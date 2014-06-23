@@ -1,307 +1,594 @@
-/*! JSFuck 0.4.0 - http://jsfuck.com */
+(function (self)
+{
+    'use strict';
+    
+    // Mapping syntax has been changed to match Javascript more closely. The main differences from
+    // JSFuck are:
+    // * Support for constant literals like "ANY_FUNCTION", "FHP_3_NS", etc. improves readability
+    //   and simplifies maintenance.
+    // * 10 evaluates to a number, while "10" evaluates to a string. This can make a difference in
+    //   certain expressions and may affect the mapping length.
+    // * String literals must be always double quoted.
+    
+    var CONSTANTS =
+    {
+        ANY_FUNCTION:   '[]["filter"]',
+        
+        // Function boby padding constants: prepended to a function to align the body at the same
+        // position on different browsers. The number after "FBP_" is the maximum character
+        // overhead; the suffix "_NS" indicates that the constant does not evaluate to a string or
+        // an array.
+        FBP_9_NS:       '[false][+!(false+ANY_FUNCTION)["40"]]',
+        FBP_10:
+        {
+            NO_IE:      '[0]+FBP_9_NS'
+        },
+        FBP_15:         'FHP_5_NS+[0]+FBP_9_NS',
+        FBP_16:         'FHP_3_NS+[true]+FBP_9_NS',
+        FBP_18:         'FHP_5_NS+[true]+FBP_9_NS',
+        FBP_20:         'FHP_5_NS+[0]+false+FBP_9_NS',
 
-(function(self){
+        // Function header padding constants: prepended to a function to align the header at the
+        // same position on different browsers. The number after "FHP_" is the maximum character
+        // overhead; the suffix "_NS" indicates that the constant does not evaluate to a string or
+        // an array.
+        FHP_3_NS:
+        {
+            DEFAULT:    '+((ANY_FUNCTION+[])[0]+"10")',
+            NO_IE:      'NaN'
+        },
+        FHP_5_NS:
+        {
+            DEFAULT:    '!!+((ANY_FUNCTION+[])[0]+1)',
+            NO_IE:      'false'
+        },
+        FHP_7:          'FHP_3_NS+[true]',
+        FHP_8:          'FHP_5_NS+[NaN]',
+        
+        // Plain padding constants: The number after "PP_" is the character overhead; the suffix
+        // "_NS" indicates that the constant does not evaluate to a string or an array.
+        PP_0:           '[]',
+        PP_1_NS:        '0',
+        PP_3_NS:        'NaN',
+        PP_4_NS:        'true',
+        PP_5:           '[false]',
+        PP_5_NS:        'false',
+        PP_6:           '"0false"'
+    };
+    
+    var CONSTRUCTORS =
+    {
+        Array:      '[]',
+        Boolean:    '(false)',
+        Function:   'ANY_FUNCTION',
+        Number:     '(0)',
+        RegExp:     'Function("return/false/")()',
+        String:     '("")'
+    };
+    
+    var CHARACTERS =
+    {
+        'a':            '"false"[1]',
+        'b':
+        {
+            DEFAULT:    '(FHP_8+Number)["20"]',
+            NO_IE:      '(PP_0+Number)["12"]'
+        },
+        'c':
+        {
+            DEFAULT:    '(FHP_7+ANY_FUNCTION)["10"]',
+            NO_IE:      '(PP_0+ANY_FUNCTION)[3]'
+        },
+        'd':            '"undefined"[2]',
+        'e':            '"true"[3]',
+        'f':            '"false"[0]',
+        'g':
+        {
+            DEFAULT:    '(FHP_7+String)["21"]',
+            NO_IE:      '(PP_6+String)["20"]'
+        },
+        'h':            '(101)["toString"]("21")[1]',
+        'i':            '(PP_5+undefined)["10"]',
+        'j':            '(Function("return{}")()+[])["10"]',
+        'k':            '(20)["toString"]("21")',
+        'l':            '"false"[2]',
+        'm':            '(PP_6+Function())["20"]',
+        'n':            '"undefined"[1]',
+        'o':
+        {
+            DEFAULT:    '(FHP_5_NS+ANY_FUNCTION)["11"]',
+            NO_IE:      '(PP_4_NS+ANY_FUNCTION)["10"]'
+        },
+        'p':            '(211)["toString"]("31")[1]',
+        'q':            '(212)["toString"]("31")[1]',
+        'r':            '"true"[1]',
+        's':            '"false"[3]',
+        't':            '"true"[0]',
+        'u':            '"undefined"[0]',
+        'v':            '(FBP_15+ANY_FUNCTION)["40"]',
+        'w':            '(32)["toString"]("33")',
+        'x':            '(101)["toString"]("34")[1]',
+        'y':            '(PP_3_NS+[Infinity])["10"]',
+        'z':            '(35)["toString"]("36")',
 
-  var USE_CHAR_CODE = "USE_CHAR_CODE";
+        'A':
+        {
+            DEFAULT:    '(FHP_3_NS+Array)["12"]',
+            NO_IE:      '(PP_1_NS+Array)["10"]'
+        },
+        'B':
+        {
+            DEFAULT:    '(FHP_3_NS+Boolean)["12"]',
+            NO_IE:      '(PP_1_NS+Boolean)["10"]'
+        },
+        'C':            'Function("return escape")()(""["italics"]())[2]',
+        'D':            'Function("return escape")()("}")[2]',
+        'E':
+        {
+            DEFAULT:    '(FHP_8+RegExp)["20"]',
+            NO_IE:      '(PP_0+RegExp)["12"]'
+        },
+        'F':
+        {
+            DEFAULT:    '(FHP_3_NS+Function)["12"]',
+            NO_IE:      '(PP_1_NS+Function)["10"]'
+        },
+        'G':            '(PP_5_NS+Function("return Date")()())["30"]',
+    //  'H':    ,
+        'I':            '"Infinity"[0]',
+    //  'J':    ,
+    //  'K':    ,
+    //  'L':    ,
+        'M':            '(PP_4_NS+Function("return Date")()())["30"]',
+        'N':            '"NaN"[0]',
+        'O':            '(PP_3_NS+Function("return{}")())["11"]',
+    //  'P':    ,
+    //  'Q':    ,
+        'R':
+        {
+            DEFAULT:    '(FHP_3_NS+RegExp)["12"]',
+            NO_IE:      '(PP_1_NS+RegExp)["10"]'
+        },
+        'S':
+        {
+            DEFAULT:    '(FHP_3_NS+String)["12"]',
+            NO_IE:      '(PP_1_NS+String)["10"]'
+        },
+        'T':            '(PP_3_NS+Function("return Date")()())["30"]',
+        'U':            '(PP_3_NS+Function("return{}")()["toString"]["call"]())["11"]',
+    //  'V':    ,
+    //  'W':    ,
+    //  'X':    ,
+    //  'Y':    ,
+    //  'Z':    ,
 
-  var MIN = 32, MAX = 126;
-
-  var SIMPLE = {
-    'false':      '![]',
-    'true':       '!![]',
-    'undefined':  '[][[]]',
-    'NaN':        '+[![]]',
-    'Infinity':   '+(+!+[]+(!+[]+[])[!+[]+!+[]+!+[]]+[+!+[]]+[+[]]+[+[]]+[+[]])' // +"1e1000"
-  };
-
-  var CONSTRUCTORS = {
-    'Array':    '[]',
-    'Number':   '(+[])',
-    'String':   '([]+[])',
-    'Boolean':  '(![])',
-    'Function': '[]["filter"]',
-    'RegExp':   'Function("return/"+false+"/")()'
-  };
-
-  var MAPPING = {
-    'a':   '(false+"")[1]',
-    'b':   '(Function("return{}")()+"")[2]',
-    'c':   '([]["filter"]+"")[3]',
-    'd':   '(undefined+"")[2]',
-    'e':   '(true+"")[3]',
-    'f':   '(false+"")[0]',
-    'g':   '(false+[0]+String)[20]',
-    'h':   '(+(101))["toString"](21)[1]',
-    'i':   '([false]+undefined)[10]',
-    'j':   '(Function("return{}")()+"")[10]',
-    'k':   '(+(20))["toString"](21)',
-    'l':   '(false+"")[2]',
-    'm':   '(Number+"")[11]',
-    'n':   '(undefined+"")[1]',
-    'o':   '(true+[]["filter"])[10]',
-    'p':   '(+(211))["toString"](31)[1]',
-    'q':   '(+(212))["toString"](31)[1]',
-    'r':   '(true+"")[1]',
-    's':   '(false+"")[3]',
-    't':   '(true+"")[0]',
-    'u':   '(undefined+"")[0]',
-    'v':   '(+(31))["toString"](32)',
-    'w':   '(+(32))["toString"](33)',
-    'x':   '(+(101))["toString"](34)[1]',
-    'y':   '(NaN+[Infinity])[10]',
-    'z':   '(+(35))["toString"](36)',
-
-    'A':   '(+[]+Array)[10]',
-    'B':   '(+[]+Boolean)[10]',
-    'C':   'Function("return escape")()(("")["italics"]())[2]',
-    'D':   'Function("return escape")()([]["filter"])["slice"]("-1")',
-    'E':   '(RegExp+"")[12]',
-    'F':   '(+[]+Function)[10]',
-    'G':   '(false+Function("return Date")()())[30]',
-    'H':   USE_CHAR_CODE,
-    'I':   '(Infinity+"")[0]',
-    //'J':   USE_CHAR_CODE,
-    'K':   USE_CHAR_CODE,
-    'L':   USE_CHAR_CODE,
-    'M':   '(true+Function("return Date")()())[30]',
-    'N':   '(NaN+"")[0]',
-    'O':   '(NaN+Function("return{}")())[11]',
-    'P':   USE_CHAR_CODE,
-    'Q':   USE_CHAR_CODE,
-    'R':   '(+[]+RegExp)[10]',
-    'S':   '(+[]+String)[10]',
-    'T':   '(NaN+Function("return Date")()())[30]',
-    'U':   '(NaN+Function("return{}")()["toString"]["call"]())[11]',
-    'V':   USE_CHAR_CODE,
-    'W':   USE_CHAR_CODE,
-    'X':   USE_CHAR_CODE,
-    'Y':   USE_CHAR_CODE,
-    'Z':   USE_CHAR_CODE,
-
-    ' ':   '(NaN+[]["filter"])[11]',
-    '!':   USE_CHAR_CODE,
-    '"':   '("")["fontcolor"]()[12]',
-    '#':   USE_CHAR_CODE,
-    '$':   USE_CHAR_CODE,
-    '%':   'Function("return escape")()([]["filter"])[20]',
-    '&':   USE_CHAR_CODE,
-    '\'':  USE_CHAR_CODE,
-    '(':   '(false+[]["filter"])[20]',
-    ')':   '(true+[]["filter"])[20]',
-    '*':   USE_CHAR_CODE,
-    '+':   '(+(+!+[]+(!+[]+[])[!+[]+!+[]+!+[]]+[+!+[]]+[+[]]+[+[]])+[])[2]',
-    ',':   '([]["slice"]["call"](false+"")+"")[1]',
-    '-':   '(+(.+[0000000001])+"")[2]',
-    '.':   '(+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]',
-    '/':   '(false+[0])["italics"]()[10]',
-    ':':   '(RegExp()+"")[3]',
-    ';':   USE_CHAR_CODE,
-    '<':   '("")["italics"]()[0]',
-    '=':   '("")["fontcolor"]()[11]',
-    '>':   '("")["italics"]()[2]',
-    '?':   '(RegExp()+"")[2]',
-    '@':   USE_CHAR_CODE,
-    '[':   '(Function("return{}")()+"")[0]',
-    '\\':  USE_CHAR_CODE,
-    ']':   '(Function("return{}")()+"")["slice"]("-1")',
-    '^':   USE_CHAR_CODE,
-    '_':   USE_CHAR_CODE,
-    '`':   USE_CHAR_CODE,
-    '{':   '(NaN+[]["filter"])[21]',
-    '|':   USE_CHAR_CODE,
-    '}':   '([]["filter"]+"")["slice"]("-1")',
-    '~':   USE_CHAR_CODE
-  };
-
-  var GLOBAL = 'Function("return this")()';
-
-  function fillMissingChars(){
-    for (var key in MAPPING){
-      if (MAPPING[key] === USE_CHAR_CODE){
-        MAPPING[key] = 'Function("return unescape")()("%"'+ key.charCodeAt(0).toString(16).replace(/(\d+)/g, "+($1)+\"") + '")';
-      }
+        '\n':           '(PP_0+Function())["23"]',
+        ' ':            '(FHP_3_NS+ANY_FUNCTION)["11"]',
+    //  '!':    ,
+        '"':            '""["fontcolor"]()["12"]',
+    //  '#':    ,
+    //  '$':    ,
+        '%':            'Function("return escape")()(ANY_FUNCTION)["20"]',
+    //  '&':    ,
+    //  '\'':   ,
+        '(':            '(FHP_5_NS+ANY_FUNCTION)["20"]',
+        ')':
+        {
+            DEFAULT:    '(FHP_5_NS+ANY_FUNCTION)["21"]',
+            NO_IE:      '(PP_4_NS+ANY_FUNCTION)["20"]'
+        },
+    //  '*':    ,
+        '+':            '(+"1e100"+[])[2]',
+        ',':            '([]["slice"]["call"]("false")+[])[1]',
+        '-':            '(+".0000000001"+[])[2]',
+        '.':            '(+"11e20"+[])[1]',
+        '/':            '"0false"["italics"]()["10"]',
+        ':':            '(PP_0+RegExp())[3]',
+    //  ';':    ,
+        '<':            '""["italics"]()[0]',
+        '=':            '""["fontcolor"]()["11"]',
+        '>':            '""["italics"]()[2]',
+        '?':            '(PP_0+RegExp())[2]',
+    //  '@':    ,
+        '[':
+        {
+            DEFAULT:    '(FBP_20+ANY_FUNCTION)["40"]',
+            NO_IE:      '(FBP_10+ANY_FUNCTION)["30"]'
+        },
+    //  '\\':   ,
+        ']':
+        {
+            DEFAULT:    '(FBP_18+ANY_FUNCTION)["50"]',
+            NO_IE:      '(FBP_9_NS+ANY_FUNCTION)["41"]'
+        },
+    //  '^':    ,
+    //  '_':    ,
+    //  '`':    ,
+        '{':            '(FHP_3_NS+ANY_FUNCTION)["21"]',
+    //  '|':    ,
+        '}':
+        {
+            DEFAULT:    '(FBP_16+ANY_FUNCTION)["50"]',
+            NO_IE:      '(FBP_9_NS+ANY_FUNCTION)["43"]'
+        },
+    //  '~':
+    };
+    
+    var SIMPLE =
+    {
+        'false':        '![]',
+        'true':         '!![]',
+        'undefined':    '[][[]]',
+        'NaN':          '+[![]]',
+        'Infinity':     '+"1e1000"'
+    };
+    
+    function Encoder(compatibility)
+    {
+        this.compatibility = compatibility;
+        this.characterCache = { };
+        this.constantCache = { };
+        this.constructorCache = { };
+        this.expressionCache = { };
+        this.stack = [];
     }
-  }
-
-  function fillMissingDigits(){
-    var output, number, i;
-
-    for (number = 0; number < 10; number++){
-
-      output = "+[]";
-
-      if (number > 0){ output = "+!" + output; }
-      for (i = 1; i < number; i++){ output = "+!+[]" + output; }
-      if (number > 1){ output = output.substr(1); }
-
-      MAPPING[number] = "[" + output + "]";
-    }
-  }
-
-  function replaceMap(){
-    var character = "", value, original, i, key;
-
-    function replace(pattern, replacement){
-      value = value.replace(
-        new RegExp(pattern, "gi"),
-        replacement
-      );
-    }
-
-    function digitReplacer(_,x) { return MAPPING[x]; }
-
-    function numberReplacer(_,y) {
-      var values = y.split("");
-      var head = +(values.shift());
-      var output = "+[]";
-
-      if (head > 0){ output = "+!" + output; }
-      for (i = 1; i < head; i++){ output = "+!+[]" + output; }
-      if (head > 1){ output = output.substr(1); }
-
-      return [output].concat(values).join("+").replace(/(\d)/g, digitReplacer);
-    }
-
-    for (i = MIN; i <= MAX; i++){
-      character = String.fromCharCode(i);
-      value = MAPPING[character];
-      if(!value) {continue;}
-      original = value;
-
-      for (key in CONSTRUCTORS){
-        replace("\\b" + key, CONSTRUCTORS[key] + '["constructor"]');
-      }
-
-      for (key in SIMPLE){
-        replace(key, SIMPLE[key]);
-      }
-
-      replace('(\\d\\d+)', numberReplacer);
-      replace('\\((\\d)\\)', digitReplacer);
-      replace('\\[(\\d)\\]', digitReplacer);
-
-      replace("GLOBAL", GLOBAL);
-      replace('\\+""', "+[]");
-      replace('""', "[]+[]");
-
-      MAPPING[character] = value;
-    }
-  }
-
-  function replaceStrings(){
-    var regEx = /[^\[\]\(\)\!\+]{1}/g,
-      all, value, missing,
-      count = MAX - MIN;
-
-    function findMissing(){
-      var all, value, done = false;
-
-      missing = {};
-
-      for (all in MAPPING){
-
-        value = MAPPING[all];
-
-        if (value.match(regEx)){
-          missing[all] = value;
-          done = true;
+    
+    Encoder.prototype =
+    {
+        callResolver: function (stackName, value, resolver)
+        {
+            var expr = value instanceof Object ? value[this.compatibility] || value.DEFAULT : value;
+            if (expr === undefined)
+            {
+                throw new SyntaxError('Undefined symbol: ' + stackName);
+            }
+            var stackIndex = this.stack.indexOf(stackName);
+            this.stack.push(stackName);
+            try
+            {
+                if (stackIndex >= 0)
+                {
+                    var chain = this.stack.slice(stackIndex);
+                    throw new SyntaxError('Circular reference detected: ' + chain.join(' < '));
+                }
+                resolver.call(this, expr);
+            }
+            finally
+            {
+                this.stack.pop();
+            }
+        },
+        
+        encode: function (input, wrapWithEval)
+        {
+            var output = this.resolveString(input);
+            if (wrapWithEval)
+            {
+                output = this.replaceAndCache('Function') + '(' + output + ')()';
+            }
+            return output;
+        },
+                
+        replace: function (expr)
+        {
+            expr = expr.replace(/"(.*?)"/g, stringReplacer.bind(this));
+            expr = expr.replace(/[\$A-Z_a-z][\$0-9A-Z_a-z]*/g, literalReplacer.bind(this));
+            expr = expr.replace(/[0-9]+/g, numberReplacer);
+            return expr;
+        },
+    
+        replaceAndCache: function (expr)
+        {
+            var replacement = this.expressionCache[expr];
+            if (replacement === undefined)
+            {
+                this.expressionCache[expr] = replacement = this.replace(expr);
+            }
+            return replacement;
+        },
+        
+        resolveCharacter: function (character)
+        {
+            var value = this.characterCache[character];
+            if (value === undefined)
+            {
+                this.callResolver(
+                    '"' + character + '"',
+                    CHARACTERS[character] || null,
+                    function (expr)
+                    {
+                        if (expr == null)
+                        {
+                            var charCode = character.charCodeAt(0);
+                            if (charCode < 0x100)
+                            {
+                                expr =
+                                    this.replaceAndCache('Function("return unescape")') +
+                                    '()(' +
+                                    this.resolveString(
+                                    '%' + ('0' + charCode.toString(16).replace(/b/g, 'B')).slice(-2)
+                                    ) +
+                                    ')';
+                            }
+                            else
+                            {
+                                expr =
+                                    this.replaceAndCache('String["fromCharCode"]') +
+                                    '(' + charCode + ')';
+                            }
+                        }
+                        this.characterCache[character] = value = Object(this.replace(expr));
+                    }
+                    );
+            }
+            return value;
+        },
+        
+        resolveConstant: function (constant)
+        {
+            var value = this.constantCache[constant];
+            if (value === undefined)
+            {
+                this.callResolver(
+                    constant,
+                    CONSTANTS[constant],
+                    function (expr)
+                    {
+                        this.constantCache[constant] = value = Object(this.replace(expr));
+                    }
+                    );
+            }
+            return String(value);
+        },
+        
+        resolveConstructor: function (constructor)
+        {
+            var CONSTRUCTOR_POSTFIX = '["constructor"]';
+            var value = this.constructorCache[constructor];
+            if (value === undefined)
+            {
+                this.callResolver(
+                    constructor,
+                    CONSTRUCTORS[constructor],
+                    function (expr)
+                    {
+                        this.constructorCache[constructor] = value = Object(this.replace(expr));
+                        // make sure the replacement is cached
+                        this.replaceAndCache(CONSTRUCTOR_POSTFIX);
+                    }
+                    );
+            }
+            var result = value + this.replaceAndCache(CONSTRUCTOR_POSTFIX);
+            return result;
+        },
+        
+        resolveSimple: function (simple)
+        {
+            var value = SIMPLE[simple];
+            if (!(value instanceof Object))
+            {
+                this.callResolver(
+                    simple,
+                    null,
+                    function ()
+                    {
+                        SIMPLE[simple] = value = Object(this.replace(value));
+                    }
+                    );
+            }
+            return value;
+        },
+        
+        resolveString: function (string, strongBound)
+        {
+            var result;
+            var multipart = false;
+            var fullLevel;
+            if (string)
+            {
+                var regExp = new RegExp(Object.keys(SIMPLE).join('|') + '|[^]', 'g');
+                var match;
+                while (match = regExp.exec(string))
+                {
+                    var token = match[0];
+                    var tokenValue;
+                    if (token in SIMPLE)
+                    {
+                        tokenValue = this.resolveSimple(token);
+                    }
+                    else
+                    {
+                        tokenValue = this.resolveCharacter(token);
+                    }
+                    var level = tokenValue.level;
+                    if (tokenValue.level === undefined)
+                    {
+                        var type = typeof(eval(String(tokenValue)));
+                        switch (type)
+                        {
+                        case 'string':
+                            level = 1;
+                            break;
+                        case 'array':
+                            level = 0;
+                            break;
+                        case 'undefined':
+                            level = -2;
+                            break;
+                        default:
+                            level = -1;
+                            break;
+                        }
+                        tokenValue.level = level;
+                    }
+                    if (result && (fullLevel < 0 && level < 0 || hasOuterPlus(tokenValue)))
+                    {
+                        if (level !== -2)
+                        {
+                            tokenValue = '[' + tokenValue + ']';
+                        }
+                        else if (fullLevel !== -2)
+                        {
+                            result = '[' + result + ']';
+                        }
+                        else
+                        {
+                            result += '+[]';
+                        }
+                    }
+                    if (result)
+                    {
+                        multipart = true;
+                        fullLevel = 1;
+                        result += '+' + tokenValue;
+                    }
+                    else
+                    {
+                        fullLevel = level;
+                        result = String(tokenValue);
+                    }
+                }
+            }
+            else
+            {
+                fullLevel = 0;
+                result = '[]';
+            }
+            if (fullLevel <= 0)
+            {
+                multipart = true;
+                result += '+[]';
+            }
+            if (multipart && strongBound)
+            {
+                result = '(' + result + ')';
+            }
+            return result;
         }
-      }
-
-      return done;
-    }
-
-    function mappingReplacer(a, b) {
-      return b.split("").join("+");
-    }
-
-    function valueReplacer(c) {
-      return missing[c] ? c : MAPPING[c];
-    }
-
-    for (all in MAPPING){
-      MAPPING[all] = MAPPING[all].replace(/\"([^\"]+)\"/gi, mappingReplacer);
-    }
-
-    while (findMissing()){
-      for (all in missing){
-        value = MAPPING[all];
-        value = value.replace(regEx, valueReplacer);
-
-        MAPPING[all] = value;
-        missing[all] = value;
-      }
-
-      if (count-- === 0){
-        console.error("Could not compile the following chars:", missing);
-      }
-    }
-  }
-
-  function encode(input, wrapWithEval){
-    var output = [];
-
-    if (!input){
-      return "";
-    }
-
-    var r = "";
-    for (var i in SIMPLE) {
-      r += i + "|";
-    }
-    r+=".";
-
-    input.replace(new RegExp(r, 'g'), function(c) {
-      var replacement = SIMPLE[c];
-      if (replacement) {
-        output.push("[" + replacement + "]+[]");
-      } else {
-        replacement = MAPPING[c];
-        if (replacement){
-          output.push(replacement);
-        } else {
-          if (c === "J") {
-            replacement =
-              "([][" + encode("filter") + "]" +
-              "[" + encode("constructor") + "]" +
-              "(" + encode("return new Date(200000000)") + ")()+[])[!+[]+!+[]+!+[]+!+[]]";
-     
-            output.push(replacement);
-            MAPPING[c] = replacement;
-          } else {
-            replacement =
-              "([]+[])[" + encode("constructor") + "]" +
-              "[" + encode("fromCharCode") + "]" +
-              "(" + encode(c.charCodeAt(0) + "") + ")";
-     
-            output.push(replacement);
-            MAPPING[c] = replacement;
-          }
+    };
+    
+    function encodeDigit(digit)
+    {
+        switch (digit)
+        {
+        case '0':
+            return '+[]';
+        case '1':
+            return '+!![]';
+        default:
+            var result = '!![]';
+            do { result += '+!![]'; } while (--digit > 1);
+            return result;
         }
-      }
-    });
-
-    output = output.join("+");
-
-    if (/^\d$/.test(input)){
-      output += "+[]";
     }
-
-    if (wrapWithEval){
-      output = "[][" + encode("filter") + "]" +
-        "[" + encode("constructor") + "]" +
-        "(" + output + ")()";
+    
+    function fillMissingDigits()
+    {
+        for (var number = 0; number < 10; ++number)
+        {
+            var digit = String(number);
+            CHARACTERS[digit] = encodeDigit(digit);
+        }
     }
-
-    return output;
-  }
-
-  fillMissingDigits();
-  fillMissingChars();
-  replaceMap();
-  replaceStrings();
-
-  self.JSFuck = {
-    encode: encode
-  };
-})(typeof(exports) === "undefined" ? window : exports);
+    
+    function hasOuterPlus(expr)
+    {
+        if (expr.outerPlus != null)
+        {
+            return expr.outerPlus;
+        }
+        var unclosed = 0;
+        var regExp = /".*?"|!\+|[+([)\]]/g;
+        var match;
+        while (match = regExp.exec(expr))
+        {
+            switch (match[0])
+            {
+            case '+':
+                if (!unclosed)
+                {
+                    expr.outerPlus = true;
+                    return true;
+                }
+                break;
+            case '(':
+            case '[':
+                ++unclosed;
+                break;
+            case ')':
+            case ']':
+                --unclosed;
+                break;
+            }
+        }
+        expr.outerPlus = false;
+        return false;
+    }
+    
+    function literalReplacer(literal)
+    {
+        if (literal in CONSTANTS)
+        {
+            return this.resolveConstant(literal);
+        }
+        if (literal in CONSTRUCTORS)
+        {
+            return this.resolveConstructor(literal);
+        }
+        if (literal in SIMPLE)
+        {
+            return this.resolveSimple(literal);
+        }
+        throw new SyntaxError('Undefined literal ' + literal);
+    }
+    
+    function numberReplacer(number, offset, total)
+    {
+        var replacement = encodeDigit(number[0]);
+        var length = number.length;
+        for (var index = 1; index < length; ++index)
+        {
+            replacement += '+[' + encodeDigit(number[index]) + ']';
+        }
+        if (length > 1)
+        {
+            replacement = '+(' + replacement + ')';
+        }
+        if (total[offset - 1] === '+')
+        {
+            replacement = '(' + replacement + ')';
+        }
+        return replacement;
+    }
+    
+    function stringReplacer(quotedString, string, offset, total)
+    {
+        var result =
+            this.resolveString(
+            string,
+            /[+!]/.test(total[offset - 1]) || total[offset + quotedString.length] === '['
+            );
+        return result;
+    }
+    
+    fillMissingDigits();
+    var encoders = { };
+    
+    function encode(input, wrapWithEval, compatibility)
+    {
+        compatibility = compatibility === undefined ? 'DEFAULT' : String(compatibility);
+        var encoder = encoders[compatibility];
+        if (!encoder)
+        {
+            encoders[compatibility] = encoder = new Encoder(compatibility);
+        }
+        var output = encoder.encode(input, wrapWithEval);
+        return output;
+    }
+    
+    self.JSFuck =
+    {
+        encode: encode
+    };
+    
+})(typeof(exports) === 'undefined' ? window : exports);
