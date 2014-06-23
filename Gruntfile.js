@@ -12,14 +12,19 @@ module.exports = function(grunt) {
         latedef: true,
         newcap: true,
         noarg: true,
+        quotmark: true,
         sub: true,
+        trailing: true,
         undef: true,
         unused: true,
+        
         boss: true,
         eqnull: true,
+        evil: true,
+        validthis: true,
+        
         node: true,
         globals: {
-          jQuery: true,
           window: true,
         }
       },
