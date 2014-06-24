@@ -338,7 +338,7 @@
                     }
                     );
             }
-            return String(value);
+            return value;
         },
         
         resolveConstructor: function (constructor)
@@ -352,14 +352,12 @@
                     CONSTRUCTORS[constructor],
                     function (expr)
                     {
-                        this.constructorCache[constructor] = value = Object(this.replace(expr));
-                        // make sure the replacement is cached
-                        this.replaceAndCache(CONSTRUCTOR_POSTFIX);
+                        this.constructorCache[constructor] = value =
+                            Object(this.replace(expr) + this.replaceAndCache(CONSTRUCTOR_POSTFIX));
                     }
                     );
             }
-            var result = value + this.replaceAndCache(CONSTRUCTOR_POSTFIX);
-            return result;
+            return value;
         },
         
         resolveSimple: function (simple)
@@ -525,21 +523,30 @@
         return false;
     }
     
-    function literalReplacer(literal)
+    function literalReplacer(literal, offset, total)
     {
+        var replacement;
         if (literal in CONSTANTS)
         {
-            return this.resolveConstant(literal);
+            replacement = this.resolveConstant(literal);
         }
-        if (literal in CONSTRUCTORS)
+        else if (literal in CONSTRUCTORS)
         {
-            return this.resolveConstructor(literal);
+            replacement = this.resolveConstructor(literal);
         }
-        if (literal in SIMPLE)
+        else if (literal in SIMPLE)
         {
-            return this.resolveSimple(literal);
+            replacement = this.resolveSimple(literal);
         }
-        throw new SyntaxError('Undefined literal ' + literal);
+        else
+        {
+            throw new SyntaxError('Undefined literal ' + literal);
+        }
+        if (total[offset - 1] === '+' && hasOuterPlus(replacement))
+        {
+            replacement = '(' + replacement + ')';
+        }
+        return replacement;
     }
     
     function numberReplacer(number, offset, total)
