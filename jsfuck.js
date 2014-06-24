@@ -593,7 +593,7 @@
         return output;
     }
     
-    self.JSFuck =
+    self.JSFuck = self.JScrewIt =
     {
         encode: encode
     };
