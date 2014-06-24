@@ -1,4 +1,4 @@
-// Test cases for art.js
+// Test cases for JScrewIt
 
 (
 function ()
