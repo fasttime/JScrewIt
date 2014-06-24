@@ -1,36 +1,36 @@
 {
-  'name': 'JScrewIt',
-  'version': '0.1.0',
-  'description': 'Write any JavaScript with just 6 characters: []()!+',
-  'main': 'jsfuck.js',
-  'bin': 'fuck.js',
-  'repository': {
-    'type': 'git',
-    'url': 'git://github.com/fasttime/JScrewIt.git'
+  "name": "JScrewIt",
+  "version": "0.1.0",
+  "description": "Write any JavaScript with just 6 characters: []()!+",
+  "main": "jsfuck.js",
+  "bin": "fuck.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fasttime/JScrewIt.git"
   },
-  'keywords': [
-    'esoteric',
-    'jsfuck',
-    'obfuscation'
+  "keywords": [
+    "esoteric",
+    "jsfuck",
+    "obfuscation"
   ],
-  'author': {
-    'name': 'Francesco Trotta',
-    'url': 'https://github.com/fasttime'
+  "author": {
+    "name": "Francesco Trotta",
+    "url": "https://github.com/fasttime"
   },
-  'licenses': [
+  "licenses": [
     {
-      'type': 'WTFPL',
-      'url': 'https://raw.github.com/fasttime/JScrewIt/master/LICENSE.txt'
+      "type": "WTFPL",
+      "url": "https://raw.github.com/fasttime/JScrewIt/master/LICENSE.txt"
     }
   ],
-  'bugs': {
-    'url': 'https://github.com/fasttime/JScrewIt/issues'
+  "bugs": {
+    "url": "https://github.com/fasttime/JScrewIt/issues"
   },
-  'devDependencies': {
-    'grunt': '~0.4.5',
-    'grunt-contrib-nodeunit': '~0.4.1',
-    'grunt-contrib-watch': '~0.6.1',
-    'grunt-contrib-jshint': '~0.10.0',
-    'qunitjs': '~1.14.0'
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-nodeunit": "~0.4.1",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-contrib-jshint": "~0.10.0",
+    "qunitjs": "~1.14.0"
   }
 }
