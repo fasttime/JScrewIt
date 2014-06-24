@@ -237,9 +237,8 @@
     
     Encoder.prototype =
     {
-        callResolver: function (stackName, value, resolver)
+        callResolver: function (stackName, expr, resolver)
         {
-            var expr = value instanceof Object ? value[this.compatibility] || value.DEFAULT : value;
             if (expr === undefined)
             {
                 throw new SyntaxError('Undefined symbol: ' + stackName);
@@ -270,7 +269,13 @@
             }
             return output;
         },
-                
+        
+        getCompatibleExpr: function (value)
+        {
+            var expr = value instanceof Object ? value[this.compatibility] || value.DEFAULT : value;
+            return expr;
+        },
+        
         replace: function (expr)
         {
             expr = expr.replace(/"(.*?)"/g, stringReplacer.bind(this));
@@ -296,7 +301,7 @@
             {
                 this.callResolver(
                     '"' + character + '"',
-                    CHARACTERS[character] || null,
+                    this.getCompatibleExpr(CHARACTERS[character]) || null,
                     function (expr)
                     {
                         if (expr == null)
@@ -333,7 +338,7 @@
             {
                 this.callResolver(
                     constant,
-                    CONSTANTS[constant],
+                    this.getCompatibleExpr(CONSTANTS[constant]),
                     function (expr)
                     {
                         this.constantCache[constant] = value = Object(this.replace(expr));
@@ -345,7 +350,6 @@
         
         resolveConstructor: function (constructor)
         {
-            var CONSTRUCTOR_POSTFIX = '["constructor"]';
             var value = this.constructorCache[constructor];
             if (value === undefined)
             {
@@ -355,7 +359,7 @@
                     function (expr)
                     {
                         this.constructorCache[constructor] = value =
-                            Object(this.replace(expr) + this.replaceAndCache(CONSTRUCTOR_POSTFIX));
+                            Object(this.replace(expr) + this.replaceAndCache('["constructor"]'));
                     }
                     );
             }
@@ -369,10 +373,10 @@
             {
                 this.callResolver(
                     simple,
-                    null,
-                    function ()
+                    value,
+                    function (expr)
                     {
-                        SIMPLE[simple] = value = Object(this.replace(value));
+                        SIMPLE[simple] = value = Object(this.replace(expr));
                     }
                     );
             }
