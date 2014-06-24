@@ -45,15 +45,17 @@
         FHP_7:          'FHP_3_NS+[true]',
         FHP_8:          'FHP_5_NS+[NaN]',
         
-        // Plain padding constants: The number after "PP_" is the character overhead; the suffix
+        // Regular padding constants: The number after "RP_" is the character overhead; the suffix
         // "_NS" indicates that the constant does not evaluate to a string or an array.
-        PP_0:           '[]',
-        PP_1_NS:        '0',
-        PP_3_NS:        'NaN',
-        PP_4_NS:        'true',
-        PP_5:           '[false]',
-        PP_5_NS:        'false',
-        PP_6:           '"0false"'
+        RP_1_NS:        '0',
+        RP_3_NS:        'NaN',
+        RP_4_NS:        'true',
+        RP_5:           '[false]',
+        RP_5_NS:        'false',
+        RP_6:           '"0false"',
+        
+        // Zero padding constant: used to convert an adjacent expression into a string.
+        ZP:             '[]'
     };
     
     var CONSTRUCTORS =
@@ -72,12 +74,12 @@
         'b':
         {
             DEFAULT:    '(FHP_8+Number)["20"]',
-            NO_IE:      '(PP_0+Number)["12"]'
+            NO_IE:      '(ZP+Number)["12"]'
         },
         'c':
         {
             DEFAULT:    '(FHP_7+ANY_FUNCTION)["10"]',
-            NO_IE:      '(PP_0+ANY_FUNCTION)[3]'
+            NO_IE:      '(ZP+ANY_FUNCTION)[3]'
         },
         'd':            '"undefined"[2]',
         'e':            '"true"[3]',
@@ -85,19 +87,19 @@
         'g':
         {
             DEFAULT:    '(FHP_7+String)["21"]',
-            NO_IE:      '(PP_6+String)["20"]'
+            NO_IE:      '(RP_6+String)["20"]'
         },
         'h':            '(101)["toString"]("21")[1]',
-        'i':            '(PP_5+undefined)["10"]',
+        'i':            '(RP_5+undefined)["10"]',
         'j':            '(Function("return{}")()+[])["10"]',
         'k':            '(20)["toString"]("21")',
         'l':            '"false"[2]',
-        'm':            '(PP_6+Function())["20"]',
+        'm':            '(RP_6+Function())["20"]',
         'n':            '"undefined"[1]',
         'o':
         {
             DEFAULT:    '(FHP_5_NS+ANY_FUNCTION)["11"]',
-            NO_IE:      '(PP_4_NS+ANY_FUNCTION)["10"]'
+            NO_IE:      '(RP_4_NS+ANY_FUNCTION)["10"]'
         },
         'p':            '(211)["toString"]("31")[1]',
         'q':            '(212)["toString"]("31")[1]',
@@ -108,61 +110,61 @@
         'v':            '(FBP_15+ANY_FUNCTION)["40"]',
         'w':            '(32)["toString"]("33")',
         'x':            '(101)["toString"]("34")[1]',
-        'y':            '(PP_3_NS+[Infinity])["10"]',
+        'y':            '(RP_3_NS+[Infinity])["10"]',
         'z':            '(35)["toString"]("36")',
 
         'A':
         {
             DEFAULT:    '(FHP_3_NS+Array)["12"]',
-            NO_IE:      '(PP_1_NS+Array)["10"]'
+            NO_IE:      '(RP_1_NS+Array)["10"]'
         },
         'B':
         {
             DEFAULT:    '(FHP_3_NS+Boolean)["12"]',
-            NO_IE:      '(PP_1_NS+Boolean)["10"]'
+            NO_IE:      '(RP_1_NS+Boolean)["10"]'
         },
         'C':            'Function("return escape")()(""["italics"]())[2]',
         'D':            'Function("return escape")()("}")[2]',
         'E':
         {
             DEFAULT:    '(FHP_8+RegExp)["20"]',
-            NO_IE:      '(PP_0+RegExp)["12"]'
+            NO_IE:      '(ZP+RegExp)["12"]'
         },
         'F':
         {
             DEFAULT:    '(FHP_3_NS+Function)["12"]',
-            NO_IE:      '(PP_1_NS+Function)["10"]'
+            NO_IE:      '(RP_1_NS+Function)["10"]'
         },
-        'G':            '(PP_5_NS+Function("return Date")()())["30"]',
+        'G':            '(RP_5_NS+Function("return Date")()())["30"]',
     //  'H':    ,
         'I':            '"Infinity"[0]',
     //  'J':    ,
     //  'K':    ,
     //  'L':    ,
-        'M':            '(PP_4_NS+Function("return Date")()())["30"]',
+        'M':            '(RP_4_NS+Function("return Date")()())["30"]',
         'N':            '"NaN"[0]',
-        'O':            '(PP_3_NS+Function("return{}")())["11"]',
+        'O':            '(RP_3_NS+Function("return{}")())["11"]',
     //  'P':    ,
     //  'Q':    ,
         'R':
         {
             DEFAULT:    '(FHP_3_NS+RegExp)["12"]',
-            NO_IE:      '(PP_1_NS+RegExp)["10"]'
+            NO_IE:      '(RP_1_NS+RegExp)["10"]'
         },
         'S':
         {
             DEFAULT:    '(FHP_3_NS+String)["12"]',
-            NO_IE:      '(PP_1_NS+String)["10"]'
+            NO_IE:      '(RP_1_NS+String)["10"]'
         },
-        'T':            '(PP_3_NS+Function("return Date")()())["30"]',
-        'U':            '(PP_3_NS+Function("return{}")()["toString"]["call"]())["11"]',
+        'T':            '(RP_3_NS+Function("return Date")()())["30"]',
+        'U':            '(RP_3_NS+Function("return{}")()["toString"]["call"]())["11"]',
     //  'V':    ,
     //  'W':    ,
     //  'X':    ,
     //  'Y':    ,
     //  'Z':    ,
 
-        '\n':           '(PP_0+Function())["23"]',
+        '\n':           '(ZP+Function())["23"]',
         ' ':            '(FHP_3_NS+ANY_FUNCTION)["11"]',
     //  '!':    ,
         '"':            '""["fontcolor"]()["12"]',
@@ -175,7 +177,7 @@
         ')':
         {
             DEFAULT:    '(FHP_5_NS+ANY_FUNCTION)["21"]',
-            NO_IE:      '(PP_4_NS+ANY_FUNCTION)["20"]'
+            NO_IE:      '(RP_4_NS+ANY_FUNCTION)["20"]'
         },
     //  '*':    ,
         '+':            '(+"1e100"+[])[2]',
@@ -183,12 +185,12 @@
         '-':            '(+".0000000001"+[])[2]',
         '.':            '(+"11e20"+[])[1]',
         '/':            '"0false"["italics"]()["10"]',
-        ':':            '(PP_0+RegExp())[3]',
+        ':':            '(ZP+RegExp())[3]',
     //  ';':    ,
         '<':            '""["italics"]()[0]',
         '=':            '""["fontcolor"]()["11"]',
         '>':            '""["italics"]()[2]',
-        '?':            '(PP_0+RegExp())[2]',
+        '?':            '(ZP+RegExp())[2]',
     //  '@':    ,
         '[':
         {
