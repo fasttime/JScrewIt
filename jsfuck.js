@@ -135,13 +135,19 @@
             DEFAULT:    '(FHP_3_NS+Function)["12"]',
             NO_IE:      '(RP_1_NS+Function)["10"]'
         },
-        'G':            '(RP_5_NS+Function("return Date")()())["30"]',
+        'G':
+        {
+            NO_IE:      '(RP_5_NS+Function("return Date")()())["30"]' // not for IE ≤ 10
+        },
     //  'H':    ,
         'I':            '"Infinity"[0]',
     //  'J':    ,
     //  'K':    ,
     //  'L':    ,
-        'M':            '(RP_4_NS+Function("return Date")()())["30"]',
+        'M':
+        {
+            NO_IE:      '(RP_4_NS+Function("return Date")()())["30"]' // not for IE ≤ 10
+        },
         'N':            '"NaN"[0]',
         'O':            '(RP_3_NS+Function("return{}")())["11"]',
     //  'P':    ,
@@ -156,7 +162,10 @@
             DEFAULT:    '(FHP_3_NS+String)["12"]',
             NO_IE:      '(RP_1_NS+String)["10"]'
         },
-        'T':            '(RP_3_NS+Function("return Date")()())["30"]',
+        'T':
+        {
+            NO_IE:      '(RP_3_NS+Function("return Date")()())["30"]' // not for IE ≤ 10
+        },
         'U':            '(RP_3_NS+Function("return{}")()["toString"]["call"]())["11"]',
     //  'V':    ,
     //  'W':    ,
