@@ -2,7 +2,7 @@
   "name": "JScrewIt",
   "version": "0.1.0",
   "description": "Write any JavaScript with just 6 characters: []()!+",
-  "main": "jsfuck.js",
+  "main": "jscrewit.js",
   "bin": "fuck.js",
   "repository": {
     "type": "git",

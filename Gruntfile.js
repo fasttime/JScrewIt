@@ -31,7 +31,7 @@ module.exports = function(grunt) {
         src: 'Gruntfile.js'
       },
       lib_test: {
-        src: ['jsfuck.js', 'lib/**/*.js', 'test/**/*.js']
+        src: ['jscrewit.js', 'lib/**/*.js', 'test/**/*.js']
       }
     },
     nodeunit: {
