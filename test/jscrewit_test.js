@@ -1,6 +1,6 @@
 'use strict';
 
-var JSFuck = require('../jsfuck.js').JSFuck;
+var JScrewIt = require('../jscrewit.js').JScrewIt;
 var fs = require('fs');
 
 function createTest(input)
@@ -12,7 +12,7 @@ function testEncode(value, test)
 {
     var encoded;
     
-    encoded = JSFuck.encode(value);
+    encoded = JScrewIt.encode(value);
     var unencodedDefault = eval(encoded);
     test.strictEqual(
         value,
@@ -20,7 +20,7 @@ function testEncode(value, test)
         'encoding "' + value + '" with compatibility DEFAULT failed'
         );
     
-    encoded = JSFuck.encode(value, false, 'NO_IE');
+    encoded = JScrewIt.encode(value, false, 'NO_IE');
     var unencodedNoIE = eval(encoded);
     test.strictEqual(
         value,
@@ -47,8 +47,8 @@ exports['integration'] =
         for (var i = MIN; i < MAX; ++i)
         {
             var c = String.fromCharCode(i);
-            var encodedDefault = JSFuck.encode(c, false, 'DEFAULT');
-            var encodedNoIE = JSFuck.encode(c, false, 'NO_IE');
+            var encodedDefault = JScrewIt.encode(c, false, 'DEFAULT');
+            var encodedNoIE = JScrewIt.encode(c, false, 'NO_IE');
             fs.writeSync(
                 file,
                 '`' + c + '`' +

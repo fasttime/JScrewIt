@@ -145,13 +145,13 @@
         (broken)</li>
         </ul>
     </div>
-    <script src="https://rawgithub.com/fasttime/JScrewIt/master/jsfuck.js"></script>
+    <script src="https://rawgithub.com/fasttime/JScrewIt/master/jscrewit.js"></script>
     <script>
     
     function encode()
     {
         var compatibility = ua.options[ua.selectedIndex].value;
-        var output = JSFuck.encode(inputArea.value, evalBox.checked, compatibility);
+        var output = JScrewIt.encode(inputArea.value, evalBox.checked, compatibility);
         outputArea.value = output;
         updateStats();
     }
