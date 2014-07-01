@@ -24,7 +24,6 @@ module.exports =
                         newcap: true,
                         noarg: true,
                         quotmark: true,
-                        sub: true,
                         trailing: true,
                         undef: true,
                         unused: true,
@@ -32,6 +31,7 @@ module.exports =
                         boss: true,
                         eqnull: true,
                         evil: true,
+                        sub: true,
                         validthis: true,
                         
                         node: true,
@@ -46,7 +46,7 @@ module.exports =
                     },
                     lib_test:
                     {
-                        src: ['jscrewit.js', 'lib/**/*.js', 'test/**/*.js']
+                        src: ['jasmine/**/*.js', 'jscrewit.js', 'test/**/*.js']
                     }
                 },
                 nodeunit:
