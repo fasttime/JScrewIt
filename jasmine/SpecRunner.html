@@ -1,20 +1,68 @@
 <!DOCTYPE HTML>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="shortcut icon" type="image/png" href="jasmine_favicon.png">
-        <link rel="stylesheet" type="text/css"
-         href="../node_modules/jasmine-core/lib/jasmine-core/jasmine.css">
-        <script type="text/javascript"
-         src="../node_modules/jasmine-core/lib/jasmine-core/jasmine.js"></script>
-        <script type="text/javascript"
-         src="../node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js"></script>
-        <script type="text/javascript"
-         src="../node_modules/jasmine-core/lib/jasmine-core/boot.js"></script>
-        <script type="text/javascript" src="../jscrewit.js"></script>
-        <script type="text/javascript" src="spec.js"></script>
-        <title>Jasmine Spec Runner</title>
-    </head>
-    <body>
-    </body>
+<head>
+    <meta charset='utf-8'>
+    <link rel='shortcut icon' type='image/png' href='jasmine_favicon.png'>
+    <link rel='stylesheet' type='text/css'
+     href='../node_modules/jasmine-core/lib/jasmine-core/jasmine.css'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <script type='text/javascript'
+     src='../node_modules/jasmine-core/lib/jasmine-core/jasmine.js'></script>
+    <script type='text/javascript'
+     src='../node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js'></script>
+    <script type='text/javascript'
+     src='../node_modules/jasmine-core/lib/jasmine-core/boot.js'></script>
+    <script type='text/javascript' src='../jscrewit.js'></script>
+    <script type='text/javascript' src='test_suite.js'></script>
+    <script>
+    
+    TestSuite.init();
+    TestSuite.run();
+    
+    addEventListener(
+        'load',
+        function ()
+        {
+            var outputWindow;
+            var button =
+                document.querySelector('.bar').appendChild(document.createElement('BUTTON'));
+            button.textContent = 'View lengths';
+            button.onclick =
+                function ()
+                {
+                    if (outputWindow) outputWindow.close();
+                    var left = window.screenX + 50;
+                    var top = window.screenY + 50;
+                    var features =
+                        'resizable,scrollbars,width=250,height=300,left=' + left + ',top=' + top;
+                    outputWindow = window.open('', 'outputWindow', features);
+                    var outputDocument = outputWindow.document;
+                    outputDocument.title = 'JScrewIt Encoding Lengths';
+                    var outputBody = outputDocument.body;
+                    outputBody.textContent = TestSuite.createOutput();
+                    var outputBodyStyle = outputBody.style;
+                    outputBodyStyle.fontFamily = 'monospace';
+                    outputBodyStyle.whiteSpace = 'pre';
+                };
+        }
+        );
+        
+    </script>
+    <style>
+    
+    button
+    {
+        background-color: #aaa;
+        border: #eee thin solid;
+        box-shadow: 0 0 0 2px #aaa;
+        color: #eee;
+        font: 11px/16px Monaco, 'Lucida Console', monospace;
+        margin: 7px 16px;
+    }
+    
+    </style>
+    <title>Jasmine Spec Runner</title>
+</head>
+<body>
+</body>
 </html>
