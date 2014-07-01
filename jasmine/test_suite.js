@@ -1,3 +1,6 @@
+/* global describe, expect, it */
+'use strict';
+
 (function (self)
 {
     function createOutput()
@@ -28,7 +31,7 @@
                 result += padBoth(compatibility, 8);
             }
         );
-        result += '\n   ' + Array(compatibilities.length + 1).join(' -------');
+        result += '\n   ' + new Array(compatibilities.length + 1).join(' -------');
         result += '\nNL ';
         appendLengths('\n');
         var MIN = 32, MAX = 127;
@@ -61,24 +64,25 @@
     function padBoth(str, length)
     {
         str += '';
-        result = padLeft(padRight(str, length + str.length >> 1), length);
+        var result = padLeft(padRight(str, length + str.length >> 1), length);
         return result;
     }
     
     function padLeft(str, length)
     {
         str += '';
-        result = Array(length - str.length + 1).join(' ') + str;
+        var result = new Array(length - str.length + 1).join(' ') + str;
         return result;
     }
     
     function padRight(str, length)
     {
         str += '';
-        result = str + Array(length - str.length + 1).join(' ');
+        var result = str + new Array(length - str.length + 1).join(' ');
         return result;
     }
     
+    /*
     function prettyFormat(char)
     {
         var output;
@@ -130,6 +134,7 @@
         }
         return output;
     }
+    */
     
     function run()
     {
