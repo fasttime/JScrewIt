@@ -16,16 +16,14 @@
     <script type='text/javascript' src='test_suite.js'></script>
     <script>
     
-    TestSuite.init();
-    TestSuite.run();
-    
-    addEventListener(
-        'load',
-        function ()
+    function listener()
+    {
+        var bar = document.querySelector('.bar');
+        if (bar)
         {
+            removeEventListener('DOMNodeInserted', listener);
             var outputWindow;
-            var button =
-                document.querySelector('.bar').appendChild(document.createElement('BUTTON'));
+            var button = bar.appendChild(document.createElement('BUTTON'));
             button.textContent = 'View lengths';
             button.onclick =
                 function ()
@@ -45,8 +43,13 @@
                     outputBodyStyle.whiteSpace = 'pre';
                 };
         }
-        );
-        
+    }
+
+    TestSuite.init();
+    TestSuite.run();
+    
+    addEventListener('DOMNodeInserted', listener);
+    
     </script>
     <style>
     
