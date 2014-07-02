@@ -63,19 +63,18 @@ module.exports =
                     lib_test:
                     {
                         files: '<%= jshint.lib_test.src %>',
-                        tasks: ['jshint:lib_test', 'nodeunit']
+                        tasks: ['jshint:lib_test', 'jasmine_node']
                     }
                 }
             }
         );
 
         // These plugins provide necessary tasks.
-        grunt.loadNpmTasks('grunt-contrib-nodeunit');
         grunt.loadNpmTasks('grunt-contrib-jshint');
         grunt.loadNpmTasks('grunt-contrib-watch');
         grunt.loadNpmTasks('grunt-jasmine-node');
 
         // Default task.
-        grunt.registerTask('default', ['jshint', 'nodeunit', 'jasmine_node']);
+        grunt.registerTask('default', ['jshint', 'jasmine_node']);
 
     };

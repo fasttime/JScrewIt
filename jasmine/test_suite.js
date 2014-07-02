@@ -81,61 +81,7 @@
         var result = str + new Array(length - str.length + 1).join(' ');
         return result;
     }
-    
-    /*
-    function prettyFormat(char)
-    {
-        var output;
-        if (/[\0-\7]/.test(char))
-        {
-            output = '\\' + char.charCodeAt(0);
-        }
-        else if (char == '\b')
-        {
-            output = '\\b';
-        }
-        else if (char == '\f')
-        {
-            output = '\\f';
-        }
-        else if (char == '\n')
-        {
-            output = '\\n';
-        }
-        else if (char == '\r')
-        {
-            output = '\\r';
-        }
-        else if (char == '\t')
-        {
-            output = '\\t';
-        }
-        else if (char == '\v')
-        {
-            output = '\\v';
-        }
-        else if (char == '"')
-        {
-            output = '\\"';
-        }
-        else if (char == '\\')
-        {
-            output = '\\\\';
-        }
-        else if (/[\0-\x1f\x7f-\x9f]/.test(char))
-        {
-            output = char.charCodeAt(0).toString(16);
-            if (output.length < 2) output = '0' + output;
-            output = '\\x' + output;
-        }
-        else
-        {
-            output = char;
-        }
-        return output;
-    }
-    */
-    
+        
     function run()
     {
         describe(
@@ -145,22 +91,19 @@
                 compatibilities.forEach(
                     function (compatibility)
                     {
-                        it(
-                            'should encode with ' + compatibility + ' compatibility',
-                            function()
+                        describe(
+                            'encodes with ' + compatibility + ' compatibility',
+                            function ()
                             {
-                                testChars(
-                                    function (code)
-                                    {
-                                        var char = String.fromCharCode(code);
-                                        var result = JScrewIt.encode(char, false, compatibility);
-                                        expect(eval(result)).toEqual(char);
-                                        expect(result).toMatch(/^[!+()[\]]*$/);
-                                        expect(result.length).not.toBeGreaterThan(
-                                            JScrewIt.encode(char).length
-                                        );
-                                    }
-                                );
+                                var code;
+                                for (code = 0; code < 128; ++code)
+                                {
+                                    test(code, compatibility);
+                                }
+                                for (; code < 0x00010000; code <<= 1)
+                                {
+                                    test(code + 33, compatibility);
+                                }
                             }
                         );
                     }
@@ -169,17 +112,23 @@
         );
     }
     
-    function testChars(test)
+    function test(code, compatibility)
     {
-        var code;
-        for (code = 0; code < 128; ++code)
-        {
-            test(code);
-        }
-        for (; code < 0x00010000; code <<= 1)
-        {
-            test(code + 33);
-        }
+        var char = String.fromCharCode(code);
+        var desc = char === '\x7f' ? '"\\u007f"' : JSON.stringify(char);
+        it(
+            desc,
+            function ()
+            {
+                var encoding = JScrewIt.encode(char, false, compatibility);
+                expect(eval(encoding)).toBe(char);
+                expect(encoding).toMatch(/^[!+()[\]]*$/);
+                if (compatibility !== 'DEFAULT')
+                {
+                    expect(encoding.length).not.toBeGreaterThan(JScrewIt.encode(char).length);
+                }
+            }
+        );
     }
     
     var compatibilities;
