@@ -41,6 +41,10 @@
             result += '\n`' + char + '`';
             appendLengths(char);
         }
+        result += '\n`©`';
+        appendLengths('©');
+        result += '\n`µ`';
+        appendLengths('µ');
         return result;
     }
     
@@ -52,6 +56,10 @@
         {
             compatibilities.push('NO_IE');
         }
+        if (!isNodeJS())
+        {
+            compatibilities.push('NO_NODE');
+        }
     }
     
     function isIE()
@@ -59,6 +67,11 @@
         var navigator = self.navigator;
         var result = navigator && /\b(MSIE|Trident)\b/.test(navigator.userAgent);
         return result;
+    }
+    
+    function isNodeJS()
+    {
+        return typeof module !== 'undefined' && !!module.exports;
     }
     
     function padBoth(str, length)
