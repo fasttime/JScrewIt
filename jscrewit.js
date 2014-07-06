@@ -14,6 +14,11 @@
     {
         ANY_FUNCTION:   '[]["filter"]',
         
+        btoa:
+        {
+            NO_NODE:    'Function("return btoa")()'
+        },
+        
         // Function boby padding constants: prepended to a function to align the body at the same
         // position on different browsers. The number after "FBP_" is the maximum character
         // overhead; the suffix "_NS" indicates that the constant does not evaluate to a string or
@@ -120,12 +125,21 @@
             DEFAULT:    '(FHP_3_NS + Boolean)["12"]',
             NO_IE:      '(RP_1_NS + Boolean)["10"]'
         },
-        'C':            'Function("return escape")()(""["italics"]())[2]',
-        'D':            'Function("return escape")()("}")[2]',
+        'C':
+        {
+            DEFAULT:    'Function("return escape")()(""["italics"]())[2]',
+            NO_NODE:    'btoa("0+")[1]'
+        },
+        'D':
+        {
+            DEFAULT:    'Function("return escape")()("}")[2]',
+            NO_NODE:    'btoa(40)[1]'
+        },
         'E':
         {
             DEFAULT:    '(FHP_8 + RegExp)["20"]',
-            NO_IE:      '(RegExp + [])["12"]'
+            NO_IE:      '(RegExp + [])["12"]',
+            NO_NODE:    'btoa(11)[2]'
         },
         'F':
         {
@@ -134,25 +148,46 @@
         },
         'G':
         {
-            NO_IE:      '(RP_5_NS + Function("return Date")()())["30"]' // not for IE ≤ 10
+            NO_IE:      '(RP_5_NS + Function("return Date")()())["30"]', // not for IE ≤ 10
+            NO_NODE:    'btoa("0false")[1]'
         },
-    //  'H':    ,
+        'H':
+        {
+            NO_NODE:    'btoa(true)[1]'
+        },
         'I':            '"Infinity"[0]',
-    //  'J':    ,
-    //  'K':    ,
-    //  'L':    ,
+        'J':
+        {
+            NO_NODE:    'btoa(true)[2]'
+        },
+        'K':
+        {
+            NO_NODE:    'btoa("+")[0]'
+        },
+        'L':
+        {
+            NO_NODE:    'btoa(".")[0]'
+        },
         'M':
         {
-            NO_IE:      '(RP_4_NS + Function("return Date")()())["30"]' // not for IE ≤ 10
+            NO_IE:      '(RP_4_NS + Function("return Date")()())["30"]', // not for IE ≤ 10
+            NO_NODE:    'btoa(0)[0]'
         },
         'N':            '"NaN"[0]',
         'O':            '(RP_3_NS + Function("return{}")())["11"]',
-    //  'P':    ,
-    //  'Q':    ,
+        'P':
+        {
+            NO_NODE:    'btoa(""["italics"]())[0]'
+        },
+        'Q':
+        {
+            NO_NODE:    'btoa(1)[1]'
+        },
         'R':
         {
             DEFAULT:    '(FHP_3_NS + RegExp)["12"]',
-            NO_IE:      '(RP_1_NS + RegExp)["10"]'
+            NO_IE:      '(RP_1_NS + RegExp)["10"]',
+            NO_NODE:    'btoa("0true")[2]'
         },
         'S':
         {
@@ -161,14 +196,34 @@
         },
         'T':
         {
-            NO_IE:      '(RP_3_NS + Function("return Date")()())["30"]' // not for IE ≤ 10
+            NO_IE:      '(RP_3_NS + Function("return Date")()())["30"]', // not for IE ≤ 10
+            NO_NODE:    'btoa(NaN)[0]'
         },
-        'U':            '(RP_3_NS + Function("return{}")()["toString"]["call"]())["11"]',
-    //  'V':    ,
-    //  'W':    ,
-    //  'X':    ,
-    //  'Y':    ,
-    //  'Z':    ,
+        'U':
+        {
+            DEFAULT:    '(RP_3_NS + Function("return{}")()["toString"]["call"]())["11"]',
+            NO_NODE:    '(RP_4_NS + btoa(false))["10"]'
+        },
+        'V':
+        {
+            NO_NODE:    'btoa(undefined)["10"]'
+        },
+        'W':
+        {
+            NO_NODE:    'btoa(undefined)[1]'
+        },
+        'X':
+        {
+            NO_NODE:    'btoa("1true")[1]'
+        },
+        'Y':
+        {
+            NO_NODE:    'btoa("a")[0]'
+        },
+        'Z':
+        {
+            NO_NODE:    'btoa(false)[0]'
+        },
 
         '\n':           '(Function() + [])["23"]',
         ' ':            '(FHP_3_NS + ANY_FUNCTION)["11"]',
@@ -316,23 +371,23 @@
                     {
                         if (expr == null)
                         {
+                            var param;
                             var charCode = character.charCodeAt(0);
                             if (charCode < 0x100)
                             {
-                                expr =
-                                    this.replaceAndCache('Function("return unescape")') +
-                                    '()(' +
-                                    this.resolveString(
-                                    '%' + ('0' + charCode.toString(16).replace(/b/g, 'B')).slice(-2)
-                                    ) +
-                                    ')';
+                                param =
+                                    '%' +
+                                    ('0' + charCode.toString(16).replace(/b/g, 'B')).slice(-2);
                             }
                             else
                             {
-                                expr =
-                                    this.replaceAndCache('String["fromCharCode"]') +
-                                    '(' + charCode + ')';
+                                param =
+                                    '%u' +
+                                    ('000' + charCode.toString(16).replace(/b/g, 'B')).slice(-4);
                             }
+                            expr =
+                                this.replaceAndCache('Function("return unescape")') +
+                                '()(' + this.resolveString(param) + ')';
                         }
                         this.characterCache[character] = value = Object(this.replace(expr));
                     }
