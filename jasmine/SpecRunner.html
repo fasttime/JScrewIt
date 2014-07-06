@@ -34,6 +34,9 @@
                     var features =
                         'resizable,scrollbars,width=250,height=300,left=' + left + ',top=' + top;
                     outputWindow = window.open('', 'outputWindow', features);
+                    // Chrome won't always bring the new popup to the front automatically, so we
+                    // better take care of that.
+                    outputWindow.focus();
                     var outputDocument = outputWindow.document;
                     outputDocument.title = 'JScrewIt Encoding Lengths';
                     var outputBody = outputDocument.body;
