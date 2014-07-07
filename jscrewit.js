@@ -128,7 +128,7 @@
         'C':
         {
             DEFAULT:    'Function("return escape")()(""["italics"]())[2]',
-            NO_NODE:    'btoa("0+")[1]'
+            NO_NODE:    null
         },
         'D':
         {
@@ -160,10 +160,7 @@
         {
             NO_NODE:    'btoa(true)[2]'
         },
-        'K':
-        {
-            NO_NODE:    'btoa("+")[0]'
-        },
+     // 'K':    ,
         'L':
         {
             NO_NODE:    'btoa(".")[0]'
@@ -361,7 +358,11 @@
         
         getCompatibleObject: function (value)
         {
-            var result = value[this.compatibility] || value.DEFAULT;
+            var result = value[this.compatibility];
+            if (result === undefined)
+            {
+                result = value.DEFAULT;
+            }
             return result;
         },
         
