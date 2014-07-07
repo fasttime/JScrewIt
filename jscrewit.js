@@ -277,6 +277,26 @@
     //  '~':    ,
     };
     
+    var DEFAULT_CHARACTER_ENCODER =
+    {
+        DEFAULT:
+        function (character)
+        {
+            var charCode = character.charCodeAt(0);
+            var encoder = charCode < 0x100 ? unescapeCharacterEncoder8 : unescapeCharacterEncoder16;
+            var result = encoder.call(this, charCode);
+            return result;
+        },
+        NO_NODE:
+        function (character)
+        {
+            var charCode = character.charCodeAt(0);
+            var encoder = charCode < 0x100 ? atobCharacterEncoder : unescapeCharacterEncoder16;
+            var result = encoder.call(this, charCode);
+            return result;
+        }
+    };
+    
     var SIMPLE =
     {
         'false':        '![]',
@@ -335,8 +355,14 @@
         
         getCompatibleExpr: function (value)
         {
-            var expr = value instanceof Object ? value[this.compatibility] || value.DEFAULT : value;
-            return expr;
+            var result = value instanceof Object ? this.getCompatibleObject(value) : value;
+            return result;
+        },
+        
+        getCompatibleObject: function (value)
+        {
+            var result = value[this.compatibility] || value.DEFAULT;
+            return result;
         },
         
         replace: function (expr)
@@ -371,23 +397,9 @@
                     {
                         if (expr == null)
                         {
-                            var param;
-                            var charCode = character.charCodeAt(0);
-                            if (charCode < 0x100)
-                            {
-                                param =
-                                    '%' +
-                                    ('0' + charCode.toString(16).replace(/b/g, 'B')).slice(-2);
-                            }
-                            else
-                            {
-                                param =
-                                    '%u' +
-                                    ('000' + charCode.toString(16).replace(/b/g, 'B')).slice(-4);
-                            }
-                            expr =
-                                this.replaceAndCache('Function("return unescape")') +
-                                '()(' + this.resolveString(param) + ')';
+                            var defaultCharacterEncoder =
+                                this.getCompatibleObject(DEFAULT_CHARACTER_ENCODER);
+                            expr = defaultCharacterEncoder.call(this, character);
                         }
                         this.characterCache[character] = value = Object(this.replace(expr));
                     }
@@ -540,6 +552,35 @@
         }
     };
     
+    function atobCharacterEncoder(charCode)
+    {
+        var BASE64_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+        var BASE64_ALPHABET_HI_2 = 'Nft0';
+        var BASE64_ALPHABET_HI_4 = 'AFINSWafinrty048';
+        var BASE64_ALPHABET_LO_2 = '012f';
+        var BASE64_ALPHABET_LO_4 = 'ABij012345arstuf';
+        
+        var param1 = BASE64_ALPHABET[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
+        var postfix1 = '(' + this.resolveString(param1) + ')';
+        var length1 = postfix1.length;
+        
+        var param2 =
+            '0' + BASE64_ALPHABET_LO_4[charCode >> 4] + BASE64_ALPHABET_HI_4[charCode & 0x0f];
+        var postfix2 = '(' + this.resolveString(param2) + ')' + this.replace('[1]');
+        var length2 = postfix2.length;
+        
+        var param3 = '00' + BASE64_ALPHABET_LO_2[charCode >> 6] + BASE64_ALPHABET[charCode & 0x3f];
+        var postfix3 = '(' + this.resolveString(param3) + ')' + this.replace('[2]');
+        var length3 = postfix3.length;
+        
+        var postfix =
+            length1 <= length2 && length1 <= length3 ?
+            postfix1 :
+            length2 <= length3 ? postfix2 : postfix3;
+        var result = this.replaceAndCache('Function("return atob")') + '()' + postfix;
+        return result;
+    }
+    
     function encodeDigit(digit)
     {
         switch (digit)
@@ -691,6 +732,24 @@
             throw new SyntaxError('Unexpected character ' + wholeMatch);
         }
         return replacement;
+    }
+    
+    function unescapeCharacterEncoder16(charCode)
+    {
+        var param = '%u' + ('000' + charCode.toString(16).replace(/b/g, 'B')).slice(-4);
+        var result =
+            this.replaceAndCache('Function("return unescape")') +
+            '()(' + this.resolveString(param) + ')';
+        return result;
+    }
+    
+    function unescapeCharacterEncoder8(charCode)
+    {
+        var param = '%' + ('0' + charCode.toString(16).replace(/b/g, 'B')).slice(-2);
+        var result =
+            this.replaceAndCache('Function("return unescape")') +
+            '()(' + this.resolveString(param) + ')';
+        return result;
     }
     
     fillMissingDigits();
