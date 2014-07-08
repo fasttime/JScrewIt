@@ -43,8 +43,8 @@
         }
         result += '\n`©`';
         appendLengths('©');
-        result += '\n`☺`';
-        appendLengths('☺');
+        result += '\n`♥`';
+        appendLengths('♥');
         return result;
     }
     
