@@ -12,12 +12,31 @@
     
     var CONSTANTS =
     {
-        ANY_FUNCTION:   '[]["filter"]',
+        Array:          '[][CONSTRUCTOR]',
+        Boolean:        '(false)[CONSTRUCTOR]',
+        Function:       'ANY_FUNCTION[CONSTRUCTOR]',
+        Number:         '(0)[CONSTRUCTOR]',
+        RegExp:         'Function("return/false/")()[CONSTRUCTOR]',
+        String:         '("")[CONSTRUCTOR]',
         
+        // Global functions
+        
+        atob:
+        {
+            NO_NODE:    'Function("return atob")()'
+        },
         btoa:
         {
             NO_NODE:    'Function("return btoa")()'
         },
+        escape:         'Function("return escape")()',
+        unescape:       'Function("return unescape")()',
+        
+        // Custom definitions
+        
+        ANY_FUNCTION:   '[]["filter"]',
+        
+        CONSTRUCTOR:    '"constructor"',
         
         // Function boby padding constants: prepended to a function to align the body at the same
         // position on different browsers. The number after "FBP_" is the maximum character
@@ -58,16 +77,6 @@
         RP_5:           '[false]',
         RP_5_NS:        'false',
         RP_6:           '"0false"',
-    };
-    
-    var CONSTRUCTORS =
-    {
-        Array:      '[]',
-        Boolean:    '(false)',
-        Function:   'ANY_FUNCTION',
-        Number:     '(0)',
-        RegExp:     'Function("return/false/")()',
-        String:     '("")',
     };
     
     var CHARACTERS =
@@ -127,12 +136,12 @@
         },
         'C':
         {
-            DEFAULT:    'Function("return escape")()(""["italics"]())[2]',
+            DEFAULT:    'escape(""["italics"]())[2]',
             NO_NODE:    null
         },
         'D':
         {
-            DEFAULT:    'Function("return escape")()("}")[2]',
+            DEFAULT:    'escape("}")[2]',
             NO_NODE:    'btoa(40)[1]'
         },
         'E':
@@ -230,7 +239,7 @@
     //  '$':    ,
         '%':
         {
-            DEFAULT:    'Function("return escape")()(ANY_FUNCTION)["20"]',
+            DEFAULT:    'escape(ANY_FUNCTION)["20"]',
             NO_NODE:    null
         },
     //  '&':    ,
@@ -318,8 +327,6 @@
         this.compatibility = compatibility;
         this.characterCache = { };
         this.constantCache = { };
-        this.constructorCache = { };
-        this.expressionCache = { };
         this.stack = [];
     }
     
@@ -353,7 +360,7 @@
             var output = this.resolveString(input);
             if (wrapWithEval)
             {
-                output = this.replaceAndCache('Function') + '(' + output + ')()';
+                output = this.resolveConstant('Function') + '(' + output + ')()';
             }
             return output;
         },
@@ -381,16 +388,6 @@
                 /([0-9]+)|("(.*?)")|( +)|([$A-Z_a-z][$0-9A-Z_a-z]*)|[^!()+[\]]/g,
                 this.replaceToken || (this.replaceToken = replaceToken.bind(this))
                 );
-            return replacement;
-        },
-    
-        replaceAndCache: function (expr)
-        {
-            var replacement = this.expressionCache[expr];
-            if (replacement === undefined)
-            {
-                this.expressionCache[expr] = replacement = this.replace(expr);
-            }
             return replacement;
         },
         
@@ -428,24 +425,6 @@
                     function (expr)
                     {
                         this.constantCache[constant] = value = Object(this.replace(expr));
-                    }
-                    );
-            }
-            return value;
-        },
-        
-        resolveConstructor: function (constructor)
-        {
-            var value = this.constructorCache[constructor];
-            if (value === undefined)
-            {
-                this.callResolver(
-                    constructor,
-                    CONSTRUCTORS[constructor],
-                    function (expr)
-                    {
-                        this.constructorCache[constructor] = value =
-                            Object(this.replace(expr) + this.replaceAndCache('["constructor"]'));
                     }
                     );
             }
@@ -586,7 +565,7 @@
             length1 <= length2 && length1 <= length3 ?
             postfix1 :
             length2 <= length3 ? postfix2 : postfix3;
-        var result = this.replaceAndCache('Function("return atob")') + '()' + postfix;
+        var result = this.resolveConstant('atob') + postfix;
         return result;
     }
     
@@ -719,10 +698,6 @@
             {
                 replacement = this.resolveConstant(literal);
             }
-            else if (literal in CONSTRUCTORS)
-            {
-                replacement = this.resolveConstructor(literal);
-            }
             else if (literal in SIMPLE)
             {
                 replacement = this.resolveSimple(literal);
@@ -746,18 +721,14 @@
     function unescapeCharacterEncoder16(charCode)
     {
         var param = '%u' + ('000' + charCode.toString(16).replace(/b/g, 'B')).slice(-4);
-        var result =
-            this.replaceAndCache('Function("return unescape")') +
-            '()(' + this.resolveString(param) + ')';
+        var result = this.resolveConstant('unescape') + '(' + this.resolveString(param) + ')';
         return result;
     }
     
     function unescapeCharacterEncoder8(charCode)
     {
         var param = '%' + ('0' + charCode.toString(16).replace(/b/g, 'B')).slice(-2);
-        var result =
-            this.replaceAndCache('Function("return unescape")') +
-            '()(' + this.resolveString(param) + ')';
+        var result = this.resolveConstant('unescape') + '(' + this.resolveString(param) + ')';
         return result;
     }
     
