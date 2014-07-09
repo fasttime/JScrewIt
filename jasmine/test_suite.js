@@ -49,6 +49,31 @@
         return result;
     }
     
+    function createOutputNodeJs()
+    {
+        try
+        {
+            global.atob =
+                function (value)
+                {
+                    return new Buffer(value + '', 'base64').toString('binary');
+                };
+            global.btoa =
+                function (value)
+                {
+                    return new Buffer(value + '', 'binary').toString('base64');
+                };
+            global.self = self;
+            return createOutput();
+        }
+        finally
+        {
+            delete global.atob;
+            delete global.btoa;
+            delete global.self;
+        }
+    }
+    
     function init(env)
     {
         JScrewIt = (env || self).JScrewIt;
@@ -57,10 +82,7 @@
         {
             compatibilities.push('NO_IE');
         }
-        if (!isNodeJS())
-        {
-            compatibilities.push('NO_NODE');
-        }
+        compatibilities.push('NO_NODE');
     }
     
     function isIE()
@@ -70,7 +92,7 @@
         return result;
     }
     
-    function isNodeJS()
+    function isNodeJs()
     {
         return typeof module !== 'undefined' && !!module.exports;
     }
@@ -105,21 +127,24 @@
                 compatibilities.forEach(
                     function (compatibility)
                     {
-                        describe(
-                            'encodes with ' + compatibility + ' compatibility',
-                            function ()
-                            {
-                                var code;
-                                for (code = 0; code < 128; ++code)
+                        if (compatibility !== 'NO_NODE' || !isNodeJs())
+                        {
+                            describe(
+                                'encodes with ' + compatibility + ' compatibility',
+                                function ()
                                 {
-                                    test(code, compatibility);
+                                    var code;
+                                    for (code = 0; code < 128; ++code)
+                                    {
+                                        test(code, compatibility);
+                                    }
+                                    for (; code < 0x00010000; code <<= 1)
+                                    {
+                                        test(code + 33, compatibility);
+                                    }
                                 }
-                                for (; code < 0x00010000; code <<= 1)
-                                {
-                                    test(code + 33, compatibility);
-                                }
-                            }
-                        );
+                            );
+                        }
                     }
                 );
             }
@@ -150,7 +175,7 @@
     
     self.TestSuite =
     {
-        createOutput: createOutput,
+        createOutput: isNodeJs() ? createOutputNodeJs : createOutput,
         init: init,
         run: run
     };
