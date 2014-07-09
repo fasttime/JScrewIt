@@ -102,7 +102,11 @@
         },
         'h':            '(101)["toString"]("21")[1]',
         'i':            '(RP_5 + undefined)["10"]',
-        'j':            '(Function("return{}")() + [])["10"]',
+        'j':
+        {
+            DEFAULT:    '(Function("return{}")() + [])["10"]',
+            NO_NODE:    '(Function("return self")() + [])[3]'
+        },
         'k':            '(20)["toString"]("21")',
         'l':            '"false"[2]',
         'm':            '(RP_6 + Function())["20"]',
