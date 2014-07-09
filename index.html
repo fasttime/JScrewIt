@@ -1,190 +1,202 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="JScrewIt converts plain JavaScript into JSFuck code, which
-    uses only six different characters to write and execute code.">
-    <meta name="viewport" content="width=device-width">
-    <title>JScrewIt - Write any JavaScript with 6 Characters: []()!+</title>
-    <style>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="JScrewIt converts plain JavaScript into JSFuck code, which
+uses only six different characters to write and execute code.">
+<meta name="viewport" content="width=device-width">
+<title>JScrewIt - Write any JavaScript with 6 Characters: []()!+</title>
+<style>
 
-    * { box-sizing: border-box; }
+* { box-sizing: border-box; }
 
-    a { text-decoration: none; }
+a { text-decoration: none; }
 
-    a:link { color: #00c; }
+a:link { color: #00c; }
 
-    a:visited { color: #808; }
+a:visited { color: #808; }
 
-    a:active { color: #c00; }
+a:active { color: #c00; }
 
-    body
-    {
-        background-color: white;
-        color: black;
-        font-family: sans-serif;
-        padding: 0 20px;
-        text-align: center;
-    }
+body
+{
+    background-color: white;
+    color: black;
+    font-family: sans-serif;
+    padding: 0 20px;
+    text-align: center;
+}
 
-    body>* { margin: 0 auto; max-width: 640px; text-align: justify; }
+body>* { margin: 0 auto; max-width: 640px; text-align: justify; }
 
-    body>*>*:first-child { height: 100px; position: relative; width: 100%; }
+body>*>*:first-child { height: 100px; position: relative; width: 100%; }
 
-    h1
-    {
-        font-size: 2em;
-        font-weight: normal;
-        left: 115px;
-        position: absolute;
-        top: 40px;
-    }
+h1
+{
+    font-size: 2em;
+    font-weight: normal;
+    left: 115px;
+    position: absolute;
+    top: 40px;
+}
 
-    h2
-    {
-        background: #F0DB4E;
-        color: #323230;
-        font-family: monospace;
-        font-size: 20px;
-        font-weight: bold;
-        height: 100px;
-        line-height: 1em;
-        padding: 50px 10px 0 0;
-        text-align: right;
-        width: 100px;
-    }
+h2
+{
+    background: #F0DB4E;
+    color: #323230;
+    font-family: monospace;
+    font-size: 20px;
+    font-weight: bold;
+    height: 100px;
+    line-height: 1em;
+    padding: 50px 10px 0 0;
+    text-align: right;
+    width: 100px;
+}
 
-    h3 { font-weight: bold; }
+h3 { font-weight: bold; }
 
-    p, .code, .actions, .controls { width: 100%; }
+p, .code, .actions, .controls { width: 100%; }
 
-    textarea
-    {
-        display: block;
-        font-family: monospace;
-        margin: .25em 0 0;
-        resize: vertical;
-        width: 100%;
-    }
+textarea
+{
+    display: block;
+    font-family: monospace;
+    margin: .25em 0 0;
+    resize: vertical;
+    width: 100%;
+}
 
-    .actions { display: block; margin: .25em 0 0; }
+.actions { display: block; margin: .25em 0 0; }
 
-    .actions a { float: right; }
+.actions a { float: right; }
 
-    .code
-    {
-        background-color: #e0e0e0;
-        border-radius: .4em;
-        display: block;
-        margin: .75em 0 .75em;
-        padding: .4em;
-    }
+.code
+{
+    background-color: #e0e0e0;
+    border-radius: .4em;
+    display: block;
+    margin: .75em 0 .75em;
+    padding: .4em;
+}
 
-    .code>*:first-child { font-weight: bold; }
+.code>*:first-child { font-weight: bold; }
 
-    .controls>*:not(:last-child) { margin-right: 1em; }
+.controls>*:not(:last-child) { margin-right: 1em; }
 
-    </style>
-</head>
+</style>
+
 <body>
+<div>
     <div>
-        <div>
-            <h1>JScrewIt</h1>
-            <h2>()+<br>[]!</h2>
-        </div>
+        <h1>JScrewIt</h1>
+        <h2>()+<br>[]!</h2>
+    </div>
 
-        <p>JScrewIt converts plain JavaScript into JSFuck code, which uses only six different
-        characters to write and execute code. JScrewIt is a fork of <a
-        href="https://github.com/aemkei/jsfuck">JSFuck</a> with additional optimization and
-        compatibility options.</p>
+    <p>JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters
+    to write and execute code. JScrewIt is a fork of <a
+    href="https://github.com/aemkei/jsfuck">JSFuck</a> with additional optimization and
+    compatibility options.</p>
 
-        <p>Use the form below to convert your own script. Uncheck "Eval source" to get back a plain
-        string.</p>
+    <p>Use the form below to convert your own script. Uncheck "Eval source" to get back a plain
+    string.</p>
 
-        <label class="code">
+    <label class="code">
         <span>Input</span>
         <textarea id="inputArea" rows="1">alert(1)</textarea>
-        </label>
+    </label>
 
-        <div class="controls">
-        <label>User agent:
+    <div class="controls">
+        <label>Compatibility:
             <select id="ua">
-                <option value="DEFAULT">All supported</option>
-                <option value="NO_IE">All except Internet Explorer (JSFuck mode)</option>
-                <option value="NO_NODE">Only browsers (no Node.js support)</option>
+                <option value="DEFAULT">All supported engines
+                <option value="NO_NODE">All browsers (no Node.js support)
+                <option value="NO_IE">All except Internet Explorer (JSFuck mode)
             </select>
         </label>
         <label><input id="evalBox" type="checkbox" checked /> Eval source</label>
         <button id="encodeButton">Encode</button>
-        </div>
+    </div>
 
-        <label class="code">
+    <label class="code">
         <span>Output</span>
         <textarea id="outputArea" rows="10"></textarea>
         <span class="actions">
             <span id="stats">…</span>
             <a id="run" href="#">Run this</a>
         </span>
-        </label>
+    </label>
 
-        <h3>Links</h3>
+    <h3>Compatibility</h3>
+    
+    <p>JScrewIt itself and the code it generates are compatible with the Javascript engines listed
+    below.
+    <ul>
+        <li>Chrome 35+
+        <li>Internet Explorer 10+
+        <li>Firefox 30+
+        <li>Safari 7+
+        <li>Opera 22+
+        <li>Android Browser 4.1.2+
+        <li>Node.js 0.10.28+
+    </ul>
+    
+    <h3>Links</h3>
 
-        <ul>
-        <li>View source on <a href="http://github.com/fasttime/JScrewIt">GitHub</a></li>
+    <ul>
+        <li>View source on <a href="http://github.com/fasttime/JScrewIt">GitHub</a>
         <li>Original discussion at <a
-        href="http://sla.ckers.org/forum/read.php?24,32930">Sla.ckers.org</a></li>
-        </ul>
+        href="http://sla.ckers.org/forum/read.php?24,32930">Sla.ckers.org</a>
+    </ul>
 
-        <h3>Alternatives</h3>
-        <ul>
-        <li><a href="http://www.jsfuck.com">JSFuck</a></li>
+    <h3>Alternatives</h3>
+    <ul>
+        <li><a href="http://www.jsfuck.com">JSFuck</a>
         <li><a href="http://patriciopalladino.com/files/hieroglyphy/">Hieroglyphy</a> (8 chars,
-        browser only)</li>
-        <li><a href="http://utf-8.jp/public/jsfuck.html">utf-8.jp</a> (broken)</li>
+        browser only)
+        <li><a href="http://utf-8.jp/public/jsfuck.html">utf-8.jp</a> (broken)
         <li><a href="http://discogscounter.getfreehosting.co.uk/js-noalnum.php">JS-NoAlnum</a>
-        (broken)</li>
-        </ul>
-    </div>
-    <script src="https://rawgithub.com/fasttime/JScrewIt/master/jscrewit.js"></script>
-    <script>
-    
-    function encode()
+        (broken)
+    </ul>
+</div>
+<script src="https://rawgithub.com/fasttime/JScrewIt/master/jscrewit.js"></script>
+<script>
+
+function encode()
+{
+    var compatibility = ua.options[ua.selectedIndex].value;
+    var output = JScrewIt.encode(inputArea.value, evalBox.checked, compatibility);
+    outputArea.value = output;
+    updateStats();
+}
+
+function updateStats()
+{
+    stats.innerHTML = outputArea.value.length + " chars";
+}
+
+encodeButton.onclick = encode;
+outputArea.oninput = updateStats;
+
+encode();
+
+run.onclick = function ()
+{
+    try
     {
-        var compatibility = ua.options[ua.selectedIndex].value;
-        var output = JScrewIt.encode(inputArea.value, evalBox.checked, compatibility);
-        outputArea.value = output;
-        updateStats();
+        value = eval(outputArea.value);
     }
-    
-    function updateStats()
+    catch (e)
     {
-        stats.innerHTML = outputArea.value.length + " chars";
-    }
-    
-    encodeButton.onclick = encode;
-    outputArea.oninput = updateStats;
-    
-    encode();
-    
-    run.onclick = function ()
-    {
-        try
-        {
-            value = eval(outputArea.value);
-        }
-        catch (e)
-        {
-            alert(e);
-            return false;
-        }
-        
-        if (!evalBox.checked)
-        {
-            alert('"' + value + '"');
-        }
+        alert(e);
         return false;
-    };
-    </script>
-</body>
-</html>
+    }
+    
+    if (!evalBox.checked)
+    {
+        alert('"' + value + '"');
+    }
+    return false;
+};
+</script>
