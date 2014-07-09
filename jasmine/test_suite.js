@@ -31,6 +31,7 @@
                 result += padBoth(compatibility, 8);
             }
         );
+        result = result.replace(/ +$/, '');
         result += '\n   ' + new Array(compatibilities.length + 1).join(' -------');
         result += '\nNL ';
         appendLengths('\n');
