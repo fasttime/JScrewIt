@@ -228,7 +228,11 @@
         '"':            '""["fontcolor"]()["12"]',
     //  '#':    ,
     //  '$':    ,
-        '%':            'Function("return escape")()(ANY_FUNCTION)["20"]',
+        '%':
+        {
+            DEFAULT:    'Function("return escape")()(ANY_FUNCTION)["20"]',
+            NO_NODE:    null
+        },
     //  '&':    ,
     //  '\'':   ,
         '(':            '(FHP_5_NS + ANY_FUNCTION)["20"]',
@@ -243,7 +247,11 @@
         '-':            '(+".0000000001" + [])[2]',
         '.':            '(+"11e20" + [])[1]',
         '/':            '"0false"["italics"]()["10"]',
-        ':':            '(RegExp() + [])[3]',
+        ':':
+        {
+            DEFAULT:    '(RegExp() + [])[3]',
+            NO_NODE:    null
+        },
     //  ';':    ,
         '<':            '""["italics"]()[0]',
         '=':            '""["fontcolor"]()["11"]',
