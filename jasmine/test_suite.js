@@ -1,4 +1,4 @@
-/* global describe, expect, it */
+/* global describe, expect, it, navigator */
 'use strict';
 
 (function (self)
@@ -25,6 +25,12 @@
         }
         
         var result = '   ';
+        var compatibilities = ['DEFAULT'];
+        if (!isIE)
+        {
+            compatibilities.push('NO_IE');
+        }
+        compatibilities.push('NO_NODE');
         compatibilities.forEach(
             function (compatibility)
             {
@@ -74,27 +80,28 @@
         }
     }
     
+    function describeTest(compatibility)
+    {
+        describe(
+            'encodes with ' + compatibility + ' compatibility',
+            function ()
+            {
+                var code;
+                for (code = 0; code < 128; ++code)
+                {
+                    test(code, compatibility);
+                }
+                for (; code < 0x00010000; code <<= 1)
+                {
+                    test(code + 33, compatibility);
+                }
+            }
+        );
+    }
+    
     function init(env)
     {
         JScrewIt = (env || self).JScrewIt;
-        compatibilities = ['DEFAULT'];
-        if (!isIE())
-        {
-            compatibilities.push('NO_IE');
-        }
-        compatibilities.push('NO_NODE');
-    }
-    
-    function isIE()
-    {
-        var navigator = self.navigator;
-        var result = navigator && /\b(MSIE|Trident)\b/.test(navigator.userAgent);
-        return result;
-    }
-    
-    function isNodeJs()
-    {
-        return typeof module !== 'undefined' && !!module.exports;
     }
     
     function padBoth(str, length)
@@ -117,36 +124,22 @@
         var result = str + new Array(length - str.length + 1).join(' ');
         return result;
     }
-        
+    
     function run()
     {
         describe(
             'JScrewIt',
             function()
             {
-                compatibilities.forEach(
-                    function (compatibility)
-                    {
-                        if (compatibility !== 'NO_NODE' || !isNodeJs())
-                        {
-                            describe(
-                                'encodes with ' + compatibility + ' compatibility',
-                                function ()
-                                {
-                                    var code;
-                                    for (code = 0; code < 128; ++code)
-                                    {
-                                        test(code, compatibility);
-                                    }
-                                    for (; code < 0x00010000; code <<= 1)
-                                    {
-                                        test(code + 33, compatibility);
-                                    }
-                                }
-                            );
-                        }
-                    }
-                );
+                describeTest('DEFAULT');
+                if (!isIE)
+                {
+                    describeTest('NO_IE');
+                }
+                if (!isNodeJs)
+                {
+                    describeTest('NO_NODE');
+                }
             }
         );
     }
@@ -170,12 +163,13 @@
         );
     }
     
-    var compatibilities;
+    var isIE = typeof navigator !== 'undefined' && /\b(MSIE|Trident)\b/.test(navigator.userAgent);
+    var isNodeJs = typeof module !== 'undefined' && !!module.exports;
     var JScrewIt;
     
     self.TestSuite =
     {
-        createOutput: isNodeJs() ? createOutputNodeJs : createOutput,
+        createOutput: isNodeJs ? createOutputNodeJs : createOutput,
         init: init,
         run: run
     };
