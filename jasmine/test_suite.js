@@ -47,8 +47,11 @@
             var char = String.fromCharCode(code);
             appendLengths('`' + char + '`', char);
         }
+        appendLengths('`¥`', '¥');
         appendLengths('`©`', '©');
+        appendLengths('`±`', '±');
         appendLengths('`¿`', '¿');
+        appendLengths('`ö`', 'ö');
         appendLengths('`ú`', 'ú');
         appendLengths('`♥`', '♥');
         return result;

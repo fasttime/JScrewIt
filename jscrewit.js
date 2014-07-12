@@ -293,6 +293,23 @@
             NO_IE:      '(FBP_9_NS + ANY_FUNCTION)["43"]'
         },
     //  '~':    ,
+    
+        '¥':
+        {
+            NO_NODE:    'atob("0false")[2]'
+        },
+        '©':
+        {
+            NO_NODE:    'atob("falsefalse")[1]'
+        },
+        '±':
+        {
+            NO_NODE:    'atob("0false")[3]'
+        },
+        'ö':
+        {
+            NO_NODE:    'atob("0false")[1]'
+        },
     };
     
     var DEFAULT_CHARACTER_ENCODER =
@@ -547,13 +564,17 @@
     function atobCharacterEncoder(charCode)
     {
         var BASE64_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-        var BASE64_ALPHABET_HI_2 = 'Nft0';
+        var BASE64_ALPHABET_HI_2 = ['NaN', 'false', 'truefalse', '0'];
         var BASE64_ALPHABET_HI_4 = 'AFINSWafinrty048';
         var BASE64_ALPHABET_LO_2 = '012f';
         var BASE64_ALPHABET_LO_4 = 'ABij012345arstuf';
         
         var param1 = BASE64_ALPHABET[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
         var postfix1 = '(' + this.resolveString(param1) + ')';
+        if (param1.length > 2)
+        {
+            postfix1 += this.replace('[0]');
+        }
         var length1 = postfix1.length;
         
         var param2 =
