@@ -294,6 +294,10 @@
         },
     //  '~':    ,
     
+        '\x9e':
+        {
+            NO_NODE:    'atob(true)[2]'
+        },
         '¥':
         {
             NO_NODE:    'atob("0false")[2]'
