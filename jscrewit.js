@@ -724,15 +724,27 @@
     
     function unescapeCharacterEncoder16(charCode)
     {
-        var param = '%u' + ('000' + charCode.toString(16).replace(/b/g, 'B')).slice(-4);
+        var param =
+            '%u' +
+            ('000' + charCode.toString(16).replace(/b/g, 'B')).slice(-4).replace(/fa?$/, 'false');
         var result = this.resolveConstant('unescape') + '(' + this.resolveString(param) + ')';
+        if (param.length > 6)
+        {
+            result += this.replace('[0]');
+        }
         return result;
     }
     
     function unescapeCharacterEncoder8(charCode)
     {
-        var param = '%' + ('0' + charCode.toString(16).replace(/b/g, 'B')).slice(-2);
+        var param =
+            '%' +
+            ('0' + charCode.toString(16).replace(/b/g, 'B')).slice(-2).replace(/fa?$/, 'false');
         var result = this.resolveConstant('unescape') + '(' + this.resolveString(param) + ')';
+        if (param.length > 3)
+        {
+            result += this.replace('[0]');
+        }
         return result;
     }
     
