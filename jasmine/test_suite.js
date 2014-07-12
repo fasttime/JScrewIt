@@ -5,8 +5,9 @@
 {
     function createOutput()
     {
-        function appendLengths(char)
+        function appendLengths(name, char)
         {
+            result += '\n' + padRight(name, 3);
             compatibilities.forEach(
                 function (compatibility)
                 {
@@ -39,19 +40,17 @@
         );
         result = result.replace(/ +$/, '');
         result += '\n   ' + new Array(compatibilities.length + 1).join(' -------');
-        result += '\nNL ';
-        appendLengths('\n');
+        appendLengths('LF', '\n');
         var MIN = 32, MAX = 127;
         for (var code = MIN; code < MAX; ++code)
         {
             var char = String.fromCharCode(code);
-            result += '\n`' + char + '`';
-            appendLengths(char);
+            appendLengths('`' + char + '`', char);
         }
-        result += '\n`©`';
-        appendLengths('©');
-        result += '\n`♥`';
-        appendLengths('♥');
+        appendLengths('`©`', '©');
+        appendLengths('`¿`', '¿');
+        appendLengths('`ú`', 'ú');
+        appendLengths('`♥`', '♥');
         return result;
     }
     
@@ -87,7 +86,7 @@
             function ()
             {
                 var code;
-                for (code = 0; code < 128; ++code)
+                for (code = 0; code < 256; ++code)
                 {
                     test(code, compatibility);
                 }
