@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
+ fill="white"
+ viewBox="-300 0 600 600"
+ width="600" height="600"
  xmlns="http://www.w3.org/2000/svg"
- width="600"
- height="600"
- style="background: blue; fill: white;"
- viewBox="-300 0 600 600">
-    <path d="m -69,203 a 97.581 97.581 0 0 1 0,-138 h -16.129 a 109.581 109.581 0 0 0 0,138 z"/>
-    <path d="m 44,140 -38,0 0,38 -12,0 0,-38 -38,0 0,-12 38,0 0,-38 12,0 0,38 38,0 z"/>
-    <path d="m 69,203 a 97.581 97.581 0 0 0 0,-138 h 16.129 a 109.581 109.581 0 0 1 0,138 z"/>
-    <path d="m -12,383 -37,0 0,-138 37,0 0,12 -25,0 0,114 25,0 z"/>
-    <path d="m 49,383 -37,0 0,-12 25,0 0,-114 -25,0 0,-12 37,0 z"/>
-    <path d="m 8,429 -2,77 -12,0 -2,-77 z m -1,106 -14,0 0,-14 14,0 z"/>
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+    <symbol id="round-bracket">
+        <!--
+        97.581  ≈ 69√2
+        21.22   ≈ -69+√(5017+2208√2)
+        113.581 ≈ 16+69√2
+        -->
+        <path d="m 69,203 a 97.581,97.581 0 0,0 0,-138 h 21.22 a 113.581,113.581 0 0,1 0,138 z" />
+    </symbol>
+    <symbol id="square-bracket">
+        <path d="m 49,383 h -37 v -16 h 21 v -106 h -21 v -16 h 37 z" />
+    </symbol>
+    <rect fill="blue" width="600" height="600" x="-300" />
+    <use xlink:href="#round-bracket" />
+    <path d="m 44,142 h -36 v 36 h -16 v -36 h -36 v -16 h 36 v -36 h 16 v 36 h 36 z" />
+    <use transform="scale(-1, 1)" xlink:href="#round-bracket" />
+    <use xlink:href="#square-bracket" />
+    <use transform="scale(-1, 1)" xlink:href="#square-bracket" />
+    <path d="m 10,429 -2,77 -16,0 -2,-77 z m -1,110 h -18 v -18 h 18 z" />
 </svg>
