@@ -7,7 +7,7 @@
     {
         function appendLengths(name, char)
         {
-            result += '\n' + padRight(name, 3);
+            result += '\n' + padRight(name, 7);
             compatibilities.forEach(
                 function (compatibility)
                 {
@@ -51,8 +51,9 @@
         result += '\n   ' + new Array(compatibilities.length + 1).join(' -------');
         appendLengths('LF', '\n');
         appendLengthsRange(32, 126);
+        appendLengths('U+009E', '\x9e');
         appendLengthsRange(161, 172);
-        appendLengthsRange(174, 255);
+        appendLengthsRange(177, 255);
         appendLengths('`♥`', '♥');
         return result;
     }

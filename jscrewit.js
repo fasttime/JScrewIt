@@ -310,6 +310,10 @@
         {
             NO_NODE:    'atob(true)[0]'
         },
+        '»':
+        {
+            NO_NODE:    'atob(true)[1]'
+        },
         'ö':
         {
             NO_NODE:    'atob("0false")[1]'
