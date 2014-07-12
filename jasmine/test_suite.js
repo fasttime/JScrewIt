@@ -50,6 +50,7 @@
         appendLengths('`¥`', '¥');
         appendLengths('`©`', '©');
         appendLengths('`±`', '±');
+        appendLengths('`¶`', '¶');
         appendLengths('`¿`', '¿');
         appendLengths('`ö`', 'ö');
         appendLengths('`ú`', 'ú');
