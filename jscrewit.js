@@ -306,6 +306,10 @@
         {
             NO_NODE:    'atob("0false")[3]'
         },
+        '¶':
+        {
+            NO_NODE:    'atob(true)[0]'
+        },
         'ö':
         {
             NO_NODE:    'atob("0false")[1]'
@@ -563,13 +567,99 @@
     
     function atobCharacterEncoder(charCode)
     {
-        var BASE64_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
         var BASE64_ALPHABET_HI_2 = ['NaN', 'false', 'truefalse', '0'];
-        var BASE64_ALPHABET_HI_4 = 'AFINSWafinrty048';
+        var BASE64_ALPHABET_HI_4 =
+        [
+            'A',
+            'F',
+            'Infinity',
+            'NaNfalse',
+            'S',
+            'W',
+            'a',
+            'false',
+            'i',
+            'n',
+            'r',
+            'true',
+            'y',
+            '0',
+            '4',
+            '8',
+        ];
+        var BASE64_ALPHABET_HI_6 =
+        [
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F',
+            'G',
+            'H',
+            'Infinity',
+            'J',
+            'K',
+            'L',
+            'M',
+            'NaN',
+            'O',
+            'P',
+            'Q',
+            'R',
+            'S',
+            'T',
+            'U',
+            'V',
+            'W',
+            'X',
+            'Y',
+            'Z',
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+            'false',
+            'g',
+            'h',
+            'i',
+            'j',
+            'k',
+            'l',
+            'm',
+            'n',
+            'o',
+            'p',
+            'q',
+            'r',
+            's',
+            'true',
+            'undefined',
+            'v',
+            'w',
+            'x',
+            'y',
+            'z',
+            '0',
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            '+',
+            '/',
+        ];
         var BASE64_ALPHABET_LO_2 = '012f';
         var BASE64_ALPHABET_LO_4 = 'ABij012345arstuf';
+        var BASE64_ALPHABET_LO_6 =
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
         
-        var param1 = BASE64_ALPHABET[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
+        var param1 = BASE64_ALPHABET_LO_6[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
         var postfix1 = '(' + this.resolveString(param1) + ')';
         if (param1.length > 2)
         {
@@ -582,7 +672,8 @@
         var postfix2 = '(' + this.resolveString(param2) + ')' + this.replace('[1]');
         var length2 = postfix2.length;
         
-        var param3 = '00' + BASE64_ALPHABET_LO_2[charCode >> 6] + BASE64_ALPHABET[charCode & 0x3f];
+        var param3 =
+            '00' + BASE64_ALPHABET_LO_2[charCode >> 6] + BASE64_ALPHABET_HI_6[charCode & 0x3f];
         var postfix3 = '(' + this.resolveString(param3) + ')' + this.replace('[2]');
         var length3 = postfix3.length;
         
