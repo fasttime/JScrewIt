@@ -25,6 +25,15 @@
             );
         }
         
+        function appendLengthsRange(min, max)
+        {
+            for (var code = min; code <= max; ++code)
+            {
+                var char = String.fromCharCode(code);
+                appendLengths('`' + char + '`', char);
+            }
+        }
+        
         var result = '   ';
         var compatibilities = ['DEFAULT'];
         if (!isIE)
@@ -41,19 +50,9 @@
         result = result.replace(/ +$/, '');
         result += '\n   ' + new Array(compatibilities.length + 1).join(' -------');
         appendLengths('LF', '\n');
-        var MIN = 32, MAX = 127;
-        for (var code = MIN; code < MAX; ++code)
-        {
-            var char = String.fromCharCode(code);
-            appendLengths('`' + char + '`', char);
-        }
-        appendLengths('`¥`', '¥');
-        appendLengths('`©`', '©');
-        appendLengths('`±`', '±');
-        appendLengths('`¶`', '¶');
-        appendLengths('`¿`', '¿');
-        appendLengths('`ö`', 'ö');
-        appendLengths('`ú`', 'ú');
+        appendLengthsRange(32, 126);
+        appendLengthsRange(161, 172);
+        appendLengthsRange(174, 255);
         appendLengths('`♥`', '♥');
         return result;
     }
