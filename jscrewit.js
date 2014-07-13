@@ -377,12 +377,8 @@
     
     Encoder.prototype =
     {
-        callResolver: function (stackName, expr, resolver)
+        callResolver: function (stackName, resolver)
         {
-            if (expr === undefined)
-            {
-                throw new SyntaxError('Undefined symbol: ' + stackName);
-            }
             var stackIndex = this.stack.indexOf(stackName);
             this.stack.push(stackName);
             try
@@ -392,7 +388,7 @@
                     var chain = this.stack.slice(stackIndex);
                     throw new SyntaxError('Circular reference detected: ' + chain.join(' < '));
                 }
-                resolver.call(this, expr);
+                resolver.call(this);
             }
             finally
             {
@@ -443,9 +439,9 @@
             {
                 this.callResolver(
                     '"' + character + '"',
-                    this.getCompatibleExpr(CHARACTERS[character]) || null,
-                    function (expr)
+                    function ()
                     {
+                        var expr = this.getCompatibleExpr(CHARACTERS[character]);
                         if (expr == null)
                         {
                             var defaultCharacterEncoder =
@@ -454,7 +450,7 @@
                         }
                         this.characterCache[character] = value = Object(this.replace(expr));
                     }
-                    );
+                );
             }
             return value;
         },
@@ -466,12 +462,16 @@
             {
                 this.callResolver(
                     constant,
-                    this.getCompatibleExpr(CONSTANTS[constant]),
-                    function (expr)
+                    function ()
                     {
+                        var expr = this.getCompatibleExpr(CONSTANTS[constant]);
+                        if (expr === undefined)
+                        {
+                            throw new SyntaxError('Undefined symbol: ' + constant);
+                        }
                         this.constantCache[constant] = value = Object(this.replace(expr));
                     }
-                    );
+                );
             }
             return value;
         },
@@ -483,12 +483,11 @@
             {
                 this.callResolver(
                     simple,
-                    value,
-                    function (expr)
+                    function ()
                     {
-                        SIMPLE[simple] = value = Object(this.replace(expr));
+                        SIMPLE[simple] = value = Object(this.replace(value));
                     }
-                    );
+                );
             }
             return value;
         },
