@@ -7,7 +7,7 @@
     {
         function appendLengths(name, char)
         {
-            result += '\n' + padRight(name, 7);
+            result += '\n' + padRight(name, 4);
             compatibilities.forEach(
                 function (compatibility)
                 {
@@ -25,16 +25,18 @@
             );
         }
         
-        function appendLengthsRange(min, max)
+        function appendLengthsRange(min, max, namer)
         {
-            for (var code = min; code <= max; ++code)
+            namer = namer || function () { return '`' + String.fromCharCode(charCode) + '`'; };
+            for (var charCode = min; charCode <= max; ++charCode)
             {
-                var char = String.fromCharCode(code);
-                appendLengths('`' + char + '`', char);
+                var name = namer(charCode);
+                var char = String.fromCharCode(charCode);
+                appendLengths(name, char);
             }
         }
         
-        var result = '       ';
+        var result = '    ';
         var compatibilities = ['DEFAULT'];
         if (!isIE)
         {
@@ -48,14 +50,33 @@
             }
         );
         result = result.replace(/ +$/, '');
-        result += '\n       ' + new Array(compatibilities.length + 1).join(' -------');
-        appendLengths('LF', '\n');
-        appendLengths('RS', '\x1e');
+        result += '\n    ' + new Array(compatibilities.length + 1).join(' -------');
+        var C0_CONTROL_CODE_NAMES =
+        [
+            'NUL',  'SOH',  'STX',  'ETX',  'EOT',  'ENQ',  'ACK',  'BEL',
+            'BS',   'HT',   'LF',   'VT',   'FF',   'CR',   'SO',   'SI',
+            'DLE',  'DC1',  'DC2',  'DC3',  'DC4',  'NAK',  'SYN',  'ETB',
+            'CAN',  'EM',   'SUB',  'ESC',  'FS',   'GS',   'RS',   'US'
+        ];
+        appendLengthsRange(0, 31, function (charCode) { return C0_CONTROL_CODE_NAMES[charCode]; });
         appendLengthsRange(32, 126);
-        appendLengths('U+0096', '\x96');
-        appendLengths('U+009E', '\x9e');
+        appendLengths('DEL', '\x7f');
+        var C1_CONTROL_CODE_NAMES =
+        [
+            'PAD',  'HOP',  'BPH',  'NBH',  'IND',  'NEL',  'SSA',  'ESA',
+            'HTS',  'HTJ',  'VTS',  'PLD',  'PLU',  'RI',   'SS2',  'SS3',
+            'DCS',  'PU1',  'PU2',  'STS',  'CCH',  'MW',   'SPA',  'EPA',
+            'SOS',  'SGCI', 'SCI',  'CSI',  'ST',   'OSC',  'PM',   'APC'
+        ];
+        appendLengthsRange(
+            128,
+            159,
+            function (charCode) { return C1_CONTROL_CODE_NAMES[charCode - 0x80]; }
+        );
+        appendLengths('NBSP', '\xa0');
         appendLengthsRange(161, 172);
-        appendLengthsRange(177, 255);
+        appendLengths('SHY', '\xad');
+        appendLengthsRange(174, 255);
         appendLengths('`♥`', '♥');
         return result;
     }
