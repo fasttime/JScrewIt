@@ -50,7 +50,9 @@
         result = result.replace(/ +$/, '');
         result += '\n   ' + new Array(compatibilities.length + 1).join(' -------');
         appendLengths('LF', '\n');
+        appendLengths('RS', '\x1e');
         appendLengthsRange(32, 126);
+        appendLengths('U+0096', '\x96');
         appendLengths('U+009E', '\x9e');
         appendLengthsRange(161, 172);
         appendLengthsRange(177, 255);

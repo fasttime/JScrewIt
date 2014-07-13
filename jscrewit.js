@@ -236,6 +236,10 @@
         },
 
         '\n':           '(Function() + [])["23"]',
+        '\x1e':
+        {
+            NO_NODE:    '(RP_5_NS + atob("NaNfalse"))["10"]'
+        },
         ' ':            '(FHP_3_NS + ANY_FUNCTION)["11"]',
     //  '!':    ,
         '"':            '""["fontcolor"]()["12"]',
@@ -293,7 +297,11 @@
             NO_IE:      '(FBP_9_NS + ANY_FUNCTION)["43"]'
         },
     //  '~':    ,
-    
+        
+        '\x96':
+        {
+            NO_NODE:    'atob("00false")[3]'
+        },
         '\x9e':
         {
             NO_NODE:    'atob(true)[2]'
@@ -317,6 +325,10 @@
         '»':
         {
             NO_NODE:    'atob(true)[1]'
+        },
+        'Ú':
+        {
+            NO_NODE:    'atob("0truefalse")[1]'
         },
         'ö':
         {
