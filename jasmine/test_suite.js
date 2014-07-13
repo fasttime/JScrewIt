@@ -34,7 +34,7 @@
             }
         }
         
-        var result = '   ';
+        var result = '       ';
         var compatibilities = ['DEFAULT'];
         if (!isIE)
         {
@@ -48,7 +48,7 @@
             }
         );
         result = result.replace(/ +$/, '');
-        result += '\n   ' + new Array(compatibilities.length + 1).join(' -------');
+        result += '\n       ' + new Array(compatibilities.length + 1).join(' -------');
         appendLengths('LF', '\n');
         appendLengths('RS', '\x1e');
         appendLengthsRange(32, 126);
