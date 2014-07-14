@@ -314,6 +314,10 @@
         {
             NO_NODE:    'atob("falsefalse")[1]'
         },
+        '®':
+        {
+            NO_NODE:    'atob("NaNtrue")[3]'
+        },
         '±':
         {
             NO_NODE:    'atob("0false")[3]'
@@ -329,6 +333,10 @@
         'Ú':
         {
             NO_NODE:    'atob("0truefalse")[1]'
+        },
+        'î':
+        {
+            NO_NODE:    'atob("0truefalse")[2]'
         },
         'ö':
         {
