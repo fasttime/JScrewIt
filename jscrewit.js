@@ -681,8 +681,26 @@
             '+',
             '/',
         ];
-        var BASE64_ALPHABET_LO_2 = '012f';
-        var BASE64_ALPHABET_LO_4 = 'ABij012345arstuf';
+        var BASE64_ALPHABET_LO_2 = ['000', 'NaN', 'falsefalsefalse', '00f'];
+        var BASE64_ALPHABET_LO_4 =
+        [
+            '0A',
+            '0B',
+            '0i',
+            '0j',
+            '00',
+            '01',
+            '02',
+            '03',
+            '04',
+            '05',
+            '0a',
+            '0r',
+            '0s',
+            '0t',
+            'undefinedfalse',
+            '0f',
+        ];
         var BASE64_ALPHABET_LO_6 =
             'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
         
@@ -694,14 +712,24 @@
         }
         var length1 = postfix1.length;
         
-        var param2 =
-            '0' + BASE64_ALPHABET_LO_4[charCode >> 4] + BASE64_ALPHABET_HI_4[charCode & 0x0f];
-        var postfix2 = '(' + this.resolveString(param2) + ')' + this.replace('[1]');
+        var param2Left = BASE64_ALPHABET_LO_4[charCode >> 4];
+        var param2 = param2Left + BASE64_ALPHABET_HI_4[charCode & 0x0f];
+        var index2 = 1 + (param2Left.length - 2) / 4 * 3;
+        if (index2 > 9)
+        {
+            index2 = '"' + index2 + '"';
+        }
+        var postfix2 = '(' + this.resolveString(param2) + ')' + this.replace('[' + index2 + ']');
         var length2 = postfix2.length;
         
-        var param3 =
-            '00' + BASE64_ALPHABET_LO_2[charCode >> 6] + BASE64_ALPHABET_HI_6[charCode & 0x3f];
-        var postfix3 = '(' + this.resolveString(param3) + ')' + this.replace('[2]');
+        var param3Left = BASE64_ALPHABET_LO_2[charCode >> 6];
+        var param3 = param3Left + BASE64_ALPHABET_HI_6[charCode & 0x3f];
+        var index3 = 2 + (param3Left.length - 3) / 4 * 3;
+        if (index3 > 9)
+        {
+            index3 = '"' + index3 + '"';
+        }
+        var postfix3 = '(' + this.resolveString(param3) + ')' + this.replace('[' + index3 + ']');
         var length3 = postfix3.length;
         
         var postfix =
