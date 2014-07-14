@@ -286,7 +286,10 @@
             DEFAULT:    '(FBP_18 + ANY_FUNCTION)["50"]',
             NO_IE:      '(FBP_9_NS + ANY_FUNCTION)["41"]'
         },
-    //  '^':    ,
+        '^':
+        {
+            NO_NODE:    'atob("undefinedfalse")[2]'
+        },
     //  '_':    ,
     //  '`':    ,
         '{':            '(FHP_3_NS + ANY_FUNCTION)["21"]',
@@ -298,6 +301,14 @@
         },
     //  '~':    ,
         
+        '\x8a':
+        {
+            NO_NODE:    '(RP_4_NS + atob("NaNundefined"))["10"]'
+        },
+        '\x8d':
+        {
+            NO_NODE:    'atob("0NaN")[2]'
+        },
         '\x96':
         {
             NO_NODE:    'atob("00false")[3]'
@@ -306,9 +317,17 @@
         {
             NO_NODE:    'atob(true)[2]'
         },
+        '£':
+        {
+            NO_NODE:    'atob(NaN)[1]'
+        },
         '¥':
         {
             NO_NODE:    'atob("0false")[2]'
+        },
+        '§':
+        {
+            NO_NODE:    'atob("00undefined")[2]'
         },
         '©':
         {
@@ -326,13 +345,33 @@
         {
             NO_NODE:    'atob(true)[0]'
         },
+        'º':
+        {
+            NO_NODE:    'atob("undefinedfalse")[0]'
+        },
         '»':
         {
             NO_NODE:    'atob(true)[1]'
         },
+        'Ö':
+        {
+            NO_NODE:    'atob("0NaN")[1]'
+        },
         'Ú':
         {
             NO_NODE:    'atob("0truefalse")[1]'
+        },
+        'Ý':
+        {
+            NO_NODE:    'atob("0undefined")[2]'
+        },
+        'â':
+        {
+            NO_NODE:    'atob("falsefalseundefined")["11"]'
+        },
+        'é':
+        {
+            NO_NODE:    'atob("0undefined")[1]'
         },
         'î':
         {
@@ -341,6 +380,10 @@
         'ö':
         {
             NO_NODE:    'atob("0false")[1]'
+        },
+        'ø':
+        {
+            NO_NODE:    'atob("undefinedundefined")["10"]'
         },
     };
     
