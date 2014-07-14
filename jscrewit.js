@@ -888,23 +888,59 @@
     }
     
     fillMissingDigits();
-    var encoders = { };
+    
+    // BEGIN: JScrewIt /////////////////
     
     function encode(input, wrapWithEval, compatibility)
     {
-        compatibility = compatibility === undefined ? 'DEFAULT' : compatibility + '';
+        var encoder = getEncoder(compatibility);
+        var output = encoder.encode(input, wrapWithEval);
+        return output;
+    }
+    
+    function fixCompatibility(compatibility)
+    {
+        if (compatibility != null)
+        {
+            compatibility += '';
+            if (compatibility === 'NO_IE' || compatibility === 'NO_NODE')
+            {
+                return compatibility;
+            }
+        }
+        return 'DEFAULT';
+    }
+    
+    function getEncoder(compatibility)
+    {
+        compatibility = fixCompatibility(compatibility);
         var encoder = encoders[compatibility];
         if (!encoder)
         {
             encoders[compatibility] = encoder = new Encoder(compatibility);
         }
-        var output = encoder.encode(input, wrapWithEval);
+        return encoder;
+    }
+    
+    var encoders = { };
+    
+    var JScrewIt = { encode: encode };
+    
+    self.JSFuck = self.JScrewIt = JScrewIt;
+    
+    // END: JScrewIt ///////////////////
+    
+    // BEGIN: Debug only ///////////////
+    
+    function debugReplace(input, compatibility)
+    {
+        var encoder = getEncoder(compatibility);
+        var output = encoder.replace(input);
         return output;
     }
     
-    self.JSFuck = self.JScrewIt =
-    {
-        encode: encode
-    };
+    JScrewIt.debugReplace = debugReplace;
+    
+    // END: Debug only /////////////////
     
 })(typeof(exports) === 'undefined' ? window : exports);
