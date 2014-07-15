@@ -170,10 +170,12 @@
         );
     }
     
-    function test(code, compatibility)
+    function test(charCode, compatibility)
     {
-        var char = String.fromCharCode(code);
-        var desc = char === '\x7f' ? '"\\u007f"' : JSON.stringify(char);
+        var char = String.fromCharCode(charCode);
+        var desc =
+            charCode >= 0x7f && charCode <= 0xa0 || charCode === 0xad ?
+            '"\\u00' + charCode.toString(16) + '"' : JSON.stringify(char);
         it(
             desc,
             function ()
