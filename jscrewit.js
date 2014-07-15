@@ -12,14 +12,15 @@
     
     var CONSTANTS =
     {
+        // Javascript globals
+        
         Array:          '[][CONSTRUCTOR]',
         Boolean:        '(false)[CONSTRUCTOR]',
+        Date:           'Function("return Date")()',
         Function:       'ANY_FUNCTION[CONSTRUCTOR]',
         Number:         '(0)[CONSTRUCTOR]',
         RegExp:         'Function("return/false/")()[CONSTRUCTOR]',
         String:         '("")[CONSTRUCTOR]',
-        
-        // Global functions
         
         atob:
         {
@@ -161,7 +162,7 @@
         },
         'G':
         {
-            NO_IE:      '(RP_5_NS + Function("return Date")()())["30"]', // not for IE ≤ 10
+            NO_IE:      '(RP_5_NS + Date())["30"]', // not for IE ≤ 10
             NO_NODE:    'btoa("0false")[1]'
         },
         'H':
@@ -180,7 +181,7 @@
         },
         'M':
         {
-            NO_IE:      '(RP_4_NS + Function("return Date")()())["30"]', // not for IE ≤ 10
+            NO_IE:      '(RP_4_NS + Date())["30"]', // not for IE ≤ 10
             NO_NODE:    'btoa(0)[0]'
         },
         'N':            '"NaN"[0]',
@@ -206,7 +207,7 @@
         },
         'T':
         {
-            NO_IE:      '(RP_3_NS + Function("return Date")()())["30"]', // not for IE ≤ 10
+            NO_IE:      '(RP_3_NS + Date())["30"]', // not for IE ≤ 10
             NO_NODE:    'btoa(NaN)[0]'
         },
         'U':
