@@ -31,6 +31,10 @@
             NO_NODE:    'Function("return btoa")()'
         },
         escape:         'Function("return escape")()',
+        self:
+        {
+            NO_NODE:    'Function("return self")()'
+        },
         unescape:       'Function("return unescape")()',
         
         // Custom definitions
@@ -114,7 +118,7 @@
         'j':
         {
             DEFAULT:    '(Function("return{}")() + [])["10"]',
-            NO_NODE:    '(Function("return self")() + [])[3]'
+            NO_NODE:    '(self + [])[3]'
         },
         'k':            '(20)["toString"]("21")',
         'l':            '"false"[2]',
@@ -229,7 +233,9 @@
         },
         'W':
         {
-            NO_NODE:    'btoa(undefined)[1]'
+            // self + '' is '[object DOMWindow]' in Android Browser 4.1.2 and '[object Window]' in
+            // other browsers.
+            NO_NODE:    '(self + RP_3_NS)["slice"]("-10")[0]'
         },
         'X':
         {
