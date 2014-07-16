@@ -146,7 +146,7 @@
         },
         'D':
         {
-            DEFAULT:    'escape("}")[2]',
+            DEFAULT:    'escape("]")[2]',
             NO_NODE:    'btoa(40)[1]'
         },
         'E':
