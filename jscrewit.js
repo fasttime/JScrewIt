@@ -75,11 +75,10 @@
         },
         FHP_5_NS:
         {
-            DEFAULT:    '!!+((ANY_FUNCTION + [])[0] + 1)',
+            DEFAULT:    '!!(+(ANY_FUNCTION + [])[0] + true)',
             NO_IE:      'false'
         },
         FHP_6:          'FHP_5_NS + [0]',
-        FHP_7:          'FHP_3_NS + [true]',
         FHP_8:          'FHP_5_NS + [NaN]',
         
         // Regular padding constants: The number after "RP_" is the character overhead; the suffix
@@ -102,7 +101,7 @@
         },
         'c':
         {
-            DEFAULT:    '(FHP_7 + ANY_FUNCTION)["10"]',
+            DEFAULT:    '(FHP_8 + ANY_FUNCTION)["11"]',
             NO_IE:      '(ANY_FUNCTION + [])[3]'
         },
         'd':            '"undefined"[2]',
