@@ -159,13 +159,13 @@
         'D':
         {
             DEFAULT:    'escape("]")[2]',
-            NO_NODE:    'btoa(40)[1]'
+            NO_NODE:    'btoa("40")[1]'
         },
         'E':
         {
             DEFAULT:    '(FHP_8 + RegExp)["20"]',
             NO_IE:      '(RegExp + [])["12"]',
-            NO_NODE:    'btoa(11)[2]'
+            NO_NODE:    'btoa("11")[2]'
         },
         'F':
         {
