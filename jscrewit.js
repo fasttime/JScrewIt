@@ -67,6 +67,7 @@
             DEFAULT:    '!!+((ANY_FUNCTION + [])[0] + 1)',
             NO_IE:      'false'
         },
+        FHP_6:          'FHP_5_NS + [0]',
         FHP_7:          'FHP_3_NS + [true]',
         FHP_8:          'FHP_5_NS + [NaN]',
         
@@ -98,7 +99,7 @@
         'f':            '"false"[0]',
         'g':
         {
-            DEFAULT:    '(FHP_7 + String)["21"]',
+            DEFAULT:    '(FHP_6 + String)["20"]',
             NO_IE:      '(RP_6 + String)["20"]'
         },
         'h':            '(101)["toString"]("21")[1]',
