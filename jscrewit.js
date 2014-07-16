@@ -39,19 +39,25 @@
         
         CONSTRUCTOR:    '"constructor"',
         
+        // Function body extra padding
+        FBEP_9_NS:      '[false][+!(false + ANY_FUNCTION)["40"]]',
+        
         // Function boby padding constants: prepended to a function to align the body at the same
         // position on different browsers. The number after "FBP_" is the maximum character
         // overhead; the suffix "_NS" indicates that the constant does not evaluate to a string or
         // an array.
-        FBP_9_NS:       '[false][+!(false + ANY_FUNCTION)["40"]]',
+        FBP_9_NS:
+        {
+            NO_IE:      'FBEP_9_NS'
+        },
         FBP_10:
         {
-            NO_IE:      '[0] + FBP_9_NS'
+            NO_IE:      '[0] + FBEP_9_NS'
         },
-        FBP_15:         'FHP_5_NS + [0] + FBP_9_NS',
-        FBP_16:         'FHP_3_NS + [true] + FBP_9_NS',
-        FBP_18:         'FHP_5_NS + [true] + FBP_9_NS',
-        FBP_20:         'FHP_5_NS + [0] + false + FBP_9_NS',
+        FBP_15:         'FHP_5_NS + [0] + FBEP_9_NS',
+        FBP_16:         'FHP_3_NS + [true] + FBEP_9_NS',
+        FBP_18:         'FHP_5_NS + [true] + FBEP_9_NS',
+        FBP_20:         'FHP_5_NS + [0] + false + FBEP_9_NS',
 
         // Function header padding constants: prepended to a function to align the header at the
         // same position on different browsers. The number after "FHP_" is the maximum character
