@@ -59,7 +59,7 @@
         },
         FBP_10:
         {
-            DEFAULT:    'FHP_5_NS + [0] + FBEP_4',
+            DEFAULT:    'FHP_1_NS + FBEP_9_NS',
             NO_IE:      '[0] + FBEP_9_NS'
         },
         FBP_15:         'FHP_5_NS + [0] + FBEP_9_NS',
@@ -68,6 +68,11 @@
         // same position on different browsers. The number after "FHP_" is the maximum character
         // overhead; the suffix "_NS" indicates that the constant does not always evaluate to a
         // string or an array.
+        FHP_1_NS:
+        {
+            DEFAULT:    '[[0][+!!(+(ANY_FUNCTION + [])[0] + true)]]',
+            NO_IE:      '0',
+        },
         FHP_3_NS:
         {
             DEFAULT:    '+((ANY_FUNCTION + [])[0] + "10")',
@@ -107,11 +112,7 @@
         'd':            '"undefined"[2]',
         'e':            '"true"[3]',
         'f':            '"false"[0]',
-        'g':
-        {
-            DEFAULT:    '(FHP_6 + String)["20"]',
-            NO_IE:      '(RP_6 + String)["20"]'
-        },
+        'g':            '(FHP_6 + String)["20"]',
         'h':            '(101)["toString"]("21")[1]',
         'i':            '(RP_5 + undefined)["10"]',
         'j':
@@ -140,16 +141,8 @@
         'y':            '(RP_3_NS + [Infinity])["10"]',
         'z':            '(35)["toString"]("36")',
 
-        'A':
-        {
-            DEFAULT:    '(FHP_3_NS + Array)["12"]',
-            NO_IE:      '(RP_1_NS + Array)["10"]'
-        },
-        'B':
-        {
-            DEFAULT:    '(FHP_3_NS + Boolean)["12"]',
-            NO_IE:      '(RP_1_NS + Boolean)["10"]'
-        },
+        'A':            '(FHP_1_NS + Array)["10"]',
+        'B':            '(FHP_1_NS + Boolean)["10"]',
         'C':
         {
             DEFAULT:    'escape(""["italics"]())[2]',
@@ -166,11 +159,7 @@
             NO_IE:      '(RegExp + [])["12"]',
             NO_NODE:    'btoa("11")[2]'
         },
-        'F':
-        {
-            DEFAULT:    '(FHP_3_NS + Function)["12"]',
-            NO_IE:      '(RP_1_NS + Function)["10"]'
-        },
+        'F':            '(FHP_1_NS + Function)["10"]',
         'G':
         {
             NO_IE:      '(RP_5_NS + Date())["30"]', // not for IE ≤ 10
@@ -207,15 +196,10 @@
         },
         'R':
         {
-            DEFAULT:    '(FHP_3_NS + RegExp)["12"]',
-            NO_IE:      '(RP_1_NS + RegExp)["10"]',
+            DEFAULT:    '(FHP_1_NS + RegExp)["10"]',
             NO_NODE:    'btoa("0true")[2]'
         },
-        'S':
-        {
-            DEFAULT:    '(FHP_3_NS + String)["12"]',
-            NO_IE:      '(RP_1_NS + String)["10"]'
-        },
+        'S':            '(FHP_1_NS + String)["10"]',
         'T':
         {
             NO_IE:      '(RP_3_NS + Date())["30"]', // not for IE ≤ 10
