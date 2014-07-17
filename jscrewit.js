@@ -51,6 +51,11 @@
         // position on different browsers. The number after "FBP_" is the maximum character
         // overhead; the suffix "_NS" indicates that the constant does not always evaluate to a
         // string or an array.
+        FBP_5:
+        {
+            DEFAULT:    'FHP_1_NS + FBEP_4',
+            NO_IE:      '0 + FBEP_4'
+        },
         FBP_7:          'FHP_3_NS + FBEP_4',
         FBP_9_NS:
         {
@@ -75,7 +80,7 @@
         },
         FHP_3_NS:
         {
-            DEFAULT:    '+((ANY_FUNCTION + [])[0] + "10")',
+            DEFAULT:    '+(1 + [+(ANY_FUNCTION + [])[0]])',
             NO_IE:      'NaN'
         },
         FHP_5_NS:
@@ -84,7 +89,15 @@
             NO_IE:      'false'
         },
         FHP_6:          'FHP_5_NS + [0]',
-        FHP_8:          'FHP_5_NS + [NaN]',
+        FHP_7:          'FHP_3_NS + [true]',
+        FHP_8:          'FHP_3_NS + [false]',
+        /*
+        FHP_9_NS:
+        {
+            DEFAULT:    '["truetrue"][+(ANY_FUNCTION + [])[0]]',
+            NO_IE:      '"truetrue"'
+        },
+        */
         
         // Regular padding constants: The number after "RP_" is the character overhead; the suffix
         // "_NS" indicates that the constant does not always evaluate to a string or an array.
@@ -106,7 +119,7 @@
         },
         'c':
         {
-            DEFAULT:    '(FHP_8 + ANY_FUNCTION)["11"]',
+            DEFAULT:    '(FHP_7 + ANY_FUNCTION)["10"]',
             NO_IE:      '(ANY_FUNCTION + [])[3]'
         },
         'd':            '"undefined"[2]',
@@ -135,7 +148,11 @@
         's':            '"false"[3]',
         't':            '"true"[0]',
         'u':            '"undefined"[0]',
-        'v':            '(FBP_15 + ANY_FUNCTION)["40"]',
+        'v':
+        {
+            DEFAULT:    '(FBP_15 + ANY_FUNCTION)["40"]',
+            NO_IE:      '(FBP_5 + ANY_FUNCTION)["30"]'
+        },
         'w':            '(32)["toString"]("33")',
         'x':            '(101)["toString"]("34")[1]',
         'y':            '(RP_3_NS + [Infinity])["10"]',
