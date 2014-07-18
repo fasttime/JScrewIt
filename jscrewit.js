@@ -160,7 +160,11 @@
         },
         'k':            '(20)["toString"]("21")',
         'l':            '"false"[2]',
-        'm':            '(RP_6_SO + Function())["20"]',
+        'm':
+        {
+            DEFAULT:    '(RP_6_SO + Function())["20"]',
+            NO_IE:      '(Number + [])["11"]'
+        },
         'n':            '"undefined"[1]',
         'o':
         {
