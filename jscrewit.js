@@ -4,7 +4,7 @@
     
     // Mapping syntax has been changed to match Javascript more closely. The main differences from
     // JSFuck are:
-    // * Support for constant literals like "ANY_FUNCTION", "FHP_3_NS", etc. improves readability
+    // * Support for constant literals like "ANY_FUNCTION", "FHP_3_NO", etc. improves readability
     //   and simplifies maintenance.
     // * 10 evaluates to a number, while "10" evaluates to a string. This can make a difference in
     //   certain expressions and may affect the mapping length.
@@ -43,70 +43,90 @@
         
         CONSTRUCTOR:    '"constructor"',
         
-        // Function body extra padding
-        FBEP_4:         '[[true][+!!(RP_5_NS + ANY_FUNCTION)["40"]]]',
-        FBEP_9_NS:      '[false][+!(RP_5_NS + ANY_FUNCTION)["40"]]',
+        // Function body extra padding blocks. The number after "FBEP_" is the maximum character
+        // overhead. The letters after the last underscore have the same meaning as in regular
+        // padding blocks.
+        FBEP_4_S:       '[[true][+!!(RP_5_N + ANY_FUNCTION)["40"]]]',
+        FBEP_9_N:       '[false][+!(RP_5_N + ANY_FUNCTION)["40"]]',
         
-        // Function boby padding constants: prepended to a function to align the body at the same
+        // Function body padding constants: prepended to a function to align the body at the same
         // position on different browsers. The number after "FBP_" is the maximum character
-        // overhead; the suffix "_NS" indicates that the constant does not always evaluate to a
-        // string or an array.
+        // overhead.
         FBP_5:
         {
-            DEFAULT:    'FHP_1_NS + FBEP_4',
-            NO_IE:      '0 + FBEP_4'
+            DEFAULT:    'FHP_1_S + FBEP_4_S',
+            NO_IE:      'RP_1_NO + FBEP_4_S'
         },
-        FBP_7:          'FHP_3_NS + FBEP_4',
-        FBP_9_NS:
+        FBP_7:
         {
-            DEFAULT:    'FHP_5_NS + FBEP_4',
-            NO_IE:      'FBEP_9_NS'
+            DEFAULT:    'FHP_3_NO + FBEP_4_S',
+            NO_IE:      'RP_3_NO + FBEP_4_S'
+        },
+        FBP_9:
+        {
+            DEFAULT:    'FHP_5_N + FBEP_4_S',
+            NO_IE:      'FBEP_9_N'
         },
         FBP_10:
         {
-            DEFAULT:    'FHP_1_NS + FBEP_9_NS',
-            NO_IE:      '[0] + FBEP_9_NS'
+            DEFAULT:    'FHP_1_S + FBEP_9_N',
+            NO_IE:      'RP_1_S + FBEP_9_N'
         },
-        FBP_15:         'FHP_5_NS + [0] + FBEP_9_NS',
+        FBP_15:
+        {
+            DEFAULT:    'FHP_5_N + RP_1_S + FBEP_9_N',
+            NO_IE:      'RP_6_SO + FBEP_9_N'
+        },
 
+        // Function header padding blocks. The number after "FBP_" is the maximum character
+        // overhead. The letters after the last underscore have the same meaning as in regular
+        // padding blocks.
+        FHP_1_S:        '[[0][+!!(+(ANY_FUNCTION + [])[0] + true)]]',
+        FHP_3_NO:       '+(1 + [+(ANY_FUNCTION + [])[0]])',
+        FHP_5_N:        '!!(+(ANY_FUNCTION + [])[0] + true)',
+        
         // Function header padding constants: prepended to a function to align the header at the
         // same position on different browsers. The number after "FHP_" is the maximum character
-        // overhead; the suffix "_NS" indicates that the constant does not always evaluate to a
-        // string or an array.
-        FHP_1_NS:
+        // overhead.
+        FHP_1:
         {
-            DEFAULT:    '[[0][+!!(+(ANY_FUNCTION + [])[0] + true)]]',
-            NO_IE:      '0',
+            DEFAULT:    'FHP_1_S',
+            NO_IE:      'RP_1_NO',
         },
-        FHP_3_NS:
+        FHP_3:
         {
-            DEFAULT:    '+(1 + [+(ANY_FUNCTION + [])[0]])',
-            NO_IE:      'NaN'
+            DEFAULT:    'FHP_3_NO',
+            NO_IE:      'RP_3_NO'
         },
-        FHP_5_NS:
+        FHP_5:
         {
-            DEFAULT:    '!!(+(ANY_FUNCTION + [])[0] + true)',
-            NO_IE:      'false'
+            DEFAULT:    'FHP_5_N',
+            NO_IE:      'RP_5_N'
         },
-        FHP_6:          'FHP_5_NS + [0]',
-        FHP_7:          'FHP_3_NS + [true]',
-        FHP_8:          'FHP_3_NS + [false]',
-        /*
-        FHP_9_NS:
+        FHP_6:
         {
-            DEFAULT:    '["truetrue"][+(ANY_FUNCTION + [])[0]]',
-            NO_IE:      '"truetrue"'
+            DEFAULT:    'FHP_5_N + RP_1_S',
+            NO_IE:      'RP_6_SO',
         },
-        */
+        FHP_7:          'FHP_3_NO + RP_4_S',
+        FHP_8:          'FHP_3_NO + RP_5_S',
         
-        // Regular padding constants: The number after "RP_" is the character overhead; the suffix
-        // "_NS" indicates that the constant does not always evaluate to a string or an array.
-        RP_1_NS:        '0',
-        RP_3_NS:        'NaN',
-        RP_4_NS:        'true',
-        RP_5:           '[false]',
-        RP_5_NS:        'false',
-        RP_6:           '"0false"',
+        // Regular padding blocks. The number after "RP_" is the character overhead. The postfix
+        // "_N" in the name indicates that the constant does not evaluate to a string or array. The
+        // postifx "_S" in the name indicates that the constant does evaluate to a string or array.
+        // A trailing "O" as in "_NO" and "_SO" is appended to the name if the constant resolves to
+        // an expression containing a plus sign ("+") out of brackets (PSOOB). When concatenating
+        // such a constant with other expressions, the PSOOB constant should be placed in the
+        // beginning whenever possible in order to save an extra pair of brackets in the resolved
+        // expressions.
+        RP_1_NO:        '0',
+        RP_1_S:         '[0]',
+        RP_3_NO:        'NaN',
+        RP_4_N:         'true',
+        RP_4_S:         '[true]',
+        RP_5_N:         'false',
+        RP_5_S:         '[false]',
+        RP_6_SO:        '"0false"',
     };
     
     var CHARACTERS =
@@ -127,7 +147,7 @@
         'f':            '"false"[0]',
         'g':            '(FHP_6 + String)["20"]',
         'h':            '(101)["toString"]("21")[1]',
-        'i':            '(RP_5 + undefined)["10"]',
+        'i':            '(RP_5_S + undefined)["10"]',
         'j':
         {
             DEFAULT:    '(Function("return{}")() + [])["10"]',
@@ -135,12 +155,12 @@
         },
         'k':            '(20)["toString"]("21")',
         'l':            '"false"[2]',
-        'm':            '(RP_6 + Function())["20"]',
+        'm':            '(RP_6_SO + Function())["20"]',
         'n':            '"undefined"[1]',
         'o':
         {
-            DEFAULT:    '(FHP_5_NS + ANY_FUNCTION)["11"]',
-            NO_IE:      '(RP_4_NS + ANY_FUNCTION)["10"]'
+            DEFAULT:    '(FHP_5 + ANY_FUNCTION)["11"]',
+            NO_IE:      '(RP_4_N + ANY_FUNCTION)["10"]'
         },
         'p':            '(211)["toString"]("31")[1]',
         'q':            '(212)["toString"]("31")[1]',
@@ -155,11 +175,11 @@
         },
         'w':            '(32)["toString"]("33")',
         'x':            '(101)["toString"]("34")[1]',
-        'y':            '(RP_3_NS + [Infinity])["10"]',
+        'y':            '(RP_3_NO + [Infinity])["10"]',
         'z':            '(35)["toString"]("36")',
 
-        'A':            '(FHP_1_NS + Array)["10"]',
-        'B':            '(FHP_1_NS + Boolean)["10"]',
+        'A':            '(FHP_1 + Array)["10"]',
+        'B':            '(FHP_1 + Boolean)["10"]',
         'C':
         {
             DEFAULT:    'escape(""["italics"]())[2]',
@@ -176,10 +196,10 @@
             NO_IE:      '(RegExp + [])["12"]',
             NO_NODE:    'btoa("11")[2]'
         },
-        'F':            '(FHP_1_NS + Function)["10"]',
+        'F':            '(FHP_1 + Function)["10"]',
         'G':
         {
-            NO_IE:      '(RP_5_NS + Date())["30"]', // not for IE ≤ 10
+            NO_IE:      '(RP_5_N + Date())["30"]', // not for IE ≤ 10
             NO_NODE:    'btoa("0false")[1]'
         },
         'H':
@@ -198,11 +218,11 @@
         },
         'M':
         {
-            NO_IE:      '(RP_4_NS + Date())["30"]', // not for IE ≤ 10
+            NO_IE:      '(RP_4_N + Date())["30"]', // not for IE ≤ 10
             NO_NODE:    'btoa(0)[0]'
         },
         'N':            '"NaN"[0]',
-        'O':            '(RP_3_NS + Function("return{}")())["11"]',
+        'O':            '(RP_3_NO + Function("return{}")())["11"]',
         'P':
         {
             NO_NODE:    'btoa(""["italics"]())[0]'
@@ -213,19 +233,19 @@
         },
         'R':
         {
-            DEFAULT:    '(FHP_1_NS + RegExp)["10"]',
+            DEFAULT:    '(FHP_1 + RegExp)["10"]',
             NO_NODE:    'btoa("0true")[2]'
         },
-        'S':            '(FHP_1_NS + String)["10"]',
+        'S':            '(FHP_1 + String)["10"]',
         'T':
         {
-            NO_IE:      '(RP_3_NS + Date())["30"]', // not for IE ≤ 10
+            NO_IE:      '(RP_3_NO + Date())["30"]', // not for IE ≤ 10
             NO_NODE:    'btoa(NaN)[0]'
         },
         'U':
         {
-            DEFAULT:    '(RP_3_NS + Function("return{}")()["toString"]["call"]())["11"]',
-            NO_NODE:    '(RP_4_NS + btoa(false))["10"]'
+            DEFAULT:    '(RP_3_NO + Function("return{}")()["toString"]["call"]())["11"]',
+            NO_NODE:    '(RP_4_N + btoa(false))["10"]'
         },
         'V':
         {
@@ -235,7 +255,7 @@
         {
             // self + '' is '[object DOMWindow]' in Android Browser 4.1.2 and '[object Window]' in
             // other browsers.
-            NO_NODE:    '(self + RP_3_NS)["slice"]("-10")[0]'
+            NO_NODE:    '(self + RP_3_NO)["slice"]("-10")[0]'
         },
         'X':
         {
@@ -253,9 +273,9 @@
         '\n':           '(Function() + [])["23"]',
         '\x1e':
         {
-            NO_NODE:    '(RP_5_NS + atob("NaNfalse"))["10"]'
+            NO_NODE:    '(RP_5_N + atob("NaNfalse"))["10"]'
         },
-        ' ':            '(FHP_3_NS + ANY_FUNCTION)["11"]',
+        ' ':            '(FHP_3 + ANY_FUNCTION)["11"]',
     //  '!':    ,
         '"':            '""["fontcolor"]()["12"]',
     //  '#':    ,
@@ -267,11 +287,11 @@
         },
     //  '&':    ,
     //  '\'':   ,
-        '(':            '(FHP_5_NS + ANY_FUNCTION)["20"]',
+        '(':            '(FHP_5 + ANY_FUNCTION)["20"]',
         ')':
         {
-            DEFAULT:    '(FHP_5_NS + ANY_FUNCTION)["21"]',
-            NO_IE:      '(RP_4_NS + ANY_FUNCTION)["20"]'
+            DEFAULT:    '(FHP_5 + ANY_FUNCTION)["21"]',
+            NO_IE:      '(RP_4_N + ANY_FUNCTION)["20"]'
         },
     //  '*':    ,
         '+':            '(+"1e100" + [])[2]',
@@ -292,25 +312,25 @@
     //  '@':    ,
         '[':            '(FBP_10 + ANY_FUNCTION)["30"]',
     //  '\\':   ,
-        ']':            '(FBP_9_NS + ANY_FUNCTION)["41"]',
+        ']':            '(FBP_9 + ANY_FUNCTION)["41"]',
         '^':
         {
             NO_NODE:    'atob("undefinedfalse")[2]'
         },
     //  '_':    ,
     //  '`':    ,
-        '{':            '(FHP_3_NS + ANY_FUNCTION)["21"]',
+        '{':            '(FHP_3 + ANY_FUNCTION)["21"]',
     //  '|':    ,
         '}':
         {
             DEFAULT:    '(FBP_7 + ANY_FUNCTION)["41"]',
-            NO_IE:      '(FBP_9_NS + ANY_FUNCTION)["43"]'
+            NO_IE:      '(FBP_9 + ANY_FUNCTION)["43"]'
         },
     //  '~':    ,
         
         '\x8a':
         {
-            NO_NODE:    '(RP_4_NS + atob("NaNundefined"))["10"]'
+            NO_NODE:    '(RP_4_N + atob("NaNundefined"))["10"]'
         },
         '\x8d':
         {
@@ -596,7 +616,7 @@
                         }
                         tokenValue.level = level;
                     }
-                    if (result && (fullLevel < 0 && level < 0 || hasOuterPlus(tokenValue)))
+                    if (result && (fullLevel < 0 && level < 0 || hasPsoob(tokenValue)))
                     {
                         if (level !== -2)
                         {
@@ -814,11 +834,12 @@
         }
     }
     
-    function hasOuterPlus(expr)
+    // Determine whether the specified expression contains a plus sign out of brackets.
+    function hasPsoob(expr)
     {
-        if (expr.outerPlus != null)
+        if (expr.psoob != null)
         {
-            return expr.outerPlus;
+            return expr.psoob;
         }
         var unclosed = 0;
         var regExp = /".*?"|!\+|[+([)\]]/g;
@@ -830,7 +851,7 @@
             case '+':
                 if (!unclosed)
                 {
-                    expr.outerPlus = true;
+                    expr.psoob = true;
                     return true;
                 }
                 break;
@@ -844,7 +865,7 @@
                 break;
             }
         }
-        expr.outerPlus = false;
+        expr.psoob = false;
         return false;
     }
     
@@ -927,7 +948,7 @@
             {
                 throw new SyntaxError('Undefined literal ' + literal);
             }
-            if (isPrecededByOperator(expr, offset) && hasOuterPlus(replacement))
+            if (isPrecededByOperator(expr, offset) && hasPsoob(replacement))
             {
                 replacement = '(' + replacement + ')';
             }
