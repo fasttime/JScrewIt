@@ -54,13 +54,15 @@
         // overhead.
         FBP_5:
         {
-            DEFAULT:    'FHP_1_S + FBEP_4_S',
+            // Unused:
+            // DEFAULT:    'FHP_1_S + FBEP_4_S',
             NO_IE:      'RP_1_NO + FBEP_4_S'
         },
         FBP_7:
         {
             DEFAULT:    'FHP_3_NO + FBEP_4_S',
-            NO_IE:      'RP_3_NO + FBEP_4_S'
+            // Unused:
+            // NO_IE:      'RP_3_NO + FBEP_4_S'
         },
         FBP_9:
         {
@@ -75,13 +77,16 @@
         FBP_15:
         {
             DEFAULT:    'FHP_5_N + RP_1_S + FBEP_9_N',
-            NO_IE:      'RP_6_SO + FBEP_9_N'
+            // Unused:
+            // NO_IE:      'RP_6_SO + FBEP_9_N'
         },
 
         // Function header padding blocks. The number after "FBP_" is the maximum character
         // overhead. The letters after the last underscore have the same meaning as in regular
         // padding blocks.
         FHP_1_S:        '[[0][+!!(+(ANY_FUNCTION + [])[0] + true)]]',
+        // Unused:
+        // FHP_2_NO:       '+(+!(+(ANY_FUNCTION + [])[0] + true)+[0])',
         FHP_3_NO:       '+(1 + [+(ANY_FUNCTION + [])[0]])',
         FHP_5_N:        '!!(+(ANY_FUNCTION + [])[0] + true)',
         
