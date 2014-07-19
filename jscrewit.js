@@ -43,6 +43,12 @@
         
         CONSTRUCTOR:    '"constructor"',
         
+        TO_STRING:
+        {
+            DEFAULT:    '"toString"',
+            NO_IE:      '"to" + String["name"]'
+        },
+        
         // Function body extra padding blocks. The number after "FBEP_" is the maximum character
         // overhead. The letters after the last underscore have the same meaning as in regular
         // padding blocks.
@@ -151,14 +157,14 @@
         'e':            '"true"[3]',
         'f':            '"false"[0]',
         'g':            '(FHP_6 + String)["20"]',
-        'h':            '(101)["toString"]("21")[1]',
+        'h':            '(101)[TO_STRING]("21")[1]',
         'i':            '(RP_5_S + undefined)["10"]',
         'j':
         {
             DEFAULT:    '(Function("return{}")() + [])["10"]',
             NO_NODE:    '(self + [])[3]'
         },
-        'k':            '(20)["toString"]("21")',
+        'k':            '(20)[TO_STRING]("21")',
         'l':            '"false"[2]',
         'm':
         {
@@ -171,8 +177,8 @@
             DEFAULT:    '(FHP_5 + ANY_FUNCTION)["11"]',
             NO_IE:      '(RP_4_N + ANY_FUNCTION)["10"]'
         },
-        'p':            '(211)["toString"]("31")[1]',
-        'q':            '(212)["toString"]("31")[1]',
+        'p':            '(211)[TO_STRING]("31")[1]',
+        'q':            '(212)[TO_STRING]("31")[1]',
         'r':            '"true"[1]',
         's':            '"false"[3]',
         't':            '"true"[0]',
@@ -182,10 +188,10 @@
             DEFAULT:    '(FBP_15 + ANY_FUNCTION)["40"]',
             NO_IE:      '(FBP_5 + ANY_FUNCTION)["30"]'
         },
-        'w':            '(32)["toString"]("33")',
-        'x':            '(101)["toString"]("34")[1]',
+        'w':            '(32)[TO_STRING]("33")',
+        'x':            '(101)[TO_STRING]("34")[1]',
         'y':            '(RP_3_NO + [Infinity])["10"]',
-        'z':            '(35)["toString"]("36")',
+        'z':            '(35)[TO_STRING]("36")',
 
         'A':            '(FHP_1 + Array)["10"]',
         'B':            '(FHP_1 + Boolean)["10"]',
@@ -253,7 +259,7 @@
         },
         'U':
         {
-            DEFAULT:    '(RP_3_NO + Function("return{}")()["toString"]["call"]())["11"]',
+            DEFAULT:    '(RP_3_NO + Function("return{}")()[TO_STRING]["call"]())["11"]',
             NO_NODE:    '(RP_4_N + btoa(false))["10"]'
         },
         'V':
