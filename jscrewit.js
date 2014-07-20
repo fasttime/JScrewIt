@@ -2,6 +2,8 @@
 {
     'use strict';
     
+    // BEGIN: Encoder //////////////////
+    
     // Mapping syntax has been changed to match Javascript more closely. The main differences from
     // JSFuck are:
     // * Support for constant literals like "ANY_FUNCTION", "FHP_3_NO", etc. improves readability
@@ -458,6 +460,7 @@
         'Infinity':     '+"1e1000"',
     };
     
+    var quoteCharacter = JSON.stringify;
     var simplePattern;
     
     function Encoder(compatibility)
@@ -472,20 +475,21 @@
     {
         callResolver: function (stackName, resolver)
         {
-            var stackIndex = this.stack.indexOf(stackName);
-            this.stack.push(stackName);
+            var stack = this.stack;
+            var stackIndex = stack.indexOf(stackName);
+            stack.push(stackName);
             try
             {
                 if (stackIndex >= 0)
                 {
-                    var chain = this.stack.slice(stackIndex);
+                    var chain = stack.slice(stackIndex);
                     throw new SyntaxError('Circular reference detected: ' + chain.join(' < '));
                 }
                 resolver.call(this);
             }
             finally
             {
-                this.stack.pop();
+                stack.pop();
             }
         },
         
@@ -515,6 +519,13 @@
             return result;
         },
         
+        peekLastFromStack: function ()
+        {
+            var stack = this.stack;
+            var result = stack[stack.length - 1];
+            return result;
+        },
+        
         replace: function (expr)
         {
             var replacement =
@@ -531,7 +542,7 @@
             if (value === undefined)
             {
                 this.callResolver(
-                    '"' + character + '"',
+                    quoteCharacter(character),
                     function ()
                     {
                         var expr = this.getCompatibleExpr(CHARACTERS[character]);
@@ -558,10 +569,6 @@
                     function ()
                     {
                         var expr = this.getCompatibleExpr(CONSTANTS[constant]);
-                        if (expr === undefined)
-                        {
-                            throw new SyntaxError('Undefined symbol: ' + constant);
-                        }
                         this.constantCache[constant] = value = Object(this.replace(expr));
                     }
                 );
@@ -961,7 +968,10 @@
             }
             else
             {
-                throw new SyntaxError('Undefined literal ' + literal);
+                throw new SyntaxError(
+                    'Undefined literal ' + literal + ' in the definition of ' +
+                    this.peekLastFromStack()
+                    );
             }
             if (isPrecededByOperator(expr, offset) && hasPsoob(replacement))
             {
@@ -970,7 +980,10 @@
         }
         else
         {
-            throw new SyntaxError('Unexpected character ' + wholeMatch);
+            throw new SyntaxError(
+                'Unexpected character ' + quoteCharacter(wholeMatch) + ' in the definition of ' +
+                this.peekLastFromStack()
+                );
         }
         return replacement;
     }
@@ -1002,6 +1015,8 @@
     }
     
     fillMissingDigits();
+    
+    // END: Encoder ////////////////////
     
     // BEGIN: JScrewIt /////////////////
     
