@@ -4,8 +4,24 @@
     
     // BEGIN: Encoder //////////////////
     
-    // Mapping syntax has been changed to match Javascript more closely. The main differences from
-    // JSFuck are:
+    // Features
+    
+    var DEFAULT     = 0;
+    var NO_IE       = 0x01;
+    var ANONYMOUS   = 0x02; // not for IE
+    var GMT         = 0x04; // not for IE < 11
+    var SELF        = 0x08; // not for Node.js
+    var ATOB        = 0x10; // not for IE < 10 and Node.js
+    
+    var FEATURES =
+    {
+        DEFAULT:    DEFAULT,
+        NO_IE:      NO_IE | ANONYMOUS | GMT,
+        NO_NODE:    SELF | ATOB
+    };
+    
+    // Definition syntax has been changed to match Javascript more closely. The main differences
+    // from JSFuck are:
     // * Support for constant literals like "ANY_FUNCTION", "FHP_3_NO", etc. improves readability
     //   and simplifies maintenance.
     // * 10 evaluates to a number, while "10" evaluates to a string. This can make a difference in
@@ -25,18 +41,18 @@
         String:         '("")[CONSTRUCTOR]',
         
         atob:
-        {
-            NO_NODE:    'Function("return atob")()'
-        },
+        [
+            define('Function("return atob")()', ATOB)
+        ],
         btoa:
-        {
-            NO_NODE:    'Function("return btoa")()'
-        },
+        [
+            define('Function("return btoa")()', ATOB)
+        ],
         escape:         'Function("return escape")()',
         self:
-        {
-            NO_NODE:    'Function("return self")()'
-        },
+        [
+            define('Function("return self")()', SELF)
+        ],
         unescape:       'Function("return unescape")()',
         
         // Custom definitions
@@ -46,10 +62,10 @@
         CONSTRUCTOR:    '"constructor"',
         
         TO_STRING:
-        {
-            DEFAULT:    '"toString"',
-            NO_IE:      '"to" + String["name"]'
-        },
+        [
+            define('"toString"'),
+            define('"to" + String["name"]', NO_IE)
+        ],
         
         // Function body extra padding blocks. The number after "FBEP_" is the maximum character
         // overhead. The letters after the last underscore have the same meaning as in regular
@@ -61,33 +77,33 @@
         // position on different browsers. The number after "FBP_" is the maximum character
         // overhead.
         FBP_5:
-        {
+        [
             // Unused:
-            // DEFAULT:    'FHP_1_S + FBEP_4_S',
-            NO_IE:      'RP_1_NO + FBEP_4_S'
-        },
+            // define('FHP_1_S + FBEP_4_S'),
+            define('RP_1_NO + FBEP_4_S', NO_IE)
+        ],
         FBP_7:
-        {
-            DEFAULT:    'FHP_3_NO + FBEP_4_S',
+        [
+            define('FHP_3_NO + FBEP_4_S'),
             // Unused:
-            // NO_IE:      'RP_3_NO + FBEP_4_S'
-        },
+            // define('RP_3_NO + FBEP_4_S', NO_IE)
+        ],
         FBP_9:
-        {
-            DEFAULT:    'FHP_5_N + FBEP_4_S',
-            NO_IE:      'FBEP_9_N'
-        },
+        [
+            define('FHP_5_N + FBEP_4_S'),
+            define('FBEP_9_N', NO_IE)
+        ],
         FBP_10:
-        {
-            DEFAULT:    'FHP_1_S + FBEP_9_N',
-            NO_IE:      'RP_1_S + FBEP_9_N'
-        },
+        [
+            define('FHP_1_S + FBEP_9_N'),
+            define('RP_1_S + FBEP_9_N', NO_IE)
+        ],
         FBP_15:
-        {
-            DEFAULT:    'FHP_5_N + RP_1_S + FBEP_9_N',
+        [
+            define('FHP_5_N + RP_1_S + FBEP_9_N'),
             // Unused:
-            // NO_IE:      'RP_6_SO + FBEP_9_N'
-        },
+            // define('RP_6_SO + FBEP_9_N', NO_IE)
+        ],
 
         // Function header padding blocks. The number after "FBP_" is the maximum character
         // overhead. The letters after the last underscore have the same meaning as in regular
@@ -102,25 +118,25 @@
         // same position on different browsers. The number after "FHP_" is the maximum character
         // overhead.
         FHP_1:
-        {
-            DEFAULT:    'FHP_1_S',
-            NO_IE:      'RP_1_NO',
-        },
+        [
+            define('FHP_1_S'),
+            define('RP_1_NO', NO_IE)
+        ],
         FHP_3:
-        {
-            DEFAULT:    'FHP_3_NO',
-            NO_IE:      'RP_3_NO'
-        },
+        [
+            define('FHP_3_NO'),
+            define('RP_3_NO', NO_IE)
+        ],
         FHP_5:
-        {
-            DEFAULT:    'FHP_5_N',
-            NO_IE:      'RP_5_N'
-        },
+        [
+            define('FHP_5_N'),
+            define('RP_5_N', NO_IE)
+        ],
         FHP_6:
-        {
-            DEFAULT:    'FHP_5_N + RP_1_S',
-            NO_IE:      'RP_6_SO',
-        },
+        [
+            define('FHP_5_N + RP_1_S'),
+            define('RP_6_SO', NO_IE)
+        ],
         FHP_7:          'FHP_3_NO + RP_4_S',
         FHP_8:          'FHP_3_NO + RP_5_S',
         
@@ -146,15 +162,15 @@
     {
         'a':            '"false"[1]',
         'b':
-        {
-            DEFAULT:    '(FHP_8 + Number)["20"]',
-            NO_IE:      '(Number + [])["12"]'
-        },
+        [
+            define('(FHP_8 + Number)["20"]'),
+            define('(Number + [])["12"]', NO_IE)
+        ],
         'c':
-        {
-            DEFAULT:    '(FHP_7 + ANY_FUNCTION)["10"]',
-            NO_IE:      '(ANY_FUNCTION + [])[3]'
-        },
+        [
+            define('(FHP_7 + ANY_FUNCTION)["10"]'),
+            define('(ANY_FUNCTION + [])[3]', NO_IE)
+        ],
         'd':            '"undefined"[2]',
         'e':            '"true"[3]',
         'f':            '"false"[0]',
@@ -162,23 +178,23 @@
         'h':            '(101)[TO_STRING]("21")[1]',
         'i':            '(RP_5_S + undefined)["10"]',
         'j':
-        {
-            DEFAULT:    '(Function("return{}")() + [])["10"]',
-            NO_NODE:    '(self + [])[3]'
-        },
+        [
+            define('(Function("return{}")() + [])["10"]'),
+            define('(self + [])[3]', SELF)
+        ],
         'k':            '(20)[TO_STRING]("21")',
         'l':            '"false"[2]',
         'm':
-        {
-            DEFAULT:    '(RP_6_SO + Function())["20"]',
-            NO_IE:      '(Number + [])["11"]'
-        },
+        [
+            define('(RP_6_SO + Function())["20"]'),
+            define('(Number + [])["11"]', ANONYMOUS)
+        ],
         'n':            '"undefined"[1]',
         'o':
-        {
-            DEFAULT:    '(FHP_5 + ANY_FUNCTION)["11"]',
-            NO_IE:      '(RP_4_N + ANY_FUNCTION)["10"]'
-        },
+        [
+            define('(FHP_5 + ANY_FUNCTION)["11"]'),
+            define('(RP_4_N + ANY_FUNCTION)["10"]', NO_IE)
+        ],
         'p':            '(211)[TO_STRING]("31")[1]',
         'q':            '(212)[TO_STRING]("31")[1]',
         'r':            '"true"[1]',
@@ -186,10 +202,10 @@
         't':            '"true"[0]',
         'u':            '"undefined"[0]',
         'v':
-        {
-            DEFAULT:    '(FBP_15 + ANY_FUNCTION)["40"]',
-            NO_IE:      '(FBP_5 + ANY_FUNCTION)["30"]'
-        },
+        [
+            define('(FBP_15 + ANY_FUNCTION)["40"]'),
+            define('(FBP_5 + ANY_FUNCTION)["30"]', NO_IE)
+        ],
         'w':            '(32)[TO_STRING]("33")',
         'x':            '(101)[TO_STRING]("34")[1]',
         'y':            '(RP_3_NO + [Infinity])["10"]',
@@ -198,118 +214,118 @@
         'A':            '(FHP_1 + Array)["10"]',
         'B':            '(FHP_1 + Boolean)["10"]',
         'C':
-        {
-            DEFAULT:    'escape(""["italics"]())[2]',
-            NO_NODE:    null
-        },
+        [
+            define('escape(""["italics"]())[2]'),
+            define(null, ATOB)
+        ],
         'D':
-        {
-            DEFAULT:    'escape("]")[2]',
-            NO_NODE:    'btoa("00")[1]'
-        },
+        [
+            define('escape("]")[2]'),
+            define('btoa("00")[1]', ATOB)
+        ],
         'E':
-        {
-            DEFAULT:    '(FHP_8 + RegExp)["20"]',
-            NO_IE:      '(RegExp + [])["12"]',
-            NO_NODE:    'btoa("01")[2]'
-        },
+        [
+            define('(FHP_8 + RegExp)["20"]'),
+            define('btoa("01")[2]', ATOB),
+            define('(RegExp + [])["12"]', NO_IE)
+        ],
         'F':            '(FHP_1 + Function)["10"]',
         'G':
-        {
-            NO_IE:      '(RP_5_N + Date())["30"]', // not for IE ≤ 10
-            NO_NODE:    'btoa("0false")[1]'
-        },
+        [
+            define('(RP_5_N + Date())["30"]', GMT),
+            define('btoa("0false")[1]', ATOB)
+        ],
         'H':
-        {
-            NO_NODE:    'btoa(true)[1]'
-        },
+        [
+            define('btoa(true)[1]', ATOB)
+        ],
         'I':            '"Infinity"[0]',
         'J':
-        {
-            NO_NODE:    'btoa(true)[2]'
-        },
+        [
+            define('btoa(true)[2]', ATOB)
+        ],
      // 'K':    ,
         'L':
-        {
-            NO_NODE:    'btoa(".")[0]'
-        },
+        [
+            define('btoa(".")[0]', ATOB)
+        ],
         'M':
-        {
-            NO_IE:      '(RP_4_N + Date())["30"]', // not for IE ≤ 10
-            NO_NODE:    'btoa(0)[0]'
-        },
+        [
+            define('(RP_4_N + Date())["30"]', GMT),
+            define('btoa(0)[0]', ATOB)
+        ],
         'N':            '"NaN"[0]',
         'O':            '(RP_3_NO + Function("return{}")())["11"]',
         'P':
-        {
-            NO_NODE:    'btoa(""["italics"]())[0]'
-        },
+        [
+            define('btoa(""["italics"]())[0]', ATOB)
+        ],
         'Q':
-        {
-            NO_NODE:    'btoa(1)[1]'
-        },
+        [
+            define('btoa(1)[1]', ATOB)
+        ],
         'R':
-        {
-            DEFAULT:    '(FHP_1 + RegExp)["10"]',
-            NO_NODE:    'btoa("0true")[2]'
-        },
+        [
+            define('(FHP_1 + RegExp)["10"]'),
+            define('btoa("0true")[2]', ATOB)
+        ],
         'S':            '(FHP_1 + String)["10"]',
         'T':
-        {
-            NO_IE:      '(RP_3_NO + Date())["30"]', // not for IE ≤ 10
-            NO_NODE:    'btoa(NaN)[0]'
-        },
+        [
+            define('(RP_3_NO + Date())["30"]', GMT),
+            define('btoa(NaN)[0]', ATOB)
+        ],
         'U':
-        {
-            DEFAULT:    '(RP_3_NO + Function("return{}")()[TO_STRING]["call"]())["11"]',
-            NO_NODE:    '(RP_4_N + btoa(false))["10"]'
-        },
+        [
+            define('(RP_3_NO + Function("return{}")()[TO_STRING]["call"]())["11"]'),
+            define('(RP_4_N + btoa(false))["10"]', ATOB)
+        ],
         'V':
-        {
-            NO_NODE:    'btoa(undefined)["10"]'
-        },
+        [
+            define('btoa(undefined)["10"]', ATOB)
+        ],
         'W':
-        {
+        [
             // self + '' is '[object DOMWindow]' in Android Browser 4.1.2 and '[object Window]' in
             // other browsers.
-            NO_NODE:    '(self + RP_3_NO)["slice"]("-10")[0]'
-        },
+            define('(self + RP_3_NO)["slice"]("-10")[0]', SELF)
+        ],
         'X':
-        {
-            NO_NODE:    'btoa("1true")[1]'
-        },
+        [
+            define('btoa("1true")[1]', ATOB)
+        ],
         'Y':
-        {
-            NO_NODE:    'btoa("a")[0]'
-        },
+        [
+            define('btoa("a")[0]', ATOB)
+        ],
         'Z':
-        {
-            NO_NODE:    'btoa(false)[0]'
-        },
+        [
+            define('btoa(false)[0]', ATOB)
+        ],
 
         '\n':           '(Function() + [])["23"]',
         '\x1e':
-        {
-            NO_NODE:    '(RP_5_N + atob("NaNfalse"))["10"]'
-        },
+        [
+            define('(RP_5_N + atob("NaNfalse"))["10"]', ATOB)
+        ],
         ' ':            '(FHP_3 + ANY_FUNCTION)["11"]',
     //  '!':    ,
         '"':            '""["fontcolor"]()["12"]',
     //  '#':    ,
     //  '$':    ,
         '%':
-        {
-            DEFAULT:    'escape(ANY_FUNCTION)["20"]',
-            NO_NODE:    null
-        },
+        [
+            define('escape(ANY_FUNCTION)["20"]'),
+            define(null, ATOB)
+        ],
     //  '&':    ,
     //  '\'':   ,
         '(':            '(FHP_5 + ANY_FUNCTION)["20"]',
         ')':
-        {
-            DEFAULT:    '(FHP_5 + ANY_FUNCTION)["21"]',
-            NO_IE:      '(RP_4_N + ANY_FUNCTION)["20"]'
-        },
+        [
+            define('(FHP_5 + ANY_FUNCTION)["21"]'),
+            define('(RP_4_N + ANY_FUNCTION)["20"]', NO_IE)
+        ],
     //  '*':    ,
         '+':            '(+"1e100" + [])[2]',
         ',':            '([]["slice"]["call"]("false") + [])[1]',
@@ -317,10 +333,10 @@
         '.':            '(+"11e20" + [])[1]',
         '/':            '"0false"["italics"]()["10"]',
         ':':
-        {
-            DEFAULT:    '(RegExp() + [])[3]',
-            NO_NODE:    null
-        },
+        [
+            define('(RegExp() + [])[3]'),
+            define(null, ATOB)
+        ],
     //  ';':    ,
         '<':            '""["italics"]()[0]',
         '=':            '""["fontcolor"]()["11"]',
@@ -331,125 +347,128 @@
     //  '\\':   ,
         ']':            '(FBP_9 + ANY_FUNCTION)["41"]',
         '^':
-        {
-            NO_NODE:    'atob("undefinedfalse")[2]'
-        },
+        [
+            define('atob("undefinedfalse")[2]', ATOB)
+        ],
     //  '_':    ,
     //  '`':    ,
         '{':            '(FHP_3 + ANY_FUNCTION)["21"]',
     //  '|':    ,
         '}':
-        {
-            DEFAULT:    '(FBP_7 + ANY_FUNCTION)["41"]',
-            NO_IE:      '(FBP_9 + ANY_FUNCTION)["43"]'
-        },
+        [
+            define('(FBP_7 + ANY_FUNCTION)["41"]'),
+            define('(FBP_9 + ANY_FUNCTION)["43"]', NO_IE)
+        ],
     //  '~':    ,
         
         '\x8a':
-        {
-            NO_NODE:    '(RP_4_N + atob("NaNundefined"))["10"]'
-        },
+        [
+            define('(RP_4_N + atob("NaNundefined"))["10"]', ATOB)
+        ],
         '\x8d':
-        {
-            NO_NODE:    'atob("0NaN")[2]'
-        },
+        [
+            define('atob("0NaN")[2]', ATOB)
+        ],
         '\x96':
-        {
-            NO_NODE:    'atob("00false")[3]'
-        },
+        [
+            define('atob("00false")[3]', ATOB)
+        ],
         '\x9e':
-        {
-            NO_NODE:    'atob(true)[2]'
-        },
+        [
+            define('atob(true)[2]', ATOB)
+        ],
         '£':
-        {
-            NO_NODE:    'atob(NaN)[1]'
-        },
+        [
+            define('atob(NaN)[1]', ATOB)
+        ],
         '¥':
-        {
-            NO_NODE:    'atob("0false")[2]'
-        },
+        [
+            define('atob("0false")[2]', ATOB)
+        ],
         '§':
-        {
-            NO_NODE:    'atob("00undefined")[2]'
-        },
+        [
+            define('atob("00undefined")[2]', ATOB)
+        ],
         '©':
-        {
-            NO_NODE:    'atob("falsefalse")[1]'
-        },
+        [
+            define('atob("falsefalse")[1]', ATOB)
+        ],
         '®':
-        {
-            NO_NODE:    'atob("NaNtrue")[3]'
-        },
+        [
+            define('atob("NaNtrue")[3]', ATOB)
+        ],
         '±':
-        {
-            NO_NODE:    'atob("0false")[3]'
-        },
+        [
+            define('atob("0false")[3]', ATOB)
+        ],
         '¶':
-        {
-            NO_NODE:    'atob(true)[0]'
-        },
+        [
+            define('atob(true)[0]', ATOB)
+        ],
         'º':
-        {
-            NO_NODE:    'atob("undefinedfalse")[0]'
-        },
+        [
+            define('atob("undefinedfalse")[0]', ATOB)
+        ],
         '»':
-        {
-            NO_NODE:    'atob(true)[1]'
-        },
+        [
+            define('atob(true)[1]', ATOB)
+        ],
         'Ö':
-        {
-            NO_NODE:    'atob("0NaN")[1]'
-        },
+        [
+            define('atob("0NaN")[1]', ATOB)
+        ],
         'Ú':
-        {
-            NO_NODE:    'atob("0truefalse")[1]'
-        },
+        [
+            define('atob("0truefalse")[1]', ATOB)
+        ],
         'Ý':
-        {
-            NO_NODE:    'atob("0undefined")[2]'
-        },
+        [
+            define('atob("0undefined")[2]', ATOB)
+        ],
         'â':
-        {
-            NO_NODE:    'atob("falsefalseundefined")["11"]'
-        },
+        [
+            define('atob("falsefalseundefined")["11"]', ATOB)
+        ],
         'é':
-        {
-            NO_NODE:    'atob("0undefined")[1]'
-        },
+        [
+            define('atob("0undefined")[1]', ATOB)
+        ],
         'î':
-        {
-            NO_NODE:    'atob("0truefalse")[2]'
-        },
+        [
+            define('atob("0truefalse")[2]', ATOB)
+        ],
         'ö':
-        {
-            NO_NODE:    'atob("0false")[1]'
-        },
+        [
+            define('atob("0false")[1]', ATOB)
+        ],
         'ø':
-        {
-            NO_NODE:    'atob("undefinedundefined")["10"]'
-        },
+        [
+            define('atob("undefinedundefined")["10"]', ATOB)
+        ],
     };
     
     var DEFAULT_CHARACTER_ENCODER =
-    {
-        DEFAULT:
-        function (character)
-        {
-            var charCode = character.charCodeAt(0);
-            var encoder = charCode < 0x100 ? unescapeCharacterEncoder8 : unescapeCharacterEncoder16;
-            var result = encoder.call(this, charCode);
-            return result;
-        },
-        NO_NODE:
-        function (character)
-        {
-            var charCode = character.charCodeAt(0);
-            var encoder = charCode < 0x100 ? atobCharacterEncoder : unescapeCharacterEncoder16;
-            var result = encoder.call(this, charCode);
-            return result;
-        }
-    };
+    [
+        define(
+            function (character)
+            {
+                var charCode = character.charCodeAt(0);
+                var encoder = charCode < 0x100 ? unescapeCharacterEncoder8 : unescapeCharacterEncoder16;
+                var result = encoder.call(this, charCode);
+                return result;
+            }
+        ),
+        define(
+            function (character)
+            {
+                var charCode = character.charCodeAt(0);
+                var encoder = charCode < 0x100 ? atobCharacterEncoder : unescapeCharacterEncoder16;
+                var result = encoder.call(this, charCode);
+                return result;
+            },
+            ATOB
+        )
+    ];
     
     var SIMPLE =
     {
@@ -465,7 +484,7 @@
     
     function Encoder(compatibility)
     {
-        this.compatibility = compatibility;
+        this.features = FEATURES[compatibility];
         this.characterCache = { };
         this.constantCache = { };
         this.stack = [];
@@ -503,22 +522,19 @@
             return output;
         },
         
-        getCompatibleExpr: function (value)
+        findBestDefinition: function (entries)
         {
-            var result = value instanceof Object ? this.getCompatibleObject(value) : value;
-            return result;
-        },
-        
-        getCompatibleObject: function (value)
-        {
-            var result = value[this.compatibility];
-            if (result === undefined)
+            for (var index = entries.length; index-- > 0;)
             {
-                result = value.DEFAULT;
+                var entry = entries[index];
+                var entryFeatures = entry.features;
+                if ((entryFeatures & this.features) === entryFeatures)
+                {
+                    return entry.definition;
+                }
             }
-            return result;
         },
-        
+                
         peekLastFromStack: function ()
         {
             var stack = this.stack;
@@ -545,11 +561,20 @@
                     quoteCharacter(character),
                     function ()
                     {
-                        var expr = this.getCompatibleExpr(CHARACTERS[character]);
+                        var expr;
+                        var entries = CHARACTERS[character];
+                        if (Array.isArray(entries))
+                        {
+                            expr = this.findBestDefinition(entries);
+                        }
+                        else
+                        {
+                            expr = entries;
+                        }
                         if (expr == null)
                         {
                             var defaultCharacterEncoder =
-                                this.getCompatibleObject(DEFAULT_CHARACTER_ENCODER);
+                                this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
                             expr = defaultCharacterEncoder.call(this, character);
                         }
                         this.characterCache[character] = value = Object(this.replace(expr));
@@ -568,7 +593,16 @@
                     constant,
                     function ()
                     {
-                        var expr = this.getCompatibleExpr(CONSTANTS[constant]);
+                        var expr;
+                        var entries = CONSTANTS[constant];
+                        if (Array.isArray(entries))
+                        {
+                            expr = this.findBestDefinition(entries);
+                        }
+                        else
+                        {
+                            expr = entries;
+                        }
                         this.constantCache[constant] = value = Object(this.replace(expr));
                     }
                 );
@@ -832,6 +866,12 @@
         return result;
     }
     
+    function define(definition, features)
+    {
+        var result = { definition: definition, features: features ^ 0 };
+        return result;
+    }
+    
     function encodeDigit(digit)
     {
         switch (digit)
@@ -1032,7 +1072,7 @@
         if (compatibility != null)
         {
             compatibility += '';
-            if (compatibility === 'NO_IE' || compatibility === 'NO_NODE')
+            if (compatibility in FEATURES)
             {
                 return compatibility;
             }
