@@ -35,7 +35,15 @@
             value: 0x08,
             check: function ()
             {
-                return 'atob' in self;
+                return 'atob' in self && 'btoa' in self;
+            }
+        },
+        NAME: // not for IE
+        {
+            value: 0x10,
+            check: function ()
+            {
+                return 'name' in new Function();
             }
         },
     };
@@ -83,7 +91,7 @@
     var COMPATIBILITIES =
     {
         DEFAULT:    [],
-        NO_IE:      ['NO_IE', 'GMT'],
+        NO_IE:      ['NO_IE', 'GMT', 'NAME'],
         NO_NODE:    ['SELF', 'ATOB'],
         AUTO:       getAutoFeatureNames()
     };
@@ -425,7 +433,7 @@
         TO_STRING:
         [
             define('"toString"'),
-            define('"to" + String["name"]', 'NO_IE')
+            define('"to" + String["name"]', 'NAME')
         ],
         
         // Function body extra padding blocks. The number after "FBEP_" is the maximum character
