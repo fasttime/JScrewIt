@@ -2,23 +2,95 @@
 {
     'use strict';
     
-    // BEGIN: Encoder //////////////////
-    
-    // Features
-    
-    var DEFAULT     = 0;
-    var NO_IE       = 0x01;
-    var ANONYMOUS   = 0x02; // not for IE
-    var GMT         = 0x04; // not for IE < 11
-    var SELF        = 0x08; // not for Node.js
-    var ATOB        = 0x10; // not for IE < 10 and Node.js
+    // BEGIN: Features /////////////////
     
     var FEATURES =
     {
-        DEFAULT:    DEFAULT,
-        NO_IE:      NO_IE | ANONYMOUS | GMT,
-        NO_NODE:    SELF | ATOB
+        NO_IE:
+        {
+            value: 0x01,
+            check: function ()
+            {
+                return (Object + '')[0] === 'f';
+            }
+        },
+        GMT: // not for IE < 11
+        {
+            value: 0x02,
+            check: function ()
+            {
+                return /^.{25}GMT/.test(Date());
+            }
+        },
+        SELF: // not for Node.js
+        {
+            value: 0x04,
+            check: function ()
+            {
+                return 'self' in self;
+            }
+        },
+        ATOB: // not for IE < 10 and Node.js
+        {
+            value: 0x08,
+            check: function ()
+            {
+                return 'atob' in self;
+            }
+        },
     };
+    
+    var arraySlice = Array.prototype.slice;
+    
+    function define(definition)
+    {
+        var features = getFeatures(arraySlice.call(arguments, 1));
+        var result = { definition: definition, features: features };
+        return result;
+    }
+    
+    function getFeatures(featureNames)
+    {
+        var features = 0;
+        for (var index = featureNames.length; index > 0;)
+        {
+            features |= FEATURES[featureNames[--index]].value;
+        }
+        return features;
+    }
+    
+    // END: Features ///////////////////
+    
+    // BEGIN: Compatibilities //////////
+    
+    function getAutoFeatureNames()
+    {
+        var result = [];
+        var featureNames = Object.getOwnPropertyNames(FEATURES);
+        var length = featureNames.length;
+        for (var index = 0; index < length; ++index)
+        {
+            var featureName = featureNames[index];
+            var feature = FEATURES[featureName];
+            if (feature.check())
+            {
+                result.push(featureName);
+            }
+        }
+        return result;
+    }
+    
+    var COMPATIBILITIES =
+    {
+        DEFAULT:    [],
+        NO_IE:      ['NO_IE', 'GMT'],
+        NO_NODE:    ['SELF', 'ATOB'],
+        AUTO:       getAutoFeatureNames()
+    };
+    
+    // END: Compatibilities ////////////
+    
+    // BEGIN: Encoder //////////////////
     
     // Definition syntax has been changed to match Javascript more closely. The main differences
     // from JSFuck are:
@@ -27,6 +99,295 @@
     // * 10 evaluates to a number, while "10" evaluates to a string. This can make a difference in
     //   certain expressions and may affect the mapping length.
     // * String literals must be always double quoted.
+    
+    var CHARACTERS =
+    {
+        'a':            '"false"[1]',
+        'b':
+        [
+            define('(FHP_8 + Number)["20"]'),
+            define('(Number + [])["12"]', 'NO_IE')
+        ],
+        'c':
+        [
+            define('(FHP_7 + ANY_FUNCTION)["10"]'),
+            define('(ANY_FUNCTION + [])[3]', 'NO_IE')
+        ],
+        'd':            '"undefined"[2]',
+        'e':            '"true"[3]',
+        'f':            '"false"[0]',
+        'g':            '(FHP_6 + String)["20"]',
+        'h':            '(101)[TO_STRING]("21")[1]',
+        'i':            '(RP_5_S + undefined)["10"]',
+        'j':
+        [
+            define('(Function("return{}")() + [])["10"]'),
+            define('(self + [])[3]', 'SELF')
+        ],
+        'k':            '(20)[TO_STRING]("21")',
+        'l':            '"false"[2]',
+        'm':
+        [
+            define('(RP_6_SO + Function())["20"]'),
+            define('(Number + [])["11"]', 'NO_IE')
+        ],
+        'n':            '"undefined"[1]',
+        'o':
+        [
+            define('(FHP_5 + ANY_FUNCTION)["11"]'),
+            define('(RP_4_N + ANY_FUNCTION)["10"]', 'NO_IE')
+        ],
+        'p':            '(211)[TO_STRING]("31")[1]',
+        'q':            '(212)[TO_STRING]("31")[1]',
+        'r':            '"true"[1]',
+        's':            '"false"[3]',
+        't':            '"true"[0]',
+        'u':            '"undefined"[0]',
+        'v':
+        [
+            define('(FBP_15 + ANY_FUNCTION)["40"]'),
+            define('(FBP_5 + ANY_FUNCTION)["30"]', 'NO_IE')
+        ],
+        'w':            '(32)[TO_STRING]("33")',
+        'x':            '(101)[TO_STRING]("34")[1]',
+        'y':            '(RP_3_NO + [Infinity])["10"]',
+        'z':            '(35)[TO_STRING]("36")',
+
+        'A':            '(FHP_1 + Array)["10"]',
+        'B':            '(FHP_1 + Boolean)["10"]',
+        'C':
+        [
+            define('escape(""["italics"]())[2]'),
+            define(null, 'ATOB')
+        ],
+        'D':
+        [
+            define('escape("]")[2]'),
+            define('btoa("00")[1]', 'ATOB')
+        ],
+        'E':
+        [
+            define('(FHP_8 + RegExp)["20"]'),
+            define('btoa("01")[2]', 'ATOB'),
+            define('(RegExp + [])["12"]', 'NO_IE')
+        ],
+        'F':            '(FHP_1 + Function)["10"]',
+        'G':
+        [
+            define('(RP_5_N + Date())["30"]', 'GMT'),
+            define('btoa("0false")[1]', 'ATOB')
+        ],
+        'H':
+        [
+            define('btoa(true)[1]', 'ATOB')
+        ],
+        'I':            '"Infinity"[0]',
+        'J':
+        [
+            define('btoa(true)[2]', 'ATOB')
+        ],
+     // 'K':    ,
+        'L':
+        [
+            define('btoa(".")[0]', 'ATOB')
+        ],
+        'M':
+        [
+            define('(RP_4_N + Date())["30"]', 'GMT'),
+            define('btoa(0)[0]', 'ATOB')
+        ],
+        'N':            '"NaN"[0]',
+        'O':            '(RP_3_NO + Function("return{}")())["11"]',
+        'P':
+        [
+            define('btoa(""["italics"]())[0]', 'ATOB')
+        ],
+        'Q':
+        [
+            define('btoa(1)[1]', 'ATOB')
+        ],
+        'R':
+        [
+            define('(FHP_1 + RegExp)["10"]'),
+            define('btoa("0true")[2]', 'ATOB')
+        ],
+        'S':            '(FHP_1 + String)["10"]',
+        'T':
+        [
+            define('(RP_3_NO + Date())["30"]', 'GMT'),
+            define('btoa(NaN)[0]', 'ATOB')
+        ],
+        'U':
+        [
+            define('(RP_3_NO + Function("return{}")()[TO_STRING]["call"]())["11"]'),
+            define('(RP_4_N + btoa(false))["10"]', 'ATOB')
+        ],
+        'V':
+        [
+            define('btoa(undefined)["10"]', 'ATOB')
+        ],
+        'W':
+        [
+            // self + '' is '[object DOMWindow]' in Android Browser 4.1.2 and '[object Window]' in
+            // other browsers.
+            define('(self + RP_3_NO)["slice"]("-10")[0]', 'SELF')
+        ],
+        'X':
+        [
+            define('btoa("1true")[1]', 'ATOB')
+        ],
+        'Y':
+        [
+            define('btoa("a")[0]', 'ATOB')
+        ],
+        'Z':
+        [
+            define('btoa(false)[0]', 'ATOB')
+        ],
+
+        '\n':           '(Function() + [])["23"]',
+        '\x1e':
+        [
+            define('(RP_5_N + atob("NaNfalse"))["10"]', 'ATOB')
+        ],
+        ' ':            '(FHP_3 + ANY_FUNCTION)["11"]',
+    //  '!':    ,
+        '"':            '""["fontcolor"]()["12"]',
+    //  '#':    ,
+    //  '$':    ,
+        '%':
+        [
+            define('escape(ANY_FUNCTION)["20"]'),
+            define(null, 'ATOB')
+        ],
+    //  '&':    ,
+    //  '\'':   ,
+        '(':            '(FHP_5 + ANY_FUNCTION)["20"]',
+        ')':
+        [
+            define('(FHP_5 + ANY_FUNCTION)["21"]'),
+            define('(RP_4_N + ANY_FUNCTION)["20"]', 'NO_IE')
+        ],
+    //  '*':    ,
+        '+':            '(+"1e100" + [])[2]',
+        ',':            '([]["slice"]["call"]("false") + [])[1]',
+        '-':            '(+".0000000001" + [])[2]',
+        '.':            '(+"11e20" + [])[1]',
+        '/':            '"0false"["italics"]()["10"]',
+        ':':
+        [
+            define('(RegExp() + [])[3]'),
+            define(null, 'ATOB')
+        ],
+    //  ';':    ,
+        '<':            '""["italics"]()[0]',
+        '=':            '""["fontcolor"]()["11"]',
+        '>':            '""["italics"]()[2]',
+        '?':            '(RegExp() + [])[2]',
+    //  '@':    ,
+        '[':            '(FBP_10 + ANY_FUNCTION)["30"]',
+    //  '\\':   ,
+        ']':            '(FBP_9 + ANY_FUNCTION)["41"]',
+        '^':
+        [
+            define('atob("undefinedfalse")[2]', 'ATOB')
+        ],
+    //  '_':    ,
+    //  '`':    ,
+        '{':            '(FHP_3 + ANY_FUNCTION)["21"]',
+    //  '|':    ,
+        '}':
+        [
+            define('(FBP_7 + ANY_FUNCTION)["41"]'),
+            define('(FBP_9 + ANY_FUNCTION)["43"]', 'NO_IE')
+        ],
+    //  '~':    ,
+        
+        '\x8a':
+        [
+            define('(RP_4_N + atob("NaNundefined"))["10"]', 'ATOB')
+        ],
+        '\x8d':
+        [
+            define('atob("0NaN")[2]', 'ATOB')
+        ],
+        '\x96':
+        [
+            define('atob("00false")[3]', 'ATOB')
+        ],
+        '\x9e':
+        [
+            define('atob(true)[2]', 'ATOB')
+        ],
+        '£':
+        [
+            define('atob(NaN)[1]', 'ATOB')
+        ],
+        '¥':
+        [
+            define('atob("0false")[2]', 'ATOB')
+        ],
+        '§':
+        [
+            define('atob("00undefined")[2]', 'ATOB')
+        ],
+        '©':
+        [
+            define('atob("falsefalse")[1]', 'ATOB')
+        ],
+        '®':
+        [
+            define('atob("NaNtrue")[3]', 'ATOB')
+        ],
+        '±':
+        [
+            define('atob("0false")[3]', 'ATOB')
+        ],
+        '¶':
+        [
+            define('atob(true)[0]', 'ATOB')
+        ],
+        'º':
+        [
+            define('atob("undefinedfalse")[0]', 'ATOB')
+        ],
+        '»':
+        [
+            define('atob(true)[1]', 'ATOB')
+        ],
+        'Ö':
+        [
+            define('atob("0NaN")[1]', 'ATOB')
+        ],
+        'Ú':
+        [
+            define('atob("0truefalse")[1]', 'ATOB')
+        ],
+        'Ý':
+        [
+            define('atob("0undefined")[2]', 'ATOB')
+        ],
+        'â':
+        [
+            define('atob("falsefalseundefined")["11"]', 'ATOB')
+        ],
+        'é':
+        [
+            define('atob("0undefined")[1]', 'ATOB')
+        ],
+        'î':
+        [
+            define('atob("0truefalse")[2]', 'ATOB')
+        ],
+        'ö':
+        [
+            define('atob("0false")[1]', 'ATOB')
+        ],
+        'ø':
+        [
+            define('atob("undefinedundefined")["10"]', 'ATOB')
+        ],
+    };
     
     var CONSTANTS =
     {
@@ -42,16 +403,16 @@
         
         atob:
         [
-            define('Function("return atob")()', ATOB)
+            define('Function("return atob")()', 'ATOB')
         ],
         btoa:
         [
-            define('Function("return btoa")()', ATOB)
+            define('Function("return btoa")()', 'ATOB')
         ],
         escape:         'Function("return escape")()',
         self:
         [
-            define('Function("return self")()', SELF)
+            define('Function("return self")()', 'SELF')
         ],
         unescape:       'Function("return unescape")()',
         
@@ -64,7 +425,7 @@
         TO_STRING:
         [
             define('"toString"'),
-            define('"to" + String["name"]', NO_IE)
+            define('"to" + String["name"]', 'NO_IE')
         ],
         
         // Function body extra padding blocks. The number after "FBEP_" is the maximum character
@@ -80,29 +441,29 @@
         [
             // Unused:
             // define('FHP_1_S + FBEP_4_S'),
-            define('RP_1_NO + FBEP_4_S', NO_IE)
+            define('RP_1_NO + FBEP_4_S', 'NO_IE')
         ],
         FBP_7:
         [
             define('FHP_3_NO + FBEP_4_S'),
             // Unused:
-            // define('RP_3_NO + FBEP_4_S', NO_IE)
+            // define('RP_3_NO + FBEP_4_S', 'NO_IE')
         ],
         FBP_9:
         [
             define('FHP_5_N + FBEP_4_S'),
-            define('FBEP_9_N', NO_IE)
+            define('FBEP_9_N', 'NO_IE')
         ],
         FBP_10:
         [
             define('FHP_1_S + FBEP_9_N'),
-            define('RP_1_S + FBEP_9_N', NO_IE)
+            define('RP_1_S + FBEP_9_N', 'NO_IE')
         ],
         FBP_15:
         [
             define('FHP_5_N + RP_1_S + FBEP_9_N'),
             // Unused:
-            // define('RP_6_SO + FBEP_9_N', NO_IE)
+            // define('RP_6_SO + FBEP_9_N', 'NO_IE')
         ],
 
         // Function header padding blocks. The number after "FBP_" is the maximum character
@@ -120,25 +481,26 @@
         FHP_1:
         [
             define('FHP_1_S'),
-            define('RP_1_NO', NO_IE)
+            define('RP_1_NO', 'NO_IE')
         ],
         FHP_3:
         [
             define('FHP_3_NO'),
-            define('RP_3_NO', NO_IE)
+            define('RP_3_NO', 'NO_IE')
         ],
         FHP_5:
         [
             define('FHP_5_N'),
-            define('RP_5_N', NO_IE)
+            define('RP_5_N', 'NO_IE')
         ],
         FHP_6:
         [
             define('FHP_5_N + RP_1_S'),
-            define('RP_6_SO', NO_IE)
+            define('RP_6_SO', 'NO_IE')
         ],
         FHP_7:          'FHP_3_NO + RP_4_S',
         FHP_8:          'FHP_3_NO + RP_5_S',
+        FHP_9:          'FHP_5_N + RP_4_S',
         
         // Regular padding blocks. The number after "RP_" is the character overhead. The postfix
         // "_N" in the name indicates that the constant does not evaluate to a string or array. The
@@ -158,302 +520,14 @@
         RP_6_SO:        '"0false"',
     };
     
-    var CHARACTERS =
-    {
-        'a':            '"false"[1]',
-        'b':
-        [
-            define('(FHP_8 + Number)["20"]'),
-            define('(Number + [])["12"]', NO_IE)
-        ],
-        'c':
-        [
-            define('(FHP_7 + ANY_FUNCTION)["10"]'),
-            define('(ANY_FUNCTION + [])[3]', NO_IE)
-        ],
-        'd':            '"undefined"[2]',
-        'e':            '"true"[3]',
-        'f':            '"false"[0]',
-        'g':            '(FHP_6 + String)["20"]',
-        'h':            '(101)[TO_STRING]("21")[1]',
-        'i':            '(RP_5_S + undefined)["10"]',
-        'j':
-        [
-            define('(Function("return{}")() + [])["10"]'),
-            define('(self + [])[3]', SELF)
-        ],
-        'k':            '(20)[TO_STRING]("21")',
-        'l':            '"false"[2]',
-        'm':
-        [
-            define('(RP_6_SO + Function())["20"]'),
-            define('(Number + [])["11"]', ANONYMOUS)
-        ],
-        'n':            '"undefined"[1]',
-        'o':
-        [
-            define('(FHP_5 + ANY_FUNCTION)["11"]'),
-            define('(RP_4_N + ANY_FUNCTION)["10"]', NO_IE)
-        ],
-        'p':            '(211)[TO_STRING]("31")[1]',
-        'q':            '(212)[TO_STRING]("31")[1]',
-        'r':            '"true"[1]',
-        's':            '"false"[3]',
-        't':            '"true"[0]',
-        'u':            '"undefined"[0]',
-        'v':
-        [
-            define('(FBP_15 + ANY_FUNCTION)["40"]'),
-            define('(FBP_5 + ANY_FUNCTION)["30"]', NO_IE)
-        ],
-        'w':            '(32)[TO_STRING]("33")',
-        'x':            '(101)[TO_STRING]("34")[1]',
-        'y':            '(RP_3_NO + [Infinity])["10"]',
-        'z':            '(35)[TO_STRING]("36")',
-
-        'A':            '(FHP_1 + Array)["10"]',
-        'B':            '(FHP_1 + Boolean)["10"]',
-        'C':
-        [
-            define('escape(""["italics"]())[2]'),
-            define(null, ATOB)
-        ],
-        'D':
-        [
-            define('escape("]")[2]'),
-            define('btoa("00")[1]', ATOB)
-        ],
-        'E':
-        [
-            define('(FHP_8 + RegExp)["20"]'),
-            define('btoa("01")[2]', ATOB),
-            define('(RegExp + [])["12"]', NO_IE)
-        ],
-        'F':            '(FHP_1 + Function)["10"]',
-        'G':
-        [
-            define('(RP_5_N + Date())["30"]', GMT),
-            define('btoa("0false")[1]', ATOB)
-        ],
-        'H':
-        [
-            define('btoa(true)[1]', ATOB)
-        ],
-        'I':            '"Infinity"[0]',
-        'J':
-        [
-            define('btoa(true)[2]', ATOB)
-        ],
-     // 'K':    ,
-        'L':
-        [
-            define('btoa(".")[0]', ATOB)
-        ],
-        'M':
-        [
-            define('(RP_4_N + Date())["30"]', GMT),
-            define('btoa(0)[0]', ATOB)
-        ],
-        'N':            '"NaN"[0]',
-        'O':            '(RP_3_NO + Function("return{}")())["11"]',
-        'P':
-        [
-            define('btoa(""["italics"]())[0]', ATOB)
-        ],
-        'Q':
-        [
-            define('btoa(1)[1]', ATOB)
-        ],
-        'R':
-        [
-            define('(FHP_1 + RegExp)["10"]'),
-            define('btoa("0true")[2]', ATOB)
-        ],
-        'S':            '(FHP_1 + String)["10"]',
-        'T':
-        [
-            define('(RP_3_NO + Date())["30"]', GMT),
-            define('btoa(NaN)[0]', ATOB)
-        ],
-        'U':
-        [
-            define('(RP_3_NO + Function("return{}")()[TO_STRING]["call"]())["11"]'),
-            define('(RP_4_N + btoa(false))["10"]', ATOB)
-        ],
-        'V':
-        [
-            define('btoa(undefined)["10"]', ATOB)
-        ],
-        'W':
-        [
-            // self + '' is '[object DOMWindow]' in Android Browser 4.1.2 and '[object Window]' in
-            // other browsers.
-            define('(self + RP_3_NO)["slice"]("-10")[0]', SELF)
-        ],
-        'X':
-        [
-            define('btoa("1true")[1]', ATOB)
-        ],
-        'Y':
-        [
-            define('btoa("a")[0]', ATOB)
-        ],
-        'Z':
-        [
-            define('btoa(false)[0]', ATOB)
-        ],
-
-        '\n':           '(Function() + [])["23"]',
-        '\x1e':
-        [
-            define('(RP_5_N + atob("NaNfalse"))["10"]', ATOB)
-        ],
-        ' ':            '(FHP_3 + ANY_FUNCTION)["11"]',
-    //  '!':    ,
-        '"':            '""["fontcolor"]()["12"]',
-    //  '#':    ,
-    //  '$':    ,
-        '%':
-        [
-            define('escape(ANY_FUNCTION)["20"]'),
-            define(null, ATOB)
-        ],
-    //  '&':    ,
-    //  '\'':   ,
-        '(':            '(FHP_5 + ANY_FUNCTION)["20"]',
-        ')':
-        [
-            define('(FHP_5 + ANY_FUNCTION)["21"]'),
-            define('(RP_4_N + ANY_FUNCTION)["20"]', NO_IE)
-        ],
-    //  '*':    ,
-        '+':            '(+"1e100" + [])[2]',
-        ',':            '([]["slice"]["call"]("false") + [])[1]',
-        '-':            '(+".0000000001" + [])[2]',
-        '.':            '(+"11e20" + [])[1]',
-        '/':            '"0false"["italics"]()["10"]',
-        ':':
-        [
-            define('(RegExp() + [])[3]'),
-            define(null, ATOB)
-        ],
-    //  ';':    ,
-        '<':            '""["italics"]()[0]',
-        '=':            '""["fontcolor"]()["11"]',
-        '>':            '""["italics"]()[2]',
-        '?':            '(RegExp() + [])[2]',
-    //  '@':    ,
-        '[':            '(FBP_10 + ANY_FUNCTION)["30"]',
-    //  '\\':   ,
-        ']':            '(FBP_9 + ANY_FUNCTION)["41"]',
-        '^':
-        [
-            define('atob("undefinedfalse")[2]', ATOB)
-        ],
-    //  '_':    ,
-    //  '`':    ,
-        '{':            '(FHP_3 + ANY_FUNCTION)["21"]',
-    //  '|':    ,
-        '}':
-        [
-            define('(FBP_7 + ANY_FUNCTION)["41"]'),
-            define('(FBP_9 + ANY_FUNCTION)["43"]', NO_IE)
-        ],
-    //  '~':    ,
-        
-        '\x8a':
-        [
-            define('(RP_4_N + atob("NaNundefined"))["10"]', ATOB)
-        ],
-        '\x8d':
-        [
-            define('atob("0NaN")[2]', ATOB)
-        ],
-        '\x96':
-        [
-            define('atob("00false")[3]', ATOB)
-        ],
-        '\x9e':
-        [
-            define('atob(true)[2]', ATOB)
-        ],
-        '£':
-        [
-            define('atob(NaN)[1]', ATOB)
-        ],
-        '¥':
-        [
-            define('atob("0false")[2]', ATOB)
-        ],
-        '§':
-        [
-            define('atob("00undefined")[2]', ATOB)
-        ],
-        '©':
-        [
-            define('atob("falsefalse")[1]', ATOB)
-        ],
-        '®':
-        [
-            define('atob("NaNtrue")[3]', ATOB)
-        ],
-        '±':
-        [
-            define('atob("0false")[3]', ATOB)
-        ],
-        '¶':
-        [
-            define('atob(true)[0]', ATOB)
-        ],
-        'º':
-        [
-            define('atob("undefinedfalse")[0]', ATOB)
-        ],
-        '»':
-        [
-            define('atob(true)[1]', ATOB)
-        ],
-        'Ö':
-        [
-            define('atob("0NaN")[1]', ATOB)
-        ],
-        'Ú':
-        [
-            define('atob("0truefalse")[1]', ATOB)
-        ],
-        'Ý':
-        [
-            define('atob("0undefined")[2]', ATOB)
-        ],
-        'â':
-        [
-            define('atob("falsefalseundefined")["11"]', ATOB)
-        ],
-        'é':
-        [
-            define('atob("0undefined")[1]', ATOB)
-        ],
-        'î':
-        [
-            define('atob("0truefalse")[2]', ATOB)
-        ],
-        'ö':
-        [
-            define('atob("0false")[1]', ATOB)
-        ],
-        'ø':
-        [
-            define('atob("undefinedundefined")["10"]', ATOB)
-        ],
-    };
-    
     var DEFAULT_CHARACTER_ENCODER =
     [
         define(
             function (character)
             {
                 var charCode = character.charCodeAt(0);
-                var encoder = charCode < 0x100 ? unescapeCharacterEncoder8 : unescapeCharacterEncoder16;
+                var encoder =
+                    charCode < 0x100 ? unescapeCharacterEncoder8 : unescapeCharacterEncoder16;
                 var result = encoder.call(this, charCode);
                 return result;
             }
@@ -466,7 +540,7 @@
                 var result = encoder.call(this, charCode);
                 return result;
             },
-            ATOB
+            'ATOB'
         )
     ];
     
@@ -482,9 +556,339 @@
     var quoteCharacter = JSON.stringify;
     var simplePattern;
     
+    function atobCharacterEncoder(charCode)
+    {
+        var BASE64_ALPHABET_HI_2 = ['NaN', 'false', 'truefalse', '0'];
+        var BASE64_ALPHABET_HI_4 =
+        [
+            'A',
+            'F',
+            'Infinity',
+            'NaNfalse',
+            'S',
+            'W',
+            'a',
+            'false',
+            'i',
+            'n',
+            'r',
+            'true',
+            'y',
+            '0',
+            '4',
+            '8',
+        ];
+        var BASE64_ALPHABET_HI_6 =
+        [
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F',
+            'G',
+            'H',
+            'Infinity',
+            'J',
+            'K',
+            'L',
+            'M',
+            'NaN',
+            'O',
+            'P',
+            'Q',
+            'R',
+            'S',
+            'T',
+            'U',
+            'V',
+            'W',
+            'X',
+            'Y',
+            'Z',
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+            'false',
+            'g',
+            'h',
+            'i',
+            'j',
+            'k',
+            'l',
+            'm',
+            'n',
+            'o',
+            'p',
+            'q',
+            'r',
+            's',
+            'true',
+            'undefined',
+            'v',
+            'w',
+            'x',
+            'y',
+            'z',
+            '0',
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            '+',
+            '/',
+        ];
+        var BASE64_ALPHABET_LO_2 = ['000', 'NaN', 'falsefalsefalse', '00f'];
+        var BASE64_ALPHABET_LO_4 =
+        [
+            '0A',
+            '0B',
+            '0i',
+            '0j',
+            '00',
+            '01',
+            '02',
+            '03',
+            '04',
+            '05',
+            '0a',
+            '0r',
+            '0s',
+            '0t',
+            'undefinedfalse',
+            '0f',
+        ];
+        var BASE64_ALPHABET_LO_6 =
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+        
+        var param1 = BASE64_ALPHABET_LO_6[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
+        var postfix1 = '(' + this.resolveString(param1) + ')';
+        if (param1.length > 2)
+        {
+            postfix1 += this.replace('[0]');
+        }
+        var length1 = postfix1.length;
+        
+        var param2Left = BASE64_ALPHABET_LO_4[charCode >> 4];
+        var param2 = param2Left + BASE64_ALPHABET_HI_4[charCode & 0x0f];
+        var index2 = 1 + (param2Left.length - 2) / 4 * 3;
+        if (index2 > 9)
+        {
+            index2 = '"' + index2 + '"';
+        }
+        var postfix2 = '(' + this.resolveString(param2) + ')' + this.replace('[' + index2 + ']');
+        var length2 = postfix2.length;
+        
+        var param3Left = BASE64_ALPHABET_LO_2[charCode >> 6];
+        var param3 = param3Left + BASE64_ALPHABET_HI_6[charCode & 0x3f];
+        var index3 = 2 + (param3Left.length - 3) / 4 * 3;
+        if (index3 > 9)
+        {
+            index3 = '"' + index3 + '"';
+        }
+        var postfix3 = '(' + this.resolveString(param3) + ')' + this.replace('[' + index3 + ']');
+        var length3 = postfix3.length;
+        
+        var postfix =
+            length1 <= length2 && length1 <= length3 ?
+            postfix1 :
+            length2 <= length3 ? postfix2 : postfix3;
+        var result = this.resolveConstant('atob') + postfix;
+        return result;
+    }
+    
+    function encodeDigit(digit)
+    {
+        switch (digit)
+        {
+        case '0':
+            return '+[]';
+        case '1':
+            return '+!![]';
+        default:
+            var result = '!![]';
+            do { result += '+!![]'; } while (--digit > 1);
+            return result;
+        }
+    }
+    
+    function fillMissingDigits()
+    {
+        for (var number = 0; number < 10; ++number)
+        {
+            var digit = number + '';
+            CHARACTERS[digit] = encodeDigit(digit);
+        }
+    }
+    
+    // Determine whether the specified expression contains a plus sign out of brackets.
+    function hasPsoob(expr)
+    {
+        if (expr.psoob != null)
+        {
+            return expr.psoob;
+        }
+        var unclosed = 0;
+        var regExp = /".*?"|!\+|[+([)\]]/g;
+        var match;
+        while (match = regExp.exec(expr))
+        {
+            switch (match[0])
+            {
+            case '+':
+                if (!unclosed)
+                {
+                    expr.psoob = true;
+                    return true;
+                }
+                break;
+            case '(':
+            case '[':
+                ++unclosed;
+                break;
+            case ')':
+            case ']':
+                --unclosed;
+                break;
+            }
+        }
+        expr.psoob = false;
+        return false;
+    }
+    
+    function isFollowedByLeftSquareBracket(expr, offset)
+    {
+        for (;;)
+        {
+            var character = expr[offset++];
+            if (character === '[')
+            {
+                return true;
+            }
+            if (character !== ' ')
+            {
+                return false;
+            }
+        }
+    }
+    
+    function isPrecededByOperator(expr, offset)
+    {
+        for (;;)
+        {
+            var character = expr[--offset];
+            if (character === '+' || character === '!')
+            {
+                return true;
+            }
+            if (character !== ' ')
+            {
+                return false;
+            }
+        }
+    }
+    
+    function replaceToken(wholeMatch, number, quotedString, string, space, literal, offset, expr)
+    {
+        var replacement;
+        if (number)
+        {
+            replacement = encodeDigit(number[0]);
+            var length = number.length;
+            for (var index = 1; index < length; ++index)
+            {
+                replacement += '+[' + encodeDigit(number[index]) + ']';
+            }
+            if (length > 1)
+            {
+                replacement = '+(' + replacement + ')';
+            }
+            if (isPrecededByOperator(expr, offset))
+            {
+                replacement = '(' + replacement + ')';
+            }
+        }
+        else if (quotedString)
+        {
+            replacement =
+                this.resolveString(
+                string,
+                isPrecededByOperator(expr, offset) ||
+                isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length)
+                );
+        }
+        else if (space)
+        {
+            replacement = '';
+        }
+        else if (literal)
+        {
+            if (literal in CONSTANTS)
+            {
+                replacement = this.resolveConstant(literal);
+            }
+            else if (literal in SIMPLE)
+            {
+                replacement = this.resolveSimple(literal);
+            }
+            else
+            {
+                throw new SyntaxError(
+                    'Undefined literal ' + literal + ' in the definition of ' +
+                    this.peekLastFromStack()
+                    );
+            }
+            if (isPrecededByOperator(expr, offset) && hasPsoob(replacement))
+            {
+                replacement = '(' + replacement + ')';
+            }
+        }
+        else
+        {
+            throw new SyntaxError(
+                'Unexpected character ' + quoteCharacter(wholeMatch) + ' in the definition of ' +
+                this.peekLastFromStack()
+                );
+        }
+        return replacement;
+    }
+    
+    function unescapeCharacterEncoder16(charCode)
+    {
+        var param =
+            '%u' +
+            ('000' + charCode.toString(16).replace(/b/g, 'B')).slice(-4).replace(/fa?$/, 'false');
+        var result = this.resolveConstant('unescape') + '(' + this.resolveString(param) + ')';
+        if (param.length > 6)
+        {
+            result += this.replace('[0]');
+        }
+        return result;
+    }
+    
+    function unescapeCharacterEncoder8(charCode)
+    {
+        var param =
+            '%' +
+            ('0' + charCode.toString(16).replace(/b/g, 'B')).slice(-2).replace(/fa?$/, 'false');
+        var result = this.resolveConstant('unescape') + '(' + this.resolveString(param) + ')';
+        if (param.length > 3)
+        {
+            result += this.replace('[0]');
+        }
+        return result;
+    }
+    
     function Encoder(compatibility)
     {
-        this.features = FEATURES[compatibility];
+        this.features = getFeatures(COMPATIBILITIES[compatibility]);
         this.characterCache = { };
         this.constantCache = { };
         this.stack = [];
@@ -718,342 +1122,6 @@
         }
     };
     
-    function atobCharacterEncoder(charCode)
-    {
-        var BASE64_ALPHABET_HI_2 = ['NaN', 'false', 'truefalse', '0'];
-        var BASE64_ALPHABET_HI_4 =
-        [
-            'A',
-            'F',
-            'Infinity',
-            'NaNfalse',
-            'S',
-            'W',
-            'a',
-            'false',
-            'i',
-            'n',
-            'r',
-            'true',
-            'y',
-            '0',
-            '4',
-            '8',
-        ];
-        var BASE64_ALPHABET_HI_6 =
-        [
-            'A',
-            'B',
-            'C',
-            'D',
-            'E',
-            'F',
-            'G',
-            'H',
-            'Infinity',
-            'J',
-            'K',
-            'L',
-            'M',
-            'NaN',
-            'O',
-            'P',
-            'Q',
-            'R',
-            'S',
-            'T',
-            'U',
-            'V',
-            'W',
-            'X',
-            'Y',
-            'Z',
-            'a',
-            'b',
-            'c',
-            'd',
-            'e',
-            'false',
-            'g',
-            'h',
-            'i',
-            'j',
-            'k',
-            'l',
-            'm',
-            'n',
-            'o',
-            'p',
-            'q',
-            'r',
-            's',
-            'true',
-            'undefined',
-            'v',
-            'w',
-            'x',
-            'y',
-            'z',
-            '0',
-            '1',
-            '2',
-            '3',
-            '4',
-            '5',
-            '6',
-            '7',
-            '8',
-            '9',
-            '+',
-            '/',
-        ];
-        var BASE64_ALPHABET_LO_2 = ['000', 'NaN', 'falsefalsefalse', '00f'];
-        var BASE64_ALPHABET_LO_4 =
-        [
-            '0A',
-            '0B',
-            '0i',
-            '0j',
-            '00',
-            '01',
-            '02',
-            '03',
-            '04',
-            '05',
-            '0a',
-            '0r',
-            '0s',
-            '0t',
-            'undefinedfalse',
-            '0f',
-        ];
-        var BASE64_ALPHABET_LO_6 =
-            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-        
-        var param1 = BASE64_ALPHABET_LO_6[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
-        var postfix1 = '(' + this.resolveString(param1) + ')';
-        if (param1.length > 2)
-        {
-            postfix1 += this.replace('[0]');
-        }
-        var length1 = postfix1.length;
-        
-        var param2Left = BASE64_ALPHABET_LO_4[charCode >> 4];
-        var param2 = param2Left + BASE64_ALPHABET_HI_4[charCode & 0x0f];
-        var index2 = 1 + (param2Left.length - 2) / 4 * 3;
-        if (index2 > 9)
-        {
-            index2 = '"' + index2 + '"';
-        }
-        var postfix2 = '(' + this.resolveString(param2) + ')' + this.replace('[' + index2 + ']');
-        var length2 = postfix2.length;
-        
-        var param3Left = BASE64_ALPHABET_LO_2[charCode >> 6];
-        var param3 = param3Left + BASE64_ALPHABET_HI_6[charCode & 0x3f];
-        var index3 = 2 + (param3Left.length - 3) / 4 * 3;
-        if (index3 > 9)
-        {
-            index3 = '"' + index3 + '"';
-        }
-        var postfix3 = '(' + this.resolveString(param3) + ')' + this.replace('[' + index3 + ']');
-        var length3 = postfix3.length;
-        
-        var postfix =
-            length1 <= length2 && length1 <= length3 ?
-            postfix1 :
-            length2 <= length3 ? postfix2 : postfix3;
-        var result = this.resolveConstant('atob') + postfix;
-        return result;
-    }
-    
-    function define(definition, features)
-    {
-        var result = { definition: definition, features: features ^ 0 };
-        return result;
-    }
-    
-    function encodeDigit(digit)
-    {
-        switch (digit)
-        {
-        case '0':
-            return '+[]';
-        case '1':
-            return '+!![]';
-        default:
-            var result = '!![]';
-            do { result += '+!![]'; } while (--digit > 1);
-            return result;
-        }
-    }
-    
-    function fillMissingDigits()
-    {
-        for (var number = 0; number < 10; ++number)
-        {
-            var digit = number + '';
-            CHARACTERS[digit] = encodeDigit(digit);
-        }
-    }
-    
-    // Determine whether the specified expression contains a plus sign out of brackets.
-    function hasPsoob(expr)
-    {
-        if (expr.psoob != null)
-        {
-            return expr.psoob;
-        }
-        var unclosed = 0;
-        var regExp = /".*?"|!\+|[+([)\]]/g;
-        var match;
-        while (match = regExp.exec(expr))
-        {
-            switch (match[0])
-            {
-            case '+':
-                if (!unclosed)
-                {
-                    expr.psoob = true;
-                    return true;
-                }
-                break;
-            case '(':
-            case '[':
-                ++unclosed;
-                break;
-            case ')':
-            case ']':
-                --unclosed;
-                break;
-            }
-        }
-        expr.psoob = false;
-        return false;
-    }
-    
-    function isFollowedByLeftSquareBracket(expr, offset)
-    {
-        for (;;)
-        {
-            var character = expr[offset++];
-            if (character === '[')
-            {
-                return true;
-            }
-            if (character !== ' ')
-            {
-                return false;
-            }
-        }
-    }
-    
-    function isPrecededByOperator(expr, offset)
-    {
-        for (;;)
-        {
-            var character = expr[--offset];
-            if (character === '+' || character === '!')
-            {
-                return true;
-            }
-            if (character !== ' ')
-            {
-                return false;
-            }
-        }
-    }
-    
-    function replaceToken(wholeMatch, number, quotedString, string, space, literal, offset, expr)
-    {
-        var replacement;
-        if (number)
-        {
-            replacement = encodeDigit(number[0]);
-            var length = number.length;
-            for (var index = 1; index < length; ++index)
-            {
-                replacement += '+[' + encodeDigit(number[index]) + ']';
-            }
-            if (length > 1)
-            {
-                replacement = '+(' + replacement + ')';
-            }
-            if (isPrecededByOperator(expr, offset))
-            {
-                replacement = '(' + replacement + ')';
-            }
-        }
-        else if (quotedString)
-        {
-            replacement =
-                this.resolveString(
-                string,
-                isPrecededByOperator(expr, offset) ||
-                isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length)
-                );
-        }
-        else if (space)
-        {
-            replacement = '';
-        }
-        else if (literal)
-        {
-            if (literal in CONSTANTS)
-            {
-                replacement = this.resolveConstant(literal);
-            }
-            else if (literal in SIMPLE)
-            {
-                replacement = this.resolveSimple(literal);
-            }
-            else
-            {
-                throw new SyntaxError(
-                    'Undefined literal ' + literal + ' in the definition of ' +
-                    this.peekLastFromStack()
-                    );
-            }
-            if (isPrecededByOperator(expr, offset) && hasPsoob(replacement))
-            {
-                replacement = '(' + replacement + ')';
-            }
-        }
-        else
-        {
-            throw new SyntaxError(
-                'Unexpected character ' + quoteCharacter(wholeMatch) + ' in the definition of ' +
-                this.peekLastFromStack()
-                );
-        }
-        return replacement;
-    }
-    
-    function unescapeCharacterEncoder16(charCode)
-    {
-        var param =
-            '%u' +
-            ('000' + charCode.toString(16).replace(/b/g, 'B')).slice(-4).replace(/fa?$/, 'false');
-        var result = this.resolveConstant('unescape') + '(' + this.resolveString(param) + ')';
-        if (param.length > 6)
-        {
-            result += this.replace('[0]');
-        }
-        return result;
-    }
-    
-    function unescapeCharacterEncoder8(charCode)
-    {
-        var param =
-            '%' +
-            ('0' + charCode.toString(16).replace(/b/g, 'B')).slice(-2).replace(/fa?$/, 'false');
-        var result = this.resolveConstant('unescape') + '(' + this.resolveString(param) + ')';
-        if (param.length > 3)
-        {
-            result += this.replace('[0]');
-        }
-        return result;
-    }
-    
     fillMissingDigits();
     
     // END: Encoder ////////////////////
@@ -1072,7 +1140,7 @@
         if (compatibility != null)
         {
             compatibility += '';
-            if (compatibility in FEATURES)
+            if (compatibility in COMPATIBILITIES)
             {
                 return compatibility;
             }
@@ -1091,9 +1159,17 @@
         return encoder;
     }
     
+    function getFeatureNames(compatibility)
+    {
+        compatibility = fixCompatibility(compatibility);
+        var featureNames = COMPATIBILITIES[compatibility];
+        var result = featureNames.slice();
+        return result;
+    }
+    
     var encoders = { };
     
-    var JScrewIt = { encode: encode };
+    var JScrewIt = { encode: encode, getFeatureNames: getFeatureNames };
     
     self.JSFuck = self.JScrewIt = JScrewIt;
     

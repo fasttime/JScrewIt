@@ -43,6 +43,10 @@
             compatibilities.push('NO_IE');
         }
         compatibilities.push('NO_NODE');
+        if (!isNodeJs)
+        {
+            compatibilities.push('AUTO');
+        }
         compatibilities.forEach(
             function (compatibility)
             {
@@ -154,7 +158,7 @@
     function run()
     {
         describe(
-            'JScrewIt',
+            'JScrewIt.encode',
             function()
             {
                 describeTest('DEFAULT');
@@ -165,7 +169,47 @@
                 if (!isNodeJs)
                 {
                     describeTest('NO_NODE');
+                    describeTest('AUTO');
                 }
+            }
+        );
+        describe(
+            'JScrewIt.getFeatureNames',
+            function()
+            {
+                it(
+                    'with DEFAULT compatibility returns an empty array',
+                    function ()
+                    {
+                        var featureNames = JScrewIt.getFeatureNames('DEFAULT');
+                        expect(featureNames.length).toBe(0);
+                    }
+                );
+                it(
+                    'without compatibility returns an empty array',
+                    function ()
+                    {
+                        var featureNames = JScrewIt.getFeatureNames();
+                        expect(featureNames.length).toBe(0);
+                    }
+                );
+                it(
+                    'with AUTO compatibility returns a non-empty array',
+                    function ()
+                    {
+                        var featureNames = JScrewIt.getFeatureNames('AUTO');
+                        expect(featureNames.length).toBeGreaterThan(0);
+                    }
+                );
+                it(
+                    'returns each time a new array',
+                    function ()
+                    {
+                        var featureNames1 = JScrewIt.getFeatureNames('AUTO');
+                        var featureNames2 = JScrewIt.getFeatureNames('AUTO');
+                        expect(featureNames1).not.toBe(featureNames2);
+                    }
+                );
             }
         );
     }

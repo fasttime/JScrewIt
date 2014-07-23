@@ -21,6 +21,7 @@ module.exports =
                         curly: true,
                         eqeqeq: true,
                         immed: true,
+                        latedef: true,
                         newcap: true,
                         noarg: true,
                         quotmark: true,
@@ -31,7 +32,6 @@ module.exports =
                         boss: true,
                         eqnull: true,
                         evil: true,
-                        sub: true,
                         validthis: true,
                         
                         node: true,
