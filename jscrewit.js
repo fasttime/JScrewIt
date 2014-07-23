@@ -8,7 +8,6 @@
     {
         NO_IE:
         {
-            value: 0x01,
             check: function ()
             {
                 return (Object + '')[0] === 'f';
@@ -16,7 +15,6 @@
         },
         GMT: // not for IE < 11
         {
-            value: 0x02,
             check: function ()
             {
                 return /^.{25}GMT/.test(Date());
@@ -24,7 +22,6 @@
         },
         SELF: // not for Node.js
         {
-            value: 0x04,
             check: function ()
             {
                 return 'self' in self;
@@ -32,7 +29,6 @@
         },
         ATOB: // not for IE < 10 and Node.js
         {
-            value: 0x08,
             check: function ()
             {
                 return 'atob' in self && 'btoa' in self;
@@ -40,7 +36,6 @@
         },
         NAME: // not for IE
         {
-            value: 0x10,
             check: function ()
             {
                 return 'name' in new Function();
@@ -66,6 +61,21 @@
         }
         return features;
     }
+    
+    // Assign a power of 2 value to each feature
+    (
+    function ()
+    {
+        var featureNames = Object.getOwnPropertyNames(FEATURES);
+        var length = featureNames.length;
+        for (var index = 0; index < length; ++index)
+        {
+            var featureName = featureNames[index];
+            var feature = FEATURES[featureName];
+            feature.value = 1 << index;
+        }
+    }
+    )();
     
     // END: Features ///////////////////
     
@@ -727,15 +737,6 @@
         }
     }
     
-    function fillMissingDigits()
-    {
-        for (var number = 0; number < 10; ++number)
-        {
-            var digit = number + '';
-            CHARACTERS[digit] = encodeDigit(digit);
-        }
-    }
-    
     // Determine whether the specified expression contains a plus sign out of brackets.
     function hasPsoob(expr)
     {
@@ -1130,7 +1131,17 @@
         }
     };
     
-    fillMissingDigits();
+    // Create definitions for digits
+    (
+    function ()
+    {
+        for (var number = 0; number < 10; ++number)
+        {
+            var digit = number + '';
+            CHARACTERS[digit] = encodeDigit(digit);
+        }
+    }
+    )();
     
     // END: Encoder ////////////////////
     
