@@ -13,6 +13,20 @@
                 return (Object + '')[0] === 'f';
             }
         },
+        NO_SAFARI:
+        {
+            check: function ()
+            {
+                return (new Function() + '')[22] === '\n';
+            }
+        },
+        IE:
+        {
+            check: function ()
+            {
+                return (Object + '')[0] === '\n';
+            }
+        },
         GMT: // not for IE < 11
         {
             check: function ()
@@ -124,7 +138,8 @@
         'b':
         [
             define('(FHP_8 + Number)["20"]'),
-            define('(Number + [])["12"]', 'NO_IE')
+            define('(Number + [])["12"]', 'NO_IE'),
+            define('(Number + [])["13"]', 'IE')
         ],
         'c':
         [
@@ -147,13 +162,15 @@
         'm':
         [
             define('(RP_6_SO + Function())["20"]'),
-            define('(Number + [])["11"]', 'NO_IE')
+            define('(Number + [])["11"]', 'NO_IE'),
+            define('(Number + [])["12"]', 'IE')
         ],
         'n':            '"undefined"[1]',
         'o':
         [
             define('(FHP_5 + ANY_FUNCTION)["11"]'),
-            define('(RP_4_N + ANY_FUNCTION)["10"]', 'NO_IE')
+            define('(RP_4_N + ANY_FUNCTION)["10"]', 'NO_IE'),
+            define('(RP_3_NO + ANY_FUNCTION)["10"]', 'IE')
         ],
         'p':            '(211)[TO_STRING]("31")[1]',
         'q':            '(212)[TO_STRING]("31")[1]',
@@ -164,7 +181,8 @@
         'v':
         [
             define('(FBP_15 + ANY_FUNCTION)["40"]'),
-            define('(FBP_5 + ANY_FUNCTION)["30"]', 'NO_IE')
+            define('(FBP_5 + ANY_FUNCTION)["30"]', 'NO_IE'),
+            define('(ANY_FUNCTION + [])["30"]', 'IE')
         ],
         'w':            '(32)[TO_STRING]("33")',
         'x':            '(101)[TO_STRING]("34")[1]',
@@ -186,8 +204,9 @@
         'E':
         [
             define('(FHP_8 + RegExp)["20"]'),
-            define('btoa("01")[2]', 'ATOB'),
-            define('(RegExp + [])["12"]', 'NO_IE')
+            define('(RegExp + [])["12"]', 'NO_IE'),
+            define('(RegExp + [])["13"]', 'IE'),
+            define('btoa("01")[2]', 'ATOB')
         ],
         'F':            '(FHP_1 + Function)["10"]',
         'G':
@@ -263,12 +282,21 @@
             define('btoa(false)[0]', 'ATOB')
         ],
 
-        '\n':           '(Function() + [])["23"]',
+        '\n':
+        [
+            define('(Function() + [])["23"]'),
+            define('(Function() + [])["22"]', 'NO_SAFARI'),
+            define('(ANY_FUNCTION + [])[0]', 'IE')
+        ],
         '\x1e':
         [
             define('(RP_5_N + atob("NaNfalse"))["10"]', 'ATOB')
         ],
-        ' ':            '(FHP_3 + ANY_FUNCTION)["11"]',
+        ' ':
+        [
+            define('(FHP_3 + ANY_FUNCTION)["11"]'),
+            define('(RP_1_NO + ANY_FUNCTION)["10"]', 'IE')
+        ],
     //  '!':    ,
         '"':            '""["fontcolor"]()["12"]',
     //  '#':    ,
@@ -284,7 +312,8 @@
         ')':
         [
             define('(FHP_5 + ANY_FUNCTION)["21"]'),
-            define('(RP_4_N + ANY_FUNCTION)["20"]', 'NO_IE')
+            define('(RP_4_N + ANY_FUNCTION)["20"]', 'NO_IE'),
+            define('(RP_3_NO + ANY_FUNCTION)["20"]', 'IE')
         ],
     //  '*':    ,
         '+':            '(+"1e100" + [])[2]',
@@ -305,19 +334,28 @@
     //  '@':    ,
         '[':            '(FBP_10 + ANY_FUNCTION)["30"]',
     //  '\\':   ,
-        ']':            '(FBP_9 + ANY_FUNCTION)["41"]',
+        ']':
+        [
+            define('(FBP_9 + ANY_FUNCTION)["41"]'),
+            define('(RP_3_NO + ANY_FUNCTION)["40"]', 'IE')
+        ],
         '^':
         [
             define('atob("undefinedfalse")[2]', 'ATOB')
         ],
     //  '_':    ,
     //  '`':    ,
-        '{':            '(FHP_3 + ANY_FUNCTION)["21"]',
+        '{':
+        [
+            define('(FHP_3 + ANY_FUNCTION)["21"]'),
+            define('(RP_1_NO + ANY_FUNCTION)["20"]', 'IE')
+        ],
     //  '|':    ,
         '}':
         [
             define('(FBP_7 + ANY_FUNCTION)["41"]'),
-            define('(FBP_9 + ANY_FUNCTION)["43"]', 'NO_IE')
+            define('(FBP_9 + ANY_FUNCTION)["43"]', 'NO_IE'),
+            define('(RP_1_NO + ANY_FUNCTION)["40"]', 'IE')
         ],
     //  '~':    ,
         
@@ -475,7 +513,8 @@
         FBP_10:
         [
             define('FHP_1_S + FBEP_9_N'),
-            define('RP_1_S + FBEP_9_N', 'NO_IE')
+            define('RP_1_S + FBEP_9_N', 'NO_IE'),
+            define('RP_5_N', 'IE')
         ],
         FBP_15:
         [
@@ -499,7 +538,8 @@
         FHP_1:
         [
             define('FHP_1_S'),
-            define('RP_1_NO', 'NO_IE')
+            define('RP_1_NO', 'NO_IE'),
+            define('[]', 'IE')
         ],
         FHP_3:
         [
@@ -509,14 +549,20 @@
         FHP_5:
         [
             define('FHP_5_N'),
-            define('RP_5_N', 'NO_IE')
+            define('RP_5_N', 'NO_IE'),
+            define('RP_4_N', 'IE')
         ],
         FHP_6:
         [
             define('FHP_5_N + RP_1_S'),
-            define('RP_6_SO', 'NO_IE')
+            define('RP_6_SO', 'NO_IE'),
+            define('RP_5_N', 'IE')
         ],
-        FHP_7:          'FHP_3_NO + RP_4_S',
+        FHP_7:
+        [
+            define('FHP_3_NO + RP_4_S'),
+            define('RP_6_SO', 'IE')
+        ],
         FHP_8:          'FHP_3_NO + RP_5_S',
         FHP_9:          'FHP_5_N + RP_4_S',
         
