@@ -304,7 +304,8 @@
         '%':
         [
             define('escape(FILTER)["20"]'),
-            define(null, 'ATOB')
+            define('escape(FILTER)[0]', 'IE'),
+            define(null, 'ATOB'),
         ],
     //  '&':    ,
     //  '\'':   ,
