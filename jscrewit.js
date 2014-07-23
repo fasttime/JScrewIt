@@ -10,7 +10,7 @@
         {
             check: function ()
             {
-                return (Object + '')[0] === 'f';
+                return /^function Object\(\) \{/.test(Object);
             }
         },
         NO_SAFARI:
@@ -24,7 +24,7 @@
         {
             check: function ()
             {
-                return (Object + '')[0] === '\n';
+                return /^\nfunction Object\(\) \{/.test(Object);
             }
         },
         GMT: // not for IE < 11
@@ -180,9 +180,9 @@
         'u':            '"undefined"[0]',
         'v':
         [
-            define('(FBP_15 + ANY_FUNCTION)["40"]'),
-            define('(FBP_5 + ANY_FUNCTION)["30"]', 'NO_IE'),
-            define('(ANY_FUNCTION + [])["30"]', 'IE')
+            define('(FBP_15 + FILTER)["40"]'),
+            define('(FBP_5 + FILTER)["30"]', 'NO_IE'),
+            define('(FILTER + [])["30"]', 'IE')
         ],
         'w':            '(32)[TO_STRING]("33")',
         'x':            '(101)[TO_STRING]("34")[1]',
@@ -303,17 +303,17 @@
     //  '$':    ,
         '%':
         [
-            define('escape(ANY_FUNCTION)["20"]'),
+            define('escape(FILTER)["20"]'),
             define(null, 'ATOB')
         ],
     //  '&':    ,
     //  '\'':   ,
-        '(':            '(FHP_5 + ANY_FUNCTION)["20"]',
+        '(':            '(FHP_5 + FILTER)["20"]',
         ')':
         [
-            define('(FHP_5 + ANY_FUNCTION)["21"]'),
-            define('(RP_4_N + ANY_FUNCTION)["20"]', 'NO_IE'),
-            define('(RP_3_NO + ANY_FUNCTION)["20"]', 'IE')
+            define('(FHP_5 + FILTER)["21"]'),
+            define('(RP_4_N + FILTER)["20"]', 'NO_IE'),
+            define('(RP_3_NO + FILTER)["20"]', 'IE')
         ],
     //  '*':    ,
         '+':            '(+"1e100" + [])[2]',
@@ -332,12 +332,12 @@
         '>':            '""["italics"]()[2]',
         '?':            '(RegExp() + [])[2]',
     //  '@':    ,
-        '[':            '(FBP_10 + ANY_FUNCTION)["30"]',
+        '[':            '(FBP_10 + FILTER)["30"]',
     //  '\\':   ,
         ']':
         [
-            define('(FBP_9 + ANY_FUNCTION)["41"]'),
-            define('(RP_3_NO + ANY_FUNCTION)["40"]', 'IE')
+            define('(FBP_9 + FILTER)["41"]'),
+            define('(RP_3_NO + FILTER)["40"]', 'IE')
         ],
         '^':
         [
@@ -347,15 +347,15 @@
     //  '`':    ,
         '{':
         [
-            define('(FHP_3 + ANY_FUNCTION)["21"]'),
-            define('(RP_1_NO + ANY_FUNCTION)["20"]', 'IE')
+            define('(FHP_3 + FILTER)["21"]'),
+            define('(RP_1_NO + FILTER)["20"]', 'IE')
         ],
     //  '|':    ,
         '}':
         [
-            define('(FBP_7 + ANY_FUNCTION)["41"]'),
-            define('(FBP_9 + ANY_FUNCTION)["43"]', 'NO_IE'),
-            define('(RP_1_NO + ANY_FUNCTION)["40"]', 'IE')
+            define('(FBP_7 + FILTER)["41"]'),
+            define('(FBP_9 + FILTER)["43"]', 'NO_IE'),
+            define('(RP_1_NO + FILTER)["40"]', 'IE')
         ],
     //  '~':    ,
         
@@ -474,9 +474,11 @@
         
         // Custom definitions
         
-        ANY_FUNCTION:   '[]["filter"]',
+        ANY_FUNCTION:   'FILTER',
         
         CONSTRUCTOR:    '"constructor"',
+        
+        FILTER:         '[]["filter"]',
         
         TO_STRING:
         [
