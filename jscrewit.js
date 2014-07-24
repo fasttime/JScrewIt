@@ -104,7 +104,9 @@
         {
             var featureName = featureNames[index];
             var feature = FEATURES[featureName];
-            if (feature.check())
+            var available = feature.check();
+            feature.available = available;
+            if (available)
             {
                 result.push(featureName);
             }
@@ -1235,9 +1237,28 @@
         return result;
     }
     
+    function isAvailable(compatibility)
+    {
+        var featureNames = COMPATIBILITIES[compatibility];
+        var result =
+            featureNames &&
+            featureNames.every(
+                function (featureName)
+                {
+                    return FEATURES[featureName].available;
+                }
+            );
+        return result;
+    }
+    
     var encoders = { };
     
-    var JScrewIt = { encode: encode, getFeatureNames: getFeatureNames };
+    var JScrewIt =
+    {
+        encode:             encode,
+        getFeatureNames:    getFeatureNames,
+        isAvailable:        isAvailable
+    };
     
     self.JSFuck = self.JScrewIt = JScrewIt;
     
