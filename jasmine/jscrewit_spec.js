@@ -8,6 +8,34 @@ TestSuite.init(exports);
 TestSuite.run();
 
 var file = fs.openSync('output.txt', 'w+');
-var output = TestSuite.createOutput();
+var output =
+    (
+    function ()
+    {
+        try
+        {
+            global.atob =
+                function (value)
+                {
+                    return new Buffer(value + '', 'base64').toString('binary');
+                };
+            global.btoa =
+                function (value)
+                {
+                    return new Buffer(value + '', 'binary').toString('base64');
+                };
+            global.self = exports;
+            var result = TestSuite.createOutput(['DEFAULT', 'NO_IE', 'NO_NODE']);
+            return result;
+        }
+        finally
+        {
+            delete global.atob;
+            delete global.btoa;
+            delete global.self;
+        }
+    }
+    )();
+
 fs.writeSync(file, output);
 fs.closeSync(file);

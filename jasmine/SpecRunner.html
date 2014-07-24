@@ -32,7 +32,7 @@
                     var left = window.screenX + 50;
                     var top = window.screenY + 50;
                     var features =
-                        'resizable,scrollbars,width=300,height=300,left=' + left + ',top=' + top;
+                        'resizable,scrollbars,width=184,height=300,left=' + left + ',top=' + top;
                     outputWindow = window.open('', 'outputWindow', features);
                     // Chrome won't always bring the new popup to the front automatically, so we
                     // better take care of that.
@@ -40,7 +40,7 @@
                     var outputDocument = outputWindow.document;
                     outputDocument.title = 'JScrewIt Encoding Lengths';
                     var outputBody = outputDocument.body;
-                    outputBody.textContent = TestSuite.createOutput();
+                    outputBody.textContent = TestSuite.createOutput(['DEFAULT', 'AUTO']);
                     var outputBodyStyle = outputBody.style;
                     outputBodyStyle.font = '12px "Courier New",Monaco,monospace';
                     outputBodyStyle.margin = '8px 20px';
