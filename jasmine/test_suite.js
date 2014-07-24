@@ -1,9 +1,9 @@
-/* global describe, expect, it, navigator */
+/* global describe, expect, it */
 'use strict';
 
 (function (self)
 {
-    function createOutput()
+    function createOutput(compatibilities)
     {
         function appendLengths(name, char)
         {
@@ -37,16 +37,6 @@
         }
         
         var result = '    ';
-        var compatibilities = ['DEFAULT'];
-        if (!isIE)
-        {
-            compatibilities.push('NO_IE');
-        }
-        compatibilities.push('NO_NODE');
-        if (!isNodeJs)
-        {
-            compatibilities.push('AUTO');
-        }
         compatibilities.forEach(
             function (compatibility)
             {
@@ -83,31 +73,6 @@
         appendLengthsRange(174, 255);
         appendLengths('`♥`', '♥');
         return result;
-    }
-    
-    function createOutputNodeJs()
-    {
-        try
-        {
-            global.atob =
-                function (value)
-                {
-                    return new Buffer(value + '', 'base64').toString('binary');
-                };
-            global.btoa =
-                function (value)
-                {
-                    return new Buffer(value + '', 'binary').toString('base64');
-                };
-            global.self = self;
-            return createOutput();
-        }
-        finally
-        {
-            delete global.atob;
-            delete global.btoa;
-            delete global.self;
-        }
     }
     
     function describeTest(compatibility)
@@ -162,15 +127,15 @@
             function()
             {
                 describeTest('DEFAULT');
-                if (!isIE)
+                if (JScrewIt.isAvailable('NO_IE'))
                 {
                     describeTest('NO_IE');
                 }
-                if (!isNodeJs)
+                if (JScrewIt.isAvailable('NO_NODE'))
                 {
                     describeTest('NO_NODE');
-                    describeTest('AUTO');
                 }
+                describeTest('AUTO');
             }
         );
         describe(
@@ -235,15 +200,8 @@
         );
     }
     
-    var isIE = typeof navigator !== 'undefined' && /\b(MSIE|Trident)\b/.test(navigator.userAgent);
-    var isNodeJs = typeof module !== 'undefined' && !!module.exports;
     var JScrewIt;
     
-    self.TestSuite =
-    {
-        createOutput: isNodeJs ? createOutputNodeJs : createOutput,
-        init: init,
-        run: run
-    };
+    self.TestSuite = { createOutput: createOutput, init: init, run: run };
     
 })(typeof(exports) === 'undefined' ? window : exports);
