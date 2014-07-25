@@ -69,6 +69,13 @@
                 return 'name' in new Function();
             }
         },
+        UNDEFINED: // not for Android < 4.1
+        {
+            check: function ()
+            {
+                return Object.prototype.toString.call() === '[object Undefined]';
+            }
+        }
     };
     
     var arraySlice = Array.prototype.slice;
@@ -272,7 +279,7 @@
         ],
         'U':
         [
-            define('(RP_3_NO + Function("return{}")()[TO_STRING]["call"]())["11"]'),
+            define('(RP_3_NO + Function("return{}")()[TO_STRING]["call"]())["11"]', 'UNDEFINED'),
             define('(RP_4_N + btoa(false))["10"]', 'ATOB')
         ],
         'V':
