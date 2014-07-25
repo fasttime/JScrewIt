@@ -100,7 +100,7 @@ textarea
         <label>Compatibility:
             <select id="ua">
                 <option value="DEFAULT">All supported engines
-                <option value="NO_NODE">All browsers (no Node.js support)
+                <option value="COMPACT">All new browsers
                 <option value="NO_IE">All except Internet Explorer (JSFuck mode)
             </select>
         </label>
@@ -167,8 +167,6 @@ function updateStats()
 
 encodeButton.onclick = encode;
 outputArea.oninput = updateStats;
-
-encode();
 
 run.onclick = function ()
 {

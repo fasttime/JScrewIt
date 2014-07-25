@@ -25,7 +25,7 @@ var output =
                     return new Buffer(value + '', 'binary').toString('base64');
                 };
             global.self = exports;
-            var result = TestSuite.createOutput(['DEFAULT', 'NO_IE', 'NO_NODE']);
+            var result = TestSuite.createOutput(['DEFAULT', 'COMPACT', 'NO_IE']);
             return result;
         }
         finally

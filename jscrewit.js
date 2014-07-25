@@ -138,8 +138,8 @@
     var COMPATIBILITIES =
     {
         DEFAULT:    [],
+        COMPACT:    ['GMT', 'SELF', 'ATOB', 'UNDEFINED'],
         NO_IE:      ['NO_IE', 'GMT', 'NAME'],
-        NO_NODE:    ['SELF', 'ATOB'],
         AUTO:       getAutoFeatureNames()
     };
     

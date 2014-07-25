@@ -127,13 +127,13 @@
             function()
             {
                 describeTest('DEFAULT');
+                if (JScrewIt.isAvailable('COMPACT'))
+                {
+                    describeTest('COMPACT');
+                }
                 if (JScrewIt.isAvailable('NO_IE'))
                 {
                     describeTest('NO_IE');
-                }
-                if (JScrewIt.isAvailable('NO_NODE'))
-                {
-                    describeTest('NO_NODE');
                 }
                 describeTest('AUTO');
             }
