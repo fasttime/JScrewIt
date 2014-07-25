@@ -221,7 +221,13 @@
             define('(FBP_5 + FILTER)["30"]', 'NO_IE'),
             define('(FILTER + [])["30"]', 'IE')
         ],
-        'w':            '(32)[TO_STRING]("33")',
+        'w':
+        [
+            define('(32)[TO_STRING]("33")'),
+            define('(self + [])["slice"]("-2")[0]', 'SELF'),
+            define('(self + [])["13"]', 'WINDOW'),
+            define('(RP_4_N + self)["20"]', 'DOMWINDOW')
+        ],
         'x':            '(101)[TO_STRING]("34")[1]',
         'y':            '(RP_3_NO + [Infinity])["10"]',
         'z':            '(35)[TO_STRING]("36")',
