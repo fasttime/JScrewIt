@@ -24,7 +24,10 @@ var output =
                 {
                     return new Buffer(value + '', 'binary').toString('base64');
                 };
-            global.self = exports;
+            global.self =
+                {
+                    toString: function () { return '[object Window]'; }
+                };
             var result = TestSuite.createOutput(['DEFAULT', 'COMPACT', 'NO_IE']);
             return result;
         }

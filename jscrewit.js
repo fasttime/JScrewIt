@@ -55,6 +55,20 @@
                 return 'self' in self;
             }
         },
+        WINDOW: // not for Android < 4.4 and Node.js
+        {
+            check: function ()
+            {
+                return (self + '') === '[object Window]';
+            }
+        },
+        DOMWINDOW: // Android < 4.4
+        {
+            check: function ()
+            {
+                return (self + '') === '[object DOMWindow]';
+            }
+        },
         ATOB: // not for IE < 10 and Node.js
         {
             check: function ()
@@ -75,7 +89,7 @@
             {
                 return Object.prototype.toString.call() === '[object Undefined]';
             }
-        }
+        },
     };
     
     var arraySlice = Array.prototype.slice;
@@ -138,7 +152,7 @@
     var COMPATIBILITIES =
     {
         DEFAULT:    [],
-        COMPACT:    ['GMT', 'SELF', 'ATOB', 'UNDEFINED'],
+        COMPACT:    ['GMT', 'SELF', 'ATOB', 'UNDEFINED', 'WINDOW'],
         NO_IE:      ['NO_IE', 'GMT', 'NAME'],
         AUTO:       getAutoFeatureNames()
     };
@@ -288,9 +302,9 @@
         ],
         'W':
         [
-            // self + '' is '[object DOMWindow]' in Android Browser 4.1.2 and '[object Window]' in
-            // other browsers.
-            define('(self + RP_3_NO)["slice"]("-10")[0]', 'SELF')
+            define('(self + RP_3_NO)["slice"]("-10")[0]', 'SELF'),
+            define('(RP_3_NO + self)["11"]', 'WINDOW'),
+            define('(self + [])["11"]', 'DOMWINDOW')
         ],
         'X':
         [
