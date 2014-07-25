@@ -6,13 +6,6 @@
     
     var FEATURES =
     {
-        NO_IE:
-        {
-            check: function ()
-            {
-                return /^function Object\(\) \{/.test(Object);
-            }
-        },
         NO_SAFARI:
         {
             check: function ()
@@ -20,11 +13,32 @@
                 return (new Function() + '')[22] === '\n';
             }
         },
+        NO_IE:
+        {
+            check: function ()
+            {
+                return /^function Object\(\) \{(\n   )? \[native code\][^]\}/.test(Object);
+            }
+        },
+        CHROME:
+        {
+            check: function ()
+            {
+                return /^.{19} \[native code\] \}/.test(Object);
+            }
+        },
+        FF_SAFARI:
+        {
+            check: function ()
+            {
+                return /^.{19}\n    \[native code\]\n\}/.test(Object);
+            }
+        },
         IE:
         {
             check: function ()
             {
-                return /^\nfunction Object\(\) \{/.test(Object);
+                return /^\nfunction Object\(\) \{\n    \[native code\]\n\}/.test(Object);
             }
         },
         GMT: // not for IE < 11
@@ -288,6 +302,7 @@
         [
             define('(Function() + [])["23"]'),
             define('(Function() + [])["22"]', 'NO_SAFARI'),
+            define('(RP_1_NO + FILTER)["20"]', 'FF_SAFARI'),
             define('(ANY_FUNCTION + [])[0]', 'IE')
         ],
         '\x1e':
@@ -297,6 +312,8 @@
         ' ':
         [
             define('(FHP_3 + ANY_FUNCTION)["11"]'),
+            define('(RP_1_NO + FILTER)["20"]', 'CHROME'),
+            define('(FILTER + [])["20"]', 'FF_SAFARI'),
             define('(RP_1_NO + ANY_FUNCTION)["10"]', 'IE')
         ],
     //  '!':    ,
@@ -335,11 +352,17 @@
         '>':            '""["italics"]()[2]',
         '?':            '(RegExp() + [])[2]',
     //  '@':    ,
-        '[':            '(FBP_10 + FILTER)["30"]',
+        '[':
+        [
+            define('(FBP_10 + FILTER)["30"]'),
+            define('(FILTER + [])["20"]', 'CHROME')
+        ],
     //  '\\':   ,
         ']':
         [
             define('(FBP_9 + FILTER)["41"]'),
+            define('(FILTER + [])["32"]', 'CHROME'),
+            define('(RP_4_N + FILTER)["40"]', 'FF_SAFARI'),
             define('(RP_3_NO + FILTER)["40"]', 'IE')
         ],
         '^':
@@ -358,6 +381,8 @@
         [
             define('(FBP_7 + FILTER)["41"]'),
             define('(FBP_9 + FILTER)["43"]', 'NO_IE'),
+            define('(RP_6_SO + FILTER)["40"]', 'CHROME'),
+            define('(RP_3_NO + FILTER)["41"]', 'FF_SAFARI'),
             define('(RP_1_NO + FILTER)["40"]', 'IE')
         ],
     //  '~':    ,
@@ -502,7 +527,9 @@
         [
             // Unused:
             // define('FHP_1_S + FBEP_4_S'),
-            define('RP_1_NO + FBEP_4_S', 'NO_IE')
+            define('RP_1_NO + FBEP_4_S', 'NO_IE'),
+            define('RP_5_N', 'CHROME'),
+            define('RP_1_NO', 'FF_SAFARI')
         ],
         FBP_7:
         [
@@ -519,6 +546,7 @@
         [
             define('FHP_1_S + FBEP_9_N'),
             define('RP_1_S + FBEP_9_N', 'NO_IE'),
+            define('RP_6_SO', 'FF_SAFARI'),
             define('RP_5_N', 'IE')
         ],
         FBP_15:
