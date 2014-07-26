@@ -99,15 +99,6 @@
         },
     };
     
-    var arraySlice = Array.prototype.slice;
-    
-    function define(definition)
-    {
-        var features = getFeatures(arraySlice.call(arguments, 1));
-        var result = { definition: definition, features: features };
-        return result;
-    }
-    
     function getFeatures(featureNames)
     {
         var features = 0;
@@ -166,6 +157,122 @@
     
     // END: Compatibilities ////////////
     
+    // BEGIN: Definers /////////////////
+    
+    var R_PADDINGS =
+    [
+        '[]',
+        'RP_1_NO',
+        null,
+        'RP_3_NO',
+        'RP_4_N',
+        'RP_5_N',
+        'RP_6_SO'
+    ];
+    
+    var FH_PADDINGS =
+    [
+        null,
+        'FHP_1_S',
+        null,
+        'FHP_3_NO',
+        null,
+        'FHP_5_N',
+        'FHP_5_N + RP_1_S',
+        'FHP_3_NO + RP_4_S',
+        'FHP_3_NO + RP_5_S'
+    ];
+    
+    function define(definition)
+    {
+        var features = getFeatures(arraySlice.call(arguments, 1));
+        var result = { definition: definition, features: features };
+        return result;
+    }
+    
+    function defineFHCharAt(expr, index)
+    {
+        var entries;
+        switch (index)
+        {
+        case 3:
+        case 13:
+            entries =
+            [
+                define(7),
+                define(0, 'NO_IE'),
+                define(6, 'IE')
+            ];
+            break;
+        case 6:
+        case 16:
+            entries =
+            [
+                define(5),
+                define(4, 'NO_IE'),
+                define(3, 'IE')
+            ];
+            break;
+        case 8:
+        case 18:
+            entries =
+            [
+                define(3),
+                define(3, 'NO_IE'),
+                define(1, 'IE')
+            ];
+            break;
+        case 9:
+            entries =
+            [
+                define(1),
+                define(1, 'NO_IE'),
+                define(0, 'IE')
+            ];
+            break;
+        case 11:
+            entries =
+            [
+                // Unused:
+                // define(7),
+                define(0, 'NO_IE'),
+                define(0, 'IE')
+            ];
+            break;
+        case 12:
+            entries =
+            [
+                define(8),
+                define(0, 'NO_IE'),
+                define(0, 'IE')
+            ];
+            break;
+        case 14:
+            entries =
+            [
+                define(6),
+                define(6, 'NO_IE'),
+                define(5, 'IE')
+            ];
+            break;
+        case 15:
+            entries =
+            [
+                define(5),
+                define(5, 'NO_IE'),
+                define(4, 'IE')
+            ];
+        }
+        var definition = entries ? createFHCharAtDefinition(expr, index, entries) : null;
+        var features = getFeatures(arraySlice.call(arguments, 2));
+        var result = { definition: definition, features: features };
+        return result;
+    }
+    
+    var arraySlice = Array.prototype.slice;
+    
+    // END: Definers ///////////////////
+    
     // BEGIN: Encoder //////////////////
     
     // Definition syntax has been changed to match Javascript more closely. The main differences
@@ -181,19 +288,19 @@
         'a':            '"false"[1]',
         'b':
         [
-            define('(FHP_8 + Number)["20"]'),
-            define('(Number + [])["12"]', 'NO_IE'),
-            define('(Number + [])["13"]', 'IE')
+            defineFHCharAt('Number', 12)
         ],
         'c':
         [
-            define('(FHP_7 + ANY_FUNCTION)["10"]'),
-            define('(ANY_FUNCTION + [])[3]', 'NO_IE')
+            defineFHCharAt('ANY_FUNCTION', 3)
         ],
         'd':            '"undefined"[2]',
         'e':            '"true"[3]',
         'f':            '"false"[0]',
-        'g':            '(FHP_6 + String)["20"]',
+        'g':
+        [
+            defineFHCharAt('String', 14)
+        ],
         'h':            '(101)[TO_STRING]("21")[1]',
         'i':            '(RP_5_S + undefined)["10"]',
         'j':
@@ -206,15 +313,13 @@
         'm':
         [
             define('(RP_6_SO + Function())["20"]'),
-            define('(Number + [])["11"]', 'NO_IE'),
-            define('(Number + [])["12"]', 'IE')
+            defineFHCharAt('Number', 11, 'NO_IE'),
+            defineFHCharAt('Number', 11, 'IE')
         ],
         'n':            '"undefined"[1]',
         'o':
         [
-            define('(FHP_5 + ANY_FUNCTION)["11"]'),
-            define('(RP_4_N + ANY_FUNCTION)["10"]', 'NO_IE'),
-            define('(RP_3_NO + ANY_FUNCTION)["10"]', 'IE')
+            defineFHCharAt('ANY_FUNCTION', 6)
         ],
         'p':            '(211)[TO_STRING]("31")[1]',
         'q':            '(212)[TO_STRING]("31")[1]',
@@ -242,8 +347,14 @@
         'y':            '(RP_3_NO + [Infinity])["10"]',
         'z':            '(35)[TO_STRING]("36")',
 
-        'A':            '(FHP_1 + Array)["10"]',
-        'B':            '(FHP_1 + Boolean)["10"]',
+        'A':
+        [
+            defineFHCharAt('Array', 9)
+        ],
+        'B':
+        [
+            defineFHCharAt('Boolean', 9)
+        ],
         'C':
         [
             define('escape(""["italics"]())[2]'),
@@ -256,12 +367,13 @@
         ],
         'E':
         [
-            define('(FHP_8 + RegExp)["20"]'),
-            define('(RegExp + [])["12"]', 'NO_IE'),
-            define('(RegExp + [])["13"]', 'IE'),
+            defineFHCharAt('RegExp', 12),
             define('btoa("01")[2]', 'ATOB')
         ],
-        'F':            '(FHP_1 + Function)["10"]',
+        'F':
+        [
+            defineFHCharAt('Function', 9)
+        ],
         'G':
         [
             define('(RP_5_N + Date())["30"]', 'GMT'),
@@ -298,10 +410,13 @@
         ],
         'R':
         [
-            define('(FHP_1 + RegExp)["10"]'),
+            defineFHCharAt('RegExp', 9),
             define('btoa("0true")[2]', 'ATOB')
         ],
-        'S':            '(FHP_1 + String)["10"]',
+        'S':
+        [
+            defineFHCharAt('String', 9)
+        ],
         'T':
         [
             define('(RP_3_NO + Date())["30"]', 'GMT'),
@@ -349,12 +464,11 @@
         ],
         ' ':
         [
-            define('(FHP_3 + ANY_FUNCTION)["11"]'),
+            defineFHCharAt('ANY_FUNCTION', 8),
             define('(RP_1_NO + FILTER)["20"]', 'CHROME'),
             define('(RP_3_NO + FILTER)["20"]', 'CHROME', 'FILL'),
             define('(FILTER + [])["20"]', 'FF_SAFARI'),
-            define('(RP_3_NO + FILL)["21"]', 'FF_SAFARI', 'FILL'),
-            define('(RP_1_NO + ANY_FUNCTION)["10"]', 'IE')
+            define('(RP_3_NO + FILL)["21"]', 'FF_SAFARI', 'FILL')
         ],
     //  '!':    ,
         '"':            '""["fontcolor"]()["12"]',
@@ -371,16 +485,13 @@
     //  '\'':   ,
         '(':
         [
-            define('(FHP_5 + FILTER)["20"]'),
-            define('(FHP_7 + FILL)["20"]', 'FILL'),
-            define('(FILL + [])["13"]', 'NO_IE', 'FILL')
+            defineFHCharAt('FILTER', 15),
+            defineFHCharAt('FILL', 13, 'FILL')
         ],
         ')':
         [
-            define('(FHP_5 + FILTER)["21"]'),
-            define('(RP_4_N + FILTER)["20"]', 'NO_IE'),
-            define('(RP_3_NO + FILTER)["20"]', 'IE'),
-            define('(FHP_6 + FILL)["20"]', 'FILL')
+            defineFHCharAt('FILTER', 16),
+            defineFHCharAt('FILL', 14, 'FILL')
         ],
     //  '*':    ,
         '+':            '(+"1e100" + [])[2]',
@@ -426,11 +537,8 @@
     //  '`':    ,
         '{':
         [
-            define('(FHP_3 + FILTER)["21"]'),
-            define('(RP_1_NO + FILTER)["20"]', 'IE'),
-            define('(FHP_5 + FILL)["21"]', 'FILL'),
-            define('(RP_4_N + FILL)["20"]', 'FILL', 'NO_IE'),
-            define('(RP_3_NO + FILL)["20"]', 'FILL', 'IE')
+            defineFHCharAt('FILTER', 18),
+            defineFHCharAt('FILL', 16, 'FILL')
         ],
     //  '|':    ,
         '}':
@@ -647,43 +755,7 @@
         // FHP_2_NO:       '+(+!(+(ANY_FUNCTION + [])[0] + true)+[0])',
         FHP_3_NO:       '+(1 + [+(ANY_FUNCTION + [])[0]])',
         FHP_5_N:        '!!(+(ANY_FUNCTION + [])[0] + true)',
-        
-        // Function header padding constants: prepended to a function to align the header at the
-        // same position on different browsers. The number after "FHP_" is the maximum character
-        // overhead.
-        FHP_1:
-        [
-            define('FHP_1_S'),
-            define('RP_1_NO', 'NO_IE'),
-            define('[]', 'IE')
-        ],
-        FHP_3:
-        [
-            define('FHP_3_NO'),
-            define('RP_3_NO', 'NO_IE'),
-            define(null, 'IE')
-        ],
-        FHP_5:
-        [
-            define('FHP_5_N'),
-            define('RP_5_N', 'NO_IE'),
-            define('RP_4_N', 'IE')
-        ],
-        FHP_6:
-        [
-            define('FHP_5_N + RP_1_S'),
-            define('RP_6_SO', 'NO_IE'),
-            define('RP_5_N', 'IE')
-        ],
-        FHP_7:
-        [
-            define('FHP_3_NO + RP_4_S'),
-            define(null, 'NO_IE'),
-            define('RP_6_SO', 'IE')
-        ],
-        FHP_8:          'FHP_3_NO + RP_5_S',
-        FHP_9:          'FHP_5_N + RP_4_S',
-        
+                
         // Regular padding blocks. The number after "RP_" is the character overhead. The postfix
         // "_N" in the name indicates that the constant does not evaluate to a string or array. The
         // postifx "_S" in the name indicates that the constant does evaluate to a string or array.
@@ -903,6 +975,31 @@
             do { result += '+!![]'; } while (--digit > 1);
             return result;
         }
+    }
+    
+    function createFHCharAtDefinition(expr, index, entries)
+    {
+        function definition()
+        {
+            var padding = this.findBestDefinition(entries);
+            if (padding != null)
+            {
+                var features = this.features;
+                var paddingStrings =
+                    features & (FEATURES.IE.value | FEATURES.NO_IE.value) ?
+                    R_PADDINGS : FH_PADDINGS;
+                var paddingString = paddingStrings[padding];
+                var indexer = index + padding + (features & FEATURES.IE.value ? 1 : 0);
+                if (indexer > 9)
+                {
+                    indexer = '"' + indexer + '"';
+                }
+                var result = '(' + paddingString + '+' + expr + ')[' + indexer + ']';
+                return result;
+            }
+        }
+        
+        return definition;
     }
     
     // Determine whether the specified expression contains a plus sign out of brackets.
@@ -1157,6 +1254,10 @@
                             var defaultCharacterEncoder =
                                 this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
                             expr = defaultCharacterEncoder.call(this, character);
+                        }
+                        else if (expr instanceof Function)
+                        {
+                            expr = expr.call(this);
                         }
                         this.characterCache[character] = value = Object(this.replace(expr));
                     }
