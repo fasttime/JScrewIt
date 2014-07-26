@@ -163,7 +163,7 @@
     [
         '[]',
         'RP_1_NO',
-        null,
+        ,
         'RP_3_NO',
         'RP_4_N',
         'RP_5_N',
@@ -172,11 +172,11 @@
     
     var FH_PADDINGS =
     [
-        null,
+        ,
         'FHP_1_S',
-        null,
+        ,
         'FHP_3_NO',
-        null,
+        ,
         'FHP_5_N',
         'FHP_5_N + RP_1_S',
         'FHP_3_NO + RP_4_S',
@@ -218,7 +218,6 @@
             entries =
             [
                 define(3),
-                define(3, 'NO_IE'),
                 define(1, 'IE')
             ];
             break;
@@ -226,7 +225,6 @@
             entries =
             [
                 define(1),
-                define(1, 'NO_IE'),
                 define(0, 'IE')
             ];
             break;
@@ -251,7 +249,6 @@
             entries =
             [
                 define(6),
-                define(6, 'NO_IE'),
                 define(5, 'IE')
             ];
             break;
@@ -259,7 +256,6 @@
             entries =
             [
                 define(5),
-                define(5, 'NO_IE'),
                 define(4, 'IE')
             ];
         }
