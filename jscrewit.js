@@ -109,6 +109,8 @@
         return features;
     }
     
+    var arraySlice = Array.prototype.slice;
+    
     // Assign a power of 2 value to each feature
     (
     function ()
@@ -170,6 +172,43 @@
         'RP_6_SO'
     ];
     
+    var FB_PADDINGS =
+    [
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        'FHP_3_NO + FBEP_4_S',
+        ,
+        'FHP_5_N + FBEP_4_S',
+        'FHP_1_S + FBEP_9_N',
+        ,
+        '[FHP_3_NO] + FBEP_9_N',
+        ,
+        ,
+        'FHP_5_N + RP_1_S + FBEP_9_N'
+    ];
+    
+    var FB_NO_IE_PADDINGS =
+    [
+        ,
+        ,
+        ,
+        ,
+        ,
+        'RP_1_NO + FBEP_4_S',
+        ,
+        'RP_3_NO + FBEP_4_S',
+        ,
+        'FBEP_9_N',
+        'RP_1_S + FBEP_9_N',
+        ,
+        'RP_3_S + FBEP_9_N'
+    ];
+    
     var FH_PADDINGS =
     [
         ,
@@ -179,8 +218,10 @@
         ,
         'FHP_5_N',
         'FHP_5_N + RP_1_S',
-        'FHP_3_NO + RP_4_S',
-        'FHP_3_NO + RP_5_S'
+        'FHP_3_NO + [RP_4_N]',
+        'FHP_3_NO + [RP_5_N]',
+        // Unused:
+        // 'FHP_5_N + [RP_4_N]'
     ];
     
     function define(definition)
@@ -189,6 +230,90 @@
         var result = { definition: definition, features: features };
         return result;
     }
+    
+    var FB_PADDING_INFOS =
+    [
+        define({ paddingStrings: FB_PADDINGS, shift: 0 }),
+        define({ paddingStrings: FB_NO_IE_PADDINGS, shift: 0 }, 'NO_IE'),
+        define({ paddingStrings: R_PADDINGS, shift: 0 }, 'CHROME'),
+        define({ paddingStrings: R_PADDINGS, shift: 4 }, 'FF_SAFARI'),
+        define({ paddingStrings: R_PADDINGS, shift: 5 }, 'IE')
+    ];
+    
+    function defineFBCharAt(expr, index)
+    {
+        var entries;
+        switch (index)
+        {
+        case 18:
+            entries =
+            [
+                define(12),
+                define(3, 'CHROME'),
+                define(0, 'FF_SAFARI'),
+                define(0, 'IE')
+            ];
+            break;
+        case 20:
+        case 30:
+            entries =
+            [
+                define(10),
+                define(0, 'CHROME'),
+                define(6, 'FF_SAFARI'),
+                define(5, 'IE')
+            ];
+            break;
+        case 23:
+            entries =
+            [
+                define(7),
+                define(0, 'CHROME'),
+                define(3, 'FF_SAFARI'),
+                define(3, 'IE')
+            ];
+            break;
+        case 25:
+            entries =
+            [
+                define(15),
+                define(5, 'NO_IE'),
+                define(1, 'FF_SAFARI'),
+                define(0, 'IE')
+            ];
+            break;
+        case 32:
+            entries =
+            [
+                define(9),
+                define(0, 'CHROME'),
+                define(4, 'FF_SAFARI'),
+                define(3, 'IE')
+            ];
+            break;
+        case 34:
+            entries =
+            [
+                define(7),
+                define(9, 'NO_IE'),
+                define(6, 'CHROME'),
+                define(3, 'FF_SAFARI'),
+                define(1, 'IE')
+            ];
+            break;
+        }
+        var definition = entries ? createFBCharAtDefinition(expr, index, entries) : null;
+        var features = getFeatures(arraySlice.call(arguments, 2));
+        var result = { definition: definition, features: features };
+        return result;
+    }
+    
+    var FH_PADDING_INFOS =
+    [
+        define({ paddingStrings: FH_PADDINGS, shift: 0 }),
+        define({ paddingStrings: R_PADDINGS, shift: 0 }, 'NO_IE'),
+        define({ paddingStrings: R_PADDINGS, shift: 1 }, 'IE')
+    ];
     
     function defineFHCharAt(expr, index)
     {
@@ -232,7 +357,7 @@
             entries =
             [
                 // Unused:
-                // define(7),
+                // define(9),
                 define(0, 'NO_IE'),
                 define(0, 'IE')
             ];
@@ -258,14 +383,13 @@
                 define(5),
                 define(4, 'IE')
             ];
+            break;
         }
         var definition = entries ? createFHCharAtDefinition(expr, index, entries) : null;
         var features = getFeatures(arraySlice.call(arguments, 2));
         var result = { definition: definition, features: features };
         return result;
     }
-    
-    var arraySlice = Array.prototype.slice;
     
     // END: Definers ///////////////////
     
@@ -298,7 +422,7 @@
             defineFHCharAt('String', 14)
         ],
         'h':            '(101)[TO_STRING]("21")[1]',
-        'i':            '(RP_5_S + undefined)["10"]',
+        'i':            '([RP_5_N] + undefined)["10"]',
         'j':
         [
             define('(Function("return{}")() + [])["10"]'),
@@ -325,12 +449,8 @@
         'u':            '"undefined"[0]',
         'v':
         [
-            define('(FBP_15 + FILTER)["40"]'),
-            define('(FBP_5 + FILTER)["30"]', 'NO_IE'),
-            define('(FBP_7 + FILL)["30"]', 'FILL'),
-            define('(FILL + [])["23"]', 'CHROME', 'FILL'),
-            define('(FILTER + [])["30"]', 'IE'),
-            define('(RP_3_NO + FILL)["31"]', 'IE', 'FILL')
+            defineFBCharAt('FILTER', 25),
+            defineFBCharAt('FILL', 23, 'FILL')
         ],
         'w':
         [
@@ -508,22 +628,14 @@
     //  '@':    ,
         '[':
         [
-            define('(FBP_10 + FILTER)["30"]'),
-            define('(FILTER + [])["20"]', 'CHROME'),
-            define('(FBP_12 + FILL)["30"]', 'FILL'),
-            define('(RP_3_NO + FILL)["21"]', 'CHROME', 'FILL'),
-            define('(FILL + [])["22"]', 'FF_SAFARI', 'FILL'),
-            define('(FILL + [])["23"]', 'IE', 'FILL')
+            defineFBCharAt('FILTER', 20),
+            defineFBCharAt('FILL', 18, 'FILL')
         ],
     //  '\\':   ,
         ']':
         [
-            define('(FBP_9 + FILTER)["41"]'),
-            define('(FILTER + [])["32"]', 'CHROME'),
-            define('(RP_4_N + FILTER)["40"]', 'FF_SAFARI'),
-            define('(RP_3_NO + FILTER)["40"]', 'IE'),
-            define('(FBP_10 + FILL)["40"]', 'FILL'),
-            define('(FILL + [])["30"]', 'CHROME', 'FILL')
+            defineFBCharAt('FILTER', 32),
+            defineFBCharAt('FILL', 30, 'FILL')
         ],
         '^':
         [
@@ -539,15 +651,8 @@
     //  '|':    ,
         '}':
         [
-            define('(FBP_7 + FILTER)["41"]'),
-            define('(FBP_9 + FILTER)["43"]', 'NO_IE'),
-            define('(RP_6_SO + FILTER)["40"]', 'CHROME'),
-            define('(RP_3_NO + FILTER)["41"]', 'FF_SAFARI'),
-            define('(RP_1_NO + FILTER)["40"]', 'IE'),
-            define('(FBP_9 + FILL)["41"]', 'FILL'),
-            define('(FILL + [])["32"]', 'FILL', 'CHROME'),
-            define('(RP_4_N + FILL)["40"]', 'FILL', 'FF_SAFARI'),
-            define('(RP_3_NO + FILL)["40"]', 'FILL', 'IE')
+            defineFBCharAt('FILTER', 34),
+            defineFBCharAt('FILL', 32, 'FILL')
         ],
     //  '~':    ,
         
@@ -683,69 +788,17 @@
             define('"to" + String["name"]', 'NAME')
         ],
         
-        // Function body extra padding blocks. The number after "FBEP_" is the maximum character
-        // overhead. The letters after the last underscore have the same meaning as in regular
-        // padding blocks.
+        // Function body extra padding blocks: prepended to a function to align the function's body
+        // at the same position on different browsers.
+        // The number after "FBEP_" is the maximum character overhead. The letters after the last
+        // underscore have the same meaning as in regular padding blocks.
         FBEP_4_S:       '[[true][+!!(RP_5_N + ANY_FUNCTION)["40"]]]',
         FBEP_9_N:       '[false][+!(RP_5_N + ANY_FUNCTION)["40"]]',
         
-        // Function body padding constants: prepended to a function to align the body at the same
-        // position on different browsers. The number after "FBP_" is the maximum character
-        // overhead.
-        FBP_5:
-        [
-            // Unused:
-            // define('FHP_1_S + FBEP_4_S'),
-            define('RP_1_NO + FBEP_4_S', 'NO_IE'),
-            define('RP_5_N', 'CHROME'),
-            define('RP_1_NO', 'FF_SAFARI'),
-            // Unused:
-            // define('[]', 'IE')
-        ],
-        FBP_7:
-        [
-            define('FHP_3_NO + FBEP_4_S'),
-            define('RP_3_NO + FBEP_4_S', 'NO_IE'),
-            define(null, 'CHROME'),
-            define('RP_3_NO', 'FF_SAFARI'),
-            define(null, 'IE')
-        ],
-        FBP_9:
-        [
-            define('FHP_5_N + FBEP_4_S'),
-            define('FBEP_9_N', 'NO_IE'),
-            define(null, 'CHROME'),
-            // Unused:
-            // define('RP_5_N', 'FF_SAFARI'),
-            // define('RP_4_N', 'IE')
-        ],
-        FBP_10:
-        [
-            define('FHP_1_S + FBEP_9_N'),
-            define('RP_1_S + FBEP_9_N', 'NO_IE'),
-            define(null, 'CHROME'),
-            define('RP_6_SO', 'FF_SAFARI'),
-            define('RP_5_N', 'IE')
-        ],
-        FBP_12:
-        [
-            define('[FHP_3_NO] + FBEP_9_N'),
-            define('[RP_3_NO] + FBEP_9_N', 'NO_IE'),
-            define(null, 'CHROME'),
-            define(null, 'FF_SAFARI'),
-            define(null, 'IE')
-        ],
-        FBP_15:
-        [
-            define('FHP_5_N + RP_1_S + FBEP_9_N'),
-            // Unused:
-            // define('RP_6_SO + FBEP_9_N', 'NO_IE'),
-            define(null, 'IE')
-        ],
-
-        // Function header padding blocks. The number after "FBP_" is the maximum character
-        // overhead. The letters after the last underscore have the same meaning as in regular
-        // padding blocks.
+        // Function header padding blocks: prepended to a function to align the function's header
+        // at the same position on different browsers.
+        // The number after "FBP_" is the maximum character overhead. The letters after the last
+        // underscore have the same meaning as in regular padding blocks.
         FHP_1_S:        '[[0][+!!(+(ANY_FUNCTION + [])[0] + true)]]',
         // Unused:
         // FHP_2_NO:       '+(+!(+(ANY_FUNCTION + [])[0] + true)+[0])',
@@ -762,16 +815,11 @@
         // expressions.
         RP_1_NO:        '0',
         RP_1_S:         '[0]',
-        // Unused:
-        // RP_2_SO:        '"00"',
         RP_3_NO:        'NaN',
+        RP_3_S:         '[NaN]',
         RP_4_N:         'true',
-        RP_4_S:         '[true]',
         RP_5_N:         'false',
-        RP_5_S:         '[false]',
         RP_6_SO:        '"0false"',
-        // Unused:
-        // RP_7_SO:        '"NaNtrue"'
     };
     
     var DEFAULT_CHARACTER_ENCODER =
@@ -973,6 +1021,28 @@
         }
     }
     
+    function createFBCharAtDefinition(expr, index, entries)
+    {
+        function definition()
+        {
+            var padding = this.findBestDefinition(entries);
+            if (padding != null)
+            {
+                var paddingInfo = this.findBestDefinition(FB_PADDING_INFOS);
+                var paddingString = paddingInfo.paddingStrings[padding];
+                var indexer = index + padding + paddingInfo.shift;
+                if (indexer > 9)
+                {
+                    indexer = '"' + indexer + '"';
+                }
+                var result = '(' + paddingString + '+' + expr + ')[' + indexer + ']';
+                return result;
+            }
+        }
+        
+        return definition;
+    }
+    
     function createFHCharAtDefinition(expr, index, entries)
     {
         function definition()
@@ -980,12 +1050,9 @@
             var padding = this.findBestDefinition(entries);
             if (padding != null)
             {
-                var features = this.features;
-                var paddingStrings =
-                    features & (FEATURES.IE.value | FEATURES.NO_IE.value) ?
-                    R_PADDINGS : FH_PADDINGS;
-                var paddingString = paddingStrings[padding];
-                var indexer = index + padding + (features & FEATURES.IE.value ? 1 : 0);
+                var paddingInfo = this.findBestDefinition(FH_PADDING_INFOS);
+                var paddingString = paddingInfo.paddingStrings[padding];
+                var indexer = index + padding + paddingInfo.shift;
                 if (indexer > 9)
                 {
                     indexer = '"' + indexer + '"';
