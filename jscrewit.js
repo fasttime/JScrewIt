@@ -6,35 +6,35 @@
     
     var FEATURES =
     {
-        NO_SAFARI:
+        NO_SAFARI_LF:
         {
             check: function ()
             {
                 return (new Function() + '')[22] === '\n';
             }
         },
-        NO_IE:
+        NO_IE_SRC:
         {
             check: function ()
             {
                 return /^function Object\(\) \{(\n   )? \[native code\][^]\}/.test(Object);
             }
         },
-        CHROME:
+        CHROME_SRC:
         {
             check: function ()
             {
                 return /^.{19} \[native code\] \}/.test(Object);
             }
         },
-        FF_SAFARI:
+        FF_SAFARI_SRC:
         {
             check: function ()
             {
                 return /^.{19}\n    \[native code\]\n\}/.test(Object);
             }
         },
-        IE:
+        IE_SRC:
         {
             check: function ()
             {
@@ -153,7 +153,7 @@
     {
         DEFAULT:    [],
         COMPACT:    ['GMT', 'SELF', 'ATOB', 'UNDEFINED', 'WINDOW'],
-        NO_IE:      ['NO_IE', 'GMT', 'NAME'],
+        NO_IE:      ['NO_IE_SRC', 'GMT', 'NAME'],
         AUTO:       getAutoFeatureNames()
     };
     
@@ -234,10 +234,10 @@
     var FB_PADDING_INFOS =
     [
         define({ paddingStrings: FB_PADDINGS, shift: 0 }),
-        define({ paddingStrings: FB_NO_IE_PADDINGS, shift: 0 }, 'NO_IE'),
-        define({ paddingStrings: R_PADDINGS, shift: 0 }, 'CHROME'),
-        define({ paddingStrings: R_PADDINGS, shift: 4 }, 'FF_SAFARI'),
-        define({ paddingStrings: R_PADDINGS, shift: 5 }, 'IE')
+        define({ paddingStrings: FB_NO_IE_PADDINGS, shift: 0 }, 'NO_IE_SRC'),
+        define({ paddingStrings: R_PADDINGS, shift: 0 }, 'CHROME_SRC'),
+        define({ paddingStrings: R_PADDINGS, shift: 4 }, 'FF_SAFARI_SRC'),
+        define({ paddingStrings: R_PADDINGS, shift: 5 }, 'IE_SRC')
     ];
     
     function defineFBCharAt(expr, index)
@@ -249,9 +249,9 @@
             entries =
             [
                 define(12),
-                define(3, 'CHROME'),
-                define(0, 'FF_SAFARI'),
-                define(0, 'IE')
+                define(3, 'CHROME_SRC'),
+                define(0, 'FF_SAFARI_SRC'),
+                define(0, 'IE_SRC')
             ];
             break;
         case 20:
@@ -259,46 +259,46 @@
             entries =
             [
                 define(10),
-                define(0, 'CHROME'),
-                define(6, 'FF_SAFARI'),
-                define(5, 'IE')
+                define(0, 'CHROME_SRC'),
+                define(6, 'FF_SAFARI_SRC'),
+                define(5, 'IE_SRC')
             ];
             break;
         case 23:
             entries =
             [
                 define(7),
-                define(0, 'CHROME'),
-                define(3, 'FF_SAFARI'),
-                define(3, 'IE')
+                define(0, 'CHROME_SRC'),
+                define(3, 'FF_SAFARI_SRC'),
+                define(3, 'IE_SRC')
             ];
             break;
         case 25:
             entries =
             [
                 define(15),
-                define(5, 'NO_IE'),
-                define(1, 'FF_SAFARI'),
-                define(0, 'IE')
+                define(5, 'NO_IE_SRC'),
+                define(1, 'FF_SAFARI_SRC'),
+                define(0, 'IE_SRC')
             ];
             break;
         case 32:
             entries =
             [
                 define(9),
-                define(0, 'CHROME'),
-                define(4, 'FF_SAFARI'),
-                define(3, 'IE')
+                define(0, 'CHROME_SRC'),
+                define(4, 'FF_SAFARI_SRC'),
+                define(3, 'IE_SRC')
             ];
             break;
         case 34:
             entries =
             [
                 define(7),
-                define(9, 'NO_IE'),
-                define(6, 'CHROME'),
-                define(3, 'FF_SAFARI'),
-                define(1, 'IE')
+                define(9, 'NO_IE_SRC'),
+                define(6, 'CHROME_SRC'),
+                define(3, 'FF_SAFARI_SRC'),
+                define(1, 'IE_SRC')
             ];
             break;
         }
@@ -312,8 +312,8 @@
     var FH_PADDING_INFOS =
     [
         define({ paddingStrings: FH_PADDINGS, shift: 0 }),
-        define({ paddingStrings: R_PADDINGS, shift: 0 }, 'NO_IE'),
-        define({ paddingStrings: R_PADDINGS, shift: 1 }, 'IE')
+        define({ paddingStrings: R_PADDINGS, shift: 0 }, 'NO_IE_SRC'),
+        define({ paddingStrings: R_PADDINGS, shift: 1 }, 'IE_SRC')
     ];
     
     function defineFHCharAt(expr, index)
@@ -326,8 +326,8 @@
             entries =
             [
                 define(7),
-                define(0, 'NO_IE'),
-                define(6, 'IE')
+                define(0, 'NO_IE_SRC'),
+                define(6, 'IE_SRC')
             ];
             break;
         case 6:
@@ -335,8 +335,8 @@
             entries =
             [
                 define(5),
-                define(4, 'NO_IE'),
-                define(3, 'IE')
+                define(4, 'NO_IE_SRC'),
+                define(3, 'IE_SRC')
             ];
             break;
         case 8:
@@ -344,14 +344,14 @@
             entries =
             [
                 define(3),
-                define(1, 'IE')
+                define(1, 'IE_SRC')
             ];
             break;
         case 9:
             entries =
             [
                 define(1),
-                define(0, 'IE')
+                define(0, 'IE_SRC')
             ];
             break;
         case 11:
@@ -359,30 +359,30 @@
             [
                 // Unused:
                 // define(9),
-                define(0, 'NO_IE'),
-                define(0, 'IE')
+                define(0, 'NO_IE_SRC'),
+                define(0, 'IE_SRC')
             ];
             break;
         case 12:
             entries =
             [
                 define(8),
-                define(0, 'NO_IE'),
-                define(0, 'IE')
+                define(0, 'NO_IE_SRC'),
+                define(0, 'IE_SRC')
             ];
             break;
         case 14:
             entries =
             [
                 define(6),
-                define(5, 'IE')
+                define(5, 'IE_SRC')
             ];
             break;
         case 15:
             entries =
             [
                 define(5),
-                define(4, 'IE')
+                define(4, 'IE_SRC')
             ];
             break;
         }
@@ -435,8 +435,8 @@
         'm':
         [
             define('(RP_6_SO + Function())["20"]'),
-            defineFHCharAt('Number', 11, 'NO_IE'),
-            defineFHCharAt('Number', 11, 'IE')
+            defineFHCharAt('Number', 11, 'NO_IE_SRC'),
+            defineFHCharAt('Number', 11, 'IE_SRC')
         ],
         'n':            '"undefined"[1]',
         'o':
@@ -571,10 +571,10 @@
         '\n':
         [
             define('(Function() + [])["23"]'),
-            define('(Function() + [])["22"]', 'NO_SAFARI'),
-            define('(RP_1_NO + FILTER)["20"]', 'FF_SAFARI'),
-            define('(RP_3_NO + FILL)["20"]', 'FF_SAFARI', 'FILL'),
-            define('(ANY_FUNCTION + [])[0]', 'IE')
+            define('(Function() + [])["22"]', 'NO_SAFARI_LF'),
+            define('(RP_1_NO + FILTER)["20"]', 'FF_SAFARI_SRC'),
+            define('(RP_3_NO + FILL)["20"]', 'FF_SAFARI_SRC', 'FILL'),
+            define('(ANY_FUNCTION + [])[0]', 'IE_SRC')
         ],
         '\x1e':
         [
@@ -583,10 +583,10 @@
         ' ':
         [
             defineFHCharAt('ANY_FUNCTION', 8),
-            define('(RP_1_NO + FILTER)["20"]', 'CHROME'),
-            define('(RP_3_NO + FILTER)["20"]', 'CHROME', 'FILL'),
-            define('(FILTER + [])["20"]', 'FF_SAFARI'),
-            define('(RP_3_NO + FILL)["21"]', 'FF_SAFARI', 'FILL')
+            define('(RP_1_NO + FILTER)["20"]', 'CHROME_SRC'),
+            define('(RP_3_NO + FILTER)["20"]', 'CHROME_SRC', 'FILL'),
+            define('(FILTER + [])["20"]', 'FF_SAFARI_SRC'),
+            define('(RP_3_NO + FILL)["21"]', 'FF_SAFARI_SRC', 'FILL')
         ],
     //  '!':    ,
         '"':            '""["fontcolor"]()["12"]',
@@ -595,8 +595,8 @@
         '%':
         [
             define('escape(FILTER)["20"]'),
-            define('escape(false + FILL)["20"]', 'NO_IE', 'FILL'),
-            define('escape(ANY_FUNCTION)[0]', 'IE'),
+            define('escape(false + FILL)["20"]', 'NO_IE_SRC', 'FILL'),
+            define('escape(ANY_FUNCTION)[0]', 'IE_SRC'),
             define(null, 'ATOB'),
         ],
     //  '&':    ,
