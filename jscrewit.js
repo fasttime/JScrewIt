@@ -832,7 +832,7 @@
                 var charCode = character.charCodeAt(0);
                 var encoder =
                     charCode < 0x100 ? unescapeCharacterEncoder8 : unescapeCharacterEncoder16;
-                var result = encoder.call(this, charCode);
+                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING);
                 return result;
             }
         ),
@@ -841,7 +841,7 @@
             {
                 var charCode = character.charCodeAt(0);
                 var encoder = charCode < 0x100 ? atobCharacterEncoder : unescapeCharacterEncoder16;
-                var result = encoder.call(this, charCode);
+                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING);
                 return result;
             },
             'ATOB'
@@ -1042,12 +1042,31 @@
                 {
                     indexer = '"' + indexer + '"';
                 }
-                var result = '(' + paddingString + '+' + expr + ')[' + indexer + ']';
+                var fullExpr = '(' + paddingString + '+' + expr + ')[' + indexer + ']';
+                var result = createSolution(this.replace(fullExpr), LEVEL_STRING);
                 return result;
             }
         }
         
         return definition;
+    }
+    
+    function createDigitDefinition(digit)
+    {
+        function definition()
+        {
+            var result = createSolution(encodeDigit(digit), LEVEL_NUMERIC);
+            return result;
+        }
+        
+        return definition;
+    }
+    
+    function createSolution(replacement, level)
+    {
+        var result = Object(replacement);
+        result.level = level;
+        return result;
     }
     
     // Determine whether the specified expression contains a plus sign out of brackets.
@@ -1280,8 +1299,8 @@
         
         resolveCharacter: function (character)
         {
-            var value = this.characterCache[character];
-            if (value === undefined)
+            var solution = this.characterCache[character];
+            if (solution === undefined)
             {
                 this.callResolver(
                     quoteCharacter(character),
@@ -1301,23 +1320,28 @@
                         {
                             var defaultCharacterEncoder =
                                 this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
-                            expr = defaultCharacterEncoder.call(this, character);
+                            solution = defaultCharacterEncoder.call(this, character);
                         }
                         else if (expr instanceof Function)
                         {
-                            expr = expr.call(this);
+                            solution = expr.call(this);
                         }
-                        this.characterCache[character] = value = Object(this.replace(expr));
+                        else
+                        {
+                            var replacement = this.replace(expr);
+                            solution = createSolution(replacement, LEVEL_STRING);
+                        }
+                        this.characterCache[character] = solution;
                     }
                 );
             }
-            return value;
+            return solution;
         },
         
         resolveConstant: function (constant)
         {
-            var value = this.constantCache[constant];
-            if (value === undefined)
+            var solution = this.constantCache[constant];
+            if (solution === undefined)
             {
                 this.callResolver(
                     constant,
@@ -1333,27 +1357,28 @@
                         {
                             expr = entries;
                         }
-                        this.constantCache[constant] = value = Object(this.replace(expr));
+                        this.constantCache[constant] = solution =
+                            createSolution(this.replace(expr));
                     }
                 );
             }
-            return value;
+            return solution;
         },
         
         resolveSimple: function (simple)
         {
-            var value = SIMPLE[simple];
-            if (!(value instanceof Object))
+            var solution = SIMPLE[simple];
+            if (!(solution instanceof Object))
             {
                 this.callResolver(
                     simple,
                     function ()
                     {
-                        SIMPLE[simple] = value = Object(this.replace(value));
+                        SIMPLE[simple] = solution = createSolution(this.replace(solution));
                     }
                 );
             }
-            return value;
+            return solution;
         },
         
         resolveString: function (string, strongBound)
@@ -1372,43 +1397,45 @@
                 while (match = regExp.exec(string))
                 {
                     var token = match[0];
-                    var tokenValue;
+                    var solution;
+                    var level;
                     if (token in SIMPLE)
                     {
-                        tokenValue = this.resolveSimple(token);
+                        solution = this.resolveSimple(token);
+                        level = solution.level;
+                        if (level === undefined)
+                        {
+                            var type = typeof(eval(solution + ''));
+                            switch (type)
+                            {
+                            case 'string':
+                                level = LEVEL_STRING;
+                                break;
+                            case 'array':
+                                level = LEVEL_OBJECT;
+                                break;
+                            case 'undefined':
+                                level = LEVEL_UNDEFINED;
+                                break;
+                            default:
+                                level = LEVEL_NUMERIC;
+                                break;
+                            }
+                            solution.level = level;
+                        }
                     }
                     else
                     {
-                        tokenValue = this.resolveCharacter(token);
-                    }
-                    var level = tokenValue.level;
-                    if (tokenValue.level === undefined)
-                    {
-                        var type = typeof(eval(tokenValue + ''));
-                        switch (type)
-                        {
-                        case 'string':
-                            level = LEVEL_STRING;
-                            break;
-                        case 'array':
-                            level = LEVEL_OBJECT;
-                            break;
-                        case 'undefined':
-                            level = LEVEL_UNDEFINED;
-                            break;
-                        default:
-                            level = LEVEL_NUMERIC;
-                            break;
-                        }
-                        tokenValue.level = level;
+                        solution = this.resolveCharacter(token);
+                        level = solution.level;
                     }
                     if (
                         result &&
-                        (fullLevel < LEVEL_OBJECT && level < LEVEL_OBJECT || hasPsoob(tokenValue)))
+                        (fullLevel < LEVEL_OBJECT && level < LEVEL_OBJECT || hasPsoob(solution)))
                     {
                         if (level > LEVEL_UNDEFINED)
                         {
-                            tokenValue = '[' + tokenValue + ']';
+                            solution = '[' + solution + ']';
                         }
                         else if (fullLevel > LEVEL_UNDEFINED)
                         {
@@ -1423,12 +1450,12 @@
                     {
                         multipart = true;
                         fullLevel = LEVEL_STRING;
-                        result += '+' + tokenValue;
+                        result += '+' + solution;
                     }
                     else
                     {
                         fullLevel = level;
-                        result = tokenValue + '';
+                        result = solution + '';
                     }
                 }
             }
@@ -1457,7 +1484,7 @@
         for (var number = 0; number < 10; ++number)
         {
             var digit = number + '';
-            CHARACTERS[digit] = encodeDigit(digit);
+            CHARACTERS[digit] = createDigitDefinition(digit);
         }
     }
     )();
