@@ -846,6 +846,11 @@
         )
     ];
     
+    var LEVEL_STRING    = 1;
+    var LEVEL_OBJECT    = 0;
+    var LEVEL_NUMERIC   = -1;
+    var LEVEL_UNDEFINED = -2;
+    
     var SIMPLE =
     {
         'false':        '![]',
@@ -1403,27 +1408,29 @@
                         switch (type)
                         {
                         case 'string':
-                            level = 1;
+                            level = LEVEL_STRING;
                             break;
                         case 'array':
-                            level = 0;
+                            level = LEVEL_OBJECT;
                             break;
                         case 'undefined':
-                            level = -2;
+                            level = LEVEL_UNDEFINED;
                             break;
                         default:
-                            level = -1;
+                            level = LEVEL_NUMERIC;
                             break;
                         }
                         tokenValue.level = level;
                     }
-                    if (result && (fullLevel < 0 && level < 0 || hasPsoob(tokenValue)))
+                    if (
+                        result &&
+                        (fullLevel < LEVEL_OBJECT && level < LEVEL_OBJECT || hasPsoob(tokenValue)))
                     {
-                        if (level !== -2)
+                        if (level > LEVEL_UNDEFINED)
                         {
                             tokenValue = '[' + tokenValue + ']';
                         }
-                        else if (fullLevel !== -2)
+                        else if (fullLevel > LEVEL_UNDEFINED)
                         {
                             result = '[' + result + ']';
                         }
@@ -1435,7 +1442,7 @@
                     if (result)
                     {
                         multipart = true;
-                        fullLevel = 1;
+                        fullLevel = LEVEL_STRING;
                         result += '+' + tokenValue;
                     }
                     else
@@ -1447,10 +1454,10 @@
             }
             else
             {
-                fullLevel = 0;
+                fullLevel = LEVEL_OBJECT;
                 result = '[]';
             }
-            if (fullLevel <= 0)
+            if (fullLevel < LEVEL_STRING)
             {
                 multipart = true;
                 result += '+[]';
