@@ -302,7 +302,8 @@
             ];
             break;
         }
-        var definition = entries ? createFBCharAtDefinition(expr, index, entries) : null;
+        var definition =
+            entries ? createCharAtDefinition(expr, index, entries, FB_PADDING_INFOS) : null;
         var features = getFeatures(arraySlice.call(arguments, 2));
         var result = { definition: definition, features: features };
         return result;
@@ -385,7 +386,8 @@
             ];
             break;
         }
-        var definition = entries ? createFHCharAtDefinition(expr, index, entries) : null;
+        var definition =
+            entries ? createCharAtDefinition(expr, index, entries, FH_PADDING_INFOS) : null;
         var features = getFeatures(arraySlice.call(arguments, 2));
         var result = { definition: definition, features: features };
         return result;
@@ -1026,36 +1028,14 @@
         }
     }
     
-    function createFBCharAtDefinition(expr, index, entries)
+    function createCharAtDefinition(expr, index, entries, paddingInfos)
     {
         function definition()
         {
             var padding = this.findBestDefinition(entries);
             if (padding != null)
             {
-                var paddingInfo = this.findBestDefinition(FB_PADDING_INFOS);
-                var paddingString = paddingInfo.paddingStrings[padding];
-                var indexer = index + padding + paddingInfo.shift;
-                if (indexer > 9)
-                {
-                    indexer = '"' + indexer + '"';
-                }
-                var result = '(' + paddingString + '+' + expr + ')[' + indexer + ']';
-                return result;
-            }
-        }
-        
-        return definition;
-    }
-    
-    function createFHCharAtDefinition(expr, index, entries)
-    {
-        function definition()
-        {
-            var padding = this.findBestDefinition(entries);
-            if (padding != null)
-            {
-                var paddingInfo = this.findBestDefinition(FH_PADDING_INFOS);
+                var paddingInfo = this.findBestDefinition(paddingInfos);
                 var paddingString = paddingInfo.paddingStrings[padding];
                 var indexer = index + padding + paddingInfo.shift;
                 if (indexer > 9)
