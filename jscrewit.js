@@ -6,6 +6,16 @@
     
     var FEATURES =
     {
+        DEFAULT:
+        { },
+        COMPACT:
+        {
+            implies: ['GMT', 'SELF', 'ATOB', 'UNDEFINED', 'WINDOW']
+        },
+        NO_IE:
+        {
+            implies: ['NO_IE_SRC', 'GMT', 'NAME']
+        },
         NO_SAFARI_LF:
         {
             check: function ()
@@ -111,53 +121,60 @@
     
     var arraySlice = Array.prototype.slice;
     
-    // Assign a power of 2 value to each feature
+    // Assign a power of 2 value to each checkable feature
     (
     function ()
     {
-        var featureNames = Object.getOwnPropertyNames(FEATURES);
-        var length = featureNames.length;
-        for (var index = 0; index < length; ++index)
+        function completeFeature(featureName)
         {
-            var featureName = featureNames[index];
             var feature = FEATURES[featureName];
-            feature.value = 1 << index;
+            if (!('value' in feature))
+            {
+                var value = 0;
+                var available = true;
+                if (feature.check)
+                {
+                    value = 1 << bitIndex++;
+                    available = feature.check();
+                    if (available)
+                    {
+                        autoValue |= value;
+                        autoImplies.push(featureName);
+                    }
+                }
+                var implies = feature.implies;
+                if (implies)
+                {
+                    implies.forEach(
+                        function (imply)
+                        {
+                            var impliedFeature = completeFeature(imply);
+                            value |= impliedFeature.value;
+                            available &= impliedFeature.available;
+                        }
+                    );
+                }
+                feature.value = value;
+                feature.available = available;
+            }
+            return feature;
         }
+        
+        var bitIndex = 0;
+        var featureNames = Object.getOwnPropertyNames(FEATURES);
+        var autoValue = 0;
+        var autoImplies = [];
+        featureNames.forEach(completeFeature);
+        FEATURES.AUTO =
+            {
+                value: autoValue,
+                available: true,
+                implies: autoImplies
+            };
     }
     )();
     
     // END: Features ///////////////////
-    
-    // BEGIN: Compatibilities //////////
-    
-    function getAutoFeatureNames()
-    {
-        var result = [];
-        var featureNames = Object.getOwnPropertyNames(FEATURES);
-        var length = featureNames.length;
-        for (var index = 0; index < length; ++index)
-        {
-            var featureName = featureNames[index];
-            var feature = FEATURES[featureName];
-            var available = feature.check();
-            feature.available = available;
-            if (available)
-            {
-                result.push(featureName);
-            }
-        }
-        return result;
-    }
-    
-    var COMPATIBILITIES =
-    {
-        DEFAULT:    [],
-        COMPACT:    ['GMT', 'SELF', 'ATOB', 'UNDEFINED', 'WINDOW'],
-        NO_IE:      ['NO_IE_SRC', 'GMT', 'NAME'],
-        AUTO:       getAutoFeatureNames()
-    };
-    
-    // END: Compatibilities ////////////
     
     // BEGIN: Definers /////////////////
     
@@ -1229,7 +1246,7 @@
     
     function Encoder(compatibility)
     {
-        this.features = getFeatures(COMPATIBILITIES[compatibility]);
+        this.features = FEATURES[compatibility].value;
         this.characterCache = { };
         this.constantCache = { };
         this.stack = [];
@@ -1505,7 +1522,7 @@
         if (compatibility != null)
         {
             compatibility += '';
-            if (compatibility in COMPATIBILITIES)
+            if (compatibility in FEATURES)
             {
                 return compatibility;
             }
@@ -1527,22 +1544,15 @@
     function getFeatureNames(compatibility)
     {
         compatibility = fixCompatibility(compatibility);
-        var featureNames = COMPATIBILITIES[compatibility];
-        var result = featureNames.slice();
+        var featureNames = FEATURES[compatibility].implies;
+        var result = featureNames ? featureNames.slice() : [];
         return result;
     }
     
     function isAvailable(compatibility)
     {
-        var featureNames = COMPATIBILITIES[compatibility];
-        var result =
-            featureNames &&
-            featureNames.every(
-                function (featureName)
-                {
-                    return FEATURES[featureName].available;
-                }
-            );
+        var feature = FEATURES[compatibility];
+        var result = feature != null && feature.available;
         return result;
     }
     
