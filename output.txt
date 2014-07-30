@@ -1,4 +1,4 @@
-     DEFAULT COMPACT  NO_IE   FF31    IE11    NODE
+     DEFAULT COMPACT  NO_IE    FF31    IE11    NODE
      ------- ------- ------- ------- ------- -------
 NUL    11282    5044    6298    2173    2776    6296
 SOH    11284    5039    6300    2168    2771    6298
