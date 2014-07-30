@@ -110,7 +110,7 @@
         {
             implies: ['GMT', 'NAME', 'NO_IE_SRC']
         },
-        FF31: // FF >= 31
+        FF31:
         {
             implies:
             [
@@ -119,6 +119,42 @@
                 'FILL',
                 'GMT',
                 'NAME',
+                'NO_SAFARI_LF',
+                'SELF',
+                'UNDEFINED',
+                'WINDOW'
+            ]
+        },
+        IE9:
+        {
+            implies:
+            [
+                'IE_SRC',
+                'NO_SAFARI_LF',
+                'SELF',
+                'UNDEFINED',
+                'WINDOW'
+            ]
+        },
+        IE10:
+        {
+            implies:
+            [
+                'ATOB',
+                'IE_SRC',
+                'NO_SAFARI_LF',
+                'SELF',
+                'UNDEFINED',
+                'WINDOW'
+            ]
+        },
+        IE11:
+        {
+            implies:
+            [
+                'ATOB',
+                'GMT',
+                'IE_SRC',
                 'NO_SAFARI_LF',
                 'SELF',
                 'UNDEFINED',
