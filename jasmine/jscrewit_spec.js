@@ -28,7 +28,7 @@ var output =
                 {
                     toString: function () { return '[object Window]'; }
                 };
-            var result = TestSuite.createOutput(['DEFAULT', 'COMPACT', 'NO_IE', 'FF31']);
+            var result = TestSuite.createOutput(['DEFAULT', 'COMPACT', 'NO_IE', 'FF31', 'IE11']);
             return result;
         }
         finally
