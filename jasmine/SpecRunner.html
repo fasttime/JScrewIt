@@ -60,7 +60,7 @@
             var summary = document.querySelector('.symbol-summary');
             var info = summary.parentNode.insertBefore(document.createElement('DIV'), summary);
             info.style.padding = '6px 9px 0';
-            info.textContent = 'Browser features: ' + JScrewIt.getFeatureNames('AUTO').join(', ');
+            info.textContent = 'Browser features: ' + JScrewIt.getSubFeatures('AUTO').join(', ');
         }
     );
 

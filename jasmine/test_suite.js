@@ -139,40 +139,40 @@
             }
         );
         describe(
-            'JScrewIt.getFeatureNames',
+            'JScrewIt.getSubFeatures',
             function()
             {
                 it(
                     'with DEFAULT compatibility returns an empty array',
                     function ()
                     {
-                        var featureNames = JScrewIt.getFeatureNames('DEFAULT');
-                        expect(featureNames.length).toBe(0);
+                        var subFeatures = JScrewIt.getSubFeatures('DEFAULT');
+                        expect(subFeatures.length).toBe(0);
                     }
                 );
                 it(
                     'without compatibility returns an empty array',
                     function ()
                     {
-                        var featureNames = JScrewIt.getFeatureNames();
-                        expect(featureNames.length).toBe(0);
+                        var subFeatures = JScrewIt.getSubFeatures();
+                        expect(subFeatures.length).toBe(0);
                     }
                 );
                 it(
                     'with AUTO compatibility returns a non-empty array',
                     function ()
                     {
-                        var featureNames = JScrewIt.getFeatureNames('AUTO');
-                        expect(featureNames.length).toBeGreaterThan(0);
+                        var subFeatures = JScrewIt.getSubFeatures('AUTO');
+                        expect(subFeatures.length).toBeGreaterThan(0);
                     }
                 );
                 it(
                     'returns each time a new array',
                     function ()
                     {
-                        var featureNames1 = JScrewIt.getFeatureNames('AUTO');
-                        var featureNames2 = JScrewIt.getFeatureNames('AUTO');
-                        expect(featureNames1).not.toBe(featureNames2);
+                        var subFeatures1 = JScrewIt.getSubFeatures('AUTO');
+                        var subFeatures2 = JScrewIt.getSubFeatures('AUTO');
+                        expect(subFeatures1).not.toBe(subFeatures2);
                     }
                 );
             }
