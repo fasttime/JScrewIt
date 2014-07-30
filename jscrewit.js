@@ -194,7 +194,6 @@
         return featureMask;
     }
     
-    var arraySlice = Array.prototype.slice;
     var availableFeatureMask;
     
     // Assign a bit mask to each checkable feature
@@ -249,17 +248,6 @@
     
     // BEGIN: Definers /////////////////
     
-    var R_PADDINGS =
-    [
-        '[]',
-        'RP_1_NO',
-        ,
-        'RP_3_NO',
-        'RP_4_N',
-        'RP_5_N',
-        'RP_6_SO'
-    ];
-    
     var FB_PADDINGS =
     [
         ,
@@ -312,21 +300,30 @@
         // 'FHP_5_N + [RP_4_N]'
     ];
     
-    function define(definition)
+    var R_PADDINGS =
+    [
+        '[]',
+        'RP_1_NO',
+        ,
+        'RP_3_NO',
+        'RP_4_N',
+        'RP_5_N',
+        'RP_6_SO'
+    ];
+    
+    function createDefinitionEntry(definition, featureArgs, startIndex)
     {
-        var featureMask = getFeatureMask(arraySlice.call(arguments, 1));
-        var result = { definition: definition, featureMask: featureMask };
-        return result;
+        var features = Array.prototype.slice.call(featureArgs, startIndex);
+        var featureMask = getFeatureMask(features);
+        var entry = { definition: definition, featureMask: featureMask };
+        return entry;
     }
     
-    var FB_PADDING_INFOS =
-    [
-        define({ paddingStrings: FB_PADDINGS, shift: 0 }),
-        define({ paddingStrings: FB_NO_IE_PADDINGS, shift: 0 }, 'NO_IE_SRC'),
-        define({ paddingStrings: R_PADDINGS, shift: 0 }, 'CHROME_SRC'),
-        define({ paddingStrings: R_PADDINGS, shift: 4 }, 'FF_SAFARI_SRC'),
-        define({ paddingStrings: R_PADDINGS, shift: 5 }, 'IE_SRC')
-    ];
+    function define(definition)
+    {
+        var result = createDefinitionEntry(definition, arguments, 1);
+        return result;
+    }
     
     function defineFBCharAt(expr, index)
     {
@@ -392,17 +389,9 @@
         }
         var definition =
             entries ? createCharAtDefinition(expr, index, entries, FB_PADDING_INFOS) : null;
-        var featureMask = getFeatureMask(arraySlice.call(arguments, 2));
-        var result = { definition: definition, featureMask: featureMask };
+        var result = createDefinitionEntry(definition, arguments, 2);
         return result;
     }
-    
-    var FH_PADDING_INFOS =
-    [
-        define({ paddingStrings: FH_PADDINGS, shift: 0 }),
-        define({ paddingStrings: R_PADDINGS, shift: 0 }, 'NO_IE_SRC'),
-        define({ paddingStrings: R_PADDINGS, shift: 1 }, 'IE_SRC')
-    ];
     
     function defineFHCharAt(expr, index)
     {
@@ -476,10 +465,32 @@
         }
         var definition =
             entries ? createCharAtDefinition(expr, index, entries, FH_PADDING_INFOS) : null;
-        var featureMask = getFeatureMask(arraySlice.call(arguments, 2));
-        var result = { definition: definition, featureMask: featureMask };
+        var result = createDefinitionEntry(definition, arguments, 2);
         return result;
     }
+    
+    function definePadding(paddingStrings, shift)
+    {
+        var definition = { paddingStrings: paddingStrings, shift: shift };
+        var result = createDefinitionEntry(definition, arguments, 2);
+        return result;
+    }
+    
+    var FB_PADDING_INFOS =
+    [
+        definePadding(FB_PADDINGS, 0),
+        definePadding(FB_NO_IE_PADDINGS, 0, 'NO_IE_SRC'),
+        definePadding(R_PADDINGS, 0, 'CHROME_SRC'),
+        definePadding(R_PADDINGS, 4, 'FF_SAFARI_SRC'),
+        definePadding(R_PADDINGS, 5, 'IE_SRC')
+    ];
+    
+    var FH_PADDING_INFOS =
+    [
+        definePadding(FH_PADDINGS, 0),
+        definePadding(R_PADDINGS, 0, 'NO_IE_SRC'),
+        definePadding(R_PADDINGS, 1, 'IE_SRC')
+    ];
     
     // END: Definers ///////////////////
     
