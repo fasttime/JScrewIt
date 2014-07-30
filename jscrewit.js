@@ -111,6 +111,17 @@
         },
     };
     
+    function getFeatureInfo(feature)
+    {
+        feature = feature + '';
+        var featureInfo = FEATURE_INFOS[feature];
+        if (!featureInfo)
+        {
+            throw new ReferenceError('Unknown feature ' + JSON.stringify(feature));
+        }
+        return featureInfo;
+    }
+    
     function getFeatureMask(features)
     {
         var featureMask = 0;
@@ -123,12 +134,7 @@
             features.forEach(
                 function (feature)
                 {
-                    feature = feature + '';
-                    var featureInfo = FEATURE_INFOS[feature];
-                    if (!featureInfo)
-                    {
-                        throw new ReferenceError('Unknown feature ' + JSON.stringify(feature));
-                    }
+                    var featureInfo = getFeatureInfo(feature);
                     featureMask |= featureInfo.value;
                 }
             );
@@ -1547,7 +1553,8 @@
     
     function getSubFeatures(feature)
     {
-        var implies = FEATURE_INFOS[feature].implies;
+        var featureInfo = getFeatureInfo(feature);
+        var implies = featureInfo.implies;
         var result = implies ? implies.slice() : [];
         return result;
     }

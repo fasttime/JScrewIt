@@ -175,6 +175,14 @@
                         expect(subFeatures1).not.toBe(subFeatures2);
                     }
                 );
+                it(
+                    'throws a ReferenceError for a nonexisting feature',
+                    function ()
+                    {
+                        var fn = function () { JScrewIt.getSubFeatures('xyz'); };
+                        expect(fn).toThrow(new ReferenceError('Unknown feature "xyz"'));
+                    }
+                );
             }
         );
     }
