@@ -35,14 +35,16 @@
             check: function ()
             {
                 return /^.{19} \[native code\] \}/.test(Object);
-            }
+            },
+            implies: ['NO_IE_SRC']
         },
         FF_SAFARI_SRC:
         {
             check: function ()
             {
                 return /^.{19}\n    \[native code\]\n\}/.test(Object);
-            }
+            },
+            implies: ['NO_IE_SRC']
         },
         IE_SRC:
         {
@@ -112,9 +114,24 @@
     function getFeatureMask(features)
     {
         var featureMask = 0;
-        for (var index = features.length; index > 0;)
+        if (features !== undefined)
         {
-            featureMask |= FEATURE_INFOS[features[--index]].value;
+            if (!Array.isArray(features))
+            {
+                features = [features];
+            }
+            features.forEach(
+                function (feature)
+                {
+                    feature = feature + '';
+                    var featureInfo = FEATURE_INFOS[feature];
+                    if (!featureInfo)
+                    {
+                        throw new ReferenceError('Unknown feature ' + JSON.stringify(feature));
+                    }
+                    featureMask |= featureInfo.value;
+                }
+            );
         }
         return featureMask;
     }
@@ -1510,30 +1527,16 @@
     
     // BEGIN: JScrewIt /////////////////
     
-    function encode(input, wrapWithEval, compatibility)
+    function encode(input, wrapWithEval, features)
     {
-        var encoder = getEncoder(compatibility);
+        var encoder = getEncoder(features);
         var output = encoder.encode(input, wrapWithEval);
         return output;
     }
     
-    function fixCompatibility(compatibility)
+    function getEncoder(features)
     {
-        if (compatibility != null)
-        {
-            compatibility += '';
-            if (compatibility in FEATURE_INFOS)
-            {
-                return compatibility;
-            }
-        }
-        return 'DEFAULT';
-    }
-    
-    function getEncoder(compatibility)
-    {
-        compatibility = fixCompatibility(compatibility);
-        var featureMask = FEATURE_INFOS[compatibility].value;
+        var featureMask = getFeatureMask(features);
         var encoder = encoders[featureMask];
         if (!encoder)
         {
@@ -1542,17 +1545,16 @@
         return encoder;
     }
     
-    function getSubFeatures(compatibility)
+    function getSubFeatures(feature)
     {
-        compatibility = fixCompatibility(compatibility);
-        var features = FEATURE_INFOS[compatibility].implies;
-        var result = features ? features.slice() : [];
+        var implies = FEATURE_INFOS[feature].implies;
+        var result = implies ? implies.slice() : [];
         return result;
     }
     
-    function isAvailable(compatibility)
+    function isAvailable(feature)
     {
-        var featureInfo = FEATURE_INFOS[compatibility];
+        var featureInfo = FEATURE_INFOS[feature];
         var result = featureInfo != null && featureInfo.available;
         return result;
     }
@@ -1572,9 +1574,9 @@
     
     // BEGIN: Debug only ///////////////
     
-    function debugReplace(input, compatibility)
+    function debugReplace(input, features)
     {
-        var encoder = getEncoder(compatibility);
+        var encoder = getEncoder(features);
         var output = encoder.replace(input);
         return output;
     }
