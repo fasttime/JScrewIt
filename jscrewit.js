@@ -127,39 +127,19 @@
         },
         IE9:
         {
-            implies:
-            [
-                'IE_SRC',
-                'NO_SAFARI_LF',
-                'SELF',
-                'UNDEFINED',
-                'WINDOW'
-            ]
+            implies: ['IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         IE10:
         {
-            implies:
-            [
-                'ATOB',
-                'IE_SRC',
-                'NO_SAFARI_LF',
-                'SELF',
-                'UNDEFINED',
-                'WINDOW'
-            ]
+            implies: ['ATOB', 'IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         IE11:
         {
-            implies:
-            [
-                'ATOB',
-                'GMT',
-                'IE_SRC',
-                'NO_SAFARI_LF',
-                'SELF',
-                'UNDEFINED',
-                'WINDOW'
-            ]
+            implies: ['ATOB', 'GMT', 'IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
+        },
+        NODE:
+        {
+            implies: ['CHROME_SRC', 'GMT', 'NAME', 'NO_SAFARI_LF', 'UNDEFINED']
         },
     };
     
