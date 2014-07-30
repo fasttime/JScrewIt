@@ -4,7 +4,7 @@
     
     // BEGIN: Features /////////////////
     
-    var FEATURES =
+    var FEATURE_INFOS =
     {
         DEFAULT:
         { },
@@ -109,14 +109,14 @@
         },
     };
     
-    function getFeatures(featureNames)
+    function getFeatureMask(features)
     {
-        var features = 0;
-        for (var index = featureNames.length; index > 0;)
+        var featureMask = 0;
+        for (var index = features.length; index > 0;)
         {
-            features |= FEATURES[featureNames[--index]].value;
+            featureMask |= FEATURE_INFOS[features[--index]].value;
         }
-        return features;
+        return featureMask;
     }
     
     var arraySlice = Array.prototype.slice;
@@ -125,47 +125,47 @@
     (
     function ()
     {
-        function completeFeature(featureName)
+        function completeFeature(feature)
         {
-            var feature = FEATURES[featureName];
-            if (!('value' in feature))
+            var featureInfo = FEATURE_INFOS[feature];
+            if (!('value' in featureInfo))
             {
                 var value = 0;
                 var available = true;
-                if (feature.check)
+                if (featureInfo.check)
                 {
                     value = 1 << bitIndex++;
-                    available = feature.check();
+                    available = featureInfo.check();
                     if (available)
                     {
                         autoValue |= value;
-                        autoImplies.push(featureName);
+                        autoImplies.push(feature);
                     }
                 }
-                var implies = feature.implies;
+                var implies = featureInfo.implies;
                 if (implies)
                 {
                     implies.forEach(
                         function (imply)
                         {
-                            var impliedFeature = completeFeature(imply);
-                            value |= impliedFeature.value;
-                            available &= impliedFeature.available;
+                            var impliedFeatureInfo = completeFeature(imply);
+                            value |= impliedFeatureInfo.value;
+                            available &= impliedFeatureInfo.available;
                         }
                     );
                 }
-                feature.value = value;
-                feature.available = available;
+                featureInfo.value = value;
+                featureInfo.available = available;
             }
-            return feature;
+            return featureInfo;
         }
         
         var bitIndex = 0;
-        var featureNames = Object.getOwnPropertyNames(FEATURES);
+        var features = Object.getOwnPropertyNames(FEATURE_INFOS);
         var autoValue = 0;
         var autoImplies = [];
-        featureNames.forEach(completeFeature);
-        FEATURES.AUTO =
+        features.forEach(completeFeature);
+        FEATURE_INFOS.AUTO =
             {
                 value: autoValue,
                 available: true,
@@ -243,8 +243,8 @@
     
     function define(definition)
     {
-        var features = getFeatures(arraySlice.call(arguments, 1));
-        var result = { definition: definition, features: features };
+        var featureMask = getFeatureMask(arraySlice.call(arguments, 1));
+        var result = { definition: definition, featureMask: featureMask };
         return result;
     }
     
@@ -321,8 +321,8 @@
         }
         var definition =
             entries ? createCharAtDefinition(expr, index, entries, FB_PADDING_INFOS) : null;
-        var features = getFeatures(arraySlice.call(arguments, 2));
-        var result = { definition: definition, features: features };
+        var featureMask = getFeatureMask(arraySlice.call(arguments, 2));
+        var result = { definition: definition, featureMask: featureMask };
         return result;
     }
     
@@ -405,8 +405,8 @@
         }
         var definition =
             entries ? createCharAtDefinition(expr, index, entries, FH_PADDING_INFOS) : null;
-        var features = getFeatures(arraySlice.call(arguments, 2));
-        var result = { definition: definition, features: features };
+        var featureMask = getFeatureMask(arraySlice.call(arguments, 2));
+        var result = { definition: definition, featureMask: featureMask };
         return result;
     }
     
@@ -1244,9 +1244,9 @@
         return result;
     }
     
-    function Encoder(compatibility)
+    function Encoder(featureMask)
     {
-        this.features = FEATURES[compatibility].value;
+        this.featureMask = featureMask;
         this.characterCache = { };
         this.constantCache = { };
         this.stack = [];
@@ -1289,8 +1289,8 @@
             for (var index = entries.length; index-- > 0;)
             {
                 var entry = entries[index];
-                var entryFeatures = entry.features;
-                if ((entryFeatures & this.features) === entryFeatures)
+                var entryFeatureMask = entry.featureMask;
+                if ((entryFeatureMask & this.featureMask) === entryFeatureMask)
                 {
                     return entry.definition;
                 }
@@ -1522,7 +1522,7 @@
         if (compatibility != null)
         {
             compatibility += '';
-            if (compatibility in FEATURES)
+            if (compatibility in FEATURE_INFOS)
             {
                 return compatibility;
             }
@@ -1533,26 +1533,27 @@
     function getEncoder(compatibility)
     {
         compatibility = fixCompatibility(compatibility);
-        var encoder = encoders[compatibility];
+        var featureMask = FEATURE_INFOS[compatibility].value;
+        var encoder = encoders[featureMask];
         if (!encoder)
         {
-            encoders[compatibility] = encoder = new Encoder(compatibility);
+            encoders[featureMask] = encoder = new Encoder(featureMask);
         }
         return encoder;
     }
     
-    function getFeatureNames(compatibility)
+    function getSubFeatures(compatibility)
     {
         compatibility = fixCompatibility(compatibility);
-        var featureNames = FEATURES[compatibility].implies;
-        var result = featureNames ? featureNames.slice() : [];
+        var features = FEATURE_INFOS[compatibility].implies;
+        var result = features ? features.slice() : [];
         return result;
     }
     
     function isAvailable(compatibility)
     {
-        var feature = FEATURES[compatibility];
-        var result = feature != null && feature.available;
+        var featureInfo = FEATURE_INFOS[compatibility];
+        var result = featureInfo != null && featureInfo.available;
         return result;
     }
     
@@ -1560,9 +1561,9 @@
     
     var JScrewIt =
     {
-        encode:             encode,
-        getFeatureNames:    getFeatureNames,
-        isAvailable:        isAvailable
+        encode:         encode,
+        getSubFeatures: getSubFeatures,
+        isAvailable:    isAvailable
     };
     
     self.JSFuck = self.JScrewIt = JScrewIt;
