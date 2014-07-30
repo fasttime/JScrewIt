@@ -135,7 +135,7 @@
                 function (feature)
                 {
                     var featureInfo = getFeatureInfo(feature);
-                    featureMask |= featureInfo.value;
+                    featureMask |= featureInfo.mask;
                 }
             );
         }
@@ -143,25 +143,24 @@
     }
     
     var arraySlice = Array.prototype.slice;
+    var availableFeatureMask;
     
-    // Assign a power of 2 value to each checkable feature
+    // Assign a bit mask to each checkable feature
     (
     function ()
     {
         function completeFeature(feature)
         {
             var featureInfo = FEATURE_INFOS[feature];
-            if (!('value' in featureInfo))
+            var mask = featureInfo.mask;
+            if (mask == null)
             {
-                var value = 0;
-                var available = true;
                 if (featureInfo.check)
                 {
-                    value = 1 << bitIndex++;
-                    available = featureInfo.check();
-                    if (available)
+                    mask = 1 << bitIndex++;
+                    if (featureInfo.check())
                     {
-                        autoValue |= value;
+                        availableFeatureMask |= mask;
                         autoImplies.push(feature);
                     }
                 }
@@ -171,26 +170,23 @@
                     implies.forEach(
                         function (imply)
                         {
-                            var impliedFeatureInfo = completeFeature(imply);
-                            value |= impliedFeatureInfo.value;
-                            available &= impliedFeatureInfo.available;
+                            var impliedFeatureMask = completeFeature(imply);
+                            mask |= impliedFeatureMask;
                         }
                     );
                 }
-                featureInfo.value = value;
-                featureInfo.available = available;
+                featureInfo.mask = mask;
             }
-            return featureInfo;
+            return mask;
         }
         
         var bitIndex = 0;
         var features = Object.getOwnPropertyNames(FEATURE_INFOS);
-        var autoValue = 0;
         var autoImplies = [];
         features.forEach(completeFeature);
         FEATURE_INFOS.AUTO =
             {
-                value: autoValue,
+                mask: availableFeatureMask,
                 available: true,
                 implies: autoImplies
             };
@@ -1559,11 +1555,10 @@
         return result;
     }
     
-    function isAvailable(feature)
+    function isAvailable(features)
     {
-        var featureInfo = FEATURE_INFOS[feature];
-        var result = featureInfo != null && featureInfo.available;
-        return result;
+        var featureMask = getFeatureMask(features);
+        return (featureMask & availableFeatureMask) === featureMask;
     }
     
     var encoders = { };
