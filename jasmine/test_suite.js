@@ -36,7 +36,7 @@
             }
         }
         
-        var result = '    ';
+        var result = '     ';
         compatibilities.forEach(
             function (compatibility)
             {
@@ -102,7 +102,7 @@
     function padBoth(str, length)
     {
         str += '';
-        var result = padLeft(padRight(str, length + str.length >> 1), length);
+        var result = padRight(padLeft(str, length + str.length >> 1), length);
         return result;
     }
     
