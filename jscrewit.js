@@ -6,16 +6,6 @@
     
     var FEATURE_INFOS =
     {
-        DEFAULT:
-        { },
-        COMPACT:
-        {
-            implies: ['GMT', 'SELF', 'ATOB', 'UNDEFINED', 'WINDOW']
-        },
-        NO_IE:
-        {
-            implies: ['NO_IE_SRC', 'GMT', 'NAME']
-        },
         NO_SAFARI_LF:
         {
             check: function ()
@@ -108,6 +98,32 @@
             {
                 return 'fill' in Array.prototype;
             }
+        },
+        
+        DEFAULT:
+        { },
+        COMPACT:
+        {
+            implies: ['GMT', 'SELF', 'WINDOW', 'ATOB', 'UNDEFINED']
+        },
+        NO_IE:
+        {
+            implies: ['NO_IE_SRC', 'GMT', 'NAME']
+        },
+        FF31: // FF >= 31
+        {
+            implies:
+            [
+                'NO_SAFARI_LF',
+                'FF_SAFARI_SRC',
+                'GMT',
+                'SELF',
+                'WINDOW',
+                'ATOB',
+                'NAME',
+                'UNDEFINED',
+                'FILL'
+            ]
         },
     };
     
