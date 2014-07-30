@@ -104,25 +104,25 @@
         { },
         COMPACT:
         {
-            implies: ['GMT', 'SELF', 'WINDOW', 'ATOB', 'UNDEFINED']
+            implies: ['ATOB', 'GMT', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         NO_IE:
         {
-            implies: ['NO_IE_SRC', 'GMT', 'NAME']
+            implies: ['GMT', 'NAME', 'NO_IE_SRC']
         },
         FF31: // FF >= 31
         {
             implies:
             [
-                'NO_SAFARI_LF',
-                'FF_SAFARI_SRC',
-                'GMT',
-                'SELF',
-                'WINDOW',
                 'ATOB',
+                'FF_SAFARI_SRC',
+                'FILL',
+                'GMT',
                 'NAME',
+                'NO_SAFARI_LF',
+                'SELF',
                 'UNDEFINED',
-                'FILL'
+                'WINDOW'
             ]
         },
     };
@@ -204,7 +204,7 @@
             {
                 mask: availableFeatureMask,
                 available: true,
-                implies: autoImplies
+                implies: autoImplies.sort()
             };
     }
     )();
