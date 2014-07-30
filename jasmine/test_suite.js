@@ -143,7 +143,7 @@
             function()
             {
                 it(
-                    'with DEFAULT compatibility returns an empty array',
+                    'returns an empty array for the DEFAULT feature',
                     function ()
                     {
                         var subFeatures = JScrewIt.getSubFeatures('DEFAULT');
@@ -151,19 +151,19 @@
                     }
                 );
                 it(
-                    'without compatibility returns an empty array',
-                    function ()
-                    {
-                        var subFeatures = JScrewIt.getSubFeatures();
-                        expect(subFeatures.length).toBe(0);
-                    }
-                );
-                it(
-                    'with AUTO compatibility returns a non-empty array',
+                    'returns a non-empty array for the AUTO feature',
                     function ()
                     {
                         var subFeatures = JScrewIt.getSubFeatures('AUTO');
                         expect(subFeatures.length).toBeGreaterThan(0);
+                    }
+                );
+                it(
+                    'returns an array containing NO_IE_SRC for the CHROME_SRC feature',
+                    function ()
+                    {
+                        var subFeatures = JScrewIt.getSubFeatures('CHROME_SRC');
+                        expect(subFeatures).toContain('NO_IE_SRC');
                     }
                 );
                 it(
