@@ -259,12 +259,12 @@
         'FHP_3_NO + FBEP_4_S',
         ,
         'FHP_5_N + FBEP_4_S',
-        'FHP_1_S + FBEP_9_N',
+        'FHP_1_S + FBEP_9_U',
         ,
-        '[FHP_3_NO] + FBEP_9_N',
+        '[FHP_3_NO] + FBEP_9_U',
         ,
         ,
-        'FHP_5_N + RP_1_S + FBEP_9_N'
+        'FHP_5_N + [RP_1_NO] + FBEP_9_U'
     ];
     
     var FB_NO_IE_PADDINGS =
@@ -278,10 +278,10 @@
         ,
         'RP_3_NO + FBEP_4_S',
         ,
-        'FBEP_9_N',
-        'RP_1_S + FBEP_9_N',
+        'FBEP_9_U',
+        '[RP_1_NO] + FBEP_9_U',
         ,
-        'RP_3_S + FBEP_9_N'
+        '[RP_3_NO] + FBEP_9_U'
     ];
     
     var FH_PADDINGS =
@@ -292,7 +292,7 @@
         'FHP_3_NO',
         ,
         'FHP_5_N',
-        'FHP_5_N + RP_1_S',
+        'FHP_5_N + [RP_1_NO]',
         'FHP_3_NO + [RP_4_N]',
         'FHP_3_NO + [RP_5_N]',
         // Unused:
@@ -893,7 +893,7 @@
         // The number after "FBEP_" is the maximum character overhead. The letters after the last
         // underscore have the same meaning as in regular padding blocks.
         FBEP_4_S:       '[[true][+!!(RP_5_N + ANY_FUNCTION)["40"]]]',
-        FBEP_9_N:       '[false][+!(RP_5_N + ANY_FUNCTION)["40"]]',
+        FBEP_9_U:       '[false][+!(RP_5_N + ANY_FUNCTION)["40"]]',
         
         // Function header padding blocks: prepended to a function to align the function's header
         // at the same position on different browsers.
@@ -907,18 +907,18 @@
                 
         // Regular padding blocks.
         // The number after "RP_" is the character overhead.
-        // The postfix "_N" in the name indicates that the constant does not evaluate to a string or
-        // array; the postifx "_S" in the name indicates that the constant does evaluate to a string
-        // or array.
+        // The postifx "_S" in the name indicates that the constant always evaluates to a string or
+        // an array.
+        // The postfix "_N" in the name indicates that the constant does not always evaluate to a
+        // string or an array, but it never evaluates to undefined.
+        // The postfix "_U" in the name indicates that the constant can evaluate to undefined.
         // A trailing "O" as in "_NO" and "_SO" is appended to the name if the constant resolves to
         // an expression containing a plus sign ("+") out of brackets not preceded by an exclamation
-        // mark. When concatenating such a constant with other expressions, the outer plus constant
-        // should be placed in the beginning whenever possible in order to save an extra pair of
-        // brackets in the resolved expressions.
+        // mark ("!"). When concatenating such a constant with other expressions, the outer plus
+        // constant should be placed in the beginning whenever possible in order to save an extra
+        // pair of brackets in the resolved expressions.
         RP_1_NO:        '0',
-        RP_1_S:         '[0]',
         RP_3_NO:        'NaN',
-        RP_3_S:         '[NaN]',
         RP_4_N:         'true',
         RP_5_N:         'false',
         RP_6_SO:        '"0false"',
