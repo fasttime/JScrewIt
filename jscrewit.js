@@ -906,14 +906,16 @@
         FHP_3_NO:       '+(1 + [+(ANY_FUNCTION + [])[0]])',
         FHP_5_N:        '!!(+(ANY_FUNCTION + [])[0] + true)',
                 
-        // Regular padding blocks. The number after "RP_" is the character overhead. The postfix
-        // "_N" in the name indicates that the constant does not evaluate to a string or array. The
-        // postifx "_S" in the name indicates that the constant does evaluate to a string or array.
+        // Regular padding blocks.
+        // The number after "RP_" is the character overhead.
+        // The postfix "_N" in the name indicates that the constant does not evaluate to a string or
+        // array; the postifx "_S" in the name indicates that the constant does evaluate to a string
+        // or array.
         // A trailing "O" as in "_NO" and "_SO" is appended to the name if the constant resolves to
-        // an expression containing a plus sign ("+") out of brackets (PSOOB). When concatenating
-        // such a constant with other expressions, the PSOOB constant should be placed in the
-        // beginning whenever possible in order to save an extra pair of brackets in the resolved
-        // expressions.
+        // an expression containing a plus sign ("+") out of brackets not preceded by an exclamation
+        // mark. When concatenating such a constant with other expressions, the outer plus constant
+        // should be placed in the beginning whenever possible in order to save an extra pair of
+        // brackets in the resolved expressions.
         RP_1_NO:        '0',
         RP_1_S:         '[0]',
         RP_3_NO:        'NaN',
@@ -931,7 +933,7 @@
                 var charCode = character.charCodeAt(0);
                 var encoder =
                     charCode < 0x100 ? unescapeCharacterEncoder8 : unescapeCharacterEncoder16;
-                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING);
+                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
                 return result;
             }
         ),
@@ -940,7 +942,7 @@
             {
                 var charCode = character.charCodeAt(0);
                 var encoder = charCode < 0x100 ? atobCharacterEncoder : unescapeCharacterEncoder16;
-                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING);
+                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
                 return result;
             },
             'ATOB'
@@ -1142,7 +1144,7 @@
                     indexer = '"' + indexer + '"';
                 }
                 var fullExpr = '(' + paddingString + '+' + expr + ')[' + indexer + ']';
-                var result = createSolution(this.replace(fullExpr), LEVEL_STRING);
+                var result = createSolution(this.replace(fullExpr), LEVEL_STRING, false);
                 return result;
             }
         }
@@ -1161,19 +1163,21 @@
         return definition;
     }
     
-    function createSolution(replacement, level)
+    function createSolution(replacement, level, outerPlus)
     {
         var result = Object(replacement);
         result.level = level;
+        result.outerPlus = outerPlus;
         return result;
     }
     
-    // Determine whether the specified expression contains a plus sign out of brackets.
-    function hasPsoob(expr)
+    // Determine whether the specified expression contains a plus sign out of brackets not preceded
+    // by an exclamation mark.
+    function hasOuterPlus(expr)
     {
-        if (expr.psoob != null)
+        if (expr.outerPlus != null)
         {
-            return expr.psoob;
+            return expr.outerPlus;
         }
         var unclosed = 0;
         var regExp = /".*?"|!\+|[+([)\]]/g;
@@ -1185,7 +1189,7 @@
             case '+':
                 if (!unclosed)
                 {
-                    expr.psoob = true;
+                    expr.outerPlus = true;
                     return true;
                 }
                 break;
@@ -1199,7 +1203,7 @@
                 break;
             }
         }
-        expr.psoob = false;
+        expr.outerPlus = false;
         return false;
     }
     
@@ -1285,7 +1289,7 @@
                     this.peekLastFromStack()
                     );
             }
-            if (isPrecededByOperator(expr, offset) && hasPsoob(replacement))
+            if (isPrecededByOperator(expr, offset) && hasOuterPlus(replacement))
             {
                 replacement = '(' + replacement + ')';
             }
@@ -1530,7 +1534,8 @@
                     }
                     if (
                         result &&
-                        (fullLevel < LEVEL_OBJECT && level < LEVEL_OBJECT || hasPsoob(solution)))
+                        (fullLevel < LEVEL_OBJECT && level < LEVEL_OBJECT ||
+                        hasOuterPlus(solution)))
                     {
                         if (level > LEVEL_UNDEFINED)
                         {
