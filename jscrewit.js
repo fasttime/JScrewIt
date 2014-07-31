@@ -238,7 +238,6 @@
         FEATURE_INFOS.AUTO =
             {
                 mask: availableFeatureMask,
-                available: true,
                 implies: autoImplies.sort()
             };
     }
@@ -1493,7 +1492,7 @@
             {
                 if (!simplePattern)
                 {
-                    simplePattern = Object.keys(SIMPLE).join('|') + '|[^]';
+                    simplePattern = Object.getOwnPropertyNames(SIMPLE).join('|') + '|[^]';
                 }
                 var regExp = new RegExp(simplePattern, 'g');
                 var match;
