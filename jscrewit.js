@@ -26,7 +26,7 @@
             {
                 return /^.{19} \[native code\] \}/.test(Object);
             },
-            implies: ['NO_IE_SRC']
+            includes: ['NO_IE_SRC']
         },
         FF_SAFARI_SRC:
         {
@@ -34,7 +34,7 @@
             {
                 return /^.{19}\n    \[native code\]\n\}/.test(Object);
             },
-            implies: ['NO_IE_SRC']
+            includes: ['NO_IE_SRC']
         },
         IE_SRC:
         {
@@ -104,15 +104,15 @@
         { },
         COMPACT:
         {
-            implies: ['ATOB', 'GMT', 'SELF', 'UNDEFINED', 'WINDOW']
+            includes: ['ATOB', 'GMT', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         NO_IE:
         {
-            implies: ['GMT', 'NAME', 'NO_IE_SRC']
+            includes: ['GMT', 'NAME', 'NO_IE_SRC']
         },
         FF31:
         {
-            implies:
+            includes:
             [
                 'ATOB',
                 'FF_SAFARI_SRC',
@@ -127,19 +127,19 @@
         },
         IE9:
         {
-            implies: ['IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
+            includes: ['IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         IE10:
         {
-            implies: ['ATOB', 'IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
+            includes: ['ATOB', 'IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         IE11:
         {
-            implies: ['ATOB', 'GMT', 'IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
+            includes: ['ATOB', 'GMT', 'IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         NODE:
         {
-            implies: ['CHROME_SRC', 'GMT', 'NAME', 'NO_SAFARI_LF', 'UNDEFINED']
+            includes: ['CHROME_SRC', 'GMT', 'NAME', 'NO_SAFARI_LF', 'UNDEFINED']
         },
     };
     
@@ -192,17 +192,17 @@
                     if (featureInfo.check())
                     {
                         availableFeatureMask |= mask;
-                        autoImplies.push(feature);
+                        autoIncludes.push(feature);
                     }
                 }
-                var implies = featureInfo.implies;
-                if (implies)
+                var includes = featureInfo.includes;
+                if (includes)
                 {
-                    implies.forEach(
-                        function (imply)
+                    includes.forEach(
+                        function (include)
                         {
-                            var impliedFeatureMask = completeFeature(imply);
-                            mask |= impliedFeatureMask;
+                            var includedFeatureMask = completeFeature(include);
+                            mask |= includedFeatureMask;
                         }
                     );
                 }
@@ -213,12 +213,12 @@
         
         var bitIndex = 0;
         var features = Object.getOwnPropertyNames(FEATURE_INFOS);
-        var autoImplies = [];
+        var autoIncludes = [];
         features.forEach(completeFeature);
         FEATURE_INFOS.AUTO =
             {
                 mask: availableFeatureMask,
-                implies: autoImplies.sort()
+                includes: autoIncludes.sort()
             };
     }
     )();
@@ -1597,8 +1597,8 @@
     function getSubFeatures(feature)
     {
         var featureInfo = getFeatureInfo(feature);
-        var implies = featureInfo.implies;
-        var result = implies ? implies.slice() : [];
+        var includes = featureInfo.includes;
+        var result = includes ? includes.slice() : [];
         return result;
     }
     
