@@ -1599,6 +1599,12 @@
     
     // BEGIN: JScrewIt /////////////////
     
+    function areFeaturesAvailable(features)
+    {
+        var featureMask = getFeatureMask(features);
+        return (featureMask & availableFeatureMask) === featureMask;
+    }
+    
     function areFeaturesCompatible(features)
     {
         var featureMask = getFeatureMask(features);
@@ -1636,12 +1642,6 @@
         return result;
     }
     
-    function isAvailable(features)
-    {
-        var featureMask = getFeatureMask(features);
-        return (featureMask & availableFeatureMask) === featureMask;
-    }
-    
     function isFeatureMaskCompatible(featureMask)
     {
         var result =
@@ -1660,10 +1660,10 @@
     
     var JScrewIt =
     {
+        areFeaturesAvailable:   areFeaturesAvailable,
         areFeaturesCompatible:  areFeaturesCompatible,
         encode:                 encode,
         getSubFeatures:         getSubFeatures,
-        isAvailable:            isAvailable
     };
     
     self.JSFuck = self.JScrewIt = JScrewIt;
