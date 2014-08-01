@@ -148,6 +148,28 @@
             }
         );
         describe(
+            'JScrewIt.areFeaturesCompatible',
+            function()
+            {
+                it(
+                    'returns true for compatible features',
+                    function ()
+                    {
+                        var compatible = JScrewIt.areFeaturesCompatible(['FILL', 'SELF']);
+                        expect(compatible).toBe(true);
+                    }
+                );
+                it(
+                    'returns false for incompatible features',
+                    function ()
+                    {
+                        var compatible = JScrewIt.areFeaturesCompatible(['CHROME_SRC', 'IE_SRC']);
+                        expect(compatible).toBe(false);
+                    }
+                );
+            }
+        );
+        describe(
             'JScrewIt.getSubFeatures',
             function()
             {
