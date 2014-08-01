@@ -136,6 +136,15 @@
                     describeTest('NO_IE');
                 }
                 describeTest('AUTO');
+                it(
+                    'throws a ReferenceError for incompatible features',
+                    function ()
+                    {
+                        var fn =
+                            function () { JScrewIt.encode('', false, ['NO_IE_SRC', 'IE_SRC']); };
+                        expect(fn).toThrow(new ReferenceError('Incompatible features'));
+                    }
+                );
             }
         );
         describe(
