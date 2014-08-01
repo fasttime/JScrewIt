@@ -18,7 +18,8 @@
             check: function ()
             {
                 return /^function Object\(\) \{(\n   )? \[native code\][^]\}/.test(Object);
-            }
+            },
+            excludes: ['IE_SRC']
         },
         CHROME_SRC:
         {
@@ -26,7 +27,8 @@
             {
                 return /^.{19} \[native code\] \}/.test(Object);
             },
-            includes: ['NO_IE_SRC']
+            includes: ['NO_IE_SRC'],
+            excludes: ['FF_SAFARI_SRC']
         },
         FF_SAFARI_SRC:
         {
@@ -34,14 +36,16 @@
             {
                 return /^.{19}\n    \[native code\]\n\}/.test(Object);
             },
-            includes: ['NO_IE_SRC']
+            includes: ['NO_IE_SRC'],
+            excludes: ['CHROME_SRC']
         },
         IE_SRC:
         {
             check: function ()
             {
                 return /^\nfunction Object\(\) \{\n    \[native code\]\n\}/.test(Object);
-            }
+            },
+            excludes: ['NO_IE_SRC']
         },
         GMT: // not for IE < 11
         {
@@ -62,14 +66,16 @@
             check: function ()
             {
                 return (self + '') === '[object Window]';
-            }
+            },
+            excludes: ['DOMWINDOW']
         },
         DOMWINDOW: // Android < 4.4
         {
             check: function ()
             {
                 return (self + '') === '[object DOMWindow]';
-            }
+            },
+            excludes: ['WINDOW']
         },
         ATOB: // not for IE < 10 and Node.js
         {
@@ -175,38 +181,55 @@
     }
     
     var availableFeatureMask;
+    var incompatibleFeatureMasks = [];
     
     // Assign a bit mask to each checkable feature
     (
     function ()
     {
-        function completeFeature(feature)
+        function completeFeature(feature, ignoreExcludes)
         {
-            var featureInfo = FEATURE_INFOS[feature];
-            var mask = featureInfo.mask;
+            var info = FEATURE_INFOS[feature];
+            var mask = info.mask;
             if (mask == null)
             {
-                if (featureInfo.check)
+                if (info.check)
                 {
                     mask = 1 << bitIndex++;
-                    if (featureInfo.check())
+                    if (info.check())
                     {
                         availableFeatureMask |= mask;
                         autoIncludes.push(feature);
                     }
                 }
-                var includes = featureInfo.includes;
+                var includes = info.includes;
                 if (includes)
                 {
                     includes.forEach(
                         function (include)
                         {
-                            var includedFeatureMask = completeFeature(include);
-                            mask |= includedFeatureMask;
+                            var includeMask = completeFeature(include);
+                            mask |= includeMask;
                         }
                     );
                 }
-                featureInfo.mask = mask;
+                info.mask = mask;
+                if (ignoreExcludes !== true)
+                {
+                    var excludes = info.excludes;
+                    if (excludes)
+                    {
+                        excludes.forEach(
+                            function (exclude)
+                            {
+                                var excludeMask = completeFeature(exclude, true);
+                                var incompatibleMask = mask | excludeMask;
+                                incompatibleFeatureMasks.push(incompatibleMask);
+                            }
+                        );
+                    }
+                    info.mask = mask;
+                }
             }
             return mask;
         }
@@ -1576,6 +1599,13 @@
     
     // BEGIN: JScrewIt /////////////////
     
+    function areFeaturesCompatible(features)
+    {
+        var featureMask = getFeatureMask(features);
+        var result = isFeatureMaskCompatible(featureMask);
+        return result;
+    }
+    
     function encode(input, wrapWithEval, features)
     {
         var encoder = getEncoder(features);
@@ -1586,6 +1616,10 @@
     function getEncoder(features)
     {
         var featureMask = getFeatureMask(features);
+        if (!isFeatureMaskCompatible(featureMask))
+        {
+            throw new ReferenceError('Incompatible features');
+        }
         var encoder = encoders[featureMask];
         if (!encoder)
         {
@@ -1608,13 +1642,28 @@
         return (featureMask & availableFeatureMask) === featureMask;
     }
     
+    function isFeatureMaskCompatible(featureMask)
+    {
+        var result =
+            incompatibleFeatureMasks.every(
+                function (incompatibleFeatureMask)
+                {
+                    var result =
+                        (incompatibleFeatureMask & featureMask) !== incompatibleFeatureMask;
+                    return result;
+                }
+            );
+        return result;
+    }
+    
     var encoders = { };
     
     var JScrewIt =
     {
-        encode:         encode,
-        getSubFeatures: getSubFeatures,
-        isAvailable:    isAvailable
+        areFeaturesCompatible:  areFeaturesCompatible,
+        encode:                 encode,
+        getSubFeatures:         getSubFeatures,
+        isAvailable:            isAvailable
     };
     
     self.JSFuck = self.JScrewIt = JScrewIt;
