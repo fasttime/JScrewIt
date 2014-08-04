@@ -170,48 +170,81 @@
             }
         );
         describe(
-            'JScrewIt.getSubFeatures',
+            'JScrewIt.getFeatureInfo',
             function()
             {
                 it(
-                    'returns an empty array for the DEFAULT feature',
+                    'returns each time a new object',
                     function ()
                     {
-                        var subFeatures = JScrewIt.getSubFeatures('DEFAULT');
-                        expect(subFeatures.length).toBe(0);
+                        var info1 = JScrewIt.getFeatureInfo('DEFAULT');
+                        var info2 = JScrewIt.getFeatureInfo('DEFAULT');
+                        expect(info1).not.toBe(info2);
+                        expect(info1.includes).not.toBe(info2.includes);
+                        expect(info1.excludes).not.toBe(info2.excludes);
                     }
                 );
-                it(
-                    'returns a non-empty array for the AUTO feature',
+                describe(
+                    'returns correct information',
                     function ()
                     {
-                        var subFeatures = JScrewIt.getSubFeatures('AUTO');
-                        expect(subFeatures.length).toBeGreaterThan(0);
+                        it(
+                            'for the DEFAULT feature',
+                            function ()
+                            {
+                                var info = JScrewIt.getFeatureInfo('DEFAULT');
+                                expect(info.name).toBe('DEFAULT');
+                                expect(info.available).toBe(true);
+                                expect(info.includes.length).toBe(0);
+                                expect(info.excludes.length).toBe(0);
+                            }
+                        );
+                        it(
+                            'for the AUTO feature',
+                            function ()
+                            {
+                                var info = JScrewIt.getFeatureInfo('AUTO');
+                                expect(info.name).toBe('AUTO');
+                                expect(info.available).toBe(true);
+                                expect(info.includes.length).toBeGreaterThan(0);
+                                expect(info.excludes.length).toBe(0);
+                            }
+                        );
+                        it(
+                            'for the CHROME_SRC feature',
+                            function ()
+                            {
+                                var info = JScrewIt.getFeatureInfo('CHROME_SRC');
+                                expect(info.name).toBe('CHROME_SRC');
+                                expect(typeof info.available).toBe('boolean');
+                                expect(info.includes).toContain('NO_IE_SRC');
+                                expect(info.excludes).toContain('FF_SAFARI_SRC');
+                            }
+                        );
                     }
                 );
-                it(
-                    'returns an array containing NO_IE_SRC for the CHROME_SRC feature',
+                describe(
+                    'throws a ReferenceError',
                     function ()
                     {
-                        var subFeatures = JScrewIt.getSubFeatures('CHROME_SRC');
-                        expect(subFeatures).toContain('NO_IE_SRC');
-                    }
-                );
-                it(
-                    'returns each time a new array',
-                    function ()
-                    {
-                        var subFeatures1 = JScrewIt.getSubFeatures('AUTO');
-                        var subFeatures2 = JScrewIt.getSubFeatures('AUTO');
-                        expect(subFeatures1).not.toBe(subFeatures2);
-                    }
-                );
-                it(
-                    'throws a ReferenceError for a nonexisting feature',
-                    function ()
-                    {
-                        var fn = function () { JScrewIt.getSubFeatures('xyz'); };
-                        expect(fn).toThrow(new ReferenceError('Unknown feature "xyz"'));
+                        it(
+                            'for a nonexisting feature',
+                            function ()
+                            {
+                                var fn = function () { JScrewIt.getFeatureInfo('xyz'); }
+                                expect(fn).toThrow(new ReferenceError('Unknown feature "xyz"'));
+                            }
+                        );
+                        it(
+                            'for a missing parameter',
+                            function ()
+                            {
+                                var fn = function () { JScrewIt.getFeatureInfo(); }
+                                expect(fn).toThrow(
+                                    new ReferenceError('Unknown feature "undefined"')
+                                    );
+                            }
+                        );
                     }
                 );
             }
