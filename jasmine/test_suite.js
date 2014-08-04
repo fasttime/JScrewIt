@@ -231,7 +231,7 @@
                             'for a nonexisting feature',
                             function ()
                             {
-                                var fn = function () { JScrewIt.getFeatureInfo('xyz'); }
+                                var fn = function () { JScrewIt.getFeatureInfo('xyz'); };
                                 expect(fn).toThrow(new ReferenceError('Unknown feature "xyz"'));
                             }
                         );
@@ -239,7 +239,7 @@
                             'for a missing parameter',
                             function ()
                             {
-                                var fn = function () { JScrewIt.getFeatureInfo(); }
+                                var fn = function () { JScrewIt.getFeatureInfo(); };
                                 expect(fn).toThrow(
                                     new ReferenceError('Unknown feature "undefined"')
                                     );
