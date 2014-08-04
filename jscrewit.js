@@ -4,7 +4,7 @@
     
     // BEGIN: Features /////////////////
     
-    var FEATURE_INFOS =
+    var FEATURE_DATA_SET =
     {
         NO_SAFARI_LF:
         {
@@ -107,17 +107,27 @@
         },
         
         DEFAULT:
-        { },
+        {
+            description: 'Minimun feature level, compatible with all supported engines.'
+        },
         COMPACT:
         {
+            description:
+                'All new browsers\' features. ' +
+                'No support for Node.js and older browsers like IE 10 or Android Browser 4.1.2.',
             includes: ['ATOB', 'GMT', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         NO_IE:
         {
+            description:
+                'Features available in all supported engines except IE. ' +
+                'Includes features used by JSfuck with the exception of "UNDEFINED", which is ' +
+                'not available in older Android Browser versions.',
             includes: ['GMT', 'NAME', 'NO_IE_SRC']
         },
         FF31:
         {
+            description: 'Features available in Firefox 31 and possibly later versions.',
             includes:
             [
                 'ATOB',
@@ -133,36 +143,48 @@
         },
         IE9:
         {
+            description:
+                'Features available in IE 9. ' +
+                'Compatible with IE 10, 11 and possibly later versions.',
             includes: ['IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         IE10:
         {
+            description:
+                'Features available in IE 10. ' +
+                'Compatible with IE 11 and possibly later versions.',
             includes: ['ATOB', 'IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         IE11:
         {
+            description:
+                'Features available in IE 11. ' +
+                'Possibly compatible with later versions.',
             includes: ['ATOB', 'GMT', 'IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         NODE:
         {
+            description:
+                'Features available in Node.js. ' +
+                'Also compatible with Chrome and Opera.',
             includes: ['CHROME_SRC', 'GMT', 'NAME', 'NO_SAFARI_LF', 'UNDEFINED']
         },
     };
     
-    function getFeatureInfo(feature)
+    function getFeatureData(feature)
     {
         feature = feature + '';
-        var featureInfo = FEATURE_INFOS[feature];
-        if (!featureInfo)
+        var data = FEATURE_DATA_SET[feature];
+        if (!data)
         {
             throw new ReferenceError('Unknown feature ' + JSON.stringify(feature));
         }
-        return featureInfo;
+        return data;
     }
     
     function getFeatureMask(features)
     {
-        var featureMask = 0;
+        var mask = 0;
         if (features !== undefined)
         {
             if (!Array.isArray(features))
@@ -172,12 +194,12 @@
             features.forEach(
                 function (feature)
                 {
-                    var featureInfo = getFeatureInfo(feature);
-                    featureMask |= featureInfo.mask;
+                    var data = getFeatureData(feature);
+                    mask |= data.mask;
                 }
             );
         }
-        return featureMask;
+        return mask;
     }
     
     var availableFeatureMask;
@@ -189,20 +211,20 @@
     {
         function completeFeature(feature, ignoreExcludes)
         {
-            var info = FEATURE_INFOS[feature];
-            var mask = info.mask;
+            var data = FEATURE_DATA_SET[feature];
+            var mask = data.mask;
             if (mask == null)
             {
-                if (info.check)
+                if (data.check)
                 {
                     mask = 1 << bitIndex++;
-                    if (info.check())
+                    if (data.check())
                     {
                         availableFeatureMask |= mask;
                         autoIncludes.push(feature);
                     }
                 }
-                var includes = info.includes;
+                var includes = data.includes;
                 if (includes)
                 {
                     includes.forEach(
@@ -213,10 +235,10 @@
                         }
                     );
                 }
-                info.mask = mask;
+                data.mask = mask ^ 0;
                 if (ignoreExcludes !== true)
                 {
-                    var excludes = info.excludes;
+                    var excludes = data.excludes;
                     if (excludes)
                     {
                         excludes.forEach(
@@ -228,20 +250,20 @@
                             }
                         );
                     }
-                    info.mask = mask;
                 }
             }
             return mask;
         }
         
         var bitIndex = 0;
-        var features = Object.getOwnPropertyNames(FEATURE_INFOS);
+        var features = Object.getOwnPropertyNames(FEATURE_DATA_SET);
         var autoIncludes = [];
         features.forEach(completeFeature);
-        FEATURE_INFOS.AUTO =
+        FEATURE_DATA_SET.AUTO =
             {
-                mask: availableFeatureMask,
-                includes: autoIncludes.sort()
+                description: 'All features available in the current engine.',
+                includes: autoIncludes.sort(),
+                mask: availableFeatureMask
             };
     }
     )();
@@ -1634,11 +1656,20 @@
         return encoder;
     }
     
-    function getSubFeatures(feature)
+    function getFeatureInfo(feature)
     {
-        var featureInfo = getFeatureInfo(feature);
-        var includes = featureInfo.includes;
-        var result = includes ? includes.slice() : [];
+        var data = getFeatureData(feature);
+        var includes = data.includes;
+        var excludes = data.excludes;
+        var mask = data.mask;
+        var result =
+        {
+            name:           feature,
+            description:    data.description,
+            includes:       includes ? includes.slice() : [],
+            excludes:       excludes ? excludes.slice() : [],
+            available:      (mask & availableFeatureMask) === mask
+        };
         return result;
     }
     
@@ -1663,7 +1694,7 @@
         areFeaturesAvailable:   areFeaturesAvailable,
         areFeaturesCompatible:  areFeaturesCompatible,
         encode:                 encode,
-        getSubFeatures:         getSubFeatures,
+        getFeatureInfo:         getFeatureInfo,
     };
     
     self.JSFuck = self.JScrewIt = JScrewIt;
