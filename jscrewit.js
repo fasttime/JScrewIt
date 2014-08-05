@@ -4,7 +4,7 @@
     
     // BEGIN: Features /////////////////
     
-    var FEATURE_DATA_SET =
+    var FEATURE_INFO_MAP =
     {
         NO_SAFARI_LF:
         {
@@ -171,20 +171,9 @@
         },
     };
     
-    function getFeatureData(feature)
-    {
-        feature = feature + '';
-        var data = FEATURE_DATA_SET[feature];
-        if (!data)
-        {
-            throw new ReferenceError('Unknown feature ' + JSON.stringify(feature));
-        }
-        return data;
-    }
-    
     function getFeatureMask(features)
     {
-        var mask = 0;
+        var result = 0;
         if (features !== undefined)
         {
             if (!Array.isArray(features))
@@ -194,14 +183,20 @@
             features.forEach(
                 function (feature)
                 {
-                    var data = getFeatureData(feature);
-                    mask |= data.mask;
+                    feature += '';
+                    if (!featureMaskMap.hasOwnProperty(feature))
+                    {
+                        throw new ReferenceError('Unknown feature ' + JSON.stringify(feature));
+                    }
+                    var mask = featureMaskMap[feature];
+                    result |= mask;
                 }
             );
         }
-        return mask;
+        return result;
     }
     
+    var featureMaskMap = { };
     var availableFeatureMask;
     var incompatibleFeatureMasks = [];
     
@@ -211,60 +206,64 @@
     {
         function completeFeature(feature, ignoreExcludes)
         {
-            var data = FEATURE_DATA_SET[feature];
-            var mask = data.mask;
+            var mask = featureMaskMap[feature];
             if (mask == null)
             {
-                if (data.check)
+                var info = FEATURE_INFO_MAP[feature];
+                if (info.check)
                 {
                     mask = 1 << bitIndex++;
-                    if (data.check())
+                    if (info.check())
                     {
                         availableFeatureMask |= mask;
                         autoIncludes.push(feature);
                     }
                 }
-                var includes = data.includes;
-                if (includes)
+                mask ^= 0;
+                var includes = Object.freeze(info.includes || (info.includes = []));
+                includes.forEach(
+                    function (include)
+                    {
+                        var includeMask = completeFeature(include);
+                        mask |= includeMask;
+                    }
+                );
+                var excludes = Object.freeze(info.excludes || (info.excludes = []));
+                if (ignoreExcludes !== true)
                 {
-                    includes.forEach(
-                        function (include)
+                    excludes.forEach(
+                        function (exclude)
                         {
-                            var includeMask = completeFeature(include);
-                            mask |= includeMask;
+                            var excludeMask = completeFeature(exclude, true);
+                            var incompatibleMask = mask | excludeMask;
+                            incompatibleFeatureMasks.push(incompatibleMask);
                         }
                     );
                 }
-                data.mask = mask ^ 0;
-                if (ignoreExcludes !== true)
-                {
-                    var excludes = data.excludes;
-                    if (excludes)
-                    {
-                        excludes.forEach(
-                            function (exclude)
-                            {
-                                var excludeMask = completeFeature(exclude, true);
-                                var incompatibleMask = mask | excludeMask;
-                                incompatibleFeatureMasks.push(incompatibleMask);
-                            }
-                        );
-                    }
-                }
+                info.name = feature;
+                var available = (mask & availableFeatureMask) === mask;
+                info.available = available;
+                Object.freeze(info);
+                featureMaskMap[feature] = mask;
             }
             return mask;
         }
         
         var bitIndex = 0;
-        var features = Object.getOwnPropertyNames(FEATURE_DATA_SET);
+        var features = Object.getOwnPropertyNames(FEATURE_INFO_MAP);
         var autoIncludes = [];
         features.forEach(completeFeature);
-        FEATURE_DATA_SET.AUTO =
-            {
-                description: 'All features available in the current engine.',
-                includes: autoIncludes.sort(),
-                mask: availableFeatureMask
-            };
+        FEATURE_INFO_MAP.AUTO =
+            Object.freeze(
+                {
+                    description: 'All features available in the current engine.',
+                    includes: Object.freeze(autoIncludes.sort()),
+                    excludes: Object.freeze([]),
+                    name: 'AUTO',
+                    available: true
+                }
+            );
+        featureMaskMap.AUTO = availableFeatureMask;
     }
     )();
     
@@ -1658,18 +1657,12 @@
     
     function getFeatureInfo(feature)
     {
-        var data = getFeatureData(feature);
-        var includes = data.includes;
-        var excludes = data.excludes;
-        var mask = data.mask;
-        var result =
+        feature += '';
+        var result;
+        if (FEATURE_INFO_MAP.hasOwnProperty(feature))
         {
-            name:           feature,
-            description:    data.description,
-            includes:       includes ? includes.slice() : [],
-            excludes:       excludes ? excludes.slice() : [],
-            available:      (mask & availableFeatureMask) === mask
-        };
+            result = FEATURE_INFO_MAP[feature];
+        }
         return result;
     }
     
