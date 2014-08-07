@@ -84,22 +84,33 @@
                 return 'atob' in self && 'btoa' in self;
             }
         },
-        NAME: // not for IE
+        NAME:
         {
+            description:
+                'Existence of a name property for functions. ' +
+                'This feature is not available in Internet Explorer.',
             check: function ()
             {
                 return 'name' in new Function();
             }
         },
-        UNDEFINED: // not for Android < 4.1
+        UNDEFINED:
         {
+            description:
+                'Object.prototype.toString.call() evaluating to "[object Undefined]". ' +
+                'This behaviour is defined by ECMAScript 5, but Android Browser 4.0 does not ' +
+                'comply with the specification and so this feature is not available in that ' +
+                'browser.',
             check: function ()
             {
                 return Object.prototype.toString.call() === '[object Undefined]';
             }
         },
-        FILL: // FF only
+        FILL:
         {
+            description:
+                'Existence of the native function Array.prototype.fill. ' +
+                'Currently only available in Firefox 31.',
             check: function ()
             {
                 return 'fill' in Array.prototype;
@@ -114,13 +125,14 @@
         {
             description:
                 'All new browsers\' features. ' +
-                'No support for Node.js and older browsers like IE 10 or Android Browser 4.1.2.',
+                'No support for Node.js and older browsers like Internet Explorer 10 or Android ' +
+                'Browser 4.1.2.',
             includes: ['ATOB', 'GMT', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         NO_IE:
         {
             description:
-                'Features available in all supported engines except IE. ' +
+                'Features available in all supported engines except Internet Explorer. ' +
                 'Includes features used by JSfuck with the exception of "UNDEFINED", which is ' +
                 'not available in older Android Browser versions.',
             includes: ['GMT', 'NAME', 'NO_IE_SRC']
@@ -144,21 +156,21 @@
         IE9:
         {
             description:
-                'Features available in IE 9. ' +
-                'Compatible with IE 10, 11 and possibly later versions.',
+                'Features available in Internet Explorer 9. ' +
+                'Compatible with Internet Explorer 10, 11 and possibly later versions.',
             includes: ['IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         IE10:
         {
             description:
-                'Features available in IE 10. ' +
-                'Compatible with IE 11 and possibly later versions.',
+                'Features available in Internet Explorer 10. ' +
+                'Compatible with Internet Explorer 11 and possibly later versions.',
             includes: ['ATOB', 'IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         IE11:
         {
             description:
-                'Features available in IE 11. ' +
+                'Features available in Internet Explorer 11. ' +
                 'Possibly compatible with later versions.',
             includes: ['ATOB', 'GMT', 'IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
         },
