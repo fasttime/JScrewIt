@@ -47,38 +47,59 @@
             },
             excludes: ['NO_IE_SRC']
         },
-        GMT: // not for IE < 11
+        GMT:
         {
+            description:
+                'Feature linked to the property that the string representation of a Date object ' +
+                'contains the text "GMT" after the first 25 characters. ' +
+                'Although ECMAScript states that string representation of dates is ' +
+                'implementation dependent, most engines align to the same format, making this ' +
+                'feature available in all supported engines except Internet Explorer.',
             check: function ()
             {
                 return /^.{25}GMT/.test(Date());
             }
         },
-        SELF: // not for Node.js
+        SELF:
         {
+            description:
+                'Existence of the global object property self. ' +
+                'This feature is not available in Node.js.',
             check: function ()
             {
                 return 'self' in self;
             }
         },
-        WINDOW: // not for Android < 4.4 and Node.js
+        WINDOW:
         {
+            description:
+                'Feature linked to the property that the string representation of the global ' +
+                'object evaluates to "[object Window]". ' +
+                'Not available in Android Browser versions prior to 4.4 and Node.js.',
             check: function ()
             {
                 return (self + '') === '[object Window]';
             },
             excludes: ['DOMWINDOW']
         },
-        DOMWINDOW: // Android < 4.4
+        DOMWINDOW:
         {
+            description:
+                'Feature linked to the property that the string representation of the global ' +
+                'object evaluates to "[object DOMWindow]". ' +
+                'Only available in Android Browser versions prior to 4.4.',
             check: function ()
             {
                 return (self + '') === '[object DOMWindow]';
             },
             excludes: ['WINDOW']
         },
-        ATOB: // not for IE < 10 and Node.js
+        ATOB:
         {
+            description:
+                'Existence of the global object functions atob and btoa. ' +
+                'This feature is not available in Internet Explorer versions prior to 11 and ' +
+                'Node.js.',
             check: function ()
             {
                 return 'atob' in self && 'btoa' in self;
@@ -87,7 +108,7 @@
         NAME:
         {
             description:
-                'Existence of a name property for functions. ' +
+                'Existence of the name property for functions. ' +
                 'This feature is not available in Internet Explorer.',
             check: function ()
             {
@@ -97,8 +118,9 @@
         UNDEFINED:
         {
             description:
-                'Object.prototype.toString.call() evaluating to "[object Undefined]". ' +
-                'This behaviour is defined by ECMAScript 5, but Android Browser 4.0 does not ' +
+                'Feature linked to the property that Object.prototype.toString.call() evaluates ' +
+                'to "[object Undefined]". ' +
+                'This behaviour is defined by ECMAScript, but Android Browser 4.0 does not ' +
                 'comply with the specification and so this feature is not available in that ' +
                 'browser.',
             check: function ()
