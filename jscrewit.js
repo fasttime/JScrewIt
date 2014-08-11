@@ -8,6 +8,11 @@
     {
         NO_SAFARI_LF:
         {
+            description:
+                'Feature linked to a string representation of dynamically generated functions ' +
+                'typical for most browsers with the notable exception of Safari. ' +
+                'More specifically, in this representation, the character at index 22 is a line ' +
+                'feed ("\n").',
             check: function ()
             {
                 return (new Function() + '')[22] === '\n';
@@ -15,6 +20,11 @@
         },
         NO_IE_SRC:
         {
+            description:
+                'Feature linked to a string representation of native functions typical for ' +
+                'most browsers with the notable exception of Internet Explorer. ' +
+                'A remarkable trait for this feature is the lack of characters in the beginning ' +
+                'of the string before "function".',
             check: function ()
             {
                 return /^function Object\(\) \{(\n   )? \[native code\][^]\}/.test(Object);
@@ -23,6 +33,11 @@
         },
         CHROME_SRC:
         {
+            description:
+                'Feature linked to a string representation of native functions typically found ' +
+                'in browsers using the Chrome engine. ' +
+                'Remarkable traits are the lack of characters in the beginning of the string ' +
+                'before "function" and a single whitespace before the "[native code]" sequence.',
             check: function ()
             {
                 return /^.{19} \[native code\] \}/.test(Object);
@@ -32,6 +47,12 @@
         },
         FF_SAFARI_SRC:
         {
+            description:
+                'Feature linked to a string representation of native functions typically found ' +
+                'in Firefox and Safari. ' +
+                'Remarkable traits are the lack of characters in the beginning of the string ' +
+                'before "function" and a line feed with four whitespaces ("\n    ") before the ' +
+                '"[native code]" sequence.',
             check: function ()
             {
                 return /^.{19}\n    \[native code\]\n\}/.test(Object);
@@ -41,6 +62,12 @@
         },
         IE_SRC:
         {
+            description:
+                'Feature linked to a string representation of native functions typical for ' +
+                'Internet Explorer. ' +
+                'Remarkable traits are the presence of a line feed character ("\n") in the ' +
+                'beginning of the string before "function" and a line feed with four whitespaces ' +
+                '("\n    ") before the "[native code]" sequence.',
             check: function ()
             {
                 return /^\nfunction Object\(\) \{\n    \[native code\]\n\}/.test(Object);
