@@ -10,9 +10,9 @@
         {
             description:
                 'Feature linked to a string representation of dynamically generated functions ' +
-                'typical for most browsers with the notable exception of Safari. ' +
+                'typical for most browsers with the notable exception of Safari.\n' +
                 'More specifically, in this representation, the character at index 22 is a line ' +
-                'feed ("\n").',
+                'feed ("\\n").',
             check: function ()
             {
                 return (new Function() + '')[22] === '\n';
@@ -22,7 +22,7 @@
         {
             description:
                 'Feature linked to a string representation of native functions typical for ' +
-                'most browsers with the notable exception of Internet Explorer. ' +
+                'most browsers with the notable exception of Internet Explorer.\n' +
                 'A remarkable trait for this feature is the lack of characters in the beginning ' +
                 'of the string before "function".',
             check: function ()
@@ -34,8 +34,8 @@
         CHROME_SRC:
         {
             description:
-                'Feature linked to a string representation of native functions typically found ' +
-                'in browsers using the Chrome engine. ' +
+                'Feature linked to a string representation of native functions found in several ' +
+                'engines including Chrome, Opera, Android Browser and Node.js.\n' +
                 'Remarkable traits are the lack of characters in the beginning of the string ' +
                 'before "function" and a single whitespace before the "[native code]" sequence.',
             check: function ()
@@ -49,9 +49,9 @@
         {
             description:
                 'Feature linked to a string representation of native functions typically found ' +
-                'in Firefox and Safari. ' +
+                'in Firefox and Safari.\n' +
                 'Remarkable traits are the lack of characters in the beginning of the string ' +
-                'before "function" and a line feed with four whitespaces ("\n    ") before the ' +
+                'before "function" and a line feed with four whitespaces ("\\n    ") before the ' +
                 '"[native code]" sequence.',
             check: function ()
             {
@@ -64,10 +64,10 @@
         {
             description:
                 'Feature linked to a string representation of native functions typical for ' +
-                'Internet Explorer. ' +
-                'Remarkable traits are the presence of a line feed character ("\n") in the ' +
+                'Internet Explorer.\n' +
+                'Remarkable traits are the presence of a line feed character ("\\n") in the ' +
                 'beginning of the string before "function" and a line feed with four whitespaces ' +
-                '("\n    ") before the "[native code]" sequence.',
+                '("\\n    ") before the "[native code]" sequence.',
             check: function ()
             {
                 return /^\nfunction Object\(\) \{\n    \[native code\]\n\}/.test(Object);
@@ -78,7 +78,7 @@
         {
             description:
                 'Feature linked to the property that the string representation of a Date object ' +
-                'contains the text "GMT" after the first 25 characters. ' +
+                'contains the text "GMT" after the first 25 characters.\n' +
                 'Although ECMAScript states that string representation of dates is ' +
                 'implementation dependent, most engines align to the same format, making this ' +
                 'feature available in all supported engines except Internet Explorer.',
@@ -90,7 +90,7 @@
         SELF:
         {
             description:
-                'Existence of the global object property self. ' +
+                'Existence of the global object property self.\n' +
                 'This feature is not available in Node.js.',
             check: function ()
             {
@@ -101,7 +101,7 @@
         {
             description:
                 'Feature linked to the property that the string representation of the global ' +
-                'object evaluates to "[object Window]". ' +
+                'object evaluates to "[object Window]".\n' +
                 'Not available in Android Browser versions prior to 4.4 and Node.js.',
             check: function ()
             {
@@ -113,7 +113,7 @@
         {
             description:
                 'Feature linked to the property that the string representation of the global ' +
-                'object evaluates to "[object DOMWindow]". ' +
+                'object evaluates to "[object DOMWindow]".\n' +
                 'Only available in Android Browser versions prior to 4.4.',
             check: function ()
             {
@@ -124,7 +124,7 @@
         ATOB:
         {
             description:
-                'Existence of the global object functions atob and btoa. ' +
+                'Existence of the global object functions atob and btoa.\n' +
                 'This feature is not available in Internet Explorer versions prior to 11 and ' +
                 'Node.js.',
             check: function ()
@@ -135,7 +135,7 @@
         NAME:
         {
             description:
-                'Existence of the name property for functions. ' +
+                'Existence of the name property for functions.\n' +
                 'This feature is not available in Internet Explorer.',
             check: function ()
             {
@@ -146,10 +146,9 @@
         {
             description:
                 'Feature linked to the property that Object.prototype.toString.call() evaluates ' +
-                'to "[object Undefined]". ' +
-                'This behaviour is defined by ECMAScript, but Android Browser 4.0 does not ' +
-                'comply with the specification and so this feature is not available in that ' +
-                'browser.',
+                'to "[object Undefined]".\n' +
+                'This behavior is defined by ECMAScript, but Android Browser 4.0 does not comply ' +
+                'with the specification and so this feature is not available in that browser.',
             check: function ()
             {
                 return Object.prototype.toString.call() === '[object Undefined]';
@@ -158,7 +157,7 @@
         FILL:
         {
             description:
-                'Existence of the native function Array.prototype.fill. ' +
+                'Existence of the native function Array.prototype.fill.\n' +
                 'Currently only available in Firefox 31.',
             check: function ()
             {
@@ -173,7 +172,7 @@
         COMPACT:
         {
             description:
-                'All new browsers\' features. ' +
+                'All new browsers\' features.\n' +
                 'No support for Node.js and older browsers like Internet Explorer 10 or Android ' +
                 'Browser 4.1.2.',
             includes: ['ATOB', 'GMT', 'SELF', 'UNDEFINED', 'WINDOW']
@@ -181,7 +180,7 @@
         NO_IE:
         {
             description:
-                'Features available in all supported engines except Internet Explorer. ' +
+                'Features available in all supported engines except Internet Explorer.\n' +
                 'Includes features used by JSfuck with the exception of "UNDEFINED", which is ' +
                 'not available in older Android Browser versions.',
             includes: ['GMT', 'NAME', 'NO_IE_SRC']
@@ -205,29 +204,29 @@
         IE9:
         {
             description:
-                'Features available in Internet Explorer 9. ' +
+                'Features available in Internet Explorer 9.\n' +
                 'Compatible with Internet Explorer 10, 11 and possibly later versions.',
             includes: ['IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         IE10:
         {
             description:
-                'Features available in Internet Explorer 10. ' +
+                'Features available in Internet Explorer 10.\n' +
                 'Compatible with Internet Explorer 11 and possibly later versions.',
             includes: ['ATOB', 'IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         IE11:
         {
             description:
-                'Features available in Internet Explorer 11. ' +
+                'Features available in Internet Explorer 11.\n' +
                 'Possibly compatible with later versions.',
             includes: ['ATOB', 'GMT', 'IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
         },
         NODE:
         {
             description:
-                'Features available in Node.js. ' +
-                'Also compatible with Chrome and Opera.',
+                'Features available in Node.js.\n' +
+                'Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.',
             includes: ['CHROME_SRC', 'GMT', 'NAME', 'NO_SAFARI_LF', 'UNDEFINED']
         },
     };
