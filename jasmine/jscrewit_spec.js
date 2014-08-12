@@ -5,6 +5,7 @@ var TestSuite = require('./test_suite.js').TestSuite;
 var fs = require('fs');
 
 TestSuite.init(exports);
+console.log('Available features: ' + TestSuite.getAvailableFeatures().join(', '));
 TestSuite.run();
 
 var file = fs.openSync('output.txt', 'w+');
