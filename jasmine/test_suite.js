@@ -94,6 +94,12 @@
         );
     }
     
+    function getAvailableFeatures()
+    {
+        var result = JScrewIt.getFeatureInfo('AUTO').includes;
+        return result;
+    }
+    
     function init(env)
     {
         JScrewIt = (env || self).JScrewIt;
@@ -278,6 +284,12 @@
     
     var JScrewIt;
     
-    self.TestSuite = { createOutput: createOutput, init: init, run: run };
+    self.TestSuite =
+    {
+        createOutput: createOutput,
+        getAvailableFeatures: getAvailableFeatures,
+        init: init,
+        run: run
+    };
     
 })(typeof(exports) === 'undefined' ? window : exports);
