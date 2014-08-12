@@ -59,14 +59,32 @@
         {
             var summary = document.querySelector('.symbol-summary');
             var info = summary.parentNode.insertBefore(document.createElement('DIV'), summary);
-            info.style.padding = '6px 9px 0';
-            info.textContent =
-                'Browser features: ' + JScrewIt.getFeatureInfo('AUTO').includes.join(', ');
+            info.className = 'featureList';
+            info.textContent = 'Available features: ';
+            var availableFeatures = TestSuite.getAvailableFeatures();
+            availableFeatures.forEach(
+                function (feature, index)
+                {
+                    if (index)
+                    {
+                        info.appendChild(document.createTextNode(', '));
+                    }
+                    var span = info.appendChild(document.createElement('SPAN'));
+                    span.textContent = feature;
+                    span.title = JScrewIt.getFeatureInfo(feature).description;
+                }
+            );
         }
     );
 
     </script>
     <style>
+    
+    .featureList { padding: 6px 9px 0; }
+    
+    .featureList * { color: #aaa; cursor: default; }
+    
+    .featureList *:hover { background: #c6fe32; }
     
     button
     {
