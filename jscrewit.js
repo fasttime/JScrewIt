@@ -4,7 +4,7 @@
     
     // BEGIN: Features /////////////////
     
-    var FEATURE_INFO_MAP =
+    var FEATURE_INFOS =
     {
         NO_SAFARI_LF:
         {
@@ -269,7 +269,7 @@
             var mask = featureMaskMap[feature];
             if (mask == null)
             {
-                var info = FEATURE_INFO_MAP[feature];
+                var info = FEATURE_INFOS[feature];
                 if (info.check)
                 {
                     mask = 1 << bitIndex++;
@@ -280,7 +280,7 @@
                     }
                 }
                 mask ^= 0;
-                var includes = Object.freeze(info.includes || (info.includes = []));
+                var includes = info.includes || (info.includes = []);
                 includes.forEach(
                     function (include)
                     {
@@ -288,7 +288,7 @@
                         mask |= includeMask;
                     }
                 );
-                var excludes = Object.freeze(info.excludes || (info.excludes = []));
+                var excludes = info.excludes || (info.excludes = []);
                 if (ignoreExcludes !== true)
                 {
                     excludes.forEach(
@@ -303,26 +303,23 @@
                 info.name = feature;
                 var available = (mask & availableFeatureMask) === mask;
                 info.available = available;
-                Object.freeze(info);
                 featureMaskMap[feature] = mask;
             }
             return mask;
         }
         
         var bitIndex = 0;
-        var features = Object.getOwnPropertyNames(FEATURE_INFO_MAP);
+        var features = Object.getOwnPropertyNames(FEATURE_INFOS);
         var autoIncludes = [];
         features.forEach(completeFeature);
-        FEATURE_INFO_MAP.AUTO =
-            Object.freeze(
-                {
-                    description: 'All features available in the current engine.',
-                    includes: Object.freeze(autoIncludes.sort()),
-                    excludes: Object.freeze([]),
-                    name: 'AUTO',
-                    available: true
-                }
-            );
+        FEATURE_INFOS.AUTO =
+            {
+                description: 'All features available in the current engine.',
+                includes: autoIncludes.sort(),
+                excludes: [],
+                name: 'AUTO',
+                available: true
+            };
         featureMaskMap.AUTO = availableFeatureMask;
     }
     )();
@@ -1715,17 +1712,6 @@
         return encoder;
     }
     
-    function getFeatureInfo(feature)
-    {
-        feature += '';
-        var result;
-        if (FEATURE_INFO_MAP.hasOwnProperty(feature))
-        {
-            result = FEATURE_INFO_MAP[feature];
-        }
-        return result;
-    }
-    
     function isFeatureMaskCompatible(featureMask)
     {
         var result =
@@ -1747,7 +1733,7 @@
         areFeaturesAvailable:   areFeaturesAvailable,
         areFeaturesCompatible:  areFeaturesCompatible,
         encode:                 encode,
-        getFeatureInfo:         getFeatureInfo,
+        FEATURE_INFOS:          FEATURE_INFOS,
     };
     
     self.JSFuck = self.JScrewIt = JScrewIt;

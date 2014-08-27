@@ -96,7 +96,7 @@
     
     function getAvailableFeatures()
     {
-        var result = JScrewIt.getFeatureInfo('AUTO').includes;
+        var result = JScrewIt.FEATURE_INFOS.AUTO.includes;
         return result;
     }
     
@@ -176,7 +176,7 @@
             }
         );
         describe(
-            'JScrewIt.getFeatureInfo',
+            'JScrewIt.FEATURE_INFOS',
             function()
             {
                 describe(
@@ -187,13 +187,10 @@
                             'for the DEFAULT feature',
                             function ()
                             {
-                                var info = JScrewIt.getFeatureInfo('DEFAULT');
-                                expect(Object.isFrozen(info)).toBeTruthy();
+                                var info = JScrewIt.FEATURE_INFOS.DEFAULT;
                                 expect(info.name).toBe('DEFAULT');
                                 expect(info.available).toBe(true);
-                                expect(Object.isFrozen(info.includes)).toBeTruthy();
                                 expect(info.includes.length).toBe(0);
-                                expect(Object.isFrozen(info.excludes)).toBeTruthy();
                                 expect(info.excludes.length).toBe(0);
                             }
                         );
@@ -201,13 +198,10 @@
                             'for the AUTO feature',
                             function ()
                             {
-                                var info = JScrewIt.getFeatureInfo('AUTO');
-                                expect(Object.isFrozen(info)).toBeTruthy();
+                                var info = JScrewIt.FEATURE_INFOS.AUTO;
                                 expect(info.name).toBe('AUTO');
                                 expect(info.available).toBe(true);
-                                expect(Object.isFrozen(info.includes)).toBeTruthy();
                                 expect(info.includes.length).toBeGreaterThan(0);
-                                expect(Object.isFrozen(info.excludes)).toBeTruthy();
                                 expect(info.excludes.length).toBe(0);
                             }
                         );
@@ -215,13 +209,10 @@
                             'for the CHROME_SRC feature',
                             function ()
                             {
-                                var info = JScrewIt.getFeatureInfo('CHROME_SRC');
-                                expect(Object.isFrozen(info)).toBeTruthy();
+                                var info = JScrewIt.FEATURE_INFOS.CHROME_SRC;
                                 expect(info.name).toBe('CHROME_SRC');
                                 expect(typeof info.available).toBe('boolean');
-                                expect(Object.isFrozen(info.includes)).toBeTruthy();
                                 expect(info.includes).toContain('NO_IE_SRC');
-                                expect(Object.isFrozen(info.excludes)).toBeTruthy();
                                 expect(info.excludes).toContain('FF_SAFARI_SRC');
                             }
                         );
@@ -235,23 +226,7 @@
                             'for a nonexisting feature',
                             function ()
                             {
-                                var info = JScrewIt.getFeatureInfo('xyz');
-                                expect(info).toBeUndefined();
-                            }
-                        );
-                        it(
-                            'for a feature with a special name',
-                            function ()
-                            {
-                                var info = JScrewIt.getFeatureInfo('toString');
-                                expect(info).toBeUndefined();
-                            }
-                        );
-                        it(
-                            'for a missing parameter',
-                            function ()
-                            {
-                                var info = JScrewIt.getFeatureInfo();
+                                var info = JScrewIt.FEATURE_INFOS['???'];
                                 expect(info).toBeUndefined();
                             }
                         );

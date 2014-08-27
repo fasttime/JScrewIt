@@ -71,7 +71,7 @@
                     }
                     var span = info.appendChild(document.createElement('SPAN'));
                     span.textContent = feature;
-                    span.title = JScrewIt.getFeatureInfo(feature).description;
+                    span.title = JScrewIt.FEATURE_INFOS[feature].description;
                 }
             );
         }
