@@ -180,7 +180,7 @@
             function()
             {
                 describe(
-                    'returns correct information',
+                    'contains correct information',
                     function ()
                     {
                         it(
@@ -188,7 +188,6 @@
                             function ()
                             {
                                 var info = JScrewIt.FEATURE_INFOS.DEFAULT;
-                                expect(info.name).toBe('DEFAULT');
                                 expect(info.available).toBe(true);
                                 expect(info.includes.length).toBe(0);
                                 expect(info.excludes.length).toBe(0);
@@ -199,7 +198,6 @@
                             function ()
                             {
                                 var info = JScrewIt.FEATURE_INFOS.AUTO;
-                                expect(info.name).toBe('AUTO');
                                 expect(info.available).toBe(true);
                                 expect(info.includes.length).toBeGreaterThan(0);
                                 expect(info.excludes.length).toBe(0);
@@ -210,8 +208,6 @@
                             function ()
                             {
                                 var info = JScrewIt.FEATURE_INFOS.CHROME_SRC;
-                                expect(info.name).toBe('CHROME_SRC');
-                                expect(typeof info.available).toBe('boolean');
                                 expect(info.includes).toContain('NO_IE_SRC');
                                 expect(info.excludes).toContain('FF_SAFARI_SRC');
                             }
@@ -219,15 +215,38 @@
                     }
                 );
                 describe(
-                    'returns undefined',
+                    'contains only well-formed obejcts:',
                     function ()
                     {
-                        it(
-                            'for a nonexisting feature',
-                            function ()
+                        var features = Object.getOwnPropertyNames(JScrewIt.FEATURE_INFOS);
+                        features.forEach(
+                            function (feature)
                             {
-                                var info = JScrewIt.FEATURE_INFOS['???'];
-                                expect(info).toBeUndefined();
+                                it(
+                                    feature,
+                                    function ()
+                                    {
+                                        var info = JScrewIt.FEATURE_INFOS[feature];
+                                        expect(typeof info).toBe('object');
+                                        expect(info.name).toBe(feature);
+                                        var available = info.available;
+                                        expect(typeof available).toBe('boolean');
+                                        expect(available).toBe(
+                                            JScrewIt.areFeaturesAvailable(feature)
+                                        );
+                                        expect(Array.isArray(info.includes)).toBeTruthy();
+                                        var excludes = info.excludes;
+                                        expect(Array.isArray(excludes)).toBeTruthy();
+                                        expect(typeof info.description).toBe('string');
+                                        excludes.forEach(
+                                            function (exclude)
+                                            {
+                                                var info = JScrewIt.FEATURE_INFOS[exclude];
+                                                expect(info.excludes).toContain(feature);
+                                            }
+                                        );
+                                    }
+                                );
                             }
                         );
                     }
