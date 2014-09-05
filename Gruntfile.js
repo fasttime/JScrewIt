@@ -22,7 +22,7 @@ module.exports =
                         eqeqeq: true,
                         immed: true,
                         latedef: true,
-                        newcap: true,
+                        newcap: false,
                         noarg: true,
                         quotmark: true,
                         trailing: true,
