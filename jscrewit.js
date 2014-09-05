@@ -1753,4 +1753,4 @@
     
     // END: Debug only /////////////////
     
-})(typeof(exports) === 'undefined' ? window : exports);
+})(typeof exports === 'undefined' ? self : exports);
