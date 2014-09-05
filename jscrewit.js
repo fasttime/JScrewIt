@@ -15,7 +15,7 @@
                 'feed ("\\n").',
             check: function ()
             {
-                return (new Function() + '')[22] === '\n';
+                return (Function() + '')[22] === '\n';
             }
         },
         NO_IE_SRC:
@@ -139,7 +139,7 @@
                 'This feature is not available in Internet Explorer.',
             check: function ()
             {
-                return 'name' in new Function();
+                return 'name' in Function();
             }
         },
         UNDEFINED:
