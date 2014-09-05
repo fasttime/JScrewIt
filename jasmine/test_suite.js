@@ -286,4 +286,4 @@
         run: run
     };
     
-})(typeof(exports) === 'undefined' ? window : exports);
+})(typeof exports === 'undefined' ? self : exports);

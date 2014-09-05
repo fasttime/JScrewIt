@@ -37,7 +37,7 @@ module.exports =
                         node: true,
                         globals:
                         {
-                            window: true,
+                            self: true,
                         }
                     },
                     gruntfile:
