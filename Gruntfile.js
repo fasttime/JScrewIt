@@ -8,11 +8,9 @@ module.exports =
                 // Task configuration.
                 jasmine_node:
                 {
-                    options:
-                    {
-                        forceExit: true
-                    },
-                    all: ['jasmine/']
+                    all: ['jasmine/'],
+                    coverage: { },
+                    options: { forceExit: true }
                 },
                 jshint:
                 {
@@ -72,7 +70,7 @@ module.exports =
         // These plugins provide necessary tasks.
         grunt.loadNpmTasks('grunt-contrib-jshint');
         grunt.loadNpmTasks('grunt-contrib-watch');
-        grunt.loadNpmTasks('grunt-jasmine-node');
+        grunt.loadNpmTasks('grunt-jasmine-node-coverage');
 
         // Default task.
         grunt.registerTask('default', ['jshint', 'jasmine_node']);
