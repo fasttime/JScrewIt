@@ -44,7 +44,7 @@
             }
         );
         result = result.replace(/ +$/, '');
-        result += '\n    ' + new Array(compatibilities.length + 1).join(' -------');
+        result += '\n    ' + Array(compatibilities.length + 1).join(' -------');
         var C0_CONTROL_CODE_NAMES =
         [
             'NUL',  'SOH',  'STX',  'ETX',  'EOT',  'ENQ',  'ACK',  'BEL',
@@ -115,14 +115,14 @@
     function padLeft(str, length)
     {
         str += '';
-        var result = new Array(length - str.length + 1).join(' ') + str;
+        var result = Array(length - str.length + 1).join(' ') + str;
         return result;
     }
     
     function padRight(str, length)
     {
         str += '';
-        var result = str + new Array(length - str.length + 1).join(' ');
+        var result = str + Array(length - str.length + 1).join(' ');
         return result;
     }
     
@@ -148,7 +148,7 @@
                     {
                         var fn =
                             function () { JScrewIt.encode('', false, ['NO_IE_SRC', 'IE_SRC']); };
-                        expect(fn).toThrow(new ReferenceError('Incompatible features'));
+                        expect(fn).toThrow(ReferenceError('Incompatible features'));
                     }
                 );
             }
@@ -171,6 +171,14 @@
                     {
                         var compatible = JScrewIt.areFeaturesCompatible(['CHROME_SRC', 'IE_SRC']);
                         expect(compatible).toBe(false);
+                    }
+                );
+                it(
+                    'throws a ReferenceError for unknown features',
+                    function ()
+                    {
+                        var fn = function () { JScrewIt.areFeaturesCompatible(['???']); };
+                        expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
                     }
                 );
             }
