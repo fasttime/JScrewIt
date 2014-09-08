@@ -31,6 +31,6 @@
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-jasmine-node-coverage": "~0.1.11",
-    "jasmine-core": "~2.0.0"
+    "jasmine-core": "~2.0.4"
   }
 }
