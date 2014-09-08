@@ -88,8 +88,17 @@
                 }
                 for (; code < 0x00010000; code <<= 1)
                 {
-                    test(code + 33, compatibility);
+                    test(code + 0x3f, compatibility);
                 }
+                var expression = 'return Math.log(2e18)^0';
+                it(
+                    JSON.stringify(expression) + ' (with wrapWithEval)',
+                    function ()
+                    {
+                        var encoding = JScrewIt.encode(expression, true, compatibility);
+                        expect(eval(encoding)).toBe(42);
+                    }
+                );
             }
         );
     }
@@ -188,11 +197,11 @@
             function()
             {
                 describe(
-                    'contains correct information',
+                    'contains correct information for the feature',
                     function ()
                     {
                         it(
-                            'for the DEFAULT feature',
+                            'DEFAULT',
                             function ()
                             {
                                 var info = JScrewIt.FEATURE_INFOS.DEFAULT;
@@ -202,7 +211,7 @@
                             }
                         );
                         it(
-                            'for the AUTO feature',
+                            'AUTO',
                             function ()
                             {
                                 var info = JScrewIt.FEATURE_INFOS.AUTO;
@@ -212,7 +221,7 @@
                             }
                         );
                         it(
-                            'for the CHROME_SRC feature',
+                            'CHROME_SRC',
                             function ()
                             {
                                 var info = JScrewIt.FEATURE_INFOS.CHROME_SRC;
@@ -256,6 +265,74 @@
                                     }
                                 );
                             }
+                        );
+                    }
+                );
+            }
+        );
+        describe(
+            'JScrewIt.debug.replace can replace',
+            function ()
+            {
+                it(
+                    'a number',
+                    function ()
+                    {
+                        var actual = eval(JScrewIt.debug.replace('""+2'));
+                        expect(actual).toBe('2');
+                    }
+                );
+                it(
+                    'NaN',
+                    function ()
+                    {
+                        var actual = eval(JScrewIt.debug.replace('""+NaN'));
+                        expect(actual).toBe('NaN');
+                    }
+                );
+            }
+        );
+        describe(
+            'SyntaxError thrown for',
+            function ()
+            {
+                function debugCharacterEncoder(character)
+                {
+                    var result = function () { JScrewIt.encode(character, false, 'DEBUG'); };
+                    return result;
+                }
+                
+                it(
+                    'Undefined literal',
+                    function ()
+                    {
+                        JScrewIt.debug.defineCharacter('a', 'a');
+                        expect(debugCharacterEncoder('a')).toThrow(
+                            'Undefined literal a in the definition of "a"'
+                        );
+                    }
+                );
+                it(
+                    'Circular reference',
+                    function ()
+                    {
+                        JScrewIt.debug.defineCharacter('a', '"a"');
+                        expect(debugCharacterEncoder('a')).toThrow(
+                            'Circular reference detected: "a" < "a"'
+                        );
+                        JScrewIt.debug.defineCharacter('b', '"b"');
+                        expect(debugCharacterEncoder('b')).toThrow(
+                            'Circular reference detected: "b" < "b"'
+                        );
+                    }
+                );
+                it(
+                    'Unexpected character',
+                    function ()
+                    {
+                        JScrewIt.debug.defineCharacter('c', '?');
+                        expect(debugCharacterEncoder('c')).toThrow(
+                            'Unexpected character "?" in the definition of "c"'
                         );
                     }
                 );

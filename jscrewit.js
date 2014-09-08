@@ -164,7 +164,15 @@
                 return 'fill' in Array.prototype;
             }
         },
-        
+        DEBUG:
+        {
+            description: 'Debug only feature.',
+            check: function ()
+            {
+                return false;
+            }
+        },
+
         DEFAULT:
         {
             description: 'Minimun feature level, compatible with all supported engines.'
@@ -584,7 +592,7 @@
     //   certain expressions and may affect the mapping length.
     // * String literals must be always double quoted.
     
-    var CHARACTERS =
+    var PROTO_CHARACTERS =
     {
         'a':            '"false"[1]',
         'b':
@@ -922,6 +930,8 @@
             define('atob("undefinedundefined")["10"]', 'ATOB')
         ],
     };
+    
+    var CHARACTERS = Object.create(PROTO_CHARACTERS);
     
     var CONSTANTS =
     {
@@ -1742,14 +1752,44 @@
     
     // BEGIN: Debug only ///////////////
     
-    function debugReplace(input, features)
+    var debugDefineCharacter =
+    function (character, definition)
+    {
+        character += '';
+        var entries = CHARACTERS[character];
+        if (CHARACTERS.hasOwnProperty(character))
+        {
+            entries.pop();
+        }
+        else
+        {
+            if (Array.isArray(entries))
+            {
+                entries = entries.slice();
+            }
+            else
+            {
+                entries = [define(entries)];
+            }
+            CHARACTERS[character] = entries;
+        }
+        var entry = define(definition + '', 'DEBUG');
+        entries.push(entry);
+    };
+    
+    var debugReplace =
+    function (input, features)
     {
         var encoder = getEncoder(features);
         var output = encoder.replace(input);
         return output;
-    }
+    };
     
-    JScrewIt.debugReplace = debugReplace;
+    JScrewIt.debug =
+    {
+        defineCharacter:    debugDefineCharacter,
+        replace:            debugReplace
+    };
     
     // END: Debug only /////////////////
     
