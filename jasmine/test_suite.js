@@ -109,9 +109,9 @@
         return result;
     }
     
-    function init(env)
+    function init(arg)
     {
-        JScrewIt = (env || self).JScrewIt;
+        JScrewIt = arg || self.JScrewIt;
     }
     
     function padBoth(str, length)
@@ -391,7 +391,7 @@
     
     var JScrewIt;
     
-    self.TestSuite =
+    var TestSuite =
     {
         createOutput: createOutput,
         getAvailableFeatures: getAvailableFeatures,
@@ -399,4 +399,13 @@
         run: run
     };
     
-})(typeof exports === 'undefined' ? self : exports);
+    if (self)
+    {
+        self.TestSuite = TestSuite;
+    }
+    if (typeof module !== 'undefined')
+    {
+        module.exports = TestSuite;
+    }
+    
+})(typeof self === 'undefined' ? null : self);
