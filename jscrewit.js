@@ -94,7 +94,7 @@
                 'This feature is not available in Node.js.',
             check: function ()
             {
-                return 'self' in self;
+                return self && 'self' in self;
             }
         },
         WINDOW:
@@ -129,7 +129,7 @@
                 'Node.js.',
             check: function ()
             {
-                return 'atob' in self && 'btoa' in self;
+                return self && 'atob' in self && 'btoa' in self;
             }
         },
         NAME:
@@ -1723,7 +1723,14 @@
         FEATURE_INFOS:          FEATURE_INFOS,
     };
     
-    self.JSFuck = self.JScrewIt = JScrewIt;
+    if (self)
+    {
+        self.JSFuck = self.JScrewIt = JScrewIt;
+    }
+    if (typeof module !== 'undefined')
+    {
+        module.exports = JScrewIt;
+    }
     
     // END: JScrewIt ///////////////////
     
@@ -1756,4 +1763,4 @@
     
     // END: Debug only /////////////////
     
-})(typeof exports === 'undefined' ? self : exports);
+})(typeof self === 'undefined' ? null : self);

@@ -1,10 +1,10 @@
 'use strict';
 
-var exports = require('../jscrewit.js');
-var TestSuite = require('./test_suite.js').TestSuite;
+var JScrewIt = require('../jscrewit.js');
+var TestSuite = require('./test_suite.js');
 var fs = require('fs');
 
-TestSuite.init(exports);
+TestSuite.init(JScrewIt);
 console.log('Available features: ' + TestSuite.getAvailableFeatures().join(', '));
 TestSuite.run();
 
