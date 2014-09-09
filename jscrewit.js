@@ -31,11 +31,12 @@
             },
             excludes: ['IE_SRC']
         },
-        CHROME_SRC:
+        V8_SRC:
         {
             description:
-                'Feature linked to a string representation of native functions found in several ' +
-                'engines including Chrome, Opera, Android Browser and Node.js.\n' +
+                'Feature linked to a string representation of native functions found in the V8 ' +
+                'JavaScript engine.\n' +
+                'V8 is used among others in Chrome, Opera, Android Browser and Node.js.\n' +
                 'Remarkable traits are the lack of characters in the beginning of the string ' +
                 'before "function" and a single whitespace before the "[native code]" sequence.',
             check: function ()
@@ -58,7 +59,7 @@
                 return /^.{19}\n    \[native code\]\n\}/.test(Object);
             },
             includes: ['NO_IE_SRC'],
-            excludes: ['CHROME_SRC']
+            excludes: ['V8_SRC']
         },
         IE_SRC:
         {
@@ -94,7 +95,7 @@
                 'This feature is not available in Node.js.',
             check: function ()
             {
-                return self && 'self' in self;
+                return self;
             }
         },
         WINDOW:
@@ -227,7 +228,7 @@
             description:
                 'Features available in Node.js.\n' +
                 'Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.',
-            includes: ['CHROME_SRC', 'GMT', 'NAME', 'NO_SAFARI_LF', 'UNDEFINED']
+            includes: ['GMT', 'NAME', 'NO_SAFARI_LF', 'UNDEFINED', 'V8_SRC']
         },
     };
     
@@ -414,7 +415,7 @@
             entries =
             [
                 define(12),
-                define(3, 'CHROME_SRC'),
+                define(3, 'V8_SRC'),
                 define(0, 'FF_SAFARI_SRC'),
                 define(0, 'IE_SRC')
             ];
@@ -424,7 +425,7 @@
             entries =
             [
                 define(10),
-                define(0, 'CHROME_SRC'),
+                define(0, 'V8_SRC'),
                 define(6, 'FF_SAFARI_SRC'),
                 define(5, 'IE_SRC')
             ];
@@ -433,7 +434,7 @@
             entries =
             [
                 define(7),
-                define(0, 'CHROME_SRC'),
+                define(0, 'V8_SRC'),
                 define(3, 'FF_SAFARI_SRC'),
                 define(3, 'IE_SRC')
             ];
@@ -451,7 +452,7 @@
             entries =
             [
                 define(9),
-                define(0, 'CHROME_SRC'),
+                define(0, 'V8_SRC'),
                 define(4, 'FF_SAFARI_SRC'),
                 define(3, 'IE_SRC')
             ];
@@ -461,7 +462,7 @@
             [
                 define(7),
                 define(9, 'NO_IE_SRC'),
-                define(6, 'CHROME_SRC'),
+                define(6, 'V8_SRC'),
                 define(3, 'FF_SAFARI_SRC'),
                 define(1, 'IE_SRC')
             ];
@@ -560,7 +561,7 @@
     [
         definePadding(FB_PADDINGS, 0),
         definePadding(FB_NO_IE_PADDINGS, 0, 'NO_IE_SRC'),
-        definePadding(R_PADDINGS, 0, 'CHROME_SRC'),
+        definePadding(R_PADDINGS, 0, 'V8_SRC'),
         definePadding(R_PADDINGS, 4, 'FF_SAFARI_SRC'),
         definePadding(R_PADDINGS, 5, 'IE_SRC')
     ];
@@ -576,7 +577,7 @@
     
     // BEGIN: Encoder //////////////////
     
-    // Definition syntax has been changed to match Javascript more closely. The main differences
+    // Definition syntax has been changed to match JavaScript more closely. The main differences
     // from JSFuck are:
     // * Support for constant literals like "ANY_FUNCTION", "FHP_3_NO", etc. improves readability
     //   and simplifies maintenance.
@@ -762,8 +763,8 @@
         ' ':
         [
             defineFHCharAt('ANY_FUNCTION', 8),
-            define('(RP_1_NO + FILTER)["20"]', 'CHROME_SRC'),
-            define('(RP_3_NO + FILTER)["20"]', 'CHROME_SRC', 'FILL'),
+            define('(RP_1_NO + FILTER)["20"]', 'V8_SRC'),
+            define('(RP_3_NO + FILTER)["20"]', 'V8_SRC', 'FILL'),
             define('(FILTER + [])["20"]', 'FF_SAFARI_SRC'),
             define('(RP_3_NO + FILL)["21"]', 'FF_SAFARI_SRC', 'FILL')
         ],
@@ -925,7 +926,7 @@
     
     var CONSTANTS =
     {
-        // Javascript globals
+        // JavaScript globals
         
         Array:          '[][CONSTRUCTOR]',
         Boolean:        '(false)[CONSTRUCTOR]',
