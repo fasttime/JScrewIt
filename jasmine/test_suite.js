@@ -271,6 +271,36 @@
             }
         );
         describe(
+            'JScrewIt.debug.defineConstant fails for',
+            function ()
+            {
+                it(
+                    'invalid identifier',
+                    function ()
+                    {
+                        expect(
+                            function ()
+                            {
+                                JScrewIt.debug.defineConstant('X:X', '0');
+                            }
+                        ).toThrow(SyntaxError('Invalid identifier "X:X"'));
+                    }
+                );
+                it(
+                    'identifier already defined',
+                    function ()
+                    {
+                        expect(
+                            function ()
+                            {
+                                JScrewIt.debug.defineConstant('Array', '0');
+                            }
+                        ).toThrow(ReferenceError('Array already defined'));
+                    }
+                );
+            }
+        );
+        describe(
             'JScrewIt.debug.replace can replace',
             function ()
             {
@@ -296,19 +326,23 @@
             'SyntaxError thrown for',
             function ()
             {
-                function debugCharacterEncoder(character)
+                function debugReplacer(input)
                 {
-                    var result = function () { JScrewIt.encode(character, false, 'DEBUG'); };
+                    var result = function () { JScrewIt.debug.replace(input); };
                     return result;
                 }
+                
+                JScrewIt.debug.defineConstant('A', 'B');
+                JScrewIt.debug.defineConstant('C', 'D');
+                JScrewIt.debug.defineConstant('D', 'C');
+                JScrewIt.debug.defineConstant('E', '?');
                 
                 it(
                     'Undefined literal',
                     function ()
                     {
-                        JScrewIt.debug.defineCharacter('a', 'a');
-                        expect(debugCharacterEncoder('a')).toThrow(
-                            'Undefined literal a in the definition of "a"'
+                        expect(debugReplacer('A')).toThrow(
+                            SyntaxError('Undefined literal B in the definition of A')
                         );
                     }
                 );
@@ -316,13 +350,8 @@
                     'Circular reference',
                     function ()
                     {
-                        JScrewIt.debug.defineCharacter('a', '"a"');
-                        expect(debugCharacterEncoder('a')).toThrow(
-                            'Circular reference detected: "a" < "a"'
-                        );
-                        JScrewIt.debug.defineCharacter('b', '"b"');
-                        expect(debugCharacterEncoder('b')).toThrow(
-                            'Circular reference detected: "b" < "b"'
+                        expect(debugReplacer('C')).toThrow(
+                            SyntaxError('Circular reference detected: C < D < C')
                         );
                     }
                 );
@@ -330,9 +359,8 @@
                     'Unexpected character',
                     function ()
                     {
-                        JScrewIt.debug.defineCharacter('c', '?');
-                        expect(debugCharacterEncoder('c')).toThrow(
-                            'Unexpected character "?" in the definition of "c"'
+                        expect(debugReplacer('E')).toThrow(
+                            SyntaxError('Unexpected character "?" in the definition of E')
                         );
                     }
                 );
