@@ -164,15 +164,7 @@
                 return 'fill' in Array.prototype;
             }
         },
-        DEBUG:
-        {
-            description: 'Debug only feature.',
-            check: function ()
-            {
-                return false;
-            }
-        },
-
+        
         DEFAULT:
         {
             description: 'Minimun feature level, compatible with all supported engines.'
@@ -592,7 +584,7 @@
     //   certain expressions and may affect the mapping length.
     // * String literals must be always double quoted.
     
-    var PROTO_CHARACTERS =
+    var CHARACTERS =
     {
         'a':            '"false"[1]',
         'b':
@@ -931,8 +923,6 @@
         ],
     };
     
-    var CHARACTERS = Object.create(PROTO_CHARACTERS);
-    
     var CONSTANTS =
     {
         // Javascript globals
@@ -1204,21 +1194,6 @@
         return result;
     }
     
-    function encodeDigit(digit)
-    {
-        switch (digit)
-        {
-        case '0':
-            return '+[]';
-        case '1':
-            return '+!![]';
-        default:
-            var result = '!![]';
-            do { result += '+!![]'; } while (--digit > 1);
-            return result;
-        }
-    }
-    
     function createCharAtDefinition(expr, index, entries, paddingInfos)
     {
         function definition()
@@ -1259,6 +1234,21 @@
         result.level = level;
         result.outerPlus = outerPlus;
         return result;
+    }
+    
+    function encodeDigit(digit)
+    {
+        switch (digit)
+        {
+        case '0':
+            return '+[]';
+        case '1':
+            return '+!![]';
+        default:
+            var result = '!![]';
+            do { result += '+!![]'; } while (--digit > 1);
+            return result;
+        }
     }
     
     // Determine whether the specified expression contains a plus sign out of brackets not preceded
@@ -1598,23 +1588,10 @@
                         level = solution.level;
                         if (level === undefined)
                         {
-                            var type = typeof(eval(solution + ''));
-                            switch (type)
-                            {
-                            case 'string':
-                                level = LEVEL_STRING;
-                                break;
-                            case 'array':
-                                level = LEVEL_OBJECT;
-                                break;
-                            case 'undefined':
-                                level = LEVEL_UNDEFINED;
-                                break;
-                            default:
-                                level = LEVEL_NUMERIC;
-                                break;
-                            }
-                            solution.level = level;
+                            var value = eval(solution + '');
+                            solution.level =
+                                level =
+                                value === undefined ? LEVEL_UNDEFINED : LEVEL_NUMERIC;
                         }
                     }
                     else
@@ -1752,29 +1729,19 @@
     
     // BEGIN: Debug only ///////////////
     
-    var debugDefineCharacter =
-    function (character, definition)
+    var debugDefineConstant =
+    function (constant, definition)
     {
-        character += '';
-        var entries = CHARACTERS[character];
-        if (CHARACTERS.hasOwnProperty(character))
+        constant += '';
+        if (!/^[$A-Z_a-z][$0-9A-Z_a-z]*$/.test(constant))
         {
-            entries.pop();
+            throw new SyntaxError('Invalid identifier ' + JSON.stringify(constant));
         }
-        else
+        if (constant in CONSTANTS)
         {
-            if (Array.isArray(entries))
-            {
-                entries = entries.slice();
-            }
-            else
-            {
-                entries = [define(entries)];
-            }
-            CHARACTERS[character] = entries;
+            throw new ReferenceError(constant + ' already defined');
         }
-        var entry = define(definition + '', 'DEBUG');
-        entries.push(entry);
+        CONSTANTS[constant] = definition + '';
     };
     
     var debugReplace =
@@ -1785,11 +1752,7 @@
         return output;
     };
     
-    JScrewIt.debug =
-    {
-        defineCharacter:    debugDefineCharacter,
-        replace:            debugReplace
-    };
+    JScrewIt.debug = { defineConstant: debugDefineConstant, replace: debugReplace };
     
     // END: Debug only /////////////////
     
