@@ -178,7 +178,7 @@
                     'returns false for incompatible features',
                     function ()
                     {
-                        var compatible = JScrewIt.areFeaturesCompatible(['CHROME_SRC', 'IE_SRC']);
+                        var compatible = JScrewIt.areFeaturesCompatible(['V8_SRC', 'IE_SRC']);
                         expect(compatible).toBe(false);
                     }
                 );
@@ -221,10 +221,10 @@
                             }
                         );
                         it(
-                            'CHROME_SRC',
+                            'V8_SRC',
                             function ()
                             {
-                                var info = JScrewIt.FEATURE_INFOS.CHROME_SRC;
+                                var info = JScrewIt.FEATURE_INFOS.V8_SRC;
                                 expect(info.includes).toContain('NO_IE_SRC');
                                 expect(info.excludes).toContain('FF_SAFARI_SRC');
                             }
