@@ -28,10 +28,10 @@ if (process.argv.length !== 3)
     var fuckScript = new Stream();
     repl.start(
         {
-            prompt: 'FUCK> ',
             input: fuckScript,
-            useColors: true,
-            output: process.stdout
+            output: process.stdout,
+            prompt: 'FUCK> ',
+            useColors: true
         }
     );
     process.stdin.pipe(fuckScript);
