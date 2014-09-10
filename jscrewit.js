@@ -163,7 +163,17 @@
                 'Currently only available in Firefox 31.',
             check: function ()
             {
-                return 'fill' in Array.prototype;
+                return Array.prototype.fill;
+            }
+        },
+        QUOTE:
+        {
+            description:
+                'Existence of the function String.prototype.quote.\n' +
+                'Only available in Firefox.',
+            check: function ()
+            {
+                return String.prototype.quote;
             }
         },
         
@@ -198,6 +208,7 @@
                 'GMT',
                 'NAME',
                 'NO_SAFARI_LF',
+                'QUOTE',
                 'SELF',
                 'UNDEFINED',
                 'WINDOW'
@@ -814,7 +825,10 @@
             defineFBCharAt('FILTER', 20),
             defineFBCharAt('FILL', 18, 'FILL')
         ],
-    //  '\\':   ,
+        '\\':
+        [
+            define('(RP_3_NO + FILL)["quote"]()["21"]', 'FF_SAFARI_SRC', 'FILL', 'QUOTE')
+        ],
         ']':
         [
             defineFBCharAt('FILTER', 32),
@@ -1476,7 +1490,7 @@
         {
             var replacement =
                 expr.replace(
-                /([0-9]+)|("(.*?)")|( +)|([$A-Z_a-z][$0-9A-Z_a-z]*)|[^!()+[\]]/g,
+                /([0-9]+)|("([^]*?)")|( +)|([$A-Z_a-z][$0-9A-Z_a-z]*)|[^!()+[\]]/g,
                 this.replaceToken || (this.replaceToken = replaceToken.bind(this))
                 );
             return replacement;
