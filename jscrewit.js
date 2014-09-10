@@ -1,6 +1,5 @@
 /* global DEBUG */
-(
-function (self)
+(function (self)
 {
     'use strict';
     
@@ -97,7 +96,7 @@ function (self)
                 'This feature is not available in Node.js.',
             check: function ()
             {
-                return self;
+                return self != null;
             }
         },
         WINDOW:
@@ -132,7 +131,7 @@ function (self)
                 'Node.js.',
             check: function ()
             {
-                return self && 'atob' in self && 'btoa' in self;
+                return self != null && 'atob' in self && 'btoa' in self;
             }
         },
         NAME:
@@ -1652,8 +1651,7 @@ function (self)
     };
     
     // Create definitions for digits
-    (
-    function ()
+    (function ()
     {
         for (var number = 0; number < 10; ++number)
         {
@@ -1716,6 +1714,14 @@ function (self)
         return result;
     }
     
+    function setUp(self)
+    {
+        if (self != null)
+        {
+            self.JSFuck = self.JScrewIt = JScrewIt;
+        }
+    }
+    
     var encoders = { };
     
     var JScrewIt =
@@ -1726,10 +1732,8 @@ function (self)
         FEATURE_INFOS:          FEATURE_INFOS,
     };
     
-    if (self)
-    {
-        self.JSFuck = self.JScrewIt = JScrewIt;
-    }
+    setUp(self);
+    
     if (typeof module !== 'undefined')
     {
         module.exports = JScrewIt;
@@ -1764,7 +1768,7 @@ function (self)
                 return output;
             }
             
-            JScrewIt.debug = { defineConstant: defineConstant, replace: replace };
+            JScrewIt.debug = { defineConstant: defineConstant, replace: replace, setUp: setUp };
         })();
     }
     

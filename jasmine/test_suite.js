@@ -17,7 +17,7 @@
                     {
                         content = JScrewIt.encode(char, false, compatibility).length;
                     }
-                    catch (e)
+                    catch (error)
                     {
                         content = 'ERROR';
                     }
@@ -138,6 +138,22 @@
     
     function run()
     {
+        describe(
+            'JScrewIt',
+            function()
+            {
+                it(
+                    'is set up correctly',
+                    function ()
+                    {
+                        var self = { };
+                        JScrewIt.debug.setUp(self);
+                        expect(self.JScrewIt).toBe(JScrewIt);
+                        expect(self.JSFuck).toBe(JScrewIt);
+                    }
+                );
+            }
+        );
         describe(
             'JScrewIt.encode',
             function()
