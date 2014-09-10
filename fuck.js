@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+'use strict';
+
 var stream = require('stream');
 var util = require('util');
 var JScrewIt = require('./jscrewit.js');

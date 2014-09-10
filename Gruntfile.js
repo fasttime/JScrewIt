@@ -1,4 +1,5 @@
-/* global module: false */
+'use strict';
+
 module.exports =
 function (grunt)
 {
@@ -8,12 +9,21 @@ function (grunt)
             // Task configuration.
             jasmine_node:
             {
-                coverage: { },
-                files: ['jasmine/**/*.js']
+                all: ['jasmine/'],
+                coverage: { }
             },
             jshint:
             {
-                files: ['Gruntfile.js', 'jscrewit.js', 'fuck.js', 'jasmine/**/*.js'],
+                any:
+                {
+                    options: { globals: { module: true, self: true } },
+                    src: ['jscrewit.js', 'jasmine/test_suite.js']
+                },
+                node:
+                {
+                    options: { node: true },
+                    src: ['Gruntfile.js', 'fuck.js', 'jasmine/*spec.js']
+                },
                 options:
                 {
                     curly: true,
@@ -24,6 +34,7 @@ function (grunt)
                     newcap: false,
                     noarg: true,
                     quotmark: true,
+                    strict: true,
                     trailing: true,
                     undef: true,
                     unused: true,
@@ -32,15 +43,12 @@ function (grunt)
                     eqnull: true,
                     evil: true,
                     validthis: true,
-                    
-                    node: true,
-                    globals: { self: true }
-                }
+                },
             },
             uglify:
             {
-                options: { compress: { global_defs: { DEBUG: false } } },
-                main: { files: { 'jscrewit.min.js': ['jscrewit.js'] } }
+                main: { files: { 'jscrewit.min.js': ['jscrewit.js'] } },
+                options: { compress: { global_defs: { DEBUG: false } } }
             }
         }
     );
