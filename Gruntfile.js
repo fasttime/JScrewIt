@@ -37,7 +37,11 @@ function (grunt)
                     globals: { self: true }
                 }
             },
-            uglify: { main: { files: { 'jscrewit.min.js': ['jscrewit.js'] } } }
+            uglify:
+            {
+                options: { compress: { global_defs: { DEBUG: false } } },
+                main: { files: { 'jscrewit.min.js': ['jscrewit.js'] } }
+            }
         }
     );
     

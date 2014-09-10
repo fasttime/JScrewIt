@@ -1,3 +1,4 @@
+/* global DEBUG: true */
 (function (self)
 {
     'use strict';
@@ -1737,31 +1738,35 @@
     
     // BEGIN: Debug only ///////////////
     
-    var debugDefineConstant =
-    function (constant, definition)
+    if (typeof DEBUG === 'undefined' || DEBUG)
     {
-        constant += '';
-        if (!/^[$A-Z_a-z][$0-9A-Z_a-z]*$/.test(constant))
+        (function ()
         {
-            throw new SyntaxError('Invalid identifier ' + JSON.stringify(constant));
-        }
-        if (constant in CONSTANTS)
-        {
-            throw new ReferenceError(constant + ' already defined');
-        }
-        CONSTANTS[constant] = definition + '';
-    };
-    
-    var debugReplace =
-    function (input, features)
-    {
-        var encoder = getEncoder(features);
-        var output = encoder.replace(input);
-        return output;
-    };
-    
-    JScrewIt.debug = { defineConstant: debugDefineConstant, replace: debugReplace };
+            function defineConstant(constant, definition)
+            {
+                constant += '';
+                if (!/^[$A-Z_a-z][$0-9A-Z_a-z]*$/.test(constant))
+                {
+                    throw new SyntaxError('Invalid identifier ' + JSON.stringify(constant));
+                }
+                if (constant in CONSTANTS)
+                {
+                    throw new ReferenceError(constant + ' already defined');
+                }
+                CONSTANTS[constant] = definition + '';
+            }
+            
+            function replace(input, features)
+            {
+                var encoder = getEncoder(features);
+                var output = encoder.replace(input);
+                return output;
+            }
+            
+            JScrewIt.debug = { defineConstant: defineConstant, replace: replace };
+        })();
+    }
     
     // END: Debug only /////////////////
-    
+
 })(typeof self === 'undefined' ? null : self);
