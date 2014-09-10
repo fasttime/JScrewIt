@@ -1,8 +1,9 @@
 /* global describe, expect, it */
-'use strict';
 
 (function (self)
 {
+    'use strict';
+    
     function createOutput(compatibilities)
     {
         function appendLengths(name, char)
@@ -88,7 +89,7 @@
                 }
                 for (; code < 0x00010000; code <<= 1)
                 {
-                    test(code + 0x3f, compatibility);
+                    test(code + 0x1f, compatibility);
                 }
                 var expression = 'return Math.log(2e18)^0';
                 it(

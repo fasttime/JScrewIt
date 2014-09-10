@@ -1,4 +1,4 @@
-/* global DEBUG: true */
+/* global DEBUG */
 (function (self)
 {
     'use strict';
