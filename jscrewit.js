@@ -1,5 +1,6 @@
 /* global DEBUG */
-(function (self)
+(
+function (self)
 {
     'use strict';
     
