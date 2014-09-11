@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset='utf-8'>
+<link rel='shortcut icon' href='../node_modules/jasmine-core/images/jasmine_favicon.png'>
+<link rel='stylesheet' href='../node_modules/jasmine-core/lib/jasmine-core/jasmine.css'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<script src='../node_modules/jasmine-core/lib/jasmine-core/jasmine.js'></script>
+<script src='../node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js'></script>
+<script src='../node_modules/jasmine-core/lib/jasmine-core/boot.js'></script>
+<script src='../jscrewit.js'></script>
+<script src='test_suite.js'></script>
+<script>
+
+'use strict';
+
+function handleDOMNodeInserted()
+{
+    var bar = document.querySelector('.bar');
+    if (bar)
+    {
+        removeEventListener('DOMNodeInserted', listener);
+        var outputWindow;
+        var button = bar.appendChild(document.createElement('BUTTON'));
+        button.textContent = 'View lengths';
+        button.onclick =
+        function ()
+        {
+            if (outputWindow) outputWindow.close();
+            var left = window.screenX + 50;
+            var top = window.screenY + 50;
+            var features = 'resizable,scrollbars,width=184,height=300,left=' + left + ',top=' + top;
+            outputWindow = window.open('', 'outputWindow', features);
+            // Chrome won't always bring the new popup to the front automatically, so we better take
+            // care of that.
+            outputWindow.focus();
+            var outputDocument = outputWindow.document;
+            outputDocument.title = 'JScrewIt Encoding Lengths';
+            var outputBody = outputDocument.body;
+            outputBody.textContent = TestSuite.createOutput(['DEFAULT', 'AUTO']);
+            var outputBodyStyle = outputBody.style;
+            outputBodyStyle.font = '12px "Courier New",Monaco,monospace';
+            outputBodyStyle.margin = '8px 20px';
+            outputBodyStyle.whiteSpace = 'pre';
+        };
+    }
+}
+
+function handleLoad()
+{
+    var summary = document.querySelector('.symbol-summary');
+    var info = summary.parentNode.insertBefore(document.createElement('DIV'), summary);
+    info.className = 'featureList';
+    info.textContent = 'Available features: ';
+    var availableFeatures = TestSuite.getAvailableFeatures();
+    availableFeatures.forEach(
+        function (feature, index)
+        {
+            if (index)
+            {
+                info.appendChild(document.createTextNode(', '));
+            }
+            var span = info.appendChild(document.createElement('SPAN'));
+            span.textContent = feature;
+            span.title = JScrewIt.FEATURE_INFOS[feature].description;
+        }
+    );
+}
+
+TestSuite.init();
+TestSuite.run();
+
+addEventListener('DOMNodeInserted', handleDOMNodeInserted);
+addEventListener('load', handleLoad);
+
+</script>
+<style>
+
+.bar { height: 30px; }
+
+.featureList { clear: both; padding: 6px 9px 0; }
+
+.featureList * { color: #aaa; cursor: default; }
+
+.featureList *:hover { background: #80fff8; }
+
+button
+{
+    background-color: #aaa;
+    border: #eee thin solid;
+    box-shadow: 0 0 0 2px #aaa;
+    color: #eee;
+    font: 11px/16px Monaco, 'Lucida Console', monospace;
+    margin: 0 16px;
+}
+
+</style>
+<title>JScrewIt Spec Runner</title>
+<body>
