@@ -169,7 +169,7 @@
         QUOTE:
         {
             description:
-                'Existence of the function String.prototype.quote.\n' +
+                'Existence of the native function String.prototype.quote.\n' +
                 'Only available in Firefox.',
             check: function ()
             {
@@ -827,6 +827,11 @@
         ],
         '\\':
         [
+        
+            define('""["fontcolor"]()["quote"]()["13"]', 'QUOTE'),
+            define(null, 'ATOB'),
+            define('(ANY_FUNCTION + [])["quote"]()[1]', 'IE_SRC', 'QUOTE'),
+            define('(FILTER + [])["quote"]()["20"]', 'FF_SAFARI_SRC', 'QUOTE'),
             define('(RP_3_NO + FILL)["quote"]()["21"]', 'FF_SAFARI_SRC', 'FILL', 'QUOTE')
         ],
         ']':
