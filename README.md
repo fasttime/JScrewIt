@@ -1,12 +1,16 @@
 # JScrewIt `[]()!+`
 
-JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters to write and execute code.
-JScrewIt is a fork of [JSFuck](https://github.com/aemkei/jsfuck) with additional optimization and compatibility
-options.
+JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters to write and execute any code.
+
+JScrewIt is a fork of [JSFuck](https://github.com/aemkei/jsfuck) with the ability to optimize code for a particular set of JavaScript engines and even just for your browser.
+
+The more specific your engine choice, the shorter the code you'll get.
+
+Demo: [jscrew.it](http://jscrew.it)
 
 ### Example
 
-The following source will do an `alert(1)` in any browser:
+The following source will do an `alert(1)` in any browser, including Internet Explorer:
 
 ```js
 [][(![]+[])[+[]]+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[

@@ -1,7 +1,8 @@
 {
   "name": "JScrewIt",
   "version": "0.1.0",
-  "description": "Write any JavaScript with just 6 characters: []()!+",
+  "description": "Converts plain JavaScript into JSFuck code, which uses only six different
+characters: []()!+",
   "main": "jscrewit.js",
   "bin": "fuck.js",
   "repository": {
