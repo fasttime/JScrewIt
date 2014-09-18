@@ -6,8 +6,8 @@
 <link rel="author" href="https://github.com/fasttime">
 <link rel="icon" href="favicon.ico">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="description" content="Converts plain JavaScript into JSFuck code, which uses
-only six different characters: []()!+">
+<meta name="description" content="Converts plain JavaScript into JSFuck code, which uses only six
+different characters: []()!+">
 <meta name="viewport" content="width=device-width">
 <style>
 
@@ -32,7 +32,7 @@ body
 
 body>* { margin: 0 auto; max-width: 640px; text-align: justify; }
 
-body>*>*:first-child { height: 100px; position: relative; width: 100%; }
+header { height: 100px; position: relative; width: 100%; }
 
 h1
 {
@@ -65,7 +65,7 @@ textarea
     background-color: #e0e0e0;
     border-radius: .4em;
     display: block;
-    margin: .75em 0 .75em;
+    margin: .75em 0;
     padding: .4em;
 }
 
@@ -77,46 +77,46 @@ textarea
 <title>JScrewIt - Write any JavaScript with 6 Characters: []()!+</title>
 
 <body>
-<main>
+<div>
     <header>
         <h1>JScrewIt</h1>
         <img alt src="screw.svg" width="100" height="100">
     </header>
 
     <p>JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters
-    to write and execute code. JScrewIt is a fork of <a
-    href="https://github.com/aemkei/jsfuck">JSFuck</a> with additional optimization and
-    compatibility options.</p>
+    to write and execute any code.
 
-    <p>Use the form below to convert your own script. Uncheck "Eval source" to get back a plain
-    string.</p>
+    <p>Use the form below to convert your own script. Uncheck <kbd>Eval source</kbd> to get back a
+    plain string.
 
-    <label class="code">
-        <span>Input</span>
-        <textarea id="inputArea" rows="1">alert(1)</textarea>
-    </label>
-
-    <div class="controls">
-        <label>Compatibility:
-            <select id="ua">
-                <option value="DEFAULT">All supported engines
-                <option value="COMPACT">All new browsers
-                <option value="NO_IE">All except Internet Explorer (JSFuck mode)
-                <option value="AUTO">Only this browser
-            </select>
+    <div>
+        <label class="code">
+            <span>Input</span>
+            <textarea id="inputArea" rows="1">alert(1)</textarea>
         </label>
-        <label><input id="evalBox" type="checkbox" checked> Eval source</label>
-        <button id="encodeButton">Encode</button>
-    </div>
 
-    <label class="code">
-        <span>Output</span>
-        <textarea id="outputArea" rows="10"></textarea>
-        <span class="actions">
-            <span id="stats">…</span>
-            <a id="run" href="#">Run this</a>
-        </span>
-    </label>
+        <div class="controls">
+            <label>Compatibility:
+                <select id="ua">
+                    <option value="DEFAULT">All supported engines
+                    <option value="COMPACT">All new browsers
+                    <option value="NO_IE">All except Internet Explorer (JSFuck mode)
+                    <option value="AUTO">Only this browser
+                </select>
+            </label>
+            <label><input id="evalBox" type="checkbox" checked> Eval source</label>
+            <button id="encodeButton">Encode</button>
+        </div>
+
+        <label class="code">
+            <span>Output</span>
+            <textarea id="outputArea" rows="10"></textarea>
+            <span class="actions">
+                <span id="stats">…</span>
+                <a id="run" href="#">Run this</a>
+            </span>
+        </label>
+    </div>
 
     <h2>Compatibility</h2>
     
@@ -149,7 +149,7 @@ textarea
         <li><a href="http://discogscounter.getfreehosting.co.uk/js-noalnum.php">JS-NoAlnum</a>
         (broken)
     </ul>
-</main>
+</div>
 <script src="https://rawgithub.com/fasttime/JScrewIt/master/jscrewit.js"></script>
 <script>
 
