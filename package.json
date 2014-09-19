@@ -1,8 +1,7 @@
 {
-  "name": "JScrewIt",
+  "name": "jscrewit",
   "version": "1.0.0",
-  "description": "Converts plain JavaScript into JSFuck code, which uses only six different
-characters: []()!+",
+  "description": "Converts plain JavaScript into JSFuck code, which uses only six different characters: []()!+",
   "main": "screw.js",
   "dependencies": {
     "grunt": "~0.4.5",
