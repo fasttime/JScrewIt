@@ -14,17 +14,18 @@ if (process.argv.length !== 3)
     Stream.prototype._transform =
     function (chunk, encoding, callback)
     {
-        chunk.toString().split(/\n+/).forEach(
-            function (line)
-            {
-                if (line)
+        var lines = chunk.toString().match(/.+/g);
+        if (lines)
+        {
+            lines.forEach(
+                function (line)
                 {
                     var output = JScrewIt.encode(line);
                     this.push(output + '\n');
-                }
-            },
-            this
-        );
+                },
+                this
+            );
+        }
         callback();
     };
     var script = new Stream();
