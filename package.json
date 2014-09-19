@@ -3,35 +3,28 @@
   "version": "1.0.0",
   "description": "Converts plain JavaScript into JSFuck code, which uses only six different
 characters: []()!+",
-  "main": "jscrewit.js",
-  "bin": "fuck.js",
+  "main": "fuck.js",
+  "dependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-uglify": "~0.5.1",
+    "grunt-jasmine-node-coverage": "~0.1.11",
+    "jasmine-core": "~2.0.4",
+    "grunt-contrib-jshint": "~0.10.0"
+  },
+  "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git://github.com/fasttime/JScrewIt.git"
+    "url": "https://github.com/fasttime/JScrewIt.git"
   },
   "keywords": [
     "esoteric",
     "jsfuck",
     "obfuscation"
   ],
-  "author": {
-    "name": "Francesco Trotta",
-    "url": "https://github.com/fasttime"
-  },
-  "licenses": [
-    {
-      "type": "WTFPL",
-      "url": "https://raw.github.com/fasttime/JScrewIt/master/LICENSE.txt"
-    }
-  ],
+  "author": "Francesco Trotta <ft@fasttime.org> (https://github.com/fasttime)",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/fasttime/JScrewIt/issues"
   },
-  "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-contrib-jshint": "~0.10.0",
-    "grunt-contrib-uglify": "~0.5.1",
-    "grunt-jasmine-node-coverage": "~0.1.11",
-    "jasmine-core": "~2.0.4"
-  }
+  "homepage": "https://github.com/fasttime/JScrewIt"
 }
