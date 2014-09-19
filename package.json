@@ -2,7 +2,23 @@
   "name": "jscrewit",
   "version": "1.0.1",
   "description": "Converts plain JavaScript into JSFuck code, which uses only six different characters: []()!+",
-  "main": "screw.js",
+  "keywords": [
+    "esoteric",
+    "jsfuck",
+    "obfuscation"
+  ],
+  "homepage": "https://github.com/fasttime/JScrewIt",
+  "bugs": {
+    "url": "https://github.com/fasttime/JScrewIt/issues"
+  },
+  "license": "ISC",
+  "author": "Francesco Trotta <ft@fasttime.org> (https://github.com/fasttime)",
+  "main": "jscrewit.js",
+  "bin": "screw.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fasttime/JScrewIt.git"
+  },
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.5",
@@ -11,19 +27,5 @@
     "grunt-jasmine-node-coverage": "~0.1.11",
     "jasmine-core": "~2.0.4"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/fasttime/JScrewIt.git"
-  },
-  "keywords": [
-    "esoteric",
-    "jsfuck",
-    "obfuscation"
-  ],
-  "author": "Francesco Trotta <ft@fasttime.org> (https://github.com/fasttime)",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/fasttime/JScrewIt/issues"
-  },
-  "homepage": "https://github.com/fasttime/JScrewIt"
+  "browserDependencies": {}
 }
