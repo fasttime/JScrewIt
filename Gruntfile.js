@@ -22,7 +22,7 @@ function (grunt)
                 node:
                 {
                     options: { node: true },
-                    src: ['Gruntfile.js', 'fuck.js', 'jasmine/*spec.js']
+                    src: ['Gruntfile.js', 'jasmine/*spec.js', 'screw.js']
                 },
                 options:
                 {

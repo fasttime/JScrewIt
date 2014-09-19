@@ -27,16 +27,16 @@ if (process.argv.length !== 3)
         );
         callback();
     };
-    var fuckScript = new Stream();
+    var script = new Stream();
     repl.start(
         {
-            input: fuckScript,
+            input: script,
             output: process.stdout,
-            prompt: 'FUCK> ',
+            prompt: 'SCREW> ',
             useColors: true
         }
     );
-    process.stdin.pipe(fuckScript);
+    process.stdin.pipe(script);
 }
 else
 {
