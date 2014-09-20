@@ -1495,7 +1495,8 @@
         {
             var replacement =
                 expr.replace(
-                /([0-9]+)|("([^]*?)")|( +)|([$A-Z_a-z][$0-9A-Z_a-z]*)|[^!()+[\]]/g,
+                // IE 9 doesn't interpret '[^]' correctly; using '[^"]' instead.
+                /([0-9]+)|("([^"]*?)")|( +)|([$A-Z_a-z][$0-9A-Z_a-z]*)|[^!()+[\]]/g,
                 this.replaceToken || (this.replaceToken = replaceToken.bind(this))
                 );
             return replacement;
