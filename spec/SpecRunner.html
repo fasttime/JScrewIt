@@ -19,7 +19,7 @@ function handleDOMNodeInserted()
     var bar = document.querySelector('.bar');
     if (bar)
     {
-        removeEventListener('DOMNodeInserted', listener);
+        removeEventListener('DOMNodeInserted', handleDOMNodeInserted);
         var outputWindow;
         var button = bar.appendChild(document.createElement('BUTTON'));
         button.textContent = 'View lengths';
