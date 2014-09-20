@@ -1033,7 +1033,7 @@
             {
                 var charCode = character.charCodeAt(0);
                 var encoder =
-                    charCode < 0x100 ? unescapeCharacterEncoder8 : unescapeCharacterEncoder16;
+                    charCode < 0x100 ? encodeCharacterByUnescape8 : encodeCharacterByUnescape16;
                 var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
                 return result;
             }
@@ -1042,7 +1042,7 @@
             function (character)
             {
                 var charCode = character.charCodeAt(0);
-                var encoder = charCode < 0x100 ? atobCharacterEncoder : unescapeCharacterEncoder16;
+                var encoder = charCode < 0x100 ? encodeCharacterByAtob : encodeCharacterByEval;
                 var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
                 return result;
             },
@@ -1067,7 +1067,49 @@
     var quoteCharacter = JSON.stringify;
     var simplePattern;
     
-    function atobCharacterEncoder(charCode)
+    function createCharAtDefinition(expr, index, entries, paddingInfos)
+    {
+        function definition()
+        {
+            var padding = this.findBestDefinition(entries);
+            if (padding != null)
+            {
+                var paddingInfo = this.findBestDefinition(paddingInfos);
+                var paddingString = paddingInfo.paddingStrings[padding];
+                var indexer = index + padding + paddingInfo.shift;
+                if (indexer > 9)
+                {
+                    indexer = '"' + indexer + '"';
+                }
+                var fullExpr = '(' + paddingString + '+' + expr + ')[' + indexer + ']';
+                var result = createSolution(this.replace(fullExpr), LEVEL_STRING, false);
+                return result;
+            }
+        }
+        
+        return definition;
+    }
+    
+    function createDigitDefinition(digit)
+    {
+        function definition()
+        {
+            var result = createSolution(encodeDigit(digit), LEVEL_NUMERIC);
+            return result;
+        }
+        
+        return definition;
+    }
+    
+    function createSolution(replacement, level, outerPlus)
+    {
+        var result = Object(replacement);
+        result.level = level;
+        result.outerPlus = outerPlus;
+        return result;
+    }
+    
+    function encodeCharacterByAtob(charCode)
     {
         var BASE64_ALPHABET_HI_2 = ['NaN', 'false', 'truefalse', '0'];
         var BASE64_ALPHABET_HI_4 =
@@ -1215,45 +1257,40 @@
         return result;
     }
     
-    function createCharAtDefinition(expr, index, entries, paddingInfos)
+    function encodeCharacterByEval(charCode)
     {
-        function definition()
+        var hexCode = hexCodeOf(charCode, 4);
+        var result =
+            this.resolveConstant('Function') + '(' +
+            this.resolveString('return"\\u' + hexCode + '"') + ')()';
+        if (hexCode.length > 4)
         {
-            var padding = this.findBestDefinition(entries);
-            if (padding != null)
-            {
-                var paddingInfo = this.findBestDefinition(paddingInfos);
-                var paddingString = paddingInfo.paddingStrings[padding];
-                var indexer = index + padding + paddingInfo.shift;
-                if (indexer > 9)
-                {
-                    indexer = '"' + indexer + '"';
-                }
-                var fullExpr = '(' + paddingString + '+' + expr + ')[' + indexer + ']';
-                var result = createSolution(this.replace(fullExpr), LEVEL_STRING, false);
-                return result;
-            }
+            result += this.replace('[0]');
         }
-        
-        return definition;
+        return result;
     }
     
-    function createDigitDefinition(digit)
+    function encodeCharacterByUnescape16(charCode)
     {
-        function definition()
+        var hexCode = hexCodeOf(charCode, 4);
+        var result =
+            this.resolveConstant('unescape') + '(' + this.resolveString('%u' + hexCode) + ')';
+        if (hexCode.length > 4)
         {
-            var result = createSolution(encodeDigit(digit), LEVEL_NUMERIC);
-            return result;
+            result += this.replace('[0]');
         }
-        
-        return definition;
+        return result;
     }
     
-    function createSolution(replacement, level, outerPlus)
+    function encodeCharacterByUnescape8(charCode)
     {
-        var result = Object(replacement);
-        result.level = level;
-        result.outerPlus = outerPlus;
+        var hexCode = hexCodeOf(charCode, 2);
+        var result =
+            this.resolveConstant('unescape') + '(' + this.resolveString('%' + hexCode) + ')';
+        if (hexCode.length > 2)
+        {
+            result += this.replace('[0]');
+        }
         return result;
     }
     
@@ -1306,6 +1343,13 @@
         }
         expr.outerPlus = false;
         return false;
+    }
+    
+    function hexCodeOf(charCode, length)
+    {
+        var result = charCode.toString(16).replace(/b/g, 'B');
+        result = Array(length - result.length + 1).join(0) + result.replace(/fa?$/, 'false');
+        return result;
     }
     
     function isFollowedByLeftSquareBracket(expr, offset)
@@ -1403,32 +1447,6 @@
                 );
         }
         return replacement;
-    }
-    
-    function unescapeCharacterEncoder16(charCode)
-    {
-        var param =
-            '%u' +
-            ('000' + charCode.toString(16).replace(/b/g, 'B')).slice(-4).replace(/fa?$/, 'false');
-        var result = this.resolveConstant('unescape') + '(' + this.resolveString(param) + ')';
-        if (param.length > 6)
-        {
-            result += this.replace('[0]');
-        }
-        return result;
-    }
-    
-    function unescapeCharacterEncoder8(charCode)
-    {
-        var param =
-            '%' +
-            ('0' + charCode.toString(16).replace(/b/g, 'B')).slice(-2).replace(/fa?$/, 'false');
-        var result = this.resolveConstant('unescape') + '(' + this.resolveString(param) + ')';
-        if (param.length > 3)
-        {
-            result += this.replace('[0]');
-        }
-        return result;
     }
     
     function Encoder(featureMask)
