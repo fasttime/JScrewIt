@@ -1309,40 +1309,37 @@
         }
     }
     
-    // Determine whether the specified expression contains a plus sign out of brackets not preceded
-    // by an exclamation mark.
-    function hasOuterPlus(expr)
+    // Determine whether the specified solution contains a plus sign out of brackets not preceded by
+    // an exclamation mark.
+    function hasOuterPlus(solution)
     {
-        if (expr.outerPlus != null)
+        if (solution.outerPlus != null)
         {
-            return expr.outerPlus;
+            return solution.outerPlus;
         }
         var unclosed = 0;
-        var regExp = /".*?"|!\+|[+([)\]]/g;
-        var match;
-        while (match = regExp.exec(expr))
-        {
-            switch (match[0])
-            {
-            case '+':
-                if (!unclosed)
+        var outerPlus =
+            solution.match(/!\+|./g).some(
+                function (match)
                 {
-                    expr.outerPlus = true;
-                    return true;
+                    switch (match)
+                    {
+                    case '+':
+                        return !unclosed;
+                    case '(':
+                    case '[':
+                        ++unclosed;
+                        break;
+                    case ')':
+                    case ']':
+                        --unclosed;
+                        break;
+                    }
+                    return false;
                 }
-                break;
-            case '(':
-            case '[':
-                ++unclosed;
-                break;
-            case ')':
-            case ']':
-                --unclosed;
-                break;
-            }
-        }
-        expr.outerPlus = false;
-        return false;
+            );
+        solution.outerPlus = outerPlus;
+        return outerPlus;
     }
     
     function hexCodeOf(charCode, length)
@@ -1514,7 +1511,7 @@
             var replacement =
                 expr.replace(
                 // IE 9 doesn't interpret '[^]' correctly; using '[^"]' instead.
-                /([0-9]+)|("([^"]*?)")|( +)|([$A-Z_a-z][$0-9A-Z_a-z]*)|[^!()+[\]]/g,
+                /([0-9]+)|("([^"]*)")|( +)|([$A-Z_a-z][$0-9A-Z_a-z]*)|[^!()+[\]]/g,
                 this.replaceToken || (this.replaceToken = replaceToken.bind(this))
                 );
             return replacement;
@@ -1806,7 +1803,13 @@
                 return output;
             }
             
-            JScrewIt.debug = { defineConstant: defineConstant, replace: replace, setUp: setUp };
+            JScrewIt.debug =
+            {
+                defineConstant: defineConstant,
+                hasOuterPlus:   hasOuterPlus,
+                replace:        replace,
+                setUp:          setUp
+            };
         })();
     }
     

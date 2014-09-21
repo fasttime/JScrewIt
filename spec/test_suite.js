@@ -383,6 +383,56 @@
                 );
             }
         );
+        describe(
+            'hasOuterPlus is',
+            function ()
+            {
+                it(
+                    'true for leading plus',
+                    function ()
+                    {
+                        var solution = Object('+[]');
+                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(true);
+                        expect(solution.outerPlus).toBe(true);
+                    }
+                );
+                it(
+                    'true for middle plus',
+                    function ()
+                    {
+                        var solution = Object('[]+[]');
+                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(true);
+                        expect(solution.outerPlus).toBe(true);
+                    }
+                );
+                it(
+                    'false for inner plus',
+                    function ()
+                    {
+                        var solution = Object('(+[])');
+                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(false);
+                        expect(solution.outerPlus).toBe(false);
+                    }
+                );
+                it(
+                    'false for leading !+',
+                    function ()
+                    {
+                        var solution = Object('!+[]');
+                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(false);
+                        expect(solution.outerPlus).toBe(false);
+                    }
+                );
+                it(
+                    'cached',
+                    function ()
+                    {
+                        var solution = { outerPlus: true };
+                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(true);
+                    }
+                );
+            }
+        );
     }
     
     function test(charCode, compatibility)
