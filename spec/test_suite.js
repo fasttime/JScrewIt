@@ -72,6 +72,7 @@
         appendLengthsRange(161, 172);
         appendLengths('SHY', '\xad');
         appendLengthsRange(174, 255);
+        appendLengths('`∟`', '∟');
         appendLengths('`♥`', '♥');
         return result;
     }
