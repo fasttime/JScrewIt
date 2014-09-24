@@ -9,7 +9,7 @@ function (grunt)
             // Task configuration.
             jasmine_node:
             {
-                all: ['jasmine/'],
+                all: ['spec/'],
                 coverage: { }
             },
             jshint:
@@ -17,12 +17,12 @@ function (grunt)
                 any:
                 {
                     options: { globals: { module: true, self: true } },
-                    src: ['jscrewit.js', 'jasmine/test_suite.js']
+                    src: ['jscrewit.js', 'spec/test_suite.js']
                 },
                 node:
                 {
                     options: { node: true },
-                    src: ['Gruntfile.js', 'jasmine/*spec.js', 'screw.js']
+                    src: ['Gruntfile.js', 'spec/*spec.js', 'screw.js']
                 },
                 options:
                 {
