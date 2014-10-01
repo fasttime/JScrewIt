@@ -69,7 +69,7 @@ Returns `true` if all of the specified features are available in the current eng
 `false`.
 
 <dl>
-<dt><code><b>features</b></code> (required)</dt>
+<dt><code><b>features</b></code></dt>
 <dd>A string or array of strings specifying the feature(s) to be tested.</dd>
 </dl>
 
@@ -85,7 +85,7 @@ JScrewIt.areFeaturesAvailable(["ATOB", "GMT", "NAME"])
 
 ##### Notes
 
-If *`features`* is an empty array, the return value is `true`.
+If *`features`* is an empty array or `undefined`, the return value is `true`.
 
 This function throws a `ReferenceError` if some unknown features are specified.
 
@@ -94,7 +94,7 @@ This function throws a `ReferenceError` if some unknown features are specified.
 Returns `true` if the specified features are compatible with each other.
 
 <dl>
-<dt><code><b>features</b></code> (required)</dt>
+<dt><code><b>features</b></code></dt>
 <dd>A string or array of strings specifying the feature(s) to be tested.</dd>
 </dl>
 
@@ -110,7 +110,8 @@ JScrewIt.areFeaturesCompatible(["DEFAULT", "FILL"]) // returns true
 
 ##### Notes
 
-If *`features`* is an empty array, or if it only specifies one feature, the return value is `true`.
+If *`features`* is an empty array or `undefined`, or if it only specifies one feature, the return
+value is `true`.
 
 This function throws a `ReferenceError` if some unknown features are specified.
 
