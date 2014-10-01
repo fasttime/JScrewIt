@@ -1,7 +1,7 @@
-# JScrewIt `[]()!+`
+# JScrewIt
 
 JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters to
-write and execute any code.
+write and execute any code: `[]()!+`.
 
 JScrewIt is a fork of [JSFuck](https://github.com/aemkei/jsfuck) with the ability to optimize code
 for a particular set of JavaScript engines and even just for your browser.
@@ -10,7 +10,7 @@ The more specific your engine choice, the shorter the code you'll get.
 
 Demo: [jscrew.it](http://jscrew.it)
 
-### Example
+## Example
 
 The following source will do an `alert(1)` in any browser, including Internet Explorer:
 
@@ -44,9 +44,9 @@ The following source will do an `alert(1)` in any browser, including Internet Ex
 ])()
 ``` 
 
-### API
+## API
 
-#### Including in your project
+### Including in your project
 
 To use JScrewIt from another project, just include the file jscrewit.js (or jscrewit.min.js) in your
 HTML file:
@@ -61,16 +61,16 @@ or require it in Node.js:
 var JScrewIt = require("jscrewit/jscrewit.js");
 ```
 
-#### Reference
+### Reference
 
-##### <code>JScrewIt.areFeaturesAvailable(*features*)</code>
+#### <code>JScrewIt.areFeaturesAvailable(*features*)</code>
 
 Returns `true` if all of the specified features are available in the current engine; otherwise,
 `false`.
 
 * ***`features`*** (required): a string or array of strings specifying the feature(s) to be tested.
 
-###### Examples
+##### Examples
 
 ```js
 JScrewIt.areFeaturesAvailable("NO_IE_SRC")
@@ -80,19 +80,19 @@ JScrewIt.areFeaturesAvailable("NO_IE_SRC")
 JScrewIt.areFeaturesAvailable(["ATOB", "GMT", "NAME"])
 ```
 
-###### Notes
+##### Notes
 
 If *`features`* is an empty array, the return value is `true`.
 
 This function throws a `ReferenceError` if some unknown features are specified.
 
-##### <code>JScrewIt.areFeaturesCompatible(*features*)</code>
+#### <code>JScrewIt.areFeaturesCompatible(*features*)</code>
 
 Returns `true` if the specified features are compatible with each other.
 
 * ***`features`*** (required): a string or array of strings specifying the feature(s) to be tested.
 
-###### Examples
+##### Examples
 
 ```js
 JScrewIt.areFeaturesCompatible(["V8_SRC", "IE_SRC"]) // returns false
@@ -102,13 +102,13 @@ JScrewIt.areFeaturesCompatible(["V8_SRC", "IE_SRC"]) // returns false
 JScrewIt.areFeaturesCompatible(["DEFAULT", "FILL"]) // returns true
 ```
 
-###### Notes
+##### Notes
 
 If *`features`* is an empty array, or if it only specifies one feature, the return value is `true`.
 
 This function throws a `ReferenceError` if some unknown features are specified.
 
-##### <code>JScrewIt.encode(*input*, *wrapWithEval*, *features*)</code>
+#### <code>JScrewIt.encode(*input*, *wrapWithEval*, *features*)</code>
 
 Encodes a given string into JSFuck. Returns the encoded string.
 
@@ -124,33 +124,34 @@ The default is `DEFAULT`: this generates the largest code and ensures compatibil
 supported engines.
 To generate shorter code, specify some features.
 
-###### Notes
+##### Notes
 
 This function throws a `ReferenceError` if some unknown features are specified.
 
-##### <code>JScrewIt.FEATURE_INFOS</code>
+#### <code>JScrewIt.FEATURE_INFOS</code>
 
 This is a container mapping feature names to descriptors.
 A feature descriptor is an object with a set of properties defining the feature.
 
-###### Feature descriptor properties
+##### Feature descriptor properties
 
 <dl>
-<dt>`name`</dt>
+<dt><code>name</code></dt>
 <dd>Name of the feature.</dd>
-<dt>`description`<dt>
+<dt><code>description</code><dt>
 <dd>A short description of the feature in plain English.
-<dt>`available`</dt>
-<dd>`true` if the specified feature is available on the current engine; otherwise, `false`.</dd>
-<dt>`includes`</dt>
-<dd>An array of feature names implied by this feature. If a feature is available, its `includes`
-are, too.</dd>
-<dt>`excludes`</dt>
+<dt><code>available</code></dt>
+<dd><code>true</code> if the specified feature is available on the current engine; otherwise,
+<code>false</code>.</dd>
+<dt><code>includes</code></dt>
+<dd>An array of feature names implied by this feature. If a feature is available, its
+<code>includes</code> are, too.</dd>
+<dt><code>excludes</code></dt>
 <dd>An array of feature names not compatible with this feature. If a feature is available, its
-`excludes` are not.</dt>
+<code>excludes</code> are not.</dt>
 </dl>
 
-### Links
+## Links
 
 * [JSFuck](http://www.jsfuck.com) <br>
 * Original discussion at [Sla.ckers.org](http://sla.ckers.org/forum/read.php?24,32930)
