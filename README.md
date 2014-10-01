@@ -69,7 +69,7 @@ Returns `true` if all of the specified features are available in the current eng
 `false`.
 
 <dl>
-<dt><code><b>features</b></code></dt>
+<dt><code><strong><em>features</em></strong></code></dt>
 <dd>A string or array of strings specifying the feature(s) to be tested.</dd>
 </dl>
 
@@ -94,7 +94,7 @@ This function throws a `ReferenceError` if some unknown features are specified.
 Returns `true` if the specified features are compatible with each other.
 
 <dl>
-<dt><code><b>features</b></code></dt>
+<dt><code><strong><em>features</em></strong></code></dt>
 <dd>A string or array of strings specifying the feature(s) to be tested.</dd>
 </dl>
 
@@ -121,23 +121,22 @@ Encodes a given string into JSFuck. Returns the encoded string.
 
 <dl>
 
-<dt><code><b>input</b></code> (required)</dt>
+<dt><code><strong><em>input</em></strong></code></dt>
 <dd>The string to encode.</dd>
 
-<dt><code><b>wrapWithEval</b></code> (optional)</dt>
+<dt><code><strong><em>wrapWithEval</em></strong></code></dt>
 <dd>
 If this parameter is truthy, the return value evaluates to a function that runs the specified string
 as JavaScript code.
 If this parameter is falsy, the return value evaluates to a string equivalent to the specified
-input.
-The default is <code>false</code>.
+input.</dd>
 
-<dt><code><b>features</b></code> (optional)</dt>
+<dt><code><strong><em>features</em></strong></code></dt>
 <dd>
 A string or array of strings specifying the feature(s) available on the engine that evaluates the
 encoded output.
-The default is <code>DEFAULT</code>: this generates the largest code and ensures compatibility with
-all supported engines.
+If this parameter is an empty array or <code>undefined</code>, <code>DEFAULT</code> is assumed: this
+ensures maximum compatibility but also generates the largest code.
 To generate shorter code, specify some features.</dd>
 
 </dl>
@@ -155,23 +154,27 @@ A feature descriptor is an object with a set of properties defining the feature.
 
 <dl>
 
-<dt><code><b>name</b></code></dt>
+<dt><code><strong>name</strong></code></dt>
 <dd>Name of the feature.</dd>
 
-<dt><code><b>description</b></code></dt>
+<dt><code><strong>description</strong></code></dt>
 <dd>A short description of the feature in plain English.</dd>
 
-<dt><code><b>available</b></code></dt>
-<dd><code>true</code> if the specified feature is available on the current engine; otherwise,
+<dt><code><strong>available</strong></code></dt>
+<dd>
+<code>true</code> if the specified feature is available on the current engine; otherwise,
 <code>false</code>.</dd>
 
-<dt><code><b>includes</b></code></dt>
-<dd>An array of feature names implied by this feature. If a feature is available, its
-<code>includes</code> are, too.</dd>
+<dt><code><strong>includes</strong></code></dt>
+<dd>
+An array of feature names implied by this feature.
+If a feature is available, its <code>includes</code> are, too.
+If a feature is not available, other features including it are also not available.</dd>
 
-<dt><code><b>excludes</b></code></dt>
-<dd>An array of feature names not compatible with this feature. If a feature is available, its
-<code>excludes</code> are not.</dt>
+<dt><code><strong>excludes</strong></code></dt>
+<dd>
+An array of feature names not compatible with this feature.
+If a feature is available, its <code>excludes</code> are not.</dd>
 
 </dl>
 
