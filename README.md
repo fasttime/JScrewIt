@@ -68,7 +68,10 @@ var JScrewIt = require("jscrewit/jscrewit.js");
 Returns `true` if all of the specified features are available in the current engine; otherwise,
 `false`.
 
-* ***`features`*** (required): a string or array of strings specifying the feature(s) to be tested.
+<dl>
+<dt><code><b>features</b></code> (required)</dt>
+<dd>A string or array of strings specifying the feature(s) to be tested.</dd>
+</dl>
 
 ##### Examples
 
@@ -90,7 +93,10 @@ This function throws a `ReferenceError` if some unknown features are specified.
 
 Returns `true` if the specified features are compatible with each other.
 
-* ***`features`*** (required): a string or array of strings specifying the feature(s) to be tested.
+<dl>
+<dt><code><b>features</b></code> (required)</dt>
+<dd>A string or array of strings specifying the feature(s) to be tested.</dd>
+</dl>
 
 ##### Examples
 
@@ -112,17 +118,28 @@ This function throws a `ReferenceError` if some unknown features are specified.
 
 Encodes a given string into JSFuck. Returns the encoded string.
 
-* ***`input`*** (required): the string to encode.
-* ***`wrapWithEval`*** (optional): if this parameter is truthy, the return value evaluates to a
-function that runs the specified string as JavaScript code.
+<dl>
+
+<dt><code><b>input</b></code> (required)</dt>
+<dd>The string to encode.</dd>
+
+<dt><code><b>wrapWithEval</b></code> (optional)</dt>
+<dd>
+If this parameter is truthy, the return value evaluates to a function that runs the specified string
+as JavaScript code.
 If this parameter is falsy, the return value evaluates to a string equivalent to the specified
 input.
-The default is `false`.
-* ***`features`*** (optional): a string or array of strings specifying the feature(s) available on
-the engine that evaluates the return value.
-The default is `DEFAULT`: this generates the largest code and ensures compatibility with all
-supported engines.
-To generate shorter code, specify some features.
+The default is <code>false</code>.
+
+<dt><code><b>features</b></code> (optional)</dt>
+<dd>
+A string or array of strings specifying the feature(s) available on the engine that evaluates the
+encoded output.
+The default is <code>DEFAULT</code>: this generates the largest code and ensures compatibility with
+all supported engines.
+To generate shorter code, specify some features.</dd>
+
+</dl>
 
 ##### Notes
 
@@ -136,22 +153,36 @@ A feature descriptor is an object with a set of properties defining the feature.
 ##### Feature descriptor properties
 
 <dl>
-<dt><code>name</code></dt>
+
+<dt><code><b>name</b></code></dt>
 <dd>Name of the feature.</dd>
-<dt><code>description</code><dt>
-<dd>A short description of the feature in plain English.
-<dt><code>available</code></dt>
+
+<dt><code><b>description</b></code></dt>
+<dd>A short description of the feature in plain English.</dd>
+
+<dt><code><b>available</b></code></dt>
 <dd><code>true</code> if the specified feature is available on the current engine; otherwise,
 <code>false</code>.</dd>
-<dt><code>includes</code></dt>
+
+<dt><code><b>includes</b></code></dt>
 <dd>An array of feature names implied by this feature. If a feature is available, its
 <code>includes</code> are, too.</dd>
-<dt><code>excludes</code></dt>
+
+<dt><code><b>excludes</b></code></dt>
 <dd>An array of feature names not compatible with this feature. If a feature is available, its
 <code>excludes</code> are not.</dt>
+
 </dl>
+
+##### Examples
+
+This will return an array with the names of all features supported by JScrewIt:
+
+```js
+Object.getOwnPropertyNames(JScrewIt.FEATURE_INFOS)
+```
 
 ## Links
 
-* [JSFuck](http://www.jsfuck.com) <br>
+* [JSFuck](http://www.jsfuck.com)
 * Original discussion at [Sla.ckers.org](http://sla.ckers.org/forum/read.php?24,32930)
