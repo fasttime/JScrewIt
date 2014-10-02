@@ -44,26 +44,40 @@ The following source will do an `alert(1)` in any browser, including Internet Ex
 ])()
 ``` 
 
-## API
+## Usage
 
-### Including in your project
+### Installation
 
-To use JScrewIt from another project, just include the file jscrewit.js (or jscrewit.min.js) in your
-HTML file:
+To use JScrewIt in your project, download [jscrewit.js]
+(https://github.com/fasttime/JScrewIt/blob/master/jscrewit.js) or [jscrewit.min.js]
+(https://github.com/fasttime/JScrewIt/blob/master/jscrewit.min.js) from GitHub and include it in
+your HTML file.
 
 ```html
-<script src="jscrewit/jscrewit.js"></script>
+<script src="jscrewit.js"></script>
 ```
 
-or require it in Node.js:
+Alternatively, you can hotlink the online file.
+
+```html
+<script src="https://rawgithub.com/fasttime/JScrewIt/master/jscrewit.min.js"></script>
+```
+
+If you are using Node.js, you can install JScrewIt with npm.
+
+```
+npm install jscrewit
+```
+
+Then you can include it in your code.
 
 ```js
-var JScrewIt = require("jscrewit/jscrewit.js");
+var JScrewIt = require("jscrewit");
 ```
 
 ### Reference
 
-#### <code>JScrewIt.areFeaturesAvailable(*features*)</code>
+#### <code>**JScrewIt.areFeaturesAvailable(*features*)**</code>
 
 Returns `true` if all of the specified features are available in the current engine; otherwise,
 `false`.
@@ -89,7 +103,7 @@ If *`features`* is an empty array or `undefined`, the return value is `true`.
 
 This function throws a `ReferenceError` if some unknown features are specified.
 
-#### <code>JScrewIt.areFeaturesCompatible(*features*)</code>
+#### <code>**JScrewIt.areFeaturesCompatible(*features*)**</code>
 
 Returns `true` if the specified features are compatible with each other.
 
@@ -115,7 +129,7 @@ value is `true`.
 
 This function throws a `ReferenceError` if some unknown features are specified.
 
-#### <code>JScrewIt.encode(*input*, *wrapWithEval*, *features*)</code>
+#### <code>**JScrewIt.encode(*input*, *wrapWithEval*, *features*)**</code>
 
 Encodes a given string into JSFuck. Returns the encoded string.
 
@@ -145,7 +159,7 @@ To generate shorter code, specify some features.</dd>
 
 This function throws a `ReferenceError` if some unknown features are specified.
 
-#### <code>JScrewIt.FEATURE_INFOS</code>
+#### <code>**JScrewIt.FEATURE_INFOS**</code>
 
 This is a container mapping feature names to descriptors.
 A feature descriptor is an object with a set of properties defining the feature.
