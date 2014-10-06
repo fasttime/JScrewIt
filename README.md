@@ -63,7 +63,7 @@ Alternatively, you can hotlink the online file.
 <script src="https://rawgithub.com/fasttime/JScrewIt/master/jscrewit.min.js"></script>
 ```
 
-If you are using Node.js, you can install JScrewIt with npm.
+If you are using Node.js, you can install JScrewIt with [npm](https://www.npmjs.org).
 
 ```
 npm install jscrewit
@@ -73,6 +73,24 @@ Then you can include it in your code.
 
 ```js
 var JScrewIt = require("jscrewit");
+```
+
+### Encoding
+
+This will encode and run the `alert(1)` example shown above.
+
+```js
+var output = JScrewIt.encode("alert(1)", true);
+eval(output);
+```
+
+The `true` passed as a second parameter indicates that we would like the output to be executable.
+
+This parameter should be `false` to encode a plain string rather than code.
+
+```js
+var output = JScrewIt.encode("Hello, world!", false);
+var input = eval(output); // input contains the string "Hello, world!".
 ```
 
 ### Reference
