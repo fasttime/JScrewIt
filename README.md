@@ -77,7 +77,9 @@ var JScrewIt = require("jscrewit");
 
 ### Encoding
 
-This will encode and run the `alert(1)` example shown above.
+#### Basics
+
+This will encode the `alert(1)` example shown above and run it using `eval`.
 
 ```js
 var output = JScrewIt.encode("alert(1)", true);
@@ -86,11 +88,62 @@ eval(output);
 
 The `true` passed as a second parameter indicates that we would like the output to be executable.
 
-This parameter should be `false` to encode a plain string rather than code.
+This parameter should be `false` to encode a plain string rather than JavaScript code.
 
 ```js
 var output = JScrewIt.encode("Hello, world!", false);
 var input = eval(output); // input contains the string "Hello, world!".
+```
+
+#### Features
+
+JScrewIt has the ability to generate JSFuck code that is targeted for a particular set of JavaScript
+engines (web browsers or Node.js).
+This optimized code is shorter than generic JSFuck code but does not work everywhere.
+To make use of this optimization, you have to specify which *features* the decoder engine is
+expected to support.
+In order to understand how this works consider the JavaScript functions `atob` and `btoa`.
+Not all browsers support these functions: without any further information, JScrewIt will assume that
+they are unavailable and will not be able to use them in generated code.
+Anyway, if you know in advance that the browsers you plan to target do support `atob` and `btoa`
+indeed, you can let JScrewIt create code that uses those functions whenever this would make the
+output shorter.
+The way to tell JScrewIt to use these features is by specifying a string (or array of strings) as
+a third parameter to `encode`.
+
+For instance, the generic `alert(1)` example is 2084 chracters long.
+
+```js
+var output = JScrewIt.encode("alert(1)", true); // output is 2084 characters
+```
+
+But if we specify that we are only interested in code that runs in an up to date Firefox browser,
+the output length shrinks to less than a half:
+
+```js
+var output = JScrewIt.encode("alert(1)", true, "FF31"); // 972 characters now
+```
+
+You can specify more than one feature using an array, e.g.
+
+```js
+var input = "document.body.style.background='red'";
+var features = ["ATOB", "WINDOW"];
+var output = JScrewIt.encode(input, true, features);
+```
+
+Keep in mind that each of the target engines needs to support every feature you specify.
+So if you want your JSFuck code to run on both Internet Explorer and Firefox, this won't work.
+
+```js
+var features = ["IE9", "FF31"];
+```
+
+Instead, you have to specify features supported by both browsers.
+Those turn out out to be `"NO_SAFARI_LF"`, `"SELF"`, `"UNDEFINED"` and `"WINDOW"`.
+
+```js
+var features = ["NO_SAFARI_LF", "SELF", "UNDEFINED", "WINDOW"];
 ```
 
 ### Reference
