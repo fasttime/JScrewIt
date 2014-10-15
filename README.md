@@ -132,6 +132,94 @@ var features = ["ATOB", "WINDOW"];
 var output = JScrewIt.encode(input, true, features);
 ```
 
+This table lists individual features of some common browsers.
+
+<table>
+<tr>
+<th>Target</th>
+<th>Features</th>
+</tr>
+<tr>
+<td>Firefox 31+</td>
+<td>
+<ul>
+<li><code>ATOB</code>
+<li><code>FF_SAFARI_SRC</code>
+<li><code>FILL</code>
+<li><code>GMT</code>
+<li><code>NAME</code>
+<li><code>NO_IE_SRC</code>
+<li><code>NO_SAFARI_LF</code>
+<li><code>QUOTE</code>
+<li><code>SELF</code>
+<li><code>UNDEFINED</code>
+<li><code>WINDOW</code>
+</td>
+</tr>
+<tr>
+<td>
+Google Chrome 35+, Opera 22+
+</td>
+<td>
+<ul>
+<li><code>ATOB</code>
+<li><code>GMT</code>
+<li><code>NAME</code>
+<li><code>NO_SAFARI_LF</code>
+<li><code>SELF</code>
+<li><code>UNDEFINED</code>
+<li><code>V8_SRC</code> (includes <code>NO_IE_SRC</code>)
+<li><code>WINDOW</code>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+Internet Explorer 9
+</td>
+<td>
+<ul>
+<li><code>IE_SRC</code>
+<li><code>NO_SAFARI_LF</code>
+<li><code>SELF</code>
+<li><code>UNDEFINED</code>
+<li><code>WINDOW</code>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+Internet Explorer 10
+</td>
+<td>
+<ul>
+<li><code>ATOB</code>
+<li><code>IE_SRC</code>
+<li><code>NO_SAFARI_LF</code>
+<li><code>SELF</code>
+<li><code>UNDEFINED</code>
+<li><code>WINDOW</code>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+Internet Explorer 11
+</td>
+<td>
+<ul>
+<li><code>ATOB</code>
+<li><code>GMT</code>
+<li><code>IE_SRC</code>
+<li><code>NO_SAFARI_LF</code>
+<li><code>SELF</code>
+<li><code>UNDEFINED</code>
+<li><code>WINDOW</code>
+</ul>
+</td>
+</tr>
+</table>
+
 Keep in mind that each of the target engines needs to support every feature you specify.
 So if you want your JSFuck code to run on both Internet Explorer and Firefox, this won't work.
 
