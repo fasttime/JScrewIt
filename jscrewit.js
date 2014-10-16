@@ -104,7 +104,7 @@
             description:
                 'Feature linked to the property that the string representation of the global ' +
                 'object evaluates to "[object Window]".\n' +
-                'Not available in Android Browser versions prior to 4.4 and Node.js.',
+                'Not available in Android Browser versions prior to 4.4.2 and Node.js.',
             check: function ()
             {
                 return (self + '') === '[object Window]';
@@ -116,7 +116,7 @@
             description:
                 'Feature linked to the property that the string representation of the global ' +
                 'object evaluates to "[object DOMWindow]".\n' +
-                'Only available in Android Browser versions prior to 4.4.',
+                'Only available in Android Browser versions prior to 4.4.2.',
             check: function ()
             {
                 return (self + '') === '[object DOMWindow]';
@@ -149,8 +149,9 @@
             description:
                 'Feature linked to the property that Object.prototype.toString.call() evaluates ' +
                 'to "[object Undefined]".\n' +
-                'This behavior is defined by ECMAScript, but Android Browser 4.0 does not comply ' +
-                'with the specification and so this feature is not available in that browser.',
+                'This behavior is defined by ECMAScript, but Android Browser prior to 4.1.2 does ' +
+                'not comply with the specification and so this feature is not available in that ' +
+                'browser.',
             check: function ()
             {
                 return Object.prototype.toString.call() === '[object Undefined]';

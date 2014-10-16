@@ -210,6 +210,25 @@ Safari 7.0+
 </tr>
 <tr>
 <td>
+Android Browser 4.0+
+</td>
+<td>
+<ul>
+<li><code>ATOB</code>
+<li><code>DOMWINDOW</code> (not in Android Browser 4.4.2+)
+<li><code>GMT</code>
+<li><code>NAME</code>
+<li><code>NO_IE_SRC</code> (implied by <code>V8_SRC</code>)
+<li><code>NO_SAFARI_LF</code>
+<li><code>SELF</code>
+<li><code>UNDEFINED</code> (Android Browser 4.1.2+)
+<li><code>V8_SRC</code>
+<li><code>WINDOW</code> (Android Browser 4.4.2+)
+</ul>
+</td>
+</tr>
+<tr>
+<td>
 Node.js 0.10.28+
 </td>
 <td>
