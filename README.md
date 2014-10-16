@@ -140,12 +140,12 @@ This table lists individual features of some common browsers.
 <th>Features</th>
 </tr>
 <tr>
-<td>Firefox 31+</td>
+<td>Firefox 30+</td>
 <td>
 <ul>
 <li><code>ATOB</code>
 <li><code>FF_SAFARI_SRC</code>
-<li><code>FILL</code>
+<li><code>FILL</code> (Firefox 31+)
 <li><code>GMT</code>
 <li><code>NAME</code>
 <li><code>NO_IE_SRC</code>
@@ -175,10 +175,12 @@ Google Chrome 35+, Opera 22+
 </tr>
 <tr>
 <td>
-Internet Explorer 9
+Internet Explorer 9+
 </td>
 <td>
 <ul>
+<li><code>ATOB</code> (Internet Explorer 10+)
+<li><code>GMT</code> (Internet Explorer 11)
 <li><code>IE_SRC</code>
 <li><code>NO_SAFARI_LF</code>
 <li><code>SELF</code>
@@ -189,32 +191,19 @@ Internet Explorer 9
 </tr>
 <tr>
 <td>
-Internet Explorer 10
+Safari 7+
 </td>
 <td>
 <ul>
 <li><code>ATOB</code>
-<li><code>IE_SRC</code>
-<li><code>NO_SAFARI_LF</code>
-<li><code>SELF</code>
-<li><code>UNDEFINED</code>
-<li><code>WINDOW</code>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-Internet Explorer 11
-</td>
-<td>
-<ul>
-<li><code>ATOB</code>
+<li><code>FF_SAFARI_SRC</code>
+<li><code>FILL</code> (newer versions only)
 <li><code>GMT</code>
-<li><code>IE_SRC</code>
-<li><code>NO_SAFARI_LF</code>
+<li><code>NAME</code>
+<li><code>NO_IE_SRC</code>
 <li><code>SELF</code>
 <li><code>UNDEFINED</code>
-<li><code>WINDOW</code>
+<li><code>WINDOW
 </ul>
 </td>
 </tr>
