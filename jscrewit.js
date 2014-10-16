@@ -160,7 +160,7 @@
         {
             description:
                 'Existence of the native function Array.prototype.fill.\n' +
-                'Currently only available in Firefox 31.',
+                'Currently only available in Firefox 31, Safari 7.1 and later versions.',
             check: function ()
             {
                 return Array.prototype.fill;
@@ -199,7 +199,7 @@
         },
         FF31:
         {
-            description: 'Features available in Firefox 31 and possibly later versions.',
+            description: 'Features available in Firefox 31 and later versions.',
             includes:
             [
                 'ATOB',

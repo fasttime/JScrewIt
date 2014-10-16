@@ -190,7 +190,7 @@ Internet Explorer 9+
 </tr>
 <tr>
 <td>
-Safari 7+
+Safari 7.0+
 </td>
 <td>
 <ul>
