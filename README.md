@@ -144,10 +144,11 @@ This table lists individual features of some common browsers.
 <td>
 <ul>
 <li><code>ATOB</code>
-<li><code>FF_SAFARI_SRC</code> (includes <code>NO_IE_SRC</code>)
+<li><code>FF_SAFARI_SRC</code>
 <li><code>FILL</code> (Firefox 31+)
 <li><code>GMT</code>
 <li><code>NAME</code>
+<li><code>NO_IE_SRC</code> (implied by <code>FF_SAFARI_SRC</code>)
 <li><code>NO_SAFARI_LF</code>
 <li><code>QUOTE</code>
 <li><code>SELF</code>
@@ -164,10 +165,11 @@ Google Chrome 35+, Opera 22+
 <li><code>ATOB</code>
 <li><code>GMT</code>
 <li><code>NAME</code>
+<li><code>NO_IE_SRC</code> (implied by <code>V8_SRC</code>)
 <li><code>NO_SAFARI_LF</code>
 <li><code>SELF</code>
 <li><code>UNDEFINED</code>
-<li><code>V8_SRC</code> (includes <code>NO_IE_SRC</code>)
+<li><code>V8_SRC</code>
 <li><code>WINDOW</code>
 </ul>
 </td>
@@ -195,13 +197,29 @@ Safari 7.0+
 <td>
 <ul>
 <li><code>ATOB</code>
-<li><code>FF_SAFARI_SRC</code> (includes <code>NO_IE_SRC</code>)
+<li><code>FF_SAFARI_SRC</code>
 <li><code>FILL</code> (Safari 7.1+)
 <li><code>GMT</code>
 <li><code>NAME</code>
+<li><code>NO_IE_SRC</code> (implied by <code>FF_SAFARI_SRC</code>)
 <li><code>SELF</code>
 <li><code>UNDEFINED</code>
-<li><code>WINDOW
+<li><code>WINDOW</code>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+Node.js 0.10.28+
+</td>
+<td>
+<ul>
+<li><code>GMT</code>
+<li><code>NAME</code>
+<li><code>NO_IE_SRC</code> (implied by <code>V8_SRC</code>)
+<li><code>NO_SAFARI_LF</code>
+<li><code>UNDEFINED</code>
+<li><code>V8_SRC</code>
 </ul>
 </td>
 </tr>
