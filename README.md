@@ -144,11 +144,10 @@ This table lists individual features of some common browsers.
 <td>
 <ul>
 <li><code>ATOB</code>
-<li><code>FF_SAFARI_SRC</code>
+<li><code>FF_SAFARI_SRC</code> (includes <code>NO_IE_SRC</code>)
 <li><code>FILL</code> (Firefox 31+)
 <li><code>GMT</code>
 <li><code>NAME</code>
-<li><code>NO_IE_SRC</code>
 <li><code>NO_SAFARI_LF</code>
 <li><code>QUOTE</code>
 <li><code>SELF</code>
@@ -196,11 +195,10 @@ Safari 7+
 <td>
 <ul>
 <li><code>ATOB</code>
-<li><code>FF_SAFARI_SRC</code>
-<li><code>FILL</code> (newer versions only)
+<li><code>FF_SAFARI_SRC</code> (includes <code>NO_IE_SRC</code>)
+<li><code>FILL</code> (Safari 7.1+)
 <li><code>GMT</code>
 <li><code>NAME</code>
-<li><code>NO_IE_SRC</code>
 <li><code>SELF</code>
 <li><code>UNDEFINED</code>
 <li><code>WINDOW
