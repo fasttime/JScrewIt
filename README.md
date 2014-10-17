@@ -144,6 +144,7 @@ This table lists individual features of some common browsers.
 <td>
 <ul>
 <li><code>ATOB</code>
+<li><code>ENTRIES</code>
 <li><code>FF_SAFARI_SRC</code>
 <li><code>FILL</code> (Firefox 31+)
 <li><code>GMT</code>
@@ -163,6 +164,7 @@ Google Chrome 35+, Opera 22+
 <td>
 <ul>
 <li><code>ATOB</code>
+<li><code>ENTRIES</code> (Chrome 38+, Opera 25+)
 <li><code>GMT</code>
 <li><code>NAME</code>
 <li><code>NO_IE_SRC</code> (implied by <code>V8_SRC</code>)
@@ -197,6 +199,7 @@ Safari 7.0+
 <td>
 <ul>
 <li><code>ATOB</code>
+<li><code>ENTRIES</code> (Safari 7.1+)
 <li><code>FF_SAFARI_SRC</code>
 <li><code>FILL</code> (Safari 7.1+)
 <li><code>GMT</code>

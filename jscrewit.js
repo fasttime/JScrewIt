@@ -177,6 +177,18 @@
                 return String.prototype.quote;
             }
         },
+        ENTRIES:
+        {
+            description:
+                'Feature linked to the property that the string representation of ' +
+                'Array.prototype.entries() evaluates to "[object Array Iterator]".\n' +
+                'This feature is available in Firefox, Chrome 38, Opera 25, Safari 7.1 and later ' +
+                'versions.',
+            check: function ()
+            {
+                return Array.prototype.entries && ([].entries() + '') === '[object Array Iterator]';
+            }
+        },
         
         DEFAULT:
         {
@@ -204,6 +216,7 @@
             includes:
             [
                 'ATOB',
+                'ENTRIES',
                 'FF_SAFARI_SRC',
                 'FILL',
                 'GMT',
@@ -603,7 +616,8 @@
         'a':            '"false"[1]',
         'b':
         [
-            defineFHCharAt('Number', 12)
+            defineFHCharAt('Number', 12),
+            define('(ARRAY_ITERATOR + [])[2]', 'ENTRIES')
         ],
         'c':
         [
@@ -621,7 +635,8 @@
         'j':
         [
             define('(Function("return{}")() + [])["10"]'),
-            define('(self + [])[3]', 'SELF')
+            define('(self + [])[3]', 'SELF'),
+            define('(ARRAY_ITERATOR + [])[3]', 'ENTRIES')
         ],
         'k':            '(20)[TO_STRING]("21")',
         'l':            '"false"[2]',
@@ -660,7 +675,8 @@
 
         'A':
         [
-            defineFHCharAt('Array', 9)
+            defineFHCharAt('Array', 9),
+            define('(RP_3_NO + ARRAY_ITERATOR)[11]', 'ENTRIES')
         ],
         'B':
         [
@@ -979,6 +995,10 @@
             define('FILTER'),
             define('FILL', 'FILL')
         ],
+        ARRAY_ITERATOR:
+        [
+            define('[]["entries"]()', 'ENTRIES')
+        ],
         CONSTRUCTOR:    '"constructor"',
         FILL:
         [
@@ -1260,7 +1280,7 @@
     
     function encodeCharacterByEval(charCode)
     {
-        var hexCode = hexCodeOf(charCode, 4);
+        var hexCode = this.hexCodeOf(charCode, 4);
         var result =
             this.resolveConstant('Function') + '(' +
             this.resolveString('return"\\u' + hexCode + '"') + ')()';
@@ -1273,7 +1293,7 @@
     
     function encodeCharacterByUnescape16(charCode)
     {
-        var hexCode = hexCodeOf(charCode, 4);
+        var hexCode = this.hexCodeOf(charCode, 4);
         var result =
             this.resolveConstant('unescape') + '(' + this.resolveString('%u' + hexCode) + ')';
         if (hexCode.length > 4)
@@ -1285,7 +1305,7 @@
     
     function encodeCharacterByUnescape8(charCode)
     {
-        var hexCode = hexCodeOf(charCode, 2);
+        var hexCode = this.hexCodeOf(charCode, 2);
         var result =
             this.resolveConstant('unescape') + '(' + this.resolveString('%' + hexCode) + ')';
         if (hexCode.length > 2)
@@ -1341,13 +1361,6 @@
             );
         solution.outerPlus = outerPlus;
         return outerPlus;
-    }
-    
-    function hexCodeOf(charCode, length)
-    {
-        var result = charCode.toString(16).replace(/b/g, 'B');
-        result = Array(length - result.length + 1).join(0) + result.replace(/fa?$/, 'false');
-        return result;
     }
     
     function isFollowedByLeftSquareBracket(expr, offset)
@@ -1492,14 +1505,29 @@
             for (var index = entries.length; index-- > 0;)
             {
                 var entry = entries[index];
-                var entryFeatureMask = entry.featureMask;
-                if ((entryFeatureMask & this.featureMask) === entryFeatureMask)
+                if (this.hasFeatures(entry.featureMask))
                 {
                     return entry.definition;
                 }
             }
         },
-                
+        
+        hasFeatures: function (featureMask)
+        {
+            return (featureMask & this.featureMask) === featureMask;
+        },
+    
+        hexCodeOf: function (charCode, length)
+        {
+            var result = charCode.toString(16);
+            if (!this.hasFeatures(featureMaskMap.ENTRIES))
+            {
+                result = result.replace(/b/g, 'B');
+            }
+            result = Array(length - result.length + 1).join(0) + result.replace(/fa?$/, 'false');
+            return result;
+        },
+        
         peekLastFromStack: function ()
         {
             var stack = this.stack;
