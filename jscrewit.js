@@ -181,13 +181,39 @@
         {
             description:
                 'Feature linked to the property that the string representation of ' +
-                'Array.prototype.entries() evaluates to "[object Array Iterator]".\n' +
+                'Array.prototype.entries() starts with "[object Array".\n' +
                 'This feature is available in Firefox, Chrome 38, Opera 25, Safari 7.1 and later ' +
                 'versions.',
             check: function ()
             {
-                return Array.prototype.entries && ([].entries() + '') === '[object Array Iterator]';
+                return Array.prototype.entries && /^\[object Array/.test([].entries());
             }
+        },
+        NO_SAFARI_ARRAY_ITERATOR:
+        {
+            description:
+                'Feature linked to the property that the string representation of ' +
+                'Array.prototype.entries() evaluates to "[object Array Iterator]".\n' +
+                'Available in Firefox, Chrome 38, Opera 25 and later versions.',
+            check: function ()
+            {
+                return Array.prototype.entries && ([].entries() + '')[22] === ']';
+            },
+            includes: ['ENTRIES'],
+            excludes: ['SAFARI_ARRAY_ITERATOR']
+        },
+        SAFARI_ARRAY_ITERATOR:
+        {
+            description:
+                'Feature linked to the property that the string representation of ' +
+                'Array.prototype.entries() evaluates to "[object ArrayIterator]".\n' +
+                'Available in Safari 7.1 and later versions.',
+            check: function ()
+            {
+                return Array.prototype.entries && ([].entries() + '')[21] === ']';
+            },
+            includes: ['ENTRIES'],
+            excludes: ['NO_SAFARI_ARRAY_ITERATOR']
         },
         
         DEFAULT:
@@ -621,7 +647,10 @@
         ],
         'c':
         [
-            defineFHCharAt('ANY_FUNCTION', 3)
+            defineFHCharAt('ANY_FUNCTION', 3),
+            define('(RP_5_N + ARRAY_ITERATOR)["10"]', 'ENTRIES'),
+            defineFHCharAt('ANY_FUNCTION', 3, 'IE_SRC'),
+            defineFHCharAt('ANY_FUNCTION', 3, 'NO_IE_SRC')
         ],
         'd':            '"undefined"[2]',
         'e':            '"true"[3]',
@@ -649,7 +678,10 @@
         'n':            '"undefined"[1]',
         'o':
         [
-            defineFHCharAt('ANY_FUNCTION', 6)
+            defineFHCharAt('ANY_FUNCTION', 6),
+            define('(ARRAY_ITERATOR + [])[1]', 'ENTRIES'),
+            defineFHCharAt('ANY_FUNCTION', 6, 'IE_SRC'),
+            defineFHCharAt('ANY_FUNCTION', 6, 'NO_IE_SRC')
         ],
         'p':            '(211)[TO_STRING]("31")[1]',
         'q':            '(212)[TO_STRING]("31")[1]',
@@ -792,8 +824,10 @@
         ' ':
         [
             defineFHCharAt('ANY_FUNCTION', 8),
+            define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ENTRIES'),
+            defineFHCharAt('ANY_FUNCTION', 8, 'IE_SRC'),
             define('(RP_1_NO + FILTER)["20"]', 'V8_SRC'),
-            define('(RP_3_NO + FILTER)["20"]', 'V8_SRC', 'FILL'),
+            define('(RP_3_NO + FILL)["20"]', 'V8_SRC', 'FILL'),
             define('(FILTER + [])["20"]', 'FF_SAFARI_SRC'),
             define('(RP_3_NO + FILL)["21"]', 'FF_SAFARI_SRC', 'FILL')
         ],
@@ -840,7 +874,14 @@
         '[':
         [
             defineFBCharAt('FILTER', 20),
-            defineFBCharAt('FILL', 18, 'FILL')
+            defineFBCharAt('FILL', 18, 'FILL'),
+            define('(ARRAY_ITERATOR + [])[0]', 'ENTRIES'),
+            defineFBCharAt('FILTER', 20, 'FF_SAFARI_SRC'),
+            defineFBCharAt('FILL', 18, 'FF_SAFARI_SRC', 'FILL'),
+            defineFBCharAt('FILTER', 20, 'IE_SRC'),
+            defineFBCharAt('FILL', 18, 'IE_SRC', 'FILL'),
+            defineFBCharAt('FILTER', 20, 'V8_SRC'),
+            defineFBCharAt('FILL', 18, 'V8_SRC', 'FILL')
         ],
         '\\':
         [
@@ -854,7 +895,15 @@
         ']':
         [
             defineFBCharAt('FILTER', 32),
-            defineFBCharAt('FILL', 30, 'FILL')
+            defineFBCharAt('FILL', 30, 'FILL'),
+            define('(ARRAY_ITERATOR + [])["22"]', 'NO_SAFARI_ARRAY_ITERATOR'),
+            define('(ARRAY_ITERATOR + [])["21"]', 'SAFARI_ARRAY_ITERATOR'),
+            defineFBCharAt('FILTER', 32, 'FF_SAFARI_SRC'),
+            defineFBCharAt('FILL', 30, 'FF_SAFARI_SRC', 'FILL'),
+            defineFBCharAt('FILTER', 32, 'IE_SRC'),
+            defineFBCharAt('FILL', 30, 'IE_SRC', 'FILL'),
+            defineFBCharAt('FILTER', 32, 'V8_SRC'),
+            defineFBCharAt('FILL', 30, 'V8_SRC', 'FILL')
         ],
         '^':
         [
