@@ -10,8 +10,8 @@
         NO_SAFARI_LF:
         {
             description:
-                'Feature linked to a string representation of dynamically generated functions ' +
-                'typical for most browsers with the notable exception of Safari.\n' +
+                'A string representation of dynamically generated functions typical for most ' +
+                'browsers with the notable exception of Safari.\n' +
                 'More specifically, in this representation, the character at index 22 is a line ' +
                 'feed ("\\n").',
             check: function ()
@@ -22,8 +22,8 @@
         NO_IE_SRC:
         {
             description:
-                'Feature linked to a string representation of native functions typical for ' +
-                'most browsers with the notable exception of Internet Explorer.\n' +
+                'A string representation of native functions typical for most browsers with the ' +
+                'notable exception of Internet Explorer.\n' +
                 'A remarkable trait for this feature is the lack of characters in the beginning ' +
                 'of the string before "function".',
             check: function ()
@@ -35,8 +35,7 @@
         V8_SRC:
         {
             description:
-                'Feature linked to a string representation of native functions found in the V8 ' +
-                'JavaScript engine.\n' +
+                'A string representation of native functions found in the V8 JavaScript engine.\n' +
                 'V8 is used among others in Chrome, Opera, Android Browser and Node.js.\n' +
                 'Remarkable traits are the lack of characters in the beginning of the string ' +
                 'before "function" and a single whitespace before the "[native code]" sequence.',
@@ -50,8 +49,8 @@
         FF_SAFARI_SRC:
         {
             description:
-                'Feature linked to a string representation of native functions typically found ' +
-                'in Firefox and Safari.\n' +
+                'A string representation of native functions typically found in Firefox and ' +
+                'Safari.\n' +
                 'Remarkable traits are the lack of characters in the beginning of the string ' +
                 'before "function" and a line feed with four whitespaces ("\\n    ") before the ' +
                 '"[native code]" sequence.',
@@ -65,8 +64,7 @@
         IE_SRC:
         {
             description:
-                'Feature linked to a string representation of native functions typical for ' +
-                'Internet Explorer.\n' +
+                'A string representation of native functions typical for Internet Explorer.\n' +
                 'Remarkable traits are the presence of a line feed character ("\\n") in the ' +
                 'beginning of the string before "function" and a line feed with four whitespaces ' +
                 '("\\n    ") before the "[native code]" sequence.',
@@ -79,8 +77,8 @@
         GMT:
         {
             description:
-                'Feature linked to the property that the string representation of a Date object ' +
-                'contains the text "GMT" after the first 25 characters.\n' +
+                'The property that the string representation of a Date object contains the text ' +
+                '"GMT" after the first 25 characters.\n' +
                 'Although ECMAScript states that string representation of dates is ' +
                 'implementation dependent, most engines align to the same format, making this ' +
                 'feature available in all supported engines except Internet Explorer.',
@@ -102,8 +100,8 @@
         WINDOW:
         {
             description:
-                'Feature linked to the property that the string representation of the global ' +
-                'object evaluates to "[object Window]".\n' +
+                'The property that the string representation of the global object evaluates to ' +
+                '"[object Window]".\n' +
                 'Not available in Android Browser versions prior to 4.4.2 and Node.js.',
             check: function ()
             {
@@ -114,8 +112,8 @@
         DOMWINDOW:
         {
             description:
-                'Feature linked to the property that the string representation of the global ' +
-                'object evaluates to "[object DOMWindow]".\n' +
+                'The property that the string representation of the global object evaluates to ' +
+                '"[object DOMWindow]".\n' +
                 'Only available in Android Browser versions prior to 4.4.2.',
             check: function ()
             {
@@ -147,8 +145,8 @@
         UNDEFINED:
         {
             description:
-                'Feature linked to the property that Object.prototype.toString.call() evaluates ' +
-                'to "[object Undefined]".\n' +
+                'The property that Object.prototype.toString.call() evaluates to "[object ' +
+                'Undefined]".\n' +
                 'This behavior is defined by ECMAScript, but Android Browser prior to 4.1.2 does ' +
                 'not comply with the specification and so this feature is not available in that ' +
                 'browser.',
@@ -180,8 +178,8 @@
         ENTRIES:
         {
             description:
-                'Feature linked to the property that the string representation of ' +
-                'Array.prototype.entries() starts with "[object Array".\n' +
+                'The property that the string representation of Array.prototype.entries() starts ' +
+                'with "[object Array".\n' +
                 'This feature is available in Firefox, Chrome 38, Opera 25, Safari 7.1 and later ' +
                 'versions.',
             check: function ()
@@ -192,8 +190,8 @@
         NO_SAFARI_ARRAY_ITERATOR:
         {
             description:
-                'Feature linked to the property that the string representation of ' +
-                'Array.prototype.entries() evaluates to "[object Array Iterator]".\n' +
+                'The property that the string representation of Array.prototype.entries() ' +
+                'evaluates to "[object Array Iterator]".\n' +
                 'Available in Firefox, Chrome 38, Opera 25 and later versions.',
             check: function ()
             {
@@ -205,8 +203,8 @@
         SAFARI_ARRAY_ITERATOR:
         {
             description:
-                'Feature linked to the property that the string representation of ' +
-                'Array.prototype.entries() evaluates to "[object ArrayIterator]".\n' +
+                'The property that the string representation of Array.prototype.entries() ' +
+                'evaluates to "[object ArrayIterator]".\n' +
                 'Available in Safari 7.1 and later versions.',
             check: function ()
             {
