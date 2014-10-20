@@ -247,6 +247,7 @@
                 'FILL',
                 'GMT',
                 'NAME',
+                'NO_SAFARI_ARRAY_ITERATOR',
                 'NO_SAFARI_LF',
                 'QUOTE',
                 'SELF',
@@ -458,6 +459,26 @@
         return result;
     }
     
+    function defineCharacterByAtob(character)
+    {
+        var charCode = character.charCodeAt(0);
+        var result =
+            define(
+                function ()
+                {
+                    var result =
+                        createSolution(
+                            encodeCharacterByAtob.call(this, charCode),
+                            LEVEL_STRING,
+                            false
+                        );
+                    return result;
+                },
+                'ATOB'
+            );
+        return result;
+    }
+    
     function defineFBCharAt(expr, index)
     {
         var entries;
@@ -648,9 +669,7 @@
         'c':
         [
             defineFHCharAt('ANY_FUNCTION', 3),
-            define('(RP_5_N + ARRAY_ITERATOR)["10"]', 'ENTRIES'),
-            defineFHCharAt('ANY_FUNCTION', 3, 'IE_SRC'),
-            defineFHCharAt('ANY_FUNCTION', 3, 'NO_IE_SRC')
+            define('(RP_5_N + ARRAY_ITERATOR)["10"]', 'ENTRIES')
         ],
         'd':            '"undefined"[2]',
         'e':            '"true"[3]',
@@ -672,16 +691,13 @@
         'm':
         [
             define('(RP_6_SO + Function())["20"]'),
-            defineFHCharAt('Number', 11, 'NO_IE_SRC'),
-            defineFHCharAt('Number', 11, 'IE_SRC')
+            defineFHCharAt('Number', 11)
         ],
         'n':            '"undefined"[1]',
         'o':
         [
             defineFHCharAt('ANY_FUNCTION', 6),
-            define('(ARRAY_ITERATOR + [])[1]', 'ENTRIES'),
-            defineFHCharAt('ANY_FUNCTION', 6, 'IE_SRC'),
-            defineFHCharAt('ANY_FUNCTION', 6, 'NO_IE_SRC')
+            define('(ARRAY_ITERATOR + [])[1]', 'ENTRIES')
         ],
         'p':            '(211)[TO_STRING]("31")[1]',
         'q':            '(212)[TO_STRING]("31")[1]',
@@ -717,7 +733,8 @@
         'C':
         [
             define('escape(""["italics"]())[2]'),
-            define(null, 'ATOB')
+            define('escape(""["sub"]())[2]'),
+            defineCharacterByAtob('C')
         ],
         'D':
         [
@@ -761,7 +778,8 @@
         'O':            '(RP_3_NO + Function("return{}")())["11"]',
         'P':
         [
-            define('btoa(""["italics"]())[0]', 'ATOB')
+            define('btoa(""["italics"]())[0]', 'ATOB'),
+            define('btoa(""["sub"]())[0]', 'ATOB')
         ],
         'Q':
         [
@@ -825,7 +843,6 @@
         [
             defineFHCharAt('ANY_FUNCTION', 8),
             define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ENTRIES'),
-            defineFHCharAt('ANY_FUNCTION', 8, 'IE_SRC'),
             define('(RP_1_NO + FILTER)["20"]', 'V8_SRC'),
             define('(RP_3_NO + FILL)["20"]', 'V8_SRC', 'FILL'),
             define('(FILTER + [])["20"]', 'FF_SAFARI_SRC'),
@@ -840,7 +857,7 @@
             define('escape(FILTER)["20"]'),
             define('escape(false + FILL)["20"]', 'NO_IE_SRC', 'FILL'),
             define('escape(ANY_FUNCTION)[0]', 'IE_SRC'),
-            define(null, 'ATOB'),
+            defineCharacterByAtob('%'),
         ],
     //  '&':    ,
     //  '\'':   ,
@@ -859,35 +876,41 @@
         ',':            '([]["slice"]["call"]("false") + [])[1]',
         '-':            '(+".0000000001" + [])[2]',
         '.':            '(+"11e20" + [])[1]',
-        '/':            '"0false"["italics"]()["10"]',
+        '/':
+        [
+            define('"0false"["italics"]()["10"]'),
+            define('"true"["sub"]()["10"]')
+        ],
         ':':
         [
             define('(RegExp() + [])[3]'),
-            define(null, 'ATOB')
+            defineCharacterByAtob(':')
         ],
     //  ';':    ,
-        '<':            '""["italics"]()[0]',
+        '<':
+        [
+            define('""["italics"]()[0]'),
+            define('""["sub"]()[0]')
+        ],
         '=':            '""["fontcolor"]()["11"]',
-        '>':            '""["italics"]()[2]',
+        '>':
+        [
+            define('""["italics"]()[2]'),
+            define('""["sub"]()["10"]')
+        ],
         '?':            '(RegExp() + [])[2]',
     //  '@':    ,
         '[':
         [
             defineFBCharAt('FILTER', 20),
             defineFBCharAt('FILL', 18, 'FILL'),
-            define('(ARRAY_ITERATOR + [])[0]', 'ENTRIES'),
-            defineFBCharAt('FILTER', 20, 'FF_SAFARI_SRC'),
-            defineFBCharAt('FILL', 18, 'FF_SAFARI_SRC', 'FILL'),
-            defineFBCharAt('FILTER', 20, 'IE_SRC'),
-            defineFBCharAt('FILL', 18, 'IE_SRC', 'FILL'),
-            defineFBCharAt('FILTER', 20, 'V8_SRC'),
-            defineFBCharAt('FILL', 18, 'V8_SRC', 'FILL')
+            define('(ARRAY_ITERATOR + [])[0]', 'ENTRIES')
         ],
         '\\':
         [
         
             define('""["fontcolor"]()["quote"]()["13"]', 'QUOTE'),
-            define(null, 'ATOB'),
+            defineCharacterByAtob('\\'),
             define('(ANY_FUNCTION + [])["quote"]()[1]', 'IE_SRC', 'QUOTE'),
             define('(FILTER + [])["quote"]()["20"]', 'FF_SAFARI_SRC', 'QUOTE'),
             define('(RP_3_NO + FILL)["quote"]()["21"]', 'FF_SAFARI_SRC', 'FILL', 'QUOTE')
@@ -897,13 +920,7 @@
             defineFBCharAt('FILTER', 32),
             defineFBCharAt('FILL', 30, 'FILL'),
             define('(ARRAY_ITERATOR + [])["22"]', 'NO_SAFARI_ARRAY_ITERATOR'),
-            define('(ARRAY_ITERATOR + [])["21"]', 'SAFARI_ARRAY_ITERATOR'),
-            defineFBCharAt('FILTER', 32, 'FF_SAFARI_SRC'),
-            defineFBCharAt('FILL', 30, 'FF_SAFARI_SRC', 'FILL'),
-            defineFBCharAt('FILTER', 32, 'IE_SRC'),
-            defineFBCharAt('FILL', 30, 'IE_SRC', 'FILL'),
-            defineFBCharAt('FILTER', 32, 'V8_SRC'),
-            defineFBCharAt('FILL', 30, 'V8_SRC', 'FILL')
+            define('(ARRAY_ITERATOR + [])["21"]', 'SAFARI_ARRAY_ITERATOR')
         ],
         '^':
         [
@@ -1561,6 +1578,38 @@
             }
         },
         
+        findOptimalSolution: function (entries)
+        {
+            var result;
+            if (!Array.isArray(entries))
+            {
+                entries = [define(entries)];
+            }
+            for (var index = entries.length; index-- > 0;)
+            {
+                var entry = entries[index];
+                if (this.hasFeatures(entry.featureMask))
+                {
+                    var solution;
+                    var definition = entry.definition;
+                    if (definition instanceof Function)
+                    {
+                        solution = definition.call(this);
+                    }
+                    else
+                    {
+                        var replacement = this.replace(definition);
+                        solution = createSolution(replacement);
+                    }
+                    if (!result || result.length >= solution.length)
+                    {
+                        result = solution;
+                    }
+                }
+            }
+            return result;
+        },
+        
         hasFeatures: function (featureMask)
         {
             return (featureMask & this.featureMask) === featureMask;
@@ -1604,30 +1653,16 @@
                     quoteCharacter(character),
                     function ()
                     {
-                        var expr;
                         var entries = CHARACTERS[character];
-                        if (Array.isArray(entries))
+                        if (entries != null)
                         {
-                            expr = this.findBestDefinition(entries);
+                            solution = this.findOptimalSolution(entries);
                         }
-                        else
-                        {
-                            expr = entries;
-                        }
-                        if (expr == null)
+                        if (!solution)
                         {
                             var defaultCharacterEncoder =
                                 this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
                             solution = defaultCharacterEncoder.call(this, character);
-                        }
-                        else if (expr instanceof Function)
-                        {
-                            solution = expr.call(this);
-                        }
-                        else
-                        {
-                            var replacement = this.replace(expr);
-                            solution = createSolution(replacement, LEVEL_STRING);
                         }
                         this.characterCache[character] = solution;
                     }
@@ -1645,18 +1680,9 @@
                     constant,
                     function ()
                     {
-                        var expr;
                         var entries = CONSTANTS[constant];
-                        if (Array.isArray(entries))
-                        {
-                            expr = this.findBestDefinition(entries);
-                        }
-                        else
-                        {
-                            expr = entries;
-                        }
-                        this.constantCache[constant] = solution =
-                            createSolution(this.replace(expr));
+                        solution = this.findOptimalSolution(entries);
+                        this.constantCache[constant] = solution;
                     }
                 );
             }
