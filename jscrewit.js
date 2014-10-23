@@ -946,10 +946,7 @@
         [
             defineFBCharAt('FILTER', 32),
             defineFBCharAt('FILL', 30, 'FILL'),
-            define(
-                '(ARRAY_ITERATOR + [])["2" + (true + !!(ARRAY_ITERATOR + [])["22"])]',
-                'ENTRIES'
-            ),
+            define('(ARRAY_ITERATOR + [])[2 + [true + !!(ARRAY_ITERATOR + [])["22"]]]', 'ENTRIES'),
             define('(ARRAY_ITERATOR + [])["22"]', 'NO_SAFARI_ARRAY_ITERATOR'),
             define('(ARRAY_ITERATOR + [])["21"]', 'SAFARI_ARRAY_ITERATOR')
         ],
