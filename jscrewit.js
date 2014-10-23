@@ -676,7 +676,11 @@
         [
             defineFHCharAt('String', 14)
         ],
-        'h':            '(101)[TO_STRING]("21")[1]',
+        'h':
+        [
+            define('(101)[TO_STRING]("21")[1]'),
+            defineCharacterByAtob('h')
+        ],
         'i':            '([RP_5_N] + undefined)["10"]',
         'j':
         [
@@ -684,7 +688,11 @@
             define('(self + [])[3]', 'SELF'),
             define('(ARRAY_ITERATOR + [])[3]', 'ENTRIES')
         ],
-        'k':            '(20)[TO_STRING]("21")',
+        'k':
+        [
+            define('(20)[TO_STRING]("21")'),
+            defineCharacterByAtob('k')
+        ],
         'l':            '"false"[2]',
         'm':
         [
@@ -697,8 +705,16 @@
             defineFHCharAt('ANY_FUNCTION', 6),
             define('(ARRAY_ITERATOR + [])[1]', 'ENTRIES')
         ],
-        'p':            '(211)[TO_STRING]("31")[1]',
-        'q':            '(212)[TO_STRING]("31")[1]',
+        'p':
+        [
+            define('(211)[TO_STRING]("31")[1]'),
+            defineCharacterByAtob('p')
+        ],
+        'q':
+        [
+            define('(212)[TO_STRING]("31")[1]'),
+            defineCharacterByAtob('q')
+        ],
         'r':            '"true"[1]',
         's':            '"false"[3]',
         't':            '"true"[0]',
@@ -713,11 +729,20 @@
             define('(32)[TO_STRING]("33")'),
             define('(self + [])["slice"]("-2")[0]', 'SELF'),
             define('(self + [])["13"]', 'WINDOW'),
-            define('(RP_4_N + self)["20"]', 'DOMWINDOW')
+            define('(RP_4_N + self)["20"]', 'DOMWINDOW'),
+            defineCharacterByAtob('w')
         ],
-        'x':            '(101)[TO_STRING]("34")[1]',
+        'x':
+        [
+            define('(101)[TO_STRING]("34")[1]'),
+            defineCharacterByAtob('x')
+        ],
         'y':            '(RP_3_NO + [Infinity])["10"]',
-        'z':            '(35)[TO_STRING]("36")',
+        'z':
+        [
+            define('(35)[TO_STRING]("36")'),
+            defineCharacterByAtob('z')
+        ],
 
         'A':
         [
@@ -777,7 +802,7 @@
         'P':
         [
             define('btoa(""["italics"]())[0]', 'ATOB'),
-            define('btoa(""["sub"]())[0]', 'ATOB')
+            defineCharacterByAtob('P')
         ],
         'Q':
         [
@@ -896,7 +921,11 @@
             define('""["italics"]()[2]'),
             define('""["sub"]()["10"]')
         ],
-        '?':            '(RegExp() + [])[2]',
+        '?':
+        [
+            define('(RegExp() + [])[2]'),
+            defineCharacterByAtob('?')
+        ],
     //  '@':    ,
         '[':
         [
@@ -908,10 +937,10 @@
         [
         
             define('""["fontcolor"]()["quote"]()["13"]', 'QUOTE'),
-            defineCharacterByAtob('\\'),
             define('(ANY_FUNCTION + [])["quote"]()[1]', 'IE_SRC', 'QUOTE'),
             define('(FILTER + [])["quote"]()["20"]', 'FF_SAFARI_SRC', 'QUOTE'),
-            define('(RP_3_NO + FILL)["quote"]()["21"]', 'FF_SAFARI_SRC', 'FILL', 'QUOTE')
+            define('(RP_3_NO + FILL)["quote"]()["21"]', 'FF_SAFARI_SRC', 'FILL', 'QUOTE'),
+            defineCharacterByAtob('\\')
         ],
         ']':
         [
