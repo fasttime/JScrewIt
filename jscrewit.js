@@ -698,8 +698,7 @@
             ];
             break;
         }
-        var definition =
-            entries ? createCharAtDefinition(expr, index, entries, FH_PADDING_INFOS) : null;
+        var definition = createCharAtDefinition(expr, index, entries, FH_PADDING_INFOS);
         var result = createDefinitionEntry(definition, arguments, 2);
         return result;
     }
