@@ -392,12 +392,12 @@
         'FHP_3_NO + FBEP_4_S',
         ,
         'FHP_5_N + FBEP_4_S',
-        'FHP_1_S + FBEP_9_U',
+        , // Unused: 'FHP_1_S + FBEP_9_U'
         ,
         '[FHP_3_NO] + FBEP_9_U',
-        ,
-        ,
-        'FHP_5_N + [RP_1_NO] + FBEP_9_U'
+        // Unused
+        // Unused
+        // Unused: 'FHP_5_N + [RP_1_NO] + FBEP_9_U'
     ];
     
     var FB_NO_IE_PADDINGS =
@@ -420,7 +420,7 @@
     var FH_PADDINGS =
     [
         ,
-        'FHP_1_S',
+        , // Unused: 'FHP_1_S'
         ,
         'FHP_3_NO',
         ,
@@ -428,8 +428,7 @@
         'FHP_5_N + [RP_1_NO]',
         'FHP_3_NO + [RP_4_N]',
         'FHP_3_NO + [RP_5_N]',
-        // Unused:
-        // 'FHP_5_N + [RP_4_N]'
+        // Unused: 'FHP_5_N + [RP_4_N]'
     ];
     
     var R_PADDINGS =
@@ -495,7 +494,13 @@
         case 30:
             entries =
             [
-                define(10),
+                define(
+                    {
+                        padding: '[RP_1_NO] + FBEP_9_U',
+                        indexer: index / 10 + 1 + ' + [+!!(+(ANY_FUNCTION + [])[0] + true)]'
+                    }
+                ),
+                define(10, 'NO_IE_SRC'),
                 define(0, 'V8_SRC'),
                 define(6, 'FF_SAFARI_SRC'),
                 define(5, 'IE_SRC')
@@ -513,7 +518,12 @@
         case 25:
             entries =
             [
-                define(15),
+                define(
+                    {
+                        padding: 'RP_1_NO + FBEP_4_S',
+                        indexer: '3 + [+!!(+(ANY_FUNCTION + [])[0] + true)]'
+                    }
+                ),
                 define(5, 'NO_IE_SRC'),
                 define(1, 'FF_SAFARI_SRC'),
                 define(0, 'IE_SRC')
@@ -579,7 +589,10 @@
         case 9:
             entries =
             [
-                define(1),
+                define(
+                    { padding: 'RP_1_NO', indexer: '1 + [+!!(+(ANY_FUNCTION + [])[0] + true)]' }
+                ),
+                define(1, 'NO_IE_SRC'),
                 define(0, 'IE_SRC')
             ];
             break;
@@ -621,9 +634,9 @@
         return result;
     }
     
-    function definePadding(paddingStrings, shift)
+    function definePadding(paddings, shift)
     {
-        var definition = { paddingStrings: paddingStrings, shift: shift };
+        var definition = { paddings: paddings, shift: shift };
         var result = createDefinitionEntry(definition, arguments, 2);
         return result;
     }
@@ -1116,8 +1129,8 @@
         // at the same position on different browsers.
         // The number after "FBP_" is the maximum character overhead. The letters after the last
         // underscore have the same meaning as in regular padding blocks.
-        FHP_1_S:        '[[0][+!!(+(ANY_FUNCTION + [])[0] + true)]]',
         // Unused:
+        // FHP_1_S:        '[[0][+!!(+(ANY_FUNCTION + [])[0] + true)]]',
         // FHP_2_NO:       '+(+!(+(ANY_FUNCTION + [])[0] + true)+[0])',
         FHP_3_NO:       '+(1 + [+(ANY_FUNCTION + [])[0]])',
         FHP_5_N:        '!!(+(ANY_FUNCTION + [])[0] + true)',
@@ -1186,17 +1199,26 @@
     {
         function definition()
         {
-            var padding = this.findBestDefinition(entries);
-            if (padding != null)
+            var paddingDefinition = this.findBestDefinition(entries);
+            if (paddingDefinition != null)
             {
-                var paddingInfo = this.findBestDefinition(paddingInfos);
-                var paddingString = paddingInfo.paddingStrings[padding];
-                var indexer = index + padding + paddingInfo.shift;
-                if (indexer > 9)
+                var padding, indexer;
+                if (typeof paddingDefinition === 'number')
                 {
-                    indexer = '"' + indexer + '"';
+                    var paddingInfo = this.findBestDefinition(paddingInfos);
+                    padding = paddingInfo.paddings[paddingDefinition];
+                    indexer = index + paddingDefinition + paddingInfo.shift;
+                    if (indexer > 9)
+                    {
+                        indexer = '"' + indexer + '"';
+                    }
                 }
-                var fullExpr = '(' + paddingString + '+' + expr + ')[' + indexer + ']';
+                else
+                {
+                    padding = paddingDefinition.padding;
+                    indexer = paddingDefinition.indexer;
+                }
+                var fullExpr = '(' + padding + '+' + expr + ')[' + indexer + ']';
                 var result = createSolution(this.replace(fullExpr), LEVEL_STRING, false);
                 return result;
             }
