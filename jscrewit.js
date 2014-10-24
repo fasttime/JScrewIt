@@ -380,6 +380,35 @@
     
     // BEGIN: Definers /////////////////
     
+    function define(definition)
+    {
+        var result = createDefinitionEntry(definition, arguments, 1);
+        return result;
+    }
+    
+    var FB_EXPR_INFOS =
+    [
+        define({ expr: 'FILTER', shift: 6 }),
+        define({ expr: 'FILL', shift: 4 }, 'FILL')
+    ];
+    
+    var FB_NO_IE_PADDINGS =
+    [
+        ,
+        ,
+        ,
+        ,
+        ,
+        'RP_1_NO + FBEP_4_S',
+        ,
+        'RP_3_NO + FBEP_4_S',
+        ,
+        'FBEP_9_U',
+        '[RP_1_NO] + FBEP_9_U',
+        ,
+        '[RP_3_NO] + FBEP_9_U'
+    ];
+    
     var FB_PADDINGS =
     [
         ,
@@ -398,23 +427,6 @@
         // Unused
         // Unused
         // Unused: 'FHP_5_N + [RP_1_NO] + FBEP_9_U'
-    ];
-    
-    var FB_NO_IE_PADDINGS =
-    [
-        ,
-        ,
-        ,
-        ,
-        ,
-        'RP_1_NO + FBEP_4_S',
-        ,
-        'RP_3_NO + FBEP_4_S',
-        ,
-        'FBEP_9_U',
-        '[RP_1_NO] + FBEP_9_U',
-        ,
-        '[RP_3_NO] + FBEP_9_U'
     ];
     
     var FH_PADDINGS =
@@ -442,6 +454,65 @@
         'RP_6_SO'
     ];
     
+    var FH_PADDING_INFOS =
+    [
+        define({ paddings: FH_PADDINGS, shift: 0 }),
+        define({ paddings: R_PADDINGS, shift: 0 }, 'NO_IE_SRC'),
+        define({ paddings: R_PADDINGS, shift: 1 }, 'IE_SRC')
+    ];
+    
+    var LEVEL_STRING    = 1;
+    var LEVEL_OBJECT    = 0;
+    var LEVEL_NUMERIC   = -1;
+    var LEVEL_UNDEFINED = -2;
+    
+    var FB_PADDING_INFOS =
+    [
+        define({ paddings: FB_PADDINGS, shift: 0 }),
+        define({ paddings: FB_NO_IE_PADDINGS, shift: 0 }, 'NO_IE_SRC'),
+        define({ paddings: R_PADDINGS, shift: 0 }, 'V8_SRC'),
+        define({ paddings: R_PADDINGS, shift: 4 }, 'FF_SAFARI_SRC'),
+        define({ paddings: R_PADDINGS, shift: 5 }, 'IE_SRC')
+    ];
+    
+    function createCharAtDefinition(expr, index, entries, paddingInfos)
+    {
+        function definition()
+        {
+            var result = createCharAtSolution.call(this, expr, index, entries, paddingInfos);
+            return result;
+        }
+        
+        return definition;
+    }
+    
+    function createCharAtSolution(expr, index, entries, paddingInfos)
+    {
+        var paddingDefinition = this.findBestDefinition(entries);
+        var padding, indexer;
+        if (paddingDefinition != null)
+        {
+            if (typeof paddingDefinition === 'number')
+            {
+                var paddingInfo = this.findBestDefinition(paddingInfos);
+                padding = paddingInfo.paddings[paddingDefinition];
+                indexer = index + paddingDefinition + paddingInfo.shift;
+                if (indexer > 9)
+                {
+                    indexer = '"' + indexer + '"';
+                }
+            }
+            else
+            {
+                padding = paddingDefinition.padding;
+                indexer = paddingDefinition.indexer;
+            }
+            var fullExpr = '(' + padding + '+' + expr + ')[' + indexer + ']';
+            var result = createSolution(this.replace(fullExpr), LEVEL_STRING, false);
+            return result;
+        }
+    }
+    
     function createDefinitionEntry(definition, featureArgs, startIndex)
     {
         var features = Array.prototype.slice.call(featureArgs, startIndex);
@@ -450,9 +521,11 @@
         return entry;
     }
     
-    function define(definition)
+    function createSolution(replacement, level, outerPlus)
     {
-        var result = createDefinitionEntry(definition, arguments, 1);
+        var result = Object(replacement);
+        result.level = level;
+        result.outerPlus = outerPlus;
         return result;
     }
     
@@ -464,11 +537,7 @@
                 function ()
                 {
                     var result =
-                        createSolution(
-                            encodeCharacterByAtob.call(this, charCode),
-                            LEVEL_STRING,
-                            false
-                        );
+                        createSolution(this.encodeCharacterByAtob(charCode), LEVEL_STRING, false);
                     return result;
                 },
                 'ATOB'
@@ -476,82 +545,85 @@
         return result;
     }
     
-    function defineFBCharAt(expr, index)
+    function defineFBCharAt(offset)
     {
-        var entries;
-        switch (index)
+        function definition()
         {
-        case 18:
-            entries =
-            [
-                define(12),
-                define(3, 'V8_SRC'),
-                define(0, 'FF_SAFARI_SRC'),
-                define(0, 'IE_SRC')
-            ];
-            break;
-        case 20:
-        case 30:
-            entries =
-            [
-                define(
-                    {
-                        padding: '[RP_1_NO] + FBEP_9_U',
-                        indexer: index / 10 + 1 + ' + [+!!(+(ANY_FUNCTION + [])[0] + true)]'
-                    }
-                ),
-                define(10, 'NO_IE_SRC'),
-                define(0, 'V8_SRC'),
-                define(6, 'FF_SAFARI_SRC'),
-                define(5, 'IE_SRC')
-            ];
-            break;
-        case 23:
-            entries =
-            [
-                define(7),
-                define(0, 'V8_SRC'),
-                define(3, 'FF_SAFARI_SRC'),
-                define(3, 'IE_SRC')
-            ];
-            break;
-        case 25:
-            entries =
-            [
-                define(
-                    {
-                        padding: 'RP_1_NO + FBEP_4_S',
-                        indexer: '3 + [+!!(+(ANY_FUNCTION + [])[0] + true)]'
-                    }
-                ),
-                define(5, 'NO_IE_SRC'),
-                define(1, 'FF_SAFARI_SRC'),
-                define(0, 'IE_SRC')
-            ];
-            break;
-        case 32:
-            entries =
-            [
-                define(9),
-                define(0, 'V8_SRC'),
-                define(4, 'FF_SAFARI_SRC'),
-                define(3, 'IE_SRC')
-            ];
-            break;
-        case 34:
-            entries =
-            [
-                define(7),
-                define(9, 'NO_IE_SRC'),
-                define(6, 'V8_SRC'),
-                define(3, 'FF_SAFARI_SRC'),
-                define(1, 'IE_SRC')
-            ];
-            break;
+            var functionDefinition = this.findBestDefinition(FB_EXPR_INFOS);
+            var expr = functionDefinition.expr;
+            var index = offset + functionDefinition.shift;
+            var paddingEntries;
+            switch (index)
+            {
+            case 18:
+                paddingEntries =
+                [
+                    define(12),
+                    define(3, 'V8_SRC'),
+                    define(0, 'FF_SAFARI_SRC'),
+                    define(0, 'IE_SRC')
+                ];
+                break;
+            case 20:
+            case 30:
+                paddingEntries =
+                [
+                    define(
+                        {
+                            padding: '[RP_1_NO] + FBEP_9_U',
+                            indexer: index / 10 + 1 + ' + FH_SHIFT'
+                        }
+                    ),
+                    define(10, 'NO_IE_SRC'),
+                    define(0, 'V8_SRC'),
+                    define(6, 'FF_SAFARI_SRC'),
+                    define(5, 'IE_SRC')
+                ];
+                break;
+            case 23:
+                paddingEntries =
+                [
+                    define(7),
+                    define(0, 'V8_SRC'),
+                    define(3, 'FF_SAFARI_SRC'),
+                    define(3, 'IE_SRC')
+                ];
+                break;
+            case 25:
+                paddingEntries =
+                [
+                    define({ padding: 'RP_1_NO + FBEP_4_S', indexer: '3 + FH_SHIFT' }),
+                    define(5, 'NO_IE_SRC'),
+                    define(1, 'FF_SAFARI_SRC'),
+                    define(0, 'IE_SRC')
+                ];
+                break;
+            case 32:
+                paddingEntries =
+                [
+                    define(9),
+                    define(0, 'V8_SRC'),
+                    define(4, 'FF_SAFARI_SRC'),
+                    define(3, 'IE_SRC')
+                ];
+                break;
+            case 34:
+                paddingEntries =
+                [
+                    define(7),
+                    define(9, 'NO_IE_SRC'),
+                    define(6, 'V8_SRC'),
+                    define(3, 'FF_SAFARI_SRC'),
+                    define(1, 'IE_SRC')
+                ];
+                break;
+            }
+            var result =
+                createCharAtSolution.call(this, expr, index, paddingEntries, FB_PADDING_INFOS);
+            return result;
         }
-        var definition =
-            entries ? createCharAtDefinition(expr, index, entries, FB_PADDING_INFOS) : null;
-        var result = createDefinitionEntry(definition, arguments, 2);
+        
+        var result = define(definition);
         return result;
     }
     
@@ -589,9 +661,7 @@
         case 9:
             entries =
             [
-                define(
-                    { padding: 'RP_1_NO', indexer: '1 + [+!!(+(ANY_FUNCTION + [])[0] + true)]' }
-                ),
+                define({ padding: 'RP_1_NO', indexer: '1 + FH_SHIFT' }),
                 define(1, 'NO_IE_SRC'),
                 define(0, 'IE_SRC')
             ];
@@ -634,29 +704,6 @@
         return result;
     }
     
-    function definePadding(paddings, shift)
-    {
-        var definition = { paddings: paddings, shift: shift };
-        var result = createDefinitionEntry(definition, arguments, 2);
-        return result;
-    }
-    
-    var FB_PADDING_INFOS =
-    [
-        definePadding(FB_PADDINGS, 0),
-        definePadding(FB_NO_IE_PADDINGS, 0, 'NO_IE_SRC'),
-        definePadding(R_PADDINGS, 0, 'V8_SRC'),
-        definePadding(R_PADDINGS, 4, 'FF_SAFARI_SRC'),
-        definePadding(R_PADDINGS, 5, 'IE_SRC')
-    ];
-    
-    var FH_PADDING_INFOS =
-    [
-        definePadding(FH_PADDINGS, 0),
-        definePadding(R_PADDINGS, 0, 'NO_IE_SRC'),
-        definePadding(R_PADDINGS, 1, 'IE_SRC')
-    ];
-    
     // END: Definers ///////////////////
     
     // BEGIN: Encoder //////////////////
@@ -697,7 +744,7 @@
         'i':            '([RP_5_N] + undefined)["10"]',
         'j':
         [
-            define('(Function("return{}")() + [])["10"]'),
+            define('(PLAIN_OBJECT + [])["10"]'),
             define('(self + [])[3]', 'SELF'),
             define('(ARRAY_ITERATOR + [])[3]', 'ENTRIES')
         ],
@@ -734,8 +781,7 @@
         'u':            '"undefined"[0]',
         'v':
         [
-            defineFBCharAt('FILTER', 25),
-            defineFBCharAt('FILL', 23, 'FILL')
+            defineFBCharAt(19)
         ],
         'w':
         [
@@ -811,7 +857,7 @@
             define('btoa(0)[0]', 'ATOB')
         ],
         'N':            '"NaN"[0]',
-        'O':            '(RP_3_NO + Function("return{}")())["11"]',
+        'O':            '(RP_3_NO + PLAIN_OBJECT)["11"]',
         'P':
         [
             define('btoa(""["italics"]())[0]', 'ATOB'),
@@ -837,7 +883,7 @@
         ],
         'U':
         [
-            define('(RP_3_NO + Function("return{}")()[TO_STRING]["call"]())["11"]', 'UNDEFINED'),
+            define('(RP_3_NO + PLAIN_OBJECT[TO_STRING]["call"]())["11"]', 'UNDEFINED'),
             define('(RP_4_N + btoa(false))["10"]', 'ATOB')
         ],
         'V':
@@ -942,8 +988,7 @@
     //  '@':    ,
         '[':
         [
-            defineFBCharAt('FILTER', 20),
-            defineFBCharAt('FILL', 18, 'FILL'),
+            defineFBCharAt(14),
             define('(ARRAY_ITERATOR + [])[0]', 'ENTRIES')
         ],
         '\\':
@@ -957,8 +1002,7 @@
         ],
         ']':
         [
-            defineFBCharAt('FILTER', 32),
-            defineFBCharAt('FILL', 30, 'FILL'),
+            defineFBCharAt(26),
             define('(ARRAY_ITERATOR + [])[2 + [true + !!(ARRAY_ITERATOR + [])["22"]]]', 'ENTRIES'),
             define('(ARRAY_ITERATOR + [])["22"]', 'NO_SAFARI_ARRAY_ITERATOR'),
             define('(ARRAY_ITERATOR + [])["21"]', 'SAFARI_ARRAY_ITERATOR')
@@ -977,8 +1021,7 @@
     //  '|':    ,
         '}':
         [
-            defineFBCharAt('FILTER', 34),
-            defineFBCharAt('FILL', 32, 'FILL')
+            defineFBCharAt(28),
         ],
     //  '~':    ,
         
@@ -1112,6 +1155,7 @@
             define('[]["fill"]', 'FILL')
         ],
         FILTER:         '[]["filter"]',
+        PLAIN_OBJECT:   'Function("return{}")()',
         TO_STRING:
         [
             define('"toString"'),
@@ -1124,6 +1168,11 @@
         // underscore have the same meaning as in regular padding blocks.
         FBEP_4_S:       '[[true][+!!(RP_5_N + ANY_FUNCTION)["40"]]]',
         FBEP_9_U:       '[false][+!(RP_5_N + ANY_FUNCTION)["40"]]',
+        
+        // Function header shift: used to adjust an indexer to make it point to the same position in
+        // the string representation of a function's header on different browsers.
+        // This evaluates to an array containing only the number 0 or only the number 1.
+        FH_SHIFT:       '[+!!(+(ANY_FUNCTION + [])[0] + true)]',
         
         // Function header padding blocks: prepended to a function to align the function's header
         // at the same position on different browsers.
@@ -1178,11 +1227,6 @@
         )
     ];
     
-    var LEVEL_STRING    = 1;
-    var LEVEL_OBJECT    = 0;
-    var LEVEL_NUMERIC   = -1;
-    var LEVEL_UNDEFINED = -2;
-    
     var SIMPLE =
     {
         'false':        '![]',
@@ -1195,38 +1239,6 @@
     var quoteCharacter = JSON.stringify;
     var simplePattern;
     
-    function createCharAtDefinition(expr, index, entries, paddingInfos)
-    {
-        function definition()
-        {
-            var paddingDefinition = this.findBestDefinition(entries);
-            if (paddingDefinition != null)
-            {
-                var padding, indexer;
-                if (typeof paddingDefinition === 'number')
-                {
-                    var paddingInfo = this.findBestDefinition(paddingInfos);
-                    padding = paddingInfo.paddings[paddingDefinition];
-                    indexer = index + paddingDefinition + paddingInfo.shift;
-                    if (indexer > 9)
-                    {
-                        indexer = '"' + indexer + '"';
-                    }
-                }
-                else
-                {
-                    padding = paddingDefinition.padding;
-                    indexer = paddingDefinition.indexer;
-                }
-                var fullExpr = '(' + padding + '+' + expr + ')[' + indexer + ']';
-                var result = createSolution(this.replace(fullExpr), LEVEL_STRING, false);
-                return result;
-            }
-        }
-        
-        return definition;
-    }
-    
     function createDigitDefinition(digit)
     {
         function definition()
@@ -1236,14 +1248,6 @@
         }
         
         return definition;
-    }
-    
-    function createSolution(replacement, level, outerPlus)
-    {
-        var result = Object(replacement);
-        result.level = level;
-        result.outerPlus = outerPlus;
-        return result;
     }
     
     function encodeCharacterByAtob(charCode)
@@ -1616,6 +1620,12 @@
             return output;
         },
         
+        encodeCharacterByAtob: function (charCode)
+        {
+            var result = encodeCharacterByAtob.call(this, charCode);
+            return result;
+        },
+        
         findBestDefinition: function (entries)
         {
             for (var index = entries.length; index-- > 0;)
@@ -1645,6 +1655,10 @@
                     if (definition instanceof Function)
                     {
                         solution = definition.call(this);
+                        if (solution == null)
+                        {
+                            continue;
+                        }
                     }
                     else
                     {
