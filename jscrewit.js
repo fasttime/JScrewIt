@@ -365,13 +365,13 @@
         var autoIncludes = [];
         features.forEach(completeFeature);
         FEATURE_INFOS.AUTO =
-            {
-                description: 'All features available in the current engine.',
-                includes: autoIncludes.sort(),
-                excludes: [],
-                name: 'AUTO',
-                available: true
-            };
+        {
+            description: 'All features available in the current engine.',
+            includes: autoIncludes.sort(),
+            excludes: [],
+            name: 'AUTO',
+            available: true
+        };
         featureMaskMap.AUTO = availableFeatureMask;
     }
     )();
@@ -1540,9 +1540,9 @@
         {
             replacement =
                 this.resolveString(
-                string,
-                isPrecededByOperator(expr, offset) ||
-                isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length)
+                    string,
+                    isPrecededByOperator(expr, offset) ||
+                    isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length)
                 );
         }
         else if (space)
@@ -1702,9 +1702,9 @@
         {
             var replacement =
                 expr.replace(
-                // IE 9 doesn't interpret '[^]' correctly; using '[^"]' instead.
-                /([0-9]+)|("([^"]*)")|( +)|([$A-Z_a-z][$0-9A-Z_a-z]*)|[^!()+[\]]/g,
-                this.replaceToken || (this.replaceToken = replaceToken.bind(this))
+                    // IE 9 doesn't interpret '[^]' correctly; using '[^"]' instead.
+                    /([0-9]+)|("([^"]*)")|( +)|([$A-Z_a-z][$0-9A-Z_a-z]*)|[^!()+[\]]/g,
+                    this.replaceToken || (this.replaceToken = replaceToken.bind(this))
                 );
             return replacement;
         },
