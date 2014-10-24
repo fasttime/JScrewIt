@@ -884,6 +884,7 @@
         'U':
         [
             define('(RP_3_NO + PLAIN_OBJECT[TO_STRING]["call"]())["11"]', 'UNDEFINED'),
+            define('(RP_3_NO + ARRAY_ITERATOR[TO_STRING]["call"]())["11"]', 'UNDEFINED', 'ENTRIES'),
             define('(RP_4_N + btoa(false))["10"]', 'ATOB')
         ],
         'V':
