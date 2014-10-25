@@ -665,6 +665,38 @@
             }
         },
         DOMWINDOW: createWindowEmuFeature('[object DOMWindow]'),
+        FILL:
+        {
+            check: function () { return true; },
+            setUp: function ()
+            {
+                var fill = Function();
+                var string = (Array.prototype.join + '').replace(/\bjoin\b/, 'fill');
+                fill.toString = function () { return string; };
+                Object.defineProperty(Array.prototype, 'fill', { configurable: true, value: fill });
+            },
+            tearDown: function ()
+            {
+                delete Array.prototype.fill;
+            }
+        },
+        QUOTE:
+        {
+            check: function () { return true; },
+            setUp: function ()
+            {
+                var quote = function () { return JSON.stringify(this); };
+                Object.defineProperty(
+                    String.prototype,
+                    'quote',
+                    { configurable: true, value: quote }
+                );
+            },
+            tearDown: function ()
+            {
+                delete String.prototype.quote;
+            }
+        },
         SELF:
         {
             check: function () { return true; },
