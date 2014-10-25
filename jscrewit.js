@@ -90,11 +90,12 @@
         SELF:
         {
             description:
-                'Existence of the global object property self.\n' +
+                'Existence of the global object property self whose string representation starts '+
+                'with "[object " and ends with "Window]"\n' +
                 'This feature is not available in Node.js.',
             check: function ()
             {
-                return self != null;
+                return /^\[object .*Window]$/.test(self);
             }
         },
         WINDOW:
@@ -1994,7 +1995,11 @@
                         var featureMask = featureMaskMap[feature];
                         if ((featureMask & entryMask) === featureMask)
                         {
-                            result.push(feature);
+                            var featureInfo = FEATURE_INFOS[feature];
+                            if (featureInfo.check)
+                            {
+                                result.push(feature);
+                            }
                         }
                     }
                 );
