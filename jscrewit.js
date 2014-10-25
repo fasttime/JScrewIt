@@ -1977,7 +1977,18 @@
             
             function getCharacterEntries(character)
             {
-                var entries = CHARACTERS[character];
+                var result = getEntries(CHARACTERS[character]);
+                return result;
+            }
+            
+            function getConstantEntries(constant)
+            {
+                var result = getEntries(CONSTANTS[constant]);
+                return result;
+            }
+            
+            function getEntries(entries)
+            {
                 if (entries != null)
                 {
                     var result = expandEntries(entries);
@@ -2018,6 +2029,7 @@
             {
                 defineConstant:         defineConstant,
                 getCharacterEntries:    getCharacterEntries,
+                getConstantEntries:     getConstantEntries,
                 getEntryFeatures:       getEntryFeatures,
                 hasOuterPlus:           hasOuterPlus,
                 replace:                replace,

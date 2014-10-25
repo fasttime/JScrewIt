@@ -1,4 +1,4 @@
-/* global Buffer, describe, expect, global, it */
+/* global atob, btoa, Buffer, describe, escape, expect, global, it, unescape */
 
 (function (self)
 {
@@ -209,6 +209,16 @@
         );
     }
     
+    function isExpected(expected)
+    {
+        var result =
+            function ()
+            {
+                this.toBe(expected);
+            };
+        return result;
+    }
+    
     function listFeatures(available)
     {
         var callback = function (feature) { return !!featureSet[feature] !== available; };
@@ -267,6 +277,40 @@
                 {
                     testCharacter(charCode + 0x1f);
                 }
+            }
+        );
+        describe(
+            'Constants definitions of',
+            function ()
+            {
+                testConstant('Array', isExpected(Array));
+                testConstant('Boolean', isExpected(Boolean));
+                testConstant('Date', isExpected(Date));
+                testConstant('Function', isExpected(Function));
+                testConstant('Number', isExpected(Number));
+                testConstant('RegExp', isExpected(RegExp));
+                testConstant('String', isExpected(String));
+                
+                testConstant('atob', function () { this.toBe(atob); });
+                testConstant('btoa', function () { this.toBe(btoa); });
+                testConstant('escape', isExpected(escape));
+                testConstant('self', function () { this.toBe(self || global.self); });
+                testConstant('unescape', isExpected(unescape));
+                
+                testConstant('CONSTRUCTOR', isExpected('constructor'));
+                testConstant('FILL', function () { this.toBe(Array.prototype.fill); });
+                testConstant('FILTER', function () { this.toBe(Array.prototype.filter); });
+                testConstant(
+                    'PLAIN_OBJECT',
+                    function ()
+                    {
+                        var expected =
+                            Object.prototype.toString.call(this.actual) === '[object Object]' ?
+                            this.actual : { };
+                        this.toBe(expected);
+                    }
+                );
+                testConstant('TO_STRING', isExpected('toString'));
             }
         );
         describe(
@@ -577,10 +621,7 @@
                         {
                             var features = JScrewIt.debug.getEntryFeatures(entry);
                             var usingDefaultFeature = !features.length;
-                            if (usingDefaultFeature)
-                            {
-                                defaultEntryFound = true;
-                            }
+                            defaultEntryFound |= usingDefaultFeature;
                             var emuFeatures = getEmuFeatures(features);
                             if (emuFeatures)
                             {
@@ -639,6 +680,44 @@
         );
     }
     
+    function testConstant(constant, validator)
+    {
+        describe(
+            constant,
+            function ()
+            {
+                function verifyOutput(output)
+                {
+                    expect(output).toMatch(/^[!+()[\]]*$/);
+                    var actual = eval(output);
+                    validator.call(expect(actual));
+                }
+                
+                var entries = JScrewIt.debug.getConstantEntries(constant);
+                entries.forEach(
+                    function (entry, index)
+                    {
+                        var features = JScrewIt.debug.getEntryFeatures(entry);
+                        var emuFeatures = getEmuFeatures(features);
+                        if (emuFeatures)
+                        {
+                            emuIt(
+                                '(definition ' + index + ')',
+                                function ()
+                                {
+                                    var definition = entry.definition;
+                                    var output = JScrewIt.debug.replace(definition, features);
+                                    verifyOutput(output);
+                                },
+                                emuFeatures
+                            );
+                        }
+                    }
+                );
+            }
+        );
+    }
+    
     var JScrewIt;
     var featureSet =
     {
@@ -678,6 +757,24 @@
             tearDown: function ()
             {
                 delete Array.prototype.fill;
+            }
+        },
+        NAME:
+        {
+            check: function () { return true; },
+            setUp: function ()
+            {
+                var get =
+                    function ()
+                    {
+                        var result = /^\s*function ([\w\$]+)/.exec(this)[1];
+                        return result;
+                    };
+                Object.defineProperty(Function.prototype, 'name', { configurable: true, get: get });
+            },
+            tearDown: function ()
+            {
+                delete Function.prototype.name;
             }
         },
         QUOTE:
