@@ -297,6 +297,25 @@
                 testConstant('self', function () { this.toBe(self || global.self); });
                 testConstant('unescape', isExpected(unescape));
                 
+                testConstant(
+                    'ANY_FUNCTION',
+                    function ()
+                    {
+                        this.toMatch(/^\s*function [\w\$]+\(\)\s*\{\s*\[native code]\s*\}\s*$/);
+                    }
+                );
+                testConstant(
+                    'ARRAY_ITERATOR',
+                    function ()
+                    {
+                        var expected =
+                            /^\[object Array ?Iterator]$/.test(
+                                Object.prototype.toString.call(this.actual)
+                            ) ?
+                            this.actual : [].entries();
+                        this.toBe(expected);
+                    }
+                );
                 testConstant('CONSTRUCTOR', isExpected('constructor'));
                 testConstant('FILL', function () { this.toBe(Array.prototype.fill); });
                 testConstant('FILTER', function () { this.toBe(Array.prototype.filter); });
