@@ -43,6 +43,7 @@ function (grunt)
                     eqnull: true,
                     evil: true,
                     validthis: true,
+                    '-W018': true,
                 },
             },
             uglify:

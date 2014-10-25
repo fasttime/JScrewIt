@@ -1,4 +1,4 @@
-/* global describe, expect, it */
+/* global Buffer, describe, expect, global, it */
 
 (function (self)
 {
@@ -77,6 +77,50 @@
         return result;
     }
     
+    function createWindowEmuFeature(string)
+    {
+        var result =
+        {
+            check: function () { return true; },
+            setUp: function ()
+            {
+                var toString = function () { return string; };
+                if (typeof global === 'undefined')
+                {
+                    Object.defineProperty(
+                        self,
+                        'toString',
+                        { configurable: true, value: toString }
+                    );
+                    if (self + '' !== string)
+                    {
+                        self.toString = toString;
+                    }
+                }
+                else
+                {
+                    if (!global.self)
+                    {
+                        global.self = { };
+                    }
+                    global.self.toString = toString;
+                }
+            },
+            tearDown: function ()
+            {
+                if (typeof global === 'undefined')
+                {
+                    delete self.toString;
+                }
+                else
+                {
+                    delete global.self;
+                }
+            }
+        };
+        return result;
+    }
+    
     function describeEncodeTest(compatibility)
     {
         describe(
@@ -120,15 +164,56 @@
         );
     }
     
-    function getAvailableFeatures()
+    function emuIt(description, callback, emuFeatures)
     {
-        var result = JScrewIt.FEATURE_INFOS.AUTO.includes;
-        return result;
+        it(
+            description,
+            function ()
+            {
+                try
+                {
+                    emuFeatures.forEach(function (feature) { featureSet[feature].setUp(); });
+                    callback();
+                }
+                finally
+                {
+                    emuFeatures.forEach(function (feature) { featureSet[feature].tearDown(); });
+                }
+            }
+        );
+    }
+    
+    function getEmuFeatures(features)
+    {
+        if (features.every(function (feature) { return feature in featureSet; }))
+        {
+            return features.filter(function (feature) { return featureSet[feature]; });
+        }
     }
     
     function init(arg)
     {
         JScrewIt = arg || self.JScrewIt;
+        for (var feature in featureSet)
+        {
+            if (!featureSet[feature].check())
+            {
+                delete featureSet[feature];
+            }
+        }
+        JScrewIt.FEATURE_INFOS.AUTO.includes.forEach(
+            function (feature)
+            {
+                featureSet[feature] = null;
+            }
+        );
+    }
+    
+    function listFeatures(available)
+    {
+        var callback = function (feature) { return !!featureSet[feature] !== available; };
+        var result = Object.getOwnPropertyNames(featureSet).filter(callback).sort();
+        return result;
     }
     
     function padBoth(str, length)
@@ -491,22 +576,23 @@
                         function (entry, index)
                         {
                             var features = JScrewIt.debug.getEntryFeatures(entry);
-                            var usingDefaultFeature =
-                                features.length === 1 && features[0] === 'DEFAULT';
+                            var usingDefaultFeature = !features.length;
                             if (usingDefaultFeature)
                             {
                                 defaultEntryFound = true;
                             }
-                            if (JScrewIt.areFeaturesAvailable(features))
+                            var emuFeatures = getEmuFeatures(features);
+                            if (emuFeatures)
                             {
-                                it(
+                                emuIt(
                                     '(definition ' + index + ')',
                                     function ()
                                     {
                                         var definition = entry.definition;
                                         var output = JScrewIt.debug.replace(definition, features);
                                         verifyOutput(output);
-                                    }
+                                    },
+                                    emuFeatures
                                 );
                             }
                         }
@@ -533,9 +619,9 @@
                             verifyOutput(output);
                         }
                     );
-                    if (JScrewIt.areFeaturesAvailable('ATOB'))
+                    if ('ATOB' in featureSet)
                     {
-                        it(
+                        (featureSet.ATOB ? emuIt : it)(
                             '(atob)',
                             function ()
                             {
@@ -544,7 +630,8 @@
                                 expect(output.length).not.toBeGreaterThan(
                                     JScrewIt.encode(character, false).length
                                 );
-                            }
+                            },
+                            ['ATOB']
                         );
                     }
                 }
@@ -553,12 +640,54 @@
     }
     
     var JScrewIt;
+    var featureSet =
+    {
+        ATOB:
+        {
+            check: function () { return typeof Buffer !== 'undefined'; },
+            setUp: function ()
+            {
+                global.atob =
+                    function (value)
+                    {
+                        return new Buffer(value + '', 'base64').toString('binary');
+                    };
+                global.btoa =
+                    function (value)
+                    {
+                        return new Buffer(value + '', 'binary').toString('base64');
+                    };
+            },
+            tearDown: function ()
+            {
+                delete global.atob;
+                delete global.btoa;
+            }
+        },
+        DOMWINDOW: createWindowEmuFeature('[object DOMWindow]'),
+        SELF:
+        {
+            check: function () { return true; },
+            setUp: function ()
+            {
+                if (!global.self)
+                {
+                    global.self = { toString: function () { return '[object Window]'; } };
+                }
+            },
+            tearDown: function ()
+            {
+                delete global.self;
+            }
+        },
+        WINDOW: createWindowEmuFeature('[object Window]')
+    };
     
     var TestSuite =
     {
         createOutput: createOutput,
-        getAvailableFeatures: getAvailableFeatures,
         init: init,
+        listFeatures: listFeatures,
         run: run
     };
     
