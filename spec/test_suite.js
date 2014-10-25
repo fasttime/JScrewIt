@@ -77,28 +77,43 @@
         return result;
     }
     
-    function describeTest(compatibility)
+    function describeEncodeTest(compatibility)
     {
         describe(
             'encodes with ' + compatibility + ' compatibility',
             function ()
             {
-                var code;
-                for (code = 0; code < 256; ++code)
-                {
-                    test(code, compatibility);
-                }
-                for (; code < 0x00010000; code <<= 1)
-                {
-                    test(code + 0x1f, compatibility);
-                }
-                var expression = 'return Math.log(2e18)^0';
+                var expression1 = 'return Math.log(2e18)^0';
                 it(
-                    JSON.stringify(expression) + ' (with wrapWithEval)',
+                    JSON.stringify(expression1) + ' (with wrapWithEval)',
                     function ()
                     {
-                        var encoding = JScrewIt.encode(expression, true, compatibility);
+                        var encoding = JScrewIt.encode(expression1, true, compatibility);
                         expect(eval(encoding)).toBe(42);
+                    }
+                );
+                var expression2 = 'return decodeURI(encodeURI("♠♥♦♣"))';
+                it(
+                    JSON.stringify(expression2) + ' (with wrapWithEval)',
+                    function ()
+                    {
+                        var encoding = JScrewIt.encode(expression2, true, compatibility);
+                        expect(eval(encoding)).toBe('♠♥♦♣');
+                    }
+                );
+                var expression3 = 'true or false';
+                it(
+                    JSON.stringify(expression3),
+                    function ()
+                    {
+                        var encoding = JScrewIt.encode(expression3, false, compatibility);
+                        expect(eval(encoding)).toBe(expression3);
+                        expect(encoding).toBe(
+                            JScrewIt.debug.replace(
+                                'true + " " + "o" + "r" + " " + false',
+                                compatibility
+                            )
+                        );
                     }
                 );
             }
@@ -156,19 +171,33 @@
             }
         );
         describe(
-            'JScrewIt.encode',
-            function()
+            'Character definitions of',
+            function ()
             {
-                describeTest('DEFAULT');
+                for (var charCode = 0; charCode < 256; ++charCode)
+                {
+                    testCharacter(charCode);
+                }
+                for (; charCode < 0x00010000; charCode <<= 1)
+                {
+                    testCharacter(charCode + 0x1f);
+                }
+            }
+        );
+        describe(
+            'JScrewIt.encode',
+            function ()
+            {
+                describeEncodeTest('DEFAULT');
                 if (JScrewIt.areFeaturesAvailable('COMPACT'))
                 {
-                    describeTest('COMPACT');
+                    describeEncodeTest('COMPACT');
                 }
                 if (JScrewIt.areFeaturesAvailable('NO_IE'))
                 {
-                    describeTest('NO_IE');
+                    describeEncodeTest('NO_IE');
                 }
-                describeTest('AUTO');
+                describeEncodeTest('AUTO');
                 it(
                     'throws a ReferenceError for incompatible features',
                     function ()
@@ -436,22 +465,88 @@
         );
     }
     
-    function test(charCode, compatibility)
+    function testCharacter(charCode)
     {
         var char = String.fromCharCode(charCode);
         var desc =
             charCode >= 0x7f && charCode <= 0xa0 || charCode === 0xad ?
             '"\\u00' + charCode.toString(16) + '"' : JSON.stringify(char);
-        it(
+        describe(
             desc,
             function ()
             {
-                var encoding = JScrewIt.encode(char, false, compatibility);
-                expect(eval(encoding)).toBe(char);
-                expect(encoding).toMatch(/^[!+()[\]]*$/);
-                if (compatibility !== 'DEFAULT')
+                function verifyOutput(output)
                 {
-                    expect(encoding.length).not.toBeGreaterThan(JScrewIt.encode(char).length);
+                    expect(output).toMatch(/^[!+()[\]]*$/);
+                    var actual = eval(output) + '';
+                    expect(actual).toBe(character);
+                }
+                
+                var character = char;
+                var entries = JScrewIt.debug.getCharacterEntries(character);
+                if (entries)
+                {
+                    var defaultEntryFound = false;
+                    entries.forEach(
+                        function (entry, index)
+                        {
+                            var features = JScrewIt.debug.getEntryFeatures(entry);
+                            var usingDefaultFeature =
+                                features.length === 1 && features[0] === 'DEFAULT';
+                            if (usingDefaultFeature)
+                            {
+                                defaultEntryFound = true;
+                            }
+                            if (JScrewIt.areFeaturesAvailable(features))
+                            {
+                                it(
+                                    '(definition ' + index + ')',
+                                    function ()
+                                    {
+                                        var definition = entry.definition;
+                                        var output = JScrewIt.debug.replace(definition, features);
+                                        verifyOutput(output);
+                                    }
+                                );
+                            }
+                        }
+                    );
+                    if (!defaultEntryFound)
+                    {
+                        it(
+                            '(default)',
+                            function ()
+                            {
+                                var output = JScrewIt.encode(character, false);
+                                verifyOutput(output);
+                            }
+                        );
+                    }
+                }
+                else
+                {
+                    it(
+                        '(default)',
+                        function ()
+                        {
+                            var output = JScrewIt.encode(character, false);
+                            verifyOutput(output);
+                        }
+                    );
+                    if (JScrewIt.areFeaturesAvailable('ATOB'))
+                    {
+                        it(
+                            '(atob)',
+                            function ()
+                            {
+                                var output = JScrewIt.encode(character, false, 'ATOB');
+                                verifyOutput(output);
+                                expect(output.length).not.toBeGreaterThan(
+                                    JScrewIt.encode(character, false).length
+                                );
+                            }
+                        );
+                    }
                 }
             }
         );

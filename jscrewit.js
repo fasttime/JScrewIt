@@ -107,6 +107,7 @@
             {
                 return (self + '') === '[object Window]';
             },
+            includes: ['SELF'],
             excludes: ['DOMWINDOW']
         },
         DOMWINDOW:
@@ -119,6 +120,7 @@
             {
                 return (self + '') === '[object DOMWindow]';
             },
+            includes: ['SELF'],
             excludes: ['WINDOW']
         },
         ATOB:
@@ -490,27 +492,24 @@
     {
         var paddingDefinition = this.findBestDefinition(entries);
         var padding, indexer;
-        if (paddingDefinition != null)
+        if (typeof paddingDefinition === 'number')
         {
-            if (typeof paddingDefinition === 'number')
+            var paddingInfo = this.findBestDefinition(paddingInfos);
+            padding = paddingInfo.paddings[paddingDefinition];
+            indexer = index + paddingDefinition + paddingInfo.shift;
+            if (indexer > 9)
             {
-                var paddingInfo = this.findBestDefinition(paddingInfos);
-                padding = paddingInfo.paddings[paddingDefinition];
-                indexer = index + paddingDefinition + paddingInfo.shift;
-                if (indexer > 9)
-                {
-                    indexer = '"' + indexer + '"';
-                }
+                indexer = '"' + indexer + '"';
             }
-            else
-            {
-                padding = paddingDefinition.padding;
-                indexer = paddingDefinition.indexer;
-            }
-            var fullExpr = '(' + padding + '+' + expr + ')[' + indexer + ']';
-            var result = createSolution(this.replace(fullExpr), LEVEL_STRING, false);
-            return result;
         }
+        else
+        {
+            padding = paddingDefinition.padding;
+            indexer = paddingDefinition.indexer;
+        }
+        var fullExpr = '(' + padding + '+' + expr + ')[' + indexer + ']';
+        var result = createSolution(this.replaceExpr(fullExpr), LEVEL_STRING, false);
+        return result;
     }
     
     function createDefinitionEntry(definition, featureArgs, startIndex)
@@ -756,7 +755,8 @@
         'm':
         [
             define('(RP_6_SO + Function())["20"]'),
-            defineFHCharAt('Number', 11)
+            defineFHCharAt('Number', 11, 'NO_IE_SRC'),
+            defineFHCharAt('Number', 11, 'IE_SRC')
         ],
         'n':            '"undefined"[1]',
         'o':
@@ -1366,7 +1366,7 @@
         var postfix1 = '(' + this.resolveString(param1) + ')';
         if (param1.length > 2)
         {
-            postfix1 += this.replace('[0]');
+            postfix1 += this.replaceExpr('[0]');
         }
         var length1 = postfix1.length;
         
@@ -1377,7 +1377,8 @@
         {
             index2 = '"' + index2 + '"';
         }
-        var postfix2 = '(' + this.resolveString(param2) + ')' + this.replace('[' + index2 + ']');
+        var postfix2 =
+            '(' + this.resolveString(param2) + ')' + this.replaceExpr('[' + index2 + ']');
         var length2 = postfix2.length;
         
         var param3Left = BASE64_ALPHABET_LO_2[charCode >> 6];
@@ -1387,7 +1388,8 @@
         {
             index3 = '"' + index3 + '"';
         }
-        var postfix3 = '(' + this.resolveString(param3) + ')' + this.replace('[' + index3 + ']');
+        var postfix3 =
+            '(' + this.resolveString(param3) + ')' + this.replaceExpr('[' + index3 + ']');
         var length3 = postfix3.length;
         
         var postfix =
@@ -1406,7 +1408,7 @@
             this.resolveString('return"\\u' + hexCode + '"') + ')()';
         if (hexCode.length > 4)
         {
-            result += this.replace('[0]');
+            result += this.replaceExpr('[0]');
         }
         return result;
     }
@@ -1418,7 +1420,7 @@
             this.resolveConstant('unescape') + '(' + this.resolveString('%u' + hexCode) + ')';
         if (hexCode.length > 4)
         {
-            result += this.replace('[0]');
+            result += this.replaceExpr('[0]');
         }
         return result;
     }
@@ -1430,7 +1432,7 @@
             this.resolveConstant('unescape') + '(' + this.resolveString('%' + hexCode) + ')';
         if (hexCode.length > 2)
         {
-            result += this.replace('[0]');
+            result += this.replaceExpr('[0]');
         }
         return result;
     }
@@ -1448,6 +1450,15 @@
             do { result += '+!![]'; } while (--digit > 1);
             return result;
         }
+    }
+    
+    function expandEntries(entries)
+    {
+        if (!Array.isArray(entries))
+        {
+            entries = [define(entries)];
+        }
+        return entries;
     }
     
     // Determine whether the specified solution contains a plus sign out of brackets not preceded by
@@ -1641,30 +1652,14 @@
         findOptimalSolution: function (entries)
         {
             var result;
-            if (!Array.isArray(entries))
-            {
-                entries = [define(entries)];
-            }
+            entries = expandEntries(entries);
             for (var index = entries.length; index-- > 0;)
             {
                 var entry = entries[index];
                 if (this.hasFeatures(entry.featureMask))
                 {
-                    var solution;
                     var definition = entry.definition;
-                    if (definition instanceof Function)
-                    {
-                        solution = definition.call(this);
-                        if (solution == null)
-                        {
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        var replacement = this.replace(definition);
-                        solution = createSolution(replacement);
-                    }
+                    var solution = this.replace(definition);
                     if (!result || result.length >= solution.length)
                     {
                         result = solution;
@@ -1697,15 +1692,30 @@
             return result;
         },
         
-        replace: function (expr)
+        replace: function (definition)
         {
-            var replacement =
+            var result;
+            if (definition instanceof Function)
+            {
+                result = definition.call(this);
+            }
+            else
+            {
+                var replacement = this.replaceExpr(definition);
+                result = createSolution(replacement);
+            }
+            return result;
+        },
+        
+        replaceExpr: function (expr)
+        {
+            var result =
                 expr.replace(
                     // IE 9 doesn't interpret '[^]' correctly; using '[^"]' instead.
                     /([0-9]+)|("([^"]*)")|( +)|([$A-Z_a-z][$0-9A-Z_a-z]*)|[^!()+[\]]/g,
                     this.replaceToken || (this.replaceToken = replaceToken.bind(this))
                 );
-            return replacement;
+            return result;
         },
         
         resolveCharacter: function (character)
@@ -1762,7 +1772,7 @@
                     simple,
                     function ()
                     {
-                        SIMPLE[simple] = solution = createSolution(this.replace(solution));
+                        SIMPLE[simple] = solution = createSolution(this.replaceExpr(solution));
                     }
                 );
             }
@@ -1964,19 +1974,49 @@
                 CONSTANTS[constant] = definition + '';
             }
             
-            function replace(input, features)
+            function getCharacterEntries(character)
+            {
+                var entries = CHARACTERS[character];
+                if (entries != null)
+                {
+                    var result = expandEntries(entries);
+                    return result;
+                }
+            }
+            
+            function getEntryFeatures(entry)
+            {
+                var result = [];
+                var entryMask = entry.featureMask;
+                Object.getOwnPropertyNames(featureMaskMap).forEach(
+                    function (feature)
+                    {
+                        var featureMask = featureMaskMap[feature];
+                        if ((featureMask & entryMask) === featureMask)
+                        {
+                            result.push(feature);
+                        }
+                    }
+                );
+                return result;
+            }
+            
+            function replace(definition, features)
             {
                 var encoder = getEncoder(features);
-                var output = encoder.replace(input);
-                return output;
+                var output = encoder.replace(definition);
+                var result = output + '';
+                return result;
             }
             
             JScrewIt.debug =
             {
-                defineConstant: defineConstant,
-                hasOuterPlus:   hasOuterPlus,
-                replace:        replace,
-                setUp:          setUp
+                defineConstant:         defineConstant,
+                getCharacterEntries:    getCharacterEntries,
+                getEntryFeatures:       getEntryFeatures,
+                hasOuterPlus:           hasOuterPlus,
+                replace:                replace,
+                setUp:                  setUp
             };
         })();
     }
