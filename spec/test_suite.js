@@ -1,8 +1,90 @@
-/* global atob, btoa, Buffer, describe, escape, expect, global, it, unescape */
+/* global atob, btoa, describe, escape, expect, global, it, unescape */
 
-(function (self)
+(function (global)
 {
     'use strict';
+    
+    var Base64 =
+    {
+        // private property
+        _keyStr: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
+        
+        // public method for encoding
+        encode:
+        function (input)
+        {
+            var output = '';
+            input += '';
+            for (var i = 0; i < input.length;)
+            {
+                var chr1 = input.charCodeAt(i++);
+                var enc1 = chr1 >> 2;
+                
+                var chr2 = input.charCodeAt(i++);
+                var enc2 = (chr1 & 3) << 4 | chr2 >> 4;
+                
+                var enc3, enc4;
+                if (isNaN(chr2))
+                {
+                    enc3 = enc4 = 64;
+                }
+                else
+                {
+                    var chr3 = input.charCodeAt(i++);
+                    enc3 = (chr2 & 15) << 2 | chr3 >> 6;
+                    if (isNaN(chr3))
+                    {
+                        enc4 = 64;
+                    }
+                    else
+                    {
+                        enc4 = chr3 & 63;
+                    }
+                }
+                
+                output +=
+                    this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+                    this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+            }
+            
+            return output;
+        },
+        
+        // public method for decoding
+        decode:
+        function (input)
+        {
+            var output = '';
+            input += '';
+            for (var i = 0; i < input.length;)
+            {
+                var enc1 = this._keyStr.indexOf(input.charAt(i++));
+                var enc2 = this._keyStr.indexOf(input.charAt(i++));
+                var chr1 = (enc1 << 2) | (enc2 >> 4);
+                output += String.fromCharCode(chr1);
+                
+                var pos3 = input.charAt(i++);
+                var enc3 = this._keyStr.indexOf(pos3);
+                if (!pos3 || enc3 === 64)
+                {
+                    break;
+                }
+                var chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                output += String.fromCharCode(chr2);
+                
+                var pos4 = input.charAt(i++);
+                var enc4 = this._keyStr.indexOf(pos4);
+                if (!pos4 || enc4 === 64)
+                {
+                    break;
+                }
+                var chr3 = ((enc3 & 3) << 6) | enc4;
+                output += String.fromCharCode(chr3);
+            }
+            
+            return output;
+        },
+    };
     
     function createOutput(compatibilities)
     {
@@ -81,34 +163,26 @@
     {
         var result =
         {
-            check: function () { return true; },
             setUp: function ()
             {
                 var toString = function () { return string; };
-                if (typeof global === 'undefined')
+                if (!global.self)
                 {
-                    Object.defineProperty(
-                        self,
-                        'toString',
-                        { configurable: true, value: toString }
-                    );
-                    if (self + '' !== string)
-                    {
-                        self.toString = toString;
-                    }
+                    global.self = { };
                 }
-                else
+                Object.defineProperty(
+                    self,
+                    'toString',
+                    { configurable: true, value: toString }
+                );
+                if (self + '' !== string)
                 {
-                    if (!global.self)
-                    {
-                        global.self = { };
-                    }
-                    global.self.toString = toString;
+                    self.toString = toString;
                 }
             },
             tearDown: function ()
             {
-                if (typeof global === 'undefined')
+                if (typeof module === 'undefined')
                 {
                     delete self.toString;
                 }
@@ -193,10 +267,11 @@
     
     function init(arg)
     {
-        JScrewIt = arg || self.JScrewIt;
+        JScrewIt = arg || global.JScrewIt;
         for (var feature in featureSet)
         {
-            if (!featureSet[feature].check())
+            var condition = featureSet[feature].condition;
+            if (condition && !condition())
             {
                 delete featureSet[feature];
             }
@@ -294,7 +369,7 @@
                 testConstant('atob', function () { this.toBe(atob); });
                 testConstant('btoa', function () { this.toBe(btoa); });
                 testConstant('escape', isExpected(escape));
-                testConstant('self', function () { this.toBe(self || global.self); });
+                testConstant('self', function () { this.toBe(global.self); });
                 testConstant('unescape', isExpected(unescape));
                 
                 testConstant(
@@ -742,18 +817,17 @@
     {
         ATOB:
         {
-            check: function () { return typeof Buffer !== 'undefined'; },
             setUp: function ()
             {
                 global.atob =
                     function (value)
                     {
-                        return new Buffer(value + '', 'base64').toString('binary');
+                        return Base64.decode(value);
                     };
                 global.btoa =
                     function (value)
                     {
-                        return new Buffer(value + '', 'binary').toString('base64');
+                        return Base64.encode(value);
                     };
             },
             tearDown: function ()
@@ -765,7 +839,6 @@
         DOMWINDOW: createWindowEmuFeature('[object DOMWindow]'),
         FILL:
         {
-            check: function () { return true; },
             setUp: function ()
             {
                 var fill = Function();
@@ -780,7 +853,6 @@
         },
         NAME:
         {
-            check: function () { return true; },
             setUp: function ()
             {
                 var get =
@@ -798,7 +870,6 @@
         },
         QUOTE:
         {
-            check: function () { return true; },
             setUp: function ()
             {
                 var quote = function () { return JSON.stringify(this); };
@@ -815,7 +886,6 @@
         },
         SELF:
         {
-            check: function () { return true; },
             setUp: function ()
             {
                 if (!global.self)
@@ -839,7 +909,7 @@
         run: run
     };
     
-    if (self)
+    if (global.self)
     {
         self.TestSuite = TestSuite;
     }
@@ -848,4 +918,4 @@
         module.exports = TestSuite;
     }
     
-})(typeof self === 'undefined' ? null : self);
+})(typeof self === 'undefined' ? global : self);
