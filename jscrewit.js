@@ -77,11 +77,11 @@
         GMT:
         {
             description:
-                'The property that the string representation of a Date object contains the text ' +
-                '"GMT" after the first 25 characters.\n' +
+                'Presence of the text "GMT" after the first 25 characters in the string returned ' +
+                'by Date().\n' +
                 'Although ECMAScript states that string representation of dates is ' +
                 'implementation dependent, most engines align to the same format, making this ' +
-                'feature available in all supported engines except Internet Explorer.',
+                'feature available in all supported engines except Internet Explorer 9 and 10.',
             check: function ()
             {
                 return /^.{25}GMT/.test(Date());
