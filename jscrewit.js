@@ -975,7 +975,11 @@
             define('""["italics"]()[0]'),
             define('""["sub"]()[0]')
         ],
-        '=':            '""["fontcolor"]()["11"]',
+        '=':
+        [
+            define('""["fontcolor"]()["11"]'),
+            define('btoa(0)[2]', 'ATOB')
+        ],
         '>':
         [
             define('""["italics"]()[2]'),
