@@ -193,70 +193,100 @@
     
     function describeEncodeTest(compatibility)
     {
-        describe(
-            'encodes with ' + compatibility + ' compatibility',
-            function ()
-            {
-                var expression1 = 'return Math.log(2e18)^0';
-                it(
-                    JSON.stringify(expression1) + ' (with wrapWithEval)',
-                    function ()
-                    {
-                        var encoding = JScrewIt.encode(expression1, true, compatibility);
-                        expect(eval(encoding)).toBe(42);
-                    }
-                );
-                var expression2 = 'return decodeURI(encodeURI("♠♥♦♣"))';
-                it(
-                    JSON.stringify(expression2) + ' (with wrapWithEval)',
-                    function ()
-                    {
-                        var encoding = JScrewIt.encode(expression2, true, compatibility);
-                        expect(eval(encoding)).toBe('♠♥♦♣');
-                    }
-                );
-                var expression3 = 'true or false';
-                it(
-                    JSON.stringify(expression3),
-                    function ()
-                    {
-                        var encoding = JScrewIt.encode(expression3, false, compatibility);
-                        expect(eval(encoding)).toBe(expression3);
-                        expect(encoding).toBe(
-                            JScrewIt.debug.replace(
-                                'true + " " + "o" + "r" + " " + false',
-                                compatibility
-                            )
-                        );
-                    }
-                );
-            }
-        );
+        var emuFeatures = getEmuFeatures(getSubFeatures(compatibility));
+        if (emuFeatures)
+        {
+            describe(
+                'encodes with ' + compatibility + ' compatibility',
+                function ()
+                {
+                    var expression1 = 'return Math.log(2e18)^0';
+                    it(
+                        JSON.stringify(expression1) + ' (with wrapWithEval)',
+                        function ()
+                        {
+                            var encoding = JScrewIt.encode(expression1, true, compatibility);
+                            var actual = emuEval(emuFeatures, encoding);
+                            expect(actual).toBe(42);
+                        }
+                    );
+                    var expression2 = 'return decodeURI(encodeURI("♠♥♦♣"))';
+                    it(
+                        JSON.stringify(expression2) + ' (with wrapWithEval)',
+                        function ()
+                        {
+                            var encoding = JScrewIt.encode(expression2, true, compatibility);
+                            var actual = emuEval(emuFeatures, encoding);
+                            expect(actual).toBe('♠♥♦♣');
+                        }
+                    );
+                    var expression3 = 'true or false';
+                    it(
+                        JSON.stringify(expression3),
+                        function ()
+                        {
+                            var encoding = JScrewIt.encode(expression3, false, compatibility);
+                            var actual = emuEval(emuFeatures, encoding);
+                            expect(actual).toBe(expression3);
+                            expect(encoding).toBe(
+                                JScrewIt.debug.replace(
+                                    'true + " " + "o" + "r" + " " + false',
+                                    compatibility
+                                )
+                            );
+                        }
+                    );
+                }
+            );
+        }
     }
     
-    function emuIt(description, callback, emuFeatures)
+    function emuDo(emuFeatures, callback)
     {
-        it(
-            description,
-            function ()
+        var result;
+        var context = Object.create(null);
+        try
+        {
+            emuFeatures.forEach(
+                function (feature) { featureSet[feature].setUp.call(context); }
+            );
+            result = callback.call(this);
+        }
+        finally
+        {
+            emuFeatures.forEach(
+                function (feature) { featureSet[feature].tearDown.call(context); }
+            );
+        }
+        return result;
+    }
+    
+    function emuEval(emuFeatures, string)
+    {
+        var result = emuDo(emuFeatures, function () { return eval(string); });
+        return result;
+    }
+    
+    function getSubFeatures(feature)
+    {
+        function branchIn(feature)
+        {
+            var featureInfo = JScrewIt.FEATURE_INFOS[feature];
+            var includes = featureInfo.includes;
+            for (var i = 0; i < includes.length; ++i)
             {
-                try
-                {
-                    emuFeatures.forEach(
-                        function (feature) { featureSet[feature].setUp.call(this); },
-                        this
-                    );
-                    callback();
-                }
-                finally
-                {
-                    emuFeatures.forEach(
-                        function (feature) { featureSet[feature].tearDown.call(this); },
-                        this
-                    );
-                }
+                var include = includes[i];
+                branchIn(include);
             }
-        );
+            if (featureInfo.check)
+            {
+                atomicSet[feature] = null;
+            }
+        }
+        
+        var atomicSet = Object.create(null);
+        branchIn(feature);
+        return Object.getOwnPropertyNames(atomicSet);
     }
     
     function getEmuFeatures(features)
@@ -450,14 +480,8 @@
             function ()
             {
                 describeEncodeTest('DEFAULT');
-                if (JScrewIt.areFeaturesAvailable('COMPACT'))
-                {
-                    describeEncodeTest('COMPACT');
-                }
-                if (JScrewIt.areFeaturesAvailable('NO_IE'))
-                {
-                    describeEncodeTest('NO_IE');
-                }
+                describeEncodeTest('COMPACT');
+                describeEncodeTest('NO_IE');
                 describeEncodeTest('AUTO');
                 it(
                     'throws a ReferenceError for incompatible features',
@@ -736,10 +760,10 @@
             desc,
             function ()
             {
-                function verifyOutput(output)
+                function verifyOutput(output, emuFeatures)
                 {
                     expect(output).toMatch(/^[!+()[\]]*$/);
-                    var actual = eval(output) + '';
+                    var actual = emuEval(emuFeatures || [], output) + '';
                     expect(actual).toBe(character);
                 }
                 
@@ -757,15 +781,14 @@
                             var emuFeatures = getEmuFeatures(features);
                             if (emuFeatures)
                             {
-                                emuIt(
+                                it(
                                     '(definition ' + index + ')',
                                     function ()
                                     {
                                         var definition = entry.definition;
                                         var output = JScrewIt.debug.replace(definition, features);
-                                        verifyOutput(output);
-                                    },
-                                    emuFeatures
+                                        verifyOutput(output, emuFeatures);
+                                    }
                                 );
                             }
                         }
@@ -794,17 +817,16 @@
                     );
                     if ('ATOB' in featureSet)
                     {
-                        (featureSet.ATOB ? emuIt : it)(
+                        it(
                             '(atob)',
                             function ()
                             {
                                 var output = JScrewIt.encode(character, false, 'ATOB');
-                                verifyOutput(output);
+                                verifyOutput(output, featureSet.ATOB && ['ATOB']);
                                 expect(output.length).not.toBeGreaterThan(
                                     JScrewIt.encode(character, false).length
                                 );
-                            },
-                            ['ATOB']
+                            }
                         );
                     }
                 }
@@ -818,13 +840,6 @@
             constant,
             function ()
             {
-                function verifyOutput(output)
-                {
-                    expect(output).toMatch(/^[!+()[\]]*$/);
-                    var actual = eval(output);
-                    validator.call(expect(actual));
-                }
-                
                 var entries = JScrewIt.debug.getConstantEntries(constant);
                 entries.forEach(
                     function (entry, index)
@@ -833,15 +848,22 @@
                         var emuFeatures = getEmuFeatures(features);
                         if (emuFeatures)
                         {
-                            emuIt(
+                            it(
                                 '(definition ' + index + ')',
                                 function ()
                                 {
                                     var definition = entry.definition;
                                     var output = JScrewIt.debug.replace(definition, features);
-                                    verifyOutput(output);
-                                },
-                                emuFeatures
+                                    expect(output).toMatch(/^[!+()[\]]*$/);
+                                    emuDo(
+                                        emuFeatures,
+                                        function ()
+                                        {
+                                            var actual = eval(output);
+                                            validator.call(expect(actual));
+                                        }
+                                    );
+                                }
                             );
                         }
                     }
