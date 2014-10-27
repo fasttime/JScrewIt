@@ -173,16 +173,12 @@
                 Object.defineProperty(
                     self,
                     'toString',
-                    { configurable: true, value: toString }
+                    { configurable: true, get: function () { return toString; } }
                 );
-                if (self + '' !== string)
-                {
-                    self.toString = toString;
-                }
             },
             tearDown: function ()
             {
-                if (typeof module === 'undefined')
+                if (global.self === global)
                 {
                     delete self.toString;
                 }
@@ -246,12 +242,18 @@
             {
                 try
                 {
-                    emuFeatures.forEach(function (feature) { featureSet[feature].setUp(); });
+                    emuFeatures.forEach(
+                        function (feature) { featureSet[feature].setUp.call(this); },
+                        this
+                    );
                     callback();
                 }
                 finally
                 {
-                    emuFeatures.forEach(function (feature) { featureSet[feature].tearDown(); });
+                    emuFeatures.forEach(
+                        function (feature) { featureSet[feature].tearDown.call(this); },
+                        this
+                    );
                 }
             }
         );
@@ -320,6 +322,42 @@
         str += '';
         var result = str + Array(length - str.length + 1).join(' ');
         return result;
+    }
+    
+    function registerToStringAdapter(context, name, adapter)
+    {
+        if (!context.toStringDescriptor)
+        {
+            var toStringDescriptor =
+                context.toStringDescriptor =
+                Object.getOwnPropertyDescriptor(Object.prototype, 'toString');
+            var toString = context.toString = toStringDescriptor.value;
+            context.toStringAdapters = Object.create(null);
+            Object.defineProperty(
+                Object.prototype,
+                'toString',
+                {
+                    configurable: true,
+                    value:
+                    function ()
+                    {
+                        var adapters = context.toStringAdapters;
+                        for (var name in adapters)
+                        {
+                            var string = adapters[name].call(this);
+                            if (string !== void 0)
+                            {
+                                return string;
+                            }
+                        }
+                        // When no arguments are provided to the call method, IE 9 will use the
+                        // global object as this.
+                        return toString.call(this === global.self ? void 0 : this);
+                    }
+                }
+            );
+        }
+        context.toStringAdapters[name] = adapter;
     }
     
     function run()
@@ -812,6 +850,11 @@
         );
     }
     
+    function unregisterToStringAdapters(context)
+    {
+        Object.defineProperty(Object.prototype, 'toString', context.toStringDescriptor);
+    }
+    
     var JScrewIt;
     var featureSet =
     {
@@ -837,6 +880,40 @@
             }
         },
         DOMWINDOW: createWindowEmuFeature('[object DOMWindow]'),
+        ENTRIES:
+        {
+            setUp: function ()
+            {
+                if (!Array.prototype.entries)
+                {
+                    var arrayIterator = this.arrayIterator = { };
+                    Object.defineProperty(
+                        Array.prototype,
+                        'entries',
+                        {
+                            configurable: true,
+                            value: function () { return arrayIterator; }
+                        }
+                    );
+                    registerToStringAdapter(
+                        this,
+                        'ArrayIterator',
+                        function ()
+                        {
+                            if (this === arrayIterator)
+                            {
+                                return '[object Array Iterator]';
+                            }
+                        }
+                    );
+                }
+            },
+            tearDown: function ()
+            {
+                unregisterToStringAdapters(this);
+                delete Array.prototype.entries;
+            }
+        },
         FILL:
         {
             setUp: function ()
@@ -856,12 +933,11 @@
             setUp: function ()
             {
                 this.Date = Date;
-                Date = function () { return 'Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)'; };
+                global.Date = function () { return 'Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)'; };
             },
             tearDown: function ()
             {
-                Date = this.Date;
-                delete this.Date;
+                global.Date = this.Date;
             }
         },
         NAME:
@@ -881,6 +957,46 @@
                 delete Function.prototype.name;
             }
         },
+        NO_SAFARI_ARRAY_ITERATOR:
+        {
+            setUp: function ()
+            {
+                if (!Array.prototype.entries)
+                {
+                    var arrayIterator = this.arrayIterator = { };
+                    Object.defineProperty(
+                        Array.prototype,
+                        'entries',
+                        {
+                            configurable: true,
+                            value: function () { return arrayIterator; }
+                        }
+                    );
+                }
+                var context = this;
+                registerToStringAdapter(
+                    this,
+                    'ArrayIterator',
+                    function ()
+                    {
+                        if (
+                            this === context.arrayIterator ||
+                            /^\[object Array.?Iterator]$/.test(context.toString.call(this)))
+                        {
+                            return '[object Array Iterator]';
+                        }
+                    }
+                );
+            },
+            tearDown: function ()
+            {
+                unregisterToStringAdapters(this);
+                if (this.arrayIterator)
+                {
+                    delete Array.prototype.entries;
+                }
+            }
+        },
         QUOTE:
         {
             setUp: function ()
@@ -895,6 +1011,46 @@
             tearDown: function ()
             {
                 delete String.prototype.quote;
+            }
+        },
+        SAFARI_ARRAY_ITERATOR:
+        {
+            setUp: function ()
+            {
+                if (!Array.prototype.entries)
+                {
+                    var arrayIterator = this.arrayIterator = { };
+                    Object.defineProperty(
+                        Array.prototype,
+                        'entries',
+                        {
+                            configurable: true,
+                            value: function () { return arrayIterator; }
+                        }
+                    );
+                }
+                var context = this;
+                registerToStringAdapter(
+                    this,
+                    'ArrayIterator',
+                    function ()
+                    {
+                        if (
+                            this === context.arrayIterator ||
+                            /^\[object Array.?Iterator]$/.test(context.toString.call(this)))
+                        {
+                            return '[object ArrayIterator]';
+                        }
+                    }
+                );
+            },
+            tearDown: function ()
+            {
+                unregisterToStringAdapters(this);
+                if (this.arrayIterator)
+                {
+                    delete Array.prototype.entries;
+                }
             }
         },
         SELF:
@@ -915,34 +1071,21 @@
         {
             setUp: function ()
             {
-                var toString = Object.getOwnPropertyDescriptor(Object.prototype, 'toString');
-                this.toString = toString;
-                Object.defineProperty(
-                    Object.prototype,
-                    'toString',
+                registerToStringAdapter(
+                    this,
+                    'Undefined',
+                    function ()
                     {
-                        configurable: true,
-                        value:
-                        function ()
+                        if (this === void 0)
                         {
-                            var result;
-                            if (this === void 0)
-                            {
-                                result = '[object Undefined]';
-                            }
-                            else
-                            {
-                                result = toString.value.call(this);
-                            }
-                            return result;
+                            return '[object Undefined]';
                         }
                     }
                 );
             },
             tearDown: function ()
             {
-                Object.defineProperty(Object.prototype, 'toString', this.toString);
-                delete this.toString;
+                unregisterToStringAdapters(this);
             }
         },
         WINDOW: createWindowEmuFeature('[object Window]')
