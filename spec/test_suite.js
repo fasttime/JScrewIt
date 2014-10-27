@@ -86,6 +86,58 @@
         },
     };
     
+    function createArrayIteratorEmuFeature(string, noOverwrite)
+    {
+        var result =
+        {
+            setUp: function ()
+            {
+                if (Array.prototype.entries)
+                {
+                    if (noOverwrite)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    var arrayIterator = this.arrayIterator = { };
+                    Object.defineProperty(
+                        Array.prototype,
+                        'entries',
+                        {
+                            configurable: true,
+                            value: function () { return arrayIterator; }
+                        }
+                    );
+                }
+                var context = this;
+                registerToStringAdapter(
+                    this,
+                    'ArrayIterator',
+                    function ()
+                    {
+                        if (
+                            this === context.arrayIterator ||
+                            /^\[object Array.?Iterator]$/.test(context.objectToString.call(this)))
+                        {
+                            return string;
+                        }
+                    }
+                );
+            },
+            tearDown: function ()
+            {
+                unregisterToStringAdapters(this);
+                if (this.arrayIterator)
+                {
+                    delete Array.prototype.entries;
+                }
+            }
+        };
+        return result;
+    }
+    
     function createOutput(compatibilities)
     {
         function appendLengths(name, char)
@@ -159,17 +211,24 @@
         return result;
     }
     
-    function createWindowEmuFeature(string)
+    function createWindowEmuFeature(string, noOverwrite)
     {
         var result =
         {
             setUp: function ()
             {
-                var toString = function () { return string; };
-                if (!global.self)
+                if (global.self)
+                {
+                    if (noOverwrite)
+                    {
+                        return;
+                    }
+                }
+                else
                 {
                     global.self = { };
                 }
+                var toString = function () { return string; };
                 Object.defineProperty(
                     self,
                     'toString',
@@ -356,38 +415,28 @@
     
     function registerToStringAdapter(context, name, adapter)
     {
-        if (!context.toStringDescriptor)
+        if (!context.objectToString)
         {
-            var toStringDescriptor =
-                context.toStringDescriptor =
-                Object.getOwnPropertyDescriptor(Object.prototype, 'toString');
-            var toString = context.toString = toStringDescriptor.value;
-            context.toStringAdapters = Object.create(null);
-            Object.defineProperty(
-                Object.prototype,
-                'toString',
+            var prototype = Object.prototype;
+            var toString = context.objectToString = prototype.toString;
+            var adapters = context.objectToStringAdapters = Object.create(null);
+            prototype.toString =
+                function ()
                 {
-                    configurable: true,
-                    value:
-                    function ()
+                    for (var name in adapters)
                     {
-                        var adapters = context.toStringAdapters;
-                        for (var name in adapters)
+                        var string = adapters[name].call(this);
+                        if (string !== void 0)
                         {
-                            var string = adapters[name].call(this);
-                            if (string !== void 0)
-                            {
-                                return string;
-                            }
+                            return string;
                         }
-                        // When no arguments are provided to the call method, IE 9 will use the
-                        // global object as this.
-                        return toString.call(this === global.self ? void 0 : this);
                     }
-                }
-            );
+                    // When no arguments are provided to the call method, IE 9 will use the global
+                    // object as this.
+                    return toString.call(this === global.self ? void 0 : this);
+                };
         }
-        context.toStringAdapters[name] = adapter;
+        context.objectToStringAdapters[name] = adapter;
     }
     
     function run()
@@ -874,7 +923,7 @@
     
     function unregisterToStringAdapters(context)
     {
-        Object.defineProperty(Object.prototype, 'toString', context.toStringDescriptor);
+        Object.prototype.toString = context.objectToString;
     }
     
     var JScrewIt;
@@ -902,40 +951,7 @@
             }
         },
         DOMWINDOW: createWindowEmuFeature('[object DOMWindow]'),
-        ENTRIES:
-        {
-            setUp: function ()
-            {
-                if (!Array.prototype.entries)
-                {
-                    var arrayIterator = this.arrayIterator = { };
-                    Object.defineProperty(
-                        Array.prototype,
-                        'entries',
-                        {
-                            configurable: true,
-                            value: function () { return arrayIterator; }
-                        }
-                    );
-                    registerToStringAdapter(
-                        this,
-                        'ArrayIterator',
-                        function ()
-                        {
-                            if (this === arrayIterator)
-                            {
-                                return '[object Array Iterator]';
-                            }
-                        }
-                    );
-                }
-            },
-            tearDown: function ()
-            {
-                unregisterToStringAdapters(this);
-                delete Array.prototype.entries;
-            }
-        },
+        ENTRIES: createArrayIteratorEmuFeature('[object Array Iterator]', true),
         FILL:
         {
             setUp: function ()
@@ -979,46 +995,7 @@
                 delete Function.prototype.name;
             }
         },
-        NO_SAFARI_ARRAY_ITERATOR:
-        {
-            setUp: function ()
-            {
-                if (!Array.prototype.entries)
-                {
-                    var arrayIterator = this.arrayIterator = { };
-                    Object.defineProperty(
-                        Array.prototype,
-                        'entries',
-                        {
-                            configurable: true,
-                            value: function () { return arrayIterator; }
-                        }
-                    );
-                }
-                var context = this;
-                registerToStringAdapter(
-                    this,
-                    'ArrayIterator',
-                    function ()
-                    {
-                        if (
-                            this === context.arrayIterator ||
-                            /^\[object Array.?Iterator]$/.test(context.toString.call(this)))
-                        {
-                            return '[object Array Iterator]';
-                        }
-                    }
-                );
-            },
-            tearDown: function ()
-            {
-                unregisterToStringAdapters(this);
-                if (this.arrayIterator)
-                {
-                    delete Array.prototype.entries;
-                }
-            }
-        },
+        NO_SAFARI_ARRAY_ITERATOR: createArrayIteratorEmuFeature('[object Array Iterator]'),
         QUOTE:
         {
             setUp: function ()
@@ -1035,60 +1012,8 @@
                 delete String.prototype.quote;
             }
         },
-        SAFARI_ARRAY_ITERATOR:
-        {
-            setUp: function ()
-            {
-                if (!Array.prototype.entries)
-                {
-                    var arrayIterator = this.arrayIterator = { };
-                    Object.defineProperty(
-                        Array.prototype,
-                        'entries',
-                        {
-                            configurable: true,
-                            value: function () { return arrayIterator; }
-                        }
-                    );
-                }
-                var context = this;
-                registerToStringAdapter(
-                    this,
-                    'ArrayIterator',
-                    function ()
-                    {
-                        if (
-                            this === context.arrayIterator ||
-                            /^\[object Array.?Iterator]$/.test(context.toString.call(this)))
-                        {
-                            return '[object ArrayIterator]';
-                        }
-                    }
-                );
-            },
-            tearDown: function ()
-            {
-                unregisterToStringAdapters(this);
-                if (this.arrayIterator)
-                {
-                    delete Array.prototype.entries;
-                }
-            }
-        },
-        SELF:
-        {
-            setUp: function ()
-            {
-                if (!global.self)
-                {
-                    global.self = { toString: function () { return '[object Window]'; } };
-                }
-            },
-            tearDown: function ()
-            {
-                delete global.self;
-            }
-        },
+        SAFARI_ARRAY_ITERATOR: createArrayIteratorEmuFeature('[object ArrayIterator]'),
+        SELF: createWindowEmuFeature('[object Window]', true),
         UNDEFINED:
         {
             setUp: function ()
