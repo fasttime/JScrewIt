@@ -851,6 +851,19 @@
                 delete Array.prototype.fill;
             }
         },
+        GMT:
+        {
+            setUp: function ()
+            {
+                this.Date = Date;
+                Date = function () { return 'Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)'; };
+            },
+            tearDown: function ()
+            {
+                Date = this.Date;
+                delete this.Date;
+            }
+        },
         NAME:
         {
             setUp: function ()
@@ -896,6 +909,40 @@
             tearDown: function ()
             {
                 delete global.self;
+            }
+        },
+        UNDEFINED:
+        {
+            setUp: function ()
+            {
+                var toString = Object.getOwnPropertyDescriptor(Object.prototype, 'toString');
+                this.toString = toString;
+                Object.defineProperty(
+                    Object.prototype,
+                    'toString',
+                    {
+                        configurable: true,
+                        value:
+                        function ()
+                        {
+                            var result;
+                            if (this === void 0)
+                            {
+                                result = '[object Undefined]';
+                            }
+                            else
+                            {
+                                result = toString.value.call(this);
+                            }
+                            return result;
+                        }
+                    }
+                );
+            },
+            tearDown: function ()
+            {
+                Object.defineProperty(Object.prototype, 'toString', this.toString);
+                delete this.toString;
             }
         },
         WINDOW: createWindowEmuFeature('[object Window]')
