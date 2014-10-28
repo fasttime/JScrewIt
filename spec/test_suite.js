@@ -86,58 +86,6 @@
         },
     };
     
-    function createArrayIteratorEmuFeature(string, noOverwrite)
-    {
-        var result =
-        {
-            setUp: function ()
-            {
-                if (Array.prototype.entries)
-                {
-                    if (noOverwrite)
-                    {
-                        return;
-                    }
-                }
-                else
-                {
-                    var arrayIterator = this.arrayIterator = { };
-                    Object.defineProperty(
-                        Array.prototype,
-                        'entries',
-                        {
-                            configurable: true,
-                            value: function () { return arrayIterator; }
-                        }
-                    );
-                }
-                var context = this;
-                registerToStringAdapter(
-                    this,
-                    'ArrayIterator',
-                    function ()
-                    {
-                        if (
-                            this === context.arrayIterator ||
-                            /^\[object Array.?Iterator]$/.test(context.objectToString.call(this)))
-                        {
-                            return string;
-                        }
-                    }
-                );
-            },
-            tearDown: function ()
-            {
-                unregisterToStringAdapters(this);
-                if (this.arrayIterator)
-                {
-                    delete Array.prototype.entries;
-                }
-            }
-        };
-        return result;
-    }
-    
     function createOutput(compatibilities)
     {
         function appendLengths(name, char)
@@ -211,45 +159,6 @@
         return result;
     }
     
-    function createWindowEmuFeature(string, noOverwrite)
-    {
-        var result =
-        {
-            setUp: function ()
-            {
-                if (global.self)
-                {
-                    if (noOverwrite)
-                    {
-                        return;
-                    }
-                }
-                else
-                {
-                    global.self = { };
-                }
-                var toString = function () { return string; };
-                Object.defineProperty(
-                    self,
-                    'toString',
-                    { configurable: true, get: function () { return toString; } }
-                );
-            },
-            tearDown: function ()
-            {
-                if (global.self === global)
-                {
-                    delete self.toString;
-                }
-                else
-                {
-                    delete global.self;
-                }
-            }
-        };
-        return result;
-    }
-    
     function describeEncodeTest(compatibility)
     {
         var emuFeatures = getEmuFeatures(getSubFeatures(compatibility));
@@ -309,7 +218,7 @@
             emuFeatures.forEach(
                 function (feature) { featureSet[feature].setUp.call(context); }
             );
-            result = callback.call(this);
+            result = callback.call();
         }
         finally
         {
@@ -392,6 +301,135 @@
         return result;
     }
     
+    function makeEmuFeatureArrayIterator(string, noOverwrite)
+    {
+        var result =
+        {
+            setUp: function ()
+            {
+                if (Array.prototype.entries)
+                {
+                    if (noOverwrite)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    var arrayIterator = this.arrayIterator = { };
+                    Object.defineProperty(
+                        Array.prototype,
+                        'entries',
+                        {
+                            configurable: true,
+                            value: function () { return arrayIterator; }
+                        }
+                    );
+                }
+                var context = this;
+                registerToStringAdapter(
+                    this,
+                    'Object',
+                    'ArrayIterator',
+                    function ()
+                    {
+                        if (
+                            this === context.arrayIterator ||
+                            /^\[object Array.?Iterator]$/.test(context.Object.toString.call(this)))
+                        {
+                            return string;
+                        }
+                    }
+                );
+            },
+            tearDown: function ()
+            {
+                unregisterToStringAdapters(this, 'Object');
+                if (this.arrayIterator)
+                {
+                    delete Array.prototype.entries;
+                }
+            }
+        };
+        return result;
+    }
+    
+    function makeEmuFeatureFunctionSource(format, noOverwrite)
+    {
+        var result =
+        {
+            setUp: function ()
+            {
+                if (!this.Function || !noOverwrite)
+                {
+                    var context = this;
+                    registerToStringAdapter(
+                        this,
+                        'Function',
+                        'native',
+                        function ()
+                        {
+                            var regExp =
+                                /^\s*function ([\w\$]+)\(\)\s*\{\s*\[native code]\s*\}\s*$/;
+                            var string = context.Function.toString.call(this);
+                            var match = regExp.exec(string);
+                            if (match)
+                            {
+                                var name = match[1];
+                                var result = format.replace('?', name);
+                                return result;
+                            }
+                        }
+                    );
+                }
+            },
+            tearDown: function ()
+            {
+                unregisterToStringAdapters(this, 'Function');
+            }
+        };
+        return result;
+    }
+    
+    function makeEmuFeatureWindow(string, noOverwrite)
+    {
+        var result =
+        {
+            setUp: function ()
+            {
+                if (global.self)
+                {
+                    if (noOverwrite)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    global.self = { };
+                }
+                var toString = function () { return string; };
+                Object.defineProperty(
+                    self,
+                    'toString',
+                    { configurable: true, get: function () { return toString; } }
+                );
+            },
+            tearDown: function ()
+            {
+                if (global.self === global)
+                {
+                    delete self.toString;
+                }
+                else
+                {
+                    delete global.self;
+                }
+            }
+        };
+        return result;
+    }
+    
     function padBoth(str, length)
     {
         str += '';
@@ -413,19 +451,20 @@
         return result;
     }
     
-    function registerToStringAdapter(context, name, adapter)
+    function registerToStringAdapter(context, typeName, key, adapter)
     {
-        if (!context.objectToString)
+        if (!context[typeName])
         {
-            var prototype = Object.prototype;
-            var toString = context.objectToString = prototype.toString;
-            var adapters = context.objectToStringAdapters = Object.create(null);
+            var prototype = global[typeName].prototype;
+            var toString = prototype.toString;
+            var adapters = Object.create(null);
+            context[typeName] = { adapters: adapters, toString: toString };
             prototype.toString =
                 function ()
                 {
-                    for (var name in adapters)
+                    for (var key in adapters)
                     {
-                        var string = adapters[name].call(this);
+                        var string = adapters[key].call(this);
                         if (string !== void 0)
                         {
                             return string;
@@ -436,7 +475,7 @@
                     return toString.call(this === global.self ? void 0 : this);
                 };
         }
-        context.objectToStringAdapters[name] = adapter;
+        context[typeName].adapters[key] = adapter;
     }
     
     function run()
@@ -921,9 +960,9 @@
         );
     }
     
-    function unregisterToStringAdapters(context)
+    function unregisterToStringAdapters(context, typeName)
     {
-        Object.prototype.toString = context.objectToString;
+        global[typeName].prototype.toString = context[typeName].toString;
     }
     
     var JScrewIt;
@@ -950,15 +989,19 @@
                 delete global.btoa;
             }
         },
-        DOMWINDOW: createWindowEmuFeature('[object DOMWindow]'),
-        ENTRIES: createArrayIteratorEmuFeature('[object Array Iterator]', true),
+        DOMWINDOW: makeEmuFeatureWindow('[object DOMWindow]'),
+        ENTRIES: makeEmuFeatureArrayIterator('[object Array Iterator]', true),
+        FF_SAFARI_SRC: makeEmuFeatureFunctionSource('function ?() {\n    [native code]\n}'),
         FILL:
         {
             setUp: function ()
             {
                 var fill = Function();
-                var string = (Array.prototype.join + '').replace(/\bjoin\b/, 'fill');
-                fill.toString = function () { return string; };
+                fill.toString =
+                    function ()
+                    {
+                        return (Array.prototype.join + '').replace(/\bjoin\b/, 'fill');
+                    };
                 Object.defineProperty(Array.prototype, 'fill', { configurable: true, value: fill });
             },
             tearDown: function ()
@@ -978,6 +1021,7 @@
                 global.Date = this.Date;
             }
         },
+        IE_SRC: makeEmuFeatureFunctionSource('\nfunction ?() {\n    [native code]\n}\n'),
         NAME:
         {
             setUp: function ()
@@ -995,7 +1039,32 @@
                 delete Function.prototype.name;
             }
         },
-        NO_SAFARI_ARRAY_ITERATOR: createArrayIteratorEmuFeature('[object Array Iterator]'),
+        NO_IE_SRC: makeEmuFeatureFunctionSource('function ?() { [native code] }', true),
+        NO_SAFARI_ARRAY_ITERATOR: makeEmuFeatureArrayIterator('[object Array Iterator]'),
+        NO_SAFARI_LF:
+        {
+            setUp: function ()
+            {
+                var context = this;
+                registerToStringAdapter(
+                    this,
+                    'Function',
+                    'anonymous',
+                    function ()
+                    {
+                        var string = context.Function.toString.call(this);
+                        if (string === 'function anonymous() { \n}')
+                        {
+                            return 'function anonymous() {\n\n}';
+                        }
+                    }
+                );
+            },
+            tearDown: function ()
+            {
+                unregisterToStringAdapters(this, 'Function');
+            }
+        },
         QUOTE:
         {
             setUp: function ()
@@ -1012,14 +1081,15 @@
                 delete String.prototype.quote;
             }
         },
-        SAFARI_ARRAY_ITERATOR: createArrayIteratorEmuFeature('[object ArrayIterator]'),
-        SELF: createWindowEmuFeature('[object Window]', true),
+        SAFARI_ARRAY_ITERATOR: makeEmuFeatureArrayIterator('[object ArrayIterator]'),
+        SELF: makeEmuFeatureWindow('[object Window]', true),
         UNDEFINED:
         {
             setUp: function ()
             {
                 registerToStringAdapter(
                     this,
+                    'Object',
                     'Undefined',
                     function ()
                     {
@@ -1032,10 +1102,11 @@
             },
             tearDown: function ()
             {
-                unregisterToStringAdapters(this);
+                unregisterToStringAdapters(this, 'Object');
             }
         },
-        WINDOW: createWindowEmuFeature('[object Window]')
+        V8_SRC: makeEmuFeatureFunctionSource('function ?() { [native code] }'),
+        WINDOW: makeEmuFeatureWindow('[object Window]')
     };
     
     var TestSuite =
