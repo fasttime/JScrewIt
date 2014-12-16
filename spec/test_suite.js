@@ -241,11 +241,7 @@
         {
             var featureInfo = JScrewIt.FEATURE_INFOS[feature];
             var includes = featureInfo.includes;
-            for (var i = 0; i < includes.length; ++i)
-            {
-                var include = includes[i];
-                branchIn(include);
-            }
+			includes.forEach(branchIn);
             if (featureInfo.check)
             {
                 atomicSet[feature] = null;
