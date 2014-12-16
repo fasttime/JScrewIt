@@ -4,7 +4,7 @@
 
 var stream = require('stream');
 var util = require('util');
-var JScrewIt = require('./jscrewit.js');
+var JScrewIt = require('./lib/jscrewit.js');
 var repl = require('repl');
 
 if (process.argv.length !== 3)

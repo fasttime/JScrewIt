@@ -6,18 +6,17 @@ function (grunt)
     // Project configuration.
     grunt.initConfig(
         {
-            // Task configuration.
             jasmine_node:
-            {
-                all: ['spec/'],
-                coverage: { }
-            },
+			{
+				options: { },
+				src: ['**/*.js']
+			},
             jshint:
             {
                 any:
                 {
                     options: { globals: { module: true, self: true } },
-                    src: ['jscrewit.js', 'spec/test_suite.js']
+                    src: ['lib/jscrewit.js', 'spec/test_suite.js']
                 },
                 node:
                 {
@@ -48,7 +47,7 @@ function (grunt)
             },
             uglify:
             {
-                main: { files: { 'jscrewit.min.js': ['jscrewit.js'] } },
+                main: { files: { 'lib/jscrewit.min.js': ['lib/jscrewit.js'] } },
                 options: { compress: { global_defs: { DEBUG: false } } }
             }
         }

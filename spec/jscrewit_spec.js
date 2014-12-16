@@ -8,7 +8,7 @@ function listFeatures(label, features)
     }
 }
 
-var JScrewIt = require('../jscrewit.js');
+var JScrewIt = require('../lib/jscrewit.js');
 var TestSuite = require('./test_suite.js');
 var fs = require('fs');
 
