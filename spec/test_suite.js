@@ -218,7 +218,9 @@
             emuFeatures.forEach(
                 function (feature) { featureSet[feature].setUp.call(context); }
             );
-            result = callback.call();
+            // In older Android Browser versions eval throws an error if the caller's context is
+            // null or undefined.
+            result = callback.call(this);
         }
         finally
         {
@@ -241,7 +243,7 @@
         {
             var featureInfo = JScrewIt.FEATURE_INFOS[feature];
             var includes = featureInfo.includes;
-			includes.forEach(branchIn);
+            includes.forEach(branchIn);
             if (featureInfo.check)
             {
                 atomicSet[feature] = null;
