@@ -49,7 +49,11 @@ function (grunt)
             uglify:
             {
                 main: { files: { 'lib/jscrewit.min.js': 'lib/jscrewit.js' } },
-                options: { compress: { global_defs: { DEBUG: false } } }
+                options:
+                {
+                    compress: { global_defs: { DEBUG: false }, hoist_vars: true },
+                    mangle: { eval: true }
+                }
             }
         }
     );
