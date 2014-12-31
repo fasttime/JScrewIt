@@ -215,18 +215,14 @@
         var context = Object.create(null);
         try
         {
-            emuFeatures.forEach(
-                function (feature) { featureSet[feature].setUp.call(context); }
-            );
+            emuFeatures.forEach(function (feature) { featureSet[feature].setUp.call(context); });
             // In older Android Browser versions eval throws an error if the caller's context is
             // null or undefined.
             result = callback.call(this);
         }
         finally
         {
-            emuFeatures.forEach(
-                function (feature) { featureSet[feature].tearDown.call(context); }
-            );
+            emuFeatures.forEach(function (feature) { featureSet[feature].tearDown.call(context); });
         }
         return result;
     }
@@ -754,6 +750,7 @@
                 JScrewIt.debug.defineConstant('C', 'D');
                 JScrewIt.debug.defineConstant('D', 'C');
                 JScrewIt.debug.defineConstant('E', '?');
+                JScrewIt.debug.defineConstant('F', '"\\?"');
                 
                 it(
                     'Undefined literal',
@@ -779,6 +776,15 @@
                     {
                         expect(debugReplacer('E')).toThrow(
                             SyntaxError('Unexpected character "?" in the definition of E')
+                        );
+                    }
+                );
+                it(
+                    'Illegal string',
+                    function ()
+                    {
+                        expect(debugReplacer('F')).toThrow(
+                            SyntaxError('Illegal string "\\?" in the definition of F')
                         );
                     }
                 );
