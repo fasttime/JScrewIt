@@ -1,4 +1,5 @@
-/* global atob, btoa, describe, escape, expect, global, it, unescape */
+/* global atob, btoa, escape, global, unescape */
+/* jshint jasmine: true */
 
 (function (global)
 {
