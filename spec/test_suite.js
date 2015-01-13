@@ -128,7 +128,7 @@
             }
         );
         result = result.replace(/ +$/, '');
-        result += '\n    ' + Array(compatibilities.length + 1).join(' -------');
+        result += '\n    ' + repeat(' -------', compatibilities.length);
         var C0_CONTROL_CODE_NAMES =
         [
             'NUL',  'SOH',  'STX',  'ETX',  'EOT',  'ENQ',  'ACK',  'BEL',
@@ -435,14 +435,14 @@
     function padLeft(str, length)
     {
         str += '';
-        var result = Array(length - str.length + 1).join(' ') + str;
+        var result = repeat(' ', length - str.length) + str;
         return result;
     }
     
     function padRight(str, length)
     {
         str += '';
-        var result = str + Array(length - str.length + 1).join(' ');
+        var result = str + repeat(' ', length - str.length);
         return result;
     }
     
@@ -471,6 +471,12 @@
                 };
         }
         context[typeName].adapters[key] = adapter;
+    }
+    
+    function repeat(string, count)
+    {
+        var result = Array(count + 1).join(string);
+        return result;
     }
     
     function run()
@@ -566,6 +572,17 @@
                 describeEncodeTest('COMPACT');
                 describeEncodeTest('NO_IE');
                 describeEncodeTest('AUTO');
+                var longString =
+                    'qqxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' + repeat('0123456789', 411);
+                it(
+                    'encodes correctly a string with more than MAX_CONCAT_TOKENS tokens',
+                    function ()
+                    {
+                        var encoding = JScrewIt.encode(longString);
+                        var actual = eval(encoding);
+                        expect(actual).toBe(longString);
+                    }
+                );
                 it(
                     'throws a ReferenceError for incompatible features',
                     function ()
