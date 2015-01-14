@@ -89,7 +89,7 @@
     
     function createOutput(compatibilities)
     {
-        function appendLengths(name, char)
+        function appendLengths(name, input)
         {
             result += '\n' + padRight(name, 4);
             compatibilities.forEach(
@@ -98,7 +98,7 @@
                     var content;
                     try
                     {
-                        content = JScrewIt.encode(char, false, compatibility).length;
+                        content = JScrewIt.encode(input, false, compatibility).length;
                     }
                     catch (error)
                     {
@@ -157,6 +157,7 @@
         appendLengthsRange(174, 255);
         appendLengths('`∟`', '∟');
         appendLengths('`♥`', '♥');
+        appendLengths('A…Z', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
         return result;
     }
     
@@ -572,10 +573,19 @@
                 describeEncodeTest('COMPACT');
                 describeEncodeTest('NO_IE');
                 describeEncodeTest('AUTO');
+                it(
+                    'correctly encodes an empty string',
+                    function ()
+                    {
+                        var encoding = JScrewIt.encode('');
+                        var actual = eval(encoding);
+                        expect(actual).toBe('');
+                    }
+                );
                 var longString =
                     'qqxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' + repeat('0123456789', 411);
                 it(
-                    'encodes correctly a string with more than MAX_CONCAT_TOKENS tokens',
+                    'correctly encodes a string with more than MAX_CONCAT_TOKENS tokens',
                     function ()
                     {
                         var encoding = JScrewIt.encode(longString);
