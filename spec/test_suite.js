@@ -1027,6 +1027,24 @@
             }
         },
         IE_SRC: makeEmuFeatureFunctionSource('\nfunction ?() {\n    [native code]\n}\n'),
+        LINK_DOUBLE_QUOTE_ESC:
+        {
+            setUp: function ()
+            {
+                var prototype = String.prototype;
+                var link = this.link = prototype.link;
+                prototype.link =
+                    function (href)
+                    {
+                        arguments[0] = (href + '').replace(/"/g, '&quot;');
+                        return link.apply(this, arguments);
+                    };
+            },
+            tearDown: function ()
+            {
+                String.prototype.link = this.link;
+            }
+        },
         NAME:
         {
             setUp: function ()
