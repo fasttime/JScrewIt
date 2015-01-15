@@ -404,18 +404,14 @@
                 {
                     global.self = { };
                 }
-                var toString = function () { return string; };
-                Object.defineProperty(
-                    self,
-                    'toString',
-                    { configurable: true, get: function () { return toString; } }
-                );
+                var valueOf = function () { return string; };
+                Object.defineProperty(self, 'valueOf', { configurable: true, value: valueOf });
             },
             tearDown: function ()
             {
                 if (global.self === global)
                 {
-                    delete self.toString;
+                    delete self.valueOf;
                 }
                 else
                 {
@@ -1054,6 +1050,24 @@
             }
         },
         IE_SRC: makeEmuFeatureFunctionSource('\nfunction ?() {\n    [native code]\n}\n'),
+        LINK_DOUBLE_QUOTE_ESC:
+        {
+            setUp: function ()
+            {
+                var prototype = String.prototype;
+                var link = this.link = prototype.link;
+                prototype.link =
+                    function (href)
+                    {
+                        arguments[0] = (href + '').replace(/"/g, '&quot;');
+                        return link.apply(this, arguments);
+                    };
+            },
+            tearDown: function ()
+            {
+                String.prototype.link = this.link;
+            }
+        },
         NAME:
         {
             setUp: function ()
