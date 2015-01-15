@@ -403,18 +403,14 @@
                 {
                     global.self = { };
                 }
-                var toString = function () { return string; };
-                Object.defineProperty(
-                    self,
-                    'toString',
-                    { configurable: true, get: function () { return toString; } }
-                );
+                var valueOf = function () { return string; };
+                Object.defineProperty(self, 'valueOf', { configurable: true, value: valueOf });
             },
             tearDown: function ()
             {
                 if (global.self === global)
                 {
-                    delete self.toString;
+                    delete self.valueOf;
                 }
                 else
                 {
