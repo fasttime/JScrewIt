@@ -7,7 +7,32 @@ var util = require('util');
 var JScrewIt = require('./lib/jscrewit.js');
 var repl = require('repl');
 
-if (process.argv.length !== 3)
+var wrapWithEval;
+var inputFileName;
+var features;
+
+var argv = process.argv;
+for (var index = 2; index < argv.length; ++index)
+{
+    var arg = argv[index];
+    if (index > 2 && argv[index - 1] === '-f')
+    {
+        features = arg.split(/[ ,]g/);
+    }
+    else
+    {
+        if (arg === '-w')
+        {
+            wrapWithEval = true;
+        }
+        else if (arg !== '-f')
+        {
+            inputFileName = arg;
+        }
+    }
+}
+
+if (inputFileName == null)
 {
     var Stream = function Stream() { stream.Transform.call(this); };
     util.inherits(Stream, stream.Transform);
@@ -20,7 +45,7 @@ if (process.argv.length !== 3)
             lines.forEach(
                 function (line)
                 {
-                    var output = JScrewIt.encode(line);
+                    var output = JScrewIt.encode(line, wrapWithEval, features);
                     this.push(output + '\n');
                 },
                 this
@@ -41,7 +66,7 @@ if (process.argv.length !== 3)
 }
 else
 {
-    var data = require('fs').readFileSync(process.argv[2]);
-    var output = JScrewIt.encode(data);
-    console.log(output);
+    var data = require('fs').readFileSync(inputFileName);
+    var output = JScrewIt.encode(data, wrapWithEval, features);
+    process.stdout.write(output);
 }
