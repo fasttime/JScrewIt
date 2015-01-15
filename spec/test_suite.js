@@ -218,9 +218,7 @@
         try
         {
             emuFeatures.forEach(function (feature) { featureSet[feature].setUp.call(context); });
-            // In older Android Browser versions eval throws an error if the caller's context is
-            // null or undefined.
-            result = callback.call(this);
+            result = callback();
         }
         finally
         {
