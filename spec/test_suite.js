@@ -161,6 +161,21 @@
         return result;
     }
     
+    var encoderCache = { };
+    
+    function decodeEntry(entry)
+    {
+        var features = JScrewIt.debug.getEntryFeatures(entry);
+        var key = features.join();
+        var encoder = encoderCache[key];
+        if (!encoder)
+        {
+            encoderCache[key] = encoder = JScrewIt.debug.createEncoder(features);
+        }
+        var output = encoder.replace(entry.definition) + '';
+        return output;
+    }
+    
     function describeEncodeTest(compatibility)
     {
         var emuFeatures = getEmuFeatures(getSubFeatures(compatibility));
@@ -191,6 +206,9 @@
                         }
                     );
                     var expression3 = 'true or false';
+                    var encoder = JScrewIt.debug.createEncoder(compatibility);
+                    var expectedEncoding3 =
+                        encoder.replace('true + " " + "o" + "r" + " " + false') + '';
                     it(
                         JSON.stringify(expression3),
                         function ()
@@ -198,12 +216,7 @@
                             var encoding = JScrewIt.encode(expression3, false, compatibility);
                             var actual = emuEval(emuFeatures, encoding);
                             expect(actual).toBe(expression3);
-                            expect(encoding).toBe(
-                                JScrewIt.debug.replace(
-                                    'true + " " + "o" + "r" + " " + false',
-                                    compatibility
-                                )
-                            );
+                            expect(encoding).toBe(expectedEncoding3);
                         }
                     );
                 }
@@ -737,34 +750,14 @@
             }
         );
         describe(
-            'JScrewIt.debug.replace can replace',
-            function ()
-            {
-                it(
-                    'a number',
-                    function ()
-                    {
-                        var actual = eval(JScrewIt.debug.replace('""+2'));
-                        expect(actual).toBe('2');
-                    }
-                );
-                it(
-                    'NaN',
-                    function ()
-                    {
-                        var actual = eval(JScrewIt.debug.replace('""+NaN'));
-                        expect(actual).toBe('NaN');
-                    }
-                );
-            }
-        );
-        describe(
             'SyntaxError thrown for',
             function ()
             {
+                var encoder = JScrewIt.debug.createEncoder();
+                
                 function debugReplacer(input)
                 {
-                    var result = function () { JScrewIt.debug.replace(input); };
+                    var result = function () { encoder.replace(input); };
                     return result;
                 }
                 
@@ -862,6 +855,64 @@
                 );
             }
         );
+        describe(
+            'replace can replace',
+            function ()
+            {
+                var encoder = JScrewIt.debug.createEncoder();
+                it(
+                    'a number',
+                    function ()
+                    {
+                        var actual = eval(encoder.replace('"" + 2') + '');
+                        expect(actual).toBe('2');
+                    }
+                );
+                it(
+                    'NaN',
+                    function ()
+                    {
+                        var actual = eval(encoder.replace('"" + NaN') + '');
+                        expect(actual).toBe('NaN');
+                    }
+                );
+            }
+        );
+        describe(
+            'subencodeLongString',
+            function ()
+            {
+                var encoder = JScrewIt.debug.createEncoder();
+                Object.defineProperty(encoder, 'maxDecodableArgs', { value: 0 });
+                Object.defineProperty(encoder, 'encodeStringPlain', { value: function () { } });
+                var input = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                it(
+                    'encodes correctly',
+                    function ()
+                    {
+                        var output = encoder.encodeString(input);
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+            }
+        );
+        describe(
+            'subencodeShortString',
+            function ()
+            {
+                var encoder = JScrewIt.debug.createEncoder();
+                Object.defineProperty(encoder, 'encodeStringPlain', { value: function () { } });
+                var input = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                it(
+                    'encodes correctly',
+                    function ()
+                    {
+                        var output = encoder.encodeString(input);
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+            }
+        );
     }
     
     function testCharacter(charCode)
@@ -899,8 +950,7 @@
                                     '(definition ' + index + ')',
                                     function ()
                                     {
-                                        var definition = entry.definition;
-                                        var output = JScrewIt.debug.replace(definition, features);
+                                        var output = decodeEntry(entry);
                                         verifyOutput(output, emuFeatures);
                                     }
                                 );
@@ -966,8 +1016,7 @@
                                 '(definition ' + index + ')',
                                 function ()
                                 {
-                                    var definition = entry.definition;
-                                    var output = JScrewIt.debug.replace(definition, features);
+                                    var output = decodeEntry(entry);
                                     expect(output).toMatch(/^[!+()[\]]*$/);
                                     emuDo(
                                         emuFeatures,
