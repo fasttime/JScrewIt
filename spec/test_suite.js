@@ -763,15 +763,6 @@
                 JScrewIt.debug.defineConstant(encoder, 'F', '"\\?"');
                 
                 it(
-                    'Undefined literal',
-                    function ()
-                    {
-                        expect(debugReplacer('A')).toThrow(
-                            SyntaxError('Undefined literal B in the definition of A')
-                        );
-                    }
-                );
-                it(
                     'Circular reference',
                     function ()
                     {
@@ -780,21 +771,75 @@
                         );
                     }
                 );
-                it(
-                    'Unexpected character',
+                describe(
+                    'Undefined literal',
                     function ()
                     {
-                        expect(debugReplacer('E')).toThrow(
-                            SyntaxError('Unexpected character "?" in the definition of E')
+                        it(
+                            'in a definition',
+                            function ()
+                            {
+                                expect(debugReplacer('A')).toThrow(
+                                    SyntaxError('Undefined literal B in the definition of A')
+                                );
+                            }
+                        );
+                        it(
+                            'inline',
+                            function ()
+                            {
+                                expect(debugReplacer('valueOf')).toThrow(
+                                    SyntaxError('Undefined literal valueOf')
+                                );
+                            }
                         );
                     }
                 );
-                it(
+                describe(
+                    'Unexpected character',
+                    function ()
+                    {
+                        it(
+                            'in a definition',
+                            function ()
+                            {
+                                expect(debugReplacer('E')).toThrow(
+                                    SyntaxError('Unexpected character "?" in the definition of E')
+                                );
+                            }
+                        );
+                        it(
+                            'inline',
+                            function ()
+                            {
+                                expect(debugReplacer('?')).toThrow(
+                                    SyntaxError('Unexpected character "?"')
+                                );
+                            }
+                        );
+                    }
+                );
+                describe(
                     'Illegal string',
                     function ()
                     {
-                        expect(debugReplacer('F')).toThrow(
-                            SyntaxError('Illegal string "\\?" in the definition of F')
+                        it(
+                            'in a definition',
+                            function ()
+                            {
+                                expect(debugReplacer('F')).toThrow(
+                                    SyntaxError('Illegal string "\\?" in the definition of F')
+                                );
+                            }
+                        );
+                        it(
+                            'inline',
+                            function ()
+                            {
+                                expect(debugReplacer('"\\?"')).toThrow(
+                                    SyntaxError('Illegal string "\\?"')
+                                );
+                            }
                         );
                     }
                 );
