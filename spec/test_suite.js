@@ -218,6 +218,16 @@
                             expect(encoding).toBe(expectedEncoding3);
                         }
                     );
+                    var expression4 = repeat('☺', 20);
+                    it(
+                        JSON.stringify(expression4),
+                        function ()
+                        {
+                            var encoding = JScrewIt.encode(expression4, false, compatibility);
+                            var actual = emuEval(emuFeatures, encoding);
+                            expect(actual).toBe(expression4);
+                        }
+                    );
                 }
             );
         }
@@ -588,19 +598,17 @@
                         expect(actual).toBe('');
                     }
                 );
-                var longString =
-                    'qqxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' + repeat('0123456789', 411);
                 it(
-                    'correctly encodes a string with more than MAX_CONCAT_TOKENS tokens',
+                    'throws a ReferenceError for incompatible features',
                     function ()
                     {
-                        var encoding = JScrewIt.encode(longString);
-                        var actual = eval(encoding);
-                        expect(actual).toBe(longString);
+                        var fn =
+                            function () { JScrewIt.encode('', false, ['NO_IE_SRC', 'IE_SRC']); };
+                        expect(fn).toThrow(ReferenceError('Incompatible features'));
                     }
                 );
                 it(
-                    'throws a ReferenceError for incompatible features',
+                    '',
                     function ()
                     {
                         var fn =
@@ -875,38 +883,114 @@
                         expect(actual).toBe('NaN');
                     }
                 );
-            }
-        );
-        describe(
-            'subencodeLongString',
-            function ()
-            {
-                var encoder = JScrewIt.debug.createEncoder();
-                Object.defineProperty(encoder, 'maxDecodableArgs', { value: 0 });
-                Object.defineProperty(encoder, 'encodeStringPlain', { value: function () { } });
-                var input = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 it(
-                    'encodes correctly',
+                    'a string with more than MAX_CONCAT_TOKENS tokens',
                     function ()
                     {
-                        var output = encoder.encodeString(input);
-                        expect(eval(output)).toBe(input);
+                        var string = repeat('0123456789', 500);
+                        var actual = eval(encoder.replace(JSON.stringify(string)));
+                        expect(actual).toBe(string);
                     }
                 );
             }
         );
         describe(
-            'subencodeShortString',
+            'encodePlain',
             function ()
             {
                 var encoder = JScrewIt.debug.createEncoder();
-                Object.defineProperty(encoder, 'encodeStringPlain', { value: function () { } });
-                var input = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 it(
-                    'encodes correctly',
+                    'returns undefined when output length exceeds maxLength',
                     function ()
                     {
-                        var output = encoder.encodeString(input);
+                        var actual = encoder.encodePlain('', 4);
+                        expect(actual).toBeUndefined();
+                    }
+                );
+                it(
+                    'returns a string when output length equals maxLength',
+                    function ()
+                    {
+                        var actual = encoder.encodePlain('', 5);
+                        expect(typeof actual).toBe('string');
+                    }
+                );
+                it(
+                    'returns a string when maxLength is not specified',
+                    function ()
+                    {
+                        var actual = encoder.encodePlain('');
+                        expect(typeof actual).toBe('string');
+                    }
+                );
+            }
+        );
+        describe(
+            'encodeSimple',
+            function ()
+            {
+                var encoder = JScrewIt.debug.createEncoder();
+                it(
+                    'returns undefined when output length exceeds maxLength',
+                    function ()
+                    {
+                        var actual = encoder.encodeSimple('', 4);
+                        expect(actual).toBeUndefined();
+                    }
+                );
+                it(
+                    'returns a string when output length equals maxLength',
+                    function ()
+                    {
+                        var actual = encoder.encodeSimple('', 5);
+                        expect(typeof actual).toBe('string');
+                    }
+                );
+                it(
+                    'returns a string when maxLength is not specified',
+                    function ()
+                    {
+                        var actual = encoder.encodeSimple('');
+                        expect(typeof actual).toBe('string');
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoding',
+            function ()
+            {
+                var encoder = JScrewIt.debug.createEncoder();
+                var input = 'Lorem ipsum dolor sit amet';
+                it(
+                    'plain is ok',
+                    function ()
+                    {
+                        var output = encoder.encodePlain(input);
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+                it(
+                    'by dictionary is ok',
+                    function ()
+                    {
+                        var output = encoder.encodeByDict(input);
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+                it(
+                    'by long character code list is ok',
+                    function ()
+                    {
+                        var output = encoder.encodeByCharCodes(input, true);
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+                it(
+                    'by short character code list is ok',
+                    function ()
+                    {
+                        var output = encoder.encodeByCharCodes(input, false);
                         expect(eval(output)).toBe(input);
                     }
                 );
