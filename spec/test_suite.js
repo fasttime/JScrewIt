@@ -176,6 +176,41 @@
         return output;
     }
     
+    function describeEncodeMethodTest(methodName)
+    {
+        describe(
+            'Encoder#' + methodName,
+            function ()
+            {
+                var encoder = JScrewIt.debug.createEncoder();
+                it(
+                    'returns undefined when output length exceeds maxLength',
+                    function ()
+                    {
+                        var actual = encoder[methodName]('', 4);
+                        expect(actual).toBeUndefined();
+                    }
+                );
+                it(
+                    'returns a string when output length equals maxLength',
+                    function ()
+                    {
+                        var actual = encoder[methodName]('', 5);
+                        expect(typeof actual).toBe('string');
+                    }
+                );
+                it(
+                    'returns a string when maxLength is not specified',
+                    function ()
+                    {
+                        var actual = encoder[methodName]('');
+                        expect(typeof actual).toBe('string');
+                    }
+                );
+            }
+        );
+    }
+    
     function describeEncodeTest(compatibility)
     {
         var emuFeatures = getEmuFeatures(getSubFeatures(compatibility));
@@ -745,7 +780,89 @@
             }
         );
         describe(
-            'SyntaxError thrown for',
+            'JScrewIt.debug.hasOuterPlus is',
+            function ()
+            {
+                it(
+                    'true for leading plus',
+                    function ()
+                    {
+                        var solution = Object('+[]');
+                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(true);
+                        expect(solution.outerPlus).toBe(true);
+                    }
+                );
+                it(
+                    'true for middle plus',
+                    function ()
+                    {
+                        var solution = Object('[]+[]');
+                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(true);
+                        expect(solution.outerPlus).toBe(true);
+                    }
+                );
+                it(
+                    'false for inner plus',
+                    function ()
+                    {
+                        var solution = Object('(+[])');
+                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(false);
+                        expect(solution.outerPlus).toBe(false);
+                    }
+                );
+                it(
+                    'false for leading !+',
+                    function ()
+                    {
+                        var solution = Object('!+[]');
+                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(false);
+                        expect(solution.outerPlus).toBe(false);
+                    }
+                );
+                it(
+                    'cached',
+                    function ()
+                    {
+                        var solution = { outerPlus: true };
+                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(true);
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#replace can replace',
+            function ()
+            {
+                var encoder = JScrewIt.debug.createEncoder();
+                it(
+                    'a number',
+                    function ()
+                    {
+                        var actual = eval(encoder.replace('"" + 2'));
+                        expect(actual).toBe('2');
+                    }
+                );
+                it(
+                    'NaN',
+                    function ()
+                    {
+                        var actual = eval(encoder.replace('"" + NaN'));
+                        expect(actual).toBe('NaN');
+                    }
+                );
+                it(
+                    'a string with more than MAX_CONCAT_TOKENS tokens',
+                    function ()
+                    {
+                        var string = repeat('0123456789', 500);
+                        var actual = eval(encoder.replace(JSON.stringify(string)));
+                        expect(actual).toBe(string);
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#resolve throws a SyntaxError for',
             function ()
             {
                 var encoder = JScrewIt.debug.createEncoder();
@@ -845,150 +962,8 @@
                 );
             }
         );
-        describe(
-            'hasOuterPlus is',
-            function ()
-            {
-                it(
-                    'true for leading plus',
-                    function ()
-                    {
-                        var solution = Object('+[]');
-                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(true);
-                        expect(solution.outerPlus).toBe(true);
-                    }
-                );
-                it(
-                    'true for middle plus',
-                    function ()
-                    {
-                        var solution = Object('[]+[]');
-                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(true);
-                        expect(solution.outerPlus).toBe(true);
-                    }
-                );
-                it(
-                    'false for inner plus',
-                    function ()
-                    {
-                        var solution = Object('(+[])');
-                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(false);
-                        expect(solution.outerPlus).toBe(false);
-                    }
-                );
-                it(
-                    'false for leading !+',
-                    function ()
-                    {
-                        var solution = Object('!+[]');
-                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(false);
-                        expect(solution.outerPlus).toBe(false);
-                    }
-                );
-                it(
-                    'cached',
-                    function ()
-                    {
-                        var solution = { outerPlus: true };
-                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(true);
-                    }
-                );
-            }
-        );
-        describe(
-            'replace can replace',
-            function ()
-            {
-                var encoder = JScrewIt.debug.createEncoder();
-                it(
-                    'a number',
-                    function ()
-                    {
-                        var actual = eval(encoder.replace('"" + 2'));
-                        expect(actual).toBe('2');
-                    }
-                );
-                it(
-                    'NaN',
-                    function ()
-                    {
-                        var actual = eval(encoder.replace('"" + NaN'));
-                        expect(actual).toBe('NaN');
-                    }
-                );
-                it(
-                    'a string with more than MAX_CONCAT_TOKENS tokens',
-                    function ()
-                    {
-                        var string = repeat('0123456789', 500);
-                        var actual = eval(encoder.replace(JSON.stringify(string)));
-                        expect(actual).toBe(string);
-                    }
-                );
-            }
-        );
-        describe(
-            'encodePlain',
-            function ()
-            {
-                var encoder = JScrewIt.debug.createEncoder();
-                it(
-                    'returns undefined when output length exceeds maxLength',
-                    function ()
-                    {
-                        var actual = encoder.encodePlain('', 4);
-                        expect(actual).toBeUndefined();
-                    }
-                );
-                it(
-                    'returns a string when output length equals maxLength',
-                    function ()
-                    {
-                        var actual = encoder.encodePlain('', 5);
-                        expect(typeof actual).toBe('string');
-                    }
-                );
-                it(
-                    'returns a string when maxLength is not specified',
-                    function ()
-                    {
-                        var actual = encoder.encodePlain('');
-                        expect(typeof actual).toBe('string');
-                    }
-                );
-            }
-        );
-        describe(
-            'encodeSimple',
-            function ()
-            {
-                var encoder = JScrewIt.debug.createEncoder();
-                it(
-                    'returns undefined when output length exceeds maxLength',
-                    function ()
-                    {
-                        var actual = encoder.encodeSimple('', 4);
-                        expect(actual).toBeUndefined();
-                    }
-                );
-                it(
-                    'returns a string when output length equals maxLength',
-                    function ()
-                    {
-                        var actual = encoder.encodeSimple('', 5);
-                        expect(typeof actual).toBe('string');
-                    }
-                );
-                it(
-                    'returns a string when maxLength is not specified',
-                    function ()
-                    {
-                        var actual = encoder.encodeSimple('');
-                        expect(typeof actual).toBe('string');
-                    }
-                );
-            }
-        );
+        describeEncodeMethodTest('encodePlain');
+        describeEncodeMethodTest('encodeSimple');
         describe(
             'Encoding',
             function ()
