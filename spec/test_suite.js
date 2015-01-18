@@ -727,31 +727,19 @@
             }
         );
         describe(
-            'JScrewIt.debug.defineConstant fails for',
+            'JScrewIt.debug.defineConstant',
             function ()
             {
                 it(
-                    'invalid identifier',
+                    'fails for invalid identifier',
                     function ()
                     {
                         expect(
                             function ()
                             {
-                                JScrewIt.debug.defineConstant('X:X', '0');
+                                JScrewIt.debug.defineConstant(null, 'X:X', '0');
                             }
                         ).toThrow(SyntaxError('Invalid identifier "X:X"'));
-                    }
-                );
-                it(
-                    'identifier already defined',
-                    function ()
-                    {
-                        expect(
-                            function ()
-                            {
-                                JScrewIt.debug.defineConstant('Array', '0');
-                            }
-                        ).toThrow(ReferenceError('Array already defined'));
                     }
                 );
             }
@@ -768,11 +756,11 @@
                     return result;
                 }
                 
-                JScrewIt.debug.defineConstant('A', 'B');
-                JScrewIt.debug.defineConstant('C', 'D');
-                JScrewIt.debug.defineConstant('D', 'C');
-                JScrewIt.debug.defineConstant('E', '?');
-                JScrewIt.debug.defineConstant('F', '"\\?"');
+                JScrewIt.debug.defineConstant(encoder, 'A', 'B');
+                JScrewIt.debug.defineConstant(encoder, 'C', 'D');
+                JScrewIt.debug.defineConstant(encoder, 'D', 'C');
+                JScrewIt.debug.defineConstant(encoder, 'E', '?');
+                JScrewIt.debug.defineConstant(encoder, 'F', '"\\?"');
                 
                 it(
                     'Undefined literal',
