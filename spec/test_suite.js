@@ -830,6 +830,114 @@
             }
         );
         describe(
+            'ScrewBuffer',
+            function ()
+            {
+                var solutionA = Object('[![]+[]][+[]]');
+                solutionA.level = 1;
+                var solution0 = Object('+[]');
+                solution0.level = -1;
+                var solutionFalse = Object('![]');
+                solutionFalse.level = -1;
+                describe(
+                    'with weak bound encodes',
+                    function ()
+                    {
+                        var buffer = JScrewIt.debug.createScrewBuffer(false, 3);
+                        it(
+                            'an empty string',
+                            function ()
+                            {
+                                expect(buffer.length).toBe(5);
+                                expect(buffer + '').toBe('[]+[]');
+                            }
+                        );
+                        it(
+                            'a single character',
+                            function ()
+                            {
+                                buffer.append(solutionA);
+                                expect(buffer.length).toBe(13);
+                                expect(buffer + '').toBe('[![]+[]][+[]]');
+                            }
+                        );
+                        it(
+                            'a string with more elements than the group threshold',
+                            function ()
+                            {
+                                buffer.append(solution0);
+                                buffer.append(solution0);
+                                buffer.append(solution0);
+                                expect(buffer.length).toBe(31);
+                                expect(buffer + '').toBe('[![]+[]][+[]]+(+[])+(+[])+(+[])');
+                            }
+                        );
+                        it(
+                            'a string with more elements than twice the group threshold',
+                            function ()
+                            {
+                                buffer.append(solutionFalse);
+                                buffer.append(solutionFalse);
+                                buffer.append(solutionFalse);
+                                expect(buffer.length).toBe(45);
+                                expect(buffer + '').toBe(
+                                    '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![]+![])'
+                                );
+                            }
+                        );
+                    }
+                );
+                describe(
+                    'with strong bound encodes',
+                    function ()
+                    {
+                        var buffer = JScrewIt.debug.createScrewBuffer(true, 3);
+                        it(
+                            'an empty string',
+                            function ()
+                            {
+                                expect(buffer.length).toBe(7);
+                                expect(buffer + '').toBe('([]+[])');
+                            }
+                        );
+                        it(
+                            'a single character',
+                            function ()
+                            {
+                                buffer.append(solutionA);
+                                expect(buffer.length).toBe(13);
+                                expect(buffer + '').toBe('[![]+[]][+[]]');
+                            }
+                        );
+                        it(
+                            'a string with more elements than the group threshold',
+                            function ()
+                            {
+                                buffer.append(solution0);
+                                buffer.append(solution0);
+                                buffer.append(solution0);
+                                expect(buffer.length).toBe(33);
+                                expect(buffer + '').toBe('([![]+[]][+[]]+(+[])+(+[])+(+[]))');
+                            }
+                        );
+                        it(
+                            'a string with more elements than twice the group threshold',
+                            function ()
+                            {
+                                buffer.append(solutionFalse);
+                                buffer.append(solutionFalse);
+                                buffer.append(solutionFalse);
+                                expect(buffer.length).toBe(47);
+                                expect(buffer + '').toBe(
+                                    '([![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![]+![]))'
+                                );
+                            }
+                        );
+                    }
+                );
+            }
+        );
+        describe(
             'Encoder#replace can replace',
             function ()
             {
@@ -848,15 +956,6 @@
                     {
                         var actual = eval(encoder.replace('"" + NaN'));
                         expect(actual).toBe('NaN');
-                    }
-                );
-                it(
-                    'a string with more than MAX_CONCAT_TOKENS tokens',
-                    function ()
-                    {
-                        var string = repeat('0123456789', 500);
-                        var actual = eval(encoder.replace(JSON.stringify(string)));
-                        expect(actual).toBe(string);
                     }
                 );
             }
