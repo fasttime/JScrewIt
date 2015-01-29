@@ -833,6 +833,12 @@
             'ScrewBuffer',
             function ()
             {
+                function test(buffer, expectedString)
+                {
+                    expect(buffer.length).toBe(expectedString.length);
+                    expect(buffer + '').toBe(expectedString);
+                }
+                
                 var solutionA = Object('[![]+[]][+[]]');
                 solutionA.level = 1;
                 var solution0 = Object('+[]');
@@ -840,97 +846,115 @@
                 var solutionFalse = Object('![]');
                 solutionFalse.level = -1;
                 describe(
-                    'with weak bound encodes',
+                    'with weak bound',
                     function ()
                     {
-                        var buffer = JScrewIt.debug.createScrewBuffer(false, 3);
+                        var buffer = JScrewIt.debug.createScrewBuffer(false, 4);
                         it(
-                            'an empty string',
+                            'encodes an empty string',
                             function ()
                             {
-                                expect(buffer.length).toBe(5);
-                                expect(buffer + '').toBe('[]+[]');
+                                test(buffer, '[]+[]');
                             }
                         );
                         it(
-                            'a single character',
+                            'encodes a single character',
                             function ()
                             {
-                                buffer.append(solutionA);
-                                expect(buffer.length).toBe(13);
-                                expect(buffer + '').toBe('[![]+[]][+[]]');
+                                expect(buffer.append(solutionA)).toBe(true);
+                                test(buffer, '[![]+[]][+[]]');
                             }
                         );
                         it(
-                            'a string with more elements than the group threshold',
+                            'encodes a string with more elements than the first group threshold',
                             function ()
                             {
-                                buffer.append(solution0);
-                                buffer.append(solution0);
-                                buffer.append(solution0);
-                                expect(buffer.length).toBe(31);
-                                expect(buffer + '').toBe('[![]+[]][+[]]+(+[])+(+[])+(+[])');
+                                expect(buffer.append(solution0)).toBe(true);
+                                expect(buffer.append(solution0)).toBe(true);
+                                expect(buffer.append(solution0)).toBe(true);
+                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[])');
                             }
                         );
                         it(
-                            'a string with more elements than twice the group threshold',
+                            'encodes a string with more elements than the second group threshold',
                             function ()
                             {
-                                buffer.append(solutionFalse);
-                                buffer.append(solutionFalse);
-                                buffer.append(solutionFalse);
-                                expect(buffer.length).toBe(45);
-                                expect(buffer + '').toBe(
-                                    '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![]+![])'
-                                );
+                                expect(buffer.append(solutionFalse)).toBe(true);
+                                expect(buffer.append(solutionFalse)).toBe(true);
+                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![])');
+                            }
+                        );
+                        it(
+                            'encodes a string with the largest possible number of elements',
+                            function ()
+                            {
+                                expect(buffer.append(solutionFalse)).toBe(true);
+                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))');
+                            }
+                        );
+                        it(
+                            'does not encode a string with too many elements',
+                            function ()
+                            {
+                                expect(buffer.append(solutionFalse)).toBe(false);
+                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))');
                             }
                         );
                     }
                 );
                 describe(
-                    'with strong bound encodes',
+                    'with strong bound',
                     function ()
                     {
-                        var buffer = JScrewIt.debug.createScrewBuffer(true, 3);
+                        var buffer = JScrewIt.debug.createScrewBuffer(true, 4);
                         it(
-                            'an empty string',
+                            'encodes an empty string',
                             function ()
                             {
-                                expect(buffer.length).toBe(7);
-                                expect(buffer + '').toBe('([]+[])');
+                                test(buffer, '([]+[])');
                             }
                         );
                         it(
-                            'a single character',
+                            'encodes a single character',
                             function ()
                             {
-                                buffer.append(solutionA);
-                                expect(buffer.length).toBe(13);
-                                expect(buffer + '').toBe('[![]+[]][+[]]');
+                                expect(buffer.append(solutionA)).toBe(true);
+                                test(buffer, '[![]+[]][+[]]');
                             }
                         );
                         it(
-                            'a string with more elements than the group threshold',
+                            'encodes a string with more elements than the first group threshold',
                             function ()
                             {
-                                buffer.append(solution0);
-                                buffer.append(solution0);
-                                buffer.append(solution0);
-                                expect(buffer.length).toBe(33);
-                                expect(buffer + '').toBe('([![]+[]][+[]]+(+[])+(+[])+(+[]))');
+                                expect(buffer.append(solution0)).toBe(true);
+                                expect(buffer.append(solution0)).toBe(true);
+                                expect(buffer.append(solution0)).toBe(true);
+                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]))');
                             }
                         );
                         it(
-                            'a string with more elements than twice the group threshold',
+                            'encodes a string with more elements than the second group threshold',
                             function ()
                             {
-                                buffer.append(solutionFalse);
-                                buffer.append(solutionFalse);
-                                buffer.append(solutionFalse);
-                                expect(buffer.length).toBe(47);
-                                expect(buffer + '').toBe(
-                                    '([![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![]+![]))'
-                                );
+                                expect(buffer.append(solutionFalse)).toBe(true);
+                                expect(buffer.append(solutionFalse)).toBe(true);
+                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![]))');
+                            }
+                        );
+                        it(
+                            'encodes a string with the largest possible number of elements',
+                            function ()
+                            {
+                                expect(buffer.append(solutionFalse)).toBe(true);
+                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]])))');
+                            }
+                        );
+                        it(
+                            'does not encode a string with too many elements',
+                            function ()
+                            {
+                                expect(buffer.append(solutionFalse)).toBe(false);
+                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]])))');
                             }
                         );
                     }
@@ -961,10 +985,41 @@
             }
         );
         describe(
+            'Encoder#encode',
+            function ()
+            {
+                it(
+                    'throws an Error with message "Encoding failed" for too complex input',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        encoder.replaceNumberArray = encoder.encodePlain = function () { };
+                        expect(function () { encoder.encode('12345'); }).toThrow('Encoding failed');
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#replaceNumberArray',
+            function ()
+            {
+                it(
+                    'returns undefined for too large array',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        encoder.replaceString = encoder.encodePlain = function () { };
+                        expect(encoder.replaceNumberArray([])).toBeUndefined();
+                    }
+                );
+            }
+        );
+        describe(
             'Encoder#resolve throws a SyntaxError for',
             function ()
             {
                 var encoder = JScrewIt.debug.createEncoder();
+                encoder.replaceString = function () { };
                 
                 function debugReplacer(input)
                 {
@@ -977,6 +1032,7 @@
                 JScrewIt.debug.defineConstant(encoder, 'D', 'C');
                 JScrewIt.debug.defineConstant(encoder, 'E', '?');
                 JScrewIt.debug.defineConstant(encoder, 'F', '"\\?"');
+                JScrewIt.debug.defineConstant(encoder, 'G', '"too complex"');
                 
                 it(
                     'Circular reference',
@@ -1054,6 +1110,30 @@
                             {
                                 expect(debugReplacer('"\\?"')).toThrow(
                                     SyntaxError('Illegal string "\\?"')
+                                );
+                            }
+                        );
+                    }
+                );
+                describe(
+                    'String too complex',
+                    function ()
+                    {
+                        it(
+                            'in a definition',
+                            function ()
+                            {
+                                expect(debugReplacer('G')).toThrow(
+                                    SyntaxError('String too complex in the definition of G')
+                                );
+                            }
+                        );
+                        it(
+                            'inline',
+                            function ()
+                            {
+                                expect(debugReplacer('"too complex"')).toThrow(
+                                    SyntaxError('String too complex')
                                 );
                             }
                         );
