@@ -67,6 +67,15 @@ if (inputFileName == null)
 else
 {
     var data = require('fs').readFileSync(inputFileName);
-    var output = JScrewIt.encode(data, wrapWithEval, features);
+    var output;
+    try
+    {
+        output = JScrewIt.encode(data, wrapWithEval, features);
+    }
+    catch (error)
+    {
+        console.error(error.message);
+        return;
+    }
     process.stdout.write(output);
 }
