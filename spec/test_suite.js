@@ -994,7 +994,9 @@
                     {
                         var encoder = JScrewIt.debug.createEncoder();
                         encoder.replaceNumberArray = encoder.encodePlain = function () { };
-                        expect(function () { encoder.encode('12345'); }).toThrow('Encoding failed');
+                        expect(function () { encoder.encode('12345'); }).toThrow(
+                            new Error('Encoding failed')
+                        );
                     }
                 );
             }
