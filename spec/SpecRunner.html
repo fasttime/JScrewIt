@@ -16,33 +16,51 @@
 
 function handleDOMNodeInserted()
 {
+    function addBarButton(caption, onclick)
+    {
+        var button = bar.appendChild(document.createElement('BUTTON'));
+        button.textContent = caption;
+        button.onclick = onclick;
+    }
+
     var bar = document.querySelector('.bar');
     if (bar)
     {
         removeEventListener('DOMNodeInserted', handleDOMNodeInserted);
         var outputWindow;
-        var button = bar.appendChild(document.createElement('BUTTON'));
-        button.textContent = 'View lengths';
-        button.onclick =
-        function ()
-        {
-            if (outputWindow) outputWindow.close();
-            var left = window.screenX + 50;
-            var top = window.screenY + 50;
-            var features = 'resizable,scrollbars,width=184,height=300,left=' + left + ',top=' + top;
-            outputWindow = window.open('', 'outputWindow', features);
-            // Chrome won't always bring the new popup to the front automatically, so we better take
-            // care of that.
-            outputWindow.focus();
-            var outputDocument = outputWindow.document;
-            outputDocument.title = 'JScrewIt Encoding Lengths';
-            var outputBody = outputDocument.body;
-            outputBody.textContent = TestSuite.createOutput(['DEFAULT', 'AUTO']);
-            var outputBodyStyle = outputBody.style;
-            outputBodyStyle.font = '12px "Courier New",Monaco,monospace';
-            outputBodyStyle.margin = '8px 20px';
-            outputBodyStyle.whiteSpace = 'pre';
-        };
+        addBarButton(
+            'View lengths',
+            function ()
+            {
+                if (outputWindow) outputWindow.close();
+                outputWindow = popup('', 'outputWindow', 184, 300);
+                // Chrome won't always bring the new popup to the front automatically, so we better
+                // take care of that.
+                outputWindow.focus();
+                var outputDocument = outputWindow.document;
+                outputDocument.title = 'JScrewIt Encoding Lengths';
+                var outputBody = outputDocument.body;
+                outputBody.textContent = TestSuite.createOutput(['DEFAULT', 'AUTO']);
+                var outputBodyStyle = outputBody.style;
+                outputBodyStyle.font = '12px "Courier New",Monaco,monospace';
+                outputBodyStyle.margin = '8px 20px';
+                outputBodyStyle.whiteSpace = 'pre';
+            }
+        );
+        var extremeTestWindow;
+        addBarButton(
+            'Extreme test',
+            function ()
+            {
+                // Workaraoud for Android bug
+                // https://code.google.com/p/android/issues/detail?id=21061
+                if (!extremeTestWindow || extremeTestWindow.closed !== false)
+                {
+                    extremeTestWindow = popup('ExtremeTest.html', 'extremeTestWindow', 600, 600);
+                }
+                extremeTestWindow.focus();
+            }
+        );
     }
 }
 
@@ -76,6 +94,17 @@ function listFeatures(info, label, features)
     }
 }
 
+function popup(url, name, width, height)
+{
+    var left = screenX + 50;
+    var top = screenY + 50;
+    var features =
+        'resizable,scrollbars,width=' + width + ',height=' + height + ',left=' + left + ',top=' +
+        top;
+    var popup = open(url, name, features);
+    return popup;
+}
+
 TestSuite.init();
 TestSuite.run();
 
@@ -85,7 +114,7 @@ addEventListener('load', handleLoad);
 </script>
 <style>
 
-.bar { height: 30px; }
+.bar { min-height: 30px; }
 
 .featureList { clear: both; padding: 6px 9px 0; }
 
@@ -100,7 +129,7 @@ button
     box-shadow: 0 0 0 2px #aaa;
     color: #eee;
     font: 11px/16px Monaco, 'Lucida Console', monospace;
-    margin: 0 16px;
+    margin-left: 16px;
 }
 
 </style>
