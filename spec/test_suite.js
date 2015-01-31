@@ -89,7 +89,7 @@
     
     function createOutput(compatibilities)
     {
-        function appendLengths(name, char)
+        function appendLengths(name, input)
         {
             result += '\n' + padRight(name, 4);
             compatibilities.forEach(
@@ -98,7 +98,7 @@
                     var content;
                     try
                     {
-                        content = JScrewIt.encode(char, false, compatibility).length;
+                        content = JScrewIt.encode(input, false, compatibility).length;
                     }
                     catch (error)
                     {
@@ -128,7 +128,7 @@
             }
         );
         result = result.replace(/ +$/, '');
-        result += '\n    ' + Array(compatibilities.length + 1).join(' -------');
+        result += '\n    ' + repeat(' -------', compatibilities.length);
         var C0_CONTROL_CODE_NAMES =
         [
             'NUL',  'SOH',  'STX',  'ETX',  'EOT',  'ENQ',  'ACK',  'BEL',
@@ -157,7 +157,58 @@
         appendLengthsRange(174, 255);
         appendLengths('`∟`', '∟');
         appendLengths('`♥`', '♥');
+        appendLengths('A…Z', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
         return result;
+    }
+    
+    var encoderCache = { };
+    
+    function decodeEntry(entry)
+    {
+        var features = JScrewIt.debug.getEntryFeatures(entry);
+        var key = features.join();
+        var encoder = encoderCache[key];
+        if (!encoder)
+        {
+            encoderCache[key] = encoder = JScrewIt.debug.createEncoder(features);
+        }
+        var output = encoder.replace(entry.definition);
+        return output;
+    }
+    
+    function describeEncodeMethodTest(methodName)
+    {
+        describe(
+            'Encoder#' + methodName,
+            function ()
+            {
+                var encoder = JScrewIt.debug.createEncoder();
+                it(
+                    'returns undefined when output length exceeds maxLength',
+                    function ()
+                    {
+                        var actual = encoder[methodName]('', 4);
+                        expect(actual).toBeUndefined();
+                    }
+                );
+                it(
+                    'returns a string when output length equals maxLength',
+                    function ()
+                    {
+                        var actual = encoder[methodName]('', 5);
+                        expect(typeof actual).toBe('string');
+                    }
+                );
+                it(
+                    'returns a string when maxLength is not specified',
+                    function ()
+                    {
+                        var actual = encoder[methodName]('');
+                        expect(typeof actual).toBe('string');
+                    }
+                );
+            }
+        );
     }
     
     function describeEncodeTest(compatibility)
@@ -190,6 +241,8 @@
                         }
                     );
                     var expression3 = 'true or false';
+                    var encoder = JScrewIt.debug.createEncoder(compatibility);
+                    var expectedEncoding3 = encoder.replace('true + " " + "o" + "r" + " " + false');
                     it(
                         JSON.stringify(expression3),
                         function ()
@@ -197,12 +250,17 @@
                             var encoding = JScrewIt.encode(expression3, false, compatibility);
                             var actual = emuEval(emuFeatures, encoding);
                             expect(actual).toBe(expression3);
-                            expect(encoding).toBe(
-                                JScrewIt.debug.replace(
-                                    'true + " " + "o" + "r" + " " + false',
-                                    compatibility
-                                )
-                            );
+                            expect(encoding).toBe(expectedEncoding3);
+                        }
+                    );
+                    var expression4 = repeat('☺', 20);
+                    it(
+                        JSON.stringify(expression4),
+                        function ()
+                        {
+                            var encoding = JScrewIt.encode(expression4, false, compatibility);
+                            var actual = emuEval(emuFeatures, encoding);
+                            expect(actual).toBe(expression4);
                         }
                     );
                 }
@@ -217,9 +275,7 @@
         try
         {
             emuFeatures.forEach(function (feature) { featureSet[feature].setUp.call(context); });
-            // In older Android Browser versions eval throws an error if the caller's context is
-            // null or undefined.
-            result = callback.call(this);
+            result = callback();
         }
         finally
         {
@@ -431,14 +487,14 @@
     function padLeft(str, length)
     {
         str += '';
-        var result = Array(length - str.length + 1).join(' ') + str;
+        var result = repeat(' ', length - str.length) + str;
         return result;
     }
     
     function padRight(str, length)
     {
         str += '';
-        var result = str + Array(length - str.length + 1).join(' ');
+        var result = str + repeat(' ', length - str.length);
         return result;
     }
     
@@ -467,6 +523,12 @@
                 };
         }
         context[typeName].adapters[key] = adapter;
+    }
+    
+    function repeat(string, count)
+    {
+        var result = Array(count + 1).join(string);
+        return result;
     }
     
     function run()
@@ -563,7 +625,25 @@
                 describeEncodeTest('NO_IE');
                 describeEncodeTest('AUTO');
                 it(
+                    'correctly encodes an empty string',
+                    function ()
+                    {
+                        var encoding = JScrewIt.encode('');
+                        var actual = eval(encoding);
+                        expect(actual).toBe('');
+                    }
+                );
+                it(
                     'throws a ReferenceError for incompatible features',
+                    function ()
+                    {
+                        var fn =
+                            function () { JScrewIt.encode('', false, ['NO_IE_SRC', 'IE_SRC']); };
+                        expect(fn).toThrow(ReferenceError('Incompatible features'));
+                    }
+                );
+                it(
+                    '',
                     function ()
                     {
                         var fn =
@@ -682,113 +762,25 @@
             }
         );
         describe(
-            'JScrewIt.debug.defineConstant fails for',
+            'JScrewIt.debug.defineConstant',
             function ()
             {
                 it(
-                    'invalid identifier',
+                    'fails for invalid identifier',
                     function ()
                     {
                         expect(
                             function ()
                             {
-                                JScrewIt.debug.defineConstant('X:X', '0');
+                                JScrewIt.debug.defineConstant(null, 'X:X', '0');
                             }
                         ).toThrow(SyntaxError('Invalid identifier "X:X"'));
                     }
                 );
-                it(
-                    'identifier already defined',
-                    function ()
-                    {
-                        expect(
-                            function ()
-                            {
-                                JScrewIt.debug.defineConstant('Array', '0');
-                            }
-                        ).toThrow(ReferenceError('Array already defined'));
-                    }
-                );
             }
         );
         describe(
-            'JScrewIt.debug.replace can replace',
-            function ()
-            {
-                it(
-                    'a number',
-                    function ()
-                    {
-                        var actual = eval(JScrewIt.debug.replace('""+2'));
-                        expect(actual).toBe('2');
-                    }
-                );
-                it(
-                    'NaN',
-                    function ()
-                    {
-                        var actual = eval(JScrewIt.debug.replace('""+NaN'));
-                        expect(actual).toBe('NaN');
-                    }
-                );
-            }
-        );
-        describe(
-            'SyntaxError thrown for',
-            function ()
-            {
-                function debugReplacer(input)
-                {
-                    var result = function () { JScrewIt.debug.replace(input); };
-                    return result;
-                }
-                
-                JScrewIt.debug.defineConstant('A', 'B');
-                JScrewIt.debug.defineConstant('C', 'D');
-                JScrewIt.debug.defineConstant('D', 'C');
-                JScrewIt.debug.defineConstant('E', '?');
-                JScrewIt.debug.defineConstant('F', '"\\?"');
-                
-                it(
-                    'Undefined literal',
-                    function ()
-                    {
-                        expect(debugReplacer('A')).toThrow(
-                            SyntaxError('Undefined literal B in the definition of A')
-                        );
-                    }
-                );
-                it(
-                    'Circular reference',
-                    function ()
-                    {
-                        expect(debugReplacer('C')).toThrow(
-                            SyntaxError('Circular reference detected: C < D < C')
-                        );
-                    }
-                );
-                it(
-                    'Unexpected character',
-                    function ()
-                    {
-                        expect(debugReplacer('E')).toThrow(
-                            SyntaxError('Unexpected character "?" in the definition of E')
-                        );
-                    }
-                );
-                it(
-                    'Illegal string',
-                    function ()
-                    {
-                        expect(debugReplacer('F')).toThrow(
-                            SyntaxError('Illegal string "\\?" in the definition of F')
-                        );
-                    }
-                );
-            }
-        );
-        describe(
-            'hasOuterPlus is',
+            'JScrewIt.debug.hasOuterPlus is',
             function ()
             {
                 it(
@@ -837,6 +829,371 @@
                 );
             }
         );
+        describe(
+            'ScrewBuffer',
+            function ()
+            {
+                function test(buffer, expectedString)
+                {
+                    expect(buffer.length).toBe(expectedString.length);
+                    expect(buffer + '').toBe(expectedString);
+                }
+                
+                var solutionA = Object('[![]+[]][+[]]');
+                solutionA.level = 1;
+                var solution0 = Object('+[]');
+                solution0.level = -1;
+                var solutionFalse = Object('![]');
+                solutionFalse.level = -1;
+                describe(
+                    'with weak bound',
+                    function ()
+                    {
+                        var buffer = JScrewIt.debug.createScrewBuffer(false, 4);
+                        it(
+                            'encodes an empty string',
+                            function ()
+                            {
+                                test(buffer, '[]+[]');
+                            }
+                        );
+                        it(
+                            'encodes a single character',
+                            function ()
+                            {
+                                expect(buffer.append(solutionA)).toBe(true);
+                                test(buffer, '[![]+[]][+[]]');
+                            }
+                        );
+                        it(
+                            'encodes a string with more elements than the first group threshold',
+                            function ()
+                            {
+                                expect(buffer.append(solution0)).toBe(true);
+                                expect(buffer.append(solution0)).toBe(true);
+                                expect(buffer.append(solution0)).toBe(true);
+                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[])');
+                            }
+                        );
+                        it(
+                            'encodes a string with more elements than the second group threshold',
+                            function ()
+                            {
+                                expect(buffer.append(solutionFalse)).toBe(true);
+                                expect(buffer.append(solutionFalse)).toBe(true);
+                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![])');
+                            }
+                        );
+                        it(
+                            'encodes a string with the largest possible number of elements',
+                            function ()
+                            {
+                                expect(buffer.append(solutionFalse)).toBe(true);
+                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))');
+                            }
+                        );
+                        it(
+                            'does not encode a string with too many elements',
+                            function ()
+                            {
+                                expect(buffer.append(solutionFalse)).toBe(false);
+                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))');
+                            }
+                        );
+                    }
+                );
+                describe(
+                    'with strong bound',
+                    function ()
+                    {
+                        var buffer = JScrewIt.debug.createScrewBuffer(true, 4);
+                        it(
+                            'encodes an empty string',
+                            function ()
+                            {
+                                test(buffer, '([]+[])');
+                            }
+                        );
+                        it(
+                            'encodes a single character',
+                            function ()
+                            {
+                                expect(buffer.append(solutionA)).toBe(true);
+                                test(buffer, '[![]+[]][+[]]');
+                            }
+                        );
+                        it(
+                            'encodes a string with more elements than the first group threshold',
+                            function ()
+                            {
+                                expect(buffer.append(solution0)).toBe(true);
+                                expect(buffer.append(solution0)).toBe(true);
+                                expect(buffer.append(solution0)).toBe(true);
+                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]))');
+                            }
+                        );
+                        it(
+                            'encodes a string with more elements than the second group threshold',
+                            function ()
+                            {
+                                expect(buffer.append(solutionFalse)).toBe(true);
+                                expect(buffer.append(solutionFalse)).toBe(true);
+                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![]))');
+                            }
+                        );
+                        it(
+                            'encodes a string with the largest possible number of elements',
+                            function ()
+                            {
+                                expect(buffer.append(solutionFalse)).toBe(true);
+                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]])))');
+                            }
+                        );
+                        it(
+                            'does not encode a string with too many elements',
+                            function ()
+                            {
+                                expect(buffer.append(solutionFalse)).toBe(false);
+                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]])))');
+                            }
+                        );
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#replace can replace',
+            function ()
+            {
+                var encoder = JScrewIt.debug.createEncoder();
+                it(
+                    'a number',
+                    function ()
+                    {
+                        var actual = eval(encoder.replace('"" + 2'));
+                        expect(actual).toBe('2');
+                    }
+                );
+                it(
+                    'NaN',
+                    function ()
+                    {
+                        var actual = eval(encoder.replace('"" + NaN'));
+                        expect(actual).toBe('NaN');
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#encode',
+            function ()
+            {
+                it(
+                    'throws an Error with message "Encoding failed" for too complex input',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        encoder.replaceNumberArray = encoder.encodePlain = function () { };
+                        expect(function () { encoder.encode('12345'); }).toThrow(
+                            new Error('Encoding failed')
+                        );
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#replaceNumberArray',
+            function ()
+            {
+                it(
+                    'returns undefined for too large array',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        encoder.replaceString = encoder.encodePlain = function () { };
+                        expect(encoder.replaceNumberArray([])).toBeUndefined();
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#resolve throws a SyntaxError for',
+            function ()
+            {
+                var encoder = JScrewIt.debug.createEncoder();
+                encoder.replaceString = function () { };
+                
+                function debugReplacer(input)
+                {
+                    var result = function () { encoder.resolve(input); };
+                    return result;
+                }
+                
+                JScrewIt.debug.defineConstant(encoder, 'A', 'B');
+                JScrewIt.debug.defineConstant(encoder, 'C', 'D');
+                JScrewIt.debug.defineConstant(encoder, 'D', 'C');
+                JScrewIt.debug.defineConstant(encoder, 'E', '?');
+                JScrewIt.debug.defineConstant(encoder, 'F', '"\\?"');
+                JScrewIt.debug.defineConstant(encoder, 'G', '"too complex"');
+                
+                it(
+                    'Circular reference',
+                    function ()
+                    {
+                        expect(debugReplacer('C')).toThrow(
+                            SyntaxError('Circular reference detected: C < D < C')
+                        );
+                    }
+                );
+                describe(
+                    'Undefined literal',
+                    function ()
+                    {
+                        it(
+                            'in a definition',
+                            function ()
+                            {
+                                expect(debugReplacer('A')).toThrow(
+                                    SyntaxError('Undefined literal B in the definition of A')
+                                );
+                            }
+                        );
+                        it(
+                            'inline',
+                            function ()
+                            {
+                                expect(debugReplacer('valueOf')).toThrow(
+                                    SyntaxError('Undefined literal valueOf')
+                                );
+                            }
+                        );
+                    }
+                );
+                describe(
+                    'Unexpected character',
+                    function ()
+                    {
+                        it(
+                            'in a definition',
+                            function ()
+                            {
+                                expect(debugReplacer('E')).toThrow(
+                                    SyntaxError('Unexpected character "?" in the definition of E')
+                                );
+                            }
+                        );
+                        it(
+                            'inline',
+                            function ()
+                            {
+                                expect(debugReplacer('?')).toThrow(
+                                    SyntaxError('Unexpected character "?"')
+                                );
+                            }
+                        );
+                    }
+                );
+                describe(
+                    'Illegal string',
+                    function ()
+                    {
+                        it(
+                            'in a definition',
+                            function ()
+                            {
+                                expect(debugReplacer('F')).toThrow(
+                                    SyntaxError('Illegal string "\\?" in the definition of F')
+                                );
+                            }
+                        );
+                        it(
+                            'inline',
+                            function ()
+                            {
+                                expect(debugReplacer('"\\?"')).toThrow(
+                                    SyntaxError('Illegal string "\\?"')
+                                );
+                            }
+                        );
+                    }
+                );
+                describe(
+                    'String too complex',
+                    function ()
+                    {
+                        it(
+                            'in a definition',
+                            function ()
+                            {
+                                expect(debugReplacer('G')).toThrow(
+                                    SyntaxError('String too complex in the definition of G')
+                                );
+                            }
+                        );
+                        it(
+                            'inline',
+                            function ()
+                            {
+                                expect(debugReplacer('"too complex"')).toThrow(
+                                    SyntaxError('String too complex')
+                                );
+                            }
+                        );
+                    }
+                );
+                it(
+                    'Illegal string',
+                    function ()
+                    {
+                        expect(debugReplacer('F')).toThrow(
+                            SyntaxError('Illegal string "\\?" in the definition of F')
+                        );
+                    }
+                );
+            }
+        );
+        describeEncodeMethodTest('encodePlain');
+        describeEncodeMethodTest('encodeSimple');
+        describe(
+            'Encoding',
+            function ()
+            {
+                var encoder = JScrewIt.debug.createEncoder();
+                var input = 'Lorem ipsum dolor sit amet';
+                it(
+                    'plain is ok',
+                    function ()
+                    {
+                        var output = encoder.encodePlain(input);
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+                it(
+                    'by dictionary is ok',
+                    function ()
+                    {
+                        var output = encoder.encodeByDict(input);
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+                it(
+                    'by long character code list is ok',
+                    function ()
+                    {
+                        var output = encoder.encodeByCharCodes(input, true);
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+                it(
+                    'by short character code list is ok',
+                    function ()
+                    {
+                        var output = encoder.encodeByCharCodes(input, false);
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+            }
+        );
     }
     
     function testCharacter(charCode)
@@ -874,8 +1231,7 @@
                                     '(definition ' + index + ')',
                                     function ()
                                     {
-                                        var definition = entry.definition;
-                                        var output = JScrewIt.debug.replace(definition, features);
+                                        var output = decodeEntry(entry);
                                         verifyOutput(output, emuFeatures);
                                     }
                                 );
@@ -941,8 +1297,7 @@
                                 '(definition ' + index + ')',
                                 function ()
                                 {
-                                    var definition = entry.definition;
-                                    var output = JScrewIt.debug.replace(definition, features);
+                                    var output = decodeEntry(entry);
                                     expect(output).toMatch(/^[!+()[\]]*$/);
                                     emuDo(
                                         emuFeatures,
@@ -1088,16 +1443,23 @@
         {
             setUp: function ()
             {
-                var quote = function () { return JSON.stringify(this); };
-                Object.defineProperty(
-                    String.prototype,
-                    'quote',
-                    { configurable: true, value: quote }
-                );
+                if (!String.prototype.quote)
+                {
+                    this.quoteEmulation = true;
+                    var quote = function () { return JSON.stringify(this); };
+                    Object.defineProperty(
+                        String.prototype,
+                        'quote',
+                        { configurable: true, value: quote }
+                    );
+                }
             },
             tearDown: function ()
             {
-                delete String.prototype.quote;
+                if (this.quoteEmulation)
+                {
+                    delete String.prototype.quote;
+                }
             }
         },
         SAFARI_ARRAY_ITERATOR: makeEmuFeatureArrayIterator('[object ArrayIterator]'),
