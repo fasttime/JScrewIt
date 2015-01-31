@@ -40,6 +40,7 @@ function (grunt)
                     unused: true,
                     
                     boss: true,
+                    elision: true,
                     eqnull: true,
                     evil: true,
                     validthis: true,

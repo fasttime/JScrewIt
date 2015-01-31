@@ -151,7 +151,7 @@ textarea
         (broken)
     </ul>
 </div>
-<script src="https://rawgithub.com/fasttime/JScrewIt/master/lib/jscrewit.min.js"></script>
+<script src="lib/jscrewit.min.js"></script>
 <script>
 
 "use strict";
@@ -159,7 +159,16 @@ textarea
 function encode()
 {
     var compatibility = ua.options[ua.selectedIndex].value;
-    var output = JScrewIt.encode(inputArea.value, evalBox.checked, compatibility);
+    var output;
+    try
+    {
+        output = JScrewIt.encode(inputArea.value, evalBox.checked, compatibility);
+    }
+    catch (e)
+    {
+        alert(e);
+        return;
+    }
     outputArea.value = output;
     updateStats();
 }

@@ -153,7 +153,6 @@ This table lists individual features of some common browsers.
 <li><code>NO_IE_SRC</code> (implied by <code>FF_SAFARI_SRC</code>)
 <li><code>NO_SAFARI_ARRAY_ITERATOR</code>
 <li><code>NO_SAFARI_LF</code>
-<li><code>QUOTE</code>
 <li><code>SELF</code> (implied by <code>WINDOW</code>)
 <li><code>UNDEFINED</code>
 <li><code>WINDOW</code>
@@ -351,7 +350,11 @@ To generate shorter code, specify some features.</dd>
 
 ##### Notes
 
-This function throws a `ReferenceError` if some unknown features are specified.
+If the input string is too complex to be encoded, this function throws an `Error` with the message
+"Encoding failed".
+Also, an out of memory condition may occur when processing very large data.
+
+If some unknown features are specified, a `ReferenceError` is thrown.
 
 #### <code>**JScrewIt.FEATURE_INFOS**</code>
 

@@ -1,0 +1,198 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<meta name='viewport' content='width=device-width'>
+<script src='../lib/jscrewit.js'></script>
+<script>
+
+'use strict';
+
+function disableForm(disabled)
+{
+    var elements = form.elements;
+    var callback = function (element) { element.disabled = disabled; }
+    Array.prototype.forEach.call(elements, callback);
+    form.className = disabled ? 'disabled' : '';
+}
+
+function handleLoad()
+{
+    form.addEventListener('submit', handleSubmit);
+    Array.prototype.forEach.call(
+        document.querySelectorAll('.label'),
+        function (label)
+        {
+            var input = label.querySelector('input');
+            label.addEventListener(
+                'mousedown',
+                function (evt)
+                {
+                    if (evt.target !== input)
+                    {
+                        evt.preventDefault();
+                        input.focus();
+                    }
+                }
+            );
+        }
+    );
+}
+
+function handleSubmit(evt)
+{
+    evt.preventDefault();
+    var maxGroupThresholdField = form.maxGroupThreshold;
+    var groupingsField = form.groupings;
+    var callDepthField = form.callDepth;
+    var maxGroupThreshold = parseInt(maxGroupThresholdField.value, 10);
+    var groupings = parseInt(groupingsField.value, 10);
+    var callDepth = parseInt(callDepthField.value, 10);
+    if (isNaN(maxGroupThreshold) || maxGroupThreshold < 10)
+    {
+        alert('First group threshold must be an integer ≥ 10.');
+        return;
+    }
+    if (isNaN(groupings) || groupings < 1 || groupings > maxGroupThreshold)
+    {
+        alert('Groupings must be an integer between 1 and the first group threshold.');
+        return;
+    }
+    if (isNaN(callDepth) || callDepth < 0)
+    {
+        alert('Call depth must be a non-negative integer.');
+        return;
+    }
+    maxGroupThresholdField.value = maxGroupThreshold;
+    groupingsField.value = groupings;
+    callDepthField.value = callDepth;
+    var call = function () { return runExtremeTest(maxGroupThreshold, groupings); };
+    for (var i = 0; i < callDepth; ++i)
+    {
+        call = Function.prototype.call.bind(call);
+    }
+    disableForm(true);
+    setTimeout(
+        function ()
+        {
+            var ok = call();
+            disableForm(false);
+            log(maxGroupThreshold, groupings, callDepth, ok);
+        },
+        12
+    );
+}
+
+function log(maxGroupThreshold, groupings, callDepth, ok)
+{
+    var html =
+        (ok ? '<span class="success">Success</span>' : '<span class="failed">Failed</span>') +
+        ': FGT ' + maxGroupThreshold + ', groupings ' + groupings + ', call depth ' + callDepth;
+    logger.insertBefore(document.createElement('DIV'), logger.firstChild).innerHTML = html;
+}
+
+function repeat(string, count)
+{
+    var result = Array(count + 1).join(string);
+    return result;
+}
+
+function randomString(length)
+{
+    var string = '';
+    for (var i = 0; i < length; ++i)
+    {
+        var digit = Math.random() < 0.5 & 1;
+        string += digit;
+    }
+    return string;
+}
+
+function runExtremeTest(maxGroupThreshold, groupings)
+{
+    var encoder = JScrewIt.debug.createEncoder();
+    encoder.maxGroupThreshold = maxGroupThreshold;
+    var input = '';
+    for (var i = 0; i < groupings; ++i)
+    {
+        input += '\uEA5F' + randomString(maxGroupThreshold - 2 - i);
+    }
+    if (groupings < maxGroupThreshold)
+    {
+        input += 'undefined';
+    }
+    var string = encoder.encodePlain(input);
+    var output =
+        encoder.replaceNumberArray([0]) + encoder.replace('["map"]') + '(' +
+        encoder.replace('""["charAt"]["bind"]') + '(' + string + '))' +
+        encoder.replace('["join"]([])');
+    try
+    {
+        var actual = eval(output);
+        return actual === '\uEA5F';
+    }
+    catch (error)
+    {
+        return false;
+    }
+}
+
+addEventListener('load', handleLoad);
+
+</script>
+<style>
+
+#logger, .label>*:first-child, input { font: 1.5em sans-serif; }
+
+#logger { padding: .25em; text-align: left; }
+
+#logger>div { margin: .25em 0; }
+
+.failed { color: red; }
+
+.success { color: green; }
+
+body { text-align: center; }
+
+body>div { display: inline-block; text-align: center; }
+
+fieldset { display: inline-block; padding: .25em 0 1em; }
+
+fieldset>div { border-collapse: separate; border-spacing: 1em; display: table; text-align: left; }
+
+fieldset>div input { text-align: right; width: 5em; }
+
+fieldset>div>* { display: table-row; }
+
+fieldset>div>*>* { display: table-cell; vertical-align: middle; }
+
+fieldset input[type='submit'] {  -webkit-appearance: button;text-align: center; }
+
+form.disabled { color: GrayText; }
+
+</style>
+<title>JScrewIt Extreme Decoding Test</title>
+<body>
+<div>
+<form id='form'>
+<fieldset>
+<div>
+<div class='label'>
+<div>First group threshold</div>
+<div><input name='maxGroupThreshold' type='number' value='1800'/></div>
+</div>
+<div class='label'>
+<div>Groupings</div>
+<div><input name='groupings' type='number' value='100'/></div>
+</div>
+<div class='label'>
+<div>Call depth</div>
+<div><input name='callDepth' type='number' value='25'/></div>
+</div>
+</div>
+<input type='submit' value='Run test'/>
+</fieldset>
+</form>
+<div id='logger'></div>
+</div>
