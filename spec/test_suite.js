@@ -1141,6 +1141,15 @@
                         );
                     }
                 );
+                it(
+                    'Illegal string',
+                    function ()
+                    {
+                        expect(debugReplacer('F')).toThrow(
+                            SyntaxError('Illegal string "\\?" in the definition of F')
+                        );
+                    }
+                );
             }
         );
         describeEncodeMethodTest('encodePlain');
@@ -1434,16 +1443,23 @@
         {
             setUp: function ()
             {
-                var quote = function () { return JSON.stringify(this); };
-                Object.defineProperty(
-                    String.prototype,
-                    'quote',
-                    { configurable: true, value: quote }
-                );
+                if (!String.prototype.quote)
+                {
+                    this.quoteEmulation = true;
+                    var quote = function () { return JSON.stringify(this); };
+                    Object.defineProperty(
+                        String.prototype,
+                        'quote',
+                        { configurable: true, value: quote }
+                    );
+                }
             },
             tearDown: function ()
             {
-                delete String.prototype.quote;
+                if (this.quoteEmulation)
+                {
+                    delete String.prototype.quote;
+                }
             }
         },
         SAFARI_ARRAY_ITERATOR: makeEmuFeatureArrayIterator('[object ArrayIterator]'),

@@ -153,7 +153,6 @@ This table lists individual features of some common browsers.
 <li><code>NO_IE_SRC</code> (implied by <code>FF_SAFARI_SRC</code>)
 <li><code>NO_SAFARI_ARRAY_ITERATOR</code>
 <li><code>NO_SAFARI_LF</code>
-<li><code>QUOTE</code>
 <li><code>SELF</code> (implied by <code>WINDOW</code>)
 <li><code>UNDEFINED</code>
 <li><code>WINDOW</code>
