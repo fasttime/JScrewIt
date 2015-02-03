@@ -240,9 +240,9 @@
                             expect(actual).toBe('♠♥♦♣');
                         }
                     );
-                    var expression3 = 'true or false';
+                    var expression3 = 'Boolean true';
                     var encoder = JScrewIt.debug.createEncoder(compatibility);
-                    var expectedEncoding3 = encoder.replace('true + " " + "o" + "r" + " " + false');
+                    var expectedEncoding3 = encoder.replace('"Boolean" + " " + true');
                     it(
                         JSON.stringify(expression3),
                         function ()
@@ -498,6 +498,51 @@
         return result;
     }
     
+    function registerJSFuckMatcher()
+    {
+        beforeEach(
+            function()
+            {
+                function toBeJSFuck(actual)
+                {
+                    var result = { };
+                    var pass = result.pass = /^[!+()[\]]*$/.test(actual);
+                    if (!pass)
+                    {
+                        result.message = 'Expected JSFuck code.';
+                    }
+                    return result;
+                }
+                
+                if (typeof this.addMatchers === 'function')
+                {
+                    var matchersV1 = 
+                    {
+                        toBeJSFuck: function()
+                        {
+                            var expectation = toBeJSFuck(this.actual);
+                            this.message = function () { return expectation.message; };
+                            return expectation.pass;
+                        }
+                    };
+                    this.addMatchers(matchersV1);
+                }
+                else if (typeof jasmine.addMatchers === 'function')
+                {
+                    var matchersV2 =
+                    {
+                        toBeJSFuck: function()
+                        {
+                            var result = { compare: toBeJSFuck };
+                            return result;
+                        }
+                    };
+                    jasmine.addMatchers(matchersV2);
+                }
+            }
+        );
+    }
+    
     function registerToStringAdapter(context, typeName, key, adapter)
     {
         if (!context[typeName])
@@ -553,6 +598,7 @@
             'Character definitions of',
             function ()
             {
+                registerJSFuckMatcher();
                 for (var charCode = 0; charCode < 256; ++charCode)
                 {
                     testCharacter(charCode);
@@ -564,9 +610,55 @@
             }
         );
         describe(
+            'Complex definitions of',
+            function ()
+            {
+                registerJSFuckMatcher();
+                ['Boolean', 'Number', 'String'].forEach(
+                    function (complex)
+                    {
+                        function verifyOutput(output, emuFeatures)
+                        {
+                            expect(output).toBeJSFuck();
+                            var actual = emuEval(emuFeatures || [], output);
+                            expect(actual).toBe(complex);
+                        }
+                        
+                        var desc = JSON.stringify(complex);
+                        describe(
+                            desc,
+                            function ()
+                            {
+                                var entries = JScrewIt.debug.getComplexEntries(complex);
+                                entries.forEach(
+                                    function (entry, index)
+                                    {
+                                        var features = JScrewIt.debug.getEntryFeatures(entry);
+                                        var emuFeatures = getEmuFeatures(features);
+                                        if (emuFeatures)
+                                        {
+                                            it(
+                                                '(definition ' + index + ')',
+                                                function ()
+                                                {
+                                                    var output = decodeEntry(entry);
+                                                    verifyOutput(output, emuFeatures);
+                                                }
+                                            );
+                                        }
+                                    }
+                                );
+                            }
+                        );
+                    }
+                );
+            }
+        );
+        describe(
             'Constants definitions of',
             function ()
             {
+                registerJSFuckMatcher();
                 testConstant('Array', isExpected(Array));
                 testConstant('Boolean', isExpected(Boolean));
                 testConstant('Date', isExpected(Date));
@@ -600,7 +692,6 @@
                         this.toBe(expected);
                     }
                 );
-                testConstant('CONSTRUCTOR', isExpected('constructor'));
                 testConstant('FILL', function () { this.toBe(Array.prototype.fill); });
                 testConstant('FILTER', function () { this.toBe(Array.prototype.filter); });
                 testConstant(
@@ -613,7 +704,6 @@
                         this.toBe(expected);
                     }
                 );
-                testConstant('TO_STRING', isExpected('toString'));
             }
         );
         describe(
@@ -1208,7 +1298,7 @@
             {
                 function verifyOutput(output, emuFeatures)
                 {
-                    expect(output).toMatch(/^[!+()[\]]*$/);
+                    expect(output).toBeJSFuck();
                     var actual = emuEval(emuFeatures || [], output) + '';
                     expect(actual).toBe(character);
                 }
@@ -1298,7 +1388,7 @@
                                 function ()
                                 {
                                     var output = decodeEntry(entry);
-                                    expect(output).toMatch(/^[!+()[\]]*$/);
+                                    expect(output).toBeJSFuck();
                                     emuDo(
                                         emuFeatures,
                                         function ()
