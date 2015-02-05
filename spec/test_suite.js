@@ -1,4 +1,4 @@
-/* global atob, btoa, escape, global, unescape */
+/* global atob, btoa, escape, global, module, self, unescape */
 /* jshint jasmine: true */
 
 (function (global)
@@ -196,7 +196,7 @@
                     function ()
                     {
                         var actual = encoder[methodName]('', 5);
-                        expect(typeof actual).toBe('string');
+                        expect(actual).toBeString();
                     }
                 );
                 it(
@@ -204,7 +204,7 @@
                     function ()
                     {
                         var actual = encoder[methodName]('');
-                        expect(typeof actual).toBe('string');
+                        expect(actual).toBeString();
                     }
                 );
             }
@@ -498,51 +498,6 @@
         return result;
     }
     
-    function registerJSFuckMatcher()
-    {
-        beforeEach(
-            function()
-            {
-                function toBeJSFuck(actual)
-                {
-                    var result = { };
-                    var pass = result.pass = /^[!+()[\]]*$/.test(actual);
-                    if (!pass)
-                    {
-                        result.message = 'Expected JSFuck code.';
-                    }
-                    return result;
-                }
-                
-                if (typeof this.addMatchers === 'function')
-                {
-                    var matchersV1 = 
-                    {
-                        toBeJSFuck: function()
-                        {
-                            var expectation = toBeJSFuck(this.actual);
-                            this.message = function () { return expectation.message; };
-                            return expectation.pass;
-                        }
-                    };
-                    this.addMatchers(matchersV1);
-                }
-                else if (typeof jasmine.addMatchers === 'function')
-                {
-                    var matchersV2 =
-                    {
-                        toBeJSFuck: function()
-                        {
-                            var result = { compare: toBeJSFuck };
-                            return result;
-                        }
-                    };
-                    jasmine.addMatchers(matchersV2);
-                }
-            }
-        );
-    }
-    
     function registerToStringAdapter(context, typeName, key, adapter)
     {
         if (!context[typeName])
@@ -598,7 +553,6 @@
             'Character definitions of',
             function ()
             {
-                registerJSFuckMatcher();
                 for (var charCode = 0; charCode < 256; ++charCode)
                 {
                     testCharacter(charCode);
@@ -613,7 +567,6 @@
             'Complex definitions of',
             function ()
             {
-                registerJSFuckMatcher();
                 ['Boolean', 'Number', 'String'].forEach(
                     function (complex)
                     {
@@ -658,7 +611,6 @@
             'Constants definitions of',
             function ()
             {
-                registerJSFuckMatcher();
                 testConstant('Array', isExpected(Array));
                 testConstant('Boolean', isExpected(Boolean));
                 testConstant('Date', isExpected(Date));
@@ -670,40 +622,14 @@
                 testConstant('atob', function () { this.toBe(atob); });
                 testConstant('btoa', function () { this.toBe(btoa); });
                 testConstant('escape', isExpected(escape));
-                testConstant('self', function () { this.toBe(global.self); });
+                testConstant('self', function () { this.toBe(self); });
                 testConstant('unescape', isExpected(unescape));
                 
-                testConstant(
-                    'ANY_FUNCTION',
-                    function ()
-                    {
-                        this.toMatch(/^\s*function [\w\$]+\(\)\s*\{\s*\[native code]\s*\}\s*$/);
-                    }
-                );
-                testConstant(
-                    'ARRAY_ITERATOR',
-                    function ()
-                    {
-                        var expected =
-                            /^\[object Array ?Iterator]$/.test(
-                                Object.prototype.toString.call(this.actual)
-                            ) ?
-                            this.actual : [].entries();
-                        this.toBe(expected);
-                    }
-                );
+                testConstant('ANY_FUNCTION', function () { this.toBeNativeFunction(); });
+                testConstant('ARRAY_ITERATOR', function () { this.toBeArrayIterator(); });
                 testConstant('FILL', function () { this.toBe(Array.prototype.fill); });
                 testConstant('FILTER', function () { this.toBe(Array.prototype.filter); });
-                testConstant(
-                    'PLAIN_OBJECT',
-                    function ()
-                    {
-                        var expected =
-                            Object.prototype.toString.call(this.actual) === '[object Object]' ?
-                            this.actual : { };
-                        this.toBe(expected);
-                    }
-                );
+                testConstant('PLAIN_OBJECT', function () { this.toBePlainObject(); });
             }
         );
         describe(
@@ -825,17 +751,14 @@
                                     function ()
                                     {
                                         var info = JScrewIt.FEATURE_INFOS[feature];
-                                        expect(typeof info).toBe('object');
+                                        expect(info).toBeObject();
                                         expect(info.name).toBe(feature);
-                                        var available = info.available;
-                                        expect(typeof available).toBe('boolean');
-                                        expect(available).toBe(
+                                        expect(info.available).toBe(
                                             JScrewIt.areFeaturesAvailable(feature)
                                         );
-                                        expect(Array.isArray(info.includes)).toBeTruthy();
+                                        expect(info.includes).toBeArray();
                                         var excludes = info.excludes;
-                                        expect(Array.isArray(excludes)).toBeTruthy();
-                                        expect(typeof info.description).toBe('string');
+                                        expect(excludes).toBeArray();
                                         excludes.forEach(
                                             function (exclude)
                                             {
@@ -843,6 +766,7 @@
                                                 expect(info.excludes).toContain(feature);
                                             }
                                         );
+                                        expect(info.description).toBeString();
                                     }
                                 );
                             }
