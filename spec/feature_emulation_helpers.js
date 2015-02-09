@@ -446,14 +446,16 @@
         };
     
     var EMU_FEATURES = [];
-    for (var feature in EMU_FEATURE_INFOS)
-    {
-        var condition = EMU_FEATURE_INFOS[feature].condition;
-        if (!condition || condition())
+    Object.getOwnPropertyNames(EMU_FEATURE_INFOS).forEach(
+        function (feature)
         {
-            EMU_FEATURES.push(feature);
+            var condition = EMU_FEATURE_INFOS[feature].condition;
+            if (!condition || condition())
+            {
+                EMU_FEATURES.push(feature);
+            }
         }
-    }
+    );
     
     var exports =
     {
@@ -464,7 +466,9 @@
     
     if (global.self)
     {
-        Object.keys(exports).forEach(function (name) { self[name] = exports[name]; });
+        Object.getOwnPropertyNames(exports).forEach(
+            function (name) { self[name] = exports[name]; }
+        );
     }
     if (typeof module !== 'undefined')
     {

@@ -397,7 +397,7 @@ If a feature is available, its <code>excludes</code> are not.</dd>
 This will return an array with the names of all features supported by JScrewIt:
 
 ```js
-Object.getOwnPropertyNames(JScrewIt.FEATURE_INFOS)
+Object.keys(JScrewIt.FEATURE_INFOS)
 ```
 
 ## Links

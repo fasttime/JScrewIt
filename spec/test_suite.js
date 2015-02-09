@@ -216,7 +216,7 @@
     function init(arg)
     {
         JScrewIt = arg || global.JScrewIt;
-        featureSet = { };
+        featureSet = Object.create(null);
         EMU_FEATURES.forEach(
             function (feature) { featureSet[feature] = true; }
         );
@@ -238,7 +238,7 @@
     function listFeatures(available)
     {
         var callback = function (feature) { return !!featureSet[feature] !== available; };
-        var result = Object.getOwnPropertyNames(featureSet).filter(callback).sort();
+        var result = Object.keys(featureSet).filter(callback).sort();
         return result;
     }
     
@@ -441,6 +441,8 @@
             'JScrewIt.FEATURE_INFOS',
             function()
             {
+                var FEATURE_INFOS = JScrewIt.FEATURE_INFOS;
+                
                 describe(
                     'contains correct information for the feature',
                     function ()
@@ -449,7 +451,7 @@
                             'DEFAULT',
                             function ()
                             {
-                                var info = JScrewIt.FEATURE_INFOS.DEFAULT;
+                                var info = FEATURE_INFOS.DEFAULT;
                                 expect(info.available).toBe(true);
                                 expect(info.includes.length).toBe(0);
                                 expect(info.excludes.length).toBe(0);
@@ -459,7 +461,7 @@
                             'AUTO',
                             function ()
                             {
-                                var info = JScrewIt.FEATURE_INFOS.AUTO;
+                                var info = FEATURE_INFOS.AUTO;
                                 expect(info.available).toBe(true);
                                 expect(info.includes.length).toBeGreaterThan(0);
                                 expect(info.excludes.length).toBe(0);
@@ -469,7 +471,7 @@
                             'V8_SRC',
                             function ()
                             {
-                                var info = JScrewIt.FEATURE_INFOS.V8_SRC;
+                                var info = FEATURE_INFOS.V8_SRC;
                                 expect(info.includes).toContain('NO_IE_SRC');
                                 expect(info.excludes).toContain('FF_SAFARI_SRC');
                             }
@@ -480,7 +482,7 @@
                     'contains only well-formed obejcts:',
                     function ()
                     {
-                        var features = Object.getOwnPropertyNames(JScrewIt.FEATURE_INFOS);
+                        var features = Object.keys(FEATURE_INFOS).sort();
                         features.forEach(
                             function (feature)
                             {
@@ -488,10 +490,10 @@
                                     feature,
                                     function ()
                                     {
-                                        var info = JScrewIt.FEATURE_INFOS[feature];
+                                        var info = FEATURE_INFOS[feature];
                                         var name = info.name;
                                         expect(name).toBeString();
-                                        expect(info).toBe(JScrewIt.FEATURE_INFOS[name]);
+                                        expect(info).toBe(FEATURE_INFOS[name]);
                                         expect(info.available).toBe(
                                             JScrewIt.areFeaturesAvailable(feature)
                                         );
@@ -501,7 +503,7 @@
                                         excludes.forEach(
                                             function (exclude)
                                             {
-                                                var info = JScrewIt.FEATURE_INFOS[exclude];
+                                                var info = FEATURE_INFOS[exclude];
                                                 expect(info.excludes).toContain(feature);
                                             }
                                         );
