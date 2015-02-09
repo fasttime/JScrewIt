@@ -34,12 +34,6 @@
             var result = { message: 'Expected a native function.', pass: pass };
             return result;            
         },
-        toBeObject: function (actual)
-        {
-            var pass = typeof actual === 'object';
-            var result = { message: 'Expected an object.', pass: pass };
-            return result;
-        },
         toBePlainObject: function (actual)
         {
             var pass = Object.prototype.toString.call(actual) === '[object Object]';
