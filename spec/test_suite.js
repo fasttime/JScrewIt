@@ -201,7 +201,8 @@
         
         var atomicSet = Object.create(null);
         branchIn(feature);
-        return Object.getOwnPropertyNames(atomicSet);
+        var result = Object.keys(atomicSet);
+        return result;
     }
     
     function getEmuFeatures(features)
@@ -488,8 +489,9 @@
                                     function ()
                                     {
                                         var info = JScrewIt.FEATURE_INFOS[feature];
-                                        expect(info).toBeObject();
-                                        expect(info.name).toBe(feature);
+                                        var name = info.name;
+                                        expect(name).toBeString();
+                                        expect(info).toBe(JScrewIt.FEATURE_INFOS[name]);
                                         expect(info.available).toBe(
                                             JScrewIt.areFeaturesAvailable(feature)
                                         );

@@ -242,10 +242,12 @@ Node.js 0.10.28+
 </td>
 <td>
 <ul>
+<li><code>ENTRIES</code> (implied by <code>NO_SAFARI_ARRAY_ITERATOR</code>; Node.js 0.12)
 <li><code>GMT</code>
 <li><code>LINK_DOUBLE_QUOTE_ESC</code>
 <li><code>NAME</code>
 <li><code>NO_IE_SRC</code> (implied by <code>V8_SRC</code>)
+<li><code>NO_SAFARI_ARRAY_ITERATOR</code> (Node.js 0.12)
 <li><code>NO_SAFARI_LF</code>
 <li><code>UNDEFINED</code>
 <li><code>V8_SRC</code>
@@ -360,13 +362,14 @@ If some unknown features are specified, a `ReferenceError` is thrown.
 
 This is a container mapping feature names to descriptors.
 A feature descriptor is an object with a set of properties defining the feature.
+Note that a feature descriptor can be mapped to by more than one name. 
 
 ##### Feature descriptor properties
 
 <dl>
 
 <dt><code><strong>name</strong></code></dt>
-<dd>Name of the feature.</dd>
+<dd>Primary name of the feature.</dd>
 
 <dt><code><strong>description</strong></code></dt>
 <dd>A short description of the feature in plain English.</dd>
