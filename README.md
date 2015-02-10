@@ -186,6 +186,7 @@ Internet Explorer 9+
 <td>
 <ul>
 <li><code>ATOB</code> (Internet Explorer 10+)
+<li><code>CAPITAL_HTML</code>
 <li><code>GMT</code> (Internet Explorer 11)
 <li><code>IE_SRC</code>
 <li><code>NO_SAFARI_LF</code>
