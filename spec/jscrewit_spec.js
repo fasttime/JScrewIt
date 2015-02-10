@@ -1,3 +1,5 @@
+/* jshint node: true */
+
 'use strict';
 
 function listFeatures(label, features)
