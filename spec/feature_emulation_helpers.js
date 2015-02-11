@@ -5,86 +5,119 @@
     'use strict';
     
     var Base64 =
+    {
+        // private property
+        _keyStr: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
+        
+        // public method for encoding
+        encode:
+        function (input)
         {
-            // private property
-            _keyStr: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
-            
-            // public method for encoding
-            encode:
-            function (input)
+            var output = '';
+            input += '';
+            for (var i = 0; i < input.length;)
             {
-                var output = '';
-                input += '';
-                for (var i = 0; i < input.length;)
+                var chr1 = input.charCodeAt(i++);
+                var enc1 = chr1 >> 2;
+                
+                var chr2 = input.charCodeAt(i++);
+                var enc2 = (chr1 & 3) << 4 | chr2 >> 4;
+                
+                var enc3, enc4;
+                if (isNaN(chr2))
                 {
-                    var chr1 = input.charCodeAt(i++);
-                    var enc1 = chr1 >> 2;
-                    
-                    var chr2 = input.charCodeAt(i++);
-                    var enc2 = (chr1 & 3) << 4 | chr2 >> 4;
-                    
-                    var enc3, enc4;
-                    if (isNaN(chr2))
+                    enc3 = enc4 = 64;
+                }
+                else
+                {
+                    var chr3 = input.charCodeAt(i++);
+                    enc3 = (chr2 & 15) << 2 | chr3 >> 6;
+                    if (isNaN(chr3))
                     {
-                        enc3 = enc4 = 64;
+                        enc4 = 64;
                     }
                     else
                     {
-                        var chr3 = input.charCodeAt(i++);
-                        enc3 = (chr2 & 15) << 2 | chr3 >> 6;
-                        if (isNaN(chr3))
-                        {
-                            enc4 = 64;
-                        }
-                        else
-                        {
-                            enc4 = chr3 & 63;
-                        }
+                        enc4 = chr3 & 63;
                     }
-                    
-                    output +=
-                        this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
-                        this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
                 }
                 
-                return output;
-            },
+                output +=
+                    this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+                    this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+            }
             
-            // public method for decoding
-            decode:
-            function (input)
+            return output;
+        },
+        
+        // public method for decoding
+        decode:
+        function (input)
+        {
+            var output = '';
+            input += '';
+            for (var i = 0; i < input.length;)
             {
-                var output = '';
-                input += '';
-                for (var i = 0; i < input.length;)
-                {
-                    var enc1 = this._keyStr.indexOf(input.charAt(i++));
-                    var enc2 = this._keyStr.indexOf(input.charAt(i++));
-                    var chr1 = (enc1 << 2) | (enc2 >> 4);
-                    output += String.fromCharCode(chr1);
-                    
-                    var pos3 = input.charAt(i++);
-                    var enc3 = this._keyStr.indexOf(pos3);
-                    if (!pos3 || enc3 === 64)
-                    {
-                        break;
-                    }
-                    var chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-                    output += String.fromCharCode(chr2);
-                    
-                    var pos4 = input.charAt(i++);
-                    var enc4 = this._keyStr.indexOf(pos4);
-                    if (!pos4 || enc4 === 64)
-                    {
-                        break;
-                    }
-                    var chr3 = ((enc3 & 3) << 6) | enc4;
-                    output += String.fromCharCode(chr3);
-                }
+                var enc1 = this._keyStr.indexOf(input.charAt(i++));
+                var enc2 = this._keyStr.indexOf(input.charAt(i++));
+                var chr1 = (enc1 << 2) | (enc2 >> 4);
+                output += String.fromCharCode(chr1);
                 
-                return output;
-            },
-        };
+                var pos3 = input.charAt(i++);
+                var enc3 = this._keyStr.indexOf(pos3);
+                if (!pos3 || enc3 === 64)
+                {
+                    break;
+                }
+                var chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                output += String.fromCharCode(chr2);
+                
+                var pos4 = input.charAt(i++);
+                var enc4 = this._keyStr.indexOf(pos4);
+                if (!pos4 || enc4 === 64)
+                {
+                    break;
+                }
+                var chr3 = ((enc3 & 3) << 6) | enc4;
+                output += String.fromCharCode(chr3);
+            }
+            
+            return output;
+        },
+    };
+    
+    function backup(context, path)
+    {
+        var backupMap = context.BACKUP || (context.BACKUP = new BackupMap());
+        var components = path.split('.');
+        var name = components.pop();
+        var obj = global;
+        var ok =
+            components.every(
+                function (name)
+                {
+                    if (name in backupMap)
+                    {
+                        backupMap = backupMap[name];
+                        if (!(backupMap instanceof BackupMap))
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        backupMap = backupMap[name] = new BackupMap();
+                    }
+                    obj = obj[name];
+                    return true;
+                }
+            );
+        if (ok && !(name in backupMap))
+        {
+            var descriptor = Object.getOwnPropertyDescriptor(obj, name);
+            backupMap[name] = descriptor;
+        }
+    }
     
     function emuDo(emuFeatures, callback)
     {
@@ -99,9 +132,11 @@
         }
         finally
         {
-            emuFeatures.forEach(
-                function (feature) { EMU_FEATURE_INFOS[feature].tearDown.call(context); }
-            );
+            var backupMap = context.BACKUP;
+            if (backupMap)
+            {
+                restoreAll(backupMap, global);
+            }
         }
         return result;
     }
@@ -127,6 +162,7 @@
                 }
                 else
                 {
+                    backup(this, 'Array.prototype.entries');
                     var arrayIterator = this.arrayIterator = { };
                     Object.defineProperty(
                         Array.prototype,
@@ -152,14 +188,6 @@
                         }
                     }
                 );
-            },
-            tearDown: function ()
-            {
-                unregisterToStringAdapters(this, 'Object');
-                if (this.arrayIterator)
-                {
-                    delete Array.prototype.entries;
-                }
             }
         };
         return result;
@@ -193,10 +221,32 @@
                         }
                     );
                 }
-            },
-            tearDown: function ()
+            }
+        };
+        return result;
+    }
+    
+    function makeEmuFeatureHtml(methodNames, adapter)
+    {
+        var result =
+        {
+            setUp: function ()
             {
-                unregisterToStringAdapters(this, 'Function');
+                var prototype = String.prototype;
+                methodNames.forEach(
+                    function (name)
+                    {
+                        backup(this, 'String.prototype.' + name);
+                        var method = prototype[name];
+                        var value = adapter(method);
+                        Object.defineProperty(
+                            prototype,
+                            name,
+                            { configurable: true, value: value }
+                        );
+                    },
+                    this
+                );
             }
         };
         return result;
@@ -217,21 +267,12 @@
                 }
                 else
                 {
+                    backup(this, 'self');
                     global.self = { };
                 }
+                backup(this, 'self.valueOf');
                 var valueOf = function () { return string; };
                 Object.defineProperty(self, 'valueOf', { configurable: true, value: valueOf });
-            },
-            tearDown: function ()
-            {
-                if (global.self === global)
-                {
-                    delete self.valueOf;
-                }
-                else
-                {
-                    delete global.self;
-                }
             }
         };
         return result;
@@ -241,6 +282,7 @@
     {
         if (!context[typeName])
         {
+            backup(context, typeName + '.prototype.toString');
             var prototype = global[typeName].prototype;
             var toString = prototype.toString;
             var adapters = Object.create(null);
@@ -264,199 +306,187 @@
         context[typeName].adapters[key] = adapter;
     }
     
-    function unregisterToStringAdapters(context, typeName)
+    function restoreAll(backupMap, obj)
     {
-        global[typeName].prototype.toString = context[typeName].toString;
+        for (var name in backupMap)
+        {
+            var node = backupMap[name];
+            if (node instanceof BackupMap)
+            {
+                restoreAll(node, obj[name]);
+            }
+            else
+            {
+                if (node)
+                {
+                    Object.defineProperty(obj, name, node);
+                }
+                else
+                {
+                    delete obj[name];
+                }
+            }
+        }
     }
     
-    var DOUBLE_QUOTE_ESC_METHODS = ['anchor', 'fontcolor', 'fontsize', 'link'];
-    
     var EMU_FEATURE_INFOS =
+    {
+        ATOB:
         {
-            ATOB:
+            setUp: function ()
             {
-                setUp: function ()
-                {
-                    global.atob =
-                        function (value)
-                        {
-                            return Base64.decode(value);
-                        };
-                    global.btoa =
-                        function (value)
-                        {
-                            return Base64.encode(value);
-                        };
-                },
-                tearDown: function ()
-                {
-                    delete global.atob;
-                    delete global.btoa;
-                }
-            },
-            DOMWINDOW: makeEmuFeatureWindow('[object DOMWindow]'),
-            DOUBLE_QUOTE_ESC_HTML:
+                backup(this, 'atob');
+                backup(this, 'btoa');
+                global.atob = function (value) { return Base64.decode(value); };
+                global.btoa = function (value) { return Base64.encode(value); };
+            }
+        },
+        CAPITAL_HTML: makeEmuFeatureHtml(
+            [
+                'anchor',
+                'big',
+                'blink',
+                'bold',
+                'fixed',
+                'fontcolor',
+                'fontsize',
+                'italics',
+                'link',
+                'small',
+                'strike',
+                'sub',
+                'sup'
+            ],
+            function (method)
             {
-                setUp: function ()
-                {
-                    var prototype = String.prototype;
-                    DOUBLE_QUOTE_ESC_METHODS.forEach(
-                        function (name)
-                        {
-                            var method = this[name] = prototype[name];
-                            prototype[name] =
-                                function (value)
-                                {
-                                    arguments[0] = (value + '').replace(/"/g, '&quot;');
-                                    var result = method.apply(this, arguments);
-                                    return result;
-                                };
-                        },
-                        this
-                    );
-                },
-                tearDown: function ()
-                {
-                    var prototype = String.prototype;
-                    DOUBLE_QUOTE_ESC_METHODS.forEach(
-                        function (name) { prototype[name] = this[name]; },
-                        this
-                    );
-                }
-            },
-            ENTRIES: makeEmuFeatureArrayIterator('[object Array Iterator]', true),
-            FF_SAFARI_SRC: makeEmuFeatureFunctionSource('function ?() {\n    [native code]\n}'),
-            FILL:
-            {
-                setUp: function ()
-                {
-                    var fill = Function();
-                    fill.toString =
-                        function ()
-                        {
-                            return (Array.prototype.join + '').replace(/\bjoin\b/, 'fill');
-                        };
-                    Object.defineProperty(
-                        Array.prototype,
-                        'fill',
-                        { configurable: true, value: fill }
-                    );
-                },
-                tearDown: function ()
-                {
-                    delete Array.prototype.fill;
-                }
-            },
-            GMT:
-            {
-                setUp: function ()
-                {
-                    this.Date = Date;
-                    global.Date = function () { return 'Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)'; };
-                },
-                tearDown: function ()
-                {
-                    global.Date = this.Date;
-                }
-            },
-            IE_SRC: makeEmuFeatureFunctionSource('\nfunction ?() {\n    [native code]\n}\n'),
-            NAME:
-            {
-                setUp: function ()
-                {
-                    var get =
-                        function ()
-                        {
-                            var result = /^\s*function ([\w\$]+)/.exec(this)[1];
-                            return result;
-                        };
-                    Object.defineProperty(
-                        Function.prototype,
-                        'name',
-                        { configurable: true, get: get }
-                    );
-                },
-                tearDown: function ()
-                {
-                    delete Function.prototype.name;
-                }
-            },
-            NO_IE_SRC: makeEmuFeatureFunctionSource('function ?() { [native code] }', true),
-            NO_SAFARI_ARRAY_ITERATOR: makeEmuFeatureArrayIterator('[object Array Iterator]'),
-            NO_SAFARI_LF:
-            {
-                setUp: function ()
-                {
-                    var context = this;
-                    registerToStringAdapter(
-                        this,
-                        'Function',
-                        'anonymous',
-                        function ()
-                        {
-                            var string = context.Function.toString.call(this);
-                            if (string === 'function anonymous() { \n}')
-                            {
-                                return 'function anonymous() {\n\n}';
-                            }
-                        }
-                    );
-                },
-                tearDown: function ()
-                {
-                    unregisterToStringAdapters(this, 'Function');
-                }
-            },
-            QUOTE:
-            {
-                setUp: function ()
-                {
-                    if (!String.prototype.quote)
+                var result =
+                    function ()
                     {
-                        this.quoteEmulation = true;
-                        var quote = function () { return JSON.stringify(this); };
-                        Object.defineProperty(
-                            String.prototype,
-                            'quote',
-                            { configurable: true, value: quote }
-                        );
-                    }
-                },
-                tearDown: function ()
-                {
-                    if (this.quoteEmulation)
-                    {
-                        delete String.prototype.quote;
-                    }
-                }
-            },
-            SAFARI_ARRAY_ITERATOR: makeEmuFeatureArrayIterator('[object ArrayIterator]'),
-            SELF: makeEmuFeatureWindow('[object Window]', true),
-            UNDEFINED:
+                        var result =
+                            method.apply(this, arguments).replace(
+                                /^<[\w ]+|[\w ]+>$/g,
+                                function (match) { return match.toUpperCase(); }
+                            );
+                        return result;
+                    };
+                return result;
+            }
+        ),
+        DOMWINDOW: makeEmuFeatureWindow('[object DOMWindow]'),
+        DOUBLE_QUOTE_ESC_HTML: makeEmuFeatureHtml(
+            ['anchor', 'fontcolor', 'fontsize', 'link'],
+            function (method)
             {
-                setUp: function ()
-                {
-                    registerToStringAdapter(
-                        this,
-                        'Object',
-                        'Undefined',
-                        function ()
+                var result =
+                    function (value)
+                    {
+                        arguments[0] = (value + '').replace(/"/g, '&quot;');
+                        var result = method.apply(this, arguments);
+                        return result;
+                    };
+                return result;
+            }
+        ),
+        ENTRIES: makeEmuFeatureArrayIterator('[object Array Iterator]', true),
+        FF_SAFARI_SRC: makeEmuFeatureFunctionSource('function ?() {\n    [native code]\n}'),
+        FILL:
+        {
+            setUp: function ()
+            {
+                backup(this, 'Array.prototype.fill');
+                var fill = Function();
+                fill.toString =
+                    function ()
+                    {
+                        return (Array.prototype.join + '').replace(/\bjoin\b/, 'fill');
+                    };
+                Object.defineProperty(Array.prototype, 'fill', { configurable: true, value: fill });
+            }
+        },
+        GMT:
+        {
+            setUp: function ()
+            {
+                backup(this, 'Date');
+                global.Date = function () { return 'Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)'; };
+            }
+        },
+        IE_SRC: makeEmuFeatureFunctionSource('\nfunction ?() {\n    [native code]\n}\n'),
+        NAME:
+        {
+            setUp: function ()
+            {
+                backup(this, 'Function.prototype.name');
+                var get =
+                    function ()
+                    {
+                        var result = /^\s*function ([\w\$]+)/.exec(this)[1];
+                        return result;
+                    };
+                Object.defineProperty(Function.prototype, 'name', { configurable: true, get: get });
+            }
+        },
+        NO_IE_SRC: makeEmuFeatureFunctionSource('function ?() { [native code] }', true),
+        NO_SAFARI_ARRAY_ITERATOR: makeEmuFeatureArrayIterator('[object Array Iterator]'),
+        NO_SAFARI_LF:
+        {
+            setUp: function ()
+            {
+                var context = this;
+                registerToStringAdapter(
+                    this,
+                    'Function',
+                    'anonymous',
+                    function ()
+                    {
+                        var string = context.Function.toString.call(this);
+                        if (string === 'function anonymous() { \n}')
                         {
-                            if (this === void 0)
-                            {
-                                return '[object Undefined]';
-                            }
+                            return 'function anonymous() {\n\n}';
                         }
-                    );
-                },
-                tearDown: function ()
+                    }
+                );
+            }
+        },
+        QUOTE:
+        {
+            setUp: function ()
+            {
+                if (!String.prototype.quote)
                 {
-                    unregisterToStringAdapters(this, 'Object');
+                    backup(this, 'String.prototype.quote');
+                    var quote = function () { return JSON.stringify(this); };
+                    Object.defineProperty(
+                        String.prototype,
+                        'quote',
+                        { configurable: true, value: quote }
+                    );
                 }
-            },
-            V8_SRC: makeEmuFeatureFunctionSource('function ?() { [native code] }'),
-            WINDOW: makeEmuFeatureWindow('[object Window]')
-        };
+            }
+        },
+        SAFARI_ARRAY_ITERATOR: makeEmuFeatureArrayIterator('[object ArrayIterator]'),
+        SELF: makeEmuFeatureWindow('[object Window]', true),
+        UNDEFINED:
+        {
+            setUp: function ()
+            {
+                registerToStringAdapter(
+                    this,
+                    'Object',
+                    'Undefined',
+                    function ()
+                    {
+                        if (this === void 0)
+                        {
+                            return '[object Undefined]';
+                        }
+                    }
+                );
+            }
+        },
+        V8_SRC: makeEmuFeatureFunctionSource('function ?() { [native code] }'),
+        WINDOW: makeEmuFeatureWindow('[object Window]')
+    };
     
     var EMU_FEATURES = [];
     Object.getOwnPropertyNames(EMU_FEATURE_INFOS).forEach(
@@ -469,6 +499,9 @@
             }
         }
     );
+    
+    var BackupMap = function () { };
+    BackupMap.prototype = Object.create(null);
     
     var exports =
     {
