@@ -269,6 +269,8 @@
         global[typeName].prototype.toString = context[typeName].toString;
     }
     
+    var DOUBLE_QUOTE_ESC_METHODS = ['anchor', 'fontcolor', 'fontsize', 'link'];
+    
     var EMU_FEATURE_INFOS =
         {
             ATOB:
@@ -293,6 +295,35 @@
                 }
             },
             DOMWINDOW: makeEmuFeatureWindow('[object DOMWindow]'),
+            DOUBLE_QUOTE_ESC_HTML:
+            {
+                setUp: function ()
+                {
+                    var prototype = String.prototype;
+                    DOUBLE_QUOTE_ESC_METHODS.forEach(
+                        function (name)
+                        {
+                            var method = this[name] = prototype[name];
+                            prototype[name] =
+                                function (value)
+                                {
+                                    arguments[0] = (value + '').replace(/"/g, '&quot;');
+                                    var result = method.apply(this, arguments);
+                                    return result;
+                                };
+                        },
+                        this
+                    );
+                },
+                tearDown: function ()
+                {
+                    var prototype = String.prototype;
+                    DOUBLE_QUOTE_ESC_METHODS.forEach(
+                        function (name) { prototype[name] = this[name]; },
+                        this
+                    );
+                }
+            },
             ENTRIES: makeEmuFeatureArrayIterator('[object Array Iterator]', true),
             FF_SAFARI_SRC: makeEmuFeatureFunctionSource('function ?() {\n    [native code]\n}'),
             FILL:
@@ -329,24 +360,6 @@
                 }
             },
             IE_SRC: makeEmuFeatureFunctionSource('\nfunction ?() {\n    [native code]\n}\n'),
-            LINK_DOUBLE_QUOTE_ESC:
-            {
-                setUp: function ()
-                {
-                    var prototype = String.prototype;
-                    var link = this.link = prototype.link;
-                    prototype.link =
-                        function (href)
-                        {
-                            arguments[0] = (href + '').replace(/"/g, '&quot;');
-                            return link.apply(this, arguments);
-                        };
-                },
-                tearDown: function ()
-                {
-                    String.prototype.link = this.link;
-                }
-            },
             NAME:
             {
                 setUp: function ()
