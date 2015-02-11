@@ -88,35 +88,30 @@
     
     function backup(context, path)
     {
-        var backupMap = context.BACKUP || (context.BACKUP = new BackupMap());
+        var backupMap = context.BACKUP || (context.BACKUP = createBackupMap());
         var components = path.split('.');
-        var name = components.pop();
-        var obj = global;
         var ok =
             components.every(
                 function (name)
                 {
-                    if (name in backupMap)
-                    {
-                        backupMap = backupMap[name];
-                        if (!(backupMap instanceof BackupMap))
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        backupMap = backupMap[name] = new BackupMap();
-                    }
-                    obj = obj[name];
-                    return true;
+                    backupMap = backupMap[name] || (backupMap[name] = createBackupMap());
+                    var ok = !('' in backupMap);
+                    return ok;
                 }
             );
-        if (ok && !(name in backupMap))
+        if (ok)
         {
+            var name = components.pop();
+            var obj = components.reduce(function (obj, name) { return obj[name]; }, global);
             var descriptor = Object.getOwnPropertyDescriptor(obj, name);
-            backupMap[name] = descriptor;
+            Object.defineProperty(backupMap, '', { value: descriptor });
         }
+    }
+    
+    function createBackupMap()
+    {
+        var backupMap = Object.create(null);
+        return backupMap;
     }
     
     function emuDo(emuFeatures, callback)
@@ -177,7 +172,6 @@
                 registerToStringAdapter(
                     this,
                     'Object',
-                    'ArrayIterator',
                     function ()
                     {
                         if (
@@ -205,7 +199,6 @@
                     registerToStringAdapter(
                         this,
                         'Function',
-                        'native',
                         function ()
                         {
                             var regExp =
@@ -278,21 +271,22 @@
         return result;
     }
     
-    function registerToStringAdapter(context, typeName, key, adapter)
+    function registerToStringAdapter(context, typeName, adapter)
     {
         if (!context[typeName])
         {
             backup(context, typeName + '.prototype.toString');
             var prototype = global[typeName].prototype;
             var toString = prototype.toString;
-            var adapters = Object.create(null);
+            var adapters = [];
             context[typeName] = { adapters: adapters, toString: toString };
             prototype.toString =
                 function ()
                 {
-                    for (var key in adapters)
+                    for (var index = adapters.length; index-- > 0;)
                     {
-                        var string = adapters[key].call(this);
+                        var adapter = adapters[index];
+                        var string = adapter.call(this);
                         if (string !== void 0)
                         {
                             return string;
@@ -303,29 +297,28 @@
                     return toString.call(this === global.self ? void 0 : this);
                 };
         }
-        context[typeName].adapters[key] = adapter;
+        context[typeName].adapters.push(adapter);
     }
     
     function restoreAll(backupMap, obj)
     {
         for (var name in backupMap)
         {
-            var node = backupMap[name];
-            if (node instanceof BackupMap)
+            var subBackupMap = backupMap[name];
+            if ('' in subBackupMap)
             {
-                restoreAll(node, obj[name]);
-            }
-            else
-            {
-                if (node)
+                var descriptor = subBackupMap[''];
+                if (descriptor)
                 {
-                    Object.defineProperty(obj, name, node);
+                    Object.defineProperty(obj, name, descriptor);
                 }
                 else
                 {
                     delete obj[name];
+                    continue;
                 }
             }
+            restoreAll(subBackupMap, obj[name]);
         }
     }
     
@@ -436,7 +429,6 @@
                 registerToStringAdapter(
                     this,
                     'Function',
-                    'anonymous',
                     function ()
                     {
                         var string = context.Function.toString.call(this);
@@ -473,7 +465,6 @@
                 registerToStringAdapter(
                     this,
                     'Object',
-                    'Undefined',
                     function ()
                     {
                         if (this === void 0)
@@ -499,9 +490,6 @@
             }
         }
     );
-    
-    var BackupMap = function () { };
-    BackupMap.prototype = Object.create(null);
     
     var exports =
     {
