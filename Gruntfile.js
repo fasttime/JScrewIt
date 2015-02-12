@@ -34,7 +34,7 @@ module.exports =
                         validthis: true,
                         '-W018': true,
                     },
-                    src: [ '*.js', 'lib/**/*.js', 'spec/**/*.js' ]
+                    src: ['*.js', 'lib/**/*.js', 'spec/**/*.js']
                 },
                 uglify:
                 {
