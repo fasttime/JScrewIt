@@ -86,28 +86,6 @@
         },
     };
     
-    function backup(context, path)
-    {
-        var backupMap = context.BACKUP || (context.BACKUP = createBackupMap());
-        var components = path.split('.');
-        var ok =
-            components.every(
-                function (name)
-                {
-                    backupMap = backupMap[name] || (backupMap[name] = createBackupMap());
-                    var ok = !('' in backupMap);
-                    return ok;
-                }
-            );
-        if (ok)
-        {
-            var name = components.pop();
-            var obj = components.reduce(function (obj, name) { return obj[name]; }, global);
-            var descriptor = Object.getOwnPropertyDescriptor(obj, name);
-            Object.defineProperty(backupMap, '', { value: descriptor });
-        }
-    }
-    
     function createBackupMap()
     {
         var backupMap = Object.create(null);
@@ -157,16 +135,9 @@
                 }
                 else
                 {
-                    backup(this, 'Array.prototype.entries');
                     var arrayIterator = this.arrayIterator = { };
-                    Object.defineProperty(
-                        Array.prototype,
-                        'entries',
-                        {
-                            configurable: true,
-                            value: function () { return arrayIterator; }
-                        }
-                    );
+                    var entries = function () { return arrayIterator; };
+                    override(this, 'Array.prototype.entries', { value: entries });
                 }
                 var context = this;
                 registerToStringAdapter(
@@ -229,14 +200,9 @@
                 methodNames.forEach(
                     function (name)
                     {
-                        backup(this, 'String.prototype.' + name);
                         var method = prototype[name];
                         var value = adapter(method);
-                        Object.defineProperty(
-                            prototype,
-                            name,
-                            { configurable: true, value: value }
-                        );
+                        override(this, 'String.prototype.' + name, { value: value });
                     },
                     this
                 );
@@ -260,27 +226,47 @@
                 }
                 else
                 {
-                    backup(this, 'self');
-                    global.self = { };
+                    override(this, 'self', { value: { } });
                 }
-                backup(this, 'self.valueOf');
                 var valueOf = function () { return string; };
-                Object.defineProperty(self, 'valueOf', { configurable: true, value: valueOf });
+                override(this, 'self.valueOf', { value: valueOf });
             }
         };
         return result;
+    }
+    
+    function override(context, path, descriptor)
+    {
+        var backupMap = context.BACKUP || (context.BACKUP = createBackupMap());
+        var components = path.split('.');
+        var backup =
+            components.every(
+                function (name)
+                {
+                    backupMap = backupMap[name] || (backupMap[name] = createBackupMap());
+                    var backup = !('' in backupMap);
+                    return backup;
+                }
+            );
+        var name = components.pop();
+        var obj = components.reduce(function (obj, name) { return obj[name]; }, global);
+        if (backup)
+        {
+            var oldDescriptor = Object.getOwnPropertyDescriptor(obj, name);
+            Object.defineProperty(backupMap, '', { value: oldDescriptor });
+        }
+        descriptor.configurable = true;
+        Object.defineProperty(obj, name, descriptor);
     }
     
     function registerToStringAdapter(context, typeName, adapter)
     {
         if (!context[typeName])
         {
-            backup(context, typeName + '.prototype.toString');
-            var prototype = global[typeName].prototype;
-            var toString = prototype.toString;
+            var toString = global[typeName].prototype.toString;
             var adapters = [];
             context[typeName] = { adapters: adapters, toString: toString };
-            prototype.toString =
+            var value =
                 function ()
                 {
                     for (var index = adapters.length; index-- > 0;)
@@ -296,6 +282,7 @@
                     // object as this.
                     return toString.call(this === global.self ? void 0 : this);
                 };
+            override(context, typeName + '.prototype.toString', { value: value });
         }
         context[typeName].adapters.push(adapter);
     }
@@ -328,10 +315,10 @@
         {
             setUp: function ()
             {
-                backup(this, 'atob');
-                backup(this, 'btoa');
-                global.atob = function (value) { return Base64.decode(value); };
-                global.btoa = function (value) { return Base64.encode(value); };
+                var atob = function (value) { return Base64.decode(value); };
+                var btoa = function (value) { return Base64.encode(value); };
+                override(this, 'atob', { value: atob });
+                override(this, 'btoa', { value: btoa });
             }
         },
         CAPITAL_HTML: makeEmuFeatureHtml(
@@ -386,22 +373,21 @@
         {
             setUp: function ()
             {
-                backup(this, 'Array.prototype.fill');
                 var fill = Function();
                 fill.toString =
                     function ()
                     {
                         return (Array.prototype.join + '').replace(/\bjoin\b/, 'fill');
                     };
-                Object.defineProperty(Array.prototype, 'fill', { configurable: true, value: fill });
+                override(this, 'Array.prototype.fill', { value: fill });
             }
         },
         GMT:
         {
             setUp: function ()
             {
-                backup(this, 'Date');
-                global.Date = function () { return 'Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)'; };
+                var Date = function () { return 'Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)'; };
+                override(this, 'Date', { value: Date });
             }
         },
         IE_SRC: makeEmuFeatureFunctionSource('\nfunction ?() {\n    [native code]\n}\n'),
@@ -409,14 +395,13 @@
         {
             setUp: function ()
             {
-                backup(this, 'Function.prototype.name');
                 var get =
                     function ()
                     {
                         var result = /^\s*function ([\w\$]+)/.exec(this)[1];
                         return result;
                     };
-                Object.defineProperty(Function.prototype, 'name', { configurable: true, get: get });
+                override(this, 'Function.prototype.name', { get: get });
             }
         },
         NO_IE_SRC: makeEmuFeatureFunctionSource('function ?() { [native code] }', true),
@@ -446,13 +431,8 @@
             {
                 if (!String.prototype.quote)
                 {
-                    backup(this, 'String.prototype.quote');
                     var quote = function () { return JSON.stringify(this); };
-                    Object.defineProperty(
-                        String.prototype,
-                        'quote',
-                        { configurable: true, value: quote }
-                    );
+                    override(this, 'String.prototype.quote', { value: quote });
                 }
             }
         },
