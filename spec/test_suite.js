@@ -396,15 +396,6 @@
                         expect(fn).toThrow(ReferenceError('Incompatible features'));
                     }
                 );
-                it(
-                    '',
-                    function ()
-                    {
-                        var fn =
-                            function () { JScrewIt.encode('', false, ['NO_IE_SRC', 'IE_SRC']); };
-                        expect(fn).toThrow(ReferenceError('Incompatible features'));
-                    }
-                );
             }
         );
         describe(
@@ -744,6 +735,58 @@
             function ()
             {
                 it(
+                    'calls encodeByDict without radix for sufficiently long input',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        encoder.encodeByDict = jasmine.createSpy('encodeByDict() spy');
+                        var input = repeat('0', 3);
+                        encoder.encode(input);
+                        expect(encoder.encodeByDict).toHaveBeenCalledWith(input, undefined);
+                    }
+                );
+                it(
+                    'does not call encodeByDict without radix for short input',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        encoder.encodeByDict = jasmine.createSpy('encodeByDict() spy');
+                        var input = repeat('0', 2);
+                        encoder.encode(input);
+                        expect(encoder.encodeByDict).not.toHaveBeenCalledWith(input, undefined);
+                    }
+                );
+                it(
+                    'calls encodeByDict with radix 4 for sufficiently long input',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var input = repeat('0', 185);
+                        var output;
+                        
+                        encoder.encodeByDict =
+                            function (input, radix) { return radix ? 'AB' : 'ABCD'; };
+                        output = encoder.encode(input);
+                        expect(output).toBe('AB');
+                        
+                        encoder.encodeByDict =
+                            function (input, radix) { return radix ? 'ABCD' : 'CD'; };
+                        output = encoder.encode(input);
+                        expect(output).toBe('CD');
+                    }
+                );
+                it(
+                    'does not call encodeByDict with radix 4 for short input',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        encoder.encodeByDict = jasmine.createSpy('encodeByDict() spy');
+                        var input = repeat('0', 184);
+                        encoder.encode(input);
+                        expect(encoder.encodeByDict).not.toHaveBeenCalledWith(input, 4);
+                    }
+                );
+                it(
                     'throws an Error with message "Encoding failed" for too complex input',
                     function ()
                     {
@@ -932,6 +975,14 @@
                     }
                 );
                 it(
+                    'by dictionary with radix is ok',
+                    function ()
+                    {
+                        var output = encoder.encodeByDict(input, 7);
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+                it(
                     'by long character code list is ok',
                     function ()
                     {
@@ -944,6 +995,14 @@
                     function ()
                     {
                         var output = encoder.encodeByCharCodes(input, false);
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+                it(
+                    'by character code list with radix is ok',
+                    function ()
+                    {
+                        var output = encoder.encodeByCharCodes(input, undefined, 7);
                         expect(eval(output)).toBe(input);
                     }
                 );
