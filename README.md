@@ -144,11 +144,11 @@ This table lists individual features of some common browsers.
 <td>
 <ul>
 <li><code>ATOB</code>
+<li><code>DOUBLE_QUOTE_ESC_HTML</code>
 <li><code>ENTRIES</code> (implied by <code>NO_SAFARI_ARRAY_ITERATOR</code>)
 <li><code>FF_SAFARI_SRC</code>
 <li><code>FILL</code> (Firefox 31+)
 <li><code>GMT</code>
-<li><code>LINK_DOUBLE_QUOTE_ESC</code>
 <li><code>NAME</code>
 <li><code>NO_IE_SRC</code> (implied by <code>FF_SAFARI_SRC</code>)
 <li><code>NO_SAFARI_ARRAY_ITERATOR</code>
@@ -165,9 +165,9 @@ Google Chrome 35+, Opera 22+
 <td>
 <ul>
 <li><code>ATOB</code>
+<li><code>DOUBLE_QUOTE_ESC_HTML</code>
 <li><code>ENTRIES</code> (implied by <code>NO_SAFARI_ARRAY_ITERATOR</code>; Chrome 38+, Opera 25+)
 <li><code>GMT</code>
-<li><code>LINK_DOUBLE_QUOTE_ESC</code>
 <li><code>NAME</code>
 <li><code>NO_IE_SRC</code> (implied by <code>V8_SRC</code>)
 <li><code>NO_SAFARI_ARRAY_ITERATOR</code> (Chrome 38+, Opera 25+)
@@ -186,6 +186,7 @@ Internet Explorer 9+
 <td>
 <ul>
 <li><code>ATOB</code> (Internet Explorer 10+)
+<li><code>CAPITAL_HTML</code>
 <li><code>GMT</code> (Internet Explorer 11)
 <li><code>IE_SRC</code>
 <li><code>NO_SAFARI_LF</code>
@@ -202,11 +203,11 @@ Safari 7.0+
 <td>
 <ul>
 <li><code>ATOB</code>
+<li><code>DOUBLE_QUOTE_ESC_HTML</code>
 <li><code>ENTRIES</code> (implied by <code>SAFARI_ARRAY_ITERATOR</code>; Safari 7.1+)
 <li><code>FF_SAFARI_SRC</code>
 <li><code>FILL</code> (Safari 7.1+)
 <li><code>GMT</code>
-<li><code>LINK_DOUBLE_QUOTE_ESC</code>
 <li><code>NAME</code>
 <li><code>NO_IE_SRC</code> (implied by <code>FF_SAFARI_SRC</code>)
 <li><code>SAFARI_ARRAY_ITERATOR</code> (Safari 7.1+)
@@ -224,8 +225,8 @@ Android Browser 4.0+
 <ul>
 <li><code>ATOB</code>
 <li><code>DOMWINDOW</code> (not in Android Browser 4.4.2+)
+<li><code>DOUBLE_QUOTE_ESC_HTML</code>
 <li><code>GMT</code>
-<li><code>LINK_DOUBLE_QUOTE_ESC</code>
 <li><code>NAME</code>
 <li><code>NO_IE_SRC</code> (implied by <code>V8_SRC</code>)
 <li><code>NO_SAFARI_LF</code>
@@ -242,9 +243,9 @@ Node.js 0.10.28+
 </td>
 <td>
 <ul>
+<li><code>DOUBLE_QUOTE_ESC_HTML</code>
 <li><code>ENTRIES</code> (implied by <code>NO_SAFARI_ARRAY_ITERATOR</code>; Node.js 0.12)
 <li><code>GMT</code>
-<li><code>LINK_DOUBLE_QUOTE_ESC</code>
 <li><code>NAME</code>
 <li><code>NO_IE_SRC</code> (implied by <code>V8_SRC</code>)
 <li><code>NO_SAFARI_ARRAY_ITERATOR</code> (Node.js 0.12)

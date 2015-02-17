@@ -122,11 +122,11 @@ function runExtremeTest(maxGroupThreshold, groupings)
     {
         input += 'undefined';
     }
+    var mapper = 'Function("return this[parseInt(arguments[0],4)]")["bind"]';
     var string = encoder.encodePlain(input);
     var output =
         encoder.replaceNumberArray([0]) + encoder.replace('["map"]') + '(' +
-        encoder.replace('""["charAt"]["bind"]') + '(' + string + '))' +
-        encoder.replace('["join"]([])');
+        encoder.replace(mapper) + '(' + string + '))' + encoder.replace('["join"]([])');
     try
     {
         var actual = eval(output);
