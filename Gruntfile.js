@@ -11,6 +11,7 @@ module.exports =
                 clean: ['coverage', 'lib/**/*.min.js'],
                 jshint:
                 {
+                    main: ['*.js', 'lib/**/*.js', 'test/**/*.js'],
                     options:
                     {
                         curly: true,
@@ -32,10 +33,9 @@ module.exports =
                         evil: true,
                         validthis: true,
                         '-W018': true,
-                    },
-                    src: ['*.js', 'lib/**/*.js', 'test/**/*.js']
+                    }
                 },
-                mocha_istanbul: { src: 'test/**/*.spec.js' },
+                mocha_istanbul: ['test/**/*.spec.js'],
                 uglify:
                 {
                     main: { files: { 'lib/jscrewit.min.js': 'lib/jscrewit.js' } },
