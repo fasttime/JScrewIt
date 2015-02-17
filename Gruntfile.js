@@ -9,9 +9,9 @@ module.exports =
         grunt.initConfig(
             {
                 clean: ['coverage', 'lib/**/*.min.js'],
-                jasmine_node: { main: '**/*.js', options: { useHelpers: true } },
                 jshint:
                 {
+                    main: ['*.js', 'lib/**/*.js', 'test/**/*.js'],
                     options:
                     {
                         curly: true,
@@ -33,9 +33,9 @@ module.exports =
                         evil: true,
                         validthis: true,
                         '-W018': true,
-                    },
-                    src: [ '*.js', 'lib/**/*.js', 'spec/**/*.js' ]
+                    }
                 },
+                mocha_istanbul: ['test/**/*.spec.js'],
                 uglify:
                 {
                     main: { files: { 'lib/jscrewit.min.js': 'lib/jscrewit.js' } },
@@ -52,8 +52,8 @@ module.exports =
         grunt.loadNpmTasks('grunt-contrib-clean');
         grunt.loadNpmTasks('grunt-contrib-jshint');
         grunt.loadNpmTasks('grunt-contrib-uglify');
-        grunt.loadNpmTasks('grunt-jasmine-node-coverage');
+        grunt.loadNpmTasks('grunt-mocha-istanbul');
         
         // Default task.
-        grunt.registerTask('default', ['clean', 'jshint', 'jasmine_node', 'uglify']);
+        grunt.registerTask('default', ['clean', 'jshint', 'mocha_istanbul', 'uglify']);
     };

@@ -1,5 +1,5 @@
-/* global atob, btoa, escape, emuDo, emuEval, EMU_FEATURES, global, module, self, unescape */
-/* jshint jasmine: true */
+/* global atob, btoa, expect, emuDo, emuEval, EMU_FEATURES, global, module, self, sinon */
+/* jshint mocha: true, nonstandard: true */
 
 (function (global)
 {
@@ -78,8 +78,6 @@
         appendLengths('A…Z', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
         return result;
     }
-    
-    var encoderCache = { };
     
     function decodeEntry(entry)
     {
@@ -186,90 +184,7 @@
         }
     }
     
-    function getSubFeatures(feature)
-    {
-        function branchIn(feature)
-        {
-            var featureInfo = JScrewIt.FEATURE_INFOS[feature];
-            var includes = featureInfo.includes;
-            includes.forEach(branchIn);
-            if (featureInfo.check)
-            {
-                atomicSet[feature] = null;
-            }
-        }
-        
-        var atomicSet = Object.create(null);
-        branchIn(feature);
-        var result = Object.keys(atomicSet);
-        return result;
-    }
-    
-    function getEmuFeatures(features)
-    {
-        if (features.every(function (feature) { return feature in featureSet; }))
-        {
-            return features.filter(function (feature) { return featureSet[feature]; });
-        }
-    }
-    
-    function init(arg)
-    {
-        JScrewIt = arg || global.JScrewIt;
-        featureSet = Object.create(null);
-        EMU_FEATURES.forEach(
-            function (feature) { featureSet[feature] = true; }
-        );
-        JScrewIt.FEATURE_INFOS.AUTO.includes.forEach(
-            function (feature) { featureSet[feature] = false; }
-        );
-    }
-    
-    function isExpected(expected)
-    {
-        var result =
-            function ()
-            {
-                this.toBe(expected);
-            };
-        return result;
-    }
-    
-    function listFeatures(available)
-    {
-        var callback = function (feature) { return !!featureSet[feature] !== available; };
-        var result = Object.keys(featureSet).filter(callback).sort();
-        return result;
-    }
-    
-    function padBoth(str, length)
-    {
-        str += '';
-        var result = padRight(padLeft(str, length + str.length >> 1), length);
-        return result;
-    }
-    
-    function padLeft(str, length)
-    {
-        str += '';
-        var result = repeat(' ', length - str.length) + str;
-        return result;
-    }
-    
-    function padRight(str, length)
-    {
-        str += '';
-        var result = str + repeat(' ', length - str.length);
-        return result;
-    }
-    
-    function repeat(string, count)
-    {
-        var result = Array(count + 1).join(string);
-        return result;
-    }
-    
-    function run()
+    function describeTests()
     {
         describe(
             'JScrewIt',
@@ -389,15 +304,6 @@
                 );
                 it(
                     'throws a ReferenceError for incompatible features',
-                    function ()
-                    {
-                        var fn =
-                            function () { JScrewIt.encode('', false, ['NO_IE_SRC', 'IE_SRC']); };
-                        expect(fn).toThrow(ReferenceError('Incompatible features'));
-                    }
-                );
-                it(
-                    '',
                     function ()
                     {
                         var fn =
@@ -744,11 +650,60 @@
             function ()
             {
                 it(
+                    'does not call encodeByDict for insufficiently long input',
+                    function ()
+                    {
+                        var input = repeat('0', 2);
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var encodeByDict = sinon.stub(encoder, 'encodeByDict');
+                        sinon.stub(encoder, 'encodeSimple').returns('ABC');
+                        var output = encoder.encode(input);
+                        
+                        sinon.assert.notCalled(encodeByDict);
+                        expect(output).toBe('ABC');
+                    }
+                );
+                it(
+                    'calls encodeByDict without radix for sufficiently long input',
+                    function ()
+                    {
+                        var input = repeat('0', 3);
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var encodeByDict = sinon.stub(encoder, 'encodeByDict');
+                        encodeByDict.returns('AB');
+                        sinon.stub(encoder, 'encodeSimple');
+                        var output = encoder.encode(input);
+                        
+                        sinon.assert.calledOnce(encodeByDict);
+                        sinon.assert.calledWith(encodeByDict, input, undefined);
+                        expect(output).toBe('AB');
+                    }
+                );
+                it(
+                    'calls encodeByDict with and without radix for sufficiently long input',
+                    function ()
+                    {
+                        var input = repeat('0', 185);
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var encodeByDict = sinon.stub(encoder, 'encodeByDict');
+                        encodeByDict.withArgs(input, undefined).returns('AB');
+                        encodeByDict.withArgs(input, 4).returns('A');
+                        sinon.stub(encoder, 'encodeSimple');
+                        var output = encoder.encode(input);
+                        
+                        sinon.assert.calledTwice(encodeByDict);
+                        sinon.assert.calledWith(encodeByDict, input, undefined);
+                        sinon.assert.calledWith(encodeByDict, input, 4);
+                        expect(output).toBe('A');
+                    }
+                );
+                it(
                     'throws an Error with message "Encoding failed" for too complex input',
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.replaceNumberArray = encoder.encodePlain = function () { };
+                        sinon.stub(encoder, 'encodePlain');
+                        sinon.stub(encoder, 'replaceNumberArray');
                         expect(function () { encoder.encode('12345'); }).toThrow(
                             new Error('Encoding failed')
                         );
@@ -765,7 +720,8 @@
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.replaceString = encoder.encodePlain = function () { };
+                        sinon.stub(encoder, 'encodePlain');
+                        sinon.stub(encoder, 'replaceString');
                         expect(encoder.replaceNumberArray([])).toBeUndefined();
                     }
                 );
@@ -776,7 +732,7 @@
             function ()
             {
                 var encoder = JScrewIt.debug.createEncoder();
-                encoder.replaceString = function () { };
+                sinon.stub(encoder, 'replaceString');
                 
                 function debugReplacer(input)
                 {
@@ -932,6 +888,14 @@
                     }
                 );
                 it(
+                    'by dictionary with radix is ok',
+                    function ()
+                    {
+                        var output = encoder.encodeByDict(input, 7);
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+                it(
                     'by long character code list is ok',
                     function ()
                     {
@@ -947,8 +911,100 @@
                         expect(eval(output)).toBe(input);
                     }
                 );
+                it(
+                    'by character code list with radix is ok',
+                    function ()
+                    {
+                        var output = encoder.encodeByCharCodes(input, undefined, 7);
+                        expect(eval(output)).toBe(input);
+                    }
+                );
             }
         );
+    }
+    
+    function getEmuFeatures(features)
+    {
+        if (features.every(function (feature) { return feature in featureSet; }))
+        {
+            return features.filter(function (feature) { return featureSet[feature]; });
+        }
+    }
+    
+    function getSubFeatures(feature)
+    {
+        function branchIn(feature)
+        {
+            var featureInfo = JScrewIt.FEATURE_INFOS[feature];
+            var includes = featureInfo.includes;
+            includes.forEach(branchIn);
+            if (featureInfo.check)
+            {
+                atomicSet[feature] = null;
+            }
+        }
+        
+        var atomicSet = Object.create(null);
+        branchIn(feature);
+        var result = Object.keys(atomicSet);
+        return result;
+    }
+    
+    function init(arg)
+    {
+        JScrewIt = arg || global.JScrewIt;
+        featureSet = Object.create(null);
+        EMU_FEATURES.forEach(
+            function (feature) { featureSet[feature] = true; }
+        );
+        JScrewIt.FEATURE_INFOS.AUTO.includes.forEach(
+            function (feature) { featureSet[feature] = false; }
+        );
+        describeTests();
+    }
+    
+    function isExpected(expected)
+    {
+        var result =
+            function ()
+            {
+                this.toBe(expected);
+            };
+        return result;
+    }
+    
+    function listFeatures(available)
+    {
+        var callback = function (feature) { return !!featureSet[feature] !== available; };
+        var result = Object.keys(featureSet).filter(callback).sort();
+        return result;
+    }
+    
+    function padBoth(str, length)
+    {
+        str += '';
+        var result = padRight(padLeft(str, length + str.length >> 1), length);
+        return result;
+    }
+    
+    function padLeft(str, length)
+    {
+        str += '';
+        var result = repeat(' ', length - str.length) + str;
+        return result;
+    }
+    
+    function padRight(str, length)
+    {
+        str += '';
+        var result = str + repeat(' ', length - str.length);
+        return result;
+    }
+    
+    function repeat(string, count)
+    {
+        var result = Array(count + 1).join(string);
+        return result;
     }
     
     function testCharacter(charCode)
@@ -1071,6 +1127,7 @@
         );
     }
     
+    var encoderCache = { };
     var featureSet;
     var JScrewIt;
     
@@ -1078,8 +1135,7 @@
     {
         createOutput: createOutput,
         init: init,
-        listFeatures: listFeatures,
-        run: run
+        listFeatures: listFeatures
     };
     
     if (global.self)
@@ -1090,5 +1146,5 @@
     {
         module.exports = TestSuite;
     }
-    
+
 })(typeof self === 'undefined' ? global : self);
