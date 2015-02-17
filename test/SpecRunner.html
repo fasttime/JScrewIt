@@ -2,48 +2,9 @@
 <html>
 <head>
 <meta charset='utf-8'>
+<link rel='icon' href='favicon-pending.ico'>
 <link rel='stylesheet' href='../node_modules/mocha/mocha.css'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-<style>
-
-#buttonBar { margin-top: 10px; }
-
-#buttonBar>*
-{
-    background-color: #aaa;
-    border: #eee thin solid;
-    box-shadow: 0 0 0 2px #aaa;
-    color: #fff;
-    font: 11px/16px 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
-#buttonBar>*+* { margin-left: 16px; }
-
-#featureList { font: 12px/1.2 'Helvetica Neue', Helvetica, Arial, sans-serif; }
-
-#featureList>*>*
-{
-    border-radius: 2px;
-    color: #aaa;
-    cursor: default;
-    display: inline-block;
-    padding: 0 1px;
-}
-
-#featureList>*>*:hover { background: #00d6b2; color: #fff; }
-
-#header { margin: 30px 300px 0 60px; }
-
-</style>
-<title>JScrewIt Spec Runner</title>
-</head>
-<body>
-
-<div id='header'>
-<div id='featureList'></div>
-<div id='buttonBar'></div>
-</div>
-<div id='mocha'></div>
 <script src='../node_modules/mocha/mocha.js'></script>
 <script src='../lib/jscrewit.js'></script>
 <script src='../node_modules/expectations/expectations.js'></script>
@@ -52,6 +13,8 @@
 <script src='matcher_helpers.js'></script>
 <script src='test_suite.js'></script>
 <script>
+
+'use strict';
 
 function addBarButtons()
 {
@@ -102,12 +65,20 @@ function addBarButtons()
     }
 }
 
-function handleLoad()
+function addFeatureLists()
 {
     var info = document.querySelector('#featureList');
     listFeatures(info, 'Available features: ', TestSuite.listFeatures(true));
     listFeatures(info, 'Emulated features: ', TestSuite.listFeatures(false));
+}
+
+function handleLoad()
+{
+    addFeatureLists();
     addBarButtons();
+    var runner = mocha.run();
+    runner.on('fail', function () { if (runner.failures === 1) setFavicon('favicon-fail.ico'); });
+    runner.on('end', function () { if (!runner.failures) { setFavicon('favicon-pass.ico'); } });
 }
 
 function listFeatures(info, label, features)
@@ -142,13 +113,52 @@ function popup(url, name, width, height)
     return popup;
 }
 
-mocha.setup('bdd');
-TestSuite.init();
-mocha.checkLeaks();
-mocha.run();
+function setFavicon(href)
+{
+    document.querySelector('link[rel="icon"]').href = href;
+}
 
+mocha.setup('bdd');
+mocha.checkLeaks();
+TestSuite.init();
 addEventListener('load', handleLoad);
 
 </script>
-</body>
-</html>
+<style>
+
+#buttonBar { margin-top: 10px; }
+
+#buttonBar>*
+{
+    background-color: #aaa;
+    border: #eee thin solid;
+    box-shadow: 0 0 0 2px #aaa;
+    color: #fff;
+    font: 11px/16px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#buttonBar>*+* { margin-left: 16px; }
+
+#featureList { font: 12px/1.2 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+#featureList>*>*
+{
+    border-radius: 2px;
+    color: #aaa;
+    cursor: default;
+    display: inline-block;
+    padding: 0 1px;
+}
+
+#featureList>*>*:hover { background: #00d6b2; color: #fff; }
+
+body>header { margin: 30px 300px 0 60px; }
+
+</style>
+<title>JScrewIt Spec Runner</title>
+<body>
+<header>
+<div id='featureList'></div>
+<div id='buttonBar'></div>
+</header>
+<div id='mocha'></div>

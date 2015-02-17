@@ -1,5 +1,6 @@
 /* global atob, btoa, expect, emuDo, emuEval, EMU_FEATURES, global, module, self, sinon */
 /* jshint mocha: true, nonstandard: true */
+
 (function (global)
 {
     'use strict';
