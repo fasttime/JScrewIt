@@ -12,6 +12,7 @@ function listFeatures(label, features)
 
 var JScrewIt = require('../lib/jscrewit.js');
 require('expectations');
+global.sinon = require('sinon');
 require('./feature_emulation_helpers.js');
 require('./matcher_helpers.js');
 var TestSuite = require('./test_suite.js');
