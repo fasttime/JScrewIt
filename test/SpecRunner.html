@@ -5,6 +5,7 @@
 <link rel='icon' href='favicon-pending.ico'>
 <link rel='stylesheet' href='../node_modules/mocha/mocha.css'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<meta name='viewport' content='width=device-width'>
 <script src='../node_modules/mocha/mocha.js'></script>
 <script src='../lib/jscrewit.js'></script>
 <script src='../node_modules/expectations/expectations.js'></script>
@@ -126,7 +127,7 @@ addEventListener('load', handleLoad);
 </script>
 <style>
 
-#buttonBar { margin-top: 10px; }
+#buttonBar { margin-top: 10px; white-space: nowrap; }
 
 #buttonBar>*
 {
@@ -139,7 +140,7 @@ addEventListener('load', handleLoad);
 
 #buttonBar>*+* { margin-left: 16px; }
 
-#featureList { font: 12px/1.2 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+#featureList>* { font: 12px/1.2 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 2px 0; }
 
 #featureList>*>*
 {
@@ -152,7 +153,7 @@ addEventListener('load', handleLoad);
 
 #featureList>*>*:hover { background: #00d6b2; color: #fff; }
 
-body>header { margin: 30px 300px 0 60px; }
+body>header { margin: 28px 300px 0 60px; }
 
 </style>
 <title>JScrewIt Spec Runner</title>
