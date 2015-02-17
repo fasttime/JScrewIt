@@ -1,6 +1,6 @@
-/* global atob, btoa, escape, emuDo, emuEval, EMU_FEATURES, global, module, self, unescape */
-/* jshint jasmine: true */
-
+/* global atob, btoa, escape, expect, emuDo, emuEval, EMU_FEATURES, global, module, self, unescape
+ */
+/* jshint mocha: true */
 (function (global)
 {
     'use strict';
@@ -78,8 +78,6 @@
         appendLengths('A…Z', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
         return result;
     }
-    
-    var encoderCache = { };
     
     function decodeEntry(entry)
     {
@@ -186,90 +184,7 @@
         }
     }
     
-    function getEmuFeatures(features)
-    {
-        if (features.every(function (feature) { return feature in featureSet; }))
-        {
-            return features.filter(function (feature) { return featureSet[feature]; });
-        }
-    }
-    
-    function getSubFeatures(feature)
-    {
-        function branchIn(feature)
-        {
-            var featureInfo = JScrewIt.FEATURE_INFOS[feature];
-            var includes = featureInfo.includes;
-            includes.forEach(branchIn);
-            if (featureInfo.check)
-            {
-                atomicSet[feature] = null;
-            }
-        }
-        
-        var atomicSet = Object.create(null);
-        branchIn(feature);
-        var result = Object.keys(atomicSet);
-        return result;
-    }
-    
-    function init(arg)
-    {
-        JScrewIt = arg || global.JScrewIt;
-        featureSet = Object.create(null);
-        EMU_FEATURES.forEach(
-            function (feature) { featureSet[feature] = true; }
-        );
-        JScrewIt.FEATURE_INFOS.AUTO.includes.forEach(
-            function (feature) { featureSet[feature] = false; }
-        );
-    }
-    
-    function isExpected(expected)
-    {
-        var result =
-            function ()
-            {
-                this.toBe(expected);
-            };
-        return result;
-    }
-    
-    function listFeatures(available)
-    {
-        var callback = function (feature) { return !!featureSet[feature] !== available; };
-        var result = Object.keys(featureSet).filter(callback).sort();
-        return result;
-    }
-    
-    function padBoth(str, length)
-    {
-        str += '';
-        var result = padRight(padLeft(str, length + str.length >> 1), length);
-        return result;
-    }
-    
-    function padLeft(str, length)
-    {
-        str += '';
-        var result = repeat(' ', length - str.length) + str;
-        return result;
-    }
-    
-    function padRight(str, length)
-    {
-        str += '';
-        var result = str + repeat(' ', length - str.length);
-        return result;
-    }
-    
-    function repeat(string, count)
-    {
-        var result = Array(count + 1).join(string);
-        return result;
-    }
-    
-    function run()
+    function describeTests()
     {
         describe(
             'JScrewIt',
@@ -739,10 +654,18 @@
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.encodeByDict = jasmine.createSpy('encodeByDict() spy');
                         var input = repeat('0', 3);
-                        encoder.encode(input);
-                        expect(encoder.encodeByDict).toHaveBeenCalledWith(input, undefined);
+                        
+                        encoder.encodeByDict =
+                            function (input, radix)
+                            {
+                                if (radix === undefined)
+                                {
+                                    return 'AB';
+                                }
+                            };
+                        var output = encoder.encode(input);
+                        expect(output).toBe('AB');
                     }
                 );
                 it(
@@ -750,10 +673,17 @@
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.encodeByDict = jasmine.createSpy('encodeByDict() spy');
                         var input = repeat('0', 2);
+                        
+                        encoder.encodeByDict =
+                            function (input, radix)
+                            {
+                                if (radix === undefined)
+                                {
+                                    throw new Error();
+                                }
+                            };
                         encoder.encode(input);
-                        expect(encoder.encodeByDict).not.toHaveBeenCalledWith(input, undefined);
                     }
                 );
                 it(
@@ -780,10 +710,17 @@
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.encodeByDict = jasmine.createSpy('encodeByDict() spy');
                         var input = repeat('0', 184);
+                        
+                        encoder.encodeByDict =
+                            function (input, radix)
+                            {
+                                if (radix === 4)
+                                {
+                                    throw new Error();
+                                }
+                            };
                         encoder.encode(input);
-                        expect(encoder.encodeByDict).not.toHaveBeenCalledWith(input, 4);
                     }
                 );
                 it(
@@ -1010,6 +947,90 @@
         );
     }
     
+    function getEmuFeatures(features)
+    {
+        if (features.every(function (feature) { return feature in featureSet; }))
+        {
+            return features.filter(function (feature) { return featureSet[feature]; });
+        }
+    }
+    
+    function getSubFeatures(feature)
+    {
+        function branchIn(feature)
+        {
+            var featureInfo = JScrewIt.FEATURE_INFOS[feature];
+            var includes = featureInfo.includes;
+            includes.forEach(branchIn);
+            if (featureInfo.check)
+            {
+                atomicSet[feature] = null;
+            }
+        }
+        
+        var atomicSet = Object.create(null);
+        branchIn(feature);
+        var result = Object.keys(atomicSet);
+        return result;
+    }
+    
+    function init(arg)
+    {
+        JScrewIt = arg || global.JScrewIt;
+        featureSet = Object.create(null);
+        EMU_FEATURES.forEach(
+            function (feature) { featureSet[feature] = true; }
+        );
+        JScrewIt.FEATURE_INFOS.AUTO.includes.forEach(
+            function (feature) { featureSet[feature] = false; }
+        );
+        describeTests();
+    }
+    
+    function isExpected(expected)
+    {
+        var result =
+            function ()
+            {
+                this.toBe(expected);
+            };
+        return result;
+    }
+    
+    function listFeatures(available)
+    {
+        var callback = function (feature) { return !!featureSet[feature] !== available; };
+        var result = Object.keys(featureSet).filter(callback).sort();
+        return result;
+    }
+    
+    function padBoth(str, length)
+    {
+        str += '';
+        var result = padRight(padLeft(str, length + str.length >> 1), length);
+        return result;
+    }
+    
+    function padLeft(str, length)
+    {
+        str += '';
+        var result = repeat(' ', length - str.length) + str;
+        return result;
+    }
+    
+    function padRight(str, length)
+    {
+        str += '';
+        var result = str + repeat(' ', length - str.length);
+        return result;
+    }
+    
+    function repeat(string, count)
+    {
+        var result = Array(count + 1).join(string);
+        return result;
+    }
+    
     function testCharacter(charCode)
     {
         var char = String.fromCharCode(charCode);
@@ -1130,6 +1151,7 @@
         );
     }
     
+    var encoderCache = { };
     var featureSet;
     var JScrewIt;
     
@@ -1137,8 +1159,7 @@
     {
         createOutput: createOutput,
         init: init,
-        listFeatures: listFeatures,
-        run: run
+        listFeatures: listFeatures
     };
     
     if (global.self)
@@ -1149,5 +1170,5 @@
     {
         module.exports = TestSuite;
     }
-    
+
 })(typeof self === 'undefined' ? global : self);
