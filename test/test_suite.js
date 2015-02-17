@@ -1,6 +1,5 @@
-/* global atob, btoa, escape, expect, emuDo, emuEval, EMU_FEATURES, global, module, self, unescape
- */
-/* jshint mocha: true */
+/* global atob, btoa, expect, emuDo, emuEval, EMU_FEATURES, global, module, self, sinon */
+/* jshint mocha: true, nonstandard: true */
 (function (global)
 {
     'use strict';
@@ -650,77 +649,51 @@
             function ()
             {
                 it(
+                    'does not call encodeByDict for insufficiently long input',
+                    function ()
+                    {
+                        var input = repeat('0', 2);
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var encodeByDict = sinon.stub(encoder, 'encodeByDict');
+                        sinon.stub(encoder, 'encodeSimple').returns('ABC');
+                        var output = encoder.encode(input);
+                        
+                        sinon.assert.notCalled(encodeByDict);
+                        expect(output).toBe('ABC');
+                    }
+                );
+                it(
                     'calls encodeByDict without radix for sufficiently long input',
                     function ()
                     {
-                        var encoder = JScrewIt.debug.createEncoder();
                         var input = repeat('0', 3);
-                        
-                        encoder.encodeByDict =
-                            function (input, radix)
-                            {
-                                if (radix === undefined)
-                                {
-                                    return 'AB';
-                                }
-                            };
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var encodeByDict = sinon.stub(encoder, 'encodeByDict');
+                        encodeByDict.returns('AB');
+                        sinon.stub(encoder, 'encodeSimple');
                         var output = encoder.encode(input);
+                        
+                        sinon.assert.calledOnce(encodeByDict);
+                        sinon.assert.calledWith(encodeByDict, input, undefined);
                         expect(output).toBe('AB');
                     }
                 );
                 it(
-                    'does not call encodeByDict without radix for short input',
+                    'calls encodeByDict with and without radix for sufficiently long input',
                     function ()
                     {
-                        var encoder = JScrewIt.debug.createEncoder();
-                        var input = repeat('0', 2);
-                        
-                        encoder.encodeByDict =
-                            function (input, radix)
-                            {
-                                if (radix === undefined)
-                                {
-                                    throw new Error();
-                                }
-                            };
-                        encoder.encode(input);
-                    }
-                );
-                it(
-                    'calls encodeByDict with radix 4 for sufficiently long input',
-                    function ()
-                    {
-                        var encoder = JScrewIt.debug.createEncoder();
                         var input = repeat('0', 185);
-                        var output;
-                        
-                        encoder.encodeByDict =
-                            function (input, radix) { return radix ? 'AB' : 'ABCD'; };
-                        output = encoder.encode(input);
-                        expect(output).toBe('AB');
-                        
-                        encoder.encodeByDict =
-                            function (input, radix) { return radix ? 'ABCD' : 'CD'; };
-                        output = encoder.encode(input);
-                        expect(output).toBe('CD');
-                    }
-                );
-                it(
-                    'does not call encodeByDict with radix 4 for short input',
-                    function ()
-                    {
                         var encoder = JScrewIt.debug.createEncoder();
-                        var input = repeat('0', 184);
+                        var encodeByDict = sinon.stub(encoder, 'encodeByDict');
+                        encodeByDict.withArgs(input, undefined).returns('AB');
+                        encodeByDict.withArgs(input, 4).returns('A');
+                        sinon.stub(encoder, 'encodeSimple');
+                        var output = encoder.encode(input);
                         
-                        encoder.encodeByDict =
-                            function (input, radix)
-                            {
-                                if (radix === 4)
-                                {
-                                    throw new Error();
-                                }
-                            };
-                        encoder.encode(input);
+                        sinon.assert.calledTwice(encodeByDict);
+                        sinon.assert.calledWith(encodeByDict, input, undefined);
+                        sinon.assert.calledWith(encodeByDict, input, 4);
+                        expect(output).toBe('A');
                     }
                 );
                 it(
@@ -728,7 +701,8 @@
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.replaceNumberArray = encoder.encodePlain = function () { };
+                        sinon.stub(encoder, 'encodePlain');
+                        sinon.stub(encoder, 'replaceNumberArray');
                         expect(function () { encoder.encode('12345'); }).toThrow(
                             new Error('Encoding failed')
                         );
@@ -745,7 +719,8 @@
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.replaceString = encoder.encodePlain = function () { };
+                        sinon.stub(encoder, 'encodePlain');
+                        sinon.stub(encoder, 'replaceString');
                         expect(encoder.replaceNumberArray([])).toBeUndefined();
                     }
                 );
@@ -756,7 +731,7 @@
             function ()
             {
                 var encoder = JScrewIt.debug.createEncoder();
-                encoder.replaceString = function () { };
+                sinon.stub(encoder, 'replaceString');
                 
                 function debugReplacer(input)
                 {
