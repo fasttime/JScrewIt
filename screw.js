@@ -2,13 +2,24 @@
 
 'use strict';
 
-var stream = require('stream');
-var util = require('util');
 var JScrewIt = require('./lib/jscrewit.js');
-var repl = require('repl');
+
+function widthOf(size)
+{
+    return (size + '').length;
+}
+
+function byteCount(size, width)
+{
+    /* jshint singleGroups: false */
+    var string =
+        Array(width - widthOf(size) + 1).join(' ') + (size === 1 ? '1 byte' : size + ' bytes');
+    return string;
+}
 
 var wrapWithEval;
 var inputFileName;
+var outputFileName;
 var features;
 
 var argv = process.argv;
@@ -27,32 +38,44 @@ for (var index = 2; index < argv.length; ++index)
         }
         else if (arg !== '-f')
         {
-            inputFileName = arg;
+            if (inputFileName)
+            {
+                outputFileName = arg;
+            }
+            else
+            {
+                inputFileName = arg;
+            }
         }
     }
 }
 
 if (inputFileName == null)
 {
+    var repl = require('repl');
+    var stream = require('stream');
+    var util = require('util');
+    
     var Stream = function Stream() { stream.Transform.call(this); };
     util.inherits(Stream, stream.Transform);
     Stream.prototype._transform =
-    function (chunk, encoding, callback)
-    {
-        var lines = chunk.toString().match(/.+/g);
-        if (lines)
+        function (chunk, encoding, callback)
         {
-            lines.forEach(
-                function (line)
-                {
-                    var output = JScrewIt.encode(line, wrapWithEval, features);
-                    this.push(output + '\n');
-                },
-                this
-            );
-        }
-        callback();
-    };
+            var lines = chunk.toString().match(/.+/g);
+            if (lines)
+            {
+                lines.forEach(
+                    function (line)
+                    {
+                        var output = JScrewIt.encode(line, wrapWithEval, features);
+                        this.push(output + '\n');
+                    },
+                    this
+                );
+            }
+            callback();
+        };
+    console.log('Press ^C at any time to quit.');
     var script = new Stream();
     repl.start(
         {
@@ -66,16 +89,33 @@ if (inputFileName == null)
 }
 else
 {
-    var data = require('fs').readFileSync(inputFileName);
+    var fs = require('fs');
+    
+    var input = fs.readFileSync(inputFileName);
     var output;
     try
     {
-        output = JScrewIt.encode(data, wrapWithEval, features);
+        output = JScrewIt.encode(input, wrapWithEval, features);
     }
     catch (error)
     {
         console.error(error.message);
         return;
     }
-    process.stdout.write(output);
+    var outputStream;
+    if (outputFileName)
+    {
+        outputStream = fs.createWriteStream(outputFileName);
+        var screwedSize = output.length;
+        var width = widthOf(screwedSize);
+        var message =
+            'Original size: ' + byteCount(input.length, width) + '\nScrewed size:  ' +
+            byteCount(screwedSize, width);
+        console.log(message);
+    }
+    else
+    {
+        outputStream = process.stdout;
+    }
+    outputStream.write(output);
 }
