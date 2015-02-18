@@ -188,7 +188,7 @@
     {
         describe(
             'JScrewIt',
-            function()
+            function ()
             {
                 it(
                     'is set up correctly',
@@ -315,7 +315,7 @@
         );
         describe(
             'JScrewIt.areFeaturesCompatible',
-            function()
+            function ()
             {
                 it(
                     'returns true for compatible features',
@@ -345,7 +345,7 @@
         );
         describe(
             'JScrewIt.FEATURE_INFOS',
-            function()
+            function ()
             {
                 var FEATURE_INFOS = JScrewIt.FEATURE_INFOS;
                 
