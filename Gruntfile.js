@@ -86,6 +86,7 @@ module.exports =
                         noarg: true,
                         noempty: true,
                         quotmark: true,
+                        singleGroups: true,
                         strict: true,
                         trailing: true,
                         undef: true,
