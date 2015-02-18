@@ -60,7 +60,7 @@
             {
                 var enc1 = this._keyStr.indexOf(input.charAt(i++));
                 var enc2 = this._keyStr.indexOf(input.charAt(i++));
-                var chr1 = (enc1 << 2) | (enc2 >> 4);
+                var chr1 = enc1 << 2 | enc2 >> 4;
                 output += String.fromCharCode(chr1);
                 
                 var pos3 = input.charAt(i++);
@@ -69,7 +69,7 @@
                 {
                     break;
                 }
-                var chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                var chr2 = (enc2 & 15) << 4 | enc3 >> 2;
                 output += String.fromCharCode(chr2);
                 
                 var pos4 = input.charAt(i++);
@@ -78,7 +78,7 @@
                 {
                     break;
                 }
-                var chr3 = ((enc3 & 3) << 6) | enc4;
+                var chr3 = (enc3 & 3) << 6 | enc4;
                 output += String.fromCharCode(chr3);
             }
             
