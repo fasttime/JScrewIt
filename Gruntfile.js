@@ -11,7 +11,7 @@ module.exports =
                 clean: ['coverage', 'lib/**/*.min.js'],
                 jscs:
                 {
-                    main: ['*.js', 'lib/**/*.js', 'test/**/*.js'],
+                    default: ['*.js', 'lib/**/*.js', 'test/**/*.js'],
                     options:
                     {
                         disallowMixedSpacesAndTabs: true,
@@ -74,7 +74,7 @@ module.exports =
                 },
                 jshint:
                 {
-                    main: ['*.js', 'lib/**/*.js', 'test/**/*.js'],
+                    default: ['*.js', 'lib/**/*.js', 'test/**/*.js'],
                     options:
                     {
                         curly: true,
@@ -103,7 +103,7 @@ module.exports =
                 mocha_istanbul: ['test/**/*.spec.js'],
                 uglify:
                 {
-                    main: { files: { 'lib/jscrewit.min.js': 'lib/jscrewit.js' } },
+                    default: { files: { 'lib/jscrewit.min.js': 'lib/jscrewit.js' } },
                     options: { compress: { global_defs: { DEBUG: false }, hoist_vars: true } }
                 }
             }
