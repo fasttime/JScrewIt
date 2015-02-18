@@ -51,7 +51,6 @@
                 return this.assertions.pass(message);
             }
             this.assertions.fail(message);
-        
         },
         toBePlainObject: function ()
         {
@@ -63,7 +62,6 @@
                 return this.assertions.pass(message);
             }
             this.assertions.fail(message);
-
         },
         toBeString: function ()
         {
@@ -85,5 +83,4 @@
             expect.addAssertion(name, matcher);
         }
     );
-    
 })();
