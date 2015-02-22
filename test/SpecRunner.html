@@ -88,16 +88,22 @@ function listFeatures(info, label, features)
     {
         var div = info.appendChild(document.createElement('DIV'));
         div.textContent = label;
+        var span;
         features.forEach(
             function (feature, index)
             {
                 if (index)
                 {
-                    div.appendChild(document.createTextNode(', '));
+                    span.appendChild(document.createTextNode(','));
+                    div.appendChild(document.createTextNode(' '));
                 }
-                var span = div.appendChild(document.createElement('CODE'));
-                span.textContent = feature;
-                span.title = JScrewIt.FEATURE_INFOS[feature].description;
+                span = div.appendChild(document.createElement('SPAN'));
+                var code =
+                    span.appendChild(document.createElement('SPAN')).appendChild(
+                        document.createElement('CODE')
+                    );
+                code.textContent = feature;
+                code.title = JScrewIt.FEATURE_INFOS[feature].description;
             }
         );
     }
@@ -127,33 +133,56 @@ addEventListener('load', handleLoad);
 </script>
 <style>
 
-#buttonBar { margin-top: 10px; white-space: nowrap; }
+#buttonBar { margin-top: 8px; }
 
 #buttonBar>*
 {
     background-color: #aaa;
     border: #eee thin solid;
+    border-radius: 1px;
     box-shadow: 0 0 0 2px #aaa;
     color: #fff;
     font: 11px/16px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 2px;
+    width: 90px;
 }
 
-#buttonBar>*+* { margin-left: 16px; }
+#buttonBar>*:not(:last-child) { margin-right: 14px; }
 
-#featureList>* { font: 12px/1.2 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 2px 0; }
-
-#featureList>*>*
+#featureList code
 {
     border-radius: 2px;
-    color: #aaa;
+    color: #888;
     cursor: default;
     display: inline-block;
     padding: 0 1px;
 }
 
-#featureList>*>*:hover { background: #00d6b2; color: #fff; }
+#featureList code:hover { background: #00d6b2; color: #fff; }
 
-body>header { margin: 28px 300px 0 60px; }
+#featureList>*
+{
+    font: 12px/1.2 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin-bottom: 4px;
+}
+
+#featureList>*>*>* { white-space: pre; }
+
+#mocha { margin-top: 36px; }
+
+body>header
+{
+    background: #eee;
+    border-radius: 10px;
+    margin: 48px 60px 0;
+    min-width: 200px;
+    padding: 10px;
+}
+
+@media screen and (max-device-width: 480px)
+{
+    body>header { margin-left: 10px; margin-right: 10px; }
+}
 
 </style>
 <title>JScrewIt Spec Runner</title>
