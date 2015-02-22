@@ -8,7 +8,7 @@ module.exports =
         // Project configuration.
         grunt.initConfig(
             {
-                clean: ['coverage', 'lib/**/*.min.js'],
+                clean: { default: ['coverage', 'lib/**/*.min.js'] },
                 jscs:
                 {
                     default: ['*.js', 'lib/**/*.js', 'test/**/*.js'],
@@ -100,7 +100,7 @@ module.exports =
                         '-W018': true,
                     }
                 },
-                mocha_istanbul: ['test/**/*.spec.js'],
+                mocha_istanbul: { default: 'test/**/*.spec.js' },
                 uglify:
                 {
                     default: { files: { 'lib/jscrewit.min.js': 'lib/jscrewit.js' } },
