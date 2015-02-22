@@ -106,11 +106,13 @@ else
     if (outputFileName)
     {
         outputStream = fs.createWriteStream(outputFileName);
+        var originalSize = input.length;
         var screwedSize = output.length;
-        var width = widthOf(screwedSize);
+        var width = Math.max(widthOf(originalSize), widthOf(screwedSize));
         var message =
-            'Original size: ' + byteCount(input.length, width) + '\nScrewed size:  ' +
-            byteCount(screwedSize, width);
+            'Original size: ' + byteCount(input.length, width) +
+            '\nScrewed size:  ' + byteCount(screwedSize, width) +
+            '\nExpansion factor: ' + (screwedSize / originalSize).toFixed(2);
         console.log(message);
     }
     else
