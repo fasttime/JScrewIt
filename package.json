@@ -33,6 +33,5 @@
     "istanbul": "~0.3.5",
     "mocha": "https://github.com/fasttime/mocha/tarball/master",
     "sinon": "~1.12.2"
-  },
-  "browserDependencies": {}
+  }
 }
