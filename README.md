@@ -1,5 +1,7 @@
 # JScrewIt
 
+[![NPM](https://nodei.co/npm/jscrewit.png?compact=true)](https://nodei.co/npm/jscrewit/)
+
 JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters to
 write and execute any code: `[]()!+`.
 
