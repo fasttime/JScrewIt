@@ -23,7 +23,7 @@
     "url": "https://github.com/fasttime/JScrewIt.git"
   },
   "devDependencies": {
-    "expectations": "~0.3.1",
+    "expectations": "~0.4.1",
     "grunt": "~0.4.5",
     "grunt-contrib-clean": "~0.6.0",
     "grunt-contrib-jshint": "~0.11.0",
