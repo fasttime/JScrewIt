@@ -88,16 +88,18 @@ var JScrewIt = require("jscrewit");
 This will encode the `alert(1)` example shown above and run it using `eval`.
 
 ```js
-var output = JScrewIt.encode("alert(1)", true);
+var output = JScrewIt.encode("alert(1)", { wrapWithEval: true });
 eval(output);
 ```
 
-The `true` passed as a second parameter indicates that we would like the output to be executable.
+Setting `wrapWithEval` to `true` in the second parameter indicates that we would like the output to
+be executable.
 
-This parameter should be `false` to encode a plain string rather than JavaScript code.
+`wrapWithEval` should be omitted or set to `false` to encode a plain string instead of JavaScript
+code.
 
 ```js
-var output = JScrewIt.encode("Hello, world!", false);
+var output = JScrewIt.encode("Hello, world!");
 var input = eval(output); // input contains the string "Hello, world!".
 ```
 
@@ -115,27 +117,29 @@ Anyway, if you know in advance that the browsers you plan to target do support `
 indeed, you can let JScrewIt create code that uses those functions whenever this would make the
 output shorter.
 The way to tell JScrewIt to use these features is by specifying a string (or array of strings) as
-a third parameter to `encode`.
+the value of the `features` option in the second parameter to `encode`.
 
 For instance, the generic `alert(1)` example is 2084 chracters long.
 
 ```js
-var output = JScrewIt.encode("alert(1)", true); // output is 2084 characters
+var options = { wrapWithEval: true };
+var output = JScrewIt.encode("alert(1)", options); // output is 2084 characters
 ```
 
 But if we specify that we are only interested in code that runs in an up to date Firefox browser,
 the output length shrinks to less than a half:
 
 ```js
-var output = JScrewIt.encode("alert(1)", true, "FF31"); // 972 characters now
+var options = { features: "FF31", wrapWithEval: true };
+var output = JScrewIt.encode("alert(1)", options); // 972 characters now
 ```
 
 You can specify more than one feature using an array, e.g.
 
 ```js
 var input = "document.body.style.background='red'";
-var features = ["ATOB", "WINDOW"];
-var output = JScrewIt.encode(input, true, features);
+var options = { features: ["ATOB", "WINDOW"], wrapWithEval: true };
+var output = JScrewIt.encode(input, options);
 ```
 
 This table lists individual features of some common browsers.
@@ -267,14 +271,14 @@ Keep in mind that each of the target engines needs to support every feature you 
 So if you want your JSFuck code to run on both Internet Explorer and Firefox, this won't work.
 
 ```js
-var features = ["IE9", "FF31"];
+{ features: ["IE9", "FF31"] }
 ```
 
 Instead, you have to specify features supported by both browsers.
 Those turn out out to be `"NO_SAFARI_LF"`, `"SELF"`, `"UNDEFINED"` and `"WINDOW"`.
 
 ```js
-var features = ["NO_SAFARI_LF", "SELF", "UNDEFINED", "WINDOW"];
+{ features: ["NO_SAFARI_LF", "SELF", "UNDEFINED", "WINDOW"] }
 ```
 
 ### Reference
@@ -331,7 +335,7 @@ value is `true`.
 
 This function throws a `ReferenceError` if some unknown features are specified.
 
-#### <code>**JScrewIt.encode(*input*, *wrapWithEval*, *features*)**</code>
+#### <code>**JScrewIt.encode(*input*, *options*)**</code>
 
 Encodes a given string into JSFuck. Returns the encoded string.
 
@@ -340,20 +344,23 @@ Encodes a given string into JSFuck. Returns the encoded string.
 <dt><code><strong><em>input</em></strong></code></dt>
 <dd>The string to encode.</dd>
 
-<dt><code><strong><em>wrapWithEval</em></strong></code></dt>
-<dd>
-If this parameter is truthy, the return value evaluates to a function that runs the specified string
-as JavaScript code.
-If this parameter is falsy, the return value evaluates to a string equivalent to the specified
-input.</dd>
+<dt><code><strong><em>options</em></strong></code></dt>
+<dd>An optional object specifying encoding options.</dd>
 
-<dt><code><strong><em>features</em></strong></code></dt>
+<dt><code><strong><em>options.features</em></strong></code></dt>
 <dd>
 A string or array of strings specifying the feature(s) available on the engine that evaluates the
 encoded output.
 If this parameter is an empty array or <code>undefined</code>, <code>DEFAULT</code> is assumed: this
 ensures maximum compatibility but also generates the largest code.
 To generate shorter code, specify some features.</dd>
+
+<dt><code><strong><em>options.wrapWithEval</em></strong></code></dt>
+<dd>
+If this parameter is truthy, the return value evaluates to a function that runs the specified string
+as JavaScript code.
+If this parameter is falsy, the return value evaluates to a string equivalent to the specified
+input.</dd>
 
 </dl>
 
