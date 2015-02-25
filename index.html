@@ -152,9 +152,10 @@ function encode()
 {
     var compatibility = ua.options[ua.selectedIndex].value;
     var output;
+    var options = { features: compatibility, wrapWithEval: evalBox.checked };
     try
     {
-        output = JScrewIt.encode(inputArea.value, evalBox.checked, compatibility);
+        output = JScrewIt.encode(inputArea.value, options);
     }
     catch (e)
     {

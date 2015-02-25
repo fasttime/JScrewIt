@@ -50,6 +50,7 @@ for (var index = 2; index < argv.length; ++index)
     }
 }
 
+var options = { features: features, wrapWithEval: wrapWithEval };
 if (inputFileName == null)
 {
     var repl = require('repl');
@@ -67,7 +68,7 @@ if (inputFileName == null)
                 lines.forEach(
                     function (line)
                     {
-                        var output = JScrewIt.encode(line, wrapWithEval, features);
+                        var output = JScrewIt.encode(line, options);
                         this.push(output + '\n');
                     },
                     this
@@ -95,7 +96,7 @@ else
     var output;
     try
     {
-        output = JScrewIt.encode(input, wrapWithEval, features);
+        output = JScrewIt.encode(input, options);
     }
     catch (error)
     {
