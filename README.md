@@ -345,7 +345,10 @@ Encodes a given string into JSFuck. Returns the encoded string.
 <dd>The string to encode.</dd>
 
 <dt><code><strong><em>options</em></strong></code></dt>
-<dd>An optional object specifying encoding options.</dd>
+<dd>
+An optional object specifying encoding options.
+
+<dl>
 
 <dt><code><strong><em>options.features</em></strong></code></dt>
 <dd>
@@ -361,6 +364,10 @@ If this parameter is truthy, the return value evaluates to a function that runs 
 as JavaScript code.
 If this parameter is falsy, the return value evaluates to a string equivalent to the specified
 input.</dd>
+
+</dl>
+
+</dd>
 
 </dl>
 
