@@ -8,10 +8,29 @@ module.exports =
         // Project configuration.
         grunt.initConfig(
             {
-                clean: { default: ['coverage', 'lib/**/*.min.js'] },
+                clean: { default: ['coverage', 'lib/**/*.js'] },
+                concat:
+                {
+                    default:
+                    {
+                        src:
+                        [
+                            'src/preamble',
+                            'src/features.js',
+                            'src/definers.js',
+                            'src/screw-buffer.js',
+                            'src/encoder.js',
+                            'src/jscrewit-base.js',
+                            'src/debug.js',
+                            'src/postamble'
+                        ],
+                        dest: 'lib/jscrewit.js'
+                    },
+                    options: { separator: '\n', stripBanners: true }
+                },
                 jscs:
                 {
-                    default: ['*.js', 'lib/**/*.js', 'test/**/*.js'],
+                    default: ['*.js', 'src/**/*.js', 'test/**/*.js'],
                     options:
                     {
                         disallowMixedSpacesAndTabs: true,
@@ -74,7 +93,7 @@ module.exports =
                 },
                 jshint:
                 {
-                    default: ['*.js', 'lib/**/*.js', 'test/**/*.js'],
+                    default: ['*.js', 'src/**/*.js', 'test/**/*.js'],
                     options:
                     {
                         curly: true,
@@ -111,11 +130,15 @@ module.exports =
         
         // These plugins provide necessary tasks.
         grunt.loadNpmTasks('grunt-contrib-clean');
+        grunt.loadNpmTasks('grunt-contrib-concat');
         grunt.loadNpmTasks('grunt-contrib-jshint');
         grunt.loadNpmTasks('grunt-contrib-uglify');
         grunt.loadNpmTasks('grunt-jscs');
         grunt.loadNpmTasks('grunt-mocha-istanbul');
         
         // Default task.
-        grunt.registerTask('default', ['clean', 'jshint', 'jscs', 'mocha_istanbul', 'uglify']);
+        grunt.registerTask(
+            'default',
+            ['clean', 'jshint', 'jscs', 'concat', 'mocha_istanbul', 'uglify']
+        );
     };

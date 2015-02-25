@@ -26,6 +26,7 @@
     "expectations": "~0.4.1",
     "grunt": "~0.4.5",
     "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-concat": "~0.5.1",
     "grunt-contrib-jshint": "~0.11.0",
     "grunt-contrib-uglify": "~0.8.0",
     "grunt-jscs": "~1.5.0",
