@@ -16,7 +16,7 @@
                     var content;
                     try
                     {
-                        content = JScrewIt.encode(input, false, compatibility).length;
+                        content = JScrewIt.encode(input, { features: compatibility }).length;
                     }
                     catch (error)
                     {
@@ -141,7 +141,8 @@
                         JSON.stringify(expression1) + ' (with wrapWithEval)',
                         function ()
                         {
-                            var encoding = JScrewIt.encode(expression1, true, compatibility);
+                            var options = { features: compatibility, wrapWithEval: true };
+                            var encoding = JScrewIt.encode(expression1, options);
                             var actual = emuEval(emuFeatures, encoding);
                             expect(actual).toBe(42);
                         }
@@ -151,7 +152,8 @@
                         JSON.stringify(expression2) + ' (with wrapWithEval)',
                         function ()
                         {
-                            var encoding = JScrewIt.encode(expression2, true, compatibility);
+                            var options = { features: compatibility, wrapWithEval: true };
+                            var encoding = JScrewIt.encode(expression2, options);
                             var actual = emuEval(emuFeatures, encoding);
                             expect(actual).toBe('♠♥♦♣');
                         }
@@ -163,7 +165,8 @@
                         JSON.stringify(expression3),
                         function ()
                         {
-                            var encoding = JScrewIt.encode(expression3, false, compatibility);
+                            var options = { features: compatibility };
+                            var encoding = JScrewIt.encode(expression3, options);
                             var actual = emuEval(emuFeatures, encoding);
                             expect(actual).toBe(expression3);
                             expect(encoding).toBe(expectedEncoding3);
@@ -174,7 +177,8 @@
                         JSON.stringify(expression4),
                         function ()
                         {
-                            var encoding = JScrewIt.encode(expression4, false, compatibility);
+                            var options = { features: compatibility };
+                            var encoding = JScrewIt.encode(expression4, options);
                             var actual = emuEval(emuFeatures, encoding);
                             expect(actual).toBe(expression4);
                         }
@@ -307,8 +311,23 @@
                     function ()
                     {
                         var fn =
-                            function () { JScrewIt.encode('', false, ['NO_IE_SRC', 'IE_SRC']); };
+                            function ()
+                            {
+                                var options = { features: ['NO_IE_SRC', 'IE_SRC'] };
+                                JScrewIt.encode('', options);
+                            };
                         expect(fn).toThrow(ReferenceError('Incompatible features'));
+                    }
+                );
+                it(
+                    'still supports legacy option parameters',
+                    function ()
+                    {
+                        var input = 'alert(1)';
+                        var actual = JScrewIt.encode(input, true, 'FF31');
+                        var options = { features: 'FF31', wrapWithEval: true };
+                        var expected = JScrewIt.encode(input, options);
+                        expect(actual).toBe(expected);
                     }
                 );
             }
@@ -1062,7 +1081,7 @@
                             '(default)',
                             function ()
                             {
-                                var output = JScrewIt.encode(character, false);
+                                var output = JScrewIt.encode(character);
                                 verifyOutput(output);
                             }
                         );
@@ -1074,7 +1093,7 @@
                         '(default)',
                         function ()
                         {
-                            var output = JScrewIt.encode(character, false);
+                            var output = JScrewIt.encode(character);
                             verifyOutput(output);
                         }
                     );
@@ -1084,10 +1103,11 @@
                             '(atob)',
                             function ()
                             {
-                                var output = JScrewIt.encode(character, false, 'ATOB');
+                                var options = { features: 'ATOB' };
+                                var output = JScrewIt.encode(character, options);
                                 verifyOutput(output, featureSet.ATOB && ['ATOB']);
                                 expect(output.length).not.toBeGreaterThan(
-                                    JScrewIt.encode(character, false).length
+                                    JScrewIt.encode(character).length
                                 );
                             }
                         );
