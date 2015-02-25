@@ -5,12 +5,16 @@
 JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters to
 write and execute any code: `[]()!+`.
 
-JScrewIt is a fork of [JSFuck](https://github.com/aemkei/jsfuck) with the ability to optimize code
-for a particular set of JavaScript engines and even just for your browser.
+JScrewIt is a fork of [JSFuck](https://github.com/aemkei/jsfuck) that adds substantial enhancements
+to the original implementation.
+* Options to optimize code for a particular set of JavaScript engines or even just for your browser:
+  the more specific your engine choice, the shorter the code you'll get.
+* Support for all modern JavaScript engines.
+* Neat large file encoding.
 
-The more specific your engine choice, the shorter the code you'll get.
-
-Demo: [jscrew.it](http://jscrew.it)
+Play with it now at [**jscrew.it**](http://jscrew.it), or give a look at [jQuery *Screwed*]
+(https://github.com/fasttime/jquery-screwed) for a real example: a working version of jQuery
+consisting of only six different characters.
 
 ## Example
 
