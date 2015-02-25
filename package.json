@@ -16,6 +16,17 @@
     "url": "https://github.com/fasttime/JScrewIt/blob/master/LICENSE.txt"
   },
   "author": "Francesco Trotta <ft@fasttime.org> (https://github.com/fasttime)",
+  "files": [
+    "favicon.ico",
+    "index.html",
+    "lib",
+    "LICENSE.txt",
+    "output.txt",
+    "package.json",
+    "screw.js",
+    "screw.svg",
+    "*.md"
+  ],
   "main": "lib/jscrewit.js",
   "bin": "screw.js",
   "repository": {
