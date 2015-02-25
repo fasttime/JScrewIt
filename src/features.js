@@ -75,7 +75,7 @@ var incompatibleFeatureMasks;
                 'Node.js.',
             check: function ()
             {
-                return self != null && 'atob' in self && 'btoa' in self;
+                return typeof self !== 'undefined' && 'atob' in self && 'btoa' in self;
             }
         },
         CAPITAL_HTML:
@@ -107,7 +107,7 @@ var incompatibleFeatureMasks;
                 'Only available in Android Browser versions prior to 4.4.2.',
             check: function ()
             {
-                return self + '' === '[object DOMWindow]';
+                return typeof self !== 'undefined' && self + '' === '[object DOMWindow]';
             },
             includes: ['SELF'],
             excludes: ['WINDOW']
@@ -267,7 +267,7 @@ var incompatibleFeatureMasks;
                 'This feature is not available in Node.js.',
             check: function ()
             {
-                return /^\[object .*Window]$/.test(self);
+                return typeof self !== 'undefined' && /^\[object .*Window]$/.test(self);
             }
         },
         UNDEFINED:
@@ -305,7 +305,7 @@ var incompatibleFeatureMasks;
                 'Not available in Android Browser versions prior to 4.4.2 and Node.js.',
             check: function ()
             {
-                return self + '' === '[object Window]';
+                return typeof self !== 'undefined' && self + '' === '[object Window]';
             },
             includes: ['SELF'],
             excludes: ['DOMWINDOW']

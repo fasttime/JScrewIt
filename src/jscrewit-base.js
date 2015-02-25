@@ -92,7 +92,7 @@ var setUp;
             }
         };
     
-    setUp(self);
+    setUp(typeof self !== 'undefined' ? self : null);
     
     if (typeof module !== 'undefined')
     {

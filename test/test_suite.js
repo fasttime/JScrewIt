@@ -684,17 +684,24 @@
                     function ()
                     {
                         var input = repeat('0', 185);
-                        var encoder = JScrewIt.debug.createEncoder();
-                        var encodeByDict = sinon.stub(encoder, 'encodeByDict');
-                        encodeByDict.withArgs(input, undefined).returns('AB');
-                        encodeByDict.withArgs(input, 4).returns('A');
-                        sinon.stub(encoder, 'encodeSimple');
-                        var output = encoder.encode(input);
                         
-                        sinon.assert.calledTwice(encodeByDict);
-                        sinon.assert.calledWith(encodeByDict, input, undefined);
-                        sinon.assert.calledWith(encodeByDict, input, 4);
-                        expect(output).toBe('A');
+                        function test(radixOutput, expectedOutput)
+                        {
+                            var encoder = JScrewIt.debug.createEncoder();
+                            var encodeByDict = sinon.stub(encoder, 'encodeByDict');
+                            encodeByDict.withArgs(input, undefined).returns('AB');
+                            encodeByDict.withArgs(input, 4).returns(radixOutput);
+                            sinon.stub(encoder, 'encodeSimple');
+                            var output = encoder.encode(input);
+                            
+                            sinon.assert.calledTwice(encodeByDict);
+                            sinon.assert.calledWith(encodeByDict, input, undefined);
+                            sinon.assert.calledWith(encodeByDict, input, 4);
+                            expect(output).toBe(expectedOutput);
+                        }
+                        
+                        test('A', 'A');
+                        test('ABC', 'AB');
                     }
                 );
                 it(
