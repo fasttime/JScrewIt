@@ -360,10 +360,18 @@ To generate shorter code, specify some features.</dd>
 
 <dt><code><strong><em>options.wrapWithEval</em></strong></code></dt>
 <dd>
-If this parameter is truthy, the return value evaluates to a function that runs the specified string
-as JavaScript code.
+If this parameter is truthy, the return value evaluates to a function that runs the specified input
+string as JavaScript code.
 If this parameter is falsy, the return value evaluates to a string equivalent to the specified
 input.</dd>
+
+<dt><code><strong><em>options.trimCode</em></strong></code></dt>
+<dd>
+If this parameter is truthy, the specified input string is interpreted as JavaScript code and spaces
+and comments in the beginning and in the end are removed from the generated output.
+This is especially useful to remove banner comments and trailing newline characters which are
+sometimes found in minified scripts.
+This option has no effect if the input string is not well-formed JavaScript code.</dd>
 
 </dl>
 
