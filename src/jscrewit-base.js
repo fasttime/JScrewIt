@@ -6,7 +6,8 @@ availableFeatureMask,
 getFeatureMask,
 incompatibleFeatureMasks,
 module,
-self
+self,
+trimJS
 */
 
 var JScrewIt;
@@ -30,19 +31,27 @@ var setUp;
         return result;
     }
     
-    function encode(input, param2, param3)
+    function encode(input, arg2, arg3)
     {
         var features;
         var wrapWithEval;
-        if (typeof param2 === 'object')
+        if (typeof arg2 === 'object')
         {
-            features = param2.features;
-            wrapWithEval = param2.wrapWithEval;
+            features = arg2.features;
+            wrapWithEval = arg2.wrapWithEval;
+            if (arg2.trimScript)
+            {
+                input = trimJS(input);
+                if (input == null)
+                {
+                    throw new SyntaxError('Malformed JavaScript');
+                }
+            }
         }
         else
         {
-            features = param3;
-            wrapWithEval = param2;
+            features = arg3;
+            wrapWithEval = arg2;
         }
         var encoder = getEncoder(features);
         var output = encoder.encode(input + '', wrapWithEval);

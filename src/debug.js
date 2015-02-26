@@ -12,7 +12,8 @@ expandEntries,
 featureMaskMap,
 getValidFeatureMask,
 hasOuterPlus,
-setUp
+setUp,
+trimJS
 */
 
 if (typeof DEBUG === 'undefined' || DEBUG)
@@ -104,7 +105,8 @@ if (typeof DEBUG === 'undefined' || DEBUG)
             getConstantEntries:     getConstantEntries,
             getEntryFeatures:       getEntryFeatures,
             hasOuterPlus:           hasOuterPlus,
-            setUp:                  setUp
+            setUp:                  setUp,
+            trimJS:                 trimJS,
         };
     
     })();
