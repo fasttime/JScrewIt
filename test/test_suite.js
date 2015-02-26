@@ -564,15 +564,24 @@
                     }
                 );
                 it(
+                    'does not remove false comment in regular expression',
+                    function ()
+                    {
+                        var input = 'x=/\\/*.*/';
+                        var expected = 'x=/\\/*.*/';
+                        var actual = JScrewIt.debug.trimJS(input);
+                        expect(actual).toBe(expected);
+                    }
+                );
+                it(
                     'returns undefined for malformed code',
                     function ()
                     {
-                        var input = '/* hey guys! my comment doesn\t work!';
+                        var input = '/* hey guys! my comment doesn\'t work!';
                         var actual = JScrewIt.debug.trimJS(input);
                         expect(actual).toBeUndefined();
                     }
                 );
-                // TODO: handle and test backslashes
             }
         );
         describe(
