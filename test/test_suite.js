@@ -142,8 +142,8 @@
                         function ()
                         {
                             var options = { features: compatibility, wrapWithEval: true };
-                            var encoding = JScrewIt.encode(expression1, options);
-                            var actual = emuEval(emuFeatures, encoding);
+                            var output = JScrewIt.encode(expression1, options);
+                            var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(42);
                         }
                     );
@@ -153,8 +153,8 @@
                         function ()
                         {
                             var options = { features: compatibility, wrapWithEval: true };
-                            var encoding = JScrewIt.encode(expression2, options);
-                            var actual = emuEval(emuFeatures, encoding);
+                            var output = JScrewIt.encode(expression2, options);
+                            var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe('♠♥♦♣');
                         }
                     );
@@ -166,10 +166,10 @@
                         function ()
                         {
                             var options = { features: compatibility };
-                            var encoding = JScrewIt.encode(expression3, options);
-                            var actual = emuEval(emuFeatures, encoding);
+                            var output = JScrewIt.encode(expression3, options);
+                            var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(expression3);
-                            expect(encoding).toBe(expectedEncoding3);
+                            expect(output).toBe(expectedEncoding3);
                         }
                     );
                     var expression4 = repeat('☺', 20);
@@ -178,8 +178,8 @@
                         function ()
                         {
                             var options = { features: compatibility };
-                            var encoding = JScrewIt.encode(expression4, options);
-                            var actual = emuEval(emuFeatures, encoding);
+                            var output = JScrewIt.encode(expression4, options);
+                            var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(expression4);
                         }
                     );
@@ -298,11 +298,11 @@
                 describeEncodeTest('NO_IE');
                 describeEncodeTest('AUTO');
                 it(
-                    'correctly encodes an empty string',
+                    'encodes an empty string',
                     function ()
                     {
-                        var encoding = JScrewIt.encode('');
-                        var actual = eval(encoding);
+                        var output = JScrewIt.encode('');
+                        var actual = eval(output);
                         expect(actual).toBe('');
                     }
                 );
@@ -324,10 +324,43 @@
                     function ()
                     {
                         var input = 'alert(1)';
-                        var actual = JScrewIt.encode(input, true, 'FF31');
+                        var output = JScrewIt.encode(input, true, 'FF31');
                         var options = { features: 'FF31', wrapWithEval: true };
                         var expected = JScrewIt.encode(input, options);
-                        expect(actual).toBe(expected);
+                        expect(output).toBe(expected);
+                    }
+                );
+                describe(
+                    'with option trimCode',
+                    function ()
+                    {
+                        it(
+                            'uses trimJS',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('/* */ABC\n', { trimCode: true });
+                                var actual = eval(output);
+                                expect(actual).toBe('ABC');
+                            }
+                        );
+                        it(
+                            'encodes a script consisting of only blanks and comments',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('/* */\n', { trimCode: true });
+                                var actual = eval(output);
+                                expect(actual).toBe('');
+                            }
+                        );
+                        it(
+                            'encodes malformed JavaScript',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('/* */"ABC', { trimCode: true });
+                                var actual = eval(output);
+                                expect(actual).toBe('/* */"ABC');
+                            }
+                        );
                     }
                 );
             }
