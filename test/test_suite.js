@@ -510,6 +510,72 @@
             }
         );
         describe(
+            'JScrewIt.debug.trimJS',
+            function ()
+            {
+                it(
+                    'trims spaces',
+                    function ()
+                    {
+                        var input = '\n \t\ralert(1)\r\t \n';
+                        var expected = 'alert(1)';
+                        var actual = JScrewIt.debug.trimJS(input);
+                        expect(actual).toBe(expected);
+                    }
+                );
+                it(
+                    'trims single-line comments',
+                    function ()
+                    {
+                        var input = '// Hello\n//World!\nalert(1)//Goodbye\n// World!';
+                        var expected = 'alert(1)';
+                        var actual = JScrewIt.debug.trimJS(input);
+                        expect(actual).toBe(expected);
+                    }
+                );
+                it(
+                    'trims multiline comments',
+                    function ()
+                    {
+                        var input = '/*/**//* || pipes\n//slashes */alert(1)/* and stuff */';
+                        var expected = 'alert(1)';
+                        var actual = JScrewIt.debug.trimJS(input);
+                        expect(actual).toBe(expected);
+                    }
+                );
+                it(
+                    'trims empty script comments',
+                    function ()
+                    {
+                        var input = '/* Introduction */\n// The end.\n';
+                        var expected = '';
+                        var actual = JScrewIt.debug.trimJS(input);
+                        expect(actual).toBe(expected);
+                    }
+                );
+                it(
+                    'does not remove comments between code',
+                    function ()
+                    {
+                        var input = '/*A*/\nalert//B\n(/*C*/1\n//D\n)/*E*/';
+                        var expected = 'alert//B\n(/*C*/1\n//D\n)';
+                        var actual = JScrewIt.debug.trimJS(input);
+                        expect(actual).toBe(expected);
+                    }
+                );
+                it(
+                    'returns undefined for malformed code',
+                    function ()
+                    {
+                        var input = '/* hey guys! my comment doesn\t work!';
+                        var actual = JScrewIt.debug.trimJS(input);
+                        expect(actual).toBeUndefined();
+                    }
+                );
+                // TODO: handle and test backslashes
+            }
+        );
+        describe(
             'ScrewBuffer',
             function ()
             {
