@@ -20,6 +20,7 @@ module.exports =
                             'src/definers.js',
                             'src/screw-buffer.js',
                             'src/encoder.js',
+                            'src/trim-js.js',
                             'src/jscrewit-base.js',
                             'src/debug.js',
                             'src/postamble'
