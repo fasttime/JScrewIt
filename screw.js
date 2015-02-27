@@ -3,6 +3,7 @@
 'use strict';
 
 var JScrewIt = require('./lib/jscrewit.js');
+var parseCommandLine = require('./bin/parse-command-line.js');
 
 function widthOf(size)
 {
@@ -17,40 +18,22 @@ function byteCount(size, width)
     return string;
 }
 
-var wrapWith;
-var inputFileName;
-var outputFileName;
-var features;
+var command;
 
-var argv = process.argv;
-for (var index = 2; index < argv.length; ++index)
+try
 {
-    var arg = argv[index];
-    if (index > 2 && argv[index - 1] === '-f')
-    {
-        features = arg.split(/[ ,]g/);
-    }
-    else
-    {
-        if (arg === '-w')
-        {
-            wrapWith = 'call';
-        }
-        else if (arg !== '-f')
-        {
-            if (inputFileName)
-            {
-                outputFileName = arg;
-            }
-            else
-            {
-                inputFileName = arg;
-            }
-        }
-    }
+    command = parseCommandLine(process.argv);
+}
+catch (error)
+{
+    console.error(error.message);
+    return;
 }
 
-var options = { features: features, wrapWith: wrapWith };
+var inputFileName   = command.inputFileName;
+var outputFileName  = command.outputFileName;
+var options         = command.options;
+
 if (inputFileName == null)
 {
     var repl = require('repl');
@@ -103,10 +86,9 @@ else
         console.error(error.message);
         return;
     }
-    var outputStream;
     if (outputFileName)
     {
-        outputStream = fs.createWriteStream(outputFileName);
+        fs.writeFile(outputFileName, output);
         var originalSize = input.length;
         var screwedSize = output.length;
         var width = Math.max(widthOf(originalSize), widthOf(screwedSize));
@@ -118,7 +100,6 @@ else
     }
     else
     {
-        outputStream = process.stdout;
+        console.log(output);
     }
-    outputStream.write(output);
 }
