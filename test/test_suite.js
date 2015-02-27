@@ -138,21 +138,21 @@
                 {
                     var expression1 = 'return Math.log(2e18)^0';
                     it(
-                        JSON.stringify(expression1) + ' (with wrapWithEval)',
+                        JSON.stringify(expression1) + ' (with wrapWith: "call")',
                         function ()
                         {
-                            var options = { features: compatibility, wrapWithEval: true };
+                            var options = { features: compatibility, wrapWith: 'call' };
                             var output = JScrewIt.encode(expression1, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(42);
                         }
                     );
-                    var expression2 = 'return decodeURI(encodeURI("♠♥♦♣"))';
+                    var expression2 = 'decodeURI(encodeURI("♠♥♦♣"))';
                     it(
-                        JSON.stringify(expression2) + ' (with wrapWithEval)',
+                        JSON.stringify(expression2) + ' (with wrapWith: "eval")',
                         function ()
                         {
-                            var options = { features: compatibility, wrapWithEval: true };
+                            var options = { features: compatibility, wrapWith: 'eval' };
                             var output = JScrewIt.encode(expression2, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe('♠♥♦♣');
@@ -174,10 +174,10 @@
                     );
                     var expression4 = repeat('☺', 20);
                     it(
-                        JSON.stringify(expression4),
+                        JSON.stringify(expression4) + ' (with wrapWith: "none")',
                         function ()
                         {
-                            var options = { features: compatibility };
+                            var options = { features: compatibility, wrapWith: 'none' };
                             var output = JScrewIt.encode(expression4, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(expression4);
@@ -320,12 +320,26 @@
                     }
                 );
                 it(
+                    'throws an error for invalid wrapWith',
+                    function ()
+                    {
+                        var fn =
+                            function ()
+                            {
+                                var options = { wrapWith: null };
+                                JScrewIt.encode('', options);
+                            };
+                        expect(fn).toThrow(Error('Invalid value for option wrapWith'));
+
+                    }
+                );
+                it(
                     'still supports legacy option parameters',
                     function ()
                     {
                         var input = 'alert(1)';
                         var output = JScrewIt.encode(input, true, 'FF31');
-                        var options = { features: 'FF31', wrapWithEval: true };
+                        var options = { features: 'FF31', wrapWith: 'call' };
                         var expected = JScrewIt.encode(input, options);
                         expect(output).toBe(expected);
                     }

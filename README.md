@@ -3,7 +3,7 @@
 [![NPM](https://nodei.co/npm/jscrewit.png?compact=true)](https://nodei.co/npm/jscrewit/)
 
 JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters to
-write and execute any code: `[]()!+`.
+write and run any code: `[]()!+`.
 
 JScrewIt is a fork of [JSFuck](https://github.com/aemkei/jsfuck) that adds substantial enhancements
 to the original implementation.
@@ -88,15 +88,14 @@ var JScrewIt = require("jscrewit");
 This will encode the `alert(1)` example shown above and run it using `eval`.
 
 ```js
-var output = JScrewIt.encode("alert(1)", { wrapWithEval: true });
+var output = JScrewIt.encode("alert(1)", { wrapWith: "call" });
 eval(output);
 ```
 
-Setting `wrapWithEval` to `true` in the second parameter indicates that we would like the output to
-be executable.
+Setting `wrapWith` to `"call"` in the second parameter indicates that we would like the output to be
+executable.
 
-`wrapWithEval` should be omitted or set to `false` to encode a plain string instead of JavaScript
-code.
+`wrapWith` should be omitted or set to `"none"` to encode a plain string instead of JavaScript code.
 
 ```js
 var output = JScrewIt.encode("Hello, world!");
@@ -122,7 +121,7 @@ the value of the `features` option in the second parameter to `encode`.
 For instance, the generic `alert(1)` example is 2084 chracters long.
 
 ```js
-var options = { wrapWithEval: true };
+var options = { wrapWith: "call" };
 var output = JScrewIt.encode("alert(1)", options); // output is 2084 characters
 ```
 
@@ -130,7 +129,7 @@ But if we specify that we are only interested in code that runs in an up to date
 the output length shrinks to less than a half:
 
 ```js
-var options = { features: "FF31", wrapWithEval: true };
+var options = { features: "FF31", wrapWith: "call" };
 var output = JScrewIt.encode("alert(1)", options); // 972 characters now
 ```
 
@@ -138,7 +137,7 @@ You can specify more than one feature using an array, e.g.
 
 ```js
 var input = "document.body.style.background='red'";
-var options = { features: ["ATOB", "WINDOW"], wrapWithEval: true };
+var options = { features: ["ATOB", "WINDOW"], wrapWith: "call" };
 var output = JScrewIt.encode(input, options);
 ```
 
@@ -289,7 +288,7 @@ Returns `true` if all of the specified features are available in the current eng
 `false`.
 
 <dl>
-<dt><code><strong><em>features</em></strong></code></dt>
+<dt><code>features</code></dt>
 <dd>A string or array of strings specifying the feature(s) to be tested.</dd>
 </dl>
 
@@ -314,7 +313,7 @@ This function throws a `ReferenceError` if some unknown features are specified.
 Returns `true` if the specified features are compatible with each other.
 
 <dl>
-<dt><code><strong><em>features</em></strong></code></dt>
+<dt><code>features</code></dt>
 <dd>A string or array of strings specifying the feature(s) to be tested.</dd>
 </dl>
 
@@ -341,16 +340,16 @@ Encodes a given string into JSFuck. Returns the encoded string.
 
 <dl>
 
-<dt><code><strong><em>input</em></strong></code></dt>
+<dt><code>input</code></dt>
 <dd>The string to encode.</dd>
 
-<dt><code><strong><em>options</em></strong></code></dt>
+<dt><code>options</code></dt>
 <dd>
 An optional object specifying encoding options.
 
 <dl>
 
-<dt><code><strong><em>options.features</em></strong></code></dt>
+<dt><code>options.features</code></dt>
 <dd>
 A string or array of strings specifying the feature(s) available on the engine that evaluates the
 encoded output.
@@ -358,14 +357,32 @@ If this parameter is an empty array or <code>undefined</code>, <code>DEFAULT</co
 ensures maximum compatibility but also generates the largest code.
 To generate shorter code, specify some features.</dd>
 
-<dt><code><strong><em>options.wrapWithEval</em></strong></code></dt>
+<dt><code>options.wrapWith</code></dt>
 <dd>
-If this parameter is truthy, the return value evaluates to a function that runs the specified input
-string as JavaScript code.
-If this parameter is falsy, the return value evaluates to a string equivalent to the specified
-input.</dd>
+This option controls the type of code generated from the given input.
+Allowed values are listed below.
 
-<dt><code><strong><em>options.trimCode</em></strong></code></dt>
+<dl>
+
+<dt><code>"none"</code> (default)</dt>
+<dd>
+Produces a string matching the specified input string (except for trimmed parts when used in
+conjunction with the option <code>trimCode</code>).</dd>
+
+<dt><code>"call"</code></dt>
+<dd>
+Produces code evaluating to a call to a function whose body contains the specified input
+string.</dd>
+
+<dt><code>"eval"</code></dt>
+<dd>
+Produces code evaluating to the result of invoking <code>eval</code> with the specified input string
+as parameter.</dd>
+
+</dl>
+</dd>
+
+<dt><code>options.trimCode</code></dt>
 <dd>
 If this parameter is truthy, the specified input string is interpreted as JavaScript code and spaces
 and comments in the beginning and in the end are removed from the generated output.
@@ -374,7 +391,6 @@ sometimes found in minified scripts.
 This option has no effect if the input string is not well-formed JavaScript code.</dd>
 
 </dl>
-
 </dd>
 
 </dl>
@@ -387,6 +403,9 @@ Also, an out of memory condition may occur when processing very large data.
 
 If some unknown features are specified, a `ReferenceError` is thrown.
 
+If the option `wrapWith` is specified with an invalid value, an `Error` with the message "Invalid
+value for option wrapWith" is thrown.
+
 #### <code>**JScrewIt.FEATURE_INFOS**</code>
 
 This is a container mapping feature names to descriptors.
@@ -397,24 +416,24 @@ Note that a feature descriptor can be mapped to by more than one name.
 
 <dl>
 
-<dt><code><strong>name</strong></code></dt>
+<dt><code>name</code></dt>
 <dd>Primary name of the feature.</dd>
 
-<dt><code><strong>description</strong></code></dt>
+<dt><code>description</code></dt>
 <dd>A short description of the feature in plain English.</dd>
 
-<dt><code><strong>available</strong></code></dt>
+<dt><code>available</code></dt>
 <dd>
 <code>true</code> if the specified feature is available on the current engine; otherwise,
 <code>false</code>.</dd>
 
-<dt><code><strong>includes</strong></code></dt>
+<dt><code>includes</code></dt>
 <dd>
 An array of feature names implied by this feature.
 If a feature is available, its <code>includes</code> are, too.
 If a feature is not available, other features including it are also not available.</dd>
 
-<dt><code><strong>excludes</strong></code></dt>
+<dt><code>excludes</code></dt>
 <dd>
 An array of feature names not compatible with this feature.
 If a feature is available, its <code>excludes</code> are not.</dd>

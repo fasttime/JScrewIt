@@ -17,7 +17,7 @@ function byteCount(size, width)
     return string;
 }
 
-var wrapWithEval;
+var wrapWith;
 var inputFileName;
 var outputFileName;
 var features;
@@ -34,7 +34,7 @@ for (var index = 2; index < argv.length; ++index)
     {
         if (arg === '-w')
         {
-            wrapWithEval = true;
+            wrapWith = 'call';
         }
         else if (arg !== '-f')
         {
@@ -50,7 +50,7 @@ for (var index = 2; index < argv.length; ++index)
     }
 }
 
-var options = { features: features, wrapWithEval: wrapWithEval };
+var options = { features: features, wrapWith: wrapWith };
 if (inputFileName == null)
 {
     var repl = require('repl');
