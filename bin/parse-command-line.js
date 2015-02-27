@@ -2,17 +2,22 @@
 
 'use strict';
 
+function quote(arg)
+{
+    return '"' + arg + '"';
+}
+
 module.exports =
     function (argv)
     {
         function parseFeatures()
         {
-            var arg = argv[++index];
-            if (arg === undefined)
+            var arg2 = argv[++index];
+            if (arg2 === undefined)
             {
-                throw Error('Missing feature list');
+                throw Error('option ' + quote(arg) + ' requires an argument');
             }
-            options.features = arg.trim().split(/(?:\s+|\s*\,\s*)/);
+            options.features = arg2.trim().split(/(?:\s+|\s*\,\s*)/);
         }
         
         function parseSwitch(char)
@@ -29,17 +34,18 @@ module.exports =
                 options.trimCode = true;
                 break;
             default:
-                throw Error('Unrecognized switch ' + JSON.stringify(char));
+                throw Error('unrecognized flag ' + quote(char));
             }
         }
         
         var inputFileName;
         var outputFileName;
         var options = { };
+        var arg;
         
         for (var index = 2; index < argv.length; ++index)
         {
-            var arg = argv[index];
+            arg = argv[index];
             var flag;
             if (/^\-\-/.test(arg))
             {
@@ -49,6 +55,8 @@ module.exports =
                 case 'features':
                     parseFeatures();
                     break;
+                case 'help':
+                    return;
                 case 'trim-code':
                     options.trimCode = true;
                     break;
@@ -59,7 +67,7 @@ module.exports =
                     options.wrapWith = 'eval';
                     break;
                 default:
-                    throw Error('Unrecognized flag ' + JSON.stringify(arg));
+                    throw Error('unrecognized option ' + quote(arg));
                 }
             }
             else if (/^\-/.test(arg))
