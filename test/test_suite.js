@@ -458,28 +458,80 @@
                         features.forEach(
                             function (feature)
                             {
-                                it(
+                                describe(
                                     feature,
                                     function ()
                                     {
                                         var info = FEATURE_INFOS[feature];
-                                        var name = info.name;
-                                        expect(name).toBeString();
-                                        expect(info).toBe(FEATURE_INFOS[name]);
-                                        expect(info.available).toBe(
-                                            JScrewIt.areFeaturesAvailable(feature)
-                                        );
-                                        expect(info.includes).toBeArray();
-                                        var excludes = info.excludes;
-                                        expect(excludes).toBeArray();
-                                        excludes.forEach(
-                                            function (exclude)
+                                        
+                                        it(
+                                            'is named correctly',
+                                            function ()
                                             {
-                                                var info = FEATURE_INFOS[exclude];
-                                                expect(info.excludes).toContain(feature);
+                                                var name = info.name;
+                                                expect(name).toBeString();
+                                                expect(info).toBe(FEATURE_INFOS[name]);
                                             }
                                         );
-                                        expect(info.description).toBeString();
+                                        it(
+                                            'has expected availability',
+                                            function ()
+                                            {
+                                                expect(info.available).toBe(
+                                                    JScrewIt.areFeaturesAvailable(feature)
+                                                );
+                                            }
+                                        );
+                                        it(
+                                            'has includes array',
+                                            function ()
+                                            {
+                                                expect(info.includes).toBeArray();
+                                            }
+                                        );
+                                        it(
+                                            'has expected excludes array',
+                                            function ()
+                                            {
+                                                var excludes = info.excludes;
+                                                expect(excludes).toBeArray();
+                                                excludes.forEach(
+                                                    function (exclude)
+                                                    {
+                                                        var info = FEATURE_INFOS[exclude];
+                                                        expect(info.excludes).toContain(feature);
+                                                    }
+                                                );
+                                            }
+                                        );
+                                        it(
+                                            'has description string',
+                                            function ()
+                                            {
+                                                expect(info.description).toBeString();
+                                            }
+                                        );
+                                        it(
+                                            'is checkable',
+                                            function ()
+                                            {
+                                                var check = info.check;
+                                                if (check)
+                                                {
+                                                    if (feature in featureSet)
+                                                    {
+                                                        var emuFeatures =
+                                                            featureSet[feature] ? [feature] : [];
+                                                        expect(
+                                                            function ()
+                                                            {
+                                                                emuDo(emuFeatures, check);
+                                                            }
+                                                        ).not.toThrow();
+                                                    }
+                                                }
+                                            }
+                                        );
                                     }
                                 );
                             }

@@ -75,7 +75,7 @@ var incompatibleFeatureMasks;
                 'Node.js.',
             check: function ()
             {
-                return typeof self !== 'undefined' && 'atob' in self && 'btoa' in self;
+                return typeof atob === 'function' && typeof btoa === 'function';
             }
         },
         CAPITAL_HTML:

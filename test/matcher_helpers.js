@@ -28,6 +28,17 @@
             }
             this.assertions.fail(message);
         },
+        toBeBoolean: function ()
+        {
+            var actual = this.value;
+            var message = this.generateMessage(actual, this.expr, 'to be a boolean');
+            var pass = typeof actual === 'boolean';
+            if (pass)
+            {
+                return this.assertions.pass(message);
+            }
+            this.assertions.fail(message);
+        },
         toBeJSFuck: function ()
         {
             var actual = this.value;
