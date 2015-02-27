@@ -34,11 +34,11 @@ var setUp;
     function encode(input, arg2, arg3)
     {
         var features;
-        var wrapWithEval;
+        var wrapWith;
         if (typeof arg2 === 'object')
         {
             features = arg2.features;
-            wrapWithEval = arg2.wrapWithEval;
+            wrapWith = filterWrapWith(arg2.wrapWith);
             if (arg2.trimCode)
             {
                 var trimmedInput = trimJS(input);
@@ -53,11 +53,27 @@ var setUp;
         else
         {
             features = arg3;
-            wrapWithEval = arg2;
+            wrapWith = arg2 ? 'call' : 'none';
         }
         var encoder = getEncoder(features);
-        var output = encoder.encode(input + '', wrapWithEval);
+        var output = encoder.encode(input + '', wrapWith);
         return output;
+    }
+    
+    function filterWrapWith(wrapWith)
+    {
+        if (wrapWith === undefined)
+        {
+            return 'none';
+        }
+        switch (wrapWith += '')
+        {
+        case 'none':
+        case 'call':
+        case 'eval':
+            return wrapWith;
+        }
+        throw new Error('Invalid value for option wrapWith');
     }
     
     function getEncoder(features)

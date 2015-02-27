@@ -1037,7 +1037,7 @@ var expandEntries;
             return stringTokenPattern;
         },
         
-        encode: function (input, wrapWithEval)
+        encode: function (input, wrapWith)
         {
             var MIN_DICT_ENCODABLE_LENGTH = 3;
             var MIN_DICT_RADIX_ENCODABLE_LENGTH = 185;
@@ -1063,9 +1063,13 @@ var expandEntries;
             {
                 throw new Error('Encoding failed');
             }
-            if (wrapWithEval)
+            if (wrapWith === 'call')
             {
                 output = this.resolveConstant('Function') + '(' + output + ')()';
+            }
+            else if (wrapWith === 'eval')
+            {
+                output = this.replace('Function("return eval")()') + '(' + output + ')';
             }
             return output;
         },
