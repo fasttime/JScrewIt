@@ -17,6 +17,7 @@
   },
   "author": "Francesco Trotta <ft@fasttime.org> (https://github.com/fasttime)",
   "files": [
+    "bin",
     "favicon.ico",
     "index.html",
     "lib",
