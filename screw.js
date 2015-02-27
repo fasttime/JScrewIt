@@ -20,13 +20,40 @@ function byteCount(size, width)
 
 var command;
 
+var argv = process.argv;
 try
 {
-    command = parseCommandLine(process.argv);
+    command = parseCommandLine(argv);
 }
 catch (error)
 {
-    console.error(error.message);
+    var path = require('path');
+    
+    var basename = path.basename(argv[1]);
+    var message =
+        basename + ': ' + error.message + '.\nTry "' + basename + ' --help" for more information.';
+    console.error(message);
+    return;
+}
+if (!command)
+{
+    var path = require('path');
+    
+    var basename = path.basename(argv[1]);
+    var message =
+        'Usage: ' + basename + ' [OPTION]... [SOURCE [DESTINATION]]\n' +
+        'Encodes JavaScript with JScrewIt.\n' +
+        '\n' +
+        '  -c, --wrap-with-call    wrap output with a function call\n' +
+        '  -e, --wrap-with-eval    wrap output with eval\n' +
+        '  -f, --features FEATURES use a list of comma separated fetures\n' +
+        '  -t, --trim-code         strip leading and trailing blanks and comments\n' +
+        '      --help              display this help and exit\n' +
+        '\n' +
+        'If no destination file is specified, the output is written to the console.\n' +
+        'If no source or destination file is specified, the command runs in interactive\n' +
+        'mode until interrupted with ^C.';
+    console.log(message);
     return;
 }
 
