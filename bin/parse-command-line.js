@@ -56,7 +56,8 @@ module.exports =
                     parseFeatures();
                     break;
                 case 'help':
-                    return;
+                case 'version':
+                    return flag;
                 case 'trim-code':
                     options.trimCode = true;
                     break;
@@ -84,7 +85,11 @@ module.exports =
             }
             else
             {
-                if (inputFileName)
+                if (outputFileName != null)
+                {
+                    throw Error('unexpected argument ' + quote(arg));
+                }
+                if (inputFileName != null)
                 {
                     outputFileName = arg;
                 }
