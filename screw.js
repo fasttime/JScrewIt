@@ -35,7 +35,7 @@ catch (error)
     console.error(message);
     return;
 }
-if (!command)
+if (command === 'help')
 {
     var path = require('path');
     
@@ -49,11 +49,18 @@ if (!command)
         '  -f, --features FEATURES use a list of comma separated fetures\n' +
         '  -t, --trim-code         strip leading and trailing blanks and comments\n' +
         '      --help              display this help and exit\n' +
+        '      --version           print version information and exit\n' +
         '\n' +
         'If no destination file is specified, the output is written to the console.\n' +
         'If no source or destination file is specified, the command runs in interactive\n' +
         'mode until interrupted with ^C.';
     console.log(message);
+    return;
+}
+else if (command === 'version')
+{
+    var version = require('./package.json').version;
+    console.log('JScrewIt ' + version);
     return;
 }
 
