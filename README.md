@@ -384,11 +384,13 @@ as parameter.</dd>
 
 <dt><code>options.trimCode</code></dt>
 <dd>
-If this parameter is truthy, the specified input string is interpreted as JavaScript code and spaces
-and comments in the beginning and in the end are removed from the generated output.
-This is especially useful to remove banner comments and trailing newline characters which are
+If this parameter is truthy, lines in the beginning and in the end of the file containing nothing
+but space characters and JavaScript comments are removed from the generated output.
+A newline terminator in the last preserved line is also removed.
+This option is especially useful to strip banner comments and trailing newline characters which are
 sometimes found in minified scripts.
-This option has no effect if the input string is not well-formed JavaScript code.</dd>
+Using this option may produce unexpected results if the input is not well-formed JavaScript
+code.</dd>
 
 </dl>
 </dd>
