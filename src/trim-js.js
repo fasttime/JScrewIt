@@ -4,55 +4,30 @@ var trimJS;
 {
     'use strict';
     
-    function expand(pattern, replacementMap)
-    {
-        function replaceCode(_, code)
-        {
-            var replacement = replacementMap[code];
-            return replacement;
-        }
-        
-        var result = pattern.replace(/%([A-Z]+)/g, replaceCode);
-        return result;
-    }
-    
-    var pattern =
-        expand(
-            '^%NCS(?:(%PCS(?:%NCS%PCS)*)%NCS)?$',
-            {
-                NCS:
-                    expand(
-                        '(?:%SLC|%MLC|%WHS)*',
-                        {
-                            SLC: '//[^\\n\\r]*(?![^\\n\\r])',
-                            MLC: '/\\*[^]*?\\*/',
-                            WHS: '\\s+',
-                        }
-                    ),
-                PCS:
-                    expand(
-                        '(?:%DQS|%SQS|%MLS|%COD)',
-                        {
-                            DQS: '"(?:[^"]|\\")*"',
-                            SQS: '\'(?:[^\']|\\\')*\'',
-                            MLS: '`(?:[^`]|\\`)*`',
-                            COD: '(?:[^\\s"\'`/\\\\]|/(?![/\\*])|\\\\[^])+'
-                        }
-                    ),
-            }
+    var regExp =
+        RegExp(
+            '[\n\r]+(?:\\s|//(?:(?!\\*/|`)[^\n\r])*(?![^\n\r])|/\\*(?:(?!`)(?:[^*]|\\*[^/' +
+            ']))*?\\*/)*$'
         );
     
-    var regExp = RegExp(pattern);
-    
     trimJS =
-        function (input)
+        function (str)
         {
-            var match = regExp.exec(input);
+            str =
+                (str + '').replace(
+                    /^(?:\s|\/\/[^\n\r]*(?![^\n\r])|\/\*(?:[^*]|\*[^\/])*?\*\/)*[\n\r]/,
+                    ''
+                );
+            var match = regExp.exec(str);
             if (match)
             {
-                var output = match[1] || '';
-                return output;
+                var index = match.index;
+                if (str[index - 1] !== '\\')
+                {
+                    str = str.slice(0, index);
+                }
             }
+            return str;
         };
 
 })();

@@ -41,13 +41,7 @@ var setUp;
             wrapWith = filterWrapWith(arg2.wrapWith);
             if (arg2.trimCode)
             {
-                var trimmedInput = trimJS(input);
-                // Note that trimJS returns an empty string if the input consists of only blanks
-                // and comments.
-                if (trimmedInput != null)
-                {
-                    input = trimmedInput;
-                }
+                input = trimJS(input);
             }
         }
         else

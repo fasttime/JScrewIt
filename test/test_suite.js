@@ -352,7 +352,7 @@
                             'uses trimJS',
                             function ()
                             {
-                                var output = JScrewIt.encode('/* */ABC\n', { trimCode: true });
+                                var output = JScrewIt.encode('/* */\nABC\n', { trimCode: true });
                                 var actual = eval(output);
                                 expect(actual).toBe('ABC');
                             }
@@ -626,7 +626,7 @@
                     'trims single-line comments',
                     function ()
                     {
-                        var input = '// Hello\n//World!\nalert(1)//Goodbye\n// World!';
+                        var input = '// Hello\n//World!\nalert(1)\n//Goodbye\n// World!';
                         var expected = 'alert(1)';
                         var actual = JScrewIt.debug.trimJS(input);
                         expect(actual).toBe(expected);
@@ -636,7 +636,7 @@
                     'trims multiline comments',
                     function ()
                     {
-                        var input = '/*/**//* || pipes\n//slashes */alert(1)/* and stuff */';
+                        var input = '/*/**//* || pipes\n//slashes */\ralert(1)\r/* and stuff */\n';
                         var expected = 'alert(1)';
                         var actual = JScrewIt.debug.trimJS(input);
                         expect(actual).toBe(expected);
@@ -656,29 +656,30 @@
                     'does not remove comments between code',
                     function ()
                     {
-                        var input = '/*A*/\nalert//B\n(/*C*/1\n//D\n)/*E*/';
+                        var input = '/*A*/\nalert//B\n(/*C*/1\n//D\n)\n/*E*/';
                         var expected = 'alert//B\n(/*C*/1\n//D\n)';
                         var actual = JScrewIt.debug.trimJS(input);
                         expect(actual).toBe(expected);
                     }
                 );
                 it(
-                    'does not remove false comment in regular expression',
+                    'does not remove false comment in multiline string',
                     function ()
                     {
-                        var input = 'x=/\\/*.*/';
-                        var expected = 'x=/\\/*.*/';
+                        var input = 'x="\\\n//"';
+                        var expected = 'x="\\\n//"';
                         var actual = JScrewIt.debug.trimJS(input);
                         expect(actual).toBe(expected);
                     }
                 );
                 it(
-                    'returns undefined for malformed code',
+                    'does not remove false comment in template string',
                     function ()
                     {
-                        var input = '/* hey guys! my comment doesn\'t work!';
+                        var input = 'x=`\n//`';
+                        var expected = 'x=`\n//`';
                         var actual = JScrewIt.debug.trimJS(input);
-                        expect(actual).toBeUndefined();
+                        expect(actual).toBe(expected);
                     }
                 );
             }
