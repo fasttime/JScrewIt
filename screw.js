@@ -97,11 +97,13 @@ else
 {
     var fs = require('fs');
     
-    var input = fs.readFileSync(inputFileName);
+    var input;
     var output;
     try
     {
+        input = fs.readFileSync(inputFileName);
         output = JScrewIt.encode(input, options);
+        fs.writeFileSync(outputFileName, output);
     }
     catch (error)
     {
@@ -110,7 +112,6 @@ else
     }
     if (outputFileName)
     {
-        fs.writeFile(outputFileName, output);
         var report = cli.createReport(input.length, output.length);
         console.log(report);
     }
