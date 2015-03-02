@@ -31,7 +31,7 @@ module.exports =
                 },
                 jscs:
                 {
-                    default: ['*.js', 'bin/**/*.js', 'src/**/*.js', 'test/**/*.js'],
+                    default: ['*.js', 'src/**/*.js', 'test/**/*.js'],
                     options:
                     {
                         disallowMixedSpacesAndTabs: true,
@@ -94,7 +94,7 @@ module.exports =
                 },
                 jshint:
                 {
-                    default: ['*.js', 'bin/**/*.js', 'src/**/*.js', 'test/**/*.js'],
+                    default: ['*.js', 'src/**/*.js', 'test/**/*.js'],
                     options:
                     {
                         curly: true,

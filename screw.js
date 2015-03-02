@@ -2,28 +2,14 @@
 
 'use strict';
 
-var JScrewIt = require('./lib/jscrewit.js');
-var parseCommandLine = require('./bin/parse-command-line.js');
-
-function widthOf(size)
-{
-    return (size + '').length;
-}
-
-function byteCount(size, width)
-{
-    /* jshint singleGroups: false */
-    var string =
-        Array(width - widthOf(size) + 1).join(' ') + (size === 1 ? '1 byte' : size + ' bytes');
-    return string;
-}
+var cli = require('./cli.js');
 
 var command;
 
 var argv = process.argv;
 try
 {
-    command = parseCommandLine(argv);
+    command = cli.parseCommandLine(argv);
 }
 catch (error)
 {
@@ -67,6 +53,8 @@ else if (command === 'version')
 var inputFileName   = command.inputFileName;
 var outputFileName  = command.outputFileName;
 var options         = command.options;
+
+var JScrewIt = require('./lib/jscrewit.js');
 
 if (inputFileName == null)
 {
@@ -123,14 +111,8 @@ else
     if (outputFileName)
     {
         fs.writeFile(outputFileName, output);
-        var originalSize = input.length;
-        var screwedSize = output.length;
-        var width = Math.max(widthOf(originalSize), widthOf(screwedSize));
-        var message =
-            'Original size: ' + byteCount(input.length, width) +
-            '\nScrewed size:  ' + byteCount(screwedSize, width) +
-            '\nExpansion factor: ' + (screwedSize / originalSize).toFixed(2);
-        console.log(message);
+        var report = cli.createReport(input.length, output.length);
+        console.log(report);
     }
     else
     {

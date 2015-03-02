@@ -3,10 +3,10 @@
 'use strict';
 
 var assert = require('assert');
+var cli = require('../cli.js');
 
-var parseCommandLine = require('../bin/parse-command-line.js');
 describe(
-    'parse-command-line.js returns expected results with params',
+    'parseCommandLine returns expected results with params',
     function ()
     {
         function test(params, expected)
@@ -16,7 +16,7 @@ describe(
                 function ()
                 {
                     var argv = [null, '../screw.js'].concat(params);
-                    var actual = parseCommandLine(argv);
+                    var actual = cli.parseCommandLine(argv);
                     assert.deepEqual(actual, expected);
                 }
             );
@@ -29,7 +29,7 @@ describe(
                 function ()
                 {
                     var argv = [null, '../screw.js'].concat(params);
-                    assert.throws(function () { parseCommandLine(argv); }, error);
+                    assert.throws(function () { cli.parseCommandLine(argv); }, error);
                 }
             );
         }
@@ -148,5 +148,48 @@ describe(
             }
         );
         testError(['infile', 'outfile', 'etc.'], /unexpected argument "etc."/);
+    }
+);
+
+describe(
+    'createReport works as expected',
+    function ()
+    {
+        it(
+            'when screwed size is larger than original size',
+            function ()
+            {
+                var actual = cli.createReport(90, 2345);
+                var expected =
+                    'Original size:   90 bytes\n' +
+                    'Screwed size:  2345 bytes\n' +
+                    'Expansion factor: 26.06';
+                assert.strictEqual(actual, expected);
+            }
+        );
+        it(
+            'when screwed size is smaller than original size',
+            function ()
+            {
+                var actual = cli.createReport(100, 99);
+                var expected =
+                    'Original size: 100 bytes\n' +
+                    'Screwed size:   99 bytes\n' +
+                    'Expansion factor: 0.99';
+                assert.strictEqual(actual, expected);
+            }
+        );
+        it(
+            'when original size is 1',
+            function ()
+            {
+                var actual = cli.createReport(1, 6);
+                var expected =
+                    'Original size: 1 byte\n' +
+                    'Screwed size:  6 bytes\n' +
+                    'Expansion factor: 6.00';
+                assert.strictEqual(actual, expected);
+            }
+        );
     }
 );
