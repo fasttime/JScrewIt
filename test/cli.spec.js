@@ -53,6 +53,14 @@ describe(
             }
         );
         test(
+            ['-w'],
+            {
+                inputFileName: undefined,
+                outputFileName: undefined,
+                options: { wrapWith: 'call' }
+            }
+        );
+        test(
             ['--wrap-with-call'],
             {
                 inputFileName: undefined,

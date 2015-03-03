@@ -42,11 +42,12 @@ function parseCommandLine(argv)
         options.features = arg2.trim().split(/(?:\s+|\s*\,\s*)/);
     }
     
-    function parseSwitch(char)
+    function parseFlag(char)
     {
         switch (char)
         {
         case 'c':
+        case 'w':
             options.wrapWith = 'call';
             break;
         case 'e':
@@ -93,7 +94,7 @@ function parseCommandLine(argv)
                 throw Error('unrecognized option ' + quote(arg));
             }
         }
-        else if (/^\-/.test(arg))
+        else if (/^-/.test(arg))
         {
             flag = arg.slice(1);
             if (flag === 'f')
@@ -102,7 +103,7 @@ function parseCommandLine(argv)
             }
             else
             {
-                flag.split('').forEach(parseSwitch);
+                flag.split('').forEach(parseFlag);
             }
         }
         else
