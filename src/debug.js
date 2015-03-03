@@ -16,7 +16,8 @@ setUp,
 trimJS
 */
 
-if (typeof DEBUG === 'undefined' || DEBUG)
+// istanbul ignore else
+if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
 {
     (function ()
     {

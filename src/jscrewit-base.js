@@ -125,8 +125,9 @@ var setUp;
             }
         };
     
-    setUp(typeof self !== 'undefined' ? self : null);
+    setUp(typeof self !== 'undefined' ? /* istanbul ignore next */ self : null);
     
+    // istanbul ignore else
     if (typeof module !== 'undefined')
     {
         module.exports = JScrewIt;
