@@ -69,7 +69,7 @@ function parseCommandLine(argv)
     {
         arg = argv[index];
         var flag;
-        if (/^\-\-/.test(arg))
+        if (/^--/.test(arg))
         {
             flag = arg.slice(2);
             switch (flag)

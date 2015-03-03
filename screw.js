@@ -60,11 +60,10 @@ if (inputFileName == null)
 {
     var repl = require('repl');
     var stream = require('stream');
-    var util = require('util');
     
-    var Stream = function Stream() { stream.Transform.call(this); };
-    util.inherits(Stream, stream.Transform);
-    Stream.prototype._transform =
+    console.log('Press ^C at any time to quit.');
+    var transform = new stream.Transform();
+    transform._transform =
         function (chunk, encoding, callback)
         {
             var lines = chunk.toString().match(/.+/g);
@@ -74,24 +73,21 @@ if (inputFileName == null)
                     function (line)
                     {
                         var output = JScrewIt.encode(line, options);
-                        this.push(output + '\n');
-                    },
-                    this
+                        transform.push(output + '\n');
+                    }
                 );
             }
             callback();
         };
-    console.log('Press ^C at any time to quit.');
-    var script = new Stream();
     repl.start(
         {
-            input: script,
+            input: transform,
             output: process.stdout,
             prompt: 'SCREW> ',
             useColors: true
         }
     );
-    process.stdin.pipe(script);
+    process.stdin.pipe(transform);
 }
 else
 {
