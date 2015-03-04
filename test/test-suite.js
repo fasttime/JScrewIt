@@ -16,7 +16,7 @@
                     var content;
                     try
                     {
-                        content = JScrewIt.encode(input, false, compatibility).length;
+                        content = JScrewIt.encode(input, { features: compatibility }).length;
                     }
                     catch (error)
                     {
@@ -138,21 +138,23 @@
                 {
                     var expression1 = 'return Math.log(2e18)^0';
                     it(
-                        JSON.stringify(expression1) + ' (with wrapWithEval)',
+                        JSON.stringify(expression1) + ' (with wrapWith: "call")',
                         function ()
                         {
-                            var encoding = JScrewIt.encode(expression1, true, compatibility);
-                            var actual = emuEval(emuFeatures, encoding);
+                            var options = { features: compatibility, wrapWith: 'call' };
+                            var output = JScrewIt.encode(expression1, options);
+                            var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(42);
                         }
                     );
-                    var expression2 = 'return decodeURI(encodeURI("♠♥♦♣"))';
+                    var expression2 = 'decodeURI(encodeURI("♠♥♦♣"))';
                     it(
-                        JSON.stringify(expression2) + ' (with wrapWithEval)',
+                        JSON.stringify(expression2) + ' (with wrapWith: "eval")',
                         function ()
                         {
-                            var encoding = JScrewIt.encode(expression2, true, compatibility);
-                            var actual = emuEval(emuFeatures, encoding);
+                            var options = { features: compatibility, wrapWith: 'eval' };
+                            var output = JScrewIt.encode(expression2, options);
+                            var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe('♠♥♦♣');
                         }
                     );
@@ -163,19 +165,21 @@
                         JSON.stringify(expression3),
                         function ()
                         {
-                            var encoding = JScrewIt.encode(expression3, false, compatibility);
-                            var actual = emuEval(emuFeatures, encoding);
+                            var options = { features: compatibility };
+                            var output = JScrewIt.encode(expression3, options);
+                            var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(expression3);
-                            expect(encoding).toBe(expectedEncoding3);
+                            expect(output).toBe(expectedEncoding3);
                         }
                     );
                     var expression4 = repeat('☺', 20);
                     it(
-                        JSON.stringify(expression4),
+                        JSON.stringify(expression4) + ' (with wrapWith: "none")',
                         function ()
                         {
-                            var encoding = JScrewIt.encode(expression4, false, compatibility);
-                            var actual = emuEval(emuFeatures, encoding);
+                            var options = { features: compatibility, wrapWith: 'none' };
+                            var output = JScrewIt.encode(expression4, options);
+                            var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(expression4);
                         }
                     );
@@ -294,11 +298,11 @@
                 describeEncodeTest('NO_IE');
                 describeEncodeTest('AUTO');
                 it(
-                    'correctly encodes an empty string',
+                    'encodes an empty string',
                     function ()
                     {
-                        var encoding = JScrewIt.encode('');
-                        var actual = eval(encoding);
+                        var output = JScrewIt.encode('');
+                        var actual = eval(output);
                         expect(actual).toBe('');
                     }
                 );
@@ -307,8 +311,70 @@
                     function ()
                     {
                         var fn =
-                            function () { JScrewIt.encode('', false, ['NO_IE_SRC', 'IE_SRC']); };
+                            function ()
+                            {
+                                var options = { features: ['NO_IE_SRC', 'IE_SRC'] };
+                                JScrewIt.encode('', options);
+                            };
                         expect(fn).toThrow(ReferenceError('Incompatible features'));
+                    }
+                );
+                it(
+                    'throws an error for invalid wrapWith',
+                    function ()
+                    {
+                        var fn =
+                            function ()
+                            {
+                                var options = { wrapWith: null };
+                                JScrewIt.encode('', options);
+                            };
+                        expect(fn).toThrow(Error('Invalid value for option wrapWith'));
+
+                    }
+                );
+                it(
+                    'still supports legacy option parameters',
+                    function ()
+                    {
+                        var input = 'alert(1)';
+                        var output = JScrewIt.encode(input, true, 'FF31');
+                        var options = { features: 'FF31', wrapWith: 'call' };
+                        var expected = JScrewIt.encode(input, options);
+                        expect(output).toBe(expected);
+                    }
+                );
+                describe(
+                    'with option trimCode',
+                    function ()
+                    {
+                        it(
+                            'uses trimJS',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('/* */\nABC\n', { trimCode: true });
+                                var actual = eval(output);
+                                expect(actual).toBe('ABC');
+                            }
+                        );
+                        it(
+                            'encodes a script consisting of only blanks and comments',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('/* */\n', { trimCode: true });
+                                var actual = eval(output);
+                                expect(actual).toBe('');
+                            }
+                        );
+                        it(
+                            'encodes malformed JavaScript',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('/* */"ABC', { trimCode: true });
+                                var actual = eval(output);
+                                expect(actual).toBe('/* */"ABC');
+                            }
+                        );
                     }
                 );
             }
@@ -392,28 +458,80 @@
                         features.forEach(
                             function (feature)
                             {
-                                it(
+                                describe(
                                     feature,
                                     function ()
                                     {
                                         var info = FEATURE_INFOS[feature];
-                                        var name = info.name;
-                                        expect(name).toBeString();
-                                        expect(info).toBe(FEATURE_INFOS[name]);
-                                        expect(info.available).toBe(
-                                            JScrewIt.areFeaturesAvailable(feature)
-                                        );
-                                        expect(info.includes).toBeArray();
-                                        var excludes = info.excludes;
-                                        expect(excludes).toBeArray();
-                                        excludes.forEach(
-                                            function (exclude)
+                                        
+                                        it(
+                                            'is named correctly',
+                                            function ()
                                             {
-                                                var info = FEATURE_INFOS[exclude];
-                                                expect(info.excludes).toContain(feature);
+                                                var name = info.name;
+                                                expect(name).toBeString();
+                                                expect(info).toBe(FEATURE_INFOS[name]);
                                             }
                                         );
-                                        expect(info.description).toBeString();
+                                        it(
+                                            'has expected availability',
+                                            function ()
+                                            {
+                                                expect(info.available).toBe(
+                                                    JScrewIt.areFeaturesAvailable(feature)
+                                                );
+                                            }
+                                        );
+                                        it(
+                                            'has includes array',
+                                            function ()
+                                            {
+                                                expect(info.includes).toBeArray();
+                                            }
+                                        );
+                                        it(
+                                            'has expected excludes array',
+                                            function ()
+                                            {
+                                                var excludes = info.excludes;
+                                                expect(excludes).toBeArray();
+                                                excludes.forEach(
+                                                    function (exclude)
+                                                    {
+                                                        var info = FEATURE_INFOS[exclude];
+                                                        expect(info.excludes).toContain(feature);
+                                                    }
+                                                );
+                                            }
+                                        );
+                                        it(
+                                            'has description string',
+                                            function ()
+                                            {
+                                                expect(info.description).toBeString();
+                                            }
+                                        );
+                                        it(
+                                            'is checkable',
+                                            function ()
+                                            {
+                                                var check = info.check;
+                                                if (check)
+                                                {
+                                                    if (feature in featureSet)
+                                                    {
+                                                        var emuFeatures =
+                                                            featureSet[feature] ? [feature] : [];
+                                                        expect(
+                                                            function ()
+                                                            {
+                                                                emuDo(emuFeatures, check);
+                                                            }
+                                                        ).not.toThrow();
+                                                    }
+                                                }
+                                            }
+                                        );
                                     }
                                 );
                             }
@@ -486,6 +604,82 @@
                     {
                         var solution = { outerPlus: true };
                         expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(true);
+                    }
+                );
+            }
+        );
+        describe(
+            'JScrewIt.debug.trimJS',
+            function ()
+            {
+                it(
+                    'trims spaces',
+                    function ()
+                    {
+                        var input = '\n \t\ralert(1)\r\t \n';
+                        var expected = 'alert(1)';
+                        var actual = JScrewIt.debug.trimJS(input);
+                        expect(actual).toBe(expected);
+                    }
+                );
+                it(
+                    'trims single-line comments',
+                    function ()
+                    {
+                        var input = '// Hello\n//World!\nalert(1)\n//Goodbye\n// World!';
+                        var expected = 'alert(1)';
+                        var actual = JScrewIt.debug.trimJS(input);
+                        expect(actual).toBe(expected);
+                    }
+                );
+                it(
+                    'trims multiline comments',
+                    function ()
+                    {
+                        var input = '/*/**//* || pipes\n//slashes */\ralert(1)\r/* and stuff */\n';
+                        var expected = 'alert(1)';
+                        var actual = JScrewIt.debug.trimJS(input);
+                        expect(actual).toBe(expected);
+                    }
+                );
+                it(
+                    'trims empty script comments',
+                    function ()
+                    {
+                        var input = '/* Introduction */\n// The end.\n';
+                        var expected = '';
+                        var actual = JScrewIt.debug.trimJS(input);
+                        expect(actual).toBe(expected);
+                    }
+                );
+                it(
+                    'does not remove comments between code',
+                    function ()
+                    {
+                        var input = '/*A*/\nalert//B\n(/*C*/1\n//D\n)\n/*E*/';
+                        var expected = 'alert//B\n(/*C*/1\n//D\n)';
+                        var actual = JScrewIt.debug.trimJS(input);
+                        expect(actual).toBe(expected);
+                    }
+                );
+                it(
+                    'does not remove false comment in multiline string',
+                    function ()
+                    {
+                        var input = 'x="\\\n//"';
+                        var expected = 'x="\\\n//"';
+                        var actual = JScrewIt.debug.trimJS(input);
+                        expect(actual).toBe(expected);
+                    }
+                );
+                it(
+                    'does not remove false comment in template string',
+                    function ()
+                    {
+                        var input = 'x=`\n//`';
+                        var expected = 'x=`\n//`';
+                        var actual = JScrewIt.debug.trimJS(input);
+                        expect(actual).toBe(expected);
                     }
                 );
             }
@@ -684,17 +878,24 @@
                     function ()
                     {
                         var input = repeat('0', 185);
-                        var encoder = JScrewIt.debug.createEncoder();
-                        var encodeByDict = sinon.stub(encoder, 'encodeByDict');
-                        encodeByDict.withArgs(input, undefined).returns('AB');
-                        encodeByDict.withArgs(input, 4).returns('A');
-                        sinon.stub(encoder, 'encodeSimple');
-                        var output = encoder.encode(input);
                         
-                        sinon.assert.calledTwice(encodeByDict);
-                        sinon.assert.calledWith(encodeByDict, input, undefined);
-                        sinon.assert.calledWith(encodeByDict, input, 4);
-                        expect(output).toBe('A');
+                        function test(radixOutput, expectedOutput)
+                        {
+                            var encoder = JScrewIt.debug.createEncoder();
+                            var encodeByDict = sinon.stub(encoder, 'encodeByDict');
+                            encodeByDict.withArgs(input, undefined).returns('AB');
+                            encodeByDict.withArgs(input, 4).returns(radixOutput);
+                            sinon.stub(encoder, 'encodeSimple');
+                            var output = encoder.encode(input);
+                            
+                            sinon.assert.calledTwice(encodeByDict);
+                            sinon.assert.calledWith(encodeByDict, input, undefined);
+                            sinon.assert.calledWith(encodeByDict, input, 4);
+                            expect(output).toBe(expectedOutput);
+                        }
+                        
+                        test('A', 'A');
+                        test('ABC', 'AB');
                     }
                 );
                 it(
@@ -1055,7 +1256,7 @@
                             '(default)',
                             function ()
                             {
-                                var output = JScrewIt.encode(character, false);
+                                var output = JScrewIt.encode(character);
                                 verifyOutput(output);
                             }
                         );
@@ -1067,7 +1268,7 @@
                         '(default)',
                         function ()
                         {
-                            var output = JScrewIt.encode(character, false);
+                            var output = JScrewIt.encode(character);
                             verifyOutput(output);
                         }
                     );
@@ -1077,10 +1278,11 @@
                             '(atob)',
                             function ()
                             {
-                                var output = JScrewIt.encode(character, false, 'ATOB');
+                                var options = { features: 'ATOB' };
+                                var output = JScrewIt.encode(character, options);
                                 verifyOutput(output, featureSet.ATOB && ['ATOB']);
                                 expect(output.length).not.toBeGreaterThan(
-                                    JScrewIt.encode(character, false).length
+                                    JScrewIt.encode(character).length
                                 );
                             }
                         );

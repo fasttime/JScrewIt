@@ -2,63 +2,68 @@
 
 'use strict';
 
-var JScrewIt = require('./lib/jscrewit.js');
+var cli = require('./cli.js');
 
-function widthOf(size)
-{
-    return (size + '').length;
-}
-
-function byteCount(size, width)
-{
-    /* jshint singleGroups: false */
-    var string =
-        Array(width - widthOf(size) + 1).join(' ') + (size === 1 ? '1 byte' : size + ' bytes');
-    return string;
-}
-
-var wrapWithEval;
-var inputFileName;
-var outputFileName;
-var features;
+var command;
 
 var argv = process.argv;
-for (var index = 2; index < argv.length; ++index)
+try
 {
-    var arg = argv[index];
-    if (index > 2 && argv[index - 1] === '-f')
-    {
-        features = arg.split(/[ ,]g/);
-    }
-    else
-    {
-        if (arg === '-w')
-        {
-            wrapWithEval = true;
-        }
-        else if (arg !== '-f')
-        {
-            if (inputFileName)
-            {
-                outputFileName = arg;
-            }
-            else
-            {
-                inputFileName = arg;
-            }
-        }
-    }
+    command = cli.parseCommandLine(argv);
 }
+catch (error)
+{
+    var path = require('path');
+    
+    var basename = path.basename(argv[1]);
+    var message =
+        basename + ': ' + error.message + '.\nTry "' + basename + ' --help" for more information.';
+    console.error(message);
+    return;
+}
+if (command === 'help')
+{
+    var path = require('path');
+    
+    var basename = path.basename(argv[1]);
+    var message =
+        'Usage: ' + basename + ' [OPTION]... [SOURCE [DESTINATION]]\n' +
+        'Encodes JavaScript with JScrewIt.\n' +
+        '\n' +
+        '  -c, --wrap-with-call    wrap output with a function call\n' +
+        '  -e, --wrap-with-eval    wrap output with eval\n' +
+        '  -f, --features FEATURES use a list of comma separated fetures\n' +
+        '  -t, --trim-code         strip leading and trailing blanks and comments\n' +
+        '      --help              display this help and exit\n' +
+        '      --version           print version information and exit\n' +
+        '\n' +
+        'If no destination file is specified, the output is written to the console.\n' +
+        'If no source or destination file is specified, the command runs in interactive\n' +
+        'mode until interrupted with ^C.';
+    console.log(message);
+    return;
+}
+else if (command === 'version')
+{
+    var version = require('./package.json').version;
+    console.log('JScrewIt ' + version);
+    return;
+}
+
+var inputFileName   = command.inputFileName;
+var outputFileName  = command.outputFileName;
+var options         = command.options;
+
+var JScrewIt = require('./lib/jscrewit.js');
 
 if (inputFileName == null)
 {
     var repl = require('repl');
     var stream = require('stream');
-    var util = require('util');
     
-    var Stream = function Stream() { stream.Transform.call(this); };
-    util.inherits(Stream, stream.Transform);
-    Stream.prototype._transform =
+    console.log('Press ^C at any time to quit.');
+    var transform = new stream.Transform();
+    transform._transform =
         function (chunk, encoding, callback)
         {
             var lines = chunk.toString().match(/.+/g);
@@ -67,57 +72,47 @@ if (inputFileName == null)
                 lines.forEach(
                     function (line)
                     {
-                        var output = JScrewIt.encode(line, wrapWithEval, features);
-                        this.push(output + '\n');
-                    },
-                    this
+                        var output = JScrewIt.encode(line, options);
+                        transform.push(output + '\n');
+                    }
                 );
             }
             callback();
         };
-    console.log('Press ^C at any time to quit.');
-    var script = new Stream();
     repl.start(
         {
-            input: script,
+            input: transform,
             output: process.stdout,
             prompt: 'SCREW> ',
             useColors: true
         }
     );
-    process.stdin.pipe(script);
+    process.stdin.pipe(transform);
 }
 else
 {
     var fs = require('fs');
     
-    var input = fs.readFileSync(inputFileName);
+    var input;
     var output;
     try
     {
-        output = JScrewIt.encode(input, wrapWithEval, features);
+        input = fs.readFileSync(inputFileName);
+        output = JScrewIt.encode(input, options);
+        fs.writeFileSync(outputFileName, output);
     }
     catch (error)
     {
         console.error(error.message);
         return;
     }
-    var outputStream;
     if (outputFileName)
     {
-        outputStream = fs.createWriteStream(outputFileName);
-        var originalSize = input.length;
-        var screwedSize = output.length;
-        var width = Math.max(widthOf(originalSize), widthOf(screwedSize));
-        var message =
-            'Original size: ' + byteCount(input.length, width) +
-            '\nScrewed size:  ' + byteCount(screwedSize, width) +
-            '\nExpansion factor: ' + (screwedSize / originalSize).toFixed(2);
-        console.log(message);
+        var report = cli.createReport(input.length, output.length);
+        console.log(report);
     }
     else
     {
-        outputStream = process.stdout;
+        console.log(output);
     }
-    outputStream.write(output);
 }
