@@ -85,10 +85,10 @@ textarea
     </header>
 
     <p>JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters
-    to write and execute any code.
+    to write and run any code.
 
-    <p>Use the form below to convert your own script. Uncheck <kbd>Eval source</kbd> to get back a
-    plain string.
+    <p>Use the form below to convert your own script. Uncheck <kbd>Runnable source</kbd> to obtain
+    a plain string.
 
     <div>
         <label class="code">
@@ -105,7 +105,7 @@ textarea
                     <option value="AUTO">Only this browser
                 </select>
             </label>
-            <label><input id="evalBox" type="checkbox" checked> Eval source</label>
+            <label><input id="wrapWithCallBox" type="checkbox" checked> Executable source</label>
             <button id="encodeButton">Encode</button>
         </div>
 
@@ -152,9 +152,10 @@ function encode()
 {
     var compatibility = ua.options[ua.selectedIndex].value;
     var output;
+    var options = { features: compatibility, wrapWith: wrapWithCallBox.checked ? 'call' : 'none' };
     try
     {
-        output = JScrewIt.encode(inputArea.value, evalBox.checked, compatibility);
+        output = JScrewIt.encode(inputArea.value, options);
     }
     catch (e)
     {
@@ -185,7 +186,7 @@ run.onclick = function ()
         return false;
     }
     
-    if (!evalBox.checked)
+    if (!wrapWithCallBox.checked)
     {
         alert('"' + value + '"');
     }
