@@ -452,5 +452,7 @@ Object.keys(JScrewIt.FEATURE_INFOS)
 
 ## Links
 
+* [JScrewIt](http://www.jscrew.it) online encoder: the true one
 * [JSFuck](http://www.jsfuck.com)
 * Original discussion at [Sla.ckers.org](http://sla.ckers.org/forum/read.php?24,32930)
+* JSFuck introduction and alternatives on [Esolang](http://esolangs.org/wiki/JSFuck)
