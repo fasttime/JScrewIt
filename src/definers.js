@@ -350,13 +350,13 @@ var noProto;
         };
     
     noProto =
-        function (object)
+        function (obj)
         {
             var result = Object.create(null);
-            Object.getOwnPropertyNames(object).forEach(
+            Object.getOwnPropertyNames(obj).forEach(
                 function (name)
                 {
-                    result[name] = object[name];
+                    result[name] = obj[name];
                 }
             );
             return result;

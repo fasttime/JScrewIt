@@ -8,10 +8,12 @@ FEATURE_INFOS,
 Encoder,
 JScrewIt,
 ScrewBuffer,
+describeNoEnum,
 expandEntries,
 featureMaskMap,
 getValidFeatureMask,
 hasOuterPlus,
+noEnum,
 setUp,
 trimJS
 */
@@ -96,19 +98,24 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             return result;
         }
         
-        JScrewIt.debug =
-        {
-            createEncoder:          createEncoder,
-            createScrewBuffer:      createScrewBuffer,
-            defineConstant:         defineConstant,
-            getCharacterEntries:    getCharacterEntries,
-            getComplexEntries:      getComplexEntries,
-            getConstantEntries:     getConstantEntries,
-            getEntryFeatures:       getEntryFeatures,
-            hasOuterPlus:           hasOuterPlus,
-            setUp:                  setUp,
-            trimJS:                 trimJS,
-        };
+        Object.defineProperty(
+            JScrewIt,
+            'debug',
+            describeNoEnum(noEnum
+                ({
+                    createEncoder:          createEncoder,
+                    createScrewBuffer:      createScrewBuffer,
+                    defineConstant:         defineConstant,
+                    getCharacterEntries:    getCharacterEntries,
+                    getComplexEntries:      getComplexEntries,
+                    getConstantEntries:     getConstantEntries,
+                    getEntryFeatures:       getEntryFeatures,
+                    hasOuterPlus:           hasOuterPlus,
+                    setUp:                  setUp,
+                    trimJS:                 trimJS,
+                })
+            )
+        );
     
     })();
 }
