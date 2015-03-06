@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<base target="_top">
-<link rel="apple-touch-icon" href="screw.svg">
-<link rel="author" href="https://github.com/fasttime">
-<link rel="icon" href="favicon.ico">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="description" content="Converts plain JavaScript into JSFuck code, which uses only six
-different characters: []()!+">
-<meta name="viewport" content="width=device-width">
+<meta charset='utf-8'>
+<base target='_top'>
+<link rel='apple-touch-icon' href='screw.svg'>
+<link rel='author' href='https://github.com/fasttime'>
+<link rel='icon' href='favicon.ico'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<meta name='description' content='Converts plain JavaScript into JSFuck code, which uses only six
+different characters: []()!+'>
+<meta name='viewport' content='width=device-width'>
 <style>
 
 * { box-sizing: border-box; }
@@ -74,6 +74,8 @@ textarea
 
 .controls>*:not(:last-child) { margin-right: 1em; }
 
+.execSrc::after { content: 'Executable code'; }
+
 </style>
 <title>JScrewIt - Write any JavaScript with 6 Characters: []()!+</title>
 
@@ -81,40 +83,40 @@ textarea
 <div>
     <header>
         <h1>JScrewIt</h1>
-        <img alt src="screw.svg" width="100" height="100">
+        <img alt src='screw.svg' width='100' height='100'>
     </header>
 
     <p>JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters
     to write and run any code.
 
-    <p>Use the form below to convert your own script. Uncheck <kbd>Runnable source</kbd> to obtain
+    <p>Use the form below to convert your own script. Uncheck <kbd class='execSrc'></kbd> to obtain
     a plain string.
 
     <div>
-        <label class="code">
+        <label class='code'>
             <span>Input</span>
-            <textarea id="inputArea" rows="1">alert(1)</textarea>
+            <textarea id='inputArea' rows='1'>alert(1)</textarea>
         </label>
 
-        <div class="controls">
+        <div class='controls'>
             <label>Compatibility:
-                <select id="ua">
-                    <option value="DEFAULT">All supported engines
-                    <option value="COMPACT">All new browsers
-                    <option value="NO_IE">All except Internet Explorer (JSFuck mode)
-                    <option value="AUTO">Only this browser
+                <select id='ua'>
+                    <option value='DEFAULT'>All supported engines
+                    <option value='COMPACT'>All new browsers
+                    <option value='NO_IE'>All except Internet Explorer (JSFuck mode)
+                    <option value='AUTO'>Only this browser
                 </select>
             </label>
-            <label><input id="wrapWithCallBox" type="checkbox" checked> Executable source</label>
-            <button id="encodeButton">Encode</button>
+            <label class='execSrc'><input id='wrapWithCallBox' type='checkbox' checked> </label>
+            <button id='encodeButton'>Encode</button>
         </div>
 
-        <label class="code">
+        <label class='code'>
             <span>Output</span>
-            <textarea id="outputArea" rows="10"></textarea>
-            <span class="actions">
-                <span id="stats">…</span>
-                <a id="run" href="#">Run this</a>
+            <textarea id='outputArea' rows='10'></textarea>
+            <span class='actions'>
+                <span id='stats'>…</span>
+                <a id='run' href='#'>Run this</a>
             </span>
         </label>
     </div>
@@ -136,17 +138,17 @@ textarea
     <h2>Links</h2>
 
     <ul>
-        <li>View source on <a href="https://github.com/fasttime/JScrewIt">GitHub</a>
+        <li>View source on <a href='https://github.com/fasttime/JScrewIt'>GitHub</a>
         <li>Original discussion at <a
-        href="http://sla.ckers.org/forum/read.php?24,32930">Sla.ckers.org</a>
+        href='http://sla.ckers.org/forum/read.php?24,32930'>Sla.ckers.org</a>
         <li>JSFuck introduction and alternatives on <a
-        href="http://esolangs.org/wiki/JSFuck">Esolang</a>
+        href='http://esolangs.org/wiki/JSFuck'>Esolang</a>
     </ul>
 </div>
-<script src="lib/jscrewit.min.js"></script>
+<script src='lib/jscrewit.min.js'></script>
 <script>
 
-"use strict";
+'use strict';
 
 function encode()
 {
@@ -168,7 +170,7 @@ function encode()
 
 function updateStats()
 {
-    stats.innerHTML = outputArea.value.length + " chars";
+    stats.innerHTML = outputArea.value.length + ' chars';
 }
 
 encodeButton.onclick = encode;
