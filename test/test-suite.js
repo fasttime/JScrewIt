@@ -204,6 +204,20 @@
                         expect(self.JSFuck).toBe(JScrewIt);
                     }
                 );
+                it(
+                    'has no enumerable properties',
+                    function ()
+                    {
+                        expect(JScrewIt).toEqual({ });
+                    }
+                );
+                it(
+                    'has no enumerable debug properties',
+                    function ()
+                    {
+                        expect(JScrewIt.debug).toEqual({ });
+                    }
+                );
             }
         );
         describe(
