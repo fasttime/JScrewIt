@@ -3,7 +3,7 @@
 [![NPM](https://nodei.co/npm/jscrewit.png?compact=true)](https://nodei.co/npm/jscrewit/)
 
 JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters to
-write and run any code: `[]()!+`.
+write and run any code: `!` `(` `)` `+` `[` `]`
 
 JScrewIt is a fork of [JSFuck](https://github.com/aemkei/jsfuck) that adds substantial enhancements
 to the original implementation.
@@ -452,7 +452,6 @@ Object.keys(JScrewIt.FEATURE_INFOS)
 
 ## Links
 
-* [JScrewIt](http://www.jscrew.it) online encoder: the true one
-* [JSFuck](http://www.jsfuck.com)
+* [JScrewIt](http://jscrew.it) online encoder
 * Original discussion at [Sla.ckers.org](http://sla.ckers.org/forum/read.php?24,32930)
 * JSFuck introduction and alternatives on [Esolang](http://esolangs.org/wiki/JSFuck)

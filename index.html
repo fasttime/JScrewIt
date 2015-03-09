@@ -8,58 +8,18 @@
 <link rel='icon' href='favicon.ico'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
 <meta name='description' content='Converts plain JavaScript into JSFuck code, which uses only six
-different characters: []()!+'>
+different characters: ! ( ) + [ ]'>
 <meta name='viewport' content='width=device-width'>
+<script src='lib/jscrewit.min.js'></script>
 <style>
 
 * { box-sizing: border-box; }
 
-a { text-decoration: none; }
-
-a:link { color: #00c; }
-
-a:visited { color: #808; }
-
-a:active { color: #c00; }
-
-body
-{
-    background-color: white;
-    color: black;
-    font-family: sans-serif;
-    padding: 0 20px;
-    text-align: center;
-}
-
-body>* { margin: 0 auto; max-width: 640px; text-align: justify; }
-
-header { height: 100px; position: relative; width: 100%; }
-
-h1
-{
-    font-size: 2em;
-    font-weight: normal;
-    left: 115px;
-    position: absolute;
-    top: 40px;
-}
-
-h2 { font-weight: bold; }
-
-p, .code, .actions, .controls { width: 100%; }
-
-textarea
-{
-    display: block;
-    font-family: monospace;
-    margin: .25em 0 0;
-    resize: vertical;
-    width: 100%;
-}
-
 .actions { display: block; margin: .25em 0 0; }
 
 .actions a { float: right; }
+
+.actions, .code, .controls, p { width: 100%; }
 
 .code
 {
@@ -76,8 +36,50 @@ textarea
 
 .execSrc::after { content: 'Executable code'; }
 
+.noWrap { white-space: nowrap; }
+
+#ua { -webkit-appearance: menulist-button; width: 15em; }
+
+a { text-decoration: none; }
+
+a:link { color: #00c; }
+
+a:visited { color: #808; }
+
+a:active { color: #c00; }
+
+body { background-color: white; color: black; font-family: sans-serif; }
+
+body, button, select { font-size: 13.5pt; }
+
+body>* { margin: 0 auto; max-width: 720px; text-align: justify; }
+
+header { height: 100px; position: relative; width: 100%; }
+
+h1
+{
+    font-size: 2em;
+    font-weight: normal;
+    left: 115px;
+    position: absolute;
+    top: 40px;
+}
+
+h2 { font-weight: bold; }
+
+img { background-color: blue; }
+
+textarea
+{
+    display: block;
+    font: 12pt monospace;
+    margin: .25em 0 0;
+    resize: vertical;
+    width: 100%;
+}
+
 </style>
-<title>JScrewIt - Write any JavaScript with 6 Characters: []()!+</title>
+<title>JScrewIt - Write any JavaScript with 6 Characters: ! ( ) + [ ]</title>
 
 <body>
 <div>
@@ -87,7 +89,8 @@ textarea
     </header>
 
     <p>JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters
-    to write and run any code.
+    to write and run any code: <code>!</code> <code>(</code> <code>)</code> <code>+</code>
+    <code>[</code> <code>]</code>
 
     <p>Use the form below to convert your own script. Uncheck <kbd class='execSrc'></kbd> to obtain
     a plain string.
@@ -95,7 +98,7 @@ textarea
     <div>
         <label class='code'>
             <span>Input</span>
-            <textarea id='inputArea' rows='1'>alert(1)</textarea>
+            <textarea id='inputArea' rows='3'>alert(1)</textarea>
         </label>
 
         <div class='controls'>
@@ -107,7 +110,9 @@ textarea
                     <option value='AUTO'>Only this browser
                 </select>
             </label>
-            <label class='execSrc'><input id='wrapWithCallBox' type='checkbox' checked> </label>
+            <label class='execSrc noWrap'>
+                <input id='wrapWithCallBox' type='checkbox' checked>
+            </label>
             <button id='encodeButton'>Encode</button>
         </div>
 
@@ -138,61 +143,209 @@ textarea
     <h2>Links</h2>
 
     <ul>
-        <li>View source on <a href='https://github.com/fasttime/JScrewIt'>GitHub</a>
-        <li><a href='http://www.jsfuck.com/'>JSFuck</a></li>
+        <li>Documentation and source code on <a
+        href='https://github.com/fasttime/JScrewIt'>GitHub</a>
         <li>Original discussion at <a
         href='http://sla.ckers.org/forum/read.php?24,32930'>Sla.ckers.org</a>
         <li>JSFuck introduction and alternatives on <a
         href='http://esolangs.org/wiki/JSFuck'>Esolang</a>
     </ul>
 </div>
-<script src='lib/jscrewit.min.js'></script>
 <script>
 
 'use strict';
 
+function createWorker()
+{
+    if (typeof Worker !== 'undefined')
+    {
+        try
+        {
+            worker = new Worker('worker.js');
+        }
+        catch (error)
+        { }
+    }
+}
+
 function encode()
 {
-    var compatibility = ua.options[ua.selectedIndex].value;
     var output;
-    var options = { features: compatibility, wrapWith: wrapWithCallBox.checked ? 'call' : 'none' };
+    var options = getOptions();
     try
     {
         output = JScrewIt.encode(inputArea.value, options);
     }
-    catch (e)
+    catch (error)
     {
-        alert(e);
-        return;
+        resetOutput();
+        return updateError(error + '');
     }
-    outputArea.value = output;
-    updateStats();
+    updateOutput(output);
 }
 
-function updateStats()
+function encodeAsync()
 {
-    stats.innerHTML = outputArea.value.length + ' chars';
+    var options = getOptions();
+    var data = { input: inputArea.value, options: options };
+    if (waitingForWorker)
+    {
+        queuedData = data;
+    }
+    else
+    {
+        worker.postMessage(data);
+        outputArea.disabled = true;
+        waitingForWorker = true;
+        resetOutput();
+    }
 }
 
-encodeButton.onclick = encode;
-outputArea.oninput = updateStats;
+function getOptions()
+{
+    var compatibility = ua.options[ua.selectedIndex].value;
+    // Note that some features may be not available in a web worker, that's why we cannot pass
+    // "AUTO" directly.
+    var features = JScrewIt.FEATURE_INFOS[compatibility].includes;
+    var wrapWith = wrapWithCallBox.checked ? 'call' : 'none';
+    var options = { features: features, wrapWith: wrapWith };
+    return options;
+}
 
-run.onclick = function ()
+function handleInputAreaKeyUp(evt)
+{
+    if (evt.key !== 'Tab' && outputSet < 0)
+    {
+        encodeAsync();
+    }
+}
+
+function handleRunClick()
 {
     try
     {
         var value = eval(outputArea.value);
     }
-    catch (e)
+    catch (error)
     {
-        alert(e);
+        alert(error);
         return false;
     }
-    
-    if (!wrapWithCallBox.checked)
+
+    if (typeof value === 'string')
     {
         alert('"' + value + '"');
     }
     return false;
-};
+}
+
+function handleWorkerMessage(evt)
+{
+    if (queuedData)
+    {
+        worker.postMessage(queuedData);
+        queuedData = null;
+    }
+    else
+    {
+        var data = evt.data;
+        var error = data.error;
+        if (error)
+        {
+            updateError(data.error);
+        }
+        else
+        {
+            updateOutput(data.output);
+        }
+        outputArea.disabled = false;
+        waitingForWorker = false;
+    }
+}
+
+function noEncode()
+{
+    if (outputSet)
+    {
+        updateStats(true);
+    }
+}
+
+function resetOutput()
+{
+    outputSet = 0;
+    outputArea.value = '';
+    stats.textContent = '…';
+}
+
+function updateError(error)
+{
+    alert(error);
+}
+
+function updateOutput(output)
+{
+    outputArea.value = output;
+    updateStats();
+}
+
+function updateStats(async)
+{
+    var length = outputArea.value.length;
+    var html = length === 1 ? '1 char' : length + ' chars';
+    if (async)
+    {
+        outputSet = -1;
+        html += ' – <i>out of sync</i>';
+    }
+    else
+    {
+        outputSet = 1;
+    }
+    stats.innerHTML = html;
+}
+
+var outputSet;
+var queuedData;
+var waitingForWorker;
+var worker;
+
+window.onload =
+    function ()
+    {
+        if (worker)
+        {
+            encodeButton.parentNode.removeChild(encodeButton);
+            inputArea.oninput = encodeAsync;
+            inputArea.onkeyup = handleInputAreaKeyUp;
+            ua.onchange = encodeAsync;
+            wrapWithCallBox.onchange = encodeAsync;
+            worker.onmessage = handleWorkerMessage;
+            encodeAsync();
+        }
+        else
+        {
+            encodeButton.onclick = encode;
+            inputArea.oninput = noEncode;
+            ua.onchange = noEncode;
+            wrapWithCallBox.onchange = noEncode;
+            outputArea.value = '';
+        }
+        if (inputArea.createTextRange)
+        {
+            var range = inputArea.createTextRange();
+            range.move('textedit', 1);
+            range.select();
+        }
+        else
+        {
+            inputArea.setSelectionRange(0x7fffffff, 0x7fffffff);
+        }
+        inputArea.focus();
+    };
+
+createWorker();
+run.onclick = handleRunClick;
+outputArea.oninput = updateStats;
+
 </script>
