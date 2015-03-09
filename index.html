@@ -179,7 +179,8 @@ function encode()
     catch (error)
     {
         resetOutput();
-        return updateError(error + '');
+        updateError(error + '');
+        return;
     }
     updateOutput(output);
 }
@@ -195,10 +196,10 @@ function encodeAsync()
     else
     {
         worker.postMessage(data);
-        outputArea.disabled = true;
-        waitingForWorker = true;
         resetOutput();
+        setWaitingForWorker(true);
     }
+    inputArea.onkeyup = null;
 }
 
 function getOptions()
@@ -214,7 +215,7 @@ function getOptions()
 
 function handleInputAreaKeyUp(evt)
 {
-    if (evt.key !== 'Tab' && outputSet < 0)
+    if (evt.key !== 'Tab')
     {
         encodeAsync();
     }
@@ -258,8 +259,7 @@ function handleWorkerMessage(evt)
         {
             updateOutput(data.output);
         }
-        outputArea.disabled = false;
-        waitingForWorker = false;
+        setWaitingForWorker(false);
     }
 }
 
@@ -273,9 +273,15 @@ function noEncode()
 
 function resetOutput()
 {
-    outputSet = 0;
+    outputSet = false;
     outputArea.value = '';
     stats.textContent = '…';
+}
+
+function setWaitingForWorker(value)
+{
+    waitingForWorker = value;
+    outputArea.disabled = value;
 }
 
 function updateError(error)
@@ -289,19 +295,19 @@ function updateOutput(output)
     updateStats();
 }
 
-function updateStats(async)
+function updateStats(outOfSync)
 {
     var length = outputArea.value.length;
     var html = length === 1 ? '1 char' : length + ' chars';
-    if (async)
+    if (outOfSync)
     {
-        outputSet = -1;
+        if (worker)
+        {
+            inputArea.onkeyup = handleInputAreaKeyUp;
+        }
         html += ' – <i>out of sync</i>';
     }
-    else
-    {
-        outputSet = 1;
-    }
+    outputSet = true;
     stats.innerHTML = html;
 }
 
@@ -317,7 +323,6 @@ window.onload =
         {
             encodeButton.parentNode.removeChild(encodeButton);
             inputArea.oninput = encodeAsync;
-            inputArea.onkeyup = handleInputAreaKeyUp;
             ua.onchange = encodeAsync;
             wrapWithCallBox.onchange = encodeAsync;
             worker.onmessage = handleWorkerMessage;
