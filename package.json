@@ -1,7 +1,7 @@
 {
   "name": "jscrewit",
   "version": "1.5.0",
-  "description": "Converts plain JavaScript into JSFuck code, which uses only six different characters: []()!+",
+  "description": "Converts plain JavaScript into JSFuck code, which uses only six different characters: ! ( ) + [ ]",
   "keywords": [
     "esoteric",
     "jsfuck",
@@ -43,8 +43,8 @@
     "grunt-contrib-uglify": "~0.8.0",
     "grunt-jscs": "~1.5.0",
     "grunt-mocha-istanbul": "~2.3.1",
-    "istanbul": "~0.3.6",
+    "istanbul": "~0.3.7",
     "mocha": "https://github.com/fasttime/mocha/tarball/master",
-    "sinon": "~1.12.2"
+    "sinon": "~1.13.0"
   }
 }
