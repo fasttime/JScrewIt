@@ -153,292 +153,6 @@ var expandEntries;
     
     var BASE64_ALPHABET_LO_6 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
     
-    var DEFAULT_CHARACTER_ENCODER =
-    [
-        define(
-            function (char)
-            {
-                var charCode = char.charCodeAt(0);
-                var encoder = charCode < 0x100 ? charEncodeByUnescape8 : charEncodeByUnescape16;
-                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
-                return result;
-            }
-        ),
-        define(
-            function (char)
-            {
-                var charCode = char.charCodeAt(0);
-                var encoder = charCode < 0x100 ? charEncodeByAtob : charEncodeByEval;
-                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
-                return result;
-            },
-            'ATOB'
-        )
-    ];
-    
-    var SIMPLE = noProto
-    ({
-        'false':        { expr: '![]', level: LEVEL_NUMERIC },
-        'true':         { expr: '!![]', level: LEVEL_NUMERIC },
-        'undefined':    { expr: '[][[]]', level: LEVEL_UNDEFINED },
-        'NaN':          { expr: '+[false]', level: LEVEL_NUMERIC },
-        'Infinity':     { expr: '+"1e1000"', level: LEVEL_NUMERIC }
-    });
-    
-    var quoteString = JSON.stringify;
-    
-    function charEncodeByAtob(charCode)
-    {
-        var param1 = BASE64_ALPHABET_LO_6[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
-        var postfix1 = '(' + this.replaceString(param1) + ')';
-        if (param1.length > 2)
-        {
-            postfix1 += this.replaceExpr('[0]');
-        }
-        var length1 = postfix1.length;
-        
-        var param2Left = this.findBase64AlphabetDefinition(BASE64_ALPHABET_LO_4[charCode >> 4]);
-        var param2Right = this.findBase64AlphabetDefinition(BASE64_ALPHABET_HI_4[charCode & 0x0f]);
-        var param2 = param2Left + param2Right;
-        var index2 = 1 + (param2Left.length - 2) / 4 * 3;
-        if (index2 > 9)
-        {
-            index2 = '"' + index2 + '"';
-        }
-        var postfix2 =
-            '(' + this.replaceString(param2) + ')' + this.replaceExpr('[' + index2 + ']');
-        var length2 = postfix2.length;
-        
-        var param3Left = BASE64_ALPHABET_LO_2[charCode >> 6];
-        var param3 = param3Left + BASE64_ALPHABET_HI_6[charCode & 0x3f];
-        var index3 = 2 + (param3Left.length - 3) / 4 * 3;
-        if (index3 > 9)
-        {
-            index3 = '"' + index3 + '"';
-        }
-        var postfix3 =
-            '(' + this.replaceString(param3) + ')' + this.replaceExpr('[' + index3 + ']');
-        var length3 = postfix3.length;
-        
-        var postfix =
-            length1 <= length2 && length1 <= length3 ?
-            postfix1 :
-            length2 <= length3 ? postfix2 : postfix3;
-        var result = this.resolveConstant('atob') + postfix;
-        return result;
-    }
-    
-    function charEncodeByEval(charCode)
-    {
-        var hexCode = this.hexCodeOf(charCode, 4);
-        var result =
-            this.resolveConstant('Function') + '(' +
-            this.replaceString('return"\\u' + hexCode + '"') + ')()';
-        if (hexCode.length > 4)
-        {
-            result += this.replaceExpr('[0]');
-        }
-        return result;
-    }
-    
-    function charEncodeByUnescape16(charCode)
-    {
-        var hexCode = this.hexCodeOf(charCode, 4);
-        var result =
-            this.resolveConstant('unescape') + '(' + this.replaceString('%u' + hexCode) + ')';
-        if (hexCode.length > 4)
-        {
-            result += this.replaceExpr('[0]');
-        }
-        return result;
-    }
-    
-    function charEncodeByUnescape8(charCode)
-    {
-        var hexCode = this.hexCodeOf(charCode, 2);
-        var result =
-            this.resolveConstant('unescape') + '(' + this.replaceString('%' + hexCode) + ')';
-        if (hexCode.length > 2)
-        {
-            result += this.replaceExpr('[0]');
-        }
-        return result;
-    }
-    
-    function createDigitDefinition(digit)
-    {
-        function definition()
-        {
-            var result = createSolution(encodeDigit(digit), LEVEL_NUMERIC);
-            return result;
-        }
-        
-        return definition;
-    }
-    
-    function createReindexMap(count, radix)
-    {
-        var DIGIT_LENGTHS = [3, 5, 9, 14, 19, 24, 29, 34, 39, 44];
-        
-        function getSortLength()
-        {
-            var length = 3 * (str.length - 1);
-            Array.prototype.forEach.call(str, function (digit) { length += DIGIT_LENGTHS[digit]; });
-            return length;
-        }
-        
-        var range = [];
-        for (var index = 0; index < count; ++index)
-        {
-            var str = index.toString(radix);
-            var reindex = range[index] = Object(str);
-            reindex.sortLength = getSortLength();
-        }
-        range.sort(
-            function (reindex1, reindex2)
-            {
-                var result = reindex1.sortLength - reindex2.sortLength;
-                return result;
-            }
-        );
-        return range;
-    }
-    
-    function encodeDigit(digit)
-    {
-        switch (digit)
-        {
-        case '0':
-            return '+[]';
-        case '1':
-            return '+!![]';
-        default:
-            var result = '!![]';
-            do { result += '+!![]'; } while (--digit > 1);
-            return result;
-        }
-    }
-    
-    function isFollowedByLeftSquareBracket(expr, offset)
-    {
-        for (;;)
-        {
-            var char = expr[offset++];
-            if (char === '[')
-            {
-                return true;
-            }
-            if (char !== ' ')
-            {
-                return false;
-            }
-        }
-    }
-    
-    function isPrecededByOperator(expr, offset)
-    {
-        for (;;)
-        {
-            var char = expr[--offset];
-            if (char === '+' || char === '!')
-            {
-                return true;
-            }
-            if (char !== ' ')
-            {
-                return false;
-            }
-        }
-    }
-    
-    function replaceToken(wholeMatch, number, quotedString, space, literal, offset, expr)
-    {
-        var replacement;
-        if (number)
-        {
-            replacement = encodeDigit(number[0]) + '';
-            var length = number.length;
-            for (var index = 1; index < length; ++index)
-            {
-                replacement += '+[' + encodeDigit(number[index]) + ']';
-            }
-            if (length > 1)
-            {
-                replacement = '+(' + replacement + ')';
-            }
-            if (isPrecededByOperator(expr, offset))
-            {
-                replacement = '(' + replacement + ')';
-            }
-        }
-        else if (quotedString)
-        {
-            var string;
-            try
-            {
-                string = JSON.parse(quotedString);
-            }
-            catch (e)
-            {
-                this.throwSyntaxError('Illegal string ' + quotedString);
-            }
-            var strongBound =
-                isPrecededByOperator(expr, offset) ||
-                isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length);
-            replacement = this.replaceString(string, strongBound);
-            if (!replacement)
-            {
-                this.throwSyntaxError('String too complex');
-            }
-        }
-        else if (space)
-        {
-            replacement = '';
-        }
-        else if (literal)
-        {
-            var solution;
-            if (literal in this.constantDefinitions)
-            {
-                solution = this.resolveConstant(literal);
-            }
-            else if (literal in SIMPLE)
-            {
-                solution = resolveSimple(literal);
-            }
-            else
-            {
-                this.throwSyntaxError('Undefined literal ' + literal);
-            }
-            replacement =
-                isPrecededByOperator(expr, offset) && hasOuterPlus(solution) ?
-                '(' + solution + ')' : solution + '';
-        }
-        else
-        {
-            this.throwSyntaxError('Unexpected character ' + quoteString(wholeMatch));
-        }
-        return replacement;
-    }
-    
-    function resolveSimple(simple)
-    {
-        var solution = SIMPLE[simple];
-        if (typeof solution.valueOf() === 'object')
-        {
-            var encoder = new Encoder();
-            encoder.callResolver(
-                simple,
-                function ()
-                {
-                    SIMPLE[simple] = solution =
-                        createSolution(encoder.replaceExpr(solution.expr), solution.level);
-                }
-            );
-        }
-        return solution;
-    }
-    
     CHARACTERS = noProto
     ({
         'a':            '"false"[1]',
@@ -871,17 +585,6 @@ var expandEntries;
         ],
     });
     
-    // Create definitions for digits
-    (function ()
-    {
-        for (var number = 0; number < 10; ++number)
-        {
-            var digit = number + '';
-            CHARACTERS[digit] = createDigitDefinition(digit);
-        }
-    
-    })();
-    
     COMPLEX = noProto
     ({
         Boolean:
@@ -983,6 +686,303 @@ var expandEntries;
         RP_5_N:         'false',
         RP_6_SO:        '"0false"',
     });
+    
+    var DEFAULT_CHARACTER_ENCODER =
+    [
+        define(
+            function (char)
+            {
+                var charCode = char.charCodeAt(0);
+                var encoder = charCode < 0x100 ? charEncodeByUnescape8 : charEncodeByUnescape16;
+                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
+                return result;
+            }
+        ),
+        define(
+            function (char)
+            {
+                var charCode = char.charCodeAt(0);
+                var encoder = charCode < 0x100 ? charEncodeByAtob : charEncodeByEval;
+                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
+                return result;
+            },
+            'ATOB'
+        )
+    ];
+    
+    var SIMPLE = noProto
+    ({
+        'false':        { expr: '![]', level: LEVEL_NUMERIC },
+        'true':         { expr: '!![]', level: LEVEL_NUMERIC },
+        'undefined':    { expr: '[][[]]', level: LEVEL_UNDEFINED },
+        'NaN':          { expr: '+[false]', level: LEVEL_NUMERIC },
+        'Infinity':     { expr: '+"1e1000"', level: LEVEL_NUMERIC }
+    });
+    
+    var quoteString = JSON.stringify;
+    
+    function charEncodeByAtob(charCode)
+    {
+        var param1 = BASE64_ALPHABET_LO_6[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
+        var postfix1 = '(' + this.replaceString(param1) + ')';
+        if (param1.length > 2)
+        {
+            postfix1 += this.replaceExpr('[0]');
+        }
+        var length1 = postfix1.length;
+        
+        var param2Left = this.findBase64AlphabetDefinition(BASE64_ALPHABET_LO_4[charCode >> 4]);
+        var param2Right = this.findBase64AlphabetDefinition(BASE64_ALPHABET_HI_4[charCode & 0x0f]);
+        var param2 = param2Left + param2Right;
+        var index2 = 1 + (param2Left.length - 2) / 4 * 3;
+        if (index2 > 9)
+        {
+            index2 = '"' + index2 + '"';
+        }
+        var postfix2 =
+            '(' + this.replaceString(param2) + ')' + this.replaceExpr('[' + index2 + ']');
+        var length2 = postfix2.length;
+        
+        var param3Left = BASE64_ALPHABET_LO_2[charCode >> 6];
+        var param3 = param3Left + BASE64_ALPHABET_HI_6[charCode & 0x3f];
+        var index3 = 2 + (param3Left.length - 3) / 4 * 3;
+        if (index3 > 9)
+        {
+            index3 = '"' + index3 + '"';
+        }
+        var postfix3 =
+            '(' + this.replaceString(param3) + ')' + this.replaceExpr('[' + index3 + ']');
+        var length3 = postfix3.length;
+        
+        var postfix =
+            length1 <= length2 && length1 <= length3 ?
+            postfix1 :
+            length2 <= length3 ? postfix2 : postfix3;
+        var result = this.resolveConstant('atob') + postfix;
+        return result;
+    }
+    
+    function charEncodeByEval(charCode)
+    {
+        var hexCode = this.hexCodeOf(charCode, 4);
+        var result =
+            this.resolveConstant('Function') + '(' +
+            this.replaceString('return"\\u' + hexCode + '"') + ')()';
+        if (hexCode.length > 4)
+        {
+            result += this.replaceExpr('[0]');
+        }
+        return result;
+    }
+    
+    function charEncodeByUnescape16(charCode)
+    {
+        var hexCode = this.hexCodeOf(charCode, 4);
+        var result =
+            this.resolveConstant('unescape') + '(' + this.replaceString('%u' + hexCode) + ')';
+        if (hexCode.length > 4)
+        {
+            result += this.replaceExpr('[0]');
+        }
+        return result;
+    }
+    
+    function charEncodeByUnescape8(charCode)
+    {
+        var hexCode = this.hexCodeOf(charCode, 2);
+        var result =
+            this.resolveConstant('unescape') + '(' + this.replaceString('%' + hexCode) + ')';
+        if (hexCode.length > 2)
+        {
+            result += this.replaceExpr('[0]');
+        }
+        return result;
+    }
+    
+    function createDigitDefinition(digit)
+    {
+        function definition()
+        {
+            var result = createSolution(encodeDigit(digit), LEVEL_NUMERIC);
+            return result;
+        }
+        
+        return definition;
+    }
+    
+    function createReindexMap(count, radix)
+    {
+        var DIGIT_LENGTHS = [3, 5, 9, 14, 19, 24, 29, 34, 39, 44];
+        
+        function getSortLength()
+        {
+            var length = 3 * (str.length - 1);
+            Array.prototype.forEach.call(str, function (digit) { length += DIGIT_LENGTHS[digit]; });
+            return length;
+        }
+        
+        var range = [];
+        for (var index = 0; index < count; ++index)
+        {
+            var str = index.toString(radix);
+            var reindex = range[index] = Object(str);
+            reindex.sortLength = getSortLength();
+        }
+        range.sort(
+            function (reindex1, reindex2)
+            {
+                var result = reindex1.sortLength - reindex2.sortLength;
+                return result;
+            }
+        );
+        return range;
+    }
+    
+    function encodeDigit(digit)
+    {
+        switch (digit)
+        {
+        case '0':
+            return '+[]';
+        case '1':
+            return '+!![]';
+        default:
+            var result = '!![]';
+            do { result += '+!![]'; } while (--digit > 1);
+            return result;
+        }
+    }
+    
+    function isFollowedByLeftSquareBracket(expr, offset)
+    {
+        for (;;)
+        {
+            var char = expr[offset++];
+            if (char === '[')
+            {
+                return true;
+            }
+            if (char !== ' ')
+            {
+                return false;
+            }
+        }
+    }
+    
+    function isPrecededByOperator(expr, offset)
+    {
+        for (;;)
+        {
+            var char = expr[--offset];
+            if (char === '+' || char === '!')
+            {
+                return true;
+            }
+            if (char !== ' ')
+            {
+                return false;
+            }
+        }
+    }
+    
+    function replaceToken(wholeMatch, number, quotedString, space, literal, offset, expr)
+    {
+        var replacement;
+        if (number)
+        {
+            replacement = encodeDigit(number[0]) + '';
+            var length = number.length;
+            for (var index = 1; index < length; ++index)
+            {
+                replacement += '+[' + encodeDigit(number[index]) + ']';
+            }
+            if (length > 1)
+            {
+                replacement = '+(' + replacement + ')';
+            }
+            if (isPrecededByOperator(expr, offset))
+            {
+                replacement = '(' + replacement + ')';
+            }
+        }
+        else if (quotedString)
+        {
+            var string;
+            try
+            {
+                string = JSON.parse(quotedString);
+            }
+            catch (e)
+            {
+                this.throwSyntaxError('Illegal string ' + quotedString);
+            }
+            var strongBound =
+                isPrecededByOperator(expr, offset) ||
+                isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length);
+            replacement = this.replaceString(string, strongBound);
+            if (!replacement)
+            {
+                this.throwSyntaxError('String too complex');
+            }
+        }
+        else if (space)
+        {
+            replacement = '';
+        }
+        else if (literal)
+        {
+            var solution;
+            if (literal in this.constantDefinitions)
+            {
+                solution = this.resolveConstant(literal);
+            }
+            else if (literal in SIMPLE)
+            {
+                solution = resolveSimple(literal);
+            }
+            else
+            {
+                this.throwSyntaxError('Undefined literal ' + literal);
+            }
+            replacement =
+                isPrecededByOperator(expr, offset) && hasOuterPlus(solution) ?
+                '(' + solution + ')' : solution + '';
+        }
+        else
+        {
+            this.throwSyntaxError('Unexpected character ' + quoteString(wholeMatch));
+        }
+        return replacement;
+    }
+    
+    function resolveSimple(simple)
+    {
+        var solution = SIMPLE[simple];
+        if (typeof solution.valueOf() === 'object')
+        {
+            var encoder = new Encoder();
+            encoder.callResolver(
+                simple,
+                function ()
+                {
+                    SIMPLE[simple] = solution =
+                        createSolution(encoder.replaceExpr(solution.expr), solution.level);
+                }
+            );
+        }
+        return solution;
+    }
+    
+    // Create definitions for digits
+    (function ()
+    {
+        for (var number = 0; number < 10; ++number)
+        {
+            var digit = number + '';
+            CHARACTERS[digit] = createDigitDefinition(digit);
+        }
+    
+    })();
     
     Encoder =
         function (featureMask)
