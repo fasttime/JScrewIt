@@ -278,15 +278,26 @@ var expandEntries;
     
     function createReindexMap(count, radix)
     {
+        var DIGIT_LENGTHS = [3, 5, 9, 14, 19, 24, 29, 34, 39, 44];
+        
+        function getSortLength()
+        {
+            var length = 3 * (str.length - 1);
+            Array.prototype.forEach.call(str, function (digit) { length += DIGIT_LENGTHS[digit]; });
+            return length;
+        }
+        
         var range = [];
         for (var index = 0; index < count; ++index)
         {
-            range[index] = index.toString(radix);
+            var str = index.toString(radix);
+            var reindex = range[index] = Object(str);
+            reindex.sortLength = getSortLength();
         }
         range.sort(
-            function (number1, number2)
+            function (reindex1, reindex2)
             {
-                var result = getNumberLength(number1) - getNumberLength(number2);
+                var result = reindex1.sortLength - reindex2.sortLength;
                 return result;
             }
         );
@@ -306,15 +317,6 @@ var expandEntries;
             do { result += '+!![]'; } while (--digit > 1);
             return result;
         }
-    }
-    
-    function getNumberLength(number)
-    {
-        var DIGIT_LENGTHS = [3, 5, 9, 14, 19, 24, 29, 34, 39, 44];
-        
-        var length = 3 * (number.length - 1);
-        Array.prototype.forEach.call(number, function (digit) { length += DIGIT_LENGTHS[digit]; });
-        return length;
     }
     
     function isFollowedByLeftSquareBracket(expr, offset)
@@ -1142,10 +1144,7 @@ var expandEntries;
                 );
             var freqIndexes =
                 this.replaceNumberArray(
-                    Array.prototype.map.call(
-                        input,
-                        function (char) { return freqs[char].index.toString(radix); }
-                    )
+                    Array.prototype.map.call(input, function (char) { return freqs[char].index; })
                 );
             if (freqIndexes)
             {
