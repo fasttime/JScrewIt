@@ -1136,6 +1136,73 @@
                 );
             }
         );
+        describe(
+            'Limit',
+            function ()
+            {
+                it(
+                    'MIN_CHAR_CODES_ENCODABLE_LENGTH = 3 is suitable',
+                    function ()
+                    {
+                        var MIN_CHAR_CODES_ENCODABLE_LENGTH = 3;
+                        
+                        var encoder = JScrewIt.debug.createEncoder();
+                        
+                        var inputA =
+                            repeat(String.fromCharCode(59999), MIN_CHAR_CODES_ENCODABLE_LENGTH - 1);
+                        var outputA1 = encoder.encodePlain(inputA);
+                        var outputA2 = encoder.encodeByCharCodes(inputA);
+                        expect(outputA1.length).not.toBeGreaterThan(
+                            outputA2.length,
+                            'MIN_CHAR_CODES_ENCODABLE_LENGTH is too large'
+                        );
+                        
+                        var inputB =
+                            repeat(String.fromCharCode(59999), MIN_CHAR_CODES_ENCODABLE_LENGTH);
+                        var outputB1 = encoder.encodePlain(inputB);
+                        var outputB2 = encoder.encodeByCharCodes(inputB);
+                        expect(outputB1.length).toBeGreaterThan(
+                            outputB2.length,
+                            'MIN_CHAR_CODES_ENCODABLE_LENGTH is too small'
+                        );
+                    }
+                );
+                it(
+                    'MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH = 46 is suitable',
+                    function ()
+                    {
+                        var MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH = 46;
+                        
+                        var features = ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'];
+                        var encoder = JScrewIt.debug.createEncoder(features);
+                        
+                        var inputA =
+                            repeat(
+                                String.fromCharCode(49989),
+                                MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH - 1
+                            );
+                        var outputA1 = encoder.encodeByCharCodes(inputA);
+                        var outputA2 = encoder.encodeByCharCodes(inputA, undefined, 4);
+                        expect(outputA1.length).not.toBeGreaterThan(
+                            outputA2.length,
+                            'MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH is too large'
+                        );
+                        
+                        var inputB =
+                            repeat(
+                                String.fromCharCode(49989),
+                                MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH
+                            );
+                        var outputB1 = encoder.encodeByCharCodes(inputB);
+                        var outputB2 = encoder.encodeByCharCodes(inputB, undefined, 4);
+                        expect(outputB1.length).toBeGreaterThan(
+                            outputB2.length,
+                            'MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH is too small'
+                        );
+                    }
+                );
+            }
+        );
     }
     
     function getEmuFeatures(features)
