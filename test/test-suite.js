@@ -1137,9 +1137,42 @@
             }
         );
         describe(
-            'Limit',
+            'Lower bound',
             function ()
             {
+                it(
+                    'MIN_DICT_ENCODABLE_LENGTH = 3 is suitable',
+                    function ()
+                    {
+                        var MIN_DICT_ENCODABLE_LENGTH = 3;
+                        
+                        var encoder = JScrewIt.debug.createEncoder('ENTRIES');
+                        
+                        var inputA =
+                            repeat(
+                                String.fromCharCode(59999),
+                                MIN_DICT_ENCODABLE_LENGTH - 1
+                            );
+                        var outputA1 = encoder.encodeSimple(inputA);
+                        var outputA2 = encoder.encodeByDict(inputA);
+                        expect(outputA1.length).not.toBeGreaterThan(
+                            outputA2.length,
+                            'MIN_DICT_ENCODABLE_LENGTH is too large'
+                        );
+                        
+                        var inputB =
+                            repeat(
+                                String.fromCharCode(59999),
+                                MIN_DICT_ENCODABLE_LENGTH
+                            );
+                        var outputB1 = encoder.encodeSimple(inputB);
+                        var outputB2 = encoder.encodeByDict(inputB);
+                        expect(outputB1.length).toBeGreaterThan(
+                            outputB2.length,
+                            'MIN_DICT_ENCODABLE_LENGTH is too small'
+                        );
+                    }
+                );
                 it(
                     'MIN_CHAR_CODES_ENCODABLE_LENGTH = 3 is suitable',
                     function ()
