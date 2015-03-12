@@ -26,6 +26,7 @@
     "package.json",
     "screw.js",
     "screw.svg",
+    "worker.js",
     "*.md"
   ],
   "main": "lib/jscrewit.js",
