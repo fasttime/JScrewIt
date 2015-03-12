@@ -17,6 +17,10 @@ noProto
 var CHARACTERS;
 var COMPLEX;
 var CONSTANTS;
+var MIN_CHAR_CODES_ENCODABLE_LENGTH;
+var MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH;
+var MIN_DICT_ENCODABLE_LENGTH;
+var MIN_DICT_RADIX_ENCODABLE_LENGTH;
 
 var Encoder;
 
@@ -984,6 +988,11 @@ var expandEntries;
     
     })();
     
+    MIN_CHAR_CODES_ENCODABLE_LENGTH = 3;
+    MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH = 46;
+    MIN_DICT_ENCODABLE_LENGTH = 3;
+    MIN_DICT_RADIX_ENCODABLE_LENGTH = 284;
+    
     Encoder =
         function (featureMask)
         {
@@ -1041,9 +1050,6 @@ var expandEntries;
         
         encode: function (input, wrapWith)
         {
-            var MIN_DICT_ENCODABLE_LENGTH = 3;
-            var MIN_DICT_RADIX_ENCODABLE_LENGTH = 185;
-            
             function callEncode(encoder, minInputLength, radix)
             {
                 if (inputLength >= minInputLength)
@@ -1173,8 +1179,6 @@ var expandEntries;
         
         encodeSimple: function (input, maxLength)
         {
-            var MIN_CHAR_CODES_ENCODABLE_LENGTH = 3;
-            var MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH = 46;
             var MAX_DECODABLE_ARGS = 65533; // limit imposed by Internet Explorer
             
             function callEncode(encoder, minInputLength, long, radix)
