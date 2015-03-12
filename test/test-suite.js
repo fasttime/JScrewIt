@@ -204,6 +204,20 @@
                         expect(self.JSFuck).toBe(JScrewIt);
                     }
                 );
+                it(
+                    'has no enumerable properties',
+                    function ()
+                    {
+                        expect(JScrewIt).toEqual({ });
+                    }
+                );
+                it(
+                    'has no enumerable debug properties',
+                    function ()
+                    {
+                        expect(JScrewIt.debug).toEqual({ });
+                    }
+                );
             }
         );
         describe(
@@ -847,7 +861,7 @@
                     'does not call encodeByDict for insufficiently long input',
                     function ()
                     {
-                        var input = repeat('0', 2);
+                        var input = repeat('0', JScrewIt.debug.MIN_DICT_ENCODABLE_LENGTH - 1);
                         var encoder = JScrewIt.debug.createEncoder();
                         var encodeByDict = sinon.stub(encoder, 'encodeByDict');
                         sinon.stub(encoder, 'encodeSimple').returns('ABC');
@@ -861,7 +875,7 @@
                     'calls encodeByDict without radix for sufficiently long input',
                     function ()
                     {
-                        var input = repeat('0', 3);
+                        var input = repeat('0', JScrewIt.debug.MIN_DICT_ENCODABLE_LENGTH);
                         var encoder = JScrewIt.debug.createEncoder();
                         var encodeByDict = sinon.stub(encoder, 'encodeByDict');
                         encodeByDict.returns('AB');
@@ -877,7 +891,7 @@
                     'calls encodeByDict with and without radix for sufficiently long input',
                     function ()
                     {
-                        var input = repeat('0', 185);
+                        var input = repeat('0', JScrewIt.debug.MIN_DICT_RADIX_ENCODABLE_LENGTH);
                         
                         function test(radixOutput, expectedOutput)
                         {
@@ -1118,6 +1132,79 @@
                     {
                         var output = encoder.encodeByCharCodes(input, undefined, 7);
                         expect(eval(output)).toBe(input);
+                    }
+                );
+            }
+        );
+        describe(
+            'Lower bound',
+            function ()
+            {
+                function test(name, features, createInput, encode1, encode2)
+                {
+                    var minLength = JScrewIt.debug[name];
+                    it(
+                        name + ' = ' + minLength + ' is suitable',
+                        function ()
+                        {
+                            var encoder = JScrewIt.debug.createEncoder(features);
+                            
+                            var inputA = createInput(minLength - 1);
+                            var outputA1 = encode1(encoder, inputA);
+                            var outputA2 = encode2(encoder, inputA);
+                            expect(outputA1.length).not.toBeGreaterThan(
+                                outputA2.length,
+                                name + ' is too large'
+                            );
+                            
+                            var inputB = createInput(minLength);
+                            var outputB1 = encode1(encoder, inputB);
+                            var outputB2 = encode2(encoder, inputB);
+                            expect(outputB1.length).toBeGreaterThan(
+                                outputB2.length,
+                                name + ' is too small'
+                            );
+                        }
+                    );
+                }
+                
+                test(
+                    'MIN_DICT_ENCODABLE_LENGTH',
+                    'ENTRIES',
+                    repeat.bind(null, String.fromCharCode(59999)),
+                    function (encoder, input) { return encoder.encodeSimple(input); },
+                    function (encoder, input) { return encoder.encodeByDict(input); }
+                );
+                test(
+                    'MIN_DICT_RADIX_ENCODABLE_LENGTH',
+                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
+                    function createTestInput(length)
+                    {
+                        var str = '';
+                        while (str.length < length)
+                        {
+                            str += String.fromCharCode(str.length % 100);
+                        }
+                        return str;
+                    },
+                    function (encoder, input) { return encoder.encodeByDict(input); },
+                    function (encoder, input) { return encoder.encodeByDict(input, 4); }
+                );
+                test(
+                    'MIN_CHAR_CODES_ENCODABLE_LENGTH',
+                    'ENTRIES',
+                    repeat.bind(null, String.fromCharCode(59999)),
+                    function (encoder, input) { return encoder.encodePlain(input); },
+                    function (encoder, input) { return encoder.encodeByCharCodes(input); }
+                );
+                test(
+                    'MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH',
+                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
+                    repeat.bind(null, String.fromCharCode(49989)),
+                    function (encoder, input) { return encoder.encodeByCharCodes(input); },
+                    function (encoder, input)
+                    {
+                        return encoder.encodeByCharCodes(input, undefined, 4);
                     }
                 );
             }

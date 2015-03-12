@@ -1,13 +1,13 @@
 {
   "name": "jscrewit",
-  "version": "1.5.0",
-  "description": "Converts plain JavaScript into JSFuck code, which uses only six different characters: []()!+",
+  "version": "1.5.1",
+  "description": "Converts plain JavaScript into JSFuck code, which uses only six different characters: ! ( ) + [ ]",
   "keywords": [
     "esoteric",
     "jsfuck",
     "obfuscation"
   ],
-  "homepage": "https://github.com/fasttime/JScrewIt",
+  "homepage": "http://jscrew.it",
   "bugs": {
     "url": "https://github.com/fasttime/JScrewIt/issues"
   },
@@ -26,6 +26,7 @@
     "package.json",
     "screw.js",
     "screw.svg",
+    "worker.js",
     "*.md"
   ],
   "main": "lib/jscrewit.js",
@@ -35,7 +36,7 @@
     "url": "https://github.com/fasttime/JScrewIt.git"
   },
   "devDependencies": {
-    "expectations": "~0.4.1",
+    "expectations": "~0.4.2",
     "grunt": "~0.4.5",
     "grunt-contrib-clean": "~0.6.0",
     "grunt-contrib-concat": "~0.5.1",
@@ -43,8 +44,8 @@
     "grunt-contrib-uglify": "~0.8.0",
     "grunt-jscs": "~1.5.0",
     "grunt-mocha-istanbul": "~2.3.1",
-    "istanbul": "~0.3.6",
+    "istanbul": "~0.3.7",
     "mocha": "https://github.com/fasttime/mocha/tarball/master",
-    "sinon": "~1.12.2"
+    "sinon": "~1.13.0"
   }
 }

@@ -107,7 +107,8 @@ var incompatibleFeatureMasks;
                 'Only available in Android Browser versions prior to 4.4.2.',
             check: function ()
             {
-                return typeof self !== 'undefined' && self + '' === '[object DOMWindow]';
+                // self + '' throws an error in a web worker in Safari 8
+                return typeof self !== 'undefined' && self.toString() === '[object DOMWindow]';
             },
             includes: ['SELF'],
             excludes: ['WINDOW']
@@ -305,7 +306,8 @@ var incompatibleFeatureMasks;
                 'Not available in Android Browser versions prior to 4.4.2 and Node.js.',
             check: function ()
             {
-                return typeof self !== 'undefined' && self + '' === '[object Window]';
+                // self + '' throws an error in a web worker in Safari 8
+                return typeof self !== 'undefined' && self.toString() === '[object Window]';
             },
             includes: ['SELF'],
             excludes: ['DOMWINDOW']
