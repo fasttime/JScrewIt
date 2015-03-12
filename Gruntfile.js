@@ -27,7 +27,12 @@ module.exports =
                         ],
                         dest: 'lib/jscrewit.js'
                     },
-                    options: { separator: '\n', stripBanners: true }
+                    options:
+                    {
+                        banner: '//! JScrewIt <%= pkg.version %> – <%= pkg.homepage %>\n',
+                        separator: '\n',
+                        stripBanners: true
+                    }
                 },
                 jscs:
                 {
@@ -121,10 +126,15 @@ module.exports =
                     }
                 },
                 mocha_istanbul: { default: 'test/**/*.spec.js' },
+                pkg: grunt.file.readJSON('package.json'),
                 uglify:
                 {
                     default: { files: { 'lib/jscrewit.min.js': 'lib/jscrewit.js' } },
-                    options: { compress: { global_defs: { DEBUG: false }, hoist_vars: true } }
+                    options:
+                    {
+                        compress: { global_defs: { DEBUG: false }, hoist_vars: true },
+                        preserveComments: 'some'
+                    }
                 }
             }
         );
