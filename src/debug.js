@@ -5,13 +5,19 @@ COMPLEX,
 CONSTANTS,
 DEBUG,
 FEATURE_INFOS,
+MIN_CHAR_CODES_ENCODABLE_LENGTH,
+MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH,
+MIN_DICT_ENCODABLE_LENGTH,
+MIN_DICT_RADIX_ENCODABLE_LENGTH,
 Encoder,
 JScrewIt,
 ScrewBuffer,
+describeNoEnum,
 expandEntries,
 featureMaskMap,
 getValidFeatureMask,
 hasOuterPlus,
+noEnum,
 setUp,
 trimJS
 */
@@ -96,19 +102,28 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             return result;
         }
         
-        JScrewIt.debug =
-        {
-            createEncoder:          createEncoder,
-            createScrewBuffer:      createScrewBuffer,
-            defineConstant:         defineConstant,
-            getCharacterEntries:    getCharacterEntries,
-            getComplexEntries:      getComplexEntries,
-            getConstantEntries:     getConstantEntries,
-            getEntryFeatures:       getEntryFeatures,
-            hasOuterPlus:           hasOuterPlus,
-            setUp:                  setUp,
-            trimJS:                 trimJS,
-        };
+        Object.defineProperty(
+            JScrewIt,
+            'debug',
+            describeNoEnum(noEnum
+                ({
+                    MIN_CHAR_CODES_ENCODABLE_LENGTH:        MIN_CHAR_CODES_ENCODABLE_LENGTH,
+                    MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH:  MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH,
+                    MIN_DICT_ENCODABLE_LENGTH:              MIN_DICT_ENCODABLE_LENGTH,
+                    MIN_DICT_RADIX_ENCODABLE_LENGTH:        MIN_DICT_RADIX_ENCODABLE_LENGTH,
+                    createEncoder:                          createEncoder,
+                    createScrewBuffer:                      createScrewBuffer,
+                    defineConstant:                         defineConstant,
+                    getCharacterEntries:                    getCharacterEntries,
+                    getComplexEntries:                      getComplexEntries,
+                    getConstantEntries:                     getConstantEntries,
+                    getEntryFeatures:                       getEntryFeatures,
+                    hasOuterPlus:                           hasOuterPlus,
+                    setUp:                                  setUp,
+                    trimJS:                                 trimJS,
+                })
+            )
+        );
     
     })();
 }
