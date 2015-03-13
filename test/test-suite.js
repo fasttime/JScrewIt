@@ -1178,7 +1178,7 @@
                 test(
                     'MIN_DICT_RADIX_ENCODABLE_LENGTH',
                     ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
-                    function createTestInput(length)
+                    function (length)
                     {
                         var str = '';
                         while (str.length < length)
