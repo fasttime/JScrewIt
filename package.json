@@ -45,7 +45,6 @@
     "grunt-jscs": "~1.5.0",
     "grunt-mocha-istanbul": "~2.3.1",
     "istanbul": "~0.3.7",
-    "mocha": "https://github.com/fasttime/mocha/tarball/master",
-    "sinon": "~1.13.0"
+    "mocha": "https://github.com/fasttime/mocha/tarball/master"
   }
 }
