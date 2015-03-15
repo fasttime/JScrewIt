@@ -17,10 +17,6 @@ noProto
 var CHARACTERS;
 var COMPLEX;
 var CONSTANTS;
-var MIN_CHAR_CODES_ENCODABLE_LENGTH;
-var MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH;
-var MIN_DICT_ENCODABLE_LENGTH;
-var MIN_DICT_RADIX_ENCODABLE_LENGTH;
 
 var Encoder;
 
@@ -842,6 +838,12 @@ var expandEntries;
         return range;
     }
     
+    function defineEnc(enc, minInputLength)
+    {
+        enc.MIN_INPUT_LENGTH = minInputLength;
+        return enc;
+    }
+    
     function encodeDigit(digit)
     {
         switch (digit)
@@ -988,11 +990,6 @@ var expandEntries;
     
     })();
     
-    MIN_CHAR_CODES_ENCODABLE_LENGTH = 3;
-    MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH = 46;
-    MIN_DICT_ENCODABLE_LENGTH = 3;
-    MIN_DICT_RADIX_ENCODABLE_LENGTH = 284;
-    
     Encoder =
         function (featureMask)
         {
@@ -1005,19 +1002,19 @@ var expandEntries;
     
     Encoder.prototype =
     {
-        callEncoder: function (input, encInfoList)
+        callEnc: function (input, encNames)
         {
             var output;
             var inputLength = input.length;
-            encInfoList.forEach(
-                function (encInfo)
+            encNames.forEach(
+                function (encName)
                 {
-                    if (!(inputLength < encInfo.minInputLength))
+                    var enc = this.enc[encName];
+                    if (!(inputLength < enc.MIN_INPUT_LENGTH))
                     {
-                        var encoder = this.enc[encInfo.name];
                         var maxLength = output != null ? output.length : undefined;
-                        var newOutput = encoder.call(this, input, maxLength, encInfo.params);
-                        if (output == null || newOutput != null && newOutput.length < output.length)
+                        var newOutput = enc.call(this, input, maxLength);
+                        if (newOutput != null)
                         {
                             output = newOutput;
                         }
@@ -1073,58 +1070,60 @@ var expandEntries;
         
         enc:
         {
-            byCharCodes: function (input, maxLength, params)
-            {
-                var long = params.long;
-                var radix = params.radix;
-                var output = this.encodeByCharCodes(input, long, radix);
-                if (output && !(output.length > maxLength))
+            byCharCodes: defineEnc(
+                function (input, maxLength)
                 {
+                    var MAX_DECODABLE_ARGS = 65533; // limit imposed by Internet Explorer
+                
+                    var long = input.length > MAX_DECODABLE_ARGS;
+                    var output = this.encodeByCharCodes(input, long, undefined, maxLength);
+                    return output;
+                },
+                3
+            ),
+            byCharCodesRadix4: defineEnc(
+                function (input, maxLength)
+                {
+                    var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
+                    return output;
+                },
+                46
+            ),
+            byDict: defineEnc(
+                function (input, maxLength)
+                {
+                    var output = this.encodeByDict(input, undefined, maxLength);
+                    return output;
+                },
+                3
+            ),
+            byDictRadix4: defineEnc(
+                function (input, maxLength)
+                {
+                    var output = this.encodeByDict(input, 4, maxLength);
+                    return output;
+                },
+                284
+            ),
+            plain: defineEnc(
+                function (input, maxLength)
+                {
+                    var output = this.replaceString(input, false, maxLength);
                     return output;
                 }
-            },
-            byDict: function (input, maxLength, params)
-            {
-                var radix = params.radix;
-                var output = this.encodeByDict(input, radix);
-                if (output && !(output.length > maxLength))
+            ),
+            simple: defineEnc(
+                function (input, maxLength)
                 {
+                    var output = this.encodeSimple(input, maxLength);
                     return output;
                 }
-            },
-            plain: function (input, maxLength)
-            {
-                var output = this.encodePlain(input, maxLength);
-                return output;
-            },
-            simple: function (input, maxLength)
-            {
-                var output = this.encodeSimple(input, maxLength);
-                return output;
-            },
+            ),
         },
         
         encode: function (input, wrapWith)
         {
-            var output =
-                this.callEncoder(
-                    input,
-                    [
-                        {
-                            minInputLength: MIN_DICT_ENCODABLE_LENGTH,
-                            name:           'byDict',
-                            params:         { }
-                        },
-                        {
-                            minInputLength: MIN_DICT_RADIX_ENCODABLE_LENGTH,
-                            name:           'byDict',
-                            params:         { radix: 4 }
-                        },
-                        {
-                            name:           'simple'
-                        }
-                    ]
-                );
+            var output = this.callEnc(input, ['byDict', 'byDictRadix4', 'simple']);
             if (!output)
             {
                 throw new Error('Encoding failed');
@@ -1140,7 +1139,7 @@ var expandEntries;
             return output;
         },
         
-        encodeByCharCodes: function (input, long, radix)
+        encodeByCharCodes: function (input, long, radix, maxLength)
         {
             var output;
             var charCodes =
@@ -1180,11 +1179,14 @@ var expandEntries;
                             '+' + this.replaceString(')') + ')()';
                     }
                 }
+                if (!(output.length > maxLength))
+                {
+                    return output;
+                }
             }
-            return output;
         },
         
-        encodeByDict: function (input, radix)
+        encodeByDict: function (input, radix, maxLength)
         {
             var freqs = Object.create(null);
             Array.prototype.forEach.call(
@@ -1225,39 +1227,16 @@ var expandEntries;
                 var output =
                     freqIndexes + this.replace('["map"]') + '(' + this.replace(mapper) + '(' +
                     this.encodeSimple(dictChars.join('')) + '))' + this.replace('["join"]([])');
-                return output;
+                if (!(output.length > maxLength))
+                {
+                    return output;
+                }
             }
-        },
-        
-        encodePlain: function (input, maxLength)
-        {
-            var output = this.replaceString(input, false, maxLength);
-            return output;
         },
         
         encodeSimple: function (input, maxLength)
         {
-            var MAX_DECODABLE_ARGS = 65533; // limit imposed by Internet Explorer
-            
-            var output =
-                this.callEncoder(
-                    input,
-                    [
-                        {
-                            minInputLength: MIN_CHAR_CODES_ENCODABLE_LENGTH,
-                            name:           'byCharCodes',
-                            params:         { long: input.length > MAX_DECODABLE_ARGS }
-                        },
-                        {
-                            minInputLength: MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH,
-                            name:           'byCharCodes',
-                            params:         { radix: 4 }
-                        },
-                        {
-                            name:           'plain'
-                        }
-                    ]
-                );
+            var output = this.callEnc(input, ['byCharCodes', 'byCharCodesRadix4', 'plain']);
             if (output && !(output.length > maxLength))
             {
                 return output;
