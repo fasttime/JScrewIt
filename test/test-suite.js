@@ -1033,20 +1033,20 @@
             {
                 var encoder = JScrewIt.debug.createEncoder();
                 var input = 'Lorem ipsum dolor sit amet';
-                var CODERS = JScrewIt.debug.CODERS;
-                Object.keys(CODERS).forEach(
+                var coders = JScrewIt.debug.getCoders();
+                Object.keys(coders).forEach(
                     function (coderName)
                     {
                         describe(
                             coderName,
                             function ()
                             {
-                                var maxLength = CODERS[coderName].call(encoder, '').length;
+                                var maxLength = coders[coderName].call(encoder, '').length;
                                 it(
                                     'returns correct JSFuck',
                                     function ()
                                     {
-                                        var output = CODERS[coderName].call(encoder, input);
+                                        var output = coders[coderName].call(encoder, input);
                                         expect(output).toBeJSFuck();
                                         expect(eval(output)).toBe(input);
                                     }
@@ -1056,7 +1056,7 @@
                                     function ()
                                     {
                                         var output =
-                                            CODERS[coderName].call(encoder, '', maxLength - 1);
+                                            coders[coderName].call(encoder, '', maxLength - 1);
                                         expect(output).toBeUndefined();
                                     }
                                 );
@@ -1064,7 +1064,7 @@
                                     'returns a string when output length equals maxLength',
                                     function ()
                                     {
-                                        var output = CODERS[coderName].call(encoder, '', maxLength);
+                                        var output = coders[coderName].call(encoder, '', maxLength);
                                         expect(output).toBeString();
                                     }
                                 );
@@ -1081,9 +1081,9 @@
                 function test(features, createInput, coderName1, coderName2)
                 {
                     var encoder = JScrewIt.debug.createEncoder(features);
-                    var CODERS = JScrewIt.debug.CODERS;
-                    var coder1 = CODERS[coderName1];
-                    var coder2 = CODERS[coderName2];
+                    var coders = JScrewIt.debug.getCoders();
+                    var coder1 = coders[coderName1];
+                    var coder2 = coders[coderName2];
                     var minLength = coder2.MIN_INPUT_LENGTH;
                     it(
                         coderName2 + ' is suitable',
