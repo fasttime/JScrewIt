@@ -827,7 +827,7 @@
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.callEnc = function () { };
+                        encoder.callCoders = function () { };
                         expect(function () { encoder.encode('12345'); }).toThrow(
                             new Error('Encoding failed')
                         );
@@ -1033,19 +1033,20 @@
             {
                 var encoder = JScrewIt.debug.createEncoder();
                 var input = 'Lorem ipsum dolor sit amet';
-                Object.keys(encoder.enc).forEach(
-                    function (encName)
+                var CODERS = JScrewIt.debug.CODERS;
+                Object.keys(CODERS).forEach(
+                    function (coderName)
                     {
                         describe(
-                            encName,
+                            coderName,
                             function ()
                             {
-                                var maxLength = encoder.enc[encName].call(encoder, '').length;
+                                var maxLength = CODERS[coderName].call(encoder, '').length;
                                 it(
                                     'returns correct JSFuck',
                                     function ()
                                     {
-                                        var output = encoder.enc[encName].call(encoder, input);
+                                        var output = CODERS[coderName].call(encoder, input);
                                         expect(output).toBeJSFuck();
                                         expect(eval(output)).toBe(input);
                                     }
@@ -1055,7 +1056,7 @@
                                     function ()
                                     {
                                         var output =
-                                            encoder.enc[encName].call(encoder, '', maxLength - 1);
+                                            CODERS[coderName].call(encoder, '', maxLength - 1);
                                         expect(output).toBeUndefined();
                                     }
                                 );
@@ -1063,8 +1064,7 @@
                                     'returns a string when output length equals maxLength',
                                     function ()
                                     {
-                                        var output =
-                                            encoder.enc[encName].call(encoder, '', maxLength);
+                                        var output = CODERS[coderName].call(encoder, '', maxLength);
                                         expect(output).toBeString();
                                     }
                                 );
@@ -1078,27 +1078,28 @@
             'MIN_INPUT_LENGTH of',
             function ()
             {
-                function test(features, createInput, encName1, encName2)
+                function test(features, createInput, coderName1, coderName2)
                 {
                     var encoder = JScrewIt.debug.createEncoder(features);
-                    var enc1 = encoder.enc[encName1];
-                    var enc2 = encoder.enc[encName2];
-                    var minLength = enc2.MIN_INPUT_LENGTH;
+                    var CODERS = JScrewIt.debug.CODERS;
+                    var coder1 = CODERS[coderName1];
+                    var coder2 = CODERS[coderName2];
+                    var minLength = coder2.MIN_INPUT_LENGTH;
                     it(
-                        encName2 + ' is suitable',
+                        coderName2 + ' is suitable',
                         function ()
                         {
                             var inputA = createInput(minLength - 1);
-                            var outputA1 = enc1.call(encoder, inputA);
-                            var outputA2 = enc2.call(encoder, inputA);
+                            var outputA1 = coder1.call(encoder, inputA);
+                            var outputA2 = coder2.call(encoder, inputA);
                             expect(outputA1.length).not.toBeGreaterThan(
                                 outputA2.length,
                                 'MIN_INPUT_LENGTH is too large'
                             );
                             
                             var inputB = createInput(minLength);
-                            var outputB1 = enc1.call(encoder, inputB);
-                            var outputB2 = enc2.call(encoder, inputB);
+                            var outputB1 = coder1.call(encoder, inputB);
+                            var outputB2 = coder2.call(encoder, inputB);
                             expect(outputB1.length).toBeGreaterThan(
                                 outputB2.length,
                                 'MIN_INPUT_LENGTH is too small'

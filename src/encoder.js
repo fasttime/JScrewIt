@@ -15,6 +15,7 @@ noProto
 */
 
 var CHARACTERS;
+var CODERS;
 var COMPLEX;
 var CONSTANTS;
 
@@ -25,6 +26,12 @@ var expandEntries;
 (function ()
 {
     'use strict';
+    
+    function defineCoder(coder, minInputLength)
+    {
+        coder.MIN_INPUT_LENGTH = minInputLength;
+        return coder;
+    }
     
     var BASE64_ALPHABET_HI_2 = ['NaN', 'false', 'truefalse', '0'];
     
@@ -585,6 +592,65 @@ var expandEntries;
         ],
     });
     
+    CODERS =
+    {
+        byCharCodes: defineCoder
+        (
+            function (input, maxLength)
+            {
+                var MAX_DECODABLE_ARGS = 65533; // limit imposed by Internet Explorer
+            
+                var long = input.length > MAX_DECODABLE_ARGS;
+                var output = this.encodeByCharCodes(input, long, undefined, maxLength);
+                return output;
+            },
+            3
+        ),
+        byCharCodesRadix4: defineCoder
+        (
+            function (input, maxLength)
+            {
+                var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
+                return output;
+            },
+            46
+        ),
+        byDict: defineCoder
+        (
+            function (input, maxLength)
+            {
+                var output = this.encodeByDict(input, undefined, maxLength);
+                return output;
+            },
+            3
+        ),
+        byDictRadix4: defineCoder
+        (
+            function (input, maxLength)
+            {
+                var output = this.encodeByDict(input, 4, maxLength);
+                return output;
+            },
+            284
+        ),
+        plain: defineCoder
+        (
+            function (input, maxLength)
+            {
+                var output = this.replaceString(input, false, maxLength);
+                return output;
+            }
+        ),
+        simple: defineCoder
+        (
+            function (input, maxLength)
+            {
+                var output = this.encodeSimple(input, maxLength);
+                return output;
+            }
+        ),
+    };
+    
     COMPLEX = noProto
     ({
         Boolean:
@@ -838,12 +904,6 @@ var expandEntries;
         return range;
     }
     
-    function defineEnc(enc, minInputLength)
-    {
-        enc.MIN_INPUT_LENGTH = minInputLength;
-        return enc;
-    }
-    
     function encodeDigit(digit)
     {
         switch (digit)
@@ -1002,18 +1062,18 @@ var expandEntries;
     
     Encoder.prototype =
     {
-        callEnc: function (input, encNames)
+        callCoders: function (input, coderNames)
         {
             var output;
             var inputLength = input.length;
-            encNames.forEach(
-                function (encName)
+            coderNames.forEach(
+                function (coderName)
                 {
-                    var enc = this.enc[encName];
-                    if (!(inputLength < enc.MIN_INPUT_LENGTH))
+                    var coder = CODERS[coderName];
+                    if (!(inputLength < coder.MIN_INPUT_LENGTH))
                     {
                         var maxLength = output != null ? output.length : undefined;
-                        var newOutput = enc.call(this, input, maxLength);
+                        var newOutput = coder.call(this, input, maxLength);
                         if (newOutput != null)
                         {
                             output = newOutput;
@@ -1068,62 +1128,9 @@ var expandEntries;
             return stringTokenPattern;
         },
         
-        enc:
-        {
-            byCharCodes: defineEnc(
-                function (input, maxLength)
-                {
-                    var MAX_DECODABLE_ARGS = 65533; // limit imposed by Internet Explorer
-                
-                    var long = input.length > MAX_DECODABLE_ARGS;
-                    var output = this.encodeByCharCodes(input, long, undefined, maxLength);
-                    return output;
-                },
-                3
-            ),
-            byCharCodesRadix4: defineEnc(
-                function (input, maxLength)
-                {
-                    var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
-                    return output;
-                },
-                46
-            ),
-            byDict: defineEnc(
-                function (input, maxLength)
-                {
-                    var output = this.encodeByDict(input, undefined, maxLength);
-                    return output;
-                },
-                3
-            ),
-            byDictRadix4: defineEnc(
-                function (input, maxLength)
-                {
-                    var output = this.encodeByDict(input, 4, maxLength);
-                    return output;
-                },
-                284
-            ),
-            plain: defineEnc(
-                function (input, maxLength)
-                {
-                    var output = this.replaceString(input, false, maxLength);
-                    return output;
-                }
-            ),
-            simple: defineEnc(
-                function (input, maxLength)
-                {
-                    var output = this.encodeSimple(input, maxLength);
-                    return output;
-                }
-            ),
-        },
-        
         encode: function (input, wrapWith)
         {
-            var output = this.callEnc(input, ['byDict', 'byDictRadix4', 'simple']);
+            var output = this.callCoders(input, ['byDict', 'byDictRadix4', 'simple']);
             if (!output)
             {
                 throw new Error('Encoding failed');
@@ -1236,7 +1243,7 @@ var expandEntries;
         
         encodeSimple: function (input, maxLength)
         {
-            var output = this.callEnc(input, ['byCharCodes', 'byCharCodesRadix4', 'plain']);
+            var output = this.callCoders(input, ['byCharCodes', 'byCharCodesRadix4', 'plain']);
             if (output && !(output.length > maxLength))
             {
                 return output;

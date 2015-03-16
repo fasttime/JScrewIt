@@ -1,6 +1,7 @@
 /*
 global
 CHARACTERS,
+CODERS,
 COMPLEX,
 CONSTANTS,
 DEBUG,
@@ -103,6 +104,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             'debug',
             describeNoEnum(noEnum
                 ({
+                    CODERS:                                 CODERS,
                     createEncoder:                          createEncoder,
                     createScrewBuffer:                      createScrewBuffer,
                     defineConstant:                         defineConstant,
