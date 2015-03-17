@@ -1110,6 +1110,18 @@
                 
                 test('ENTRIES', repeat.bind(null, String.fromCharCode(59999)), 'simple', 'byDict');
                 test(
+                    'ENTRIES',
+                    repeat.bind(null, String.fromCharCode(59999)),
+                    'plain',
+                    'byCharCodes'
+                    );
+                test(
+                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
+                    repeat.bind(null, String.fromCharCode(49989)),
+                    'byCharCodes',
+                    'byCharCodesRadix4'
+                );
+                test(
                     ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
                     function (length)
                     {
@@ -1124,16 +1136,19 @@
                     'byDictRadix4'
                 );
                 test(
-                    'ENTRIES',
-                    repeat.bind(null, String.fromCharCode(59999)),
-                    'plain',
-                    'byCharCodes'
-                    );
-                test(
-                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
-                    repeat.bind(null, String.fromCharCode(49989)),
-                    'byCharCodes',
-                    'byCharCodesRadix4'
+                    ['ATOB', 'ENTRIES', 'FILL', 'NO_IE_SRC'],
+                    function (length)
+                    {
+                        var str = '';
+                        for (var i = 0; i < 125; ++i)
+                        {
+                            str += String.fromCharCode(0xffff - i);
+                        }
+                        str = repeat(str, Math.ceil(length / 125)).slice(0, length);
+                        return str;
+                    },
+                    'byDictRadix4',
+                    'byDictRadix5Amended'
                 );
             }
         );
