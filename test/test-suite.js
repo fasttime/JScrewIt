@@ -1085,11 +1085,12 @@
                     var coder1 = coders[coderName1];
                     var coder2 = coders[coderName2];
                     var minLength = coder2.MIN_INPUT_LENGTH;
+                    var inputA = createInput(minLength - 1);
+                    var inputB = createInput(minLength);
                     it(
                         coderName2 + ' is suitable',
                         function ()
                         {
-                            var inputA = createInput(minLength - 1);
                             var outputA1 = coder1.call(encoder, inputA);
                             var outputA2 = coder2.call(encoder, inputA);
                             expect(outputA1.length).not.toBeGreaterThan(
@@ -1097,7 +1098,6 @@
                                 'MIN_INPUT_LENGTH is too large'
                             );
                             
-                            var inputB = createInput(minLength);
                             var outputB1 = coder1.call(encoder, inputB);
                             var outputB2 = coder2.call(encoder, inputB);
                             expect(outputB1.length).toBeGreaterThan(

@@ -1135,6 +1135,36 @@ var expandEntries;
         
         constantDefinitions: CONSTANTS,
         
+        createDictEncoding: function (dict, indexes, radix, amend)
+        {
+            var mapper;
+            if (radix)
+            {
+                if (amend)
+                {
+                    var lastDigit1 = radix - 1;
+                    var lastDigit2 = radix - 2;
+                    mapper =
+                        'Function("return this[parseInt(arguments[0].replace(/true/g,' +
+                        lastDigit2 + ').replace(/undefined/g,' + lastDigit1 + '),' + radix +
+                        ')]")["bind"]';
+                }
+                else
+                {
+                    mapper =
+                        'Function("return this[parseInt(arguments[0],' + radix + ')]")["bind"]';
+                }
+            }
+            else
+            {
+                mapper = '""["charAt"]["bind"]';
+            }
+            var output =
+                indexes + this.replace('["map"]') + '(' + this.replace(mapper) + '(' + dict + '))' +
+                this.replace('["join"]([])');
+            return output;
+        },
+        
         createStringTokenPattern: function ()
         {
             function callback(complex)
@@ -1254,31 +1284,8 @@ var expandEntries;
                 );
             if (freqIndexes)
             {
-                var mapper;
-                if (radix)
-                {
-                    if (amend)
-                    {
-                        var lastDigit1 = radix - 1;
-                        var lastDigit2 = radix - 2;
-                        mapper =
-                            'Function("return this[parseInt(arguments[0].replace(/true/g,' +
-                            lastDigit2 + ').replace(/undefined/g,' + lastDigit1 + '),' + radix +
-                            ')]")["bind"]';
-                    }
-                    else
-                    {
-                        mapper =
-                            'Function("return this[parseInt(arguments[0],' + radix + ')]")["bind"]';
-                    }
-                }
-                else
-                {
-                    mapper = '""["charAt"]["bind"]';
-                }
-                var output =
-                    freqIndexes + this.replace('["map"]') + '(' + this.replace(mapper) + '(' +
-                    this.encodeSimple(dictChars.join('')) + '))' + this.replace('["join"]([])');
+                var dict = this.encodeSimple(dictChars.join(''));
+                var output = this.createDictEncoding(dict, freqIndexes, radix, amend);
                 if (!(output.length > maxLength))
                 {
                     return output;
