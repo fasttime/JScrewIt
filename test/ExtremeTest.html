@@ -122,11 +122,9 @@ function runExtremeTest(maxGroupThreshold, groupings)
     {
         input += 'undefined';
     }
-    var mapper = 'Function("return this[parseInt(arguments[0],4)]")["bind"]';
-    var string = encoder.encodePlain(input);
-    var output =
-        encoder.replaceNumberArray([0]) + encoder.replace('["map"]') + '(' +
-        encoder.replace(mapper) + '(' + string + '))' + encoder.replace('["join"]([])');
+    var dict = encoder.replaceString(input);
+    var indexes = encoder.replaceNumberArray([0]);
+    var output = encoder.createDictEncoding(dict, indexes, 5, true);
     try
     {
         var actual = eval(output);
