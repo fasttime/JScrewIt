@@ -619,7 +619,7 @@ var expandEntries;
         (
             function (input, maxLength)
             {
-                var output = this.encodeByDict(input, undefined, maxLength);
+                var output = this.encodeByDict(input, undefined, undefined, maxLength);
                 return output;
             },
             3
@@ -628,10 +628,19 @@ var expandEntries;
         (
             function (input, maxLength)
             {
-                var output = this.encodeByDict(input, 4, maxLength);
+                var output = this.encodeByDict(input, 4, false, maxLength);
                 return output;
             },
             284
+        ),
+        byDictRadix5Amended: defineCoder
+        (
+            function (input, maxLength)
+            {
+                var output = this.encodeByDict(input, 5, true, maxLength);
+                return output;
+            },
+            495
         ),
         plain: defineCoder
         (
@@ -876,7 +885,7 @@ var expandEntries;
         return definition;
     }
     
-    function createReindexMap(count, radix)
+    function createReindexMap(count, radix, amend)
     {
         var DIGIT_LENGTHS = [3, 5, 9, 14, 19, 24, 29, 34, 39, 44];
         
@@ -887,12 +896,25 @@ var expandEntries;
             return length;
         }
         
+        var regExp;
+        var replacer;
+        if (amend)
+        {
+            var lastDigit1 = radix - 1;
+            var lastDigit2 = radix - 2;
+            DIGIT_LENGTHS[lastDigit1] = 6;
+            DIGIT_LENGTHS[lastDigit2] = 4;
+            regExp = new RegExp('[' + lastDigit1 + lastDigit2 + ']', 'g');
+            replacer = function (match) { return +match === lastDigit1 ? 'undefined' : 'true'; };
+        }
         var range = [];
         for (var index = 0; index < count; ++index)
         {
             var str = index.toString(radix);
-            var reindex = range[index] = Object(str);
+            var reindexStr = amend ? str.replace(regExp, replacer) : str;
+            var reindex = range[index] = Object(reindexStr);
             reindex.sortLength = getSortLength();
+            reindex.index = index;
         }
         range.sort(
             function (reindex1, reindex2)
@@ -1130,7 +1152,11 @@ var expandEntries;
         
         encode: function (input, wrapWith)
         {
-            var output = this.callCoders(input, ['byDict', 'byDictRadix4', 'simple']);
+            var output =
+                this.callCoders(
+                    input,
+                    ['byDict', 'byDictRadix4', 'byDictRadix5Amended', 'simple']
+                );
             if (!output)
             {
                 throw new Error('Encoding failed');
@@ -1193,7 +1219,7 @@ var expandEntries;
             }
         },
         
-        encodeByDict: function (input, radix, maxLength)
+        encodeByDict: function (input, radix, amend, maxLength)
         {
             var freqs = Object.create(null);
             Array.prototype.forEach.call(
@@ -1205,27 +1231,46 @@ var expandEntries;
             );
             var freqList = Object.keys(freqs).map(function (char) { return freqs[char]; });
             var dictChars = [];
-            var reindexMap = createReindexMap(freqList.length, radix);
+            var reindexMap = createReindexMap(freqList.length, radix, amend);
             freqList.sort(function (freq1, freq2) { return freq2.count - freq1.count; })
                 .forEach(
                     function (freq, index)
                     {
                         var reindex = reindexMap[index];
                         freq.index = reindex;
-                        dictChars[reindex] = freq.char;
+                        dictChars[reindex.index] = freq.char;
                     }
                 );
             var freqIndexes =
                 this.replaceNumberArray(
-                    Array.prototype.map.call(input, function (char) { return freqs[char].index; })
+                    Array.prototype.map.call(
+                        input,
+                        function (char)
+                        {
+                            var index = freqs[char].index;
+                            return index;
+                        }
+                    )
                 );
             if (freqIndexes)
             {
                 var mapper;
                 if (radix)
                 {
-                    mapper =
-                        'Function("return this[parseInt(arguments[0],' + radix + ')]")["bind"]';
+                    if (amend)
+                    {
+                        var lastDigit1 = radix - 1;
+                        var lastDigit2 = radix - 2;
+                        mapper =
+                            'Function("return this[parseInt(arguments[0].replace(/true/g,' +
+                            lastDigit2 + ').replace(/undefined/g,' + lastDigit1 + '),' + radix +
+                            ')]")["bind"]';
+                    }
+                    else
+                    {
+                        mapper =
+                            'Function("return this[parseInt(arguments[0],' + radix + ')]")["bind"]';
+                    }
                 }
                 else
                 {
