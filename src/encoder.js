@@ -1286,11 +1286,14 @@ var expandEntries;
                 );
             if (freqIndexes)
             {
-                var dict = this.encodeSimple(dictChars.join(''));
-                var output = this.createDictEncoding(dict, freqIndexes, radix, amend);
-                if (!(output.length > maxLength))
+                var dict = this.encodeSimple(dictChars.join(''), maxLength - freqIndexes.length);
+                if (dict)
                 {
-                    return output;
+                    var output = this.createDictEncoding(dict, freqIndexes, radix, amend);
+                    if (!(output.length > maxLength))
+                    {
+                        return output;
+                    }
                 }
             }
         },
