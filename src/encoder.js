@@ -1185,7 +1185,7 @@ var expandEntries;
             var output =
                 this.callCoders(
                     input,
-                    ['byDict', 'byDictRadix4', 'byDictRadix5Amended', 'simple']
+                    ['byDictRadix5Amended', 'byDictRadix4', 'byDict', 'simple']
                 );
             if (!output)
             {
@@ -1210,7 +1210,8 @@ var expandEntries;
                     Array.prototype.map.call(
                         input,
                         function (char) { return char.charCodeAt().toString(radix); }
-                    )
+                    ),
+                    maxLength
                 );
             if (charCodes)
             {
@@ -1280,7 +1281,8 @@ var expandEntries;
                             var index = freqs[char].index;
                             return index;
                         }
-                    )
+                    ),
+                    maxLength
                 );
             if (freqIndexes)
             {
@@ -1295,7 +1297,7 @@ var expandEntries;
         
         encodeSimple: function (input, maxLength)
         {
-            var output = this.callCoders(input, ['byCharCodes', 'byCharCodesRadix4', 'plain']);
+            var output = this.callCoders(input, ['byCharCodesRadix4', 'byCharCodes', 'plain']);
             if (output && !(output.length > maxLength))
             {
                 return output;
@@ -1390,9 +1392,9 @@ var expandEntries;
             return result;
         },
         
-        replaceNumberArray: function (array)
+        replaceNumberArray: function (array, maxLength)
         {
-            var replacement = this.replaceString(array.join(false), true);
+            var replacement = this.replaceString(array.join(false), true, maxLength);
             if (replacement)
             {
                 var result = replacement + this.replace('["split"](false)');
