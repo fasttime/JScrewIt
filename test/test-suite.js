@@ -870,8 +870,10 @@
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.replaceNumberArray = function () { };
-                        expect(encoder.encodeByDict('12345')).toBeUndefined();
+                        var output1 = encoder.encodeByDict('12345', undefined, undefined, 10);
+                        expect(output1).toBeUndefined();
+                        var output2 = encoder.encodeByDict('12345', undefined, undefined, 100);
+                        expect(output2).toBeUndefined();
                     }
                 );
             }
