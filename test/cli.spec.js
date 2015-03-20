@@ -167,11 +167,12 @@ describe(
             'when screwed size is larger than original size',
             function ()
             {
-                var actual = cli.createReport(90, 2345);
+                var actual = cli.createReport(90, 2345, 987);
                 var expected =
-                    'Original size:   90 bytes\n' +
-                    'Screwed size:  2345 bytes\n' +
-                    'Expansion factor: 26.06';
+                    'Original size:      90 bytes\n' +
+                    'Screwed size:     2345 bytes\n' +
+                    'Expansion factor: 26.06\n' +
+                    'Encoding time:    0.99 s';
                 assert.strictEqual(actual, expected);
             }
         );
@@ -179,11 +180,12 @@ describe(
             'when screwed size is smaller than original size',
             function ()
             {
-                var actual = cli.createReport(100, 99);
+                var actual = cli.createReport(100, 99, 5);
                 var expected =
-                    'Original size: 100 bytes\n' +
-                    'Screwed size:   99 bytes\n' +
-                    'Expansion factor: 0.99';
+                    'Original size:    100 bytes\n' +
+                    'Screwed size:      99 bytes\n' +
+                    'Expansion factor: 0.99\n' +
+                    'Encoding time:    0.01 s';
                 assert.strictEqual(actual, expected);
             }
         );
@@ -191,11 +193,12 @@ describe(
             'when original size is 1',
             function ()
             {
-                var actual = cli.createReport(1, 6);
+                var actual = cli.createReport(1, 6, 4);
                 var expected =
-                    'Original size: 1 byte\n' +
-                    'Screwed size:  6 bytes\n' +
-                    'Expansion factor: 6.00';
+                    'Original size:    1 byte\n' +
+                    'Screwed size:     6 bytes\n' +
+                    'Expansion factor: 6.00\n' +
+                    'Encoding time:    < 0.01 s';
                 assert.strictEqual(actual, expected);
             }
         );
