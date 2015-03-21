@@ -1135,6 +1135,40 @@ var expandEntries;
         
         constantDefinitions: CONSTANTS,
         
+        createCharCodesEncoding: function (charCodes, long, radix)
+        {
+            var output;
+            if (radix)
+            {
+                output =
+                    charCodes +
+                    this.replace(
+                        '["map"](Function("return String.fromCharCode(parseInt(arguments[0],' +
+                        radix + '))"))["join"]([])'
+                    );
+            }
+            else
+            {
+                if (long)
+                {
+                    output =
+                        charCodes +
+                        this.replace(
+                            '["map"](Function("return String.fromCharCode(arguments[0])"))' +
+                            '["join"]([])'
+                        );
+                }
+                else
+                {
+                    output =
+                        this.resolveConstant('Function') + '(' +
+                        this.replaceString('return String.fromCharCode(') + '+' + charCodes +
+                        '+' + this.replaceString(')') + ')()';
+                }
+            }
+            return output;
+        },
+        
         createDictEncoding: function (dict, indexes, radix, amend)
         {
             var mapper;
@@ -1204,7 +1238,6 @@ var expandEntries;
         
         encodeByCharCodes: function (input, long, radix, maxLength)
         {
-            var output;
             var charCodes =
                 this.replaceNumberArray(
                     Array.prototype.map.call(
@@ -1215,34 +1248,7 @@ var expandEntries;
                 );
             if (charCodes)
             {
-                if (radix)
-                {
-                    output =
-                        charCodes +
-                        this.replace(
-                            '["map"](Function("return String.fromCharCode(parseInt(arguments[0],' +
-                            radix + '))"))["join"]([])'
-                        );
-                }
-                else
-                {
-                    if (long)
-                    {
-                        output =
-                            charCodes +
-                            this.replace(
-                                '["map"](Function("return String.fromCharCode(arguments[0])"))' +
-                                '["join"]([])'
-                            );
-                    }
-                    else
-                    {
-                        output =
-                            this.resolveConstant('Function') + '(' +
-                            this.replaceString('return String.fromCharCode(') + '+' + charCodes +
-                            '+' + this.replaceString(')') + ')()';
-                    }
-                }
+                var output = this.createCharCodesEncoding(charCodes, long, radix);
                 if (!(output.length > maxLength))
                 {
                     return output;
