@@ -1,6 +1,7 @@
 /*
 global
 LEVEL_NUMERIC,
+LEVEL_OBJECT,
 LEVEL_STRING,
 LEVEL_UNDEFINED,
 ScrewBuffer,
@@ -429,7 +430,18 @@ var expandEntries;
         ],
     //  '*':    ,
         '+':            '(+"1e100" + [])[2]',
-        ',':            '([]["slice"]["call"]("false") + [])[1]',
+        ',':
+        [
+            define('([]["slice"]["call"]("false") + [])[1]'),
+            define(
+                function ()
+                {
+                    var replacement = this.replaceExpr('[[]]["concat"]([[]])');
+                    var solution = createSolution(replacement, LEVEL_OBJECT);
+                    return solution;
+                }
+            )
+        ],
         '-':            '(+".0000000001" + [])[2]',
         '.':            '(+"11e20" + [])[1]',
         '/':
@@ -640,7 +652,7 @@ var expandEntries;
                 var output = this.encodeByDict(input, 5, true, maxLength);
                 return output;
             },
-            495
+            493
         ),
         plain: defineCoder
         (
