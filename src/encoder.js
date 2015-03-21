@@ -15,12 +15,9 @@ noProto
 */
 
 var CHARACTERS;
+var CODERS;
 var COMPLEX;
 var CONSTANTS;
-var MIN_CHAR_CODES_ENCODABLE_LENGTH;
-var MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH;
-var MIN_DICT_ENCODABLE_LENGTH;
-var MIN_DICT_RADIX_ENCODABLE_LENGTH;
 
 var Encoder;
 
@@ -29,6 +26,12 @@ var expandEntries;
 (function ()
 {
     'use strict';
+    
+    function defineCoder(coder, minInputLength)
+    {
+        coder.MIN_INPUT_LENGTH = minInputLength;
+        return coder;
+    }
     
     var BASE64_ALPHABET_HI_2 = ['NaN', 'false', 'truefalse', '0'];
     
@@ -589,6 +592,74 @@ var expandEntries;
         ],
     });
     
+    CODERS =
+    {
+        byCharCodes: defineCoder
+        (
+            function (input, maxLength)
+            {
+                var MAX_DECODABLE_ARGS = 65533; // limit imposed by Internet Explorer
+            
+                var long = input.length > MAX_DECODABLE_ARGS;
+                var output = this.encodeByCharCodes(input, long, undefined, maxLength);
+                return output;
+            },
+            3
+        ),
+        byCharCodesRadix4: defineCoder
+        (
+            function (input, maxLength)
+            {
+                var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
+                return output;
+            },
+            46
+        ),
+        byDict: defineCoder
+        (
+            function (input, maxLength)
+            {
+                var output = this.encodeByDict(input, undefined, undefined, maxLength);
+                return output;
+            },
+            3
+        ),
+        byDictRadix4: defineCoder
+        (
+            function (input, maxLength)
+            {
+                var output = this.encodeByDict(input, 4, false, maxLength);
+                return output;
+            },
+            284
+        ),
+        byDictRadix5Amended: defineCoder
+        (
+            function (input, maxLength)
+            {
+                var output = this.encodeByDict(input, 5, true, maxLength);
+                return output;
+            },
+            495
+        ),
+        plain: defineCoder
+        (
+            function (input, maxLength)
+            {
+                var output = this.replaceString(input, false, maxLength);
+                return output;
+            }
+        ),
+        simple: defineCoder
+        (
+            function (input, maxLength)
+            {
+                var output = this.encodeSimple(input, maxLength);
+                return output;
+            }
+        ),
+    };
+    
     COMPLEX = noProto
     ({
         Boolean:
@@ -814,7 +885,7 @@ var expandEntries;
         return definition;
     }
     
-    function createReindexMap(count, radix)
+    function createReindexMap(count, radix, amend)
     {
         var DIGIT_LENGTHS = [3, 5, 9, 14, 19, 24, 29, 34, 39, 44];
         
@@ -825,12 +896,25 @@ var expandEntries;
             return length;
         }
         
+        var regExp;
+        var replacer;
+        if (amend)
+        {
+            var lastDigit1 = radix - 1;
+            var lastDigit2 = radix - 2;
+            DIGIT_LENGTHS[lastDigit1] = 6;
+            DIGIT_LENGTHS[lastDigit2] = 4;
+            regExp = new RegExp('[' + lastDigit1 + lastDigit2 + ']', 'g');
+            replacer = function (match) { return +match === lastDigit1 ? 'undefined' : 'true'; };
+        }
         var range = [];
         for (var index = 0; index < count; ++index)
         {
             var str = index.toString(radix);
-            var reindex = range[index] = Object(str);
+            var reindexStr = amend ? str.replace(regExp, replacer) : str;
+            var reindex = range[index] = Object(reindexStr);
             reindex.sortLength = getSortLength();
+            reindex.index = index;
         }
         range.sort(
             function (reindex1, reindex2)
@@ -988,11 +1072,6 @@ var expandEntries;
     
     })();
     
-    MIN_CHAR_CODES_ENCODABLE_LENGTH = 3;
-    MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH = 46;
-    MIN_DICT_ENCODABLE_LENGTH = 3;
-    MIN_DICT_RADIX_ENCODABLE_LENGTH = 284;
-    
     Encoder =
         function (featureMask)
         {
@@ -1005,6 +1084,29 @@ var expandEntries;
     
     Encoder.prototype =
     {
+        callCoders: function (input, coderNames)
+        {
+            var output;
+            var inputLength = input.length;
+            coderNames.forEach(
+                function (coderName)
+                {
+                    var coder = CODERS[coderName];
+                    if (!(inputLength < coder.MIN_INPUT_LENGTH))
+                    {
+                        var maxLength = output != null ? output.length : undefined;
+                        var newOutput = coder.call(this, input, maxLength);
+                        if (newOutput != null)
+                        {
+                            output = newOutput;
+                        }
+                    }
+                },
+                this
+            );
+            return output;
+        },
+        
         callResolver: function (stackName, resolver)
         {
             var stack = this.stack;
@@ -1033,6 +1135,70 @@ var expandEntries;
         
         constantDefinitions: CONSTANTS,
         
+        createCharCodesEncoding: function (charCodes, long, radix)
+        {
+            var output;
+            if (radix)
+            {
+                output =
+                    charCodes +
+                    this.replace(
+                        '["map"](Function("return String.fromCharCode(parseInt(arguments[0],' +
+                        radix + '))"))["join"]([])'
+                    );
+            }
+            else
+            {
+                if (long)
+                {
+                    output =
+                        charCodes +
+                        this.replace(
+                            '["map"](Function("return String.fromCharCode(arguments[0])"))' +
+                            '["join"]([])'
+                        );
+                }
+                else
+                {
+                    output =
+                        this.resolveConstant('Function') + '(' +
+                        this.replaceString('return String.fromCharCode(') + '+' + charCodes +
+                        '+' + this.replaceString(')') + ')()';
+                }
+            }
+            return output;
+        },
+        
+        createDictEncoding: function (dict, indexes, radix, amend)
+        {
+            var mapper;
+            if (radix)
+            {
+                if (amend)
+                {
+                    var lastDigit1 = radix - 1;
+                    var lastDigit2 = radix - 2;
+                    mapper =
+                        'Function("return this[parseInt(arguments[0].replace(/true/g,' +
+                        lastDigit2 + ').replace(/undefined/g,' + lastDigit1 + '),' + radix +
+                        ')]")["bind"]';
+                }
+                else
+                {
+                    mapper =
+                        'Function("return this[parseInt(arguments[0],' + radix + ')]")["bind"]';
+                }
+            }
+            else
+            {
+                mapper = '""["charAt"]["bind"]';
+            }
+            var output =
+                indexes + this.replace('["map"]') + '(' + this.replace(mapper) + '(' + dict + '))' +
+                this.replace('["join"]([])');
+            return output;
+        },
+        
         createStringTokenPattern: function ()
         {
             function callback(complex)
@@ -1050,23 +1216,11 @@ var expandEntries;
         
         encode: function (input, wrapWith)
         {
-            function callEncode(encoder, minInputLength, radix)
-            {
-                if (inputLength >= minInputLength)
-                {
-                    var newOutput = encoder.encodeByDict(input, radix);
-                    if (!output || newOutput && newOutput.length < output.length)
-                    {
-                        output = newOutput;
-                    }
-                }
-            }
-            
-            var output;
-            var inputLength = input.length;
-            callEncode(this, MIN_DICT_ENCODABLE_LENGTH);
-            callEncode(this, MIN_DICT_RADIX_ENCODABLE_LENGTH, 4);
-            output = this.encodeSimple(input, output && output.length) || output;
+            var output =
+                this.callCoders(
+                    input,
+                    ['byDictRadix5Amended', 'byDictRadix4', 'byDict', 'simple']
+                );
             if (!output)
             {
                 throw new Error('Encoding failed');
@@ -1082,51 +1236,27 @@ var expandEntries;
             return output;
         },
         
-        encodeByCharCodes: function (input, long, radix)
+        encodeByCharCodes: function (input, long, radix, maxLength)
         {
-            var output;
             var charCodes =
                 this.replaceNumberArray(
                     Array.prototype.map.call(
                         input,
                         function (char) { return char.charCodeAt().toString(radix); }
-                    )
+                    ),
+                    maxLength
                 );
             if (charCodes)
             {
-                if (radix)
+                var output = this.createCharCodesEncoding(charCodes, long, radix);
+                if (!(output.length > maxLength))
                 {
-                    output =
-                        charCodes +
-                        this.replace(
-                            '["map"](Function("return String.fromCharCode(parseInt(arguments[0],' +
-                            radix + '))"))["join"]([])'
-                        );
-                }
-                else
-                {
-                    if (long)
-                    {
-                        output =
-                            charCodes +
-                            this.replace(
-                                '["map"](Function("return String.fromCharCode(arguments[0])"))' +
-                                '["join"]([])'
-                            );
-                    }
-                    else
-                    {
-                        output =
-                            this.resolveConstant('Function') + '(' +
-                            this.replaceString('return String.fromCharCode(') + '+' + charCodes +
-                            '+' + this.replaceString(')') + ')()';
-                    }
+                    return output;
                 }
             }
-            return output;
         },
         
-        encodeByDict: function (input, radix)
+        encodeByDict: function (input, radix, amend, maxLength)
         {
             var freqs = Object.create(null);
             Array.prototype.forEach.call(
@@ -1138,71 +1268,45 @@ var expandEntries;
             );
             var freqList = Object.keys(freqs).map(function (char) { return freqs[char]; });
             var dictChars = [];
-            var reindexMap = createReindexMap(freqList.length, radix);
+            var reindexMap = createReindexMap(freqList.length, radix, amend);
             freqList.sort(function (freq1, freq2) { return freq2.count - freq1.count; })
                 .forEach(
                     function (freq, index)
                     {
                         var reindex = reindexMap[index];
                         freq.index = reindex;
-                        dictChars[reindex] = freq.char;
+                        dictChars[reindex.index] = freq.char;
                     }
                 );
             var freqIndexes =
                 this.replaceNumberArray(
-                    Array.prototype.map.call(input, function (char) { return freqs[char].index; })
+                    Array.prototype.map.call(
+                        input,
+                        function (char)
+                        {
+                            var index = freqs[char].index;
+                            return index;
+                        }
+                    ),
+                    maxLength
                 );
             if (freqIndexes)
             {
-                var mapper;
-                if (radix)
+                var dict = this.encodeSimple(dictChars.join(''), maxLength - freqIndexes.length);
+                if (dict)
                 {
-                    mapper =
-                        'Function("return this[parseInt(arguments[0],' + radix + ')]")["bind"]';
+                    var output = this.createDictEncoding(dict, freqIndexes, radix, amend);
+                    if (!(output.length > maxLength))
+                    {
+                        return output;
+                    }
                 }
-                else
-                {
-                    mapper = '""["charAt"]["bind"]';
-                }
-                var output =
-                    freqIndexes + this.replace('["map"]') + '(' + this.replace(mapper) + '(' +
-                    this.encodeSimple(dictChars.join('')) + '))' + this.replace('["join"]([])');
-                return output;
             }
-        },
-        
-        encodePlain: function (input, maxLength)
-        {
-            var output = this.replaceString(input, false, maxLength);
-            return output;
         },
         
         encodeSimple: function (input, maxLength)
         {
-            var MAX_DECODABLE_ARGS = 65533; // limit imposed by Internet Explorer
-            
-            function callEncode(encoder, minInputLength, long, radix)
-            {
-                if (inputLength >= minInputLength)
-                {
-                    var outputByCharCodes = encoder.encodeByCharCodes(input, long, radix);
-                    if (outputByCharCodes)
-                    {
-                        var outputLength = outputByCharCodes.length;
-                        if (!(outputLength > maxLength))
-                        {
-                            output = outputByCharCodes;
-                            maxLength = outputLength;
-                        }
-                    }
-                }
-            }
-            
-            var output;
-            var inputLength = input.length;
-            callEncode(this, MIN_CHAR_CODES_ENCODABLE_LENGTH, inputLength > MAX_DECODABLE_ARGS);
-            callEncode(this, MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH, undefined, 4);
-            output = this.encodePlain(input, maxLength) || output;
+            var output = this.callCoders(input, ['byCharCodesRadix4', 'byCharCodes', 'plain']);
             if (output && !(output.length > maxLength))
             {
                 return output;
@@ -1297,9 +1401,9 @@ var expandEntries;
             return result;
         },
         
-        replaceNumberArray: function (array)
+        replaceNumberArray: function (array, maxLength)
         {
-            var replacement = this.replaceString(array.join(false), true);
+            var replacement = this.replaceString(array.join(false), true, maxLength);
             if (replacement)
             {
                 var result = replacement + this.replace('["split"](false)');

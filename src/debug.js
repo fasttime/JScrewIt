@@ -1,14 +1,11 @@
 /*
 global
 CHARACTERS,
+CODERS,
 COMPLEX,
 CONSTANTS,
 DEBUG,
 FEATURE_INFOS,
-MIN_CHAR_CODES_ENCODABLE_LENGTH,
-MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH,
-MIN_DICT_ENCODABLE_LENGTH,
-MIN_DICT_RADIX_ENCODABLE_LENGTH,
 Encoder,
 JScrewIt,
 ScrewBuffer,
@@ -62,6 +59,11 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             return result;
         }
         
+        function getCoders()
+        {
+            return CODERS;
+        }
+        
         function getComplexEntries(complex)
         {
             var result = getEntries(COMPLEX[complex]);
@@ -107,20 +109,17 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             'debug',
             describeNoEnum(noEnum
                 ({
-                    MIN_CHAR_CODES_ENCODABLE_LENGTH:        MIN_CHAR_CODES_ENCODABLE_LENGTH,
-                    MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH:  MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH,
-                    MIN_DICT_ENCODABLE_LENGTH:              MIN_DICT_ENCODABLE_LENGTH,
-                    MIN_DICT_RADIX_ENCODABLE_LENGTH:        MIN_DICT_RADIX_ENCODABLE_LENGTH,
-                    createEncoder:                          createEncoder,
-                    createScrewBuffer:                      createScrewBuffer,
-                    defineConstant:                         defineConstant,
-                    getCharacterEntries:                    getCharacterEntries,
-                    getComplexEntries:                      getComplexEntries,
-                    getConstantEntries:                     getConstantEntries,
-                    getEntryFeatures:                       getEntryFeatures,
-                    hasOuterPlus:                           hasOuterPlus,
-                    setUp:                                  setUp,
-                    trimJS:                                 trimJS,
+                    createEncoder:          createEncoder,
+                    createScrewBuffer:      createScrewBuffer,
+                    defineConstant:         defineConstant,
+                    getCharacterEntries:    getCharacterEntries,
+                    getCoders:              getCoders,
+                    getComplexEntries:      getComplexEntries,
+                    getConstantEntries:     getConstantEntries,
+                    getEntryFeatures:       getEntryFeatures,
+                    hasOuterPlus:           hasOuterPlus,
+                    setUp:                  setUp,
+                    trimJS:                 trimJS,
                 })
             )
         );

@@ -95,10 +95,13 @@ else
     
     var input;
     var output;
+    var encodingTime;
     try
     {
         input = fs.readFileSync(inputFileName);
+        var before = new Date();
         output = JScrewIt.encode(input, options);
+        encodingTime = new Date() - before;
         fs.writeFileSync(outputFileName, output);
     }
     catch (error)
@@ -108,7 +111,7 @@ else
     }
     if (outputFileName)
     {
-        var report = cli.createReport(input.length, output.length);
+        var report = cli.createReport(input.length, output.length, encodingTime);
         console.log(report);
     }
     else

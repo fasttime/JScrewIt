@@ -9,19 +9,20 @@ function widthOf(size)
 
 function byteCount(size, width)
 {
-    /* jshint singleGroups: false */
     var string =
         Array(width - widthOf(size) + 1).join(' ') + (size === 1 ? '1 byte' : size + ' bytes');
     return string;
 }
 
-function createReport(originalSize, screwedSize)
+function createReport(originalSize, screwedSize, encodingTime)
 {
     var width = Math.max(widthOf(originalSize), widthOf(screwedSize));
+    var encodingTimeStr = encodingTime < 5 ? '< 0.01 s' : (encodingTime / 1000).toFixed(2) + ' s';
     var report =
-        'Original size: ' + byteCount(originalSize, width) +
-        '\nScrewed size:  ' + byteCount(screwedSize, width) +
-        '\nExpansion factor: ' + (screwedSize / originalSize).toFixed(2);
+        'Original size:    ' + byteCount(originalSize, width) +
+        '\nScrewed size:     ' + byteCount(screwedSize, width) +
+        '\nExpansion factor: ' + (screwedSize / originalSize).toFixed(2) +
+        '\nEncoding time:    ' + encodingTimeStr;
     return report;
 }
 
