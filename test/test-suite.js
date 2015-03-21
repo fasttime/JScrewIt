@@ -1,4 +1,4 @@
-/* global atob, btoa, expect, emuDo, emuEval, EMU_FEATURES, global, module, self, sinon */
+/* global atob, btoa, expect, emuDo, emuEval, EMU_FEATURES, global, module, self */
 /* jshint mocha: true, nonstandard: true */
 
 (function (global)
@@ -90,41 +90,6 @@
         }
         var output = encoder.replace(entry.definition);
         return output;
-    }
-    
-    function describeEncodeMethodTest(methodName)
-    {
-        describe(
-            'Encoder#' + methodName,
-            function ()
-            {
-                var encoder = JScrewIt.debug.createEncoder();
-                it(
-                    'returns undefined when output length exceeds maxLength',
-                    function ()
-                    {
-                        var actual = encoder[methodName]('', 4);
-                        expect(actual).toBeUndefined();
-                    }
-                );
-                it(
-                    'returns a string when output length equals maxLength',
-                    function ()
-                    {
-                        var actual = encoder[methodName]('', 5);
-                        expect(actual).toBeString();
-                    }
-                );
-                it(
-                    'returns a string when maxLength is not specified',
-                    function ()
-                    {
-                        var actual = encoder[methodName]('');
-                        expect(actual).toBeString();
-                    }
-                );
-            }
-        );
     }
     
     function describeEncodeTest(compatibility)
@@ -858,70 +823,57 @@
             function ()
             {
                 it(
-                    'does not call encodeByDict for insufficiently long input',
-                    function ()
-                    {
-                        var input = repeat('0', JScrewIt.debug.MIN_DICT_ENCODABLE_LENGTH - 1);
-                        var encoder = JScrewIt.debug.createEncoder();
-                        var encodeByDict = sinon.stub(encoder, 'encodeByDict');
-                        sinon.stub(encoder, 'encodeSimple').returns('ABC');
-                        var output = encoder.encode(input);
-                        
-                        sinon.assert.notCalled(encodeByDict);
-                        expect(output).toBe('ABC');
-                    }
-                );
-                it(
-                    'calls encodeByDict without radix for sufficiently long input',
-                    function ()
-                    {
-                        var input = repeat('0', JScrewIt.debug.MIN_DICT_ENCODABLE_LENGTH);
-                        var encoder = JScrewIt.debug.createEncoder();
-                        var encodeByDict = sinon.stub(encoder, 'encodeByDict');
-                        encodeByDict.returns('AB');
-                        sinon.stub(encoder, 'encodeSimple');
-                        var output = encoder.encode(input);
-                        
-                        sinon.assert.calledOnce(encodeByDict);
-                        sinon.assert.calledWith(encodeByDict, input, undefined);
-                        expect(output).toBe('AB');
-                    }
-                );
-                it(
-                    'calls encodeByDict with and without radix for sufficiently long input',
-                    function ()
-                    {
-                        var input = repeat('0', JScrewIt.debug.MIN_DICT_RADIX_ENCODABLE_LENGTH);
-                        
-                        function test(radixOutput, expectedOutput)
-                        {
-                            var encoder = JScrewIt.debug.createEncoder();
-                            var encodeByDict = sinon.stub(encoder, 'encodeByDict');
-                            encodeByDict.withArgs(input, undefined).returns('AB');
-                            encodeByDict.withArgs(input, 4).returns(radixOutput);
-                            sinon.stub(encoder, 'encodeSimple');
-                            var output = encoder.encode(input);
-                            
-                            sinon.assert.calledTwice(encodeByDict);
-                            sinon.assert.calledWith(encodeByDict, input, undefined);
-                            sinon.assert.calledWith(encodeByDict, input, 4);
-                            expect(output).toBe(expectedOutput);
-                        }
-                        
-                        test('A', 'A');
-                        test('ABC', 'AB');
-                    }
-                );
-                it(
                     'throws an Error with message "Encoding failed" for too complex input',
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        sinon.stub(encoder, 'encodePlain');
-                        sinon.stub(encoder, 'replaceNumberArray');
+                        encoder.callCoders = function () { };
                         expect(function () { encoder.encode('12345'); }).toThrow(
                             new Error('Encoding failed')
                         );
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#encodeByCharCodes',
+            function ()
+            {
+                it(
+                    'returns correct JSFuck for long input',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var input = 'Lorem ipsum dolor sit amet';
+                        var output = encoder.encodeByCharCodes(input, true);
+                        expect(output).toBeJSFuck();
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+                it(
+                    'returns undefined for too complex input',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        encoder.replaceNumberArray = function () { };
+                        expect(encoder.encodeByCharCodes('12345')).toBeUndefined();
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#encodeByDict',
+            function ()
+            {
+                it(
+                    'returns undefined for too complex input',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var output1 = encoder.encodeByDict('12345', undefined, undefined, 10);
+                        expect(output1).toBeUndefined();
+                        var output2 = encoder.encodeByDict('12345', undefined, undefined, 100);
+                        expect(output2).toBeUndefined();
                     }
                 );
             }
@@ -935,8 +887,7 @@
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        sinon.stub(encoder, 'encodePlain');
-                        sinon.stub(encoder, 'replaceString');
+                        encoder.replaceString = function () { };
                         expect(encoder.replaceNumberArray([])).toBeUndefined();
                     }
                 );
@@ -947,7 +898,7 @@
             function ()
             {
                 var encoder = JScrewIt.debug.createEncoder();
-                sinon.stub(encoder, 'replaceString');
+                encoder.replaceString = function () { };
                 
                 function debugReplacer(input)
                 {
@@ -1078,107 +1029,103 @@
                 );
             }
         );
-        describeEncodeMethodTest('encodePlain');
-        describeEncodeMethodTest('encodeSimple');
         describe(
             'Encoding',
             function ()
             {
                 var encoder = JScrewIt.debug.createEncoder();
                 var input = 'Lorem ipsum dolor sit amet';
-                it(
-                    'plain is ok',
-                    function ()
+                var coders = JScrewIt.debug.getCoders();
+                Object.keys(coders).forEach(
+                    function (coderName)
                     {
-                        var output = encoder.encodePlain(input);
-                        expect(eval(output)).toBe(input);
-                    }
-                );
-                it(
-                    'by dictionary is ok',
-                    function ()
-                    {
-                        var output = encoder.encodeByDict(input);
-                        expect(eval(output)).toBe(input);
-                    }
-                );
-                it(
-                    'by dictionary with radix is ok',
-                    function ()
-                    {
-                        var output = encoder.encodeByDict(input, 7);
-                        expect(eval(output)).toBe(input);
-                    }
-                );
-                it(
-                    'by long character code list is ok',
-                    function ()
-                    {
-                        var output = encoder.encodeByCharCodes(input, true);
-                        expect(eval(output)).toBe(input);
-                    }
-                );
-                it(
-                    'by short character code list is ok',
-                    function ()
-                    {
-                        var output = encoder.encodeByCharCodes(input, false);
-                        expect(eval(output)).toBe(input);
-                    }
-                );
-                it(
-                    'by character code list with radix is ok',
-                    function ()
-                    {
-                        var output = encoder.encodeByCharCodes(input, undefined, 7);
-                        expect(eval(output)).toBe(input);
+                        describe(
+                            coderName,
+                            function ()
+                            {
+                                var maxLength = coders[coderName].call(encoder, '').length;
+                                it(
+                                    'returns correct JSFuck',
+                                    function ()
+                                    {
+                                        var output = coders[coderName].call(encoder, input);
+                                        expect(output).toBeJSFuck();
+                                        expect(eval(output)).toBe(input);
+                                    }
+                                );
+                                it(
+                                    'returns undefined when output length exceeds maxLength',
+                                    function ()
+                                    {
+                                        var output =
+                                            coders[coderName].call(encoder, '', maxLength - 1);
+                                        expect(output).toBeUndefined();
+                                    }
+                                );
+                                it(
+                                    'returns a string when output length equals maxLength',
+                                    function ()
+                                    {
+                                        var output = coders[coderName].call(encoder, '', maxLength);
+                                        expect(output).toBeString();
+                                    }
+                                );
+                            }
+                        );
                     }
                 );
             }
         );
         describe(
-            'Lower bound',
+            'MIN_INPUT_LENGTH of',
             function ()
             {
-                function test(name, features, createInput, encode1, encode2)
+                function test(features, createInput, coderName1, coderName2)
                 {
-                    var minLength = JScrewIt.debug[name];
+                    var encoder = JScrewIt.debug.createEncoder(features);
+                    var coders = JScrewIt.debug.getCoders();
+                    var coder1 = coders[coderName1];
+                    var coder2 = coders[coderName2];
+                    var minLength = coder2.MIN_INPUT_LENGTH;
+                    var inputA = createInput(minLength - 1);
+                    var inputB = createInput(minLength);
                     it(
-                        name + ' = ' + minLength + ' is suitable',
+                        coderName2 + ' is suitable',
                         function ()
                         {
-                            var encoder = JScrewIt.debug.createEncoder(features);
-                            
-                            var inputA = createInput(minLength - 1);
-                            var outputA1 = encode1(encoder, inputA);
-                            var outputA2 = encode2(encoder, inputA);
+                            var outputA1 = coder1.call(encoder, inputA);
+                            var outputA2 = coder2.call(encoder, inputA);
                             expect(outputA1.length).not.toBeGreaterThan(
                                 outputA2.length,
-                                name + ' is too large'
+                                'MIN_INPUT_LENGTH is too large'
                             );
                             
-                            var inputB = createInput(minLength);
-                            var outputB1 = encode1(encoder, inputB);
-                            var outputB2 = encode2(encoder, inputB);
+                            var outputB1 = coder1.call(encoder, inputB);
+                            var outputB2 = coder2.call(encoder, inputB);
                             expect(outputB1.length).toBeGreaterThan(
                                 outputB2.length,
-                                name + ' is too small'
+                                'MIN_INPUT_LENGTH is too small'
                             );
                         }
                     );
                 }
                 
+                test('ENTRIES', repeat.bind(null, String.fromCharCode(59999)), 'simple', 'byDict');
                 test(
-                    'MIN_DICT_ENCODABLE_LENGTH',
                     'ENTRIES',
                     repeat.bind(null, String.fromCharCode(59999)),
-                    function (encoder, input) { return encoder.encodeSimple(input); },
-                    function (encoder, input) { return encoder.encodeByDict(input); }
+                    'plain',
+                    'byCharCodes'
+                    );
+                test(
+                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
+                    repeat.bind(null, String.fromCharCode(49989)),
+                    'byCharCodes',
+                    'byCharCodesRadix4'
                 );
                 test(
-                    'MIN_DICT_RADIX_ENCODABLE_LENGTH',
                     ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
-                    function createTestInput(length)
+                    function (length)
                     {
                         var str = '';
                         while (str.length < length)
@@ -1187,25 +1134,23 @@
                         }
                         return str;
                     },
-                    function (encoder, input) { return encoder.encodeByDict(input); },
-                    function (encoder, input) { return encoder.encodeByDict(input, 4); }
+                    'byDict',
+                    'byDictRadix4'
                 );
                 test(
-                    'MIN_CHAR_CODES_ENCODABLE_LENGTH',
-                    'ENTRIES',
-                    repeat.bind(null, String.fromCharCode(59999)),
-                    function (encoder, input) { return encoder.encodePlain(input); },
-                    function (encoder, input) { return encoder.encodeByCharCodes(input); }
-                );
-                test(
-                    'MIN_CHAR_CODES_RADIX_ENCODABLE_LENGTH',
-                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
-                    repeat.bind(null, String.fromCharCode(49989)),
-                    function (encoder, input) { return encoder.encodeByCharCodes(input); },
-                    function (encoder, input)
+                    ['ATOB', 'ENTRIES', 'FILL', 'NO_IE_SRC'],
+                    function (length)
                     {
-                        return encoder.encodeByCharCodes(input, undefined, 4);
-                    }
+                        var str = '';
+                        for (var i = 0; i < 125; ++i)
+                        {
+                            str += String.fromCharCode(0xffff - i);
+                        }
+                        str = repeat(str, Math.ceil(length / 125)).slice(0, length);
+                        return str;
+                    },
+                    'byDictRadix4',
+                    'byDictRadix5Amended'
                 );
             }
         );
