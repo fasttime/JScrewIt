@@ -389,6 +389,28 @@
             }
         );
         describe(
+            'JScrewIt.commonFeaturesOf',
+            function ()
+            {
+                it(
+                    'returns undefined if no arguments are specified',
+                    function ()
+                    {
+                        var actual = JScrewIt.commonFeaturesOf();
+                        expect(actual).toBeUndefined();
+                    }
+                );
+                it(
+                    'returns an empty array for DEFAULT',
+                    function ()
+                    {
+                        var actual = JScrewIt.commonFeaturesOf('DEFAULT');
+                        expect(actual).toEqual([]);
+                    }
+                );
+            }
+        );
+        describe(
             'JScrewIt.FEATURE_INFOS',
             function ()
             {
