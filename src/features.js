@@ -329,9 +329,102 @@ var incompatibleFeatureMasks;
         {
             description:
                 'Features available in all supported engines except Internet Explorer.\n' +
-                'Includes features used by JSfuck with the exception of "UNDEFINED", which is ' +
+                'Includes features used by JSFuck with the exception of "UNDEFINED", which is ' +
                 'not available in older Android Browser versions.',
             includes: ['DOUBLE_QUOTE_ESC_HTML', 'GMT', 'NAME', 'NO_IE_SRC']
+        },
+        ANDRO400:
+        {
+            description: 'Features available in Android Browser 4.0 to 4.3.1.',
+            includes:
+            [
+                'ATOB',
+                'DOMWINDOW',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'GMT',
+                'NAME',
+                'NO_SAFARI_LF',
+                'V8_SRC'
+            ]
+        },
+        ANDRO412:
+        {
+            description: 'Features available in Android Browser 4.1.2 to 4.3.1.',
+            includes:
+            [
+                'ATOB',
+                'DOMWINDOW',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'GMT',
+                'NAME',
+                'NO_SAFARI_LF',
+                'UNDEFINED',
+                'V8_SRC'
+            ]
+        },
+        ANDRO442:
+        {
+            description: 'Features available in Android Browser 4.4.2 or later.',
+            includes:
+            [
+                'ATOB',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'GMT',
+                'NAME',
+                'NO_SAFARI_LF',
+                'UNDEFINED',
+                'V8_SRC',
+                'WINDOW'
+            ]
+        },
+        CHROME35:
+        {
+            description: 'Features available in Chrome 35 and Opera 22 or later.',
+            includes:
+            [
+                'ATOB',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'GMT',
+                'NAME',
+                'NO_SAFARI_LF',
+                'UNDEFINED',
+                'V8_SRC',
+                'WINDOW'
+            ]
+        },
+        CHROME38:
+        {
+            description: 'Features available in Chrome 38 and Opera 25 or later.',
+            includes:
+            [
+                'ATOB',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'GMT',
+                'NAME',
+                'NO_SAFARI_ARRAY_ITERATOR',
+                'NO_SAFARI_LF',
+                'UNDEFINED',
+                'V8_SRC',
+                'WINDOW'
+            ]
+        },
+        FF30:
+        {
+            description: 'Features available in Firefox 30 or later.',
+            includes:
+            [
+                'ATOB',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'ENTRIES',
+                'FF_SAFARI_SRC',
+                'GMT',
+                'NAME',
+                'NO_SAFARI_ARRAY_ITERATOR',
+                'NO_SAFARI_LF',
+                'SELF',
+                'UNDEFINED',
+                'WINDOW'
+            ]
         },
         FF31:
         {
@@ -417,6 +510,36 @@ var incompatibleFeatureMasks;
                 'NO_SAFARI_LF',
                 'UNDEFINED',
                 'V8_SRC'
+            ]
+        },
+        SAFARI70:
+        {
+            description: 'Features available in Safari 7.0.',
+            includes:
+            [
+                'ATOB',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'FF_SAFARI_SRC',
+                'GMT',
+                'NAME',
+                'UNDEFINED',
+                'WINDOW'
+            ]
+        },
+        SAFARI71:
+        {
+            description: 'Features available in Safari 7.1 or later.',
+            includes:
+            [
+                'ATOB',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'FF_SAFARI_SRC',
+                'FILL',
+                'GMT',
+                'NAME',
+                'SAFARI_ARRAY_ITERATOR',
+                'UNDEFINED',
+                'WINDOW'
             ]
         }
     };
