@@ -3,8 +3,8 @@
 var FEATURE_INFOS;
 
 var availableFeatureMask;
-var featureMaskMap;
 var getFeatureMask;
+var getFeatures;
 var incompatibleFeatureMasks;
 
 (function ()
@@ -64,6 +64,7 @@ var incompatibleFeatureMasks;
     }
     
     var bitIndex = 0;
+    var featureMaskMap = Object.create(null);
     
     FEATURE_INFOS =
     {
@@ -421,8 +422,6 @@ var incompatibleFeatureMasks;
         }
     };
     
-    featureMaskMap = Object.create(null);
-    
     getFeatureMask =
         function (features)
         {
@@ -446,6 +445,26 @@ var incompatibleFeatureMasks;
                     }
                 );
             }
+            return result;
+        };
+    
+    getFeatures =
+        function (mask)
+        {
+            var result = [];
+            for (var feature in featureMaskMap)
+            {
+                var featureMask = featureMaskMap[feature];
+                if ((featureMask & mask) === featureMask)
+                {
+                    var featureInfo = FEATURE_INFOS[feature];
+                    if (featureInfo.check)
+                    {
+                        result.push(feature);
+                    }
+                }
+            }
+            result.sort();
             return result;
         };
     
