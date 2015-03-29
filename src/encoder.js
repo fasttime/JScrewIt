@@ -401,10 +401,10 @@ var expandEntries;
             define('(FILTER + [])["20"]', 'FF_SAFARI_SRC'),
             define('(RP_3_NO + FILL)["21"]', 'FF_SAFARI_SRC', 'FILL')
         ],
-    //  '!':    ,
+        // '!':    ,
         '"':            '""["fontcolor"]()["12"]',
-    //  '#':    ,
-    //  '$':    ,
+        // '#':    ,
+        // '$':    ,
         '%':
         [
             define('escape(FILTER)["20"]'),
@@ -417,7 +417,7 @@ var expandEntries;
             define('""["fontcolor"]("\\"")["13"]', 'DOUBLE_QUOTE_ESC_HTML'),
             defineCharacterByAtob('&')
         ],
-    //  '\'':   ,
+        // '\'':   ,
         '(':
         [
             defineFHCharAt('FILTER', 15),
@@ -428,7 +428,7 @@ var expandEntries;
             defineFHCharAt('FILTER', 16),
             defineFHCharAt('FILL', 14, 'FILL')
         ],
-    //  '*':    ,
+        // '*':    ,
         '+':            '(+"1e100" + [])[2]',
         ',':
         [
@@ -479,7 +479,7 @@ var expandEntries;
             define('(RegExp() + [])[2]'),
             defineCharacterByAtob('?')
         ],
-    //  '@':    ,
+        // '@':    ,
         '[':
         [
             defineFBCharAt(14),
@@ -504,19 +504,19 @@ var expandEntries;
         [
             define('atob("undefinedfalse")[2]', 'ATOB')
         ],
-    //  '_':    ,
-    //  '`':    ,
+        // '_':    ,
+        // '`':    ,
         '{':
         [
             defineFHCharAt('FILTER', 18),
             defineFHCharAt('FILL', 16, 'FILL')
         ],
-    //  '|':    ,
+        // '|':    ,
         '}':
         [
             defineFBCharAt(28),
         ],
-    //  '~':    ,
+        // '~':    ,
         
         '\x8a':
         [
