@@ -92,8 +92,8 @@ var output = JScrewIt.encode("alert(1)", { wrapWith: "call" });
 eval(output);
 ```
 
-Setting `wrapWith` to `"call"` in the second parameter indicates that we would like the output to be
-executable.
+Setting `wrapWith` to `"call"` in the second parameter of [`JScrewIt.encode`]
+(#jscrewitencodeinput-options) indicates that we would like the output to be executable.
 
 `wrapWith` should be omitted or set to `"none"` to encode a plain string instead of JavaScript code.
 
@@ -274,7 +274,14 @@ So if you want your JSFuck code to run on both Internet Explorer and Firefox, th
 ```
 
 Instead, you have to specify features supported by both browsers.
-Those turn out out to be `"NO_SAFARI_LF"`, `"SELF"`, `"UNDEFINED"` and `"WINDOW"`.
+These can be retrieved with [`JScrewIt.commonFeaturesOf`](#jscrewitcommonfeaturesoffeatures).
+
+```js
+{ features: JScrewIt.commonFeaturesOf("IE9", "FF31") }
+```
+
+The features turn out to be `"NO_SAFARI_LF"`, `"SELF"`, `"UNDEFINED"` and `"WINDOW"`; with this
+knowledge, the definition can be also written as below.
 
 ```js
 { features: ["NO_SAFARI_LF", "SELF", "UNDEFINED", "WINDOW"] }
@@ -331,6 +338,33 @@ JScrewIt.areFeaturesCompatible(["DEFAULT", "FILL"]) // returns true
 
 If *`features`* is an empty array or `undefined`, or if it only specifies one feature, the return
 value is `true`.
+
+This function throws a `ReferenceError` if some unknown features are specified.
+
+#### <code>**JScrewIt.commonFeaturesOf(*features...*)**</code>
+
+Gets an array of individual features shared by a specified group of features.
+
+<dl>
+<dt><code>features</code></dt>
+<dd>
+A string or array of strings specifying an element of the group of features whose common individual
+features are to be retrieved.</dd>
+</dl>
+
+##### Examples
+
+```js
+JScrewIt.commonFeaturesOf("COMPACT", "IE9", "ANDRO412") // returns ["SELF", "UNDEFINED"]
+```
+
+```js
+JScrewIt.commonFeaturesOf(["ATOB", "NAME"], ["NAME", "SELF"]) // returns ["NAME"]
+```
+
+##### Notes
+
+If no arguments are specified, the return value is `undefined`.
 
 This function throws a `ReferenceError` if some unknown features are specified.
 
