@@ -68,10 +68,12 @@ module.exports =
                         ],
                         requireLineBreakAfterVariableAssignment: true,
                         requireLineFeedAtFileEnd: true,
+                        requirePaddingNewLinesAfterUseStrict: true,
                         requireSpaceAfterBinaryOperators: true,
                         requireSpaceAfterKeywords: true,
                         requireSpaceAfterLineComment: true,
                         requireSpaceBeforeBinaryOperators: true,
+                        requireSpaceBeforeBlockStatements: true,
                         requireSpaceBeforeKeywords:
                         [
                             'delete',
@@ -92,6 +94,7 @@ module.exports =
                         requireSpacesInFunctionDeclaration: { beforeOpeningCurlyBrace: true },
                         requireSpacesInFunctionExpression: { beforeOpeningCurlyBrace: true },
                         requireSpacesInsideObjectBrackets: 'all',
+                        validateAlignedFunctionParameters: true,
                         validateIndentation: 4,
                         validateParameterSeparator: ', '
                     }
