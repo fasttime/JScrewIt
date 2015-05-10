@@ -1,5 +1,6 @@
 # JScrewIt Feature Reference
 ## Feature List
+This section lists all features along with their descriptions.
 ### `ANDRO400`
 Features available in Android Browser 4.0 to 4.3.1.
 ### `ANDRO412`
@@ -113,19 +114,19 @@ This table lists features available in the most common engines.
 <td>Firefox 30+</td>
 <td>
 <ul>
-<li><a href="#ATOB"><code>ATOB</code></a>
-<li><a href="#DOUBLE_QUOTE_ESC_HTML"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#ENTRIES"><code>ENTRIES</code></a> (implied by <a href="#NO_SAFARI_ARRAY_ITERATOR"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
-<li><a href="#FF_SAFARI_SRC"><code>FF_SAFARI_SRC</code></a>
-<li><a href="#FILL"><code>FILL</code></a> (Firefox 31+)
-<li><a href="#GMT"><code>GMT</code></a>
-<li><a href="#NAME"><code>NAME</code></a>
-<li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#FF_SAFARI_SRC"><code>FF_SAFARI_SRC</code></a>)
-<li><a href="#NO_SAFARI_ARRAY_ITERATOR"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>
-<li><a href="#NO_SAFARI_LF"><code>NO_SAFARI_LF</code></a>
-<li><a href="#SELF"><code>SELF</code></a> (implied by <a href="#WINDOW"><code>WINDOW</code></a>)
-<li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
-<li><a href="#WINDOW"><code>WINDOW</code></a>
+<li><a href="#atob"><code>ATOB</code></a>
+<li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
+<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
+<li><a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>
+<li><a href="#fill"><code>FILL</code></a> (Firefox 31+)
+<li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#name"><code>NAME</code></a>
+<li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>)
+<li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>
+<li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
+<li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#undefined"><code>UNDEFINED</code></a>
+<li><a href="#window"><code>WINDOW</code></a>
 </ul>
 </td>
 </tr>
@@ -133,18 +134,18 @@ This table lists features available in the most common engines.
 <td>Chrome 35+, Opera 22+</td>
 <td>
 <ul>
-<li><a href="#ATOB"><code>ATOB</code></a>
-<li><a href="#DOUBLE_QUOTE_ESC_HTML"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#ENTRIES"><code>ENTRIES</code></a> (implied by <a href="#NO_SAFARI_ARRAY_ITERATOR"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Chrome 38+, Opera 25+)
-<li><a href="#GMT"><code>GMT</code></a>
-<li><a href="#NAME"><code>NAME</code></a>
-<li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#V8_SRC"><code>V8_SRC</code></a>)
-<li><a href="#NO_SAFARI_ARRAY_ITERATOR"><code>NO_SAFARI_ARRAY_ITERATOR</code></a> (Chrome 38+, Opera 25+)
-<li><a href="#NO_SAFARI_LF"><code>NO_SAFARI_LF</code></a>
-<li><a href="#SELF"><code>SELF</code></a> (implied by <a href="#WINDOW"><code>WINDOW</code></a>)
-<li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
-<li><a href="#V8_SRC"><code>V8_SRC</code></a>
-<li><a href="#WINDOW"><code>WINDOW</code></a>
+<li><a href="#atob"><code>ATOB</code></a>
+<li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
+<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Chrome 38+, Opera 25+)
+<li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#name"><code>NAME</code></a>
+<li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
+<li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a> (Chrome 38+, Opera 25+)
+<li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
+<li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#undefined"><code>UNDEFINED</code></a>
+<li><a href="#v8_src"><code>V8_SRC</code></a>
+<li><a href="#window"><code>WINDOW</code></a>
 </ul>
 </td>
 </tr>
@@ -152,14 +153,14 @@ This table lists features available in the most common engines.
 <td>Internet Explorer 9+</td>
 <td>
 <ul>
-<li><a href="#ATOB"><code>ATOB</code></a> (Internet Explorer 10+)
-<li><a href="#CAPITAL_HTML"><code>CAPITAL_HTML</code></a>
-<li><a href="#GMT"><code>GMT</code></a> (Internet Explorer 11)
-<li><a href="#IE_SRC"><code>IE_SRC</code></a>
-<li><a href="#NO_SAFARI_LF"><code>NO_SAFARI_LF</code></a>
-<li><a href="#SELF"><code>SELF</code></a> (implied by <a href="#WINDOW"><code>WINDOW</code></a>)
-<li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
-<li><a href="#WINDOW"><code>WINDOW</code></a>
+<li><a href="#atob"><code>ATOB</code></a> (Internet Explorer 10+)
+<li><a href="#capital_html"><code>CAPITAL_HTML</code></a>
+<li><a href="#gmt"><code>GMT</code></a> (Internet Explorer 11)
+<li><a href="#ie_src"><code>IE_SRC</code></a>
+<li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
+<li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#undefined"><code>UNDEFINED</code></a>
+<li><a href="#window"><code>WINDOW</code></a>
 </ul>
 </td>
 </tr>
@@ -167,18 +168,18 @@ This table lists features available in the most common engines.
 <td>Safari 7.0+</td>
 <td>
 <ul>
-<li><a href="#ATOB"><code>ATOB</code></a>
-<li><a href="#DOUBLE_QUOTE_ESC_HTML"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#ENTRIES"><code>ENTRIES</code></a> (implied by <a href="#SAFARI_ARRAY_ITERATOR"><code>SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
-<li><a href="#FF_SAFARI_SRC"><code>FF_SAFARI_SRC</code></a>
-<li><a href="#FILL"><code>FILL</code></a> (Safari 7.1+)
-<li><a href="#GMT"><code>GMT</code></a>
-<li><a href="#NAME"><code>NAME</code></a>
-<li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#FF_SAFARI_SRC"><code>FF_SAFARI_SRC</code></a>)
-<li><a href="#SAFARI_ARRAY_ITERATOR"><code>SAFARI_ARRAY_ITERATOR</code></a> (Safari 7.1+)
-<li><a href="#SELF"><code>SELF</code></a> (implied by <a href="#WINDOW"><code>WINDOW</code></a>)
-<li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
-<li><a href="#WINDOW"><code>WINDOW</code></a>
+<li><a href="#atob"><code>ATOB</code></a>
+<li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
+<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
+<li><a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>
+<li><a href="#fill"><code>FILL</code></a> (Safari 7.1+)
+<li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#name"><code>NAME</code></a>
+<li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>)
+<li><a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a> (Safari 7.1+)
+<li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#undefined"><code>UNDEFINED</code></a>
+<li><a href="#window"><code>WINDOW</code></a>
 </ul>
 </td>
 </tr>
@@ -186,17 +187,17 @@ This table lists features available in the most common engines.
 <td>Android Browser 4.0+</td>
 <td>
 <ul>
-<li><a href="#ATOB"><code>ATOB</code></a>
-<li><a href="#DOMWINDOW"><code>DOMWINDOW</code></a> (not in Android Browser 4.4.2+)
-<li><a href="#DOUBLE_QUOTE_ESC_HTML"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#GMT"><code>GMT</code></a>
-<li><a href="#NAME"><code>NAME</code></a>
-<li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#V8_SRC"><code>V8_SRC</code></a>)
-<li><a href="#NO_SAFARI_LF"><code>NO_SAFARI_LF</code></a>
-<li><a href="#SELF"><code>SELF</code></a> (implied by <a href="#DOMWINDOW"><code>DOMWINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
-<li><a href="#UNDEFINED"><code>UNDEFINED</code></a> (Android Browser 4.1.2+)
-<li><a href="#V8_SRC"><code>V8_SRC</code></a>
-<li><a href="#WINDOW"><code>WINDOW</code></a> (Android Browser 4.4.2+)
+<li><a href="#atob"><code>ATOB</code></a>
+<li><a href="#domwindow"><code>DOMWINDOW</code></a> (not in Android Browser 4.4.2+)
+<li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
+<li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#name"><code>NAME</code></a>
+<li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
+<li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
+<li><a href="#self"><code>SELF</code></a> (implied by <a href="#domwindow"><code>DOMWINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#undefined"><code>UNDEFINED</code></a> (Android Browser 4.1.2+)
+<li><a href="#v8_src"><code>V8_SRC</code></a>
+<li><a href="#window"><code>WINDOW</code></a> (Android Browser 4.4.2+)
 </ul>
 </td>
 </tr>
@@ -204,15 +205,15 @@ This table lists features available in the most common engines.
 <td>Node.js 0.10.28+</td>
 <td>
 <ul>
-<li><a href="#DOUBLE_QUOTE_ESC_HTML"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#ENTRIES"><code>ENTRIES</code></a> (implied by <a href="#NO_SAFARI_ARRAY_ITERATOR"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
-<li><a href="#GMT"><code>GMT</code></a>
-<li><a href="#NAME"><code>NAME</code></a>
-<li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#V8_SRC"><code>V8_SRC</code></a>)
-<li><a href="#NO_SAFARI_ARRAY_ITERATOR"><code>NO_SAFARI_ARRAY_ITERATOR</code></a> (Node.js 0.12+)
-<li><a href="#NO_SAFARI_LF"><code>NO_SAFARI_LF</code></a>
-<li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
-<li><a href="#V8_SRC"><code>V8_SRC</code></a>
+<li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
+<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
+<li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#name"><code>NAME</code></a>
+<li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
+<li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a> (Node.js 0.12+)
+<li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
+<li><a href="#undefined"><code>UNDEFINED</code></a>
+<li><a href="#v8_src"><code>V8_SRC</code></a>
 </ul>
 </td>
 </tr>
