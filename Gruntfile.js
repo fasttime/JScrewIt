@@ -149,9 +149,19 @@ module.exports =
         grunt.loadNpmTasks('grunt-jscs');
         grunt.loadNpmTasks('grunt-mocha-istanbul');
         
+        grunt.registerTask(
+            'feature-doc',
+            'Create Feature Reference documentation',
+            function ()
+            {
+                grunt.file.write('Features.md', require('./make-feature-doc.js')());
+                grunt.log.ok('Done.');
+            }
+        );
+        
         // Default task.
         grunt.registerTask(
             'default',
-            ['clean', 'jshint', 'jscs', 'concat', 'mocha_istanbul', 'uglify']
+            ['clean', 'jshint', 'jscs', 'concat', 'mocha_istanbul', 'uglify', 'feature-doc']
         );
     };
