@@ -4,6 +4,7 @@ FEATURE_INFOS,
 Encoder,
 availableFeatureMask,
 getFeatureMask,
+getFeatures,
 incompatibleFeatureMasks,
 module,
 self,
@@ -31,6 +32,23 @@ var setUp;
         var featureMask = getFeatureMask(features);
         var result = isFeatureMaskCompatible(featureMask);
         return result;
+    }
+    
+    function commonFeaturesOf()
+    {
+        if (arguments.length)
+        {
+            var featureMask = ~0;
+            Array.prototype.forEach.call(
+                arguments,
+                function (features)
+                {
+                    featureMask &= getFeatureMask(features);
+                }
+            );
+            var result = getFeatures(featureMask);
+            return result;
+        }
     }
     
     function encode(input, arg2, arg3)
@@ -124,6 +142,7 @@ var setUp;
     ({
         areFeaturesAvailable:   areFeaturesAvailable,
         areFeaturesCompatible:  areFeaturesCompatible,
+        commonFeaturesOf:       commonFeaturesOf,
         encode:                 encode,
         FEATURE_INFOS:          FEATURE_INFOS,
     });

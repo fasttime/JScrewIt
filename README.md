@@ -92,8 +92,8 @@ var output = JScrewIt.encode("alert(1)", { wrapWith: "call" });
 eval(output);
 ```
 
-Setting `wrapWith` to `"call"` in the second parameter indicates that we would like the output to be
-executable.
+Setting `wrapWith` to `"call"` in the second parameter of [`JScrewIt.encode`]
+(#jscrewitencodeinput-options) indicates that we would like the output to be executable.
 
 `wrapWith` should be omitted or set to `"none"` to encode a plain string instead of JavaScript code.
 
@@ -103,6 +103,8 @@ var input = eval(output); // input contains the string "Hello, world!".
 ```
 
 #### Features
+
+> _See also: [Feature Reference](Features.md)_
 
 JScrewIt has the ability to generate JSFuck code that is targeted for a particular set of JavaScript
 engines (web browsers or Node.js).
@@ -141,131 +143,6 @@ var options = { features: ["ATOB", "WINDOW"], wrapWith: "call" };
 var output = JScrewIt.encode(input, options);
 ```
 
-This table lists individual features of some common browsers.
-
-<table>
-<tr>
-<th>Target</th>
-<th>Features</th>
-</tr>
-<tr>
-<td>Firefox 30+</td>
-<td>
-<ul>
-<li><code>ATOB</code>
-<li><code>DOUBLE_QUOTE_ESC_HTML</code>
-<li><code>ENTRIES</code> (implied by <code>NO_SAFARI_ARRAY_ITERATOR</code>)
-<li><code>FF_SAFARI_SRC</code>
-<li><code>FILL</code> (Firefox 31+)
-<li><code>GMT</code>
-<li><code>NAME</code>
-<li><code>NO_IE_SRC</code> (implied by <code>FF_SAFARI_SRC</code>)
-<li><code>NO_SAFARI_ARRAY_ITERATOR</code>
-<li><code>NO_SAFARI_LF</code>
-<li><code>SELF</code> (implied by <code>WINDOW</code>)
-<li><code>UNDEFINED</code>
-<li><code>WINDOW</code>
-</td>
-</tr>
-<tr>
-<td>
-Google Chrome 35+, Opera 22+
-</td>
-<td>
-<ul>
-<li><code>ATOB</code>
-<li><code>DOUBLE_QUOTE_ESC_HTML</code>
-<li><code>ENTRIES</code> (implied by <code>NO_SAFARI_ARRAY_ITERATOR</code>; Chrome 38+, Opera 25+)
-<li><code>GMT</code>
-<li><code>NAME</code>
-<li><code>NO_IE_SRC</code> (implied by <code>V8_SRC</code>)
-<li><code>NO_SAFARI_ARRAY_ITERATOR</code> (Chrome 38+, Opera 25+)
-<li><code>NO_SAFARI_LF</code>
-<li><code>SELF</code> (implied by <code>WINDOW</code>)
-<li><code>UNDEFINED</code>
-<li><code>V8_SRC</code>
-<li><code>WINDOW</code>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-Internet Explorer 9+
-</td>
-<td>
-<ul>
-<li><code>ATOB</code> (Internet Explorer 10+)
-<li><code>CAPITAL_HTML</code>
-<li><code>GMT</code> (Internet Explorer 11)
-<li><code>IE_SRC</code>
-<li><code>NO_SAFARI_LF</code>
-<li><code>SELF</code> (implied by <code>WINDOW</code>)
-<li><code>UNDEFINED</code>
-<li><code>WINDOW</code>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-Safari 7.0+
-</td>
-<td>
-<ul>
-<li><code>ATOB</code>
-<li><code>DOUBLE_QUOTE_ESC_HTML</code>
-<li><code>ENTRIES</code> (implied by <code>SAFARI_ARRAY_ITERATOR</code>; Safari 7.1+)
-<li><code>FF_SAFARI_SRC</code>
-<li><code>FILL</code> (Safari 7.1+)
-<li><code>GMT</code>
-<li><code>NAME</code>
-<li><code>NO_IE_SRC</code> (implied by <code>FF_SAFARI_SRC</code>)
-<li><code>SAFARI_ARRAY_ITERATOR</code> (Safari 7.1+)
-<li><code>SELF</code> (implied by <code>WINDOW</code>)
-<li><code>UNDEFINED</code>
-<li><code>WINDOW</code>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-Android Browser 4.0+
-</td>
-<td>
-<ul>
-<li><code>ATOB</code>
-<li><code>DOMWINDOW</code> (not in Android Browser 4.4.2+)
-<li><code>DOUBLE_QUOTE_ESC_HTML</code>
-<li><code>GMT</code>
-<li><code>NAME</code>
-<li><code>NO_IE_SRC</code> (implied by <code>V8_SRC</code>)
-<li><code>NO_SAFARI_LF</code>
-<li><code>SELF</code> (implied by <code>DOMWINDOW</code> and <code>WINDOW</code>)
-<li><code>UNDEFINED</code> (Android Browser 4.1.2+)
-<li><code>V8_SRC</code>
-<li><code>WINDOW</code> (Android Browser 4.4.2+)
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-Node.js 0.10.28+
-</td>
-<td>
-<ul>
-<li><code>DOUBLE_QUOTE_ESC_HTML</code>
-<li><code>ENTRIES</code> (implied by <code>NO_SAFARI_ARRAY_ITERATOR</code>; Node.js 0.12)
-<li><code>GMT</code>
-<li><code>NAME</code>
-<li><code>NO_IE_SRC</code> (implied by <code>V8_SRC</code>)
-<li><code>NO_SAFARI_ARRAY_ITERATOR</code> (Node.js 0.12)
-<li><code>NO_SAFARI_LF</code>
-<li><code>UNDEFINED</code>
-<li><code>V8_SRC</code>
-</ul>
-</td>
-</tr>
-</table>
-
 Keep in mind that each of the target engines needs to support every feature you specify.
 So if you want your JSFuck code to run on both Internet Explorer and Firefox, this won't work.
 
@@ -274,7 +151,14 @@ So if you want your JSFuck code to run on both Internet Explorer and Firefox, th
 ```
 
 Instead, you have to specify features supported by both browsers.
-Those turn out out to be `"NO_SAFARI_LF"`, `"SELF"`, `"UNDEFINED"` and `"WINDOW"`.
+These can be retrieved with [`JScrewIt.commonFeaturesOf`](#jscrewitcommonfeaturesoffeatures).
+
+```js
+{ features: JScrewIt.commonFeaturesOf("IE9", "FF31") }
+```
+
+The features turn out to be `"NO_SAFARI_LF"`, `"SELF"`, `"UNDEFINED"` and `"WINDOW"`; with this
+knowledge, the definition can be also written as below.
 
 ```js
 { features: ["NO_SAFARI_LF", "SELF", "UNDEFINED", "WINDOW"] }
@@ -331,6 +215,33 @@ JScrewIt.areFeaturesCompatible(["DEFAULT", "FILL"]) // returns true
 
 If *`features`* is an empty array or `undefined`, or if it only specifies one feature, the return
 value is `true`.
+
+This function throws a `ReferenceError` if some unknown features are specified.
+
+#### <code>**JScrewIt.commonFeaturesOf(*features...*)**</code>
+
+Gets an array of individual features shared by a specified group of features.
+
+<dl>
+<dt><code>features</code></dt>
+<dd>
+A string or array of strings specifying an element of the group of features whose common individual
+features are to be retrieved.</dd>
+</dl>
+
+##### Examples
+
+```js
+JScrewIt.commonFeaturesOf("COMPACT", "IE9", "ANDRO412") // returns ["SELF", "UNDEFINED"]
+```
+
+```js
+JScrewIt.commonFeaturesOf(["ATOB", "NAME"], ["NAME", "SELF"]) // returns ["NAME"]
+```
+
+##### Notes
+
+If no arguments are specified, the return value is `undefined`.
 
 This function throws a `ReferenceError` if some unknown features are specified.
 
