@@ -68,6 +68,7 @@ module.exports =
                         ],
                         requireLineBreakAfterVariableAssignment: true,
                         requireLineFeedAtFileEnd: true,
+                        requirePaddingNewLinesAfterUseStrict: true,
                         requireSpaceAfterBinaryOperators: true,
                         requireSpaceAfterKeywords: true,
                         requireSpaceAfterLineComment: true,
@@ -93,6 +94,7 @@ module.exports =
                         requireSpacesInFunctionDeclaration: { beforeOpeningCurlyBrace: true },
                         requireSpacesInFunctionExpression: { beforeOpeningCurlyBrace: true },
                         requireSpacesInsideObjectBrackets: 'all',
+                        validateAlignedFunctionParameters: true,
                         validateIndentation: 4,
                         validateParameterSeparator: ', '
                     }
@@ -147,9 +149,19 @@ module.exports =
         grunt.loadNpmTasks('grunt-jscs');
         grunt.loadNpmTasks('grunt-mocha-istanbul');
         
+        grunt.registerTask(
+            'feature-doc',
+            'Create Feature Reference documentation',
+            function ()
+            {
+                grunt.file.write('Features.md', require('./make-feature-doc.js')());
+                grunt.log.ok('Done.');
+            }
+        );
+        
         // Default task.
         grunt.registerTask(
             'default',
-            ['clean', 'jshint', 'jscs', 'concat', 'mocha_istanbul', 'uglify']
+            ['clean', 'jshint', 'jscs', 'concat', 'mocha_istanbul', 'uglify', 'feature-doc']
         );
     };

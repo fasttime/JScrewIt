@@ -5,13 +5,12 @@ CODERS,
 COMPLEX,
 CONSTANTS,
 DEBUG,
-FEATURE_INFOS,
 Encoder,
 JScrewIt,
 ScrewBuffer,
 describeNoEnum,
 expandEntries,
-featureMaskMap,
+getFeatures,
 getValidFeatureMask,
 hasOuterPlus,
 noEnum,
@@ -87,20 +86,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         
         function getEntryFeatures(entry)
         {
-            var result = [];
-            var entryMask = entry.featureMask;
-            for (var feature in featureMaskMap)
-            {
-                var featureMask = featureMaskMap[feature];
-                if ((featureMask & entryMask) === featureMask)
-                {
-                    var featureInfo = FEATURE_INFOS[feature];
-                    if (featureInfo.check)
-                    {
-                        result.push(feature);
-                    }
-                }
-            }
+            var result = getFeatures(entry.featureMask);
             return result;
         }
         
