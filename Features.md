@@ -59,10 +59,10 @@ Remarkable traits are the presence of a line feed character (&quot;\n&quot;) in 
 Existence of the name property for functions.
 This feature is not available in Internet Explorer.
 ### `NODE`
-Features available in Node.js 0.10.28 or later.
+Features available in Node.js 0.10.26 or later.
 Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.
 ### `NODE010`
-Features available in Node.js 0.10.28 or later.
+Features available in Node.js 0.10.26 or later.
 Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.
 ### `NODE012`
 Features available in Node.js 0.12.
@@ -202,7 +202,7 @@ This table lists features available in the most common engines.
 </td>
 </tr>
 <tr>
-<td>Node.js 0.10.28+</td>
+<td>Node.js 0.10.26+</td>
 <td>
 <ul>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
