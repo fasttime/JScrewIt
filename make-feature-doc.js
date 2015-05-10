@@ -131,7 +131,7 @@ var LISTS =
         { description: 'Android Browser 4.4.2+', feature: 'ANDRO442' }
     ],
     [
-        { description: 'Node.js 0.10.28+', feature: 'NODE010' },
+        { description: 'Node.js 0.10.26+', feature: 'NODE010' },
         { description: 'Node.js 0.12+', feature: 'NODE012' }
     ]
 ];
