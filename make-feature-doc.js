@@ -7,7 +7,7 @@ var JScrewIt = require('./lib/jscrewit.js');
 
 function formatFeature(feature)
 {
-    var result = '<a href="#' + feature + '"><code>' + feature + '</code></a>';
+    var result = '<a href="#' + feature.toLowerCase() + '"><code>' + feature + '</code></a>';
     return result;
 }
 
@@ -141,7 +141,8 @@ module.exports =
     {
         var content =
             '# JScrewIt Feature Reference\n' +
-            '## Feature List\n';
+            '## Feature List\n' +
+            'This section lists all features along with their descriptions.\n';
         Object.keys(JScrewIt.FEATURE_INFOS).sort().forEach(
             function (feature)
             {
