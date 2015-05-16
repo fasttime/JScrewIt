@@ -11,10 +11,7 @@
   "bugs": {
     "url": "https://github.com/fasttime/JScrewIt/issues"
   },
-  "license": {
-    "type": "ISC",
-    "url": "https://github.com/fasttime/JScrewIt/blob/master/LICENSE.txt"
-  },
+  "license": "ISC",
   "author": "Francesco Trotta <ft@fasttime.org> (https://github.com/fasttime)",
   "files": [
     "cli.js",
@@ -34,6 +31,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/fasttime/JScrewIt.git"
+  },
+  "scripts": {
+    "build": "npm install && grunt"
   },
   "devDependencies": {
     "escape-html": "~1.0.1",
