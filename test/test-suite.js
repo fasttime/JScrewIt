@@ -689,9 +689,12 @@
             'ScrewBuffer',
             function ()
             {
-                function test(buffer, expectedString)
+                function test(buffer, expectedString, tolerance)
                 {
-                    expect(buffer.length).toBe(expectedString.length);
+                    var actualLength = buffer.length;
+                    var expectedLength = expectedString.length;
+                    expect(actualLength).not.toBeGreaterThan(expectedLength);
+                    expect(actualLength).not.toBeLessThan(expectedLength - (tolerance ^ 0));
                     expect(buffer + '').toBe(expectedString);
                 }
                 
@@ -722,7 +725,7 @@
                             }
                         );
                         it(
-                            'encodes a string with more elements than the first group threshold',
+                            'encodes a string in a single group',
                             function ()
                             {
                                 expect(buffer.append(solution0)).toBe(true);
@@ -732,12 +735,12 @@
                             }
                         );
                         it(
-                            'encodes a string with more elements than the second group threshold',
+                            'encodes a string in two groups',
                             function ()
                             {
                                 expect(buffer.append(solutionFalse)).toBe(true);
                                 expect(buffer.append(solutionFalse)).toBe(true);
-                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![])');
+                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![])', 2);
                             }
                         );
                         it(
@@ -745,7 +748,12 @@
                             function ()
                             {
                                 expect(buffer.append(solutionFalse)).toBe(true);
-                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))');
+                                expect(buffer.append(solutionFalse)).toBe(true);
+                                test(
+                                    buffer,
+                                    '[![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
+                                    8
+                                );
                             }
                         );
                         it(
@@ -753,7 +761,11 @@
                             function ()
                             {
                                 expect(buffer.append(solutionFalse)).toBe(false);
-                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))');
+                                test(
+                                    buffer,
+                                    '[![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
+                                    8
+                                );
                             }
                         );
                     }
@@ -779,7 +791,7 @@
                             }
                         );
                         it(
-                            'encodes a string with more elements than the first group threshold',
+                            'encodes a string in a single group',
                             function ()
                             {
                                 expect(buffer.append(solution0)).toBe(true);
@@ -789,12 +801,12 @@
                             }
                         );
                         it(
-                            'encodes a string with more elements than the second group threshold',
+                            'encodes a string in two groups',
                             function ()
                             {
                                 expect(buffer.append(solutionFalse)).toBe(true);
                                 expect(buffer.append(solutionFalse)).toBe(true);
-                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![]))');
+                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![]))', 2);
                             }
                         );
                         it(
@@ -802,7 +814,12 @@
                             function ()
                             {
                                 expect(buffer.append(solutionFalse)).toBe(true);
-                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]])))');
+                                expect(buffer.append(solutionFalse)).toBe(true);
+                                test(
+                                    buffer,
+                                    '([![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]])))',
+                                    8
+                                );
                             }
                         );
                         it(
@@ -810,7 +827,11 @@
                             function ()
                             {
                                 expect(buffer.append(solutionFalse)).toBe(false);
-                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]])))');
+                                test(
+                                    buffer,
+                                    '([![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]])))',
+                                    8
+                                );
                             }
                         );
                     }

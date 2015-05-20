@@ -22,11 +22,11 @@ var hasOuterPlus;
         return string;
     }
     
-    function sequence(solutions, start, count)
+    function sequence(solutions, offset, count)
     {
         var string;
-        var solution0 = solutions[start];
-        var solution1 = solutions[start + 1];
+        var solution0 = solutions[offset];
+        var solution1 = solutions[offset + 1];
         if (solution0.level < LEVEL_OBJECT && solution1.level < LEVEL_OBJECT)
         {
             if (solution1.level > LEVEL_UNDEFINED)
@@ -48,7 +48,7 @@ var hasOuterPlus;
         }
         for (var index = 2; index < count; ++index)
         {
-            var solution = solutions[start + index];
+            var solution = solutions[offset + index];
             string = appendSolution(string, solution);
         }
         return string;
@@ -103,12 +103,12 @@ var hasOuterPlus;
                     {
                         value: function ()
                         {
-                            function collect(start, count, maxGroupCount)
+                            function collect(offset, count, maxGroupCount)
                             {
                                 var result;
                                 if (count <= groupSize + 1)
                                 {
-                                    result = sequence(solutions, start, count);
+                                    result = sequence(solutions, offset, count);
                                 }
                                 else
                                 {
@@ -121,10 +121,10 @@ var hasOuterPlus;
                                             (maxGroupCount / 2 ^ 0) * (groupSize + 1)
                                         );
                                     result =
-                                        collect(start, leftCount, maxGroupCount) +
+                                        collect(offset, leftCount, maxGroupCount) +
                                         '+(' +
                                         collect(
-                                            start + leftCount,
+                                            offset + leftCount,
                                             count - leftCount,
                                             maxGroupCount) +
                                         ')';
@@ -142,6 +142,7 @@ var hasOuterPlus;
                             else if (solutionCount === 1)
                             {
                                 var solution = solutions[0];
+                                // Here we assume that string solutions never have an outer plus.
                                 singlePart = solution.level > LEVEL_OBJECT;
                                 result = solution + (singlePart ? '' : '+[]');
                             }
@@ -177,6 +178,7 @@ var hasOuterPlus;
         };
     
     getAppendLength =
+        // This function assumes that only undefined or numeric solutions can have an outer plus.
         function (solution)
         {
             var extraLength = hasOuterPlus(solution) ? 3 : 1;
