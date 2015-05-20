@@ -92,7 +92,7 @@ var hasOuterPlus;
                                 var solution = solutions[0];
                                 result =
                                     solution.length +
-                                    (strongBound && solution.level < LEVEL_STRING ? 2 : 0);
+                                    (solution.level < LEVEL_STRING ? strongBound ? 5 : 3 : 0);
                                 break;
                             default:
                                 result = length + (strongBound ? 2 : 0);
