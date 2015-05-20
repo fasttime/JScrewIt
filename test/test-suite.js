@@ -729,7 +729,7 @@
                         }
                     );
                     it(
-                        'encodes a string in three groups',
+                        'encodes a string in nested groups',
                         function ()
                         {
                             expect(buffer.append(solutionFalse)).toBe(true);
@@ -766,6 +766,24 @@
                     );
 
                 })();
+                it(
+                    'encodes a string with incomplete groups',
+                    function ()
+                    {
+                        var buffer = JScrewIt.debug.createScrewBuffer(false, 7);
+                        for (var index = 0; index < 26; ++index)
+                        {
+                            var solution = Object(String.fromCharCode(65 + index));
+                            solution.level = 0;
+                            buffer.append(solution);
+                        }
+                        test(
+                            buffer,
+                            'A+B+C+D+E+(F+G+H+I+J)+(K+L+M+N+(O+P+Q+R)+(S+T+U+V+(W+X+Y+Z)))',
+                            10
+                        );
+                    }
+                );
                 describe(
                     'with weak bound',
                     function ()
