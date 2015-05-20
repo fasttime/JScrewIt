@@ -1481,7 +1481,7 @@ var expandEntries;
             else
             {
                 var replacement = this.replaceExpr(definition);
-                solution = createSolution(replacement);
+                solution = createSolution(replacement, LEVEL_STRING);
             }
             return solution;
         },
