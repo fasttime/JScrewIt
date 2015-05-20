@@ -704,6 +704,68 @@
                 solution0.level = -1;
                 var solutionFalse = Object('![]');
                 solutionFalse.level = -1;
+                
+                (function ()
+                {
+                    var buffer = JScrewIt.debug.createScrewBuffer(false, 4);
+                    it(
+                        'encodes a string in a single group',
+                        function ()
+                        {
+                            expect(buffer.append(solutionA)).toBe(true);
+                            expect(buffer.append(solution0)).toBe(true);
+                            expect(buffer.append(solution0)).toBe(true);
+                            expect(buffer.append(solution0)).toBe(true);
+                            test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[])');
+                        }
+                    );
+                    it(
+                        'encodes a string in two groups',
+                        function ()
+                        {
+                            expect(buffer.append(solutionFalse)).toBe(true);
+                            expect(buffer.append(solutionFalse)).toBe(true);
+                            test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![])', 2);
+                        }
+                    );
+                    it(
+                        'encodes a string in three groups',
+                        function ()
+                        {
+                            expect(buffer.append(solutionFalse)).toBe(true);
+                            test(
+                                buffer,
+                                '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))',
+                                6
+                            );
+                        }
+                    );
+                    it(
+                        'encodes a string with the largest possible number of elements',
+                        function ()
+                        {
+                            expect(buffer.append(solutionFalse)).toBe(true);
+                            test(
+                                buffer,
+                                '[![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
+                                8
+                            );
+                        }
+                    );
+                    it(
+                        'does not encode a string with too many elements',
+                        function ()
+                        {
+                            expect(buffer.append(solutionFalse)).toBe(false);
+                            test(
+                                buffer,
+                                '[![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
+                                8
+                            );
+                        }
+                    );
+
+                })();
                 describe(
                     'with weak bound',
                     function ()
@@ -768,80 +830,6 @@
                         );
                     }
                 );
-                (function ()
-                {
-                    var buffer = JScrewIt.debug.createScrewBuffer(false, 4);
-                    it(
-                        'encodes an empty string',
-                        function ()
-                        {
-                            test(buffer, '[]+[]');
-                        }
-                    );
-                    it(
-                        'encodes a single character',
-                        function ()
-                        {
-                            expect(buffer.append(solutionA)).toBe(true);
-                            test(buffer, '[![]+[]][+[]]');
-                        }
-                    );
-                    it(
-                        'encodes a string in a single group',
-                        function ()
-                        {
-                            expect(buffer.append(solution0)).toBe(true);
-                            expect(buffer.append(solution0)).toBe(true);
-                            expect(buffer.append(solution0)).toBe(true);
-                            test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[])');
-                        }
-                    );
-                    it(
-                        'encodes a string in two groups',
-                        function ()
-                        {
-                            expect(buffer.append(solutionFalse)).toBe(true);
-                            expect(buffer.append(solutionFalse)).toBe(true);
-                            test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![])', 2);
-                        }
-                    );
-                    it(
-                        'encodes a string in three groups',
-                        function ()
-                        {
-                            expect(buffer.append(solutionFalse)).toBe(true);
-                            test(
-                                buffer,
-                                '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))',
-                                6
-                            );
-                        }
-                    );
-                    it(
-                        'encodes a string with the largest possible number of elements',
-                        function ()
-                        {
-                            expect(buffer.append(solutionFalse)).toBe(true);
-                            test(
-                                buffer,
-                                '[![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
-                                8
-                            );
-                        }
-                    );
-                    it(
-                        'does not encode a string with too many elements',
-                        function ()
-                        {
-                            expect(buffer.append(solutionFalse)).toBe(false);
-                            test(
-                                buffer,
-                                '[![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
-                                8
-                            );
-                        }
-                    );
-                })();
             }
         );
         describe(
