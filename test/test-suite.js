@@ -1196,16 +1196,18 @@
                     ['ATOB', 'ENTRIES', 'FILL', 'NO_IE_SRC'],
                     function (length)
                     {
+                        var MAX = 125;
+                        
                         var str = '';
-                        for (var i = 0; i < 125; ++i)
+                        for (var i = 0; i < MAX; ++i)
                         {
                             str += String.fromCharCode(0xffff - i);
                         }
-                        str = repeat(str, Math.ceil(length / 125)).slice(0, length);
+                        str = repeat(str, Math.ceil(length / MAX)).slice(0, length);
                         return str;
                     },
                     'byDictRadix4',
-                    'byDictRadix5Amended'
+                    'byDictRadix5AmendedBy2'
                 );
             }
         );
