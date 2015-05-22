@@ -1210,10 +1210,10 @@
                     'byDictRadix5AmendedBy2'
                 );
                 test(
-                    ['ATOB', 'ENTRIES', 'FILL', 'NO_IE_SRC'],
+                    ['ENTRIES', 'FILL', 'V8_SRC'],
                     function (length)
                     {
-                        var MAX = 447;
+                        var MAX = 440;
                         
                         var str = '';
                         for (var i = 0; i < MAX; ++i)
