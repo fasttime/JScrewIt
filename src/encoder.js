@@ -664,7 +664,7 @@ var expandEntries;
                 var output = this.encodeByDict(input, 5, 3, maxLength);
                 return output;
             },
-            1378
+            894
         ),
         plain: defineCoder
         (

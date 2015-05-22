@@ -1209,6 +1209,23 @@
                     'byDictRadix4',
                     'byDictRadix5AmendedBy2'
                 );
+                test(
+                    ['ATOB', 'ENTRIES', 'FILL', 'NO_IE_SRC'],
+                    function (length)
+                    {
+                        var MAX = 447;
+                        
+                        var str = '';
+                        for (var i = 0; i < MAX; ++i)
+                        {
+                            str += String.fromCharCode(0xffff - i);
+                        }
+                        str = repeat(str, Math.ceil(length / MAX)).slice(0, length);
+                        return str;
+                    },
+                    'byDictRadix5AmendedBy2',
+                    'byDictRadix5AmendedBy3'
+                );
             }
         );
     }
