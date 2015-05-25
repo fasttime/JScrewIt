@@ -35,7 +35,6 @@ var expandEntries;
     }
     
     var AMENDINGS = ['true', 'undefined', 'NaN'];
-    var AMENDING_LENGTHS = [4, 6, 8];
     
     var BASE64_ALPHABET_HI_2 = ['NaN', 'false', 'truefalse', '0'];
     
@@ -664,7 +663,7 @@ var expandEntries;
                 var output = this.encodeByDict(input, 5, 3, maxLength);
                 return output;
             },
-            777
+            773
         ),
         plain: defineCoder
         (
@@ -909,18 +908,23 @@ var expandEntries;
         return definition;
     }
     
-    function createReindexMap(count, radix, amendings)
+    function createReindexMap(count, radix, amendings, coerceToInt)
     {
-        var DIGIT_LENGTHS = [3, 5, 9, 14, 19, 24, 29, 34, 39, 44];
-        
         function getSortLength()
         {
-            var length = 3 * (str.length - 1);
-            Array.prototype.forEach.call(str, function (digit) { length += DIGIT_LENGTHS[digit]; });
+            var length = 0;
+            Array.prototype.forEach.call(str, function (digit) { length += digitLengths[digit]; });
             return length;
         }
         
         var index;
+        var digitLengths =
+            Array.apply(null, { length: radix || 10 }).map(
+                function (unused, index)
+                {
+                    return encodeDigit(index + '').length + 3;
+                }
+            );
         var regExp;
         var replacer;
         if (amendings)
@@ -930,7 +934,7 @@ var expandEntries;
             for (index = 0; index < amendings; ++index)
             {
                 var digit = firstDigit + index;
-                DIGIT_LENGTHS[digit] = AMENDING_LENGTHS[index];
+                digitLengths[digit] = getAppendLength(resolveSimple(AMENDINGS[index]));
                 pattern += digit;
             }
             pattern += ']';
@@ -940,7 +944,7 @@ var expandEntries;
         var range = [];
         for (index = 0; index < count; ++index)
         {
-            var str = index.toString(radix);
+            var str = coerceToInt && !index ? '' : index.toString(radix);
             var reindexStr = amendings ? str.replace(regExp, replacer) : str;
             var reindex = range[index] = Object(reindexStr);
             reindex.sortLength = getSortLength();
@@ -1199,7 +1203,7 @@ var expandEntries;
             return output;
         },
         
-        createDictEncoding: function (dict, indexes, radix, amendings)
+        createDictEncoding: function (dict, indexes, radix, amendings, coerceToInt)
         {
             var mapper;
             if (radix)
@@ -1231,6 +1235,10 @@ var expandEntries;
                 else
                 {
                     parseIntArg = 'arguments[0]';
+                }
+                if (coerceToInt)
+                {
+                    parseIntArg = '+' + parseIntArg;
                 }
                 mapper =
                     'Function("return this[parseInt(' + parseIntArg + ',' + radix + ')]")["bind"]';
@@ -1320,9 +1328,13 @@ var expandEntries;
             );
             var freqList = Object.keys(freqs).map(function (char) { return freqs[char]; });
             var dictChars = [];
-            var reindexMap = createReindexMap(freqList.length, radix, amendings);
-            freqList.sort(function (freq1, freq2) { return freq2.count - freq1.count; })
-                .forEach(
+            freqList.sort(function (freq1, freq2) { return freq2.count - freq1.count; });
+            var coerceToInt =
+                freqList.length &&
+                freqList[0].count * getAppendLength(this.resolveCharacter('0')) >
+                getAppendLength(this.resolveCharacter('+'));
+            var reindexMap = createReindexMap(freqList.length, radix, amendings, coerceToInt);
+            freqList.forEach(
                     function (freq, index)
                     {
                         var reindex = reindexMap[index];
@@ -1347,7 +1359,8 @@ var expandEntries;
                 var dict = this.encodeSimple(dictChars.join(''), maxLength - freqIndexes.length);
                 if (dict)
                 {
-                    var output = this.createDictEncoding(dict, freqIndexes, radix, amendings);
+                    var output =
+                        this.createDictEncoding(dict, freqIndexes, radix, amendings, coerceToInt);
                     if (!(output.length > maxLength))
                     {
                         return output;

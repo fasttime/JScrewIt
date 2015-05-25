@@ -921,6 +921,19 @@
             function ()
             {
                 it(
+                    'returns correct JSFuck with integer coercing',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var input =
+                            'The thirty-three thieves thought that they thrilled the throne ' +
+                            'throughout Thursday.';
+                        var output = encoder.encodeByDict(input, 4);
+                        expect(output).toBeJSFuck();
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+                it(
                     'returns undefined for too complex input',
                     function ()
                     {
