@@ -610,10 +610,11 @@ var expandEntries;
     {
         byCharCodes: defineCoder
         (
-            function (input, maxLength)
+            function (inputData, maxLength)
             {
                 var MAX_DECODABLE_ARGS = 65533; // limit imposed by Internet Explorer
-            
+                
+                var input = inputData.valueOf();
                 var long = input.length > MAX_DECODABLE_ARGS;
                 var output = this.encodeByCharCodes(input, long, undefined, maxLength);
                 return output;
@@ -622,8 +623,9 @@ var expandEntries;
         ),
         byCharCodesRadix4: defineCoder
         (
-            function (input, maxLength)
+            function (inputData, maxLength)
             {
+                var input = inputData.valueOf();
                 var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
                 return output;
             },
@@ -631,52 +633,54 @@ var expandEntries;
         ),
         byDict: defineCoder
         (
-            function (input, maxLength)
+            function (inputData, maxLength)
             {
-                var output = this.encodeByDict(input, undefined, undefined, maxLength);
+                var output = this.encodeByDict(inputData, undefined, undefined, maxLength);
                 return output;
             },
             3
         ),
         byDictRadix4: defineCoder
         (
-            function (input, maxLength)
+            function (inputData, maxLength)
             {
-                var output = this.encodeByDict(input, 4, 0, maxLength);
+                var output = this.encodeByDict(inputData, 4, 0, maxLength);
                 return output;
             },
             284
         ),
         byDictRadix5AmendedBy2: defineCoder
         (
-            function (input, maxLength)
+            function (inputData, maxLength)
             {
-                var output = this.encodeByDict(input, 5, 2, maxLength);
+                var output = this.encodeByDict(inputData, 5, 2, maxLength);
                 return output;
             },
             493
         ),
         byDictRadix5AmendedBy3: defineCoder
         (
-            function (input, maxLength)
+            function (inputData, maxLength)
             {
-                var output = this.encodeByDict(input, 5, 3, maxLength);
+                var output = this.encodeByDict(inputData, 5, 3, maxLength);
                 return output;
             },
             773
         ),
         plain: defineCoder
         (
-            function (input, maxLength)
+            function (inputData, maxLength)
             {
+                var input = inputData.valueOf();
                 var output = this.replaceString(input, false, maxLength);
                 return output;
             }
         ),
         simple: defineCoder
         (
-            function (input, maxLength)
+            function (inputData, maxLength)
             {
+                var input = inputData.valueOf();
                 var output = this.encodeSimple(input, maxLength);
                 return output;
             }
@@ -908,6 +912,26 @@ var expandEntries;
         return definition;
     }
     
+    function createFrequencyList(input)
+    {
+        var charMap = Object.create(null);
+        Array.prototype.forEach.call(
+            input,
+            function (char)
+            {
+                ++(charMap[char] || (charMap[char] = { char: char, count: 0 })).count;
+            }
+        );
+        var freqList =
+            Object.keys(charMap).map(
+                function (char) { return charMap[char]; }
+            ).sort(
+                function (freq1, freq2) { return freq2.count - freq1.count; }
+            );
+        freqList.charMap = charMap;
+        return freqList;
+    }
+    
     function createReindexMap(count, radix, amendings, coerceToInt)
     {
         function getSortLength()
@@ -1122,6 +1146,7 @@ var expandEntries;
         {
             var output;
             var inputLength = input.length;
+            var inputData = Object(input);
             coderNames.forEach(
                 function (coderName)
                 {
@@ -1129,7 +1154,7 @@ var expandEntries;
                     if (!(inputLength < coder.MIN_INPUT_LENGTH))
                     {
                         var maxLength = output != null ? output.length : undefined;
-                        var newOutput = coder.call(this, input, maxLength);
+                        var newOutput = coder.call(this, inputData, maxLength);
                         if (newOutput != null)
                         {
                             output = newOutput;
@@ -1316,54 +1341,59 @@ var expandEntries;
             }
         },
         
-        encodeByDict: function (input, radix, amendings, maxLength)
+        encodeByDict: function (inputData, radix, amendings, maxLength)
         {
-            var freqs = Object.create(null);
-            Array.prototype.forEach.call(
-                input,
-                function (char)
-                {
-                    ++(freqs[char] || (freqs[char] = { char: char, count: 0 })).count;
-                }
-            );
-            var freqList = Object.keys(freqs).map(function (char) { return freqs[char]; });
-            var dictChars = [];
-            freqList.sort(function (freq1, freq2) { return freq2.count - freq1.count; });
+            var input = inputData.valueOf();
+            var freqList = inputData.freqList || (inputData.freqList = createFrequencyList(input));
+            var charMap = freqList.charMap;
             var coerceToInt =
                 freqList.length &&
                 freqList[0].count * getAppendLength(this.resolveCharacter('0')) >
                 getAppendLength(this.resolveCharacter('+'));
             var reindexMap = createReindexMap(freqList.length, radix, amendings, coerceToInt);
+            var estimatedLength = (input.length - 1) * (resolveSimple('false').length + 1);
+            var dictChars = [];
             freqList.forEach(
                     function (freq, index)
                     {
                         var reindex = reindexMap[index];
                         freq.index = reindex;
+                        estimatedLength += freq.count * reindex.sortLength;
                         dictChars[reindex.index] = freq.char;
                     }
                 );
-            var freqIndexes =
-                this.replaceNumberArray(
-                    Array.prototype.map.call(
-                        input,
-                        function (char)
-                        {
-                            var index = freqs[char].index;
-                            return index;
-                        }
-                    ),
-                    maxLength
-                );
-            if (freqIndexes)
+            if (!(estimatedLength > maxLength))
             {
-                var dict = this.encodeSimple(dictChars.join(''), maxLength - freqIndexes.length);
-                if (dict)
+                var freqIndexes =
+                    this.replaceNumberArray(
+                        Array.prototype.map.call(
+                            input,
+                            function (char)
+                            {
+                                var index = charMap[char].index;
+                                return index;
+                            }
+                        ),
+                        maxLength
+                    );
+                if (freqIndexes)
                 {
-                    var output =
-                        this.createDictEncoding(dict, freqIndexes, radix, amendings, coerceToInt);
-                    if (!(output.length > maxLength))
+                    var dict =
+                        this.encodeSimple(dictChars.join(''), maxLength - freqIndexes.length);
+                    if (dict)
                     {
-                        return output;
+                        var output =
+                            this.createDictEncoding(
+                                dict,
+                                freqIndexes,
+                                radix,
+                                amendings,
+                                coerceToInt
+                            );
+                        if (!(output.length > maxLength))
+                        {
+                            return output;
+                        }
                     }
                 }
             }
