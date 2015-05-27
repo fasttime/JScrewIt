@@ -18,7 +18,7 @@ module.exports =
                             'src/preamble',
                             'src/features.js',
                             'src/definers.js',
-                            'src/screw-buffer-oktav.js',
+                            'src/screw-buffer.js',
                             'src/encoder.js',
                             'src/trim-js.js',
                             'src/jscrewit-base.js',
