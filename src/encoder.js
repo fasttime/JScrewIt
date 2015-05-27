@@ -619,7 +619,7 @@ var expandEntries;
                 var output = this.encodeByCharCodes(input, long, undefined, maxLength);
                 return output;
             },
-            3
+            2
         ),
         byCharCodesRadix4: defineCoder
         (
@@ -629,7 +629,7 @@ var expandEntries;
                 var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
                 return output;
             },
-            46
+            49
         ),
         byDict: defineCoder
         (
@@ -665,7 +665,7 @@ var expandEntries;
                 var output = this.encodeByDict(inputData, 5, 3, maxLength);
                 return output;
             },
-            773
+            656
         ),
         plain: defineCoder
         (
