@@ -1170,61 +1170,93 @@
             'MIN_INPUT_LENGTH of',
             function ()
             {
-                function test(features, createInput, coderName1, coderName2)
+                function test(features, createInput, coderName)
                 {
+                    function findBestCoder(inputData)
+                    {
+                        var bestCoderName;
+                        var bestLength = Infinity;
+                        coderNames.forEach(
+                            function (thisCoderName)
+                            {
+                                if (thisCoderName !== 'simple' && thisCoderName !== coderName)
+                                {
+                                    var coder = coders[thisCoderName];
+                                    var output = coder.call(encoder, inputData);
+                                    var length = output.length;
+                                    if (length < bestLength)
+                                    {
+                                        bestCoderName = thisCoderName;
+                                        bestLength = length;
+                                    }
+                                }
+                            }
+                        );
+                        var result = { coderName: bestCoderName, length: bestLength };
+                        return result;
+                    }
+                    
                     var encoder = JScrewIt.debug.createEncoder(features);
                     var coders = JScrewIt.debug.getCoders();
-                    var coder1 = coders[coderName1];
-                    var coder2 = coders[coderName2];
-                    var minLength = coder2.MIN_INPUT_LENGTH;
-                    var inputDataA = Object(createInput(minLength - 1));
-                    var inputDataB = Object(createInput(minLength));
+                    var coder = coders[coderName];
+                    var minLength = coder.MIN_INPUT_LENGTH;
+                    var inputDataShort = Object(createInput(minLength - 1));
+                    var inputDataFit = Object(createInput(minLength));
+                    var coderNames = Object.keys(coders);
                     it(
-                        coderName2 + ' is suitable',
+                        coderName + ' is suitable',
                         function ()
                         {
-                            var outputA1 = coder1.call(encoder, inputDataA);
-                            var outputA2 = coder2.call(encoder, inputDataA);
-                            expect(outputA1.length).not.toBeGreaterThan(
-                                outputA2.length,
-                                'MIN_INPUT_LENGTH is too large'
+                            var outputFit = coder.call(encoder, inputDataFit);
+                            var bestDataFit = findBestCoder(inputDataFit);
+                            expect(bestDataFit.length).toBeGreaterThan(
+                                outputFit.length,
+                                'MIN_INPUT_LENGTH is too small for ' + bestDataFit.coderName
                             );
-                            
-                            var outputB1 = coder1.call(encoder, inputDataB);
-                            var outputB2 = coder2.call(encoder, inputDataB);
-                            expect(outputB1.length).toBeGreaterThan(
-                                outputB2.length,
-                                'MIN_INPUT_LENGTH is too small'
+                            var outputShort = coder.call(encoder, inputDataShort);
+                            var bestDataShort = findBestCoder(inputDataShort);
+                            expect(bestDataShort.length).toBeLessThan(
+                                outputShort.length,
+                                'MIN_INPUT_LENGTH is too large for ' + bestDataShort.coderName
                             );
                         }
                     );
                 }
                 
-                test('ENTRIES', repeat.bind(null, String.fromCharCode(59999)), 'simple', 'byDict');
                 test(
-                    'ENTRIES',
+                    'CAPITAL_HTML',
                     repeat.bind(null, String.fromCharCode(59999)),
-                    'plain',
                     'byCharCodes'
                     );
                 test(
                     ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
-                    repeat.bind(null, String.fromCharCode(49989)),
-                    'byCharCodes',
+                    function (length)
+                    {
+                        var CHAR_CODES =
+                        [
+                            49989, 49988, 59989, 37889, 59988, 37888, 38999, 38998, 29989, 38997,
+                            37989, 59969, 58889, 57989, 58898, 58899, 19989
+                        ];
+                        var str = repeatToFit(String.fromCharCode.apply(null, CHAR_CODES), length);
+                        return str;
+                    },
                     'byCharCodesRadix4'
                 );
+                test('ENTRIES', repeat.bind(null, String.fromCharCode(59999)), 'byDict');
                 test(
                     ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
                     function (length)
                     {
+                        var MAX = 100;
+                        
                         var str = '';
-                        while (str.length < length)
+                        for (var i = 0; i < MAX; ++i)
                         {
-                            str += String.fromCharCode(str.length % 100);
+                            str += String.fromCharCode(0xffff - i);
                         }
+                        str = repeatToFit(str, length);
                         return str;
                     },
-                    'byDict',
                     'byDictRadix4'
                 );
                 test(
@@ -1238,27 +1270,25 @@
                         {
                             str += String.fromCharCode(0xffff - i);
                         }
-                        str = repeat(str, Math.ceil(length / MAX)).slice(0, length);
+                        str = repeatToFit(str, length);
                         return str;
                     },
-                    'byDictRadix4',
                     'byDictRadix5AmendedBy2'
                 );
                 test(
                     ['ENTRIES', 'FILL', 'V8_SRC'],
                     function (length)
                     {
-                        var MAX = 440;
+                        var MAX = 328;
                         
                         var str = '';
                         for (var i = 0; i < MAX; ++i)
                         {
                             str += String.fromCharCode(0xffff - i);
                         }
-                        str = repeat(str, Math.ceil(length / MAX)).slice(0, length);
+                        str = repeatToFit(str, length);
                         return str;
                     },
-                    'byDictRadix5AmendedBy2',
                     'byDictRadix5AmendedBy3'
                 );
             }
@@ -1346,6 +1376,12 @@
     function repeat(string, count)
     {
         var result = Array(count + 1).join(string);
+        return result;
+    }
+    
+    function repeatToFit(string, length)
+    {
+        var result = repeat(string, Math.ceil(length / string.length)).slice(0, length);
         return result;
     }
     
