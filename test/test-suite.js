@@ -942,7 +942,7 @@
                             encoder.encodeByDict(Object('12345'), undefined, undefined, 10);
                         expect(output1).toBeUndefined();
                         var output2 =
-                            encoder.encodeByDict(Object('12345'), undefined, undefined, 100);
+                            encoder.encodeByDict(Object('12345'), undefined, undefined, 200);
                         expect(output2).toBeUndefined();
                     }
                 );
@@ -959,6 +959,21 @@
                         var encoder = JScrewIt.debug.createEncoder();
                         encoder.replaceString = function () { };
                         expect(encoder.replaceNumberArray([])).toBeUndefined();
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#replaceString',
+            function ()
+            {
+                it(
+                    'returns undefined for too complex input',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        encoder.maxGroupThreshold = 2;
+                        expect(encoder.replaceString('123')).toBeUndefined();
                     }
                 );
             }
