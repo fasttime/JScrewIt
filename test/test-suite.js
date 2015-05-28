@@ -1307,6 +1307,11 @@
                 test('ENTRIES', repeat.bind(null, String.fromCharCode(59999)), 'byDict');
                 test(
                     ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
+                    createDictTestString.bind(null, 122),
+                    'byDictRadix3'
+                );
+                test(
+                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
                     createDictTestString.bind(null, 100),
                     'byDictRadix4'
                 );
