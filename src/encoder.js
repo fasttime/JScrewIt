@@ -649,6 +649,24 @@ var expandEntries;
             },
             284
         ),
+        byDictRadix4AmendedBy1: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDict(inputData, 4, 1, maxLength);
+                return output;
+            },
+            378
+        ),
+        byDictRadix4AmendedBy2: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDict(inputData, 4, 2, maxLength);
+                return output;
+            },
+            710
+        ),
         byDictRadix5AmendedBy2: defineCoder
         (
             function (inputData, maxLength)
@@ -656,7 +674,7 @@ var expandEntries;
                 var output = this.encodeByDict(inputData, 5, 2, maxLength);
                 return output;
             },
-            493
+            686
         ),
         byDictRadix5AmendedBy3: defineCoder
         (
@@ -665,7 +683,7 @@ var expandEntries;
                 var output = this.encodeByDict(inputData, 5, 3, maxLength);
                 return output;
             },
-            656
+            854
         ),
         plain: defineCoder
         (
@@ -1299,7 +1317,9 @@ var expandEntries;
                     input,
                     [
                         'byDictRadix5AmendedBy3',
+                        'byDictRadix4AmendedBy2',
                         'byDictRadix5AmendedBy2',
+                        'byDictRadix4AmendedBy1',
                         'byDictRadix4',
                         'byDict',
                         'simple'
