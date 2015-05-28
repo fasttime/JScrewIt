@@ -955,7 +955,6 @@ var expandEntries;
             ).sort(
                 function (freq1, freq2) { return freq2.count - freq1.count; }
             );
-        freqList.charMap = charMap;
         return freqList;
     }
     
@@ -969,13 +968,7 @@ var expandEntries;
         }
         
         var index;
-        var digitLengths =
-            Array.apply(null, { length: radix || 10 }).map(
-                function (unused, digit)
-                {
-                    return encodeDigit(digit).length + 3;
-                }
-            );
+        var digitLengths = [6, 8, 12, 17, 22, 27, 32, 37, 42, 47].slice(0, radix || 10);
         var regExp;
         var replacer;
         if (amendings)
@@ -1374,12 +1367,11 @@ var expandEntries;
         {
             var input = inputData.valueOf();
             var freqList = inputData.freqList || (inputData.freqList = createFrequencyList(input));
-            var charMap = freqList.charMap;
             var coerceToInt =
                 freqList.length &&
-                freqList[0].count * (encodeDigit(0).length + 3) >
-                getAppendLength(this.resolveCharacter('+'));
+                freqList[0].count * 6 > getAppendLength(this.resolveCharacter('+'));
             var reindexMap = createReindexMap(freqList.length, radix, amendings, coerceToInt);
+            var charMap = Object.create(null);
             var minFreqIndexLength =
                 Math.max((input.length - 1) * (resolveSimple('false').length + 1) - 3, 0);
             var dictChars = [];
@@ -1387,9 +1379,10 @@ var expandEntries;
                 function (freq, index)
                 {
                     var reindex = reindexMap[index];
-                    freq.index = reindex;
+                    var char = freq.char;
+                    charMap[char] = reindex;
                     minFreqIndexLength += freq.count * reindex.sortLength;
-                    dictChars[reindex.index] = freq.char;
+                    dictChars[reindex.index] = char;
                 }
             );
             var dict = this.encodeSimple(dictChars.join(''), maxLength - minFreqIndexLength);
@@ -1401,7 +1394,7 @@ var expandEntries;
                             input,
                             function (char)
                             {
-                                var index = charMap[char].index;
+                                var index = charMap[char];
                                 return index;
                             }
                         ),
