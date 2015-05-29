@@ -10,17 +10,17 @@ var hasOuterPlus;
     'use strict';
     
     // The solution parameter must already have the outerPlus property set.
-    function appendSolution(string, solution)
+    function appendSolution(str, solution)
     {
         if (solution.outerPlus)
         {
-            string += '+(' + solution + ')';
+            str += '+(' + solution + ')';
         }
         else
         {
-            string += '+' + solution;
+            str += '+' + solution;
         }
-        return string;
+        return str;
     }
     
     ScrewBuffer =
@@ -28,34 +28,34 @@ var hasOuterPlus;
         {
             function sequence(offset, count)
             {
-                var string;
+                var str;
                 var solution0 = solutions[offset];
                 var solution1 = solutions[offset + 1];
                 if (solution0.level < LEVEL_OBJECT && solution1.level < LEVEL_OBJECT)
                 {
                     if (solution1.level > LEVEL_UNDEFINED)
                     {
-                        string = solution0 + '+[' + solution1 + ']';
+                        str = solution0 + '+[' + solution1 + ']';
                     }
                     else if (solution0.level > LEVEL_UNDEFINED)
                     {
-                        string = '[' + solution0 + ']+' + solution1;
+                        str = '[' + solution0 + ']+' + solution1;
                     }
                     else
                     {
-                        string = solution0 + '+[]+' + solution1;
+                        str = solution0 + '+[]+' + solution1;
                     }
                 }
                 else
                 {
-                    string = appendSolution(solution0, solution1);
+                    str = appendSolution(solution0, solution1);
                 }
                 for (var index = 2; index < count; ++index)
                 {
                     var solution = solutions[offset + index];
-                    string = appendSolution(string, solution);
+                    str = appendSolution(str, solution);
                 }
-                return string;
+                return str;
             }
             
             var solutions = [];
@@ -108,7 +108,7 @@ var hasOuterPlus;
                             {
                                 if (count <= groupSize + 1)
                                 {
-                                    string += sequence(offset, count);
+                                    str += sequence(offset, count);
                                 }
                                 else
                                 {
@@ -121,29 +121,29 @@ var hasOuterPlus;
                                             (maxGroupCount / 2 ^ 0) * (groupSize + 1)
                                         );
                                     collect(offset, leftCount, maxGroupCount);
-                                    string += '+(';
+                                    str += '+(';
                                     collect(offset + leftCount, count - leftCount, maxGroupCount);
-                                    string += ')';
+                                    str += ')';
                                 }
                             }
                             
                             var singlePart;
-                            var string;
+                            var str;
                             var solutionCount = solutions.length;
                             if (!solutionCount)
                             {
-                                string = '[]+[]';
+                                str = '[]+[]';
                             }
                             else if (solutionCount === 1)
                             {
                                 var solution = solutions[0];
                                 // Here we assume that string solutions never have an outer plus.
                                 singlePart = solution.level > LEVEL_OBJECT;
-                                string = solution + (singlePart ? '' : '+[]');
+                                str = solution + (singlePart ? '' : '+[]');
                             }
                             else if (solutionCount <= groupThreshold)
                             {
-                                string = sequence(0, solutionCount);
+                                str = sequence(0, solutionCount);
                             }
                             else
                             {
@@ -159,14 +159,14 @@ var hasOuterPlus;
                                     }
                                     maxGroupCount *= 2;
                                 }
-                                string = '';
+                                str = '';
                                 collect(0, solutionCount, maxGroupCount);
                             }
                             if (strongBound && !singlePart)
                             {
-                                string = '(' + string + ')';
+                                str = '(' + str + ')';
                             }
-                            return string;
+                            return str;
                         }
                     }
                 }

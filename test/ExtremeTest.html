@@ -92,21 +92,21 @@ function log(maxGroupThreshold, groupings, callDepth, ok)
     logger.insertBefore(document.createElement('DIV'), logger.firstChild).innerHTML = html;
 }
 
-function repeat(string, count)
+function repeat(str, count)
 {
-    var result = Array(count + 1).join(string);
+    var result = Array(count + 1).join(str);
     return result;
 }
 
 function randomString(length)
 {
-    var string = '';
+    var str = '';
     for (var i = 0; i < length; ++i)
     {
         var digit = Math.random() < 0.5 & 1;
-        string += digit;
+        str += digit;
     }
-    return string;
+    return str;
 }
 
 function runExtremeTest(maxGroupThreshold, groupings)

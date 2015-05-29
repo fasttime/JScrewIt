@@ -7,6 +7,8 @@
     
     function createAntiRadix4TestString(variety, length)
     {
+        // The first 480 numbers between 0 and 65535 ordered by their canonical JSFuck length when
+        // printed in base 4 in descending order.
         var CHAR_CODES =
         [
             65535, 65534, 64511, 65279, 65531, 49151, 65471, 61439, 65519, 63487, 57343, 65503,
@@ -48,23 +50,23 @@
             60335, 44015, 44027, 49130, 44030, 61115, 63439, 65359, 60158, 60155, 60143, 65341,
             64831, 60095, 47867, 65500, 20479, 65335, 65491, 61118, 63475, 51199, 64765, 64238,
             64759, 47870, 65485, 64735, 62461, 63484, 65479, 52735, 61163, 44735, 29695, 44783,
-            63295, 65395, 44798, 64639, 48122, 48890, 64250, 44975, 61166, 44987, 53119, 44990
+            63295, 65395, 44798, 64639, 48122, 48890, 64250, 44975, 61166, 44987, 53119, 44990,
         ];
         
-        var string = String.fromCharCode.apply(null, CHAR_CODES.slice(0, variety));
-        string = repeatToFit(string, length);
-        return string;
+        var str = String.fromCharCode.apply(null, CHAR_CODES.slice(0, variety));
+        str = repeatToFit(str, length);
+        return str;
     }
     
     function createDictTestString(variety, length)
     {
-        var string = '';
+        var str = '';
         for (var i = 0; i < variety; ++i)
         {
-            string += String.fromCharCode(0xffff - i);
+            str += String.fromCharCode(0xffff - i);
         }
-        string = repeatToFit(string, length);
-        return string;
+        str = repeatToFit(str, length);
+        return str;
     }
     
     function createOutput(compatibilities)
@@ -751,13 +753,13 @@
             'ScrewBuffer',
             function ()
             {
-                function test(buffer, expectedString, tolerance)
+                function test(buffer, expectedStr, tolerance)
                 {
                     var actualLength = buffer.length;
-                    var expectedLength = expectedString.length;
+                    var expectedLength = expectedStr.length;
                     expect(actualLength).not.toBeGreaterThan(expectedLength);
                     expect(actualLength).not.toBeLessThan(expectedLength - (tolerance ^ 0));
-                    expect(buffer + '').toBe(expectedString);
+                    expect(buffer + '').toBe(expectedStr);
                 }
                 
                 var solutionA = Object('[![]+[]][+[]]');
@@ -1417,15 +1419,15 @@
         return result;
     }
     
-    function repeat(string, count)
+    function repeat(str, count)
     {
-        var result = Array(count + 1).join(string);
+        var result = Array(count + 1).join(str);
         return result;
     }
     
-    function repeatToFit(string, length)
+    function repeatToFit(str, length)
     {
-        var result = repeat(string, Math.ceil(length / string.length)).slice(0, length);
+        var result = repeat(str, Math.ceil(length / str.length)).slice(0, length);
         return result;
     }
     
@@ -1443,11 +1445,10 @@
                 {
                     expect(output).toBeJSFuck();
                     var actual = emuEval(emuFeatures || [], output) + '';
-                    expect(actual).toBe(character);
+                    expect(actual).toBe(char);
                 }
                 
-                var character = char;
-                var entries = JScrewIt.debug.getCharacterEntries(character);
+                var entries = JScrewIt.debug.getCharacterEntries(char);
                 if (entries)
                 {
                     var defaultEntryFound = false;
@@ -1477,7 +1478,7 @@
                             '(default)',
                             function ()
                             {
-                                var output = JScrewIt.encode(character);
+                                var output = JScrewIt.encode(char);
                                 verifyOutput(output);
                             }
                         );
@@ -1489,7 +1490,7 @@
                         '(default)',
                         function ()
                         {
-                            var output = JScrewIt.encode(character);
+                            var output = JScrewIt.encode(char);
                             verifyOutput(output);
                         }
                     );
@@ -1500,10 +1501,10 @@
                             function ()
                             {
                                 var options = { features: 'ATOB' };
-                                var output = JScrewIt.encode(character, options);
+                                var output = JScrewIt.encode(char, options);
                                 verifyOutput(output, featureSet.ATOB && ['ATOB']);
                                 expect(output.length).not.toBeGreaterThan(
-                                    JScrewIt.encode(character).length
+                                    JScrewIt.encode(char).length
                                 );
                             }
                         );
