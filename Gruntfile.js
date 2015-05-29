@@ -8,7 +8,7 @@ module.exports =
         // Project configuration.
         grunt.initConfig(
             {
-                clean: { default: ['coverage', 'lib/**/*.js'] },
+                clean: { default: ['Features.md', 'coverage', 'lib/**/*.js'] },
                 concat:
                 {
                     default:

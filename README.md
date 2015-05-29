@@ -12,9 +12,9 @@ to the original implementation.
 * Support for all modern JavaScript engines.
 * Neat large file encoding.
 
-Play with it now at [**jscrew.it**](http://jscrew.it), or give a look at [jQuery *Screwed*]
-(https://github.com/fasttime/jquery-screwed) for a real example: a working version of jQuery
-consisting of only six different characters.
+Play with it now at [**jscrew.it**](http://jscrew.it), or give a look at
+[jQuery *Screwed*](https://github.com/fasttime/jquery-screwed) for a real example: a working version
+of jQuery consisting of only six different characters.
 
 ## Example
 
@@ -54,10 +54,10 @@ The following source will do an `alert(1)` in any browser, including Internet Ex
 
 ### Installation
 
-To use JScrewIt in your project, download [jscrewit.js]
-(https://github.com/fasttime/JScrewIt/blob/master/lib/jscrewit.js) or [jscrewit.min.js]
-(https://github.com/fasttime/JScrewIt/blob/master/lib/jscrewit.min.js) from GitHub and include it in
-your HTML file.
+To use JScrewIt in your project, download
+[jscrewit.js](https://github.com/fasttime/JScrewIt/blob/master/lib/jscrewit.js) or
+[jscrewit.min.js](https://github.com/fasttime/JScrewIt/blob/master/lib/jscrewit.min.js) from GitHub
+and include it in your HTML file.
 
 ```html
 <script src="jscrewit.js"></script>
@@ -92,8 +92,9 @@ var output = JScrewIt.encode("alert(1)", { wrapWith: "call" });
 eval(output);
 ```
 
-Setting `wrapWith` to `"call"` in the second parameter of [`JScrewIt.encode`]
-(#jscrewitencodeinput-options) indicates that we would like the output to be executable.
+Setting `wrapWith` to `"call"` in the second parameter of
+[`JScrewIt.encode`](#jscrewitencodeinput-options) indicates that we would like the output to be
+executable.
 
 `wrapWith` should be omitted or set to `"none"` to encode a plain string instead of JavaScript code.
 
