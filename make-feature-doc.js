@@ -2,8 +2,13 @@
 
 'use strict';
 
-var escape = require('escape-html');
 var JScrewIt = require('./lib/jscrewit.js');
+
+function escape(str)
+{
+    var result = str.replace(/[&\(\)[\\\]]/g, function (char) { return '\\' + char; });
+    return result;
+}
 
 function formatFeature(feature)
 {

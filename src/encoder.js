@@ -34,6 +34,8 @@ var expandEntries;
         return coder;
     }
     
+    var AMENDINGS = ['true', 'undefined', 'NaN'];
+    
     var BASE64_ALPHABET_HI_2 = ['NaN', 'false', 'truefalse', '0'];
     
     var BASE64_ALPHABET_HI_4 =
@@ -608,64 +610,104 @@ var expandEntries;
     {
         byCharCodes: defineCoder
         (
-            function (input, maxLength)
+            function (inputData, maxLength)
             {
                 var MAX_DECODABLE_ARGS = 65533; // limit imposed by Internet Explorer
-            
+                
+                var input = inputData.valueOf();
                 var long = input.length > MAX_DECODABLE_ARGS;
                 var output = this.encodeByCharCodes(input, long, undefined, maxLength);
                 return output;
             },
-            3
+            2
         ),
         byCharCodesRadix4: defineCoder
         (
-            function (input, maxLength)
+            function (inputData, maxLength)
             {
+                var input = inputData.valueOf();
                 var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
                 return output;
             },
-            46
+            49
         ),
         byDict: defineCoder
         (
-            function (input, maxLength)
+            function (inputData, maxLength)
             {
-                var output = this.encodeByDict(input, undefined, undefined, maxLength);
+                var output = this.encodeByDict(inputData, undefined, undefined, maxLength);
                 return output;
             },
             3
         ),
+        byDictRadix3: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDict(inputData, 3, 0, maxLength);
+                return output;
+            },
+            363
+        ),
         byDictRadix4: defineCoder
         (
-            function (input, maxLength)
+            function (inputData, maxLength)
             {
-                var output = this.encodeByDict(input, 4, false, maxLength);
+                var output = this.encodeByDict(inputData, 4, 0, maxLength);
                 return output;
             },
             284
         ),
-        byDictRadix5Amended: defineCoder
+        byDictRadix4AmendedBy1: defineCoder
         (
-            function (input, maxLength)
+            function (inputData, maxLength)
             {
-                var output = this.encodeByDict(input, 5, true, maxLength);
+                var output = this.encodeByDict(inputData, 4, 1, maxLength);
                 return output;
             },
-            493
+            384
+        ),
+        byDictRadix4AmendedBy2: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDict(inputData, 4, 2, maxLength);
+                return output;
+            },
+            710
+        ),
+        byDictRadix5AmendedBy2: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDict(inputData, 5, 2, maxLength);
+                return output;
+            },
+            686
+        ),
+        byDictRadix5AmendedBy3: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDict(inputData, 5, 3, maxLength);
+                return output;
+            },
+            854
         ),
         plain: defineCoder
         (
-            function (input, maxLength)
+            function (inputData, maxLength)
             {
+                var input = inputData.valueOf();
                 var output = this.replaceString(input, false, maxLength);
                 return output;
             }
         ),
         simple: defineCoder
         (
-            function (input, maxLength)
+            function (inputData, maxLength)
             {
+                var input = inputData.valueOf();
                 var output = this.encodeSimple(input, maxLength);
                 return output;
             }
@@ -897,33 +939,57 @@ var expandEntries;
         return definition;
     }
     
-    function createReindexMap(count, radix, amend)
+    function createFrequencyList(input)
     {
-        var DIGIT_LENGTHS = [3, 5, 9, 14, 19, 24, 29, 34, 39, 44];
-        
+        var charMap = Object.create(null);
+        Array.prototype.forEach.call(
+            input,
+            function (char)
+            {
+                ++(charMap[char] || (charMap[char] = { char: char, count: 0 })).count;
+            }
+        );
+        var freqList =
+            Object.keys(charMap).map(
+                function (char) { return charMap[char]; }
+            ).sort(
+                function (freq1, freq2) { return freq2.count - freq1.count; }
+            );
+        return freqList;
+    }
+    
+    function createReindexMap(count, radix, amendings, coerceToInt)
+    {
         function getSortLength()
         {
-            var length = 3 * (str.length - 1);
-            Array.prototype.forEach.call(str, function (digit) { length += DIGIT_LENGTHS[digit]; });
+            var length = 0;
+            Array.prototype.forEach.call(str, function (digit) { length += digitLengths[digit]; });
             return length;
         }
         
+        var index;
+        var digitLengths = [6, 8, 12, 17, 22, 27, 32, 37, 42, 47].slice(0, radix || 10);
         var regExp;
         var replacer;
-        if (amend)
+        if (amendings)
         {
-            var lastDigit1 = radix - 1;
-            var lastDigit2 = radix - 2;
-            DIGIT_LENGTHS[lastDigit1] = 6;
-            DIGIT_LENGTHS[lastDigit2] = 4;
-            regExp = new RegExp('[' + lastDigit1 + lastDigit2 + ']', 'g');
-            replacer = function (match) { return +match === lastDigit1 ? 'undefined' : 'true'; };
+            var firstDigit = radix - amendings;
+            var pattern = '[';
+            for (index = 0; index < amendings; ++index)
+            {
+                var digit = firstDigit + index;
+                digitLengths[digit] = getAppendLength(resolveSimple(AMENDINGS[index]));
+                pattern += digit;
+            }
+            pattern += ']';
+            regExp = new RegExp(pattern, 'g');
+            replacer = function (match) { return AMENDINGS[match - firstDigit]; };
         }
         var range = [];
-        for (var index = 0; index < count; ++index)
+        for (index = 0; index < count; ++index)
         {
-            var str = index.toString(radix);
-            var reindexStr = amend ? str.replace(regExp, replacer) : str;
+            var str = coerceToInt && !index ? '' : index.toString(radix);
+            var reindexStr = amendings ? str.replace(regExp, replacer) : str;
             var reindex = range[index] = Object(reindexStr);
             reindex.sortLength = getSortLength();
             reindex.index = index;
@@ -942,9 +1008,9 @@ var expandEntries;
     {
         switch (digit)
         {
-        case '0':
+        case 0:
             return '+[]';
-        case '1':
+        case 1:
             return '+!![]';
         default:
             var result = '!![]';
@@ -990,11 +1056,11 @@ var expandEntries;
         var replacement;
         if (number)
         {
-            replacement = encodeDigit(number[0]) + '';
+            replacement = encodeDigit(+number[0]) + '';
             var length = number.length;
             for (var index = 1; index < length; ++index)
             {
-                replacement += '+[' + encodeDigit(number[index]) + ']';
+                replacement += '+[' + encodeDigit(+number[index]) + ']';
             }
             if (length > 1)
             {
@@ -1007,10 +1073,10 @@ var expandEntries;
         }
         else if (quotedString)
         {
-            var string;
+            var str;
             try
             {
-                string = JSON.parse(quotedString);
+                str = JSON.parse(quotedString);
             }
             catch (e)
             {
@@ -1019,7 +1085,7 @@ var expandEntries;
             var strongBound =
                 isPrecededByOperator(expr, offset) ||
                 isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length);
-            replacement = this.replaceString(string, strongBound);
+            replacement = this.replaceString(str, strongBound);
             if (!replacement)
             {
                 this.throwSyntaxError('String too complex');
@@ -1076,9 +1142,8 @@ var expandEntries;
     // Create definitions for digits
     (function ()
     {
-        for (var number = 0; number < 10; ++number)
+        for (var digit = 0; digit <= 9; ++digit)
         {
-            var digit = number + '';
             CHARACTERS[digit] = createDigitDefinition(digit);
         }
     
@@ -1100,6 +1165,7 @@ var expandEntries;
         {
             var output;
             var inputLength = input.length;
+            var inputData = Object(input);
             coderNames.forEach(
                 function (coderName)
                 {
@@ -1107,7 +1173,7 @@ var expandEntries;
                     if (!(inputLength < coder.MIN_INPUT_LENGTH))
                     {
                         var maxLength = output != null ? output.length : undefined;
-                        var newOutput = coder.call(this, input, maxLength);
+                        var newOutput = coder.call(this, inputData, maxLength);
                         if (newOutput != null)
                         {
                             output = newOutput;
@@ -1181,25 +1247,45 @@ var expandEntries;
             return output;
         },
         
-        createDictEncoding: function (dict, indexes, radix, amend)
+        createDictEncoding: function (dict, indexes, radix, amendings, coerceToInt)
         {
             var mapper;
             if (radix)
             {
-                if (amend)
+                var parseIntArg;
+                if (amendings)
                 {
-                    var lastDigit1 = radix - 1;
-                    var lastDigit2 = radix - 2;
-                    mapper =
-                        'Function("return this[parseInt(arguments[0].replace(/true/g,' +
-                        lastDigit2 + ').replace(/undefined/g,' + lastDigit1 + '),' + radix +
-                        ')]")["bind"]';
+                    var firstDigit = radix - amendings;
+                    if (amendings > 2)
+                    {
+                        parseIntArg =
+                            '[' +
+                            AMENDINGS.slice(0, amendings).map(
+                                function (amending) { return '/' + amending + '/g'; }
+                            ).join() +
+                            '].reduce(function(falsefalse,falsetrue,truefalse){return falsefalse.' +
+                            'replace(falsetrue,truefalse+' + firstDigit + ')},arguments[0])';
+                    }
+                    else
+                    {
+                        parseIntArg = 'arguments[0]';
+                        for (var index = 0; index < amendings; ++index)
+                        {
+                            var digit = firstDigit + index;
+                            parseIntArg += '.replace(/' + AMENDINGS[index] + '/g,' + digit + ')';
+                        }
+                    }
                 }
                 else
                 {
-                    mapper =
-                        'Function("return this[parseInt(arguments[0],' + radix + ')]")["bind"]';
+                    parseIntArg = 'arguments[0]';
                 }
+                if (coerceToInt)
+                {
+                    parseIntArg = '+' + parseIntArg;
+                }
+                mapper =
+                    'Function("return this[parseInt(' + parseIntArg + ',' + radix + ')]")["bind"]';
             }
             else
             {
@@ -1231,7 +1317,16 @@ var expandEntries;
             var output =
                 this.callCoders(
                     input,
-                    ['byDictRadix5Amended', 'byDictRadix4', 'byDict', 'simple']
+                    [
+                        'byDictRadix5AmendedBy3',
+                        'byDictRadix4AmendedBy2',
+                        'byDictRadix5AmendedBy2',
+                        'byDictRadix4AmendedBy1',
+                        'byDictRadix3',
+                        'byDictRadix4',
+                        'byDict',
+                        'simple'
+                    ]
                 );
             if (!output)
             {
@@ -1268,46 +1363,53 @@ var expandEntries;
             }
         },
         
-        encodeByDict: function (input, radix, amend, maxLength)
+        encodeByDict: function (inputData, radix, amendings, maxLength)
         {
-            var freqs = Object.create(null);
-            Array.prototype.forEach.call(
-                input,
-                function (char)
+            var input = inputData.valueOf();
+            var freqList = inputData.freqList || (inputData.freqList = createFrequencyList(input));
+            var coerceToInt =
+                freqList.length &&
+                freqList[0].count * 6 > getAppendLength(this.resolveCharacter('+'));
+            var reindexMap = createReindexMap(freqList.length, radix, amendings, coerceToInt);
+            var charMap = Object.create(null);
+            var minFreqIndexLength =
+                Math.max((input.length - 1) * (resolveSimple('false').length + 1) - 3, 0);
+            var dictChars = [];
+            freqList.forEach(
+                function (freq, index)
                 {
-                    ++(freqs[char] || (freqs[char] = { char: char, count: 0 })).count;
+                    var reindex = reindexMap[index];
+                    var char = freq.char;
+                    charMap[char] = reindex;
+                    minFreqIndexLength += freq.count * reindex.sortLength;
+                    dictChars[reindex.index] = char;
                 }
             );
-            var freqList = Object.keys(freqs).map(function (char) { return freqs[char]; });
-            var dictChars = [];
-            var reindexMap = createReindexMap(freqList.length, radix, amend);
-            freqList.sort(function (freq1, freq2) { return freq2.count - freq1.count; })
-                .forEach(
-                    function (freq, index)
-                    {
-                        var reindex = reindexMap[index];
-                        freq.index = reindex;
-                        dictChars[reindex.index] = freq.char;
-                    }
-                );
-            var freqIndexes =
-                this.replaceNumberArray(
-                    Array.prototype.map.call(
-                        input,
-                        function (char)
-                        {
-                            var index = freqs[char].index;
-                            return index;
-                        }
-                    ),
-                    maxLength
-                );
-            if (freqIndexes)
+            var dict = this.encodeSimple(dictChars.join(''), maxLength - minFreqIndexLength);
+            if (dict)
             {
-                var dict = this.encodeSimple(dictChars.join(''), maxLength - freqIndexes.length);
-                if (dict)
+                var freqIndexes =
+                    this.replaceNumberArray(
+                        Array.prototype.map.call(
+                            input,
+                            function (char)
+                            {
+                                var index = charMap[char];
+                                return index;
+                            }
+                        ),
+                        maxLength - dict.length
+                    );
+                if (freqIndexes)
                 {
-                    var output = this.createDictEncoding(dict, freqIndexes, radix, amend);
+                    var output =
+                        this.createDictEncoding(
+                            dict,
+                            freqIndexes,
+                            radix,
+                            amendings,
+                            coerceToInt
+                        );
                     if (!(output.length > maxLength))
                     {
                         return output;
@@ -1318,10 +1420,13 @@ var expandEntries;
         
         encodeSimple: function (input, maxLength)
         {
-            var output = this.callCoders(input, ['byCharCodesRadix4', 'byCharCodes', 'plain']);
-            if (output && !(output.length > maxLength))
+            if (!(maxLength < 0))
             {
-                return output;
+                var output = this.callCoders(input, ['byCharCodesRadix4', 'byCharCodes', 'plain']);
+                if (output && !(output.length > maxLength))
+                {
+                    return output;
+                }
             }
         },
         
@@ -1419,11 +1524,14 @@ var expandEntries;
             if (replacement)
             {
                 var result = replacement + this.replace('["split"](false)');
-                return result;
+                if (!(result.length > maxLength))
+                {
+                    return result;
+                }
             }
         },
         
-        replaceString: function (string, strongBound, maxLength)
+        replaceString: function (str, strongBound, maxLength)
         {
             function makeRegExp()
             {
@@ -1435,8 +1543,12 @@ var expandEntries;
             var match;
             var regExp;
             makeRegExp();
-            while (match = regExp.exec(string))
+            while (match = regExp.exec(str))
             {
+                if (buffer.length > maxLength)
+                {
+                    return;
+                }
                 var token = match[0];
                 var solution;
                 if (token in SIMPLE)
@@ -1459,7 +1571,7 @@ var expandEntries;
                 {
                     solution = this.resolveCharacter(token);
                 }
-                if (!buffer.append(solution) || buffer.length > maxLength)
+                if (!buffer.append(solution))
                 {
                     return;
                 }
@@ -1481,21 +1593,21 @@ var expandEntries;
             else
             {
                 var replacement = this.replaceExpr(definition);
-                solution = createSolution(replacement);
+                solution = createSolution(replacement, LEVEL_STRING);
             }
             return solution;
         },
         
-        resolveCharacter: function (character)
+        resolveCharacter: function (char)
         {
-            var solution = this.characterCache[character];
+            var solution = this.characterCache[char];
             if (solution === undefined)
             {
                 this.callResolver(
-                    quoteString(character),
+                    quoteString(char),
                     function ()
                     {
-                        var entries = CHARACTERS[character];
+                        var entries = CHARACTERS[char];
                         if (entries != null)
                         {
                             solution = this.findOptimalSolution(entries);
@@ -1504,9 +1616,9 @@ var expandEntries;
                         {
                             var defaultCharacterEncoder =
                                 this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
-                            solution = defaultCharacterEncoder.call(this, character);
+                            solution = defaultCharacterEncoder.call(this, char);
                         }
-                        this.characterCache[character] = solution;
+                        this.characterCache[char] = solution;
                     }
                 );
             }
@@ -1530,9 +1642,9 @@ var expandEntries;
                             var discreteLength = -1;
                             Array.prototype.forEach.call(
                                 complex,
-                                function (character)
+                                function (char)
                                 {
-                                    var solution = this.resolveCharacter(character);
+                                    var solution = this.resolveCharacter(char);
                                     discreteLength += getAppendLength(solution);
                                 },
                                 this

@@ -20,18 +20,18 @@ Features available in Chrome 35 and Opera 22 or later.
 ### `CHROME38`
 Features available in Chrome 38 and Opera 25 or later.
 ### `COMPACT`
-All new browsers&#39; features.
+All new browsers' features.
 No support for Node.js and older browsers like Internet Explorer 10 or Android Browser 4.1.2.
 ### `DEFAULT`
 Minimun feature level, compatible with all supported engines.
 ### `DOMWINDOW`
-The property that the string representation of the global object evaluates to &quot;[object DOMWindow]&quot;.
+The property that the string representation of the global object evaluates to "\[object DOMWindow\]".
 Only available in Android Browser versions prior to 4.4.2.
 ### `DOUBLE_QUOTE_ESC_HTML`
-The property that double quote characters in the argument of String.prototype.fontcolor are escaped as &quot;&amp;quot;&quot;.
+The property that double quote characters in the argument of String.prototype.fontcolor are escaped as "\&quot;".
 This feature is not available in Internet Explorer.
 ### `ENTRIES`
-The property that the string representation of Array.prototype.entries() starts with &quot;[object Array&quot;.
+The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array".
 This feature is available in Firefox, Chrome 38, Opera 25, Safari 7.1, Node.js 0.12 and later versions.
 ### `FF30`
 Features available in Firefox 30 or later.
@@ -39,12 +39,12 @@ Features available in Firefox 30 or later.
 Features available in Firefox 31 or later.
 ### `FF_SAFARI_SRC`
 A string representation of native functions typically found in Firefox and Safari.
-Remarkable traits are the lack of characters in the beginning of the string before &quot;function&quot; and a line feed with four whitespaces (&quot;\n    &quot;) before the &quot;[native code]&quot; sequence.
+Remarkable traits are the lack of characters in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 ### `FILL`
 Existence of the native function Array.prototype.fill.
 Currently only available in Firefox 31, Safari 7.1 and later versions.
 ### `GMT`
-Presence of the text &quot;GMT&quot; after the first 25 characters in the string returned by Date().
+Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
 Although ECMAScript states that string representation of dates is implementation dependent, most engines align to the same format, making this feature available in all supported engines except Internet Explorer 9 and 10.
 ### `IE10`
 Features available in Internet Explorer 10 or later.
@@ -54,7 +54,7 @@ Features available in Internet Explorer 11.
 Features available in Internet Explorer 9 or later.
 ### `IE_SRC`
 A string representation of native functions typical for Internet Explorer.
-Remarkable traits are the presence of a line feed character (&quot;\n&quot;) in the beginning of the string before &quot;function&quot; and a line feed with four whitespaces (&quot;\n    &quot;) before the &quot;[native code]&quot; sequence.
+Remarkable traits are the presence of a line feed character \("\\n"\) in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 ### `NAME`
 Existence of the name property for functions.
 This feature is not available in Internet Explorer.
@@ -69,16 +69,16 @@ Features available in Node.js 0.12.
 Also compatible with Chrome 38, Opera 25 and Android Browser 4.1.2 and later versions.
 ### `NO_IE`
 Features available in all supported engines except Internet Explorer.
-Includes features used by JSFuck with the exception of &quot;UNDEFINED&quot;, which is not available in older Android Browser versions.
+Includes features used by JSFuck with the exception of "UNDEFINED", which is not available in older Android Browser versions.
 ### `NO_IE_SRC`
 A string representation of native functions typical for most browsers with the notable exception of Internet Explorer.
-A remarkable trait for this feature is the lack of characters in the beginning of the string before &quot;function&quot;.
+A remarkable trait for this feature is the lack of characters in the beginning of the string before "function".
 ### `NO_SAFARI_ARRAY_ITERATOR`
-The property that the string representation of Array.prototype.entries() evaluates to &quot;[object Array Iterator]&quot;.
+The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
 Available in Firefox, Chrome 38, Opera 25, Node.js 0.12 and later versions.
 ### `NO_SAFARI_LF`
 A string representation of dynamically generated functions typical for most browsers with the notable exception of Safari.
-More specifically, in this representation, the character at index 22 is a line feed (&quot;\n&quot;).
+More specifically, in this representation, the character at index 22 is a line feed \("\\n"\).
 ### `QUOTE`
 Existence of the native function String.prototype.quote.
 This feature is deprecated and not available in any engine.
@@ -88,20 +88,20 @@ Features available in Safari 7.0.
 ### `SAFARI71`
 Features available in Safari 7.1 or later.
 ### `SAFARI_ARRAY_ITERATOR`
-The property that the string representation of Array.prototype.entries() evaluates to &quot;[object ArrayIterator]&quot;.
+The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object ArrayIterator\]".
 Available in Safari 7.1 and later versions.
 ### `SELF`
-Existence of the global object property self whose string representation starts with &quot;[object &quot; and ends with &quot;Window]&quot;
+Existence of the global object property self whose string representation starts with "\[object " and ends with "Window\]"
 This feature is not available in Node.js.
 ### `UNDEFINED`
-The property that Object.prototype.toString.call() evaluates to &quot;[object Undefined]&quot;.
+The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
 This behavior is defined by ECMAScript, but Android Browser prior to 4.1.2 does not comply with the specification and so this feature is not available in that browser.
 ### `V8_SRC`
 A string representation of native functions found in the V8 JavaScript engine.
 V8 is used among others in Chrome, Opera, Android Browser and Node.js.
-Remarkable traits are the lack of characters in the beginning of the string before &quot;function&quot; and a single whitespace before the &quot;[native code]&quot; sequence.
+Remarkable traits are the lack of characters in the beginning of the string before "function" and a single whitespace before the "\[native code\]" sequence.
 ### `WINDOW`
-The property that the string representation of the global object evaluates to &quot;[object Window]&quot;.
+The property that the string representation of the global object evaluates to "\[object Window\]".
 Not available in Android Browser versions prior to 4.4.2 and Node.js.
 ## Engine Support
 This table lists features available in the most common engines.

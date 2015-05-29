@@ -114,13 +114,13 @@
         return result;
     }
     
-    function emuEval(emuFeatures, string)
+    function emuEval(emuFeatures, str)
     {
-        var result = emuDo(emuFeatures, function () { return eval(string); });
+        var result = emuDo(emuFeatures, function () { return eval(str); });
         return result;
     }
     
-    function makeEmuFeatureArrayIterator(string, noOverwrite)
+    function makeEmuFeatureArrayIterator(str, noOverwrite)
     {
         var result =
         {
@@ -149,7 +149,7 @@
                             this === context.arrayIterator ||
                             /^\[object Array.?Iterator]$/.test(context.Object.toString.call(this)))
                         {
-                            return string;
+                            return str;
                         }
                     }
                 );
@@ -174,8 +174,8 @@
                         {
                             var regExp =
                                 /^\s*function ([\w\$]+)\(\)\s*\{\s*\[native code]\s*\}\s*$/;
-                            var string = context.Function.toString.call(this);
-                            var match = regExp.exec(string);
+                            var str = context.Function.toString.call(this);
+                            var match = regExp.exec(str);
                             if (match)
                             {
                                 var name = match[1];
@@ -211,7 +211,7 @@
         return result;
     }
     
-    function makeEmuFeatureWindow(string, noOverwrite)
+    function makeEmuFeatureWindow(str, noOverwrite)
     {
         var result =
         {
@@ -228,7 +228,7 @@
                 {
                     override(this, 'self', { value: { } });
                 }
-                var valueOf = function () { return string; };
+                var valueOf = function () { return str; };
                 override(this, 'self.valueOf', { value: valueOf });
             }
         };
@@ -272,10 +272,10 @@
                     for (var index = adapters.length; index-- > 0;)
                     {
                         var adapter = adapters[index];
-                        var string = adapter.call(this);
-                        if (string !== void 0)
+                        var str = adapter.call(this);
+                        if (str !== void 0)
                         {
-                            return string;
+                            return str;
                         }
                     }
                     // When no arguments are provided to the call method, IE 9 will use the global
@@ -416,8 +416,8 @@
                     'Function',
                     function ()
                     {
-                        var string = context.Function.toString.call(this);
-                        if (string === 'function anonymous() { \n}')
+                        var str = context.Function.toString.call(this);
+                        if (str === 'function anonymous() { \n}')
                         {
                             return 'function anonymous() {\n\n}';
                         }
