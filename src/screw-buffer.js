@@ -9,26 +9,58 @@ var hasOuterPlus;
 {
     'use strict';
     
-    function appendSolution(string, solution)
+    // The solution parameter must already have the outerPlus property set.
+    function appendSolution(str, solution)
     {
-        if (hasOuterPlus(solution))
+        if (solution.outerPlus)
         {
-            string += '+(' + solution + ')';
+            str += '+(' + solution + ')';
         }
         else
         {
-            string += '+' + solution;
+            str += '+' + solution;
         }
-        return string;
+        return str;
     }
     
     ScrewBuffer =
         function (strongBound, groupThreshold)
         {
-            var head = '';
-            var tail = '';
-            var lastSolution;
-            var groupSize;
+            function sequence(offset, count)
+            {
+                var str;
+                var solution0 = solutions[offset];
+                var solution1 = solutions[offset + 1];
+                if (solution0.level < LEVEL_OBJECT && solution1.level < LEVEL_OBJECT)
+                {
+                    if (solution1.level > LEVEL_UNDEFINED)
+                    {
+                        str = solution0 + '+[' + solution1 + ']';
+                    }
+                    else if (solution0.level > LEVEL_UNDEFINED)
+                    {
+                        str = '[' + solution0 + ']+' + solution1;
+                    }
+                    else
+                    {
+                        str = solution0 + '+[]+' + solution1;
+                    }
+                }
+                else
+                {
+                    str = appendSolution(solution0, solution1);
+                }
+                for (var index = 2; index < count; ++index)
+                {
+                    var solution = solutions[offset + index];
+                    str = appendSolution(str, solution);
+                }
+                return str;
+            }
+            
+            var solutions = [];
+            var length = -1;
+            var maxSolutionCount = Math.pow(2, groupThreshold - 1);
             
             Object.defineProperties(
                 this,
@@ -37,59 +69,12 @@ var hasOuterPlus;
                     {
                         value: function (solution)
                         {
-                            if (lastSolution)
+                            if (solutions.length >= maxSolutionCount)
                             {
-                                if (groupSize)
-                                {
-                                    head += '+(';
-                                    tail += ')';
-                                }
-                                else if (strongBound)
-                                {
-                                    head = '(';
-                                    tail = ')';
-                                }
-                                if (
-                                    lastSolution.level < LEVEL_OBJECT &&
-                                    solution.level < LEVEL_OBJECT)
-                                {
-                                    if (solution.level > LEVEL_UNDEFINED)
-                                    {
-                                        head += lastSolution + '+[' + solution + ']';
-                                    }
-                                    else if (lastSolution.level > LEVEL_UNDEFINED)
-                                    {
-                                        head += '[' + lastSolution + ']+' + solution;
-                                    }
-                                    else
-                                    {
-                                        head += lastSolution + '+[]+' + solution;
-                                    }
-                                }
-                                else
-                                {
-                                    head += appendSolution(lastSolution, solution);
-                                }
-                                groupSize = 2;
-                                lastSolution = null;
+                                return false;
                             }
-                            else
-                            {
-                                if (!groupSize || groupSize >= groupThreshold)
-                                {
-                                    --groupThreshold;
-                                    if (groupThreshold <= 0)
-                                    {
-                                        return false;
-                                    }
-                                    lastSolution = solution;
-                                }
-                                else
-                                {
-                                    head = appendSolution(head, solution);
-                                    ++groupSize;
-                                }
-                            }
+                            solutions.push(solution);
+                            length += getAppendLength(solution);
                             return true;
                         }
                     },
@@ -97,81 +82,91 @@ var hasOuterPlus;
                     {
                         get: function ()
                         {
-                            var length;
-                            if (head)
+                            var result;
+                            switch (solutions.length)
                             {
-                                length = head.length + tail.length;
-                                if (lastSolution)
-                                {
-                                    length += getAppendLength(lastSolution);
-                                }
+                            case 0:
+                                result = strongBound ? 7 : 5;
+                                break;
+                            case 1:
+                                var solution = solutions[0];
+                                result =
+                                    solution.length +
+                                    (solution.level < LEVEL_STRING ? strongBound ? 5 : 3 : 0);
+                                break;
+                            default:
+                                result = length + (strongBound ? 2 : 0);
                             }
-                            else
-                            {
-                                var stringify;
-                                if (lastSolution)
-                                {
-                                    length = lastSolution.length;
-                                    stringify = lastSolution.level < LEVEL_STRING;
-                                }
-                                else
-                                {
-                                    length = 2;
-                                    stringify = true;
-                                }
-                                if (stringify)
-                                {
-                                    length += strongBound ? 5 : 3;
-                                }
-                            }
-                            return length;
+                            return result;
                         }
                     },
                     'toString':
                     {
                         value: function ()
                         {
-                            var result;
-                            if (head)
+                            function collect(offset, count, maxGroupCount)
                             {
-                                if (lastSolution)
+                                if (count <= groupSize + 1)
                                 {
-                                    result = appendSolution(head, lastSolution);
+                                    str += sequence(offset, count);
                                 }
                                 else
                                 {
-                                    result = head;
+                                    maxGroupCount /= 2;
+                                    var halfCount = groupSize * maxGroupCount;
+                                    var capacity = 2 * halfCount - count;
+                                    var leftCount =
+                                        Math.max(
+                                            halfCount - capacity + capacity % (groupSize - 1),
+                                            (maxGroupCount / 2 ^ 0) * (groupSize + 1)
+                                        );
+                                    collect(offset, leftCount, maxGroupCount);
+                                    str += '+(';
+                                    collect(offset + leftCount, count - leftCount, maxGroupCount);
+                                    str += ')';
                                 }
-                                result += tail;
+                            }
+                            
+                            var singlePart;
+                            var str;
+                            var solutionCount = solutions.length;
+                            if (!solutionCount)
+                            {
+                                str = '[]+[]';
+                            }
+                            else if (solutionCount === 1)
+                            {
+                                var solution = solutions[0];
+                                // Here we assume that string solutions never have an outer plus.
+                                singlePart = solution.level > LEVEL_OBJECT;
+                                str = solution + (singlePart ? '' : '+[]');
+                            }
+                            else if (solutionCount <= groupThreshold)
+                            {
+                                str = sequence(0, solutionCount);
                             }
                             else
                             {
-                                var solution;
-                                var stringify;
-                                if (lastSolution)
+                                var groupSize = groupThreshold;
+                                var maxGroupCount = 2;
+                                for (;;)
                                 {
-                                    solution = lastSolution;
-                                    stringify = lastSolution.level < LEVEL_STRING;
-                                }
-                                else
-                                {
-                                    solution = '[]';
-                                    stringify = true;
-                                }
-                                if (stringify)
-                                {
-                                    result = solution + '+[]';
-                                    if (strongBound)
+                                    --groupSize;
+                                    var maxSolutionCountForDepth = groupSize * maxGroupCount;
+                                    if (solutionCount <= maxSolutionCountForDepth)
                                     {
-                                        result = '(' + result + ')';
+                                        break;
                                     }
+                                    maxGroupCount *= 2;
                                 }
-                                else
-                                {
-                                    result = lastSolution + '';
-                                }
+                                str = '';
+                                collect(0, solutionCount, maxGroupCount);
                             }
-                            return result;
+                            if (strongBound && !singlePart)
+                            {
+                                str = '(' + str + ')';
+                            }
+                            return str;
                         }
                     }
                 }
@@ -179,6 +174,7 @@ var hasOuterPlus;
         };
     
     getAppendLength =
+        // This function assumes that only undefined or numeric solutions can have an outer plus.
         function (solution)
         {
             var extraLength = hasOuterPlus(solution) ? 3 : 1;
@@ -191,32 +187,32 @@ var hasOuterPlus;
         // preceded by an exclamation mark.
         function (solution)
         {
-            if (solution.outerPlus != null)
+            var outerPlus = solution.outerPlus;
+            if (outerPlus == null)
             {
-                return solution.outerPlus;
-            }
-            var unclosed = 0;
-            var outerPlus =
-                solution.match(/!\+|./g).some(
-                    function (match)
-                    {
-                        switch (match)
+                var unclosed = 0;
+                outerPlus =
+                    solution.match(/!\+|./g).some(
+                        function (match)
                         {
-                        case '+':
-                            return !unclosed;
-                        case '(':
-                        case '[':
-                            ++unclosed;
-                            break;
-                        case ')':
-                        case ']':
-                            --unclosed;
-                            break;
+                            switch (match)
+                            {
+                            case '+':
+                                return !unclosed;
+                            case '(':
+                            case '[':
+                                ++unclosed;
+                                break;
+                            case ')':
+                            case ']':
+                                --unclosed;
+                                break;
+                            }
+                            return false;
                         }
-                        return false;
-                    }
-                );
-            solution.outerPlus = outerPlus;
+                    );
+                solution.outerPlus = outerPlus;
+            }
             return outerPlus;
         };
 

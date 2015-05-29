@@ -8,7 +8,7 @@ module.exports =
         // Project configuration.
         grunt.initConfig(
             {
-                clean: { default: ['coverage', 'lib/**/*.js'] },
+                clean: { default: ['Features.md', 'coverage', 'lib/**/*.js'] },
                 concat:
                 {
                     default:
@@ -39,6 +39,8 @@ module.exports =
                     default: ['*.js', 'src/**/*.js', 'test/**/*.js'],
                     options:
                     {
+                        // Encourage use of abbreviations: "char", "obj", "str".
+                        disallowIdentifierNames: ['character', 'object', 'string'],
                         disallowMixedSpacesAndTabs: true,
                         disallowSpaceAfterObjectKeys: true,
                         disallowSpaceAfterPrefixUnaryOperators: true,

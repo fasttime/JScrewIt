@@ -9,9 +9,9 @@ function widthOf(size)
 
 function byteCount(size, width)
 {
-    var string =
+    var str =
         Array(width - widthOf(size) + 1).join(' ') + (size === 1 ? '1 byte' : size + ' bytes');
-    return string;
+    return str;
 }
 
 function createReport(originalSize, screwedSize, encodingTime)

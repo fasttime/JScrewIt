@@ -5,6 +5,70 @@
 {
     'use strict';
     
+    function createAntiRadix4TestString(variety, length)
+    {
+        // The first 480 numbers between 0 and 65535 ordered by their canonical JSFuck length when
+        // printed in base 4 in descending order.
+        var CHAR_CODES =
+        [
+            65535, 65534, 64511, 65279, 65531, 49151, 65471, 61439, 65519, 63487, 57343, 65503,
+            65023, 32767, 65533, 65527, 65407, 64510, 65515, 64507, 64495, 45055, 64447, 61438,
+            65215, 61183, 64255, 65518, 65263, 65275, 65470, 65278, 65467, 61375, 65530, 48127,
+            65455, 49147, 49135, 49087, 61423, 61435, 60415, 49150, 48895, 64767, 53247, 65532,
+            65523, 65343, 65487, 62463, 32511, 63231, 65439, 65406, 65403, 47103, 49023, 65391,
+            49119, 40959, 49143, 61407, 49149, 65463, 64959, 28671, 63999, 31743, 65529, 65469,
+            65277, 65526, 65271, 56319, 61437, 48639, 65247, 63486, 61431, 57087, 32703, 65007,
+            64383, 63483, 59391, 32751, 61311, 57279, 65019, 60927, 32763, 32766, 63471, 64479,
+            65022, 64503, 65499, 64509, 65502, 63423, 65511, 65151, 57327, 57339, 57342, 65517,
+            47871, 64239, 49131, 64251, 64254, 49134, 65451, 61359, 48891, 60159, 48894, 49146,
+            65454, 48123, 60414, 65214, 48126, 65211, 61119, 44799, 61434, 65199, 64431, 48063,
+            64443, 64446, 60399, 49071, 60351, 65466, 61422, 61374, 64491, 64494, 61371, 44031,
+            64506, 49083, 49086, 60411, 48111, 65274, 61182, 64191, 61419, 65514, 45054, 61179,
+            45051, 45039, 48879, 48831, 44991, 61167, 65262, 65259, 48383, 63743, 65507, 61436,
+            65483, 49148, 65276, 48959, 65342, 61427, 60671, 65267, 64463, 64766, 65339, 65459,
+            65516, 64763, 36863, 61247, 65327, 49103, 64499, 52223, 62462, 52991, 64508, 65468,
+            46079, 53183, 62459, 65522, 53231, 62447, 64319, 61391, 65231, 65486, 62399, 64751,
+            53243, 64703, 53246, 65528, 65087, 65423, 49139, 58367, 62207, 16383, 65375, 57311,
+            32765, 32759, 57215, 32735, 32639, 56831, 32255, 64895, 57341, 30719, 62975, 57335,
+            64991, 65399, 65405, 24575, 63485, 65015, 63479, 65021, 65525, 65495, 65501, 63455,
+            63359, 55295, 40958, 65246, 63227, 49133, 65243, 32495, 63467, 32507, 32510, 63215,
+            63470, 57071, 49142, 61430, 57083, 57086, 40955, 49145, 48887, 32687, 32699, 32702,
+            61343, 61406, 64367, 65513, 64379, 64382, 48125, 40703, 47615, 48893, 65213, 48638,
+            48575, 63167, 32747, 57263, 65207, 32750, 63422, 65453, 57275, 64415, 61310, 57278,
+            28415, 48119, 28607, 64439, 28655, 64445, 28667, 61403, 48635, 61307, 32762, 28670,
+            63407, 49007, 65183, 63935, 48095, 61295, 64475, 64478, 40943, 65402, 64487, 48767,
+            63983, 64493, 47102, 63995, 63998, 64502, 65447, 64505, 47099, 49019, 47087, 31487,
+            49022, 65510, 57323, 60863, 31679, 61181, 31727, 65150, 57326, 31739, 65147, 65390,
+            31742, 40895, 45053, 49055, 45047, 47039, 61373, 45023, 61175, 57338, 65135, 65387,
+            64127, 48623, 56063, 56255, 63482, 44927, 56303, 39935, 47999, 65465, 49079, 59135,
+            44543, 59327, 59375, 61151, 61421, 63419, 49085, 65273, 59387, 59390, 65438, 48863,
+            59903, 65270, 56315, 56318, 60287, 65498, 65435, 60383, 64943, 32447, 64955, 64958,
+            63230, 60407, 61055, 49115, 60413, 65261, 49118, 61433, 65003, 65006, 64223, 57023,
+            27647, 65018, 65255, 46847, 61367, 61415, 60926, 64247, 43007, 49127, 60923, 64253,
+            65462, 60911, 44795, 65258, 65404, 65020, 65524, 65011, 65521, 49067, 61951, 60410,
+            49070, 64975, 43775, 49082, 61103, 60398, 64235, 60395, 60350, 60347, 43967, 61418,
+            60335, 44015, 44027, 49130, 44030, 61115, 63439, 65359, 60158, 60155, 60143, 65341,
+            64831, 60095, 47867, 65500, 20479, 65335, 65491, 61118, 63475, 51199, 64765, 64238,
+            64759, 47870, 65485, 64735, 62461, 63484, 65479, 52735, 61163, 44735, 29695, 44783,
+            63295, 65395, 44798, 64639, 48122, 48890, 64250, 44975, 61166, 44987, 53119, 44990,
+        ];
+        
+        var str = String.fromCharCode.apply(null, CHAR_CODES.slice(0, variety));
+        str = repeatToFit(str, length);
+        return str;
+    }
+    
+    function createDictTestString(variety, length)
+    {
+        var str = '';
+        for (var i = 0; i < variety; ++i)
+        {
+            str += String.fromCharCode(0xffff - i);
+        }
+        str = repeatToFit(str, length);
+        return str;
+    }
+    
     function createOutput(compatibilities)
     {
         function appendLengths(name, input)
@@ -689,10 +753,13 @@
             'ScrewBuffer',
             function ()
             {
-                function test(buffer, expectedString)
+                function test(buffer, expectedStr, tolerance)
                 {
-                    expect(buffer.length).toBe(expectedString.length);
-                    expect(buffer + '').toBe(expectedString);
+                    var actualLength = buffer.length;
+                    var expectedLength = expectedStr.length;
+                    expect(actualLength).not.toBeGreaterThan(expectedLength);
+                    expect(actualLength).not.toBeLessThan(expectedLength - (tolerance ^ 0));
+                    expect(buffer + '').toBe(expectedStr);
                 }
                 
                 var solutionA = Object('[![]+[]][+[]]');
@@ -701,59 +768,114 @@
                 solution0.level = -1;
                 var solutionFalse = Object('![]');
                 solutionFalse.level = -1;
+                
+                (function ()
+                {
+                    var buffer = JScrewIt.debug.createScrewBuffer(false, 4);
+                    it(
+                        'encodes a string in a single group',
+                        function ()
+                        {
+                            expect(buffer.append(solutionA)).toBe(true);
+                            expect(buffer.append(solution0)).toBe(true);
+                            expect(buffer.append(solution0)).toBe(true);
+                            expect(buffer.append(solution0)).toBe(true);
+                            test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[])');
+                        }
+                    );
+                    it(
+                        'encodes a string in two groups',
+                        function ()
+                        {
+                            expect(buffer.append(solutionFalse)).toBe(true);
+                            expect(buffer.append(solutionFalse)).toBe(true);
+                            test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![])', 2);
+                        }
+                    );
+                    it(
+                        'encodes a string in nested groups',
+                        function ()
+                        {
+                            expect(buffer.append(solutionFalse)).toBe(true);
+                            test(
+                                buffer,
+                                '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))',
+                                6
+                            );
+                        }
+                    );
+                    it(
+                        'encodes a string with the largest possible number of elements',
+                        function ()
+                        {
+                            expect(buffer.append(solutionFalse)).toBe(true);
+                            test(
+                                buffer,
+                                '[![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
+                                8
+                            );
+                        }
+                    );
+                    it(
+                        'does not encode a string with too many elements',
+                        function ()
+                        {
+                            expect(buffer.append(solutionFalse)).toBe(false);
+                            test(
+                                buffer,
+                                '[![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
+                                8
+                            );
+                        }
+                    );
+
+                })();
+                it(
+                    'encodes a string with incomplete groups',
+                    function ()
+                    {
+                        var buffer = JScrewIt.debug.createScrewBuffer(false, 7);
+                        for (var index = 0; index < 26; ++index)
+                        {
+                            var solution = Object(String.fromCharCode(65 + index));
+                            solution.level = 0;
+                            buffer.append(solution);
+                        }
+                        test(
+                            buffer,
+                            'A+B+C+D+E+(F+G+H+I+J)+(K+L+M+N+(O+P+Q+R)+(S+T+U+V+(W+X+Y+Z)))',
+                            10
+                        );
+                    }
+                );
                 describe(
                     'with weak bound',
                     function ()
                     {
-                        var buffer = JScrewIt.debug.createScrewBuffer(false, 4);
                         it(
                             'encodes an empty string',
                             function ()
                             {
+                                var buffer = JScrewIt.debug.createScrewBuffer(false, 10);
                                 test(buffer, '[]+[]');
                             }
                         );
                         it(
-                            'encodes a single character',
+                            'encodes a single string character',
                             function ()
                             {
+                                var buffer = JScrewIt.debug.createScrewBuffer(false, 10);
                                 expect(buffer.append(solutionA)).toBe(true);
                                 test(buffer, '[![]+[]][+[]]');
                             }
                         );
                         it(
-                            'encodes a string with more elements than the first group threshold',
+                            'encodes a single nonstring character',
                             function ()
                             {
+                                var buffer = JScrewIt.debug.createScrewBuffer(false, 10);
                                 expect(buffer.append(solution0)).toBe(true);
-                                expect(buffer.append(solution0)).toBe(true);
-                                expect(buffer.append(solution0)).toBe(true);
-                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[])');
-                            }
-                        );
-                        it(
-                            'encodes a string with more elements than the second group threshold',
-                            function ()
-                            {
-                                expect(buffer.append(solutionFalse)).toBe(true);
-                                expect(buffer.append(solutionFalse)).toBe(true);
-                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![])');
-                            }
-                        );
-                        it(
-                            'encodes a string with the largest possible number of elements',
-                            function ()
-                            {
-                                expect(buffer.append(solutionFalse)).toBe(true);
-                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))');
-                            }
-                        );
-                        it(
-                            'does not encode a string with too many elements',
-                            function ()
-                            {
-                                expect(buffer.append(solutionFalse)).toBe(false);
-                                test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))');
+                                test(buffer, '+[]+[]');
                             }
                         );
                     }
@@ -762,55 +884,30 @@
                     'with strong bound',
                     function ()
                     {
-                        var buffer = JScrewIt.debug.createScrewBuffer(true, 4);
                         it(
                             'encodes an empty string',
                             function ()
                             {
+                                var buffer = JScrewIt.debug.createScrewBuffer(true, 10);
                                 test(buffer, '([]+[])');
                             }
                         );
                         it(
-                            'encodes a single character',
+                            'encodes a single string character',
                             function ()
                             {
+                                var buffer = JScrewIt.debug.createScrewBuffer(true, 10);
                                 expect(buffer.append(solutionA)).toBe(true);
                                 test(buffer, '[![]+[]][+[]]');
                             }
                         );
                         it(
-                            'encodes a string with more elements than the first group threshold',
+                            'encodes a single nonstring character',
                             function ()
                             {
+                                var buffer = JScrewIt.debug.createScrewBuffer(true, 10);
                                 expect(buffer.append(solution0)).toBe(true);
-                                expect(buffer.append(solution0)).toBe(true);
-                                expect(buffer.append(solution0)).toBe(true);
-                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]))');
-                            }
-                        );
-                        it(
-                            'encodes a string with more elements than the second group threshold',
-                            function ()
-                            {
-                                expect(buffer.append(solutionFalse)).toBe(true);
-                                expect(buffer.append(solutionFalse)).toBe(true);
-                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![]))');
-                            }
-                        );
-                        it(
-                            'encodes a string with the largest possible number of elements',
-                            function ()
-                            {
-                                expect(buffer.append(solutionFalse)).toBe(true);
-                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]])))');
-                            }
-                        );
-                        it(
-                            'does not encode a string with too many elements',
-                            function ()
-                            {
-                                expect(buffer.append(solutionFalse)).toBe(false);
-                                test(buffer, '([![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]])))');
+                                test(buffer, '(+[]+[])');
                             }
                         );
                     }
@@ -888,13 +985,28 @@
             function ()
             {
                 it(
+                    'returns correct JSFuck with integer coercing',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var input =
+                            'The thirty-three thieves thought that they thrilled the throne ' +
+                            'throughout Thursday.';
+                        var output = encoder.encodeByDict(Object(input), 4);
+                        expect(output).toBeJSFuck();
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+                it(
                     'returns undefined for too complex input',
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        var output1 = encoder.encodeByDict('12345', undefined, undefined, 10);
+                        var output1 =
+                            encoder.encodeByDict(Object('12345'), undefined, undefined, 10);
                         expect(output1).toBeUndefined();
-                        var output2 = encoder.encodeByDict('12345', undefined, undefined, 100);
+                        var output2 =
+                            encoder.encodeByDict(Object('12345'), undefined, undefined, 200);
                         expect(output2).toBeUndefined();
                     }
                 );
@@ -911,6 +1023,21 @@
                         var encoder = JScrewIt.debug.createEncoder();
                         encoder.replaceString = function () { };
                         expect(encoder.replaceNumberArray([])).toBeUndefined();
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#replaceString',
+            function ()
+            {
+                it(
+                    'returns undefined for too complex input',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        encoder.maxGroupThreshold = 2;
+                        expect(encoder.replaceString('123')).toBeUndefined();
                     }
                 );
             }
@@ -1065,12 +1192,12 @@
                             coderName,
                             function ()
                             {
-                                var maxLength = coders[coderName].call(encoder, '').length;
+                                var maxLength = coders[coderName].call(encoder, Object('')).length;
                                 it(
                                     'returns correct JSFuck',
                                     function ()
                                     {
-                                        var output = coders[coderName].call(encoder, input);
+                                        var output = coders[coderName].call(encoder, Object(input));
                                         expect(output).toBeJSFuck();
                                         expect(eval(output)).toBe(input);
                                     }
@@ -1080,7 +1207,11 @@
                                     function ()
                                     {
                                         var output =
-                                            coders[coderName].call(encoder, '', maxLength - 1);
+                                            coders[coderName].call(
+                                                encoder,
+                                                Object(''),
+                                                maxLength - 1
+                                            );
                                         expect(output).toBeUndefined();
                                     }
                                 );
@@ -1088,7 +1219,8 @@
                                     'returns a string when output length equals maxLength',
                                     function ()
                                     {
-                                        var output = coders[coderName].call(encoder, '', maxLength);
+                                        var output =
+                                            coders[coderName].call(encoder, Object(''), maxLength);
                                         expect(output).toBeString();
                                     }
                                 );
@@ -1102,77 +1234,108 @@
             'MIN_INPUT_LENGTH of',
             function ()
             {
-                function test(features, createInput, coderName1, coderName2)
+                function test(features, createInput, coderName)
                 {
+                    function findBestCoder(inputData)
+                    {
+                        var bestCoderName;
+                        var bestLength = Infinity;
+                        coderNames.forEach(
+                            function (thisCoderName)
+                            {
+                                if (thisCoderName !== 'simple' && thisCoderName !== coderName)
+                                {
+                                    var coder = coders[thisCoderName];
+                                    var output = coder.call(encoder, inputData);
+                                    var length = output.length;
+                                    if (length < bestLength)
+                                    {
+                                        bestCoderName = thisCoderName;
+                                        bestLength = length;
+                                    }
+                                }
+                            }
+                        );
+                        var result = { coderName: bestCoderName, length: bestLength };
+                        return result;
+                    }
+                    
                     var encoder = JScrewIt.debug.createEncoder(features);
                     var coders = JScrewIt.debug.getCoders();
-                    var coder1 = coders[coderName1];
-                    var coder2 = coders[coderName2];
-                    var minLength = coder2.MIN_INPUT_LENGTH;
-                    var inputA = createInput(minLength - 1);
-                    var inputB = createInput(minLength);
+                    var coder = coders[coderName];
+                    var minLength = coder.MIN_INPUT_LENGTH;
+                    var inputDataShort = Object(createInput(minLength - 1));
+                    var inputDataFit = Object(createInput(minLength));
+                    var coderNames = Object.keys(coders);
                     it(
-                        coderName2 + ' is suitable',
+                        coderName + ' is suitable',
                         function ()
                         {
-                            var outputA1 = coder1.call(encoder, inputA);
-                            var outputA2 = coder2.call(encoder, inputA);
-                            expect(outputA1.length).not.toBeGreaterThan(
-                                outputA2.length,
-                                'MIN_INPUT_LENGTH is too large'
+                            var outputFit = coder.call(encoder, inputDataFit);
+                            var bestDataFit = findBestCoder(inputDataFit);
+                            expect(bestDataFit.length).toBeGreaterThan(
+                                outputFit.length,
+                                'MIN_INPUT_LENGTH is too small for ' + bestDataFit.coderName
                             );
-                            
-                            var outputB1 = coder1.call(encoder, inputB);
-                            var outputB2 = coder2.call(encoder, inputB);
-                            expect(outputB1.length).toBeGreaterThan(
-                                outputB2.length,
-                                'MIN_INPUT_LENGTH is too small'
+                            var outputShort = coder.call(encoder, inputDataShort);
+                            var bestDataShort = findBestCoder(inputDataShort);
+                            expect(bestDataShort.length).not.toBeGreaterThan(
+                                outputShort.length,
+                                'MIN_INPUT_LENGTH is too large for ' + bestDataShort.coderName
                             );
                         }
                     );
                 }
                 
-                test('ENTRIES', repeat.bind(null, String.fromCharCode(59999)), 'simple', 'byDict');
                 test(
-                    'ENTRIES',
+                    'CAPITAL_HTML',
                     repeat.bind(null, String.fromCharCode(59999)),
-                    'plain',
                     'byCharCodes'
                     );
                 test(
                     ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
-                    repeat.bind(null, String.fromCharCode(49989)),
-                    'byCharCodes',
+                    function (length)
+                    {
+                        var CHAR_CODES =
+                        [
+                            49989, 49988, 59989, 37889, 59988, 37888, 38999, 38998, 29989, 38997,
+                            37989, 59969, 58889, 57989, 58898, 58899, 19989
+                        ];
+                        var str = repeatToFit(String.fromCharCode.apply(null, CHAR_CODES), length);
+                        return str;
+                    },
                     'byCharCodesRadix4'
+                );
+                test('ENTRIES', repeat.bind(null, String.fromCharCode(59999)), 'byDict');
+                test(
+                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
+                    createDictTestString.bind(null, 122),
+                    'byDictRadix3'
                 );
                 test(
                     ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
-                    function (length)
-                    {
-                        var str = '';
-                        while (str.length < length)
-                        {
-                            str += String.fromCharCode(str.length % 100);
-                        }
-                        return str;
-                    },
-                    'byDict',
+                    createDictTestString.bind(null, 100),
                     'byDictRadix4'
                 );
                 test(
+                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
+                    createDictTestString.bind(null, 129),
+                    'byDictRadix4AmendedBy1'
+                );
+                test(
                     ['ATOB', 'ENTRIES', 'FILL', 'NO_IE_SRC'],
-                    function (length)
-                    {
-                        var str = '';
-                        for (var i = 0; i < 125; ++i)
-                        {
-                            str += String.fromCharCode(0xffff - i);
-                        }
-                        str = repeat(str, Math.ceil(length / 125)).slice(0, length);
-                        return str;
-                    },
-                    'byDictRadix4',
-                    'byDictRadix5Amended'
+                    createDictTestString.bind(null, 364),
+                    'byDictRadix4AmendedBy2'
+                );
+                test(
+                    ['ATOB', 'ENTRIES', 'FILL', 'NO_IE_SRC'],
+                    createDictTestString.bind(null, 124),
+                    'byDictRadix5AmendedBy2'
+                );
+                test(
+                    ['ENTRIES', 'FILL', 'V8_SRC'],
+                    createAntiRadix4TestString.bind(null, 473),
+                    'byDictRadix5AmendedBy3'
                 );
             }
         );
@@ -1256,9 +1419,15 @@
         return result;
     }
     
-    function repeat(string, count)
+    function repeat(str, count)
     {
-        var result = Array(count + 1).join(string);
+        var result = Array(count + 1).join(str);
+        return result;
+    }
+    
+    function repeatToFit(str, length)
+    {
+        var result = repeat(str, Math.ceil(length / str.length)).slice(0, length);
         return result;
     }
     
@@ -1276,11 +1445,10 @@
                 {
                     expect(output).toBeJSFuck();
                     var actual = emuEval(emuFeatures || [], output) + '';
-                    expect(actual).toBe(character);
+                    expect(actual).toBe(char);
                 }
                 
-                var character = char;
-                var entries = JScrewIt.debug.getCharacterEntries(character);
+                var entries = JScrewIt.debug.getCharacterEntries(char);
                 if (entries)
                 {
                     var defaultEntryFound = false;
@@ -1310,7 +1478,7 @@
                             '(default)',
                             function ()
                             {
-                                var output = JScrewIt.encode(character);
+                                var output = JScrewIt.encode(char);
                                 verifyOutput(output);
                             }
                         );
@@ -1322,7 +1490,7 @@
                         '(default)',
                         function ()
                         {
-                            var output = JScrewIt.encode(character);
+                            var output = JScrewIt.encode(char);
                             verifyOutput(output);
                         }
                     );
@@ -1333,10 +1501,10 @@
                             function ()
                             {
                                 var options = { features: 'ATOB' };
-                                var output = JScrewIt.encode(character, options);
+                                var output = JScrewIt.encode(char, options);
                                 verifyOutput(output, featureSet.ATOB && ['ATOB']);
                                 expect(output.length).not.toBeGreaterThan(
-                                    JScrewIt.encode(character).length
+                                    JScrewIt.encode(char).length
                                 );
                             }
                         );

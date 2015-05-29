@@ -9,6 +9,19 @@
 
 'use strict';
 
+function A003314(n)
+{
+    var log2 = binLog(n);
+    var result = n * (log2 + 2) - (1 << log2 + 1);
+    return result;
+}
+
+function binLog(n)
+{
+    for (var result = 0; n >>= 1; ++result);
+    return result;
+}
+
 function disableForm(disabled)
 {
     var elements = form.elements;
@@ -49,14 +62,23 @@ function handleSubmit(evt)
     var maxGroupThreshold = parseInt(maxGroupThresholdField.value, 10);
     var groupings = parseInt(groupingsField.value, 10);
     var callDepth = parseInt(callDepthField.value, 10);
-    if (isNaN(maxGroupThreshold) || maxGroupThreshold < 10)
+    if (isNaN(maxGroupThreshold) || maxGroupThreshold < 10 || maxGroupThreshold > 1000000)
     {
-        alert('First group threshold must be an integer ≥ 10.');
+        alert('First group threshold must be an integer between 10 and one million.');
         return;
     }
-    if (isNaN(groupings) || groupings < 1 || groupings > maxGroupThreshold)
+    if (isNaN(groupings) || groupings < 1 || groupings > 1000000)
     {
-        alert('Groupings must be an integer between 1 and the first group threshold.');
+        alert('Groupings must be an integer between 1 and one million.');
+        return;
+    }
+    var maxGroupings = Math.pow(2, maxGroupThreshold - 1);
+    if (groupings > maxGroupings)
+    {
+        alert(
+            'A first group threshold of ' + maxGroupThreshold + ' only allows for up to ' +
+            maxGroupings + ' groupings.'
+        );
         return;
     }
     if (isNaN(callDepth) || callDepth < 0)
@@ -92,39 +114,32 @@ function log(maxGroupThreshold, groupings, callDepth, ok)
     logger.insertBefore(document.createElement('DIV'), logger.firstChild).innerHTML = html;
 }
 
-function repeat(string, count)
+function repeat(str, count)
 {
-    var result = Array(count + 1).join(string);
+    var result = Array(count + 1).join(str);
     return result;
 }
 
 function randomString(length)
 {
-    var string = '';
+    var str = '';
     for (var i = 0; i < length; ++i)
     {
         var digit = Math.random() < 0.5 & 1;
-        string += digit;
+        str += digit;
     }
-    return string;
+    return str;
 }
 
 function runExtremeTest(maxGroupThreshold, groupings)
 {
     var encoder = JScrewIt.debug.createEncoder();
     encoder.maxGroupThreshold = maxGroupThreshold;
-    var input = '';
-    for (var i = 0; i < groupings; ++i)
-    {
-        input += '\uEA5F' + randomString(maxGroupThreshold - 2 - i);
-    }
-    if (groupings < maxGroupThreshold)
-    {
-        input += 'undefined';
-    }
+    var length = maxGroupThreshold * groupings - A003314(groupings);
+    var input = '\uEA5F' + randomString(length - 1);
     var dict = encoder.replaceString(input);
-    var indexes = encoder.replaceNumberArray([0]);
-    var output = encoder.createDictEncoding(dict, indexes, 5, true);
+    var indexes = encoder.replaceNumberArray(['']);
+    var output = encoder.createDictEncoding(dict, indexes, 5, 3, true);
     try
     {
         var actual = eval(output);
@@ -165,7 +180,7 @@ fieldset>div>* { display: table-row; }
 
 fieldset>div>*>* { display: table-cell; vertical-align: middle; }
 
-fieldset input[type='submit'] {  -webkit-appearance: button;text-align: center; }
+fieldset input[type='submit'] { -webkit-appearance: button; text-align: center; }
 
 form.disabled { color: GrayText; }
 

@@ -52,9 +52,9 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             encoder.constantDefinitions[constant] = definition + '';
         }
         
-        function getCharacterEntries(character)
+        function getCharacterEntries(char)
         {
-            var result = getEntries(CHARACTERS[character]);
+            var result = getEntries(CHARACTERS[char]);
             return result;
         }
         
