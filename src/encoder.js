@@ -1073,10 +1073,10 @@ var expandEntries;
         }
         else if (quotedString)
         {
-            var string;
+            var str;
             try
             {
-                string = JSON.parse(quotedString);
+                str = JSON.parse(quotedString);
             }
             catch (e)
             {
@@ -1085,7 +1085,7 @@ var expandEntries;
             var strongBound =
                 isPrecededByOperator(expr, offset) ||
                 isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length);
-            replacement = this.replaceString(string, strongBound);
+            replacement = this.replaceString(str, strongBound);
             if (!replacement)
             {
                 this.throwSyntaxError('String too complex');
@@ -1531,7 +1531,7 @@ var expandEntries;
             }
         },
         
-        replaceString: function (string, strongBound, maxLength)
+        replaceString: function (str, strongBound, maxLength)
         {
             function makeRegExp()
             {
@@ -1543,7 +1543,7 @@ var expandEntries;
             var match;
             var regExp;
             makeRegExp();
-            while (match = regExp.exec(string))
+            while (match = regExp.exec(str))
             {
                 if (buffer.length > maxLength)
                 {
@@ -1598,16 +1598,16 @@ var expandEntries;
             return solution;
         },
         
-        resolveCharacter: function (character)
+        resolveCharacter: function (char)
         {
-            var solution = this.characterCache[character];
+            var solution = this.characterCache[char];
             if (solution === undefined)
             {
                 this.callResolver(
-                    quoteString(character),
+                    quoteString(char),
                     function ()
                     {
-                        var entries = CHARACTERS[character];
+                        var entries = CHARACTERS[char];
                         if (entries != null)
                         {
                             solution = this.findOptimalSolution(entries);
@@ -1616,9 +1616,9 @@ var expandEntries;
                         {
                             var defaultCharacterEncoder =
                                 this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
-                            solution = defaultCharacterEncoder.call(this, character);
+                            solution = defaultCharacterEncoder.call(this, char);
                         }
-                        this.characterCache[character] = solution;
+                        this.characterCache[char] = solution;
                     }
                 );
             }
@@ -1642,9 +1642,9 @@ var expandEntries;
                             var discreteLength = -1;
                             Array.prototype.forEach.call(
                                 complex,
-                                function (character)
+                                function (char)
                                 {
-                                    var solution = this.resolveCharacter(character);
+                                    var solution = this.resolveCharacter(char);
                                     discreteLength += getAppendLength(solution);
                                 },
                                 this
