@@ -126,7 +126,7 @@
         {
             setUp: function ()
             {
-                if (Array.prototype.entries)
+                if (Array.prototype.entries && /^\[object Array/.test([].entries()))
                 {
                     if (noOverwrite)
                     {
