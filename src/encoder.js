@@ -703,15 +703,6 @@ var expandEntries;
                 return output;
             }
         ),
-        simple: defineCoder
-        (
-            function (inputData, maxLength)
-            {
-                var input = inputData.valueOf();
-                var output = this.encodeSimple(input, maxLength);
-                return output;
-            }
-        ),
     };
     
     COMPLEX = noProto
@@ -1161,24 +1152,54 @@ var expandEntries;
     
     Encoder.prototype =
     {
-        callCoders: function (input, coderNames)
+        callCoders: function (input, coderNames, codingName)
         {
             var output;
             var inputLength = input.length;
+            var codingLog = this.codingLog;
+            var perfInfoList = [];
+            perfInfoList.name = codingName;
+            perfInfoList.inputLength = inputLength;
+            codingLog.push(perfInfoList);
             var inputData = Object(input);
+            var usedPerfInfo;
             coderNames.forEach(
                 function (coderName)
                 {
                     var coder = CODERS[coderName];
-                    if (!(inputLength < coder.MIN_INPUT_LENGTH))
+                    var perfInfo = { coderName: coderName };
+                    var perfStatus;
+                    if (inputLength < coder.MIN_INPUT_LENGTH)
                     {
+                        perfStatus = 'skipped';
+                    }
+                    else
+                    {
+                        this.codingLog = perfInfo.codingLog = [];
+                        var before = new Date();
                         var maxLength = output != null ? output.length : undefined;
                         var newOutput = coder.call(this, inputData, maxLength);
+                        var time = new Date() - before;
+                        this.codingLog = codingLog;
+                        perfInfo.time = time;
                         if (newOutput != null)
                         {
                             output = newOutput;
+                            if (usedPerfInfo)
+                            {
+                                usedPerfInfo.status = 'superseded';
+                            }
+                            usedPerfInfo = perfInfo;
+                            perfInfo.outputLength = newOutput.length;
+                            perfStatus = 'used';
+                        }
+                        else
+                        {
+                            perfStatus = 'incomplete';
                         }
                     }
+                    perfInfo.status = perfStatus;
+                    perfInfoList.push(perfInfo);
                 },
                 this
             );
@@ -1247,7 +1268,7 @@ var expandEntries;
             return output;
         },
         
-        createDictEncoding: function (dict, indexes, radix, amendings, coerceToInt)
+        createDictEncoding: function (legend, indexes, radix, amendings, coerceToInt)
         {
             var mapper;
             if (radix)
@@ -1292,8 +1313,8 @@ var expandEntries;
                 mapper = '""["charAt"]["bind"]';
             }
             var output =
-                indexes + this.replace('["map"]') + '(' + this.replace(mapper) + '(' + dict + '))' +
-                this.replace('["join"]([])');
+                indexes + this.replace('["map"]') + '(' + this.replace(mapper) + '(' + legend +
+                '))' + this.replace('["join"]([])');
             return output;
         },
         
@@ -1325,7 +1346,9 @@ var expandEntries;
                         'byDictRadix3',
                         'byDictRadix4',
                         'byDict',
-                        'simple'
+                        'byCharCodesRadix4',
+                        'byCharCodes',
+                        'plain'
                     ]
                 );
             if (!output)
@@ -1385,8 +1408,8 @@ var expandEntries;
                     dictChars[reindex.index] = char;
                 }
             );
-            var dict = this.encodeSimple(dictChars.join(''), maxLength - minFreqIndexLength);
-            if (dict)
+            var legend = this.encodeDictLegend(dictChars.join(''), maxLength - minFreqIndexLength);
+            if (legend)
             {
                 var freqIndexes =
                     this.replaceNumberArray(
@@ -1398,18 +1421,12 @@ var expandEntries;
                                 return index;
                             }
                         ),
-                        maxLength - dict.length
+                        maxLength - legend.length
                     );
                 if (freqIndexes)
                 {
                     var output =
-                        this.createDictEncoding(
-                            dict,
-                            freqIndexes,
-                            radix,
-                            amendings,
-                            coerceToInt
-                        );
+                        this.createDictEncoding(legend, freqIndexes, radix, amendings, coerceToInt);
                     if (!(output.length > maxLength))
                     {
                         return output;
@@ -1418,11 +1435,12 @@ var expandEntries;
             }
         },
         
-        encodeSimple: function (input, maxLength)
+        encodeDictLegend: function (input, maxLength)
         {
             if (!(maxLength < 0))
             {
-                var output = this.callCoders(input, ['byCharCodesRadix4', 'byCharCodes', 'plain']);
+                var output =
+                    this.callCoders(input, ['byCharCodesRadix4', 'byCharCodes', 'plain'], 'legend');
                 if (output && !(output.length > maxLength))
                 {
                     return output;
