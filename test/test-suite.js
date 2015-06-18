@@ -170,10 +170,13 @@
                         JSON.stringify(expression1) + ' (with wrapWith: "call")',
                         function ()
                         {
-                            var options = { features: compatibility, wrapWith: 'call' };
+                            var perfInfo = { };
+                            var options =
+                                { features: compatibility, perfInfo: perfInfo, wrapWith: 'call' };
                             var output = JScrewIt.encode(expression1, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(42);
+                            expect(perfInfo.codingLog).toBeArray();
                         }
                     );
                     var expression2 = 'decodeURI(encodeURI("♠♥♦♣"))';
@@ -181,10 +184,13 @@
                         JSON.stringify(expression2) + ' (with wrapWith: "eval")',
                         function ()
                         {
-                            var options = { features: compatibility, wrapWith: 'eval' };
+                            var perfInfo = { };
+                            var options =
+                                { features: compatibility, perfInfo: perfInfo, wrapWith: 'eval' };
                             var output = JScrewIt.encode(expression2, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe('♠♥♦♣');
+                            expect(perfInfo.codingLog).toBeArray();
                         }
                     );
                     var expression3 = 'Boolean true';
@@ -194,11 +200,13 @@
                         JSON.stringify(expression3),
                         function ()
                         {
-                            var options = { features: compatibility };
+                            var perfInfo = { };
+                            var options = { features: compatibility, perfInfo: perfInfo };
                             var output = JScrewIt.encode(expression3, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(expression3);
                             expect(output).toBe(expectedEncoding3);
+                            expect(perfInfo.codingLog).toBeArray();
                         }
                     );
                     var expression4 = repeat('☺', 20);
@@ -206,10 +214,13 @@
                         JSON.stringify(expression4) + ' (with wrapWith: "none")',
                         function ()
                         {
-                            var options = { features: compatibility, wrapWith: 'none' };
+                            var perfInfo = { };
+                            var options =
+                                { features: compatibility, perfInfo: perfInfo, wrapWith: 'none' };
                             var output = JScrewIt.encode(expression4, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(expression4);
+                            expect(perfInfo.codingLog).toBeArray();
                         }
                     );
                 }
@@ -1006,8 +1017,11 @@
                             encoder.encodeByDict(Object('12345'), undefined, undefined, 10);
                         expect(output1).toBeUndefined();
                         var output2 =
-                            encoder.encodeByDict(Object('12345'), undefined, undefined, 200);
+                            encoder.encodeByDict(Object('12345'), undefined, undefined, 78);
                         expect(output2).toBeUndefined();
+                        var output3 =
+                            encoder.encodeByDict(Object('12345'), undefined, undefined, 200);
+                        expect(output3).toBeUndefined();
                     }
                 );
             }
@@ -1243,7 +1257,7 @@
                         coderNames.forEach(
                             function (thisCoderName)
                             {
-                                if (thisCoderName !== 'simple' && thisCoderName !== coderName)
+                                if (thisCoderName !== coderName)
                                 {
                                     var coder = coders[thisCoderName];
                                     var output = coder.call(encoder, inputData);

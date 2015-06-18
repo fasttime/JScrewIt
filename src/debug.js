@@ -29,6 +29,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         {
             var featureMask = getValidFeatureMask(features);
             var encoder = new Encoder(featureMask);
+            encoder.codingLog = [];
             return encoder;
         }
         
