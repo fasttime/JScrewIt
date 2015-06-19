@@ -4,8 +4,7 @@
 
 function byteCount(size, width)
 {
-    var str =
-        Array(width - widthOf(size) + 1).join(' ') + (size === 1 ? '1 byte' : size + ' bytes');
+    var str = padLeft(size, width) + (size === 1 ? ' byte' : ' bytes');
     return str;
 }
 
@@ -17,7 +16,7 @@ function createDiagnosticReport(codingLog)
         codingLog.reduce(
             function (report, perfInfoList)
             {
-                report += formatPerfInfoList(perfInfoList, '', '');
+                report += formatPerfInfoList(perfInfoList, ['', '']);
                 return report;
             },
             ''
@@ -46,17 +45,25 @@ function formatCodingLog(codingLog, margin)
         var perfInfoList = codingLog[index];
         result +=
             '│' +
-            (index < count - 1 ?
-            formatPerfInfoList(perfInfoList, '├', '││', margin) :
-            formatPerfInfoList(perfInfoList, '└', '│ ', margin));
+            formatPerfInfoList(
+                perfInfoList,
+                index < count - 1 ? ['├', '││'] : ['└', '│ ', margin]
+            );
     }
     return result;
 }
 
-function formatPerfInfoList(perfInfoList, paddingHead, padding, margin)
+function formatInt(int)
 {
-    var result = paddingHead + (perfInfoList.name || '(default)') + '\n';
+    var result = int != null ? int : '-' ;
+    return result;
+}
+
+function formatPerfInfoList(perfInfoList, paddingData)
+{
+    var result = paddingData[0] + (perfInfoList.name || '(default)') + '\n';
     var count = perfInfoList.length;
+    var padding = paddingData[1];
     var paddingLength = padding.length;
     for (var index = 0; index < count; ++index)
     {
@@ -64,16 +71,17 @@ function formatPerfInfoList(perfInfoList, paddingHead, padding, margin)
         var next = index < count - 1;
         result += padding + (next ? '├' : '└') +
             padRight(perfInfo.coderName, 25 - paddingLength) + padRight(perfInfo.status, 10) +
-            padLeft(perfInfo.outputLength || '-', 11) + padLeft(perfInfo.time, 11) + '\n';
+            padLeft(formatInt(perfInfo.outputLength), 11) + padLeft(formatInt(perfInfo.time), 11) +
+            '\n';
         var codingLog = perfInfo.codingLog;
-        if (codingLog.length)
+        if (codingLog)
         {
             result += formatCodingLog(codingLog, next);
         }
     }
-    if (margin)
+    if (paddingData[2])
     {
-        result += padding + '\n';
+        result += padding.replace(/ +$/, '') + '\n';
     }
     return result;
 }
