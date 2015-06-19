@@ -85,6 +85,22 @@ describe(
             }
         );
         test(
+            ['-d'],
+            {
+                inputFileName: undefined,
+                outputFileName: undefined,
+                options: { perfInfo: { } }
+            }
+        );
+        test(
+            ['--diagnostic'],
+            {
+                inputFileName: undefined,
+                outputFileName: undefined,
+                options: { perfInfo: { } }
+            }
+        );
+        test(
             ['-f', 'ATOB,SELF'],
             {
                 inputFileName: undefined,

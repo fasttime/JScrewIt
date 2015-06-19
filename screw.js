@@ -96,6 +96,7 @@ else
     var input;
     var output;
     var encodingTime;
+    var codingLog;
     try
     {
         input = fs.readFileSync(inputFileName);
@@ -103,6 +104,8 @@ else
         output = JScrewIt.encode(input, options);
         encodingTime = new Date() - before;
         fs.writeFileSync(outputFileName, output);
+        var perfInfo = options.perfInfo;
+        codingLog = perfInfo && perfInfo.codingLog;
     }
     catch (error)
     {
@@ -111,6 +114,11 @@ else
     }
     if (outputFileName)
     {
+        if (codingLog)
+        {
+            var diagnosticReport = cli.createDiagnosticReport(codingLog);
+            console.log(diagnosticReport);
+        }
         var report = cli.createReport(input.length, output.length, encodingTime);
         console.log(report);
     }
