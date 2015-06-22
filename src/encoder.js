@@ -1,24 +1,19 @@
 /*
 global
-LEVEL_NUMERIC,
-LEVEL_OBJECT,
+CHARACTERS,
+COMPLEX,
+CONSTANTS,
 LEVEL_STRING,
-LEVEL_UNDEFINED,
+SIMPLE,
 ScrewBuffer,
 createSolution,
 define,
-defineCharacterByAtob,
-defineFBCharAt,
-defineFHCharAt,
 getAppendLength,
 hasOuterPlus,
-noProto
+replaceDigit
 */
 
-var CHARACTERS;
 var CODERS;
-var COMPLEX;
-var CONSTANTS;
 
 var Encoder;
 
@@ -27,12 +22,6 @@ var expandEntries;
 (function ()
 {
     'use strict';
-    
-    function defineCoder(coder, minInputLength)
-    {
-        coder.MIN_INPUT_LENGTH = minInputLength;
-        return coder;
-    }
     
     var AMENDINGS = ['true', 'undefined', 'NaN'];
     
@@ -163,449 +152,6 @@ var expandEntries;
     
     var BASE64_ALPHABET_LO_6 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
     
-    CHARACTERS = noProto
-    ({
-        'a':            '"false"[1]',
-        'b':
-        [
-            defineFHCharAt('Number', 12),
-            define('(ARRAY_ITERATOR + [])[2]', 'ENTRIES')
-        ],
-        'c':
-        [
-            defineFHCharAt('ANY_FUNCTION', 3),
-            define('(RP_5_N + ARRAY_ITERATOR)["10"]', 'ENTRIES')
-        ],
-        'd':            '"undefined"[2]',
-        'e':            '"true"[3]',
-        'f':            '"false"[0]',
-        'g':
-        [
-            defineFHCharAt('String', 14)
-        ],
-        'h':
-        [
-            define('(101)["toString"]("21")[1]'),
-            defineCharacterByAtob('h')
-        ],
-        'i':            '([RP_5_N] + undefined)["10"]',
-        'j':
-        [
-            define('(PLAIN_OBJECT + [])["10"]'),
-            define('(self + [])[3]', 'SELF'),
-            define('(ARRAY_ITERATOR + [])[3]', 'ENTRIES')
-        ],
-        'k':
-        [
-            define('(20)["toString"]("21")'),
-            defineCharacterByAtob('k')
-        ],
-        'l':            '"false"[2]',
-        'm':
-        [
-            define('(RP_6_SO + Function())["20"]'),
-            defineFHCharAt('Number', 11, 'NO_IE_SRC'),
-            defineFHCharAt('Number', 11, 'IE_SRC')
-        ],
-        'n':            '"undefined"[1]',
-        'o':
-        [
-            defineFHCharAt('ANY_FUNCTION', 6),
-            define('(ARRAY_ITERATOR + [])[1]', 'ENTRIES')
-        ],
-        'p':
-        [
-            define('(211)["toString"]("31")[1]'),
-            define('atob("cNaN")[0]', 'ATOB', 'ENTRIES')
-        ],
-        'q':
-        [
-            define('(212)["toString"]("31")[1]'),
-            defineCharacterByAtob('q')
-        ],
-        'r':            '"true"[1]',
-        's':            '"false"[3]',
-        't':            '"true"[0]',
-        'u':            '"undefined"[0]',
-        'v':
-        [
-            defineFBCharAt(19)
-        ],
-        'w':
-        [
-            define('(32)["toString"]("33")'),
-            define('(self + [])["slice"]("-2")[0]', 'SELF'),
-            define('(self + [])["13"]', 'WINDOW'),
-            define('(RP_4_N + self)["20"]', 'DOMWINDOW'),
-            defineCharacterByAtob('w')
-        ],
-        'x':
-        [
-            define('(101)["toString"]("34")[1]'),
-            defineCharacterByAtob('x')
-        ],
-        'y':            '(RP_3_NO + [Infinity])["10"]',
-        'z':
-        [
-            define('(35)["toString"]("36")'),
-            defineCharacterByAtob('z')
-        ],
-        
-        'A':
-        [
-            defineFHCharAt('Array', 9),
-            define('(RP_3_NO + ARRAY_ITERATOR)[11]', 'ENTRIES')
-        ],
-        'B':
-        [
-            defineFHCharAt('Boolean', 9)
-        ],
-        'C':
-        [
-            define('escape(""["italics"]())[2]'),
-            define('escape(""["sub"]())[2]'),
-            define('(RP_4_N + ""["fontcolor"]())["10"]', 'CAPITAL_HTML'),
-            defineCharacterByAtob('C')
-        ],
-        'D':
-        [
-            define('escape("]")[2]'),
-            define('btoa("00")[1]', 'ATOB')
-        ],
-        'E':
-        [
-            define('btoa("01")[2]', 'ATOB'),
-            define('(RP_5_N + ""["link"]())["10"]', 'CAPITAL_HTML'),
-            defineFHCharAt('RegExp', 12)
-        ],
-        'F':
-        [
-            define('""["fontcolor"]()[1]', 'CAPITAL_HTML'),
-            defineFHCharAt('Function', 9)
-        ],
-        'G':
-        [
-            define('btoa("0false")[1]', 'ATOB'),
-            define('"0"["big"]()["10"]', 'CAPITAL_HTML'),
-            define('(RP_5_N + Date())["30"]', 'GMT')
-        ],
-        'H':
-        [
-            define('btoa(true)[1]', 'ATOB'),
-            define('""["link"]()[3]', 'CAPITAL_HTML')
-        ],
-        'I':            '"Infinity"[0]',
-        'J':
-        [
-            define('btoa(true)[2]', 'ATOB')
-        ],
-        'K':
-        [
-            define('(RP_5_N + ""["strike"]())["10"]', 'CAPITAL_HTML'),
-            defineCharacterByAtob('K')
-        ],
-        'L':
-        [
-            define('btoa(".")[0]', 'ATOB'),
-            define('(RP_3_NO + ""["fontcolor"]())["11"]', 'CAPITAL_HTML')
-        ],
-        'M':
-        [
-            define('btoa(0)[0]', 'ATOB'),
-            define('""["small"]()[2]', 'CAPITAL_HTML'),
-            define('(RP_4_N + Date())["30"]', 'GMT')
-        ],
-        'N':            '"NaN"[0]',
-        'O':
-        [
-            define('(RP_3_NO + PLAIN_OBJECT)["11"]'),
-            define('""["fontcolor"]()[2]', 'CAPITAL_HTML')
-        ],
-        'P':
-        [
-            define('btoa(""["italics"]())[0]', 'ATOB'),
-            define('"0"["sup"]()["10"]', 'CAPITAL_HTML'),
-            defineCharacterByAtob('P')
-        ],
-        'Q':
-        [
-            define('btoa(1)[1]', 'ATOB')
-        ],
-        'R':
-        [
-            define('btoa("0true")[2]', 'ATOB'),
-            define('""["fontcolor"]()["10"]', 'CAPITAL_HTML'),
-            defineFHCharAt('RegExp', 9),
-        ],
-        'S':
-        [
-            defineFHCharAt('String', 9)
-        ],
-        'T':
-        [
-            define('btoa(NaN)[0]', 'ATOB'),
-            define('""["fontcolor"]([])["20"]', 'CAPITAL_HTML'),
-            define('(RP_3_NO + Date())["30"]', 'GMT')
-        ],
-        'U':
-        [
-            define('(RP_4_N + btoa(false))["10"]', 'ATOB'),
-            define('""["sub"]()[2]', 'CAPITAL_HTML'),
-            define(
-                '(RP_3_NO + ARRAY_ITERATOR["toString"]["call"]())["11"]',
-                'ENTRIES',
-                'UNDEFINED'
-            ),
-            define('(RP_3_NO + PLAIN_OBJECT["toString"]["call"]())["11"]', 'UNDEFINED')
-        ],
-        'V':
-        [
-            define('btoa(undefined)["10"]', 'ATOB')
-        ],
-        'W':
-        [
-            define('(self + RP_3_NO)["slice"]("-10")[0]', 'SELF'),
-            define('(RP_3_NO + self)["11"]', 'WINDOW'),
-            define('(self + [])["11"]', 'DOMWINDOW')
-        ],
-        'X':
-        [
-            define('btoa("1true")[1]', 'ATOB')
-        ],
-        'Y':
-        [
-            define('btoa("a")[0]', 'ATOB')
-        ],
-        'Z':
-        [
-            define('btoa(false)[0]', 'ATOB'),
-            define('(RP_3_NO + ""["fontsize"]())["11"]', 'CAPITAL_HTML')
-        ],
-        
-        '\n':
-        [
-            define('(Function() + [])["23"]'),
-            define('(Function() + [])["22"]', 'NO_SAFARI_LF'),
-            define('(RP_1_NO + FILTER)["20"]', 'FF_SAFARI_SRC'),
-            define('(RP_3_NO + FILL)["20"]', 'FF_SAFARI_SRC', 'FILL'),
-            define('(ANY_FUNCTION + [])[0]', 'IE_SRC')
-        ],
-        '\x1e':
-        [
-            define('(RP_5_N + atob("NaNfalse"))["10"]', 'ATOB')
-        ],
-        ' ':
-        [
-            defineFHCharAt('ANY_FUNCTION', 8),
-            define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ENTRIES'),
-            define('(RP_1_NO + FILTER)["20"]', 'V8_SRC'),
-            define('(RP_3_NO + FILL)["20"]', 'V8_SRC', 'FILL'),
-            define('(FILTER + [])["20"]', 'FF_SAFARI_SRC'),
-            define('(RP_3_NO + FILL)["21"]', 'FF_SAFARI_SRC', 'FILL')
-        ],
-        // '!':    ,
-        '"':            '""["fontcolor"]()["12"]',
-        // '#':    ,
-        // '$':    ,
-        '%':
-        [
-            define('escape(FILTER)["20"]'),
-            define('escape(false + FILL)["20"]', 'NO_IE_SRC', 'FILL'),
-            define('escape(ANY_FUNCTION)[0]', 'IE_SRC'),
-            defineCharacterByAtob('%')
-        ],
-        '&':
-        [
-            define('""["fontcolor"]("\\"")["13"]', 'DOUBLE_QUOTE_ESC_HTML'),
-            defineCharacterByAtob('&')
-        ],
-        // '\'':   ,
-        '(':
-        [
-            defineFHCharAt('FILTER', 15),
-            defineFHCharAt('FILL', 13, 'FILL')
-        ],
-        ')':
-        [
-            defineFHCharAt('FILTER', 16),
-            defineFHCharAt('FILL', 14, 'FILL')
-        ],
-        // '*':    ,
-        '+':            '(+"1e100" + [])[2]',
-        ',':
-        [
-            define('([]["slice"]["call"]("false") + [])[1]'),
-            define(
-                function ()
-                {
-                    var replacement = this.replaceExpr('[[]]["concat"]([[]])');
-                    var solution = createSolution(replacement, LEVEL_OBJECT);
-                    return solution;
-                }
-            )
-        ],
-        '-':            '(+".0000000001" + [])[2]',
-        '.':            '(+"11e20" + [])[1]',
-        '/':
-        [
-            define('"0false"["italics"]()["10"]'),
-            define('"true"["sub"]()["10"]')
-        ],
-        ':':
-        [
-            define('(RegExp() + [])[3]'),
-            defineCharacterByAtob(':')
-        ],
-        ';':
-        [
-            define('""["fontcolor"]("NaN\\"")["21"]', 'DOUBLE_QUOTE_ESC_HTML'),
-            defineCharacterByAtob(';')
-        ],
-        '<':
-        [
-            define('""["italics"]()[0]'),
-            define('""["sub"]()[0]')
-        ],
-        '=':
-        [
-            define('""["fontcolor"]()["11"]'),
-            define('btoa(0)[2]', 'ATOB')
-        ],
-        '>':
-        [
-            define('""["italics"]()[2]'),
-            define('""["sub"]()["10"]')
-        ],
-        '?':
-        [
-            define('(RegExp() + [])[2]'),
-            defineCharacterByAtob('?')
-        ],
-        // '@':    ,
-        '[':
-        [
-            defineFBCharAt(14),
-            define('(ARRAY_ITERATOR + [])[0]', 'ENTRIES')
-        ],
-        '\\':
-        [
-            define('""["fontcolor"]()["quote"]()["13"]', 'QUOTE'),
-            define('(ANY_FUNCTION + [])["quote"]()[1]', 'IE_SRC', 'QUOTE'),
-            define('(FILTER + [])["quote"]()["20"]', 'FF_SAFARI_SRC', 'QUOTE'),
-            define('(RP_3_NO + FILL)["quote"]()["21"]', 'FF_SAFARI_SRC', 'FILL', 'QUOTE'),
-            defineCharacterByAtob('\\')
-        ],
-        ']':
-        [
-            defineFBCharAt(26),
-            define('(ARRAY_ITERATOR + [])[2 + [true + !!(ARRAY_ITERATOR + [])["22"]]]', 'ENTRIES'),
-            define('(ARRAY_ITERATOR + [])["22"]', 'NO_SAFARI_ARRAY_ITERATOR'),
-            define('(ARRAY_ITERATOR + [])["21"]', 'SAFARI_ARRAY_ITERATOR')
-        ],
-        '^':
-        [
-            define('atob("undefinedfalse")[2]', 'ATOB')
-        ],
-        // '_':    ,
-        // '`':    ,
-        '{':
-        [
-            defineFHCharAt('FILTER', 18),
-            defineFHCharAt('FILL', 16, 'FILL')
-        ],
-        // '|':    ,
-        '}':
-        [
-            defineFBCharAt(28),
-        ],
-        // '~':    ,
-        
-        '\x8a':
-        [
-            define('(RP_4_N + atob("NaNundefined"))["10"]', 'ATOB')
-        ],
-        '\x8d':
-        [
-            define('atob("0NaN")[2]', 'ATOB')
-        ],
-        '\x96':
-        [
-            define('atob("00false")[3]', 'ATOB')
-        ],
-        '\x9e':
-        [
-            define('atob(true)[2]', 'ATOB')
-        ],
-        '£':
-        [
-            define('atob(NaN)[1]', 'ATOB')
-        ],
-        '¥':
-        [
-            define('atob("0false")[2]', 'ATOB')
-        ],
-        '§':
-        [
-            define('atob("00undefined")[2]', 'ATOB')
-        ],
-        '©':
-        [
-            define('atob("falsefalse")[1]', 'ATOB')
-        ],
-        '®':
-        [
-            define('atob("NaNtrue")[3]', 'ATOB')
-        ],
-        '±':
-        [
-            define('atob("0false")[3]', 'ATOB')
-        ],
-        '¶':
-        [
-            define('atob(true)[0]', 'ATOB')
-        ],
-        'º':
-        [
-            define('atob("undefinedfalse")[0]', 'ATOB')
-        ],
-        '»':
-        [
-            define('atob(true)[1]', 'ATOB')
-        ],
-        'Ö':
-        [
-            define('atob("0NaN")[1]', 'ATOB')
-        ],
-        'Ú':
-        [
-            define('atob("0truefalse")[1]', 'ATOB')
-        ],
-        'Ý':
-        [
-            define('atob("0undefined")[2]', 'ATOB')
-        ],
-        'â':
-        [
-            define('atob("falsefalseundefined")["11"]', 'ATOB')
-        ],
-        'é':
-        [
-            define('atob("0undefined")[1]', 'ATOB')
-        ],
-        'î':
-        [
-            define('atob("0truefalse")[2]', 'ATOB')
-        ],
-        'ö':
-        [
-            define('atob("0false")[1]', 'ATOB')
-        ],
-        'ø':
-        [
-            define('atob("undefinedundefined")["10"]', 'ATOB')
-        ],
-    });
-    
     CODERS =
     {
         byCharCodes: defineCoder
@@ -705,108 +251,6 @@ var expandEntries;
         ),
     };
     
-    COMPLEX = noProto
-    ({
-        Boolean:
-        [
-            define('Boolean["name"]', 'NAME')
-        ],
-        Number:
-        [
-            define('Number["name"]', 'NAME')
-        ],
-        String:
-        [
-            define('String["name"]', 'NAME')
-        ],
-    });
-    
-    CONSTANTS = noProto
-    ({
-        // JavaScript globals
-        
-        Array:          '[]["constructor"]',
-        Boolean:        '(false)["constructor"]',
-        Date:           'Function("return Date")()',
-        Function:       'ANY_FUNCTION["constructor"]',
-        Number:         '(0)["constructor"]',
-        RegExp:         'Function("return/false/")()["constructor"]',
-        String:         '("")["constructor"]',
-        
-        atob:
-        [
-            define('Function("return atob")()', 'ATOB')
-        ],
-        btoa:
-        [
-            define('Function("return btoa")()', 'ATOB')
-        ],
-        escape:         'Function("return escape")()',
-        self:
-        [
-            define('Function("return self")()', 'SELF')
-        ],
-        unescape:       'Function("return unescape")()',
-        
-        // Custom definitions
-        
-        ANY_FUNCTION:
-        [
-            define('FILTER'),
-            define('FILL', 'FILL')
-        ],
-        ARRAY_ITERATOR:
-        [
-            define('[]["entries"]()', 'ENTRIES')
-        ],
-        FILL:
-        [
-            define('[]["fill"]', 'FILL')
-        ],
-        FILTER:         '[]["filter"]',
-        PLAIN_OBJECT:   'Function("return{}")()',
-        
-        // Function body extra padding blocks: prepended to a function to align the function's body
-        // at the same position on different browsers.
-        // The number after "FBEP_" is the maximum character overhead. The letters after the last
-        // underscore have the same meaning as in regular padding blocks.
-        FBEP_4_S:       '[[true][+!!(RP_5_N + ANY_FUNCTION)["40"]]]',
-        FBEP_9_U:       '[false][+!(RP_5_N + ANY_FUNCTION)["40"]]',
-        
-        // Function header shift: used to adjust an indexer to make it point to the same position in
-        // the string representation of a function's header on different browsers.
-        // This evaluates to an array containing only the number 0 or only the number 1.
-        FH_SHIFT:       '[+!!(+(ANY_FUNCTION + [])[0] + true)]',
-        
-        // Function header padding blocks: prepended to a function to align the function's header
-        // at the same position on different browsers.
-        // The number after "FBP_" is the maximum character overhead. The letters after the last
-        // underscore have the same meaning as in regular padding blocks.
-        // Unused:
-        // FHP_1_S:        '[[0][+!!(+(ANY_FUNCTION + [])[0] + true)]]',
-        // FHP_2_NO:       '+(+!(+(ANY_FUNCTION + [])[0] + true)+[0])',
-        FHP_3_NO:       '+(1 + [+(ANY_FUNCTION + [])[0]])',
-        FHP_5_N:        '!!(+(ANY_FUNCTION + [])[0] + true)',
-                
-        // Regular padding blocks.
-        // The number after "RP_" is the character overhead.
-        // The postifx "_S" in the name indicates that the constant always evaluates to a string or
-        // an array.
-        // The postfix "_N" in the name indicates that the constant does not always evaluate to a
-        // string or an array, but it never evaluates to undefined.
-        // The postfix "_U" in the name indicates that the constant can evaluate to undefined.
-        // A trailing "O" as in "_NO" and "_SO" is appended to the name if the constant resolves to
-        // an expression containing a plus sign ("+") out of brackets not preceded by an exclamation
-        // mark ("!"). When concatenating such a constant with other expressions, the outer plus
-        // constant should be placed in the beginning whenever possible in order to save an extra
-        // pair of brackets in the resolved expressions.
-        RP_1_NO:        '0',
-        RP_3_NO:        'NaN',
-        RP_4_N:         'true',
-        RP_5_N:         'false',
-        RP_6_SO:        '"0false"',
-    });
-    
     var DEFAULT_CHARACTER_ENCODER =
     [
         define(
@@ -829,15 +273,6 @@ var expandEntries;
             'ATOB'
         )
     ];
-    
-    var SIMPLE = noProto
-    ({
-        'false':        { expr: '![]', level: LEVEL_NUMERIC },
-        'true':         { expr: '!![]', level: LEVEL_NUMERIC },
-        'undefined':    { expr: '[][[]]', level: LEVEL_UNDEFINED },
-        'NaN':          { expr: '+[false]', level: LEVEL_NUMERIC },
-        'Infinity':     { expr: '+"1e1000"', level: LEVEL_NUMERIC }
-    });
     
     var quoteString = JSON.stringify;
     
@@ -919,17 +354,6 @@ var expandEntries;
         return result;
     }
     
-    function createDigitDefinition(digit)
-    {
-        function definition()
-        {
-            var result = createSolution(encodeDigit(digit), LEVEL_NUMERIC);
-            return result;
-        }
-        
-        return definition;
-    }
-    
     function createFrequencyList(input)
     {
         var charMap = Object.create(null);
@@ -995,19 +419,10 @@ var expandEntries;
         return range;
     }
     
-    function encodeDigit(digit)
+    function defineCoder(coder, minInputLength)
     {
-        switch (digit)
-        {
-        case 0:
-            return '+[]';
-        case 1:
-            return '+!![]';
-        default:
-            var result = '!![]';
-            do { result += '+!![]'; } while (--digit > 1);
-            return result;
-        }
+        coder.MIN_INPUT_LENGTH = minInputLength;
+        return coder;
     }
     
     function isFollowedByLeftSquareBracket(expr, offset)
@@ -1047,11 +462,11 @@ var expandEntries;
         var replacement;
         if (number)
         {
-            replacement = encodeDigit(+number[0]) + '';
+            replacement = replaceDigit(+number[0]) + '';
             var length = number.length;
             for (var index = 1; index < length; ++index)
             {
-                replacement += '+[' + encodeDigit(+number[index]) + ']';
+                replacement += '+[' + replaceDigit(+number[index]) + ']';
             }
             if (length > 1)
             {
@@ -1129,16 +544,6 @@ var expandEntries;
         }
         return solution;
     }
-    
-    // Create definitions for digits
-    (function ()
-    {
-        for (var digit = 0; digit <= 9; ++digit)
-        {
-            CHARACTERS[digit] = createDigitDefinition(digit);
-        }
-    
-    })();
     
     Encoder =
         function (featureMask)
@@ -1261,8 +666,8 @@ var expandEntries;
                 {
                     output =
                         this.resolveConstant('Function') + '(' +
-                        this.replaceString('return String.fromCharCode(') + '+' + charCodes +
-                        '+' + this.replaceString(')') + ')()';
+                        this.replaceString('return String.fromCharCode(') + '+' + charCodes + '+' +
+                        this.replaceString(')') + ')()';
                 }
             }
             return output;
