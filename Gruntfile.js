@@ -18,6 +18,7 @@ module.exports =
                             'src/preamble',
                             'src/features.js',
                             'src/definers.js',
+                            'src/definitions.js',
                             'src/screw-buffer.js',
                             'src/encoder.js',
                             'src/trim-js.js',
