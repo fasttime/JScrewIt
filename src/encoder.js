@@ -537,8 +537,7 @@ var expandEntries;
                 simple,
                 function ()
                 {
-                    SIMPLE[simple] = solution =
-                        createSolution(encoder.replaceExpr(solution.expr), solution.level);
+                    SIMPLE[simple] = solution = encoder.resolve(solution);
                 }
             );
         }
@@ -646,7 +645,7 @@ var expandEntries;
             {
                 output =
                     charCodes +
-                    this.replace(
+                    this.replaceExpr(
                         '["map"](Function("return String.fromCharCode(parseInt(arguments[0],' +
                         radix + '))"))["join"]([])'
                     );
@@ -657,7 +656,7 @@ var expandEntries;
                 {
                     output =
                         charCodes +
-                        this.replace(
+                        this.replaceExpr(
                             '["map"](Function("return String.fromCharCode(arguments[0])"))' +
                             '["join"]([])'
                         );
@@ -718,8 +717,8 @@ var expandEntries;
                 mapper = '""["charAt"]["bind"]';
             }
             var output =
-                indexes + this.replace('["map"]') + '(' + this.replace(mapper) + '(' + legend +
-                '))' + this.replace('["join"]([])');
+                indexes + this.replaceExpr('["map"]') + '(' + this.replaceExpr(mapper) + '(' +
+                legend + '))' + this.replaceExpr('["join"]([])');
             return output;
         },
         
@@ -766,7 +765,7 @@ var expandEntries;
             }
             else if (wrapWith === 'eval')
             {
-                output = this.replace('Function("return eval")()') + '(' + output + ')';
+                output = this.replaceExpr('Function("return eval")()') + '(' + output + ')';
             }
             return output;
         },
@@ -925,12 +924,6 @@ var expandEntries;
         
         maxGroupThreshold: 1800,
         
-        replace: function (definition)
-        {
-            var result = this.resolve(definition) + '';
-            return result;
-        },
-        
         replaceExpr: function (expr)
         {
             var result =
@@ -946,7 +939,7 @@ var expandEntries;
             var replacement = this.replaceString(array.join(false), true, maxLength);
             if (replacement)
             {
-                var result = replacement + this.replace('["split"](false)');
+                var result = replacement + this.replaceExpr('["split"](false)');
                 if (!(result.length > maxLength))
                 {
                     return result;
@@ -1009,14 +1002,26 @@ var expandEntries;
         resolve: function (definition)
         {
             var solution;
-            if (definition instanceof Function)
+            var type = typeof definition;
+            if (type === 'function')
             {
                 solution = definition.call(this);
             }
             else
             {
-                var replacement = this.replaceExpr(definition);
-                solution = createSolution(replacement, LEVEL_STRING);
+                var expr;
+                var level;
+                if (type === 'object')
+                {
+                    expr = definition.expr;
+                    level = definition.level;
+                }
+                else
+                {
+                    expr = definition;
+                }
+                var replacement = this.replaceExpr(expr);
+                solution = createSolution(replacement, level);
             }
             return solution;
         },
@@ -1040,6 +1045,10 @@ var expandEntries;
                             var defaultCharacterEncoder =
                                 this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
                             solution = defaultCharacterEncoder.call(this, char);
+                        }
+                        if (solution.level == null)
+                        {
+                            solution.level = LEVEL_STRING;
                         }
                         this.characterCache[char] = solution;
                     }
@@ -1075,6 +1084,7 @@ var expandEntries;
                             if (discreteLength >= optimalSolution.length)
                             {
                                 solution = optimalSolution;
+                                solution.level = LEVEL_STRING;
                             }
                         }
                         this.complexCache[complex] = solution;

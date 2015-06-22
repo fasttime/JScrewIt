@@ -152,7 +152,7 @@
         {
             encoderCache[key] = encoder = JScrewIt.debug.createEncoder(features);
         }
-        var output = encoder.replace(entry.definition);
+        var output = encoder.resolve(entry.definition) + '';
         return output;
     }
     
@@ -195,7 +195,7 @@
                     );
                     var expression3 = 'Boolean true';
                     var encoder = JScrewIt.debug.createEncoder(compatibility);
-                    var expectedEncoding3 = encoder.replace('"Boolean" + " " + true');
+                    var expectedEncoding3 = encoder.replaceExpr('"Boolean" + " " + true');
                     it(
                         JSON.stringify(expression3),
                         function ()
@@ -926,7 +926,7 @@
             }
         );
         describe(
-            'Encoder#replace can replace',
+            'Encoder#replaceExpr can replace',
             function ()
             {
                 var encoder = JScrewIt.debug.createEncoder();
@@ -934,7 +934,7 @@
                     'a number',
                     function ()
                     {
-                        var actual = eval(encoder.replace('"" + 2'));
+                        var actual = eval(encoder.replaceExpr('"" + 2'));
                         expect(actual).toBe('2');
                     }
                 );
@@ -942,7 +942,7 @@
                     'NaN',
                     function ()
                     {
-                        var actual = eval(encoder.replace('"" + NaN'));
+                        var actual = eval(encoder.replaceExpr('"" + NaN'));
                         expect(actual).toBe('NaN');
                     }
                 );

@@ -157,18 +157,6 @@ var replaceDigit;
         return definition;
     }
     
-    function createDefinitionWithLevel(expr, level)
-    {
-        function definition()
-        {
-            var replacement = this.replaceExpr(expr);
-            var solution = createSolution(replacement, level);
-            return solution;
-        }
-        
-        return definition;
-    }
-    
     function createFBCharAtDefinition(offset)
     {
         function definition()
@@ -335,13 +323,6 @@ var replaceDigit;
         }
         var definition = createCharAtDefinition(expr, index, entries, FH_PADDING_INFOS);
         var entry = createDefinitionEntry(definition, arguments, 2);
-        return entry;
-    }
-    
-    function defineWithLevel(expr, level)
-    {
-        var definition = createDefinitionWithLevel(expr, level);
-        var entry = define(definition);
         return entry;
     }
     
@@ -622,7 +603,7 @@ var replaceDigit;
         ',':
         [
             define('([]["slice"]["call"]("false") + [])[1]'),
-            defineWithLevel('[[]]["concat"]([[]])', LEVEL_OBJECT)
+            define({ expr: '[[]]["concat"]([[]])', level: LEVEL_OBJECT })
         ],
         '-': '(+".0000000001" + [])[2]',
         '.': '(+"11e20" + [])[1]',
@@ -783,7 +764,7 @@ var replaceDigit;
         'ø':
         [
             define('atob("undefinedundefined")["10"]', 'ATOB')
-        ],
+        ]
     });
     
     COMPLEX = noProto
@@ -927,9 +908,8 @@ var replaceDigit;
     {
         for (var digit = 0; digit <= 9; ++digit)
         {
-            var definition = replaceDigit(digit);
-            var entry = defineWithLevel(definition, LEVEL_NUMERIC);
-            CHARACTERS[digit] = [entry];
+            var expr = replaceDigit(digit);
+            CHARACTERS[digit] = { expr: expr, level: LEVEL_NUMERIC };
         }
     
     })();
