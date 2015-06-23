@@ -292,8 +292,7 @@ var replaceDigit;
         case 11:
             entries =
             [
-                // Unused:
-                // define(9),
+                define(9),
                 define(0, 'NO_IE_SRC'),
                 define(0, 'IE_SRC')
             ];
@@ -372,8 +371,7 @@ var replaceDigit;
         'm':
         [
             define('(RP_6_SO + Function())["20"]'),
-            defineFHCharAt('Number', 11, 'NO_IE_SRC'),
-            defineFHCharAt('Number', 11, 'IE_SRC')
+            defineFHCharAt('Number', 11)
         ],
         'n': '"undefined"[1]',
         'o':
@@ -713,10 +711,6 @@ var replaceDigit;
         [
             define('atob("falsefalse")[1]', 'ATOB')
         ],
-        '®':
-        [
-            define('atob("NaNtrue")[3]', 'ATOB')
-        ],
         '±':
         [
             define('atob("0false")[3]', 'ATOB')
@@ -732,10 +726,6 @@ var replaceDigit;
         '»':
         [
             define('atob(true)[1]', 'ATOB')
-        ],
-        'Ö':
-        [
-            define('atob("0NaN")[1]', 'ATOB')
         ],
         'Ú':
         [
