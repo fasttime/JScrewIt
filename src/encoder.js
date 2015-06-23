@@ -25,7 +25,7 @@ var expandEntries;
     
     var AMENDINGS = ['true', 'undefined', 'NaN'];
     
-    var BASE64_ALPHABET_HI_2 = ['NaN', 'false', 'truefalse', '0'];
+    var BASE64_ALPHABET_HI_2 = ['NaN', 'false', 'undefined', '0'];
     
     var BASE64_ALPHABET_HI_4 =
     [
