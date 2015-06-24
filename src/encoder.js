@@ -175,7 +175,7 @@ var expandEntries;
                 var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
                 return output;
             },
-            49
+            48
         ),
         byDict: defineCoder
         (
@@ -202,7 +202,7 @@ var expandEntries;
                 var output = this.encodeByDict(inputData, 4, 0, maxLength);
                 return output;
             },
-            284
+            282
         ),
         byDictRadix4AmendedBy1: defineCoder
         (
@@ -211,7 +211,7 @@ var expandEntries;
                 var output = this.encodeByDict(inputData, 4, 1, maxLength);
                 return output;
             },
-            384
+            379
         ),
         byDictRadix4AmendedBy2: defineCoder
         (
@@ -220,7 +220,7 @@ var expandEntries;
                 var output = this.encodeByDict(inputData, 4, 2, maxLength);
                 return output;
             },
-            710
+            706
         ),
         byDictRadix5AmendedBy2: defineCoder
         (
@@ -229,7 +229,7 @@ var expandEntries;
                 var output = this.encodeByDict(inputData, 5, 2, maxLength);
                 return output;
             },
-            686
+            679
         ),
         byDictRadix5AmendedBy3: defineCoder
         (
