@@ -384,7 +384,7 @@ var replaceDigit;
         'p':
         [
             define('(211)["toString"]("31")[1]'),
-            define('atob("cNaN")[0]', 'ATOB', 'ENTRIES')
+            define('(RP_3_NO + btoa(Infinity))["10"]', 'ATOB')
         ],
         'q':
         [
@@ -487,7 +487,8 @@ var replaceDigit;
         'O':
         [
             define('(RP_3_NO + PLAIN_OBJECT)["11"]'),
-            define('""["fontcolor"]()[2]', 'CAPITAL_HTML')
+            define('""["fontcolor"]()[2]', 'CAPITAL_HTML'),
+            defineCharByAtob('O')
         ],
         'P':
         [
