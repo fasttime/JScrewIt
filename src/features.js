@@ -3,8 +3,8 @@
 var FEATURE_INFOS;
 
 var availableFeatureMask;
+var featuresFromMask;
 var getFeatureMask;
-var getFeatures;
 var incompatibleFeatureMasks;
 
 (function ()
@@ -571,7 +571,7 @@ var incompatibleFeatureMasks;
             return result;
         };
     
-    getFeatures =
+    featuresFromMask =
         function (mask)
         {
             var result = [];

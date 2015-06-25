@@ -145,7 +145,7 @@
     
     function decodeEntry(entry)
     {
-        var features = JScrewIt.debug.getEntryFeatures(entry);
+        var features = getEntryFeatures(entry);
         var key = features.join();
         var encoder = encoderCache[key];
         if (!encoder)
@@ -297,7 +297,7 @@
                                 entries.forEach(
                                     function (entry, index)
                                     {
-                                        var features = JScrewIt.debug.getEntryFeatures(entry);
+                                        var features = getEntryFeatures(entry);
                                         var emuFeatures = getEmuFeatures(features);
                                         if (emuFeatures)
                                         {
@@ -1363,6 +1363,12 @@
         }
     }
     
+    function getEntryFeatures(entry)
+    {
+        var result = JScrewIt.debug.featuresFromMask(entry.featureMask);
+        return result;
+    }
+    
     function getSubFeatures(feature)
     {
         function branchIn(feature)
@@ -1469,7 +1475,7 @@
                     entries.forEach(
                         function (entry, index)
                         {
-                            var features = JScrewIt.debug.getEntryFeatures(entry);
+                            var features = getEntryFeatures(entry);
                             var usingDefaultFeature = !features.length;
                             defaultEntryFound |= usingDefaultFeature;
                             var emuFeatures = getEmuFeatures(features);
@@ -1538,7 +1544,7 @@
                 entries.forEach(
                     function (entry, index)
                     {
-                        var features = JScrewIt.debug.getEntryFeatures(entry);
+                        var features = getEntryFeatures(entry);
                         var emuFeatures = getEmuFeatures(features);
                         if (emuFeatures)
                         {
