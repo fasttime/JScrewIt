@@ -3,8 +3,8 @@ global
 FEATURE_INFOS,
 Encoder,
 availableFeatureMask,
+featuresFromMask,
 getFeatureMask,
-getFeatures,
 incompatibleFeatureMasks,
 module,
 self,
@@ -46,7 +46,7 @@ var setUp;
                     featureMask &= getFeatureMask(features);
                 }
             );
-            var result = getFeatures(featureMask);
+            var result = featuresFromMask(featureMask);
             return result;
         }
     }

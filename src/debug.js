@@ -10,7 +10,7 @@ JScrewIt,
 ScrewBuffer,
 describeNoEnum,
 expandEntries,
-getFeatures,
+featuresFromMask,
 getValidFeatureMask,
 hasOuterPlus,
 noEnum,
@@ -85,12 +85,6 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             }
         }
         
-        function getEntryFeatures(entry)
-        {
-            var result = getFeatures(entry.featureMask);
-            return result;
-        }
-        
         Object.defineProperty(
             JScrewIt,
             'debug',
@@ -99,11 +93,11 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                     createEncoder:          createEncoder,
                     createScrewBuffer:      createScrewBuffer,
                     defineConstant:         defineConstant,
+                    featuresFromMask:       featuresFromMask,
                     getCharacterEntries:    getCharacterEntries,
                     getCoders:              getCoders,
                     getComplexEntries:      getComplexEntries,
                     getConstantEntries:     getConstantEntries,
-                    getEntryFeatures:       getEntryFeatures,
                     hasOuterPlus:           hasOuterPlus,
                     setUp:                  setUp,
                     trimJS:                 trimJS,
