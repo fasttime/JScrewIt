@@ -1,4 +1,4 @@
-/* global atob, btoa, expect, emuDo, emuEval, EMU_FEATURES, global, module, self */
+/* global atob, btoa, emuDo, emuEval, EMU_FEATURES, expect, global, module, repeat, self */
 /* jshint mocha: true, nonstandard: true */
 
 (function (global)
@@ -67,80 +67,6 @@
         }
         str = repeatToFit(str, length);
         return str;
-    }
-    
-    function createOutput(compatibilities)
-    {
-        function appendLengths(name, input)
-        {
-            result += '\n' + padRight(name, 4);
-            compatibilities.forEach(
-                function (compatibility)
-                {
-                    var content;
-                    try
-                    {
-                        content = JScrewIt.encode(input, { features: compatibility }).length;
-                    }
-                    catch (error)
-                    {
-                        content = 'ERROR';
-                    }
-                    result += padLeft(content, 8);
-                }
-            );
-        }
-        
-        function appendLengthsRange(min, max, namer)
-        {
-            namer = namer || function () { return '`' + String.fromCharCode(charCode) + '`'; };
-            for (var charCode = min; charCode <= max; ++charCode)
-            {
-                var name = namer(charCode);
-                var char = String.fromCharCode(charCode);
-                appendLengths(name, char);
-            }
-        }
-        
-        var result = '     ';
-        compatibilities.forEach(
-            function (compatibility)
-            {
-                result += padBoth(compatibility, 8);
-            }
-        );
-        result = result.replace(/ +$/, '');
-        result += '\n    ' + repeat(' -------', compatibilities.length);
-        var C0_CONTROL_CODE_NAMES =
-        [
-            'NUL',  'SOH',  'STX',  'ETX',  'EOT',  'ENQ',  'ACK',  'BEL',
-            'BS',   'HT',   'LF',   'VT',   'FF',   'CR',   'SO',   'SI',
-            'DLE',  'DC1',  'DC2',  'DC3',  'DC4',  'NAK',  'SYN',  'ETB',
-            'CAN',  'EM',   'SUB',  'ESC',  'FS',   'GS',   'RS',   'US'
-        ];
-        appendLengthsRange(0, 31, function (charCode) { return C0_CONTROL_CODE_NAMES[charCode]; });
-        appendLengthsRange(32, 126);
-        appendLengths('DEL', '\x7f');
-        var C1_CONTROL_CODE_NAMES =
-        [
-            'PAD',  'HOP',  'BPH',  'NBH',  'IND',  'NEL',  'SSA',  'ESA',
-            'HTS',  'HTJ',  'VTS',  'PLD',  'PLU',  'RI',   'SS2',  'SS3',
-            'DCS',  'PU1',  'PU2',  'STS',  'CCH',  'MW',   'SPA',  'EPA',
-            'SOS',  'SGCI', 'SCI',  'CSI',  'ST',   'OSC',  'PM',   'APC'
-        ];
-        appendLengthsRange(
-            128,
-            159,
-            function (charCode) { return C1_CONTROL_CODE_NAMES[charCode - 0x80]; }
-        );
-        appendLengths('NBSP', '\xa0');
-        appendLengthsRange(161, 172);
-        appendLengths('SHY', '\xad');
-        appendLengthsRange(174, 255);
-        appendLengths('`∟`', '∟');
-        appendLengths('`♥`', '♥');
-        appendLengths('A…Z', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
-        return result;
     }
     
     function decodeEntry(entry)
@@ -1419,33 +1345,6 @@
         return result;
     }
     
-    function padBoth(str, length)
-    {
-        str += '';
-        var result = padRight(padLeft(str, length + str.length >> 1), length);
-        return result;
-    }
-    
-    function padLeft(str, length)
-    {
-        str += '';
-        var result = repeat(' ', length - str.length) + str;
-        return result;
-    }
-    
-    function padRight(str, length)
-    {
-        str += '';
-        var result = str + repeat(' ', length - str.length);
-        return result;
-    }
-    
-    function repeat(str, count)
-    {
-        var result = Array(count + 1).join(str);
-        return result;
-    }
-    
     function repeatToFit(str, length)
     {
         var result = repeat(str, Math.ceil(length / str.length)).slice(0, length);
@@ -1576,12 +1475,7 @@
     var featureSet;
     var JScrewIt;
     
-    var TestSuite =
-    {
-        createOutput: createOutput,
-        init: init,
-        listFeatures: listFeatures
-    };
+    var TestSuite = { init: init, listFeatures: listFeatures };
     
     if (global.self)
     {
