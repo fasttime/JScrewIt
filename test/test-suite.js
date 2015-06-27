@@ -350,6 +350,7 @@
                 describeEncodeTest('DEFAULT');
                 describeEncodeTest('COMPACT');
                 describeEncodeTest('NO_IE');
+                describeEncodeTest('FF31');
                 describeEncodeTest('AUTO');
                 it(
                     'encodes an empty string',
