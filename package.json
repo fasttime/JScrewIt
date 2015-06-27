@@ -23,6 +23,7 @@
     "package.json",
     "screw.js",
     "screw.svg",
+    "text-utils.js",
     "worker.js",
     "*.md"
   ],
@@ -46,6 +47,7 @@
     "grunt-jscs": "~1.8.0",
     "grunt-mocha-istanbul": "~2.4.0",
     "istanbul": "~0.3.15",
-    "mocha": "https://github.com/fasttime/mocha/tarball/master"
+    "mocha": "https://github.com/fasttime/mocha/tarball/master",
+    "progress": "~1.1.8"
   }
 }

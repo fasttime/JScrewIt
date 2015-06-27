@@ -1,6 +1,9 @@
+/* global padLeft, padRight, repeat */
 /* jshint node: true */
 
 'use strict';
+
+require('./text-utils.js');
 
 function byteCount(size, width)
 {
@@ -83,20 +86,6 @@ function formatPerfInfoList(perfInfoList, paddingData)
     {
         result += padding.replace(/ +$/, '') + '\n';
     }
-    return result;
-}
-
-function padLeft(str, length)
-{
-    str += '';
-    var result = repeat(' ', length - str.length) + str;
-    return result;
-}
-
-function padRight(str, length)
-{
-    str += '';
-    var result = str + repeat(' ', length - str.length);
     return result;
 }
 
@@ -206,12 +195,6 @@ function parseCommandLine(argv)
 function quote(arg)
 {
     return '"' + arg + '"';
-}
-
-function repeat(str, count)
-{
-    var result = Array(count + 1).join(str);
-    return result;
 }
 
 function widthOf(size)

@@ -2,7 +2,7 @@
 
 'use strict';
 
-var JScrewIt = require('./lib/jscrewit.js');
+var JScrewIt = require('../lib/jscrewit.js');
 
 function escape(str)
 {

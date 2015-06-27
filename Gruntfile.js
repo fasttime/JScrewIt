@@ -8,7 +8,7 @@ module.exports =
         // Project configuration.
         grunt.initConfig(
             {
-                clean: { default: ['Features.md', 'coverage', 'lib/**/*.js'] },
+                clean: { default: ['Features.md', 'coverage', 'lib/**/*.js', 'output.txt'] },
                 concat:
                 {
                     default:
@@ -37,7 +37,7 @@ module.exports =
                 },
                 jscs:
                 {
-                    default: ['*.js', 'src/**/*.js', 'test/**/*.js'],
+                    default: ['*.js', 'build/**/*.js', 'src/**/*.js', 'test/**/*.js'],
                     options:
                     {
                         // Encourage use of abbreviations: "char", "obj", "str".
@@ -104,7 +104,7 @@ module.exports =
                 },
                 jshint:
                 {
-                    default: ['*.js', 'src/**/*.js', 'test/**/*.js'],
+                    default: ['*.js', 'build/**/*.js', 'src/**/*.js', 'test/**/*.js'],
                     options:
                     {
                         curly: true,
@@ -154,17 +154,46 @@ module.exports =
         
         grunt.registerTask(
             'feature-doc',
-            'Create Feature Reference documentation',
+            'Create Feature Reference documentation.',
             function ()
             {
-                grunt.file.write('Features.md', require('./make-feature-doc.js')());
+                grunt.file.write('Features.md', require('./build/make-feature-doc.js')());
                 grunt.log.ok('Done.');
+            }
+        );
+        
+        grunt.registerTask(
+            'scan-char-defs',
+            'Analyze all character encodings.',
+            function ()
+            {
+                var runScan = require('./build/scan-char-defs.js');
+                var unusedDefs = runScan();
+                if (unusedDefs)
+                {
+                    grunt.warn(
+                        'There are unused character definitions. See output.txt for details.'
+                    );
+                }
+                else
+                {
+                    grunt.log.ok('Done. All character definitions used.');
+                }
             }
         );
         
         // Default task.
         grunt.registerTask(
             'default',
-            ['clean', 'jshint', 'jscs', 'concat', 'mocha_istanbul', 'uglify', 'feature-doc']
+            [
+                'clean',
+                'jshint',
+                'jscs',
+                'concat',
+                'mocha_istanbul',
+                'scan-char-defs',
+                'uglify',
+                'feature-doc'
+            ]
         );
     };
