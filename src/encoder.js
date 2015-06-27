@@ -882,9 +882,9 @@ var expandEntries;
         {
             var result;
             entries = expandEntries(entries);
-            for (var index = entries.length; index--;)
+            for (var entryIndex = entries.length; entryIndex--;)
             {
-                var entry = entries[index];
+                var entry = entries[entryIndex];
                 if (this.hasFeatures(entry.featureMask))
                 {
                     var definition = entry.definition;
@@ -892,6 +892,7 @@ var expandEntries;
                     if (!result || result.length >= solution.length)
                     {
                         result = solution;
+                        solution.entryIndex = entryIndex;
                     }
                 }
             }
