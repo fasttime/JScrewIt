@@ -74,7 +74,7 @@ function isIndependentFeatureMask(featureQueries, index, newFeatureMask)
     return true;
 }
 
-function processOutputMap(outputMap, entryCount, log)
+function processOutputMap(outputMap, entryCount, logLine)
 {
     var entryIndexSet = { };
     for (var output in outputMap)
@@ -92,7 +92,7 @@ function processOutputMap(outputMap, entryCount, log)
     var notAllDefsUsed = Object.keys(entryIndexSet).length !== entryCount;
     if (notAllDefsUsed)
     {
-        log('Not all definitions used!');
+        logLine('Not all definitions used!');
     }
     var outputs = Object.keys(outputMap);
     outputs.sort(
@@ -131,7 +131,7 @@ function processOutputMap(outputMap, entryCount, log)
             var line =
                 padLeft(outputLength, 5) + ' | ' + (entryIndex == null ? '-' : entryIndex) + ' | ' +
                 formatFeatures(features);
-            log(line);
+            logLine(line);
         }
     );
     return notAllDefsUsed;
@@ -151,10 +151,10 @@ function runScan()
         );
     var defsUnused = false;
     scanAllChars(
-        function (char, notAllDefsUsed, charCount, done)
+        function (char, allCharCount, charDoneCount, notAllDefsUsed)
         {
             defsUnused |= notAllDefsUsed;
-            bar.update(done / charCount);
+            bar.update(charDoneCount / allCharCount);
         }
     );
     return defsUnused;
@@ -172,12 +172,12 @@ function scanAllChars(callback)
             chars.push(char);
         }
     }
-    var charCount = chars.length;
+    var allCharCount = chars.length;
     var fd = fs.openSync('output.txt', 'w');
-    var log = function (line) { fs.writeSync(fd, line + '\n'); };
+    var logLine = function (line) { fs.writeSync(fd, line + '\n'); };
     try
     {
-        log(
+        logLine(
             'This is a report of all character encodings produced by JScrewIt using different\n' +
             'features.\n' +
             'The lines after a character headline contain encoding length, definition entry\n' +
@@ -188,10 +188,11 @@ function scanAllChars(callback)
             function (char, index)
             {
                 var entries = JScrewIt.debug.getCharacterEntries(char);
-                var notAllDefsUsed = scanChar(char, entries.length, log);
+                var notAllDefsUsed =
+                    scanChar(char, entries.length, logLine, allCharCount, index, callback);
                 if (callback)
                 {
-                    callback(char, notAllDefsUsed, charCount, index + 1);
+                    callback(char, allCharCount, index + 1, notAllDefsUsed);
                 }
             }
         );
@@ -202,7 +203,7 @@ function scanAllChars(callback)
     }
 }
 
-function scanChar(char, entryCount, log)
+function scanChar(char, entryCount, logLine, allCharCount, charDoneCount, callback)
 {
     function hasFeatures(featureMask)
     {
@@ -215,6 +216,8 @@ function scanChar(char, entryCount, log)
                 var featureQuery =
                     new FeatureQueryInfo(featureMask, included, ancestorFeatureMask);
                 featureQueries.push(featureQuery);
+                step /= 2;
+                progress += step * included;
             }
         }
         if (included)
@@ -225,8 +228,7 @@ function scanChar(char, entryCount, log)
     }
     
     var desc = formatChar(char);
-    log('');
-    log('Character ' + desc);
+    logLine('\nCharacter ' + desc);
     var features = [];
     var featureMask = 0;
     var outputMap = { };
@@ -236,6 +238,8 @@ function scanChar(char, entryCount, log)
         var featureQueries = [];
         var featureMaskSet = { };
         var ancestorFeatureMask = 0;
+        var progress = 0;
+        var step = 1;
         encoder.hasFeatures = hasFeatures;
         var output = encoder.resolveCharacter(char);
         var outputData = outputMap[output];
@@ -254,8 +258,12 @@ function scanChar(char, entryCount, log)
         }
         features = featureData.features;
         featureMask = featureData.featureMask;
+        if (callback)
+        {
+            callback(char, allCharCount, charDoneCount + progress + step);
+        }
     }
-    var notAllDefsUsed = processOutputMap(outputMap, entryCount, log);
+    var notAllDefsUsed = processOutputMap(outputMap, entryCount, logLine);
     return notAllDefsUsed;
 }
 
