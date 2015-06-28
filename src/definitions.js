@@ -426,7 +426,8 @@ var replaceDigit;
         ],
         'B':
         [
-            defineFHCharAt('Boolean', 9)
+            defineFHCharAt('Boolean', 9),
+            define('""["sub"]()[3]', 'CAPITAL_HTML')
         ],
         'C':
         [
@@ -508,7 +509,8 @@ var replaceDigit;
         ],
         'S':
         [
-            defineFHCharAt('String', 9)
+            defineFHCharAt('String', 9),
+            define('""["sub"]()[1]', 'CAPITAL_HTML')
         ],
         'T':
         [
