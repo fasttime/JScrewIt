@@ -196,4 +196,17 @@ module.exports =
                 'feature-doc'
             ]
         );
+        
+        // Quick build task.
+        grunt.registerTask(
+            'quick',
+            [
+                'clean',
+                'jshint',
+                'jscs',
+                'concat',
+                'mocha_istanbul',
+                'uglify'
+            ]
+        );
     };
