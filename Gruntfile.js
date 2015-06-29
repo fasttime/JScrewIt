@@ -209,4 +209,6 @@ module.exports =
                 'uglify'
             ]
         );
+        
+        grunt.util.linefeed = '\n';
     };
