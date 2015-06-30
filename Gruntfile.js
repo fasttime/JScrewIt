@@ -5,10 +5,12 @@
 module.exports =
     function (grunt)
     {
+        var JS_FILES = ['*.js', 'build/**/*.js', 'html/**/*.js', 'src/**/*.js', 'test/**/*.js'];
+        
         // Project configuration.
         grunt.initConfig(
             {
-                clean: { default: ['Features.md', 'coverage', 'lib/**/*.js', 'output.txt'] },
+                clean: { default: ['coverage', 'Features.md', 'lib/**/*.js', 'output.txt'] },
                 concat:
                 {
                     default:
@@ -37,7 +39,7 @@ module.exports =
                 },
                 jscs:
                 {
-                    default: ['*.js', 'build/**/*.js', 'src/**/*.js', 'test/**/*.js'],
+                    default: JS_FILES,
                     options:
                     {
                         // Encourage use of abbreviations: "char", "obj", "str".
@@ -104,7 +106,7 @@ module.exports =
                 },
                 jshint:
                 {
-                    default: ['*.js', 'build/**/*.js', 'src/**/*.js', 'test/**/*.js'],
+                    default: JS_FILES,
                     options:
                     {
                         curly: true,

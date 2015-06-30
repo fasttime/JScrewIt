@@ -14,18 +14,16 @@
   "license": "ISC",
   "author": "Francesco Trotta <ft@fasttime.org> (https://github.com/fasttime)",
   "files": [
+    "*.md",
     "cli.js",
-    "favicon.ico",
+    "html",
     "index.html",
     "lib",
     "LICENSE.txt",
     "output.txt",
     "package.json",
     "screw.js",
-    "screw.svg",
-    "text-utils.js",
-    "worker.js",
-    "*.md"
+    "text-utils.js"
   ],
   "main": "lib/jscrewit.js",
   "bin": "screw.js",
