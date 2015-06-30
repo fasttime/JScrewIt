@@ -1,8 +1,7 @@
 /* jshint worker: true */
 /* global JScrewIt */
 
-
-importScripts('lib/jscrewit.js');
+importScripts('../lib/jscrewit.min.js');
 
 self.onmessage =
     function (evt)
