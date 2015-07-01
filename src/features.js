@@ -266,7 +266,8 @@ var incompatibleFeatureMasks;
             description:
                 'Existence of the global object property self whose string representation starts ' +
                 'with "[object " and ends with "Window]"\n' +
-                'This feature is not available in Node.js.',
+                'This feature is not available in Node.js. It is also not available inside web ' +
+                'workers.',
             check: function ()
             {
                 return typeof self !== 'undefined' && /^\[object .*Window]$/.test(self);
@@ -304,7 +305,8 @@ var incompatibleFeatureMasks;
             description:
                 'The property that the string representation of the global object evaluates to ' +
                 '"[object Window]".\n' +
-                'Not available in Android Browser versions prior to 4.4.2 and Node.js.',
+                'This feature is not available in Android Browser versions prior to 4.4.2 and ' +
+                'Node.js. It is also not available inside web workers.',
             check: function ()
             {
                 // self + '' throws an error in a web worker in Safari 8
