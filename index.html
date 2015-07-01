@@ -38,7 +38,7 @@ different characters: ! ( ) + [ ]'>
 
 .noWrap { white-space: nowrap; }
 
-#ua { -webkit-appearance: menulist-button; width: 15em; }
+#compMenu { -webkit-appearance: menulist-button; width: 15em; }
 
 a { text-decoration: none; }
 
@@ -103,7 +103,7 @@ textarea
 
         <div class='controls'>
             <label>Compatibility:
-                <select id='ua'>
+                <select id='compMenu'>
                     <option value='DEFAULT'>All supported engines
                     <option value='COMPACT'>All new browsers
                     <option value='NO_IE'>All except Internet Explorer (JSFuck mode)
@@ -155,6 +155,12 @@ textarea
 
 'use strict';
 
+function callLater(callback)
+{
+    var result = function () { setTimeout(callback); };
+    return result;
+}
+
 function createWorker()
 {
     if (typeof Worker !== 'undefined')
@@ -204,13 +210,23 @@ function encodeAsync()
 
 function getOptions()
 {
-    var compatibility = ua.options[ua.selectedIndex].value;
+    var compatibility = compMenu.options[compMenu.selectedIndex].value;
     // Note that some features may be not available in a web worker, that's why we cannot pass
     // "AUTO" directly.
     var features = JScrewIt.FEATURE_INFOS[compatibility].includes;
     var wrapWith = wrapWithCallBox.checked ? 'call' : 'none';
     var options = { features: features, wrapWith: wrapWith };
     return options;
+}
+
+function handleCompMenuSelect()
+{
+    var selectedIndex = compMenu.selectedIndex;
+    if (selectedIndex !== compMenu.previousIndex)
+    {
+        compMenu.previousIndex = selectedIndex;
+        encodeAsync();
+    }
 }
 
 function handleInputAreaKeyUp(evt)
@@ -319,11 +335,12 @@ var worker;
 window.onload =
     function ()
     {
+        var compMenuHandler;
         if (worker)
         {
             encodeButton.parentNode.removeChild(encodeButton);
             inputArea.oninput = encodeAsync;
-            ua.onchange = encodeAsync;
+            compMenuHandler = handleCompMenuSelect;
             wrapWithCallBox.onchange = encodeAsync;
             worker.onmessage = handleWorkerMessage;
             encodeAsync();
@@ -332,10 +349,14 @@ window.onload =
         {
             encodeButton.onclick = encode;
             inputArea.oninput = noEncode;
-            ua.onchange = noEncode;
+            compMenuHandler = noEncode;
             wrapWithCallBox.onchange = noEncode;
             outputArea.value = '';
         }
+        compMenu.onchange = compMenuHandler;
+        // Firefox does not always trigger a change event when an option is selected using the
+        // keyboard; we must handle keydown events, too.
+        compMenu.onkeydown = callLater(compMenuHandler);
         if (inputArea.createTextRange)
         {
             var range = inputArea.createTextRange();
