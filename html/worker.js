@@ -1,5 +1,5 @@
-/* jshint worker: true */
 /* global JScrewIt */
+/* jshint worker: true */
 
 importScripts('../lib/jscrewit.min.js');
 
