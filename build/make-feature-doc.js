@@ -131,6 +131,9 @@ var LISTS =
         { description: 'Safari 7.1+', feature: 'SAFARI71' }
     ],
     [
+        { description: 'Microsoft Edge', feature: 'EDGE' }
+    ],
+    [
         { description: 'Android Browser 4.0+', feature: 'ANDRO400' },
         { description: 'Android Browser 4.1.2+', feature: 'ANDRO412' },
         { description: 'Android Browser 4.4.2+', feature: 'ANDRO442' }
