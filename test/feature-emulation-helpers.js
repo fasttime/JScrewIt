@@ -311,6 +311,7 @@
     
     var EMU_FEATURE_INFOS =
     {
+        ARRAY_ITERATOR: makeEmuFeatureArrayIterator('[object Array Iterator]', true),
         ATOB:
         {
             setUp: function ()
@@ -367,7 +368,6 @@
                 return result;
             }
         ),
-        ENTRIES: makeEmuFeatureArrayIterator('[object Array Iterator]', true),
         FF_SAFARI_SRC: makeEmuFeatureFunctionSource('function ?() {\n    [native code]\n}'),
         FILL:
         {

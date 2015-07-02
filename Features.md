@@ -7,6 +7,9 @@ Features available in Android Browser 4.0 to 4.3.1.
 Features available in Android Browser 4.1.2 to 4.3.1.
 ### `ANDRO442`
 Features available in Android Browser 4.4.2 or later.
+### `ARRAY_ITERATOR`
+The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
+This feature is available in Firefox and in Chrome 38, Opera 25, Safari 7.1, Node.js 0.12 and later versions.
 ### `ATOB`
 Existence of the global object functions atob and btoa.
 This feature is not available in Internet Explorer versions prior to 11 and Node.js.
@@ -32,9 +35,6 @@ The property that double quote characters in the argument of String.prototype.fo
 This feature is not available in Internet Explorer.
 ### `EDGE`
 Features available in Microsoft Edge.
-### `ENTRIES`
-The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array".
-This feature is available in Firefox and in Chrome 38, Opera 25, Safari 7.1, Node.js 0.12 and later versions.
 ### `FF30`
 Features available in Firefox 30 or later.
 ### `FF31`
@@ -116,9 +116,9 @@ This table lists features available in the most common engines.
 <td>Firefox 30+</td>
 <td>
 <ul>
+<li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>
 <li><a href="#fill"><code>FILL</code></a> (Firefox 31+)
 <li><a href="#gmt"><code>GMT</code></a>
@@ -136,9 +136,9 @@ This table lists features available in the most common engines.
 <td>Chrome 35+, Opera 22+</td>
 <td>
 <ul>
+<li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Chrome 38+, Opera 25+)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Chrome 38+, Opera 25+)
 <li><a href="#gmt"><code>GMT</code></a>
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
@@ -170,9 +170,9 @@ This table lists features available in the most common engines.
 <td>Safari 7.0+</td>
 <td>
 <ul>
+<li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>
 <li><a href="#fill"><code>FILL</code></a> (Safari 7.1+)
 <li><a href="#gmt"><code>GMT</code></a>
@@ -225,8 +225,8 @@ This table lists features available in the most common engines.
 <td>Node.js 0.10.26+</td>
 <td>
 <ul>
+<li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
 <li><a href="#gmt"><code>GMT</code></a>
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
