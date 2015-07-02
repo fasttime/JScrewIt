@@ -21,7 +21,7 @@
         {
             var actual = this.value;
             var message = this.generateMessage(actual, this.expr, 'to be an Array Iterator object');
-            var pass = /^\[object Array ?Iterator]$/.test(Object.prototype.toString.call(actual));
+            var pass = Object.getPrototypeOf(actual) === Object.getPrototypeOf([].entries());
             if (pass)
             {
                 return this.assertions.pass(message);

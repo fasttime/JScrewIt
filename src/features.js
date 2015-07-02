@@ -78,7 +78,8 @@ var incompatibleFeatureMasks;
             check: function ()
             {
                 return Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries());
-            }
+            },
+            includes: ['ENTRIES']
         },
         ATOB:
         {
@@ -136,6 +137,18 @@ var incompatibleFeatureMasks;
             {
                 var available = ''.fontcolor('"').substr(13, 6) === '&quot;';
                 return available;
+            }
+        },
+        ENTRIES:
+        {
+            description:
+                'The property that the string representation of Array.prototype.entries() starts ' +
+                'with "[object ".\n' +
+                'This feature is available in Firefox, in Microsoft Edge and in Chrome 38, Opera ' +
+                '25, Safari 7.1, Node.js 0.12 and later versions.',
+            check: function ()
+            {
+                return Array.prototype.entries && /^\[object /.test([].entries());
             }
         },
         FF_SAFARI_SRC:
@@ -220,7 +233,7 @@ var incompatibleFeatureMasks;
                 'Available in Firefox, Chrome 38, Opera 25, Node.js 0.12 and later versions.',
             check: function ()
             {
-                return Array.prototype.entries && ([].entries() + '')[22] === ']';
+                return Array.prototype.entries && [].entries() + '' === '[object Array Iterator]';
             },
             includes: ['ARRAY_ITERATOR'],
             excludes: ['SAFARI_ARRAY_ITERATOR']
@@ -256,7 +269,7 @@ var incompatibleFeatureMasks;
                 'Available in Safari 7.1 and later versions.',
             check: function ()
             {
-                return Array.prototype.entries && ([].entries() + '')[21] === ']';
+                return Array.prototype.entries && [].entries() + '' === '[object ArrayIterator]';
             },
             includes: ['ARRAY_ITERATOR'],
             excludes: ['NO_SAFARI_ARRAY_ITERATOR']
@@ -420,6 +433,7 @@ var incompatibleFeatureMasks;
             [
                 'ATOB',
                 'DOUBLE_QUOTE_ESC_HTML',
+                'ENTRIES',
                 'FILL',
                 'GMT',
                 'NAME',

@@ -906,7 +906,7 @@ var expandEntries;
         
         hexCodeOf: function (charCode, length)
         {
-            var optimalB = this.findBestDefinition([define('B'), define('b', 'ARRAY_ITERATOR')]);
+            var optimalB = this.findBestDefinition([define('B'), define('b', 'ENTRIES')]);
             var result = charCode.toString(16).replace(/b/g, optimalB);
             result = Array(length - result.length + 1).join(0) + result.replace(/fa?$/, 'false');
             return result;
