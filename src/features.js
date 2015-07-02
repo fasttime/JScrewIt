@@ -131,8 +131,8 @@ var incompatibleFeatureMasks;
             description:
                 'The property that the string representation of Array.prototype.entries() starts ' +
                 'with "[object Array".\n' +
-                'This feature is available in Firefox, Chrome 38, Opera 25, Safari 7.1, Node.js ' +
-                '0.12 and later versions.',
+                'This feature is available in Firefox and in Chrome 38, Opera 25, Safari 7.1, ' +
+                'Node.js 0.12 and later versions.',
             check: function ()
             {
                 return Array.prototype.entries && /^\[object Array/.test([].entries());
@@ -157,7 +157,7 @@ var incompatibleFeatureMasks;
         {
             description:
                 'Existence of the native function Array.prototype.fill.\n' +
-                'Currently only available in Firefox 31, Safari 7.1 and later versions.',
+                'Available in Firefox 31, Safari 7.1 and later versions and in Microsoft Edge.',
             check: function ()
             {
                 return Array.prototype.fill;
@@ -289,8 +289,10 @@ var incompatibleFeatureMasks;
         V8_SRC:
         {
             description:
-                'A string representation of native functions found in the V8 JavaScript engine.\n' +
-                'V8 is used among others in Chrome, Opera, Android Browser and Node.js.\n' +
+                'A string representation of native functions typically found in the V8 ' +
+                'JavaScript engine.\n' +
+                'V8 is used in Chrome, Opera, Android Browser and Node.js. Microsoft Edge, ' +
+                'although not using V8, also has this feature available.\n' +
                 'Remarkable traits are the lack of characters in the beginning of the string ' +
                 'before "function" and a single whitespace before the "[native code]" sequence.',
             check: function ()
@@ -309,7 +311,7 @@ var incompatibleFeatureMasks;
                 'Node.js. It is also not available inside web workers.',
             check: function ()
             {
-                // self + '' throws an error in a web worker in Safari 8
+                // self + '' throws an error inside a web worker in Safari 8.
                 return typeof self !== 'undefined' && self.toString() === '[object Window]';
             },
             includes: ['SELF'],
@@ -326,7 +328,7 @@ var incompatibleFeatureMasks;
                 'All new browsers\' features.\n' +
                 'No support for Node.js and older browsers like Internet Explorer 10 or Android ' +
                 'Browser 4.1.2.',
-            includes: ['ATOB', 'GMT', 'SELF', 'UNDEFINED', 'WINDOW']
+            includes: ['ATOB', 'GMT', 'UNDEFINED', 'WINDOW']
         },
         NO_IE:
         {
@@ -411,6 +413,22 @@ var incompatibleFeatureMasks;
                 'WINDOW'
             ]
         },
+        EDGE:
+        {
+            description: 'Features available in Microsoft Edge.',
+            includes:
+            [
+                'ATOB',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'FILL',
+                'GMT',
+                'NAME',
+                'NO_SAFARI_LF',
+                'UNDEFINED',
+                'V8_SRC',
+                'WINDOW'
+            ]
+        },
         FF30:
         {
             description: 'Features available in Firefox 30 or later.',
@@ -418,13 +436,11 @@ var incompatibleFeatureMasks;
             [
                 'ATOB',
                 'DOUBLE_QUOTE_ESC_HTML',
-                'ENTRIES',
                 'FF_SAFARI_SRC',
                 'GMT',
                 'NAME',
                 'NO_SAFARI_ARRAY_ITERATOR',
                 'NO_SAFARI_LF',
-                'SELF',
                 'UNDEFINED',
                 'WINDOW'
             ]
@@ -436,14 +452,12 @@ var incompatibleFeatureMasks;
             [
                 'ATOB',
                 'DOUBLE_QUOTE_ESC_HTML',
-                'ENTRIES',
                 'FF_SAFARI_SRC',
                 'FILL',
                 'GMT',
                 'NAME',
                 'NO_SAFARI_ARRAY_ITERATOR',
                 'NO_SAFARI_LF',
-                'SELF',
                 'UNDEFINED',
                 'WINDOW'
             ]
@@ -451,21 +465,12 @@ var incompatibleFeatureMasks;
         IE9:
         {
             description: 'Features available in Internet Explorer 9 or later.',
-            includes: ['CAPITAL_HTML', 'IE_SRC', 'NO_SAFARI_LF', 'SELF', 'UNDEFINED', 'WINDOW']
+            includes: ['CAPITAL_HTML', 'IE_SRC', 'NO_SAFARI_LF', 'UNDEFINED', 'WINDOW']
         },
         IE10:
         {
             description: 'Features available in Internet Explorer 10 or later.',
-            includes:
-            [
-                'ATOB',
-                'CAPITAL_HTML',
-                'IE_SRC',
-                'NO_SAFARI_LF',
-                'SELF',
-                'UNDEFINED',
-                'WINDOW'
-            ]
+            includes: ['ATOB', 'CAPITAL_HTML', 'IE_SRC', 'NO_SAFARI_LF', 'UNDEFINED', 'WINDOW']
         },
         IE11:
         {
@@ -477,7 +482,6 @@ var incompatibleFeatureMasks;
                 'GMT',
                 'IE_SRC',
                 'NO_SAFARI_LF',
-                'SELF',
                 'UNDEFINED',
                 'WINDOW'
             ]
