@@ -68,6 +68,18 @@ var incompatibleFeatureMasks;
     
     FEATURE_INFOS =
     {
+        ARRAY_ITERATOR:
+        {
+            description:
+                'The property that the string representation of Array.prototype.entries() starts ' +
+                'with "[object Array" and ends with "]" at index 21 or 22.\n' +
+                'This feature is available in Firefox and in Chrome 38, Opera 25, Safari 7.1, ' +
+                'Node.js 0.12 and later versions.',
+            check: function ()
+            {
+                return Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries());
+            }
+        },
         ATOB:
         {
             description:
@@ -124,18 +136,6 @@ var incompatibleFeatureMasks;
             {
                 var available = ''.fontcolor('"').substr(13, 6) === '&quot;';
                 return available;
-            }
-        },
-        ENTRIES:
-        {
-            description:
-                'The property that the string representation of Array.prototype.entries() starts ' +
-                'with "[object Array".\n' +
-                'This feature is available in Firefox and in Chrome 38, Opera 25, Safari 7.1, ' +
-                'Node.js 0.12 and later versions.',
-            check: function ()
-            {
-                return Array.prototype.entries && /^\[object Array/.test([].entries());
             }
         },
         FF_SAFARI_SRC:
@@ -222,7 +222,7 @@ var incompatibleFeatureMasks;
             {
                 return Array.prototype.entries && ([].entries() + '')[22] === ']';
             },
-            includes: ['ENTRIES'],
+            includes: ['ARRAY_ITERATOR'],
             excludes: ['SAFARI_ARRAY_ITERATOR']
         },
         NO_SAFARI_LF:
@@ -258,7 +258,7 @@ var incompatibleFeatureMasks;
             {
                 return Array.prototype.entries && ([].entries() + '')[21] === ']';
             },
-            includes: ['ENTRIES'],
+            includes: ['ARRAY_ITERATOR'],
             excludes: ['NO_SAFARI_ARRAY_ITERATOR']
         },
         SELF:

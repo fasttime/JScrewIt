@@ -1234,7 +1234,7 @@
                     'byCharCodes'
                     );
                 test(
-                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
+                    ['ARRAY_ITERATOR', 'ATOB', 'FILL', 'V8_SRC'],
                     function (length)
                     {
                         var CHAR_CODES =
@@ -1247,34 +1247,34 @@
                     },
                     'byCharCodesRadix4'
                 );
-                test('ENTRIES', repeat.bind(null, String.fromCharCode(59999)), 'byDict');
+                test('ARRAY_ITERATOR', repeat.bind(null, String.fromCharCode(59999)), 'byDict');
                 test(
-                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
+                    ['ARRAY_ITERATOR', 'ATOB', 'FILL', 'V8_SRC'],
                     createDictTestString.bind(null, 122),
                     'byDictRadix3'
                 );
                 test(
-                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
+                    ['ARRAY_ITERATOR', 'ATOB', 'FILL', 'V8_SRC'],
                     createDictTestString.bind(null, 100),
                     'byDictRadix4'
                 );
                 test(
-                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
+                    ['ARRAY_ITERATOR', 'ATOB', 'FILL', 'V8_SRC'],
                     createDictTestString.bind(null, 129),
                     'byDictRadix4AmendedBy1'
                 );
                 test(
-                    ['ATOB', 'ENTRIES', 'FILL', 'NO_IE_SRC'],
+                    ['ARRAY_ITERATOR', 'ATOB', 'FILL', 'NO_IE_SRC'],
                     createDictTestString.bind(null, 364),
                     'byDictRadix4AmendedBy2'
                 );
                 test(
-                    ['ATOB', 'ENTRIES', 'FILL', 'NO_IE_SRC'],
+                    ['ARRAY_ITERATOR', 'ATOB', 'FILL', 'NO_IE_SRC'],
                     createDictTestString.bind(null, 124),
                     'byDictRadix5AmendedBy2'
                 );
                 test(
-                    ['ENTRIES', 'FILL', 'V8_SRC'],
+                    ['ARRAY_ITERATOR', 'FILL', 'V8_SRC'],
                     createAntiRadix4TestString.bind(null, 473),
                     'byDictRadix5AmendedBy3'
                 );

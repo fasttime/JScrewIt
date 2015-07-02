@@ -337,12 +337,12 @@ var replaceDigit;
         'b':
         [
             defineFHCharAt('Number', 12),
-            define('(ARRAY_ITERATOR + [])[2]', 'ENTRIES')
+            define('(ARRAY_ITERATOR + [])[2]', 'ARRAY_ITERATOR')
         ],
         'c':
         [
             defineFHCharAt('ANY_FUNCTION', 3),
-            define('(RP_5_N + ARRAY_ITERATOR)["10"]', 'ENTRIES')
+            define('(RP_5_N + ARRAY_ITERATOR)["10"]', 'ARRAY_ITERATOR')
         ],
         'd': '"undefined"[2]',
         'e': '"true"[3]',
@@ -361,7 +361,7 @@ var replaceDigit;
         [
             define('(PLAIN_OBJECT + [])["10"]'),
             define('(self + [])[3]', 'SELF'),
-            define('(ARRAY_ITERATOR + [])[3]', 'ENTRIES')
+            define('(ARRAY_ITERATOR + [])[3]', 'ARRAY_ITERATOR')
         ],
         'k':
         [
@@ -379,7 +379,7 @@ var replaceDigit;
         'o':
         [
             defineFHCharAt('ANY_FUNCTION', 6),
-            define('(ARRAY_ITERATOR + [])[1]', 'ENTRIES')
+            define('(ARRAY_ITERATOR + [])[1]', 'ARRAY_ITERATOR')
         ],
         'p':
         [
@@ -422,7 +422,7 @@ var replaceDigit;
         'A':
         [
             defineFHCharAt('Array', 9),
-            define('(RP_3_NO + ARRAY_ITERATOR)[11]', 'ENTRIES')
+            define('(RP_3_NO + ARRAY_ITERATOR)[11]', 'ARRAY_ITERATOR')
         ],
         'B':
         [
@@ -524,7 +524,7 @@ var replaceDigit;
             define('""["sub"]()[2]', 'CAPITAL_HTML'),
             define(
                 '(RP_3_NO + ARRAY_ITERATOR["toString"]["call"]())["11"]',
-                'ENTRIES',
+                'ARRAY_ITERATOR',
                 'UNDEFINED'
             ),
             define('(RP_3_NO + PLAIN_OBJECT["toString"]["call"]())["11"]', 'UNDEFINED')
@@ -568,7 +568,7 @@ var replaceDigit;
         ' ':
         [
             defineFHCharAt('ANY_FUNCTION', 8),
-            define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ENTRIES'),
+            define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ARRAY_ITERATOR'),
             define('(RP_1_NO + FILTER)["20"]', 'V8_SRC'),
             define('(FILTER + [])["20"]', 'FF_SAFARI_SRC')
         ],
@@ -646,7 +646,7 @@ var replaceDigit;
         '[':
         [
             defineFBCharAt(14),
-            define('(ARRAY_ITERATOR + [])[0]', 'ENTRIES')
+            define('(ARRAY_ITERATOR + [])[0]', 'ARRAY_ITERATOR')
         ],
         '\\':
         [
@@ -659,7 +659,10 @@ var replaceDigit;
         ']':
         [
             defineFBCharAt(26),
-            define('(ARRAY_ITERATOR + [])[2 + [true + !!(ARRAY_ITERATOR + [])["22"]]]', 'ENTRIES'),
+            define(
+                '(ARRAY_ITERATOR + [])[2 + [true + !!(ARRAY_ITERATOR + [])["22"]]]',
+                'ARRAY_ITERATOR'
+            ),
             define('(ARRAY_ITERATOR + [])["22"]', 'NO_SAFARI_ARRAY_ITERATOR'),
             define('(ARRAY_ITERATOR + [])["21"]', 'SAFARI_ARRAY_ITERATOR')
         ],
@@ -811,7 +814,7 @@ var replaceDigit;
         ],
         ARRAY_ITERATOR:
         [
-            define('[]["entries"]()', 'ENTRIES')
+            define('[]["entries"]()', 'ARRAY_ITERATOR')
         ],
         FILL:
         [
