@@ -337,12 +337,12 @@ var replaceDigit;
         'b':
         [
             defineFHCharAt('Number', 12),
-            define('(ARRAY_ITERATOR + [])[2]', 'ARRAY_ITERATOR')
+            define('(ARRAY_ITERATOR + [])[2]', 'ENTRIES')
         ],
         'c':
         [
             defineFHCharAt('ANY_FUNCTION', 3),
-            define('(RP_5_N + ARRAY_ITERATOR)["10"]', 'ARRAY_ITERATOR')
+            define('(RP_5_N + ARRAY_ITERATOR)["10"]', 'ENTRIES')
         ],
         'd': '"undefined"[2]',
         'e': '"true"[3]',
@@ -361,7 +361,7 @@ var replaceDigit;
         [
             define('(PLAIN_OBJECT + [])["10"]'),
             define('(self + [])[3]', 'SELF'),
-            define('(ARRAY_ITERATOR + [])[3]', 'ARRAY_ITERATOR')
+            define('(ARRAY_ITERATOR + [])[3]', 'ENTRIES')
         ],
         'k':
         [
@@ -379,7 +379,7 @@ var replaceDigit;
         'o':
         [
             defineFHCharAt('ANY_FUNCTION', 6),
-            define('(ARRAY_ITERATOR + [])[1]', 'ARRAY_ITERATOR')
+            define('(ARRAY_ITERATOR + [])[1]', 'ENTRIES')
         ],
         'p':
         [
@@ -568,7 +568,7 @@ var replaceDigit;
         ' ':
         [
             defineFHCharAt('ANY_FUNCTION', 8),
-            define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ARRAY_ITERATOR'),
+            define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ENTRIES'),
             define('(RP_1_NO + FILTER)["20"]', 'V8_SRC'),
             define('(FILTER + [])["20"]', 'FF_SAFARI_SRC')
         ],
@@ -646,7 +646,7 @@ var replaceDigit;
         '[':
         [
             defineFBCharAt(14),
-            define('(ARRAY_ITERATOR + [])[0]', 'ARRAY_ITERATOR')
+            define('(ARRAY_ITERATOR + [])[0]', 'ENTRIES')
         ],
         '\\':
         [
@@ -814,7 +814,7 @@ var replaceDigit;
         ],
         ARRAY_ITERATOR:
         [
-            define('[]["entries"]()', 'ARRAY_ITERATOR')
+            define('[]["entries"]()', 'ENTRIES')
         ],
         FILL:
         [
