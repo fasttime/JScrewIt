@@ -524,7 +524,7 @@ var replaceDigit;
             define('""["sub"]()[2]', 'CAPITAL_HTML'),
             define(
                 '(RP_3_NO + ARRAY_ITERATOR["toString"]["call"]())["11"]',
-                'ARRAY_ITERATOR',
+                'ENTRIES',
                 'UNDEFINED'
             ),
             define('(RP_3_NO + PLAIN_OBJECT["toString"]["call"]())["11"]', 'UNDEFINED')
