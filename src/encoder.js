@@ -202,7 +202,7 @@ var expandEntries;
                 var output = this.encodeByDict(inputData, 4, 0, maxLength);
                 return output;
             },
-            282
+            267
         ),
         byDictRadix4AmendedBy1: defineCoder
         (
