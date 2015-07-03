@@ -209,7 +209,7 @@
         return result;
     }
     
-    function makeEmuFeatureWindow(str, noOverwrite)
+    function makeEmuFeatureWindow(str, regExp)
     {
         var result =
         {
@@ -217,7 +217,7 @@
             {
                 if (global.self)
                 {
-                    if (noOverwrite)
+                    if (regExp.test(self))
                     {
                         return;
                     }
@@ -228,6 +228,7 @@
                 }
                 var valueOf = function () { return str; };
                 override(this, 'self.valueOf', { value: valueOf });
+                override(this, 'self.toString', { value: valueOf });
             }
         };
         return result;
@@ -351,7 +352,7 @@
                 return result;
             }
         ),
-        DOMWINDOW: makeEmuFeatureWindow('[object DOMWindow]'),
+        DOMWINDOW: makeEmuFeatureWindow('[object DOMWindow]', /^\[object DOMWindow]$/),
         DOUBLE_QUOTE_ESC_HTML: makeEmuFeatureHtml(
             ['anchor', 'fontcolor', 'fontsize', 'link'],
             function (method)
@@ -442,7 +443,7 @@
             '[object ArrayIterator]',
             /^\[object ArrayIterator]$/
         ),
-        SELF: makeEmuFeatureWindow('[object Window]', true),
+        SELF: makeEmuFeatureWindow('[object Window]', /^\[object .*Window]$/),
         UNDEFINED:
         {
             setUp: function ()
@@ -461,7 +462,7 @@
             }
         },
         V8_SRC: makeEmuFeatureFunctionSource('function ?() { [native code] }'),
-        WINDOW: makeEmuFeatureWindow('[object Window]')
+        WINDOW: makeEmuFeatureWindow('[object Window]', /^\[object Window]$/)
     };
     
     var EMU_FEATURES = [];

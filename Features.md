@@ -28,7 +28,7 @@ No support for Node.js and older browsers like Internet Explorer 10 or Android B
 ### `DEFAULT`
 Minimun feature level, compatible with all supported engines.
 ### `DOMWINDOW`
-The property that the string representation of the global object evaluates to "\[object DOMWindow\]".
+Existence of the global object property self having the string representation "\[object DOMWindow\]".
 Only available in Android Browser versions prior to 4.4.2.
 ### `DOUBLE_QUOTE_ESC_HTML`
 The property that double quote characters in the argument of String.prototype.fontcolor are escaped as "\&quot;".
@@ -96,7 +96,7 @@ Features available in Safari 7.1 or later.
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object ArrayIterator\]".
 Available in Safari 7.1 and later versions.
 ### `SELF`
-Existence of the global object property self whose string representation starts with "\[object " and ends with "Window\]"
+Existence of the global object property self whose string representation starts with "\[object " and ends with "Window\]".
 This feature is not available in Node.js. It is also not available inside web workers.
 ### `UNDEFINED`
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
@@ -106,7 +106,7 @@ A string representation of native functions typically found in the V8 JavaScript
 V8 is used in Chrome, Opera, Android Browser and Node.js. Microsoft Edge, although not using V8, also has this feature available.
 Remarkable traits are the lack of characters in the beginning of the string before "function" and a single whitespace before the "\[native code\]" sequence.
 ### `WINDOW`
-The property that the string representation of the global object evaluates to "\[object Window\]".
+Existence of the global object property self having the string representation "\[object Window\]".
 This feature is not available in Android Browser versions prior to 4.4.2 and Node.js. It is also not available inside web workers.
 ## Engine Support
 This table lists features available in the most common engines.
