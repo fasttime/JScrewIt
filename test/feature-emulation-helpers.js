@@ -209,7 +209,7 @@
         return result;
     }
     
-    function makeEmuFeatureWindow(str, regExp)
+    function makeEmuFeatureSelf(str, regExp)
     {
         var result =
         {
@@ -351,7 +351,7 @@
                 return result;
             }
         ),
-        DOMWINDOW: makeEmuFeatureWindow('[object DOMWindow]', /^\[object DOMWindow]$/),
+        DOMWINDOW: makeEmuFeatureSelf('[object DOMWindow]', /^\[object DOMWindow]$/),
         DOUBLE_QUOTE_ESC_HTML: makeEmuFeatureHtml(
             ['anchor', 'fontcolor', 'fontsize', 'link'],
             function (method)
@@ -442,7 +442,8 @@
             '[object ArrayIterator]',
             /^\[object ArrayIterator]$/
         ),
-        SELF: makeEmuFeatureWindow('[object Window]', /^\[object .*Window]$/),
+        SELF: makeEmuFeatureSelf('[object Window]', /^\[object .*Window]$/),
+        SELF_OBJECT: makeEmuFeatureSelf('[object Object]', /^\[object /),
         UNDEFINED:
         {
             setUp: function ()
@@ -461,7 +462,7 @@
             }
         },
         V8_SRC: makeEmuFeatureFunctionSource('function ?() { [native code] }'),
-        WINDOW: makeEmuFeatureWindow('[object Window]', /^\[object Window]$/)
+        WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object Window]$/)
     };
     
     var EMU_FEATURES = [];
