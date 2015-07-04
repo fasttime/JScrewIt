@@ -122,7 +122,12 @@ var incompatibleFeatureMasks;
             check: function ()
             {
                 // self + '' throws an error inside a web worker in Safari 8.
-                return typeof self !== 'undefined' && self.toString() === '[object DOMWindow]';
+                try
+                {
+                    return self + '' === '[object DOMWindow]';
+                }
+                catch (error) { }
+                return false;
             },
             includes: ['SELF'],
             excludes: ['WINDOW']
@@ -283,7 +288,13 @@ var incompatibleFeatureMasks;
                 'workers.',
             check: function ()
             {
-                return typeof self !== 'undefined' && /^\[object .*Window]$/.test(self);
+                // self + '' throws an error inside a web worker in Safari 8.
+                try
+                {
+                    return /^\[object .*Window]$/.test(self + '');
+                }
+                catch (error) { }
+                return false;
             }
         },
         UNDEFINED:
@@ -325,7 +336,12 @@ var incompatibleFeatureMasks;
             check: function ()
             {
                 // self + '' throws an error inside a web worker in Safari 8.
-                return typeof self !== 'undefined' && self.toString() === '[object Window]';
+                try
+                {
+                    return self + '' === '[object Window]';
+                }
+                catch (error) { }
+                return false;
             },
             includes: ['SELF'],
             excludes: ['DOMWINDOW']
