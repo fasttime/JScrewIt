@@ -98,6 +98,9 @@ Available in Safari 7.1 and later versions.
 ### `SELF`
 Existence of the global object property self whose string representation starts with "\[object " and ends with "Window\]".
 This feature is not available in Node.js. It is also not available inside web workers.
+### `SELF_OBJECT`
+Existence of the global object property self whose string representation starts with "\[object ".
+This feature is not available in Node.js. It is also not available inside web workers in Safari 8.0 and later versions.
 ### `UNDEFINED`
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
 This behavior is defined by ECMAScript, but Android Browser prior to 4.1.2 does not comply with the specification and so this feature is not available in that browser.
@@ -131,6 +134,7 @@ This table lists features available in the most common engines.
 <li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
 <li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
 </ul>
@@ -150,6 +154,7 @@ This table lists features available in the most common engines.
 <li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a> (Chrome 38+, Opera 25+)
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
 <li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#v8_src"><code>V8_SRC</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
@@ -166,6 +171,7 @@ This table lists features available in the most common engines.
 <li><a href="#ie_src"><code>IE_SRC</code></a>
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
 <li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
 </ul>
@@ -186,6 +192,7 @@ This table lists features available in the most common engines.
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>)
 <li><a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a> (Safari 7.1+)
 <li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
 </ul>
@@ -204,6 +211,7 @@ This table lists features available in the most common engines.
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
 <li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#v8_src"><code>V8_SRC</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
@@ -222,6 +230,7 @@ This table lists features available in the most common engines.
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
 <li><a href="#self"><code>SELF</code></a> (implied by <a href="#domwindow"><code>DOMWINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#domwindow"><code>DOMWINDOW</code></a> and <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a> (Android Browser 4.1.2+)
 <li><a href="#v8_src"><code>V8_SRC</code></a>
 <li><a href="#window"><code>WINDOW</code></a> (Android Browser 4.4.2+)

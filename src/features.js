@@ -11,6 +11,22 @@ var incompatibleFeatureMasks;
 {
     'use strict';
     
+    function checkSelfFeature()
+    {
+        // self + '' throws an error inside a web worker in Safari 8.
+        var str;
+        try
+        {
+            str = self + '';
+        }
+        catch (error)
+        {
+            return false;
+        }
+        var available = this(str);
+        return available;
+    }
+    
     function completeFeature(feature, ignoreExcludes)
     {
         var mask = featureMaskMap[feature];
@@ -119,16 +135,12 @@ var incompatibleFeatureMasks;
                 'Existence of the global object property self having the string representation ' +
                 '"[object DOMWindow]".\n' +
                 'Only available in Android Browser versions prior to 4.4.2.',
-            check: function ()
-            {
-                // self + '' throws an error inside a web worker in Safari 8.
-                try
+            check: checkSelfFeature.bind(
+                function (str)
                 {
-                    return self + '' === '[object DOMWindow]';
+                    return str + '' === '[object DOMWindow]';
                 }
-                catch (error) { }
-                return false;
-            },
+            ),
             includes: ['SELF'],
             excludes: ['WINDOW']
         },
@@ -286,16 +298,27 @@ var incompatibleFeatureMasks;
                 'with "[object " and ends with "Window]".\n' +
                 'This feature is not available in Node.js. It is also not available inside web ' +
                 'workers.',
-            check: function ()
-            {
-                // self + '' throws an error inside a web worker in Safari 8.
-                try
+            check: checkSelfFeature.bind(
+                function (str)
                 {
-                    return /^\[object .*Window]$/.test(self + '');
+                    return /^\[object .*Window]$/.test(str);
                 }
-                catch (error) { }
-                return false;
-            }
+            ),
+            includes: ['SELF_OBJECT']
+        },
+        SELF_OBJECT:
+        {
+            description:
+                'Existence of the global object property self whose string representation starts ' +
+                'with "[object ".\n' +
+                'This feature is not available in Node.js. It is also not available inside web ' +
+                'workers in Safari 8.0 and later versions.',
+            check: checkSelfFeature.bind(
+                function (str)
+                {
+                    return /^\[object /.test(str);
+                }
+            )
         },
         UNDEFINED:
         {
@@ -333,16 +356,12 @@ var incompatibleFeatureMasks;
                 '"[object Window]".\n' +
                 'This feature is not available in Android Browser versions prior to 4.4.2 and ' +
                 'Node.js. It is also not available inside web workers.',
-            check: function ()
-            {
-                // self + '' throws an error inside a web worker in Safari 8.
-                try
+            check: checkSelfFeature.bind(
+                function (str)
                 {
-                    return self + '' === '[object Window]';
+                    return str === '[object Window]';
                 }
-                catch (error) { }
-                return false;
-            },
+            ),
             includes: ['SELF'],
             excludes: ['DOMWINDOW']
         },

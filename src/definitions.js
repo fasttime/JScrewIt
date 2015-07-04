@@ -360,7 +360,7 @@ var replaceDigit;
         'j':
         [
             define('(PLAIN_OBJECT + [])["10"]'),
-            define('(self + [])[3]', 'SELF'),
+            define('(self + [])[3]', 'SELF_OBJECT'),
             define('(ARRAY_ITERATOR + [])[3]', 'ENTRIES')
         ],
         'k':
@@ -801,7 +801,7 @@ var replaceDigit;
         escape:         'Function("return escape")()',
         self:
         [
-            define('Function("return self")()', 'SELF')
+            define('Function("return self")()', 'SELF_OBJECT')
         ],
         unescape:       'Function("return unescape")()',
         
