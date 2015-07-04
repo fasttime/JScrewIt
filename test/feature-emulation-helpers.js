@@ -217,7 +217,7 @@
             {
                 if (global.self)
                 {
-                    if (regExp.test(self))
+                    if (regExp.test(self + ''))
                     {
                         return;
                     }
@@ -228,7 +228,6 @@
                 }
                 var valueOf = function () { return str; };
                 override(this, 'self.valueOf', { value: valueOf });
-                override(this, 'self.toString', { value: valueOf });
             }
         };
         return result;
