@@ -9,6 +9,7 @@
 <script src='../node_modules/mocha/mocha.js'></script>
 <script src='../lib/jscrewit.js'></script>
 <script src='../node_modules/expectations/expectations.js'></script>
+<script src='../text-utils.js'></script>
 <script src='feature-emulation-helpers.js'></script>
 <script src='matcher-helpers.js'></script>
 <script src='test-suite.js'></script>
@@ -41,7 +42,7 @@ function addBarButtons()
                 var outputDocument = outputWindow.document;
                 outputDocument.title = 'JScrewIt Encoding Lengths';
                 var outputBody = outputDocument.body;
-                outputBody.textContent = TestSuite.createOutput(['DEFAULT', 'AUTO']);
+                outputBody.textContent = createOutput(['DEFAULT', 'AUTO']);
                 var outputBodyStyle = outputBody.style;
                 outputBodyStyle.font = '12px "Courier New",Monaco,monospace';
                 outputBodyStyle.margin = '8px 20px';
@@ -70,6 +71,75 @@ function addFeatureLists()
     var info = document.querySelector('#featureList');
     listFeatures(info, 'Available features: ', TestSuite.listFeatures(true));
     listFeatures(info, 'Emulated features: ', TestSuite.listFeatures(false));
+}
+
+function createOutput(compatibilities)
+{
+    function appendLengths(name, input)
+    {
+        result += '\n' + padRight(name, 4);
+        compatibilities.forEach(
+            function (compatibility)
+            {
+                var content;
+                try
+                {
+                    content = JScrewIt.encode(input, { features: compatibility }).length;
+                }
+                catch (error)
+                {
+                    content = 'ERROR';
+                }
+                result += padLeft(content, 8);
+            }
+        );
+    }
+    
+    function appendLengthsRange(min, max, namer)
+    {
+        namer = namer || function () { return '`' + String.fromCharCode(charCode) + '`'; };
+        for (var charCode = min; charCode <= max; ++charCode)
+        {
+            var name = namer(charCode);
+            var char = String.fromCharCode(charCode);
+            appendLengths(name, char);
+        }
+    }
+    
+    var result = '     ';
+    compatibilities.forEach(function (compatibility) { result += padBoth(compatibility, 8); });
+    result = result.replace(/ +$/, '');
+    result += '\n    ' + repeat(' -------', compatibilities.length);
+    var C0_CONTROL_CODE_NAMES =
+    [
+        'NUL',  'SOH',  'STX',  'ETX',  'EOT',  'ENQ',  'ACK',  'BEL',
+        'BS',   'HT',   'LF',   'VT',   'FF',   'CR',   'SO',   'SI',
+        'DLE',  'DC1',  'DC2',  'DC3',  'DC4',  'NAK',  'SYN',  'ETB',
+        'CAN',  'EM',   'SUB',  'ESC',  'FS',   'GS',   'RS',   'US'
+    ];
+    appendLengthsRange(0, 31, function (charCode) { return C0_CONTROL_CODE_NAMES[charCode]; });
+    appendLengthsRange(32, 126);
+    appendLengths('DEL', '\x7f');
+    var C1_CONTROL_CODE_NAMES =
+    [
+        'PAD',  'HOP',  'BPH',  'NBH',  'IND',  'NEL',  'SSA',  'ESA',
+        'HTS',  'HTJ',  'VTS',  'PLD',  'PLU',  'RI',   'SS2',  'SS3',
+        'DCS',  'PU1',  'PU2',  'STS',  'CCH',  'MW',   'SPA',  'EPA',
+        'SOS',  'SGCI', 'SCI',  'CSI',  'ST',   'OSC',  'PM',   'APC'
+    ];
+    appendLengthsRange(
+        128,
+        159,
+        function (charCode) { return C1_CONTROL_CODE_NAMES[charCode - 0x80]; }
+    );
+    appendLengths('NBSP', '\xa0');
+    appendLengthsRange(161, 172);
+    appendLengths('SHY', '\xad');
+    appendLengthsRange(174, 255);
+    appendLengths('`∟`', '∟');
+    appendLengths('`♥`', '♥');
+    appendLengths('A…Z', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    return result;
 }
 
 function handleLoad()
@@ -106,6 +176,13 @@ function listFeatures(info, label, features)
             }
         );
     }
+}
+
+function padBoth(str, length)
+{
+    str += '';
+    var result = padRight(padLeft(str, length + str.length >> 1), length);
+    return result;
 }
 
 function popup(url, name, width, height)

@@ -3,9 +3,9 @@
 <head>
 <meta charset='utf-8'>
 <base target='_top'>
-<link rel='apple-touch-icon' href='screw.svg'>
+<link rel='apple-touch-icon' href='html/screw.svg'>
 <link rel='author' href='https://github.com/fasttime'>
-<link rel='icon' href='favicon.ico'>
+<link rel='icon' href='html/favicon.ico'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
 <meta name='description' content='Converts plain JavaScript into JSFuck code, which uses only six
 different characters: ! ( ) + [ ]'>
@@ -38,7 +38,7 @@ different characters: ! ( ) + [ ]'>
 
 .noWrap { white-space: nowrap; }
 
-#ua { -webkit-appearance: menulist-button; width: 15em; }
+#compMenu { -webkit-appearance: menulist-button; width: 15em; }
 
 a { text-decoration: none; }
 
@@ -85,7 +85,7 @@ textarea
 <div>
     <header>
         <h1>JScrewIt</h1>
-        <img alt src='screw.svg' width='100' height='100'>
+        <img alt src='html/screw.svg' width='100' height='100'>
     </header>
 
     <p>JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters
@@ -103,7 +103,7 @@ textarea
 
         <div class='controls'>
             <label>Compatibility:
-                <select id='ua'>
+                <select id='compMenu'>
                     <option value='DEFAULT'>All supported engines
                     <option value='COMPACT'>All new browsers
                     <option value='NO_IE'>All except Internet Explorer (JSFuck mode)
@@ -136,6 +136,7 @@ textarea
         <li>Firefox 30+
         <li>Safari 7.0+
         <li>Opera 22+
+        <li>Microsoft Edge <i>(experimental support)</i>
         <li>Android Browser 4.0+
         <li>Node.js 0.10.26+
     </ul>
@@ -161,7 +162,7 @@ function createWorker()
     {
         try
         {
-            worker = new Worker('worker.js');
+            worker = new Worker('html/worker.js');
         }
         catch (error)
         { }
@@ -204,13 +205,23 @@ function encodeAsync()
 
 function getOptions()
 {
-    var compatibility = ua.options[ua.selectedIndex].value;
+    var compatibility = compMenu.options[compMenu.selectedIndex].value;
     // Note that some features may be not available in a web worker, that's why we cannot pass
     // "AUTO" directly.
     var features = JScrewIt.FEATURE_INFOS[compatibility].includes;
     var wrapWith = wrapWithCallBox.checked ? 'call' : 'none';
     var options = { features: features, wrapWith: wrapWith };
     return options;
+}
+
+function handleCompMenuSelect()
+{
+    var selectedIndex = compMenu.selectedIndex;
+    if (selectedIndex !== compMenu.previousIndex)
+    {
+        compMenu.previousIndex = selectedIndex;
+        encodeAsync();
+    }
 }
 
 function handleInputAreaKeyUp(evt)
@@ -319,11 +330,13 @@ var worker;
 window.onload =
     function ()
     {
+        var compMenuHandler;
         if (worker)
         {
             encodeButton.parentNode.removeChild(encodeButton);
             inputArea.oninput = encodeAsync;
-            ua.onchange = encodeAsync;
+            compMenu.previousIndex = compMenu.selectedIndex;
+            compMenuHandler = handleCompMenuSelect;
             wrapWithCallBox.onchange = encodeAsync;
             worker.onmessage = handleWorkerMessage;
             encodeAsync();
@@ -332,10 +345,14 @@ window.onload =
         {
             encodeButton.onclick = encode;
             inputArea.oninput = noEncode;
-            ua.onchange = noEncode;
+            compMenuHandler = noEncode;
             wrapWithCallBox.onchange = noEncode;
             outputArea.value = '';
         }
+        compMenu.onchange = compMenuHandler;
+        // Firefox does not always trigger a change event when an option is selected using the
+        // keyboard; we must handle keydown events asynchronously, too.
+        compMenu.onkeydown = setTimeout.bind(null, compMenuHandler);
         if (inputArea.createTextRange)
         {
             var range = inputArea.createTextRange();

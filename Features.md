@@ -7,6 +7,9 @@ Features available in Android Browser 4.0 to 4.3.1.
 Features available in Android Browser 4.1.2 to 4.3.1.
 ### `ANDRO442`
 Features available in Android Browser 4.4.2 or later.
+### `ARRAY_ITERATOR`
+The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
+This feature is available in Firefox and in Chrome 38, Opera 25, Safari 7.1, Node.js 0.12 and later versions.
 ### `ATOB`
 Existence of the global object functions atob and btoa.
 This feature is not available in Internet Explorer versions prior to 11 and Node.js.
@@ -25,14 +28,16 @@ No support for Node.js and older browsers like Internet Explorer 10 or Android B
 ### `DEFAULT`
 Minimun feature level, compatible with all supported engines.
 ### `DOMWINDOW`
-The property that the string representation of the global object evaluates to "\[object DOMWindow\]".
+Existence of the global object property self having the string representation "\[object DOMWindow\]".
 Only available in Android Browser versions prior to 4.4.2.
 ### `DOUBLE_QUOTE_ESC_HTML`
 The property that double quote characters in the argument of String.prototype.fontcolor are escaped as "\&quot;".
 This feature is not available in Internet Explorer.
+### `EDGE`
+Features available in Microsoft Edge.
 ### `ENTRIES`
-The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array".
-This feature is available in Firefox, Chrome 38, Opera 25, Safari 7.1, Node.js 0.12 and later versions.
+The property that the string representation of Array.prototype.entries\(\) starts with "\[object ".
+This feature is available in Firefox, in Microsoft Edge and in Chrome 38, Opera 25, Safari 7.1, Node.js 0.12 and later versions.
 ### `FF30`
 Features available in Firefox 30 or later.
 ### `FF31`
@@ -42,7 +47,7 @@ A string representation of native functions typically found in Firefox and Safar
 Remarkable traits are the lack of characters in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 ### `FILL`
 Existence of the native function Array.prototype.fill.
-Currently only available in Firefox 31, Safari 7.1 and later versions.
+Available in Firefox 31, Safari 7.1 and later versions and in Microsoft Edge.
 ### `GMT`
 Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
 Although ECMAScript states that string representation of dates is implementation dependent, most engines align to the same format, making this feature available in all supported engines except Internet Explorer 9 and 10.
@@ -91,18 +96,21 @@ Features available in Safari 7.1 or later.
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object ArrayIterator\]".
 Available in Safari 7.1 and later versions.
 ### `SELF`
-Existence of the global object property self whose string representation starts with "\[object " and ends with "Window\]"
-This feature is not available in Node.js.
+Existence of the global object property self whose string representation starts with "\[object " and ends with "Window\]".
+This feature is not available in Node.js. It is also not available inside web workers.
+### `SELF_OBJECT`
+Existence of the global object property self whose string representation starts with "\[object ".
+This feature is not available in Node.js. It is also not available inside web workers in Safari 8.0.
 ### `UNDEFINED`
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
 This behavior is defined by ECMAScript, but Android Browser prior to 4.1.2 does not comply with the specification and so this feature is not available in that browser.
 ### `V8_SRC`
-A string representation of native functions found in the V8 JavaScript engine.
-V8 is used among others in Chrome, Opera, Android Browser and Node.js.
+A string representation of native functions typically found in the V8 JavaScript engine.
+V8 is used in Chrome, Opera, Android Browser and Node.js. Microsoft Edge, although not using V8, also has this feature available.
 Remarkable traits are the lack of characters in the beginning of the string before "function" and a single whitespace before the "\[native code\]" sequence.
 ### `WINDOW`
-The property that the string representation of the global object evaluates to "\[object Window\]".
-Not available in Android Browser versions prior to 4.4.2 and Node.js.
+Existence of the global object property self having the string representation "\[object Window\]".
+This feature is not available in Android Browser versions prior to 4.4.2 and Node.js. It is also not available inside web workers.
 ## Engine Support
 This table lists features available in the most common engines.
 <table>
@@ -114,9 +122,10 @@ This table lists features available in the most common engines.
 <td>Firefox 30+</td>
 <td>
 <ul>
+<li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
+<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>
 <li><a href="#fill"><code>FILL</code></a> (Firefox 31+)
 <li><a href="#gmt"><code>GMT</code></a>
@@ -125,6 +134,7 @@ This table lists features available in the most common engines.
 <li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
 <li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
 </ul>
@@ -134,15 +144,17 @@ This table lists features available in the most common engines.
 <td>Chrome 35+, Opera 22+</td>
 <td>
 <ul>
+<li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Chrome 38+, Opera 25+)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Chrome 38+, Opera 25+)
+<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Chrome 38+, Opera 25+)
 <li><a href="#gmt"><code>GMT</code></a>
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
 <li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a> (Chrome 38+, Opera 25+)
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
 <li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#v8_src"><code>V8_SRC</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
@@ -159,6 +171,7 @@ This table lists features available in the most common engines.
 <li><a href="#ie_src"><code>IE_SRC</code></a>
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
 <li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
 </ul>
@@ -168,9 +181,10 @@ This table lists features available in the most common engines.
 <td>Safari 7.0+</td>
 <td>
 <ul>
+<li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
+<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>
 <li><a href="#fill"><code>FILL</code></a> (Safari 7.1+)
 <li><a href="#gmt"><code>GMT</code></a>
@@ -178,7 +192,28 @@ This table lists features available in the most common engines.
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>)
 <li><a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a> (Safari 7.1+)
 <li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
+<li><a href="#window"><code>WINDOW</code></a>
+</ul>
+</td>
+</tr>
+<tr>
+<td>Microsoft Edge</td>
+<td>
+<ul>
+<li><a href="#atob"><code>ATOB</code></a>
+<li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
+<li><a href="#entries"><code>ENTRIES</code></a>
+<li><a href="#fill"><code>FILL</code></a>
+<li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#name"><code>NAME</code></a>
+<li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
+<li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
+<li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#undefined"><code>UNDEFINED</code></a>
+<li><a href="#v8_src"><code>V8_SRC</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
 </ul>
 </td>
@@ -195,6 +230,7 @@ This table lists features available in the most common engines.
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
 <li><a href="#self"><code>SELF</code></a> (implied by <a href="#domwindow"><code>DOMWINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#domwindow"><code>DOMWINDOW</code></a> and <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a> (Android Browser 4.1.2+)
 <li><a href="#v8_src"><code>V8_SRC</code></a>
 <li><a href="#window"><code>WINDOW</code></a> (Android Browser 4.4.2+)
@@ -205,8 +241,9 @@ This table lists features available in the most common engines.
 <td>Node.js 0.10.26+</td>
 <td>
 <ul>
+<li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
+<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
 <li><a href="#gmt"><code>GMT</code></a>
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)

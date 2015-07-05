@@ -3,8 +3,8 @@ global
 FEATURE_INFOS,
 Encoder,
 availableFeatureMask,
+featuresFromMask,
 getFeatureMask,
-getFeatures,
 incompatibleFeatureMasks,
 module,
 self,
@@ -46,7 +46,7 @@ var setUp;
                     featureMask &= getFeatureMask(features);
                 }
             );
-            var result = getFeatures(featureMask);
+            var result = featuresFromMask(featureMask);
             return result;
         }
     }
@@ -55,6 +55,7 @@ var setUp;
     {
         var features;
         var wrapWith;
+        var perfInfo;
         if (typeof arg2 === 'object')
         {
             features = arg2.features;
@@ -63,6 +64,7 @@ var setUp;
             {
                 input = trimJS(input);
             }
+            perfInfo = arg2.perfInfo;
         }
         else
         {
@@ -70,7 +72,13 @@ var setUp;
             wrapWith = arg2 ? 'call' : 'none';
         }
         var encoder = getEncoder(features);
+        var codingLog = encoder.codingLog = [];
         var output = encoder.encode(input + '', wrapWith);
+        if (perfInfo)
+        {
+            perfInfo.codingLog = codingLog;
+        }
+        delete encoder.codingLog;
         return output;
     }
     

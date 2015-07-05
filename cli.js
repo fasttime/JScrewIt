@@ -1,17 +1,30 @@
+/* global padLeft, padRight, repeat */
 /* jshint node: true */
 
 'use strict';
 
-function widthOf(size)
-{
-    return (size + '').length;
-}
+require('./text-utils.js');
 
 function byteCount(size, width)
 {
-    var str =
-        Array(width - widthOf(size) + 1).join(' ') + (size === 1 ? '1 byte' : size + ' bytes');
+    var str = padLeft(size, width) + (size === 1 ? ' byte' : ' bytes');
     return str;
+}
+
+function createDiagnosticReport(codingLog)
+{
+    var report =
+        '\nCoder                     Status         Length  Time (ms)\n' +
+        repeat('─', 58) + '\n' +
+        codingLog.reduce(
+            function (report, perfInfoList)
+            {
+                report += formatPerfInfoList(perfInfoList, ['', '']);
+                return report;
+            },
+            ''
+        );
+    return report;
 }
 
 function createReport(originalSize, screwedSize, encodingTime)
@@ -26,9 +39,54 @@ function createReport(originalSize, screwedSize, encodingTime)
     return report;
 }
 
-function quote(arg)
+function formatCodingLog(codingLog, margin)
 {
-    return '"' + arg + '"';
+    var result = '';
+    var count = codingLog.length;
+    for (var index = 0; index < count; ++index)
+    {
+        var perfInfoList = codingLog[index];
+        result +=
+            '│' +
+            formatPerfInfoList(
+                perfInfoList,
+                index < count - 1 ? ['├', '││'] : ['└', '│ ', margin]
+            );
+    }
+    return result;
+}
+
+function formatInt(int)
+{
+    var result = int != null ? int : '-' ;
+    return result;
+}
+
+function formatPerfInfoList(perfInfoList, paddingData)
+{
+    var result = paddingData[0] + (perfInfoList.name || '(default)') + '\n';
+    var count = perfInfoList.length;
+    var padding = paddingData[1];
+    var paddingLength = padding.length;
+    for (var index = 0; index < count; ++index)
+    {
+        var perfInfo = perfInfoList[index];
+        var next = index < count - 1;
+        result += padding + (next ? '├' : '└') +
+            padRight(perfInfo.coderName, 25 - paddingLength) + padRight(perfInfo.status, 10) +
+            padLeft(formatInt(perfInfo.outputLength), 11) + padLeft(formatInt(perfInfo.time), 11) +
+            '\n';
+        var codingLog = perfInfo.codingLog;
+        if (codingLog)
+        {
+            result += formatCodingLog(codingLog, next);
+        }
+    }
+    if (paddingData[2])
+    {
+        result += padding.replace(/ +$/, '') + '\n';
+    }
+    return result;
 }
 
 function parseCommandLine(argv)
@@ -50,6 +108,9 @@ function parseCommandLine(argv)
         case 'c':
         case 'w':
             options.wrapWith = 'call';
+            break;
+        case 'd':
+            options.perfInfo = { };
             break;
         case 'e':
             options.wrapWith = 'eval';
@@ -76,6 +137,9 @@ function parseCommandLine(argv)
             flag = arg.slice(2);
             switch (flag)
             {
+            case 'diagnostic':
+                options.perfInfo = { };
+                break;
             case 'features':
                 parseFeatures();
                 break;
@@ -128,4 +192,19 @@ function parseCommandLine(argv)
     return result;
 }
 
-module.exports = { createReport: createReport, parseCommandLine: parseCommandLine };
+function quote(arg)
+{
+    return '"' + arg + '"';
+}
+
+function widthOf(size)
+{
+    return (size + '').length;
+}
+
+module.exports =
+{
+    createDiagnosticReport: createDiagnosticReport,
+    createReport:           createReport,
+    parseCommandLine:       parseCommandLine
+};

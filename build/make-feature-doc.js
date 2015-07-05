@@ -2,7 +2,7 @@
 
 'use strict';
 
-var JScrewIt = require('./lib/jscrewit.js');
+var JScrewIt = require('../lib/jscrewit.js');
 
 function escape(str)
 {
@@ -129,6 +129,9 @@ var LISTS =
     [
         { description: 'Safari 7.0+', feature: 'SAFARI70' },
         { description: 'Safari 7.1+', feature: 'SAFARI71' }
+    ],
+    [
+        { description: 'Microsoft Edge', feature: 'EDGE' }
     ],
     [
         { description: 'Android Browser 4.0+', feature: 'ANDRO400' },

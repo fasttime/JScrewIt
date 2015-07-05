@@ -85,6 +85,22 @@ describe(
             }
         );
         test(
+            ['-d'],
+            {
+                inputFileName: undefined,
+                outputFileName: undefined,
+                options: { perfInfo: { } }
+            }
+        );
+        test(
+            ['--diagnostic'],
+            {
+                inputFileName: undefined,
+                outputFileName: undefined,
+                options: { perfInfo: { } }
+            }
+        );
+        test(
             ['-f', 'ATOB,SELF'],
             {
                 inputFileName: undefined,
@@ -160,7 +176,7 @@ describe(
 );
 
 describe(
-    'createReport works as expected',
+    'createReport',
     function ()
     {
         it(
@@ -199,6 +215,75 @@ describe(
                     'Screwed size:     6 bytes\n' +
                     'Expansion factor: 6.00\n' +
                     'Encoding time:    < 0.01 s';
+                assert.strictEqual(actual, expected);
+            }
+        );
+    }
+);
+
+describe(
+    'createDiagnosticReport',
+    function ()
+    {
+        function makePerfInfoList(name)
+        {
+            var perfInfoList = Array.prototype.slice.call(arguments, 1);
+            perfInfoList.name = name;
+            return perfInfoList;
+        }
+        
+        it(
+            'works as expected',
+            function ()
+            {
+                var actual =
+                    cli.createDiagnosticReport(
+                        [
+                            makePerfInfoList(
+                                null,
+                                {
+                                    coderName: 'lorem',
+                                    status: 'used',
+                                    outputLength: 100,
+                                    time: 123,
+                                    codingLog:
+                                    [
+                                        makePerfInfoList(
+                                            'ipsum',
+                                            {
+                                                coderName: 'dolor',
+                                                status: 'used',
+                                                outputLength: 50,
+                                                time: 45
+                                            }
+                                        ),
+                                        makePerfInfoList(
+                                            'sit',
+                                            {
+                                                coderName: 'amet',
+                                                status: 'used',
+                                                outputLength: 25,
+                                                time: 67
+                                            }
+                                        )
+                                    ]
+                                },
+                                { coderName: 'consetetur', status: 'skipped' }
+                            )
+                        ]
+                    );
+                var expected =
+                    '\n' +
+                    'Coder                     Status         Length  Time (ms)\n' +
+                    '──────────────────────────────────────────────────────────\n' +
+                    '(default)\n' +
+                    '├lorem                    used              100        123\n' +
+                    '│├ipsum\n' +
+                    '││└dolor                  used               50         45\n' +
+                    '│└sit\n' +
+                    '│ └amet                   used               25         67\n' +
+                    '│\n' +
+                    '└consetetur               skipped             -          -\n';
                 assert.strictEqual(actual, expected);
             }
         );

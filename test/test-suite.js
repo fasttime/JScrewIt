@@ -1,4 +1,4 @@
-/* global atob, btoa, expect, emuDo, emuEval, EMU_FEATURES, global, module, self */
+/* global atob, btoa, emuDo, emuEval, EMU_FEATURES, expect, global, module, repeat, self */
 /* jshint mocha: true, nonstandard: true */
 
 (function (global)
@@ -69,90 +69,16 @@
         return str;
     }
     
-    function createOutput(compatibilities)
-    {
-        function appendLengths(name, input)
-        {
-            result += '\n' + padRight(name, 4);
-            compatibilities.forEach(
-                function (compatibility)
-                {
-                    var content;
-                    try
-                    {
-                        content = JScrewIt.encode(input, { features: compatibility }).length;
-                    }
-                    catch (error)
-                    {
-                        content = 'ERROR';
-                    }
-                    result += padLeft(content, 8);
-                }
-            );
-        }
-        
-        function appendLengthsRange(min, max, namer)
-        {
-            namer = namer || function () { return '`' + String.fromCharCode(charCode) + '`'; };
-            for (var charCode = min; charCode <= max; ++charCode)
-            {
-                var name = namer(charCode);
-                var char = String.fromCharCode(charCode);
-                appendLengths(name, char);
-            }
-        }
-        
-        var result = '     ';
-        compatibilities.forEach(
-            function (compatibility)
-            {
-                result += padBoth(compatibility, 8);
-            }
-        );
-        result = result.replace(/ +$/, '');
-        result += '\n    ' + repeat(' -------', compatibilities.length);
-        var C0_CONTROL_CODE_NAMES =
-        [
-            'NUL',  'SOH',  'STX',  'ETX',  'EOT',  'ENQ',  'ACK',  'BEL',
-            'BS',   'HT',   'LF',   'VT',   'FF',   'CR',   'SO',   'SI',
-            'DLE',  'DC1',  'DC2',  'DC3',  'DC4',  'NAK',  'SYN',  'ETB',
-            'CAN',  'EM',   'SUB',  'ESC',  'FS',   'GS',   'RS',   'US'
-        ];
-        appendLengthsRange(0, 31, function (charCode) { return C0_CONTROL_CODE_NAMES[charCode]; });
-        appendLengthsRange(32, 126);
-        appendLengths('DEL', '\x7f');
-        var C1_CONTROL_CODE_NAMES =
-        [
-            'PAD',  'HOP',  'BPH',  'NBH',  'IND',  'NEL',  'SSA',  'ESA',
-            'HTS',  'HTJ',  'VTS',  'PLD',  'PLU',  'RI',   'SS2',  'SS3',
-            'DCS',  'PU1',  'PU2',  'STS',  'CCH',  'MW',   'SPA',  'EPA',
-            'SOS',  'SGCI', 'SCI',  'CSI',  'ST',   'OSC',  'PM',   'APC'
-        ];
-        appendLengthsRange(
-            128,
-            159,
-            function (charCode) { return C1_CONTROL_CODE_NAMES[charCode - 0x80]; }
-        );
-        appendLengths('NBSP', '\xa0');
-        appendLengthsRange(161, 172);
-        appendLengths('SHY', '\xad');
-        appendLengthsRange(174, 255);
-        appendLengths('`∟`', '∟');
-        appendLengths('`♥`', '♥');
-        appendLengths('A…Z', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
-        return result;
-    }
-    
     function decodeEntry(entry)
     {
-        var features = JScrewIt.debug.getEntryFeatures(entry);
+        var features = getEntryFeatures(entry);
         var key = features.join();
         var encoder = encoderCache[key];
         if (!encoder)
         {
             encoderCache[key] = encoder = JScrewIt.debug.createEncoder(features);
         }
-        var output = encoder.replace(entry.definition);
+        var output = encoder.resolve(entry.definition) + '';
         return output;
     }
     
@@ -170,10 +96,13 @@
                         JSON.stringify(expression1) + ' (with wrapWith: "call")',
                         function ()
                         {
-                            var options = { features: compatibility, wrapWith: 'call' };
+                            var perfInfo = { };
+                            var options =
+                                { features: compatibility, perfInfo: perfInfo, wrapWith: 'call' };
                             var output = JScrewIt.encode(expression1, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(42);
+                            expect(perfInfo.codingLog).toBeArray();
                         }
                     );
                     var expression2 = 'decodeURI(encodeURI("♠♥♦♣"))';
@@ -181,24 +110,29 @@
                         JSON.stringify(expression2) + ' (with wrapWith: "eval")',
                         function ()
                         {
-                            var options = { features: compatibility, wrapWith: 'eval' };
+                            var perfInfo = { };
+                            var options =
+                                { features: compatibility, perfInfo: perfInfo, wrapWith: 'eval' };
                             var output = JScrewIt.encode(expression2, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe('♠♥♦♣');
+                            expect(perfInfo.codingLog).toBeArray();
                         }
                     );
                     var expression3 = 'Boolean true';
                     var encoder = JScrewIt.debug.createEncoder(compatibility);
-                    var expectedEncoding3 = encoder.replace('"Boolean" + " " + true');
+                    var expectedEncoding3 = encoder.replaceExpr('"Boolean" + " " + true');
                     it(
                         JSON.stringify(expression3),
                         function ()
                         {
-                            var options = { features: compatibility };
+                            var perfInfo = { };
+                            var options = { features: compatibility, perfInfo: perfInfo };
                             var output = JScrewIt.encode(expression3, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(expression3);
                             expect(output).toBe(expectedEncoding3);
+                            expect(perfInfo.codingLog).toBeArray();
                         }
                     );
                     var expression4 = repeat('☺', 20);
@@ -206,10 +140,13 @@
                         JSON.stringify(expression4) + ' (with wrapWith: "none")',
                         function ()
                         {
-                            var options = { features: compatibility, wrapWith: 'none' };
+                            var perfInfo = { };
+                            var options =
+                                { features: compatibility, perfInfo: perfInfo, wrapWith: 'none' };
                             var output = JScrewIt.encode(expression4, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(expression4);
+                            expect(perfInfo.codingLog).toBeArray();
                         }
                     );
                 }
@@ -286,7 +223,7 @@
                                 entries.forEach(
                                     function (entry, index)
                                     {
-                                        var features = JScrewIt.debug.getEntryFeatures(entry);
+                                        var features = getEntryFeatures(entry);
                                         var emuFeatures = getEmuFeatures(features);
                                         if (emuFeatures)
                                         {
@@ -308,7 +245,7 @@
             }
         );
         describe(
-            'Constants definitions of',
+            'Constant definitions of',
             function ()
             {
                 testConstant('Array', isExpected(Array));
@@ -339,6 +276,7 @@
                 describeEncodeTest('DEFAULT');
                 describeEncodeTest('COMPACT');
                 describeEncodeTest('NO_IE');
+                describeEncodeTest('FF31');
                 describeEncodeTest('AUTO');
                 it(
                     'encodes an empty string',
@@ -915,7 +853,7 @@
             }
         );
         describe(
-            'Encoder#replace can replace',
+            'Encoder#replaceExpr can replace',
             function ()
             {
                 var encoder = JScrewIt.debug.createEncoder();
@@ -923,7 +861,7 @@
                     'a number',
                     function ()
                     {
-                        var actual = eval(encoder.replace('"" + 2'));
+                        var actual = eval(encoder.replaceExpr('"" + 2'));
                         expect(actual).toBe('2');
                     }
                 );
@@ -931,7 +869,7 @@
                     'NaN',
                     function ()
                     {
-                        var actual = eval(encoder.replace('"" + NaN'));
+                        var actual = eval(encoder.replaceExpr('"" + NaN'));
                         expect(actual).toBe('NaN');
                     }
                 );
@@ -1006,8 +944,11 @@
                             encoder.encodeByDict(Object('12345'), undefined, undefined, 10);
                         expect(output1).toBeUndefined();
                         var output2 =
-                            encoder.encodeByDict(Object('12345'), undefined, undefined, 200);
+                            encoder.encodeByDict(Object('12345'), undefined, undefined, 78);
                         expect(output2).toBeUndefined();
+                        var output3 =
+                            encoder.encodeByDict(Object('12345'), undefined, undefined, 200);
+                        expect(output3).toBeUndefined();
                     }
                 );
             }
@@ -1243,7 +1184,7 @@
                         coderNames.forEach(
                             function (thisCoderName)
                             {
-                                if (thisCoderName !== 'simple' && thisCoderName !== coderName)
+                                if (thisCoderName !== coderName)
                                 {
                                     var coder = coders[thisCoderName];
                                     var output = coder.call(encoder, inputData);
@@ -1287,13 +1228,9 @@
                     );
                 }
                 
+                test('CAPITAL_HTML', repeat.bind(null, String.fromCharCode(59999)), 'byCharCodes');
                 test(
-                    'CAPITAL_HTML',
-                    repeat.bind(null, String.fromCharCode(59999)),
-                    'byCharCodes'
-                    );
-                test(
-                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
+                    ['ENTRIES', 'ATOB', 'FILL', 'V8_SRC'],
                     function (length)
                     {
                         var CHAR_CODES =
@@ -1308,27 +1245,27 @@
                 );
                 test('ENTRIES', repeat.bind(null, String.fromCharCode(59999)), 'byDict');
                 test(
-                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
+                    ['ENTRIES', 'ATOB', 'FILL', 'V8_SRC'],
                     createDictTestString.bind(null, 122),
                     'byDictRadix3'
                 );
                 test(
-                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
+                    ['ENTRIES', 'ATOB', 'FILL', 'V8_SRC'],
                     createDictTestString.bind(null, 100),
                     'byDictRadix4'
                 );
                 test(
-                    ['ATOB', 'ENTRIES', 'FILL', 'V8_SRC'],
+                    ['ENTRIES', 'ATOB', 'FILL', 'V8_SRC'],
                     createDictTestString.bind(null, 129),
                     'byDictRadix4AmendedBy1'
                 );
                 test(
-                    ['ATOB', 'ENTRIES', 'FILL', 'NO_IE_SRC'],
+                    ['ENTRIES', 'ATOB', 'FILL', 'NO_IE_SRC'],
                     createDictTestString.bind(null, 364),
                     'byDictRadix4AmendedBy2'
                 );
                 test(
-                    ['ATOB', 'ENTRIES', 'FILL', 'NO_IE_SRC'],
+                    ['ENTRIES', 'ATOB', 'FILL', 'NO_IE_SRC'],
                     createDictTestString.bind(null, 124),
                     'byDictRadix5AmendedBy2'
                 );
@@ -1347,6 +1284,12 @@
         {
             return features.filter(function (feature) { return featureSet[feature]; });
         }
+    }
+    
+    function getEntryFeatures(entry)
+    {
+        var result = JScrewIt.debug.featuresFromMask(entry.featureMask);
+        return result;
     }
     
     function getSubFeatures(feature)
@@ -1398,33 +1341,6 @@
         return result;
     }
     
-    function padBoth(str, length)
-    {
-        str += '';
-        var result = padRight(padLeft(str, length + str.length >> 1), length);
-        return result;
-    }
-    
-    function padLeft(str, length)
-    {
-        str += '';
-        var result = repeat(' ', length - str.length) + str;
-        return result;
-    }
-    
-    function padRight(str, length)
-    {
-        str += '';
-        var result = str + repeat(' ', length - str.length);
-        return result;
-    }
-    
-    function repeat(str, count)
-    {
-        var result = Array(count + 1).join(str);
-        return result;
-    }
-    
     function repeatToFit(str, length)
     {
         var result = repeat(str, Math.ceil(length / str.length)).slice(0, length);
@@ -1455,7 +1371,7 @@
                     entries.forEach(
                         function (entry, index)
                         {
-                            var features = JScrewIt.debug.getEntryFeatures(entry);
+                            var features = getEntryFeatures(entry);
                             var usingDefaultFeature = !features.length;
                             defaultEntryFound |= usingDefaultFeature;
                             var emuFeatures = getEmuFeatures(features);
@@ -1524,7 +1440,7 @@
                 entries.forEach(
                     function (entry, index)
                     {
-                        var features = JScrewIt.debug.getEntryFeatures(entry);
+                        var features = getEntryFeatures(entry);
                         var emuFeatures = getEmuFeatures(features);
                         if (emuFeatures)
                         {
@@ -1555,12 +1471,7 @@
     var featureSet;
     var JScrewIt;
     
-    var TestSuite =
-    {
-        createOutput: createOutput,
-        init: init,
-        listFeatures: listFeatures
-    };
+    var TestSuite = { init: init, listFeatures: listFeatures };
     
     if (global.self)
     {
