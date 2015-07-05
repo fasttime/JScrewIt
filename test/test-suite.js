@@ -1228,6 +1228,8 @@
                     );
                 }
                 
+                this.timeout(5000);
+                
                 test('CAPITAL_HTML', repeat.bind(null, String.fromCharCode(59999)), 'byCharCodes');
                 test(
                     ['ENTRIES', 'ATOB', 'FILL', 'V8_SRC'],
