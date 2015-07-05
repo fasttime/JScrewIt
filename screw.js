@@ -32,12 +32,14 @@ if (command === 'help')
         '\n' +
         '  -c, --wrap-with-call    wrap output with a function call\n' +
         '  -e, --wrap-with-eval    wrap output with eval\n' +
+        '  -d, --diagnostic        print diagnostic report\n' +
         '  -f, --features FEATURES use a list of comma separated fetures\n' +
         '  -t, --trim-code         strip leading and trailing blanks and comments\n' +
         '      --help              display this help and exit\n' +
         '      --version           print version information and exit\n' +
         '\n' +
-        'If no destination file is specified, the output is written to the console.\n' +
+        'If no destination file is specified, the output is written to the console and\n' +
+        'no reports are printed (-d is ignored).\n' +
         'If no source or destination file is specified, the command runs in interactive\n' +
         'mode until interrupted with ^C.';
     console.log(message);
@@ -96,6 +98,7 @@ else
     var input;
     var output;
     var encodingTime;
+    var codingLog;
     try
     {
         input = fs.readFileSync(inputFileName);
@@ -103,6 +106,8 @@ else
         output = JScrewIt.encode(input, options);
         encodingTime = new Date() - before;
         fs.writeFileSync(outputFileName, output);
+        var perfInfo = options.perfInfo;
+        codingLog = perfInfo && perfInfo.codingLog;
     }
     catch (error)
     {
@@ -111,6 +116,11 @@ else
     }
     if (outputFileName)
     {
+        if (codingLog)
+        {
+            var diagnosticReport = cli.createDiagnosticReport(codingLog);
+            console.log(diagnosticReport);
+        }
         var report = cli.createReport(input.length, output.length, encodingTime);
         console.log(report);
     }

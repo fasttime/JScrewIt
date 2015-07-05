@@ -5,10 +5,12 @@
 module.exports =
     function (grunt)
     {
+        var JS_FILES = ['*.js', 'build/**/*.js', 'html/**/*.js', 'src/**/*.js', 'test/**/*.js'];
+        
         // Project configuration.
         grunt.initConfig(
             {
-                clean: { default: ['Features.md', 'coverage', 'lib/**/*.js'] },
+                clean: { default: ['coverage', 'Features.md', 'lib/**/*.js', 'output.txt'] },
                 concat:
                 {
                     default:
@@ -18,6 +20,7 @@ module.exports =
                             'src/preamble',
                             'src/features.js',
                             'src/definers.js',
+                            'src/definitions.js',
                             'src/screw-buffer.js',
                             'src/encoder.js',
                             'src/trim-js.js',
@@ -36,7 +39,7 @@ module.exports =
                 },
                 jscs:
                 {
-                    default: ['*.js', 'src/**/*.js', 'test/**/*.js'],
+                    default: JS_FILES,
                     options:
                     {
                         // Encourage use of abbreviations: "char", "obj", "str".
@@ -103,13 +106,13 @@ module.exports =
                 },
                 jshint:
                 {
-                    default: ['*.js', 'src/**/*.js', 'test/**/*.js'],
+                    default: JS_FILES,
                     options:
                     {
                         curly: true,
                         eqeqeq: true,
                         immed: true,
-                        latedef: true,
+                        latedef: 'nofunc',
                         maxlen: 100,
                         newcap: false,
                         noarg: true,
@@ -153,17 +156,61 @@ module.exports =
         
         grunt.registerTask(
             'feature-doc',
-            'Create Feature Reference documentation',
+            'Create Feature Reference documentation.',
             function ()
             {
-                grunt.file.write('Features.md', require('./make-feature-doc.js')());
+                grunt.file.write('Features.md', require('./build/make-feature-doc.js')());
                 grunt.log.ok('Done.');
+            }
+        );
+        
+        grunt.registerTask(
+            'scan-char-defs',
+            'Analyze all character encodings.',
+            function ()
+            {
+                var runScan = require('./build/scan-char-defs.js');
+                var unusedDefs = runScan();
+                if (unusedDefs)
+                {
+                    grunt.warn(
+                        'There are unused character definitions. See output.txt for details.'
+                    );
+                }
+                else
+                {
+                    grunt.log.ok('Done. All character definitions used.');
+                }
             }
         );
         
         // Default task.
         grunt.registerTask(
             'default',
-            ['clean', 'jshint', 'jscs', 'concat', 'mocha_istanbul', 'uglify', 'feature-doc']
+            [
+                'clean',
+                'jshint',
+                'jscs',
+                'concat',
+                'mocha_istanbul',
+                'scan-char-defs',
+                'uglify',
+                'feature-doc'
+            ]
         );
+        
+        // Quick build task.
+        grunt.registerTask(
+            'quick',
+            [
+                'clean',
+                'jshint',
+                'jscs',
+                'concat',
+                'mocha_istanbul',
+                'uglify'
+            ]
+        );
+        
+        grunt.util.linefeed = '\n';
     };

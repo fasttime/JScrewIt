@@ -120,22 +120,20 @@
         return result;
     }
     
-    function makeEmuFeatureArrayIterator(str, noOverwrite)
+    function makeEmuFeatureEntries(str, regExp)
     {
         var result =
         {
             setUp: function ()
             {
-                if (Array.prototype.entries)
+                if (Array.prototype.entries && regExp.test([].entries()))
                 {
-                    if (noOverwrite)
-                    {
-                        return;
-                    }
+                    return;
                 }
                 else
                 {
-                    var arrayIterator = this.arrayIterator = { };
+                    var arrayIteratorProto = this.arrayIteratorProto = { };
+                    var arrayIterator = Object.create(arrayIteratorProto);
                     var entries = function () { return arrayIterator; };
                     override(this, 'Array.prototype.entries', { value: entries });
                 }
@@ -146,8 +144,8 @@
                     function ()
                     {
                         if (
-                            this === context.arrayIterator ||
-                            /^\[object Array.?Iterator]$/.test(context.Object.toString.call(this)))
+                            this instanceof Object &&
+                            Object.getPrototypeOf(this) === context.arrayIteratorProto)
                         {
                             return str;
                         }
@@ -211,7 +209,7 @@
         return result;
     }
     
-    function makeEmuFeatureWindow(str, noOverwrite)
+    function makeEmuFeatureSelf(str, regExp)
     {
         var result =
         {
@@ -219,7 +217,7 @@
             {
                 if (global.self)
                 {
-                    if (noOverwrite)
+                    if (regExp.test(self + ''))
                     {
                         return;
                     }
@@ -311,6 +309,7 @@
     
     var EMU_FEATURE_INFOS =
     {
+        ARRAY_ITERATOR: makeEmuFeatureEntries('[object Array Iterator]', /^\[object Array.{8,9}]$/),
         ATOB:
         {
             setUp: function ()
@@ -352,7 +351,7 @@
                 return result;
             }
         ),
-        DOMWINDOW: makeEmuFeatureWindow('[object DOMWindow]'),
+        DOMWINDOW: makeEmuFeatureSelf('[object DOMWindow]', /^\[object DOMWindow]$/),
         DOUBLE_QUOTE_ESC_HTML: makeEmuFeatureHtml(
             ['anchor', 'fontcolor', 'fontsize', 'link'],
             function (method)
@@ -367,7 +366,7 @@
                 return result;
             }
         ),
-        ENTRIES: makeEmuFeatureArrayIterator('[object Array Iterator]', true),
+        ENTRIES: makeEmuFeatureEntries('[object Object]', /^\[object /),
         FF_SAFARI_SRC: makeEmuFeatureFunctionSource('function ?() {\n    [native code]\n}'),
         FILL:
         {
@@ -405,7 +404,10 @@
             }
         },
         NO_IE_SRC: makeEmuFeatureFunctionSource('function ?() { [native code] }', true),
-        NO_SAFARI_ARRAY_ITERATOR: makeEmuFeatureArrayIterator('[object Array Iterator]'),
+        NO_SAFARI_ARRAY_ITERATOR: makeEmuFeatureEntries(
+            '[object Array Iterator]',
+            /^\[object Array Iterator]$/
+        ),
         NO_SAFARI_LF:
         {
             setUp: function ()
@@ -436,8 +438,12 @@
                 }
             }
         },
-        SAFARI_ARRAY_ITERATOR: makeEmuFeatureArrayIterator('[object ArrayIterator]'),
-        SELF: makeEmuFeatureWindow('[object Window]', true),
+        SAFARI_ARRAY_ITERATOR: makeEmuFeatureEntries(
+            '[object ArrayIterator]',
+            /^\[object ArrayIterator]$/
+        ),
+        SELF: makeEmuFeatureSelf('[object Window]', /^\[object .*Window]$/),
+        SELF_OBJECT: makeEmuFeatureSelf('[object Object]', /^\[object /),
         UNDEFINED:
         {
             setUp: function ()
@@ -456,7 +462,7 @@
             }
         },
         V8_SRC: makeEmuFeatureFunctionSource('function ?() { [native code] }'),
-        WINDOW: makeEmuFeatureWindow('[object Window]')
+        WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object Window]$/)
     };
     
     var EMU_FEATURES = [];
