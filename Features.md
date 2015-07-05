@@ -100,7 +100,7 @@ Existence of the global object property self whose string representation starts 
 This feature is not available in Node.js. It is also not available inside web workers.
 ### `SELF_OBJECT`
 Existence of the global object property self whose string representation starts with "\[object ".
-This feature is not available in Node.js. It is also not available inside web workers in Safari 8.0 and later versions.
+This feature is not available in Node.js. It is also not available inside web workers in Safari 8.0.
 ### `UNDEFINED`
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
 This behavior is defined by ECMAScript, but Android Browser prior to 4.1.2 does not comply with the specification and so this feature is not available in that browser.

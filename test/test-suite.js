@@ -245,7 +245,7 @@
             }
         );
         describe(
-            'Constants definitions of',
+            'Constant definitions of',
             function ()
             {
                 testConstant('Array', isExpected(Array));

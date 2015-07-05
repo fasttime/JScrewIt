@@ -13,7 +13,7 @@ var incompatibleFeatureMasks;
     
     function checkSelfFeature()
     {
-        // self + '' throws an error inside a web worker in Safari 8.
+        // self + '' throws an error inside a web worker in Safari 8.0.
         var str;
         try
         {
@@ -312,7 +312,7 @@ var incompatibleFeatureMasks;
                 'Existence of the global object property self whose string representation starts ' +
                 'with "[object ".\n' +
                 'This feature is not available in Node.js. It is also not available inside web ' +
-                'workers in Safari 8.0 and later versions.',
+                'workers in Safari 8.0.',
             check: checkSelfFeature.bind(
                 function (str)
                 {
