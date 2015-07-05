@@ -158,11 +158,11 @@ These can be retrieved with [`JScrewIt.commonFeaturesOf`](#jscrewitcommonfeature
 { features: JScrewIt.commonFeaturesOf("IE9", "FF31") }
 ```
 
-The features turn out to be `"NO_SAFARI_LF"`, `"SELF"`, `"UNDEFINED"` and `"WINDOW"`; with this
-knowledge, the definition can be also written as below.
+The features turn out to be `"NO_SAFARI_LF"`, `"SELF"`, `"SELF_OBJECT"`, `"UNDEFINED"` and
+`"WINDOW"`; with this knowledge, the definition can be also written as below.
 
 ```js
-{ features: ["NO_SAFARI_LF", "SELF", "UNDEFINED", "WINDOW"] }
+{ features: ["NO_SAFARI_LF", "SELF", "SELF_OBJECT", "UNDEFINED", "WINDOW"] }
 ```
 
 ### Reference
