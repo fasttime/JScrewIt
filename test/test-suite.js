@@ -410,6 +410,14 @@
                         expect(actual).toEqual([]);
                     }
                 );
+                it(
+                    'does not return implied features',
+                    function ()
+                    {
+                        var actual = JScrewIt.commonFeaturesOf(['V8_SRC', 'WINDOW'], 'FF31');
+                        expect(actual).toEqual(['NO_IE_SRC', 'WINDOW']);
+                    }
+                );
             }
         );
         describe(

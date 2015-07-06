@@ -158,11 +158,12 @@ These can be retrieved with [`JScrewIt.commonFeaturesOf`](#jscrewitcommonfeature
 { features: JScrewIt.commonFeaturesOf("IE9", "FF31") }
 ```
 
-The features turn out to be `"NO_SAFARI_LF"`, `"SELF"`, `"SELF_OBJECT"`, `"UNDEFINED"` and
-`"WINDOW"`; with this knowledge, the definition can be also written as below.
+The features turn out to be `"NO_SAFARI_LF"`, `"UNDEFINED"` and `"WINDOW"`; `"SELF"` and
+`"SELF_OBJECT"` are both implied by `"WINDOW"`, so there is no need to specify them explicitly.
+With this knowledge, the definition can be also written as below.
 
 ```js
-{ features: ["NO_SAFARI_LF", "SELF", "SELF_OBJECT", "UNDEFINED", "WINDOW"] }
+{ features: ["NO_SAFARI_LF", "UNDEFINED", "WINDOW"] }
 ```
 
 ### Reference
@@ -221,7 +222,7 @@ This function throws a `ReferenceError` if some unknown features are specified.
 
 #### <code>**JScrewIt.commonFeaturesOf(*features...*)**</code>
 
-Gets an array of individual features shared by a specified group of features.
+Gets an array of individual, not otherwise implied features shared by a specified group of features.
 
 <dl>
 <dt><code>features</code></dt>

@@ -142,7 +142,7 @@ function processOutputMap(outputMap, entryCount, logLine)
             var outputData2 = outputMap[output2];
             var features1 = outputData1.features;
             var features2 = outputData2.features;
-            for (var index = 0; ; ++index)
+            for (var index = 0;; ++index)
             {
                 var feature1 = features1[index] || '';
                 var feature2 = features2[index] || '';
@@ -250,7 +250,7 @@ function scanChar(char, entryCount, logLine, allCharCount, charDoneCount, callba
     var features = [];
     var featureMask = 0;
     var outputMap = { };
-    for (; ;)
+    for (;;)
     {
         var featureQueries = [];
         var encoder = createModifiedEncoder(features, featureQueries);

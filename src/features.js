@@ -629,7 +629,8 @@ var incompatibleFeatureMasks;
     featuresFromMask =
         function (mask)
         {
-            var result = [];
+            var features = { };
+            var includes = [];
             for (var feature in featureMaskMap)
             {
                 var featureMask = featureMaskMap[feature];
@@ -638,11 +639,18 @@ var incompatibleFeatureMasks;
                     var featureInfo = FEATURE_INFOS[feature];
                     if (featureInfo.check)
                     {
-                        result.push(feature);
+                        features[feature] = true;
+                        Array.prototype.push.apply(includes, featureInfo.includes);
                     }
                 }
             }
-            result.sort();
+            includes.forEach(
+                function (feature)
+                {
+                    delete features[feature];
+                }
+            );
+            var result = Object.keys(features).sort();
             return result;
         };
     
