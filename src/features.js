@@ -629,7 +629,7 @@ var incompatibleFeatureMasks;
     featuresFromMask =
         function (mask)
         {
-            var features = { };
+            var featureSet = { };
             var includes = [];
             for (var feature in featureMaskMap)
             {
@@ -639,7 +639,7 @@ var incompatibleFeatureMasks;
                     var featureInfo = FEATURE_INFOS[feature];
                     if (featureInfo.check)
                     {
-                        features[feature] = true;
+                        featureSet[feature] = true;
                         Array.prototype.push.apply(includes, featureInfo.includes);
                     }
                 }
@@ -647,10 +647,10 @@ var incompatibleFeatureMasks;
             includes.forEach(
                 function (feature)
                 {
-                    delete features[feature];
+                    delete featureSet[feature];
                 }
             );
-            var result = Object.keys(features).sort();
+            var result = Object.keys(featureSet).sort();
             return result;
         };
     
