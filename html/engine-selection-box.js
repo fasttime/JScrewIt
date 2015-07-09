@@ -170,11 +170,7 @@ function createEngineSelectionBox()
         Object.defineProperty(
             comp,
             'features',
-            {
-                configurable: true,
-                enumerable: false,
-                get: function () { return currentFeatures; }
-            }
+            { configurable: true, get: function () { return currentFeatures; } }
         );
         var container = comp.appendChild(document.createElement('DIV'));
         var engineFieldBox = container.appendChild(document.createElement('DIV'));
