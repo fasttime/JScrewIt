@@ -50,7 +50,7 @@ a:active { color: #c00; }
 
 body { background-color: white; color: black; font-family: sans-serif; }
 
-body, button, select { font-size: 13.5pt; }
+body, button, input[type=checkbox], select { font-size: 13.5pt; }
 
 body>* { margin: 0 auto; max-width: 720px; text-align: justify; }
 
@@ -68,6 +68,9 @@ h1
 h2 { font-weight: bold; }
 
 img { background-color: blue; }
+
+/* Hack for Firefox that doesn't interpret font-size on check boxes */
+input[type=checkbox] { height: -moz-calc(13.5pt); width: -moz-calc(13.5pt); }
 
 textarea
 {
@@ -127,7 +130,7 @@ textarea
     </div>
 
     <h2>Compatibility</h2>
-    
+
     <p>JScrewIt itself and the code it generates are compatible with the JavaScript engines listed
     below.
     <ul>
@@ -140,7 +143,7 @@ textarea
         <li>Android Browser 4.0+
         <li>Node.js 0.10.26+
     </ul>
-    
+
     <h2>Links</h2>
 
     <ul>
