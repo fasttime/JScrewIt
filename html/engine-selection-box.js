@@ -166,7 +166,7 @@ function createEngineSelectionBox()
     
     function init()
     {
-        comp = document.createElement('DIV');
+        comp = document.createElement('FIELDSET');
         Object.defineProperty(
             comp,
             'features',
