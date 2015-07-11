@@ -9,7 +9,7 @@ function createRoll()
     {
         var now = +new Date();
         var elapsed = now - startTime;
-        opening = startOpening + elapsed * openSign / 500;
+        opening = startOpening + elapsed * openSign / 250;
         if ((opening - endOpening) * openSign >= 0)
         {
             opening = endOpening;
