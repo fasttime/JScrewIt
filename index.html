@@ -34,6 +34,8 @@ different characters: ! ( ) + [ ]'>
 
 .code>*:first-child { display: inline-block; font-weight: bold; margin-bottom: .25em; }
 
+.engineSelectionBox { background-color: #f0f0f0; }
+
 .execSrc::after { content: 'Executable code'; }
 
 .noWrap { white-space: nowrap; }
@@ -317,11 +319,15 @@ var worker;
 window.onload =
     function ()
     {
+        inputArea.value = inputArea.defaultValue;
+        wrapWithCallBox.checked = wrapWithCallBox.defaultChecked;
         roll = controls.appendChild(createRoll());
         var container = roll.appendChild(document.createElement('DIV'));
         container.className = 'code';
-        container.appendChild(document.createElement('SPAN')).textContent = 'Custom Engine Selection';
+        container.appendChild(document.createElement('SPAN')).textContent =
+            'Custom Engine Selection';
         engineSelectionBox = container.appendChild(createEngineSelectionBox());
+        engineSelectionBox.className = 'engineSelectionBox';
         var changeHandler;
         if (worker)
         {

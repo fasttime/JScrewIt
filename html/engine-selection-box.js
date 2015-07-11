@@ -20,7 +20,7 @@ function createEngineSelectionBox()
             name: 'Chrome',
             versions:
             [
-                { feature: 'CHROME35', number: '35 - 37' },
+                { feature: 'CHROME35', number: '35–37' },
                 { feature: 'CHROME38', number: '38+' }
             ]
         },
@@ -46,7 +46,7 @@ function createEngineSelectionBox()
             name: 'Opera',
             versions:
             [
-                { feature: 'CHROME35', number: '22 - 24' },
+                { feature: 'CHROME35', number: '22–24' },
                 { feature: 'CHROME38', number: '25+' }
             ]
         },
@@ -62,7 +62,7 @@ function createEngineSelectionBox()
             versions:
             [
                 { feature: 'ANDRO400', number: '4.0.x' },
-                { feature: 'ANDRO412', number: '4.1.x - 4.3.x' },
+                { feature: 'ANDRO412', number: '4.1.x–4.3.x' },
                 { feature: 'ANDRO442', number: '4.4.x' }
             ]
         },
@@ -189,8 +189,8 @@ function createEngineSelectionBox()
                         var versionField = engineField.appendChild(document.createElement('DIV'));
                         var style = versionField.style;
                         style.display = 'table-cell';
+                        style.minWidth = '7em';
                         style.paddingLeft = '.5em';
-                        style.minWidth = '6.5em';
                         versionField.appendChild(
                             createCheckBox(
                                 version.number,
