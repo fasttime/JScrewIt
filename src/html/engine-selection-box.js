@@ -1,5 +1,5 @@
 /* exported createEngineSelectionBox */
-/* global JScrewIt */
+/* global art, JScrewIt */
 /* jshint browser: true */
 
 function createEngineSelectionBox()
@@ -97,20 +97,13 @@ function createEngineSelectionBox()
     
     function createCheckBox(text, props)
     {
-        var label = document.createElement('LABEL');
-        var input = label.appendChild(document.createElement('INPUT'));
-        input.style.marginLeft = '0';
-        input.type = 'checkbox';
-        if (text)
-        {
-            label.appendChild(document.createTextNode(text));
-        }
-        for (var prop in props)
-        {
-            var value = props[prop];
-            input[prop] = value;
-        }
-        return label;
+        var checkBox =
+            art(
+                'LABEL',
+                art('INPUT', { style: { marginLeft: '0' }, type: 'checkbox' }, props),
+                text || null
+            );
+        return checkBox;
     }
     
     function dispatchChangeEvent()
@@ -167,53 +160,62 @@ function createEngineSelectionBox()
     
     function init()
     {
-        comp = document.createElement('FIELDSET');
+        var engineFieldBox = art('DIV', { style: { display: 'table' } });
+        var webWorkerField = createCheckBox('Support web workers');
+        var container =
+            art(
+                'DIV',
+                art(
+                    'P',
+                    { style: { margin: '.25em 0 .75em' } },
+                    'Select the engines you want your code to support.'
+                ),
+                engineFieldBox,
+                art('HR'),
+                webWorkerField,
+                art.on('change', updateStatus)
+            );
+        comp = art('FIELDSET', container);
         Object.defineProperty(
             comp,
             'features',
             { configurable: true, get: function () { return currentFeatures; } }
         );
-        var container = comp.appendChild(document.createElement('DIV'));
-        var infoSection = container.appendChild(document.createElement('P'));
-        infoSection.style.margin = '.25em 0 .75em';
-        infoSection.textContent = 'Select the engines you want your code to support.';
-        var engineFieldBox = container.appendChild(document.createElement('DIV'));
-        engineFieldBox.style.display = 'table';
         ENGINE_INFO_LIST.forEach(
             function (engineInfo)
             {
-                var engineField = engineFieldBox.appendChild(document.createElement('DIV'));
-                engineField.style.display = 'table-row';
-                var captionField = engineField.appendChild(document.createElement('DIV'));
-                var style = captionField.style;
-                style.display = 'table-cell';
-                style.paddingRight = '.5em';
-                captionField.textContent = engineInfo.name;
+                var engineField =
+                    art(
+                        'DIV',
+                        { style: { display: 'table-row' } },
+                        art(
+                            'DIV',
+                            { style: { display: 'table-cell', paddingRight: '.5em' } },
+                            engineInfo.name
+                        )
+                    );
+                art(engineFieldBox, engineField);
                 engineInfo.versions.forEach(
                     function (version)
                     {
                         var versionField =
-                            engineField.appendChild(
-                                createCheckBox(
-                                    version.number,
-                                    {
-                                        checked: true,
-                                        feature: version.feature,
-                                        notForWebWorker: version.notForWebWorker
-                                    }
-                                )
+                            createCheckBox(
+                                version.number,
+                                {
+                                    checked: true,
+                                    feature: version.feature,
+                                    notForWebWorker: version.notForWebWorker
+                                }
                             );
                         var style = versionField.style;
                         style.display = 'table-cell';
                         style.paddingLeft = '.5em';
                         style.width = '7.5em';
+                        art(engineField, versionField);
                     }
                 );
             }
         );
-        container.appendChild(document.createElement('HR'));
-        var webWorkerField = container.appendChild(createCheckBox('Support web workers', { }));
-        container.addEventListener('change', updateStatus);
         engineVersionInputs = engineFieldBox.querySelectorAll('INPUT');
         webWorkerInput = webWorkerField.querySelector('INPUT');
         currentFeatures = getFeatures();
