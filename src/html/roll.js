@@ -15,7 +15,7 @@ function createRoll()
             opening = endOpening;
             stop();
         }
-        style.height = comp.scrollHeight * opening + 'px';
+        style.height = opening === 1 ? '' : comp.scrollHeight * opening + 'px';
     }
     
     function rollTo(newEndOpening)

@@ -105,7 +105,7 @@ var input = eval(output); // input contains the string "Hello, world!".
 
 #### Features
 
-> _See also: [Feature Reference](Features.md)_
+> *See also: [Feature Reference](Features.md)*
 
 JScrewIt has the ability to generate JSFuck code that is targeted for a particular set of JavaScript
 engines (web browsers or Node.js).
@@ -362,6 +362,19 @@ This will return an array with the names of all features supported by JScrewIt:
 ```js
 Object.keys(JScrewIt.FEATURE_INFOS)
 ```
+
+## Compatibility
+
+JScrewIt itself and the code it generates are compatible with the JavaScript engines listed below.
+
+- Chrome 35+
+- Internet Explorer 9+
+- Firefox 30+
+- Safari 7.0+
+- Opera 22+
+- Microsoft Edge *(experimental support)*
+- Android Browser 4.x
+- Node.js 0.10.26+
 
 ## Links
 
