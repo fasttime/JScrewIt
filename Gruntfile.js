@@ -17,9 +17,9 @@ module.exports =
             {
                 clean:
                 {
-                    build: ['coverage', 'Features.md', 'output.txt'],
+                    build: ['Features.md', 'output.txt'],
                     html: 'html/**/*.js',
-                    lib: 'lib/**/*.js'
+                    lib: ['coverage', 'lib/**/*.js']
                 },
                 concat:
                 {
@@ -149,11 +149,7 @@ module.exports =
                 mocha_istanbul:
                 {
                     default: 'test/**/*.spec.js',
-                    lib:
-                    {
-                        options: { root: 'lib' },
-                        src: 'test/**/jscrewit.spec.js',
-                    }
+                    lib: { options: { root: 'lib' }, src: 'test/**/jscrewit.spec.js' }
                 },
                 pkg: grunt.file.readJSON('package.json'),
                 uglify:
