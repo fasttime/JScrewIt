@@ -10,23 +10,33 @@ module.exports =
         // Project configuration.
         grunt.initConfig(
             {
-                clean: { default: ['coverage', 'Features.md', 'lib/**/*.js', 'output.txt'] },
+                clean:
+                {
+                    default:
+                    [
+                        'coverage',
+                        'Features.md',
+                        'html/ui.js',
+                        'lib/**/*.js',
+                        'output.txt'
+                    ]
+                },
                 concat:
                 {
                     default:
                     {
                         src:
                         [
-                            'src/preamble',
-                            'src/features.js',
-                            'src/definers.js',
-                            'src/definitions.js',
-                            'src/screw-buffer.js',
-                            'src/encoder.js',
-                            'src/trim-js.js',
-                            'src/jscrewit-base.js',
-                            'src/debug.js',
-                            'src/postamble'
+                            'src/lib/preamble',
+                            'src/lib/features.js',
+                            'src/lib/definers.js',
+                            'src/lib/definitions.js',
+                            'src/lib/screw-buffer.js',
+                            'src/lib/encoder.js',
+                            'src/lib/trim-js.js',
+                            'src/lib/jscrewit-base.js',
+                            'src/lib/debug.js',
+                            'src/lib/postamble'
                         ],
                         dest: 'lib/jscrewit.js'
                     },
@@ -136,7 +146,19 @@ module.exports =
                 pkg: grunt.file.readJSON('package.json'),
                 uglify:
                 {
-                    default: { files: { 'lib/jscrewit.min.js': 'lib/jscrewit.js' } },
+                    html:
+                    {
+                        files:
+                        {
+                            'html/ui.js':
+                            [
+                                'src/html/engine-selection-box.js',
+                                'src/html/roll.js',
+                                'src/html/ui-main.js'
+                            ]
+                        }
+                    },
+                    lib: { files: { 'lib/jscrewit.min.js': 'lib/jscrewit.js' } },
                     options:
                     {
                         compress: { global_defs: { DEBUG: false }, hoist_vars: true },
