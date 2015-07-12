@@ -1,3 +1,4 @@
+/* global art */
 /* exported createRoll */
 /* jshint browser: true */
 
@@ -48,7 +49,7 @@ function createRoll()
         openSign = 0;
     }
     
-    var comp = document.createElement('DIV');
+    var comp = art('DIV');
     Object.defineProperty(comp, 'rollTo', { configurable: true, value: rollTo, writable: true });
     var style = comp.style;
     style.height = '0';
