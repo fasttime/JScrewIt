@@ -136,8 +136,9 @@ function init()
     run.onclick = handleRunClick;
     roll = controls.appendChild(createRoll());
     var container = roll.appendChild(document.createElement('DIV'));
-    container.className = 'code';
-    container.appendChild(document.createElement('SPAN')).textContent = 'Custom Engine Selection';
+    container.className = 'frame';
+    container.appendChild(document.createElement('SPAN')).textContent =
+        'Custom Compatibility Selection';
     engineSelectionBox = container.appendChild(createEngineSelectionBox());
     engineSelectionBox.className = 'engineSelectionBox';
     var changeHandler;

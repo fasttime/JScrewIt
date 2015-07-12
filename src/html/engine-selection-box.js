@@ -99,6 +99,7 @@ function createEngineSelectionBox()
     {
         var label = document.createElement('LABEL');
         var input = label.appendChild(document.createElement('INPUT'));
+        input.style.marginLeft = '0';
         input.type = 'checkbox';
         if (text)
         {
@@ -173,6 +174,9 @@ function createEngineSelectionBox()
             { configurable: true, get: function () { return currentFeatures; } }
         );
         var container = comp.appendChild(document.createElement('DIV'));
+        var infoSection = container.appendChild(document.createElement('P'));
+        infoSection.style.margin = '.25em 0 .75em';
+        infoSection.textContent = 'Select the engines you want your code to support.';
         var engineFieldBox = container.appendChild(document.createElement('DIV'));
         engineFieldBox.style.display = 'table';
         ENGINE_INFO_LIST.forEach(
@@ -181,33 +185,34 @@ function createEngineSelectionBox()
                 var engineField = engineFieldBox.appendChild(document.createElement('DIV'));
                 engineField.style.display = 'table-row';
                 var captionField = engineField.appendChild(document.createElement('DIV'));
-                captionField.style.display = 'table-cell';
+                var style = captionField.style;
+                style.display = 'table-cell';
+                style.paddingRight = '.5em';
                 captionField.textContent = engineInfo.name;
                 engineInfo.versions.forEach(
                     function (version)
                     {
-                        var versionField = engineField.appendChild(document.createElement('DIV'));
+                        var versionField =
+                            engineField.appendChild(
+                                createCheckBox(
+                                    version.number,
+                                    {
+                                        checked: true,
+                                        feature: version.feature,
+                                        notForWebWorker: version.notForWebWorker
+                                    }
+                                )
+                            );
                         var style = versionField.style;
                         style.display = 'table-cell';
-                        style.minWidth = '7em';
                         style.paddingLeft = '.5em';
-                        versionField.appendChild(
-                            createCheckBox(
-                                version.number,
-                                {
-                                    checked: true,
-                                    feature: version.feature,
-                                    notForWebWorker: version.notForWebWorker
-                                }
-                            )
-                        );
+                        style.width = '7.5em';
                     }
                 );
             }
         );
         container.appendChild(document.createElement('HR'));
-        var webWorkerField = container.appendChild(document.createElement('DIV'));
-        webWorkerField.appendChild(createCheckBox('Support web workers', { }));
+        var webWorkerField = container.appendChild(createCheckBox('Support web workers', { }));
         container.addEventListener('change', updateStatus);
         engineVersionInputs = engineFieldBox.querySelectorAll('INPUT');
         webWorkerInput = webWorkerField.querySelector('INPUT');

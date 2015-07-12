@@ -20,9 +20,9 @@ different characters: ! ( ) + [ ]'>
 
 .actions a { float: right; }
 
-.actions, .code, #controls, p { width: 100%; }
+.actions, .frame, #controls, p { width: 100%; }
 
-.code
+.frame
 {
     background-color: #e0e0e0;
     border-radius: .4em;
@@ -31,7 +31,13 @@ different characters: ! ( ) + [ ]'>
     padding: .4em;
 }
 
-.code>*:first-child { display: inline-block; font-weight: bold; margin-bottom: .25em; }
+.frame>*:first-child
+{
+    cursor: default; /* Otherwise Internet Explorer would show an I-beam. */
+    display: inline-block;
+    font-weight: bold;
+    margin-bottom: .25em;
+}
 
 .engineSelectionBox { background-color: #f0f0f0; }
 
@@ -42,6 +48,8 @@ different characters: ! ( ) + [ ]'>
 #compMenu { -webkit-appearance: menulist-button; width: 15em; }
 
 #controls>*:first-child>*:not(:last-child) { margin-right: 1em; }
+
+#wrapWithCallBox { margin-left: 0; }
 
 a { text-decoration: none; }
 
@@ -88,7 +96,7 @@ textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; 
     a plain string.
 
     <div>
-        <label class='code'>
+        <label class='frame'>
             <span>Input</span>
             <textarea id='inputArea' rows='3'>alert(1)</textarea>
         </label>
@@ -101,7 +109,7 @@ textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; 
                         <option value='COMPACT'>All new browsers
                         <option value='NO_IE'>All except Internet Explorer (JSFuck mode)
                         <option value='AUTO'>Only this browser
-                        <option value>Custom…
+                        <option value=''>Custom…
                     </select>
                 </label>
                 <label class='execSrc noWrap'>
@@ -111,7 +119,7 @@ textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; 
             </div>
         </div>
 
-        <label class='code'>
+        <label class='frame'>
             <span>Output</span>
             <textarea id='outputArea' rows='10'></textarea>
             <span class='actions'>
@@ -120,21 +128,6 @@ textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; 
             </span>
         </label>
     </div>
-
-    <h2>Compatibility</h2>
-
-    <p>JScrewIt itself and the code it generates are compatible with the JavaScript engines listed
-    below.
-    <ul>
-        <li>Chrome 35+
-        <li>Internet Explorer 9+
-        <li>Firefox 30+
-        <li>Safari 7.0+
-        <li>Opera 22+
-        <li>Microsoft Edge <i>(experimental support)</i>
-        <li>Android Browser 4.0+
-        <li>Node.js 0.10.26+
-    </ul>
 
     <h2>Links</h2>
 
