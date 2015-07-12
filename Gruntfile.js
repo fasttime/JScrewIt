@@ -5,7 +5,7 @@
 module.exports =
     function (grunt)
     {
-        var JS_FILES = ['*.js', 'build/**/*.js', 'html/**/*.js', 'src/**/*.js', 'test/**/*.js'];
+        var JS_FILES = ['*.js', 'build/**/*.js', 'src/**/*.js', 'test/**/*.js'];
         
         // Project configuration.
         grunt.initConfig(
@@ -16,7 +16,7 @@ module.exports =
                     [
                         'coverage',
                         'Features.md',
-                        'html/ui.js',
+                        'html/**/*.js',
                         'lib/**/*.js',
                         'output.txt'
                     ]
@@ -156,7 +156,8 @@ module.exports =
                                 'src/html/engine-selection-box.js',
                                 'src/html/roll.js',
                                 'src/html/ui-main.js'
-                            ]
+                            ],
+                            'html/worker.js': 'src/html/worker.js'
                         }
                     },
                     lib: { files: { 'lib/jscrewit.min.js': 'lib/jscrewit.js' } },
