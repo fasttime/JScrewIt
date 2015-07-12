@@ -5,25 +5,25 @@
 module.exports =
     function (grunt)
     {
-        var JS_FILES = ['*.js', 'build/**/*.js', 'src/**/*.js', 'test/**/*.js'];
+        var JS_FILES =
+            {
+                default: ['*.js', 'build/**/*.js', 'src/**/*.js', 'test/**/*.js'],
+                html: 'src/html/**/*.js',
+                lib: ['src/lib/**/*.js', 'test/**/*.js']
+            };
         
         // Project configuration.
         grunt.initConfig(
             {
                 clean:
                 {
-                    default:
-                    [
-                        'coverage',
-                        'Features.md',
-                        'html/**/*.js',
-                        'lib/**/*.js',
-                        'output.txt'
-                    ]
+                    build: ['coverage', 'Features.md', 'output.txt'],
+                    html: 'html/**/*.js',
+                    lib: 'lib/**/*.js'
                 },
                 concat:
                 {
-                    default:
+                    lib:
                     {
                         src:
                         [
@@ -49,7 +49,9 @@ module.exports =
                 },
                 jscs:
                 {
-                    default: JS_FILES,
+                    default: JS_FILES.default,
+                    html: JS_FILES.html,
+                    lib: JS_FILES.lib,
                     options:
                     {
                         // Encourage use of abbreviations: "char", "obj", "str".
@@ -116,7 +118,9 @@ module.exports =
                 },
                 jshint:
                 {
-                    default: JS_FILES,
+                    default: JS_FILES.default,
+                    html: JS_FILES.html,
+                    lib: JS_FILES.lib,
                     options:
                     {
                         curly: true,
@@ -142,7 +146,15 @@ module.exports =
                         '-W018': true,
                     }
                 },
-                mocha_istanbul: { default: 'test/**/*.spec.js' },
+                mocha_istanbul:
+                {
+                    default: 'test/**/*.spec.js',
+                    lib:
+                    {
+                        options: { root: 'lib' },
+                        src: 'test/**/jscrewit.spec.js',
+                    }
+                },
                 pkg: grunt.file.readJSON('package.json'),
                 uglify:
                 {
@@ -213,27 +225,23 @@ module.exports =
             'default',
             [
                 'clean',
-                'jshint',
-                'jscs',
+                'jshint:default',
+                'jscs:default',
                 'concat',
-                'mocha_istanbul',
+                'mocha_istanbul:default',
                 'scan-char-defs',
                 'uglify',
                 'feature-doc'
             ]
         );
         
-        // Quick build task.
         grunt.registerTask(
-            'quick',
-            [
-                'clean',
-                'jshint',
-                'jscs',
-                'concat',
-                'mocha_istanbul',
-                'uglify'
-            ]
+            'html', ['clean:html', 'jshint:html', 'jscs:html', 'uglify:html']
+        );
+        
+        grunt.registerTask(
+            'lib',
+            ['clean:lib', 'jshint:lib', 'jscs:lib', 'concat', 'mocha_istanbul:lib', 'uglify:lib']
         );
         
         grunt.util.linefeed = '\n';
