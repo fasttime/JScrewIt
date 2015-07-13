@@ -159,7 +159,7 @@ module.exports =
                         {
                             'html/ui.js':
                             [
-                                'src/html/art.js',
+                                'node_modules/art-js/lib/art.js',
                                 'src/html/engine-selection-box.js',
                                 'src/html/roll.js',
                                 'src/html/ui-main.js'
