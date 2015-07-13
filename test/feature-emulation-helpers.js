@@ -427,17 +427,6 @@
                 );
             }
         },
-        QUOTE:
-        {
-            setUp: function ()
-            {
-                if (!String.prototype.quote)
-                {
-                    var quote = function () { return JSON.stringify(this); };
-                    override(this, 'String.prototype.quote', { value: quote });
-                }
-            }
-        },
         SAFARI_ARRAY_ITERATOR: makeEmuFeatureEntries(
             '[object ArrayIterator]',
             /^\[object ArrayIterator]$/
