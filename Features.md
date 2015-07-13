@@ -84,10 +84,6 @@ Available in Firefox, Chrome 38, Opera 25, Node.js 0.12 and later versions.
 ### `NO_SAFARI_LF`
 A string representation of dynamically generated functions typical for most browsers with the notable exception of Safari.
 More specifically, in this representation, the character at index 22 is a line feed \("\\n"\).
-### `QUOTE`
-Existence of the native function String.prototype.quote.
-This feature is deprecated and not available in any engine.
-Native support only exists in Firefox versions prior to 37.
 ### `SAFARI70`
 Features available in Safari 7.0.
 ### `SAFARI71`

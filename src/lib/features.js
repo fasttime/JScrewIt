@@ -267,17 +267,6 @@ var incompatibleFeatureMasks;
                 return (Function() + '')[22] === '\n';
             }
         },
-        QUOTE:
-        {
-            description:
-                'Existence of the native function String.prototype.quote.\n' +
-                'This feature is deprecated and not available in any engine.\n' +
-                'Native support only exists in Firefox versions prior to 37.',
-            check: function ()
-            {
-                return false;
-            }
-        },
         SAFARI_ARRAY_ITERATOR:
         {
             description:
