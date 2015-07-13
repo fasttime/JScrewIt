@@ -1381,20 +1381,23 @@
                     entries.forEach(
                         function (entry, index)
                         {
-                            var features = getEntryFeatures(entry);
-                            var usingDefaultFeature = !features.length;
-                            defaultEntryFound |= usingDefaultFeature;
-                            var emuFeatures = getEmuFeatures(features);
-                            if (emuFeatures)
+                            if (entry.definition)
                             {
-                                it(
-                                    '(definition ' + index + ')',
-                                    function ()
-                                    {
-                                        var output = decodeEntry(entry);
-                                        verifyOutput(output, emuFeatures);
-                                    }
-                                );
+                                var features = getEntryFeatures(entry);
+                                var usingDefaultFeature = !features.length;
+                                defaultEntryFound |= usingDefaultFeature;
+                                var emuFeatures = getEmuFeatures(features);
+                                if (emuFeatures)
+                                {
+                                    it(
+                                        '(definition ' + index + ')',
+                                        function ()
+                                        {
+                                            var output = decodeEntry(entry);
+                                            verifyOutput(output, emuFeatures);
+                                        }
+                                    );
+                                }
                             }
                         }
                     );

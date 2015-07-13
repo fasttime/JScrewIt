@@ -630,12 +630,6 @@ var expandEntries;
             }
         },
         
-        charEncodeByAtob: function (charCode)
-        {
-            var result = charEncodeByAtob.call(this, charCode);
-            return result;
-        },
-        
         constantDefinitions: CONSTANTS,
         
         createCharCodesEncoding: function (charCodes, long, radix)
@@ -878,7 +872,7 @@ var expandEntries;
             }
         },
         
-        findOptimalSolution: function (entries)
+        findOptimalSolution: function (entries, defaultResolver)
         {
             var result;
             entries = expandEntries(entries);
@@ -888,7 +882,7 @@ var expandEntries;
                 if (this.hasFeatures(entry.featureMask))
                 {
                     var definition = entry.definition;
-                    var solution = this.resolve(definition);
+                    var solution = definition ? this.resolve(definition) : defaultResolver();
                     if (!result || result.length >= solution.length)
                     {
                         result = solution;
@@ -1037,15 +1031,13 @@ var expandEntries;
                     function ()
                     {
                         var entries = CHARACTERS[char];
-                        if (entries != null)
-                        {
-                            solution = this.findOptimalSolution(entries);
-                        }
+                        var defaultCharacterEncoder =
+                            this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
+                        var defaultResolver = defaultCharacterEncoder.bind(this, char);
+                        solution = this.findOptimalSolution(entries, defaultResolver);
                         if (!solution)
                         {
-                            var defaultCharacterEncoder =
-                                this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
-                            solution = defaultCharacterEncoder.call(this, char);
+                            solution = defaultResolver();
                         }
                         if (solution.level == null)
                         {

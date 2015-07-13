@@ -145,18 +145,6 @@ var replaceDigit;
         return solution;
     }
     
-    function createCharByAtobDefinition(charCode)
-    {
-        function definition()
-        {
-            var replacement = this.charEncodeByAtob(charCode);
-            var solution = createSolution(replacement, LEVEL_STRING, false);
-            return solution;
-        }
-        
-        return definition;
-    }
-    
     function createFBCharAtDefinition(offset)
     {
         function definition()
@@ -233,14 +221,6 @@ var replaceDigit;
         }
         
         return definition;
-    }
-    
-    function defineCharByAtob(char)
-    {
-        var charCode = char.charCodeAt(0);
-        var definition = createCharByAtobDefinition(charCode);
-        var entry = define(definition, 'ATOB');
-        return entry;
     }
     
     function defineFBCharAt(offset)
@@ -354,7 +334,7 @@ var replaceDigit;
         'h':
         [
             define('(101)["toString"]("21")[1]'),
-            defineCharByAtob('h')
+            define()
         ],
         'i': '([RP_5_N] + undefined)["10"]',
         'j':
@@ -366,7 +346,7 @@ var replaceDigit;
         'k':
         [
             define('(20)["toString"]("21")'),
-            defineCharByAtob('k')
+            define()
         ],
         'l': '"false"[2]',
         'm':
@@ -389,7 +369,7 @@ var replaceDigit;
         'q':
         [
             define('(212)["toString"]("31")[1]'),
-            defineCharByAtob('q')
+            define()
         ],
         'r': '"true"[1]',
         's': '"false"[3]',
@@ -405,18 +385,18 @@ var replaceDigit;
             define('(self + [])["slice"]("-2")[0]', 'SELF'),
             define('(self + [])["13"]', 'WINDOW'),
             define('(RP_4_N + self)["20"]', 'DOMWINDOW'),
-            defineCharByAtob('w')
+            define()
         ],
         'x':
         [
             define('(101)["toString"]("34")[1]'),
-            defineCharByAtob('x')
+            define()
         ],
         'y': '(RP_3_NO + [Infinity])["10"]',
         'z':
         [
             define('(35)["toString"]("36")'),
-            defineCharByAtob('z')
+            define()
         ],
         
         'A':
@@ -434,7 +414,7 @@ var replaceDigit;
             define('escape(""["italics"]())[2]'),
             define('escape(""["sub"]())[2]'),
             define('(RP_4_N + ""["fontcolor"]())["10"]', 'CAPITAL_HTML'),
-            defineCharByAtob('C')
+            define()
         ],
         'D':
         [
@@ -471,7 +451,7 @@ var replaceDigit;
         'K':
         [
             define('(RP_5_N + ""["strike"]())["10"]', 'CAPITAL_HTML'),
-            defineCharByAtob('K')
+            define()
         ],
         'L':
         [
@@ -489,13 +469,13 @@ var replaceDigit;
         [
             define('(RP_3_NO + PLAIN_OBJECT)["11"]'),
             define('""["fontcolor"]()[2]', 'CAPITAL_HTML'),
-            defineCharByAtob('O')
+            define()
         ],
         'P':
         [
             define('btoa(""["italics"]())[0]', 'ATOB'),
             define('"0"["sup"]()["10"]', 'CAPITAL_HTML'),
-            defineCharByAtob('P')
+            define()
         ],
         'Q':
         [
@@ -581,12 +561,12 @@ var replaceDigit;
             define('escape(FILTER)["20"]'),
             define('escape(false + FILL)["20"]', 'NO_IE_SRC', 'FILL'),
             define('escape(ANY_FUNCTION)[0]', 'IE_SRC'),
-            defineCharByAtob('%')
+            define(undefined, 'ATOB')
         ],
         '&':
         [
             define('""["fontcolor"]("\\"")["13"]', 'DOUBLE_QUOTE_ESC_HTML'),
-            defineCharByAtob('&')
+            define()
         ],
         // '\'':   ,
         '(':
@@ -616,12 +596,12 @@ var replaceDigit;
         ':':
         [
             define('(RegExp() + [])[3]'),
-            defineCharByAtob(':')
+            define()
         ],
         ';':
         [
             define('""["fontcolor"]("NaN\\"")["21"]', 'DOUBLE_QUOTE_ESC_HTML'),
-            defineCharByAtob(';')
+            define()
         ],
         '<':
         [
@@ -640,7 +620,7 @@ var replaceDigit;
         '?':
         [
             define('(RegExp() + [])[2]'),
-            defineCharByAtob('?')
+            define()
         ],
         // '@':    ,
         '[':
