@@ -333,7 +333,7 @@ var replaceDigit;
         ],
         'h':
         [
-            define('(101)["toString"]("21")[1]'),
+            define('101["toString"]("21")[1]'),
             define()
         ],
         'i': '([RP_5_N] + undefined)["10"]',
@@ -345,7 +345,7 @@ var replaceDigit;
         ],
         'k':
         [
-            define('(20)["toString"]("21")'),
+            define('20["toString"]("21")'),
             define()
         ],
         'l': '"false"[2]',
@@ -363,12 +363,12 @@ var replaceDigit;
         ],
         'p':
         [
-            define('(211)["toString"]("31")[1]'),
+            define('211["toString"]("31")[1]'),
             define('(RP_3_NO + btoa(Infinity))["10"]', 'ATOB')
         ],
         'q':
         [
-            define('(212)["toString"]("31")[1]'),
+            define('212["toString"]("31")[1]'),
             define()
         ],
         'r': '"true"[1]',
@@ -381,7 +381,7 @@ var replaceDigit;
         ],
         'w':
         [
-            define('(32)["toString"]("33")'),
+            define('32["toString"]("33")'),
             define('(self + [])["slice"]("-2")[0]', 'SELF'),
             define('(self + [])["13"]', 'WINDOW'),
             define('(RP_4_N + self)["20"]', 'DOMWINDOW'),
@@ -389,13 +389,13 @@ var replaceDigit;
         ],
         'x':
         [
-            define('(101)["toString"]("34")[1]'),
+            define('101["toString"]("34")[1]'),
             define()
         ],
         'y': '(RP_3_NO + [Infinity])["10"]',
         'z':
         [
-            define('(35)["toString"]("36")'),
+            define('35["toString"]("36")'),
             define()
         ],
         
@@ -735,7 +735,7 @@ var replaceDigit;
         ],
         '∞':
         [
-            define('(Infinity)["toLocaleString"]()', 'LOCALE_INFINITY'),
+            define('Infinity["toLocaleString"]()', 'LOCALE_INFINITY'),
             define()
         ]
     });
@@ -764,7 +764,7 @@ var replaceDigit;
         Boolean:        '(false)["constructor"]',
         Date:           'Function("return Date")()',
         Function:       'ANY_FUNCTION["constructor"]',
-        Number:         '(0)["constructor"]',
+        Number:         '0["constructor"]',
         RegExp:         'Function("return/false/")()["constructor"]',
         String:         '("")["constructor"]',
         
