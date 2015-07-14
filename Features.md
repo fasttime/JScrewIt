@@ -62,6 +62,7 @@ A string representation of native functions typical for Internet Explorer.
 Remarkable traits are the presence of a line feed character \("\\n"\) in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 ### `LOCALE_INFINITY`
 Language sensitive string representation of Infinity as "∞".
+Available in Firefox, Chrome 38, Opera 25, Microsoft Edge, Android Browser 4.4.2, Node.js 0.12 and later versions.
 ### `NAME`
 Existence of the name property for functions.
 This feature is not available in Internet Explorer.
@@ -207,6 +208,7 @@ This table lists features available in the most common engines.
 <li><a href="#entries"><code>ENTRIES</code></a>
 <li><a href="#fill"><code>FILL</code></a>
 <li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#locale_infinity"><code>LOCALE_INFINITY</code></a>
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
@@ -246,6 +248,7 @@ This table lists features available in the most common engines.
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
 <li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#locale_infinity"><code>LOCALE_INFINITY</code></a> (Node.js 0.12+)
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
 <li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a> (Node.js 0.12+)

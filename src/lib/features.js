@@ -221,7 +221,10 @@ var incompatibleFeatureMasks;
         },
         LOCALE_INFINITY:
         {
-            description: 'Language sensitive string representation of Infinity as "∞".',
+            description:
+                'Language sensitive string representation of Infinity as "∞".\n' +
+                'Available in Firefox, Chrome 38, Opera 25, Microsoft Edge, Android Browser ' +
+                '4.4.2, Node.js 0.12 and later versions.',
             check: function ()
             {
                 return Infinity.toLocaleString() === '∞';
@@ -470,6 +473,7 @@ var incompatibleFeatureMasks;
                 'ENTRIES',
                 'FILL',
                 'GMT',
+                'LOCALE_INFINITY',
                 'NAME',
                 'NO_SAFARI_LF',
                 'UNDEFINED',
@@ -562,6 +566,7 @@ var incompatibleFeatureMasks;
             [
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'LOCALE_INFINITY',
                 'NAME',
                 'NO_SAFARI_ARRAY_ITERATOR',
                 'NO_SAFARI_LF',
