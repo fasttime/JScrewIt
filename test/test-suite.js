@@ -190,11 +190,13 @@
             'Character definitions of',
             function ()
             {
-                for (var charCode = 0; charCode < 256; ++charCode)
+                var charCode;
+                for (charCode = 0; charCode < 256; ++charCode)
                 {
                     testCharacter(charCode);
                 }
-                for (; charCode < 0x00010000; charCode <<= 1)
+                testCharacter(8734); // ∞
+                for (; charCode <= 0xffff; charCode <<= 1)
                 {
                     testCharacter(charCode + 0x1f);
                 }

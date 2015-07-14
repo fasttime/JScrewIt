@@ -219,6 +219,14 @@ var incompatibleFeatureMasks;
             },
             excludes: ['NO_IE_SRC']
         },
+        LOCALE_INFINITY:
+        {
+            description: 'Language sensitive string representation of Infinity as "∞".',
+            check: function ()
+            {
+                return Infinity.toLocaleString() === '∞';
+            }
+        },
         NAME:
         {
             description:

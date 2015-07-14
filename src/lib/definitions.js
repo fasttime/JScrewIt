@@ -732,6 +732,11 @@ var replaceDigit;
         'ø':
         [
             define('atob("undefinedundefined")["10"]', 'ATOB')
+        ],
+        '∞':
+        [
+            define('(Infinity)["toLocaleString"]()', 'LOCALE_INFINITY'),
+            define()
         ]
     });
     
