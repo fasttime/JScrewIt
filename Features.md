@@ -127,6 +127,7 @@ This table lists features available in the most common engines.
 <li><a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>
 <li><a href="#fill"><code>FILL</code></a> (Firefox 31+)
 <li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#locale_infinity"><code>LOCALE_INFINITY</code></a>
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>)
 <li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>
@@ -147,6 +148,7 @@ This table lists features available in the most common engines.
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Chrome 38+, Opera 25+)
 <li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#locale_infinity"><code>LOCALE_INFINITY</code></a> (Chrome 38+, Opera 25+)
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
 <li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a> (Chrome 38+, Opera 25+)
@@ -224,6 +226,7 @@ This table lists features available in the most common engines.
 <li><a href="#domwindow"><code>DOMWINDOW</code></a> (not in Android Browser 4.4.2+)
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#locale_infinity"><code>LOCALE_INFINITY</code></a> (Android Browser 4.4.2+)
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
