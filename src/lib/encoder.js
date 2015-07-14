@@ -457,6 +457,14 @@ var expandEntries;
         }
     }
     
+    function isStrongBoundRequired(expr, offset, wholeMatch)
+    {
+        var strongBound =
+            isPrecededByOperator(expr, offset) ||
+            isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length);
+        return strongBound;
+    }
+    
     function replaceToken(wholeMatch, number, quotedString, space, literal, offset, expr)
     {
         var replacement;
@@ -472,7 +480,7 @@ var expandEntries;
             {
                 replacement = '+(' + replacement + ')';
             }
-            if (isPrecededByOperator(expr, offset))
+            if (isStrongBoundRequired(expr, offset, wholeMatch))
             {
                 replacement = '(' + replacement + ')';
             }
@@ -488,9 +496,7 @@ var expandEntries;
             {
                 this.throwSyntaxError('Illegal string ' + quotedString);
             }
-            var strongBound =
-                isPrecededByOperator(expr, offset) ||
-                isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length);
+            var strongBound = isStrongBoundRequired(expr, offset, wholeMatch);
             replacement = this.replaceString(str, strongBound);
             if (!replacement)
             {
@@ -517,7 +523,7 @@ var expandEntries;
                 this.throwSyntaxError('Undefined literal ' + literal);
             }
             replacement =
-                isPrecededByOperator(expr, offset) && hasOuterPlus(solution) ?
+                isStrongBoundRequired(expr, offset, wholeMatch) && hasOuterPlus(solution) ?
                 '(' + solution + ')' : solution + '';
         }
         else
