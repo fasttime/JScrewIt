@@ -390,6 +390,32 @@
             }
         },
         IE_SRC: makeEmuFeatureFunctionSource('\nfunction ?() {\n    [native code]\n}\n'),
+        LOCALE_INFINITY:
+        {
+            setUp: function ()
+            {
+                var toLocaleString = Number.prototype.toLocaleString;
+                var value =
+                    function ()
+                    {
+                        var result;
+                        switch (this)
+                        {
+                        case Infinity:
+                            result = '∞';
+                            break;
+                        case -Infinity:
+                            result = '-∞';
+                            break;
+                        default:
+                            result = toLocaleString.apply(this, arguments);
+                            break;
+                        }
+                        return result;
+                    };
+                override(this, 'Number.prototype.toLocaleString', { value: value });
+            }
+        },
         NAME:
         {
             setUp: function ()
