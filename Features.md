@@ -60,6 +60,8 @@ Features available in Internet Explorer 9 or later.
 ### `IE_SRC`
 A string representation of native functions typical for Internet Explorer.
 Remarkable traits are the presence of a line feed character \("\\n"\) in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
+### `LOCALE_INFINITY`
+Language sensitive string representation of Infinity as "∞".
 ### `NAME`
 Existence of the name property for functions.
 This feature is not available in Internet Explorer.
