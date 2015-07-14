@@ -203,7 +203,7 @@ function runScan()
 function scanAllChars(callback)
 {
     var chars = [];
-    for (var charCode = 0; charCode <= 0x00010000; ++charCode)
+    for (var charCode = 0; charCode <= 0xffff; ++charCode)
     {
         var char = String.fromCharCode(charCode);
         var entries = JScrewIt.debug.getCharacterEntries(char);
