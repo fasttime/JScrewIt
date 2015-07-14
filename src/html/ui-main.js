@@ -10,7 +10,7 @@ encodeButton,
 inputArea,
 JScrewIt,
 outputArea,
-run,
+runButton,
 stats,
 wrapWithCallBox
 */
@@ -87,7 +87,7 @@ wrapWithCallBox
         }
     }
 
-    function handleRunClick()
+    function handleRun()
     {
         var value;
         try
@@ -97,13 +97,11 @@ wrapWithCallBox
         catch (error)
         {
             alert(error);
-            return false;
         }
         if (typeof value === 'string')
         {
             alert('"' + value + '"');
         }
-        return false;
     }
 
     function handleWorkerMessage(evt)
@@ -134,7 +132,7 @@ wrapWithCallBox
         inputArea.value = inputArea.defaultValue;
         wrapWithCallBox.checked = wrapWithCallBox.defaultChecked;
         outputArea.oninput = updateStats;
-        run.onclick = handleRunClick;
+        runButton.onclick = handleRun;
         engineSelectionBox = art(createEngineSelectionBox(), { className: 'engineSelectionBox' });
         roll =
             art(

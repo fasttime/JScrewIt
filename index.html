@@ -18,8 +18,6 @@ different characters: ! ( ) + [ ]'>
 
 .actions { display: block; margin: .25em 0 0; }
 
-.actions a { float: right; }
-
 .actions, .frame, #controls, p { width: 100%; }
 
 .frame
@@ -48,6 +46,8 @@ different characters: ! ( ) + [ ]'>
 #compMenu { -webkit-appearance: menulist-button; width: 15em; }
 
 #controls>*:first-child>*:not(:last-child) { margin-right: 1em; }
+
+#runButton { float: right; font-size: 10pt; }
 
 #wrapWithCallBox { margin-left: 0; }
 
@@ -124,7 +124,7 @@ textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; 
             <textarea id='outputArea' rows='10'></textarea>
             <span class='actions'>
                 <span id='stats'>…</span>
-                <a id='run' href='#'>Run this</a>
+                <button id='runButton'>Run this</button>
             </span>
         </label>
     </div>
