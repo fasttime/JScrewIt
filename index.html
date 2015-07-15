@@ -51,13 +51,13 @@ different characters: ! ( ) + [ ]'>
 
 #wrapWithCallBox { margin-left: 0; }
 
-a { text-decoration: none; }
+a:link { color: #00c; text-decoration: none; }
 
-a:link { color: #00c; }
+a:visited { color: #66c; }
 
-a:visited { color: #808; }
+a:hover { text-decoration: underline; }
 
-a:active { color: #c00; }
+a:active { color: #c60; }
 
 body { background-color: white; color: black; font-family: sans-serif; }
 
@@ -69,14 +69,20 @@ header { height: 100px; position: relative; width: 100%; }
 
 h1 { font-size: 2em; font-weight: normal; left: 115px; position: absolute; top: 40px; }
 
-h2 { font-weight: bold; }
+h2 { font-size: 1em; text-align: center; }
 
 img { background-color: blue; }
 
 /* Hack for Firefox that doesn't interpret font-size on check boxes */
 input[type=checkbox] { height: -moz-calc(13.5pt); width: -moz-calc(13.5pt); }
 
+li { display: inline; }
+
+li:not(:last-child)::after { content: ' | '; }
+
 textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; }
+
+ul { font-size: 10pt; padding: 0; }
 
 </style>
 <title>JScrewIt - Write any JavaScript with 6 Characters: ! ( ) + [ ]</title>
@@ -130,13 +136,16 @@ textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; 
     </div>
 
     <h2>Links</h2>
-
     <ul>
-        <li>Documentation and source code on <a
-        href='https://github.com/fasttime/JScrewIt'>GitHub</a>
-        <li>Original discussion at <a
-        href='http://sla.ckers.org/forum/read.php?24,32930'>Sla.ckers.org</a>
-        <li>JSFuck introduction and alternatives on <a
-        href='http://esolangs.org/wiki/JSFuck'>Esolang</a>
+        <!--
+        A closing "</li>" tag prevents the browser from inserting a selectable white space after a
+        link. The content of the ::after pseudo-element is not selectable.
+        -->
+        <li><a href='https://github.com/fasttime/JScrewIt'>Documentation and source code on
+        GitHub</a></li>
+        <li><a href='http://sla.ckers.org/forum/read.php?24,32930'>Original discussion at
+        Sla.ckers.org</a></li>
+        <li><a href='http://esolangs.org/wiki/JSFuck'>JSFuck introduction and alternatives on
+        Esolang</a></li>
     </ul>
 </div>
