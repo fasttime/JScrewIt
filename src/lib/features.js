@@ -89,8 +89,8 @@ var incompatibleFeatureMasks;
             description:
                 'The property that the string representation of Array.prototype.entries() starts ' +
                 'with "[object Array" and ends with "]" at index 21 or 22.\n' +
-                'This feature is available in Firefox and in Chrome 38, Opera 25, Safari 7.1, ' +
-                'Node.js 0.12 and later versions.',
+                'This feature is available in Firefox, Chrome, Opera, and in Safari 7.1, Node.js ' +
+                '0.12 and later versions.',
             check: function ()
             {
                 return Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries());
@@ -161,8 +161,8 @@ var incompatibleFeatureMasks;
             description:
                 'The property that the string representation of Array.prototype.entries() starts ' +
                 'with "[object ".\n' +
-                'This feature is available in Firefox, in Microsoft Edge and in Chrome 38, Opera ' +
-                '25, Safari 7.1, Node.js 0.12 and later versions.',
+                'This feature is available in Firefox, Chrome, Opera, Microsoft Edge, and in ' +
+                'Safari 7.1, Node.js 0.12 and later versions.',
             check: function ()
             {
                 return Array.prototype.entries && /^\[object /.test([].entries());
@@ -231,7 +231,7 @@ var incompatibleFeatureMasks;
         {
             description:
                 'Language sensitive string representation of Infinity as "∞".\n' +
-                'Available in Firefox, Chrome 38, Opera 25, Microsoft Edge, Android Browser ' +
+                'Available in Firefox, Chrome, Opera, Microsoft Edge, and in Android Browser ' +
                 '4.4.2, Node.js 0.12 and later versions.',
             check: function ()
             {
@@ -266,7 +266,7 @@ var incompatibleFeatureMasks;
             description:
                 'The property that the string representation of Array.prototype.entries() ' +
                 'evaluates to "[object Array Iterator]".\n' +
-                'Available in Firefox, Chrome 38, Opera 25, Node.js 0.12 and later versions.',
+                'Available in Firefox, Chrome, Opera, and in Node.js 0.12 and later versions.',
             check: function ()
             {
                 return Array.prototype.entries && [].entries() + '' === '[object Array Iterator]';
@@ -439,28 +439,14 @@ var incompatibleFeatureMasks;
                 'WINDOW'
             ]
         },
-        CHROME35:
+        CHROME41:
         {
-            description: 'Features available in Chrome 35 and Opera 22 or later.',
+            description: 'Features available in Chrome 41 and Opera 28 or later.',
             includes:
             [
                 'ATOB',
                 'DOUBLE_QUOTE_ESC_HTML',
-                'GMT',
-                'NAME',
-                'NO_SAFARI_LF',
-                'UNDEFINED',
-                'V8_SRC',
-                'WINDOW'
-            ]
-        },
-        CHROME38:
-        {
-            description: 'Features available in Chrome 38 and Opera 25 or later.',
-            includes:
-            [
-                'ATOB',
-                'DOUBLE_QUOTE_ESC_HTML',
+                'FROM_CODE_POINT',
                 'GMT',
                 'LOCALE_INFINITY',
                 'NAME',

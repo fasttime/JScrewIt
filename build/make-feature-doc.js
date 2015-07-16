@@ -117,8 +117,7 @@ var LISTS =
         { description: 'Firefox 31+', feature: 'FF31' }
     ],
     [
-        { description: 'Chrome 35+, Opera 22+', feature: 'CHROME35' },
-        { description: 'Chrome 38+, Opera 25+', feature: 'CHROME38' }
+        { description: 'Chrome 41+, Opera 28+', feature: 'CHROME41' }
     ],
     [
         { description: 'Internet Explorer 9+', feature: 'IE9' },

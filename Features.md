@@ -9,7 +9,7 @@ Features available in Android Browser 4.1.2 to 4.3.1.
 Features available in Android Browser 4.4.2 or later.
 ### `ARRAY_ITERATOR`
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
-This feature is available in Firefox and in Chrome 38, Opera 25, Safari 7.1, Node.js 0.12 and later versions.
+This feature is available in Firefox, Chrome, Opera, and in Safari 7.1, Node.js 0.12 and later versions.
 ### `ATOB`
 Existence of the global object functions atob and btoa.
 This feature is not available in Internet Explorer versions prior to 11 and Node.js.
@@ -18,10 +18,8 @@ All features available in the current engine.
 ### `CAPITAL_HTML`
 The property that the various string methods returning HTML code such as String.prototype.big or String.prototype.link have both the tag name and attributes written in capital letters.
 This feature is only available in Internet Explorer.
-### `CHROME35`
-Features available in Chrome 35 and Opera 22 or later.
-### `CHROME38`
-Features available in Chrome 38 and Opera 25 or later.
+### `CHROME41`
+Features available in Chrome 41 and Opera 28 or later.
 ### `COMPACT`
 All new browsers' features.
 No support for Node.js and older browsers like Internet Explorer 10 or Android Browser 4.1.2.
@@ -37,7 +35,7 @@ This feature is not available in Internet Explorer.
 Features available in Microsoft Edge.
 ### `ENTRIES`
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object ".
-This feature is available in Firefox, in Microsoft Edge and in Chrome 38, Opera 25, Safari 7.1, Node.js 0.12 and later versions.
+This feature is available in Firefox, Chrome, Opera, Microsoft Edge, and in Safari 7.1, Node.js 0.12 and later versions.
 ### `FF31`
 Features available in Firefox 31 or later.
 ### `FF_SAFARI_SRC`
@@ -62,7 +60,7 @@ A string representation of native functions typical for Internet Explorer.
 Remarkable traits are the presence of a line feed character \("\\n"\) in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 ### `LOCALE_INFINITY`
 Language sensitive string representation of Infinity as "∞".
-Available in Firefox, Chrome 38, Opera 25, Microsoft Edge, Android Browser 4.4.2, Node.js 0.12 and later versions.
+Available in Firefox, Chrome, Opera, Microsoft Edge, and in Android Browser 4.4.2, Node.js 0.12 and later versions.
 ### `NAME`
 Existence of the name property for functions.
 This feature is not available in Internet Explorer.
@@ -83,7 +81,7 @@ A string representation of native functions typical for most browsers with the n
 A remarkable trait for this feature is the lack of characters in the beginning of the string before "function".
 ### `NO_SAFARI_ARRAY_ITERATOR`
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
-Available in Firefox, Chrome 38, Opera 25, Node.js 0.12 and later versions.
+Available in Firefox, Chrome, Opera, and in Node.js 0.12 and later versions.
 ### `NO_SAFARI_LF`
 A string representation of dynamically generated functions typical for most browsers with the notable exception of Safari.
 More specifically, in this representation, the character at index 22 is a line feed \("\\n"\).
@@ -141,18 +139,19 @@ This table lists features available in the most common engines.
 </td>
 </tr>
 <tr>
-<td>Chrome 35+, Opera 22+</td>
+<td>Chrome 41+, Opera 28+</td>
 <td>
 <ul>
-<li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Chrome 38+, Opera 25+)
+<li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Chrome 38+, Opera 25+)
+<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
+<li><a href="#from_code_point"><code>FROM_CODE_POINT</code></a>
 <li><a href="#gmt"><code>GMT</code></a>
-<li><a href="#locale_infinity"><code>LOCALE_INFINITY</code></a> (Chrome 38+, Opera 25+)
+<li><a href="#locale_infinity"><code>LOCALE_INFINITY</code></a>
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
-<li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a> (Chrome 38+, Opera 25+)
+<li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
 <li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)

@@ -367,11 +367,11 @@ Object.keys(JScrewIt.FEATURE_INFOS)
 
 JScrewIt itself and the code it generates are compatible with the JavaScript engines listed below.
 
-- Chrome 35+
+- Chrome 41+
 - Internet Explorer 9+
 - Firefox 31+
 - Safari 7.0+
-- Opera 22+
+- Opera 28+
 - Microsoft Edge *(experimental support)*
 - Android Browser 4.x
 - Node.js 0.10.26+
