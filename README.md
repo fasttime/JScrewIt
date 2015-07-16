@@ -379,5 +379,4 @@ JScrewIt itself and the code it generates are compatible with the JavaScript eng
 ## Links
 
 * [JScrewIt](http://jscrew.it) online encoder
-* Original discussion at [Sla.ckers.org](http://sla.ckers.org/forum/read.php?24,32930)
 * JSFuck introduction and alternatives on [Esolang](http://esolangs.org/wiki/JSFuck)
