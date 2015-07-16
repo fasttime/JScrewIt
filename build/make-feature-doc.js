@@ -114,7 +114,6 @@ function printRow(label, assignmentMap)
 var LISTS =
 [
     [
-        { description: 'Firefox 30+', feature: 'FF30' },
         { description: 'Firefox 31+', feature: 'FF31' }
     ],
     [
