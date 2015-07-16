@@ -120,6 +120,34 @@
         return result;
     }
     
+    function fromCodePoint()
+    {
+        var codeUnits = [];
+        Array.prototype.forEach.call(
+            arguments,
+            function (arg)
+            {
+                var codePoint = Number(arg);
+                if ((codePoint & 0x1fffff) !== codePoint || codePoint > 0x10ffff)
+                {
+                    throw RangeError(codePoint + ' is not a valid code point');
+                }
+                if (codePoint <= 0xffff)
+                {
+                    codeUnits.push(codePoint);
+                }
+                else
+                {
+                    var highSurrogate = (codePoint - 0x10000 >> 10) + 0xd800;
+                    var lowSurrogate = (codePoint & 0x3ff) + 0xdc00;
+                    codeUnits.push(highSurrogate, lowSurrogate);
+                }
+            }
+        );
+        var result = String.fromCharCode.apply(null, codeUnits);
+        return result;
+    }
+    
     function makeEmuFeatureEntries(str, regExp)
     {
         var result =
@@ -385,7 +413,7 @@
         {
             setUp: function ()
             {
-                override(this, 'String.fromCodePoint', { value: String.fromCharCode });
+                override(this, 'String.fromCodePoint', { value: fromCodePoint });
             }
         },
         GMT:
