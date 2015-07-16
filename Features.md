@@ -43,9 +43,10 @@ A string representation of native functions typically found in Firefox and Safar
 Remarkable traits are the lack of characters in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 ### `FILL`
 Existence of the native function Array.prototype.fill.
-Available in Firefox, Safari 7.1 and later versions and in Microsoft Edge.
+Available in Firefox, Microsoft Edge, and in Safari 7.1 and later versions.
 ### `FROM_CODE_POINT`
 Existence of the function String.fromCodePoint.
+Available in Firefox, Chrome, Opera and Microsoft Edge.
 ### `GMT`
 Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
 Although ECMAScript states that string representation of dates is implementation dependent, most engines align to the same format, making this feature available in all supported engines except Internet Explorer 9 and 10.
@@ -125,6 +126,7 @@ This table lists features available in the most common engines.
 <li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>
 <li><a href="#fill"><code>FILL</code></a>
+<li><a href="#from_code_point"><code>FROM_CODE_POINT</code></a>
 <li><a href="#gmt"><code>GMT</code></a>
 <li><a href="#locale_infinity"><code>LOCALE_INFINITY</code></a>
 <li><a href="#name"><code>NAME</code></a>
@@ -206,6 +208,7 @@ This table lists features available in the most common engines.
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#entries"><code>ENTRIES</code></a>
 <li><a href="#fill"><code>FILL</code></a>
+<li><a href="#from_code_point"><code>FROM_CODE_POINT</code></a>
 <li><a href="#gmt"><code>GMT</code></a>
 <li><a href="#locale_infinity"><code>LOCALE_INFINITY</code></a>
 <li><a href="#name"><code>NAME</code></a>
