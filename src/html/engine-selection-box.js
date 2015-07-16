@@ -12,7 +12,6 @@ function createEngineSelectionBox()
             name: 'Firefox',
             versions:
             [
-                { feature: 'FF30', number: '30' },
                 { feature: 'FF31', number: '31+' }
             ]
         },

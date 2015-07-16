@@ -38,8 +38,6 @@ Features available in Microsoft Edge.
 ### `ENTRIES`
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object ".
 This feature is available in Firefox, in Microsoft Edge and in Chrome 38, Opera 25, Safari 7.1, Node.js 0.12 and later versions.
-### `FF30`
-Features available in Firefox 30 or later.
 ### `FF31`
 Features available in Firefox 31 or later.
 ### `FF_SAFARI_SRC`
@@ -47,7 +45,7 @@ A string representation of native functions typically found in Firefox and Safar
 Remarkable traits are the lack of characters in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 ### `FILL`
 Existence of the native function Array.prototype.fill.
-Available in Firefox 31, Safari 7.1 and later versions and in Microsoft Edge.
+Available in Firefox, Safari 7.1 and later versions and in Microsoft Edge.
 ### `FROM_CODE_POINT`
 Existence of the function String.fromCodePoint.
 ### `GMT`
@@ -120,7 +118,7 @@ This table lists features available in the most common engines.
 <th>Features</th>
 </tr>
 <tr>
-<td>Firefox 30+</td>
+<td>Firefox 31+</td>
 <td>
 <ul>
 <li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
@@ -128,7 +126,7 @@ This table lists features available in the most common engines.
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>
-<li><a href="#fill"><code>FILL</code></a> (Firefox 31+)
+<li><a href="#fill"><code>FILL</code></a>
 <li><a href="#gmt"><code>GMT</code></a>
 <li><a href="#locale_infinity"><code>LOCALE_INFINITY</code></a>
 <li><a href="#name"><code>NAME</code></a>
