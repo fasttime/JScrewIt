@@ -187,7 +187,7 @@ var incompatibleFeatureMasks;
         {
             description:
                 'Existence of the native function Array.prototype.fill.\n' +
-                'Available in Firefox, Safari 7.1 and later versions and in Microsoft Edge.',
+                'Available in Firefox, Microsoft Edge, and in Safari 7.1 and later versions.',
             check: function ()
             {
                 return Array.prototype.fill;
@@ -195,7 +195,9 @@ var incompatibleFeatureMasks;
         },
         FROM_CODE_POINT:
         {
-            description: 'Existence of the function String.fromCodePoint.',
+            description:
+                'Existence of the function String.fromCodePoint.\n' +
+                'Available in Firefox, Chrome, Opera and Microsoft Edge.',
             check: function ()
             {
                 return String.fromCodePoint;
@@ -466,6 +468,7 @@ var incompatibleFeatureMasks;
                 'DOUBLE_QUOTE_ESC_HTML',
                 'ENTRIES',
                 'FILL',
+                'FROM_CODE_POINT',
                 'GMT',
                 'LOCALE_INFINITY',
                 'NAME',
@@ -484,6 +487,7 @@ var incompatibleFeatureMasks;
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FF_SAFARI_SRC',
                 'FILL',
+                'FROM_CODE_POINT',
                 'GMT',
                 'LOCALE_INFINITY',
                 'NAME',
