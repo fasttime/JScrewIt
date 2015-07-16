@@ -646,7 +646,7 @@ var expandEntries;
                 output =
                     charCodes +
                     this.replaceExpr(
-                        '["map"](Function("return String.fromCharCode(parseInt(arguments[0],' +
+                        '["map"](Function("return " + FROM_CHAR_CODE + "(parseInt(arguments[0],' +
                         radix + '))"))["join"]([])'
                     );
             }
@@ -657,16 +657,15 @@ var expandEntries;
                     output =
                         charCodes +
                         this.replaceExpr(
-                            '["map"](Function("return String.fromCharCode(arguments[0])"))' +
+                            '["map"](Function("return " + FROM_CHAR_CODE + "(arguments[0])"))' +
                             '["join"]([])'
                         );
                 }
                 else
                 {
                     output =
-                        this.resolveConstant('Function') + '(' +
-                        this.replaceString('return String.fromCharCode(') + '+' + charCodes + '+' +
-                        this.replaceString(')') + ')()';
+                        this.replaceExpr('Function("return " + FROM_CHAR_CODE + "(" +') +
+                        charCodes + this.replaceExpr('+ ")")()');
                 }
             }
             return output;

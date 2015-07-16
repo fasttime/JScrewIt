@@ -381,6 +381,13 @@
                 override(this, 'Array.prototype.fill', { value: fill });
             }
         },
+        FROM_CODE_POINT:
+        {
+            setUp: function ()
+            {
+                override(this, 'String.fromCodePoint', { value: String.fromCharCode });
+            }
+        },
         GMT:
         {
             setUp: function ()

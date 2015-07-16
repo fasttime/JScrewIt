@@ -48,6 +48,8 @@ Remarkable traits are the lack of characters in the beginning of the string befo
 ### `FILL`
 Existence of the native function Array.prototype.fill.
 Available in Firefox 31, Safari 7.1 and later versions and in Microsoft Edge.
+### `FROM_CODE_POINT`
+Existence of the function String.fromCodePoint.
 ### `GMT`
 Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
 Although ECMAScript states that string representation of dates is implementation dependent, most engines align to the same format, making this feature available in all supported engines except Internet Explorer 9 and 10.

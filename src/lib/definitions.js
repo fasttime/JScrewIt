@@ -799,6 +799,11 @@ var replaceDigit;
             define('[]["fill"]', 'FILL')
         ],
         FILTER:         '[]["filter"]',
+        FROM_CHAR_CODE:
+        [
+            define('"String.fromCharCode"'),
+            define('"String.fromCodePoint"', 'FROM_CODE_POINT')
+        ],
         PLAIN_OBJECT:   'Function("return{}")()',
         
         // Function body extra padding blocks: prepended to a function to align the function's body

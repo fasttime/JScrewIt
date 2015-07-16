@@ -193,6 +193,14 @@ var incompatibleFeatureMasks;
                 return Array.prototype.fill;
             }
         },
+        FROM_CODE_POINT:
+        {
+            description: 'Existence of the function String.fromCodePoint.',
+            check: function ()
+            {
+                return String.fromCodePoint;
+            }
+        },
         GMT:
         {
             description:
