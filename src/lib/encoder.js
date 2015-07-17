@@ -32,6 +32,7 @@ var expandEntries;
         [
             define('A'),
             define('C', 'CAPITAL_HTML'),
+            define('B', 'CAPITAL_HTML', 'ENTRIES'),
             define('A', 'ARRAY_ITERATOR')
         ],
         'F',
@@ -39,11 +40,13 @@ var expandEntries;
         'NaNfalse',
         [
             define('S'),
-            define('R', 'CAPITAL_HTML')
+            define('R', 'CAPITAL_HTML'),
+            define('S', 'CAPITAL_HTML', 'ENTRIES')
         ],
         [
-            define('W'),
-            define('U', 'CAPITAL_HTML')
+            define('U'),
+            define('V', 'ATOB'),
+            define('U', 'ATOB', 'CAPITAL_HTML')
         ],
         'a',
         'false',
@@ -132,7 +135,8 @@ var expandEntries;
         '0A',
         [
             define('0B'),
-            define('0R', 'CAPITAL_HTML')
+            define('0R', 'CAPITAL_HTML'),
+            define('0B', 'ENTRIES')
         ],
         '0i',
         '0j',
@@ -916,8 +920,8 @@ var expandEntries;
         // This value is typically limited by the free memory available on the stack, and since the
         // memory layout of the stack changes at runtime in an unstable way, the maximum safe value
         // cannot be determined exactly.
-        // The lowest recorded value so far is 1844, measured in an Android Browser 4.2.2 running
-        // on an Intel Atom emulator.
+        // The lowest recorded value so far is 1844, measured in an Android Browser 4.2.2 running on
+        // an Intel Atom emulator.
         // Internet Explorer on Windows Phone occasionally failed the extreme decoding test in a
         // non-reproducible manner, although the issue seems to be related to the output size rather
         // than the grouping threshold setting.
