@@ -535,5 +535,5 @@
     };
     
     Object.getOwnPropertyNames(exports).forEach(function (name) { global[name] = exports[name]; });
-
+    
 })(typeof self === 'undefined' ? global : self);

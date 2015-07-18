@@ -827,7 +827,7 @@ var replaceDigit;
         // FHP_2_NO:       '+(+!(+(ANY_FUNCTION + [])[0] + true)+[0])',
         FHP_3_NO:       '+(1 + [+(ANY_FUNCTION + [])[0]])',
         FHP_5_N:        '!!(+(ANY_FUNCTION + [])[0] + true)',
-                
+        
         // Regular padding blocks.
         // The number after "RP_" is the character overhead.
         // The postifx "_S" in the name indicates that the constant always evaluates to a string or
@@ -889,7 +889,7 @@ var replaceDigit;
             var expr = replaceDigit(digit);
             CHARACTERS[digit] = { expr: expr, level: LEVEL_NUMERIC };
         }
-    
+        
     })();
-
+    
 })();

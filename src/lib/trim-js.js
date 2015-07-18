@@ -29,5 +29,5 @@ var trimJS;
             }
             return str;
         };
-
+    
 })();
