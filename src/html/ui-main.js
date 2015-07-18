@@ -19,6 +19,25 @@ wrapWithCallBox
 (function ()
 {
     'use strict';
+    
+    function areEqualArrays(array1, array2)
+    {
+        var index = array1.length;
+        if (index !== array2.length)
+        {
+            return false;
+        }
+        while (index--)
+        {
+            var item1 = array1[index];
+            var item2 = array2[index];
+            if (item1 !== item2)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
     function createWorker()
     {
@@ -69,14 +88,27 @@ wrapWithCallBox
 
     function getOptions()
     {
-        var compatibility = compMenu.options[compMenu.selectedIndex].value;
-        var features =
-            compatibility ?
-            JScrewIt.commonFeaturesOf(compatibility) :
-            engineSelectionBox.features;
         var wrapWith = wrapWithCallBox.checked ? 'call' : 'none';
-        var options = { features: features, wrapWith: wrapWith };
+        var options = { features: currentFeatures, wrapWith: wrapWith };
         return options;
+    }
+
+    function handleCompInput()
+    {
+        var selectedIndex = compMenu.selectedIndex;
+        var compatibility = compMenu.options[selectedIndex].value;
+        var features =
+            compatibility ? JScrewIt.commonFeaturesOf(compatibility) : engineSelectionBox.features;
+        if (outOfSync || !areEqualArrays(features, currentFeatures))
+        {
+            currentFeatures = features;
+            this();
+        }
+        if (selectedIndex !== compMenu.previousIndex)
+        {
+            compMenu.previousIndex = selectedIndex;
+            roll.rollTo(compatibility ? 0 : 1);
+        }
     }
 
     function handleInputAreaKeyUp(evt)
@@ -133,18 +165,6 @@ wrapWithCallBox
         wrapWithCallBox.checked = wrapWithCallBox.defaultChecked;
         outputArea.oninput = updateStats;
         runButton.onclick = handleRun;
-        engineSelectionBox = art(createEngineSelectionBox(), { className: 'engineSelectionBox' });
-        roll =
-            art(
-                createRoll(),
-                art(
-                    'DIV',
-                    { className: 'frame' },
-                    art('SPAN', 'Custom Compatibility Selection'),
-                    engineSelectionBox
-                )
-            );
-        art(controls, roll);
         var changeHandler;
         if (worker)
         {
@@ -162,23 +182,28 @@ wrapWithCallBox
         inputArea.oninput = changeHandler;
         wrapWithCallBox.onchange = changeHandler;
         compMenu.selectedIndex = compMenu.previousIndex = 0;
-        var compMenuHandler =
-            function ()
-            {
-                var selectedIndex = compMenu.selectedIndex;
-                if (selectedIndex !== compMenu.previousIndex)
-                {
-                    compMenu.previousIndex = selectedIndex;
-                    changeHandler();
-                    var compatibility = compMenu.options[compMenu.selectedIndex].value;
-                    roll.rollTo(compatibility ? 0 : 1);
-                }
-            };
-        compMenu.onchange = compMenuHandler;
+        var compHandler = handleCompInput.bind(changeHandler);
+        compMenu.onchange = compHandler;
         // Firefox does not always trigger a change event when an option is selected using the
         // keyboard; we must handle keydown events asynchronously, too.
-        compMenu.onkeydown = setTimeout.bind(null, compMenuHandler);
-        engineSelectionBox.addEventListener('change', changeHandler);
+        compMenu.onkeydown = setTimeout.bind(null, compHandler);
+        engineSelectionBox =
+            art(
+                createEngineSelectionBox(),
+                { className: 'engineSelectionBox' },
+                art.on('input', compHandler)
+            );
+        roll =
+            art(
+                createRoll(),
+                art(
+                    'DIV',
+                    { className: 'frame' },
+                    art('SPAN', 'Custom Compatibility Selection'),
+                    engineSelectionBox
+                )
+            );
+        art(controls, roll);
         if (inputArea.createTextRange)
         {
             var range = inputArea.createTextRange();
@@ -212,7 +237,7 @@ wrapWithCallBox
         waitingForWorker = value;
         outputArea.disabled = value;
     }
-
+    
     function updateError(error)
     {
         alert(error);
@@ -224,11 +249,12 @@ wrapWithCallBox
         updateStats();
     }
 
-    function updateStats(outOfSync)
+    function updateStats(newOutOfSync)
     {
         var length = outputArea.value.length;
         var html = length === 1 ? '1 char' : length + ' chars';
-        if (outOfSync)
+        outOfSync = !!newOutOfSync;
+        if (newOutOfSync)
         {
             if (worker)
             {
@@ -240,7 +266,9 @@ wrapWithCallBox
         stats.innerHTML = html;
     }
 
+    var currentFeatures = [];
     var engineSelectionBox;
+    var outOfSync;
     var outputSet;
     var queuedData;
     var roll;

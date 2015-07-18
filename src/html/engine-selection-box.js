@@ -73,25 +73,6 @@ function createEngineSelectionBox()
         }
     ];
     
-    function areEqualArrays(array1, array2)
-    {
-        var index = array1.length;
-        if (index !== array2.length)
-        {
-            return false;
-        }
-        while (index--)
-        {
-            var item1 = array1[index];
-            var item2 = array2[index];
-            if (item1 !== item2)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-    
     function createCheckBox(text, props)
     {
         var checkBox =
@@ -103,10 +84,10 @@ function createEngineSelectionBox()
         return checkBox;
     }
     
-    function dispatchChangeEvent()
+    function dispatchInputEvent()
     {
         var evt = document.createEvent('Event');
-        evt.initEvent('change', true, false);
+        evt.initEvent('input', true, false);
         comp.dispatchEvent(evt);
     }
     
@@ -218,15 +199,10 @@ function createEngineSelectionBox()
         currentFeatures = getFeatures();
     }
     
-    function updateStatus(evt)
+    function updateStatus()
     {
-        var newFeatures = getFeatures();
-        if (!areEqualArrays(currentFeatures, newFeatures))
-        {
-            currentFeatures = newFeatures;
-            dispatchChangeEvent();
-        }
-        evt.stopPropagation();
+        currentFeatures = getFeatures();
+        dispatchInputEvent();
     }
     
     var comp;
