@@ -111,7 +111,7 @@ module.exports =
                         requireSpacesInFunctionExpression: { beforeOpeningCurlyBrace: true },
                         requireSpacesInsideObjectBrackets: 'all',
                         validateAlignedFunctionParameters: true,
-                        validateIndentation: 4,
+                        validateIndentation: { includeEmptyLines: true, value: 4 },
                         validateParameterSeparator: ', '
                     }
                 },

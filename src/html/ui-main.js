@@ -38,7 +38,7 @@ wrapWithCallBox
         }
         return true;
     }
-
+    
     function createWorker()
     {
         if (typeof Worker !== 'undefined')
@@ -51,7 +51,7 @@ wrapWithCallBox
             { }
         }
     }
-
+    
     function encode()
     {
         var output;
@@ -68,7 +68,7 @@ wrapWithCallBox
         }
         updateOutput(output);
     }
-
+    
     function encodeAsync()
     {
         var options = getOptions();
@@ -85,14 +85,14 @@ wrapWithCallBox
         }
         inputArea.onkeyup = null;
     }
-
+    
     function getOptions()
     {
         var wrapWith = wrapWithCallBox.checked ? 'call' : 'none';
         var options = { features: currentFeatures, wrapWith: wrapWith };
         return options;
     }
-
+    
     function handleCompInput()
     {
         var selectedIndex = compMenu.selectedIndex;
@@ -110,7 +110,7 @@ wrapWithCallBox
             roll.rollTo(compatibility ? 0 : 1);
         }
     }
-
+    
     function handleInputAreaKeyUp(evt)
     {
         if (evt.key !== 'Tab')
@@ -118,7 +118,7 @@ wrapWithCallBox
             encodeAsync();
         }
     }
-
+    
     function handleRun()
     {
         var value;
@@ -135,7 +135,7 @@ wrapWithCallBox
             alert('"' + value + '"');
         }
     }
-
+    
     function handleWorkerMessage(evt)
     {
         if (queuedData)
@@ -158,7 +158,7 @@ wrapWithCallBox
             setWaitingForWorker(false);
         }
     }
-
+    
     function init()
     {
         inputArea.value = inputArea.defaultValue;
@@ -216,7 +216,7 @@ wrapWithCallBox
         }
         inputArea.focus();
     }
-
+    
     function noEncode()
     {
         if (outputSet)
@@ -224,14 +224,14 @@ wrapWithCallBox
             updateStats(true);
         }
     }
-
+    
     function resetOutput()
     {
         outputSet = false;
         outputArea.value = '';
         stats.textContent = '…';
     }
-
+    
     function setWaitingForWorker(value)
     {
         waitingForWorker = value;
@@ -242,13 +242,13 @@ wrapWithCallBox
     {
         alert(error);
     }
-
+    
     function updateOutput(output)
     {
         outputArea.value = output;
         updateStats();
     }
-
+    
     function updateStats(newOutOfSync)
     {
         var length = outputArea.value.length;
@@ -265,7 +265,7 @@ wrapWithCallBox
         outputSet = true;
         stats.innerHTML = html;
     }
-
+    
     var currentFeatures = [];
     var engineSelectionBox;
     var outOfSync;
@@ -274,8 +274,8 @@ wrapWithCallBox
     var roll;
     var waitingForWorker;
     var worker;
-
+    
     window.onload = init;
     createWorker();
-
+    
 })();

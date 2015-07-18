@@ -317,7 +317,6 @@
                                 JScrewIt.encode('', options);
                             };
                         expect(fn).toThrow(Error('Invalid value for option wrapWith'));
-
                     }
                 );
                 it(
@@ -780,7 +779,7 @@
                             );
                         }
                     );
-
+                    
                 })();
                 it(
                     'encodes a string with incomplete groups',
@@ -1500,5 +1499,5 @@
     {
         module.exports = TestSuite;
     }
-
+    
 })(typeof self === 'undefined' ? global : self);
