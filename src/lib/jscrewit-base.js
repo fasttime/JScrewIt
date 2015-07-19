@@ -182,5 +182,5 @@ var setUp;
     {
         module.exports = JScrewIt;
     }
-    
-})();
+}
+)();

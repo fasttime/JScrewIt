@@ -277,5 +277,5 @@ wrapWithCallBox
     
     window.onload = init;
     createWorker();
-    
-})();
+}
+)();

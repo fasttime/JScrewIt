@@ -657,5 +657,5 @@ var incompatibleFeatureMasks;
         available: true
     };
     featureMaskMap.AUTO = availableFeatureMask;
-    
-})();
+}
+)();

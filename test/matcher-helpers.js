@@ -94,4 +94,5 @@
             expect.addAssertion(name, matcher);
         }
     );
-})();
+}
+)();
