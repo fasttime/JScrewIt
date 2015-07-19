@@ -1499,5 +1499,5 @@
     {
         module.exports = TestSuite;
     }
-    
-})(typeof self === 'undefined' ? global : self);
+}
+)(typeof self === 'undefined' ? global : self);

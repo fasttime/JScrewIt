@@ -140,20 +140,22 @@ function createEngineSelectionBox()
     {
         var engineFieldBox = art('DIV', { style: { display: 'table' } });
         var webWorkerField = createCheckBox('Support web workers');
-        var container =
+        comp =
             art(
-                'DIV',
+                'FIELDSET',
                 art(
-                    'P',
-                    { style: { margin: '.25em 0 .75em' } },
-                    'Select the engines you want your code to support.'
-                ),
-                engineFieldBox,
-                art('HR'),
-                webWorkerField,
-                art.on('change', updateStatus)
+                    'DIV',
+                    art(
+                        'P',
+                        { style: { margin: '.25em 0 .75em' } },
+                        'Select the engines you want your code to support.'
+                    ),
+                    engineFieldBox,
+                    art('HR'),
+                    webWorkerField,
+                    art.on('change', updateStatus)
+                )
             );
-        comp = art('FIELDSET', container);
         Object.defineProperty(
             comp,
             'features',

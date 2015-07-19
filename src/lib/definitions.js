@@ -890,6 +890,7 @@ var replaceDigit;
             CHARACTERS[digit] = { expr: expr, level: LEVEL_NUMERIC };
         }
         
-    })();
-    
-})();
+    }
+    )();
+}
+)();

@@ -1135,5 +1135,5 @@ var expandEntries;
             }
             return entries;
         };
-    
-})();
+}
+)();

@@ -36,5 +36,5 @@ var noProto;
             );
             return result;
         };
-    
-})();
+}
+)();
