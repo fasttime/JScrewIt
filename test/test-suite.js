@@ -268,10 +268,6 @@
                 testConstant('ARRAY_ITERATOR', function () { this.toBeArrayIterator(); });
                 testConstant('FILL', function () { this.toBe(Array.prototype.fill); });
                 testConstant('FILTER', function () { this.toBe(Array.prototype.filter); });
-                testConstant(
-                    'FROM_CHAR_CODE',
-                    function () { this.toMatch(/String\.(fromCharCode|fromCodePoint)/); }
-                );
                 testConstant('PLAIN_OBJECT', function () { this.toBePlainObject(); });
             }
         );
