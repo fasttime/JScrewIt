@@ -502,12 +502,12 @@ var replaceDigit;
         [
             define('(RP_4_N + btoa(false))["10"]', 'ATOB'),
             define('""["sub"]()[2]', 'CAPITAL_HTML'),
+            define('(RP_3_NO + PLAIN_OBJECT["toString"]["call"]())["11"]', 'UNDEFINED'),
             define(
                 '(RP_3_NO + ARRAY_ITERATOR["toString"]["call"]())["11"]',
                 'ENTRIES',
                 'UNDEFINED'
-            ),
-            define('(RP_3_NO + PLAIN_OBJECT["toString"]["call"]())["11"]', 'UNDEFINED')
+            )
         ],
         'V':
         [
@@ -559,8 +559,8 @@ var replaceDigit;
         '%':
         [
             define('escape(FILTER)["20"]'),
-            define('escape(false + FILL)["20"]', 'NO_IE_SRC', 'FILL'),
             define('escape(ANY_FUNCTION)[0]', 'IE_SRC'),
+            define('escape(false + FILL)["20"]', 'NO_IE_SRC', 'FILL'),
             define(undefined, 'ATOB')
         ],
         '&':

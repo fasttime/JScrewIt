@@ -885,20 +885,22 @@ var expandEntries;
         {
             var result;
             entries = expandEntries(entries);
-            for (var entryIndex = entries.length; entryIndex--;)
-            {
-                var entry = entries[entryIndex];
-                if (this.hasFeatures(entry.featureMask))
+            entries.forEach(
+                function (entry, entryIndex)
                 {
-                    var definition = entry.definition;
-                    var solution = definition ? this.resolve(definition) : defaultResolver();
-                    if (!result || result.length >= solution.length)
+                    if (this.hasFeatures(entry.featureMask))
                     {
-                        result = solution;
-                        solution.entryIndex = entryIndex;
+                        var definition = entry.definition;
+                        var solution = definition ? this.resolve(definition) : defaultResolver();
+                        if (!result || result.length >= solution.length)
+                        {
+                            result = solution;
+                            solution.entryIndex = entryIndex;
+                        }
                     }
-                }
-            }
+                },
+                this
+            );
             return result;
         },
         
@@ -925,7 +927,6 @@ var expandEntries;
         // Internet Explorer on Windows Phone occasionally failed the extreme decoding test in a
         // non-reproducible manner, although the issue seems to be related to the output size rather
         // than the grouping threshold setting.
-        
         maxGroupThreshold: 1800,
         
         replaceExpr: function (expr)
