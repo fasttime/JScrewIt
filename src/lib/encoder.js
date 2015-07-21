@@ -156,6 +156,13 @@ var expandEntries;
     
     var BASE64_ALPHABET_LO_6 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
     
+    var FROM_CHAR_CODE =
+    [
+        define('fromCharCode'),
+        define('fromCodePoint', 'ATOB', 'FROM_CODE_POINT'),
+        define('fromCodePoint', 'CAPITAL_HTML', 'FROM_CODE_POINT')
+    ];
+    
     CODERS =
     {
         byCharCodes: defineCoder
@@ -645,13 +652,14 @@ var expandEntries;
         createCharCodesEncoding: function (charCodes, long, radix)
         {
             var output;
+            var fromCharCode = this.findBestDefinition(FROM_CHAR_CODE);
             if (radix)
             {
                 output =
                     charCodes +
                     this.replaceExpr(
-                        '["map"](Function("return " + FROM_CHAR_CODE + "(parseInt(arguments[0],' +
-                        radix + '))"))["join"]([])'
+                        '["map"](Function("return String.' + fromCharCode +
+                        '(parseInt(arguments[0],' + radix + '))"))["join"]([])'
                     );
             }
             else
@@ -661,14 +669,14 @@ var expandEntries;
                     output =
                         charCodes +
                         this.replaceExpr(
-                            '["map"](Function("return " + FROM_CHAR_CODE + "(arguments[0])"))' +
-                            '["join"]([])'
+                            '["map"](Function("return String.' + fromCharCode +
+                            '(arguments[0])"))["join"]([])'
                         );
                 }
                 else
                 {
                     output =
-                        this.replaceExpr('Function("return " + FROM_CHAR_CODE + "(" +') +
+                        this.replaceExpr('Function("return String.' + fromCharCode + '(" +') +
                         charCodes + this.replaceExpr('+ ")")()');
                 }
             }
@@ -885,20 +893,22 @@ var expandEntries;
         {
             var result;
             entries = expandEntries(entries);
-            for (var entryIndex = entries.length; entryIndex--;)
-            {
-                var entry = entries[entryIndex];
-                if (this.hasFeatures(entry.featureMask))
+            entries.forEach(
+                function (entry, entryIndex)
                 {
-                    var definition = entry.definition;
-                    var solution = definition ? this.resolve(definition) : defaultResolver();
-                    if (!result || result.length >= solution.length)
+                    if (this.hasFeatures(entry.featureMask))
                     {
-                        result = solution;
-                        solution.entryIndex = entryIndex;
+                        var definition = entry.definition;
+                        var solution = definition ? this.resolve(definition) : defaultResolver();
+                        if (!result || result.length >= solution.length)
+                        {
+                            result = solution;
+                            solution.entryIndex = entryIndex;
+                        }
                     }
-                }
-            }
+                },
+                this
+            );
             return result;
         },
         
@@ -925,7 +935,6 @@ var expandEntries;
         // Internet Explorer on Windows Phone occasionally failed the extreme decoding test in a
         // non-reproducible manner, although the issue seems to be related to the output size rather
         // than the grouping threshold setting.
-        
         maxGroupThreshold: 1800,
         
         replaceExpr: function (expr)
