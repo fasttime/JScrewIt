@@ -201,8 +201,13 @@ module.exports =
             function ()
             {
                 var runScan = require('./build/scan-char-defs.js');
-                var unusedDefs = runScan();
-                if (unusedDefs)
+                var before = new Date();
+                var defsUnused = runScan();
+                var time = new Date() - before;
+                var timeUtils = require('./time-utils.js');
+                var timeStr = timeUtils.formatDuration(time);
+                grunt.log.writeln(timeStr + ' elapsed.');
+                if (defsUnused)
                 {
                     grunt.warn(
                         'There are unused character definitions. See output.txt for details.'
