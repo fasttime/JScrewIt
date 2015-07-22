@@ -23,7 +23,8 @@
     "output.txt",
     "package.json",
     "screw.js",
-    "text-utils.js"
+    "text-utils.js",
+    "time-utils.js"
   ],
   "main": "lib/jscrewit.js",
   "bin": "screw.js",
