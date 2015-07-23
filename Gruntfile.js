@@ -7,7 +7,7 @@ module.exports =
     {
         var JS_FILES =
             {
-                default: ['*.js', 'build/**/*.js', 'src/**/*.js', 'test/**/*.js'],
+                default: ['*.js', 'build/**/*.js', 'src/**/*.js', 'test/**/*.js', 'tools/**/*.js'],
                 html: 'src/html/**/*.js',
                 lib: ['src/lib/**/*.js', 'test/**/*.js']
             };
@@ -204,7 +204,7 @@ module.exports =
                 var before = new Date();
                 var defsUnused = runScan();
                 var time = new Date() - before;
-                var timeUtils = require('./time-utils.js');
+                var timeUtils = require('./tools/time-utils.js');
                 var timeStr = timeUtils.formatDuration(time);
                 grunt.log.writeln(timeStr + ' elapsed.');
                 if (defsUnused)
