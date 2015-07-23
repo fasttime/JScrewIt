@@ -784,11 +784,17 @@ var expandEntries;
         
         encodeByCharCodes: function (input, long, radix, maxLength)
         {
+            var cache = Object.create(null);
             var charCodes =
                 this.replaceNumberArray(
                     Array.prototype.map.call(
                         input,
-                        function (char) { return char.charCodeAt().toString(radix); }
+                        function (char)
+                        {
+                            var charCode =
+                                cache[char] || (cache[char] = char.charCodeAt().toString(radix));
+                            return charCode;
+                        }
                     ),
                     maxLength
                 );
