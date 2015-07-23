@@ -516,7 +516,7 @@
     };
     
     var EMU_FEATURES = [];
-    Object.getOwnPropertyNames(EMU_FEATURE_INFOS).forEach(
+    Object.keys(EMU_FEATURE_INFOS).forEach(
         function (feature)
         {
             var condition = EMU_FEATURE_INFOS[feature].condition;
@@ -534,6 +534,6 @@
         EMU_FEATURES:   EMU_FEATURES,
     };
     
-    Object.getOwnPropertyNames(exports).forEach(function (name) { global[name] = exports[name]; });
+    Object.keys(exports).forEach(function (name) { global[name] = exports[name]; });
 }
 )(typeof self === 'undefined' ? global : self);

@@ -28,7 +28,7 @@ var noProto;
         function (obj)
         {
             var result = Object.create(null);
-            Object.getOwnPropertyNames(obj).forEach(
+            Object.keys(obj).forEach(
                 function (name)
                 {
                     result[name] = obj[name];
