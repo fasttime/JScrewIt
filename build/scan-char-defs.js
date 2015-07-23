@@ -3,7 +3,7 @@
 
 'use strict';
 
-require('../text-utils.js');
+require('../tools/text-utils.js');
 var JScrewIt = require('../lib/jscrewit.js');
 var ProgressBar = require('progress');
 var fs = require('fs');

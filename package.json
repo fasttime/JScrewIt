@@ -15,7 +15,6 @@
   "author": "Francesco Trotta <ft@fasttime.org> (https://github.com/fasttime)",
   "files": [
     "*.md",
-    "cli.js",
     "html",
     "index.html",
     "lib",
@@ -23,8 +22,7 @@
     "output.txt",
     "package.json",
     "screw.js",
-    "text-utils.js",
-    "time-utils.js"
+    "tools"
   ],
   "main": "lib/jscrewit.js",
   "bin": "screw.js",

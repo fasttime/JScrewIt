@@ -14,7 +14,7 @@ var JScrewIt = require('../lib/jscrewit.js');
 require('expectations');
 require('./feature-emulation-helpers.js');
 require('./matcher-helpers.js');
-require('../text-utils.js');
+require('../tools/text-utils.js');
 var TestSuite = require('./test-suite.js');
 
 TestSuite.init(JScrewIt);
