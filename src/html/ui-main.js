@@ -10,7 +10,6 @@ encodeButton,
 inputArea,
 JScrewIt,
 outputArea,
-runButton,
 stats,
 wrapWithCallBox
 */
@@ -164,7 +163,15 @@ wrapWithCallBox
         inputArea.value = inputArea.defaultValue;
         wrapWithCallBox.checked = wrapWithCallBox.defaultChecked;
         outputArea.oninput = updateStats;
-        runButton.onclick = handleRun;
+        art(
+            stats.parentNode,
+            art(
+                'BUTTON',
+                'Run this',
+                { style: { float: 'right', fontSize: '10pt' } },
+                art.on('click', handleRun)
+            )
+        );
         var changeHandler;
         if (worker)
         {

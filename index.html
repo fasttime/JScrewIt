@@ -47,8 +47,6 @@ different characters: ! ( ) + [ ]'>
 
 #controls>*:first-child>*:not(:last-child) { margin-right: 1em; }
 
-#runButton { float: right; font-size: 10pt; }
-
 #wrapWithCallBox { margin-left: 0; }
 
 a:link { color: #00c; text-decoration: none; }
@@ -110,7 +108,7 @@ ul { font-size: 10pt; padding: 0; }
         <div id='controls'>
             <div>
                 <label>Compatibility:
-                    <select autocomplete='off' id='compMenu'>
+                    <select id='compMenu'>
                         <option value='DEFAULT'>All supported engines
                         <option value='COMPACT'>All new browsers
                         <option value='NO_IE'>All except Internet Explorer (JSFuck mode)
@@ -130,7 +128,6 @@ ul { font-size: 10pt; padding: 0; }
             <textarea id='outputArea' rows='10'></textarea>
             <span class='actions'>
                 <span id='stats'>…</span>
-                <button id='runButton'>Run this</button>
             </span>
         </label>
     </div>
