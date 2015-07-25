@@ -6,7 +6,6 @@ compMenu,
 controls,
 createEngineSelectionBox,
 createRoll,
-encodeButton,
 inputArea,
 JScrewIt,
 outputArea,
@@ -160,6 +159,7 @@ wrapWithCallBox
     
     function init()
     {
+        document.querySelector('body>*>div').style.display = 'block';
         inputArea.value = inputArea.defaultValue;
         wrapWithCallBox.checked = wrapWithCallBox.defaultChecked;
         outputArea.oninput = updateStats;
@@ -173,9 +173,10 @@ wrapWithCallBox
             )
         );
         var changeHandler;
+        var encodeButton = controls.querySelector('button');
         if (worker)
         {
-            encodeButton.parentNode.removeChild(encodeButton);
+            controls.removeChild(encodeButton);
             changeHandler = encodeAsync;
             worker.onmessage = handleWorkerMessage;
             encodeAsync();
@@ -210,7 +211,7 @@ wrapWithCallBox
                     engineSelectionBox
                 )
             );
-        art(controls, roll);
+        art(controls.parentNode, roll);
         if (inputArea.createTextRange)
         {
             var range = inputArea.createTextRange();
@@ -282,7 +283,7 @@ wrapWithCallBox
     var waitingForWorker;
     var worker;
     
-    window.onload = init;
+    document.addEventListener('DOMContentLoaded', init);
     createWorker();
 }
 )();

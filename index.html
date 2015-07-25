@@ -18,7 +18,7 @@ different characters: ! ( ) + [ ]'>
 
 .actions { display: block; margin: .25em 0 0; }
 
-.actions, .frame, #controls, p { width: 100%; }
+.actions, .frame, p { width: 100%; }
 
 .frame
 {
@@ -45,7 +45,7 @@ different characters: ! ( ) + [ ]'>
 
 #compMenu { -webkit-appearance: menulist-button; width: 15em; }
 
-#controls>*:first-child>*:not(:last-child) { margin-right: 1em; }
+#controls>*:not(:last-child) { margin-right: 1em; }
 
 #wrapWithCallBox { margin-left: 0; }
 
@@ -62,6 +62,8 @@ body { background-color: white; color: black; font-family: sans-serif; }
 body, button, input[type=checkbox], select { font-size: 13.5pt; }
 
 body>* { margin: 0 auto; max-width: 720px; text-align: justify; }
+
+body>*>div { display: none; }
 
 header { height: 100px; position: relative; width: 100%; }
 
@@ -96,41 +98,47 @@ ul { font-size: 10pt; padding: 0; }
     to write and run any code: <code>!</code> <code>(</code> <code>)</code> <code>+</code>
     <code>[</code> <code>]</code>
 
-    <p>Use the form below to convert your own script. Uncheck <kbd class='execSrc'></kbd> to obtain
-    a plain string.
-
     <div>
-        <label class='frame'>
-            <span>Input</span>
-            <textarea id='inputArea' rows='3'>alert(1)</textarea>
-        </label>
+        <p>Use the form below to convert your own script. Uncheck <kbd class='execSrc'></kbd> to
+        obtain a plain string.
 
-        <div id='controls'>
+        <div>
+            <label class='frame'>
+                <span>Input</span>
+                <textarea id='inputArea' rows='3'>alert(1)</textarea>
+            </label>
+
             <div>
-                <label>Compatibility:
-                    <select id='compMenu'>
-                        <option value='DEFAULT'>All supported engines
-                        <option value='COMPACT'>All new browsers
-                        <option value='NO_IE'>All except Internet Explorer (JSFuck mode)
-                        <option value='AUTO'>Only this browser
-                        <option value=''>Custom…
-                    </select>
-                </label>
-                <label class='execSrc noWrap'>
-                    <input id='wrapWithCallBox' type='checkbox' checked>
-                </label>
-                <button id='encodeButton'>Encode</button>
+                <div id='controls'>
+                    <label>Compatibility:
+                        <select id='compMenu'>
+                            <option value='DEFAULT'>All supported engines
+                            <option value='COMPACT'>All new browsers
+                            <option value='NO_IE'>All except Internet Explorer (JSFuck mode)
+                            <option value='AUTO'>Only this browser
+                            <option value=''>Custom…
+                        </select>
+                    </label>
+                    <label class='execSrc noWrap'>
+                        <input id='wrapWithCallBox' type='checkbox' checked>
+                    </label>
+                    <button>Encode</button>
+                </div>
             </div>
-        </div>
 
-        <label class='frame'>
-            <span>Output</span>
-            <textarea id='outputArea' rows='10'></textarea>
-            <span class='actions'>
-                <span id='stats'>…</span>
-            </span>
-        </label>
+            <label class='frame'>
+                <span>Output</span>
+                <textarea id='outputArea' rows='10'></textarea>
+                <span class='actions'>
+                    <span id='stats'>…</span>
+                </span>
+            </label>
+        </div>
     </div>
+
+    <noscript>
+        <p>You must enable JavaScript to use JScrewIt.
+    </noscript>
 
     <h2>Links</h2>
     <ul>
