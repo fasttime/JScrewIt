@@ -105,7 +105,7 @@ wrapWithCallBox
         if (selectedIndex !== compMenu.previousIndex)
         {
             compMenu.previousIndex = selectedIndex;
-            roll.rollTo(compatibility ? 0 : 1);
+            roll.rollTo(+!compatibility);
         }
     }
     
@@ -201,16 +201,16 @@ wrapWithCallBox
                 { className: 'engineSelectionBox' },
                 art.on('input', compHandler)
             );
-        roll =
+        roll = createRoll();
+        art(
+            roll.container,
             art(
-                createRoll(),
-                art(
-                    'DIV',
-                    { className: 'frame' },
-                    art('SPAN', 'Custom Compatibility Selection'),
-                    engineSelectionBox
-                )
-            );
+                'DIV',
+                { className: 'frame' },
+                art('SPAN', 'Custom Compatibility Selection'),
+                engineSelectionBox
+            )
+        );
         art(controls.parentNode, roll);
         if (inputArea.createTextRange)
         {
