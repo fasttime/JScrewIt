@@ -6,6 +6,23 @@ function createRoll()
 {
     'use strict';
     
+    function init()
+    {
+        var container = art('DIV');
+        containerStyle = container.style;
+        containerStyle.display = 'none';
+        comp = art('DIV', container);
+        comp.container = container;
+        Object.defineProperty(
+            comp,
+            'rollTo',
+            { configurable: true, value: rollTo, writable: true }
+        );
+        compStyle = comp.style;
+        compStyle.height = '0';
+        compStyle.overflowY = 'hidden';
+    }
+    
     function progress()
     {
         var now = +new Date();
@@ -16,7 +33,8 @@ function createRoll()
             opening = endOpening;
             stop();
         }
-        style.height = opening === 1 ? '' : comp.scrollHeight * opening + 'px';
+        compStyle.height = opening === 1 ? '' : comp.scrollHeight * opening + 'px';
+        containerStyle.display = opening === 0 ? 'none' : '';
     }
     
     function rollTo(newEndOpening)
@@ -49,17 +67,17 @@ function createRoll()
         openSign = 0;
     }
     
-    var comp = art('DIV');
-    Object.defineProperty(comp, 'rollTo', { configurable: true, value: rollTo, writable: true });
-    var style = comp.style;
-    style.height = '0';
-    style.overflowY = 'hidden';
-    var opening = 0;
-    var openSign = 0;
-    var startOpening;
+    var comp;
+    var compStyle;
+    var containerStyle;
     var endOpening;
-    var startTime;
     var interval;
+    var openSign = 0;
+    var opening = 0;
+    var startOpening;
+    var startTime;
+    
+    init();
     
     return comp;
 }
