@@ -5,6 +5,10 @@
 JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters to
 write and run any code: `!` `(` `)` `+` `[` `]`
 
+Play with it now at [**jscrew.it**](http://jscrew.it), or give a look at
+[jQuery *Screwed*](https://github.com/fasttime/jquery-screwed) for a real example: a working version
+of jQuery consisting of only six different characters.
+
 JScrewIt is a fork of [JSFuck](https://github.com/aemkei/jsfuck) that adds substantial enhancements
 to the original implementation.
 * Options to optimize code for a particular set of JavaScript engines or even just for your browser:
@@ -12,11 +16,7 @@ to the original implementation.
 * Support for all modern JavaScript engines.
 * Neat large file encoding.
 
-Play with it now at [**jscrew.it**](http://jscrew.it), or give a look at
-[jQuery *Screwed*](https://github.com/fasttime/jquery-screwed) for a real example: a working version
-of jQuery consisting of only six different characters.
-
-## Example
+### Example
 
 The following source will do an `alert(1)` in any browser, including Internet Explorer:
 
@@ -50,9 +50,9 @@ The following source will do an `alert(1)` in any browser, including Internet Ex
 ])()
 ``` 
 
-## Usage
+## Setup Instructions
 
-### Installation
+### In the Browser
 
 To use JScrewIt in your project, download
 [jscrewit.js](https://github.com/fasttime/JScrewIt/blob/master/lib/jscrewit.js) or
@@ -69,6 +69,8 @@ Alternatively, you can hotlink the online file.
 <script src="https://rawgithub.com/fasttime/JScrewIt/master/lib/jscrewit.min.js"></script>
 ```
 
+### In Node.js
+
 If you are using Node.js, you can install JScrewIt with [npm](https://www.npmjs.org).
 
 ```
@@ -81,9 +83,9 @@ Then you can include it in your code.
 var JScrewIt = require("jscrewit");
 ```
 
-### Encoding
+## Usage
 
-#### Basics
+### Basics
 
 This will encode the `alert(1)` example shown above and run it using `eval`.
 
@@ -103,7 +105,7 @@ var output = JScrewIt.encode("Hello, world!");
 var input = eval(output); // input contains the string "Hello, world!".
 ```
 
-#### Features
+### Features
 
 > *See also: [Feature Reference](Features.md)*
 
@@ -166,7 +168,7 @@ With this knowledge, the definition can be also written as below.
 { features: ["NO_SAFARI_LF", "UNDEFINED", "WINDOW"] }
 ```
 
-### Reference
+## Reference
 
 #### <code>**JScrewIt.areFeaturesAvailable(*features*)**</code>
 
