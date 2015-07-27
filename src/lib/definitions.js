@@ -419,7 +419,9 @@ var replaceDigit;
         'D':
         [
             define('escape("]")[2]'),
-            define('btoa("00")[1]', 'ATOB')
+            define('btoa("00")[1]', 'ATOB'),
+            define('(RP_3_NO + document)["11"]', 'DOCUMENT'),
+            define('(document + [])["12"]', 'HTMLDOCUMENT')
         ],
         'E':
         [
@@ -441,7 +443,8 @@ var replaceDigit;
         'H':
         [
             define('btoa(true)[1]', 'ATOB'),
-            define('""["link"]()[3]', 'CAPITAL_HTML')
+            define('""["link"]()[3]', 'CAPITAL_HTML'),
+            define('(RP_3_NO + document)["11"]', 'HTMLDOCUMENT')
         ],
         'I': '"Infinity"[0]',
         'J':
@@ -456,13 +459,15 @@ var replaceDigit;
         'L':
         [
             define('btoa(".")[0]', 'ATOB'),
-            define('(RP_3_NO + ""["fontcolor"]())["11"]', 'CAPITAL_HTML')
+            define('(RP_3_NO + ""["fontcolor"]())["11"]', 'CAPITAL_HTML'),
+            define('(document + [])["11"]', 'HTMLDOCUMENT')
         ],
         'M':
         [
             define('btoa(0)[0]', 'ATOB'),
             define('""["small"]()[2]', 'CAPITAL_HTML'),
-            define('(RP_4_N + Date())["30"]', 'GMT')
+            define('(RP_4_N + Date())["30"]', 'GMT'),
+            define('(document + [])["10"]', 'HTMLDOCUMENT')
         ],
         'N': '"NaN"[0]',
         'O':
@@ -496,7 +501,8 @@ var replaceDigit;
         [
             define('btoa(NaN)[0]', 'ATOB'),
             define('""["fontcolor"]([])["20"]', 'CAPITAL_HTML'),
-            define('(RP_3_NO + Date())["30"]', 'GMT')
+            define('(RP_3_NO + Date())["30"]', 'GMT'),
+            define('(RP_1_NO + document)["10"]', 'HTMLDOCUMENT')
         ],
         'U':
         [
