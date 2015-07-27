@@ -776,6 +776,11 @@ var replaceDigit;
         [
             define('Function("return btoa")()', 'ATOB')
         ],
+        document:
+        [
+            define('Function("return document")()', 'DOCUMENT'),
+            define('Function("return document")()', 'HTMLDOCUMENT')
+        ],
         escape:         'Function("return escape")()',
         self:
         [

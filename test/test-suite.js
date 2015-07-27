@@ -1,4 +1,17 @@
-/* global atob, btoa, emuDo, emuEval, EMU_FEATURES, expect, global, module, repeat, self */
+/*
+global
+atob,
+btoa,
+document,
+emuDo,
+emuEval,
+EMU_FEATURES,
+expect,
+global,
+module,
+repeat,
+self
+*/
 /* jshint mocha: true, nonstandard: true */
 
 (function (global)
@@ -260,6 +273,7 @@
                 
                 testConstant('atob', function () { this.toBe(atob); });
                 testConstant('btoa', function () { this.toBe(btoa); });
+                testConstant('document', function () { this.toBe(document); });
                 testConstant('escape', isExpected(escape));
                 testConstant('self', function () { this.toBe(self); });
                 testConstant('unescape', isExpected(unescape));
