@@ -1,4 +1,4 @@
-/* global self */
+/* global document, self */
 
 var FEATURE_INFOS;
 
@@ -129,6 +129,17 @@ var incompatibleFeatureMasks;
                 return available;
             }
         },
+        DOCUMENT:
+        {
+            description:
+                'Existence of the global object property document having the string ' +
+                'representation "[object Document]".',
+            check: function ()
+            {
+                return typeof document === 'object' && document + '' === '[object Document]';
+            },
+            excludes: ['HTMLDOCUMENT']
+        },
         DOMWINDOW:
         {
             description:
@@ -215,6 +226,17 @@ var incompatibleFeatureMasks;
             {
                 return /^.{25}GMT/.test(Date());
             }
+        },
+        HTMLDOCUMENT:
+        {
+            description:
+                'Existence of the global object property document having the string ' +
+                'representation "[object HTMLDocument]".',
+            check: function ()
+            {
+                return typeof document === 'object' && document + '' === '[object HTMLDocument]';
+            },
+            excludes: ['DOCUMENT']
         },
         IE_SRC:
         {
