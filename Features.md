@@ -25,6 +25,8 @@ All new browsers' features.
 No support for Node.js and older browsers like Internet Explorer 10 or Android Browser 4.1.2.
 ### `DEFAULT`
 Minimun feature level, compatible with all supported engines.
+### `DOCUMENT`
+Existence of the global object property document having the string representation "\[object Document\]".
 ### `DOMWINDOW`
 Existence of the global object property self having the string representation "\[object DOMWindow\]".
 Only available in Android Browser versions prior to 4.4.2.
@@ -50,6 +52,8 @@ Available in Firefox, Chrome, Opera and Microsoft Edge.
 ### `GMT`
 Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
 Although ECMAScript states that string representation of dates is implementation dependent, most engines align to the same format, making this feature available in all supported engines except Internet Explorer 9 and 10.
+### `HTMLDOCUMENT`
+Existence of the global object property document having the string representation "\[object HTMLDocument\]".
 ### `IE10`
 Features available in Internet Explorer 10 or later.
 ### `IE11`

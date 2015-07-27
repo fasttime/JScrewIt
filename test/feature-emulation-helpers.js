@@ -1,4 +1,4 @@
-/* global global, self */
+/* global document, global, self */
 
 (function (global)
 {
@@ -145,6 +145,30 @@
             }
         );
         var result = String.fromCharCode.apply(null, codeUnits);
+        return result;
+    }
+    
+    function makeEmuFeatureDocument(str)
+    {
+        var result =
+        {
+            setUp: function ()
+            {
+                if (global.document)
+                {
+                    if (document + '' === str)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    override(this, 'document', { value: { } });
+                }
+                var valueOf = function () { return str; };
+                override(this, 'document.valueOf', { value: valueOf });
+            }
+        };
         return result;
     }
     
@@ -379,6 +403,7 @@
                 return result;
             }
         ),
+        DOCUMENT: makeEmuFeatureDocument('[object Document]'),
         DOMWINDOW: makeEmuFeatureSelf('[object DOMWindow]', /^\[object DOMWindow]$/),
         DOUBLE_QUOTE_ESC_HTML: makeEmuFeatureHtml(
             ['anchor', 'fontcolor', 'fontsize', 'link'],
@@ -424,6 +449,7 @@
                 override(this, 'Date', { value: Date });
             }
         },
+        HTMLDOCUMENT: makeEmuFeatureDocument('[object HTMLDocument]'),
         IE_SRC: makeEmuFeatureFunctionSource('\nfunction ?() {\n    [native code]\n}\n'),
         LOCALE_INFINITY:
         {
