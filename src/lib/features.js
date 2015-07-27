@@ -133,7 +133,9 @@ var incompatibleFeatureMasks;
         {
             description:
                 'Existence of the global object property document having the string ' +
-                'representation "[object Document]".',
+                'representation "[object Document]".\n' +
+                'This feature is only available in Internet Explorer 9 and 10. It is not ' +
+                'available inside web workers.',
             check: function ()
             {
                 return typeof document === 'object' && document + '' === '[object Document]';
@@ -231,7 +233,9 @@ var incompatibleFeatureMasks;
         {
             description:
                 'Existence of the global object property document having the string ' +
-                'representation "[object HTMLDocument]".',
+                'representation "[object HTMLDocument]".\n' +
+                'This feature is not available in Internet Explorer versions prior to 11 and ' +
+                'Node.js. It is also not available inside web workers.',
             check: function ()
             {
                 return typeof document === 'object' && document + '' === '[object HTMLDocument]';
@@ -408,7 +412,7 @@ var incompatibleFeatureMasks;
                 'All new browsers\' features.\n' +
                 'No support for Node.js and older browsers like Internet Explorer 10 or Android ' +
                 'Browser 4.1.2.',
-            includes: ['ATOB', 'GMT', 'UNDEFINED', 'WINDOW']
+            includes: ['ATOB', 'GMT', 'HTMLDOCUMENT', 'UNDEFINED', 'WINDOW']
         },
         NO_IE:
         {
@@ -427,6 +431,7 @@ var incompatibleFeatureMasks;
                 'DOMWINDOW',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'HTMLDOCUMENT',
                 'NAME',
                 'NO_SAFARI_LF',
                 'V8_SRC'
@@ -441,6 +446,7 @@ var incompatibleFeatureMasks;
                 'DOMWINDOW',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'HTMLDOCUMENT',
                 'NAME',
                 'NO_SAFARI_LF',
                 'UNDEFINED',
@@ -455,6 +461,7 @@ var incompatibleFeatureMasks;
                 'ATOB',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'HTMLDOCUMENT',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_SAFARI_LF',
@@ -472,6 +479,7 @@ var incompatibleFeatureMasks;
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FROM_CODE_POINT',
                 'GMT',
+                'HTMLDOCUMENT',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_SAFARI_ARRAY_ITERATOR',
@@ -492,6 +500,7 @@ var incompatibleFeatureMasks;
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
+                'HTMLDOCUMENT',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_SAFARI_LF',
@@ -511,6 +520,7 @@ var incompatibleFeatureMasks;
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
+                'HTMLDOCUMENT',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_SAFARI_ARRAY_ITERATOR',
@@ -522,12 +532,21 @@ var incompatibleFeatureMasks;
         IE9:
         {
             description: 'Features available in Internet Explorer 9 or later.',
-            includes: ['CAPITAL_HTML', 'IE_SRC', 'NO_SAFARI_LF', 'UNDEFINED', 'WINDOW']
+            includes: ['CAPITAL_HTML', 'DOCUMENT', 'IE_SRC', 'NO_SAFARI_LF', 'UNDEFINED', 'WINDOW']
         },
         IE10:
         {
             description: 'Features available in Internet Explorer 10 or later.',
-            includes: ['ATOB', 'CAPITAL_HTML', 'IE_SRC', 'NO_SAFARI_LF', 'UNDEFINED', 'WINDOW']
+            includes:
+            [
+                'ATOB',
+                'CAPITAL_HTML',
+                'DOCUMENT',
+                'IE_SRC',
+                'NO_SAFARI_LF',
+                'UNDEFINED',
+                'WINDOW'
+            ]
         },
         IE11:
         {
@@ -537,6 +556,7 @@ var incompatibleFeatureMasks;
                 'ATOB',
                 'CAPITAL_HTML',
                 'GMT',
+                'HTMLDOCUMENT',
                 'IE_SRC',
                 'NO_SAFARI_LF',
                 'UNDEFINED',
@@ -586,6 +606,7 @@ var incompatibleFeatureMasks;
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FF_SAFARI_SRC',
                 'GMT',
+                'HTMLDOCUMENT',
                 'NAME',
                 'UNDEFINED',
                 'WINDOW'
@@ -601,6 +622,7 @@ var incompatibleFeatureMasks;
                 'FF_SAFARI_SRC',
                 'FILL',
                 'GMT',
+                'HTMLDOCUMENT',
                 'NAME',
                 'SAFARI_ARRAY_ITERATOR',
                 'UNDEFINED',
