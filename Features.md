@@ -27,6 +27,7 @@ No support for Node.js and older browsers like Internet Explorer 10 or Android B
 Minimun feature level, compatible with all supported engines.
 ### `DOCUMENT`
 Existence of the global object property document having the string representation "\[object Document\]".
+This feature is only available in Internet Explorer 9 and 10. It is not available inside web workers.
 ### `DOMWINDOW`
 Existence of the global object property self having the string representation "\[object DOMWindow\]".
 Only available in Android Browser versions prior to 4.4.2.
@@ -54,6 +55,7 @@ Presence of the text "GMT" after the first 25 characters in the string returned 
 Although ECMAScript states that string representation of dates is implementation dependent, most engines align to the same format, making this feature available in all supported engines except Internet Explorer 9 and 10.
 ### `HTMLDOCUMENT`
 Existence of the global object property document having the string representation "\[object HTMLDocument\]".
+This feature is not available in Internet Explorer versions prior to 11 and Node.js. It is also not available inside web workers.
 ### `IE10`
 Features available in Internet Explorer 10 or later.
 ### `IE11`
@@ -132,6 +134,7 @@ This table lists features available in the most common engines.
 <li><a href="#fill"><code>FILL</code></a>
 <li><a href="#from_code_point"><code>FROM_CODE_POINT</code></a>
 <li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#htmldocument"><code>HTMLDOCUMENT</code></a>
 <li><a href="#locale_infinity"><code>LOCALE_INFINITY</code></a>
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>)
@@ -154,6 +157,7 @@ This table lists features available in the most common engines.
 <li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#from_code_point"><code>FROM_CODE_POINT</code></a>
 <li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#htmldocument"><code>HTMLDOCUMENT</code></a>
 <li><a href="#locale_infinity"><code>LOCALE_INFINITY</code></a>
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
@@ -173,7 +177,9 @@ This table lists features available in the most common engines.
 <ul>
 <li><a href="#atob"><code>ATOB</code></a> (Internet Explorer 10+)
 <li><a href="#capital_html"><code>CAPITAL_HTML</code></a>
+<li><a href="#document"><code>DOCUMENT</code></a> (not in Internet Explorer 11)
 <li><a href="#gmt"><code>GMT</code></a> (Internet Explorer 11)
+<li><a href="#htmldocument"><code>HTMLDOCUMENT</code></a> (Internet Explorer 11)
 <li><a href="#ie_src"><code>IE_SRC</code></a>
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
 <li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
@@ -194,6 +200,7 @@ This table lists features available in the most common engines.
 <li><a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>
 <li><a href="#fill"><code>FILL</code></a> (Safari 7.1+)
 <li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#htmldocument"><code>HTMLDOCUMENT</code></a>
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>)
 <li><a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a> (Safari 7.1+)
@@ -214,6 +221,7 @@ This table lists features available in the most common engines.
 <li><a href="#fill"><code>FILL</code></a>
 <li><a href="#from_code_point"><code>FROM_CODE_POINT</code></a>
 <li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#htmldocument"><code>HTMLDOCUMENT</code></a>
 <li><a href="#locale_infinity"><code>LOCALE_INFINITY</code></a>
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
@@ -234,6 +242,7 @@ This table lists features available in the most common engines.
 <li><a href="#domwindow"><code>DOMWINDOW</code></a> (not in Android Browser 4.4.2+)
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#gmt"><code>GMT</code></a>
+<li><a href="#htmldocument"><code>HTMLDOCUMENT</code></a>
 <li><a href="#locale_infinity"><code>LOCALE_INFINITY</code></a> (Android Browser 4.4.2+)
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
