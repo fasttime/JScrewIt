@@ -75,8 +75,7 @@ Available in Firefox, Chrome, Opera, Microsoft Edge, and in Android Browser 4.4.
 Existence of the name property for functions.
 This feature is not available in Internet Explorer.
 ### `NODE`
-Features available in Node.js 0.10.26 or later.
-Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.
+_An alias for [`NODE010`](#node010)._
 ### `NODE010`
 Features available in Node.js 0.10.26 or later.
 Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.
