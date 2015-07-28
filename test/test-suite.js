@@ -433,6 +433,14 @@ self
                         expect(actual).toEqual(['NO_IE_SRC', 'WINDOW']);
                     }
                 );
+                it(
+                    'does not return aliases',
+                    function ()
+                    {
+                        var actual = JScrewIt.commonFeaturesOf('WINDOW', 'DOMWINDOW');
+                        expect(actual).toEqual(['ANY_WINDOW']);
+                    }
+                );
             }
         );
         describe(

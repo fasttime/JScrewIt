@@ -10,6 +10,9 @@ Features available in Android Browser 4.4.2 or later.
 ### `ANY_DOCUMENT`
 Existence of the global object property document whose string representation starts with "\[object " and ends with "Document\]".
 This feature is not available in Node.js. It is also not available inside web workers.
+### `ANY_WINDOW`
+Existence of the global object property self whose string representation starts with "\[object " and ends with "Window\]".
+This feature is not available in Node.js. It is also not available inside web workers.
 ### `ARRAY_ITERATOR`
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
 This feature is available in Firefox, Chrome, Opera, and in Safari 7.1, Node.js 0.12 and later versions.
@@ -102,8 +105,7 @@ Features available in Safari 7.1 or later.
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object ArrayIterator\]".
 Available in Safari 7.1 and later versions.
 ### `SELF`
-Existence of the global object property self whose string representation starts with "\[object " and ends with "Window\]".
-This feature is not available in Node.js. It is also not available inside web workers.
+_An alias for [`ANY_WINDOW`](#any_window)._
 ### `SELF_OBJECT`
 Existence of the global object property self whose string representation starts with "\[object ".
 This feature is not available in Node.js. It is also not available inside web workers in Safari 8.0.
@@ -129,6 +131,7 @@ This table lists features available in the most common engines.
 <td>
 <ul>
 <li><a href="#any_document"><code>ANY_DOCUMENT</code></a> (implied by <a href="#htmldocument"><code>HTMLDOCUMENT</code></a>)
+<li><a href="#any_window"><code>ANY_WINDOW</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
@@ -143,8 +146,7 @@ This table lists features available in the most common engines.
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>)
 <li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
-<li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
-<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
 </ul>
@@ -155,6 +157,7 @@ This table lists features available in the most common engines.
 <td>
 <ul>
 <li><a href="#any_document"><code>ANY_DOCUMENT</code></a> (implied by <a href="#htmldocument"><code>HTMLDOCUMENT</code></a>)
+<li><a href="#any_window"><code>ANY_WINDOW</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
@@ -167,8 +170,7 @@ This table lists features available in the most common engines.
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
 <li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
-<li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
-<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#v8_src"><code>V8_SRC</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
@@ -180,6 +182,7 @@ This table lists features available in the most common engines.
 <td>
 <ul>
 <li><a href="#any_document"><code>ANY_DOCUMENT</code></a> (implied by <a href="#document"><code>DOCUMENT</code></a> and <a href="#htmldocument"><code>HTMLDOCUMENT</code></a>)
+<li><a href="#any_window"><code>ANY_WINDOW</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#atob"><code>ATOB</code></a> (Internet Explorer 10+)
 <li><a href="#capital_html"><code>CAPITAL_HTML</code></a>
 <li><a href="#document"><code>DOCUMENT</code></a> (not in Internet Explorer 11)
@@ -187,8 +190,7 @@ This table lists features available in the most common engines.
 <li><a href="#htmldocument"><code>HTMLDOCUMENT</code></a> (Internet Explorer 11)
 <li><a href="#ie_src"><code>IE_SRC</code></a>
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
-<li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
-<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
 </ul>
@@ -199,6 +201,7 @@ This table lists features available in the most common engines.
 <td>
 <ul>
 <li><a href="#any_document"><code>ANY_DOCUMENT</code></a> (implied by <a href="#htmldocument"><code>HTMLDOCUMENT</code></a>)
+<li><a href="#any_window"><code>ANY_WINDOW</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
@@ -210,8 +213,7 @@ This table lists features available in the most common engines.
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>)
 <li><a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a> (Safari 7.1+)
-<li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
-<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
 </ul>
@@ -222,6 +224,7 @@ This table lists features available in the most common engines.
 <td>
 <ul>
 <li><a href="#any_document"><code>ANY_DOCUMENT</code></a> (implied by <a href="#htmldocument"><code>HTMLDOCUMENT</code></a>)
+<li><a href="#any_window"><code>ANY_WINDOW</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#entries"><code>ENTRIES</code></a>
@@ -233,8 +236,7 @@ This table lists features available in the most common engines.
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
-<li><a href="#self"><code>SELF</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
-<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#v8_src"><code>V8_SRC</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
@@ -246,6 +248,7 @@ This table lists features available in the most common engines.
 <td>
 <ul>
 <li><a href="#any_document"><code>ANY_DOCUMENT</code></a> (implied by <a href="#htmldocument"><code>HTMLDOCUMENT</code></a>)
+<li><a href="#any_window"><code>ANY_WINDOW</code></a> (implied by <a href="#domwindow"><code>DOMWINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#domwindow"><code>DOMWINDOW</code></a> (not in Android Browser 4.4.2+)
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
@@ -255,8 +258,7 @@ This table lists features available in the most common engines.
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
-<li><a href="#self"><code>SELF</code></a> (implied by <a href="#domwindow"><code>DOMWINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
-<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#domwindow"><code>DOMWINDOW</code></a> and <a href="#self"><code>SELF</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#domwindow"><code>DOMWINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a> (Android Browser 4.1.2+)
 <li><a href="#v8_src"><code>V8_SRC</code></a>
 <li><a href="#window"><code>WINDOW</code></a> (Android Browser 4.4.2+)

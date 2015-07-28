@@ -565,9 +565,9 @@ var expandEntries;
         function (featureMask)
         {
             this.featureMask = featureMask;
-            this.characterCache = { };
-            this.complexCache = { };
-            this.constantCache = { };
+            this.characterCache = Object.create(null);
+            this.complexCache = Object.create(null);
+            this.constantCache = Object.create(null);
             this.stack = [];
         };
     

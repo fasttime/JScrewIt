@@ -96,6 +96,21 @@ var incompatibleFeatureMasks;
                 return typeof document === 'object' && /^\[object .*Document]$/.test(document + '');
             }
         },
+        ANY_WINDOW:
+        {
+            description:
+                'Existence of the global object property self whose string representation starts ' +
+                'with "[object " and ends with "Window]".\n' +
+                'This feature is not available in Node.js. It is also not available inside web ' +
+                'workers.',
+            check: checkSelfFeature.bind(
+                function (str)
+                {
+                    return /^\[object .*Window]$/.test(str);
+                }
+            ),
+            includes: ['SELF_OBJECT']
+        },
         ARRAY_ITERATOR:
         {
             description:
@@ -167,7 +182,7 @@ var incompatibleFeatureMasks;
                     return str + '' === '[object DOMWindow]';
                 }
             ),
-            includes: ['SELF'],
+            includes: ['ANY_WINDOW'],
             excludes: ['WINDOW']
         },
         DOUBLE_QUOTE_ESC_HTML:
@@ -341,21 +356,7 @@ var incompatibleFeatureMasks;
             includes: ['ARRAY_ITERATOR'],
             excludes: ['NO_SAFARI_ARRAY_ITERATOR']
         },
-        SELF:
-        {
-            description:
-                'Existence of the global object property self whose string representation starts ' +
-                'with "[object " and ends with "Window]".\n' +
-                'This feature is not available in Node.js. It is also not available inside web ' +
-                'workers.',
-            check: checkSelfFeature.bind(
-                function (str)
-                {
-                    return /^\[object .*Window]$/.test(str);
-                }
-            ),
-            includes: ['SELF_OBJECT']
-        },
+        SELF: 'ANY_WINDOW',
         SELF_OBJECT:
         {
             description:
@@ -412,7 +413,7 @@ var incompatibleFeatureMasks;
                     return str === '[object Window]';
                 }
             ),
-            includes: ['SELF'],
+            includes: ['ANY_WINDOW'],
             excludes: ['DOMWINDOW']
         },
         
@@ -674,7 +675,7 @@ var incompatibleFeatureMasks;
     featuresFromMask =
         function (mask)
         {
-            var featureSet = { };
+            var featureSet = Object.create(null);
             var includes = [];
             for (var feature in featureMaskMap)
             {
@@ -682,9 +683,9 @@ var incompatibleFeatureMasks;
                 if ((featureMask & mask) === featureMask)
                 {
                     var featureInfo = FEATURE_INFOS[feature];
-                    if (featureInfo.check)
+                    if (featureInfo.check && featureInfo.name === feature)
                     {
-                        featureSet[feature] = true;
+                        featureSet[feature] = null;
                         Array.prototype.push.apply(includes, featureInfo.includes);
                     }
                 }
