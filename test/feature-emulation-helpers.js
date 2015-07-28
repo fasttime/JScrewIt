@@ -362,6 +362,7 @@
     var EMU_FEATURE_INFOS =
     {
         ANY_DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object .*Document]$/),
+        ANY_WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object .*Window]$/),
         ARRAY_ITERATOR: makeEmuFeatureEntries('[object Array Iterator]', /^\[object Array.{8,9}]$/),
         ATOB:
         {
@@ -519,7 +520,6 @@
             '[object ArrayIterator]',
             /^\[object ArrayIterator]$/
         ),
-        SELF: makeEmuFeatureSelf('[object Window]', /^\[object .*Window]$/),
         SELF_OBJECT: makeEmuFeatureSelf('[object Object]', /^\[object /),
         UNDEFINED:
         {

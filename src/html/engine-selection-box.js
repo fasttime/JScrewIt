@@ -95,11 +95,11 @@ function createEngineSelectionBox()
     {
         function putFeature(feature)
         {
-            featureSet[feature] = true;
+            featureSet[feature] = null;
             JScrewIt.FEATURE_INFOS[feature].includes.forEach(putFeature);
         }
         
-        var featureSet = { };
+        var featureSet = Object(null);
         features.forEach(putFeature);
         excludedFeatures.forEach(
             function (feature)
@@ -115,7 +115,7 @@ function createEngineSelectionBox()
     {
         var features = [];
         var allNotForWebWorker =
-            ['ANY_DOCUMENT', 'DOCUMENT', 'DOMWINDOW', 'HTMLDOCUMENT', 'SELF', 'WINDOW'];
+            ['ANY_DOCUMENT', 'ANY_WINDOW', 'DOCUMENT', 'DOMWINDOW', 'HTMLDOCUMENT', 'WINDOW'];
         Array.prototype.forEach.call(
             engineVersionInputs,
             function (input)

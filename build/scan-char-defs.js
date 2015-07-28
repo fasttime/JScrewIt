@@ -36,7 +36,7 @@ function createModifiedEncoder(features, featureQueries)
         return included;
     }
     
-    var featureMaskSet = { };
+    var featureMaskSet = Object.create(null);
     var ancestorFeatureMask = 0;
     var encoder = JScrewIt.debug.createEncoder(features);
     encoder.hasFeatures = hasFeatures;
@@ -116,7 +116,7 @@ function isIndependentFeatureMask(featureQueries, index, newFeatureMask)
 
 function processOutputMap(outputMap, entryCount, logLine)
 {
-    var entryIndexSet = { };
+    var entryIndexSet = Object.create(null);
     for (var output in outputMap)
     {
         var outputData = outputMap[output];
@@ -126,7 +126,7 @@ function processOutputMap(outputMap, entryCount, logLine)
         var entryIndex = outputData.entryIndex;
         if (entryIndex != null)
         {
-            entryIndexSet[entryIndex] = true;
+            entryIndexSet[entryIndex] = null;
         }
     }
     var notAllDefsUsed = Object.keys(entryIndexSet).length !== entryCount;

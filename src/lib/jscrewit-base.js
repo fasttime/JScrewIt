@@ -123,7 +123,7 @@ var setUp;
         return result;
     }
     
-    var encoders = { };
+    var encoders = Object.create(null);
     
     describeNoEnum =
         function (value)
