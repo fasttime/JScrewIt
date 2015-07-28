@@ -84,6 +84,18 @@ var incompatibleFeatureMasks;
     
     FEATURE_INFOS =
     {
+        ANY_DOCUMENT:
+        {
+            description:
+                'Existence of the global object property document whose string representation ' +
+                'starts with "[object " and ends with "Document]".\n' +
+                'This feature is not available in Node.js. It is also not available inside web ' +
+                'workers.',
+            check: function ()
+            {
+                return typeof document === 'object' && /^\[object .*Document]$/.test(document + '');
+            }
+        },
         ARRAY_ITERATOR:
         {
             description:
@@ -140,7 +152,8 @@ var incompatibleFeatureMasks;
             {
                 return typeof document === 'object' && document + '' === '[object Document]';
             },
-            excludes: ['HTMLDOCUMENT']
+            excludes: ['HTMLDOCUMENT'],
+            includes: ['ANY_DOCUMENT']
         },
         DOMWINDOW:
         {
@@ -240,7 +253,8 @@ var incompatibleFeatureMasks;
             {
                 return typeof document === 'object' && document + '' === '[object HTMLDocument]';
             },
-            excludes: ['DOCUMENT']
+            excludes: ['DOCUMENT'],
+            includes: ['ANY_DOCUMENT']
         },
         IE_SRC:
         {

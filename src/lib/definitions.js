@@ -420,6 +420,7 @@ var replaceDigit;
         [
             define('escape("]")[2]'),
             define('btoa("00")[1]', 'ATOB'),
+            define('(document + 0)["slice"]("-10")[0]', 'ANY_DOCUMENT'),
             define('(RP_3_NO + document)["11"]', 'DOCUMENT'),
             define('(document + [])["12"]', 'HTMLDOCUMENT')
         ],
@@ -784,8 +785,7 @@ var replaceDigit;
         ],
         document:
         [
-            define('Function("return document")()', 'DOCUMENT'),
-            define('Function("return document")()', 'HTMLDOCUMENT')
+            define('Function("return document")()', 'ANY_DOCUMENT')
         ],
         escape:         'Function("return escape")()',
         self:
