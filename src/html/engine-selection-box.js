@@ -114,7 +114,8 @@ function createEngineSelectionBox()
     function getFeatures()
     {
         var features = [];
-        var allNotForWebWorker = ['DOCUMENT', 'DOMWINDOW', 'HTMLDOCUMENT', 'SELF', 'WINDOW'];
+        var allNotForWebWorker =
+            ['ANY_DOCUMENT', 'DOCUMENT', 'DOMWINDOW', 'HTMLDOCUMENT', 'SELF', 'WINDOW'];
         Array.prototype.forEach.call(
             engineVersionInputs,
             function (input)

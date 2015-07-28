@@ -7,6 +7,9 @@ Features available in Android Browser 4.0 to 4.3.1.
 Features available in Android Browser 4.1.2 to 4.3.1.
 ### `ANDRO442`
 Features available in Android Browser 4.4.2 or later.
+### `ANY_DOCUMENT`
+Existence of the global object property document whose string representation starts with "\[object " and ends with "Document\]".
+This feature is not available in Node.js. It is also not available inside web workers.
 ### `ARRAY_ITERATOR`
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
 This feature is available in Firefox, Chrome, Opera, and in Safari 7.1, Node.js 0.12 and later versions.
@@ -126,6 +129,7 @@ This table lists features available in the most common engines.
 <td>Firefox 31+</td>
 <td>
 <ul>
+<li><a href="#any_document"><code>ANY_DOCUMENT</code></a> (implied by <a href="#htmldocument"><code>HTMLDOCUMENT</code></a>)
 <li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
@@ -151,6 +155,7 @@ This table lists features available in the most common engines.
 <td>Chrome 41+, Opera 28+</td>
 <td>
 <ul>
+<li><a href="#any_document"><code>ANY_DOCUMENT</code></a> (implied by <a href="#htmldocument"><code>HTMLDOCUMENT</code></a>)
 <li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
@@ -175,6 +180,7 @@ This table lists features available in the most common engines.
 <td>Internet Explorer 9+</td>
 <td>
 <ul>
+<li><a href="#any_document"><code>ANY_DOCUMENT</code></a> (implied by <a href="#document"><code>DOCUMENT</code></a> and <a href="#htmldocument"><code>HTMLDOCUMENT</code></a>)
 <li><a href="#atob"><code>ATOB</code></a> (Internet Explorer 10+)
 <li><a href="#capital_html"><code>CAPITAL_HTML</code></a>
 <li><a href="#document"><code>DOCUMENT</code></a> (not in Internet Explorer 11)
@@ -193,6 +199,7 @@ This table lists features available in the most common engines.
 <td>Safari 7.0+</td>
 <td>
 <ul>
+<li><a href="#any_document"><code>ANY_DOCUMENT</code></a> (implied by <a href="#htmldocument"><code>HTMLDOCUMENT</code></a>)
 <li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
@@ -215,6 +222,7 @@ This table lists features available in the most common engines.
 <td>Microsoft Edge</td>
 <td>
 <ul>
+<li><a href="#any_document"><code>ANY_DOCUMENT</code></a> (implied by <a href="#htmldocument"><code>HTMLDOCUMENT</code></a>)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#entries"><code>ENTRIES</code></a>
@@ -238,6 +246,7 @@ This table lists features available in the most common engines.
 <td>Android Browser 4.0+</td>
 <td>
 <ul>
+<li><a href="#any_document"><code>ANY_DOCUMENT</code></a> (implied by <a href="#htmldocument"><code>HTMLDOCUMENT</code></a>)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#domwindow"><code>DOMWINDOW</code></a> (not in Android Browser 4.4.2+)
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>

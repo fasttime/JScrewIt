@@ -148,7 +148,7 @@
         return result;
     }
     
-    function makeEmuFeatureDocument(str)
+    function makeEmuFeatureDocument(str, regExp)
     {
         var result =
         {
@@ -156,7 +156,7 @@
             {
                 if (global.document)
                 {
-                    if (document + '' === str)
+                    if (regExp.test(document + ''))
                     {
                         return;
                     }
@@ -361,6 +361,7 @@
     
     var EMU_FEATURE_INFOS =
     {
+        ANY_DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object .*Document]$/),
         ARRAY_ITERATOR: makeEmuFeatureEntries('[object Array Iterator]', /^\[object Array.{8,9}]$/),
         ATOB:
         {
@@ -403,7 +404,7 @@
                 return result;
             }
         ),
-        DOCUMENT: makeEmuFeatureDocument('[object Document]'),
+        DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object Document]$/),
         DOMWINDOW: makeEmuFeatureSelf('[object DOMWindow]', /^\[object DOMWindow]$/),
         DOUBLE_QUOTE_ESC_HTML: makeEmuFeatureHtml(
             ['anchor', 'fontcolor', 'fontsize', 'link'],
@@ -449,7 +450,7 @@
                 override(this, 'Date', { value: Date });
             }
         },
-        HTMLDOCUMENT: makeEmuFeatureDocument('[object HTMLDocument]'),
+        HTMLDOCUMENT: makeEmuFeatureDocument('[object HTMLDocument]', /^\[object HTMLDocument]$/),
         IE_SRC: makeEmuFeatureFunctionSource('\nfunction ?() {\n    [native code]\n}\n'),
         LOCALE_INFINITY:
         {
