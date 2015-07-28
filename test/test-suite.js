@@ -481,87 +481,7 @@ self
                     function ()
                     {
                         var features = Object.keys(FEATURE_INFOS).sort();
-                        features.forEach(
-                            function (feature)
-                            {
-                                describe(
-                                    feature,
-                                    function ()
-                                    {
-                                        var info = FEATURE_INFOS[feature];
-                                        
-                                        it(
-                                            'is named correctly',
-                                            function ()
-                                            {
-                                                var name = info.name;
-                                                expect(name).toBeString();
-                                                expect(info).toBe(FEATURE_INFOS[name]);
-                                            }
-                                        );
-                                        it(
-                                            'has expected availability',
-                                            function ()
-                                            {
-                                                expect(info.available).toBe(
-                                                    JScrewIt.areFeaturesAvailable(feature)
-                                                );
-                                            }
-                                        );
-                                        it(
-                                            'has includes array',
-                                            function ()
-                                            {
-                                                expect(info.includes).toBeArray();
-                                            }
-                                        );
-                                        it(
-                                            'has expected excludes array',
-                                            function ()
-                                            {
-                                                var excludes = info.excludes;
-                                                expect(excludes).toBeArray();
-                                                excludes.forEach(
-                                                    function (exclude)
-                                                    {
-                                                        var info = FEATURE_INFOS[exclude];
-                                                        expect(info.excludes).toContain(feature);
-                                                    }
-                                                );
-                                            }
-                                        );
-                                        it(
-                                            'has description string',
-                                            function ()
-                                            {
-                                                expect(info.description).toBeString();
-                                            }
-                                        );
-                                        it(
-                                            'is checkable',
-                                            function ()
-                                            {
-                                                var check = info.check;
-                                                if (check)
-                                                {
-                                                    if (feature in featureSet)
-                                                    {
-                                                        var emuFeatures =
-                                                            featureSet[feature] ? [feature] : [];
-                                                        expect(
-                                                            function ()
-                                                            {
-                                                                emuDo(emuFeatures, check);
-                                                            }
-                                                        ).not.toThrow();
-                                                    }
-                                                }
-                                            }
-                                        );
-                                    }
-                                );
-                            }
-                        );
+                        features.forEach(function (feature) { testFeature(feature); });
                     }
                 );
             }
@@ -1488,6 +1408,84 @@ self
                                     );
                                 }
                             );
+                        }
+                    }
+                );
+            }
+        );
+    }
+    
+    function testFeature(feature)
+    {
+        var FEATURE_INFOS = JScrewIt.FEATURE_INFOS;
+        
+        describe(
+            feature,
+            function ()
+            {
+                var info = FEATURE_INFOS[feature];
+                
+                it(
+                    'is named correctly',
+                    function ()
+                    {
+                        var name = info.name;
+                        expect(name).toBeString();
+                        expect(info).toBe(FEATURE_INFOS[name]);
+                    }
+                );
+                it(
+                    'has expected availability',
+                    function ()
+                    {
+                        expect(info.available).toBe(JScrewIt.areFeaturesAvailable(feature));
+                    }
+                );
+                it(
+                    'has includes array',
+                    function ()
+                    {
+                        expect(info.includes).toBeArray();
+                    }
+                );
+                it(
+                    'has expected excludes array',
+                    function ()
+                    {
+                        var excludes = info.excludes;
+                        expect(excludes).toBeArray();
+                        excludes.forEach(
+                            function (exclude)
+                            {
+                                var info = FEATURE_INFOS[exclude];
+                                expect(info.excludes).toContain(
+                                    feature,
+                                    'feature ' + feature + ' excludes ' + exclude +
+                                    ', but not vice versa'
+                                );
+                            }
+                        );
+                    }
+                );
+                it(
+                    'has description string',
+                    function ()
+                    {
+                        expect(info.description).toBeString();
+                    }
+                );
+                it(
+                    'is checkable',
+                    function ()
+                    {
+                        var check = info.check;
+                        if (check)
+                        {
+                            if (feature in featureSet)
+                            {
+                                var emuFeatures = featureSet[feature] ? [feature] : [];
+                                expect(function () { emuDo(emuFeatures, check); }).not.toThrow();
+                            }
                         }
                     }
                 );
