@@ -249,7 +249,7 @@ function scanChar(char, entryCount, logLine, allCharCount, charDoneCount, callba
     logLine('\nCharacter ' + desc);
     var features = [];
     var featureMask = 0;
-    var outputMap = { };
+    var outputMap = Object.create(null);
     for (;;)
     {
         var featureQueries = [];
