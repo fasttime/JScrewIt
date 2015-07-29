@@ -1,6 +1,7 @@
 /*
 global
 FEATURE_INFOS,
+Empty,
 Encoder,
 availableFeatureMask,
 featuresFromMask,
@@ -123,7 +124,7 @@ var setUp;
         return result;
     }
     
-    var encoders = Object.create(null);
+    var encoders = new Empty();
     
     describeNoEnum =
         function (value)

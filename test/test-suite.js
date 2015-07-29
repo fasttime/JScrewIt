@@ -1,11 +1,11 @@
 /*
 global
+EMU_FEATURES,
 atob,
 btoa,
 document,
 emuDo,
 emuEval,
-EMU_FEATURES,
 expect,
 global,
 module,
