@@ -97,7 +97,7 @@ self
     
     function describeEncodeTest(compatibility)
     {
-        var emuFeatures = getEmuFeatures(getSubFeatures(compatibility));
+        var emuFeatures = getEmuFeatures(JScrewIt.commonFeaturesOf(compatibility));
         if (emuFeatures)
         {
             describe(
@@ -1242,25 +1242,6 @@ self
     function getEntryFeatures(entry)
     {
         var result = JScrewIt.debug.featuresFromMask(entry.featureMask);
-        return result;
-    }
-    
-    function getSubFeatures(feature)
-    {
-        function branchIn(feature)
-        {
-            var featureInfo = JScrewIt.FEATURE_INFOS[feature];
-            var includes = featureInfo.includes;
-            includes.forEach(branchIn);
-            if (featureInfo.check)
-            {
-                atomicSet[feature] = null;
-            }
-        }
-        
-        var atomicSet = Object.create(null);
-        branchIn(feature);
-        var result = Object.keys(atomicSet);
         return result;
     }
     

@@ -99,7 +99,7 @@ function createEngineSelectionBox()
             JScrewIt.FEATURE_INFOS[feature].includes.forEach(putFeature);
         }
         
-        var featureSet = Object(null);
+        var featureSet = Object.create(null);
         features.forEach(putFeature);
         excludedFeatures.forEach(
             function (feature)
