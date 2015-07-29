@@ -6,11 +6,11 @@ module.exports =
     function (grunt)
     {
         var JS_FILES =
-            {
-                default: ['*.js', 'build/**/*.js', 'src/**/*.js', 'test/**/*.js', 'tools/**/*.js'],
-                html: 'src/html/**/*.js',
-                lib: ['src/lib/**/*.js', 'test/**/*.js']
-            };
+        {
+            default: ['*.js', 'build/**/*.js', 'src/**/*.js', 'test/**/*.js', 'tools/**/*.js'],
+            html: 'src/html/**/*.js',
+            lib: ['src/lib/**/*.js', 'test/**/*.js']
+        };
         
         // Project configuration.
         grunt.initConfig(

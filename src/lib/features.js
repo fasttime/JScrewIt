@@ -79,9 +79,6 @@ var incompatibleFeatureMasks;
         return mask;
     }
     
-    var bitIndex = 0;
-    var featureMaskMap = new Empty();
-    
     FEATURE_INFOS =
     {
         ANY_DOCUMENT:
@@ -646,32 +643,6 @@ var incompatibleFeatureMasks;
         }
     };
     
-    getFeatureMask =
-        function (features)
-        {
-            var result = 0;
-            if (features !== undefined)
-            {
-                if (!Array.isArray(features))
-                {
-                    features = [features];
-                }
-                features.forEach(
-                    function (feature)
-                    {
-                        feature += '';
-                        var mask = featureMaskMap[feature];
-                        if (mask == null)
-                        {
-                            throw new ReferenceError('Unknown feature ' + JSON.stringify(feature));
-                        }
-                        result |= mask;
-                    }
-                );
-            }
-            return result;
-        };
-    
     featuresFromMask =
         function (mask)
         {
@@ -700,12 +671,40 @@ var incompatibleFeatureMasks;
             return result;
         };
     
+    getFeatureMask =
+        function (features)
+        {
+            var result = 0;
+            if (features !== undefined)
+            {
+                if (!Array.isArray(features))
+                {
+                    features = [features];
+                }
+                features.forEach(
+                    function (feature)
+                    {
+                        feature += '';
+                        var mask = featureMaskMap[feature];
+                        if (mask == null)
+                        {
+                            throw new ReferenceError('Unknown feature ' + JSON.stringify(feature));
+                        }
+                        result |= mask;
+                    }
+                );
+            }
+            return result;
+        };
+    
     incompatibleFeatureMasks = [];
     
     // Assign a bit mask to each checkable feature
     
-    var features = Object.keys(FEATURE_INFOS);
     var autoIncludes = [];
+    var bitIndex = 0;
+    var featureMaskMap = new Empty();
+    var features = Object.keys(FEATURE_INFOS);
     features.forEach(completeFeature);
     FEATURE_INFOS.AUTO =
     {
