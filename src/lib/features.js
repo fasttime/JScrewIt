@@ -1,4 +1,4 @@
-/* global document, self */
+/* global Empty, document, self */
 
 var FEATURE_INFOS;
 
@@ -80,7 +80,7 @@ var incompatibleFeatureMasks;
     }
     
     var bitIndex = 0;
-    var featureMaskMap = Object.create(null);
+    var featureMaskMap = new Empty();
     
     FEATURE_INFOS =
     {
@@ -675,7 +675,7 @@ var incompatibleFeatureMasks;
     featuresFromMask =
         function (mask)
         {
-            var featureSet = Object.create(null);
+            var featureSet = new Empty();
             var includes = [];
             for (var feature in featureMaskMap)
             {

@@ -2,7 +2,6 @@
 
 var createDefinitionEntry;
 var define;
-var noProto;
 
 (function ()
 {
@@ -22,19 +21,6 @@ var noProto;
         {
             var entry = createDefinitionEntry(definition, arguments, 1);
             return entry;
-        };
-    
-    noProto =
-        function (obj)
-        {
-            var result = Object.create(null);
-            Object.keys(obj).forEach(
-                function (name)
-                {
-                    result[name] = obj[name];
-                }
-            );
-            return result;
         };
 }
 )();

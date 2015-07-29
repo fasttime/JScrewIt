@@ -5,6 +5,7 @@ COMPLEX,
 CONSTANTS,
 LEVEL_STRING,
 SIMPLE,
+Empty,
 ScrewBuffer,
 createSolution,
 define,
@@ -367,7 +368,7 @@ var expandEntries;
     
     function createFrequencyList(input)
     {
-        var charMap = Object.create(null);
+        var charMap = new Empty();
         Array.prototype.forEach.call(
             input,
             function (char)
@@ -565,9 +566,9 @@ var expandEntries;
         function (featureMask)
         {
             this.featureMask = featureMask;
-            this.characterCache = Object.create(null);
-            this.complexCache = Object.create(null);
-            this.constantCache = Object.create(null);
+            this.characterCache = new Empty();
+            this.complexCache = new Empty();
+            this.constantCache = new Empty();
             this.stack = [];
         };
     
@@ -784,7 +785,7 @@ var expandEntries;
         
         encodeByCharCodes: function (input, long, radix, maxLength)
         {
-            var cache = Object.create(null);
+            var cache = new Empty();
             var charCodes =
                 this.replaceNumberArray(
                     Array.prototype.map.call(
@@ -816,7 +817,7 @@ var expandEntries;
                 freqList.length &&
                 freqList[0].count * 6 > getAppendLength(this.resolveCharacter('+'));
             var reindexMap = createReindexMap(freqList.length, radix, amendings, coerceToInt);
-            var charMap = Object.create(null);
+            var charMap = new Empty();
             var minFreqIndexLength =
                 Math.max((input.length - 1) * (resolveSimple('false').length + 1) - 3, 0);
             var dictChars = [];
