@@ -1264,13 +1264,20 @@ self
     {
         JScrewIt = arg || global.JScrewIt;
         featureSet = Object.create(null);
-        EMU_FEATURES.forEach(
-            function (feature) { featureSet[feature] = true; }
-        );
-        JScrewIt.FEATURE_INFOS.AUTO.includes.forEach(
-            function (feature) { featureSet[feature] = false; }
-        );
+        EMU_FEATURES.forEach(function (feature) { featureSet[feature] = true; });
+        initIncludesOf('AUTO');
         describeTests();
+    }
+    
+    function initIncludesOf(feature)
+    {
+        JScrewIt.FEATURE_INFOS[feature].includes.forEach(
+            function (feature)
+            {
+                initIncludesOf(feature);
+                featureSet[feature] = false;
+            }
+        );
     }
     
     function isExpected(expected)
