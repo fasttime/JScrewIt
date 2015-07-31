@@ -810,7 +810,11 @@ var replaceDigit;
             define('[]["fill"]', 'FILL')
         ],
         FILTER:         '[]["filter"]',
-        PLAIN_OBJECT:   'Function("return{}")()',
+        PLAIN_OBJECT:
+        [
+            define('Function("return{}")()'),
+            define('ARRAY_ITERATOR', 'ENTRIES_PLAIN')
+        ],
         
         // Function body extra padding blocks: prepended to a function to align the function's body
         // at the same position on different browsers.

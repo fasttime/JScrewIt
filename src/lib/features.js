@@ -119,6 +119,7 @@ var incompatibleFeatureMasks;
             {
                 return Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries());
             },
+            excludes: ['ENTRIES_PLAIN'],
             includes: ['ENTRIES_OBJ']
         },
         ATOB:
@@ -205,6 +206,19 @@ var incompatibleFeatureMasks;
             {
                 return Array.prototype.entries && /^\[object /.test([].entries());
             }
+        },
+        ENTRIES_PLAIN:
+        {
+            description:
+                'The property that the string representation of Array.prototype.entries() ' +
+                'evaluates to "[object Object]".\n' +
+                'This feature is only available in Microsoft Edge.',
+            check: function ()
+            {
+                return Array.prototype.entries && [].entries() + '' === '[object Object]';
+            },
+            excludes: ['ARRAY_ITERATOR'],
+            includes: ['ENTRIES_OBJ']
         },
         FF_SAFARI_SRC:
         {
@@ -510,7 +524,7 @@ var incompatibleFeatureMasks;
             [
                 'ATOB',
                 'DOUBLE_QUOTE_ESC_HTML',
-                'ENTRIES_OBJ',
+                'ENTRIES_PLAIN',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
