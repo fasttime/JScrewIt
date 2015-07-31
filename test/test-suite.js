@@ -291,7 +291,6 @@ self
             {
                 describeEncodeTest('DEFAULT');
                 describeEncodeTest('COMPACT');
-                describeEncodeTest('NO_IE');
                 describeEncodeTest('FF31');
                 describeEncodeTest('AUTO');
                 it(
@@ -460,6 +459,22 @@ self
                                 var info = FEATURE_INFOS.DEFAULT;
                                 expect(info.available).toBe(true);
                                 expect(info.includes.length).toBe(0);
+                                expect(info.excludes.length).toBe(0);
+                            }
+                        );
+                        it(
+                            'COMPACT',
+                            function ()
+                            {
+                                var info = FEATURE_INFOS.COMPACT;
+                                var expected =
+                                    JScrewIt.commonFeaturesOf(
+                                        'CHROME41',
+                                        'EDGE',
+                                        'FF31',
+                                        'SAFARI71'
+                                    );
+                                expect(info.includes).toEqual(expected);
                                 expect(info.excludes.length).toBe(0);
                             }
                         );
