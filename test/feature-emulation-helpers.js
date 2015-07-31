@@ -422,6 +422,7 @@
             }
         ),
         ENTRIES_OBJ: makeEmuFeatureEntries('[object Object]', /^\[object /),
+        ENTRIES_PLAIN: makeEmuFeatureEntries('[object Object]', /^\[object Object]$/),
         FF_SAFARI_SRC: makeEmuFeatureFunctionSource('function ?() {\n    [native code]\n}'),
         FILL:
         {

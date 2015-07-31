@@ -45,6 +45,9 @@ Features available in Microsoft Edge.
 ### `ENTRIES_OBJ`
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object ".
 This feature is available in Firefox, Chrome, Opera, Microsoft Edge, and in Safari 7.1, Node.js 0.12 and later versions.
+### `ENTRIES_PLAIN`
+The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Object\]".
+This feature is only available in Microsoft Edge.
 ### `FF31`
 Features available in Firefox 31 or later.
 ### `FF_SAFARI_SRC`
@@ -224,7 +227,8 @@ This table lists features available in the most common engines.
 <li><a href="#any_window"><code>ANY_WINDOW</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#entries_obj"><code>ENTRIES_OBJ</code></a>
+<li><a href="#entries_obj"><code>ENTRIES_OBJ</code></a> (implied by <a href="#entries_plain"><code>ENTRIES_PLAIN</code></a>)
+<li><a href="#entries_plain"><code>ENTRIES_PLAIN</code></a>
 <li><a href="#fill"><code>FILL</code></a>
 <li><a href="#from_code_point"><code>FROM_CODE_POINT</code></a>
 <li><a href="#gmt"><code>GMT</code></a>
