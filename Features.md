@@ -42,7 +42,7 @@ The property that double quote characters in the argument of String.prototype.fo
 This feature is not available in Internet Explorer.
 ### `EDGE`
 Features available in Microsoft Edge.
-### `ENTRIES`
+### `ENTRIES_OBJ`
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object ".
 This feature is available in Firefox, Chrome, Opera, Microsoft Edge, and in Safari 7.1, Node.js 0.12 and later versions.
 ### `FF31`
@@ -103,7 +103,7 @@ The property that the string representation of Array.prototype.entries\(\) evalu
 Available in Safari 7.1 and later versions.
 ### `SELF`
 _An alias for [`ANY_WINDOW`](#any_window)._
-### `SELF_OBJECT`
+### `SELF_OBJ`
 Existence of the global object property self whose string representation starts with "\[object ".
 This feature is not available in Node.js. It is also not available inside web workers in Safari 8.0.
 ### `UNDEFINED`
@@ -132,7 +132,7 @@ This table lists features available in the most common engines.
 <li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
+<li><a href="#entries_obj"><code>ENTRIES_OBJ</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>
 <li><a href="#fill"><code>FILL</code></a>
 <li><a href="#from_code_point"><code>FROM_CODE_POINT</code></a>
@@ -143,7 +143,7 @@ This table lists features available in the most common engines.
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>)
 <li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
-<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_obj"><code>SELF_OBJ</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
 </ul>
@@ -158,7 +158,7 @@ This table lists features available in the most common engines.
 <li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
+<li><a href="#entries_obj"><code>ENTRIES_OBJ</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#from_code_point"><code>FROM_CODE_POINT</code></a>
 <li><a href="#gmt"><code>GMT</code></a>
 <li><a href="#htmldocument"><code>HTMLDOCUMENT</code></a>
@@ -167,7 +167,7 @@ This table lists features available in the most common engines.
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
 <li><a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
-<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_obj"><code>SELF_OBJ</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#v8_src"><code>V8_SRC</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
@@ -187,7 +187,7 @@ This table lists features available in the most common engines.
 <li><a href="#htmldocument"><code>HTMLDOCUMENT</code></a> (Internet Explorer 11)
 <li><a href="#ie_src"><code>IE_SRC</code></a>
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
-<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_obj"><code>SELF_OBJ</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
 </ul>
@@ -202,7 +202,7 @@ This table lists features available in the most common engines.
 <li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
+<li><a href="#entries_obj"><code>ENTRIES_OBJ</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>
 <li><a href="#fill"><code>FILL</code></a> (Safari 7.1+)
 <li><a href="#gmt"><code>GMT</code></a>
@@ -210,7 +210,7 @@ This table lists features available in the most common engines.
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#ff_safari_src"><code>FF_SAFARI_SRC</code></a>)
 <li><a href="#safari_array_iterator"><code>SAFARI_ARRAY_ITERATOR</code></a> (Safari 7.1+)
-<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_obj"><code>SELF_OBJ</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
 </ul>
@@ -224,7 +224,7 @@ This table lists features available in the most common engines.
 <li><a href="#any_window"><code>ANY_WINDOW</code></a> (implied by <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#atob"><code>ATOB</code></a>
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#entries"><code>ENTRIES</code></a>
+<li><a href="#entries_obj"><code>ENTRIES_OBJ</code></a>
 <li><a href="#fill"><code>FILL</code></a>
 <li><a href="#from_code_point"><code>FROM_CODE_POINT</code></a>
 <li><a href="#gmt"><code>GMT</code></a>
@@ -233,7 +233,7 @@ This table lists features available in the most common engines.
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
-<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_obj"><code>SELF_OBJ</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a>
 <li><a href="#v8_src"><code>V8_SRC</code></a>
 <li><a href="#window"><code>WINDOW</code></a>
@@ -255,7 +255,7 @@ This table lists features available in the most common engines.
 <li><a href="#name"><code>NAME</code></a>
 <li><a href="#no_ie_src"><code>NO_IE_SRC</code></a> (implied by <a href="#v8_src"><code>V8_SRC</code></a>)
 <li><a href="#no_safari_lf"><code>NO_SAFARI_LF</code></a>
-<li><a href="#self_object"><code>SELF_OBJECT</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#domwindow"><code>DOMWINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
+<li><a href="#self_obj"><code>SELF_OBJ</code></a> (implied by <a href="#any_window"><code>ANY_WINDOW</code></a> and <a href="#domwindow"><code>DOMWINDOW</code></a> and <a href="#window"><code>WINDOW</code></a>)
 <li><a href="#undefined"><code>UNDEFINED</code></a> (Android Browser 4.1.2+)
 <li><a href="#v8_src"><code>V8_SRC</code></a>
 <li><a href="#window"><code>WINDOW</code></a> (Android Browser 4.4.2+)
@@ -268,7 +268,7 @@ This table lists features available in the most common engines.
 <ul>
 <li><a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
 <li><a href="#double_quote_esc_html"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
-<li><a href="#entries"><code>ENTRIES</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
+<li><a href="#entries_obj"><code>ENTRIES_OBJ</code></a> (implied by <a href="#array_iterator"><code>ARRAY_ITERATOR</code></a> and <a href="#no_safari_array_iterator"><code>NO_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
 <li><a href="#gmt"><code>GMT</code></a>
 <li><a href="#locale_infinity"><code>LOCALE_INFINITY</code></a> (Node.js 0.12+)
 <li><a href="#name"><code>NAME</code></a>

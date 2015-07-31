@@ -33,7 +33,7 @@ var expandEntries;
         [
             define('A'),
             define('C', 'CAPITAL_HTML'),
-            define('B', 'CAPITAL_HTML', 'ENTRIES'),
+            define('B', 'CAPITAL_HTML', 'ENTRIES_OBJ'),
             define('A', 'ARRAY_ITERATOR')
         ],
         'F',
@@ -42,7 +42,7 @@ var expandEntries;
         [
             define('S'),
             define('R', 'CAPITAL_HTML'),
-            define('S', 'CAPITAL_HTML', 'ENTRIES')
+            define('S', 'CAPITAL_HTML', 'ENTRIES_OBJ')
         ],
         [
             define('U'),
@@ -137,7 +137,7 @@ var expandEntries;
         [
             define('0B'),
             define('0R', 'CAPITAL_HTML'),
-            define('0B', 'ENTRIES')
+            define('0B', 'ENTRIES_OBJ')
         ],
         '0i',
         '0j',
@@ -927,7 +927,7 @@ var expandEntries;
         
         hexCodeOf: function (charCode, length)
         {
-            var optimalB = this.findBestDefinition([define('B'), define('b', 'ENTRIES')]);
+            var optimalB = this.findBestDefinition([define('B'), define('b', 'ENTRIES_OBJ')]);
             var result = charCode.toString(16).replace(/b/g, optimalB);
             result = Array(length - result.length + 1).join(0) + result.replace(/fa?$/, 'false');
             return result;
