@@ -1198,7 +1198,7 @@ self
                 
                 test('CAPITAL_HTML', repeat.bind(null, String.fromCharCode(59999)), 'byCharCodes');
                 test(
-                    ['ENTRIES', 'ATOB', 'FILL', 'V8_SRC'],
+                    ['ATOB', 'ENTRIES_OBJ', 'FILL', 'V8_SRC'],
                     function (length)
                     {
                         var CHAR_CODES =
@@ -1211,34 +1211,34 @@ self
                     },
                     'byCharCodesRadix4'
                 );
-                test('ENTRIES', repeat.bind(null, String.fromCharCode(59999)), 'byDict');
+                test('ENTRIES_OBJ', repeat.bind(null, String.fromCharCode(59999)), 'byDict');
                 test(
-                    ['ENTRIES', 'ATOB', 'FILL', 'V8_SRC'],
+                    ['ATOB', 'ENTRIES_OBJ', 'FILL', 'V8_SRC'],
                     createDictTestString.bind(null, 122),
                     'byDictRadix3'
                 );
                 test(
-                    ['ENTRIES', 'ATOB', 'FILL', 'V8_SRC'],
+                    ['ATOB', 'ENTRIES_OBJ', 'FILL', 'V8_SRC'],
                     createDictTestString.bind(null, 100),
                     'byDictRadix4'
                 );
                 test(
-                    ['ENTRIES', 'ATOB', 'FILL', 'V8_SRC'],
+                    ['ATOB', 'ENTRIES_OBJ', 'FILL', 'V8_SRC'],
                     createDictTestString.bind(null, 129),
                     'byDictRadix4AmendedBy1'
                 );
                 test(
-                    ['ENTRIES', 'ATOB', 'FILL', 'NO_IE_SRC'],
+                    ['ATOB', 'ENTRIES_OBJ', 'FILL', 'NO_IE_SRC'],
                     createDictTestString.bind(null, 364),
                     'byDictRadix4AmendedBy2'
                 );
                 test(
-                    ['ENTRIES', 'ATOB', 'FILL', 'NO_IE_SRC'],
+                    ['ATOB', 'ENTRIES_OBJ', 'FILL', 'NO_IE_SRC'],
                     createDictTestString.bind(null, 124),
                     'byDictRadix5AmendedBy2'
                 );
                 test(
-                    ['ENTRIES', 'FILL', 'V8_SRC'],
+                    ['ENTRIES_OBJ', 'FILL', 'V8_SRC'],
                     createAntiRadix4TestString.bind(null, 473),
                     'byDictRadix5AmendedBy3'
                 );

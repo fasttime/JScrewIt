@@ -106,7 +106,7 @@ var incompatibleFeatureMasks;
                     return /^\[object .*Window]$/.test(str);
                 }
             ),
-            includes: ['SELF_OBJECT']
+            includes: ['SELF_OBJ']
         },
         ARRAY_ITERATOR:
         {
@@ -119,7 +119,7 @@ var incompatibleFeatureMasks;
             {
                 return Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries());
             },
-            includes: ['ENTRIES']
+            includes: ['ENTRIES_OBJ']
         },
         ATOB:
         {
@@ -194,7 +194,7 @@ var incompatibleFeatureMasks;
                 return available;
             }
         },
-        ENTRIES:
+        ENTRIES_OBJ:
         {
             description:
                 'The property that the string representation of Array.prototype.entries() starts ' +
@@ -354,7 +354,7 @@ var incompatibleFeatureMasks;
             excludes: ['NO_SAFARI_ARRAY_ITERATOR']
         },
         SELF: 'ANY_WINDOW',
-        SELF_OBJECT:
+        SELF_OBJ:
         {
             description:
                 'Existence of the global object property self whose string representation starts ' +
@@ -427,7 +427,7 @@ var incompatibleFeatureMasks;
             [
                 'ATOB',
                 'DOUBLE_QUOTE_ESC_HTML',
-                'ENTRIES',
+                'ENTRIES_OBJ',
                 'GMT',
                 'HTMLDOCUMENT',
                 'NAME',
@@ -510,7 +510,7 @@ var incompatibleFeatureMasks;
             [
                 'ATOB',
                 'DOUBLE_QUOTE_ESC_HTML',
-                'ENTRIES',
+                'ENTRIES_OBJ',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',

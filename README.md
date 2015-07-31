@@ -161,7 +161,7 @@ These can be retrieved with [`JScrewIt.commonFeaturesOf`](#jscrewitcommonfeature
 ```
 
 The features turn out to be `"NO_SAFARI_LF"`, `"UNDEFINED"` and `"WINDOW"`; `"ANY_WINDOW"` and
-`"SELF_OBJECT"` are both implied by `"WINDOW"`, so there is no need to specify them explicitly.
+`"SELF_OBJ"` are both implied by `"WINDOW"`, so there is no need to specify them explicitly.
 With this knowledge, the definition can be also written as below.
 
 ```js

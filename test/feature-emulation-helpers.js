@@ -421,7 +421,7 @@
                 return result;
             }
         ),
-        ENTRIES: makeEmuFeatureEntries('[object Object]', /^\[object /),
+        ENTRIES_OBJ: makeEmuFeatureEntries('[object Object]', /^\[object /),
         FF_SAFARI_SRC: makeEmuFeatureFunctionSource('function ?() {\n    [native code]\n}'),
         FILL:
         {
@@ -520,7 +520,7 @@
             '[object ArrayIterator]',
             /^\[object ArrayIterator]$/
         ),
-        SELF_OBJECT: makeEmuFeatureSelf('[object Object]', /^\[object /),
+        SELF_OBJ: makeEmuFeatureSelf('[object Object]', /^\[object /),
         UNDEFINED:
         {
             setUp: function ()

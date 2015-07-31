@@ -317,12 +317,12 @@ var replaceDigit;
         'b':
         [
             defineFHCharAt('Number', 12),
-            define('(ARRAY_ITERATOR + [])[2]', 'ENTRIES')
+            define('(ARRAY_ITERATOR + [])[2]', 'ENTRIES_OBJ')
         ],
         'c':
         [
             defineFHCharAt('ANY_FUNCTION', 3),
-            define('(RP_5_N + ARRAY_ITERATOR)["10"]', 'ENTRIES')
+            define('(RP_5_N + ARRAY_ITERATOR)["10"]', 'ENTRIES_OBJ')
         ],
         'd': '"undefined"[2]',
         'e': '"true"[3]',
@@ -340,8 +340,8 @@ var replaceDigit;
         'j':
         [
             define('(PLAIN_OBJECT + [])["10"]'),
-            define('(self + [])[3]', 'SELF_OBJECT'),
-            define('(ARRAY_ITERATOR + [])[3]', 'ENTRIES')
+            define('(self + [])[3]', 'SELF_OBJ'),
+            define('(ARRAY_ITERATOR + [])[3]', 'ENTRIES_OBJ')
         ],
         'k':
         [
@@ -359,7 +359,7 @@ var replaceDigit;
         'o':
         [
             defineFHCharAt('ANY_FUNCTION', 6),
-            define('(ARRAY_ITERATOR + [])[1]', 'ENTRIES')
+            define('(ARRAY_ITERATOR + [])[1]', 'ENTRIES_OBJ')
         ],
         'p':
         [
@@ -512,7 +512,7 @@ var replaceDigit;
             define('(RP_3_NO + PLAIN_OBJECT["toString"]["call"]())["11"]', 'UNDEFINED'),
             define(
                 '(RP_3_NO + ARRAY_ITERATOR["toString"]["call"]())["11"]',
-                'ENTRIES',
+                'ENTRIES_OBJ',
                 'UNDEFINED'
             )
         ],
@@ -555,7 +555,7 @@ var replaceDigit;
         ' ':
         [
             defineFHCharAt('ANY_FUNCTION', 8),
-            define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ENTRIES'),
+            define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ENTRIES_OBJ'),
             define('(RP_1_NO + FILTER)["20"]', 'V8_SRC'),
             define('(FILTER + [])["20"]', 'FF_SAFARI_SRC')
         ],
@@ -633,7 +633,7 @@ var replaceDigit;
         '[':
         [
             defineFBCharAt(14),
-            define('(ARRAY_ITERATOR + [])[0]', 'ENTRIES')
+            define('(ARRAY_ITERATOR + [])[0]', 'ENTRIES_OBJ')
         ],
         // '\\':   ,
         ']':
@@ -790,7 +790,7 @@ var replaceDigit;
         escape:         'Function("return escape")()',
         self:
         [
-            define('Function("return self")()', 'SELF_OBJECT')
+            define('Function("return self")()', 'SELF_OBJ')
         ],
         unescape:       'Function("return unescape")()',
         
@@ -803,7 +803,7 @@ var replaceDigit;
         ],
         ARRAY_ITERATOR:
         [
-            define('[]["entries"]()', 'ENTRIES')
+            define('[]["entries"]()', 'ENTRIES_OBJ')
         ],
         FILL:
         [

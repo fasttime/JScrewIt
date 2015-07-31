@@ -37,7 +37,7 @@ function createEngineSelectionBox()
             [
                 { feature: 'SAFARI70', number: '7.0' },
                 { feature: 'SAFARI71', number: '7.1' },
-                { feature: 'SAFARI71', number: '8.0', notForWebWorker: ['SELF_OBJECT'] }
+                { feature: 'SAFARI71', number: '8.0', notForWebWorker: ['SELF_OBJ'] }
             ]
         },
         {
