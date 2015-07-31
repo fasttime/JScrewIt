@@ -28,7 +28,7 @@ This feature is only available in Internet Explorer.
 Features available in Chrome 41 and Opera 28 or later.
 ### `COMPACT`
 All new browsers' features.
-No support for Node.js and older browsers like Internet Explorer 10 or Android Browser 4.1.2.
+No support for Node.js and older browsers like Internet Explorer, Safari 7.0 or Android Browser
 ### `DEFAULT`
 Minimun feature level, compatible with all supported engines.
 ### `DOCUMENT`
@@ -85,9 +85,6 @@ Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.
 ### `NODE012`
 Features available in Node.js 0.12.
 Also compatible with Chrome 38, Opera 25 and Android Browser 4.1.2 and later versions.
-### `NO_IE`
-Features available in all supported engines except Internet Explorer.
-Includes features used by JSFuck with the exception of "UNDEFINED", which is not available in older Android Browser versions.
 ### `NO_IE_SRC`
 A string representation of native functions typical for most browsers with the notable exception of Internet Explorer.
 A remarkable trait for this feature is the lack of characters in the beginning of the string before "function".
@@ -111,7 +108,7 @@ Existence of the global object property self whose string representation starts 
 This feature is not available in Node.js. It is also not available inside web workers in Safari 8.0.
 ### `UNDEFINED`
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
-This behavior is defined by ECMAScript, but Android Browser prior to 4.1.2 does not comply with the specification and so this feature is not available in that browser.
+This behavior is defined by ECMAScript, and is supported by all engines except Android Browser versions prior to 4.1.2, where this feature is not available.
 ### `V8_SRC`
 A string representation of native functions typically found in the V8 JavaScript engine.
 V8 is used in Chrome, Opera, Android Browser and Node.js. Microsoft Edge, although not using V8, also has this feature available.

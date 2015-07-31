@@ -160,7 +160,7 @@ These can be retrieved with [`JScrewIt.commonFeaturesOf`](#jscrewitcommonfeature
 { features: JScrewIt.commonFeaturesOf("IE9", "FF31") }
 ```
 
-The features turn out to be `"NO_SAFARI_LF"`, `"UNDEFINED"` and `"WINDOW"`; `"SELF"` and
+The features turn out to be `"NO_SAFARI_LF"`, `"UNDEFINED"` and `"WINDOW"`; `"ANY_WINDOW"` and
 `"SELF_OBJECT"` are both implied by `"WINDOW"`, so there is no need to specify them explicitly.
 With this knowledge, the definition can be also written as below.
 
@@ -183,7 +183,7 @@ Returns `true` if all of the specified features are available in the current eng
 ##### Examples
 
 ```js
-JScrewIt.areFeaturesAvailable("NO_IE_SRC")
+JScrewIt.areFeaturesAvailable("FF_SAFARI_SRC")
 ```
 
 ```js
@@ -236,7 +236,8 @@ features are to be retrieved.</dd>
 ##### Examples
 
 ```js
-JScrewIt.commonFeaturesOf("COMPACT", "IE9", "ANDRO412") // returns ["SELF", "UNDEFINED"]
+// returns ["ANY_DOCUMENT", "ANY_WINDOW", "UNDEFINED"]
+JScrewIt.commonFeaturesOf("COMPACT", "IE9", "ANDRO412")
 ```
 
 ```js
@@ -374,7 +375,7 @@ JScrewIt itself and the code it generates are compatible with the JavaScript eng
 - Firefox 31+
 - Safari 7.0+
 - Opera 28+
-- Microsoft Edge *(experimental support)*
+- Microsoft Edge
 - Android Browser 4.x
 - Node.js 0.10.26+
 

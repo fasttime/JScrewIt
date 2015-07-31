@@ -373,9 +373,8 @@ var incompatibleFeatureMasks;
             description:
                 'The property that Object.prototype.toString.call() evaluates to "[object ' +
                 'Undefined]".\n' +
-                'This behavior is defined by ECMAScript, but Android Browser prior to 4.1.2 does ' +
-                'not comply with the specification and so this feature is not available in that ' +
-                'browser.',
+                'This behavior is defined by ECMAScript, and is supported by all engines except ' +
+                'Android Browser versions prior to 4.1.2, where this feature is not available.',
             check: function ()
             {
                 return Object.prototype.toString.call() === '[object Undefined]';
@@ -422,17 +421,20 @@ var incompatibleFeatureMasks;
         {
             description:
                 'All new browsers\' features.\n' +
-                'No support for Node.js and older browsers like Internet Explorer 10 or Android ' +
-                'Browser 4.1.2.',
-            includes: ['ATOB', 'GMT', 'HTMLDOCUMENT', 'UNDEFINED', 'WINDOW']
-        },
-        NO_IE:
-        {
-            description:
-                'Features available in all supported engines except Internet Explorer.\n' +
-                'Includes features used by JSFuck with the exception of "UNDEFINED", which is ' +
-                'not available in older Android Browser versions.',
-            includes: ['DOUBLE_QUOTE_ESC_HTML', 'GMT', 'NAME', 'NO_IE_SRC']
+                'No support for Node.js and older browsers like Internet Explorer, Safari 7.0 or ' +
+                'Android Browser',
+            includes:
+            [
+                'ATOB',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'ENTRIES',
+                'GMT',
+                'HTMLDOCUMENT',
+                'NAME',
+                'NO_IE_SRC',
+                'UNDEFINED',
+                'WINDOW'
+            ]
         },
         ANDRO400:
         {
