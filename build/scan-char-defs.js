@@ -4,44 +4,10 @@
 'use strict';
 
 require('../tools/text-utils.js');
+var Analyzer = require('./analyzer.js');
 var JScrewIt = require('../lib/jscrewit.js');
 var ProgressBar = require('progress');
 var fs = require('fs');
-
-function FeatureQueryInfo(featureMask, included, ancestorFeatureMask)
-{
-    this.featureMask = featureMask;
-    this.included = included;
-    this.ancestorFeatureMask = ancestorFeatureMask;
-}
-
-function createModifiedEncoder(features, featureQueries)
-{
-    function hasFeatures(featureMask)
-    {
-        var included = (featureMask & this.featureMask) === featureMask;
-        if (featureMask)
-        {
-            if (!featureMaskSet[featureMask])
-            {
-                featureMaskSet[featureMask] = true;
-                var featureQuery = new FeatureQueryInfo(featureMask, included, ancestorFeatureMask);
-                featureQueries.push(featureQuery);
-            }
-        }
-        if (included)
-        {
-            ancestorFeatureMask |= featureMask;
-        }
-        return included;
-    }
-    
-    var featureMaskSet = Object.create(null);
-    var ancestorFeatureMask = 0;
-    var encoder = JScrewIt.debug.createEncoder(features);
-    encoder.hasFeatures = hasFeatures;
-    return encoder;
-}
 
 function formatChar(char)
 {
@@ -56,62 +22,6 @@ function formatFeatures(features)
 {
     var str = features.length ? features.join(', ') : 'DEFAULT';
     return str;
-}
-
-function getNewFeatureData(featureQueries)
-{
-    for (var index = featureQueries.length; index--;)
-    {
-        var featureQuery = featureQueries[index];
-        if (!featureQuery.included)
-        {
-            var featureMask = featureQuery.featureMask | featureQuery.ancestorFeatureMask;
-            if (isIndependentFeatureMask(featureQueries, index, featureMask))
-            {
-                var features = JScrewIt.debug.featuresFromMask(featureMask);
-                if (JScrewIt.areFeaturesCompatible(features))
-                {
-                    var featureData = { features: features, featureMask: featureMask };
-                    return featureData;
-                }
-            }
-        }
-    }
-}
-
-function getProgress(featureQueries)
-{
-    var step = 1;
-    var progress = 0;
-    featureQueries.forEach(
-        function (featureQuery)
-        {
-            step /= 2;
-            if (featureQuery.included)
-            {
-                progress += step;
-            }
-        }
-    );
-    progress += step;
-    return progress;
-}
-
-function isIndependentFeatureMask(featureQueries, index, newFeatureMask)
-{
-    while (index--)
-    {
-        var featureQuery = featureQueries[index];
-        if (!featureQuery.included)
-        {
-            var featureMask = featureQuery.featureMask;
-            if ((featureMask & newFeatureMask) === featureMask)
-            {
-                return false;
-            }
-        }
-    }
-    return true;
 }
 
 function processOutputMap(outputMap, entryCount, logLine)
@@ -247,15 +157,14 @@ function scanChar(char, entryCount, logLine, allCharCount, charDoneCount, callba
 {
     var desc = formatChar(char);
     logLine('\nCharacter ' + desc);
-    var features = [];
-    var featureMask = 0;
+    var analyzer = new Analyzer();
     var outputMap = Object.create(null);
-    for (;;)
+    var encoder;
+    while (encoder = analyzer.nextEncoder)
     {
-        var featureQueries = [];
-        var encoder = createModifiedEncoder(features, featureQueries);
         var output = encoder.resolveCharacter(char);
         var outputData = outputMap[output];
+        var featureMask = analyzer.featureMask;
         if (outputData)
         {
             outputData.featureMask &= featureMask;
@@ -264,16 +173,9 @@ function scanChar(char, entryCount, logLine, allCharCount, charDoneCount, callba
         {
             outputMap[output] = { featureMask: featureMask, entryIndex: output.entryIndex };
         }
-        var featureData = getNewFeatureData(featureQueries);
-        if (!featureData)
-        {
-            break;
-        }
-        features = featureData.features;
-        featureMask = featureData.featureMask;
         if (callback)
         {
-            var progress = getProgress(featureQueries);
+            var progress = analyzer.progress;
             callback(char, allCharCount, charDoneCount + progress);
         }
     }
