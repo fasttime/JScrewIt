@@ -79,9 +79,11 @@ module.exports =
                             'else',
                             'finally',
                             'for',
+                            'return',
                             'switch',
                             'throw',
-                            'try'
+                            'try',
+                            'while'
                         ],
                         requireLineBreakAfterVariableAssignment: true,
                         requireLineFeedAtFileEnd: true,
@@ -92,15 +94,7 @@ module.exports =
                         requireSpaceAfterLineComment: true,
                         requireSpaceBeforeBinaryOperators: true,
                         requireSpaceBeforeBlockStatements: true,
-                        requireSpaceBeforeKeywords:
-                        [
-                            'delete',
-                            'if',
-                            'in',
-                            'instanceof',
-                            'return',
-                            'while'
-                        ],
+                        requireSpaceBeforeKeywords: ['delete', 'if', 'in', 'instanceof'],
                         requireSpaceBeforeObjectValues: true,
                         requireSpaceBetweenArguments: true,
                         requireSpacesInAnonymousFunctionExpression:
