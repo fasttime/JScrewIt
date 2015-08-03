@@ -160,7 +160,13 @@ function createEngineSelectionBox()
         Object.defineProperty(
             comp,
             'features',
-            { configurable: true, get: function () { return currentFeatures; } }
+            {
+                configurable: true,
+                get: function ()
+                {
+                    return currentFeatures;
+                }
+            }
         );
         ENGINE_INFO_LIST.forEach(
             function (engineInfo)

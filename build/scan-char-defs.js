@@ -124,7 +124,11 @@ function scanAllChars(callback)
     }
     var allCharCount = chars.length;
     var fd = fs.openSync('output.txt', 'w');
-    var logLine = function (line) { fs.writeSync(fd, line + '\n'); };
+    var logLine =
+        function (line)
+        {
+            fs.writeSync(fd, line + '\n');
+        };
     try
     {
         logLine(

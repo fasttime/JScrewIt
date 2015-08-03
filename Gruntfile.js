@@ -67,7 +67,7 @@ module.exports =
                         disallowSpacesInsideParentheses: true,
                         disallowTrailingWhitespace: 'ignoreEmptyLines',
                         disallowYodaConditions: true,
-                        requireBlocksOnNewline: 1,
+                        requireBlocksOnNewline: true,
                         requireKeywordsOnNewLine:
                         [
                             'break',
@@ -85,6 +85,7 @@ module.exports =
                         ],
                         requireLineBreakAfterVariableAssignment: true,
                         requireLineFeedAtFileEnd: true,
+                        requireNewlineBeforeBlockStatements: true,
                         requirePaddingNewLinesAfterUseStrict: true,
                         requireSpaceAfterBinaryOperators: true,
                         requireSpaceAfterKeywords: true,

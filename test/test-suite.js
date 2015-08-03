@@ -271,18 +271,72 @@ self
                 testConstant('RegExp', isExpected(RegExp));
                 testConstant('String', isExpected(String));
                 
-                testConstant('atob', function () { this.toBe(atob); });
-                testConstant('btoa', function () { this.toBe(btoa); });
-                testConstant('document', function () { this.toBe(document); });
+                testConstant(
+                    'atob',
+                    function ()
+                    {
+                        this.toBe(atob);
+                    }
+                );
+                testConstant(
+                    'btoa',
+                    function ()
+                    {
+                        this.toBe(btoa);
+                    }
+                );
+                testConstant(
+                    'document',
+                    function ()
+                    {
+                        this.toBe(document);
+                    }
+                );
                 testConstant('escape', isExpected(escape));
-                testConstant('self', function () { this.toBe(self); });
+                testConstant(
+                    'self',
+                    function ()
+                    {
+                        this.toBe(self);
+                    }
+                );
                 testConstant('unescape', isExpected(unescape));
                 
-                testConstant('ANY_FUNCTION', function () { this.toBeNativeFunction(); });
-                testConstant('ARRAY_ITERATOR', function () { this.toBeArrayIterator(); });
-                testConstant('FILL', function () { this.toBe(Array.prototype.fill); });
-                testConstant('FILTER', function () { this.toBe(Array.prototype.filter); });
-                testConstant('PLAIN_OBJECT', function () { this.toBePlainObject(); });
+                testConstant(
+                    'ANY_FUNCTION',
+                    function ()
+                    {
+                        this.toBeNativeFunction();
+                    }
+                );
+                testConstant(
+                    'ARRAY_ITERATOR',
+                    function ()
+                    {
+                        this.toBeArrayIterator();
+                    }
+                );
+                testConstant(
+                    'FILL',
+                    function ()
+                    {
+                        this.toBe(Array.prototype.fill);
+                    }
+                );
+                testConstant(
+                    'FILTER',
+                    function ()
+                    {
+                        this.toBe(Array.prototype.filter);
+                    }
+                );
+                testConstant(
+                    'PLAIN_OBJECT',
+                    function ()
+                    {
+                        this.toBePlainObject();
+                    }
+                );
             }
         );
         describe(
@@ -398,7 +452,11 @@ self
                     'throws a ReferenceError for unknown features',
                     function ()
                     {
-                        var fn = function () { JScrewIt.areFeaturesCompatible(['???']); };
+                        var fn =
+                            function ()
+                            {
+                                JScrewIt.areFeaturesCompatible(['???']);
+                            };
                         expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
                     }
                 );
@@ -504,7 +562,7 @@ self
                     function ()
                     {
                         var features = Object.keys(FEATURE_INFOS).sort();
-                        features.forEach(function (feature) { testFeature(feature); });
+                        features.forEach(testFeature);
                     }
                 );
             }
@@ -850,8 +908,13 @@ self
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.callCoders = function () { };
-                        expect(function () { encoder.encode('12345'); }).toThrow(
+                        encoder.callCoders = Function();
+                        expect(
+                            function ()
+                            {
+                                encoder.encode('12345');
+                            }
+                        ).toThrow(
                             new Error('Encoding failed')
                         );
                     }
@@ -878,7 +941,7 @@ self
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.replaceNumberArray = function () { };
+                        encoder.replaceNumberArray = Function();
                         expect(encoder.encodeByCharCodes('12345')).toBeUndefined();
                     }
                 );
@@ -928,7 +991,7 @@ self
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.replaceString = function () { };
+                        encoder.replaceString = Function();
                         expect(encoder.replaceNumberArray([])).toBeUndefined();
                     }
                 );
@@ -954,11 +1017,15 @@ self
             function ()
             {
                 var encoder = JScrewIt.debug.createEncoder();
-                encoder.replaceString = function () { };
+                encoder.replaceString = Function();
                 
                 function debugReplacer(input)
                 {
-                    var result = function () { encoder.resolve(input); };
+                    var result =
+                        function ()
+                        {
+                            encoder.resolve(input);
+                        };
                     return result;
                 }
                 
@@ -1248,9 +1315,21 @@ self
     
     function getEmuFeatures(features)
     {
-        if (features.every(function (feature) { return feature in featureSet; }))
+        if (
+            features.every(
+                function (feature)
+                {
+                    return feature in featureSet;
+                }
+            )
+        )
         {
-            return features.filter(function (feature) { return featureSet[feature]; });
+            return features.filter(
+                function (feature)
+                {
+                    return featureSet[feature];
+                }
+            );
         }
     }
     
@@ -1264,7 +1343,12 @@ self
     {
         JScrewIt = arg || global.JScrewIt;
         featureSet = Object.create(null);
-        EMU_FEATURES.forEach(function (feature) { featureSet[feature] = true; });
+        EMU_FEATURES.forEach(
+            function (feature)
+            {
+                featureSet[feature] = true;
+            }
+        );
         initIncludesOf('AUTO');
         describeTests();
     }
@@ -1292,7 +1376,11 @@ self
     
     function listFeatures(available)
     {
-        var callback = function (feature) { return !!featureSet[feature] !== available; };
+        var callback =
+            function (feature)
+            {
+                return !!featureSet[feature] !== available;
+            };
         var result = Object.keys(featureSet).filter(callback).sort();
         return result;
     }
@@ -1495,7 +1583,7 @@ self
                             if (feature in featureSet)
                             {
                                 var emuFeatures = featureSet[feature] ? [feature] : [];
-                                expect(function () { emuDo(emuFeatures, check); }).not.toThrow();
+                                expect(emuDo.bind(null, emuFeatures, check)).not.toThrow();
                             }
                         }
                     }
