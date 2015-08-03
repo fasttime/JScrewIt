@@ -47,7 +47,11 @@ var expandEntries;
         [
             define('U'),
             define('V', 'ATOB'),
-            define('U', 'ATOB', 'CAPITAL_HTML')
+            define('W', 'ANY_WINDOW'),
+            define('V', 'ATOB', 'ENTRIES_OBJ'),
+            define('W', 'ATOB', 'DOMWINDOW', 'ENTRIES_OBJ'),
+            define('W', 'ATOB', 'ENTRIES_OBJ', 'WINDOW'),
+            define('U', 'CAPITAL_HTML')
         ],
         'a',
         'false',
@@ -140,7 +144,11 @@ var expandEntries;
             define('0B', 'ENTRIES_OBJ')
         ],
         '0i',
-        '0j',
+        [
+            define('0j'),
+            define('0T', 'CAPITAL_HTML'),
+            define('0j', 'ENTRIES_OBJ')
+        ],
         '00',
         '01',
         '02',

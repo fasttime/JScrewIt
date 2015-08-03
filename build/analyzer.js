@@ -123,7 +123,8 @@
                         return null;
                     }
                     var featureQueries = this.featureQueries = [];
-                    var encoder = createModifiedEncoder(this.features, featureQueries);
+                    var encoder = this.encoder =
+                        createModifiedEncoder(this.features, featureQueries);
                     return encoder;
                 }
             },
@@ -135,6 +136,18 @@
                     var featureQueries = this.featureQueries;
                     var progress = featureQueries ? getProgress(featureQueries) : 0;
                     return progress;
+                }
+            },
+            'stopCapture':
+            {
+                configurable: true,
+                value: function ()
+                {
+                    var encoder = this.encoder;
+                    if (encoder)
+                    {
+                        delete encoder.hasFeatures;
+                    }
                 }
             }
         }
