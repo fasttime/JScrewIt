@@ -9,13 +9,6 @@ function createEngineSelectionBox()
     var ENGINE_INFO_LIST =
     [
         {
-            name: 'Firefox',
-            versions:
-            [
-                { feature: 'FF31', number: '31+' }
-            ]
-        },
-        {
             name: 'Chrome',
             versions:
             [
@@ -29,6 +22,13 @@ function createEngineSelectionBox()
                 { feature: 'IE9', number: '9' },
                 { feature: 'IE10', number: '10' },
                 { feature: 'IE11', number: '11' }
+            ]
+        },
+        {
+            name: 'Firefox',
+            versions:
+            [
+                { feature: 'FF31', number: '31+' }
             ]
         },
         {
