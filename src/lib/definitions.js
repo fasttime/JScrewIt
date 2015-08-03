@@ -886,7 +886,11 @@ var replaceDigit;
                 return '+!![]';
             default:
                 var replacement = '!![]';
-                do { replacement += '+!![]'; } while (--digit > 1);
+                do
+                {
+                    replacement += '+!![]';
+                }
+                while (--digit > 1);
                 return replacement;
             }
         };

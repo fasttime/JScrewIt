@@ -99,7 +99,10 @@
         try
         {
             emuFeatures.forEach(
-                function (feature) { EMU_FEATURE_INFOS[feature].setUp.call(context); }
+                function (feature)
+                {
+                    EMU_FEATURE_INFOS[feature].setUp.call(context);
+                }
             );
             result = callback();
         }
@@ -116,7 +119,14 @@
     
     function emuEval(emuFeatures, str)
     {
-        var result = emuDo(emuFeatures, function () { return eval(str); });
+        var result =
+            emuDo(
+                emuFeatures,
+                function ()
+                {
+                    return eval(str);
+                }
+            );
         return result;
     }
     
@@ -165,7 +175,11 @@
                 {
                     override(this, 'document', { value: { } });
                 }
-                var valueOf = function () { return str; };
+                var valueOf =
+                    function ()
+                    {
+                        return str;
+                    };
                 override(this, 'document.valueOf', { value: valueOf });
             }
         };
@@ -186,7 +200,11 @@
                 {
                     var arrayIteratorProto = this.arrayIteratorProto = { };
                     var arrayIterator = Object.create(arrayIteratorProto);
-                    var entries = function () { return arrayIterator; };
+                    var entries =
+                        function ()
+                        {
+                            return arrayIterator;
+                        };
                     override(this, 'Array.prototype.entries', { value: entries });
                 }
                 var context = this;
@@ -278,7 +296,11 @@
                 {
                     override(this, 'self', { value: { } });
                 }
-                var valueOf = function () { return str; };
+                var valueOf =
+                    function ()
+                    {
+                        return str;
+                    };
                 override(this, 'self.valueOf', { value: valueOf });
             }
         };
@@ -299,7 +321,14 @@
                 }
             );
         var name = components.pop();
-        var obj = components.reduce(function (obj, name) { return obj[name]; }, global);
+        var obj =
+            components.reduce(
+                function (obj, name)
+                {
+                    return obj[name];
+                },
+                global
+            );
         if (backup)
         {
             var oldDescriptor = Object.getOwnPropertyDescriptor(obj, name);
@@ -368,8 +397,16 @@
         {
             setUp: function ()
             {
-                var atob = function (value) { return Base64.decode(value); };
-                var btoa = function (value) { return Base64.encode(value); };
+                var atob =
+                    function (value)
+                    {
+                        return Base64.decode(value);
+                    };
+                var btoa =
+                    function (value)
+                    {
+                        return Base64.encode(value);
+                    };
                 override(this, 'atob', { value: atob });
                 override(this, 'btoa', { value: btoa });
             }
@@ -398,7 +435,10 @@
                         var result =
                             method.apply(this, arguments).replace(
                                 /^<[\w ]+|[\w ]+>$/g,
-                                function (match) { return match.toUpperCase(); }
+                                function (match)
+                                {
+                                    return match.toUpperCase();
+                                }
                             );
                         return result;
                     };
@@ -448,7 +488,11 @@
         {
             setUp: function ()
             {
-                var Date = function () { return 'Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)'; };
+                var Date =
+                    function ()
+                    {
+                        return 'Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)';
+                    };
                 override(this, 'Date', { value: Date });
             }
         },
@@ -562,6 +606,11 @@
         EMU_FEATURES:   EMU_FEATURES,
     };
     
-    Object.keys(exports).forEach(function (name) { global[name] = exports[name]; });
+    Object.keys(exports).forEach(
+        function (name)
+        {
+            global[name] = exports[name];
+        }
+    );
 }
 )(typeof self === 'undefined' ? global : self);

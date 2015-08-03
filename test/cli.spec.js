@@ -29,7 +29,13 @@ describe(
                 function ()
                 {
                     var argv = [null, '../screw.js'].concat(params);
-                    assert.throws(function () { cli.parseCommandLine(argv); }, error);
+                    assert.throws(
+                        function ()
+                        {
+                            cli.parseCommandLine(argv);
+                        },
+                        error
+                    );
                 }
             );
         }

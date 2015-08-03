@@ -6,7 +6,7 @@ var noProto;
 {
     'use strict';
     
-    Empty = function () { };
+    Empty = Function();
     Empty.prototype = Object.create(null);
     
     noProto =

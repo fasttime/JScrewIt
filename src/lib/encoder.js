@@ -386,9 +386,15 @@ var expandEntries;
         );
         var freqList =
             Object.keys(charMap).map(
-                function (char) { return charMap[char]; }
+                function (char)
+                {
+                    return charMap[char];
+                }
             ).sort(
-                function (freq1, freq2) { return freq2.count - freq1.count; }
+                function (freq1, freq2)
+                {
+                    return freq2.count - freq1.count;
+                }
             );
         return freqList;
     }
@@ -398,7 +404,13 @@ var expandEntries;
         function getSortLength()
         {
             var length = 0;
-            Array.prototype.forEach.call(str, function (digit) { length += digitLengths[digit]; });
+            Array.prototype.forEach.call(
+                str,
+                function (digit)
+                {
+                    length += digitLengths[digit];
+                }
+            );
             return length;
         }
         
@@ -418,7 +430,11 @@ var expandEntries;
             }
             pattern += ']';
             regExp = new RegExp(pattern, 'g');
-            replacer = function (match) { return AMENDINGS[match - firstDigit]; };
+            replacer =
+                function (match)
+                {
+                    return AMENDINGS[match - firstDigit];
+                };
         }
         var range = [];
         for (index = 0; index < count; ++index)
@@ -706,7 +722,10 @@ var expandEntries;
                         parseIntArg =
                             '[' +
                             AMENDINGS.slice(0, amendings).map(
-                                function (amending) { return '/' + amending + '/g'; }
+                                function (amending)
+                                {
+                                    return '/' + amending + '/g';
+                                }
                             ).join() +
                             '].reduce(function(falsefalse,falsetrue,truefalse){return falsefalse.' +
                             'replace(falsetrue,truefalse+' + firstDigit + ')},arguments[0])';
