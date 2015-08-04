@@ -7,6 +7,7 @@ LEVEL_STRING,
 SIMPLE,
 Empty,
 ScrewBuffer,
+assignNoEnum,
 createSolution,
 define,
 getAppendLength,
@@ -596,7 +597,7 @@ var expandEntries;
             this.stack = [];
         };
     
-    Encoder.prototype =
+    var encoderProtoSource =
     {
         callCoders: function (input, coderNames, codingName)
         {
@@ -1170,6 +1171,8 @@ var expandEntries;
             throw new SyntaxError(message);
         }
     };
+    
+    assignNoEnum(Encoder.prototype, encoderProtoSource);
     
     expandEntries =
         function (entries)
