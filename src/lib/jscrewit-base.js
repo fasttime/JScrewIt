@@ -3,14 +3,16 @@ global
 FEATURE_INFOS,
 Empty,
 Encoder,
+Feature,
 assignNoEnum,
 availableFeatureMask,
 featuresFromMask,
 getFeatureMask,
-incompatibleFeatureMasks,
+isFeatureMaskCompatible,
 module,
 self,
-trimJS
+trimJS,
+validateFeatureMask
 */
 
 var JScrewIt;
@@ -109,31 +111,18 @@ var setUp;
         return encoder;
     }
     
-    function isFeatureMaskCompatible(featureMask)
-    {
-        var result =
-            incompatibleFeatureMasks.every(
-                function (incompatibleFeatureMask)
-                {
-                    var result =
-                        (incompatibleFeatureMask & featureMask) !== incompatibleFeatureMask;
-                    return result;
-                }
-            );
-        return result;
-    }
-    
     var encoders = new Empty();
     
     JScrewIt =
         assignNoEnum(
             { },
             {
+                FEATURE_INFOS:          FEATURE_INFOS,
+                Feature:                Feature,
                 areFeaturesAvailable:   areFeaturesAvailable,
                 areFeaturesCompatible:  areFeaturesCompatible,
                 commonFeaturesOf:       commonFeaturesOf,
                 encode:                 encode,
-                FEATURE_INFOS:          FEATURE_INFOS,
             }
         );
     
@@ -141,10 +130,7 @@ var setUp;
         function (features)
         {
             var featureMask = getFeatureMask(features);
-            if (!isFeatureMaskCompatible(featureMask))
-            {
-                throw new ReferenceError('Incompatible features');
-            }
+            validateFeatureMask(featureMask);
             return featureMask;
         };
     

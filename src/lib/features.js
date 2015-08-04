@@ -1,11 +1,15 @@
-/* global Empty, document, self */
+/* global Empty, assignNoEnum, document, self */
 
 var FEATURE_INFOS;
+
+var Feature;
 
 var availableFeatureMask;
 var featuresFromMask;
 var getFeatureMask;
 var incompatibleFeatureMasks;
+var isFeatureMaskCompatible;
+var validateFeatureMask;
 
 (function ()
 {
@@ -27,16 +31,18 @@ var incompatibleFeatureMasks;
         return available;
     }
     
-    function completeFeature(feature, ignoreExcludes)
+    function completeFeature(name, ignoreExcludes)
     {
-        var mask = featureMaskMap[feature];
+        var mask = featureMaskMap[name];
         if (mask == null)
         {
-            var info = FEATURE_INFOS[feature];
+            var info = FEATURE_INFOS[name];
+            var featureObj;
             if (typeof info === 'string')
             {
                 mask = completeFeature(info, ignoreExcludes);
-                FEATURE_INFOS[feature] = FEATURE_INFOS[info];
+                FEATURE_INFOS[name] = FEATURE_INFOS[info];
+                featureObj = ALL[info];
             }
             else
             {
@@ -46,7 +52,7 @@ var incompatibleFeatureMasks;
                     if (info.check())
                     {
                         availableFeatureMask |= mask;
-                        autoIncludes.push(feature);
+                        autoIncludes.push(name);
                     }
                 }
                 mask ^= 0;
@@ -70,14 +76,85 @@ var incompatibleFeatureMasks;
                         }
                     );
                 }
-                info.name = feature;
+                info.name = name;
                 var available = (mask & availableFeatureMask) === mask;
                 info.available = available;
+                featureObj =
+                    Object.create(
+                        Feature.prototype,
+                        {
+                            description: { value: info.description },
+                            mask: { value: mask },
+                            name: { value: name }
+                        }
+                    );
             }
-            featureMaskMap[feature] = mask;
+            var descriptor = { enumerable: true, value: featureObj };
+            Object.defineProperty(Feature, name, descriptor);
+            Object.defineProperty(ALL, name, descriptor);
+            featureMaskMap[name] = mask;
         }
         return mask;
     }
+    
+    function maskFromArguments(args)
+    {
+        var mask = 0;
+        Array.prototype.forEach.call(
+            args,
+            function (arg)
+            {
+                if (Array.isArray(arg))
+                {
+                    arg.forEach(
+                        function (arg)
+                        {
+                            mask |= maskFromStringOrFeature(arg);
+                        }
+                    );
+                }
+                else
+                {
+                    mask |= maskFromStringOrFeature(arg);
+                }
+            }
+        );
+        validateFeatureMask(mask);
+        return mask;
+    }
+    
+    function maskFromStringOrFeature(arg)
+    {
+        var mask;
+        if (arg instanceof Feature)
+        {
+            mask = arg.mask;
+        }
+        else
+        {
+            var name = arg + '';
+            var featureObj = ALL[name];
+            if (!featureObj)
+            {
+                throw new ReferenceError('Unknown feature ' + JSON.stringify(name));
+            }
+            mask = featureObj.mask;
+        }
+        return mask;
+    }
+    
+    var ALL = new Empty();
+    
+    Feature =
+        function Feature()
+        {
+            var mask = maskFromArguments(arguments);
+            var featureObj = this instanceof Feature ? this : Object.create(Feature.prototype);
+            featureObj.mask = mask;
+            return featureObj;
+        };
+    
+    assignNoEnum(Feature, { 'ALL': ALL });
     
     FEATURE_INFOS =
     {
@@ -714,6 +791,29 @@ var incompatibleFeatureMasks;
         };
     
     incompatibleFeatureMasks = [];
+    
+    isFeatureMaskCompatible =
+        function (mask)
+        {
+            var result =
+                incompatibleFeatureMasks.every(
+                    function (incompatibleFeatureMask)
+                    {
+                        var result = (incompatibleFeatureMask & mask) !== incompatibleFeatureMask;
+                        return result;
+                    }
+                );
+            return result;
+        };
+    
+    validateFeatureMask =
+        function (mask)
+        {
+            if (!isFeatureMaskCompatible(mask))
+            {
+                throw new ReferenceError('Incompatible features');
+            }
+        };
     
     // Assign a bit mask to each checkable feature
     
