@@ -568,6 +568,70 @@ self
             }
         );
         describe(
+            'JScrewIt.Feature',
+            function ()
+            {
+                var Feature = JScrewIt.Feature;
+                
+                describe(
+                    'constructor',
+                    function ()
+                    {
+                        it(
+                            'accepts mixed arguments',
+                            function ()
+                            {
+                                var feature =
+                                    new Feature(
+                                        ['NAME', Feature.WINDOW],
+                                        'HTMLDOCUMENT',
+                                        Feature.NO_IE_SRC
+                                    );
+                                expect(feature.mask).toBe(
+                                    Feature.NAME.mask |
+                                    Feature.WINDOW.mask |
+                                    Feature.HTMLDOCUMENT.mask |
+                                    Feature.NO_IE_SRC.mask
+                                );
+                            }
+                        );
+                        it(
+                            'can be invoked without new',
+                            function ()
+                            {
+                                var featureObj = Feature();
+                                expect(featureObj.constructor).toBe(Feature);
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for incompatible features',
+                            function ()
+                            {
+                                expect(
+                                    function ()
+                                    {
+                                        new Feature('ENTRIES_PLAIN', 'SAFARI_ARRAY_ITERATOR');
+                                    }
+                                ).toThrow(ReferenceError('Incompatible features'));
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for unknown features',
+                            function ()
+                            {
+                                expect(
+                                    function ()
+                                    {
+                                        new Feature('???');
+                                    }
+                                ).toThrow(ReferenceError('Unknown feature "???"'));
+                            }
+                        );
+                    }
+                );
+            }
+        );
+        describe(
             'JScrewIt.debug.defineConstant',
             function ()
             {
