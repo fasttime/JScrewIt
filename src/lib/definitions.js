@@ -896,14 +896,10 @@ var replaceDigit;
         };
     
     // Create definitions for digits
-    (function ()
-    {
-        for (var digit = 0; digit <= 9; ++digit)
-        {
-            var expr = replaceDigit(digit);
-            CHARACTERS[digit] = { expr: expr, level: LEVEL_NUMERIC };
-        }
+    for (var digit = 0; digit <= 9; ++digit)
+	{
+        var expr = replaceDigit(digit);
+        CHARACTERS[digit] = { expr: expr, level: LEVEL_NUMERIC };
     }
-    )();
 }
 )();

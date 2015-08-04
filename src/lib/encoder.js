@@ -456,6 +456,13 @@ var expandEntries;
         return range;
     }
     
+    function defaultResolveCharacter(char)
+    {
+        var defaultCharacterEncoder = this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
+        var solution = defaultCharacterEncoder.call(this, char);
+        return solution;
+    }
+    
     function defineCoder(coder, minInputLength)
     {
         coder.MIN_INPUT_LENGTH = minInputLength;
@@ -1086,9 +1093,7 @@ var expandEntries;
                     function ()
                     {
                         var entries = CHARACTERS[char];
-                        var defaultCharacterEncoder =
-                            this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
-                        var defaultResolver = defaultCharacterEncoder.bind(this, char);
+                        var defaultResolver = defaultResolveCharacter.bind(this, char);
                         solution = this.findOptimalSolution(entries, defaultResolver);
                         if (!solution)
                         {
