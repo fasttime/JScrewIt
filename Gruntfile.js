@@ -5,41 +5,53 @@
 module.exports =
     function (grunt)
     {
-        var JS_FILES = ['*.js', 'build/**/*.js', 'html/**/*.js', 'src/**/*.js', 'test/**/*.js'];
+        var JS_FILES =
+        {
+            default: ['*.js', 'build/**/*.js', 'src/**/*.js', 'test/**/*.js', 'tools/**/*.js'],
+            html: 'src/html/**/*.js',
+            lib: ['src/lib/**/*.js', 'test/**/*.js']
+        };
         
         // Project configuration.
         grunt.initConfig(
             {
-                clean: { default: ['coverage', 'Features.md', 'lib/**/*.js', 'output.txt'] },
+                clean:
+                {
+                    build: ['Features.md', 'output.txt'],
+                    html: 'html/**/*.js',
+                    lib: ['coverage', 'lib/**/*.js']
+                },
                 concat:
                 {
-                    default:
+                    lib:
                     {
                         src:
                         [
-                            'src/preamble',
-                            'src/features.js',
-                            'src/definers.js',
-                            'src/definitions.js',
-                            'src/screw-buffer.js',
-                            'src/encoder.js',
-                            'src/trim-js.js',
-                            'src/jscrewit-base.js',
-                            'src/debug.js',
-                            'src/postamble'
+                            'src/lib/preamble',
+                            'src/lib/no-proto.js',
+                            'src/lib/features.js',
+                            'src/lib/definers.js',
+                            'src/lib/definitions.js',
+                            'src/lib/screw-buffer.js',
+                            'src/lib/encoder.js',
+                            'src/lib/trim-js.js',
+                            'src/lib/jscrewit-base.js',
+                            'src/lib/debug.js',
+                            'src/lib/postamble'
                         ],
                         dest: 'lib/jscrewit.js'
                     },
                     options:
                     {
                         banner: '//! JScrewIt <%= pkg.version %> – <%= pkg.homepage %>\n',
-                        separator: '\n',
                         stripBanners: true
                     }
                 },
                 jscs:
                 {
-                    default: JS_FILES,
+                    default: JS_FILES.default,
+                    html: JS_FILES.html,
+                    lib: JS_FILES.lib,
                     options:
                     {
                         // Encourage use of abbreviations: "char", "obj", "str".
@@ -55,7 +67,7 @@ module.exports =
                         disallowSpacesInsideParentheses: true,
                         disallowTrailingWhitespace: 'ignoreEmptyLines',
                         disallowYodaConditions: true,
-                        requireBlocksOnNewline: 1,
+                        requireBlocksOnNewline: true,
                         requireKeywordsOnNewLine:
                         [
                             'break',
@@ -67,27 +79,22 @@ module.exports =
                             'else',
                             'finally',
                             'for',
+                            'return',
                             'switch',
                             'throw',
-                            'try'
+                            'try',
+                            'while'
                         ],
                         requireLineBreakAfterVariableAssignment: true,
                         requireLineFeedAtFileEnd: true,
+                        requireNewlineBeforeBlockStatements: true,
                         requirePaddingNewLinesAfterUseStrict: true,
                         requireSpaceAfterBinaryOperators: true,
                         requireSpaceAfterKeywords: true,
                         requireSpaceAfterLineComment: true,
                         requireSpaceBeforeBinaryOperators: true,
                         requireSpaceBeforeBlockStatements: true,
-                        requireSpaceBeforeKeywords:
-                        [
-                            'delete',
-                            'if',
-                            'in',
-                            'instanceof',
-                            'return',
-                            'while'
-                        ],
+                        requireSpaceBeforeKeywords: ['delete', 'if', 'in', 'instanceof'],
                         requireSpaceBeforeObjectValues: true,
                         requireSpaceBetweenArguments: true,
                         requireSpacesInAnonymousFunctionExpression:
@@ -100,13 +107,15 @@ module.exports =
                         requireSpacesInFunctionExpression: { beforeOpeningCurlyBrace: true },
                         requireSpacesInsideObjectBrackets: 'all',
                         validateAlignedFunctionParameters: true,
-                        validateIndentation: 4,
+                        validateIndentation: { includeEmptyLines: true, value: 4 },
                         validateParameterSeparator: ', '
                     }
                 },
                 jshint:
                 {
-                    default: JS_FILES,
+                    default: JS_FILES.default,
+                    html: JS_FILES.html,
+                    lib: JS_FILES.lib,
                     options:
                     {
                         curly: true,
@@ -132,11 +141,29 @@ module.exports =
                         '-W018': true,
                     }
                 },
-                mocha_istanbul: { default: 'test/**/*.spec.js' },
+                mocha_istanbul:
+                {
+                    default: 'test/**/*.spec.js',
+                    lib: { options: { root: 'lib' }, src: 'test/**/jscrewit.spec.js' }
+                },
                 pkg: grunt.file.readJSON('package.json'),
                 uglify:
                 {
-                    default: { files: { 'lib/jscrewit.min.js': 'lib/jscrewit.js' } },
+                    html:
+                    {
+                        files:
+                        {
+                            'html/ui.js':
+                            [
+                                'node_modules/art-js/lib/art.js',
+                                'src/html/engine-selection-box.js',
+                                'src/html/roll.js',
+                                'src/html/ui-main.js'
+                            ],
+                            'html/worker.js': 'src/html/worker.js'
+                        }
+                    },
+                    lib: { files: { 'lib/jscrewit.min.js': 'lib/jscrewit.js' } },
                     options:
                     {
                         compress: { global_defs: { DEBUG: false }, hoist_vars: true },
@@ -170,8 +197,13 @@ module.exports =
             function ()
             {
                 var runScan = require('./build/scan-char-defs.js');
-                var unusedDefs = runScan();
-                if (unusedDefs)
+                var before = new Date();
+                var defsUnused = runScan();
+                var time = new Date() - before;
+                var timeUtils = require('./tools/time-utils.js');
+                var timeStr = timeUtils.formatDuration(time);
+                grunt.log.writeln(timeStr + ' elapsed.');
+                if (defsUnused)
                 {
                     grunt.warn(
                         'There are unused character definitions. See output.txt for details.'
@@ -189,27 +221,23 @@ module.exports =
             'default',
             [
                 'clean',
-                'jshint',
-                'jscs',
+                'jshint:default',
+                'jscs:default',
                 'concat',
-                'mocha_istanbul',
+                'mocha_istanbul:default',
                 'scan-char-defs',
                 'uglify',
                 'feature-doc'
             ]
         );
         
-        // Quick build task.
         grunt.registerTask(
-            'quick',
-            [
-                'clean',
-                'jshint',
-                'jscs',
-                'concat',
-                'mocha_istanbul',
-                'uglify'
-            ]
+            'html', ['clean:html', 'jshint:html', 'jscs:html', 'uglify:html']
+        );
+        
+        grunt.registerTask(
+            'lib',
+            ['clean:lib', 'jshint:lib', 'jscs:lib', 'concat', 'mocha_istanbul:lib', 'uglify:lib']
         );
         
         grunt.util.linefeed = '\n';

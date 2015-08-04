@@ -1,4 +1,4 @@
-/* global self */
+/* global Empty, document, self */
 
 var FEATURE_INFOS;
 
@@ -79,23 +79,48 @@ var incompatibleFeatureMasks;
         return mask;
     }
     
-    var bitIndex = 0;
-    var featureMaskMap = Object.create(null);
-    
     FEATURE_INFOS =
     {
+        ANY_DOCUMENT:
+        {
+            description:
+                'Existence of the global object property document whose string representation ' +
+                'starts with "[object " and ends with "Document]".\n' +
+                'This feature is not available in Node.js. It is also not available inside web ' +
+                'workers.',
+            check: function ()
+            {
+                return typeof document === 'object' && /^\[object .*Document]$/.test(document + '');
+            }
+        },
+        ANY_WINDOW:
+        {
+            description:
+                'Existence of the global object property self whose string representation starts ' +
+                'with "[object " and ends with "Window]".\n' +
+                'This feature is not available in Node.js. It is also not available inside web ' +
+                'workers.',
+            check: checkSelfFeature.bind(
+                function (str)
+                {
+                    return /^\[object .*Window]$/.test(str);
+                }
+            ),
+            includes: ['SELF_OBJ']
+        },
         ARRAY_ITERATOR:
         {
             description:
                 'The property that the string representation of Array.prototype.entries() starts ' +
                 'with "[object Array" and ends with "]" at index 21 or 22.\n' +
-                'This feature is available in Firefox and in Chrome 38, Opera 25, Safari 7.1, ' +
-                'Node.js 0.12 and later versions.',
+                'This feature is available in Firefox, Chrome, Opera, and in Safari 7.1, Node.js ' +
+                '0.12 and later versions.',
             check: function ()
             {
                 return Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries());
             },
-            includes: ['ENTRIES']
+            excludes: ['ENTRIES_PLAIN'],
+            includes: ['ENTRIES_OBJ']
         },
         ATOB:
         {
@@ -129,6 +154,20 @@ var incompatibleFeatureMasks;
                 return available;
             }
         },
+        DOCUMENT:
+        {
+            description:
+                'Existence of the global object property document having the string ' +
+                'representation "[object Document]".\n' +
+                'This feature is only available in Internet Explorer 9 and 10. It is not ' +
+                'available inside web workers.',
+            check: function ()
+            {
+                return typeof document === 'object' && document + '' === '[object Document]';
+            },
+            excludes: ['HTMLDOCUMENT'],
+            includes: ['ANY_DOCUMENT']
+        },
         DOMWINDOW:
         {
             description:
@@ -141,7 +180,7 @@ var incompatibleFeatureMasks;
                     return str + '' === '[object DOMWindow]';
                 }
             ),
-            includes: ['SELF'],
+            includes: ['ANY_WINDOW'],
             excludes: ['WINDOW']
         },
         DOUBLE_QUOTE_ESC_HTML:
@@ -156,17 +195,30 @@ var incompatibleFeatureMasks;
                 return available;
             }
         },
-        ENTRIES:
+        ENTRIES_OBJ:
         {
             description:
                 'The property that the string representation of Array.prototype.entries() starts ' +
                 'with "[object ".\n' +
-                'This feature is available in Firefox, in Microsoft Edge and in Chrome 38, Opera ' +
-                '25, Safari 7.1, Node.js 0.12 and later versions.',
+                'This feature is available in Firefox, Chrome, Opera, Microsoft Edge, and in ' +
+                'Safari 7.1, Node.js 0.12 and later versions.',
             check: function ()
             {
                 return Array.prototype.entries && /^\[object /.test([].entries());
             }
+        },
+        ENTRIES_PLAIN:
+        {
+            description:
+                'The property that the string representation of Array.prototype.entries() ' +
+                'evaluates to "[object Object]".\n' +
+                'This feature is only available in Microsoft Edge.',
+            check: function ()
+            {
+                return Array.prototype.entries && [].entries() + '' === '[object Object]';
+            },
+            excludes: ['ARRAY_ITERATOR'],
+            includes: ['ENTRIES_OBJ']
         },
         FF_SAFARI_SRC:
         {
@@ -187,10 +239,20 @@ var incompatibleFeatureMasks;
         {
             description:
                 'Existence of the native function Array.prototype.fill.\n' +
-                'Available in Firefox 31, Safari 7.1 and later versions and in Microsoft Edge.',
+                'Available in Firefox, Microsoft Edge, and in Safari 7.1 and later versions.',
             check: function ()
             {
                 return Array.prototype.fill;
+            }
+        },
+        FROM_CODE_POINT:
+        {
+            description:
+                'Existence of the function String.fromCodePoint.\n' +
+                'Available in Firefox, Chrome, Opera and Microsoft Edge.',
+            check: function ()
+            {
+                return String.fromCodePoint;
             }
         },
         GMT:
@@ -206,6 +268,20 @@ var incompatibleFeatureMasks;
                 return /^.{25}GMT/.test(Date());
             }
         },
+        HTMLDOCUMENT:
+        {
+            description:
+                'Existence of the global object property document having the string ' +
+                'representation "[object HTMLDocument]".\n' +
+                'This feature is not available in Internet Explorer versions prior to 11 and ' +
+                'Node.js. It is also not available inside web workers.',
+            check: function ()
+            {
+                return typeof document === 'object' && document + '' === '[object HTMLDocument]';
+            },
+            excludes: ['DOCUMENT'],
+            includes: ['ANY_DOCUMENT']
+        },
         IE_SRC:
         {
             description:
@@ -218,6 +294,17 @@ var incompatibleFeatureMasks;
                 return /^\nfunction Object\(\) \{\n    \[native code\]\n\}/.test(Object);
             },
             excludes: ['NO_IE_SRC']
+        },
+        LOCALE_INFINITY:
+        {
+            description:
+                'Language sensitive string representation of Infinity as "∞".\n' +
+                'Available in Firefox, Chrome, Opera, Microsoft Edge, and in Android Browser ' +
+                '4.4.2, Node.js 0.12 and later versions.',
+            check: function ()
+            {
+                return Infinity.toLocaleString() === '∞';
+            }
         },
         NAME:
         {
@@ -247,7 +334,7 @@ var incompatibleFeatureMasks;
             description:
                 'The property that the string representation of Array.prototype.entries() ' +
                 'evaluates to "[object Array Iterator]".\n' +
-                'Available in Firefox, Chrome 38, Opera 25, Node.js 0.12 and later versions.',
+                'Available in Firefox, Chrome, Opera, and in Node.js 0.12 and later versions.',
             check: function ()
             {
                 return Array.prototype.entries && [].entries() + '' === '[object Array Iterator]';
@@ -267,17 +354,6 @@ var incompatibleFeatureMasks;
                 return (Function() + '')[22] === '\n';
             }
         },
-        QUOTE:
-        {
-            description:
-                'Existence of the native function String.prototype.quote.\n' +
-                'This feature is deprecated and not available in any engine.\n' +
-                'Native support only exists in Firefox versions prior to 37.',
-            check: function ()
-            {
-                return false;
-            }
-        },
         SAFARI_ARRAY_ITERATOR:
         {
             description:
@@ -291,22 +367,8 @@ var incompatibleFeatureMasks;
             includes: ['ARRAY_ITERATOR'],
             excludes: ['NO_SAFARI_ARRAY_ITERATOR']
         },
-        SELF:
-        {
-            description:
-                'Existence of the global object property self whose string representation starts ' +
-                'with "[object " and ends with "Window]".\n' +
-                'This feature is not available in Node.js. It is also not available inside web ' +
-                'workers.',
-            check: checkSelfFeature.bind(
-                function (str)
-                {
-                    return /^\[object .*Window]$/.test(str);
-                }
-            ),
-            includes: ['SELF_OBJECT']
-        },
-        SELF_OBJECT:
+        SELF: 'ANY_WINDOW',
+        SELF_OBJ:
         {
             description:
                 'Existence of the global object property self whose string representation starts ' +
@@ -325,9 +387,8 @@ var incompatibleFeatureMasks;
             description:
                 'The property that Object.prototype.toString.call() evaluates to "[object ' +
                 'Undefined]".\n' +
-                'This behavior is defined by ECMAScript, but Android Browser prior to 4.1.2 does ' +
-                'not comply with the specification and so this feature is not available in that ' +
-                'browser.',
+                'This behavior is defined by ECMAScript, and is supported by all engines except ' +
+                'Android Browser versions prior to 4.1.2, where this feature is not available.',
             check: function ()
             {
                 return Object.prototype.toString.call() === '[object Undefined]';
@@ -362,7 +423,7 @@ var incompatibleFeatureMasks;
                     return str === '[object Window]';
                 }
             ),
-            includes: ['SELF'],
+            includes: ['ANY_WINDOW'],
             excludes: ['DOMWINDOW']
         },
         
@@ -374,17 +435,20 @@ var incompatibleFeatureMasks;
         {
             description:
                 'All new browsers\' features.\n' +
-                'No support for Node.js and older browsers like Internet Explorer 10 or Android ' +
-                'Browser 4.1.2.',
-            includes: ['ATOB', 'GMT', 'UNDEFINED', 'WINDOW']
-        },
-        NO_IE:
-        {
-            description:
-                'Features available in all supported engines except Internet Explorer.\n' +
-                'Includes features used by JSFuck with the exception of "UNDEFINED", which is ' +
-                'not available in older Android Browser versions.',
-            includes: ['DOUBLE_QUOTE_ESC_HTML', 'GMT', 'NAME', 'NO_IE_SRC']
+                'No support for Node.js and older browsers like Internet Explorer, Safari 7.0 or ' +
+                'Android Browser',
+            includes:
+            [
+                'ATOB',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'ENTRIES_OBJ',
+                'GMT',
+                'HTMLDOCUMENT',
+                'NAME',
+                'NO_IE_SRC',
+                'UNDEFINED',
+                'WINDOW'
+            ]
         },
         ANDRO400:
         {
@@ -395,6 +459,7 @@ var incompatibleFeatureMasks;
                 'DOMWINDOW',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'HTMLDOCUMENT',
                 'NAME',
                 'NO_SAFARI_LF',
                 'V8_SRC'
@@ -409,6 +474,7 @@ var incompatibleFeatureMasks;
                 'DOMWINDOW',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'HTMLDOCUMENT',
                 'NAME',
                 'NO_SAFARI_LF',
                 'UNDEFINED',
@@ -423,6 +489,8 @@ var incompatibleFeatureMasks;
                 'ATOB',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'HTMLDOCUMENT',
+                'LOCALE_INFINITY',
                 'NAME',
                 'NO_SAFARI_LF',
                 'UNDEFINED',
@@ -430,29 +498,17 @@ var incompatibleFeatureMasks;
                 'WINDOW'
             ]
         },
-        CHROME35:
+        CHROME41:
         {
-            description: 'Features available in Chrome 35 and Opera 22 or later.',
+            description: 'Features available in Chrome 41 and Opera 28 or later.',
             includes:
             [
                 'ATOB',
                 'DOUBLE_QUOTE_ESC_HTML',
+                'FROM_CODE_POINT',
                 'GMT',
-                'NAME',
-                'NO_SAFARI_LF',
-                'UNDEFINED',
-                'V8_SRC',
-                'WINDOW'
-            ]
-        },
-        CHROME38:
-        {
-            description: 'Features available in Chrome 38 and Opera 25 or later.',
-            includes:
-            [
-                'ATOB',
-                'DOUBLE_QUOTE_ESC_HTML',
-                'GMT',
+                'HTMLDOCUMENT',
+                'LOCALE_INFINITY',
                 'NAME',
                 'NO_SAFARI_ARRAY_ITERATOR',
                 'NO_SAFARI_LF',
@@ -468,29 +524,16 @@ var incompatibleFeatureMasks;
             [
                 'ATOB',
                 'DOUBLE_QUOTE_ESC_HTML',
-                'ENTRIES',
+                'ENTRIES_PLAIN',
                 'FILL',
+                'FROM_CODE_POINT',
                 'GMT',
+                'HTMLDOCUMENT',
+                'LOCALE_INFINITY',
                 'NAME',
                 'NO_SAFARI_LF',
                 'UNDEFINED',
                 'V8_SRC',
-                'WINDOW'
-            ]
-        },
-        FF30:
-        {
-            description: 'Features available in Firefox 30 or later.',
-            includes:
-            [
-                'ATOB',
-                'DOUBLE_QUOTE_ESC_HTML',
-                'FF_SAFARI_SRC',
-                'GMT',
-                'NAME',
-                'NO_SAFARI_ARRAY_ITERATOR',
-                'NO_SAFARI_LF',
-                'UNDEFINED',
                 'WINDOW'
             ]
         },
@@ -503,7 +546,10 @@ var incompatibleFeatureMasks;
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FF_SAFARI_SRC',
                 'FILL',
+                'FROM_CODE_POINT',
                 'GMT',
+                'HTMLDOCUMENT',
+                'LOCALE_INFINITY',
                 'NAME',
                 'NO_SAFARI_ARRAY_ITERATOR',
                 'NO_SAFARI_LF',
@@ -514,12 +560,21 @@ var incompatibleFeatureMasks;
         IE9:
         {
             description: 'Features available in Internet Explorer 9 or later.',
-            includes: ['CAPITAL_HTML', 'IE_SRC', 'NO_SAFARI_LF', 'UNDEFINED', 'WINDOW']
+            includes: ['CAPITAL_HTML', 'DOCUMENT', 'IE_SRC', 'NO_SAFARI_LF', 'UNDEFINED', 'WINDOW']
         },
         IE10:
         {
             description: 'Features available in Internet Explorer 10 or later.',
-            includes: ['ATOB', 'CAPITAL_HTML', 'IE_SRC', 'NO_SAFARI_LF', 'UNDEFINED', 'WINDOW']
+            includes:
+            [
+                'ATOB',
+                'CAPITAL_HTML',
+                'DOCUMENT',
+                'IE_SRC',
+                'NO_SAFARI_LF',
+                'UNDEFINED',
+                'WINDOW'
+            ]
         },
         IE11:
         {
@@ -529,6 +584,7 @@ var incompatibleFeatureMasks;
                 'ATOB',
                 'CAPITAL_HTML',
                 'GMT',
+                'HTMLDOCUMENT',
                 'IE_SRC',
                 'NO_SAFARI_LF',
                 'UNDEFINED',
@@ -561,6 +617,7 @@ var incompatibleFeatureMasks;
             [
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'LOCALE_INFINITY',
                 'NAME',
                 'NO_SAFARI_ARRAY_ITERATOR',
                 'NO_SAFARI_LF',
@@ -577,6 +634,7 @@ var incompatibleFeatureMasks;
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FF_SAFARI_SRC',
                 'GMT',
+                'HTMLDOCUMENT',
                 'NAME',
                 'UNDEFINED',
                 'WINDOW'
@@ -592,6 +650,7 @@ var incompatibleFeatureMasks;
                 'FF_SAFARI_SRC',
                 'FILL',
                 'GMT',
+                'HTMLDOCUMENT',
                 'NAME',
                 'SAFARI_ARRAY_ITERATOR',
                 'UNDEFINED',
@@ -599,6 +658,34 @@ var incompatibleFeatureMasks;
             ]
         }
     };
+    
+    featuresFromMask =
+        function (mask)
+        {
+            var featureSet = new Empty();
+            var includes = [];
+            for (var feature in featureMaskMap)
+            {
+                var featureMask = featureMaskMap[feature];
+                if ((featureMask & mask) === featureMask)
+                {
+                    var featureInfo = FEATURE_INFOS[feature];
+                    if (featureInfo.check && featureInfo.name === feature)
+                    {
+                        featureSet[feature] = null;
+                        Array.prototype.push.apply(includes, featureInfo.includes);
+                    }
+                }
+            }
+            includes.forEach(
+                function (feature)
+                {
+                    delete featureSet[feature];
+                }
+            );
+            var result = Object.keys(featureSet).sort();
+            return result;
+        };
     
     getFeatureMask =
         function (features)
@@ -626,32 +713,14 @@ var incompatibleFeatureMasks;
             return result;
         };
     
-    featuresFromMask =
-        function (mask)
-        {
-            var result = [];
-            for (var feature in featureMaskMap)
-            {
-                var featureMask = featureMaskMap[feature];
-                if ((featureMask & mask) === featureMask)
-                {
-                    var featureInfo = FEATURE_INFOS[feature];
-                    if (featureInfo.check)
-                    {
-                        result.push(feature);
-                    }
-                }
-            }
-            result.sort();
-            return result;
-        };
-    
     incompatibleFeatureMasks = [];
     
     // Assign a bit mask to each checkable feature
     
-    var features = Object.keys(FEATURE_INFOS);
     var autoIncludes = [];
+    var bitIndex = 0;
+    var featureMaskMap = new Empty();
+    var features = Object.keys(FEATURE_INFOS);
     features.forEach(completeFeature);
     FEATURE_INFOS.AUTO =
     {
@@ -662,5 +731,5 @@ var incompatibleFeatureMasks;
         available: true
     };
     featureMaskMap.AUTO = availableFeatureMask;
-
-})();
+}
+)();

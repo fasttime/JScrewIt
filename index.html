@@ -11,17 +11,16 @@
 different characters: ! ( ) + [ ]'>
 <meta name='viewport' content='width=device-width'>
 <script src='lib/jscrewit.min.js'></script>
+<script src='html/ui.js'></script>
 <style>
 
 * { box-sizing: border-box; }
 
 .actions { display: block; margin: .25em 0 0; }
 
-.actions a { float: right; }
+.actions, .frame, p { width: 100%; }
 
-.actions, .code, .controls, p { width: 100%; }
-
-.code
+.frame
 {
     background-color: #e0e0e0;
     border-radius: .4em;
@@ -30,9 +29,15 @@ different characters: ! ( ) + [ ]'>
     padding: .4em;
 }
 
-.code>*:first-child { font-weight: bold; }
+.frame>*:first-child
+{
+    cursor: default; /* Otherwise Internet Explorer would show an I-beam. */
+    display: inline-block;
+    font-weight: bold;
+    margin-bottom: .25em;
+}
 
-.controls>*:not(:last-child) { margin-right: 1em; }
+.engineSelectionBox { background-color: #f0f0f0; }
 
 .execSrc::after { content: 'Executable code'; }
 
@@ -40,43 +45,44 @@ different characters: ! ( ) + [ ]'>
 
 #compMenu { -webkit-appearance: menulist-button; width: 15em; }
 
-a { text-decoration: none; }
+#controls>*:not(:last-child) { margin-right: 1em; }
 
-a:link { color: #00c; }
+#wrapWithCallBox { margin-left: 0; }
 
-a:visited { color: #808; }
+a:link { color: #00c; text-decoration: none; }
 
-a:active { color: #c00; }
+a:visited { color: #66c; }
+
+a:hover { text-decoration: underline; }
+
+a:active { color: #c60; }
 
 body { background-color: white; color: black; font-family: sans-serif; }
 
-body, button, select { font-size: 13.5pt; }
+body, button, input[type=checkbox], select { font-size: 13.5pt; }
 
 body>* { margin: 0 auto; max-width: 720px; text-align: justify; }
 
+body>*>div { display: none; }
+
 header { height: 100px; position: relative; width: 100%; }
 
-h1
-{
-    font-size: 2em;
-    font-weight: normal;
-    left: 115px;
-    position: absolute;
-    top: 40px;
-}
+h1 { font-size: 2em; font-weight: normal; left: 115px; position: absolute; top: 40px; }
 
-h2 { font-weight: bold; }
+h2 { font-size: 1em; text-align: center; }
 
 img { background-color: blue; }
 
-textarea
-{
-    display: block;
-    font: 12pt monospace;
-    margin: .25em 0 0;
-    resize: vertical;
-    width: 100%;
-}
+/* Hack for Firefox that doesn't interpret font-size on check boxes */
+input[type=checkbox] { height: -moz-calc(13.5pt); width: -moz-calc(13.5pt); }
+
+li { display: inline; }
+
+li:not(:last-child)::after { content: ' | '; }
+
+textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; }
+
+ul { font-size: 10pt; padding: 0; }
 
 </style>
 <title>JScrewIt - Write any JavaScript with 6 Characters: ! ( ) + [ ]</title>
@@ -92,282 +98,58 @@ textarea
     to write and run any code: <code>!</code> <code>(</code> <code>)</code> <code>+</code>
     <code>[</code> <code>]</code>
 
-    <p>Use the form below to convert your own script. Uncheck <kbd class='execSrc'></kbd> to obtain
-    a plain string.
-
     <div>
-        <label class='code'>
-            <span>Input</span>
-            <textarea id='inputArea' rows='3'>alert(1)</textarea>
-        </label>
+        <p>Use the form below to convert your own script. Uncheck <kbd class='execSrc'></kbd> to
+        obtain a plain string.
 
-        <div class='controls'>
-            <label>Compatibility:
-                <select id='compMenu'>
-                    <option value='DEFAULT'>All supported engines
-                    <option value='COMPACT'>All new browsers
-                    <option value='NO_IE'>All except Internet Explorer (JSFuck mode)
-                    <option value='AUTO'>Only this browser
-                </select>
+        <div>
+            <label class='frame'>
+                <span>Input</span>
+                <textarea id='inputArea' rows='3'>alert(1)</textarea>
             </label>
-            <label class='execSrc noWrap'>
-                <input id='wrapWithCallBox' type='checkbox' checked>
+
+            <div>
+                <div id='controls'>
+                    <label>Compatibility:
+                        <select id='compMenu'>
+                            <option value='DEFAULT'>All supported engines
+                            <option value='COMPACT'>All new browsers (Chrome, Firefox, Safari, Opera and Microsoft Edge)
+                            <option value='AUTO'>Only this browser
+                            <option value=''>Custom…
+                        </select>
+                    </label>
+                    <label class='execSrc noWrap'>
+                        <input id='wrapWithCallBox' type='checkbox' checked>
+                    </label>
+                    <button>Encode</button>
+                </div>
+            </div>
+
+            <label class='frame'>
+                <span>Output</span>
+                <textarea id='outputArea' rows='10'></textarea>
+                <span class='actions'>
+                    <span id='stats'>…</span>
+                </span>
             </label>
-            <button id='encodeButton'>Encode</button>
         </div>
-
-        <label class='code'>
-            <span>Output</span>
-            <textarea id='outputArea' rows='10'></textarea>
-            <span class='actions'>
-                <span id='stats'>…</span>
-                <a id='run' href='#'>Run this</a>
-            </span>
-        </label>
     </div>
 
-    <h2>Compatibility</h2>
-    
-    <p>JScrewIt itself and the code it generates are compatible with the JavaScript engines listed
-    below.
-    <ul>
-        <li>Chrome 35+
-        <li>Internet Explorer 9+
-        <li>Firefox 30+
-        <li>Safari 7.0+
-        <li>Opera 22+
-        <li>Microsoft Edge <i>(experimental support)</i>
-        <li>Android Browser 4.0+
-        <li>Node.js 0.10.26+
-    </ul>
-    
-    <h2>Links</h2>
+    <noscript>
+        <p>You must enable JavaScript to use JScrewIt.
+    </noscript>
 
+    <h2>Links</h2>
     <ul>
-        <li>Documentation and source code on <a
-        href='https://github.com/fasttime/JScrewIt'>GitHub</a>
-        <li>Original discussion at <a
-        href='http://sla.ckers.org/forum/read.php?24,32930'>Sla.ckers.org</a>
-        <li>JSFuck introduction and alternatives on <a
-        href='http://esolangs.org/wiki/JSFuck'>Esolang</a>
+        <!--
+        A closing "</li>" tag prevents the browser from inserting a selectable white space after a
+        link. The content of the ::after pseudo-element is not selectable.
+        -->
+        <li><a href='https://github.com/fasttime/JScrewIt'>Documentation and source code on
+        GitHub</a></li>
+        <li><a href='http://esolangs.org/wiki/JSFuck'>JSFuck introduction and alternatives on
+        Esolang</a></li>
+        <li><a href='http://www.jsfuck.com/'>jsfuck.com</a></li>
+        <li><a href='https://github.com/fasttime/jquery-screwed'>jQuery Screwed</a></li>
     </ul>
 </div>
-<script>
-
-'use strict';
-
-function createWorker()
-{
-    if (typeof Worker !== 'undefined')
-    {
-        try
-        {
-            worker = new Worker('html/worker.js');
-        }
-        catch (error)
-        { }
-    }
-}
-
-function encode()
-{
-    var output;
-    var options = getOptions();
-    try
-    {
-        output = JScrewIt.encode(inputArea.value, options);
-    }
-    catch (error)
-    {
-        resetOutput();
-        updateError(error + '');
-        return;
-    }
-    updateOutput(output);
-}
-
-function encodeAsync()
-{
-    var options = getOptions();
-    var data = { input: inputArea.value, options: options };
-    if (waitingForWorker)
-    {
-        queuedData = data;
-    }
-    else
-    {
-        worker.postMessage(data);
-        resetOutput();
-        setWaitingForWorker(true);
-    }
-    inputArea.onkeyup = null;
-}
-
-function getOptions()
-{
-    var compatibility = compMenu.options[compMenu.selectedIndex].value;
-    // Note that some features may be not available in a web worker, that's why we cannot pass
-    // "AUTO" directly.
-    var features = JScrewIt.FEATURE_INFOS[compatibility].includes;
-    var wrapWith = wrapWithCallBox.checked ? 'call' : 'none';
-    var options = { features: features, wrapWith: wrapWith };
-    return options;
-}
-
-function handleCompMenuSelect()
-{
-    var selectedIndex = compMenu.selectedIndex;
-    if (selectedIndex !== compMenu.previousIndex)
-    {
-        compMenu.previousIndex = selectedIndex;
-        encodeAsync();
-    }
-}
-
-function handleInputAreaKeyUp(evt)
-{
-    if (evt.key !== 'Tab')
-    {
-        encodeAsync();
-    }
-}
-
-function handleRunClick()
-{
-    try
-    {
-        var value = eval(outputArea.value);
-    }
-    catch (error)
-    {
-        alert(error);
-        return false;
-    }
-
-    if (typeof value === 'string')
-    {
-        alert('"' + value + '"');
-    }
-    return false;
-}
-
-function handleWorkerMessage(evt)
-{
-    if (queuedData)
-    {
-        worker.postMessage(queuedData);
-        queuedData = null;
-    }
-    else
-    {
-        var data = evt.data;
-        var error = data.error;
-        if (error)
-        {
-            updateError(data.error);
-        }
-        else
-        {
-            updateOutput(data.output);
-        }
-        setWaitingForWorker(false);
-    }
-}
-
-function noEncode()
-{
-    if (outputSet)
-    {
-        updateStats(true);
-    }
-}
-
-function resetOutput()
-{
-    outputSet = false;
-    outputArea.value = '';
-    stats.textContent = '…';
-}
-
-function setWaitingForWorker(value)
-{
-    waitingForWorker = value;
-    outputArea.disabled = value;
-}
-
-function updateError(error)
-{
-    alert(error);
-}
-
-function updateOutput(output)
-{
-    outputArea.value = output;
-    updateStats();
-}
-
-function updateStats(outOfSync)
-{
-    var length = outputArea.value.length;
-    var html = length === 1 ? '1 char' : length + ' chars';
-    if (outOfSync)
-    {
-        if (worker)
-        {
-            inputArea.onkeyup = handleInputAreaKeyUp;
-        }
-        html += ' – <i>out of sync</i>';
-    }
-    outputSet = true;
-    stats.innerHTML = html;
-}
-
-var outputSet;
-var queuedData;
-var waitingForWorker;
-var worker;
-
-window.onload =
-    function ()
-    {
-        var compMenuHandler;
-        if (worker)
-        {
-            encodeButton.parentNode.removeChild(encodeButton);
-            inputArea.oninput = encodeAsync;
-            compMenu.previousIndex = compMenu.selectedIndex;
-            compMenuHandler = handleCompMenuSelect;
-            wrapWithCallBox.onchange = encodeAsync;
-            worker.onmessage = handleWorkerMessage;
-            encodeAsync();
-        }
-        else
-        {
-            encodeButton.onclick = encode;
-            inputArea.oninput = noEncode;
-            compMenuHandler = noEncode;
-            wrapWithCallBox.onchange = noEncode;
-            outputArea.value = '';
-        }
-        compMenu.onchange = compMenuHandler;
-        // Firefox does not always trigger a change event when an option is selected using the
-        // keyboard; we must handle keydown events asynchronously, too.
-        compMenu.onkeydown = setTimeout.bind(null, compMenuHandler);
-        if (inputArea.createTextRange)
-        {
-            var range = inputArea.createTextRange();
-            range.move('textedit', 1);
-            range.select();
-        }
-        else
-        {
-            inputArea.setSelectionRange(0x7fffffff, 0x7fffffff);
-        }
-        inputArea.focus();
-    };
-
-createWorker();
-run.onclick = handleRunClick;
-outputArea.oninput = updateStats;
-
-</script>

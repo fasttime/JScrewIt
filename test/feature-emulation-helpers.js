@@ -1,4 +1,4 @@
-/* global global, self */
+/* global document, global, self */
 
 (function (global)
 {
@@ -99,7 +99,10 @@
         try
         {
             emuFeatures.forEach(
-                function (feature) { EMU_FEATURE_INFOS[feature].setUp.call(context); }
+                function (feature)
+                {
+                    EMU_FEATURE_INFOS[feature].setUp.call(context);
+                }
             );
             result = callback();
         }
@@ -116,7 +119,70 @@
     
     function emuEval(emuFeatures, str)
     {
-        var result = emuDo(emuFeatures, function () { return eval(str); });
+        var result =
+            emuDo(
+                emuFeatures,
+                function ()
+                {
+                    return eval(str);
+                }
+            );
+        return result;
+    }
+    
+    function fromCodePoint()
+    {
+        var codeUnits = [];
+        Array.prototype.forEach.call(
+            arguments,
+            function (arg)
+            {
+                var codePoint = Number(arg);
+                if ((codePoint & 0x1fffff) !== codePoint || codePoint > 0x10ffff)
+                {
+                    throw RangeError(codePoint + ' is not a valid code point');
+                }
+                if (codePoint <= 0xffff)
+                {
+                    codeUnits.push(codePoint);
+                }
+                else
+                {
+                    var highSurrogate = (codePoint - 0x10000 >> 10) + 0xd800;
+                    var lowSurrogate = (codePoint & 0x3ff) + 0xdc00;
+                    codeUnits.push(highSurrogate, lowSurrogate);
+                }
+            }
+        );
+        var result = String.fromCharCode.apply(null, codeUnits);
+        return result;
+    }
+    
+    function makeEmuFeatureDocument(str, regExp)
+    {
+        var result =
+        {
+            setUp: function ()
+            {
+                if (global.document)
+                {
+                    if (regExp.test(document + ''))
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    override(this, 'document', { value: { } });
+                }
+                var valueOf =
+                    function ()
+                    {
+                        return str;
+                    };
+                override(this, 'document.valueOf', { value: valueOf });
+            }
+        };
         return result;
     }
     
@@ -134,7 +200,11 @@
                 {
                     var arrayIteratorProto = this.arrayIteratorProto = { };
                     var arrayIterator = Object.create(arrayIteratorProto);
-                    var entries = function () { return arrayIterator; };
+                    var entries =
+                        function ()
+                        {
+                            return arrayIterator;
+                        };
                     override(this, 'Array.prototype.entries', { value: entries });
                 }
                 var context = this;
@@ -226,7 +296,11 @@
                 {
                     override(this, 'self', { value: { } });
                 }
-                var valueOf = function () { return str; };
+                var valueOf =
+                    function ()
+                    {
+                        return str;
+                    };
                 override(this, 'self.valueOf', { value: valueOf });
             }
         };
@@ -247,7 +321,14 @@
                 }
             );
         var name = components.pop();
-        var obj = components.reduce(function (obj, name) { return obj[name]; }, global);
+        var obj =
+            components.reduce(
+                function (obj, name)
+                {
+                    return obj[name];
+                },
+                global
+            );
         if (backup)
         {
             var oldDescriptor = Object.getOwnPropertyDescriptor(obj, name);
@@ -309,13 +390,23 @@
     
     var EMU_FEATURE_INFOS =
     {
+        ANY_DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object .*Document]$/),
+        ANY_WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object .*Window]$/),
         ARRAY_ITERATOR: makeEmuFeatureEntries('[object Array Iterator]', /^\[object Array.{8,9}]$/),
         ATOB:
         {
             setUp: function ()
             {
-                var atob = function (value) { return Base64.decode(value); };
-                var btoa = function (value) { return Base64.encode(value); };
+                var atob =
+                    function (value)
+                    {
+                        return Base64.decode(value);
+                    };
+                var btoa =
+                    function (value)
+                    {
+                        return Base64.encode(value);
+                    };
                 override(this, 'atob', { value: atob });
                 override(this, 'btoa', { value: btoa });
             }
@@ -344,13 +435,17 @@
                         var result =
                             method.apply(this, arguments).replace(
                                 /^<[\w ]+|[\w ]+>$/g,
-                                function (match) { return match.toUpperCase(); }
+                                function (match)
+                                {
+                                    return match.toUpperCase();
+                                }
                             );
                         return result;
                     };
                 return result;
             }
         ),
+        DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object Document]$/),
         DOMWINDOW: makeEmuFeatureSelf('[object DOMWindow]', /^\[object DOMWindow]$/),
         DOUBLE_QUOTE_ESC_HTML: makeEmuFeatureHtml(
             ['anchor', 'fontcolor', 'fontsize', 'link'],
@@ -366,7 +461,8 @@
                 return result;
             }
         ),
-        ENTRIES: makeEmuFeatureEntries('[object Object]', /^\[object /),
+        ENTRIES_OBJ: makeEmuFeatureEntries('[object Object]', /^\[object /),
+        ENTRIES_PLAIN: makeEmuFeatureEntries('[object Object]', /^\[object Object]$/),
         FF_SAFARI_SRC: makeEmuFeatureFunctionSource('function ?() {\n    [native code]\n}'),
         FILL:
         {
@@ -381,15 +477,53 @@
                 override(this, 'Array.prototype.fill', { value: fill });
             }
         },
+        FROM_CODE_POINT:
+        {
+            setUp: function ()
+            {
+                override(this, 'String.fromCodePoint', { value: fromCodePoint });
+            }
+        },
         GMT:
         {
             setUp: function ()
             {
-                var Date = function () { return 'Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)'; };
+                var Date =
+                    function ()
+                    {
+                        return 'Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)';
+                    };
                 override(this, 'Date', { value: Date });
             }
         },
+        HTMLDOCUMENT: makeEmuFeatureDocument('[object HTMLDocument]', /^\[object HTMLDocument]$/),
         IE_SRC: makeEmuFeatureFunctionSource('\nfunction ?() {\n    [native code]\n}\n'),
+        LOCALE_INFINITY:
+        {
+            setUp: function ()
+            {
+                var toLocaleString = Number.prototype.toLocaleString;
+                var value =
+                    function ()
+                    {
+                        var result;
+                        switch (this)
+                        {
+                        case Infinity:
+                            result = '∞';
+                            break;
+                        case -Infinity:
+                            result = '-∞';
+                            break;
+                        default:
+                            result = toLocaleString.apply(this, arguments);
+                            break;
+                        }
+                        return result;
+                    };
+                override(this, 'Number.prototype.toLocaleString', { value: value });
+            }
+        },
         NAME:
         {
             setUp: function ()
@@ -427,23 +561,11 @@
                 );
             }
         },
-        QUOTE:
-        {
-            setUp: function ()
-            {
-                if (!String.prototype.quote)
-                {
-                    var quote = function () { return JSON.stringify(this); };
-                    override(this, 'String.prototype.quote', { value: quote });
-                }
-            }
-        },
         SAFARI_ARRAY_ITERATOR: makeEmuFeatureEntries(
             '[object ArrayIterator]',
             /^\[object ArrayIterator]$/
         ),
-        SELF: makeEmuFeatureSelf('[object Window]', /^\[object .*Window]$/),
-        SELF_OBJECT: makeEmuFeatureSelf('[object Object]', /^\[object /),
+        SELF_OBJ: makeEmuFeatureSelf('[object Object]', /^\[object /),
         UNDEFINED:
         {
             setUp: function ()
@@ -466,7 +588,7 @@
     };
     
     var EMU_FEATURES = [];
-    Object.getOwnPropertyNames(EMU_FEATURE_INFOS).forEach(
+    Object.keys(EMU_FEATURE_INFOS).forEach(
         function (feature)
         {
             var condition = EMU_FEATURE_INFOS[feature].condition;
@@ -484,6 +606,11 @@
         EMU_FEATURES:   EMU_FEATURES,
     };
     
-    Object.getOwnPropertyNames(exports).forEach(function (name) { global[name] = exports[name]; });
-
-})(typeof self === 'undefined' ? global : self);
+    Object.keys(exports).forEach(
+        function (name)
+        {
+            global[name] = exports[name];
+        }
+    );
+}
+)(typeof self === 'undefined' ? global : self);

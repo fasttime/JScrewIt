@@ -1,6 +1,6 @@
 {
   "name": "jscrewit",
-  "version": "1.6.2",
+  "version": "1.7.0",
   "description": "Converts plain JavaScript into JSFuck code, which uses only six different characters: ! ( ) + [ ]",
   "keywords": [
     "esoteric",
@@ -15,7 +15,6 @@
   "author": "Francesco Trotta <ft@fasttime.org> (https://github.com/fasttime)",
   "files": [
     "*.md",
-    "cli.js",
     "html",
     "index.html",
     "lib",
@@ -23,7 +22,7 @@
     "output.txt",
     "package.json",
     "screw.js",
-    "text-utils.js"
+    "tools"
   ],
   "main": "lib/jscrewit.js",
   "bin": "screw.js",
@@ -35,6 +34,7 @@
     "build": "npm install && grunt"
   },
   "devDependencies": {
+    "art-js": "~0.1.0",
     "expectations": "~0.5.1",
     "grunt": "~0.4.5",
     "grunt-cli": "~0.1.13",
@@ -42,7 +42,7 @@
     "grunt-contrib-concat": "~0.5.1",
     "grunt-contrib-jshint": "~0.11.2",
     "grunt-contrib-uglify": "~0.9.1",
-    "grunt-jscs": "~1.8.0",
+    "grunt-jscs": "~2.0.0",
     "grunt-mocha-istanbul": "~2.4.0",
     "istanbul": "~0.3.17",
     "mocha": "https://github.com/fasttime/mocha/tarball/master",

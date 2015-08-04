@@ -145,18 +145,6 @@ var replaceDigit;
         return solution;
     }
     
-    function createCharByAtobDefinition(charCode)
-    {
-        function definition()
-        {
-            var replacement = this.charEncodeByAtob(charCode);
-            var solution = createSolution(replacement, LEVEL_STRING, false);
-            return solution;
-        }
-        
-        return definition;
-    }
-    
     function createFBCharAtDefinition(offset)
     {
         function definition()
@@ -233,14 +221,6 @@ var replaceDigit;
         }
         
         return definition;
-    }
-    
-    function defineCharByAtob(char)
-    {
-        var charCode = char.charCodeAt(0);
-        var definition = createCharByAtobDefinition(charCode);
-        var entry = define(definition, 'ATOB');
-        return entry;
     }
     
     function defineFBCharAt(offset)
@@ -337,12 +317,12 @@ var replaceDigit;
         'b':
         [
             defineFHCharAt('Number', 12),
-            define('(ARRAY_ITERATOR + [])[2]', 'ENTRIES')
+            define('(ARRAY_ITERATOR + [])[2]', 'ENTRIES_OBJ')
         ],
         'c':
         [
             defineFHCharAt('ANY_FUNCTION', 3),
-            define('(RP_5_N + ARRAY_ITERATOR)["10"]', 'ENTRIES')
+            define('(RP_5_N + ARRAY_ITERATOR)["10"]', 'ENTRIES_OBJ')
         ],
         'd': '"undefined"[2]',
         'e': '"true"[3]',
@@ -353,20 +333,20 @@ var replaceDigit;
         ],
         'h':
         [
-            define('(101)["toString"]("21")[1]'),
-            defineCharByAtob('h')
+            define('101["toString"]("21")[1]'),
+            define()
         ],
         'i': '([RP_5_N] + undefined)["10"]',
         'j':
         [
             define('(PLAIN_OBJECT + [])["10"]'),
-            define('(self + [])[3]', 'SELF_OBJECT'),
-            define('(ARRAY_ITERATOR + [])[3]', 'ENTRIES')
+            define('(self + [])[3]', 'SELF_OBJ'),
+            define('(ARRAY_ITERATOR + [])[3]', 'ENTRIES_OBJ')
         ],
         'k':
         [
-            define('(20)["toString"]("21")'),
-            defineCharByAtob('k')
+            define('20["toString"]("21")'),
+            define()
         ],
         'l': '"false"[2]',
         'm':
@@ -379,17 +359,17 @@ var replaceDigit;
         'o':
         [
             defineFHCharAt('ANY_FUNCTION', 6),
-            define('(ARRAY_ITERATOR + [])[1]', 'ENTRIES')
+            define('(ARRAY_ITERATOR + [])[1]', 'ENTRIES_OBJ')
         ],
         'p':
         [
-            define('(211)["toString"]("31")[1]'),
+            define('211["toString"]("31")[1]'),
             define('(RP_3_NO + btoa(Infinity))["10"]', 'ATOB')
         ],
         'q':
         [
-            define('(212)["toString"]("31")[1]'),
-            defineCharByAtob('q')
+            define('212["toString"]("31")[1]'),
+            define()
         ],
         'r': '"true"[1]',
         's': '"false"[3]',
@@ -401,22 +381,22 @@ var replaceDigit;
         ],
         'w':
         [
-            define('(32)["toString"]("33")'),
+            define('32["toString"]("33")'),
             define('(self + [])["slice"]("-2")[0]', 'SELF'),
             define('(self + [])["13"]', 'WINDOW'),
             define('(RP_4_N + self)["20"]', 'DOMWINDOW'),
-            defineCharByAtob('w')
+            define()
         ],
         'x':
         [
-            define('(101)["toString"]("34")[1]'),
-            defineCharByAtob('x')
+            define('101["toString"]("34")[1]'),
+            define()
         ],
         'y': '(RP_3_NO + [Infinity])["10"]',
         'z':
         [
-            define('(35)["toString"]("36")'),
-            defineCharByAtob('z')
+            define('35["toString"]("36")'),
+            define()
         ],
         
         'A':
@@ -434,12 +414,15 @@ var replaceDigit;
             define('escape(""["italics"]())[2]'),
             define('escape(""["sub"]())[2]'),
             define('(RP_4_N + ""["fontcolor"]())["10"]', 'CAPITAL_HTML'),
-            defineCharByAtob('C')
+            define()
         ],
         'D':
         [
             define('escape("]")[2]'),
-            define('btoa("00")[1]', 'ATOB')
+            define('btoa("00")[1]', 'ATOB'),
+            define('(document + 0)["slice"]("-10")[0]', 'ANY_DOCUMENT'),
+            define('(RP_3_NO + document)["11"]', 'DOCUMENT'),
+            define('(document + [])["12"]', 'HTMLDOCUMENT')
         ],
         'E':
         [
@@ -461,7 +444,8 @@ var replaceDigit;
         'H':
         [
             define('btoa(true)[1]', 'ATOB'),
-            define('""["link"]()[3]', 'CAPITAL_HTML')
+            define('""["link"]()[3]', 'CAPITAL_HTML'),
+            define('(RP_3_NO + document)["11"]', 'HTMLDOCUMENT')
         ],
         'I': '"Infinity"[0]',
         'J':
@@ -471,31 +455,33 @@ var replaceDigit;
         'K':
         [
             define('(RP_5_N + ""["strike"]())["10"]', 'CAPITAL_HTML'),
-            defineCharByAtob('K')
+            define()
         ],
         'L':
         [
             define('btoa(".")[0]', 'ATOB'),
-            define('(RP_3_NO + ""["fontcolor"]())["11"]', 'CAPITAL_HTML')
+            define('(RP_3_NO + ""["fontcolor"]())["11"]', 'CAPITAL_HTML'),
+            define('(document + [])["11"]', 'HTMLDOCUMENT')
         ],
         'M':
         [
             define('btoa(0)[0]', 'ATOB'),
             define('""["small"]()[2]', 'CAPITAL_HTML'),
-            define('(RP_4_N + Date())["30"]', 'GMT')
+            define('(RP_4_N + Date())["30"]', 'GMT'),
+            define('(document + [])["10"]', 'HTMLDOCUMENT')
         ],
         'N': '"NaN"[0]',
         'O':
         [
             define('(RP_3_NO + PLAIN_OBJECT)["11"]'),
             define('""["fontcolor"]()[2]', 'CAPITAL_HTML'),
-            defineCharByAtob('O')
+            define()
         ],
         'P':
         [
             define('btoa(""["italics"]())[0]', 'ATOB'),
             define('"0"["sup"]()["10"]', 'CAPITAL_HTML'),
-            defineCharByAtob('P')
+            define()
         ],
         'Q':
         [
@@ -516,18 +502,19 @@ var replaceDigit;
         [
             define('btoa(NaN)[0]', 'ATOB'),
             define('""["fontcolor"]([])["20"]', 'CAPITAL_HTML'),
-            define('(RP_3_NO + Date())["30"]', 'GMT')
+            define('(RP_3_NO + Date())["30"]', 'GMT'),
+            define('(RP_1_NO + document)["10"]', 'HTMLDOCUMENT')
         ],
         'U':
         [
             define('(RP_4_N + btoa(false))["10"]', 'ATOB'),
             define('""["sub"]()[2]', 'CAPITAL_HTML'),
+            define('(RP_3_NO + PLAIN_OBJECT["toString"]["call"]())["11"]', 'UNDEFINED'),
             define(
                 '(RP_3_NO + ARRAY_ITERATOR["toString"]["call"]())["11"]',
-                'ENTRIES',
+                'ENTRIES_OBJ',
                 'UNDEFINED'
-            ),
-            define('(RP_3_NO + PLAIN_OBJECT["toString"]["call"]())["11"]', 'UNDEFINED')
+            )
         ],
         'V':
         [
@@ -568,7 +555,7 @@ var replaceDigit;
         ' ':
         [
             defineFHCharAt('ANY_FUNCTION', 8),
-            define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ENTRIES'),
+            define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ENTRIES_OBJ'),
             define('(RP_1_NO + FILTER)["20"]', 'V8_SRC'),
             define('(FILTER + [])["20"]', 'FF_SAFARI_SRC')
         ],
@@ -579,14 +566,14 @@ var replaceDigit;
         '%':
         [
             define('escape(FILTER)["20"]'),
-            define('escape(false + FILL)["20"]', 'NO_IE_SRC', 'FILL'),
             define('escape(ANY_FUNCTION)[0]', 'IE_SRC'),
-            defineCharByAtob('%')
+            define('escape(false + FILL)["20"]', 'NO_IE_SRC', 'FILL'),
+            define(undefined, 'ATOB')
         ],
         '&':
         [
             define('""["fontcolor"]("\\"")["13"]', 'DOUBLE_QUOTE_ESC_HTML'),
-            defineCharByAtob('&')
+            define()
         ],
         // '\'':   ,
         '(':
@@ -616,12 +603,12 @@ var replaceDigit;
         ':':
         [
             define('(RegExp() + [])[3]'),
-            defineCharByAtob(':')
+            define()
         ],
         ';':
         [
             define('""["fontcolor"]("NaN\\"")["21"]', 'DOUBLE_QUOTE_ESC_HTML'),
-            defineCharByAtob(';')
+            define()
         ],
         '<':
         [
@@ -640,22 +627,15 @@ var replaceDigit;
         '?':
         [
             define('(RegExp() + [])[2]'),
-            defineCharByAtob('?')
+            define()
         ],
         // '@':    ,
         '[':
         [
             defineFBCharAt(14),
-            define('(ARRAY_ITERATOR + [])[0]', 'ENTRIES')
+            define('(ARRAY_ITERATOR + [])[0]', 'ENTRIES_OBJ')
         ],
-        '\\':
-        [
-            define('""["fontcolor"]()["quote"]()["13"]', 'QUOTE'),
-            define('(ANY_FUNCTION + [])["quote"]()[1]', 'IE_SRC', 'QUOTE'),
-            define('(FILTER + [])["quote"]()["20"]', 'FF_SAFARI_SRC', 'QUOTE'),
-            define('(RP_3_NO + FILL)["quote"]()["21"]', 'FF_SAFARI_SRC', 'FILL', 'QUOTE'),
-            defineCharByAtob('\\')
-        ],
+        // '\\':   ,
         ']':
         [
             defineFBCharAt(26),
@@ -759,6 +739,11 @@ var replaceDigit;
         'ø':
         [
             define('atob("undefinedundefined")["10"]', 'ATOB')
+        ],
+        '∞':
+        [
+            define('Infinity["toLocaleString"]()', 'LOCALE_INFINITY'),
+            define()
         ]
     });
     
@@ -786,7 +771,7 @@ var replaceDigit;
         Boolean:        '(false)["constructor"]',
         Date:           'Function("return Date")()',
         Function:       'ANY_FUNCTION["constructor"]',
-        Number:         '(0)["constructor"]',
+        Number:         '0["constructor"]',
         RegExp:         'Function("return/false/")()["constructor"]',
         String:         '("")["constructor"]',
         
@@ -798,10 +783,14 @@ var replaceDigit;
         [
             define('Function("return btoa")()', 'ATOB')
         ],
+        document:
+        [
+            define('Function("return document")()', 'ANY_DOCUMENT')
+        ],
         escape:         'Function("return escape")()',
         self:
         [
-            define('Function("return self")()', 'SELF_OBJECT')
+            define('Function("return self")()', 'SELF_OBJ')
         ],
         unescape:       'Function("return unescape")()',
         
@@ -814,14 +803,18 @@ var replaceDigit;
         ],
         ARRAY_ITERATOR:
         [
-            define('[]["entries"]()', 'ENTRIES')
+            define('[]["entries"]()', 'ENTRIES_OBJ')
         ],
         FILL:
         [
             define('[]["fill"]', 'FILL')
         ],
         FILTER:         '[]["filter"]',
-        PLAIN_OBJECT:   'Function("return{}")()',
+        PLAIN_OBJECT:
+        [
+            define('Function("return{}")()'),
+            define('ARRAY_ITERATOR', 'ENTRIES_PLAIN')
+        ],
         
         // Function body extra padding blocks: prepended to a function to align the function's body
         // at the same position on different browsers.
@@ -844,7 +837,7 @@ var replaceDigit;
         // FHP_2_NO:       '+(+!(+(ANY_FUNCTION + [])[0] + true)+[0])',
         FHP_3_NO:       '+(1 + [+(ANY_FUNCTION + [])[0]])',
         FHP_5_N:        '!!(+(ANY_FUNCTION + [])[0] + true)',
-                
+        
         // Regular padding blocks.
         // The number after "RP_" is the character overhead.
         // The postifx "_S" in the name indicates that the constant always evaluates to a string or
@@ -893,7 +886,11 @@ var replaceDigit;
                 return '+!![]';
             default:
                 var replacement = '!![]';
-                do { replacement += '+!![]'; } while (--digit > 1);
+                do
+                {
+                    replacement += '+!![]';
+                }
+                while (--digit > 1);
                 return replacement;
             }
         };
@@ -906,7 +903,7 @@ var replaceDigit;
             var expr = replaceDigit(digit);
             CHARACTERS[digit] = { expr: expr, level: LEVEL_NUMERIC };
         }
-    
-    })();
-
-})();
+    }
+    )();
+}
+)();

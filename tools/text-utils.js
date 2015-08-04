@@ -26,6 +26,11 @@
     
     var exports = { padLeft: padLeft, padRight: padRight, repeat: repeat };
     
-    Object.getOwnPropertyNames(exports).forEach(function (name) { global[name] = exports[name]; });
-
-})(typeof self === 'undefined' ? global : /* istanbul ignore next */ self);
+    Object.keys(exports).forEach(
+        function (name)
+        {
+            global[name] = exports[name];
+        }
+    );
+}
+)(typeof self === 'undefined' ? global : /* istanbul ignore next */ self);
