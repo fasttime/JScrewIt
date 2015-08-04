@@ -4,6 +4,7 @@
 'use strict';
 
 require('./text-utils.js');
+var timeUtils = require('./time-utils.js');
 
 function byteCount(size, width)
 {
@@ -30,7 +31,7 @@ function createDiagnosticReport(codingLog)
 function createReport(originalSize, screwedSize, encodingTime)
 {
     var width = Math.max(widthOf(originalSize), widthOf(screwedSize));
-    var encodingTimeStr = encodingTime < 5 ? '< 0.01 s' : (encodingTime / 1000).toFixed(2) + ' s';
+    var encodingTimeStr = timeUtils.formatDuration(encodingTime);
     var report =
         'Original size:    ' + byteCount(originalSize, width) +
         '\nScrewed size:     ' + byteCount(screwedSize, width) +

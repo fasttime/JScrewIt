@@ -2,7 +2,7 @@
 
 'use strict';
 
-var cli = require('./cli.js');
+var cli = require('./tools/cli.js');
 
 var command;
 

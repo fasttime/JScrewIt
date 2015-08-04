@@ -6,13 +6,26 @@ var JScrewIt = require('../lib/jscrewit.js');
 
 function escape(str)
 {
-    var result = str.replace(/[&\(\)[\\\]]/g, function (char) { return '\\' + char; });
+    var result =
+        str.replace(
+            /[&\(\)[\\\]]/g,
+            function (char)
+            {
+                return '\\' + char;
+            }
+        );
     return result;
 }
 
 function formatFeature(feature)
 {
     var result = '<a href="#' + feature.toLowerCase() + '"><code>' + feature + '</code></a>';
+    return result;
+}
+
+function formatFeatureMD(feature)
+{
+    var result = '[`' + feature + '`](#' + feature.toLowerCase() + ')';
     return result;
 }
 
@@ -114,12 +127,10 @@ function printRow(label, assignmentMap)
 var LISTS =
 [
     [
-        { description: 'Firefox 30+', feature: 'FF30' },
         { description: 'Firefox 31+', feature: 'FF31' }
     ],
     [
-        { description: 'Chrome 35+, Opera 22+', feature: 'CHROME35' },
-        { description: 'Chrome 38+, Opera 25+', feature: 'CHROME38' }
+        { description: 'Chrome 41+, Opera 28+', feature: 'CHROME41' }
     ],
     [
         { description: 'Internet Explorer 9+', feature: 'IE9' },
@@ -147,15 +158,27 @@ var LISTS =
 module.exports =
     function ()
     {
+        var FEATURE_INFOS = JScrewIt.FEATURE_INFOS;
+        
         var content =
             '# JScrewIt Feature Reference\n' +
             '## Feature List\n' +
             'This section lists all features along with their descriptions.\n';
-        Object.keys(JScrewIt.FEATURE_INFOS).sort().forEach(
+        Object.keys(FEATURE_INFOS).sort().forEach(
             function (feature)
             {
-                var description = JScrewIt.FEATURE_INFOS[feature].description;
-                content += '### `' + feature + '`\n' + escape(description) + '\n';
+                var subContent;
+                var name = FEATURE_INFOS[feature].name;
+                if (name === feature)
+                {
+                    var description = FEATURE_INFOS[feature].description;
+                    subContent = escape(description);
+                }
+                else
+                {
+                    subContent = '_An alias for ' + formatFeatureMD(name) + '._';
+                }
+                content += '### `' + feature + '`\n' + subContent + '\n';
             }
         );
         content +=
@@ -169,19 +192,22 @@ module.exports =
         LISTS.forEach(
             function (list)
             {
-                var assignmentMap = { };
+                var assignmentMap = Object.create(null);
                 var feature;
-                for (feature in JScrewIt.FEATURE_INFOS)
+                for (feature in FEATURE_INFOS)
                 {
-                    var versioning = getVersioningFor(feature, list);
-                    if (versioning)
+                    if (FEATURE_INFOS[feature].name === feature)
                     {
-                        var assignments = { };
-                        if (typeof versioning === 'string')
+                        var versioning = getVersioningFor(feature, list);
+                        if (versioning)
                         {
-                            assignments.versioning = versioning;
+                            var assignments = { };
+                            if (typeof versioning === 'string')
+                            {
+                                assignments.versioning = versioning;
+                            }
+                            assignmentMap[feature] = assignments;
                         }
-                        assignmentMap[feature] = assignments;
                     }
                 }
                 for (feature in assignmentMap)

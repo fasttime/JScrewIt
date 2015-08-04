@@ -1,6 +1,7 @@
 /*
 global
 FEATURE_INFOS,
+Empty,
 Encoder,
 availableFeatureMask,
 featuresFromMask,
@@ -123,7 +124,7 @@ var setUp;
         return result;
     }
     
-    var encoders = { };
+    var encoders = new Empty();
     
     describeNoEnum =
         function (value)
@@ -182,5 +183,5 @@ var setUp;
     {
         module.exports = JScrewIt;
     }
-
-})();
+}
+)();

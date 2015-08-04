@@ -5,6 +5,10 @@
 JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters to
 write and run any code: `!` `(` `)` `+` `[` `]`
 
+Play with it now at [**jscrew.it**](http://jscrew.it), or give a look at
+[jQuery *Screwed*](https://github.com/fasttime/jquery-screwed) for a real example: a working version
+of jQuery consisting of only six different characters.
+
 JScrewIt is a fork of [JSFuck](https://github.com/aemkei/jsfuck) that adds substantial enhancements
 to the original implementation.
 * Options to optimize code for a particular set of JavaScript engines or even just for your browser:
@@ -12,11 +16,7 @@ to the original implementation.
 * Support for all modern JavaScript engines.
 * Neat large file encoding.
 
-Play with it now at [**jscrew.it**](http://jscrew.it), or give a look at
-[jQuery *Screwed*](https://github.com/fasttime/jquery-screwed) for a real example: a working version
-of jQuery consisting of only six different characters.
-
-## Example
+### Example
 
 The following source will do an `alert(1)` in any browser, including Internet Explorer:
 
@@ -50,9 +50,9 @@ The following source will do an `alert(1)` in any browser, including Internet Ex
 ])()
 ``` 
 
-## Usage
+## Setup Instructions
 
-### Installation
+### In the Browser
 
 To use JScrewIt in your project, download
 [jscrewit.js](https://github.com/fasttime/JScrewIt/blob/master/lib/jscrewit.js) or
@@ -69,6 +69,8 @@ Alternatively, you can hotlink the online file.
 <script src="https://rawgithub.com/fasttime/JScrewIt/master/lib/jscrewit.min.js"></script>
 ```
 
+### In Node.js
+
 If you are using Node.js, you can install JScrewIt with [npm](https://www.npmjs.org).
 
 ```
@@ -81,9 +83,9 @@ Then you can include it in your code.
 var JScrewIt = require("jscrewit");
 ```
 
-### Encoding
+## Usage
 
-#### Basics
+### Basics
 
 This will encode the `alert(1)` example shown above and run it using `eval`.
 
@@ -103,9 +105,9 @@ var output = JScrewIt.encode("Hello, world!");
 var input = eval(output); // input contains the string "Hello, world!".
 ```
 
-#### Features
+### Features
 
-> _See also: [Feature Reference](Features.md)_
+> *See also: [Feature Reference](Features.md)*
 
 JScrewIt has the ability to generate JSFuck code that is targeted for a particular set of JavaScript
 engines (web browsers or Node.js).
@@ -158,14 +160,15 @@ These can be retrieved with [`JScrewIt.commonFeaturesOf`](#jscrewitcommonfeature
 { features: JScrewIt.commonFeaturesOf("IE9", "FF31") }
 ```
 
-The features turn out to be `"NO_SAFARI_LF"`, `"SELF"`, `"SELF_OBJECT"`, `"UNDEFINED"` and
-`"WINDOW"`; with this knowledge, the definition can be also written as below.
+The features turn out to be `"NO_SAFARI_LF"`, `"UNDEFINED"` and `"WINDOW"`; `"ANY_WINDOW"` and
+`"SELF_OBJ"` are both implied by `"WINDOW"`, so there is no need to specify them explicitly.
+With this knowledge, the definition can be also written as below.
 
 ```js
-{ features: ["NO_SAFARI_LF", "SELF", "SELF_OBJECT", "UNDEFINED", "WINDOW"] }
+{ features: ["NO_SAFARI_LF", "UNDEFINED", "WINDOW"] }
 ```
 
-### Reference
+## Reference
 
 #### <code>**JScrewIt.areFeaturesAvailable(*features*)**</code>
 
@@ -180,7 +183,7 @@ Returns `true` if all of the specified features are available in the current eng
 ##### Examples
 
 ```js
-JScrewIt.areFeaturesAvailable("NO_IE_SRC")
+JScrewIt.areFeaturesAvailable("FF_SAFARI_SRC")
 ```
 
 ```js
@@ -221,7 +224,7 @@ This function throws a `ReferenceError` if some unknown features are specified.
 
 #### <code>**JScrewIt.commonFeaturesOf(*features...*)**</code>
 
-Gets an array of individual features shared by a specified group of features.
+Gets an array of individual, not otherwise implied features shared by a specified group of features.
 
 <dl>
 <dt><code>features</code></dt>
@@ -233,7 +236,8 @@ features are to be retrieved.</dd>
 ##### Examples
 
 ```js
-JScrewIt.commonFeaturesOf("COMPACT", "IE9", "ANDRO412") // returns ["SELF", "UNDEFINED"]
+// returns ["ANY_DOCUMENT", "ANY_WINDOW", "UNDEFINED"]
+JScrewIt.commonFeaturesOf("COMPACT", "IE9", "ANDRO412")
 ```
 
 ```js
@@ -362,8 +366,20 @@ This will return an array with the names of all features supported by JScrewIt:
 Object.keys(JScrewIt.FEATURE_INFOS)
 ```
 
+## Compatibility
+
+JScrewIt itself and the code it generates are compatible with the JavaScript engines listed below.
+
+- Chrome 41+
+- Internet Explorer 9+
+- Firefox 31+
+- Safari 7.0+
+- Opera 28+
+- Microsoft Edge
+- Android Browser 4.x
+- Node.js 0.10.26+
+
 ## Links
 
 * [JScrewIt](http://jscrew.it) online encoder
-* Original discussion at [Sla.ckers.org](http://sla.ckers.org/forum/read.php?24,32930)
 * JSFuck introduction and alternatives on [Esolang](http://esolangs.org/wiki/JSFuck)

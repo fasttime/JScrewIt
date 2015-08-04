@@ -3,45 +3,11 @@
 
 'use strict';
 
-require('../text-utils.js');
+require('../tools/text-utils.js');
+var Analyzer = require('./analyzer.js');
 var JScrewIt = require('../lib/jscrewit.js');
 var ProgressBar = require('progress');
 var fs = require('fs');
-
-function FeatureQueryInfo(featureMask, included, ancestorFeatureMask)
-{
-    this.featureMask = featureMask;
-    this.included = included;
-    this.ancestorFeatureMask = ancestorFeatureMask;
-}
-
-function createModifiedEncoder(features, featureQueries)
-{
-    function hasFeatures(featureMask)
-    {
-        var included = (featureMask & this.featureMask) === featureMask;
-        if (featureMask)
-        {
-            if (!featureMaskSet[featureMask])
-            {
-                featureMaskSet[featureMask] = true;
-                var featureQuery = new FeatureQueryInfo(featureMask, included, ancestorFeatureMask);
-                featureQueries.push(featureQuery);
-            }
-        }
-        if (included)
-        {
-            ancestorFeatureMask |= featureMask;
-        }
-        return included;
-    }
-    
-    var featureMaskSet = { };
-    var ancestorFeatureMask = 0;
-    var encoder = JScrewIt.debug.createEncoder(features);
-    encoder.hasFeatures = hasFeatures;
-    return encoder;
-}
 
 function formatChar(char)
 {
@@ -58,65 +24,9 @@ function formatFeatures(features)
     return str;
 }
 
-function getNewFeatureData(featureQueries)
-{
-    for (var index = featureQueries.length; index--;)
-    {
-        var featureQuery = featureQueries[index];
-        if (!featureQuery.included)
-        {
-            var featureMask = featureQuery.featureMask | featureQuery.ancestorFeatureMask;
-            if (isIndependentFeatureMask(featureQueries, index, featureMask))
-            {
-                var features = JScrewIt.debug.featuresFromMask(featureMask);
-                if (JScrewIt.areFeaturesCompatible(features))
-                {
-                    var featureData = { features: features, featureMask: featureMask };
-                    return featureData;
-                }
-            }
-        }
-    }
-}
-
-function getProgress(featureQueries)
-{
-    var step = 1;
-    var progress = 0;
-    featureQueries.forEach(
-        function (featureQuery)
-        {
-            step /= 2;
-            if (featureQuery.included)
-            {
-                progress += step;
-            }
-        }
-    );
-    progress += step;
-    return progress;
-}
-
-function isIndependentFeatureMask(featureQueries, index, newFeatureMask)
-{
-    while (index--)
-    {
-        var featureQuery = featureQueries[index];
-        if (!featureQuery.included)
-        {
-            var featureMask = featureQuery.featureMask;
-            if ((featureMask & newFeatureMask) === featureMask)
-            {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
 function processOutputMap(outputMap, entryCount, logLine)
 {
-    var entryIndexSet = { };
+    var entryIndexSet = Object.create(null);
     for (var output in outputMap)
     {
         var outputData = outputMap[output];
@@ -126,7 +36,7 @@ function processOutputMap(outputMap, entryCount, logLine)
         var entryIndex = outputData.entryIndex;
         if (entryIndex != null)
         {
-            entryIndexSet[entryIndex] = true;
+            entryIndexSet[entryIndex] = null;
         }
     }
     var notAllDefsUsed = Object.keys(entryIndexSet).length !== entryCount;
@@ -142,7 +52,7 @@ function processOutputMap(outputMap, entryCount, logLine)
             var outputData2 = outputMap[output2];
             var features1 = outputData1.features;
             var features2 = outputData2.features;
-            for (var index = 0; ; ++index)
+            for (var index = 0;; ++index)
             {
                 var feature1 = features1[index] || '';
                 var feature2 = features2[index] || '';
@@ -203,7 +113,7 @@ function runScan()
 function scanAllChars(callback)
 {
     var chars = [];
-    for (var charCode = 0; charCode < 256; ++charCode)
+    for (var charCode = 0; charCode <= 0xffff; ++charCode)
     {
         var char = String.fromCharCode(charCode);
         var entries = JScrewIt.debug.getCharacterEntries(char);
@@ -214,7 +124,11 @@ function scanAllChars(callback)
     }
     var allCharCount = chars.length;
     var fd = fs.openSync('output.txt', 'w');
-    var logLine = function (line) { fs.writeSync(fd, line + '\n'); };
+    var logLine =
+        function (line)
+        {
+            fs.writeSync(fd, line + '\n');
+        };
     try
     {
         logLine(
@@ -247,15 +161,14 @@ function scanChar(char, entryCount, logLine, allCharCount, charDoneCount, callba
 {
     var desc = formatChar(char);
     logLine('\nCharacter ' + desc);
-    var features = [];
-    var featureMask = 0;
-    var outputMap = { };
-    for (; ;)
+    var analyzer = new Analyzer();
+    var outputMap = Object.create(null);
+    var encoder;
+    while (encoder = analyzer.nextEncoder)
     {
-        var featureQueries = [];
-        var encoder = createModifiedEncoder(features, featureQueries);
         var output = encoder.resolveCharacter(char);
         var outputData = outputMap[output];
+        var featureMask = analyzer.featureMask;
         if (outputData)
         {
             outputData.featureMask &= featureMask;
@@ -264,16 +177,9 @@ function scanChar(char, entryCount, logLine, allCharCount, charDoneCount, callba
         {
             outputMap[output] = { featureMask: featureMask, entryIndex: output.entryIndex };
         }
-        var featureData = getNewFeatureData(featureQueries);
-        if (!featureData)
-        {
-            break;
-        }
-        features = featureData.features;
-        featureMask = featureData.featureMask;
         if (callback)
         {
-            var progress = getProgress(featureQueries);
+            var progress = analyzer.progress;
             callback(char, allCharCount, charDoneCount + progress);
         }
     }

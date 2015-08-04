@@ -104,6 +104,6 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                 })
             )
         );
-    
-    })();
+    }
+    )();
 }

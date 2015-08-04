@@ -1,4 +1,17 @@
-/* global atob, btoa, emuDo, emuEval, EMU_FEATURES, expect, global, module, repeat, self */
+/*
+global
+EMU_FEATURES,
+atob,
+btoa,
+document,
+emuDo,
+emuEval,
+expect,
+global,
+module,
+repeat,
+self
+*/
 /* jshint mocha: true, nonstandard: true */
 
 (function (global)
@@ -84,7 +97,7 @@
     
     function describeEncodeTest(compatibility)
     {
-        var emuFeatures = getEmuFeatures(getSubFeatures(compatibility));
+        var emuFeatures = getEmuFeatures(JScrewIt.commonFeaturesOf(compatibility));
         if (emuFeatures)
         {
             describe(
@@ -190,11 +203,13 @@
             'Character definitions of',
             function ()
             {
-                for (var charCode = 0; charCode < 256; ++charCode)
+                var charCode;
+                for (charCode = 0; charCode < 256; ++charCode)
                 {
                     testCharacter(charCode);
                 }
-                for (; charCode < 0x00010000; charCode <<= 1)
+                testCharacter(8734); // ∞
+                for (; charCode <= 0xffff; charCode <<= 1)
                 {
                     testCharacter(charCode + 0x1f);
                 }
@@ -256,17 +271,72 @@
                 testConstant('RegExp', isExpected(RegExp));
                 testConstant('String', isExpected(String));
                 
-                testConstant('atob', function () { this.toBe(atob); });
-                testConstant('btoa', function () { this.toBe(btoa); });
+                testConstant(
+                    'atob',
+                    function ()
+                    {
+                        this.toBe(atob);
+                    }
+                );
+                testConstant(
+                    'btoa',
+                    function ()
+                    {
+                        this.toBe(btoa);
+                    }
+                );
+                testConstant(
+                    'document',
+                    function ()
+                    {
+                        this.toBe(document);
+                    }
+                );
                 testConstant('escape', isExpected(escape));
-                testConstant('self', function () { this.toBe(self); });
+                testConstant(
+                    'self',
+                    function ()
+                    {
+                        this.toBe(self);
+                    }
+                );
                 testConstant('unescape', isExpected(unescape));
                 
-                testConstant('ANY_FUNCTION', function () { this.toBeNativeFunction(); });
-                testConstant('ARRAY_ITERATOR', function () { this.toBeArrayIterator(); });
-                testConstant('FILL', function () { this.toBe(Array.prototype.fill); });
-                testConstant('FILTER', function () { this.toBe(Array.prototype.filter); });
-                testConstant('PLAIN_OBJECT', function () { this.toBePlainObject(); });
+                testConstant(
+                    'ANY_FUNCTION',
+                    function ()
+                    {
+                        this.toBeNativeFunction();
+                    }
+                );
+                testConstant(
+                    'ARRAY_ITERATOR',
+                    function ()
+                    {
+                        this.toBeArrayIterator();
+                    }
+                );
+                testConstant(
+                    'FILL',
+                    function ()
+                    {
+                        this.toBe(Array.prototype.fill);
+                    }
+                );
+                testConstant(
+                    'FILTER',
+                    function ()
+                    {
+                        this.toBe(Array.prototype.filter);
+                    }
+                );
+                testConstant(
+                    'PLAIN_OBJECT',
+                    function ()
+                    {
+                        this.toBePlainObject();
+                    }
+                );
             }
         );
         describe(
@@ -275,7 +345,6 @@
             {
                 describeEncodeTest('DEFAULT');
                 describeEncodeTest('COMPACT');
-                describeEncodeTest('NO_IE');
                 describeEncodeTest('FF31');
                 describeEncodeTest('AUTO');
                 it(
@@ -311,7 +380,6 @@
                                 JScrewIt.encode('', options);
                             };
                         expect(fn).toThrow(Error('Invalid value for option wrapWith'));
-
                     }
                 );
                 it(
@@ -384,7 +452,11 @@
                     'throws a ReferenceError for unknown features',
                     function ()
                     {
-                        var fn = function () { JScrewIt.areFeaturesCompatible(['???']); };
+                        var fn =
+                            function ()
+                            {
+                                JScrewIt.areFeaturesCompatible(['???']);
+                            };
                         expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
                     }
                 );
@@ -410,6 +482,22 @@
                         expect(actual).toEqual([]);
                     }
                 );
+                it(
+                    'does not return implied features',
+                    function ()
+                    {
+                        var actual = JScrewIt.commonFeaturesOf(['V8_SRC', 'WINDOW'], 'FF31');
+                        expect(actual).toEqual(['NO_IE_SRC', 'WINDOW']);
+                    }
+                );
+                it(
+                    'does not return aliases',
+                    function ()
+                    {
+                        var actual = JScrewIt.commonFeaturesOf('WINDOW', 'DOMWINDOW');
+                        expect(actual).toEqual(['ANY_WINDOW']);
+                    }
+                );
             }
         );
         describe(
@@ -429,6 +517,22 @@
                                 var info = FEATURE_INFOS.DEFAULT;
                                 expect(info.available).toBe(true);
                                 expect(info.includes.length).toBe(0);
+                                expect(info.excludes.length).toBe(0);
+                            }
+                        );
+                        it(
+                            'COMPACT',
+                            function ()
+                            {
+                                var info = FEATURE_INFOS.COMPACT;
+                                var expected =
+                                    JScrewIt.commonFeaturesOf(
+                                        'CHROME41',
+                                        'EDGE',
+                                        'FF31',
+                                        'SAFARI71'
+                                    );
+                                expect(info.includes).toEqual(expected);
                                 expect(info.excludes.length).toBe(0);
                             }
                         );
@@ -458,87 +562,7 @@
                     function ()
                     {
                         var features = Object.keys(FEATURE_INFOS).sort();
-                        features.forEach(
-                            function (feature)
-                            {
-                                describe(
-                                    feature,
-                                    function ()
-                                    {
-                                        var info = FEATURE_INFOS[feature];
-                                        
-                                        it(
-                                            'is named correctly',
-                                            function ()
-                                            {
-                                                var name = info.name;
-                                                expect(name).toBeString();
-                                                expect(info).toBe(FEATURE_INFOS[name]);
-                                            }
-                                        );
-                                        it(
-                                            'has expected availability',
-                                            function ()
-                                            {
-                                                expect(info.available).toBe(
-                                                    JScrewIt.areFeaturesAvailable(feature)
-                                                );
-                                            }
-                                        );
-                                        it(
-                                            'has includes array',
-                                            function ()
-                                            {
-                                                expect(info.includes).toBeArray();
-                                            }
-                                        );
-                                        it(
-                                            'has expected excludes array',
-                                            function ()
-                                            {
-                                                var excludes = info.excludes;
-                                                expect(excludes).toBeArray();
-                                                excludes.forEach(
-                                                    function (exclude)
-                                                    {
-                                                        var info = FEATURE_INFOS[exclude];
-                                                        expect(info.excludes).toContain(feature);
-                                                    }
-                                                );
-                                            }
-                                        );
-                                        it(
-                                            'has description string',
-                                            function ()
-                                            {
-                                                expect(info.description).toBeString();
-                                            }
-                                        );
-                                        it(
-                                            'is checkable',
-                                            function ()
-                                            {
-                                                var check = info.check;
-                                                if (check)
-                                                {
-                                                    if (feature in featureSet)
-                                                    {
-                                                        var emuFeatures =
-                                                            featureSet[feature] ? [feature] : [];
-                                                        expect(
-                                                            function ()
-                                                            {
-                                                                emuDo(emuFeatures, check);
-                                                            }
-                                                        ).not.toThrow();
-                                                    }
-                                                }
-                                            }
-                                        );
-                                    }
-                                );
-                            }
-                        );
+                        features.forEach(testFeature);
                     }
                 );
             }
@@ -766,7 +790,7 @@
                             );
                         }
                     );
-
+                    
                 })();
                 it(
                     'encodes a string with incomplete groups',
@@ -884,8 +908,13 @@
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.callCoders = function () { };
-                        expect(function () { encoder.encode('12345'); }).toThrow(
+                        encoder.callCoders = Function();
+                        expect(
+                            function ()
+                            {
+                                encoder.encode('12345');
+                            }
+                        ).toThrow(
                             new Error('Encoding failed')
                         );
                     }
@@ -912,7 +941,7 @@
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.replaceNumberArray = function () { };
+                        encoder.replaceNumberArray = Function();
                         expect(encoder.encodeByCharCodes('12345')).toBeUndefined();
                     }
                 );
@@ -962,7 +991,7 @@
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.replaceString = function () { };
+                        encoder.replaceString = Function();
                         expect(encoder.replaceNumberArray([])).toBeUndefined();
                     }
                 );
@@ -988,11 +1017,15 @@
             function ()
             {
                 var encoder = JScrewIt.debug.createEncoder();
-                encoder.replaceString = function () { };
+                encoder.replaceString = Function();
                 
                 function debugReplacer(input)
                 {
-                    var result = function () { encoder.resolve(input); };
+                    var result =
+                        function ()
+                        {
+                            encoder.resolve(input);
+                        };
                     return result;
                 }
                 
@@ -1232,7 +1265,7 @@
                 
                 test('CAPITAL_HTML', repeat.bind(null, String.fromCharCode(59999)), 'byCharCodes');
                 test(
-                    ['ENTRIES', 'ATOB', 'FILL', 'V8_SRC'],
+                    ['ATOB', 'ENTRIES_OBJ', 'FILL', 'V8_SRC'],
                     function (length)
                     {
                         var CHAR_CODES =
@@ -1245,34 +1278,34 @@
                     },
                     'byCharCodesRadix4'
                 );
-                test('ENTRIES', repeat.bind(null, String.fromCharCode(59999)), 'byDict');
+                test('ENTRIES_OBJ', repeat.bind(null, String.fromCharCode(59999)), 'byDict');
                 test(
-                    ['ENTRIES', 'ATOB', 'FILL', 'V8_SRC'],
+                    ['ATOB', 'ENTRIES_OBJ', 'FILL', 'V8_SRC'],
                     createDictTestString.bind(null, 122),
                     'byDictRadix3'
                 );
                 test(
-                    ['ENTRIES', 'ATOB', 'FILL', 'V8_SRC'],
+                    ['ATOB', 'ENTRIES_OBJ', 'FILL', 'V8_SRC'],
                     createDictTestString.bind(null, 100),
                     'byDictRadix4'
                 );
                 test(
-                    ['ENTRIES', 'ATOB', 'FILL', 'V8_SRC'],
+                    ['ATOB', 'ENTRIES_OBJ', 'FILL', 'V8_SRC'],
                     createDictTestString.bind(null, 129),
                     'byDictRadix4AmendedBy1'
                 );
                 test(
-                    ['ENTRIES', 'ATOB', 'FILL', 'NO_IE_SRC'],
+                    ['ATOB', 'ENTRIES_OBJ', 'FILL', 'NO_IE_SRC'],
                     createDictTestString.bind(null, 364),
                     'byDictRadix4AmendedBy2'
                 );
                 test(
-                    ['ENTRIES', 'ATOB', 'FILL', 'NO_IE_SRC'],
+                    ['ATOB', 'ENTRIES_OBJ', 'FILL', 'NO_IE_SRC'],
                     createDictTestString.bind(null, 124),
                     'byDictRadix5AmendedBy2'
                 );
                 test(
-                    ['ENTRIES', 'FILL', 'V8_SRC'],
+                    ['ENTRIES_OBJ', 'FILL', 'V8_SRC'],
                     createAntiRadix4TestString.bind(null, 473),
                     'byDictRadix5AmendedBy3'
                 );
@@ -1282,9 +1315,21 @@
     
     function getEmuFeatures(features)
     {
-        if (features.every(function (feature) { return feature in featureSet; }))
+        if (
+            features.every(
+                function (feature)
+                {
+                    return feature in featureSet;
+                }
+            )
+        )
         {
-            return features.filter(function (feature) { return featureSet[feature]; });
+            return features.filter(
+                function (feature)
+                {
+                    return featureSet[feature];
+                }
+            );
         }
     }
     
@@ -1294,36 +1339,29 @@
         return result;
     }
     
-    function getSubFeatures(feature)
-    {
-        function branchIn(feature)
-        {
-            var featureInfo = JScrewIt.FEATURE_INFOS[feature];
-            var includes = featureInfo.includes;
-            includes.forEach(branchIn);
-            if (featureInfo.check)
-            {
-                atomicSet[feature] = null;
-            }
-        }
-        
-        var atomicSet = Object.create(null);
-        branchIn(feature);
-        var result = Object.keys(atomicSet);
-        return result;
-    }
-    
     function init(arg)
     {
         JScrewIt = arg || global.JScrewIt;
         featureSet = Object.create(null);
         EMU_FEATURES.forEach(
-            function (feature) { featureSet[feature] = true; }
+            function (feature)
+            {
+                featureSet[feature] = true;
+            }
         );
-        JScrewIt.FEATURE_INFOS.AUTO.includes.forEach(
-            function (feature) { featureSet[feature] = false; }
-        );
+        initIncludesOf('AUTO');
         describeTests();
+    }
+    
+    function initIncludesOf(feature)
+    {
+        JScrewIt.FEATURE_INFOS[feature].includes.forEach(
+            function (feature)
+            {
+                initIncludesOf(feature);
+                featureSet[feature] = false;
+            }
+        );
     }
     
     function isExpected(expected)
@@ -1338,7 +1376,11 @@
     
     function listFeatures(available)
     {
-        var callback = function (feature) { return !!featureSet[feature] !== available; };
+        var callback =
+            function (feature)
+            {
+                return !!featureSet[feature] !== available;
+            };
         var result = Object.keys(featureSet).filter(callback).sort();
         return result;
     }
@@ -1373,20 +1415,23 @@
                     entries.forEach(
                         function (entry, index)
                         {
-                            var features = getEntryFeatures(entry);
-                            var usingDefaultFeature = !features.length;
-                            defaultEntryFound |= usingDefaultFeature;
-                            var emuFeatures = getEmuFeatures(features);
-                            if (emuFeatures)
+                            if (entry.definition)
                             {
-                                it(
-                                    '(definition ' + index + ')',
-                                    function ()
-                                    {
-                                        var output = decodeEntry(entry);
-                                        verifyOutput(output, emuFeatures);
-                                    }
-                                );
+                                var features = getEntryFeatures(entry);
+                                var usingDefaultFeature = !features.length;
+                                defaultEntryFound |= usingDefaultFeature;
+                                var emuFeatures = getEmuFeatures(features);
+                                if (emuFeatures)
+                                {
+                                    it(
+                                        '(definition ' + index + ')',
+                                        function ()
+                                        {
+                                            var output = decodeEntry(entry);
+                                            verifyOutput(output, emuFeatures);
+                                        }
+                                    );
+                                }
                             }
                         }
                     );
@@ -1469,6 +1514,84 @@
         );
     }
     
+    function testFeature(feature)
+    {
+        var FEATURE_INFOS = JScrewIt.FEATURE_INFOS;
+        
+        describe(
+            feature,
+            function ()
+            {
+                var info = FEATURE_INFOS[feature];
+                
+                it(
+                    'is named correctly',
+                    function ()
+                    {
+                        var name = info.name;
+                        expect(name).toBeString();
+                        expect(info).toBe(FEATURE_INFOS[name]);
+                    }
+                );
+                it(
+                    'has expected availability',
+                    function ()
+                    {
+                        expect(info.available).toBe(JScrewIt.areFeaturesAvailable(feature));
+                    }
+                );
+                it(
+                    'has includes array',
+                    function ()
+                    {
+                        expect(info.includes).toBeArray();
+                    }
+                );
+                it(
+                    'has expected excludes array',
+                    function ()
+                    {
+                        var excludes = info.excludes;
+                        expect(excludes).toBeArray();
+                        excludes.forEach(
+                            function (exclude)
+                            {
+                                var info = FEATURE_INFOS[exclude];
+                                expect(info.excludes).toContain(
+                                    feature,
+                                    'feature ' + feature + ' excludes ' + exclude +
+                                    ', but not vice versa'
+                                );
+                            }
+                        );
+                    }
+                );
+                it(
+                    'has description string',
+                    function ()
+                    {
+                        expect(info.description).toBeString();
+                    }
+                );
+                it(
+                    'is checkable',
+                    function ()
+                    {
+                        var check = info.check;
+                        if (check)
+                        {
+                            if (feature in featureSet)
+                            {
+                                var emuFeatures = featureSet[feature] ? [feature] : [];
+                                expect(emuDo.bind(null, emuFeatures, check)).not.toThrow();
+                            }
+                        }
+                    }
+                );
+            }
+        );
+    }
+    
     var encoderCache = { };
     var featureSet;
     var JScrewIt;
@@ -1483,5 +1606,5 @@
     {
         module.exports = TestSuite;
     }
-
-})(typeof self === 'undefined' ? global : self);
+}
+)(typeof self === 'undefined' ? global : self);

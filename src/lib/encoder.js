@@ -5,6 +5,7 @@ COMPLEX,
 CONSTANTS,
 LEVEL_STRING,
 SIMPLE,
+Empty,
 ScrewBuffer,
 createSolution,
 define,
@@ -32,6 +33,7 @@ var expandEntries;
         [
             define('A'),
             define('C', 'CAPITAL_HTML'),
+            define('B', 'CAPITAL_HTML', 'ENTRIES_OBJ'),
             define('A', 'ARRAY_ITERATOR')
         ],
         'F',
@@ -39,10 +41,16 @@ var expandEntries;
         'NaNfalse',
         [
             define('S'),
-            define('R', 'CAPITAL_HTML')
+            define('R', 'CAPITAL_HTML'),
+            define('S', 'CAPITAL_HTML', 'ENTRIES_OBJ')
         ],
         [
-            define('W'),
+            define('U'),
+            define('V', 'ATOB'),
+            define('W', 'ANY_WINDOW'),
+            define('V', 'ATOB', 'ENTRIES_OBJ'),
+            define('W', 'ATOB', 'DOMWINDOW', 'ENTRIES_OBJ'),
+            define('W', 'ATOB', 'ENTRIES_OBJ', 'WINDOW'),
             define('U', 'CAPITAL_HTML')
         ],
         'a',
@@ -132,10 +140,15 @@ var expandEntries;
         '0A',
         [
             define('0B'),
-            define('0R', 'CAPITAL_HTML')
+            define('0R', 'CAPITAL_HTML'),
+            define('0B', 'ENTRIES_OBJ')
         ],
         '0i',
-        '0j',
+        [
+            define('0j'),
+            define('0T', 'CAPITAL_HTML'),
+            define('0j', 'ENTRIES_OBJ')
+        ],
         '00',
         '01',
         '02',
@@ -151,6 +164,13 @@ var expandEntries;
     ];
     
     var BASE64_ALPHABET_LO_6 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    
+    var FROM_CHAR_CODE =
+    [
+        define('fromCharCode'),
+        define('fromCodePoint', 'ATOB', 'FROM_CODE_POINT'),
+        define('fromCodePoint', 'CAPITAL_HTML', 'FROM_CODE_POINT')
+    ];
     
     CODERS =
     {
@@ -356,7 +376,7 @@ var expandEntries;
     
     function createFrequencyList(input)
     {
-        var charMap = Object.create(null);
+        var charMap = new Empty();
         Array.prototype.forEach.call(
             input,
             function (char)
@@ -366,9 +386,15 @@ var expandEntries;
         );
         var freqList =
             Object.keys(charMap).map(
-                function (char) { return charMap[char]; }
+                function (char)
+                {
+                    return charMap[char];
+                }
             ).sort(
-                function (freq1, freq2) { return freq2.count - freq1.count; }
+                function (freq1, freq2)
+                {
+                    return freq2.count - freq1.count;
+                }
             );
         return freqList;
     }
@@ -378,7 +404,13 @@ var expandEntries;
         function getSortLength()
         {
             var length = 0;
-            Array.prototype.forEach.call(str, function (digit) { length += digitLengths[digit]; });
+            Array.prototype.forEach.call(
+                str,
+                function (digit)
+                {
+                    length += digitLengths[digit];
+                }
+            );
             return length;
         }
         
@@ -398,7 +430,11 @@ var expandEntries;
             }
             pattern += ']';
             regExp = new RegExp(pattern, 'g');
-            replacer = function (match) { return AMENDINGS[match - firstDigit]; };
+            replacer =
+                function (match)
+                {
+                    return AMENDINGS[match - firstDigit];
+                };
         }
         var range = [];
         for (index = 0; index < count; ++index)
@@ -457,6 +493,14 @@ var expandEntries;
         }
     }
     
+    function isStrongBoundRequired(expr, offset, wholeMatch)
+    {
+        var strongBound =
+            isPrecededByOperator(expr, offset) ||
+            isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length);
+        return strongBound;
+    }
+    
     function replaceToken(wholeMatch, number, quotedString, space, literal, offset, expr)
     {
         var replacement;
@@ -472,7 +516,7 @@ var expandEntries;
             {
                 replacement = '+(' + replacement + ')';
             }
-            if (isPrecededByOperator(expr, offset))
+            if (isStrongBoundRequired(expr, offset, wholeMatch))
             {
                 replacement = '(' + replacement + ')';
             }
@@ -488,9 +532,7 @@ var expandEntries;
             {
                 this.throwSyntaxError('Illegal string ' + quotedString);
             }
-            var strongBound =
-                isPrecededByOperator(expr, offset) ||
-                isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length);
+            var strongBound = isStrongBoundRequired(expr, offset, wholeMatch);
             replacement = this.replaceString(str, strongBound);
             if (!replacement)
             {
@@ -517,7 +559,7 @@ var expandEntries;
                 this.throwSyntaxError('Undefined literal ' + literal);
             }
             replacement =
-                isPrecededByOperator(expr, offset) && hasOuterPlus(solution) ?
+                isStrongBoundRequired(expr, offset, wholeMatch) && hasOuterPlus(solution) ?
                 '(' + solution + ')' : solution + '';
         }
         else
@@ -548,9 +590,9 @@ var expandEntries;
         function (featureMask)
         {
             this.featureMask = featureMask;
-            this.characterCache = { };
-            this.complexCache = { };
-            this.constantCache = { };
+            this.characterCache = new Empty();
+            this.complexCache = new Empty();
+            this.constantCache = new Empty();
             this.stack = [];
         };
     
@@ -630,24 +672,19 @@ var expandEntries;
             }
         },
         
-        charEncodeByAtob: function (charCode)
-        {
-            var result = charEncodeByAtob.call(this, charCode);
-            return result;
-        },
-        
         constantDefinitions: CONSTANTS,
         
         createCharCodesEncoding: function (charCodes, long, radix)
         {
             var output;
+            var fromCharCode = this.findBestDefinition(FROM_CHAR_CODE);
             if (radix)
             {
                 output =
                     charCodes +
                     this.replaceExpr(
-                        '["map"](Function("return String.fromCharCode(parseInt(arguments[0],' +
-                        radix + '))"))["join"]([])'
+                        '["map"](Function("return String.' + fromCharCode +
+                        '(parseInt(arguments[0],' + radix + '))"))["join"]([])'
                     );
             }
             else
@@ -657,16 +694,15 @@ var expandEntries;
                     output =
                         charCodes +
                         this.replaceExpr(
-                            '["map"](Function("return String.fromCharCode(arguments[0])"))' +
-                            '["join"]([])'
+                            '["map"](Function("return String.' + fromCharCode +
+                            '(arguments[0])"))["join"]([])'
                         );
                 }
                 else
                 {
                     output =
-                        this.resolveConstant('Function') + '(' +
-                        this.replaceString('return String.fromCharCode(') + '+' + charCodes + '+' +
-                        this.replaceString(')') + ')()';
+                        this.replaceExpr('Function("return String.' + fromCharCode + '(" +') +
+                        charCodes + this.replaceExpr('+ ")")()');
                 }
             }
             return output;
@@ -686,7 +722,10 @@ var expandEntries;
                         parseIntArg =
                             '[' +
                             AMENDINGS.slice(0, amendings).map(
-                                function (amending) { return '/' + amending + '/g'; }
+                                function (amending)
+                                {
+                                    return '/' + amending + '/g';
+                                }
                             ).join() +
                             '].reduce(function(falsefalse,falsetrue,truefalse){return falsefalse.' +
                             'replace(falsetrue,truefalse+' + firstDigit + ')},arguments[0])';
@@ -731,8 +770,9 @@ var expandEntries;
             }
             
             var stringTokenPattern =
-                Object.keys(SIMPLE).concat(Object.keys(COMPLEX).filter(callback, this)).join('|') +
-                '|[^]';
+                '(' + Object.keys(SIMPLE).join('|') + ')' +
+                '|(' + Object.keys(COMPLEX).filter(callback, this).join('|') + ')' +
+                '|([^])';
             this.stringTokenPattern = stringTokenPattern;
             return stringTokenPattern;
         },
@@ -772,11 +812,17 @@ var expandEntries;
         
         encodeByCharCodes: function (input, long, radix, maxLength)
         {
+            var cache = new Empty();
             var charCodes =
                 this.replaceNumberArray(
                     Array.prototype.map.call(
                         input,
-                        function (char) { return char.charCodeAt().toString(radix); }
+                        function (char)
+                        {
+                            var charCode =
+                                cache[char] || (cache[char] = char.charCodeAt().toString(radix));
+                            return charCode;
+                        }
                     ),
                     maxLength
                 );
@@ -798,7 +844,7 @@ var expandEntries;
                 freqList.length &&
                 freqList[0].count * 6 > getAppendLength(this.resolveCharacter('+'));
             var reindexMap = createReindexMap(freqList.length, radix, amendings, coerceToInt);
-            var charMap = Object.create(null);
+            var charMap = new Empty();
             var minFreqIndexLength =
                 Math.max((input.length - 1) * (resolveSimple('false').length + 1) - 3, 0);
             var dictChars = [];
@@ -878,24 +924,26 @@ var expandEntries;
             }
         },
         
-        findOptimalSolution: function (entries)
+        findOptimalSolution: function (entries, defaultResolver)
         {
             var result;
             entries = expandEntries(entries);
-            for (var entryIndex = entries.length; entryIndex--;)
-            {
-                var entry = entries[entryIndex];
-                if (this.hasFeatures(entry.featureMask))
+            entries.forEach(
+                function (entry, entryIndex)
                 {
-                    var definition = entry.definition;
-                    var solution = this.resolve(definition);
-                    if (!result || result.length >= solution.length)
+                    if (this.hasFeatures(entry.featureMask))
                     {
-                        result = solution;
-                        solution.entryIndex = entryIndex;
+                        var definition = entry.definition;
+                        var solution = definition ? this.resolve(definition) : defaultResolver();
+                        if (!result || result.length >= solution.length)
+                        {
+                            result = solution;
+                            solution.entryIndex = entryIndex;
+                        }
                     }
-                }
-            }
+                },
+                this
+            );
             return result;
         },
         
@@ -906,7 +954,7 @@ var expandEntries;
         
         hexCodeOf: function (charCode, length)
         {
-            var optimalB = this.findBestDefinition([define('B'), define('b', 'ENTRIES')]);
+            var optimalB = this.findBestDefinition([define('B'), define('b', 'ENTRIES_OBJ')]);
             var result = charCode.toString(16).replace(/b/g, optimalB);
             result = Array(length - result.length + 1).join(0) + result.replace(/fa?$/, 'false');
             return result;
@@ -917,12 +965,11 @@ var expandEntries;
         // This value is typically limited by the free memory available on the stack, and since the
         // memory layout of the stack changes at runtime in an unstable way, the maximum safe value
         // cannot be determined exactly.
-        // The lowest recorded value so far is 1844, measured in an Android Browser 4.2.2 running
-        // on an Intel Atom emulator.
+        // The lowest recorded value so far is 1844, measured in an Android Browser 4.2.2 running on
+        // an Intel Atom emulator.
         // Internet Explorer on Windows Phone occasionally failed the extreme decoding test in a
         // non-reproducible manner, although the issue seems to be related to the output size rather
         // than the grouping threshold setting.
-        
         maxGroupThreshold: 1800,
         
         replaceExpr: function (expr)
@@ -966,13 +1013,13 @@ var expandEntries;
                 {
                     return;
                 }
-                var token = match[0];
+                var token;
                 var solution;
-                if (token in SIMPLE)
+                if (token = match[1])
                 {
                     solution = resolveSimple(token);
                 }
-                else if (token in COMPLEX)
+                else if (token = match[2])
                 {
                     solution = this.resolveComplex(token);
                     if (!solution)
@@ -986,6 +1033,7 @@ var expandEntries;
                 }
                 else
                 {
+                    token = match[3];
                     solution = this.resolveCharacter(token);
                 }
                 if (!buffer.append(solution))
@@ -1037,15 +1085,13 @@ var expandEntries;
                     function ()
                     {
                         var entries = CHARACTERS[char];
-                        if (entries != null)
-                        {
-                            solution = this.findOptimalSolution(entries);
-                        }
+                        var defaultCharacterEncoder =
+                            this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
+                        var defaultResolver = defaultCharacterEncoder.bind(this, char);
+                        solution = this.findOptimalSolution(entries, defaultResolver);
                         if (!solution)
                         {
-                            var defaultCharacterEncoder =
-                                this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
-                            solution = defaultCharacterEncoder.call(this, char);
+                            solution = defaultResolver();
                         }
                         if (solution.level == null)
                         {
@@ -1134,5 +1180,5 @@ var expandEntries;
             }
             return entries;
         };
-
-})();
+}
+)();

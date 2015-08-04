@@ -25,7 +25,11 @@ function binLog(n)
 function disableForm(disabled)
 {
     var elements = form.elements;
-    var callback = function (element) { element.disabled = disabled; }
+    var callback =
+        function (element)
+        {
+            element.disabled = disabled;
+        }
     Array.prototype.forEach.call(elements, callback);
     form.className = disabled ? 'disabled' : '';
 }
@@ -89,7 +93,11 @@ function handleSubmit(evt)
     maxGroupThresholdField.value = maxGroupThreshold;
     groupingsField.value = groupings;
     callDepthField.value = callDepth;
-    var call = function () { return runExtremeTest(maxGroupThreshold, groupings); };
+    var call =
+        function ()
+        {
+            return runExtremeTest(maxGroupThreshold, groupings);
+        };
     for (var i = 0; i < callDepth; ++i)
     {
         call = Function.prototype.call.bind(call);

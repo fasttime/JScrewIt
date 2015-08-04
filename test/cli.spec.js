@@ -3,7 +3,7 @@
 'use strict';
 
 var assert = require('assert');
-var cli = require('../cli.js');
+var cli = require('../tools/cli.js');
 
 describe(
     'parseCommandLine returns expected results with params',
@@ -29,7 +29,13 @@ describe(
                 function ()
                 {
                     var argv = [null, '../screw.js'].concat(params);
-                    assert.throws(function () { cli.parseCommandLine(argv); }, error);
+                    assert.throws(
+                        function ()
+                        {
+                            cli.parseCommandLine(argv);
+                        },
+                        error
+                    );
                 }
             );
         }
