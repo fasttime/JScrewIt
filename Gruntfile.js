@@ -28,7 +28,7 @@ module.exports =
                         src:
                         [
                             'src/lib/preamble',
-                            'src/lib/no-proto.js',
+                            'src/lib/obj-utils.js',
                             'src/lib/features.js',
                             'src/lib/definers.js',
                             'src/lib/definitions.js',

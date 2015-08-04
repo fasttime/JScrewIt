@@ -8,12 +8,11 @@ DEBUG,
 Encoder,
 JScrewIt,
 ScrewBuffer,
-describeNoEnum,
+assignNoEnum,
 expandEntries,
 featuresFromMask,
 getValidFeatureMask,
 hasOuterPlus,
-noEnum,
 setUp,
 trimJS
 */
@@ -85,11 +84,10 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             }
         }
         
-        Object.defineProperty(
-            JScrewIt,
-            'debug',
-            describeNoEnum(noEnum
-                ({
+        var debug =
+            assignNoEnum(
+                { },
+                {
                     createEncoder:          createEncoder,
                     createScrewBuffer:      createScrewBuffer,
                     defineConstant:         defineConstant,
@@ -101,9 +99,9 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                     hasOuterPlus:           hasOuterPlus,
                     setUp:                  setUp,
                     trimJS:                 trimJS,
-                })
-            )
-        );
+                }
+            );
+        assignNoEnum(JScrewIt, { debug: debug });
     }
     )();
 }

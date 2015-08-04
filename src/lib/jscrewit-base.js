@@ -3,6 +3,7 @@ global
 FEATURE_INFOS,
 Empty,
 Encoder,
+assignNoEnum,
 availableFeatureMask,
 featuresFromMask,
 getFeatureMask,
@@ -13,9 +14,7 @@ trimJS
 */
 
 var JScrewIt;
-var describeNoEnum;
 var getValidFeatureMask;
-var noEnum;
 var setUp;
 
 (function ()
@@ -126,35 +125,17 @@ var setUp;
     
     var encoders = new Empty();
     
-    describeNoEnum =
-        function (value)
-        {
-            var descriptor = { configurable: true, value: value, writable: true };
-            return descriptor;
-        };
-    
-    noEnum =
-        function (obj)
-        {
-            var result = { };
-            Object.keys(obj).forEach(
-                function (name)
-                {
-                    var descriptor = describeNoEnum(obj[name]);
-                    Object.defineProperty(result, name, descriptor);
-                }
-            );
-            return result;
-        };
-    
-    JScrewIt = noEnum
-    ({
-        areFeaturesAvailable:   areFeaturesAvailable,
-        areFeaturesCompatible:  areFeaturesCompatible,
-        commonFeaturesOf:       commonFeaturesOf,
-        encode:                 encode,
-        FEATURE_INFOS:          FEATURE_INFOS,
-    });
+    JScrewIt =
+        assignNoEnum(
+            { },
+            {
+                areFeaturesAvailable:   areFeaturesAvailable,
+                areFeaturesCompatible:  areFeaturesCompatible,
+                commonFeaturesOf:       commonFeaturesOf,
+                encode:                 encode,
+                FEATURE_INFOS:          FEATURE_INFOS,
+            }
+        );
     
     getValidFeatureMask =
         function (features)
