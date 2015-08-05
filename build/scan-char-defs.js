@@ -31,7 +31,7 @@ function processOutputMap(outputMap, entryCount, logLine)
     {
         var outputData = outputMap[output];
         var featureMask = outputData.featureMask;
-        var features = JScrewIt.debug.featuresFromMask(featureMask);
+        var features = JScrewIt.debug.featureFromMask(featureMask).canonicalNames;
         outputData.features = features;
         var entryIndex = outputData.entryIndex;
         if (entryIndex != null)

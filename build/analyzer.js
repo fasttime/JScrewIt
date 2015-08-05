@@ -55,7 +55,7 @@
                 var featureMask = featureQuery.featureMask | featureQuery.ancestorFeatureMask;
                 if (isIndependentFeatureMask(featureQueries, index, featureMask))
                 {
-                    var features = JScrewIt.debug.featuresFromMask(featureMask);
+                    var features = JScrewIt.debug.featureFromMask(featureMask).canonicalNames;
                     if (JScrewIt.areFeaturesCompatible(features))
                     {
                         analyzer.features = features;
