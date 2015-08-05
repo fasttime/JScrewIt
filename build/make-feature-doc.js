@@ -158,27 +158,29 @@ var LISTS =
 module.exports =
     function ()
     {
-        var FEATURE_INFOS = JScrewIt.FEATURE_INFOS;
+        var Feature = JScrewIt.Feature;
+        var allFeatureMap = Feature.ALL;
         
         var content =
             '# JScrewIt Feature Reference\n' +
             '## Feature List\n' +
             'This section lists all features along with their descriptions.\n';
-        Object.keys(FEATURE_INFOS).sort().forEach(
-            function (feature)
+        Object.keys(allFeatureMap).sort().forEach(
+            function (featureName)
             {
                 var subContent;
-                var name = FEATURE_INFOS[feature].name;
-                if (name === feature)
+                var featureObj = allFeatureMap[featureName];
+                var name = featureObj.name;
+                if (name === featureName)
                 {
-                    var description = FEATURE_INFOS[feature].description;
+                    var description = featureObj.description;
                     subContent = escape(description);
                 }
                 else
                 {
                     subContent = '_An alias for ' + formatFeatureMD(name) + '._';
                 }
-                content += '### `' + feature + '`\n' + subContent + '\n';
+                content += '### `' + featureName + '`\n' + subContent + '\n';
             }
         );
         content +=
@@ -193,12 +195,12 @@ module.exports =
             function (list)
             {
                 var assignmentMap = Object.create(null);
-                var feature;
-                for (feature in FEATURE_INFOS)
+                var featureName;
+                for (featureName in allFeatureMap)
                 {
-                    if (FEATURE_INFOS[feature].name === feature)
+                    if (Feature[featureName].name === featureName)
                     {
-                        var versioning = getVersioningFor(feature, list);
+                        var versioning = getVersioningFor(featureName, list);
                         if (versioning)
                         {
                             var assignments = { };
@@ -206,16 +208,16 @@ module.exports =
                             {
                                 assignments.versioning = versioning;
                             }
-                            assignmentMap[feature] = assignments;
+                            assignmentMap[featureName] = assignments;
                         }
                     }
                 }
-                for (feature in assignmentMap)
+                for (featureName in assignmentMap)
                 {
-                    var impliers = getImpliers(feature, assignmentMap);
+                    var impliers = getImpliers(featureName, assignmentMap);
                     if (impliers)
                     {
-                        assignmentMap[feature].impliers = impliers;
+                        assignmentMap[featureName].impliers = impliers;
                     }
                 }
                 content += printRow(list[0].description, assignmentMap);

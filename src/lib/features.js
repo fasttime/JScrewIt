@@ -56,6 +56,7 @@ var validMaskFromArrayOrStringOrFeature;
                         availableFeatureMask |= mask;
                         autoIncludes.push(name);
                     }
+                    individualNames.push(name);
                 }
                 mask ^= 0;
                 var includes = info.includes || (info.includes = []);
@@ -182,23 +183,27 @@ var validMaskFromArrayOrStringOrFeature;
         };
     
     assignNoEnum(Feature, { ALL: ALL });
-    assignNoEnum(
+    Object.defineProperty(
         Feature.prototype,
+        'individualNames',
         {
-            includes: function ()
+            configurable: true,
+            get: function ()
             {
+                var names = [];
                 var mask = this.mask;
-                var included =
-                    Array.prototype.every.call(
-                        arguments,
-                        function (arg)
+                individuals.forEach(
+                    function (featureObj)
+                    {
+                        var otherMask = featureObj.mask;
+                        var included = (otherMask & mask) === otherMask;
+                        if (included)
                         {
-                            var otherMask = validMaskFromArrayOrStringOrFeature(arg);
-                            var included = (otherMask & mask) === otherMask;
-                            return included;
+                            names.push(featureObj.name);
                         }
-                    );
-                return included;
+                    }
+                );
+                return names;
             }
         }
     );
@@ -857,7 +862,16 @@ var validMaskFromArrayOrStringOrFeature;
     var bitIndex = 0;
     var featureMaskMap = new Empty();
     var features = Object.keys(FEATURE_INFOS);
+    var individualNames = [];
     features.forEach(completeFeature);
+    var individuals =
+        individualNames.sort().map(
+            function (name)
+            {
+                return ALL[name];
+            }
+        );
+    
     var autoName = 'AUTO';
     var autoDescription = 'All features available in the current engine.';
     FEATURE_INFOS.AUTO =

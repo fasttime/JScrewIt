@@ -659,21 +659,36 @@ self
                             function ()
                             {
                                 var featureObj = Feature.DEFAULT;
+                                expect(featureObj.individualNames).toEqual([]);
                                 expect(featureObj.mask).toBe(0);
                             }
                         );
-                    }
-                );
-                describe(
-                    '#includes',
-                    function ()
-                    {
                         it(
-                            'accepts mixed arguments',
+                            'COMPACT',
                             function ()
                             {
-                                expect(Feature.DEFAULT.includes('DEFAULT', [Feature.AUTO]))
-                                .toBe(false);
+                                var featureObj = Feature.COMPACT;
+                                var featureNames =
+                                    JScrewIt.commonFeaturesOf(
+                                        'CHROME41',
+                                        'EDGE',
+                                        'FF31',
+                                        'SAFARI71'
+                                    );
+                                var expectedFeature = Feature(featureNames);
+                                var actualNames = featureObj.individualNames;
+                                var expectedNames = expectedFeature.individualNames;
+                                expect(actualNames).toEqual(expectedNames);
+                                expect(featureObj.mask).toBe(expectedFeature.mask);
+                            }
+                        );
+                        it(
+                            'AUTO',
+                            function ()
+                            {
+                                var featureObj = Feature.AUTO;
+                                expect(featureObj.individualNames.length).toBeGreaterThan(0);
+                                expect(featureObj.mask).not.toBe(0);
                             }
                         );
                     }
@@ -1457,24 +1472,18 @@ self
         JScrewIt = arg || global.JScrewIt;
         featureSet = Object.create(null);
         EMU_FEATURES.forEach(
-            function (feature)
+            function (featureName)
             {
-                featureSet[feature] = true;
+                featureSet[featureName] = true;
             }
         );
-        initIncludesOf('AUTO');
+        JScrewIt.Feature.AUTO.individualNames.forEach(
+            function (featureName)
+            {
+                featureSet[featureName] = false;
+            }
+        );
         describeTests();
-    }
-    
-    function initIncludesOf(feature)
-    {
-        JScrewIt.FEATURE_INFOS[feature].includes.forEach(
-            function (feature)
-            {
-                initIncludesOf(feature);
-                featureSet[feature] = false;
-            }
-        );
     }
     
     function isExpected(expected)
@@ -1730,6 +1739,27 @@ self
                     function ()
                     {
                         expect(featureObj.description).toBeString();
+                    }
+                );
+                it(
+                    'has 32-bit integer mask',
+                    function ()
+                    {
+                        expect(featureObj.mask).toBeInt32();
+                    }
+                );
+                it(
+                    'has individualNames string array',
+                    function ()
+                    {
+                        var individualNames = featureObj.individualNames;
+                        expect(individualNames).toBeArray();
+                        individualNames.forEach(
+                            function (name)
+                            {
+                                expect(name).toBeString();
+                            }
+                        );
                     }
                 );
                 it(

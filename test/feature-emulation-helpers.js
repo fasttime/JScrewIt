@@ -99,9 +99,9 @@
         try
         {
             emuFeatures.forEach(
-                function (feature)
+                function (featureName)
                 {
-                    EMU_FEATURE_INFOS[feature].setUp.call(context);
+                    EMU_FEATURE_INFOS[featureName].setUp.call(context);
                 }
             );
             result = callback();
@@ -589,12 +589,12 @@
     
     var EMU_FEATURES = [];
     Object.keys(EMU_FEATURE_INFOS).forEach(
-        function (feature)
+        function (featureName)
         {
-            var condition = EMU_FEATURE_INFOS[feature].condition;
+            var condition = EMU_FEATURE_INFOS[featureName].condition;
             if (!condition || condition())
             {
-                EMU_FEATURES.push(feature);
+                EMU_FEATURES.push(featureName);
             }
         }
     );
