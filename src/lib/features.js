@@ -46,10 +46,11 @@ var validateFeatureMask;
             }
             else
             {
-                if (info.check)
+                var check = info.check;
+                if (check)
                 {
                     mask = 1 << bitIndex++;
-                    if (info.check())
+                    if (check())
                     {
                         availableFeatureMask |= mask;
                         autoIncludes.push(name);
@@ -79,7 +80,7 @@ var validateFeatureMask;
                 info.name = name;
                 var available = (mask & availableFeatureMask) === mask;
                 info.available = available;
-                featureObj = createFeature(name, info.description, mask);
+                featureObj = createFeature(name, info.description, mask, check);
             }
             registerFeature(name, featureObj);
             featureMaskMap[name] = mask;
@@ -87,12 +88,13 @@ var validateFeatureMask;
         return mask;
     }
     
-    function createFeature(name, description, mask)
+    function createFeature(name, description, mask, check)
     {
         var featureObj =
             Object.create(
                 Feature.prototype,
                 {
+                    check: { value: check },
                     description: { value: description },
                     mask: { value: mask },
                     name: { value: name }
