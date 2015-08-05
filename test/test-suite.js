@@ -629,6 +629,14 @@ self
                         );
                     }
                 );
+                describe(
+                    'contains only well-formed obejcts:',
+                    function ()
+                    {
+                        var featureNames = Object.keys(Feature).sort();
+                        featureNames.forEach(testFeatureObj);
+                    }
+                );
             }
         );
         describe(
@@ -1647,6 +1655,52 @@ self
                             if (feature in featureSet)
                             {
                                 var emuFeatures = featureSet[feature] ? [feature] : [];
+                                expect(emuDo.bind(null, emuFeatures, check)).not.toThrow();
+                            }
+                        }
+                    }
+                );
+            }
+        );
+    }
+    
+    function testFeatureObj(featureName)
+    {
+        var Feature = JScrewIt.Feature;
+        
+        var featureObj = Feature[featureName];
+        
+        describe(
+            featureName,
+            function ()
+            {
+                it(
+                    'is named correctly',
+                    function ()
+                    {
+                        var name = featureObj.name;
+                        expect(name).toBeString();
+                        expect(featureObj).toBe(Feature[name]);
+                        expect(featureObj).toBe(Feature.ALL[name]);
+                    }
+                );
+                it(
+                    'has description string',
+                    function ()
+                    {
+                        expect(featureObj.description).toBeString();
+                    }
+                );
+                it(
+                    'is checkable',
+                    function ()
+                    {
+                        var check = featureObj.check;
+                        if (check)
+                        {
+                            if (featureName in featureSet)
+                            {
+                                var emuFeatures = featureSet[featureName] ? [featureName] : [];
                                 expect(emuDo.bind(null, emuFeatures, check)).not.toThrow();
                             }
                         }
