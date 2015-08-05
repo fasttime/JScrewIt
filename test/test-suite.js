@@ -97,7 +97,7 @@ self
     
     function describeEncodeTest(compatibility)
     {
-        var emuFeatures = getEmuFeatures(JScrewIt.commonFeaturesOf(compatibility));
+        var emuFeatures = getEmuFeatures(Feature[compatibility].individualNames);
         if (emuFeatures)
         {
             describe(
@@ -517,8 +517,6 @@ self
             'JScrewIt.Feature',
             function ()
             {
-                var Feature = JScrewIt.Feature;
-                
                 describe(
                     'constructor',
                     function ()
@@ -592,6 +590,7 @@ self
                             function ()
                             {
                                 var featureObj = Feature.DEFAULT;
+                                expect(featureObj.canonicalNames).toEqual([]);
                                 expect(featureObj.individualNames).toEqual([]);
                                 expect(featureObj.mask).toBe(0);
                             }
@@ -609,9 +608,12 @@ self
                                         'SAFARI71'
                                     );
                                 var expectedFeature = Feature(featureNames);
-                                var actualNames = featureObj.individualNames;
-                                var expectedNames = expectedFeature.individualNames;
-                                expect(actualNames).toEqual(expectedNames);
+                                var actualIndividualNames = featureObj.individualNames;
+                                var expectedIndividualNames = expectedFeature.individualNames;
+                                expect(actualIndividualNames).toEqual(expectedIndividualNames);
+                                var actualCanonicalNames = expectedFeature.individualNames;
+                                var expectedCanonicalNames = featureObj.individualNames;
+                                expect(actualCanonicalNames).toEqual(expectedCanonicalNames);
                                 expect(featureObj.mask).toBe(expectedFeature.mask);
                             }
                         );
@@ -620,7 +622,10 @@ self
                             function ()
                             {
                                 var featureObj = Feature.AUTO;
-                                expect(featureObj.individualNames.length).toBeGreaterThan(0);
+                                var canonicalNameCount = featureObj.canonicalNames.length;
+                                var individualNameCount = featureObj.individualNames.length;
+                                expect(canonicalNameCount).toBeGreaterThan(0);
+                                expect(individualNameCount).not.toBeLessThan(canonicalNameCount);
                                 expect(featureObj.mask).not.toBe(0);
                             }
                         );
@@ -1403,6 +1408,7 @@ self
     function init(arg)
     {
         JScrewIt = arg || global.JScrewIt;
+        Feature = JScrewIt.Feature;
         featureSet = Object.create(null);
         EMU_FEATURES.forEach(
             function (featureName)
@@ -1410,7 +1416,7 @@ self
                 featureSet[featureName] = true;
             }
         );
-        JScrewIt.Feature.AUTO.individualNames.forEach(
+        Feature.AUTO.individualNames.forEach(
             function (featureName)
             {
                 featureSet[featureName] = false;
@@ -1571,8 +1577,6 @@ self
     
     function testFeatureObj(featureName)
     {
-        var Feature = JScrewIt.Feature;
-        
         var featureObj = Feature[featureName];
         
         describe(
@@ -1618,6 +1622,21 @@ self
                     }
                 );
                 it(
+                    'has canonicalNames string array',
+                    function ()
+                    {
+                        var canonicalNames = featureObj.canonicalNames;
+                        expect(canonicalNames).toBeArray();
+                        var individualNames = featureObj.individualNames;
+                        canonicalNames.forEach(
+                            function (name)
+                            {
+                                expect(individualNames).toContain(name);
+                            }
+                        );
+                    }
+                );
+                it(
                     'is checkable',
                     function ()
                     {
@@ -1636,9 +1655,10 @@ self
         );
     }
     
+    var Feature;
+    var JScrewIt;
     var encoderCache = { };
     var featureSet;
-    var JScrewIt;
     
     var TestSuite = { init: init, listFeatures: listFeatures };
     

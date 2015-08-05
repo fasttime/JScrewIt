@@ -96,7 +96,8 @@ wrapWithCallBox
         var selectedIndex = compMenu.selectedIndex;
         var compatibility = compMenu.options[selectedIndex].value;
         var features =
-            compatibility ? JScrewIt.commonFeaturesOf(compatibility) : engineSelectionBox.features;
+            compatibility ?
+            JScrewIt.Feature[compatibility].canonicalNames : engineSelectionBox.features;
         if (outOfSync || !areEqualArrays(features, currentFeatures))
         {
             currentFeatures = features;
