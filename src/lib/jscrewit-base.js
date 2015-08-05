@@ -1,11 +1,9 @@
 /*
 global
-FEATURE_INFOS,
 Empty,
 Encoder,
 Feature,
 assignNoEnum,
-availableFeatureMask,
 featuresFromMask,
 getFeatureMask,
 isFeatureMaskCompatible,
@@ -23,12 +21,6 @@ var setUp;
 (function ()
 {
     'use strict';
-    
-    function areFeaturesAvailable(features)
-    {
-        var featureMask = getFeatureMask(features);
-        return (featureMask & availableFeatureMask) === featureMask;
-    }
     
     function areFeaturesCompatible(features)
     {
@@ -118,9 +110,7 @@ var setUp;
         assignNoEnum(
             { },
             {
-                FEATURE_INFOS:          FEATURE_INFOS,
                 Feature:                Feature,
-                areFeaturesAvailable:   areFeaturesAvailable,
                 areFeaturesCompatible:  areFeaturesCompatible,
                 commonFeaturesOf:       commonFeaturesOf,
                 encode:                 encode,

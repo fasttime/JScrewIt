@@ -1,10 +1,7 @@
 /* global Empty, assignNoEnum, document, self */
 
-var FEATURE_INFOS;
-
 var Feature;
 
-var availableFeatureMask;
 var featuresFromMask;
 var getFeatureMask;
 var incompatibleFeatureMasks;
@@ -53,7 +50,7 @@ var validMaskFromArrayOrStringOrFeature;
                     mask = 1 << bitIndex++;
                     if (check())
                     {
-                        availableFeatureMask |= mask;
+                        autoMask |= mask;
                         autoIncludes.push(name);
                     }
                     individualNames.push(name);
@@ -80,7 +77,7 @@ var validMaskFromArrayOrStringOrFeature;
                     );
                 }
                 info.name = name;
-                var available = (mask & availableFeatureMask) === mask;
+                var available = (mask & autoMask) === mask;
                 info.available = available;
                 featureObj = createFeature(name, info.description, mask, check);
             }
@@ -173,42 +170,7 @@ var validMaskFromArrayOrStringOrFeature;
     
     var ALL = new Empty();
     
-    Feature =
-        function Feature()
-        {
-            var mask = validMaskFromArguments(arguments);
-            var featureObj = this instanceof Feature ? this : Object.create(Feature.prototype);
-            featureObj.mask = mask;
-            return featureObj;
-        };
-    
-    assignNoEnum(Feature, { ALL: ALL });
-    Object.defineProperty(
-        Feature.prototype,
-        'individualNames',
-        {
-            configurable: true,
-            get: function ()
-            {
-                var names = [];
-                var mask = this.mask;
-                individuals.forEach(
-                    function (featureObj)
-                    {
-                        var otherMask = featureObj.mask;
-                        var included = (otherMask & mask) === otherMask;
-                        if (included)
-                        {
-                            names.push(featureObj.name);
-                        }
-                    }
-                );
-                return names;
-            }
-        }
-    );
-    
-    FEATURE_INFOS =
+    var FEATURE_INFOS =
     {
         ANY_DOCUMENT:
         {
@@ -788,6 +750,41 @@ var validMaskFromArrayOrStringOrFeature;
         }
     };
     
+    Feature =
+        function Feature()
+        {
+            var mask = validMaskFromArguments(arguments);
+            var featureObj = this instanceof Feature ? this : Object.create(Feature.prototype);
+            featureObj.mask = mask;
+            return featureObj;
+        };
+    
+    assignNoEnum(Feature, { ALL: ALL });
+    Object.defineProperty(
+        Feature.prototype,
+        'individualNames',
+        {
+            configurable: true,
+            get: function ()
+            {
+                var names = [];
+                var mask = this.mask;
+                individuals.forEach(
+                    function (featureObj)
+                    {
+                        var otherMask = featureObj.mask;
+                        var included = (otherMask & mask) === otherMask;
+                        if (included)
+                        {
+                            names.push(featureObj.name);
+                        }
+                    }
+                );
+                return names;
+            }
+        }
+    );
+    
     featuresFromMask =
         function (mask)
         {
@@ -859,6 +856,7 @@ var validMaskFromArrayOrStringOrFeature;
     // Assign a bit mask to each checkable feature
     
     var autoIncludes = [];
+    var autoMask = 0;
     var bitIndex = 0;
     var featureMaskMap = new Empty();
     var features = Object.keys(FEATURE_INFOS);
@@ -882,8 +880,8 @@ var validMaskFromArrayOrStringOrFeature;
         name: autoName,
         available: true
     };
-    var autoFeatureObj = createFeature(autoName, autoDescription, availableFeatureMask);
+    var autoFeatureObj = createFeature(autoName, autoDescription, autoMask);
     registerFeature('AUTO', autoFeatureObj);
-    featureMaskMap.AUTO = availableFeatureMask;
+    featureMaskMap.AUTO = autoMask;
 }
 )();
