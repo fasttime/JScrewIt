@@ -79,22 +79,26 @@ var validateFeatureMask;
                 info.name = name;
                 var available = (mask & availableFeatureMask) === mask;
                 info.available = available;
-                featureObj =
-                    Object.create(
-                        Feature.prototype,
-                        {
-                            description: { value: info.description },
-                            mask: { value: mask },
-                            name: { value: name }
-                        }
-                    );
+                featureObj = createFeature(name, info.description, mask);
             }
-            var descriptor = { enumerable: true, value: featureObj };
-            Object.defineProperty(Feature, name, descriptor);
-            Object.defineProperty(ALL, name, descriptor);
+            registerFeature(name, featureObj);
             featureMaskMap[name] = mask;
         }
         return mask;
+    }
+    
+    function createFeature(name, description, mask)
+    {
+        var featureObj =
+            Object.create(
+                Feature.prototype,
+                {
+                    description: { value: description },
+                    mask: { value: mask },
+                    name: { value: name }
+                }
+            );
+        return featureObj;
     }
     
     function maskFromArguments(args)
@@ -141,6 +145,13 @@ var validateFeatureMask;
             mask = featureObj.mask;
         }
         return mask;
+    }
+    
+    function registerFeature(name, featureObj)
+    {
+        var descriptor = { enumerable: true, value: featureObj };
+        Object.defineProperty(Feature, name, descriptor);
+        Object.defineProperty(ALL, name, descriptor);
     }
     
     var ALL = new Empty();
@@ -822,14 +833,18 @@ var validateFeatureMask;
     var featureMaskMap = new Empty();
     var features = Object.keys(FEATURE_INFOS);
     features.forEach(completeFeature);
+    var autoName = 'AUTO';
+    var autoDescription = 'All features available in the current engine.';
     FEATURE_INFOS.AUTO =
     {
-        description: 'All features available in the current engine.',
+        description: autoDescription,
         includes: autoIncludes.sort(),
         excludes: [],
-        name: 'AUTO',
+        name: autoName,
         available: true
     };
+    var autoFeatureObj = createFeature(autoName, autoDescription, availableFeatureMask);
+    registerFeature('AUTO', autoFeatureObj);
     featureMaskMap.AUTO = availableFeatureMask;
 }
 )();
