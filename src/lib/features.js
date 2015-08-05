@@ -10,6 +10,7 @@ var getFeatureMask;
 var incompatibleFeatureMasks;
 var isFeatureMaskCompatible;
 var validateFeatureMask;
+var validMaskFromArrayOrStringOrFeature;
 
 (function ()
 {
@@ -113,7 +114,6 @@ var validateFeatureMask;
                 mask |= maskFromArrayOrStringOrFeature(arg);
             }
         );
-        validateFeatureMask(mask);
         return mask;
     }
     
@@ -156,6 +156,13 @@ var validateFeatureMask;
         return mask;
     }
     
+    function validMaskFromArguments(args)
+    {
+        var mask = maskFromArguments(args);
+        validateFeatureMask(mask);
+        return mask;
+    }
+    
     function registerFeature(name, featureObj)
     {
         var descriptor = { enumerable: true, value: featureObj };
@@ -168,13 +175,33 @@ var validateFeatureMask;
     Feature =
         function Feature()
         {
-            var mask = maskFromArguments(arguments);
+            var mask = validMaskFromArguments(arguments);
             var featureObj = this instanceof Feature ? this : Object.create(Feature.prototype);
             featureObj.mask = mask;
             return featureObj;
         };
     
-    assignNoEnum(Feature, { 'ALL': ALL });
+    assignNoEnum(Feature, { ALL: ALL });
+    assignNoEnum(
+        Feature.prototype,
+        {
+            includes: function ()
+            {
+                var mask = this.mask;
+                var included =
+                    Array.prototype.every.call(
+                        arguments,
+                        function (arg)
+                        {
+                            var otherMask = validMaskFromArrayOrStringOrFeature(arg);
+                            var included = (otherMask & mask) === otherMask;
+                            return included;
+                        }
+                    );
+                return included;
+            }
+        }
+    );
     
     FEATURE_INFOS =
     {
@@ -814,6 +841,14 @@ var validateFeatureMask;
             {
                 throw new ReferenceError('Incompatible features');
             }
+        };
+    
+    validMaskFromArrayOrStringOrFeature =
+        function (arg)
+        {
+            var mask = maskFromArrayOrStringOrFeature(arg);
+            validateFeatureMask(mask);
+            return mask;
         };
     
     // Assign a bit mask to each checkable feature

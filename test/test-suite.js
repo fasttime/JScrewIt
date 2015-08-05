@@ -650,6 +650,34 @@ self
                         featureNames.forEach(testFeatureObj);
                     }
                 );
+                describe(
+                    'contains correct information for the feature',
+                    function ()
+                    {
+                        it(
+                            'DEFAULT',
+                            function ()
+                            {
+                                var featureObj = Feature.DEFAULT;
+                                expect(featureObj.mask).toBe(0);
+                            }
+                        );
+                    }
+                );
+                describe(
+                    '#includes',
+                    function ()
+                    {
+                        it(
+                            'accepts mixed arguments',
+                            function ()
+                            {
+                                expect(Feature.DEFAULT.includes('DEFAULT', [Feature.AUTO]))
+                                .toBe(false);
+                            }
+                        );
+                    }
+                );
             }
         );
         describe(
