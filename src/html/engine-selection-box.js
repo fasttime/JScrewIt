@@ -93,21 +93,27 @@ function createEngineSelectionBox()
     
     function filterFeatures(features, excludedFeatures)
     {
-        function putFeature(feature)
-        {
-            featureSet[feature] = null;
-            JScrewIt.FEATURE_INFOS[feature].includes.forEach(putFeature);
-        }
-        
-        var featureSet = Object.create(null);
-        features.forEach(putFeature);
-        excludedFeatures.forEach(
-            function (feature)
+        var featureNameSet = Object.create(null);
+        var Feature = JScrewIt.Feature;
+        features.forEach(
+            function (featureName)
             {
-                delete featureSet[feature];
+                var featureObj = Feature[featureName];
+                featureObj.individualNames.forEach(
+                    function (featureName)
+                    {
+                        featureNameSet[featureName] = null;
+                    }
+                );
             }
         );
-        var result = JScrewIt.commonFeaturesOf.call(null, Object.keys(featureSet));
+        excludedFeatures.forEach(
+            function (featureName)
+            {
+                delete featureNameSet[featureName];
+            }
+        );
+        var result = JScrewIt.commonFeaturesOf.call(null, Object.keys(featureNameSet));
         return result;
     }
     
