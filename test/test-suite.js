@@ -611,8 +611,8 @@ self
                                 var actualIndividualNames = featureObj.individualNames;
                                 var expectedIndividualNames = expectedFeature.individualNames;
                                 expect(actualIndividualNames).toEqual(expectedIndividualNames);
-                                var actualCanonicalNames = expectedFeature.individualNames;
-                                var expectedCanonicalNames = featureObj.individualNames;
+                                var actualCanonicalNames = expectedFeature.canonicalNames;
+                                var expectedCanonicalNames = featureObj.canonicalNames;
                                 expect(actualCanonicalNames).toEqual(expectedCanonicalNames);
                                 expect(featureObj.mask).toBe(expectedFeature.mask);
                             }
@@ -1401,7 +1401,7 @@ self
     
     function getEntryFeatures(entry)
     {
-        var result = JScrewIt.debug.featuresFromMask(entry.featureMask);
+        var result = JScrewIt.debug.featureFromMask(entry.featureMask).canonicalNames;
         return result;
     }
     

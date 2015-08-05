@@ -4,7 +4,7 @@ Empty,
 Encoder,
 Feature,
 assignNoEnum,
-featuresFromMask,
+featureFromMask,
 getFeatureMask,
 isFeatureMaskCompatible,
 module,
@@ -41,7 +41,7 @@ var setUp;
                     featureMask &= validMaskFromArrayOrStringOrFeature(arg);
                 }
             );
-            var result = featuresFromMask(featureMask);
+            var result = featureFromMask(featureMask).canonicalNames;
             return result;
         }
     }
