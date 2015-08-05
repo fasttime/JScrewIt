@@ -498,6 +498,19 @@ self
                         expect(actual).toEqual(['ANY_WINDOW']);
                     }
                 );
+                it(
+                    'throws a ReferenceError for incompatible feature arrays',
+                    function ()
+                    {
+                        var fn =
+                            JScrewIt.commonFeaturesOf.bind(
+                                null,
+                                'ANY_WINDOW',
+                                ['WINDOW', 'DOMWINDOW']
+                            );
+                        expect(fn).toThrow(ReferenceError('Incompatible features'));
+                    }
+                );
             }
         );
         describe(
