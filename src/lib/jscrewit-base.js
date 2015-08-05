@@ -12,7 +12,8 @@ isFeatureMaskCompatible,
 module,
 self,
 trimJS,
-validateFeatureMask
+validateFeatureMask,
+validMaskFromArrayOrStringOrFeature
 */
 
 var JScrewIt;
@@ -43,9 +44,9 @@ var setUp;
             var featureMask = ~0;
             Array.prototype.forEach.call(
                 arguments,
-                function (features)
+                function (arg)
                 {
-                    featureMask &= getValidFeatureMask(features);
+                    featureMask &= validMaskFromArrayOrStringOrFeature(arg);
                 }
             );
             var result = featuresFromMask(featureMask);
