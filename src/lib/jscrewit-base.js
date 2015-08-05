@@ -45,7 +45,7 @@ var setUp;
                 arguments,
                 function (features)
                 {
-                    featureMask &= getFeatureMask(features);
+                    featureMask &= getValidFeatureMask(features);
                 }
             );
             var result = featuresFromMask(featureMask);
