@@ -760,27 +760,61 @@ var validMaskFromArrayOrStringOrFeature;
         };
     
     assignNoEnum(Feature, { ALL: ALL });
-    Object.defineProperty(
+    Object.defineProperties(
         Feature.prototype,
-        'individualNames',
         {
-            configurable: true,
-            get: function ()
+            canonicalNames:
             {
-                var names = [];
-                var mask = this.mask;
-                individuals.forEach(
-                    function (featureObj)
-                    {
-                        var otherMask = featureObj.mask;
-                        var included = (otherMask & mask) === otherMask;
-                        if (included)
+                configurable: true,
+                get: function ()
+                {
+                    var featureNameSet = new Empty();
+                    var includes = [];
+                    var mask = this.mask;
+                    individualNames.forEach(
+                        function (name)
                         {
-                            names.push(featureObj.name);
+                            var featureObj = ALL[name];
+                            var otherMask = featureObj.mask;
+                            var included = (otherMask & mask) === otherMask;
+                            if (included)
+                            {
+                                var info = FEATURE_INFOS[name];
+                                featureNameSet[name] = null;
+                                Array.prototype.push.apply(includes, info.includes);
+                            }
                         }
-                    }
-                );
-                return names;
+                    );
+                    includes.forEach(
+                        function (name)
+                        {
+                            delete featureNameSet[name];
+                        }
+                    );
+                    var names = Object.keys(featureNameSet).sort();
+                    return names;
+                }
+            },
+            individualNames:
+            {
+                configurable: true,
+                get: function ()
+                {
+                    var names = [];
+                    var mask = this.mask;
+                    individuals.forEach(
+                        function (featureObj)
+                        {
+                            var otherMask = featureObj.mask;
+                            var included = (otherMask & mask) === otherMask;
+                            if (included)
+                            {
+                                names.push(featureObj.name);
+                            }
+                        }
+                    );
+                    return names;
+                }
             }
         }
     );

@@ -113,7 +113,7 @@ function createEngineSelectionBox()
                 delete featureNameSet[featureName];
             }
         );
-        var result = JScrewIt.commonFeaturesOf.call(null, Object.keys(featureNameSet));
+        var result = JScrewIt.Feature(Object.keys(featureNameSet)).canonicalNames;
         return result;
     }
     
