@@ -91,20 +91,13 @@ function createEngineSelectionBox()
         comp.dispatchEvent(evt);
     }
     
-    function filterFeatures(featureNames, excludedFeatures)
+    function filterFeatures(featureObj, excludedFeatures)
     {
         var featureNameSet = Object.create(null);
-        var Feature = JScrewIt.Feature;
-        featureNames.forEach(
+        featureObj.individualNames.forEach(
             function (featureName)
             {
-                var featureObj = Feature[featureName];
-                featureObj.individualNames.forEach(
-                    function (featureName)
-                    {
-                        featureNameSet[featureName] = null;
-                    }
-                );
+                featureNameSet[featureName] = null;
             }
         );
         excludedFeatures.forEach(
@@ -113,11 +106,11 @@ function createEngineSelectionBox()
                 delete featureNameSet[featureName];
             }
         );
-        var result = JScrewIt.Feature(Object.keys(featureNameSet)).canonicalNames;
-        return result;
+        featureObj = JScrewIt.Feature(Object.keys(featureNameSet));
+        return featureObj;
     }
     
-    function getFeatureNames()
+    function updateCurrentFeatureObj()
     {
         var featureNames = [];
         var allNotForWebWorker =
@@ -135,13 +128,13 @@ function createEngineSelectionBox()
                 }
             }
         );
-        var commonFeatureObj = JScrewIt.Feature.commonOf.apply(null, featureNames);
-        var commonFeatureNames = commonFeatureObj ? commonFeatureObj.individualNames : [];
+        var Feature = JScrewIt.Feature;
+        var commonFeatureObj = Feature.commonOf.apply(null, featureNames) || Feature.DEFAULT;
         if (webWorkerInput.checked)
         {
-            commonFeatureNames = filterFeatures(commonFeatureNames, allNotForWebWorker);
+            commonFeatureObj = filterFeatures(commonFeatureObj, allNotForWebWorker);
         }
-        return commonFeatureNames;
+        currentFeatureObj = commonFeatureObj;
     }
     
     function init()
@@ -166,12 +159,12 @@ function createEngineSelectionBox()
             );
         Object.defineProperty(
             comp,
-            'features',
+            'featureObj',
             {
                 configurable: true,
                 get: function ()
                 {
-                    return currentFeatureNames;
+                    return currentFeatureObj;
                 }
             }
         );
@@ -212,17 +205,17 @@ function createEngineSelectionBox()
         );
         engineVersionInputs = engineFieldBox.querySelectorAll('INPUT');
         webWorkerInput = webWorkerField.querySelector('INPUT');
-        currentFeatureNames = getFeatureNames();
+        updateCurrentFeatureObj();
     }
     
     function updateStatus()
     {
-        currentFeatureNames = getFeatureNames();
+        updateCurrentFeatureObj();
         dispatchInputEvent();
     }
     
     var comp;
-    var currentFeatureNames;
+    var currentFeatureObj;
     var engineVersionInputs;
     var webWorkerInput;
     

@@ -18,25 +18,6 @@ wrapWithCallBox
 {
     'use strict';
     
-    function areEqualArrays(array1, array2)
-    {
-        var index = array1.length;
-        if (index !== array2.length)
-        {
-            return false;
-        }
-        while (index--)
-        {
-            var item1 = array1[index];
-            var item2 = array2[index];
-            if (item1 !== item2)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-    
     function createWorker()
     {
         if (typeof Worker !== 'undefined')
@@ -87,7 +68,7 @@ wrapWithCallBox
     function getOptions()
     {
         var wrapWith = wrapWithCallBox.checked ? 'call' : 'none';
-        var options = { features: currentFeatures, wrapWith: wrapWith };
+        var options = { features: currentFeatureObj.canonicalNames, wrapWith: wrapWith };
         return options;
     }
     
@@ -95,12 +76,12 @@ wrapWithCallBox
     {
         var selectedIndex = compMenu.selectedIndex;
         var compatibility = compMenu.options[selectedIndex].value;
-        var features =
-            compatibility ?
-            JScrewIt.Feature[compatibility].canonicalNames : engineSelectionBox.features;
-        if (outOfSync || !areEqualArrays(features, currentFeatures))
+        var Feature = JScrewIt.Feature;
+        var featureObj =
+            compatibility ? Feature[compatibility] : engineSelectionBox.featureObj;
+        if (outOfSync || !Feature.areEqual(featureObj, currentFeatureObj))
         {
-            currentFeatures = features;
+            currentFeatureObj = featureObj;
             this();
         }
         if (selectedIndex !== compMenu.previousIndex)
@@ -275,7 +256,7 @@ wrapWithCallBox
         stats.innerHTML = html;
     }
     
-    var currentFeatures = [];
+    var currentFeatureObj = JScrewIt.Feature.DEFAULT;
     var engineSelectionBox;
     var outOfSync;
     var outputSet;
