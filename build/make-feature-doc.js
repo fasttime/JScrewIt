@@ -17,28 +17,29 @@ function escape(str)
     return result;
 }
 
-function formatFeature(feature)
+function formatFeatureName(featureName)
 {
-    var result = '<a href="#' + feature.toLowerCase() + '"><code>' + feature + '</code></a>';
+    var result =
+        '<a href="#' + featureName.toLowerCase() + '"><code>' + featureName + '</code></a>';
     return result;
 }
 
-function formatFeatureMD(feature)
+function formatFeatureNameMD(featureName)
 {
-    var result = '[`' + feature + '`](#' + feature.toLowerCase() + ')';
+    var result = '[`' + featureName + '`](#' + featureName.toLowerCase() + ')';
     return result;
 }
 
-function getImpliers(feature, assignmentMap)
+function getImpliers(featureName, assignmentMap)
 {
     var impliers = [];
-    for (var mapFeature in assignmentMap)
+    for (var otherFeatureName in assignmentMap)
     {
         if (
-            feature !== mapFeature &&
-            JScrewIt.commonFeaturesOf(feature, mapFeature).indexOf(feature) >= 0)
+            featureName !== otherFeatureName &&
+            JScrewIt.Feature[otherFeatureName].includes(featureName))
         {
-            impliers.push(mapFeature);
+            impliers.push(otherFeatureName);
         }
     }
     if (impliers.length)
@@ -52,8 +53,8 @@ function getVersioningFor(feature, list)
     var firstAvail, firstUnavail;
     for (var index = 0; index < list.length; ++index)
     {
-        var listFeature = list[index].feature;
-        if (JScrewIt.commonFeaturesOf(feature, listFeature).indexOf(feature) >= 0)
+        var otherFeatureName = list[index].feature;
+        if (JScrewIt.Feature[otherFeatureName].includes(feature))
         {
             if (firstAvail == null)
             {
@@ -93,9 +94,9 @@ function printRow(label, assignmentMap)
     var features = Object.keys(assignmentMap).sort();
     for (var index = 0; index < features.length; ++index)
     {
-        var feature = features[index];
-        result += '<li>' + formatFeature(feature);
-        var assigments = assignmentMap[feature];
+        var featureName = features[index];
+        result += '<li>' + formatFeatureName(featureName);
+        var assigments = assignmentMap[featureName];
         var versioning = assigments.versioning;
         var impliers = assigments.impliers;
         if (versioning || impliers)
@@ -103,7 +104,7 @@ function printRow(label, assignmentMap)
             result += ' (';
             if (impliers)
             {
-                result += 'implied by ' + impliers.map(formatFeature).join(' and ');
+                result += 'implied by ' + impliers.map(formatFeatureName).join(' and ');
                 if (versioning)
                 {
                     result += '; ';
@@ -178,7 +179,7 @@ module.exports =
                 }
                 else
                 {
-                    subContent = '_An alias for ' + formatFeatureMD(name) + '._';
+                    subContent = '_An alias for ' + formatFeatureNameMD(name) + '._';
                 }
                 content += '### `' + featureName + '`\n' + subContent + '\n';
             }
@@ -198,7 +199,8 @@ module.exports =
                 var featureName;
                 for (featureName in allFeatureMap)
                 {
-                    if (Feature[featureName].name === featureName)
+                    var featureObj = Feature[featureName];
+                    if (featureObj.check && featureObj.name === featureName)
                     {
                         var versioning = getVersioningFor(featureName, list);
                         if (versioning)
@@ -214,10 +216,13 @@ module.exports =
                 }
                 for (featureName in assignmentMap)
                 {
-                    var impliers = getImpliers(featureName, assignmentMap);
-                    if (impliers)
+                    if (Feature[featureName].check)
                     {
-                        assignmentMap[featureName].impliers = impliers;
+                        var impliers = getImpliers(featureName, assignmentMap);
+                        if (impliers)
+                        {
+                            assignmentMap[featureName].impliers = impliers;
+                        }
                     }
                 }
                 content += printRow(list[0].description, assignmentMap);
