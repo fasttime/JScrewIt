@@ -429,40 +429,6 @@ self
             }
         );
         describe(
-            'JScrewIt.areFeaturesCompatible',
-            function ()
-            {
-                it(
-                    'returns true for compatible features',
-                    function ()
-                    {
-                        var compatible = JScrewIt.areFeaturesCompatible(['FILL', 'SELF']);
-                        expect(compatible).toBe(true);
-                    }
-                );
-                it(
-                    'returns false for incompatible features',
-                    function ()
-                    {
-                        var compatible = JScrewIt.areFeaturesCompatible(['V8_SRC', 'IE_SRC']);
-                        expect(compatible).toBe(false);
-                    }
-                );
-                it(
-                    'throws a ReferenceError for unknown features',
-                    function ()
-                    {
-                        var fn =
-                            function ()
-                            {
-                                JScrewIt.areFeaturesCompatible(['???']);
-                            };
-                        expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
-                    }
-                );
-            }
-        );
-        describe(
             'JScrewIt.commonFeaturesOf',
             function ()
             {
@@ -655,24 +621,50 @@ self
                             'throws a ReferenceError for unknown features',
                             function ()
                             {
-                                expect(
-                                    function ()
-                                    {
-                                        Feature.DEFAULT.includes('???');
-                                    }
-                                ).toThrow(ReferenceError('Unknown feature "???"'));
+                                var fn = Feature.prototype.includes.bind(Feature.DEFAULT, '???');
+                                expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
                             }
                         );
                         it(
                             'throws a ReferenceError for incompatible feature arrays',
                             function ()
                             {
-                                expect(
-                                    function ()
-                                    {
-                                        Feature.DEFAULT.includes(['IE_SRC', 'NO_IE_SRC']);
-                                    }
-                                ).toThrow(ReferenceError('Incompatible features'));
+                                var fn =
+                                    Feature.prototype.includes.bind(
+                                        Feature.DEFAULT,
+                                        ['IE_SRC', 'NO_IE_SRC']
+                                    );
+                                expect(fn).toThrow(ReferenceError('Incompatible features'));
+                            }
+                        );
+                    }
+                );
+                describe(
+                    '.areCompatible',
+                    function ()
+                    {
+                        it(
+                            'returns true for any single feature',
+                            function ()
+                            {
+                                var compatible = Feature.areCompatible([Feature.AUTO]);
+                                expect(compatible).toBe(true);
+                            }
+                        );
+                        it(
+                            'returns true for compatible features',
+                            function ()
+                            {
+                                var compatible = Feature.areCompatible(['FILL', 'SELF']);
+                                expect(compatible).toBe(true);
+                            }
+                        );
+                        it(
+                            'returns false for incompatible features',
+                            function ()
+                            {
+                                var compatible = Feature.areCompatible(['V8_SRC', 'IE_SRC']);
+                                expect(compatible).toBe(false);
                             }
                         );
                     }
@@ -687,12 +679,8 @@ self
                     'fails for invalid identifier',
                     function ()
                     {
-                        expect(
-                            function ()
-                            {
-                                JScrewIt.debug.defineConstant(null, 'X:X', '0');
-                            }
-                        ).toThrow(SyntaxError('Invalid identifier "X:X"'));
+                        var fn = JScrewIt.debug.defineConstant.bind(null, null, 'X:X', '0');
+                        expect(fn).toThrow(SyntaxError('Invalid identifier "X:X"'));
                     }
                 );
             }

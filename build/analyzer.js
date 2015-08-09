@@ -56,7 +56,7 @@
                 if (isIndependentFeatureMask(featureQueries, index, featureMask))
                 {
                     var features = JScrewIt.debug.featureFromMask(featureMask).canonicalNames;
-                    if (JScrewIt.areFeaturesCompatible(features))
+                    if (JScrewIt.Feature.areCompatible(features))
                     {
                         analyzer.features = features;
                         analyzer.featureMask = featureMask;
