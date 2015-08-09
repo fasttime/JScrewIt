@@ -4,13 +4,33 @@ var Feature;
 
 var featureFromMask;
 var getFeatureMask;
-var isFeatureMaskCompatible;
 var validateFeatureMask;
 var validMaskFromArrayOrStringOrFeature;
 
 (function ()
 {
     'use strict';
+    
+    function areCompatible(features)
+    {
+        var compatible;
+        if (features.length > 1)
+        {
+            var mask;
+            features.forEach(
+                function (arg)
+                {
+                    mask |= maskFromStringOrFeature(arg);
+                }
+            );
+            compatible = isMaskCompatible(mask);
+        }
+        else
+        {
+            compatible = true;
+        }
+        return compatible;
+    }
     
     function checkSelfFeature()
     {
@@ -98,6 +118,19 @@ var validMaskFromArrayOrStringOrFeature;
                 }
             );
         return featureObj;
+    }
+    
+    function isMaskCompatible(mask)
+    {
+        var result =
+            incompatibleFeatureMasks.every(
+                function (incompatibleFeatureMask)
+                {
+                    var result = (incompatibleFeatureMask & mask) !== incompatibleFeatureMask;
+                    return result;
+                }
+            );
+        return result;
     }
     
     function maskFromArrayOrStringOrFeature(arg)
@@ -770,7 +803,7 @@ var validMaskFromArrayOrStringOrFeature;
             return featureObj;
         };
     
-    assignNoEnum(Feature, { ALL: ALL });
+    assignNoEnum(Feature, { ALL: ALL, areCompatible: areCompatible });
     Object.defineProperties(
         Feature.prototype,
         {
@@ -863,24 +896,10 @@ var validMaskFromArrayOrStringOrFeature;
             return mask;
         };
     
-    isFeatureMaskCompatible =
-        function (mask)
-        {
-            var result =
-                incompatibleFeatureMasks.every(
-                    function (incompatibleFeatureMask)
-                    {
-                        var result = (incompatibleFeatureMask & mask) !== incompatibleFeatureMask;
-                        return result;
-                    }
-                );
-            return result;
-        };
-    
     validateFeatureMask =
         function (mask)
         {
-            if (!isFeatureMaskCompatible(mask))
+            if (!isMaskCompatible(mask))
             {
                 throw new ReferenceError('Incompatible features');
             }

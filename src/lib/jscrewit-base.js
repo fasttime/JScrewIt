@@ -6,7 +6,6 @@ Feature,
 assignNoEnum,
 featureFromMask,
 getFeatureMask,
-isFeatureMaskCompatible,
 module,
 self,
 trimJS,
@@ -21,13 +20,6 @@ var setUp;
 (function ()
 {
     'use strict';
-    
-    function areFeaturesCompatible(features)
-    {
-        var featureMask = getFeatureMask(features);
-        var result = isFeatureMaskCompatible(featureMask);
-        return result;
-    }
     
     function commonFeaturesOf()
     {
@@ -111,7 +103,6 @@ var setUp;
             { },
             {
                 Feature:                Feature,
-                areFeaturesCompatible:  areFeaturesCompatible,
                 commonFeaturesOf:       commonFeaturesOf,
                 encode:                 encode,
             }
