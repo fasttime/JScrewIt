@@ -430,7 +430,7 @@ var expandEntries;
                 pattern += digit;
             }
             pattern += ']';
-            regExp = new RegExp(pattern, 'g');
+            regExp = RegExp(pattern, 'g');
             replacer =
                 function (match)
                 {
