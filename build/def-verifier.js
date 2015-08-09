@@ -32,9 +32,9 @@
             var actualDefinition = encoder.findBestDefinition(entries);
             if (!optimalInputs[actualDefinition])
             {
-                var features = analyzer.features;
+                var featureNames = analyzer.featureNames;
                 var expectedDefinitions = Object.keys(optimalInputs).sort();
-                mismatchCallback(features, actualDefinition, expectedDefinitions);
+                mismatchCallback(featureNames, actualDefinition, expectedDefinitions);
             }
         }
     }
