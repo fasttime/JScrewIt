@@ -529,7 +529,8 @@ self
                                     new Feature(
                                         ['NAME', Feature.WINDOW],
                                         'HTMLDOCUMENT',
-                                        Feature.NO_IE_SRC
+                                        Feature.NO_IE_SRC,
+                                        []
                                     );
                                 expect(feature.mask).toBe(
                                     Feature.NAME.mask |
@@ -537,6 +538,30 @@ self
                                     Feature.HTMLDOCUMENT.mask |
                                     Feature.NO_IE_SRC.mask
                                 );
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for unknown features',
+                            function ()
+                            {
+                                expect(
+                                    function ()
+                                    {
+                                        new Feature('???');
+                                    }
+                                ).toThrow(ReferenceError('Unknown feature "???"'));
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for incompatible feature arrays',
+                            function ()
+                            {
+                                expect(
+                                    function ()
+                                    {
+                                        new Feature(['IE_SRC', 'NO_IE_SRC']);
+                                    }
+                                ).toThrow(ReferenceError('Incompatible features'));
                             }
                         );
                         it(
@@ -557,18 +582,6 @@ self
                                         new Feature('ENTRIES_PLAIN', 'SAFARI_ARRAY_ITERATOR');
                                     }
                                 ).toThrow(ReferenceError('Incompatible features'));
-                            }
-                        );
-                        it(
-                            'throws a ReferenceError for unknown features',
-                            function ()
-                            {
-                                expect(
-                                    function ()
-                                    {
-                                        new Feature('???');
-                                    }
-                                ).toThrow(ReferenceError('Unknown feature "???"'));
                             }
                         );
                     }
@@ -627,6 +640,50 @@ self
                                 expect(canonicalNameCount).toBeGreaterThan(0);
                                 expect(individualNameCount).not.toBeLessThan(canonicalNameCount);
                                 expect(featureObj.mask).not.toBe(0);
+                            }
+                        );
+                    }
+                );
+                describe(
+                    '#includes',
+                    function ()
+                    {
+                        it(
+                            'accepts mixed arguments',
+                            function ()
+                            {
+                                var actual =
+                                    Feature.COMPACT.includes(
+                                        ['NAME', Feature.WINDOW],
+                                        'HTMLDOCUMENT',
+                                        Feature.NO_IE_SRC,
+                                        []
+                                    );
+                                expect(actual).toBe(true);
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for unknown features',
+                            function ()
+                            {
+                                expect(
+                                    function ()
+                                    {
+                                        Feature.DEFAULT.includes('???');
+                                    }
+                                ).toThrow(ReferenceError('Unknown feature "???"'));
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for incompatible feature arrays',
+                            function ()
+                            {
+                                expect(
+                                    function ()
+                                    {
+                                        Feature.DEFAULT.includes(['IE_SRC', 'NO_IE_SRC']);
+                                    }
+                                ).toThrow(ReferenceError('Incompatible features'));
                             }
                         );
                     }
