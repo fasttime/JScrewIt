@@ -25,6 +25,31 @@ var validMaskFromArrayOrStringOrFeature;
         return compatible;
     }
     
+    function areEqual()
+    {
+        var mask;
+        var result =
+            Array.prototype.every.call(
+                arguments,
+                function (arg, index)
+                {
+                    var result;
+                    var otherMask = validMaskFromArrayOrStringOrFeature(arg);
+                    if (index)
+                    {
+                        result = otherMask === mask;
+                    }
+                    else
+                    {
+                        mask = otherMask;
+                        result = true;
+                    }
+                    return result;
+                }
+            );
+        return result;
+    }
+    
     function checkSelfFeature()
     {
         // self + '' throws an error inside a web worker in Safari 8.0.
@@ -806,7 +831,10 @@ var validMaskFromArrayOrStringOrFeature;
             return featureObj;
         };
     
-    assignNoEnum(Feature, { ALL: ALL, areCompatible: areCompatible, commonOf: commonOf });
+    assignNoEnum(
+        Feature,
+        { ALL: ALL, areCompatible: areCompatible, areEqual: areEqual, commonOf: commonOf }
+    );
     Object.defineProperties(
         Feature.prototype,
         {

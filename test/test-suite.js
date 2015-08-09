@@ -614,9 +614,99 @@ self
                     }
                 );
                 describe(
+                    '.areEqual',
+                    function ()
+                    {
+                        it(
+                            'accepts mixed arguments',
+                            function ()
+                            {
+                                var actual =
+                                    Feature.areEqual(
+                                        ['NAME', Feature.WINDOW],
+                                        'HTMLDOCUMENT',
+                                        Feature.NO_IE_SRC,
+                                        []
+                                    );
+                                expect(actual).toBe(false);
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for unknown features',
+                            function ()
+                            {
+                                var fn = Feature.areEqual.bind(null, '???');
+                                expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for incompatible feature arrays',
+                            function ()
+                            {
+                                var fn = Feature.areEqual.bind(null, ['IE_SRC', 'NO_IE_SRC']);
+                                expect(fn).toThrow(ReferenceError('Incompatible features'));
+                            }
+                        );
+                        it(
+                            'returns true for any single feature',
+                            function ()
+                            {
+                                var equal = Feature.areEqual([Feature.AUTO]);
+                                expect(equal).toBe(true);
+                            }
+                        );
+                        it(
+                            'returns true for equal features',
+                            function ()
+                            {
+                                var equal = Feature.areEqual(['FILL'], Feature.FILL);
+                                expect(equal).toBe(true);
+                            }
+                        );
+                        it(
+                            'returns false for unequal features',
+                            function ()
+                            {
+                                var equal = Feature.areEqual('V8_SRC', 'IE_SRC');
+                                expect(equal).toBe(false);
+                            }
+                        );
+                    }
+                );
+                describe(
                     '.commonOf',
                     function ()
                     {
+                        it(
+                            'accepts mixed arguments',
+                            function ()
+                            {
+                                var featureObj =
+                                    Feature.commonOf(
+                                        ['NAME', Feature.WINDOW],
+                                        'HTMLDOCUMENT',
+                                        Feature.NO_IE_SRC,
+                                        []
+                                    );
+                                expect(featureObj.mask).toBe(0);
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for unknown features',
+                            function ()
+                            {
+                                var fn = Feature.commonOf.bind(null, '???');
+                                expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for incompatible feature arrays',
+                            function ()
+                            {
+                                var fn = Feature.commonOf.bind(null, ['IE_SRC', 'NO_IE_SRC']);
+                                expect(fn).toThrow(ReferenceError('Incompatible features'));
+                            }
+                        );
                         it(
                             'returns null if no arguments are specified',
                             function ()
