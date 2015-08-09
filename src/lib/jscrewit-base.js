@@ -4,12 +4,9 @@ Empty,
 Encoder,
 Feature,
 assignNoEnum,
-featureFromMask,
-getFeatureMask,
 module,
 self,
 trimJS,
-validateFeatureMask,
 validMaskFromArrayOrStringOrFeature
 */
 
@@ -20,23 +17,6 @@ var setUp;
 (function ()
 {
     'use strict';
-    
-    function commonFeaturesOf()
-    {
-        if (arguments.length)
-        {
-            var featureMask = ~0;
-            Array.prototype.forEach.call(
-                arguments,
-                function (arg)
-                {
-                    featureMask &= validMaskFromArrayOrStringOrFeature(arg);
-                }
-            );
-            var result = featureFromMask(featureMask).canonicalNames;
-            return result;
-        }
-    }
     
     function encode(input, arg2, arg3)
     {
@@ -98,22 +78,13 @@ var setUp;
     
     var encoders = new Empty();
     
-    JScrewIt =
-        assignNoEnum(
-            { },
-            {
-                Feature:                Feature,
-                commonFeaturesOf:       commonFeaturesOf,
-                encode:                 encode,
-            }
-        );
+    JScrewIt = assignNoEnum({ }, { Feature: Feature, encode: encode });
     
     getValidFeatureMask =
         function (features)
         {
-            var featureMask = getFeatureMask(features);
-            validateFeatureMask(featureMask);
-            return featureMask;
+            var mask = features !== undefined ? validMaskFromArrayOrStringOrFeature(features) : 0;
+            return mask;
         };
     
     setUp =

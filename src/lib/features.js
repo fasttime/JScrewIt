@@ -3,8 +3,7 @@
 var Feature;
 
 var featureFromMask;
-var getFeatureMask;
-var validateFeatureMask;
+var maskFromArray;
 var validMaskFromArrayOrStringOrFeature;
 
 (function ()
@@ -16,13 +15,7 @@ var validMaskFromArrayOrStringOrFeature;
         var compatible;
         if (features.length > 1)
         {
-            var mask;
-            features.forEach(
-                function (arg)
-                {
-                    mask |= maskFromStringOrFeature(arg);
-                }
-            );
+            var mask = maskFromArray(features);
             compatible = isMaskCompatible(mask);
         }
         else
@@ -46,6 +39,28 @@ var validMaskFromArrayOrStringOrFeature;
         }
         var available = this(str);
         return available;
+    }
+    
+    function commonOf()
+    {
+        var result;
+        if (arguments.length)
+        {
+            var mask = ~0;
+            Array.prototype.forEach.call(
+                arguments,
+                function (arg)
+                {
+                    mask &= validMaskFromArrayOrStringOrFeature(arg);
+                }
+            );
+            result = featureFromMask(mask);
+        }
+        else
+        {
+            result = null;
+        }
+        return result;
     }
     
     function completeFeature(name, ignoreExcludes)
@@ -133,26 +148,6 @@ var validMaskFromArrayOrStringOrFeature;
         return result;
     }
     
-    function maskFromArrayOrStringOrFeature(arg)
-    {
-        var mask;
-        if (Array.isArray(arg))
-        {
-            mask = 0;
-            arg.forEach(
-                function (arg)
-                {
-                    mask |= maskFromStringOrFeature(arg);
-                }
-            );
-        }
-        else
-        {
-            mask = maskFromStringOrFeature(arg);
-        }
-        return mask;
-    }
-    
     function maskFromStringOrFeature(arg)
     {
         var mask;
@@ -178,6 +173,14 @@ var validMaskFromArrayOrStringOrFeature;
         var descriptor = { enumerable: true, value: featureObj };
         Object.defineProperty(Feature, name, descriptor);
         Object.defineProperty(ALL, name, descriptor);
+    }
+    
+    function validateMask(mask)
+    {
+        if (!isMaskCompatible(mask))
+        {
+            throw new ReferenceError('Incompatible features');
+        }
     }
     
     function validMaskFromArguments(args)
@@ -207,7 +210,7 @@ var validMaskFromArrayOrStringOrFeature;
         validationNeeded |= args.length > 1;
         if (validationNeeded)
         {
-            validateFeatureMask(mask);
+            validateMask(mask);
         }
         return mask;
     }
@@ -803,7 +806,7 @@ var validMaskFromArrayOrStringOrFeature;
             return featureObj;
         };
     
-    assignNoEnum(Feature, { ALL: ALL, areCompatible: areCompatible });
+    assignNoEnum(Feature, { ALL: ALL, areCompatible: areCompatible, commonOf: commonOf });
     Object.defineProperties(
         Feature.prototype,
         {
@@ -889,20 +892,17 @@ var validMaskFromArrayOrStringOrFeature;
             return featureObj;
         };
     
-    getFeatureMask =
+    maskFromArray =
         function (features)
         {
-            var mask = features !== undefined ? maskFromArrayOrStringOrFeature(features) : 0;
+            var mask = 0;
+            features.forEach(
+                function (arg)
+                {
+                    mask |= maskFromStringOrFeature(arg);
+                }
+            );
             return mask;
-        };
-    
-    validateFeatureMask =
-        function (mask)
-        {
-            if (!isMaskCompatible(mask))
-            {
-                throw new ReferenceError('Incompatible features');
-            }
         };
     
     validMaskFromArrayOrStringOrFeature =
@@ -920,7 +920,7 @@ var validMaskFromArrayOrStringOrFeature;
                 );
                 if (arg.length > 1)
                 {
-                    validateFeatureMask(mask);
+                    validateMask(mask);
                 }
             }
             else

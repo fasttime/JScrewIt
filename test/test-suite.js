@@ -429,57 +429,6 @@ self
             }
         );
         describe(
-            'JScrewIt.commonFeaturesOf',
-            function ()
-            {
-                it(
-                    'returns undefined if no arguments are specified',
-                    function ()
-                    {
-                        var actual = JScrewIt.commonFeaturesOf();
-                        expect(actual).toBeUndefined();
-                    }
-                );
-                it(
-                    'returns an empty array for DEFAULT',
-                    function ()
-                    {
-                        var actual = JScrewIt.commonFeaturesOf('DEFAULT');
-                        expect(actual).toEqual([]);
-                    }
-                );
-                it(
-                    'does not return implied features',
-                    function ()
-                    {
-                        var actual = JScrewIt.commonFeaturesOf(['V8_SRC', 'WINDOW'], 'FF31');
-                        expect(actual).toEqual(['NO_IE_SRC', 'WINDOW']);
-                    }
-                );
-                it(
-                    'does not return aliases',
-                    function ()
-                    {
-                        var actual = JScrewIt.commonFeaturesOf('WINDOW', 'DOMWINDOW');
-                        expect(actual).toEqual(['ANY_WINDOW']);
-                    }
-                );
-                it(
-                    'throws a ReferenceError for incompatible feature arrays',
-                    function ()
-                    {
-                        var fn =
-                            JScrewIt.commonFeaturesOf.bind(
-                                null,
-                                'ANY_WINDOW',
-                                ['WINDOW', 'DOMWINDOW']
-                            );
-                        expect(fn).toThrow(ReferenceError('Incompatible features'));
-                    }
-                );
-            }
-        );
-        describe(
             'JScrewIt.Feature',
             function ()
             {
@@ -569,12 +518,7 @@ self
                             {
                                 var featureObj = Feature.COMPACT;
                                 var featureNames =
-                                    JScrewIt.commonFeaturesOf(
-                                        'CHROME41',
-                                        'EDGE',
-                                        'FF31',
-                                        'SAFARI71'
-                                    );
+                                    Feature.commonOf('CHROME41', 'EDGE', 'FF31', 'SAFARI71');
                                 var expectedFeature = Feature(featureNames);
                                 var actualIndividualNames = featureObj.individualNames;
                                 var expectedIndividualNames = expectedFeature.individualNames;
@@ -665,6 +609,41 @@ self
                             {
                                 var compatible = Feature.areCompatible(['V8_SRC', 'IE_SRC']);
                                 expect(compatible).toBe(false);
+                            }
+                        );
+                    }
+                );
+                describe(
+                    '.commonOf',
+                    function ()
+                    {
+                        it(
+                            'returns null if no arguments are specified',
+                            function ()
+                            {
+                                var featureObj = Feature.commonOf();
+                                expect(featureObj).toBe(null);
+                            }
+                        );
+                        it(
+                            'returns a feature with expected mask',
+                            function ()
+                            {
+                                var featureObj = Feature.commonOf(Feature.AUTO);
+                                expect(featureObj.mask).toEqual(Feature.AUTO.mask);
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for incompatible feature arrays',
+                            function ()
+                            {
+                                var fn =
+                                    Feature.commonOf.bind(
+                                        null,
+                                        'ANY_WINDOW',
+                                        ['WINDOW', 'DOMWINDOW']
+                                    );
+                                expect(fn).toThrow(ReferenceError('Incompatible features'));
                             }
                         );
                     }

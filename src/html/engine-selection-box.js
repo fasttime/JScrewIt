@@ -91,11 +91,11 @@ function createEngineSelectionBox()
         comp.dispatchEvent(evt);
     }
     
-    function filterFeatures(features, excludedFeatures)
+    function filterFeatures(featureNames, excludedFeatures)
     {
         var featureNameSet = Object.create(null);
         var Feature = JScrewIt.Feature;
-        features.forEach(
+        featureNames.forEach(
             function (featureName)
             {
                 var featureObj = Feature[featureName];
@@ -117,9 +117,9 @@ function createEngineSelectionBox()
         return result;
     }
     
-    function getFeatures()
+    function getFeatureNames()
     {
-        var features = [];
+        var featureNames = [];
         var allNotForWebWorker =
             ['ANY_DOCUMENT', 'ANY_WINDOW', 'DOCUMENT', 'DOMWINDOW', 'HTMLDOCUMENT', 'WINDOW'];
         Array.prototype.forEach.call(
@@ -128,19 +128,20 @@ function createEngineSelectionBox()
             {
                 if (input.checked)
                 {
-                    var feature = input.feature;
-                    features.push(feature);
+                    var featureName = input.feature;
+                    featureNames.push(featureName);
                     var notForWebWorker = input.notForWebWorker;
                     Array.prototype.push.apply(allNotForWebWorker, notForWebWorker);
                 }
             }
         );
-        var commonFeatures = JScrewIt.commonFeaturesOf.apply(null, features) || [];
+        var commonFeatureObj = JScrewIt.Feature.commonOf.apply(null, featureNames);
+        var commonFeatureNames = commonFeatureObj ? commonFeatureObj.individualNames : [];
         if (webWorkerInput.checked)
         {
-            commonFeatures = filterFeatures(commonFeatures, allNotForWebWorker);
+            commonFeatureNames = filterFeatures(commonFeatureNames, allNotForWebWorker);
         }
-        return commonFeatures;
+        return commonFeatureNames;
     }
     
     function init()
@@ -170,7 +171,7 @@ function createEngineSelectionBox()
                 configurable: true,
                 get: function ()
                 {
-                    return currentFeatures;
+                    return currentFeatureNames;
                 }
             }
         );
@@ -211,17 +212,17 @@ function createEngineSelectionBox()
         );
         engineVersionInputs = engineFieldBox.querySelectorAll('INPUT');
         webWorkerInput = webWorkerField.querySelector('INPUT');
-        currentFeatures = getFeatures();
+        currentFeatureNames = getFeatureNames();
     }
     
     function updateStatus()
     {
-        currentFeatures = getFeatures();
+        currentFeatureNames = getFeatureNames();
         dispatchInputEvent();
     }
     
     var comp;
-    var currentFeatures;
+    var currentFeatureNames;
     var engineVersionInputs;
     var webWorkerInput;
     

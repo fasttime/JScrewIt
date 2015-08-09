@@ -11,7 +11,7 @@
         this.ancestorFeatureMask = ancestorFeatureMask;
     }
     
-    function createModifiedEncoder(features, featureQueries)
+    function createModifiedEncoder(featureNames, featureQueries)
     {
         function hasFeatures(featureMask)
         {
@@ -35,7 +35,7 @@
         
         var featureMaskSet = Object.create(null);
         var ancestorFeatureMask = 0;
-        var encoder = JScrewIt.debug.createEncoder(features);
+        var encoder = JScrewIt.debug.createEncoder(featureNames);
         encoder.hasFeatures = hasFeatures;
         return encoder;
     }
@@ -55,10 +55,10 @@
                 var featureMask = featureQuery.featureMask | featureQuery.ancestorFeatureMask;
                 if (isIndependentFeatureMask(featureQueries, index, featureMask))
                 {
-                    var features = JScrewIt.debug.featureFromMask(featureMask).canonicalNames;
-                    if (JScrewIt.Feature.areCompatible(features))
+                    var featureNames = JScrewIt.debug.featureFromMask(featureMask).canonicalNames;
+                    if (JScrewIt.Feature.areCompatible(featureNames))
                     {
-                        analyzer.features = features;
+                        analyzer.featureNames = featureNames;
                         analyzer.featureMask = featureMask;
                         return true;
                     }
@@ -104,7 +104,7 @@
     
     function Analyzer()
     {
-        this.features = [];
+        this.featureNames = [];
         this.featureMask = 0;
     }
     
@@ -124,7 +124,7 @@
                     }
                     var featureQueries = this.featureQueries = [];
                     var encoder = this.encoder =
-                        createModifiedEncoder(this.features, featureQueries);
+                        createModifiedEncoder(this.featureNames, featureQueries);
                     return encoder;
                 }
             },
