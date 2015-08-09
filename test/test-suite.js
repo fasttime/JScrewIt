@@ -526,7 +526,7 @@ self
                             function ()
                             {
                                 var feature =
-                                    new Feature(
+                                    Feature(
                                         ['NAME', Feature.WINDOW],
                                         'HTMLDOCUMENT',
                                         Feature.NO_IE_SRC,
@@ -544,31 +544,23 @@ self
                             'throws a ReferenceError for unknown features',
                             function ()
                             {
-                                expect(
-                                    function ()
-                                    {
-                                        new Feature('???');
-                                    }
-                                ).toThrow(ReferenceError('Unknown feature "???"'));
+                                var fn = Feature.bind(Feature, '???');
+                                expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
                             }
                         );
                         it(
                             'throws a ReferenceError for incompatible feature arrays',
                             function ()
                             {
-                                expect(
-                                    function ()
-                                    {
-                                        new Feature(['IE_SRC', 'NO_IE_SRC']);
-                                    }
-                                ).toThrow(ReferenceError('Incompatible features'));
+                                var fn = Feature.bind(Feature, ['IE_SRC', 'NO_IE_SRC']);
+                                expect(fn).toThrow(ReferenceError('Incompatible features'));
                             }
                         );
                         it(
-                            'can be invoked without new',
+                            'can be invoked with the new operator',
                             function ()
                             {
-                                var featureObj = Feature();
+                                var featureObj = new Feature();
                                 expect(featureObj.constructor).toBe(Feature);
                             }
                         );
@@ -576,12 +568,9 @@ self
                             'throws a ReferenceError for incompatible features',
                             function ()
                             {
-                                expect(
-                                    function ()
-                                    {
-                                        new Feature('ENTRIES_PLAIN', 'SAFARI_ARRAY_ITERATOR');
-                                    }
-                                ).toThrow(ReferenceError('Incompatible features'));
+                                var fn =
+                                    Feature.bind(Feature, 'ENTRIES_PLAIN', 'SAFARI_ARRAY_ITERATOR');
+                                expect(fn).toThrow(ReferenceError('Incompatible features'));
                             }
                         );
                     }
