@@ -1,19 +1,8 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<meta charset='utf-8'>
-<link rel='icon' href='favicon-pending.ico'>
-<link rel='stylesheet' href='../node_modules/mocha/mocha.css'>
-<meta http-equiv='X-UA-Compatible' content='IE=edge'>
-<meta name='viewport' content='width=device-width'>
-<script src='../node_modules/mocha/mocha.js'></script>
-<script src='../lib/jscrewit.js'></script>
-<script src='../node_modules/expectations/expectations.js'></script>
-<script src='../tools/text-utils.js'></script>
-<script src='feature-emulation-helpers.js'></script>
-<script src='matcher-helpers.js'></script>
-<script src='test-suite.js'></script>
-<script>
+/* global JScrewIt, TestSuite, mocha, padLeft, padRight, repeat, screenX, screenY */
+/* jshint browser: true */
+
+(function ()
+{
 
 'use strict';
 
@@ -25,7 +14,7 @@ function addBarButtons()
         button.textContent = caption;
         button.onclick = onclick;
     }
-
+    
     var bar = document.querySelector('#buttonBar');
     if (bar)
     {
@@ -34,7 +23,10 @@ function addBarButtons()
             'View lengths',
             function ()
             {
-                if (outputWindow) outputWindow.close();
+                if (outputWindow)
+                {
+                    outputWindow.close();
+                }
                 outputWindow = popup('', 'outputWindow', 184, 300);
                 // Chrome won't always bring the new popup to the front automatically, so we better
                 // take care of that.
@@ -97,7 +89,12 @@ function createOutput(compatibilities)
     
     function appendLengthsRange(min, max, namer)
     {
-        namer = namer || function () { return '`' + String.fromCharCode(charCode) + '`'; };
+        namer =
+            namer ||
+            function ()
+            {
+                return '`' + String.fromCharCode(charCode) + '`';
+            };
         for (var charCode = min; charCode <= max; ++charCode)
         {
             var name = namer(charCode);
@@ -107,7 +104,12 @@ function createOutput(compatibilities)
     }
     
     var result = '     ';
-    compatibilities.forEach(function (compatibility) { result += padBoth(compatibility, 8); });
+    compatibilities.forEach(
+        function (compatibility)
+        {
+            result += padBoth(compatibility, 8);
+        }
+    );
     result = result.replace(/ +$/, '');
     result += '\n    ' + repeat(' -------', compatibilities.length);
     var C0_CONTROL_CODE_NAMES =
@@ -117,7 +119,14 @@ function createOutput(compatibilities)
         'DLE',  'DC1',  'DC2',  'DC3',  'DC4',  'NAK',  'SYN',  'ETB',
         'CAN',  'EM',   'SUB',  'ESC',  'FS',   'GS',   'RS',   'US'
     ];
-    appendLengthsRange(0, 31, function (charCode) { return C0_CONTROL_CODE_NAMES[charCode]; });
+    appendLengthsRange(
+        0,
+        31,
+        function (charCode)
+        {
+            return C0_CONTROL_CODE_NAMES[charCode];
+        }
+    );
     appendLengthsRange(32, 126);
     appendLengths('DEL', '\x7f');
     var C1_CONTROL_CODE_NAMES =
@@ -130,7 +139,10 @@ function createOutput(compatibilities)
     appendLengthsRange(
         128,
         159,
-        function (charCode) { return C1_CONTROL_CODE_NAMES[charCode - 0x80]; }
+        function (charCode)
+        {
+            return C1_CONTROL_CODE_NAMES[charCode - 0x80];
+        }
     );
     appendLengths('NBSP', '\xa0');
     appendLengthsRange(161, 172);
@@ -147,8 +159,26 @@ function handleLoad()
     addFeatureLists();
     addBarButtons();
     var runner = mocha.run();
-    runner.on('fail', function () { if (runner.failures === 1) setFavicon('favicon-fail.ico'); });
-    runner.on('end', function () { if (!runner.failures) { setFavicon('favicon-pass.ico'); } });
+    runner.on(
+        'fail',
+        function ()
+        {
+            if (runner.failures === 1)
+            {
+                setFavicon('favicon-fail.ico');
+            }
+        }
+    );
+    runner.on(
+        'end',
+        function ()
+        {
+            if (!runner.failures)
+            {
+                setFavicon('favicon-pass.ico');
+            }
+        }
+    );
 }
 
 function listFeatures(info, label, features)
@@ -172,7 +202,7 @@ function listFeatures(info, label, features)
                         document.createElement('CODE')
                     );
                 code.textContent = feature;
-                code.title = JScrewIt.FEATURE_INFOS[feature].description;
+                code.title = JScrewIt.Feature[feature].description;
             }
         );
     }
@@ -192,8 +222,8 @@ function popup(url, name, width, height)
     var features =
         'resizable,scrollbars,width=' + width + ',height=' + height + ',left=' + left + ',top=' +
         top;
-    var popup = open(url, name, features);
-    return popup;
+    var window = open(url, name, features);
+    return window;
 }
 
 function setFavicon(href)
@@ -206,65 +236,5 @@ mocha.checkLeaks();
 TestSuite.init();
 addEventListener('load', handleLoad);
 
-</script>
-<style>
-
-#buttonBar { margin-top: 8px; }
-
-#buttonBar>*
-{
-    background-color: #aaa;
-    border: #eee thin solid;
-    border-radius: 1px;
-    box-shadow: 0 0 0 2px #aaa;
-    color: #fff;
-    font: 11px/16px 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    margin: 2px;
-    width: 90px;
 }
-
-#buttonBar>*:not(:last-child) { margin-right: 14px; }
-
-#featureList code
-{
-    border-radius: 2px;
-    color: #888;
-    cursor: default;
-    display: inline-block;
-    padding: 0 1px;
-}
-
-#featureList code:hover { background: #00d6b2; color: #fff; }
-
-#featureList>*
-{
-    font: 12px/1.2 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    margin-bottom: 4px;
-}
-
-#featureList>*>*>* { white-space: pre; }
-
-#mocha { margin-top: 36px; }
-
-body>header
-{
-    background: #eee;
-    border-radius: 10px;
-    margin: 48px 60px 0;
-    min-width: 200px;
-    padding: 10px;
-}
-
-@media screen and (max-device-width: 480px)
-{
-    body>header { margin-left: 10px; margin-right: 10px; }
-}
-
-</style>
-<title>JScrewIt Spec Runner</title>
-<body>
-<header>
-<div id='featureList'></div>
-<div id='buttonBar'></div>
-</header>
-<div id='mocha'></div>
+)();
