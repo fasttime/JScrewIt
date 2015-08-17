@@ -73,12 +73,13 @@ function createEngineSelectionBox()
         }
     ];
     
-    function createCheckBox(text, props)
+    function createCheckBox(text, labelProps, inputProps)
     {
         var checkBox =
             art(
                 'LABEL',
-                art('INPUT', { style: { marginLeft: '0' }, type: 'checkbox' }, props),
+                art('INPUT', { style: { marginLeft: '0' }, type: 'checkbox' }, inputProps),
+                labelProps,
                 text || null
             );
         return checkBox;
@@ -155,19 +156,14 @@ function createEngineSelectionBox()
                     art('HR'),
                     webWorkerField,
                     art.on('change', updateStatus)
-                )
-            );
-        Object.defineProperty(
-            comp,
-            'featureObj',
-            {
-                configurable: true,
-                get: function ()
+                ),
                 {
-                    return currentFeatureObj;
+                    get featureObj()
+                    {
+                        return currentFeatureObj;
+                    }
                 }
-            }
-        );
+            );
         ENGINE_INFO_LIST.forEach(
             function (engineInfo)
             {
@@ -189,15 +185,15 @@ function createEngineSelectionBox()
                             createCheckBox(
                                 version.number,
                                 {
+                                    style:
+                                    { display: 'table-cell', paddingLeft: '.5em', width: '7.5em' }
+                                },
+                                {
                                     checked: true,
                                     feature: version.feature,
                                     notForWebWorker: version.notForWebWorker
                                 }
                             );
-                        var style = versionField.style;
-                        style.display = 'table-cell';
-                        style.paddingLeft = '.5em';
-                        style.width = '7.5em';
                         art(engineField, versionField);
                     }
                 );
