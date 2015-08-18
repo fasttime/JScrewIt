@@ -562,6 +562,14 @@ self
                             }
                         );
                         it(
+                            'returns true if no arguments are specified',
+                            function ()
+                            {
+                                var actual = Feature.AUTO.includes();
+                                expect(actual).toBe(true);
+                            }
+                        );
+                        it(
                             'throws a ReferenceError for unknown features',
                             function ()
                             {
@@ -587,6 +595,14 @@ self
                     '.areCompatible',
                     function ()
                     {
+                        it(
+                            'returns true if no arguments are specified',
+                            function ()
+                            {
+                                var compatible = Feature.areCompatible([]);
+                                expect(compatible).toBe(true);
+                            }
+                        );
                         it(
                             'returns true for any single feature',
                             function ()
@@ -645,6 +661,14 @@ self
                             {
                                 var fn = Feature.areEqual.bind(null, ['IE_SRC', 'NO_IE_SRC']);
                                 expect(fn).toThrow(ReferenceError('Incompatible features'));
+                            }
+                        );
+                        it(
+                            'returns true if no arguments are specified',
+                            function ()
+                            {
+                                var equal = Feature.areEqual([]);
+                                expect(equal).toBe(true);
                             }
                         );
                         it(
