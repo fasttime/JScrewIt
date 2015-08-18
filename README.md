@@ -170,31 +170,95 @@ With this knowledge, the definition can be also written as below.
 
 ## Reference
 
-#### <code>**JScrewIt.areFeaturesAvailable(*features*)**</code>
+#### <code>**JScrewIt.Feature(*...feature*)**</code>
 
-Returns `true` if all of the specified features are available in the current engine; otherwise,
-`false`.
+Creates a new feature from the union of the specified features.
+
+<dl>
+<dt><code>...feature</code></dt>
+<dd>Each argument may be a <code>Feature</code> object, a string naming a predefined feature, or an
+array of compatible features.
+</dd>
+</dl>
+
+#### <code>**JScrewIt.Feature.ALL**</code>
+
+A map of predefined features accessed by name or alias.
+
+#### <code>**JScrewIt.Feature.areCompatible(*features*)**</code>
+
+Determines whether the specified features are compatible with each other.
 
 <dl>
 <dt><code>features</code></dt>
-<dd>A string or array of strings specifying the feature(s) to be tested.</dd>
+<dd>An array of <code>Feature</code> objects or strings naming a predefined feature.
+</dd>
 </dl>
-
-##### Examples
-
-```js
-JScrewIt.areFeaturesAvailable("FF_SAFARI_SRC")
-```
-
-```js
-JScrewIt.areFeaturesAvailable(["ATOB", "GMT", "NAME"])
-```
 
 ##### Notes
 
-If *`features`* is an empty array or `undefined`, the return value is `true`.
+If the array argument is empty or contains only one element, `true` is returned.
 
-This function throws a `ReferenceError` if some unknown features are specified.
+#### <code>**JScrewIt.Feature.areEqual(*...feature*)**</code>
+
+Determines whether all of the specified features are equal.
+
+<dl>
+<dt><code>...feature</code></dt>
+<dd>Each argument may be a <code>Feature</code> object, a string naming a predefined feature, or an
+array of compatible features.
+</dd>
+</dl>
+
+##### Notes
+
+If passed less than two arguments, this function returns `true`.
+
+#### <code>**JScrewIt.Feature.commonOf(*...feature*)**</code>
+
+Creates a new feature from the intersection of the specified features.
+
+<dl>
+<dt><code>...feature</code></dt>
+<dd>Each argument may be a <code>Feature</code> object, a string naming a predefined feature, or an
+array of compatible features.
+</dd>
+</dl>
+
+##### Notes
+
+If called without arguments, this function returns `null`.
+
+#### <code>**JScrewIt.Feature#canonicalNames**</code>
+
+An array of all individual feature names included in this feature, without aliases and implied
+features.
+
+#### <code>**JScrewIt.Feature#includes(*...feature*)**</code>
+
+Determines whether this feature includes all of the specified features.
+
+<dl>
+<dt><code>...feature</code></dt>
+<dd>Each argument may be a <code>Feature</code> object, a string naming a predefined feature, or an
+array of compatible features.
+</dd>
+</dl>
+
+##### Notes
+
+If called without arguments, this function returns `true`.
+
+#### <code>**JScrewIt.Feature#individualNames**</code>
+
+An array of all individual feature names included in this feature, without aliases.
+
+
+
+
+
+
+
 
 #### <code>**JScrewIt.areFeaturesCompatible(*features*)**</code>
 
@@ -267,11 +331,12 @@ An optional object specifying encoding options.
 
 <dt><code>options.features</code></dt>
 <dd>
-A string or array of strings specifying the feature(s) available on the engine that evaluates the
-encoded output.
-If this parameter is an empty array or <code>undefined</code>, <code>DEFAULT</code> is assumed: this
-ensures maximum compatibility but also generates the largest code.
-To generate shorter code, specify some features.</dd>
+Specifies the features available on the engines that evaluate the encoded output.
+This parameter should be a <code>Feature</code> object, a string naming a predefined feature, an
+array of compatible features, or <code>unefined</code>.
+If this parameter is an empty array or <code>undefined</code>, <code>Feature.DEFAULT</code> is
+assumed: this ensures maximum compatibility but also generates the largest code.
+To generate shorter code, specify all features available on all target engines explicitly.</dd>
 
 <dt><code>options.wrapWith</code></dt>
 <dd>
