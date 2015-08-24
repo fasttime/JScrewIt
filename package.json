@@ -43,8 +43,9 @@
     "grunt-contrib-jshint": "~0.11.2",
     "grunt-contrib-uglify": "~0.9.1",
     "grunt-jscs": "~2.1.0",
+    "grunt-jsdoc-to-markdown": "^1.1.1",
     "grunt-mocha-istanbul": "~3.0.1",
-    "istanbul": "~0.3.17",
+    "istanbul": "~0.3.18",
     "mocha": "https://github.com/fasttime/mocha/tarball/master",
     "progress": "~1.1.8"
   }

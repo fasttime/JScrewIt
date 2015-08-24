@@ -13,17 +13,16 @@ var noProto;
     assignNoEnum =
         function (target, source)
         {
+            var descriptors = { };
             Object.keys(source).forEach(
                 function (name)
                 {
-                    var value = source[name];
-                    Object.defineProperty(
-                        target,
-                        name,
-                        { configurable: true, value: value, writable: true }
-                    );
+                    var descriptor = Object.getOwnPropertyDescriptor(source, name);
+                    descriptor.enumerable = false;
+                    descriptors[name] = descriptor;
                 }
             );
+            Object.defineProperties(target, descriptors);
             return target;
         };
     

@@ -17,7 +17,7 @@ module.exports =
             {
                 clean:
                 {
-                    build: ['Features.md', 'output.txt'],
+                    build: ['Features.md', 'output.txt', 'Reference.md'],
                     html: 'html/**/*.js',
                     lib: ['coverage', 'lib/**/*.js']
                 },
@@ -111,6 +111,7 @@ module.exports =
                         validateParameterSeparator: ', '
                     }
                 },
+                jsdoc2md: { default: { dest: 'Reference.md', src: 'lib/jscrewit.js' } },
                 jshint:
                 {
                     default: JS_FILES.default,
@@ -176,6 +177,7 @@ module.exports =
         // These plugins provide necessary tasks.
         grunt.loadNpmTasks('grunt-contrib-clean');
         grunt.loadNpmTasks('grunt-contrib-concat');
+        grunt.loadNpmTasks('grunt-jsdoc-to-markdown');
         grunt.loadNpmTasks('grunt-contrib-jshint');
         grunt.loadNpmTasks('grunt-contrib-uglify');
         grunt.loadNpmTasks('grunt-jscs');
@@ -227,7 +229,8 @@ module.exports =
                 'mocha_istanbul:default',
                 'scan-char-defs',
                 'uglify',
-                'feature-doc'
+                'feature-doc',
+                'jsdoc2md'
             ]
         );
         
