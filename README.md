@@ -154,10 +154,10 @@ So if you want your JSFuck code to run on both Internet Explorer and Firefox, th
 ```
 
 Instead, you have to specify features supported by both browsers.
-These can be retrieved with [`JScrewIt.commonFeaturesOf`](#jscrewitcommonfeaturesoffeatures).
+These can be retrieved with [`JScrewIt.Feature.commonOf`](Reference.md#JScrewIt.Feature.commonOf).
 
 ```js
-{ features: JScrewIt.commonFeaturesOf("IE9", "FF31") }
+{ features: JScrewIt.Features.commonOf("IE9", "FF31") }
 ```
 
 The features turn out to be `"NO_SAFARI_LF"`, `"UNDEFINED"` and `"WINDOW"`; `"ANY_WINDOW"` and
@@ -169,150 +169,6 @@ With this knowledge, the definition can be also written as below.
 ```
 
 ## Reference
-
-#### <code>**JScrewIt.Feature(*...feature*)**</code>
-
-Creates a new feature from the union of the specified features.
-
-<dl>
-<dt><code>...feature</code></dt>
-<dd>Each argument may be a <code>Feature</code> object, a string naming a predefined feature, or an
-array of compatible features.
-</dd>
-</dl>
-
-#### <code>**JScrewIt.Feature.ALL**</code>
-
-A map of predefined features accessed by name or alias.
-
-#### <code>**JScrewIt.Feature.areCompatible(*features*)**</code>
-
-Determines whether the specified features are compatible with each other.
-
-<dl>
-<dt><code>features</code></dt>
-<dd>An array of <code>Feature</code> objects or strings naming a predefined feature.
-</dd>
-</dl>
-
-##### Notes
-
-If the array argument is empty or contains only one element, `true` is returned.
-
-#### <code>**JScrewIt.Feature.areEqual(*...feature*)**</code>
-
-Determines whether all of the specified features are equal.
-
-<dl>
-<dt><code>...feature</code></dt>
-<dd>Each argument may be a <code>Feature</code> object, a string naming a predefined feature, or an
-array of compatible features.
-</dd>
-</dl>
-
-##### Notes
-
-If passed less than two arguments, this function returns `true`.
-
-#### <code>**JScrewIt.Feature.commonOf(*...feature*)**</code>
-
-Creates a new feature from the intersection of the specified features.
-
-<dl>
-<dt><code>...feature</code></dt>
-<dd>Each argument may be a <code>Feature</code> object, a string naming a predefined feature, or an
-array of compatible features.
-</dd>
-</dl>
-
-##### Notes
-
-If called without arguments, this function returns `null`.
-
-#### <code>**JScrewIt.Feature#canonicalNames**</code>
-
-An array of all individual feature names included in this feature, without aliases and implied
-features.
-
-#### <code>**JScrewIt.Feature#includes(*...feature*)**</code>
-
-Determines whether this feature includes all of the specified features.
-
-<dl>
-<dt><code>...feature</code></dt>
-<dd>Each argument may be a <code>Feature</code> object, a string naming a predefined feature, or an
-array of compatible features.
-</dd>
-</dl>
-
-##### Notes
-
-If called without arguments, this function returns `true`.
-
-#### <code>**JScrewIt.Feature#individualNames**</code>
-
-An array of all individual feature names included in this feature, without aliases.
-
-
-
-
-
-
-
-
-#### <code>**JScrewIt.areFeaturesCompatible(*features*)**</code>
-
-Returns `true` if the specified features are compatible with each other.
-
-<dl>
-<dt><code>features</code></dt>
-<dd>A string or array of strings specifying the feature(s) to be tested.</dd>
-</dl>
-
-##### Examples
-
-```js
-JScrewIt.areFeaturesCompatible(["V8_SRC", "IE_SRC"]) // returns false
-```
-
-```js
-JScrewIt.areFeaturesCompatible(["DEFAULT", "FILL"]) // returns true
-```
-
-##### Notes
-
-If *`features`* is an empty array or `undefined`, or if it only specifies one feature, the return
-value is `true`.
-
-This function throws a `ReferenceError` if some unknown features are specified.
-
-#### <code>**JScrewIt.commonFeaturesOf(*features...*)**</code>
-
-Gets an array of individual, not otherwise implied features shared by a specified group of features.
-
-<dl>
-<dt><code>features</code></dt>
-<dd>
-A string or array of strings specifying an element of the group of features whose common individual
-features are to be retrieved.</dd>
-</dl>
-
-##### Examples
-
-```js
-// returns ["ANY_DOCUMENT", "ANY_WINDOW", "UNDEFINED"]
-JScrewIt.commonFeaturesOf("COMPACT", "IE9", "ANDRO412")
-```
-
-```js
-JScrewIt.commonFeaturesOf(["ATOB", "NAME"], ["NAME", "SELF"]) // returns ["NAME"]
-```
-
-##### Notes
-
-If no arguments are specified, the return value is `undefined`.
-
-This function throws a `ReferenceError` if some unknown features are specified.
 
 #### <code>**JScrewIt.encode(*input*, *options*)**</code>
 
@@ -388,48 +244,6 @@ If some unknown features are specified, a `ReferenceError` is thrown.
 
 If the option `wrapWith` is specified with an invalid value, an `Error` with the message "Invalid
 value for option wrapWith" is thrown.
-
-#### <code>**JScrewIt.FEATURE_INFOS**</code>
-
-This is a container mapping feature names to descriptors.
-A feature descriptor is an object with a set of properties defining the feature.
-Note that a feature descriptor can be mapped to by more than one name. 
-
-##### Feature descriptor properties
-
-<dl>
-
-<dt><code>name</code></dt>
-<dd>Primary name of the feature.</dd>
-
-<dt><code>description</code></dt>
-<dd>A short description of the feature in plain English.</dd>
-
-<dt><code>available</code></dt>
-<dd>
-<code>true</code> if the specified feature is available on the current engine; otherwise,
-<code>false</code>.</dd>
-
-<dt><code>includes</code></dt>
-<dd>
-An array of feature names implied by this feature.
-If a feature is available, its <code>includes</code> are, too.
-If a feature is not available, other features including it are also not available.</dd>
-
-<dt><code>excludes</code></dt>
-<dd>
-An array of feature names not compatible with this feature.
-If a feature is available, its <code>excludes</code> are not.</dd>
-
-</dl>
-
-##### Examples
-
-This will return an array with the names of all features supported by JScrewIt:
-
-```js
-Object.keys(JScrewIt.FEATURE_INFOS)
-```
 
 ## Compatibility
 
