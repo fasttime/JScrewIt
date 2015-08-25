@@ -32,6 +32,7 @@ in no particular order.</p>
       * [.areCompatible([features])](#JScrewIt.Feature.areCompatible) ⇒ <code>boolean</code>
       * [.areEqual([...feature])](#JScrewIt.Feature.areEqual) ⇒ <code>boolean</code>
       * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ <code>[Feature](#JScrewIt.Feature)</code>
+  * [.encode(input, [options])](#JScrewIt.encode) ⇒ <code>string</code>
 
 <a name="JScrewIt.Feature"></a>
 ### JScrewIt.Feature
@@ -207,6 +208,32 @@ JScrewIt.Feature.ANY_DOCUMENT.
 ```js
 var newFeature = JScrewIt.Feature.commonOf("HTML_DOCUMENT", "DOCUMENT");
 ```
+<a name="JScrewIt.encode"></a>
+### JScrewIt.encode(input, [options]) ⇒ <code>string</code>
+Encodes a given string into JSFuck.
+
+**Kind**: static method of <code>[JScrewIt](#JScrewIt)</code>  
+**Returns**: <code>string</code> - The encoded string.  
+**Throws**:
+
+- In the hypothetical case that the input string is too complex to be encoded, this function
+throws an `Error` with the message "Encoding failed".
+Also, an out of memory condition may occur when processing very large data.
+
+If some unknown features are specified, a `ReferenceError` is thrown.
+
+If the option `wrapWith` is specified with an invalid value, an `Error` with the message
+"Invalid value for option wrapWith" is thrown.
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| input | <code>string</code> |  | The string to encode. |
+| [options] | <code>object</code> | <code>{ }</code> | An optional object specifying encoding options. |
+| [options.features] | <code>[FeatureElement](#FeatureElement)</code> &#124; <code>[CompatibleFeatureArray](#CompatibleFeatureArray)</code> | <code>JScrewIt.Feature.DEFAULT</code> | Specifies the features available on the engines that evaluate the encoded output. If this parameter is an empty array or unspecified, `JScrewIt.Feature.DEFAULT` is assumed: this ensures maximum compatibility but also generates the largest code. To generate shorter code, specify all features available on all target engines explicitly. |
+| [options.trimCode] | <code>boolean</code> | <code>false</code> | If this parameter is truthy, lines in the beginning and in the end of the file containing nothing but space characters and JavaScript comments are removed from the generated output. A newline terminator in the last preserved line is also removed. This option is especially useful to strip banner comments and trailing newline characters which are sometimes found in minified scripts. Using this option may produce unexpected results if the input is not well-formed JavaScript code. |
+| [options.wrapWith] | <code>string</code> | <code>&quot;none&quot;</code> | This option controls the type of code generated from the given input. Allowed values are listed below. <dl> <dt><code>"none"</code> (default)</dt> <dd> Produces a string evaluating to specified input string (except for trimmed parts when used in conjunction with the option <code>trimCode</code>).</dd> <dt><code>"call"</code></dt> <dd> Produces code evaluating to a call to a function whose body contains the specified input string.</dd> <dt><code>"eval"</code></dt> <dd> Produces code evaluating to the result of invoking <code>eval</code> with the specified input string as parameter.</dd> </dl> |
+
 <a name="FeatureElement"></a>
 ## FeatureElement : <code>[Feature](#JScrewIt.Feature)</code> &#124; <code>string</code>
 A feature object or name or alias of a predefined feature.
