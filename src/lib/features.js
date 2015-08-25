@@ -10,8 +10,6 @@ var validMaskFromArrayOrStringOrFeature;
 {
     'use strict';
     
-    /** @namespace JScrewIt */
-    
     function areCompatible(features)
     {
         var compatible;

@@ -107,8 +107,6 @@ var input = eval(output); // input contains the string "Hello, world!".
 
 ### Features
 
-> *See also: [Feature Reference](Features.md)*
-
 JScrewIt has the ability to generate JSFuck code that is targeted for a particular set of JavaScript
 engines (web browsers or Node.js).
 This optimized code is shorter than generic JSFuck code but does not work everywhere.
@@ -168,82 +166,10 @@ With this knowledge, the definition can be also written as below.
 { features: ["NO_SAFARI_LF", "UNDEFINED", "WINDOW"] }
 ```
 
-## Reference
+### Further Reading
 
-#### <code>**JScrewIt.encode(*input*, *options*)**</code>
-
-Encodes a given string into JSFuck. Returns the encoded string.
-
-<dl>
-
-<dt><code>input</code></dt>
-<dd>The string to encode.</dd>
-
-<dt><code>options</code></dt>
-<dd>
-An optional object specifying encoding options.
-
-<dl>
-
-<dt><code>options.features</code></dt>
-<dd>
-Specifies the features available on the engines that evaluate the encoded output.
-This parameter should be a <code>Feature</code> object, a string naming a predefined feature, an
-array of compatible features, or <code>unefined</code>.
-If this parameter is an empty array or <code>undefined</code>, <code>Feature.DEFAULT</code> is
-assumed: this ensures maximum compatibility but also generates the largest code.
-To generate shorter code, specify all features available on all target engines explicitly.</dd>
-
-<dt><code>options.wrapWith</code></dt>
-<dd>
-This option controls the type of code generated from the given input.
-Allowed values are listed below.
-
-<dl>
-
-<dt><code>"none"</code> (default)</dt>
-<dd>
-Produces a string matching the specified input string (except for trimmed parts when used in
-conjunction with the option <code>trimCode</code>).</dd>
-
-<dt><code>"call"</code></dt>
-<dd>
-Produces code evaluating to a call to a function whose body contains the specified input
-string.</dd>
-
-<dt><code>"eval"</code></dt>
-<dd>
-Produces code evaluating to the result of invoking <code>eval</code> with the specified input string
-as parameter.</dd>
-
-</dl>
-</dd>
-
-<dt><code>options.trimCode</code></dt>
-<dd>
-If this parameter is truthy, lines in the beginning and in the end of the file containing nothing
-but space characters and JavaScript comments are removed from the generated output.
-A newline terminator in the last preserved line is also removed.
-This option is especially useful to strip banner comments and trailing newline characters which are
-sometimes found in minified scripts.
-Using this option may produce unexpected results if the input is not well-formed JavaScript
-code.</dd>
-
-</dl>
-</dd>
-
-</dl>
-
-##### Notes
-
-If the input string is too complex to be encoded, this function throws an `Error` with the message
-"Encoding failed".
-Also, an out of memory condition may occur when processing very large data.
-
-If some unknown features are specified, a `ReferenceError` is thrown.
-
-If the option `wrapWith` is specified with an invalid value, an `Error` with the message "Invalid
-value for option wrapWith" is thrown.
+* *[API Reference](Reference.md)*
+* *[Feature Reference](Features.md)*
 
 ## Compatibility
 
