@@ -84,12 +84,12 @@ self
     
     function decodeEntry(entry)
     {
-        var features = getEntryFeatures(entry);
-        var key = features.join();
+        var featureObj = getEntryFeature(entry);
+        var key = featureObj.canonicalNames.join('+');
         var encoder = encoderCache[key];
         if (!encoder)
         {
-            encoderCache[key] = encoder = JScrewIt.debug.createEncoder(features);
+            encoderCache[key] = encoder = JScrewIt.debug.createEncoder(featureObj);
         }
         var output = encoder.resolve(entry.definition) + '';
         return output;
@@ -97,7 +97,8 @@ self
     
     function describeEncodeTest(compatibility)
     {
-        var emuFeatures = getEmuFeatures(Feature[compatibility].individualNames);
+        var featureObj = Feature[compatibility];
+        var emuFeatures = getEmuFeatureNames(featureObj);
         if (emuFeatures)
         {
             describe(
@@ -238,8 +239,8 @@ self
                                 entries.forEach(
                                     function (entry, index)
                                     {
-                                        var features = getEntryFeatures(entry);
-                                        var emuFeatures = getEmuFeatures(features);
+                                        var featureObj = getEntryFeature(entry);
+                                        var emuFeatures = getEmuFeatureNames(featureObj);
                                         if (emuFeatures)
                                         {
                                             it(
@@ -587,6 +588,32 @@ self
                                         ['IE_SRC', 'NO_IE_SRC']
                                     );
                                 expect(fn).toThrow(ReferenceError('Incompatible features'));
+                            }
+                        );
+                    }
+                );
+                describe(
+                    '#toString',
+                    function ()
+                    {
+                        it(
+                            'works for predefined features',
+                            function ()
+                            {
+                                expect(Feature.DEFAULT.toString()).toBe('[Feature DEFAULT]');
+                                expect(Feature.NODE.toString()).toBe('[Feature NODE010]');
+                                expect(Feature.ATOB.toString()).toBe('[Feature ATOB]');
+                            }
+                        );
+                        it(
+                            'works for custom features',
+                            function ()
+                            {
+                                expect(Feature('DEFAULT').toString()).toBe('[Feature {}]');
+                                expect(Feature('NODE').toString()).toMatch(
+                                    /^\[Feature \{[0-9A-Z_]+(, [0-9A-Z_]+)*\}\]$/
+                                );
+                                expect(Feature('ATOB').toString()).toBe('[Feature {ATOB}]');
                             }
                         );
                     }
@@ -1506,30 +1533,31 @@ self
         );
     }
     
-    function getEmuFeatures(features)
+    function getEmuFeatureNames(featureObj)
     {
+        var featureNames = featureObj.individualNames;
         if (
-            features.every(
-                function (feature)
+            featureNames.every(
+                function (featureName)
                 {
-                    return feature in featureSet;
+                    return featureName in featureSet;
                 }
             )
         )
         {
-            return features.filter(
-                function (feature)
+            return featureNames.filter(
+                function (featureName)
                 {
-                    return featureSet[feature];
+                    return featureSet[featureName];
                 }
             );
         }
     }
     
-    function getEntryFeatures(entry)
+    function getEntryFeature(entry)
     {
-        var result = JScrewIt.debug.featureFromMask(entry.featureMask).canonicalNames;
-        return result;
+        var featureObj = JScrewIt.debug.featureFromMask(entry.featureMask);
+        return featureObj;
     }
     
     function init(arg)
@@ -1605,10 +1633,11 @@ self
                         {
                             if (entry.definition)
                             {
-                                var features = getEntryFeatures(entry);
-                                var usingDefaultFeature = !features.length;
+                                var featureObj = getEntryFeature(entry);
+                                var usingDefaultFeature =
+                                    JScrewIt.Feature.DEFAULT.includes(featureObj);
                                 defaultEntryFound |= usingDefaultFeature;
-                                var emuFeatures = getEmuFeatures(features);
+                                var emuFeatures = getEmuFeatureNames(featureObj);
                                 if (emuFeatures)
                                 {
                                     it(
@@ -1675,8 +1704,8 @@ self
                 entries.forEach(
                     function (entry, index)
                     {
-                        var features = getEntryFeatures(entry);
-                        var emuFeatures = getEmuFeatures(features);
+                        var featureObj = getEntryFeature(entry);
+                        var emuFeatures = getEmuFeatureNames(featureObj);
                         if (emuFeatures)
                         {
                             it(
@@ -1755,6 +1784,7 @@ self
                         var canonicalNames = featureObj.canonicalNames;
                         expect(canonicalNames).toBeArray();
                         var individualNames = featureObj.individualNames;
+                        expect(individualNames).toBeArray();
                         canonicalNames.forEach(
                             function (name)
                             {
@@ -1784,7 +1814,7 @@ self
     
     var Feature;
     var JScrewIt;
-    var encoderCache = { };
+    var encoderCache = Object.create(null);
     var featureSet;
     
     var TestSuite = { init: init, listFeatures: listFeatures };

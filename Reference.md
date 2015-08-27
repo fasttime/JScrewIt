@@ -23,15 +23,16 @@ in no particular order.</p>
     * [new Feature([...feature])](#new_JScrewIt.Feature_new)
     * _instance_
       * [.canonicalNames](#JScrewIt.Feature+canonicalNames) : <code>Array.&lt;string&gt;</code>
-      * [.description](#JScrewIt.Feature+description) : <code>string</code>
+      * [.description](#JScrewIt.Feature+description) : <code>string</code> &#124; <code>undefined</code>
       * [.individualNames](#JScrewIt.Feature+individualNames) : <code>Array.&lt;string&gt;</code>
-      * [.name](#JScrewIt.Feature+name) : <code>string</code>
+      * [.name](#JScrewIt.Feature+name) : <code>string</code> &#124; <code>undefined</code>
       * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
+      * [.toString()](#JScrewIt.Feature+toString) ⇒ <code>string</code>
     * _static_
       * [.ALL](#JScrewIt.Feature.ALL) : <code>object</code>
       * [.areCompatible([features])](#JScrewIt.Feature.areCompatible) ⇒ <code>boolean</code>
       * [.areEqual([...feature])](#JScrewIt.Feature.areEqual) ⇒ <code>boolean</code>
-      * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ <code>[Feature](#JScrewIt.Feature)</code>
+      * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ <code>[Feature](#JScrewIt.Feature)</code> &#124; <code>null</code>
   * [.encode(input, [options])](#JScrewIt.encode) ⇒ <code>string</code>
 
 <a name="JScrewIt.Feature"></a>
@@ -52,15 +53,16 @@ constructed.
   * [new Feature([...feature])](#new_JScrewIt.Feature_new)
   * _instance_
     * [.canonicalNames](#JScrewIt.Feature+canonicalNames) : <code>Array.&lt;string&gt;</code>
-    * [.description](#JScrewIt.Feature+description) : <code>string</code>
+    * [.description](#JScrewIt.Feature+description) : <code>string</code> &#124; <code>undefined</code>
     * [.individualNames](#JScrewIt.Feature+individualNames) : <code>Array.&lt;string&gt;</code>
-    * [.name](#JScrewIt.Feature+name) : <code>string</code>
+    * [.name](#JScrewIt.Feature+name) : <code>string</code> &#124; <code>undefined</code>
     * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
+    * [.toString()](#JScrewIt.Feature+toString) ⇒ <code>string</code>
   * _static_
     * [.ALL](#JScrewIt.Feature.ALL) : <code>object</code>
     * [.areCompatible([features])](#JScrewIt.Feature.areCompatible) ⇒ <code>boolean</code>
     * [.areEqual([...feature])](#JScrewIt.Feature.areEqual) ⇒ <code>boolean</code>
-    * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ <code>[Feature](#JScrewIt.Feature)</code>
+    * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ <code>[Feature](#JScrewIt.Feature)</code> &#124; <code>null</code>
 
 <a name="new_JScrewIt.Feature_new"></a>
 #### new Feature([...feature])
@@ -87,8 +89,8 @@ and implied features.
 
 **Kind**: instance property of <code>[Feature](#JScrewIt.Feature)</code>  
 <a name="JScrewIt.Feature+description"></a>
-#### feature.description : <code>string</code>
-A short description of this feature in plain English.
+#### feature.description : <code>string</code> &#124; <code>undefined</code>
+A short description of this feature object in plain English.
 
 All predefined features have a description.
 If desired, custom features may be assigned a description, too.
@@ -101,8 +103,8 @@ aliases.
 
 **Kind**: instance property of <code>[Feature](#JScrewIt.Feature)</code>  
 <a name="JScrewIt.Feature+name"></a>
-#### feature.name : <code>string</code>
-The primary name of this feature, useful for identification purpose.
+#### feature.name : <code>string</code> &#124; <code>undefined</code>
+The primary name of this feature object, useful for identification purpose.
 
 All predefined features have a name.
 If desired, custom features may be assigned a name, too.
@@ -120,6 +122,12 @@ If no arguments are specified, the return value is `true`.
 | --- | --- |
 | [...feature] | <code>[FeatureElement](#FeatureElement)</code> &#124; <code>[CompatibleFeatureArray](#CompatibleFeatureArray)</code> | 
 
+<a name="JScrewIt.Feature+toString"></a>
+#### feature.toString() ⇒ <code>string</code>
+Returns a string representation of this feature object.
+
+**Kind**: instance method of <code>[Feature](#JScrewIt.Feature)</code>  
+**Returns**: <code>string</code> - A string representation of this feature object.  
 <a name="JScrewIt.Feature.ALL"></a>
 #### Feature.ALL : <code>object</code>
 A map of predefined feature objects accessed by name or alias.
@@ -184,11 +192,11 @@ JScrewIt.Feature.areEqual(JScrewIt.Feature.CHROME, JScrewIt.Feature.FIREFOX)
 JScrewIt.Feature.areEqual("DEFAULT", [])
 ```
 <a name="JScrewIt.Feature.commonOf"></a>
-#### Feature.commonOf([...feature]) ⇒ <code>[Feature](#JScrewIt.Feature)</code>
+#### Feature.commonOf([...feature]) ⇒ <code>[Feature](#JScrewIt.Feature)</code> &#124; <code>null</code>
 Creates a new feature object equivalent to the intersection of the specified features.
 
 **Kind**: static method of <code>[Feature](#JScrewIt.Feature)</code>  
-**Returns**: <code>[Feature](#JScrewIt.Feature)</code> - A feature object, or `null` if no arguments are specified.  
+**Returns**: <code>[Feature](#JScrewIt.Feature)</code> &#124; <code>null</code> - A feature object, or `null` if no arguments are specified.  
 
 | Param | Type |
 | --- | --- |
