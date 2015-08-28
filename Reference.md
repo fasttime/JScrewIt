@@ -24,7 +24,7 @@ in no particular order.</p>
     * _instance_
       * [.canonicalNames](#JScrewIt.Feature+canonicalNames) : <code>Array.&lt;string&gt;</code>
       * [.description](#JScrewIt.Feature+description) : <code>string</code> &#124; <code>undefined</code>
-      * [.individualNames](#JScrewIt.Feature+individualNames) : <code>Array.&lt;string&gt;</code>
+      * [.elementaryNames](#JScrewIt.Feature+elementaryNames) : <code>Array.&lt;string&gt;</code>
       * [.name](#JScrewIt.Feature+name) : <code>string</code> &#124; <code>undefined</code>
       * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
       * [.toString()](#JScrewIt.Feature+toString) ⇒ <code>string</code>
@@ -41,19 +41,19 @@ Objects of this type indicate which of the capabilities that JScrewIt can use to
 length of its output are available in a particular JavaScript engine.
 
 JScrewIt comes with a set of predefined feature objects exposed as property values of
-`JScrewIt.Feature` or [`JScrewIt.Feature.ALL`](#ALL), where the property name is the
-feature's name or an alias thereof.
+`JScrewIt.Feature` or [`JScrewIt.Feature.ALL`](#JScrewIt.Feature.ALL), where the property
+name is the feature's name or an alias thereof.
 
 Besides these predefined features, it is possible to construct custom features from the union
 or intersection of other features.
 
-Among the predefined features, there are some special ones called _individual_ features that
-cannot be expressed as a union of any number of other individual features.
+Among the predefined features, there are some special ones called _elementary_ features that
+cannot be expressed as a union of any number of other elementary features.
 All other features, called _composite_ features, can be constructed as a union of zero or
-more individual features.
+more elementary features.
 Two of the predefined composite features are particularly important:
-[`DEFAULT`](Features.md#DEFAULT) is the empty feature, indicating that no individual feature
-is available at all; [`AUTO`](Features.md#AUTO) is the union of all individual features
+[`DEFAULT`](Features.md#DEFAULT) is the empty feature, indicating that no elementary feature
+is available at all; [`AUTO`](Features.md#AUTO) is the union of all elementary features
 available in the current engine.
 
 Not all features can be available at the same time: some features are necessarily
@@ -67,7 +67,7 @@ constructed.
   * _instance_
     * [.canonicalNames](#JScrewIt.Feature+canonicalNames) : <code>Array.&lt;string&gt;</code>
     * [.description](#JScrewIt.Feature+description) : <code>string</code> &#124; <code>undefined</code>
-    * [.individualNames](#JScrewIt.Feature+individualNames) : <code>Array.&lt;string&gt;</code>
+    * [.elementaryNames](#JScrewIt.Feature+elementaryNames) : <code>Array.&lt;string&gt;</code>
     * [.name](#JScrewIt.Feature+name) : <code>string</code> &#124; <code>undefined</code>
     * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
     * [.toString()](#JScrewIt.Feature+toString) ⇒ <code>string</code>
@@ -113,7 +113,7 @@ new JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW
 ```
 <a name="JScrewIt.Feature+canonicalNames"></a>
 #### feature.canonicalNames : <code>Array.&lt;string&gt;</code>
-An array of all individual feature names included in this feature object, without aliases
+An array of all elementary feature names included in this feature object, without aliases
 and implied features.
 
 **Kind**: instance property of <code>[Feature](#JScrewIt.Feature)</code>  
@@ -125,9 +125,9 @@ All predefined features have a description.
 If desired, custom features may be assigned a description, too.
 
 **Kind**: instance property of <code>[Feature](#JScrewIt.Feature)</code>  
-<a name="JScrewIt.Feature+individualNames"></a>
-#### feature.individualNames : <code>Array.&lt;string&gt;</code>
-An array of all individual feature names included in this feature object, without
+<a name="JScrewIt.Feature+elementaryNames"></a>
+#### feature.elementaryNames : <code>Array.&lt;string&gt;</code>
+An array of all elementary feature names included in this feature object, without
 aliases.
 
 **Kind**: instance property of <code>[Feature](#JScrewIt.Feature)</code>  
@@ -240,11 +240,11 @@ var newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
 
 This will create a new feature object equivalent to
 [ANY_DOCUMENT](Features.md#ANY_DOCUMENT).
-This is because both [HTML_DOCUMENT](Features.md#HTML_DOCUMENT) and
+This is because both [HTMLDOCUMENT](Features.md#HTMLDOCUMENT) and
 [DOCUMENT](Features.md#DOCUMENT) imply [ANY_DOCUMENT](Features.md#ANY_DOCUMENT).
 
 ```js
-var newFeature = JScrewIt.Feature.commonOf("HTML_DOCUMENT", "DOCUMENT");
+var newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
 ```
 <a name="JScrewIt.encode"></a>
 ### JScrewIt.encode(input, [options]) ⇒ <code>string</code>

@@ -509,7 +509,7 @@ self
                             {
                                 var featureObj = Feature.DEFAULT;
                                 expect(featureObj.canonicalNames).toEqual([]);
-                                expect(featureObj.individualNames).toEqual([]);
+                                expect(featureObj.elementaryNames).toEqual([]);
                                 expect(featureObj.mask).toBe(0);
                             }
                         );
@@ -521,9 +521,9 @@ self
                                 var featureNames =
                                     Feature.commonOf('CHROME41', 'EDGE', 'FF31', 'SAFARI71');
                                 var expectedFeature = Feature(featureNames);
-                                var actualIndividualNames = featureObj.individualNames;
-                                var expectedIndividualNames = expectedFeature.individualNames;
-                                expect(actualIndividualNames).toEqual(expectedIndividualNames);
+                                var actualElementaryNames = featureObj.elementaryNames;
+                                var expectedElementaryNames = expectedFeature.elementaryNames;
+                                expect(actualElementaryNames).toEqual(expectedElementaryNames);
                                 var actualCanonicalNames = expectedFeature.canonicalNames;
                                 var expectedCanonicalNames = featureObj.canonicalNames;
                                 expect(actualCanonicalNames).toEqual(expectedCanonicalNames);
@@ -536,9 +536,9 @@ self
                             {
                                 var featureObj = Feature.AUTO;
                                 var canonicalNameCount = featureObj.canonicalNames.length;
-                                var individualNameCount = featureObj.individualNames.length;
+                                var elementaryNameCount = featureObj.elementaryNames.length;
                                 expect(canonicalNameCount).toBeGreaterThan(0);
-                                expect(individualNameCount).not.toBeLessThan(canonicalNameCount);
+                                expect(elementaryNameCount).not.toBeLessThan(canonicalNameCount);
                                 expect(featureObj.mask).not.toBe(0);
                             }
                         );
@@ -1535,7 +1535,7 @@ self
     
     function getEmuFeatureNames(featureObj)
     {
-        var featureNames = featureObj.individualNames;
+        var featureNames = featureObj.elementaryNames;
         if (
             featureNames.every(
                 function (featureName)
@@ -1571,7 +1571,7 @@ self
                 featureSet[featureName] = true;
             }
         );
-        Feature.AUTO.individualNames.forEach(
+        Feature.AUTO.elementaryNames.forEach(
             function (featureName)
             {
                 featureSet[featureName] = false;
@@ -1764,12 +1764,12 @@ self
                     }
                 );
                 it(
-                    'has individualNames string array',
+                    'has elementaryNames string array',
                     function ()
                     {
-                        var individualNames = featureObj.individualNames;
-                        expect(individualNames).toBeArray();
-                        individualNames.forEach(
+                        var elementaryNames = featureObj.elementaryNames;
+                        expect(elementaryNames).toBeArray();
+                        elementaryNames.forEach(
                             function (name)
                             {
                                 expect(name).toBeString();
@@ -1783,12 +1783,12 @@ self
                     {
                         var canonicalNames = featureObj.canonicalNames;
                         expect(canonicalNames).toBeArray();
-                        var individualNames = featureObj.individualNames;
-                        expect(individualNames).toBeArray();
+                        var elementaryNames = featureObj.elementaryNames;
+                        expect(elementaryNames).toBeArray();
                         canonicalNames.forEach(
                             function (name)
                             {
-                                expect(individualNames).toContain(name);
+                                expect(elementaryNames).toContain(name);
                             }
                         );
                     }
