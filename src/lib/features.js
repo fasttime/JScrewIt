@@ -847,7 +847,7 @@ var validMaskFromArrayOrStringOrFeature;
      * The constructor can be used with or without the `new` operator, e.g.
      * `new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
      * If no arguments are specified, the new feature object will be equivalent to
-     * JScrewIt.Feature.DEFAULT.
+     * [DEFAULT](Features.md#DEFAULT).
      *
      * @class JScrewIt.Feature
      *
@@ -855,12 +855,42 @@ var validMaskFromArrayOrStringOrFeature;
      *
      * @throws {ReferenceError} The specified features are not compatible with each other.
      *
+     * @example
+     * The following statements are equivalent, and will all construct a new feature object
+     * including both [ANY_DOCUMENT](Features.md#ANY_DOCUMENT) and
+     * [ANY_WINDOW](Features.md#ANY_WINDOW).
+     *
+     * ```js
+     * new JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
+     * ```
+     *
+     * ```js
+     * new JScrewIt.Feature(JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW);
+     * ```
+     *
+     * ```js
+     * new JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW]);
+     * ```
+     *
      * @classdesc
      * Objects of this type indicate which of the capabilities that JScrewIt can use to minimize the
      * length of its output are available in a particular JavaScript engine.
      *
-     * Besides the _predefined_ features exposed by JScrewIt, it is possible to construct _custom_
-     * features from the union or intersection of other features.
+     * JScrewIt comes with a set of predefined feature objects exposed as property values of
+     * `JScrewIt.Feature` or [`JScrewIt.Feature.ALL`](#ALL), where the property name is the
+     * feature's name or an alias thereof.
+     *
+     * Besides these predefined features, it is possible to construct custom features from the union
+     * or intersection of other features.
+     *
+     * Among the predefined features, there are some special ones called _individual_ features that
+     * cannot be expressed as a union of any number of other individual features.
+     * All other features, called _composite_ features, can be constructed as a union of zero or
+     * more individual features.
+     * Two of the predefined composite features are particularly important:
+     * [`DEFAULT`](Features.md#DEFAULT) is the empty feature, indicating that no individual feature
+     * is available at all; [`AUTO`](Features.md#AUTO) is the union of all individual features
+     * available in the current engine.
      *
      * Not all features can be available at the same time: some features are necessarily
      * incompatible, meaning that they mutually exclude each other, and thus their union cannot be
@@ -881,7 +911,7 @@ var validMaskFromArrayOrStringOrFeature;
         /**
          * A map of predefined feature objects accessed by name or alias.
          *
-         * For an exhaustive list of all features, see the [Feature Reference](#Features.md).
+         * For an exhaustive list of all features, see the [Feature Reference](Features.md).
          *
          * @member {object} JScrewIt.Feature.ALL
          *
@@ -965,15 +995,16 @@ var validMaskFromArrayOrStringOrFeature;
          *
          * @example
          *
-         * This will create a new feature object equivalent to JScrewIt.Feature.NAME.
+         * This will create a new feature object equivalent to [NAME](Features.md#NAME).
          *
          * ```js
          * var newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
          * ```
          *
-         * This will create a new feature object equivalent to JScrewIt.Feature.ANY_DOCUMENT.
-         * This is because both JScrewIt.Feature.HTML_DOCUMENT and JScrewIt.Feature.DOCUMENT imply
-         * JScrewIt.Feature.ANY_DOCUMENT.
+         * This will create a new feature object equivalent to
+         * [ANY_DOCUMENT](Features.md#ANY_DOCUMENT).
+         * This is because both [HTML_DOCUMENT](Features.md#HTML_DOCUMENT) and
+         * [DOCUMENT](Features.md#DOCUMENT) imply [ANY_DOCUMENT](Features.md#ANY_DOCUMENT).
          *
          * ```js
          * var newFeature = JScrewIt.Feature.commonOf("HTML_DOCUMENT", "DOCUMENT");
