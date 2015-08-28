@@ -95,7 +95,7 @@ function createEngineSelectionBox()
     function filterFeatures(featureObj, excludedFeatures)
     {
         var featureNameSet = Object.create(null);
-        featureObj.individualNames.forEach(
+        featureObj.elementaryNames.forEach(
             function (featureName)
             {
                 featureNameSet[featureName] = null;
