@@ -20,14 +20,19 @@ function escape(str)
 function formatFeatureName(featureName)
 {
     var result =
-        '<a href="#' + featureName.toLowerCase() + '"><code>' + featureName + '</code></a>';
+        '<a href="#' + getAnchorName(featureName) + '"><code>' + featureName + '</code></a>';
     return result;
 }
 
 function formatFeatureNameMD(featureName)
 {
-    var result = '[`' + featureName + '`](#' + featureName.toLowerCase() + ')';
+    var result = '[`' + featureName + '`](#' + getAnchorName(featureName) + ')';
     return result;
+}
+
+function getAnchorName(featureName)
+{
+    return featureName;
 }
 
 function getImpliers(featureName, assignmentMap)
@@ -181,7 +186,9 @@ module.exports =
                 {
                     subContent = '_An alias for ' + formatFeatureNameMD(name) + '._';
                 }
-                content += '### `' + featureName + '`\n' + subContent + '\n';
+                content +=
+                    '<a name="' + getAnchorName(featureName) + '"></a>\n' +
+                    '### `' + featureName + '`\n' + subContent + '\n';
             }
         );
         content +=
