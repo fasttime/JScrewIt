@@ -47,9 +47,9 @@ name is the feature's name or an alias thereof.
 Besides these predefined features, it is possible to construct custom features from the union
 or intersection of other features.
 
-Among the predefined features, there are some special ones called _elementary_ features that
+Among the predefined features, there are some special ones called *elementary* features that
 cannot be expressed as a union of any number of other elementary features.
-All other features, called _composite_ features, can be constructed as a union of zero or
+All other features, called *composite* features, can be constructed as a union of zero or
 more elementary features.
 Two of the predefined composite features are particularly important:
 [`DEFAULT`](Features.md#DEFAULT) is the empty feature, indicating that no elementary feature
@@ -84,7 +84,7 @@ Creates a new feature object from the union of the specified features.
 The constructor can be used with or without the `new` operator, e.g.
 `new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
 If no arguments are specified, the new feature object will be equivalent to
-[DEFAULT](Features.md#DEFAULT).
+[`DEFAULT`](Features.md#DEFAULT).
 
 **Throws**:
 
@@ -97,8 +97,8 @@ If no arguments are specified, the new feature object will be equivalent to
 
 **Example**  
 The following statements are equivalent, and will all construct a new feature object
-including both [ANY_DOCUMENT](Features.md#ANY_DOCUMENT) and
-[ANY_WINDOW](Features.md#ANY_WINDOW).
+including both [`ANY_DOCUMENT`](Features.md#ANY_DOCUMENT) and
+[`ANY_WINDOW`](Features.md#ANY_WINDOW).
 
 ```js
 new JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
@@ -232,16 +232,16 @@ Creates a new feature object equivalent to the intersection of the specified fea
 | [...feature] | <code>[FeatureElement](#FeatureElement)</code> &#124; <code>[CompatibleFeatureArray](#CompatibleFeatureArray)</code> | 
 
 **Example**  
-This will create a new feature object equivalent to [NAME](Features.md#NAME).
+This will create a new feature object equivalent to [`NAME`](Features.md#NAME).
 
 ```js
 var newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
 ```
 
 This will create a new feature object equivalent to
-[ANY_DOCUMENT](Features.md#ANY_DOCUMENT).
-This is because both [HTMLDOCUMENT](Features.md#HTMLDOCUMENT) and
-[DOCUMENT](Features.md#DOCUMENT) imply [ANY_DOCUMENT](Features.md#ANY_DOCUMENT).
+[`ANY_DOCUMENT`](Features.md#ANY_DOCUMENT).
+This is because both [`HTMLDOCUMENT`](Features.md#HTMLDOCUMENT) and
+[`DOCUMENT`](Features.md#DOCUMENT) imply [`ANY_DOCUMENT`](Features.md#ANY_DOCUMENT).
 
 ```js
 var newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
@@ -268,9 +268,9 @@ If the option `wrapWith` is specified with an invalid value, an `Error` with the
 | --- | --- | --- | --- |
 | input | <code>string</code> |  | The string to encode. |
 | [options] | <code>object</code> | <code>{ }</code> | An optional object specifying encoding options. |
-| [options.features] | <code>[FeatureElement](#FeatureElement)</code> &#124; <code>[CompatibleFeatureArray](#CompatibleFeatureArray)</code> | <code>JScrewIt.Feature.DEFAULT</code> | Specifies the features available on the engines that evaluate the encoded output. If this parameter is an empty array or unspecified, `JScrewIt.Feature.DEFAULT` is assumed: this ensures maximum compatibility but also generates the largest code. To generate shorter code, specify all features available on all target engines explicitly. |
+| [options.features] | <code>[FeatureElement](#FeatureElement)</code> &#124; <code>[CompatibleFeatureArray](#CompatibleFeatureArray)</code> | <code>JScrewIt.Feature.DEFAULT</code> | Specifies the features available on the engines that evaluate the encoded output. If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](Features.md#DEFAULT) is assumed: this ensures maximum compatibility but also generates the largest code. To generate shorter code, specify all features available on all target engines explicitly. |
 | [options.trimCode] | <code>boolean</code> | <code>false</code> | If this parameter is truthy, lines in the beginning and in the end of the file containing nothing but space characters and JavaScript comments are removed from the generated output. A newline terminator in the last preserved line is also removed. This option is especially useful to strip banner comments and trailing newline characters which are sometimes found in minified scripts. Using this option may produce unexpected results if the input is not well-formed JavaScript code. |
-| [options.wrapWith] | <code>string</code> | <code>&quot;none&quot;</code> | This option controls the type of code generated from the given input. Allowed values are listed below. <dl> <dt><code>"none"</code> (default)</dt> <dd> Produces a string evaluating to specified input string (except for trimmed parts when used in conjunction with the option <code>trimCode</code>).</dd> <dt><code>"call"</code></dt> <dd> Produces code evaluating to a call to a function whose body contains the specified input string.</dd> <dt><code>"eval"</code></dt> <dd> Produces code evaluating to the result of invoking <code>eval</code> with the specified input string as parameter.</dd> </dl> |
+| [options.wrapWith] | <code>string</code> | <code>&quot;none&quot;</code> | This option controls the type of code generated from the given input. Allowed values are listed below. <dl> <dt><code>"none"</code> (default)</dt> <dd> Produces a string evaluating to the specified input string (except for trimmed parts when used in conjunction with the option <code>trimCode</code>).</dd> <dt><code>"call"</code></dt> <dd> Produces code evaluating to a call to a function whose body contains the specified input string.</dd> <dt><code>"eval"</code></dt> <dd> Produces code evaluating to the result of invoking <code>eval</code> with the specified input string as parameter.</dd> </dl> |
 
 <a name="FeatureElement"></a>
 ## FeatureElement : <code>[Feature](#JScrewIt.Feature)</code> &#124; <code>string</code>

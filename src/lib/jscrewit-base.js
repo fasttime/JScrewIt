@@ -29,16 +29,19 @@ var setUp;
      *
      * @param {FeatureElement|CompatibleFeatureArray} [options.features=JScrewIt.Feature.DEFAULT]
      * Specifies the features available on the engines that evaluate the encoded output.
-     * If this parameter is an empty array or unspecified, `JScrewIt.Feature.DEFAULT` is assumed:
-     * this ensures maximum compatibility but also generates the largest code.
+     *
+     * If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](Features.md#DEFAULT) is
+     * assumed: this ensures maximum compatibility but also generates the largest code.
      * To generate shorter code, specify all features available on all target engines explicitly.
      *
      * @param {boolean} [options.trimCode=false]
      * If this parameter is truthy, lines in the beginning and in the end of the file containing
      * nothing but space characters and JavaScript comments are removed from the generated output.
      * A newline terminator in the last preserved line is also removed.
+     *
      * This option is especially useful to strip banner comments and trailing newline characters
      * which are sometimes found in minified scripts.
+     *
      * Using this option may produce unexpected results if the input is not well-formed JavaScript
      * code.
      *
@@ -50,8 +53,8 @@ var setUp;
      *
      * <dt><code>"none"</code> (default)</dt>
      * <dd>
-     * Produces a string evaluating to specified input string (except for trimmed parts when used in
-     * conjunction with the option <code>trimCode</code>).</dd>
+     * Produces a string evaluating to the specified input string (except for trimmed parts when
+     * used in conjunction with the option <code>trimCode</code>).</dd>
      *
      * <dt><code>"call"</code></dt>
      * <dd>

@@ -95,7 +95,7 @@ eval(output);
 ```
 
 Setting `wrapWith` to `"call"` in the second parameter of
-[`JScrewIt.encode`](#jscrewitencodeinput-options) indicates that we would like the output to be
+[`JScrewIt.encode`](Reference.md#JScrewIt.encode) indicates that we would like the output to be
 executable.
 
 `wrapWith` should be omitted or set to `"none"` to encode a plain string instead of JavaScript code.
