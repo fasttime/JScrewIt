@@ -57,6 +57,7 @@ module.exports =
                         // Encourage use of abbreviations: "char", "obj", "str".
                         disallowIdentifierNames: ['character', 'object', 'string'],
                         disallowMixedSpacesAndTabs: true,
+                        disallowNamedUnassignedFunctions: true,
                         disallowSpaceAfterObjectKeys: true,
                         disallowSpaceAfterPrefixUnaryOperators: true,
                         disallowSpaceBeforePostfixUnaryOperators: true,

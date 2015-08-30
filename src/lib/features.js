@@ -88,7 +88,7 @@ var validMaskFromArrayOrStringOrFeature;
         return result;
     }
     
-    function completeFeature(name, ignoreExcludes)
+    function completeFeature(name)
     {
         var mask;
         var featureObj = ALL[name];
@@ -98,10 +98,11 @@ var validMaskFromArrayOrStringOrFeature;
         }
         else
         {
+            var excludes;
             var info = FEATURE_INFOS[name];
             if (typeof info === 'string')
             {
-                mask = completeFeature(info, ignoreExcludes);
+                mask = completeFeature(info);
                 featureObj = ALL[info];
             }
             else
@@ -114,10 +115,9 @@ var validMaskFromArrayOrStringOrFeature;
                     {
                         autoMask |= mask;
                     }
-                    elementaryNames.push(name);
                 }
                 mask ^= 0;
-                var includes = info.includes || (info.includes = []);
+                var includes = includesMap[name] = info.includes || [];
                 includes.forEach(
                     function (include)
                     {
@@ -125,21 +125,25 @@ var validMaskFromArrayOrStringOrFeature;
                         mask |= includeMask;
                     }
                 );
-                var excludes = info.excludes;
-                if (excludes && ignoreExcludes !== true)
-                {
-                    excludes.forEach(
-                        function (exclude)
-                        {
-                            var excludeMask = completeFeature(exclude, true);
-                            var incompatibleMask = mask | excludeMask;
-                            incompatibleFeatureMasks.push(incompatibleMask);
-                        }
-                    );
-                }
+                excludes = info.excludes;
                 featureObj = createFeature(name, info.description, mask, check);
+                if (check)
+                {
+                    elementaryFeatureObjs.push(featureObj);
+                }
             }
             registerFeature(name, featureObj);
+            if (excludes)
+            {
+                excludes.forEach(
+                    function (exclude)
+                    {
+                        var excludeMask = completeFeature(exclude);
+                        var incompatibleMask = mask | excludeMask;
+                        incompatibleMasks.push(incompatibleMask);
+                    }
+                );
+            }
         }
         return mask;
     }
@@ -162,10 +166,10 @@ var validMaskFromArrayOrStringOrFeature;
     function isMaskCompatible(mask)
     {
         var result =
-            incompatibleFeatureMasks.every(
-                function (incompatibleFeatureMask)
+            incompatibleMasks.every(
+                function (incompatibleMask)
                 {
-                    var result = (incompatibleFeatureMask & mask) !== incompatibleFeatureMask;
+                    var result = (incompatibleMask & mask) !== incompatibleMask;
                     return result;
                 }
             );
@@ -847,7 +851,7 @@ var validMaskFromArrayOrStringOrFeature;
      * The constructor can be used with or without the `new` operator, e.g.
      * `new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
      * If no arguments are specified, the new feature object will be equivalent to
-     * [DEFAULT](Features.md#DEFAULT).
+     * [`DEFAULT`](Features.md#DEFAULT).
      *
      * @class JScrewIt.Feature
      *
@@ -857,8 +861,8 @@ var validMaskFromArrayOrStringOrFeature;
      *
      * @example
      * The following statements are equivalent, and will all construct a new feature object
-     * including both [ANY_DOCUMENT](Features.md#ANY_DOCUMENT) and
-     * [ANY_WINDOW](Features.md#ANY_WINDOW).
+     * including both [`ANY_DOCUMENT`](Features.md#ANY_DOCUMENT) and
+     * [`ANY_WINDOW`](Features.md#ANY_WINDOW).
      *
      * ```js
      * new JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
@@ -883,9 +887,9 @@ var validMaskFromArrayOrStringOrFeature;
      * Besides these predefined features, it is possible to construct custom features from the union
      * or intersection of other features.
      *
-     * Among the predefined features, there are some special ones called _elementary_ features that
+     * Among the predefined features, there are some special ones called *elementary* features that
      * cannot be expressed as a union of any number of other elementary features.
-     * All other features, called _composite_ features, can be constructed as a union of zero or
+     * All other features, called *composite* features, can be constructed as a union of zero or
      * more elementary features.
      * Two of the predefined composite features are particularly important:
      * [`DEFAULT`](Features.md#DEFAULT) is the empty feature, indicating that no elementary feature
@@ -898,7 +902,7 @@ var validMaskFromArrayOrStringOrFeature;
      */
     
     Feature =
-        function Feature()
+        function ()
         {
             var mask = validMaskFromArguments(arguments);
             var featureObj = this instanceof Feature ? this : Object.create(Feature.prototype);
@@ -995,16 +999,16 @@ var validMaskFromArrayOrStringOrFeature;
          *
          * @example
          *
-         * This will create a new feature object equivalent to [NAME](Features.md#NAME).
+         * This will create a new feature object equivalent to [`NAME`](Features.md#NAME).
          *
          * ```js
          * var newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
          * ```
          *
          * This will create a new feature object equivalent to
-         * [ANY_DOCUMENT](Features.md#ANY_DOCUMENT).
-         * This is because both [HTMLDOCUMENT](Features.md#HTMLDOCUMENT) and
-         * [DOCUMENT](Features.md#DOCUMENT) imply [ANY_DOCUMENT](Features.md#ANY_DOCUMENT).
+         * [`ANY_DOCUMENT`](Features.md#ANY_DOCUMENT).
+         * This is because both [`HTMLDOCUMENT`](Features.md#HTMLDOCUMENT) and
+         * [`DOCUMENT`](Features.md#DOCUMENT) imply [`ANY_DOCUMENT`](Features.md#ANY_DOCUMENT).
          *
          * ```js
          * var newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
@@ -1028,22 +1032,22 @@ var validMaskFromArrayOrStringOrFeature;
         {
             var mask = this.mask;
             var featureNameSet = new Empty();
-            var includes = [];
-            elementaryNames.forEach(
-                function (name)
+            var allIncludes = [];
+            elementaryFeatureObjs.forEach(
+                function (featureObj)
                 {
-                    var featureObj = ALL[name];
                     var otherMask = featureObj.mask;
                     var included = (otherMask & mask) === otherMask;
                     if (included)
                     {
-                        var info = FEATURE_INFOS[name];
+                        var name = featureObj.name;
                         featureNameSet[name] = null;
-                        Array.prototype.push.apply(includes, info.includes);
+                        var includes = includesMap[name];
+                        Array.prototype.push.apply(allIncludes, includes);
                     }
                 }
             );
-            includes.forEach(
+            allIncludes.forEach(
                 function (name)
                 {
                     delete featureNameSet[name];
@@ -1194,22 +1198,15 @@ var validMaskFromArrayOrStringOrFeature;
             return mask;
         };
     
-    // Assign a bit mask to each checkable feature
-    
     var autoMask = 0;
     var bitIndex = 0;
-    var featureNames = Object.keys(FEATURE_INFOS);
-    var incompatibleFeatureMasks = [];
-    var elementaryNames = [];
-    featureNames.forEach(completeFeature);
-    var elementaryFeatureObjs =
-        elementaryNames.sort().map(
-            function (name)
-            {
-                return ALL[name];
-            }
-        );
+    var elementaryFeatureObjs = [];
+    var includesMap = new Empty();
+    var incompatibleMasks = [];
     
+    var featureNames = Object.keys(FEATURE_INFOS);
+    featureNames.forEach(completeFeature);
+    elementaryFeatureObjs.sort();
     var autoFeatureObj =
         createFeature('AUTO', 'All features available in the current engine.', autoMask);
     registerFeature('AUTO', autoFeatureObj);
