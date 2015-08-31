@@ -953,7 +953,7 @@ self
                 
                 (function ()
                 {
-                    var buffer = JScrewIt.debug.createScrewBuffer(false, 4);
+                    var buffer = JScrewIt.debug.createScrewBuffer(false, true, 4);
                     it(
                         'encodes a string in a single group',
                         function ()
@@ -1016,7 +1016,7 @@ self
                     'encodes a string with incomplete groups',
                     function ()
                     {
-                        var buffer = JScrewIt.debug.createScrewBuffer(false, 7);
+                        var buffer = JScrewIt.debug.createScrewBuffer(false, true, 7);
                         for (var index = 0; index < 26; ++index)
                         {
                             var solution = Object(String.fromCharCode(65 + index));
@@ -1030,69 +1030,85 @@ self
                         );
                     }
                 );
-                describe(
-                    'with weak bound',
-                    function ()
-                    {
-                        it(
-                            'encodes an empty string',
-                            function ()
-                            {
-                                var buffer = JScrewIt.debug.createScrewBuffer(false, 10);
-                                test(buffer, '[]+[]');
-                            }
-                        );
-                        it(
-                            'encodes a single string character',
-                            function ()
-                            {
-                                var buffer = JScrewIt.debug.createScrewBuffer(false, 10);
-                                expect(buffer.append(solutionA)).toBe(true);
-                                test(buffer, '[![]+[]][+[]]');
-                            }
-                        );
-                        it(
-                            'encodes a single nonstring character',
-                            function ()
-                            {
-                                var buffer = JScrewIt.debug.createScrewBuffer(false, 10);
-                                expect(buffer.append(solution0)).toBe(true);
-                                test(buffer, '+[]+[]');
-                            }
-                        );
-                    }
+                
+                function testShortEncodings(
+                    description,
+                    strongBound,
+                    forceString,
+                    expected0,
+                    expected1,
+                    expected2)
+                {
+                    var createScrewBuffer = JScrewIt.debug.createScrewBuffer;
+                    
+                    describe(
+                        description,
+                        function ()
+                        {
+                            it(
+                                'encodes an empty string',
+                                function ()
+                                {
+                                    var buffer = createScrewBuffer(strongBound, forceString, 10);
+                                    test(buffer, expected0);
+                                }
+                            );
+                            it(
+                                'encodes a single string character',
+                                function ()
+                                {
+                                    var buffer = createScrewBuffer(strongBound, forceString, 10);
+                                    expect(buffer.append(solutionA)).toBe(true);
+                                    test(buffer, expected1);
+                                }
+                            );
+                            it(
+                                'encodes a single nonstring character',
+                                function ()
+                                {
+                                    var buffer = createScrewBuffer(strongBound, forceString, 10);
+                                    expect(buffer.append(solution0)).toBe(true);
+                                    test(buffer, expected2);
+                                }
+                            );
+                        }
+                    );
+                }
+                
+                testShortEncodings(
+                    'with weak bound and no string forcing',
+                    false,
+                    false,
+                    '[]',
+                    '[![]+[]][+[]]',
+                    '+[]'
                 );
-                describe(
-                    'with strong bound',
-                    function ()
-                    {
-                        it(
-                            'encodes an empty string',
-                            function ()
-                            {
-                                var buffer = JScrewIt.debug.createScrewBuffer(true, 10);
-                                test(buffer, '([]+[])');
-                            }
-                        );
-                        it(
-                            'encodes a single string character',
-                            function ()
-                            {
-                                var buffer = JScrewIt.debug.createScrewBuffer(true, 10);
-                                expect(buffer.append(solutionA)).toBe(true);
-                                test(buffer, '[![]+[]][+[]]');
-                            }
-                        );
-                        it(
-                            'encodes a single nonstring character',
-                            function ()
-                            {
-                                var buffer = JScrewIt.debug.createScrewBuffer(true, 10);
-                                expect(buffer.append(solution0)).toBe(true);
-                                test(buffer, '(+[]+[])');
-                            }
-                        );
-                    }
+                
+                testShortEncodings(
+                    'with weak bound and string forcing',
+                    false,
+                    true,
+                    '[]+[]',
+                    '[![]+[]][+[]]',
+                    '+[]+[]'
+                );
+                
+                testShortEncodings(
+                    'with strong bound and no string forcing',
+                    true,
+                    false,
+                    '[]',
+                    '[![]+[]][+[]]',
+                    '+[]'
+                );
+                
+                testShortEncodings(
+                    'with strong bound and string forcing',
+                    true,
+                    true,
+                    '([]+[])',
+                    '[![]+[]][+[]]',
+                    '(+[]+[])'
                 );
             }
         );
