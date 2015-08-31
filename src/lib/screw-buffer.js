@@ -1,9 +1,9 @@
+/* global LEVEL_OBJECT, LEVEL_STRING, LEVEL_UNDEFINED */
+
 var ScrewBuffer;
 
 var getAppendLength;
 var hasOuterPlus;
-
-/* global LEVEL_OBJECT, LEVEL_STRING, LEVEL_UNDEFINED */
 
 (function ()
 {
@@ -24,7 +24,7 @@ var hasOuterPlus;
     }
     
     ScrewBuffer =
-        function (strongBound, groupThreshold)
+        function (strongBound, forceString, groupThreshold)
         {
             function sequence(offset, count)
             {
@@ -86,13 +86,16 @@ var hasOuterPlus;
                             switch (solutions.length)
                             {
                             case 0:
-                                result = strongBound ? 7 : 5;
+                                result = forceString ? strongBound ? 7 : 5 : 2;
                                 break;
                             case 1:
                                 var solution = solutions[0];
                                 result =
                                     solution.length +
-                                    (solution.level < LEVEL_STRING ? strongBound ? 5 : 3 : 0);
+                                    (
+                                        forceString && solution.level < LEVEL_STRING ?
+                                        strongBound ? 5 : 3 : 0
+                                    );
                                 break;
                             default:
                                 result = length + (strongBound ? 2 : 0);
@@ -132,13 +135,14 @@ var hasOuterPlus;
                             var solutionCount = solutions.length;
                             if (!solutionCount)
                             {
-                                str = '[]+[]';
+                                singlePart = !forceString;
+                                str = singlePart ? '[]' : '[]+[]';
                             }
                             else if (solutionCount === 1)
                             {
                                 var solution = solutions[0];
                                 // Here we assume that string solutions never have an outer plus.
-                                singlePart = solution.level > LEVEL_OBJECT;
+                                singlePart = !forceString || solution.level > LEVEL_OBJECT;
                                 str = solution + (singlePart ? '' : '+[]');
                             }
                             else if (solutionCount <= groupThreshold)

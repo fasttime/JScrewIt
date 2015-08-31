@@ -32,9 +32,9 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             return encoder;
         }
         
-        function createScrewBuffer(strongBound, groupThreshold)
+        function createScrewBuffer(strongBound, forceString, groupThreshold)
         {
-            var buffer = new ScrewBuffer(strongBound, groupThreshold);
+            var buffer = new ScrewBuffer(strongBound, forceString, groupThreshold);
             return buffer;
         }
         

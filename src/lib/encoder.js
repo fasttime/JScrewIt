@@ -266,7 +266,7 @@ var expandEntries;
             function (inputData, maxLength)
             {
                 var input = inputData.valueOf();
-                var output = this.replaceString(input, false, maxLength);
+                var output = this.replaceString(input, false, true, maxLength);
                 return output;
             }
         ),
@@ -541,7 +541,7 @@ var expandEntries;
                 this.throwSyntaxError('Illegal string ' + quotedString);
             }
             var strongBound = isStrongBoundRequired(expr, offset, wholeMatch);
-            replacement = this.replaceString(str, strongBound);
+            replacement = this.replaceString(str, strongBound, true);
             if (!replacement)
             {
                 this.throwSyntaxError('String too complex');
@@ -866,7 +866,7 @@ var expandEntries;
                     dictChars[reindex.index] = char;
                 }
             );
-            var legend = this.encodeDictLegend(dictChars.join(''), maxLength - minFreqIndexLength);
+            var legend = this.encodeDictLegend(dictChars, maxLength - minFreqIndexLength);
             if (legend)
             {
                 var freqIndexes =
@@ -893,10 +893,11 @@ var expandEntries;
             }
         },
         
-        encodeDictLegend: function (input, maxLength)
+        encodeDictLegend: function (dictChars, maxLength)
         {
             if (!(maxLength < 0))
             {
+                var input = dictChars.join('');
                 var output =
                     this.callCoders(input, ['byCharCodesRadix4', 'byCharCodes', 'plain'], 'legend');
                 if (output && !(output.length > maxLength))
@@ -992,7 +993,8 @@ var expandEntries;
         
         replaceNumberArray: function (array, maxLength)
         {
-            var replacement = this.replaceString(array.join(false), true, maxLength);
+            var str = array.join(false);
+            var replacement = this.replaceString(str, true, true, maxLength);
             if (replacement)
             {
                 var result = replacement + this.replaceExpr('["split"](false)');
@@ -1003,14 +1005,14 @@ var expandEntries;
             }
         },
         
-        replaceString: function (str, strongBound, maxLength)
+        replaceString: function (str, strongBound, forceString, maxLength)
         {
             function makeRegExp()
             {
                 regExp = new RegExp(stringTokenPattern, 'g');
             }
             
-            var buffer = new ScrewBuffer(strongBound, this.maxGroupThreshold);
+            var buffer = new ScrewBuffer(strongBound, forceString, this.maxGroupThreshold);
             var stringTokenPattern = this.stringTokenPattern || this.createStringTokenPattern();
             var match;
             var regExp;
