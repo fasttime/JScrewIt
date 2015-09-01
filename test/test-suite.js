@@ -763,7 +763,7 @@ self
                             function ()
                             {
                                 var featureObj = Feature.commonOf();
-                                expect(featureObj).toBe(null);
+                                expect(featureObj).toBeNull();
                             }
                         );
                         it(
@@ -801,7 +801,7 @@ self
                     {
                         var featureMask = Feature.NO_IE_SRC.mask | Feature.IE_SRC.mask;
                         var featureObj = JScrewIt.debug.createFeatureFromMask(featureMask);
-                        expect(featureObj).toBe(null);
+                        expect(featureObj).toBeNull();
                     }
                 );
             }
