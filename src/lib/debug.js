@@ -13,6 +13,7 @@ expandEntries,
 featureFromMask,
 getValidFeatureMask,
 hasOuterPlus,
+isMaskCompatible,
 setUp,
 trimJS
 */
@@ -30,6 +31,12 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             var encoder = new Encoder(featureMask);
             encoder.codingLog = [];
             return encoder;
+        }
+        
+        function createFeatureFromMask(mask)
+        {
+            var featureObj = isMaskCompatible(mask) ? featureFromMask(mask) : null;
+            return featureObj;
         }
         
         function createScrewBuffer(strongBound, forceString, groupThreshold)
@@ -89,9 +96,9 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                 { },
                 {
                     createEncoder:          createEncoder,
+                    createFeatureFromMask:  createFeatureFromMask,
                     createScrewBuffer:      createScrewBuffer,
                     defineConstant:         defineConstant,
-                    featureFromMask:        featureFromMask,
                     getCharacterEntries:    getCharacterEntries,
                     getCoders:              getCoders,
                     getComplexEntries:      getComplexEntries,

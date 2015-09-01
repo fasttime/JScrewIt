@@ -31,7 +31,7 @@ function processOutputMap(outputMap, entryCount, logLine)
     {
         var outputData = outputMap[output];
         var featureMask = outputData.featureMask;
-        var featureNames = JScrewIt.debug.featureFromMask(featureMask).canonicalNames;
+        var featureNames = JScrewIt.debug.createFeatureFromMask(featureMask).canonicalNames;
         outputData.featureNames = featureNames;
         var entryIndex = outputData.entryIndex;
         if (entryIndex != null)
@@ -168,7 +168,7 @@ function scanChar(char, entryCount, logLine, allCharCount, charDoneCount, callba
     {
         var output = encoder.resolveCharacter(char);
         var outputData = outputMap[output];
-        var featureMask = analyzer.featureMask;
+        var featureMask = analyzer.featureObj.mask;
         if (outputData)
         {
             outputData.featureMask &= featureMask;
