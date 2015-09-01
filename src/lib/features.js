@@ -3,6 +3,7 @@
 var Feature;
 
 var featureFromMask;
+var isMaskCompatible;
 var maskFromArray;
 var validMaskFromArrayOrStringOrFeature;
 
@@ -161,19 +162,6 @@ var validMaskFromArrayOrStringOrFeature;
                 }
             );
         return featureObj;
-    }
-    
-    function isMaskCompatible(mask)
-    {
-        var result =
-            incompatibleMasks.every(
-                function (incompatibleMask)
-                {
-                    var result = (incompatibleMask & mask) !== incompatibleMask;
-                    return result;
-                }
-            );
-        return result;
     }
     
     function maskFromStringOrFeature(arg)
@@ -1158,6 +1146,20 @@ var validMaskFromArrayOrStringOrFeature;
         {
             var featureObj = Object.create(Feature.prototype, { mask: { value: mask } });
             return featureObj;
+        };
+    
+    isMaskCompatible =
+        function (mask)
+        {
+            var result =
+                incompatibleMasks.every(
+                    function (incompatibleMask)
+                    {
+                        var result = (incompatibleMask & mask) !== incompatibleMask;
+                        return result;
+                    }
+                );
+            return result;
         };
     
     maskFromArray =

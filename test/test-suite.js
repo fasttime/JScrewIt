@@ -792,6 +792,21 @@ self
             }
         );
         describe(
+            'JScrewIt.debug.createFeatureFromMask',
+            function ()
+            {
+                it(
+                    'returns null for an incompatible mask',
+                    function ()
+                    {
+                        var featureMask = Feature.NO_IE_SRC.mask | Feature.IE_SRC.mask;
+                        var featureObj = JScrewIt.debug.createFeatureFromMask(featureMask);
+                        expect(featureObj).toBe(null);
+                    }
+                );
+            }
+        );
+        describe(
             'JScrewIt.debug.defineConstant',
             function ()
             {
@@ -1572,7 +1587,7 @@ self
     
     function getEntryFeature(entry)
     {
-        var featureObj = JScrewIt.debug.featureFromMask(entry.featureMask);
+        var featureObj = JScrewIt.debug.createFeatureFromMask(entry.featureMask);
         return featureObj;
     }
     
