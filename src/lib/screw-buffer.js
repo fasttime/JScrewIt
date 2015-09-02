@@ -59,7 +59,7 @@ var hasOuterPlus;
             }
             
             var solutions = [];
-            var length = -1;
+            var length = strongBound ? -1 : -3;
             var maxSolutionCount = Math.pow(2, groupThreshold - 1);
             
             assignNoEnum(
@@ -93,7 +93,8 @@ var hasOuterPlus;
                                 );
                             break;
                         default:
-                            result = length + (strongBound ? 2 : 0);
+                            result = length;
+                            break;
                         }
                         return result;
                     },

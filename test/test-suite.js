@@ -1014,8 +1014,21 @@ self
                 solutionA.level = 1;
                 var solution0 = Object('+[]');
                 solution0.level = -1;
+                var solution2 = Object('!![]+!![]');
+                solution2.level = -1;
                 var solutionFalse = Object('![]');
                 solutionFalse.level = -1;
+                
+                it(
+                    'Buffer length does not exceed string length',
+                    function ()
+                    {
+                        var buffer = JScrewIt.debug.createScrewBuffer(false, true, 4);
+                        buffer.append(solution2);
+                        buffer.append(solution2);
+                        expect(buffer.length).not.toBeGreaterThan(buffer.toString().length);
+                    }
+                );
                 
                 (function ()
                 {
@@ -1028,7 +1041,7 @@ self
                             expect(buffer.append(solution0)).toBe(true);
                             expect(buffer.append(solution0)).toBe(true);
                             expect(buffer.append(solution0)).toBe(true);
-                            test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[])');
+                            test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[])', 2);
                         }
                     );
                     it(
@@ -1037,7 +1050,7 @@ self
                         {
                             expect(buffer.append(solutionFalse)).toBe(true);
                             expect(buffer.append(solutionFalse)).toBe(true);
-                            test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![])', 2);
+                            test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![])', 4);
                         }
                     );
                     it(
@@ -1048,7 +1061,7 @@ self
                             test(
                                 buffer,
                                 '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))',
-                                6
+                                8
                             );
                         }
                     );
@@ -1060,7 +1073,7 @@ self
                             test(
                                 buffer,
                                 '[![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
-                                8
+                                10
                             );
                         }
                     );
@@ -1072,7 +1085,7 @@ self
                             test(
                                 buffer,
                                 '[![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
-                                8
+                                10
                             );
                         }
                     );
@@ -1092,7 +1105,7 @@ self
                         test(
                             buffer,
                             'A+B+C+D+E+(F+G+H+I+J)+(K+L+M+N+(O+P+Q+R)+(S+T+U+V+(W+X+Y+Z)))',
-                            10
+                            12
                         );
                     }
                 );
