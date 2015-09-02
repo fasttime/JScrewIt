@@ -348,13 +348,64 @@ self
                 describeEncodeTest('COMPACT');
                 describeEncodeTest('FF31');
                 describeEncodeTest('AUTO');
-                it(
-                    'encodes an empty string',
+                describe(
+                    'encodes an empty string with wrapWith',
                     function ()
                     {
-                        var output = JScrewIt.encode('');
-                        var actual = eval(output);
-                        expect(actual).toBe('');
+                        it(
+                            'none',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('', { wrapWith: 'none' });
+                                expect(output).toBe('[]+[]');
+                            }
+                        );
+                        it(
+                            'call',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('', { wrapWith: 'call' });
+                                expect(output).toMatch(/\(\)\(\)$/);
+                            }
+                        );
+                        it(
+                            'eval',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('', { wrapWith: 'eval' });
+                                expect(output).toMatch(/\(\)$/);
+                            }
+                        );
+                    }
+                );
+                describe(
+                    'encodes a single digit with wrapWith',
+                    function ()
+                    {
+                        it(
+                            'none',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('2');
+                                expect(output).toBe('!![]+!![]+[]');
+                            }
+                        );
+                        it(
+                            'call',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('2', { wrapWith: 'call' });
+                                expect(output).toMatch(/\(!!\[]\+!!\[]\)\(\)$/);
+                            }
+                        );
+                        it(
+                            'eval',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('2', { wrapWith: 'eval' });
+                                expect(output).toMatch(/\(!!\[]\+!!\[]\)$/);
+                            }
+                        );
                     }
                 );
                 it(
@@ -1094,7 +1145,7 @@ self
                     'with weak bound and no string forcing',
                     false,
                     false,
-                    '[]',
+                    '',
                     '[![]+[]][+[]]',
                     '+[]'
                 );
@@ -1112,7 +1163,7 @@ self
                     'with strong bound and no string forcing',
                     true,
                     false,
-                    '[]',
+                    '',
                     '[![]+[]][+[]]',
                     '+[]'
                 );

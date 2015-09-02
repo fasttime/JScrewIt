@@ -266,7 +266,7 @@ var expandEntries;
             function (inputData, maxLength)
             {
                 var input = inputData.valueOf();
-                var output = this.replaceString(input, false, true, maxLength);
+                var output = this.replaceString(input, false, inputData.forceString, maxLength);
                 return output;
             }
         ),
@@ -606,7 +606,7 @@ var expandEntries;
     
     var encoderProtoSource =
     {
-        callCoders: function (input, coderNames, codingName)
+        callCoders: function (input, forceString, coderNames, codingName)
         {
             var output;
             var inputLength = input.length;
@@ -616,6 +616,7 @@ var expandEntries;
             perfInfoList.inputLength = inputLength;
             codingLog.push(perfInfoList);
             var inputData = Object(input);
+            inputData.forceString = forceString;
             var usedPerfInfo;
             coderNames.forEach(
                 function (coderName)
@@ -790,6 +791,7 @@ var expandEntries;
             var output =
                 this.callCoders(
                     input,
+                    wrapWith === 'none',
                     [
                         'byDictRadix5AmendedBy3',
                         'byDictRadix4AmendedBy2',
@@ -803,7 +805,7 @@ var expandEntries;
                         'plain'
                     ]
                 );
-            if (!output)
+            if (output == null)
             {
                 throw new Error('Encoding failed');
             }
@@ -899,7 +901,12 @@ var expandEntries;
             {
                 var input = dictChars.join('');
                 var output =
-                    this.callCoders(input, ['byCharCodesRadix4', 'byCharCodes', 'plain'], 'legend');
+                    this.callCoders(
+                        input,
+                        true,
+                        ['byCharCodesRadix4', 'byCharCodes', 'plain'],
+                        'legend'
+                    );
                 if (output && !(output.length > maxLength))
                 {
                     return output;
