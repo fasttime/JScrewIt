@@ -1,4 +1,4 @@
-/* global LEVEL_OBJECT, LEVEL_STRING, LEVEL_UNDEFINED */
+/* global LEVEL_OBJECT, LEVEL_STRING, LEVEL_UNDEFINED, assignNoEnum */
 
 var ScrewBuffer;
 
@@ -62,116 +62,107 @@ var hasOuterPlus;
             var length = -1;
             var maxSolutionCount = Math.pow(2, groupThreshold - 1);
             
-            Object.defineProperties(
+            assignNoEnum(
                 this,
                 {
-                    'append':
+                    append: function (solution)
                     {
-                        value: function (solution)
+                        if (solutions.length >= maxSolutionCount)
                         {
-                            if (solutions.length >= maxSolutionCount)
-                            {
-                                return false;
-                            }
-                            solutions.push(solution);
-                            length += getAppendLength(solution);
-                            return true;
+                            return false;
                         }
+                        solutions.push(solution);
+                        length += getAppendLength(solution);
+                        return true;
                     },
-                    'length':
+                    get length ()
                     {
-                        get: function ()
+                        var result;
+                        switch (solutions.length)
                         {
-                            var result;
-                            switch (solutions.length)
-                            {
-                            case 0:
-                                result = forceString ? strongBound ? 7 : 5 : 2;
-                                break;
-                            case 1:
-                                var solution = solutions[0];
-                                result =
-                                    solution.length +
-                                    (
-                                        forceString && solution.level < LEVEL_STRING ?
-                                        strongBound ? 5 : 3 : 0
-                                    );
-                                break;
-                            default:
-                                result = length + (strongBound ? 2 : 0);
-                            }
-                            return result;
+                        case 0:
+                            result = forceString ? strongBound ? 7 : 5 : 0;
+                            break;
+                        case 1:
+                            var solution = solutions[0];
+                            result =
+                                solution.length +
+                                (
+                                    forceString && solution.level < LEVEL_STRING ?
+                                    strongBound ? 5 : 3 : 0
+                                );
+                            break;
+                        default:
+                            result = length + (strongBound ? 2 : 0);
                         }
+                        return result;
                     },
-                    'toString':
+                    toString: function ()
                     {
-                        value: function ()
+                        function collect(offset, count, maxGroupCount)
                         {
-                            function collect(offset, count, maxGroupCount)
+                            if (count <= groupSize + 1)
                             {
-                                if (count <= groupSize + 1)
-                                {
-                                    str += sequence(offset, count);
-                                }
-                                else
-                                {
-                                    maxGroupCount /= 2;
-                                    var halfCount = groupSize * maxGroupCount;
-                                    var capacity = 2 * halfCount - count;
-                                    var leftCount =
-                                        Math.max(
-                                            halfCount - capacity + capacity % (groupSize - 1),
-                                            (maxGroupCount / 2 ^ 0) * (groupSize + 1)
-                                        );
-                                    collect(offset, leftCount, maxGroupCount);
-                                    str += '+(';
-                                    collect(offset + leftCount, count - leftCount, maxGroupCount);
-                                    str += ')';
-                                }
-                            }
-                            
-                            var singlePart;
-                            var str;
-                            var solutionCount = solutions.length;
-                            if (!solutionCount)
-                            {
-                                singlePart = !forceString;
-                                str = singlePart ? '[]' : '[]+[]';
-                            }
-                            else if (solutionCount === 1)
-                            {
-                                var solution = solutions[0];
-                                // Here we assume that string solutions never have an outer plus.
-                                singlePart = !forceString || solution.level > LEVEL_OBJECT;
-                                str = solution + (singlePart ? '' : '+[]');
-                            }
-                            else if (solutionCount <= groupThreshold)
-                            {
-                                str = sequence(0, solutionCount);
+                                str += sequence(offset, count);
                             }
                             else
                             {
-                                var groupSize = groupThreshold;
-                                var maxGroupCount = 2;
-                                for (;;)
-                                {
-                                    --groupSize;
-                                    var maxSolutionCountForDepth = groupSize * maxGroupCount;
-                                    if (solutionCount <= maxSolutionCountForDepth)
-                                    {
-                                        break;
-                                    }
-                                    maxGroupCount *= 2;
-                                }
-                                str = '';
-                                collect(0, solutionCount, maxGroupCount);
+                                maxGroupCount /= 2;
+                                var halfCount = groupSize * maxGroupCount;
+                                var capacity = 2 * halfCount - count;
+                                var leftCount =
+                                    Math.max(
+                                        halfCount - capacity + capacity % (groupSize - 1),
+                                        (maxGroupCount / 2 ^ 0) * (groupSize + 1)
+                                    );
+                                collect(offset, leftCount, maxGroupCount);
+                                str += '+(';
+                                collect(offset + leftCount, count - leftCount, maxGroupCount);
+                                str += ')';
                             }
-                            if (strongBound && !singlePart)
-                            {
-                                str = '(' + str + ')';
-                            }
-                            return str;
                         }
+                        
+                        var singlePart;
+                        var str;
+                        var solutionCount = solutions.length;
+                        if (!solutionCount)
+                        {
+                            singlePart = !forceString;
+                            str = singlePart ? '' : '[]+[]';
+                        }
+                        else if (solutionCount === 1)
+                        {
+                            var solution = solutions[0];
+                            // Here we assume that string solutions never have an outer plus.
+                            singlePart = !forceString || solution.level > LEVEL_OBJECT;
+                            str = solution + (singlePart ? '' : '+[]');
+                        }
+                        else if (solutionCount <= groupThreshold)
+                        {
+                            str = sequence(0, solutionCount);
+                        }
+                        else
+                        {
+                            var groupSize = groupThreshold;
+                            var maxGroupCount = 2;
+                            for (;;)
+                            {
+                                --groupSize;
+                                var maxSolutionCountForDepth = groupSize * maxGroupCount;
+                                if (solutionCount <= maxSolutionCountForDepth)
+                                {
+                                    break;
+                                }
+                                maxGroupCount *= 2;
+                            }
+                            str = '';
+                            collect(0, solutionCount, maxGroupCount);
+                        }
+                        if (strongBound && !singlePart)
+                        {
+                            str = '(' + str + ')';
+                        }
+                        return str;
                     }
                 }
             );
