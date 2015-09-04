@@ -1,4 +1,4 @@
-/* global LEVEL_OBJECT, LEVEL_STRING, LEVEL_UNDEFINED, assignNoEnum */
+/* global LEVEL_OBJECT, LEVEL_NUMERIC, LEVEL_STRING, LEVEL_UNDEFINED, assignNoEnum */
 
 var ScrewBuffer;
 
@@ -23,6 +23,12 @@ var hasOuterPlus;
         return str;
     }
     
+    function getSingleArrayItemExpr(solution)
+    {
+        var str = solution + (solution.level < LEVEL_NUMERIC ? '+[]' : '');
+        return str;
+    }
+    
     ScrewBuffer =
         function (strongBound, forceString, groupThreshold)
         {
@@ -41,11 +47,12 @@ var hasOuterPlus;
             function findSplitIndex(intrinsicSplitCost, startIndex, endIndex)
             {
                 var index = startIndex;
-                var optimalSplitCost = getSplitCostAt(index, true);
+                var rightmostIndex = endIndex - 1;
+                var optimalSplitCost = getSplitCostAt(index, true, index === rightmostIndex);
                 var splitIndex = index;
                 while (++index < endIndex)
                 {
-                    var splitCost = getSplitCostAt(index, false);
+                    var splitCost = getSplitCostAt(index, false, index === rightmostIndex);
                     if (splitCost < optimalSplitCost)
                     {
                         optimalSplitCost = splitCost;
@@ -54,18 +61,25 @@ var hasOuterPlus;
                 }
                 if (optimalSplitCost + intrinsicSplitCost < 0)
                 {
+                    /*
+                    if (optimalSplitCost > 0)
+                    {
+                        // See if we can split the right side for free instead.
+                        // If so, discard the left split index.
+                    }
+                    */
                     return splitIndex;
                 }
             }
             
-            function gather(localStrongBound)
+            function gather(localStrongBound, localForceString)
             {
                 var str;
                 var index = findBridge(0);
                 var offset;
                 if (index > 1)
                 {
-                    var intrinsicSplitCost = forceString ? -3 : strongBound ? 2 : 0;
+                    var intrinsicSplitCost = localForceString ? -3 : localStrongBound ? 2 : 0;
                     offset = findSplitIndex(intrinsicSplitCost, 1, index);
                 }
                 var multiPart = offset != null;
@@ -94,9 +108,9 @@ var hasOuterPlus;
                 }
                 var solutionCount = solutions.length;
                 var count = solutionCount - offset;
-                if (forceString && !multiPart && count > 1)
+                if (localForceString && !multiPart && count > 1)
                 {
-                    str += solutions[offset] + ')';
+                    str += getSingleArrayItemExpr(solutions[offset]) + ')';
                     while (++offset < solutionCount)
                     {
                         str = appendSolution(str, solutions[offset]);
@@ -107,7 +121,7 @@ var hasOuterPlus;
                 {
                     str += sequence0(offset, count, '[[]]') + ')';
                 }
-                if (!multiPart && forceString)
+                if (!multiPart && localForceString)
                 {
                     str += '+[]';
                     multiPart = true;
@@ -119,33 +133,30 @@ var hasOuterPlus;
                 return str;
             }
             
-            function getSplitCostAt(index, leftmost)
+            function getSplitCostAt(index, leftmost, rightmost)
             {
-                var splitCost;
-                var solutionLeft    = solutions[index - 1];
-                var solutionCenter  = solutions[index];
-                var solutionRight   = solutions[index + 1];
-                var levelLeft   = solutionLeft.level;
+                var solutionCenter = solutions[index];
                 var levelCenter = solutionCenter.level;
-                var levelRight  = solutionRight.level;
-                if (leftmost && levelLeft < LEVEL_OBJECT && levelCenter < LEVEL_OBJECT)
-                {
-                    splitCost =
-                        levelLeft > LEVEL_UNDEFINED || levelCenter > LEVEL_UNDEFINED ? -2 : -3;
-                }
-                else
-                {
-                    splitCost = solutionCenter.outerPlus ? -2 : 0;
-                }
-                if (levelCenter < LEVEL_OBJECT && levelRight < LEVEL_OBJECT)
-                {
-                    splitCost +=
-                        levelCenter > LEVEL_UNDEFINED || levelRight > LEVEL_UNDEFINED ? 2 : 3;
-                    if (solutionRight.outerPlus)
-                    {
-                        splitCost -= 2;
-                    }
-                }
+                var levelLeft;
+                var levelRight;
+                var solutionRight;
+                var splitCost =
+                (
+                    rightmost && levelCenter < LEVEL_NUMERIC ?
+                    3 :
+                    levelCenter < LEVEL_OBJECT &&
+                    (levelRight = (solutionRight = solutions[index + 1]).level) < LEVEL_OBJECT ?
+                    (levelCenter > LEVEL_UNDEFINED || levelRight > LEVEL_UNDEFINED ? 2 : 3) -
+                    (solutionRight.outerPlus ? 2 : 0) :
+                    0
+                ) -
+                (
+                    leftmost &&
+                    levelCenter < LEVEL_OBJECT &&
+                    (levelLeft = solutions[index - 1].level) < LEVEL_OBJECT ?
+                    levelLeft > LEVEL_UNDEFINED || levelCenter > LEVEL_UNDEFINED ? 2 : 3 :
+                    solutionCenter.outerPlus ? 2 : 0
+                );
                 return splitCost;
             }
             
@@ -183,7 +194,23 @@ var hasOuterPlus;
             
             function sequence0(offset, count, emptyReplacement)
             {
-                var str = count ? sequence1(offset, count) : emptyReplacement;
+                var str;
+                if (count)
+                {
+                    if (count > 1)
+                    {
+                        str = sequence(offset, count);
+                    }
+                    else
+                    {
+                        var solution = solutions[offset];
+                        str = getSingleArrayItemExpr(solution);
+                    }
+                }
+                else
+                {
+                    str = emptyReplacement;
+                }
                 return str;
             }
             
@@ -286,7 +313,7 @@ var hasOuterPlus;
                             }
                             else
                             {
-                                str = gather(strongBound);
+                                str = gather(strongBound, forceString);
                                 singlePart = strongBound;
                             }
                         }
