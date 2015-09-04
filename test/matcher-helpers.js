@@ -95,6 +95,28 @@
                 return this.assertions.pass(message);
             }
             this.assertions.fail(message);
+        },
+        toEndWith: function (str)
+        {
+            var actual = this.value;
+            var message = this.generateMessage(actual, this.expr, 'to end with', str);
+            var pass = actual.slice(-str.length) === str;
+            if (pass)
+            {
+                return this.assertions.pass(message);
+            }
+            this.assertions.fail(message);
+        },
+        toStartWith: function (str)
+        {
+            var actual = this.value;
+            var message = this.generateMessage(actual, this.expr, 'to start with', str);
+            var pass = actual.slice(0, str.length) === str;
+            if (pass)
+            {
+                return this.assertions.pass(message);
+            }
+            this.assertions.fail(message);
         }
     };
     
