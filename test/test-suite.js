@@ -1014,19 +1014,37 @@ self
                 solutionA.level = 1;
                 var solution0 = Object('+[]');
                 solution0.level = -1;
-                var solution2 = Object('!![]+!![]');
-                solution2.level = -1;
                 var solutionFalse = Object('![]');
                 solutionFalse.level = -1;
+                var solutionComma =
+                    JScrewIt.debug.createEncoder(['FILL', 'V8_SRC']).resolveCharacter(',');
                 
-                it(
-                    'Buffer length does not exceed string length',
+                describe(
+                    'buffer length does not exceed string length when joining solutions with ' +
+                    'outer plus',
                     function ()
                     {
-                        var buffer = JScrewIt.debug.createScrewBuffer(false, true, 4);
-                        buffer.append(solution2);
-                        buffer.append(solution2);
-                        expect(buffer.length).not.toBeGreaterThan(buffer.toString().length);
+                        it(
+                            'without a bridge',
+                            function ()
+                            {
+                                var buffer = JScrewIt.debug.createScrewBuffer(false, false, 4);
+                                buffer.append(solution0);
+                                buffer.append(solution0);
+                                expect(buffer.length).not.toBeGreaterThan(buffer.toString().length);
+                            }
+                        );
+                        it(
+                            'with a bridge',
+                            function ()
+                            {
+                                var buffer = JScrewIt.debug.createScrewBuffer(true, false, 4);
+                                buffer.append(solution0);
+                                buffer.append(solutionComma);
+                                buffer.append(solution0);
+                                expect(buffer.length).not.toBeGreaterThan(buffer.toString().length);
+                            }
+                        );
                     }
                 );
                 
@@ -1316,6 +1334,116 @@ self
             'Encoder#replaceString',
             function ()
             {
+                describe(
+                    'supports bridging',
+                    function ()
+                    {
+                        function test(
+                            expr,
+                            start0,
+                            end0,
+                            startSB,
+                            endSB,
+                            startFS,
+                            endFS,
+                            startSBFS,
+                            endSBFS)
+                        {
+                            function fn()
+                            {
+                                it(
+                                    'with weak bound and no string forcing',
+                                    function ()
+                                    {
+                                        var output = encoder.replaceString(expr, false, false);
+                                        expect(output).toStartWith(start0);
+                                        expect(output).toEndWith(end0);
+                                    }
+                                );
+                                it(
+                                    'with strong bound and no string forcing',
+                                    function ()
+                                    {
+                                        var output = encoder.replaceString(expr, true, false);
+                                        expect(output).toStartWith(startSB);
+                                        expect(output).toEndWith(endSB);
+                                    }
+                                );
+                                it(
+                                    'with weak bound and string forcing',
+                                    function ()
+                                    {
+                                        var output = encoder.replaceString(expr, false, true);
+                                        expect(output).toStartWith(startFS);
+                                        expect(output).toEndWith(endFS);
+                                    }
+                                );
+                                it(
+                                    'with strong bound and string forcing',
+                                    function ()
+                                    {
+                                        var output = encoder.replaceString(expr, true, true);
+                                        expect(output).toStartWith(startSBFS);
+                                        expect(output).toEndWith(endSBFS);
+                                    }
+                                );
+                            }
+                            
+                            describe('with "' + expr + '"', fn);
+                        }
+                        
+                        var encoder = JScrewIt.debug.createEncoder(['FILL', 'NO_IE_SRC']);
+                        test(
+                            ',0',
+                            '[[]][', '](+[])',
+                            '[[]][', '](+[])',
+                            '[[]][', '](+[])+[]',
+                            '([[]][', '](+[])+[])'
+                        );
+                        test(
+                            '0,',
+                            '[+[]][', ']([[]])',
+                            '[+[]][', ']([[]])',
+                            '[+[]][', ']([[]])+[]',
+                            '([+[]][', ']([[]])+[])'
+                        );
+                        test(
+                            ',',
+                            '[[]][', ']([[]])',
+                            '[[]][', ']([[]])',
+                            '[[]][', ']([[]])+[]',
+                            '([[]][', ']([[]])+[])'
+                        );
+                        test(
+                            '0,0',
+                            '[+[]][', '](+[])',
+                            '[+[]][', '](+[])',
+                            '[+[]][', '](+[])+[]',
+                            '([+[]][', '](+[])+[])'
+                        );
+                        test(
+                            '00,0',
+                            '+[]+[+[]][', '](+[])',
+                            '[+[]+[+[]]][', '](+[])',
+                            '+[]+[+[]][', '](+[])',
+                            '(+[]+[+[]][', '](+[]))'
+                        );
+                        test(
+                            '0a0f,0',
+                            '+[]+(![]+[])[+!![]]+[+[]+(![]+[])[+[]]][', '](+[])',
+                            '[+[]+(![]+[])[+!![]]+(+[])+(![]+[])[+[]]][', '](+[])',
+                            '+[]+(![]+[])[+!![]]+[+[]+(![]+[])[+[]]][', '](+[])',
+                            '(+[]+(![]+[])[+!![]]+[+[]+(![]+[])[+[]]][', '](+[]))'
+                        );
+                        test(
+                            '0,00',
+                            '[+[]][', '](+[]+[+[]])',
+                            '[+[]][', '](+[]+[+[]])',
+                            '[+[]][', '](+[])+(+[])',
+                            '([+[]][', '](+[])+(+[]))'
+                        );
+                    }
+                );
                 it(
                     'returns undefined for too complex input',
                     function ()

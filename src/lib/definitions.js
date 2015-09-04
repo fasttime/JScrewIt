@@ -145,6 +145,16 @@ var replaceDigit;
         return solution;
     }
     
+    function createCommaSolution()
+    {
+        var block = this.replaceExpr('["concat"]');
+        var replacement = '[[]]' + block + '([[]])';
+        var solution = createSolution(replacement, LEVEL_OBJECT, false);
+        var appendLength = block.length - 1;
+        solution.bridge = { block: block, appendLength: appendLength };
+        return solution;
+    }
+    
     function createFBCharAtDefinition(offset)
     {
         function definition()
@@ -591,7 +601,7 @@ var replaceDigit;
         ',':
         [
             define('([]["slice"]["call"]("false") + [])[1]'),
-            define({ expr: '[[]]["concat"]([[]])', level: LEVEL_OBJECT })
+            define(createCommaSolution)
         ],
         '-': '(+".0000000001" + [])[2]',
         '.': '(+"11e20" + [])[1]',
