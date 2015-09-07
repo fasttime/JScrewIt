@@ -1,9 +1,12 @@
+/* global LEVEL_OBJECT, LEVEL_NUMERIC, LEVEL_STRING, LEVEL_UNDEFINED, assignNoEnum */
+
+// This implementation assumes that all numeric solutions have an outer plus, and all other
+// character solutions have none.
+
 var ScrewBuffer;
 
 var getAppendLength;
 var hasOuterPlus;
-
-/* global LEVEL_OBJECT, LEVEL_STRING, LEVEL_UNDEFINED */
 
 (function ()
 {
@@ -23,9 +26,214 @@ var hasOuterPlus;
         return str;
     }
     
+    function getNumericJoinCost(level0, level1)
+    {
+        var joinCost = level0 > LEVEL_UNDEFINED || level1 > LEVEL_UNDEFINED ? 2 : 3;
+        return joinCost;
+    }
+    
+    function isNumericJoin(level0, level1)
+    {
+        var result = level0 < LEVEL_OBJECT && level1 < LEVEL_OBJECT;
+        return result;
+    }
+    
     ScrewBuffer =
-        function (strongBound, groupThreshold)
+        function (strongBound, forceString, groupThreshold)
         {
+            function canSplitRightEndForFree(lastBridgeIndex, limit)
+            {
+                var rightEndIndex = lastBridgeIndex + 1;
+                var rightEndLength = limit - rightEndIndex;
+                var result =
+                    rightEndLength > 2 ||
+                    rightEndLength > 1 && !isUnluckyRightEnd(rightEndIndex);
+                return result;
+            }
+            
+            function findLastBridge(offset, limit)
+            {
+                for (var index = limit; index-- > offset;)
+                {
+                    var solution = solutions[index];
+                    if (solution.bridge)
+                    {
+                        return index;
+                    }
+                }
+            }
+            
+            function findNextBridge(index)
+            {
+                for (;; ++index)
+                {
+                    var solution = solutions[index];
+                    if (solution.bridge)
+                    {
+                        return index;
+                    }
+                }
+            }
+            
+            function findSplitIndex(
+                offset,
+                limit,
+                intrinsicSplitCost,
+                firstBridgeIndex,
+                lastBridgeIndex)
+            {
+                var index = offset + 1;
+                var lastIndex = firstBridgeIndex - 1;
+                var optimalSplitCost = getSplitCostAt(index, true, index === lastIndex);
+                var splitIndex = index;
+                while (++index < firstBridgeIndex)
+                {
+                    var splitCost = getSplitCostAt(index, false, index === lastIndex);
+                    if (splitCost < optimalSplitCost)
+                    {
+                        optimalSplitCost = splitCost;
+                        splitIndex = index;
+                    }
+                }
+                if (
+                    optimalSplitCost + intrinsicSplitCost < 0 &&
+                    !(optimalSplitCost > 0 && canSplitRightEndForFree(lastBridgeIndex, limit)))
+                {
+                    return splitIndex;
+                }
+            }
+            
+            function gather(offset, count, localStrongBound, localForceString)
+            {
+                function appendRightGroup(groupCount)
+                {
+                    str += sequence0(index, groupCount, '[[]]') + ')';
+                }
+                
+                var limit;
+                var lastBridgeIndex;
+                if (bridgeUsed)
+                {
+                    limit = offset + count;
+                    lastBridgeIndex = findLastBridge(offset, limit);
+                }
+                var str;
+                var multiPart = lastBridgeIndex == null;
+                if (multiPart)
+                {
+                    str = sequence(offset, count);
+                }
+                else
+                {
+                    var bridgeIndex = findNextBridge(offset);
+                    var index;
+                    if (bridgeIndex - offset > 1)
+                    {
+                        var intrinsicSplitCost = localForceString ? -3 : localStrongBound ? 2 : 0;
+                        index =
+                            findSplitIndex(
+                                offset,
+                                limit,
+                                intrinsicSplitCost,
+                                bridgeIndex,
+                                lastBridgeIndex
+                            );
+                    }
+                    multiPart = index != null;
+                    if (multiPart)
+                    {
+                        // Keep the first solutions out of the concat context to reduce output
+                        // length.
+                        var preBridgeCount = index - offset;
+                        str =
+                            (
+                                preBridgeCount > 1 ?
+                                sequence(offset, preBridgeCount) : solutions[offset]
+                            ) +
+                            '+';
+                    }
+                    else
+                    {
+                        str = '';
+                        index = offset;
+                    }
+                    str += '[' + sequence0(index, bridgeIndex - index, '[]') + ']';
+                    for (;;)
+                    {
+                        str += solutions[bridgeIndex].bridge.block + '(';
+                        index = bridgeIndex + 1;
+                        if (bridgeIndex === lastBridgeIndex)
+                        {
+                            break;
+                        }
+                        bridgeIndex = findNextBridge(index);
+                        appendRightGroup(bridgeIndex - index);
+                    }
+                    var groupCount;
+                    var rightEndCount = limit - index;
+                    if (localForceString && !multiPart && rightEndCount > 1)
+                    {
+                        groupCount = rightEndCount > 2 && isUnluckyRightEnd(index) ? 2 : 1;
+                        multiPart = true;
+                    }
+                    else
+                    {
+                        groupCount = rightEndCount;
+                    }
+                    appendRightGroup(groupCount);
+                    index += groupCount - 1;
+                    while (++index < limit)
+                    {
+                        str = appendSolution(str, solutions[index]);
+                    }
+                    if (!multiPart && localForceString)
+                    {
+                        str += '+[]';
+                        multiPart = true;
+                    }
+                }
+                if (localStrongBound && multiPart)
+                {
+                    str = '(' + str + ')';
+                }
+                return str;
+            }
+            
+            function getSplitCostAt(index, leftmost, rightmost)
+            {
+                var solutionCenter = solutions[index];
+                var levelCenter = solutionCenter.level;
+                var levelLeft;
+                var levelRight;
+                var solutionRight;
+                var splitCost =
+                (
+                    rightmost && levelCenter < LEVEL_NUMERIC ?
+                    3 :
+                    isNumericJoin(
+                        levelCenter,
+                        levelRight = (solutionRight = solutions[index + 1]).level) ?
+                    getNumericJoinCost(levelCenter, levelRight) -
+                    (solutionRight.outerPlus ? 2 : 0) :
+                    0
+                ) -
+                (
+                    leftmost &&
+                    isNumericJoin(levelCenter, levelLeft = solutions[index - 1].level) ?
+                    getNumericJoinCost(levelLeft, levelCenter) :
+                    solutionCenter.outerPlus ? 2 : 0
+                );
+                return splitCost;
+            }
+            
+            function isUnluckyRightEnd(firstIndex)
+            {
+                var result =
+                    solutions[firstIndex].level < LEVEL_NUMERIC &&
+                    solutions[firstIndex + 1].level > LEVEL_UNDEFINED;
+                return result;
+            }
+            
             function sequence(offset, count)
             {
                 var str;
@@ -58,116 +266,147 @@ var hasOuterPlus;
                 return str;
             }
             
-            var solutions = [];
-            var length = -1;
-            var maxSolutionCount = Math.pow(2, groupThreshold - 1);
+            function sequence0(offset, count, emptyReplacement)
+            {
+                var str;
+                if (count)
+                {
+                    if (count > 1)
+                    {
+                        str = sequence(offset, count);
+                    }
+                    else
+                    {
+                        var solution = solutions[offset];
+                        str = solution + (solution.level < LEVEL_NUMERIC ? '+[]' : '');
+                    }
+                }
+                else
+                {
+                    str = emptyReplacement;
+                }
+                return str;
+            }
             
-            Object.defineProperties(
+            var bridgeUsed;
+            var length = strongBound ? -1 : -3;
+            var maxSolutionCount = Math.pow(2, groupThreshold - 1);
+            var solutions = [];
+            
+            assignNoEnum(
                 this,
                 {
-                    'append':
+                    append: function (solution)
                     {
-                        value: function (solution)
+                        if (solutions.length >= maxSolutionCount)
                         {
-                            if (solutions.length >= maxSolutionCount)
-                            {
-                                return false;
-                            }
-                            solutions.push(solution);
-                            length += getAppendLength(solution);
-                            return true;
+                            return false;
                         }
+                        bridgeUsed |= !!solution.bridge;
+                        solutions.push(solution);
+                        length += getAppendLength(solution);
+                        return true;
                     },
-                    'length':
+                    get length ()
                     {
-                        get: function ()
+                        var result;
+                        switch (solutions.length)
                         {
-                            var result;
-                            switch (solutions.length)
-                            {
-                            case 0:
-                                result = strongBound ? 7 : 5;
-                                break;
-                            case 1:
-                                var solution = solutions[0];
-                                result =
-                                    solution.length +
-                                    (solution.level < LEVEL_STRING ? strongBound ? 5 : 3 : 0);
-                                break;
-                            default:
-                                result = length + (strongBound ? 2 : 0);
-                            }
-                            return result;
+                        case 0:
+                            result = forceString ? strongBound ? 7 : 5 : 0;
+                            break;
+                        case 1:
+                            var solution = solutions[0];
+                            result =
+                                solution.length +
+                                (
+                                    forceString && solution.level < LEVEL_STRING ?
+                                    strongBound ? 5 : 3 : 0
+                                );
+                            break;
+                        default:
+                            result = length;
+                            break;
                         }
+                        return result;
                     },
-                    'toString':
+                    toString: function ()
                     {
-                        value: function ()
+                        function collectOut(offset, count, maxGroupCount, localStrongBound)
                         {
-                            function collect(offset, count, maxGroupCount)
-                            {
-                                if (count <= groupSize + 1)
-                                {
-                                    str += sequence(offset, count);
-                                }
-                                else
-                                {
-                                    maxGroupCount /= 2;
-                                    var halfCount = groupSize * maxGroupCount;
-                                    var capacity = 2 * halfCount - count;
-                                    var leftCount =
-                                        Math.max(
-                                            halfCount - capacity + capacity % (groupSize - 1),
-                                            (maxGroupCount / 2 ^ 0) * (groupSize + 1)
-                                        );
-                                    collect(offset, leftCount, maxGroupCount);
-                                    str += '+(';
-                                    collect(offset + leftCount, count - leftCount, maxGroupCount);
-                                    str += ')';
-                                }
-                            }
-                            
-                            var singlePart;
                             var str;
-                            var solutionCount = solutions.length;
-                            if (!solutionCount)
+                            if (count <= groupSize + 1)
                             {
-                                str = '[]+[]';
-                            }
-                            else if (solutionCount === 1)
-                            {
-                                var solution = solutions[0];
-                                // Here we assume that string solutions never have an outer plus.
-                                singlePart = solution.level > LEVEL_OBJECT;
-                                str = solution + (singlePart ? '' : '+[]');
-                            }
-                            else if (solutionCount <= groupThreshold)
-                            {
-                                str = sequence(0, solutionCount);
+                                str = gather(offset, count, localStrongBound);
                             }
                             else
                             {
-                                var groupSize = groupThreshold;
-                                var maxGroupCount = 2;
-                                for (;;)
+                                maxGroupCount /= 2;
+                                var halfCount = groupSize * maxGroupCount;
+                                var capacity = 2 * halfCount - count;
+                                var leftEndCount =
+                                    Math.max(
+                                        halfCount - capacity + capacity % (groupSize - 1),
+                                        (maxGroupCount / 2 ^ 0) * (groupSize + 1)
+                                    );
+                                str =
+                                    collectOut(offset, leftEndCount, maxGroupCount) +
+                                    '+' +
+                                    collectOut(
+                                        offset + leftEndCount,
+                                        count - leftEndCount,
+                                        maxGroupCount,
+                                        true
+                                    );
+                                if (localStrongBound)
                                 {
-                                    --groupSize;
-                                    var maxSolutionCountForDepth = groupSize * maxGroupCount;
-                                    if (solutionCount <= maxSolutionCountForDepth)
-                                    {
-                                        break;
-                                    }
-                                    maxGroupCount *= 2;
+                                    str = '(' + str + ')';
                                 }
-                                str = '';
-                                collect(0, solutionCount, maxGroupCount);
-                            }
-                            if (strongBound && !singlePart)
-                            {
-                                str = '(' + str + ')';
                             }
                             return str;
                         }
+                        
+                        var singlePart;
+                        var str;
+                        var solutionCount = solutions.length;
+                        if (!solutionCount)
+                        {
+                            singlePart = !forceString;
+                            str = singlePart ? '' : '[]+[]';
+                        }
+                        else if (solutionCount === 1)
+                        {
+                            var solution = solutions[0];
+                            singlePart = !forceString || solution.level > LEVEL_OBJECT;
+                            str = solution + (singlePart ? '' : '+[]');
+                        }
+                        else if (solutionCount <= groupThreshold)
+                        {
+                            str = gather(0, solutionCount, strongBound, forceString);
+                            singlePart = strongBound;
+                        }
+                        else
+                        {
+                            var groupSize = groupThreshold;
+                            var maxGroupCount = 2;
+                            for (;;)
+                            {
+                                --groupSize;
+                                var maxSolutionCountForDepth = groupSize * maxGroupCount;
+                                if (solutionCount <= maxSolutionCountForDepth)
+                                {
+                                    break;
+                                }
+                                maxGroupCount *= 2;
+                            }
+                            str = collectOut(0, solutionCount, maxGroupCount, strongBound);
+                            singlePart = strongBound;
+                        }
+                        if (strongBound && !singlePart)
+                        {
+                            str = '(' + str + ')';
+                        }
+                        return str;
                     }
                 }
             );
@@ -177,8 +416,17 @@ var hasOuterPlus;
         // This function assumes that only undefined or numeric solutions can have an outer plus.
         function (solution)
         {
-            var extraLength = hasOuterPlus(solution) ? 3 : 1;
-            var length = solution.length + extraLength;
+            var length;
+            var bridge = solution.bridge;
+            if (bridge)
+            {
+                length = bridge.appendLength;
+            }
+            else
+            {
+                var extraLength = hasOuterPlus(solution) ? 3 : 1;
+                length = solution.length + extraLength;
+            }
             return length;
         };
     
