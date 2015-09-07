@@ -507,7 +507,7 @@
                     function ()
                     {
                         var result;
-                        switch (this)
+                        switch (+this) // In IE 9, +this is different from this.
                         {
                         case Infinity:
                             result = '∞';

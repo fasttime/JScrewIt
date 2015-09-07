@@ -214,7 +214,7 @@ var expandEntries;
                 var output = this.encodeByDict(inputData, 3, 0, maxLength);
                 return output;
             },
-            363
+            353
         ),
         byDictRadix4: defineCoder
         (
@@ -259,7 +259,7 @@ var expandEntries;
                 var output = this.encodeByDict(inputData, 5, 3, maxLength);
                 return output;
             },
-            848
+            847
         ),
         plain: defineCoder
         (
@@ -382,19 +382,25 @@ var expandEntries;
             input,
             function (char)
             {
-                ++(charMap[char] || (charMap[char] = { char: char, count: 0 })).count;
+                ++(
+                    charMap[char] ||
+                    (charMap[char] = { char: char, charCode: char.charCodeAt(0), count: 0 })
+                ).count;
             }
         );
+        var charList = Object.keys(charMap);
         var freqList =
-            Object.keys(charMap).map(
+            charList.map(
                 function (char)
                 {
-                    return charMap[char];
+                    var freq = charMap[char];
+                    return freq;
                 }
             ).sort(
                 function (freq1, freq2)
                 {
-                    return freq2.count - freq1.count;
+                    var diff = freq2.count - freq1.count || freq1.charCode - freq2.charCode;
+                    return diff;
                 }
             );
         return freqList;
@@ -449,7 +455,9 @@ var expandEntries;
         range.sort(
             function (reindex1, reindex2)
             {
-                var result = reindex1.sortLength - reindex2.sortLength;
+                var result =
+                    reindex1.sortLength - reindex2.sortLength ||
+                    reindex1.index - reindex2.index;
                 return result;
             }
         );
@@ -871,18 +879,16 @@ var expandEntries;
             var legend = this.encodeDictLegend(dictChars, maxLength - minFreqIndexLength);
             if (legend)
             {
-                var freqIndexes =
-                    this.replaceNumberArray(
-                        Array.prototype.map.call(
-                            input,
-                            function (char)
-                            {
-                                var index = charMap[char];
-                                return index;
-                            }
-                        ),
-                        maxLength - legend.length
+                var freqIndexList =
+                    Array.prototype.map.call(
+                        input,
+                        function (char)
+                        {
+                            var index = charMap[char];
+                            return index;
+                        }
                     );
+                var freqIndexes = this.replaceNumberArray(freqIndexList, maxLength - legend.length);
                 if (freqIndexes)
                 {
                     var output =

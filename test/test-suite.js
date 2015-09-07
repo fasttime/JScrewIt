@@ -1787,7 +1787,7 @@ self
                 test('ENTRIES_OBJ', repeat.bind(null, String.fromCharCode(59999)), 'byDict');
                 test(
                     ['ATOB', 'ENTRIES_OBJ', 'FILL', 'V8_SRC'],
-                    createDictTestString.bind(null, 122),
+                    createDictTestString.bind(null, 124),
                     'byDictRadix3'
                 );
                 test(

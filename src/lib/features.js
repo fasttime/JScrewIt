@@ -164,6 +164,11 @@ var validMaskFromArrayOrStringOrFeature;
         return featureObj;
     }
     
+    function initMask(featureObj, mask)
+    {
+        Object.defineProperty(featureObj, 'mask', { value: mask });
+    }
+    
     function maskFromStringOrFeature(arg)
     {
         var mask;
@@ -894,7 +899,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             var mask = validMaskFromArguments(arguments);
             var featureObj = this instanceof Feature ? this : Object.create(Feature.prototype);
-            featureObj.mask = mask;
+            initMask(featureObj, mask);
             return featureObj;
         };
     
@@ -1144,7 +1149,8 @@ var validMaskFromArrayOrStringOrFeature;
     featureFromMask =
         function (mask)
         {
-            var featureObj = Object.create(Feature.prototype, { mask: { value: mask } });
+            var featureObj = Object.create(Feature.prototype);
+            initMask(featureObj, mask);
             return featureObj;
         };
     
