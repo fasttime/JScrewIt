@@ -8,12 +8,12 @@ DEBUG,
 Encoder,
 JScrewIt,
 ScrewBuffer,
-describeNoEnum,
+assignNoEnum,
 expandEntries,
-featuresFromMask,
+featureFromMask,
 getValidFeatureMask,
 hasOuterPlus,
-noEnum,
+isMaskCompatible,
 setUp,
 trimJS
 */
@@ -33,9 +33,15 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             return encoder;
         }
         
-        function createScrewBuffer(strongBound, groupThreshold)
+        function createFeatureFromMask(mask)
         {
-            var buffer = new ScrewBuffer(strongBound, groupThreshold);
+            var featureObj = isMaskCompatible(mask) ? featureFromMask(mask) : null;
+            return featureObj;
+        }
+        
+        function createScrewBuffer(strongBound, forceString, groupThreshold)
+        {
+            var buffer = new ScrewBuffer(strongBound, forceString, groupThreshold);
             return buffer;
         }
         
@@ -85,15 +91,14 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             }
         }
         
-        Object.defineProperty(
-            JScrewIt,
-            'debug',
-            describeNoEnum(noEnum
-                ({
+        var debug =
+            assignNoEnum(
+                { },
+                {
                     createEncoder:          createEncoder,
+                    createFeatureFromMask:  createFeatureFromMask,
                     createScrewBuffer:      createScrewBuffer,
                     defineConstant:         defineConstant,
-                    featuresFromMask:       featuresFromMask,
                     getCharacterEntries:    getCharacterEntries,
                     getCoders:              getCoders,
                     getComplexEntries:      getComplexEntries,
@@ -101,9 +106,9 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                     hasOuterPlus:           hasOuterPlus,
                     setUp:                  setUp,
                     trimJS:                 trimJS,
-                })
-            )
-        );
+                }
+            );
+        assignNoEnum(JScrewIt, { debug: debug });
     }
     )();
 }

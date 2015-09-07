@@ -1,56 +1,85 @@
 /*
 global
-FEATURE_INFOS,
 Empty,
 Encoder,
-availableFeatureMask,
-featuresFromMask,
-getFeatureMask,
-incompatibleFeatureMasks,
+Feature,
+assignNoEnum,
 module,
 self,
-trimJS
+trimJS,
+validMaskFromArrayOrStringOrFeature
 */
 
 var JScrewIt;
-var describeNoEnum;
 var getValidFeatureMask;
-var noEnum;
 var setUp;
 
 (function ()
 {
     'use strict';
     
-    function areFeaturesAvailable(features)
-    {
-        var featureMask = getFeatureMask(features);
-        return (featureMask & availableFeatureMask) === featureMask;
-    }
-    
-    function areFeaturesCompatible(features)
-    {
-        var featureMask = getFeatureMask(features);
-        var result = isFeatureMaskCompatible(featureMask);
-        return result;
-    }
-    
-    function commonFeaturesOf()
-    {
-        if (arguments.length)
-        {
-            var featureMask = ~0;
-            Array.prototype.forEach.call(
-                arguments,
-                function (features)
-                {
-                    featureMask &= getFeatureMask(features);
-                }
-            );
-            var result = featuresFromMask(featureMask);
-            return result;
-        }
-    }
+    /**
+     * Encodes a given string into JSFuck.
+     *
+     * @function JScrewIt.encode
+     *
+     * @param {string} input The string to encode.
+     *
+     * @param {object} [options={ }] An optional object specifying encoding options.
+     *
+     * @param {FeatureElement|CompatibleFeatureArray} [options.features=JScrewIt.Feature.DEFAULT]
+     * Specifies the features available on the engines that evaluate the encoded output.
+     *
+     * If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](Features.md#DEFAULT) is
+     * assumed: this ensures maximum compatibility but also generates the largest code.
+     * To generate shorter code, specify all features available on all target engines explicitly.
+     *
+     * @param {boolean} [options.trimCode=false]
+     * If this parameter is truthy, lines in the beginning and in the end of the file containing
+     * nothing but space characters and JavaScript comments are removed from the generated output.
+     * A newline terminator in the last preserved line is also removed.
+     *
+     * This option is especially useful to strip banner comments and trailing newline characters
+     * which are sometimes found in minified scripts.
+     *
+     * Using this option may produce unexpected results if the input is not well-formed JavaScript
+     * code.
+     *
+     * @param {string} [options.wrapWith=none]
+     * This option controls the type of code generated from the given input.
+     * Allowed values are listed below.
+     *
+     * <dl>
+     *
+     * <dt><code>"none"</code> (default)</dt>
+     * <dd>
+     * Produces a string evaluating to the specified input string (except for trimmed parts when
+     * used in conjunction with the option <code>trimCode</code>).</dd>
+     *
+     * <dt><code>"call"</code></dt>
+     * <dd>
+     * Produces code evaluating to a call to a function whose body contains the specified input
+     * string.</dd>
+     *
+     * <dt><code>"eval"</code></dt>
+     * <dd>
+     * Produces code evaluating to the result of invoking <code>eval</code> with the specified
+     * input string as parameter.</dd>
+     *
+     * </dl>
+     *
+     * @returns {string} The encoded string.
+     *
+     * @throws
+     * In the hypothetical case that the input string is too complex to be encoded, this function
+     * throws an `Error` with the message "Encoding failed".
+     * Also, an out of memory condition may occur when processing very large data.
+     *
+     * If some unknown features are specified, a `ReferenceError` is thrown.
+     *
+     * If the option `wrapWith` is specified with an invalid value, an `Error` with the message
+     * "Invalid value for option wrapWith" is thrown.
+     */
     
     function encode(input, arg2, arg3)
     {
@@ -110,61 +139,16 @@ var setUp;
         return encoder;
     }
     
-    function isFeatureMaskCompatible(featureMask)
-    {
-        var result =
-            incompatibleFeatureMasks.every(
-                function (incompatibleFeatureMask)
-                {
-                    var result =
-                        (incompatibleFeatureMask & featureMask) !== incompatibleFeatureMask;
-                    return result;
-                }
-            );
-        return result;
-    }
-    
     var encoders = new Empty();
     
-    describeNoEnum =
-        function (value)
-        {
-            var descriptor = { configurable: true, value: value, writable: true };
-            return descriptor;
-        };
-    
-    noEnum =
-        function (obj)
-        {
-            var result = { };
-            Object.keys(obj).forEach(
-                function (name)
-                {
-                    var descriptor = describeNoEnum(obj[name]);
-                    Object.defineProperty(result, name, descriptor);
-                }
-            );
-            return result;
-        };
-    
-    JScrewIt = noEnum
-    ({
-        areFeaturesAvailable:   areFeaturesAvailable,
-        areFeaturesCompatible:  areFeaturesCompatible,
-        commonFeaturesOf:       commonFeaturesOf,
-        encode:                 encode,
-        FEATURE_INFOS:          FEATURE_INFOS,
-    });
+    /** @namespace JScrewIt */
+    JScrewIt = assignNoEnum({ }, { Feature: Feature, encode: encode });
     
     getValidFeatureMask =
         function (features)
         {
-            var featureMask = getFeatureMask(features);
-            if (!isFeatureMaskCompatible(featureMask))
-            {
-                throw new ReferenceError('Incompatible features');
-            }
-            return featureMask;
+            var mask = features !== undefined ? validMaskFromArrayOrStringOrFeature(features) : 0;
+            return mask;
         };
     
     setUp =

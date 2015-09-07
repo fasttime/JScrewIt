@@ -73,12 +73,13 @@ function createEngineSelectionBox()
         }
     ];
     
-    function createCheckBox(text, props)
+    function createCheckBox(text, labelProps, inputProps)
     {
         var checkBox =
             art(
                 'LABEL',
-                art('INPUT', { style: { marginLeft: '0' }, type: 'checkbox' }, props),
+                art('INPUT', { style: { marginLeft: '0' }, type: 'checkbox' }, inputProps),
+                labelProps,
                 text || null
             );
         return checkBox;
@@ -91,29 +92,28 @@ function createEngineSelectionBox()
         comp.dispatchEvent(evt);
     }
     
-    function filterFeatures(features, excludedFeatures)
+    function filterFeatures(featureObj, excludedFeatures)
     {
-        function putFeature(feature)
-        {
-            featureSet[feature] = null;
-            JScrewIt.FEATURE_INFOS[feature].includes.forEach(putFeature);
-        }
-        
-        var featureSet = Object.create(null);
-        features.forEach(putFeature);
-        excludedFeatures.forEach(
-            function (feature)
+        var featureNameSet = Object.create(null);
+        featureObj.elementaryNames.forEach(
+            function (featureName)
             {
-                delete featureSet[feature];
+                featureNameSet[featureName] = null;
             }
         );
-        var result = JScrewIt.commonFeaturesOf.call(null, Object.keys(featureSet));
-        return result;
+        excludedFeatures.forEach(
+            function (featureName)
+            {
+                delete featureNameSet[featureName];
+            }
+        );
+        featureObj = JScrewIt.Feature(Object.keys(featureNameSet));
+        return featureObj;
     }
     
-    function getFeatures()
+    function updateCurrentFeatureObj()
     {
-        var features = [];
+        var featureNames = [];
         var allNotForWebWorker =
             ['ANY_DOCUMENT', 'ANY_WINDOW', 'DOCUMENT', 'DOMWINDOW', 'HTMLDOCUMENT', 'WINDOW'];
         Array.prototype.forEach.call(
@@ -122,19 +122,20 @@ function createEngineSelectionBox()
             {
                 if (input.checked)
                 {
-                    var feature = input.feature;
-                    features.push(feature);
+                    var featureName = input.feature;
+                    featureNames.push(featureName);
                     var notForWebWorker = input.notForWebWorker;
                     Array.prototype.push.apply(allNotForWebWorker, notForWebWorker);
                 }
             }
         );
-        var commonFeatures = JScrewIt.commonFeaturesOf.apply(null, features) || [];
+        var Feature = JScrewIt.Feature;
+        var commonFeatureObj = Feature.commonOf.apply(null, featureNames) || Feature.DEFAULT;
         if (webWorkerInput.checked)
         {
-            commonFeatures = filterFeatures(commonFeatures, allNotForWebWorker);
+            commonFeatureObj = filterFeatures(commonFeatureObj, allNotForWebWorker);
         }
-        return commonFeatures;
+        currentFeatureObj = commonFeatureObj;
     }
     
     function init()
@@ -155,19 +156,14 @@ function createEngineSelectionBox()
                     art('HR'),
                     webWorkerField,
                     art.on('change', updateStatus)
-                )
-            );
-        Object.defineProperty(
-            comp,
-            'features',
-            {
-                configurable: true,
-                get: function ()
+                ),
                 {
-                    return currentFeatures;
+                    get featureObj()
+                    {
+                        return currentFeatureObj;
+                    }
                 }
-            }
-        );
+            );
         ENGINE_INFO_LIST.forEach(
             function (engineInfo)
             {
@@ -189,15 +185,15 @@ function createEngineSelectionBox()
                             createCheckBox(
                                 version.number,
                                 {
+                                    style:
+                                    { display: 'table-cell', paddingLeft: '.5em', width: '7.5em' }
+                                },
+                                {
                                     checked: true,
                                     feature: version.feature,
                                     notForWebWorker: version.notForWebWorker
                                 }
                             );
-                        var style = versionField.style;
-                        style.display = 'table-cell';
-                        style.paddingLeft = '.5em';
-                        style.width = '7.5em';
                         art(engineField, versionField);
                     }
                 );
@@ -205,17 +201,17 @@ function createEngineSelectionBox()
         );
         engineVersionInputs = engineFieldBox.querySelectorAll('INPUT');
         webWorkerInput = webWorkerField.querySelector('INPUT');
-        currentFeatures = getFeatures();
+        updateCurrentFeatureObj();
     }
     
     function updateStatus()
     {
-        currentFeatures = getFeatures();
+        updateCurrentFeatureObj();
         dispatchInputEvent();
     }
     
     var comp;
-    var currentFeatures;
+    var currentFeatureObj;
     var engineVersionInputs;
     var webWorkerInput;
     

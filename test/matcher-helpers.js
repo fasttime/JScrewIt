@@ -39,6 +39,17 @@
             }
             this.assertions.fail(message);
         },
+        toBeInt32: function ()
+        {
+            var actual = this.value;
+            var message = this.generateMessage(actual, this.expr, 'to be a 32-bit integer');
+            var pass = actual === actual ^ 0;
+            if (pass)
+            {
+                return this.assertions.pass(message);
+            }
+            this.assertions.fail(message);
+        },
         toBeJSFuck: function ()
         {
             var actual = this.value;
@@ -79,6 +90,28 @@
             var actual = this.value;
             var message = this.generateMessage(actual, this.expr, 'to be a string');
             var pass = typeof actual === 'string';
+            if (pass)
+            {
+                return this.assertions.pass(message);
+            }
+            this.assertions.fail(message);
+        },
+        toEndWith: function (str)
+        {
+            var actual = this.value;
+            var message = this.generateMessage(actual, this.expr, 'to end with', str);
+            var pass = actual.slice(-str.length) === str;
+            if (pass)
+            {
+                return this.assertions.pass(message);
+            }
+            this.assertions.fail(message);
+        },
+        toStartWith: function (str)
+        {
+            var actual = this.value;
+            var message = this.generateMessage(actual, this.expr, 'to start with', str);
+            var pass = actual.slice(0, str.length) === str;
             if (pass)
             {
                 return this.assertions.pass(message);

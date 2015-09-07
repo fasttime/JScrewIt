@@ -84,12 +84,12 @@ self
     
     function decodeEntry(entry)
     {
-        var features = getEntryFeatures(entry);
-        var key = features.join();
+        var featureObj = getEntryFeature(entry);
+        var key = featureObj.canonicalNames.join('+');
         var encoder = encoderCache[key];
         if (!encoder)
         {
-            encoderCache[key] = encoder = JScrewIt.debug.createEncoder(features);
+            encoderCache[key] = encoder = JScrewIt.debug.createEncoder(featureObj);
         }
         var output = encoder.resolve(entry.definition) + '';
         return output;
@@ -97,7 +97,8 @@ self
     
     function describeEncodeTest(compatibility)
     {
-        var emuFeatures = getEmuFeatures(JScrewIt.commonFeaturesOf(compatibility));
+        var featureObj = Feature[compatibility];
+        var emuFeatures = getEmuFeatureNames(featureObj);
         if (emuFeatures)
         {
             describe(
@@ -238,8 +239,8 @@ self
                                 entries.forEach(
                                     function (entry, index)
                                     {
-                                        var features = getEntryFeatures(entry);
-                                        var emuFeatures = getEmuFeatures(features);
+                                        var featureObj = getEntryFeature(entry);
+                                        var emuFeatures = getEmuFeatureNames(featureObj);
                                         if (emuFeatures)
                                         {
                                             it(
@@ -347,13 +348,64 @@ self
                 describeEncodeTest('COMPACT');
                 describeEncodeTest('FF31');
                 describeEncodeTest('AUTO');
-                it(
-                    'encodes an empty string',
+                describe(
+                    'encodes an empty string with wrapWith',
                     function ()
                     {
-                        var output = JScrewIt.encode('');
-                        var actual = eval(output);
-                        expect(actual).toBe('');
+                        it(
+                            'none',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('', { wrapWith: 'none' });
+                                expect(output).toBe('[]+[]');
+                            }
+                        );
+                        it(
+                            'call',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('', { wrapWith: 'call' });
+                                expect(output).toMatch(/\(\)\(\)$/);
+                            }
+                        );
+                        it(
+                            'eval',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('', { wrapWith: 'eval' });
+                                expect(output).toMatch(/\(\)$/);
+                            }
+                        );
+                    }
+                );
+                describe(
+                    'encodes a single digit with wrapWith',
+                    function ()
+                    {
+                        it(
+                            'none',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('2');
+                                expect(output).toBe('!![]+!![]+[]');
+                            }
+                        );
+                        it(
+                            'call',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('2', { wrapWith: 'call' });
+                                expect(output).toMatch(/\(!!\[]\+!!\[]\)\(\)$/);
+                            }
+                        );
+                        it(
+                            'eval',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('2', { wrapWith: 'eval' });
+                                expect(output).toMatch(/\(!!\[]\+!!\[]\)$/);
+                            }
+                        );
                     }
                 );
                 it(
@@ -429,130 +481,63 @@ self
             }
         );
         describe(
-            'JScrewIt.areFeaturesCompatible',
+            'JScrewIt.Feature',
             function ()
             {
-                it(
-                    'returns true for compatible features',
-                    function ()
-                    {
-                        var compatible = JScrewIt.areFeaturesCompatible(['FILL', 'SELF']);
-                        expect(compatible).toBe(true);
-                    }
-                );
-                it(
-                    'returns false for incompatible features',
-                    function ()
-                    {
-                        var compatible = JScrewIt.areFeaturesCompatible(['V8_SRC', 'IE_SRC']);
-                        expect(compatible).toBe(false);
-                    }
-                );
-                it(
-                    'throws a ReferenceError for unknown features',
-                    function ()
-                    {
-                        var fn =
-                            function ()
-                            {
-                                JScrewIt.areFeaturesCompatible(['???']);
-                            };
-                        expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
-                    }
-                );
-            }
-        );
-        describe(
-            'JScrewIt.commonFeaturesOf',
-            function ()
-            {
-                it(
-                    'returns undefined if no arguments are specified',
-                    function ()
-                    {
-                        var actual = JScrewIt.commonFeaturesOf();
-                        expect(actual).toBeUndefined();
-                    }
-                );
-                it(
-                    'returns an empty array for DEFAULT',
-                    function ()
-                    {
-                        var actual = JScrewIt.commonFeaturesOf('DEFAULT');
-                        expect(actual).toEqual([]);
-                    }
-                );
-                it(
-                    'does not return implied features',
-                    function ()
-                    {
-                        var actual = JScrewIt.commonFeaturesOf(['V8_SRC', 'WINDOW'], 'FF31');
-                        expect(actual).toEqual(['NO_IE_SRC', 'WINDOW']);
-                    }
-                );
-                it(
-                    'does not return aliases',
-                    function ()
-                    {
-                        var actual = JScrewIt.commonFeaturesOf('WINDOW', 'DOMWINDOW');
-                        expect(actual).toEqual(['ANY_WINDOW']);
-                    }
-                );
-            }
-        );
-        describe(
-            'JScrewIt.FEATURE_INFOS',
-            function ()
-            {
-                var FEATURE_INFOS = JScrewIt.FEATURE_INFOS;
-                
                 describe(
-                    'contains correct information for the feature',
+                    'constructor',
                     function ()
                     {
                         it(
-                            'DEFAULT',
+                            'accepts mixed arguments',
                             function ()
                             {
-                                var info = FEATURE_INFOS.DEFAULT;
-                                expect(info.available).toBe(true);
-                                expect(info.includes.length).toBe(0);
-                                expect(info.excludes.length).toBe(0);
-                            }
-                        );
-                        it(
-                            'COMPACT',
-                            function ()
-                            {
-                                var info = FEATURE_INFOS.COMPACT;
-                                var expected =
-                                    JScrewIt.commonFeaturesOf(
-                                        'CHROME41',
-                                        'EDGE',
-                                        'FF31',
-                                        'SAFARI71'
+                                var feature =
+                                    Feature(
+                                        ['NAME', Feature.WINDOW],
+                                        'HTMLDOCUMENT',
+                                        Feature.NO_IE_SRC,
+                                        []
                                     );
-                                expect(info.includes).toEqual(expected);
-                                expect(info.excludes.length).toBe(0);
+                                expect(feature.mask).toBe(
+                                    Feature.NAME.mask |
+                                    Feature.WINDOW.mask |
+                                    Feature.HTMLDOCUMENT.mask |
+                                    Feature.NO_IE_SRC.mask
+                                );
                             }
                         );
                         it(
-                            'AUTO',
+                            'throws a ReferenceError for unknown features',
                             function ()
                             {
-                                var info = FEATURE_INFOS.AUTO;
-                                expect(info.available).toBe(true);
-                                expect(info.includes.length).toBeGreaterThan(0);
-                                expect(info.excludes.length).toBe(0);
+                                var fn = Feature.bind(Feature, '???');
+                                expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
                             }
                         );
                         it(
-                            'V8_SRC',
+                            'throws a ReferenceError for incompatible feature arrays',
                             function ()
                             {
-                                var info = FEATURE_INFOS.V8_SRC;
-                                expect(info.includes).toContain('NO_IE_SRC');
-                                expect(info.excludes).toContain('FF_SAFARI_SRC');
+                                var fn = Feature.bind(Feature, ['IE_SRC', 'NO_IE_SRC']);
+                                expect(fn).toThrow(ReferenceError('Incompatible features'));
+                            }
+                        );
+                        it(
+                            'can be invoked with the new operator',
+                            function ()
+                            {
+                                var featureObj = new Feature();
+                                expect(featureObj.constructor).toBe(Feature);
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for incompatible features',
+                            function ()
+                            {
+                                var fn =
+                                    Feature.bind(Feature, 'ENTRIES_PLAIN', 'SAFARI_ARRAY_ITERATOR');
+                                expect(fn).toThrow(ReferenceError('Incompatible features'));
                             }
                         );
                     }
@@ -561,8 +546,313 @@ self
                     'contains only well-formed obejcts:',
                     function ()
                     {
-                        var features = Object.keys(FEATURE_INFOS).sort();
-                        features.forEach(testFeature);
+                        var featureNames = Object.keys(Feature).sort();
+                        featureNames.forEach(testFeatureObj);
+                    }
+                );
+                describe(
+                    'contains correct information for the feature',
+                    function ()
+                    {
+                        it(
+                            'DEFAULT',
+                            function ()
+                            {
+                                var featureObj = Feature.DEFAULT;
+                                expect(featureObj.canonicalNames).toEqual([]);
+                                expect(featureObj.elementaryNames).toEqual([]);
+                                expect(featureObj.mask).toBe(0);
+                            }
+                        );
+                        it(
+                            'COMPACT',
+                            function ()
+                            {
+                                var featureObj = Feature.COMPACT;
+                                var featureNames =
+                                    Feature.commonOf('CHROME41', 'EDGE', 'FF31', 'SAFARI71');
+                                var expectedFeature = Feature(featureNames);
+                                var actualElementaryNames = featureObj.elementaryNames;
+                                var expectedElementaryNames = expectedFeature.elementaryNames;
+                                expect(actualElementaryNames).toEqual(expectedElementaryNames);
+                                var actualCanonicalNames = expectedFeature.canonicalNames;
+                                var expectedCanonicalNames = featureObj.canonicalNames;
+                                expect(actualCanonicalNames).toEqual(expectedCanonicalNames);
+                                expect(featureObj.mask).toBe(expectedFeature.mask);
+                            }
+                        );
+                        it(
+                            'AUTO',
+                            function ()
+                            {
+                                var featureObj = Feature.AUTO;
+                                var canonicalNameCount = featureObj.canonicalNames.length;
+                                var elementaryNameCount = featureObj.elementaryNames.length;
+                                expect(canonicalNameCount).toBeGreaterThan(0);
+                                expect(elementaryNameCount).not.toBeLessThan(canonicalNameCount);
+                                expect(featureObj.mask).not.toBe(0);
+                            }
+                        );
+                    }
+                );
+                describe(
+                    '#includes',
+                    function ()
+                    {
+                        it(
+                            'accepts mixed arguments',
+                            function ()
+                            {
+                                var actual =
+                                    Feature.COMPACT.includes(
+                                        ['NAME', Feature.WINDOW],
+                                        'HTMLDOCUMENT',
+                                        Feature.NO_IE_SRC,
+                                        []
+                                    );
+                                expect(actual).toBe(true);
+                            }
+                        );
+                        it(
+                            'returns true if no arguments are specified',
+                            function ()
+                            {
+                                var actual = Feature.AUTO.includes();
+                                expect(actual).toBe(true);
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for unknown features',
+                            function ()
+                            {
+                                var fn = Feature.prototype.includes.bind(Feature.DEFAULT, '???');
+                                expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for incompatible feature arrays',
+                            function ()
+                            {
+                                var fn =
+                                    Feature.prototype.includes.bind(
+                                        Feature.DEFAULT,
+                                        ['IE_SRC', 'NO_IE_SRC']
+                                    );
+                                expect(fn).toThrow(ReferenceError('Incompatible features'));
+                            }
+                        );
+                    }
+                );
+                describe(
+                    '#toString',
+                    function ()
+                    {
+                        it(
+                            'works for predefined features',
+                            function ()
+                            {
+                                expect(Feature.DEFAULT.toString()).toBe('[Feature DEFAULT]');
+                                expect(Feature.NODE.toString()).toBe('[Feature NODE010]');
+                                expect(Feature.ATOB.toString()).toBe('[Feature ATOB]');
+                            }
+                        );
+                        it(
+                            'works for custom features',
+                            function ()
+                            {
+                                expect(Feature('DEFAULT').toString()).toBe('[Feature {}]');
+                                expect(Feature('NODE').toString()).toMatch(
+                                    /^\[Feature \{[0-9A-Z_]+(, [0-9A-Z_]+)*\}\]$/
+                                );
+                                expect(Feature('ATOB').toString()).toBe('[Feature {ATOB}]');
+                            }
+                        );
+                    }
+                );
+                describe(
+                    '.areCompatible',
+                    function ()
+                    {
+                        it(
+                            'returns true if no arguments are specified',
+                            function ()
+                            {
+                                var compatible = Feature.areCompatible([]);
+                                expect(compatible).toBe(true);
+                            }
+                        );
+                        it(
+                            'returns true for any single feature',
+                            function ()
+                            {
+                                var compatible = Feature.areCompatible([Feature.AUTO]);
+                                expect(compatible).toBe(true);
+                            }
+                        );
+                        it(
+                            'returns true for compatible features',
+                            function ()
+                            {
+                                var compatible = Feature.areCompatible(['FILL', 'SELF']);
+                                expect(compatible).toBe(true);
+                            }
+                        );
+                        it(
+                            'returns false for incompatible features',
+                            function ()
+                            {
+                                var compatible = Feature.areCompatible(['V8_SRC', 'IE_SRC']);
+                                expect(compatible).toBe(false);
+                            }
+                        );
+                    }
+                );
+                describe(
+                    '.areEqual',
+                    function ()
+                    {
+                        it(
+                            'accepts mixed arguments',
+                            function ()
+                            {
+                                var actual =
+                                    Feature.areEqual(
+                                        ['NAME', Feature.WINDOW],
+                                        'HTMLDOCUMENT',
+                                        Feature.NO_IE_SRC,
+                                        []
+                                    );
+                                expect(actual).toBe(false);
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for unknown features',
+                            function ()
+                            {
+                                var fn = Feature.areEqual.bind(null, '???');
+                                expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for incompatible feature arrays',
+                            function ()
+                            {
+                                var fn = Feature.areEqual.bind(null, ['IE_SRC', 'NO_IE_SRC']);
+                                expect(fn).toThrow(ReferenceError('Incompatible features'));
+                            }
+                        );
+                        it(
+                            'returns true if no arguments are specified',
+                            function ()
+                            {
+                                var equal = Feature.areEqual([]);
+                                expect(equal).toBe(true);
+                            }
+                        );
+                        it(
+                            'returns true for any single feature',
+                            function ()
+                            {
+                                var equal = Feature.areEqual([Feature.AUTO]);
+                                expect(equal).toBe(true);
+                            }
+                        );
+                        it(
+                            'returns true for equal features',
+                            function ()
+                            {
+                                var equal = Feature.areEqual(['FILL'], Feature.FILL);
+                                expect(equal).toBe(true);
+                            }
+                        );
+                        it(
+                            'returns false for unequal features',
+                            function ()
+                            {
+                                var equal = Feature.areEqual('V8_SRC', 'IE_SRC');
+                                expect(equal).toBe(false);
+                            }
+                        );
+                    }
+                );
+                describe(
+                    '.commonOf',
+                    function ()
+                    {
+                        it(
+                            'accepts mixed arguments',
+                            function ()
+                            {
+                                var featureObj =
+                                    Feature.commonOf(
+                                        ['NAME', Feature.WINDOW],
+                                        'HTMLDOCUMENT',
+                                        Feature.NO_IE_SRC,
+                                        []
+                                    );
+                                expect(featureObj.mask).toBe(0);
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for unknown features',
+                            function ()
+                            {
+                                var fn = Feature.commonOf.bind(null, '???');
+                                expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for incompatible feature arrays',
+                            function ()
+                            {
+                                var fn = Feature.commonOf.bind(null, ['IE_SRC', 'NO_IE_SRC']);
+                                expect(fn).toThrow(ReferenceError('Incompatible features'));
+                            }
+                        );
+                        it(
+                            'returns null if no arguments are specified',
+                            function ()
+                            {
+                                var featureObj = Feature.commonOf();
+                                expect(featureObj).toBeNull();
+                            }
+                        );
+                        it(
+                            'returns a feature with expected mask',
+                            function ()
+                            {
+                                var featureObj = Feature.commonOf(Feature.AUTO);
+                                expect(featureObj.mask).toEqual(Feature.AUTO.mask);
+                            }
+                        );
+                        it(
+                            'throws a ReferenceError for incompatible feature arrays',
+                            function ()
+                            {
+                                var fn =
+                                    Feature.commonOf.bind(
+                                        null,
+                                        'ANY_WINDOW',
+                                        ['WINDOW', 'DOMWINDOW']
+                                    );
+                                expect(fn).toThrow(ReferenceError('Incompatible features'));
+                            }
+                        );
+                    }
+                );
+            }
+        );
+        describe(
+            'JScrewIt.debug.createFeatureFromMask',
+            function ()
+            {
+                it(
+                    'returns null for an incompatible mask',
+                    function ()
+                    {
+                        var featureMask = Feature.NO_IE_SRC.mask | Feature.IE_SRC.mask;
+                        var featureObj = JScrewIt.debug.createFeatureFromMask(featureMask);
+                        expect(featureObj).toBeNull();
                     }
                 );
             }
@@ -575,12 +865,8 @@ self
                     'fails for invalid identifier',
                     function ()
                     {
-                        expect(
-                            function ()
-                            {
-                                JScrewIt.debug.defineConstant(null, 'X:X', '0');
-                            }
-                        ).toThrow(SyntaxError('Invalid identifier "X:X"'));
+                        var fn = JScrewIt.debug.defineConstant.bind(null, null, 'X:X', '0');
+                        expect(fn).toThrow(SyntaxError('Invalid identifier "X:X"'));
                     }
                 );
             }
@@ -715,6 +1001,18 @@ self
             'ScrewBuffer',
             function ()
             {
+                function createCommaSolution()
+                {
+                    var block = '["concat"]';
+                    var replacement = '[[]]' + block + '([[]])';
+                    var solution = Object(replacement);
+                    solution.level = 1;
+                    solution.outerPlus = false;
+                    var appendLength = block.length - 1;
+                    solution.bridge = { block: block, appendLength: appendLength };
+                    return solution;
+                }
+                
                 function test(buffer, expectedStr, tolerance)
                 {
                     var actualLength = buffer.length;
@@ -730,10 +1028,40 @@ self
                 solution0.level = -1;
                 var solutionFalse = Object('![]');
                 solutionFalse.level = -1;
+                var solutionComma = createCommaSolution();
+                
+                describe(
+                    'buffer length does not exceed string length when joining solutions with ' +
+                    'outer plus',
+                    function ()
+                    {
+                        it(
+                            'without a bridge',
+                            function ()
+                            {
+                                var buffer = JScrewIt.debug.createScrewBuffer(false, false, 4);
+                                buffer.append(solution0);
+                                buffer.append(solution0);
+                                expect(buffer.length).not.toBeGreaterThan(buffer.toString().length);
+                            }
+                        );
+                        it(
+                            'with a bridge',
+                            function ()
+                            {
+                                var buffer = JScrewIt.debug.createScrewBuffer(true, false, 4);
+                                buffer.append(solution0);
+                                buffer.append(solutionComma);
+                                buffer.append(solution0);
+                                expect(buffer.length).not.toBeGreaterThan(buffer.toString().length);
+                            }
+                        );
+                    }
+                );
                 
                 (function ()
                 {
-                    var buffer = JScrewIt.debug.createScrewBuffer(false, 4);
+                    var buffer = JScrewIt.debug.createScrewBuffer(false, true, 4);
                     it(
                         'encodes a string in a single group',
                         function ()
@@ -742,7 +1070,7 @@ self
                             expect(buffer.append(solution0)).toBe(true);
                             expect(buffer.append(solution0)).toBe(true);
                             expect(buffer.append(solution0)).toBe(true);
-                            test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[])');
+                            test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[])', 2);
                         }
                     );
                     it(
@@ -751,7 +1079,7 @@ self
                         {
                             expect(buffer.append(solutionFalse)).toBe(true);
                             expect(buffer.append(solutionFalse)).toBe(true);
-                            test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![])', 2);
+                            test(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![])', 4);
                         }
                     );
                     it(
@@ -762,7 +1090,7 @@ self
                             test(
                                 buffer,
                                 '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))',
-                                6
+                                8
                             );
                         }
                     );
@@ -774,7 +1102,7 @@ self
                             test(
                                 buffer,
                                 '[![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
-                                8
+                                10
                             );
                         }
                     );
@@ -786,7 +1114,7 @@ self
                             test(
                                 buffer,
                                 '[![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
-                                8
+                                10
                             );
                         }
                     );
@@ -796,7 +1124,7 @@ self
                     'encodes a string with incomplete groups',
                     function ()
                     {
-                        var buffer = JScrewIt.debug.createScrewBuffer(false, 7);
+                        var buffer = JScrewIt.debug.createScrewBuffer(false, true, 7);
                         for (var index = 0; index < 26; ++index)
                         {
                             var solution = Object(String.fromCharCode(65 + index));
@@ -806,73 +1134,106 @@ self
                         test(
                             buffer,
                             'A+B+C+D+E+(F+G+H+I+J)+(K+L+M+N+(O+P+Q+R)+(S+T+U+V+(W+X+Y+Z)))',
-                            10
+                            12
                         );
                     }
                 );
-                describe(
-                    'with weak bound',
+                it(
+                    'encodes a string with multiple bridges',
                     function ()
                     {
-                        it(
-                            'encodes an empty string',
-                            function ()
-                            {
-                                var buffer = JScrewIt.debug.createScrewBuffer(false, 10);
-                                test(buffer, '[]+[]');
-                            }
-                        );
-                        it(
-                            'encodes a single string character',
-                            function ()
-                            {
-                                var buffer = JScrewIt.debug.createScrewBuffer(false, 10);
-                                expect(buffer.append(solutionA)).toBe(true);
-                                test(buffer, '[![]+[]][+[]]');
-                            }
-                        );
-                        it(
-                            'encodes a single nonstring character',
-                            function ()
-                            {
-                                var buffer = JScrewIt.debug.createScrewBuffer(false, 10);
-                                expect(buffer.append(solution0)).toBe(true);
-                                test(buffer, '+[]+[]');
-                            }
+                        var buffer = JScrewIt.debug.createScrewBuffer(false, true, 4);
+                        for (var index = 0; index < 5; ++index)
+                        {
+                            buffer.append(solutionComma);
+                        }
+                        test(
+                            buffer,
+                            '[[]]["concat"]([[]])["concat"]([[]])["concat"]([[]])+' +
+                            '[[]]["concat"]([[]])["concat"]([[]])',
+                            47
                         );
                     }
                 );
-                describe(
-                    'with strong bound',
-                    function ()
-                    {
-                        it(
-                            'encodes an empty string',
-                            function ()
-                            {
-                                var buffer = JScrewIt.debug.createScrewBuffer(true, 10);
-                                test(buffer, '([]+[])');
-                            }
-                        );
-                        it(
-                            'encodes a single string character',
-                            function ()
-                            {
-                                var buffer = JScrewIt.debug.createScrewBuffer(true, 10);
-                                expect(buffer.append(solutionA)).toBe(true);
-                                test(buffer, '[![]+[]][+[]]');
-                            }
-                        );
-                        it(
-                            'encodes a single nonstring character',
-                            function ()
-                            {
-                                var buffer = JScrewIt.debug.createScrewBuffer(true, 10);
-                                expect(buffer.append(solution0)).toBe(true);
-                                test(buffer, '(+[]+[])');
-                            }
-                        );
-                    }
+                
+                function testShortEncodings(
+                    description,
+                    strongBound,
+                    forceString,
+                    expected0,
+                    expected1,
+                    expected2)
+                {
+                    var createScrewBuffer = JScrewIt.debug.createScrewBuffer;
+                    
+                    describe(
+                        description,
+                        function ()
+                        {
+                            it(
+                                'encodes an empty string',
+                                function ()
+                                {
+                                    var buffer = createScrewBuffer(strongBound, forceString, 10);
+                                    test(buffer, expected0);
+                                }
+                            );
+                            it(
+                                'encodes a single string character',
+                                function ()
+                                {
+                                    var buffer = createScrewBuffer(strongBound, forceString, 10);
+                                    expect(buffer.append(solutionA)).toBe(true);
+                                    test(buffer, expected1);
+                                }
+                            );
+                            it(
+                                'encodes a single nonstring character',
+                                function ()
+                                {
+                                    var buffer = createScrewBuffer(strongBound, forceString, 10);
+                                    expect(buffer.append(solution0)).toBe(true);
+                                    test(buffer, expected2);
+                                }
+                            );
+                        }
+                    );
+                }
+                
+                testShortEncodings(
+                    'with weak bound and no string forcing',
+                    false,
+                    false,
+                    '',
+                    '[![]+[]][+[]]',
+                    '+[]'
+                );
+                
+                testShortEncodings(
+                    'with weak bound and string forcing',
+                    false,
+                    true,
+                    '[]+[]',
+                    '[![]+[]][+[]]',
+                    '+[]+[]'
+                );
+                
+                testShortEncodings(
+                    'with strong bound and no string forcing',
+                    true,
+                    false,
+                    '',
+                    '[![]+[]][+[]]',
+                    '+[]'
+                );
+                
+                testShortEncodings(
+                    'with strong bound and string forcing',
+                    true,
+                    true,
+                    '([]+[])',
+                    '[![]+[]][+[]]',
+                    '(+[]+[])'
                 );
             }
         );
@@ -1001,6 +1362,151 @@ self
             'Encoder#replaceString',
             function ()
             {
+                describe(
+                    'supports bridging',
+                    function ()
+                    {
+                        function test(
+                            expr,
+                            start0,
+                            end0,
+                            startSB,
+                            endSB,
+                            startFS,
+                            endFS,
+                            startSBFS,
+                            endSBFS)
+                        {
+                            function fn()
+                            {
+                                it(
+                                    'with weak bound and no string forcing',
+                                    function ()
+                                    {
+                                        var output = encoder.replaceString(expr, false, false);
+                                        expect(output).toStartWith(start0);
+                                        expect(output).toEndWith(end0);
+                                    }
+                                );
+                                it(
+                                    'with strong bound and no string forcing',
+                                    function ()
+                                    {
+                                        var output = encoder.replaceString(expr, true, false);
+                                        expect(output).toStartWith(startSB);
+                                        expect(output).toEndWith(endSB);
+                                    }
+                                );
+                                it(
+                                    'with weak bound and string forcing',
+                                    function ()
+                                    {
+                                        var output = encoder.replaceString(expr, false, true);
+                                        expect(output).toStartWith(startFS);
+                                        expect(output).toEndWith(endFS);
+                                    }
+                                );
+                                it(
+                                    'with strong bound and string forcing',
+                                    function ()
+                                    {
+                                        var output = encoder.replaceString(expr, true, true);
+                                        expect(output).toStartWith(startSBFS);
+                                        expect(output).toEndWith(endSBFS);
+                                    }
+                                );
+                            }
+                            
+                            describe('with "' + expr + '"', fn);
+                        }
+                        
+                        var encoder = JScrewIt.debug.createEncoder(['FILL', 'NO_IE_SRC']);
+                        test(
+                            ',0',
+                            '[[]][', '](+[])',
+                            '[[]][', '](+[])',
+                            '[[]][', '](+[])+[]',
+                            '([[]][', '](+[])+[])'
+                        );
+                        test(
+                            '0,',
+                            '[+[]][', ']([[]])',
+                            '[+[]][', ']([[]])',
+                            '[+[]][', ']([[]])+[]',
+                            '([+[]][', ']([[]])+[])'
+                        );
+                        test(
+                            ',',
+                            '[[]][', ']([[]])',
+                            '[[]][', ']([[]])',
+                            '[[]][', ']([[]])+[]',
+                            '([[]][', ']([[]])+[])'
+                        );
+                        test(
+                            '0,0',
+                            '[+[]][', '](+[])',
+                            '[+[]][', '](+[])',
+                            '[+[]][', '](+[])+[]',
+                            '([+[]][', '](+[])+[])'
+                        );
+                        test(
+                            '00,0',
+                            '+[]+[+[]][', '](+[])',
+                            '[+[]+[+[]]][', '](+[])',
+                            '+[]+[+[]][', '](+[])',
+                            '(+[]+[+[]][', '](+[]))'
+                        );
+                        test(
+                            '0a0f,0',
+                            '+[]+(![]+[])[+!![]]+[+[]+(![]+[])[+[]]][', '](+[])',
+                            '[+[]+(![]+[])[+!![]]+(+[])+(![]+[])[+[]]][', '](+[])',
+                            '+[]+(![]+[])[+!![]]+[+[]+(![]+[])[+[]]][', '](+[])',
+                            '(+[]+(![]+[])[+!![]]+[+[]+(![]+[])[+[]]][', '](+[]))'
+                        );
+                        test(
+                            '0undefinedundefined,0',
+                            '[[+[]]+[][[]]+[][[]]][', '](+[])',
+                            '[[+[]]+[][[]]+[][[]]][', '](+[])',
+                            '+[]+[[][[]]+[]+[][[]]][', '](+[])',
+                            '(+[]+[[][[]]+[]+[][[]]][', '](+[]))'
+                        );
+                        test(
+                            '0undefinedundefined,00',
+                            '[[+[]]+[][[]]+[][[]]][', '](+[]+[+[]])',
+                            '[[+[]]+[][[]]+[][[]]][', '](+[]+[+[]])',
+                            '[[+[]]+[][[]]+[][[]]][', '](+[])+(+[])',
+                            '([[+[]]+[][[]]+[][[]]][', '](+[])+(+[]))'
+                        );
+                        test(
+                            '0undefinedundefined,undefined00',
+                            '[[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]]+(+[]))',
+                            '[[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]]+(+[]))',
+                            '[[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]])+(+[])',
+                            '([[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]])+(+[]))'
+                        );
+                        test(
+                            '0undefinedundefined,undefinedundefined',
+                            '[[+[]]+[][[]]+[][[]]][', ']([][[]]+[]+[][[]])',
+                            '[[+[]]+[][[]]+[][[]]][', ']([][[]]+[]+[][[]])',
+                            '[[+[]]+[][[]]+[][[]]][', ']([][[]]+[])+[][[]]',
+                            '([[+[]]+[][[]]+[][[]]][', ']([][[]]+[])+[][[]])'
+                        );
+                        test(
+                            'undefinedundefined0,0',
+                            '[][[]]+[[][[]]+[+[]]][', '](+[])',
+                            '([][[]]+[[][[]]+[+[]]][', '](+[]))',
+                            '[][[]]+[[][[]]+[+[]]][', '](+[])',
+                            '([][[]]+[[][[]]+[+[]]][', '](+[]))'
+                        );
+                        test(
+                            '0,00',
+                            '[+[]][', '](+[]+[+[]])',
+                            '[+[]][', '](+[]+[+[]])',
+                            '[+[]][', '](+[])+(+[])',
+                            '([+[]][', '](+[])+(+[]))'
+                        );
+                    }
+                );
                 it(
                     'returns undefined for too complex input',
                     function ()
@@ -1281,7 +1787,7 @@ self
                 test('ENTRIES_OBJ', repeat.bind(null, String.fromCharCode(59999)), 'byDict');
                 test(
                     ['ATOB', 'ENTRIES_OBJ', 'FILL', 'V8_SRC'],
-                    createDictTestString.bind(null, 122),
+                    createDictTestString.bind(null, 124),
                     'byDictRadix3'
                 );
                 test(
@@ -1313,55 +1819,51 @@ self
         );
     }
     
-    function getEmuFeatures(features)
+    function getEmuFeatureNames(featureObj)
     {
+        var featureNames = featureObj.elementaryNames;
         if (
-            features.every(
-                function (feature)
+            featureNames.every(
+                function (featureName)
                 {
-                    return feature in featureSet;
+                    return featureName in featureSet;
                 }
             )
         )
         {
-            return features.filter(
-                function (feature)
+            return featureNames.filter(
+                function (featureName)
                 {
-                    return featureSet[feature];
+                    return featureSet[featureName];
                 }
             );
         }
     }
     
-    function getEntryFeatures(entry)
+    function getEntryFeature(entry)
     {
-        var result = JScrewIt.debug.featuresFromMask(entry.featureMask);
-        return result;
+        var featureObj = JScrewIt.debug.createFeatureFromMask(entry.featureMask);
+        return featureObj;
     }
     
     function init(arg)
     {
         JScrewIt = arg || global.JScrewIt;
+        Feature = JScrewIt.Feature;
         featureSet = Object.create(null);
         EMU_FEATURES.forEach(
-            function (feature)
+            function (featureName)
             {
-                featureSet[feature] = true;
+                featureSet[featureName] = true;
             }
         );
-        initIncludesOf('AUTO');
+        Feature.AUTO.elementaryNames.forEach(
+            function (featureName)
+            {
+                featureSet[featureName] = false;
+            }
+        );
         describeTests();
-    }
-    
-    function initIncludesOf(feature)
-    {
-        JScrewIt.FEATURE_INFOS[feature].includes.forEach(
-            function (feature)
-            {
-                initIncludesOf(feature);
-                featureSet[feature] = false;
-            }
-        );
     }
     
     function isExpected(expected)
@@ -1417,10 +1919,11 @@ self
                         {
                             if (entry.definition)
                             {
-                                var features = getEntryFeatures(entry);
-                                var usingDefaultFeature = !features.length;
+                                var featureObj = getEntryFeature(entry);
+                                var usingDefaultFeature =
+                                    JScrewIt.Feature.DEFAULT.includes(featureObj);
                                 defaultEntryFound |= usingDefaultFeature;
-                                var emuFeatures = getEmuFeatures(features);
+                                var emuFeatures = getEmuFeatureNames(featureObj);
                                 if (emuFeatures)
                                 {
                                     it(
@@ -1487,8 +1990,8 @@ self
                 entries.forEach(
                     function (entry, index)
                     {
-                        var features = getEntryFeatures(entry);
-                        var emuFeatures = getEmuFeatures(features);
+                        var featureObj = getEntryFeature(entry);
+                        var emuFeatures = getEmuFeatureNames(featureObj);
                         if (emuFeatures)
                         {
                             it(
@@ -1514,75 +2017,78 @@ self
         );
     }
     
-    function testFeature(feature)
+    function testFeatureObj(featureName)
     {
-        var FEATURE_INFOS = JScrewIt.FEATURE_INFOS;
+        var featureObj = Feature[featureName];
         
         describe(
-            feature,
+            featureName,
             function ()
             {
-                var info = FEATURE_INFOS[feature];
-                
                 it(
                     'is named correctly',
                     function ()
                     {
-                        var name = info.name;
+                        var name = featureObj.name;
                         expect(name).toBeString();
-                        expect(info).toBe(FEATURE_INFOS[name]);
-                    }
-                );
-                it(
-                    'has expected availability',
-                    function ()
-                    {
-                        expect(info.available).toBe(JScrewIt.areFeaturesAvailable(feature));
-                    }
-                );
-                it(
-                    'has includes array',
-                    function ()
-                    {
-                        expect(info.includes).toBeArray();
-                    }
-                );
-                it(
-                    'has expected excludes array',
-                    function ()
-                    {
-                        var excludes = info.excludes;
-                        expect(excludes).toBeArray();
-                        excludes.forEach(
-                            function (exclude)
-                            {
-                                var info = FEATURE_INFOS[exclude];
-                                expect(info.excludes).toContain(
-                                    feature,
-                                    'feature ' + feature + ' excludes ' + exclude +
-                                    ', but not vice versa'
-                                );
-                            }
-                        );
+                        expect(featureObj).toBe(Feature[name]);
+                        expect(featureObj).toBe(Feature.ALL[name]);
                     }
                 );
                 it(
                     'has description string',
                     function ()
                     {
-                        expect(info.description).toBeString();
+                        expect(featureObj.description).toBeString();
+                    }
+                );
+                it(
+                    'has 32-bit integer mask',
+                    function ()
+                    {
+                        expect(featureObj.mask).toBeInt32();
+                    }
+                );
+                it(
+                    'has elementaryNames string array',
+                    function ()
+                    {
+                        var elementaryNames = featureObj.elementaryNames;
+                        expect(elementaryNames).toBeArray();
+                        elementaryNames.forEach(
+                            function (name)
+                            {
+                                expect(name).toBeString();
+                            }
+                        );
+                    }
+                );
+                it(
+                    'has canonicalNames string array',
+                    function ()
+                    {
+                        var canonicalNames = featureObj.canonicalNames;
+                        expect(canonicalNames).toBeArray();
+                        var elementaryNames = featureObj.elementaryNames;
+                        expect(elementaryNames).toBeArray();
+                        canonicalNames.forEach(
+                            function (name)
+                            {
+                                expect(elementaryNames).toContain(name);
+                            }
+                        );
                     }
                 );
                 it(
                     'is checkable',
                     function ()
                     {
-                        var check = info.check;
+                        var check = featureObj.check;
                         if (check)
                         {
-                            if (feature in featureSet)
+                            if (featureName in featureSet)
                             {
-                                var emuFeatures = featureSet[feature] ? [feature] : [];
+                                var emuFeatures = featureSet[featureName] ? [featureName] : [];
                                 expect(emuDo.bind(null, emuFeatures, check)).not.toThrow();
                             }
                         }
@@ -1592,9 +2098,10 @@ self
         );
     }
     
-    var encoderCache = { };
-    var featureSet;
+    var Feature;
     var JScrewIt;
+    var encoderCache = Object.create(null);
+    var featureSet;
     
     var TestSuite = { init: init, listFeatures: listFeatures };
     

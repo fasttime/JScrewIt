@@ -4,11 +4,35 @@
 {
     'use strict';
     
-    function verifyDefinitions(entries, inputList, mismatchCallback)
+    function define(definition)
+    {
+        var features = Array.prototype.slice.call(arguments, 1);
+        var featureMask = JScrewIt.Feature(features).mask;
+        var entry = { definition: definition, featureMask: featureMask };
+        return entry;
+    }
+    
+    function getExprList(entries)
+    {
+        var exprSet = Object.create(null);
+        entries.forEach(
+            function (entry)
+            {
+                var definition = entry.definition;
+                var type = typeof definition;
+                var expr = type === 'object' ? definition.expr :  definition;
+                exprSet[expr] = null;
+            }
+        );
+        var exprList = Object.keys(exprSet).sort();
+        return exprList;
+    }
+    
+    function verifyDefinitions(entries, inputList, mismatchCallback, replacerName)
     {
         function considerInput(input)
         {
-            var solution = encoder.replaceString(input);
+            var solution = encoder[replacerName](input);
             var length = solution.length;
             if (length <= optimalLength)
             {
@@ -21,6 +45,10 @@
             }
         }
         
+        if (!inputList)
+        {
+            inputList = getExprList(entries);
+        }
         var analyzer = new Analyzer();
         var encoder;
         while (encoder = analyzer.nextEncoder)
@@ -32,25 +60,29 @@
             var actualDefinition = encoder.findBestDefinition(entries);
             if (!optimalInputs[actualDefinition])
             {
-                var features = analyzer.features;
+                var featureNames = analyzer.featureObj.canonicalNames;
                 var expectedDefinitions = Object.keys(optimalInputs).sort();
-                mismatchCallback(features, actualDefinition, expectedDefinitions);
+                mismatchCallback(featureNames, actualDefinition, expectedDefinitions);
             }
         }
     }
     
     var Analyzer;
+    var JScrewIt;
     
     if (typeof self !== 'undefined')
     {
         Analyzer = self.Analyzer;
-        self.verifyDefinitions = verifyDefinitions;
+        JScrewIt = self.JScrewIt;
+        self.define             = define;
+        self.verifyDefinitions  = verifyDefinitions;
     }
     
     if (typeof module !== 'undefined')
     {
         Analyzer = require('./analyzer.js');
-        module.exports = verifyDefinitions;
+        JScrewIt = require('../lib/jscrewit.js');
+        module.exports = { define: define, verifyDefinitions: verifyDefinitions };
     }
 }
 )();

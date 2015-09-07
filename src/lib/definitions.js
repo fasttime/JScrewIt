@@ -145,6 +145,16 @@ var replaceDigit;
         return solution;
     }
     
+    function createCommaSolution()
+    {
+        var block = this.replaceExpr('["concat"]');
+        var replacement = '[[]]' + block + '([[]])';
+        var solution = createSolution(replacement, LEVEL_OBJECT, false);
+        var appendLength = block.length - 1;
+        solution.bridge = { block: block, appendLength: appendLength };
+        return solution;
+    }
+    
     function createFBCharAtDefinition(offset)
     {
         function definition()
@@ -557,7 +567,9 @@ var replaceDigit;
             defineFHCharAt('ANY_FUNCTION', 8),
             define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ENTRIES_OBJ'),
             define('(RP_1_NO + FILTER)["20"]', 'V8_SRC'),
-            define('(FILTER + [])["20"]', 'FF_SAFARI_SRC')
+            define('(RP_5_N + FILL)["20"]', 'NO_IE_SRC', 'FILL'),
+            define('(FILTER + [])["20"]', 'FF_SAFARI_SRC'),
+            define('(FILL + [])["20"]', 'FF_SAFARI_SRC', 'FILL')
         ],
         // '!':    ,
         '"': '""["fontcolor"]()["12"]',
@@ -591,7 +603,7 @@ var replaceDigit;
         ',':
         [
             define('([]["slice"]["call"]("false") + [])[1]'),
-            define({ expr: '[[]]["concat"]([[]])', level: LEVEL_OBJECT })
+            define(createCommaSolution)
         ],
         '-': '(+".0000000001" + [])[2]',
         '.': '(+"11e20" + [])[1]',
@@ -896,14 +908,10 @@ var replaceDigit;
         };
     
     // Create definitions for digits
-    (function ()
+    for (var digit = 0; digit <= 9; ++digit)
     {
-        for (var digit = 0; digit <= 9; ++digit)
-        {
-            var expr = replaceDigit(digit);
-            CHARACTERS[digit] = { expr: expr, level: LEVEL_NUMERIC };
-        }
+        var expr = replaceDigit(digit);
+        CHARACTERS[digit] = { expr: expr, level: LEVEL_NUMERIC };
     }
-    )();
 }
 )();

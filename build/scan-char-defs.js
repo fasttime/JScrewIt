@@ -18,9 +18,9 @@ function formatChar(char)
     return str;
 }
 
-function formatFeatures(features)
+function formatFeatures(featureNames)
 {
-    var str = features.length ? features.join(', ') : 'DEFAULT';
+    var str = featureNames.length ? featureNames.join(', ') : 'DEFAULT';
     return str;
 }
 
@@ -31,8 +31,8 @@ function processOutputMap(outputMap, entryCount, logLine)
     {
         var outputData = outputMap[output];
         var featureMask = outputData.featureMask;
-        var features = JScrewIt.debug.featuresFromMask(featureMask);
-        outputData.features = features;
+        var featureNames = JScrewIt.debug.createFeatureFromMask(featureMask).canonicalNames;
+        outputData.featureNames = featureNames;
         var entryIndex = outputData.entryIndex;
         if (entryIndex != null)
         {
@@ -50,8 +50,8 @@ function processOutputMap(outputMap, entryCount, logLine)
         {
             var outputData1 = outputMap[output1];
             var outputData2 = outputMap[output2];
-            var features1 = outputData1.features;
-            var features2 = outputData2.features;
+            var features1 = outputData1.featureNames;
+            var features2 = outputData2.featureNames;
             for (var index = 0;; ++index)
             {
                 var feature1 = features1[index] || '';
@@ -75,12 +75,12 @@ function processOutputMap(outputMap, entryCount, logLine)
         function (output)
         {
             var outputData = outputMap[output];
-            var features = outputData.features;
+            var featureNames = outputData.featureNames;
             var outputLength = output.length;
             var entryIndex = outputData.entryIndex;
             var line =
                 padLeft(outputLength, 5) + ' | ' + (entryIndex == null ? '-' : entryIndex) + ' | ' +
-                formatFeatures(features);
+                formatFeatures(featureNames);
             logLine(line);
         }
     );
@@ -168,7 +168,7 @@ function scanChar(char, entryCount, logLine, allCharCount, charDoneCount, callba
     {
         var output = encoder.resolveCharacter(char);
         var outputData = outputMap[output];
-        var featureMask = analyzer.featureMask;
+        var featureMask = analyzer.featureObj.mask;
         if (outputData)
         {
             outputData.featureMask &= featureMask;

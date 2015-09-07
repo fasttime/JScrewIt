@@ -17,7 +17,7 @@ module.exports =
             {
                 clean:
                 {
-                    build: ['Features.md', 'output.txt'],
+                    build: ['Features.md', 'output.txt', 'Reference.md'],
                     html: 'html/**/*.js',
                     lib: ['coverage', 'lib/**/*.js']
                 },
@@ -28,7 +28,7 @@ module.exports =
                         src:
                         [
                             'src/lib/preamble',
-                            'src/lib/no-proto.js',
+                            'src/lib/obj-utils.js',
                             'src/lib/features.js',
                             'src/lib/definers.js',
                             'src/lib/definitions.js',
@@ -57,6 +57,7 @@ module.exports =
                         // Encourage use of abbreviations: "char", "obj", "str".
                         disallowIdentifierNames: ['character', 'object', 'string'],
                         disallowMixedSpacesAndTabs: true,
+                        disallowNamedUnassignedFunctions: true,
                         disallowSpaceAfterObjectKeys: true,
                         disallowSpaceAfterPrefixUnaryOperators: true,
                         disallowSpaceBeforePostfixUnaryOperators: true,
@@ -111,6 +112,7 @@ module.exports =
                         validateParameterSeparator: ', '
                     }
                 },
+                jsdoc2md: { default: { dest: 'Reference.md', src: 'lib/jscrewit.js' } },
                 jshint:
                 {
                     default: JS_FILES.default,
@@ -176,6 +178,7 @@ module.exports =
         // These plugins provide necessary tasks.
         grunt.loadNpmTasks('grunt-contrib-clean');
         grunt.loadNpmTasks('grunt-contrib-concat');
+        grunt.loadNpmTasks('grunt-jsdoc-to-markdown');
         grunt.loadNpmTasks('grunt-contrib-jshint');
         grunt.loadNpmTasks('grunt-contrib-uglify');
         grunt.loadNpmTasks('grunt-jscs');
@@ -227,7 +230,8 @@ module.exports =
                 'mocha_istanbul:default',
                 'scan-char-defs',
                 'uglify',
-                'feature-doc'
+                'feature-doc',
+                'jsdoc2md'
             ]
         );
         
