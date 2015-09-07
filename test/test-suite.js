@@ -1001,6 +1001,18 @@ self
             'ScrewBuffer',
             function ()
             {
+                function createCommaSolution()
+                {
+                    var block = '["concat"]';
+                    var replacement = '[[]]' + block + '([[]])';
+                    var solution = Object(replacement);
+                    solution.level = 1;
+                    solution.outerPlus = false;
+                    var appendLength = block.length - 1;
+                    solution.bridge = { block: block, appendLength: appendLength };
+                    return solution;
+                }
+                
                 function test(buffer, expectedStr, tolerance)
                 {
                     var actualLength = buffer.length;
@@ -1016,8 +1028,7 @@ self
                 solution0.level = -1;
                 var solutionFalse = Object('![]');
                 solutionFalse.level = -1;
-                var solutionComma =
-                    JScrewIt.debug.createEncoder(['FILL', 'V8_SRC']).resolveCharacter(',');
+                var solutionComma = createCommaSolution();
                 
                 describe(
                     'buffer length does not exceed string length when joining solutions with ' +
@@ -1124,6 +1135,23 @@ self
                             buffer,
                             'A+B+C+D+E+(F+G+H+I+J)+(K+L+M+N+(O+P+Q+R)+(S+T+U+V+(W+X+Y+Z)))',
                             12
+                        );
+                    }
+                );
+                it(
+                    'encodes a string with multiple bridges',
+                    function ()
+                    {
+                        var buffer = JScrewIt.debug.createScrewBuffer(false, true, 4);
+                        for (var index = 0; index < 5; ++index)
+                        {
+                            buffer.append(solutionComma);
+                        }
+                        test(
+                            buffer,
+                            '[[]]["concat"]([[]])["concat"]([[]])["concat"]([[]])+' +
+                            '[[]]["concat"]([[]])["concat"]([[]])',
+                            47
                         );
                     }
                 );
@@ -1441,6 +1469,27 @@ self
                             '[[+[]]+[][[]]+[][[]]][', '](+[])',
                             '+[]+[[][[]]+[]+[][[]]][', '](+[])',
                             '(+[]+[[][[]]+[]+[][[]]][', '](+[]))'
+                        );
+                        test(
+                            '0undefinedundefined,00',
+                            '[[+[]]+[][[]]+[][[]]][', '](+[]+[+[]])',
+                            '[[+[]]+[][[]]+[][[]]][', '](+[]+[+[]])',
+                            '[[+[]]+[][[]]+[][[]]][', '](+[])+(+[])',
+                            '([[+[]]+[][[]]+[][[]]][', '](+[])+(+[]))'
+                        );
+                        test(
+                            '0undefinedundefined,undefined00',
+                            '[[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]]+(+[]))',
+                            '[[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]]+(+[]))',
+                            '[[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]])+(+[])',
+                            '([[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]])+(+[]))'
+                        );
+                        test(
+                            '0undefinedundefined,undefinedundefined',
+                            '[[+[]]+[][[]]+[][[]]][', ']([][[]]+[]+[][[]])',
+                            '[[+[]]+[][[]]+[][[]]][', ']([][[]]+[]+[][[]])',
+                            '[[+[]]+[][[]]+[][[]]][', ']([][[]]+[])+[][[]]',
+                            '([[+[]]+[][[]]+[][[]]][', ']([][[]]+[])+[][[]])'
                         );
                         test(
                             'undefinedundefined0,0',
