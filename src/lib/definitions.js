@@ -567,7 +567,9 @@ var replaceDigit;
             defineFHCharAt('ANY_FUNCTION', 8),
             define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ENTRIES_OBJ'),
             define('(RP_1_NO + FILTER)["20"]', 'V8_SRC'),
-            define('(FILTER + [])["20"]', 'FF_SAFARI_SRC')
+            define('(RP_5_N + FILL)["20"]', 'NO_IE_SRC', 'FILL'),
+            define('(FILTER + [])["20"]', 'FF_SAFARI_SRC'),
+            define('(FILL + [])["20"]', 'FF_SAFARI_SRC', 'FILL')
         ],
         // '!':    ,
         '"': '""["fontcolor"]()["12"]',
