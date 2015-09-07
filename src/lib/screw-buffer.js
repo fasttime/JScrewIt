@@ -32,12 +32,6 @@ var hasOuterPlus;
         return joinCost;
     }
     
-    function getSingleArrayItemExpr(solution)
-    {
-        var str = solution + (solution.level < LEVEL_NUMERIC ? '+[]' : '');
-        return str;
-    }
-    
     function isNumericJoin(level0, level1)
     {
         var result = level0 < LEVEL_OBJECT && level1 < LEVEL_OBJECT;
@@ -49,9 +43,11 @@ var hasOuterPlus;
         {
             function canSplitRightEndForFree(lastBridgeIndex, limit)
             {
-                var sideLength = limit - lastBridgeIndex;
+                var rightEndIndex = lastBridgeIndex + 1;
+                var rightEndLength = limit - rightEndIndex;
                 var result =
-                    sideLength > 3 || sideLength > 2 && !isUnluckyRightEnd(lastBridgeIndex + 1);
+                    rightEndLength > 2 ||
+                    rightEndLength > 1 && !isUnluckyRightEnd(rightEndIndex);
                 return result;
             }
             
@@ -109,13 +105,11 @@ var hasOuterPlus;
             
             function gather(offset, count, localStrongBound, localForceString)
             {
-                function appendGroup(groupCount)
+                function appendRightGroup(groupCount)
                 {
-                    str += sequence0(groupIndex, groupCount, '[[]]') + ')';
+                    str += sequence0(index, groupCount, '[[]]') + ')';
                 }
                 
-                var str;
-                var multiPart;
                 var limit;
                 var lastBridgeIndex;
                 if (bridgeUsed)
@@ -123,19 +117,20 @@ var hasOuterPlus;
                     limit = offset + count;
                     lastBridgeIndex = findLastBridge(offset, limit);
                 }
-                if (lastBridgeIndex == null)
+                var str;
+                var multiPart = lastBridgeIndex == null;
+                if (multiPart)
                 {
                     str = sequence(offset, count);
-                    multiPart = true;
                 }
                 else
                 {
                     var bridgeIndex = findNextBridge(offset);
-                    var groupIndex;
+                    var index;
                     if (bridgeIndex - offset > 1)
                     {
                         var intrinsicSplitCost = localForceString ? -3 : localStrongBound ? 2 : 0;
-                        groupIndex =
+                        index =
                             findSplitIndex(
                                 offset,
                                 limit,
@@ -144,59 +139,52 @@ var hasOuterPlus;
                                 lastBridgeIndex
                             );
                     }
-                    multiPart = groupIndex != null;
+                    multiPart = index != null;
                     if (multiPart)
                     {
                         // Keep the first solutions out of the concat context to reduce output
                         // length.
-                        var leftEndCount = groupIndex - offset;
+                        var preBridgeCount = index - offset;
                         str =
                             (
-                                leftEndCount > 1 ?
-                                sequence(offset, leftEndCount) : solutions[offset]
+                                preBridgeCount > 1 ?
+                                sequence(offset, preBridgeCount) : solutions[offset]
                             ) +
                             '+';
                     }
                     else
                     {
                         str = '';
-                        groupIndex = offset;
+                        index = offset;
                     }
-                    str += '[' + sequence0(groupIndex, bridgeIndex - groupIndex, '[]') + ']';
+                    str += '[' + sequence0(index, bridgeIndex - index, '[]') + ']';
                     for (;;)
                     {
                         str += solutions[bridgeIndex].bridge.block + '(';
-                        groupIndex = bridgeIndex + 1;
+                        index = bridgeIndex + 1;
                         if (bridgeIndex === lastBridgeIndex)
                         {
                             break;
                         }
-                        bridgeIndex = findNextBridge(groupIndex);
-                        appendGroup(bridgeIndex - groupIndex);
+                        bridgeIndex = findNextBridge(index);
+                        appendRightGroup(bridgeIndex - index);
                     }
-                    var rightEndCount = limit - groupIndex;
+                    var groupCount;
+                    var rightEndCount = limit - index;
                     if (localForceString && !multiPart && rightEndCount > 1)
                     {
-                        if (rightEndCount > 2 && isUnluckyRightEnd(groupIndex))
-                        {
-                            str += sequence(groupIndex, 2);
-                            ++groupIndex;
-                        }
-                        else
-                        {
-                            var solution = solutions[groupIndex];
-                            str += getSingleArrayItemExpr(solution);
-                        }
-                        str += ')';
-                        while (++groupIndex < limit)
-                        {
-                            str = appendSolution(str, solutions[groupIndex]);
-                        }
+                        groupCount = rightEndCount > 2 && isUnluckyRightEnd(index) ? 2 : 1;
                         multiPart = true;
                     }
                     else
                     {
-                        appendGroup(rightEndCount);
+                        groupCount = rightEndCount;
+                    }
+                    appendRightGroup(groupCount);
+                    index += groupCount - 1;
+                    while (++index < limit)
+                    {
+                        str = appendSolution(str, solutions[index]);
                     }
                     if (!multiPart && localForceString)
                     {
@@ -290,7 +278,7 @@ var hasOuterPlus;
                     else
                     {
                         var solution = solutions[offset];
-                        str = getSingleArrayItemExpr(solution);
+                        str = solution + (solution.level < LEVEL_NUMERIC ? '+[]' : '');
                     }
                 }
                 else
@@ -300,10 +288,10 @@ var hasOuterPlus;
                 return str;
             }
             
-            var solutions = [];
+            var bridgeUsed;
             var length = strongBound ? -1 : -3;
             var maxSolutionCount = Math.pow(2, groupThreshold - 1);
-            var bridgeUsed;
+            var solutions = [];
             
             assignNoEnum(
                 this,
@@ -314,10 +302,7 @@ var hasOuterPlus;
                         {
                             return false;
                         }
-                        if (solution.bridge)
-                        {
-                            bridgeUsed = true;
-                        }
+                        bridgeUsed |= !!solution.bridge;
                         solutions.push(solution);
                         length += getAppendLength(solution);
                         return true;
