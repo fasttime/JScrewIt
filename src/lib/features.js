@@ -398,7 +398,8 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the native function Array.prototype.fill.\n' +
-                'Available in Firefox, Microsoft Edge, and in Safari 7.1 and later versions.',
+                'Available in Firefox, Microsoft Edge, and in Chrome 45, Opera 32, Safari 7.1 ' +
+                'and later versions.',
             check: function ()
             {
                 return Array.prototype.fill;
@@ -657,6 +658,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'WINDOW'
             ]
         },
+        CHROME: 'CHROME41',
         CHROME41:
         {
             description: 'Features available in Chrome 41 and Opera 28 or later.',
@@ -664,6 +666,26 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'DOUBLE_QUOTE_ESC_HTML',
+                'FROM_CODE_POINT',
+                'GMT',
+                'HTMLDOCUMENT',
+                'LOCALE_INFINITY',
+                'NAME',
+                'NO_SAFARI_ARRAY_ITERATOR',
+                'NO_SAFARI_LF',
+                'UNDEFINED',
+                'V8_SRC',
+                'WINDOW'
+            ]
+        },
+        CHROME45:
+        {
+            description: 'Features available in Chrome 45 and Opera 32 or later.',
+            includes:
+            [
+                'ATOB',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
                 'HTMLDOCUMENT',

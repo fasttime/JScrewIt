@@ -12,7 +12,8 @@ function createEngineSelectionBox()
             name: 'Chrome',
             versions:
             [
-                { feature: 'CHROME41', number: '41+' }
+                { feature: 'CHROME41', number: '41+' },
+                { feature: 'CHROME45', number: '45+' }
             ]
         },
         {
