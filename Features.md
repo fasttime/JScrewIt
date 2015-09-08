@@ -33,9 +33,15 @@ All features available in the current engine.
 ### `CAPITAL_HTML`
 The property that the various string methods returning HTML code such as String.prototype.big or String.prototype.link have both the tag name and attributes written in capital letters.
 This feature is only available in Internet Explorer.
+<a name="CHROME"></a>
+### `CHROME`
+_An alias for [`CHROME41`](#CHROME41)._
 <a name="CHROME41"></a>
 ### `CHROME41`
 Features available in Chrome 41 and Opera 28 or later.
+<a name="CHROME45"></a>
+### `CHROME45`
+Features available in Chrome 45 and Opera 32 or later.
 <a name="COMPACT"></a>
 ### `COMPACT`
 All new browsers' features.
