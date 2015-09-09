@@ -46,7 +46,8 @@
     "grunt-jsdoc-to-markdown": "~1.1.1",
     "grunt-mocha-istanbul": "~3.0.1",
     "istanbul": "~0.3.19",
-    "mocha": "https://github.com/fasttime/mocha/tarball/master",
+    "mocha": "~2.3.2",
+    "mocha-matrix": "https://github.com/fasttime/mocha-matrix/tarball/master",
     "progress": "~1.1.8"
   }
 }
