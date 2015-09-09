@@ -69,7 +69,8 @@ function createEngineSelectionBox()
             versions:
             [
                 { feature: 'NODE010', number: '0.10.x' },
-                { feature: 'NODE012', number: '0.12.x' }
+                { feature: 'NODE012', number: '0.12.x' },
+                { feature: 'NODE40', number: '4.0.x' },
             ]
         }
     ];

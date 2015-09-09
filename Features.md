@@ -82,11 +82,11 @@ Remarkable traits are the lack of characters in the beginning of the string befo
 <a name="FILL"></a>
 ### `FILL`
 Existence of the native function Array.prototype.fill.
-Available in Firefox, Microsoft Edge, and in Safari 7.1 and later versions.
+Available in Firefox, Microsoft Edge, and in Chrome 45, Opera 32, Safari 7.1, Node.js 4.0 and later versions.
 <a name="FROM_CODE_POINT"></a>
 ### `FROM_CODE_POINT`
 Existence of the function String.fromCodePoint.
-Available in Firefox, Chrome, Opera and Microsoft Edge.
+Available in Firefox, Chrome, Opera, Microsoft Edge, and in Node.js 4.0.
 <a name="GMT"></a>
 ### `GMT`
 Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
@@ -125,8 +125,12 @@ Features available in Node.js 0.10.26 or later.
 Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.
 <a name="NODE012"></a>
 ### `NODE012`
-Features available in Node.js 0.12.
-Also compatible with Chrome 38, Opera 25 and Android Browser 4.1.2 and later versions.
+Features available in Node.js 0.12 or later.
+Also compatible with Chrome 38, Opera 25 and Android Browser 4.1.2 or later.
+<a name="NODE40"></a>
+### `NODE40`
+Features available in Node.js 4.0.
+Also compatible with Chrome 45 and Opera 32 or later.
 <a name="NO_IE_SRC"></a>
 ### `NO_IE_SRC`
 A string representation of native functions typical for most browsers with the notable exception of Internet Explorer.
