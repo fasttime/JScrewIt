@@ -1302,7 +1302,7 @@ self
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.replaceNumberArray = Function();
+                        encoder.replaceFalseFreeArray = Function();
                         expect(encoder.encodeByCharCodes('12345')).toBeUndefined();
                     }
                 );
@@ -1344,7 +1344,7 @@ self
             }
         );
         describe(
-            'Encoder#replaceNumberArray',
+            'Encoder#replaceFalseFreeArray',
             function ()
             {
                 it(
@@ -1353,7 +1353,7 @@ self
                     {
                         var encoder = JScrewIt.debug.createEncoder();
                         encoder.replaceString = Function();
-                        expect(encoder.replaceNumberArray([])).toBeUndefined();
+                        expect(encoder.replaceFalseFreeArray([])).toBeUndefined();
                     }
                 );
             }
