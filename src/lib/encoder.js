@@ -206,7 +206,7 @@ var expandEntries;
                 var output = this.encodeByDblDict(inputData, maxLength);
                 return output;
             },
-            1000
+            518
         ),
         byDict: defineCoder
         (

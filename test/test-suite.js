@@ -1842,6 +1842,11 @@ self
                     createAntiRadix4TestString.bind(null, 473),
                     'byDictRadix5AmendedBy3'
                 );
+                test(
+                    ['ARRAY_ITERATOR', 'ATOB', 'CAPITAL_HTML'],
+                    createDictTestString.bind(null, 103),
+                    'byDblDict'
+                );
             }
         );
     }
