@@ -253,17 +253,6 @@ var expandEntries;
             },
             704
         ),
-        /*
-        byDictRadix5AmendedBy2: defineCoder
-        (
-            function (inputData, maxLength)
-            {
-                var output = this.encodeByDict(inputData, 5, 2, maxLength);
-                return output;
-            },
-            1000
-        ),
-        */
         byDictRadix5AmendedBy3: defineCoder
         (
             function (inputData, maxLength)
@@ -855,7 +844,6 @@ var expandEntries;
                         'byDblDict',
                         'byDictRadix5AmendedBy3',
                         'byDictRadix4AmendedBy2',
-                        // 'byDictRadix5AmendedBy2',
                         'byDictRadix4AmendedBy1',
                         'byDictRadix3',
                         'byDictRadix4',
