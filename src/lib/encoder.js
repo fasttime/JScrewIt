@@ -199,6 +199,15 @@ var expandEntries;
             },
             48
         ),
+        byDblDict: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDblDict(inputData, maxLength);
+                return output;
+            },
+            1000
+        ),
         byDict: defineCoder
         (
             function (inputData, maxLength)
@@ -244,6 +253,7 @@ var expandEntries;
             },
             704
         ),
+        /*
         byDictRadix5AmendedBy2: defineCoder
         (
             function (inputData, maxLength)
@@ -251,8 +261,9 @@ var expandEntries;
                 var output = this.encodeByDict(inputData, 5, 2, maxLength);
                 return output;
             },
-            676
+            1000
         ),
+        */
         byDictRadix5AmendedBy3: defineCoder
         (
             function (inputData, maxLength)
@@ -810,9 +821,10 @@ var expandEntries;
                     input,
                     wrapWith === 'none',
                     [
+                        'byDblDict',
                         'byDictRadix5AmendedBy3',
                         'byDictRadix4AmendedBy2',
-                        'byDictRadix5AmendedBy2',
+                        // 'byDictRadix5AmendedBy2',
                         'byDictRadix4AmendedBy1',
                         'byDictRadix3',
                         'byDictRadix4',
@@ -863,33 +875,22 @@ var expandEntries;
             }
         },
         
-        encodeByDblDict: function (inputData)
+        encodeByDblDict: function (inputData, maxLength)
         {
             var input = inputData.valueOf();
             var freqList = inputData.freqList || (inputData.freqList = createFrequencyList(input));
             var figures = getFigures(freqList.length);
             var charMap = new Empty();
+            var minFreqIndexLength =
+                Math.max((input.length - 1) * (resolveSimple('false').length + 1) - 3, 0);
             freqList.forEach(
                 function (freq, index)
                 {
                     var figure = figures[index];
                     charMap[freq.char] = figure;
+                    minFreqIndexLength += freq.count * figure.sortLength;
                 }
             );
-            var intermediateList =
-                Array.prototype.map.call(
-                    input,
-                    function (char)
-                    {
-                        var intermediate = charMap[char];
-                        return intermediate;
-                    }
-                );
-            var intermediateArray = this.replaceFalseFreeArray(intermediateList);
-            var intermediateMapper = 'Function("return this.indexOf(arguments[0])")["bind"]';
-            var intermediateLegend = this.replaceFalseFreeArray(figures);
-            var charIndexes =
-                this.createDictArray(intermediateArray, intermediateMapper, intermediateLegend);
             var dictChars =
                 freqList.map(
                     function (freq)
@@ -897,9 +898,29 @@ var expandEntries;
                         return freq.char;
                     }
                 );
-            var legend = this.encodeDictLegend(dictChars);
-            var output = this.createDictEncoding(legend, charIndexes);
-            return output;
+            var legend = this.encodeDictLegend(dictChars, maxLength - minFreqIndexLength);
+            if (legend)
+            {
+                var intermediateList =
+                    Array.prototype.map.call(
+                        input,
+                        function (char)
+                        {
+                            var intermediate = charMap[char];
+                            return intermediate;
+                        }
+                    );
+                var intermediateArray = this.replaceFalseFreeArray(intermediateList);
+                var intermediateMapper = 'Function("return this.indexOf(arguments[0])")["bind"]';
+                var intermediateLegend = this.replaceFalseFreeArray(figures);
+                var charIndexes =
+                    this.createDictArray(intermediateArray, intermediateMapper, intermediateLegend);
+                var output = this.createDictEncoding(legend, charIndexes);
+                if (!(output.length > maxLength))
+                {
+                    return output;
+                }
+            }
         },
         
         encodeByDict: function (inputData, radix, amendings, maxLength)

@@ -1805,11 +1805,13 @@ self
                     createDictTestString.bind(null, 364),
                     'byDictRadix4AmendedBy2'
                 );
+                /*
                 test(
                     ['ATOB', 'ENTRIES_OBJ', 'FILL', 'NO_IE_SRC'],
                     createDictTestString.bind(null, 124),
                     'byDictRadix5AmendedBy2'
                 );
+                */
                 test(
                     ['ENTRIES_OBJ', 'FILL', 'V8_SRC'],
                     createAntiRadix4TestString.bind(null, 473),
