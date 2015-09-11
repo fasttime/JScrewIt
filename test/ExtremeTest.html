@@ -147,7 +147,7 @@ function runExtremeTest(maxGroupThreshold, groupings)
     var input = '\uEA5F' + randomString(length - 1);
     var dict = encoder.replaceString(input, false, true);
     var indexes = encoder.replaceFalseFreeArray(['']);
-    var output = encoder.createDictEncoding(dict, indexes, 5, 3, true);
+    var output = encoder.createDictEncoding(dict, indexes, NaN, 5, 3, true);
     try
     {
         var actual = eval(output);
