@@ -398,7 +398,8 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the native function Array.prototype.fill.\n' +
-                'Available in Firefox, Microsoft Edge, and in Safari 7.1 and later versions.',
+                'Available in Firefox, Microsoft Edge, and in Chrome 45, Safari 7.1, Node.js 4.0 ' +
+                'and later versions.',
             check: function ()
             {
                 return Array.prototype.fill;
@@ -408,7 +409,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the function String.fromCodePoint.\n' +
-                'Available in Firefox, Chrome, Opera and Microsoft Edge.',
+                'Available in Firefox, Chrome, Opera, Microsoft Edge, and in Node.js 4.0.',
             check: function ()
             {
                 return String.fromCodePoint;
@@ -657,6 +658,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'WINDOW'
             ]
         },
+        CHROME: 'CHROME41',
         CHROME41:
         {
             description: 'Features available in Chrome 41 and Opera 28 or later.',
@@ -664,6 +666,26 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'DOUBLE_QUOTE_ESC_HTML',
+                'FROM_CODE_POINT',
+                'GMT',
+                'HTMLDOCUMENT',
+                'LOCALE_INFINITY',
+                'NAME',
+                'NO_SAFARI_ARRAY_ITERATOR',
+                'NO_SAFARI_LF',
+                'UNDEFINED',
+                'V8_SRC',
+                'WINDOW'
+            ]
+        },
+        CHROME45:
+        {
+            description: 'Features available in Chrome 45 or later.',
+            includes:
+            [
+                'ATOB',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
                 'HTMLDOCUMENT',
@@ -769,12 +791,30 @@ var validMaskFromArrayOrStringOrFeature;
         NODE012:
         {
             description:
-                'Features available in Node.js 0.12.\n' +
-                'Also compatible with Chrome 38, Opera 25 and Android Browser 4.1.2 and later ' +
-                'versions.',
+                'Features available in Node.js 0.12 or later.\n' +
+                'Also compatible with Chrome 38, Opera 25 and Android Browser 4.1.2 or later.',
             includes:
             [
                 'DOUBLE_QUOTE_ESC_HTML',
+                'GMT',
+                'LOCALE_INFINITY',
+                'NAME',
+                'NO_SAFARI_ARRAY_ITERATOR',
+                'NO_SAFARI_LF',
+                'UNDEFINED',
+                'V8_SRC'
+            ]
+        },
+        NODE40:
+        {
+            description:
+                'Features available in Node.js 4.0.\n' +
+                'Also compatible with Chrome 45 or later.',
+            includes:
+            [
+                'DOUBLE_QUOTE_ESC_HTML',
+                'FILL',
+                'FROM_CODE_POINT',
                 'GMT',
                 'LOCALE_INFINITY',
                 'NAME',

@@ -32,6 +32,7 @@ module.exports =
                             'src/lib/features.js',
                             'src/lib/definers.js',
                             'src/lib/definitions.js',
+                            'src/lib/figures.js',
                             'src/lib/screw-buffer.js',
                             'src/lib/encoder.js',
                             'src/lib/trim-js.js',
