@@ -34,7 +34,7 @@
     "build": "npm install && grunt"
   },
   "devDependencies": {
-    "art-js": "~0.2.1",
+    "art-js": "~0.2.2",
     "expectations": "~0.5.1",
     "grunt": "~0.4.5",
     "grunt-cli": "~0.1.13",
