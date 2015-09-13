@@ -11,6 +11,7 @@ assignNoEnum,
 createSolution,
 define,
 getAppendLength,
+getFigures,
 hasOuterPlus,
 replaceDigit
 */
@@ -198,6 +199,15 @@ var expandEntries;
             },
             48
         ),
+        byDblDict: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDblDict(inputData, maxLength);
+                return output;
+            },
+            518
+        ),
         byDict: defineCoder
         (
             function (inputData, maxLength)
@@ -243,15 +253,6 @@ var expandEntries;
             },
             704
         ),
-        byDictRadix5AmendedBy2: defineCoder
-        (
-            function (inputData, maxLength)
-            {
-                var output = this.encodeByDict(inputData, 5, 2, maxLength);
-                return output;
-            },
-            676
-        ),
         byDictRadix5AmendedBy3: defineCoder
         (
             function (inputData, maxLength)
@@ -259,7 +260,7 @@ var expandEntries;
                 var output = this.encodeByDict(inputData, 5, 3, maxLength);
                 return output;
             },
-            847
+            845
         ),
         plain: defineCoder
         (
@@ -375,37 +376,6 @@ var expandEntries;
         return result;
     }
     
-    function createFrequencyList(input)
-    {
-        var charMap = new Empty();
-        Array.prototype.forEach.call(
-            input,
-            function (char)
-            {
-                ++(
-                    charMap[char] ||
-                    (charMap[char] = { char: char, charCode: char.charCodeAt(0), count: 0 })
-                ).count;
-            }
-        );
-        var charList = Object.keys(charMap);
-        var freqList =
-            charList.map(
-                function (char)
-                {
-                    var freq = charMap[char];
-                    return freq;
-                }
-            ).sort(
-                function (freq1, freq2)
-                {
-                    var diff = freq2.count - freq1.count || freq1.charCode - freq2.charCode;
-                    return diff;
-                }
-            );
-        return freqList;
-    }
-    
     function createReindexMap(count, radix, amendings, coerceToInt)
     {
         function getSortLength()
@@ -475,6 +445,48 @@ var expandEntries;
     {
         coder.MIN_INPUT_LENGTH = minInputLength;
         return coder;
+    }
+    
+    function getFrequencyList(inputData)
+    {
+        var freqList = inputData.freqList;
+        if (!freqList)
+        {
+            var charMap = new Empty();
+            Array.prototype.forEach.call(
+                inputData,
+                function (char)
+                {
+                    ++(
+                        charMap[char] ||
+                        (charMap[char] = { char: char, charCode: char.charCodeAt(0), count: 0 })
+                    ).count;
+                }
+            );
+            var charList = Object.keys(charMap);
+            inputData.freqList = freqList =
+                charList.map(
+                    function (char)
+                    {
+                        var freq = charMap[char];
+                        return freq;
+                    }
+                ).sort(
+                    function (freq1, freq2)
+                    {
+                        var diff = freq2.count - freq1.count || freq1.charCode - freq2.charCode;
+                        return diff;
+                    }
+                );
+        }
+        return freqList;
+    }
+    
+    function initMinCharIndexArrayStrLength(input)
+    {
+        var minCharIndexArrayStrLength =
+            Math.max((input.length - 1) * (resolveSimple('false').length + 1) - 3, 0);
+        return minCharIndexArrayStrLength;
     }
     
     function isFollowedByLeftSquareBracket(expr, offset)
@@ -691,14 +703,14 @@ var expandEntries;
         
         constantDefinitions: CONSTANTS,
         
-        createCharCodesEncoding: function (charCodes, long, radix)
+        createCharCodesEncoding: function (charCodeArrayStr, long, radix)
         {
             var output;
             var fromCharCode = this.findBestDefinition(FROM_CHAR_CODE);
             if (radix)
             {
                 output =
-                    charCodes +
+                    charCodeArrayStr +
                     this.replaceExpr(
                         '["map"](Function("return String.' + fromCharCode +
                         '(parseInt(arguments[0],' + radix + '))"))["join"]([])'
@@ -709,7 +721,7 @@ var expandEntries;
                 if (long)
                 {
                     output =
-                        charCodes +
+                        charCodeArrayStr +
                         this.replaceExpr(
                             '["map"](Function("return String.' + fromCharCode +
                             '(arguments[0])"))["join"]([])'
@@ -719,13 +731,34 @@ var expandEntries;
                 {
                     output =
                         this.replaceExpr('Function("return String.' + fromCharCode + '(" +') +
-                        charCodes + this.replaceExpr('+ ")")()');
+                        charCodeArrayStr + this.replaceExpr('+ ")")()');
                 }
             }
             return output;
         },
         
-        createDictEncoding: function (legend, indexes, radix, amendings, coerceToInt)
+        createCharKeyArrayString: function (input, charMap, maxLength)
+        {
+            var charKeyArray =
+                Array.prototype.map.call(
+                    input,
+                    function (char)
+                    {
+                        var charKey = charMap[char];
+                        return charKey;
+                    }
+                );
+            var charKeyArrayStr = this.replaceFalseFreeArray(charKeyArray, maxLength);
+            return charKeyArrayStr;
+        },
+        
+        createDictEncoding: function (
+            legend,
+            charIndexArrayStr,
+            maxLength,
+            radix,
+            amendings,
+            coerceToInt)
         {
             var mapper;
             if (radix)
@@ -744,8 +777,8 @@ var expandEntries;
                                     return '/' + amending + '/g';
                                 }
                             ).join() +
-                            '].reduce(function(falsefalse,falsetrue,truefalse){return falsefalse.' +
-                            'replace(falsetrue,truefalse+' + firstDigit + ')},arguments[0])';
+                            '].reduce(function(falsefalse,NaN,undefined){return falsefalse.' +
+                            'replace(NaN,' + firstDigit + '+undefined)},arguments[0])';
                     }
                     else
                     {
@@ -773,9 +806,20 @@ var expandEntries;
                 mapper = '""["charAt"]["bind"]';
             }
             var output =
-                indexes + this.replaceExpr('["map"]') + '(' + this.replaceExpr(mapper) + '(' +
-                legend + '))' + this.replaceExpr('["join"]([])');
-            return output;
+                this.createJSFuckArrayMapping(charIndexArrayStr, mapper, legend) +
+                this.replaceExpr('["join"]([])');
+            if (!(output.length > maxLength))
+            {
+                return output;
+            }
+        },
+        
+        createJSFuckArrayMapping: function (arrayStr, mapper, legend)
+        {
+            var result =
+                arrayStr + this.replaceExpr('["map"]') + '(' + this.replaceExpr(mapper) + '(' +
+                legend + '))';
+            return result;
         },
         
         createStringTokenPattern: function ()
@@ -801,9 +845,9 @@ var expandEntries;
                     input,
                     wrapWith === 'none',
                     [
+                        'byDblDict',
                         'byDictRadix5AmendedBy3',
                         'byDictRadix4AmendedBy2',
-                        'byDictRadix5AmendedBy2',
                         'byDictRadix4AmendedBy1',
                         'byDictRadix3',
                         'byDictRadix4',
@@ -831,8 +875,8 @@ var expandEntries;
         encodeByCharCodes: function (input, long, radix, maxLength)
         {
             var cache = new Empty();
-            var charCodes =
-                this.replaceNumberArray(
+            var charCodeArrayStr =
+                this.replaceFalseFreeArray(
                     Array.prototype.map.call(
                         input,
                         function (char)
@@ -844,9 +888,9 @@ var expandEntries;
                     ),
                     maxLength
                 );
-            if (charCodes)
+            if (charCodeArrayStr)
             {
-                var output = this.createCharCodesEncoding(charCodes, long, radix);
+                var output = this.createCharCodesEncoding(charCodeArrayStr, long, radix);
                 if (!(output.length > maxLength))
                 {
                     return output;
@@ -854,17 +898,70 @@ var expandEntries;
             }
         },
         
+        encodeByDblDict: function (inputData, maxLength)
+        {
+            var input = inputData.valueOf();
+            var freqList = getFrequencyList(inputData);
+            var figures = getFigures(freqList.length);
+            var charMap = new Empty();
+            var minCharIndexArrayStrLength = initMinCharIndexArrayStrLength(input);
+            freqList.forEach(
+                function (freq, index)
+                {
+                    var figure = figures[index];
+                    charMap[freq.char] = figure;
+                    minCharIndexArrayStrLength += freq.count * figure.sortLength;
+                }
+            );
+            var dictChars =
+                freqList.map(
+                    function (freq)
+                    {
+                        return freq.char;
+                    }
+                );
+            var legend = this.encodeDictLegend(dictChars, maxLength - minCharIndexArrayStrLength);
+            if (!legend)
+            {
+                return;
+            }
+            var figureMaxLength = maxLength - legend.length;
+            var figureLegend =
+                this.replaceFalseFreeArray(figures, figureMaxLength - minCharIndexArrayStrLength);
+            if (!figureLegend)
+            {
+                return;
+            }
+            var keyFigureArrayStr =
+                this.createCharKeyArrayString(
+                    input,
+                    charMap,
+                    figureMaxLength - figureLegend.length
+                );
+            if (!keyFigureArrayStr)
+            {
+                return;
+            }
+            var charIndexArrayStr =
+                this.createJSFuckArrayMapping(
+                    keyFigureArrayStr,
+                    'Function("return this.indexOf(arguments[0])")["bind"]',
+                    figureLegend
+                );
+            var output = this.createDictEncoding(legend, charIndexArrayStr, maxLength);
+            return output;
+        },
+        
         encodeByDict: function (inputData, radix, amendings, maxLength)
         {
             var input = inputData.valueOf();
-            var freqList = inputData.freqList || (inputData.freqList = createFrequencyList(input));
+            var freqList = getFrequencyList(inputData);
             var coerceToInt =
                 freqList.length &&
                 freqList[0].count * 6 > getAppendLength(this.resolveCharacter('+'));
             var reindexMap = createReindexMap(freqList.length, radix, amendings, coerceToInt);
             var charMap = new Empty();
-            var minFreqIndexLength =
-                Math.max((input.length - 1) * (resolveSimple('false').length + 1) - 3, 0);
+            var minCharIndexArrayStrLength = initMinCharIndexArrayStrLength(input);
             var dictChars = [];
             freqList.forEach(
                 function (freq, index)
@@ -872,33 +969,31 @@ var expandEntries;
                     var reindex = reindexMap[index];
                     var char = freq.char;
                     charMap[char] = reindex;
-                    minFreqIndexLength += freq.count * reindex.sortLength;
+                    minCharIndexArrayStrLength += freq.count * reindex.sortLength;
                     dictChars[reindex.index] = char;
                 }
             );
-            var legend = this.encodeDictLegend(dictChars, maxLength - minFreqIndexLength);
-            if (legend)
+            var legend = this.encodeDictLegend(dictChars, maxLength - minCharIndexArrayStrLength);
+            if (!legend)
             {
-                var freqIndexList =
-                    Array.prototype.map.call(
-                        input,
-                        function (char)
-                        {
-                            var index = charMap[char];
-                            return index;
-                        }
-                    );
-                var freqIndexes = this.replaceNumberArray(freqIndexList, maxLength - legend.length);
-                if (freqIndexes)
-                {
-                    var output =
-                        this.createDictEncoding(legend, freqIndexes, radix, amendings, coerceToInt);
-                    if (!(output.length > maxLength))
-                    {
-                        return output;
-                    }
-                }
+                return;
             }
+            var charIndexArrayStr =
+                this.createCharKeyArrayString(input, charMap, maxLength - legend.length);
+            if (!charIndexArrayStr)
+            {
+                return;
+            }
+            var output =
+                this.createDictEncoding(
+                    legend,
+                    charIndexArrayStr,
+                    maxLength,
+                    radix,
+                    amendings,
+                    coerceToInt
+                );
+            return output;
         },
         
         encodeDictLegend: function (dictChars, maxLength)
@@ -1004,7 +1099,10 @@ var expandEntries;
             return result;
         },
         
-        replaceNumberArray: function (array, maxLength)
+        // Replaces a JavaScript array with a JSFuck array or strings.
+        // Array elements may not contain "false" in their string representations, because the value
+        // false is used as a separator for the encoding.
+        replaceFalseFreeArray: function (array, maxLength)
         {
             var str = array.join(false);
             var replacement = this.replaceString(str, true, true, maxLength);

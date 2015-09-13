@@ -1302,8 +1302,40 @@ self
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.replaceNumberArray = Function();
+                        encoder.replaceFalseFreeArray = Function();
                         expect(encoder.encodeByCharCodes('12345')).toBeUndefined();
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#encodeByDblDict',
+            function ()
+            {
+                it(
+                    'returns correct JSFuck',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var input =
+                            'The thirty-three thieves thought that they thrilled the throne ' +
+                            'throughout Thursday.';
+                        var output = encoder.encodeByDblDict(Object(input));
+                        expect(output).toBeJSFuck();
+                        expect(eval(output)).toBe(input);
+                    }
+                );
+                it(
+                    'returns undefined for too complex input',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var output1 = encoder.encodeByDblDict(Object('12345'), 10);
+                        expect(output1).toBeUndefined();
+                        var output2 = encoder.encodeByDblDict(Object('12345'), 125);
+                        expect(output2).toBeUndefined();
+                        var output3 = encoder.encodeByDblDict(Object('12345'), 3700);
+                        expect(output3).toBeUndefined();
                     }
                 );
             }
@@ -1344,7 +1376,7 @@ self
             }
         );
         describe(
-            'Encoder#replaceNumberArray',
+            'Encoder#replaceFalseFreeArray',
             function ()
             {
                 it(
@@ -1353,7 +1385,7 @@ self
                     {
                         var encoder = JScrewIt.debug.createEncoder();
                         encoder.replaceString = Function();
-                        expect(encoder.replaceNumberArray([])).toBeUndefined();
+                        expect(encoder.replaceFalseFreeArray([])).toBeUndefined();
                     }
                 );
             }
@@ -1806,14 +1838,14 @@ self
                     'byDictRadix4AmendedBy2'
                 );
                 test(
-                    ['ATOB', 'ENTRIES_OBJ', 'FILL', 'NO_IE_SRC'],
-                    createDictTestString.bind(null, 124),
-                    'byDictRadix5AmendedBy2'
-                );
-                test(
                     ['ENTRIES_OBJ', 'FILL', 'V8_SRC'],
                     createAntiRadix4TestString.bind(null, 473),
                     'byDictRadix5AmendedBy3'
+                );
+                test(
+                    ['ARRAY_ITERATOR', 'ATOB', 'CAPITAL_HTML'],
+                    createDictTestString.bind(null, 103),
+                    'byDblDict'
                 );
             }
         );

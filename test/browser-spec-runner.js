@@ -1,4 +1,4 @@
-/* global JScrewIt, TestSuite, mocha, padLeft, padRight, repeat, screenX, screenY */
+/* global JScrewIt, Matrix, TestSuite, mocha, padLeft, padRight, repeat, screenX, screenY */
 /* jshint browser: true */
 
 (function ()
@@ -231,7 +231,7 @@
         document.querySelector('link[rel="icon"]').href = href;
     }
     
-    mocha.setup('bdd');
+    mocha.setup({ ui: 'bdd', reporter: Matrix });
     mocha.checkLeaks();
     TestSuite.init();
     addEventListener('load', handleLoad);
