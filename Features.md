@@ -41,7 +41,7 @@ _An alias for [`CHROME41`](#CHROME41)._
 Features available in Chrome 41 and Opera 28 or later.
 <a name="CHROME45"></a>
 ### `CHROME45`
-Features available in Chrome 45 or later.
+Features available in Chrome 45 and Opera 32 or later.
 <a name="COMPACT"></a>
 ### `COMPACT`
 All new browsers' features.
@@ -82,7 +82,7 @@ Remarkable traits are the lack of characters in the beginning of the string befo
 <a name="FILL"></a>
 ### `FILL`
 Existence of the native function Array.prototype.fill.
-Available in Firefox, Microsoft Edge, and in Chrome 45, Safari 7.1, Node.js 4.0 and later versions.
+Available in Firefox, Microsoft Edge, and in Chrome 45, Safari 7.1, Opera 32, Node.js 4.0 and later versions.
 <a name="FROM_CODE_POINT"></a>
 ### `FROM_CODE_POINT`
 Existence of the function String.fromCodePoint.
@@ -130,7 +130,7 @@ Also compatible with Chrome 38, Opera 25 and Android Browser 4.1.2 or later.
 <a name="NODE40"></a>
 ### `NODE40`
 Features available in Node.js 4.0.
-Also compatible with Chrome 45 or later.
+Also compatible with Chrome 45 and Opera 32 or later.
 <a name="NO_IE_SRC"></a>
 ### `NO_IE_SRC`
 A string representation of native functions typical for most browsers with the notable exception of Internet Explorer.
