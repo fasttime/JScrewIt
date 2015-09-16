@@ -45,7 +45,8 @@ function createEngineSelectionBox()
             name: 'Opera',
             versions:
             [
-                { feature: 'CHROME41', number: '28+' }
+                { feature: 'CHROME41', number: '28+' },
+                { feature: 'CHROME45', number: '32+' }
             ]
         },
         {
