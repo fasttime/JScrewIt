@@ -572,7 +572,10 @@ var replaceDigit;
             define('(FILL + [])["20"]', 'FF_SAFARI_SRC', 'FILL')
         ],
         // '!':    ,
-        '"': '""["fontcolor"]()["12"]',
+        '"':
+        [
+            define('""["fontcolor"]()["12"]')
+        ],
         // '#':    ,
         // '$':    ,
         '%':

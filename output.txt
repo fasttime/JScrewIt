@@ -220,7 +220,7 @@ Character ")"
   147 | 0 | NO_IE_SRC
 
 Character "+"
-   70 | 0 | DEFAULT
+   70 | - | DEFAULT
 
 Character ","
   763 | 0 | DEFAULT
@@ -232,10 +232,10 @@ Character ","
   469 | 0 | NO_IE_SRC
 
 Character "-"
-  153 | 0 | DEFAULT
+  153 | - | DEFAULT
 
 Character "."
-   72 | 0 | DEFAULT
+   72 | - | DEFAULT
 
 Character "/"
   451 | 0 | DEFAULT
@@ -247,34 +247,34 @@ Character "/"
   304 | 0 | NO_IE_SRC
 
 Character "0"
-    3 | 0 | DEFAULT
+    3 | - | DEFAULT
 
 Character "1"
-    5 | 0 | DEFAULT
+    5 | - | DEFAULT
 
 Character "2"
-    9 | 0 | DEFAULT
+    9 | - | DEFAULT
 
 Character "3"
-   14 | 0 | DEFAULT
+   14 | - | DEFAULT
 
 Character "4"
-   19 | 0 | DEFAULT
+   19 | - | DEFAULT
 
 Character "5"
-   24 | 0 | DEFAULT
+   24 | - | DEFAULT
 
 Character "6"
-   29 | 0 | DEFAULT
+   29 | - | DEFAULT
 
 Character "7"
-   34 | 0 | DEFAULT
+   34 | - | DEFAULT
 
 Character "8"
-   39 | 0 | DEFAULT
+   39 | - | DEFAULT
 
 Character "9"
-   44 | 0 | DEFAULT
+   44 | - | DEFAULT
 
 Character ":"
  3728 | 0 | DEFAULT
@@ -906,7 +906,7 @@ Character "H"
  6442 | - | V8_SRC
 
 Character "I"
-   70 | 0 | DEFAULT
+   70 | - | DEFAULT
 
 Character "J"
 11290 | - | DEFAULT
@@ -1219,7 +1219,7 @@ Character "M"
  6423 | - | V8_SRC
 
 Character "N"
-   16 | 0 | DEFAULT
+   16 | - | DEFAULT
 
 Character "O"
  2303 | 0 | DEFAULT
@@ -1996,7 +1996,7 @@ Character "^"
  6431 | - | V8_SRC
 
 Character "a"
-   15 | 0 | DEFAULT
+   15 | - | DEFAULT
 
 Character "b"
  1456 | 0 | DEFAULT
@@ -2017,13 +2017,13 @@ Character "c"
   144 | 0 | NO_IE_SRC
 
 Character "d"
-   22 | 0 | DEFAULT
+   22 | - | DEFAULT
 
 Character "e"
-   25 | 0 | DEFAULT
+   25 | - | DEFAULT
 
 Character "f"
-   13 | 0 | DEFAULT
+   13 | - | DEFAULT
 
 Character "g"
  1456 | 0 | DEFAULT
@@ -2069,7 +2069,7 @@ Character "h"
  1761 | 0 | NO_IE_SRC
 
 Character "i"
-   27 | 0 | DEFAULT
+   27 | - | DEFAULT
 
 Character "j"
  2297 | 0 | DEFAULT
@@ -2128,7 +2128,7 @@ Character "k"
  1750 | 0 | NO_IE_SRC
 
 Character "l"
-   19 | 0 | DEFAULT
+   19 | - | DEFAULT
 
 Character "m"
  1434 | 0 | DEFAULT
@@ -2141,7 +2141,7 @@ Character "m"
   729 | 1 | NO_IE_SRC
 
 Character "n"
-   18 | 0 | DEFAULT
+   18 | - | DEFAULT
 
 Character "o"
   284 | 0 | DEFAULT
@@ -2219,16 +2219,16 @@ Character "q"
  1776 | 0 | NO_IE_SRC
 
 Character "r"
-   16 | 0 | DEFAULT
+   16 | - | DEFAULT
 
 Character "s"
-   24 | 0 | DEFAULT
+   24 | - | DEFAULT
 
 Character "t"
-   14 | 0 | DEFAULT
+   14 | - | DEFAULT
 
 Character "u"
-   16 | 0 | DEFAULT
+   16 | - | DEFAULT
 
 Character "v"
   462 | 0 | DEFAULT
@@ -2342,7 +2342,7 @@ Character "x"
  1780 | 0 | NO_IE_SRC
 
 Character "y"
-   84 | 0 | DEFAULT
+   84 | - | DEFAULT
 
 Character "z"
  3379 | 0 | DEFAULT
