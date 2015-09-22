@@ -47,9 +47,9 @@ different characters: ! ( ) + [ ]'>
 
 #controls>*:not(:last-child) { margin-right: 1em; }
 
-#outputArea { white-space: pre; word-wrap: break-word; }
+#outputArea { white-space: pre; word-break: break-all; }
 
-@-moz-document url-prefix() { #outputArea { white-space: normal; } }
+@-moz-document url-prefix() { #outputArea { white-space: pre-wrap; } } /* Hack for Firefox */
 
 #wrapWithCallBox { margin-left: 0; }
 
