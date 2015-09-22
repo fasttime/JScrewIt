@@ -142,8 +142,9 @@ function scanAllChars(callback)
             function (char, index)
             {
                 var entries = JScrewIt.debug.getCharacterEntries(char);
+                var entryCount = Array.isArray(entries) ? entries.length : 0;
                 var notAllDefsUsed =
-                    scanChar(char, entries.length, logLine, allCharCount, index, callback);
+                    scanChar(char, entryCount, logLine, allCharCount, index, callback);
                 if (callback)
                 {
                     callback(char, allCharCount, index + 1, notAllDefsUsed);

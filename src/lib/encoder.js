@@ -8,6 +8,7 @@ SIMPLE,
 Empty,
 ScrewBuffer,
 assignNoEnum,
+createConstructor,
 createSolution,
 define,
 getAppendLength,
@@ -173,6 +174,8 @@ var expandEntries;
         define('fromCodePoint', 'ATOB', 'FROM_CODE_POINT'),
         define('fromCodePoint', 'CAPITAL_HTML', 'FROM_CODE_POINT')
     ];
+    
+    var STATIC_CHAR_CACHE = new Empty();
     
     CODERS =
     {
@@ -602,23 +605,24 @@ var expandEntries;
         var solution = SIMPLE[simple];
         if (typeof solution.valueOf() === 'object')
         {
-            var encoder = new Encoder();
-            encoder.callResolver(
+            STATIC_ENCODER.callResolver(
                 simple,
                 function ()
                 {
-                    SIMPLE[simple] = solution = encoder.resolve(solution);
+                    SIMPLE[simple] = solution = STATIC_ENCODER.resolve(solution);
                 }
             );
         }
         return solution;
     }
     
+    var CharCache = createConstructor(STATIC_CHAR_CACHE);
+    
     Encoder =
         function (featureMask)
         {
             this.featureMask = featureMask;
-            this.characterCache = new Empty();
+            this.charCache = new CharCache();
             this.complexCache = new Empty();
             this.constantCache = new Empty();
             this.stack = [];
@@ -1044,7 +1048,6 @@ var expandEntries;
         findOptimalSolution: function (entries, defaultResolver)
         {
             var result;
-            entries = expandEntries(entries);
             entries.forEach(
                 function (entry, entryIndex)
                 {
@@ -1198,25 +1201,38 @@ var expandEntries;
         
         resolveCharacter: function (char)
         {
-            var solution = this.characterCache[char];
+            var solution = this.charCache[char];
             if (solution === undefined)
             {
                 this.callResolver(
                     quoteString(char),
                     function ()
                     {
+                        var charCache;
                         var entries = CHARACTERS[char];
-                        var defaultResolver = defaultResolveCharacter.bind(this, char);
-                        solution = this.findOptimalSolution(entries, defaultResolver);
-                        if (!solution)
+                        if (entries && !Array.isArray(entries))
                         {
-                            solution = defaultResolver();
+                            solution = STATIC_ENCODER.resolve(entries);
+                            charCache = STATIC_CHAR_CACHE;
+                        }
+                        else
+                        {
+                            var defaultResolver = defaultResolveCharacter.bind(this, char);
+                            if (entries)
+                            {
+                                solution = this.findOptimalSolution(entries, defaultResolver);
+                            }
+                            if (!solution)
+                            {
+                                solution = defaultResolver();
+                            }
+                            charCache = this.charCache;
                         }
                         if (solution.level == null)
                         {
                             solution.level = LEVEL_STRING;
                         }
-                        this.characterCache[char] = solution;
+                        charCache[char] = solution;
                     }
                 );
             }
@@ -1270,6 +1286,7 @@ var expandEntries;
                     function ()
                     {
                         var entries = this.constantDefinitions[constant];
+                        entries = expandEntries(entries);
                         solution = this.findOptimalSolution(entries);
                         this.constantCache[constant] = solution;
                     }
@@ -1291,6 +1308,8 @@ var expandEntries;
     };
     
     assignNoEnum(Encoder.prototype, encoderProtoSource);
+    
+    var STATIC_ENCODER = new Encoder();
     
     expandEntries =
         function (entries)

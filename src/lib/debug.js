@@ -61,8 +61,8 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         
         function getCharacterEntries(char)
         {
-            var result = getEntries(CHARACTERS[char]);
-            return result;
+            var entries = CHARACTERS[char];
+            return entries;
         }
         
         function getCoders()
@@ -72,23 +72,14 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         
         function getComplexEntries(complex)
         {
-            var result = getEntries(COMPLEX[complex]);
-            return result;
+            var entries = COMPLEX[complex];
+            return entries;
         }
         
         function getConstantEntries(constant)
         {
-            var result = getEntries(CONSTANTS[constant]);
-            return result;
-        }
-        
-        function getEntries(entries)
-        {
-            if (entries != null)
-            {
-                var result = expandEntries(entries);
-                return result;
-            }
+            var entries = expandEntries(CONSTANTS[constant]);
+            return entries;
         }
         
         var debug =

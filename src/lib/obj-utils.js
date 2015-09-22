@@ -1,14 +1,12 @@
 var Empty;
 
 var assignNoEnum;
+var createConstructor;
 var noProto;
 
 (function ()
 {
     'use strict';
-    
-    Empty = Function();
-    Empty.prototype = Object.create(null);
     
     assignNoEnum =
         function (target, source)
@@ -26,6 +24,14 @@ var noProto;
             return target;
         };
     
+    createConstructor =
+        function (prototype)
+        {
+            var constructor = Function();
+            constructor.prototype = prototype;
+            return constructor;
+        };
+    
     noProto =
         function (obj)
         {
@@ -38,5 +44,7 @@ var noProto;
             );
             return result;
         };
+    
+    Empty = createConstructor(Object.create(null));
 }
 )();

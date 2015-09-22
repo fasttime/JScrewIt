@@ -1946,30 +1946,33 @@ self
                 if (entries)
                 {
                     var defaultEntryFound = false;
-                    entries.forEach(
-                        function (entry, index)
-                        {
-                            if (entry.definition)
+                    if (Array.isArray(entries))
+                    {
+                        entries.forEach(
+                            function (entry, index)
                             {
-                                var featureObj = getEntryFeature(entry);
-                                var usingDefaultFeature =
-                                    JScrewIt.Feature.DEFAULT.includes(featureObj);
-                                defaultEntryFound |= usingDefaultFeature;
-                                var emuFeatures = getEmuFeatureNames(featureObj);
-                                if (emuFeatures)
+                                if (entry.definition)
                                 {
-                                    it(
-                                        '(definition ' + index + ')',
-                                        function ()
-                                        {
-                                            var output = decodeEntry(entry);
-                                            verifyOutput(output, emuFeatures);
-                                        }
-                                    );
+                                    var featureObj = getEntryFeature(entry);
+                                    var usingDefaultFeature =
+                                        JScrewIt.Feature.DEFAULT.includes(featureObj);
+                                    defaultEntryFound |= usingDefaultFeature;
+                                    var emuFeatures = getEmuFeatureNames(featureObj);
+                                    if (emuFeatures)
+                                    {
+                                        it(
+                                            '(definition ' + index + ')',
+                                            function ()
+                                            {
+                                                var output = decodeEntry(entry);
+                                                verifyOutput(output, emuFeatures);
+                                            }
+                                        );
+                                    }
                                 }
                             }
-                        }
-                    );
+                        );
+                    }
                     if (!defaultEntryFound)
                     {
                         it(
