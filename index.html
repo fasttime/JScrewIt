@@ -16,7 +16,7 @@ different characters: ! ( ) + [ ]'>
 
 * { box-sizing: border-box; }
 
-.actions { display: block; margin: .25em 0 0; }
+.actions { display: block; margin: .25em 0 0; position: relative; }
 
 .actions, .frame, p { width: 100%; }
 
@@ -46,6 +46,10 @@ different characters: ! ( ) + [ ]'>
 #compMenu { -webkit-appearance: menulist-button; width: 15em; }
 
 #controls>*:not(:last-child) { margin-right: 1em; }
+
+#outputArea { white-space: pre; word-wrap: break-word; }
+
+@-moz-document url-prefix() { #outputArea { white-space: normal; } }
 
 #wrapWithCallBox { margin-left: 0; }
 
