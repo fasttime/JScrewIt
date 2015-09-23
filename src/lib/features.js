@@ -1,4 +1,4 @@
-/* global Empty, assignNoEnum, document, self */
+/* global Empty, assignNoEnum, document, isArray, self */
 
 var Feature;
 
@@ -212,7 +212,7 @@ var validMaskFromArrayOrStringOrFeature;
             args,
             function (arg)
             {
-                if (Array.isArray(arg))
+                if (isArray(arg))
                 {
                     arg.forEach(
                         function (arg)
@@ -1225,7 +1225,7 @@ var validMaskFromArrayOrStringOrFeature;
         function (arg)
         {
             var mask;
-            if (Array.isArray(arg))
+            if (isArray(arg))
             {
                 mask = 0;
                 arg.forEach(
