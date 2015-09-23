@@ -2,6 +2,7 @@ var Empty;
 
 var assignNoEnum;
 var createConstructor;
+var isArray;
 var noProto;
 
 (function ()
@@ -31,6 +32,8 @@ var noProto;
             constructor.prototype = prototype;
             return constructor;
         };
+    
+    isArray = Array.isArray;
     
     noProto =
         function (obj)

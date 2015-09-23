@@ -14,14 +14,13 @@ define,
 getAppendLength,
 getFigures,
 hasOuterPlus,
+isArray,
 replaceDigit
 */
 
 var CODERS;
 
 var Encoder;
-
-var expandEntries;
 
 (function ()
 {
@@ -176,6 +175,7 @@ var expandEntries;
     ];
     
     var STATIC_CHAR_CACHE = new Empty();
+    var STATIC_CONST_CACHE = new Empty();
     
     CODERS =
     {
@@ -617,6 +617,7 @@ var expandEntries;
     }
     
     var CharCache = createConstructor(STATIC_CHAR_CACHE);
+    var ConstCache = createConstructor(STATIC_CONST_CACHE);
     
     Encoder =
         function (featureMask)
@@ -624,7 +625,7 @@ var expandEntries;
             this.featureMask = featureMask;
             this.charCache = new CharCache();
             this.complexCache = new Empty();
-            this.constantCache = new Empty();
+            this.constCache = new ConstCache();
             this.stack = [];
         };
     
@@ -962,7 +963,7 @@ var expandEntries;
             var freqList = getFrequencyList(inputData);
             var coerceToInt =
                 freqList.length &&
-                freqList[0].count * 6 > getAppendLength(this.resolveCharacter('+'));
+                freqList[0].count * 6 > getAppendLength(STATIC_ENCODER.resolveCharacter('+'));
             var reindexMap = createReindexMap(freqList.length, radix, amendings, coerceToInt);
             var charMap = new Empty();
             var minCharIndexArrayStrLength = initMinCharIndexArrayStrLength(input);
@@ -1022,7 +1023,7 @@ var expandEntries;
         findBase64AlphabetDefinition: function (element)
         {
             var definition;
-            if (Array.isArray(element))
+            if (isArray(element))
             {
                 definition = this.findBestDefinition(element);
             }
@@ -1210,12 +1211,7 @@ var expandEntries;
                     {
                         var charCache;
                         var entries = CHARACTERS[char];
-                        if (entries && !Array.isArray(entries))
-                        {
-                            solution = STATIC_ENCODER.resolve(entries);
-                            charCache = STATIC_CHAR_CACHE;
-                        }
-                        else
+                        if (!entries || isArray(entries))
                         {
                             var defaultResolver = defaultResolveCharacter.bind(this, char);
                             if (entries)
@@ -1227,6 +1223,11 @@ var expandEntries;
                                 solution = defaultResolver();
                             }
                             charCache = this.charCache;
+                        }
+                        else
+                        {
+                            solution = STATIC_ENCODER.resolve(entries);
+                            charCache = STATIC_CHAR_CACHE;
                         }
                         if (solution.level == null)
                         {
@@ -1278,17 +1279,26 @@ var expandEntries;
         
         resolveConstant: function (constant)
         {
-            var solution = this.constantCache[constant];
+            var solution = this.constCache[constant];
             if (solution === undefined)
             {
                 this.callResolver(
                     constant,
                     function ()
                     {
+                        var constCache;
                         var entries = this.constantDefinitions[constant];
-                        entries = expandEntries(entries);
-                        solution = this.findOptimalSolution(entries);
-                        this.constantCache[constant] = solution;
+                        if (isArray(entries))
+                        {
+                            solution = this.findOptimalSolution(entries);
+                            constCache = this.constCache;
+                        }
+                        else
+                        {
+                            solution = STATIC_ENCODER.resolve(entries);
+                            constCache = STATIC_CONST_CACHE;
+                        }
+                        constCache[constant] = solution;
                     }
                 );
             }
@@ -1310,15 +1320,5 @@ var expandEntries;
     assignNoEnum(Encoder.prototype, encoderProtoSource);
     
     var STATIC_ENCODER = new Encoder();
-    
-    expandEntries =
-        function (entries)
-        {
-            if (!Array.isArray(entries))
-            {
-                entries = [define(entries)];
-            }
-            return entries;
-        };
 }
 )();

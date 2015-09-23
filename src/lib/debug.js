@@ -9,7 +9,7 @@ Encoder,
 JScrewIt,
 ScrewBuffer,
 assignNoEnum,
-expandEntries,
+define,
 featureFromMask,
 getValidFeatureMask,
 hasOuterPlus,
@@ -56,7 +56,8 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             {
                 encoder.constantDefinitions = Object.create(CONSTANTS);
             }
-            encoder.constantDefinitions[constant] = definition + '';
+            var entries = [define(definition + '')];
+            encoder.constantDefinitions[constant] = entries;
         }
         
         function getCharacterEntries(char)
@@ -78,7 +79,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         
         function getConstantEntries(constant)
         {
-            var entries = expandEntries(CONSTANTS[constant]);
+            var entries = CONSTANTS[constant];
             return entries;
         }
         
