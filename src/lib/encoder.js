@@ -1124,7 +1124,7 @@ var Encoder;
         {
             function makeRegExp()
             {
-                regExp = new RegExp(stringTokenPattern, 'g');
+                regExp = RegExp(stringTokenPattern, 'g');
             }
             
             var buffer = new ScrewBuffer(strongBound, forceString, this.maxGroupThreshold);
