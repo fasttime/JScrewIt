@@ -510,6 +510,7 @@ var replaceDigit;
         ],
         'T':
         [
+            define('Function("try{null.false}catch(undefined){return undefined}")()["name"][0]'),
             define('btoa(NaN)[0]', 'ATOB'),
             define('""["fontcolor"]([])["20"]', 'CAPITAL_HTML'),
             define('(RP_3_NO + Date())["30"]', 'GMT'),
