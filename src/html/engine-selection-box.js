@@ -38,7 +38,8 @@ function createEngineSelectionBox()
             [
                 { feature: 'SAFARI70', number: '7.0' },
                 { feature: 'SAFARI71', number: '7.1' },
-                { feature: 'SAFARI71', number: '8.0', notForWebWorker: ['SELF_OBJ'] }
+                { feature: 'SAFARI71', number: '8', notForWebWorker: ['SELF_OBJ'] },
+                { feature: 'SAFARI90', number: '9', notForWebWorker: ['SELF_OBJ'] }
             ]
         },
         {
@@ -60,29 +61,28 @@ function createEngineSelectionBox()
             name: 'Android Browser',
             versions:
             [
-                { feature: 'ANDRO400', number: '4.0.x' },
-                { feature: 'ANDRO412', number: '4.1.x–4.3.x' },
-                { feature: 'ANDRO442', number: '4.4.x' }
+                { feature: 'ANDRO400', number: '4.0' },
+                { feature: 'ANDRO412', number: '4.1–4.3' },
+                { feature: 'ANDRO442', number: '4.4' }
             ]
         },
         {
             name: 'Node.js',
             versions:
             [
-                { feature: 'NODE010', number: '0.10.x' },
-                { feature: 'NODE012', number: '0.12.x' },
-                { feature: 'NODE40', number: '4.0.x' },
+                { feature: 'NODE010', number: '0.10' },
+                { feature: 'NODE012', number: '0.12' },
+                { feature: 'NODE40', number: '4' },
             ]
         }
     ];
     
-    function createCheckBox(text, labelProps, inputProps)
+    function createCheckBox(text, inputProps)
     {
         var checkBox =
             art(
                 'LABEL',
-                art('INPUT', { style: { marginLeft: '0' }, type: 'checkbox' }, inputProps),
-                labelProps,
+                art('INPUT', { style: { margin: '0 .25em 0 0' }, type: 'checkbox' }, inputProps),
                 text || null
             );
         return checkBox;
@@ -143,7 +143,7 @@ function createEngineSelectionBox()
     
     function init()
     {
-        var engineFieldBox = art('DIV', { style: { display: 'table' } });
+        var engineFieldBox = art('TABLE', { style: { borderSpacing: '0', width: '100%' } });
         var webWorkerField = createCheckBox('Support web workers');
         comp =
             art(
@@ -168,38 +168,52 @@ function createEngineSelectionBox()
                 }
             );
         ENGINE_INFO_LIST.forEach(
-            function (engineInfo)
+            function (engineInfo, engineIndex)
             {
-                var engineField =
+                var versions = engineInfo.versions;
+                var engineField;
+                var engineFieldProps = engineIndex & 1 ? { className: 'engineFieldEven' } : null;
+                var rowSpan = (versions.length + 2) / 3 ^ 0;
+                var cellCount = rowSpan * 3;
+                for (var versionIndex = 0; versionIndex < cellCount; ++versionIndex)
+                {
+                    var version = versions[versionIndex];
+                    if (!(versionIndex % 3))
+                    {
+                        engineField = art('TR', engineFieldProps);
+                        if (!versionIndex)
+                        {
+                            art(
+                                engineField,
+                                art(
+                                    'TD',
+                                    { rowSpan: rowSpan, style: { padding: '0 .5em 0 0' } },
+                                    engineInfo.name
+                                )
+                            );
+                        }
+                        art(engineFieldBox, engineField);
+                    }
+                    var versionCheckBox =
+                        version ?
+                        createCheckBox(
+                            version.number,
+                            {
+                                checked: true,
+                                feature: version.feature,
+                                notForWebWorker: version.notForWebWorker
+                            }
+                        ) :
+                        null;
                     art(
-                        'DIV',
-                        { style: { display: 'table-row' } },
+                        engineField,
                         art(
-                            'DIV',
-                            { style: { display: 'table-cell', paddingRight: '.5em' } },
-                            engineInfo.name
+                            'TD',
+                            { style: { padding: '0 0 0 .5em', width: '6em' } },
+                            versionCheckBox
                         )
                     );
-                art(engineFieldBox, engineField);
-                engineInfo.versions.forEach(
-                    function (version)
-                    {
-                        var versionField =
-                            createCheckBox(
-                                version.number,
-                                {
-                                    style:
-                                    { display: 'table-cell', paddingLeft: '.5em', width: '7.5em' }
-                                },
-                                {
-                                    checked: true,
-                                    feature: version.feature,
-                                    notForWebWorker: version.notForWebWorker
-                                }
-                            );
-                        art(engineField, versionField);
-                    }
-                );
+                }
             }
         );
         engineVersionInputs = engineFieldBox.querySelectorAll('INPUT');

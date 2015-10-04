@@ -150,7 +150,16 @@ wrapWithCallBox
             art(
                 'BUTTON',
                 'Run this',
-                { style: { float: 'right', fontSize: '10pt' } },
+                {
+                    style:
+                    {
+                        bottom: '0',
+                        fontSize: '10pt',
+                        margin: '0',
+                        position: 'absolute',
+                        right: '0'
+                    }
+                },
                 art.on('click', handleRun)
             )
         );

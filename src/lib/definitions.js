@@ -510,6 +510,7 @@ var replaceDigit;
         ],
         'T':
         [
+            define('(Function("try{undefined.false}catch(undefined){return undefined}")()+[])[0]'),
             define('btoa(NaN)[0]', 'ATOB'),
             define('""["fontcolor"]([])["20"]', 'CAPITAL_HTML'),
             define('(RP_3_NO + Date())["30"]', 'GMT'),
@@ -553,7 +554,7 @@ var replaceDigit;
         '\n':
         [
             define('(Function() + [])["23"]'),
-            define('(Function() + [])["22"]', 'NO_SAFARI_LF'),
+            define('(Function() + [])["22"]', 'NO_OLD_SAFARI_LF'),
             define('(RP_1_NO + FILTER)["20"]', 'FF_SAFARI_SRC'),
             define('(RP_3_NO + FILL)["20"]', 'FF_SAFARI_SRC', 'FILL'),
             define('(ANY_FUNCTION + [])[0]', 'IE_SRC')
@@ -572,7 +573,10 @@ var replaceDigit;
             define('(FILL + [])["20"]', 'FF_SAFARI_SRC', 'FILL')
         ],
         // '!':    ,
-        '"': '""["fontcolor"]()["12"]',
+        '"':
+        [
+            define('""["fontcolor"]()["12"]')
+        ],
         // '#':    ,
         // '$':    ,
         '%':
@@ -655,8 +659,8 @@ var replaceDigit;
                 '(ARRAY_ITERATOR + [])[2 + [true + !!(ARRAY_ITERATOR + [])["22"]]]',
                 'ARRAY_ITERATOR'
             ),
-            define('(ARRAY_ITERATOR + [])["22"]', 'NO_SAFARI_ARRAY_ITERATOR'),
-            define('(ARRAY_ITERATOR + [])["21"]', 'SAFARI_ARRAY_ITERATOR')
+            define('(ARRAY_ITERATOR + [])["22"]', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
+            define('(ARRAY_ITERATOR + [])["21"]', 'OLD_SAFARI_ARRAY_ITERATOR')
         ],
         '^':
         [
@@ -779,13 +783,34 @@ var replaceDigit;
     ({
         // JavaScript globals
         
-        Array:          '[]["constructor"]',
-        Boolean:        '(false)["constructor"]',
-        Date:           'Function("return Date")()',
-        Function:       'ANY_FUNCTION["constructor"]',
-        Number:         '0["constructor"]',
-        RegExp:         'Function("return/false/")()["constructor"]',
-        String:         '("")["constructor"]',
+        Array:
+        [
+            define('[]["constructor"]')
+        ],
+        Boolean:
+        [
+            define('(false)["constructor"]')
+        ],
+        Date:
+        [
+            define('Function("return Date")()')
+        ],
+        Function:
+        [
+            define('ANY_FUNCTION["constructor"]')
+        ],
+        Number:
+        [
+            define('0["constructor"]')
+        ],
+        RegExp:
+        [
+            define('Function("return/false/")()["constructor"]')
+        ],
+        String:
+        [
+            define('("")["constructor"]')
+        ],
         
         atob:
         [
@@ -799,12 +824,18 @@ var replaceDigit;
         [
             define('Function("return document")()', 'ANY_DOCUMENT')
         ],
-        escape:         'Function("return escape")()',
+        escape:
+        [
+            define('Function("return escape")()')
+        ],
         self:
         [
             define('Function("return self")()', 'SELF_OBJ')
         ],
-        unescape:       'Function("return unescape")()',
+        unescape:
+        [
+            define('Function("return unescape")()')
+        ],
         
         // Custom definitions
         
@@ -821,7 +852,10 @@ var replaceDigit;
         [
             define('[]["fill"]', 'FILL')
         ],
-        FILTER:         '[]["filter"]',
+        FILTER:
+        [
+            define('[]["filter"]')
+        ],
         PLAIN_OBJECT:
         [
             define('Function("return{}")()'),
@@ -832,23 +866,44 @@ var replaceDigit;
         // at the same position on different browsers.
         // The number after "FBEP_" is the maximum character overhead. The letters after the last
         // underscore have the same meaning as in regular padding blocks.
-        FBEP_4_S:       '[[true][+!!(RP_5_N + ANY_FUNCTION)["40"]]]',
-        FBEP_9_U:       '[false][+!(RP_5_N + ANY_FUNCTION)["40"]]',
+        FBEP_4_S:
+        [
+            define('[[true][+!!(RP_5_N + ANY_FUNCTION)["40"]]]')
+        ],
+        FBEP_9_U:
+        [
+            define('[false][+!(RP_5_N + ANY_FUNCTION)["40"]]')
+        ],
         
         // Function header shift: used to adjust an indexer to make it point to the same position in
         // the string representation of a function's header on different browsers.
         // This evaluates to an array containing only the number 0 or only the number 1.
-        FH_SHIFT:       '[+!!(+(ANY_FUNCTION + [])[0] + true)]',
+        FH_SHIFT:
+        [
+            define('[+!!(+(ANY_FUNCTION + [])[0] + true)]')
+        ],
         
         // Function header padding blocks: prepended to a function to align the function's header
         // at the same position on different browsers.
         // The number after "FBP_" is the maximum character overhead. The letters after the last
         // underscore have the same meaning as in regular padding blocks.
         // Unused:
-        // FHP_1_S:        '[[0][+!!(+(ANY_FUNCTION + [])[0] + true)]]',
-        // FHP_2_NO:       '+(+!(+(ANY_FUNCTION + [])[0] + true)+[0])',
-        FHP_3_NO:       '+(1 + [+(ANY_FUNCTION + [])[0]])',
-        FHP_5_N:        '!!(+(ANY_FUNCTION + [])[0] + true)',
+        // FHP_1_S:
+        // [
+        //     define('[[0][+!!(+(ANY_FUNCTION + [])[0] + true)]]')
+        // ],
+        // FHP_2_NO:
+        // [
+        //     define('+(+!(+(ANY_FUNCTION + [])[0] + true)+[0])')
+        // ],
+        FHP_3_NO:
+        [
+            define('+(1 + [+(ANY_FUNCTION + [])[0]])')
+        ],
+        FHP_5_N:
+        [
+            define('!!(+(ANY_FUNCTION + [])[0] + true)')
+        ],
         
         // Regular padding blocks.
         // The number after "RP_" is the character overhead.
