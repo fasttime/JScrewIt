@@ -554,7 +554,7 @@ var replaceDigit;
         '\n':
         [
             define('(Function() + [])["23"]'),
-            define('(Function() + [])["22"]', 'NO_SAFARI_LF'),
+            define('(Function() + [])["22"]', 'NO_OLD_SAFARI_LF'),
             define('(RP_1_NO + FILTER)["20"]', 'FF_SAFARI_SRC'),
             define('(RP_3_NO + FILL)["20"]', 'FF_SAFARI_SRC', 'FILL'),
             define('(ANY_FUNCTION + [])[0]', 'IE_SRC')
@@ -659,8 +659,8 @@ var replaceDigit;
                 '(ARRAY_ITERATOR + [])[2 + [true + !!(ARRAY_ITERATOR + [])["22"]]]',
                 'ARRAY_ITERATOR'
             ),
-            define('(ARRAY_ITERATOR + [])["22"]', 'NO_SAFARI_ARRAY_ITERATOR'),
-            define('(ARRAY_ITERATOR + [])["21"]', 'SAFARI_ARRAY_ITERATOR')
+            define('(ARRAY_ITERATOR + [])["22"]', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
+            define('(ARRAY_ITERATOR + [])["21"]', 'OLD_SAFARI_ARRAY_ITERATOR')
         ],
         '^':
         [
