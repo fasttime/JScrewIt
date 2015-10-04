@@ -61,18 +61,18 @@ function createEngineSelectionBox()
             name: 'Android Browser',
             versions:
             [
-                { feature: 'ANDRO400', number: '4.0.x' },
-                { feature: 'ANDRO412', number: '4.1.x–4.3.x' },
-                { feature: 'ANDRO442', number: '4.4.x' }
+                { feature: 'ANDRO400', number: '4.0' },
+                { feature: 'ANDRO412', number: '4.1–4.3' },
+                { feature: 'ANDRO442', number: '4.4' }
             ]
         },
         {
             name: 'Node.js',
             versions:
             [
-                { feature: 'NODE010', number: '0.10.x' },
-                { feature: 'NODE012', number: '0.12.x' },
-                { feature: 'NODE40', number: '4.0.x' },
+                { feature: 'NODE010', number: '0.10' },
+                { feature: 'NODE012', number: '0.12' },
+                { feature: 'NODE40', number: '4' },
             ]
         }
     ];
@@ -209,7 +209,7 @@ function createEngineSelectionBox()
                         engineField,
                         art(
                             'TD',
-                            { style: { padding: '0 0 0 .5em', width: '7.5em' } },
+                            { style: { padding: '0 0 0 .5em', width: '6em' } },
                             versionCheckBox
                         )
                     );

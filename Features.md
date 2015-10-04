@@ -129,7 +129,7 @@ Features available in Node.js 0.12 or later.
 Also compatible with Chrome 38, Opera 25 and Android Browser 4.1.2 or later.
 <a name="NODE40"></a>
 ### `NODE40`
-Features available in Node.js 4.0.
+Features available in Node.js 4.0 or later.
 Also compatible with Chrome 45 and Opera 32 or later.
 <a name="NO_IE_SRC"></a>
 ### `NO_IE_SRC`
@@ -334,6 +334,8 @@ This table lists features available in the most common engines.
 <li><a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
 <li><a href="#DOUBLE_QUOTE_ESC_HTML"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
+<li><a href="#FILL"><code>FILL</code></a> (Node.js 4+)
+<li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Node.js 4+)
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Node.js 0.12+)
 <li><a href="#NAME"><code>NAME</code></a>

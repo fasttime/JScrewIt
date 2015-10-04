@@ -162,7 +162,8 @@ var LISTS =
     ],
     [
         { description: 'Node.js 0.10.26+', feature: 'NODE010' },
-        { description: 'Node.js 0.12+', feature: 'NODE012' }
+        { description: 'Node.js 0.12+', feature: 'NODE012' },
+        { description: 'Node.js 4+', feature: 'NODE40' }
     ]
 ];
 
