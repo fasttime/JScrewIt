@@ -538,11 +538,11 @@
             }
         },
         NO_IE_SRC: makeEmuFeatureFunctionSource('function ?() { [native code] }', true),
-        NO_SAFARI_ARRAY_ITERATOR: makeEmuFeatureEntries(
+        NO_OLD_SAFARI_ARRAY_ITERATOR: makeEmuFeatureEntries(
             '[object Array Iterator]',
             /^\[object Array Iterator]$/
         ),
-        NO_SAFARI_LF:
+        NO_OLD_SAFARI_LF:
         {
             setUp: function ()
             {
@@ -561,7 +561,7 @@
                 );
             }
         },
-        SAFARI_ARRAY_ITERATOR: makeEmuFeatureEntries(
+        OLD_SAFARI_ARRAY_ITERATOR: makeEmuFeatureEntries(
             '[object ArrayIterator]',
             /^\[object ArrayIterator]$/
         ),

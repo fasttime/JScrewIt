@@ -536,7 +536,11 @@ self
                             function ()
                             {
                                 var fn =
-                                    Feature.bind(Feature, 'ENTRIES_PLAIN', 'SAFARI_ARRAY_ITERATOR');
+                                    Feature.bind(
+                                        Feature,
+                                        'ENTRIES_PLAIN',
+                                        'OLD_SAFARI_ARRAY_ITERATOR'
+                                    );
                                 expect(fn).toThrow(ReferenceError('Incompatible features'));
                             }
                         );
@@ -570,7 +574,7 @@ self
                             {
                                 var featureObj = Feature.COMPACT;
                                 var featureNames =
-                                    Feature.commonOf('CHROME41', 'EDGE', 'FF31', 'SAFARI71');
+                                    Feature.commonOf('CHROME41', 'EDGE', 'FF31', 'SAFARI90');
                                 var expectedFeature = Feature(featureNames);
                                 var actualElementaryNames = featureObj.elementaryNames;
                                 var expectedElementaryNames = expectedFeature.elementaryNames;
