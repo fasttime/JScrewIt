@@ -53,7 +53,7 @@ var validMaskFromArrayOrStringOrFeature;
     
     function checkSelfFeature()
     {
-        // self + '' throws an error inside a web worker in Safari 8.0.
+        // self + '' throws an error inside a web worker in Safari 8 and 9.
         var str;
         try
         {
@@ -409,7 +409,8 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the function String.fromCodePoint.\n' +
-                'Available in Firefox, Chrome, Opera, Microsoft Edge, and in Node.js 4.0.',
+                'Not available in Internet Explorer, Android Browser, Safari versions prior to 9 ' +
+                'and Node.js versions prior to 4.0.',
             check: function ()
             {
                 return String.fromCodePoint;
@@ -494,7 +495,8 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'The property that the string representation of Array.prototype.entries() ' +
                 'evaluates to "[object Array Iterator]".\n' +
-                'Available in Firefox, Chrome, Opera, and in Node.js 0.12 and later versions.',
+                'Available in Firefox, Chrome, Opera, and in Safari 9 and Node.js 0.12 and later ' +
+                'versions.',
             check: function ()
             {
                 return Array.prototype.entries && [].entries() + '' === '[object Array Iterator]';
@@ -506,7 +508,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'A string representation of dynamically generated functions typical for most ' +
-                'browsers with the notable exception of Safari.\n' +
+                'browsers with the notable exception of Safari versions prior to 9.\n' +
                 'More specifically, in this representation, the character at index 22 is a line ' +
                 'feed ("\\n").',
             check: function ()
@@ -519,7 +521,7 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'The property that the string representation of Array.prototype.entries() ' +
                 'evaluates to "[object ArrayIterator]".\n' +
-                'Available in Safari 7.1 and later versions.',
+                'Available in Safari versions from 7.1 up to 8.0.8.',
             check: function ()
             {
                 return Array.prototype.entries && [].entries() + '' === '[object ArrayIterator]';
@@ -534,7 +536,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'Existence of the global object property self whose string representation starts ' +
                 'with "[object ".\n' +
                 'This feature is not available in Node.js. It is also not available inside web ' +
-                'workers in Safari 8.0.',
+                'workers in Safari 8 and 9.',
             check: checkSelfFeature.bind(
                 function (str)
                 {
@@ -841,7 +843,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         SAFARI71:
         {
-            description: 'Features available in Safari 7.1 or later.',
+            description: 'Features available in Safari 7.1 to 8.0.8.',
             includes:
             [
                 'ATOB',
@@ -852,6 +854,25 @@ var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'NAME',
                 'SAFARI_ARRAY_ITERATOR',
+                'UNDEFINED',
+                'WINDOW'
+            ]
+        },
+        SAFARI90:
+        {
+            description: 'Features available in Safari 9.0 or later.',
+            includes:
+            [
+                'ATOB',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'FF_SAFARI_SRC',
+                'FILL',
+                'FROM_CODE_POINT',
+                'GMT',
+                'HTMLDOCUMENT',
+                'NAME',
+                'NO_SAFARI_ARRAY_ITERATOR',
+                'NO_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
             ]

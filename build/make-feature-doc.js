@@ -68,25 +68,28 @@ function getVersioningFor(feature, list)
         }
         else
         {
-            if (firstUnavail == null)
+            if (firstAvail != null && firstUnavail == null)
             {
                 firstUnavail = index;
             }
         }
     }
-    if (firstAvail == null)
+    if (firstAvail != null)
     {
-        return false;
+        var notes = [];
+        if (firstAvail)
+        {
+            var availNote = list[firstAvail].description;
+            notes.push(availNote);
+        }
+        if (firstUnavail != null)
+        {
+            var unavailNote = 'not in ' + list[firstUnavail].description;
+            notes.push(unavailNote);
+        }
+        var versioning = notes.join(', ');
+        return versioning;
     }
-    if (firstAvail > 0)
-    {
-        return list[firstAvail].description;
-    }
-    if (firstUnavail == null)
-    {
-        return true;
-    }
-    return 'not in ' + list[firstUnavail].description;
 }
 
 function printRow(label, assignmentMap)
@@ -136,7 +139,8 @@ var LISTS =
         { description: 'Firefox 31+', feature: 'FF31' }
     ],
     [
-        { description: 'Chrome 41+, Opera 28+', feature: 'CHROME41' }
+        { description: 'Chrome 41+, Opera 28+', feature: 'CHROME41' },
+        { description: 'Chrome 45+, Opera 32+', feature: 'CHROME45' }
     ],
     [
         { description: 'Internet Explorer 9+', feature: 'IE9' },
@@ -145,7 +149,8 @@ var LISTS =
     ],
     [
         { description: 'Safari 7.0+', feature: 'SAFARI70' },
-        { description: 'Safari 7.1+', feature: 'SAFARI71' }
+        { description: 'Safari 7.1+', feature: 'SAFARI71' },
+        { description: 'Safari 9.0+', feature: 'SAFARI90' }
     ],
     [
         { description: 'Microsoft Edge', feature: 'EDGE' }
@@ -210,13 +215,9 @@ module.exports =
                     if (featureObj.check && featureObj.name === featureName)
                     {
                         var versioning = getVersioningFor(featureName, list);
-                        if (versioning)
+                        if (versioning != null)
                         {
-                            var assignments = { };
-                            if (typeof versioning === 'string')
-                            {
-                                assignments.versioning = versioning;
-                            }
+                            var assignments = { versioning: versioning };
                             assignmentMap[featureName] = assignments;
                         }
                     }
