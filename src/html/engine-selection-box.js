@@ -114,17 +114,44 @@ function createEngineSelectionBox()
         return featureObj;
     }
     
+    function handleAllEngineChange()
+    {
+        var checked = allEngineInput.checked;
+        Array.prototype.forEach.call(
+            engineVersionInputs,
+            function (input)
+            {
+                input.checked = checked;
+            }
+        );
+    }
+    
+    function handleAllEngineChangeAsync()
+    {
+        setTimeout(
+            function ()
+            {
+                if (!allEngineInput.indeterminate)
+                {
+                    handleAllEngineChange();
+                }
+            }
+        );
+    }
+    
     function updateCurrentFeatureObj()
     {
         var featureNames = [];
         var allNotForWebWorker =
             ['ANY_DOCUMENT', 'ANY_WINDOW', 'DOCUMENT', 'DOMWINDOW', 'HTMLDOCUMENT', 'WINDOW'];
+        var checkedCount = 0;
         Array.prototype.forEach.call(
             engineVersionInputs,
             function (input)
             {
                 if (input.checked)
                 {
+                    ++checkedCount;
                     var featureName = input.feature;
                     featureNames.push(featureName);
                     var notForWebWorker = input.notForWebWorker;
@@ -132,6 +159,8 @@ function createEngineSelectionBox()
                 }
             }
         );
+        allEngineInput.checked = checkedCount;
+        allEngineInput.indeterminate = checkedCount && checkedCount < engineVersionInputs.length;
         var Feature = JScrewIt.Feature;
         var commonFeatureObj = Feature.commonOf.apply(null, featureNames) || Feature.DEFAULT;
         if (webWorkerInput.checked)
@@ -143,6 +172,14 @@ function createEngineSelectionBox()
     
     function init()
     {
+        var allEngineField =
+            art(
+                createCheckBox('Select/deselect all'),
+                { style: { display: 'inline-block', margin: '0 0 .5em' } },
+                art.on('change', handleAllEngineChange),
+                art.on('keyup', handleAllEngineChangeAsync),
+                art.on('mouseup', handleAllEngineChangeAsync)
+            );
         var engineFieldBox = art('TABLE', { style: { borderSpacing: '0', width: '100%' } });
         var webWorkerField = createCheckBox('Support web workers');
         comp =
@@ -155,6 +192,7 @@ function createEngineSelectionBox()
                         { style: { margin: '.25em 0 .75em' } },
                         'Select the engines you want your code to support.'
                     ),
+                    allEngineField,
                     engineFieldBox,
                     art('HR'),
                     webWorkerField,
@@ -216,6 +254,7 @@ function createEngineSelectionBox()
                 }
             }
         );
+        allEngineInput = allEngineField.querySelector('INPUT');
         engineVersionInputs = engineFieldBox.querySelectorAll('INPUT');
         webWorkerInput = webWorkerField.querySelector('INPUT');
         updateCurrentFeatureObj();
@@ -227,6 +266,7 @@ function createEngineSelectionBox()
         dispatchInputEvent();
     }
     
+    var allEngineInput;
     var comp;
     var currentFeatureObj;
     var engineVersionInputs;
