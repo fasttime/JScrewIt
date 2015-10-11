@@ -997,6 +997,7 @@ var validMaskFromArrayOrStringOrFeature;
          * featureObj === JScrewIt.Feature.ALL[featureObj.name]
          * ```
          */
+        
         ALL: ALL,
         
         /**
