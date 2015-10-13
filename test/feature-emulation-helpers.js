@@ -498,6 +498,13 @@
         },
         HTMLDOCUMENT: makeEmuFeatureDocument('[object HTMLDocument]', /^\[object HTMLDocument]$/),
         IE_SRC: makeEmuFeatureFunctionSource('\nfunction ?() {\n    [native code]\n}\n'),
+        INTL:
+        {
+            setUp: function ()
+            {
+                override(this, 'Intl', { value: { } });
+            }
+        },
         LOCALE_INFINITY:
         {
             setUp: function ()

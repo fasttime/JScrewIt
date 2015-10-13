@@ -859,7 +859,8 @@ var replaceDigit;
         PLAIN_OBJECT:
         [
             define('Function("return{}")()'),
-            define('ARRAY_ITERATOR', 'ENTRIES_PLAIN')
+            define('ARRAY_ITERATOR', 'ENTRIES_PLAIN'),
+            define('Function("return Intl")()', 'INTL')
         ],
         
         // Function body extra padding blocks: prepended to a function to align the function's body
