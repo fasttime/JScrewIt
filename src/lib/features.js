@@ -456,6 +456,18 @@ var validMaskFromArrayOrStringOrFeature;
             },
             excludes: ['NO_IE_SRC']
         },
+        INTL:
+        {
+            description:
+                'Existence of the global object property Intl.\n' +
+                'This feature is not available in Safari, in Internet Explorer versions prior to ' +
+                '11, in Android Browser versions prior to 4.4.2, and in Node.js versions prior ' +
+                'to 0.12.',
+            check: function ()
+            {
+                return typeof Intl === 'object';
+            }
+        },
         LOCALE_INFINITY:
         {
             description:
@@ -654,6 +666,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
                 'HTMLDOCUMENT',
+                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
@@ -673,6 +686,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FROM_CODE_POINT',
                 'GMT',
                 'HTMLDOCUMENT',
+                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -693,6 +707,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FROM_CODE_POINT',
                 'GMT',
                 'HTMLDOCUMENT',
+                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -714,6 +729,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FROM_CODE_POINT',
                 'GMT',
                 'HTMLDOCUMENT',
+                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
@@ -734,6 +750,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FROM_CODE_POINT',
                 'GMT',
                 'HTMLDOCUMENT',
+                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -779,6 +796,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'GMT',
                 'HTMLDOCUMENT',
                 'IE_SRC',
+                'INTL',
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
@@ -809,6 +827,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -828,6 +847,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
+                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
