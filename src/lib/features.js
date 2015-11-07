@@ -398,8 +398,8 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the native function Array.prototype.fill.\n' +
-                'Available in Firefox, Microsoft Edge, and in Chrome 45, Safari 7.1, Opera 32, ' +
-                'Node.js 4.0 and later versions.',
+                'Available in Firefox, Chrome, Opera, Microsoft Edge, and in Safari 7.1, Node.js ' +
+                '4.0 and later versions.',
             check: function ()
             {
                 return Array.prototype.fill;
@@ -456,6 +456,18 @@ var validMaskFromArrayOrStringOrFeature;
             },
             excludes: ['NO_IE_SRC']
         },
+        INTL:
+        {
+            description:
+                'Existence of the global object property Intl.\n' +
+                'This feature is not available in Safari, in Internet Explorer versions prior to ' +
+                '11, in Android Browser versions prior to 4.4.2, and in Node.js versions prior ' +
+                'to 0.12.',
+            check: function ()
+            {
+                return typeof Intl === 'object';
+            }
+        },
         LOCALE_INFINITY:
         {
             description:
@@ -495,7 +507,7 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'The property that the string representation of Array.prototype.entries() ' +
                 'evaluates to "[object Array Iterator]".\n' +
-                'Available in Firefox, Chrome, Opera, and in Safari 9 and Node.js 0.12 and later ' +
+                'Available in Firefox, Chrome, Opera, and in Safari 9, Node.js 0.12 and later ' +
                 'versions.',
             check: function ()
             {
@@ -604,6 +616,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ATOB',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'ENTRIES_OBJ',
+                'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
                 'HTMLDOCUMENT',
@@ -654,6 +667,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
                 'HTMLDOCUMENT',
+                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
@@ -662,26 +676,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'WINDOW'
             ]
         },
-        CHROME: 'CHROME41',
-        CHROME41:
-        {
-            description: 'Features available in Chrome 41 and Opera 28 or later.',
-            includes:
-            [
-                'ATOB',
-                'DOUBLE_QUOTE_ESC_HTML',
-                'FROM_CODE_POINT',
-                'GMT',
-                'HTMLDOCUMENT',
-                'LOCALE_INFINITY',
-                'NAME',
-                'NO_OLD_SAFARI_ARRAY_ITERATOR',
-                'NO_OLD_SAFARI_LF',
-                'UNDEFINED',
-                'V8_SRC',
-                'WINDOW'
-            ]
-        },
+        CHROME: 'CHROME45',
         CHROME45:
         {
             description: 'Features available in Chrome 45 and Opera 32 or later.',
@@ -693,6 +688,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FROM_CODE_POINT',
                 'GMT',
                 'HTMLDOCUMENT',
+                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -714,6 +710,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FROM_CODE_POINT',
                 'GMT',
                 'HTMLDOCUMENT',
+                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
@@ -734,6 +731,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FROM_CODE_POINT',
                 'GMT',
                 'HTMLDOCUMENT',
+                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -779,6 +777,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'GMT',
                 'HTMLDOCUMENT',
                 'IE_SRC',
+                'INTL',
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
@@ -804,11 +803,12 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Features available in Node.js 0.12 or later.\n' +
-                'Also compatible with Chrome 38, Opera 25 and Android Browser 4.1.2 or later.',
+                'Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.',
             includes:
             [
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -821,13 +821,14 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Features available in Node.js 4.0 or later.\n' +
-                'Also compatible with Chrome 45 and Opera 32 or later.',
+                'Also compatible with Chrome and Opera.',
             includes:
             [
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
+                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -997,6 +998,7 @@ var validMaskFromArrayOrStringOrFeature;
          * featureObj === JScrewIt.Feature.ALL[featureObj.name]
          * ```
          */
+        
         ALL: ALL,
         
         /**

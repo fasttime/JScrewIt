@@ -35,10 +35,7 @@ The property that the various string methods returning HTML code such as String.
 This feature is only available in Internet Explorer.
 <a name="CHROME"></a>
 ### `CHROME`
-_An alias for [`CHROME41`](#CHROME41)._
-<a name="CHROME41"></a>
-### `CHROME41`
-Features available in Chrome 41 and Opera 28 or later.
+_An alias for [`CHROME45`](#CHROME45)._
 <a name="CHROME45"></a>
 ### `CHROME45`
 Features available in Chrome 45 and Opera 32 or later.
@@ -82,7 +79,7 @@ Remarkable traits are the lack of characters in the beginning of the string befo
 <a name="FILL"></a>
 ### `FILL`
 Existence of the native function Array.prototype.fill.
-Available in Firefox, Microsoft Edge, and in Chrome 45, Safari 7.1, Opera 32, Node.js 4.0 and later versions.
+Available in Firefox, Chrome, Opera, Microsoft Edge, and in Safari 7.1, Node.js 4.0 and later versions.
 <a name="FROM_CODE_POINT"></a>
 ### `FROM_CODE_POINT`
 Existence of the function String.fromCodePoint.
@@ -108,6 +105,10 @@ Features available in Internet Explorer 9 or later.
 ### `IE_SRC`
 A string representation of native functions typical for Internet Explorer.
 Remarkable traits are the presence of a line feed character \("\\n"\) in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
+<a name="INTL"></a>
+### `INTL`
+Existence of the global object property Intl.
+This feature is not available in Safari, in Internet Explorer versions prior to 11, in Android Browser versions prior to 4.4.2, and in Node.js versions prior to 0.12.
 <a name="LOCALE_INFINITY"></a>
 ### `LOCALE_INFINITY`
 Language sensitive string representation of Infinity as "∞".
@@ -126,11 +127,11 @@ Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.
 <a name="NODE012"></a>
 ### `NODE012`
 Features available in Node.js 0.12 or later.
-Also compatible with Chrome 38, Opera 25 and Android Browser 4.1.2 or later.
+Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.
 <a name="NODE40"></a>
 ### `NODE40`
 Features available in Node.js 4.0 or later.
-Also compatible with Chrome 45 and Opera 32 or later.
+Also compatible with Chrome and Opera.
 <a name="NO_IE_SRC"></a>
 ### `NO_IE_SRC`
 A string representation of native functions typical for most browsers with the notable exception of Internet Explorer.
@@ -138,7 +139,7 @@ A remarkable trait for this feature is the lack of characters in the beginning o
 <a name="NO_OLD_SAFARI_ARRAY_ITERATOR"></a>
 ### `NO_OLD_SAFARI_ARRAY_ITERATOR`
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
-Available in Firefox, Chrome, Opera, and in Safari 9 and Node.js 0.12 and later versions.
+Available in Firefox, Chrome, Opera, and in Safari 9, Node.js 0.12 and later versions.
 <a name="NO_OLD_SAFARI_LF"></a>
 ### `NO_OLD_SAFARI_LF`
 A string representation of dynamically generated functions typical for most browsers with the notable exception of Safari versions prior to 9.
@@ -198,6 +199,7 @@ This table lists features available in the most common engines.
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
+<li><a href="#INTL"><code>INTL</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#FF_SAFARI_SRC"><code>FF_SAFARI_SRC</code></a>)
@@ -210,7 +212,7 @@ This table lists features available in the most common engines.
 </td>
 </tr>
 <tr>
-<td>Chrome 41+, Opera 28+</td>
+<td>Chrome 45+, Opera 32+</td>
 <td>
 <ul>
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
@@ -219,10 +221,11 @@ This table lists features available in the most common engines.
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#DOUBLE_QUOTE_ESC_HTML"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
-<li><a href="#FILL"><code>FILL</code></a> (Chrome 45+, Opera 32+)
+<li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
+<li><a href="#INTL"><code>INTL</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#V8_SRC"><code>V8_SRC</code></a>)
@@ -247,6 +250,7 @@ This table lists features available in the most common engines.
 <li><a href="#GMT"><code>GMT</code></a> (Internet Explorer 11)
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a> (Internet Explorer 11)
 <li><a href="#IE_SRC"><code>IE_SRC</code></a>
+<li><a href="#INTL"><code>INTL</code></a> (Internet Explorer 11)
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
@@ -294,6 +298,7 @@ This table lists features available in the most common engines.
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
+<li><a href="#INTL"><code>INTL</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#V8_SRC"><code>V8_SRC</code></a>)
@@ -316,6 +321,7 @@ This table lists features available in the most common engines.
 <li><a href="#DOUBLE_QUOTE_ESC_HTML"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
+<li><a href="#INTL"><code>INTL</code></a> (Android Browser 4.4.2+)
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Android Browser 4.4.2+)
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#V8_SRC"><code>V8_SRC</code></a>)
@@ -337,6 +343,7 @@ This table lists features available in the most common engines.
 <li><a href="#FILL"><code>FILL</code></a> (Node.js 4+)
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Node.js 4+)
 <li><a href="#GMT"><code>GMT</code></a>
+<li><a href="#INTL"><code>INTL</code></a> (Node.js 0.12+)
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Node.js 0.12+)
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#V8_SRC"><code>V8_SRC</code></a>)

@@ -128,7 +128,7 @@ module.exports =
                     },
                     options:
                     {
-                        banner: '//! JScrewIt <%= pkg.version %> – <%= pkg.homepage %>\n',
+                        banner: '// JScrewIt <%= pkg.version %> – <%= pkg.homepage %>\n',
                         stripBanners: true
                     }
                 },
@@ -169,11 +169,20 @@ module.exports =
                             'html/worker.js': 'src/html/worker.js'
                         }
                     },
-                    lib: { files: { 'lib/jscrewit.min.js': 'lib/jscrewit.js' } },
+                    lib:
+                    {
+                        files: { 'lib/jscrewit.min.js': 'lib/jscrewit.js' },
+                        options:
+                        {
+                            preserveComments: function (node, comment)
+                            {
+                                return comment.pos === 0;
+                            }
+                        }
+                    },
                     options:
                     {
-                        compress: { global_defs: { DEBUG: false }, hoist_vars: true },
-                        preserveComments: 'some'
+                        compress: { global_defs: { DEBUG: false }, hoist_vars: true }
                     }
                 }
             }

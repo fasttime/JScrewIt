@@ -139,7 +139,6 @@ var LISTS =
         { description: 'Firefox 31+', feature: 'FF31' }
     ],
     [
-        { description: 'Chrome 41+, Opera 28+', feature: 'CHROME41' },
         { description: 'Chrome 45+, Opera 32+', feature: 'CHROME45' }
     ],
     [
