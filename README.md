@@ -193,11 +193,11 @@ With this knowledge, we can rewrite the expression as follows.
 
 JScrewIt itself and the code it generates are compatible with the JavaScript engines listed below.
 
-- Chrome 41+
+- Chrome 45+
 - Internet Explorer 9+
 - Firefox 31+
 - Safari 7.0+
-- Opera 28+
+- Opera 32+
 - Microsoft Edge
 - Android Browser 4.x
 - Node.js 0.10.26+

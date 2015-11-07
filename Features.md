@@ -35,10 +35,7 @@ The property that the various string methods returning HTML code such as String.
 This feature is only available in Internet Explorer.
 <a name="CHROME"></a>
 ### `CHROME`
-_An alias for [`CHROME41`](#CHROME41)._
-<a name="CHROME41"></a>
-### `CHROME41`
-Features available in Chrome 41 and Opera 28 or later.
+_An alias for [`CHROME45`](#CHROME45)._
 <a name="CHROME45"></a>
 ### `CHROME45`
 Features available in Chrome 45 and Opera 32 or later.
@@ -82,7 +79,7 @@ Remarkable traits are the lack of characters in the beginning of the string befo
 <a name="FILL"></a>
 ### `FILL`
 Existence of the native function Array.prototype.fill.
-Available in Firefox, Microsoft Edge, and in Chrome 45, Safari 7.1, Opera 32, Node.js 4.0 and later versions.
+Available in Firefox, Chrome, Opera, Microsoft Edge, and in Safari 7.1, Node.js 4.0 and later versions.
 <a name="FROM_CODE_POINT"></a>
 ### `FROM_CODE_POINT`
 Existence of the function String.fromCodePoint.
@@ -130,11 +127,11 @@ Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.
 <a name="NODE012"></a>
 ### `NODE012`
 Features available in Node.js 0.12 or later.
-Also compatible with Chrome 38, Opera 25 and Android Browser 4.1.2 or later.
+Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.
 <a name="NODE40"></a>
 ### `NODE40`
 Features available in Node.js 4.0 or later.
-Also compatible with Chrome 45 and Opera 32 or later.
+Also compatible with Chrome and Opera.
 <a name="NO_IE_SRC"></a>
 ### `NO_IE_SRC`
 A string representation of native functions typical for most browsers with the notable exception of Internet Explorer.
@@ -142,7 +139,7 @@ A remarkable trait for this feature is the lack of characters in the beginning o
 <a name="NO_OLD_SAFARI_ARRAY_ITERATOR"></a>
 ### `NO_OLD_SAFARI_ARRAY_ITERATOR`
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
-Available in Firefox, Chrome, Opera, and in Safari 9 and Node.js 0.12 and later versions.
+Available in Firefox, Chrome, Opera, and in Safari 9, Node.js 0.12 and later versions.
 <a name="NO_OLD_SAFARI_LF"></a>
 ### `NO_OLD_SAFARI_LF`
 A string representation of dynamically generated functions typical for most browsers with the notable exception of Safari versions prior to 9.
@@ -215,7 +212,7 @@ This table lists features available in the most common engines.
 </td>
 </tr>
 <tr>
-<td>Chrome 41+, Opera 28+</td>
+<td>Chrome 45+, Opera 32+</td>
 <td>
 <ul>
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
@@ -224,7 +221,7 @@ This table lists features available in the most common engines.
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#DOUBLE_QUOTE_ESC_HTML"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
-<li><a href="#FILL"><code>FILL</code></a> (Chrome 45+, Opera 32+)
+<li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
