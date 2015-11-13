@@ -98,6 +98,9 @@ Features available in Internet Explorer 10 or later.
 <a name="IE11"></a>
 ### `IE11`
 Features available in Internet Explorer 11.
+<a name="IE11_WIN10"></a>
+### `IE11_WIN10`
+Features available in Internet Explorer 11 on Windows 10.
 <a name="IE9"></a>
 ### `IE9`
 Features available in Internet Explorer 9 or later.
@@ -112,7 +115,7 @@ This feature is not available in Safari, in Internet Explorer versions prior to 
 <a name="LOCALE_INFINITY"></a>
 ### `LOCALE_INFINITY`
 Language sensitive string representation of Infinity as "∞".
-Available in Firefox, Chrome, Opera, Microsoft Edge, and in Android Browser 4.4.2, Node.js 0.12 and later versions.
+Available in Firefox, Chrome, Opera, Microsoft Edge, and in Internet Explorer 11 on Windows 10, Android Browser 4.4.2, Node.js 0.12 and later versions.
 <a name="NAME"></a>
 ### `NAME`
 Existence of the name property for functions.
@@ -251,6 +254,7 @@ This table lists features available in the most common engines.
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a> (Internet Explorer 11)
 <li><a href="#IE_SRC"><code>IE_SRC</code></a>
 <li><a href="#INTL"><code>INTL</code></a> (Internet Explorer 11)
+<li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Internet Explorer 11 on Windows 10)
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>

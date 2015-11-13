@@ -21,7 +21,8 @@ function createEngineSelectionBox()
             [
                 { feature: 'IE9', number: '9' },
                 { feature: 'IE10', number: '10' },
-                { feature: 'IE11', number: '11' }
+                { feature: 'IE11', number: '11' },
+                { feature: 'IE11_WIN10', number: '11 (W10)' }
             ]
         },
         {
