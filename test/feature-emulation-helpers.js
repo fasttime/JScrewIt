@@ -594,17 +594,15 @@
         WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object Window]$/)
     };
     
-    var EMU_FEATURES = [];
-    Object.keys(EMU_FEATURE_INFOS).forEach(
-        function (featureName)
-        {
-            var condition = EMU_FEATURE_INFOS[featureName].condition;
-            if (!condition || condition())
+    var EMU_FEATURES =
+        Object.keys(EMU_FEATURE_INFOS).filter(
+            function (featureName)
             {
-                EMU_FEATURES.push(featureName);
+                var condition = EMU_FEATURE_INFOS[featureName].condition;
+                var result = !condition || condition();
+                return result;
             }
-        }
-    );
+        );
     
     var exports =
     {

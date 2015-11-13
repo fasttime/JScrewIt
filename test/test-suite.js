@@ -1912,17 +1912,6 @@ self
         return result;
     }
     
-    function listFeatures(available)
-    {
-        var callback =
-            function (feature)
-            {
-                return !!featureSet[feature] !== available;
-            };
-        var result = Object.keys(featureSet).filter(callback).sort();
-        return result;
-    }
-    
     function repeatToFit(str, length)
     {
         var result = repeat(str, Math.ceil(length / str.length)).slice(0, length);
@@ -2142,7 +2131,7 @@ self
     var encoderCache = Object.create(null);
     var featureSet;
     
-    var TestSuite = { init: init, listFeatures: listFeatures };
+    var TestSuite = { init: init };
     
     if (global.self)
     {
