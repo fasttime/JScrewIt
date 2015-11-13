@@ -144,7 +144,8 @@ var LISTS =
     [
         { description: 'Internet Explorer 9+', feature: 'IE9' },
         { description: 'Internet Explorer 10+', feature: 'IE10' },
-        { description: 'Internet Explorer 11', feature: 'IE11' }
+        { description: 'Internet Explorer 11', feature: 'IE11' },
+        { description: 'Internet Explorer 11 on Windows 10', feature: 'IE11_WIN10' }
     ],
     [
         { description: 'Safari 7.0+', feature: 'SAFARI70' },
