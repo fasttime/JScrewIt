@@ -208,6 +208,21 @@ module.exports =
         );
         
         grunt.registerTask(
+            'feature-info',
+            'Show feature support information for the JavaScript engine in use.',
+            function ()
+            {
+                var showFeatureSupport = require('./test/feature-info.js');
+                showFeatureSupport(
+                    function (label, features)
+                    {
+                        grunt.log.writeln(label.bold + features.join(', '));
+                    }
+                );
+            }
+        );
+        
+        grunt.registerTask(
             'scan-char-defs',
             'Analyze all character encodings.',
             function ()
@@ -240,6 +255,7 @@ module.exports =
                 'jshint:default',
                 'jscs:default',
                 'concat',
+                'feature-info',
                 'mocha_istanbul:default',
                 'scan-char-defs',
                 'uglify',
@@ -254,7 +270,15 @@ module.exports =
         
         grunt.registerTask(
             'lib',
-            ['clean:lib', 'jshint:lib', 'jscs:lib', 'concat', 'mocha_istanbul:lib', 'uglify:lib']
+            [
+                'clean:lib',
+                'jshint:lib',
+                'jscs:lib',
+                'concat',
+                'feature-info',
+                'mocha_istanbul:lib',
+                'uglify:lib'
+            ]
         );
         
         grunt.util.linefeed = '\n';
