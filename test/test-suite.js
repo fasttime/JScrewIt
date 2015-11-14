@@ -1803,7 +1803,7 @@ self
                     );
                 }
                 
-                this.timeout(5000);
+                this.timeout(10000);
                 
                 test('CAPITAL_HTML', repeat.bind(null, String.fromCharCode(59999)), 'byCharCodes');
                 test(
@@ -1935,6 +1935,16 @@ self
                     expect(actual).toBe(char);
                 }
                 
+                var testDefault =
+                    it.bind(
+                        null,
+                        '(default)',
+                        function ()
+                        {
+                            var output = JScrewIt.encode(char);
+                            verifyOutput(output);
+                        }
+                    );
                 var entries = JScrewIt.debug.getCharacterEntries(char);
                 if (entries)
                 {
@@ -1968,26 +1978,12 @@ self
                     }
                     if (!defaultEntryFound)
                     {
-                        it(
-                            '(default)',
-                            function ()
-                            {
-                                var output = JScrewIt.encode(char);
-                                verifyOutput(output);
-                            }
-                        );
+                        testDefault();
                     }
                 }
                 else
                 {
-                    it(
-                        '(default)',
-                        function ()
-                        {
-                            var output = JScrewIt.encode(char);
-                            verifyOutput(output);
-                        }
-                    );
+                    testDefault();
                     if ('ATOB' in featureSet)
                     {
                         it(
