@@ -1,4 +1,4 @@
-/* global Empty, assignNoEnum, document, isArray, self */
+/* global Empty, assignNoEnum, document, isArray, self, toolbar */
 
 var Feature;
 
@@ -290,6 +290,16 @@ var validMaskFromArrayOrStringOrFeature;
             check: function ()
             {
                 return typeof atob === 'function' && typeof btoa === 'function';
+            }
+        },
+        BARPROP:
+        {
+            description:
+                'Existence of the global object property toolbar having the string ' +
+                'representation "[object BarProp]"',
+            check: function ()
+            {
+                return typeof toolbar === 'object' && toolbar + '' === '[object BarProp]';
             }
         },
         CAPITAL_HTML:
@@ -614,6 +624,7 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'ENTRIES_OBJ',
                 'FILL',
@@ -664,6 +675,7 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
                 'HTMLDOCUMENT',
@@ -683,6 +695,7 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FILL',
                 'FROM_CODE_POINT',
@@ -704,6 +717,7 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'ENTRIES_PLAIN',
                 'FILL',
@@ -725,6 +739,7 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FF_SAFARI_SRC',
                 'FILL',
@@ -803,9 +818,7 @@ var validMaskFromArrayOrStringOrFeature;
         NODE: 'NODE010',
         NODE010:
         {
-            description:
-                'Features available in Node.js 0.10.26 or later.\n' +
-                'Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.',
+            description: 'Features available in Node.js 0.10.26 or later.',
             includes:
             [
                 'DOUBLE_QUOTE_ESC_HTML',
@@ -818,9 +831,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         NODE012:
         {
-            description:
-                'Features available in Node.js 0.12 or later.\n' +
-                'Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.',
+            description: 'Features available in Node.js 0.12 or later.',
             includes:
             [
                 'DOUBLE_QUOTE_ESC_HTML',
@@ -836,9 +847,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         NODE40:
         {
-            description:
-                'Features available in Node.js 4.0 or later.\n' +
-                'Also compatible with Chrome and Opera.',
+            description: 'Features available in Node.js 4.0 or later.',
             includes:
             [
                 'DOUBLE_QUOTE_ESC_HTML',
@@ -860,6 +869,7 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FF_SAFARI_SRC',
                 'GMT',
@@ -875,6 +885,7 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FF_SAFARI_SRC',
                 'FILL',
@@ -892,6 +903,7 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FF_SAFARI_SRC',
                 'FILL',

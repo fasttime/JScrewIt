@@ -374,14 +374,10 @@
             if ('' in subBackupMap)
             {
                 var descriptor = subBackupMap[''];
+                delete obj[name];
                 if (descriptor)
                 {
                     Object.defineProperty(obj, name, descriptor);
-                }
-                else
-                {
-                    delete obj[name];
-                    continue;
                 }
             }
             restoreAll(subBackupMap, obj[name]);
@@ -409,6 +405,18 @@
                     };
                 override(this, 'atob', { value: atob });
                 override(this, 'btoa', { value: btoa });
+            }
+        },
+        BARPROP:
+        {
+            setUp: function ()
+            {
+                var toString =
+                    function ()
+                    {
+                        return '[object BarProp]';
+                    };
+                override(this, 'toolbar', { value: { toString: toString } });
             }
         },
         CAPITAL_HTML: makeEmuFeatureHtml(
