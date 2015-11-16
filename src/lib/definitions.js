@@ -490,6 +490,7 @@ var replaceDigit;
         'P':
         [
             define('btoa(""["italics"]())[0]', 'ATOB'),
+            define('(Function("return toolbar")() + [])["11"]', 'BARPROP'),
             define('"0"["sup"]()["10"]', 'CAPITAL_HTML'),
             define()
         ],
