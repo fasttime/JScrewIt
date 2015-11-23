@@ -245,8 +245,7 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'Existence of the global object property document whose string representation ' +
                 'starts with "[object " and ends with "Document]".\n' +
-                'This feature is not available in Node.js. It is also not available inside web ' +
-                'workers.',
+                'This feature is not available inside web workers.',
             check: function ()
             {
                 return typeof document === 'object' && /^\[object .*Document]$/.test(document + '');
@@ -257,8 +256,7 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'Existence of the global object property self whose string representation starts ' +
                 'with "[object " and ends with "Window]".\n' +
-                'This feature is not available in Node.js. It is also not available inside web ' +
-                'workers.',
+                'This feature is not available inside web workers.',
             check: checkSelfFeature.bind(
                 function (str)
                 {
@@ -271,9 +269,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'The property that the string representation of Array.prototype.entries() starts ' +
-                'with "[object Array" and ends with "]" at index 21 or 22.\n' +
-                'This feature is available in Firefox, Chrome, Opera, and in Safari 7.1, Node.js ' +
-                '0.12 and later versions.',
+                'with "[object Array" and ends with "]" at index 21 or 22.',
             check: function ()
             {
                 return Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries());
@@ -283,10 +279,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         ATOB:
         {
-            description:
-                'Existence of the global object functions atob and btoa.\n' +
-                'This feature is not available in Internet Explorer versions prior to 11 and ' +
-                'Node.js.',
+            description: 'Existence of the global object functions atob and btoa.',
             check: function ()
             {
                 return typeof atob === 'function' && typeof btoa === 'function';
@@ -307,8 +300,7 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'The property that the various string methods returning HTML code such as ' +
                 'String.prototype.big or String.prototype.link have both the tag name and ' +
-                'attributes written in capital letters.\n' +
-                'This feature is only available in Internet Explorer.',
+                'attributes written in capital letters.',
             check: function ()
             {
                 var available =
@@ -328,8 +320,7 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'Existence of the global object property document having the string ' +
                 'representation "[object Document]".\n' +
-                'This feature is only available in Internet Explorer 9 and 10. It is not ' +
-                'available inside web workers.',
+                'This feature is not available inside web workers.',
             check: function ()
             {
                 return typeof document === 'object' && document + '' === '[object Document]';
@@ -341,8 +332,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the global object property self having the string representation ' +
-                '"[object DOMWindow]".\n' +
-                'Only available in Android Browser versions prior to 4.4.2.',
+                '"[object DOMWindow]".',
             check: checkSelfFeature.bind(
                 function (str)
                 {
@@ -356,8 +346,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'The property that double quote characters in the argument of ' +
-                'String.prototype.fontcolor are escaped as "&quot;".\n' +
-                'This feature is not available in Internet Explorer.',
+                'String.prototype.fontcolor are escaped as "&quot;".',
             check: function ()
             {
                 var available = ''.fontcolor('"').substr(13, 6) === '&quot;';
@@ -368,9 +357,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'The property that the string representation of Array.prototype.entries() starts ' +
-                'with "[object ".\n' +
-                'This feature is available in Firefox, Chrome, Opera, Microsoft Edge, and in ' +
-                'Safari 7.1, Node.js 0.12 and later versions.',
+                'with "[object ".',
             check: function ()
             {
                 return Array.prototype.entries && /^\[object /.test([].entries());
@@ -380,8 +367,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'The property that the string representation of Array.prototype.entries() ' +
-                'evaluates to "[object Object]".\n' +
-                'This feature is only available in Microsoft Edge.',
+                'evaluates to "[object Object]".',
             check: function ()
             {
                 return Array.prototype.entries && [].entries() + '' === '[object Object]';
@@ -406,10 +392,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         FILL:
         {
-            description:
-                'Existence of the native function Array.prototype.fill.\n' +
-                'Available in Firefox, Chrome, Opera, Microsoft Edge, and in Safari 7.1, Node.js ' +
-                '4.0 and later versions.',
+            description: 'Existence of the native function Array.prototype.fill.',
             check: function ()
             {
                 return Array.prototype.fill;
@@ -417,10 +400,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         FROM_CODE_POINT:
         {
-            description:
-                'Existence of the function String.fromCodePoint.\n' +
-                'Not available in Internet Explorer, Android Browser, Safari versions prior to 9 ' +
-                'and Node.js versions prior to 4.0.',
+            description: 'Existence of the function String.fromCodePoint.',
             check: function ()
             {
                 return String.fromCodePoint;
@@ -444,8 +424,7 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'Existence of the global object property document having the string ' +
                 'representation "[object HTMLDocument]".\n' +
-                'This feature is not available in Internet Explorer versions prior to 11 and ' +
-                'Node.js. It is also not available inside web workers.',
+                'This feature is not available inside web workers.',
             check: function ()
             {
                 return typeof document === 'object' && document + '' === '[object HTMLDocument]';
@@ -468,11 +447,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         INTL:
         {
-            description:
-                'Existence of the global object property Intl.\n' +
-                'This feature is not available in Safari, in Internet Explorer versions prior to ' +
-                '11, in Android Browser versions prior to 4.4.2, and in Node.js versions prior ' +
-                'to 0.12.',
+            description: 'Existence of the global object property Intl.',
             check: function ()
             {
                 return typeof Intl === 'object';
@@ -480,10 +455,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         LOCALE_INFINITY:
         {
-            description:
-                'Language sensitive string representation of Infinity as "∞".\n' +
-                'Available in Firefox, Chrome, Opera, Microsoft Edge, and in Internet Explorer ' +
-                '11 on Windows 10, Android Browser 4.4.2, Node.js 0.12 and later versions.',
+            description: 'Language sensitive string representation of Infinity as "∞".',
             check: function ()
             {
                 return Infinity.toLocaleString() === '∞';
@@ -491,9 +463,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         NAME:
         {
-            description:
-                'Existence of the name property for functions.\n' +
-                'This feature is not available in Internet Explorer.',
+            description: 'Existence of the name property for functions.',
             check: function ()
             {
                 return 'name' in Function();
@@ -502,10 +472,10 @@ var validMaskFromArrayOrStringOrFeature;
         NO_IE_SRC:
         {
             description:
-                'A string representation of native functions typical for most browsers with the ' +
+                'A string representation of native functions typical for most engines with the ' +
                 'notable exception of Internet Explorer.\n' +
-                'A remarkable trait for this feature is the lack of characters in the beginning ' +
-                'of the string before "function".',
+                'A remarkable trait of this feature is the lack of extra characters in the ' +
+                'beginning of the string before "function".',
             check: function ()
             {
                 return /^function Object\(\) \{(\n   )? \[native code\][^]\}/.test(Object);
@@ -516,9 +486,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'The property that the string representation of Array.prototype.entries() ' +
-                'evaluates to "[object Array Iterator]".\n' +
-                'Available in Firefox, Chrome, Opera, and in Safari 9, Node.js 0.12 and later ' +
-                'versions.',
+                'evaluates to "[object Array Iterator]".',
             check: function ()
             {
                 return Array.prototype.entries && [].entries() + '' === '[object Array Iterator]';
@@ -530,7 +498,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'A string representation of dynamically generated functions typical for most ' +
-                'browsers with the notable exception of Safari versions prior to 9.\n' +
+                'engines with the notable exception of Safari versions prior to 9.\n' +
                 'More specifically, in this representation, the character at index 22 is a line ' +
                 'feed ("\\n").',
             check: function ()
@@ -542,8 +510,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'The property that the string representation of Array.prototype.entries() ' +
-                'evaluates to "[object ArrayIterator]".\n' +
-                'Available in Safari versions from 7.1 up to 8.0.8.',
+                'evaluates to "[object ArrayIterator]".',
             check: function ()
             {
                 return Array.prototype.entries && [].entries() + '' === '[object ArrayIterator]';
@@ -557,8 +524,7 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'Existence of the global object property self whose string representation starts ' +
                 'with "[object ".\n' +
-                'This feature is not available in Node.js. It is also not available inside web ' +
-                'workers in Safari 8 and 9.',
+                'This feature is not available inside web workers in Safari 8 and 9.',
             check: checkSelfFeature.bind(
                 function (str)
                 {
@@ -581,10 +547,8 @@ var validMaskFromArrayOrStringOrFeature;
         V8_SRC:
         {
             description:
-                'A string representation of native functions typically found in the V8 ' +
-                'JavaScript engine.\n' +
-                'V8 is used in Chrome, Opera, Android Browser and Node.js. Microsoft Edge, ' +
-                'although not using V8, also has this feature available.\n' +
+                'A string representation of native functions typical for the V8 engine, but also ' +
+                'found in Microsoft Edge.\n' +
                 'Remarkable traits are the lack of characters in the beginning of the string ' +
                 'before "function" and a single whitespace before the "[native code]" sequence.',
             check: function ()
@@ -599,8 +563,7 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'Existence of the global object property self having the string representation ' +
                 '"[object Window]".\n' +
-                'This feature is not available in Android Browser versions prior to 4.4.2 and ' +
-                'Node.js. It is also not available inside web workers.',
+                'This feature is not available inside web workers.',
             check: checkSelfFeature.bind(
                 function (str)
                 {
@@ -619,7 +582,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'All new browsers\' features.\n' +
-                'No support for Node.js and older browsers like Internet Explorer, Safari 7.0 or ' +
+                'No support for Node.js and older browsers like Internet Explorer, Safari 8 or ' +
                 'Android Browser',
             includes:
             [
