@@ -504,6 +504,18 @@
                 override(this, 'Date', { value: Date });
             }
         },
+        HISTORY:
+        {
+            setUp: function ()
+            {
+                var toString =
+                    function ()
+                    {
+                        return '[object History]';
+                    };
+                override(this, 'history', { value: { toString: toString } });
+            }
+        },
         HTMLDOCUMENT: makeEmuFeatureDocument('[object HTMLDocument]', /^\[object HTMLDocument]$/),
         IE_SRC: makeEmuFeatureFunctionSource('\nfunction ?() {\n    [native code]\n}\n'),
         INTL:

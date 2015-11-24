@@ -1,4 +1,4 @@
-/* global Empty, assignNoEnum, document, isArray, self, toolbar */
+/* global Empty, assignNoEnum, document, history, isArray, self, toolbar */
 
 var Feature;
 
@@ -461,6 +461,16 @@ var validMaskFromArrayOrStringOrFeature;
                 return Infinity.toLocaleString() === '∞';
             }
         },
+        HISTORY:
+        {
+            description:
+                'Existence of the global object property history having the string ' +
+                'representation "[object History]"',
+            check: function ()
+            {
+                return typeof history === 'object' && history + '' === '[object History]';
+            }
+        },
         NAME:
         {
             description: 'Existence of the name property for functions.',
@@ -593,6 +603,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
                 'NO_IE_SRC',
@@ -610,6 +621,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'DOMWINDOW',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
@@ -625,6 +637,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'DOMWINDOW',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
@@ -641,6 +654,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'INTL',
                 'LOCALE_INFINITY',
@@ -663,6 +677,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'INTL',
                 'LOCALE_INFINITY',
@@ -686,6 +701,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'INTL',
                 'LOCALE_INFINITY',
@@ -708,6 +724,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'INTL',
                 'LOCALE_INFINITY',
@@ -725,6 +742,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'CAPITAL_HTML',
                 'DOCUMENT',
+                'HISTORY',
                 'IE_SRC',
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
@@ -739,6 +757,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ATOB',
                 'CAPITAL_HTML',
                 'DOCUMENT',
+                'HISTORY',
                 'IE_SRC',
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
@@ -753,6 +772,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ATOB',
                 'CAPITAL_HTML',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'IE_SRC',
                 'INTL',
@@ -769,6 +789,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ATOB',
                 'CAPITAL_HTML',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'IE_SRC',
                 'INTL',
@@ -836,6 +857,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FF_SAFARI_SRC',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
                 'UNDEFINED',
@@ -853,6 +875,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FF_SAFARI_SRC',
                 'FILL',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
                 'OLD_SAFARI_ARRAY_ITERATOR',
@@ -872,6 +895,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
