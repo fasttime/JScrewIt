@@ -454,6 +454,7 @@ var replaceDigit;
         'H':
         [
             define('btoa(true)[1]', 'ATOB'),
+            define('(NaN + Function("return history")())["11"]', 'HISTORY'),
             define('""["link"]()[3]', 'CAPITAL_HTML'),
             define('(RP_3_NO + document)["11"]', 'HTMLDOCUMENT')
         ],

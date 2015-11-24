@@ -172,6 +172,13 @@ function getAvailability(featureName)
                     return result;
                 }
                 
+                function getDescription(versionIndex)
+                {
+                    var description = versions[versionIndex].description;
+                    var result = getBySubIndex(description);
+                    return result;
+                }
+                
                 var engineEntry = ENGINE_ENTRIES[engineRef.index];
                 var availabilityInfo = getAvailabilityInfo(featureName, engineEntry);
                 var firstAvail = availabilityInfo.firstAvail;
@@ -182,14 +189,12 @@ function getAvailability(featureName)
                     var availEntry = getBySubIndex(engineEntry.name);
                     if (firstAvail)
                     {
-                        var availDescription = versions[firstAvail].description;
-                        availEntry += ' ' + getBySubIndex(availDescription);
+                        availEntry += ' ' + getDescription(firstAvail);
                     }
                     var firstUnavail = availabilityInfo.firstUnavail;
                     if (firstUnavail)
                     {
-                        var unavailDescription = versions[firstUnavail].description;
-                        availEntry += ' before ' + getBySubIndex(unavailDescription);
+                        availEntry += ' before ' + getDescription(firstUnavail);
                     }
                     return availEntry;
                 }

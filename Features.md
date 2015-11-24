@@ -112,6 +112,11 @@ Presence of the text "GMT" after the first 25 characters in the string returned 
 Although ECMAScript states that string representation of dates is implementation dependent, most engines align to the same format, making this feature available in all supported engines except Internet Explorer 9 and 10.
 
 _Available in Firefox, Chrome, Internet Explorer 11, Safari, Opera, Microsoft Edge, Android Browser and Node.js._
+<a name="HISTORY"></a>
+### `HISTORY`
+Existence of the global object property history having the string representation "\[object History\]"
+
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser._
 <a name="HTMLDOCUMENT"></a>
 ### `HTMLDOCUMENT`
 Existence of the global object property document having the string representation "\[object HTMLDocument\]".
@@ -243,6 +248,7 @@ This table lists features available in the most common engines.
 <li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
+<li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#INTL"><code>INTL</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
@@ -270,6 +276,7 @@ This table lists features available in the most common engines.
 <li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
+<li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#INTL"><code>INTL</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
@@ -294,6 +301,7 @@ This table lists features available in the most common engines.
 <li><a href="#CAPITAL_HTML"><code>CAPITAL_HTML</code></a>
 <li><a href="#DOCUMENT"><code>DOCUMENT</code></a> (not in Internet Explorer 11)
 <li><a href="#GMT"><code>GMT</code></a> (Internet Explorer 11)
+<li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a> (Internet Explorer 11)
 <li><a href="#IE_SRC"><code>IE_SRC</code></a>
 <li><a href="#INTL"><code>INTL</code></a> (Internet Explorer 11)
@@ -320,6 +328,7 @@ This table lists features available in the most common engines.
 <li><a href="#FILL"><code>FILL</code></a> (Safari 7.1+)
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Safari 9.0+)
 <li><a href="#GMT"><code>GMT</code></a>
+<li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#FF_SAFARI_SRC"><code>FF_SAFARI_SRC</code></a>)
@@ -346,6 +355,7 @@ This table lists features available in the most common engines.
 <li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
+<li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#INTL"><code>INTL</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
@@ -370,6 +380,7 @@ This table lists features available in the most common engines.
 <li><a href="#DOMWINDOW"><code>DOMWINDOW</code></a> (not in Android Browser 4.4.2+)
 <li><a href="#DOUBLE_QUOTE_ESC_HTML"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
+<li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#INTL"><code>INTL</code></a> (Android Browser 4.4.2+)
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Android Browser 4.4.2+)
