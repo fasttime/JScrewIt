@@ -127,7 +127,7 @@ var validMaskFromArrayOrStringOrFeature;
                     }
                 );
                 excludes = info.excludes;
-                featureObj = createFeature(name, info.description, mask, check);
+                featureObj = createFeature(name, info.description, mask, check, info.attributes);
                 if (check)
                 {
                     elementaryFeatureObjs.push(featureObj);
@@ -149,12 +149,13 @@ var validMaskFromArrayOrStringOrFeature;
         return mask;
     }
     
-    function createFeature(name, description, mask, check)
+    function createFeature(name, description, mask, check, attributes)
     {
         var featureObj =
             Object.create(
                 Feature.prototype,
                 {
+                    attributes: { value: Object.freeze(attributes || { }) },
                     check: { value: check },
                     description: { value: description },
                     mask: { value: mask },
@@ -167,6 +168,18 @@ var validMaskFromArrayOrStringOrFeature;
     function initMask(featureObj, mask)
     {
         Object.defineProperty(featureObj, 'mask', { value: mask });
+    }
+    
+    function isExcludingAttribute(attributeName, featureObjs)
+    {
+        var result =
+            featureObjs.some(
+                function (featureObj)
+                {
+                    return attributeName in featureObj.attributes;
+                }
+            );
+        return result;
     }
     
     function maskFromStringOrFeature(arg)
@@ -244,26 +257,26 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the global object property document whose string representation ' +
-                'starts with "[object " and ends with "Document]".\n' +
-                'This feature is not available inside web workers.',
+                'starts with "[object " and ends with "Document]".',
             check: function ()
             {
                 return typeof document === 'object' && /^\[object .*Document]$/.test(document + '');
-            }
+            },
+            attributes: { 'web-worker': 'web-worker-restriction' }
         },
         ANY_WINDOW:
         {
             description:
                 'Existence of the global object property self whose string representation starts ' +
-                'with "[object " and ends with "Window]".\n' +
-                'This feature is not available inside web workers.',
+                'with "[object " and ends with "Window]".',
             check: checkSelfFeature.bind(
                 function (str)
                 {
                     return /^\[object .*Window]$/.test(str);
                 }
             ),
-            includes: ['SELF_OBJ']
+            includes: ['SELF_OBJ'],
+            attributes: { 'web-worker': 'web-worker-restriction' }
         },
         ARRAY_ITERATOR:
         {
@@ -293,7 +306,8 @@ var validMaskFromArrayOrStringOrFeature;
             check: function ()
             {
                 return typeof toolbar === 'object' && toolbar + '' === '[object BarProp]';
-            }
+            },
+            attributes: { 'web-worker': 'web-worker-restriction' }
         },
         CAPITAL_HTML:
         {
@@ -319,14 +333,14 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the global object property document having the string ' +
-                'representation "[object Document]".\n' +
-                'This feature is not available inside web workers.',
+                'representation "[object Document]".',
             check: function ()
             {
                 return typeof document === 'object' && document + '' === '[object Document]';
             },
             excludes: ['HTMLDOCUMENT'],
-            includes: ['ANY_DOCUMENT']
+            includes: ['ANY_DOCUMENT'],
+            attributes: { 'web-worker': 'web-worker-restriction' }
         },
         DOMWINDOW:
         {
@@ -340,7 +354,8 @@ var validMaskFromArrayOrStringOrFeature;
                 }
             ),
             includes: ['ANY_WINDOW'],
-            excludes: ['WINDOW']
+            excludes: ['WINDOW'],
+            attributes: { 'web-worker': 'web-worker-restriction' }
         },
         DOUBLE_QUOTE_ESC_HTML:
         {
@@ -419,18 +434,29 @@ var validMaskFromArrayOrStringOrFeature;
                 return /^.{25}GMT/.test(Date());
             }
         },
+        HISTORY:
+        {
+            description:
+                'Existence of the global object property history having the string ' +
+                'representation "[object History]"',
+            check: function ()
+            {
+                return typeof history === 'object' && history + '' === '[object History]';
+            },
+            attributes: { 'web-worker': 'web-worker-restriction' }
+        },
         HTMLDOCUMENT:
         {
             description:
                 'Existence of the global object property document having the string ' +
-                'representation "[object HTMLDocument]".\n' +
-                'This feature is not available inside web workers.',
+                'representation "[object HTMLDocument]".',
             check: function ()
             {
                 return typeof document === 'object' && document + '' === '[object HTMLDocument]';
             },
             excludes: ['DOCUMENT'],
-            includes: ['ANY_DOCUMENT']
+            includes: ['ANY_DOCUMENT'],
+            attributes: { 'web-worker': 'web-worker-restriction' }
         },
         IE_SRC:
         {
@@ -459,16 +485,6 @@ var validMaskFromArrayOrStringOrFeature;
             check: function ()
             {
                 return Infinity.toLocaleString() === '∞';
-            }
-        },
-        HISTORY:
-        {
-            description:
-                'Existence of the global object property history having the string ' +
-                'representation "[object History]"',
-            check: function ()
-            {
-                return typeof history === 'object' && history + '' === '[object History]';
             }
         },
         NAME:
@@ -533,22 +549,23 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the global object property self whose string representation starts ' +
-                'with "[object ".\n' +
-                'This feature is not available inside web workers in Safari 8 and 9.',
+                'with "[object ".',
             check: checkSelfFeature.bind(
                 function (str)
                 {
                     return /^\[object /.test(str);
                 }
-            )
+            ),
+            attributes: { 'web-worker': 'safari-bug-21820506' }
         },
         UNDEFINED:
         {
             description:
                 'The property that Object.prototype.toString.call() evaluates to "[object ' +
                 'Undefined]".\n' +
-                'This behavior is defined by ECMAScript, and is supported by all engines except ' +
-                'Android Browser versions prior to 4.1.2, where this feature is not available.',
+                'This behavior is specified by ECMAScript, and is supported by all engines ' +
+                'except Android Browser versions prior to 4.1.2, where this feature is not ' +
+                'available.',
             check: function ()
             {
                 return Object.prototype.toString.call() === '[object Undefined]';
@@ -572,8 +589,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the global object property self having the string representation ' +
-                '"[object Window]".\n' +
-                'This feature is not available inside web workers.',
+                '"[object Window]".',
             check: checkSelfFeature.bind(
                 function (str)
                 {
@@ -581,7 +597,8 @@ var validMaskFromArrayOrStringOrFeature;
                 }
             ),
             includes: ['ANY_WINDOW'],
-            excludes: ['DOMWINDOW']
+            excludes: ['DOMWINDOW'],
+            attributes: { 'web-worker': 'web-worker-restriction' }
         },
         
         DEFAULT:
@@ -610,7 +627,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'safari-bug-21820506': null, 'web-worker-restriction': null }
         },
         ANDRO400:
         {
@@ -663,7 +681,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'V8_SRC',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
         },
         CHROME: 'CHROME45',
         CHROME45:
@@ -687,7 +706,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'V8_SRC',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
         },
         EDGE:
         {
@@ -710,7 +730,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'V8_SRC',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
         },
         FF31:
         {
@@ -733,7 +754,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
         },
         IE9:
         {
@@ -762,7 +784,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
         },
         IE11:
         {
@@ -779,7 +802,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
         },
         IE11_WIN10:
         {
@@ -797,7 +821,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
         },
         NODE: 'NODE010',
         NODE010:
@@ -862,11 +887,12 @@ var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'UNDEFINED',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
         },
         SAFARI71:
         {
-            description: 'Features available in Safari 7.1 to 8.0.8.',
+            description: 'Features available in Safari 7.1.',
             includes:
             [
                 'ATOB',
@@ -881,7 +907,28 @@ var validMaskFromArrayOrStringOrFeature;
                 'OLD_SAFARI_ARRAY_ITERATOR',
                 'UNDEFINED',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
+        },
+        SAFARI80:
+        {
+            description: 'Features available in Safari 8.0.',
+            includes:
+            [
+                'ATOB',
+                'BARPROP',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'FF_SAFARI_SRC',
+                'FILL',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'NAME',
+                'OLD_SAFARI_ARRAY_ITERATOR',
+                'UNDEFINED',
+                'WINDOW'
+            ],
+            attributes: { 'safari-bug-21820506': null, 'web-worker-restriction': null }
         },
         SAFARI90:
         {
@@ -902,7 +949,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'safari-bug-21820506': null, 'web-worker-restriction': null }
         }
     };
     
@@ -1213,6 +1261,53 @@ var validMaskFromArrayOrStringOrFeature;
          */
         
         name: undefined,
+        
+        /**
+         * Creates a new feature object from this feature by removing elementary features that are
+         * not available inside a particular environment.
+         *
+         * This method is useful to get features that are available inside a web worker.
+         *
+         * @function JScrewIt.Feature#restrict
+         *
+         * @param {string} environment
+         * The environment to which the feature should be restricted. The only environment currently
+         * supported is `"web-worker"`.
+         *
+         * @param {JScrewIt.Feature[]} [referenceFeatureObjs]
+         * An array of predefined feature objects, each corresponding to a particular engine in
+         * which the restriction should be enacted.
+         * If this parameter is omitted, the restriction is enacted in all engines.
+         *
+         * @returns {JScrewIt.Feature}
+         * A feature object.
+         */
+        
+        restrict: function (environment, referenceFeatureObjs)
+        {
+            var resultMask = 0;
+            var thisMask = this.mask;
+            elementaryFeatureObjs.filter(
+                function (featureObj)
+                {
+                    var otherMask = featureObj.mask;
+                    var included = (otherMask & thisMask) === otherMask;
+                    if (included)
+                    {
+                        var attributeValue = featureObj.attributes[environment];
+                        if (
+                            attributeValue === undefined ||
+                            referenceFeatureObjs !== undefined &&
+                            !isExcludingAttribute(attributeValue, referenceFeatureObjs))
+                        {
+                            resultMask |= otherMask;
+                        }
+                    }
+                }
+            );
+            var result = featureFromMask(resultMask);
+            return result;
+        },
         
         /**
          * Returns a string representation of this feature object.

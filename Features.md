@@ -13,15 +13,13 @@ Features available in Android Browser 4.4.2 or later.
 <a name="ANY_DOCUMENT"></a>
 ### `ANY_DOCUMENT`
 Existence of the global object property document whose string representation starts with "\[object " and ends with "Document\]".
-This feature is not available inside web workers.
 
-_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser._
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers._
 <a name="ANY_WINDOW"></a>
 ### `ANY_WINDOW`
 Existence of the global object property self whose string representation starts with "\[object " and ends with "Window\]".
-This feature is not available inside web workers.
 
-_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser._
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers._
 <a name="ARRAY_ITERATOR"></a>
 ### `ARRAY_ITERATOR`
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
@@ -39,7 +37,7 @@ All features available in the current engine.
 ### `BARPROP`
 Existence of the global object property toolbar having the string representation "\[object BarProp\]"
 
-_Available in Firefox, Chrome, Safari, Opera, Microsoft Edge and Android Browser 4.4.2+._
+_Available in Firefox, Chrome, Safari, Opera, Microsoft Edge and Android Browser 4.4.2+. This feature is not available inside web workers._
 <a name="CAPITAL_HTML"></a>
 ### `CAPITAL_HTML`
 The property that the various string methods returning HTML code such as String.prototype.big or String.prototype.link have both the tag name and attributes written in capital letters.
@@ -61,14 +59,13 @@ Minimun feature level, compatible with all supported engines.
 <a name="DOCUMENT"></a>
 ### `DOCUMENT`
 Existence of the global object property document having the string representation "\[object Document\]".
-This feature is not available inside web workers.
 
-_Available in Internet Explorer before 11._
+_Available in Internet Explorer before 11. This feature is not available inside web workers._
 <a name="DOMWINDOW"></a>
 ### `DOMWINDOW`
 Existence of the global object property self having the string representation "\[object DOMWindow\]".
 
-_Available in Android Browser before 4.4.2+._
+_Available in Android Browser before 4.4.2+. This feature is not available inside web workers._
 <a name="DOUBLE_QUOTE_ESC_HTML"></a>
 ### `DOUBLE_QUOTE_ESC_HTML`
 The property that double quote characters in the argument of String.prototype.fontcolor are escaped as "\&quot;".
@@ -116,13 +113,12 @@ _Available in Firefox, Chrome, Internet Explorer 11, Safari, Opera, Microsoft Ed
 ### `HISTORY`
 Existence of the global object property history having the string representation "\[object History\]"
 
-_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser._
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers._
 <a name="HTMLDOCUMENT"></a>
 ### `HTMLDOCUMENT`
 Existence of the global object property document having the string representation "\[object HTMLDocument\]".
-This feature is not available inside web workers.
 
-_Available in Firefox, Chrome, Internet Explorer 11, Safari, Opera, Microsoft Edge and Android Browser._
+_Available in Firefox, Chrome, Internet Explorer 11, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers._
 <a name="IE10"></a>
 ### `IE10`
 Features available in Internet Explorer 10 or later.
@@ -195,7 +191,10 @@ _Available in Safari 7.1+ before 9.0+._
 Features available in Safari 7.0.
 <a name="SAFARI71"></a>
 ### `SAFARI71`
-Features available in Safari 7.1 to 8.0.8.
+Features available in Safari 7.1.
+<a name="SAFARI80"></a>
+### `SAFARI80`
+Features available in Safari 8.0.
 <a name="SAFARI90"></a>
 ### `SAFARI90`
 Features available in Safari 9.0 or later.
@@ -205,13 +204,12 @@ _An alias for [`ANY_WINDOW`](#ANY_WINDOW)._
 <a name="SELF_OBJ"></a>
 ### `SELF_OBJ`
 Existence of the global object property self whose string representation starts with "\[object ".
-This feature is not available inside web workers in Safari 8 and 9.
 
-_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser._
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers in Safari 8.0+._
 <a name="UNDEFINED"></a>
 ### `UNDEFINED`
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
-This behavior is defined by ECMAScript, and is supported by all engines except Android Browser versions prior to 4.1.2, where this feature is not available.
+This behavior is specified by ECMAScript, and is supported by all engines except Android Browser versions prior to 4.1.2, where this feature is not available.
 
 _Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge, Android Browser 4.1.2+ and Node.js._
 <a name="V8_SRC"></a>
@@ -223,9 +221,8 @@ _Available in Chrome, Opera, Microsoft Edge, Android Browser and Node.js._
 <a name="WINDOW"></a>
 ### `WINDOW`
 Existence of the global object property self having the string representation "\[object Window\]".
-This feature is not available inside web workers.
 
-_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser 4.4.2+._
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser 4.4.2+. This feature is not available inside web workers._
 ## Engine Support
 This table lists features available in the most common engines.
 <table>
