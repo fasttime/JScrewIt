@@ -648,6 +648,29 @@ self
                     }
                 );
                 describe(
+                    '#restrict',
+                    function ()
+                    {
+                        it(
+                            'restricts a feature in all engines',
+                            function ()
+                            {
+                                var featureObj = Feature.WINDOW.restrict('web-worker');
+                                expect(featureObj.mask).toBe(Feature.DEFAULT.mask);
+                            }
+                        );
+                        it(
+                            'restricts a feature in a particular engine',
+                            function ()
+                            {
+                                var featureObj =
+                                    Feature.WINDOW.restrict('web-worker', [Feature.FF31]);
+                                expect(featureObj.mask).toBe(Feature.SELF_OBJ.mask);
+                            }
+                        );
+                    }
+                );
+                describe(
                     '#toString',
                     function ()
                     {

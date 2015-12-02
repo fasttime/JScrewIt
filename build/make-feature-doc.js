@@ -36,6 +36,7 @@ var ENGINE_ENTRIES =
         [
             { description: '7.0+', feature: 'SAFARI70' },
             { description: '7.1+', feature: 'SAFARI71' },
+            { description: '8.0+', feature: 'SAFARI80' },
             { description: '9.0+', feature: 'SAFARI90' }
         ]
     },
@@ -78,14 +79,14 @@ var ENGINE_REFS =
     { index: 6 }
 ];
 
-function calculateAvailabilityInfo(feature, engineEntry)
+function calculateEngineSupportInfo(engineEntry, filter)
 {
     var firstAvail, firstUnavail;
     var versions = engineEntry.versions;
     for (var versionIndex = 0, length = versions.length; versionIndex < length; ++versionIndex)
     {
-        var otherFeatureName = versions[versionIndex].feature;
-        if (JScrewIt.Feature[otherFeatureName].includes(feature))
+        var engineFeatureName = versions[versionIndex].feature;
+        if (filter(JScrewIt.Feature[engineFeatureName]))
         {
             if (firstAvail == null)
             {
@@ -117,23 +118,22 @@ function escape(str)
     return result;
 }
 
-function formatAvailability(availability)
+function formatAvailability(availability, noWWReport)
 {
     var result;
     var length = availability.length;
     if (length)
     {
-        result = 'Available in ';
-        if (length === 1)
+        result = 'Available in ' + formatReport(availability) + '.';
+        if (noWWReport)
         {
-            result += availability[0];
+            result += ' This feature is not available inside web workers';
+            if (noWWReport !== true)
+            {
+                result += ' in ' + formatReport(noWWReport);
+            }
+            result += '.';
         }
-        else
-        {
-            var lastAvailEntry = availability.pop();
-            result += availability.join(', ') + ' and ' + lastAvailEntry;
-        }
-        result += '.';
     }
     else
     {
@@ -155,57 +155,24 @@ function formatFeatureNameMD(featureName)
     return result;
 }
 
+function formatReport(report)
+{
+    var result;
+    if (report.length === 1)
+    {
+        result = report[0];
+    }
+    else
+    {
+        var lastEntry = report.pop();
+        result = report.join(', ') + ' and ' + lastEntry;
+    }
+    return result;
+}
+
 function getAnchorName(featureName)
 {
     return featureName;
-}
-
-function getAvailability(featureName)
-{
-    var availability =
-        ENGINE_REFS.map(
-            function (engineRef)
-            {
-                function getBySubIndex(obj)
-                {
-                    var result = subIndex == null ? obj : obj[subIndex];
-                    return result;
-                }
-                
-                function getDescription(versionIndex)
-                {
-                    var description = versions[versionIndex].description;
-                    var result = getBySubIndex(description);
-                    return result;
-                }
-                
-                var engineEntry = ENGINE_ENTRIES[engineRef.index];
-                var availabilityInfo = getAvailabilityInfo(featureName, engineEntry);
-                var firstAvail = availabilityInfo.firstAvail;
-                if (firstAvail != null)
-                {
-                    var versions = engineEntry.versions;
-                    var subIndex = engineRef.subIndex;
-                    var availEntry = getBySubIndex(engineEntry.name);
-                    if (firstAvail)
-                    {
-                        availEntry += ' ' + getDescription(firstAvail);
-                    }
-                    var firstUnavail = availabilityInfo.firstUnavail;
-                    if (firstUnavail)
-                    {
-                        availEntry += ' before ' + getDescription(firstUnavail);
-                    }
-                    return availEntry;
-                }
-            }
-        ).filter(
-            function (availEntry)
-            {
-                return availEntry != null;
-            }
-        );
-    return availability;
 }
 
 function getAvailabilityInfo(featureName, engineEntry)
@@ -215,7 +182,16 @@ function getAvailabilityInfo(featureName, engineEntry)
         (engineEntry.availabilityInfoCache = Object.create(null));
     var availabilityInfo =
         availabilityInfoCache[featureName] ||
-        (availabilityInfoCache[featureName] = calculateAvailabilityInfo(featureName, engineEntry));
+        (
+            availabilityInfoCache[featureName] =
+            calculateEngineSupportInfo(
+                engineEntry,
+                function (engineFeatureObj)
+                {
+                    return engineFeatureObj.includes(featureName);
+                }
+            )
+        );
     return availabilityInfo;
 }
 
@@ -260,6 +236,28 @@ function getImpliers(featureName, assignmentMap)
     {
         return impliers.sort();
     }
+}
+
+function getNoWWInfo(attributeName, engineEntry)
+{
+    var result =
+        calculateEngineSupportInfo(
+            engineEntry,
+            function (engineFeatureObj)
+            {
+                return attributeName in engineFeatureObj.attributes;
+            }
+        );
+    return result;
+}
+
+function getNoWWReport(featureObj)
+{
+    var restriction = featureObj.attributes['web-worker'];
+    var report =
+        restriction !== undefined &&
+        (restriction === 'web-worker-restriction' || reportAsList(restriction, getNoWWInfo));
+    return report;
 }
 
 function getVersioningFor(featureName, engineEntry)
@@ -326,6 +324,54 @@ function printRow(label, assignmentMap)
     return result;
 }
 
+function reportAsList(property, filter)
+{
+    var availability =
+        ENGINE_REFS.map(
+            function (engineRef)
+            {
+                function getBySubIndex(obj)
+                {
+                    var result = subIndex == null ? obj : obj[subIndex];
+                    return result;
+                }
+                
+                function getDescription(versionIndex)
+                {
+                    var description = versions[versionIndex].description;
+                    var result = getBySubIndex(description);
+                    return result;
+                }
+                
+                var engineEntry = ENGINE_ENTRIES[engineRef.index];
+                var availabilityInfo = filter(property, engineEntry);
+                var firstAvail = availabilityInfo.firstAvail;
+                if (firstAvail != null)
+                {
+                    var versions = engineEntry.versions;
+                    var subIndex = engineRef.subIndex;
+                    var availEntry = getBySubIndex(engineEntry.name);
+                    if (firstAvail)
+                    {
+                        availEntry += ' ' + getDescription(firstAvail);
+                    }
+                    var firstUnavail = availabilityInfo.firstUnavail;
+                    if (firstUnavail)
+                    {
+                        availEntry += ' before ' + getDescription(firstUnavail);
+                    }
+                    return availEntry;
+                }
+            }
+        ).filter(
+            function (availEntry)
+            {
+                return availEntry != null;
+            }
+        );
+    return availability;
+}
+
 module.exports =
     function ()
     {
@@ -348,8 +394,10 @@ module.exports =
                     subContent = escape(description);
                     if (featureObj.check)
                     {
-                        var availability = getAvailability(featureName);
-                        subContent += '\n\n_' + formatAvailability(availability) + '_';
+                        var availability = reportAsList(featureName, getAvailabilityInfo);
+                        var noWWReport = getNoWWReport(featureObj);
+                        subContent +=
+                            '\n\n_' + formatAvailability(availability, noWWReport) + '_';
                     }
                 }
                 else
