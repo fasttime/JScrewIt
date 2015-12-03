@@ -170,15 +170,20 @@ var validMaskFromArrayOrStringOrFeature;
         Object.defineProperty(featureObj, 'mask', { value: mask });
     }
     
-    function isExcludingAttribute(attributeName, featureObjs)
+    function isExcludingAttribute(attributeCache, attributeName, featureObjs)
     {
-        var result =
-            featureObjs.some(
-                function (featureObj)
-                {
-                    return attributeName in featureObj.attributes;
-                }
-            );
+        var result = attributeCache[attributeName];
+        if (result === undefined)
+        {
+            attributeCache[attributeName] =
+                result =
+                featureObjs.some(
+                    function (featureObj)
+                    {
+                        return attributeName in featureObj.attributes;
+                    }
+                );
+        }
         return result;
     }
     
@@ -1287,7 +1292,8 @@ var validMaskFromArrayOrStringOrFeature;
         {
             var resultMask = 0;
             var thisMask = this.mask;
-            elementaryFeatureObjs.filter(
+            var attributeCache = new Empty();
+            elementaryFeatureObjs.forEach(
                 function (featureObj)
                 {
                     var otherMask = featureObj.mask;
@@ -1298,7 +1304,10 @@ var validMaskFromArrayOrStringOrFeature;
                         if (
                             attributeValue === undefined ||
                             referenceFeatureObjs !== undefined &&
-                            !isExcludingAttribute(attributeValue, referenceFeatureObjs))
+                            !isExcludingAttribute(
+                                attributeCache,
+                                attributeValue,
+                                referenceFeatureObjs))
                         {
                             resultMask |= otherMask;
                         }
