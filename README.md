@@ -175,13 +175,13 @@ These can be retrieved with [`JScrewIt.Feature.commonOf`](Reference.md#JScrewIt.
 ```
 
 The features turn out to be [`ANY_DOCUMENT`](Features.md#ANY_DOCUMENT),
-[`NO_OLD_SAFARI_LF`](Features.md#NO_OLD_SAFARI_LF), [`UNDEFINED`](Features.md#UNDEFINED) and
-[`WINDOW`](Features.md#WINDOW) (a quick way to see this is entering
-`JScrewIt.Feature.commonOf("IE9", "FF31").toString()` in the browser's JavaScript console).
+[`HISTORY`](Features.md#HISTORY), [`NO_OLD_SAFARI_LF`](Features.md#NO_OLD_SAFARI_LF),
+[`UNDEFINED`](Features.md#UNDEFINED) and [`WINDOW`](Features.md#WINDOW) (a quick way to see this is
+entering `JScrewIt.Feature.commonOf("IE9", "FF31").toString()` in the browser's JavaScript console).
 With this knowledge, we can rewrite the expression as follows.
 
 ```js
-{ features: ["ANY_DOCUMENT", "NO_OLD_SAFARI_LF", "UNDEFINED", "WINDOW"] }
+{ features: ["ANY_DOCUMENT", "HISTORY", "NO_OLD_SAFARI_LF", "UNDEFINED", "WINDOW"] }
 ```
 
 ### Further Reading

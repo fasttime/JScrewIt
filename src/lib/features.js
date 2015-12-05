@@ -1271,13 +1271,14 @@ var validMaskFromArrayOrStringOrFeature;
          * Creates a new feature object from this feature by removing elementary features that are
          * not available inside a particular environment.
          *
-         * This method is useful to get features that are available inside a web worker.
+         * This method is useful to selectively exclude features that are available inside a web
+         * worker.
          *
          * @function JScrewIt.Feature#restrict
          *
          * @param {string} environment
-         * The environment to which the feature should be restricted. The only environment currently
-         * supported is `"web-worker"`.
+         * The environment to which this feature should be restricted.
+         * The only environment currently supported is `"web-worker"`.
          *
          * @param {JScrewIt.Feature[]} [referenceFeatureObjs]
          * An array of predefined feature objects, each corresponding to a particular engine in
