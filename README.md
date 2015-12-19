@@ -2,19 +2,22 @@
 
 [![NPM](https://nodei.co/npm/jscrewit.png?compact=true)](https://nodei.co/npm/jscrewit/)
 
-JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters to
-write and run any code: `!` `(` `)` `+` `[` `]`
+Use **JScrewIt** to convert your JavaScript code into JSFuck.
+JSFuck is an encoding technique that uses only the six characters `!` `(` `)` `+` `[` `]` to produce
+syntactically correct JavaScript that can still run in a browser or another JavaScript engine
+without any additional software.
 
-Play with it now at [**jscrew.it**](http://jscrew.it), or give a look at
-[jQuery *Screwed*](https://github.com/fasttime/jquery-screwed) for a real example: a working version
+Play now with [**jscrew.it**](http://jscrew.it), or give a look at
+[jQuery *Screwed*](https://github.com/fasttime/jquery-screwed) for a true example: a working version
 of jQuery consisting of only six different characters.
 
-JScrewIt is a fork of [JSFuck](https://github.com/aemkei/jsfuck) that adds substantial enhancements
-to the original implementation.
+JScrewIt was born as a fork of [JSFuck](https://github.com/aemkei/jsfuck) and has developed into one
+of the most powerful JSFuck encoders on the web, including a number of unique features.
 * Options to optimize code for a particular set of JavaScript engines or even just for your browser:
   the more specific your engine choice, the shorter the code you'll get.
-* Support for all modern JavaScript engines.
-* Neat large file encoding.
+* Support for all modern JavaScript engines (and a few older ones, too).
+* Neatly optimized large file encoding.
+* Encode-as-you-type browser interface.
 
 ### Example
 
