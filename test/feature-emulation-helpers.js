@@ -374,14 +374,10 @@
             if ('' in subBackupMap)
             {
                 var descriptor = subBackupMap[''];
+                delete obj[name];
                 if (descriptor)
                 {
                     Object.defineProperty(obj, name, descriptor);
-                }
-                else
-                {
-                    delete obj[name];
-                    continue;
                 }
             }
             restoreAll(subBackupMap, obj[name]);
@@ -409,6 +405,18 @@
                     };
                 override(this, 'atob', { value: atob });
                 override(this, 'btoa', { value: btoa });
+            }
+        },
+        BARPROP:
+        {
+            setUp: function ()
+            {
+                var toString =
+                    function ()
+                    {
+                        return '[object BarProp]';
+                    };
+                override(this, 'toolbar', { value: { toString: toString } });
             }
         },
         CAPITAL_HTML: makeEmuFeatureHtml(
@@ -494,6 +502,18 @@
                         return 'Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)';
                     };
                 override(this, 'Date', { value: Date });
+            }
+        },
+        HISTORY:
+        {
+            setUp: function ()
+            {
+                var toString =
+                    function ()
+                    {
+                        return '[object History]';
+                    };
+                override(this, 'history', { value: { toString: toString } });
             }
         },
         HTMLDOCUMENT: makeEmuFeatureDocument('[object HTMLDocument]', /^\[object HTMLDocument]$/),
@@ -594,17 +614,15 @@
         WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object Window]$/)
     };
     
-    var EMU_FEATURES = [];
-    Object.keys(EMU_FEATURE_INFOS).forEach(
-        function (featureName)
-        {
-            var condition = EMU_FEATURE_INFOS[featureName].condition;
-            if (!condition || condition())
+    var EMU_FEATURES =
+        Object.keys(EMU_FEATURE_INFOS).filter(
+            function (featureName)
             {
-                EMU_FEATURES.push(featureName);
+                var condition = EMU_FEATURE_INFOS[featureName].condition;
+                var result = !condition || condition();
+                return result;
             }
-        }
-    );
+        );
     
     var exports =
     {

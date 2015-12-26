@@ -1,4 +1,16 @@
-/* global JScrewIt, Matrix, TestSuite, mocha, padLeft, padRight, repeat, screenX, screenY */
+/*
+global
+JScrewIt,
+Matrix,
+TestSuite,
+mocha,
+padLeft,
+padRight,
+repeat,
+screenX,
+screenY,
+showFeatureSupport
+*/
 /* jshint browser: true */
 
 (function ()
@@ -61,8 +73,7 @@
     function addFeatureLists()
     {
         var info = document.querySelector('#featureList');
-        listFeatures(info, 'Available features: ', TestSuite.listFeatures(true));
-        listFeatures(info, 'Emulated features: ', TestSuite.listFeatures(false));
+        showFeatureSupport(listFeatures.bind(null, info));
     }
     
     function createOutput(compatibilities)
@@ -231,7 +242,9 @@
         document.querySelector('link[rel="icon"]').href = href;
     }
     
-    mocha.setup({ ui: 'bdd', reporter: Matrix });
+    // In Internet Explorer 10, Mocha will occasionally set the globals $0, $1, $2, $3 and $4 and
+    // recognize them as leaked while running unit tests.
+    mocha.setup({ globals: ['$0', '$1', '$2', '$3', '$4'], reporter: Matrix, ui: 'bdd' });
     mocha.checkLeaks();
     TestSuite.init();
     addEventListener('load', handleLoad);
