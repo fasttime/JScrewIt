@@ -28,6 +28,53 @@
         return exprList;
     }
     
+    function findOptimalFeatures(replacer)
+    {
+        var optimalFeatureObjMap;
+        var optimalLength = Infinity;
+        var analyzer = new Analyzer();
+        var encoder;
+        while (encoder = analyzer.nextEncoder)
+        {
+            var output = replacer(encoder);
+            var length = output !== undefined ? output.length : NaN;
+            if (length <= optimalLength)
+            {
+                if (length < optimalLength)
+                {
+                    optimalFeatureObjMap = Object.create(null);
+                    optimalLength = length;
+                }
+                var optimalFeatureObjs =
+                    optimalFeatureObjMap[output] || (optimalFeatureObjMap[output] = []);
+                optimalFeatureObjs.push(analyzer.featureObj);
+            }
+        }
+        if (optimalFeatureObjMap)
+        {
+            var result =
+                Object.keys(optimalFeatureObjMap).map(
+                    function (output)
+                    {
+                        var optimalFeatureObjs = optimalFeatureObjMap[output];
+                        var featureObj = optimalFeatureObjs.reduce(
+                            function (previousFeatureObj, currentFeatureObj)
+                            {
+                                var nextFeatureObj =
+                                    JScrewIt.Feature.commonOf(
+                                        previousFeatureObj,
+                                        currentFeatureObj
+                                    );
+                                return nextFeatureObj;
+                            }
+                        );
+                        return featureObj;
+                    }
+                );
+            return result;
+        }
+    }
+    
     function verifyDefinitions(entries, inputList, mismatchCallback, replacerName)
     {
         function considerInput(input)
@@ -70,19 +117,29 @@
     var Analyzer;
     var JScrewIt;
     
+    var exports =
+    {
+        define:                 define,
+        findOptimalFeatures:    findOptimalFeatures,
+        verifyDefinitions:      verifyDefinitions
+    };
     if (typeof self !== 'undefined')
     {
         Analyzer = self.Analyzer;
         JScrewIt = self.JScrewIt;
-        self.define             = define;
-        self.verifyDefinitions  = verifyDefinitions;
+        Object.keys(exports).forEach(
+            function (propName)
+            {
+                self[propName] = exports[propName];
+            }
+        );
     }
     
     if (typeof module !== 'undefined')
     {
         Analyzer = require('./analyzer.js');
         JScrewIt = require('../lib/jscrewit.js');
-        module.exports = { define: define, verifyDefinitions: verifyDefinitions };
+        module.exports = exports;
     }
 }
 )();

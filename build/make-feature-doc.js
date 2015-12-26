@@ -4,6 +4,107 @@
 
 var JScrewIt = require('../lib/jscrewit.js');
 
+var ENGINE_ENTRIES =
+[
+    {
+        name: 'Firefox',
+        versions:
+        [
+            { description: '31+', feature: 'FF31' }
+        ]
+    },
+    {
+        name: ['Chrome', 'Opera'],
+        versions:
+        [
+            { description: ['45+', '32+'], feature: 'CHROME45' }
+        ]
+    },
+    {
+        name: 'Internet Explorer',
+        versions:
+        [
+            { description: '9+', feature: 'IE9' },
+            { description: '10+', feature: 'IE10' },
+            { description: '11', feature: 'IE11' },
+            { description: '11 on Windows 10', feature: 'IE11_WIN10' }
+        ]
+    },
+    {
+        name: 'Safari',
+        versions:
+        [
+            { description: '7.0+', feature: 'SAFARI70' },
+            { description: '7.1+', feature: 'SAFARI71' },
+            { description: '8.0+', feature: 'SAFARI80' },
+            { description: '9.0+', feature: 'SAFARI90' }
+        ]
+    },
+    {
+        name: 'Microsoft Edge',
+        versions:
+        [
+            { feature: 'EDGE' }
+        ]
+    },
+    {
+        name: 'Android Browser',
+        versions:
+        [
+            { description: '4.0+', feature: 'ANDRO400' },
+            { description: '4.1.2+', feature: 'ANDRO412' },
+            { description: '4.4.2+', feature: 'ANDRO442' }
+        ]
+    },
+    {
+        name: 'Node.js',
+        versions:
+        [
+            { description: '0.10.26+', feature: 'NODE010' },
+            { description: '0.12+', feature: 'NODE012' },
+            { description: '4+', feature: 'NODE40' }
+        ]
+    }
+];
+
+var ENGINE_REFS =
+[
+    { index: 0 },
+    { index: 1, subIndex: 0 },
+    { index: 2 },
+    { index: 3 },
+    { index: 1, subIndex: 1 },
+    { index: 4 },
+    { index: 5 },
+    { index: 6 }
+];
+
+function calculateEngineSupportInfo(engineEntry, filter)
+{
+    var firstAvail, firstUnavail;
+    var versions = engineEntry.versions;
+    for (var versionIndex = 0, length = versions.length; versionIndex < length; ++versionIndex)
+    {
+        var engineFeatureName = versions[versionIndex].feature;
+        if (filter(JScrewIt.Feature[engineFeatureName]))
+        {
+            if (firstAvail == null)
+            {
+                firstAvail = versionIndex;
+            }
+        }
+        else
+        {
+            if (firstAvail != null && firstUnavail == null)
+            {
+                firstUnavail = versionIndex;
+            }
+        }
+    }
+    var availabilityInfo = { firstAvail: firstAvail, firstUnavail: firstUnavail };
+    return availabilityInfo;
+}
+
 function escape(str)
 {
     var result =
@@ -14,6 +115,30 @@ function escape(str)
                 return '\\' + char;
             }
         );
+    return result;
+}
+
+function formatAvailability(availability, noWWReport)
+{
+    var result;
+    var length = availability.length;
+    if (length)
+    {
+        result = 'Available in ' + formatReport(availability) + '.';
+        if (noWWReport)
+        {
+            result += ' This feature is not available inside web workers';
+            if (noWWReport !== true)
+            {
+                result += ' in ' + formatReport(noWWReport);
+            }
+            result += '.';
+        }
+    }
+    else
+    {
+        result = 'This feature is not available in any of the supported engines.';
+    }
     return result;
 }
 
@@ -30,9 +155,69 @@ function formatFeatureNameMD(featureName)
     return result;
 }
 
+function formatReport(report)
+{
+    var result;
+    if (report.length === 1)
+    {
+        result = report[0];
+    }
+    else
+    {
+        var lastEntry = report.pop();
+        result = report.join(', ') + ' and ' + lastEntry;
+    }
+    return result;
+}
+
 function getAnchorName(featureName)
 {
     return featureName;
+}
+
+function getAvailabilityInfo(featureName, engineEntry)
+{
+    var availabilityInfoCache =
+        engineEntry.availabilityInfoCache ||
+        (engineEntry.availabilityInfoCache = Object.create(null));
+    var availabilityInfo =
+        availabilityInfoCache[featureName] ||
+        (
+            availabilityInfoCache[featureName] =
+            calculateEngineSupportInfo(
+                engineEntry,
+                function (engineFeatureObj)
+                {
+                    return engineFeatureObj.includes(featureName);
+                }
+            )
+        );
+    return availabilityInfo;
+}
+
+function getCombinedDescription(engineEntry, versionIndex)
+{
+    function getVersionedName(name, description)
+    {
+        var result = description ? name + ' ' + description : name;
+        return result;
+    }
+    
+    var name = engineEntry.name;
+    var versionEntry = engineEntry.versions[versionIndex];
+    var description = versionEntry.description;
+    var result =
+        Array.isArray(name) ?
+        name.map(
+            function (name, subIndex)
+            {
+                var indexedDescription = description[subIndex];
+                var result = getVersionedName(name, indexedDescription);
+                return result;
+            }
+        ).join(', ') :
+        getVersionedName(name, description);
+    return result;
 }
 
 function getImpliers(featureName, assignmentMap)
@@ -53,38 +238,44 @@ function getImpliers(featureName, assignmentMap)
     }
 }
 
-function getVersioningFor(feature, list)
+function getNoWWInfo(attributeName, engineEntry)
 {
-    var firstAvail, firstUnavail;
-    for (var index = 0; index < list.length; ++index)
-    {
-        var otherFeatureName = list[index].feature;
-        if (JScrewIt.Feature[otherFeatureName].includes(feature))
-        {
-            if (firstAvail == null)
+    var result =
+        calculateEngineSupportInfo(
+            engineEntry,
+            function (engineFeatureObj)
             {
-                firstAvail = index;
+                return attributeName in engineFeatureObj.attributes;
             }
-        }
-        else
-        {
-            if (firstAvail != null && firstUnavail == null)
-            {
-                firstUnavail = index;
-            }
-        }
-    }
+        );
+    return result;
+}
+
+function getNoWWReport(featureObj)
+{
+    var restriction = featureObj.attributes['web-worker'];
+    var report =
+        restriction !== undefined &&
+        (restriction === 'web-worker-restriction' || reportAsList(restriction, getNoWWInfo));
+    return report;
+}
+
+function getVersioningFor(featureName, engineEntry)
+{
+    var availabilityInfo = getAvailabilityInfo(featureName, engineEntry);
+    var firstAvail = availabilityInfo.firstAvail;
     if (firstAvail != null)
     {
         var notes = [];
         if (firstAvail)
         {
-            var availNote = list[firstAvail].description;
+            var availNote = getCombinedDescription(engineEntry, firstAvail);
             notes.push(availNote);
         }
-        if (firstUnavail != null)
+        var firstUnavail = availabilityInfo.firstUnavail;
+        if (firstUnavail)
         {
-            var unavailNote = 'not in ' + list[firstUnavail].description;
+            var unavailNote = 'not in ' + getCombinedDescription(engineEntry, firstUnavail);
             notes.push(unavailNote);
         }
         var versioning = notes.join(', ');
@@ -133,38 +324,53 @@ function printRow(label, assignmentMap)
     return result;
 }
 
-var LISTS =
-[
-    [
-        { description: 'Firefox 31+', feature: 'FF31' }
-    ],
-    [
-        { description: 'Chrome 45+, Opera 32+', feature: 'CHROME45' }
-    ],
-    [
-        { description: 'Internet Explorer 9+', feature: 'IE9' },
-        { description: 'Internet Explorer 10+', feature: 'IE10' },
-        { description: 'Internet Explorer 11', feature: 'IE11' }
-    ],
-    [
-        { description: 'Safari 7.0+', feature: 'SAFARI70' },
-        { description: 'Safari 7.1+', feature: 'SAFARI71' },
-        { description: 'Safari 9.0+', feature: 'SAFARI90' }
-    ],
-    [
-        { description: 'Microsoft Edge', feature: 'EDGE' }
-    ],
-    [
-        { description: 'Android Browser 4.0+', feature: 'ANDRO400' },
-        { description: 'Android Browser 4.1.2+', feature: 'ANDRO412' },
-        { description: 'Android Browser 4.4.2+', feature: 'ANDRO442' }
-    ],
-    [
-        { description: 'Node.js 0.10.26+', feature: 'NODE010' },
-        { description: 'Node.js 0.12+', feature: 'NODE012' },
-        { description: 'Node.js 4+', feature: 'NODE40' }
-    ]
-];
+function reportAsList(property, filter)
+{
+    var availability =
+        ENGINE_REFS.map(
+            function (engineRef)
+            {
+                function getBySubIndex(obj)
+                {
+                    var result = subIndex == null ? obj : obj[subIndex];
+                    return result;
+                }
+                
+                function getDescription(versionIndex)
+                {
+                    var description = versions[versionIndex].description;
+                    var result = getBySubIndex(description);
+                    return result;
+                }
+                
+                var engineEntry = ENGINE_ENTRIES[engineRef.index];
+                var availabilityInfo = filter(property, engineEntry);
+                var firstAvail = availabilityInfo.firstAvail;
+                if (firstAvail != null)
+                {
+                    var versions = engineEntry.versions;
+                    var subIndex = engineRef.subIndex;
+                    var availEntry = getBySubIndex(engineEntry.name);
+                    if (firstAvail)
+                    {
+                        availEntry += ' ' + getDescription(firstAvail);
+                    }
+                    var firstUnavail = availabilityInfo.firstUnavail;
+                    if (firstUnavail)
+                    {
+                        availEntry += ' before ' + getDescription(firstUnavail);
+                    }
+                    return availEntry;
+                }
+            }
+        ).filter(
+            function (availEntry)
+            {
+                return availEntry != null;
+            }
+        );
+    return availability;
+}
 
 module.exports =
     function ()
@@ -186,6 +392,13 @@ module.exports =
                 {
                     var description = featureObj.description;
                     subContent = escape(description);
+                    if (featureObj.check)
+                    {
+                        var availability = reportAsList(featureName, getAvailabilityInfo);
+                        var noWWReport = getNoWWReport(featureObj);
+                        subContent +=
+                            '\n\n_' + formatAvailability(availability, noWWReport) + '_';
+                    }
                 }
                 else
                 {
@@ -204,8 +417,8 @@ module.exports =
             '<th>Target</th>\n' +
             '<th>Features</th>\n' +
             '</tr>\n';
-        LISTS.forEach(
-            function (list)
+        ENGINE_ENTRIES.forEach(
+            function (engineEntry)
             {
                 var assignmentMap = Object.create(null);
                 var featureName;
@@ -214,7 +427,7 @@ module.exports =
                     var featureObj = Feature[featureName];
                     if (featureObj.check && featureObj.name === featureName)
                     {
-                        var versioning = getVersioningFor(featureName, list);
+                        var versioning = getVersioningFor(featureName, engineEntry);
                         if (versioning != null)
                         {
                             var assignments = { versioning: versioning };
@@ -233,7 +446,7 @@ module.exports =
                         }
                     }
                 }
-                content += printRow(list[0].description, assignmentMap);
+                content += printRow(getCombinedDescription(engineEntry, 0), assignmentMap);
             }
         );
         content += '</table>\n';

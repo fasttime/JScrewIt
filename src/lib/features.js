@@ -1,4 +1,4 @@
-/* global Empty, assignNoEnum, document, isArray, self */
+/* global Empty, assignNoEnum, document, history, isArray, self, toolbar */
 
 var Feature;
 
@@ -127,7 +127,7 @@ var validMaskFromArrayOrStringOrFeature;
                     }
                 );
                 excludes = info.excludes;
-                featureObj = createFeature(name, info.description, mask, check);
+                featureObj = createFeature(name, info.description, mask, check, info.attributes);
                 if (check)
                 {
                     elementaryFeatureObjs.push(featureObj);
@@ -149,12 +149,13 @@ var validMaskFromArrayOrStringOrFeature;
         return mask;
     }
     
-    function createFeature(name, description, mask, check)
+    function createFeature(name, description, mask, check, attributes)
     {
         var featureObj =
             Object.create(
                 Feature.prototype,
                 {
+                    attributes: { value: Object.freeze(attributes || { }) },
                     check: { value: check },
                     description: { value: description },
                     mask: { value: mask },
@@ -167,6 +168,23 @@ var validMaskFromArrayOrStringOrFeature;
     function initMask(featureObj, mask)
     {
         Object.defineProperty(featureObj, 'mask', { value: mask });
+    }
+    
+    function isExcludingAttribute(attributeCache, attributeName, featureObjs)
+    {
+        var result = attributeCache[attributeName];
+        if (result === undefined)
+        {
+            attributeCache[attributeName] =
+                result =
+                featureObjs.some(
+                    function (featureObj)
+                    {
+                        return attributeName in featureObj.attributes;
+                    }
+                );
+        }
+        return result;
     }
     
     function maskFromStringOrFeature(arg)
@@ -244,36 +262,32 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the global object property document whose string representation ' +
-                'starts with "[object " and ends with "Document]".\n' +
-                'This feature is not available in Node.js. It is also not available inside web ' +
-                'workers.',
+                'starts with "[object " and ends with "Document]".',
             check: function ()
             {
                 return typeof document === 'object' && /^\[object .*Document]$/.test(document + '');
-            }
+            },
+            attributes: { 'web-worker': 'web-worker-restriction' }
         },
         ANY_WINDOW:
         {
             description:
                 'Existence of the global object property self whose string representation starts ' +
-                'with "[object " and ends with "Window]".\n' +
-                'This feature is not available in Node.js. It is also not available inside web ' +
-                'workers.',
+                'with "[object " and ends with "Window]".',
             check: checkSelfFeature.bind(
                 function (str)
                 {
                     return /^\[object .*Window]$/.test(str);
                 }
             ),
-            includes: ['SELF_OBJ']
+            includes: ['SELF_OBJ'],
+            attributes: { 'web-worker': 'web-worker-restriction' }
         },
         ARRAY_ITERATOR:
         {
             description:
                 'The property that the string representation of Array.prototype.entries() starts ' +
-                'with "[object Array" and ends with "]" at index 21 or 22.\n' +
-                'This feature is available in Firefox, Chrome, Opera, and in Safari 7.1, Node.js ' +
-                '0.12 and later versions.',
+                'with "[object Array" and ends with "]" at index 21 or 22.',
             check: function ()
             {
                 return Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries());
@@ -283,22 +297,29 @@ var validMaskFromArrayOrStringOrFeature;
         },
         ATOB:
         {
-            description:
-                'Existence of the global object functions atob and btoa.\n' +
-                'This feature is not available in Internet Explorer versions prior to 11 and ' +
-                'Node.js.',
+            description: 'Existence of the global object functions atob and btoa.',
             check: function ()
             {
                 return typeof atob === 'function' && typeof btoa === 'function';
             }
+        },
+        BARPROP:
+        {
+            description:
+                'Existence of the global object property toolbar having the string ' +
+                'representation "[object BarProp]"',
+            check: function ()
+            {
+                return typeof toolbar === 'object' && toolbar + '' === '[object BarProp]';
+            },
+            attributes: { 'web-worker': 'web-worker-restriction' }
         },
         CAPITAL_HTML:
         {
             description:
                 'The property that the various string methods returning HTML code such as ' +
                 'String.prototype.big or String.prototype.link have both the tag name and ' +
-                'attributes written in capital letters.\n' +
-                'This feature is only available in Internet Explorer.',
+                'attributes written in capital letters.',
             check: function ()
             {
                 var available =
@@ -317,22 +338,20 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the global object property document having the string ' +
-                'representation "[object Document]".\n' +
-                'This feature is only available in Internet Explorer 9 and 10. It is not ' +
-                'available inside web workers.',
+                'representation "[object Document]".',
             check: function ()
             {
                 return typeof document === 'object' && document + '' === '[object Document]';
             },
             excludes: ['HTMLDOCUMENT'],
-            includes: ['ANY_DOCUMENT']
+            includes: ['ANY_DOCUMENT'],
+            attributes: { 'web-worker': 'web-worker-restriction' }
         },
         DOMWINDOW:
         {
             description:
                 'Existence of the global object property self having the string representation ' +
-                '"[object DOMWindow]".\n' +
-                'Only available in Android Browser versions prior to 4.4.2.',
+                '"[object DOMWindow]".',
             check: checkSelfFeature.bind(
                 function (str)
                 {
@@ -340,14 +359,14 @@ var validMaskFromArrayOrStringOrFeature;
                 }
             ),
             includes: ['ANY_WINDOW'],
-            excludes: ['WINDOW']
+            excludes: ['WINDOW'],
+            attributes: { 'web-worker': 'web-worker-restriction' }
         },
         DOUBLE_QUOTE_ESC_HTML:
         {
             description:
                 'The property that double quote characters in the argument of ' +
-                'String.prototype.fontcolor are escaped as "&quot;".\n' +
-                'This feature is not available in Internet Explorer.',
+                'String.prototype.fontcolor are escaped as "&quot;".',
             check: function ()
             {
                 var available = ''.fontcolor('"').substr(13, 6) === '&quot;';
@@ -358,9 +377,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'The property that the string representation of Array.prototype.entries() starts ' +
-                'with "[object ".\n' +
-                'This feature is available in Firefox, Chrome, Opera, Microsoft Edge, and in ' +
-                'Safari 7.1, Node.js 0.12 and later versions.',
+                'with "[object ".',
             check: function ()
             {
                 return Array.prototype.entries && /^\[object /.test([].entries());
@@ -370,8 +387,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'The property that the string representation of Array.prototype.entries() ' +
-                'evaluates to "[object Object]".\n' +
-                'This feature is only available in Microsoft Edge.',
+                'evaluates to "[object Object]".',
             check: function ()
             {
                 return Array.prototype.entries && [].entries() + '' === '[object Object]';
@@ -396,10 +412,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         FILL:
         {
-            description:
-                'Existence of the native function Array.prototype.fill.\n' +
-                'Available in Firefox, Chrome, Opera, Microsoft Edge, and in Safari 7.1, Node.js ' +
-                '4.0 and later versions.',
+            description: 'Existence of the native function Array.prototype.fill.',
             check: function ()
             {
                 return Array.prototype.fill;
@@ -407,10 +420,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         FROM_CODE_POINT:
         {
-            description:
-                'Existence of the function String.fromCodePoint.\n' +
-                'Not available in Internet Explorer, Android Browser, Safari versions prior to 9 ' +
-                'and Node.js versions prior to 4.0.',
+            description: 'Existence of the function String.fromCodePoint.',
             check: function ()
             {
                 return String.fromCodePoint;
@@ -429,19 +439,29 @@ var validMaskFromArrayOrStringOrFeature;
                 return /^.{25}GMT/.test(Date());
             }
         },
+        HISTORY:
+        {
+            description:
+                'Existence of the global object property history having the string ' +
+                'representation "[object History]"',
+            check: function ()
+            {
+                return typeof history === 'object' && history + '' === '[object History]';
+            },
+            attributes: { 'web-worker': 'web-worker-restriction' }
+        },
         HTMLDOCUMENT:
         {
             description:
                 'Existence of the global object property document having the string ' +
-                'representation "[object HTMLDocument]".\n' +
-                'This feature is not available in Internet Explorer versions prior to 11 and ' +
-                'Node.js. It is also not available inside web workers.',
+                'representation "[object HTMLDocument]".',
             check: function ()
             {
                 return typeof document === 'object' && document + '' === '[object HTMLDocument]';
             },
             excludes: ['DOCUMENT'],
-            includes: ['ANY_DOCUMENT']
+            includes: ['ANY_DOCUMENT'],
+            attributes: { 'web-worker': 'web-worker-restriction' }
         },
         IE_SRC:
         {
@@ -458,11 +478,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         INTL:
         {
-            description:
-                'Existence of the global object property Intl.\n' +
-                'This feature is not available in Safari, in Internet Explorer versions prior to ' +
-                '11, in Android Browser versions prior to 4.4.2, and in Node.js versions prior ' +
-                'to 0.12.',
+            description: 'Existence of the global object property Intl.',
             check: function ()
             {
                 return typeof Intl === 'object';
@@ -470,10 +486,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         LOCALE_INFINITY:
         {
-            description:
-                'Language sensitive string representation of Infinity as "∞".\n' +
-                'Available in Firefox, Chrome, Opera, Microsoft Edge, and in Android Browser ' +
-                '4.4.2, Node.js 0.12 and later versions.',
+            description: 'Language sensitive string representation of Infinity as "∞".',
             check: function ()
             {
                 return Infinity.toLocaleString() === '∞';
@@ -481,9 +494,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         NAME:
         {
-            description:
-                'Existence of the name property for functions.\n' +
-                'This feature is not available in Internet Explorer.',
+            description: 'Existence of the name property for functions.',
             check: function ()
             {
                 return 'name' in Function();
@@ -492,10 +503,10 @@ var validMaskFromArrayOrStringOrFeature;
         NO_IE_SRC:
         {
             description:
-                'A string representation of native functions typical for most browsers with the ' +
+                'A string representation of native functions typical for most engines with the ' +
                 'notable exception of Internet Explorer.\n' +
-                'A remarkable trait for this feature is the lack of characters in the beginning ' +
-                'of the string before "function".',
+                'A remarkable trait of this feature is the lack of extra characters in the ' +
+                'beginning of the string before "function".',
             check: function ()
             {
                 return /^function Object\(\) \{(\n   )? \[native code\][^]\}/.test(Object);
@@ -506,9 +517,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'The property that the string representation of Array.prototype.entries() ' +
-                'evaluates to "[object Array Iterator]".\n' +
-                'Available in Firefox, Chrome, Opera, and in Safari 9, Node.js 0.12 and later ' +
-                'versions.',
+                'evaluates to "[object Array Iterator]".',
             check: function ()
             {
                 return Array.prototype.entries && [].entries() + '' === '[object Array Iterator]';
@@ -520,7 +529,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'A string representation of dynamically generated functions typical for most ' +
-                'browsers with the notable exception of Safari versions prior to 9.\n' +
+                'engines with the notable exception of Safari versions prior to 9.\n' +
                 'More specifically, in this representation, the character at index 22 is a line ' +
                 'feed ("\\n").',
             check: function ()
@@ -532,8 +541,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'The property that the string representation of Array.prototype.entries() ' +
-                'evaluates to "[object ArrayIterator]".\n' +
-                'Available in Safari versions from 7.1 up to 8.0.8.',
+                'evaluates to "[object ArrayIterator]".',
             check: function ()
             {
                 return Array.prototype.entries && [].entries() + '' === '[object ArrayIterator]';
@@ -546,23 +554,23 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the global object property self whose string representation starts ' +
-                'with "[object ".\n' +
-                'This feature is not available in Node.js. It is also not available inside web ' +
-                'workers in Safari 8 and 9.',
+                'with "[object ".',
             check: checkSelfFeature.bind(
                 function (str)
                 {
                     return /^\[object /.test(str);
                 }
-            )
+            ),
+            attributes: { 'web-worker': 'safari-bug-21820506' }
         },
         UNDEFINED:
         {
             description:
                 'The property that Object.prototype.toString.call() evaluates to "[object ' +
                 'Undefined]".\n' +
-                'This behavior is defined by ECMAScript, and is supported by all engines except ' +
-                'Android Browser versions prior to 4.1.2, where this feature is not available.',
+                'This behavior is specified by ECMAScript, and is supported by all engines ' +
+                'except Android Browser versions prior to 4.1.2, where this feature is not ' +
+                'available.',
             check: function ()
             {
                 return Object.prototype.toString.call() === '[object Undefined]';
@@ -571,10 +579,8 @@ var validMaskFromArrayOrStringOrFeature;
         V8_SRC:
         {
             description:
-                'A string representation of native functions typically found in the V8 ' +
-                'JavaScript engine.\n' +
-                'V8 is used in Chrome, Opera, Android Browser and Node.js. Microsoft Edge, ' +
-                'although not using V8, also has this feature available.\n' +
+                'A string representation of native functions typical for the V8 engine, but also ' +
+                'found in Microsoft Edge.\n' +
                 'Remarkable traits are the lack of characters in the beginning of the string ' +
                 'before "function" and a single whitespace before the "[native code]" sequence.',
             check: function ()
@@ -588,9 +594,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the global object property self having the string representation ' +
-                '"[object Window]".\n' +
-                'This feature is not available in Android Browser versions prior to 4.4.2 and ' +
-                'Node.js. It is also not available inside web workers.',
+                '"[object Window]".',
             check: checkSelfFeature.bind(
                 function (str)
                 {
@@ -598,7 +602,8 @@ var validMaskFromArrayOrStringOrFeature;
                 }
             ),
             includes: ['ANY_WINDOW'],
-            excludes: ['DOMWINDOW']
+            excludes: ['DOMWINDOW'],
+            attributes: { 'web-worker': 'web-worker-restriction' }
         },
         
         DEFAULT:
@@ -609,23 +614,26 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'All new browsers\' features.\n' +
-                'No support for Node.js and older browsers like Internet Explorer, Safari 7.0 or ' +
+                'No support for Node.js and older browsers like Internet Explorer, Safari 8 or ' +
                 'Android Browser',
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'ENTRIES_OBJ',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
                 'NO_IE_SRC',
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'safari-bug-21820506': null, 'web-worker-restriction': null }
         },
         ANDRO400:
         {
@@ -636,6 +644,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'DOMWINDOW',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
@@ -651,6 +660,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'DOMWINDOW',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
@@ -664,8 +674,10 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'INTL',
                 'LOCALE_INFINITY',
@@ -674,7 +686,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'V8_SRC',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
         },
         CHROME: 'CHROME45',
         CHROME45:
@@ -683,10 +696,12 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'INTL',
                 'LOCALE_INFINITY',
@@ -696,7 +711,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'V8_SRC',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
         },
         EDGE:
         {
@@ -704,11 +720,13 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'ENTRIES_PLAIN',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'INTL',
                 'LOCALE_INFINITY',
@@ -717,7 +735,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'V8_SRC',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
         },
         FF31:
         {
@@ -725,11 +744,13 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FF_SAFARI_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'INTL',
                 'LOCALE_INFINITY',
@@ -738,7 +759,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
         },
         IE9:
         {
@@ -747,6 +769,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'CAPITAL_HTML',
                 'DOCUMENT',
+                'HISTORY',
                 'IE_SRC',
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
@@ -761,11 +784,13 @@ var validMaskFromArrayOrStringOrFeature;
                 'ATOB',
                 'CAPITAL_HTML',
                 'DOCUMENT',
+                'HISTORY',
                 'IE_SRC',
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
         },
         IE11:
         {
@@ -775,20 +800,39 @@ var validMaskFromArrayOrStringOrFeature;
                 'ATOB',
                 'CAPITAL_HTML',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'IE_SRC',
                 'INTL',
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
+        },
+        IE11_WIN10:
+        {
+            description: 'Features available in Internet Explorer 11 on Windows 10.',
+            includes:
+            [
+                'ATOB',
+                'CAPITAL_HTML',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'IE_SRC',
+                'INTL',
+                'LOCALE_INFINITY',
+                'NO_OLD_SAFARI_LF',
+                'UNDEFINED',
+                'WINDOW'
+            ],
+            attributes: { 'web-worker-restriction': null }
         },
         NODE: 'NODE010',
         NODE010:
         {
-            description:
-                'Features available in Node.js 0.10.26 or later.\n' +
-                'Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.',
+            description: 'Features available in Node.js 0.10.26 or later.',
             includes:
             [
                 'DOUBLE_QUOTE_ESC_HTML',
@@ -801,9 +845,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         NODE012:
         {
-            description:
-                'Features available in Node.js 0.12 or later.\n' +
-                'Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.',
+            description: 'Features available in Node.js 0.12 or later.',
             includes:
             [
                 'DOUBLE_QUOTE_ESC_HTML',
@@ -819,9 +861,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         NODE40:
         {
-            description:
-                'Features available in Node.js 4.0 or later.\n' +
-                'Also compatible with Chrome and Opera.',
+            description: 'Features available in Node.js 4.0 or later.',
             includes:
             [
                 'DOUBLE_QUOTE_ESC_HTML',
@@ -843,31 +883,57 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FF_SAFARI_SRC',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
                 'UNDEFINED',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
         },
         SAFARI71:
         {
-            description: 'Features available in Safari 7.1 to 8.0.8.',
+            description: 'Features available in Safari 7.1.',
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FF_SAFARI_SRC',
                 'FILL',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
                 'OLD_SAFARI_ARRAY_ITERATOR',
                 'UNDEFINED',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'web-worker-restriction': null }
+        },
+        SAFARI80:
+        {
+            description: 'Features available in Safari 8.0.',
+            includes:
+            [
+                'ATOB',
+                'BARPROP',
+                'DOUBLE_QUOTE_ESC_HTML',
+                'FF_SAFARI_SRC',
+                'FILL',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'NAME',
+                'OLD_SAFARI_ARRAY_ITERATOR',
+                'UNDEFINED',
+                'WINDOW'
+            ],
+            attributes: { 'safari-bug-21820506': null, 'web-worker-restriction': null }
         },
         SAFARI90:
         {
@@ -875,18 +941,21 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FF_SAFARI_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
+                'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
-            ]
+            ],
+            attributes: { 'safari-bug-21820506': null, 'web-worker-restriction': null }
         }
     };
     
@@ -1197,6 +1266,58 @@ var validMaskFromArrayOrStringOrFeature;
          */
         
         name: undefined,
+        
+        /**
+         * Creates a new feature object from this feature by removing elementary features that are
+         * not available inside a particular environment.
+         *
+         * This method is useful to selectively exclude features that are available inside a web
+         * worker.
+         *
+         * @function JScrewIt.Feature#restrict
+         *
+         * @param {string} environment
+         * The environment to which this feature should be restricted.
+         * The only environment currently supported is `"web-worker"`.
+         *
+         * @param {JScrewIt.Feature[]} [referenceFeatureObjs]
+         * An array of predefined feature objects, each corresponding to a particular engine in
+         * which the restriction should be enacted.
+         * If this parameter is omitted, the restriction is enacted in all engines.
+         *
+         * @returns {JScrewIt.Feature}
+         * A feature object.
+         */
+        
+        restrict: function (environment, referenceFeatureObjs)
+        {
+            var resultMask = 0;
+            var thisMask = this.mask;
+            var attributeCache = new Empty();
+            elementaryFeatureObjs.forEach(
+                function (featureObj)
+                {
+                    var otherMask = featureObj.mask;
+                    var included = (otherMask & thisMask) === otherMask;
+                    if (included)
+                    {
+                        var attributeValue = featureObj.attributes[environment];
+                        if (
+                            attributeValue === undefined ||
+                            referenceFeatureObjs !== undefined &&
+                            !isExcludingAttribute(
+                                attributeCache,
+                                attributeValue,
+                                referenceFeatureObjs))
+                        {
+                            resultMask |= otherMask;
+                        }
+                    }
+                }
+            );
+            var result = featureFromMask(resultMask);
+            return result;
+        },
         
         /**
          * Returns a string representation of this feature object.

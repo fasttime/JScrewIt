@@ -2,6 +2,20 @@
 
 'use strict';
 
+var DEFAULT_TASKS =
+[
+    'clean',
+    'jshint:default',
+    'jscs:default',
+    'concat',
+    'feature-info',
+    'mocha_istanbul:default',
+    'scan-char-defs',
+    'uglify',
+    'feature-doc',
+    'jsdoc2md'
+];
+
 var JSCS_OPTIONS =
 {
     // Encourage use of abbreviations: "char", "obj", "str".
@@ -101,9 +115,10 @@ module.exports =
             {
                 clean:
                 {
-                    build: ['Features.md', 'output.txt', 'Reference.md'],
+                    build: ['Features.md', 'Reference.md'],
                     html: 'html/**/*.js',
-                    lib: ['coverage', 'lib/**/*.js']
+                    lib: ['coverage', 'lib/**/*.js'],
+                    output: 'output.txt'
                 },
                 concat:
                 {
@@ -208,6 +223,21 @@ module.exports =
         );
         
         grunt.registerTask(
+            'feature-info',
+            'Show feature support information for the JavaScript engine in use.',
+            function ()
+            {
+                var showFeatureSupport = require('./test/feature-info.js');
+                showFeatureSupport(
+                    function (label, features)
+                    {
+                        grunt.log.writeln(label.bold + features.join(', '));
+                    }
+                );
+            }
+        );
+        
+        grunt.registerTask(
             'scan-char-defs',
             'Analyze all character encodings.',
             function ()
@@ -233,28 +263,37 @@ module.exports =
         );
         
         // Default task.
-        grunt.registerTask(
-            'default',
-            [
-                'clean',
-                'jshint:default',
-                'jscs:default',
-                'concat',
-                'mocha_istanbul:default',
-                'scan-char-defs',
-                'uglify',
-                'feature-doc',
-                'jsdoc2md'
-            ]
-        );
+        grunt.registerTask('default', DEFAULT_TASKS);
         
         grunt.registerTask(
-            'html', ['clean:html', 'jshint:html', 'jscs:html', 'uglify:html']
+            'nscd',
+            function ()
+            {
+                var tasks =
+                    DEFAULT_TASKS.filter(
+                        function (task)
+                        {
+                            var result = task !== 'scan-char-defs';
+                            return result;
+                        }
+                    );
+                grunt.task.run(tasks);
+            }
         );
+        
+        grunt.registerTask('html', ['clean:html', 'jshint:html', 'jscs:html', 'uglify:html']);
         
         grunt.registerTask(
             'lib',
-            ['clean:lib', 'jshint:lib', 'jscs:lib', 'concat', 'mocha_istanbul:lib', 'uglify:lib']
+            [
+                'clean:lib',
+                'jshint:lib',
+                'jscs:lib',
+                'concat',
+                'feature-info',
+                'mocha_istanbul:lib',
+                'uglify:lib'
+            ]
         );
         
         grunt.util.linefeed = '\n';

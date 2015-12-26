@@ -13,26 +13,36 @@ Features available in Android Browser 4.4.2 or later.
 <a name="ANY_DOCUMENT"></a>
 ### `ANY_DOCUMENT`
 Existence of the global object property document whose string representation starts with "\[object " and ends with "Document\]".
-This feature is not available in Node.js. It is also not available inside web workers.
+
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers._
 <a name="ANY_WINDOW"></a>
 ### `ANY_WINDOW`
 Existence of the global object property self whose string representation starts with "\[object " and ends with "Window\]".
-This feature is not available in Node.js. It is also not available inside web workers.
+
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers._
 <a name="ARRAY_ITERATOR"></a>
 ### `ARRAY_ITERATOR`
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
-This feature is available in Firefox, Chrome, Opera, and in Safari 7.1, Node.js 0.12 and later versions.
+
+_Available in Firefox, Chrome, Safari 7.1+, Opera and Node.js 0.12+._
 <a name="ATOB"></a>
 ### `ATOB`
 Existence of the global object functions atob and btoa.
-This feature is not available in Internet Explorer versions prior to 11 and Node.js.
+
+_Available in Firefox, Chrome, Internet Explorer 10+, Safari, Opera, Microsoft Edge and Android Browser._
 <a name="AUTO"></a>
 ### `AUTO`
 All features available in the current engine.
+<a name="BARPROP"></a>
+### `BARPROP`
+Existence of the global object property toolbar having the string representation "\[object BarProp\]"
+
+_Available in Firefox, Chrome, Safari, Opera, Microsoft Edge and Android Browser 4.4.2+. This feature is not available inside web workers._
 <a name="CAPITAL_HTML"></a>
 ### `CAPITAL_HTML`
 The property that the various string methods returning HTML code such as String.prototype.big or String.prototype.link have both the tag name and attributes written in capital letters.
-This feature is only available in Internet Explorer.
+
+_Available in Internet Explorer._
 <a name="CHROME"></a>
 ### `CHROME`
 _An alias for [`CHROME45`](#CHROME45)._
@@ -42,33 +52,38 @@ Features available in Chrome 45 and Opera 32 or later.
 <a name="COMPACT"></a>
 ### `COMPACT`
 All new browsers' features.
-No support for Node.js and older browsers like Internet Explorer, Safari 7.0 or Android Browser
+No support for Node.js and older browsers like Internet Explorer, Safari 8 or Android Browser
 <a name="DEFAULT"></a>
 ### `DEFAULT`
 Minimun feature level, compatible with all supported engines.
 <a name="DOCUMENT"></a>
 ### `DOCUMENT`
 Existence of the global object property document having the string representation "\[object Document\]".
-This feature is only available in Internet Explorer 9 and 10. It is not available inside web workers.
+
+_Available in Internet Explorer before 11. This feature is not available inside web workers._
 <a name="DOMWINDOW"></a>
 ### `DOMWINDOW`
 Existence of the global object property self having the string representation "\[object DOMWindow\]".
-Only available in Android Browser versions prior to 4.4.2.
+
+_Available in Android Browser before 4.4.2+. This feature is not available inside web workers._
 <a name="DOUBLE_QUOTE_ESC_HTML"></a>
 ### `DOUBLE_QUOTE_ESC_HTML`
 The property that double quote characters in the argument of String.prototype.fontcolor are escaped as "\&quot;".
-This feature is not available in Internet Explorer.
+
+_Available in Firefox, Chrome, Safari, Opera, Microsoft Edge, Android Browser and Node.js._
 <a name="EDGE"></a>
 ### `EDGE`
 Features available in Microsoft Edge.
 <a name="ENTRIES_OBJ"></a>
 ### `ENTRIES_OBJ`
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object ".
-This feature is available in Firefox, Chrome, Opera, Microsoft Edge, and in Safari 7.1, Node.js 0.12 and later versions.
+
+_Available in Firefox, Chrome, Safari 7.1+, Opera, Microsoft Edge and Node.js 0.12+._
 <a name="ENTRIES_PLAIN"></a>
 ### `ENTRIES_PLAIN`
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Object\]".
-This feature is only available in Microsoft Edge.
+
+_Available in Microsoft Edge._
 <a name="FF31"></a>
 ### `FF31`
 Features available in Firefox 31 or later.
@@ -76,28 +91,43 @@ Features available in Firefox 31 or later.
 ### `FF_SAFARI_SRC`
 A string representation of native functions typically found in Firefox and Safari.
 Remarkable traits are the lack of characters in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
+
+_Available in Firefox and Safari._
 <a name="FILL"></a>
 ### `FILL`
 Existence of the native function Array.prototype.fill.
-Available in Firefox, Chrome, Opera, Microsoft Edge, and in Safari 7.1, Node.js 4.0 and later versions.
+
+_Available in Firefox, Chrome, Safari 7.1+, Opera, Microsoft Edge and Node.js 4+._
 <a name="FROM_CODE_POINT"></a>
 ### `FROM_CODE_POINT`
 Existence of the function String.fromCodePoint.
-Not available in Internet Explorer, Android Browser, Safari versions prior to 9 and Node.js versions prior to 4.0.
+
+_Available in Firefox, Chrome, Safari 9.0+, Opera, Microsoft Edge and Node.js 4+._
 <a name="GMT"></a>
 ### `GMT`
 Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
 Although ECMAScript states that string representation of dates is implementation dependent, most engines align to the same format, making this feature available in all supported engines except Internet Explorer 9 and 10.
+
+_Available in Firefox, Chrome, Internet Explorer 11, Safari, Opera, Microsoft Edge, Android Browser and Node.js._
+<a name="HISTORY"></a>
+### `HISTORY`
+Existence of the global object property history having the string representation "\[object History\]"
+
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers._
 <a name="HTMLDOCUMENT"></a>
 ### `HTMLDOCUMENT`
 Existence of the global object property document having the string representation "\[object HTMLDocument\]".
-This feature is not available in Internet Explorer versions prior to 11 and Node.js. It is also not available inside web workers.
+
+_Available in Firefox, Chrome, Internet Explorer 11, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers._
 <a name="IE10"></a>
 ### `IE10`
 Features available in Internet Explorer 10 or later.
 <a name="IE11"></a>
 ### `IE11`
 Features available in Internet Explorer 11.
+<a name="IE11_WIN10"></a>
+### `IE11_WIN10`
+Features available in Internet Explorer 11 on Windows 10.
 <a name="IE9"></a>
 ### `IE9`
 Features available in Internet Explorer 9 or later.
@@ -105,55 +135,66 @@ Features available in Internet Explorer 9 or later.
 ### `IE_SRC`
 A string representation of native functions typical for Internet Explorer.
 Remarkable traits are the presence of a line feed character \("\\n"\) in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
+
+_Available in Internet Explorer._
 <a name="INTL"></a>
 ### `INTL`
 Existence of the global object property Intl.
-This feature is not available in Safari, in Internet Explorer versions prior to 11, in Android Browser versions prior to 4.4.2, and in Node.js versions prior to 0.12.
+
+_Available in Firefox, Chrome, Internet Explorer 11, Opera, Microsoft Edge, Android Browser 4.4.2+ and Node.js 0.12+._
 <a name="LOCALE_INFINITY"></a>
 ### `LOCALE_INFINITY`
 Language sensitive string representation of Infinity as "∞".
-Available in Firefox, Chrome, Opera, Microsoft Edge, and in Android Browser 4.4.2, Node.js 0.12 and later versions.
+
+_Available in Firefox, Chrome, Internet Explorer 11 on Windows 10, Opera, Microsoft Edge, Android Browser 4.4.2+ and Node.js 0.12+._
 <a name="NAME"></a>
 ### `NAME`
 Existence of the name property for functions.
-This feature is not available in Internet Explorer.
+
+_Available in Firefox, Chrome, Safari, Opera, Microsoft Edge, Android Browser and Node.js._
 <a name="NODE"></a>
 ### `NODE`
 _An alias for [`NODE010`](#NODE010)._
 <a name="NODE010"></a>
 ### `NODE010`
 Features available in Node.js 0.10.26 or later.
-Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.
 <a name="NODE012"></a>
 ### `NODE012`
 Features available in Node.js 0.12 or later.
-Also compatible with Chrome, Opera and Android Browser 4.1.2 or later.
 <a name="NODE40"></a>
 ### `NODE40`
 Features available in Node.js 4.0 or later.
-Also compatible with Chrome and Opera.
 <a name="NO_IE_SRC"></a>
 ### `NO_IE_SRC`
-A string representation of native functions typical for most browsers with the notable exception of Internet Explorer.
-A remarkable trait for this feature is the lack of characters in the beginning of the string before "function".
+A string representation of native functions typical for most engines with the notable exception of Internet Explorer.
+A remarkable trait of this feature is the lack of extra characters in the beginning of the string before "function".
+
+_Available in Firefox, Chrome, Safari, Opera, Microsoft Edge, Android Browser and Node.js._
 <a name="NO_OLD_SAFARI_ARRAY_ITERATOR"></a>
 ### `NO_OLD_SAFARI_ARRAY_ITERATOR`
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
-Available in Firefox, Chrome, Opera, and in Safari 9, Node.js 0.12 and later versions.
+
+_Available in Firefox, Chrome, Safari 9.0+, Opera and Node.js 0.12+._
 <a name="NO_OLD_SAFARI_LF"></a>
 ### `NO_OLD_SAFARI_LF`
-A string representation of dynamically generated functions typical for most browsers with the notable exception of Safari versions prior to 9.
+A string representation of dynamically generated functions typical for most engines with the notable exception of Safari versions prior to 9.
 More specifically, in this representation, the character at index 22 is a line feed \("\\n"\).
+
+_Available in Firefox, Chrome, Internet Explorer, Safari 9.0+, Opera, Microsoft Edge, Android Browser and Node.js._
 <a name="OLD_SAFARI_ARRAY_ITERATOR"></a>
 ### `OLD_SAFARI_ARRAY_ITERATOR`
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object ArrayIterator\]".
-Available in Safari versions from 7.1 up to 8.0.8.
+
+_Available in Safari 7.1+ before 9.0+._
 <a name="SAFARI70"></a>
 ### `SAFARI70`
 Features available in Safari 7.0.
 <a name="SAFARI71"></a>
 ### `SAFARI71`
-Features available in Safari 7.1 to 8.0.8.
+Features available in Safari 7.1.
+<a name="SAFARI80"></a>
+### `SAFARI80`
+Features available in Safari 8.0.
 <a name="SAFARI90"></a>
 ### `SAFARI90`
 Features available in Safari 9.0 or later.
@@ -163,20 +204,25 @@ _An alias for [`ANY_WINDOW`](#ANY_WINDOW)._
 <a name="SELF_OBJ"></a>
 ### `SELF_OBJ`
 Existence of the global object property self whose string representation starts with "\[object ".
-This feature is not available in Node.js. It is also not available inside web workers in Safari 8 and 9.
+
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers in Safari 8.0+._
 <a name="UNDEFINED"></a>
 ### `UNDEFINED`
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
-This behavior is defined by ECMAScript, and is supported by all engines except Android Browser versions prior to 4.1.2, where this feature is not available.
+This behavior is specified by ECMAScript, and is supported by all engines except Android Browser versions prior to 4.1.2, where this feature is not available.
+
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge, Android Browser 4.1.2+ and Node.js._
 <a name="V8_SRC"></a>
 ### `V8_SRC`
-A string representation of native functions typically found in the V8 JavaScript engine.
-V8 is used in Chrome, Opera, Android Browser and Node.js. Microsoft Edge, although not using V8, also has this feature available.
+A string representation of native functions typical for the V8 engine, but also found in Microsoft Edge.
 Remarkable traits are the lack of characters in the beginning of the string before "function" and a single whitespace before the "\[native code\]" sequence.
+
+_Available in Chrome, Opera, Microsoft Edge, Android Browser and Node.js._
 <a name="WINDOW"></a>
 ### `WINDOW`
 Existence of the global object property self having the string representation "\[object Window\]".
-This feature is not available in Android Browser versions prior to 4.4.2 and Node.js. It is also not available inside web workers.
+
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser 4.4.2+. This feature is not available inside web workers._
 ## Engine Support
 This table lists features available in the most common engines.
 <table>
@@ -192,12 +238,14 @@ This table lists features available in the most common engines.
 <li><a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#ATOB"><code>ATOB</code></a>
+<li><a href="#BARPROP"><code>BARPROP</code></a>
 <li><a href="#DOUBLE_QUOTE_ESC_HTML"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#FF_SAFARI_SRC"><code>FF_SAFARI_SRC</code></a>
 <li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
+<li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#INTL"><code>INTL</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
@@ -219,11 +267,13 @@ This table lists features available in the most common engines.
 <li><a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#ATOB"><code>ATOB</code></a>
+<li><a href="#BARPROP"><code>BARPROP</code></a>
 <li><a href="#DOUBLE_QUOTE_ESC_HTML"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
+<li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#INTL"><code>INTL</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
@@ -248,9 +298,11 @@ This table lists features available in the most common engines.
 <li><a href="#CAPITAL_HTML"><code>CAPITAL_HTML</code></a>
 <li><a href="#DOCUMENT"><code>DOCUMENT</code></a> (not in Internet Explorer 11)
 <li><a href="#GMT"><code>GMT</code></a> (Internet Explorer 11)
+<li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a> (Internet Explorer 11)
 <li><a href="#IE_SRC"><code>IE_SRC</code></a>
 <li><a href="#INTL"><code>INTL</code></a> (Internet Explorer 11)
+<li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Internet Explorer 11 on Windows 10)
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
@@ -266,12 +318,14 @@ This table lists features available in the most common engines.
 <li><a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> and <a href="#OLD_SAFARI_ARRAY_ITERATOR"><code>OLD_SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="#ATOB"><code>ATOB</code></a>
+<li><a href="#BARPROP"><code>BARPROP</code></a>
 <li><a href="#DOUBLE_QUOTE_ESC_HTML"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> and <a href="#OLD_SAFARI_ARRAY_ITERATOR"><code>OLD_SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="#FF_SAFARI_SRC"><code>FF_SAFARI_SRC</code></a>
 <li><a href="#FILL"><code>FILL</code></a> (Safari 7.1+)
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Safari 9.0+)
 <li><a href="#GMT"><code>GMT</code></a>
+<li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#FF_SAFARI_SRC"><code>FF_SAFARI_SRC</code></a>)
@@ -291,12 +345,14 @@ This table lists features available in the most common engines.
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
 <li><a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#ATOB"><code>ATOB</code></a>
+<li><a href="#BARPROP"><code>BARPROP</code></a>
 <li><a href="#DOUBLE_QUOTE_ESC_HTML"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ENTRIES_PLAIN"><code>ENTRIES_PLAIN</code></a>)
 <li><a href="#ENTRIES_PLAIN"><code>ENTRIES_PLAIN</code></a>
 <li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
+<li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#INTL"><code>INTL</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
@@ -317,9 +373,11 @@ This table lists features available in the most common engines.
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
 <li><a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="#DOMWINDOW"><code>DOMWINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#ATOB"><code>ATOB</code></a>
+<li><a href="#BARPROP"><code>BARPROP</code></a> (Android Browser 4.4.2+)
 <li><a href="#DOMWINDOW"><code>DOMWINDOW</code></a> (not in Android Browser 4.4.2+)
 <li><a href="#DOUBLE_QUOTE_ESC_HTML"><code>DOUBLE_QUOTE_ESC_HTML</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
+<li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#INTL"><code>INTL</code></a> (Android Browser 4.4.2+)
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Android Browser 4.4.2+)

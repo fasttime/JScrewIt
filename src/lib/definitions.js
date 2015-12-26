@@ -454,6 +454,7 @@ var replaceDigit;
         'H':
         [
             define('btoa(true)[1]', 'ATOB'),
+            define('(NaN + Function("return history")())["11"]', 'HISTORY'),
             define('""["link"]()[3]', 'CAPITAL_HTML'),
             define('(RP_3_NO + document)["11"]', 'HTMLDOCUMENT')
         ],
@@ -490,6 +491,7 @@ var replaceDigit;
         'P':
         [
             define('btoa(""["italics"]())[0]', 'ATOB'),
+            define('(Function("return toolbar")() + [])["11"]', 'BARPROP'),
             define('"0"["sup"]()["10"]', 'CAPITAL_HTML'),
             define()
         ],
