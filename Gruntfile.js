@@ -82,7 +82,6 @@ var JSHINT_OPTIONS =
     // Enforcing options
     eqeqeq: true,
     immed: true,
-    latedef: 'nofunc',
     maxlen: 100,
     newcap: false,
     noarg: true,

@@ -313,26 +313,26 @@ function reportAsList(property, filter)
         ENGINE_REFS.map(
             function (engineRef)
             {
-                function getBySubIndex(obj)
-                {
-                    var result = subIndex == null ? obj : obj[subIndex];
-                    return result;
-                }
-                
-                function getDescription(versionIndex)
-                {
-                    var description = versions[versionIndex].description;
-                    var result = getBySubIndex(description);
-                    return result;
-                }
-                
                 var engineEntry = ENGINE_ENTRIES[engineRef.index];
                 var availabilityInfo = filter(property, engineEntry);
                 var firstAvail = availabilityInfo.firstAvail;
                 if (firstAvail != null)
                 {
-                    var versions = engineEntry.versions;
                     var subIndex = engineRef.subIndex;
+                    var getBySubIndex =
+                        function (obj)
+                        {
+                            var result = subIndex == null ? obj : obj[subIndex];
+                            return result;
+                        };
+                    var versions = engineEntry.versions;
+                    var getDescription =
+                        function (versionIndex)
+                        {
+                            var description = versions[versionIndex].description;
+                            var result = getBySubIndex(description);
+                            return result;
+                        };
                     var availEntry = getBySubIndex(engineEntry.name);
                     if (firstAvail)
                         availEntry += ' ' + getDescription(firstAvail);
