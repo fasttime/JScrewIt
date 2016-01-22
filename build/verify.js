@@ -13,13 +13,11 @@ require('../test/coder-test-helpers.js');
 
 function findCoderTestData(coderName)
 {
-    for (var index = 0; ; ++index)
+    for (var index = 0;; ++index)
     {
         var coderTestData = CODER_TEST_DATA_LIST[index];
         if (coderTestData.coderName === coderName)
-        {
             return coderTestData;
-        }
     }
 }
 
@@ -68,9 +66,7 @@ function verifyCoder(coderName, rivalCoderName)
                         var output = coder.call(encoder, inputData);
                         var rivalOutput = rivalCoder.call(encoder, inputData);
                         if (output.length <= rivalOutput.length)
-                        {
                             return output;
-                        }
                     };
             }
             var optimalFeatureObjs = findOptimalFeatures(replacer);
@@ -93,9 +89,7 @@ function verifyCoder(coderName, rivalCoderName)
                 }
             }
             else
-            {
                 console.log('No optimal features found.');
-            }
         };
     return result;
 }

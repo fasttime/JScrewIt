@@ -59,7 +59,7 @@ function formatCodingLog(codingLog, margin)
 
 function formatInt(int)
 {
-    var result = int != null ? int : '-' ;
+    var result = int != null ? int : '-';
     return result;
 }
 
@@ -79,14 +79,10 @@ function formatPerfInfoList(perfInfoList, paddingData)
             '\n';
         var codingLog = perfInfo.codingLog;
         if (codingLog)
-        {
             result += formatCodingLog(codingLog, next);
-        }
     }
     if (paddingData[2])
-    {
         result += padding.replace(/ +$/, '') + '\n';
-    }
     return result;
 }
 
@@ -96,9 +92,7 @@ function parseCommandLine(argv)
     {
         var arg2 = argv[++index];
         if (arg2 === undefined)
-        {
             throw Error('option ' + quote(arg) + ' requires an argument');
-        }
         options.features = arg2.trim().split(/(?:\s+|\s*\,\s*)/);
     }
     
@@ -164,28 +158,18 @@ function parseCommandLine(argv)
         {
             flag = arg.slice(1);
             if (flag === 'f')
-            {
                 parseFeatures();
-            }
             else
-            {
                 flag.split('').forEach(parseFlag);
-            }
         }
         else
         {
             if (outputFileName != null)
-            {
                 throw Error('unexpected argument ' + quote(arg));
-            }
             if (inputFileName != null)
-            {
                 outputFileName = arg;
-            }
             else
-            {
                 inputFileName = arg;
-            }
         }
     }
     
