@@ -81,7 +81,8 @@ var ENGINE_REFS =
 
 function calculateEngineSupportInfo(engineEntry, filter)
 {
-    var firstAvail, firstUnavail;
+    var firstAvail;
+    var firstUnavail;
     var versions = engineEntry.versions;
     for (var versionIndex = 0, length = versions.length; versionIndex < length; ++versionIndex)
     {
@@ -89,16 +90,12 @@ function calculateEngineSupportInfo(engineEntry, filter)
         if (filter(JScrewIt.Feature[engineFeatureName]))
         {
             if (firstAvail == null)
-            {
                 firstAvail = versionIndex;
-            }
         }
         else
         {
             if (firstAvail != null && firstUnavail == null)
-            {
                 firstUnavail = versionIndex;
-            }
         }
     }
     var availabilityInfo = { firstAvail: firstAvail, firstUnavail: firstUnavail };
@@ -129,16 +126,12 @@ function formatAvailability(availability, noWWReport)
         {
             result += ' This feature is not available inside web workers';
             if (noWWReport !== true)
-            {
                 result += ' in ' + formatReport(noWWReport);
-            }
             result += '.';
         }
     }
     else
-    {
         result = 'This feature is not available in any of the supported engines.';
-    }
     return result;
 }
 
@@ -159,9 +152,7 @@ function formatReport(report)
 {
     var result;
     if (report.length === 1)
-    {
         result = report[0];
-    }
     else
     {
         var lastEntry = report.pop();
@@ -228,14 +219,10 @@ function getImpliers(featureName, assignmentMap)
         if (
             featureName !== otherFeatureName &&
             JScrewIt.Feature[otherFeatureName].includes(featureName))
-        {
             impliers.push(otherFeatureName);
-        }
     }
     if (impliers.length)
-    {
         return impliers.sort();
-    }
 }
 
 function getNoWWInfo(attributeName, engineEntry)
@@ -305,14 +292,10 @@ function printRow(label, assignmentMap)
             {
                 result += 'implied by ' + impliers.map(formatFeatureName).join(' and ');
                 if (versioning)
-                {
                     result += '; ';
-                }
             }
             if (versioning)
-            {
                 result += versioning;
-            }
             result += ')';
         }
         result += '\n';
@@ -352,14 +335,10 @@ function reportAsList(property, filter)
                     var subIndex = engineRef.subIndex;
                     var availEntry = getBySubIndex(engineEntry.name);
                     if (firstAvail)
-                    {
                         availEntry += ' ' + getDescription(firstAvail);
-                    }
                     var firstUnavail = availabilityInfo.firstUnavail;
                     if (firstUnavail)
-                    {
                         availEntry += ' before ' + getDescription(firstUnavail);
-                    }
                     return availEntry;
                 }
             }
@@ -401,9 +380,7 @@ module.exports =
                     }
                 }
                 else
-                {
                     subContent = '_An alias for ' + formatFeatureNameMD(name) + '._';
-                }
                 content +=
                     '<a name="' + getAnchorName(featureName) + '"></a>\n' +
                     '### `' + featureName + '`\n' + subContent + '\n';
@@ -441,9 +418,7 @@ module.exports =
                     {
                         var impliers = getImpliers(featureName, assignmentMap);
                         if (impliers)
-                        {
                             assignmentMap[featureName].impliers = impliers;
-                        }
                     }
                 }
                 content += printRow(getCombinedDescription(engineEntry, 0), assignmentMap);

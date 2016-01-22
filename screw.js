@@ -45,7 +45,7 @@ if (command === 'help')
     console.log(message);
     return;
 }
-else if (command === 'version')
+if (command === 'version')
 {
     var version = require('./package.json').version;
     console.log('JScrewIt ' + version);
@@ -125,7 +125,5 @@ else
         console.log(report);
     }
     else
-    {
         console.log(output);
-    }
 }

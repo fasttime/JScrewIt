@@ -23,23 +23,18 @@
                 var chr2 = input.charCodeAt(i++);
                 var enc2 = (chr1 & 3) << 4 | chr2 >> 4;
                 
-                var enc3, enc4;
+                var enc3;
+                var enc4;
                 if (isNaN(chr2))
-                {
                     enc3 = enc4 = 64;
-                }
                 else
                 {
                     var chr3 = input.charCodeAt(i++);
                     enc3 = (chr2 & 15) << 2 | chr3 >> 6;
                     if (isNaN(chr3))
-                    {
                         enc4 = 64;
-                    }
                     else
-                    {
                         enc4 = chr3 & 63;
-                    }
                 }
                 
                 output +=
@@ -66,18 +61,14 @@
                 var pos3 = input.charAt(i++);
                 var enc3 = this._keyStr.indexOf(pos3);
                 if (!pos3 || enc3 === 64)
-                {
                     break;
-                }
                 var chr2 = (enc2 & 15) << 4 | enc3 >> 2;
                 output += String.fromCharCode(chr2);
                 
                 var pos4 = input.charAt(i++);
                 var enc4 = this._keyStr.indexOf(pos4);
                 if (!pos4 || enc4 === 64)
-                {
                     break;
-                }
                 var chr3 = (enc3 & 3) << 6 | enc4;
                 output += String.fromCharCode(chr3);
             }
@@ -110,9 +101,7 @@
         {
             var backupMap = context.BACKUP;
             if (backupMap)
-            {
                 restoreAll(backupMap, global);
-            }
         }
         return result;
     }
@@ -139,13 +128,9 @@
             {
                 var codePoint = Number(arg);
                 if ((codePoint & 0x1fffff) !== codePoint || codePoint > 0x10ffff)
-                {
                     throw RangeError(codePoint + ' is not a valid code point');
-                }
                 if (codePoint <= 0xffff)
-                {
                     codeUnits.push(codePoint);
-                }
                 else
                 {
                     var highSurrogate = (codePoint - 0x10000 >> 10) + 0xd800;
@@ -167,14 +152,10 @@
                 if (global.document)
                 {
                     if (regExp.test(document + ''))
-                    {
                         return;
-                    }
                 }
                 else
-                {
                     override(this, 'document', { value: { } });
-                }
                 var valueOf =
                     function ()
                     {
@@ -193,20 +174,15 @@
             setUp: function ()
             {
                 if (Array.prototype.entries && regExp.test([].entries()))
-                {
                     return;
-                }
-                else
-                {
-                    var arrayIteratorProto = this.arrayIteratorProto = { };
-                    var arrayIterator = Object.create(arrayIteratorProto);
-                    var entries =
-                        function ()
-                        {
-                            return arrayIterator;
-                        };
-                    override(this, 'Array.prototype.entries', { value: entries });
-                }
+                var arrayIteratorProto = this.arrayIteratorProto = { };
+                var arrayIterator = Object.create(arrayIteratorProto);
+                var entries =
+                    function ()
+                    {
+                        return arrayIterator;
+                    };
+                override(this, 'Array.prototype.entries', { value: entries });
                 var context = this;
                 registerToStringAdapter(
                     this,
@@ -216,9 +192,7 @@
                         if (
                             this instanceof Object &&
                             Object.getPrototypeOf(this) === context.arrayIteratorProto)
-                        {
                             return str;
-                        }
                     }
                 );
             }
@@ -288,14 +262,10 @@
                 if (global.self)
                 {
                     if (regExp.test(self + ''))
-                    {
                         return;
-                    }
                 }
                 else
-                {
                     override(this, 'self', { value: { } });
-                }
                 var valueOf =
                     function ()
                     {
@@ -353,9 +323,7 @@
                         var adapter = adapters[index];
                         var str = adapter.call(this);
                         if (str !== void 0)
-                        {
                             return str;
-                        }
                     }
                     // When no arguments are provided to the call method, IE 9 will use the global
                     // object as this.
@@ -376,9 +344,7 @@
                 var descriptor = subBackupMap[''];
                 delete obj[name];
                 if (descriptor)
-                {
                     Object.defineProperty(obj, name, descriptor);
-                }
             }
             restoreAll(subBackupMap, obj[name]);
         }
@@ -581,9 +547,7 @@
                     {
                         var str = context.Function.toString.call(this);
                         if (str === 'function anonymous() { \n}')
-                        {
                             return 'function anonymous() {\n\n}';
-                        }
                     }
                 );
             }
@@ -603,9 +567,7 @@
                     function ()
                     {
                         if (this === void 0)
-                        {
                             return '[object Undefined]';
-                        }
                     }
                 );
             }
