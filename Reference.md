@@ -1,9 +1,12 @@
 ## Objects
+
 <dl>
 <dt><a href="#JScrewIt">JScrewIt</a> : <code>object</code></dt>
 <dd></dd>
 </dl>
+
 ## Typedefs
+
 <dl>
 <dt><a href="#FeatureElement">FeatureElement</a> : <code><a href="#JScrewIt.Feature">Feature</a></code> | <code>string</code></dt>
 <dd><p>A feature object or name or alias of a predefined feature.</p>
@@ -14,27 +17,28 @@ in no particular order.</p>
 <p>All of the specified features need to be compatible, so that their union can be constructed.</p>
 </dd>
 </dl>
+
 <a name="JScrewIt"></a>
 ## JScrewIt : <code>object</code>
 **Kind**: global namespace  
 
 * [JScrewIt](#JScrewIt) : <code>object</code>
-  * [.Feature](#JScrewIt.Feature)
-    * [new Feature([...feature])](#new_JScrewIt.Feature_new)
-    * _instance_
-      * [.canonicalNames](#JScrewIt.Feature+canonicalNames) : <code>Array.&lt;string&gt;</code>
-      * [.description](#JScrewIt.Feature+description) : <code>string</code> &#124; <code>undefined</code>
-      * [.elementaryNames](#JScrewIt.Feature+elementaryNames) : <code>Array.&lt;string&gt;</code>
-      * [.name](#JScrewIt.Feature+name) : <code>string</code> &#124; <code>undefined</code>
-      * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
-      * [.restrict(environment, [referenceFeatureObjs])](#JScrewIt.Feature+restrict) ⇒ <code>[Feature](#JScrewIt.Feature)</code>
-      * [.toString()](#JScrewIt.Feature+toString) ⇒ <code>string</code>
-    * _static_
-      * [.ALL](#JScrewIt.Feature.ALL) : <code>object</code>
-      * [.areCompatible([features])](#JScrewIt.Feature.areCompatible) ⇒ <code>boolean</code>
-      * [.areEqual([...feature])](#JScrewIt.Feature.areEqual) ⇒ <code>boolean</code>
-      * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ <code>[Feature](#JScrewIt.Feature)</code> &#124; <code>null</code>
-  * [.encode(input, [options])](#JScrewIt.encode) ⇒ <code>string</code>
+    * [.Feature](#JScrewIt.Feature)
+        * [new Feature([...feature])](#new_JScrewIt.Feature_new)
+        * _instance_
+            * [.canonicalNames](#JScrewIt.Feature+canonicalNames) : <code>Array.&lt;string&gt;</code>
+            * [.description](#JScrewIt.Feature+description) : <code>string</code> &#124; <code>undefined</code>
+            * [.elementaryNames](#JScrewIt.Feature+elementaryNames) : <code>Array.&lt;string&gt;</code>
+            * [.name](#JScrewIt.Feature+name) : <code>string</code> &#124; <code>undefined</code>
+            * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
+            * [.restrict(environment, [referenceFeatureObjs])](#JScrewIt.Feature+restrict) ⇒ <code>[Feature](#JScrewIt.Feature)</code>
+            * [.toString()](#JScrewIt.Feature+toString) ⇒ <code>string</code>
+        * _static_
+            * [.ALL](#JScrewIt.Feature.ALL) : <code>object</code>
+            * [.areCompatible([features])](#JScrewIt.Feature.areCompatible) ⇒ <code>boolean</code>
+            * [.areEqual([...feature])](#JScrewIt.Feature.areEqual) ⇒ <code>boolean</code>
+            * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ <code>[Feature](#JScrewIt.Feature)</code> &#124; <code>null</code>
+    * [.encode(input, [options])](#JScrewIt.encode) ⇒ <code>string</code>
 
 <a name="JScrewIt.Feature"></a>
 ### JScrewIt.Feature
@@ -64,20 +68,20 @@ constructed.
 **Kind**: static class of <code>[JScrewIt](#JScrewIt)</code>  
 
 * [.Feature](#JScrewIt.Feature)
-  * [new Feature([...feature])](#new_JScrewIt.Feature_new)
-  * _instance_
-    * [.canonicalNames](#JScrewIt.Feature+canonicalNames) : <code>Array.&lt;string&gt;</code>
-    * [.description](#JScrewIt.Feature+description) : <code>string</code> &#124; <code>undefined</code>
-    * [.elementaryNames](#JScrewIt.Feature+elementaryNames) : <code>Array.&lt;string&gt;</code>
-    * [.name](#JScrewIt.Feature+name) : <code>string</code> &#124; <code>undefined</code>
-    * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
-    * [.restrict(environment, [referenceFeatureObjs])](#JScrewIt.Feature+restrict) ⇒ <code>[Feature](#JScrewIt.Feature)</code>
-    * [.toString()](#JScrewIt.Feature+toString) ⇒ <code>string</code>
-  * _static_
-    * [.ALL](#JScrewIt.Feature.ALL) : <code>object</code>
-    * [.areCompatible([features])](#JScrewIt.Feature.areCompatible) ⇒ <code>boolean</code>
-    * [.areEqual([...feature])](#JScrewIt.Feature.areEqual) ⇒ <code>boolean</code>
-    * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ <code>[Feature](#JScrewIt.Feature)</code> &#124; <code>null</code>
+    * [new Feature([...feature])](#new_JScrewIt.Feature_new)
+    * _instance_
+        * [.canonicalNames](#JScrewIt.Feature+canonicalNames) : <code>Array.&lt;string&gt;</code>
+        * [.description](#JScrewIt.Feature+description) : <code>string</code> &#124; <code>undefined</code>
+        * [.elementaryNames](#JScrewIt.Feature+elementaryNames) : <code>Array.&lt;string&gt;</code>
+        * [.name](#JScrewIt.Feature+name) : <code>string</code> &#124; <code>undefined</code>
+        * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
+        * [.restrict(environment, [referenceFeatureObjs])](#JScrewIt.Feature+restrict) ⇒ <code>[Feature](#JScrewIt.Feature)</code>
+        * [.toString()](#JScrewIt.Feature+toString) ⇒ <code>string</code>
+    * _static_
+        * [.ALL](#JScrewIt.Feature.ALL) : <code>object</code>
+        * [.areCompatible([features])](#JScrewIt.Feature.areCompatible) ⇒ <code>boolean</code>
+        * [.areEqual([...feature])](#JScrewIt.Feature.areEqual) ⇒ <code>boolean</code>
+        * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ <code>[Feature](#JScrewIt.Feature)</code> &#124; <code>null</code>
 
 <a name="new_JScrewIt.Feature_new"></a>
 #### new Feature([...feature])

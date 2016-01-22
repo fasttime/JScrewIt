@@ -18,21 +18,28 @@ var DEFAULT_TASKS =
 
 var JSCS_OPTIONS =
 {
+    disallowEmptyBlocks: true,
     // Encourage use of abbreviations: "char", "obj", "str".
     disallowIdentifierNames: ['character', 'object', 'string'],
-    disallowMixedSpacesAndTabs: true,
+    disallowMultipleLineBreaks: true,
+    disallowMultipleVarDecl: true,
     disallowNamedUnassignedFunctions: true,
     disallowSpaceAfterObjectKeys: true,
     disallowSpaceAfterPrefixUnaryOperators: true,
+    disallowSpaceBeforeComma: { allExcept: ['sparseArrays'] },
     disallowSpaceBeforePostfixUnaryOperators: true,
+    disallowSpaceBeforeSemicolon: true,
     disallowSpacesInCallExpression: true,
     disallowSpacesInFunctionDeclaration: { beforeOpeningRoundBrace: true },
     disallowSpacesInNamedFunctionExpression: { beforeOpeningRoundBrace: true },
     disallowSpacesInsideBrackets: true,
     disallowSpacesInsideParentheses: true,
+    disallowTabs: true,
     disallowTrailingWhitespace: 'ignoreEmptyLines',
     disallowYodaConditions: true,
+    requireAlignedMultilineParams: true,
     requireBlocksOnNewline: true,
+    requireEarlyReturn: true,
     requireKeywordsOnNewLine:
     [
         'break',
@@ -53,30 +60,26 @@ var JSCS_OPTIONS =
     requireLineBreakAfterVariableAssignment: true,
     requireLineFeedAtFileEnd: true,
     requireNewlineBeforeBlockStatements: true,
+    requireObjectKeysOnNewLine: { allExcept: ['sameLine'] },
     requirePaddingNewLinesAfterUseStrict: true,
     requireSpaceAfterBinaryOperators: true,
+    requireSpaceAfterComma: true,
     requireSpaceAfterKeywords: true,
     requireSpaceAfterLineComment: true,
     requireSpaceBeforeBinaryOperators: true,
     requireSpaceBeforeBlockStatements: true,
     requireSpaceBeforeKeywords: ['delete', 'if', 'in', 'instanceof'],
     requireSpaceBeforeObjectValues: true,
-    requireSpaceBetweenArguments: true,
-    requireSpacesInAnonymousFunctionExpression: { beforeOpeningRoundBrace: true },
     requireSpacesInConditionalExpression: true,
     requireSpacesInForStatement: true,
-    requireSpacesInFunctionDeclaration: { beforeOpeningCurlyBrace: true },
-    requireSpacesInFunctionExpression: { beforeOpeningCurlyBrace: true },
     requireSpacesInsideObjectBrackets: 'all',
     validateAlignedFunctionParameters: true,
-    validateIndentation: { includeEmptyLines: true, value: 4 },
-    validateParameterSeparator: ', '
+    validateIndentation: { includeEmptyLines: true, value: 4 }
 };
 
 var JSHINT_OPTIONS =
 {
     // Enforcing options
-    curly: true,
     eqeqeq: true,
     immed: true,
     latedef: 'nofunc',
@@ -256,9 +259,7 @@ module.exports =
                     );
                 }
                 else
-                {
                     grunt.log.ok('Done. All character definitions used.');
-                }
             }
         );
         
