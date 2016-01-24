@@ -157,7 +157,7 @@ self
             'Complex definitions of',
             function ()
             {
-                ['Boolean', 'Number', 'String'].forEach(
+                ['Number', 'Object', 'RegExp', 'String'].forEach(
                     function (complex)
                     {
                         function verifyOutput(output, emuFeatures)
@@ -1650,6 +1650,57 @@ self
                         expect(debugReplacer('F')).toThrow(
                             SyntaxError('Illegal string "\\?" in the definition of F')
                         );
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#resolveComplex with proper features',
+            function ()
+            {
+                describe(
+                    'resolves',
+                    function ()
+                    {
+                        function test(complex, features)
+                        {
+                            it(
+                                complex,
+                                function ()
+                                {
+                                    var encoder = JScrewIt.debug.createEncoder(features);
+                                    var solution = encoder.resolveComplex(complex);
+                                    expect(solution).toBeJSFuck();
+                                }
+                            );
+                        }
+                        
+                        test('Number', 'NAME');
+                        test('Object', 'NAME');
+                        test('RegExp', 'NAME');
+                        test('String', 'NAME');
+                    }
+                );
+                describe(
+                    'does not resolve',
+                    function ()
+                    {
+                        function test(complex, features)
+                        {
+                            it(
+                                complex,
+                                function ()
+                                {
+                                    var encoder = JScrewIt.debug.createEncoder(features);
+                                    var solution = encoder.resolveComplex(complex);
+                                    expect(solution).toBeNull();
+                                }
+                            );
+                        }
+                        
+                        test('Number', ['ENTRIES_OBJ', 'NAME']);
+                        test('Object', ['ENTRIES_OBJ', 'NAME']);
+                        test('String', ['CAPITAL_HTML', 'ENTRIES_OBJ', 'NAME']);
                     }
                 );
             }

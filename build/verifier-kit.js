@@ -75,6 +75,27 @@
         }
     }
     
+    function verifyComplex(complex, mismatchCallback)
+    {
+        var entries = JScrewIt.debug.getComplexEntries(complex);
+        var analyzer = new Analyzer();
+        var encoder;
+        while (encoder = analyzer.nextEncoder)
+        {
+            var solution = encoder.resolveComplex(complex);
+            analyzer.stopCapture();
+            var bestDefinition = encoder.findBestDefinition(entries);
+            if (bestDefinition)
+            {
+                if (!solution)
+                {
+                    var featureNames = analyzer.featureObj.canonicalNames;
+                    mismatchCallback(featureNames);
+                }
+            }
+        }
+    }
+    
     function verifyDefinitions(entries, inputList, mismatchCallback, replacerName)
     {
         function considerInput(input)
@@ -121,6 +142,7 @@
     {
         define:                 define,
         findOptimalFeatures:    findOptimalFeatures,
+        verifyComplex:          verifyComplex,
         verifyDefinitions:      verifyDefinitions
     };
     if (typeof self !== 'undefined')
