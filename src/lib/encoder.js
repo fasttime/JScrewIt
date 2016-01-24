@@ -1249,7 +1249,7 @@ var Encoder;
                     quoteString(complex),
                     function ()
                     {
-                        var solution = null;
+                        solution = null;
                         var entries = COMPLEX[complex];
                         var optimalSolution = this.findOptimalSolution(entries);
                         if (optimalSolution)

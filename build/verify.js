@@ -7,6 +7,7 @@ var JScrewIt = require('../lib/jscrewit.js');
 var kit = require('./verifier-kit.js');
 var define              = kit.define;
 var findOptimalFeatures = kit.findOptimalFeatures;
+var verifyComplex       = kit.verifyComplex;
 var verifyDefinitions   = kit.verifyDefinitions;
 require('../tools/text-utils.js');
 require('../test/coder-test-helpers.js');
@@ -96,6 +97,26 @@ function verifyCoder(coderName, rivalCoderName)
 
 var verify = Object.create(null);
 
+verify.Number =
+    function ()
+    {
+        verifyComplex('Number', mismatchCallback);
+    };
+verify.Object =
+    function ()
+    {
+        verifyComplex('Object', mismatchCallback);
+    };
+verify.RegExp =
+    function ()
+    {
+        verifyComplex('RegExp', mismatchCallback);
+    };
+verify.String =
+    function ()
+    {
+        verifyComplex('String', mismatchCallback);
+    };
 verify['base64-1'] =
     verifyBase64Defs(
         [

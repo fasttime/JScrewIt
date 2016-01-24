@@ -766,13 +766,17 @@ var replaceDigit;
     
     COMPLEX = noProto
     ({
-        Boolean:
-        [
-            define('Boolean["name"]', 'NAME')
-        ],
         Number:
         [
             define('Number["name"]', 'NAME')
+        ],
+        Object:
+        [
+            define('Object["name"]', 'NAME')
+        ],
+        RegExp:
+        [
+            define('RegExp["name"]', 'NAME')
         ],
         String:
         [
@@ -803,6 +807,10 @@ var replaceDigit;
         Number:
         [
             define('0["constructor"]')
+        ],
+        Object:
+        [
+            define('PLAIN_OBJECT["constructor"]')
         ],
         RegExp:
         [
