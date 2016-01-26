@@ -1,4 +1,4 @@
-/* global createDefinitionEntry, define, noProto */
+/* global Empty, createDefinitionEntry, define, noProto */
 
 // Definition syntax has been changed to match JavaScript more closely. The main differences from
 // JSFuck are:
@@ -20,6 +20,7 @@ var LEVEL_UNDEFINED;
 
 var createSolution;
 var replaceDigit;
+var resolveSimple;
 
 (function ()
 {
@@ -313,6 +314,19 @@ var replaceDigit;
         var definition = createCharAtDefinition(expr, index, entries, FH_PADDING_INFOS);
         var entry = createDefinitionEntry(definition, arguments, 2);
         return entry;
+    }
+    
+    function defineSimple(simple, expr, level)
+    {
+        function get()
+        {
+            var definition = { expr: expr, level: level };
+            var solution = resolveSimple(simple, definition);
+            Object.defineProperty(SIMPLE, simple, { value: solution });
+            return solution;
+        }
+        
+        Object.defineProperty(SIMPLE, simple, { configurable: true, enumerable: true, get: get });
     }
     
     LEVEL_STRING    = 1;
@@ -942,14 +956,7 @@ var replaceDigit;
         RP_6_SO:        '"0false"',
     });
     
-    SIMPLE = noProto
-    ({
-        'false':        { expr: '![]', level: LEVEL_NUMERIC },
-        'true':         { expr: '!![]', level: LEVEL_NUMERIC },
-        'undefined':    { expr: '[][[]]', level: LEVEL_UNDEFINED },
-        'NaN':          { expr: '+[false]', level: LEVEL_NUMERIC },
-        'Infinity':     { expr: '+"1e1000"', level: LEVEL_NUMERIC }
-    });
+    SIMPLE = new Empty();
     
     createSolution =
         function (replacement, level, outerPlus)
@@ -972,9 +979,7 @@ var replaceDigit;
             default:
                 var replacement = '!![]';
                 do
-                {
                     replacement += '+!![]';
-                }
                 while (--digit > 1);
                 return replacement;
             }
@@ -986,5 +991,11 @@ var replaceDigit;
         var expr = replaceDigit(digit);
         CHARACTERS[digit] = { expr: expr, level: LEVEL_NUMERIC };
     }
+    
+    defineSimple('false',       '![]',          LEVEL_NUMERIC);
+    defineSimple('true',        '!![]',         LEVEL_NUMERIC);
+    defineSimple('undefined',   '[][[]]',       LEVEL_UNDEFINED);
+    defineSimple('NaN',         '+[false]',     LEVEL_NUMERIC);
+    defineSimple('Infinity',    '+"1e1000"',    LEVEL_NUMERIC);
 }
 )();
