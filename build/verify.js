@@ -100,22 +100,22 @@ var verify = Object.create(null);
 verify.Number =
     function ()
     {
-        verifyComplex('Number', mismatchCallback);
+        verifyComplex('Number', [define('Number["name"]', 'NAME')], mismatchCallback);
     };
 verify.Object =
     function ()
     {
-        verifyComplex('Object', mismatchCallback);
+        verifyComplex('Object', [define('Object["name"]', 'NAME')], mismatchCallback);
     };
 verify.RegExp =
     function ()
     {
-        verifyComplex('RegExp', mismatchCallback);
+        verifyComplex('RegExp', [define('RegExp["name"]', 'NAME')], mismatchCallback);
     };
 verify.String =
     function ()
     {
-        verifyComplex('String', mismatchCallback);
+        verifyComplex('String', [define('String["name"]', 'NAME')], mismatchCallback);
     };
 verify['base64-1'] =
     verifyBase64Defs(

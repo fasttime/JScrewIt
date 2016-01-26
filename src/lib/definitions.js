@@ -768,11 +768,18 @@ var replaceDigit;
     ({
         Number:
         [
-            define('Number["name"]', 'NAME')
+            define('Number["name"]', 'NAME'),
+            define(undefined, 'ENTRIES_OBJ')
         ],
         Object:
         [
-            define('Object["name"]', 'NAME')
+            define('Object["name"]', 'NAME'),
+            define(undefined, 'CAPITAL_HTML', 'SELF_OBJ'),
+            define('Object["name"]', 'FF_SAFARI_SRC', 'NAME'),
+            define('Object["name"]', 'IE_SRC', 'NAME'),
+            define('Object["name"]', 'INTL', 'NAME'),
+            define('Object["name"]', 'NAME', 'V8_SRC'),
+            define(undefined, 'ENTRIES_OBJ')
         ],
         RegExp:
         [
@@ -780,7 +787,8 @@ var replaceDigit;
         ],
         String:
         [
-            define('String["name"]', 'NAME')
+            define('String["name"]', 'NAME'),
+            define(undefined, 'CAPITAL_HTML', 'ENTRIES_OBJ')
         ],
     });
     
