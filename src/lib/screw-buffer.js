@@ -12,20 +12,6 @@ var hasOuterPlus;
 {
     'use strict';
     
-    // The solution parameter must already have the outerPlus property set.
-    function appendSolution(str, solution)
-    {
-        if (solution.outerPlus)
-        {
-            str += '+(' + solution + ')';
-        }
-        else
-        {
-            str += '+' + solution;
-        }
-        return str;
-    }
-    
     function getNumericJoinCost(level0, level1)
     {
         var joinCost = level0 > LEVEL_UNDEFINED || level1 > LEVEL_UNDEFINED ? 2 : 3;
@@ -36,6 +22,15 @@ var hasOuterPlus;
     {
         var result = level0 < LEVEL_OBJECT && level1 < LEVEL_OBJECT;
         return result;
+    }
+    
+    // The solution parameter must already have the outerPlus property set.
+    function pushSolution(array, solution)
+    {
+        if (solution.outerPlus)
+            array.push('+(', solution, ')');
+        else
+            array.push('+', solution);
     }
     
     ScrewBuffer =
@@ -57,9 +52,7 @@ var hasOuterPlus;
                 {
                     var solution = solutions[index];
                     if (solution.bridge)
-                    {
                         return index;
-                    }
                 }
             }
             
@@ -69,9 +62,7 @@ var hasOuterPlus;
                 {
                     var solution = solutions[index];
                     if (solution.bridge)
-                    {
                         return index;
-                    }
                 }
             }
             
@@ -98,16 +89,14 @@ var hasOuterPlus;
                 if (
                     optimalSplitCost + intrinsicSplitCost < 0 &&
                     !(optimalSplitCost > 0 && canSplitRightEndForFree(lastBridgeIndex, limit)))
-                {
                     return splitIndex;
-                }
             }
             
             function gather(offset, count, localStrongBound, localForceString)
             {
                 function appendRightGroup(groupCount)
                 {
-                    str += sequence0(index, groupCount, '[[]]') + ')';
+                    array.push(sequenceAsString(index, groupCount, '[[]]'), ')');
                 }
                 
                 var limit;
@@ -117,12 +106,10 @@ var hasOuterPlus;
                     limit = offset + count;
                     lastBridgeIndex = findLastBridge(offset, limit);
                 }
-                var str;
+                var array;
                 var multiPart = lastBridgeIndex == null;
                 if (multiPart)
-                {
-                    str = sequence(offset, count);
-                }
+                    array = sequence(offset, count);
                 else
                 {
                     var bridgeIndex = findNextBridge(offset);
@@ -145,27 +132,23 @@ var hasOuterPlus;
                         // Keep the first solutions out of the concat context to reduce output
                         // length.
                         var preBridgeCount = index - offset;
-                        str =
-                            (
-                                preBridgeCount > 1 ?
-                                sequence(offset, preBridgeCount) : solutions[offset]
-                            ) +
-                            '+';
+                        array =
+                            preBridgeCount > 1 ?
+                            sequence(offset, preBridgeCount) : [solutions[offset]];
+                        array.push('+');
                     }
                     else
                     {
-                        str = '';
+                        array = [];
                         index = offset;
                     }
-                    str += '[' + sequence0(index, bridgeIndex - index, '[]') + ']';
+                    array.push('[', sequenceAsString(index, bridgeIndex - index, '[]'), ']');
                     for (;;)
                     {
-                        str += solutions[bridgeIndex].bridge.block + '(';
+                        array.push(solutions[bridgeIndex].bridge.block, '(');
                         index = bridgeIndex + 1;
                         if (bridgeIndex === lastBridgeIndex)
-                        {
                             break;
-                        }
                         bridgeIndex = findNextBridge(index);
                         appendRightGroup(bridgeIndex - index);
                     }
@@ -177,25 +160,20 @@ var hasOuterPlus;
                         multiPart = true;
                     }
                     else
-                    {
                         groupCount = rightEndCount;
-                    }
                     appendRightGroup(groupCount);
                     index += groupCount - 1;
                     while (++index < limit)
-                    {
-                        str = appendSolution(str, solutions[index]);
-                    }
+                        pushSolution(array, solutions[index]);
                     if (!multiPart && localForceString)
                     {
-                        str += '+[]';
+                        array.push('+[]');
                         multiPart = true;
                     }
                 }
+                var str = array.join('');
                 if (localStrongBound && multiPart)
-                {
                     str = '(' + str + ')';
-                }
                 return str;
             }
             
@@ -236,45 +214,38 @@ var hasOuterPlus;
             
             function sequence(offset, count)
             {
-                var str;
+                var array;
                 var solution0 = solutions[offset];
                 var solution1 = solutions[offset + 1];
                 if (solution0.level < LEVEL_OBJECT && solution1.level < LEVEL_OBJECT)
                 {
                     if (solution1.level > LEVEL_UNDEFINED)
-                    {
-                        str = solution0 + '+[' + solution1 + ']';
-                    }
+                        array = [solution0, '+[', solution1, ']'];
                     else if (solution0.level > LEVEL_UNDEFINED)
-                    {
-                        str = '[' + solution0 + ']+' + solution1;
-                    }
+                        array = ['[', solution0, ']+', solution1];
                     else
-                    {
-                        str = solution0 + '+[]+' + solution1;
-                    }
+                        array = [solution0, '+[]+', solution1];
                 }
                 else
                 {
-                    str = appendSolution(solution0, solution1);
+                    array = [solution0];
+                    pushSolution(array, solution1);
                 }
                 for (var index = 2; index < count; ++index)
                 {
                     var solution = solutions[offset + index];
-                    str = appendSolution(str, solution);
+                    pushSolution(array, solution);
                 }
-                return str;
+                return array;
             }
             
-            function sequence0(offset, count, emptyReplacement)
+            function sequenceAsString(offset, count, emptyReplacement)
             {
                 var str;
                 if (count)
                 {
                     if (count > 1)
-                    {
-                        str = sequence(offset, count);
-                    }
+                        str = sequence(offset, count).join('');
                     else
                     {
                         var solution = solutions[offset];
@@ -282,9 +253,7 @@ var hasOuterPlus;
                     }
                 }
                 else
-                {
                     str = emptyReplacement;
-                }
                 return str;
             }
             
@@ -299,9 +268,7 @@ var hasOuterPlus;
                     append: function (solution)
                     {
                         if (solutions.length >= maxSolutionCount)
-                        {
                             return false;
-                        }
                         bridgeUsed |= !!solution.bridge;
                         solutions.push(solution);
                         length += getAppendLength(solution);
@@ -336,9 +303,7 @@ var hasOuterPlus;
                         {
                             var str;
                             if (count <= groupSize + 1)
-                            {
                                 str = gather(offset, count, localStrongBound);
-                            }
                             else
                             {
                                 maxGroupCount /= 2;
@@ -359,9 +324,7 @@ var hasOuterPlus;
                                         true
                                     );
                                 if (localStrongBound)
-                                {
                                     str = '(' + str + ')';
-                                }
                             }
                             return str;
                         }
@@ -394,18 +357,14 @@ var hasOuterPlus;
                                 --groupSize;
                                 var maxSolutionCountForDepth = groupSize * maxGroupCount;
                                 if (solutionCount <= maxSolutionCountForDepth)
-                                {
                                     break;
-                                }
                                 maxGroupCount *= 2;
                             }
                             str = collectOut(0, solutionCount, maxGroupCount, strongBound);
                             singlePart = strongBound;
                         }
                         if (strongBound && !singlePart)
-                        {
                             str = '(' + str + ')';
-                        }
                         return str;
                     }
                 }
@@ -419,9 +378,7 @@ var hasOuterPlus;
             var length;
             var bridge = solution.bridge;
             if (bridge)
-            {
                 length = bridge.appendLength;
-            }
             else
             {
                 var extraLength = hasOuterPlus(solution) ? 3 : 1;
