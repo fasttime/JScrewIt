@@ -603,7 +603,7 @@ var Encoder;
     function resolveSimple(simple)
     {
         var solution = SIMPLE[simple];
-        if (typeof solution.valueOf() === 'object')
+        if (solution.expr)
         {
             STATIC_ENCODER.callResolver(
                 simple,
