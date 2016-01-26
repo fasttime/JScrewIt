@@ -4,6 +4,13 @@
 {
     'use strict';
     
+    function decomplex(encoder, complex)
+    {
+        encoder.stringTokenPattern = JScrewIt.debug.createEncoder().createStringTokenPattern();
+        var str = encoder.replaceString(complex);
+        return str;
+    }
+    
     function define(definition)
     {
         var features = Array.prototype.slice.call(arguments, 1);
@@ -75,22 +82,39 @@
         }
     }
     
-    function verifyComplex(complex, mismatchCallback)
+    function verifyComplex(complex, inputEntries, mismatchCallback)
     {
-        var entries = JScrewIt.debug.getComplexEntries(complex);
+        var actualEntries = JScrewIt.debug.getComplexEntries(complex);
         var analyzer = new Analyzer();
         var encoder;
         while (encoder = analyzer.nextEncoder)
         {
-            var solution = encoder.resolveComplex(complex);
-            analyzer.stopCapture();
-            var bestDefinition = encoder.findBestDefinition(entries);
-            if (bestDefinition)
+            var definition = encoder.findBestDefinition(actualEntries);
+            var solution;
+            var replacement;
+            var featureNames;
+            if (definition)
             {
-                if (!solution)
+                solution = encoder.resolve(definition);
+                replacement = decomplex(encoder, complex);
+                if (solution.length > replacement.length)
                 {
-                    var featureNames = analyzer.featureObj.canonicalNames;
+                    featureNames = analyzer.featureObj.canonicalNames;
                     mismatchCallback(featureNames);
+                }
+            }
+            else
+            {
+                definition = encoder.findBestDefinition(inputEntries);
+                if (definition)
+                {
+                    solution = encoder.resolve(definition);
+                    replacement = decomplex(encoder, complex);
+                    if (solution.length < replacement.length)
+                    {
+                        featureNames = analyzer.featureObj.canonicalNames;
+                        mismatchCallback(featureNames);
+                    }
                 }
             }
         }

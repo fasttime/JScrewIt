@@ -176,18 +176,21 @@ self
                                 entries.forEach(
                                     function (entry, index)
                                     {
-                                        var featureObj = getEntryFeature(entry);
-                                        var emuFeatures = getEmuFeatureNames(featureObj);
-                                        if (emuFeatures)
+                                        if (entry.definition)
                                         {
-                                            it(
-                                                '(definition ' + index + ')',
-                                                function ()
-                                                {
-                                                    var output = decodeEntry(entry);
-                                                    verifyOutput(output, emuFeatures);
-                                                }
-                                            );
+                                            var featureObj = getEntryFeature(entry);
+                                            var emuFeatures = getEmuFeatureNames(featureObj);
+                                            if (emuFeatures)
+                                            {
+                                                it(
+                                                    '(definition ' + index + ')',
+                                                    function ()
+                                                    {
+                                                        var output = decodeEntry(entry);
+                                                        verifyOutput(output, emuFeatures);
+                                                    }
+                                                );
+                                            }
                                         }
                                     }
                                 );
@@ -1512,6 +1515,35 @@ self
                         expect(encoder.replaceString('123')).toBeUndefined();
                     }
                 );
+                
+                describe(
+                    'replaces complex input for',
+                    function ()
+                    {
+                        function test(complex, features)
+                        {
+                            it(
+                                complex,
+                                function ()
+                                {
+                                    var encoder = JScrewIt.debug.createEncoder(features);
+                                    var expectedOutput = encoder.resolveComplex(complex) + '';
+                                    var actualOutput = encoder.replaceString(complex);
+                                    expect(actualOutput).toBe(
+                                        expectedOutput,
+                                        'expected ' + expectedOutput.length + ' chars but found ' +
+                                        actualOutput.length
+                                    );
+                                }
+                            );
+                        }
+                        
+                        test('Number', 'NAME');
+                        test('Object', 'NAME');
+                        test('RegExp', 'NAME');
+                        test('String', 'NAME');
+                    }
+                );
             }
         );
         describe(
@@ -1650,57 +1682,6 @@ self
                         expect(debugReplacer('F')).toThrow(
                             SyntaxError('Illegal string "\\?" in the definition of F')
                         );
-                    }
-                );
-            }
-        );
-        describe(
-            'Encoder#resolveComplex with proper features',
-            function ()
-            {
-                describe(
-                    'resolves',
-                    function ()
-                    {
-                        function test(complex, features)
-                        {
-                            it(
-                                complex,
-                                function ()
-                                {
-                                    var encoder = JScrewIt.debug.createEncoder(features);
-                                    var solution = encoder.resolveComplex(complex);
-                                    expect(solution).toBeJSFuck();
-                                }
-                            );
-                        }
-                        
-                        test('Number', 'NAME');
-                        test('Object', 'NAME');
-                        test('RegExp', 'NAME');
-                        test('String', 'NAME');
-                    }
-                );
-                describe(
-                    'does not resolve',
-                    function ()
-                    {
-                        function test(complex, features)
-                        {
-                            it(
-                                complex,
-                                function ()
-                                {
-                                    var encoder = JScrewIt.debug.createEncoder(features);
-                                    var solution = encoder.resolveComplex(complex);
-                                    expect(solution).toBeNull();
-                                }
-                            );
-                        }
-                        
-                        test('Number', ['ENTRIES_OBJ', 'NAME']);
-                        test('Object', ['ENTRIES_OBJ', 'NAME']);
-                        test('String', ['CAPITAL_HTML', 'ENTRIES_OBJ', 'NAME']);
                     }
                 );
             }
