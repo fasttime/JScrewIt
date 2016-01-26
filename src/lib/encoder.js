@@ -15,7 +15,8 @@ getAppendLength,
 getFigures,
 hasOuterPlus,
 isArray,
-replaceDigit
+replaceDigit,
+resolveSimple: true
 */
 
 var CODERS;
@@ -281,7 +282,7 @@ var Encoder;
         define(
             function (char)
             {
-                var charCode = char.charCodeAt(0);
+                var charCode = char.charCodeAt();
                 var encoder = charCode < 0x100 ? charEncodeByUnescape8 : charEncodeByUnescape16;
                 var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
                 return result;
@@ -290,7 +291,7 @@ var Encoder;
         define(
             function (char)
             {
-                var charCode = char.charCodeAt(0);
+                var charCode = char.charCodeAt();
                 var encoder = charCode < 0x100 ? charEncodeByAtob : charEncodeByEval;
                 var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
                 return result;
@@ -405,7 +406,7 @@ var Encoder;
             for (index = 0; index < amendings; ++index)
             {
                 var digit = firstDigit + index;
-                digitLengths[digit] = getAppendLength(resolveSimple(AMENDINGS[index]));
+                digitLengths[digit] = getAppendLength(SIMPLE[AMENDINGS[index]]);
                 pattern += digit;
             }
             pattern += ']';
@@ -462,7 +463,7 @@ var Encoder;
                 {
                     ++(
                         charMap[char] ||
-                        (charMap[char] = { char: char, charCode: char.charCodeAt(0), count: 0 })
+                        (charMap[char] = { char: char, charCode: char.charCodeAt(), count: 0 })
                     ).count;
                 }
             );
@@ -488,7 +489,7 @@ var Encoder;
     function initMinCharIndexArrayStrLength(input)
     {
         var minCharIndexArrayStrLength =
-            Math.max((input.length - 1) * (resolveSimple('false').length + 1) - 3, 0);
+            Math.max((input.length - 1) * (SIMPLE['false'].length + 1) - 3, 0);
         return minCharIndexArrayStrLength;
     }
     
@@ -583,7 +584,7 @@ var Encoder;
             }
             else if (literal in SIMPLE)
             {
-                solution = resolveSimple(literal);
+                solution = SIMPLE[literal];
             }
             else
             {
@@ -598,22 +599,6 @@ var Encoder;
             this.throwSyntaxError('Unexpected character ' + quoteString(wholeMatch));
         }
         return replacement;
-    }
-    
-    function resolveSimple(simple)
-    {
-        var solution = SIMPLE[simple];
-        if (solution.expr)
-        {
-            STATIC_ENCODER.callResolver(
-                simple,
-                function ()
-                {
-                    SIMPLE[simple] = solution = STATIC_ENCODER.resolve(solution);
-                }
-            );
-        }
-        return solution;
     }
     
     var CharCache = createConstructor(STATIC_CHAR_CACHE);
@@ -1142,7 +1127,7 @@ var Encoder;
                 if (token = match[2])
                     solution = this.resolveCharacter(token);
                 else if (token = match[1])
-                    solution = resolveSimple(token);
+                    solution = SIMPLE[token];
                 else
                 {
                     token = match[0];
@@ -1286,5 +1271,19 @@ var Encoder;
     assignNoEnum(Encoder.prototype, encoderProtoSource);
     
     var STATIC_ENCODER = new Encoder();
+    
+    resolveSimple =
+        function (simple, definition)
+        {
+            var solution;
+            STATIC_ENCODER.callResolver(
+                simple,
+                function ()
+                {
+                    solution = STATIC_ENCODER.resolve(definition);
+                }
+            );
+            return solution;
+        };
 }
 )();
