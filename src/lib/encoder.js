@@ -12,7 +12,7 @@ createConstructor,
 createSolution,
 define,
 getAppendLength,
-getFigures,
+getFigure,
 hasOuterPlus,
 isArray,
 replaceDigit,
@@ -872,26 +872,22 @@ var Encoder;
         encodeByCharCodes: function (input, long, radix, maxLength)
         {
             var cache = new Empty();
-            var charCodeArrayStr =
-                this.replaceFalseFreeArray(
-                    Array.prototype.map.call(
-                        input,
-                        function (char)
-                        {
-                            var charCode =
-                                cache[char] || (cache[char] = char.charCodeAt().toString(radix));
-                            return charCode;
-                        }
-                    ),
-                    maxLength
+            var charCodeArray =
+                Array.prototype.map.call(
+                    input,
+                    function (char)
+                    {
+                        var charCode =
+                            cache[char] || (cache[char] = char.charCodeAt().toString(radix));
+                        return charCode;
+                    }
                 );
+            var charCodeArrayStr = this.replaceFalseFreeArray(charCodeArray, maxLength);
             if (charCodeArrayStr)
             {
                 var output = this.createCharCodesEncoding(charCodeArrayStr, long, radix);
                 if (!(output.length > maxLength))
-                {
                     return output;
-                }
             }
         },
         
@@ -899,17 +895,18 @@ var Encoder;
         {
             var input = inputData.valueOf();
             var freqList = getFrequencyList(inputData);
-            var figures = getFigures(freqList.length);
             var charMap = new Empty();
             var minCharIndexArrayStrLength = initMinCharIndexArrayStrLength(input);
-            freqList.forEach(
-                function (freq, index)
-                {
-                    var figure = figures[index];
-                    charMap[freq.char] = figure;
-                    minCharIndexArrayStrLength += freq.count * figure.sortLength;
-                }
-            );
+            var figures =
+                freqList.map(
+                    function (freq, index)
+                    {
+                        var figure = getFigure(index);
+                        charMap[freq.char] = figure;
+                        minCharIndexArrayStrLength += freq.count * figure.sortLength;
+                        return figure;
+                    }
+                );
             var dictChars =
                 freqList.map(
                     function (freq)
@@ -919,16 +916,12 @@ var Encoder;
                 );
             var legend = this.encodeDictLegend(dictChars, maxLength - minCharIndexArrayStrLength);
             if (!legend)
-            {
                 return;
-            }
             var figureMaxLength = maxLength - legend.length;
             var figureLegend =
                 this.replaceFalseFreeArray(figures, figureMaxLength - minCharIndexArrayStrLength);
             if (!figureLegend)
-            {
                 return;
-            }
             var keyFigureArrayStr =
                 this.createCharKeyArrayString(
                     input,
@@ -936,9 +929,7 @@ var Encoder;
                     figureMaxLength - figureLegend.length
                 );
             if (!keyFigureArrayStr)
-            {
                 return;
-            }
             var charIndexArrayStr =
                 this.createJSFuckArrayMapping(
                     keyFigureArrayStr,
