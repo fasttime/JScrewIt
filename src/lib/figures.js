@@ -1,6 +1,6 @@
 /* global Empty */
 
-var getFigures;
+var getFigure;
 
 (function ()
 {
@@ -88,10 +88,10 @@ var getFigures;
         }
     );
     
-    getFigures =
-        function (count)
+    getFigure =
+        function (index)
         {
-            while (figures.length < count)
+            while (figures.length <= index)
             {
                 var usedFigures = figureList[figureIndex];
                 if (usedFigures)
@@ -103,8 +103,8 @@ var getFigures;
                 newFigures.forEach(useFigure);
                 ++figureIndex;
             }
-            var result = figures.slice(0, count);
-            return result;
+            var figure = figures[index];
+            return figure;
         };
 }
 )();

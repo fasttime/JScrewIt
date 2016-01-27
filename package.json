@@ -46,7 +46,7 @@
     "grunt-jsdoc-to-markdown": "~1.2.0",
     "grunt-mocha-istanbul": "~3.0.1",
     "istanbul": "~0.4.1",
-    "mocha": "~2.3.4",
+    "mocha": "~2.4.1",
     "mocha-matrix": "~0.1.0",
     "progress": "~1.1.8"
   }
