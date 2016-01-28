@@ -9,6 +9,7 @@ Encoder,
 JScrewIt,
 ScrewBuffer,
 assignNoEnum,
+create,
 define,
 featureFromMask,
 getValidFeatureMask,
@@ -49,13 +50,9 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         {
             constant += '';
             if (!/^[$A-Z_a-z][$0-9A-Z_a-z]*$/.test(constant))
-            {
                 throw new SyntaxError('Invalid identifier ' + JSON.stringify(constant));
-            }
             if (!encoder.hasOwnProperty('constantDefinitions'))
-            {
-                encoder.constantDefinitions = Object.create(CONSTANTS);
-            }
+                encoder.constantDefinitions = create(CONSTANTS);
             var entries = [define(definition + '')];
             encoder.constantDefinitions[constant] = entries;
         }

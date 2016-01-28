@@ -1,4 +1,4 @@
-/* global Empty, createDefinitionEntry, define, noProto */
+/* global Empty, createDefinitionEntry, define, defineProperty, noProto */
 
 // Definition syntax has been changed to match JavaScript more closely. The main differences from
 // JSFuck are:
@@ -322,11 +322,11 @@ var resolveSimple;
         {
             var definition = { expr: expr, level: level };
             var solution = resolveSimple(simple, definition);
-            Object.defineProperty(SIMPLE, simple, { value: solution });
+            defineProperty(SIMPLE, simple, { value: solution });
             return solution;
         }
         
-        Object.defineProperty(SIMPLE, simple, { configurable: true, enumerable: true, get: get });
+        defineProperty(SIMPLE, simple, { configurable: true, enumerable: true, get: get });
     }
     
     LEVEL_STRING    = 1;

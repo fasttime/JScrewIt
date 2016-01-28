@@ -23,9 +23,7 @@ var trimJS;
             {
                 var index = match.index;
                 if (str[index - 1] !== '\\')
-                {
                     str = str.slice(0, index);
-                }
             }
             return str;
         };
