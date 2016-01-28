@@ -1,4 +1,16 @@
-/* global Empty, assignNoEnum, document, history, isArray, self, toolbar */
+/*
+global
+Empty,
+assignNoEnum,
+create,
+defineProperty,
+document,
+history,
+isArray,
+keys,
+self,
+toolbar
+*/
 
 var Feature;
 
@@ -20,9 +32,7 @@ var validMaskFromArrayOrStringOrFeature;
             compatible = isMaskCompatible(mask);
         }
         else
-        {
             compatible = true;
-        }
         return compatible;
     }
     
@@ -37,9 +47,7 @@ var validMaskFromArrayOrStringOrFeature;
                     var result;
                     var otherMask = validMaskFromArrayOrStringOrFeature(arg);
                     if (index)
-                    {
                         result = otherMask === mask;
-                    }
                     else
                     {
                         mask = otherMask;
@@ -83,9 +91,7 @@ var validMaskFromArrayOrStringOrFeature;
             result = featureFromMask(mask);
         }
         else
-        {
             result = null;
-        }
         return result;
     }
     
@@ -94,9 +100,7 @@ var validMaskFromArrayOrStringOrFeature;
         var mask;
         var featureObj = ALL[name];
         if (featureObj)
-        {
             mask = featureObj.mask;
-        }
         else
         {
             var excludes;
@@ -113,9 +117,7 @@ var validMaskFromArrayOrStringOrFeature;
                 {
                     mask = 1 << bitIndex++;
                     if (check())
-                    {
                         autoMask |= mask;
-                    }
                 }
                 mask ^= 0;
                 var includes = includesMap[name] = info.includes || [];
@@ -129,9 +131,7 @@ var validMaskFromArrayOrStringOrFeature;
                 excludes = info.excludes;
                 featureObj = createFeature(name, info.description, mask, check, info.attributes);
                 if (check)
-                {
                     elementaryFeatureObjs.push(featureObj);
-                }
             }
             registerFeature(name, featureObj);
             if (excludes)
@@ -152,7 +152,7 @@ var validMaskFromArrayOrStringOrFeature;
     function createFeature(name, description, mask, check, attributes)
     {
         var featureObj =
-            Object.create(
+            create(
                 Feature.prototype,
                 {
                     attributes: { value: Object.freeze(attributes || { }) },
@@ -167,7 +167,7 @@ var validMaskFromArrayOrStringOrFeature;
     
     function initMask(featureObj, mask)
     {
-        Object.defineProperty(featureObj, 'mask', { value: mask });
+        defineProperty(featureObj, 'mask', { value: mask });
     }
     
     function isExcludingAttribute(attributeCache, attributeName, featureObjs)
@@ -191,17 +191,13 @@ var validMaskFromArrayOrStringOrFeature;
     {
         var mask;
         if (arg instanceof Feature)
-        {
             mask = arg.mask;
-        }
         else
         {
             var name = arg + '';
             var featureObj = ALL[name];
             if (!featureObj)
-            {
                 throw new ReferenceError('Unknown feature ' + JSON.stringify(name));
-            }
             mask = featureObj.mask;
         }
         return mask;
@@ -210,16 +206,14 @@ var validMaskFromArrayOrStringOrFeature;
     function registerFeature(name, featureObj)
     {
         var descriptor = { enumerable: true, value: featureObj };
-        Object.defineProperty(Feature, name, descriptor);
-        Object.defineProperty(ALL, name, descriptor);
+        defineProperty(Feature, name, descriptor);
+        defineProperty(ALL, name, descriptor);
     }
     
     function validateMask(mask)
     {
         if (!isMaskCompatible(mask))
-        {
             throw new ReferenceError('Incompatible features');
-        }
     }
     
     function validMaskFromArguments(args)
@@ -248,9 +242,7 @@ var validMaskFromArrayOrStringOrFeature;
         );
         validationNeeded |= args.length > 1;
         if (validationNeeded)
-        {
             validateMask(mask);
-        }
         return mask;
     }
     
@@ -1039,7 +1031,7 @@ var validMaskFromArrayOrStringOrFeature;
         function ()
         {
             var mask = validMaskFromArguments(arguments);
-            var featureObj = this instanceof Feature ? this : Object.create(Feature.prototype);
+            var featureObj = this instanceof Feature ? this : create(Feature.prototype);
             initMask(featureObj, mask);
             return featureObj;
         };
@@ -1188,7 +1180,7 @@ var validMaskFromArrayOrStringOrFeature;
                     delete featureNameSet[name];
                 }
             );
-            var names = Object.keys(featureNameSet).sort();
+            var names = keys(featureNameSet).sort();
             return names;
         },
         
@@ -1220,9 +1212,7 @@ var validMaskFromArrayOrStringOrFeature;
                     var otherMask = featureObj.mask;
                     var included = (otherMask & mask) === otherMask;
                     if (included)
-                    {
                         names.push(featureObj.name);
-                    }
                 }
             );
             return names;
@@ -1309,9 +1299,7 @@ var validMaskFromArrayOrStringOrFeature;
                                 attributeCache,
                                 attributeValue,
                                 referenceFeatureObjs))
-                        {
                             resultMask |= otherMask;
-                        }
                     }
                 }
             );
@@ -1331,9 +1319,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             var name = this.name;
             if (name === undefined)
-            {
                 name = '{' + this.canonicalNames.join(', ') + '}';
-            }
             var str = '[Feature ' + name + ']';
             return str;
         }
@@ -1343,7 +1329,7 @@ var validMaskFromArrayOrStringOrFeature;
     featureFromMask =
         function (mask)
         {
-            var featureObj = Object.create(Feature.prototype);
+            var featureObj = create(Feature.prototype);
             initMask(featureObj, mask);
             return featureObj;
         };
@@ -1389,14 +1375,10 @@ var validMaskFromArrayOrStringOrFeature;
                     }
                 );
                 if (arg.length > 1)
-                {
                     validateMask(mask);
-                }
             }
             else
-            {
                 mask = maskFromStringOrFeature(arg);
-            }
             return mask;
         };
     
@@ -1406,7 +1388,7 @@ var validMaskFromArrayOrStringOrFeature;
     var includesMap = new Empty();
     var incompatibleMasks = [];
     
-    var featureNames = Object.keys(FEATURE_INFOS);
+    var featureNames = keys(FEATURE_INFOS);
     featureNames.forEach(completeFeature);
     elementaryFeatureObjs.sort();
     var autoFeatureObj =

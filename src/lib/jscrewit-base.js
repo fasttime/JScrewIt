@@ -91,9 +91,7 @@ var setUp;
             features = arg2.features;
             wrapWith = filterWrapWith(arg2.wrapWith);
             if (arg2.trimCode)
-            {
                 input = trimJS(input);
-            }
             perfInfo = arg2.perfInfo;
         }
         else
@@ -105,9 +103,7 @@ var setUp;
         var codingLog = encoder.codingLog = [];
         var output = encoder.encode(input + '', wrapWith);
         if (perfInfo)
-        {
             perfInfo.codingLog = codingLog;
-        }
         delete encoder.codingLog;
         return output;
     }
@@ -115,9 +111,7 @@ var setUp;
     function filterWrapWith(wrapWith)
     {
         if (wrapWith === undefined)
-        {
             return 'none';
-        }
         switch (wrapWith += '')
         {
         case 'none':
@@ -133,9 +127,7 @@ var setUp;
         var featureMask = getValidFeatureMask(features);
         var encoder = encoders[featureMask];
         if (!encoder)
-        {
             encoders[featureMask] = encoder = new Encoder(featureMask);
-        }
         return encoder;
     }
     
@@ -155,17 +147,13 @@ var setUp;
         function (self)
         {
             if (self != null)
-            {
                 self.JSFuck = self.JScrewIt = JScrewIt;
-            }
         };
     
     setUp(typeof self !== 'undefined' ? /* istanbul ignore next */ self : null);
     
     // istanbul ignore else
     if (typeof module !== 'undefined')
-    {
         module.exports = JScrewIt;
-    }
 }
 )();

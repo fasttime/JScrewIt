@@ -15,6 +15,7 @@ getAppendLength,
 getFigure,
 hasOuterPlus,
 isArray,
+keys,
 replaceDigit,
 resolveSimple: true
 */
@@ -307,9 +308,7 @@ var Encoder;
         var param1 = BASE64_ALPHABET_LO_6[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
         var postfix1 = '(' + this.replaceString(param1) + ')';
         if (param1.length > 2)
-        {
             postfix1 += this.replaceExpr('[0]');
-        }
         var length1 = postfix1.length;
         
         var param2Left = this.findBase64AlphabetDefinition(BASE64_ALPHABET_LO_4[charCode >> 4]);
@@ -317,9 +316,7 @@ var Encoder;
         var param2 = param2Left + param2Right;
         var index2 = 1 + (param2Left.length - 2) / 4 * 3;
         if (index2 > 9)
-        {
             index2 = '"' + index2 + '"';
-        }
         var postfix2 =
             '(' + this.replaceString(param2) + ')' + this.replaceExpr('[' + index2 + ']');
         var length2 = postfix2.length;
@@ -328,9 +325,7 @@ var Encoder;
         var param3 = param3Left + BASE64_ALPHABET_HI_6[charCode & 0x3f];
         var index3 = 2 + (param3Left.length - 3) / 4 * 3;
         if (index3 > 9)
-        {
             index3 = '"' + index3 + '"';
-        }
         var postfix3 =
             '(' + this.replaceString(param3) + ')' + this.replaceExpr('[' + index3 + ']');
         var length3 = postfix3.length;
@@ -350,9 +345,7 @@ var Encoder;
             this.resolveConstant('Function') + '(' +
             this.replaceString('return"\\u' + hexCode + '"') + ')()';
         if (hexCode.length > 4)
-        {
             result += this.replaceExpr('[0]');
-        }
         return result;
     }
     
@@ -362,9 +355,7 @@ var Encoder;
         var result =
             this.resolveConstant('unescape') + '(' + this.replaceString('%u' + hexCode) + ')';
         if (hexCode.length > 4)
-        {
             result += this.replaceExpr('[0]');
-        }
         return result;
     }
     
@@ -374,9 +365,7 @@ var Encoder;
         var result =
             this.resolveConstant('unescape') + '(' + this.replaceString('%' + hexCode) + ')';
         if (hexCode.length > 2)
-        {
             result += this.replaceExpr('[0]');
-        }
         return result;
     }
     
@@ -467,7 +456,7 @@ var Encoder;
                     ).count;
                 }
             );
-            var charList = Object.keys(charMap);
+            var charList = keys(charMap);
             inputData.freqList = freqList =
                 charList.map(
                     function (char)
@@ -499,13 +488,9 @@ var Encoder;
         {
             var char = expr[offset++];
             if (char === '[')
-            {
                 return true;
-            }
             if (char !== ' ')
-            {
                 return false;
-            }
         }
     }
     
@@ -515,13 +500,9 @@ var Encoder;
         {
             var char = expr[--offset];
             if (char === '+' || char === '!')
-            {
                 return true;
-            }
             if (char !== ' ')
-            {
                 return false;
-            }
         }
     }
     
@@ -541,17 +522,11 @@ var Encoder;
             replacement = replaceDigit(+number[0]) + '';
             var length = number.length;
             for (var index = 1; index < length; ++index)
-            {
                 replacement += '+[' + replaceDigit(+number[index]) + ']';
-            }
             if (length > 1)
-            {
                 replacement = '+(' + replacement + ')';
-            }
             if (isStrongBoundRequired(expr, offset, wholeMatch))
-            {
                 replacement = '(' + replacement + ')';
-            }
         }
         else if (quotedString)
         {
@@ -567,37 +542,25 @@ var Encoder;
             var strongBound = isStrongBoundRequired(expr, offset, wholeMatch);
             replacement = this.replaceString(str, strongBound, true);
             if (!replacement)
-            {
                 this.throwSyntaxError('String too complex');
-            }
         }
         else if (space)
-        {
             replacement = '';
-        }
         else if (literal)
         {
             var solution;
             if (literal in this.constantDefinitions)
-            {
                 solution = this.resolveConstant(literal);
-            }
             else if (literal in SIMPLE)
-            {
                 solution = SIMPLE[literal];
-            }
             else
-            {
                 this.throwSyntaxError('Undefined literal ' + literal);
-            }
             replacement =
                 isStrongBoundRequired(expr, offset, wholeMatch) && hasOuterPlus(solution) ?
                 '(' + solution + ')' : solution + '';
         }
         else
-        {
             this.throwSyntaxError('Unexpected character ' + quoteString(wholeMatch));
-        }
         return replacement;
     }
     
@@ -635,9 +598,7 @@ var Encoder;
                     var perfInfo = { coderName: coderName };
                     var perfStatus;
                     if (inputLength < coder.MIN_INPUT_LENGTH)
-                    {
                         perfStatus = 'skipped';
-                    }
                     else
                     {
                         this.codingLog = perfInfo.codingLog = [];
@@ -651,17 +612,13 @@ var Encoder;
                         {
                             output = newOutput;
                             if (usedPerfInfo)
-                            {
                                 usedPerfInfo.status = 'superseded';
-                            }
                             usedPerfInfo = perfInfo;
                             perfInfo.outputLength = newOutput.length;
                             perfStatus = 'used';
                         }
                         else
-                        {
                             perfStatus = 'incomplete';
-                        }
                     }
                     perfInfo.status = perfStatus;
                     perfInfoList.push(perfInfo);
@@ -781,27 +738,19 @@ var Encoder;
                     }
                 }
                 else
-                {
                     parseIntArg = 'arguments[0]';
-                }
                 if (coerceToInt)
-                {
                     parseIntArg = '+' + parseIntArg;
-                }
                 mapper =
                     'Function("return this[parseInt(' + parseIntArg + ',' + radix + ')]")["bind"]';
             }
             else
-            {
                 mapper = '""["charAt"]["bind"]';
-            }
             var output =
                 this.createJSFuckArrayMapping(charIndexArrayStr, mapper, legend) +
                 this.replaceExpr('["join"]([])');
             if (!(output.length > maxLength))
-            {
                 return output;
-            }
         },
         
         createJSFuckArrayMapping: function (arrayStr, mapper, legend)
@@ -828,8 +777,8 @@ var Encoder;
             }
             
             var stringTokenPattern =
-                '(' + Object.keys(SIMPLE).join('|') + ')|' +
-                Object.keys(COMPLEX).filter(filterCallback, this).map(mapCallback).join('') +
+                '(' + keys(SIMPLE).join('|') + ')|' +
+                keys(COMPLEX).filter(filterCallback, this).map(mapCallback).join('') +
                 '([^])';
             this.stringTokenPattern = stringTokenPattern;
             return stringTokenPattern;
@@ -855,17 +804,11 @@ var Encoder;
                     ]
                 );
             if (output == null)
-            {
                 throw new Error('Encoding failed');
-            }
             if (wrapWith === 'call')
-            {
                 output = this.resolveConstant('Function') + '(' + output + ')()';
-            }
             else if (wrapWith === 'eval')
-            {
                 output = this.replaceExpr('Function("return eval")()') + '(' + output + ')';
-            }
             return output;
         },
         
@@ -963,15 +906,11 @@ var Encoder;
             );
             var legend = this.encodeDictLegend(dictChars, maxLength - minCharIndexArrayStrLength);
             if (!legend)
-            {
                 return;
-            }
             var charIndexArrayStr =
                 this.createCharKeyArrayString(input, charMap, maxLength - legend.length);
             if (!charIndexArrayStr)
-            {
                 return;
-            }
             var output =
                 this.createDictEncoding(
                     legend,
@@ -997,9 +936,7 @@ var Encoder;
                         'legend'
                     );
                 if (output && !(output.length > maxLength))
-                {
                     return output;
-                }
             }
         },
         
@@ -1007,13 +944,9 @@ var Encoder;
         {
             var definition;
             if (isArray(element))
-            {
                 definition = this.findBestDefinition(element);
-            }
             else
-            {
                 definition = element;
-            }
             return definition;
         },
         
@@ -1023,9 +956,7 @@ var Encoder;
             {
                 var entry = entries[entryIndex];
                 if (this.hasFeatures(entry.featureMask))
-                {
                     return entry.definition;
-                }
             }
         },
         
@@ -1097,9 +1028,7 @@ var Encoder;
             {
                 var result = replacement + this.replaceExpr('["split"](false)');
                 if (!(result.length > maxLength))
-                {
                     return result;
-                }
             }
         },
         
@@ -1137,9 +1066,7 @@ var Encoder;
             var solution;
             var type = typeof definition;
             if (type === 'function')
-            {
                 solution = definition.call(this);
-            }
             else
             {
                 var expr;
@@ -1150,9 +1077,7 @@ var Encoder;
                     level = definition.level;
                 }
                 else
-                {
                     expr = definition;
-                }
                 var replacement = this.replaceExpr(expr);
                 solution = createSolution(replacement, level);
             }
@@ -1174,13 +1099,9 @@ var Encoder;
                         {
                             var defaultResolver = defaultResolveCharacter.bind(this, char);
                             if (entries)
-                            {
                                 solution = this.findOptimalSolution(entries, defaultResolver);
-                            }
                             if (!solution)
-                            {
                                 solution = defaultResolver();
-                            }
                             charCache = this.charCache;
                         }
                         else
@@ -1189,9 +1110,7 @@ var Encoder;
                             charCache = STATIC_CHAR_CACHE;
                         }
                         if (solution.level == null)
-                        {
                             solution.level = LEVEL_STRING;
-                        }
                         charCache[char] = solution;
                     }
                 );
@@ -1252,9 +1171,7 @@ var Encoder;
             var stack = this.stack;
             var stackLength = stack.length;
             if (stackLength)
-            {
                 message += ' in the definition of ' + stack[stackLength - 1];
-            }
             throw new SyntaxError(message);
         }
     };

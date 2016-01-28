@@ -1,8 +1,11 @@
 var Empty;
 
 var assignNoEnum;
+var create;
 var createConstructor;
+var defineProperty;
 var isArray;
+var keys;
 var noProto;
 
 (function ()
@@ -13,7 +16,7 @@ var noProto;
         function (target, source)
         {
             var descriptors = { };
-            Object.keys(source).forEach(
+            keys(source).forEach(
                 function (name)
                 {
                     var descriptor = Object.getOwnPropertyDescriptor(source, name);
@@ -25,6 +28,8 @@ var noProto;
             return target;
         };
     
+    create = Object.create;
+    
     createConstructor =
         function (prototype)
         {
@@ -33,13 +38,17 @@ var noProto;
             return constructor;
         };
     
+    defineProperty = Object.defineProperty;
+    
     isArray = Array.isArray;
+    
+    keys = Object.keys;
     
     noProto =
         function (obj)
         {
             var result = new Empty();
-            Object.keys(obj).forEach(
+            keys(obj).forEach(
                 function (name)
                 {
                     result[name] = obj[name];
@@ -48,6 +57,6 @@ var noProto;
             return result;
         };
     
-    Empty = createConstructor(Object.create(null));
+    Empty = createConstructor(create(null));
 }
 )();
