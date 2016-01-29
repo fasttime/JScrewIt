@@ -1,4 +1,13 @@
-/* global Empty, createDefinitionEntry, define, defineProperty, noProto */
+/*
+global
+Empty,
+createDefinitionEntry,
+define,
+defineProperty,
+noProto,
+replaceIndexer,
+resolveSimple
+*/
 
 // Definition syntax has been changed to match JavaScript more closely. The main differences from
 // JSFuck are:
@@ -20,7 +29,6 @@ var LEVEL_UNDEFINED;
 
 var createSolution;
 var replaceDigit;
-var resolveSimple;
 
 (function ()
 {
@@ -130,17 +138,15 @@ var resolveSimple;
         {
             var paddingInfo = this.findBestDefinition(paddingInfos);
             padding = paddingInfo.paddings[paddingDefinition];
-            indexer = index + paddingDefinition + paddingInfo.shift;
-            if (indexer > 9)
-                indexer = '"' + indexer + '"';
+            indexer = replaceIndexer(index + paddingDefinition + paddingInfo.shift);
         }
         else
         {
             padding = paddingDefinition.padding;
-            indexer = paddingDefinition.indexer;
+            indexer = '[' + this.replaceExpr(paddingDefinition.indexer) + ']';
         }
-        var fullExpr = '(' + padding + '+' + expr + ')[' + indexer + ']';
-        var replacement = this.replaceExpr(fullExpr);
+        var fullExpr = '(' + padding + '+' + expr + ')';
+        var replacement = this.replaceExpr(fullExpr) + indexer;
         var solution = createSolution(replacement, LEVEL_STRING, false);
         return solution;
     }
@@ -425,7 +431,7 @@ var resolveSimple;
         'A':
         [
             defineFHCharAt('Array', 9),
-            define('(RP_3_NO + ARRAY_ITERATOR)[11]', 'ARRAY_ITERATOR')
+            define('(RP_3_NO + ARRAY_ITERATOR)["11"]', 'ARRAY_ITERATOR')
         ],
         'B':
         [
