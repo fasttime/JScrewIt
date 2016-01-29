@@ -16,13 +16,15 @@ getFigure,
 hasOuterPlus,
 isArray,
 keys,
-replaceDigit,
-resolveSimple: true
+replaceDigit
 */
 
 var CODERS;
 
 var Encoder;
+
+var replaceIndexer;
+var resolveSimple;
 
 (function ()
 {
@@ -308,26 +310,22 @@ var Encoder;
         var param1 = BASE64_ALPHABET_LO_6[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
         var postfix1 = '(' + this.replaceString(param1) + ')';
         if (param1.length > 2)
-            postfix1 += this.replaceExpr('[0]');
+            postfix1 += replaceIndexer(0);
         var length1 = postfix1.length;
         
         var param2Left = this.findBase64AlphabetDefinition(BASE64_ALPHABET_LO_4[charCode >> 4]);
         var param2Right = this.findBase64AlphabetDefinition(BASE64_ALPHABET_HI_4[charCode & 0x0f]);
         var param2 = param2Left + param2Right;
         var index2 = 1 + (param2Left.length - 2) / 4 * 3;
-        if (index2 > 9)
-            index2 = '"' + index2 + '"';
-        var postfix2 =
-            '(' + this.replaceString(param2) + ')' + this.replaceExpr('[' + index2 + ']');
+        var indexer2 = replaceIndexer(index2);
+        var postfix2 = '(' + this.replaceString(param2) + ')' + indexer2;
         var length2 = postfix2.length;
         
         var param3Left = BASE64_ALPHABET_LO_2[charCode >> 6];
         var param3 = param3Left + BASE64_ALPHABET_HI_6[charCode & 0x3f];
         var index3 = 2 + (param3Left.length - 3) / 4 * 3;
-        if (index3 > 9)
-            index3 = '"' + index3 + '"';
-        var postfix3 =
-            '(' + this.replaceString(param3) + ')' + this.replaceExpr('[' + index3 + ']');
+        var indexer3 = replaceIndexer(index3);
+        var postfix3 = '(' + this.replaceString(param3) + ')' + indexer3;
         var length3 = postfix3.length;
         
         var postfix =
@@ -345,7 +343,7 @@ var Encoder;
             this.resolveConstant('Function') + '(' +
             this.replaceString('return"\\u' + hexCode + '"') + ')()';
         if (hexCode.length > 4)
-            result += this.replaceExpr('[0]');
+            result += replaceIndexer(0);
         return result;
     }
     
@@ -355,7 +353,7 @@ var Encoder;
         var result =
             this.resolveConstant('unescape') + '(' + this.replaceString('%u' + hexCode) + ')';
         if (hexCode.length > 4)
-            result += this.replaceExpr('[0]');
+            result += replaceIndexer(0);
         return result;
     }
     
@@ -365,7 +363,7 @@ var Encoder;
         var result =
             this.resolveConstant('unescape') + '(' + this.replaceString('%' + hexCode) + ')';
         if (hexCode.length > 2)
-            result += this.replaceExpr('[0]');
+            result += replaceIndexer(0);
         return result;
     }
     
@@ -1179,6 +1177,14 @@ var Encoder;
     assignNoEnum(Encoder.prototype, encoderProtoSource);
     
     var STATIC_ENCODER = new Encoder();
+    
+    replaceIndexer =
+        function (index)
+        {
+            var replacement =
+                '[' + STATIC_ENCODER.replaceExpr(index > 9 ? '"' + index + '"' : index + '') + ']';
+            return replacement;
+        };
     
     resolveSimple =
         function (simple, definition)
