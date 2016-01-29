@@ -141,9 +141,7 @@ function createEngineSelectionBox()
         allEngineInput.indeterminate = checkedCount && checkedCount < engineVersionInputs.length;
         currentFeatureObj = Feature.commonOf.apply(null, featureObjs) || Feature.DEFAULT;
         if (webWorkerInput.checked)
-        {
             currentFeatureObj = currentFeatureObj.restrict('web-worker', featureObjs);
-        }
     }
     
     function init()

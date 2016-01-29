@@ -35,15 +35,11 @@ function processOutputMap(outputMap, entryCount, logLine)
         outputData.featureNames = featureNames;
         var entryIndex = outputData.entryIndex;
         if (entryIndex != null)
-        {
             entryIndexSet[entryIndex] = null;
-        }
     }
     var notAllDefsUsed = Object.keys(entryIndexSet).length !== entryCount;
     if (notAllDefsUsed)
-    {
         logLine('Not all definitions used!');
-    }
     var outputs = Object.keys(outputMap);
     outputs.sort(
         function (output1, output2)
@@ -57,17 +53,11 @@ function processOutputMap(outputMap, entryCount, logLine)
                 var feature1 = features1[index] || '';
                 var feature2 = features2[index] || '';
                 if (!feature1 && !feature2)
-                {
                     return 0;
-                }
                 if (feature1 < feature2)
-                {
                     return -1;
-                }
                 if (feature1 > feature2)
-                {
                     return 1;
-                }
             }
         }
     );
@@ -118,9 +108,7 @@ function scanAllChars(callback)
         var char = String.fromCharCode(charCode);
         var entries = JScrewIt.debug.getCharacterEntries(char);
         if (entries)
-        {
             chars.push(char);
-        }
     }
     var allCharCount = chars.length;
     var fd = fs.openSync('output.txt', 'w');
@@ -146,9 +134,7 @@ function scanAllChars(callback)
                 var notAllDefsUsed =
                     scanChar(char, entryCount, logLine, allCharCount, index, callback);
                 if (callback)
-                {
                     callback(char, allCharCount, index + 1, notAllDefsUsed);
-                }
             }
         );
     }
@@ -171,13 +157,9 @@ function scanChar(char, entryCount, logLine, allCharCount, charDoneCount, callba
         var outputData = outputMap[output];
         var featureMask = analyzer.featureObj.mask;
         if (outputData)
-        {
             outputData.featureMask &= featureMask;
-        }
         else
-        {
             outputMap[output] = { featureMask: featureMask, entryIndex: output.entryIndex };
-        }
         if (callback)
         {
             var progress = analyzer.progress;

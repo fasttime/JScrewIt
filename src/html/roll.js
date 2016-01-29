@@ -54,9 +54,7 @@ function createRoll()
             }
             endOpening = newEndOpening;
             if (!interval)
-            {
                 interval = setInterval(progress, 0);
-            }
         }
     }
     

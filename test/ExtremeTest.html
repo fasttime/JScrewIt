@@ -99,9 +99,7 @@ function handleSubmit(evt)
             return runExtremeTest(maxGroupThreshold, groupings);
         };
     for (var i = 0; i < callDepth; ++i)
-    {
         call = Function.prototype.call.bind(call);
-    }
     disableForm(true);
     setTimeout(
         function ()
