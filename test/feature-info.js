@@ -8,9 +8,7 @@
     {
         var count = list.length;
         if (count)
-        {
             callback(label + ' ' + (count === 1 ? 'feature' : 'features') + ': ', list);
-        }
     }
     
     function showFeatureSupport(callback)
@@ -67,13 +65,9 @@
                 featureObj !== COMPACT)
             {
                 if (Feature.areEqual(featureObj, AUTO))
-                {
                     characteristicList.push(featureName);
-                }
                 else if (featureObj !== DEFAULT && AUTO.includes(featureObj))
-                {
                     compatibleList.push(featureName);
-                }
             }
         }
         characteristicList.sort();

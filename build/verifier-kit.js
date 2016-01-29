@@ -138,9 +138,7 @@
         }
         
         if (!inputList)
-        {
             inputList = getExprList(entries);
-        }
         var analyzer = new Analyzer();
         var encoder;
         while (encoder = analyzer.nextEncoder)

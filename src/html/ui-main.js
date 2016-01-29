@@ -53,9 +53,7 @@ wrapWithCallBox
         var options = getOptions();
         var data = { input: inputArea.value, options: options };
         if (waitingForWorker)
-        {
             queuedData = data;
-        }
         else
         {
             worker.postMessage(data);
@@ -94,9 +92,7 @@ wrapWithCallBox
     function handleInputAreaKeyUp(evt)
     {
         if (evt.key !== 'Tab')
-        {
             encodeAsync();
-        }
     }
     
     function handleRun()
@@ -111,9 +107,7 @@ wrapWithCallBox
             alert(error);
         }
         if (typeof value === 'string')
-        {
             alert('"' + value + '"');
-        }
     }
     
     function handleWorkerMessage(evt)
@@ -128,13 +122,9 @@ wrapWithCallBox
             var data = evt.data;
             var error = data.error;
             if (error)
-            {
                 updateError(data.error);
-            }
             else
-            {
                 updateOutput(data.output);
-            }
             setWaitingForWorker(false);
         }
     }
@@ -210,18 +200,14 @@ wrapWithCallBox
             range.select();
         }
         else
-        {
             inputArea.setSelectionRange(0x7fffffff, 0x7fffffff);
-        }
         inputArea.focus();
     }
     
     function noEncode()
     {
         if (outputSet)
-        {
             updateStats(true);
-        }
     }
     
     function resetOutput()
@@ -256,9 +242,7 @@ wrapWithCallBox
         if (newOutOfSync)
         {
             if (worker)
-            {
                 inputArea.onkeyup = handleInputAreaKeyUp;
-            }
             html += ' – <i>out of sync</i>';
         }
         outputSet = true;

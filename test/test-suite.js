@@ -25,9 +25,7 @@ self
         var key = featureObj.canonicalNames.join('+');
         var encoder = encoderCache[key];
         if (!encoder)
-        {
             encoderCache[key] = encoder = JScrewIt.debug.createEncoder(featureObj);
-        }
         var output = encoder.resolve(entry.definition) + '';
         return output;
     }
@@ -143,14 +141,10 @@ self
             {
                 var charCode;
                 for (charCode = 0; charCode < 256; ++charCode)
-                {
                     testCharacter(charCode);
-                }
                 testCharacter(8734); // ∞
                 for (; charCode <= 0xffff; charCode <<= 1)
-                {
                     testCharacter(charCode + 0x1f);
-                }
             }
         );
         describe(
@@ -1111,9 +1105,7 @@ self
                     {
                         var buffer = JScrewIt.debug.createScrewBuffer(false, true, 4);
                         for (var index = 0; index < 5; ++index)
-                        {
                             buffer.append(solutionComma);
-                        }
                         test(
                             buffer,
                             '[[]]["concat"]([[]])["concat"]([[]])["concat"]([[]])+' +
@@ -1927,9 +1919,7 @@ self
                         );
                     }
                     if (!defaultEntryFound)
-                    {
                         testDefault();
-                    }
                 }
                 else
                 {
@@ -2080,12 +2070,8 @@ self
     var TestSuite = { init: init };
     
     if (global.self)
-    {
         self.TestSuite = TestSuite;
-    }
     if (typeof module !== 'undefined')
-    {
         module.exports = TestSuite;
-    }
 }
 )(typeof self === 'undefined' ? global : self);

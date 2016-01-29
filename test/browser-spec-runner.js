@@ -35,9 +35,7 @@ showFeatureSupport
                 function ()
                 {
                     if (outputWindow)
-                    {
                         outputWindow.close();
-                    }
                     outputWindow = popup('', 'outputWindow', 184, 300);
                     // Chrome won't always bring the new popup to the front automatically, so we
                     // better take care of that.
@@ -175,9 +173,7 @@ showFeatureSupport
             function ()
             {
                 if (runner.failures === 1)
-                {
                     setFavicon('favicon-fail.ico');
-                }
             }
         );
         runner.on(
@@ -185,9 +181,7 @@ showFeatureSupport
             function ()
             {
                 if (!runner.failures)
-                {
                     setFavicon('favicon-pass.ico');
-                }
             }
         );
     }
