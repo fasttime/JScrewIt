@@ -393,7 +393,7 @@ var replaceDigit;
         'p':
         [
             define('211["toString"]("31")[1]'),
-            define('(RP_3_NO + btoa(Infinity))["10"]', 'ATOB')
+            define('(RP_3_NO + btoa(undefined))["10"]', 'ATOB')
         ],
         'q':
         [
@@ -455,9 +455,9 @@ var replaceDigit;
         ],
         'E':
         [
-            define('btoa("01")[2]', 'ATOB'),
-            define('(RP_5_N + ""["link"]())["10"]', 'CAPITAL_HTML'),
-            defineFHCharAt('RegExp', 12)
+            defineFHCharAt('RegExp', 12),
+            define('btoa("0NaN")[1]', 'ATOB'),
+            define('(RP_5_N + ""["link"]())["10"]', 'CAPITAL_HTML')
         ],
         'F':
         [
@@ -504,7 +504,7 @@ var replaceDigit;
         'O':
         [
             define('(RP_3_NO + PLAIN_OBJECT)["11"]'),
-            define('btoa(8)[0]', 'ATOB'),
+            define('btoa(NaN)[3]', 'ATOB'),
             define('""["fontcolor"]()[2]', 'CAPITAL_HTML')
         ],
         'P':
@@ -539,7 +539,7 @@ var replaceDigit;
         ],
         'U':
         [
-            define('(RP_4_N + btoa(false))["10"]', 'ATOB'),
+            define('btoa("1NaN")[1]', 'ATOB'),
             define('""["sub"]()[2]', 'CAPITAL_HTML'),
             define('(RP_3_NO + PLAIN_OBJECT["toString"]["call"]())["11"]', 'UNDEFINED'),
             define(
@@ -554,9 +554,10 @@ var replaceDigit;
         ],
         'W':
         [
+            define('btoa(undefined)[1]', 'ATOB'),
+            define('(self + [])["11"]', 'DOMWINDOW'),
             define('(self + RP_3_NO)["slice"]("-10")[0]', 'SELF'),
-            define('(RP_3_NO + self)["11"]', 'WINDOW'),
-            define('(self + [])["11"]', 'DOMWINDOW')
+            define('(RP_3_NO + self)["11"]', 'WINDOW')
         ],
         'X':
         [
