@@ -142,11 +142,8 @@ verify['base64-3'] =
     verifyBase64Defs(
         [
             define('U'),
-            define('V', 'ATOB'),
             define('W', 'ANY_WINDOW'),
-            define('V', 'ATOB', 'ENTRIES_OBJ'),
-            define('W', 'ATOB', 'DOMWINDOW', 'ENTRIES_OBJ'),
-            define('W', 'ATOB', 'ENTRIES_OBJ', 'WINDOW'),
+            define('W', 'ATOB'),
             define('U', 'CAPITAL_HTML')
         ],
         ['U', 'V', 'W', 'X']
