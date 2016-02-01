@@ -19,22 +19,6 @@
         return entry;
     }
     
-    function getExprList(entries)
-    {
-        var exprSet = Object.create(null);
-        entries.forEach(
-            function (entry)
-            {
-                var definition = entry.definition;
-                var type = typeof definition;
-                var expr = type === 'object' ? definition.expr :  definition;
-                exprSet[expr] = null;
-            }
-        );
-        var exprList = Object.keys(exprSet).sort();
-        return exprList;
-    }
-    
     function findOptimalFeatures(replacer)
     {
         var optimalFeatureObjMap;
@@ -82,6 +66,31 @@
         }
     }
     
+    function getExprList(entries, defaultExpr)
+    {
+        var exprList =
+            entries.map(
+                function (entry)
+                {
+                    var definition = entry.definition;
+                    var type = typeof definition;
+                    var expr = type === 'object' ? definition.expr :  definition;
+                    if (expr === undefined)
+                        expr = defaultExpr;
+                    return expr;
+                }
+            );
+        exprList =
+            exprList.filter(
+                function (entry, index)
+                {
+                    var result = exprList.indexOf(entry) === index;
+                    return result;
+                }
+            );
+        return exprList;
+    }
+    
     function verifyComplex(complex, inputEntries, mismatchCallback)
     {
         var actualEntries = JScrewIt.debug.getComplexEntries(complex);
@@ -120,39 +129,44 @@
         }
     }
     
-    function verifyDefinitions(entries, inputList, mismatchCallback, replacerName)
+    function verifyDefinitions(entries, inputList, mismatchCallback, replacer, defaultExpr)
     {
         function considerInput(input)
         {
-            var solution = encoder[replacerName](input);
-            var length = solution.length;
-            if (length <= optimalLength)
+            var solution =
+                typeof replacer === 'function' ?
+                replacer.call(encoder, input) : encoder[replacer](input);
+            actualLength = solution.length;
+            if (actualLength <= optimalLength)
             {
-                if (length < optimalLength)
+                if (actualLength < optimalLength)
                 {
                     optimalInputs = Object.create(null);
-                    optimalLength = length;
+                    optimalLength = actualLength;
                 }
                 optimalInputs[input] = true;
             }
         }
         
         if (!inputList)
-            inputList = getExprList(entries);
+            inputList = getExprList(entries, defaultExpr);
         var analyzer = new Analyzer();
         var encoder;
         while (encoder = analyzer.nextEncoder)
         {
             var optimalInputs = null;
             var optimalLength = Infinity;
+            var actualLength = null;
             inputList.forEach(considerInput);
             analyzer.stopCapture();
             var actualDefinition = encoder.findBestDefinition(entries);
+            if (actualDefinition === undefined)
+                actualDefinition = defaultExpr;
             if (!optimalInputs[actualDefinition])
             {
                 var featureNames = analyzer.featureObj.canonicalNames;
                 var expectedDefinitions = Object.keys(optimalInputs).sort();
-                mismatchCallback(featureNames, actualDefinition, expectedDefinitions);
+                mismatchCallback(featureNames, String(actualDefinition), expectedDefinitions);
             }
         }
     }

@@ -1,14 +1,19 @@
 /*
 global
+AMENDINGS,
 CHARACTERS,
 COMPLEX,
 CONSTANTS,
+CREATE_PARSE_INT_ARG,
+DEFAULT_CHARACTER_ENCODER,
+FROM_CHAR_CODE,
 LEVEL_STRING,
 SIMPLE,
 Empty,
 ScrewBuffer,
 assignNoEnum,
 createConstructor,
+createParseIntArgDefault,
 createSolution,
 define,
 getAppendLength,
@@ -29,151 +34,6 @@ var resolveSimple;
 (function ()
 {
     'use strict';
-    
-    var AMENDINGS = ['true', 'undefined', 'NaN'];
-    
-    var BASE64_ALPHABET_HI_2 = ['NaN', 'false', 'undefined', '0'];
-    
-    var BASE64_ALPHABET_HI_4 =
-    [
-        [
-            define('A'),
-            define('C', 'CAPITAL_HTML'),
-            define('B', 'CAPITAL_HTML', 'ENTRIES_OBJ'),
-            define('A', 'ARRAY_ITERATOR')
-        ],
-        'F',
-        'Infinity',
-        'NaNfalse',
-        [
-            define('S'),
-            define('R', 'CAPITAL_HTML'),
-            define('S', 'CAPITAL_HTML', 'ENTRIES_OBJ')
-        ],
-        [
-            define('U'),
-            define('W', 'ANY_WINDOW'),
-            define('W', 'ATOB'),
-            define('U', 'CAPITAL_HTML')
-        ],
-        'a',
-        'false',
-        'i',
-        'n',
-        'r',
-        'true',
-        'y',
-        '0',
-        '4',
-        '8',
-    ];
-    
-    var BASE64_ALPHABET_HI_6 =
-    [
-        'A',
-        'B',
-        'C',
-        'D',
-        'E',
-        'F',
-        'G',
-        'H',
-        'Infinity',
-        'J',
-        'K',
-        'L',
-        'M',
-        'NaN',
-        'O',
-        'P',
-        'Q',
-        'R',
-        'S',
-        'T',
-        'U',
-        'V',
-        'W',
-        'X',
-        'Y',
-        'Z',
-        'a',
-        'b',
-        'c',
-        'd',
-        'e',
-        'false',
-        'g',
-        'h',
-        'i',
-        'j',
-        'k',
-        'l',
-        'm',
-        'n',
-        'o',
-        'p',
-        'q',
-        'r',
-        's',
-        'true',
-        'undefined',
-        'v',
-        'w',
-        'x',
-        'y',
-        'z',
-        '0',
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        '+',
-        '/',
-    ];
-    
-    var BASE64_ALPHABET_LO_2 = ['000', 'NaN', 'falsefalsefalse', '00f'];
-    
-    var BASE64_ALPHABET_LO_4 =
-    [
-        '0A',
-        [
-            define('0B'),
-            define('0R', 'CAPITAL_HTML'),
-            define('0B', 'ENTRIES_OBJ')
-        ],
-        '0i',
-        [
-            define('0j'),
-            define('0T', 'CAPITAL_HTML'),
-            define('0j', 'ENTRIES_OBJ')
-        ],
-        '00',
-        '01',
-        '02',
-        '03',
-        '04',
-        '05',
-        '0a',
-        '0r',
-        '0s',
-        '0t',
-        'undefinedfalse',
-        '0f',
-    ];
-    
-    var BASE64_ALPHABET_LO_6 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-    
-    var FROM_CHAR_CODE =
-    [
-        define('fromCharCode'),
-        define('fromCodePoint', 'ATOB', 'FROM_CODE_POINT'),
-        define('fromCodePoint', 'CAPITAL_HTML', 'FROM_CODE_POINT')
-    ];
     
     var STATIC_CHAR_CACHE = new Empty();
     var STATIC_CONST_CACHE = new Empty();
@@ -277,92 +137,7 @@ var resolveSimple;
         ),
     };
     
-    var DEFAULT_CHARACTER_ENCODER =
-    [
-        define(
-            function (char)
-            {
-                var charCode = char.charCodeAt();
-                var encoder = charCode < 0x100 ? charEncodeByUnescape8 : charEncodeByUnescape16;
-                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
-                return result;
-            }
-        ),
-        define(
-            function (char)
-            {
-                var charCode = char.charCodeAt();
-                var encoder = charCode < 0x100 ? charEncodeByAtob : charEncodeByEval;
-                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
-                return result;
-            },
-            'ATOB'
-        )
-    ];
-    
     var quoteString = JSON.stringify;
-    
-    function charEncodeByAtob(charCode)
-    {
-        var param1 = BASE64_ALPHABET_LO_6[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
-        var postfix1 = '(' + this.replaceString(param1) + ')';
-        if (param1.length > 2)
-            postfix1 += replaceIndexer(0);
-        var length1 = postfix1.length;
-        
-        var param2Left = this.findBase64AlphabetDefinition(BASE64_ALPHABET_LO_4[charCode >> 4]);
-        var param2Right = this.findBase64AlphabetDefinition(BASE64_ALPHABET_HI_4[charCode & 0x0f]);
-        var param2 = param2Left + param2Right;
-        var index2 = 1 + (param2Left.length - 2) / 4 * 3;
-        var indexer2 = replaceIndexer(index2);
-        var postfix2 = '(' + this.replaceString(param2) + ')' + indexer2;
-        var length2 = postfix2.length;
-        
-        var param3Left = BASE64_ALPHABET_LO_2[charCode >> 6];
-        var param3 = param3Left + BASE64_ALPHABET_HI_6[charCode & 0x3f];
-        var index3 = 2 + (param3Left.length - 3) / 4 * 3;
-        var indexer3 = replaceIndexer(index3);
-        var postfix3 = '(' + this.replaceString(param3) + ')' + indexer3;
-        var length3 = postfix3.length;
-        
-        var postfix =
-            length1 <= length2 && length1 <= length3 ?
-            postfix1 :
-            length2 <= length3 ? postfix2 : postfix3;
-        var result = this.resolveConstant('atob') + postfix;
-        return result;
-    }
-    
-    function charEncodeByEval(charCode)
-    {
-        var hexCode = this.hexCodeOf(charCode, 4);
-        var result =
-            this.resolveConstant('Function') + '(' +
-            this.replaceString('return"\\u' + hexCode + '"') + ')()';
-        if (hexCode.length > 4)
-            result += replaceIndexer(0);
-        return result;
-    }
-    
-    function charEncodeByUnescape16(charCode)
-    {
-        var hexCode = this.hexCodeOf(charCode, 4);
-        var result =
-            this.resolveConstant('unescape') + '(' + this.replaceString('%u' + hexCode) + ')';
-        if (hexCode.length > 4)
-            result += replaceIndexer(0);
-        return result;
-    }
-    
-    function charEncodeByUnescape8(charCode)
-    {
-        var hexCode = this.hexCodeOf(charCode, 2);
-        var result =
-            this.resolveConstant('unescape') + '(' + this.replaceString('%' + hexCode) + ')';
-        if (hexCode.length > 2)
-            result += replaceIndexer(0);
-        return result;
-    }
     
     function createReindexMap(count, radix, amendings, coerceToInt)
     {
@@ -709,28 +484,12 @@ var resolveSimple;
                 if (amendings)
                 {
                     var firstDigit = radix - amendings;
+                    var createParseIntArg;
                     if (amendings > 2)
-                    {
-                        parseIntArg =
-                            '[' +
-                            AMENDINGS.slice(0, amendings).map(
-                                function (amending)
-                                {
-                                    return '/' + amending + '/g';
-                                }
-                            ).join() +
-                            '].reduce(function(falsefalse,NaN,undefined){return falsefalse.' +
-                            'replace(NaN,' + firstDigit + '+undefined)},arguments[0])';
-                    }
-                    else
-                    {
-                        parseIntArg = 'arguments[0]';
-                        for (var index = 0; index < amendings; ++index)
-                        {
-                            var digit = firstDigit + index;
-                            parseIntArg += '.replace(/' + AMENDINGS[index] + '/g,' + digit + ')';
-                        }
-                    }
+                        createParseIntArg = this.findBestDefinition(CREATE_PARSE_INT_ARG);
+                    if (!createParseIntArg)
+                        createParseIntArg = createParseIntArgDefault;
+                    parseIntArg = createParseIntArg(amendings, firstDigit);
                 }
                 else
                     parseIntArg = 'arguments[0]';

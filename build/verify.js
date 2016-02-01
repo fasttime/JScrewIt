@@ -12,6 +12,19 @@ var verifyDefinitions   = kit.verifyDefinitions;
 require('../tools/text-utils.js');
 require('../test/coder-test-helpers.js');
 
+var createParseIntArgByReduce = JScrewIt.debug.createParseIntArgByReduce;
+createParseIntArgByReduce.toString =
+    function ()
+    {
+        return 'createParseIntArgByReduce';
+    };
+var createParseIntArgDefault = JScrewIt.debug.createParseIntArgDefault;
+createParseIntArgDefault.toString =
+    function ()
+    {
+        return 'createParseIntArgDefault';
+    };
+
 function findCoderTestData(coderName)
 {
     for (var index = 0;; ++index)
@@ -117,55 +130,34 @@ verify.String =
     {
         verifyComplex('String', [define('String["name"]', 'NAME')], mismatchCallback);
     };
+
 verify['base64-1'] =
     verifyBase64Defs(
-        [
-            define('A'),
-            define('C', 'CAPITAL_HTML'),
-            define('B', 'CAPITAL_HTML', 'ENTRIES_OBJ'),
-            define('A', 'ARRAY_ITERATOR')
-        ],
+        JScrewIt.debug.BASE64_ALPHABET_HI_4[0],
         ['A', 'B', 'C', 'D']
     );
 
 verify['base64-2'] =
     verifyBase64Defs(
-        [
-            define('S'),
-            define('R', 'CAPITAL_HTML'),
-            define('S', 'CAPITAL_HTML', 'ENTRIES_OBJ')
-        ],
+        JScrewIt.debug.BASE64_ALPHABET_HI_4[4],
         ['Q', 'R', 'S', 'T']
     );
 
 verify['base64-3'] =
     verifyBase64Defs(
-        [
-            define('U'),
-            define('W', 'ANY_WINDOW'),
-            define('W', 'ATOB'),
-            define('U', 'CAPITAL_HTML')
-        ],
+        JScrewIt.debug.BASE64_ALPHABET_HI_4[5],
         ['U', 'V', 'W', 'X']
     );
 
 verify['base64-4'] =
     verifyBase64Defs(
-        [
-            define('0B'),
-            define('0R', 'CAPITAL_HTML'),
-            define('0B', 'ENTRIES_OBJ')
-        ],
+        JScrewIt.debug.BASE64_ALPHABET_LO_4[1],
         ['0B', '0R', '0h', '0x']
     );
 
 verify['base64-5'] =
     verifyBase64Defs(
-        [
-            define('0j'),
-            define('0T', 'CAPITAL_HTML'),
-            define('0j', 'ENTRIES_OBJ')
-        ],
+        JScrewIt.debug.BASE64_ALPHABET_LO_4[3],
         ['0D', '0T', '0j', '0z']
     );
 
@@ -178,6 +170,23 @@ verify.byDictRadix4AmendedBy1 = verifyCoder('byDictRadix4AmendedBy1');
 verify.byDictRadix4AmendedBy2 = verifyCoder('byDictRadix4AmendedBy2');
 verify.byDictRadix5AmendedBy3 = verifyCoder('byDictRadix5AmendedBy3', 'byDictRadix4AmendedBy2');
 verify.byDblDict = verifyCoder('byDblDict');
+
+verify.parseIntArg =
+    function ()
+    {
+        verifyDefinitions(
+            JScrewIt.debug.CREATE_PARSE_INT_ARG,
+            undefined,
+            mismatchCallback,
+            function (createParseIntArg)
+            {
+                var expr = createParseIntArg(3, 2);
+                var replacement = this.replaceString(expr);
+                return replacement;
+            },
+            createParseIntArgDefault
+        );
+    };
 
 var routineName = process.argv[2];
 if (routineName != null)
