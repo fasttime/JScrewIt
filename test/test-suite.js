@@ -1332,6 +1332,35 @@ self
                         expect(output3).toBeUndefined();
                     }
                 );
+                
+                describe(
+                    'returns correct JSFuck with',
+                    function ()
+                    {
+                        function test(createParseIntArgName, features)
+                        {
+                            var featureObj = Feature(features);
+                            var emuFeatures = getEmuFeatureNames(featureObj);
+                            if (emuFeatures)
+                            {
+                                it(
+                                    createParseIntArgName,
+                                    function ()
+                                    {
+                                        var encoder = JScrewIt.debug.createEncoder(featureObj);
+                                        var output = encoder.encodeByDict(Object(input), 5, 3);
+                                        expect(emuEval(emuFeatures, output)).toBe(input);
+                                    }
+                                );
+                            }
+                        }
+                        
+                        var input = 'ABC';
+                        test('createParseIntArgDefault', ['ATOB', 'ENTRIES_OBJ']);
+                        test('createParseIntArgByReduce', 'DEFAULT');
+                        test('createParseIntArgByReduceArrow', ['ARROW', 'ENTRIES_OBJ']);
+                    }
+                );
             }
         );
         describe(
