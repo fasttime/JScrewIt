@@ -25,6 +25,11 @@ _Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge 
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
 
 _Available in Firefox, Chrome, Safari 7.1+, Opera and Node.js 0.12+._
+<a name="ARROW"></a>
+### `ARROW`
+Support for arrow functions.
+
+_This feature is not available in any of the supported engines._
 <a name="ATOB"></a>
 ### `ATOB`
 Existence of the global object functions atob and btoa.

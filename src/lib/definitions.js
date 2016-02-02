@@ -40,6 +40,7 @@ var LEVEL_STRING;
 var LEVEL_UNDEFINED;
 
 var createParseIntArgByReduce;
+var createParseIntArgByReduceArrow;
 var createParseIntArgDefault;
 var createSolution;
 var replaceDigit;
@@ -1197,8 +1198,24 @@ var replaceDigit;
                         return '/' + amending + '/g';
                     }
                 ).join() +
-                '].reduce(function(falsefalse,NaN,undefined){return falsefalse.' +
-                'replace(NaN,' + firstDigit + '+undefined)},arguments[0])';
+                '].reduce(function(falsefalse,NaN,undefined){return falsefalse.replace(NaN,' +
+                firstDigit + '+undefined)},arguments[0])';
+            return parseIntArg;
+        };
+    
+    createParseIntArgByReduceArrow =
+        function (amendings, firstDigit)
+        {
+            var parseIntArg =
+                '[' +
+                AMENDINGS.slice(0, amendings).map(
+                    function (amending)
+                    {
+                        return '/' + amending + '/g';
+                    }
+                ).join() +
+                '].reduce((falsefalse,NaN,undefined)=>falsefalse.replace(NaN,' + firstDigit +
+                '+undefined),arguments[0])';
             return parseIntArg;
         };
     
@@ -1225,10 +1242,21 @@ var replaceDigit;
         define(undefined, 'CAPITAL_HTML', 'ENTRIES_OBJ'),
         define(createParseIntArgByReduce, 'CAPITAL_HTML', 'FILL', 'OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduce, 'CAPITAL_HTML', 'FILL', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-        define(undefined, 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
+        define(undefined, 'CAPITAL_HTML', 'NO_IE_SRC', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
+        define(createParseIntArgByReduceArrow, 'ARROW'),
         define(createParseIntArgByReduce, 'FF_SAFARI_SRC'),
         define(createParseIntArgByReduce, 'IE_SRC'),
-        define(createParseIntArgByReduce, 'V8_SRC')
+        define(createParseIntArgByReduce, 'V8_SRC'),
+        define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ'),
+        define(undefined, 'ARROW', 'CAPITAL_HTML', 'ENTRIES_OBJ', 'NO_IE_SRC'),
+        define(createParseIntArgByReduceArrow, 'ARROW', 'FILL'),
+        define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'FF_SAFARI_SRC'),
+        define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'V8_SRC'),
+        define(createParseIntArgByReduceArrow, 'ARROW', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
+        define(createParseIntArgByReduceArrow, 'ARROW', 'OLD_SAFARI_ARRAY_ITERATOR'),
+        define(createParseIntArgByReduce, 'FILL', 'FF_SAFARI_SRC'),
+        define(createParseIntArgByReduce, 'FILL', 'IE_SRC'),
+        define(createParseIntArgByReduce, 'FILL', 'V8_SRC')
     ];
     
     DEFAULT_CHARACTER_ENCODER =

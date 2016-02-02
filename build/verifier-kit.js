@@ -66,31 +66,6 @@
         }
     }
     
-    function getExprList(entries, defaultExpr)
-    {
-        var exprList =
-            entries.map(
-                function (entry)
-                {
-                    var definition = entry.definition;
-                    var type = typeof definition;
-                    var expr = type === 'object' ? definition.expr :  definition;
-                    if (expr === undefined)
-                        expr = defaultExpr;
-                    return expr;
-                }
-            );
-        exprList =
-            exprList.filter(
-                function (entry, index)
-                {
-                    var result = exprList.indexOf(entry) === index;
-                    return result;
-                }
-            );
-        return exprList;
-    }
-    
     function verifyComplex(complex, inputEntries, mismatchCallback)
     {
         var actualEntries = JScrewIt.debug.getComplexEntries(complex);
@@ -131,8 +106,17 @@
     
     function verifyDefinitions(entries, inputList, mismatchCallback, replacer, defaultExpr)
     {
-        function considerInput(input)
+        function considerInput(entry)
         {
+            var input; // definition or expression
+            if (typeof entry === 'object')
+            {
+                if (!encoder.hasFeatures(entry.featureMask))
+                    return;
+                input = entry.definition;
+            }
+            else
+                input = entry;
             var solution =
                 typeof replacer === 'function' ?
                 replacer.call(encoder, input) : encoder[replacer](input);
@@ -148,8 +132,7 @@
             }
         }
         
-        if (!inputList)
-            inputList = getExprList(entries, defaultExpr);
+        var mismatchCount = 0;
         var analyzer = new Analyzer();
         var encoder;
         while (encoder = analyzer.nextEncoder)
@@ -166,7 +149,12 @@
             {
                 var featureNames = analyzer.featureObj.canonicalNames;
                 var expectedDefinitions = Object.keys(optimalInputs).sort();
-                mismatchCallback(featureNames, String(actualDefinition), expectedDefinitions);
+                mismatchCallback(
+                    ++mismatchCount + '.',
+                    featureNames,
+                    String(actualDefinition),
+                    expectedDefinitions
+                );
             }
         }
     }

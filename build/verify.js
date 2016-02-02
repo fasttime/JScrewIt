@@ -18,6 +18,12 @@ createParseIntArgByReduce.toString =
     {
         return 'createParseIntArgByReduce';
     };
+var createParseIntArgByReduceArrow = JScrewIt.debug.createParseIntArgByReduceArrow;
+createParseIntArgByReduceArrow.toString =
+    function ()
+    {
+        return 'createParseIntArgByReduceArrow';
+    };
 var createParseIntArgDefault = JScrewIt.debug.createParseIntArgDefault;
 createParseIntArgDefault.toString =
     function ()
@@ -176,7 +182,11 @@ verify.parseIntArg =
     {
         verifyDefinitions(
             JScrewIt.debug.CREATE_PARSE_INT_ARG,
-            undefined,
+            [
+                define(createParseIntArgDefault),
+                define(createParseIntArgByReduce),
+                define(createParseIntArgByReduceArrow, 'ARROW')
+            ],
             mismatchCallback,
             function (createParseIntArg)
             {
