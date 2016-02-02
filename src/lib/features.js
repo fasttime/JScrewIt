@@ -287,6 +287,22 @@ var validMaskFromArrayOrStringOrFeature;
             excludes: ['ENTRIES_PLAIN'],
             includes: ['ENTRIES_OBJ']
         },
+        ARROW:
+        {
+            description: 'Support for arrow functions.',
+            check: function ()
+            {
+                try
+                {
+                    Function('_=>_');
+                }
+                catch (error)
+                {
+                    return false;
+                }
+                return true;
+            }
+        },
         ATOB:
         {
             description: 'Existence of the global object functions atob and btoa.',
