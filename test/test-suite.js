@@ -2072,21 +2072,19 @@ self
                         );
                     }
                 );
-                it(
-                    'is checkable',
-                    function ()
-                    {
-                        var check = featureObj.check;
-                        if (check)
+                var emuFeatures = getEmuFeatureNames(featureObj);
+                if (emuFeatures)
+                {
+                    it(
+                        'is checkable',
+                        function ()
                         {
-                            if (featureName in featureSet)
-                            {
-                                var emuFeatures = featureSet[featureName] ? [featureName] : [];
-                                expect(emuDo.bind(null, emuFeatures, check)).not.toThrow();
-                            }
+                            var check = featureObj.check;
+                            if (check)
+                                expect(emuDo(emuFeatures, check)).toBeTruthy();
                         }
-                    }
-                );
+                    );
+                }
             }
         );
     }

@@ -295,12 +295,10 @@ var validMaskFromArrayOrStringOrFeature;
                 try
                 {
                     Function('()=>{}')();
+                    return true;
                 }
                 catch (error)
-                {
-                    return false;
-                }
-                return true;
+                { }
             }
         },
         ATOB:
