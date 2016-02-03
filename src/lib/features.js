@@ -294,7 +294,7 @@ var validMaskFromArrayOrStringOrFeature;
             {
                 try
                 {
-                    Function('_=>_');
+                    Function('()=>{}')();
                 }
                 catch (error)
                 {

@@ -355,6 +355,49 @@
         ANY_DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object .*Document]$/),
         ANY_WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object .*Window]$/),
         ARRAY_ITERATOR: makeEmuFeatureEntries('[object Array Iterator]', /^\[object Array.{8,9}]$/),
+        ARROW:
+        {
+            setUp: function ()
+            {
+                var newFunction =
+                    (function (oldFunction)
+                    {
+                        function Function()
+                        {
+                            var lastArgIndex = arguments.length - 1;
+                            if (lastArgIndex >= 0)
+                                arguments[lastArgIndex] = fixBody(arguments[lastArgIndex]);
+                            return oldFunction.apply(null, arguments);
+                        }
+                        
+                        function fixBody(body)
+                        {
+                            body =
+                                body.replace(
+                                    /(\([^(]*\))=>(\{.*?\}|(?:[^,()]|\(.*?\))*)/g,
+                                    function (match, capture1, capture2)
+                                    {
+                                        var body =
+                                            'function' + capture1 +
+                                            (
+                                                /^\{[^]*\}$/.test(capture2) ?
+                                                capture2 : '{return(' + capture2 + ')}'
+                                            );
+                                        return body;
+                                    }
+                                );
+                            return body;
+                        }
+                        
+                        Function.prototype = oldFunction.prototype;
+                        
+                        return Function;
+                    }
+                    )(Function);
+                override(this, 'Function', { value: newFunction });
+                override(this, 'Function.prototype.constructor', { value: newFunction });
+            }
+        },
         ATOB:
         {
             setUp: function ()
