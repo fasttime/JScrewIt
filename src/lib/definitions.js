@@ -573,7 +573,7 @@ var replaceDigit;
         'h':
         [
             define('101["toString"]("21")[1]'),
-            define()
+            define('btoa("0NaN")[3]', 'ATOB')
         ],
         'i': '([RP_5_N] + undefined)["10"]',
         'j':
