@@ -629,13 +629,13 @@ var replaceDigit;
         'x':
         [
             define('101["toString"]("34")[1]'),
-            define()
+            define('btoa("falsefalse")["10"]', 'ATOB')
         ],
         'y': '(RP_3_NO + [Infinity])["10"]',
         'z':
         [
             define('35["toString"]("36")'),
-            define()
+            define('btoa("falsefalse")["11"]', 'ATOB')
         ],
         
         'A':
