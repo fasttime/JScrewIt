@@ -701,6 +701,7 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Features available in Chrome 45 and Opera 32 or later.',
             includes:
             [
+                'ARROW',
                 'ATOB',
                 'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
@@ -725,6 +726,7 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Features available in Microsoft Edge.',
             includes:
             [
+                'ARROW',
                 'ATOB',
                 'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
@@ -749,6 +751,7 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Features available in Firefox 31 or later.',
             includes:
             [
+                'ARROW',
                 'ATOB',
                 'BARPROP',
                 'DOUBLE_QUOTE_ESC_HTML',
@@ -870,6 +873,7 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Features available in Node.js 4.0 or later.',
             includes:
             [
+                'ARROW',
                 'DOUBLE_QUOTE_ESC_HTML',
                 'FILL',
                 'FROM_CODE_POINT',
