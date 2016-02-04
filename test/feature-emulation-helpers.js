@@ -279,30 +279,25 @@
     
     function override(context, path, descriptor)
     {
-        var backupMap = context.BACKUP || (context.BACKUP = createBackupMap());
+        var properties = context.BACKUP || (context.BACKUP = createBackupMap());
         var components = path.split('.');
-        var backup =
-            components.every(
-                function (name)
-                {
-                    backupMap = backupMap[name] || (backupMap[name] = createBackupMap());
-                    var backup = !('' in backupMap);
-                    return backup;
-                }
-            );
         var name = components.pop();
         var obj =
             components.reduce(
                 function (obj, name)
                 {
+                    var backupData = properties[name] || (properties[name] = { });
+                    properties =
+                        backupData.properties || (backupData.properties = createBackupMap());
                     return obj[name];
                 },
                 global
             );
-        if (backup)
+        var backupData = properties[name] || (properties[name] = { });
+        if (!('descriptor' in backupData))
         {
             var oldDescriptor = Object.getOwnPropertyDescriptor(obj, name);
-            Object.defineProperty(backupMap, '', { value: oldDescriptor });
+            backupData.descriptor = oldDescriptor;
         }
         descriptor.configurable = true;
         Object.defineProperty(obj, name, descriptor);
@@ -334,19 +329,22 @@
         context[typeName].adapters.push(adapter);
     }
     
-    function restoreAll(backupMap, obj)
+    function restoreAll(properties, obj)
     {
-        for (var name in backupMap)
+        for (var name in properties)
         {
-            var subBackupMap = backupMap[name];
-            if ('' in subBackupMap)
+            var backupData = properties[name];
+            var subProperties = backupData.properties;
+            if (subProperties)
+                restoreAll(subProperties, obj[name]);
+            if ('descriptor' in backupData)
             {
-                var descriptor = subBackupMap[''];
-                delete obj[name];
+                var descriptor = backupData.descriptor;
                 if (descriptor)
                     Object.defineProperty(obj, name, descriptor);
+                else
+                    delete obj[name];
             }
-            restoreAll(subBackupMap, obj[name]);
         }
     }
     
@@ -367,25 +365,30 @@
                             var lastArgIndex = arguments.length - 1;
                             if (lastArgIndex >= 0)
                                 arguments[lastArgIndex] = fixBody(arguments[lastArgIndex]);
-                            return oldFunction.apply(null, arguments);
+                            var fnObj = oldFunction.apply(null, arguments);
+                            return fnObj;
                         }
                         
                         function fixBody(body)
                         {
-                            body =
-                                body.replace(
-                                    /(\([^(]*\))=>(\{.*?\}|(?:[^,()]|\(.*?\))*)/g,
-                                    function (match, capture1, capture2)
-                                    {
-                                        var body =
-                                            'function' + capture1 +
-                                            (
-                                                /^\{[^]*\}$/.test(capture2) ?
-                                                capture2 : '{return(' + capture2 + ')}'
-                                            );
-                                        return body;
-                                    }
-                                );
+                            if (typeof body === 'string')
+                            {
+                                body =
+                                    body.replace(
+                                        /(\([^(]*\))=>(\{.*?\}|(?:[^,()]|\(.*?\))*)/g,
+                                        function (match, capture1, capture2)
+                                        {
+                                            var body =
+                                                '(function' + capture1 +
+                                                (
+                                                    /^\{[^]*\}$/.test(capture2) ?
+                                                    capture2 : '{return(' + capture2 + ')}'
+                                                ) +
+                                                ')';
+                                            return body;
+                                        }
+                                    );
+                            }
                             return body;
                         }
                         
@@ -394,8 +397,8 @@
                         return Function;
                     }
                     )(Function);
-                override(this, 'Function', { value: newFunction });
                 override(this, 'Function.prototype.constructor', { value: newFunction });
+                override(this, 'Function', { value: newFunction });
             }
         },
         ATOB:
@@ -425,7 +428,13 @@
                     {
                         return '[object BarProp]';
                     };
-                override(this, 'toolbar', { value: { toString: toString } });
+                // In Android Browser versions prior to 4.4, Object.defineProperty doesn't replace
+                // the toolbar correctly despite the configurable attribute set.
+                // As a workaround, we'll simply set a custom toString function.
+                if (global.toolbar)
+                    override(this, 'toolbar.toString', { value: toString });
+                else
+                    override(this, 'toolbar', { value: { toString: toString } });
             }
         },
         CAPITAL_HTML: makeEmuFeatureHtml(
