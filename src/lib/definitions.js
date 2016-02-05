@@ -621,9 +621,9 @@ var replaceDigit;
         'w':
         [
             define('32["toString"]("33")'),
+            define('(self + [])["slice"]("-2")[0]', 'ANY_WINDOW'),
             define('btoa(3)[1]', 'ATOB'),
             define('(RP_4_N + self)["20"]', 'DOMWINDOW'),
-            define('(self + [])["slice"]("-2")[0]', 'SELF'),
             define('(self + [])["13"]', 'WINDOW')
         ],
         'x':
@@ -658,6 +658,7 @@ var replaceDigit;
         'D':
         [
             define('escape("]")[2]'),
+            define('escape(PLAIN_OBJECT)["20"]'),
             define('(document + RP_1_NO)["slice"]("-10")[0]', 'ANY_DOCUMENT'),
             define('btoa("00")[1]', 'ATOB'),
             define('(RP_3_NO + document)["11"]', 'DOCUMENT'),
@@ -768,9 +769,9 @@ var replaceDigit;
         ],
         'W':
         [
+            define('(self + RP_4_N)["slice"]("-11")[0]', 'ANY_WINDOW'),
             define('btoa(undefined)[1]', 'ATOB'),
             define('(self + [])["11"]', 'DOMWINDOW'),
-            define('(self + RP_4_N)["slice"]("-11")[0]', 'SELF'),
             define('(RP_3_NO + self)["11"]', 'WINDOW')
         ],
         'X':
@@ -891,6 +892,7 @@ var replaceDigit;
         ']':
         [
             defineFBCharAt(26),
+            define('(RP_6_SO + PLAIN_OBJECT)["20"]'),
             define(
                 '(ARRAY_ITERATOR + [])[2 + [true + !!(ARRAY_ITERATOR + [])["22"]]]',
                 'ARRAY_ITERATOR'
