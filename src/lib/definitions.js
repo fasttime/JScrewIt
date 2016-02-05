@@ -573,7 +573,7 @@ var replaceDigit;
         'h':
         [
             define('101["toString"]("21")[1]'),
-            define('btoa("0NaN")[3]', 'ATOB')
+            define('btoa("0false")[3]', 'ATOB')
         ],
         'i': '([RP_5_N] + undefined)["10"]',
         'j':
@@ -621,10 +621,10 @@ var replaceDigit;
         'w':
         [
             define('32["toString"]("33")'),
-            define('(self + [])["slice"]("-2")[0]', 'SELF'),
-            define('(self + [])["13"]', 'WINDOW'),
+            define('btoa(3)[1]', 'ATOB'),
             define('(RP_4_N + self)["20"]', 'DOMWINDOW'),
-            define()
+            define('(self + [])["slice"]("-2")[0]', 'SELF'),
+            define('(self + [])["13"]', 'WINDOW')
         ],
         'x':
         [
@@ -658,10 +658,12 @@ var replaceDigit;
         'D':
         [
             define('escape("]")[2]'),
+            define('(document + RP_1_NO)["slice"]("-10")[0]', 'ANY_DOCUMENT'),
             define('btoa("00")[1]', 'ATOB'),
-            define('(document + 0)["slice"]("-10")[0]', 'ANY_DOCUMENT'),
             define('(RP_3_NO + document)["11"]', 'DOCUMENT'),
-            define('(document + [])["12"]', 'HTMLDOCUMENT')
+            define('(document + [])["12"]', 'HTMLDOCUMENT'),
+            define('escape(ARRAY_ITERATOR)["30"]', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
+            define('escape(NaN + ARRAY_ITERATOR)["30"]', 'OLD_SAFARI_ARRAY_ITERATOR')
         ],
         'E':
         [
@@ -683,8 +685,8 @@ var replaceDigit;
         'H':
         [
             define('btoa(true)[1]', 'ATOB'),
-            define('(NaN + Function("return history")())["11"]', 'HISTORY'),
             define('""["link"]()[3]', 'CAPITAL_HTML'),
+            define('(RP_3_NO + Function("return history")())["11"]', 'HISTORY'),
             define('(RP_3_NO + document)["11"]', 'HTMLDOCUMENT')
         ],
         'I': '"Infinity"[0]',
@@ -768,7 +770,7 @@ var replaceDigit;
         [
             define('btoa(undefined)[1]', 'ATOB'),
             define('(self + [])["11"]', 'DOMWINDOW'),
-            define('(self + RP_3_NO)["slice"]("-10")[0]', 'SELF'),
+            define('(self + RP_4_N)["slice"]("-11")[0]', 'SELF'),
             define('(RP_3_NO + self)["11"]', 'WINDOW')
         ],
         'X':
@@ -961,6 +963,10 @@ var replaceDigit;
         '»':
         [
             define('atob(true)[1]', 'ATOB')
+        ],
+        'Ç':
+        [
+            define('atob("falsefalsefalse")["10"]', 'ATOB')
         ],
         'Ú':
         [
