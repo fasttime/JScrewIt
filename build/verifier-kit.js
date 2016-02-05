@@ -66,6 +66,48 @@
         }
     }
     
+    function getOptimalityInfo(encoder, inputList, replacer)
+    {
+        function considerInput(entry)
+        {
+            var input; // definition or expression
+            if (typeof entry === 'object')
+            {
+                if (!encoder.hasFeatures(entry.featureMask))
+                    return;
+                input = entry.definition;
+            }
+            else
+                input = entry;
+            var solution =
+                typeof replacer === 'function' ?
+                replacer.call(encoder, input) : encoder[replacer](input);
+            var length = solution.length;
+            if (length <= optimalLength)
+            {
+                if (length < optimalLength)
+                {
+                    optimalDefinitions = [];
+                    optimalLength = length;
+                }
+                optimalDefinitions.push(String(input));
+            }
+            lengthMap[input] = length;
+        }
+        
+        var optimalDefinitions;
+        var lengthMap = Object.create(null);
+        var optimalLength = Infinity;
+        inputList.forEach(considerInput);
+        var optimalityInfo =
+        {
+            optimalDefinitions: optimalDefinitions,
+            optimalLength: optimalLength,
+            lengthMap: lengthMap
+        };
+        return optimalityInfo;
+    }
+    
     function verifyComplex(complex, inputEntries, mismatchCallback)
     {
         var actualEntries = JScrewIt.debug.getComplexEntries(complex);
@@ -106,54 +148,30 @@
     
     function verifyDefinitions(entries, inputList, mismatchCallback, replacer, defaultExpr)
     {
-        function considerInput(entry)
-        {
-            var input; // definition or expression
-            if (typeof entry === 'object')
-            {
-                if (!encoder.hasFeatures(entry.featureMask))
-                    return;
-                input = entry.definition;
-            }
-            else
-                input = entry;
-            var solution =
-                typeof replacer === 'function' ?
-                replacer.call(encoder, input) : encoder[replacer](input);
-            actualLength = solution.length;
-            if (actualLength <= optimalLength)
-            {
-                if (actualLength < optimalLength)
-                {
-                    optimalInputs = Object.create(null);
-                    optimalLength = actualLength;
-                }
-                optimalInputs[input] = true;
-            }
-        }
-        
         var mismatchCount = 0;
         var analyzer = new Analyzer();
         var encoder;
         while (encoder = analyzer.nextEncoder)
         {
-            var optimalInputs = null;
-            var optimalLength = Infinity;
-            var actualLength = null;
-            inputList.forEach(considerInput);
+            var optimalityInfo = getOptimalityInfo(encoder, inputList, replacer);
             analyzer.stopCapture();
             var actualDefinition = encoder.findBestDefinition(entries);
             if (actualDefinition === undefined)
                 actualDefinition = defaultExpr;
-            if (!optimalInputs[actualDefinition])
+            var lengthMap = optimalityInfo.lengthMap;
+            var optimalLength = optimalityInfo.optimalLength;
+            if (lengthMap[actualDefinition] > optimalLength)
             {
                 var featureNames = analyzer.featureObj.canonicalNames;
-                var expectedDefinitions = Object.keys(optimalInputs).sort();
+                var optimalDefinitions = optimalityInfo.optimalDefinitions;
+                optimalDefinitions.sort();
                 mismatchCallback(
                     ++mismatchCount + '.',
                     featureNames,
                     String(actualDefinition),
-                    expectedDefinitions
+                    '(' + lengthMap[actualDefinition] + ')',
+                    optimalDefinitions,
+                    '(' + optimalLength + ')'
                 );
             }
         }

@@ -69,7 +69,8 @@ function processOutputMap(outputMap, entryCount, logLine)
             var outputLength = output.length;
             var entryIndex = outputData.entryIndex;
             var line =
-                padLeft(outputLength, 5) + ' | ' + (entryIndex == null ? '-' : entryIndex) + ' | ' +
+                padLeft(outputLength, 5) + ' | ' +
+                padLeft(entryIndex == null ? '-' : entryIndex, 2) + ' | ' +
                 formatFeatures(featureNames);
             logLine(line);
         }
