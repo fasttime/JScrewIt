@@ -91,13 +91,20 @@ function runScan()
             }
         );
     var defsUnused = false;
-    scanAllChars(
-        function (char, allCharCount, charDoneCount, notAllDefsUsed)
-        {
-            defsUnused |= notAllDefsUsed;
-            bar.update(charDoneCount / allCharCount);
-        }
-    );
+    try
+    {
+        scanAllChars(
+            function (char, allCharCount, charDoneCount, notAllDefsUsed)
+            {
+                defsUnused |= notAllDefsUsed;
+                bar.update(charDoneCount / allCharCount);
+            }
+        );
+    }
+    finally
+    {
+        bar.terminate();
+    }
     return defsUnused;
 }
 

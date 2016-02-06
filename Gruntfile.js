@@ -246,7 +246,16 @@ module.exports =
             {
                 var runScan = require('./build/scan-char-defs.js');
                 var before = new Date();
-                var defsUnused = runScan();
+                var defsUnused;
+                try
+                {
+                    defsUnused = runScan();
+                }
+                catch (error)
+                {
+                    grunt.warn(error);
+                    return;
+                }
                 var time = new Date() - before;
                 var timeUtils = require('./tools/time-utils.js');
                 var timeStr = timeUtils.formatDuration(time);
