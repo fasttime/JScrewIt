@@ -63,7 +63,7 @@ var replaceDigit;
         'FBEP_9_U',
         '[RP_1_NO] + FBEP_9_U',
         ,
-        '[RP_3_NO] + FBEP_9_U'
+        '[RP_3_NO] + FBEP_9_U',
     ];
     
     var FB_PADDINGS =
@@ -108,7 +108,7 @@ var replaceDigit;
         'RP_3_NO',
         'RP_4_N',
         'RP_5_N',
-        'RP_6_SO'
+        'RP_6_SO',
     ];
     
     var FB_EXPR_INFOS =
@@ -119,18 +119,18 @@ var replaceDigit;
     
     var FB_PADDING_INFOS =
     [
-        define({ paddings: FB_PADDINGS, shift: 0 }),
-        define({ paddings: FB_NO_IE_PADDINGS, shift: 0 }, 'NO_IE_SRC'),
-        define({ paddings: R_PADDINGS, shift: 0 }, 'V8_SRC'),
-        define({ paddings: R_PADDINGS, shift: 4 }, 'FF_SAFARI_SRC'),
-        define({ paddings: R_PADDINGS, shift: 5 }, 'IE_SRC')
+        define({ blocks: FB_PADDINGS, shift: 0 }),
+        define({ blocks: FB_NO_IE_PADDINGS, shift: 0 }, 'NO_IE_SRC'),
+        define({ blocks: R_PADDINGS, shift: 0 }, 'V8_SRC'),
+        define({ blocks: R_PADDINGS, shift: 4 }, 'FF_SAFARI_SRC'),
+        define({ blocks: R_PADDINGS, shift: 5 }, 'IE_SRC')
     ];
     
     var FH_PADDING_INFOS =
     [
-        define({ paddings: FH_PADDINGS, shift: 0 }),
-        define({ paddings: R_PADDINGS, shift: 0 }, 'NO_IE_SRC'),
-        define({ paddings: R_PADDINGS, shift: 1 }, 'IE_SRC')
+        define({ blocks: FH_PADDINGS, shift: 0 }),
+        define({ blocks: R_PADDINGS, shift: 0 }, 'NO_IE_SRC'),
+        define({ blocks: R_PADDINGS, shift: 1 }, 'IE_SRC')
     ];
     
     function charEncodeByAtob(charCode)
@@ -199,33 +199,11 @@ var replaceDigit;
     {
         function definition()
         {
-            var solution = createCharAtSolution.call(this, expr, index, entries, paddingInfos);
+            var solution = this.resolveExprAt(expr, index, entries, paddingInfos);
             return solution;
         }
         
         return definition;
-    }
-    
-    function createCharAtSolution(expr, index, entries, paddingInfos)
-    {
-        var paddingDefinition = this.findBestDefinition(entries);
-        var padding;
-        var indexer;
-        if (typeof paddingDefinition === 'number')
-        {
-            var paddingInfo = this.findBestDefinition(paddingInfos);
-            padding = paddingInfo.paddings[paddingDefinition];
-            indexer = replaceIndexer(index + paddingDefinition + paddingInfo.shift);
-        }
-        else
-        {
-            padding = paddingDefinition.padding;
-            indexer = '[' + this.replaceExpr(paddingDefinition.indexer) + ']';
-        }
-        var fullExpr = '(' + padding + '+' + expr + ')';
-        var replacement = this.replaceExpr(fullExpr) + indexer;
-        var solution = createSolution(replacement, LEVEL_STRING, false);
-        return solution;
     }
     
     function createCommaSolution()
@@ -262,7 +240,7 @@ var replaceDigit;
                 paddingEntries =
                 [
                     define(
-                        { padding: '[RP_1_NO] + FBEP_9_U', indexer: index / 10 + 1 + ' + FH_SHIFT' }
+                        { block: '[RP_1_NO] + FBEP_9_U', indexer: index / 10 + 1 + ' + FH_SHIFT' }
                     ),
                     define(10, 'NO_IE_SRC'),
                     define(0, 'V8_SRC'),
@@ -282,7 +260,7 @@ var replaceDigit;
             case 25:
                 paddingEntries =
                 [
-                    define({ padding: 'RP_1_NO + FBEP_4_S', indexer: '3 + FH_SHIFT' }),
+                    define({ block: 'RP_1_NO + FBEP_4_S', indexer: '3 + FH_SHIFT' }),
                     define(5, 'NO_IE_SRC'),
                     define(1, 'FF_SAFARI_SRC'),
                     define(0, 'IE_SRC')
@@ -308,8 +286,7 @@ var replaceDigit;
                 ];
                 break;
             }
-            var solution =
-                createCharAtSolution.call(this, expr, index, paddingEntries, FB_PADDING_INFOS);
+            var solution = this.resolveExprAt(expr, index, paddingEntries, FB_PADDING_INFOS);
             return solution;
         }
         
@@ -357,7 +334,7 @@ var replaceDigit;
         case 9:
             entries =
             [
-                define({ padding: 'RP_1_NO', indexer: '1 + FH_SHIFT' }),
+                define({ block: 'RP_1_NO', indexer: '1 + FH_SHIFT' }),
                 define(1, 'NO_IE_SRC'),
                 define(0, 'IE_SRC')
             ];

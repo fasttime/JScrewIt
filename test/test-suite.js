@@ -1708,6 +1708,44 @@ self
             }
         );
         describe(
+            'Encoder#resolveExprAt throws a SyntaxError for',
+            function ()
+            {
+                it(
+                    'missing padding entries',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        expect(
+                            function ()
+                            {
+                                encoder.resolveExprAt('', 42, undefined, []);
+                            }
+                        ).toThrow(SyntaxError('Missing padding entries for index 42'));
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#getPadding throws a SyntaxError for',
+            function ()
+            {
+                it(
+                    'undefined padding',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        expect(
+                            function ()
+                            {
+                                encoder.getPaddingBlock({ blocks: [] }, -1);
+                            }
+                        ).toThrow(SyntaxError('Undefined padding block with length -1'));
+                    }
+                );
+            }
+        );
+        describe(
             'Encoding',
             function ()
             {
