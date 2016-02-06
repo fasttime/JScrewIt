@@ -736,6 +736,14 @@ var resolveSimple;
             return result;
         },
         
+        getPaddingBlock: function (paddingInfo, length)
+        {
+            var paddingBlock = paddingInfo.blocks[length];
+            if (paddingBlock !== undefined)
+                return paddingBlock;
+            this.throwSyntaxError('Undefined padding block with length ' + length);
+        },
+        
         hasFeatures: function (featureMask)
         {
             return (featureMask & this.featureMask) === featureMask;
@@ -917,6 +925,30 @@ var resolveSimple;
                     }
                 );
             }
+            return solution;
+        },
+        
+        resolveExprAt: function (expr, index, entries, paddingInfos)
+        {
+            if (!entries)
+                this.throwSyntaxError('Missing padding entries for index ' + index);
+            var paddingDefinition = this.findBestDefinition(entries);
+            var paddingBlock;
+            var indexer;
+            if (typeof paddingDefinition === 'number')
+            {
+                var paddingInfo = this.findBestDefinition(paddingInfos);
+                paddingBlock = this.getPaddingBlock(paddingInfo, paddingDefinition);
+                indexer = replaceIndexer(index + paddingDefinition + paddingInfo.shift);
+            }
+            else
+            {
+                paddingBlock = paddingDefinition.block;
+                indexer = '[' + this.replaceExpr(paddingDefinition.indexer) + ']';
+            }
+            var fullExpr = '(' + paddingBlock + '+' + expr + ')';
+            var replacement = this.replaceExpr(fullExpr) + indexer;
+            var solution = createSolution(replacement, LEVEL_STRING, false);
             return solution;
         },
         
