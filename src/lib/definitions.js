@@ -1070,7 +1070,7 @@ var replaceDigit;
         ],
         String:
         [
-            define('("")["constructor"]')
+            define('""["constructor"]')
         ],
         
         atob:
@@ -1128,18 +1128,21 @@ var replaceDigit;
         // at the same position on different browsers.
         // The number after "FBEP_" is the maximum character overhead. The letters after the last
         // underscore have the same meaning as in regular padding blocks.
+        
         FBEP_4_S:
         [
-            define('[[true][+!!(RP_5_N + ANY_FUNCTION)["40"]]]')
+            define('[[true][+(RP_3_NO + FILTER)["30"]]]'),
+            define('[[true][+(RP_5_N + FILL)["30"]]]', 'FILL')
         ],
         FBEP_9_U:
         [
-            define('[false][+!(RP_5_N + ANY_FUNCTION)["40"]]')
+            define('[false][+(ANY_FUNCTION + [])["20"]]')
         ],
         
         // Function header shift: used to adjust an indexer to make it point to the same position in
         // the string representation of a function's header on different browsers.
         // This evaluates to an array containing only the number 0 or only the number 1.
+        
         FH_SHIFT:
         [
             define('[+!!(+(ANY_FUNCTION + [])[0] + true)]')
@@ -1147,8 +1150,9 @@ var replaceDigit;
         
         // Function header padding blocks: prepended to a function to align the function's header
         // at the same position on different browsers.
-        // The number after "FBP_" is the maximum character overhead. The letters after the last
-        // underscore have the same meaning as in regular padding blocks.
+        // The number after "FHP_" is the maximum character overhead.
+        // The letters after the last underscore have the same meaning as in regular padding blocks.
+        
         // Unused:
         // FHP_1_S:
         // [
@@ -1179,6 +1183,7 @@ var replaceDigit;
         // mark ("!"). When concatenating such a constant with other expressions, the outer plus
         // constant should be placed in the beginning whenever possible in order to save an extra
         // pair of brackets in the resolved expressions.
+        
         RP_1_NO:        '0',
         RP_3_NO:        'NaN',
         RP_4_N:         'true',
