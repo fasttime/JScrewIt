@@ -8,6 +8,7 @@ CREATE_PARSE_INT_ARG,
 DEFAULT_CHARACTER_ENCODER,
 FROM_CHAR_CODE,
 LEVEL_STRING,
+OPTIMAL_B,
 SIMPLE,
 Empty,
 ScrewBuffer,
@@ -15,7 +16,6 @@ assignNoEnum,
 createConstructor,
 createParseIntArgDefault,
 createSolution,
-define,
 getAppendLength,
 getFigure,
 hasOuterPlus,
@@ -751,7 +751,7 @@ var resolveSimple;
         
         hexCodeOf: function (charCode, length)
         {
-            var optimalB = this.findBestDefinition([define('B'), define('b', 'ENTRIES_OBJ')]);
+            var optimalB = this.findBestDefinition(OPTIMAL_B);
             var result = charCode.toString(16).replace(/b/g, optimalB);
             result = Array(length - result.length + 1).join(0) + result.replace(/fa?$/, 'false');
             return result;
