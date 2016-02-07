@@ -724,7 +724,7 @@ var resolveSimple;
                     {
                         var definition = entry.definition;
                         var solution = definition ? this.resolve(definition) : defaultResolver();
-                        if (!result || result.length >= solution.length)
+                        if (!result || result.length > solution.length)
                         {
                             result = solution;
                             solution.entryIndex = entryIndex;

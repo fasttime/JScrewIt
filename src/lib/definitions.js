@@ -343,8 +343,6 @@ var replaceDigit;
         case 11:
             entries =
             [
-                // Unused:
-                // define(9),
                 define(0, 'NO_IE_SRC'),
                 define(0, 'IE_SRC')
             ];
@@ -408,7 +406,7 @@ var replaceDigit;
         [
             define('S'),
             define('R', 'CAPITAL_HTML'),
-            define('S', 'CAPITAL_HTML', 'ENTRIES_OBJ')
+            define('S', 'ENTRIES_OBJ')
         ],
         [
             define('U'),
@@ -557,8 +555,8 @@ var replaceDigit;
         'j':
         [
             define('(PLAIN_OBJECT + [])["10"]'),
-            define('(self + [])[3]', 'SELF_OBJ'),
-            define('(ARRAY_ITERATOR + [])[3]', 'ENTRIES_OBJ')
+            define('(ARRAY_ITERATOR + [])[3]', 'ENTRIES_OBJ'),
+            define('(self + [])[3]', 'SELF_OBJ')
         ],
         'k':
         [
