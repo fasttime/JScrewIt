@@ -75,16 +75,12 @@ var replaceDigit;
         ,
         ,
         ,
-        'FHP_3_NO + FBEP_4_S',
+        'FBP_7_NO',
+        'RP_1_NO + [FBP_7_NO]',
         ,
+        'RP_3_NO + [FBP_7_NO]',
         ,
-        ,
-        ,
-        '[FHP_3_NO] + FBEP_9_U',
-        ,
-        ,
-        ,
-        'FHP_3_NO + [RP_4_N] + FBEP_9_U',
+        'RP_5_N + [FBP_7_NO]',
     ];
     
     var FH_PADDINGS =
@@ -239,9 +235,7 @@ var replaceDigit;
             case 30:
                 paddingEntries =
                 [
-                    define(
-                        { block: '[RP_1_NO] + FBEP_9_U', indexer: index / 10 + 1 + ' + FH_SHIFT_1' }
-                    ),
+                    define(10),
                     define(10, 'NO_IE_SRC'),
                     define(0, 'V8_SRC'),
                     define(6, 'FF_SAFARI_SRC'),
@@ -260,7 +254,7 @@ var replaceDigit;
             case 25:
                 paddingEntries =
                 [
-                    define({ block: 'RP_1_NO + FBEP_4_S', indexer: '3 + FH_SHIFT_1' }),
+                    define(7),
                     define(5, 'NO_IE_SRC'),
                     define(1, 'FF_SAFARI_SRC'),
                     define(0, 'IE_SRC')
@@ -269,7 +263,7 @@ var replaceDigit;
             case 32:
                 paddingEntries =
                 [
-                    define({ block: 'FBEP_9_U', indexer: '4 + FH_SHIFT_2' }),
+                    define(8),
                     define(9, 'NO_IE_SRC'),
                     define(0, 'V8_SRC'),
                     define(4, 'FF_SAFARI_SRC'),
@@ -279,7 +273,7 @@ var replaceDigit;
             case 34:
                 paddingEntries =
                 [
-                    define(16),
+                    define(7),
                     define(9, 'NO_IE_SRC'),
                     define(6, 'V8_SRC'),
                     define(3, 'FF_SAFARI_SRC'),
@@ -872,10 +866,6 @@ var replaceDigit;
         [
             defineFBCharAt(26),
             define('(RP_6_SO + PLAIN_OBJECT)["20"]'),
-            define(
-                '(ARRAY_ITERATOR + [])[2 + [true + !!(ARRAY_ITERATOR + [])["22"]]]',
-                'ARRAY_ITERATOR'
-            ),
             define('(ARRAY_ITERATOR + [])["22"]', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
             define('(ARRAY_ITERATOR + [])["21"]', 'OLD_SAFARI_ARRAY_ITERATOR')
         ],
@@ -1101,7 +1091,7 @@ var replaceDigit;
         ],
         
         // Function body extra padding blocks: prepended to a function to align the function's body
-        // at the same position on different browsers.
+        // at the same position on different browsers, assuming that the function header is aligned.
         // The number after "FBEP_" is the maximum character overhead. The letters after the last
         // underscore have the same meaning as in regular padding blocks.
         
@@ -1113,6 +1103,17 @@ var replaceDigit;
         FBEP_9_U:
         [
             define('[false][+(ANY_FUNCTION + [])["20"]]')
+        ],
+        
+        // Function body padding blocks: prepended to a function to align the function's body at the
+        // same position on different browsers.
+        // The number after "FBP_" is the maximum character overhead. The letters after the last
+        // underscore have the same meaning as in regular padding blocks.
+        
+        FBP_7_NO:
+        [
+            define('+(1 + [(RP_4_N + FILTER)["40"]] + 0 + 0 + 0 + 0 + 0 + 1)'),
+            define('+(1 + [(RP_6_SO + FILL)["40"]] + 0 + 0 + 0 + 0 + 0 + 1)', 'FILL'),
         ],
         
         // Function header shift: used to adjust an indexer to make it point to the same position in
@@ -1166,6 +1167,7 @@ var replaceDigit;
         RP_4_N:         'true',
         RP_5_N:         'false',
         RP_6_SO:        '"0false"',
+        RP_9_U:         'undefined',
     });
     
     FROM_CHAR_CODE =
