@@ -13,6 +13,7 @@ var AMENDINGS;
 var CREATE_PARSE_INT_ARG;
 var DEFAULT_CHARACTER_ENCODER;
 var FROM_CHAR_CODE;
+var OPTIMAL_B;
 
 var BASE64_ALPHABET_HI_2;
 var BASE64_ALPHABET_HI_4;
@@ -1166,18 +1167,6 @@ var replaceDigit;
         RP_9_U:         'undefined',
     });
     
-    FROM_CHAR_CODE =
-    [
-        define('fromCharCode'),
-        define('fromCodePoint', 'ATOB', 'FROM_CODE_POINT'),
-        define('fromCodePoint', 'CAPITAL_HTML', 'FROM_CODE_POINT')
-    ];
-    
-    LEVEL_STRING    = 1;
-    LEVEL_OBJECT    = 0;
-    LEVEL_NUMERIC   = -1;
-    LEVEL_UNDEFINED = -2;
-    
     createParseIntArgByReduce =
         function (amendings, firstDigit)
         {
@@ -1225,13 +1214,13 @@ var replaceDigit;
     CREATE_PARSE_INT_ARG =
     [
         define(createParseIntArgByReduce),
-        define(undefined, 'ATOB', 'ENTRIES_OBJ'),
-        define(createParseIntArgByReduce, 'ATOB', 'ENTRIES_PLAIN'),
-        define(createParseIntArgByReduce, 'ATOB', 'FILL'),
-        define(createParseIntArgByReduce, 'ATOB', 'NO_IE_SRC'),
-        define(createParseIntArgByReduce, 'ATOB', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-        define(createParseIntArgByReduce, 'ATOB', 'OLD_SAFARI_ARRAY_ITERATOR'),
         define(undefined, 'CAPITAL_HTML', 'ENTRIES_OBJ'),
+        define(createParseIntArgByReduce, 'CAPITAL_HTML', 'ENTRIES_PLAIN'),
+        define(createParseIntArgByReduce, 'CAPITAL_HTML', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
+        define(createParseIntArgByReduce, 'CAPITAL_HTML', 'OLD_SAFARI_ARRAY_ITERATOR'),
+        define(undefined, 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'NO_IE_SRC'),
+        define(undefined, 'CAPITAL_HTML', 'NO_IE_SRC', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
+        define(undefined, 'CAPITAL_HTML', 'NO_IE_SRC', 'OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduce, 'ENTRIES_PLAIN', 'FILL'),
         define(createParseIntArgByReduce, 'FILL', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduce, 'FILL', 'OLD_SAFARI_ARRAY_ITERATOR'),
@@ -1274,6 +1263,21 @@ var replaceDigit;
             'ATOB'
         )
     ];
+    
+    FROM_CHAR_CODE =
+    [
+        define('fromCharCode'),
+        define('fromCodePoint', 'ATOB', 'FROM_CODE_POINT'),
+        define('fromCodePoint', 'BARPROP', 'FROM_CODE_POINT'),
+        define('fromCodePoint', 'CAPITAL_HTML', 'FROM_CODE_POINT')
+    ];
+    
+    LEVEL_STRING    = 1;
+    LEVEL_OBJECT    = 0;
+    LEVEL_NUMERIC   = -1;
+    LEVEL_UNDEFINED = -2;
+    
+    OPTIMAL_B = [define('B'), define('b', 'ENTRIES_OBJ')];
     
     SIMPLE = new Empty();
     
