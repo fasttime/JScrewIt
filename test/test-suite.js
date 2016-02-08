@@ -272,6 +272,13 @@ self
                         this.toBePlainObject();
                     }
                 );
+                testConstant(
+                    'SUBSTR',
+                    function ()
+                    {
+                        this.toMatch(/^slice|substr$/);
+                    }
+                );
             }
         );
         describe(
