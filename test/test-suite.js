@@ -1584,19 +1584,19 @@ self
                     return result;
                 }
                 
-                JScrewIt.debug.defineConstant(encoder, 'A', 'B');
-                JScrewIt.debug.defineConstant(encoder, 'C', 'D');
-                JScrewIt.debug.defineConstant(encoder, 'D', 'C');
-                JScrewIt.debug.defineConstant(encoder, 'E', '?');
-                JScrewIt.debug.defineConstant(encoder, 'F', '"\\?"');
-                JScrewIt.debug.defineConstant(encoder, 'G', '"too complex"');
+                JScrewIt.debug.defineConstant(encoder, 'A', 'FILL');
+                JScrewIt.debug.defineConstant(encoder, 'B', 'C');
+                JScrewIt.debug.defineConstant(encoder, 'C', 'B');
+                JScrewIt.debug.defineConstant(encoder, 'D', '?');
+                JScrewIt.debug.defineConstant(encoder, 'E', '"\\?"');
+                JScrewIt.debug.defineConstant(encoder, 'F', '"too complex"');
                 
                 it(
                     'Circular reference',
                     function ()
                     {
-                        expect(debugReplacer('C')).toThrow(
-                            SyntaxError('Circular reference detected: C < D < C')
+                        expect(debugReplacer('B')).toThrow(
+                            SyntaxError('Circular reference detected: B < C < B')
                         );
                     }
                 );
@@ -1609,7 +1609,7 @@ self
                             function ()
                             {
                                 expect(debugReplacer('A')).toThrow(
-                                    SyntaxError('Undefined literal B in the definition of A')
+                                    SyntaxError('Undefined literal FILL in the definition of A')
                                 );
                             }
                         );
@@ -1632,8 +1632,8 @@ self
                             'in a definition',
                             function ()
                             {
-                                expect(debugReplacer('E')).toThrow(
-                                    SyntaxError('Unexpected character "?" in the definition of E')
+                                expect(debugReplacer('D')).toThrow(
+                                    SyntaxError('Unexpected character "?" in the definition of D')
                                 );
                             }
                         );
@@ -1656,8 +1656,8 @@ self
                             'in a definition',
                             function ()
                             {
-                                expect(debugReplacer('F')).toThrow(
-                                    SyntaxError('Illegal string "\\?" in the definition of F')
+                                expect(debugReplacer('E')).toThrow(
+                                    SyntaxError('Illegal string "\\?" in the definition of E')
                                 );
                             }
                         );
@@ -1680,8 +1680,8 @@ self
                             'in a definition',
                             function ()
                             {
-                                expect(debugReplacer('G')).toThrow(
-                                    SyntaxError('String too complex in the definition of G')
+                                expect(debugReplacer('F')).toThrow(
+                                    SyntaxError('String too complex in the definition of F')
                                 );
                             }
                         );
@@ -1693,15 +1693,6 @@ self
                                     SyntaxError('String too complex')
                                 );
                             }
-                        );
-                    }
-                );
-                it(
-                    'Illegal string',
-                    function ()
-                    {
-                        expect(debugReplacer('F')).toThrow(
-                            SyntaxError('Illegal string "\\?" in the definition of F')
                         );
                     }
                 );
