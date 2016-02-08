@@ -799,7 +799,7 @@ var replaceDigit;
         ],
         '&':
         [
-            define('""["fontcolor"]("\\"")["13"]', 'DOUBLE_QUOTE_ESC_HTML'),
+            define('""["fontcolor"](""["fontcolor"]([]))["31"]', 'DOUBLE_QUOTE_ESC_HTML'),
             define()
         ],
         // '\'':   ,
