@@ -323,7 +323,7 @@ var resolveSimple;
                 solution = this.resolveConstant(literal);
             else if (literal in SIMPLE)
                 solution = SIMPLE[literal];
-            else
+            if (!solution)
                 this.throwSyntaxError('Undefined literal ' + literal);
             replacement =
                 isStrongBoundRequired(expr, offset, wholeMatch) && hasOuterPlus(solution) ?
