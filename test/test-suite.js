@@ -840,6 +840,19 @@ self
             }
         );
         describe(
+            'JScrewIt.debug.getEntries',
+            function ()
+            {
+                it(
+                    'does not throw',
+                    function ()
+                    {
+                        JScrewIt.debug.getEntries('');
+                    }
+                );
+            }
+        );
+        describe(
             'JScrewIt.debug.hasOuterPlus is',
             function ()
             {

@@ -7,6 +7,7 @@ var JScrewIt = require('../lib/jscrewit.js');
 var kit = require('./verifier-kit.js');
 var define              = kit.define;
 var findOptimalFeatures = kit.findOptimalFeatures;
+var getEntries          = JScrewIt.debug.getEntries;
 var verifyComplex       = kit.verifyComplex;
 var verifyDefinitions   = kit.verifyDefinitions;
 require('../tools/text-utils.js');
@@ -31,6 +32,18 @@ createParseIntArgDefault.toString =
         return 'createParseIntArgDefault';
     };
 
+function compareRoutineNames(name1, name2)
+{
+    var result = isCapital(name2) - isCapital(name1);
+    if (result)
+        return result;
+    if (name1 > name2)
+        return 1;
+    if (name1 < name2)
+        return -1;
+    return 0;
+}
+
 function findCoderTestData(coderName)
 {
     for (var index = 0;; ++index)
@@ -39,6 +52,12 @@ function findCoderTestData(coderName)
         if (coderTestData.coderName === coderName)
             return coderTestData;
     }
+}
+
+function isCapital(name)
+{
+    var capital = name.toUpperCase() === name;
+    return capital;
 }
 
 function mismatchCallback()
@@ -137,35 +156,46 @@ verify.String =
         verifyComplex('String', [define('String["name"]', 'NAME')], mismatchCallback);
     };
 
-verify['base64-1'] =
+verify['BASE64_ALPHABET_HI_4:0'] =
     verifyBase64Defs(
-        JScrewIt.debug.BASE64_ALPHABET_HI_4[0],
+        getEntries('BASE64_ALPHABET_HI_4:0'),
         ['A', 'B', 'C', 'D']
     );
 
-verify['base64-2'] =
+verify['BASE64_ALPHABET_HI_4:4'] =
     verifyBase64Defs(
-        JScrewIt.debug.BASE64_ALPHABET_HI_4[4],
+        getEntries('BASE64_ALPHABET_HI_4:4'),
         ['Q', 'R', 'S', 'T']
     );
 
-verify['base64-3'] =
+verify['BASE64_ALPHABET_HI_4:5'] =
     verifyBase64Defs(
-        JScrewIt.debug.BASE64_ALPHABET_HI_4[5],
+        getEntries('BASE64_ALPHABET_HI_4:5'),
         ['U', 'V', 'W', 'X']
     );
 
-verify['base64-4'] =
+verify['BASE64_ALPHABET_LO_4:1'] =
     verifyBase64Defs(
-        JScrewIt.debug.BASE64_ALPHABET_LO_4[1],
+        getEntries('BASE64_ALPHABET_LO_4:1'),
         ['0B', '0R', '0h', '0x']
     );
 
-verify['base64-5'] =
+verify['BASE64_ALPHABET_LO_4:3'] =
     verifyBase64Defs(
-        JScrewIt.debug.BASE64_ALPHABET_LO_4[3],
+        getEntries('BASE64_ALPHABET_LO_4:3'),
         ['0D', '0T', '0j', '0z']
     );
+
+verify.FROM_CHAR_CODE =
+    function ()
+    {
+        verifyDefinitions(
+                getEntries('FROM_CHAR_CODE'),
+                [define('fromCharCode'), define('fromCodePoint', 'FROM_CODE_POINT')],
+                mismatchCallback,
+                'replaceString'
+            );
+    };
 
 verify.byCharCodes = verifyCoder('byCharCodes');
 verify.byCharCodesRadix4 = verifyCoder('byCharCodesRadix4');
@@ -177,11 +207,11 @@ verify.byDictRadix4AmendedBy2 = verifyCoder('byDictRadix4AmendedBy2');
 verify.byDictRadix5AmendedBy3 = verifyCoder('byDictRadix5AmendedBy3', 'byDictRadix4AmendedBy2');
 verify.byDblDict = verifyCoder('byDblDict');
 
-verify.parseIntArg =
+verify.CREATE_PARSE_INT_ARG =
     function ()
     {
         verifyDefinitions(
-            JScrewIt.debug.CREATE_PARSE_INT_ARG,
+            getEntries('CREATE_PARSE_INT_ARG'),
             [
                 define(createParseIntArgDefault),
                 define(createParseIntArgByReduce),
@@ -198,6 +228,17 @@ verify.parseIntArg =
         );
     };
 
+verify.OPTIMAL_B =
+    function ()
+    {
+        verifyDefinitions(
+            getEntries('OPTIMAL_B'),
+            ['b', 'B'],
+            mismatchCallback,
+            'resolveCharacter'
+        );
+    };
+
 var routineName = process.argv[2];
 if (routineName != null)
 {
@@ -209,7 +250,7 @@ if (routineName != null)
     }
 }
 console.error(
-    Object.keys(verify).sort().reduce(
+    Object.keys(verify).sort(compareRoutineNames).reduce(
         function (str, routineName)
         {
             return str + '\n* ' + routineName;
