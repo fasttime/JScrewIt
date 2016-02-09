@@ -492,7 +492,7 @@ var resolveSimple;
                     var createParseIntArg;
                     if (amendings > 2)
                         createParseIntArg = this.findBestDefinition(CREATE_PARSE_INT_ARG);
-                    if (!createParseIntArg)
+                    else
                         createParseIntArg = createParseIntArgDefault;
                     parseIntArg = createParseIntArg(amendings, firstDigit);
                 }
