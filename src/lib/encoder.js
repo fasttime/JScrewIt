@@ -325,9 +325,14 @@ var resolveSimple;
                 solution = SIMPLE[literal];
             if (!solution)
                 this.throwSyntaxError('Undefined literal ' + literal);
-            replacement =
-                isStrongBoundRequired(expr, offset, wholeMatch) && hasOuterPlus(solution) ?
-                '(' + solution + ')' : solution + '';
+            var groupingRequired;
+            if (isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length))
+                groupingRequired = solution[0] === '!' || hasOuterPlus(solution);
+            else if (isPrecededByOperator(expr, offset))
+                groupingRequired = hasOuterPlus(solution);
+            else
+                groupingRequired = false;
+            replacement = groupingRequired ? '(' + solution + ')' : solution + '';
         }
         else
             this.throwSyntaxError('Unexpected character ' + quoteString(wholeMatch));

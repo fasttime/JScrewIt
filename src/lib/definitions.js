@@ -1013,7 +1013,7 @@ var replaceDigit;
         ],
         Boolean:
         [
-            define('(false)["constructor"]')
+            define('false["constructor"]')
         ],
         Date:
         [
