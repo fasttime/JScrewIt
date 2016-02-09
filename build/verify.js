@@ -13,25 +13,6 @@ var verifyDefinitions   = kit.verifyDefinitions;
 require('../tools/text-utils.js');
 require('../test/coder-test-helpers.js');
 
-var createParseIntArgByReduce = JScrewIt.debug.createParseIntArgByReduce;
-createParseIntArgByReduce.toString =
-    function ()
-    {
-        return 'createParseIntArgByReduce';
-    };
-var createParseIntArgByReduceArrow = JScrewIt.debug.createParseIntArgByReduceArrow;
-createParseIntArgByReduceArrow.toString =
-    function ()
-    {
-        return 'createParseIntArgByReduceArrow';
-    };
-var createParseIntArgDefault = JScrewIt.debug.createParseIntArgDefault;
-createParseIntArgDefault.toString =
-    function ()
-    {
-        return 'createParseIntArgDefault';
-    };
-
 function compareRoutineNames(name1, name2)
 {
     var result = isCapital(name2) - isCapital(name1);
@@ -210,8 +191,31 @@ verify.byDblDict = verifyCoder('byDblDict');
 verify.CREATE_PARSE_INT_ARG =
     function ()
     {
+        function findAs(name, match)
+        {
+            var createParseIntArg;
+            entries.some(
+                function (entry)
+                {
+                    createParseIntArg = entry.definition;
+                    if (String(createParseIntArg).indexOf(match) >= 0)
+                        return true;
+                }
+            );
+            createParseIntArg.toString =
+                function ()
+                {
+                    return name;
+                };
+            return createParseIntArg;
+        }
+        
+        var entries = getEntries('CREATE_PARSE_INT_ARG');
+        var createParseIntArgByReduce       = findAs('createParseIntArgByReduce', '{return');
+        var createParseIntArgByReduceArrow  = findAs('createParseIntArgByReduceArrow', '=>');
+        var createParseIntArgDefault        = findAs('createParseIntArgDefault', 'replace(/');
         verifyDefinitions(
-            getEntries('CREATE_PARSE_INT_ARG'),
+            entries,
             [
                 define(createParseIntArgDefault),
                 define(createParseIntArgByReduce),
@@ -223,8 +227,7 @@ verify.CREATE_PARSE_INT_ARG =
                 var expr = createParseIntArg(3, 2);
                 var replacement = this.replaceString(expr);
                 return replacement;
-            },
-            createParseIntArgDefault
+            }
         );
     };
 

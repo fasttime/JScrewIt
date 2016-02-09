@@ -146,7 +146,7 @@
         }
     }
     
-    function verifyDefinitions(entries, inputList, mismatchCallback, replacer, defaultExpr)
+    function verifyDefinitions(entries, inputList, mismatchCallback, replacer)
     {
         var mismatchCount = 0;
         var analyzer = new Analyzer();
@@ -156,8 +156,6 @@
             var optimalityInfo = getOptimalityInfo(encoder, inputList, replacer);
             analyzer.stopCapture();
             var actualDefinition = encoder.findBestDefinition(entries);
-            if (actualDefinition === undefined)
-                actualDefinition = defaultExpr;
             var lengthMap = optimalityInfo.lengthMap;
             var optimalLength = optimalityInfo.optimalLength;
             if (lengthMap[actualDefinition] > optimalLength)

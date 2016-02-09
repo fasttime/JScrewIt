@@ -40,8 +40,6 @@ var LEVEL_OBJECT;
 var LEVEL_STRING;
 var LEVEL_UNDEFINED;
 
-var createParseIntArgByReduce;
-var createParseIntArgByReduceArrow;
 var createParseIntArgDefault;
 var createSolution;
 var replaceDigit;
@@ -1171,7 +1169,7 @@ var replaceDigit;
         RP_9_U:         'undefined',
     });
     
-    createParseIntArgByReduce =
+    var createParseIntArgByReduce =
         function (amendings, firstDigit)
         {
             var parseIntArg =
@@ -1187,7 +1185,7 @@ var replaceDigit;
             return parseIntArg;
         };
     
-    createParseIntArgByReduceArrow =
+    var createParseIntArgByReduceArrow =
         function (amendings, firstDigit)
         {
             var parseIntArg =
@@ -1218,13 +1216,18 @@ var replaceDigit;
     CREATE_PARSE_INT_ARG =
     [
         define(createParseIntArgByReduce),
-        define(undefined, 'CAPITAL_HTML', 'ENTRIES_OBJ'),
+        define(createParseIntArgDefault, 'CAPITAL_HTML', 'ENTRIES_OBJ'),
         define(createParseIntArgByReduce, 'CAPITAL_HTML', 'ENTRIES_PLAIN'),
         define(createParseIntArgByReduce, 'CAPITAL_HTML', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduce, 'CAPITAL_HTML', 'OLD_SAFARI_ARRAY_ITERATOR'),
-        define(undefined, 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'NO_IE_SRC'),
-        define(undefined, 'CAPITAL_HTML', 'NO_IE_SRC', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-        define(undefined, 'CAPITAL_HTML', 'NO_IE_SRC', 'OLD_SAFARI_ARRAY_ITERATOR'),
+        define(createParseIntArgDefault, 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'NO_IE_SRC'),
+        define(
+            createParseIntArgDefault,
+            'CAPITAL_HTML',
+            'NO_IE_SRC',
+            'NO_OLD_SAFARI_ARRAY_ITERATOR'
+        ),
+        define(createParseIntArgDefault, 'CAPITAL_HTML', 'NO_IE_SRC', 'OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduce, 'ENTRIES_PLAIN', 'FILL'),
         define(createParseIntArgByReduce, 'FILL', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduce, 'FILL', 'OLD_SAFARI_ARRAY_ITERATOR'),
@@ -1233,7 +1236,7 @@ var replaceDigit;
         define(createParseIntArgByReduce, 'IE_SRC'),
         define(createParseIntArgByReduce, 'V8_SRC'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ'),
-        define(undefined, 'ARROW', 'CAPITAL_HTML', 'ENTRIES_OBJ', 'NO_IE_SRC'),
+        define(createParseIntArgDefault, 'ARROW', 'CAPITAL_HTML', 'ENTRIES_OBJ', 'NO_IE_SRC'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_PLAIN'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'FILL'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
