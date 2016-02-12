@@ -3,11 +3,127 @@
 
 'use strict';
 
-require('../tools/text-utils.js');
 var Analyzer = require('./analyzer.js');
 var JScrewIt = require('../lib/jscrewit.js');
 var ProgressBar = require('progress');
 var fs = require('fs');
+require('../tools/text-utils.js');
+
+function Interruption(blocker)
+{
+    this.blocker = blocker;
+}
+
+function allPropertyNamesIn(obj)
+{
+    var propertyNames = [];
+    for (var propertyName in obj)
+        propertyNames.push(propertyName);
+    return propertyNames;
+}
+
+function compareCanonicalNames(solution1, solution2)
+{
+    var canonicalNames1 = solution1.canonicalNames;
+    var canonicalNames2 = solution2.canonicalNames;
+    for (var index = 0;; ++index)
+    {
+        var name1 = canonicalNames1[index] || '';
+        var name2 = canonicalNames2[index] || '';
+        if (!name1 && !name2)
+        {
+            // If you get this error, it's because more distinct solutions share the same minimal
+            // common feature. In this case, the minimal common feature may not be characteristic
+            // for the set of features generating the solution, and a new characterization may be
+            // necessary.
+            throw new Error('Feature collision');
+        }
+        if (name1 < name2)
+            return -1;
+        if (name1 > name2)
+            return 1;
+    }
+}
+
+function createEmpty()
+{
+    var empty = Object.create(null);
+    return empty;
+}
+
+function createExceptionalCharMap(toDoCharMap)
+{
+    var exceptionalCharMap = createEmpty();
+    for (var char in toDoCharMap)
+    {
+        var exceptionalChars = createEmpty();
+        if (findDependencyLoops(toDoCharMap, char, exceptionalChars, char))
+            exceptionalCharMap[char] = exceptionalChars;
+    }
+    return exceptionalCharMap;
+}
+
+function createToDoCharMap()
+{
+    var toDoCharMap = createEmpty();
+    for (var charCode = 0; charCode <= 0xffff; ++charCode)
+    {
+        var char = String.fromCharCode(charCode);
+        var entries = JScrewIt.debug.getCharacterEntries(char);
+        if (entries)
+        {
+            var definitionCount = Array.isArray(entries) ? entries.length : 0;
+            toDoCharMap[char] = { blockedSet: createEmpty(), definitionCount: definitionCount };
+        }
+    }
+    return toDoCharMap;
+}
+
+function findDependencyLoops(toDoCharMap, char, exceptionalChars, blocked)
+{
+    var toDoEntry = toDoCharMap[blocked];
+    if (!toDoEntry)
+        return;
+    var blockedSet = toDoEntry.blockedSet;
+    if (char in blockedSet)
+        return true;
+    var result;
+    for (var blockedBlocked in blockedSet)
+    {
+        if (blockedBlocked in exceptionalChars)
+            continue;
+        exceptionalChars[blockedBlocked] = null;
+        if (findDependencyLoops(toDoCharMap, char, exceptionalChars, blockedBlocked))
+            result = true;
+        else
+            delete exceptionalChars[blockedBlocked];
+    }
+    return result;
+}
+
+function findKnownSolution(solutions, encoder, analyzer)
+{
+    var knownSolution;
+    var knownLength = Infinity;
+    solutions.forEach(
+        function (solution)
+        {
+            var featureMask = solution.featureMask;
+            if (encoder.hasFeatures(featureMask) && analyzer.doesNotExclude(featureMask))
+            {
+                var length = solution.length;
+                if (length < knownLength)
+                {
+                    knownSolution = solution;
+                    knownLength = length;
+                }
+                else if (length === knownLength)
+                    knownSolution = null;
+            }
+        }
+    );
+    return knownSolution;
+}
 
 function formatChar(char)
 {
@@ -18,60 +134,90 @@ function formatChar(char)
     return str;
 }
 
-function formatFeatures(featureNames)
+function formatFeatureNames(featureNames)
 {
     var str = featureNames.length ? featureNames.join(', ') : 'DEFAULT';
     return str;
 }
 
-function processOutputMap(outputMap, entryCount, logLine)
+function multiSolve(char, doneCharMap, exceptionalChars)
 {
-    var entryIndexSet = Object.create(null);
-    for (var output in outputMap)
+    function newResolveCharacter(char)
     {
-        var outputData = outputMap[output];
-        var featureMask = outputData.featureMask;
-        var featureNames = JScrewIt.debug.createFeatureFromMask(featureMask).canonicalNames;
-        outputData.featureNames = featureNames;
-        var entryIndex = outputData.entryIndex;
-        if (entryIndex != null)
-            entryIndexSet[entryIndex] = null;
-    }
-    var notAllDefsUsed = Object.keys(entryIndexSet).length !== entryCount;
-    if (notAllDefsUsed)
-        logLine('Not all definitions used!');
-    var outputs = Object.keys(outputMap);
-    outputs.sort(
-        function (output1, output2)
+        var solutions = doneCharMap[char];
+        if (solutions)
         {
-            var outputData1 = outputMap[output1];
-            var outputData2 = outputMap[output2];
-            var features1 = outputData1.featureNames;
-            var features2 = outputData2.featureNames;
-            for (var index = 0;; ++index)
+            var solution = findKnownSolution(solutions, encoder, analyzer);
+            // If you ever get this error you may need to implement the logic to choose the optimal
+            // character solution out of two or more with the same length.
+            if (solution == null)
+                throw new Error('No single determinate solution found.');
+            return solution;
+        }
+        if (char in exceptionalChars)
+            return oldResolveCharacter.apply(encoder, arguments);
+        throw new Interruption(char);
+    }
+    
+    var entryIndexSet = createEmpty();
+    var outputMap = createEmpty();
+    var analyzer = new Analyzer();
+    for (var encoder; encoder = analyzer.nextEncoder;)
+    {
+        var featureMask = analyzer.featureObj.mask;
+        var oldResolveCharacter = encoder.resolveCharacter;
+        encoder.resolveCharacter = newResolveCharacter;
+        var solution = encoder.resolveCharacter(char);
+        var outputSolution = outputMap[solution];
+        if (outputSolution)
+            outputSolution.featureMask &= featureMask;
+        else
+        {
+            solution.featureMask = featureMask;
+            outputMap[solution] = solution;
+            var entryIndex = solution.entryIndex;
+            if (entryIndex !== undefined)
+                entryIndexSet[entryIndex] = null;
+        }
+    }
+    var solutions =
+        Object.keys(outputMap).map(
+            function (outputKey)
             {
-                var feature1 = features1[index] || '';
-                var feature2 = features2[index] || '';
-                if (!feature1 && !feature2)
-                    return 0;
-                if (feature1 < feature2)
-                    return -1;
-                if (feature1 > feature2)
-                    return 1;
+                var solution = outputMap[outputKey];
+                return solution;
             }
+        );
+    solutions.entryIndexCount = Object.keys(entryIndexSet).length;
+    return solutions;
+}
+
+function printReport(logLine, char, solutions)
+{
+    solutions.forEach(
+        function (solution)
+        {
+            var featureObj = JScrewIt.debug.createFeatureFromMask(solution.featureMask);
+            var canonicalNames = featureObj.canonicalNames;
+            solution.canonicalNames = canonicalNames;
         }
     );
-    outputs.forEach(
-        function (output)
+    solutions.sort(compareCanonicalNames);
+    var desc = formatChar(char);
+    var notAllDefsUsed = solutions.definitionCount > solutions.entryIndexCount;
+    logLine('\nCharacter ' + desc);
+    if (notAllDefsUsed)
+        logLine('Not all definitions used!');
+    solutions.forEach(
+        function (solution)
         {
-            var outputData = outputMap[output];
-            var featureNames = outputData.featureNames;
-            var outputLength = output.length;
-            var entryIndex = outputData.entryIndex;
+            var canonicalNames = solution.canonicalNames;
+            var length = solution.length;
+            var entryIndex = solution.entryIndex;
             var line =
-                padLeft(outputLength, 5) + ' | ' +
+                padLeft(length, 5) + ' | ' +
                 padLeft(entryIndex == null ? '-' : entryIndex, 2) + ' | ' +
-                formatFeatures(featureNames);
+                formatFeatureNames(canonicalNames);
             logLine(line);
         }
     );
@@ -90,35 +236,85 @@ function runScan()
                 total:      100
             }
         );
-    var defsUnused = false;
     try
     {
-        scanAllChars(
-            function (char, allCharCount, charDoneCount, notAllDefsUsed)
-            {
-                defsUnused |= notAllDefsUsed;
-                bar.update(charDoneCount / allCharCount);
-            }
-        );
+        var notAllDefsUsed =
+            subRunScan(
+                function (charCount, doneCharCount)
+                {
+                    bar.update(doneCharCount / charCount);
+                }
+            );
+        return notAllDefsUsed;
     }
     finally
     {
         bar.terminate();
     }
-    return defsUnused;
 }
 
-function scanAllChars(callback)
+function scanCharDefs(logLine, callback)
 {
-    var chars = [];
-    for (var charCode = 0; charCode <= 0xffff; ++charCode)
+    var toDoCharMap = createToDoCharMap();
+    var charCount = Object.keys(toDoCharMap).length;
+    var doneCharMap = createEmpty();
+    var doneCharCount = 0;
+    var exceptionalCharMap = createEmpty();
+    var interruptCount = 0;
+    for (;;)
     {
-        var char = String.fromCharCode(charCode);
-        var entries = JScrewIt.debug.getCharacterEntries(char);
-        if (entries)
-            chars.push(char);
+        var newDoneCharMap = Object.create(doneCharMap);
+        for (var char in toDoCharMap)
+        {
+            var exceptionalChars = exceptionalCharMap[char] || createEmpty();
+            exceptionalChars[char] = null;
+            try
+            {
+                var solutions =
+                    newDoneCharMap[char] = multiSolve(char, doneCharMap, exceptionalChars);
+                solutions.definitionCount = toDoCharMap[char].definitionCount;
+                delete toDoCharMap[char];
+                ++doneCharCount;
+                interruptCount = 0;
+            }
+            catch (error)
+            {
+                if (!(error instanceof Interruption))
+                    throw error;
+                var blocker = error.blocker;
+                ++interruptCount;
+                if (!newDoneCharMap[blocker])
+                {
+                    var toDoEntry = toDoCharMap[blocker];
+                    if (!toDoEntry)
+                    {
+                        toDoCharMap[blocker] = toDoEntry = { blockedSet: createEmpty() };
+                        ++charCount;
+                    }
+                    toDoEntry.blockedSet[char] = null;
+                }
+            }
+            callback(charCount, doneCharCount + interruptCount / (interruptCount + 1));
+        }
+        doneCharMap = newDoneCharMap;
+        if (charCount === doneCharCount)
+            break;
+        exceptionalCharMap = createExceptionalCharMap(toDoCharMap);
     }
-    var allCharCount = chars.length;
+    var notAllDefsUsed = false;
+    allPropertyNamesIn(doneCharMap).sort().forEach(
+        function (char)
+        {
+            var solutions = doneCharMap[char];
+            if (printReport(logLine, char, solutions))
+                notAllDefsUsed = true;
+        }
+    );
+    return notAllDefsUsed;
+}
+
+function subRunScan(callback)
+{
     var fd = fs.openSync('output.txt', 'w');
     var logLine =
         function (line)
@@ -134,48 +330,13 @@ function scanAllChars(callback)
             'index and minimal feature list for each encoding of that character.\n' +
             'Only characters with explicit definitions are listed.'
         );
-        chars.forEach(
-            function (char, index)
-            {
-                var entries = JScrewIt.debug.getCharacterEntries(char);
-                var entryCount = Array.isArray(entries) ? entries.length : 0;
-                var notAllDefsUsed =
-                    scanChar(char, entryCount, logLine, allCharCount, index, callback);
-                if (callback)
-                    callback(char, allCharCount, index + 1, notAllDefsUsed);
-            }
-        );
+        var notAllDefsUsed = scanCharDefs(logLine, callback);
+        return notAllDefsUsed;
     }
     finally
     {
         fs.closeSync(fd);
     }
-}
-
-function scanChar(char, entryCount, logLine, allCharCount, charDoneCount, callback)
-{
-    var desc = formatChar(char);
-    logLine('\nCharacter ' + desc);
-    var analyzer = new Analyzer();
-    var outputMap = Object.create(null);
-    var encoder;
-    while (encoder = analyzer.nextEncoder)
-    {
-        var output = encoder.resolveCharacter(char);
-        var outputData = outputMap[output];
-        var featureMask = analyzer.featureObj.mask;
-        if (outputData)
-            outputData.featureMask &= featureMask;
-        else
-            outputMap[output] = { featureMask: featureMask, entryIndex: output.entryIndex };
-        if (callback)
-        {
-            var progress = analyzer.progress;
-            callback(char, allCharCount, charDoneCount + progress);
-        }
-    }
-    var notAllDefsUsed = processOutputMap(outputMap, entryCount, logLine);
-    return notAllDefsUsed;
 }
 
 module.exports = runScan;
