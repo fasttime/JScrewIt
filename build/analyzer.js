@@ -102,6 +102,21 @@
     Object.defineProperties(
         Analyzer.prototype,
         {
+            'doesNotExclude':
+            {
+                configurable: true,
+                value: function (featureMask)
+                {
+                    var featureQueries = this.featureQueries;
+                    var result =
+                        isIndependentFeatureMask(
+                            featureQueries,
+                            featureQueries.length,
+                            featureMask
+                        );
+                    return result;
+                }
+            },
             'nextEncoder':
             {
                 configurable: true,

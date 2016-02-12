@@ -1977,8 +1977,7 @@ self
                                 if (entry.definition)
                                 {
                                     var featureObj = getEntryFeature(entry);
-                                    var usingDefaultFeature =
-                                        JScrewIt.Feature.DEFAULT.includes(featureObj);
+                                    var usingDefaultFeature = Feature.DEFAULT.includes(featureObj);
                                     defaultEntryFound |= usingDefaultFeature;
                                     var emuFeatures = getEmuFeatureNames(featureObj);
                                     if (emuFeatures)
