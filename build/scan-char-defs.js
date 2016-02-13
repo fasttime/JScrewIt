@@ -72,8 +72,9 @@ function createToDoCharMap()
         var entries = JScrewIt.debug.getCharacterEntries(char);
         if (entries)
         {
-            var definitionCount = Array.isArray(entries) ? entries.length : 0;
-            toDoCharMap[char] = { blockedSet: createEmpty(), definitionCount: definitionCount };
+            var toDoEntry = toDoCharMap[char] = { blockedSet: createEmpty() };
+            if (!entries.singleton)
+                toDoEntry.definitionCount = entries.length;
         }
     }
     return toDoCharMap;

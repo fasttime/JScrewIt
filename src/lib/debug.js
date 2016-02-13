@@ -20,6 +20,7 @@ define,
 featureFromMask,
 getValidFeatureMask,
 hasOuterPlus,
+isArray,
 isMaskCompatible,
 setUp,
 trimJS
@@ -32,12 +33,43 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
     {
         'use strict';
         
+        function cloneEntries(entries)
+        {
+            if (entries)
+            {
+                var singleton = !isArray(entries);
+                if (singleton)
+                    entries = [createEntryClone(entries)];
+                else
+                {
+                    entries =
+                        entries.map(
+                            function (entry)
+                            {
+                                entry = createEntryClone(entry.definition, entry.featureMask);
+                                return entry;
+                            }
+                        );
+                }
+                entries.singleton = singleton;
+            }
+            return entries;
+        }
+        
         function createEncoder(features)
         {
             var featureMask = getValidFeatureMask(features);
             var encoder = new Encoder(featureMask);
             encoder.codingLog = [];
             return encoder;
+        }
+        
+        function createEntryClone(definition, featureMask)
+        {
+            if (typeof definition === 'object')
+                definition = Object.freeze(definition);
+            var entry = { definition: definition, featureMask: featureMask };
+            return entry;
         }
         
         function createFeatureFromMask(mask)
@@ -65,7 +97,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         
         function getCharacterEntries(char)
         {
-            var entries = CHARACTERS[char];
+            var entries = cloneEntries(CHARACTERS[char]);
             return entries;
         }
         
@@ -76,19 +108,19 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         
         function getComplexEntries(complex)
         {
-            var entries = COMPLEX[complex];
+            var entries = cloneEntries(COMPLEX[complex]);
             return entries;
         }
         
         function getConstantEntries(constant)
         {
-            var entries = CONSTANTS[constant];
+            var entries = cloneEntries(CONSTANTS[constant]);
             return entries;
         }
         
         function getEntries(name)
         {
-            var entries = ENTRIES[name];
+            var entries = cloneEntries(ENTRIES[name]);
             return entries;
         }
         

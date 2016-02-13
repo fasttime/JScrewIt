@@ -1969,7 +1969,7 @@ self
                 if (entries)
                 {
                     var defaultEntryFound = false;
-                    if (Array.isArray(entries))
+                    if (entries)
                     {
                         entries.forEach(
                             function (entry, index)
