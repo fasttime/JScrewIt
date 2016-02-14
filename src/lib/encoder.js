@@ -969,7 +969,7 @@ var resolveSimple;
     
     assignNoEnum(Encoder.prototype, encoderProtoSource);
     
-    var STATIC_ENCODER = new Encoder();
+    var STATIC_ENCODER = new Encoder(0);
     
     replaceIndexer =
         function (index)
