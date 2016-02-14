@@ -39,7 +39,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             {
                 var singleton = !isArray(entries);
                 if (singleton)
-                    entries = [createEntryClone(entries)];
+                    entries = [createEntryClone(entries, 0)];
                 else
                 {
                     entries =
