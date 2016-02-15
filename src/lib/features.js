@@ -368,17 +368,6 @@ var validMaskFromArrayOrStringOrFeature;
             excludes: ['WINDOW'],
             attributes: { 'web-worker': 'web-worker-restriction' }
         },
-        DOUBLE_QUOTE_ESC_HTML:
-        {
-            description:
-                'The property that double quote characters in the argument of ' +
-                'String.prototype.fontcolor are escaped as "&quot;".',
-            check: function ()
-            {
-                var available = ''.fontcolor('"').substr(13, 6) === '&quot;';
-                return available;
-            }
-        },
         ENTRIES_OBJ:
         {
             description:
@@ -400,6 +389,17 @@ var validMaskFromArrayOrStringOrFeature;
             },
             excludes: ['ARRAY_ITERATOR'],
             includes: ['ENTRIES_OBJ']
+        },
+        ESC_HTML_QUOT:
+        {
+            description:
+                'The property that double quote characters in the argument of ' +
+                'String.prototype.fontcolor are escaped as "&quot;".',
+            check: function ()
+            {
+                var available = ''.fontcolor('"').substr(13, 6) === '&quot;';
+                return available;
+            }
         },
         FF_SAFARI_SRC:
         {
@@ -626,8 +626,8 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
-                'DOUBLE_QUOTE_ESC_HTML',
                 'ENTRIES_OBJ',
+                'ESC_HTML_QUOT',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -648,7 +648,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'DOMWINDOW',
-                'DOUBLE_QUOTE_ESC_HTML',
+                'ESC_HTML_QUOT',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -664,7 +664,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'DOMWINDOW',
-                'DOUBLE_QUOTE_ESC_HTML',
+                'ESC_HTML_QUOT',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -681,7 +681,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
-                'DOUBLE_QUOTE_ESC_HTML',
+                'ESC_HTML_QUOT',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -704,7 +704,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ARROW',
                 'ATOB',
                 'BARPROP',
-                'DOUBLE_QUOTE_ESC_HTML',
+                'ESC_HTML_QUOT',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -729,7 +729,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ARROW',
                 'ATOB',
                 'BARPROP',
-                'DOUBLE_QUOTE_ESC_HTML',
+                'ESC_HTML_QUOT',
                 'ENTRIES_PLAIN',
                 'FILL',
                 'FROM_CODE_POINT',
@@ -754,7 +754,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ARROW',
                 'ATOB',
                 'BARPROP',
-                'DOUBLE_QUOTE_ESC_HTML',
+                'ESC_HTML_QUOT',
                 'FF_SAFARI_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
@@ -844,7 +844,7 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Features available in Node.js 0.10.26 or later.',
             includes:
             [
-                'DOUBLE_QUOTE_ESC_HTML',
+                'ESC_HTML_QUOT',
                 'GMT',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
@@ -857,7 +857,7 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Features available in Node.js 0.12 or later.',
             includes:
             [
-                'DOUBLE_QUOTE_ESC_HTML',
+                'ESC_HTML_QUOT',
                 'GMT',
                 'INTL',
                 'LOCALE_INFINITY',
@@ -874,7 +874,7 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ARROW',
-                'DOUBLE_QUOTE_ESC_HTML',
+                'ESC_HTML_QUOT',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -894,7 +894,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
-                'DOUBLE_QUOTE_ESC_HTML',
+                'ESC_HTML_QUOT',
                 'FF_SAFARI_SRC',
                 'GMT',
                 'HISTORY',
@@ -912,7 +912,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
-                'DOUBLE_QUOTE_ESC_HTML',
+                'ESC_HTML_QUOT',
                 'FF_SAFARI_SRC',
                 'FILL',
                 'GMT',
@@ -932,7 +932,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
-                'DOUBLE_QUOTE_ESC_HTML',
+                'ESC_HTML_QUOT',
                 'FF_SAFARI_SRC',
                 'FILL',
                 'GMT',
@@ -952,7 +952,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
-                'DOUBLE_QUOTE_ESC_HTML',
+                'ESC_HTML_QUOT',
                 'FF_SAFARI_SRC',
                 'FILL',
                 'FROM_CODE_POINT',

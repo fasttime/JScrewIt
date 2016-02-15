@@ -473,7 +473,9 @@
         ),
         DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object Document]$/),
         DOMWINDOW: makeEmuFeatureSelf('[object DOMWindow]', /^\[object DOMWindow]$/),
-        DOUBLE_QUOTE_ESC_HTML: makeEmuFeatureHtml(
+        ENTRIES_OBJ: makeEmuFeatureEntries('[object Object]', /^\[object /),
+        ENTRIES_PLAIN: makeEmuFeatureEntries('[object Object]', /^\[object Object]$/),
+        ESC_HTML_QUOT: makeEmuFeatureHtml(
             ['anchor', 'fontcolor', 'fontsize', 'link'],
             function (method)
             {
@@ -487,8 +489,6 @@
                 return result;
             }
         ),
-        ENTRIES_OBJ: makeEmuFeatureEntries('[object Object]', /^\[object /),
-        ENTRIES_PLAIN: makeEmuFeatureEntries('[object Object]', /^\[object Object]$/),
         FF_SAFARI_SRC: makeEmuFeatureFunctionSource('function ?() {\n    [native code]\n}'),
         FILL:
         {

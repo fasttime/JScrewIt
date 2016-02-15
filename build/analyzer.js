@@ -102,7 +102,7 @@
     Object.defineProperties(
         Analyzer.prototype,
         {
-            'doesNotExclude':
+            doesNotExclude:
             {
                 configurable: true,
                 value: function (featureMask)
@@ -117,7 +117,7 @@
                     return result;
                 }
             },
-            'nextEncoder':
+            nextEncoder:
             {
                 configurable: true,
                 get: function ()
@@ -130,7 +130,7 @@
                     return encoder;
                 }
             },
-            'progress':
+            progress:
             {
                 configurable: true,
                 get: function ()
@@ -140,7 +140,7 @@
                     return progress;
                 }
             },
-            'stopCapture':
+            stopCapture:
             {
                 configurable: true,
                 value: function ()
