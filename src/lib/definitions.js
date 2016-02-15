@@ -797,7 +797,7 @@ var replaceDigit;
         ],
         '&':
         [
-            define('""["fontcolor"](""["fontcolor"]([]))["31"]', 'DOUBLE_QUOTE_ESC_HTML'),
+            define('""["fontcolor"](""["fontcolor"]([]))["31"]', 'ESC_HTML_QUOT'),
             define()
         ],
         // '\'':   ,
@@ -832,7 +832,7 @@ var replaceDigit;
         ],
         ';':
         [
-            define('""["fontcolor"]("NaN\\"")["21"]', 'DOUBLE_QUOTE_ESC_HTML'),
+            define('""["fontcolor"]("NaN\\"")["21"]', 'ESC_HTML_QUOT'),
             define()
         ],
         '<':
