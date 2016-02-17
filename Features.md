@@ -84,11 +84,21 @@ _Available in Firefox, Chrome, Safari 7.1+, Opera, Microsoft Edge and Node.js 0.
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Object\]".
 
 _Available in Microsoft Edge._
+<a name="ESC_HTML_ALL"></a>
+### `ESC_HTML_ALL`
+The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
+
+_This feature is not available in any of the supported engines._
 <a name="ESC_HTML_QUOT"></a>
 ### `ESC_HTML_QUOT`
-The property that double quote characters in the argument of String.prototype.fontcolor are escaped as "\&quot;".
+The property that double quotation marks in the argument of String.prototype.fontcolor are escaped as "\&quot;".
 
 _Available in Firefox, Chrome, Safari, Opera, Microsoft Edge, Android Browser and Node.js._
+<a name="ESC_HTML_QUOT_ONLY"></a>
+### `ESC_HTML_QUOT_ONLY`
+The property that only double quotation marks and no other characters in the argument of String.prototype.fontcolor are escaped into HTML entities.
+
+_This feature is not available in any of the supported engines._
 <a name="FF31"></a>
 ### `FF31`
 Features available in Firefox 31 or later.

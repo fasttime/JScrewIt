@@ -390,16 +390,43 @@ var validMaskFromArrayOrStringOrFeature;
             excludes: ['ARRAY_ITERATOR'],
             includes: ['ENTRIES_OBJ']
         },
+        ESC_HTML_ALL:
+        {
+            description:
+                'The property that double quotation mark, less than and greater than characters ' +
+                'in the argument of String.prototype.fontcolor are escaped into their respective ' +
+                'HTML entities.',
+            check: function ()
+            {
+                var available = ''.fontcolor('"<>').indexOf('&quot;&lt;&gt;') >= 0;
+                return available;
+            },
+            excludes: ['ESC_HTML_QUOT_ONLY'],
+            includes: ['ESC_HTML_QUOT']
+        },
         ESC_HTML_QUOT:
         {
             description:
-                'The property that double quote characters in the argument of ' +
+                'The property that double quotation marks in the argument of ' +
                 'String.prototype.fontcolor are escaped as "&quot;".',
             check: function ()
             {
-                var available = ''.fontcolor('"').substr(13, 6) === '&quot;';
+                var available = ''.fontcolor('"').indexOf('&quot;') >= 0;
                 return available;
             }
+        },
+        ESC_HTML_QUOT_ONLY:
+        {
+            description:
+                'The property that only double quotation marks and no other characters in the ' +
+                'argument of String.prototype.fontcolor are escaped into HTML entities.',
+            check: function ()
+            {
+                var available = ''.fontcolor('"<>').indexOf('&quot;<>') >= 0;
+                return available;
+            },
+            excludes: ['ESC_HTML_ALL'],
+            includes: ['ESC_HTML_QUOT']
         },
         FF_SAFARI_SRC:
         {

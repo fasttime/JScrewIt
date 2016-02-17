@@ -797,7 +797,8 @@ var replaceDigit;
         ],
         '&':
         [
-            define('""["fontcolor"](""["fontcolor"]([]))["31"]', 'ESC_HTML_QUOT'),
+            define('""["fontcolor"](""["fontcolor"]())["13"]', 'ESC_HTML_ALL'),
+            define('""["fontcolor"](""["fontcolor"]([]))["31"]', 'ESC_HTML_QUOT_ONLY'),
             define()
         ],
         // '\'':   ,

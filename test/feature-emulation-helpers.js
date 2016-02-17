@@ -240,11 +240,11 @@
             {
                 var prototype = String.prototype;
                 methodNames.forEach(
-                    function (name)
+                    function (methodName)
                     {
-                        var method = prototype[name];
+                        var method = prototype[methodName];
                         var value = adapter(method);
-                        override(this, 'String.prototype.' + name, { value: value });
+                        override(this, 'String.prototype.' + methodName, { value: value });
                     },
                     this
                 );
@@ -475,6 +475,24 @@
         DOMWINDOW: makeEmuFeatureSelf('[object DOMWindow]', /^\[object DOMWindow]$/),
         ENTRIES_OBJ: makeEmuFeatureEntries('[object Object]', /^\[object /),
         ENTRIES_PLAIN: makeEmuFeatureEntries('[object Object]', /^\[object Object]$/),
+        ESC_HTML_ALL: makeEmuFeatureHtml(
+            ['anchor', 'fontcolor', 'fontsize', 'link'],
+            function (method)
+            {
+                var result =
+                    function (value)
+                    {
+                        var result = method.call(this, '');
+                        value =
+                            (value + '').replace(/"/g, '&quot;').replace(/</g, '&lt;')
+                            .replace(/>/g, '&gt;');
+                        var index = result.lastIndexOf('"');
+                        result = result.slice(0, index) + value + result.slice(index);
+                        return result;
+                    };
+                return result;
+            }
+        ),
         ESC_HTML_QUOT: makeEmuFeatureHtml(
             ['anchor', 'fontcolor', 'fontsize', 'link'],
             function (method)
@@ -482,8 +500,26 @@
                 var result =
                     function (value)
                     {
-                        arguments[0] = (value + '').replace(/"/g, '&quot;');
-                        var result = method.apply(this, arguments);
+                        var result = method.call(this, '');
+                        value = (value + '').replace(/"/g, '&quot;');
+                        var index = result.lastIndexOf('"');
+                        result = result.slice(0, index) + value + result.slice(index);
+                        return result;
+                    };
+                return result;
+            }
+        ),
+        ESC_HTML_QUOT_ONLY: makeEmuFeatureHtml(
+            ['anchor', 'fontcolor', 'fontsize', 'link'],
+            function (method)
+            {
+                var result =
+                    function (value)
+                    {
+                        var result = method.call(this, '');
+                        value = (value + '').replace(/"/g, '&quot;');
+                        var index = result.lastIndexOf('"');
+                        result = result.slice(0, index) + value + result.slice(index);
                         return result;
                     };
                 return result;
