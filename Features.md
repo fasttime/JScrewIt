@@ -88,7 +88,7 @@ _Available in Microsoft Edge._
 ### `ESC_HTML_ALL`
 The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
 
-_This feature is not available in any of the supported engines._
+_Available in Android Browser and Node.js before 0.12+._
 <a name="ESC_HTML_QUOT"></a>
 ### `ESC_HTML_QUOT`
 The property that double quotation marks in the argument of String.prototype.fontcolor are escaped as "\&quot;".
@@ -98,7 +98,10 @@ _Available in Firefox, Chrome, Safari, Opera, Microsoft Edge, Android Browser an
 ### `ESC_HTML_QUOT_ONLY`
 The property that only double quotation marks and no other characters in the argument of String.prototype.fontcolor are escaped into HTML entities.
 
-_This feature is not available in any of the supported engines._
+_Available in Firefox, Chrome, Safari, Opera, Microsoft Edge and Node.js 0.12+._
+<a name="FF"></a>
+### `FF`
+_An alias for [`FF31`](#FF31)._
 <a name="FF31"></a>
 ### `FF31`
 Features available in Firefox 31 or later.
@@ -167,12 +170,9 @@ _Available in Firefox, Chrome, Internet Explorer 11 on Windows 10, Opera, Micros
 Existence of the name property for functions.
 
 _Available in Firefox, Chrome, Safari, Opera, Microsoft Edge, Android Browser and Node.js._
-<a name="NODE"></a>
-### `NODE`
-_An alias for [`NODE010`](#NODE010)._
 <a name="NODE010"></a>
 ### `NODE010`
-Features available in Node.js 0.10.26 or later.
+Features available in Node.js 0.10.
 <a name="NODE012"></a>
 ### `NODE012`
 Features available in Node.js 0.12 or later.
@@ -256,7 +256,8 @@ This table lists features available in the most common engines.
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
-<li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a>
+<li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
+<li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="#FF_SAFARI_SRC"><code>FF_SAFARI_SRC</code></a>
 <li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
@@ -286,7 +287,8 @@ This table lists features available in the most common engines.
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
-<li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a>
+<li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
+<li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
@@ -337,7 +339,8 @@ This table lists features available in the most common engines.
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> and <a href="#OLD_SAFARI_ARRAY_ITERATOR"><code>OLD_SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
-<li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a>
+<li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
+<li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="#FF_SAFARI_SRC"><code>FF_SAFARI_SRC</code></a>
 <li><a href="#FILL"><code>FILL</code></a> (Safari 7.1+)
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Safari 9.0+)
@@ -366,7 +369,8 @@ This table lists features available in the most common engines.
 <li><a href="#BARPROP"><code>BARPROP</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ENTRIES_PLAIN"><code>ENTRIES_PLAIN</code></a>)
 <li><a href="#ENTRIES_PLAIN"><code>ENTRIES_PLAIN</code></a>
-<li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a>
+<li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
+<li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
@@ -393,7 +397,8 @@ This table lists features available in the most common engines.
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a> (Android Browser 4.4.2+)
 <li><a href="#DOMWINDOW"><code>DOMWINDOW</code></a> (not in Android Browser 4.4.2+)
-<li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a>
+<li><a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a>
+<li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a>)
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
@@ -416,7 +421,9 @@ This table lists features available in the most common engines.
 <li><a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
 <li><a href="#ARROW"><code>ARROW</code></a> (Node.js 4+)
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
-<li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a>
+<li><a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a> (not in Node.js 0.12+)
+<li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a> and <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
+<li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a> (Node.js 0.12+)
 <li><a href="#FILL"><code>FILL</code></a> (Node.js 4+)
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Node.js 4+)
 <li><a href="#GMT"><code>GMT</code></a>

@@ -200,7 +200,7 @@
         return result;
     }
     
-    function makeEmuFeatureEscHtml(replacer)
+    function makeEmuFeatureEscHtml(replacer, regExp)
     {
         var result =
             makeEmuFeatureHtml(
@@ -217,7 +217,8 @@
                             return result;
                         };
                     return result;
-                }
+                },
+                regExp
             );
         return result;
     }
@@ -254,7 +255,7 @@
         return result;
     }
     
-    function makeEmuFeatureHtml(methodNames, adapter)
+    function makeEmuFeatureHtml(methodNames, adapter, regExp)
     {
         var result =
         {
@@ -265,6 +266,8 @@
                     function (methodName)
                     {
                         var method = prototype[methodName];
+                        if (regExp && regExp.test(''[methodName]('"<>')))
+                            return;
                         var value = adapter(method);
                         override(this, 'String.prototype.' + methodName, { value: value });
                     },
@@ -502,21 +505,24 @@
             {
                 str = str.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                 return str;
-            }
+            },
+            /&quot;&lt;&gt;/
         ),
         ESC_HTML_QUOT: makeEmuFeatureEscHtml(
             function (str)
             {
                 str = str.replace(/"/g, '&quot;');
                 return str;
-            }
+            },
+            /&quot;/
         ),
         ESC_HTML_QUOT_ONLY: makeEmuFeatureEscHtml(
             function (str)
             {
                 str = str.replace(/"/g, '&quot;');
                 return str;
-            }
+            },
+            /&quot;<>/
         ),
         FF_SAFARI_SRC: makeEmuFeatureFunctionSource('function ?() {\n    [native code]\n}'),
         FILL:
