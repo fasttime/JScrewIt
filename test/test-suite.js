@@ -620,7 +620,7 @@ self
                             function ()
                             {
                                 expect(Feature.DEFAULT.toString()).toBe('[Feature DEFAULT]');
-                                expect(Feature.NODE.toString()).toBe('[Feature NODE010]');
+                                expect(Feature.NODE010.toString()).toBe('[Feature NODE010]');
                                 expect(Feature.ATOB.toString()).toBe('[Feature ATOB]');
                             }
                         );
@@ -629,7 +629,7 @@ self
                             function ()
                             {
                                 expect(Feature('DEFAULT').toString()).toBe('[Feature {}]');
-                                expect(Feature('NODE').toString()).toMatch(
+                                expect(Feature('NODE010').toString()).toMatch(
                                     /^\[Feature \{[0-9A-Z_]+(, [0-9A-Z_]+)*\}\]$/
                                 );
                                 expect(Feature('ATOB').toString()).toBe('[Feature {ATOB}]');

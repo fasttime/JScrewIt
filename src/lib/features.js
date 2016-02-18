@@ -865,13 +865,12 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'web-worker-restriction': null }
         },
-        NODE: 'NODE010',
         NODE010:
         {
-            description: 'Features available in Node.js 0.10.26 or later.',
+            description: 'Features available in Node.js 0.10.',
             includes:
             [
-                'ESC_HTML_QUOT',
+                'ESC_HTML_ALL',
                 'GMT',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
@@ -884,7 +883,7 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Features available in Node.js 0.12 or later.',
             includes:
             [
-                'ESC_HTML_QUOT',
+                'ESC_HTML_QUOT_ONLY',
                 'GMT',
                 'INTL',
                 'LOCALE_INFINITY',
@@ -901,7 +900,7 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ARROW',
-                'ESC_HTML_QUOT',
+                'ESC_HTML_QUOT_ONLY',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
