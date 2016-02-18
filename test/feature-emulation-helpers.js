@@ -200,6 +200,28 @@
         return result;
     }
     
+    function makeEmuFeatureEscHtml(replacer)
+    {
+        var result =
+            makeEmuFeatureHtml(
+                ['anchor', 'fontcolor', 'fontsize', 'link'],
+                function (method)
+                {
+                    var result =
+                        function (value)
+                        {
+                            var result = method.call(this, '');
+                            value = replacer(value + '');
+                            var index = result.lastIndexOf('"');
+                            result = result.slice(0, index) + value + result.slice(index);
+                            return result;
+                        };
+                    return result;
+                }
+            );
+        return result;
+    }
+    
     function makeEmuFeatureFunctionSource(format, noOverwrite)
     {
         var result =
@@ -475,54 +497,25 @@
         DOMWINDOW: makeEmuFeatureSelf('[object DOMWindow]', /^\[object DOMWindow]$/),
         ENTRIES_OBJ: makeEmuFeatureEntries('[object Object]', /^\[object /),
         ENTRIES_PLAIN: makeEmuFeatureEntries('[object Object]', /^\[object Object]$/),
-        ESC_HTML_ALL: makeEmuFeatureHtml(
-            ['anchor', 'fontcolor', 'fontsize', 'link'],
-            function (method)
+        ESC_HTML_ALL: makeEmuFeatureEscHtml(
+            function (str)
             {
-                var result =
-                    function (value)
-                    {
-                        var result = method.call(this, '');
-                        value =
-                            (value + '').replace(/"/g, '&quot;').replace(/</g, '&lt;')
-                            .replace(/>/g, '&gt;');
-                        var index = result.lastIndexOf('"');
-                        result = result.slice(0, index) + value + result.slice(index);
-                        return result;
-                    };
-                return result;
+                str = str.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return str;
             }
         ),
-        ESC_HTML_QUOT: makeEmuFeatureHtml(
-            ['anchor', 'fontcolor', 'fontsize', 'link'],
-            function (method)
+        ESC_HTML_QUOT: makeEmuFeatureEscHtml(
+            function (str)
             {
-                var result =
-                    function (value)
-                    {
-                        var result = method.call(this, '');
-                        value = (value + '').replace(/"/g, '&quot;');
-                        var index = result.lastIndexOf('"');
-                        result = result.slice(0, index) + value + result.slice(index);
-                        return result;
-                    };
-                return result;
+                str = str.replace(/"/g, '&quot;');
+                return str;
             }
         ),
-        ESC_HTML_QUOT_ONLY: makeEmuFeatureHtml(
-            ['anchor', 'fontcolor', 'fontsize', 'link'],
-            function (method)
+        ESC_HTML_QUOT_ONLY: makeEmuFeatureEscHtml(
+            function (str)
             {
-                var result =
-                    function (value)
-                    {
-                        var result = method.call(this, '');
-                        value = (value + '').replace(/"/g, '&quot;');
-                        var index = result.lastIndexOf('"');
-                        result = result.slice(0, index) + value + result.slice(index);
-                        return result;
-                    };
-                return result;
+                str = str.replace(/"/g, '&quot;');
+                return str;
             }
         ),
         FF_SAFARI_SRC: makeEmuFeatureFunctionSource('function ?() {\n    [native code]\n}'),
