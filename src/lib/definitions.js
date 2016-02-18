@@ -990,9 +990,9 @@ var replaceDigit;
         [
             define('Object["name"]', 'NAME'),
             define(undefined, 'CAPITAL_HTML', 'NO_IE_SRC', 'SELF_OBJ'),
-            define('Object["name"]', 'FF_SAFARI_SRC'),
-            define('Object["name"]', 'INTL'),
-            define('Object["name"]', 'V8_SRC'),
+            define('Object["name"]', 'FF_SAFARI_SRC', 'NAME'),
+            define('Object["name"]', 'INTL', 'NAME'),
+            define('Object["name"]', 'NAME', 'V8_SRC'),
             define(undefined, 'ENTRIES_OBJ')
         ],
         RegExp:

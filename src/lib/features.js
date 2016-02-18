@@ -654,7 +654,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ATOB',
                 'BARPROP',
                 'ENTRIES_OBJ',
-                'ESC_HTML_QUOT',
+                'ESC_HTML_QUOT_ONLY',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -675,7 +675,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'DOMWINDOW',
-                'ESC_HTML_QUOT',
+                'ESC_HTML_ALL',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -691,7 +691,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'DOMWINDOW',
-                'ESC_HTML_QUOT',
+                'ESC_HTML_ALL',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -708,7 +708,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
-                'ESC_HTML_QUOT',
+                'ESC_HTML_ALL',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -731,7 +731,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ARROW',
                 'ATOB',
                 'BARPROP',
-                'ESC_HTML_QUOT',
+                'ESC_HTML_QUOT_ONLY',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -756,7 +756,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ARROW',
                 'ATOB',
                 'BARPROP',
-                'ESC_HTML_QUOT',
+                'ESC_HTML_QUOT_ONLY',
                 'ENTRIES_PLAIN',
                 'FILL',
                 'FROM_CODE_POINT',
@@ -773,6 +773,7 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'web-worker-restriction': null }
         },
+        FF: 'FF31',
         FF31:
         {
             description: 'Features available in Firefox 31 or later.',
@@ -781,7 +782,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ARROW',
                 'ATOB',
                 'BARPROP',
-                'ESC_HTML_QUOT',
+                'ESC_HTML_QUOT_ONLY',
                 'FF_SAFARI_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
@@ -920,7 +921,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
-                'ESC_HTML_QUOT',
+                'ESC_HTML_QUOT_ONLY',
                 'FF_SAFARI_SRC',
                 'GMT',
                 'HISTORY',
@@ -938,7 +939,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
-                'ESC_HTML_QUOT',
+                'ESC_HTML_QUOT_ONLY',
                 'FF_SAFARI_SRC',
                 'FILL',
                 'GMT',
@@ -958,7 +959,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
-                'ESC_HTML_QUOT',
+                'ESC_HTML_QUOT_ONLY',
                 'FF_SAFARI_SRC',
                 'FILL',
                 'GMT',
@@ -978,7 +979,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
-                'ESC_HTML_QUOT',
+                'ESC_HTML_QUOT_ONLY',
                 'FF_SAFARI_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
