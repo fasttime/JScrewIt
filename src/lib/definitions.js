@@ -881,7 +881,7 @@ var replaceDigit;
         ],
         '^':
         [
-            define('atob("undefinedfalse")[2]', 'ATOB')
+            define('atob("undefined0")[2]', 'ATOB')
         ],
         // '_':    ,
         // '`':    ,
@@ -939,7 +939,7 @@ var replaceDigit;
         ],
         'º':
         [
-            define('atob("undefinedfalse")[0]', 'ATOB')
+            define('atob("undefined0")[0]', 'ATOB')
         ],
         '»':
         [
