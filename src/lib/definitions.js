@@ -665,12 +665,13 @@ var replaceDigit;
         'I': '"Infinity"[0]',
         'J':
         [
-            define('btoa(true)[2]', 'ATOB')
+            define('btoa(true)[2]', 'ATOB'),
+            define('"j"["toUpperCase"]()'),
+            define()
         ],
         'K':
         [
-            define('(RP_5_N + ""["strike"]())["10"]', 'CAPITAL_HTML'),
-            define()
+            define('(RP_5_N + ""["strike"]())["10"]', 'CAPITAL_HTML')
         ],
         'L':
         [
@@ -737,6 +738,8 @@ var replaceDigit;
         ],
         'V':
         [
+            define('unescape("%56")'),
+            define('"v"["toUpperCase"]()'),
             define('btoa(undefined)["10"]', 'ATOB')
         ],
         'W':
@@ -752,7 +755,9 @@ var replaceDigit;
         ],
         'Y':
         [
-            define('btoa("a")[0]', 'ATOB')
+            define('btoa("a")[0]', 'ATOB'),
+            define('"y"["toUpperCase"]()'),
+            define()
         ],
         'Z':
         [
