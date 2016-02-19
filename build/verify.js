@@ -12,6 +12,7 @@ var verifyComplex       = kit.verifyComplex;
 var verifyDefinitions   = kit.verifyDefinitions;
 require('../tools/text-utils.js');
 require('../test/coder-test-helpers.js');
+var timeUtils = require('../tools/time-utils.js');
 
 function compareRoutineNames(name1, name2)
 {
@@ -248,7 +249,11 @@ if (routineName != null)
     var routine = verify[routineName];
     if (routine)
     {
+        var before = new Date();
         routine();
+        var time = new Date() - before;
+        var timeStr = timeUtils.formatDuration(time);
+        console.log('Time elapsed: ' + timeStr);
         return;
     }
 }
