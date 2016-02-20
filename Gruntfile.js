@@ -244,20 +244,25 @@ module.exports =
             'Analyze all character encodings.',
             function ()
             {
-                var runScan = require('./build/scan-char-defs.js');
-                var before = new Date();
+                var timeUtils = require('./tools/time-utils.js');
                 var defsUnused;
+                var time;
                 try
                 {
-                    defsUnused = runScan();
+                    time =
+                        timeUtils.timeThis(
+                            function ()
+                            {
+                                var runScan = require('./build/scan-char-defs.js');
+                                defsUnused = runScan();
+                            }
+                        );
                 }
                 catch (error)
                 {
                     grunt.warn(error);
                     return;
                 }
-                var time = new Date() - before;
-                var timeUtils = require('./tools/time-utils.js');
                 var timeStr = timeUtils.formatDuration(time);
                 grunt.log.writeln(timeStr + ' elapsed.');
                 if (defsUnused)

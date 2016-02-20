@@ -1,6 +1,5 @@
 /*
 global
-CODER_TEST_DATA_LIST,
 EMU_FEATURES,
 atob,
 btoa,
@@ -40,7 +39,7 @@ self
                 'encodes with ' + compatibility + ' compatibility',
                 function ()
                 {
-                    var expression1 = 'return Math.log(2e18)^0';
+                    var expression1 = 'return[Math.log(2e18)]^0';
                     it(
                         JSON.stringify(expression1) + ' (with wrapWith: "call")',
                         function ()
@@ -1368,7 +1367,7 @@ self
                                     function ()
                                     {
                                         var encoder = JScrewIt.debug.createEncoder(featureObj);
-                                        var output = encoder.encodeByDict(Object(input), 5, 3);
+                                        var output = encoder.encodeByDict(inputData, 5, 3);
                                         expect(emuEval(emuFeatures, output)).toBe(input);
                                     }
                                 );
@@ -1376,6 +1375,7 @@ self
                         }
                         
                         var input = 'ABC';
+                        var inputData = Object(input);
                         test('createParseIntArgDefault', ['ATOB', 'ENTRIES_OBJ']);
                         test('createParseIntArgByReduce', 'DEFAULT');
                         test('createParseIntArgByReduceArrow', ['ARROW', 'ENTRIES_OBJ']);
@@ -1803,77 +1803,6 @@ self
                                     }
                                 );
                             }
-                        );
-                    }
-                );
-            }
-        );
-        describe(
-            'MIN_INPUT_LENGTH of',
-            function ()
-            {
-                function test(features, createInput, coderName)
-                {
-                    function findBestCoder(inputData)
-                    {
-                        var bestCoderName;
-                        var bestLength = Infinity;
-                        coderNames.forEach(
-                            function (thisCoderName)
-                            {
-                                if (thisCoderName !== coderName)
-                                {
-                                    var coder = coders[thisCoderName];
-                                    var output = coder.call(encoder, inputData);
-                                    var length = output.length;
-                                    if (length < bestLength)
-                                    {
-                                        bestCoderName = thisCoderName;
-                                        bestLength = length;
-                                    }
-                                }
-                            }
-                        );
-                        var result = { coderName: bestCoderName, length: bestLength };
-                        return result;
-                    }
-                    
-                    var encoder = JScrewIt.debug.createEncoder(features);
-                    var coders = JScrewIt.debug.getCoders();
-                    var coder = coders[coderName];
-                    var minLength = coder.MIN_INPUT_LENGTH;
-                    var inputDataShort = Object(createInput(minLength - 1));
-                    var inputDataFit = Object(createInput(minLength));
-                    var coderNames = Object.keys(coders);
-                    it(
-                        coderName + ' is suitable',
-                        function ()
-                        {
-                            var outputFit = coder.call(encoder, inputDataFit);
-                            var bestDataFit = findBestCoder(inputDataFit);
-                            expect(bestDataFit.length).toBeGreaterThan(
-                                outputFit.length,
-                                'MIN_INPUT_LENGTH is too small for ' + bestDataFit.coderName
-                            );
-                            var outputShort = coder.call(encoder, inputDataShort);
-                            var bestDataShort = findBestCoder(inputDataShort);
-                            expect(bestDataShort.length).not.toBeGreaterThan(
-                                outputShort.length,
-                                'MIN_INPUT_LENGTH is too large for ' + bestDataShort.coderName
-                            );
-                        }
-                    );
-                }
-                
-                this.timeout(10000);
-                
-                CODER_TEST_DATA_LIST.forEach(
-                    function (coderTestData)
-                    {
-                        test(
-                            coderTestData.features,
-                            coderTestData.createInput,
-                            coderTestData.coderName
                         );
                     }
                 );
