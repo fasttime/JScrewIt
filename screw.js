@@ -102,9 +102,13 @@ else
     try
     {
         input = fs.readFileSync(inputFileName);
-        var before = new Date();
-        output = JScrewIt.encode(input, options);
-        encodingTime = new Date() - before;
+        var encodingTime =
+            cli.timeThis(
+                function ()
+                {
+                    output = JScrewIt.encode(input, options);
+                }
+            );
         fs.writeFileSync(outputFileName, output);
         var perfInfo = options.perfInfo;
         codingLog = perfInfo && perfInfo.codingLog;

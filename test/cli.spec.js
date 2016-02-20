@@ -295,3 +295,26 @@ describe(
         );
     }
 );
+
+describe(
+    'timeThis',
+    function ()
+    {
+        it(
+            'executes the callback and returns a non-negative integer',
+            function ()
+            {
+                var callbackCalled = false;
+                var actual =
+                    cli.timeThis(
+                        function ()
+                        {
+                            callbackCalled = true;
+                        }
+                    );
+                assert(callbackCalled);
+                assert(Number.isInteger(actual) && actual >= 0);
+            }
+        );
+    }
+);

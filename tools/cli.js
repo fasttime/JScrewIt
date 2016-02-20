@@ -191,5 +191,6 @@ module.exports =
 {
     createDiagnosticReport: createDiagnosticReport,
     createReport:           createReport,
-    parseCommandLine:       parseCommandLine
+    parseCommandLine:       parseCommandLine,
+    timeThis:               timeUtils.timeThis
 };

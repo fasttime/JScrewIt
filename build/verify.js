@@ -1,4 +1,3 @@
-/* global CODER_TEST_DATA_LIST */
 /* jshint node: true */
 
 'use strict';
@@ -11,8 +10,103 @@ var getEntries          = JScrewIt.debug.getEntries;
 var verifyComplex       = kit.verifyComplex;
 var verifyDefinitions   = kit.verifyDefinitions;
 require('../tools/text-utils.js');
-require('../test/coder-test-helpers.js');
 var timeUtils = require('../tools/time-utils.js');
+
+function checkCoderFeatureOptimality(
+    features,
+    createInput,
+    coders,
+    coder,
+    minLength,
+    rivalCoderName)
+{
+    var input = createInput(minLength);
+    var replacer;
+    if (rivalCoderName === undefined)
+    {
+        replacer =
+            function (encoder)
+            {
+                var inputData = Object(input);
+                var output = coder.call(encoder, inputData);
+                return output;
+            };
+    }
+    else
+    {
+        var rivalCoder = coders[rivalCoderName];
+        replacer =
+            function (encoder)
+            {
+                var inputData = Object(input);
+                var output = coder.call(encoder, inputData);
+                var rivalOutput = rivalCoder.call(encoder, inputData);
+                if (output.length <= rivalOutput.length)
+                    return output;
+            };
+    }
+    var optimalFeatureObjs = findOptimalFeatures(replacer);
+    if (optimalFeatureObjs)
+    {
+        var featureObj = JScrewIt.Feature(features);
+        var featureMatches =
+            function (optimalFeatureObj)
+            {
+                return JScrewIt.Feature.areEqual(optimalFeatureObj, featureObj);
+            };
+        if (!optimalFeatureObjs.some(featureMatches))
+        {
+            optimalFeatureObjs.forEach(
+                function (featureObj)
+                {
+                    console.log(featureObj.toString());
+                }
+            );
+        }
+    }
+    else
+        console.log('No optimal features found.');
+}
+
+function checkMinInputLength(features, createInput, coders, coder, minLength)
+{
+    function findBestCoder(inputData)
+    {
+        var bestCoderName;
+        var bestLength = Infinity;
+        coderNames.forEach(
+            function (coderName)
+            {
+                var thisCoder = coders[coderName];
+                if (thisCoder !== coder)
+                {
+                    var output = thisCoder.call(encoder, inputData);
+                    var length = output.length;
+                    if (length < bestLength)
+                    {
+                        bestCoderName = coderName;
+                        bestLength = length;
+                    }
+                }
+            }
+        );
+        var result = { coderName: bestCoderName, length: bestLength };
+        return result;
+    }
+    
+    var encoder = JScrewIt.debug.createEncoder(features);
+    var inputDataShort = Object(createInput(minLength - 1));
+    var inputDataFit = Object(createInput(minLength));
+    var coderNames = Object.keys(coders);
+    var outputFit = coder.call(encoder, inputDataFit);
+    var bestDataFit = findBestCoder(inputDataFit);
+    if (bestDataFit.length <= outputFit.length)
+        console.log('MIN_INPUT_LENGTH is too small for ' + bestDataFit.coderName);
+    var outputShort = coder.call(encoder, inputDataShort);
+    var bestDataShort = findBestCoder(inputDataShort);
+    if (bestDataShort.length > outputShort.length)
+        console.log('MIN_INPUT_LENGTH is too large for ' + bestDataShort.coderName);
+}
 
 function compareRoutineNames(name1, name2)
 {
@@ -28,6 +122,8 @@ function compareRoutineNames(name1, name2)
 
 function findCoderTestData(coderName)
 {
+    var CODER_TEST_DATA_LIST = require('./coder-test-data.js');
+    
     for (var index = 0;; ++index)
     {
         var coderTestData = CODER_TEST_DATA_LIST[index];
@@ -63,54 +159,20 @@ function verifyCoder(coderName, rivalCoderName)
         function ()
         {
             var coderTestData = findCoderTestData(coderName);
+            var features = coderTestData.features;
+            var createInput = coderTestData.createInput;
             var coders = JScrewIt.debug.getCoders();
             var coder = coders[coderName];
-            var input = coderTestData.createInput(coder.MIN_INPUT_LENGTH);
-            var replacer;
-            if (rivalCoderName === undefined)
-            {
-                replacer =
-                    function (encoder)
-                    {
-                        var inputData = Object(input);
-                        var output = coder.call(encoder, inputData);
-                        return output;
-                    };
-            }
-            else
-            {
-                var rivalCoder = coders[rivalCoderName];
-                replacer =
-                    function (encoder)
-                    {
-                        var inputData = Object(input);
-                        var output = coder.call(encoder, inputData);
-                        var rivalOutput = rivalCoder.call(encoder, inputData);
-                        if (output.length <= rivalOutput.length)
-                            return output;
-                    };
-            }
-            var optimalFeatureObjs = findOptimalFeatures(replacer);
-            if (optimalFeatureObjs)
-            {
-                var featureObj = JScrewIt.Feature(coderTestData.features);
-                var featureMatches =
-                    function (optimalFeatureObj)
-                    {
-                        return JScrewIt.Feature.areEqual(optimalFeatureObj, featureObj);
-                    };
-                if (!optimalFeatureObjs.some(featureMatches))
-                {
-                    optimalFeatureObjs.forEach(
-                        function (featureObj)
-                        {
-                            console.log(featureObj.toString());
-                        }
-                    );
-                }
-            }
-            else
-                console.log('No optimal features found.');
+            var minLength = coder.MIN_INPUT_LENGTH;
+            checkMinInputLength(features, createInput, coders, coder, minLength);
+            checkCoderFeatureOptimality(
+                features,
+                createInput,
+                coders,
+                coder,
+                minLength,
+                rivalCoderName
+            );
         };
     return result;
 }
@@ -249,11 +311,9 @@ if (routineName != null)
     var routine = verify[routineName];
     if (routine)
     {
-        var before = new Date();
-        routine();
-        var time = new Date() - before;
+        var time = timeUtils.timeThis(routine);
         var timeStr = timeUtils.formatDuration(time);
-        console.log('Time elapsed: ' + timeStr);
+        console.log(timeStr + ' elapsed.');
         return;
     }
 }
