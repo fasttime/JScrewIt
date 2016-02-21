@@ -119,31 +119,6 @@ function createEngineSelectionBox()
         );
     }
     
-    function updateCurrentFeatureObj()
-    {
-        var Feature = JScrewIt.Feature;
-        var featureObjs =
-            Array.prototype.filter.call(
-                engineVersionInputs,
-                function (input)
-                {
-                    return input.checked;
-                }
-            ).map(
-                function (input)
-                {
-                    ++checkedCount;
-                    return Feature[input.feature];
-                }
-            );
-        var checkedCount = featureObjs.length;
-        allEngineInput.checked = checkedCount;
-        allEngineInput.indeterminate = checkedCount && checkedCount < engineVersionInputs.length;
-        currentFeatureObj = Feature.commonOf.apply(null, featureObjs) || Feature.DEFAULT;
-        if (webWorkerInput.checked)
-            currentFeatureObj = currentFeatureObj.restrict('web-worker', featureObjs);
-    }
-    
     function init()
     {
         var allEngineField =
@@ -230,6 +205,31 @@ function createEngineSelectionBox()
         updateCurrentFeatureObj();
     }
     
+    function updateCurrentFeatureObj()
+    {
+        var Feature = JScrewIt.Feature;
+        var featureObjs =
+            Array.prototype.filter.call(
+                engineVersionInputs,
+                function (input)
+                {
+                    return input.checked;
+                }
+            ).map(
+                function (input)
+                {
+                    ++checkedCount;
+                    return Feature[input.feature];
+                }
+            );
+        var checkedCount = featureObjs.length;
+        allEngineInput.checked = checkedCount;
+        allEngineInput.indeterminate = checkedCount && checkedCount < engineVersionInputs.length;
+        currentFeatureObj = Feature.commonOf.apply(null, featureObjs) || Feature.DEFAULT;
+        if (webWorkerInput.checked)
+            currentFeatureObj = currentFeatureObj.restrict('web-worker', featureObjs);
+    }
+    
     function updateStatus()
     {
         updateCurrentFeatureObj();
@@ -243,6 +243,5 @@ function createEngineSelectionBox()
     var webWorkerInput;
     
     init();
-    
     return comp;
 }
