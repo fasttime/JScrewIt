@@ -38,105 +38,6 @@ var resolveSimple;
     var STATIC_CHAR_CACHE = new Empty();
     var STATIC_CONST_CACHE = new Empty();
     
-    CODERS =
-    {
-        byCharCodes: defineCoder
-        (
-            function (inputData, maxLength)
-            {
-                var MAX_DECODABLE_ARGS = 65533; // limit imposed by Internet Explorer
-                
-                var input = inputData.valueOf();
-                var long = input.length > MAX_DECODABLE_ARGS;
-                var output = this.encodeByCharCodes(input, long, undefined, maxLength);
-                return output;
-            },
-            2
-        ),
-        byCharCodesRadix4: defineCoder
-        (
-            function (inputData, maxLength)
-            {
-                var input = inputData.valueOf();
-                var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
-                return output;
-            },
-            45
-        ),
-        byDblDict: defineCoder
-        (
-            function (inputData, maxLength)
-            {
-                var output = this.encodeByDblDict(inputData, maxLength);
-                return output;
-            },
-            411
-        ),
-        byDict: defineCoder
-        (
-            function (inputData, maxLength)
-            {
-                var output = this.encodeByDict(inputData, undefined, undefined, maxLength);
-                return output;
-            },
-            3
-        ),
-        byDictRadix3: defineCoder
-        (
-            function (inputData, maxLength)
-            {
-                var output = this.encodeByDict(inputData, 3, 0, maxLength);
-                return output;
-            },
-            349
-        ),
-        byDictRadix4: defineCoder
-        (
-            function (inputData, maxLength)
-            {
-                var output = this.encodeByDict(inputData, 4, 0, maxLength);
-                return output;
-            },
-            258
-        ),
-        byDictRadix4AmendedBy1: defineCoder
-        (
-            function (inputData, maxLength)
-            {
-                var output = this.encodeByDict(inputData, 4, 1, maxLength);
-                return output;
-            },
-            358
-        ),
-        byDictRadix4AmendedBy2: defineCoder
-        (
-            function (inputData, maxLength)
-            {
-                var output = this.encodeByDict(inputData, 4, 2, maxLength);
-                return output;
-            },
-            676
-        ),
-        byDictRadix5AmendedBy3: defineCoder
-        (
-            function (inputData, maxLength)
-            {
-                var output = this.encodeByDict(inputData, 5, 3, maxLength);
-                return output;
-            },
-            845
-        ),
-        plain: defineCoder
-        (
-            function (inputData, maxLength)
-            {
-                var input = inputData.valueOf();
-                var output = this.replaceString(input, false, inputData.forceString, maxLength);
-                return output;
-            }
-        ),
-    };
-    
     var quoteString = JSON.stringify;
     
     function createReindexMap(count, radix, amendings, coerceToInt)
@@ -338,6 +239,105 @@ var resolveSimple;
             this.throwSyntaxError('Unexpected character ' + quoteString(wholeMatch));
         return replacement;
     }
+    
+    CODERS =
+    {
+        byCharCodes: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var MAX_DECODABLE_ARGS = 65533; // limit imposed by Internet Explorer
+                
+                var input = inputData.valueOf();
+                var long = input.length > MAX_DECODABLE_ARGS;
+                var output = this.encodeByCharCodes(input, long, undefined, maxLength);
+                return output;
+            },
+            2
+        ),
+        byCharCodesRadix4: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var input = inputData.valueOf();
+                var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
+                return output;
+            },
+            45
+        ),
+        byDblDict: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDblDict(inputData, maxLength);
+                return output;
+            },
+            411
+        ),
+        byDict: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDict(inputData, undefined, undefined, maxLength);
+                return output;
+            },
+            3
+        ),
+        byDictRadix3: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDict(inputData, 3, 0, maxLength);
+                return output;
+            },
+            349
+        ),
+        byDictRadix4: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDict(inputData, 4, 0, maxLength);
+                return output;
+            },
+            258
+        ),
+        byDictRadix4AmendedBy1: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDict(inputData, 4, 1, maxLength);
+                return output;
+            },
+            358
+        ),
+        byDictRadix4AmendedBy2: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDict(inputData, 4, 2, maxLength);
+                return output;
+            },
+            676
+        ),
+        byDictRadix5AmendedBy3: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDict(inputData, 5, 3, maxLength);
+                return output;
+            },
+            845
+        ),
+        plain: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var input = inputData.valueOf();
+                var output = this.replaceString(input, false, inputData.forceString, maxLength);
+                return output;
+            }
+        ),
+    };
     
     var CharCache = createConstructor(STATIC_CHAR_CACHE);
     var ConstCache = createConstructor(STATIC_CONST_CACHE);

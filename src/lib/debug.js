@@ -124,6 +124,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             return entries;
         }
         
+        // Exported entries
         var ENTRIES = new Empty();
         ENTRIES['BASE64_ALPHABET_HI_4:0']   = BASE64_ALPHABET_HI_4[0];
         ENTRIES['BASE64_ALPHABET_HI_4:4']   = BASE64_ALPHABET_HI_4[4];
