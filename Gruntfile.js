@@ -2,20 +2,6 @@
 
 'use strict';
 
-var DEFAULT_TASKS =
-[
-    'clean',
-    'jshint:default',
-    'jscs:default',
-    'concat',
-    'feature-info',
-    'mocha_istanbul:default',
-    'scan-char-defs',
-    'uglify',
-    'feature-doc',
-    'jsdoc2md'
-];
-
 var JSCS_OPTIONS =
 {
     disallowEmptyBlocks: true,
@@ -277,22 +263,20 @@ module.exports =
         );
         
         // Default task.
-        grunt.registerTask('default', DEFAULT_TASKS);
-        
         grunt.registerTask(
-            'nscd',
-            function ()
-            {
-                var tasks =
-                    DEFAULT_TASKS.filter(
-                        function (task)
-                        {
-                            var result = task !== 'scan-char-defs';
-                            return result;
-                        }
-                    );
-                grunt.task.run(tasks);
-            }
+            'default',
+            [
+                'clean',
+                'jshint:default',
+                'jscs:default',
+                'concat',
+                'feature-info',
+                'mocha_istanbul:default',
+                'scan-char-defs',
+                'uglify',
+                'feature-doc',
+                'jsdoc2md'
+            ]
         );
         
         grunt.registerTask('html', ['clean:html', 'jshint:html', 'jscs:html', 'uglify:html']);
