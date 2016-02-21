@@ -560,8 +560,8 @@ var replaceDigit;
         'm':
         [
             define('(RP_6_SO + Function())["20"]'),
-            defineFHCharAt('Number', 11, 'NO_IE_SRC'),
-            defineFHCharAt('Number', 11, 'IE_SRC')
+            defineFHCharAt('Number', 11, 'IE_SRC'),
+            defineFHCharAt('Number', 11, 'NO_IE_SRC')
         ],
         'n': '"undefined"[1]',
         'o':
@@ -591,7 +591,7 @@ var replaceDigit;
         [
             define('32["toString"]("33")'),
             define('(self + [])[SUBSTR]("-2")[0]', 'ANY_WINDOW'),
-            define('btoa(3)[1]', 'ATOB'),
+            define('atob("undefined0")[1]', 'ATOB'),
             define('(RP_4_N + self)["20"]', 'DOMWINDOW'),
             define('(self + [])["13"]', 'WINDOW')
         ],
@@ -621,8 +621,8 @@ var replaceDigit;
         [
             define('escape(""["italics"]())[2]'),
             define('escape(""["sub"]())[2]'),
-            define('(RP_4_N + ""["fontcolor"]())["10"]', 'CAPITAL_HTML'),
-            define()
+            define('atob("00NaNfalse")[1]', 'ATOB'),
+            define('(RP_4_N + ""["fontcolor"]())["10"]', 'CAPITAL_HTML')
         ],
         'D':
         [
@@ -665,8 +665,8 @@ var replaceDigit;
         'I': '"Infinity"[0]',
         'J':
         [
-            define('btoa(true)[2]', 'ATOB'),
             define('"j"["toUpperCase"]()'),
+            define('btoa(true)[2]', 'ATOB'),
             define()
         ],
         'K':
@@ -704,7 +704,9 @@ var replaceDigit;
         ],
         'Q':
         [
-            define('btoa(1)[1]', 'ATOB')
+            define('"q"["toUpperCase"]()'),
+            define('btoa(1)[1]', 'ATOB'),
+            define()
         ],
         'R':
         [
@@ -744,6 +746,8 @@ var replaceDigit;
         ],
         'W':
         [
+            define('unescape("%57")'),
+            define('"w"["toUpperCase"]()'),
             define('(self + RP_4_N)[SUBSTR]("-11")[0]', 'ANY_WINDOW'),
             define('btoa(undefined)[1]', 'ATOB'),
             define('(self + [])["11"]', 'DOMWINDOW'),
@@ -751,12 +755,14 @@ var replaceDigit;
         ],
         'X':
         [
-            define('btoa("1true")[1]', 'ATOB')
+            define('"x"["toUpperCase"]()'),
+            define('btoa("1true")[1]', 'ATOB'),
+            define()
         ],
         'Y':
         [
-            define('btoa("a")[0]', 'ATOB'),
             define('"y"["toUpperCase"]()'),
+            define('btoa("a")[0]', 'ATOB'),
             define()
         ],
         'Z':
@@ -781,9 +787,9 @@ var replaceDigit;
         [
             defineFHCharAt('ANY_FUNCTION', 8),
             define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ENTRIES_OBJ'),
+            define('(FILTER + [])["20"]', 'FF_SAFARI_SRC'),
             define('(RP_1_NO + FILTER)["20"]', 'V8_SRC'),
             define('(RP_5_N + FILL)["20"]', 'NO_IE_SRC', 'FILL'),
-            define('(FILTER + [])["20"]', 'FF_SAFARI_SRC'),
             define('(FILL + [])["20"]', 'FF_SAFARI_SRC', 'FILL')
         ],
         // '!':    ,
@@ -798,7 +804,7 @@ var replaceDigit;
             define('escape(FILTER)["20"]'),
             define('escape(ANY_FUNCTION)[0]', 'IE_SRC'),
             define('escape(false + FILL)["20"]', 'NO_IE_SRC', 'FILL'),
-            define(undefined, 'ATOB')
+            define('atob("000l")[2]', 'ATOB')
         ],
         '&':
         [
@@ -893,7 +899,7 @@ var replaceDigit;
         // '|':    ,
         '}':
         [
-            defineFBCharAt(28),
+            defineFBCharAt(28)
         ],
         // '~':    ,
         
