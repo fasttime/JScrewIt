@@ -652,7 +652,6 @@ var replaceDigit;
             define('(RP_3_NO + document)["11"]', 'DOCUMENT'),
             define('(document + [])["12"]', 'HTMLDOCUMENT'),
             define('escape(ARRAY_ITERATOR)["30"]', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-            define('escape(NaN + ARRAY_ITERATOR)["30"]', 'OLD_SAFARI_ARRAY_ITERATOR'),
             define('escape(FILTER)["50"]', 'V8_SRC'),
             define('escape(FILL)["60"]', 'FF_SAFARI_SRC', 'FILL')
         ],
@@ -798,8 +797,7 @@ var replaceDigit;
         [
             defineFBCharAt(26),
             define('(RP_6_SO + PLAIN_OBJECT)["20"]'),
-            define('(ARRAY_ITERATOR + [])["22"]', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-            define('(ARRAY_ITERATOR + [])["21"]', 'OLD_SAFARI_ARRAY_ITERATOR')
+            define('(ARRAY_ITERATOR + [])["22"]', 'NO_OLD_SAFARI_ARRAY_ITERATOR')
         ],
         '^':
         [
@@ -1237,7 +1235,6 @@ var replaceDigit;
         define(createParseIntArgDefault, 'CAPITAL_HTML', 'ENTRIES_OBJ'),
         define(createParseIntArgByReduce, 'CAPITAL_HTML', 'ENTRIES_PLAIN'),
         define(createParseIntArgByReduce, 'CAPITAL_HTML', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-        define(createParseIntArgByReduce, 'CAPITAL_HTML', 'OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgDefault, 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'NO_IE_SRC'),
         define(
             createParseIntArgDefault,
@@ -1245,10 +1242,8 @@ var replaceDigit;
             'NO_IE_SRC',
             'NO_OLD_SAFARI_ARRAY_ITERATOR'
         ),
-        define(createParseIntArgDefault, 'CAPITAL_HTML', 'NO_IE_SRC', 'OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduce, 'ENTRIES_PLAIN', 'FILL'),
         define(createParseIntArgByReduce, 'FILL', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-        define(createParseIntArgByReduce, 'FILL', 'OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduceArrow, 'ARROW'),
         define(createParseIntArgByReduce, 'FF_SAFARI_SRC'),
         define(createParseIntArgByReduce, 'IE_SRC'),
@@ -1258,7 +1253,6 @@ var replaceDigit;
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_PLAIN'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'FILL'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-        define(createParseIntArgByReduceArrow, 'ARROW', 'OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'FF_SAFARI_SRC'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'V8_SRC'),
         define(createParseIntArgByReduce, 'FILL', 'FF_SAFARI_SRC'),
