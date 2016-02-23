@@ -659,7 +659,8 @@ var replaceDigit;
         [
             defineFHCharAt('RegExp', 12),
             define('btoa("0NaN")[1]', 'ATOB'),
-            define('(RP_5_N + ""["link"]())["10"]', 'CAPITAL_HTML')
+            define('(RP_5_N + ""["link"]())["10"]', 'CAPITAL_HTML'),
+            define('(RP_3_NO + Audio)["21"]', 'HTMLAUDIOELEMENT')
         ],
         'F':
         [
@@ -677,6 +678,7 @@ var replaceDigit;
             define('btoa(true)[1]', 'ATOB'),
             define('""["link"]()[3]', 'CAPITAL_HTML'),
             define('(RP_3_NO + Function("return history")())["11"]', 'HISTORY'),
+            define('(RP_1_NO + Audio)["10"]', 'HTMLAUDIOELEMENT'),
             define('(RP_3_NO + document)["11"]', 'HTMLDOCUMENT')
         ],
         'I': '"Infinity"[0]',
@@ -694,6 +696,7 @@ var replaceDigit;
         [
             define('btoa(".")[0]', 'ATOB'),
             define('(RP_3_NO + ""["fontcolor"]())["11"]', 'CAPITAL_HTML'),
+            define('(Audio + [])["12"]', 'HTMLAUDIOELEMENT'),
             define('(document + [])["11"]', 'HTMLDOCUMENT')
         ],
         'M':
@@ -701,6 +704,7 @@ var replaceDigit;
             define('btoa(0)[0]', 'ATOB'),
             define('""["small"]()[2]', 'CAPITAL_HTML'),
             define('(RP_4_N + Date())["30"]', 'GMT'),
+            define('(Audio + [])["11"]', 'HTMLAUDIOELEMENT'),
             define('(document + [])["10"]', 'HTMLDOCUMENT')
         ],
         'N': '"NaN"[0]',
@@ -742,6 +746,7 @@ var replaceDigit;
             define('btoa(NaN)[0]', 'ATOB'),
             define('""["fontcolor"]([])["20"]', 'CAPITAL_HTML'),
             define('(RP_3_NO + Date())["30"]', 'GMT'),
+            define('(Audio + [])["10"]', 'HTMLAUDIOELEMENT'),
             define('(RP_1_NO + document)["10"]', 'HTMLDOCUMENT')
         ],
         'U':
@@ -1024,6 +1029,10 @@ var replaceDigit;
         [
             define('[]["constructor"]')
         ],
+        Audio:
+        [
+            define('Function("return Audio")()', 'HTMLAUDIOELEMENT')
+        ],
         Boolean:
         [
             define('false["constructor"]')
@@ -1052,7 +1061,6 @@ var replaceDigit;
         [
             define('""["constructor"]')
         ],
-        
         atob:
         [
             define('Function("return atob")()', 'ATOB')
