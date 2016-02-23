@@ -1,5 +1,6 @@
 /*
 global
+Audio,
 Empty,
 assignNoEnum,
 create,
@@ -483,6 +484,18 @@ var validMaskFromArrayOrStringOrFeature;
             },
             attributes: { 'web-worker': 'web-worker-restriction' }
         },
+        HTMLAUDIOELEMENT:
+        {
+            description:
+                'Existence of the global object property Audio whose string representation ' +
+                'starts with "function HTMLAudioElement".',
+            check: function ()
+            {
+                return typeof Audio === 'function' && /^function HTMLAudioElement/.test(Audio);
+            },
+            includes: ['NO_IE_SRC'],
+            attributes: { 'web-worker': 'web-worker-restriction' }
+        },
         HTMLDOCUMENT:
         {
             description:
@@ -698,6 +711,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ESC_HTML_ALL',
                 'GMT',
                 'HISTORY',
+                'HTMLAUDIOELEMENT',
                 'HTMLDOCUMENT',
                 'INTL',
                 'LOCALE_INFINITY',
@@ -723,6 +737,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FROM_CODE_POINT',
                 'GMT',
                 'HISTORY',
+                'HTMLAUDIOELEMENT',
                 'HTMLDOCUMENT',
                 'INTL',
                 'LOCALE_INFINITY',

@@ -569,6 +569,20 @@
                 override(this, 'history', { value: { toString: toString } });
             }
         },
+        HTMLAUDIOELEMENT:
+        {
+            setUp: function ()
+            {
+                if (!global.Audio)
+                    override(this, 'Audio', { value: Function() });
+                var toString =
+                    function ()
+                    {
+                        return 'function HTMLAudioElement';
+                    };
+                override(this, 'Audio.toString', { value: toString });
+            }
+        },
         HTMLDOCUMENT: makeEmuFeatureDocument('[object HTMLDocument]', /^\[object HTMLDocument]$/),
         IE_SRC: makeEmuFeatureFunctionSource('\nfunction ?() {\n    [native code]\n}\n'),
         INTL:
