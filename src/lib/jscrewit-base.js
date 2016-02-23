@@ -124,10 +124,10 @@ var setUp;
     
     function getEncoder(features)
     {
-        var featureMask = getValidFeatureMask(features);
-        var encoder = encoders[featureMask];
+        var mask = getValidFeatureMask(features);
+        var encoder = encoders[mask];
         if (!encoder)
-            encoders[featureMask] = encoder = new Encoder(featureMask);
+            encoders[mask] = encoder = new Encoder(mask);
         return encoder;
     }
     

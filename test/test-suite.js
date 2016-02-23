@@ -432,6 +432,7 @@ self
                             'accepts mixed arguments',
                             function ()
                             {
+                                var maskUnion = JScrewIt.debug.maskUnion;
                                 var feature =
                                     Feature(
                                         ['NAME', Feature.WINDOW],
@@ -439,12 +440,15 @@ self
                                         Feature.NO_IE_SRC,
                                         []
                                     );
-                                expect(feature.mask).toBe(
-                                    Feature.NAME.mask |
-                                    Feature.WINDOW.mask |
-                                    Feature.HTMLDOCUMENT.mask |
-                                    Feature.NO_IE_SRC.mask
-                                );
+                                var expectedMask =
+                                    maskUnion(
+                                        maskUnion(
+                                            maskUnion(Feature.NAME.mask, Feature.WINDOW.mask),
+                                            Feature.HTMLDOCUMENT.mask
+                                        ),
+                                        Feature.NO_IE_SRC.mask
+                                    );
+                                expect(feature.mask).toEqual(expectedMask);
                             }
                         );
                         it(
@@ -505,7 +509,7 @@ self
                                 var featureObj = Feature.DEFAULT;
                                 expect(featureObj.canonicalNames).toEqual([]);
                                 expect(featureObj.elementaryNames).toEqual([]);
-                                expect(featureObj.mask).toBe(0);
+                                expect(featureObj.mask).toEqual([0, 0]);
                             }
                         );
                         it(
@@ -522,7 +526,7 @@ self
                                 var actualCanonicalNames = expectedFeature.canonicalNames;
                                 var expectedCanonicalNames = featureObj.canonicalNames;
                                 expect(actualCanonicalNames).toEqual(expectedCanonicalNames);
-                                expect(featureObj.mask).toBe(expectedFeature.mask);
+                                expect(featureObj.mask).toEqual(expectedFeature.mask);
                             }
                         );
                         it(
@@ -534,7 +538,7 @@ self
                                 var elementaryNameCount = featureObj.elementaryNames.length;
                                 expect(canonicalNameCount).toBeGreaterThan(0);
                                 expect(elementaryNameCount).not.toBeLessThan(canonicalNameCount);
-                                expect(featureObj.mask).not.toBe(0);
+                                expect(featureObj.mask).not.toEqual([0, 0]);
                             }
                         );
                     }
@@ -596,7 +600,7 @@ self
                             function ()
                             {
                                 var featureObj = Feature.WINDOW.restrict('web-worker');
-                                expect(featureObj.mask).toBe(Feature.DEFAULT.mask);
+                                expect(featureObj.mask).toEqual(Feature.DEFAULT.mask);
                             }
                         );
                         it(
@@ -605,7 +609,7 @@ self
                             {
                                 var featureObj =
                                     Feature.WINDOW.restrict('web-worker', [Feature.FF31]);
-                                expect(featureObj.mask).toBe(Feature.SELF_OBJ.mask);
+                                expect(featureObj.mask).toEqual(Feature.SELF_OBJ.mask);
                             }
                         );
                     }
@@ -757,7 +761,7 @@ self
                                         Feature.NO_IE_SRC,
                                         []
                                     );
-                                expect(featureObj.mask).toBe(0);
+                                expect(featureObj.mask).toEqual([0, 0]);
                             }
                         );
                         it(
@@ -817,8 +821,9 @@ self
                     'returns null for an incompatible mask',
                     function ()
                     {
-                        var featureMask = Feature.NO_IE_SRC.mask | Feature.IE_SRC.mask;
-                        var featureObj = JScrewIt.debug.createFeatureFromMask(featureMask);
+                        var mask =
+                            JScrewIt.debug.maskUnion(Feature.NO_IE_SRC.mask, Feature.IE_SRC.mask);
+                        var featureObj = JScrewIt.debug.createFeatureFromMask(mask);
                         expect(featureObj).toBeNull();
                     }
                 );
@@ -1833,7 +1838,7 @@ self
     
     function getEntryFeature(entry)
     {
-        var featureObj = JScrewIt.debug.createFeatureFromMask(entry.featureMask);
+        var featureObj = JScrewIt.debug.createFeatureFromMask(entry.mask);
         return featureObj;
     }
     
@@ -2013,10 +2018,15 @@ self
                     }
                 );
                 it(
-                    'has 32-bit integer mask',
+                    'has a mask consisting of two 32-bit integers',
                     function ()
                     {
-                        expect(featureObj.mask).toBeInt32();
+                        var mask = featureObj.mask;
+                        expect(mask).toBeArray();
+                        expect(Object.isFrozen(mask)).toBeTruthy();
+                        expect(mask.length).toBe(2);
+                        expect(mask[0]).toBeInt32();
+                        expect(mask[1]).toBeInt32();
                     }
                 );
                 it(
@@ -2049,18 +2059,27 @@ self
                         );
                     }
                 );
-                var emuFeatures = getEmuFeatureNames(featureObj);
-                if (emuFeatures)
+                var check = featureObj.check;
+                if (check)
                 {
                     it(
-                        'is checkable',
+                        'has a nonempty mask',
                         function ()
                         {
-                            var check = featureObj.check;
-                            if (check)
-                                expect(emuDo(emuFeatures, check)).toBeTruthy();
+                            expect(JScrewIt.debug.maskIsEmpty(featureObj.mask)).toBe(false);
                         }
                     );
+                    var emuFeatures = getEmuFeatureNames(featureObj);
+                    if (emuFeatures)
+                    {
+                        it(
+                            'is checkable',
+                            function ()
+                            {
+                                expect(emuDo(emuFeatures, check)).toBeTruthy();
+                            }
+                        );
+                    }
                 }
             }
         );

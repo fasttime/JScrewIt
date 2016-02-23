@@ -22,6 +22,11 @@ getValidFeatureMask,
 hasOuterPlus,
 isArray,
 isMaskCompatible,
+maskAnd,
+maskIncludes,
+maskIsEmpty,
+maskNew,
+maskUnion,
 setUp,
 trimJS
 */
@@ -39,14 +44,14 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             {
                 var singleton = !isArray(entries);
                 if (singleton)
-                    entries = [createEntryClone(entries, 0)];
+                    entries = [createEntryClone(entries, [0, 0])];
                 else
                 {
                     entries =
                         entries.map(
                             function (entry)
                             {
-                                entry = createEntryClone(entry.definition, entry.featureMask);
+                                entry = createEntryClone(entry.definition, entry.mask);
                                 return entry;
                             }
                         );
@@ -58,17 +63,18 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         
         function createEncoder(features)
         {
-            var featureMask = getValidFeatureMask(features);
-            var encoder = new Encoder(featureMask);
+            var mask = getValidFeatureMask(features);
+            var encoder = new Encoder(mask);
             encoder.codingLog = [];
             return encoder;
         }
         
-        function createEntryClone(definition, featureMask)
+        function createEntryClone(definition, mask)
         {
             if (typeof definition === 'object')
                 definition = Object.freeze(definition);
-            var entry = { definition: definition, featureMask: featureMask };
+            mask = mask.slice();
+            var entry = { definition: definition, mask: mask };
             return entry;
         }
         
@@ -149,6 +155,11 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                     getConstantEntries:     getConstantEntries,
                     getEntries:             getEntries,
                     hasOuterPlus:           hasOuterPlus,
+                    maskAnd:                maskAnd,
+                    maskIncludes:           maskIncludes,
+                    maskIsEmpty:            maskIsEmpty,
+                    maskNew:                maskNew,
+                    maskUnion:              maskUnion,
                     setUp:                  setUp,
                     trimJS:                 trimJS,
                 }

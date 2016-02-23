@@ -11,8 +11,8 @@ var define;
         function (definition, featureArgs, startIndex)
         {
             var features = Array.prototype.slice.call(featureArgs, startIndex);
-            var featureMask = maskFromArray(features);
-            var entry = { definition: definition, featureMask: featureMask };
+            var mask = maskFromArray(features);
+            var entry = { definition: definition, mask: mask };
             return entry;
         };
     

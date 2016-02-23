@@ -14,8 +14,8 @@
     function define(definition)
     {
         var features = Array.prototype.slice.call(arguments, 1);
-        var featureMask = JScrewIt.Feature(features).mask;
-        var entry = { definition: definition, featureMask: featureMask };
+        var mask = JScrewIt.Feature(features).mask;
+        var entry = { definition: definition, mask: mask };
         return entry;
     }
     
@@ -73,7 +73,7 @@
             var input; // definition or expression
             if (typeof entry === 'object')
             {
-                if (!encoder.hasFeatures(entry.featureMask))
+                if (!encoder.hasFeatures(entry.mask))
                     return;
                 input = entry.definition;
             }
