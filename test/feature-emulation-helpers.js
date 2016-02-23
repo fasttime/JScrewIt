@@ -639,10 +639,6 @@
                 );
             }
         },
-        OLD_SAFARI_ARRAY_ITERATOR: makeEmuFeatureEntries(
-            '[object ArrayIterator]',
-            /^\[object ArrayIterator]$/
-        ),
         SELF_OBJ: makeEmuFeatureSelf('[object Object]', /^\[object /),
         UNDEFINED:
         {

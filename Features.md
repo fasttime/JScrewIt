@@ -196,11 +196,6 @@ A string representation of dynamically generated functions typical for most engi
 More specifically, in this representation, the character at index 22 is a line feed \("\\n"\).
 
 _Available in Firefox, Chrome, Internet Explorer, Safari 9.0+, Opera, Microsoft Edge, Android Browser and Node.js._
-<a name="OLD_SAFARI_ARRAY_ITERATOR"></a>
-### `OLD_SAFARI_ARRAY_ITERATOR`
-The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object ArrayIterator\]".
-
-_Available in Safari 7.1+ before 9.0+._
 <a name="SAFARI70"></a>
 ### `SAFARI70`
 Features available in Safari 7.0.
@@ -335,10 +330,10 @@ This table lists features available in the most common engines.
 <ul>
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
 <li><a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="#WINDOW"><code>WINDOW</code></a>)
-<li><a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> and <a href="#OLD_SAFARI_ARRAY_ITERATOR"><code>OLD_SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
+<li><a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
-<li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> and <a href="#OLD_SAFARI_ARRAY_ITERATOR"><code>OLD_SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
+<li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="#FF_SAFARI_SRC"><code>FF_SAFARI_SRC</code></a>
@@ -351,7 +346,6 @@ This table lists features available in the most common engines.
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#FF_SAFARI_SRC"><code>FF_SAFARI_SRC</code></a>)
 <li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Safari 9.0+)
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a> (Safari 9.0+)
-<li><a href="#OLD_SAFARI_ARRAY_ITERATOR"><code>OLD_SAFARI_ARRAY_ITERATOR</code></a> (Safari 7.1+, not in Safari 9.0+)
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
 <li><a href="#WINDOW"><code>WINDOW</code></a>
