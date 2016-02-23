@@ -55,8 +55,7 @@
         var featureQueries = analyzer.featureQueries;
         if (!featureQueries)
             return true;
-        var featureQuery;
-        while (featureQuery = featureQueries.pop())
+        for (var featureQuery; featureQuery = featureQueries.pop();)
         {
             if (!featureQuery.included)
             {
