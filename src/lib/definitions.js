@@ -652,7 +652,6 @@ var replaceDigit;
             define('(RP_3_NO + document)["11"]', 'DOCUMENT'),
             define('(document + [])["12"]', 'HTMLDOCUMENT'),
             define('escape(ARRAY_ITERATOR)["30"]', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-            define('escape(NaN + ARRAY_ITERATOR)["30"]', 'OLD_SAFARI_ARRAY_ITERATOR'),
             define('escape(FILTER)["50"]', 'V8_SRC'),
             define('escape(FILL)["60"]', 'FF_SAFARI_SRC', 'FILL')
         ],
@@ -660,7 +659,8 @@ var replaceDigit;
         [
             defineFHCharAt('RegExp', 12),
             define('btoa("0NaN")[1]', 'ATOB'),
-            define('(RP_5_N + ""["link"]())["10"]', 'CAPITAL_HTML')
+            define('(RP_5_N + ""["link"]())["10"]', 'CAPITAL_HTML'),
+            define('(RP_3_NO + Audio)["21"]', 'HTMLAUDIOELEMENT')
         ],
         'F':
         [
@@ -678,6 +678,7 @@ var replaceDigit;
             define('btoa(true)[1]', 'ATOB'),
             define('""["link"]()[3]', 'CAPITAL_HTML'),
             define('(RP_3_NO + Function("return history")())["11"]', 'HISTORY'),
+            define('(RP_1_NO + Audio)["10"]', 'HTMLAUDIOELEMENT'),
             define('(RP_3_NO + document)["11"]', 'HTMLDOCUMENT')
         ],
         'I': '"Infinity"[0]',
@@ -695,6 +696,7 @@ var replaceDigit;
         [
             define('btoa(".")[0]', 'ATOB'),
             define('(RP_3_NO + ""["fontcolor"]())["11"]', 'CAPITAL_HTML'),
+            define('(Audio + [])["12"]', 'HTMLAUDIOELEMENT'),
             define('(document + [])["11"]', 'HTMLDOCUMENT')
         ],
         'M':
@@ -702,6 +704,7 @@ var replaceDigit;
             define('btoa(0)[0]', 'ATOB'),
             define('""["small"]()[2]', 'CAPITAL_HTML'),
             define('(RP_4_N + Date())["30"]', 'GMT'),
+            define('(Audio + [])["11"]', 'HTMLAUDIOELEMENT'),
             define('(document + [])["10"]', 'HTMLDOCUMENT')
         ],
         'N': '"NaN"[0]',
@@ -743,6 +746,7 @@ var replaceDigit;
             define('btoa(NaN)[0]', 'ATOB'),
             define('""["fontcolor"]([])["20"]', 'CAPITAL_HTML'),
             define('(RP_3_NO + Date())["30"]', 'GMT'),
+            define('(Audio + [])["10"]', 'HTMLAUDIOELEMENT'),
             define('(RP_1_NO + document)["10"]', 'HTMLDOCUMENT')
         ],
         'U':
@@ -798,8 +802,7 @@ var replaceDigit;
         [
             defineFBCharAt(26),
             define('(RP_6_SO + PLAIN_OBJECT)["20"]'),
-            define('(ARRAY_ITERATOR + [])["22"]', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-            define('(ARRAY_ITERATOR + [])["21"]', 'OLD_SAFARI_ARRAY_ITERATOR')
+            define('(ARRAY_ITERATOR + [])["22"]', 'NO_OLD_SAFARI_ARRAY_ITERATOR')
         ],
         '^':
         [
@@ -1026,6 +1029,10 @@ var replaceDigit;
         [
             define('[]["constructor"]')
         ],
+        Audio:
+        [
+            define('Function("return Audio")()', 'HTMLAUDIOELEMENT')
+        ],
         Boolean:
         [
             define('false["constructor"]')
@@ -1054,7 +1061,6 @@ var replaceDigit;
         [
             define('""["constructor"]')
         ],
-        
         atob:
         [
             define('Function("return atob")()', 'ATOB')
@@ -1237,7 +1243,6 @@ var replaceDigit;
         define(createParseIntArgDefault, 'CAPITAL_HTML', 'ENTRIES_OBJ'),
         define(createParseIntArgByReduce, 'CAPITAL_HTML', 'ENTRIES_PLAIN'),
         define(createParseIntArgByReduce, 'CAPITAL_HTML', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-        define(createParseIntArgByReduce, 'CAPITAL_HTML', 'OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgDefault, 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'NO_IE_SRC'),
         define(
             createParseIntArgDefault,
@@ -1245,10 +1250,8 @@ var replaceDigit;
             'NO_IE_SRC',
             'NO_OLD_SAFARI_ARRAY_ITERATOR'
         ),
-        define(createParseIntArgDefault, 'CAPITAL_HTML', 'NO_IE_SRC', 'OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduce, 'ENTRIES_PLAIN', 'FILL'),
         define(createParseIntArgByReduce, 'FILL', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-        define(createParseIntArgByReduce, 'FILL', 'OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduceArrow, 'ARROW'),
         define(createParseIntArgByReduce, 'FF_SAFARI_SRC'),
         define(createParseIntArgByReduce, 'IE_SRC'),
@@ -1258,7 +1261,6 @@ var replaceDigit;
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_PLAIN'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'FILL'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-        define(createParseIntArgByReduceArrow, 'ARROW', 'OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'FF_SAFARI_SRC'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'V8_SRC'),
         define(createParseIntArgByReduce, 'FILL', 'FF_SAFARI_SRC'),
