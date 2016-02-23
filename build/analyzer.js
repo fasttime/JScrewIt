@@ -49,13 +49,12 @@
         var featureQueries = analyzer.featureQueries;
         if (!featureQueries)
             return true;
-        for (var index = featureQueries.length; index--;)
+        for (var featureQuery; featureQuery = featureQueries.pop();)
         {
-            var featureQuery = featureQueries[index];
             if (!featureQuery.included)
             {
                 var featureMask = featureQuery.featureMask | featureQuery.ancestorFeatureMask;
-                if (isIndependentFeatureMask(featureQueries, index, featureMask))
+                if (analyzer.doesNotExclude(featureMask))
                 {
                     var featureObj = JScrewIt.debug.createFeatureFromMask(featureMask);
                     if (featureObj)
@@ -84,21 +83,6 @@
         return progress;
     }
     
-    function isIndependentFeatureMask(featureQueries, index, newFeatureMask)
-    {
-        while (index--)
-        {
-            var featureQuery = featureQueries[index];
-            if (!featureQuery.included)
-            {
-                var featureMask = featureQuery.featureMask;
-                if ((featureMask & newFeatureMask) === featureMask)
-                    return false;
-            }
-        }
-        return true;
-    }
-    
     Object.defineProperties(
         Analyzer.prototype,
         {
@@ -108,13 +92,17 @@
                 value: function (featureMask)
                 {
                     var featureQueries = this.featureQueries;
-                    var result =
-                        isIndependentFeatureMask(
-                            featureQueries,
-                            featureQueries.length,
-                            featureMask
-                        );
-                    return result;
+                    for (var index = featureQueries.length; index--;)
+                    {
+                        var featureQuery = featureQueries[index];
+                        if (!featureQuery.included)
+                        {
+                            var queryFeatureMask = featureQuery.featureMask;
+                            if ((queryFeatureMask & featureMask) === queryFeatureMask)
+                                return false;
+                        }
+                    }
+                    return true;
                 }
             },
             nextEncoder:
