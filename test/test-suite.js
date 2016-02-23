@@ -483,7 +483,7 @@ self
                                     Feature.bind(
                                         Feature,
                                         'ENTRIES_PLAIN',
-                                        'OLD_SAFARI_ARRAY_ITERATOR'
+                                        'NO_OLD_SAFARI_ARRAY_ITERATOR'
                                     );
                                 expect(fn).toThrow(ReferenceError('Incompatible features'));
                             }

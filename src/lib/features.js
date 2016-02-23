@@ -1,5 +1,6 @@
 /*
 global
+Audio,
 Empty,
 assignNoEnum,
 create,
@@ -493,6 +494,18 @@ var validMaskFromArrayOrStringOrFeature;
             },
             attributes: { 'web-worker': 'web-worker-restriction' }
         },
+        HTMLAUDIOELEMENT:
+        {
+            description:
+                'Existence of the global object property Audio whose string representation ' +
+                'starts with "function HTMLAudioElement".',
+            check: function ()
+            {
+                return typeof Audio === 'function' && /^function HTMLAudioElement/.test(Audio);
+            },
+            includes: ['NO_IE_SRC'],
+            attributes: { 'web-worker': 'web-worker-restriction' }
+        },
         HTMLDOCUMENT:
         {
             description:
@@ -565,8 +578,7 @@ var validMaskFromArrayOrStringOrFeature;
             {
                 return Array.prototype.entries && [].entries() + '' === '[object Array Iterator]';
             },
-            includes: ['ARRAY_ITERATOR'],
-            excludes: ['OLD_SAFARI_ARRAY_ITERATOR']
+            includes: ['ARRAY_ITERATOR']
         },
         NO_OLD_SAFARI_LF:
         {
@@ -579,18 +591,6 @@ var validMaskFromArrayOrStringOrFeature;
             {
                 return (Function() + '')[22] === '\n';
             }
-        },
-        OLD_SAFARI_ARRAY_ITERATOR:
-        {
-            description:
-                'The property that the string representation of Array.prototype.entries() ' +
-                'evaluates to "[object ArrayIterator]".',
-            check: function ()
-            {
-                return Array.prototype.entries && [].entries() + '' === '[object ArrayIterator]';
-            },
-            includes: ['ARRAY_ITERATOR'],
-            excludes: ['NO_OLD_SAFARI_ARRAY_ITERATOR']
         },
         SELF: 'ANY_WINDOW',
         SELF_OBJ:
@@ -721,6 +721,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ESC_HTML_ALL',
                 'GMT',
                 'HISTORY',
+                'HTMLAUDIOELEMENT',
                 'HTMLDOCUMENT',
                 'INTL',
                 'LOCALE_INFINITY',
@@ -746,6 +747,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FROM_CODE_POINT',
                 'GMT',
                 'HISTORY',
+                'HTMLAUDIOELEMENT',
                 'HTMLDOCUMENT',
                 'INTL',
                 'LOCALE_INFINITY',
@@ -947,6 +949,7 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Features available in Safari 7.1.',
             includes:
             [
+                'ARRAY_ITERATOR',
                 'ATOB',
                 'BARPROP',
                 'ESC_HTML_QUOT_ONLY',
@@ -956,7 +959,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
-                'OLD_SAFARI_ARRAY_ITERATOR',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -967,6 +969,7 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Features available in Safari 8.0.',
             includes:
             [
+                'ARRAY_ITERATOR',
                 'ATOB',
                 'BARPROP',
                 'ESC_HTML_QUOT_ONLY',
@@ -976,7 +979,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
-                'OLD_SAFARI_ARRAY_ITERATOR',
                 'UNDEFINED',
                 'WINDOW'
             ],
