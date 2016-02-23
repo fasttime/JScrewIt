@@ -21,6 +21,7 @@ getFigure,
 hasOuterPlus,
 isArray,
 keys,
+maskIncludes,
 replaceDigit
 */
 
@@ -343,9 +344,9 @@ var resolveSimple;
     var ConstCache = createConstructor(STATIC_CONST_CACHE);
     
     Encoder =
-        function (featureMask)
+        function (mask)
         {
-            this.featureMask = featureMask;
+            this.mask = mask;
             this.charCache = new CharCache();
             this.complexCache = new Empty();
             this.constCache = new ConstCache();
@@ -714,7 +715,7 @@ var resolveSimple;
             for (var entryIndex = entries.length; entryIndex--;)
             {
                 var entry = entries[entryIndex];
-                if (this.hasFeatures(entry.featureMask))
+                if (this.hasFeatures(entry.mask))
                     return entry.definition;
             }
         },
@@ -725,7 +726,7 @@ var resolveSimple;
             entries.forEach(
                 function (entry, entryIndex)
                 {
-                    if (this.hasFeatures(entry.featureMask))
+                    if (this.hasFeatures(entry.mask))
                     {
                         var definition = entry.definition;
                         var solution = definition ? this.resolve(definition) : defaultResolver();
@@ -749,9 +750,10 @@ var resolveSimple;
             this.throwSyntaxError('Undefined padding block with length ' + length);
         },
         
-        hasFeatures: function (featureMask)
+        hasFeatures: function (mask)
         {
-            return (featureMask & this.featureMask) === featureMask;
+            var included = maskIncludes(this.mask, mask);
+            return included;
         },
         
         hexCodeOf: function (charCode, length)
@@ -969,7 +971,7 @@ var resolveSimple;
     
     assignNoEnum(Encoder.prototype, encoderProtoSource);
     
-    var STATIC_ENCODER = new Encoder(0);
+    var STATIC_ENCODER = new Encoder([0, 0]);
     
     replaceIndexer =
         function (index)

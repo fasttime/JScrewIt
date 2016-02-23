@@ -116,6 +116,7 @@ module.exports =
                         [
                             'src/lib/preamble',
                             'src/lib/obj-utils.js',
+                            'src/lib/mask.js',
                             'src/lib/features.js',
                             'src/lib/definers.js',
                             'src/lib/definitions.js',

@@ -11,37 +11,43 @@
         this.featureObj = JScrewIt.Feature.DEFAULT;
     }
     
-    function FeatureQueryInfo(featureMask, included, ancestorFeatureMask)
+    function FeatureQueryInfo(mask, included, ancestorMask)
     {
-        this.featureMask = featureMask;
+        this.mask = mask;
         this.included = included;
-        this.ancestorFeatureMask = ancestorFeatureMask;
+        this.ancestorMask = ancestorMask;
     }
     
     function createModifiedEncoder(featureObj, featureQueries)
     {
-        var featureMaskSet = Object.create(null);
-        var ancestorFeatureMask = 0;
-        var encoder = JScrewIt.debug.createEncoder(featureObj);
+        var maskSet = Object.create(null);
+        var ancestorMask = maskNew();
+        var encoder = createEncoder(featureObj);
         encoder.hasFeatures =
-            function (featureMask)
+            function (mask)
             {
-                var included = (featureMask & this.featureMask) === featureMask;
-                if (featureMask)
+                var included = maskIncludes(encoder.mask, mask);
+                if (!maskIsEmpty(mask))
                 {
-                    if (!featureMaskSet[featureMask])
+                    var key = getMaskKey(mask);
+                    if (!maskSet[key])
                     {
-                        featureMaskSet[featureMask] = true;
-                        var featureQuery =
-                            new FeatureQueryInfo(featureMask, included, ancestorFeatureMask);
+                        maskSet[key] = true;
+                        var featureQuery = new FeatureQueryInfo(mask, included, ancestorMask);
                         featureQueries.push(featureQuery);
                     }
                 }
                 if (included)
-                    ancestorFeatureMask |= featureMask;
+                    ancestorMask = maskUnion(mask, ancestorMask);
                 return included;
             };
         return encoder;
+    }
+    
+    function getMaskKey(mask)
+    {
+        var key = mask + '';
+        return key;
     }
     
     function getNewFeatureData(analyzer)
@@ -49,15 +55,15 @@
         var featureQueries = analyzer.featureQueries;
         if (!featureQueries)
             return true;
-        for (var index = featureQueries.length; index--;)
+        var featureQuery;
+        while (featureQuery = featureQueries.pop())
         {
-            var featureQuery = featureQueries[index];
             if (!featureQuery.included)
             {
-                var featureMask = featureQuery.featureMask | featureQuery.ancestorFeatureMask;
-                if (isIndependentFeatureMask(featureQueries, index, featureMask))
+                var mask = maskUnion(featureQuery.mask, featureQuery.ancestorMask);
+                if (analyzer.doesNotExclude(mask))
                 {
-                    var featureObj = JScrewIt.debug.createFeatureFromMask(featureMask);
+                    var featureObj = createFeatureFromMask(mask);
                     if (featureObj)
                     {
                         analyzer.featureObj = featureObj;
@@ -84,37 +90,22 @@
         return progress;
     }
     
-    function isIndependentFeatureMask(featureQueries, index, newFeatureMask)
-    {
-        while (index--)
-        {
-            var featureQuery = featureQueries[index];
-            if (!featureQuery.included)
-            {
-                var featureMask = featureQuery.featureMask;
-                if ((featureMask & newFeatureMask) === featureMask)
-                    return false;
-            }
-        }
-        return true;
-    }
-    
     Object.defineProperties(
         Analyzer.prototype,
         {
             doesNotExclude:
             {
                 configurable: true,
-                value: function (featureMask)
+                value: function (mask)
                 {
                     var featureQueries = this.featureQueries;
-                    var result =
-                        isIndependentFeatureMask(
-                            featureQueries,
-                            featureQueries.length,
-                            featureMask
-                        );
-                    return result;
+                    for (var index = featureQueries.length; index--;)
+                    {
+                        var featureQuery = featureQueries[index];
+                        if (!featureQuery.included && maskIncludes(mask, featureQuery.mask))
+                            return false;
+                    }
+                    return true;
                 }
             },
             nextEncoder:
@@ -164,5 +155,12 @@
         JScrewIt = require('../lib/jscrewit.js');
         module.exports = Analyzer;
     }
+    
+    var createEncoder = JScrewIt.debug.createEncoder;
+    var createFeatureFromMask = JScrewIt.debug.createFeatureFromMask;
+    var maskIncludes = JScrewIt.debug.maskIncludes;
+    var maskIsEmpty = JScrewIt.debug.maskIsEmpty;
+    var maskNew = JScrewIt.debug.maskNew;
+    var maskUnion = JScrewIt.debug.maskUnion;
 }
 )();

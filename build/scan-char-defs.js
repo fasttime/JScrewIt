@@ -8,6 +8,7 @@ var JScrewIt = require('../lib/jscrewit.js');
 var ProgressBar = require('progress');
 var fs = require('fs');
 require('../tools/text-utils.js');
+var maskAnd = JScrewIt.debug.maskAnd;
 
 function Interruption(blocker)
 {
@@ -65,11 +66,12 @@ function createExceptionalCharMap(toDoCharMap)
 
 function createToDoCharMap()
 {
+    var getCharacterEntries = JScrewIt.debug.getCharacterEntries;
     var toDoCharMap = createEmpty();
     for (var charCode = 0; charCode <= 0xffff; ++charCode)
     {
         var char = String.fromCharCode(charCode);
-        var entries = JScrewIt.debug.getCharacterEntries(char);
+        var entries = getCharacterEntries(char);
         if (entries)
         {
             var toDoEntry = toDoCharMap[char] = { blockedSet: createEmpty() };
@@ -109,8 +111,8 @@ function findKnownSolution(solutions, encoder, analyzer)
     solutions.forEach(
         function (solution)
         {
-            var featureMask = solution.featureMask;
-            if (encoder.hasFeatures(featureMask) && analyzer.doesNotExclude(featureMask))
+            var mask = solution.mask;
+            if (encoder.hasFeatures(mask) && analyzer.doesNotExclude(mask))
             {
                 var length = solution.length;
                 if (length < knownLength)
@@ -165,16 +167,16 @@ function multiSolve(char, doneCharMap, exceptionalChars)
     var analyzer = new Analyzer();
     for (var encoder; encoder = analyzer.nextEncoder;)
     {
-        var featureMask = analyzer.featureObj.mask;
+        var mask = analyzer.featureObj.mask.slice();
         var oldResolveCharacter = encoder.resolveCharacter;
         encoder.resolveCharacter = newResolveCharacter;
         var solution = encoder.resolveCharacter(char);
         var outputSolution = outputMap[solution];
         if (outputSolution)
-            outputSolution.featureMask &= featureMask;
+            maskAnd(outputSolution.mask, mask);
         else
         {
-            solution.featureMask = featureMask;
+            solution.mask = mask;
             outputMap[solution] = solution;
             var entryIndex = solution.entryIndex;
             if (entryIndex !== undefined)
@@ -195,10 +197,11 @@ function multiSolve(char, doneCharMap, exceptionalChars)
 
 function printReport(logLine, char, solutions)
 {
+    var createFeatureFromMask = JScrewIt.debug.createFeatureFromMask;
     solutions.forEach(
         function (solution)
         {
-            var featureObj = JScrewIt.debug.createFeatureFromMask(solution.featureMask);
+            var featureObj = createFeatureFromMask(solution.mask);
             var canonicalNames = featureObj.canonicalNames;
             solution.canonicalNames = canonicalNames;
         }

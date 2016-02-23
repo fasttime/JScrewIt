@@ -8,6 +8,12 @@ document,
 history,
 isArray,
 keys,
+maskAnd,
+maskAreEqual,
+maskIncludes,
+maskNew,
+maskOr,
+maskUnion,
 self,
 toolbar
 */
@@ -47,7 +53,7 @@ var validMaskFromArrayOrStringOrFeature;
                     var result;
                     var otherMask = validMaskFromArrayOrStringOrFeature(arg);
                     if (index)
-                        result = otherMask === mask;
+                        result = maskAreEqual(otherMask, mask);
                     else
                     {
                         mask = otherMask;
@@ -80,12 +86,13 @@ var validMaskFromArrayOrStringOrFeature;
         var result;
         if (arguments.length)
         {
-            var mask = ~0;
+            var mask = [~0, ~0];
             Array.prototype.forEach.call(
                 arguments,
                 function (arg)
                 {
-                    mask &= validMaskFromArrayOrStringOrFeature(arg);
+                    var otherMask = validMaskFromArrayOrStringOrFeature(arg);
+                    maskAnd(mask, otherMask);
                 }
             );
             result = featureFromMask(mask);
@@ -112,24 +119,25 @@ var validMaskFromArrayOrStringOrFeature;
             }
             else
             {
+                mask = maskNew();
                 var check = info.check;
                 if (check)
                 {
-                    mask = 1 << bitIndex++;
+                    mask[bitIndex >> 5] = 1 << bitIndex++;
                     if (check())
-                        autoMask |= mask;
+                        maskOr(autoMask, mask);
                 }
-                mask ^= 0;
                 var includes = includesMap[name] = info.includes || [];
                 includes.forEach(
                     function (include)
                     {
                         var includeMask = completeFeature(include);
-                        mask |= includeMask;
+                        maskOr(mask, includeMask);
                     }
                 );
                 excludes = info.excludes;
-                featureObj = createFeature(name, info.description, mask, check, info.attributes);
+                featureObj =
+                    createFeature(name, info.description, mask, check, info.attributes);
                 if (check)
                     elementaryFeatureObjs.push(featureObj);
             }
@@ -140,7 +148,7 @@ var validMaskFromArrayOrStringOrFeature;
                     function (exclude)
                     {
                         var excludeMask = completeFeature(exclude);
-                        var incompatibleMask = mask | excludeMask;
+                        var incompatibleMask = maskUnion(mask, excludeMask);
                         incompatibleMasks.push(incompatibleMask);
                     }
                 );
@@ -158,7 +166,7 @@ var validMaskFromArrayOrStringOrFeature;
                     attributes: { value: Object.freeze(attributes || { }) },
                     check: { value: check },
                     description: { value: description },
-                    mask: { value: mask },
+                    mask: { value: Object.freeze(mask) },
                     name: { value: name }
                 }
             );
@@ -167,7 +175,7 @@ var validMaskFromArrayOrStringOrFeature;
     
     function initMask(featureObj, mask)
     {
-        defineProperty(featureObj, 'mask', { value: mask });
+        defineProperty(featureObj, 'mask', { value: Object.freeze(mask) });
     }
     
     function isExcludingAttribute(attributeCache, attributeName, featureObjs)
@@ -218,7 +226,7 @@ var validMaskFromArrayOrStringOrFeature;
     
     function validMaskFromArguments(args)
     {
-        var mask = 0;
+        var mask = maskNew();
         var validationNeeded = false;
         Array.prototype.forEach.call(
             args,
@@ -229,14 +237,16 @@ var validMaskFromArrayOrStringOrFeature;
                     arg.forEach(
                         function (arg)
                         {
-                            mask |= maskFromStringOrFeature(arg);
+                            var otherMask = maskFromStringOrFeature(arg);
+                            maskOr(mask, otherMask);
                         }
                     );
                     validationNeeded |= arg.length > 1;
                 }
                 else
                 {
-                    mask |= maskFromStringOrFeature(arg);
+                    var otherMask = maskFromStringOrFeature(arg);
+                    maskOr(mask, otherMask);
                 }
             }
         );
@@ -1208,8 +1218,7 @@ var validMaskFromArrayOrStringOrFeature;
             elementaryFeatureObjs.forEach(
                 function (featureObj)
                 {
-                    var otherMask = featureObj.mask;
-                    var included = (otherMask & mask) === otherMask;
+                    var included = maskIncludes(mask, featureObj.mask);
                     if (included)
                     {
                         var name = featureObj.name;
@@ -1254,8 +1263,7 @@ var validMaskFromArrayOrStringOrFeature;
             elementaryFeatureObjs.forEach(
                 function (featureObj)
                 {
-                    var otherMask = featureObj.mask;
-                    var included = (otherMask & mask) === otherMask;
+                    var included = maskIncludes(mask, featureObj.mask);
                     if (included)
                         names.push(featureObj.name);
                 }
@@ -1284,7 +1292,7 @@ var validMaskFromArrayOrStringOrFeature;
                     function (arg)
                     {
                         var otherMask = validMaskFromArrayOrStringOrFeature(arg);
-                        var included = (otherMask & mask) === otherMask;
+                        var included = maskIncludes(mask, otherMask);
                         return included;
                     }
                 );
@@ -1326,14 +1334,14 @@ var validMaskFromArrayOrStringOrFeature;
         
         restrict: function (environment, referenceFeatureObjs)
         {
-            var resultMask = 0;
+            var resultMask = maskNew();
             var thisMask = this.mask;
             var attributeCache = new Empty();
             elementaryFeatureObjs.forEach(
                 function (featureObj)
                 {
                     var otherMask = featureObj.mask;
-                    var included = (otherMask & thisMask) === otherMask;
+                    var included = maskIncludes(thisMask, otherMask);
                     if (included)
                     {
                         var attributeValue = featureObj.attributes[environment];
@@ -1344,7 +1352,7 @@ var validMaskFromArrayOrStringOrFeature;
                                 attributeCache,
                                 attributeValue,
                                 referenceFeatureObjs))
-                            resultMask |= otherMask;
+                            maskOr(resultMask, otherMask);
                     }
                 }
             );
@@ -1386,7 +1394,7 @@ var validMaskFromArrayOrStringOrFeature;
                 incompatibleMasks.every(
                     function (incompatibleMask)
                     {
-                        var result = (incompatibleMask & mask) !== incompatibleMask;
+                        var result = !maskIncludes(mask, incompatibleMask);
                         return result;
                     }
                 );
@@ -1396,11 +1404,12 @@ var validMaskFromArrayOrStringOrFeature;
     maskFromArray =
         function (features)
         {
-            var mask = 0;
+            var mask = maskNew();
             features.forEach(
                 function (arg)
                 {
-                    mask |= maskFromStringOrFeature(arg);
+                    var otherMask = maskFromStringOrFeature(arg);
+                    maskOr(mask, otherMask);
                 }
             );
             return mask;
@@ -1412,11 +1421,12 @@ var validMaskFromArrayOrStringOrFeature;
             var mask;
             if (isArray(arg))
             {
-                mask = 0;
+                mask = maskNew();
                 arg.forEach(
                     function (arg)
                     {
-                        mask |= maskFromStringOrFeature(arg);
+                        var otherMask = maskFromStringOrFeature(arg);
+                        maskOr(mask, otherMask);
                     }
                 );
                 if (arg.length > 1)
@@ -1427,7 +1437,7 @@ var validMaskFromArrayOrStringOrFeature;
             return mask;
         };
     
-    var autoMask = 0;
+    var autoMask = maskNew();
     var bitIndex = 0;
     var elementaryFeatureObjs = [];
     var includesMap = new Empty();
