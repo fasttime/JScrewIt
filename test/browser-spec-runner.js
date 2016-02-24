@@ -254,7 +254,7 @@ showFeatureSupport
                     code.textContent = featureName;
                     code.title = JScrewIt.Feature[featureName].description;
                     if (
-                        label == 'Available features: ' &&
+                        label === 'Available features: ' &&
                         webWorkerFeatureNames &&
                         webWorkerFeatureNames.indexOf(featureName) < 0)
                         span.appendChild(document.createTextNode('*'));

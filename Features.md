@@ -34,7 +34,7 @@ _Available in Firefox, Chrome, Opera, Microsoft Edge and Node.js 4+._
 ### `ATOB`
 Existence of the global object functions atob and btoa.
 
-_Available in Firefox, Chrome, Internet Explorer 10+, Safari, Opera, Microsoft Edge and Android Browser._
+_Available in Firefox, Chrome, Internet Explorer 10+, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers in Safari._
 <a name="AUTO"></a>
 ### `AUTO`
 All features available in the current engine.
@@ -203,13 +203,13 @@ More specifically, in this representation, the character at index 22 is a line f
 _Available in Firefox, Chrome, Internet Explorer, Safari 9.0+, Opera, Microsoft Edge, Android Browser and Node.js._
 <a name="SAFARI70"></a>
 ### `SAFARI70`
-Features available in Safari 7.0.
+Features available in Safari 7.0 or later.
 <a name="SAFARI71"></a>
 ### `SAFARI71`
-Features available in Safari 7.1.
+Features available in Safari 7.1 or later.
 <a name="SAFARI80"></a>
 ### `SAFARI80`
-Features available in Safari 8.0.
+Features available in Safari 8.0 or later.
 <a name="SAFARI90"></a>
 ### `SAFARI90`
 Features available in Safari 9.0 or later.
