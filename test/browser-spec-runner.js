@@ -72,6 +72,21 @@ showFeatureSupport
     {
         var info = document.querySelector('#featureList');
         showFeatureSupport(listFeatures.bind(null, info));
+        var notice;
+        if (typeof Worker !== 'undefined')
+        {
+            if (webWorkerFeatureNames)
+            {
+                notice =
+                    'Web workers are supported. Features marked with an asterisk (*) are not ' +
+                    'available inside web workers.';
+            }
+            else
+                notice = 'Web workers are supported, but not right here.';
+        }
+        else
+            notice = 'Web workers are not supported.';
+        info.appendChild(document.createElement('I')).textContent = notice;
     }
     
     function createOutput(compatibilities)
@@ -165,6 +180,12 @@ showFeatureSupport
     
     function handleLoad()
     {
+        if (!--waitCount)
+            handleLoadAndWorkerMessage();
+    }
+    
+    function handleLoadAndWorkerMessage()
+    {
         addFeatureLists();
         addBarButtons();
         var runner = mocha.run();
@@ -186,15 +207,39 @@ showFeatureSupport
         );
     }
     
-    function listFeatures(info, label, features)
+    function handleWorkerMessage(evt)
     {
-        if (features.length)
+        webWorkerFeatureNames = evt.data;
+        if (!--waitCount)
+            handleLoadAndWorkerMessage();
+    }
+    
+    function initWorker()
+    {
+        if (typeof Worker === 'undefined')
+            return 1;
+        var worker;
+        try
+        {
+            worker = new Worker('./feature-info-worker.js');
+        }
+        catch (error)
+        {
+            return 1;
+        }
+        worker.onmessage = handleWorkerMessage;
+        return 2;
+    }
+    
+    function listFeatures(info, label, featureNames)
+    {
+        if (featureNames.length)
         {
             var div = info.appendChild(document.createElement('DIV'));
             div.textContent = label;
             var span;
-            features.forEach(
-                function (feature, index)
+            featureNames.forEach(
+                function (featureName, index)
                 {
                     if (index)
                     {
@@ -206,8 +251,13 @@ showFeatureSupport
                         span.appendChild(document.createElement('SPAN')).appendChild(
                             document.createElement('CODE')
                         );
-                    code.textContent = feature;
-                    code.title = JScrewIt.Feature[feature].description;
+                    code.textContent = featureName;
+                    code.title = JScrewIt.Feature[featureName].description;
+                    if (
+                        label === 'Available features: ' &&
+                        webWorkerFeatureNames &&
+                        webWorkerFeatureNames.indexOf(featureName) < 0)
+                        span.appendChild(document.createTextNode('*'));
                 }
             );
         }
@@ -242,5 +292,7 @@ showFeatureSupport
     mocha.checkLeaks();
     TestSuite.init();
     addEventListener('load', handleLoad);
+    var webWorkerFeatureNames;
+    var waitCount = initWorker();
 }
 )();
