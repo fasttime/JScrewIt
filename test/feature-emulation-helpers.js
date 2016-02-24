@@ -574,7 +574,7 @@
             setUp: function ()
             {
                 if (!global.Audio)
-                    override(this, 'Audio', { value: Function() });
+                    override(this, 'Audio', { value: { } });
                 var toString =
                     function ()
                     {
