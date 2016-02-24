@@ -318,7 +318,8 @@ var validMaskFromArrayOrStringOrFeature;
             check: function ()
             {
                 return typeof atob === 'function' && typeof btoa === 'function';
-            }
+            },
+            attributes: { 'web-worker': 'no-atob-in-web-worker' }
         },
         BARPROP:
         {
@@ -928,7 +929,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         SAFARI70:
         {
-            description: 'Features available in Safari 7.0.',
+            description: 'Features available in Safari 7.0 or later.',
             includes:
             [
                 'ATOB',
@@ -942,11 +943,11 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'WINDOW'
             ],
-            attributes: { 'web-worker-restriction': null }
+            attributes: { 'no-atob-in-web-worker': null, 'web-worker-restriction': null }
         },
         SAFARI71:
         {
-            description: 'Features available in Safari 7.1.',
+            description: 'Features available in Safari 7.1 or later.',
             includes:
             [
                 'ARRAY_ITERATOR',
@@ -962,11 +963,11 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'WINDOW'
             ],
-            attributes: { 'web-worker-restriction': null }
+            attributes: { 'no-atob-in-web-worker': null, 'web-worker-restriction': null }
         },
         SAFARI80:
         {
-            description: 'Features available in Safari 8.0.',
+            description: 'Features available in Safari 8.0 or later.',
             includes:
             [
                 'ARRAY_ITERATOR',
@@ -982,7 +983,12 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'WINDOW'
             ],
-            attributes: { 'safari-bug-21820506': null, 'web-worker-restriction': null }
+            attributes:
+            {
+                'no-atob-in-web-worker': null,
+                'safari-bug-21820506': null,
+                'web-worker-restriction': null
+            }
         },
         SAFARI90:
         {
@@ -1004,7 +1010,12 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'WINDOW'
             ],
-            attributes: { 'safari-bug-21820506': null, 'web-worker-restriction': null }
+            attributes:
+            {
+                'no-atob-in-web-worker': null,
+                'safari-bug-21820506': null,
+                'web-worker-restriction': null
+            }
         }
     };
     
