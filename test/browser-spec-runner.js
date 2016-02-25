@@ -75,11 +75,11 @@ showFeatureSupport
         var notice;
         if (typeof Worker !== 'undefined')
         {
-            if (webWorkerFeatureNames)
+            if (webWorkerFeatureObj)
             {
                 notice =
-                    'Web workers are supported. Features marked with an asterisk (*) are not ' +
-                    'available inside web workers.';
+                    'Web workers are supported. Features marked with an asterisk (*) are ' +
+                    'excluded inside web workers.';
             }
             else
                 notice = 'Web workers are supported, but not right here.';
@@ -209,7 +209,7 @@ showFeatureSupport
     
     function handleWorkerMessage(evt)
     {
-        webWorkerFeatureNames = evt.data;
+        webWorkerFeatureObj = JScrewIt.Feature(evt.data);
         if (!--waitCount)
             handleLoadAndWorkerMessage();
     }
@@ -235,6 +235,7 @@ showFeatureSupport
     {
         if (featureNames.length)
         {
+            var Feature = JScrewIt.Feature;
             var div = info.appendChild(document.createElement('DIV'));
             div.textContent = label;
             var span;
@@ -251,13 +252,31 @@ showFeatureSupport
                         span.appendChild(document.createElement('SPAN')).appendChild(
                             document.createElement('CODE')
                         );
+                    var featureObj = Feature[featureName];
                     code.textContent = featureName;
-                    code.title = JScrewIt.Feature[featureName].description;
-                    if (
-                        label === 'Available features: ' &&
-                        webWorkerFeatureNames &&
-                        webWorkerFeatureNames.indexOf(featureName) < 0)
-                        span.appendChild(document.createTextNode('*'));
+                    code.title = featureObj.description;
+                    if (webWorkerFeatureObj)
+                    {
+                        var nonInWebWorkers;
+                        var restrictedFeatureObj;
+                        if (/^Characteristic /.test(label))
+                        {
+                            restrictedFeatureObj =
+                                Feature.AUTO.restrict('web-worker', [featureObj]);
+                            nonInWebWorkers =
+                                !Feature.areEqual(webWorkerFeatureObj, restrictedFeatureObj);
+                        }
+                        else if (/^Compatible /.test(label))
+                        {
+                            restrictedFeatureObj =
+                                Feature.AUTO.restrict('web-worker', [featureObj]);
+                            nonInWebWorkers = !webWorkerFeatureObj.includes(restrictedFeatureObj);
+                        }
+                        else if (/^Available /.test(label))
+                            nonInWebWorkers = !webWorkerFeatureObj.includes(featureObj);
+                        if (nonInWebWorkers)
+                            span.appendChild(document.createTextNode('*'));
+                    }
                 }
             );
         }
@@ -292,7 +311,7 @@ showFeatureSupport
     mocha.checkLeaks();
     TestSuite.init();
     addEventListener('load', handleLoad);
-    var webWorkerFeatureNames;
+    var webWorkerFeatureObj;
     var waitCount = initWorker();
 }
 )();
