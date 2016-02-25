@@ -5,6 +5,13 @@
 var assert = require('assert');
 var cli = require('../tools/cli.js');
 
+var isInteger =
+    Number.isInteger ||
+    function (value)
+    {
+        return Number.isFinite(value) && Math.floor(value) === value;
+    };
+
 describe(
     'parseCommandLine returns expected results with params',
     function ()
@@ -313,7 +320,7 @@ describe(
                         }
                     );
                 assert(callbackCalled);
-                assert(Number.isInteger(actual) && actual >= 0);
+                assert(isInteger(actual) && actual >= 0);
             }
         );
     }
