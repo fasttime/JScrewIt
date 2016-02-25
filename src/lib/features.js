@@ -2,7 +2,9 @@
 global
 Audio,
 Empty,
+Node,
 assignNoEnum,
+console,
 create,
 defineProperty,
 document,
@@ -352,6 +354,17 @@ var validMaskFromArrayOrStringOrFeature;
                 return available;
             }
         },
+        CONSOLE:
+        {
+            description:
+                'Existence of the global object property console having the string ' +
+                'representation "[object Console]".',
+            check: function ()
+            {
+                return typeof console === 'object' && console + '' === '[object Console]';
+            },
+            attributes: { 'web-worker': 'no-console-in-web-worker' }
+        },
         DOCUMENT:
         {
             description:
@@ -557,6 +570,18 @@ var validMaskFromArrayOrStringOrFeature;
                 return 'name' in Function();
             }
         },
+        NODECONSTRUCTOR:
+        {
+            description:
+                'Existence of the global object property Node having the string representation ' +
+                '"[object NodeConstructor]".',
+            check: function ()
+            {
+                return typeof Node !== 'undefined' && Node + '' === '[object NodeConstructor]';
+            },
+            excludes: ['IE_SRC'],
+            attributes: { 'web-worker': 'web-worker-restriction' }
+        },
         NO_IE_SRC:
         {
             description:
@@ -664,6 +689,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
+                'CONSOLE',
                 'ENTRIES_OBJ',
                 'ESC_HTML_QUOT_ONLY',
                 'FILL',
@@ -677,7 +703,13 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'WINDOW'
             ],
-            attributes: { 'safari-bug-21820506': null, 'web-worker-restriction': null }
+            attributes:
+            {
+                'no-atob-in-web-worker': null,
+                'no-console-in-web-worker': null,
+                'safari-bug-21820506': null,
+                'web-worker-restriction': null
+            }
         },
         ANDRO400:
         {
@@ -685,6 +717,7 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'CONSOLE',
                 'DOMWINDOW',
                 'ESC_HTML_ALL',
                 'GMT',
@@ -701,6 +734,7 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ATOB',
+                'CONSOLE',
                 'DOMWINDOW',
                 'ESC_HTML_ALL',
                 'GMT',
@@ -719,6 +753,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
+                'CONSOLE',
                 'ESC_HTML_ALL',
                 'GMT',
                 'HISTORY',
@@ -732,7 +767,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
                 'WINDOW'
             ],
-            attributes: { 'web-worker-restriction': null }
+            attributes: { 'no-console-in-web-worker': null, 'web-worker-restriction': null }
         },
         CHROME: 'CHROME45',
         CHROME45:
@@ -743,6 +778,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ARROW',
                 'ATOB',
                 'BARPROP',
+                'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
                 'FILL',
                 'FROM_CODE_POINT',
@@ -759,7 +795,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
                 'WINDOW'
             ],
-            attributes: { 'web-worker-restriction': null }
+            attributes: { 'no-console-in-web-worker': null, 'web-worker-restriction': null }
         },
         EDGE:
         {
@@ -769,6 +805,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ARROW',
                 'ATOB',
                 'BARPROP',
+                'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
                 'ENTRIES_PLAIN',
                 'FILL',
@@ -795,6 +832,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ARROW',
                 'ATOB',
                 'BARPROP',
+                'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
                 'FF_SAFARI_SRC',
                 'FILL',
@@ -833,6 +871,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'CAPITAL_HTML',
+                'CONSOLE',
                 'DOCUMENT',
                 'HISTORY',
                 'IE_SRC',
@@ -849,6 +888,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'CAPITAL_HTML',
+                'CONSOLE',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -867,6 +907,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'CAPITAL_HTML',
+                'CONSOLE',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -934,16 +975,23 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
+                'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
                 'FF_SAFARI_SRC',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
+                'NODECONSTRUCTOR',
                 'UNDEFINED',
                 'WINDOW'
             ],
-            attributes: { 'no-atob-in-web-worker': null, 'web-worker-restriction': null }
+            attributes:
+            {
+                'no-atob-in-web-worker': null,
+                'no-console-in-web-worker': null,
+                'web-worker-restriction': null
+            }
         },
         SAFARI71:
         {
@@ -953,6 +1001,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ARRAY_ITERATOR',
                 'ATOB',
                 'BARPROP',
+                'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
                 'FF_SAFARI_SRC',
                 'FILL',
@@ -960,9 +1009,11 @@ var validMaskFromArrayOrStringOrFeature;
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
+                'NODECONSTRUCTOR',
                 'UNDEFINED',
                 'WINDOW'
             ],
+            // TODO: Check attribute 'no-console-in-web-worker'.
             attributes: { 'no-atob-in-web-worker': null, 'web-worker-restriction': null }
         },
         SAFARI80:
@@ -973,6 +1024,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ARRAY_ITERATOR',
                 'ATOB',
                 'BARPROP',
+                'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
                 'FF_SAFARI_SRC',
                 'FILL',
@@ -980,6 +1032,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
+                'NODECONSTRUCTOR',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -997,6 +1050,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
+                'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
                 'FF_SAFARI_SRC',
                 'FILL',
@@ -1005,6 +1059,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
+                'NODECONSTRUCTOR',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
