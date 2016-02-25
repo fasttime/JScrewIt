@@ -667,7 +667,12 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'WINDOW'
             ],
-            attributes: { 'safari-bug-21820506': null, 'web-worker-restriction': null }
+            attributes:
+            {
+                'no-atob-in-web-worker': null,
+                'safari-bug-21820506': null,
+                'web-worker-restriction': null
+            }
         },
         ANDRO400:
         {

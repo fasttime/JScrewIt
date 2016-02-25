@@ -198,13 +198,19 @@ self
             function ()
             {
                 testConstant('Array', isExpected(Array));
+                testConstant(
+                    'Audio',
+                    function ()
+                    {
+                        this.toMatch(/^function HTMLAudioElement/);
+                    }
+                );
                 testConstant('Boolean', isExpected(Boolean));
                 testConstant('Date', isExpected(Date));
                 testConstant('Function', isExpected(Function));
                 testConstant('Number', isExpected(Number));
                 testConstant('RegExp', isExpected(RegExp));
                 testConstant('String', isExpected(String));
-                
                 testConstant(
                     'atob',
                     function ()
