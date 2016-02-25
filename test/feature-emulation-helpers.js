@@ -496,6 +496,18 @@
                 return result;
             }
         ),
+        CONSOLE:
+        {
+            setUp: function ()
+            {
+                var toString =
+                    function ()
+                    {
+                        return '[object Console]';
+                    };
+                override(this, 'console.toString', { value: toString });
+            }
+        },
         DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object Document]$/),
         DOMWINDOW: makeEmuFeatureSelf('[object DOMWindow]', /^\[object DOMWindow]$/),
         ENTRIES_OBJ: makeEmuFeatureEntries('[object Object]', /^\[object /),
@@ -629,6 +641,20 @@
                         return result;
                     };
                 override(this, 'Function.prototype.name', { get: get });
+            }
+        },
+        NODECONSTRUCTOR:
+        {
+            setUp: function ()
+            {
+                if (!global.Node)
+                    override(this, 'Node', { value: { } });
+                var toString =
+                    function ()
+                    {
+                        return '[object NodeConstructor]';
+                    };
+                override(this, 'Node.toString', { value: toString });
             }
         },
         NO_IE_SRC: makeEmuFeatureFunctionSource('function ?() { [native code] }', true),
