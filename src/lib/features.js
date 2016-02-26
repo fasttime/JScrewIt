@@ -18,7 +18,7 @@ maskNew,
 maskOr,
 maskUnion,
 self,
-toolbar
+statusbar
 */
 
 var Feature;
@@ -326,11 +326,11 @@ var validMaskFromArrayOrStringOrFeature;
         BARPROP:
         {
             description:
-                'Existence of the global object property toolbar having the string ' +
+                'Existence of the global object property statusbar having the string ' +
                 'representation "[object BarProp]"',
             check: function ()
             {
-                return typeof toolbar === 'object' && toolbar + '' === '[object BarProp]';
+                return typeof statusbar === 'object' && statusbar + '' === '[object BarProp]';
             },
             attributes: { 'web-worker': 'web-worker-restriction' }
         },
