@@ -721,7 +721,7 @@ var replaceDigit;
             define('btoa(""["italics"]())[0]', 'ATOB'),
             define('btoa(""["sub"]())[0]', 'ATOB'),
             define('(RP_3_NO + btoa("falseO"))["10"]', 'ATOB'),
-            define('(Function("return toolbar")() + [])["11"]', 'BARPROP'),
+            define('(Function("return statusbar")() + [])["11"]', 'BARPROP'),
             define('"0"["sup"]()["10"]', 'CAPITAL_HTML'),
             define()
         ],

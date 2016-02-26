@@ -40,7 +40,7 @@ _Available in Firefox, Chrome, Internet Explorer 10+, Safari, Opera, Microsoft E
 All features available in the current engine.
 <a name="BARPROP"></a>
 ### `BARPROP`
-Existence of the global object property toolbar having the string representation "\[object BarProp\]"
+Existence of the global object property statusbar having the string representation "\[object BarProp\]"
 
 _Available in Firefox, Chrome, Safari, Opera, Microsoft Edge and Android Browser 4.4.2+. This feature is not available inside web workers._
 <a name="CAPITAL_HTML"></a>
