@@ -1,6 +1,7 @@
 /*
 global
 EMU_FEATURES,
+Audio,
 atob,
 btoa,
 document,
@@ -202,7 +203,7 @@ self
                     'Audio',
                     function ()
                     {
-                        this.toMatch(/^function HTMLAudioElement/);
+                        this.toBe(Audio);
                     }
                 );
                 testConstant('Boolean', isExpected(Boolean));
