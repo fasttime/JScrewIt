@@ -640,7 +640,9 @@ var replaceDigit;
             define('escape(""["italics"]())[2]'),
             define('escape(""["sub"]())[2]'),
             define('atob("00NaNfalse")[1]', 'ATOB'),
-            define('(RP_4_N + ""["fontcolor"]())["10"]', 'CAPITAL_HTML')
+            define('(RP_4_N + ""["fontcolor"]())["10"]', 'CAPITAL_HTML'),
+            define('(RP_3_NO + Function("return console")())["11"]', 'CONSOLE'),
+            define('(Node + [])["12"]', 'NODECONSTRUCTOR')
         ],
         'D':
         [
@@ -838,6 +840,7 @@ var replaceDigit;
         [
             define('(PLAIN_OBJECT + [])["10"]'),
             define('(ARRAY_ITERATOR + [])[3]', 'ENTRIES_OBJ'),
+            define('(Node + [])[3]', 'NODECONSTRUCTOR'),
             define('(self + [])[3]', 'SELF_OBJ')
         ],
         'k':
@@ -1044,6 +1047,10 @@ var replaceDigit;
         Function:
         [
             define('ANY_FUNCTION["constructor"]')
+        ],
+        Node:
+        [
+            define('Function("return Node")()', 'NODECONSTRUCTOR')
         ],
         Number:
         [
