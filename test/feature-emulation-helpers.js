@@ -454,12 +454,12 @@
                         return '[object BarProp]';
                     };
                 // In Android Browser versions prior to 4.4, Object.defineProperty doesn't replace
-                // the toolbar correctly despite the configurable attribute set.
+                // the statusbar correctly despite the configurable attribute set.
                 // As a workaround, we'll simply set a custom toString function.
-                if (global.toolbar)
-                    override(this, 'toolbar.toString', { value: toString });
+                if (global.statusbar)
+                    override(this, 'statusbar.toString', { value: toString });
                 else
-                    override(this, 'toolbar', { value: { toString: toString } });
+                    override(this, 'statusbar', { value: { toString: toString } });
             }
         },
         CAPITAL_HTML: makeEmuFeatureHtml(
