@@ -1,6 +1,8 @@
 /*
 global
 EMU_FEATURES,
+Audio,
+Node,
 atob,
 btoa,
 document,
@@ -202,12 +204,19 @@ self
                     'Audio',
                     function ()
                     {
-                        this.toMatch(/^function HTMLAudioElement/);
+                        this.toBe(Audio);
                     }
                 );
                 testConstant('Boolean', isExpected(Boolean));
                 testConstant('Date', isExpected(Date));
                 testConstant('Function', isExpected(Function));
+                testConstant(
+                    'Node',
+                    function ()
+                    {
+                        this.toBe(Node);
+                    }
+                );
                 testConstant('Number', isExpected(Number));
                 testConstant('RegExp', isExpected(RegExp));
                 testConstant('String', isExpected(String));
