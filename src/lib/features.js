@@ -1013,29 +1013,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'WINDOW'
             ],
-            // TODO: Check attribute 'no-console-in-web-worker'.
-            attributes: { 'no-atob-in-web-worker': null, 'web-worker-restriction': null }
-        },
-        SAFARI80:
-        {
-            description: 'Features available in Safari 8.0 or later.',
-            includes:
-            [
-                'ARRAY_ITERATOR',
-                'ATOB',
-                'BARPROP',
-                'CONSOLE',
-                'ESC_HTML_QUOT_ONLY',
-                'FF_SAFARI_SRC',
-                'FILL',
-                'GMT',
-                'HISTORY',
-                'HTMLDOCUMENT',
-                'NAME',
-                'NODECONSTRUCTOR',
-                'UNDEFINED',
-                'WINDOW'
-            ],
             attributes:
             {
                 'no-atob-in-web-worker': null,
@@ -1043,6 +1020,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'web-worker-restriction': null
             }
         },
+        SAFARI80: 'SAFARI71',
         SAFARI90:
         {
             description: 'Features available in Safari 9.0 or later.',
