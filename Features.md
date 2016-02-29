@@ -209,7 +209,7 @@ Features available in Safari 7.0 or later.
 Features available in Safari 7.1 or later.
 <a name="SAFARI80"></a>
 ### `SAFARI80`
-Features available in Safari 8.0 or later.
+_An alias for [`SAFARI71`](#SAFARI71)._
 <a name="SAFARI90"></a>
 ### `SAFARI90`
 Features available in Safari 9.0 or later.
@@ -220,7 +220,7 @@ _An alias for [`ANY_WINDOW`](#ANY_WINDOW)._
 ### `SELF_OBJ`
 Existence of the global object property self whose string representation starts with "\[object ".
 
-_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers in Safari 8.0+._
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers in Safari 7.1+._
 <a name="UNDEFINED"></a>
 ### `UNDEFINED`
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
