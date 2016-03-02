@@ -358,7 +358,9 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the global object property console having the string ' +
-                'representation "[object Console]".',
+                'representation "[object Console]".\n' +
+                'This feature may become unavailable when Firebug or Firebug Lite is open and ' +
+                'the console panel is enabled.',
             check: function ()
             {
                 return typeof console === 'object' && console + '' === '[object Console]';
