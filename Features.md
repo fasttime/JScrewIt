@@ -61,6 +61,7 @@ No support for Node.js and older browsers like Internet Explorer, Safari 8 or An
 <a name="CONSOLE"></a>
 ### `CONSOLE`
 Existence of the global object property console having the string representation "\[object Console\]".
+This feature may become unavailable when Firebug or Firebug Lite is open and the console panel is enabled.
 
 _Available in Firefox, Chrome, Internet Explorer 10+, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers in Chrome, Safari before 7.1+, Opera and Android Browser 4.4.2+._
 <a name="DEFAULT"></a>
