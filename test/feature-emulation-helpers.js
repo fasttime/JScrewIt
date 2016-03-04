@@ -679,6 +679,7 @@
                 );
             }
         },
+        NO_V8_SRC: makeEmuFeatureFunctionSource('function ?() {\n    [native code] }', true),
         SELF_OBJ: makeEmuFeatureSelf('[object Object]', /^\[object /),
         UNDEFINED:
         {
