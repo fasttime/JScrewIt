@@ -116,6 +116,7 @@ var replaceDigit;
     [
         define({ blocks: FB_PADDINGS, shift: 0 }),
         define({ blocks: FB_NO_IE_PADDINGS, shift: 0 }, 'NO_IE_SRC'),
+        define(null, 'NO_V8_SRC'),
         define({ blocks: R_PADDINGS, shift: 0 }, 'V8_SRC'),
         define({ blocks: R_PADDINGS, shift: 4 }, 'FF_SAFARI_SRC'),
         define({ blocks: R_PADDINGS, shift: 5 }, 'IE_SRC')
@@ -225,6 +226,7 @@ var replaceDigit;
                 paddingEntries =
                 [
                     define(12),
+                    define({ block: 'RP_2_SO', indexer: '2 + FH_SHIFT_1' }, 'NO_V8_SRC'),
                     define(3, 'V8_SRC'),
                     define(0, 'FF_SAFARI_SRC'),
                     define(0, 'IE_SRC')
@@ -235,7 +237,7 @@ var replaceDigit;
                 paddingEntries =
                 [
                     define(10),
-                    define(10, 'NO_IE_SRC'),
+                    define({ block: 'RP_0_S', indexer: index / 10 + ' + FH_SHIFT_1' }, 'NO_V8_SRC'),
                     define(0, 'V8_SRC'),
                     define(6, 'FF_SAFARI_SRC'),
                     define(5, 'IE_SRC')
@@ -245,6 +247,7 @@ var replaceDigit;
                 paddingEntries =
                 [
                     define(7),
+                    define({ block: 'RP_7_SO', indexer: '3 + FH_SHIFT_1' }, 'NO_V8_SRC'),
                     define(0, 'V8_SRC'),
                     define(3, 'FF_SAFARI_SRC'),
                     define(3, 'IE_SRC')
@@ -255,6 +258,7 @@ var replaceDigit;
                 [
                     define(7),
                     define(5, 'NO_IE_SRC'),
+                    define({ block: 'RP_5_N', indexer: '3 + FH_SHIFT_1' }, 'NO_V8_SRC'),
                     define(1, 'FF_SAFARI_SRC'),
                     define(0, 'IE_SRC')
                 ];
@@ -264,6 +268,7 @@ var replaceDigit;
                 [
                     define(8),
                     define(9, 'NO_IE_SRC'),
+                    define({ block: 'RP_0_S', indexer: '3 + FH_SHIFT_3' }, 'NO_V8_SRC'),
                     define(0, 'V8_SRC'),
                     define(4, 'FF_SAFARI_SRC'),
                     define(3, 'IE_SRC')
@@ -274,6 +279,7 @@ var replaceDigit;
                 [
                     define(7),
                     define(9, 'NO_IE_SRC'),
+                    define({ block: 'RP_6_SO', indexer: '4 + FH_SHIFT_1' }, 'NO_V8_SRC'),
                     define(6, 'V8_SRC'),
                     define(3, 'FF_SAFARI_SRC'),
                     define(1, 'IE_SRC')
@@ -524,10 +530,10 @@ var replaceDigit;
         '\n':
         [
             define('(Function() + [])["23"]'),
-            define('(Function() + [])["22"]', 'NO_OLD_SAFARI_LF'),
             define('(RP_1_NO + FILTER)["20"]', 'FF_SAFARI_SRC'),
-            define('(RP_3_NO + FILL)["20"]', 'FF_SAFARI_SRC', 'FILL'),
-            define('(ANY_FUNCTION + [])[0]', 'IE_SRC')
+            define('(ANY_FUNCTION + [])[0]', 'IE_SRC'),
+            define('(Function() + [])["22"]', 'NO_OLD_SAFARI_LF'),
+            define('(RP_3_NO + FILL)["20"]', 'FF_SAFARI_SRC', 'FILL')
         ],
         
         '\x1e':
@@ -541,8 +547,8 @@ var replaceDigit;
             define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ENTRIES_OBJ'),
             define('(FILTER + [])["20"]', 'FF_SAFARI_SRC'),
             define('(RP_1_NO + FILTER)["20"]', 'V8_SRC'),
-            define('(RP_5_N + FILL)["20"]', 'NO_IE_SRC', 'FILL'),
-            define('(FILL + [])["20"]', 'FF_SAFARI_SRC', 'FILL')
+            define('(RP_5_N + FILL)["20"]', 'FILL', 'NO_IE_SRC'),
+            define('(FILL + [])["20"]', 'FILL', 'NO_V8_SRC')
         ],
         // '!':    ,
         '"':
@@ -554,9 +560,10 @@ var replaceDigit;
         '%':
         [
             define('escape(FILTER)["20"]'),
+            define('atob("000l")[2]', 'ATOB'),
             define('escape(ANY_FUNCTION)[0]', 'IE_SRC'),
-            define('escape(false + FILL)["20"]', 'NO_IE_SRC', 'FILL'),
-            define('atob("000l")[2]', 'ATOB')
+            define('escape(false + FILL)["20"]', 'FILL', 'NO_IE_SRC'),
+            define('escape(FILL)["21"]', 'FILL', 'NO_V8_SRC')
         ],
         '&':
         [
@@ -1159,6 +1166,10 @@ var replaceDigit;
         [
             define('[+!!(+(ANY_FUNCTION + [])[0] + true)]')
         ],
+        FH_SHIFT_3:
+        [
+            define('[+!!(+(ANY_FUNCTION + [])[0] + true) + true + true]')
+        ],
         
         // Function header padding blocks: prepended to a function to align the function's header
         // at the same position on different browsers.
@@ -1192,11 +1203,14 @@ var replaceDigit;
         // constant should be placed in the beginning whenever possible in order to save an extra
         // pair of brackets in the resolved expressions.
         
+        RP_0_S:         '[]',
         RP_1_NO:        '0',
+        RP_2_SO:        '"00"',
         RP_3_NO:        'NaN',
         RP_4_N:         'true',
         RP_5_N:         'false',
         RP_6_SO:        '"0false"',
+        RP_7_SO:        '"NaNtrue"',
         RP_9_U:         'undefined',
     });
     

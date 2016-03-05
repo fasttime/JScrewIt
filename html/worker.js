@@ -1,0 +1,1 @@
+importScripts("../lib/jscrewit.min.js"),self.onmessage=function(a){"use strict";var b=a.data,c=b.input,d=b.options,e={};try{e.output=JScrewIt.encode(c,d)}catch(f){e.error=f+""}postMessage(e)};
