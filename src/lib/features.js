@@ -430,16 +430,6 @@ var validMaskFromArrayOrStringOrFeature;
             excludes: ['ESC_HTML_ALL'],
             includes: ['ESC_HTML_QUOT']
         },
-        FF_SAFARI_SRC:
-        {
-            description:
-                'A string representation of native functions typically found in Firefox and ' +
-                'Safari.\n' +
-                'Remarkable traits are the lack of characters in the beginning of the string ' +
-                'before "function" and a line feed with four whitespaces ("\\n    ") before the ' +
-                '"[native code]" sequence.',
-            includes: ['NO_IE_SRC', 'NO_V8_SRC']
-        },
         FILL:
         {
             description: 'Existence of the native function Array.prototype.fill.',
@@ -800,7 +790,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'ATOB',
                 'BARPROP',
                 'ESC_HTML_QUOT_ONLY',
-                'FF_SAFARI_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -809,8 +798,10 @@ var validMaskFromArrayOrStringOrFeature;
                 'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
+                'NO_IE_SRC',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',
+                'NO_V8_SRC',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -939,11 +930,12 @@ var validMaskFromArrayOrStringOrFeature;
                 'ATOB',
                 'BARPROP',
                 'ESC_HTML_QUOT_ONLY',
-                'FF_SAFARI_SRC',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
+                'NO_IE_SRC',
+                'NO_V8_SRC',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -958,12 +950,13 @@ var validMaskFromArrayOrStringOrFeature;
                 'ATOB',
                 'BARPROP',
                 'ESC_HTML_QUOT_ONLY',
-                'FF_SAFARI_SRC',
                 'FILL',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
+                'NO_IE_SRC',
+                'NO_V8_SRC',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -983,15 +976,16 @@ var validMaskFromArrayOrStringOrFeature;
                 'ATOB',
                 'BARPROP',
                 'ESC_HTML_QUOT_ONLY',
-                'FF_SAFARI_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'NAME',
+                'NO_IE_SRC',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',
+                'NO_V8_SRC',
                 'UNDEFINED',
                 'WINDOW'
             ],
