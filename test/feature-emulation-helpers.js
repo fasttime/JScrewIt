@@ -223,33 +223,20 @@
         return result;
     }
     
-    function makeEmuFeatureFunctionSource(format, noOverwrite)
+    function makeEmuFeatureFunctionSource(regExp, replacement)
     {
         var result =
         {
             setUp: function ()
             {
-                if (!this.Function || !noOverwrite)
-                {
-                    var context = this;
-                    registerToStringAdapter(
-                        this,
-                        'Function',
-                        function ()
-                        {
-                            var regExp =
-                                /^\s*function ([\w\$]+)\(\)\s*\{\s*\[native code]\s*\}\s*$/;
-                            var str = context.Function.toString.call(this);
-                            var match = regExp.exec(str);
-                            if (match)
-                            {
-                                var name = match[1];
-                                var result = format.replace('?', name);
-                                return result;
-                            }
-                        }
-                    );
-                }
+                var oldToString = Function.toString;
+                var newToString =
+                    function ()
+                    {
+                        var str = oldToString.call(this).replace(regExp, replacement);
+                        return str;
+                    };
+                override(this, 'Function.prototype.toString', { value: newToString });
             }
         };
         return result;
@@ -536,7 +523,6 @@
             },
             /&quot;<>/
         ),
-        FF_SAFARI_SRC: makeEmuFeatureFunctionSource('function ?() {\n    [native code]\n}'),
         FILL:
         {
             setUp: function ()
@@ -596,7 +582,10 @@
             }
         },
         HTMLDOCUMENT: makeEmuFeatureDocument('[object HTMLDocument]', /^\[object HTMLDocument]$/),
-        IE_SRC: makeEmuFeatureFunctionSource('\nfunction ?() {\n    [native code]\n}\n'),
+        IE_SRC: makeEmuFeatureFunctionSource(
+            /^(.*)\{\s+\[native code\]\s+\}$/,
+            '\n$1{\n    [native code]\n}'
+        ),
         INTL:
         {
             setUp: function ()
@@ -657,7 +646,7 @@
                 override(this, 'Node.toString', { value: toString });
             }
         },
-        NO_IE_SRC: makeEmuFeatureFunctionSource('function ?() { [native code] }', true),
+        NO_IE_SRC: makeEmuFeatureFunctionSource(/^\n/, ''),
         NO_OLD_SAFARI_ARRAY_ITERATOR: makeEmuFeatureEntries(
             '[object Array Iterator]',
             /^\[object Array Iterator]$/
@@ -679,7 +668,10 @@
                 );
             }
         },
-        NO_V8_SRC: makeEmuFeatureFunctionSource('function ?() {\n    [native code] }', true),
+        NO_V8_SRC: makeEmuFeatureFunctionSource(
+            /\{ \[native code\] \}$/,
+            '{\n    [native code]\n}'
+        ),
         SELF_OBJ: makeEmuFeatureSelf('[object Object]', /^\[object /),
         UNDEFINED:
         {
@@ -696,7 +688,10 @@
                 );
             }
         },
-        V8_SRC: makeEmuFeatureFunctionSource('function ?() { [native code] }'),
+        V8_SRC: makeEmuFeatureFunctionSource(
+            /^\n?(.*)\{\n    \[native code\]\n\}$/,
+            '$1{ [native code] }'
+        ),
         WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object Window]$/)
     };
     
