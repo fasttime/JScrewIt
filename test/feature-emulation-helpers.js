@@ -229,7 +229,7 @@
         {
             setUp: function ()
             {
-                var oldToString = Function.toString;
+                var oldToString = Function.prototype.toString;
                 var newToString =
                     function ()
                     {

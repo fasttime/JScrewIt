@@ -82,7 +82,7 @@ function repeatToFit(str, length)
 module.exports =
 [
     data(
-        ['CAPITAL_HTML', 'ENTRIES_OBJ', 'FF_SAFARI_SRC', 'FILL', 'FROM_CODE_POINT'],
+        ['CAPITAL_HTML', 'ENTRIES_OBJ', 'FILL', 'FROM_CODE_POINT', 'NO_IE_SRC', 'NO_V8_SRC'],
         repeat.bind(null, String.fromCharCode(59999)),
         'byCharCodes'
     ),
@@ -101,7 +101,7 @@ module.exports =
         'byCharCodesRadix4'
     ),
     data(
-        ['ARRAY_ITERATOR', 'ATOB', 'FF_SAFARI_SRC', 'FILL'],
+        ['ARRAY_ITERATOR', 'ATOB', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
         repeat.bind(null, String.fromCharCode(59999)),
         'byDict'
     ),
