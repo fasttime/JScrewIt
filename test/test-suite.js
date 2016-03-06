@@ -22,6 +22,12 @@ self
     function decodeEntry(entry)
     {
         var featureObj = getEntryFeature(entry);
+        var output = decodeEntryWithFeature(entry, featureObj);
+        return output;
+    }
+    
+    function decodeEntryWithFeature(entry, featureObj)
+    {
         var key = featureObj.canonicalNames.join('+');
         var encoder = encoderCache[key];
         if (!encoder)
@@ -1924,6 +1930,45 @@ self
                                             {
                                                 var output = decodeEntry(entry);
                                                 verifyOutput(output, emuFeatures);
+                                                if (entry.definition.FB)
+                                                {
+                                                    [
+                                                        [],
+                                                        ['IE_SRC'],
+                                                        ['V8_SRC'],
+                                                        ['NO_IE_SRC'],
+                                                        ['NO_V8_SRC'],
+                                                        ['NO_IE_SRC', 'NO_V8_SRC'],
+                                                        ['FILL'],
+                                                        ['FILL', 'IE_SRC'],
+                                                        ['FILL', 'V8_SRC'],
+                                                        ['FILL', 'NO_IE_SRC'],
+                                                        ['FILL', 'NO_V8_SRC'],
+                                                        ['FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
+                                                    ].forEach(
+                                                        function (additionalFeatureNames)
+                                                        {
+                                                            var augmentedFeatureObj =
+                                                                Feature(
+                                                                    featureObj,
+                                                                    additionalFeatureNames
+                                                                );
+                                                            var emuFeatures =
+                                                                getEmuFeatureNames(
+                                                                    augmentedFeatureObj
+                                                                );
+                                                            if (emuFeatures)
+                                                            {
+                                                                var output =
+                                                                    decodeEntryWithFeature(
+                                                                        entry,
+                                                                        augmentedFeatureObj
+                                                                    );
+                                                                verifyOutput(output, emuFeatures);
+                                                            }
+                                                        }
+                                                    );
+                                                }
                                             }
                                         );
                                     }

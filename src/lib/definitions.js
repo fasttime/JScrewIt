@@ -293,6 +293,7 @@ var replaceDigit;
             return solution;
         }
         
+        definition.FB = true;
         return definition;
     }
     
