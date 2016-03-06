@@ -1255,9 +1255,10 @@ var replaceDigit;
     [
         define(createParseIntArgByReduce),
         define(createParseIntArgDefault, 'CAPITAL_HTML', 'ENTRIES_OBJ'),
+        define(createParseIntArgByReduce, 'CAPITAL_HTML', 'ENTRIES_OBJ', 'FILL', 'NO_V8_SRC'),
         define(createParseIntArgByReduce, 'CAPITAL_HTML', 'ENTRIES_PLAIN'),
         define(createParseIntArgByReduce, 'CAPITAL_HTML', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-        define(createParseIntArgDefault, 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'NO_IE_SRC'),
+        define(createParseIntArgDefault, 'CAPITAL_HTML', 'ENTRIES_OBJ', 'NO_IE_SRC'),
         define(
             createParseIntArgDefault,
             'CAPITAL_HTML',
@@ -1267,19 +1268,21 @@ var replaceDigit;
         define(createParseIntArgByReduce, 'ENTRIES_PLAIN', 'FILL'),
         define(createParseIntArgByReduce, 'FILL', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduceArrow, 'ARROW'),
-        define(createParseIntArgByReduce, 'NO_IE_SRC', 'NO_V8_SRC'),
+        define(createParseIntArgByReduce, 'ARROW', 'NO_V8_SRC'),
         define(createParseIntArgByReduce, 'IE_SRC'),
         define(createParseIntArgByReduce, 'V8_SRC'),
+        define(createParseIntArgByReduce, 'NO_IE_SRC', 'NO_V8_SRC'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ'),
         define(createParseIntArgDefault, 'ARROW', 'CAPITAL_HTML', 'ENTRIES_OBJ', 'NO_IE_SRC'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_PLAIN'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'FILL'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-        define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'NO_IE_SRC', 'NO_V8_SRC'),
+        define(createParseIntArgByReduce, 'FILL', 'NO_V8_SRC'),
+        define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'NO_V8_SRC'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'V8_SRC'),
-        define(createParseIntArgByReduce, 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'),
         define(createParseIntArgByReduce, 'FILL', 'IE_SRC'),
-        define(createParseIntArgByReduce, 'FILL', 'V8_SRC')
+        define(createParseIntArgByReduce, 'FILL', 'V8_SRC'),
+        define(createParseIntArgByReduce, 'FILL', 'NO_IE_SRC', 'NO_V8_SRC')
     ];
     
     DEFAULT_CHARACTER_ENCODER =
