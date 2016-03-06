@@ -111,10 +111,6 @@ _An alias for [`FF31`](#FF31)._
 <a name="FF31"></a>
 ### `FF31`
 Features available in Firefox 31 or later.
-<a name="FF_SAFARI_SRC"></a>
-### `FF_SAFARI_SRC`
-A string representation of native functions typically found in Firefox and Safari.
-Remarkable traits are the lack of characters in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 <a name="FILL"></a>
 ### `FILL`
 Existence of the native function Array.prototype.fill.
