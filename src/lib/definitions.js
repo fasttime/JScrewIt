@@ -226,7 +226,7 @@ var replaceDigit;
                 paddingEntries =
                 [
                     define(12),
-                    define({ block: 'RP_2_SO', indexer: '2 + FH_SHIFT_1' }, 'NO_V8_SRC'),
+                    define({ block: 'RP_0_S', indexer: '2 + FH_SHIFT_3' }, 'NO_V8_SRC'),
                     define(3, 'V8_SRC'),
                     define(0, 'IE_SRC'),
                     define(0, 'NO_IE_SRC', 'NO_V8_SRC')
@@ -237,7 +237,10 @@ var replaceDigit;
                 paddingEntries =
                 [
                     define(10),
-                    define({ block: 'RP_0_S', indexer: index / 10 + ' + FH_SHIFT_1' }, 'NO_V8_SRC'),
+                    define(
+                        { block: 'RP_6_SO', indexer: 1 + index / 10 + ' + FH_SHIFT_1' },
+                        'NO_V8_SRC'
+                    ),
                     define(0, 'V8_SRC'),
                     define(5, 'IE_SRC'),
                     define(6, 'NO_IE_SRC', 'NO_V8_SRC')
@@ -247,7 +250,7 @@ var replaceDigit;
                 paddingEntries =
                 [
                     define(7),
-                    define({ block: 'RP_7_SO', indexer: '3 + FH_SHIFT_1' }, 'NO_V8_SRC'),
+                    define({ block: 'RP_3_NO', indexer: '3 + FH_SHIFT_1' }, 'NO_V8_SRC'),
                     define(0, 'V8_SRC'),
                     define(3, 'IE_SRC'),
                     define(3, 'NO_IE_SRC', 'NO_V8_SRC')
@@ -258,7 +261,7 @@ var replaceDigit;
                 [
                     define(7),
                     define(5, 'NO_IE_SRC'),
-                    define({ block: 'RP_5_N', indexer: '3 + FH_SHIFT_1' }, 'NO_V8_SRC'),
+                    define({ block: 'RP_1_NO', indexer: '3 + FH_SHIFT_1' }, 'NO_V8_SRC'),
                     define(0, 'IE_SRC'),
                     define(1, 'NO_IE_SRC', 'NO_V8_SRC')
                 ];
@@ -268,7 +271,7 @@ var replaceDigit;
                 [
                     define(8),
                     define(9, 'NO_IE_SRC'),
-                    define({ block: 'RP_0_S', indexer: '3 + FH_SHIFT_3' }, 'NO_V8_SRC'),
+                    define({ block: 'RP_4_N', indexer: '4 + FH_SHIFT_1' }, 'NO_V8_SRC'),
                     define(0, 'V8_SRC'),
                     define(3, 'IE_SRC'),
                     define(4, 'NO_IE_SRC', 'NO_V8_SRC')
@@ -279,7 +282,7 @@ var replaceDigit;
                 [
                     define(7),
                     define(9, 'NO_IE_SRC'),
-                    define({ block: 'RP_6_SO', indexer: '4 + FH_SHIFT_1' }, 'NO_V8_SRC'),
+                    define({ block: 'RP_2_SO', indexer: '4 + FH_SHIFT_1' }, 'NO_V8_SRC'),
                     define(6, 'V8_SRC'),
                     define(1, 'IE_SRC'),
                     define(3, 'NO_IE_SRC', 'NO_V8_SRC')
@@ -290,6 +293,7 @@ var replaceDigit;
             return solution;
         }
         
+        definition.FB = true;
         return definition;
     }
     
@@ -1015,7 +1019,9 @@ var replaceDigit;
         [
             define('Object["name"]', 'NAME'),
             define(undefined, 'CAPITAL_HTML', 'NO_IE_SRC', 'SELF_OBJ'),
-            define('Object["name"]', 'NAME', 'NO_IE_SRC', 'NO_V8_SRC'),
+            define(undefined, 'CAPITAL_HTML', 'FILL', 'NO_V8_SRC', 'SELF_OBJ'),
+            define('Object["name"]', 'CAPITAL_HTML', 'FILL', 'IE_SRC', 'NAME', 'SELF_OBJ'),
+            define('Object["name"]', 'NAME', 'NO_V8_SRC'),
             define('Object["name"]', 'INTL', 'NAME'),
             define('Object["name"]', 'NAME', 'V8_SRC'),
             define(undefined, 'ENTRIES_OBJ')
@@ -1210,8 +1216,6 @@ var replaceDigit;
         RP_4_N:         'true',
         RP_5_N:         'false',
         RP_6_SO:        '"0false"',
-        RP_7_SO:        '"NaNtrue"',
-        RP_9_U:         'undefined',
     });
     
     var createParseIntArgByReduce =
@@ -1262,9 +1266,10 @@ var replaceDigit;
     [
         define(createParseIntArgByReduce),
         define(createParseIntArgDefault, 'CAPITAL_HTML', 'ENTRIES_OBJ'),
+        define(createParseIntArgByReduce, 'CAPITAL_HTML', 'ENTRIES_OBJ', 'FILL', 'NO_V8_SRC'),
         define(createParseIntArgByReduce, 'CAPITAL_HTML', 'ENTRIES_PLAIN'),
         define(createParseIntArgByReduce, 'CAPITAL_HTML', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-        define(createParseIntArgDefault, 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'NO_IE_SRC'),
+        define(createParseIntArgDefault, 'CAPITAL_HTML', 'ENTRIES_OBJ', 'NO_IE_SRC'),
         define(
             createParseIntArgDefault,
             'CAPITAL_HTML',
@@ -1274,19 +1279,21 @@ var replaceDigit;
         define(createParseIntArgByReduce, 'ENTRIES_PLAIN', 'FILL'),
         define(createParseIntArgByReduce, 'FILL', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduceArrow, 'ARROW'),
-        define(createParseIntArgByReduce, 'NO_IE_SRC', 'NO_V8_SRC'),
+        define(createParseIntArgByReduce, 'ARROW', 'NO_V8_SRC'),
         define(createParseIntArgByReduce, 'IE_SRC'),
         define(createParseIntArgByReduce, 'V8_SRC'),
+        define(createParseIntArgByReduce, 'NO_IE_SRC', 'NO_V8_SRC'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ'),
         define(createParseIntArgDefault, 'ARROW', 'CAPITAL_HTML', 'ENTRIES_OBJ', 'NO_IE_SRC'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_PLAIN'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'FILL'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-        define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'NO_IE_SRC', 'NO_V8_SRC'),
+        define(createParseIntArgByReduce, 'FILL', 'NO_V8_SRC'),
+        define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'NO_V8_SRC'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'V8_SRC'),
-        define(createParseIntArgByReduce, 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'),
         define(createParseIntArgByReduce, 'FILL', 'IE_SRC'),
-        define(createParseIntArgByReduce, 'FILL', 'V8_SRC')
+        define(createParseIntArgByReduce, 'FILL', 'V8_SRC'),
+        define(createParseIntArgByReduce, 'FILL', 'NO_IE_SRC', 'NO_V8_SRC')
     ];
     
     DEFAULT_CHARACTER_ENCODER =
