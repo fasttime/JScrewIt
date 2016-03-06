@@ -118,8 +118,8 @@ var replaceDigit;
         define({ blocks: FB_NO_IE_PADDINGS, shift: 0 }, 'NO_IE_SRC'),
         define(null, 'NO_V8_SRC'),
         define({ blocks: R_PADDINGS, shift: 0 }, 'V8_SRC'),
-        define({ blocks: R_PADDINGS, shift: 4 }, 'FF_SAFARI_SRC'),
-        define({ blocks: R_PADDINGS, shift: 5 }, 'IE_SRC')
+        define({ blocks: R_PADDINGS, shift: 5 }, 'IE_SRC'),
+        define({ blocks: R_PADDINGS, shift: 4 }, 'NO_IE_SRC', 'NO_V8_SRC')
     ];
     
     var FH_PADDING_INFOS =
@@ -228,8 +228,8 @@ var replaceDigit;
                     define(12),
                     define({ block: 'RP_2_SO', indexer: '2 + FH_SHIFT_1' }, 'NO_V8_SRC'),
                     define(3, 'V8_SRC'),
-                    define(0, 'FF_SAFARI_SRC'),
-                    define(0, 'IE_SRC')
+                    define(0, 'IE_SRC'),
+                    define(0, 'NO_IE_SRC', 'NO_V8_SRC')
                 ];
                 break;
             case 20:
@@ -239,8 +239,8 @@ var replaceDigit;
                     define(10),
                     define({ block: 'RP_0_S', indexer: index / 10 + ' + FH_SHIFT_1' }, 'NO_V8_SRC'),
                     define(0, 'V8_SRC'),
-                    define(6, 'FF_SAFARI_SRC'),
-                    define(5, 'IE_SRC')
+                    define(5, 'IE_SRC'),
+                    define(6, 'NO_IE_SRC', 'NO_V8_SRC')
                 ];
                 break;
             case 23:
@@ -249,8 +249,8 @@ var replaceDigit;
                     define(7),
                     define({ block: 'RP_7_SO', indexer: '3 + FH_SHIFT_1' }, 'NO_V8_SRC'),
                     define(0, 'V8_SRC'),
-                    define(3, 'FF_SAFARI_SRC'),
-                    define(3, 'IE_SRC')
+                    define(3, 'IE_SRC'),
+                    define(3, 'NO_IE_SRC', 'NO_V8_SRC')
                 ];
                 break;
             case 25:
@@ -259,8 +259,8 @@ var replaceDigit;
                     define(7),
                     define(5, 'NO_IE_SRC'),
                     define({ block: 'RP_5_N', indexer: '3 + FH_SHIFT_1' }, 'NO_V8_SRC'),
-                    define(1, 'FF_SAFARI_SRC'),
-                    define(0, 'IE_SRC')
+                    define(0, 'IE_SRC'),
+                    define(1, 'NO_IE_SRC', 'NO_V8_SRC')
                 ];
                 break;
             case 32:
@@ -270,8 +270,8 @@ var replaceDigit;
                     define(9, 'NO_IE_SRC'),
                     define({ block: 'RP_0_S', indexer: '3 + FH_SHIFT_3' }, 'NO_V8_SRC'),
                     define(0, 'V8_SRC'),
-                    define(4, 'FF_SAFARI_SRC'),
-                    define(3, 'IE_SRC')
+                    define(3, 'IE_SRC'),
+                    define(4, 'NO_IE_SRC', 'NO_V8_SRC')
                 ];
                 break;
             case 34:
@@ -281,8 +281,8 @@ var replaceDigit;
                     define(9, 'NO_IE_SRC'),
                     define({ block: 'RP_6_SO', indexer: '4 + FH_SHIFT_1' }, 'NO_V8_SRC'),
                     define(6, 'V8_SRC'),
-                    define(3, 'FF_SAFARI_SRC'),
-                    define(1, 'IE_SRC')
+                    define(1, 'IE_SRC'),
+                    define(3, 'NO_IE_SRC', 'NO_V8_SRC')
                 ];
                 break;
             }
@@ -530,10 +530,10 @@ var replaceDigit;
         '\n':
         [
             define('(Function() + [])["23"]'),
-            define('(RP_1_NO + FILTER)["20"]', 'FF_SAFARI_SRC'),
             define('(ANY_FUNCTION + [])[0]', 'IE_SRC'),
             define('(Function() + [])["22"]', 'NO_OLD_SAFARI_LF'),
-            define('(RP_3_NO + FILL)["20"]', 'FF_SAFARI_SRC', 'FILL')
+            define('(RP_1_NO + FILTER)["20"]', 'NO_IE_SRC', 'NO_V8_SRC'),
+            define('(RP_3_NO + FILL)["20"]', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC')
         ],
         
         '\x1e':
@@ -545,10 +545,10 @@ var replaceDigit;
         [
             defineFHCharAt('ANY_FUNCTION', 8),
             define('(RP_3_NO + ARRAY_ITERATOR)["10"]', 'ENTRIES_OBJ'),
-            define('(FILTER + [])["20"]', 'FF_SAFARI_SRC'),
             define('(RP_1_NO + FILTER)["20"]', 'V8_SRC'),
             define('(RP_5_N + FILL)["20"]', 'FILL', 'NO_IE_SRC'),
-            define('(FILL + [])["20"]', 'FILL', 'NO_V8_SRC')
+            define('(FILL + [])["20"]', 'FILL', 'NO_V8_SRC'),
+            define('(FILTER + [])["20"]', 'NO_IE_SRC', 'NO_V8_SRC')
         ],
         // '!':    ,
         '"':
@@ -660,7 +660,7 @@ var replaceDigit;
             define('(document + [])["12"]', 'HTMLDOCUMENT'),
             define('escape(ARRAY_ITERATOR)["30"]', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
             define('escape(FILTER)["50"]', 'V8_SRC'),
-            define('escape(FILL)["60"]', 'FF_SAFARI_SRC', 'FILL')
+            define('escape(FILL)["60"]', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC')
         ],
         'E':
         [
@@ -1012,7 +1012,7 @@ var replaceDigit;
         [
             define('Object["name"]', 'NAME'),
             define(undefined, 'CAPITAL_HTML', 'NO_IE_SRC', 'SELF_OBJ'),
-            define('Object["name"]', 'FF_SAFARI_SRC', 'NAME'),
+            define('Object["name"]', 'NAME', 'NO_IE_SRC', 'NO_V8_SRC'),
             define('Object["name"]', 'INTL', 'NAME'),
             define('Object["name"]', 'NAME', 'V8_SRC'),
             define(undefined, 'ENTRIES_OBJ')
@@ -1267,7 +1267,7 @@ var replaceDigit;
         define(createParseIntArgByReduce, 'ENTRIES_PLAIN', 'FILL'),
         define(createParseIntArgByReduce, 'FILL', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduceArrow, 'ARROW'),
-        define(createParseIntArgByReduce, 'FF_SAFARI_SRC'),
+        define(createParseIntArgByReduce, 'NO_IE_SRC', 'NO_V8_SRC'),
         define(createParseIntArgByReduce, 'IE_SRC'),
         define(createParseIntArgByReduce, 'V8_SRC'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ'),
@@ -1275,9 +1275,9 @@ var replaceDigit;
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_PLAIN'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'FILL'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-        define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'FF_SAFARI_SRC'),
+        define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'NO_IE_SRC', 'NO_V8_SRC'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'V8_SRC'),
-        define(createParseIntArgByReduce, 'FILL', 'FF_SAFARI_SRC'),
+        define(createParseIntArgByReduce, 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'),
         define(createParseIntArgByReduce, 'FILL', 'IE_SRC'),
         define(createParseIntArgByReduce, 'FILL', 'V8_SRC')
     ];

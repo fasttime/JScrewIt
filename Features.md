@@ -58,12 +58,6 @@ Features available in Chrome 45 and Opera 32 or later.
 ### `COMPACT`
 All new browsers' features.
 No support for Node.js and older browsers like Internet Explorer, Safari 8 or Android Browser
-<a name="CONSOLE"></a>
-### `CONSOLE`
-Existence of the global object property console having the string representation "\[object Console\]".
-This feature may become unavailable when Firebug or Firebug Lite is open and the console panel is enabled.
-
-_Available in Firefox, Chrome, Internet Explorer 10+, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers in Chrome, Safari before 7.1+, Opera and Android Browser 4.4.2+._
 <a name="DEFAULT"></a>
 ### `DEFAULT`
 Minimun feature level, compatible with all supported engines.
@@ -111,10 +105,6 @@ _An alias for [`FF31`](#FF31)._
 <a name="FF31"></a>
 ### `FF31`
 Features available in Firefox 31 or later.
-<a name="FF_SAFARI_SRC"></a>
-### `FF_SAFARI_SRC`
-A string representation of native functions typically found in Firefox and Safari.
-Remarkable traits are the lack of characters in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 <a name="FILL"></a>
 ### `FILL`
 Existence of the native function Array.prototype.fill.
@@ -188,11 +178,6 @@ Features available in Node.js 0.12 or later.
 <a name="NODE40"></a>
 ### `NODE40`
 Features available in Node.js 4.0 or later.
-<a name="NODECONSTRUCTOR"></a>
-### `NODECONSTRUCTOR`
-Existence of the global object property Node having the string representation "\[object NodeConstructor\]".
-
-_Available in Safari. This feature is not available inside web workers._
 <a name="NO_IE_SRC"></a>
 ### `NO_IE_SRC`
 A string representation of native functions typical for most engines with the notable exception of Internet Explorer.
@@ -270,7 +255,6 @@ This table lists features available in the most common engines.
 <li><a href="#ARROW"><code>ARROW</code></a>
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
-<li><a href="#CONSOLE"><code>CONSOLE</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
@@ -302,7 +286,6 @@ This table lists features available in the most common engines.
 <li><a href="#ARROW"><code>ARROW</code></a>
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
-<li><a href="#CONSOLE"><code>CONSOLE</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
@@ -333,7 +316,6 @@ This table lists features available in the most common engines.
 <li><a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#ATOB"><code>ATOB</code></a> (Internet Explorer 10+)
 <li><a href="#CAPITAL_HTML"><code>CAPITAL_HTML</code></a>
-<li><a href="#CONSOLE"><code>CONSOLE</code></a> (Internet Explorer 10+)
 <li><a href="#DOCUMENT"><code>DOCUMENT</code></a> (not in Internet Explorer 11)
 <li><a href="#GMT"><code>GMT</code></a> (Internet Explorer 11)
 <li><a href="#HISTORY"><code>HISTORY</code></a>
@@ -358,7 +340,6 @@ This table lists features available in the most common engines.
 <li><a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
-<li><a href="#CONSOLE"><code>CONSOLE</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
@@ -368,7 +349,6 @@ This table lists features available in the most common engines.
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#NAME"><code>NAME</code></a>
-<li><a href="#NODECONSTRUCTOR"><code>NODECONSTRUCTOR</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a>
 <li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Safari 9.0+)
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a> (Safari 9.0+)
@@ -388,7 +368,6 @@ This table lists features available in the most common engines.
 <li><a href="#ARROW"><code>ARROW</code></a>
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
-<li><a href="#CONSOLE"><code>CONSOLE</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ENTRIES_PLAIN"><code>ENTRIES_PLAIN</code></a>)
 <li><a href="#ENTRIES_PLAIN"><code>ENTRIES_PLAIN</code></a>
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
@@ -418,7 +397,6 @@ This table lists features available in the most common engines.
 <li><a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="#DOMWINDOW"><code>DOMWINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a> (Android Browser 4.4.2+)
-<li><a href="#CONSOLE"><code>CONSOLE</code></a>
 <li><a href="#DOMWINDOW"><code>DOMWINDOW</code></a> (not in Android Browser 4.4.2+)
 <li><a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a>
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a>)
