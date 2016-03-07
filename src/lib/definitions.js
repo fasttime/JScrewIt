@@ -1018,10 +1018,10 @@ var replaceDigit;
         Object:
         [
             define('Object["name"]', 'NAME'),
+            define(undefined, 'CAPITAL_HTML', 'FILL', 'SELF_OBJ'),
             define(undefined, 'CAPITAL_HTML', 'NO_IE_SRC', 'SELF_OBJ'),
-            define(undefined, 'CAPITAL_HTML', 'FILL', 'NO_V8_SRC', 'SELF_OBJ'),
-            define('Object["name"]', 'CAPITAL_HTML', 'FILL', 'IE_SRC', 'NAME', 'SELF_OBJ'),
-            define('Object["name"]', 'NAME', 'NO_V8_SRC'),
+            define('Object["name"]', 'NAME', 'NO_IE_SRC', 'NO_V8_SRC'),
+            define('Object["name"]', 'IE_SRC', 'NAME'),
             define('Object["name"]', 'INTL', 'NAME'),
             define('Object["name"]', 'NAME', 'V8_SRC'),
             define(undefined, 'ENTRIES_OBJ')
@@ -1266,34 +1266,41 @@ var replaceDigit;
     [
         define(createParseIntArgByReduce),
         define(createParseIntArgDefault, 'CAPITAL_HTML', 'ENTRIES_OBJ'),
-        define(createParseIntArgByReduce, 'CAPITAL_HTML', 'ENTRIES_OBJ', 'FILL', 'NO_V8_SRC'),
-        define(createParseIntArgByReduce, 'CAPITAL_HTML', 'ENTRIES_PLAIN'),
-        define(createParseIntArgByReduce, 'CAPITAL_HTML', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
+        define(createParseIntArgByReduceArrow, 'ARROW'),
+        define(createParseIntArgByReduce, 'NO_V8_SRC'),
+        define(createParseIntArgDefault, 'CAPITAL_HTML', 'ENTRIES_OBJ', 'NO_V8_SRC'),
+        define(createParseIntArgByReduce, 'NO_IE_SRC', 'NO_V8_SRC'),
+        define(createParseIntArgByReduce, 'ENTRIES_PLAIN'),
+        define(createParseIntArgByReduce, 'IE_SRC'),
+        define(createParseIntArgByReduce, 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
+        define(createParseIntArgByReduce, 'V8_SRC'),
+        define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ'),
         define(createParseIntArgDefault, 'CAPITAL_HTML', 'ENTRIES_OBJ', 'NO_IE_SRC'),
         define(
-            createParseIntArgDefault,
+            createParseIntArgByReduce,
             'CAPITAL_HTML',
+            'ENTRIES_PLAIN',
+            'FILL',
+            'NO_IE_SRC'
+        ),
+        define(
+            createParseIntArgByReduce,
+            'CAPITAL_HTML',
+            'FILL',
             'NO_IE_SRC',
             'NO_OLD_SAFARI_ARRAY_ITERATOR'
         ),
-        define(createParseIntArgByReduce, 'ENTRIES_PLAIN', 'FILL'),
-        define(createParseIntArgByReduce, 'FILL', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
-        define(createParseIntArgByReduceArrow, 'ARROW'),
-        define(createParseIntArgByReduce, 'ARROW', 'NO_V8_SRC'),
-        define(createParseIntArgByReduce, 'IE_SRC'),
-        define(createParseIntArgByReduce, 'V8_SRC'),
-        define(createParseIntArgByReduce, 'NO_IE_SRC', 'NO_V8_SRC'),
-        define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ'),
-        define(createParseIntArgDefault, 'ARROW', 'CAPITAL_HTML', 'ENTRIES_OBJ', 'NO_IE_SRC'),
+        define(createParseIntArgByReduce, 'CAPITAL_HTML', 'ENTRIES_OBJ', 'NO_IE_SRC', 'NO_V8_SRC'),
+        define(createParseIntArgByReduce, 'CAPITAL_HTML', 'ENTRIES_OBJ', 'V8_SRC'),
+        define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'V8_SRC'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_PLAIN'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'FILL'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'NO_OLD_SAFARI_ARRAY_ITERATOR'),
         define(createParseIntArgByReduce, 'FILL', 'NO_V8_SRC'),
         define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'NO_V8_SRC'),
-        define(createParseIntArgByReduceArrow, 'ARROW', 'ENTRIES_OBJ', 'V8_SRC'),
+        define(createParseIntArgByReduce, 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'),
         define(createParseIntArgByReduce, 'FILL', 'IE_SRC'),
-        define(createParseIntArgByReduce, 'FILL', 'V8_SRC'),
-        define(createParseIntArgByReduce, 'FILL', 'NO_IE_SRC', 'NO_V8_SRC')
+        define(createParseIntArgByReduce, 'FILL', 'V8_SRC')
     ];
     
     DEFAULT_CHARACTER_ENCODER =
