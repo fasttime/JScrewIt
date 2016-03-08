@@ -212,6 +212,17 @@ var replaceDigit;
         return solution;
     }
     
+    function createDefaultCharDefinition(char)
+    {
+        function definition()
+        {
+            var solution = this.defaultResolveCharacter(char);
+            return solution;
+        }
+        
+        return definition;
+    }
+    
     function createFBCharAtDefinition(offset)
     {
         function definition()
@@ -295,6 +306,13 @@ var replaceDigit;
         
         definition.FB = true;
         return definition;
+    }
+    
+    function defineDefaultChar(char)
+    {
+        var definition = createDefaultCharDefinition(char);
+        var entry = define(definition);
+        return entry;
     }
     
     function defineFBCharAt(offset)
@@ -575,7 +593,7 @@ var replaceDigit;
             define('""["fontcolor"](""["sub"]())["20"]', 'ESC_HTML_ALL'),
             define('""["fontcolor"]("\\"")["13"]', 'ESC_HTML_QUOT'),
             define('""["fontcolor"](""["fontcolor"]([]))["31"]', 'ESC_HTML_QUOT_ONLY'),
-            define()
+            defineDefaultChar('&')
         ],
         // '\'':   ,
         '(':
@@ -606,7 +624,7 @@ var replaceDigit;
         ':':
         [
             define('(RegExp() + [])[3]'),
-            define()
+            defineDefaultChar(':')
         ],
         ';':
         [
@@ -614,7 +632,7 @@ var replaceDigit;
             define('""["fontcolor"](true + ""["sub"]())["20"]', 'ESC_HTML_ALL'),
             define('""["fontcolor"]("NaN\\"")["21"]', 'ESC_HTML_QUOT'),
             define('""["fontcolor"](""["fontcolor"]())["30"]', 'ESC_HTML_QUOT_ONLY'),
-            define()
+            defineDefaultChar(';')
         ],
         '<':
         [
@@ -633,7 +651,7 @@ var replaceDigit;
         '?':
         [
             define('(RegExp() + [])[2]'),
-            define()
+            defineDefaultChar('?')
         ],
         // '@':    ,
         'A':
@@ -697,7 +715,7 @@ var replaceDigit;
         [
             define('"j"["toUpperCase"]()'),
             define('btoa(true)[2]', 'ATOB'),
-            define()
+            defineDefaultChar('J')
         ],
         'K':
         [
@@ -732,13 +750,13 @@ var replaceDigit;
             define('(RP_3_NO + btoa("falseO"))["10"]', 'ATOB'),
             define('(Function("return statusbar")() + [])["11"]', 'BARPROP'),
             define('"0"["sup"]()["10"]', 'CAPITAL_HTML'),
-            define()
+            defineDefaultChar('P')
         ],
         'Q':
         [
             define('"q"["toUpperCase"]()'),
             define('btoa(1)[1]', 'ATOB'),
-            define()
+            defineDefaultChar('Q')
         ],
         'R':
         [
@@ -790,13 +808,13 @@ var replaceDigit;
         [
             define('"x"["toUpperCase"]()'),
             define('btoa("1true")[1]', 'ATOB'),
-            define()
+            defineDefaultChar('X')
         ],
         'Y':
         [
             define('"y"["toUpperCase"]()'),
             define('btoa("a")[0]', 'ATOB'),
-            define()
+            defineDefaultChar('Y')
         ],
         'Z':
         [
@@ -854,7 +872,7 @@ var replaceDigit;
         'k':
         [
             define('20["toString"]("21")'),
-            define()
+            defineDefaultChar('k')
         ],
         'l': '"false"[2]',
         'm':
@@ -877,7 +895,7 @@ var replaceDigit;
         'q':
         [
             define('212["toString"]("31")[1]'),
-            define()
+            defineDefaultChar('q')
         ],
         'r': '"true"[1]',
         's': '"false"[3]',
@@ -1001,7 +1019,7 @@ var replaceDigit;
         '∞':
         [
             define('Infinity["toLocaleString"]()', 'LOCALE_INFINITY'),
-            define()
+            defineDefaultChar('∞')
         ]
     });
     
@@ -1339,10 +1357,10 @@ var replaceDigit;
     createSolution =
         function (replacement, level, outerPlus)
         {
-            var result = Object(replacement);
-            result.level = level;
-            result.outerPlus = outerPlus;
-            return result;
+            var solution = Object(replacement);
+            solution.level = level;
+            solution.outerPlus = outerPlus;
+            return solution;
         };
     
     replaceDigit =

@@ -98,13 +98,6 @@ var resolveSimple;
         return range;
     }
     
-    function defaultResolveCharacter(char)
-    {
-        var defaultCharacterEncoder = this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
-        var solution = defaultCharacterEncoder.call(this, char);
-        return solution;
-    }
-    
     function defineCoder(coder, minInputLength)
     {
         coder.MIN_INPUT_LENGTH = minInputLength;
@@ -543,6 +536,13 @@ var resolveSimple;
             return stringTokenPattern;
         },
         
+        defaultResolveCharacter: function (char)
+        {
+            var defaultCharacterEncoder = this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
+            var solution = defaultCharacterEncoder.call(this, char);
+            return solution;
+        },
+        
         encode: function (input, wrapWith)
         {
             var output =
@@ -719,7 +719,7 @@ var resolveSimple;
             }
         },
         
-        findOptimalSolution: function (entries, defaultResolver)
+        findOptimalSolution: function (entries)
         {
             var result;
             entries.forEach(
@@ -728,7 +728,7 @@ var resolveSimple;
                     if (this.hasFeatures(entry.featureMask))
                     {
                         var definition = entry.definition;
-                        var solution = definition ? this.resolve(definition) : defaultResolver();
+                        var solution = this.resolve(definition);
                         if (!result || result.length > solution.length)
                         {
                             result = solution;
@@ -864,11 +864,10 @@ var resolveSimple;
                         var entries = CHARACTERS[char];
                         if (!entries || isArray(entries))
                         {
-                            var defaultResolver = defaultResolveCharacter.bind(this, char);
                             if (entries)
-                                solution = this.findOptimalSolution(entries, defaultResolver);
+                                solution = this.findOptimalSolution(entries);
                             if (!solution)
-                                solution = defaultResolver();
+                                solution = this.defaultResolveCharacter(char);
                             charCache = this.charCache;
                         }
                         else
