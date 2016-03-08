@@ -23,18 +23,15 @@ self
     function decodeEntry(entry)
     {
         var featureObj = getEntryFeature(entry);
-        var output = decodeEntryWithFeature(entry, featureObj);
-        return output;
+        var solution = decodeEntryWithFeature(entry, featureObj);
+        return solution;
     }
     
     function decodeEntryWithFeature(entry, featureObj)
     {
-        var key = featureObj.canonicalNames.join('+');
-        var encoder = encoderCache[key];
-        if (!encoder)
-            encoderCache[key] = encoder = JScrewIt.debug.createEncoder(featureObj);
-        var output = encoder.resolve(entry.definition) + '';
-        return output;
+        var encoder = getPoolEncoder(featureObj);
+        var solution = encoder.resolve(entry.definition);
+        return solution;
     }
     
     function describeEncodeTest(compatibility)
@@ -161,11 +158,24 @@ self
                 ['Number', 'Object', 'RegExp', 'String'].forEach(
                     function (complex)
                     {
-                        function verifyOutput(output, emuFeatures)
+                        function testEntry(entry, index)
                         {
-                            expect(output).toBeJSFuck();
-                            var actual = emuEval(emuFeatures || [], output);
-                            expect(actual).toBe(complex);
+                            if (entry.definition)
+                            {
+                                var featureObj = getEntryFeature(entry);
+                                var emuFeatures = getEmuFeatureNames(featureObj);
+                                if (emuFeatures)
+                                {
+                                    it(
+                                        '(definition ' + index + ')',
+                                        function ()
+                                        {
+                                            var solution = decodeEntry(entry);
+                                            verifySolution(solution, complex, emuFeatures);
+                                        }
+                                    );
+                                }
+                            }
                         }
                         
                         var desc = JSON.stringify(complex);
@@ -174,27 +184,7 @@ self
                             function ()
                             {
                                 var entries = JScrewIt.debug.getComplexEntries(complex);
-                                entries.forEach(
-                                    function (entry, index)
-                                    {
-                                        if (entry.definition)
-                                        {
-                                            var featureObj = getEntryFeature(entry);
-                                            var emuFeatures = getEmuFeatureNames(featureObj);
-                                            if (emuFeatures)
-                                            {
-                                                it(
-                                                    '(definition ' + index + ')',
-                                                    function ()
-                                                    {
-                                                        var output = decodeEntry(entry);
-                                                        verifyOutput(output, emuFeatures);
-                                                    }
-                                                );
-                                            }
-                                        }
-                                    }
-                                );
+                                entries.forEach(testEntry);
                             }
                         );
                     }
@@ -1863,6 +1853,15 @@ self
         return featureObj;
     }
     
+    function getPoolEncoder(featureObj)
+    {
+        var key = featureObj.canonicalNames.join('+');
+        var encoder = encoderCache[key];
+        if (!encoder)
+            encoderCache[key] = encoder = JScrewIt.debug.createEncoder(featureObj);
+        return encoder;
+    }
+    
     function init(arg)
     {
         JScrewIt = arg || global.JScrewIt;
@@ -1903,11 +1902,76 @@ self
             desc,
             function ()
             {
-                function verifyOutput(output, emuFeatures)
+                function testAtob()
                 {
-                    expect(output).toBeJSFuck();
-                    var actual = emuEval(emuFeatures || [], output) + '';
-                    expect(actual).toBe(char);
+                    if ('ATOB' in featureSet)
+                    {
+                        it(
+                            '(atob)',
+                            function ()
+                            {
+                                var encoder = getPoolEncoder(Feature.ATOB);
+                                var solution = encoder.defaultResolveCharacter(char);
+                                verifySolution(solution, char, featureSet.ATOB && ['ATOB']);
+                                expect(solution.length).not.toBeGreaterThan(
+                                    JScrewIt.encode(char).length
+                                );
+                            }
+                        );
+                    }
+                }
+                
+                function testEntry(entry, index)
+                {
+                    var featureObj = getEntryFeature(entry);
+                    var usingDefaultFeature = Feature.DEFAULT.includes(featureObj);
+                    defaultEntryFound |= usingDefaultFeature;
+                    var emuFeatures = getEmuFeatureNames(featureObj);
+                    if (emuFeatures)
+                    {
+                        it(
+                            '(definition ' + index + ')',
+                            function ()
+                            {
+                                var solution = decodeEntry(entry);
+                                verifySolution(solution, char, emuFeatures);
+                                if (entry.definition.FB)
+                                {
+                                    [
+                                        [],
+                                        ['IE_SRC'],
+                                        ['V8_SRC'],
+                                        ['NO_IE_SRC'],
+                                        ['NO_V8_SRC'],
+                                        ['NO_IE_SRC', 'NO_V8_SRC'],
+                                        ['FILL'],
+                                        ['FILL', 'IE_SRC'],
+                                        ['FILL', 'V8_SRC'],
+                                        ['FILL', 'NO_IE_SRC'],
+                                        ['FILL', 'NO_V8_SRC'],
+                                        ['FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
+                                    ].forEach(
+                                        function (additionalFeatureNames)
+                                        {
+                                            var augmentedFeatureObj =
+                                                Feature(featureObj, additionalFeatureNames);
+                                            var emuFeatures =
+                                                getEmuFeatureNames(augmentedFeatureObj);
+                                            if (emuFeatures)
+                                            {
+                                                var solution =
+                                                    decodeEntryWithFeature(
+                                                        entry,
+                                                        augmentedFeatureObj
+                                                    );
+                                                verifySolution(solution, char, emuFeatures);
+                                            }
+                                        }
+                                    );
+                                }
+                            }
+                        );
+                    }
                 }
                 
                 var testDefault =
@@ -1916,8 +1980,9 @@ self
                         '(default)',
                         function ()
                         {
-                            var output = JScrewIt.encode(char);
-                            verifyOutput(output);
+                            var encoder = getPoolEncoder(Feature.DEFAULT);
+                            var solution = encoder.defaultResolveCharacter(char);
+                            verifySolution(solution, char);
                         }
                     );
                 var entries = JScrewIt.debug.getCharacterEntries(char);
@@ -1925,91 +1990,17 @@ self
                 {
                     var defaultEntryFound = false;
                     if (entries)
-                    {
-                        entries.forEach(
-                            function (entry, index)
-                            {
-                                if (entry.definition)
-                                {
-                                    var featureObj = getEntryFeature(entry);
-                                    var usingDefaultFeature = Feature.DEFAULT.includes(featureObj);
-                                    defaultEntryFound |= usingDefaultFeature;
-                                    var emuFeatures = getEmuFeatureNames(featureObj);
-                                    if (emuFeatures)
-                                    {
-                                        it(
-                                            '(definition ' + index + ')',
-                                            function ()
-                                            {
-                                                var output = decodeEntry(entry);
-                                                verifyOutput(output, emuFeatures);
-                                                if (entry.definition.FB)
-                                                {
-                                                    [
-                                                        [],
-                                                        ['IE_SRC'],
-                                                        ['V8_SRC'],
-                                                        ['NO_IE_SRC'],
-                                                        ['NO_V8_SRC'],
-                                                        ['NO_IE_SRC', 'NO_V8_SRC'],
-                                                        ['FILL'],
-                                                        ['FILL', 'IE_SRC'],
-                                                        ['FILL', 'V8_SRC'],
-                                                        ['FILL', 'NO_IE_SRC'],
-                                                        ['FILL', 'NO_V8_SRC'],
-                                                        ['FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
-                                                    ].forEach(
-                                                        function (additionalFeatureNames)
-                                                        {
-                                                            var augmentedFeatureObj =
-                                                                Feature(
-                                                                    featureObj,
-                                                                    additionalFeatureNames
-                                                                );
-                                                            var emuFeatures =
-                                                                getEmuFeatureNames(
-                                                                    augmentedFeatureObj
-                                                                );
-                                                            if (emuFeatures)
-                                                            {
-                                                                var output =
-                                                                    decodeEntryWithFeature(
-                                                                        entry,
-                                                                        augmentedFeatureObj
-                                                                    );
-                                                                verifyOutput(output, emuFeatures);
-                                                            }
-                                                        }
-                                                    );
-                                                }
-                                            }
-                                        );
-                                    }
-                                }
-                            }
-                        );
-                    }
+                        entries.forEach(testEntry);
                     if (!defaultEntryFound)
+                    {
                         testDefault();
+                        testAtob();
+                    }
                 }
                 else
                 {
                     testDefault();
-                    if ('ATOB' in featureSet)
-                    {
-                        it(
-                            '(atob)',
-                            function ()
-                            {
-                                var options = { features: 'ATOB' };
-                                var output = JScrewIt.encode(char, options);
-                                verifyOutput(output, featureSet.ATOB && ['ATOB']);
-                                expect(output.length).not.toBeGreaterThan(
-                                    JScrewIt.encode(char).length
-                                );
-                            }
-                        );
-                    }
+                    testAtob();
                 }
             }
         );
@@ -2033,7 +2024,7 @@ self
                                 '(definition ' + index + ')',
                                 function ()
                                 {
-                                    var output = decodeEntry(entry);
+                                    var output = String(decodeEntry(entry));
                                     expect(output).toBeJSFuck();
                                     emuDo(
                                         emuFeatures,
@@ -2143,6 +2134,15 @@ self
                 }
             }
         );
+    }
+    
+    function verifySolution(solution, expected, emuFeatures)
+    {
+        expect(typeof solution).toBe('object');
+        var output = String(solution);
+        expect(output).toBeJSFuck();
+        var actual = emuEval(emuFeatures || [], output) + '';
+        expect(actual).toBe(expected);
     }
     
     var Feature;
