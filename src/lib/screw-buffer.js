@@ -395,27 +395,15 @@ var hasOuterPlus;
             var outerPlus = solution.outerPlus;
             if (outerPlus == null)
             {
-                var unclosed = 0;
-                outerPlus =
-                    solution.match(/!\+|./g).some(
-                        function (match)
-                        {
-                            switch (match)
-                            {
-                            case '+':
-                                return !unclosed;
-                            case '(':
-                            case '[':
-                                ++unclosed;
-                                break;
-                            case ')':
-                            case ']':
-                                --unclosed;
-                                break;
-                            }
-                            return false;
-                        }
-                    );
+                var str = solution;
+                for (;;)
+                {
+                    var newStr = str.replace(/\([^()]*\)|\[[^[\]]*]/g, '.');
+                    if (newStr.length === str.length)
+                        break;
+                    str = newStr;
+                }
+                outerPlus = /(^|[^!])\+/.test(str);
                 solution.outerPlus = outerPlus;
             }
             return outerPlus;
