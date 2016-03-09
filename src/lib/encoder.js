@@ -727,8 +727,7 @@ var resolveSimple;
                 {
                     if (this.hasFeatures(entry.featureMask))
                     {
-                        var definition = entry.definition;
-                        var solution = this.resolve(definition);
+                        var solution = this.resolve(entry.definition);
                         if (!result || result.length > solution.length)
                         {
                             result = solution;

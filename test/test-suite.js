@@ -1741,7 +1741,7 @@ self
             }
         );
         describe(
-            'Encoder#getPadding throws a SyntaxError for',
+            'Encoder#getPaddingBlock throws a SyntaxError for',
             function ()
             {
                 it(
@@ -1901,7 +1901,7 @@ self
                                 var solution = encoder.defaultResolveCharacter(char);
                                 verifySolution(solution, char, featureSet.ATOB && ['ATOB']);
                                 expect(solution.length).not.toBeGreaterThan(
-                                    JScrewIt.encode(char).length
+                                    getPoolEncoder(Feature.DEFAULT).resolveCharacter(char).length
                                 );
                             }
                         );
