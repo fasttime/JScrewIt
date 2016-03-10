@@ -4,6 +4,45 @@
 {
     'use strict';
     
+    function createAnalyzer()
+    {
+        var analyzer = new Analyzer();
+        if (!CharMap)
+            return analyzer;
+        var fs = require('fs');
+        var charMapJSON = fs.readFileSync(CharMap.FILE_NAME);
+        var charMap = CharMap.parse(charMapJSON);
+        var findKnownSolution = CharMap.findKnownSolution;
+        var prepareEncoder = CharMap.prepareEncoder;
+        var resolveCharacter =
+            function (char)
+            {
+                var solutions = charMap[char];
+                if (solutions)
+                {
+                    var solution = findKnownSolution(solutions, analyzer);
+                    return solution;
+                }
+            };
+        var newAnalyzer =
+            Object.create(
+                analyzer,
+                {
+                    nextEncoder:
+                    {
+                        get: function ()
+                        {
+                            var encoder = analyzer.nextEncoder;
+                            if (encoder)
+                                prepareEncoder(encoder, resolveCharacter);
+                            return encoder;
+                        }
+                    }
+                }
+            );
+        return newAnalyzer;
+    }
+    
     function decomplex(encoder, complex)
     {
         encoder.stringTokenPattern = JScrewIt.debug.createEncoder().createStringTokenPattern();
@@ -23,7 +62,7 @@
     {
         var optimalFeatureObjMap;
         var optimalLength = Infinity;
-        var analyzer = new Analyzer();
+        var analyzer = createAnalyzer();
         var encoder;
         while (encoder = analyzer.nextEncoder)
         {
@@ -111,7 +150,7 @@
     function verifyComplex(complex, inputEntries, mismatchCallback)
     {
         var actualEntries = JScrewIt.debug.getComplexEntries(complex);
-        var analyzer = new Analyzer();
+        var analyzer = createAnalyzer();
         var encoder;
         while (encoder = analyzer.nextEncoder)
         {
@@ -149,7 +188,7 @@
     function verifyDefinitions(entries, inputList, mismatchCallback, replacer)
     {
         var mismatchCount = 0;
-        var analyzer = new Analyzer();
+        var analyzer = createAnalyzer();
         var encoder;
         while (encoder = analyzer.nextEncoder)
         {
@@ -176,8 +215,8 @@
     }
     
     var Analyzer;
+    var CharMap;
     var JScrewIt;
-    
     var exports =
     {
         define:                 define,
@@ -196,10 +235,10 @@
             }
         );
     }
-    
     if (typeof module !== 'undefined')
     {
         Analyzer = require('./analyzer.js');
+        CharMap = require('./char-map.js');
         JScrewIt = require('../lib/jscrewit.js');
         module.exports = exports;
     }
