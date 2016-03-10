@@ -126,7 +126,7 @@ module.exports =
         'byDictRadix4AmendedBy2'
     ),
     data(
-        ['ENTRIES_PLAIN', 'FILL', 'V8_SRC'],
+        ['BARPROP', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'NODECONSTRUCTOR', 'V8_SRC'],
         createAntiRadix4TestString.bind(null, 473),
         'byDictRadix5AmendedBy3'
     ),

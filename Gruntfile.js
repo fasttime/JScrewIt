@@ -103,10 +103,9 @@ module.exports =
             {
                 clean:
                 {
-                    build: ['Features.md', 'Reference.md'],
+                    build: ['Features.md', 'Reference.md', 'char-map.json', 'output.txt'],
                     html: 'html/**/*.js',
-                    lib: ['coverage', 'lib/**/*.js'],
-                    output: 'output.txt'
+                    lib: ['coverage', 'lib/**/*.js']
                 },
                 concat:
                 {
