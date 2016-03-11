@@ -164,27 +164,27 @@ Most typically, it will throw some kind of error at runtime.
 
 It's important to keep in mind that each of the target engines needs to support every feature we
 specify.
-So if we want our JSFuck code to run on both Internet Explorer and Firefox, this won't work.
+So if we want our JSFuck code to run on both Internet Explorer and Safari, this won't work.
 
 ```js
-{ features: ["IE9", "FF31"] }
+{ features: ["IE9", "SAFARI70"] }
 ```
 
 Instead, we have to specify features supported by both browsers.
 These can be retrieved with [`JScrewIt.Feature.commonOf`](Reference.md#JScrewIt.Feature.commonOf).
 
 ```js
-{ features: JScrewIt.Feature.commonOf("IE9", "FF31") }
+{ features: JScrewIt.Feature.commonOf("IE9", "SAFARI70") }
 ```
 
 The features turn out to be [`ANY_DOCUMENT`](Features.md#ANY_DOCUMENT),
-[`HISTORY`](Features.md#HISTORY), [`NO_OLD_SAFARI_LF`](Features.md#NO_OLD_SAFARI_LF),
+[`HISTORY`](Features.md#HISTORY), [`NO_V8_SRC`](Features.md#NO_V8_SRC),
 [`UNDEFINED`](Features.md#UNDEFINED) and [`WINDOW`](Features.md#WINDOW) (a quick way to see this is
 entering `JScrewIt.Feature.commonOf("IE9", "FF31").toString()` in the browser's JavaScript console).
 With this knowledge, we can rewrite the expression as follows.
 
 ```js
-{ features: ["ANY_DOCUMENT", "HISTORY", "NO_OLD_SAFARI_LF", "UNDEFINED", "WINDOW"] }
+{ features: ["ANY_DOCUMENT", "HISTORY", "NO_V8_SRC", "UNDEFINED", "WINDOW"] }
 ```
 
 ### Further Reading
