@@ -185,7 +185,12 @@ module.exports =
                     },
                     options:
                     {
-                        compress: { global_defs: { DEBUG: false }, hoist_vars: true }
+                        compress:
+                        {
+                            collapse_vars: true,
+                            global_defs: { DEBUG: false },
+                            hoist_vars: true
+                        }
                     }
                 }
             }
