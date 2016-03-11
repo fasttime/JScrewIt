@@ -689,7 +689,7 @@
             }
         },
         V8_SRC: makeEmuFeatureFunctionSource(
-            /^\n?(.*)\{\n    \[native code\]\n\}$/,
+            /^\n?(.*)\{\n    \[native code\]\n\}\n?$/,
             '$1{ [native code] }'
         ),
         WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object Window]$/)
