@@ -532,7 +532,7 @@ var resolveSimple;
             var stringTokenPattern =
                 '(' + keys(SIMPLE).join('|') + ')|' +
                 keys(COMPLEX).filter(filterCallback, this).map(mapCallback).join('') +
-                '([^])';
+                '([\\s\\S])';
             this.stringTokenPattern = stringTokenPattern;
             return stringTokenPattern;
         },

@@ -393,7 +393,7 @@
                                             var body =
                                                 '(function' + capture1 +
                                                 (
-                                                    /^\{[^]*\}$/.test(capture2) ?
+                                                    /^\{[\s\S]*\}$/.test(capture2) ?
                                                     capture2 : '{return(' + capture2 + ')}'
                                                 ) +
                                                 ')';
@@ -487,6 +487,11 @@
         {
             setUp: function ()
             {
+                // Workaround for IE9...
+                var console = global.console;
+                if (!Object.getPrototypeOf(console))
+                    global.console = Object.create(console);
+                // ...end of the workaround.
                 var toString =
                     function ()
                     {
@@ -583,7 +588,7 @@
         },
         HTMLDOCUMENT: makeEmuFeatureDocument('[object HTMLDocument]', /^\[object HTMLDocument]$/),
         IE_SRC: makeEmuFeatureFunctionSource(
-            /^(.*)\{\s+\[native code\]\s+\}$/,
+            /^(.*)\{\s+\[native code]\s+\}$/,
             '\n$1{\n    [native code]\n}'
         ),
         INTL:
@@ -668,10 +673,7 @@
                 );
             }
         },
-        NO_V8_SRC: makeEmuFeatureFunctionSource(
-            /\{ \[native code\] \}$/,
-            '{\n    [native code]\n}'
-        ),
+        NO_V8_SRC: makeEmuFeatureFunctionSource(/\{ \[native code] \}$/, '{\n    [native code]\n}'),
         SELF_OBJ: makeEmuFeatureSelf('[object Object]', /^\[object /),
         UNDEFINED:
         {
@@ -689,7 +691,7 @@
             }
         },
         V8_SRC: makeEmuFeatureFunctionSource(
-            /^\n?(.*)\{\n    \[native code\]\n\}\n?$/,
+            /^\n?(.*)\{\n    \[native code]\n\}\n?$/,
             '$1{ [native code] }'
         ),
         WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object Window]$/)
