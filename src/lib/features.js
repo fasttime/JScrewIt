@@ -529,7 +529,7 @@ var validMaskFromArrayOrStringOrFeature;
                 '("\\n    ") before the "[native code]" sequence.',
             check: function ()
             {
-                return /^\nfunction Object\(\) \{\n    \[native code\]\n\}/.test(Object);
+                return /^\nfunction Object\(\) \{\n    \[native code]\n\}/.test(Object);
             },
             includes: ['NO_V8_SRC'],
             excludes: ['NODECONSTRUCTOR', 'NO_IE_SRC']
@@ -579,7 +579,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'beginning of the string before "function".',
             check: function ()
             {
-                return /^function Object\(\) \{(\n   )? \[native code\][^]\}/.test(Object);
+                return /^function Object\(\) \{(\n   )? \[native code]\s\}/.test(Object);
             },
             excludes: ['IE_SRC']
         },
@@ -592,7 +592,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'by four whitespaces ("\\n    ") before the "[native code]" sequence.',
             check: function ()
             {
-                return /^\n?function Object\(\) \{\n    \[native code\][^]\}/.test(Object);
+                return /^\n?function Object\(\) \{\n    \[native code]\s\}/.test(Object);
             },
             excludes: ['V8_SRC']
         },
@@ -655,7 +655,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'before "function" and a single whitespace before the "[native code]" sequence.',
             check: function ()
             {
-                return /^.{19} \[native code\] \}/.test(Object);
+                return /^.{19} \[native code] \}/.test(Object);
             },
             includes: ['NO_IE_SRC'],
             excludes: ['NO_V8_SRC']
