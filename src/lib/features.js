@@ -8,6 +8,7 @@ console,
 create,
 defineProperty,
 document,
+freeze,
 history,
 isArray,
 keys,
@@ -166,19 +167,19 @@ var validMaskFromArrayOrStringOrFeature;
             create(
                 Feature.prototype,
                 {
-                    attributes: { value: Object.freeze(attributes || { }) },
+                    attributes: { value: freeze(attributes || { }) },
                     check: { value: check },
                     description: { value: description },
-                    mask: { value: Object.freeze(mask) },
                     name: { value: name }
                 }
             );
+        initMask(featureObj, mask);
         return featureObj;
     }
     
     function initMask(featureObj, mask)
     {
-        defineProperty(featureObj, 'mask', { value: Object.freeze(mask) });
+        defineProperty(featureObj, 'mask', { value: freeze(mask) });
     }
     
     function isExcludingAttribute(attributeCache, attributeName, featureObjs)
@@ -678,7 +679,7 @@ var validMaskFromArrayOrStringOrFeature;
         
         DEFAULT:
         {
-            description: 'Minimun feature level, compatible with all supported engines.'
+            description: 'Minimum feature level, compatible with all supported engines.'
         },
         COMPACT:
         {

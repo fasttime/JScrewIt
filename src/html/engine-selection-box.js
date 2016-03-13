@@ -1,5 +1,5 @@
 /* exported createEngineSelectionBox */
-/* global art, JScrewIt */
+/* global JScrewIt, art */
 /* jshint browser: true */
 
 function createEngineSelectionBox()
