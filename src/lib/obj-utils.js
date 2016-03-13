@@ -4,6 +4,7 @@ var assignNoEnum;
 var create;
 var createConstructor;
 var defineProperty;
+var freeze;
 var isArray;
 var keys;
 var noProto;
@@ -39,6 +40,8 @@ var noProto;
         };
     
     defineProperty = Object.defineProperty;
+    
+    freeze = Object.freeze;
     
     isArray = Array.isArray;
     

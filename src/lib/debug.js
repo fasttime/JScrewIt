@@ -18,6 +18,7 @@ assignNoEnum,
 create,
 define,
 featureFromMask,
+freeze,
 getValidFeatureMask,
 hasOuterPlus,
 isArray,
@@ -72,7 +73,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         function createEntryClone(definition, mask)
         {
             if (typeof definition === 'object')
-                definition = Object.freeze(definition);
+                definition = freeze(definition);
             mask = mask.slice();
             var entry = { definition: definition, mask: mask };
             return entry;
