@@ -42,7 +42,6 @@ var LEVEL_UNDEFINED;
 
 var createParseIntArgDefault;
 var createSolution;
-var replaceDigit;
 
 (function ()
 {
@@ -1370,28 +1369,10 @@ var replaceDigit;
             return solution;
         };
     
-    replaceDigit =
-        function (digit)
-        {
-            switch (digit)
-            {
-            case 0:
-                return '+[]';
-            case 1:
-                return '+!![]';
-            default:
-                var replacement = '!![]';
-                do
-                    replacement += '+!![]';
-                while (--digit > 1);
-                return replacement;
-            }
-        };
-    
     // Create definitions for digits
     for (var digit = 0; digit <= 9; ++digit)
     {
-        var expr = replaceDigit(digit);
+        var expr = digit + '';
         CHARACTERS[digit] = { expr: expr, level: LEVEL_NUMERIC };
     }
     
