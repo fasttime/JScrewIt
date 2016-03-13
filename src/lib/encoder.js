@@ -21,8 +21,7 @@ getFigure,
 hasOuterPlus,
 isArray,
 keys,
-maskIncludes,
-replaceDigit
+maskIncludes
 */
 
 var CODERS;
@@ -177,6 +176,23 @@ var resolveSimple;
             isPrecededByOperator(expr, offset) ||
             isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length);
         return strongBound;
+    }
+    
+    function replaceDigit(digit)
+    {
+        switch (digit)
+        {
+        case 0:
+            return '+[]';
+        case 1:
+            return '+!![]';
+        default:
+            var replacement = '!![]';
+            do
+                replacement += '+!![]';
+            while (--digit > 1);
+            return replacement;
+        }
     }
     
     function replaceToken(wholeMatch, number, quotedString, space, literal, offset, expr)
