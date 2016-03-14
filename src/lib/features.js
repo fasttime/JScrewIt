@@ -25,8 +25,8 @@ statusbar
 var Feature;
 
 var featureFromMask;
+var featuresToMask;
 var isMaskCompatible;
-var maskFromArray;
 var validMaskFromArrayOrStringOrFeature;
 
 (function ()
@@ -38,7 +38,7 @@ var validMaskFromArrayOrStringOrFeature;
         var compatible;
         if (features.length > 1)
         {
-            var mask = maskFromArray(features);
+            var mask = featureArrayToMask(features);
             compatible = isMaskCompatible(mask);
         }
         else
@@ -177,6 +177,19 @@ var validMaskFromArrayOrStringOrFeature;
         return featureObj;
     }
     
+    function featureArrayToMask(array)
+    {
+        var mask = maskNew();
+        array.forEach(
+            function (feature)
+            {
+                var otherMask = maskFromStringOrFeature(feature);
+                maskOr(mask, otherMask);
+            }
+        );
+        return mask;
+    }
+    
     function initMask(featureObj, mask)
     {
         defineProperty(featureObj, 'mask', { value: freeze(mask) });
@@ -236,22 +249,15 @@ var validMaskFromArrayOrStringOrFeature;
             args,
             function (arg)
             {
+                var otherMask;
                 if (isArray(arg))
                 {
-                    arg.forEach(
-                        function (arg)
-                        {
-                            var otherMask = maskFromStringOrFeature(arg);
-                            maskOr(mask, otherMask);
-                        }
-                    );
+                    otherMask = featureArrayToMask(arg);
                     validationNeeded |= arg.length > 1;
                 }
                 else
-                {
-                    var otherMask = maskFromStringOrFeature(arg);
-                    maskOr(mask, otherMask);
-                }
+                    otherMask = maskFromStringOrFeature(arg);
+                maskOr(mask, otherMask);
             }
         );
         validationNeeded |= args.length > 1;
@@ -1439,6 +1445,19 @@ var validMaskFromArrayOrStringOrFeature;
             return featureObj;
         };
     
+    featuresToMask =
+        function (featureObjs)
+        {
+            var mask = maskNew();
+            featureObjs.forEach(
+                function (featureObj)
+                {
+                    maskOr(mask, featureObj.mask);
+                }
+            );
+            return mask;
+        };
+    
     isMaskCompatible =
         function (mask)
         {
@@ -1453,34 +1472,13 @@ var validMaskFromArrayOrStringOrFeature;
             return result;
         };
     
-    maskFromArray =
-        function (features)
-        {
-            var mask = maskNew();
-            features.forEach(
-                function (arg)
-                {
-                    var otherMask = maskFromStringOrFeature(arg);
-                    maskOr(mask, otherMask);
-                }
-            );
-            return mask;
-        };
-    
     validMaskFromArrayOrStringOrFeature =
         function (arg)
         {
             var mask;
             if (isArray(arg))
             {
-                mask = maskNew();
-                arg.forEach(
-                    function (arg)
-                    {
-                        var otherMask = maskFromStringOrFeature(arg);
-                        maskOr(mask, otherMask);
-                    }
-                );
+                mask = featureArrayToMask(arg);
                 if (arg.length > 1)
                     validateMask(mask);
             }
