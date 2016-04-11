@@ -19,6 +19,7 @@ in no particular order.</p>
 </dl>
 
 <a name="JScrewIt"></a>
+
 ## JScrewIt : <code>object</code>
 **Kind**: global namespace  
 
@@ -41,6 +42,7 @@ in no particular order.</p>
     * [.encode(input, [options])](#JScrewIt.encode) ⇒ <code>string</code>
 
 <a name="JScrewIt.Feature"></a>
+
 ### JScrewIt.Feature
 Objects of this type indicate which of the capabilities that JScrewIt can use to minimize the
 length of its output are available in a particular JavaScript engine.
@@ -84,6 +86,7 @@ constructed.
         * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ <code>[Feature](#JScrewIt.Feature)</code> &#124; <code>null</code>
 
 <a name="new_JScrewIt.Feature_new"></a>
+
 #### new Feature([...feature])
 Creates a new feature object from the union of the specified features.
 
@@ -118,12 +121,14 @@ new JScrewIt.Feature(JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW)
 new JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW]);
 ```
 <a name="JScrewIt.Feature+canonicalNames"></a>
+
 #### feature.canonicalNames : <code>Array.&lt;string&gt;</code>
 An array of all elementary feature names included in this feature object, without aliases
 and implied features.
 
 **Kind**: instance property of <code>[Feature](#JScrewIt.Feature)</code>  
 <a name="JScrewIt.Feature+description"></a>
+
 #### feature.description : <code>string</code> &#124; <code>undefined</code>
 A short description of this feature object in plain English.
 
@@ -132,12 +137,14 @@ If desired, custom features may be assigned a description, too.
 
 **Kind**: instance property of <code>[Feature](#JScrewIt.Feature)</code>  
 <a name="JScrewIt.Feature+elementaryNames"></a>
+
 #### feature.elementaryNames : <code>Array.&lt;string&gt;</code>
 An array of all elementary feature names included in this feature object, without
 aliases.
 
 **Kind**: instance property of <code>[Feature](#JScrewIt.Feature)</code>  
 <a name="JScrewIt.Feature+name"></a>
+
 #### feature.name : <code>string</code> &#124; <code>undefined</code>
 The primary name of this feature object, useful for identification purpose.
 
@@ -146,6 +153,7 @@ If desired, custom features may be assigned a name, too.
 
 **Kind**: instance property of <code>[Feature](#JScrewIt.Feature)</code>  
 <a name="JScrewIt.Feature+includes"></a>
+
 #### feature.includes([...feature]) ⇒ <code>boolean</code>
 Determines whether this feature object includes all of the specified features.
 
@@ -158,6 +166,7 @@ If no arguments are specified, the return value is `true`.
 | [...feature] | <code>[FeatureElement](#FeatureElement)</code> &#124; <code>[CompatibleFeatureArray](#CompatibleFeatureArray)</code> | 
 
 <a name="JScrewIt.Feature+restrict"></a>
+
 #### feature.restrict(environment, [referenceFeatureObjs]) ⇒ <code>[Feature](#JScrewIt.Feature)</code>
 Creates a new feature object from this feature by removing elementary features that are
 not available inside a particular environment.
@@ -174,12 +183,14 @@ worker.
 | [referenceFeatureObjs] | <code>[Array.&lt;Feature&gt;](#JScrewIt.Feature)</code> | An array of predefined feature objects, each corresponding to a particular engine in which the restriction should be enacted. If this parameter is omitted, the restriction is enacted in all engines. |
 
 <a name="JScrewIt.Feature+toString"></a>
+
 #### feature.toString() ⇒ <code>string</code>
 Returns a string representation of this feature object.
 
 **Kind**: instance method of <code>[Feature](#JScrewIt.Feature)</code>  
 **Returns**: <code>string</code> - A string representation of this feature object.  
 <a name="JScrewIt.Feature.ALL"></a>
+
 #### Feature.ALL : <code>object</code>
 A map of predefined feature objects accessed by name or alias.
 
@@ -199,6 +210,7 @@ This will determine if a particular feature object is predefined or not.
 featureObj === JScrewIt.Feature.ALL[featureObj.name]
 ```
 <a name="JScrewIt.Feature.areCompatible"></a>
+
 #### Feature.areCompatible([features]) ⇒ <code>boolean</code>
 Determines whether the specified features are compatible with each other.
 
@@ -221,6 +233,7 @@ JScrewIt.Feature.areCompatible(["V8_SRC", "IE_SRC"])
 JScrewIt.Feature.areCompatible([JScrewIt.Feature.DEFAULT, JScrewIt.Feature.FILL])
 ```
 <a name="JScrewIt.Feature.areEqual"></a>
+
 #### Feature.areEqual([...feature]) ⇒ <code>boolean</code>
 Determines whether all of the specified features are equivalent.
 
@@ -243,6 +256,7 @@ JScrewIt.Feature.areEqual(JScrewIt.Feature.CHROME, JScrewIt.Feature.FIREFOX)
 JScrewIt.Feature.areEqual("DEFAULT", [])
 ```
 <a name="JScrewIt.Feature.commonOf"></a>
+
 #### Feature.commonOf([...feature]) ⇒ <code>[Feature](#JScrewIt.Feature)</code> &#124; <code>null</code>
 Creates a new feature object equivalent to the intersection of the specified features.
 
@@ -269,6 +283,7 @@ This is because both [`HTMLDOCUMENT`](Features.md#HTMLDOCUMENT) and
 var newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
 ```
 <a name="JScrewIt.encode"></a>
+
 ### JScrewIt.encode(input, [options]) ⇒ <code>string</code>
 Encodes a given string into JSFuck.
 
@@ -295,6 +310,7 @@ If the option `wrapWith` is specified with an invalid value, an `Error` with the
 | [options.wrapWith] | <code>string</code> | <code>&quot;none&quot;</code> | This option controls the type of code generated from the given input. Allowed values are listed below. <dl> <dt><code>"none"</code> (default)</dt> <dd> Produces a string evaluating to the specified input string (except for trimmed parts when used in conjunction with the option <code>trimCode</code>).</dd> <dt><code>"call"</code></dt> <dd> Produces code evaluating to a call to a function whose body contains the specified input string.</dd> <dt><code>"eval"</code></dt> <dd> Produces code evaluating to the result of invoking <code>eval</code> with the specified input string as parameter.</dd> </dl> |
 
 <a name="FeatureElement"></a>
+
 ## FeatureElement : <code>[Feature](#JScrewIt.Feature)</code> &#124; <code>string</code>
 A feature object or name or alias of a predefined feature.
 
@@ -304,6 +320,7 @@ A feature object or name or alias of a predefined feature.
 - <code>ReferenceError</code> The specified value is neither a feature object nor a name or alias of a predefined feature.
 
 <a name="CompatibleFeatureArray"></a>
+
 ## CompatibleFeatureArray : <code>[Array.&lt;FeatureElement&gt;](#FeatureElement)</code>
 An array containing any number of feature objects or names or aliases of predefined features,
 in no particular order.

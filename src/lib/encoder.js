@@ -7,6 +7,7 @@ CONSTANTS,
 CREATE_PARSE_INT_ARG,
 DEFAULT_CHARACTER_ENCODER,
 FROM_CHAR_CODE,
+GET_MAP_CALLBACK,
 LEVEL_STRING,
 OPTIMAL_B,
 SIMPLE,
@@ -442,10 +443,10 @@ var resolveSimple;
             if (radix)
             {
                 output =
-                    charCodeArrayStr +
-                    this.replaceExpr(
-                        '["map"](Function("return function(undefined){return String.' +
-                        fromCharCode + '(parseInt(undefined,' + radix + '))}")())["join"]([])'
+                    this.createLongCharCodesOutput(
+                        charCodeArrayStr,
+                        fromCharCode,
+                        'parseInt(undefined,' + radix + ')'
                     );
             }
             else
@@ -453,11 +454,7 @@ var resolveSimple;
                 if (long)
                 {
                     output =
-                        charCodeArrayStr +
-                        this.replaceExpr(
-                            '["map"](Function("return function(undefined){return String.' +
-                            fromCharCode + '(undefined)}")())["join"]([])'
-                        );
+                        this.createLongCharCodesOutput(charCodeArrayStr, fromCharCode, 'undefined');
                 }
                 else
                 {
@@ -528,6 +525,18 @@ var resolveSimple;
                 arrayStr + this.replaceExpr('["map"]') + '(' + this.replaceExpr(mapper) + '(' +
                 legend + '))';
             return result;
+        },
+        
+        createLongCharCodesOutput: function (charCodeArrayStr, fromCharCode, arg)
+        {
+            var getMapCallback = this.findBestDefinition(GET_MAP_CALLBACK);
+            var mapCallback = getMapCallback(fromCharCode, arg);
+            var output =
+                charCodeArrayStr +
+                this.replaceExpr(
+                    '["map"](Function("return ' + mapCallback + '")())["join"]([])'
+                );
+            return output;
         },
         
         createStringTokenPattern: function ()
