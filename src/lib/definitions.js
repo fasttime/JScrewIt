@@ -14,6 +14,7 @@ var AMENDINGS;
 var CREATE_PARSE_INT_ARG;
 var DEFAULT_CHARACTER_ENCODER;
 var FROM_CHAR_CODE;
+var GET_MAP_CALLBACK;
 var OPTIMAL_B;
 
 var BASE64_ALPHABET_HI_2;
@@ -442,6 +443,16 @@ var createSolution;
         }
         
         defineProperty(SIMPLE, simple, { configurable: true, enumerable: true, get: get });
+    }
+    
+    function getMapCallbackArrow(fromCharCode, arg)
+    {
+        return 'undefined=>String.' + fromCharCode + '(' + arg + ')';
+    }
+    
+    function getMapCallbackDefault(fromCharCode, arg)
+    {
+        return 'function(undefined){return String.' + fromCharCode + '(' + arg + ')}';
     }
     
     AMENDINGS = ['true', 'undefined', 'NaN'];
@@ -1376,6 +1387,8 @@ var createSolution;
         define('fromCodePoint', BARPROP, FROM_CODE_POINT),
         define('fromCodePoint', CAPITAL_HTML, FROM_CODE_POINT)
     ];
+    
+    GET_MAP_CALLBACK = [define(getMapCallbackDefault), define(getMapCallbackArrow, ARROW)];
     
     LEVEL_STRING    = 1;
     LEVEL_OBJECT    = 0;
