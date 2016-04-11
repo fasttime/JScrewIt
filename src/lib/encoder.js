@@ -273,7 +273,7 @@ var resolveSimple;
                 var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
                 return output;
             },
-            45
+            41
         ),
         byDblDict: defineCoder
         (
@@ -444,8 +444,8 @@ var resolveSimple;
                 output =
                     charCodeArrayStr +
                     this.replaceExpr(
-                        '["map"](Function("return String.' + fromCharCode +
-                        '(parseInt(arguments[0],' + radix + '))"))["join"]([])'
+                        '["map"](Function("return function(undefined){return String.' +
+                        fromCharCode + '(parseInt(undefined,' + radix + '))}")())["join"]([])'
                     );
             }
             else
@@ -455,8 +455,8 @@ var resolveSimple;
                     output =
                         charCodeArrayStr +
                         this.replaceExpr(
-                            '["map"](Function("return String.' + fromCharCode +
-                            '(arguments[0])"))["join"]([])'
+                            '["map"](Function("return function(undefined){return String.' +
+                            fromCharCode + '(undefined)}")())["join"]([])'
                         );
                 }
                 else
