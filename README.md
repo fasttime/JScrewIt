@@ -180,7 +180,8 @@ These can be retrieved with [`JScrewIt.Feature.commonOf`](Reference.md#JScrewIt.
 The features turn out to be [`ANY_DOCUMENT`](Features.md#ANY_DOCUMENT),
 [`HISTORY`](Features.md#HISTORY), [`NO_V8_SRC`](Features.md#NO_V8_SRC),
 [`UNDEFINED`](Features.md#UNDEFINED) and [`WINDOW`](Features.md#WINDOW) (a quick way to see this is
-entering `JScrewIt.Feature.commonOf("IE9", "FF31").toString()` in the browser's JavaScript console).
+entering `JScrewIt.Feature.commonOf("IE9", "SAFARI70").toString()` in the browser's JavaScript
+console).
 With this knowledge, we can rewrite the expression as follows.
 
 ```js

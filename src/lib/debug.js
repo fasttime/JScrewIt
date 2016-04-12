@@ -9,6 +9,7 @@ CONSTANTS,
 CREATE_PARSE_INT_ARG,
 DEBUG,
 FROM_CHAR_CODE,
+MAPPER_FORMATTER,
 OPTIMAL_B,
 Empty,
 Encoder,
@@ -140,6 +141,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         ENTRIES['BASE64_ALPHABET_LO_4:3']   = BASE64_ALPHABET_LO_4[3];
         ENTRIES.CREATE_PARSE_INT_ARG        = CREATE_PARSE_INT_ARG;
         ENTRIES.FROM_CHAR_CODE              = FROM_CHAR_CODE;
+        ENTRIES.MAPPER_FORMATTER            = MAPPER_FORMATTER;
         ENTRIES.OPTIMAL_B                   = OPTIMAL_B;
         
         var debug =

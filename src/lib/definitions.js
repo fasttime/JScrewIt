@@ -14,7 +14,8 @@ var AMENDINGS;
 var CREATE_PARSE_INT_ARG;
 var DEFAULT_CHARACTER_ENCODER;
 var FROM_CHAR_CODE;
-var GET_MAP_CALLBACK;
+var FROM_CHAR_CODE_CALLBACK_FORMATTER;
+var MAPPER_FORMATTER;
 var OPTIMAL_B;
 
 var BASE64_ALPHABET_HI_2;
@@ -445,14 +446,26 @@ var createSolution;
         defineProperty(SIMPLE, simple, { configurable: true, enumerable: true, get: get });
     }
     
-    function getMapCallbackArrow(fromCharCode, arg)
+    function fromCharCodeCallbackFormatterArrow(fromCharCode, arg)
     {
         return 'undefined=>String.' + fromCharCode + '(' + arg + ')';
     }
     
-    function getMapCallbackDefault(fromCharCode, arg)
+    function fromCharCodeCallbackFormatterDefault(fromCharCode, arg)
     {
         return 'function(undefined){return String.' + fromCharCode + '(' + arg + ')}';
+    }
+    
+    function mapperFormatterDblArrow(arg)
+    {
+        var mapper = 'Function("return falsefalse=>undefined=>falsefalse' + arg + '")()';
+        return mapper;
+    }
+    
+    function mapperFormatterDefault(arg)
+    {
+        var mapper = 'Function("return function(undefined){return this' + arg + '}")()["bind"]';
+        return mapper;
     }
     
     AMENDINGS = ['true', 'undefined', 'NaN'];
@@ -1388,12 +1401,18 @@ var createSolution;
         define('fromCodePoint', CAPITAL_HTML, FROM_CODE_POINT)
     ];
     
-    GET_MAP_CALLBACK = [define(getMapCallbackDefault), define(getMapCallbackArrow, ARROW)];
+    FROM_CHAR_CODE_CALLBACK_FORMATTER =
+    [
+        define(fromCharCodeCallbackFormatterDefault),
+        define(fromCharCodeCallbackFormatterArrow, ARROW)
+    ];
     
     LEVEL_STRING    = 1;
     LEVEL_OBJECT    = 0;
     LEVEL_NUMERIC   = -1;
     LEVEL_UNDEFINED = -2;
+    
+    MAPPER_FORMATTER = [define(mapperFormatterDefault), define(mapperFormatterDblArrow, ARROW)];
     
     OPTIMAL_B = [define('B'), define('b', ENTRIES_OBJ)];
     
