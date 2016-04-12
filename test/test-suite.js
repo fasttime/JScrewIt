@@ -1289,7 +1289,7 @@ self
                     }
                 );
                 emuIt(
-                    'returns correct JSFuck with ARROW feature',
+                    'returns correct JSFuck with feature ARROW',
                     Feature.ARROW,
                     function (emuFeatures)
                     {
@@ -1358,6 +1358,18 @@ self
                         var output = encoder.encodeByDict(Object(input), 4);
                         expect(output).toBeJSFuck();
                         expect(eval(output)).toBe(input);
+                    }
+                );
+                emuIt(
+                    'returns correct JSFuck with feature ARROW',
+                    Feature.ARROW,
+                    function (emuFeatures)
+                    {
+                        var encoder = JScrewIt.debug.createEncoder(Feature.ARROW);
+                        var input = 'Lorem ipsum dolor sit amet';
+                        var output = encoder.encodeByDict(Object(input), 4);
+                        expect(output).toBeJSFuck();
+                        expect(emuEval(emuFeatures, output)).toBe(input);
                     }
                 );
                 it(

@@ -230,27 +230,6 @@ verify['BASE64_ALPHABET_LO_4:3'] =
         ['0D', '0T', '0j', '0z']
     );
 
-verify.FROM_CHAR_CODE =
-    function ()
-    {
-        verifyDefinitions(
-                getEntries('FROM_CHAR_CODE'),
-                [define('fromCharCode'), define('fromCodePoint', 'FROM_CODE_POINT')],
-                mismatchCallback,
-                'replaceString'
-            );
-    };
-
-verify.byCharCodes = verifyCoder('byCharCodes');
-verify.byCharCodesRadix4 = verifyCoder('byCharCodesRadix4');
-verify.byDict = verifyCoder('byDict', 'byCharCodes');
-verify.byDictRadix3 = verifyCoder('byDictRadix3');
-verify.byDictRadix4 = verifyCoder('byDictRadix4');
-verify.byDictRadix4AmendedBy1 = verifyCoder('byDictRadix4AmendedBy1');
-verify.byDictRadix4AmendedBy2 = verifyCoder('byDictRadix4AmendedBy2');
-verify.byDictRadix5AmendedBy3 = verifyCoder('byDictRadix5AmendedBy3', 'byDictRadix4AmendedBy2');
-verify.byDblDict = verifyCoder('byDblDict');
-
 verify.CREATE_PARSE_INT_ARG =
     function ()
     {
@@ -294,6 +273,55 @@ verify.CREATE_PARSE_INT_ARG =
         );
     };
 
+verify.FROM_CHAR_CODE =
+    function ()
+    {
+        verifyDefinitions(
+            getEntries('FROM_CHAR_CODE'),
+            [define('fromCharCode'), define('fromCodePoint', 'FROM_CODE_POINT')],
+            mismatchCallback,
+            'replaceString'
+        );
+    };
+
+verify.MAPPER_FORMATTER =
+    function ()
+    {
+        function findAs(name, match)
+        {
+            var mapperFormatter;
+            entries.some(
+                function (entry)
+                {
+                    mapperFormatter = entry.definition;
+                    if (String(mapperFormatter).indexOf(match) >= 0)
+                        return true;
+                }
+            );
+            mapperFormatter.toString =
+                function ()
+                {
+                    return name;
+                };
+            return mapperFormatter;
+        }
+        
+        var entries = getEntries('MAPPER_FORMATTER');
+        var mapperFormatterDblArrow = findAs('mapperFormatterDblArrow', '=>');
+        var mapperFormatterDefault  = findAs('mapperFormatterDefault', 'function');
+        verifyDefinitions(
+            entries,
+            [define(mapperFormatterDefault), define(mapperFormatterDblArrow, 'ARROW')],
+            mismatchCallback,
+            function (formatter)
+            {
+                var expr = formatter('[undefined]');
+                var replacement = this.replaceExpr(expr);
+                return replacement;
+            }
+        );
+    };
+
 verify.OPTIMAL_B =
     function ()
     {
@@ -304,6 +332,16 @@ verify.OPTIMAL_B =
             'resolveCharacter'
         );
     };
+
+verify.byCharCodes = verifyCoder('byCharCodes');
+verify.byCharCodesRadix4 = verifyCoder('byCharCodesRadix4');
+verify.byDict = verifyCoder('byDict', 'byCharCodes');
+verify.byDictRadix3 = verifyCoder('byDictRadix3');
+verify.byDictRadix4 = verifyCoder('byDictRadix4');
+verify.byDictRadix4AmendedBy1 = verifyCoder('byDictRadix4AmendedBy1');
+verify.byDictRadix4AmendedBy2 = verifyCoder('byDictRadix4AmendedBy2');
+verify.byDictRadix5AmendedBy3 = verifyCoder('byDictRadix5AmendedBy3', 'byDictRadix4AmendedBy2');
+verify.byDblDict = verifyCoder('byDblDict');
 
 var routineName = process.argv[2];
 if (routineName != null)

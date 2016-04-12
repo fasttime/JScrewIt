@@ -7,8 +7,9 @@ CONSTANTS,
 CREATE_PARSE_INT_ARG,
 DEFAULT_CHARACTER_ENCODER,
 FROM_CHAR_CODE,
-GET_MAP_CALLBACK,
+FROM_CHAR_CODE_CALLBACK_FORMATTER,
 LEVEL_STRING,
+MAPPER_FORMATTER,
 OPTIMAL_B,
 SIMPLE,
 Empty,
@@ -507,9 +508,8 @@ var resolveSimple;
                     parseIntArg = 'undefined';
                 if (coerceToInt)
                     parseIntArg = '+' + parseIntArg;
-                mapper =
-                    'Function("return function(undefined){return this[parseInt(' + parseIntArg +
-                    ',' + radix + ')]}")()["bind"]';
+                var formatter = this.findBestDefinition(MAPPER_FORMATTER);
+                mapper = formatter('[parseInt(' + parseIntArg + ',' + radix + ')]');
             }
             else
                 mapper = '""["charAt"]["bind"]';
@@ -530,13 +530,11 @@ var resolveSimple;
         
         createLongCharCodesOutput: function (charCodeArrayStr, fromCharCode, arg)
         {
-            var getMapCallback = this.findBestDefinition(GET_MAP_CALLBACK);
-            var mapCallback = getMapCallback(fromCharCode, arg);
+            var formatter = this.findBestDefinition(FROM_CHAR_CODE_CALLBACK_FORMATTER);
+            var callback = formatter(fromCharCode, arg);
             var output =
                 charCodeArrayStr +
-                this.replaceExpr(
-                    '["map"](Function("return ' + mapCallback + '")())["join"]([])'
-                );
+                this.replaceExpr('["map"](Function("return ' + callback + '")())["join"]([])');
             return output;
         },
         
@@ -659,13 +657,10 @@ var resolveSimple;
                 );
             if (!keyFigureArrayStr)
                 return;
+            var formatter = this.findBestDefinition(MAPPER_FORMATTER);
+            var mapper = formatter('.indexOf(undefined)');
             var charIndexArrayStr =
-                this.createJSFuckArrayMapping(
-                    keyFigureArrayStr,
-                    'Function("return function(undefined){return this.indexOf(undefined)}")()' +
-                    '["bind"]',
-                    figureLegend
-                );
+                this.createJSFuckArrayMapping(keyFigureArrayStr, mapper, figureLegend);
             var output = this.createDictEncoding(legend, charIndexArrayStr, maxLength);
             return output;
         },
