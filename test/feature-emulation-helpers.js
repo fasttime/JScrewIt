@@ -360,6 +360,9 @@
         }
     }
     
+    var ARROW_REGEXP =
+        /(\([^(]*\)|[\w$]+)=>(\{.*?\}|(?:[^,()]|\((?:[^()]|\([^()]*\))*\))*)/g;
+    
     var EMU_FEATURE_INFOS =
     {
         ANY_DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object .*Document]$/),
@@ -387,16 +390,17 @@
                             {
                                 body =
                                     body.replace(
-                                        /(\([^(]*\))=>(\{.*?\}|(?:[^,()]|\(.*?\))*)/g,
+                                        ARROW_REGEXP,
                                         function (match, capture1, capture2)
                                         {
-                                            var body =
-                                                '(function' + capture1 +
-                                                (
-                                                    /^\{[\s\S]*\}$/.test(capture2) ?
-                                                    capture2 : '{return(' + capture2 + ')}'
-                                                ) +
-                                                ')';
+                                            var replacement1 =
+                                                /^\(.*\)$/.test(capture1) ?
+                                                capture1 : '(' + capture1 + ')';
+                                            var replacement2 =
+                                                /^\{[\s\S]*\}$/.test(capture2) ?
+                                                capture2 : '{return(' + capture2 + ')}';
+                                            var body = '(function' + replacement1 + replacement2 + ')';
+                                            console.log(capture1, capture2);
                                             return body;
                                         }
                                     );
