@@ -1290,7 +1290,7 @@ var createSolution;
                     }
                 ).join() +
                 '].reduce(function(falsefalse,NaN,undefined){return falsefalse.replace(NaN,' +
-                firstDigit + '+undefined)},arguments[0])';
+                firstDigit + '+undefined)},undefined)';
             return parseIntArg;
         };
     
@@ -1306,14 +1306,14 @@ var createSolution;
                     }
                 ).join() +
                 '].reduce((falsefalse,NaN,undefined)=>falsefalse.replace(NaN,' + firstDigit +
-                '+undefined),arguments[0])';
+                '+undefined),undefined)';
             return parseIntArg;
         };
     
     createParseIntArgDefault =
         function (amendings, firstDigit)
         {
-            var parseIntArg = 'arguments[0]';
+            var parseIntArg = 'undefined';
             for (var index = 0; index < amendings; ++index)
             {
                 var digit = firstDigit + index;

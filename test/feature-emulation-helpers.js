@@ -399,8 +399,8 @@
                                             var replacement2 =
                                                 /^\{[\s\S]*\}$/.test(capture2) ?
                                                 capture2 : '{return(' + capture2 + ')}';
-                                            var body = '(function' + replacement1 + replacement2 + ')';
-                                            console.log(capture1, capture2);
+                                            var body =
+                                                '(function' + replacement1 + replacement2 + ')';
                                             return body;
                                         }
                                     );

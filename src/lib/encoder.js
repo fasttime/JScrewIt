@@ -504,11 +504,12 @@ var resolveSimple;
                     parseIntArg = createParseIntArg(amendings, firstDigit);
                 }
                 else
-                    parseIntArg = 'arguments[0]';
+                    parseIntArg = 'undefined';
                 if (coerceToInt)
                     parseIntArg = '+' + parseIntArg;
                 mapper =
-                    'Function("return this[parseInt(' + parseIntArg + ',' + radix + ')]")["bind"]';
+                    'Function("return function(undefined){return this[parseInt(' + parseIntArg +
+                    ',' + radix + ')]}")()["bind"]';
             }
             else
                 mapper = '""["charAt"]["bind"]';
@@ -661,7 +662,8 @@ var resolveSimple;
             var charIndexArrayStr =
                 this.createJSFuckArrayMapping(
                     keyFigureArrayStr,
-                    'Function("return this.indexOf(arguments[0])")["bind"]',
+                    'Function("return function(undefined){return this.indexOf(undefined)}")()' +
+                    '["bind"]',
                     figureLegend
                 );
             var output = this.createDictEncoding(legend, charIndexArrayStr, maxLength);
