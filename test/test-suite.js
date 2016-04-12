@@ -163,18 +163,15 @@ self
                             if (entry.definition)
                             {
                                 var featureObj = getEntryFeature(entry);
-                                var emuFeatures = getEmuFeatureNames(featureObj);
-                                if (emuFeatures)
-                                {
-                                    it(
-                                        '(definition ' + index + ')',
-                                        function ()
-                                        {
-                                            var solution = decodeEntry(entry);
-                                            verifySolution(solution, complex, emuFeatures);
-                                        }
-                                    );
-                                }
+                                emuIt(
+                                    '(definition ' + index + ')',
+                                    featureObj,
+                                    function (emuFeatures)
+                                    {
+                                        var solution = decodeEntry(entry);
+                                        verifySolution(solution, complex, emuFeatures);
+                                    }
+                                );
                             }
                         }
                         
@@ -1291,6 +1288,18 @@ self
                         expect(eval(output)).toBe(input);
                     }
                 );
+                emuIt(
+                    'returns correct JSFuck with ARROW feature',
+                    Feature.ARROW,
+                    function (emuFeatures)
+                    {
+                        var encoder = JScrewIt.debug.createEncoder(Feature.ARROW);
+                        var input = 'Lorem ipsum dolor sit amet';
+                        var output = encoder.encodeByCharCodes(input, false, 4);
+                        expect(output).toBeJSFuck();
+                        expect(emuEval(emuFeatures, output)).toBe(input);
+                    }
+                );
                 it(
                     'returns undefined for too complex input',
                     function ()
@@ -1375,19 +1384,16 @@ self
                         function test(createParseIntArgName, features)
                         {
                             var featureObj = Feature(features);
-                            var emuFeatures = getEmuFeatureNames(featureObj);
-                            if (emuFeatures)
-                            {
-                                it(
-                                    createParseIntArgName,
-                                    function ()
-                                    {
-                                        var encoder = JScrewIt.debug.createEncoder(featureObj);
-                                        var output = encoder.encodeByDict(inputData, 5, 3);
-                                        expect(emuEval(emuFeatures, output)).toBe(input);
-                                    }
-                                );
-                            }
+                            emuIt(
+                                createParseIntArgName,
+                                featureObj,
+                                function (emuFeatures)
+                                {
+                                    var encoder = JScrewIt.debug.createEncoder(featureObj);
+                                    var output = encoder.encodeByDict(inputData, 5, 3);
+                                    expect(emuEval(emuFeatures, output)).toBe(input);
+                                }
+                            );
                         }
                         
                         var input = 'ABC';
@@ -1826,6 +1832,13 @@ self
         );
     }
     
+    function emuIt(description, featureObj, fn)
+    {
+        var emuFeatures = getEmuFeatureNames(featureObj);
+        if (emuFeatures)
+            it(description, fn.bind(null, emuFeatures));
+    }
+    
     function getEmuFeatureNames(featureObj)
     {
         var featureNames = featureObj.elementaryNames;
@@ -1926,52 +1939,45 @@ self
                     var featureObj = getEntryFeature(entry);
                     var usingDefaultFeature = Feature.DEFAULT.includes(featureObj);
                     defaultEntryFound |= usingDefaultFeature;
-                    var emuFeatures = getEmuFeatureNames(featureObj);
-                    if (emuFeatures)
-                    {
-                        it(
-                            '(definition ' + index + ')',
-                            function ()
+                    emuIt(
+                        '(definition ' + index + ')',
+                        featureObj,
+                        function (emuFeatures)
+                        {
+                            var solution = decodeEntry(entry);
+                            verifySolution(solution, char, emuFeatures);
+                            if (entry.definition.FB)
                             {
-                                var solution = decodeEntry(entry);
-                                verifySolution(solution, char, emuFeatures);
-                                if (entry.definition.FB)
-                                {
-                                    [
-                                        [],
-                                        ['IE_SRC'],
-                                        ['V8_SRC'],
-                                        ['NO_IE_SRC'],
-                                        ['NO_V8_SRC'],
-                                        ['NO_IE_SRC', 'NO_V8_SRC'],
-                                        ['FILL'],
-                                        ['FILL', 'IE_SRC'],
-                                        ['FILL', 'V8_SRC'],
-                                        ['FILL', 'NO_IE_SRC'],
-                                        ['FILL', 'NO_V8_SRC'],
-                                        ['FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
-                                    ].forEach(
-                                        function (additionalFeatureNames)
+                                [
+                                    [],
+                                    ['IE_SRC'],
+                                    ['V8_SRC'],
+                                    ['NO_IE_SRC'],
+                                    ['NO_V8_SRC'],
+                                    ['NO_IE_SRC', 'NO_V8_SRC'],
+                                    ['FILL'],
+                                    ['FILL', 'IE_SRC'],
+                                    ['FILL', 'V8_SRC'],
+                                    ['FILL', 'NO_IE_SRC'],
+                                    ['FILL', 'NO_V8_SRC'],
+                                    ['FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
+                                ].forEach(
+                                    function (additionalFeatureNames)
+                                    {
+                                        var augmentedFeatureObj =
+                                            Feature(featureObj, additionalFeatureNames);
+                                        var emuFeatures = getEmuFeatureNames(augmentedFeatureObj);
+                                        if (emuFeatures)
                                         {
-                                            var augmentedFeatureObj =
-                                                Feature(featureObj, additionalFeatureNames);
-                                            var emuFeatures =
-                                                getEmuFeatureNames(augmentedFeatureObj);
-                                            if (emuFeatures)
-                                            {
-                                                var solution =
-                                                    decodeEntryWithFeature(
-                                                        entry,
-                                                        augmentedFeatureObj
-                                                    );
-                                                verifySolution(solution, char, emuFeatures);
-                                            }
+                                            var solution =
+                                                decodeEntryWithFeature(entry, augmentedFeatureObj);
+                                            verifySolution(solution, char, emuFeatures);
                                         }
-                                    );
-                                }
+                                    }
+                                );
                             }
-                        );
-                    }
+                        }
+                    );
                 }
                 
                 var testDefault =
@@ -2017,26 +2023,23 @@ self
                     function (entry, index)
                     {
                         var featureObj = getEntryFeature(entry);
-                        var emuFeatures = getEmuFeatureNames(featureObj);
-                        if (emuFeatures)
-                        {
-                            it(
-                                '(definition ' + index + ')',
-                                function ()
-                                {
-                                    var output = String(decodeEntry(entry));
-                                    expect(output).toBeJSFuck();
-                                    emuDo(
-                                        emuFeatures,
-                                        function ()
-                                        {
-                                            var actual = eval(output);
-                                            validator.call(expect(actual));
-                                        }
-                                    );
-                                }
-                            );
-                        }
+                        emuIt(
+                            '(definition ' + index + ')',
+                            featureObj,
+                            function (emuFeatures)
+                            {
+                                var output = String(decodeEntry(entry));
+                                expect(output).toBeJSFuck();
+                                emuDo(
+                                    emuFeatures,
+                                    function ()
+                                    {
+                                        var actual = eval(output);
+                                        validator.call(expect(actual));
+                                    }
+                                );
+                            }
+                        );
                     }
                 );
             }
@@ -2120,17 +2123,14 @@ self
                             expect(JScrewIt.debug.maskIsEmpty(featureObj.mask)).toBe(false);
                         }
                     );
-                    var emuFeatures = getEmuFeatureNames(featureObj);
-                    if (emuFeatures)
-                    {
-                        it(
-                            'is checkable',
-                            function ()
-                            {
-                                expect(emuDo(emuFeatures, check)).toBeTruthy();
-                            }
-                        );
-                    }
+                    emuIt(
+                        'is checkable',
+                        featureObj,
+                        function (emuFeatures)
+                        {
+                            expect(emuDo(emuFeatures, check)).toBeTruthy();
+                        }
+                    );
                 }
             }
         );
