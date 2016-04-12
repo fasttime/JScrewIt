@@ -274,7 +274,7 @@ var resolveSimple;
                 var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
                 return output;
             },
-            41
+            39
         ),
         byDblDict: defineCoder
         (

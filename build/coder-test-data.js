@@ -87,7 +87,15 @@ module.exports =
         'byCharCodes'
     ),
     data(
-        ['CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'NO_IE_SRC', 'NO_V8_SRC'],
+        [
+            'ARROW',
+            'CAPITAL_HTML',
+            'ENTRIES_PLAIN',
+            'FILL',
+            'FROM_CODE_POINT',
+            'NO_IE_SRC',
+            'NO_V8_SRC'
+        ],
         function (length)
         {
             var CHAR_CODES =
