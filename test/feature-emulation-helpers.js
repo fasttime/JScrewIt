@@ -341,6 +341,24 @@
         context[typeName].adapters.push(adapter);
     }
     
+    function replaceArrowFunctions(expr)
+    {
+        expr =
+            expr.replace(
+                ARROW_REGEXP,
+                function (match, capture1, capture2)
+                {
+                    var replacement1 = /^\(.*\)$/.test(capture1) ? capture1 : '(' + capture1 + ')';
+                    var innerExpr = replaceArrowFunctions(capture2);
+                    var replacement2 =
+                        /^\{[\s\S]*\}$/.test(capture2) ? innerExpr : '{return(' + innerExpr + ')}';
+                    var replacement = '(function' + replacement1 + replacement2 + ')';
+                    return replacement;
+                }
+            );
+        return expr;
+    }
+    
     function restoreAll(properties, obj)
     {
         for (var name in properties)
@@ -361,7 +379,7 @@
     }
     
     var ARROW_REGEXP =
-        /(\([^(]*\)|[\w$]+)=>(\{.*?\}|(?:[^,()]|\((?:[^()]|\([^()]*\))*\))*)/g;
+        /(\([^(]*\)|[\w$]+)=>(\{.*?\}|(?:\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\)|[^,()])*)/g;
     
     var EMU_FEATURE_INFOS =
     {
@@ -387,24 +405,7 @@
                         function fixBody(body)
                         {
                             if (typeof body === 'string')
-                            {
-                                body =
-                                    body.replace(
-                                        ARROW_REGEXP,
-                                        function (match, capture1, capture2)
-                                        {
-                                            var replacement1 =
-                                                /^\(.*\)$/.test(capture1) ?
-                                                capture1 : '(' + capture1 + ')';
-                                            var replacement2 =
-                                                /^\{[\s\S]*\}$/.test(capture2) ?
-                                                capture2 : '{return(' + capture2 + ')}';
-                                            var body =
-                                                '(function' + replacement1 + replacement2 + ')';
-                                            return body;
-                                        }
-                                    );
-                            }
+                                body = replaceArrowFunctions(body);
                             return body;
                         }
                         
