@@ -114,7 +114,7 @@ module.exports =
         'byDict'
     ),
     data(
-        ['CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'V8_SRC'],
+        ['ARROW', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'V8_SRC'],
         createDictTestString.bind(null, 125),
         'byDictRadix3'
     ),
@@ -124,22 +124,38 @@ module.exports =
         'byDictRadix4'
     ),
     data(
-        ['CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'V8_SRC'],
+        ['ARROW', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'V8_SRC'],
         createDictTestString.bind(null, 129),
         'byDictRadix4AmendedBy1'
     ),
     data(
-        ['CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'V8_SRC'],
+        ['ARROW', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'V8_SRC'],
         createDictTestString.bind(null, 364),
         'byDictRadix4AmendedBy2'
     ),
     data(
-        ['BARPROP', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'NODECONSTRUCTOR', 'V8_SRC'],
+        [
+            'ARROW',
+            'BARPROP',
+            'ENTRIES_PLAIN',
+            'FILL',
+            'FROM_CODE_POINT',
+            'NODECONSTRUCTOR',
+            'V8_SRC'
+        ],
         createAntiRadix4TestString.bind(null, 473),
         'byDictRadix5AmendedBy3'
     ),
     data(
-        ['ARRAY_ITERATOR', 'CAPITAL_HTML', 'FILL', 'FROM_CODE_POINT', 'V8_SRC'],
+        [
+            'ARRAY_ITERATOR',
+            'ARROW',
+            'CAPITAL_HTML',
+            'FILL',
+            'FROM_CODE_POINT',
+            'NO_IE_SRC',
+            'NO_V8_SRC'
+        ],
         createDictTestString.bind(null, 103),
         'byDblDict'
     )

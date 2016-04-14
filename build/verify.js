@@ -132,6 +132,25 @@ function findCoderTestData(coderName)
     }
 }
 
+function findFunctionInEntries(entries, name, match)
+{
+    var fn;
+    entries.some(
+        function (entry)
+        {
+            fn = entry.definition;
+            if (String(fn).indexOf(match) >= 0)
+                return true;
+        }
+    );
+    fn.toString =
+        function ()
+        {
+            return name;
+        };
+    return fn;
+}
+
 function isCapital(name)
 {
     var capital = name.toUpperCase() === name;
@@ -235,21 +254,7 @@ verify.CREATE_PARSE_INT_ARG =
     {
         function findAs(name, match)
         {
-            var createParseIntArg;
-            entries.some(
-                function (entry)
-                {
-                    createParseIntArg = entry.definition;
-                    if (String(createParseIntArg).indexOf(match) >= 0)
-                        return true;
-                }
-            );
-            createParseIntArg.toString =
-                function ()
-                {
-                    return name;
-                };
-            return createParseIntArg;
+            return findFunctionInEntries(entries, name, match);
         }
         
         var entries = getEntries('CREATE_PARSE_INT_ARG');
@@ -284,26 +289,41 @@ verify.FROM_CHAR_CODE =
         );
     };
 
+verify.FROM_CHAR_CODE_CALLBACK_FORMATTER =
+    function ()
+    {
+        function findAs(name, match)
+        {
+            return findFunctionInEntries(entries, name, match);
+        }
+        
+        var entries = getEntries('FROM_CHAR_CODE_CALLBACK_FORMATTER');
+        var fromCharCodeCallbackFormatterArrow =
+            findAs('fromCharCodeCallbackFormatterArrow', '=>');
+        var fromCharCodeCallbackFormatterDefault =
+            findAs('fromCharCodeCallbackFormatterDefault', 'return');
+        verifyDefinitions(
+            entries,
+            [
+                define(fromCharCodeCallbackFormatterDefault),
+                define(fromCharCodeCallbackFormatterArrow, 'ARROW')
+            ],
+            mismatchCallback,
+            function (formatter)
+            {
+                var str = formatter('0');
+                var replacement = this.replaceString(str);
+                return replacement;
+            }
+        );
+    };
+
 verify.MAPPER_FORMATTER =
     function ()
     {
         function findAs(name, match)
         {
-            var mapperFormatter;
-            entries.some(
-                function (entry)
-                {
-                    mapperFormatter = entry.definition;
-                    if (String(mapperFormatter).indexOf(match) >= 0)
-                        return true;
-                }
-            );
-            mapperFormatter.toString =
-                function ()
-                {
-                    return name;
-                };
-            return mapperFormatter;
+            return findFunctionInEntries(entries, name, match);
         }
         
         var entries = getEntries('MAPPER_FORMATTER');

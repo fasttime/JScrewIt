@@ -284,7 +284,7 @@ var resolveSimple;
                 var output = this.encodeByDblDict(inputData, maxLength);
                 return output;
             },
-            411
+            410
         ),
         byDict: defineCoder
         (
@@ -311,7 +311,7 @@ var resolveSimple;
                 var output = this.encodeByDict(inputData, 4, 0, maxLength);
                 return output;
             },
-            258
+            222
         ),
         byDictRadix4AmendedBy1: defineCoder
         (
@@ -338,7 +338,7 @@ var resolveSimple;
                 var output = this.encodeByDict(inputData, 5, 3, maxLength);
                 return output;
             },
-            845
+            844
         ),
         plain: defineCoder
         (
