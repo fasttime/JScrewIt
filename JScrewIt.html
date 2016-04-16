@@ -53,6 +53,9 @@ different characters: ! ( ) + [ ]'>
 
 @-moz-document url-prefix() { #outputArea { white-space: pre-wrap; } } /* Hack for Firefox */
 
+/* Hack for newer versions of Chrome */
+@media screen and (-webkit-min-device-pixel-ratio: 0) { #outputArea { white-space: normal; } }
+
 #wrapWithCallBox { margin-left: 0; }
 
 a:link { color: #00c; text-decoration: none; }
