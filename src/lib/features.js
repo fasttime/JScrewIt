@@ -657,7 +657,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'A string representation of native functions typical for the V8 engine, but also ' +
-                'found in Microsoft Edge.\n' +
+                'found in Edge.\n' +
                 'Remarkable traits are the lack of characters in the beginning of the string ' +
                 'before "function" and a single whitespace before the "[native code]" sequence.',
             check: function ()
@@ -807,7 +807,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         EDGE:
         {
-            description: 'Features available in Microsoft Edge.',
+            description: 'Features available in Edge.',
             includes:
             [
                 'ARROW',

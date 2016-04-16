@@ -494,8 +494,8 @@
             {
                 // Workaround for IE9...
                 var console = global.console;
-                if (!Object.getPrototypeOf(console))
-                    global.console = Object.create(console);
+                if (!console || !Object.getPrototypeOf(console))
+                    global.console = Object.create(console || null);
                 // ...end of the workaround.
                 var toString =
                     function ()
