@@ -49,7 +49,7 @@ function createEngineSelectionBox()
             ]
         },
         {
-            name: 'Microsoft Edge',
+            name: 'Edge',
             versions:
             [
                 { feature: 'EDGE' }
