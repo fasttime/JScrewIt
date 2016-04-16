@@ -7,7 +7,9 @@ CONSTANTS,
 CREATE_PARSE_INT_ARG,
 DEFAULT_CHARACTER_ENCODER,
 FROM_CHAR_CODE,
+FROM_CHAR_CODE_CALLBACK_FORMATTER,
 LEVEL_STRING,
+MAPPER_FORMATTER,
 OPTIMAL_B,
 SIMPLE,
 Empty,
@@ -21,8 +23,7 @@ getFigure,
 hasOuterPlus,
 isArray,
 keys,
-maskIncludes,
-replaceDigit
+maskIncludes
 */
 
 var CODERS;
@@ -179,6 +180,23 @@ var resolveSimple;
         return strongBound;
     }
     
+    function replaceDigit(digit)
+    {
+        switch (digit)
+        {
+        case 0:
+            return '+[]';
+        case 1:
+            return '+!![]';
+        default:
+            var replacement = '!![]';
+            do
+                replacement += '+!![]';
+            while (--digit > 1);
+            return replacement;
+        }
+    }
+    
     function replaceToken(wholeMatch, number, quotedString, space, literal, offset, expr)
     {
         var replacement;
@@ -257,7 +275,7 @@ var resolveSimple;
                 var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
                 return output;
             },
-            45
+            39
         ),
         byDblDict: defineCoder
         (
@@ -266,7 +284,7 @@ var resolveSimple;
                 var output = this.encodeByDblDict(inputData, maxLength);
                 return output;
             },
-            411
+            410
         ),
         byDict: defineCoder
         (
@@ -293,7 +311,7 @@ var resolveSimple;
                 var output = this.encodeByDict(inputData, 4, 0, maxLength);
                 return output;
             },
-            258
+            222
         ),
         byDictRadix4AmendedBy1: defineCoder
         (
@@ -320,7 +338,7 @@ var resolveSimple;
                 var output = this.encodeByDict(inputData, 5, 3, maxLength);
                 return output;
             },
-            845
+            844
         ),
         plain: defineCoder
         (
@@ -426,10 +444,10 @@ var resolveSimple;
             if (radix)
             {
                 output =
-                    charCodeArrayStr +
-                    this.replaceExpr(
-                        '["map"](Function("return String.' + fromCharCode +
-                        '(parseInt(arguments[0],' + radix + '))"))["join"]([])'
+                    this.createLongCharCodesOutput(
+                        charCodeArrayStr,
+                        fromCharCode,
+                        'parseInt(undefined,' + radix + ')'
                     );
             }
             else
@@ -437,11 +455,7 @@ var resolveSimple;
                 if (long)
                 {
                     output =
-                        charCodeArrayStr +
-                        this.replaceExpr(
-                            '["map"](Function("return String.' + fromCharCode +
-                            '(arguments[0])"))["join"]([])'
-                        );
+                        this.createLongCharCodesOutput(charCodeArrayStr, fromCharCode, 'undefined');
                 }
                 else
                 {
@@ -491,11 +505,11 @@ var resolveSimple;
                     parseIntArg = createParseIntArg(amendings, firstDigit);
                 }
                 else
-                    parseIntArg = 'arguments[0]';
+                    parseIntArg = 'undefined';
                 if (coerceToInt)
                     parseIntArg = '+' + parseIntArg;
-                mapper =
-                    'Function("return this[parseInt(' + parseIntArg + ',' + radix + ')]")["bind"]';
+                var formatter = this.findBestDefinition(MAPPER_FORMATTER);
+                mapper = formatter('[parseInt(' + parseIntArg + ',' + radix + ')]');
             }
             else
                 mapper = '""["charAt"]["bind"]';
@@ -512,6 +526,16 @@ var resolveSimple;
                 arrayStr + this.replaceExpr('["map"]') + '(' + this.replaceExpr(mapper) + '(' +
                 legend + '))';
             return result;
+        },
+        
+        createLongCharCodesOutput: function (charCodeArrayStr, fromCharCode, arg)
+        {
+            var formatter = this.findBestDefinition(FROM_CHAR_CODE_CALLBACK_FORMATTER);
+            var callback = formatter(fromCharCode, arg);
+            var output =
+                charCodeArrayStr +
+                this.replaceExpr('["map"](Function("return ' + callback + '")())["join"]([])');
+            return output;
         },
         
         createStringTokenPattern: function ()
@@ -633,12 +657,10 @@ var resolveSimple;
                 );
             if (!keyFigureArrayStr)
                 return;
+            var formatter = this.findBestDefinition(MAPPER_FORMATTER);
+            var mapper = formatter('.indexOf(undefined)');
             var charIndexArrayStr =
-                this.createJSFuckArrayMapping(
-                    keyFigureArrayStr,
-                    'Function("return this.indexOf(arguments[0])")["bind"]',
-                    figureLegend
-                );
+                this.createJSFuckArrayMapping(keyFigureArrayStr, mapper, figureLegend);
             var output = this.createDictEncoding(legend, charIndexArrayStr, maxLength);
             return output;
         },

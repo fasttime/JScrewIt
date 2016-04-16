@@ -8,6 +8,7 @@ console,
 create,
 defineProperty,
 document,
+freeze,
 history,
 isArray,
 keys,
@@ -24,8 +25,8 @@ statusbar
 var Feature;
 
 var featureFromMask;
+var featuresToMask;
 var isMaskCompatible;
-var maskFromArray;
 var validMaskFromArrayOrStringOrFeature;
 
 (function ()
@@ -37,7 +38,7 @@ var validMaskFromArrayOrStringOrFeature;
         var compatible;
         if (features.length > 1)
         {
-            var mask = maskFromArray(features);
+            var mask = featureArrayToMask(features);
             compatible = isMaskCompatible(mask);
         }
         else
@@ -166,19 +167,32 @@ var validMaskFromArrayOrStringOrFeature;
             create(
                 Feature.prototype,
                 {
-                    attributes: { value: Object.freeze(attributes || { }) },
+                    attributes: { value: freeze(attributes || { }) },
                     check: { value: check },
                     description: { value: description },
-                    mask: { value: Object.freeze(mask) },
                     name: { value: name }
                 }
             );
+        initMask(featureObj, mask);
         return featureObj;
+    }
+    
+    function featureArrayToMask(array)
+    {
+        var mask = maskNew();
+        array.forEach(
+            function (feature)
+            {
+                var otherMask = maskFromStringOrFeature(feature);
+                maskOr(mask, otherMask);
+            }
+        );
+        return mask;
     }
     
     function initMask(featureObj, mask)
     {
-        defineProperty(featureObj, 'mask', { value: Object.freeze(mask) });
+        defineProperty(featureObj, 'mask', { value: freeze(mask) });
     }
     
     function isExcludingAttribute(attributeCache, attributeName, featureObjs)
@@ -235,22 +249,15 @@ var validMaskFromArrayOrStringOrFeature;
             args,
             function (arg)
             {
+                var otherMask;
                 if (isArray(arg))
                 {
-                    arg.forEach(
-                        function (arg)
-                        {
-                            var otherMask = maskFromStringOrFeature(arg);
-                            maskOr(mask, otherMask);
-                        }
-                    );
+                    otherMask = featureArrayToMask(arg);
                     validationNeeded |= arg.length > 1;
                 }
                 else
-                {
-                    var otherMask = maskFromStringOrFeature(arg);
-                    maskOr(mask, otherMask);
-                }
+                    otherMask = maskFromStringOrFeature(arg);
+                maskOr(mask, otherMask);
             }
         );
         validationNeeded |= args.length > 1;
@@ -650,7 +657,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'A string representation of native functions typical for the V8 engine, but also ' +
-                'found in Microsoft Edge.\n' +
+                'found in Edge.\n' +
                 'Remarkable traits are the lack of characters in the beginning of the string ' +
                 'before "function" and a single whitespace before the "[native code]" sequence.',
             check: function ()
@@ -678,7 +685,7 @@ var validMaskFromArrayOrStringOrFeature;
         
         DEFAULT:
         {
-            description: 'Minimun feature level, compatible with all supported engines.'
+            description: 'Minimum feature level, compatible with all supported engines.'
         },
         COMPACT:
         {
@@ -800,7 +807,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         EDGE:
         {
-            description: 'Features available in Microsoft Edge.',
+            description: 'Features available in Edge.',
             includes:
             [
                 'ARROW',
@@ -1438,6 +1445,19 @@ var validMaskFromArrayOrStringOrFeature;
             return featureObj;
         };
     
+    featuresToMask =
+        function (featureObjs)
+        {
+            var mask = maskNew();
+            featureObjs.forEach(
+                function (featureObj)
+                {
+                    maskOr(mask, featureObj.mask);
+                }
+            );
+            return mask;
+        };
+    
     isMaskCompatible =
         function (mask)
         {
@@ -1452,34 +1472,13 @@ var validMaskFromArrayOrStringOrFeature;
             return result;
         };
     
-    maskFromArray =
-        function (features)
-        {
-            var mask = maskNew();
-            features.forEach(
-                function (arg)
-                {
-                    var otherMask = maskFromStringOrFeature(arg);
-                    maskOr(mask, otherMask);
-                }
-            );
-            return mask;
-        };
-    
     validMaskFromArrayOrStringOrFeature =
         function (arg)
         {
             var mask;
             if (isArray(arg))
             {
-                mask = maskNew();
-                arg.forEach(
-                    function (arg)
-                    {
-                        var otherMask = maskFromStringOrFeature(arg);
-                        maskOr(mask, otherMask);
-                    }
-                );
+                mask = featureArrayToMask(arg);
                 if (arg.length > 1)
                     validateMask(mask);
             }

@@ -1,4 +1,4 @@
-/* global maskFromArray */
+/* global featuresToMask */
 
 var createDefinitionEntry;
 var define;
@@ -11,7 +11,7 @@ var define;
         function (definition, featureArgs, startIndex)
         {
             var features = Array.prototype.slice.call(featureArgs, startIndex);
-            var mask = maskFromArray(features);
+            var mask = featuresToMask(features);
             var entry = { definition: definition, mask: mask };
             return entry;
         };
