@@ -41,7 +41,7 @@ var ENGINE_ENTRIES =
         ]
     },
     {
-        name: 'Microsoft Edge',
+        name: 'Edge',
         versions:
         [
             { feature: 'EDGE' }

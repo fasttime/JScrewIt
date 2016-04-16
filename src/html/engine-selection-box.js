@@ -1,5 +1,5 @@
 /* exported createEngineSelectionBox */
-/* global art, JScrewIt */
+/* global JScrewIt, art */
 /* jshint browser: true */
 
 function createEngineSelectionBox()
@@ -49,7 +49,7 @@ function createEngineSelectionBox()
             ]
         },
         {
-            name: 'Microsoft Edge',
+            name: 'Edge',
             versions:
             [
                 { feature: 'EDGE' }

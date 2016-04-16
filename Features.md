@@ -14,12 +14,12 @@ Features available in Android Browser 4.4.2 or later.
 ### `ANY_DOCUMENT`
 Existence of the global object property document whose string representation starts with "\[object " and ends with "Document\]".
 
-_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers._
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Edge and Android Browser. This feature is not available inside web workers._
 <a name="ANY_WINDOW"></a>
 ### `ANY_WINDOW`
 Existence of the global object property self whose string representation starts with "\[object " and ends with "Window\]".
 
-_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers._
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Edge and Android Browser. This feature is not available inside web workers._
 <a name="ARRAY_ITERATOR"></a>
 ### `ARRAY_ITERATOR`
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
@@ -29,12 +29,12 @@ _Available in Firefox, Chrome, Safari 7.1+, Opera and Node.js 0.12+._
 ### `ARROW`
 Support for arrow functions.
 
-_Available in Firefox, Chrome, Opera, Microsoft Edge and Node.js 4+._
+_Available in Firefox, Chrome, Opera, Edge and Node.js 4+._
 <a name="ATOB"></a>
 ### `ATOB`
 Existence of the global object functions atob and btoa.
 
-_Available in Firefox, Chrome, Internet Explorer 10+, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers in Safari._
+_Available in Firefox, Chrome, Internet Explorer 10+, Safari, Opera, Edge and Android Browser. This feature is not available inside web workers in Safari._
 <a name="AUTO"></a>
 ### `AUTO`
 All features available in the current engine.
@@ -42,7 +42,7 @@ All features available in the current engine.
 ### `BARPROP`
 Existence of the global object property statusbar having the string representation "\[object BarProp\]"
 
-_Available in Firefox, Chrome, Safari, Opera, Microsoft Edge and Android Browser 4.4.2+. This feature is not available inside web workers._
+_Available in Firefox, Chrome, Safari, Opera, Edge and Android Browser 4.4.2+. This feature is not available inside web workers._
 <a name="CAPITAL_HTML"></a>
 ### `CAPITAL_HTML`
 The property that the various string methods returning HTML code such as String.prototype.big or String.prototype.link have both the tag name and attributes written in capital letters.
@@ -63,10 +63,10 @@ No support for Node.js and older browsers like Internet Explorer, Safari 8 or An
 Existence of the global object property console having the string representation "\[object Console\]".
 This feature may become unavailable when Firebug or Firebug Lite is open and the console panel is enabled.
 
-_Available in Firefox, Chrome, Internet Explorer 10+, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers in Chrome, Safari before 7.1+, Opera and Android Browser 4.4.2+._
+_Available in Firefox, Chrome, Internet Explorer 10+, Safari, Opera, Edge and Android Browser. This feature is not available inside web workers in Chrome, Safari before 7.1+, Opera and Android Browser 4.4.2+._
 <a name="DEFAULT"></a>
 ### `DEFAULT`
-Minimun feature level, compatible with all supported engines.
+Minimum feature level, compatible with all supported engines.
 <a name="DOCUMENT"></a>
 ### `DOCUMENT`
 Existence of the global object property document having the string representation "\[object Document\]".
@@ -79,17 +79,17 @@ Existence of the global object property self having the string representation "\
 _Available in Android Browser before 4.4.2+. This feature is not available inside web workers._
 <a name="EDGE"></a>
 ### `EDGE`
-Features available in Microsoft Edge.
+Features available in Edge.
 <a name="ENTRIES_OBJ"></a>
 ### `ENTRIES_OBJ`
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object ".
 
-_Available in Firefox, Chrome, Safari 7.1+, Opera, Microsoft Edge and Node.js 0.12+._
+_Available in Firefox, Chrome, Safari 7.1+, Opera, Edge and Node.js 0.12+._
 <a name="ENTRIES_PLAIN"></a>
 ### `ENTRIES_PLAIN`
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Object\]".
 
-_Available in Microsoft Edge._
+_Available in Edge._
 <a name="ESC_HTML_ALL"></a>
 ### `ESC_HTML_ALL`
 The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
@@ -99,12 +99,12 @@ _Available in Android Browser and Node.js before 0.12+._
 ### `ESC_HTML_QUOT`
 The property that double quotation marks in the argument of String.prototype.fontcolor are escaped as "\&quot;".
 
-_Available in Firefox, Chrome, Safari, Opera, Microsoft Edge, Android Browser and Node.js._
+_Available in Firefox, Chrome, Safari, Opera, Edge, Android Browser and Node.js._
 <a name="ESC_HTML_QUOT_ONLY"></a>
 ### `ESC_HTML_QUOT_ONLY`
 The property that only double quotation marks and no other characters in the argument of String.prototype.fontcolor are escaped into HTML entities.
 
-_Available in Firefox, Chrome, Safari, Opera, Microsoft Edge and Node.js 0.12+._
+_Available in Firefox, Chrome, Safari, Opera, Edge and Node.js 0.12+._
 <a name="FF"></a>
 ### `FF`
 _An alias for [`FF31`](#FF31)._
@@ -115,23 +115,23 @@ Features available in Firefox 31 or later.
 ### `FILL`
 Existence of the native function Array.prototype.fill.
 
-_Available in Firefox, Chrome, Safari 7.1+, Opera, Microsoft Edge and Node.js 4+._
+_Available in Firefox, Chrome, Safari 7.1+, Opera, Edge and Node.js 4+._
 <a name="FROM_CODE_POINT"></a>
 ### `FROM_CODE_POINT`
 Existence of the function String.fromCodePoint.
 
-_Available in Firefox, Chrome, Safari 9.0+, Opera, Microsoft Edge and Node.js 4+._
+_Available in Firefox, Chrome, Safari 9.0+, Opera, Edge and Node.js 4+._
 <a name="GMT"></a>
 ### `GMT`
 Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
 Although ECMAScript states that string representation of dates is implementation dependent, most engines align to the same format, making this feature available in all supported engines except Internet Explorer 9 and 10.
 
-_Available in Firefox, Chrome, Internet Explorer 11, Safari, Opera, Microsoft Edge, Android Browser and Node.js._
+_Available in Firefox, Chrome, Internet Explorer 11, Safari, Opera, Edge, Android Browser and Node.js._
 <a name="HISTORY"></a>
 ### `HISTORY`
 Existence of the global object property history having the string representation "\[object History\]"
 
-_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers._
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Edge and Android Browser. This feature is not available inside web workers._
 <a name="HTMLAUDIOELEMENT"></a>
 ### `HTMLAUDIOELEMENT`
 Existence of the global object property Audio whose string representation starts with "function HTMLAudioElement".
@@ -141,7 +141,7 @@ _Available in Chrome, Opera and Android Browser 4.4.2+. This feature is not avai
 ### `HTMLDOCUMENT`
 Existence of the global object property document having the string representation "\[object HTMLDocument\]".
 
-_Available in Firefox, Chrome, Internet Explorer 11, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers._
+_Available in Firefox, Chrome, Internet Explorer 11, Safari, Opera, Edge and Android Browser. This feature is not available inside web workers._
 <a name="IE10"></a>
 ### `IE10`
 Features available in Internet Explorer 10 or later.
@@ -164,17 +164,17 @@ _Available in Internet Explorer._
 ### `INTL`
 Existence of the global object property Intl.
 
-_Available in Firefox, Chrome, Internet Explorer 11, Opera, Microsoft Edge, Android Browser 4.4.2+ and Node.js 0.12+._
+_Available in Firefox, Chrome, Internet Explorer 11, Opera, Edge, Android Browser 4.4.2+ and Node.js 0.12+._
 <a name="LOCALE_INFINITY"></a>
 ### `LOCALE_INFINITY`
 Language sensitive string representation of Infinity as "∞".
 
-_Available in Firefox, Chrome, Internet Explorer 11 on Windows 10, Opera, Microsoft Edge, Android Browser 4.4.2+ and Node.js 0.12+._
+_Available in Firefox, Chrome, Internet Explorer 11 on Windows 10, Opera, Edge, Android Browser 4.4.2+ and Node.js 0.12+._
 <a name="NAME"></a>
 ### `NAME`
 Existence of the name property for functions.
 
-_Available in Firefox, Chrome, Safari, Opera, Microsoft Edge, Android Browser and Node.js._
+_Available in Firefox, Chrome, Safari, Opera, Edge, Android Browser and Node.js._
 <a name="NODE010"></a>
 ### `NODE010`
 Features available in Node.js 0.10.
@@ -194,7 +194,7 @@ _Available in Safari. This feature is not available inside web workers._
 A string representation of native functions typical for most engines with the notable exception of Internet Explorer.
 A remarkable trait of this feature is the lack of extra characters in the beginning of the string before "function".
 
-_Available in Firefox, Chrome, Safari, Opera, Microsoft Edge, Android Browser and Node.js._
+_Available in Firefox, Chrome, Safari, Opera, Edge, Android Browser and Node.js._
 <a name="NO_OLD_SAFARI_ARRAY_ITERATOR"></a>
 ### `NO_OLD_SAFARI_ARRAY_ITERATOR`
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
@@ -205,7 +205,7 @@ _Available in Firefox, Chrome, Safari 9.0+, Opera and Node.js 0.12+._
 A string representation of dynamically generated functions typical for most engines with the notable exception of Safari versions prior to 9.
 More specifically, in this representation, the character at index 22 is a line feed \("\\n"\).
 
-_Available in Firefox, Chrome, Internet Explorer, Safari 9.0+, Opera, Microsoft Edge, Android Browser and Node.js._
+_Available in Firefox, Chrome, Internet Explorer, Safari 9.0+, Opera, Edge, Android Browser and Node.js._
 <a name="NO_V8_SRC"></a>
 ### `NO_V8_SRC`
 A string representation of native functions typical for most engines except V8.
@@ -231,24 +231,24 @@ _An alias for [`ANY_WINDOW`](#ANY_WINDOW)._
 ### `SELF_OBJ`
 Existence of the global object property self whose string representation starts with "\[object ".
 
-_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser. This feature is not available inside web workers in Safari 7.1+._
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Edge and Android Browser. This feature is not available inside web workers in Safari 7.1+._
 <a name="UNDEFINED"></a>
 ### `UNDEFINED`
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
 This behavior is specified by ECMAScript, and is supported by all engines except Android Browser versions prior to 4.1.2, where this feature is not available.
 
-_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge, Android Browser 4.1.2+ and Node.js._
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Edge, Android Browser 4.1.2+ and Node.js._
 <a name="V8_SRC"></a>
 ### `V8_SRC`
-A string representation of native functions typical for the V8 engine, but also found in Microsoft Edge.
+A string representation of native functions typical for the V8 engine, but also found in Edge.
 Remarkable traits are the lack of characters in the beginning of the string before "function" and a single whitespace before the "\[native code\]" sequence.
 
-_Available in Chrome, Opera, Microsoft Edge, Android Browser and Node.js._
+_Available in Chrome, Opera, Edge, Android Browser and Node.js._
 <a name="WINDOW"></a>
 ### `WINDOW`
 Existence of the global object property self having the string representation "\[object Window\]".
 
-_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Microsoft Edge and Android Browser 4.4.2+. This feature is not available inside web workers._
+_Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Edge and Android Browser 4.4.2+. This feature is not available inside web workers._
 ## Engine Support
 This table lists features available in the most common engines.
 <table>
@@ -376,7 +376,7 @@ This table lists features available in the most common engines.
 </td>
 </tr>
 <tr>
-<td>Microsoft Edge</td>
+<td>Edge</td>
 <td>
 <ul>
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)

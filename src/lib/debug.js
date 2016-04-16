@@ -9,6 +9,8 @@ CONSTANTS,
 CREATE_PARSE_INT_ARG,
 DEBUG,
 FROM_CHAR_CODE,
+FROM_CHAR_CODE_CALLBACK_FORMATTER,
+MAPPER_FORMATTER,
 OPTIMAL_B,
 Empty,
 Encoder,
@@ -18,6 +20,7 @@ assignNoEnum,
 create,
 define,
 featureFromMask,
+freeze,
 getValidFeatureMask,
 hasOuterPlus,
 isArray,
@@ -72,7 +75,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         function createEntryClone(definition, mask)
         {
             if (typeof definition === 'object')
-                definition = Object.freeze(definition);
+                definition = freeze(definition);
             mask = mask.slice();
             var entry = { definition: definition, mask: mask };
             return entry;
@@ -132,14 +135,16 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         
         // Exported entries
         var ENTRIES = new Empty();
-        ENTRIES['BASE64_ALPHABET_HI_4:0']   = BASE64_ALPHABET_HI_4[0];
-        ENTRIES['BASE64_ALPHABET_HI_4:4']   = BASE64_ALPHABET_HI_4[4];
-        ENTRIES['BASE64_ALPHABET_HI_4:5']   = BASE64_ALPHABET_HI_4[5];
-        ENTRIES['BASE64_ALPHABET_LO_4:1']   = BASE64_ALPHABET_LO_4[1];
-        ENTRIES['BASE64_ALPHABET_LO_4:3']   = BASE64_ALPHABET_LO_4[3];
-        ENTRIES.CREATE_PARSE_INT_ARG        = CREATE_PARSE_INT_ARG;
-        ENTRIES.FROM_CHAR_CODE              = FROM_CHAR_CODE;
-        ENTRIES.OPTIMAL_B                   = OPTIMAL_B;
+        ENTRIES['BASE64_ALPHABET_HI_4:0']           = BASE64_ALPHABET_HI_4[0];
+        ENTRIES['BASE64_ALPHABET_HI_4:4']           = BASE64_ALPHABET_HI_4[4];
+        ENTRIES['BASE64_ALPHABET_HI_4:5']           = BASE64_ALPHABET_HI_4[5];
+        ENTRIES['BASE64_ALPHABET_LO_4:1']           = BASE64_ALPHABET_LO_4[1];
+        ENTRIES['BASE64_ALPHABET_LO_4:3']           = BASE64_ALPHABET_LO_4[3];
+        ENTRIES.CREATE_PARSE_INT_ARG                = CREATE_PARSE_INT_ARG;
+        ENTRIES.FROM_CHAR_CODE                      = FROM_CHAR_CODE;
+        ENTRIES.FROM_CHAR_CODE_CALLBACK_FORMATTER   = FROM_CHAR_CODE_CALLBACK_FORMATTER;
+        ENTRIES.MAPPER_FORMATTER                    = MAPPER_FORMATTER;
+        ENTRIES.OPTIMAL_B                           = OPTIMAL_B;
         
         var debug =
             assignNoEnum(
