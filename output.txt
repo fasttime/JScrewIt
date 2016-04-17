@@ -16,11 +16,13 @@ Character "\n"
   667 |  2 | FILL, NO_IE_SRC, NO_OLD_SAFARI_LF
   111 |  4 | FILL, NO_IE_SRC, NO_V8_SRC
  1091 |  2 | FILL, NO_OLD_SAFARI_LF
+  212 |  4 | FILL, NO_V8_SRC
   133 |  1 | IE_SRC
   862 |  0 | NO_IE_SRC
   857 |  2 | NO_IE_SRC, NO_OLD_SAFARI_LF
   146 |  3 | NO_IE_SRC, NO_V8_SRC
  1433 |  2 | NO_OLD_SAFARI_LF
+  287 |  3 | NO_V8_SRC
 
 Character "\u001e"
 11286 |  - | DEFAULT
