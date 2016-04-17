@@ -391,9 +391,10 @@ var createSolution;
             ];
             break;
         case 9:
+        case 19:
             entries =
             [
-                define({ block: 'RP_1_NO', indexer: '1 + FH_SHIFT_1' }),
+                define({ block: 'RP_1_NO', indexer: (index + 1) / 10 + ' + FH_SHIFT_1' }),
                 define(1, NO_IE_SRC),
                 define(0, IE_SRC)
             ];
@@ -425,6 +426,12 @@ var createSolution;
             [
                 define(5),
                 define(4, IE_SRC)
+            ];
+            break;
+        case 17:
+            entries =
+            [
+                define(3)
             ];
             break;
         }
@@ -613,8 +620,8 @@ var createSolution;
             define('(Function() + [])["23"]'),
             define('(ANY_FUNCTION + [])[0]', IE_SRC),
             define('(Function() + [])["22"]', NO_OLD_SAFARI_LF),
-            define('(RP_1_NO + FILTER)["20"]', NO_IE_SRC, NO_V8_SRC),
-            define('(RP_3_NO + FILL)["20"]', FILL, NO_IE_SRC, NO_V8_SRC)
+            defineFHCharAt('FILTER', 19, NO_V8_SRC),
+            defineFHCharAt('FILL', 17, FILL, NO_V8_SRC)
         ],
         
         '\x1e':
@@ -1282,13 +1289,13 @@ var createSolution;
         // constant should be placed in the beginning whenever possible in order to save an extra
         // pair of brackets in the resolved expressions.
         
-        RP_0_S:         '[]',
-        RP_1_NO:        '0',
-        RP_2_SO:        '"00"',
-        RP_3_NO:        'NaN',
-        RP_4_N:         'true',
-        RP_5_N:         'false',
-        RP_6_SO:        '"0false"',
+        RP_0_S:     '[]',
+        RP_1_NO:    '0',
+        RP_2_SO:    '"00"',
+        RP_3_NO:    'NaN',
+        RP_4_N:     'true',
+        RP_5_N:     'false',
+        RP_6_SO:    '"0false"',
     });
     
     var createParseIntArgByReduce =
