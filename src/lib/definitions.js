@@ -642,9 +642,8 @@ var createSolution;
         [
             define('escape(FILTER)["20"]'),
             define('atob("000l")[2]', ATOB),
-            define('escape(ANY_FUNCTION)[0]', IE_SRC),
-            define('escape(false + FILL)["20"]', FILL, NO_IE_SRC),
-            define('escape(FILL)["21"]', FILL, NO_V8_SRC)
+            define('escape(FILL)["21"]', FILL),
+            define('escape(ANY_FUNCTION)[0]', IE_SRC)
         ],
         '&':
         [
