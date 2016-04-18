@@ -159,8 +159,10 @@
                     var createElement =
                         function (tagName)
                         {
-                            if ((tagName + '').toLowerCase() === 'video')
-                                return '[object HTMLVideoElement]';
+                            var str =
+                                (tagName + '').toLowerCase() === 'video' ?
+                                '[object HTMLVideoElement]' : '[object HTMLUnknownElement]';
+                            return str;
                         };
                     override(this, 'document', { value: { createElement: createElement } });
                 }
