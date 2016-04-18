@@ -130,11 +130,12 @@ var createSolution;
         'FHP_5_N + [RP_1_NO]',
         'FHP_3_NO + [RP_4_N]',
         'FHP_3_NO + [RP_5_N]',
+        'FHP_5_N + [RP_4_N]',
     ];
     
     var R_PADDINGS =
     [
-        '[]',
+        'RP_0_S',
         'RP_1_NO',
         ,
         'RP_3_NO',
@@ -402,6 +403,7 @@ var createSolution;
         case 11:
             entries =
             [
+                define(9),
                 define(0, NO_IE_SRC),
                 define(0, IE_SRC)
             ];
@@ -944,9 +946,8 @@ var createSolution;
         'l': '"false"[2]',
         'm':
         [
-            define('(RP_6_SO + Function())["20"]'),
-            defineFHCharAt('Number', 11, IE_SRC),
-            defineFHCharAt('Number', 11, NO_IE_SRC)
+            defineFHCharAt('Number', 11),
+            define('(RP_6_SO + Function())["20"]')
         ],
         'n': '"undefined"[1]',
         'o':
