@@ -155,7 +155,15 @@
                         return;
                 }
                 else
-                    override(this, 'document', { value: { } });
+                {
+                    var createElement =
+                        function (tagName)
+                        {
+                            if ((tagName + '').toLowerCase() === 'video')
+                                return '[object HTMLVideoElement]';
+                        };
+                    override(this, 'document', { value: { createElement: createElement } });
+                }
                 var valueOf =
                     function ()
                     {
