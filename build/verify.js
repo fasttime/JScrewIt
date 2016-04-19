@@ -252,22 +252,10 @@ verify['BASE64_ALPHABET_LO_4:3'] =
 verify.CREATE_PARSE_INT_ARG =
     function ()
     {
-        function findAs(name, match)
-        {
-            return findFunctionInEntries(entries, name, match);
-        }
-        
         var entries = getEntries('CREATE_PARSE_INT_ARG');
-        var createParseIntArgByReduce       = findAs('createParseIntArgByReduce', '{return');
-        var createParseIntArgByReduceArrow  = findAs('createParseIntArgByReduceArrow', '=>');
-        var createParseIntArgDefault        = JScrewIt.debug.createParseIntArgDefault;
         verifyDefinitions(
             entries,
-            [
-                define(createParseIntArgDefault),
-                define(createParseIntArgByReduce),
-                define(createParseIntArgByReduceArrow, 'ARROW')
-            ],
+            entries.availableEntries,
             mismatchCallback,
             function (createParseIntArg)
             {

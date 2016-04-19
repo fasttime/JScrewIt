@@ -14,10 +14,13 @@ MAPPER_FORMATTER,
 OPTIMAL_B,
 Empty,
 Encoder,
+Feature,
 JScrewIt,
 ScrewBuffer,
 assignNoEnum,
 create,
+createParseIntArgByReduce,
+createParseIntArgByReduceArrow,
 createParseIntArgDefault,
 define,
 featureFromMask,
@@ -42,27 +45,34 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
     {
         'use strict';
         
-        function cloneEntries(entries)
+        function cloneEntries(inputEntries)
         {
-            if (entries)
+            var outputEntries;
+            if (inputEntries)
             {
-                var singleton = !isArray(entries);
+                var singleton = !isArray(inputEntries);
                 if (singleton)
-                    entries = [createEntryClone(entries, [0, 0])];
+                    outputEntries = [createEntryClone(inputEntries, [0, 0])];
                 else
                 {
-                    entries =
-                        entries.map(
+                    outputEntries =
+                        inputEntries.map(
                             function (entry)
                             {
                                 entry = createEntryClone(entry.definition, entry.mask);
                                 return entry;
                             }
                         );
+                    Object.keys(inputEntries).forEach(
+                        function (name)
+                        {
+                            outputEntries[name] = inputEntries[name];
+                        }
+                    );
                 }
-                entries.singleton = singleton;
+                outputEntries.singleton = singleton;
             }
-            return entries;
+            return outputEntries;
         }
         
         function createEncoder(features)
@@ -134,6 +144,13 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             return entries;
         }
         
+        CREATE_PARSE_INT_ARG.availableEntries =
+        [
+            define(createParseIntArgDefault),
+            define(createParseIntArgByReduce),
+            define(createParseIntArgByReduceArrow, Feature.ARROW)
+        ];
+        
         // Exported entries
         var ENTRIES = new Empty();
         ENTRIES['BASE64_ALPHABET_HI_4:0']           = BASE64_ALPHABET_HI_4[0];
@@ -151,24 +168,23 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             assignNoEnum(
                 { },
                 {
-                    createEncoder:              createEncoder,
-                    createFeatureFromMask:      createFeatureFromMask,
-                    createParseIntArgDefault:   createParseIntArgDefault,
-                    createScrewBuffer:          createScrewBuffer,
-                    defineConstant:             defineConstant,
-                    getCharacterEntries:        getCharacterEntries,
-                    getCoders:                  getCoders,
-                    getComplexEntries:          getComplexEntries,
-                    getConstantEntries:         getConstantEntries,
-                    getEntries:                 getEntries,
-                    hasOuterPlus:               hasOuterPlus,
-                    maskAnd:                    maskAnd,
-                    maskIncludes:               maskIncludes,
-                    maskIsEmpty:                maskIsEmpty,
-                    maskNew:                    maskNew,
-                    maskUnion:                  maskUnion,
-                    setUp:                      setUp,
-                    trimJS:                     trimJS,
+                    createEncoder:          createEncoder,
+                    createFeatureFromMask:  createFeatureFromMask,
+                    createScrewBuffer:      createScrewBuffer,
+                    defineConstant:         defineConstant,
+                    getCharacterEntries:    getCharacterEntries,
+                    getCoders:              getCoders,
+                    getComplexEntries:      getComplexEntries,
+                    getConstantEntries:     getConstantEntries,
+                    getEntries:             getEntries,
+                    hasOuterPlus:           hasOuterPlus,
+                    maskAnd:                maskAnd,
+                    maskIncludes:           maskIncludes,
+                    maskIsEmpty:            maskIsEmpty,
+                    maskNew:                maskNew,
+                    maskUnion:              maskUnion,
+                    setUp:                  setUp,
+                    trimJS:                 trimJS,
                 }
             );
         assignNoEnum(JScrewIt, { debug: debug });
