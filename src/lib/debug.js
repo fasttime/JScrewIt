@@ -63,12 +63,6 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                                 return entry;
                             }
                         );
-                    Object.keys(inputEntries).forEach(
-                        function (name)
-                        {
-                            outputEntries[name] = inputEntries[name];
-                        }
-                    );
                 }
                 outputEntries.singleton = singleton;
             }
@@ -144,7 +138,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             return entries;
         }
         
-        CREATE_PARSE_INT_ARG.availableEntries =
+        var CREATE_PARSE_INT_ARG_AVAILABLE =
         [
             define(createParseIntArgDefault),
             define(createParseIntArgByReduce),
@@ -159,6 +153,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         ENTRIES['BASE64_ALPHABET_LO_4:1']           = BASE64_ALPHABET_LO_4[1];
         ENTRIES['BASE64_ALPHABET_LO_4:3']           = BASE64_ALPHABET_LO_4[3];
         ENTRIES.CREATE_PARSE_INT_ARG                = CREATE_PARSE_INT_ARG;
+        ENTRIES['CREATE_PARSE_INT_ARG:available']   = CREATE_PARSE_INT_ARG_AVAILABLE;
         ENTRIES.FROM_CHAR_CODE                      = FROM_CHAR_CODE;
         ENTRIES.FROM_CHAR_CODE_CALLBACK_FORMATTER   = FROM_CHAR_CODE_CALLBACK_FORMATTER;
         ENTRIES.MAPPER_FORMATTER                    = MAPPER_FORMATTER;

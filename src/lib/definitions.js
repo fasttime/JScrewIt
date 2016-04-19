@@ -1,5 +1,9 @@
 /*
 global
+LEVEL_NUMERIC,
+LEVEL_OBJECT,
+LEVEL_STRING,
+LEVEL_UNDEFINED,
 Empty,
 Feature,
 createDefinitionEntry,
@@ -37,11 +41,6 @@ var CHARACTERS;
 var COMPLEX;
 var CONSTANTS;
 var SIMPLE;
-
-var LEVEL_NUMERIC;
-var LEVEL_OBJECT;
-var LEVEL_STRING;
-var LEVEL_UNDEFINED;
 
 var createParseIntArgByReduce;
 var createParseIntArgByReduceArrow;
@@ -1397,11 +1396,6 @@ var createSolution;
         define(fromCharCodeCallbackFormatterDefault),
         define(fromCharCodeCallbackFormatterArrow, ARROW)
     ];
-    
-    LEVEL_STRING    = 1;
-    LEVEL_OBJECT    = 0;
-    LEVEL_NUMERIC   = -1;
-    LEVEL_UNDEFINED = -2;
     
     MAPPER_FORMATTER = [define(mapperFormatterDefault), define(mapperFormatterDblArrow, ARROW)];
     

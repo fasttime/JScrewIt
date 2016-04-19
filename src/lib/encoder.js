@@ -919,7 +919,8 @@ var resolveSimple;
                         var entries = COMPLEX[complex];
                         var definition = this.findBestDefinition(entries);
                         solution = this.resolve(definition);
-                        solution.level = LEVEL_STRING;
+                        if (solution.level == null)
+                            solution.level = LEVEL_STRING;
                         this.complexCache[complex] = solution;
                     }
                 );

@@ -160,7 +160,8 @@ self
                     {
                         function testEntry(entry, index)
                         {
-                            if (entry.definition)
+                            var definition = entry.definition;
+                            if (definition)
                             {
                                 var featureObj = getEntryFeature(entry);
                                 emuIt(
@@ -168,8 +169,14 @@ self
                                     featureObj,
                                     function (emuFeatures)
                                     {
-                                        var solution = decodeEntry(entry);
+                                        var encoder = getPoolEncoder(featureObj);
+                                        var solution = encoder.resolveComplex(complex);
                                         verifySolution(solution, complex, emuFeatures);
+                                        var expectedLevel = definition.level;
+                                        if (expectedLevel == null)
+                                            expectedLevel = LEVEL_STRING;
+                                        expect(solution.level)
+                                            .toBe(expectedLevel, 'Solution level mismatch');
                                     }
                                 );
                             }
@@ -999,7 +1006,7 @@ self
                     var block = '["concat"]';
                     var replacement = '[[]]' + block + '([[]])';
                     var solution = Object(replacement);
-                    solution.level = 1;
+                    solution.level = LEVEL_STRING;
                     solution.outerPlus = false;
                     var appendLength = block.length - 1;
                     solution.bridge = { block: block, appendLength: appendLength };
@@ -1016,11 +1023,11 @@ self
                 }
                 
                 var solutionA = Object('[![]+[]][+[]]');
-                solutionA.level = 1;
+                solutionA.level = LEVEL_STRING;
                 var solution0 = Object('+[]');
-                solution0.level = -1;
+                solution0.level = LEVEL_NUMERIC;
                 var solutionFalse = Object('![]');
-                solutionFalse.level = -1;
+                solutionFalse.level = LEVEL_NUMERIC;
                 var solutionComma = createCommaSolution();
                 
                 describe(
@@ -1121,7 +1128,7 @@ self
                         for (var index = 0; index < 26; ++index)
                         {
                             var solution = Object(String.fromCharCode(65 + index));
-                            solution.level = 0;
+                            solution.level = LEVEL_OBJECT;
                             buffer.append(solution);
                         }
                         test(
@@ -2156,6 +2163,10 @@ self
         var actual = emuEval(emuFeatures || [], output) + '';
         expect(actual).toBe(expected);
     }
+    
+    var LEVEL_NUMERIC   = -1;
+    var LEVEL_OBJECT    = 0;
+    var LEVEL_STRING    = 1;
     
     var Feature;
     var JScrewIt;
