@@ -140,10 +140,11 @@ module.exports =
             'ENTRIES_PLAIN',
             'FILL',
             'FROM_CODE_POINT',
+            'NAME',
             'NODECONSTRUCTOR',
             'V8_SRC'
         ],
-        createAntiRadix4TestString.bind(null, 473),
+        createAntiRadix4TestString.bind(null, 471),
         'byDictRadix5AmendedBy3'
     ),
     data(

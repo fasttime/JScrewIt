@@ -338,7 +338,7 @@ var resolveSimple;
                 var output = this.encodeByDict(inputData, 5, 3, maxLength);
                 return output;
             },
-            844
+            783
         ),
         plain: defineCoder
         (
