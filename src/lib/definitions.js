@@ -43,6 +43,8 @@ var LEVEL_OBJECT;
 var LEVEL_STRING;
 var LEVEL_UNDEFINED;
 
+var createParseIntArgByReduce;
+var createParseIntArgByReduceArrow;
 var createParseIntArgDefault;
 var createSolution;
 
@@ -1305,7 +1307,7 @@ var createSolution;
         RP_6_SO:    '"0false"',
     });
     
-    var createParseIntArgByReduce =
+    createParseIntArgByReduce =
         function (amendings, firstDigit)
         {
             var parseIntArg =
@@ -1320,7 +1322,7 @@ var createSolution;
             return parseIntArg;
         };
     
-    var createParseIntArgByReduceArrow =
+    createParseIntArgByReduceArrow =
         function (amendings, firstDigit)
         {
             var parseIntArg =
