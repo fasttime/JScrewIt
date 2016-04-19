@@ -118,6 +118,7 @@ module.exports =
                             'src/lib/mask.js',
                             'src/lib/features.js',
                             'src/lib/definers.js',
+                            'src/lib/levels.js',
                             'src/lib/definitions.js',
                             'src/lib/figures.js',
                             'src/lib/screw-buffer.js',

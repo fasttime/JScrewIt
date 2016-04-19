@@ -253,9 +253,10 @@ verify.CREATE_PARSE_INT_ARG =
     function ()
     {
         var entries = getEntries('CREATE_PARSE_INT_ARG');
+        var availableEntries = getEntries('CREATE_PARSE_INT_ARG:available');
         verifyDefinitions(
             entries,
-            entries.availableEntries,
+            availableEntries,
             mismatchCallback,
             function (createParseIntArg)
             {
