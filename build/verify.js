@@ -260,7 +260,7 @@ verify.CREATE_PARSE_INT_ARG =
         var entries = getEntries('CREATE_PARSE_INT_ARG');
         var createParseIntArgByReduce       = findAs('createParseIntArgByReduce', '{return');
         var createParseIntArgByReduceArrow  = findAs('createParseIntArgByReduceArrow', '=>');
-        var createParseIntArgDefault        = findAs('createParseIntArgDefault', 'replace(/');
+        var createParseIntArgDefault        = JScrewIt.debug.createParseIntArgDefault;
         verifyDefinitions(
             entries,
             [

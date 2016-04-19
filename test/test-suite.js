@@ -155,7 +155,7 @@ self
             'Complex definitions of',
             function ()
             {
-                ['Number', 'Object', 'RegExp', 'String'].forEach(
+                ['Number', 'Object', 'RegExp', 'String', 'f,a,l,s,e'].forEach(
                     function (complex)
                     {
                         function testEntry(entry, index)
