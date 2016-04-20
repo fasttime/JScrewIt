@@ -119,8 +119,8 @@ module.exports =
         'byDictRadix3'
     ),
     data(
-        ['CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'V8_SRC'],
-        createDictTestString.bind(null, 100),
+        ['ARROW', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'V8_SRC'],
+        createDictTestString.bind(null, 88),
         'byDictRadix4'
     ),
     data(
