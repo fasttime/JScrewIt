@@ -12,40 +12,32 @@ var verifyDefinitions   = kit.verifyDefinitions;
 require('../tools/text-utils.js');
 var timeUtils = require('../tools/time-utils.js');
 
-function checkCoderFeatureOptimality(
-    features,
-    createInput,
-    coders,
-    coder,
-    minLength,
-    rivalCoderName)
+function checkCoderFeatureOptimality(features, createInput, coders, coder, minLength)
 {
     var input = createInput(minLength);
-    var replacer;
-    if (rivalCoderName === undefined)
-    {
-        replacer =
-            function (encoder)
+    var replacer =
+        function (encoder)
+        {
+            var inputData = Object(input);
+            var output = coder.call(encoder, inputData);
+            return output;
+        };
+    var rivalReplacer =
+        function (encoder, maxLength)
+        {
+            var inputData = Object(input);
+            for (var coderName in coders)
             {
-                var inputData = Object(input);
-                var output = coder.call(encoder, inputData);
-                return output;
-            };
-    }
-    else
-    {
-        var rivalCoder = coders[rivalCoderName];
-        replacer =
-            function (encoder)
-            {
-                var inputData = Object(input);
-                var output = coder.call(encoder, inputData);
-                var rivalOutput = rivalCoder.call(encoder, inputData);
-                if (output.length <= rivalOutput.length)
-                    return output;
-            };
-    }
-    var optimalFeatureObjs = findOptimalFeatures(replacer);
+                var rivalCoder = coders[coderName];
+                if (rivalCoder !== coder)
+                {
+                    var output = rivalCoder.call(encoder, inputData, maxLength);
+                    if (output !== undefined)
+                        return output;
+                }
+            }
+        };
+    var optimalFeatureObjs = findOptimalFeatures(replacer, rivalReplacer);
     if (optimalFeatureObjs)
     {
         var featureObj = JScrewIt.Feature(features);
@@ -172,7 +164,7 @@ function verifyBase64Defs(entries, inputList)
     return result;
 }
 
-function verifyCoder(coderName, rivalCoderName)
+function verifyCoder(coderName)
 {
     var result =
         function ()
@@ -184,14 +176,7 @@ function verifyCoder(coderName, rivalCoderName)
             var coder = coders[coderName];
             var minLength = coder.MIN_INPUT_LENGTH;
             checkMinInputLength(features, createInput, coders, coder, minLength);
-            checkCoderFeatureOptimality(
-                features,
-                createInput,
-                coders,
-                coder,
-                minLength,
-                rivalCoderName
-            );
+            checkCoderFeatureOptimality(features, createInput, coders, coder, minLength);
         };
     return result;
 }
@@ -349,7 +334,7 @@ verify.byDictRadix3 = verifyCoder('byDictRadix3');
 verify.byDictRadix4 = verifyCoder('byDictRadix4');
 verify.byDictRadix4AmendedBy1 = verifyCoder('byDictRadix4AmendedBy1');
 verify.byDictRadix4AmendedBy2 = verifyCoder('byDictRadix4AmendedBy2');
-verify.byDictRadix5AmendedBy3 = verifyCoder('byDictRadix5AmendedBy3', 'byDictRadix4AmendedBy2');
+verify.byDictRadix5AmendedBy3 = verifyCoder('byDictRadix5AmendedBy3');
 verify.byDblDict = verifyCoder('byDblDict');
 
 var routineName = process.argv[2];

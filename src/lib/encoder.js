@@ -311,7 +311,7 @@ var resolveSimple;
                 var output = this.encodeByDict(inputData, 4, 0, maxLength);
                 return output;
             },
-            222
+            195
         ),
         byDictRadix4AmendedBy1: defineCoder
         (

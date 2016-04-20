@@ -58,7 +58,7 @@
         return entry;
     }
     
-    function findOptimalFeatures(replacer)
+    function findOptimalFeatures(replacer, rivalReplacer)
     {
         var optimalFeatureObjMap;
         var optimalLength = Infinity;
@@ -67,9 +67,15 @@
         while (encoder = analyzer.nextEncoder)
         {
             var output = replacer(encoder);
-            var length = output !== undefined ? output.length : NaN;
+            if (output === undefined)
+                continue;
+            var length = output.length;
             if (length <= optimalLength)
             {
+                analyzer.stopCapture();
+                var rivalOutput = rivalReplacer(encoder, length);
+                if (rivalOutput !== undefined)
+                    continue;
                 if (length < optimalLength)
                 {
                     optimalFeatureObjMap = Object.create(null);
