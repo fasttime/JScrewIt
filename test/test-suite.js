@@ -155,7 +155,7 @@ self
             'Complex definitions of',
             function ()
             {
-                ['Number', 'Object', 'RegExp', 'String', 'f,a,l,s,e'].forEach(
+                JScrewIt.debug.getComplexNames().forEach(
                     function (complex)
                     {
                         function testEntry(entry, index)
@@ -1602,6 +1602,16 @@ self
                     'replaces complex input for',
                     function ()
                     {
+                        function findFirstDefinedEntry(entries)
+                        {
+                            var entry;
+                            while (entry = entries.shift())
+                            {
+                                if (entry.definition)
+                                    return entry;
+                            }
+                        }
+                        
                         function test(complex, features)
                         {
                             it(
@@ -1620,10 +1630,16 @@ self
                             );
                         }
                         
-                        test('Number', 'NAME');
-                        test('Object', 'NAME');
-                        test('RegExp', 'NAME');
-                        test('String', 'NAME');
+                        JScrewIt.debug.getComplexNames().forEach(
+                            function (complexName)
+                            {
+                                var entries = JScrewIt.debug.getComplexEntries(complexName);
+                                var firstDefinedEntry = findFirstDefinedEntry(entries);
+                                var mask = firstDefinedEntry.mask;
+                                var featureObj = JScrewIt.debug.createFeatureFromMask(mask);
+                                test(complexName, featureObj);
+                            }
+                        );
                     }
                 );
             }

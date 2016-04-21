@@ -29,6 +29,7 @@ getValidFeatureMask,
 hasOuterPlus,
 isArray,
 isMaskCompatible,
+keys,
 maskAnd,
 maskIncludes,
 maskIsEmpty,
@@ -126,6 +127,12 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             return entries;
         }
         
+        function getComplexNames()
+        {
+            var names = keys(COMPLEX).sort();
+            return names;
+        }
+        
         function getConstantEntries(constant)
         {
             var entries = cloneEntries(CONSTANTS[constant]);
@@ -170,6 +177,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                     getCharacterEntries:    getCharacterEntries,
                     getCoders:              getCoders,
                     getComplexEntries:      getComplexEntries,
+                    getComplexNames:        getComplexNames,
                     getConstantEntries:     getConstantEntries,
                     getEntries:             getEntries,
                     hasOuterPlus:           hasOuterPlus,
