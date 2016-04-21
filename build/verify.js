@@ -124,6 +124,16 @@ function findCoderTestData(coderName)
     }
 }
 
+function findFirstDefinedEntry(entries)
+{
+    var entry;
+    while (entry = entries.shift())
+    {
+        if (entry.definition)
+            return entry;
+    }
+}
+
 function findFunctionInEntries(entries, name, match)
 {
     var fn;
@@ -183,26 +193,18 @@ function verifyCoder(coderName)
 
 var verify = Object.create(null);
 
-verify.Number =
-    function ()
+JScrewIt.debug.getComplexNames().forEach(
+    function (complexName)
     {
-        verifyComplex('Number', [define('Number["name"]', 'NAME')], mismatchCallback);
-    };
-verify.Object =
-    function ()
-    {
-        verifyComplex('Object', [define('Object["name"]', 'NAME')], mismatchCallback);
-    };
-verify.RegExp =
-    function ()
-    {
-        verifyComplex('RegExp', [define('RegExp["name"]', 'NAME')], mismatchCallback);
-    };
-verify.String =
-    function ()
-    {
-        verifyComplex('String', [define('String["name"]', 'NAME')], mismatchCallback);
-    };
+        var entries = JScrewIt.debug.getComplexEntries(complexName);
+        var firstDefinedEntry = findFirstDefinedEntry(entries);
+        verify[complexName] =
+            function ()
+            {
+                verifyComplex(complexName, [firstDefinedEntry], mismatchCallback);
+            };
+    }
+);
 
 verify['BASE64_ALPHABET_HI_4:0'] =
     verifyBase64Defs(
