@@ -14,6 +14,9 @@ OPTIMAL_B,
 SIMPLE,
 Empty,
 ScrewBuffer,
+array_isArray,
+array_prototype_forEach,
+array_prototype_map,
 assignNoEnum,
 createConstructor,
 createParseIntArgDefault,
@@ -21,9 +24,8 @@ createSolution,
 getAppendLength,
 getFigure,
 hasOuterPlus,
-isArray,
-keys,
-maskIncludes
+maskIncludes,
+object_keys
 */
 
 var CODERS;
@@ -47,7 +49,7 @@ var resolveSimple;
         function getSortLength()
         {
             var length = 0;
-            Array.prototype.forEach.call(
+            array_prototype_forEach.call(
                 str,
                 function (digit)
                 {
@@ -112,7 +114,7 @@ var resolveSimple;
         if (!freqList)
         {
             var charMap = new Empty();
-            Array.prototype.forEach.call(
+            array_prototype_forEach.call(
                 inputData,
                 function (char)
                 {
@@ -122,7 +124,7 @@ var resolveSimple;
                     ).count;
                 }
             );
-            var charList = keys(charMap);
+            var charList = object_keys(charMap);
             inputData.freqList = freqList =
                 charList.map(
                     function (char)
@@ -470,7 +472,7 @@ var resolveSimple;
         createCharKeyArrayString: function (input, charMap, maxLength)
         {
             var charKeyArray =
-                Array.prototype.map.call(
+                array_prototype_map.call(
                     input,
                     function (char)
                     {
@@ -554,8 +556,8 @@ var resolveSimple;
             }
             
             var stringTokenPattern =
-                '(' + keys(SIMPLE).join('|') + ')|' +
-                keys(COMPLEX).filter(filterCallback, this).map(mapCallback).join('') +
+                '(' + object_keys(SIMPLE).join('|') + ')|' +
+                object_keys(COMPLEX).filter(filterCallback, this).map(mapCallback).join('') +
                 '([\\s\\S])';
             this.stringTokenPattern = stringTokenPattern;
             return stringTokenPattern;
@@ -600,7 +602,7 @@ var resolveSimple;
         {
             var cache = new Empty();
             var charCodeArray =
-                Array.prototype.map.call(
+                array_prototype_map.call(
                     input,
                     function (char)
                     {
@@ -725,7 +727,7 @@ var resolveSimple;
         findBase64AlphabetDefinition: function (element)
         {
             var definition;
-            if (isArray(element))
+            if (array_isArray(element))
                 definition = this.findBestDefinition(element);
             else
                 definition = element;
@@ -885,7 +887,7 @@ var resolveSimple;
                     {
                         var charCache;
                         var entries = CHARACTERS[char];
-                        if (!entries || isArray(entries))
+                        if (!entries || array_isArray(entries))
                         {
                             if (entries)
                                 solution = this.findOptimalSolution(entries);
@@ -939,7 +941,7 @@ var resolveSimple;
                     {
                         var constCache;
                         var entries = this.constantDefinitions[constant];
-                        if (isArray(entries))
+                        if (array_isArray(entries))
                         {
                             solution = this.findOptimalSolution(entries);
                             constCache = this.constCache;

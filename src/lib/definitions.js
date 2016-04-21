@@ -8,8 +8,8 @@ Empty,
 Feature,
 createDefinitionEntry,
 define,
-defineProperty,
 noProto,
+object_defineProperty,
 replaceIndexer,
 resolveSimple
 */
@@ -449,11 +449,11 @@ var createSolution;
         {
             var definition = { expr: expr, level: level };
             var solution = resolveSimple(simple, definition);
-            defineProperty(SIMPLE, simple, { value: solution });
+            object_defineProperty(SIMPLE, simple, { value: solution });
             return solution;
         }
         
-        defineProperty(SIMPLE, simple, { configurable: true, enumerable: true, get: get });
+        object_defineProperty(SIMPLE, simple, { configurable: true, enumerable: true, get: get });
     }
     
     function fromCharCodeCallbackFormatterArrow(fromCharCode, arg)

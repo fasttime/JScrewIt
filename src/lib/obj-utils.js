@@ -1,23 +1,34 @@
 var Empty;
 
+var array_isArray;
+var array_prototype_every;
+var array_prototype_forEach;
+var array_prototype_map;
 var assignNoEnum;
-var create;
 var createConstructor;
-var defineProperty;
-var freeze;
-var isArray;
-var keys;
 var noProto;
+var object_create;
+var object_defineProperty;
+var object_freeze;
+var object_keys;
 
 (function ()
 {
     'use strict';
     
+    array_isArray = Array.isArray;
+    
+    array_prototype_every = Array.prototype.every;
+    
+    array_prototype_forEach = Array.prototype.forEach;
+    
+    array_prototype_map = Array.prototype.map;
+    
     assignNoEnum =
         function (target, source)
         {
             var descriptors = { };
-            keys(source).forEach(
+            object_keys(source).forEach(
                 function (name)
                 {
                     var descriptor = Object.getOwnPropertyDescriptor(source, name);
@@ -29,8 +40,6 @@ var noProto;
             return target;
         };
     
-    create = Object.create;
-    
     createConstructor =
         function (prototype)
         {
@@ -39,19 +48,11 @@ var noProto;
             return constructor;
         };
     
-    defineProperty = Object.defineProperty;
-    
-    freeze = Object.freeze;
-    
-    isArray = Array.isArray;
-    
-    keys = Object.keys;
-    
     noProto =
         function (obj)
         {
             var result = new Empty();
-            keys(obj).forEach(
+            object_keys(obj).forEach(
                 function (name)
                 {
                     result[name] = obj[name];
@@ -60,6 +61,14 @@ var noProto;
             return result;
         };
     
-    Empty = createConstructor(create(null));
+    object_create = Object.create;
+    
+    object_defineProperty = Object.defineProperty;
+    
+    object_freeze = Object.freeze;
+    
+    object_keys = Object.keys;
+    
+    Empty = createConstructor(object_create(null));
 }
 )();
