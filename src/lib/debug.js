@@ -17,24 +17,24 @@ Encoder,
 Feature,
 JScrewIt,
 ScrewBuffer,
+array_isArray,
 assignNoEnum,
-create,
 createParseIntArgByReduce,
 createParseIntArgByReduceArrow,
 createParseIntArgDefault,
 define,
 featureFromMask,
-freeze,
 getValidFeatureMask,
 hasOuterPlus,
-isArray,
 isMaskCompatible,
-keys,
 maskAnd,
 maskIncludes,
 maskIsEmpty,
 maskNew,
 maskUnion,
+object_create,
+object_freeze,
+object_keys,
 setUp,
 trimJS
 */
@@ -51,7 +51,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             var outputEntries;
             if (inputEntries)
             {
-                var singleton = !isArray(inputEntries);
+                var singleton = !array_isArray(inputEntries);
                 if (singleton)
                     outputEntries = [createEntryClone(inputEntries, [0, 0])];
                 else
@@ -81,7 +81,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         function createEntryClone(definition, mask)
         {
             if (typeof definition === 'object')
-                definition = freeze(definition);
+                definition = object_freeze(definition);
             mask = mask.slice();
             var entry = { definition: definition, mask: mask };
             return entry;
@@ -105,7 +105,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             if (!/^[$A-Z_a-z][$0-9A-Z_a-z]*$/.test(constant))
                 throw new SyntaxError('Invalid identifier ' + JSON.stringify(constant));
             if (!encoder.hasOwnProperty('constantDefinitions'))
-                encoder.constantDefinitions = create(CONSTANTS);
+                encoder.constantDefinitions = object_create(CONSTANTS);
             var entries = [define(definition + '')];
             encoder.constantDefinitions[constant] = entries;
         }
@@ -129,7 +129,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         
         function getComplexNames()
         {
-            var names = keys(COMPLEX).sort();
+            var names = object_keys(COMPLEX).sort();
             return names;
         }
         
