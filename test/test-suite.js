@@ -341,7 +341,7 @@ self
                             'none',
                             function ()
                             {
-                                var output = JScrewIt.encode('2');
+                                var output = JScrewIt.encode(2);
                                 expect(output).toBe('!![]+!![]+[]');
                             }
                         );
@@ -349,7 +349,7 @@ self
                             'call',
                             function ()
                             {
-                                var output = JScrewIt.encode('2', { wrapWith: 'call' });
+                                var output = JScrewIt.encode(2, { wrapWith: 'call' });
                                 expect(output).toMatch(/\(!!\[]\+!!\[]\)\(\)$/);
                             }
                         );
@@ -357,10 +357,18 @@ self
                             'eval',
                             function ()
                             {
-                                var output = JScrewIt.encode('2', { wrapWith: 'eval' });
+                                var output = JScrewIt.encode(2, { wrapWith: 'eval' });
                                 expect(output).toMatch(/\(!!\[]\+!!\[]\)$/);
                             }
                         );
+                    }
+                );
+                it(
+                    'encodes undefined',
+                    function ()
+                    {
+                        var output = JScrewIt.encode();
+                        expect(output).toBe('[][[]]+[]');
                     }
                 );
                 it(
