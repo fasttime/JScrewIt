@@ -1259,11 +1259,11 @@ self
             }
         );
         describe(
-            'Encoder#encode',
+            'Encoder#exec',
             function ()
             {
                 it(
-                    'throws an Error with message "Encoding failed" for too complex input',
+                    'gently fails for too complex input',
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
@@ -1271,11 +1271,12 @@ self
                         expect(
                             function ()
                             {
-                                encoder.encode('12345');
+                                encoder.exec('12345');
                             }
                         ).toThrow(
                             new Error('Encoding failed')
                         );
+                        expect('codingLog' in encoder).toBeFalsy();
                     }
                 );
             }
