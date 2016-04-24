@@ -728,7 +728,7 @@ var resolveSimple;
         exec: function (input, wrapWith, perfInfo)
         {
             var codingLog = this.codingLog = [];
-            var output = this.encode(input + '', wrapWith);
+            var output = this.encode(input, wrapWith);
             if (perfInfo)
                 perfInfo.codingLog = codingLog;
             delete this.codingLog;

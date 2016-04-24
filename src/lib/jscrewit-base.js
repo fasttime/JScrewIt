@@ -100,7 +100,7 @@ var setUp;
             wrapWith = arg2 ? 'call' : 'none';
         }
         var encoder = getEncoder(features);
-        var output = encoder.exec(input, wrapWith, perfInfo);
+        var output = encoder.exec(String(input), wrapWith, perfInfo);
         return output;
     }
     
