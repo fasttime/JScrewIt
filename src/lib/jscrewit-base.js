@@ -100,11 +100,7 @@ var setUp;
             wrapWith = arg2 ? 'call' : 'none';
         }
         var encoder = getEncoder(features);
-        var codingLog = encoder.codingLog = [];
-        var output = encoder.encode(input + '', wrapWith);
-        if (perfInfo)
-            perfInfo.codingLog = codingLog;
-        delete encoder.codingLog;
+        var output = encoder.exec(input, wrapWith, perfInfo);
         return output;
     }
     

@@ -589,13 +589,14 @@ var resolveSimple;
                         'plain'
                     ]
                 );
-            if (output == null)
-                throw new Error('Encoding failed');
-            if (wrapWith === 'call')
-                output = this.resolveConstant('Function') + '(' + output + ')()';
-            else if (wrapWith === 'eval')
-                output = this.replaceExpr('Function("return eval")()') + '(' + output + ')';
-            return output;
+            if (output != null)
+            {
+                if (wrapWith === 'call')
+                    output = this.resolveConstant('Function') + '(' + output + ')()';
+                else if (wrapWith === 'eval')
+                    output = this.replaceExpr('Function("return eval")()') + '(' + output + ')';
+                return output;
+            }
         },
         
         encodeByCharCodes: function (input, long, radix, maxLength)
@@ -722,6 +723,18 @@ var resolveSimple;
                 if (output && !(output.length > maxLength))
                     return output;
             }
+        },
+        
+        exec: function (input, wrapWith, perfInfo)
+        {
+            var codingLog = this.codingLog = [];
+            var output = this.encode(input + '', wrapWith);
+            if (perfInfo)
+                perfInfo.codingLog = codingLog;
+            delete this.codingLog;
+            if (output == null)
+                throw new Error('Encoding failed');
+            return output;
         },
         
         findBase64AlphabetDefinition: function (element)
