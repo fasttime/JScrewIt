@@ -287,16 +287,16 @@ describe(
                     );
                 var expected =
                     '\n' +
-                    'Coder                     Status         Length  Time (ms)\n' +
-                    '──────────────────────────────────────────────────────────\n' +
+                    'Coder                       Status         Length  Time (ms)\n' +
+                    '────────────────────────────────────────────────────────────\n' +
                     '(default)\n' +
-                    '├lorem                    used              100        123\n' +
+                    '├lorem                      used              100        123\n' +
                     '│├ipsum\n' +
-                    '││└dolor                  used               50         45\n' +
+                    '││└dolor                    used               50         45\n' +
                     '│└sit\n' +
-                    '│ └amet                   used               25         67\n' +
+                    '│ └amet                     used               25         67\n' +
                     '│\n' +
-                    '└consetetur               skipped             -          -\n';
+                    '└consetetur                 skipped             -          -\n';
                 assert.strictEqual(actual, expected);
             }
         );
