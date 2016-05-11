@@ -342,6 +342,16 @@ var resolveSimple;
             },
             783
         ),
+        literal: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var input = inputData.valueOf();
+                var wrapWith = inputData.wrapWith;
+                var output = this.encodeLiteral(input, wrapWith, maxLength);
+                return output;
+            }
+        ),
         plain: defineCoder
         (
             function (inputData, maxLength)
@@ -368,7 +378,7 @@ var resolveSimple;
     
     var encoderProtoSource =
     {
-        callCoders: function (input, forceString, coderNames, codingName)
+        callCoders: function (input, options, coderNames, codingName)
         {
             var output;
             var inputLength = input.length;
@@ -378,7 +388,12 @@ var resolveSimple;
             perfInfoList.inputLength = inputLength;
             codingLog.push(perfInfoList);
             var inputData = Object(input);
-            inputData.forceString = forceString;
+            Object.keys(options).forEach(
+                function (optName)
+                {
+                    inputData[optName] = options[optName];
+                }
+            );
             var usedPerfInfo;
             coderNames.forEach(
                 function (coderName)
@@ -570,35 +585,6 @@ var resolveSimple;
             return solution;
         },
         
-        encode: function (input, wrapWith)
-        {
-            var output =
-                this.callCoders(
-                    input,
-                    wrapWith === 'none',
-                    [
-                        'byDblDict',
-                        'byDictRadix5AmendedBy3',
-                        'byDictRadix4AmendedBy2',
-                        'byDictRadix4AmendedBy1',
-                        'byDictRadix3',
-                        'byDictRadix4',
-                        'byDict',
-                        'byCharCodesRadix4',
-                        'byCharCodes',
-                        'plain'
-                    ]
-                );
-            if (output != null)
-            {
-                if (wrapWith === 'call')
-                    output = this.resolveConstant('Function') + '(' + output + ')()';
-                else if (wrapWith === 'eval')
-                    output = this.replaceExpr('Function("return eval")()') + '(' + output + ')';
-                return output;
-            }
-        },
-        
         encodeByCharCodes: function (input, long, radix, maxLength)
         {
             var cache = new Empty();
@@ -716,7 +702,7 @@ var resolveSimple;
                 var output =
                     this.callCoders(
                         input,
-                        true,
+                        { forceString: true },
                         ['byCharCodesRadix4', 'byCharCodes', 'plain'],
                         'legend'
                     );
@@ -725,10 +711,41 @@ var resolveSimple;
             }
         },
         
+        encodeLiteral: function (input, wrapWith, maxLength)
+        {
+            var output =
+                this.callCoders(
+                    input,
+                    { forceString: wrapWith === 'none' },
+                    [
+                        'byDblDict',
+                        'byDictRadix5AmendedBy3',
+                        'byDictRadix4AmendedBy2',
+                        'byDictRadix4AmendedBy1',
+                        'byDictRadix3',
+                        'byDictRadix4',
+                        'byDict',
+                        'byCharCodesRadix4',
+                        'byCharCodes',
+                        'plain'
+                    ],
+                    'text'
+                );
+            if (output != null)
+            {
+                if (wrapWith === 'call')
+                    output = this.resolveConstant('Function') + '(' + output + ')()';
+                else if (wrapWith === 'eval')
+                    output = this.replaceExpr('Function("return eval")()') + '(' + output + ')';
+                if (!(output.length > maxLength))
+                    return output;
+            }
+        },
+        
         exec: function (input, wrapWith, perfInfo)
         {
             var codingLog = this.codingLog = [];
-            var output = this.encode(input, wrapWith);
+            var output = this.callCoders(input, { wrapWith: wrapWith }, ['literal']);
             if (perfInfo)
                 perfInfo.codingLog = codingLog;
             delete this.codingLog;

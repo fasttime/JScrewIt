@@ -1434,6 +1434,21 @@ self
             }
         );
         describe(
+            'Encoder#encodeLiteral',
+            function ()
+            {
+                it(
+                    'returns undefined for too complex input',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        encoder.callCoders = Function();
+                        expect(encoder.encodeLiteral('0', 'call')).toBeUndefined();
+                    }
+                );
+            }
+        );
+        describe(
             'Encoder#replaceFalseFreeArray',
             function ()
             {
