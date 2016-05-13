@@ -44,17 +44,20 @@ self
                 'encodes with ' + compatibility + ' compatibility',
                 function ()
                 {
-                    var expression1 = 'return[Math.log(2e18)]^0';
+                    var expression1 = ' ; alert (\t"Hello, World!" ) ;';
                     it(
-                        JSON.stringify(expression1) + ' (with wrapWith: "call")',
+                        JSON.stringify(expression1) + ' (with wrapWith: "interpret-call")',
                         function ()
                         {
                             var perfInfo = { };
                             var options =
-                                { features: compatibility, perfInfo: perfInfo, wrapWith: 'call' };
+                            {
+                                features: compatibility,
+                                perfInfo: perfInfo,
+                                wrapWith: 'interpret-call'
+                            };
                             var output = JScrewIt.encode(expression1, options);
-                            var actual = emuEval(emuFeatures, output);
-                            expect(actual).toBe(42);
+                            expect(output).toBeJSFuck();
                             expect(perfInfo.codingLog).toBeArray();
                         }
                     );
@@ -1844,7 +1847,14 @@ self
                 var encoder = JScrewIt.debug.createEncoder();
                 var input = 'Lorem ipsum dolor sit amet';
                 var coders = JScrewIt.debug.getCoders();
-                Object.keys(coders).forEach(
+                var coderNames =
+                    Object.keys(coders).filter(
+                        function (coderName)
+                        {
+                            return coderName !== 'interpret';
+                        }
+                    );
+                coderNames.forEach(
                     function (coderName)
                     {
                         describe(

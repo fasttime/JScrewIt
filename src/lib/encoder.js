@@ -25,7 +25,8 @@ getAppendLength,
 getFigure,
 hasOuterPlus,
 maskIncludes,
-object_keys
+object_keys,
+preparse
 */
 
 var CODERS;
@@ -341,6 +342,15 @@ var resolveSimple;
                 return output;
             },
             783
+        ),
+        interpret: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var input = inputData.valueOf();
+                var output = this.encodeInterpreted(input, maxLength);
+                return output;
+            }
         ),
         literal: defineCoder
         (
@@ -711,6 +721,36 @@ var resolveSimple;
             }
         },
         
+        encodeInterpreted: function (input, maxLength)
+        {
+            var parseData = preparse(input);
+            if (parseData)
+            {
+                var functionName = parseData.functionName;
+                var output = this.encodeLiteral('return ' + functionName, 'call');
+                if (output)
+                {
+                    var param = parseData.param;
+                    if (param)
+                    {
+                        var paramOutput;
+                        var paramValue = param.value;
+                        if (typeof paramValue === 'string')
+                            paramOutput = this.encodeLiteral(paramValue, 'none');
+                        else
+                            paramOutput = this.replaceExpr(String(paramValue));
+                        if (!paramOutput)
+                            return;
+                        output += '(' + paramOutput + ')';
+                    }
+                    else
+                        output += '()';
+                    if (!(output.length > maxLength))
+                        return output;
+                }
+            }
+        },
+        
         encodeLiteral: function (input, wrapWith, maxLength)
         {
             var output =
@@ -744,8 +784,14 @@ var resolveSimple;
         
         exec: function (input, wrapWith, perfInfo)
         {
+            var coderNames = ['literal'];
+            if (wrapWith === 'interpret-call' || wrapWith === 'interpret-eval')
+            {
+                wrapWith = wrapWith.slice(10);
+                coderNames.push('interpret');
+            }
             var codingLog = this.codingLog = [];
-            var output = this.callCoders(input, { wrapWith: wrapWith }, ['literal']);
+            var output = this.callCoders(input, { wrapWith: wrapWith }, ['literal', 'interpret']);
             if (perfInfo)
                 perfInfo.codingLog = codingLog;
             delete this.codingLog;
