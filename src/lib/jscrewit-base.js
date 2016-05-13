@@ -113,6 +113,8 @@ var setUp;
         case 'none':
         case 'call':
         case 'eval':
+        case 'interpret-call':
+        case 'interpret-eval':
             return wrapWith;
         }
         throw new Error('Invalid value for option wrapWith');
