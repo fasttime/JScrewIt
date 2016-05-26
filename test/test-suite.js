@@ -44,9 +44,9 @@ self
                 'encodes with ' + compatibility + ' compatibility',
                 function ()
                 {
-                    var expression1 = ' ; alert (\t"Hello, World!" ) ;';
+                    var expression1 = ' ; escape (\t"Hello, World!" ) ;';
                     it(
-                        JSON.stringify(expression1) + ' (with wrapWith: "interpret-call")',
+                        JSON.stringify(expression1) + ' (with wrapWith: "express-call")',
                         function ()
                         {
                             var perfInfo = { };
@@ -54,10 +54,11 @@ self
                             {
                                 features: compatibility,
                                 perfInfo: perfInfo,
-                                wrapWith: 'interpret-call'
+                                wrapWith: 'express'
                             };
                             var output = JScrewIt.encode(expression1, options);
-                            expect(output).toBeJSFuck();
+                            var actual = emuEval(emuFeatures, output);
+                            expect(actual).toBe('Hello%2C%20World%21');
                             expect(perfInfo.codingLog).toBeArray();
                         }
                     );
@@ -310,6 +311,12 @@ self
                     'encodes an empty string with wrapWith',
                     function ()
                     {
+                        function test(wrapWith, regExp)
+                        {
+                            var output = JScrewIt.encode('', { wrapWith: wrapWith });
+                            expect(output).toMatch(regExp);
+                        }
+                        
                         it(
                             'none',
                             function ()
@@ -318,28 +325,28 @@ self
                                 expect(output).toBe('[]+[]');
                             }
                         );
-                        it(
-                            'call',
-                            function ()
-                            {
-                                var output = JScrewIt.encode('', { wrapWith: 'call' });
-                                expect(output).toMatch(/\(\)\(\)$/);
-                            }
-                        );
-                        it(
-                            'eval',
-                            function ()
-                            {
-                                var output = JScrewIt.encode('', { wrapWith: 'eval' });
-                                expect(output).toMatch(/\(\)$/);
-                            }
-                        );
+                        test('call', /\(\)\(\)$/);
+                        test('eval', /\(\)$/);
+                        test('express-call', /\(\)\(\)$/);
+                        test('express-eval', /\(\)$/);
                     }
                 );
                 describe(
                     'encodes a single digit with wrapWith',
                     function ()
                     {
+                        function test(wrapWith, regExp)
+                        {
+                            it(
+                                wrapWith,
+                                function ()
+                                {
+                                    var output = JScrewIt.encode(2, { wrapWith: wrapWith });
+                                    expect(output).toMatch(regExp);
+                                }
+                            );
+                        }
+                        
                         it(
                             'none',
                             function ()
@@ -348,20 +355,32 @@ self
                                 expect(output).toBe('!![]+!![]+[]');
                             }
                         );
+                        test('call', /\(!!\[]\+!!\[]\)\(\)$/);
+                        test('eval', /\(!!\[]\+!!\[]\)$/);
+                        test('express', /^!!\[]\+!!\[]$/);
+                    }
+                );
+                describe(
+                    'with wrapWith express encodes',
+                    function ()
+                    {
                         it(
-                            'call',
+                            'Date()',
                             function ()
                             {
-                                var output = JScrewIt.encode(2, { wrapWith: 'call' });
-                                expect(output).toMatch(/\(!!\[]\+!!\[]\)\(\)$/);
+                                var output = JScrewIt.encode('Date()', { wrapWith: 'express' });
+                                var actual = eval(output);
+                                expect(actual).toBeString();
                             }
                         );
                         it(
-                            'eval',
+                            '0..constructor',
                             function ()
                             {
-                                var output = JScrewIt.encode(2, { wrapWith: 'eval' });
-                                expect(output).toMatch(/\(!!\[]\+!!\[]\)$/);
+                                var output =
+                                    JScrewIt.encode('0..constructor', { wrapWith: 'express' });
+                                var actual = eval(output);
+                                expect(actual).toBe(Number);
                             }
                         );
                     }
@@ -1274,15 +1293,14 @@ self
             function ()
             {
                 it(
-                    'gently fails for too complex input',
+                    'gently fails for unencodable input',
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.callCoders = Function();
                         expect(
                             function ()
                             {
-                                encoder.exec('12345');
+                                encoder.exec('1 + 1', 'none', 'always');
                             }
                         ).toThrow(
                             new Error('Encoding failed')
@@ -1432,6 +1450,30 @@ self
                         test('createParseIntArgDefault', ['ATOB', 'ENTRIES_OBJ']);
                         test('createParseIntArgByReduce', 'DEFAULT');
                         test('createParseIntArgByReduceArrow', ['ARROW', 'ENTRIES_OBJ']);
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#encodeExpress does not produce an output longer than maxLength',
+            function ()
+            {
+                it(
+                    'with a call operation',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var output = encoder.encodeExpress('0()', 5);
+                        expect(output).toBeUndefined();
+                    }
+                );
+                it(
+                    'with a get operation',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var output = encoder.encodeExpress('0..constructor', 5);
+                        expect(output).toBeUndefined();
                     }
                 );
             }
@@ -1845,42 +1887,46 @@ self
             function ()
             {
                 var encoder = JScrewIt.debug.createEncoder();
-                var input = 'Lorem ipsum dolor sit amet';
+                var text = 'Lorem ipsum dolor sit amet';
                 var coders = JScrewIt.debug.getCoders();
-                var coderNames =
-                    Object.keys(coders).filter(
-                        function (coderName)
-                        {
-                            return coderName !== 'interpret';
-                        }
-                    );
+                var coderNames = Object.keys(coders);
                 coderNames.forEach(
                     function (coderName)
                     {
+                        var coder = coders[coderName];
                         describe(
                             coderName,
                             function ()
                             {
-                                var maxLength = coders[coderName].call(encoder, Object('')).length;
+                                function getMaxLength(scope)
+                                {
+                                    var maxLength = scope.maxLength;
+                                    if (maxLength === undefined)
+                                    {
+                                        scope.maxLength = maxLength =
+                                            coder.call(encoder, Object('0')).length;
+                                    }
+                                    return maxLength;
+                                }
+                                
                                 it(
                                     'returns correct JSFuck',
                                     function ()
                                     {
-                                        var output = coders[coderName].call(encoder, Object(input));
+                                        var input =
+                                            coderName !== 'express' ? text : JSON.stringify(text);
+                                        var output = coder.call(encoder, Object(input));
                                         expect(output).toBeJSFuck();
-                                        expect(eval(output)).toBe(input);
+                                        expect(eval(output)).toBe(text);
                                     }
                                 );
                                 it(
                                     'returns undefined when output length exceeds maxLength',
                                     function ()
                                     {
+                                        var maxLength = getMaxLength(this);
                                         var output =
-                                            coders[coderName].call(
-                                                encoder,
-                                                Object(''),
-                                                maxLength - 1
-                                            );
+                                            coder.call(encoder, Object('0'), maxLength - 1);
                                         expect(output).toBeUndefined();
                                     }
                                 );
@@ -1888,8 +1934,8 @@ self
                                     'returns a string when output length equals maxLength',
                                     function ()
                                     {
-                                        var output =
-                                            coders[coderName].call(encoder, Object(''), maxLength);
+                                        var maxLength = getMaxLength(this);
+                                        var output = coder.call(encoder, Object('0'), maxLength);
                                         expect(output).toBeString();
                                     }
                                 );
@@ -1897,6 +1943,67 @@ self
                         );
                     }
                 );
+            }
+        );
+        describe(
+            'JScrewIt.debug.expressParse',
+            function ()
+            {
+                function test(description, input, expected)
+                {
+                    it(
+                        description,
+                        function ()
+                        {
+                            var actual = JScrewIt.debug.expressParse(input);
+                            expect(actual).toEqual(expected);
+                        }
+                    );
+                }
+                
+                test('parses standalone identifiers', 'String', { identifier: 'String', ops: [] });
+                test(
+                    'parses standalone constants',
+                    '"Hello, World!"',
+                    { value: 'Hello, World!', ops: [] }
+                );
+                test(
+                    'parses calls without parameters',
+                    'open()',
+                    { identifier: 'open', ops: [{ type: 'call' }] }
+                );
+                test(
+                    'parses one identifier parameter',
+                    'alert(message)',
+                    { identifier: 'alert', ops: [{ type: 'param-call', identifier: 'message' }] }
+                );
+                test(
+                    'parses one constant parameter',
+                    'alert("Hello, World!")',
+                    { identifier: 'alert', ops: [{ type: 'param-call', value: 'Hello, World!' }] }
+                );
+                test(
+                    'parses identifier indexers',
+                    'self[document]',
+                    { identifier: 'self', ops: [{ type: 'get', identifier: 'document' }] }
+                );
+                test(
+                    'parses constant indexers',
+                    'self[0]',
+                    { identifier: 'self', ops: [{ type: 'get', value: 0 }] }
+                );
+                test(
+                    'parses dot identifiers',
+                    'document.body',
+                    { identifier: 'document', ops: [{ type: 'get', value: 'body' }] }
+                );
+                test('does not parse object literal parameters', 'doSomething({})');
+                test('does not parse object literal indexers', 'array[{}]');
+                test('does not parse more than one parameter', 'parseInt("10", 2)');
+                test('does not parse composite expression indexers', 'obj[2 + 3]');
+                test('does not parse keywords', 'debugger');
+                test('does not parse post-increments', 'i++');
+                test('does not parse syntax errors', 'a...');
             }
         );
     }

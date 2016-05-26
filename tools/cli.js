@@ -135,6 +135,13 @@ function parseCommandLine(argv)
             flag = arg.slice(2);
             switch (flag)
             {
+            case 'wrap-with-call':
+            case 'wrap-with-eval':
+            case 'wrap-with-express':
+            case 'wrap-with-express-call':
+            case 'wrap-with-express-eval':
+                options.wrapWith = flag.slice(10);
+                break;
             case 'diagnostic':
                 options.perfInfo = { };
                 break;
@@ -146,12 +153,6 @@ function parseCommandLine(argv)
                 return flag;
             case 'trim-code':
                 options.trimCode = true;
-                break;
-            case 'wrap-with-call':
-                options.wrapWith = 'call';
-                break;
-            case 'wrap-with-eval':
-                options.wrapWith = 'eval';
                 break;
             default:
                 throw Error('unrecognized option ' + quote(arg));
