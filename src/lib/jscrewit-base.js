@@ -66,6 +66,23 @@ var setUp;
      * Produces code evaluating to the result of invoking <code>eval</code> with the specified
      * input string as parameter.</dd>
      *
+     * <dt><code>"express"</code></dt>
+     * <dd>
+     * Attempts to interpret the specified string as JavaScript code and produce functionally
+     * equivalent JSFuck code.
+     * Fails if the specified string cannot be expressed as JavaScript, or if no functionally
+     * equivalent JSFuck code can be generated.</dd>
+     *
+     * <dt><code>"express-call"</code></dt>
+     * <dd>
+     * Applies the code generation process of both <code>"express"</code> and <code>"call"</code>
+     * and returns the shortest code.</dd>
+     *
+     * <dt><code>"express-eval"</code></dt>
+     * <dd>
+     * Applies the code generation process of both <code>"express"</code> and <code>"eval"</code>
+     * and returns the shortest code.</dd>
+     *
      * </dl>
      *
      * @returns {string} The encoded string.
@@ -84,12 +101,15 @@ var setUp;
     function encode(input, arg2, arg3)
     {
         var features;
-        var wrapWith;
+        var wrapMode;
+        var express;
         var perfInfo;
         if (typeof arg2 === 'object')
         {
             features = arg2.features;
-            wrapWith = filterWrapWith(arg2.wrapWith);
+            var wrapWith = filterWrapWith(arg2.wrapWith);
+            wrapMode = wrapWith[0];
+            express = wrapWith[1];
             if (arg2.trimCode)
                 input = trimJS(input);
             perfInfo = arg2.perfInfo;
@@ -97,25 +117,29 @@ var setUp;
         else
         {
             features = arg3;
-            wrapWith = arg2 ? 'call' : 'none';
+            wrapMode = arg2 ? 'call' : 'none';
+            express = 'never';
         }
         var encoder = getEncoder(features);
-        var output = encoder.exec(String(input), wrapWith, perfInfo);
+        var output = encoder.exec(String(input), wrapMode, express, perfInfo);
         return output;
     }
     
     function filterWrapWith(wrapWith)
     {
         if (wrapWith === undefined)
-            return 'none';
+            return ['none', 'never'];
         switch (wrapWith += '')
         {
         case 'none':
         case 'call':
         case 'eval':
-        case 'interpret-call':
-        case 'interpret-eval':
-            return wrapWith;
+            return [wrapWith, 'never'];
+        case 'express-call':
+        case 'express-eval':
+            return [wrapWith.slice(8), 'possibly'];
+        case 'express':
+            return ['none', 'always'];
         }
         throw new Error('Invalid value for option wrapWith');
     }

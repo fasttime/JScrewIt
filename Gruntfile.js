@@ -122,7 +122,7 @@ module.exports =
                             'src/lib/definitions.js',
                             'src/lib/figures.js',
                             'src/lib/screw-buffer.js',
-                            'src/lib/preparse.js',
+                            'src/lib/express-parse.js',
                             'src/lib/encoder.js',
                             'src/lib/trim-js.js',
                             'src/lib/jscrewit-base.js',

@@ -21,12 +21,12 @@ assignNoEnum,
 createConstructor,
 createParseIntArgDefault,
 createSolution,
+expressParse,
 getAppendLength,
 getFigure,
 hasOuterPlus,
 maskIncludes,
-object_keys,
-preparse
+object_keys
 */
 
 var CODERS;
@@ -343,12 +343,12 @@ var resolveSimple;
             },
             783
         ),
-        interpret: defineCoder
+        express: defineCoder
         (
             function (inputData, maxLength)
             {
                 var input = inputData.valueOf();
-                var output = this.encodeInterpreted(input, maxLength);
+                var output = this.encodeExpress(input, maxLength);
                 return output;
             }
         ),
@@ -357,8 +357,8 @@ var resolveSimple;
             function (inputData, maxLength)
             {
                 var input = inputData.valueOf();
-                var wrapWith = inputData.wrapWith;
-                var output = this.encodeLiteral(input, wrapWith, maxLength);
+                var wrapMode = inputData.wrapMode;
+                var output = this.encodeLiteral(input, wrapMode, undefined, false, maxLength);
                 return output;
             }
         ),
@@ -367,7 +367,9 @@ var resolveSimple;
             function (inputData, maxLength)
             {
                 var input = inputData.valueOf();
-                var output = this.replaceString(input, false, inputData.forceString, maxLength);
+                var strongBound = inputData.strongBound;
+                var output =
+                    this.replaceString(input, strongBound, inputData.forceString, maxLength);
                 return output;
             }
         ),
@@ -721,42 +723,54 @@ var resolveSimple;
             }
         },
         
-        encodeInterpreted: function (input, maxLength)
+        encodeExpress: function (input, maxLength)
         {
-            var parseData = preparse(input);
+            var parseData = expressParse(input);
             if (parseData)
             {
-                var functionName = parseData.functionName;
-                var output = this.encodeLiteral('return ' + functionName, 'call');
+                var ops = parseData.ops;
+                var opCount = ops.length;
+                var output = this.replaceExpressUnit(parseData, 0, opCount, maxLength);
                 if (output)
                 {
-                    var param = parseData.param;
-                    if (param)
+                    for (var index = 0; index < opCount; ++index)
                     {
-                        var paramOutput;
-                        var paramValue = param.value;
-                        if (typeof paramValue === 'string')
-                            paramOutput = this.encodeLiteral(paramValue, 'none');
+                        var op = ops[index];
+                        var type = op.type;
+                        if (type === 'call')
+                        {
+                            output += '()';
+                            if (output.length > maxLength)
+                                return;
+                        }
                         else
-                            paramOutput = this.replaceExpr(String(paramValue));
-                        if (!paramOutput)
-                            return;
-                        output += '(' + paramOutput + ')';
+                        {
+                            var opOutput =
+                                this.replaceExpressUnit(
+                                    op,
+                                    index + 1,
+                                    false,
+                                    output.length - 2 - maxLength
+                                );
+                            if (!opOutput)
+                                return;
+                            if (type === 'get')
+                                output += '[' + opOutput + ']';
+                            else
+                                output += '(' + opOutput + ')';
+                        }
                     }
-                    else
-                        output += '()';
-                    if (!(output.length > maxLength))
-                        return output;
+                    return output;
                 }
             }
         },
         
-        encodeLiteral: function (input, wrapWith, maxLength)
+        encodeLiteral: function (input, wrapMode, codingName, strongBound, maxLength)
         {
             var output =
                 this.callCoders(
                     input,
-                    { forceString: wrapWith === 'none' },
+                    { forceString: wrapMode === 'none', strongBound: strongBound },
                     [
                         'byDblDict',
                         'byDictRadix5AmendedBy3',
@@ -769,29 +783,36 @@ var resolveSimple;
                         'byCharCodes',
                         'plain'
                     ],
-                    'text'
+                    codingName
                 );
             if (output != null)
             {
-                if (wrapWith === 'call')
+                if (wrapMode === 'call')
                     output = this.resolveConstant('Function') + '(' + output + ')()';
-                else if (wrapWith === 'eval')
+                else if (wrapMode === 'eval')
                     output = this.replaceExpr('Function("return eval")()') + '(' + output + ')';
                 if (!(output.length > maxLength))
                     return output;
             }
         },
         
-        exec: function (input, wrapWith, perfInfo)
+        exec: function (input, wrapMode, express, perfInfo)
         {
-            var coderNames = ['literal'];
-            if (wrapWith === 'interpret-call' || wrapWith === 'interpret-eval')
+            var coderNames;
+            switch (express)
             {
-                wrapWith = wrapWith.slice(10);
-                coderNames.push('interpret');
+            case 'always':
+                coderNames = ['express'];
+                break;
+            case 'possibly':
+                coderNames = ['express', 'literal'];
+                break;
+            default:
+                coderNames = ['literal'];
+                break;
             }
             var codingLog = this.codingLog = [];
-            var output = this.callCoders(input, { wrapWith: wrapWith }, ['literal', 'interpret']);
+            var output = this.callCoders(input, { wrapMode: wrapMode }, coderNames);
             if (perfInfo)
                 perfInfo.codingLog = codingLog;
             delete this.codingLog;
@@ -883,6 +904,47 @@ var resolveSimple;
                     this.replaceToken || (this.replaceToken = replaceToken.bind(this))
                 );
             return result;
+        },
+        
+        replaceExpressUnit: function (unit, codingName, strongBound, maxLength)
+        {
+            var output;
+            var identifier = unit.identifier;
+            if (identifier)
+            {
+                output =
+                    this.encodeLiteral(
+                        'return ' + identifier,
+                        'call',
+                        codingName,
+                        false,
+                        maxLength
+                    );
+            }
+            else
+            {
+                var value = unit.value;
+                if (typeof value === 'string')
+                {
+                    output =
+                        this.encodeLiteral(
+                            value,
+                            'none',
+                            codingName,
+                            strongBound,
+                            maxLength
+                        );
+                }
+                else
+                {
+                    output = this.replaceExpr(String(value));
+                    if (strongBound && value !== undefined)
+                        output = '(' + output + ')';
+                    if (output.length > maxLength)
+                        return;
+                }
+            }
+            return output;
         },
         
         // Replaces a JavaScript array with a JSFuck array or strings.
