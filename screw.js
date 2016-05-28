@@ -95,23 +95,22 @@ else
 {
     var fs = require('fs');
     
-    var input;
-    var output;
     var encodingTime;
-    var codingLog;
     try
     {
-        input = fs.readFileSync(inputFileName);
-        var encodingTime =
+        var output;
+        var input = fs.readFileSync(inputFileName);
+        encodingTime =
             cli.timeThis(
                 function ()
                 {
                     output = JScrewIt.encode(input, options);
                 }
             );
-        fs.writeFileSync(outputFileName, output);
-        var perfInfo = options.perfInfo;
-        codingLog = perfInfo && perfInfo.codingLog;
+        if (outputFileName != null)
+            fs.writeFileSync(outputFileName, output);
+        else
+            console.log(output);
     }
     catch (error)
     {
@@ -120,6 +119,8 @@ else
     }
     if (outputFileName)
     {
+        var perfInfo = options.perfInfo;
+        var codingLog = perfInfo && perfInfo.codingLog;
         if (codingLog)
         {
             var diagnosticReport = cli.createDiagnosticReport(codingLog);
@@ -128,6 +129,4 @@ else
         var report = cli.createReport(input.length, output.length, encodingTime);
         console.log(report);
     }
-    else
-        console.log(output);
 }
