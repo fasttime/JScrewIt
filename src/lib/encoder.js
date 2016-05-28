@@ -906,7 +906,7 @@ var resolveSimple;
             return result;
         },
         
-        replaceExpressUnit: function (unit, codingName, strongBound, maxLength)
+        replaceExpressUnit: function (unit, unitIndex, strongBound, maxLength)
         {
             var output;
             var identifier = unit.identifier;
@@ -916,7 +916,7 @@ var resolveSimple;
                     this.encodeLiteral(
                         'return ' + identifier,
                         'call',
-                        codingName,
+                        unitIndex + '',
                         false,
                         maxLength
                     );
@@ -930,7 +930,7 @@ var resolveSimple;
                         this.encodeLiteral(
                             value,
                             'none',
-                            codingName,
+                            unitIndex + '',
                             strongBound,
                             maxLength
                         );

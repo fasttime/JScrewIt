@@ -1455,25 +1455,58 @@ self
             }
         );
         describe(
-            'Encoder#encodeExpress does not produce an output longer than maxLength',
+            'Encoder#encodeExpress',
             function ()
             {
-                it(
-                    'with a call operation',
+                describe(
+                    'does not produce an output longer than maxLength',
                     function ()
                     {
-                        var encoder = JScrewIt.debug.createEncoder();
-                        var output = encoder.encodeExpress('0()', 5);
-                        expect(output).toBeUndefined();
+                        it(
+                            'with a call operation',
+                            function ()
+                            {
+                                var encoder = JScrewIt.debug.createEncoder();
+                                var output = encoder.encodeExpress('""()[""]', 7);
+                                expect(output).toBeUndefined();
+                                expect(encoder.codingLog.length).toBe(1);
+                            }
+                        );
+                        it(
+                            'with a param-call operation',
+                            function ()
+                            {
+                                var encoder = JScrewIt.debug.createEncoder();
+                                var output = encoder.encodeExpress('""(0)[""]', 7);
+                                expect(output).toBeUndefined();
+                                expect(encoder.codingLog.length).toBe(1);
+                            }
+                        );
+                        it(
+                            'with a get operation',
+                            function ()
+                            {
+                                var encoder = JScrewIt.debug.createEncoder();
+                                var output = encoder.encodeExpress('""[0][""]', 7);
+                                expect(output).toBeUndefined();
+                                expect(encoder.codingLog.length).toBe(1);
+                            }
+                        );
                     }
                 );
+                
                 it(
-                    'with a get operation',
+                    'writes into codingLog',
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        var output = encoder.encodeExpress('0..constructor', 5);
-                        expect(output).toBeUndefined();
+                        encoder.encodeExpress('"A"()("B")["C"].D');
+                        var codingLog = encoder.codingLog;
+                        expect(codingLog.length).toBe(4);
+                        expect(codingLog[0].name).toBe('0');
+                        expect(codingLog[1].name).toBe('2');
+                        expect(codingLog[2].name).toBe('3');
+                        expect(codingLog[3].name).toBe('4');
                     }
                 );
             }
