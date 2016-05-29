@@ -255,33 +255,45 @@ describe(
                             makePerfInfoList(
                                 null,
                                 {
-                                    coderName: 'lorem',
+                                    coderName: 'coderA',
                                     status: 'used',
                                     outputLength: 100,
                                     time: 123,
                                     codingLog:
                                     [
                                         makePerfInfoList(
-                                            'ipsum',
+                                            'lorem',
                                             {
-                                                coderName: 'dolor',
+                                                coderName: 'coderA1',
                                                 status: 'used',
                                                 outputLength: 50,
                                                 time: 45
                                             }
                                         ),
                                         makePerfInfoList(
-                                            'sit',
+                                            'ipsum',
                                             {
-                                                coderName: 'amet',
+                                                coderName: 'coderA2',
                                                 status: 'used',
                                                 outputLength: 25,
-                                                time: 67
+                                                time: 67,
+                                                codingLog:
+                                                [
+                                                    makePerfInfoList(
+                                                        'dolor',
+                                                        {
+                                                            coderName: 'coderA2_extra',
+                                                            status: 'used',
+                                                            outputLength: 22,
+                                                            time: 66
+                                                        }
+                                                    )
+                                                ]
                                             }
                                         )
                                     ]
                                 },
-                                { coderName: 'consetetur', status: 'skipped' }
+                                { coderName: 'coderB', status: 'skipped' }
                             )
                         ]
                     );
@@ -290,13 +302,15 @@ describe(
                     'Coder                       Status         Length  Time (ms)\n' +
                     '────────────────────────────────────────────────────────────\n' +
                     '(default)\n' +
-                    '├lorem                      used              100        123\n' +
-                    '│├ipsum\n' +
-                    '││└dolor                    used               50         45\n' +
-                    '│└sit\n' +
-                    '│ └amet                     used               25         67\n' +
+                    '├coderA                     used              100        123\n' +
+                    '│├lorem\n' +
+                    '││└coderA1                  used               50         45\n' +
+                    '│└ipsum\n' +
+                    '│ └coderA2                  used               25         67\n' +
+                    '│  └dolor\n' +
+                    '│   └coderA2_extra          used               22         66\n' +
                     '│\n' +
-                    '└consetetur                 skipped             -          -\n';
+                    '└coderB                     skipped             -          -\n';
                 assert.strictEqual(actual, expected);
             }
         );
