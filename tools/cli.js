@@ -40,16 +40,19 @@ function createReport(originalSize, screwedSize, encodingTime)
     return report;
 }
 
-function formatCodingLog(codingLog, padding)
+function formatCodingLog(codingLog, padding, nextCodingLog)
 {
+    padding += nextCodingLog ? '│' : ' ';
     var result = '';
     var count = codingLog.length;
     for (var index = 0; index < count; ++index)
     {
         var perfInfoList = codingLog[index];
-        var next = index < count - 1;
-        result += formatPerfInfoList(perfInfoList, padding, next ? '├│' : '└ .');
+        var nextPerfInfoList = index < count - 1;
+        result += formatPerfInfoList(perfInfoList, padding, nextPerfInfoList ? '├│' : '└ ');
     }
+    if (nextCodingLog)
+        result += padding + '\n';
     return result;
 }
 
@@ -59,12 +62,13 @@ function formatInt(int)
     return result;
 }
 
-function formatPerfInfoList(perfInfoList, padding, paddingData)
+function formatPerfInfoList(perfInfoList, padding, paddingChars)
 {
-    var report = padding + paddingData[0] + (perfInfoList.name || '(default)') + '\n';
-    padding += paddingData[1];
+    var report = padding + paddingChars[0] + (perfInfoList.name || '(default)') + '\n';
+    padding += paddingChars[1];
     var count = perfInfoList.length;
     var paddingLength = padding.length;
+    var codingLog;
     for (var index = 0; index < count; ++index)
     {
         var perfInfo = perfInfoList[index];
@@ -76,15 +80,9 @@ function formatPerfInfoList(perfInfoList, padding, paddingData)
             padLeft(formatInt(perfInfo.outputLength), 11) +
             padLeft(formatInt(perfInfo.time), 11) +
             '\n';
-        var codingLog = perfInfo.codingLog;
+        codingLog = perfInfo.codingLog;
         if (codingLog)
-            report += formatCodingLog(codingLog, padding + (next ? '│' : ' '));
-    }
-    if (paddingData[2])
-    {
-        var matches = /^(.*[^ ]) *$/.exec(padding);
-        if (matches)
-            report += matches[1] + '\n';
+            report += formatCodingLog(codingLog, padding, next);
     }
     return report;
 }
