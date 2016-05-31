@@ -37,12 +37,39 @@ var expressParse;
     
     function readUnit(parseInfo)
     {
+        var groupCount = 0;
+        while (readMore(parseInfo, /^\(/))
+        {
+            readMore(parseInfo, separatorRegExp);
+            ++groupCount;
+        }
+        var unit = readUnitCore(parseInfo);
+        if (unit)
+        {
+            if (groupCount)
+            {
+                unit.composite = false;
+                do
+                {
+                    readMore(parseInfo, separatorRegExp);
+                    if (!readMore(parseInfo, /^\)/))
+                        return;
+                }
+                while (--groupCount);
+            }
+            return unit;
+        }
+    }
+    
+    function readUnitCore(parseInfo)
+    {
         var unit;
         var constExpr = readMore(parseInfo, constExprRegExp);
         if (constExpr)
         {
+            var composite = /^[+-]/.test(constExpr);
             var value = evalConstExpr(constExpr);
-            unit = { value: value };
+            unit = { composite: composite, value: value };
             return unit;
         }
         var identifier = readMore(parseInfo, identifierRegExp);
@@ -80,8 +107,10 @@ var expressParse;
     {
         BinaryIntegerLiteral:
             '0[Bb][01]+',
+        ConstIdentifier:
+            'Infinity|NaN|false|true|undefined',
         DecimalLiteral:
-            '(?:(?:0|[1-9][0-9]*|0[0-9]*[89][0-9]*)(?:\\.[0-9]*)?|\\.[0-9]+)(?:[Ee][+-]?[0-9]+)?',
+            '(?:(?:0|[1-9][0-9]*)(?:\\.[0-9]*)?|\\.[0-9]+)(?:[Ee][+-]?[0-9]+)?',
         DoubleQuotedString:
             '"(?:#EscapeSequence|(?!["\\\\]).)*"',
         EscapeSequence:
@@ -97,8 +126,7 @@ var expressParse;
             '#DecimalLiteral|' +
             '#BinaryIntegerLiteral|' +
             '#OctalIntegerLiteral|' +
-            '#HexIntegerLiteral|' +
-            '#LegacyOctalIntegerLiteral',
+            '#HexIntegerLiteral',
         LegacyOctalIntegerLiteral:
             '0[0-7]+',
         OctalIntegerLiteral:
@@ -117,6 +145,7 @@ var expressParse;
     
     var UNRETURNABLE_WORDS =
     [
+        'arguments',
         'debugger',
         'delete',
         'if',
@@ -130,10 +159,13 @@ var expressParse;
         'with'
     ];
     
-    var constExprRegExp = makeRegExp('#NumericLiteral|#StringLiteral');
+    var constExprRegExp =
+        makeRegExp(
+            '#StringLiteral|(?:[+-]#Separator*)?(?:#NumericLiteral|#ConstIdentifier)(?![\\w$])'
+        );
     var identifierRegExp = makeRegExp('[$A-Z_a-z][$0-9A-Z_a-z]*');
     var separatorOrColonRegExp = makeRegExp('(?:#Separator|;)*');
-    var separatorRegExp = makeRegExp('(?:#Separator)*');
+    var separatorRegExp = makeRegExp('#Separator*');
     
     expressParse =
         function (input)
@@ -144,48 +176,51 @@ var expressParse;
             if (!parseData)
                 return;
             var ops = [];
-            for (;;)
+            if (!parseData.composite)
             {
-                readMore(parseInfo, separatorRegExp);
-                var op;
-                if (readMore(parseInfo, /^\(/))
+                for (;;)
                 {
                     readMore(parseInfo, separatorRegExp);
-                    if (readMore(parseInfo, /^\)/))
-                        op = { type: 'call' };
-                    else
+                    var op;
+                    if (readMore(parseInfo, /^\(/))
                     {
+                        readMore(parseInfo, separatorRegExp);
+                        if (readMore(parseInfo, /^\)/))
+                            op = { type: 'call' };
+                        else
+                        {
+                            op = readUnit(parseInfo);
+                            if (!op)
+                                return;
+                            readMore(parseInfo, separatorRegExp);
+                            if (!readMore(parseInfo, /^\)/))
+                                return;
+                            op.type = 'param-call';
+                        }
+                    }
+                    else if (readMore(parseInfo, /^\[/))
+                    {
+                        readMore(parseInfo, separatorRegExp);
                         op = readUnit(parseInfo);
                         if (!op)
                             return;
                         readMore(parseInfo, separatorRegExp);
-                        if (!readMore(parseInfo, /^\)/))
+                        if (!readMore(parseInfo, /^]/))
                             return;
-                        op.type = 'param-call';
+                        op.type = 'get';
                     }
+                    else if (readMore(parseInfo, /^\./))
+                    {
+                        readMore(parseInfo, separatorRegExp);
+                        var identifier = readMore(parseInfo, identifierRegExp);
+                        if (!identifier)
+                            return;
+                        op = { type: 'get', value: identifier };
+                    }
+                    else
+                        break;
+                    ops.push(op);
                 }
-                else if (readMore(parseInfo, /^\[/))
-                {
-                    readMore(parseInfo, separatorRegExp);
-                    op = readUnit(parseInfo);
-                    if (!op)
-                        return;
-                    readMore(parseInfo, separatorRegExp);
-                    if (!readMore(parseInfo, /^]/))
-                        return;
-                    op.type = 'get';
-                }
-                else if (readMore(parseInfo, /^\./))
-                {
-                    readMore(parseInfo, separatorRegExp);
-                    var identifier = readMore(parseInfo, identifierRegExp);
-                    if (!identifier)
-                        return;
-                    op = { type: 'get', value: identifier };
-                }
-                else
-                    break;
-                ops.push(op);
             }
             readMore(parseInfo, separatorOrColonRegExp);
             if (parseInfo.str)

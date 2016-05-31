@@ -361,30 +361,177 @@ self
                     }
                 );
                 describe(
-                    'with wrapWith express encodes',
+                    'with wrapWith express',
                     function ()
                     {
-                        it(
-                            'Date()',
+                        describe(
+                            'encodes',
                             function ()
                             {
-                                var output = JScrewIt.encode('Date()', { wrapWith: 'express' });
-                                var actual = eval(output);
-                                expect(actual).toBeString();
+                                function test(description, input, expectedExpr)
+                                {
+                                    it(
+                                        description,
+                                        function ()
+                                        {
+                                            var actual =
+                                                JScrewIt.encode(input, { wrapWith: 'express' });
+                                            var encoder = JScrewIt.debug.createEncoder();
+                                            var expected = encoder.replaceExpr(expectedExpr);
+                                            expect(actual).toBe(expected);
+                                        }
+                                    );
+                                }
+                                
+                                test('identifiers', 'String', 'Function("return String")()');
+                                test('double-quoted strings', '"Hello!"', '"Hello!"');
+                                test('single-quoted strings', '\'Hello!\'', '"Hello!"');
+                                test('Infinity', 'Infinity', 'Infinity');
+                                test('NaN', 'NaN', 'NaN');
+                                test('false', 'false', 'false');
+                                test('true', 'true', 'true');
+                                test('undefined', 'undefined', 'undefined');
+                                test(
+                                    'unsigned numbers',
+                                    '4.25E-7',
+                                    '+"4.25e-7"'
+                                );
+                                test(
+                                    'numbers with absolute value part starting with "0."',
+                                    '-0.9',
+                                    '+"-.9"'
+                                );
+                                test(
+                                    'standalone signed constants',
+                                    '- //x\n/*y*/\ufeffInfinity',
+                                    '+"-1e1000"'
+                                );
+                                test(
+                                    'signed constant parameters',
+                                    'Number(-Infinity)',
+                                    'Function("return Number")()(+"-1e1000")'
+                                );
+                                test(
+                                    'signed constant indexers',
+                                    'false[+Infinity]',
+                                    'false[Infinity]'
+                                );
+                                test('standalone signed numbers', '+ //x\n/*y*/\ufeff42', '42');
+                                test(
+                                    'signed number parameters',
+                                    'alert(+1234567890)',
+                                    'Function("return alert")()(+"1234567890")'
+                                );
+                                test('signed number indexers', '"abc"[+1]', '"abc"[1]');
+                                test(
+                                    'calls without parameters',
+                                    'Array()',
+                                    'Function("return Array")()()'
+                                );
+                                test(
+                                    'one identifier parameter',
+                                    'Array(Number)',
+                                    'Function("return Array")()(Function("return Number")())'
+                                );
+                                test(
+                                    'one constant parameter',
+                                    'escape("Hello!")',
+                                    'escape("Hello!")'
+                                );
+                                test(
+                                    'identifier indexers',
+                                    '"abc"[x]',
+                                    '"abc"[Function("return x")()]'
+                                );
+                                test(
+                                    'constant indexers',
+                                    'Math["PI"]',
+                                    'Function("return Math")()["PI"]'
+                                );
+                                test(
+                                    'dot identifiers',
+                                    'Function.prototype',
+                                    'Function("return Function")()["prototype"]'
+                                );
+                                test(
+                                    'operations on signed numbers in grouping parentheses',
+                                    '(-1)()',
+                                    '(+"-1")()'
+                                );
+                                test('superfluous grouping parentheses', '((\n42\t))', '42');
                             }
                         );
-                        it(
-                            '0..constructor',
+                        describe(
+                            'does not parse',
                             function ()
                             {
-                                var output =
-                                    JScrewIt.encode('0..constructor', { wrapWith: 'express' });
-                                var actual = eval(output);
-                                expect(actual).toBe(Number);
+                                function test(description, input)
+                                {
+                                    it(
+                                        description,
+                                        function ()
+                                        {
+                                            var fn =
+                                                JScrewIt.encode.bind(
+                                                    null,
+                                                    input,
+                                                    { wrapWith: 'express' }
+                                                );
+                                            expect(fn).toThrow(Error('Encoding failed'));
+                                        }
+                                    );
+                                }
+                                
+                                test('signed composite expressions', '-1["constructor"]');
+                                test('signed strings', '+"1"');
+                                test('legacy octal literals', '010');
+                                test('legacy octal-like literals', '09');
+                                test('object literal parameters', 'doSomething({})');
+                                test('object literal indexers', 'array[{}]');
+                                test('more than one parameter', 'parseInt("10", 2)');
+                                test('composite expression indexers', 'obj[2 + 3]');
+                                test('keywords', 'debugger');
+                                test('post-increments', 'i++');
+                                test('unmatched grouping parentheses', '(0');
+                                test('unrecognized tokens', 'a...');
                             }
                         );
                     }
                 );
+                describe(
+                    'with option trimCode',
+                    function ()
+                    {
+                        it(
+                            'uses trimJS',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('/* */\nABC\n', { trimCode: true });
+                                var actual = eval(output);
+                                expect(actual).toBe('ABC');
+                            }
+                        );
+                        it(
+                            'encodes a script consisting of only blanks and comments',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('/* */\n', { trimCode: true });
+                                var actual = eval(output);
+                                expect(actual).toBe('');
+                            }
+                        );
+                        it(
+                            'encodes malformed JavaScript',
+                            function ()
+                            {
+                                var output = JScrewIt.encode('/* */"ABC', { trimCode: true });
+                                var actual = eval(output);
+                                expect(actual).toBe('/* */"ABC');
+                            }
+                        );
+                    }
+                );
+                
                 it(
                     'encodes undefined',
                     function ()
@@ -428,39 +575,6 @@ self
                         var options = { features: 'FF31', wrapWith: 'call' };
                         var expected = JScrewIt.encode(input, options);
                         expect(output).toBe(expected);
-                    }
-                );
-                describe(
-                    'with option trimCode',
-                    function ()
-                    {
-                        it(
-                            'uses trimJS',
-                            function ()
-                            {
-                                var output = JScrewIt.encode('/* */\nABC\n', { trimCode: true });
-                                var actual = eval(output);
-                                expect(actual).toBe('ABC');
-                            }
-                        );
-                        it(
-                            'encodes a script consisting of only blanks and comments',
-                            function ()
-                            {
-                                var output = JScrewIt.encode('/* */\n', { trimCode: true });
-                                var actual = eval(output);
-                                expect(actual).toBe('');
-                            }
-                        );
-                        it(
-                            'encodes malformed JavaScript',
-                            function ()
-                            {
-                                var output = JScrewIt.encode('/* */"ABC', { trimCode: true });
-                                var actual = eval(output);
-                                expect(actual).toBe('/* */"ABC');
-                            }
-                        );
                     }
                 );
             }
@@ -1976,67 +2090,6 @@ self
                         );
                     }
                 );
-            }
-        );
-        describe(
-            'JScrewIt.debug.expressParse',
-            function ()
-            {
-                function test(description, input, expected)
-                {
-                    it(
-                        description,
-                        function ()
-                        {
-                            var actual = JScrewIt.debug.expressParse(input);
-                            expect(actual).toEqual(expected);
-                        }
-                    );
-                }
-                
-                test('parses standalone identifiers', 'String', { identifier: 'String', ops: [] });
-                test(
-                    'parses standalone constants',
-                    '"Hello, World!"',
-                    { value: 'Hello, World!', ops: [] }
-                );
-                test(
-                    'parses calls without parameters',
-                    'open()',
-                    { identifier: 'open', ops: [{ type: 'call' }] }
-                );
-                test(
-                    'parses one identifier parameter',
-                    'alert(message)',
-                    { identifier: 'alert', ops: [{ type: 'param-call', identifier: 'message' }] }
-                );
-                test(
-                    'parses one constant parameter',
-                    'alert("Hello, World!")',
-                    { identifier: 'alert', ops: [{ type: 'param-call', value: 'Hello, World!' }] }
-                );
-                test(
-                    'parses identifier indexers',
-                    'self[document]',
-                    { identifier: 'self', ops: [{ type: 'get', identifier: 'document' }] }
-                );
-                test(
-                    'parses constant indexers',
-                    'self[0]',
-                    { identifier: 'self', ops: [{ type: 'get', value: 0 }] }
-                );
-                test(
-                    'parses dot identifiers',
-                    'document.body',
-                    { identifier: 'document', ops: [{ type: 'get', value: 'body' }] }
-                );
-                test('does not parse object literal parameters', 'doSomething({})');
-                test('does not parse object literal indexers', 'array[{}]');
-                test('does not parse more than one parameter', 'parseInt("10", 2)');
-                test('does not parse composite expression indexers', 'obj[2 + 3]');
-                test('does not parse keywords', 'debugger');
-                test('does not parse post-increments', 'i++');
-                test('does not parse syntax errors', 'a...');
             }
         );
     }
