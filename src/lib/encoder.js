@@ -937,7 +937,25 @@ var resolveSimple;
                 }
                 else
                 {
-                    output = this.replaceExpr(String(value));
+                    if (typeof value === 'number' && value === value)
+                    {
+                        var negative = value < 0 || 1 / value < 0;
+                        var str;
+                        var abs = Math.abs(value);
+                        if (abs === Infinity)
+                            str = '1e1000';
+                        else
+                        {
+                            str = (abs + '').replace(/^0(?=\.)/, '');
+                        }
+                        if (negative)
+                            str = '-' + str;
+                        output = this.replaceString(str);
+                        if (str.length > 1)
+                            output = '+(' + output + ')';
+                    }
+                    else
+                        output = this.replaceExpr(value + '');
                     if (strongBound && value !== undefined)
                         output = '(' + output + ')';
                     if (output.length > maxLength)

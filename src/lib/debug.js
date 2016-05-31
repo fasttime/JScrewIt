@@ -35,7 +35,6 @@ maskUnion,
 object_create,
 object_freeze,
 object_keys,
-expressParse,
 setUp,
 trimJS
 */
@@ -175,7 +174,6 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                     createFeatureFromMask:  createFeatureFromMask,
                     createScrewBuffer:      createScrewBuffer,
                     defineConstant:         defineConstant,
-                    expressParse:           expressParse,
                     getCharacterEntries:    getCharacterEntries,
                     getCoders:              getCoders,
                     getComplexEntries:      getComplexEntries,
