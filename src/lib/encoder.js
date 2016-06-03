@@ -945,17 +945,15 @@ var resolveSimple;
                         if (abs === Infinity)
                             str = '1e1000';
                         else
-                        {
                             str = (abs + '').replace(/^0(?=\.)/, '');
-                        }
                         if (negative)
                             str = '-' + str;
-                        output = this.replaceString(str);
+                        output = STATIC_ENCODER.replaceString(str);
                         if (str.length > 1)
                             output = '+(' + output + ')';
                     }
                     else
-                        output = this.replaceExpr(value + '');
+                        output = STATIC_ENCODER.replaceExpr(value + '');
                     if (strongBound && value !== undefined)
                         output = '(' + output + ')';
                     if (output.length > maxLength)

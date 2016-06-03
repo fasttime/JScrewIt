@@ -384,8 +384,8 @@ self
                                 }
                                 
                                 test('identifiers', 'String', 'Function("return String")()');
-                                test('double-quoted strings', '"Hello!"', '"Hello!"');
-                                test('single-quoted strings', '\'Hello!\'', '"Hello!"');
+                                test('double-quoted strings', '"He\\x6c\\u006Co!"', '"Hello!"');
+                                test('single-quoted strings', '\'He\\154\\\r\nlo!\'', '"Hello!"');
                                 test('Infinity', 'Infinity', 'Infinity');
                                 test('NaN', 'NaN', 'NaN');
                                 test('false', 'false', 'false');
@@ -401,6 +401,7 @@ self
                                     '-0.9',
                                     '+"-.9"'
                                 );
+                                test('standalone signed numbers', '+ //x\n/*y*/\ufeff42', '42');
                                 test(
                                     'standalone signed constants',
                                     '- //x\n/*y*/\ufeffInfinity',
@@ -416,7 +417,6 @@ self
                                     'false[+Infinity]',
                                     'false[Infinity]'
                                 );
-                                test('standalone signed numbers', '+ //x\n/*y*/\ufeff42', '42');
                                 test(
                                     'signed number parameters',
                                     'alert(+1234567890)',
@@ -434,7 +434,7 @@ self
                                     'Function("return Array")()(Function("return Number")())'
                                 );
                                 test(
-                                    'one constant parameter',
+                                    'one string parameter',
                                     'escape("Hello!")',
                                     'escape("Hello!")'
                                 );
@@ -444,7 +444,7 @@ self
                                     '"abc"[Function("return x")()]'
                                 );
                                 test(
-                                    'constant indexers',
+                                    'string indexers',
                                     'Math["PI"]',
                                     'Function("return Math")()["PI"]'
                                 );
@@ -458,7 +458,11 @@ self
                                     '(-1)()',
                                     '(+"-1")()'
                                 );
-                                test('superfluous grouping parentheses', '((\n42\t))', '42');
+                                test(
+                                    'superfluous grouping parentheses',
+                                    '((\n-(/**/42//\n)\t) )',
+                                    '+"-42"'
+                                );
                             }
                         );
                         describe(
@@ -482,6 +486,7 @@ self
                                     );
                                 }
                                 
+                                test('extended Unicode escape sequences', '\\u{1}');
                                 test('signed composite expressions', '-1["constructor"]');
                                 test('signed strings', '+"1"');
                                 test('legacy octal literals', '010');
@@ -492,7 +497,11 @@ self
                                 test('composite expression indexers', 'obj[2 + 3]');
                                 test('keywords', 'debugger');
                                 test('post-increments', 'i++');
-                                test('unmatched grouping parentheses', '(0');
+                                test(
+                                    'unsigned unmatched grouping parentheses around constant',
+                                    '(0'
+                                );
+                                test('signed unmatched grouping parentheses', '-(1');
                                 test('unrecognized tokens', 'a...');
                             }
                         );
