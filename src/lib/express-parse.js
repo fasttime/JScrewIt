@@ -149,8 +149,6 @@ var expressParse;
     
     var tokens =
     {
-        BinaryIntegerLiteral:
-            '0[Bb][01]+',
         ConstIdentifier:
             'Infinity|NaN|false|true|undefined',
         DecimalLiteral:
@@ -164,9 +162,7 @@ var expressParse;
         HexIntegerLiteral:
             '0[Xx]#HexDigit+',
         NumericLiteral:
-            '#DecimalLiteral|#BinaryIntegerLiteral|#OctalIntegerLiteral|#HexIntegerLiteral',
-        OctalIntegerLiteral:
-            '0[Oo][0-7]+',
+            '#DecimalLiteral|#HexIntegerLiteral',
         Separator:
             '#SeparatorChar|\\/\\/.*(?!.)|\\/\\*[\\s\\S]*?\\*\\/',
         SeparatorChar:

@@ -383,6 +383,13 @@ self
                                     );
                                 }
                                 
+                                test(
+                                    'all separators',
+                                    '\t\n\v\f\r \xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004' +
+                                    '\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f' +
+                                    '\u3000\ufeff/*lorem\n/*///ipsum\n0',
+                                    '0'
+                                );
                                 test('identifiers', 'String', 'Function("return String")()');
                                 test('double-quoted strings', '"He\\x6c\\u006Co!"', '"Hello!"');
                                 test('single-quoted strings', '\'He\\154\\\r\nlo!\'', '"Hello!"');
@@ -391,16 +398,15 @@ self
                                 test('false', 'false', 'false');
                                 test('true', 'true', 'true');
                                 test('undefined', 'undefined', 'undefined');
-                                test(
-                                    'unsigned numbers',
-                                    '4.25E-7',
-                                    '+"4.25e-7"'
-                                );
+                                test('unsigned numbers', '4.25E-7', '+"4.25e-7"');
+                                test('hexadecimal literals', '0x1Fa', '+"506"');
                                 test(
                                     'numbers with absolute value part starting with "0."',
                                     '-0.9',
                                     '+"-.9"'
                                 );
+                                test('-0', '-0', '+"-0"');
+                                test('-NaN', '-NaN', 'NaN');
                                 test('standalone signed numbers', '+ //x\n/*y*/\ufeff42', '42');
                                 test(
                                     'standalone signed constants',
@@ -486,6 +492,8 @@ self
                                     );
                                 }
                                 
+                                test('octal literals', '0o42');
+                                test('binary literals', '0b101010');
                                 test('extended Unicode escape sequences', '\\u{1}');
                                 test('signed composite expressions', '-1["constructor"]');
                                 test('signed strings', '+"1"');
