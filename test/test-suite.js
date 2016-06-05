@@ -313,22 +313,21 @@ self
                     {
                         function test(wrapWith, regExp)
                         {
-                            var output = JScrewIt.encode('', { wrapWith: wrapWith });
-                            expect(output).toMatch(regExp);
+                            it(
+                                wrapWith,
+                                function ()
+                                {
+                                    var output = JScrewIt.encode('', { wrapWith: wrapWith });
+                                    expect(output).toMatch(regExp);
+                                }
+                            );
                         }
                         
-                        it(
-                            'none',
-                            function ()
-                            {
-                                var output = JScrewIt.encode('', { wrapWith: 'none' });
-                                expect(output).toBe('[]+[]');
-                            }
-                        );
+                        test('none', /^\[]\+\[]$/);
                         test('call', /\(\)\(\)$/);
                         test('eval', /\(\)$/);
-                        test('express-call', /\(\)\(\)$/);
-                        test('express-eval', /\(\)$/);
+                        test('express-call', /^$/);
+                        test('express-eval', /^$/);
                     }
                 );
                 describe(
@@ -383,6 +382,7 @@ self
                                     );
                                 }
                                 
+                                test('an empty script', ';\n', '');
                                 test(
                                     'all separators',
                                     '\t\n\v\f\r \xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004' +
@@ -1598,6 +1598,16 @@ self
                     'does not produce an output longer than maxLength',
                     function ()
                     {
+                        it(
+                            'with an empty script',
+                            function ()
+                            {
+                                var encoder = JScrewIt.debug.createEncoder();
+                                var output = encoder.encodeExpress('', -1);
+                                expect(output).toBeUndefined();
+                                expect(encoder.codingLog.length).toBe(0);
+                            }
+                        );
                         it(
                             'with a call operation',
                             function ()
