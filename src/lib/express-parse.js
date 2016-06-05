@@ -204,6 +204,8 @@ var expressParse;
         {
             var parseInfo = { data: input };
             read(parseInfo, separatorOrColonRegExp);
+            if (!parseInfo.data)
+                return true;
             var parseData = readUnit(parseInfo);
             if (!parseData)
                 return;
