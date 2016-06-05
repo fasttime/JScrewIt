@@ -392,7 +392,11 @@ self
                                 );
                                 test('identifiers', 'String', 'Function("return String")()');
                                 test('double-quoted strings', '"He\\x6c\\u006Co!"', '"Hello!"');
-                                test('single-quoted strings', '\'He\\154\\\r\nlo!\'', '"Hello!"');
+                                test(
+                                    'single-quoted strings',
+                                    '\'Hel\\\r\nlo\\0\'',
+                                    '"Hello\\u0000"'
+                                );
                                 test('Infinity', 'Infinity', 'Infinity');
                                 test('NaN', 'NaN', 'NaN');
                                 test('false', 'false', 'false');
@@ -494,7 +498,8 @@ self
                                 
                                 test('octal literals', '0o42');
                                 test('binary literals', '0b101010');
-                                test('extended Unicode escape sequences', '\\u{1}');
+                                test('octal escape sequences', '"\\1"');
+                                test('extended Unicode escape sequences', '"\\u{1}"');
                                 test('signed composite expressions', '-1["constructor"]');
                                 test('signed strings', '+"1"');
                                 test('legacy octal literals', '010');
