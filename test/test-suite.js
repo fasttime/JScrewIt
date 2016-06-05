@@ -124,7 +124,7 @@ self
                         var self = { };
                         JScrewIt.debug.setUp(self);
                         expect(self.JScrewIt).toBe(JScrewIt);
-                        expect(self.JSFuck).toBe(JScrewIt);
+                        expect(Object.getOwnPropertyNames(self)).toEqual(['JScrewIt']);
                     }
                 );
                 it(

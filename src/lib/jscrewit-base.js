@@ -169,7 +169,7 @@ var setUp;
         function (self)
         {
             if (self != null)
-                self.JSFuck = self.JScrewIt = JScrewIt;
+                self.JScrewIt = JScrewIt;
         };
     
     setUp(typeof self !== 'undefined' ? /* istanbul ignore next */ self : null);
