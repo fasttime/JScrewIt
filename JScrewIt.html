@@ -24,8 +24,6 @@ different characters: ! ( ) + [ ]'>
 
 .engineSelectionBox { background-color: #f0f0f0; }
 
-.execSrc::after { content: 'Executable code'; }
-
 .frame
 {
     background-color: #e0e0e0;
@@ -56,8 +54,6 @@ different characters: ! ( ) + [ ]'>
 /* Hack for newer versions of Chrome */
 @media screen and (-webkit-min-device-pixel-ratio: 0) { #outputArea { white-space: normal; } }
 
-#wrapWithCallBox { margin-left: 0; }
-
 a:link { color: #00c; text-decoration: none; }
 
 a:visited { color: #66c; }
@@ -68,7 +64,7 @@ a:active { color: #c60; }
 
 body { background-color: white; color: black; font-family: sans-serif; }
 
-body, button, input[type=checkbox], select { font-size: 13.5pt; }
+body, button, select { font-size: 13.5pt; }
 
 body>* { margin: 0 auto; max-width: 720px; text-align: justify; }
 
@@ -81,9 +77,6 @@ h1 { font-size: 2em; font-weight: normal; left: 115px; position: absolute; top: 
 h2 { font-size: 1em; text-align: center; }
 
 img { background-color: blue; }
-
-/* Hack for Firefox that doesn't interpret font-size on check boxes */
-input[type=checkbox] { height: -moz-calc(13.5pt); width: -moz-calc(13.5pt); }
 
 li { display: inline; }
 
@@ -108,8 +101,8 @@ ul { font-size: 10pt; padding: 0; }
     <code>[</code> <code>]</code>
 
     <div>
-        <p>Use the form below to convert your own script. Uncheck <kbd class='execSrc'></kbd> to
-        obtain a plain string.
+        <p>Use the form below to convert your own script. To encode a number or plain string, type
+        it in as you would in JavaScript, e.g. <kbd>6.67408e-11</kbd> or <kbd>"Hello, World!"</kbd>.
 
         <div>
             <label class='frame'>
@@ -127,9 +120,6 @@ ul { font-size: 10pt; padding: 0; }
                             <option value='AUTO'>Only this browser
                             <option value=''>Custom…
                         </select>
-                    </label>
-                    <label class='execSrc noWrap'>
-                        <input id='wrapWithCallBox' type='checkbox' checked>
                     </label>
                     <button>Encode</button>
                 </div>

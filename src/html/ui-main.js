@@ -9,8 +9,7 @@ createRoll,
 inputArea,
 JScrewIt,
 outputArea,
-stats,
-wrapWithCallBox
+stats
 */
 /* jshint browser: true */
 
@@ -65,8 +64,7 @@ wrapWithCallBox
     
     function getOptions()
     {
-        var wrapWith = wrapWithCallBox.checked ? 'call' : 'none';
-        var options = { features: currentFeatureObj.canonicalNames, wrapWith: wrapWith };
+        var options = { features: currentFeatureObj.canonicalNames, wrapWith: 'express-call' };
         return options;
     }
     
@@ -106,8 +104,11 @@ wrapWithCallBox
         {
             alert(error);
         }
-        if (typeof value === 'string')
-            alert('"' + value + '"');
+        if (value !== undefined)
+        {
+            var message = typeof value === 'string' ? '"' + value + '"' : String(value);
+            alert(message);
+        }
     }
     
     function handleWorkerMessage(evt)
@@ -133,7 +134,6 @@ wrapWithCallBox
     {
         document.querySelector('body>*>div').style.display = 'block';
         inputArea.value = inputArea.defaultValue;
-        wrapWithCallBox.checked = wrapWithCallBox.defaultChecked;
         outputArea.oninput = updateStats;
         art(
             stats.parentNode,
@@ -169,7 +169,6 @@ wrapWithCallBox
             outputArea.value = '';
         }
         inputArea.oninput = changeHandler;
-        wrapWithCallBox.onchange = changeHandler;
         compMenu.selectedIndex = compMenu.previousIndex = 0;
         var compHandler = handleCompInput.bind(changeHandler);
         compMenu.onchange = compHandler;
