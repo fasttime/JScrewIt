@@ -35,6 +35,8 @@ var Encoder;
 
 var replaceIndexer;
 var resolveSimple;
+var wrapWithCall;
+var wrapWithEval;
 
 (function ()
 {
@@ -95,8 +97,7 @@ var resolveSimple;
             function (reindex1, reindex2)
             {
                 var result =
-                    reindex1.sortLength - reindex2.sortLength ||
-                    reindex1.index - reindex2.index;
+                    reindex1.sortLength - reindex2.sortLength || reindex1.index - reindex2.index;
                 return result;
             }
         );
@@ -357,8 +358,8 @@ var resolveSimple;
             function (inputData, maxLength)
             {
                 var input = inputData.valueOf();
-                var wrapMode = inputData.wrapMode;
-                var output = this.encodeLiteral(input, wrapMode, undefined, false, maxLength);
+                var wrapper = inputData.wrapper;
+                var output = this.encodeLiteral(input, wrapper, undefined, false, maxLength);
                 return output;
             }
         ),
@@ -774,12 +775,12 @@ var resolveSimple;
             }
         },
         
-        encodeLiteral: function (input, wrapMode, codingName, strongBound, maxLength)
+        encodeLiteral: function (input, wrapper, codingName, strongBound, maxLength)
         {
             var output =
                 this.callCoders(
                     input,
-                    { forceString: wrapMode === 'none', strongBound: strongBound },
+                    { forceString: !wrapper, strongBound: strongBound },
                     [
                         'byDblDict',
                         'byDictRadix5AmendedBy3',
@@ -796,32 +797,17 @@ var resolveSimple;
                 );
             if (output != null)
             {
-                if (wrapMode === 'call')
-                    output = this.resolveConstant('Function') + '(' + output + ')()';
-                else if (wrapMode === 'eval')
-                    output = this.replaceExpr('Function("return eval")()') + '(' + output + ')';
+                if (wrapper)
+                    output = wrapper.call(this, output);
                 if (!(output.length > maxLength))
                     return output;
             }
         },
         
-        exec: function (input, wrapMode, express, perfInfo)
+        exec: function (input, wrapper, coderNames, perfInfo)
         {
-            var coderNames;
-            switch (express)
-            {
-            case 'always':
-                coderNames = ['express'];
-                break;
-            case 'possibly':
-                coderNames = ['express', 'literal'];
-                break;
-            default:
-                coderNames = ['literal'];
-                break;
-            }
             var codingLog = this.codingLog = [];
-            var output = this.callCoders(input, { wrapMode: wrapMode }, coderNames);
+            var output = this.callCoders(input, { wrapper: wrapper }, coderNames);
             if (perfInfo)
                 perfInfo.codingLog = codingLog;
             delete this.codingLog;
@@ -924,7 +910,7 @@ var resolveSimple;
                 output =
                     this.encodeLiteral(
                         'return ' + identifier,
-                        'call',
+                        wrapWithCall,
                         unitIndex + '',
                         false,
                         maxLength
@@ -938,7 +924,7 @@ var resolveSimple;
                     output =
                         this.encodeLiteral(
                             value,
-                            'none',
+                            undefined,
                             unitIndex + '',
                             strongBound,
                             maxLength
@@ -1179,6 +1165,18 @@ var resolveSimple;
                 }
             );
             return solution;
+        };
+    
+    wrapWithCall =
+        function (str)
+        {
+            return this.resolveConstant('Function') + '(' + str + ')()';
+        };
+    
+    wrapWithEval =
+        function (str)
+        {
+            return this.replaceExpr('Function("return eval")()') + '(' + str + ')';
         };
 }
 )();
