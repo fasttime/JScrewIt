@@ -103,26 +103,39 @@ function parseCommandLine(argv)
         {
         case 'c':
         case 'w':
-            options.wrapWith = 'call';
+            wrapMode = 'call';
             break;
         case 'd':
             options.perfInfo = { };
             break;
         case 'e':
-            options.wrapWith = 'eval';
+            wrapMode = 'eval';
             break;
         case 't':
             options.trimCode = true;
+            break;
+        case 'x':
+            express = true;
             break;
         default:
             throw Error('unrecognized flag ' + quote(char));
         }
     }
     
+    function parseRunAs()
+    {
+        var arg2 = argv[++index];
+        if (arg2 === undefined)
+            throw Error('option ' + quote(arg) + ' requires an argument');
+        options.runAs = arg2;
+    }
+    
     var inputFileName;
     var outputFileName;
     var options = { };
     var arg;
+    var express;
+    var wrapMode;
     
     for (var index = 2; index < argv.length; ++index)
     {
@@ -133,13 +146,6 @@ function parseCommandLine(argv)
             flag = arg.slice(2);
             switch (flag)
             {
-            case 'wrap-with-call':
-            case 'wrap-with-eval':
-            case 'wrap-with-express':
-            case 'wrap-with-express-call':
-            case 'wrap-with-express-eval':
-                options.wrapWith = flag.slice(10);
-                break;
             case 'diagnostic':
                 options.perfInfo = { };
                 break;
@@ -149,6 +155,10 @@ function parseCommandLine(argv)
             case 'help':
             case 'version':
                 return flag;
+            case 'run-as':
+            case 'wrap-with':
+                parseRunAs();
+                break;
             case 'trim-code':
                 options.trimCode = true;
                 break;
@@ -161,6 +171,8 @@ function parseCommandLine(argv)
             flag = arg.slice(1);
             if (flag === 'f')
                 parseFeatures();
+            else if (flag === 'r')
+                parseRunAs();
             else
                 flag.split('').forEach(parseFlag);
         }
@@ -174,7 +186,12 @@ function parseCommandLine(argv)
                 inputFileName = arg;
         }
     }
-    
+    if (!options.runAs)
+    {
+        var runAs = (express ? ['express'] : []).concat(wrapMode || []).join('-');
+        if (runAs)
+            options.runAs = runAs;
+    }
     var result = { inputFileName: inputFileName, outputFileName: outputFileName, options: options };
     return result;
 }

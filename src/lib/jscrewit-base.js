@@ -45,7 +45,7 @@ var setUp;
      * Using this option may produce unexpected results if the input is not well-formed JavaScript
      * code.
      *
-     * @param {string} [options.wrapWith=none]
+     * @param {string} [options.runAs=none]
      * This option controls the type of code generated from the given input.
      * Allowed values are listed below.
      *
@@ -85,63 +85,58 @@ var setUp;
      *
      * </dl>
      *
+     * @param {string} [options.wrapWith=none] An alias for `runAs`.
+     *
      * @returns {string} The encoded string.
      *
      * @throws
-     * In the hypothetical case that the input string is too complex to be encoded, this function
-     * throws an `Error` with the message "Encoding failed".
+     * An `Error` is thrown under the following circumstances:
+     *
+     * - The specified string cannot be encoded with the specified options.
+     * - Some unknown features were specified.
+     * - A combination of mutually incompatible features was specified.
+     * - The option `runAs` (or `wrapWith`) was specified with an invalid value.
+     *
      * Also, an out of memory condition may occur when processing very large data.
-     *
-     * If some unknown features are specified, a `ReferenceError` is thrown.
-     *
-     * If the option `wrapWith` is specified with an invalid value, an `Error` with the message
-     * "Invalid value for option wrapWith" is thrown.
      */
     
-    function encode(input, arg2, arg3)
+    function encode(input, options)
     {
-        var features;
-        var wrapMode;
-        var express;
-        var perfInfo;
-        if (typeof arg2 === 'object')
-        {
-            features = arg2.features;
-            var wrapWith = filterWrapWith(arg2.wrapWith);
-            wrapMode = wrapWith[0];
-            express = wrapWith[1];
-            if (arg2.trimCode)
-                input = trimJS(input);
-            perfInfo = arg2.perfInfo;
-        }
+        options = options || { };
+        var features = options.features;
+        var runAsData;
+        var runAs = options.runAs;
+        if (runAs !== undefined)
+            runAsData = filterRunAs(runAs, 'runAs');
         else
-        {
-            features = arg3;
-            wrapMode = arg2 ? 'call' : 'none';
-            express = 'never';
-        }
+            runAsData = filterRunAs(options.wrapWith, 'wrapWith');
+        var wrapMode = runAsData[0];
+        var express = runAsData[1];
+        if (options.trimCode)
+            input = trimJS(input);
+        var perfInfo = options.perfInfo;
         var encoder = getEncoder(features);
         var output = encoder.exec(String(input), wrapMode, express, perfInfo);
         return output;
     }
     
-    function filterWrapWith(wrapWith)
+    function filterRunAs(input, name)
     {
-        if (wrapWith === undefined)
+        if (input === undefined)
             return ['none', 'never'];
-        switch (wrapWith += '')
+        switch (input += '')
         {
         case 'none':
         case 'call':
         case 'eval':
-            return [wrapWith, 'never'];
+            return [input, 'never'];
         case 'express-call':
         case 'express-eval':
-            return [wrapWith.slice(8), 'possibly'];
+            return [input.slice(8), 'possibly'];
         case 'express':
             return ['none', 'always'];
         }
-        throw new Error('Invalid value for option wrapWith');
+        throw new Error('Invalid value for option ' + name);
     }
     
     function getEncoder(features)

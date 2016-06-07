@@ -93,15 +93,15 @@ var JScrewIt = require("jscrewit");
 This will encode the `alert(1)` example shown above and run it using `eval`.
 
 ```js
-var output = JScrewIt.encode("alert(1)", { wrapWith: "call" });
+var output = JScrewIt.encode("alert(1)", { runAs: "call" });
 eval(output);
 ```
 
-Setting `wrapWith` to `"call"` in the second parameter of
+Setting `runAs` to `"call"` in the second parameter of
 [`JScrewIt.encode`](Reference.md#JScrewIt.encode) indicates that we would like the output to be
 executable.
 
-`wrapWith` should be omitted or set to `"none"` to encode a plain string instead of JavaScript code.
+`runAs` should be omitted or set to `"none"` to encode a plain string instead of JavaScript code.
 
 ```js
 var output = JScrewIt.encode("Hello, world!");
@@ -129,7 +129,7 @@ The way to tell JScrewIt to use a particular set of features is by specifying a 
 For instance, the generic `alert(1)` example is 2084 chracters long.
 
 ```js
-var options = { wrapWith: "call" };
+var options = { runAs: "call" };
 var output = JScrewIt.encode("alert(1)", options); // output is 2084 characters
 ```
 
@@ -137,7 +137,7 @@ But if we specify that we are only interested in code that runs in an up to date
 the output length shrinks to less than a half:
 
 ```js
-var options = { features: "FF31", wrapWith: "call" };
+var options = { features: "FF31", runAs: "call" };
 var output = JScrewIt.encode("alert(1)", options); // 972 characters now
 ```
 
@@ -148,7 +148,7 @@ We can specify more than one feature using an array, e.g.
 
 ```js
 var input = "document.body.style.background='red'";
-var options = { features: ["ATOB", "WINDOW"], wrapWith: "call" };
+var options = { features: ["ATOB", "WINDOW"], runAs: "call" };
 var output = JScrewIt.encode(input, options);
 ```
 
