@@ -7,7 +7,9 @@ assignNoEnum,
 module,
 self,
 trimJS,
-validMaskFromArrayOrStringOrFeature
+validMaskFromArrayOrStringOrFeature,
+wrapWithCall,
+wrapWithEval
 */
 
 var JScrewIt;
@@ -110,31 +112,38 @@ var setUp;
             runAsData = filterRunAs(runAs, 'runAs');
         else
             runAsData = filterRunAs(options.wrapWith, 'wrapWith');
-        var wrapMode = runAsData[0];
-        var express = runAsData[1];
+        var wrapper = runAsData[0];
+        var coderNames = runAsData[1];
         if (options.trimCode)
             input = trimJS(input);
         var perfInfo = options.perfInfo;
         var encoder = getEncoder(features);
-        var output = encoder.exec(String(input), wrapMode, express, perfInfo);
+        var output = encoder.exec(String(input), wrapper, coderNames, perfInfo);
         return output;
     }
     
     function filterRunAs(input, name)
     {
+        var CODER_NAMES_BOTH    = ['express', 'literal'];
+        var CODER_NAMES_EXPRESS = ['express'];
+        var CODER_NAMES_LITERAL = ['literal'];
+        
         if (input === undefined)
-            return ['none', 'never'];
+            return [undefined, CODER_NAMES_LITERAL];
         switch (input += '')
         {
         case 'none':
+            return [undefined, CODER_NAMES_LITERAL];
         case 'call':
+            return [wrapWithCall, CODER_NAMES_LITERAL];
         case 'eval':
-            return [input, 'never'];
+            return [wrapWithEval, CODER_NAMES_LITERAL];
         case 'express-call':
+            return [wrapWithCall, CODER_NAMES_BOTH];
         case 'express-eval':
-            return [input.slice(8), 'possibly'];
+            return [wrapWithEval, CODER_NAMES_BOTH];
         case 'express':
-            return ['none', 'always'];
+            return [undefined, CODER_NAMES_EXPRESS];
         }
         throw new Error('Invalid value for option ' + name);
     }

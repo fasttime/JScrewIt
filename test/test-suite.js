@@ -1460,7 +1460,7 @@ self
                         expect(
                             function ()
                             {
-                                encoder.exec('1 + 1', 'none', 'always');
+                                encoder.exec('1 + 1', undefined, ['express']);
                             }
                         ).toThrow(
                             new Error('Encoding failed')
@@ -1691,7 +1691,7 @@ self
                     {
                         var encoder = JScrewIt.debug.createEncoder();
                         encoder.callCoders = Function();
-                        expect(encoder.encodeLiteral('0', 'call')).toBeUndefined();
+                        expect(encoder.encodeLiteral('0')).toBeUndefined();
                     }
                 );
             }
