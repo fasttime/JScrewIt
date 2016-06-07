@@ -224,7 +224,7 @@ var validMaskFromArrayOrStringOrFeature;
             var name = arg + '';
             var featureObj = ALL[name];
             if (!featureObj)
-                throw new ReferenceError('Unknown feature ' + JSON.stringify(name));
+                throw new Error('Unknown feature ' + JSON.stringify(name));
             mask = featureObj.mask;
         }
         return mask;
@@ -240,7 +240,7 @@ var validMaskFromArrayOrStringOrFeature;
     function validateMask(mask)
     {
         if (!isMaskCompatible(mask))
-            throw new ReferenceError('Incompatible features');
+            throw new Error('Incompatible features');
     }
     
     function validMaskFromArguments(args)
@@ -1071,7 +1071,7 @@ var validMaskFromArrayOrStringOrFeature;
      *
      * @typedef {JScrewIt.Feature|string} FeatureElement
      *
-     * @throws {ReferenceError}
+     * @throws {Error}
      * The specified value is neither a feature object nor a name or alias of a predefined feature.
      */
     
@@ -1083,7 +1083,7 @@ var validMaskFromArrayOrStringOrFeature;
      *
      * @typedef {FeatureElement[]} CompatibleFeatureArray
      *
-     * @throws {ReferenceError} The specified features are not compatible with each other.
+     * @throws {Error} The specified features are not compatible with each other.
      */
     
     /**
@@ -1098,7 +1098,7 @@ var validMaskFromArrayOrStringOrFeature;
      *
      * @param {...(FeatureElement|CompatibleFeatureArray)} [feature]
      *
-     * @throws {ReferenceError} The specified features are not compatible with each other.
+     * @throws {Error} The specified features are not compatible with each other.
      *
      * @example
      * The following statements are equivalent, and will all construct a new feature object

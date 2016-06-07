@@ -62,7 +62,7 @@ describe(
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { wrapWith: 'call' }
+                options: { runAs: 'call' }
             }
         );
         test(
@@ -70,15 +70,7 @@ describe(
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { wrapWith: 'call' }
-            }
-        );
-        test(
-            ['--wrap-with-call'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { wrapWith: 'call' }
+                options: { runAs: 'call' }
             }
         );
         test(
@@ -86,15 +78,7 @@ describe(
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { wrapWith: 'eval' }
-            }
-        );
-        test(
-            ['--wrap-with-eval'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { wrapWith: 'eval' }
+                options: { runAs: 'eval' }
             }
         );
         test(
@@ -132,6 +116,24 @@ describe(
         testError(['-f'], 'option "-f" requires an argument');
         testError(['--features'], 'option "--features" requires an argument');
         test(
+            ['-r', 'express'],
+            {
+                inputFileName: undefined,
+                outputFileName: undefined,
+                options: { runAs: 'express' }
+            }
+        );
+        test(
+            ['--run-as', 'express'],
+            {
+                inputFileName: undefined,
+                outputFileName: undefined,
+                options: { runAs: 'express' }
+            }
+        );
+        testError(['-r'], 'option "-r" requires an argument');
+        testError(['--run-as'], 'option "--run-as" requires an argument');
+        test(
             ['-t'],
             {
                 inputFileName: undefined,
@@ -148,14 +150,22 @@ describe(
             }
         );
         test(
-            ['-ct'],
+            ['-x'],
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { trimCode: true, wrapWith: 'call' }
+                options: { runAs: 'express' }
             }
         );
-        testError(['-x'], /unrecognized flag "x"/);
+        test(
+            ['-ctx'],
+            {
+                inputFileName: undefined,
+                outputFileName: undefined,
+                options: { trimCode: true, runAs: 'express-call' }
+            }
+        );
+        testError(['-y'], /unrecognized flag "y"/);
         testError(
             ['--allyourbasearebelongtous'],
             /unrecognized option "--allyourbasearebelongtous"/
@@ -181,7 +191,7 @@ describe(
             {
                 inputFileName: 'infile',
                 outputFileName: 'outfile',
-                options: { features: ['FF31'], trimCode: true, wrapWith: 'call' }
+                options: { features: ['FF31'], trimCode: true, runAs: 'call' }
             }
         );
         testError(['infile', 'outfile', 'etc.'], /unexpected argument "etc."/);

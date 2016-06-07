@@ -46,16 +46,12 @@ self
                 {
                     var expression1 = ' ; escape (\t"Hello, World!" ) ;';
                     it(
-                        JSON.stringify(expression1) + ' (with wrapWith: "express-call")',
+                        JSON.stringify(expression1) + ' (with runAs: "express-call")',
                         function ()
                         {
                             var perfInfo = { };
                             var options =
-                            {
-                                features: compatibility,
-                                perfInfo: perfInfo,
-                                wrapWith: 'express'
-                            };
+                                { features: compatibility, perfInfo: perfInfo, runAs: 'express' };
                             var output = JScrewIt.encode(expression1, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe('Hello%2C%20World%21');
@@ -64,12 +60,12 @@ self
                     );
                     var expression2 = 'decodeURI(encodeURI("♠♥♦♣"))';
                     it(
-                        JSON.stringify(expression2) + ' (with wrapWith: "eval")',
+                        JSON.stringify(expression2) + ' (with runAs: "eval")',
                         function ()
                         {
                             var perfInfo = { };
                             var options =
-                                { features: compatibility, perfInfo: perfInfo, wrapWith: 'eval' };
+                                { features: compatibility, perfInfo: perfInfo, runAs: 'eval' };
                             var output = JScrewIt.encode(expression2, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe('♠♥♦♣');
@@ -94,12 +90,12 @@ self
                     );
                     var expression4 = repeat('☺', 20);
                     it(
-                        JSON.stringify(expression4) + ' (with wrapWith: "none")',
+                        JSON.stringify(expression4) + ' (with runAs: "none")',
                         function ()
                         {
                             var perfInfo = { };
                             var options =
-                                { features: compatibility, perfInfo: perfInfo, wrapWith: 'none' };
+                                { features: compatibility, perfInfo: perfInfo, runAs: 'none' };
                             var output = JScrewIt.encode(expression4, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(expression4);
@@ -308,16 +304,16 @@ self
                 describeEncodeTest('FF31');
                 describeEncodeTest('AUTO');
                 describe(
-                    'encodes an empty string with wrapWith',
+                    'encodes an empty string with runAs',
                     function ()
                     {
-                        function test(wrapWith, regExp)
+                        function test(runAs, regExp)
                         {
                             it(
-                                wrapWith,
+                                runAs,
                                 function ()
                                 {
-                                    var output = JScrewIt.encode('', { wrapWith: wrapWith });
+                                    var output = JScrewIt.encode('', { runAs: runAs });
                                     expect(output).toMatch(regExp);
                                 }
                             );
@@ -331,16 +327,16 @@ self
                     }
                 );
                 describe(
-                    'encodes a single digit with wrapWith',
+                    'encodes a single digit with runAs',
                     function ()
                     {
-                        function test(wrapWith, regExp)
+                        function test(runAs, regExp)
                         {
                             it(
-                                wrapWith,
+                                runAs,
                                 function ()
                                 {
-                                    var output = JScrewIt.encode(2, { wrapWith: wrapWith });
+                                    var output = JScrewIt.encode(2, { runAs: runAs });
                                     expect(output).toMatch(regExp);
                                 }
                             );
@@ -360,7 +356,7 @@ self
                     }
                 );
                 describe(
-                    'with wrapWith express',
+                    'with runAs express',
                     function ()
                     {
                         describe(
@@ -374,7 +370,7 @@ self
                                         function ()
                                         {
                                             var actual =
-                                                JScrewIt.encode(input, { wrapWith: 'express' });
+                                                JScrewIt.encode(input, { runAs: 'express' });
                                             var encoder = JScrewIt.debug.createEncoder();
                                             var expected = encoder.replaceExpr(expectedExpr);
                                             expect(actual).toBe(expected);
@@ -489,7 +485,7 @@ self
                                                 JScrewIt.encode.bind(
                                                     null,
                                                     input,
-                                                    { wrapWith: 'express' }
+                                                    { runAs: 'express' }
                                                 );
                                             expect(fn).toThrow(Error('Encoding failed'));
                                         }
@@ -563,16 +559,56 @@ self
                     }
                 );
                 it(
-                    'throws a ReferenceError for incompatible features',
+                    'encodes an object',
+                    function ()
+                    {
+                        var obj =
+                        {
+                            toString: function ()
+                            {
+                                return '1';
+                            },
+                            valueOf: function ()
+                            {
+                                return '0';
+                            }
+                        };
+                        var output = JScrewIt.encode(obj);
+                        expect(output).toBe('+!![]+[]');
+                    }
+                );
+                it(
+                    'throws an Error for incompatible features',
                     function ()
                     {
                         var fn =
                             function ()
                             {
-                                var options = { features: ['NO_IE_SRC', 'IE_SRC'] };
-                                JScrewIt.encode('', options);
+                                JScrewIt.encode('', { features: ['NO_IE_SRC', 'IE_SRC'] });
                             };
-                        expect(fn).toThrow(ReferenceError('Incompatible features'));
+                        expect(fn).toThrow(Error('Incompatible features'));
+                    }
+                );
+                it(
+                    'throws an error for invalid runAs',
+                    function ()
+                    {
+                        var fn =
+                            function ()
+                            {
+                                JScrewIt.encode('', { runAs: null });
+                            };
+                        expect(fn).toThrow(Error('Invalid value for option runAs'));
+                    }
+                );
+                it(
+                    'still supports option wrapWith',
+                    function ()
+                    {
+                        var input = 'alert(1)';
+                        var actual = JScrewIt.encode(input, { wrapWith: 'call' });
+                        var expected = JScrewIt.encode(input, { runAs: 'call' });
+                        expect(actual).toBe(expected);
                     }
                 );
                 it(
@@ -582,21 +618,9 @@ self
                         var fn =
                             function ()
                             {
-                                var options = { wrapWith: null };
-                                JScrewIt.encode('', options);
+                                JScrewIt.encode('', { wrapWith: true });
                             };
                         expect(fn).toThrow(Error('Invalid value for option wrapWith'));
-                    }
-                );
-                it(
-                    'still supports legacy option parameters',
-                    function ()
-                    {
-                        var input = 'alert(1)';
-                        var output = JScrewIt.encode(input, true, 'FF31');
-                        var options = { features: 'FF31', wrapWith: 'call' };
-                        var expected = JScrewIt.encode(input, options);
-                        expect(output).toBe(expected);
                     }
                 );
             }
@@ -633,19 +657,19 @@ self
                             }
                         );
                         it(
-                            'throws a ReferenceError for unknown features',
+                            'throws an Error for unknown features',
                             function ()
                             {
                                 var fn = Feature.bind(Feature, '???');
-                                expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
+                                expect(fn).toThrow(Error('Unknown feature "???"'));
                             }
                         );
                         it(
-                            'throws a ReferenceError for incompatible feature arrays',
+                            'throws an Error for incompatible feature arrays',
                             function ()
                             {
                                 var fn = Feature.bind(Feature, ['IE_SRC', 'NO_IE_SRC']);
-                                expect(fn).toThrow(ReferenceError('Incompatible features'));
+                                expect(fn).toThrow(Error('Incompatible features'));
                             }
                         );
                         it(
@@ -657,7 +681,7 @@ self
                             }
                         );
                         it(
-                            'throws a ReferenceError for incompatible features',
+                            'throws an Error for incompatible features',
                             function ()
                             {
                                 var fn =
@@ -666,7 +690,7 @@ self
                                         'ENTRIES_PLAIN',
                                         'NO_OLD_SAFARI_ARRAY_ITERATOR'
                                     );
-                                expect(fn).toThrow(ReferenceError('Incompatible features'));
+                                expect(fn).toThrow(Error('Incompatible features'));
                             }
                         );
                     }
@@ -751,15 +775,15 @@ self
                             }
                         );
                         it(
-                            'throws a ReferenceError for unknown features',
+                            'throws an Error for unknown features',
                             function ()
                             {
                                 var fn = Feature.prototype.includes.bind(Feature.DEFAULT, '???');
-                                expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
+                                expect(fn).toThrow(Error('Unknown feature "???"'));
                             }
                         );
                         it(
-                            'throws a ReferenceError for incompatible feature arrays',
+                            'throws an Error for incompatible feature arrays',
                             function ()
                             {
                                 var fn =
@@ -767,7 +791,7 @@ self
                                         Feature.DEFAULT,
                                         ['IE_SRC', 'NO_IE_SRC']
                                     );
-                                expect(fn).toThrow(ReferenceError('Incompatible features'));
+                                expect(fn).toThrow(Error('Incompatible features'));
                             }
                         );
                     }
@@ -878,19 +902,19 @@ self
                             }
                         );
                         it(
-                            'throws a ReferenceError for unknown features',
+                            'throws an Error for unknown features',
                             function ()
                             {
                                 var fn = Feature.areEqual.bind(null, '???');
-                                expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
+                                expect(fn).toThrow(Error('Unknown feature "???"'));
                             }
                         );
                         it(
-                            'throws a ReferenceError for incompatible feature arrays',
+                            'throws an Error for incompatible feature arrays',
                             function ()
                             {
                                 var fn = Feature.areEqual.bind(null, ['IE_SRC', 'NO_IE_SRC']);
-                                expect(fn).toThrow(ReferenceError('Incompatible features'));
+                                expect(fn).toThrow(Error('Incompatible features'));
                             }
                         );
                         it(
@@ -946,19 +970,19 @@ self
                             }
                         );
                         it(
-                            'throws a ReferenceError for unknown features',
+                            'throws an Error for unknown features',
                             function ()
                             {
                                 var fn = Feature.commonOf.bind(null, '???');
-                                expect(fn).toThrow(ReferenceError('Unknown feature "???"'));
+                                expect(fn).toThrow(Error('Unknown feature "???"'));
                             }
                         );
                         it(
-                            'throws a ReferenceError for incompatible feature arrays',
+                            'throws an Error for incompatible feature arrays',
                             function ()
                             {
                                 var fn = Feature.commonOf.bind(null, ['IE_SRC', 'NO_IE_SRC']);
-                                expect(fn).toThrow(ReferenceError('Incompatible features'));
+                                expect(fn).toThrow(Error('Incompatible features'));
                             }
                         );
                         it(
@@ -978,7 +1002,7 @@ self
                             }
                         );
                         it(
-                            'throws a ReferenceError for incompatible feature arrays',
+                            'throws an Error for incompatible feature arrays',
                             function ()
                             {
                                 var fn =
@@ -987,7 +1011,7 @@ self
                                         'ANY_WINDOW',
                                         ['WINDOW', 'DOMWINDOW']
                                     );
-                                expect(fn).toThrow(ReferenceError('Incompatible features'));
+                                expect(fn).toThrow(Error('Incompatible features'));
                             }
                         );
                     }

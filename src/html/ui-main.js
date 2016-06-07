@@ -64,7 +64,7 @@ stats
     
     function getOptions()
     {
-        var options = { features: currentFeatureObj.canonicalNames, wrapWith: 'express-call' };
+        var options = { features: currentFeatureObj.canonicalNames, runAs: 'express-call' };
         return options;
     }
     

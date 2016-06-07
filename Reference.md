@@ -97,7 +97,7 @@ If no arguments are specified, the new feature object will be equivalent to
 
 **Throws**:
 
-- <code>ReferenceError</code> The specified features are not compatible with each other.
+- <code>Error</code> The specified features are not compatible with each other.
 
 
 | Param | Type |
@@ -291,14 +291,14 @@ Encodes a given string into JSFuck.
 **Returns**: <code>string</code> - The encoded string.  
 **Throws**:
 
-- In the hypothetical case that the input string is too complex to be encoded, this function
-throws an `Error` with the message "Encoding failed".
+- An `Error` is thrown under the following circumstances:
+
+- The specified string cannot be encoded with the specified options.
+- Some unknown features were specified.
+- A combination of mutually incompatible features was specified.
+- The option `runAs` (or `wrapWith`) was specified with an invalid value.
+
 Also, an out of memory condition may occur when processing very large data.
-
-If some unknown features are specified, a `ReferenceError` is thrown.
-
-If the option `wrapWith` is specified with an invalid value, an `Error` with the message
-"Invalid value for option wrapWith" is thrown.
 
 
 | Param | Type | Default | Description |
@@ -307,7 +307,8 @@ If the option `wrapWith` is specified with an invalid value, an `Error` with the
 | [options] | <code>object</code> | <code>{ }</code> | An optional object specifying encoding options. |
 | [options.features] | <code>[FeatureElement](#FeatureElement)</code> &#124; <code>[CompatibleFeatureArray](#CompatibleFeatureArray)</code> | <code>JScrewIt.Feature.DEFAULT</code> | Specifies the features available on the engines that evaluate the encoded output. If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](Features.md#DEFAULT) is assumed: this ensures maximum compatibility but also generates the largest code. To generate shorter code, specify all features available on all target engines explicitly. |
 | [options.trimCode] | <code>boolean</code> | <code>false</code> | If this parameter is truthy, lines in the beginning and in the end of the file containing nothing but space characters and JavaScript comments are removed from the generated output. A newline terminator in the last preserved line is also removed. This option is especially useful to strip banner comments and trailing newline characters which are sometimes found in minified scripts. Using this option may produce unexpected results if the input is not well-formed JavaScript code. |
-| [options.wrapWith] | <code>string</code> | <code>&quot;none&quot;</code> | This option controls the type of code generated from the given input. Allowed values are listed below. <dl> <dt><code>"none"</code> (default)</dt> <dd> Produces a string evaluating to the specified input string (except for trimmed parts when used in conjunction with the option <code>trimCode</code>).</dd> <dt><code>"call"</code></dt> <dd> Produces code evaluating to a call to a function whose body contains the specified input string.</dd> <dt><code>"eval"</code></dt> <dd> Produces code evaluating to the result of invoking <code>eval</code> with the specified input string as parameter.</dd> <dt><code>"express"</code></dt> <dd> Attempts to interpret the specified string as JavaScript code and produce functionally equivalent JSFuck code. Fails if the specified string cannot be expressed as JavaScript, or if no functionally equivalent JSFuck code can be generated.</dd> <dt><code>"express-call"</code></dt> <dd> Applies the code generation process of both <code>"express"</code> and <code>"call"</code> and returns the shortest code.</dd> <dt><code>"express-eval"</code></dt> <dd> Applies the code generation process of both <code>"express"</code> and <code>"eval"</code> and returns the shortest code.</dd> </dl> |
+| [options.runAs] | <code>string</code> | <code>&quot;none&quot;</code> | This option controls the type of code generated from the given input. Allowed values are listed below. <dl> <dt><code>"none"</code> (default)</dt> <dd> Produces a string evaluating to the specified input string (except for trimmed parts when used in conjunction with the option <code>trimCode</code>).</dd> <dt><code>"call"</code></dt> <dd> Produces code evaluating to a call to a function whose body contains the specified input string.</dd> <dt><code>"eval"</code></dt> <dd> Produces code evaluating to the result of invoking <code>eval</code> with the specified input string as parameter.</dd> <dt><code>"express"</code></dt> <dd> Attempts to interpret the specified string as JavaScript code and produce functionally equivalent JSFuck code. Fails if the specified string cannot be expressed as JavaScript, or if no functionally equivalent JSFuck code can be generated.</dd> <dt><code>"express-call"</code></dt> <dd> Applies the code generation process of both <code>"express"</code> and <code>"call"</code> and returns the shortest code.</dd> <dt><code>"express-eval"</code></dt> <dd> Applies the code generation process of both <code>"express"</code> and <code>"eval"</code> and returns the shortest code.</dd> </dl> |
+| [options.wrapWith] | <code>string</code> | <code>&quot;none&quot;</code> | An alias for `runAs`. |
 
 <a name="FeatureElement"></a>
 
@@ -317,7 +318,7 @@ A feature object or name or alias of a predefined feature.
 **Kind**: global typedef  
 **Throws**:
 
-- <code>ReferenceError</code> The specified value is neither a feature object nor a name or alias of a predefined feature.
+- <code>Error</code> The specified value is neither a feature object nor a name or alias of a predefined feature.
 
 <a name="CompatibleFeatureArray"></a>
 
@@ -330,5 +331,5 @@ All of the specified features need to be compatible, so that their union can be 
 **Kind**: global typedef  
 **Throws**:
 
-- <code>ReferenceError</code> The specified features are not compatible with each other.
+- <code>Error</code> The specified features are not compatible with each other.
 

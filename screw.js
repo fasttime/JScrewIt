@@ -30,18 +30,32 @@ if (command === 'help')
         'Usage: ' + basename + ' [OPTION]... [SOURCE [DESTINATION]]\n' +
         'Encodes JavaScript with JScrewIt.\n' +
         '\n' +
-        '  -c, --wrap-with-call    wrap output with a function call\n' +
-        '  -e, --wrap-with-eval    wrap output with eval\n' +
         '  -d, --diagnostic        print diagnostic report\n' +
-        '  -f, --features FEATURES use a list of comma separated fetures\n' +
+        '  -f, --features FEATURES use a list of comma separated features\n' +
         '  -t, --trim-code         strip leading and trailing blanks and comments\n' +
+        '  -r, --run-as METHOD     make output runnable with the specified method\n' +
         '      --help              display this help and exit\n' +
         '      --version           print version information and exit\n' +
         '\n' +
         'If no destination file is specified, the output is written to the console and\n' +
         'no reports are printed (-d is ignored).\n' +
         'If no source or destination file is specified, the command runs in interactive\n' +
-        'mode until interrupted with ^C.';
+        'mode until interrupted with ^C.\n' +
+        '\n' +
+        '--run-as expects an argument out of the values for the option runAs described\n' +
+        'in the documentation of JScrewIt.encode.\n' +
+        'Most of these methods also have a short flag syntax associated.\n' +
+        '\n' +
+        '  RunAs Method       Flags\n' +
+        '  ────────────  ──────────────────\n' +
+        '  none          (default, no flag)\n' +
+        '  call          -c, -w\n' +
+        '  eval          -e\n' +
+        '  express       -x\n' +
+        '  express-call  -xc, -xw\n' +
+        '  express-eval  -xe\n' +
+        '\n' +
+        'See the JScrewIt feature documentation for a list of all supported features.\n';
     console.log(message);
     return;
 }
@@ -60,36 +74,46 @@ var JScrewIt = require('./lib/jscrewit.js');
 
 if (inputFileName == null)
 {
-    var repl = require('repl');
-    var stream = require('stream');
-    
-    console.log('Press ^C at any time to quit.');
-    var transform = new stream.Transform();
-    transform._transform =
-        function (chunk, encoding, callback)
-        {
-            var lines = chunk.toString().match(/.+/g);
-            if (lines)
+    try
+    {
+        JScrewIt.encode('', options); // validate options
+        
+        var repl = require('repl');
+        var stream = require('stream');
+        
+        console.log('Press ^C at any time to quit.');
+        var transform = new stream.Transform();
+        transform._transform =
+            function (chunk, encoding, callback)
             {
-                lines.forEach(
-                    function (line)
-                    {
-                        var output = JScrewIt.encode(line, options);
-                        transform.push(output + '\n');
-                    }
-                );
+                var lines = chunk.toString().match(/.+/g);
+                if (lines)
+                {
+                    lines.forEach(
+                        function (line)
+                        {
+                            var output = JScrewIt.encode(line, options);
+                            transform.push(output + '\n');
+                        }
+                    );
+                }
+                callback();
+            };
+        repl.start(
+            {
+                input: transform,
+                output: process.stdout,
+                prompt: 'SCREW> ',
+                useColors: true
             }
-            callback();
-        };
-    repl.start(
-        {
-            input: transform,
-            output: process.stdout,
-            prompt: 'SCREW> ',
-            useColors: true
-        }
-    );
-    process.stdin.pipe(transform);
+        );
+        process.stdin.pipe(transform);
+    }
+    catch (error)
+    {
+        console.error(error.message);
+        return;
+    }
 }
 else
 {
