@@ -106,7 +106,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                 throw new SyntaxError('Invalid identifier ' + JSON.stringify(constant));
             if (!encoder.hasOwnProperty('constantDefinitions'))
                 encoder.constantDefinitions = object_create(CONSTANTS);
-            var entries = [define(definition + '')];
+            var entries = [define(String(definition))];
             encoder.constantDefinitions[constant] = entries;
         }
         
