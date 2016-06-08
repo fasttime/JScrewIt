@@ -14,7 +14,7 @@ var trimJS;
         function (str)
         {
             str =
-                (str + '').replace(
+                str.replace(
                     /^(?:\s|\/\/[^\n\r]*(?![^\n\r])|\/\*(?:[^*]|\*[^\/])*?\*\/)*[\n\r]/,
                     ''
                 );

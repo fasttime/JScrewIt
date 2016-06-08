@@ -30,22 +30,13 @@ var setUp;
      * @param {object} [options={ }] An optional object specifying encoding options.
      *
      * @param {FeatureElement|CompatibleFeatureArray} [options.features=JScrewIt.Feature.DEFAULT]
-     * Specifies the features available on the engines that evaluate the encoded output.
-     *
+     * <p>
+     * Specifies the features available on the engines that evaluate the encoded output.</p>
+     * <p>
      * If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](Features.md#DEFAULT) is
      * assumed: this ensures maximum compatibility but also generates the largest code.
-     * To generate shorter code, specify all features available on all target engines explicitly.
-     *
-     * @param {boolean} [options.trimCode=false]
-     * If this parameter is truthy, lines in the beginning and in the end of the file containing
-     * nothing but space characters and JavaScript comments are removed from the generated output.
-     * A newline terminator in the last preserved line is also removed.
-     *
-     * This option is especially useful to strip banner comments and trailing newline characters
-     * which are sometimes found in minified scripts.
-     *
-     * Using this option may produce unexpected results if the input is not well-formed JavaScript
-     * code.
+     * To generate shorter code, specify all features available on all target engines
+     * explicitly.</p>
      *
      * @param {string} [options.runAs=none]
      * This option controls the type of code generated from the given input.
@@ -87,17 +78,29 @@ var setUp;
      *
      * </dl>
      *
+     * @param {boolean} [options.trimCode=false]
+     * <p>
+     * If this parameter is truthy, lines in the beginning and in the end of the file containing
+     * nothing but space characters and JavaScript comments are removed from the generated output.
+     * A newline terminator in the last preserved line is also removed.</p>
+     * <p>
+     * This option is especially useful to strip banner comments and trailing newline characters
+     * which are sometimes found in minified scripts.</p>
+     * <p>
+     * Using this option may produce unexpected results if the input is not well-formed JavaScript
+     * code.</p>
+     *
      * @param {string} [options.wrapWith=none] An alias for `runAs`.
      *
      * @returns {string} The encoded string.
      *
      * @throws
-     * An `Error` is thrown under the following circumstances:
      *
-     * - The specified string cannot be encoded with the specified options.
-     * - Some unknown features were specified.
-     * - A combination of mutually incompatible features was specified.
-     * - The option `runAs` (or `wrapWith`) was specified with an invalid value.
+     * An `Error` is thrown under the following circumstances.
+     *  - The specified string cannot be encoded with the specified options.
+     *  - Some unknown features were specified.
+     *  - A combination of mutually incompatible features was specified.
+     *  - The option `runAs` (or `wrapWith`) was specified with an invalid value.
      *
      * Also, an out of memory condition may occur when processing very large data.
      */
@@ -114,11 +117,12 @@ var setUp;
             runAsData = filterRunAs(options.wrapWith, 'wrapWith');
         var wrapper = runAsData[0];
         var coderNames = runAsData[1];
+        input = String(input);
         if (options.trimCode)
             input = trimJS(input);
         var perfInfo = options.perfInfo;
         var encoder = getEncoder(features);
-        var output = encoder.exec(String(input), wrapper, coderNames, perfInfo);
+        var output = encoder.exec(input, wrapper, coderNames, perfInfo);
         return output;
     }
     
