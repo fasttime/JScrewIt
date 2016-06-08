@@ -1128,7 +1128,7 @@ self
                     'trims spaces',
                     function ()
                     {
-                        var input = '\n \t\ralert(1)\r\t \n';
+                        var input = '\n \uFEFF\t\ralert(1)\r\t \uFEFF\n';
                         var expected = 'alert(1)';
                         var actual = JScrewIt.debug.trimJS(input);
                         expect(actual).toBe(expected);
@@ -1138,7 +1138,7 @@ self
                     'trims single-line comments',
                     function ()
                     {
-                        var input = '// Hello\n//World!\nalert(1)\n//Goodbye\n// World!';
+                        var input = '// Hello\u2028//World!\nalert(1)\n//Goodbye\u2029// World!';
                         var expected = 'alert(1)';
                         var actual = JScrewIt.debug.trimJS(input);
                         expect(actual).toBe(expected);
