@@ -206,7 +206,7 @@ var wrapWithEval;
         var replacement;
         if (number)
         {
-            replacement = replaceDigit(+number[0]) + '';
+            replacement = replaceDigit(+number[0]);
             var length = number.length;
             for (var index = 1; index < length; ++index)
                 replacement += '+[' + replaceDigit(+number[index]) + ']';

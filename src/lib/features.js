@@ -221,7 +221,7 @@ var validMaskFromArrayOrStringOrFeature;
             mask = arg.mask;
         else
         {
-            var name = arg + '';
+            var name = String(arg);
             var featureObj = ALL[name];
             if (!featureObj)
                 throw new Error('Unknown feature ' + JSON.stringify(name));
