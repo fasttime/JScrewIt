@@ -275,8 +275,8 @@ var validMaskFromArrayOrStringOrFeature;
         ANY_DOCUMENT:
         {
             description:
-                'Existence of the global object property document whose string representation ' +
-                'starts with "[object " and ends with "Document]".',
+                'Existence of the global object document whose string representation starts with ' +
+                '"[object " and ends with "Document]".',
             check: function ()
             {
                 return typeof document === 'object' && /^\[object .*Document]$/.test(document + '');
@@ -286,8 +286,8 @@ var validMaskFromArrayOrStringOrFeature;
         ANY_WINDOW:
         {
             description:
-                'Existence of the global object property self whose string representation starts ' +
-                'with "[object " and ends with "Window]".',
+                'Existence of the global object self whose string representation starts with ' +
+                '"[object " and ends with "Window]".',
             check: checkSelfFeature.bind(
                 function (str)
                 {
@@ -325,7 +325,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         ATOB:
         {
-            description: 'Existence of the global object functions atob and btoa.',
+            description: 'Existence of the global functions atob and btoa.',
             check: function ()
             {
                 return typeof atob === 'function' && typeof btoa === 'function';
@@ -335,8 +335,8 @@ var validMaskFromArrayOrStringOrFeature;
         BARPROP:
         {
             description:
-                'Existence of the global object property statusbar having the string ' +
-                'representation "[object BarProp]"',
+                'Existence of the global object statusbar having the string representation ' +
+                '"[object BarProp]".',
             check: function ()
             {
                 return typeof statusbar === 'object' && statusbar + '' === '[object BarProp]';
@@ -366,8 +366,8 @@ var validMaskFromArrayOrStringOrFeature;
         CONSOLE:
         {
             description:
-                'Existence of the global object property console having the string ' +
-                'representation "[object Console]".\n' +
+                'Existence of the global object console having the string representation ' +
+                '"[object Console]".\n' +
                 'This feature may become unavailable when Firebug or Firebug Lite is open and ' +
                 'the console panel is enabled.',
             check: function ()
@@ -379,8 +379,8 @@ var validMaskFromArrayOrStringOrFeature;
         DOCUMENT:
         {
             description:
-                'Existence of the global object property document having the string ' +
-                'representation "[object Document]".',
+                'Existence of the global object document having the string representation ' +
+                '"[object Document]".',
             check: function ()
             {
                 return typeof document === 'object' && document + '' === '[object Document]';
@@ -392,8 +392,8 @@ var validMaskFromArrayOrStringOrFeature;
         DOMWINDOW:
         {
             description:
-                'Existence of the global object property self having the string representation ' +
-                '"[object DOMWindow]".',
+                'Existence of the global object self having the string representation "[object ' +
+                'DOMWindow]".',
             check: checkSelfFeature.bind(
                 function (str)
                 {
@@ -496,8 +496,8 @@ var validMaskFromArrayOrStringOrFeature;
         HISTORY:
         {
             description:
-                'Existence of the global object property history having the string ' +
-                'representation "[object History]"',
+                'Existence of the global object history having the string representation ' +
+                '"[object History]"',
             check: function ()
             {
                 return typeof history === 'object' && history + '' === '[object History]';
@@ -507,8 +507,8 @@ var validMaskFromArrayOrStringOrFeature;
         HTMLAUDIOELEMENT:
         {
             description:
-                'Existence of the global object property Audio whose string representation ' +
-                'starts with "function HTMLAudioElement".',
+                'Existence of the global object Audio whose string representation starts with ' +
+                '"function HTMLAudioElement".',
             check: function ()
             {
                 return typeof Audio !== 'undefined' && /^function HTMLAudioElement/.test(Audio);
@@ -519,8 +519,8 @@ var validMaskFromArrayOrStringOrFeature;
         HTMLDOCUMENT:
         {
             description:
-                'Existence of the global object property document having the string ' +
-                'representation "[object HTMLDocument]".',
+                'Existence of the global object document having the string representation ' +
+                '"[object HTMLDocument]".',
             check: function ()
             {
                 return typeof document === 'object' && document + '' === '[object HTMLDocument]';
@@ -545,7 +545,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         INTL:
         {
-            description: 'Existence of the global object property Intl.',
+            description: 'Existence of the global object Intl.',
             check: function ()
             {
                 return typeof Intl === 'object';
@@ -570,8 +570,8 @@ var validMaskFromArrayOrStringOrFeature;
         NODECONSTRUCTOR:
         {
             description:
-                'Existence of the global object property Node having the string representation ' +
-                '"[object NodeConstructor]".',
+                'Existence of the global object Node having the string representation "[object ' +
+                'NodeConstructor]".',
             check: function ()
             {
                 return typeof Node !== 'undefined' && Node + '' === '[object NodeConstructor]';
@@ -632,8 +632,8 @@ var validMaskFromArrayOrStringOrFeature;
         SELF_OBJ:
         {
             description:
-                'Existence of the global object property self whose string representation starts ' +
-                'with "[object ".',
+                'Existence of the global object self whose string representation starts with ' +
+                '"[object ".',
             check: checkSelfFeature.bind(
                 function (str)
                 {
@@ -655,6 +655,14 @@ var validMaskFromArrayOrStringOrFeature;
                 return Object.prototype.toString.call() === '[object Undefined]';
             }
         },
+        UNEVAL:
+        {
+            description: 'Existence of the global function uneval.',
+            check: function ()
+            {
+                return typeof uneval !== 'undefined';
+            }
+        },
         V8_SRC:
         {
             description:
@@ -672,8 +680,8 @@ var validMaskFromArrayOrStringOrFeature;
         WINDOW:
         {
             description:
-                'Existence of the global object property self having the string representation ' +
-                '"[object Window]".',
+                'Existence of the global object self having the string representation "[object ' +
+                'Window]".',
             check: checkSelfFeature.bind(
                 function (str)
                 {
@@ -857,6 +865,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'NO_OLD_SAFARI_LF',
                 'NO_V8_SRC',
                 'UNDEFINED',
+                'UNEVAL',
                 'WINDOW'
             ],
             attributes: { 'web-worker-restriction': null }
