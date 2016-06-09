@@ -851,7 +851,6 @@ var createSolution;
         ],
         'U':
         [
-            define('(document["createElement"](false) + [])["12"]', ANY_DOCUMENT),
             define('btoa("1NaN")[1]', ATOB),
             define('""["sub"]()[2]', CAPITAL_HTML),
             define('(RP_3_NO + PLAIN_OBJECT["toString"]["call"]())["11"]', UNDEFINED),
