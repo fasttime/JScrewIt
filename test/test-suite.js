@@ -12,7 +12,8 @@ expect,
 global,
 module,
 repeat,
-self
+self,
+uneval
 */
 /* jshint mocha: true, nonstandard: true */
 
@@ -250,6 +251,13 @@ self
                     }
                 );
                 testConstant('unescape', isExpected(unescape));
+                testConstant(
+                    'uneval',
+                    function ()
+                    {
+                        this.toBe(uneval);
+                    }
+                );
                 
                 testConstant(
                     'ANY_FUNCTION',
