@@ -12,12 +12,12 @@ Features available in Android Browser 4.1.2 to 4.3.1.
 Features available in Android Browser 4.4.2 or later.
 <a name="ANY_DOCUMENT"></a>
 ### `ANY_DOCUMENT`
-Existence of the global object property document whose string representation starts with "\[object " and ends with "Document\]".
+Existence of the global object document whose string representation starts with "\[object " and ends with "Document\]".
 
 _Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Edge and Android Browser. This feature is not available inside web workers._
 <a name="ANY_WINDOW"></a>
 ### `ANY_WINDOW`
-Existence of the global object property self whose string representation starts with "\[object " and ends with "Window\]".
+Existence of the global object self whose string representation starts with "\[object " and ends with "Window\]".
 
 _Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Edge and Android Browser. This feature is not available inside web workers._
 <a name="ARRAY_ITERATOR"></a>
@@ -32,7 +32,7 @@ Support for arrow functions.
 _Available in Firefox, Chrome, Opera, Edge and Node.js 4+._
 <a name="ATOB"></a>
 ### `ATOB`
-Existence of the global object functions atob and btoa.
+Existence of the global functions atob and btoa.
 
 _Available in Firefox, Chrome, Internet Explorer 10+, Safari, Opera, Edge and Android Browser. This feature is not available inside web workers in Safari._
 <a name="AUTO"></a>
@@ -40,7 +40,7 @@ _Available in Firefox, Chrome, Internet Explorer 10+, Safari, Opera, Edge and An
 All features available in the current engine.
 <a name="BARPROP"></a>
 ### `BARPROP`
-Existence of the global object property statusbar having the string representation "\[object BarProp\]"
+Existence of the global object statusbar having the string representation "\[object BarProp\]".
 
 _Available in Firefox, Chrome, Safari, Opera, Edge and Android Browser 4.4.2+. This feature is not available inside web workers._
 <a name="CAPITAL_HTML"></a>
@@ -60,7 +60,7 @@ All new browsers' features.
 No support for Node.js and older browsers like Internet Explorer, Safari 8 or Android Browser
 <a name="CONSOLE"></a>
 ### `CONSOLE`
-Existence of the global object property console having the string representation "\[object Console\]".
+Existence of the global object console having the string representation "\[object Console\]".
 This feature may become unavailable when Firebug or Firebug Lite is open and the console panel is enabled.
 
 _Available in Firefox, Chrome, Internet Explorer 10+, Safari, Opera, Edge and Android Browser. This feature is not available inside web workers in Chrome, Safari before 7.1+, Opera and Android Browser 4.4.2+._
@@ -69,12 +69,12 @@ _Available in Firefox, Chrome, Internet Explorer 10+, Safari, Opera, Edge and An
 Minimum feature level, compatible with all supported engines.
 <a name="DOCUMENT"></a>
 ### `DOCUMENT`
-Existence of the global object property document having the string representation "\[object Document\]".
+Existence of the global object document having the string representation "\[object Document\]".
 
 _Available in Internet Explorer before 11. This feature is not available inside web workers._
 <a name="DOMWINDOW"></a>
 ### `DOMWINDOW`
-Existence of the global object property self having the string representation "\[object DOMWindow\]".
+Existence of the global object self having the string representation "\[object DOMWindow\]".
 
 _Available in Android Browser before 4.4.2+. This feature is not available inside web workers._
 <a name="EDGE"></a>
@@ -129,17 +129,17 @@ Although ECMAScript states that string representation of dates is implementation
 _Available in Firefox, Chrome, Internet Explorer 11, Safari, Opera, Edge, Android Browser and Node.js._
 <a name="HISTORY"></a>
 ### `HISTORY`
-Existence of the global object property history having the string representation "\[object History\]"
+Existence of the global object history having the string representation "\[object History\]"
 
 _Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Edge and Android Browser. This feature is not available inside web workers._
 <a name="HTMLAUDIOELEMENT"></a>
 ### `HTMLAUDIOELEMENT`
-Existence of the global object property Audio whose string representation starts with "function HTMLAudioElement".
+Existence of the global object Audio whose string representation starts with "function HTMLAudioElement".
 
 _Available in Chrome, Opera and Android Browser 4.4.2+. This feature is not available inside web workers._
 <a name="HTMLDOCUMENT"></a>
 ### `HTMLDOCUMENT`
-Existence of the global object property document having the string representation "\[object HTMLDocument\]".
+Existence of the global object document having the string representation "\[object HTMLDocument\]".
 
 _Available in Firefox, Chrome, Internet Explorer 11, Safari, Opera, Edge and Android Browser. This feature is not available inside web workers._
 <a name="IE10"></a>
@@ -162,7 +162,7 @@ Remarkable traits are the presence of a line feed character \("\\n"\) in the beg
 _Available in Internet Explorer._
 <a name="INTL"></a>
 ### `INTL`
-Existence of the global object property Intl.
+Existence of the global object Intl.
 
 _Available in Firefox, Chrome, Internet Explorer 11, Opera, Edge, Android Browser 4.4.2+ and Node.js 0.12+._
 <a name="LOCALE_INFINITY"></a>
@@ -186,7 +186,7 @@ Features available in Node.js 0.12 or later.
 Features available in Node.js 4.0 or later.
 <a name="NODECONSTRUCTOR"></a>
 ### `NODECONSTRUCTOR`
-Existence of the global object property Node having the string representation "\[object NodeConstructor\]".
+Existence of the global object Node having the string representation "\[object NodeConstructor\]".
 
 _Available in Safari. This feature is not available inside web workers._
 <a name="NO_IE_SRC"></a>
@@ -229,7 +229,7 @@ Features available in Safari 9.0 or later.
 _An alias for [`ANY_WINDOW`](#ANY_WINDOW)._
 <a name="SELF_OBJ"></a>
 ### `SELF_OBJ`
-Existence of the global object property self whose string representation starts with "\[object ".
+Existence of the global object self whose string representation starts with "\[object ".
 
 _Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Edge and Android Browser. This feature is not available inside web workers in Safari 7.1+._
 <a name="UNDEFINED"></a>
@@ -238,6 +238,11 @@ The property that Object.prototype.toString.call\(\) evaluates to "\[object Unde
 This behavior is specified by ECMAScript, and is supported by all engines except Android Browser versions prior to 4.1.2, where this feature is not available.
 
 _Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Edge, Android Browser 4.1.2+ and Node.js._
+<a name="UNEVAL"></a>
+### `UNEVAL`
+Existence of the global function uneval.
+
+_Available in Firefox._
 <a name="V8_SRC"></a>
 ### `V8_SRC`
 A string representation of native functions typical for the V8 engine, but also found in Edge.
@@ -246,7 +251,7 @@ Remarkable traits are the lack of characters in the beginning of the string befo
 _Available in Chrome, Opera, Edge, Android Browser and Node.js._
 <a name="WINDOW"></a>
 ### `WINDOW`
-Existence of the global object property self having the string representation "\[object Window\]".
+Existence of the global object self having the string representation "\[object Window\]".
 
 _Available in Firefox, Chrome, Internet Explorer, Safari, Opera, Edge and Android Browser 4.4.2+. This feature is not available inside web workers._
 ## Engine Support
@@ -284,6 +289,7 @@ This table lists features available in the most common engines.
 <li><a href="#NO_V8_SRC"><code>NO_V8_SRC</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
+<li><a href="#UNEVAL"><code>UNEVAL</code></a>
 <li><a href="#WINDOW"><code>WINDOW</code></a>
 </ul>
 </td>
