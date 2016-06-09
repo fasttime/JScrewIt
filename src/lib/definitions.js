@@ -83,6 +83,7 @@ var createSolution;
     var NO_V8_SRC                       = Feature.NO_V8_SRC;
     var SELF_OBJ                        = Feature.SELF_OBJ;
     var UNDEFINED                       = Feature.UNDEFINED;
+    var UNEVAL                          = Feature.UNEVAL;
     var V8_SRC                          = Feature.V8_SRC;
     var WINDOW                          = Feature.WINDOW;
     
@@ -894,7 +895,15 @@ var createSolution;
             defineFBCharAt(14),
             define('(ARRAY_ITERATOR + [])[0]', ENTRIES_OBJ)
         ],
-        // '\\':   ,
+        '\\':
+        [
+            define('uneval(""["fontcolor"](false))["20"]', UNEVAL),
+            define('uneval(ANY_FUNCTION + [])[1]', IE_SRC, UNEVAL),
+            define('uneval(+(ANY_FUNCTION + [])[0] + FILTER)["23"]', NO_V8_SRC, UNEVAL),
+            define('uneval(+(ANY_FUNCTION + [])[0] + FILL)["21"]', FILL, NO_V8_SRC, UNEVAL),
+            define('uneval(FILTER + [])["20"]', NO_IE_SRC, NO_V8_SRC, UNEVAL),
+            define('uneval(RP_3_NO + FILL)["21"]', FILL, NO_IE_SRC, NO_V8_SRC, UNEVAL)
+        ],
         ']':
         [
             defineFBCharAt(26),
@@ -1191,6 +1200,10 @@ var createSolution;
         unescape:
         [
             define('Function("return unescape")()')
+        ],
+        uneval:
+        [
+            define('Function("return uneval")()', UNEVAL)
         ],
         
         // Custom definitions
