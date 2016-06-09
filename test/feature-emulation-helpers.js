@@ -705,6 +705,31 @@
                 );
             }
         },
+        UNEVAL:
+        {
+            setUp: function ()
+            {
+                var uneval =
+                    function (obj)
+                    {
+                        if (typeof obj === 'string')
+                        {
+                            var result =
+                                '"' +
+                                obj.replace(
+                                    /[\n"]/g,
+                                    function (char)
+                                    {
+                                        return '\\' + { '\n': 'n', '"': '"' }[char];
+                                    }
+                                ) +
+                                '"';
+                            return result;
+                        }
+                    };
+                override(this, 'uneval', { value: uneval });
+            }
+        },
         V8_SRC: makeEmuFeatureFunctionSource(
             /^\n?(.*)\{\n    \[native code]\n\}\n?$/,
             '$1{ [native code] }'
