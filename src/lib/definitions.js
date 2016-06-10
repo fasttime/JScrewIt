@@ -501,6 +501,8 @@ var createSolution;
         ],
         [
             define('U'),
+            define('V', ANY_DOCUMENT),
+            define('U', UNDEFINED),
             define('W', ANY_WINDOW),
             define('W', ATOB),
             define('U', CAPITAL_HTML)

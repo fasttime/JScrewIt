@@ -1,9 +1,12 @@
+#!/usr/bin/env node
+
 /* jshint node: true */
 
 'use strict';
 
 var JScrewIt = require('../lib/jscrewit.js');
 var kit = require('./verifier-kit.js');
+
 var define              = kit.define;
 var findOptimalFeatures = kit.findOptimalFeatures;
 var getEntries          = JScrewIt.debug.getEntries;
@@ -28,12 +31,15 @@ function checkCoderFeatureOptimality(features, createInput, coders, coder, minLe
             var inputData = Object(input);
             for (var coderName in coders)
             {
-                var rivalCoder = coders[coderName];
-                if (rivalCoder !== coder)
+                if (isRivalCoderName(coderName))
                 {
-                    var output = rivalCoder.call(encoder, inputData, maxLength);
-                    if (output !== undefined)
-                        return output;
+                    var rivalCoder = coders[coderName];
+                    if (rivalCoder !== coder)
+                    {
+                        var output = rivalCoder.call(encoder, inputData, maxLength);
+                        if (output !== undefined)
+                            return output;
+                    }
                 }
             }
         };
@@ -89,7 +95,7 @@ function checkMinInputLength(features, createInput, coders, coder, minLength)
     var encoder = JScrewIt.debug.createEncoder(features);
     var inputDataShort = Object(createInput(minLength - 1));
     var inputDataFit = Object(createInput(minLength));
-    var coderNames = Object.keys(coders);
+    var coderNames = Object.keys(coders).filter(isRivalCoderName);
     var outputFit = coder.call(encoder, inputDataFit);
     var bestDataFit = findBestCoder(inputDataFit);
     if (bestDataFit.length <= outputFit.length)
@@ -157,6 +163,11 @@ function isCapital(name)
 {
     var capital = name.toUpperCase() === name;
     return capital;
+}
+
+function isRivalCoderName(coderName)
+{
+    return coderName !== 'express' && coderName !== 'literal';
 }
 
 function mismatchCallback()
