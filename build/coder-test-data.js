@@ -109,7 +109,7 @@ module.exports =
         'byCharCodesRadix4'
     ),
     data(
-        ['ARRAY_ITERATOR', 'ATOB', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
+        ['ARRAY_ITERATOR', 'ATOB', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC', 'UNEVAL'],
         repeat.bind(null, String.fromCharCode(59999)),
         'byDict'
     ),
