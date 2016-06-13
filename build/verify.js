@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-/* jshint node: true */
+/* eslint-env node */
 
 'use strict';
 
@@ -37,7 +37,7 @@ function checkCoderFeatureOptimality(features, createInput, coders, coder, minLe
                     if (rivalCoder !== coder)
                     {
                         var output = rivalCoder.call(encoder, inputData, maxLength);
-                        if (output !== undefined)
+                        if (output !== void 0)
                             return output;
                     }
                 }
@@ -122,7 +122,7 @@ function findCoderTestData(coderName)
 {
     var CODER_TEST_DATA_LIST = require('./coder-test-data.js');
     
-    for (var index = 0;; ++index)
+    for (var index = 0; ; ++index)
     {
         var coderTestData = CODER_TEST_DATA_LIST[index];
         if (coderTestData.coderName === coderName)
@@ -168,6 +168,31 @@ function isCapital(name)
 function isRivalCoderName(coderName)
 {
     return coderName !== 'express' && coderName !== 'literal';
+}
+
+function main()
+{
+    var routineName = process.argv[2];
+    if (routineName != null)
+    {
+        var routine = verify[routineName];
+        if (routine)
+        {
+            var time = timeUtils.timeThis(routine);
+            var timeStr = timeUtils.formatDuration(time);
+            console.log(timeStr + ' elapsed.');
+            return;
+        }
+    }
+    console.error(
+        Object.keys(verify).sort(compareRoutineNames).reduce(
+            function (str, routineName)
+            {
+                return str + '\n* ' + routineName;
+            },
+            'Please, specify one of the implemented verification routines:'
+        )
+    );
 }
 
 function mismatchCallback()
@@ -350,24 +375,4 @@ verify.byDictRadix4AmendedBy2 = verifyCoder('byDictRadix4AmendedBy2');
 verify.byDictRadix5AmendedBy3 = verifyCoder('byDictRadix5AmendedBy3');
 verify.byDblDict = verifyCoder('byDblDict');
 
-var routineName = process.argv[2];
-if (routineName != null)
-{
-    var routine = verify[routineName];
-    if (routine)
-    {
-        var time = timeUtils.timeThis(routine);
-        var timeStr = timeUtils.formatDuration(time);
-        console.log(timeStr + ' elapsed.');
-        return;
-    }
-}
-console.error(
-    Object.keys(verify).sort(compareRoutineNames).reduce(
-        function (str, routineName)
-        {
-            return str + '\n* ' + routineName;
-        },
-        'Please, specify one of the implemented verification routines:'
-    )
-);
+main();

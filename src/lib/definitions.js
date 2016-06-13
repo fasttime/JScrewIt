@@ -49,8 +49,6 @@ var createSolution;
 
 (function ()
 {
-    'use strict';
-    
     var ANY_DOCUMENT                    = Feature.ANY_DOCUMENT;
     var ANY_WINDOW                      = Feature.ANY_WINDOW;
     var ARRAY_ITERATOR                  = Feature.ARRAY_ITERATOR;
@@ -1107,18 +1105,18 @@ var createSolution;
         Number:
         [
             define('Number["name"]', NAME),
-            define(undefined, ENTRIES_OBJ)
+            define(void 0, ENTRIES_OBJ)
         ],
         Object:
         [
             define('Object["name"]', NAME),
-            define(undefined, CAPITAL_HTML, NO_IE_SRC, SELF_OBJ),
-            define(undefined, CAPITAL_HTML, NO_V8_SRC, SELF_OBJ),
+            define(void 0, CAPITAL_HTML, NO_IE_SRC, SELF_OBJ),
+            define(void 0, CAPITAL_HTML, NO_V8_SRC, SELF_OBJ),
             define('Object["name"]', IE_SRC, NAME),
             define('Object["name"]', INTL, NAME),
             define('Object["name"]', NAME, V8_SRC),
             define('Object["name"]', NAME, NO_IE_SRC, NO_V8_SRC),
-            define(undefined, ENTRIES_OBJ)
+            define(void 0, ENTRIES_OBJ)
         ],
         RegExp:
         [
@@ -1127,7 +1125,7 @@ var createSolution;
         String:
         [
             define('String["name"]', NAME),
-            define(undefined, CAPITAL_HTML, ENTRIES_OBJ)
+            define(void 0, CAPITAL_HTML, ENTRIES_OBJ)
         ],
         'f,a,l,s,e':
         [

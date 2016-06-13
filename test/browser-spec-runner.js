@@ -1,3 +1,4 @@
+/* eslint-env browser */
 /*
 global
 JScrewIt,
@@ -11,7 +12,6 @@ screenX,
 screenY,
 showFeatureSupport
 */
-/* jshint browser: true */
 
 (function ()
 {

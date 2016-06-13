@@ -1,5 +1,5 @@
+/* eslint-env node */
 /* global padLeft, padRight, repeat */
-/* jshint node: true */
 
 'use strict';
 
@@ -92,9 +92,9 @@ function parseCommandLine(argv)
     function parseFeatures()
     {
         var arg2 = argv[++index];
-        if (arg2 === undefined)
+        if (arg2 === void 0)
             throw Error('option ' + quote(arg) + ' requires an argument');
-        options.features = arg2.trim().split(/(?:\s+|\s*\,\s*)/);
+        options.features = arg2.trim().split(/(?:\s+|\s*,\s*)/);
     }
     
     function parseFlag(char)
@@ -125,7 +125,7 @@ function parseCommandLine(argv)
     function parseRunAs()
     {
         var arg2 = argv[++index];
-        if (arg2 === undefined)
+        if (arg2 === void 0)
             throw Error('option ' + quote(arg) + ' requires an argument');
         options.runAs = arg2;
     }

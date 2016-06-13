@@ -1,6 +1,5 @@
-/* exported createEngineSelectionBox */
+/* eslint-env browser */
 /* global JScrewIt, art */
-/* jshint browser: true */
 
 function createEngineSelectionBox()
 {
@@ -111,9 +110,7 @@ function createEngineSelectionBox()
             function ()
             {
                 if (!allEngineInput.indeterminate)
-                {
                     handleAllEngineChange();
-                }
             }
         );
     }

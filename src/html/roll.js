@@ -1,6 +1,5 @@
+/* eslint-env browser */
 /* global art */
-/* exported createRoll */
-/* jshint browser: true */
 
 function createRoll()
 {
@@ -40,9 +39,7 @@ function createRoll()
     function rollTo(newEndOpening)
     {
         if (newEndOpening === opening)
-        {
             stop();
-        }
         else
         {
             var newOpenSign = newEndOpening > opening ? 1 : -1;

@@ -2,8 +2,6 @@ var trimJS;
 
 (function ()
 {
-    'use strict';
-    
     var regExp =
         RegExp(
             '(?:(?!.)\\s)+(?:\\s|\uFEFF|//(?:(?!\\*/|`).)*(?!.)|/\\*(?:(?!`)(?:[^*]|\\*[^/]))*?\\' +

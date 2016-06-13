@@ -14,8 +14,6 @@ var object_keys;
 
 (function ()
 {
-    'use strict';
-    
     array_isArray = Array.isArray;
     
     array_prototype_every = Array.prototype.every;

@@ -1,5 +1,5 @@
+/* eslint-env node */
 /* global repeat */
-/* jshint node: true */
 
 'use strict';
 
@@ -59,10 +59,8 @@ function createAntiRadix4TestString(variety, length)
 function createDictTestString(variety, length)
 {
     var str = '';
-    for (var i = 0; i < variety; ++i)
-    {
-        str += String.fromCharCode(0xffff - i);
-    }
+    for (var index = 0; index < variety; ++index)
+        str += String.fromCharCode(0xffff - index);
     str = repeatToFit(str, length);
     return str;
 }

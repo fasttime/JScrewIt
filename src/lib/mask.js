@@ -8,8 +8,6 @@ var maskUnion;
 
 (function ()
 {
-    'use strict';
-    
     maskAnd =
         function (thisMask, mask)
         {

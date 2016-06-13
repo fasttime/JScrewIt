@@ -1,3 +1,4 @@
+/* eslint-env browser */
 /*
 global
 alert,
@@ -11,7 +12,6 @@ JScrewIt,
 outputArea,
 stats
 */
-/* jshint browser: true */
 
 (function ()
 {
@@ -104,7 +104,7 @@ stats
         {
             alert(error);
         }
-        if (value !== undefined)
+        if (value !== void 0)
         {
             var message = typeof value === 'string' ? '"' + value + '"' : String(value);
             alert(message);

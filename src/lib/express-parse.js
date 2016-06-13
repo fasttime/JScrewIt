@@ -4,8 +4,6 @@ var expressParse;
 
 (function ()
 {
-    'use strict';
-    
     function evalExpr(expr)
     {
         var value = Function('return ' + expr)();

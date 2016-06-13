@@ -40,8 +40,6 @@ var wrapWithEval;
 
 (function ()
 {
-    'use strict';
-    
     var STATIC_CHAR_CACHE = new Empty();
     var STATIC_CONST_CACHE = new Empty();
     
@@ -148,7 +146,7 @@ var wrapWithEval;
     function initMinCharIndexArrayStrLength(input)
     {
         var minCharIndexArrayStrLength =
-            Math.max((input.length - 1) * (SIMPLE['false'].length + 1) - 3, 0);
+            Math.max((input.length - 1) * (SIMPLE.false.length + 1) - 3, 0);
         return minCharIndexArrayStrLength;
     }
     
@@ -222,7 +220,7 @@ var wrapWithEval;
             {
                 str = JSON.parse(quotedString);
             }
-            catch (e)
+            catch (error)
             {
                 this.throwSyntaxError('Illegal string ' + quotedString);
             }
@@ -266,7 +264,7 @@ var wrapWithEval;
                 
                 var input = inputData.valueOf();
                 var long = input.length > MAX_DECODABLE_ARGS;
-                var output = this.encodeByCharCodes(input, long, undefined, maxLength);
+                var output = this.encodeByCharCodes(input, long, void 0, maxLength);
                 return output;
             },
             2
@@ -276,7 +274,7 @@ var wrapWithEval;
             function (inputData, maxLength)
             {
                 var input = inputData.valueOf();
-                var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
+                var output = this.encodeByCharCodes(input, void 0, 4, maxLength);
                 return output;
             },
             39
@@ -294,7 +292,7 @@ var wrapWithEval;
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByDict(inputData, undefined, undefined, maxLength);
+                var output = this.encodeByDict(inputData, void 0, void 0, maxLength);
                 return output;
             },
             3
@@ -359,7 +357,7 @@ var wrapWithEval;
             {
                 var input = inputData.valueOf();
                 var wrapper = inputData.wrapper;
-                var output = this.encodeLiteral(input, wrapper, undefined, false, maxLength);
+                var output = this.encodeLiteral(input, wrapper, void 0, false, maxLength);
                 return output;
             }
         ),
@@ -420,7 +418,7 @@ var wrapWithEval;
                     {
                         this.codingLog = perfInfo.codingLog = [];
                         var before = new Date();
-                        var maxLength = output != null ? output.length : undefined;
+                        var maxLength = output != null ? output.length : void 0;
                         var newOutput = coder.call(this, inputData, maxLength);
                         var time = new Date() - before;
                         this.codingLog = codingLog;
@@ -583,12 +581,12 @@ var wrapWithEval;
                 return str;
             }
             
-            var stringTokenPattern =
+            var strTokenPattern =
                 '(' + object_keys(SIMPLE).join('|') + ')|' +
                 object_keys(COMPLEX).filter(filterCallback, this).map(mapCallback).join('') +
                 '([\\s\\S])';
-            this.stringTokenPattern = stringTokenPattern;
-            return stringTokenPattern;
+            this.strTokenPattern = strTokenPattern;
+            return strTokenPattern;
         },
         
         defaultResolveCharacter: function (char)
@@ -860,7 +858,7 @@ var wrapWithEval;
         getPaddingBlock: function (paddingInfo, length)
         {
             var paddingBlock = paddingInfo.blocks[length];
-            if (paddingBlock !== undefined)
+            if (paddingBlock !== void 0)
                 return paddingBlock;
             this.throwSyntaxError('Undefined padding block with length ' + length);
         },
@@ -922,17 +920,11 @@ var wrapWithEval;
                 if (typeof value === 'string')
                 {
                     output =
-                        this.encodeLiteral(
-                            value,
-                            undefined,
-                            unitIndex + '',
-                            strongBound,
-                            maxLength
-                        );
+                        this.encodeLiteral(value, void 0, unitIndex + '', strongBound, maxLength);
                 }
                 else
                 {
-                    if (typeof value === 'number' && value === value)
+                    if (typeof value === 'number' && !isNaN(value))
                     {
                         var negative = value < 0 || 1 / value < 0;
                         var str;
@@ -949,7 +941,7 @@ var wrapWithEval;
                     }
                     else
                         output = STATIC_ENCODER.replaceExpr(value + '');
-                    if (strongBound && value !== undefined)
+                    if (strongBound && value !== void 0)
                         output = '(' + output + ')';
                     if (output.length > maxLength)
                         return;
@@ -976,9 +968,9 @@ var wrapWithEval;
         replaceString: function (str, strongBound, forceString, maxLength)
         {
             var buffer = new ScrewBuffer(strongBound, forceString, this.maxGroupThreshold);
-            var stringTokenPattern = this.stringTokenPattern || this.createStringTokenPattern();
+            var strTokenPattern = this.strTokenPattern || this.createStringTokenPattern();
             var match;
-            var regExp = RegExp(stringTokenPattern, 'g');
+            var regExp = RegExp(strTokenPattern, 'g');
             while (match = regExp.exec(str))
             {
                 if (buffer.length > maxLength)
@@ -1028,7 +1020,7 @@ var wrapWithEval;
         resolveCharacter: function (char)
         {
             var solution = this.charCache[char];
-            if (solution === undefined)
+            if (solution === void 0)
             {
                 this.callResolver(
                     quoteString(char),
@@ -1061,7 +1053,7 @@ var wrapWithEval;
         resolveComplex: function (complex)
         {
             var solution = this.complexCache[complex];
-            if (solution === undefined)
+            if (solution === void 0)
             {
                 this.callResolver(
                     quoteString(complex),
@@ -1082,7 +1074,7 @@ var wrapWithEval;
         resolveConstant: function (constant)
         {
             var solution = this.constCache[constant];
-            if (solution === undefined)
+            if (solution === void 0)
             {
                 this.callResolver(
                     constant,

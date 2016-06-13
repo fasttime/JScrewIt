@@ -5,8 +5,6 @@ var define;
 
 (function ()
 {
-    'use strict';
-    
     createDefinitionEntry =
         function (definition, featureArgs, startIndex)
         {
