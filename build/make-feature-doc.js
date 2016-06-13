@@ -7,17 +7,24 @@ var JScrewIt = require('../lib/jscrewit.js');
 var ENGINE_ENTRIES =
 [
     {
-        name: 'Firefox',
-        versions:
-        [
-            { description: '31+', feature: 'FF31' }
-        ]
-    },
-    {
         name: ['Chrome', 'Opera'],
         versions:
         [
             { description: ['45+', '32+'], feature: 'CHROME45' }
+        ]
+    },
+    {
+        name: 'Edge',
+        versions:
+        [
+            { feature: 'EDGE' }
+        ]
+    },
+    {
+        name: 'Firefox',
+        versions:
+        [
+            { description: '31+', feature: 'FF31' }
         ]
     },
     {
@@ -38,13 +45,6 @@ var ENGINE_ENTRIES =
             { description: '7.1+', feature: 'SAFARI71' },
             { description: '8.0+', feature: 'SAFARI80' },
             { description: '9.0+', feature: 'SAFARI90' }
-        ]
-    },
-    {
-        name: 'Edge',
-        versions:
-        [
-            { feature: 'EDGE' }
         ]
     },
     {
@@ -69,12 +69,12 @@ var ENGINE_ENTRIES =
 
 var ENGINE_REFS =
 [
-    { index: 0 },
-    { index: 1, subIndex: 0 },
+    { index: 0, subIndex: 0 },
+    { index: 1 },
     { index: 2 },
     { index: 3 },
-    { index: 1, subIndex: 1 },
     { index: 4 },
+    { index: 0, subIndex: 1 },
     { index: 5 },
     { index: 6 }
 ];
@@ -106,7 +106,7 @@ function escape(str)
 {
     var result =
         str.replace(
-            /[&\(\)[\\\]]/g,
+            /[&\()[\\\]]/g,
             function (char)
             {
                 return '\\' + char;

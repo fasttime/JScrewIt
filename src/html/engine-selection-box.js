@@ -15,13 +15,10 @@ function createEngineSelectionBox()
             ]
         },
         {
-            name: 'Internet Explorer',
+            name: 'Edge',
             versions:
             [
-                { feature: 'IE9', number: '9' },
-                { feature: 'IE10', number: '10' },
-                { feature: 'IE11', number: '11' },
-                { feature: 'IE11_WIN10', number: '11 (W10)' }
+                { feature: 'EDGE' }
             ]
         },
         {
@@ -29,6 +26,16 @@ function createEngineSelectionBox()
             versions:
             [
                 { feature: 'FF31', number: '31+' }
+            ]
+        },
+        {
+            name: 'Internet Explorer',
+            versions:
+            [
+                { feature: 'IE9', number: '9' },
+                { feature: 'IE10', number: '10' },
+                { feature: 'IE11', number: '11' },
+                { feature: 'IE11_WIN10', number: '11 (W10)' }
             ]
         },
         {
@@ -45,13 +52,6 @@ function createEngineSelectionBox()
             versions:
             [
                 { feature: 'CHROME45', number: '32+' }
-            ]
-        },
-        {
-            name: 'Edge',
-            versions:
-            [
-                { feature: 'EDGE' }
             ]
         },
         {

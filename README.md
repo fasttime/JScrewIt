@@ -41,16 +41,13 @@ The following source will do an `alert(1)` in any browser, including Internet Ex
 []]+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![
 ]+!![]+!![]]+(!![]+[])[+!![]]]+[])[+[]]+!![])+[][(![]+[])[+[]]+([![]]+[][[]])[+!
 ![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]]+(!![]+[]
-)[+!![]]])[+!![]+[+!![]]]+(!![]+[])[+!![]]]((![]+[])[+!![]]+(![]+[])[!![]+!![]]+
-(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]+(!![]+[])[+[]]+(!!(+([][(![]+[])[+[]]
-+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!
-![]+!![]]+(!![]+[])[+!![]]]+[])[+[]]+!![])+[][(![]+[])[+[]]+([![]]+[][[]])[+!![]
-+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+
-!![]]])[!![]+!![]+[+[]]]+[+!![]]+(!!(+([][(![]+[])[+[]]+([![]]+[][[]])[+!![]+[+[
-]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]
-]]+[])[+[]]+!![])+[][(![]+[])[+[]]+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![
-]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]])[!![]+!![]+[+!![]]
-])()
+)[+!![]]])[+!![]+[+!![]]]+(!![]+[])[+!![]]]((!![]+[])[+!![]]+(!![]+[])[!![]+!![]
++!![]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!![]]+([][[]]+[])[+!![]]+(+(+!
+![]+[+([][(![]+[])[+[]]+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[]
+)[+[]]+(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]]+[])[+[]]])+[][(![]+[])[+[]]+(
+[![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![
+]+!![]]+(!![]+[])[+!![]]])[+!![]+[+!![]]]+(![]+[])[+!![]]+(![]+[])[!![]+!![]]+(!
+![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]+(!![]+[])[+[]])()(+!![])
 ``` 
 
 ## Setup Instructions
@@ -93,11 +90,11 @@ var JScrewIt = require("jscrewit");
 This will encode the `alert(1)` example shown above and run it using `eval`.
 
 ```js
-var output = JScrewIt.encode("alert(1)", { runAs: "call" });
+var output = JScrewIt.encode("alert(1)", { runAs: "express-call" });
 eval(output);
 ```
 
-Setting `runAs` to `"call"` in the second parameter of
+Setting `runAs` to `"express-call"` in the second parameter of
 [`JScrewIt.encode`](Reference.md#JScrewIt.encode) indicates that we would like the output to be
 executable.
 
@@ -126,19 +123,19 @@ shorter.
 The way to tell JScrewIt to use a particular set of features is by specifying a value for the
 `features` option in the second parameter passed to `encode`.
 
-For instance, the generic `alert(1)` example is 2084 chracters long.
+For instance, the generic `alert(1)` example is 1905 chracters long.
 
 ```js
-var options = { runAs: "call" };
-var output = JScrewIt.encode("alert(1)", options); // output is 2084 characters
+var options = { runAs: "express-call" };
+var output = JScrewIt.encode("alert(1)", options); // output is 1905 characters
 ```
 
 But if we specify that we are only interested in code that runs in an up to date Firefox browser,
 the output length shrinks to less than a half:
 
 ```js
-var options = { features: "FF31", runAs: "call" };
-var output = JScrewIt.encode("alert(1)", options); // 972 characters now
+var options = { features: "FF31", runAs: "express-call" };
+var output = JScrewIt.encode("alert(1)", options); // 960 characters now
 ```
 
 Here we have used a particular feature: [`FF31`](Features.md#FF31).
@@ -148,7 +145,7 @@ We can specify more than one feature using an array, e.g.
 
 ```js
 var input = "document.body.style.background='red'";
-var options = { features: ["ATOB", "WINDOW"], runAs: "call" };
+var options = { features: ["ATOB", "WINDOW"], runAs: "express-call" };
 var output = JScrewIt.encode(input, options);
 ```
 
@@ -198,15 +195,16 @@ With this knowledge, we can rewrite the expression as follows.
 JScrewIt itself and the code it generates are compatible with the JavaScript engines listed below.
 
 - Chrome 45+
-- Internet Explorer 9+
+- Edge
 - Firefox 31+
+- Internet Explorer 9+
 - Safari 7.0+
 - Opera 32+
-- Edge
 - Android Browser 4.x
 - Node.js 0.10.26+
 
 ## Links
 
 * [JScrewIt](http://jscrew.it) online encoder
+* JSFuck on [Wikipedia](https://en.wikipedia.org/wiki/JSFuck)
 * JSFuck introduction and alternatives on [Esolang](http://esolangs.org/wiki/JSFuck)
