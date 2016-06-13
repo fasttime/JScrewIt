@@ -1,33 +1,28 @@
 #!/usr/bin/env node
 
+/* eslint-env node */
+
 'use strict';
 
-var cli = require('./tools/cli.js');
-
-var command;
-
-var argv = process.argv;
-try
+function getBasename()
 {
-    command = cli.parseCommandLine(argv);
+    var path = require('./tools/cli.js');
+    var basename = path.basename(process.argv[1]);
+    return basename;
 }
-catch (error)
+
+function printErrorMessage(errorMessage)
 {
-    var path = require('path');
-    
-    var basename = path.basename(argv[1]);
+    var basename = getBasename();
     var message =
-        basename + ': ' + error.message + '.\nTry "' + basename + ' --help" for more information.';
+        basename + ': ' + errorMessage + '.\nTry "' + basename + ' --help" for more information.';
     console.error(message);
-    return;
 }
-if (command === 'help')
+
+function printHelpMessage()
 {
-    var path = require('path');
-    
-    var basename = path.basename(argv[1]);
     var message =
-        'Usage: ' + basename + ' [OPTION]... [SOURCE [DESTINATION]]\n' +
+        'Usage: ' + getBasename() + ' [OPTION]... [SOURCE [DESTINATION]]\n' +
         'Encodes JavaScript with JScrewIt.\n' +
         '\n' +
         '  -d, --diagnostic        print diagnostic report\n' +
@@ -57,100 +52,126 @@ if (command === 'help')
         '\n' +
         'See the JScrewIt feature documentation for a list of all supported features.\n';
     console.log(message);
-    return;
 }
-if (command === 'version')
+
+function printVersion()
 {
     var version = require('./package.json').version;
     console.log('JScrewIt ' + version);
-    return;
 }
 
-var inputFileName   = command.inputFileName;
-var outputFileName  = command.outputFileName;
-var options         = command.options;
-
-var JScrewIt = require('./lib/jscrewit.js');
-
-if (inputFileName == null)
+(function ()
 {
+    var cli = require('./tools/cli.js');
+    
+    var command;
     try
     {
-        JScrewIt.encode('', options); // validate options
-        
-        var repl = require('repl');
-        var stream = require('stream');
-        
-        console.log('Press ^C at any time to quit.');
-        var transform = new stream.Transform();
-        transform._transform =
-            function (chunk, encoding, callback)
-            {
-                var lines = chunk.toString().match(/.+/g);
-                if (lines)
-                {
-                    lines.forEach(
-                        function (line)
-                        {
-                            var output = JScrewIt.encode(line, options);
-                            transform.push(output + '\n');
-                        }
-                    );
-                }
-                callback();
-            };
-        repl.start(
-            {
-                input: transform,
-                output: process.stdout,
-                prompt: 'SCREW> ',
-                useColors: true
-            }
-        );
-        process.stdin.pipe(transform);
+        command = cli.parseCommandLine(process.argv);
     }
     catch (error)
     {
-        console.error(error.message);
+        printErrorMessage(error.message);
         return;
     }
-}
-else
-{
-    var fs = require('fs');
-    
-    var encodingTime;
-    try
+    if (command === 'help')
     {
-        var output;
-        var input = fs.readFileSync(inputFileName);
-        encodingTime =
-            cli.timeThis(
-                function ()
+        printHelpMessage();
+        return;
+    }
+    if (command === 'version')
+    {
+        printVersion();
+        return;
+    }
+    
+    var inputFileName   = command.inputFileName;
+    var outputFileName  = command.outputFileName;
+    var options         = command.options;
+    
+    var JScrewIt = require('./lib/jscrewit.js');
+    
+    if (inputFileName == null)
+    {
+        try
+        {
+            JScrewIt.encode('', options); // validate options
+            
+            var repl = require('repl');
+            var stream = require('stream');
+            
+            console.log('Press ^C at any time to quit.');
+            var transform = new stream.Transform();
+            transform._transform =
+                function (chunk, encoding, callback)
                 {
-                    output = JScrewIt.encode(input, options);
+                    var lines = chunk.toString().match(/.+/g);
+                    if (lines)
+                    {
+                        lines.forEach(
+                            function (line)
+                            {
+                                var output = JScrewIt.encode(line, options);
+                                transform.push(output + '\n');
+                            }
+                        );
+                    }
+                    callback();
+                };
+            repl.start(
+                {
+                    input: transform,
+                    output: process.stdout,
+                    prompt: 'SCREW> ',
+                    useColors: true
                 }
             );
-        if (outputFileName != null)
-            fs.writeFileSync(outputFileName, output);
-        else
-            console.log(output);
-    }
-    catch (error)
-    {
-        console.error(error.message);
-        return;
-    }
-    if (outputFileName)
-    {
-        var perfInfo = options.perfInfo;
-        var codingLog = perfInfo && perfInfo.codingLog;
-        if (codingLog)
-        {
-            var diagnosticReport = cli.createDiagnosticReport(codingLog);
-            console.log(diagnosticReport);
+            process.stdin.pipe(transform);
         }
-        var report = cli.createReport(input.length, output.length, encodingTime);
-        console.log(report);
+        catch (error)
+        {
+            console.error(error.message);
+            return;
+        }
     }
-}
+    else
+    {
+        var fs = require('fs');
+        
+        var input;
+        var output;
+        var encodingTime;
+        try
+        {
+            input = fs.readFileSync(inputFileName);
+            encodingTime =
+                cli.timeThis(
+                    function ()
+                    {
+                        output = JScrewIt.encode(input, options);
+                    }
+                );
+            if (outputFileName != null)
+                fs.writeFileSync(outputFileName, output);
+            else
+                console.log(output);
+        }
+        catch (error)
+        {
+            console.error(error.message);
+            return;
+        }
+        if (outputFileName)
+        {
+            var perfInfo = options.perfInfo;
+            var codingLog = perfInfo && perfInfo.codingLog;
+            if (codingLog)
+            {
+                var diagnosticReport = cli.createDiagnosticReport(codingLog);
+                console.log(diagnosticReport);
+            }
+            var report = cli.createReport(input.length, output.length, encodingTime);
+            console.log(report);
+        }
+    }
+})();

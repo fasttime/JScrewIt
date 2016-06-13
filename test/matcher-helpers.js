@@ -37,7 +37,7 @@
         {
             var actual = this.value;
             var message = this.generateMessage(actual, this.expr, 'to be a 32-bit integer');
-            var pass = actual === actual ^ 0;
+            var pass = actual === (actual ^ 0);
             if (pass)
                 return this.assertions.pass(message);
             this.assertions.fail(message);

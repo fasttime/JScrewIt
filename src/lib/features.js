@@ -33,8 +33,6 @@ var validMaskFromArrayOrStringOrFeature;
 
 (function ()
 {
-    'use strict';
-    
     function areCompatible(features)
     {
         var compatible;
@@ -200,7 +198,7 @@ var validMaskFromArrayOrStringOrFeature;
     function isExcludingAttribute(attributeCache, attributeName, featureObjs)
     {
         var result = attributeCache[attributeName];
-        if (result === undefined)
+        if (result === void 0)
         {
             attributeCache[attributeName] =
                 result =
@@ -1316,7 +1314,7 @@ var validMaskFromArrayOrStringOrFeature;
          * @member {string|undefined} JScrewIt.Feature#description
          */
         
-        description: undefined,
+        description: void 0,
         
         /**
          * An array of all elementary feature names included in this feature object, without
@@ -1377,7 +1375,7 @@ var validMaskFromArrayOrStringOrFeature;
          * @member {string|undefined} JScrewIt.Feature#name
          */
         
-        name: undefined,
+        name: void 0,
         
         /**
          * Creates a new feature object from this feature by removing elementary features that are
@@ -1415,8 +1413,8 @@ var validMaskFromArrayOrStringOrFeature;
                     {
                         var attributeValue = featureObj.attributes[environment];
                         if (
-                            attributeValue === undefined ||
-                            referenceFeatureObjs !== undefined &&
+                            attributeValue === void 0 ||
+                            referenceFeatureObjs !== void 0 &&
                             !isExcludingAttribute(
                                 attributeCache,
                                 attributeValue,
@@ -1440,7 +1438,7 @@ var validMaskFromArrayOrStringOrFeature;
         toString: function ()
         {
             var name = this.name;
-            if (name === undefined)
+            if (name === void 0)
                 name = '{' + this.canonicalNames.join(', ') + '}';
             var str = '[Feature ' + name + ']';
             return str;

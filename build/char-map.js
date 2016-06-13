@@ -1,4 +1,4 @@
-/* jshint node: true */
+/* eslint-env node */
 
 'use strict';
 
@@ -126,7 +126,7 @@ function multiSolve(char, doneCharMap, exceptionalChars)
             solution.mask = mask;
             outputMap[solution] = solution;
             var entryIndex = solution.entryIndex;
-            if (entryIndex !== undefined)
+            if (entryIndex !== void 0)
                 entryIndexSet[entryIndex] = null;
         }
     }

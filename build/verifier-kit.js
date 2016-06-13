@@ -67,14 +67,14 @@
         while (encoder = analyzer.nextEncoder)
         {
             var output = replacer(encoder);
-            if (output === undefined)
+            if (output === void 0)
                 continue;
             var length = output.length;
             if (length <= optimalLength)
             {
                 analyzer.stopCapture();
                 var rivalOutput = rivalReplacer(encoder, length);
-                if (rivalOutput !== undefined)
+                if (rivalOutput !== void 0)
                     continue;
                 if (length < optimalLength)
                 {

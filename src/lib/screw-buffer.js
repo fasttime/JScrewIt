@@ -10,8 +10,6 @@ var hasOuterPlus;
 
 (function ()
 {
-    'use strict';
-    
     function getNumericJoinCost(level0, level1)
     {
         var joinCost = level0 > LEVEL_UNDEFINED || level1 > LEVEL_UNDEFINED ? 2 : 3;
@@ -274,7 +272,7 @@ var hasOuterPlus;
                         length += getAppendLength(solution);
                         return true;
                     },
-                    get length ()
+                    get length()
                     {
                         var result;
                         switch (solutions.length)

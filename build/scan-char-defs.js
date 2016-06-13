@@ -1,5 +1,5 @@
+/* eslint-env node */
 /* global padLeft */
-/* jshint node: true */
 
 'use strict';
 
@@ -17,18 +17,12 @@ function compareCanonicalNames(solution1, solution2)
 {
     var canonicalNames1 = solution1.canonicalNames;
     var canonicalNames2 = solution2.canonicalNames;
-    for (var index = 0;; ++index)
+    for (var index = 0; ; ++index)
     {
         var name1 = canonicalNames1[index] || '';
         var name2 = canonicalNames2[index] || '';
         if (!name1 && !name2)
-        {
-            // If you get this error, it's because more distinct solutions share the same minimal
-            // common feature. In this case, the minimal common feature may not be characteristic
-            // for the set of features generating the solution, and a new characterization may be
-            // necessary.
-            throw new Error('Feature collision');
-        }
+            throwFeatureCollisionError();
         if (name1 < name2)
             return -1;
         if (name1 > name2)
@@ -163,6 +157,15 @@ function subRunScan(callback)
     {
         fs.closeSync(fd);
     }
+}
+
+function throwFeatureCollisionError()
+{
+    // If you get this error, it's because more distinct solutions share the same minimal common
+    // feature.
+    // In this case, the minimal common feature may not be characteristic for the set of features
+    // generating the solution, and a new characterization may be necessary.
+    throw new Error('Feature collision');
 }
 
 module.exports = runScan;

@@ -15,12 +15,12 @@
         {
             var output = '';
             input += '';
-            for (var i = 0; i < input.length;)
+            for (var index = 0; index < input.length;)
             {
-                var chr1 = input.charCodeAt(i++);
+                var chr1 = input.charCodeAt(index++);
                 var enc1 = chr1 >> 2;
                 
-                var chr2 = input.charCodeAt(i++);
+                var chr2 = input.charCodeAt(index++);
                 var enc2 = (chr1 & 3) << 4 | chr2 >> 4;
                 
                 var enc3;
@@ -29,7 +29,7 @@
                     enc3 = enc4 = 64;
                 else
                 {
-                    var chr3 = input.charCodeAt(i++);
+                    var chr3 = input.charCodeAt(index++);
                     enc3 = (chr2 & 15) << 2 | chr3 >> 6;
                     if (isNaN(chr3))
                         enc4 = 64;
@@ -51,21 +51,21 @@
         {
             var output = '';
             input += '';
-            for (var i = 0; i < input.length;)
+            for (var index = 0; index < input.length;)
             {
-                var enc1 = this._keyStr.indexOf(input.charAt(i++));
-                var enc2 = this._keyStr.indexOf(input.charAt(i++));
+                var enc1 = this._keyStr.indexOf(input.charAt(index++));
+                var enc2 = this._keyStr.indexOf(input.charAt(index++));
                 var chr1 = enc1 << 2 | enc2 >> 4;
                 output += String.fromCharCode(chr1);
                 
-                var pos3 = input.charAt(i++);
+                var pos3 = input.charAt(index++);
                 var enc3 = this._keyStr.indexOf(pos3);
                 if (!pos3 || enc3 === 64)
                     break;
                 var chr2 = (enc2 & 15) << 4 | enc3 >> 2;
                 output += String.fromCharCode(chr2);
                 
-                var pos4 = input.charAt(i++);
+                var pos4 = input.charAt(index++);
                 var enc4 = this._keyStr.indexOf(pos4);
                 if (!pos4 || enc4 === 64)
                     break;

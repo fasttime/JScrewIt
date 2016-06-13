@@ -1,4 +1,4 @@
-/* jshint mocha: true, node: true */
+/* eslint-env mocha, node */
 
 'use strict';
 
@@ -50,8 +50,8 @@ describe(
         test(
             [],
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
+                inputFileName: void 0,
+                outputFileName: void 0,
                 options: { }
             }
         );
@@ -60,56 +60,56 @@ describe(
         test(
             ['-c'],
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
+                inputFileName: void 0,
+                outputFileName: void 0,
                 options: { runAs: 'call' }
             }
         );
         test(
             ['-w'],
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
+                inputFileName: void 0,
+                outputFileName: void 0,
                 options: { runAs: 'call' }
             }
         );
         test(
             ['-e'],
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
+                inputFileName: void 0,
+                outputFileName: void 0,
                 options: { runAs: 'eval' }
             }
         );
         test(
             ['-d'],
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
+                inputFileName: void 0,
+                outputFileName: void 0,
                 options: { perfInfo: { } }
             }
         );
         test(
             ['--diagnostic'],
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
+                inputFileName: void 0,
+                outputFileName: void 0,
                 options: { perfInfo: { } }
             }
         );
         test(
             ['-f', 'ATOB,SELF'],
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
+                inputFileName: void 0,
+                outputFileName: void 0,
                 options: { features: ['ATOB', 'SELF'] }
             }
         );
         test(
             ['--features', 'ATOB,SELF'],
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
+                inputFileName: void 0,
+                outputFileName: void 0,
                 options: { features: ['ATOB', 'SELF'] }
             }
         );
@@ -118,16 +118,16 @@ describe(
         test(
             ['-r', 'express'],
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
+                inputFileName: void 0,
+                outputFileName: void 0,
                 options: { runAs: 'express' }
             }
         );
         test(
             ['--run-as', 'express'],
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
+                inputFileName: void 0,
+                outputFileName: void 0,
                 options: { runAs: 'express' }
             }
         );
@@ -136,32 +136,32 @@ describe(
         test(
             ['-t'],
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
+                inputFileName: void 0,
+                outputFileName: void 0,
                 options: { trimCode: true }
             }
         );
         test(
             ['--trim-code'],
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
+                inputFileName: void 0,
+                outputFileName: void 0,
                 options: { trimCode: true }
             }
         );
         test(
             ['-x'],
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
+                inputFileName: void 0,
+                outputFileName: void 0,
                 options: { runAs: 'express' }
             }
         );
         test(
             ['-ctx'],
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
+                inputFileName: void 0,
+                outputFileName: void 0,
                 options: { trimCode: true, runAs: 'express-call' }
             }
         );
@@ -174,7 +174,7 @@ describe(
             ['infile'],
             {
                 inputFileName: 'infile',
-                outputFileName: undefined,
+                outputFileName: void 0,
                 options: { }
             }
         );

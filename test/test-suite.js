@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 /*
 global
 EMU_FEATURES,
@@ -15,7 +16,6 @@ repeat,
 self,
 uneval
 */
-/* jshint mocha: true, nonstandard: true */
 
 (function (global)
 {
@@ -1325,8 +1325,8 @@ uneval
                             );
                         }
                     );
-                    
                 })();
+                
                 it(
                     'encodes a string with incomplete groups',
                     function ()
@@ -1477,7 +1477,7 @@ uneval
                         expect(
                             function ()
                             {
-                                encoder.exec('1 + 1', undefined, ['express']);
+                                encoder.exec('1 + 1', void 0, ['express']);
                             }
                         ).toThrow(
                             new Error('Encoding failed')
@@ -1591,14 +1591,11 @@ uneval
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        var output1 =
-                            encoder.encodeByDict(Object('12345'), undefined, undefined, 10);
+                        var output1 = encoder.encodeByDict(Object('12345'), void 0, void 0, 10);
                         expect(output1).toBeUndefined();
-                        var output2 =
-                            encoder.encodeByDict(Object('12345'), undefined, undefined, 78);
+                        var output2 = encoder.encodeByDict(Object('12345'), void 0, void 0, 78);
                         expect(output2).toBeUndefined();
-                        var output3 =
-                            encoder.encodeByDict(Object('12345'), undefined, undefined, 200);
+                        var output3 = encoder.encodeByDict(Object('12345'), void 0, void 0, 200);
                         expect(output3).toBeUndefined();
                     }
                 );
@@ -2076,7 +2073,7 @@ uneval
                         expect(
                             function ()
                             {
-                                encoder.resolveExprAt('', 42, undefined, []);
+                                encoder.resolveExprAt('', 42, void 0, []);
                             }
                         ).toThrow(SyntaxError('Missing padding entries for index 42'));
                     }
@@ -2121,7 +2118,7 @@ uneval
                                 function getMaxLength(scope)
                                 {
                                     var maxLength = scope.maxLength;
-                                    if (maxLength === undefined)
+                                    if (maxLength === void 0)
                                     {
                                         scope.maxLength = maxLength =
                                             coder.call(encoder, Object('0')).length;

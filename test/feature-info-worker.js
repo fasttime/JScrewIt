@@ -1,5 +1,5 @@
+/* eslint-env worker */
 /* global JScrewIt */
-/* jshint worker: true */
 
 importScripts('../lib/jscrewit.js');
 

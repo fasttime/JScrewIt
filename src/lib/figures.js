@@ -4,8 +4,6 @@ var getFigure;
 
 (function ()
 {
-    'use strict';
-    
     function createFigure(value, sortLength)
     {
         var figure = Object(value);

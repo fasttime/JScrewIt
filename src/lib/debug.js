@@ -44,8 +44,6 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
 {
     (function ()
     {
-        'use strict';
-        
         function cloneEntries(inputEntries)
         {
             var outputEntries;

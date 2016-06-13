@@ -98,7 +98,7 @@ function handleSubmit(evt)
         {
             return runExtremeTest(maxGroupThreshold, groupings);
         };
-    for (var i = 0; i < callDepth; ++i)
+    for (var index = 0; index < callDepth; ++index)
         call = Function.prototype.call.bind(call);
     disableForm(true);
     setTimeout(
@@ -129,7 +129,7 @@ function repeat(str, count)
 function randomString(length)
 {
     var str = '';
-    for (var i = 0; i < length; ++i)
+    for (var index = 0; index < length; ++index)
     {
         var digit = Math.random() < 0.5 & 1;
         str += digit;

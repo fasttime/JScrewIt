@@ -1,4 +1,4 @@
-/* jshint node: true */
+/* eslint-env node */
 
 'use strict';
 
@@ -242,7 +242,7 @@ function getNoWWReport(featureObj)
 {
     var restriction = featureObj.attributes['web-worker'];
     var report =
-        restriction !== undefined &&
+        restriction !== void 0 &&
         (restriction === 'web-worker-restriction' || reportAsList(restriction, getNoWWInfo));
     return report;
 }

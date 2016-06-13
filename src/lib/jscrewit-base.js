@@ -18,8 +18,6 @@ var setUp;
 
 (function ()
 {
-    'use strict';
-    
     /**
      * Encodes a given string into JSFuck.
      *
@@ -111,7 +109,7 @@ var setUp;
         var features = options.features;
         var runAsData;
         var runAs = options.runAs;
-        if (runAs !== undefined)
+        if (runAs !== void 0)
             runAsData = filterRunAs(runAs, 'runAs');
         else
             runAsData = filterRunAs(options.wrapWith, 'wrapWith');
@@ -132,12 +130,12 @@ var setUp;
         var CODER_NAMES_EXPRESS = ['express'];
         var CODER_NAMES_LITERAL = ['literal'];
         
-        if (input === undefined)
-            return [undefined, CODER_NAMES_LITERAL];
+        if (input === void 0)
+            return [, CODER_NAMES_LITERAL];
         switch (input += '')
         {
         case 'none':
-            return [undefined, CODER_NAMES_LITERAL];
+            return [, CODER_NAMES_LITERAL];
         case 'call':
             return [wrapWithCall, CODER_NAMES_LITERAL];
         case 'eval':
@@ -147,7 +145,7 @@ var setUp;
         case 'express-eval':
             return [wrapWithEval, CODER_NAMES_BOTH];
         case 'express':
-            return [undefined, CODER_NAMES_EXPRESS];
+            return [, CODER_NAMES_EXPRESS];
         }
         throw new Error('Invalid value for option ' + name);
     }
@@ -169,7 +167,7 @@ var setUp;
     getValidFeatureMask =
         function (features)
         {
-            var mask = features !== undefined ? validMaskFromArrayOrStringOrFeature(features) : 0;
+            var mask = features !== void 0 ? validMaskFromArrayOrStringOrFeature(features) : 0;
             return mask;
         };
     
