@@ -34,12 +34,12 @@
     "build": "npm install && grunt"
   },
   "devDependencies": {
-    "art-js": "~0.2.3",
+    "art-js": "~0.2.4",
     "expectations": "~0.6.0",
     "grunt": "~1.0.1",
     "grunt-cli": "~1.2.0",
     "grunt-contrib-clean": "~1.0.0",
-    "grunt-contrib-concat": "~1.0.0",
+    "grunt-contrib-concat": "~1.0.1",
     "grunt-contrib-uglify": "~1.0.1",
     "grunt-eslint": "~18.1.0",
     "grunt-jscs": "~3.0.0",
@@ -47,7 +47,7 @@
     "grunt-mocha-istanbul": "~5.0.1",
     "istanbul": "~0.4.3",
     "mocha": "~2.5.3",
-    "mocha-matrix": "~0.1.0",
+    "mocha-matrix": "~0.1.1",
     "progress": "~1.1.8"
   }
 }

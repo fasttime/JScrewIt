@@ -727,9 +727,9 @@ var validMaskFromArrayOrStringOrFeature;
                 'web-worker-restriction': null
             }
         },
-        ANDRO400:
+        ANDRO40:
         {
-            description: 'Features available in Android Browser 4.0 to 4.3.1.',
+            description: 'Features available in Android Browser 4.0 to 4.3.',
             includes:
             [
                 'ATOB',
@@ -744,9 +744,9 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC'
             ]
         },
-        ANDRO412:
+        ANDRO41:
         {
-            description: 'Features available in Android Browser 4.1.2 to 4.3.1.',
+            description: 'Features available in Android Browser 4.1 to 4.3.',
             includes:
             [
                 'ATOB',
@@ -762,9 +762,9 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC'
             ]
         },
-        ANDRO442:
+        ANDRO44:
         {
-            description: 'Features available in Android Browser 4.4.2 or later.',
+            description: 'Features available in Android Browser 4.4 or later.',
             includes:
             [
                 'ATOB',

@@ -81,7 +81,8 @@ uneval
                         function ()
                         {
                             var perfInfo = { };
-                            var options = { features: compatibility, perfInfo: perfInfo };
+                            var options =
+                            { features: compatibility, perfInfo: perfInfo, runAs: 'none' };
                             var output = JScrewIt.encode(expression3, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(expression3);
@@ -354,7 +355,7 @@ uneval
                             'none',
                             function ()
                             {
-                                var output = JScrewIt.encode(2);
+                                var output = JScrewIt.encode(2, { runAs: 'none' });
                                 expect(output).toBe('!![]+!![]+[]');
                             }
                         );
@@ -532,7 +533,11 @@ uneval
                             'uses trimJS',
                             function ()
                             {
-                                var output = JScrewIt.encode('/* */\nABC\n', { trimCode: true });
+                                var output =
+                                    JScrewIt.encode(
+                                        '/* */\nABC\n',
+                                        { runAs: 'none', trimCode: true }
+                                    );
                                 var actual = eval(output);
                                 expect(actual).toBe('ABC');
                             }
@@ -541,7 +546,11 @@ uneval
                             'encodes a script consisting of only blanks and comments',
                             function ()
                             {
-                                var output = JScrewIt.encode('/* */\n', { trimCode: true });
+                                var output =
+                                    JScrewIt.encode(
+                                        '/* */\n',
+                                        { runAs: 'none', trimCode: true }
+                                    );
                                 var actual = eval(output);
                                 expect(actual).toBe('');
                             }
@@ -550,7 +559,11 @@ uneval
                             'encodes malformed JavaScript',
                             function ()
                             {
-                                var output = JScrewIt.encode('/* */"ABC', { trimCode: true });
+                                var output =
+                                    JScrewIt.encode(
+                                        '/* */"ABC',
+                                        { runAs: 'none', trimCode: true }
+                                    );
                                 var actual = eval(output);
                                 expect(actual).toBe('/* */"ABC');
                             }
@@ -559,11 +572,11 @@ uneval
                 );
                 
                 it(
-                    'encodes undefined',
+                    'encodes undefined for missing parameter',
                     function ()
                     {
                         var output = JScrewIt.encode();
-                        expect(output).toBe('[][[]]+[]');
+                        expect(output).toBe('[][[]]');
                     }
                 );
                 it(
@@ -582,7 +595,7 @@ uneval
                             }
                         };
                         var output = JScrewIt.encode(obj);
-                        expect(output).toBe('+!![]+[]');
+                        expect(output).toBe('+!![]');
                     }
                 );
                 it(

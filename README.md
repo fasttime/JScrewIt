@@ -90,25 +90,40 @@ var JScrewIt = require("jscrewit");
 This will encode the `alert(1)` example shown above and run it using `eval`.
 
 ```js
-var output = JScrewIt.encode("alert(1)", { runAs: "express-call" });
+var output = JScrewIt.encode("alert(1)");
 eval(output);
 ```
 
-Setting `runAs` to `"express-call"` in the second parameter of
-[`JScrewIt.encode`](Reference.md#JScrewIt.encode) indicates that we would like the output to be
-executable.
-
-`runAs` should be omitted or set to `"none"` to encode a plain string instead of JavaScript code.
+To encode just a plain string rather than an executable script, enclose the text in double or simple
+quotes, like when introducing a string literal in JavaScript code.
 
 ```js
-var output = JScrewIt.encode("Hello, world!");
+var output = JScrewIt.encode("'Hello, world!'");
 var input = eval(output); // input contains the string "Hello, world!".
 ```
 
+You can also use escape sequences to encode newlines and other characters.
+Note that the initial backslash in an escape sequence must be escaped with another backslash when
+writing a "sting in a string".
+
+
+```js
+var output = JScrewIt.encode("\"1.\\n2.\\n\\u263A\"");
+/*
+1.
+2.
+☺
+*/
+```
+
+`JScrewIt.encode` also accepts an optional second parameter containing options that control various
+aspects of the encoding.
+These are covered in the relative section in the [API Reference](Reference.md#JScrewIt.encode).
+
 ### Features
 
-JScrewIt is able to generate JSFuck code that is customized for a particular set of JavaScript
-engines (web browsers or Node.js).
+One peculiarity of JScrewIt is the ability to generate JSFuck code that is customized for a
+particular set of JavaScript engines (web browsers or Node.js).
 This optimized code is shorter than generic JSFuck code but does not work everywhere.
 To make use of this optimization, you have to specify which *features* the decoder engine is
 expected to support.
@@ -126,15 +141,14 @@ The way to tell JScrewIt to use a particular set of features is by specifying a 
 For instance, the generic `alert(1)` example is 1905 chracters long.
 
 ```js
-var options = { runAs: "express-call" };
-var output = JScrewIt.encode("alert(1)", options); // output is 1905 characters
+var output = JScrewIt.encode("alert(1)"); // output is 1905 characters
 ```
 
 But if we specify that we are only interested in code that runs in an up to date Firefox browser,
-the output length shrinks to less than a half:
+the output length shrinks to about 50%:
 
 ```js
-var options = { features: "FF31", runAs: "express-call" };
+var options = { features: "FF31" };
 var output = JScrewIt.encode("alert(1)", options); // 960 characters now
 ```
 
@@ -145,7 +159,7 @@ We can specify more than one feature using an array, e.g.
 
 ```js
 var input = "document.body.style.background='red'";
-var options = { features: ["ATOB", "WINDOW"], runAs: "express-call" };
+var options = { features: ["ATOB", "WINDOW"] };
 var output = JScrewIt.encode(input, options);
 ```
 
@@ -201,7 +215,7 @@ JScrewIt itself and the code it generates are compatible with the JavaScript eng
 - Safari 7.0+
 - Opera 32+
 - Android Browser 4.x
-- Node.js 0.10.26+
+- Node.js
 
 ## Links
 
