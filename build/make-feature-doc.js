@@ -51,16 +51,16 @@ var ENGINE_ENTRIES =
         name: 'Android Browser',
         versions:
         [
-            { description: '4.0+', feature: 'ANDRO400' },
-            { description: '4.1.2+', feature: 'ANDRO412' },
-            { description: '4.4.2+', feature: 'ANDRO442' }
+            { description: '4.0+', feature: 'ANDRO40' },
+            { description: '4.1+', feature: 'ANDRO41' },
+            { description: '4.4+', feature: 'ANDRO44' }
         ]
     },
     {
         name: 'Node.js',
         versions:
         [
-            { description: '0.10.26+', feature: 'NODE010' },
+            { description: '0.10+', feature: 'NODE010' },
             { description: '0.12+', feature: 'NODE012' },
             { description: '4+', feature: 'NODE40' }
         ]

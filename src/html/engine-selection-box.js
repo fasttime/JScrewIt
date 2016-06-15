@@ -58,9 +58,9 @@ function createEngineSelectionBox()
             name: 'Android Browser',
             versions:
             [
-                { feature: 'ANDRO400', number: '4.0' },
-                { feature: 'ANDRO412', number: '4.1–4.3' },
-                { feature: 'ANDRO442', number: '4.4' }
+                { feature: 'ANDRO40', number: '4.0' },
+                { feature: 'ANDRO41', number: '4.1–4.3' },
+                { feature: 'ANDRO44', number: '4.4' }
             ]
         },
         {

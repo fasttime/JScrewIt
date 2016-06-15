@@ -98,9 +98,10 @@ showFeatureSupport
                 function (compatibility)
                 {
                     var content;
+                    var options = { features: compatibility, runAs: 'none' };
                     try
                     {
-                        content = JScrewIt.encode(input, { features: compatibility }).length;
+                        content = JScrewIt.encode(input, options).length;
                     }
                     catch (error)
                     {

@@ -1,15 +1,15 @@
 # JScrewIt Feature Reference
 ## Feature List
 This section lists all features along with their descriptions.
-<a name="ANDRO400"></a>
-### `ANDRO400`
-Features available in Android Browser 4.0 to 4.3.1.
-<a name="ANDRO412"></a>
-### `ANDRO412`
-Features available in Android Browser 4.1.2 to 4.3.1.
-<a name="ANDRO442"></a>
-### `ANDRO442`
-Features available in Android Browser 4.4.2 or later.
+<a name="ANDRO40"></a>
+### `ANDRO40`
+Features available in Android Browser 4.0 to 4.3.
+<a name="ANDRO41"></a>
+### `ANDRO41`
+Features available in Android Browser 4.1 to 4.3.
+<a name="ANDRO44"></a>
+### `ANDRO44`
+Features available in Android Browser 4.4 or later.
 <a name="ANY_DOCUMENT"></a>
 ### `ANY_DOCUMENT`
 Existence of the global object document whose string representation starts with "\[object " and ends with "Document\]".
@@ -42,7 +42,7 @@ All features available in the current engine.
 ### `BARPROP`
 Existence of the global object statusbar having the string representation "\[object BarProp\]".
 
-_Available in Chrome, Edge, Firefox, Safari, Opera and Android Browser 4.4.2+. This feature is not available inside web workers._
+_Available in Chrome, Edge, Firefox, Safari, Opera and Android Browser 4.4+. This feature is not available inside web workers._
 <a name="CAPITAL_HTML"></a>
 ### `CAPITAL_HTML`
 The property that the various string methods returning HTML code such as String.prototype.big or String.prototype.link have both the tag name and attributes written in capital letters.
@@ -63,7 +63,7 @@ No support for Node.js and older browsers like Internet Explorer, Safari 8 or An
 Existence of the global object console having the string representation "\[object Console\]".
 This feature may become unavailable when Firebug or Firebug Lite is open and the console panel is enabled.
 
-_Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Android Browser. This feature is not available inside web workers in Chrome, Safari before 7.1+, Opera and Android Browser 4.4.2+._
+_Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Android Browser. This feature is not available inside web workers in Chrome, Safari before 7.1+, Opera and Android Browser 4.4+._
 <a name="DEFAULT"></a>
 ### `DEFAULT`
 Minimum feature level, compatible with all supported engines.
@@ -76,7 +76,7 @@ _Available in Internet Explorer before 11. This feature is not available inside 
 ### `DOMWINDOW`
 Existence of the global object self having the string representation "\[object DOMWindow\]".
 
-_Available in Android Browser before 4.4.2+. This feature is not available inside web workers._
+_Available in Android Browser before 4.4+. This feature is not available inside web workers._
 <a name="EDGE"></a>
 ### `EDGE`
 Features available in Edge.
@@ -136,7 +136,7 @@ _Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Androi
 ### `HTMLAUDIOELEMENT`
 Existence of the global object Audio whose string representation starts with "function HTMLAudioElement".
 
-_Available in Chrome, Opera and Android Browser 4.4.2+. This feature is not available inside web workers._
+_Available in Chrome, Opera and Android Browser 4.4+. This feature is not available inside web workers._
 <a name="HTMLDOCUMENT"></a>
 ### `HTMLDOCUMENT`
 Existence of the global object document having the string representation "\[object HTMLDocument\]".
@@ -164,12 +164,12 @@ _Available in Internet Explorer._
 ### `INTL`
 Existence of the global object Intl.
 
-_Available in Chrome, Edge, Firefox, Internet Explorer 11, Opera, Android Browser 4.4.2+ and Node.js 0.12+._
+_Available in Chrome, Edge, Firefox, Internet Explorer 11, Opera, Android Browser 4.4+ and Node.js 0.12+._
 <a name="LOCALE_INFINITY"></a>
 ### `LOCALE_INFINITY`
 Language sensitive string representation of Infinity as "∞".
 
-_Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Opera, Android Browser 4.4.2+ and Node.js 0.12+._
+_Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Opera, Android Browser 4.4+ and Node.js 0.12+._
 <a name="NAME"></a>
 ### `NAME`
 Existence of the name property for functions.
@@ -237,7 +237,7 @@ _Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Androi
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
 This behavior is specified by ECMAScript, and is supported by all engines except Android Browser versions prior to 4.1.2, where this feature is not available.
 
-_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1.2+ and Node.js._
+_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+ and Node.js._
 <a name="UNEVAL"></a>
 ### `UNEVAL`
 Existence of the global function uneval.
@@ -253,7 +253,7 @@ _Available in Chrome, Edge, Opera, Android Browser and Node.js._
 ### `WINDOW`
 Existence of the global object self having the string representation "\[object Window\]".
 
-_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser 4.4.2+. This feature is not available inside web workers._
+_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser 4.4+. This feature is not available inside web workers._
 ## Engine Support
 This table lists features available in the most common engines.
 <table>
@@ -419,29 +419,29 @@ This table lists features available in the most common engines.
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
 <li><a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="#DOMWINDOW"><code>DOMWINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#ATOB"><code>ATOB</code></a>
-<li><a href="#BARPROP"><code>BARPROP</code></a> (Android Browser 4.4.2+)
+<li><a href="#BARPROP"><code>BARPROP</code></a> (Android Browser 4.4+)
 <li><a href="#CONSOLE"><code>CONSOLE</code></a>
-<li><a href="#DOMWINDOW"><code>DOMWINDOW</code></a> (not in Android Browser 4.4.2+)
+<li><a href="#DOMWINDOW"><code>DOMWINDOW</code></a> (not in Android Browser 4.4+)
 <li><a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a>
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a>)
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HISTORY"><code>HISTORY</code></a>
-<li><a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a> (Android Browser 4.4.2+)
+<li><a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a> (Android Browser 4.4+)
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
-<li><a href="#INTL"><code>INTL</code></a> (Android Browser 4.4.2+)
-<li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Android Browser 4.4.2+)
+<li><a href="#INTL"><code>INTL</code></a> (Android Browser 4.4+)
+<li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Android Browser 4.4+)
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a> and <a href="#V8_SRC"><code>V8_SRC</code></a>)
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#DOMWINDOW"><code>DOMWINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
-<li><a href="#UNDEFINED"><code>UNDEFINED</code></a> (Android Browser 4.1.2+)
+<li><a href="#UNDEFINED"><code>UNDEFINED</code></a> (Android Browser 4.1+)
 <li><a href="#V8_SRC"><code>V8_SRC</code></a>
-<li><a href="#WINDOW"><code>WINDOW</code></a> (Android Browser 4.4.2+)
+<li><a href="#WINDOW"><code>WINDOW</code></a> (Android Browser 4.4+)
 </ul>
 </td>
 </tr>
 <tr>
-<td>Node.js 0.10.26+</td>
+<td>Node.js 0.10+</td>
 <td>
 <ul>
 <li><a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)

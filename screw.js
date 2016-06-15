@@ -6,7 +6,7 @@
 
 function getBasename()
 {
-    var path = require('./tools/cli.js');
+    var path = require('path');
     var basename = path.basename(process.argv[1]);
     return basename;
 }
@@ -41,14 +41,14 @@ function printHelpMessage()
         'in the documentation of JScrewIt.encode.\n' +
         'Most of these methods also have a short flag syntax associated.\n' +
         '\n' +
-        '  RunAs Method       Flags\n' +
-        '  ────────────  ──────────────────\n' +
-        '  none          (default, no flag)\n' +
-        '  call          -c, -w\n' +
-        '  eval          -e\n' +
-        '  express       -x\n' +
-        '  express-call  -xc, -xw\n' +
-        '  express-eval  -xe\n' +
+        '  RunAs Method            Short Flags\n' +
+        '  ──────────────────────  ────────────────\n' +
+        '  call                    -c, -w\n' +
+        '  eval                    -e\n' +
+        '  express                 -x\n' +
+        '  express-call (default)  -xc, -xw\n' +
+        '  express-eval            -xe\n' +
+        '  none                    (none available)\n' +
         '\n' +
         'See the JScrewIt feature documentation for a list of all supported features.\n';
     console.log(message);
@@ -58,6 +58,12 @@ function printVersion()
 {
     var version = require('./package.json').version;
     console.log('JScrewIt ' + version);
+}
+
+function prompt()
+{
+    process.stdin.resume();
+    process.stdout.write('SCREW> ');
 }
 
 (function ()
@@ -96,43 +102,31 @@ function printVersion()
         try
         {
             JScrewIt.encode('', options); // validate options
-            
-            var repl = require('repl');
-            var stream = require('stream');
-            
-            console.log('Press ^C at any time to quit.');
-            var transform = new stream.Transform();
-            transform._transform =
-                function (chunk, encoding, callback)
-                {
-                    var lines = chunk.toString().match(/.+/g);
-                    if (lines)
-                    {
-                        lines.forEach(
-                            function (line)
-                            {
-                                var output = JScrewIt.encode(line, options);
-                                transform.push(output + '\n');
-                            }
-                        );
-                    }
-                    callback();
-                };
-            repl.start(
-                {
-                    input: transform,
-                    output: process.stdout,
-                    prompt: 'SCREW> ',
-                    useColors: true
-                }
-            );
-            process.stdin.pipe(transform);
         }
         catch (error)
         {
             console.error(error.message);
             return;
         }
+        process.stdin.on(
+            'data',
+            function (input)
+            {
+                var lines = (input + '').match(/.+/g);
+                if (lines)
+                {
+                    lines.forEach(
+                        function (line)
+                        {
+                            var output = JScrewIt.encode(line, options);
+                            process.stdout.write(output + '\n');
+                        }
+                    );
+                }
+                prompt();
+            }
+        );
+        prompt();
     }
     else
     {
