@@ -332,20 +332,29 @@
             var toString = global[typeName].prototype.toString;
             var adapters = [];
             context[typeName] = { adapters: adapters, toString: toString };
-            var value =
-                function ()
+            var callToString =
+                function (target)
                 {
+                    var str;
                     for (var index = adapters.length; index-- > 0;)
                     {
                         var adapter = adapters[index];
-                        var str = adapter.call(this);
+                        str = adapter.call(target);
                         if (str !== void 0)
                             return str;
                     }
-                    // When no arguments are provided to the call method, IE 9 will use the global
-                    // object as this.
-                    return toString.call(this === global.self ? void 0 : this);
+                    str = toString.call(target);
+                    return str;
                 };
+            var value =
+                function ()
+                {
+                    var str = callToString(this);
+                    return str;
+                };
+            // The IE 9 implementation of the call method sets the global object as this when no
+            // arguments are specified.
+            value.call = callToString;
             override(context, typeName + '.prototype.toString', { value: value });
         }
         context[typeName].adapters.push(adapter);
