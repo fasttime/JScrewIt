@@ -46,15 +46,15 @@ var expressParse;
         return groupCount;
     }
     
-    function readGroupRight(parseInfo, groupCount)
+    function readGroupRight(parseInfo, maxGroupCount)
     {
-        while (groupCount--)
+        for (var groupCount = 0; groupCount < maxGroupCount; ++groupCount)
         {
             readSeparators(parseInfo);
             if (!readParenthesisRight(parseInfo))
-                return;
+                break;
         }
-        return true;
+        return groupCount;
     }
     
     function readParenthesisLeft(parseInfo)
@@ -78,13 +78,8 @@ var expressParse;
         var unit = readUnitCore(parseInfo);
         if (unit)
         {
-            if (groupCount)
-            {
-                if (!readGroupRight(parseInfo, groupCount))
-                    return;
-                parseInfo.composite = false;
-            }
-            return unit;
+            if (readGroupRight(parseInfo, groupCount) === groupCount)
+                return unit;
         }
     }
     
@@ -104,7 +99,7 @@ var expressParse;
         var constValueExpr = read(parseInfo, constValueRegExp);
         if (constValueExpr)
         {
-            if (!readGroupRight(parseInfo, groupCount))
+            if (readGroupRight(parseInfo, groupCount) < groupCount)
                 return;
             var expr = sign + constValueExpr;
             var value = evalExpr(expr);
@@ -204,11 +199,14 @@ var expressParse;
             read(parseInfo, separatorOrColonRegExp);
             if (!parseInfo.data)
                 return true;
-            var parseData = readUnit(parseInfo);
+            var openGroupCount = readGroupLeft(parseInfo);
+            var parseData = readUnitCore(parseInfo);
             if (!parseData)
                 return;
             var ops = [];
-            if (!parseInfo.composite)
+            var closedGroupCount = readGroupRight(parseInfo, openGroupCount);
+            openGroupCount -= closedGroupCount;
+            if (!parseInfo.composite || closedGroupCount)
             {
                 for (;;)
                 {
@@ -251,9 +249,12 @@ var expressParse;
                     }
                     else
                         break;
+                    openGroupCount -= readGroupRight(parseInfo, openGroupCount);
                     ops.push(op);
                 }
             }
+            if (openGroupCount)
+                return;
             read(parseInfo, separatorOrColonRegExp);
             if (parseInfo.data)
                 return;

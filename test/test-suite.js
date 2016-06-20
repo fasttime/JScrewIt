@@ -474,9 +474,19 @@ uneval
                                     '(+"-1")()'
                                 );
                                 test(
-                                    'superfluous grouping parentheses',
+                                    'superfluous grouping parentheses around simple expression',
                                     '((\n-(/**/42//\n)\t) )',
                                     '+"-42"'
+                                );
+                                test(
+                                    'superfluous grouping parentheses around composite expression',
+                                    '("".length)',
+                                    '""["length"]'
+                                );
+                                test(
+                                    'superfluous grouping parentheses inside composite expression',
+                                    '((2..toString)())',
+                                    '2["toString"]()'
                                 );
                             }
                         );
@@ -520,6 +530,7 @@ uneval
                                     '(0'
                                 );
                                 test('signed unmatched grouping parentheses', '-(1');
+                                test('unclosed parenthesis after expression', 'alert((""');
                                 test('unrecognized tokens', 'a...');
                             }
                         );
