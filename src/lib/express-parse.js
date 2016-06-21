@@ -93,6 +93,13 @@ var expressParse;
             unit = { value: str };
             return unit;
         }
+        if (read(parseInfo, /^\[/))
+        {
+            readSeparators(parseInfo);
+            if (read(parseInfo, /^]/))
+                unit = { value: [] };
+            return unit;
+        }
         var sign = read(parseInfo, /^[+-]?/);
         readSeparators(parseInfo);
         var groupCount = readGroupLeft(parseInfo);

@@ -402,6 +402,7 @@ uneval
                                     '\'Hel\\\r\nlo\\0\'',
                                     '"Hello\\u0000"'
                                 );
+                                test('empty arrays', '[\n]', '[]');
                                 test('Infinity', 'Infinity', 'Infinity');
                                 test('NaN', 'NaN', 'NaN');
                                 test('false', 'false', 'false');
@@ -452,6 +453,11 @@ uneval
                                     'one string parameter',
                                     'escape("Hello!")',
                                     'escape("Hello!")'
+                                );
+                                test(
+                                    'one array parameter',
+                                    'Array([])',
+                                    'Function("return Array")()([])'
                                 );
                                 test(
                                     'identifier indexers',
@@ -531,6 +537,7 @@ uneval
                                 );
                                 test('signed unmatched grouping parentheses', '-(1');
                                 test('unclosed parenthesis after expression', 'alert((""');
+                                test('unclosed square bracket', '[');
                                 test('unrecognized tokens', 'a...');
                             }
                         );

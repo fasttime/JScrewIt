@@ -922,6 +922,8 @@ var wrapWithEval;
                     output =
                         this.encodeLiteral(value, void 0, unitIndex + '', strongBound, maxLength);
                 }
+                else if (array_isArray(value))
+                    output = '[]';
                 else
                 {
                     if (typeof value === 'number' && !isNaN(value))
