@@ -402,7 +402,22 @@ uneval
                                     '\'Hel\\\r\nlo\\0\'',
                                     '"Hello\\u0000"'
                                 );
-                                test('empty arrays', '[\n]', '[]');
+                                test('empty arrays', '[]', '[]');
+                                test('strings in arrays', '[""]', '[""]');
+                                test('undefined in arrays', '[undefined]', '[undefined]');
+                                test('standalone signed numbers in arrays', '[-1]', '[+"-1"]');
+                                test(
+                                    'signed numbers in arrays in composite expressions',
+                                    '[-1]()',
+                                    '[+"-1"]()'
+                                );
+                                test(
+                                    'identifiers in arrays',
+                                    '[null]',
+                                    '[Function("return null")()]'
+                                );
+                                test('nested arrays', '[[0]]', '[[0]]');
+                                test('array indexers', '[][[0]]', '[][[0]]');
                                 test('Infinity', 'Infinity', 'Infinity');
                                 test('NaN', 'NaN', 'NaN');
                                 test('false', 'false', 'false');
@@ -418,11 +433,7 @@ uneval
                                 test('-0', '-0', '+"-0"');
                                 test('-NaN', '-NaN', 'NaN');
                                 test('standalone signed numbers', '+ //x\n/*y*/\ufeff42', '42');
-                                test(
-                                    'standalone signed constants',
-                                    '- //x\n/*y*/\ufeffInfinity',
-                                    '+"-1e1000"'
-                                );
+                                test('standalone signed constants', '-Infinity', '+"-1e1000"');
                                 test(
                                     'signed constant parameters',
                                     'Number(-Infinity)',
@@ -481,7 +492,7 @@ uneval
                                 );
                                 test(
                                     'superfluous grouping parentheses around simple expression',
-                                    '((\n-(/**/42//\n)\t) )',
+                                    '((-(42)))',
                                     '+"-42"'
                                 );
                                 test(
@@ -494,6 +505,16 @@ uneval
                                     '((2..toString)())',
                                     '2["toString"]()'
                                 );
+                                test(
+                                    'superfluous grouping parentheses inside sigleton arrays',
+                                    '[([0])]',
+                                    '[[0]]'
+                                );
+                                test(
+                                    'superfluous separators',
+                                    ';a ( ) ( ( [ [ ] ] ) ) [ - 1 ] . b;',
+                                    'Function("return a")()()([[]])[+"-1"]["b"]'
+                                    );
                             }
                         );
                         describe(
@@ -538,6 +559,7 @@ uneval
                                 test('signed unmatched grouping parentheses', '-(1');
                                 test('unclosed parenthesis after expression', 'alert((""');
                                 test('unclosed square bracket', '[');
+                                test('unclosed square bracket before expression', '[0');
                                 test('unrecognized tokens', 'a...');
                             }
                         );
@@ -1664,49 +1686,36 @@ uneval
             function ()
             {
                 describe(
-                    'does not produce an output longer than maxLength',
+                    'respects the maxLength limit',
                     function ()
                     {
-                        it(
-                            'with an empty script',
-                            function ()
-                            {
-                                var encoder = JScrewIt.debug.createEncoder();
-                                var output = encoder.encodeExpress('', -1);
-                                expect(output).toBeUndefined();
-                                expect(encoder.codingLog.length).toBe(0);
-                            }
-                        );
-                        it(
-                            'with a call operation',
-                            function ()
-                            {
-                                var encoder = JScrewIt.debug.createEncoder();
-                                var output = encoder.encodeExpress('""()[""]', 7);
-                                expect(output).toBeUndefined();
-                                expect(encoder.codingLog.length).toBe(1);
-                            }
-                        );
-                        it(
-                            'with a param-call operation',
-                            function ()
-                            {
-                                var encoder = JScrewIt.debug.createEncoder();
-                                var output = encoder.encodeExpress('""(0)[""]', 7);
-                                expect(output).toBeUndefined();
-                                expect(encoder.codingLog.length).toBe(1);
-                            }
-                        );
-                        it(
-                            'with a get operation',
-                            function ()
-                            {
-                                var encoder = JScrewIt.debug.createEncoder();
-                                var output = encoder.encodeExpress('""[0][""]', 7);
-                                expect(output).toBeUndefined();
-                                expect(encoder.codingLog.length).toBe(1);
-                            }
-                        );
+                        function test(description, input)
+                        {
+                            it(
+                                description,
+                                function ()
+                                {
+                                    var encoder = JScrewIt.debug.createEncoder();
+                                    var output = encoder.encodeExpress(input);
+                                    var length = output.length;
+                                    var codingLogLength = encoder.codingLog.length;
+                                    output = encoder.encodeExpress(input, length);
+                                    expect(output).not.toBeUndefined();
+                                    encoder.codingLog = [];
+                                    output = encoder.encodeExpress(input, length - 1);
+                                    expect(output).toBeUndefined();
+                                    var expectedCodingLogLength = Math.max(codingLogLength, 0);
+                                    expect(encoder.codingLog.length).toBe(expectedCodingLogLength);
+                                }
+                            );
+                        }
+
+                        test('with an empty script', '');
+                        test('with a call operation', '""[0]()');
+                        test('with a param-call operation', '""(0)[""]');
+                        test('with a get operation', '""[0][""]');
+                        test('with an empty array', '""([])');
+                        test('with a singleton array', '""([0])');
                     }
                 );
                 
