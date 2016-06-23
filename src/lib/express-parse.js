@@ -84,12 +84,18 @@ var expressParse;
     
     function readUnit(parseInfo)
     {
-        var groupCount = readGroupLeft(parseInfo);
-        var unit = readUnitCore(parseInfo);
-        if (unit)
+        if (--parseInfo.height)
         {
-            if (readGroupRight(parseInfo, groupCount) === groupCount)
-                return unit;
+            var groupCount = readGroupLeft(parseInfo);
+            var unit = readUnitCore(parseInfo);
+            if (unit)
+            {
+                if (readGroupRight(parseInfo, groupCount) === groupCount)
+                {
+                    ++parseInfo.depth;
+                    return unit;
+                }
+            }
         }
     }
     
@@ -225,7 +231,7 @@ var expressParse;
     expressParse =
         function (input)
         {
-            var parseInfo = { data: input };
+            var parseInfo = { data: input, height: 1000 };
             read(parseInfo, separatorOrColonRegExp);
             if (!parseInfo.data)
                 return true;

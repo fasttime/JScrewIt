@@ -561,6 +561,7 @@ uneval
                                 test('unclosed square bracket', '[');
                                 test('unclosed square bracket before expression', '[0');
                                 test('unrecognized tokens', 'a...');
+                                test('too deep nestings', repeat('[', 1001) + repeat(']', 1001));
                             }
                         );
                     }
