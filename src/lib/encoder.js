@@ -757,7 +757,7 @@ var wrapWithEval;
                                         op,
                                         index + 1,
                                         false,
-                                        output.length - 2 - maxLength
+                                        maxLength - output.length - 2
                                     );
                                 if (!opOutput)
                                     return;
@@ -921,6 +921,18 @@ var wrapWithEval;
                 {
                     output =
                         this.encodeLiteral(value, void 0, unitIndex + '', strongBound, maxLength);
+                }
+                else if (array_isArray(value))
+                {
+                    if (value.length)
+                    {
+                        var replacement =
+                            this.replaceExpressUnit(value[0], unitIndex, false, maxLength - 2);
+                        if (replacement)
+                            output = '[' + replacement + ']';
+                    }
+                    else if (!(maxLength < 2))
+                        output = '[]';
                 }
                 else
                 {

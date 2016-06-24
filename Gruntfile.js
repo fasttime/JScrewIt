@@ -52,7 +52,7 @@ var ESLINT_RULES =
     'no-caller':                        'error',
     'no-case-declarations':             'error',
     'no-div-regex':                     'error',
-    'no-else-return':                   'off',
+    'no-else-return':                   'error',
     'no-empty-function':                'off',
     'no-empty-pattern':                 'error',
     'no-eq-null':                       'off',
@@ -142,7 +142,7 @@ var ESLINT_RULES =
     'computed-property-spacing':        'error',
     'consistent-this':                  'off',
     'eol-last':                         'error',
-    'func-names':                       'off',
+    'func-names':                       ['error', 'never'],
     'func-style':                       'off',
     'id-blacklist':                     'off',
     'id-length':                        'off',
@@ -212,11 +212,9 @@ var ESLINT_RULES =
 
 var JSCS_OPTIONS =
 {
-    disallowNamedUnassignedFunctions: true,
     disallowSpacesInCallExpression: true,
     disallowTabs: true,
     requireAlignedMultilineParams: true,
-    requireEarlyReturn: true,
     requireKeywordsOnNewLine:
     [
         'break',
