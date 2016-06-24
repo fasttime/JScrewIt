@@ -2,7 +2,8 @@
 
 [![NPM](https://nodei.co/npm/jscrewit.png?compact=true)](https://nodei.co/npm/jscrewit/)
 
-Use **JScrewIt** to convert your JavaScript code into JSFuck.
+Use **JScrewIt** to convert your JavaScript code into
+[JSFuck](https://en.wikipedia.org/wiki/JSFuck).
 JSFuck is an encoding technique that uses only the six characters `!` `(` `)` `+` `[` `]` to produce
 syntactically correct JavaScript that can still run in a browser or another JavaScript engine
 without any additional software.
@@ -11,8 +12,9 @@ Play now with [**jscrew.it**](http://jscrew.it), or give a look at
 [jQuery *Screwed*](https://github.com/fasttime/jquery-screwed) for a true example: a working version
 of jQuery consisting of only six different characters.
 
-JScrewIt was born as a fork of [JSFuck](https://github.com/aemkei/jsfuck) and has developed into one
-of the most powerful JSFuck encoders on the web, including a number of unique features.
+JScrewIt was born as a fork of [aemkei's JSFuck](https://github.com/aemkei/jsfuck) and has
+developed into one of the most powerful JSFuck encoders on the web, including a number of unique
+features.
 * Options to optimize code for a particular set of JavaScript engines or even just for your browser:
   the more specific your engine choice, the shorter the code you'll get.
 * Support for all modern JavaScript engines (and a few older ones, too).
@@ -220,5 +222,7 @@ JScrewIt itself and the code it generates are compatible with the JavaScript eng
 ## Links
 
 * [JScrewIt](http://jscrew.it) online encoder
-* JSFuck on [Wikipedia](https://en.wikipedia.org/wiki/JSFuck)
-* JSFuck introduction and alternatives on [Esolang](http://esolangs.org/wiki/JSFuck)
+* [JSFuck](https://en.wikipedia.org/wiki/JSFuck) on Wikipedia
+* [JSFuck](http://esolangs.org/wiki/JSFuck) on Esolang
+* [jsfuck.com](http://www.jsfuck.com)
+* [jQuery *Screwed*](https://github.com/fasttime/jquery-screwed)

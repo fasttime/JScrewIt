@@ -54,14 +54,6 @@ different characters: ! ( ) + [ ]'>
 /* Hack for newer versions of Chrome */
 @media screen and (min-resolution: 1e-323dpcm) { #outputArea { white-space: normal; } }
 
-a:link { color: #00c; text-decoration: none; }
-
-a:visited { color: #66c; }
-
-a:hover { text-decoration: underline; }
-
-a:active { color: #c60; }
-
 body { background-color: white; color: black; font-family: sans-serif; }
 
 body, button, select { font-size: 13.5pt; }
@@ -74,17 +66,9 @@ header { height: 100px; position: relative; width: 100%; }
 
 h1 { font-size: 2em; font-weight: normal; left: 115px; position: absolute; top: 40px; }
 
-h2 { font-size: 1em; text-align: center; }
-
 img { background-color: blue; }
 
-li { display: inline; }
-
-li:not(:last-child)::after { content: ' | '; }
-
 textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; }
-
-ul { font-size: 10pt; padding: 0; }
 
 </style>
 <title>JScrewIt - Write any JavaScript with 6 Characters: ! ( ) + [ ]</title>
@@ -138,19 +122,4 @@ ul { font-size: 10pt; padding: 0; }
     <noscript>
         <p>You must enable JavaScript to use JScrewIt.
     </noscript>
-
-    <h2>Links</h2>
-    <ul>
-        <!--
-        A closing "</li>" tag prevents the browser from inserting a selectable white space after a
-        link. The content of the ::after pseudo-element is not selectable.
-        -->
-        <li><a href='https://github.com/fasttime/JScrewIt'>Documentation and source code on
-        GitHub</a></li>
-        <li><a href='https://en.wikipedia.org/wiki/JSFuck'>JSFuck on Wikipedia</a></li>
-        <li><a href='http://esolangs.org/wiki/JSFuck'>JSFuck introduction and alternatives on
-        Esolang</a></li>
-        <li><a href='http://www.jsfuck.com/'>jsfuck.com</a></li>
-        <li><a href='https://github.com/fasttime/jquery-screwed'>jQuery Screwed</a></li>
-    </ul>
 </div>

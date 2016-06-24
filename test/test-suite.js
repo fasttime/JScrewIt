@@ -82,7 +82,7 @@ uneval
                         {
                             var perfInfo = { };
                             var options =
-                            { features: compatibility, perfInfo: perfInfo, runAs: 'none' };
+                                { features: compatibility, perfInfo: perfInfo, runAs: 'none' };
                             var output = JScrewIt.encode(expression3, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(expression3);
