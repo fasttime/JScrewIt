@@ -46,15 +46,15 @@ var expressParse;
         return groupCount;
     }
     
-    function readGroupRight(parseInfo, groupCount)
+    function readGroupRight(parseInfo, maxGroupCount)
     {
-        while (groupCount--)
+        for (var groupCount = 0; groupCount < maxGroupCount; ++groupCount)
         {
             readSeparators(parseInfo);
             if (!readParenthesisRight(parseInfo))
-                return;
+                break;
         }
-        return true;
+        return groupCount;
     }
     
     function readParenthesisLeft(parseInfo)
@@ -72,19 +72,30 @@ var expressParse;
         read(parseInfo, separatorRegExp);
     }
     
+    function readSquareBracketLeft(parseInfo)
+    {
+        return read(parseInfo, /^\[/);
+    }
+    
+    function readSquareBracketRight(parseInfo)
+    {
+        return read(parseInfo, /^]/);
+    }
+    
     function readUnit(parseInfo)
     {
-        var groupCount = readGroupLeft(parseInfo);
-        var unit = readUnitCore(parseInfo);
-        if (unit)
+        if (--parseInfo.height)
         {
-            if (groupCount)
+            var groupCount = readGroupLeft(parseInfo);
+            var unit = readUnitCore(parseInfo);
+            if (unit)
             {
-                if (!readGroupRight(parseInfo, groupCount))
-                    return;
-                parseInfo.composite = false;
+                if (readGroupRight(parseInfo, groupCount) === groupCount)
+                {
+                    ++parseInfo.depth;
+                    return unit;
+                }
             }
-            return unit;
         }
     }
     
@@ -98,13 +109,33 @@ var expressParse;
             unit = { value: str };
             return unit;
         }
+        if (readSquareBracketLeft(parseInfo))
+        {
+            readSeparators(parseInfo);
+            if (readSquareBracketRight(parseInfo))
+                unit = { value: [] };
+            else
+            {
+                var op = readUnit(parseInfo);
+                if (op)
+                {
+                    readSeparators(parseInfo);
+                    if (readSquareBracketRight(parseInfo))
+                    {
+                        unit = { value: [op] };
+                        parseInfo.composite = false;
+                    }
+                }
+            }
+            return unit;
+        }
         var sign = read(parseInfo, /^[+-]?/);
         readSeparators(parseInfo);
         var groupCount = readGroupLeft(parseInfo);
         var constValueExpr = read(parseInfo, constValueRegExp);
         if (constValueExpr)
         {
-            if (!readGroupRight(parseInfo, groupCount))
+            if (readGroupRight(parseInfo, groupCount) < groupCount)
                 return;
             var expr = sign + constValueExpr;
             var value = evalExpr(expr);
@@ -200,15 +231,18 @@ var expressParse;
     expressParse =
         function (input)
         {
-            var parseInfo = { data: input };
+            var parseInfo = { data: input, height: 1000 };
             read(parseInfo, separatorOrColonRegExp);
             if (!parseInfo.data)
                 return true;
-            var parseData = readUnit(parseInfo);
+            var openGroupCount = readGroupLeft(parseInfo);
+            var parseData = readUnitCore(parseInfo);
             if (!parseData)
                 return;
             var ops = [];
-            if (!parseInfo.composite)
+            var closedGroupCount = readGroupRight(parseInfo, openGroupCount);
+            openGroupCount -= closedGroupCount;
+            if (!parseInfo.composite || closedGroupCount)
             {
                 for (;;)
                 {
@@ -230,14 +264,14 @@ var expressParse;
                             op.type = 'param-call';
                         }
                     }
-                    else if (read(parseInfo, /^\[/))
+                    else if (readSquareBracketLeft(parseInfo))
                     {
                         readSeparators(parseInfo);
                         op = readUnit(parseInfo);
                         if (!op)
                             return;
                         readSeparators(parseInfo);
-                        if (!read(parseInfo, /^]/))
+                        if (!readSquareBracketRight(parseInfo))
                             return;
                         op.type = 'get';
                     }
@@ -251,9 +285,12 @@ var expressParse;
                     }
                     else
                         break;
+                    openGroupCount -= readGroupRight(parseInfo, openGroupCount);
                     ops.push(op);
                 }
             }
+            if (openGroupCount)
+                return;
             read(parseInfo, separatorOrColonRegExp);
             if (parseInfo.data)
                 return;
