@@ -35,28 +35,6 @@ var expressParse;
         }
     }
     
-    function readGroupLeft(parseInfo)
-    {
-        var groupCount = 0;
-        while (readParenthesisLeft(parseInfo))
-        {
-            readSeparators(parseInfo);
-            ++groupCount;
-        }
-        return groupCount;
-    }
-    
-    function readGroupRight(parseInfo, maxGroupCount)
-    {
-        for (var groupCount = 0; groupCount < maxGroupCount; ++groupCount)
-        {
-            readSeparators(parseInfo);
-            if (!readParenthesisRight(parseInfo))
-                break;
-        }
-        return groupCount;
-    }
-    
     function readParenthesisLeft(parseInfo)
     {
         return read(parseInfo, /^\(/);
@@ -67,39 +45,7 @@ var expressParse;
         return read(parseInfo, /^\)/);
     }
     
-    function readSeparators(parseInfo)
-    {
-        read(parseInfo, separatorRegExp);
-    }
-    
-    function readSquareBracketLeft(parseInfo)
-    {
-        return read(parseInfo, /^\[/);
-    }
-    
-    function readSquareBracketRight(parseInfo)
-    {
-        return read(parseInfo, /^]/);
-    }
-    
-    function readUnit(parseInfo)
-    {
-        if (--parseInfo.height)
-        {
-            var groupCount = readGroupLeft(parseInfo);
-            var unit = readUnitCore(parseInfo);
-            if (unit)
-            {
-                if (readGroupRight(parseInfo, groupCount) === groupCount)
-                {
-                    ++parseInfo.depth;
-                    return unit;
-                }
-            }
-        }
-    }
-    
-    function readUnitCore(parseInfo)
+    function readPrimaryExpr(parseInfo)
     {
         var unit;
         var strExpr = read(parseInfo, strRegExp);
@@ -107,6 +53,13 @@ var expressParse;
         {
             var str = evalExpr(strExpr);
             unit = { value: str };
+            return unit;
+        }
+        var constValueExpr = read(parseInfo, constValueRegExp);
+        if (constValueExpr)
+        {
+            var value = evalExpr(constValueExpr);
+            unit = { value: value };
             return unit;
         }
         if (readSquareBracketLeft(parseInfo))
@@ -129,26 +82,180 @@ var expressParse;
             }
             return unit;
         }
-        var sign = read(parseInfo, /^[+-]?/);
-        readSeparators(parseInfo);
-        var groupCount = readGroupLeft(parseInfo);
-        var constValueExpr = read(parseInfo, constValueRegExp);
-        if (constValueExpr)
+        if (readParenthesisLeft(parseInfo))
         {
-            if (readGroupRight(parseInfo, groupCount) < groupCount)
-                return;
-            var expr = sign + constValueExpr;
-            var value = evalExpr(expr);
-            parseInfo.composite = sign;
-            unit = { value: value };
+            readSeparators(parseInfo);
+            unit = readUnit(parseInfo);
+            if (unit)
+            {
+                readSeparators(parseInfo);
+                if (!readParenthesisRight(parseInfo))
+                    return;
+            }
             return unit;
         }
-        if (sign)
-            return;
         var identifier = read(parseInfo, identifierRegExp);
         if (identifier && isReturnableIdentifier(identifier))
         {
             unit = { identifier: identifier };
+            return unit;
+        }
+    }
+    
+    function readSeparators(parseInfo)
+    {
+        read(parseInfo, separatorRegExp);
+    }
+    
+    function readSign(parseInfo)
+    {
+        var sign;
+        var char = read(parseInfo, /^(?:\+(?!\+)|-(?!-))/);
+        if (char)
+        {
+            readSeparators(parseInfo);
+            sign = char === '+' ? 1 : -1;
+        }
+        else
+            sign = 0;
+        return sign;
+    }
+    
+    function readSigns(parseInfo)
+    {
+        var sign = readSign(parseInfo);
+        if (sign)
+        {
+            var newSign;
+            while (newSign = readSign(parseInfo))
+                sign *= newSign;
+        }
+        return sign;
+    }
+    
+    function readSquareBracketLeft(parseInfo)
+    {
+        return read(parseInfo, /^\[/);
+    }
+    
+    function readSquareBracketRight(parseInfo)
+    {
+        return read(parseInfo, /^]/);
+    }
+    
+    function readUnit(parseInfo)
+    {
+        if (parseInfo.height--)
+        {
+            var unit;
+            var allNumeric = true;
+            for (;;)
+            {
+                var binSign;
+                if (unit)
+                {
+                    binSign = readSign(parseInfo);
+                    if (!binSign)
+                    {
+                        ++parseInfo.height;
+                        return unit;
+                    }
+                }
+                else
+                    binSign = 0;
+                var uniSign = readSigns(parseInfo);
+                var term = readUnitCore(parseInfo);
+                if (!term)
+                    return;
+                if (
+                    'value' in term &&
+                    ~['boolean', 'number', 'undefined'].indexOf(typeof term.value))
+                {
+                    if (binSign < 0 ^ uniSign < 0)
+                        term.value *= -1;
+                }
+                else
+                {
+                    if (uniSign < 0)
+                        return;
+                    if (uniSign > 0)
+                        term.sign = true;
+                    allNumeric = false;
+                }
+                if (!allNumeric && binSign < 0)
+                    return;
+                if (unit)
+                {
+                    var terms = unit.terms;
+                    if (terms && !unit.sign)
+                        terms.push(term);
+                    else
+                        unit = { terms: [unit, term] };
+                }
+                else
+                    unit = term;
+            }
+        }
+    }
+    
+    function readUnitCore(parseInfo)
+    {
+        var unit = readPrimaryExpr(parseInfo);
+        if (unit)
+        {
+            var ops = [];
+            for (;;)
+            {
+                readSeparators(parseInfo);
+                var op;
+                if (readParenthesisLeft(parseInfo))
+                {
+                    readSeparators(parseInfo);
+                    if (readParenthesisRight(parseInfo))
+                        op = { type: 'call' };
+                    else
+                    {
+                        op = readUnit(parseInfo);
+                        if (!op)
+                            return;
+                        readSeparators(parseInfo);
+                        if (!readParenthesisRight(parseInfo))
+                            return;
+                        op.type = 'param-call';
+                    }
+                }
+                else if (readSquareBracketLeft(parseInfo))
+                {
+                    readSeparators(parseInfo);
+                    op = readUnit(parseInfo);
+                    if (!op)
+                        return;
+                    readSeparators(parseInfo);
+                    if (!readSquareBracketRight(parseInfo))
+                        return;
+                    op.type = 'get';
+                }
+                else if (read(parseInfo, /^\./))
+                {
+                    readSeparators(parseInfo);
+                    var identifier = read(parseInfo, identifierRegExp);
+                    if (!identifier)
+                        return;
+                    op = { type: 'get', value: identifier };
+                }
+                else
+                    break;
+                ops.push(op);
+            }
+            if (ops.length && unit.sign)
+                unit = { terms: [unit] };
+            else
+            {
+                var unitOps = unit.ops;
+                if (unitOps)
+                    ops = unitOps.concat(ops);
+            }
+            unit.ops = ops;
             return unit;
         }
     }
@@ -235,67 +342,11 @@ var expressParse;
             read(parseInfo, separatorOrColonRegExp);
             if (!parseInfo.data)
                 return true;
-            var openGroupCount = readGroupLeft(parseInfo);
-            var parseData = readUnitCore(parseInfo);
-            if (!parseData)
-                return;
-            var ops = [];
-            var closedGroupCount = readGroupRight(parseInfo, openGroupCount);
-            openGroupCount -= closedGroupCount;
-            if (!parseInfo.composite || closedGroupCount)
-            {
-                for (;;)
-                {
-                    readSeparators(parseInfo);
-                    var op;
-                    if (readParenthesisLeft(parseInfo))
-                    {
-                        readSeparators(parseInfo);
-                        if (readParenthesisRight(parseInfo))
-                            op = { type: 'call' };
-                        else
-                        {
-                            op = readUnit(parseInfo);
-                            if (!op)
-                                return;
-                            readSeparators(parseInfo);
-                            if (!readParenthesisRight(parseInfo))
-                                return;
-                            op.type = 'param-call';
-                        }
-                    }
-                    else if (readSquareBracketLeft(parseInfo))
-                    {
-                        readSeparators(parseInfo);
-                        op = readUnit(parseInfo);
-                        if (!op)
-                            return;
-                        readSeparators(parseInfo);
-                        if (!readSquareBracketRight(parseInfo))
-                            return;
-                        op.type = 'get';
-                    }
-                    else if (read(parseInfo, /^\./))
-                    {
-                        readSeparators(parseInfo);
-                        var identifier = read(parseInfo, identifierRegExp);
-                        if (!identifier)
-                            return;
-                        op = { type: 'get', value: identifier };
-                    }
-                    else
-                        break;
-                    openGroupCount -= readGroupRight(parseInfo, openGroupCount);
-                    ops.push(op);
-                }
-            }
-            if (openGroupCount)
-                return;
+            var unit = readUnit(parseInfo);
             read(parseInfo, separatorOrColonRegExp);
             if (parseInfo.data)
                 return;
-            parseData.ops = ops;
-            return parseData;
+            return unit;
         };
 }
 )();

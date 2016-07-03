@@ -5,7 +5,6 @@
 var ESLINT_RULES =
 {
     /* Possible Errors */
-    'comma-dangle':                     ['error', 'only-multiline'],
     'no-cond-assign':                   'off',
     'no-console':                       'off',
     'no-constant-condition':            'error',
@@ -40,7 +39,7 @@ var ESLINT_RULES =
     'accessor-pairs':                   'error',
     'array-callback-return':            'off',
     'block-scoped-var':                 'off',
-    'complexity':                       'error',
+    'complexity':                       'off',
     'consistent-return':                'off',
     'curly':                            ['error', 'multi-or-nest'],
     'default-case':                     'off',
@@ -136,6 +135,7 @@ var ESLINT_RULES =
     'block-spacing':                    'error',
     'brace-style':                      ['error', 'allman'],
     'camelcase':                        'off',
+    'comma-dangle':                     ['error', 'only-multiline'],
     'comma-spacing':                    'error',
     'comma-style':
     ['error', 'last', { exceptions: { ArrayExpression: true } }],

@@ -724,51 +724,17 @@ var wrapWithEval;
         
         encodeExpress: function (input, maxLength)
         {
-            var parseData = expressParse(input);
-            if (parseData)
+            var unit = expressParse(input);
+            if (unit)
             {
                 var output;
-                if (parseData === true)
+                if (unit === true)
                 {
                     if (!(maxLength < 0))
                         output = '';
                 }
                 else
-                {
-                    var ops = parseData.ops;
-                    var opCount = ops.length;
-                    output = this.replaceExpressUnit(parseData, 0, opCount, maxLength);
-                    if (output)
-                    {
-                        for (var index = 0; index < opCount; ++index)
-                        {
-                            var op = ops[index];
-                            var type = op.type;
-                            if (type === 'call')
-                            {
-                                output += '()';
-                                if (output.length > maxLength)
-                                    return;
-                            }
-                            else
-                            {
-                                var opOutput =
-                                    this.replaceExpressUnit(
-                                        op,
-                                        index + 1,
-                                        false,
-                                        maxLength - output.length - 2
-                                    );
-                                if (!opOutput)
-                                    return;
-                                if (type === 'get')
-                                    output += '[' + opOutput + ']';
-                                else
-                                    output += '(' + opOutput + ')';
-                            }
-                        }
-                    }
-                }
+                    output = this.replaceExpressUnit(unit, [], false, maxLength);
                 return output;
             }
         },
@@ -899,17 +865,102 @@ var wrapWithEval;
             return result;
         },
         
-        replaceExpressUnit: function (unit, unitIndex, strongBound, maxLength)
+        replaceExpressUnit: function (unit, unitIndices, strongBound, maxLength)
         {
+            var sign = unit.sign;
+            var ops = unit.ops || [];
+            var opCount = ops.length;
+            var maxCoreLength = maxLength - (sign ? strongBound ? 3 : 1 : 0);
+            var primaryExprStrongBound = strongBound || sign || opCount;
+            var output =
+                this.replacePrimaryExpr(unit, unitIndices, primaryExprStrongBound, maxCoreLength);
+            if (output)
+            {
+                for (var index = 0; index < opCount; ++index)
+                {
+                    var op = ops[index];
+                    var type = op.type;
+                    if (type === 'call')
+                    {
+                        output += '()';
+                        if (output.length > maxCoreLength)
+                            return;
+                    }
+                    else
+                    {
+                        var opUnitIndices = unitIndices.concat(index + 1);
+                        var maxOpLength = maxCoreLength - output.length - 2;
+                        var opOutput =
+                            this.replaceExpressUnit(op, opUnitIndices, false, maxOpLength);
+                        if (!opOutput)
+                            return;
+                        if (type === 'get')
+                            output += '[' + opOutput + ']';
+                        else
+                            output += '(' + opOutput + ')';
+                    }
+                }
+                if (sign)
+                {
+                    output = '+' + output;
+                    if (strongBound)
+                        output = '(' + output + ')';
+                }
+            }
+            return output;
+        },
+        
+        // Replaces a JavaScript array with a JSFuck array of strings.
+        // Array elements may not contain "false" in their string representations, because the value
+        // false is used as a separator for the encoding.
+        replaceFalseFreeArray: function (array, maxLength)
+        {
+            var str = array.join(false);
+            var replacement = this.replaceString(str, true, true, maxLength);
+            if (replacement)
+            {
+                var result = replacement + this.replaceExpr('["split"](false)');
+                if (!(result.length > maxLength))
+                    return result;
+            }
+        },
+        
+        replacePrimaryExpr: function (unit, unitIndices, strongBound, maxLength)
+        {
+            function getCodingName()
+            {
+                return unitIndices.length ? unitIndices.join(':') : '0';
+            }
+            
             var output;
-            var identifier = unit.identifier;
-            if (identifier)
+            var terms;
+            var identifier;
+            if (terms = unit.terms)
+            {
+                var count = terms.length;
+                var maxCoreLength = maxLength - (strongBound ? 2 : 0);
+                for (var index = 0; index < count; ++index)
+                {
+                    var term = terms[index];
+                    var termUnitIndices = count > 1 ? unitIndices.concat(index) : unitIndices;
+                    var maxTermLength = maxCoreLength - 3 * (count - index - 1);
+                    var termOutput =
+                        this.replaceExpressUnit(term, termUnitIndices, index, maxTermLength);
+                    if (!termOutput)
+                        return;
+                    output = index ? output + '+' + termOutput : termOutput;
+                    maxCoreLength -= termOutput.length + 1;
+                }
+                if (strongBound)
+                    output = '(' + output + ')';
+            }
+            else if (identifier = unit.identifier)
             {
                 output =
                     this.encodeLiteral(
                         'return ' + identifier,
                         wrapWithCall,
-                        unitIndex + '',
+                        getCodingName(),
                         false,
                         maxLength
                     );
@@ -920,14 +971,14 @@ var wrapWithEval;
                 if (typeof value === 'string')
                 {
                     output =
-                        this.encodeLiteral(value, void 0, unitIndex + '', strongBound, maxLength);
+                        this.encodeLiteral(value, void 0, getCodingName(), strongBound, maxLength);
                 }
                 else if (array_isArray(value))
                 {
                     if (value.length)
                     {
                         var replacement =
-                            this.replaceExpressUnit(value[0], unitIndex, false, maxLength - 2);
+                            this.replaceExpressUnit(value[0], unitIndices, false, maxLength - 2);
                         if (replacement)
                             output = '[' + replacement + ']';
                     }
@@ -960,21 +1011,6 @@ var wrapWithEval;
                 }
             }
             return output;
-        },
-        
-        // Replaces a JavaScript array with a JSFuck array or strings.
-        // Array elements may not contain "false" in their string representations, because the value
-        // false is used as a separator for the encoding.
-        replaceFalseFreeArray: function (array, maxLength)
-        {
-            var str = array.join(false);
-            var replacement = this.replaceString(str, true, true, maxLength);
-            if (replacement)
-            {
-                var result = replacement + this.replaceExpr('["split"](false)');
-                if (!(result.length > maxLength))
-                    return result;
-            }
         },
         
         replaceString: function (str, strongBound, forceString, maxLength)
