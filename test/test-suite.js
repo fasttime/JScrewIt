@@ -387,6 +387,7 @@ uneval
                                     );
                                 }
                                 
+                                // General
                                 test('an empty script', ';\n', '');
                                 test(
                                     'all separators',
@@ -396,6 +397,7 @@ uneval
                                     '0'
                                 );
                                 test('identifiers', 'String', 'Function("return String")()');
+                                test('unsigned numbers', '4.25E-7', '+"4.25e-7"');
                                 test('double-quoted strings', '"He\\x6c\\u006Co!"', '"Hello!"');
                                 test(
                                     'single-quoted strings',
@@ -403,118 +405,84 @@ uneval
                                     '"Hello\\u0000"'
                                 );
                                 test('empty arrays', '[]', '[]');
-                                test('strings in arrays', '[""]', '[""]');
-                                test('undefined in arrays', '[undefined]', '[undefined]');
-                                test('standalone signed numbers in arrays', '[-1]', '[+"-1"]');
-                                test(
-                                    'signed numbers in arrays in composite expressions',
-                                    '[-1]()',
-                                    '[+"-1"]()'
-                                );
-                                test(
-                                    'identifiers in arrays',
-                                    '[null]',
-                                    '[Function("return null")()]'
-                                );
-                                test('nested arrays', '[[0]]', '[[0]]');
-                                test('array indexers', '[][[0]]', '[][[0]]');
+                                test('singleton arrays', '[0]', '[0]');
+                                test('sums', '1+1', '1 + 1');
+                                
+                                // Numbers and constants
                                 test('Infinity', 'Infinity', 'Infinity');
                                 test('NaN', 'NaN', 'NaN');
                                 test('false', 'false', 'false');
                                 test('true', 'true', 'true');
                                 test('undefined', 'undefined', 'undefined');
-                                test('unsigned numbers', '4.25E-7', '+"4.25e-7"');
                                 test('hexadecimal literals', '0x1Fa', '+"506"');
+                                test('signed numbers', '+42', '42');
                                 test(
                                     'numbers with absolute value part starting with "0."',
                                     '-0.9',
                                     '+"-.9"'
                                 );
+                                test('signed constants', '-Infinity', '+"-1e1000"');
                                 test('-0', '-0', '+"-0"');
                                 test('-NaN', '-NaN', 'NaN');
-                                test('standalone signed numbers', '+ //x\n/*y*/\ufeff42', '42');
-                                test('standalone signed constants', '-Infinity', '+"-1e1000"');
+                                
+                                // Arrays
+                                test('nested arrays', '[[0]]', '[[0]]');
+                                
+                                // Operations
                                 test(
-                                    'signed constant parameters',
-                                    'Number(-Infinity)',
-                                    'Function("return Number")()(+"-1e1000")'
-                                );
-                                test(
-                                    'signed constant indexers',
+                                    'indexers',
                                     'false[+Infinity]',
                                     'false[Infinity]'
                                 );
                                 test(
-                                    'signed number parameters',
-                                    'alert(+1234567890)',
-                                    'Function("return alert")()(+"1234567890")'
+                                    'dot properties',
+                                    'window.location',
+                                    'Function("return window")()["location"]'
                                 );
-                                test('signed number indexers', '"abc"[+1]', '"abc"[1]');
                                 test(
                                     'calls without parameters',
                                     'Array()',
                                     'Function("return Array")()()'
                                 );
                                 test(
-                                    'one identifier parameter',
-                                    'Array(Number)',
-                                    'Function("return Array")()(Function("return Number")())'
+                                    'calls with parameters',
+                                    'alert(+1234567890)',
+                                    'Function("return alert")()(+"1234567890")'
                                 );
+                                
+                                // Signs
+                                test('signed strings', '+"abc"', '+"abc"');
+                                test('outer sign in composite expressions', '+("1")()', '+("1")()');
+                                test('inner sign in composite expressions', '(+"")()', '(+(""))()');
+                                test('multiple signs', '-+-1', '1');
                                 test(
-                                    'one string parameter',
-                                    'escape("Hello!")',
-                                    'escape("Hello!")'
-                                );
+                                    'redundant signs',
+                                    '+(+"")',
+                                    '+""'
+                                    );
+                                
+                                // Groupings
                                 test(
-                                    'one array parameter',
-                                    'Array([])',
-                                    'Function("return Array")()([])'
+                                    'superfluous grouping parentheses',
+                                    '(((a)())([([])])[(+(1)-(+2))].b)',
+                                    'Function("return a")()()([[]])[1 + (+"-2")]["b"]'
                                 );
-                                test(
-                                    'identifier indexers',
-                                    '"abc"[x]',
-                                    '"abc"[Function("return x")()]'
-                                );
-                                test(
-                                    'string indexers',
-                                    'Math["PI"]',
-                                    'Function("return Math")()["PI"]'
-                                );
-                                test(
-                                    'dot identifiers',
-                                    'Function.prototype',
-                                    'Function("return Function")()["prototype"]'
-                                );
-                                test(
-                                    'operations on signed numbers in grouping parentheses',
-                                    '(-1)()',
-                                    '(+"-1")()'
-                                );
-                                test(
-                                    'superfluous grouping parentheses around simple expression',
-                                    '((-(42)))',
-                                    '+"-42"'
-                                );
-                                test(
-                                    'superfluous grouping parentheses around composite expression',
-                                    '("".length)',
-                                    '""["length"]'
-                                );
-                                test(
-                                    'superfluous grouping parentheses inside composite expression',
-                                    '((2..toString)())',
-                                    '2["toString"]()'
-                                );
-                                test(
-                                    'superfluous grouping parentheses inside sigleton arrays',
-                                    '[([0])]',
-                                    '[[0]]'
-                                );
+                                
+                                // Separators
                                 test(
                                     'superfluous separators',
-                                    ';a ( ) ( ( [ [ ] ] ) ) [ - 1 ] . b;',
-                                    'Function("return a")()()([[]])[+"-1"]["b"]'
+                                    ';a ( ) ( ( [ [ ] ] ) ) [ + 1 - + 2 ] . b;',
+                                    'Function("return a")()()([[]])[1 + (+"-2")]["b"]'
                                     );
+                                
+                                // Sums
+                                test('dissociable sums', '(0+1)+2', '0+1+2');
+                                test('undissociable sums', '0+(1+2)', '0+(1+2)');
+                                test('sums of signed sums', '0+(+(1+2))', '0+(+(1+2))');
+                                
+                                // Limits
+                                var str = repeat('[', 1000) + repeat(']', 1000);
+                                test('deep nestings', str, str);
                             }
                         );
                         describe(
@@ -542,26 +510,29 @@ uneval
                                 test('binary literals', '0b101010');
                                 test('octal escape sequences', '"\\1"');
                                 test('extended Unicode escape sequences', '"\\u{1}"');
-                                test('signed composite expressions', '-1["constructor"]');
-                                test('signed strings', '+"1"');
                                 test('legacy octal literals', '010');
                                 test('legacy octal-like literals', '09');
                                 test('object literal parameters', 'doSomething({})');
                                 test('object literal indexers', 'array[{}]');
                                 test('more than one parameter', 'parseInt("10", 2)');
-                                test('composite expression indexers', 'obj[2 + 3]');
                                 test('keywords', 'debugger');
-                                test('post-increments', 'i++');
+                                test('pre-increments', '++i');
                                 test(
                                     'unsigned unmatched grouping parentheses around constant',
                                     '(0'
                                 );
                                 test('signed unmatched grouping parentheses', '-(1');
                                 test('unclosed parenthesis after expression', 'alert((""');
-                                test('unclosed square bracket', '[');
-                                test('unclosed square bracket before expression', '[0');
+                                test('unclosed empty array square bracket', '[');
+                                test('unclosed singleton array square bracket', '[0');
+                                test('unclosed indexer square bracket', '0[0');
                                 test('unrecognized tokens', 'a...');
                                 test('too deep nestings', repeat('[', 1001) + repeat(']', 1001));
+                                test('unary minus on strings', '-""');
+                                test('unary minus on arrays', '-[]');
+                                test('string subtraction', '1 - ""');
+                                test('array subtraction', '1 - []');
+                                test('empty parentheses', '()');
                             }
                         );
                     }
@@ -1531,7 +1502,7 @@ uneval
                         expect(
                             function ()
                             {
-                                encoder.exec('1 + 1', void 0, ['express']);
+                                encoder.exec('{}', void 0, ['express']);
                             }
                         ).toThrow(
                             new Error('Encoding failed')
@@ -1717,6 +1688,8 @@ uneval
                         test('with a get operation', '""[0][""]');
                         test('with an empty array', '""([])');
                         test('with a singleton array', '""([0])');
+                        test('with a sum', '1+1');
+                        test('with a sum of signed sums', 'a+(+(b+c))');
                     }
                 );
                 
@@ -1725,13 +1698,14 @@ uneval
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.encodeExpress('"A"()("B")["C"].D');
+                        encoder.encodeExpress('"A"()("B1" + "B2")["C"].D');
                         var codingLog = encoder.codingLog;
-                        expect(codingLog.length).toBe(4);
+                        expect(codingLog.length).toBe(5);
                         expect(codingLog[0].name).toBe('0');
-                        expect(codingLog[1].name).toBe('2');
-                        expect(codingLog[2].name).toBe('3');
-                        expect(codingLog[3].name).toBe('4');
+                        expect(codingLog[1].name).toBe('2:0');
+                        expect(codingLog[2].name).toBe('2:1');
+                        expect(codingLog[3].name).toBe('3');
+                        expect(codingLog[4].name).toBe('4');
                     }
                 );
             }
