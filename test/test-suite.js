@@ -450,15 +450,24 @@ uneval
                                     'Function("return alert")()(+"1234567890")'
                                 );
                                 
-                                // Signs
-                                test('signed strings', '+"abc"', '+"abc"');
-                                test('outer sign in composite expressions', '+("1")()', '+("1")()');
-                                test('inner sign in composite expressions', '(+"")()', '(+(""))()');
-                                test('multiple signs', '-+-1', '1');
+                                // Modifiers
+                                test('modified constants', '!-0', 'true');
+                                test('modified strings', '+"abc"', '+"abc"');
                                 test(
-                                    'redundant signs',
-                                    '+(+"")',
-                                    '+""'
+                                    'outer modifiers in composite expressions',
+                                    '+undefined()',
+                                    '+undefined()'
+                                );
+                                test(
+                                    'inner modifiers in composite expressions',
+                                    '(!"")()',
+                                    '(!"")()'
+                                );
+                                test('redundant modifiers on constants', '-+ +-!!!+!!42', '0');
+                                test(
+                                    'redundant modifiers on non-constants',
+                                    '-+ +-!!!+!!""',
+                                    '+!""'
                                     );
                                 
                                 // Groupings
@@ -478,7 +487,7 @@ uneval
                                 // Sums
                                 test('dissociable sums', '(0+1)+2', '0+1+2');
                                 test('undissociable sums', '0+(1+2)', '0+(1+2)');
-                                test('sums of signed sums', '0+(+(1+2))', '0+(+(1+2))');
+                                test('sums of modified sums', '0+(+(1+2))', '0+(+(1+2))');
                                 
                                 // Limits
                                 var str = repeat('[', 1000) + repeat(']', 1000);
@@ -518,10 +527,10 @@ uneval
                                 test('keywords', 'debugger');
                                 test('pre-increments', '++i');
                                 test(
-                                    'unsigned unmatched grouping parentheses around constant',
+                                    'unmodified unmatched grouping parentheses around constant',
                                     '(0'
                                 );
-                                test('signed unmatched grouping parentheses', '-(1');
+                                test('modified unmatched grouping parentheses', '-(1');
                                 test('unclosed parenthesis after expression', 'alert((""');
                                 test('unclosed empty array square bracket', '[');
                                 test('unclosed singleton array square bracket', '[0');
@@ -1689,7 +1698,7 @@ uneval
                         test('with an empty array', '""([])');
                         test('with a singleton array', '""([0])');
                         test('with a sum', '1+1');
-                        test('with a sum of signed sums', 'a+(+(b+c))');
+                        test('with a sum of modified sums', 'a+(+(b+c))');
                     }
                 );
                 
