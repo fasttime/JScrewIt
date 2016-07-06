@@ -867,11 +867,11 @@ var wrapWithEval;
         
         replaceExpressUnit: function (unit, unitIndices, strongBound, maxLength)
         {
-            var sign = unit.sign;
+            var mods = unit.mods || '';
+            var maxCoreLength = maxLength - (mods ? (strongBound ? 2 : 0) + mods.length : 0);
             var ops = unit.ops || [];
             var opCount = ops.length;
-            var maxCoreLength = maxLength - (sign ? strongBound ? 3 : 1 : 0);
-            var primaryExprStrongBound = strongBound || sign || opCount;
+            var primaryExprStrongBound = strongBound || mods || opCount;
             var output =
                 this.replacePrimaryExpr(unit, unitIndices, primaryExprStrongBound, maxCoreLength);
             if (output)
@@ -900,9 +900,9 @@ var wrapWithEval;
                             output += '(' + opOutput + ')';
                     }
                 }
-                if (sign)
+                if (mods)
                 {
-                    output = '+' + output;
+                    output = mods + output;
                     if (strongBound)
                         output = '(' + output + ')';
                 }

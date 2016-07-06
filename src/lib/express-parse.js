@@ -16,6 +16,17 @@ var expressParse;
         return returnable;
     }
     
+    function joinMods(mod1, mod2)
+    {
+        var mods =
+            (mod1 + mod2)
+            .replace(/\+\+|--/, '+')
+            .replace(/\+-|-\+/, '-')
+            .replace(/![+-]!/, '!!')
+            .replace('!!!', '!');
+        return mods;
+    }
+    
     function makeRegExp(richPattern)
     {
         var pattern = '^(?:' + replacePattern(richPattern) + ')';
@@ -33,6 +44,17 @@ var expressParse;
             parseInfo.data = data.slice(match.length);
             return match;
         }
+    }
+    
+    function readMods(parseInfo, mods)
+    {
+        var mod;
+        while (mod = read(parseInfo, /^(?:!|\+(?!\+)|-(?!-))/))
+        {
+            mods = joinMods(mods, mod);
+            readSeparators(parseInfo);
+        }
+        return mods;
     }
     
     function readParenthesisLeft(parseInfo)
@@ -85,7 +107,7 @@ var expressParse;
         if (readParenthesisLeft(parseInfo))
         {
             readSeparators(parseInfo);
-            unit = readUnit(parseInfo);
+            unit = readUnit(parseInfo, true);
             if (unit)
             {
                 readSeparators(parseInfo);
@@ -107,32 +129,6 @@ var expressParse;
         read(parseInfo, separatorRegExp);
     }
     
-    function readSign(parseInfo)
-    {
-        var sign;
-        var char = read(parseInfo, /^(?:\+(?!\+)|-(?!-))/);
-        if (char)
-        {
-            readSeparators(parseInfo);
-            sign = char === '+' ? 1 : -1;
-        }
-        else
-            sign = 0;
-        return sign;
-    }
-    
-    function readSigns(parseInfo)
-    {
-        var sign = readSign(parseInfo);
-        if (sign)
-        {
-            var newSign;
-            while (newSign = readSign(parseInfo))
-                sign *= newSign;
-        }
-        return sign;
-    }
-    
     function readSquareBracketLeft(parseInfo)
     {
         return read(parseInfo, /^\[/);
@@ -143,51 +139,66 @@ var expressParse;
         return read(parseInfo, /^]/);
     }
     
-    function readUnit(parseInfo)
+    function readUnit(parseInfo, allowInexpressibleUnits)
     {
         if (parseInfo.height--)
         {
             var unit;
-            var allNumeric = true;
             for (;;)
             {
                 var binSign;
                 if (unit)
                 {
-                    binSign = readSign(parseInfo);
+                    binSign = read(parseInfo, /^(?:\+(?!\+)|-(?!-))/);
                     if (!binSign)
                     {
                         ++parseInfo.height;
                         return unit;
                     }
+                    readSeparators(parseInfo);
                 }
                 else
-                    binSign = 0;
-                var uniSign = readSigns(parseInfo);
+                    binSign = '';
+                var mods = readMods(parseInfo, binSign === '+' ? '' : binSign);
                 var term = readUnitCore(parseInfo);
                 if (!term)
                     return;
                 if (
                     'value' in term &&
-                    ~['boolean', 'number', 'undefined'].indexOf(typeof term.value))
+                    ~['boolean', 'number', 'undefined'].indexOf(typeof term.value) &&
+                    !term.ops.length)
                 {
-                    if (binSign < 0 ^ uniSign < 0)
-                        term.value *= -1;
+                    var value = term.value;
+                    var mod;
+                    while (mod = mods.slice(-1))
+                    {
+                        mods = mods.slice(0, -1);
+                        switch (mod)
+                        {
+                        case '!':
+                            value = !value;
+                            break;
+                        case '+':
+                            value = +value;
+                            break;
+                        case '-':
+                            value = -value;
+                            break;
+                        }
+                    }
+                    term.value = value;
                 }
                 else
                 {
-                    if (uniSign < 0)
+                    mods = joinMods(mods, term.mods || '');
+                    if (!allowInexpressibleUnits && /-/.test(mods))
                         return;
-                    if (uniSign > 0)
-                        term.sign = true;
-                    allNumeric = false;
                 }
-                if (!allNumeric && binSign < 0)
-                    return;
+                term.mods = mods;
                 if (unit)
                 {
                     var terms = unit.terms;
-                    if (terms && !unit.sign)
+                    if (terms && !unit.mods)
                         terms.push(term);
                     else
                         unit = { terms: [unit, term] };
@@ -247,7 +258,7 @@ var expressParse;
                     break;
                 ops.push(op);
             }
-            if (ops.length && unit.sign)
+            if (ops.length && unit.mods)
                 unit = { terms: [unit] };
             else
             {
