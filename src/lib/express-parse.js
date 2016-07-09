@@ -10,6 +10,18 @@ var expressParse;
         return value;
     }
     
+    function isExpressibleUnit(unit)
+    {
+        var mods = unit.mods;
+        if (!(mods && /-/.test(mods)))
+        {
+            var terms = unit.terms;
+            if (!terms || terms.every(isExpressibleUnit))
+                return true;
+        }
+        return false;
+    }
+    
     function isReturnableIdentifier(identifier)
     {
         var returnable = UNRETURNABLE_WORDS.indexOf(identifier) < 0;
@@ -41,7 +53,7 @@ var expressParse;
         if (matches)
         {
             var match = matches[0];
-            parseInfo.data = data.slice(match.length);
+            parseInfo.data = data.slice(match.length).replace(separatorRegExp, '');
             return match;
         }
     }
@@ -50,21 +62,20 @@ var expressParse;
     {
         var mod;
         while (mod = read(parseInfo, /^(?:!|\+(?!\+)|-(?!-))/))
-        {
             mods = joinMods(mods, mod);
-            readSeparators(parseInfo);
-        }
         return mods;
     }
     
     function readParenthesisLeft(parseInfo)
     {
-        return read(parseInfo, /^\(/);
+        var match = read(parseInfo, /^\(/);
+        return match;
     }
     
     function readParenthesisRight(parseInfo)
     {
-        return read(parseInfo, /^\)/);
+        var match = read(parseInfo, /^\)/);
+        return match;
     }
     
     function readPrimaryExpr(parseInfo)
@@ -86,7 +97,6 @@ var expressParse;
         }
         if (readSquareBracketLeft(parseInfo))
         {
-            readSeparators(parseInfo);
             if (readSquareBracketRight(parseInfo))
                 unit = { value: [] };
             else
@@ -94,7 +104,6 @@ var expressParse;
                 var op = readUnit(parseInfo);
                 if (op)
                 {
-                    readSeparators(parseInfo);
                     if (readSquareBracketRight(parseInfo))
                     {
                         unit = { value: [op] };
@@ -106,14 +115,9 @@ var expressParse;
         }
         if (readParenthesisLeft(parseInfo))
         {
-            readSeparators(parseInfo);
-            unit = readUnit(parseInfo, true);
-            if (unit)
-            {
-                readSeparators(parseInfo);
-                if (!readParenthesisRight(parseInfo))
-                    return;
-            }
+            unit = readUnit(parseInfo);
+            if (!unit || !readParenthesisRight(parseInfo))
+                return;
             return unit;
         }
         var identifier = read(parseInfo, identifierRegExp);
@@ -124,22 +128,24 @@ var expressParse;
         }
     }
     
-    function readSeparators(parseInfo)
+    function readSeparatorOrColon(parseInfo)
     {
-        read(parseInfo, separatorRegExp);
+        parseInfo.data = parseInfo.data.replace(separatorOrColonRegExp, '');
     }
     
     function readSquareBracketLeft(parseInfo)
     {
-        return read(parseInfo, /^\[/);
+        var match = read(parseInfo, /^\[/);
+        return match;
     }
     
     function readSquareBracketRight(parseInfo)
     {
-        return read(parseInfo, /^]/);
+        var match = read(parseInfo, /^]/);
+        return match;
     }
     
-    function readUnit(parseInfo, allowInexpressibleUnits)
+    function readUnit(parseInfo)
     {
         if (parseInfo.height--)
         {
@@ -155,7 +161,6 @@ var expressParse;
                         ++parseInfo.height;
                         return unit;
                     }
-                    readSeparators(parseInfo);
                 }
                 else
                     binSign = '';
@@ -189,12 +194,7 @@ var expressParse;
                     term.value = value;
                 }
                 else
-                {
-                    mods = joinMods(mods, term.mods || '');
-                    if (!allowInexpressibleUnits && /-/.test(mods))
-                        return;
-                }
-                term.mods = mods;
+                    term.mods = joinMods(mods, term.mods || '');
                 if (unit)
                 {
                     var terms = unit.terms;
@@ -217,38 +217,30 @@ var expressParse;
             var ops = [];
             for (;;)
             {
-                readSeparators(parseInfo);
                 var op;
                 if (readParenthesisLeft(parseInfo))
                 {
-                    readSeparators(parseInfo);
                     if (readParenthesisRight(parseInfo))
                         op = { type: 'call' };
                     else
                     {
                         op = readUnit(parseInfo);
-                        if (!op)
-                            return;
-                        readSeparators(parseInfo);
-                        if (!readParenthesisRight(parseInfo))
+                        if (!op || !readParenthesisRight(parseInfo))
                             return;
                         op.type = 'param-call';
                     }
                 }
                 else if (readSquareBracketLeft(parseInfo))
                 {
-                    readSeparators(parseInfo);
                     op = readUnit(parseInfo);
                     if (!op)
                         return;
-                    readSeparators(parseInfo);
                     if (!readSquareBracketRight(parseInfo))
                         return;
                     op.type = 'get';
                 }
                 else if (read(parseInfo, /^\./))
                 {
-                    readSeparators(parseInfo);
                     var identifier = read(parseInfo, identifierRegExp);
                     if (!identifier)
                         return;
@@ -350,14 +342,16 @@ var expressParse;
         function (input)
         {
             var parseInfo = { data: input, height: 1000 };
-            read(parseInfo, separatorOrColonRegExp);
+            readSeparatorOrColon(parseInfo);
             if (!parseInfo.data)
                 return true;
             var unit = readUnit(parseInfo);
-            read(parseInfo, separatorOrColonRegExp);
-            if (parseInfo.data)
-                return;
-            return unit;
+            if (unit && isExpressibleUnit(unit))
+            {
+                readSeparatorOrColon(parseInfo);
+                if (!parseInfo.data)
+                    return unit;
+            }
         };
 }
 )();

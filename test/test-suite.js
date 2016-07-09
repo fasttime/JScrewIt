@@ -454,7 +454,7 @@ uneval
                                 test('modified constants', '!-0', 'true');
                                 test('modified strings', '+"abc"', '+"abc"');
                                 test(
-                                    'outer modifiers in composite expressions',
+                                    'outer modifiers in constant-based composite expressions',
                                     '+undefined()',
                                     '+undefined()'
                                 );
@@ -466,7 +466,7 @@ uneval
                                 test('redundant modifiers on constants', '-+ +-!!!+!!42', '0');
                                 test(
                                     'redundant modifiers on non-constants',
-                                    '-+ +-!!!+!!""',
+                                    '-+(+-!!!+!!"")',
                                     '+!""'
                                     );
                                 
@@ -539,9 +539,11 @@ uneval
                                 test('too deep nestings', repeat('[', 1001) + repeat(']', 1001));
                                 test('unary minus on strings', '-""');
                                 test('unary minus on arrays', '-[]');
-                                test('string subtraction', '1 - ""');
-                                test('array subtraction', '1 - []');
+                                test('string subtractions', '1 - ""');
+                                test('grouped string subtractions', '(1 - "")');
+                                test('array subtractions', '1 - []');
                                 test('empty parentheses', '()');
+                                test('multiple statements', '1;2');
                             }
                         );
                     }
