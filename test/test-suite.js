@@ -1990,7 +1990,7 @@ uneval
                     }
                 );
                 describe(
-                    'Undefined literal',
+                    'Undefined identifier',
                     function ()
                     {
                         it(
@@ -1998,7 +1998,7 @@ uneval
                             function ()
                             {
                                 expect(debugReplacer('A')).toThrow(
-                                    SyntaxError('Undefined literal FILL in the definition of A')
+                                    SyntaxError('Undefined identifier FILL in the definition of A')
                                 );
                             }
                         );
@@ -2007,7 +2007,7 @@ uneval
                             function ()
                             {
                                 expect(debugReplacer('valueOf')).toThrow(
-                                    SyntaxError('Undefined literal valueOf')
+                                    SyntaxError('Undefined identifier valueOf')
                                 );
                             }
                         );

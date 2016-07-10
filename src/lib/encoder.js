@@ -199,7 +199,7 @@ var wrapWithEval;
         }
     }
     
-    function replaceToken(wholeMatch, number, quotedString, space, literal, offset, expr)
+    function replaceToken(wholeMatch, number, quotedString, space, identifier, offset, expr)
     {
         var replacement;
         if (number)
@@ -231,23 +231,16 @@ var wrapWithEval;
         }
         else if (space)
             replacement = '';
-        else if (literal)
+        else if (identifier)
         {
-            var solution;
-            if (literal in this.constantDefinitions)
-                solution = this.resolveConstant(literal);
-            else if (literal in SIMPLE)
-                solution = SIMPLE[literal];
-            if (!solution)
-                this.throwSyntaxError('Undefined literal ' + literal);
-            var groupingRequired;
+            var bondStrength;
             if (isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length))
-                groupingRequired = solution[0] === '!' || hasOuterPlus(solution);
+                bondStrength = BOND_STRENGTH_STRONG;
             else if (isPrecededByOperator(expr, offset))
-                groupingRequired = hasOuterPlus(solution);
+                bondStrength = BOND_STRENGTH_WEAK;
             else
-                groupingRequired = false;
-            replacement = groupingRequired ? '(' + solution + ')' : solution + '';
+                bondStrength = BOND_STRENGTH_NONE;
+            replacement = this.replaceIdentifier(identifier, bondStrength);
         }
         else
             this.throwSyntaxError('Unexpected character ' + quoteString(wholeMatch));
@@ -925,6 +918,22 @@ var wrapWithEval;
             }
         },
         
+        replaceIdentifier: function (identifier, bondStrength)
+        {
+            var solution;
+            if (identifier in this.constantDefinitions)
+                solution = this.resolveConstant(identifier);
+            else if (identifier in SIMPLE)
+                solution = SIMPLE[identifier];
+            if (!solution)
+                this.throwSyntaxError('Undefined identifier ' + identifier);
+            var groupingRequired =
+                bondStrength && hasOuterPlus(solution) ||
+                bondStrength > BOND_STRENGTH_WEAK && solution[0] === '!';
+            var replacement = groupingRequired ? '(' + solution + ')' : solution + '';
+            return replacement;
+        },
+        
         replacePrimaryExpr: function (unit, unitIndices, strongBound, maxLength)
         {
             function getCodingName()
@@ -1182,6 +1191,10 @@ var wrapWithEval;
     };
     
     assignNoEnum(Encoder.prototype, encoderProtoSource);
+    
+    var BOND_STRENGTH_NONE      = 0;
+    var BOND_STRENGTH_WEAK      = 1;
+    var BOND_STRENGTH_STRONG    = 2;
     
     var STATIC_ENCODER = new Encoder([0, 0]);
     
