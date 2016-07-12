@@ -42,6 +42,8 @@ var COMPLEX;
 var CONSTANTS;
 var SIMPLE;
 
+var JSFUCK_INFINITY;
+
 var createParseIntArgByReduce;
 var createParseIntArgByReduceArrow;
 var createParseIntArgDefault;
@@ -475,6 +477,23 @@ var createSolution;
     {
         var mapper = 'Function("return function(undefined){return this' + arg + '}")()["bind"]';
         return mapper;
+    }
+    
+    function replaceDigit(digit)
+    {
+        switch (digit)
+        {
+        case 0:
+            return '+[]';
+        case 1:
+            return '+!![]';
+        default:
+            var replacement = '!![]';
+            do
+                replacement += '+!![]';
+            while (--digit > 1);
+            return replacement;
+        }
     }
     
     AMENDINGS = ['true', 'undefined', 'NaN'];
@@ -1409,6 +1428,8 @@ var createSolution;
         define(fromCharCodeCallbackFormatterArrow, ARROW)
     ];
     
+    JSFUCK_INFINITY = '1e1000';
+    
     MAPPER_FORMATTER = [define(mapperFormatterDefault), define(mapperFormatterDblArrow, ARROW)];
     
     OPTIMAL_B = [define('B'), define('b', ENTRIES_OBJ)];
@@ -1427,14 +1448,14 @@ var createSolution;
     // Create definitions for digits
     for (var digit = 0; digit <= 9; ++digit)
     {
-        var expr = digit + '';
+        var expr = replaceDigit(digit);
         CHARACTERS[digit] = { expr: expr, level: LEVEL_NUMERIC };
     }
     
-    defineSimple('false',       '![]',          LEVEL_NUMERIC);
-    defineSimple('true',        '!![]',         LEVEL_NUMERIC);
-    defineSimple('undefined',   '[][[]]',       LEVEL_UNDEFINED);
-    defineSimple('NaN',         '+[false]',     LEVEL_NUMERIC);
-    defineSimple('Infinity',    '+"1e1000"',    LEVEL_NUMERIC);
+    defineSimple('false',       '![]',              LEVEL_NUMERIC);
+    defineSimple('true',        '!![]',             LEVEL_NUMERIC);
+    defineSimple('undefined',   '[][[]]',           LEVEL_UNDEFINED);
+    defineSimple('NaN',         '+[false]',         LEVEL_NUMERIC);
+    defineSimple('Infinity',    JSFUCK_INFINITY,    LEVEL_NUMERIC);
 }
 )();
