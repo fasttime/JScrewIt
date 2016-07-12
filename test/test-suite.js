@@ -421,7 +421,7 @@ uneval
                                     '-0.9',
                                     '+"-.9"'
                                 );
-                                test('signed constants', '-Infinity', '+"-1e1000"');
+                                test('-Infinity', '-Infinity', '+"-1e1000"');
                                 test('-0', '-0', '+"-0"');
                                 test('-NaN', '-NaN', 'NaN');
                                 
@@ -1399,7 +1399,7 @@ uneval
                 
                 function testShortEncodings(
                     description,
-                    strongBound,
+                    bond,
                     forceString,
                     expected0,
                     expected1,
@@ -1415,7 +1415,7 @@ uneval
                                 'encodes an empty string',
                                 function ()
                                 {
-                                    var buffer = createScrewBuffer(strongBound, forceString, 10);
+                                    var buffer = createScrewBuffer(bond, forceString, 10);
                                     test(buffer, expected0);
                                 }
                             );
@@ -1423,7 +1423,7 @@ uneval
                                 'encodes a single string character',
                                 function ()
                                 {
-                                    var buffer = createScrewBuffer(strongBound, forceString, 10);
+                                    var buffer = createScrewBuffer(bond, forceString, 10);
                                     expect(buffer.append(solutionA)).toBe(true);
                                     test(buffer, expected1);
                                 }
@@ -1432,7 +1432,7 @@ uneval
                                 'encodes a single nonstring character',
                                 function ()
                                 {
-                                    var buffer = createScrewBuffer(strongBound, forceString, 10);
+                                    var buffer = createScrewBuffer(bond, forceString, 10);
                                     expect(buffer.append(solution0)).toBe(true);
                                     test(buffer, expected2);
                                 }
@@ -1977,11 +1977,11 @@ uneval
                 JScrewIt.debug.defineConstant(encoder, 'B', 'C');
                 JScrewIt.debug.defineConstant(encoder, 'C', 'B');
                 JScrewIt.debug.defineConstant(encoder, 'D', '?');
-                JScrewIt.debug.defineConstant(encoder, 'E', '"\\?"');
+                JScrewIt.debug.defineConstant(encoder, 'E', '"\\xx"');
                 JScrewIt.debug.defineConstant(encoder, 'F', '"too complex"');
                 
                 it(
-                    'Circular reference',
+                    'circular reference',
                     function ()
                     {
                         expect(debugReplacer('B')).toThrow(
@@ -1990,7 +1990,7 @@ uneval
                     }
                 );
                 describe(
-                    'Undefined identifier',
+                    'undefined identifier',
                     function ()
                     {
                         it(
@@ -2014,7 +2014,7 @@ uneval
                     }
                 );
                 describe(
-                    'Unexpected character',
+                    'unexpected character',
                     function ()
                     {
                         it(
@@ -2022,7 +2022,7 @@ uneval
                             function ()
                             {
                                 expect(debugReplacer('D')).toThrow(
-                                    SyntaxError('Unexpected character "?" in the definition of D')
+                                    SyntaxError('Syntax error in the definition of D')
                                 );
                             }
                         );
@@ -2031,14 +2031,14 @@ uneval
                             function ()
                             {
                                 expect(debugReplacer('?')).toThrow(
-                                    SyntaxError('Unexpected character "?"')
+                                    SyntaxError('Syntax error')
                                 );
                             }
                         );
                     }
                 );
                 describe(
-                    'Illegal string',
+                    'illegal string',
                     function ()
                     {
                         it(
@@ -2046,7 +2046,7 @@ uneval
                             function ()
                             {
                                 expect(debugReplacer('E')).toThrow(
-                                    SyntaxError('Illegal string "\\?" in the definition of E')
+                                    SyntaxError('Syntax error in the definition of E')
                                 );
                             }
                         );
@@ -2054,15 +2054,15 @@ uneval
                             'inline',
                             function ()
                             {
-                                expect(debugReplacer('"\\?"')).toThrow(
-                                    SyntaxError('Illegal string "\\?"')
+                                expect(debugReplacer('"\\xx"')).toThrow(
+                                    SyntaxError('Syntax error')
                                 );
                             }
                         );
                     }
                 );
                 describe(
-                    'String too complex',
+                    'string too complex',
                     function ()
                     {
                         it(

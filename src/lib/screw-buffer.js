@@ -32,7 +32,7 @@ var hasOuterPlus;
     }
     
     ScrewBuffer =
-        function (strongBound, forceString, groupThreshold)
+        function (bond, forceString, groupThreshold)
         {
             function canSplitRightEndForFree(lastBridgeIndex, limit)
             {
@@ -90,7 +90,7 @@ var hasOuterPlus;
                     return splitIndex;
             }
             
-            function gather(offset, count, localStrongBound, localForceString)
+            function gather(offset, count, localBond, localForceString)
             {
                 function appendRightGroup(groupCount)
                 {
@@ -114,7 +114,7 @@ var hasOuterPlus;
                     var index;
                     if (bridgeIndex - offset > 1)
                     {
-                        var intrinsicSplitCost = localForceString ? -3 : localStrongBound ? 2 : 0;
+                        var intrinsicSplitCost = localForceString ? -3 : localBond ? 2 : 0;
                         index =
                             findSplitIndex(
                                 offset,
@@ -170,7 +170,7 @@ var hasOuterPlus;
                     }
                 }
                 var str = array.join('');
-                if (localStrongBound && multiPart)
+                if (localBond && multiPart)
                     str = '(' + str + ')';
                 return str;
             }
@@ -256,7 +256,7 @@ var hasOuterPlus;
             }
             
             var bridgeUsed;
-            var length = strongBound ? -1 : -3;
+            var length = bond ? -1 : -3;
             var maxSolutionCount = Math.pow(2, groupThreshold - 1);
             var solutions = [];
             
@@ -278,16 +278,13 @@ var hasOuterPlus;
                         switch (solutions.length)
                         {
                         case 0:
-                            result = forceString ? strongBound ? 7 : 5 : 0;
+                            result = forceString ? bond ? 7 : 5 : 0;
                             break;
                         case 1:
                             var solution = solutions[0];
                             result =
                                 solution.length +
-                                (
-                                    forceString && solution.level < LEVEL_STRING ?
-                                    strongBound ? 5 : 3 : 0
-                                );
+                                (forceString && solution.level < LEVEL_STRING ? bond ? 5 : 3 : 0);
                             break;
                         default:
                             result = length;
@@ -297,11 +294,11 @@ var hasOuterPlus;
                     },
                     toString: function ()
                     {
-                        function collectOut(offset, count, maxGroupCount, localStrongBound)
+                        function collectOut(offset, count, maxGroupCount, localBond)
                         {
                             var str;
                             if (count <= groupSize + 1)
-                                str = gather(offset, count, localStrongBound);
+                                str = gather(offset, count, localBond);
                             else
                             {
                                 maxGroupCount /= 2;
@@ -321,7 +318,7 @@ var hasOuterPlus;
                                         maxGroupCount,
                                         true
                                     );
-                                if (localStrongBound)
+                                if (localBond)
                                     str = '(' + str + ')';
                             }
                             return str;
@@ -343,8 +340,8 @@ var hasOuterPlus;
                         }
                         else if (solutionCount <= groupThreshold)
                         {
-                            str = gather(0, solutionCount, strongBound, forceString);
-                            singlePart = strongBound;
+                            str = gather(0, solutionCount, bond, forceString);
+                            singlePart = bond;
                         }
                         else
                         {
@@ -358,10 +355,10 @@ var hasOuterPlus;
                                     break;
                                 maxGroupCount *= 2;
                             }
-                            str = collectOut(0, solutionCount, maxGroupCount, strongBound);
-                            singlePart = strongBound;
+                            str = collectOut(0, solutionCount, maxGroupCount, bond);
+                            singlePart = bond;
                         }
-                        if (strongBound && !singlePart)
+                        if (bond && !singlePart)
                             str = '(' + str + ')';
                         return str;
                     }

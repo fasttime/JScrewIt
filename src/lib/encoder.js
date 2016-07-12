@@ -8,6 +8,7 @@ CREATE_PARSE_INT_ARG,
 DEFAULT_CHARACTER_ENCODER,
 FROM_CHAR_CODE,
 FROM_CHAR_CODE_CALLBACK_FORMATTER,
+JSFUCK_INFINITY,
 LEVEL_STRING,
 MAPPER_FORMATTER,
 OPTIMAL_B,
@@ -150,103 +151,6 @@ var wrapWithEval;
         return minCharIndexArrayStrLength;
     }
     
-    function isFollowedByLeftSquareBracket(expr, offset)
-    {
-        for (;;)
-        {
-            var char = expr[offset++];
-            if (char === '[')
-                return true;
-            if (char !== ' ')
-                return false;
-        }
-    }
-    
-    function isPrecededByOperator(expr, offset)
-    {
-        for (;;)
-        {
-            var char = expr[--offset];
-            if (char === '+' || char === '!')
-                return true;
-            if (char !== ' ')
-                return false;
-        }
-    }
-    
-    function isStrongBoundRequired(expr, offset, wholeMatch)
-    {
-        var strongBound =
-            isPrecededByOperator(expr, offset) ||
-            isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length);
-        return strongBound;
-    }
-    
-    function replaceDigit(digit)
-    {
-        switch (digit)
-        {
-        case 0:
-            return '+[]';
-        case 1:
-            return '+!![]';
-        default:
-            var replacement = '!![]';
-            do
-                replacement += '+!![]';
-            while (--digit > 1);
-            return replacement;
-        }
-    }
-    
-    function replaceToken(wholeMatch, number, quotedString, space, identifier, offset, expr)
-    {
-        var replacement;
-        if (number)
-        {
-            replacement = replaceDigit(+number[0]);
-            var length = number.length;
-            for (var index = 1; index < length; ++index)
-                replacement += '+[' + replaceDigit(+number[index]) + ']';
-            if (length > 1)
-                replacement = '+(' + replacement + ')';
-            if (isStrongBoundRequired(expr, offset, wholeMatch))
-                replacement = '(' + replacement + ')';
-        }
-        else if (quotedString)
-        {
-            var str;
-            try
-            {
-                str = JSON.parse(quotedString);
-            }
-            catch (error)
-            {
-                this.throwSyntaxError('Illegal string ' + quotedString);
-            }
-            var strongBound = isStrongBoundRequired(expr, offset, wholeMatch);
-            replacement = this.replaceString(str, strongBound, true);
-            if (!replacement)
-                this.throwSyntaxError('String too complex');
-        }
-        else if (space)
-            replacement = '';
-        else if (identifier)
-        {
-            var bondStrength;
-            if (isFollowedByLeftSquareBracket(expr, offset + wholeMatch.length))
-                bondStrength = BOND_STRENGTH_STRONG;
-            else if (isPrecededByOperator(expr, offset))
-                bondStrength = BOND_STRENGTH_WEAK;
-            else
-                bondStrength = BOND_STRENGTH_NONE;
-            replacement = this.replaceIdentifier(identifier, bondStrength);
-        }
-        else
-            this.throwSyntaxError('Unexpected character ' + quoteString(wholeMatch));
-        return replacement;
-    }
-    
     CODERS =
     {
         byCharCodes: defineCoder
@@ -350,7 +254,7 @@ var wrapWithEval;
             {
                 var input = inputData.valueOf();
                 var wrapper = inputData.wrapper;
-                var output = this.encodeLiteral(input, wrapper, void 0, false, maxLength);
+                var output = this.encodeLiteral(input, wrapper, false, void 0, maxLength);
                 return output;
             }
         ),
@@ -359,9 +263,8 @@ var wrapWithEval;
             function (inputData, maxLength)
             {
                 var input = inputData.valueOf();
-                var strongBound = inputData.strongBound;
-                var output =
-                    this.replaceString(input, strongBound, inputData.forceString, maxLength);
+                var bond = inputData.bond;
+                var output = this.replaceString(input, bond, inputData.forceString, maxLength);
                 return output;
             }
         ),
@@ -481,8 +384,14 @@ var wrapWithEval;
                 else
                 {
                     output =
-                        this.replaceExpr('Function("return String.' + fromCharCode + '(" +') +
-                        charCodeArrayStr + this.replaceExpr('+ ")")()');
+                        this.replaceIdentifier('Function') +
+                        '(' +
+                        this.replaceString('return String.' + fromCharCode + '(') +
+                        '+' +
+                        charCodeArrayStr +
+                        '+' +
+                        this.replaceString(')') +
+                        ')()';
                 }
             }
             return output;
@@ -536,7 +445,7 @@ var wrapWithEval;
                 mapper = '""["charAt"]["bind"]';
             var output =
                 this.createJSFuckArrayMapping(charIndexArrayStr, mapper, legend) +
-                this.replaceExpr('["join"]([])');
+                '[' + this.replaceString('join') + ']([])';
             if (!(output.length > maxLength))
                 return output;
         },
@@ -544,7 +453,7 @@ var wrapWithEval;
         createJSFuckArrayMapping: function (arrayStr, mapper, legend)
         {
             var result =
-                arrayStr + this.replaceExpr('["map"]') + '(' + this.replaceExpr(mapper) + '(' +
+                arrayStr + '[' + this.replaceString('map') + '](' + this.replaceExpr(mapper) + '(' +
                 legend + '))';
             return result;
         },
@@ -555,7 +464,9 @@ var wrapWithEval;
             var callback = formatter(fromCharCode, arg);
             var output =
                 charCodeArrayStr +
-                this.replaceExpr('["map"](Function("return ' + callback + '")())["join"]([])');
+                '[' + this.replaceString('map') + '](' +
+                this.replaceExpr('Function("return ' + callback + '")()') + ')[' +
+                this.replaceString('join') + ']([])';
             return output;
         },
         
@@ -727,17 +638,17 @@ var wrapWithEval;
                         output = '';
                 }
                 else
-                    output = this.replaceExpressUnit(unit, [], false, maxLength);
+                    output = this.replaceExpressUnit(unit, false, [], maxLength, INPUT_REPLACERS);
                 return output;
             }
         },
         
-        encodeLiteral: function (input, wrapper, codingName, strongBound, maxLength)
+        encodeLiteral: function (input, wrapper, bond, codingName, maxLength)
         {
             var output =
                 this.callCoders(
                     input,
-                    { forceString: !wrapper, strongBound: strongBound },
+                    { forceString: !wrapper, bond: bond },
                     [
                         'byDblDict',
                         'byDictRadix5AmendedBy3',
@@ -850,23 +761,35 @@ var wrapWithEval;
         
         replaceExpr: function (expr)
         {
-            var result =
-                expr.replace(
-                    /([0-9]+)|("(?:\\.|(?!").)*")|( +)|([$A-Z_a-z][$0-9A-Z_a-z]*)|[^!()+[\]]/g,
-                    this.replaceToken || (this.replaceToken = replaceToken.bind(this))
-                );
-            return result;
+            var unit = expressParse(expr);
+            if (!unit)
+                this.throwSyntaxError('Syntax error');
+            var replacement;
+            if (unit === true)
+                replacement = '';
+            else
+                replacement = this.replaceExpressUnit(unit, false, [], NaN, DEFINITION_REPLACERS);
+            return replacement;
         },
         
-        replaceExpressUnit: function (unit, unitIndices, strongBound, maxLength)
+        replaceExpressUnit: function (unit, bond, unitIndices, maxLength, replacers)
         {
             var mods = unit.mods || '';
-            var maxCoreLength = maxLength - (mods ? (strongBound ? 2 : 0) + mods.length : 0);
+            var groupingRequired = bond && mods[0] === '+';
+            var maxCoreLength = maxLength - (mods ? (groupingRequired ? 2 : 0) + mods.length : 0);
             var ops = unit.ops || [];
             var opCount = ops.length;
-            var primaryExprStrongBound = strongBound || mods || opCount;
+            var primaryExprBondStrength =
+                opCount ?
+                BOND_STRENGTH_STRONG : bond || mods ? BOND_STRENGTH_WEAK : BOND_STRENGTH_NONE;
             var output =
-                this.replacePrimaryExpr(unit, unitIndices, primaryExprStrongBound, maxCoreLength);
+                this.replacePrimaryExpr(
+                    unit,
+                    primaryExprBondStrength,
+                    unitIndices,
+                    maxCoreLength,
+                    replacers
+                );
             if (output)
             {
                 for (var index = 0; index < opCount; ++index)
@@ -884,7 +807,13 @@ var wrapWithEval;
                         var opUnitIndices = unitIndices.concat(index + 1);
                         var maxOpLength = maxCoreLength - output.length - 2;
                         var opOutput =
-                            this.replaceExpressUnit(op, opUnitIndices, false, maxOpLength);
+                            this.replaceExpressUnit(
+                                op,
+                                false,
+                                opUnitIndices,
+                                maxOpLength,
+                                replacers
+                            );
                         if (!opOutput)
                             return;
                         if (type === 'get')
@@ -896,7 +825,7 @@ var wrapWithEval;
                 if (mods)
                 {
                     output = mods + output;
-                    if (strongBound)
+                    if (groupingRequired)
                         output = '(' + output + ')';
                 }
             }
@@ -912,7 +841,9 @@ var wrapWithEval;
             var replacement = this.replaceString(str, true, true, maxLength);
             if (replacement)
             {
-                var result = replacement + this.replaceExpr('["split"](false)');
+                var result =
+                    replacement + '[' + this.replaceString('split') + '](' +
+                    this.replaceExpr('false') + ')';
                 if (!(result.length > maxLength))
                     return result;
             }
@@ -934,11 +865,12 @@ var wrapWithEval;
             return replacement;
         },
         
-        replacePrimaryExpr: function (unit, unitIndices, strongBound, maxLength)
+        replacePrimaryExpr: function (unit, bondStrength, unitIndices, maxLength, replacers)
         {
             function getCodingName()
             {
-                return unitIndices.length ? unitIndices.join(':') : '0';
+                var codingName = unitIndices.length ? unitIndices.join(':') : '0';
+                return codingName;
             }
             
             var output;
@@ -947,47 +879,54 @@ var wrapWithEval;
             if (terms = unit.terms)
             {
                 var count = terms.length;
-                var maxCoreLength = maxLength - (strongBound ? 2 : 0);
+                var maxCoreLength = maxLength - (bondStrength ? 2 : 0);
                 for (var index = 0; index < count; ++index)
                 {
                     var term = terms[index];
                     var termUnitIndices = count > 1 ? unitIndices.concat(index) : unitIndices;
                     var maxTermLength = maxCoreLength - 3 * (count - index - 1);
                     var termOutput =
-                        this.replaceExpressUnit(term, termUnitIndices, index, maxTermLength);
+                        this.replaceExpressUnit(
+                            term,
+                            index,
+                            termUnitIndices,
+                            maxTermLength,
+                            replacers
+                        );
                     if (!termOutput)
                         return;
                     output = index ? output + '+' + termOutput : termOutput;
                     maxCoreLength -= termOutput.length + 1;
                 }
-                if (strongBound)
+                if (bondStrength)
                     output = '(' + output + ')';
             }
             else if (identifier = unit.identifier)
             {
+                var identifierReplacer = replacers.identifier;
                 output =
-                    this.encodeLiteral(
-                        'return ' + identifier,
-                        wrapWithCall,
-                        getCodingName(),
-                        false,
-                        maxLength
-                    );
+                    identifierReplacer(this, identifier, bondStrength, getCodingName(), maxLength);
             }
             else
             {
                 var value = unit.value;
                 if (typeof value === 'string')
                 {
-                    output =
-                        this.encodeLiteral(value, void 0, getCodingName(), strongBound, maxLength);
+                    var strReplacer = replacers.string;
+                    output = strReplacer(this, value, bondStrength, getCodingName(), maxLength);
                 }
                 else if (array_isArray(value))
                 {
                     if (value.length)
                     {
                         var replacement =
-                            this.replaceExpressUnit(value[0], unitIndices, false, maxLength - 2);
+                            this.replaceExpressUnit(
+                                value[0],
+                                false,
+                                unitIndices,
+                                maxLength - 2,
+                                replacers
+                            );
                         if (replacement)
                             output = '[' + replacement + ']';
                     }
@@ -1002,19 +941,20 @@ var wrapWithEval;
                         var str;
                         var abs = Math.abs(value);
                         if (abs === Infinity)
-                            str = '1e1000';
+                            str = JSFUCK_INFINITY;
                         else
                             str = (abs + '').replace(/^0(?=\.)/, '');
                         if (negative)
                             str = '-' + str;
-                        output = STATIC_ENCODER.replaceString(str);
-                        if (str.length > 1)
-                            output = '+(' + output + ')';
+                        if (/^\d$/.test(str))
+                            output = STATIC_ENCODER.resolveCharacter(str) + '';
+                        else
+                            output = '+(' + STATIC_ENCODER.replaceString(str) + ')';
+                        if (bondStrength)
+                            output = '(' + output + ')';
                     }
                     else
-                        output = STATIC_ENCODER.replaceExpr(value + '');
-                    if (strongBound && value !== void 0)
-                        output = '(' + output + ')';
+                        output = STATIC_ENCODER.replaceIdentifier(value + '', bondStrength);
                     if (output.length > maxLength)
                         return;
                 }
@@ -1022,9 +962,9 @@ var wrapWithEval;
             return output;
         },
         
-        replaceString: function (str, strongBound, forceString, maxLength)
+        replaceString: function (str, bond, forceString, maxLength)
         {
-            var buffer = new ScrewBuffer(strongBound, forceString, this.maxGroupThreshold);
+            var buffer = new ScrewBuffer(bond, forceString, this.maxGroupThreshold);
             var strTokenPattern = this.strTokenPattern || this.createStringTokenPattern();
             var match;
             var regExp = RegExp(strTokenPattern, 'g');
@@ -1174,8 +1114,8 @@ var wrapWithEval;
                 paddingBlock = paddingDefinition.block;
                 indexer = '[' + this.replaceExpr(paddingDefinition.indexer) + ']';
             }
-            var fullExpr = '(' + paddingBlock + '+' + expr + ')';
-            var replacement = this.replaceExpr(fullExpr) + indexer;
+            var fullExpr = paddingBlock + '+' + expr;
+            var replacement = '(' + this.replaceExpr(fullExpr) + ')' + indexer;
             var solution = createSolution(replacement, LEVEL_STRING, false);
             return solution;
         },
@@ -1195,6 +1135,46 @@ var wrapWithEval;
     var BOND_STRENGTH_NONE      = 0;
     var BOND_STRENGTH_WEAK      = 1;
     var BOND_STRENGTH_STRONG    = 2;
+    
+    var DEFINITION_REPLACERS =
+    {
+        identifier: function (encoder, identifier, bondStrength)
+        {
+            var replacement = encoder.replaceIdentifier(identifier, bondStrength);
+            return replacement;
+        },
+        string: function (encoder, str, bondStrength)
+        {
+            var replacement = encoder.replaceString(str, bondStrength, true);
+            if (!replacement)
+                encoder.throwSyntaxError('String too complex');
+            return replacement;
+        }
+    };
+    
+    var INPUT_REPLACERS =
+    {
+        identifier:
+        function (encoder, identifier, bondStrength, codingName, maxLength)
+        {
+            var replacement =
+                encoder.encodeLiteral(
+                    'return ' + identifier,
+                    wrapWithCall,
+                    false,
+                    codingName,
+                    maxLength
+                );
+            return replacement;
+        },
+        string:
+        function (encoder, str, bondStrength, codingName, maxLength)
+        {
+            var replacement =
+                encoder.encodeLiteral(str, void 0, bondStrength, codingName, maxLength);
+            return replacement;
+        }
+    };
     
     var STATIC_ENCODER = new Encoder([0, 0]);
     
