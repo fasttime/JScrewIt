@@ -425,6 +425,12 @@ uneval
                                     '+((*)[*]+(*)[*]+*)',
                                     -0.9
                                 );
+                                test(
+                                    'numbers with a positive exponent',
+                                    '1e+100',
+                                    '+(+!![]+(!![]+[])[!![]+!![]+!![]]+(+!![])+(+[])+(+[]))',
+                                    1e+100
+                                );
                                 test('-Infinity', '-Infinity', '+(*)', -Infinity);
                                 test('-0', '-0', '+(*)', -0);
                                 test('-NaN', '-NaN', '+[![]]');
