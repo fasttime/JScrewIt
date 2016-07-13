@@ -278,7 +278,7 @@ var hasOuterPlus;
                         switch (solutions.length)
                         {
                         case 0:
-                            result = forceString ? bond ? 7 : 5 : 0;
+                            result = forceString ? bond ? 7 : 5 : 2;
                             break;
                         case 1:
                             var solution = solutions[0];
@@ -324,41 +324,46 @@ var hasOuterPlus;
                             return str;
                         }
                         
-                        var singlePart;
+                        var multiPart;
                         var str;
                         var solutionCount = solutions.length;
-                        if (!solutionCount)
+                        if (solutionCount < 2)
                         {
-                            singlePart = !forceString;
-                            str = singlePart ? '' : '[]+[]';
-                        }
-                        else if (solutionCount === 1)
-                        {
-                            var solution = solutions[0];
-                            singlePart = !forceString || solution.level > LEVEL_OBJECT;
-                            str = solution + (singlePart ? '' : '+[]');
-                        }
-                        else if (solutionCount <= groupThreshold)
-                        {
-                            str = gather(0, solutionCount, bond, forceString);
-                            singlePart = bond;
+                            var replacement;
+                            if (solutionCount)
+                            {
+                                var solution = solutions[0];
+                                multiPart = forceString && solution.level < LEVEL_STRING;
+                                replacement = solution + '';
+                            }
+                            else
+                            {
+                                multiPart = forceString;
+                                replacement = '[]';
+                            }
+                            str = replacement + (multiPart ? '+[]' : '');
                         }
                         else
                         {
-                            var groupSize = groupThreshold;
-                            var maxGroupCount = 2;
-                            for (;;)
+                            if (solutionCount <= groupThreshold)
+                                str = gather(0, solutionCount, bond, forceString);
+                            else
                             {
-                                --groupSize;
-                                var maxSolutionCountForDepth = groupSize * maxGroupCount;
-                                if (solutionCount <= maxSolutionCountForDepth)
-                                    break;
-                                maxGroupCount *= 2;
+                                var groupSize = groupThreshold;
+                                var maxGroupCount = 2;
+                                for (;;)
+                                {
+                                    --groupSize;
+                                    var maxSolutionCountForDepth = groupSize * maxGroupCount;
+                                    if (solutionCount <= maxSolutionCountForDepth)
+                                        break;
+                                    maxGroupCount *= 2;
+                                }
+                                str = collectOut(0, solutionCount, maxGroupCount, bond);
                             }
-                            str = collectOut(0, solutionCount, maxGroupCount, bond);
-                            singlePart = bond;
+                            multiPart = !bond;
                         }
-                        if (bond && !singlePart)
+                        if (bond && multiPart)
                             str = '(' + str + ')';
                         return str;
                     }
