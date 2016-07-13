@@ -405,8 +405,8 @@ uneval
                                     '"Hello\\u0000"'
                                 );
                                 test('empty arrays', '[]', '[]');
-                                test('singleton arrays', '[0]', '[0]');
-                                test('sums', '1+1', '1 + 1');
+                                test('singleton arrays', '[0]', '[+[]]');
+                                test('sums', '1+1', '1 + (1)');
                                 
                                 // Numbers and constants
                                 test('Infinity', 'Infinity', 'Infinity');
@@ -433,6 +433,16 @@ uneval
                                     'indexers',
                                     'false[+Infinity]',
                                     'false[Infinity]'
+                                );
+                                test(
+                                    'undefined indexers',
+                                    '[][undefined]',
+                                    '[]["undefined"]'
+                                );
+                                test(
+                                    'array of undefined indexers',
+                                    '[][[undefined]]',
+                                    '[][""]'
                                 );
                                 test(
                                     'dot properties',
@@ -1442,16 +1452,16 @@ uneval
                 }
                 
                 testShortEncodings(
-                    'with weak bound and no string forcing',
+                    'with no bond and no string forcing',
                     false,
                     false,
-                    '',
+                    '[]',
                     '[![]+[]][+[]]',
                     '+[]'
                 );
                 
                 testShortEncodings(
-                    'with weak bound and string forcing',
+                    'with no bond and string forcing',
                     false,
                     true,
                     '[]+[]',
@@ -1460,16 +1470,16 @@ uneval
                 );
                 
                 testShortEncodings(
-                    'with strong bound and no string forcing',
+                    'with bond and no string forcing',
                     true,
                     false,
-                    '',
+                    '[]',
                     '[![]+[]][+[]]',
                     '+[]'
                 );
                 
                 testShortEncodings(
-                    'with strong bound and string forcing',
+                    'with bond and string forcing',
                     true,
                     true,
                     '([]+[])',
@@ -1773,7 +1783,7 @@ uneval
                             function fn()
                             {
                                 it(
-                                    'with weak bound and no string forcing',
+                                    'with no bond and no string forcing',
                                     function ()
                                     {
                                         var output = encoder.replaceString(expr, false, false);
@@ -1782,7 +1792,7 @@ uneval
                                     }
                                 );
                                 it(
-                                    'with strong bound and no string forcing',
+                                    'with bond and no string forcing',
                                     function ()
                                     {
                                         var output = encoder.replaceString(expr, true, false);
@@ -1791,7 +1801,7 @@ uneval
                                     }
                                 );
                                 it(
-                                    'with weak bound and string forcing',
+                                    'with no bond and string forcing',
                                     function ()
                                     {
                                         var output = encoder.replaceString(expr, false, true);
@@ -1800,7 +1810,7 @@ uneval
                                     }
                                 );
                                 it(
-                                    'with strong bound and string forcing',
+                                    'with bond and string forcing',
                                     function ()
                                     {
                                         var output = encoder.replaceString(expr, true, true);

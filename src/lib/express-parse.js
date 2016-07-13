@@ -1,4 +1,4 @@
-/* global Empty */
+/* global Empty, array_isArray */
 
 var expressParse;
 
@@ -233,10 +233,11 @@ var expressParse;
                 else if (readSquareBracketLeft(parseInfo))
                 {
                     op = readUnit(parseInfo);
-                    if (!op)
+                    if (!op || !readSquareBracketRight(parseInfo))
                         return;
-                    if (!readSquareBracketRight(parseInfo))
-                        return;
+                    var str = stringifyUnit(op);
+                    if (str != null)
+                        op.str = str;
                     op.type = 'get';
                 }
                 else if (read(parseInfo, /^\./))
@@ -284,6 +285,21 @@ var expressParse;
             tokenCache[tokenName] = replacement = replacePattern(richPattern);
         }
         return replacement;
+    }
+    
+    function stringifyUnit(unit)
+    {
+        var inArray = false;
+        while (!unit.mods && !(unit.ops || []).length && 'value' in unit)
+        {
+            var value = unit.value;
+            if (!array_isArray(value))
+                return value == null && inArray ? '' : value + '';
+            unit = value[0];
+            if (!unit)
+                return '';
+            inArray = true;
+        }
     }
     
     var tokens =

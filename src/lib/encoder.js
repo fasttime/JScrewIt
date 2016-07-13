@@ -109,6 +109,12 @@ var wrapWithEval;
         return coder;
     }
     
+    function getCodingName(unitIndices)
+    {
+        var codingName = unitIndices.length ? unitIndices.join(':') : '0';
+        return codingName;
+    }
+    
     function getFrequencyList(inputData)
     {
         var freqList = inputData.freqList;
@@ -254,7 +260,7 @@ var wrapWithEval;
             {
                 var input = inputData.valueOf();
                 var wrapper = inputData.wrapper;
-                var output = this.encodeLiteral(input, wrapper, false, void 0, maxLength);
+                var output = this.encodeLiteral(input, wrapper, false, !wrapper, void 0, maxLength);
                 return output;
             }
         ),
@@ -643,33 +649,38 @@ var wrapWithEval;
             }
         },
         
-        encodeLiteral: function (input, wrapper, bond, codingName, maxLength)
+        encodeLiteral: function (input, wrapper, bond, forceString, codingName, maxLength)
         {
-            var output =
-                this.callCoders(
-                    input,
-                    { forceString: !wrapper, bond: bond },
-                    [
-                        'byDblDict',
-                        'byDictRadix5AmendedBy3',
-                        'byDictRadix4AmendedBy2',
-                        'byDictRadix4AmendedBy1',
-                        'byDictRadix3',
-                        'byDictRadix4',
-                        'byDict',
-                        'byCharCodesRadix4',
-                        'byCharCodes',
-                        'plain'
-                    ],
-                    codingName
-                );
-            if (output != null)
+            var output;
+            if (!wrapper || input)
             {
-                if (wrapper)
-                    output = wrapper.call(this, output);
-                if (!(output.length > maxLength))
-                    return output;
+                output =
+                    this.callCoders(
+                        input,
+                        { forceString: forceString, bond: bond },
+                        [
+                            'byDblDict',
+                            'byDictRadix5AmendedBy3',
+                            'byDictRadix4AmendedBy2',
+                            'byDictRadix4AmendedBy1',
+                            'byDictRadix3',
+                            'byDictRadix4',
+                            'byDict',
+                            'byCharCodesRadix4',
+                            'byCharCodes',
+                            'plain'
+                        ],
+                        codingName
+                    );
+                if (output == null)
+                    return;
             }
+            else
+                output = '';
+            if (wrapper)
+                output = wrapper.call(this, output);
+            if (!(output.length > maxLength))
+                return output;
         },
         
         exec: function (input, wrapper, coderNames, perfInfo)
@@ -804,16 +815,27 @@ var wrapWithEval;
                     }
                     else
                     {
+                        var opOutput;
                         var opUnitIndices = unitIndices.concat(index + 1);
                         var maxOpLength = maxCoreLength - output.length - 2;
-                        var opOutput =
-                            this.replaceExpressUnit(
-                                op,
-                                false,
-                                opUnitIndices,
-                                maxOpLength,
-                                replacers
-                            );
+                        var str = op.str;
+                        if (str != null)
+                        {
+                            var strReplacer = replacers.string;
+                            opOutput =
+                                strReplacer(this, str, false, false, opUnitIndices, maxOpLength);
+                        }
+                        else
+                        {
+                            opOutput =
+                                this.replaceExpressUnit(
+                                    op,
+                                    false,
+                                    opUnitIndices,
+                                    maxOpLength,
+                                    replacers
+                                );
+                        }
                         if (!opOutput)
                             return;
                         if (type === 'get')
@@ -867,12 +889,6 @@ var wrapWithEval;
         
         replacePrimaryExpr: function (unit, bondStrength, unitIndices, maxLength, replacers)
         {
-            function getCodingName()
-            {
-                var codingName = unitIndices.length ? unitIndices.join(':') : '0';
-                return codingName;
-            }
-            
             var output;
             var terms;
             var identifier;
@@ -905,7 +921,7 @@ var wrapWithEval;
             {
                 var identifierReplacer = replacers.identifier;
                 output =
-                    identifierReplacer(this, identifier, bondStrength, getCodingName(), maxLength);
+                    identifierReplacer(this, identifier, bondStrength, unitIndices, maxLength);
             }
             else
             {
@@ -913,7 +929,7 @@ var wrapWithEval;
                 if (typeof value === 'string')
                 {
                     var strReplacer = replacers.string;
-                    output = strReplacer(this, value, bondStrength, getCodingName(), maxLength);
+                    output = strReplacer(this, value, bondStrength, true, unitIndices, maxLength);
                 }
                 else if (array_isArray(value))
                 {
@@ -1143,9 +1159,9 @@ var wrapWithEval;
             var replacement = encoder.replaceIdentifier(identifier, bondStrength);
             return replacement;
         },
-        string: function (encoder, str, bondStrength)
+        string: function (encoder, str, bond, forceString)
         {
-            var replacement = encoder.replaceString(str, bondStrength, true);
+            var replacement = encoder.replaceString(str, bond, forceString);
             if (!replacement)
                 encoder.throwSyntaxError('String too complex');
             return replacement;
@@ -1155,12 +1171,14 @@ var wrapWithEval;
     var INPUT_REPLACERS =
     {
         identifier:
-        function (encoder, identifier, bondStrength, codingName, maxLength)
+        function (encoder, identifier, bondStrength, unitIndices, maxLength)
         {
+            var codingName = getCodingName(unitIndices);
             var replacement =
                 encoder.encodeLiteral(
                     'return ' + identifier,
                     wrapWithCall,
+                    false,
                     false,
                     codingName,
                     maxLength
@@ -1168,10 +1186,18 @@ var wrapWithEval;
             return replacement;
         },
         string:
-        function (encoder, str, bondStrength, codingName, maxLength)
+        function (encoder, str, bond, forceString, unitIndices, maxLength)
         {
+            var codingName = getCodingName(unitIndices);
             var replacement =
-                encoder.encodeLiteral(str, void 0, bondStrength, codingName, maxLength);
+                encoder.encodeLiteral(
+                    str,
+                    void 0,
+                    bond,
+                    forceString,
+                    codingName,
+                    maxLength
+                );
             return replacement;
         }
     };
