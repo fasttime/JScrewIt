@@ -203,31 +203,30 @@ var createSolution;
     function charEncodeByEval(charCode)
     {
         var hexCode = this.hexCodeOf(charCode, 4);
-        var result =
-            this.resolveConstant('Function') + '(' +
-            this.replaceString('return"\\u' + hexCode + '"') + ')()';
+        var expr = 'Function("return\\"\\\\u' + hexCode + '\\"")()';
         if (hexCode.length > 4)
-            result += replaceIndexer(0);
+            expr += '[0]';
+        var result = this.replaceExpr(expr);
         return result;
     }
     
     function charEncodeByUnescape16(charCode)
     {
         var hexCode = this.hexCodeOf(charCode, 4);
-        var result =
-            this.resolveConstant('unescape') + '(' + this.replaceString('%u' + hexCode) + ')';
+        var expr = 'unescape("%u' + hexCode + '")';
         if (hexCode.length > 4)
-            result += replaceIndexer(0);
+            expr += '[0]';
+        var result = this.replaceExpr(expr);
         return result;
     }
     
     function charEncodeByUnescape8(charCode)
     {
         var hexCode = this.hexCodeOf(charCode, 2);
-        var result =
-            this.resolveConstant('unescape') + '(' + this.replaceString('%' + hexCode) + ')';
+        var expr = 'unescape("%' + hexCode + '")';
         if (hexCode.length > 2)
-            result += replaceIndexer(0);
+            expr += '[0]';
+        var result = this.replaceExpr(expr);
         return result;
     }
     
@@ -244,7 +243,7 @@ var createSolution;
     
     function createCommaSolution()
     {
-        var block = this.replaceExpr('["concat"]');
+        var block = '[' + this.replaceString('concat') + ']';
         var replacement = '[[]]' + block + '([[]])';
         var solution = createSolution(replacement, LEVEL_OBJECT, false);
         var appendLength = block.length - 1;
@@ -475,7 +474,7 @@ var createSolution;
     
     function mapperFormatterDefault(arg)
     {
-        var mapper = 'Function("return function(undefined){return this' + arg + '}")()["bind"]';
+        var mapper = 'Function("return function(undefined){return this' + arg + '}")().bind';
         return mapper;
     }
     
