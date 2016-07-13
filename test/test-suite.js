@@ -372,7 +372,7 @@ uneval
                             'encodes',
                             function ()
                             {
-                                function test(description, input, expectedExpr)
+                                function test(description, input, expectedPattern, expectedValue)
                                 {
                                     it(
                                         description,
@@ -380,9 +380,16 @@ uneval
                                         {
                                             var actual =
                                                 JScrewIt.encode(input, { runAs: 'express' });
-                                            var encoder = JScrewIt.debug.createEncoder();
-                                            var expected = encoder.replaceExpr(expectedExpr);
-                                            expect(actual).toBe(expected);
+                                            var regExpPattern =
+                                                '^' +
+                                                expectedPattern
+                                                .replace(/(?=[^!\*])/g, '\\')
+                                                .replace(/(?=\*)/g, '.') +
+                                                '$';
+                                            var expectedRegExp = RegExp(regExpPattern);
+                                            expect(actual).toMatch(expectedRegExp);
+                                            if (expectedValue !== void 0)
+                                                expect(eval(actual)).toBe(expectedValue);
                                         }
                                     );
                                 }
@@ -394,110 +401,92 @@ uneval
                                     '\t\n\v\f\r \xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004' +
                                     '\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f' +
                                     '\u3000\ufeff/*lorem\n/*///ipsum\n0',
-                                    '0'
+                                    '+[]'
                                 );
-                                test('identifiers', 'String', 'Function("return String")()');
-                                test('unsigned numbers', '4.25E-7', '+"4.25e-7"');
-                                test('double-quoted strings', '"He\\x6c\\u006Co!"', '"Hello!"');
-                                test(
-                                    'single-quoted strings',
-                                    '\'Hel\\\r\nlo\\0\'',
-                                    '"Hello\\u0000"'
-                                );
+                                test('identifiers', 'String', '*(*)()', String);
+                                test('unsigned numbers', '4.25E-7', '+(*)', 4.25e-7);
+                                test('double-quoted strings', '"He\\x6c\\u006Co!"', '*', 'Hello!');
+                                test('single-quoted strings', '\'Hel\\\r\nlo\\0\'', '*', 'Hello\0');
                                 test('empty arrays', '[]', '[]');
                                 test('singleton arrays', '[0]', '[+[]]');
-                                test('sums', '1+1', '1 + (1)');
+                                test('sums', '1+1', '+!![]+(+!![])');
                                 
                                 // Numbers and constants
-                                test('Infinity', 'Infinity', 'Infinity');
-                                test('NaN', 'NaN', 'NaN');
-                                test('false', 'false', 'false');
-                                test('true', 'true', 'true');
-                                test('undefined', 'undefined', 'undefined');
-                                test('hexadecimal literals', '0x1Fa', '+"506"');
-                                test('signed numbers', '+42', '42');
+                                test('Infinity', 'Infinity', '+(*)', Infinity);
+                                test('NaN', 'NaN', '+[![]]');
+                                test('false', 'false', '![]');
+                                test('true', 'true', '!![]');
+                                test('undefined', 'undefined', '[][[]]');
+                                test('hexadecimal literals', '0x1Fa', '+(*)', 506);
+                                test('signed numbers', '+42', '+(*)', 42);
                                 test(
                                     'numbers with absolute value part starting with "0."',
                                     '-0.9',
-                                    '+"-.9"'
+                                    '+((*)[*]+(*)[*]+*)',
+                                    -0.9
                                 );
-                                test('-Infinity', '-Infinity', '+"-1e1000"');
-                                test('-0', '-0', '+"-0"');
-                                test('-NaN', '-NaN', 'NaN');
+                                test('-Infinity', '-Infinity', '+(*)', -Infinity);
+                                test('-0', '-0', '+(*)', -0);
+                                test('-NaN', '-NaN', '+[![]]');
                                 
                                 // Arrays
-                                test('nested arrays', '[[0]]', '[[0]]');
+                                test('nested arrays', '[[0]]', '[[+[]]]');
                                 
                                 // Operations
-                                test(
-                                    'indexers',
-                                    'false[+Infinity]',
-                                    'false[Infinity]'
-                                );
-                                test(
-                                    'undefined indexers',
-                                    '[][undefined]',
-                                    '[]["undefined"]'
-                                );
-                                test(
-                                    'array of undefined indexers',
-                                    '[][[undefined]]',
-                                    '[][""]'
-                                );
-                                test(
-                                    'dot properties',
-                                    'window.location',
-                                    'Function("return window")()["location"]'
-                                );
-                                test(
-                                    'calls without parameters',
-                                    'Array()',
-                                    'Function("return Array")()()'
-                                );
+                                test('indexers', 'false[+x]', '(![])[+*]');
+                                test('undefined indexers', '0[undefined]', '(+[])[[][[]]]');
+                                test('array of undefined indexers', '0[[undefined]]', '(+[])[[]]');
+                                test('dot properties', 'Array.isArray', '*(*)()[*]', Array.isArray);
+                                test('calls without parameters', 'Number()', '*(*)()()', 0);
                                 test(
                                     'calls with parameters',
-                                    'alert(+1234567890)',
-                                    'Function("return alert")()(+"1234567890")'
+                                    'encodeURI("%^")',
+                                    '*(*)()(*)',
+                                    '%25%5E'
                                 );
                                 
                                 // Modifiers
-                                test('modified constants', '!-0', 'true');
-                                test('modified strings', '+"abc"', '+"abc"');
+                                test('modified constants', '!-0', '!![]');
+                                test('modified strings', '+"false"', '+(![]+[])');
                                 test(
                                     'outer modifiers in constant-based composite expressions',
                                     '+undefined()',
-                                    '+undefined()'
+                                    '+[][[]]()'
                                 );
                                 test(
                                     'inner modifiers in composite expressions',
-                                    '(!"")()',
-                                    '(!"")()'
+                                    '(!x)()',
+                                    '(!*)()'
                                 );
-                                test('redundant modifiers on constants', '-+ +-!!!+!!42', '0');
+                                test('redundant modifiers on constants', '-+ +-!!!+!!42', '+[]');
                                 test(
                                     'redundant modifiers on non-constants',
                                     '-+(+-!!!+!!"")',
-                                    '+!""'
-                                    );
+                                    '+!([]+[])'
+                                );
                                 
                                 // Groupings
                                 test(
                                     'superfluous grouping parentheses',
                                     '(((a)())([([])])[(+(1)-(+2))].b)',
-                                    'Function("return a")()()([[]])[1 + (+"-2")]["b"]'
+                                    '*(*)()()([[]])[+!![]+(+*)][*]'
                                 );
                                 
                                 // Separators
                                 test(
                                     'superfluous separators',
                                     ';a ( ) ( ( [ [ ] ] ) ) [ + 1 - + 2 ] . b;',
-                                    'Function("return a")()()([[]])[1 + (+"-2")]["b"]'
-                                    );
+                                    '*(*)()()([[]])[+!![]+(+*)][*]'
+                                );
                                 
                                 // Sums
-                                test('dissociable sums', '(0+1)+2', '0+1+2');
-                                test('undissociable sums', '0+(1+2)', '0+(1+2)');
-                                test('sums of modified sums', '0+(+(1+2))', '0+(+(1+2))');
+                                test('dissociable sums', '(0+1)+2', '+[]+(+!![])+(!![]+!![])');
+                                test('undissociable sums', '0+(1+2)', '+[]+(+!![]+(!![]+!![]))');
+                                test(
+                                    'sums of modified sums',
+                                    '0+(+(1+2))',
+                                    '+[]+(+(+!![]+(!![]+!![])))'
+                                );
                                 
                                 // Limits
                                 var str = repeat('[', 1000) + repeat(']', 1000);

@@ -448,10 +448,10 @@ var wrapWithEval;
                 mapper = formatter('[parseInt(' + parseIntArg + ',' + radix + ')]');
             }
             else
-                mapper = '""["charAt"]["bind"]';
+                mapper = '"".charAt.bind';
             var output =
-                this.createJSFuckArrayMapping(charIndexArrayStr, mapper, legend) +
-                '[' + this.replaceString('join') + ']([])';
+                this.createJSFuckArrayMapping(charIndexArrayStr, mapper, legend) + '[' +
+                this.replaceString('join') + ']([])';
             if (!(output.length > maxLength))
                 return output;
         },
@@ -469,8 +469,7 @@ var wrapWithEval;
             var formatter = this.findBestDefinition(FROM_CHAR_CODE_CALLBACK_FORMATTER);
             var callback = formatter(fromCharCode, arg);
             var output =
-                charCodeArrayStr +
-                '[' + this.replaceString('map') + '](' +
+                charCodeArrayStr + '[' + this.replaceString('map') + '](' +
                 this.replaceExpr('Function("return ' + callback + '")()') + ')[' +
                 this.replaceString('join') + ']([])';
             return output;
@@ -775,11 +774,7 @@ var wrapWithEval;
             var unit = expressParse(expr);
             if (!unit)
                 this.throwSyntaxError('Syntax error');
-            var replacement;
-            if (unit === true)
-                replacement = '';
-            else
-                replacement = this.replaceExpressUnit(unit, false, [], NaN, DEFINITION_REPLACERS);
+            var replacement = this.replaceExpressUnit(unit, false, [], NaN, DEFINITION_REPLACERS);
             return replacement;
         },
         
@@ -1123,15 +1118,15 @@ var wrapWithEval;
             {
                 var paddingInfo = this.findBestDefinition(paddingInfos);
                 paddingBlock = this.getPaddingBlock(paddingInfo, paddingDefinition);
-                indexer = replaceIndexer(index + paddingDefinition + paddingInfo.shift);
+                indexer = index + paddingDefinition + paddingInfo.shift;
             }
             else
             {
                 paddingBlock = paddingDefinition.block;
-                indexer = '[' + this.replaceExpr(paddingDefinition.indexer) + ']';
+                indexer = paddingDefinition.indexer;
             }
-            var fullExpr = paddingBlock + '+' + expr;
-            var replacement = '(' + this.replaceExpr(fullExpr) + ')' + indexer;
+            var fullExpr = '(' + paddingBlock + '+' + expr + ')[' + indexer + ']';
+            var replacement = this.replaceExpr(fullExpr);
             var solution = createSolution(replacement, LEVEL_STRING, false);
             return solution;
         },
@@ -1207,8 +1202,7 @@ var wrapWithEval;
     replaceIndexer =
         function (index)
         {
-            var replacement =
-                '[' + STATIC_ENCODER.replaceExpr(index > 9 ? '"' + index + '"' : index + '') + ']';
+            var replacement = '[' + STATIC_ENCODER.replaceString(index) + ']';
             return replacement;
         };
     
