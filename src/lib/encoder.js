@@ -954,7 +954,7 @@ var wrapWithEval;
                         if (abs === Infinity)
                             str = JSFUCK_INFINITY;
                         else
-                            str = (abs + '').replace(/^0(?=\.)/, '');
+                            str = (abs + '').replace(/^0(?=\.)|\+/g, '');
                         if (negative)
                             str = '-' + str;
                         if (/^\d$/.test(str))
