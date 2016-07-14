@@ -432,7 +432,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'HTML entities.',
             check: function ()
             {
-                var available = ''.fontcolor('"<>').indexOf('&quot;&lt;&gt;') >= 0;
+                var available = ~''.fontcolor('"<>').indexOf('&quot;&lt;&gt;');
                 return available;
             },
             excludes: ['ESC_HTML_QUOT_ONLY'],
@@ -445,7 +445,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'String.prototype.fontcolor are escaped as "&quot;".',
             check: function ()
             {
-                var available = ''.fontcolor('"').indexOf('&quot;') >= 0;
+                var available = ~''.fontcolor('"').indexOf('&quot;');
                 return available;
             }
         },
@@ -456,7 +456,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'argument of String.prototype.fontcolor are escaped into HTML entities.',
             check: function ()
             {
-                var available = ''.fontcolor('"<>').indexOf('&quot;<>') >= 0;
+                var available = ~''.fontcolor('"<>').indexOf('&quot;<>');
                 return available;
             },
             excludes: ['ESC_HTML_ALL'],

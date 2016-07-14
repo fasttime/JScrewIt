@@ -147,7 +147,7 @@ function findFunctionInEntries(entries, name, match)
         function (entry)
         {
             fn = entry.definition;
-            if (String(fn).indexOf(match) >= 0)
+            if (~String(fn).indexOf(match))
                 return true;
         }
     );
