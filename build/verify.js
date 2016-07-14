@@ -167,7 +167,7 @@ function isCapital(name)
 
 function isRivalCoderName(coderName)
 {
-    return coderName !== 'express' && coderName !== 'literal';
+    return coderName !== 'express' && coderName !== 'text';
 }
 
 function main()

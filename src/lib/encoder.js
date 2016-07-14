@@ -254,16 +254,6 @@ var wrapWithEval;
                 return output;
             }
         ),
-        literal: defineCoder
-        (
-            function (inputData, maxLength)
-            {
-                var input = inputData.valueOf();
-                var wrapper = inputData.wrapper;
-                var output = this.encodeLiteral(input, wrapper, false, !wrapper, void 0, maxLength);
-                return output;
-            }
-        ),
         plain: defineCoder
         (
             function (inputData, maxLength)
@@ -271,6 +261,16 @@ var wrapWithEval;
                 var input = inputData.valueOf();
                 var bond = inputData.bond;
                 var output = this.replaceString(input, bond, inputData.forceString, maxLength);
+                return output;
+            }
+        ),
+        text: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var input = inputData.valueOf();
+                var wrapper = inputData.wrapper;
+                var output = this.encodeAndWrapText(input, wrapper, void 0, maxLength);
                 return output;
             }
         ),
@@ -505,6 +505,23 @@ var wrapWithEval;
             return solution;
         },
         
+        encodeAndWrapText: function (input, wrapper, codingName, maxLength)
+        {
+            var output;
+            if (!wrapper || input)
+            {
+                output = this.encodeText(input, false, !wrapper, codingName, maxLength);
+                if (output == null)
+                    return;
+            }
+            else
+                output = '';
+            if (wrapper)
+                output = wrapper.call(this, output);
+            if (!(output.length > maxLength))
+                return output;
+        },
+        
         encodeByCharCodes: function (input, long, radix, maxLength)
         {
             var cache = new Empty();
@@ -648,37 +665,27 @@ var wrapWithEval;
             }
         },
         
-        encodeLiteral: function (input, wrapper, bond, forceString, codingName, maxLength)
+        encodeText: function (input, bond, forceString, codingName, maxLength)
         {
-            var output;
-            if (!wrapper || input)
-            {
-                output =
-                    this.callCoders(
-                        input,
-                        { forceString: forceString, bond: bond },
-                        [
-                            'byDblDict',
-                            'byDictRadix5AmendedBy3',
-                            'byDictRadix4AmendedBy2',
-                            'byDictRadix4AmendedBy1',
-                            'byDictRadix3',
-                            'byDictRadix4',
-                            'byDict',
-                            'byCharCodesRadix4',
-                            'byCharCodes',
-                            'plain'
-                        ],
-                        codingName
-                    );
-                if (output == null)
-                    return;
-            }
-            else
-                output = '';
-            if (wrapper)
-                output = wrapper.call(this, output);
-            if (!(output.length > maxLength))
+            var output =
+                this.callCoders(
+                    input,
+                    { forceString: forceString, bond: bond },
+                    [
+                        'byDblDict',
+                        'byDictRadix5AmendedBy3',
+                        'byDictRadix4AmendedBy2',
+                        'byDictRadix4AmendedBy1',
+                        'byDictRadix3',
+                        'byDictRadix4',
+                        'byDict',
+                        'byCharCodesRadix4',
+                        'byCharCodes',
+                        'plain'
+                    ],
+                    codingName
+                );
+            if (output != null && !(output.length > maxLength))
                 return output;
         },
         
@@ -1170,11 +1177,9 @@ var wrapWithEval;
         {
             var codingName = getCodingName(unitIndices);
             var replacement =
-                encoder.encodeLiteral(
+                encoder.encodeAndWrapText(
                     'return ' + identifier,
                     wrapWithCall,
-                    false,
-                    false,
                     codingName,
                     maxLength
                 );
@@ -1184,15 +1189,7 @@ var wrapWithEval;
         function (encoder, str, bond, forceString, unitIndices, maxLength)
         {
             var codingName = getCodingName(unitIndices);
-            var replacement =
-                encoder.encodeLiteral(
-                    str,
-                    void 0,
-                    bond,
-                    forceString,
-                    codingName,
-                    maxLength
-                );
+            var replacement = encoder.encodeText(str, bond, forceString, codingName, maxLength);
             return replacement;
         }
     };
