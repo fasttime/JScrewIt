@@ -1251,7 +1251,7 @@ uneval
             {
                 function createCommaSolution()
                 {
-                    var block = '["concat"]';
+                    var block = '.concat';
                     var replacement = '[[]]' + block + '([[]])';
                     var solution = Object(replacement);
                     solution.level = LEVEL_STRING;
@@ -1395,8 +1395,8 @@ uneval
                             buffer.append(solutionComma);
                         test(
                             buffer,
-                            '[[]]["concat"]([[]])["concat"]([[]])["concat"]([[]])+' +
-                            '[[]]["concat"]([[]])["concat"]([[]])',
+                            '[[]].concat([[]]).concat([[]]).concat([[]])+' +
+                            '[[]].concat([[]]).concat([[]])',
                             47
                         );
                     }
@@ -1480,29 +1480,6 @@ uneval
                     '([]+[])',
                     '[![]+[]][+[]]',
                     '(+[]+[])'
-                );
-            }
-        );
-        describe(
-            'Encoder#replaceExpr can replace',
-            function ()
-            {
-                var encoder = JScrewIt.debug.createEncoder();
-                it(
-                    'a number',
-                    function ()
-                    {
-                        var actual = eval(encoder.replaceExpr('"" + 2'));
-                        expect(actual).toBe('2');
-                    }
-                );
-                it(
-                    'NaN',
-                    function ()
-                    {
-                        var actual = eval(encoder.replaceExpr('"" + NaN'));
-                        expect(actual).toBe('NaN');
-                    }
                 );
             }
         );

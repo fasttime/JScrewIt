@@ -1,5 +1,23 @@
 /* global Empty, array_isArray */
 
+// Recognized syntax elements include:
+//
+// * The boolean literals "true" and "false"
+// * The pseudoconstant literals "undefined", "NaN" and "Infinity"
+// * ES5 strict mode numeric literals
+// * ES5 strict mode string literals with the line continuation extension
+// * Empty and singleton array literals
+// * ASCII identifiers
+// * ASCII property getters in dot notation
+// * Property getters in bracket notation
+// * Function calls without parameters and with one parameter
+// * The unary operators "!", "+" and to a limited extent "-"
+// * The binary operators "+" and to a limited extent "-"
+// * Grouping parentheses
+// * White spaces and line terminators
+// * Semicolons
+// * Comments
+
 var expressParse;
 
 (function ()
