@@ -352,7 +352,7 @@ var wrapWithEval;
             stack.push(stackName);
             try
             {
-                if (stackIndex >= 0)
+                if (~stackIndex)
                 {
                     var chain = stack.slice(stackIndex);
                     throw new SyntaxError('Circular reference detected: ' + chain.join(' < '));
