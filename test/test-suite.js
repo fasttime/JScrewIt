@@ -467,7 +467,7 @@ uneval
                                 test('redundant modifiers on constants', '-+ +-!!!+!!42', '+[]');
                                 test(
                                     'redundant modifiers on non-constants',
-                                    '-+(+-!!!+!!"")',
+                                    '-+(+-!!!-!!"")',
                                     '+!([]+[])'
                                 );
                                 
@@ -546,8 +546,9 @@ uneval
                                 test('unclosed indexer square bracket', '0[0');
                                 test('unrecognized tokens', 'a...');
                                 test('too deep nestings', repeat('[', 1001) + repeat(']', 1001));
-                                test('unary minus on strings', '-""');
-                                test('unary minus on arrays', '-[]');
+                                test('minus signed standalone strings', '-""');
+                                test('minus signed strings as first terms in a sum', '-"" + ""');
+                                test('minus signed arrays', '-[]');
                                 test('string subtrahends', '1 - ""');
                                 test('grouped string subtrahend subtractions', '(1 - "")');
                                 test('array subtrahends', '1 - []');
