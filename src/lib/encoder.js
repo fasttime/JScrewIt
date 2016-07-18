@@ -390,7 +390,7 @@ var wrapWithEval;
                 else
                 {
                     output =
-                        this.replaceIdentifier('Function') +
+                        this.resolveConstant('Function') +
                         '(' +
                         this.replaceString('return String.' + fromCharCode + '(') +
                         '+' +
