@@ -22,10 +22,54 @@ var expressParse;
 
 (function ()
 {
+    function applyMods(unit, mods)
+    {
+        if (!unit.ops.length && isArithmeticValueUnit(unit))
+        {
+            var value = unit.value;
+            for (var index = mods.length; index--;)
+            {
+                var mod = mods[index];
+                switch (mod)
+                {
+                case '!':
+                    value = !value;
+                    break;
+                case '+':
+                    value = +value;
+                    break;
+                case '-':
+                    value = -value;
+                    break;
+                }
+            }
+            unit.value = value;
+        }
+        else
+            unit.mods = joinMods(mods, unit.mods || '');
+    }
+    
     function evalExpr(expr)
     {
         var value = Function('return ' + expr)();
         return value;
+    }
+    
+    function isArithmetic(unit)
+    {
+        var terms;
+        var arithmetic =
+            unit.mods ||
+            !unit.ops.length &&
+            (isArithmeticValueUnit(unit) || (terms = unit.terms) && terms.every(isArithmetic));
+        return arithmetic;
+    }
+    
+    function isArithmeticValueUnit(unit)
+    {
+        var arithmeticValue =
+            'value' in unit && ~['boolean', 'number', 'undefined'].indexOf(typeof unit.value);
+        return arithmeticValue;
     }
     
     function isExpressibleUnit(unit)
@@ -179,6 +223,8 @@ var expressParse;
                         ++parseInfo.height;
                         return unit;
                     }
+                    if (binSign === '-' && !isArithmetic(unit))
+                        applyMods(unit, '+');
                 }
                 else
                     binSign = '';
@@ -186,40 +232,14 @@ var expressParse;
                 var term = readUnitCore(parseInfo);
                 if (!term)
                     return;
-                if (
-                    'value' in term &&
-                    ~['boolean', 'number', 'undefined'].indexOf(typeof term.value) &&
-                    !term.ops.length)
-                {
-                    var value = term.value;
-                    var mod;
-                    while (mod = mods.slice(-1))
-                    {
-                        mods = mods.slice(0, -1);
-                        switch (mod)
-                        {
-                        case '!':
-                            value = !value;
-                            break;
-                        case '+':
-                            value = +value;
-                            break;
-                        case '-':
-                            value = -value;
-                            break;
-                        }
-                    }
-                    term.value = value;
-                }
-                else
-                    term.mods = joinMods(mods, term.mods || '');
+                applyMods(term, mods);
                 if (unit)
                 {
                     var terms = unit.terms;
                     if (terms && !unit.mods)
                         terms.push(term);
                     else
-                        unit = { terms: [unit, term] };
+                        unit = { ops: [], terms: [unit, term] };
                 }
                 else
                     unit = term;
@@ -308,7 +328,7 @@ var expressParse;
     function stringifyUnit(unit)
     {
         var inArray = false;
-        while (!unit.mods && !(unit.ops || []).length && 'value' in unit)
+        while (!unit.mods && !unit.ops.length && 'value' in unit)
         {
             var value = unit.value;
             if (!array_isArray(value))

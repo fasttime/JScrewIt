@@ -494,6 +494,10 @@ uneval
                                     '+[]+(+(+!![]+(!![]+!![])))'
                                 );
                                 
+                                // Subtractions
+                                test('string minuhends', '"false" - - 1', '+(![]+[])+(+!![])');
+                                test('', '1+1-(-1)', '+!![]+(+!![])+(+!![])');
+                                
                                 // Limits
                                 var str = repeat('[', 1000) + repeat(']', 1000);
                                 test('deep nestings', str, str);
@@ -544,9 +548,9 @@ uneval
                                 test('too deep nestings', repeat('[', 1001) + repeat(']', 1001));
                                 test('unary minus on strings', '-""');
                                 test('unary minus on arrays', '-[]');
-                                test('string subtractions', '1 - ""');
-                                test('grouped string subtractions', '(1 - "")');
-                                test('array subtractions', '1 - []');
+                                test('string subtrahends', '1 - ""');
+                                test('grouped string subtrahend subtractions', '(1 - "")');
+                                test('array subtrahends', '1 - []');
                                 test('empty parentheses', '()');
                                 test('multiple statements', '1;2');
                             }
