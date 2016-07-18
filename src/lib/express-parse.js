@@ -24,7 +24,7 @@ var expressParse;
 {
     function applyMods(unit, mods)
     {
-        if (!unit.ops.length && isArithmeticValueUnit(unit))
+        if (!unit.mods && 'value' in unit && unit.arithmetic)
         {
             var value = unit.value;
             for (var index = mods.length; index--;)
@@ -46,7 +46,13 @@ var expressParse;
             unit.value = value;
         }
         else
-            unit.mods = joinMods(mods, unit.mods || '');
+        {
+            if (mods)
+            {
+                unit.mods = joinMods(mods, unit.mods || '');
+                unit.arithmetic = true;
+            }
+        }
     }
     
     function evalExpr(expr)
@@ -55,33 +61,10 @@ var expressParse;
         return value;
     }
     
-    function isArithmetic(unit)
+    function isInexpressibleUnit(unit)
     {
-        var terms;
-        var arithmetic =
-            unit.mods ||
-            !unit.ops.length &&
-            (isArithmeticValueUnit(unit) || (terms = unit.terms) && terms.every(isArithmetic));
-        return arithmetic;
-    }
-    
-    function isArithmeticValueUnit(unit)
-    {
-        var arithmeticValue =
-            'value' in unit && ~['boolean', 'number', 'undefined'].indexOf(typeof unit.value);
-        return arithmeticValue;
-    }
-    
-    function isExpressibleUnit(unit)
-    {
-        var mods = unit.mods;
-        if (!(mods && /-/.test(mods)))
-        {
-            var terms = unit.terms;
-            if (!terms || terms.every(isExpressibleUnit))
-                return true;
-        }
-        return false;
+        var inexpressible = (unit.mods || '')[0] === '-';
+        return inexpressible;
     }
     
     function isReturnableIdentifier(identifier)
@@ -96,7 +79,8 @@ var expressParse;
             (mod1 + mod2)
             .replace(/\+\+|--/, '+')
             .replace(/\+-|-\+/, '-')
-            .replace(/![+-]!/, '!!')
+            .replace(/!-/, '!+')
+            .replace(/!\+!/, '!!')
             .replace('!!!', '!');
         return mods;
     }
@@ -154,7 +138,7 @@ var expressParse;
         if (constValueExpr)
         {
             var value = evalExpr(constValueExpr);
-            unit = { value: value };
+            unit = { arithmetic: true, value: value };
             return unit;
         }
         if (readSquareBracketLeft(parseInfo))
@@ -177,7 +161,7 @@ var expressParse;
         }
         if (readParenthesisLeft(parseInfo))
         {
-            unit = readUnit(parseInfo);
+            unit = readUnit(parseInfo, true);
             if (!unit || !readParenthesisRight(parseInfo))
                 return;
             return unit;
@@ -207,7 +191,7 @@ var expressParse;
         return match;
     }
     
-    function readUnit(parseInfo)
+    function readUnit(parseInfo, allowInexpressibleUnit)
     {
         if (parseInfo.height--)
         {
@@ -221,9 +205,11 @@ var expressParse;
                     if (!binSign)
                     {
                         ++parseInfo.height;
+                        if (!allowInexpressibleUnit && isInexpressibleUnit(unit))
+                            return;
                         return unit;
                     }
-                    if (binSign === '-' && !isArithmetic(unit))
+                    if (binSign === '-' && !unit.arithmetic)
                         applyMods(unit, '+');
                 }
                 else
@@ -235,11 +221,24 @@ var expressParse;
                 applyMods(term, mods);
                 if (unit)
                 {
+                    if (isInexpressibleUnit(term))
+                        return;
                     var terms = unit.terms;
                     if (terms && !unit.mods)
+                    {
                         terms.push(term);
+                        if (!term.arithmetic)
+                            delete unit.arithmetic;
+                    }
                     else
+                    {
+                        if (isInexpressibleUnit(unit))
+                            return;
+                        var arithmetic = unit.arithmetic && term.arithmetic;
                         unit = { ops: [], terms: [unit, term] };
+                        if (arithmetic)
+                            unit.arithmetic = true;
+                    }
                 }
                 else
                     unit = term;
@@ -288,6 +287,7 @@ var expressParse;
                 else
                     break;
                 ops.push(op);
+                delete unit.arithmetic;
             }
             if (ops.length && unit.mods)
                 unit = { terms: [unit] };
@@ -400,7 +400,7 @@ var expressParse;
             if (!parseInfo.data)
                 return true;
             var unit = readUnit(parseInfo);
-            if (unit && isExpressibleUnit(unit))
+            if (unit)
             {
                 readSeparatorOrColon(parseInfo);
                 if (!parseInfo.data)
