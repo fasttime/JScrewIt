@@ -1,6 +1,6 @@
 {
   "name": "jscrewit",
-  "version": "2.0.3",
+  "version": "2.1.3",
   "description": "Converts plain JavaScript into JSFuck code, which uses only six different characters: ! ( ) + [ ]",
   "keywords": [
     "esoteric",
@@ -13,17 +13,6 @@
   },
   "license": "ISC",
   "author": "Francesco Trotta <ft@fasttime.org> (https://github.com/fasttime)",
-  "files": [
-    "*.md",
-    "html",
-    "JScrewIt.html",
-    "lib",
-    "LICENSE.txt",
-    "output.txt",
-    "package.json",
-    "screw.js",
-    "tools"
-  ],
   "main": "lib/jscrewit.js",
   "bin": "screw.js",
   "repository": {
@@ -40,7 +29,7 @@
     "grunt-cli": "~1.2.0",
     "grunt-contrib-clean": "~1.0.0",
     "grunt-contrib-concat": "~1.0.1",
-    "grunt-contrib-uglify": "~1.0.1",
+    "grunt-contrib-uglify": "~2.0.0",
     "grunt-fasttime-lint": "~0.0.1",
     "grunt-jsdoc-to-markdown": "~1.2.1",
     "grunt-mocha-istanbul": "~5.0.1",

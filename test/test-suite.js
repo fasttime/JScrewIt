@@ -372,7 +372,7 @@ uneval
                             'encodes',
                             function ()
                             {
-                                function test(description, input, expectedExpr)
+                                function test(description, input, expectedPattern, expectedValue)
                                 {
                                     it(
                                         description,
@@ -380,9 +380,16 @@ uneval
                                         {
                                             var actual =
                                                 JScrewIt.encode(input, { runAs: 'express' });
-                                            var encoder = JScrewIt.debug.createEncoder();
-                                            var expected = encoder.replaceExpr(expectedExpr);
-                                            expect(actual).toBe(expected);
+                                            var regExpPattern =
+                                                '^' +
+                                                expectedPattern
+                                                .replace(/(?=[^!\*])/g, '\\')
+                                                .replace(/(?=\*)/g, '.') +
+                                                '$';
+                                            var expectedRegExp = RegExp(regExpPattern);
+                                            expect(actual).toMatch(expectedRegExp);
+                                            if (expectedValue !== void 0)
+                                                expect(eval(actual)).toBe(expectedValue);
                                         }
                                     );
                                 }
@@ -394,100 +401,102 @@ uneval
                                     '\t\n\v\f\r \xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004' +
                                     '\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f' +
                                     '\u3000\ufeff/*lorem\n/*///ipsum\n0',
-                                    '0'
+                                    '+[]'
                                 );
-                                test('identifiers', 'String', 'Function("return String")()');
-                                test('unsigned numbers', '4.25E-7', '+"4.25e-7"');
-                                test('double-quoted strings', '"He\\x6c\\u006Co!"', '"Hello!"');
-                                test(
-                                    'single-quoted strings',
-                                    '\'Hel\\\r\nlo\\0\'',
-                                    '"Hello\\u0000"'
-                                );
+                                test('identifiers', 'String', '*(*)()', String);
+                                test('unsigned numbers', '4.25E-7', '+(*)', 4.25e-7);
+                                test('double-quoted strings', '"He\\x6c\\u006Co!"', '*', 'Hello!');
+                                test('single-quoted strings', '\'Hel\\\r\nlo\\0\'', '*', 'Hello\0');
                                 test('empty arrays', '[]', '[]');
-                                test('singleton arrays', '[0]', '[0]');
-                                test('sums', '1+1', '1 + 1');
+                                test('singleton arrays', '[0]', '[+[]]');
+                                test('sums', '1+1', '+!![]+(+!![])');
                                 
                                 // Numbers and constants
-                                test('Infinity', 'Infinity', 'Infinity');
-                                test('NaN', 'NaN', 'NaN');
-                                test('false', 'false', 'false');
-                                test('true', 'true', 'true');
-                                test('undefined', 'undefined', 'undefined');
-                                test('hexadecimal literals', '0x1Fa', '+"506"');
-                                test('signed numbers', '+42', '42');
+                                test('Infinity', 'Infinity', '+(*)', Infinity);
+                                test('NaN', 'NaN', '+[![]]');
+                                test('false', 'false', '![]');
+                                test('true', 'true', '!![]');
+                                test('undefined', 'undefined', '[][[]]');
+                                test('hexadecimal literals', '0x1Fa', '+(*)', 506);
+                                test('signed numbers', '+42', '+(*)', 42);
                                 test(
                                     'numbers with absolute value part starting with "0."',
                                     '-0.9',
-                                    '+"-.9"'
+                                    '+((*)[*]+(*)[*]+*)',
+                                    -0.9
                                 );
-                                test('signed constants', '-Infinity', '+"-1e1000"');
-                                test('-0', '-0', '+"-0"');
-                                test('-NaN', '-NaN', 'NaN');
+                                test(
+                                    'numbers with a positive exponent',
+                                    '1e+100',
+                                    '+(+!![]+(!![]+[])[!![]+!![]+!![]]+(+!![])+(+[])+(+[]))',
+                                    1e+100
+                                );
+                                test('-Infinity', '-Infinity', '+(*)', -Infinity);
+                                test('-0', '-0', '+(*)', -0);
+                                test('-NaN', '-NaN', '+[![]]');
                                 
                                 // Arrays
-                                test('nested arrays', '[[0]]', '[[0]]');
+                                test('nested arrays', '[[0]]', '[[+[]]]');
                                 
                                 // Operations
-                                test(
-                                    'indexers',
-                                    'false[+Infinity]',
-                                    'false[Infinity]'
-                                );
-                                test(
-                                    'dot properties',
-                                    'window.location',
-                                    'Function("return window")()["location"]'
-                                );
-                                test(
-                                    'calls without parameters',
-                                    'Array()',
-                                    'Function("return Array")()()'
-                                );
+                                test('indexers', 'false[+x]', '(![])[+*]');
+                                test('undefined indexers', '0[undefined]', '(+[])[[][[]]]');
+                                test('array of undefined indexers', '0[[undefined]]', '(+[])[[]]');
+                                test('dot properties', 'Array.isArray', '*(*)()[*]', Array.isArray);
+                                test('calls without parameters', 'Number()', '*(*)()()', 0);
                                 test(
                                     'calls with parameters',
-                                    'alert(+1234567890)',
-                                    'Function("return alert")()(+"1234567890")'
+                                    'encodeURI("%^")',
+                                    '*(*)()(*)',
+                                    '%25%5E'
                                 );
                                 
                                 // Modifiers
-                                test('modified constants', '!-0', 'true');
-                                test('modified strings', '+"abc"', '+"abc"');
+                                test('modified constants', '!-0', '!![]');
+                                test('modified strings', '+"false"', '+(![]+[])');
                                 test(
                                     'outer modifiers in constant-based composite expressions',
                                     '+undefined()',
-                                    '+undefined()'
+                                    '+[][[]]()'
                                 );
                                 test(
                                     'inner modifiers in composite expressions',
-                                    '(!"")()',
-                                    '(!"")()'
+                                    '(!x)()',
+                                    '(!*)()'
                                 );
-                                test('redundant modifiers on constants', '-+ +-!!!+!!42', '0');
+                                test('redundant modifiers on constants', '-+ +-!!!+!!42', '+[]');
                                 test(
                                     'redundant modifiers on non-constants',
-                                    '-+(+-!!!+!!"")',
-                                    '+!""'
-                                    );
+                                    '-+(+-!!!-!!"")',
+                                    '+!([]+[])'
+                                );
                                 
                                 // Groupings
                                 test(
                                     'superfluous grouping parentheses',
                                     '(((a)())([([])])[(+(1)-(+2))].b)',
-                                    'Function("return a")()()([[]])[1 + (+"-2")]["b"]'
+                                    '*(*)()()([[]])[+!![]+(+*)][*]'
                                 );
                                 
                                 // Separators
                                 test(
                                     'superfluous separators',
                                     ';a ( ) ( ( [ [ ] ] ) ) [ + 1 - + 2 ] . b;',
-                                    'Function("return a")()()([[]])[1 + (+"-2")]["b"]'
-                                    );
+                                    '*(*)()()([[]])[+!![]+(+*)][*]'
+                                );
                                 
                                 // Sums
-                                test('dissociable sums', '(0+1)+2', '0+1+2');
-                                test('undissociable sums', '0+(1+2)', '0+(1+2)');
-                                test('sums of modified sums', '0+(+(1+2))', '0+(+(1+2))');
+                                test('dissociable sums', '(0+1)+2', '+[]+(+!![])+(!![]+!![])');
+                                test('undissociable sums', '0+(1+2)', '+[]+(+!![]+(!![]+!![]))');
+                                test(
+                                    'sums of modified sums',
+                                    '0+(+(1+2))',
+                                    '+[]+(+(+!![]+(!![]+!![])))'
+                                );
+                                
+                                // Subtractions
+                                test('string minuhends', '"false" - - 1', '+(![]+[])+(+!![])');
+                                test('', '1+1-(-1)', '+!![]+(+!![])+(+!![])');
                                 
                                 // Limits
                                 var str = repeat('[', 1000) + repeat(']', 1000);
@@ -537,11 +546,12 @@ uneval
                                 test('unclosed indexer square bracket', '0[0');
                                 test('unrecognized tokens', 'a...');
                                 test('too deep nestings', repeat('[', 1001) + repeat(']', 1001));
-                                test('unary minus on strings', '-""');
-                                test('unary minus on arrays', '-[]');
-                                test('string subtractions', '1 - ""');
-                                test('grouped string subtractions', '(1 - "")');
-                                test('array subtractions', '1 - []');
+                                test('minus signed standalone strings', '-""');
+                                test('minus signed strings as first terms in a sum', '-"" + ""');
+                                test('minus signed arrays', '-[]');
+                                test('string subtrahends', '1 - ""');
+                                test('grouped string subtrahend subtractions', '(1 - "")');
+                                test('array subtrahends', '1 - []');
                                 test('empty parentheses', '()');
                                 test('multiple statements', '1;2');
                             }
@@ -1246,7 +1256,7 @@ uneval
             {
                 function createCommaSolution()
                 {
-                    var block = '["concat"]';
+                    var block = '.concat';
                     var replacement = '[[]]' + block + '([[]])';
                     var solution = Object(replacement);
                     solution.level = LEVEL_STRING;
@@ -1390,8 +1400,8 @@ uneval
                             buffer.append(solutionComma);
                         test(
                             buffer,
-                            '[[]]["concat"]([[]])["concat"]([[]])["concat"]([[]])+' +
-                            '[[]]["concat"]([[]])["concat"]([[]])',
+                            '[[]].concat([[]]).concat([[]]).concat([[]])+' +
+                            '[[]].concat([[]]).concat([[]])',
                             47
                         );
                     }
@@ -1399,7 +1409,7 @@ uneval
                 
                 function testShortEncodings(
                     description,
-                    strongBound,
+                    bond,
                     forceString,
                     expected0,
                     expected1,
@@ -1415,7 +1425,7 @@ uneval
                                 'encodes an empty string',
                                 function ()
                                 {
-                                    var buffer = createScrewBuffer(strongBound, forceString, 10);
+                                    var buffer = createScrewBuffer(bond, forceString, 10);
                                     test(buffer, expected0);
                                 }
                             );
@@ -1423,7 +1433,7 @@ uneval
                                 'encodes a single string character',
                                 function ()
                                 {
-                                    var buffer = createScrewBuffer(strongBound, forceString, 10);
+                                    var buffer = createScrewBuffer(bond, forceString, 10);
                                     expect(buffer.append(solutionA)).toBe(true);
                                     test(buffer, expected1);
                                 }
@@ -1432,7 +1442,7 @@ uneval
                                 'encodes a single nonstring character',
                                 function ()
                                 {
-                                    var buffer = createScrewBuffer(strongBound, forceString, 10);
+                                    var buffer = createScrewBuffer(bond, forceString, 10);
                                     expect(buffer.append(solution0)).toBe(true);
                                     test(buffer, expected2);
                                 }
@@ -1442,16 +1452,16 @@ uneval
                 }
                 
                 testShortEncodings(
-                    'with weak bound and no string forcing',
+                    'with no bond and no string forcing',
                     false,
                     false,
-                    '',
+                    '[]',
                     '[![]+[]][+[]]',
                     '+[]'
                 );
                 
                 testShortEncodings(
-                    'with weak bound and string forcing',
+                    'with no bond and string forcing',
                     false,
                     true,
                     '[]+[]',
@@ -1460,44 +1470,21 @@ uneval
                 );
                 
                 testShortEncodings(
-                    'with strong bound and no string forcing',
+                    'with bond and no string forcing',
                     true,
                     false,
-                    '',
+                    '[]',
                     '[![]+[]][+[]]',
                     '+[]'
                 );
                 
                 testShortEncodings(
-                    'with strong bound and string forcing',
+                    'with bond and string forcing',
                     true,
                     true,
                     '([]+[])',
                     '[![]+[]][+[]]',
                     '(+[]+[])'
-                );
-            }
-        );
-        describe(
-            'Encoder#replaceExpr can replace',
-            function ()
-            {
-                var encoder = JScrewIt.debug.createEncoder();
-                it(
-                    'a number',
-                    function ()
-                    {
-                        var actual = eval(encoder.replaceExpr('"" + 2'));
-                        expect(actual).toBe('2');
-                    }
-                );
-                it(
-                    'NaN',
-                    function ()
-                    {
-                        var actual = eval(encoder.replaceExpr('"" + NaN'));
-                        expect(actual).toBe('NaN');
-                    }
                 );
             }
         );
@@ -1722,21 +1709,6 @@ uneval
             }
         );
         describe(
-            'Encoder#encodeLiteral',
-            function ()
-            {
-                it(
-                    'returns undefined for too complex input',
-                    function ()
-                    {
-                        var encoder = JScrewIt.debug.createEncoder();
-                        encoder.callCoders = Function();
-                        expect(encoder.encodeLiteral('0')).toBeUndefined();
-                    }
-                );
-            }
-        );
-        describe(
             'Encoder#replaceFalseFreeArray',
             function ()
             {
@@ -1773,7 +1745,7 @@ uneval
                             function fn()
                             {
                                 it(
-                                    'with weak bound and no string forcing',
+                                    'with no bond and no string forcing',
                                     function ()
                                     {
                                         var output = encoder.replaceString(expr, false, false);
@@ -1782,7 +1754,7 @@ uneval
                                     }
                                 );
                                 it(
-                                    'with strong bound and no string forcing',
+                                    'with bond and no string forcing',
                                     function ()
                                     {
                                         var output = encoder.replaceString(expr, true, false);
@@ -1791,7 +1763,7 @@ uneval
                                     }
                                 );
                                 it(
-                                    'with weak bound and string forcing',
+                                    'with no bond and string forcing',
                                     function ()
                                     {
                                         var output = encoder.replaceString(expr, false, true);
@@ -1800,7 +1772,7 @@ uneval
                                     }
                                 );
                                 it(
-                                    'with strong bound and string forcing',
+                                    'with bond and string forcing',
                                     function ()
                                     {
                                         var output = encoder.replaceString(expr, true, true);
@@ -1977,11 +1949,11 @@ uneval
                 JScrewIt.debug.defineConstant(encoder, 'B', 'C');
                 JScrewIt.debug.defineConstant(encoder, 'C', 'B');
                 JScrewIt.debug.defineConstant(encoder, 'D', '?');
-                JScrewIt.debug.defineConstant(encoder, 'E', '"\\?"');
+                JScrewIt.debug.defineConstant(encoder, 'E', '"\\xx"');
                 JScrewIt.debug.defineConstant(encoder, 'F', '"too complex"');
                 
                 it(
-                    'Circular reference',
+                    'circular reference',
                     function ()
                     {
                         expect(debugReplacer('B')).toThrow(
@@ -1990,7 +1962,7 @@ uneval
                     }
                 );
                 describe(
-                    'Undefined literal',
+                    'undefined identifier',
                     function ()
                     {
                         it(
@@ -1998,7 +1970,7 @@ uneval
                             function ()
                             {
                                 expect(debugReplacer('A')).toThrow(
-                                    SyntaxError('Undefined literal FILL in the definition of A')
+                                    SyntaxError('Undefined identifier FILL in the definition of A')
                                 );
                             }
                         );
@@ -2007,14 +1979,14 @@ uneval
                             function ()
                             {
                                 expect(debugReplacer('valueOf')).toThrow(
-                                    SyntaxError('Undefined literal valueOf')
+                                    SyntaxError('Undefined identifier valueOf')
                                 );
                             }
                         );
                     }
                 );
                 describe(
-                    'Unexpected character',
+                    'unexpected character',
                     function ()
                     {
                         it(
@@ -2022,7 +1994,7 @@ uneval
                             function ()
                             {
                                 expect(debugReplacer('D')).toThrow(
-                                    SyntaxError('Unexpected character "?" in the definition of D')
+                                    SyntaxError('Syntax error in the definition of D')
                                 );
                             }
                         );
@@ -2031,14 +2003,14 @@ uneval
                             function ()
                             {
                                 expect(debugReplacer('?')).toThrow(
-                                    SyntaxError('Unexpected character "?"')
+                                    SyntaxError('Syntax error')
                                 );
                             }
                         );
                     }
                 );
                 describe(
-                    'Illegal string',
+                    'illegal string',
                     function ()
                     {
                         it(
@@ -2046,7 +2018,7 @@ uneval
                             function ()
                             {
                                 expect(debugReplacer('E')).toThrow(
-                                    SyntaxError('Illegal string "\\?" in the definition of E')
+                                    SyntaxError('Syntax error in the definition of E')
                                 );
                             }
                         );
@@ -2054,15 +2026,15 @@ uneval
                             'inline',
                             function ()
                             {
-                                expect(debugReplacer('"\\?"')).toThrow(
-                                    SyntaxError('Illegal string "\\?"')
+                                expect(debugReplacer('"\\xx"')).toThrow(
+                                    SyntaxError('Syntax error')
                                 );
                             }
                         );
                     }
                 );
                 describe(
-                    'String too complex',
+                    'string too complex',
                     function ()
                     {
                         it(
