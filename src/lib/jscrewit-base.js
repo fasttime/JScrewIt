@@ -129,18 +129,18 @@ var setUp;
     
     function filterRunAs(input, name)
     {
-        var CODER_NAMES_BOTH    = ['express', 'literal'];
+        var CODER_NAMES_BOTH    = ['text', 'express'];
         var CODER_NAMES_EXPRESS = ['express'];
-        var CODER_NAMES_LITERAL = ['literal'];
+        var CODER_NAMES_TEXT    = ['text'];
         
         if (input === void 0)
             return [wrapWithCall, CODER_NAMES_BOTH];
         switch (input += '')
         {
         case 'call':
-            return [wrapWithCall, CODER_NAMES_LITERAL];
+            return [wrapWithCall, CODER_NAMES_TEXT];
         case 'eval':
-            return [wrapWithEval, CODER_NAMES_LITERAL];
+            return [wrapWithEval, CODER_NAMES_TEXT];
         case 'express':
             return [, CODER_NAMES_EXPRESS];
         case 'express-call':
@@ -148,7 +148,7 @@ var setUp;
         case 'express-eval':
             return [wrapWithEval, CODER_NAMES_BOTH];
         case 'none':
-            return [, CODER_NAMES_LITERAL];
+            return [, CODER_NAMES_TEXT];
         }
         throw new Error('Invalid value for option ' + name);
     }

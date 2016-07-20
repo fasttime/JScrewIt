@@ -1,25 +1,70 @@
-/* global Empty */
+/* global Empty, array_isArray */
+
+// Recognized syntax elements include:
+//
+// * The boolean literals "true" and "false"
+// * The pseudoconstant literals "undefined", "NaN" and "Infinity"
+// * ES5 strict mode numeric literals
+// * ES5 strict mode string literals with the line continuation extension
+// * Empty and singleton array literals
+// * ASCII identifiers
+// * ASCII property getters in dot notation
+// * Property getters in bracket notation
+// * Function calls without parameters and with one parameter
+// * The unary operators "!", "+" and to a limited extent "-"
+// * The binary operators "+" and to a limited extent "-"
+// * Grouping parentheses
+// * White spaces and line terminators
+// * Semicolons
+// * Comments
 
 var expressParse;
 
 (function ()
 {
+    function applyMods(unit, mods)
+    {
+        if (!unit.mods && 'value' in unit && unit.arithmetic)
+        {
+            var value = unit.value;
+            for (var index = mods.length; index--;)
+            {
+                var mod = mods[index];
+                switch (mod)
+                {
+                case '!':
+                    value = !value;
+                    break;
+                case '+':
+                    value = +value;
+                    break;
+                case '-':
+                    value = -value;
+                    break;
+                }
+            }
+            unit.value = value;
+        }
+        else
+        {
+            if (mods)
+            {
+                unit.mods = joinMods(mods, unit.mods || '');
+                unit.arithmetic = true;
+            }
+        }
+    }
+    
     function evalExpr(expr)
     {
         var value = Function('return ' + expr)();
         return value;
     }
     
-    function isExpressibleUnit(unit)
+    function isInexpressibleUnit(unit)
     {
-        var mods = unit.mods;
-        if (!(mods && /-/.test(mods)))
-        {
-            var terms = unit.terms;
-            if (!terms || terms.every(isExpressibleUnit))
-                return true;
-        }
-        return false;
+        var inexpressible = (unit.mods || '')[0] === '-';
+        return inexpressible;
     }
     
     function isReturnableIdentifier(identifier)
@@ -34,7 +79,8 @@ var expressParse;
             (mod1 + mod2)
             .replace(/\+\+|--/, '+')
             .replace(/\+-|-\+/, '-')
-            .replace(/![+-]!/, '!!')
+            .replace(/!-/, '!+')
+            .replace(/!\+!/, '!!')
             .replace('!!!', '!');
         return mods;
     }
@@ -92,7 +138,7 @@ var expressParse;
         if (constValueExpr)
         {
             var value = evalExpr(constValueExpr);
-            unit = { value: value };
+            unit = { arithmetic: true, value: value };
             return unit;
         }
         if (readSquareBracketLeft(parseInfo))
@@ -115,7 +161,7 @@ var expressParse;
         }
         if (readParenthesisLeft(parseInfo))
         {
-            unit = readUnit(parseInfo);
+            unit = readUnit(parseInfo, true);
             if (!unit || !readParenthesisRight(parseInfo))
                 return;
             return unit;
@@ -145,7 +191,7 @@ var expressParse;
         return match;
     }
     
-    function readUnit(parseInfo)
+    function readUnit(parseInfo, allowInexpressibleUnit)
     {
         if (parseInfo.height--)
         {
@@ -159,8 +205,12 @@ var expressParse;
                     if (!binSign)
                     {
                         ++parseInfo.height;
+                        if (!allowInexpressibleUnit && isInexpressibleUnit(unit))
+                            return;
                         return unit;
                     }
+                    if (binSign === '-' && !unit.arithmetic)
+                        applyMods(unit, '+');
                 }
                 else
                     binSign = '';
@@ -168,40 +218,27 @@ var expressParse;
                 var term = readUnitCore(parseInfo);
                 if (!term)
                     return;
-                if (
-                    'value' in term &&
-                    ~['boolean', 'number', 'undefined'].indexOf(typeof term.value) &&
-                    !term.ops.length)
-                {
-                    var value = term.value;
-                    var mod;
-                    while (mod = mods.slice(-1))
-                    {
-                        mods = mods.slice(0, -1);
-                        switch (mod)
-                        {
-                        case '!':
-                            value = !value;
-                            break;
-                        case '+':
-                            value = +value;
-                            break;
-                        case '-':
-                            value = -value;
-                            break;
-                        }
-                    }
-                    term.value = value;
-                }
-                else
-                    term.mods = joinMods(mods, term.mods || '');
+                applyMods(term, mods);
                 if (unit)
                 {
+                    if (isInexpressibleUnit(term))
+                        return;
                     var terms = unit.terms;
                     if (terms && !unit.mods)
+                    {
                         terms.push(term);
+                        if (!term.arithmetic)
+                            delete unit.arithmetic;
+                    }
                     else
-                        unit = { terms: [unit, term] };
+                    {
+                        if (isInexpressibleUnit(unit))
+                            return;
+                        var arithmetic = unit.arithmetic && term.arithmetic;
+                        unit = { ops: [], terms: [unit, term] };
+                        if (arithmetic)
+                            unit.arithmetic = true;
+                    }
                 }
                 else
                     unit = term;
@@ -233,10 +270,11 @@ var expressParse;
                 else if (readSquareBracketLeft(parseInfo))
                 {
                     op = readUnit(parseInfo);
-                    if (!op)
+                    if (!op || !readSquareBracketRight(parseInfo))
                         return;
-                    if (!readSquareBracketRight(parseInfo))
-                        return;
+                    var str = stringifyUnit(op);
+                    if (str != null)
+                        op.str = str;
                     op.type = 'get';
                 }
                 else if (read(parseInfo, /^\./))
@@ -249,6 +287,7 @@ var expressParse;
                 else
                     break;
                 ops.push(op);
+                delete unit.arithmetic;
             }
             if (ops.length && unit.mods)
                 unit = { terms: [unit] };
@@ -284,6 +323,21 @@ var expressParse;
             tokenCache[tokenName] = replacement = replacePattern(richPattern);
         }
         return replacement;
+    }
+    
+    function stringifyUnit(unit)
+    {
+        var inArray = false;
+        while (!unit.mods && !unit.ops.length && 'value' in unit)
+        {
+            var value = unit.value;
+            if (!array_isArray(value))
+                return value == null && inArray ? '' : value + '';
+            unit = value[0];
+            if (!unit)
+                return '';
+            inArray = true;
+        }
     }
     
     var tokens =
@@ -346,7 +400,7 @@ var expressParse;
             if (!parseInfo.data)
                 return true;
             var unit = readUnit(parseInfo);
-            if (unit && isExpressibleUnit(unit))
+            if (unit)
             {
                 readSeparatorOrColon(parseInfo);
                 if (!parseInfo.data)
