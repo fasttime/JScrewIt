@@ -16,8 +16,14 @@ module.exports =
                 },
                 concat:
                 {
-                    lib:
+                    default:
                     {
+                        dest: 'lib/jscrewit.js',
+                        options:
+                        {
+                            banner: '// JScrewIt <%= pkg.version %> – <%= pkg.homepage %>\n',
+                            stripBanners: true
+                        },
                         src:
                         [
                             'src/lib/preamble',
@@ -35,13 +41,7 @@ module.exports =
                             'src/lib/jscrewit-base.js',
                             'src/lib/debug.js',
                             'src/lib/postamble'
-                        ],
-                        dest: 'lib/jscrewit.js'
-                    },
-                    options:
-                    {
-                        banner: '// JScrewIt <%= pkg.version %> – <%= pkg.homepage %>\n',
-                        stripBanners: true
+                        ]
                     }
                 },
                 fasttime_lint:
@@ -75,6 +75,7 @@ module.exports =
                             'html/ui.js':
                             [
                                 'node_modules/art-js/lib/art.js',
+                                'node_modules/art-js/lib/art.on.js',
                                 'src/html/engine-selection-box.js',
                                 'src/html/roll.js',
                                 'src/html/ui-main.js'
@@ -96,11 +97,7 @@ module.exports =
                     options:
                     {
                         compress:
-                        {
-                            collapse_vars: true,
-                            global_defs: { DEBUG: false },
-                            hoist_vars: true
-                        }
+                        { collapse_vars: true, global_defs: { DEBUG: false }, hoist_vars: true }
                     }
                 }
             }
