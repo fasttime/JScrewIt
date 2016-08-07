@@ -122,8 +122,7 @@ function createEngineSelectionBox()
                 createCheckBox('Select/deselect all'),
                 { style: { display: 'inline-block', margin: '0 0 .5em' } },
                 art.on('change', handleAllEngineChange),
-                art.on('keyup', handleAllEngineChangeAsync),
-                art.on('mouseup', handleAllEngineChangeAsync)
+                art.on(['keyup', 'mouseup'], handleAllEngineChangeAsync)
             );
         var engineFieldBox = art('TABLE', { style: { borderSpacing: '0', width: '100%' } });
         var webWorkerField = createCheckBox('Support web workers');
