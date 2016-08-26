@@ -13,6 +13,15 @@
   },
   "license": "ISC",
   "author": "Francesco Trotta <ft@fasttime.org> (https://github.com/fasttime)",
+  "files": [
+    "*.md",
+    "html",
+    "JScrewIt.html",
+    "lib",
+    "output.txt",
+    "screw.js",
+    "tools"
+  ],
   "main": "lib/jscrewit.js",
   "bin": "screw.js",
   "repository": {
@@ -33,8 +42,8 @@
     "grunt-fasttime-lint": "~0.0.5",
     "grunt-jsdoc-to-markdown": "~1.2.1",
     "grunt-mocha-istanbul": "~5.0.2",
-    "istanbul": "~0.4.4",
-    "mocha": "~3.0.1",
+    "istanbul": "~0.4.5",
+    "mocha": "~3.0.2",
     "mocha-matrix": "~0.1.1",
     "progress": "~1.1.8"
   }
