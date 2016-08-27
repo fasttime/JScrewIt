@@ -467,8 +467,8 @@ uneval
                                 test('redundant modifiers on constants', '-+ +-!!!+!!42', '+[]');
                                 test(
                                     'redundant modifiers on non-constants',
-                                    '-+(+-!!!-!!"")',
-                                    '+!([]+[])'
+                                    '-+(+-!!!-!!+(+++""))',
+                                    '+!++([]+[])'
                                 );
                                 
                                 // Groupings
@@ -497,6 +497,10 @@ uneval
                                 // Subtractions
                                 test('string minuhends', '"false" - - 1', '+(![]+[])+(+!![])');
                                 test('', '1+1-(-1)', '+!![]+(+!![])+(+!![])');
+                                
+                                // Pre-increments
+                                test('pre-incremented constant', '!++0', '!++(+[])');
+                                test('pre-incremented non-constant', '!!++[][0]', '!!++[][+[]]');
                                 
                                 // Limits
                                 var str = repeat('[', 1000) + repeat(']', 1000);
@@ -534,7 +538,7 @@ uneval
                                 test('object literal indexers', 'array[{}]');
                                 test('more than one parameter', 'parseInt("10", 2)');
                                 test('keywords', 'debugger');
-                                test('pre-increments', '++i');
+                                test('post-increments', 'i++');
                                 test(
                                     'unmodified unmatched grouping parentheses around constant',
                                     '(0'

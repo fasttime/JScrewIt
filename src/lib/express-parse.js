@@ -11,7 +11,7 @@
 // * ASCII property getters in dot notation
 // * Property getters in bracket notation
 // * Function calls without parameters and with one parameter
-// * The unary operators "!", "+" and to a limited extent "-"
+// * The unary operators "!", "+", pre-increment "++" and to a limited extent "-"
 // * The binary operators "+" and to a limited extent "-"
 // * Grouping parentheses
 // * White spaces and line terminators
@@ -26,7 +26,9 @@ var expressParse;
     {
         if (!unit.mods && 'value' in unit && unit.arithmetic)
         {
+            mods = escapeMod(mods);
             var value = unit.value;
+            loop:
             for (var index = mods.length; index--;)
             {
                 var mod = mods[index];
@@ -41,18 +43,24 @@ var expressParse;
                 case '-':
                     value = -value;
                     break;
+                case '#':
+                    break loop;
                 }
             }
             unit.value = value;
+            mods = mods.slice(0, index + 1);
         }
-        else
+        if (mods)
         {
-            if (mods)
-            {
-                unit.mods = joinMods(mods, unit.mods || '');
-                unit.arithmetic = true;
-            }
+            unit.mods = joinMods(mods, unit.mods || '');
+            unit.arithmetic = true;
         }
+    }
+    
+    function escapeMod(mod)
+    {
+        var escapedMod = mod.replace(/\+\+/g, '#');
+        return escapedMod;
     }
     
     function evalExpr(expr)
@@ -76,12 +84,15 @@ var expressParse;
     function joinMods(mod1, mod2)
     {
         var mods =
-            (mod1 + mod2)
+            (escapeMod(mod1) + escapeMod(mod2))
             .replace(/\+\+|--/, '+')
             .replace(/\+-|-\+/, '-')
             .replace(/!-/, '!+')
+            .replace(/\+#/, '#')
+            .replace(/#\+/, '#')
             .replace(/!\+!/, '!!')
-            .replace('!!!', '!');
+            .replace('!!!', '!')
+            .replace(/#/g, '++');
         return mods;
     }
     
@@ -107,7 +118,7 @@ var expressParse;
     function readMods(parseInfo, mods)
     {
         var mod;
-        while (mod = read(parseInfo, /^(?:!|\+(?!\+)|-(?!-))/))
+        while (mod = read(parseInfo, /^(?:!|\+\+?|-(?!-))/))
             mods = joinMods(mods, mod);
         return mods;
     }
