@@ -39,7 +39,7 @@
     "grunt-contrib-clean": "~1.0.0",
     "grunt-contrib-concat": "~1.0.1",
     "grunt-contrib-uglify": "~2.0.0",
-    "grunt-fasttime-lint": "~0.0.5",
+    "grunt-fasttime-lint": "~0.0.6",
     "grunt-jsdoc-to-markdown": "~1.2.1",
     "grunt-mocha-istanbul": "~5.0.2",
     "istanbul": "~0.4.5",

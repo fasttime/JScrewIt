@@ -89,7 +89,6 @@ var expressParse;
             .replace(/\+-|-\+/, '-')
             .replace(/!-/, '!+')
             .replace(/\+#/, '#')
-            .replace(/#\+/, '#')
             .replace(/!\+!/, '!!')
             .replace('!!!', '!')
             .replace(/#/g, '++');
