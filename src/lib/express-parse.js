@@ -26,7 +26,6 @@ var expressParse;
     {
         if (!unit.mods && 'value' in unit && unit.arithmetic)
         {
-            mods = escapeMod(mods);
             var value = unit.value;
             loop:
             for (var index = mods.length; index--;)
@@ -69,10 +68,14 @@ var expressParse;
         return value;
     }
     
-    function isInexpressibleUnit(unit)
+    function finalizeUnit(unit)
     {
-        var inexpressible = (unit.mods || '')[0] === '-';
-        return inexpressible;
+        var mods = unit.mods || '';
+        if (mods[0] !== '-')
+        {
+            unit.mods = unescapeMod(mods);
+            return true;
+        }
     }
     
     function isReturnableIdentifier(identifier)
@@ -84,14 +87,13 @@ var expressParse;
     function joinMods(mod1, mod2)
     {
         var mods =
-            (escapeMod(mod1) + escapeMod(mod2))
+            (mod1 + mod2)
             .replace(/\+\+|--/, '+')
             .replace(/\+-|-\+/, '-')
             .replace(/!-/, '!+')
             .replace(/\+#/, '#')
             .replace(/!\+!/, '!!')
-            .replace('!!!', '!')
-            .replace(/#/g, '++');
+            .replace('!!!', '!');
         return mods;
     }
     
@@ -118,7 +120,7 @@ var expressParse;
     {
         var mod;
         while (mod = read(parseInfo, /^(?:!|\+\+?|-(?!-))/))
-            mods = joinMods(mods, mod);
+            mods = joinMods(mods, escapeMod(mod));
         return mods;
     }
     
@@ -215,9 +217,9 @@ var expressParse;
                     if (!binSign)
                     {
                         ++parseInfo.height;
-                        if (!allowInexpressibleUnit && isInexpressibleUnit(unit))
-                            return;
-                        return unit;
+                        if (allowInexpressibleUnit || finalizeUnit(unit))
+                            return unit;
+                        return;
                     }
                     if (binSign === '-' && !unit.arithmetic)
                         applyMods(unit, '+');
@@ -231,7 +233,7 @@ var expressParse;
                 applyMods(term, mods);
                 if (unit)
                 {
-                    if (isInexpressibleUnit(term))
+                    if (!finalizeUnit(term))
                         return;
                     var terms = unit.terms;
                     if (terms && !unit.mods)
@@ -242,7 +244,7 @@ var expressParse;
                     }
                     else
                     {
-                        if (isInexpressibleUnit(unit))
+                        if (!finalizeUnit(unit))
                             return;
                         var arithmetic = unit.arithmetic && term.arithmetic;
                         unit = { ops: [], terms: [unit, term] };
@@ -348,6 +350,12 @@ var expressParse;
                 return '';
             inArray = true;
         }
+    }
+    
+    function unescapeMod(mod)
+    {
+        var unescapedMod = mod.replace(/#/g, '++');
+        return unescapedMod;
     }
     
     var tokens =
