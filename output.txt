@@ -2606,7 +2606,7 @@ Character "["
   118 |  0 | FILL, IE_SRC
   234 |  0 | FILL, NO_IE_SRC
   113 |  0 | FILL, NO_IE_SRC, NO_V8_SRC
-  220 |  0 | FILL, NO_V8_SRC
+  219 |  0 | FILL, NO_V8_SRC
   113 |  0 | FILL, V8_SRC
   151 |  0 | IE_SRC
   307 |  0 | NO_IE_SRC
