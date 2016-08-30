@@ -169,7 +169,7 @@ stats
             outputArea.value = '';
         }
         inputArea.oninput = changeHandler;
-        compMenu.selectedIndex = compMenu.previousIndex = 0;
+        compMenu.selectedIndex = compMenu.previousIndex = 1;
         var compHandler = handleCompInput.bind(changeHandler);
         compMenu.onchange = compHandler;
         // Firefox does not always trigger a change event when an option is selected using the
@@ -248,7 +248,7 @@ stats
         stats.innerHTML = html;
     }
     
-    var currentFeatureObj = JScrewIt.Feature.DEFAULT;
+    var currentFeatureObj = JScrewIt.Feature.COMPACT;
     var engineSelectionBox;
     var outOfSync;
     var outputSet;
