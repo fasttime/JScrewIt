@@ -2200,6 +2200,14 @@ uneval
         return featureObj;
     }
     
+    function getFunctionName(fn)
+    {
+        var name = fn.name;
+        if (name === void 0)
+            name = /^\s*function ([\w\$]+)/.exec(fn)[1];
+        return name;
+    }
+    
     function getPoolEncoder(featureObj)
     {
         var key = featureObj.canonicalNames.join('+');
@@ -2241,6 +2249,81 @@ uneval
     
     function testCharacter(charCode)
     {
+        function testAtob()
+        {
+            if ('ATOB' in featureSet)
+            {
+                it(
+                    '(atob)',
+                    function ()
+                    {
+                        var encoder = getPoolEncoder(Feature.ATOB);
+                        var solution = encoder.defaultResolveCharacter(char);
+                        verifySolution(solution, char, featureSet.ATOB && ['ATOB']);
+                        expect(solution.length).not.toBeGreaterThan(
+                            getPoolEncoder(Feature.DEFAULT).resolveCharacter(char).length
+                        );
+                    }
+                );
+            }
+        }
+        
+        function testFEntry(entry, dispositions, varieties)
+        {
+            var entryFeatureObj = getEntryFeature(entry);
+            dispositions.forEach(
+                function (additionalFeatureNames)
+                {
+                    var solutionFeatureObj = Feature(entryFeatureObj, additionalFeatureNames);
+                    var solution = decodeEntryWithFeature(entry, solutionFeatureObj);
+                    varieties.forEach(
+                        function (varietyFeatureNames)
+                        {
+                            var varietyFeatureObj = Feature(varietyFeatureNames);
+                            if (Feature.areCompatible([varietyFeatureObj, solutionFeatureObj]))
+                            {
+                                var testFeatureObj =
+                                    Feature(varietyFeatureObj, solutionFeatureObj);
+                                var emuFeatures = getEmuFeatureNames(testFeatureObj);
+                                if (emuFeatures)
+                                    verifySolution(solution, char, emuFeatures);
+                            }
+                        }
+                    );
+                }
+            );
+        }
+        
+        var FB_DISPOSITIONS =
+        [
+            [],
+            ['IE_SRC'],
+            ['V8_SRC'],
+            ['NO_IE_SRC'],
+            ['NO_V8_SRC'],
+            ['NO_IE_SRC', 'NO_V8_SRC'],
+            ['FILL'],
+            ['FILL', 'IE_SRC'],
+            ['FILL', 'V8_SRC'],
+            ['FILL', 'NO_IE_SRC'],
+            ['FILL', 'NO_V8_SRC'],
+            ['FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
+        ];
+        
+        var FB_VARIETIES = [['IE_SRC'], ['V8_SRC'], ['NO_IE_SRC', 'NO_V8_SRC']];
+        
+        var FH_DISPOSITIONS =
+        [
+            [],
+            ['IE_SRC'],
+            ['NO_IE_SRC'],
+            ['FILL'],
+            ['FILL', 'IE_SRC'],
+            ['FILL', 'NO_IE_SRC'],
+        ];
+        
+        var FH_VARIETIES = [['IE_SRC'], ['NO_IE_SRC']];
+        
         var char = String.fromCharCode(charCode);
         var desc =
             charCode >= 0x7f && charCode <= 0xa0 || charCode === 0xad ?
@@ -2249,25 +2332,6 @@ uneval
             desc,
             function ()
             {
-                function testAtob()
-                {
-                    if ('ATOB' in featureSet)
-                    {
-                        it(
-                            '(atob)',
-                            function ()
-                            {
-                                var encoder = getPoolEncoder(Feature.ATOB);
-                                var solution = encoder.defaultResolveCharacter(char);
-                                verifySolution(solution, char, featureSet.ATOB && ['ATOB']);
-                                expect(solution.length).not.toBeGreaterThan(
-                                    getPoolEncoder(Feature.DEFAULT).resolveCharacter(char).length
-                                );
-                            }
-                        );
-                    }
-                }
-                
                 function testEntry(entry, index)
                 {
                     var featureObj = getEntryFeature(entry);
@@ -2278,38 +2342,29 @@ uneval
                         featureObj,
                         function (emuFeatures)
                         {
+                            var definition = entry.definition;
+                            if (typeof definition === 'function')
+                            {
+                                var name = getFunctionName(definition);
+                                switch (name)
+                                {
+                                case 'commaDefinition':
+                                case 'defaultCharDefinition':
+                                    break;
+                                case 'definitionFB':
+                                    testFEntry(entry, FB_DISPOSITIONS, FB_VARIETIES);
+                                    return;
+                                case 'definitionFH':
+                                    testFEntry(entry, FH_DISPOSITIONS, FH_VARIETIES);
+                                    return;
+                                default:
+                                    throw Error(
+                                        'Unexpected definition function name ' + name
+                                    );
+                                }
+                            }
                             var solution = decodeEntry(entry);
                             verifySolution(solution, char, emuFeatures);
-                            if (entry.definition.FB)
-                            {
-                                [
-                                    [],
-                                    ['IE_SRC'],
-                                    ['V8_SRC'],
-                                    ['NO_IE_SRC'],
-                                    ['NO_V8_SRC'],
-                                    ['NO_IE_SRC', 'NO_V8_SRC'],
-                                    ['FILL'],
-                                    ['FILL', 'IE_SRC'],
-                                    ['FILL', 'V8_SRC'],
-                                    ['FILL', 'NO_IE_SRC'],
-                                    ['FILL', 'NO_V8_SRC'],
-                                    ['FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
-                                ].forEach(
-                                    function (additionalFeatureNames)
-                                    {
-                                        var augmentedFeatureObj =
-                                            Feature(featureObj, additionalFeatureNames);
-                                        var emuFeatures = getEmuFeatureNames(augmentedFeatureObj);
-                                        if (emuFeatures)
-                                        {
-                                            var solution =
-                                                decodeEntryWithFeature(entry, augmentedFeatureObj);
-                                            verifySolution(solution, char, emuFeatures);
-                                        }
-                                    }
-                                );
-                            }
                         }
                     );
                 }
