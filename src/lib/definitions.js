@@ -228,18 +228,7 @@ var createSolution;
         return result;
     }
     
-    function createCharAtDefinition(expr, index, entries, paddingInfos)
-    {
-        function definition()
-        {
-            var solution = this.resolveExprAt(expr, index, entries, paddingInfos);
-            return solution;
-        }
-        
-        return definition;
-    }
-    
-    function createCommaSolution()
+    function commaDefinition()
     {
         var block = '[' + this.replaceString('concat') + ']';
         var replacement = '[[]]' + block + '([[]])';
@@ -249,20 +238,9 @@ var createSolution;
         return solution;
     }
     
-    function createDefaultCharDefinition(char)
+    function createCharAtDefinitionFB(offset)
     {
-        function definition()
-        {
-            var solution = this.defaultResolveCharacter(char);
-            return solution;
-        }
-        
-        return definition;
-    }
-    
-    function createFBCharAtDefinition(offset)
-    {
-        function definition()
+        function definitionFB()
         {
             var functionDefinition = this.findBestDefinition(FB_EXPR_INFOS);
             var expr = functionDefinition.expr;
@@ -341,8 +319,29 @@ var createSolution;
             return solution;
         }
         
-        definition.FB = true;
-        return definition;
+        return definitionFB;
+    }
+    
+    function createCharAtDefinitionFH(expr, index, entries, paddingInfos)
+    {
+        function definitionFH()
+        {
+            var solution = this.resolveExprAt(expr, index, entries, paddingInfos);
+            return solution;
+        }
+        
+        return definitionFH;
+    }
+    
+    function createDefaultCharDefinition(char)
+    {
+        function defaultCharDefinition()
+        {
+            var solution = this.defaultResolveCharacter(char);
+            return solution;
+        }
+        
+        return defaultCharDefinition;
     }
     
     function defineDefaultChar(char)
@@ -354,7 +353,7 @@ var createSolution;
     
     function defineFBCharAt(offset)
     {
-        var definition = createFBCharAtDefinition(offset);
+        var definition = createCharAtDefinitionFB(offset);
         var entry = define(definition);
         return entry;
     }
@@ -436,7 +435,7 @@ var createSolution;
             ];
             break;
         }
-        var definition = createCharAtDefinition(expr, index, entries, FH_PADDING_INFOS);
+        var definition = createCharAtDefinitionFH(expr, index, entries, FH_PADDING_INFOS);
         var entry = createDefinitionEntry(definition, arguments, 2);
         return entry;
     }
@@ -697,7 +696,7 @@ var createSolution;
         ',':
         [
             define('([].slice.call("false") + [])[1]'),
-            define(createCommaSolution)
+            define(commaDefinition)
         ],
         '-': '(+".0000000001" + [])[2]',
         '.': '(+"11e20" + [])[1]',
