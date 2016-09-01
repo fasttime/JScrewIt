@@ -2358,8 +2358,13 @@ uneval
                                     testFEntry(entry, FH_DISPOSITIONS, FH_VARIETIES);
                                     return;
                                 default:
-                                    throw Error(
-                                        'Unexpected definition function name ' + name
+                                    expect().fail(
+                                        function ()
+                                        {
+                                            var message =
+                                                'Unexpected definition function name ' + name;
+                                            return message;
+                                        }
                                     );
                                 }
                             }
