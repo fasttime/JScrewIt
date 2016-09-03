@@ -66,7 +66,7 @@ This feature may become unavailable when Firebug or Firebug Lite is open and the
 _Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Android Browser. This feature is not available inside web workers in Chrome, Safari before 7.1+, Opera and Android Browser 4.4+._
 <a name="DEFAULT"></a>
 ### `DEFAULT`
-Minimum feature level, compatible with all supported engines.
+Minimum feature level, compatible with all supported engines in all environments.
 <a name="DOCUMENT"></a>
 ### `DOCUMENT`
 Existence of the global object document having the string representation "\[object Document\]".
@@ -160,6 +160,11 @@ A string representation of native functions typical for Internet Explorer.
 Remarkable traits are the presence of a line feed character \("\\n"\) in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 
 _Available in Internet Explorer._
+<a name="INCR_CHAR"></a>
+### `INCR_CHAR`
+The ability to use unary increment operators with string characters, like in \( ++"some string"\[0\] \): this will result in a TypeError in strict mode in ECMAScript compliant engines.
+
+_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser and Node.js._
 <a name="INTL"></a>
 ### `INTL`
 Existence of the global object Intl.
@@ -281,6 +286,7 @@ This table lists features available in the most common engines.
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
+<li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="#INTL"><code>INTL</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
 <li><a href="#NAME"><code>NAME</code></a>
@@ -313,6 +319,7 @@ This table lists features available in the most common engines.
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
+<li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="#INTL"><code>INTL</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
 <li><a href="#NAME"><code>NAME</code></a>
@@ -344,6 +351,7 @@ This table lists features available in the most common engines.
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
+<li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="#INTL"><code>INTL</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
 <li><a href="#NAME"><code>NAME</code></a>
@@ -372,6 +380,7 @@ This table lists features available in the most common engines.
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a> (Internet Explorer 11)
 <li><a href="#IE_SRC"><code>IE_SRC</code></a>
+<li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="#INTL"><code>INTL</code></a> (Internet Explorer 11)
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Internet Explorer 11 on Windows 10)
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
@@ -400,6 +409,7 @@ This table lists features available in the most common engines.
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
+<li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NODECONSTRUCTOR"><code>NODECONSTRUCTOR</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a>
@@ -428,6 +438,7 @@ This table lists features available in the most common engines.
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a> (Android Browser 4.4+)
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
+<li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="#INTL"><code>INTL</code></a> (Android Browser 4.4+)
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Android Browser 4.4+)
 <li><a href="#NAME"><code>NAME</code></a>
@@ -453,6 +464,7 @@ This table lists features available in the most common engines.
 <li><a href="#FILL"><code>FILL</code></a> (Node.js 4+)
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Node.js 4+)
 <li><a href="#GMT"><code>GMT</code></a>
+<li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="#INTL"><code>INTL</code></a> (Node.js 0.12+)
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Node.js 0.12+)
 <li><a href="#NAME"><code>NAME</code></a>

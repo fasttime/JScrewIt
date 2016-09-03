@@ -9,6 +9,7 @@ btoa,
 document,
 emuDo,
 emuEval,
+evalJSFuck,
 expect,
 global,
 module,
@@ -389,7 +390,7 @@ uneval
                                             var expectedRegExp = RegExp(regExpPattern);
                                             expect(actual).toMatch(expectedRegExp);
                                             if (expectedValue !== void 0)
-                                                expect(eval(actual)).toBe(expectedValue);
+                                                expect(evalJSFuck(actual)).toBe(expectedValue);
                                         }
                                     );
                                 }
@@ -575,7 +576,7 @@ uneval
                                         '/* */\nABC\n',
                                         { runAs: 'none', trimCode: true }
                                     );
-                                var actual = eval(output);
+                                var actual = evalJSFuck(output);
                                 expect(actual).toBe('ABC');
                             }
                         );
@@ -588,7 +589,7 @@ uneval
                                         '/* */\n',
                                         { runAs: 'none', trimCode: true }
                                     );
-                                var actual = eval(output);
+                                var actual = evalJSFuck(output);
                                 expect(actual).toBe('');
                             }
                         );
@@ -601,7 +602,7 @@ uneval
                                         '/* */"ABC',
                                         { runAs: 'none', trimCode: true }
                                     );
-                                var actual = eval(output);
+                                var actual = evalJSFuck(output);
                                 expect(actual).toBe('/* */"ABC');
                             }
                         );
@@ -1526,7 +1527,7 @@ uneval
                         var input = 'Lorem ipsum dolor sit amet';
                         var output = encoder.encodeByCharCodes(input, true);
                         expect(output).toBeJSFuck();
-                        expect(eval(output)).toBe(input);
+                        expect(evalJSFuck(output)).toBe(input);
                     }
                 );
                 emuIt(
@@ -1566,7 +1567,7 @@ uneval
                             'throughout Thursday.';
                         var output = encoder.encodeByDblDict(Object(input));
                         expect(output).toBeJSFuck();
-                        expect(eval(output)).toBe(input);
+                        expect(evalJSFuck(output)).toBe(input);
                     }
                 );
                 it(
@@ -1598,7 +1599,7 @@ uneval
                             'throughout Thursday.';
                         var output = encoder.encodeByDict(Object(input), 4);
                         expect(output).toBeJSFuck();
-                        expect(eval(output)).toBe(input);
+                        expect(evalJSFuck(output)).toBe(input);
                     }
                 );
                 emuIt(
@@ -2136,7 +2137,7 @@ uneval
                                             coderName !== 'express' ? text : JSON.stringify(text);
                                         var output = coder.call(encoder, Object(input));
                                         expect(output).toBeJSFuck();
-                                        expect(eval(output)).toBe(text);
+                                        expect(evalJSFuck(output)).toBe(text);
                                     }
                                 );
                                 it(
@@ -2428,7 +2429,7 @@ uneval
                                     emuFeatures,
                                     function ()
                                     {
-                                        var actual = eval(output);
+                                        var actual = evalJSFuck(output);
                                         validator.call(expect(actual));
                                     }
                                 );

@@ -541,6 +541,17 @@ var validMaskFromArrayOrStringOrFeature;
             includes: ['NO_V8_SRC'],
             excludes: ['NODECONSTRUCTOR', 'NO_IE_SRC']
         },
+        INCR_CHAR:
+        {
+            description:
+                'The ability to use unary increment operators with string characters, like in ' +
+                '( ++"some string"[0] ): this will result in a TypeError in strict mode in ' +
+                'ECMAScript compliant engines.',
+            check: function ()
+            {
+                return true;
+            }
+        },
         INTL:
         {
             description: 'Existence of the global object Intl.',
@@ -693,7 +704,8 @@ var validMaskFromArrayOrStringOrFeature;
         
         DEFAULT:
         {
-            description: 'Minimum feature level, compatible with all supported engines.'
+            description:
+                'Minimum feature level, compatible with all supported engines in all environments.'
         },
         COMPACT:
         {
@@ -713,6 +725,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
+                'INCR_CHAR',
                 'NAME',
                 'NO_IE_SRC',
                 'NO_OLD_SAFARI_LF',
@@ -739,6 +752,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
+                'INCR_CHAR',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
                 'V8_SRC'
@@ -756,6 +770,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
+                'INCR_CHAR',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
@@ -775,6 +790,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'HISTORY',
                 'HTMLAUDIOELEMENT',
                 'HTMLDOCUMENT',
+                'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
@@ -802,6 +818,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'HISTORY',
                 'HTMLAUDIOELEMENT',
                 'HTMLDOCUMENT',
+                'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
@@ -829,6 +846,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
+                'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
@@ -855,6 +873,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
+                'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
@@ -877,6 +896,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'DOCUMENT',
                 'HISTORY',
                 'IE_SRC',
+                'INCR_CHAR',
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
@@ -893,6 +913,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'DOCUMENT',
                 'HISTORY',
                 'IE_SRC',
+                'INCR_CHAR',
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'WINDOW'
@@ -911,6 +932,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'IE_SRC',
+                'INCR_CHAR',
                 'INTL',
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
@@ -930,6 +952,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'IE_SRC',
+                'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
                 'NO_OLD_SAFARI_LF',
@@ -945,6 +968,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ESC_HTML_ALL',
                 'GMT',
+                'INCR_CHAR',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
@@ -958,6 +982,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ESC_HTML_QUOT_ONLY',
                 'GMT',
+                'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
@@ -977,6 +1002,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
+                'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
@@ -998,6 +1024,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
+                'INCR_CHAR',
                 'NAME',
                 'NODECONSTRUCTOR',
                 'NO_IE_SRC',
@@ -1026,6 +1053,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
+                'INCR_CHAR',
                 'NAME',
                 'NODECONSTRUCTOR',
                 'NO_IE_SRC',
@@ -1055,6 +1083,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
+                'INCR_CHAR',
                 'NAME',
                 'NODECONSTRUCTOR',
                 'NO_IE_SRC',
