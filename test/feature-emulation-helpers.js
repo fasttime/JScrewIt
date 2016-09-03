@@ -106,16 +106,23 @@
         return result;
     }
     
-    function emuEval(emuFeatures, str)
+    function emuEval(emuFeatures, jsFuck)
     {
         var result =
             emuDo(
                 emuFeatures,
                 function ()
                 {
-                    return eval(str);
+                    return evalJSFuck(jsFuck);
                 }
             );
+        return result;
+    }
+    
+    function evalJSFuck(jsFuck)
+    {
+        var body = 'return ' + String(jsFuck);
+        var result = Function(body)();
         return result;
     }
     
@@ -758,9 +765,10 @@
     
     var exports =
     {
+        EMU_FEATURES:   EMU_FEATURES,
         emuDo:          emuDo,
         emuEval:        emuEval,
-        EMU_FEATURES:   EMU_FEATURES,
+        evalJSFuck:     evalJSFuck,
     };
     
     Object.keys(exports).forEach(
