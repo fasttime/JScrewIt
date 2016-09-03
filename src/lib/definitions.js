@@ -71,6 +71,7 @@ var createSolution;
     var HTMLAUDIOELEMENT                = Feature.HTMLAUDIOELEMENT;
     var HTMLDOCUMENT                    = Feature.HTMLDOCUMENT;
     var IE_SRC                          = Feature.IE_SRC;
+    var INCR_CHAR                       = Feature.INCR_CHAR;
     var INTL                            = Feature.INTL;
     var LOCALE_INFINITY                 = Feature.LOCALE_INFINITY;
     var NAME                            = Feature.NAME;
@@ -1285,11 +1286,13 @@ var createSolution;
         
         FH_SHIFT_1:
         [
-            define('[+!!(+(ANY_FUNCTION + [])[0] + true)]')
+            define('[+!!(+(ANY_FUNCTION + [])[0] + true)]'),
+            define('[+!!++(ANY_FUNCTION + [])[0]]', INCR_CHAR)
         ],
         FH_SHIFT_3:
         [
-            define('[2 + !!(+(ANY_FUNCTION + [])[0] + true)]')
+            define('[2 + !!(+(ANY_FUNCTION + [])[0] + true)]'),
+            define('[2 + !!++(ANY_FUNCTION + [])[0]]', INCR_CHAR)
         ],
         
         // Function header padding blocks: prepended to a function to align the function's header
@@ -1297,18 +1300,14 @@ var createSolution;
         // The number after "FHP_" is the maximum character overhead.
         // The letters after the last underscore have the same meaning as in regular padding blocks.
         
-        // Unused:
-        // FHP_1_S:
-        // [
-        //     define('[[0][+!!(+(ANY_FUNCTION + [])[0] + true)]]')
-        // ],
         FHP_3_NO:
         [
             define('+(1 + [+(ANY_FUNCTION + [])[0]])')
         ],
         FHP_5_N:
         [
-            define('!!(+(ANY_FUNCTION + [])[0] + true)')
+            define('!!(+(ANY_FUNCTION + [])[0] + true)'),
+            define('!!++(ANY_FUNCTION + [])[0]', INCR_CHAR)
         ],
         
         // Regular padding blocks.
