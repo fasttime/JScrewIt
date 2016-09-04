@@ -389,7 +389,7 @@ var hasOuterPlus;
     
     hasOuterPlus =
         // Determine whether the specified solution contains a plus sign out of brackets not
-        // preceded by an exclamation mark.
+        // preceded by an exclamation mark or by another plus sign.
         function (solution)
         {
             var outerPlus = solution.outerPlus;
@@ -403,7 +403,7 @@ var hasOuterPlus;
                         break;
                     str = newStr;
                 }
-                outerPlus = /(^|[^!])\+/.test(str);
+                outerPlus = /(^|[^!\+])\+/.test(str);
                 solution.outerPlus = outerPlus;
             }
             return outerPlus;
