@@ -130,7 +130,7 @@ var createSolution;
         'FHP_5_N',
         'FHP_5_N + [RP_1_NO]',
         'FHP_3_NO + [RP_4_N]',
-        'FHP_3_NO + [RP_5_N]',
+        'FHP_8_S',
         'FHP_5_N + [RP_4_N]',
     ];
     
@@ -1286,13 +1286,11 @@ var createSolution;
         
         FH_SHIFT_1:
         [
-            define('[+!!(+(ANY_FUNCTION + [])[0] + true)]'),
-            define('[+!!++(ANY_FUNCTION + [])[0]]', INCR_CHAR)
+            define('[+IS_IE_SRC_N]')
         ],
         FH_SHIFT_3:
         [
-            define('[2 + !!(+(ANY_FUNCTION + [])[0] + true)]'),
-            define('[2 + !!++(ANY_FUNCTION + [])[0]]', INCR_CHAR)
+            define('[2 + IS_IE_SRC_N]')
         ],
         
         // Function header padding blocks: prepended to a function to align the function's header
@@ -1306,11 +1304,16 @@ var createSolution;
         ],
         FHP_5_N:
         [
-            define('!!(+(ANY_FUNCTION + [])[0] + true)'),
-            define('!!++(ANY_FUNCTION + [])[0]', INCR_CHAR)
+            define('IS_IE_SRC_N')
+        ],
+        FHP_8_S:
+        [
+            define('[FHP_3_NO] + RP_5_N'),
+            define('FHP_5_N + [RP_3_NO]', INCR_CHAR)
         ],
         
         // Regular padding blocks.
+        //
         // The number after "RP_" is the character overhead.
         // The postifx "_S" in the name indicates that the constant always evaluates to a string or
         // an array.
@@ -1330,6 +1333,15 @@ var createSolution;
         RP_4_N:     'true',
         RP_5_N:     'false',
         RP_6_SO:    '"0false"',
+        
+        // Conditional padding blocks.
+        //
+        // true if feature IE_SRC is available; false otherwise.
+        IS_IE_SRC_N:
+        [
+            define('!!(+(ANY_FUNCTION + [])[0] + true)'),
+            define('!!++(ANY_FUNCTION + [])[0]', INCR_CHAR)
+        ],
     });
     
     createParseIntArgByReduce =
