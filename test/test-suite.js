@@ -504,12 +504,13 @@ uneval
                                 test('pre-incremented non-constant', '++[][0]', '++[][+[]]');
                                 
                                 // Limits
-                                var str = repeat('[', 1000) + repeat(']', 1000);
+                                var maxNesting = 1000;
+                                var str = repeat('[', maxNesting) + repeat(']', maxNesting);
                                 test('deep nestings', str, str);
                             }
                         );
                         describe(
-                            'does not parse',
+                            'does not encode',
                             function ()
                             {
                                 function test(description, input)
@@ -1684,7 +1685,7 @@ uneval
                                 }
                             );
                         }
-
+                        
                         test('with an empty script', '');
                         test('with a call operation', '""[0]()');
                         test('with a param-call operation', '""(0)[""]');

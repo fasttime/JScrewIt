@@ -143,10 +143,10 @@ module.exports =
             {
                 var timeUtils = require('./tools/time-utils.js');
                 var defsUnused;
-                var time;
+                var duration;
                 try
                 {
-                    time =
+                    duration =
                         timeUtils.timeThis(
                             function ()
                             {
@@ -160,8 +160,8 @@ module.exports =
                     grunt.warn(error);
                     return;
                 }
-                var timeStr = timeUtils.formatDuration(time);
-                grunt.log.writeln(timeStr + ' elapsed.');
+                var durationStr = timeUtils.formatDuration(duration);
+                grunt.log.writeln(durationStr + ' elapsed.');
                 if (defsUnused)
                 {
                     grunt.warn(

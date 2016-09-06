@@ -58,7 +58,7 @@ function formatCodingLog(codingLog, padding, nextCodingLog)
 
 function formatInt(int)
 {
-    var result = int != null ? int : '-';
+    var result = isNaN(int) ? '-' : int;
     return result;
 }
 
@@ -78,7 +78,7 @@ function formatPerfInfoList(perfInfoList, padding, paddingChars)
             padRight(perfInfo.coderName, 27 - paddingLength) +
             padRight(perfInfo.status, 10) +
             padLeft(formatInt(perfInfo.outputLength), 11) +
-            padLeft(formatInt(perfInfo.time), 11) +
+            padLeft(formatInt(Math.round(1000 * perfInfo.time)), 11) +
             '\n';
         codingLog = perfInfo.codingLog;
         if (codingLog)
@@ -211,5 +211,4 @@ module.exports =
     createDiagnosticReport: createDiagnosticReport,
     createReport:           createReport,
     parseCommandLine:       parseCommandLine,
-    timeThis:               timeUtils.timeThis
 };
