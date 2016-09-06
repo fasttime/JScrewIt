@@ -413,7 +413,7 @@ var expressParse;
     expressParse =
         function (input)
         {
-            var parseInfo = { data: input, height: 1000 };
+            var parseInfo = { data: input, height: 500 };
             readSeparatorOrColon(parseInfo);
             if (!parseInfo.data)
                 return true;

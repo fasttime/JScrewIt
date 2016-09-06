@@ -504,8 +504,7 @@ uneval
                                 test('pre-incremented non-constant', '++[][0]', '++[][+[]]');
                                 
                                 // Limits
-                                var maxNesting = 1000;
-                                var str = repeat('[', maxNesting) + repeat(']', maxNesting);
+                                var str = nestedBrackets(500);
                                 test('deep nestings', str, str);
                             }
                         );
@@ -551,7 +550,7 @@ uneval
                                 test('unclosed singleton array square bracket', '[0');
                                 test('unclosed indexer square bracket', '0[0');
                                 test('unrecognized tokens', 'a...');
-                                test('too deep nestings', repeat('[', 1001) + repeat(']', 1001));
+                                test('too deep nestings', nestedBrackets(501));
                                 test('minus signed standalone strings', '-""');
                                 test('minus signed strings as first terms in a sum', '-"" + ""');
                                 test('minus signed arrays', '-[]');
@@ -2247,6 +2246,12 @@ uneval
                 this.toBe(expected);
             };
         return result;
+    }
+    
+    function nestedBrackets(count)
+    {
+        var str = repeat('[', count) + repeat(']', count);
+        return str;
     }
     
     function testCharacter(charCode)
