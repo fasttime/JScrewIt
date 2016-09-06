@@ -3,14 +3,7 @@
 'use strict';
 
 var assert = require('assert');
-var cli = require('../tools/cli.js');
-
-var isInteger =
-    Number.isInteger ||
-    function (value)
-    {
-        return Number.isFinite(value) && Math.floor(value) === value;
-    };
+var cli = require('../tools/cli');
 
 describe(
     'parseCommandLine returns expected results with params',
@@ -206,7 +199,7 @@ describe(
             'when screwed size is larger than original size',
             function ()
             {
-                var actual = cli.createReport(90, 2345, 987);
+                var actual = cli.createReport(90, 2345, 0.987);
                 var expected =
                     'Original size:      90 bytes\n' +
                     'Screwed size:     2345 bytes\n' +
@@ -219,7 +212,7 @@ describe(
             'when screwed size is smaller than original size',
             function ()
             {
-                var actual = cli.createReport(100, 99, 5);
+                var actual = cli.createReport(100, 99, 0.005);
                 var expected =
                     'Original size:    100 bytes\n' +
                     'Screwed size:      99 bytes\n' +
@@ -232,7 +225,7 @@ describe(
             'when original size is 1',
             function ()
             {
-                var actual = cli.createReport(1, 6, 4);
+                var actual = cli.createReport(1, 6, 0.004);
                 var expected =
                     'Original size:    1 byte\n' +
                     'Screwed size:     6 bytes\n' +
@@ -268,7 +261,7 @@ describe(
                                     coderName: 'coderA',
                                     status: 'used',
                                     outputLength: 100,
-                                    time: 123,
+                                    time: 0.123,
                                     codingLog:
                                     [
                                         makePerfInfoList(
@@ -277,7 +270,7 @@ describe(
                                                 coderName: 'coderA1',
                                                 status: 'used',
                                                 outputLength: 50,
-                                                time: 45
+                                                time: 0.045
                                             }
                                         ),
                                         makePerfInfoList(
@@ -286,7 +279,7 @@ describe(
                                                 coderName: 'coderA2',
                                                 status: 'used',
                                                 outputLength: 25,
-                                                time: 67,
+                                                time: 0.067,
                                                 codingLog:
                                                 [
                                                     makePerfInfoList(
@@ -295,7 +288,7 @@ describe(
                                                             coderName: 'coderA2_extra',
                                                             status: 'used',
                                                             outputLength: 22,
-                                                            time: 66
+                                                            time: 0.066
                                                         }
                                                     )
                                                 ]
@@ -322,29 +315,6 @@ describe(
                     '│\n' +
                     '└coderB                     skipped             -          -\n';
                 assert.strictEqual(actual, expected);
-            }
-        );
-    }
-);
-
-describe(
-    'timeThis',
-    function ()
-    {
-        it(
-            'executes the callback and returns a non-negative integer',
-            function ()
-            {
-                var callbackCalled = false;
-                var actual =
-                    cli.timeThis(
-                        function ()
-                        {
-                            callbackCalled = true;
-                        }
-                    );
-                assert(callbackCalled);
-                assert(isInteger(actual) && actual >= 0);
             }
         );
     }

@@ -178,9 +178,9 @@ function main()
         var routine = verify[routineName];
         if (routine)
         {
-            var time = timeUtils.timeThis(routine);
-            var timeStr = timeUtils.formatDuration(time);
-            console.log(timeStr + ' elapsed.');
+            var duration = timeUtils.timeThis(routine);
+            var durationStr = timeUtils.formatDuration(duration);
+            console.log(durationStr + ' elapsed.');
             return;
         }
     }

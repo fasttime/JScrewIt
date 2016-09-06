@@ -45,6 +45,7 @@
     "istanbul": "~0.4.5",
     "mocha": "~3.0.2",
     "mocha-matrix": "~0.1.1",
-    "progress": "~1.1.8"
+    "progress": "~1.1.8",
+    "proxyquire": "^1.7.10"
   }
 }
