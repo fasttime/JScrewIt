@@ -35,8 +35,8 @@
         }
         if (typeof module !== 'undefined')
         {
-            JScrewIt = require('../lib/jscrewit.js');
-            require('./feature-emulation-helpers.js');
+            JScrewIt = require('../lib/jscrewit');
+            require('./feature-emulation-helpers');
             module.exports = showFeatureSupport;
         }
         var Feature = JScrewIt.Feature;

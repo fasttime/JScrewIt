@@ -68,7 +68,7 @@ function prompt()
 
 (function ()
 {
-    var cli = require('./tools/cli.js');
+    var cli = require('./tools/cli');
     
     var command;
     try
@@ -95,7 +95,7 @@ function prompt()
     var outputFileName  = command.outputFileName;
     var options         = command.options;
     
-    var JScrewIt = require('./lib/jscrewit.js');
+    var JScrewIt = require('./lib/jscrewit');
     
     if (inputFileName == null)
     {

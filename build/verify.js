@@ -4,16 +4,16 @@
 
 'use strict';
 
-var JScrewIt = require('../lib/jscrewit.js');
-var kit = require('./verifier-kit.js');
+var JScrewIt = require('../lib/jscrewit');
+var kit = require('./verifier-kit');
 
 var define              = kit.define;
 var findOptimalFeatures = kit.findOptimalFeatures;
 var getEntries          = JScrewIt.debug.getEntries;
 var verifyComplex       = kit.verifyComplex;
 var verifyDefinitions   = kit.verifyDefinitions;
-require('../tools/text-utils.js');
-var timeUtils = require('../tools/time-utils.js');
+require('../tools/text-utils');
+var timeUtils = require('../tools/time-utils');
 
 function checkCoderFeatureOptimality(features, createInput, coders, coder, minLength)
 {
@@ -120,7 +120,7 @@ function compareRoutineNames(name1, name2)
 
 function findCoderTestData(coderName)
 {
-    var CODER_TEST_DATA_LIST = require('./coder-test-data.js');
+    var CODER_TEST_DATA_LIST = require('./coder-test-data');
     
     for (var index = 0; ; ++index)
     {

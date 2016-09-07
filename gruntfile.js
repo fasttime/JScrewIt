@@ -116,7 +116,7 @@ module.exports =
             'Create Feature Reference documentation.',
             function ()
             {
-                grunt.file.write('Features.md', require('./build/make-feature-doc.js')());
+                grunt.file.write('Features.md', require('./build/make-feature-doc')());
                 grunt.log.ok('Done.');
             }
         );
@@ -126,7 +126,7 @@ module.exports =
             'Show feature support information for the JavaScript engine in use.',
             function ()
             {
-                var showFeatureSupport = require('./test/feature-info.js');
+                var showFeatureSupport = require('./test/feature-info');
                 showFeatureSupport(
                     function (label, features)
                     {
@@ -141,7 +141,7 @@ module.exports =
             'Analyze all character encodings.',
             function ()
             {
-                var timeUtils = require('./tools/time-utils.js');
+                var timeUtils = require('./tools/time-utils');
                 var defsUnused;
                 var duration;
                 try
@@ -150,7 +150,7 @@ module.exports =
                         timeUtils.timeThis(
                             function ()
                             {
-                                var runScan = require('./build/scan-char-defs.js');
+                                var runScan = require('./build/scan-char-defs');
                                 defsUnused = runScan();
                             }
                         );

@@ -151,7 +151,7 @@
     
     if (typeof module !== 'undefined')
     {
-        JScrewIt = require('../lib/jscrewit.js');
+        JScrewIt = require('../lib/jscrewit');
         module.exports = Analyzer;
     }
     

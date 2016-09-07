@@ -243,9 +243,9 @@
     }
     if (typeof module !== 'undefined')
     {
-        Analyzer = require('./analyzer.js');
-        CharMap = require('./char-map.js');
-        JScrewIt = require('../lib/jscrewit.js');
+        Analyzer = require('./analyzer');
+        CharMap = require('./char-map');
+        JScrewIt = require('../lib/jscrewit');
         module.exports = exports;
     }
 }

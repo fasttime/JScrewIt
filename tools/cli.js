@@ -3,8 +3,8 @@
 
 'use strict';
 
-require('./text-utils.js');
-var timeUtils = require('./time-utils.js');
+require('./text-utils');
+var timeUtils = require('./time-utils');
 
 function byteCount(size, width)
 {

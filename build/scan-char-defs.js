@@ -3,7 +3,7 @@
 
 'use strict';
 
-require('../tools/text-utils.js');
+require('../tools/text-utils');
 
 function allPropertyNamesIn(obj)
 {
@@ -47,7 +47,7 @@ function formatFeatureNames(featureNames)
 
 function printReport(logLine, char, solutions)
 {
-    var createFeatureFromMask = require('../lib/jscrewit.js').debug.createFeatureFromMask;
+    var createFeatureFromMask = require('../lib/jscrewit').debug.createFeatureFromMask;
     solutions.forEach(
         function (solution)
         {
@@ -116,7 +116,7 @@ function runScan()
 
 function scanCharDefs(logLine, callback)
 {
-    var CharMap = require('./char-map.js');
+    var CharMap = require('./char-map');
     var charMap = CharMap(callback);
     var charMapJSON = CharMap.stringify(charMap);
     requireFs().writeFile(CharMap.FILE_NAME, charMapJSON, Function());

@@ -108,7 +108,7 @@ function multiSolve(char, doneCharMap, exceptionalChars)
             throw new Interruption(char);
     }
     
-    var Analyzer = require('./analyzer.js');
+    var Analyzer = require('./analyzer');
     var analyzer = new Analyzer();
     var maskAnd = requireJScrewIt().debug.maskAnd;
     var entryIndexSet = createEmpty();
@@ -179,7 +179,7 @@ function prepareEncoder(encoder, charResolver)
 
 function requireJScrewIt()
 {
-    var JScrewIt = require('../lib/jscrewit.js');
+    var JScrewIt = require('../lib/jscrewit');
     return JScrewIt;
 }
 
