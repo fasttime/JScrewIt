@@ -2,11 +2,11 @@
 
 'use strict';
 
-var JScrewIt = require('../lib/jscrewit.js');
+var JScrewIt = require('../lib/jscrewit');
 require('expectations');
-require('../tools/text-utils.js');
-require('./feature-emulation-helpers.js');
-require('./matcher-helpers.js');
-var TestSuite = require('./test-suite.js');
+require('../tools/text-utils');
+require('./feature-emulation-helpers');
+require('./matcher-helpers');
+var TestSuite = require('./test-suite');
 
 TestSuite.init(JScrewIt);
