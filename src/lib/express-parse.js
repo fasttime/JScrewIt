@@ -11,7 +11,7 @@
 // * ASCII property getters in dot notation
 // * Property getters in bracket notation
 // * Function calls without parameters and with one parameter
-// * The unary operators "!", "+", pre-increment "++" and to a limited extent "-"
+// * The unary operators "!", "+", "++" (pre- and post-increment) and to a limited extent "-"
 // * The binary operators "+" and to a limited extent "-"
 // * Grouping parentheses
 // * White spaces and line terminators
@@ -160,7 +160,7 @@ var expressParse;
     function finalizeUnit(unit)
     {
         var mod = unit.mod || '';
-        if (mod[0] !== '-')
+        if (!/-/.test(mod))
         {
             unit.mod = unescapeMod(mod);
             return unit;
@@ -217,17 +217,22 @@ var expressParse;
             pushFinalizer(parseInfo, finalizeParamCall);
             return parseUnit;
         }
-        else if (readSquareBracketLeft(parseInfo))
+        if (readSquareBracketLeft(parseInfo))
         {
             pushFinalizer(parseInfo, finalizeIndexer);
             return parseUnit;
         }
-        else if (read(parseInfo, /^\./))
+        if (read(parseInfo, /^\./))
         {
             var identifier = read(parseInfo, identifierRegExp);
             if (!identifier)
                 return;
             appendOp(parseInfo, { type: 'get', value: identifier });
+            return parseNextOp;
+        }
+        if (read(parseInfo, /^\+\+/))
+        {
+            appendOp(parseInfo, { type: 'post-increment' });
             return parseNextOp;
         }
         var unit = popUnit(parseInfo);
@@ -284,7 +289,9 @@ var expressParse;
     
     function parseUnit(parseInfo)
     {
-        if (parseInfo.finalizerStack.length <= 1000)
+        var MAX_PARSABLE_NESTINGS = 1000;
+        
+        if (parseInfo.finalizerStack.length <= MAX_PARSABLE_NESTINGS)
         {
             var mod = readMod(parseInfo, '');
             pushMod(parseInfo, mod);
