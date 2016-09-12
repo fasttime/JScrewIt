@@ -815,6 +815,12 @@ var wrapWithEval;
                         if (output.length > maxCoreLength)
                             return;
                     }
+                    else if (type === 'post-increment')
+                    {
+                        output += '++';
+                        if (output.length > maxCoreLength)
+                            return;
+                    }
                     else
                     {
                         var opOutput;

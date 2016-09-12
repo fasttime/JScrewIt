@@ -451,6 +451,7 @@ uneval
                                     '*(*)()(*)',
                                     '%25%5E'
                                 );
+                                test('post-increments', '[0][0]++', '[+[]][+[]]++');
                                 
                                 // Modifiers
                                 test('modified constants', '!-0', '!![]');
@@ -502,6 +503,7 @@ uneval
                                 // Pre-increments
                                 test('pre-incremented constant', '++0', '++(+[])');
                                 test('pre-incremented non-constant', '++[][0]', '++[][+[]]');
+                                test('increment sandwich', '++[]++', '++[]++');
                                 
                                 // Limits
                                 var str = nestedBrackets(1000);
@@ -539,7 +541,7 @@ uneval
                                 test('object literal indexers', 'array[{}]');
                                 test('more than one parameter', 'parseInt("10", 2)');
                                 test('keywords', 'debugger');
-                                test('post-increments', 'i++');
+                                test('pre-decrements', '--i');
                                 test(
                                     'unmodified unmatched grouping parentheses around constant',
                                     '(0'
@@ -552,6 +554,7 @@ uneval
                                 test('unrecognized tokens', 'a...');
                                 test('too deep nestings', nestedBrackets(1001));
                                 test('minus signed standalone strings', '-""');
+                                test('modified minus signed strings', '++-""');
                                 test('minus signed strings as first terms in a sum', '-"" + ""');
                                 test('minus signed arrays', '-[]');
                                 test('string subtrahends', '1 - ""');
@@ -1689,6 +1692,7 @@ uneval
                         test('with a call operation', '""[0]()');
                         test('with a param-call operation', '""(0)[""]');
                         test('with a get operation', '""[0][""]');
+                        test('with a post-increment', '[0][0]++');
                         test('with an empty array', '""([])');
                         test('with a singleton array', '""([0])');
                         test('with a sum', '1+1');
