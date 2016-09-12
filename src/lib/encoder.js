@@ -787,14 +787,14 @@ var wrapWithEval;
         
         replaceExpressUnit: function (unit, bond, unitIndices, maxLength, replacers)
         {
-            var mods = unit.mods || '';
-            var groupingRequired = bond && mods[0] === '+';
-            var maxCoreLength = maxLength - (mods ? (groupingRequired ? 2 : 0) + mods.length : 0);
+            var mod = unit.mod || '';
+            var groupingRequired = bond && mod[0] === '+';
+            var maxCoreLength = maxLength - (mod ? (groupingRequired ? 2 : 0) + mod.length : 0);
             var ops = unit.ops || [];
             var opCount = ops.length;
             var primaryExprBondStrength =
                 opCount ?
-                BOND_STRENGTH_STRONG : bond || mods ? BOND_STRENGTH_WEAK : BOND_STRENGTH_NONE;
+                BOND_STRENGTH_STRONG : bond || mod ? BOND_STRENGTH_WEAK : BOND_STRENGTH_NONE;
             var output =
                 this.replacePrimaryExpr(
                     unit,
@@ -846,9 +846,9 @@ var wrapWithEval;
                             output += '(' + opOutput + ')';
                     }
                 }
-                if (mods)
+                if (mod)
                 {
-                    output = mods + output;
+                    output = mod + output;
                     if (groupingRequired)
                         output = '(' + output + ')';
                 }

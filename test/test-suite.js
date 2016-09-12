@@ -504,7 +504,7 @@ uneval
                                 test('pre-incremented non-constant', '++[][0]', '++[][+[]]');
                                 
                                 // Limits
-                                var str = nestedBrackets(500);
+                                var str = nestedBrackets(1000);
                                 test('deep nestings', str, str);
                             }
                         );
@@ -550,7 +550,7 @@ uneval
                                 test('unclosed singleton array square bracket', '[0');
                                 test('unclosed indexer square bracket', '0[0');
                                 test('unrecognized tokens', 'a...');
-                                test('too deep nestings', nestedBrackets(501));
+                                test('too deep nestings', nestedBrackets(1001));
                                 test('minus signed standalone strings', '-""');
                                 test('minus signed strings as first terms in a sum', '-"" + ""');
                                 test('minus signed arrays', '-[]');
