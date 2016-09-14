@@ -507,11 +507,14 @@ var wrapWithEval;
         
         encodeByDict: function (inputData, radix, amendings, maxLength)
         {
+            var APPEND_LENGTH_OF_DIGIT_ZERO = 6;
+            var APPEND_LENGTH_OF_PLUS_SIGN = 71;
+            
             var input = inputData.valueOf();
             var freqList = getFrequencyList(inputData);
             var coerceToInt =
                 freqList.length &&
-                freqList[0].count * 6 > getAppendLength(this.resolveCharacter('+'));
+                freqList[0].count * APPEND_LENGTH_OF_DIGIT_ZERO > APPEND_LENGTH_OF_PLUS_SIGN;
             var reindexMap = createReindexMap(freqList.length, radix, amendings, coerceToInt);
             var charMap = new Empty();
             var minCharIndexArrayStrLength = initMinCharIndexArrayStrLength(input);
