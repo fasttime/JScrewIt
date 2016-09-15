@@ -717,7 +717,6 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ATOB',
                 'BARPROP',
-                'CONSOLE',
                 'ENTRIES_OBJ',
                 'ESC_HTML_QUOT_ONLY',
                 'FILL',
@@ -735,7 +734,6 @@ var validMaskFromArrayOrStringOrFeature;
             attributes:
             {
                 'no-atob-in-web-worker': null,
-                'no-console-in-web-worker': null,
                 'safari-bug-21820506': null,
                 'web-worker-restriction': null
             }
@@ -801,16 +799,15 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'no-console-in-web-worker': null, 'web-worker-restriction': null }
         },
-        CHROME: 'CHROME45',
-        CHROME45:
+        CHROME: 'CHROME52',
+        CHROME52:
         {
-            description: 'Features available in Chrome 45 and Opera 32 or later.',
+            description: 'Features available in Chrome 52 and Opera 39 or later.',
             includes:
             [
                 'ARROW',
                 'ATOB',
                 'BARPROP',
-                'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
                 'FILL',
                 'FROM_CODE_POINT',
@@ -828,7 +825,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
                 'WINDOW'
             ],
-            attributes: { 'no-console-in-web-worker': null, 'web-worker-restriction': null }
+            attributes: { 'web-worker-restriction': null }
         },
         EDGE:
         {

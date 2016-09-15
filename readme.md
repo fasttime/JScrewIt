@@ -210,12 +210,12 @@ With this knowledge, we can rewrite the expression as follows.
 
 JScrewIt itself and the code it generates are compatible with the JavaScript engines listed below.
 
-- Chrome 45+
+- Chrome 52+
 - Edge
 - Firefox 31+
 - Internet Explorer 9+
 - Safari 7.0+
-- Opera 32+
+- Opera 39+
 - Android Browser 4.x
 - Node.js
 

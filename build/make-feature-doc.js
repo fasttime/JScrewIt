@@ -10,7 +10,7 @@ var ENGINE_ENTRIES =
         name: ['Chrome', 'Opera'],
         versions:
         [
-            { description: ['45+', '32+'], feature: 'CHROME45' }
+            { description: ['52+', '39+'], feature: 'CHROME52' }
         ]
     },
     {
