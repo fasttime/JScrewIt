@@ -72,7 +72,6 @@ stats
     {
         var selectedIndex = compMenu.selectedIndex;
         var compatibility = compMenu.options[selectedIndex].value;
-        var Feature = JScrewIt.Feature;
         var featureObj =
             compatibility ? Feature[compatibility] : engineSelectionBox.featureObj;
         if (outOfSync || !Feature.areEqual(featureObj, currentFeatureObj))
@@ -153,6 +152,23 @@ stats
                 art.on('click', handleRun)
             )
         );
+        (function ()
+        {
+            var selectedIndex;
+            var COMPACT = Feature.COMPACT;
+            if (Feature.AUTO.includes(COMPACT))
+            {
+                currentFeatureObj = COMPACT;
+                selectedIndex = 1;
+            }
+            else
+            {
+                currentFeatureObj = Feature.DEFAULT;
+                selectedIndex = 0;
+            }
+            compMenu.selectedIndex = compMenu.previousIndex = selectedIndex;
+        }
+        )();
         var changeHandler;
         var encodeButton = controls.querySelector('button');
         if (worker)
@@ -169,7 +185,6 @@ stats
             outputArea.value = '';
         }
         inputArea.oninput = changeHandler;
-        compMenu.selectedIndex = compMenu.previousIndex = 1;
         var compHandler = handleCompInput.bind(changeHandler);
         compMenu.onchange = compHandler;
         // Firefox does not always trigger a change event when an option is selected using the
@@ -248,7 +263,9 @@ stats
         stats.innerHTML = html;
     }
     
-    var currentFeatureObj = JScrewIt.Feature.COMPACT;
+    var Feature = JScrewIt.Feature;
+    
+    var currentFeatureObj;
     var engineSelectionBox;
     var outOfSync;
     var outputSet;
