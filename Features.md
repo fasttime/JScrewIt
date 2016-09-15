@@ -50,10 +50,10 @@ The property that the various string methods returning HTML code such as String.
 _Available in Internet Explorer._
 <a name="CHROME"></a>
 ### `CHROME`
-_An alias for [`CHROME45`](#CHROME45)._
-<a name="CHROME45"></a>
-### `CHROME45`
-Features available in Chrome 45 and Opera 32 or later.
+_An alias for [`CHROME52`](#CHROME52)._
+<a name="CHROME52"></a>
+### `CHROME52`
+Features available in Chrome 52 and Opera 39 or later.
 <a name="COMPACT"></a>
 ### `COMPACT`
 All new browsers' features.
@@ -63,7 +63,7 @@ No support for Node.js and older browsers like Internet Explorer, Safari 8 or An
 Existence of the global object console having the string representation "\[object Console\]".
 This feature may become unavailable when Firebug or Firebug Lite is open and the console panel is enabled.
 
-_Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Android Browser. This feature is not available inside web workers in Chrome, Safari before 7.1+, Opera and Android Browser 4.4+._
+_Available in Edge, Firefox, Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1+ and Android Browser 4.4+._
 <a name="DEFAULT"></a>
 ### `DEFAULT`
 Minimum feature level, compatible with all supported engines in all environments.
@@ -267,7 +267,7 @@ This table lists features available in the most common engines.
 <th>Features</th>
 </tr>
 <tr>
-<td>Chrome 45+, Opera 32+</td>
+<td>Chrome 52+, Opera 39+</td>
 <td>
 <ul>
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
@@ -276,7 +276,6 @@ This table lists features available in the most common engines.
 <li><a href="#ARROW"><code>ARROW</code></a>
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
-<li><a href="#CONSOLE"><code>CONSOLE</code></a>
 <li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
