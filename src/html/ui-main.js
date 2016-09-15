@@ -98,7 +98,7 @@ stats
         var value;
         try
         {
-            value = eval(outputArea.value);
+            value = (0, eval)(outputArea.value);
         }
         catch (error)
         {
