@@ -170,17 +170,16 @@ stats
         }
         )();
         var changeHandler;
-        var encodeButton = controls.querySelector('button');
         if (worker)
         {
-            controls.removeChild(encodeButton);
             changeHandler = encodeAsync;
             worker.onmessage = handleWorkerMessage;
             encodeAsync();
         }
         else
         {
-            encodeButton.onclick = encode;
+            var encodeButton = art('BUTTON', 'Encode', art.on('click', encode));
+            art(controls, encodeButton);
             changeHandler = noEncode;
             outputArea.value = '';
         }
