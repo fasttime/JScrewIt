@@ -11,7 +11,7 @@
 // * ASCII property getters in dot notation
 // * Property getters in bracket notation
 // * Function calls without parameters and with one parameter
-// * The unary operators "!", "+", "++" (pre- and post-increment) and to a limited extent "-"
+// * The unary operators "!", "+", and to a limited extent "-" and "++" (pre- and post-increment)
 // * The binary operators "+" and to a limited extent "-"
 // * Grouping parentheses
 // * White spaces and line terminators
@@ -24,7 +24,8 @@ var expressParse;
 {
     function appendOp(parseInfo, op)
     {
-        var ops = parseInfo.opsStack.slice(-1)[0];
+        var opsStack = parseInfo.opsStack;
+        var ops = opsStack[opsStack.length - 1];
         ops.push(op);
     }
     
@@ -72,7 +73,7 @@ var expressParse;
     
     function applyMod(unit, mod)
     {
-        if (!unit.mod && 'value' in unit && unit.arithmetic)
+        if (!unit.mod && 'value' in unit && unit.arithmetic && !unit.pmod)
         {
             var value = unit.value;
             loop:
@@ -99,7 +100,8 @@ var expressParse;
         }
         if (mod)
         {
-            unit.mod = joinMods(mod, unit.mod || '');
+            mod = joinMods(mod, unit.mod || '', unit.pmod);
+            unit.mod = mod;
             unit.arithmetic = true;
         }
     }
@@ -160,7 +162,7 @@ var expressParse;
     function finalizeUnit(unit)
     {
         var mod = unit.mod || '';
-        if (!/-/.test(mod))
+        if (!/-/.test(mod) && (!/#$/.test(mod) || unit.ops.length || unit.pmod))
         {
             unit.mod = unescapeMod(mod);
             return unit;
@@ -173,7 +175,7 @@ var expressParse;
         return returnable;
     }
     
-    function joinMods(mod1, mod2)
+    function joinMods(mod1, mod2, trimTrailingPlus)
     {
         var mod =
             (mod1 + mod2)
@@ -183,6 +185,8 @@ var expressParse;
             .replace(/\+#/, '#')
             .replace(/!\+!/, '!!')
             .replace('!!!', '!');
+        if (trimTrailingPlus)
+            mod = mod.replace(/\+$/, '');
         return mod;
     }
     
@@ -230,20 +234,22 @@ var expressParse;
             appendOp(parseInfo, { type: 'get', value: identifier });
             return parseNextOp;
         }
-        if (read(parseInfo, /^\+\+/))
-        {
-            appendOp(parseInfo, { type: 'post-increment' });
-            return parseNextOp;
-        }
         var unit = popUnit(parseInfo);
         var ops = popOps(parseInfo);
         if (ops.length)
         {
             delete unit.arithmetic;
-            if (unit.mod)
+            if (unit.mod || unit.pmod)
                 unit = { terms: [unit] };
         }
-        unit.ops = (unit.ops || []).concat(ops);
+        unit.ops = ops = (unit.ops || []).concat(ops);
+        if (ops.length && !unit.mod && !unit.pmod)
+        {
+            var pmod = read(parseInfo, /^\+\+/);
+            unit.pmod = pmod;
+            if (pmod)
+                unit.arithmetic = true;
+        }
         var next = appendTerm(parseInfo, unit);
         return next;
     }
@@ -419,7 +425,7 @@ var expressParse;
     function stringifyUnit(unit)
     {
         var inArray = false;
-        while (!unit.mod && !unit.ops.length && 'value' in unit)
+        while (!unit.mod && !unit.ops.length && !unit.pmod && 'value' in unit)
         {
             var value = unit.value;
             if (!array_isArray(value))
