@@ -11,7 +11,7 @@
 // * ASCII property getters in dot notation
 // * Property getters in bracket notation
 // * Function calls without parameters and with one parameter
-// * The unary operators "!", "+", pre-increment "++" and to a limited extent "-"
+// * The unary operators "!", "+", and to a limited extent "-" and "++" (pre- and post-increment)
 // * The binary operators "+" and to a limited extent "-"
 // * Grouping parentheses
 // * White spaces and line terminators
@@ -22,16 +22,65 @@ var expressParse;
 
 (function ()
 {
-    function applyMods(unit, mods)
+    function appendOp(parseInfo, op)
     {
-        if (!unit.mods && 'value' in unit && unit.arithmetic)
+        var opsStack = parseInfo.opsStack;
+        var ops = opsStack[opsStack.length - 1];
+        ops.push(op);
+    }
+    
+    function appendTerm(parseInfo, term)
+    {
+        var unit = popUnit(parseInfo);
+        var mod = popMod(parseInfo);
+        applyMod(term, mod);
+        if (unit)
+        {
+            if (!finalizeUnit(term))
+                return;
+            var terms = unit.terms;
+            if (terms && !unit.mod)
+            {
+                terms.push(term);
+                if (!term.arithmetic)
+                    delete unit.arithmetic;
+            }
+            else
+            {
+                if (!finalizeUnit(unit))
+                    return;
+                var arithmetic = unit.arithmetic && term.arithmetic;
+                unit = { ops: [], terms: [unit, term] };
+                if (arithmetic)
+                    unit.arithmetic = true;
+            }
+        }
+        else
+            unit = term;
+        var binSign = read(parseInfo, /^(?:\+(?!\+)|-(?!-))/);
+        if (!binSign)
+        {
+            var finalizer = popFinalizer(parseInfo);
+            return finalizer(unit, parseInfo);
+        }
+        if (binSign === '-' && !unit.arithmetic)
+            applyMod(unit, '+');
+        mod = readMod(parseInfo, binSign === '+' ? '' : binSign);
+        pushMod(parseInfo, mod);
+        pushUnit(parseInfo, unit);
+        return parsePrimaryExpr;
+    }
+    
+    function applyMod(unit, mod)
+    {
+        if (!unit.mod && 'value' in unit && unit.arithmetic && !unit.pmod)
         {
             var value = unit.value;
             loop:
-            for (var index = mods.length; index--;)
+            for (var index = mod.length; index--;)
             {
-                var mod = mods[index];
-                switch (mod)
+                var thisMod = mod[index];
+                switch (thisMod)
                 {
                 case '!':
                     value = !value;
@@ -47,11 +96,12 @@ var expressParse;
                 }
             }
             unit.value = value;
-            mods = mods.slice(0, index + 1);
+            mod = mod.slice(0, index + 1);
         }
-        if (mods)
+        if (mod)
         {
-            unit.mods = joinMods(mods, unit.mods || '');
+            mod = joinMods(mod, unit.mod || '', unit.pmod);
+            unit.mod = mod;
             unit.arithmetic = true;
         }
     }
@@ -68,13 +118,54 @@ var expressParse;
         return value;
     }
     
+    function finalizeArrayElement(unit, parseInfo)
+    {
+        if (finalizeUnit(unit) && readSquareBracketRight(parseInfo))
+        {
+            newOps(parseInfo, { value: [unit] });
+            return parseNextOp;
+        }
+    }
+    
+    function finalizeGroup(unit, parseInfo)
+    {
+        if (readParenthesisRight(parseInfo))
+        {
+            newOps(parseInfo, unit);
+            return parseNextOp;
+        }
+    }
+    
+    function finalizeIndexer(op, parseInfo)
+    {
+        if (finalizeUnit(op) && readSquareBracketRight(parseInfo))
+        {
+            var str = stringifyUnit(op);
+            if (str != null)
+                op.str = str;
+            op.type = 'get';
+            appendOp(parseInfo, op);
+            return parseNextOp;
+        }
+    }
+    
+    function finalizeParamCall(op, parseInfo)
+    {
+        if (finalizeUnit(op) && readParenthesisRight(parseInfo))
+        {
+            op.type = 'param-call';
+            appendOp(parseInfo, op);
+            return parseNextOp;
+        }
+    }
+    
     function finalizeUnit(unit)
     {
-        var mods = unit.mods || '';
-        if (mods[0] !== '-')
+        var mod = unit.mod || '';
+        if (!/-/.test(mod) && (!/#$/.test(mod) || unit.ops.length || unit.pmod))
         {
-            unit.mods = unescapeMod(mods);
-            return true;
+            unit.mod = unescapeMod(mod);
+            return unit;
         }
     }
     
@@ -84,9 +175,9 @@ var expressParse;
         return returnable;
     }
     
-    function joinMods(mod1, mod2)
+    function joinMods(mod1, mod2, trimTrailingPlus)
     {
-        var mods =
+        var mod =
             (mod1 + mod2)
             .replace(/\+\+|--/, '+')
             .replace(/\+-|-\+/, '-')
@@ -94,7 +185,9 @@ var expressParse;
             .replace(/\+#/, '#')
             .replace(/!\+!/, '!!')
             .replace('!!!', '!');
-        return mods;
+        if (trimTrailingPlus)
+            mod = mod.replace(/\+$/, '');
+        return mod;
     }
     
     function makeRegExp(richPattern)
@@ -102,6 +195,159 @@ var expressParse;
         var pattern = '^(?:' + replacePattern(richPattern) + ')';
         var regExp = RegExp(pattern);
         return regExp;
+    }
+    
+    function newOps(parseInfo, unit)
+    {
+        pushNewOps(parseInfo);
+        pushUnit(parseInfo, unit);
+    }
+    
+    function parse(parseInfo)
+    {
+        for (var next = parseUnit; typeof next === 'function'; next = next(parseInfo));
+        return next;
+    }
+    
+    function parseNextOp(parseInfo)
+    {
+        if (readParenthesisLeft(parseInfo))
+        {
+            if (readParenthesisRight(parseInfo))
+            {
+                appendOp(parseInfo, { type: 'call' });
+                return parseNextOp;
+            }
+            pushFinalizer(parseInfo, finalizeParamCall);
+            return parseUnit;
+        }
+        if (readSquareBracketLeft(parseInfo))
+        {
+            pushFinalizer(parseInfo, finalizeIndexer);
+            return parseUnit;
+        }
+        if (read(parseInfo, /^\./))
+        {
+            var identifier = read(parseInfo, identifierRegExp);
+            if (!identifier)
+                return;
+            appendOp(parseInfo, { type: 'get', value: identifier });
+            return parseNextOp;
+        }
+        var unit = popUnit(parseInfo);
+        var ops = popOps(parseInfo);
+        if (ops.length)
+        {
+            delete unit.arithmetic;
+            if (unit.mod || unit.pmod)
+                unit = { terms: [unit] };
+        }
+        unit.ops = ops = (unit.ops || []).concat(ops);
+        if (ops.length && !unit.mod && !unit.pmod)
+        {
+            var pmod = read(parseInfo, /^\+\+/);
+            unit.pmod = pmod;
+            if (pmod)
+                unit.arithmetic = true;
+        }
+        var next = appendTerm(parseInfo, unit);
+        return next;
+    }
+    
+    function parsePrimaryExpr(parseInfo)
+    {
+        var strExpr = read(parseInfo, strRegExp);
+        if (strExpr)
+        {
+            var str = evalExpr(strExpr);
+            newOps(parseInfo, { value: str });
+            return parseNextOp;
+        }
+        var constValueExpr = read(parseInfo, constValueRegExp);
+        if (constValueExpr)
+        {
+            var constValue = evalExpr(constValueExpr);
+            newOps(parseInfo, { arithmetic: true, value: constValue });
+            return parseNextOp;
+        }
+        if (readSquareBracketLeft(parseInfo))
+        {
+            if (readSquareBracketRight(parseInfo))
+            {
+                newOps(parseInfo, { value: [] });
+                return parseNextOp;
+            }
+            pushFinalizer(parseInfo, finalizeArrayElement);
+            return parseUnit;
+        }
+        if (readParenthesisLeft(parseInfo))
+        {
+            pushFinalizer(parseInfo, finalizeGroup);
+            return parseUnit;
+        }
+        var identifier = read(parseInfo, identifierRegExp);
+        if (identifier && isReturnableIdentifier(identifier))
+        {
+            newOps(parseInfo, { identifier: identifier });
+            return parseNextOp;
+        }
+    }
+    
+    function parseUnit(parseInfo)
+    {
+        var MAX_PARSABLE_NESTINGS = 1000;
+        
+        if (parseInfo.finalizerStack.length <= MAX_PARSABLE_NESTINGS)
+        {
+            var mod = readMod(parseInfo, '');
+            pushMod(parseInfo, mod);
+            pushUnit(parseInfo);
+            return parsePrimaryExpr;
+        }
+    }
+    
+    function popFinalizer(parseInfo)
+    {
+        var ret = parseInfo.finalizerStack.pop();
+        return ret;
+    }
+    
+    function popMod(parseInfo)
+    {
+        var mod = parseInfo.modStack.pop();
+        return mod;
+    }
+    
+    function popOps(parseInfo)
+    {
+        var ops = parseInfo.opsStack.pop();
+        return ops;
+    }
+    
+    function popUnit(parseInfo)
+    {
+        var unit = parseInfo.unitStack.pop();
+        return unit;
+    }
+    
+    function pushFinalizer(parseInfo, finalizer)
+    {
+        parseInfo.finalizerStack.push(finalizer);
+    }
+    
+    function pushMod(parseInfo, mod)
+    {
+        parseInfo.modStack.push(mod);
+    }
+    
+    function pushNewOps(parseInfo)
+    {
+        parseInfo.opsStack.push([]);
+    }
+    
+    function pushUnit(parseInfo, unit)
+    {
+        parseInfo.unitStack.push(unit);
     }
     
     function read(parseInfo, regExp)
@@ -116,12 +362,12 @@ var expressParse;
         }
     }
     
-    function readMods(parseInfo, mods)
+    function readMod(parseInfo, mod)
     {
-        var mod;
-        while (mod = read(parseInfo, /^(?:!|\+\+?|-(?!-))/))
-            mods = joinMods(mods, escapeMod(mod));
-        return mods;
+        var newMod;
+        while (newMod = read(parseInfo, /^(?:!|\+\+?|-(?!-))/))
+            mod = joinMods(mod, escapeMod(newMod));
+        return mod;
     }
     
     function readParenthesisLeft(parseInfo)
@@ -134,56 +380,6 @@ var expressParse;
     {
         var match = read(parseInfo, /^\)/);
         return match;
-    }
-    
-    function readPrimaryExpr(parseInfo)
-    {
-        var unit;
-        var strExpr = read(parseInfo, strRegExp);
-        if (strExpr)
-        {
-            var str = evalExpr(strExpr);
-            unit = { value: str };
-            return unit;
-        }
-        var constValueExpr = read(parseInfo, constValueRegExp);
-        if (constValueExpr)
-        {
-            var value = evalExpr(constValueExpr);
-            unit = { arithmetic: true, value: value };
-            return unit;
-        }
-        if (readSquareBracketLeft(parseInfo))
-        {
-            if (readSquareBracketRight(parseInfo))
-                unit = { value: [] };
-            else
-            {
-                var op = readUnit(parseInfo);
-                if (op)
-                {
-                    if (readSquareBracketRight(parseInfo))
-                    {
-                        unit = { value: [op] };
-                        parseInfo.composite = false;
-                    }
-                }
-            }
-            return unit;
-        }
-        if (readParenthesisLeft(parseInfo))
-        {
-            unit = readUnit(parseInfo, true);
-            if (!unit || !readParenthesisRight(parseInfo))
-                return;
-            return unit;
-        }
-        var identifier = read(parseInfo, identifierRegExp);
-        if (identifier && isReturnableIdentifier(identifier))
-        {
-            unit = { identifier: identifier };
-            return unit;
-        }
     }
     
     function readSeparatorOrColon(parseInfo)
@@ -201,117 +397,6 @@ var expressParse;
     {
         var match = read(parseInfo, /^]/);
         return match;
-    }
-    
-    function readUnit(parseInfo, allowInexpressibleUnit)
-    {
-        if (parseInfo.height--)
-        {
-            var unit;
-            for (;;)
-            {
-                var binSign;
-                if (unit)
-                {
-                    binSign = read(parseInfo, /^(?:\+(?!\+)|-(?!-))/);
-                    if (!binSign)
-                    {
-                        ++parseInfo.height;
-                        if (allowInexpressibleUnit || finalizeUnit(unit))
-                            return unit;
-                        return;
-                    }
-                    if (binSign === '-' && !unit.arithmetic)
-                        applyMods(unit, '+');
-                }
-                else
-                    binSign = '';
-                var mods = readMods(parseInfo, binSign === '+' ? '' : binSign);
-                var term = readUnitCore(parseInfo);
-                if (!term)
-                    return;
-                applyMods(term, mods);
-                if (unit)
-                {
-                    if (!finalizeUnit(term))
-                        return;
-                    var terms = unit.terms;
-                    if (terms && !unit.mods)
-                    {
-                        terms.push(term);
-                        if (!term.arithmetic)
-                            delete unit.arithmetic;
-                    }
-                    else
-                    {
-                        if (!finalizeUnit(unit))
-                            return;
-                        var arithmetic = unit.arithmetic && term.arithmetic;
-                        unit = { ops: [], terms: [unit, term] };
-                        if (arithmetic)
-                            unit.arithmetic = true;
-                    }
-                }
-                else
-                    unit = term;
-            }
-        }
-    }
-    
-    function readUnitCore(parseInfo)
-    {
-        var unit = readPrimaryExpr(parseInfo);
-        if (unit)
-        {
-            var ops = [];
-            for (;;)
-            {
-                var op;
-                if (readParenthesisLeft(parseInfo))
-                {
-                    if (readParenthesisRight(parseInfo))
-                        op = { type: 'call' };
-                    else
-                    {
-                        op = readUnit(parseInfo);
-                        if (!op || !readParenthesisRight(parseInfo))
-                            return;
-                        op.type = 'param-call';
-                    }
-                }
-                else if (readSquareBracketLeft(parseInfo))
-                {
-                    op = readUnit(parseInfo);
-                    if (!op || !readSquareBracketRight(parseInfo))
-                        return;
-                    var str = stringifyUnit(op);
-                    if (str != null)
-                        op.str = str;
-                    op.type = 'get';
-                }
-                else if (read(parseInfo, /^\./))
-                {
-                    var identifier = read(parseInfo, identifierRegExp);
-                    if (!identifier)
-                        return;
-                    op = { type: 'get', value: identifier };
-                }
-                else
-                    break;
-                ops.push(op);
-                delete unit.arithmetic;
-            }
-            if (ops.length && unit.mods)
-                unit = { terms: [unit] };
-            else
-            {
-                var unitOps = unit.ops;
-                if (unitOps)
-                    ops = unitOps.concat(ops);
-            }
-            unit.ops = ops;
-            return unit;
-        }
     }
     
     function replaceAndGroupToken(unused, tokenName)
@@ -340,7 +425,7 @@ var expressParse;
     function stringifyUnit(unit)
     {
         var inArray = false;
-        while (!unit.mods && !unit.ops.length && 'value' in unit)
+        while (!unit.mod && !unit.ops.length && !unit.pmod && 'value' in unit)
         {
             var value = unit.value;
             if (!array_isArray(value))
@@ -413,11 +498,18 @@ var expressParse;
     expressParse =
         function (input)
         {
-            var parseInfo = { data: input, height: 500 };
+            var parseInfo =
+            {
+                data: input,
+                modStack: [],
+                opsStack: [],
+                finalizerStack: [finalizeUnit],
+                unitStack: []
+            };
             readSeparatorOrColon(parseInfo);
             if (!parseInfo.data)
                 return true;
-            var unit = readUnit(parseInfo);
+            var unit = parse(parseInfo);
             if (unit)
             {
                 readSeparatorOrColon(parseInfo);
