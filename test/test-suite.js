@@ -456,7 +456,7 @@ uneval
                                 test('modified constants', '!-0', '!![]');
                                 test('modified strings', '+"false"', '+(![]+[])');
                                 test(
-                                    'outer modifiers in constant-based composite expressions',
+                                    'outer modifiers in call expressions on constants',
                                     '+undefined()',
                                     '+[][[]]()'
                                 );
@@ -468,8 +468,8 @@ uneval
                                 test('redundant modifiers on constants', '-+ +-!!!+!!42', '+[]');
                                 test(
                                     'redundant modifiers on non-constants',
-                                    '-+ +-!!!-!!+ ++""',
-                                    '+!++([]+[])'
+                                    '-+ +-!!!-!!+ ++!+""[0]++',
+                                    '+!++!([]+[])[+[]]++'
                                 );
                                 
                                 // Groupings
@@ -500,11 +500,34 @@ uneval
                                 test('', '1+1-(-1)', '+!![]+(+!![])+(+!![])');
                                 
                                 // Pre-increments
-                                test('pre-incremented constant', '++0', '++(+[])');
-                                test('pre-incremented non-constant', '++[][0]', '++[][+[]]');
+                                test('pre-incremented call expression', '++false()', '++(![])()');
+                                test(
+                                    'pre-incremented left-hand expression',
+                                    '++[][0]',
+                                    '++[][+[]]'
+                                );
+                                
+                                // Post-increments
+                                test('post-increments', '[0][0]++', '[+[]][+[]]++');
+                                test(
+                                    'modified grouped post-increments',
+                                    '!([0][0]++)',
+                                    '![+[]][+[]]++'
+                                );
+                                test(
+                                    'grouped post-increments with operators',
+                                    '([0].a++)[0]',
+                                    '([+[]][(![]+[])[+!![]]]++)[+[]]'
+                                );
+                                test(
+                                    'Post-increment arithmetic subtraction',
+                                    '[0][0]++ - 1',
+                                    '[+[]][+[]]+++*',
+                                    -1
+                                );
                                 
                                 // Limits
-                                var str = nestedBrackets(500);
+                                var str = nestedBrackets(1000);
                                 test('deep nestings', str, str);
                             }
                         );
@@ -539,7 +562,14 @@ uneval
                                 test('object literal indexers', 'array[{}]');
                                 test('more than one parameter', 'parseInt("10", 2)');
                                 test('keywords', 'debugger');
-                                test('post-increments', 'i++');
+                                test('pre-decrements', '--i');
+                                test('pre-increments on number', '++0');
+                                test('pre-increments on array', '++[]');
+                                test('pre-increments on indetifier', '++a');
+                                test('post-incremented arrays', '[]++');
+                                test('post-incremented indetifiers', 'a++');
+                                test('post-increments followed by an operation', '[0][0]++[0]');
+                                test('double post-increments', '([0][0]++)++');
                                 test(
                                     'unmodified unmatched grouping parentheses around constant',
                                     '(0'
@@ -550,8 +580,9 @@ uneval
                                 test('unclosed singleton array square bracket', '[0');
                                 test('unclosed indexer square bracket', '0[0');
                                 test('unrecognized tokens', 'a...');
-                                test('too deep nestings', nestedBrackets(501));
+                                test('too deep nestings', nestedBrackets(1001));
                                 test('minus signed standalone strings', '-""');
+                                test('modified minus signed strings', '++-""');
                                 test('minus signed strings as first terms in a sum', '-"" + ""');
                                 test('minus signed arrays', '-[]');
                                 test('string subtrahends', '1 - ""');
@@ -1689,6 +1720,7 @@ uneval
                         test('with a call operation', '""[0]()');
                         test('with a param-call operation', '""(0)[""]');
                         test('with a get operation', '""[0][""]');
+                        test('with a post-increment', '[0][0]++');
                         test('with an empty array', '""([])');
                         test('with a singleton array', '""([0])');
                         test('with a sum', '1+1');
