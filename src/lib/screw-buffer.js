@@ -1,4 +1,13 @@
-/* global LEVEL_OBJECT, LEVEL_NUMERIC, LEVEL_STRING, LEVEL_UNDEFINED, assignNoEnum */
+/*
+global
+LEVEL_NUMERIC,
+LEVEL_OBJECT,
+LEVEL_STRING,
+LEVEL_UNDEFINED,
+assignNoEnum,
+math_max,
+math_pow
+*/
 
 // This implementation assumes that all numeric solutions have an outer plus, and all other
 // character solutions have none.
@@ -257,7 +266,7 @@ var hasOuterPlus;
             
             var bridgeUsed;
             var length = bond ? -1 : -3;
-            var maxSolutionCount = Math.pow(2, groupThreshold - 1);
+            var maxSolutionCount = math_pow(2, groupThreshold - 1);
             var solutions = [];
             
             assignNoEnum(
@@ -305,7 +314,7 @@ var hasOuterPlus;
                                 var halfCount = groupSize * maxGroupCount;
                                 var capacity = 2 * halfCount - count;
                                 var leftEndCount =
-                                    Math.max(
+                                    math_max(
                                         halfCount - capacity + capacity % (groupSize - 1),
                                         (maxGroupCount / 2 ^ 0) * (groupSize + 1)
                                     );

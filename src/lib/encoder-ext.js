@@ -15,6 +15,7 @@ createParseIntArgDefault,
 expressParse,
 getAppendLength,
 getFigure,
+math_max,
 object_keys
 */
 
@@ -132,7 +133,7 @@ var wrapWithEval;
     function initMinCharIndexArrayStrLength(input)
     {
         var minCharIndexArrayStrLength =
-            Math.max((input.length - 1) * (SIMPLE.false.length + 1) - 3, 0);
+            math_max((input.length - 1) * (SIMPLE.false.length + 1) - 3, 0);
         return minCharIndexArrayStrLength;
     }
     
@@ -267,7 +268,7 @@ var wrapWithEval;
             perfInfoList.inputLength = inputLength;
             codingLog.push(perfInfoList);
             var inputData = Object(input);
-            Object.keys(options).forEach(
+            object_keys(options).forEach(
                 function (optName)
                 {
                     inputData[optName] = options[optName];

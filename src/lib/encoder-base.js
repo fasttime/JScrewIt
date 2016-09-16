@@ -17,6 +17,7 @@ createSolution,
 expressParse,
 hasOuterPlus,
 maskIncludes,
+math_abs,
 object_keys
 */
 
@@ -341,7 +342,7 @@ var resolveSimple;
                     {
                         var negative = value < 0 || 1 / value < 0;
                         var str;
-                        var abs = Math.abs(value);
+                        var abs = math_abs(value);
                         if (abs === Infinity)
                             str = JSFUCK_INFINITY;
                         else
