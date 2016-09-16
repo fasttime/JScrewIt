@@ -6,6 +6,7 @@ Node,
 array_isArray,
 array_prototype_every,
 array_prototype_forEach,
+array_prototype_push,
 assignNoEnum,
 console,
 document,
@@ -1317,7 +1318,7 @@ var validMaskFromArrayOrStringOrFeature;
                         var name = featureObj.name;
                         featureNameSet[name] = null;
                         var includes = includesMap[name];
-                        Array.prototype.push.apply(allIncludes, includes);
+                        array_prototype_push.apply(allIncludes, includes);
                     }
                 }
             );
