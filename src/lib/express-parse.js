@@ -52,16 +52,14 @@ var expressParse;
             {
                 terms.push(term);
                 if (!term.arithmetic)
-                    delete unit.arithmetic;
+                    unit.arithmetic = false;
             }
             else
             {
                 if (!finalizeUnit(unit))
                     return;
                 var arithmetic = unit.arithmetic && term.arithmetic;
-                unit = { ops: [], terms: [unit, term] };
-                if (arithmetic)
-                    unit.arithmetic = true;
+                unit = { arithmetic: arithmetic, ops: [], terms: [unit, term] };
             }
         }
         else
@@ -243,7 +241,7 @@ var expressParse;
         var ops = popOps(parseInfo);
         if (ops.length)
         {
-            delete unit.arithmetic;
+            unit.arithmetic = false;
             if (unit.mod || unit.pmod)
                 unit = { terms: [unit] };
         }
@@ -467,7 +465,7 @@ var expressParse;
         Separator:
             '#SeparatorChar|\\/\\/.*(?!.)|\\/\\*[\\s\\S]*?\\*\\/',
         SeparatorChar:
-            '[\\s\uFEFF]', // U+FEFF is missed by /\s/ on Android Browsers < 4.1.x.
+            '[\\s\uFEFF]', // U+FEFF is missed by /\s/ in Android Browser < 4.1.x.
         SingleQuotedString:
             '\'(?:#EscapeSequence|(?![\'\\\\]).)*\'',
     };
@@ -480,18 +478,20 @@ var expressParse;
     // evaluation.
     var UNRETURNABLE_WORDS =
     [
-        'arguments',
-        'debugger',
-        'delete',
-        'if',
-        'new',
-        'return',
-        'this',
-        'throw',
-        'typeof',
-        'void',
-        'while',
-        'with',
+        'arguments',    // shadowed in function body
+        'debugger',     // : debugger;
+        'delete',       // : delete(x);
+        'if',           // : if(x);
+        'let',          // may be an identifier in non-strict mode
+        'new',          // : new(x);
+        'return',       // : return;
+        'this',         // shadowed in function body
+        'throw',        // : throw(x);
+        'typeof',       // : typeof(x);
+        'void',         // : void(x);
+        'while',        // : while(x);
+        'with',         // : with(x);
+        'yield',        // may be an identifier in non-strict mode
     ];
     
     var constValueRegExp        = makeRegExp('(?:#NumericLiteral|#ConstIdentifier)(?![\\w$])');
