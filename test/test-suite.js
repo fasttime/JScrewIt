@@ -444,6 +444,11 @@ uneval
                                 test('undefined indexers', '0[undefined]', '(+[])[[][[]]]');
                                 test('array of undefined indexers', '0[[undefined]]', '(+[])[[]]');
                                 test('dot properties', 'Array.isArray', '*(*)()[*]', Array.isArray);
+                                test(
+                                    'dot properties with constant-like names',
+                                    'self.undefined',
+                                    '*[[][[]]]'
+                                );
                                 test('calls without parameters', 'Number()', '*(*)()()', 0);
                                 test(
                                     'calls with parameters',

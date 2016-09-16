@@ -22,6 +22,15 @@ var expressParse;
 
 (function ()
 {
+    function appendGetOp(parseInfo, op)
+    {
+        var str = stringifyUnit(op);
+        if (str != null)
+            op.str = str;
+        op.type = 'get';
+        appendOp(parseInfo, op);
+    }
+    
     function appendOp(parseInfo, op)
     {
         var opsStack = parseInfo.opsStack;
@@ -140,11 +149,7 @@ var expressParse;
     {
         if (finalizeUnit(op) && readSquareBracketRight(parseInfo))
         {
-            var str = stringifyUnit(op);
-            if (str != null)
-                op.str = str;
-            op.type = 'get';
-            appendOp(parseInfo, op);
+            appendGetOp(parseInfo, op);
             return parseNextOp;
         }
     }
@@ -231,7 +236,7 @@ var expressParse;
             var identifier = read(parseInfo, identifierRegExp);
             if (!identifier)
                 return;
-            appendOp(parseInfo, { type: 'get', value: identifier });
+            appendGetOp(parseInfo, { ops: [], value: identifier });
             return parseNextOp;
         }
         var unit = popUnit(parseInfo);

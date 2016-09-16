@@ -191,7 +191,7 @@ var resolveSimple;
             var groupingRequired = bond && mod[0] === '+';
             var maxCoreLength =
                 maxLength - (mod ? (groupingRequired ? 2 : 0) + mod.length : 0) - pmod.length;
-            var ops = unit.ops || [];
+            var ops = unit.ops;
             var opCount = ops.length;
             var primaryExprBondStrength =
                 opCount || pmod ?
