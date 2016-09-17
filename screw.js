@@ -131,6 +131,7 @@ function prompt()
     else
     {
         var fs = require('fs');
+        var timeUtils = require('./tools/time-utils');
         
         var input;
         var output;
@@ -139,7 +140,7 @@ function prompt()
         {
             input = fs.readFileSync(inputFileName);
             encodingTime =
-                cli.timeThis(
+                timeUtils.timeThis(
                     function ()
                     {
                         output = JScrewIt.encode(input, options);
