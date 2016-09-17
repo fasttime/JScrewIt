@@ -1,4 +1,4 @@
-/* global Empty, array_isArray */
+/* global Empty, array_isArray, json_parse */
 
 // Recognized syntax elements include:
 //
@@ -113,6 +113,20 @@ var expressParse;
         }
     }
     
+    function defaultReadIdentifierData(parseInfo)
+    {
+        var rawIdentifier = read(parseInfo, rawIdentifierRegExp);
+        if (rawIdentifier)
+        {
+            var identifier = json_parse('"' + rawIdentifier + '"');
+            if (/^[$A-Z_a-z][$0-9A-Z_a-z]*$/.test(identifier))
+            {
+                var escaped = identifier.length < rawIdentifier.length;
+                return { escaped: escaped, identifier: identifier };
+            }
+        }
+    }
+    
     function escapeMod(mod)
     {
         var escapedMod = mod.replace(/\+\+/g, '#');
@@ -172,9 +186,11 @@ var expressParse;
         }
     }
     
-    function isReturnableIdentifier(identifier)
+    function isReturnableIdentifier(identifier, escaped)
     {
-        var returnable = UNRETURNABLE_WORDS.indexOf(identifier) < 0;
+        var returnable =
+            UNRETURNABLE_WORDS.indexOf(identifier) < 0 &&
+            (!escaped || INESCAPABLE_WORDS.indexOf(identifier) < 0);
         return returnable;
     }
     
@@ -231,10 +247,10 @@ var expressParse;
         }
         if (read(parseInfo, /^\./))
         {
-            var identifier = read(parseInfo, identifierRegExp);
-            if (!identifier)
+            var identifierData = defaultReadIdentifierData(parseInfo);
+            if (!identifierData)
                 return;
-            appendGetOp(parseInfo, { ops: [], value: identifier });
+            appendGetOp(parseInfo, { ops: [], value: identifierData.identifier });
             return parseNextOp;
         }
         var unit = popUnit(parseInfo);
@@ -288,11 +304,15 @@ var expressParse;
             pushFinalizer(parseInfo, finalizeGroup);
             return parseUnit;
         }
-        var identifier = read(parseInfo, identifierRegExp);
-        if (identifier && isReturnableIdentifier(identifier))
+        var identifierData = defaultReadIdentifierData(parseInfo);
+        if (identifierData)
         {
-            newOps(parseInfo, { identifier: identifier });
-            return parseNextOp;
+            var identifier = identifierData.identifier;
+            if (isReturnableIdentifier(identifier, identifierData.escaped))
+            {
+                newOps(parseInfo, { identifier: identifier });
+                return parseNextOp;
+            }
         }
     }
     
@@ -468,9 +488,14 @@ var expressParse;
             '[\\s\uFEFF]', // U+FEFF is missed by /\s/ in Android Browser < 4.1.x.
         SingleQuotedString:
             '\'(?:#EscapeSequence|(?![\'\\\\]).)*\'',
+        UnicodeEscapeSequence:
+            '\\\\u#HexDigit{4}',
     };
     
     var tokenCache = new Empty();
+    
+    // Reserved words and that cannot be written with escape sequences.
+    var INESCAPABLE_WORDS = ['false', 'null', 'true'];
     
     // This list includes reserved words and identifiers that would cause a change in a script's
     // behavior when placed after a return statement inside a Function invocation.
@@ -495,7 +520,7 @@ var expressParse;
     ];
     
     var constValueRegExp        = makeRegExp('(?:#NumericLiteral|#ConstIdentifier)(?![\\w$])');
-    var identifierRegExp        = makeRegExp('[$A-Z_a-z][$0-9A-Z_a-z]*');
+    var rawIdentifierRegExp     = makeRegExp('(?:[$0-9A-Z_a-z]|#UnicodeEscapeSequence)+');
     var separatorOrColonRegExp  = makeRegExp('(?:#Separator|;)*');
     var separatorRegExp         = makeRegExp('#Separator*');
     var strRegExp               = makeRegExp('#SingleQuotedString|#DoubleQuotedString');
