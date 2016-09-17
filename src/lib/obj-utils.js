@@ -7,6 +7,7 @@ var array_prototype_map;
 var array_prototype_push;
 var assignNoEnum;
 var createConstructor;
+var json_parse;
 var math_abs;
 var math_max;
 var math_pow;
@@ -49,6 +50,8 @@ var object_getOwnPropertyDescriptor;
             constructor.prototype = prototype;
             return constructor;
         };
+    
+    json_parse = JSON.parse;
     
     math_abs    = Math.abs;
     math_max    = Math.max;

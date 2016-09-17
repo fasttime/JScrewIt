@@ -405,6 +405,12 @@ uneval
                                     '+[]'
                                 );
                                 test('identifiers', 'String', '*(*)()', String);
+                                test(
+                                    'escaped identifiers',
+                                    '\\u0053\\u0074\\u0072\\u0069\\u006e\\u0067',
+                                    '*(*)()',
+                                    \u0053\u0074\u0072\u0069\u006e\u0067
+                                );
                                 test('unsigned numbers', '4.25E-7', '+(*)', 4.25e-7);
                                 test('double-quoted strings', '"He\\x6c\\u006Co!"', '*', 'Hello!');
                                 test('single-quoted strings', '\'Hel\\\r\nlo\\0\'', '*', 'Hello\0');
@@ -563,6 +569,7 @@ uneval
                                 test('extended Unicode escape sequences', '"\\u{1}"');
                                 test('legacy octal literals', '010');
                                 test('legacy octal-like literals', '09');
+                                test('inescapable literals with escape sequences', 'f\\u0061lse');
                                 test('object literal parameters', 'doSomething({})');
                                 test('object literal indexers', 'array[{}]');
                                 test('more than one parameter', 'parseInt("10", 2)');
