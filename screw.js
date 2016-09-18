@@ -62,7 +62,6 @@ function printVersion()
 
 function prompt()
 {
-    process.stdin.resume();
     process.stdout.write('SCREW> ');
 }
 
@@ -99,29 +98,33 @@ function prompt()
     
     if (inputFileName == null)
     {
-        try
-        {
-            JScrewIt.encode('', options); // validate options
-        }
-        catch (error)
-        {
-            console.error(error.message);
-            return;
-        }
-        process.stdin.on(
-            'data',
+        var tryEncode =
             function (input)
             {
-                var lines = (input + '').match(/.+/g);
-                if (lines)
+                var output;
+                try
                 {
-                    lines.forEach(
-                        function (line)
-                        {
-                            var output = JScrewIt.encode(line, options);
-                            process.stdout.write(output + '\n');
-                        }
-                    );
+                    output = JScrewIt.encode(input, options);
+                }
+                catch (error)
+                {
+                    console.error(error.message);
+                }
+                return output;
+            };
+        if (tryEncode('') == null) // validate options
+            return;
+        var readline = require('readline');
+        var rl = readline.createInterface({ input: process.stdin, terminal: false });
+        rl.on(
+            'line',
+            function (input)
+            {
+                if (input)
+                {
+                    var output = tryEncode(input);
+                    if (output != null)
+                        console.log(output);
                 }
                 prompt();
             }
