@@ -11,6 +11,7 @@ assignNoEnum,
 console,
 document,
 history,
+json_stringify,
 maskAnd,
 maskAreEqual,
 maskIncludes,
@@ -223,7 +224,7 @@ var validMaskFromArrayOrStringOrFeature;
             var name = String(arg);
             var featureObj = ALL[name];
             if (!featureObj)
-                throw new Error('Unknown feature ' + JSON.stringify(name));
+                throw new Error('Unknown feature ' + json_stringify(name));
             mask = featureObj.mask;
         }
         return mask;
