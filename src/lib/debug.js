@@ -27,6 +27,7 @@ featureFromMask,
 getValidFeatureMask,
 hasOuterPlus,
 isMaskCompatible,
+json_stringify,
 maskAnd,
 maskIncludes,
 maskIsEmpty,
@@ -101,7 +102,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         {
             constant += '';
             if (!/^[$A-Z_a-z][$0-9A-Z_a-z]*$/.test(constant))
-                throw new SyntaxError('Invalid identifier ' + JSON.stringify(constant));
+                throw new SyntaxError('Invalid identifier ' + json_stringify(constant));
             if (!encoder.hasOwnProperty('constantDefinitions'))
                 encoder.constantDefinitions = object_create(CONSTANTS);
             var entries = [define(String(definition))];

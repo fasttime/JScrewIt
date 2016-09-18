@@ -16,6 +16,7 @@ createConstructor,
 createSolution,
 expressParse,
 hasOuterPlus,
+json_stringify,
 maskIncludes,
 math_abs,
 object_keys
@@ -34,7 +35,7 @@ var resolveSimple;
     var CharCache = createConstructor(STATIC_CHAR_CACHE);
     var ConstCache = createConstructor(STATIC_CONST_CACHE);
     
-    var quoteString = JSON.stringify;
+    var quoteString = json_stringify;
     
     Encoder =
         function (mask)
