@@ -259,7 +259,11 @@ var expressParse;
         {
             unit.arithmetic = false;
             if (unit.mod || unit.pmod)
+            {
+                if (!finalizeUnit(unit))
+                    return;
                 unit = { terms: [unit] };
+            }
         }
         unit.ops = ops = (unit.ops || []).concat(ops);
         if (ops.length && !unit.mod && !unit.pmod)

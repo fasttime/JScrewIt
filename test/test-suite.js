@@ -597,6 +597,7 @@ uneval
                                 test('modified minus signed strings', '++-""');
                                 test('minus signed strings as first terms in a sum', '-"" + ""');
                                 test('minus signed arrays', '-[]');
+                                test('operations on minus signed arrays', '(-[])()');
                                 test('string subtrahends', '1 - ""');
                                 test('grouped string subtrahend subtractions', '(1 - "")');
                                 test('array subtrahends', '1 - []');
