@@ -696,7 +696,7 @@ var createSolution;
         '+': '(1e100 + [])[2]',
         ',':
         [
-            define('([].slice.call("false") + [])[1]'),
+            define('"f,a,l,s,e"[1]'),
             define(commaDefinition)
         ],
         '-': '(+".0000000001" + [])[2]',
@@ -835,7 +835,7 @@ var createSolution;
         [
             define('btoa("".italics())[0]', ATOB),
             define('btoa("".sub())[0]', ATOB),
-            define('(RP_3_NO + btoa("falseO"))[10]', ATOB),
+            define('btoa(PLAIN_OBJECT)[11]', ATOB),
             define('(Function("return statusbar")() + [])[11]', BARPROP),
             define('"0".sup()[10]', CAPITAL_HTML),
             defineDefaultChar('P')
