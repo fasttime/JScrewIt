@@ -835,7 +835,7 @@ uneval
                             {
                                 var featureObj = Feature.COMPACT;
                                 var featureNames =
-                                    Feature.commonOf('CHROME52', 'EDGE', 'FF31', 'SAFARI90');
+                                    Feature.commonOf('CHROME52', 'EDGE', 'FF31', 'SAFARI100');
                                 var expectedFeature = Feature(featureNames);
                                 var actualElementaryNames = featureObj.elementaryNames;
                                 var expectedElementaryNames = expectedFeature.elementaryNames;
