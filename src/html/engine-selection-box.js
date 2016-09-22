@@ -11,21 +11,21 @@ function createEngineSelectionBox()
             name: 'Chrome',
             versions:
             [
-                { feature: 'CHROME52', number: '52+' }
+                { feature: 'CHROME52', number: '52+' },
             ]
         },
         {
             name: 'Edge',
             versions:
             [
-                { feature: 'EDGE' }
+                { feature: 'EDGE' },
             ]
         },
         {
             name: 'Firefox',
             versions:
             [
-                { feature: 'FF31', number: '31+' }
+                { feature: 'FF31', number: '31+' },
             ]
         },
         {
@@ -35,7 +35,7 @@ function createEngineSelectionBox()
                 { feature: 'IE9', number: '9' },
                 { feature: 'IE10', number: '10' },
                 { feature: 'IE11', number: '11' },
-                { feature: 'IE11_WIN10', number: '11 (W10)' }
+                { feature: 'IE11_WIN10', number: '11 (W10)' },
             ]
         },
         {
@@ -44,14 +44,15 @@ function createEngineSelectionBox()
             [
                 { feature: 'SAFARI70', number: '7.0' },
                 { feature: 'SAFARI71', number: '7.1–8.0' },
-                { feature: 'SAFARI90', number: '9.0' }
+                { feature: 'SAFARI90', number: '9.0' },
+                { feature: 'SAFARI100', number: '10.0' },
             ]
         },
         {
             name: 'Opera',
             versions:
             [
-                { feature: 'CHROME52', number: '39+' }
+                { feature: 'CHROME52', number: '39+' },
             ]
         },
         {
@@ -60,7 +61,7 @@ function createEngineSelectionBox()
             [
                 { feature: 'ANDRO40', number: '4.0' },
                 { feature: 'ANDRO41', number: '4.1–4.3' },
-                { feature: 'ANDRO44', number: '4.4' }
+                { feature: 'ANDRO44', number: '4.4' },
             ]
         },
         {

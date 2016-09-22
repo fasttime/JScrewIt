@@ -713,10 +713,11 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'All new browsers\' features.\n' +
-                'No support for Node.js and older browsers like Internet Explorer, Safari 8 or ' +
-                'Android Browser',
+                'No support for Node.js and older browsers like Internet Explorer, Safari 9 or ' +
+                'Android Browser.',
             includes:
             [
+                'ARROW',
                 'ATOB',
                 'BARPROP',
                 'ENTRIES_OBJ',
@@ -733,12 +734,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'WINDOW'
             ],
-            attributes:
-            {
-                'no-atob-in-web-worker': null,
-                'safari-bug-21820506': null,
-                'web-worker-restriction': null
-            }
+            attributes: { 'web-worker-restriction': null }
         },
         ANDRO40:
         {
@@ -1013,7 +1009,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         SAFARI70:
         {
-            description: 'Features available in Safari 7.0 or later.',
+            description: 'Features available in Safari 7.0.',
             includes:
             [
                 'ATOB',
@@ -1040,7 +1036,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         SAFARI71:
         {
-            description: 'Features available in Safari 7.1 or later.',
+            description: 'Features available in Safari 7.1 and Safari 8.',
             includes:
             [
                 'ARRAY_ITERATOR',
@@ -1070,7 +1066,7 @@ var validMaskFromArrayOrStringOrFeature;
         SAFARI80: 'SAFARI71',
         SAFARI90:
         {
-            description: 'Features available in Safari 9.0 or later.',
+            description: 'Features available in Safari 9.',
             includes:
             [
                 'ATOB',
@@ -1098,6 +1094,32 @@ var validMaskFromArrayOrStringOrFeature;
                 'safari-bug-21820506': null,
                 'web-worker-restriction': null
             }
+        },
+        SAFARI100:
+        {
+            description: 'Features available in Safari 10.',
+            includes:
+            [
+                'ARROW',
+                'ATOB',
+                'BARPROP',
+                'CONSOLE',
+                'ESC_HTML_QUOT_ONLY',
+                'FILL',
+                'FROM_CODE_POINT',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'INCR_CHAR',
+                'NAME',
+                'NO_IE_SRC',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'NO_OLD_SAFARI_LF',
+                'NO_V8_SRC',
+                'UNDEFINED',
+                'WINDOW'
+            ],
+            attributes: { 'web-worker-restriction': null }
         }
     };
     

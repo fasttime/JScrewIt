@@ -29,12 +29,12 @@ _Available in Chrome, Firefox, Safari 7.1+, Opera and Node.js 0.12+._
 ### `ARROW`
 Support for arrow functions.
 
-_Available in Chrome, Edge, Firefox, Opera and Node.js 4+._
+_Available in Chrome, Edge, Firefox, Safari 10.0+, Opera and Node.js 4+._
 <a name="ATOB"></a>
 ### `ATOB`
 Existence of the global functions atob and btoa.
 
-_Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari._
+_Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari before 10.0+._
 <a name="AUTO"></a>
 ### `AUTO`
 All features available in the current engine.
@@ -57,7 +57,7 @@ Features available in Chrome 52 and Opera 39 or later.
 <a name="COMPACT"></a>
 ### `COMPACT`
 All new browsers' features.
-No support for Node.js and older browsers like Internet Explorer, Safari 8 or Android Browser
+No support for Node.js and older browsers like Internet Explorer, Safari 9 or Android Browser.
 <a name="CONSOLE"></a>
 ### `CONSOLE`
 Existence of the global object console having the string representation "\[object Console\]".
@@ -193,7 +193,7 @@ Features available in Node.js 4.0 or later.
 ### `NODECONSTRUCTOR`
 Existence of the global object Node having the string representation "\[object NodeConstructor\]".
 
-_Available in Safari. This feature is not available inside web workers._
+_Available in Safari before 10.0+. This feature is not available inside web workers._
 <a name="NO_IE_SRC"></a>
 ### `NO_IE_SRC`
 A string representation of native functions typical for most engines with the notable exception of Internet Explorer.
@@ -217,18 +217,21 @@ A string representation of native functions typical for most engines except V8.
 A most remarkable trait of this feature is the presence of a line feed followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 
 _Available in Firefox, Internet Explorer and Safari._
+<a name="SAFARI100"></a>
+### `SAFARI100`
+Features available in Safari 10.
 <a name="SAFARI70"></a>
 ### `SAFARI70`
-Features available in Safari 7.0 or later.
+Features available in Safari 7.0.
 <a name="SAFARI71"></a>
 ### `SAFARI71`
-Features available in Safari 7.1 or later.
+Features available in Safari 7.1 and Safari 8.
 <a name="SAFARI80"></a>
 ### `SAFARI80`
 _An alias for [`SAFARI71`](#SAFARI71)._
 <a name="SAFARI90"></a>
 ### `SAFARI90`
-Features available in Safari 9.0 or later.
+Features available in Safari 9.
 <a name="SELF"></a>
 ### `SELF`
 _An alias for [`ANY_WINDOW`](#ANY_WINDOW)._
@@ -236,7 +239,7 @@ _An alias for [`ANY_WINDOW`](#ANY_WINDOW)._
 ### `SELF_OBJ`
 Existence of the global object self whose string representation starts with "\[object ".
 
-_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari 7.1+._
+_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.0+._
 <a name="UNDEFINED"></a>
 ### `UNDEFINED`
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
@@ -397,6 +400,7 @@ This table lists features available in the most common engines.
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
 <li><a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
+<li><a href="#ARROW"><code>ARROW</code></a> (Safari 10.0+)
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
 <li><a href="#CONSOLE"><code>CONSOLE</code></a>
@@ -410,7 +414,7 @@ This table lists features available in the most common engines.
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="#NAME"><code>NAME</code></a>
-<li><a href="#NODECONSTRUCTOR"><code>NODECONSTRUCTOR</code></a>
+<li><a href="#NODECONSTRUCTOR"><code>NODECONSTRUCTOR</code></a> (not in Safari 10.0+)
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a>
 <li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Safari 9.0+)
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a> (Safari 9.0+)
