@@ -92,6 +92,15 @@ stats
             encodeAsync();
     }
     
+    function handleReaderLoadEnd()
+    {
+        var result = this.result;
+        if (result != null)
+            inputArea.value = result;
+        inputArea.oninput();
+        inputArea.disabled = false;
+    }
+    
     function handleRun()
     {
         var value;
@@ -183,6 +192,18 @@ stats
             changeHandler = noEncode;
             outputArea.value = '';
         }
+        if (typeof File !== 'undefined')
+        {
+            var loadFileInput =
+                art(
+                    'INPUT',
+                    { accept: '.js', style: { display: 'none' }, type: 'file' },
+                    art.on('change', loadFile)
+                );
+            var openLoadFileDialog = HTMLElement.prototype.click.bind(loadFileInput);
+            var loadFileButton = art('BUTTON', 'Load file…', art.on('click', openLoadFileDialog));
+            art(controls, loadFileButton, loadFileInput);
+        }
         inputArea.oninput = changeHandler;
         var compHandler = handleCompInput.bind(changeHandler);
         compMenu.onchange = compHandler;
@@ -215,6 +236,16 @@ stats
         else
             inputArea.setSelectionRange(0x7fffffff, 0x7fffffff);
         inputArea.focus();
+    }
+    
+    function loadFile()
+    {
+        inputArea.disabled = true;
+        inputArea.value = '';
+        var file = this.files[0];
+        var reader = new FileReader();
+        reader.addEventListener('loadend', handleReaderLoadEnd);
+        reader.readAsText(file);
     }
     
     function noEncode()
