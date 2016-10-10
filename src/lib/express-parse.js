@@ -48,7 +48,7 @@ var expressParse;
             if (!finalizeUnit(term))
                 return;
             var terms = unit.terms;
-            if (terms && !unit.mod)
+            if (terms && isUndecoratedUnit(unit))
             {
                 terms.push(term);
                 if (!term.arithmetic)
@@ -179,7 +179,7 @@ var expressParse;
     function finalizeUnit(unit)
     {
         var mod = unit.mod || '';
-        if (!/-/.test(mod) && (!/#$/.test(mod) || unit.ops.length || unit.pmod))
+        if (!/-/.test(mod) && (!/#$/.test(mod) || unit.ops.length))
         {
             unit.mod = unescapeMod(mod);
             return unit;
@@ -192,6 +192,12 @@ var expressParse;
             UNRETURNABLE_WORDS.indexOf(identifier) < 0 &&
             (!escaped || INESCAPABLE_WORDS.indexOf(identifier) < 0);
         return returnable;
+    }
+    
+    function isUndecoratedUnit(unit)
+    {
+        var undecorated = !(unit.mod || unit.ops.length);
+        return undecorated;
     }
     
     function joinMods(mod1, mod2, trimTrailingPlus)
@@ -452,7 +458,7 @@ var expressParse;
     function stringifyUnit(unit)
     {
         var inArray = false;
-        while (!unit.mod && !unit.ops.length && !unit.pmod && 'value' in unit)
+        while ('value' in unit && isUndecoratedUnit(unit))
         {
             var value = unit.value;
             if (!array_isArray(value))
