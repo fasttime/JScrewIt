@@ -497,6 +497,20 @@ uneval
                                     '*(*)()()([[]])[+!![]+(+*)][*]'
                                 );
                                 
+                                // Concatenations
+                                test(
+                                    'concatenations of a modified concatenation',
+                                    '+([]+[])+[]',
+                                    '+([]+[])+[]',
+                                    '0'
+                                );
+                                test(
+                                    'concatenations of properties of a concatenation',
+                                    '(![]+[])[0]+[]',
+                                    '(![]+[])[+[]]+[]',
+                                    'f'
+                                );
+                                
                                 // Sums
                                 test('dissociable sums', '(0+1)+2', '+[]+(+!![])+(!![]+!![])');
                                 test('undissociable sums', '0+(1+2)', '+[]+(+!![]+(!![]+!![]))');
