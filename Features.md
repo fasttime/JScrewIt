@@ -43,6 +43,10 @@ All features available in the current engine.
 Existence of the global object statusbar having the string representation "\[object BarProp\]".
 
 _Available in Chrome, Edge, Firefox, Safari, Opera and Android Browser 4.4+. This feature is not available inside web workers._
+<a name="BROWSER"></a>
+### `BROWSER`
+Features available in all browsers.
+No support for Node.js.
 <a name="CAPITAL_HTML"></a>
 ### `CAPITAL_HTML`
 The property that the various string methods returning HTML code such as String.prototype.big or String.prototype.link have both the tag name and attributes written in capital letters.
