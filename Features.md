@@ -45,7 +45,7 @@ Existence of the global object statusbar having the string representation "\[obj
 _Available in Chrome, Edge, Firefox, Safari, Opera and Android Browser 4.4+. This feature is not available inside web workers._
 <a name="BROWSER"></a>
 ### `BROWSER`
-Features available in all browsers.
+Features available in all browsers.<br>
 No support for Node.js.
 <a name="CAPITAL_HTML"></a>
 ### `CAPITAL_HTML`
@@ -60,11 +60,11 @@ _An alias for [`CHROME52`](#CHROME52)._
 Features available in Chrome 52 and Opera 39 or later.
 <a name="COMPACT"></a>
 ### `COMPACT`
-All new browsers' features.
+All new browsers' features.<br>
 No support for Node.js and older browsers like Internet Explorer, Safari 9 or Android Browser.
 <a name="CONSOLE"></a>
 ### `CONSOLE`
-Existence of the global object console having the string representation "\[object Console\]".
+Existence of the global object console having the string representation "\[object Console\]".<br>
 This feature may become unavailable when Firebug or Firebug Lite is open and the console panel is enabled.
 
 _Available in Edge, Firefox, Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1+ and Android Browser 4.4+._
@@ -127,13 +127,13 @@ Existence of the function String.fromCodePoint.
 _Available in Chrome, Edge, Firefox, Safari 9.0+, Opera and Node.js 4+._
 <a name="GMT"></a>
 ### `GMT`
-Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
-Although ECMAScript states that string representation of dates is implementation dependent, most engines align to the same format, making this feature available in all supported engines except Internet Explorer 9 and 10.
+Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).<br>
+The string representation of dates is implementation dependent, but most engines use a similar format, making this feature available in all supported engines except Internet Explorer 9 and 10.
 
 _Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, Android Browser and Node.js._
 <a name="HISTORY"></a>
 ### `HISTORY`
-Existence of the global object history having the string representation "\[object History\]"
+Existence of the global object history having the string representation "\[object History\]".
 
 _Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers._
 <a name="HTMLAUDIOELEMENT"></a>
@@ -160,7 +160,7 @@ Features available in Internet Explorer 11 on Windows 10.
 Features available in Internet Explorer 9 or later.
 <a name="IE_SRC"></a>
 ### `IE_SRC`
-A string representation of native functions typical for Internet Explorer.
+A string representation of native functions typical for Internet Explorer.<br>
 Remarkable traits are the presence of a line feed character \("\\n"\) in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 
 _Available in Internet Explorer._
@@ -200,7 +200,7 @@ Existence of the global object Node having the string representation "\[object N
 _Available in Safari before 10.0+. This feature is not available inside web workers._
 <a name="NO_IE_SRC"></a>
 ### `NO_IE_SRC`
-A string representation of native functions typical for most engines with the notable exception of Internet Explorer.
+A string representation of native functions typical for most engines with the notable exception of Internet Explorer.<br>
 A remarkable trait of this feature is the lack of extra characters in the beginning of the string before "function".
 
 _Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js._
@@ -211,13 +211,13 @@ The property that the string representation of Array.prototype.entries\(\) evalu
 _Available in Chrome, Firefox, Safari 9.0+, Opera and Node.js 0.12+._
 <a name="NO_OLD_SAFARI_LF"></a>
 ### `NO_OLD_SAFARI_LF`
-A string representation of dynamically generated functions typical for most engines with the notable exception of Safari versions prior to 9.
+A string representation of dynamically generated functions typical for most engines with the notable exception of Safari versions prior to 9.<br>
 More specifically, in this representation, the character at index 22 is a line feed \("\\n"\).
 
 _Available in Chrome, Edge, Firefox, Internet Explorer, Safari 9.0+, Opera, Android Browser and Node.js._
 <a name="NO_V8_SRC"></a>
 ### `NO_V8_SRC`
-A string representation of native functions typical for most engines except V8.
+A string representation of native functions typical for most engines except V8.<br>
 A most remarkable trait of this feature is the presence of a line feed followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 
 _Available in Firefox, Internet Explorer and Safari._
@@ -246,8 +246,8 @@ Existence of the global object self whose string representation starts with "\[o
 _Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.0+._
 <a name="UNDEFINED"></a>
 ### `UNDEFINED`
-The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
-This behavior is specified by ECMAScript, and is supported by all engines except Android Browser versions prior to 4.1.2, where this feature is not available.
+The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".<br>
+This behavior is specified by ECMAScript, and is enforced by all engines except Android Browser versions prior to 4.1.2, where this feature is not available.
 
 _Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+ and Node.js._
 <a name="UNEVAL"></a>
@@ -257,7 +257,7 @@ Existence of the global function uneval.
 _Available in Firefox._
 <a name="V8_SRC"></a>
 ### `V8_SRC`
-A string representation of native functions typical for the V8 engine, but also found in Edge.
+A string representation of native functions typical for the V8 engine, but also found in Edge.<br>
 Remarkable traits are the lack of characters in the beginning of the string before "function" and a single whitespace before the "\[native code\]" sequence.
 
 _Available in Chrome, Edge, Opera, Android Browser and Node.js._
