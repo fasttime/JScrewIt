@@ -2602,7 +2602,7 @@ uneval
                     }
                 );
                 var check = featureObj.check;
-                if (check)
+                if (check !== void 0)
                 {
                     it(
                         'has a nonempty mask',
@@ -2617,6 +2617,24 @@ uneval
                         function (emuFeatures)
                         {
                             expect(emuDo(emuFeatures, check)).toBeTruthy();
+                        }
+                    );
+                }
+                var engine = featureObj.engine;
+                if (engine !== void 0)
+                {
+                    it(
+                        'has engine string',
+                        function ()
+                        {
+                            expect(engine).toBeString();
+                        }
+                    );
+                    it(
+                        'is not checkable',
+                        function ()
+                        {
+                            expect(check).toBeUndefined();
                         }
                     );
                 }

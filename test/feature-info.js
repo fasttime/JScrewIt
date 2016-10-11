@@ -42,8 +42,6 @@
         var Feature = JScrewIt.Feature;
         var ALL = Feature.ALL;
         var AUTO = Feature.AUTO;
-        var COMPACT = Feature.COMPACT;
-        var DEFAULT = Feature.DEFAULT;
         availableList = AUTO.elementaryNames;
         characteristicList = [];
         compatibleList = [];
@@ -58,15 +56,11 @@
         for (var featureName in ALL)
         {
             var featureObj = ALL[featureName];
-            if (
-                featureObj.name === featureName &&
-                !featureObj.check &&
-                featureObj !== AUTO &&
-                featureObj !== COMPACT)
+            if (featureObj.name === featureName && featureObj.engine)
             {
-                if (Feature.areEqual(featureObj, AUTO))
+                if (Feature.areEqual(AUTO, featureObj))
                     characteristicList.push(featureName);
-                else if (featureObj !== DEFAULT && AUTO.includes(featureObj))
+                else if (AUTO.includes(featureObj))
                     compatibleList.push(featureName);
             }
         }
