@@ -310,8 +310,8 @@ uneval
             function ()
             {
                 describeEncodeTest('DEFAULT');
+                describeEncodeTest('BROWSER');
                 describeEncodeTest('COMPACT');
-                describeEncodeTest('FF31');
                 describeEncodeTest('AUTO');
                 describe(
                     'encodes an empty string with runAs',
@@ -495,6 +495,20 @@ uneval
                                     'superfluous separators',
                                     ';a ( ) ( ( [ [ ] ] ) ) [ + 1 - + 2 ] . b;',
                                     '*(*)()()([[]])[+!![]+(+*)][*]'
+                                );
+                                
+                                // Concatenations
+                                test(
+                                    'concatenations of a modified concatenation',
+                                    '+([]+[])+[]',
+                                    '+([]+[])+[]',
+                                    '0'
+                                );
+                                test(
+                                    'concatenations of properties of a concatenation',
+                                    '(![]+[])[0]+[]',
+                                    '(![]+[])[+[]]+[]',
+                                    'f'
                                 );
                                 
                                 // Sums
@@ -819,6 +833,49 @@ uneval
                     'contains correct information for the feature',
                     function ()
                     {
+                        function test(actualFeatureName, expectedFeatureNames)
+                        {
+                            it(
+                                actualFeatureName,
+                                function ()
+                                {
+                                    // Default environemnt
+                                    var actualFeature = Feature.ALL[actualFeatureName];
+                                    var featureNames =
+                                        Feature.commonOf.apply(null, expectedFeatureNames);
+                                    var expectedFeature = Feature(featureNames);
+                                    testExpectations(actualFeature, expectedFeature);
+                                    
+                                    // Web Worker
+                                    var actualFeatureWW = actualFeature.restrict('web-worker');
+                                    var restrictedFeatures =
+                                        expectedFeatureNames.map(
+                                            function (featureName)
+                                            {
+                                                var feature = Feature.ALL[featureName];
+                                                var restrictedFeature =
+                                                    feature.restrict('web-worker');
+                                                return restrictedFeature;
+                                            }
+                                        );
+                                    var expectedFeatureWW =
+                                        Feature.commonOf.apply(null, restrictedFeatures);
+                                    testExpectations(actualFeatureWW, expectedFeatureWW);
+                                }
+                            );
+                        }
+                        
+                        function testExpectations(actualFeature, expectedFeature)
+                        {
+                            var actualElementaryNames = actualFeature.elementaryNames;
+                            var expectedElementaryNames = expectedFeature.elementaryNames;
+                            expect(actualElementaryNames).toEqual(expectedElementaryNames);
+                            var actualCanonicalNames = expectedFeature.canonicalNames;
+                            var expectedCanonicalNames = actualFeature.canonicalNames;
+                            expect(actualCanonicalNames).toEqual(expectedCanonicalNames);
+                            expect(actualFeature.mask).toEqual(expectedFeature.mask);
+                        }
+                        
                         it(
                             'DEFAULT',
                             function ()
@@ -829,23 +886,8 @@ uneval
                                 expect(featureObj.mask).toEqual([0, 0]);
                             }
                         );
-                        it(
-                            'COMPACT',
-                            function ()
-                            {
-                                var featureObj = Feature.COMPACT;
-                                var featureNames =
-                                    Feature.commonOf('CHROME52', 'EDGE', 'FF31', 'SAFARI100');
-                                var expectedFeature = Feature(featureNames);
-                                var actualElementaryNames = featureObj.elementaryNames;
-                                var expectedElementaryNames = expectedFeature.elementaryNames;
-                                expect(actualElementaryNames).toEqual(expectedElementaryNames);
-                                var actualCanonicalNames = expectedFeature.canonicalNames;
-                                var expectedCanonicalNames = featureObj.canonicalNames;
-                                expect(actualCanonicalNames).toEqual(expectedCanonicalNames);
-                                expect(featureObj.mask).toEqual(expectedFeature.mask);
-                            }
-                        );
+                        test('BROWSER', ['ANDRO40', 'CHROME52', 'EDGE', 'FF31', 'IE9', 'SAFARI70']);
+                        test('COMPACT', ['CHROME52', 'EDGE', 'FF31', 'SAFARI100']);
                         it(
                             'AUTO',
                             function ()
@@ -2560,7 +2602,7 @@ uneval
                     }
                 );
                 var check = featureObj.check;
-                if (check)
+                if (check !== void 0)
                 {
                     it(
                         'has a nonempty mask',
@@ -2575,6 +2617,24 @@ uneval
                         function (emuFeatures)
                         {
                             expect(emuDo(emuFeatures, check)).toBeTruthy();
+                        }
+                    );
+                }
+                var engine = featureObj.engine;
+                if (engine !== void 0)
+                {
+                    it(
+                        'has engine string',
+                        function ()
+                        {
+                            expect(engine).toBeString();
+                        }
+                    );
+                    it(
+                        'is not checkable',
+                        function ()
+                        {
+                            expect(check).toBeUndefined();
                         }
                     );
                 }

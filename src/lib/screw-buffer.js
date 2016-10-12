@@ -338,19 +338,23 @@ var hasOuterPlus;
                         var solutionCount = solutions.length;
                         if (solutionCount < 2)
                         {
-                            var replacement;
                             if (solutionCount)
                             {
                                 var solution = solutions[0];
                                 multiPart = forceString && solution.level < LEVEL_STRING;
-                                replacement = solution + '';
+                                str = solution + '';
                             }
                             else
                             {
                                 multiPart = forceString;
-                                replacement = '[]';
+                                str = '[]';
                             }
-                            str = replacement + (multiPart ? '+[]' : '');
+                            if (multiPart)
+                            {
+                                str += '+[]';
+                                if (bond)
+                                    str = '(' + str + ')';
+                            }
                         }
                         else
                         {
@@ -370,10 +374,7 @@ var hasOuterPlus;
                                 }
                                 str = collectOut(0, solutionCount, maxGroupCount, bond);
                             }
-                            multiPart = !bond;
                         }
-                        if (bond && multiPart)
-                            str = '(' + str + ')';
                         return str;
                     }
                 }

@@ -142,8 +142,14 @@ var validMaskFromArrayOrStringOrFeature;
                     }
                 );
                 excludes = info.excludes;
+                var description;
+                var engine = info.engine;
+                if (engine == null)
+                    description = info.description;
+                else
+                    description = createEngineFeatureDescription(engine);
                 featureObj =
-                    createFeature(name, info.description, mask, check, info.attributes);
+                    createFeature(name, description, mask, check, engine, info.attributes);
                 if (check)
                     elementaryFeatureObjs.push(featureObj);
             }
@@ -163,16 +169,24 @@ var validMaskFromArrayOrStringOrFeature;
         return mask;
     }
     
-    function createFeature(name, description, mask, check, attributes)
+    function createEngineFeatureDescription(engine)
     {
+        var description = 'Features available in ' + engine + '.';
+        return description;
+    }
+    
+    function createFeature(name, description, mask, check, engine, attributes)
+    {
+        attributes = object_freeze(attributes || { });
         var featureObj =
             object_create(
                 Feature.prototype,
                 {
-                    attributes: { value: object_freeze(attributes || { }) },
-                    check: { value: check },
-                    description: { value: description },
-                    name: { value: name }
+                    attributes:     { value: attributes },
+                    check:          { value: check },
+                    description:    { value: description },
+                    engine:         { value: engine },
+                    name:           { value: name }
                 }
             );
         initMask(featureObj, mask);
@@ -485,9 +499,9 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'Presence of the text "GMT" after the first 25 characters in the string returned ' +
                 'by Date().\n' +
-                'Although ECMAScript states that string representation of dates is ' +
-                'implementation dependent, most engines align to the same format, making this ' +
-                'feature available in all supported engines except Internet Explorer 9 and 10.',
+                'The string representation of dates is implementation dependent, but most ' +
+                'engines use a similar format, making this feature available in all supported ' +
+                'engines except Internet Explorer 9 and 10.',
             check: function ()
             {
                 return /^.{25}GMT/.test(Date());
@@ -497,7 +511,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'Existence of the global object history having the string representation ' +
-                '"[object History]"',
+                '"[object History]".',
             check: function ()
             {
                 return typeof history === 'object' && history + '' === '[object History]';
@@ -658,9 +672,8 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'The property that Object.prototype.toString.call() evaluates to "[object ' +
                 'Undefined]".\n' +
-                'This behavior is specified by ECMAScript, and is supported by all engines ' +
-                'except Android Browser versions prior to 4.1.2, where this feature is not ' +
-                'available.',
+                'This behavior is specified by ECMAScript, and is enforced by all engines except ' +
+                'Android Browser versions prior to 4.1.2, where this feature is not available.',
             check: function ()
             {
                 return Object.prototype.toString.call() === '[object Undefined]';
@@ -709,6 +722,14 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'Minimum feature level, compatible with all supported engines in all environments.'
         },
+        BROWSER:
+        {
+            description:
+                'Features available in all browsers.\n' +
+                'No support for Node.js.',
+            includes: ['ANY_DOCUMENT', 'ANY_WINDOW', 'HISTORY', 'INCR_CHAR'],
+            attributes: { 'safari-bug-21820506': null, 'web-worker-restriction': null }
+        },
         COMPACT:
         {
             description:
@@ -738,7 +759,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         ANDRO40:
         {
-            description: 'Features available in Android Browser 4.0 to 4.3.',
+            engine: 'Android Browser 4.0 to 4.3',
             includes:
             [
                 'ATOB',
@@ -756,7 +777,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         ANDRO41:
         {
-            description: 'Features available in Android Browser 4.1 to 4.3.',
+            engine: 'Android Browser 4.1 to 4.3',
             includes:
             [
                 'ATOB',
@@ -775,7 +796,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         ANDRO44:
         {
-            description: 'Features available in Android Browser 4.4 or later.',
+            engine: 'Android Browser 4.4 or later',
             includes:
             [
                 'ATOB',
@@ -800,7 +821,7 @@ var validMaskFromArrayOrStringOrFeature;
         CHROME: 'CHROME52',
         CHROME52:
         {
-            description: 'Features available in Chrome 52 and Opera 39 or later.',
+            engine: 'Chrome 52 and Opera 39 or later',
             includes:
             [
                 'ARROW',
@@ -827,7 +848,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         EDGE:
         {
-            description: 'Features available in Edge.',
+            engine: 'Edge',
             includes:
             [
                 'ARROW',
@@ -855,7 +876,7 @@ var validMaskFromArrayOrStringOrFeature;
         FF: 'FF31',
         FF31:
         {
-            description: 'Features available in Firefox 31 or later.',
+            engine: 'Firefox 31 or later',
             includes:
             [
                 'ARROW',
@@ -884,7 +905,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         IE9:
         {
-            description: 'Features available in Internet Explorer 9 or later.',
+            engine: 'Internet Explorer 9 or later',
             includes:
             [
                 'CAPITAL_HTML',
@@ -899,7 +920,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         IE10:
         {
-            description: 'Features available in Internet Explorer 10 or later.',
+            engine: 'Internet Explorer 10 or later',
             includes:
             [
                 'ATOB',
@@ -917,7 +938,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         IE11:
         {
-            description: 'Features available in Internet Explorer 11.',
+            engine: 'Internet Explorer 11',
             includes:
             [
                 'ATOB',
@@ -937,7 +958,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         IE11_WIN10:
         {
-            description: 'Features available in Internet Explorer 11 on Windows 10.',
+            engine: 'Internet Explorer 11 on Windows 10',
             includes:
             [
                 'ATOB',
@@ -958,7 +979,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         NODE010:
         {
-            description: 'Features available in Node.js 0.10.',
+            engine: 'Node.js 0.10',
             includes:
             [
                 'ESC_HTML_ALL',
@@ -972,7 +993,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         NODE012:
         {
-            description: 'Features available in Node.js 0.12 or later.',
+            engine: 'Node.js 0.12 or later',
             includes:
             [
                 'ESC_HTML_QUOT_ONLY',
@@ -989,7 +1010,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         NODE40:
         {
-            description: 'Features available in Node.js 4.0 or later.',
+            engine: 'Node.js 4.0 or later',
             includes:
             [
                 'ARROW',
@@ -1009,7 +1030,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         SAFARI70:
         {
-            description: 'Features available in Safari 7.0.',
+            engine: 'Safari 7.0',
             includes:
             [
                 'ATOB',
@@ -1036,7 +1057,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         SAFARI71:
         {
-            description: 'Features available in Safari 7.1 and Safari 8.',
+            engine: 'Safari 7.1 and Safari 8',
             includes:
             [
                 'ARRAY_ITERATOR',
@@ -1066,7 +1087,7 @@ var validMaskFromArrayOrStringOrFeature;
         SAFARI80: 'SAFARI71',
         SAFARI90:
         {
-            description: 'Features available in Safari 9.',
+            engine: 'Safari 9',
             includes:
             [
                 'ATOB',
@@ -1097,7 +1118,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         SAFARI100:
         {
-            description: 'Features available in Safari 10.',
+            engine: 'Safari 10',
             includes:
             [
                 'ARROW',
@@ -1262,6 +1283,9 @@ var validMaskFromArrayOrStringOrFeature;
         
         /**
          * Determines whether all of the specified features are equivalent.
+         *
+         * Different features are considered equivalent if they include the same set of elementary
+         * features, regardless of any other difference.
          *
          * @function JScrewIt.Feature.areEqual
          *
