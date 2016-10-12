@@ -30,7 +30,6 @@ in no particular order.</p>
             * [.canonicalNames](#JScrewIt.Feature+canonicalNames) : <code>Array.&lt;string&gt;</code>
             * [.description](#JScrewIt.Feature+description) : <code>string</code> &#124; <code>undefined</code>
             * [.elementaryNames](#JScrewIt.Feature+elementaryNames) : <code>Array.&lt;string&gt;</code>
-            * [.engine](#JScrewIt.Feature+engine) : <code>string</code> &#124; <code>undefined</code>
             * [.name](#JScrewIt.Feature+name) : <code>string</code> &#124; <code>undefined</code>
             * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
             * [.restrict(environment, [referenceFeatureObjs])](#JScrewIt.Feature+restrict) ⇒ <code>[Feature](#JScrewIt.Feature)</code>
@@ -76,7 +75,6 @@ constructed.
         * [.canonicalNames](#JScrewIt.Feature+canonicalNames) : <code>Array.&lt;string&gt;</code>
         * [.description](#JScrewIt.Feature+description) : <code>string</code> &#124; <code>undefined</code>
         * [.elementaryNames](#JScrewIt.Feature+elementaryNames) : <code>Array.&lt;string&gt;</code>
-        * [.engine](#JScrewIt.Feature+engine) : <code>string</code> &#124; <code>undefined</code>
         * [.name](#JScrewIt.Feature+name) : <code>string</code> &#124; <code>undefined</code>
         * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
         * [.restrict(environment, [referenceFeatureObjs])](#JScrewIt.Feature+restrict) ⇒ <code>[Feature](#JScrewIt.Feature)</code>
@@ -143,14 +141,6 @@ If desired, custom features may be assigned a description, too.
 #### feature.elementaryNames : <code>Array.&lt;string&gt;</code>
 An array of all elementary feature names included in this feature object, without
 aliases.
-
-**Kind**: instance property of <code>[Feature](#JScrewIt.Feature)</code>  
-<a name="JScrewIt.Feature+engine"></a>
-
-#### feature.engine : <code>string</code> &#124; <code>undefined</code>
-A description of the engines specifically targeted by this feature object.
-
-This property is `undefined` for feature objects that do not target any specific engines.
 
 **Kind**: instance property of <code>[Feature](#JScrewIt.Feature)</code>  
 <a name="JScrewIt.Feature+name"></a>

@@ -1413,16 +1413,6 @@ var validMaskFromArrayOrStringOrFeature;
         },
         
         /**
-         * A description of the engines specifically targeted by this feature object.
-         *
-         * This property is `undefined` for feature objects that do not target any specific engines.
-         *
-         * @member {string|undefined} JScrewIt.Feature#engine
-         */
-        
-        engine: void 0,
-        
-        /**
          * Determines whether this feature object includes all of the specified features.
          *
          * @function JScrewIt.Feature#includes
