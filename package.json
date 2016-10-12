@@ -1,6 +1,6 @@
 {
   "name": "jscrewit",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "description": "Converts plain JavaScript into JSFuck code, which uses only six different characters: ! ( ) + [ ]",
   "keywords": [
     "esoteric",
@@ -40,10 +40,10 @@
     "grunt-contrib-concat": "~1.0.1",
     "grunt-contrib-uglify": "~2.0.0",
     "grunt-fasttime-lint": "~0.0.6",
-    "grunt-jsdoc-to-markdown": "~1.2.1",
+    "grunt-jsdoc-to-markdown": "~2.0.0",
     "grunt-mocha-istanbul": "~5.0.2",
     "istanbul": "~0.4.5",
-    "mocha": "~3.0.2",
+    "mocha": "~3.1.2",
     "mocha-matrix": "~0.1.1",
     "progress": "~1.1.8",
     "proxyquire": "^1.7.10"

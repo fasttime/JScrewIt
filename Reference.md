@@ -237,6 +237,9 @@ JScrewIt.Feature.areCompatible([JScrewIt.Feature.DEFAULT, JScrewIt.Feature.FILL]
 #### Feature.areEqual([...feature]) ⇒ <code>boolean</code>
 Determines whether all of the specified features are equivalent.
 
+Different features are considered equivalent if they include the same set of elementary
+features, regardless of any other difference.
+
 **Kind**: static method of <code>[Feature](#JScrewIt.Feature)</code>  
 **Returns**: <code>boolean</code> - `true` if all of the specified features are equivalent; otherwise, `false`.
 If less than two arguments are specified, the return value is `true`.  

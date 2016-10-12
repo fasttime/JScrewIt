@@ -149,12 +149,11 @@ function parse(json)
         if (typeof value === 'object' && 'replacement' in value)
         {
             var solution = Object(value.replacement);
-            solution.level = value.level;
-            solution.mask = value.mask;
-            if ('bridge' in value)
-                solution.bridge = value.bridge;
-            if ('entryIndex' in value)
-                solution.entryIndex = value.entryIndex;
+            for (var propName in value)
+            {
+                if (propName !== 'replacement')
+                    solution[propName] = value[propName];
+            }
             return solution;
         }
         return value;
@@ -189,13 +188,15 @@ function stringify(charMap)
     {
         function toJSON()
         {
-            var json =
-                { replacement: String(solution), level: solution.level, mask: solution.mask };
-            if ('bridge' in solution)
-                json.bridge = solution.bridge;
-            if ('entryIndex' in solution)
-                json.entryIndex = solution.entryIndex;
-            return json;
+            var json = { replacement: String(solution) };
+            var keys = Object.keys(solution);
+            for (var index = keys.length; index-- > 0;)
+            {
+                var key = keys[index];
+                if (/^\d/.test(key))
+                    return json;
+                json[key] = solution[key];
+            }
         }
         
         var proxy = { toJSON: toJSON };

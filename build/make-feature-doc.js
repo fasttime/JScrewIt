@@ -106,10 +106,13 @@ function calculateEngineSupportInfo(engineEntry, filter)
 function escape(str)
 {
     var result =
-        str.replace(
-            /[&\()[\\\]]/g,
+        str
+        .replace(
+            /[\n&\()[\\\]]/g,
             function (char)
             {
+                if (char === '\n')
+                    return '<br>\n';
                 return '\\' + char;
             }
         );
