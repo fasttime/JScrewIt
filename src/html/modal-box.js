@@ -1,24 +1,35 @@
 /* eslint-env browser */
 /* global art */
 
-function showModalBox(content)
+function showModalBox(content, callback)
 {
     'use strict';
     
     function close()
     {
-        document.body.removeChild(overlay);
-        document.documentElement.removeEventListener('keydown', handleKeydown, true);
+        var body = document.body;
+        body.removeChild(overlay);
+        body.removeEventListener('keydown', handleKeydown);
+        body.removeEventListener('focus', handleFocus, true);
+        if (callback !== void 0)
+            callback();
+    }
+    
+    function handleFocus(evt)
+    {
+        if (!box.contains(evt.target))
+            box.focus();
     }
     
     function handleKeydown(evt)
     {
-        var target = evt.target;
-        if (evt.keyCode === 9)
+        var keyCode = evt.keyCode;
+        if (keyCode === 13 || keyCode === 27) // Enter, Esc
         {
-            if (target === document.body || target === document.documentElement)
+            var activeElement = document.activeElement;
+            if (activeElement.contains(box) || !activeElement.contains(evt.target))
             {
-                box.focus();
+                close();
                 evt.preventDefault();
             }
         }
@@ -30,13 +41,14 @@ function showModalBox(content)
             {
                 style:
                 {
-                    background: 'white',
-                    border: '.5em solid blue',
-                    borderRadius: '1em',
-                    display: 'inline-block',
-                    padding: '1em',
-                    maxWidth: '500px',
-                    width: '100%'
+                    background:     'white',
+                    border:         '.5em solid blue',
+                    borderRadius:   '1em',
+                    display:        'inline-block',
+                    maxWidth:       '500px',
+                    outline:        'none',
+                    padding:        '1em',
+                    width:          '100%'
                 },
                 tabIndex: 0
             },
@@ -50,20 +62,25 @@ function showModalBox(content)
                 style:
                 {
                     background: 'rgba(0, 0, 0, .25)',
-                    display: 'table',
-                    position: 'absolute',
-                    textAlign: 'center',
-                    left: '0',
-                    right: '0',
-                    top: '0',
-                    bottom: '0',
-                    width: '100%',
-                    height: '100%'
+                    display:    'table',
+                    position:   'fixed',
+                    textAlign:  'center',
+                    left:       '0',
+                    top:        '0',
+                    width:      '100%',
+                    height:     '100%'
                 }
             },
             art('DIV', { style: { display: 'table-cell', verticalAlign: 'middle' } }, box)
         );
-    art(document.body, overlay);
-    art(document.documentElement, art.on('keydown', handleKeydown, true));
-    box.focus();
+    var body = document.body;
+    body.addEventListener('focus', handleFocus, true);
+    body.addEventListener('keydown', handleKeydown);
+    art(body, overlay);
+    setTimeout(
+        function ()
+        {
+            box.focus();
+        }
+    );
 }
