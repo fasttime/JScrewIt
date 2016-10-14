@@ -104,6 +104,7 @@ stats
     
     function handleRun()
     {
+        var message;
         var value;
         try
         {
@@ -111,12 +112,20 @@ stats
         }
         catch (error)
         {
-            showModalBox(String(error));
+            message = String(error);
         }
         if (value !== void 0)
+            message = typeof value === 'string' ? '"' + value + '"' : String(value);
+        if (message != null)
         {
-            var message = typeof value === 'string' ? '"' + value + '"' : String(value);
-            showModalBox(message);
+            var runThisButton = this;
+            showModalBox(
+                message,
+                function ()
+                {
+                    runThisButton.focus();
+                }
+            );
         }
     }
     
