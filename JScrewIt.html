@@ -58,9 +58,9 @@ body { background-color: white; color: black; font-family: sans-serif; }
 
 body, button, select { font-size: 13.5pt; }
 
-body>* { margin: 0 auto; max-width: 720px; text-align: justify; }
+body>*:first-child { margin: 0 auto; max-width: 720px; text-align: justify; }
 
-body>*>div { display: none; }
+body>*:first-child>div { display: none; }
 
 header { height: 100px; position: relative; width: 100%; }
 
@@ -85,8 +85,8 @@ textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; 
     <code>[</code> <code>]</code>
 
     <div>
-        <p>Use the form below to convert your own script. To encode a number or plain string, type
-        it in as you would in JavaScript, e.g. <kbd>6.67408e-11</kbd> or <kbd>"Hello, World!"</kbd>.
+        <p>Use the form below to encode your script. To encode a number or plain string, type it in
+        as you would in JavaScript, e.g. <kbd>6.67408e-11</kbd> or <kbd>"Hello, World!"</kbd>.
 
         <div>
             <label class='frame'>

@@ -78,6 +78,7 @@ module.exports =
                                 'node_modules/art-js/lib/art.js',
                                 'node_modules/art-js/lib/art.on.js',
                                 'src/html/engine-selection-box.js',
+                                'src/html/modal-box.js',
                                 'src/html/roll.js',
                                 'src/html/ui-main.js'
                             ],
