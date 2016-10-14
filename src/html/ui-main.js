@@ -10,6 +10,7 @@ createRoll,
 inputArea,
 JScrewIt,
 outputArea,
+showModalBox,
 stats
 */
 
@@ -110,12 +111,12 @@ stats
         }
         catch (error)
         {
-            alert(error);
+            showModalBox(String(error));
         }
         if (value !== void 0)
         {
             var message = typeof value === 'string' ? '"' + value + '"' : String(value);
-            alert(message);
+            showModalBox(message);
         }
     }
     
@@ -269,7 +270,7 @@ stats
     
     function updateError(error)
     {
-        alert(error);
+        showModalBox(String(error));
     }
     
     function updateOutput(output)
