@@ -63,6 +63,25 @@ stats
         inputArea.onkeyup = null;
     }
     
+    function formatValue(value)
+    {
+        var text;
+        if (typeof value === 'string')
+            text = '"' + value + '"';
+        else if (value === 0 && 1 / value < 0)
+            text = '-0';
+        else
+        {
+            try
+            {
+                text = String(value);
+            }
+            catch (error)
+            { }
+        }
+        return text;
+    }
+    
     function getOptions()
     {
         var options = { features: currentFeatureObj.canonicalNames };
@@ -104,7 +123,7 @@ stats
     
     function handleRun()
     {
-        var message;
+        var content;
         var value;
         try
         {
@@ -112,15 +131,76 @@ stats
         }
         catch (error)
         {
-            message = String(error);
+            content = art('P', String(error));
         }
         if (value !== void 0)
-            message = typeof value === 'string' ? '"' + value + '"' : String(value);
-        if (message != null)
+        {
+            var text = formatValue(value);
+            var type;
+            switch (typeof value)
+            {
+            case 'function':
+                type = 'a function';
+                break;
+            case 'object':
+                if (Array.isArray(value))
+                {
+                    if (value.length)
+                        type = 'an array';
+                    else
+                        type = 'an empty array';
+                }
+                else
+                    type = 'an object';
+                break;
+            }
+            if (type)
+            {
+                if (text)
+                {
+                    content =
+                        art(
+                            'DIV',
+                            art('P', 'Evaluation result is ' + type + ':'),
+                            art(
+                                'P',
+                                {
+                                    style:
+                                    {
+                                        display: 'inline-block',
+                                        textAlign: 'left',
+                                        whiteSpace: 'pre'
+                                    }
+                                },
+                                text
+                            )
+                        );
+                }
+                else
+                    content = art('DIV', art('P', 'Evaluation result is ' + type + '.'));
+            }
+            else
+            {
+                content =
+                    art(
+                        'DIV',
+                        art('P', 'Evaluation result is'),
+                        art(
+                            'P',
+                            {
+                                style:
+                                { display: 'inline-block', textAlign: 'left', whiteSpace: 'pre' }
+                            },
+                            text
+                        )
+                    );
+            }
+        }
+        if (content != null)
         {
             var runThisButton = this;
             showModalBox(
-                message,
+                content,
                 function ()
                 {
                     runThisButton.focus();
@@ -279,7 +359,7 @@ stats
     
     function updateError(error)
     {
-        showModalBox(String(error));
+        showModalBox(art('P', String(error)));
     }
     
     function updateOutput(output)
