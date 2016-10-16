@@ -76,6 +76,7 @@ module.exports =
                             'html/ui.js':
                             [
                                 'node_modules/art-js/lib/art.js',
+                                'node_modules/art-js/lib/art.css.js',
                                 'node_modules/art-js/lib/art.on.js',
                                 'src/html/engine-selection-box.js',
                                 'src/html/modal-box.js',

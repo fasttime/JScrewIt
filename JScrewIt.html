@@ -18,11 +18,9 @@ different characters: ! ( ) + [ ]'>
 
 .actions { display: block; margin: .25em 0 0; position: relative; }
 
-.actions, .frame, p { width: 100%; }
-
-.engineFieldEven { background-color: #fff; }
-
 .engineSelectionBox { background-color: #f0f0f0; }
+
+.engineSelectionBox .engineFieldEven { background-color: #fff; }
 
 .frame
 {
@@ -41,11 +39,21 @@ different characters: ! ( ) + [ ]'>
     margin-bottom: .25em;
 }
 
-.noWrap { white-space: nowrap; }
-
 #compMenu { -webkit-appearance: menulist-button; width: 15em; }
 
 #controls>*:not(:last-child) { margin-right: 1em; }
+
+#main { margin: 0 auto; max-width: 720px; text-align: justify; }
+
+#main>div { display: none; }
+
+#main header { height: 100px; position: relative; width: 100%; }
+
+#main h1 { font-size: 2em; font-weight: normal; left: 115px; position: absolute; top: 40px; }
+
+#main img { background-color: blue; }
+
+#main textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; }
 
 #outputArea { white-space: pre; word-break: break-all; }
 
@@ -58,23 +66,11 @@ body { background-color: white; color: black; font-family: sans-serif; }
 
 body, button, select { font-size: 13.5pt; }
 
-body>*:first-child { margin: 0 auto; max-width: 720px; text-align: justify; }
-
-body>*:first-child>div { display: none; }
-
-header { height: 100px; position: relative; width: 100%; }
-
-h1 { font-size: 2em; font-weight: normal; left: 115px; position: absolute; top: 40px; }
-
-img { background-color: blue; }
-
-textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; }
-
 </style>
 <title>JScrewIt - Write any JavaScript with 6 Characters: ! ( ) + [ ]</title>
 
 <body>
-<div>
+<div id='main'>
     <header>
         <h1>JScrewIt</h1>
         <img alt src='html/screw.svg' width='100' height='100'>

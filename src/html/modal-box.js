@@ -15,16 +15,23 @@ function showModalBox(content, callback)
             callback();
     }
     
+    function grabFocus()
+    {
+        box.focus();
+    }
+    
     function handleFocus(evt)
     {
         if (!box.contains(evt.target))
-            box.focus();
+            grabFocus();
     }
     
     function handleKeydown(evt)
     {
         var keyCode = evt.keyCode;
-        if (keyCode === 13 || keyCode === 27) // Enter, Esc
+        if (
+            (keyCode === 13 || keyCode === 27) && // Enter, Esc
+            !(evt.altKey || evt.ctrlKey || evt.metaKey || evt.shiftKey))
         {
             var activeElement = document.activeElement;
             if (activeElement.contains(box) || !activeElement.contains(evt.target))
@@ -39,11 +46,12 @@ function showModalBox(content, callback)
         art(
             'DIV',
             {
+                id: 'modal-box',
                 style:
                 {
                     background:     'white',
-                    border:         '.5em solid blue',
-                    borderRadius:   '1em',
+                    border:         '10px solid blue',
+                    borderRadius:   '20px',
                     display:        'inline-block',
                     maxWidth:       '500px',
                     outline:        'none',
@@ -52,7 +60,11 @@ function showModalBox(content, callback)
                 },
                 tabIndex: 0
             },
-            art('DIV', content, { style: { marginBottom: '1em' } }),
+            art(
+                'DIV',
+                content,
+                { style: { marginBottom: '1em', overflow: 'hidden' } }
+            ),
             art('BUTTON', 'Ok', art.on('click', close))
         );
     var overlay =
@@ -77,10 +89,7 @@ function showModalBox(content, callback)
     body.addEventListener('focus', handleFocus, true);
     body.addEventListener('keydown', handleKeydown);
     art(body, overlay);
-    setTimeout(
-        function ()
-        {
-            box.focus();
-        }
-    );
+    setTimeout(grabFocus);
 }
+
+art.css('#modal-box:focus', { 'box-shadow': '0 0 0 3px rgba(255, 255, 255, .5)' });
