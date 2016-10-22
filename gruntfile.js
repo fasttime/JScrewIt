@@ -11,7 +11,14 @@ module.exports =
                 clean:
                 {
                     default:
-                    ['Features.md', 'Reference.md', 'coverage', 'html/**/*.js', 'lib/**/*.js'],
+                    [
+                        'Features.md',
+                        'Reference.md',
+                        'coverage',
+                        'html/**/*.js',
+                        'lib/**/*.js',
+                        'tmp-src'
+                    ],
                     'char-defs-output': ['char-map.json', 'output.txt']
                 },
                 concat:
@@ -75,9 +82,7 @@ module.exports =
                         {
                             'html/ui.js':
                             [
-                                'node_modules/art-js/lib/art.js',
-                                'node_modules/art-js/lib/art.css.js',
-                                'node_modules/art-js/lib/art.on.js',
+                                'tmp-src/art.js',
                                 'src/html/engine-selection-box.js',
                                 'src/html/modal-box.js',
                                 'src/html/roll.js',
@@ -140,6 +145,18 @@ module.exports =
         );
         
         grunt.registerTask(
+            'make-art',
+            'Create art library source.',
+            function ()
+            {
+                var makeArt = require('art-js');
+                grunt.file.mkdir('tmp-src');
+                makeArt('tmp-src/art.js', { css: true, off: true, on: true });
+                grunt.log.ok('Done.');
+            }
+        );
+        
+        grunt.registerTask(
             'scan-char-defs',
             'Analyze all character encodings.',
             function ()
@@ -185,6 +202,7 @@ module.exports =
                 'concat',
                 'feature-info',
                 'mocha_istanbul',
+                'make-art',
                 'uglify',
                 'feature-doc',
                 'jsdoc2md'
@@ -200,6 +218,7 @@ module.exports =
                 'feature-info',
                 'mocha_istanbul',
                 'scan-char-defs',
+                'make-art',
                 'uglify',
                 'feature-doc',
                 'jsdoc2md'

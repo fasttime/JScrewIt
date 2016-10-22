@@ -9,8 +9,11 @@ function showModalBox(content, callback)
     {
         var body = document.body;
         body.removeChild(overlay);
-        body.removeEventListener('keydown', handleKeydown);
-        body.removeEventListener('focus', handleFocus, true);
+        art(
+            body,
+            art.off('keydown', handleKeydown),
+            art.off('focus', handleFocus, true)
+        );
         if (callback !== void 0)
             callback();
     }
@@ -85,10 +88,12 @@ function showModalBox(content, callback)
             },
             art('DIV', { style: { display: 'table-cell', verticalAlign: 'middle' } }, box)
         );
-    var body = document.body;
-    body.addEventListener('focus', handleFocus, true);
-    body.addEventListener('keydown', handleKeydown);
-    art(body, overlay);
+    art(
+        document.body,
+        overlay,
+        art.on('focus', handleFocus, true),
+        art.on('keydown', handleKeydown)
+    );
     setTimeout(grabFocus);
 }
 

@@ -82,6 +82,29 @@ stats
         return text;
     }
     
+    function formatValueType(value)
+    {
+        var valueType;
+        switch (typeof value)
+        {
+        case 'function':
+            valueType = 'a function';
+            break;
+        case 'object':
+            if (Array.isArray(value))
+            {
+                if (value.length)
+                    valueType = 'an array';
+                else
+                    valueType = 'an empty array';
+            }
+            else
+                valueType = 'an object';
+            break;
+        }
+        return valueType;
+    }
+    
     function getOptions()
     {
         var options = { features: currentFeatureObj.canonicalNames };
@@ -136,32 +159,15 @@ stats
         if (value !== void 0)
         {
             var text = formatValue(value);
-            var type;
-            switch (typeof value)
-            {
-            case 'function':
-                type = 'a function';
-                break;
-            case 'object':
-                if (Array.isArray(value))
-                {
-                    if (value.length)
-                        type = 'an array';
-                    else
-                        type = 'an empty array';
-                }
-                else
-                    type = 'an object';
-                break;
-            }
-            if (type)
+            var valueType = formatValueType(value);
+            if (valueType)
             {
                 if (text)
                 {
                     content =
                         art(
                             'DIV',
-                            art('P', 'Evaluation result is ' + type + ':'),
+                            art('P', 'Evaluation result is ' + valueType + ':'),
                             art(
                                 'P',
                                 {
@@ -177,7 +183,7 @@ stats
                         );
                 }
                 else
-                    content = art('DIV', art('P', 'Evaluation result is ' + type + '.'));
+                    content = art('DIV', art('P', 'Evaluation result is ' + valueType + '.'));
             }
             else
             {
