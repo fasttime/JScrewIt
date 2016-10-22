@@ -22,7 +22,7 @@
     "screw.js",
     "tools"
   ],
-  "main": "lib/jscrewit.js",
+  "main": "lib/jscrewit",
   "bin": "screw.js",
   "repository": {
     "type": "git",
@@ -32,7 +32,7 @@
     "build": "npm install && grunt"
   },
   "devDependencies": {
-    "art-js": "~0.4.1",
+    "art-js": "~0.5.0",
     "expectations": "~0.6.0",
     "grunt": "~1.0.1",
     "grunt-cli": "~1.2.0",
@@ -46,6 +46,6 @@
     "mocha": "~3.1.2",
     "mocha-matrix": "~0.1.1",
     "progress": "~1.1.8",
-    "proxyquire": "^1.7.10"
+    "proxyquire": "~1.7.10"
   }
 }
