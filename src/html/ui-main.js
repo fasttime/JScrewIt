@@ -63,13 +63,22 @@ stats
         inputArea.onkeyup = null;
     }
     
-    function formatValue(value)
+    function formatItem(value)
     {
         var text;
         if (typeof value === 'string')
             text = '"' + value + '"';
         else if (value === 0 && 1 / value < 0)
             text = '-0';
+        else if (Array.isArray(value))
+        {
+            try
+            {
+                text = value.length ? '[…]' : '[]';
+            }
+            catch (error)
+            { }
+        }
         else
         {
             try
@@ -82,6 +91,23 @@ stats
         return text;
     }
     
+    function formatValue(value)
+    {
+        var text;
+        if (Array.isArray(value))
+        {
+            try
+            {
+                text = '[' + value.map(formatItem).join(', ') + ']';
+            }
+            catch (error)
+            { }
+        }
+        else
+            text = formatItem(value);
+        return text;
+    }
+    
     function formatValueType(value)
     {
         var valueType;
@@ -91,15 +117,34 @@ stats
             valueType = 'a function';
             break;
         case 'object':
-            if (Array.isArray(value))
+            var matches = /(\w+).$/.exec(Object.prototype.toString.call(value));
+            var typeStr = matches ? matches[1] : void 0;
+            switch (typeStr)
             {
-                if (value.length)
-                    valueType = 'an array';
-                else
+            case 'Array':
+                switch (value.length)
+                {
+                case 0:
                     valueType = 'an empty array';
-            }
-            else
+                    break;
+                case 1:
+                    valueType = 'a one element array';
+                    break;
+                default:
+                    valueType = 'an array';
+                    break;
+                }
+                break;
+            case 'Date':
+                valueType = 'a date';
+                break;
+            case 'RegExp':
+                valueType = 'a regular expression';
+                break;
+            default:
                 valueType = 'an object';
+                break;
+            }
             break;
         }
         return valueType;
@@ -160,47 +205,34 @@ stats
         {
             var text = formatValue(value);
             var valueType = formatValueType(value);
-            if (valueType)
+            if (text)
             {
-                if (text)
-                {
-                    content =
+                var intro =
+                    valueType ? 'Evaluation result is ' + valueType + ':' : 'Evaluation result is';
+                content =
+                    art(
+                        'DIV',
+                        art('P', intro),
                         art(
-                            'DIV',
-                            art('P', 'Evaluation result is ' + valueType + ':'),
+                            'P',
+                            { style: { overflowX: 'auto' } },
                             art(
-                                'P',
+                                'DIV',
                                 {
                                     style:
                                     {
-                                        display: 'inline-block',
-                                        textAlign: 'left',
+                                        display:    'inline-block',
+                                        textAlign:  'left',
                                         whiteSpace: 'pre'
                                     }
                                 },
                                 text
                             )
-                        );
-                }
-                else
-                    content = art('DIV', art('P', 'Evaluation result is ' + valueType + '.'));
-            }
-            else
-            {
-                content =
-                    art(
-                        'DIV',
-                        art('P', 'Evaluation result is'),
-                        art(
-                            'P',
-                            {
-                                style:
-                                { display: 'inline-block', textAlign: 'left', whiteSpace: 'pre' }
-                            },
-                            text
                         )
                     );
             }
+            else
+                content = art('DIV', art('P', 'Evaluation result is ' + valueType + '.'));
         }
         if (content != null)
         {
@@ -239,6 +271,12 @@ stats
         document.querySelector('body>*>div').style.display = 'block';
         inputArea.value = inputArea.defaultValue;
         outputArea.oninput = updateStats;
+        // The CSS function calc is not recognized by Android Browser versions prior to 4.4, and
+        // will thus prevent those browsers from interpreting the height style on the "Run this"
+        // button.
+        // This is meant as a hack for Android Browser 4.0, where setting the height would result in
+        // cutting off the lower half of the button, although it will target later versions, too,
+        // with little impact.
         art(
             stats.parentNode,
             art(
@@ -247,11 +285,14 @@ stats
                 {
                     style:
                     {
-                        bottom: '0',
-                        fontSize: '10pt',
-                        margin: '0',
-                        position: 'absolute',
-                        right: '0'
+                        bottom:     '0',
+                        fontSize:   '10pt',
+                        height:     'calc(1.5em)',
+                        lineHeight: '100%',
+                        margin:     '0',
+                        padding:    '0 .5em',
+                        position:   'absolute',
+                        right:      '0'
                     }
                 },
                 art.on('click', handleRun)

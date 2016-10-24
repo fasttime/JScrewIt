@@ -55,20 +55,17 @@ function showModalBox(content, callback)
                     background:     'white',
                     border:         '10px solid blue',
                     borderRadius:   '20px',
-                    display:        'inline-block',
-                    maxWidth:       '500px',
-                    outline:        'none',
-                    padding:        '1em',
-                    width:          '100%'
+                    margin:         '3px',
+                    outline:        'none'
                 },
                 tabIndex: 0
             },
             art(
                 'DIV',
-                content,
-                { style: { marginBottom: '1em', overflow: 'hidden' } }
-            ),
-            art('BUTTON', 'Ok', art.on('click', close))
+                { style: { margin: '1.5em' } },
+                art('DIV', { style: { margin: '1.25em 0', overflow: 'hidden' } }, content),
+                art('BUTTON', { style: { width: '5em' } }, 'OK', art.on('click', close))
+            )
         );
     var overlay =
         art(
@@ -76,17 +73,26 @@ function showModalBox(content, callback)
             {
                 style:
                 {
-                    background: 'rgba(0, 0, 0, .25)',
-                    display:    'table',
-                    position:   'fixed',
-                    textAlign:  'center',
-                    left:       '0',
-                    top:        '0',
-                    width:      '100%',
-                    height:     '100%'
+                    background:     'rgba(0, 0, 0, .25)',
+                    display:        'table',
+                    position:       'fixed',
+                    tableLayout:    'fixed',
+                    textAlign:      'center',
+                    left:           '0',
+                    top:            '0',
+                    width:          '100%',
+                    height:         '100%'
                 }
             },
-            art('DIV', { style: { display: 'table-cell', verticalAlign: 'middle' } }, box)
+            art(
+                'DIV',
+                { style: { display: 'table-cell', verticalAlign: 'middle' } },
+                art(
+                    'DIV',
+                    { style: { display: 'inline-block', maxWidth: '500px', width: '100%' } },
+                    box
+                )
+            )
         );
     art(
         document.body,
@@ -97,4 +103,6 @@ function showModalBox(content, callback)
     setTimeout(grabFocus);
 }
 
-art.css('#modal-box:focus', { 'box-shadow': '0 0 0 3px rgba(255, 255, 255, .5)' });
+art.css('#modal-box p:first-child', { 'margin-top': '0' });
+art.css('#modal-box p:last-child', { 'margin-bottom': '0' });
+art.css('#modal-box:focus', { 'box-shadow': '0 0 3px 3px rgba(255, 255, 255, .75)' });
