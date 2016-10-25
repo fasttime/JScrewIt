@@ -120,7 +120,7 @@ module.exports =
         grunt.loadNpmTasks('grunt-mocha-istanbul');
         
         grunt.registerTask(
-            'feature-doc',
+            'feature_doc',
             'Create Feature Reference documentation.',
             function ()
             {
@@ -145,7 +145,7 @@ module.exports =
         );
         
         grunt.registerTask(
-            'make-art',
+            'make_art',
             'Create art library source.',
             function ()
             {
@@ -157,7 +157,7 @@ module.exports =
         );
         
         grunt.registerTask(
-            'scan-char-defs',
+            'scan_char_defs',
             'Analyze all character encodings.',
             function ()
             {
@@ -193,18 +193,18 @@ module.exports =
             }
         );
         
-        // Default task.
+        grunt.registerTask('checkup', ['feature-info', 'mocha_istanbul']);
+        
         grunt.registerTask(
             'default',
             [
                 'fasttime_lint',
                 'clean:default',
                 'concat',
-                'feature-info',
-                'mocha_istanbul',
-                'make-art',
+                'checkup',
+                'make_art',
                 'uglify',
-                'feature-doc',
+                'feature_doc',
                 'jsdoc2md'
             ]
         );
@@ -215,12 +215,11 @@ module.exports =
                 'fasttime_lint',
                 'clean',
                 'concat',
-                'feature-info',
-                'mocha_istanbul',
-                'scan-char-defs',
-                'make-art',
+                'checkup',
+                'scan_char_defs',
+                'make_art',
                 'uglify',
-                'feature-doc',
+                'feature_doc',
                 'jsdoc2md'
             ]
         );
