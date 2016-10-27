@@ -9,11 +9,7 @@ function showModalBox(content, callback)
     {
         var body = document.body;
         body.removeChild(overlay);
-        art(
-            body,
-            art.off('keydown', handleKeydown),
-            art.off('focus', handleFocus, true)
-        );
+        art(body, art.off('keydown', handleKeydown), art.off('focus', handleFocus, true));
         if (callback !== void 0)
             callback();
     }
@@ -62,9 +58,18 @@ function showModalBox(content, callback)
             },
             art(
                 'DIV',
-                { style: { margin: '1.5em' } },
-                art('DIV', { style: { margin: '1.25em 0', overflow: 'hidden' } }, content),
-                art('BUTTON', { style: { width: '5em' } }, 'OK', art.on('click', close))
+                { style: { margin: '1.5em 1.5em .25em', overflow: 'hidden' } },
+                content,
+                art(
+                    'DIV',
+                    { style: { margin: '1.25em 0' } },
+                    art(
+                        'BUTTON',
+                        { style: { maxWidth: '5em', width: '100%' } },
+                        'OK',
+                        art.on('click', close)
+                    )
+                )
             )
         );
     var overlay =
@@ -73,24 +78,29 @@ function showModalBox(content, callback)
             {
                 style:
                 {
-                    background:     'rgba(0, 0, 0, .25)',
-                    display:        'table',
-                    position:       'fixed',
-                    tableLayout:    'fixed',
-                    textAlign:      'center',
-                    left:           '0',
-                    top:            '0',
-                    width:          '100%',
-                    height:         '100%'
+                    background: 'rgba(0, 0, 0, .25)',
+                    overflow:   'auto',
+                    position:   'fixed',
+                    textAlign:  'center',
+                    left:       '0',
+                    top:        '0',
+                    bottom:     '0',
+                    width:      '100%'
                 }
             },
             art(
                 'DIV',
-                { style: { display: 'table-cell', verticalAlign: 'middle' } },
+                {
+                    style: { display: 'table', tableLayout: 'fixed', width: '100%', height: '100%' }
+                },
                 art(
                     'DIV',
-                    { style: { display: 'inline-block', maxWidth: '500px', width: '100%' } },
-                    box
+                    { style: { display: 'table-cell', verticalAlign: 'middle' } },
+                    art(
+                        'DIV',
+                        { style: { display: 'inline-block', maxWidth: '500px', width: '100%' } },
+                        box
+                    )
                 )
             )
         );
