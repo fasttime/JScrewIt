@@ -64,10 +64,14 @@ function showModalBox(content, callback)
                     'DIV',
                     { style: { margin: '1.25em 0' } },
                     art(
-                        'BUTTON',
-                        { style: { maxWidth: '5em', width: '100%' } },
-                        'OK',
-                        art.on('click', close)
+                        'SPAN',
+                        { style: { background: 'buttonface' } },
+                        art(
+                            'BUTTON',
+                            { style: { maxWidth: '5em', width: '100%' } },
+                            'OK',
+                            art.on('click', close)
+                        )
                     )
                 )
             )
