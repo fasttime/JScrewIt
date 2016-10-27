@@ -159,24 +159,24 @@ stats
     function handleCompInput()
     {
         var selectedIndex = compMenu.selectedIndex;
-        var compatibility = compMenu.options[selectedIndex].value;
-        var featureObj =
-            compatibility ? Feature[compatibility] : engineSelectionBox.featureObj;
-        if (outOfSync || !Feature.areEqual(featureObj, currentFeatureObj))
-        {
-            currentFeatureObj = featureObj;
-            this();
-        }
         if (selectedIndex !== compMenu.previousIndex)
         {
             compMenu.previousIndex = selectedIndex;
+            var compatibility = compMenu.options[selectedIndex].value;
+            var featureObj =
+                compatibility ? Feature[compatibility] : engineSelectionBox.featureObj;
+            if (outOfSync || !Feature.areEqual(featureObj, currentFeatureObj))
+            {
+                currentFeatureObj = featureObj;
+                this();
+            }
             roll.rollTo(+!compatibility);
         }
     }
     
     function handleInputAreaKeyUp(evt)
     {
-        if (evt.key !== 'Tab')
+        if (evt.keyCode !== 9) // Tab
             encodeAsync();
     }
     
