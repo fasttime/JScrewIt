@@ -16,12 +16,12 @@ function showModalBox(content, callback)
     
     function grabFocus()
     {
-        box.focus();
+        focusableContainer.focus();
     }
     
     function handleFocus(evt)
     {
-        if (!box.contains(evt.target))
+        if (!focusableContainer.contains(evt.target))
             grabFocus();
     }
     
@@ -33,7 +33,7 @@ function showModalBox(content, callback)
             !(evt.altKey || evt.ctrlKey || evt.metaKey || evt.shiftKey))
         {
             var activeElement = document.activeElement;
-            if (activeElement.contains(box) || !activeElement.contains(evt.target))
+            if (activeElement.contains(focusableContainer) || !activeElement.contains(evt.target))
             {
                 close();
                 evt.preventDefault();
@@ -41,36 +41,55 @@ function showModalBox(content, callback)
         }
     }
     
-    var box =
+    var BOX_BORDER_RADIUS   = 22;
+    var BOX_MARGIN          = 3;
+    
+    var focusableContainer =
         art(
             'DIV',
             {
-                id: 'modal-box',
                 style:
                 {
-                    background:     'white',
-                    border:         '10px solid blue',
-                    borderRadius:   '20px',
-                    margin:         '3px',
-                    outline:        'none'
+                    borderRadius:   BOX_BORDER_RADIUS + BOX_MARGIN + 'px',
+                    display:        'inline-block',
+                    maxWidth:       '500px',
+                    outline:        'none',
+                    width:          '100%'
                 },
                 tabIndex: 0
             },
             art(
                 'DIV',
-                { style: { margin: '1.5em 1.5em .25em', overflow: 'hidden' } },
-                content,
+                {
+                    id: 'modal-box',
+                    style:
+                    {
+                        background:     'white',
+                        border:         '10px solid blue',
+                        borderRadius:   BOX_BORDER_RADIUS + 'px',
+                        margin:         BOX_MARGIN + 'px'
+                    }
+                },
                 art(
                     'DIV',
-                    { style: { margin: '1.25em 0' } },
+                    { style: { margin: '1.5em 1.5em .25em', overflow: 'hidden' } },
+                    content,
                     art(
-                        'SPAN',
-                        { style: { background: 'buttonface' } },
+                        'DIV',
+                        { style: { margin: '1.25em 0' } },
+                        // In Android Browser 4.0, the "OK" button appears borderless with a
+                        // transparent background.
+                        // In that browser, the buttonface colored inline container serves to
+                        // decorate the button with distinguishable edges.
                         art(
-                            'BUTTON',
-                            { style: { maxWidth: '5em', width: '100%' } },
-                            'OK',
-                            art.on('click', close)
+                            'SPAN',
+                            { style: { background: 'buttonface' } },
+                            art(
+                                'BUTTON',
+                                { style: { maxWidth: '5em', width: '100%' } },
+                                'OK',
+                                art.on('click', close)
+                            )
                         )
                     )
                 )
@@ -100,11 +119,7 @@ function showModalBox(content, callback)
                 art(
                     'DIV',
                     { style: { display: 'table-cell', verticalAlign: 'middle' } },
-                    art(
-                        'DIV',
-                        { style: { display: 'inline-block', maxWidth: '500px', width: '100%' } },
-                        box
-                    )
+                    focusableContainer
                 )
             )
         );
@@ -119,4 +134,4 @@ function showModalBox(content, callback)
 
 art.css('#modal-box p:first-child', { 'margin-top': '0' });
 art.css('#modal-box p:last-child', { 'margin-bottom': '0' });
-art.css('#modal-box:focus', { 'box-shadow': '0 0 3px 3px rgba(255, 255, 255, .75)' });
+art.css(':focus>#modal-box', { 'box-shadow': '0 0 3px 3px rgba(255, 255, 255, .75)' });
