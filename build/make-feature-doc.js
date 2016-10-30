@@ -108,7 +108,7 @@ function escape(str)
     var result =
         str
         .replace(
-            /[\n&\()[\\\]]/g,
+            /[\n&()[\\\]]/g,
             function (char)
             {
                 if (char === '\n')
