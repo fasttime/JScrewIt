@@ -384,7 +384,7 @@ uneval
                                             var regExpPattern =
                                                 '^' +
                                                 expectedPattern
-                                                .replace(/(?=[^!\*])/g, '\\')
+                                                .replace(/(?=[^!*])/g, '\\')
                                                 .replace(/(?=\*)/g, '.') +
                                                 '$';
                                             var expectedRegExp = RegExp(regExpPattern);
@@ -2292,7 +2292,7 @@ uneval
     {
         var name = fn.name;
         if (name === void 0)
-            name = /^\s*function ([\w\$]+)/.exec(fn)[1];
+            name = /^\s*function ([\w$]+)/.exec(fn)[1];
         return name;
     }
     

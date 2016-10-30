@@ -662,7 +662,7 @@
                 var get =
                     function ()
                     {
-                        var result = /^\s*function ([\w\$]+)/.exec(this)[1];
+                        var result = /^\s*function ([\w$]+)/.exec(this)[1];
                         return result;
                     };
                 override(this, 'Function.prototype.name', { get: get });

@@ -57,7 +57,7 @@
             var message = this.generateMessage(actual, this.expr, 'to be a native function');
             var pass =
                 typeof actual === 'function' &&
-                /^\s*function [\w\$]+\(\)\s*\{\s*\[native code]\s*\}\s*$/.test(actual);
+                /^\s*function [\w$]+\(\)\s*\{\s*\[native code]\s*\}\s*$/.test(actual);
             if (pass)
                 return this.assertions.pass(message);
             this.assertions.fail(message);
