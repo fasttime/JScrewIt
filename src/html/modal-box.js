@@ -79,17 +79,21 @@ function showModalBox(content, callback)
                         { style: { margin: '1.25em 0' } },
                         // In Android Browser 4.0, the "OK" button appears borderless with a
                         // transparent background.
-                        // In that browser, the buttonface colored inline container serves to
+                        // In that browser, because it does not recognize the CSS function
+                        // linear-gradient, the button container takes the background color
+                        // buttonface (as per stylesheet) instead of transparent, and serves to
                         // decorate the button with distinguishable edges.
                         art(
-                            'SPAN',
-                            { style: { background: 'buttonface' } },
-                            art(
-                                'BUTTON',
-                                { style: { maxWidth: '5em', width: '100%' } },
-                                'OK',
-                                art.on('click', close)
-                            )
+                            'DIV',
+                            {
+                                className: 'button-container',
+                                style:
+                                {
+                                    background: 'linear-gradient(transparent, transparent)',
+                                    display: 'inline-block'
+                                }
+                            },
+                            art('BUTTON', 'OK', art.on('click', close))
                         )
                     )
                 )
@@ -132,6 +136,11 @@ function showModalBox(content, callback)
     setTimeout(grabFocus);
 }
 
+art.css('#modal-box .button-container', { background: 'buttonface' });
+art.css(
+    '#modal-box .button-container, #modal-box .button-container>*',
+    { 'max-width': '5em', width: '100%' }
+);
 art.css('#modal-box p:first-child', { 'margin-top': '0' });
 art.css('#modal-box p:last-child', { 'margin-bottom': '0' });
 art.css(':focus>#modal-box', { 'box-shadow': '0 0 3px 3px rgba(255, 255, 255, .75)' });
