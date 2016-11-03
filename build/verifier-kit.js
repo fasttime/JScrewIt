@@ -43,22 +43,7 @@
         return newAnalyzer;
     }
     
-    function decomplex(encoder, complex)
-    {
-        encoder.stringTokenPattern = JScrewIt.debug.createEncoder().createStringTokenPattern();
-        var str = encoder.replaceString(complex);
-        return str;
-    }
-    
-    function define(definition)
-    {
-        var features = Array.prototype.slice.call(arguments, 1);
-        var mask = JScrewIt.Feature(features).mask;
-        var entry = { definition: definition, mask: mask };
-        return entry;
-    }
-    
-    function findOptimalFeatures(replacer, rivalReplacer)
+    function createOptimalFeatureObjMap(replacer, rivalReplacer)
     {
         var optimalFeatureObjMap;
         var optimalLength = Infinity;
@@ -86,6 +71,27 @@
                 optimalFeatureObjs.push(analyzer.featureObj);
             }
         }
+        return optimalFeatureObjMap;
+    }
+    
+    function decomplex(encoder, complex)
+    {
+        encoder.stringTokenPattern = JScrewIt.debug.createEncoder().createStringTokenPattern();
+        var str = encoder.replaceString(complex);
+        return str;
+    }
+    
+    function define(definition)
+    {
+        var features = Array.prototype.slice.call(arguments, 1);
+        var mask = JScrewIt.Feature(features).mask;
+        var entry = { definition: definition, mask: mask };
+        return entry;
+    }
+    
+    function findOptimalFeatures(replacer, rivalReplacer)
+    {
+        var optimalFeatureObjMap = createOptimalFeatureObjMap(replacer, rivalReplacer);
         if (optimalFeatureObjMap)
         {
             var result =

@@ -55,9 +55,9 @@ function checkCoderFeatureOptimality(features, createInput, coders, coder, minLe
         if (!optimalFeatureObjs.some(featureMatches))
         {
             optimalFeatureObjs.forEach(
-                function (featureObj)
+                function (optimalFeatureObj)
                 {
-                    console.log(featureObj.toString());
+                    console.log(String(optimalFeatureObj));
                 }
             );
         }
@@ -184,6 +184,16 @@ function main()
             return;
         }
     }
+    printHelpMessage();
+}
+
+function mismatchCallback()
+{
+    console.log.apply(console, arguments);
+}
+
+function printHelpMessage()
+{
     console.error(
         Object.keys(verify).sort(compareRoutineNames).reduce(
             function (str, routineName)
@@ -193,11 +203,6 @@ function main()
             'Please, specify one of the implemented verification routines:'
         )
     );
-}
-
-function mismatchCallback()
-{
-    console.log.apply(console, arguments);
 }
 
 function verifyBase64Defs(entries, inputList)

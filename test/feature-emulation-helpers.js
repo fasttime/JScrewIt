@@ -166,10 +166,10 @@
                     var createElement =
                         function (tagName)
                         {
-                            var str =
+                            var elementStr =
                                 (tagName + '').toLowerCase() === 'video' ?
                                 '[object HTMLVideoElement]' : '[object HTMLUnknownElement]';
-                            return str;
+                            return elementStr;
                         };
                     override(this, 'document', { value: { createElement: createElement } });
                 }
@@ -224,16 +224,16 @@
                 ['anchor', 'fontcolor', 'fontsize', 'link'],
                 function (method)
                 {
-                    var result =
-                        function (value)
-                        {
-                            var result = method.call(this, '');
-                            value = replacer(value + '');
-                            var index = result.lastIndexOf('"');
-                            result = result.slice(0, index) + value + result.slice(index);
-                            return result;
-                        };
-                    return result;
+                    function adaptedMethod(value)
+                    {
+                        var str = method.call(this, '');
+                        value = replacer(value + '');
+                        var index = str.lastIndexOf('"');
+                        str = str.slice(0, index) + value + str.slice(index);
+                        return str;
+                    }
+                    
+                    return adaptedMethod;
                 },
                 regExp
             );
@@ -272,8 +272,8 @@
                         var method = prototype[methodName];
                         if (regExp && regExp.test(''[methodName]('"<>')))
                             return;
-                        var value = adapter(method);
-                        override(this, 'String.prototype.' + methodName, { value: value });
+                        var adaptedMethod = adapter(method);
+                        override(this, 'String.prototype.' + methodName, { value: adaptedMethod });
                     },
                     this
                 );
@@ -313,12 +313,12 @@
         var name = components.pop();
         var obj =
             components.reduce(
-                function (obj, name)
+                function (parent, childName)
                 {
-                    var backupData = properties[name] || (properties[name] = { });
+                    var backupData = properties[childName] || (properties[childName] = { });
                     properties =
                         backupData.properties || (backupData.properties = createBackupMap());
-                    return obj[name];
+                    return parent[childName];
                 },
                 global
             );
@@ -332,38 +332,41 @@
         Object.defineProperty(obj, name, descriptor);
     }
     
+    function overrideToString(context, typeName)
+    {
+        var toString = global[typeName].prototype.toString;
+        var adapters = [];
+        context[typeName] = { adapters: adapters, toString: toString };
+        var callToString =
+            function (target)
+            {
+                var str;
+                for (var index = adapters.length; index-- > 0;)
+                {
+                    var adapter = adapters[index];
+                    str = adapter.call(target);
+                    if (str !== void 0)
+                        return str;
+                }
+                str = toString.call(target);
+                return str;
+            };
+        var value =
+            function ()
+            {
+                var str = callToString(this);
+                return str;
+            };
+        // The IE 9 implementation of the call method sets the global object as this when no
+        // arguments are specified.
+        value.call = callToString;
+        override(context, typeName + '.prototype.toString', { value: value });
+    }
+    
     function registerToStringAdapter(context, typeName, adapter)
     {
         if (!context[typeName])
-        {
-            var toString = global[typeName].prototype.toString;
-            var adapters = [];
-            context[typeName] = { adapters: adapters, toString: toString };
-            var callToString =
-                function (target)
-                {
-                    var str;
-                    for (var index = adapters.length; index-- > 0;)
-                    {
-                        var adapter = adapters[index];
-                        str = adapter.call(target);
-                        if (str !== void 0)
-                            return str;
-                    }
-                    str = toString.call(target);
-                    return str;
-                };
-            var value =
-                function ()
-                {
-                    var str = callToString(this);
-                    return str;
-                };
-            // The IE 9 implementation of the call method sets the global object as this when no
-            // arguments are specified.
-            value.call = callToString;
-            override(context, typeName + '.prototype.toString', { value: value });
-        }
+            overrideToString(context, typeName);
         context[typeName].adapters.push(adapter);
     }
     
@@ -498,20 +501,20 @@
             ],
             function (method)
             {
-                var result =
-                    function ()
-                    {
-                        var result =
-                            method.apply(this, arguments).replace(
-                                /^<[\w ]+|[\w ]+>$/g,
-                                function (match)
-                                {
-                                    return match.toUpperCase();
-                                }
-                            );
-                        return result;
-                    };
-                return result;
+                function adaptedMethod()
+                {
+                    var str =
+                        method.apply(this, arguments).replace(
+                            /^<[\w ]+|[\w ]+>$/g,
+                            function (match)
+                            {
+                                return match.toUpperCase();
+                            }
+                        );
+                    return str;
+                }
+                
+                return adaptedMethod;
             }
         ),
         CONSOLE:
