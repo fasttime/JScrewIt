@@ -2376,9 +2376,9 @@ uneval
                             var varietyFeatureObj = Feature(varietyFeatureNames);
                             if (Feature.areCompatible([varietyFeatureObj, solutionFeatureObj]))
                             {
-                                var testFeatureObj =
+                                var testableFeatureObj =
                                     Feature(varietyFeatureObj, solutionFeatureObj);
-                                var emuFeatures = getEmuFeatureNames(testFeatureObj);
+                                var emuFeatures = getEmuFeatureNames(testableFeatureObj);
                                 if (emuFeatures)
                                     verifySolution(solution, char, emuFeatures);
                             }

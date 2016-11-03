@@ -18,10 +18,10 @@ function createDiagnosticReport(codingLog)
         '\nCoder                       Status         Length  Time (ms)\n' +
         repeat('─', 60) + '\n' +
         codingLog.reduce(
-            function (report, perfInfoList)
+            function (str, perfInfoList)
             {
-                report += formatPerfInfoList(perfInfoList, '', ['', '']);
-                return report;
+                str += formatPerfInfoList(perfInfoList, '', ['', '']);
+                return str;
             },
             ''
         );
@@ -43,28 +43,28 @@ function createReport(originalSize, screwedSize, encodingTime)
 function formatCodingLog(codingLog, padding, nextCodingLog)
 {
     padding += nextCodingLog ? '│' : ' ';
-    var result = '';
+    var str = '';
     var count = codingLog.length;
     for (var index = 0; index < count; ++index)
     {
         var perfInfoList = codingLog[index];
         var nextPerfInfoList = index < count - 1;
-        result += formatPerfInfoList(perfInfoList, padding, nextPerfInfoList ? '├│' : '└ ');
+        str += formatPerfInfoList(perfInfoList, padding, nextPerfInfoList ? '├│' : '└ ');
     }
     if (nextCodingLog)
-        result += padding + '\n';
-    return result;
+        str += padding + '\n';
+    return str;
 }
 
 function formatInt(int)
 {
-    var result = isNaN(int) ? '-' : int;
-    return result;
+    var str = isNaN(int) ? '-' : int;
+    return str;
 }
 
 function formatPerfInfoList(perfInfoList, padding, paddingChars)
 {
-    var report = padding + paddingChars[0] + (perfInfoList.name || '(default)') + '\n';
+    var str = padding + paddingChars[0] + (perfInfoList.name || '(default)') + '\n';
     padding += paddingChars[1];
     var count = perfInfoList.length;
     var paddingLength = padding.length;
@@ -73,7 +73,7 @@ function formatPerfInfoList(perfInfoList, padding, paddingChars)
     {
         var perfInfo = perfInfoList[index];
         var next = index < count - 1;
-        report +=
+        str +=
             padding + (next ? '├' : '└') +
             padRight(perfInfo.coderName, 27 - paddingLength) +
             padRight(perfInfo.status, 10) +
@@ -82,9 +82,9 @@ function formatPerfInfoList(perfInfoList, padding, paddingChars)
             '\n';
         codingLog = perfInfo.codingLog;
         if (codingLog)
-            report += formatCodingLog(codingLog, padding, next);
+            str += formatCodingLog(codingLog, padding, next);
     }
-    return report;
+    return str;
 }
 
 function parseCommandLine(argv)

@@ -23,8 +23,8 @@ var getFigure;
                 {
                     usedNameSet[value] = null;
                     var sortLength = baseSortLength + unit.sortLength;
-                    var figure = createFigure(value, sortLength);
-                    pushFigure(figure);
+                    var newFigure = createFigure(value, sortLength);
+                    pushFigure(newFigure);
                 }
             }
         );
