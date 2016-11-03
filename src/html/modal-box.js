@@ -64,7 +64,7 @@ function showModalBox(content, callback)
                     id: 'modal-box',
                     style:
                     {
-                        background:     'white',
+                        background:     'whitesmoke',
                         border:         '10px solid blue',
                         borderRadius:   BOX_BORDER_RADIUS + 'px',
                         margin:         BOX_MARGIN + 'px'
