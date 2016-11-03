@@ -4,7 +4,7 @@ Feature: Modal box
   Scenario: General appearance
     Given a modal box
     Then the modal box should have a rounded blue border
-    And the modal box should have a white background
+    And the modal box should have a whitesmoke background
     And the modal box should contain an "OK" button in the bottom center
     And the "OK" button should have well distinguishable edges
     And the "OK" button should be 5em wide
