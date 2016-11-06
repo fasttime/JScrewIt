@@ -37,6 +37,17 @@ gulp.task(
 );
 
 gulp.task(
+    'gherkin-lint',
+    function ()
+    {
+        var gherkinlint = require('gulp-gherkin-lint');
+        
+        var stream = gulp.src('test/acceptance/**').pipe(gherkinlint());
+        return stream;
+    }
+);
+
+gulp.task(
     'lint:lib',
     function ()
     {
@@ -230,6 +241,7 @@ gulp.task(
         var SRC =
         [
             'tmp-src/art.js',
+            'src/html/button.js',
             'src/html/engine-selection-box.js',
             'src/html/modal-box.js',
             'src/html/roll.js',
@@ -286,7 +298,7 @@ gulp.task(
         var runSequence = require('run-sequence');
         
         runSequence(
-            ['clean:default', 'lint:lib', 'lint:other'],
+            ['clean:default', 'gherkin-lint', 'lint:lib', 'lint:other'],
             'concat',
             'feature-info',
             'test',
@@ -303,7 +315,7 @@ gulp.task(
         var runSequence = require('run-sequence');
         
         runSequence(
-            ['clean:char-defs-output', 'clean:default', 'lint:lib', 'lint:other'],
+            ['clean:char-defs-output', 'clean:default', 'gherkin-lint', 'lint:lib', 'lint:other'],
             'concat',
             'feature-info',
             'test',
