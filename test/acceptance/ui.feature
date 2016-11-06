@@ -4,10 +4,6 @@ Feature: User interface
     Given UI ready
 
   @appearance
-  Scenario: "Run this" button
-    Then the "Run this" button should look good
-
-  @appearance
   Scenario: Resizable output area
     Given the output text area has a resize grabber
     Then the resize grabber should not be overlayed by another element

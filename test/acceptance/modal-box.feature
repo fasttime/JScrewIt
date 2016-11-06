@@ -6,7 +6,6 @@ Feature: Modal box
     Then the modal box should have a rounded blue border
     And the modal box should have a whitesmoke background
     And the modal box should contain an "OK" button in the bottom center
-    And the "OK" button should have well distinguishable edges
     And the "OK" button should be 5em wide
 
   @appearance
@@ -64,30 +63,14 @@ Feature: Modal box
     Then the focus should never move to an overlayed element
 
   @interaction
-  Scenario Outline: Closing by key press
+  Scenario: Closing by enter or esc key
     Given a focused modal box
     And a standard keyboard
     When the user presses one of the following keys:
-      |  key   |
-      | enter  |
-      | escape |
+      |  key  |
+      | enter |
+      | esc   |
     Then the modal box should close
-
-  @interaction
-  Scenario: Pressing a key modifier with enter or escape
-    Given a focused modal box
-    And a standard keyboard
-    When the user presses one of the following keys:
-      |      key       |
-      | shift + enter  |
-      | alt + enter    |
-      | ctrl + enter   |
-      | meta + enter   |
-      | shift + escape |
-      | alt + escape   |
-      | ctrl + escape  |
-      | meta + escape  |
-    Then the modal box should not close
 
   @interaction
   Scenario: Closing with the "OK" button

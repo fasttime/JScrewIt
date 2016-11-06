@@ -5,6 +5,7 @@ alert,
 art,
 compMenu,
 controls,
+createButton,
 createEngineSelectionBox,
 createRoll,
 inputArea,
@@ -182,6 +183,7 @@ stats
     
     function handleReaderLoadEnd()
     {
+        loadFileButton.disabled = false;
         var result = this.result;
         if (result != null)
             inputArea.value = result;
@@ -271,30 +273,11 @@ stats
         document.querySelector('body>*>div').style.display = 'block';
         inputArea.value = inputArea.defaultValue;
         outputArea.oninput = updateStats;
-        // The CSS function calc is not recognized by Android Browser versions prior to 4.4, and
-        // will thus prevent those browsers from interpreting the height style on the "Run this"
-        // button.
-        // This is meant as a hack for Android Browser 4.0, where setting the height would result in
-        // cutting off the lower half of the button, although it will target later versions, too,
-        // with little impact.
         art(
             stats.parentNode,
             art(
-                'BUTTON',
-                'Run this',
-                {
-                    style:
-                    {
-                        bottom:     '0',
-                        fontSize:   '10pt',
-                        height:     'calc(1.5em)',
-                        lineHeight: '100%',
-                        margin:     '0',
-                        padding:    '0 .5em',
-                        position:   'absolute',
-                        right:      '0'
-                    }
-                },
+                createButton('Run this'),
+                { style: { bottom: '0', fontSize: '10pt', position: 'absolute', right: '0' } },
                 art.on('click', handleRun)
             )
         );
@@ -324,7 +307,7 @@ stats
         }
         else
         {
-            var encodeButton = art('BUTTON', 'Encode', art.on('click', encode));
+            var encodeButton = art(createButton('Encode'), art.on('click', encode));
             art(controls, encodeButton);
             changeHandler = noEncode;
             outputArea.value = '';
@@ -338,7 +321,8 @@ stats
                     art.on('change', loadFile)
                 );
             var openLoadFileDialog = HTMLElement.prototype.click.bind(loadFileInput);
-            var loadFileButton = art('BUTTON', 'Load file…', art.on('click', openLoadFileDialog));
+            loadFileButton =
+                art(createButton('Load file…'), art.on('click', openLoadFileDialog));
             art(controls, loadFileButton, loadFileInput);
         }
         inputArea.oninput = changeHandler;
@@ -377,12 +361,16 @@ stats
     
     function loadFile()
     {
-        inputArea.disabled = true;
-        inputArea.value = '';
         var file = this.files[0];
-        var reader = new FileReader();
-        reader.addEventListener('loadend', handleReaderLoadEnd);
-        reader.readAsText(file);
+        if (file)
+        {
+            inputArea.disabled = true;
+            inputArea.value = '';
+            loadFileButton.disabled = true;
+            var reader = new FileReader();
+            reader.addEventListener('loadend', handleReaderLoadEnd);
+            reader.readAsText(file);
+        }
     }
     
     function noEncode()
@@ -434,6 +422,7 @@ stats
     
     var currentFeatureObj;
     var engineSelectionBox;
+    var loadFileButton;
     var outOfSync;
     var outputSet;
     var queuedData;
