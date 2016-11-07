@@ -60,7 +60,7 @@ Feature: Button
     Then the button should not click
 
   @interaction
-  Scenario: Sudden page switch
+  Scenario: Sudden active window switch
     Given an active button
     And a standard keyboard
     When the user presses Ctrl + T

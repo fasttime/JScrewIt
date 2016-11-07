@@ -1,6 +1,8 @@
 /* eslint-env browser */
 /* global art */
 
+// Not much more than a collection of hacks for IE.
+
 function createButton(text)
 {
     'use strict';
@@ -8,7 +10,7 @@ function createButton(text)
     function deactivate()
     {
         button.className = 'button';
-        art(document, art.off('mouseup', handleMouseUp), art.off('mouseout', handleMouseOut));
+        setCaptureListeners('off');
     }
     
     function filterClick(evt)
@@ -35,37 +37,58 @@ function createButton(text)
         }
     }
     
-    function handleMouseDown(evt)
+    function handleMousedown(evt)
     {
-        if (evt.which === 1 && !isDisabled() && !/\bactive\b/.test(button.className))
+        if (evt.which === 1 && !isDisabled() && !isActive())
         {
+            button.setCapture();
             button.className = 'active button';
-            art(document, art.on('mouseup', handleMouseUp), art.on('mouseout', handleMouseOut));
+            setCaptureListeners('on');
         }
     }
     
-    function handleMouseOut(evt)
+    function handleMousemove(evt)
     {
-        var relatedTarget = evt.relatedTarget;
-        if (!relatedTarget || relatedTarget === document.documentElement)
+        if (evt.target !== button && isActive()) // capture lost
             deactivate();
     }
     
-    function handleMouseUp(evt)
+    function handleMouseout(evt)
     {
-        if (evt.which === 1)
+        if (!evt.relatedTarget && isActive()) // capture lost
             deactivate();
+    }
+    
+    function handleMouseup(evt)
+    {
+        if (evt.which === 1 && isActive())
+        {
+            document.releaseCapture();
+            deactivate();
+        }
+    }
+    
+    function isActive()
+    {
+        var active = /\bactive\b/.test(button.className);
+        return active;
     }
     
     function isDisabled()
     {
-        var value = !button.hasAttribute('tabindex');
-        return value;
+        var disabled = !button.hasAttribute('tabindex');
+        return disabled;
     }
     
     function makeUnselectable(element)
     {
         element.firstChild.setAttribute('unselectable', 'on');
+    }
+    
+    function setCaptureListeners(methodName)
+    {
+        var method = art[methodName];
+        art(document, method('mousemove', handleMousemove), method('mouseout', handleMouseout));
     }
     
     function setTabindex()
@@ -80,12 +103,13 @@ function createButton(text)
             art.on('click', filterClick, true),
             art.on('keydown', handleKeydown),
             art.on('keyup', handleKeyup),
+            art.on('mouseup', handleMouseup),
             art('SPAN', text),
             art('SPAN')
         );
     setTabindex();
     if (button.msMatchesSelector)
-        art(button, makeUnselectable, art.on('mousedown', handleMouseDown));
+        art(button, makeUnselectable, art.on('mousedown', handleMousedown));
     Object.defineProperty(
         button,
         'disabled',
@@ -101,19 +125,21 @@ function createButton(text)
                 value = !!value;
                 if (value !== isDisabled())
                 {
-                    // Make sure the class does change so a refresh is triggered in IE and Edge.
-                    button.className = '';
                     if (value)
                     {
                         button.removeAttribute('tabindex');
-                        deactivate();
+                        if (isActive())
+                        {
+                            document.releaseCapture();
+                            setCaptureListeners('off');
+                        }
                         button.blur();
                     }
                     else
-                    {
                         setTabindex();
-                        button.className = 'button';
-                    }
+                    // Make sure the class does change so a refresh is triggered in IE and Edge.
+                    button.className = '';
+                    button.className = 'button';
                 }
             }
         }
