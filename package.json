@@ -1,6 +1,6 @@
 {
   "name": "jscrewit",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "Converts plain JavaScript into JSFuck code, which uses only six different characters: ! ( ) + [ ]",
   "keywords": [
     "esoteric",
@@ -29,7 +29,7 @@
     "url": "https://github.com/fasttime/JScrewIt.git"
   },
   "scripts": {
-    "build": "npm install && grunt"
+    "build": "npm install && gulp"
   },
   "devDependencies": {
     "art-js": "~0.5.0",
