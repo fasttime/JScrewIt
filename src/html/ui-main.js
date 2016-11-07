@@ -5,11 +5,13 @@ alert,
 art,
 compMenu,
 controls,
+createButton,
 createEngineSelectionBox,
 createRoll,
 inputArea,
 JScrewIt,
 outputArea,
+showModalBox,
 stats
 */
 
@@ -62,6 +64,93 @@ stats
         inputArea.onkeyup = null;
     }
     
+    function formatItem(value)
+    {
+        var text;
+        if (typeof value === 'string')
+            text = '"' + value + '"';
+        else if (value === 0 && 1 / value < 0)
+            text = '-0';
+        else if (Array.isArray(value))
+        {
+            try
+            {
+                text = value.length ? '[…]' : '[]';
+            }
+            catch (error)
+            { }
+        }
+        else
+        {
+            try
+            {
+                text = String(value);
+            }
+            catch (error)
+            { }
+        }
+        return text;
+    }
+    
+    function formatValue(value)
+    {
+        var text;
+        if (Array.isArray(value))
+        {
+            try
+            {
+                text = '[' + value.map(formatItem).join(', ') + ']';
+            }
+            catch (error)
+            { }
+        }
+        else
+            text = formatItem(value);
+        return text;
+    }
+    
+    function formatValueType(value)
+    {
+        var valueType;
+        switch (typeof value)
+        {
+        case 'function':
+            valueType = 'a function';
+            break;
+        case 'object':
+            var matches = /(\w+).$/.exec(Object.prototype.toString.call(value));
+            var typeStr = matches ? matches[1] : void 0;
+            switch (typeStr)
+            {
+            case 'Array':
+                switch (value.length)
+                {
+                case 0:
+                    valueType = 'an empty array';
+                    break;
+                case 1:
+                    valueType = 'a one element array';
+                    break;
+                default:
+                    valueType = 'an array';
+                    break;
+                }
+                break;
+            case 'Date':
+                valueType = 'a date';
+                break;
+            case 'RegExp':
+                valueType = 'a regular expression';
+                break;
+            default:
+                valueType = 'an object';
+                break;
+            }
+            break;
+        }
+        return valueType;
+    }
+    
     function getOptions()
     {
         var options = { features: currentFeatureObj.canonicalNames };
@@ -71,29 +160,30 @@ stats
     function handleCompInput()
     {
         var selectedIndex = compMenu.selectedIndex;
-        var compatibility = compMenu.options[selectedIndex].value;
-        var featureObj =
-            compatibility ? Feature[compatibility] : engineSelectionBox.featureObj;
-        if (outOfSync || !Feature.areEqual(featureObj, currentFeatureObj))
-        {
-            currentFeatureObj = featureObj;
-            this();
-        }
         if (selectedIndex !== compMenu.previousIndex)
         {
             compMenu.previousIndex = selectedIndex;
+            var compatibility = compMenu.options[selectedIndex].value;
+            var featureObj =
+                compatibility ? Feature[compatibility] : engineSelectionBox.featureObj;
+            if (outOfSync || !Feature.areEqual(featureObj, currentFeatureObj))
+            {
+                currentFeatureObj = featureObj;
+                this();
+            }
             roll.rollTo(+!compatibility);
         }
     }
     
     function handleInputAreaKeyUp(evt)
     {
-        if (evt.key !== 'Tab')
+        if (evt.keyCode !== 9) // Tab
             encodeAsync();
     }
     
     function handleReaderLoadEnd()
     {
+        loadFileButton.disabled = false;
         var result = this.result;
         if (result != null)
             inputArea.value = result;
@@ -103,6 +193,7 @@ stats
     
     function handleRun()
     {
+        var content;
         var value;
         try
         {
@@ -110,12 +201,51 @@ stats
         }
         catch (error)
         {
-            alert(error);
+            content = art('P', String(error));
         }
         if (value !== void 0)
         {
-            var message = typeof value === 'string' ? '"' + value + '"' : String(value);
-            alert(message);
+            var text = formatValue(value);
+            var valueType = formatValueType(value);
+            if (text)
+            {
+                var intro =
+                    valueType ? 'Evaluation result is ' + valueType + ':' : 'Evaluation result is';
+                content =
+                    art(
+                        'DIV',
+                        art('P', intro),
+                        art(
+                            'P',
+                            { style: { overflowX: 'auto' } },
+                            art(
+                                'DIV',
+                                {
+                                    style:
+                                    {
+                                        display:    'inline-block',
+                                        textAlign:  'left',
+                                        whiteSpace: 'pre'
+                                    }
+                                },
+                                text
+                            )
+                        )
+                    );
+            }
+            else
+                content = art('DIV', art('P', 'Evaluation result is ' + valueType + '.'));
+        }
+        if (content != null)
+        {
+            var runThisButton = this;
+            showModalBox(
+                content,
+                function ()
+                {
+                    runThisButton.focus();
+                }
+            );
         }
     }
     
@@ -146,18 +276,8 @@ stats
         art(
             stats.parentNode,
             art(
-                'BUTTON',
-                'Run this',
-                {
-                    style:
-                    {
-                        bottom: '0',
-                        fontSize: '10pt',
-                        margin: '0',
-                        position: 'absolute',
-                        right: '0'
-                    }
-                },
+                createButton('Run this'),
+                { style: { bottom: '0', fontSize: '10pt', position: 'absolute', right: '0' } },
                 art.on('click', handleRun)
             )
         );
@@ -187,7 +307,7 @@ stats
         }
         else
         {
-            var encodeButton = art('BUTTON', 'Encode', art.on('click', encode));
+            var encodeButton = art(createButton('Encode'), art.on('click', encode));
             art(controls, encodeButton);
             changeHandler = noEncode;
             outputArea.value = '';
@@ -201,7 +321,8 @@ stats
                     art.on('change', loadFile)
                 );
             var openLoadFileDialog = HTMLElement.prototype.click.bind(loadFileInput);
-            var loadFileButton = art('BUTTON', 'Load file…', art.on('click', openLoadFileDialog));
+            loadFileButton =
+                art(createButton('Load file…'), art.on('click', openLoadFileDialog));
             art(controls, loadFileButton, loadFileInput);
         }
         inputArea.oninput = changeHandler;
@@ -240,12 +361,16 @@ stats
     
     function loadFile()
     {
-        inputArea.disabled = true;
-        inputArea.value = '';
         var file = this.files[0];
-        var reader = new FileReader();
-        reader.addEventListener('loadend', handleReaderLoadEnd);
-        reader.readAsText(file);
+        if (file)
+        {
+            inputArea.disabled = true;
+            inputArea.value = '';
+            loadFileButton.disabled = true;
+            var reader = new FileReader();
+            reader.addEventListener('loadend', handleReaderLoadEnd);
+            reader.readAsText(file);
+        }
     }
     
     function noEncode()
@@ -269,7 +394,7 @@ stats
     
     function updateError(error)
     {
-        alert(error);
+        showModalBox(art('P', String(error)));
     }
     
     function updateOutput(output)
@@ -297,6 +422,7 @@ stats
     
     var currentFeatureObj;
     var engineSelectionBox;
+    var loadFileButton;
     var outOfSync;
     var outputSet;
     var queuedData;

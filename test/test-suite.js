@@ -384,7 +384,7 @@ uneval
                                             var regExpPattern =
                                                 '^' +
                                                 expectedPattern
-                                                .replace(/(?=[^!\*])/g, '\\')
+                                                .replace(/(?=[^!*])/g, '\\')
                                                 .replace(/(?=\*)/g, '.') +
                                                 '$';
                                             var expectedRegExp = RegExp(regExpPattern);
@@ -2292,7 +2292,7 @@ uneval
     {
         var name = fn.name;
         if (name === void 0)
-            name = /^\s*function ([\w\$]+)/.exec(fn)[1];
+            name = /^\s*function ([\w$]+)/.exec(fn)[1];
         return name;
     }
     
@@ -2376,9 +2376,9 @@ uneval
                             var varietyFeatureObj = Feature(varietyFeatureNames);
                             if (Feature.areCompatible([varietyFeatureObj, solutionFeatureObj]))
                             {
-                                var testFeatureObj =
+                                var testableFeatureObj =
                                     Feature(varietyFeatureObj, solutionFeatureObj);
-                                var emuFeatures = getEmuFeatureNames(testFeatureObj);
+                                var emuFeatures = getEmuFeatureNames(testableFeatureObj);
                                 if (emuFeatures)
                                     verifySolution(solution, char, emuFeatures);
                             }

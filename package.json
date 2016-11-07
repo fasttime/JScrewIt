@@ -1,6 +1,6 @@
 {
   "name": "jscrewit",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Converts plain JavaScript into JSFuck code, which uses only six different characters: ! ( ) + [ ]",
   "keywords": [
     "esoteric",
@@ -22,7 +22,7 @@
     "screw.js",
     "tools"
   ],
-  "main": "lib/jscrewit.js",
+  "main": "lib/jscrewit",
   "bin": "screw.js",
   "repository": {
     "type": "git",
@@ -32,20 +32,27 @@
     "build": "npm install && grunt"
   },
   "devDependencies": {
-    "art-js": "~0.4.1",
+    "art-js": "~0.5.0",
+    "del": "~2.2.2",
     "expectations": "~0.6.0",
-    "grunt": "~1.0.1",
-    "grunt-cli": "~1.2.0",
-    "grunt-contrib-clean": "~1.0.0",
-    "grunt-contrib-concat": "~1.0.1",
-    "grunt-contrib-uglify": "~2.0.0",
-    "grunt-fasttime-lint": "~0.0.6",
-    "grunt-jsdoc-to-markdown": "~2.0.0",
-    "grunt-mocha-istanbul": "~5.0.2",
+    "fs-then-native": "~1.0.2",
+    "gulp": "~3.9.1",
+    "gulp-add-src": "~0.2.0",
+    "gulp-concat": "~2.6.0",
+    "gulp-fasttime-lint": "~0.0.3",
+    "gulp-gherkin-lint": "~0.0.2",
+    "gulp-insert": "~0.5.0",
+    "gulp-rename": "~1.2.2",
+    "gulp-replace": "~0.5.4",
+    "gulp-spawn-mocha": "~3.1.0",
+    "gulp-uglify": "~2.0.0",
+    "gulp-util": "~3.0.7",
     "istanbul": "~0.4.5",
+    "jsdoc-to-markdown": "~2.0.1",
     "mocha": "~3.1.2",
     "mocha-matrix": "~0.1.1",
     "progress": "~1.1.8",
-    "proxyquire": "^1.7.10"
+    "proxyquire": "~1.7.10",
+    "run-sequence": "~1.2.2"
   }
 }

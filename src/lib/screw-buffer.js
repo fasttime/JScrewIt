@@ -413,7 +413,7 @@ var hasOuterPlus;
                         break;
                     str = newStr;
                 }
-                outerPlus = /(^|[^!\+])\+/.test(str);
+                outerPlus = /(^|[^!+])\+/.test(str);
                 solution.outerPlus = outerPlus;
             }
             return outerPlus;
