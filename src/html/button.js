@@ -19,6 +19,18 @@ function createButton(text)
             evt.stopPropagation();
     }
     
+    function handleDocumentMousemove(evt)
+    {
+        if (evt.target !== button && isActive()) // capture lost
+            deactivate();
+    }
+    
+    function handleDocumentMouseout(evt)
+    {
+        if (!evt.relatedTarget && isActive()) // capture lost
+            deactivate();
+    }
+    
     function handleKeydown(evt)
     {
         if (evt.keyCode === 13) // Enter
@@ -47,18 +59,6 @@ function createButton(text)
         }
     }
     
-    function handleMousemove(evt)
-    {
-        if (evt.target !== button && isActive()) // capture lost
-            deactivate();
-    }
-    
-    function handleMouseout(evt)
-    {
-        if (!evt.relatedTarget && isActive()) // capture lost
-            deactivate();
-    }
-    
     function handleMouseup(evt)
     {
         if (evt.which === 1 && isActive())
@@ -80,15 +80,14 @@ function createButton(text)
         return disabled;
     }
     
-    function makeUnselectable(element)
-    {
-        element.firstChild.setAttribute('unselectable', 'on');
-    }
-    
     function setCaptureListeners(methodName)
     {
         var method = art[methodName];
-        art(document, method('mousemove', handleMousemove), method('mouseout', handleMouseout));
+        art(
+            document,
+            method('mousemove', handleDocumentMousemove),
+            method('mouseout', handleDocumentMouseout)
+        );
     }
     
     function setTabindex()
@@ -109,7 +108,10 @@ function createButton(text)
         );
     setTabindex();
     if (button.msMatchesSelector)
-        art(button, makeUnselectable, art.on('mousedown', handleMousedown));
+    {
+        button.firstChild.setAttribute('unselectable', 'on');
+        art(button, art.on('mousedown', handleMousedown));
+    }
     Object.defineProperty(
         button,
         'disabled',
