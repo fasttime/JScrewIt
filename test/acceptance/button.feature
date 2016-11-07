@@ -8,7 +8,7 @@ Feature: Button
   @appearance
   Scenario: Focused appearance
     Given a focused button
-    Then the button should have a blue outline
+    Then the button should have an azure outline
 
   @appearance
   Scenario: Hovered appearance

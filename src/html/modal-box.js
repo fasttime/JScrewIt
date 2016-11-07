@@ -39,8 +39,8 @@ function showModalBox(content, callback)
         }
     }
     
-    var BOX_BORDER_RADIUS   = 22;
-    var BOX_MARGIN          = 3;
+    var BOX_BORDER_RADIUS   = 23;
+    var BOX_MARGIN          = 2;
     
     var focusableContainer =
         art(
@@ -123,4 +123,4 @@ function showModalBox(content, callback)
 
 art.css('#modal-box p:first-child', { 'margin-top': '0' });
 art.css('#modal-box p:last-child', { 'margin-bottom': '0' });
-art.css(':focus>#modal-box', { 'box-shadow': '0 0 3px 3px rgba(255, 255, 255, .75)' });
+art.css(':focus>#modal-box', { 'box-shadow': '0 0 2px 2px rgba(0, 127, 255, .75)' });

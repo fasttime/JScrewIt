@@ -11,25 +11,25 @@ Feature: Modal box
   @appearance
   Scenario: Focus outline
     Given a focused modal box
-    Then the modal box should have a white outline
+    Then the modal box should have an azure outline
 
   @appearance
   Scenario: Horizontal alignment
     Given a modal box
     And the viewport is wider than 500px
     Then the modal box should be centered horizontally
-    And the modal box should be 494px wide
+    And the modal box should be 496px wide
 
   @appearance
   Scenario: Adaptive width
     Given a modal box
     And the viewport is little less than 500px wide
-    Then the modal box should have 3px margin from the left and right bounds of the viewport
+    Then the modal box should have 2px margin from the left and right bounds of the viewport
 
   @appearance
   Scenario: Vertical alignment
     Given a modal box
-    And the viewport is at least 6px higher than the modal box
+    And the viewport is at least 4px higher than the modal box
     Then the modal box should be centered vertically
 
   @appearance
