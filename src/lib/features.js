@@ -51,7 +51,7 @@ var validMaskFromArrayOrStringOrFeature;
     function areEqual()
     {
         var mask;
-        var result =
+        var equal =
             array_prototype_every.call(
                 arguments,
                 function (arg, index)
@@ -68,7 +68,7 @@ var validMaskFromArrayOrStringOrFeature;
                     return result;
                 }
             );
-        return result;
+        return equal;
     }
     
     function checkSelfFeature()
@@ -1433,8 +1433,8 @@ var validMaskFromArrayOrStringOrFeature;
                     function (arg)
                     {
                         var otherMask = validMaskFromArrayOrStringOrFeature(arg);
-                        var included = maskIncludes(mask, otherMask);
-                        return included;
+                        var result = maskIncludes(mask, otherMask);
+                        return result;
                     }
                 );
             return included;
@@ -1544,7 +1544,7 @@ var validMaskFromArrayOrStringOrFeature;
     isMaskCompatible =
         function (mask)
         {
-            var result =
+            var compatible =
                 incompatibleMasks.every(
                     function (incompatibleMask)
                     {
@@ -1552,7 +1552,7 @@ var validMaskFromArrayOrStringOrFeature;
                         return result;
                     }
                 );
-            return result;
+            return compatible;
         };
     
     validMaskFromArrayOrStringOrFeature =

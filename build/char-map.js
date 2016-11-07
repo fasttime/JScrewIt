@@ -94,18 +94,31 @@ function findKnownSolution(solutions, analyzer)
     return knownSolution;
 }
 
+function getValues(obj)
+{
+    var values =
+        Object.keys(obj).map(
+            function (key)
+            {
+                var value = obj[key];
+                return value;
+            }
+        );
+    return values;
+}
+
 function multiSolve(char, doneCharMap, exceptionalChars)
 {
-    function resolveCharacter(char)
+    function resolveCharacter(thisChar)
     {
-        var solutions = doneCharMap[char];
+        var solutions = doneCharMap[thisChar];
         if (solutions)
         {
             var solution = findKnownSolution(solutions, analyzer);
             return solution;
         }
-        if (!(char in exceptionalChars))
-            throw new Interruption(char);
+        if (!(thisChar in exceptionalChars))
+            throw new Interruption(thisChar);
     }
     
     var Analyzer = require('./analyzer');
@@ -130,14 +143,7 @@ function multiSolve(char, doneCharMap, exceptionalChars)
                 entryIndexSet[entryIndex] = null;
         }
     }
-    var solutions =
-        Object.keys(outputMap).map(
-            function (outputKey)
-            {
-                var solution = outputMap[outputKey];
-                return solution;
-            }
-        );
+    var solutions = getValues(outputMap);
     solutions.entryIndexCount = Object.keys(entryIndexSet).length;
     return solutions;
 }

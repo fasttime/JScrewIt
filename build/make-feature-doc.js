@@ -108,7 +108,7 @@ function escape(str)
     var result =
         str
         .replace(
-            /[\n&\()[\\\]]/g,
+            /[\n&()[\\\]]/g,
             function (char)
             {
                 if (char === '\n')
@@ -192,27 +192,32 @@ function getAvailabilityInfo(featureName, engineEntry)
 
 function getCombinedDescription(engineEntry, versionIndex)
 {
+    function formatVersionedNames(names)
+    {
+        var str =
+            names.map(
+                function (name, subIndex)
+                {
+                    var indexedDescription = description[subIndex];
+                    var versionedName = getVersionedName(name, indexedDescription);
+                    return versionedName;
+                }
+            ).join(', ');
+        return str;
+    }
+    
     function getVersionedName(name, description)
     {
-        var result = description ? name + ' ' + description : name;
-        return result;
+        var versionedName = description ? name + ' ' + description : name;
+        return versionedName;
     }
     
     var name = engineEntry.name;
     var versionEntry = engineEntry.versions[versionIndex];
     var description = versionEntry.description;
-    var result =
-        Array.isArray(name) ?
-        name.map(
-            function (name, subIndex)
-            {
-                var indexedDescription = description[subIndex];
-                var result = getVersionedName(name, indexedDescription);
-                return result;
-            }
-        ).join(', ') :
-        getVersionedName(name, description);
-    return result;
+    var combinedDescription =
+        Array.isArray(name) ? formatVersionedNames(name) : getVersionedName(name, description);
+    return combinedDescription;
 }
 
 function getImpliers(featureName, assignmentMap)
