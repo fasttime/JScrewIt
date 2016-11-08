@@ -13,10 +13,11 @@ function createButton(text)
         setCaptureListeners('off');
     }
     
-    function filterClick(evt)
+    function handleClick(evt)
     {
         if (isDisabled())
-            evt.stopPropagation();
+            evt.stopImmediatePropagation();
+        evt.preventDefault();
     }
     
     function handleDocumentMousemove(evt)
@@ -99,7 +100,7 @@ function createButton(text)
         art(
             'SPAN',
             { className: 'button' },
-            art.on('click', filterClick, true),
+            art.on('click', handleClick),
             art.on('keydown', handleKeydown),
             art.on('keyup', handleKeyup),
             art.on('mouseup', handleMouseup),

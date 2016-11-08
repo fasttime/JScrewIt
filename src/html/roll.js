@@ -73,6 +73,5 @@ function createRoll()
     var startTime;
     
     init();
-    
     return comp;
 }
