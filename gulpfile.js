@@ -244,6 +244,7 @@ gulp.task(
             'src/html/button.js',
             'src/html/engine-selection-box.js',
             'src/html/modal-box.js',
+            'src/html/result-format.js',
             'src/html/roll.js',
             'src/html/ui-main.js'
         ];
