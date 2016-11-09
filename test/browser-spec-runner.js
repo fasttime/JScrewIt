@@ -310,7 +310,6 @@ showFeatureSupport
     // recognize them as leaked while running unit tests.
     mocha.setup({ globals: ['$0', '$1', '$2', '$3', '$4'], reporter: Matrix, ui: 'bdd' });
     mocha.checkLeaks();
-    TestSuite.init();
     addEventListener('load', handleLoad);
     var webWorkerFeatureObj;
     var waitCount = initWorker();

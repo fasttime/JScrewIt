@@ -98,6 +98,7 @@
     
     if (typeof module !== 'undefined')
     {
+        require('expectations');
         var resultFormat = require('../src/html/result-format');
         formatValue = resultFormat.formatValue;
         formatValueType = resultFormat.formatValueType;
