@@ -183,7 +183,7 @@ art.css(
         'user-select':          'none',
         '-moz-user-select':     'none',
         '-ms-user-select':      'none',
-        '-webkit-user-select':  'none',
+        '-webkit-user-select':  'none'
     }
 );
 art.css(

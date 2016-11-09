@@ -8,6 +8,8 @@ controls,
 createButton,
 createEngineSelectionBox,
 createRoll,
+formatValue,
+formatValueType,
 inputArea,
 JScrewIt,
 outputArea,
@@ -62,93 +64,6 @@ stats
             setWaitingForWorker(true);
         }
         inputArea.onkeyup = null;
-    }
-    
-    function formatItem(value)
-    {
-        var text;
-        if (typeof value === 'string')
-            text = '"' + value + '"';
-        else if (value === 0 && 1 / value < 0)
-            text = '-0';
-        else if (Array.isArray(value))
-        {
-            try
-            {
-                text = value.length ? '[…]' : '[]';
-            }
-            catch (error)
-            { }
-        }
-        else
-        {
-            try
-            {
-                text = String(value);
-            }
-            catch (error)
-            { }
-        }
-        return text;
-    }
-    
-    function formatValue(value)
-    {
-        var text;
-        if (Array.isArray(value))
-        {
-            try
-            {
-                text = '[' + value.map(formatItem).join(', ') + ']';
-            }
-            catch (error)
-            { }
-        }
-        else
-            text = formatItem(value);
-        return text;
-    }
-    
-    function formatValueType(value)
-    {
-        var valueType;
-        switch (typeof value)
-        {
-        case 'function':
-            valueType = 'a function';
-            break;
-        case 'object':
-            var matches = /(\w+).$/.exec(Object.prototype.toString.call(value));
-            var typeStr = matches ? matches[1] : void 0;
-            switch (typeStr)
-            {
-            case 'Array':
-                switch (value.length)
-                {
-                case 0:
-                    valueType = 'an empty array';
-                    break;
-                case 1:
-                    valueType = 'a one element array';
-                    break;
-                default:
-                    valueType = 'an array';
-                    break;
-                }
-                break;
-            case 'Date':
-                valueType = 'a date';
-                break;
-            case 'RegExp':
-                valueType = 'a regular expression';
-                break;
-            default:
-                valueType = 'an object';
-                break;
-            }
-            break;
-        }
-        return valueType;
     }
     
     function getOptions()
