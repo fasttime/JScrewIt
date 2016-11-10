@@ -1032,6 +1032,26 @@ var validMaskFromArrayOrStringOrFeature;
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'V8_SRC'
+            ]
+        },
+        NODE50:
+        {
+            engine: 'Node.js 5.0 or later',
+            includes:
+            [
+                'ARROW',
+                'ESC_HTML_QUOT_ONLY',
+                'FILL',
+                'FROM_CODE_POINT',
+                'GMT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'NO_OLD_SAFARI_LF',
+                'UNDEFINED',
+                'V8_SRC'
             ],
             attributes: { 'char-increment-restriction': null }
         },
