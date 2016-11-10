@@ -11,57 +11,11 @@
             'Given',
             function ()
             {
-                function test(description, input, expectedValue, expectedValueType)
-                {
-                    describe(
-                        description,
-                        function ()
-                        {
-                            if (expectedValue != null)
-                            {
-                                it(
-                                    'formatValue returns the expected result',
-                                    function ()
-                                    {
-                                        var actualValue = formatValue(input);
-                                        expect(actualValue).toBe(expectedValue);
-                                    }
-                                );
-                            }
-                            it(
-                                'formatValueType returns the expected result',
-                                function ()
-                                {
-                                    var actualValueType = formatValueType(input);
-                                    expect(actualValueType).toBe(expectedValueType);
-                                }
-                            );
-                        }
-                    );
-                }
-                
-                function throwError()
-                {
-                    throw Error();
-                }
-                
                 var sparseArray = [];
                 sparseArray[5] = 'foo';
                 var sparseSingletonArray = [];
                 sparseSingletonArray.length = 1;
                 var badObj = { toString: throwError };
-                var untypedObj;
-                if (typeof Symbol !== 'undefined')
-                {
-                    untypedObj =
-                    {
-                        toString: function ()
-                        {
-                            return 'foo';
-                        }
-                    };
-                    Object.defineProperty(untypedObj, Symbol.toStringTag, { get: throwError });
-                }
                 
                 test('a number', 1, '1');
                 test('0', 0, '0');
@@ -87,10 +41,89 @@
                 test('a regular expression', /./, '/./', 'a regular expression');
                 test('a date', new Date(), void 0, 'a date');
                 test('an object that throws errors', badObj, void 0, 'an object');
-                if (untypedObj)
-                    test('a strange object', untypedObj, 'foo', 'an object');
+                testTypeUnknownObj();
             }
         );
+    }
+    
+    function test(description, input, expectedValue, expectedValueType, doBefore, doAfter)
+    {
+        describe(
+            description,
+            function ()
+            {
+                if (doBefore)
+                    before(doBefore);
+                if (doAfter)
+                    after(doAfter);
+                if (expectedValue != null)
+                {
+                    it(
+                        'formatValue returns the expected result',
+                        function ()
+                        {
+                            var actualValue = formatValue(input);
+                            expect(actualValue).toBe(expectedValue);
+                        }
+                    );
+                }
+                it(
+                    'formatValueType returns the expected result',
+                    function ()
+                    {
+                        var actualValueType = formatValueType(input);
+                        expect(actualValueType).toBe(expectedValueType);
+                    }
+                );
+            }
+        );
+    }
+    
+    function testTypeUnknownObj()
+    {
+        function callTest(doBefore, doAfter)
+        {
+            test('a strange object', obj, 'foo', 'an object', doBefore, doAfter);
+        }
+        
+        var obj = new RegExp();
+        obj.toString =
+            function ()
+            {
+                return 'foo';
+            };
+        if (typeof Symbol !== 'undefined')
+        {
+            var toStringTag = Symbol.toStringTag;
+            if (toStringTag)
+            {
+                Object.defineProperty(obj, toStringTag, { get: throwError });
+                callTest();
+                return;
+            }
+        }
+        var toString = Object.prototype.toString;
+        callTest(
+            function ()
+            {
+                toString.call =
+                    function (arg)
+                    {
+                        if (arg !== obj)
+                            return Function.prototype.call.call(toString, null, arg);
+                        throwError();
+                    };
+            },
+            function ()
+            {
+                delete toString.call;
+            }
+        );
+    }
+    
+    function throwError()
+    {
+        throw Error();
     }
     
     var formatValue;
