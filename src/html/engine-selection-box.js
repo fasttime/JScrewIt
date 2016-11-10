@@ -127,6 +127,7 @@ function createEngineSelectionBox()
                 art.on(['keyup', 'mouseup'], handleAllEngineChangeAsync)
             );
         var engineFieldBox = art('TABLE', { style: { borderSpacing: '0', width: '100%' } });
+        var forcedStrictModeField = createCheckBox('Generate strict mode code');
         var webWorkerField = createCheckBox('Support web workers');
         comp =
             art(
@@ -141,7 +142,8 @@ function createEngineSelectionBox()
                     allEngineField,
                     engineFieldBox,
                     art('HR'),
-                    webWorkerField,
+                    art('DIV', webWorkerField),
+                    art('DIV', forcedStrictModeField),
                     art.on('change', updateStatus)
                 ),
                 {
@@ -198,6 +200,7 @@ function createEngineSelectionBox()
         );
         allEngineInput = allEngineField.querySelector('INPUT');
         engineVersionInputs = engineFieldBox.querySelectorAll('INPUT');
+        forcedStrictModeInput = forcedStrictModeField.querySelector('INPUT');
         webWorkerInput = webWorkerField.querySelector('INPUT');
         updateCurrentFeatureObj();
     }
@@ -225,6 +228,8 @@ function createEngineSelectionBox()
         currentFeatureObj = Feature.commonOf.apply(null, featureObjs) || Feature.DEFAULT;
         if (webWorkerInput.checked)
             currentFeatureObj = currentFeatureObj.restrict('web-worker', featureObjs);
+        if (forcedStrictModeInput.checked)
+            currentFeatureObj = currentFeatureObj.restrict('forced-strict-mode', featureObjs);
     }
     
     function updateStatus()
@@ -237,6 +242,7 @@ function createEngineSelectionBox()
     var comp;
     var currentFeatureObj;
     var engineVersionInputs;
+    var forcedStrictModeInput;
     var webWorkerInput;
     
     init();
