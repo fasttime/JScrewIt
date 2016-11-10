@@ -70,7 +70,8 @@ function createEngineSelectionBox()
             [
                 { feature: 'NODE010', number: '0.10' },
                 { feature: 'NODE012', number: '0.12' },
-                { feature: 'NODE40', number: '4+' },
+                { feature: 'NODE40', number: '4' },
+                { feature: 'NODE50', number: '5+' }
             ]
         }
     ];
