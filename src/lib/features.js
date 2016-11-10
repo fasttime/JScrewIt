@@ -566,7 +566,8 @@ var validMaskFromArrayOrStringOrFeature;
             check: function ()
             {
                 return true;
-            }
+            },
+            attributes: { 'forced-strict-mode': 'char-increment-restriction' }
         },
         INTL:
         {
@@ -728,7 +729,12 @@ var validMaskFromArrayOrStringOrFeature;
                 'Features available in all browsers.\n' +
                 'No support for Node.js.',
             includes: ['ANY_DOCUMENT', 'ANY_WINDOW', 'HISTORY', 'INCR_CHAR'],
-            attributes: { 'safari-bug-21820506': null, 'web-worker-restriction': null }
+            attributes:
+            {
+                'char-increment-restriction': null,
+                'safari-bug-21820506': null,
+                'web-worker-restriction': null
+            }
         },
         COMPACT:
         {
@@ -755,7 +761,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'WINDOW'
             ],
-            attributes: { 'web-worker-restriction': null }
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null }
         },
         ANDRO40:
         {
@@ -844,7 +850,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
                 'WINDOW'
             ],
-            attributes: { 'web-worker-restriction': null }
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null }
         },
         EDGE:
         {
@@ -871,7 +877,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
                 'WINDOW'
             ],
-            attributes: { 'web-worker-restriction': null }
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null }
         },
         FF: 'FF31',
         FF31:
@@ -901,7 +907,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNEVAL',
                 'WINDOW'
             ],
-            attributes: { 'web-worker-restriction': null }
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null }
         },
         IE9:
         {
@@ -934,7 +940,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'WINDOW'
             ],
-            attributes: { 'web-worker-restriction': null }
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null }
         },
         IE11:
         {
@@ -954,7 +960,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'WINDOW'
             ],
-            attributes: { 'web-worker-restriction': null }
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null }
         },
         IE11_WIN10:
         {
@@ -975,7 +981,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'WINDOW'
             ],
-            attributes: { 'web-worker-restriction': null }
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null }
         },
         NODE010:
         {
@@ -1026,7 +1032,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'V8_SRC'
-            ]
+            ],
+            attributes: { 'char-increment-restriction': null }
         },
         SAFARI70:
         {
@@ -1050,6 +1057,7 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes:
             {
+                'char-increment-restriction': null,
                 'no-atob-in-web-worker': null,
                 'no-console-in-web-worker': null,
                 'web-worker-restriction': null
@@ -1079,6 +1087,7 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes:
             {
+                'char-increment-restriction': null,
                 'no-atob-in-web-worker': null,
                 'safari-bug-21820506': null,
                 'web-worker-restriction': null
@@ -1111,6 +1120,7 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes:
             {
+                'char-increment-restriction': null,
                 'no-atob-in-web-worker': null,
                 'safari-bug-21820506': null,
                 'web-worker-restriction': null
@@ -1140,7 +1150,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'WINDOW'
             ],
-            attributes: { 'web-worker-restriction': null }
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null }
         }
     };
     
@@ -1462,7 +1472,19 @@ var validMaskFromArrayOrStringOrFeature;
          *
          * @param {string} environment
          * The environment to which this feature should be restricted.
-         * The only environment currently supported is `"web-worker"`.
+         * Two environments are currently supported.
+         *
+         * <dl>
+         *
+         * <dt><code>"forced-strict-mode"</code></dt>
+         * <dd>
+         * Removes features that are not available in environments that require strict mode
+         * code.</dd>
+         *
+         * <dt><code>"web-worker"</code></dt>
+         * <dd>Removes features that are not available inside web workers.</dd>
+         *
+         * </dl>
          *
          * @param {JScrewIt.Feature[]} [referenceFeatureObjs]
          * An array of predefined feature objects, each corresponding to a particular engine in
