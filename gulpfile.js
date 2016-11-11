@@ -246,6 +246,7 @@ gulp.task(
             'src/html/modal-box.js',
             'src/html/result-format.js',
             'src/html/roll.js',
+            'src/html/tabindex.js',
             'src/html/ui-main.js'
         ];
         var uglifyOpts = { compress: { collapse_vars: true, hoist_vars: true } };

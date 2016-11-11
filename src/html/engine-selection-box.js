@@ -1,5 +1,5 @@
 /* eslint-env browser */
-/* global JScrewIt, art */
+/* global JScrewIt, art, setTabindex, showModalBox */
 
 function createEngineSelectionBox()
 {
@@ -76,15 +76,66 @@ function createEngineSelectionBox()
         }
     ];
     
+    var FORCED_STRICT_MODE_HELP =
+        '<p>This option instructs JScrewIt to generate strict mode JavaScript code. Check this ' +
+        'option only if your environment disallows non-strict code. You may want to do this for ' +
+        'example in one of the following circumstances.' +
+        '<ul>' +
+        '<li>To encode a snippet like a string or number and embed it in a JavaScript file where ' +
+        'strict mode is enacted (for example, in a scope containing the ' +
+        '<code>"use strict"</code> directive or in a class body).' +
+        '<li>To encode a script and run it in Node.js with the option <code>--use_strict</code>.' +
+        '<li>To encode an ECMAScript module.' +
+        '</ul>';
+    
+    var WEB_WORKER_HELP =
+        '<p>Web workers are part of a standard HTML technology used to perform background tasks ' +
+        'in JavaScript.' +
+        '<p>Check this option only if your code needs to run inside a web worker. To create or ' +
+        'use a web worker in your code, this option is not required.';
+    
     function createCheckBox(text, inputProps)
     {
         var checkBox =
             art(
                 'LABEL',
                 art('INPUT', { style: { margin: '0 .25em 0 0' }, type: 'checkbox' }, inputProps),
-                text || null
+                text
             );
         return checkBox;
+    }
+    
+    function createQuestionMark(innerHTML)
+    {
+        var contentBlock = art('DIV', { style: { textAlign: 'justify' } });
+        contentBlock.innerHTML = innerHTML;
+        var questionMark =
+            art(
+                'SPAN',
+                {
+                    className: 'focusable',
+                    style:
+                    {
+                        background: 'black',
+                        borderRadius: '1em',
+                        color: 'white',
+                        cursor: 'pointer',
+                        display: 'inline-block',
+                        fontSize: '8pt',
+                        lineHeight: '10.5pt',
+                        position: 'relative',
+                        textAlign: 'center',
+                        top: '-1.5pt',
+                        width: '10.5pt',
+                        height: '10.5pt'
+                    },
+                    title: 'Learn more…'
+                },
+                '?',
+                setTabindex,
+                art.on('click', showModalBox.bind(null, contentBlock))
+            );
+        return questionMark;
     }
     
     function dispatchInputEvent()
@@ -142,8 +193,13 @@ function createEngineSelectionBox()
                     allEngineField,
                     engineFieldBox,
                     art('HR'),
-                    art('DIV', webWorkerField),
-                    art('DIV', forcedStrictModeField),
+                    art('DIV', webWorkerField, ' ', createQuestionMark(WEB_WORKER_HELP)),
+                    art(
+                        'DIV',
+                        forcedStrictModeField,
+                        ' ',
+                        createQuestionMark(FORCED_STRICT_MODE_HELP)
+                    ),
                     art.on('change', updateStatus)
                 ),
                 {

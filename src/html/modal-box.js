@@ -1,5 +1,5 @@
 /* eslint-env browser */
-/* global art, createButton */
+/* global art, createButton, setTabindex */
 
 function showModalBox(content, callback)
 {
@@ -51,14 +51,14 @@ function showModalBox(content, callback)
                     borderRadius:   BOX_BORDER_RADIUS + BOX_MARGIN + 'px',
                     display:        'inline-block',
                     maxWidth:       '500px',
-                    outline:        'none',
                     width:          '100%'
-                },
-                tabIndex: 0
+                }
             },
+            setTabindex,
             art(
                 'DIV',
                 {
+                    className: 'focusable',
                     id: 'modal-box',
                     style:
                     {
@@ -123,4 +123,3 @@ function showModalBox(content, callback)
 
 art.css('#modal-box p:first-child', { 'margin-top': '0' });
 art.css('#modal-box p:last-child', { 'margin-bottom': '0' });
-art.css(':focus>#modal-box', { 'box-shadow': '0 0 2px 2px rgba(0, 127, 255, .75)' });
