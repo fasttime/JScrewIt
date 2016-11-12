@@ -76,23 +76,33 @@ function createEngineSelectionBox()
         }
     ];
     
+    var FORCED_STRICT_MODE_CAPTION = 'Generate strict mode code';
+    
     var FORCED_STRICT_MODE_HELP =
-        '<p>This option instructs JScrewIt to generate strict mode JavaScript code. Check this ' +
-        'option only if your environment disallows non-strict code. You may want to do this for ' +
-        'example in one of the following circumstances.' +
+        '<p>The option <dfn>' + FORCED_STRICT_MODE_CAPTION + '</dfn> instructs JScrewIt to avoid ' +
+        'optimizations that don\'t work in strict mode JavaScript code. Check this option only ' +
+        'if your environment disallows non-strict code. You may want to do this for example in ' +
+        'one of the following circumstances.' +
         '<ul>' +
-        '<li>To encode a snippet like a string or number and embed it in a JavaScript file where ' +
-        'strict mode is enacted (for example, in a scope containing the ' +
-        '<code>"use strict"</code> directive or in a class body).' +
+        '<li>To encode a string or a number and embed it in a JavaScript file in a place where ' +
+        'strict mode code is expected, like in a scope containing a use strict directive or in a ' +
+        'class body.' +
         '<li>To encode a script and run it in Node.js with the option <code>--use_strict</code>.' +
-        '<li>To encode an ECMAScript module.' +
-        '</ul>';
+        '<li>To encode an ECMAScript module. Note that module support in JSFuck is <em>very</em> ' +
+        'limited, as <code>import</code> and <code>export</code> statements don\'t work at all. ' +
+        'If your module doesn\'t contain these statements, you can encode it using this option.' +
+        '</ul>' +
+        '<p>In most other cases, this option is not required, even if your script contains a ' +
+        '<code>"use strict"</code> statement at file scope.';
+    
+    var WEB_WORKER_CAPTION = 'Support web workers';
     
     var WEB_WORKER_HELP =
         '<p>Web workers are part of a standard HTML technology used to perform background tasks ' +
         'in JavaScript.' +
-        '<p>Check this option only if your code needs to run inside a web worker. To create or ' +
-        'use a web worker in your code, this option is not required.';
+        '<p>Check the option <dfn>' + WEB_WORKER_CAPTION + '</dfn> only if your code needs to ' +
+        'run inside a web worker. To create or use a web worker in your code, this option is not ' +
+        'required.';
     
     function createCheckBox(text, inputProps)
     {
@@ -107,7 +117,7 @@ function createEngineSelectionBox()
     
     function createQuestionMark(innerHTML)
     {
-        var contentBlock = art('DIV', { style: { textAlign: 'justify' } });
+        var contentBlock = art('DIV', { className: 'help-text' });
         contentBlock.innerHTML = innerHTML;
         var questionMark =
             art(
@@ -178,8 +188,8 @@ function createEngineSelectionBox()
                 art.on(['keyup', 'mouseup'], handleAllEngineChangeAsync)
             );
         var engineFieldBox = art('TABLE', { style: { borderSpacing: '0', width: '100%' } });
-        var forcedStrictModeField = createCheckBox('Generate strict mode code');
-        var webWorkerField = createCheckBox('Support web workers');
+        var forcedStrictModeField = createCheckBox(FORCED_STRICT_MODE_CAPTION);
+        var webWorkerField = createCheckBox(WEB_WORKER_CAPTION);
         comp =
             art(
                 'FIELDSET',
@@ -304,3 +314,7 @@ function createEngineSelectionBox()
     init();
     return comp;
 }
+
+art.css('.help-text', { 'font-size': '11pt', 'text-align': 'justify' });
+art.css('.help-text code', { 'white-space': 'pre' });
+art.css('.help-text li', { 'margin': '.5em 0' });
