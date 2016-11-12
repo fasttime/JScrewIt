@@ -200,19 +200,13 @@ stats
         );
         (function ()
         {
-            var selectedIndex;
             var COMPACT = Feature.COMPACT;
             if (Feature.AUTO.includes(COMPACT))
-            {
                 currentFeatureObj = COMPACT;
-                selectedIndex = 1;
-            }
             else
-            {
-                currentFeatureObj = Feature.DEFAULT;
-                selectedIndex = 0;
-            }
-            compMenu.selectedIndex = compMenu.previousIndex = selectedIndex;
+                currentFeatureObj = Feature.BROWSER;
+            compMenu.value = currentFeatureObj.name;
+            compMenu.previousIndex = compMenu.selectedIndex;
         }
         )();
         var changeHandler;

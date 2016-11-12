@@ -117,6 +117,11 @@ function createEngineSelectionBox()
     
     function createQuestionMark(innerHTML)
     {
+        function showHelp()
+        {
+            showModalBox(contentBlock);
+        }
+        
         var contentBlock = art('DIV', { className: 'help-text' });
         contentBlock.innerHTML = innerHTML;
         var questionMark =
@@ -143,7 +148,7 @@ function createEngineSelectionBox()
                 },
                 '?',
                 setTabindex,
-                art.on('click', showModalBox.bind(null, contentBlock))
+                art.on('click', showHelp)
             );
         return questionMark;
     }
