@@ -75,17 +75,19 @@ stats
     function handleCompInput()
     {
         var selectedIndex = compMenu.selectedIndex;
+        var compatibility = compMenu.options[selectedIndex].value;
+        // If the option "Custom…" is not selected, the feature object can be determined directly
+        // from the selected option; otherwise, it must be retrieved from the engineSelectionBox.
+        var featureObj =
+            compatibility ? Feature[compatibility] : engineSelectionBox.featureObj;
+        if (outOfSync || !Feature.areEqual(featureObj, currentFeatureObj))
+        {
+            currentFeatureObj = featureObj;
+            this();
+        }
         if (selectedIndex !== compMenu.previousIndex)
         {
             compMenu.previousIndex = selectedIndex;
-            var compatibility = compMenu.options[selectedIndex].value;
-            var featureObj =
-                compatibility ? Feature[compatibility] : engineSelectionBox.featureObj;
-            if (outOfSync || !Feature.areEqual(featureObj, currentFeatureObj))
-            {
-                currentFeatureObj = featureObj;
-                this();
-            }
             roll.rollTo(+!compatibility);
         }
     }
