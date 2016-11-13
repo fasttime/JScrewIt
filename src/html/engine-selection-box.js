@@ -1,5 +1,5 @@
 /* eslint-env browser */
-/* global JScrewIt, art */
+/* global JScrewIt, art, setTabindex, showModalBox */
 
 function createEngineSelectionBox()
 {
@@ -70,10 +70,41 @@ function createEngineSelectionBox()
             [
                 { feature: 'NODE010', number: '0.10' },
                 { feature: 'NODE012', number: '0.12' },
-                { feature: 'NODE40', number: '4+' },
+                { feature: 'NODE40', number: '4' },
+                { feature: 'NODE50', number: '5+' }
             ]
         }
     ];
+    
+    var FORCED_STRICT_MODE_CAPTION = 'Generate strict mode code';
+    
+    var FORCED_STRICT_MODE_HELP =
+        '<p>The option <dfn>' + FORCED_STRICT_MODE_CAPTION + '</dfn> instructs JScrewIt to avoid ' +
+        'optimizations that don\'t work in strict mode JavaScript code. Check this option only ' +
+        'if your environment disallows non-strict code. You may want to do this for example in ' +
+        'one of the following circumstances.' +
+        '<ul>' +
+        '<li>To encode a string or a number and embed it in a JavaScript file in a place where ' +
+        'strict mode code is expected, like in a scope containing a use strict directive or in a ' +
+        'class body.' +
+        '<li>To encode a script and run it in Node.js with the option <code>--use_strict</code>.' +
+        '<li>To encode an ECMAScript module. Note that module support in JSFuck is <em>very</em> ' +
+        'limited, as <code>import</code> and <code>export</code> statements don\'t work at all. ' +
+        'If your module doesn\'t contain these statements, you can encode it using this option.' +
+        '</ul>' +
+        '<p>In most other cases, this option is not required, even if your script contains a top ' +
+        'level <code>"use strict"</code> statement.';
+    
+    var WEB_WORKER_CAPTION = 'Support web workers';
+    
+    var WEB_WORKER_HELP =
+        '<p>Web workers are part of a standard HTML technology used to perform background tasks ' +
+        'in JavaScript.' +
+        '<p>Check the option <dfn>' + WEB_WORKER_CAPTION + '</dfn> only if your code needs to ' +
+        'run inside a web worker. To create or use a web worker in your code, this option is not ' +
+        'required.';
+    
+    var QUESTION_MARK_SIZE = '10.5pt';
     
     function createCheckBox(text, inputProps)
     {
@@ -81,9 +112,48 @@ function createEngineSelectionBox()
             art(
                 'LABEL',
                 art('INPUT', { style: { margin: '0 .25em 0 0' }, type: 'checkbox' }, inputProps),
-                text || null
+                text
             );
         return checkBox;
+    }
+    
+    function createQuestionMark(innerHTML)
+    {
+        function showHelp()
+        {
+            showModalBox(contentBlock);
+        }
+        
+        var contentBlock = art('DIV', { className: 'help-text' });
+        contentBlock.innerHTML = innerHTML;
+        var questionMark =
+            art(
+                'SPAN',
+                {
+                    className: 'focusable',
+                    style:
+                    {
+                        background:     'black',
+                        borderRadius:   '1em',
+                        color:          'white',
+                        cursor:         'pointer',
+                        display:        'inline-block',
+                        fontSize:       '8pt',
+                        fontWeight:     'bold',
+                        lineHeight:     QUESTION_MARK_SIZE,
+                        position:       'relative',
+                        textAlign:      'center',
+                        top:            '-1.5pt',
+                        width:          QUESTION_MARK_SIZE,
+                        height:         QUESTION_MARK_SIZE
+                    },
+                    title: 'Learn more…'
+                },
+                '?',
+                setTabindex,
+                art.on('click', showHelp)
+            );
+        return questionMark;
     }
     
     function dispatchInputEvent()
@@ -126,10 +196,12 @@ function createEngineSelectionBox()
                 art.on(['keyup', 'mouseup'], handleAllEngineChangeAsync)
             );
         var engineFieldBox = art('TABLE', { style: { borderSpacing: '0', width: '100%' } });
-        var webWorkerField = createCheckBox('Support web workers');
+        var forcedStrictModeField = createCheckBox(FORCED_STRICT_MODE_CAPTION);
+        var webWorkerField = createCheckBox(WEB_WORKER_CAPTION);
         comp =
             art(
                 'FIELDSET',
+                { className: 'engine-selection-box' },
                 art(
                     'DIV',
                     art(
@@ -140,7 +212,13 @@ function createEngineSelectionBox()
                     allEngineField,
                     engineFieldBox,
                     art('HR'),
-                    webWorkerField,
+                    art('DIV', webWorkerField, ' ', createQuestionMark(WEB_WORKER_HELP)),
+                    art(
+                        'DIV',
+                        forcedStrictModeField,
+                        ' ',
+                        createQuestionMark(FORCED_STRICT_MODE_HELP)
+                    ),
                     art.on('change', updateStatus)
                 ),
                 {
@@ -155,7 +233,7 @@ function createEngineSelectionBox()
             {
                 var versions = engineInfo.versions;
                 var engineField;
-                var engineFieldProps = engineIndex & 1 ? { className: 'engineFieldEven' } : null;
+                var engineFieldProps = engineIndex & 1 ? { className: 'even-field' } : null;
                 var rowSpan = (versions.length + 2) / 3 ^ 0;
                 var cellCount = rowSpan * 3;
                 for (var versionIndex = 0; versionIndex < cellCount; ++versionIndex)
@@ -197,6 +275,7 @@ function createEngineSelectionBox()
         );
         allEngineInput = allEngineField.querySelector('INPUT');
         engineVersionInputs = engineFieldBox.querySelectorAll('INPUT');
+        forcedStrictModeInput = forcedStrictModeField.querySelector('INPUT');
         webWorkerInput = webWorkerField.querySelector('INPUT');
         updateCurrentFeatureObj();
     }
@@ -224,6 +303,8 @@ function createEngineSelectionBox()
         currentFeatureObj = Feature.commonOf.apply(null, featureObjs) || Feature.DEFAULT;
         if (webWorkerInput.checked)
             currentFeatureObj = currentFeatureObj.restrict('web-worker', featureObjs);
+        if (forcedStrictModeInput.checked)
+            currentFeatureObj = currentFeatureObj.restrict('forced-strict-mode', featureObjs);
     }
     
     function updateStatus()
@@ -236,8 +317,16 @@ function createEngineSelectionBox()
     var comp;
     var currentFeatureObj;
     var engineVersionInputs;
+    var forcedStrictModeInput;
     var webWorkerInput;
     
     init();
     return comp;
 }
+
+art.css('.engine-selection-box', { background: '#f0f0f0' });
+art.css('.engine-selection-box .even-field', { background: '#fff' });
+art.css('.help-text', { 'font-size': '11pt', 'text-align': 'justify' });
+art.css('.help-text code', { 'white-space': 'pre' });
+art.css('.help-text dfn', { 'font-style': 'normal', 'font-weight': 'bold' });
+art.css('.help-text li', { 'margin': '.5em 0' });
