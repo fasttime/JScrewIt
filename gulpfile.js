@@ -117,14 +117,37 @@ gulp.task(
     function ()
     {
         var gutil = require('gulp-util');
-        var showFeatureSupport = require('./test/feature-info');
+        var featureInfo = require('./test/feature-info');
         
-        showFeatureSupport(
-            function (label, features)
+        console.log();
+        var anyMarked;
+        var forcedStrictModeFeatureObj = featureInfo.forcedStrictModeFeatureObj;
+        featureInfo.showFeatureSupport(
+            function (label, featureNames, isCategoryMarked)
             {
-                console.log(gutil.colors.bold(label) + features.join(', '));
+                function formatFeatureName(featureName)
+                {
+                    var marked =
+                        isCategoryMarked(
+                            featureName,
+                            'forced-strict-mode',
+                            forcedStrictModeFeatureObj
+                        );
+                    if (marked)
+                        featureName += '¹';
+                    anyMarked |= marked;
+                    return featureName;
+                }
+                
+                console.log(
+                    gutil.colors.bold(label) +
+                    featureNames.map(formatFeatureName).join(', ')
+                );
             }
         );
+        if (anyMarked)
+            console.log('(¹) Feature excluded when strict mode is enforced.');
+        console.log();
     }
 );
 
