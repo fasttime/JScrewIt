@@ -69,13 +69,10 @@
             var valueType;
             if (value !== null)
             {
-                switch (typeof value)
+                var type = typeof value;
+                // document.all has type "undefined".
+                if  (type === 'function' || type === 'object' || type === 'undefined')
                 {
-                case 'function':
-                    valueType = 'a function';
-                    break;
-                case 'object':
-                case 'undefined': // document.all
                     var strTag = getStringTag(value);
                     switch (strTag)
                     {
@@ -96,14 +93,16 @@
                     case 'Date':
                         valueType = 'a date';
                         break;
-                    case 'RegExp':
-                        valueType = 'a regular expression';
-                        break;
                     default:
-                        valueType = 'an object';
+                        // RegExp objects have type "function" in older Android Browsers
+                        if (value instanceof RegExp)
+                            valueType = 'a regular expression';
+                        else if (type === 'function')
+                            valueType = 'a function';
+                        else
+                            valueType = 'an object';
                         break;
                     }
-                    break;
                 }
             }
             return valueType;
