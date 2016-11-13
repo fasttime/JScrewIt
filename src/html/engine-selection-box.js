@@ -92,8 +92,8 @@ function createEngineSelectionBox()
         'limited, as <code>import</code> and <code>export</code> statements don\'t work at all. ' +
         'If your module doesn\'t contain these statements, you can encode it using this option.' +
         '</ul>' +
-        '<p>In most other cases, this option is not required, even if your script contains a ' +
-        '<code>"use strict"</code> statement at file scope.';
+        '<p>In most other cases, this option is not required, even if your script contains a top ' +
+        'level <code>"use strict"</code> statement.';
     
     var WEB_WORKER_CAPTION = 'Support web workers';
     
@@ -103,6 +103,8 @@ function createEngineSelectionBox()
         '<p>Check the option <dfn>' + WEB_WORKER_CAPTION + '</dfn> only if your code needs to ' +
         'run inside a web worker. To create or use a web worker in your code, this option is not ' +
         'required.';
+    
+    var QUESTION_MARK_SIZE = '10.5pt';
     
     function createCheckBox(text, inputProps)
     {
@@ -131,18 +133,19 @@ function createEngineSelectionBox()
                     className: 'focusable',
                     style:
                     {
-                        background: 'black',
-                        borderRadius: '1em',
-                        color: 'white',
-                        cursor: 'pointer',
-                        display: 'inline-block',
-                        fontSize: '8pt',
-                        lineHeight: '10.5pt',
-                        position: 'relative',
-                        textAlign: 'center',
-                        top: '-1.5pt',
-                        width: '10.5pt',
-                        height: '10.5pt'
+                        background:     'black',
+                        borderRadius:   '1em',
+                        color:          'white',
+                        cursor:         'pointer',
+                        display:        'inline-block',
+                        fontSize:       '8pt',
+                        fontWeight:     'bold',
+                        lineHeight:     QUESTION_MARK_SIZE,
+                        position:       'relative',
+                        textAlign:      'center',
+                        top:            '-1.5pt',
+                        width:          QUESTION_MARK_SIZE,
+                        height:         QUESTION_MARK_SIZE
                     },
                     title: 'Learn more…'
                 },
@@ -198,6 +201,7 @@ function createEngineSelectionBox()
         comp =
             art(
                 'FIELDSET',
+                { className: 'engine-selection-box' },
                 art(
                     'DIV',
                     art(
@@ -229,7 +233,7 @@ function createEngineSelectionBox()
             {
                 var versions = engineInfo.versions;
                 var engineField;
-                var engineFieldProps = engineIndex & 1 ? { className: 'engineFieldEven' } : null;
+                var engineFieldProps = engineIndex & 1 ? { className: 'even-field' } : null;
                 var rowSpan = (versions.length + 2) / 3 ^ 0;
                 var cellCount = rowSpan * 3;
                 for (var versionIndex = 0; versionIndex < cellCount; ++versionIndex)
@@ -320,6 +324,9 @@ function createEngineSelectionBox()
     return comp;
 }
 
+art.css('.engine-selection-box', { background: '#f0f0f0' });
+art.css('.engine-selection-box .even-field', { background: '#fff' });
 art.css('.help-text', { 'font-size': '11pt', 'text-align': 'justify' });
 art.css('.help-text code', { 'white-space': 'pre' });
+art.css('.help-text dfn', { 'font-style': 'normal', 'font-weight': 'bold' });
 art.css('.help-text li', { 'margin': '.5em 0' });

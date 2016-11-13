@@ -59,7 +59,7 @@ function showModalBox(content, callback)
                 'DIV',
                 {
                     className: 'focusable',
-                    id: 'modal-box',
+                    id: 'modalBox',
                     style:
                     {
                         background:     'whitesmoke',
@@ -121,5 +121,5 @@ function showModalBox(content, callback)
     setTimeout(grabFocus);
 }
 
-art.css('#modal-box p:first-child', { 'margin-top': '0' });
-art.css('#modal-box p:last-child', { 'margin-bottom': '0' });
+art.css('#modalBox p:first-child', { 'margin-top': '0' });
+art.css('#modalBox p:last-child', { 'margin-bottom': '0' });
