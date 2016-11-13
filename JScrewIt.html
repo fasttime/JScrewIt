@@ -7,8 +7,7 @@
 <link rel='author' href='https://github.com/fasttime'>
 <link rel='icon' href='html/favicon.ico'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-<meta name='description' content='Converts plain JavaScript into JSFuck code, which uses only six
-different characters: ! ( ) + [ ]'>
+<meta name='description' content='Write any JavaScript with six characters: ! ( ) + [ ]'>
 <meta name='viewport' content='width=device-width'>
 <script src='lib/jscrewit.min.js'></script>
 <script src='html/ui.js'></script>
@@ -18,13 +17,9 @@ different characters: ! ( ) + [ ]'>
 
 .actions { display: block; margin: .25em 0 0; position: relative; }
 
-.engineSelectionBox { background-color: #f0f0f0; }
-
-.engineSelectionBox .engineFieldEven { background-color: #fff; }
-
 .frame
 {
-    background-color: #e0e0e0;
+    background: #e0e0e0;
     border-radius: .4em;
     display: block;
     margin: .75em 0;
@@ -39,7 +34,7 @@ different characters: ! ( ) + [ ]'>
     margin-bottom: .25em;
 }
 
-#compMenu { -webkit-appearance: menulist-button; width: 15em; }
+#compMenu { width: 15em; }
 
 #controls>*:not(:last-child) { margin-right: 1em; }
 
@@ -51,23 +46,27 @@ different characters: ! ( ) + [ ]'>
 
 #main h1 { font-size: 2em; font-weight: normal; left: 115px; position: absolute; top: 40px; }
 
-#main img { background-color: blue; }
+#main img { background: blue; }
 
 #main textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; }
 
 #outputArea { white-space: pre; word-break: break-all; }
+
+:focus.focusable, :focus>.focusable { box-shadow: 0 0 2px 2px rgba(0, 127, 255, .75); }
 
 @-moz-document url-prefix() { #outputArea { white-space: pre-wrap; } } /* Hack for Firefox */
 
 /* Hack for Chrome and Opera */
 @media screen and (min-resolution: 1e-323dpcm) { #outputArea { white-space: normal; } }
 
-body { background-color: white; color: black; font-family: sans-serif; }
+[tabindex] { outline: none; }
+
+body { background: white; color: black; font-family: Arial, sans-serif; }
 
 body, select { font-size: 13.5pt; }
 
 </style>
-<title>JScrewIt - Write any JavaScript with 6 Characters: ! ( ) + [ ]</title>
+<title>JScrewIt – Write any JavaScript with six characters: ! ( ) + [ ]</title>
 
 <body>
 <div id='main'>
@@ -76,9 +75,9 @@ body, select { font-size: 13.5pt; }
         <img alt src='html/screw.svg' width='100' height='100'>
     </header>
 
-    <p>JScrewIt converts plain JavaScript into JSFuck code, which uses only six different characters
-    to write and run any code: <code>!</code> <code>(</code> <code>)</code> <code>+</code>
-    <code>[</code> <code>]</code>
+    <p>JScrewIt converts plain JavaScript into JSFuck code, which consists of only six different
+    characters: <code>!</code> <code>(</code> <code>)</code> <code>+</code> <code>[</code>
+    <code>]</code>
 
     <div>
         <p>Use the form below to encode your script. To encode a number or plain string, type it in
@@ -94,7 +93,9 @@ body, select { font-size: 13.5pt; }
                 <div id='controls'>
                     <label>Compatibility:
                         <select id='compMenu'>
-                            <option value='DEFAULT'>All supported engines
+                            <option value='DEFAULT'>All supported environments (maximum
+                            compatibility)
+                            <option value='BROWSER'>All supported browsers
                             <option value='COMPACT'>All new browsers (Chrome, Edge, Firefox, Safari
                             and Opera)
                             <option value='AUTO'>Only this browser

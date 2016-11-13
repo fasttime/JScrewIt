@@ -86,7 +86,7 @@
             test('a strange object', obj, 'foo', 'an object', doBefore, doAfter);
         }
         
-        var obj = new RegExp();
+        var obj = new Date();
         obj.toString =
             function ()
             {

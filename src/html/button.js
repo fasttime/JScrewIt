@@ -1,5 +1,5 @@
 /* eslint-env browser */
-/* global art */
+/* global art, hasTabindex, removeTabindex, setTabindex */
 
 // Not much more than a collection of hacks for IE.
 
@@ -9,7 +9,7 @@ function createButton(text)
     
     function deactivate()
     {
-        button.className = 'button';
+        button.className = 'button focusable';
         setCaptureListeners('off');
     }
     
@@ -55,7 +55,7 @@ function createButton(text)
         if (evt.which === 1 && !isDisabled() && !isActive())
         {
             button.setCapture();
-            button.className = 'active button';
+            button.className = 'active button focusable';
             setCaptureListeners('on');
         }
     }
@@ -77,7 +77,7 @@ function createButton(text)
     
     function isDisabled()
     {
-        var disabled = !button.hasAttribute('tabindex');
+        var disabled = !hasTabindex(button);
         return disabled;
     }
     
@@ -91,15 +91,11 @@ function createButton(text)
         );
     }
     
-    function setTabindex()
-    {
-        button.setAttribute('tabindex', 0);
-    }
-    
     var button =
         art(
             'SPAN',
-            { className: 'button' },
+            { className: 'button focusable' },
+            setTabindex,
             art.on('click', handleClick),
             art.on('keydown', handleKeydown),
             art.on('keyup', handleKeyup),
@@ -107,7 +103,6 @@ function createButton(text)
             art('SPAN', text),
             art('SPAN')
         );
-    setTabindex();
     if (button.msMatchesSelector)
     {
         button.firstChild.setAttribute('unselectable', 'on');
@@ -130,7 +125,7 @@ function createButton(text)
                 {
                     if (value)
                     {
-                        button.removeAttribute('tabindex');
+                        art(button, removeTabindex);
                         if (isActive())
                         {
                             document.releaseCapture();
@@ -139,10 +134,10 @@ function createButton(text)
                         button.blur();
                     }
                     else
-                        setTabindex();
+                        art(button, setTabindex);
                     // Make sure the class does change so a refresh is triggered in IE and Edge.
                     button.className = '';
-                    button.className = 'button';
+                    button.className = 'button focusable';
                 }
             }
         }
@@ -157,7 +152,6 @@ art.css(
         color:      '#212121',
         cursor:     'default',
         display:    'inline-block',
-        outline:    'none',
         position:   'relative'
     }
 );
@@ -171,7 +165,6 @@ art.css(
     '.button.active>:last-child, .button[tabindex]:active>:last-child',
     { 'border-color': '#0088b6' }
 );
-art.css('.button:focus', { 'box-shadow': '0 0 2px 2px rgba(0, 127, 255, .75)' });
 art.css('.button:not([tabindex])', { background: '#e9e9e9', color: '#707070' });
 art.css('.button:not([tabindex])>:last-child', { 'border-color': '#bababa' });
 art.css(

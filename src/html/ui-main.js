@@ -1,6 +1,7 @@
 /* eslint-env browser */
 /*
 global
+JScrewIt,
 alert,
 art,
 compMenu,
@@ -11,7 +12,6 @@ createRoll,
 formatValue,
 formatValueType,
 inputArea,
-JScrewIt,
 outputArea,
 showModalBox,
 stats
@@ -200,19 +200,13 @@ stats
         );
         (function ()
         {
-            var selectedIndex;
             var COMPACT = Feature.COMPACT;
             if (Feature.AUTO.includes(COMPACT))
-            {
                 currentFeatureObj = COMPACT;
-                selectedIndex = 1;
-            }
             else
-            {
-                currentFeatureObj = Feature.DEFAULT;
-                selectedIndex = 0;
-            }
-            compMenu.selectedIndex = compMenu.previousIndex = selectedIndex;
+                currentFeatureObj = Feature.BROWSER;
+            compMenu.value = currentFeatureObj.name;
+            compMenu.previousIndex = compMenu.selectedIndex;
         }
         )();
         var changeHandler;
@@ -237,7 +231,9 @@ stats
                     { accept: '.js', style: { display: 'none' }, type: 'file' },
                     art.on('change', loadFile)
                 );
-            var openLoadFileDialog = HTMLElement.prototype.click.bind(loadFileInput);
+            // In older Android Browser version, HTMLElement objects don't have a "click" property;
+            // HTMLInputElement objects do.
+            var openLoadFileDialog = HTMLInputElement.prototype.click.bind(loadFileInput);
             loadFileButton =
                 art(createButton('Load file…'), art.on('click', openLoadFileDialog));
             art(controls, loadFileButton, loadFileInput);
@@ -248,12 +244,7 @@ stats
         // Firefox does not always trigger a change event when an option is selected using the
         // keyboard; we must handle keydown events asynchronously, too.
         compMenu.onkeydown = setTimeout.bind(null, compHandler);
-        engineSelectionBox =
-            art(
-                createEngineSelectionBox(),
-                { className: 'engineSelectionBox' },
-                art.on('input', compHandler)
-            );
+        engineSelectionBox = art(createEngineSelectionBox(), art.on('input', compHandler));
         roll = createRoll();
         art(
             roll.container,

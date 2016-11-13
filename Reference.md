@@ -179,7 +179,7 @@ worker.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| environment | <code>string</code> | The environment to which this feature should be restricted. The only environment currently supported is `"web-worker"`. |
+| environment | <code>string</code> | The environment to which this feature should be restricted. Two environments are currently supported. <dl> <dt><code>"forced-strict-mode"</code></dt> <dd> Removes features that are not available in environments that require strict mode code.</dd> <dt><code>"web-worker"</code></dt> <dd>Removes features that are not available inside web workers.</dd> </dl> |
 | [referenceFeatureObjs] | <code>[Array.&lt;Feature&gt;](#JScrewIt.Feature)</code> | An array of predefined feature objects, each corresponding to a particular engine in which the restriction should be enacted. If this parameter is omitted, the restriction is enacted in all engines. |
 
 <a name="JScrewIt.Feature+toString"></a>

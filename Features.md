@@ -168,7 +168,7 @@ _Available in Internet Explorer._
 ### `INCR_CHAR`
 The ability to use unary increment operators with string characters, like in \( ++"some string"\[0\] \): this will result in a TypeError in strict mode in ECMAScript compliant engines.
 
-_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser and Node.js._
+_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser and Node.js. This feature is not available when strict mode is enforced in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Node.js 5+._
 <a name="INTL"></a>
 ### `INTL`
 Existence of the global object Intl.
@@ -193,6 +193,9 @@ Features available in Node.js 0.12 or later.
 <a name="NODE40"></a>
 ### `NODE40`
 Features available in Node.js 4.0 or later.
+<a name="NODE50"></a>
+### `NODE50`
+Features available in Node.js 5.0 or later.
 <a name="NODECONSTRUCTOR"></a>
 ### `NODECONSTRUCTOR`
 Existence of the global object Node having the string representation "\[object NodeConstructor\]".

@@ -4,6 +4,7 @@ global
 JScrewIt,
 Matrix,
 TestSuite,
+forcedStrictModeFeatureObj,
 mocha,
 padLeft,
 padRight,
@@ -71,6 +72,7 @@ showFeatureSupport
     function addFeatureLists()
     {
         var info = document.querySelector('#featureList');
+        anyDaggers = false;
         showFeatureSupport(listFeatures.bind(null, info));
         var notice;
         if (typeof Worker !== 'undefined')
@@ -78,7 +80,7 @@ showFeatureSupport
             if (webWorkerFeatureObj)
             {
                 notice =
-                    'Web workers are supported. Features marked with an asterisk (*) are ' +
+                    'Web workers are supported. Features with the marker “*” are ' +
                     'excluded inside web workers.';
             }
             else
@@ -86,6 +88,8 @@ showFeatureSupport
         }
         else
             notice = 'Web workers are not supported.';
+        if (anyDaggers)
+            notice += ' Features with the marker “†” are excluded when strict mode is enforced.';
         info.appendChild(document.createElement('I')).textContent = notice;
     }
     
@@ -232,7 +236,7 @@ showFeatureSupport
         return 2;
     }
     
-    function listFeatures(info, label, featureNames)
+    function listFeatures(info, label, featureNames, isCategoryMarked)
     {
         if (featureNames.length)
         {
@@ -243,6 +247,15 @@ showFeatureSupport
             featureNames.forEach(
                 function (featureName, index)
                 {
+                    function addMarker(marker, environment, environmentFeatureObj)
+                    {
+                        var marked =
+                            isCategoryMarked(featureName, environment, environmentFeatureObj);
+                        if (marked)
+                            span.appendChild(document.createTextNode(marker));
+                        return marked;
+                    }
+                    
                     if (index)
                     {
                         span.appendChild(document.createTextNode(','));
@@ -257,27 +270,8 @@ showFeatureSupport
                     code.textContent = featureName;
                     code.title = featureObj.description;
                     if (webWorkerFeatureObj)
-                    {
-                        var nonInWebWorkers;
-                        var restrictedFeatureObj;
-                        if (/^Characteristic /.test(label))
-                        {
-                            restrictedFeatureObj =
-                                Feature.AUTO.restrict('web-worker', [featureObj]);
-                            nonInWebWorkers =
-                                !Feature.areEqual(webWorkerFeatureObj, restrictedFeatureObj);
-                        }
-                        else if (/^Compatible /.test(label))
-                        {
-                            restrictedFeatureObj =
-                                Feature.AUTO.restrict('web-worker', [featureObj]);
-                            nonInWebWorkers = !webWorkerFeatureObj.includes(restrictedFeatureObj);
-                        }
-                        else if (/^Available /.test(label))
-                            nonInWebWorkers = !webWorkerFeatureObj.includes(featureObj);
-                        if (nonInWebWorkers)
-                            span.appendChild(document.createTextNode('*'));
-                    }
+                        addMarker('*', 'web-worker', webWorkerFeatureObj);
+                    anyDaggers |= addMarker('†', 'forced-strict-mode', forcedStrictModeFeatureObj);
                 }
             );
         }
@@ -311,6 +305,7 @@ showFeatureSupport
     mocha.setup({ globals: ['$0', '$1', '$2', '$3', '$4'], reporter: Matrix, ui: 'bdd' });
     mocha.checkLeaks();
     addEventListener('load', handleLoad);
+    var anyDaggers;
     var webWorkerFeatureObj;
     var waitCount = initWorker();
 }

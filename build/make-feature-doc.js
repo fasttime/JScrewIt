@@ -63,7 +63,8 @@ var ENGINE_ENTRIES =
         [
             { description: '0.10+', feature: 'NODE010' },
             { description: '0.12+', feature: 'NODE012' },
-            { description: '4+', feature: 'NODE40' }
+            { description: '4+', feature: 'NODE40' },
+            { description: '5+', feature: 'NODE50' }
         ]
     }
 ];
@@ -119,20 +120,26 @@ function escape(str)
     return result;
 }
 
-function formatAvailability(availability, noWWReport)
+function formatAvailability(availability, webWorkerReport, forcedStrictModeReport)
 {
+    function appendNote(report, environmentDescription)
+    {
+        if (report)
+        {
+            result += ' This feature is not available ' + environmentDescription;
+            if (report !== true)
+                result += ' in ' + formatReport(report);
+            result += '.';
+        }
+    }
+    
     var result;
     var length = availability.length;
     if (length)
     {
         result = 'Available in ' + formatReport(availability) + '.';
-        if (noWWReport)
-        {
-            result += ' This feature is not available inside web workers';
-            if (noWWReport !== true)
-                result += ' in ' + formatReport(noWWReport);
-            result += '.';
-        }
+        appendNote(webWorkerReport, 'inside web workers');
+        appendNote(forcedStrictModeReport, 'when strict mode is enforced');
     }
     else
         result = 'This feature is not available in any of the supported engines.';
@@ -220,21 +227,7 @@ function getCombinedDescription(engineEntry, versionIndex)
     return combinedDescription;
 }
 
-function getImpliers(featureName, assignmentMap)
-{
-    var impliers = [];
-    for (var otherFeatureName in assignmentMap)
-    {
-        if (
-            featureName !== otherFeatureName &&
-            JScrewIt.Feature[otherFeatureName].includes(featureName))
-            impliers.push(otherFeatureName);
-    }
-    if (impliers.length)
-        return impliers.sort();
-}
-
-function getNoWWInfo(attributeName, engineEntry)
+function getEngineSupportInfo(attributeName, engineEntry)
 {
     var result =
         calculateEngineSupportInfo(
@@ -247,13 +240,25 @@ function getNoWWInfo(attributeName, engineEntry)
     return result;
 }
 
-function getNoWWReport(featureObj)
+function getForcedStrictModeReport(featureObj)
 {
-    var restriction = featureObj.attributes['web-worker'];
-    var report =
-        restriction !== void 0 &&
-        (restriction === 'web-worker-restriction' || reportAsList(restriction, getNoWWInfo));
+    var restriction = featureObj.attributes['forced-strict-mode'];
+    var report = restriction !== void 0 && reportAsList(restriction, getEngineSupportInfo);
     return report;
+}
+
+function getImpliers(featureName, assignmentMap)
+{
+    var impliers = [];
+    for (var otherFeatureName in assignmentMap)
+    {
+        if (
+            featureName !== otherFeatureName &&
+            JScrewIt.Feature[otherFeatureName].includes(featureName))
+            impliers.push(otherFeatureName);
+    }
+    if (impliers.length)
+        return impliers.sort();
 }
 
 function getVersioningFor(featureName, engineEntry)
@@ -277,6 +282,18 @@ function getVersioningFor(featureName, engineEntry)
         var versioning = notes.join(', ');
         return versioning;
     }
+}
+
+function getWebWorkerReport(featureObj)
+{
+    var restriction = featureObj.attributes['web-worker'];
+    var report =
+        restriction !== void 0 &&
+        (
+            restriction === 'web-worker-restriction' ||
+            reportAsList(restriction, getEngineSupportInfo)
+        );
+    return report;
 }
 
 function printRow(label, assignmentMap)
@@ -383,9 +400,16 @@ module.exports =
                     if (featureObj.check)
                     {
                         var availability = reportAsList(featureName, getAvailabilityInfo);
-                        var noWWReport = getNoWWReport(featureObj);
+                        var webWorkerReport = getWebWorkerReport(featureObj);
+                        var forcedStrictModeReport = getForcedStrictModeReport(featureObj);
                         subContent +=
-                            '\n\n_' + formatAvailability(availability, noWWReport) + '_';
+                            '\n\n_' +
+                            formatAvailability(
+                                availability,
+                                webWorkerReport,
+                                forcedStrictModeReport
+                            ) +
+                            '_';
                     }
                 }
                 else

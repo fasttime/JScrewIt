@@ -1,7 +1,7 @@
 {
   "name": "jscrewit",
-  "version": "2.3.3",
-  "description": "Converts plain JavaScript into JSFuck code, which uses only six different characters: ! ( ) + [ ]",
+  "version": "2.3.4",
+  "description": "Converts plain JavaScript into JSFuck code, which consists of only six different characters: ! ( ) + [ ]",
   "keywords": [
     "esoteric",
     "jsfuck",
@@ -32,14 +32,14 @@
     "build": "npm install && gulp"
   },
   "devDependencies": {
-    "art-js": "~0.5.0",
+    "art-js": "~0.6.0",
     "del": "~2.2.2",
     "expectations": "~0.6.0",
     "fs-then-native": "~1.0.2",
     "gulp": "~3.9.1",
     "gulp-add-src": "~0.2.0",
     "gulp-concat": "~2.6.0",
-    "gulp-fasttime-lint": "~0.0.5",
+    "gulp-fasttime-lint": "~0.0.6",
     "gulp-gherkin-lint": "~0.0.2",
     "gulp-insert": "~0.5.0",
     "gulp-rename": "~1.2.2",
