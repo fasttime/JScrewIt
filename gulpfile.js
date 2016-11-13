@@ -157,10 +157,7 @@ gulp.task(
     {
         var mocha = require('gulp-spawn-mocha');
         
-        var stream =
-            gulp
-            .src('test/**/*.spec.js')
-            .pipe(mocha({ istanbul: true }));
+        var stream = gulp.src('test/**/*.spec.js').pipe(mocha({ istanbul: true }));
         return stream;
     }
 );
@@ -225,20 +222,6 @@ gulp.task(
         var fs = require('fs');
         var makeArt = require('art-js');
         
-        function tryMakeArt()
-        {
-            try
-            {
-                makeArt('tmp-src/art.js', { css: true, off: true, on: true });
-            }
-            catch (error)
-            {
-                callback(error);
-                return;
-            }
-            callback();
-        }
-        
         fs.mkdir(
             'tmp-src',
             function (error)
@@ -246,7 +229,7 @@ gulp.task(
                 if (error && error.code !== 'EEXIST')
                     callback(error);
                 else
-                    tryMakeArt();
+                    makeArt.async('tmp-src/art.js', { css: true, off: true, on: true }, callback);
             }
         );
     }
