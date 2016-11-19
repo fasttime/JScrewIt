@@ -3,14 +3,11 @@
 global
 JScrewIt,
 Matrix,
-TestSuite,
 forcedStrictModeFeatureObj,
 mocha,
 padLeft,
 padRight,
 repeat,
-screenX,
-screenY,
 showFeatureSupport
 */
 
