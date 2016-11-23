@@ -36,7 +36,7 @@ var setUp;
      * To generate shorter code, specify all features available on all target engines
      * explicitly.</p>
      *
-     * @param {string} [options.runAs=express-call]
+     * @param {string} [options.runAs=express-eval]
      * This option controls the type of code generated from the given input.
      * Allowed values are listed below.
      *
@@ -91,7 +91,7 @@ var setUp;
      * Using this option may produce unexpected results if the input is not well-formed JavaScript
      * code.</p>
      *
-     * @param {string} [options.wrapWith=express-call] An alias for `runAs`.
+     * @param {string} [options.wrapWith=express-eval] An alias for `runAs`.
      *
      * @returns {string} The encoded string.
      *
@@ -134,7 +134,7 @@ var setUp;
         var CODER_NAMES_TEXT    = ['text'];
         
         if (input === void 0)
-            return [wrapWithCall, CODER_NAMES_BOTH];
+            return [wrapWithEval, CODER_NAMES_BOTH];
         switch (input += '')
         {
         case 'call':
