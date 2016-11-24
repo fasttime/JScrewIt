@@ -166,7 +166,7 @@
         var encoder;
         while (encoder = analyzer.nextEncoder)
         {
-            var definition = encoder.findBestDefinition(actualEntries);
+            var definition = encoder.findDefinition(actualEntries);
             var solution;
             var replacement;
             var featureNames;
@@ -182,7 +182,7 @@
             }
             else
             {
-                definition = encoder.findBestDefinition(inputEntries);
+                definition = encoder.findDefinition(inputEntries);
                 if (definition)
                 {
                     solution = encoder.resolve(definition);
@@ -206,7 +206,7 @@
         {
             var optimalityInfo = getOptimalityInfo(encoder, inputList, replacer);
             analyzer.stopCapture();
-            var actualDefinition = encoder.findBestDefinition(entries);
+            var actualDefinition = encoder.findDefinition(entries);
             var lengthMap = optimalityInfo.lengthMap;
             var optimalLength = optimalityInfo.optimalLength;
             if (lengthMap[actualDefinition] > optimalLength)
