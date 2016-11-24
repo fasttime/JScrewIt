@@ -243,7 +243,7 @@ var createSolution;
     {
         function definitionFB()
         {
-            var functionDefinition = this.findBestDefinition(FB_EXPR_INFOS);
+            var functionDefinition = this.findDefinition(FB_EXPR_INFOS);
             var expr = functionDefinition.expr;
             var index = offset + functionDefinition.shift;
             var paddingEntries;

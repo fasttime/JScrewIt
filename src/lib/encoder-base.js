@@ -76,7 +76,7 @@ var resolveSimple;
             function filterCallback(complex)
             {
                 var entries = COMPLEX[complex];
-                var definition = this.findBestDefinition(entries);
+                var definition = this.findDefinition(entries);
                 return definition;
             }
             
@@ -96,7 +96,7 @@ var resolveSimple;
         
         defaultResolveCharacter: function (char)
         {
-            var defaultCharacterEncoder = this.findBestDefinition(DEFAULT_CHARACTER_ENCODER);
+            var defaultCharacterEncoder = this.findDefinition(DEFAULT_CHARACTER_ENCODER);
             var solution = defaultCharacterEncoder.call(this, char);
             return solution;
         },
@@ -105,13 +105,13 @@ var resolveSimple;
         {
             var definition;
             if (array_isArray(element))
-                definition = this.findBestDefinition(element);
+                definition = this.findDefinition(element);
             else
                 definition = element;
             return definition;
         },
         
-        findBestDefinition: function (entries)
+        findDefinition: function (entries)
         {
             for (var entryIndex = entries.length; entryIndex--;)
             {
@@ -158,7 +158,7 @@ var resolveSimple;
         
         hexCodeOf: function (charCode, length)
         {
-            var optimalB = this.findBestDefinition(OPTIMAL_B);
+            var optimalB = this.findDefinition(OPTIMAL_B);
             var result = charCode.toString(16).replace(/b/g, optimalB);
             result = Array(length - result.length + 1).join(0) + result.replace(/fa?$/, 'false');
             return result;
@@ -461,7 +461,7 @@ var resolveSimple;
                     function ()
                     {
                         var entries = COMPLEX[complex];
-                        var definition = this.findBestDefinition(entries);
+                        var definition = this.findDefinition(entries);
                         solution = this.resolve(definition);
                         if (solution.level == null)
                             solution.level = LEVEL_STRING;
@@ -504,12 +504,12 @@ var resolveSimple;
         {
             if (!entries)
                 this.throwSyntaxError('Missing padding entries for index ' + index);
-            var paddingDefinition = this.findBestDefinition(entries);
+            var paddingDefinition = this.findDefinition(entries);
             var paddingBlock;
             var indexer;
             if (typeof paddingDefinition === 'number')
             {
-                var paddingInfo = this.findBestDefinition(paddingInfos);
+                var paddingInfo = this.findDefinition(paddingInfos);
                 paddingBlock = this.getPaddingBlock(paddingInfo, paddingDefinition);
                 indexer = index + paddingDefinition + paddingInfo.shift;
             }
