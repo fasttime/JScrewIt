@@ -22,7 +22,8 @@ resolveSimple
 
 var AMENDINGS;
 var CREATE_PARSE_INT_ARG;
-var DEFAULT_CHARACTER_ENCODER;
+var DEFAULT_16_BIT_CHARACTER_ENCODER;
+var DEFAULT_8_BIT_CHARACTER_ENCODER;
 var FROM_CHAR_CODE;
 var FROM_CHAR_CODE_CALLBACK_FORMATTER;
 var MAPPER_FORMATTER;
@@ -1402,27 +1403,17 @@ var createSolution;
         define(createParseIntArgByReduce, FILL, NO_IE_SRC, NO_V8_SRC)
     ];
     
-    DEFAULT_CHARACTER_ENCODER =
+    DEFAULT_16_BIT_CHARACTER_ENCODER =
     [
-        define(
-            function (char)
-            {
-                var charCode = char.charCodeAt();
-                var encoder = charCode < 0x100 ? charEncodeByUnescape8 : charEncodeByUnescape16;
-                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
-                return result;
-            }
-        ),
-        define(
-            function (char)
-            {
-                var charCode = char.charCodeAt();
-                var encoder = charCode < 0x100 ? charEncodeByAtob : charEncodeByEval;
-                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
-                return result;
-            },
-            ATOB
-        )
+        define(charEncodeByUnescape16),
+        define(charEncodeByEval, ATOB),
+        define(charEncodeByEval, UNEVAL)
+    ];
+    
+    DEFAULT_8_BIT_CHARACTER_ENCODER =
+    [
+        define(charEncodeByUnescape8),
+        define(charEncodeByAtob, ATOB)
     ];
     
     FROM_CHAR_CODE =
