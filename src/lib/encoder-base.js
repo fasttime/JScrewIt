@@ -3,7 +3,8 @@ global
 CHARACTERS,
 COMPLEX,
 CONSTANTS,
-DEFAULT_CHARACTER_ENCODER,
+DEFAULT_16_BIT_CHARACTER_ENCODER,
+DEFAULT_8_BIT_CHARACTER_ENCODER,
 JSFUCK_INFINITY,
 LEVEL_STRING,
 OPTIMAL_B,
@@ -96,8 +97,15 @@ var resolveSimple;
         
         defaultResolveCharacter: function (char)
         {
-            var defaultCharacterEncoder = this.findDefinition(DEFAULT_CHARACTER_ENCODER);
-            var solution = defaultCharacterEncoder.call(this, char);
+            var charCode = char.charCodeAt();
+            var entries;
+            if (charCode < 0x100)
+                entries = DEFAULT_8_BIT_CHARACTER_ENCODER;
+            else
+                entries = DEFAULT_16_BIT_CHARACTER_ENCODER;
+            var defaultCharacterEncoder = this.findDefinition(entries);
+            var replacement = defaultCharacterEncoder.call(this, charCode);
+            var solution = createSolution(replacement, LEVEL_STRING, false);
             return solution;
         },
         
