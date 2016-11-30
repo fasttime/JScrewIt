@@ -76,7 +76,8 @@
     
     function decomplex(encoder, complex)
     {
-        encoder.stringTokenPattern = JScrewIt.debug.createEncoder().createStringTokenPattern();
+        encoder.complexCache[complex] = null;
+        delete encoder.stringTokenPattern;
         var str = encoder.replaceString(complex);
         return str;
     }
