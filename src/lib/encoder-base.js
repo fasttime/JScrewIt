@@ -20,7 +20,8 @@ hasOuterPlus,
 json_stringify,
 maskIncludes,
 math_abs,
-object_keys
+noop,
+object_keys,
 */
 
 var Encoder;
@@ -70,29 +71,18 @@ var resolveSimple;
             }
         },
         
+        complexFilterCallback: function (complex)
+        {
+            var result = this.complexCache[complex] !== null;
+            return result;
+        },
+        
         constantDefinitions: CONSTANTS,
         
-        createStringTokenPattern: function ()
+        createStringTokenRegExp: function ()
         {
-            function filterCallback(complex)
-            {
-                var entries = COMPLEX[complex];
-                var definition = this.findDefinition(entries);
-                return definition;
-            }
-            
-            function mapCallback(complex)
-            {
-                var str = complex + '|';
-                return str;
-            }
-            
-            var strTokenPattern =
-                '(' + object_keys(SIMPLE).join('|') + ')|' +
-                object_keys(COMPLEX).filter(filterCallback, this).map(mapCallback).join('') +
-                '([\\s\\S])';
-            this.strTokenPattern = strTokenPattern;
-            return strTokenPattern;
+            var regExp = RegExp(this.strTokenPattern, 'g');
+            return regExp;
         },
         
         defaultResolveCharacter: function (char)
@@ -183,6 +173,24 @@ var resolveSimple;
         // non-reproducible manner, although the issue seems to be related to the output size rather
         // than the grouping threshold setting.
         maxGroupThreshold: 1800,
+        
+        optimizeComplexCache: function (str)
+        {
+            if (str.length >= 100)
+            {
+                for (var complex in COMPLEX)
+                {
+                    if (!(complex in this.complexCache))
+                    {
+                        var entries = COMPLEX[complex];
+                        var definition = this.findDefinition(entries);
+                        if (!definition)
+                            this.complexCache[complex] = null;
+                    }
+                }
+                this.optimizeComplexCache = noop;
+            }
+        },
         
         replaceExpr: function (expr)
         {
@@ -377,9 +385,11 @@ var resolveSimple;
         replaceString: function (str, bond, forceString, maxLength)
         {
             var buffer = new ScrewBuffer(bond, forceString, this.maxGroupThreshold);
-            var strTokenPattern = this.strTokenPattern || this.createStringTokenPattern();
             var match;
-            var regExp = RegExp(strTokenPattern, 'g');
+            this.optimizeComplexCache(str);
+            if (!this.strTokenPattern)
+                this.updateStringTokenPattern();
+            var regExp = this.createStringTokenRegExp();
             while (match = regExp.exec(str))
             {
                 if (buffer.length > maxLength)
@@ -394,6 +404,14 @@ var resolveSimple;
                 {
                     token = match[0];
                     solution = this.resolveComplex(token);
+                    if (!solution)
+                    {
+                        var lastIndex = regExp.lastIndex - token.length;
+                        this.updateStringTokenPattern();
+                        regExp = this.createStringTokenRegExp();
+                        regExp.lastIndex = lastIndex;
+                        continue;
+                    }
                 }
                 if (!buffer.append(solution))
                     return;
@@ -470,9 +488,14 @@ var resolveSimple;
                     {
                         var entries = COMPLEX[complex];
                         var definition = this.findDefinition(entries);
-                        solution = this.resolve(definition);
-                        if (solution.level == null)
-                            solution.level = LEVEL_STRING;
+                        if (definition)
+                        {
+                            solution = this.resolve(definition);
+                            if (solution.level == null)
+                                solution.level = LEVEL_STRING;
+                        }
+                        else
+                            solution = null;
                         this.complexCache[complex] = solution;
                     }
                 );
@@ -539,6 +562,23 @@ var resolveSimple;
             if (stackLength)
                 message += ' in the definition of ' + stack[stackLength - 1];
             throw new SyntaxError(message);
+        },
+        
+        updateStringTokenPattern: function ()
+        {
+            function mapCallback(complex)
+            {
+                var str = complex + '|';
+                return str;
+            }
+            
+            var strTokenPattern =
+                '(' + object_keys(SIMPLE).join('|') + ')|' +
+                object_keys(COMPLEX)
+                .filter(this.complexFilterCallback, this)
+                .map(mapCallback).join('') +
+                '([\\s\\S])';
+            this.strTokenPattern = strTokenPattern;
         },
     };
     

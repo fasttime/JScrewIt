@@ -13,6 +13,7 @@ var math_abs;
 var math_max;
 var math_pow;
 var noProto;
+var noop;
 var object_create;
 var object_defineProperties;
 var object_defineProperty;
@@ -71,6 +72,8 @@ var object_getOwnPropertyDescriptor;
             );
             return result;
         };
+    
+    noop = Function();
     
     object_create                   = Object.create;
     object_defineProperties         = Object.defineProperties;
