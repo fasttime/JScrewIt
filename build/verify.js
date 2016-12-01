@@ -234,16 +234,18 @@ function verifyCoder(coderName)
 
 var verify = Object.create(null);
 
+verify.mCh = verifyComplex.bind(null, 'mCh', [define('atob("bUNo")', 'ATOB')], mismatchCallback);
+
 JScrewIt.debug.getComplexNames().forEach(
     function (complexName)
     {
-        var entries = JScrewIt.debug.getComplexEntries(complexName);
-        var firstDefinedEntry = findFirstDefinedEntry(entries);
-        verify[complexName] =
-            function ()
-            {
-                verifyComplex(complexName, [firstDefinedEntry], mismatchCallback);
-            };
+        if (!verify[complexName])
+        {
+            var entries = JScrewIt.debug.getComplexEntries(complexName);
+            var firstDefinedEntry = findFirstDefinedEntry(entries);
+            verify[complexName] =
+                verifyComplex.bind(null, complexName, [firstDefinedEntry], mismatchCallback);
+        }
     }
 );
 
