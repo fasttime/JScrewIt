@@ -79,6 +79,8 @@
         encoder.complexCache[complex] = null;
         delete encoder.stringTokenPattern;
         var str = encoder.replaceString(complex);
+        delete encoder.complexCache[complex];
+        delete encoder.stringTokenPattern;
         return str;
     }
     
@@ -162,38 +164,35 @@
     
     function verifyComplex(complex, inputEntries, mismatchCallback)
     {
+        function checkEntry(entry)
+        {
+            if (encoder.hasFeatures(entry.mask))
+            {
+                var definition = entry.definition;
+                var solution = encoder.resolve(definition);
+                var length = solution.length;
+                if (length < optimalLength)
+                {
+                    optimalDefinition = definition;
+                    optimalLength = length;
+                }
+            }
+        }
+        
         var actualEntries = JScrewIt.debug.getComplexEntries(complex);
         var analyzer = createAnalyzer();
         var encoder;
         while (encoder = analyzer.nextEncoder)
         {
-            var definition = encoder.findDefinition(actualEntries);
-            var solution;
-            var replacement;
-            var featureNames;
-            if (definition)
+            var optimalDefinition = null;
+            var replacement = decomplex(encoder, complex);
+            var optimalLength = replacement.length;
+            inputEntries.forEach(checkEntry);
+            var actualDefinition = encoder.findDefinition(actualEntries) || null;
+            if (actualDefinition !== optimalDefinition)
             {
-                solution = encoder.resolve(definition);
-                replacement = decomplex(encoder, complex);
-                if (solution.length > replacement.length)
-                {
-                    featureNames = analyzer.featureObj.canonicalNames;
-                    mismatchCallback(featureNames);
-                }
-            }
-            else
-            {
-                definition = encoder.findDefinition(inputEntries);
-                if (definition)
-                {
-                    solution = encoder.resolve(definition);
-                    replacement = decomplex(encoder, complex);
-                    if (solution.length < replacement.length)
-                    {
-                        featureNames = analyzer.featureObj.canonicalNames;
-                        mismatchCallback(featureNames);
-                    }
-                }
+                var featureNames = analyzer.featureObj.canonicalNames;
+                mismatchCallback(featureNames);
             }
         }
     }
