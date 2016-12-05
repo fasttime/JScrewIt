@@ -43,15 +43,23 @@
         return newAnalyzer;
     }
     
-    function createOptimalFeatureObjMap(replacer, rivalReplacer)
+    function createOptimalFeatureObjMap(replacer, rivalReplacer, progressCallback)
     {
+        function callProgressCallback()
+        {
+            if (progressCallback)
+                progressCallback(analyzer.progress);
+        }
+        
         var optimalFeatureObjMap;
         var optimalLength = Infinity;
         var analyzer = createAnalyzer();
+        callProgressCallback();
         var encoder;
         while (encoder = analyzer.nextEncoder)
         {
             var output = replacer(encoder);
+            callProgressCallback();
             if (output === void 0)
                 continue;
             var length = output.length;
@@ -71,6 +79,7 @@
                 optimalFeatureObjs.push(analyzer.featureObj);
             }
         }
+        callProgressCallback();
         return optimalFeatureObjMap;
     }
     
@@ -92,9 +101,10 @@
         return entry;
     }
     
-    function findOptimalFeatures(replacer, rivalReplacer)
+    function findOptimalFeatures(replacer, rivalReplacer, progressCallback)
     {
-        var optimalFeatureObjMap = createOptimalFeatureObjMap(replacer, rivalReplacer);
+        var optimalFeatureObjMap =
+            createOptimalFeatureObjMap(replacer, rivalReplacer, progressCallback);
         if (optimalFeatureObjMap)
         {
             var result =
