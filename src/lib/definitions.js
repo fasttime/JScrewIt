@@ -11,7 +11,7 @@ define,
 noProto,
 object_defineProperty,
 replaceIndexer,
-resolveSimple
+resolveSimple,
 */
 
 // As of version 2.1.0, definitions are interpreted using JScrewIt's own express parser, which can

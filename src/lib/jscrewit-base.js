@@ -9,7 +9,7 @@ self,
 trimJS,
 validMaskFromArrayOrStringOrFeature,
 wrapWithCall,
-wrapWithEval
+wrapWithEval,
 */
 
 var JScrewIt;

@@ -382,6 +382,12 @@ var resolveSimple;
             return output;
         },
         
+        replaceStaticString: function (str, maxLength)
+        {
+            var replacement = STATIC_ENCODER.replaceString(str, true, true, maxLength);
+            return replacement;
+        },
+        
         replaceString: function (str, bond, forceString, maxLength)
         {
             var buffer = new ScrewBuffer(bond, forceString, this.maxGroupThreshold);

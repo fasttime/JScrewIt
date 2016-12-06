@@ -37,7 +37,7 @@ object_create,
 object_freeze,
 object_keys,
 setUp,
-trimJS
+trimJS,
 */
 
 // istanbul ignore else

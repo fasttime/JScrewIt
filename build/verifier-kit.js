@@ -51,6 +51,26 @@
                 progressCallback(analyzer.progress);
         }
         
+        function replaceStaticString(str, maxLength)
+        {
+            var replacement = staticStrCache[str];
+            if (replacement)
+            {
+                if (!(replacement.length > maxLength))
+                    return replacement;
+            }
+            else
+            {
+                replacement = this.replaceString(str, true, true, maxLength);
+                if (replacement)
+                {
+                    staticStrCache[str] = replacement;
+                    return replacement;
+                }
+            }
+        }
+        
+        var staticStrCache = Object.create(null);
         var optimalFeatureObjMap;
         var optimalLength = Infinity;
         var analyzer = createAnalyzer();
@@ -58,6 +78,7 @@
         var encoder;
         while (encoder = analyzer.nextEncoder)
         {
+            encoder.replaceStaticString = replaceStaticString;
             var output = replacer(encoder);
             callProgressCallback();
             if (output === void 0)
@@ -112,17 +133,18 @@
                     function (output)
                     {
                         var optimalFeatureObjs = optimalFeatureObjMap[output];
-                        var featureObj = optimalFeatureObjs.reduce(
-                            function (previousFeatureObj, currentFeatureObj)
-                            {
-                                var nextFeatureObj =
-                                    JScrewIt.Feature.commonOf(
-                                        previousFeatureObj,
-                                        currentFeatureObj
-                                    );
-                                return nextFeatureObj;
-                            }
-                        );
+                        var featureObj =
+                            optimalFeatureObjs.reduce(
+                                function (previousFeatureObj, currentFeatureObj)
+                                {
+                                    var nextFeatureObj =
+                                        JScrewIt.Feature.commonOf(
+                                            previousFeatureObj,
+                                            currentFeatureObj
+                                        );
+                                    return nextFeatureObj;
+                                }
+                            );
                         return featureObj;
                     }
                 );
