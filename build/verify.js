@@ -286,7 +286,7 @@ function verifyCoder(coderName)
                 };
             try
             {
-                optimalFeatureObjs = 
+                optimalFeatureObjs =
                     checkCoderFeatureOptimality(
                         createInput,
                         coders,

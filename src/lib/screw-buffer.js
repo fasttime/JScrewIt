@@ -6,7 +6,7 @@ LEVEL_STRING,
 LEVEL_UNDEFINED,
 assignNoEnum,
 math_max,
-math_pow
+math_pow,
 */
 
 // This implementation assumes that all numeric solutions have an outer plus, and all other

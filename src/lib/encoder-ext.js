@@ -16,7 +16,7 @@ expressParse,
 getAppendLength,
 getFigure,
 math_max,
-object_keys
+object_keys,
 */
 
 var CODERS;
@@ -620,12 +620,13 @@ var wrapWithEval;
         },
         
         // Replaces a JavaScript array with a JSFuck array of strings.
-        // Array elements may not contain "false" in their string representations, because the value
-        // false is used as a separator for the encoding.
+        // Array elements may only contain characters with static definitions in their string
+        // representations and may not contain the substring "false", because the value false is
+        // used as a separator in the encoding.
         replaceFalseFreeArray: function (array, maxLength)
         {
             var str = array.join(false);
-            var replacement = this.replaceString(str, true, true, maxLength);
+            var replacement = this.replaceStaticString(str, maxLength);
             if (replacement)
             {
                 var result =

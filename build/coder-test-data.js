@@ -99,7 +99,7 @@ module.exports =
         'byCharCodesRadix4'
     ),
     data(
-        ['ARRAY_ITERATOR', 'ATOB', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC', 'UNDEFINED'],
+        ['ARRAY_ITERATOR', 'ATOB', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC', 'UNEVAL'],
         repeat.bind(null, String.fromCharCode(59999)),
         'byDict'
     ),
@@ -119,7 +119,7 @@ module.exports =
         'byDictRadix4AmendedBy1'
     ),
     data(
-        ['ARROW', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'V8_SRC'],
+        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'V8_SRC'],
         createDictTestString.bind(null, 364),
         'byDictRadix4AmendedBy2'
     ),
@@ -138,15 +138,7 @@ module.exports =
         'byDictRadix5AmendedBy3'
     ),
     data(
-        [
-            'ARRAY_ITERATOR',
-            'ARROW',
-            'CAPITAL_HTML',
-            'FILL',
-            'FROM_CODE_POINT',
-            'NO_IE_SRC',
-            'NO_V8_SRC'
-        ],
+        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
         createDictTestString.bind(null, 103),
         'byDblDict'
     )
