@@ -11,7 +11,7 @@ define,
 noProto,
 object_defineProperty,
 replaceIndexer,
-resolveSimple
+resolveSimple,
 */
 
 // As of version 2.1.0, definitions are interpreted using JScrewIt's own express parser, which can
@@ -22,7 +22,8 @@ resolveSimple
 
 var AMENDINGS;
 var CREATE_PARSE_INT_ARG;
-var DEFAULT_CHARACTER_ENCODER;
+var DEFAULT_16_BIT_CHARACTER_ENCODER;
+var DEFAULT_8_BIT_CHARACTER_ENCODER;
 var FROM_CHAR_CODE;
 var FROM_CHAR_CODE_CALLBACK_FORMATTER;
 var MAPPER_FORMATTER;
@@ -243,7 +244,7 @@ var createSolution;
     {
         function definitionFB()
         {
-            var functionDefinition = this.findBestDefinition(FB_EXPR_INFOS);
+            var functionDefinition = this.findDefinition(FB_EXPR_INFOS);
             var expr = functionDefinition.expr;
             var index = offset + functionDefinition.shift;
             var paddingEntries;
@@ -1126,6 +1127,8 @@ var createSolution;
         Object:
         [
             define('Object.name', NAME),
+            define(void 0, CAPITAL_HTML, FILL, SELF_OBJ),
+            define(void 0, CAPITAL_HTML, INCR_CHAR, SELF_OBJ),
             define(void 0, CAPITAL_HTML, NO_IE_SRC, SELF_OBJ),
             define(void 0, CAPITAL_HTML, NO_V8_SRC, SELF_OBJ),
             define('Object.name', IE_SRC, NAME),
@@ -1147,6 +1150,10 @@ var createSolution;
         [
             define({ expr: '[].slice.call("false")', level: LEVEL_OBJECT })
         ],
+        mCh:
+        [
+            define('atob("bUNo")', ATOB, ENTRIES_OBJ)
+        ]
     });
     
     CONSTANTS = noProto
@@ -1398,27 +1405,17 @@ var createSolution;
         define(createParseIntArgByReduce, FILL, NO_IE_SRC, NO_V8_SRC)
     ];
     
-    DEFAULT_CHARACTER_ENCODER =
+    DEFAULT_16_BIT_CHARACTER_ENCODER =
     [
-        define(
-            function (char)
-            {
-                var charCode = char.charCodeAt();
-                var encoder = charCode < 0x100 ? charEncodeByUnescape8 : charEncodeByUnescape16;
-                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
-                return result;
-            }
-        ),
-        define(
-            function (char)
-            {
-                var charCode = char.charCodeAt();
-                var encoder = charCode < 0x100 ? charEncodeByAtob : charEncodeByEval;
-                var result = createSolution(encoder.call(this, charCode), LEVEL_STRING, false);
-                return result;
-            },
-            ATOB
-        )
+        define(charEncodeByUnescape16),
+        define(charEncodeByEval, ATOB),
+        define(charEncodeByEval, UNEVAL)
+    ];
+    
+    DEFAULT_8_BIT_CHARACTER_ENCODER =
+    [
+        define(charEncodeByUnescape8),
+        define(charEncodeByAtob, ATOB)
     ];
     
     FROM_CHAR_CODE =
@@ -1426,7 +1423,8 @@ var createSolution;
         define('fromCharCode'),
         define('fromCodePoint', ATOB, FROM_CODE_POINT),
         define('fromCodePoint', BARPROP, FROM_CODE_POINT),
-        define('fromCodePoint', CAPITAL_HTML, FROM_CODE_POINT)
+        define('fromCodePoint', CAPITAL_HTML, FROM_CODE_POINT),
+        define('fromCharCode', ATOB, CAPITAL_HTML, ENTRIES_OBJ)
     ];
     
     FROM_CHAR_CODE_CALLBACK_FORMATTER =
