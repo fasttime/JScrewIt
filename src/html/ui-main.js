@@ -14,7 +14,7 @@ formatValueType,
 inputArea,
 outputArea,
 showModalBox,
-stats
+stats,
 */
 
 (function ()

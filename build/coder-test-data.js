@@ -80,20 +80,12 @@ function repeatToFit(str, length)
 module.exports =
 [
     data(
-        ['CAPITAL_HTML', 'ENTRIES_OBJ', 'FILL', 'FROM_CODE_POINT', 'NO_IE_SRC', 'NO_V8_SRC'],
+        ['ATOB', 'CAPITAL_HTML', 'ENTRIES_OBJ', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
         repeat.bind(null, String.fromCharCode(59999)),
         'byCharCodes'
     ),
     data(
-        [
-            'ARROW',
-            'CAPITAL_HTML',
-            'ENTRIES_PLAIN',
-            'FILL',
-            'FROM_CODE_POINT',
-            'NO_IE_SRC',
-            'NO_V8_SRC'
-        ],
+        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
         function (length)
         {
             var CHAR_CODES =
@@ -112,22 +104,22 @@ module.exports =
         'byDict'
     ),
     data(
-        ['ARROW', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'V8_SRC'],
+        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'V8_SRC'],
         createDictTestString.bind(null, 125),
         'byDictRadix3'
     ),
     data(
-        ['ARROW', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'V8_SRC'],
+        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'V8_SRC'],
         createDictTestString.bind(null, 88),
         'byDictRadix4'
     ),
     data(
-        ['ARROW', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'V8_SRC'],
+        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'V8_SRC'],
         createDictTestString.bind(null, 129),
         'byDictRadix4AmendedBy1'
     ),
     data(
-        ['ARROW', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'FROM_CODE_POINT', 'V8_SRC'],
+        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'V8_SRC'],
         createDictTestString.bind(null, 364),
         'byDictRadix4AmendedBy2'
     ),
@@ -146,15 +138,7 @@ module.exports =
         'byDictRadix5AmendedBy3'
     ),
     data(
-        [
-            'ARRAY_ITERATOR',
-            'ARROW',
-            'CAPITAL_HTML',
-            'FILL',
-            'FROM_CODE_POINT',
-            'NO_IE_SRC',
-            'NO_V8_SRC'
-        ],
+        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
         createDictTestString.bind(null, 103),
         'byDblDict'
     )

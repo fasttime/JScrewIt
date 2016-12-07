@@ -5,6 +5,7 @@
 'use strict';
 
 var JScrewIt = require('../lib/jscrewit');
+var chalk = require('chalk');
 var kit = require('./verifier-kit');
 
 var define              = kit.define;
@@ -15,7 +16,12 @@ var verifyDefinitions   = kit.verifyDefinitions;
 require('../tools/text-utils');
 var timeUtils = require('../tools/time-utils');
 
-function checkCoderFeatureOptimality(features, createInput, coders, coder, minLength)
+function checkCoderFeatureOptimality(
+    createInput,
+    coders,
+    coder,
+    minLength,
+    progressCallback)
 {
     var input = createInput(minLength);
     var replacer =
@@ -43,27 +49,8 @@ function checkCoderFeatureOptimality(features, createInput, coders, coder, minLe
                 }
             }
         };
-    var optimalFeatureObjs = findOptimalFeatures(replacer, rivalReplacer);
-    if (optimalFeatureObjs)
-    {
-        var featureObj = JScrewIt.Feature(features);
-        var featureMatches =
-            function (optimalFeatureObj)
-            {
-                return JScrewIt.Feature.areEqual(optimalFeatureObj, featureObj);
-            };
-        if (!optimalFeatureObjs.some(featureMatches))
-        {
-            optimalFeatureObjs.forEach(
-                function (optimalFeatureObj)
-                {
-                    console.log(String(optimalFeatureObj));
-                }
-            );
-        }
-    }
-    else
-        console.log('No optimal features found.');
+    var optimalFeatureObjs = findOptimalFeatures(replacer, rivalReplacer, progressCallback);
+    return optimalFeatureObjs;
 }
 
 function checkMinInputLength(features, createInput, coders, coder, minLength)
@@ -96,14 +83,23 @@ function checkMinInputLength(features, createInput, coders, coder, minLength)
     var inputDataShort = Object(createInput(minLength - 1));
     var inputDataFit = Object(createInput(minLength));
     var coderNames = Object.keys(coders).filter(isRivalCoderName);
+    var ok = true;
     var outputFit = coder.call(encoder, inputDataFit);
     var bestDataFit = findBestCoder(inputDataFit);
     if (bestDataFit.length <= outputFit.length)
-        console.log('MIN_INPUT_LENGTH is too small for ' + bestDataFit.coderName);
+    {
+        ok = false;
+        logWarn('MIN_INPUT_LENGTH is too small for ' + bestDataFit.coderName + '.');
+    }
     var outputShort = coder.call(encoder, inputDataShort);
     var bestDataShort = findBestCoder(inputDataShort);
     if (bestDataShort.length > outputShort.length)
-        console.log('MIN_INPUT_LENGTH is too large for ' + bestDataShort.coderName);
+    {
+        ok = false;
+        logWarn('MIN_INPUT_LENGTH is too large for ' + bestDataShort.coderName + '.');
+    }
+    if (ok)
+        logOk('MIN_INPUT_LENGTH is ok.');
 }
 
 function compareRoutineNames(name1, name2)
@@ -170,6 +166,16 @@ function isRivalCoderName(coderName)
     return coderName !== 'express' && coderName !== 'text';
 }
 
+function logOk(str)
+{
+    console.log(chalk.green(str));
+}
+
+function logWarn(str)
+{
+    console.log(chalk.yellow(str));
+}
+
 function main()
 {
     var routineName = process.argv[2];
@@ -189,7 +195,13 @@ function main()
 
 function mismatchCallback()
 {
-    console.log.apply(console, arguments);
+    Array.prototype.forEach.call(
+        arguments,
+        function (arg)
+        {
+            logWarn(arg);
+        }
+    );
 }
 
 function printHelpMessage()
@@ -203,6 +215,34 @@ function printHelpMessage()
             'Please, specify one of the implemented verification routines:'
         )
     );
+}
+
+function printOptimalFeatureReport(features, optimalFeatureObjs)
+{
+    if (optimalFeatureObjs)
+    {
+        var featureObj = JScrewIt.Feature(features);
+        var featureMatches =
+            function (optimalFeatureObj)
+            {
+                return JScrewIt.Feature.areEqual(optimalFeatureObj, featureObj);
+            };
+        if (optimalFeatureObjs.some(featureMatches))
+            logOk('Preset features are optimal.');
+        else
+        {
+            var output = 'Preset features are suboptimal. Optimal features are:';
+            optimalFeatureObjs.forEach(
+                function (optimalFeatureObj)
+                {
+                    output += '\n' + String(optimalFeatureObj);
+                }
+            );
+            logWarn(output);
+        }
+    }
+    else
+        logWarn('No optimal features found.');
 }
 
 function verifyBase64Defs(entries, inputList)
@@ -227,23 +267,57 @@ function verifyCoder(coderName)
             var coder = coders[coderName];
             var minLength = coder.MIN_INPUT_LENGTH;
             checkMinInputLength(features, createInput, coders, coder, minLength);
-            checkCoderFeatureOptimality(features, createInput, coders, coder, minLength);
+            var optimalFeatureObjs;
+            var ProgressBar = require('progress');
+            var bar =
+                new ProgressBar(
+                    'scanning preset features [:bar] :percent :etas',
+                    {
+                        complete:   '=',
+                        incomplete: ' ',
+                        width:      20,
+                        total:      100
+                    }
+                );
+            var progressCallback =
+                function (progress)
+                {
+                    bar.update(progress);
+                };
+            try
+            {
+                optimalFeatureObjs =
+                    checkCoderFeatureOptimality(
+                        createInput,
+                        coders,
+                        coder,
+                        minLength,
+                        progressCallback
+                    );
+            }
+            finally
+            {
+                bar.terminate();
+            }
+            printOptimalFeatureReport(features, optimalFeatureObjs);
         };
     return result;
 }
 
 var verify = Object.create(null);
 
+verify.mCh = verifyComplex.bind(null, 'mCh', [define('atob("bUNo")', 'ATOB')], mismatchCallback);
+
 JScrewIt.debug.getComplexNames().forEach(
     function (complexName)
     {
-        var entries = JScrewIt.debug.getComplexEntries(complexName);
-        var firstDefinedEntry = findFirstDefinedEntry(entries);
-        verify[complexName] =
-            function ()
-            {
-                verifyComplex(complexName, [firstDefinedEntry], mismatchCallback);
-            };
+        if (!verify[complexName])
+        {
+            var entries = JScrewIt.debug.getComplexEntries(complexName);
+            var firstDefinedEntry = findFirstDefinedEntry(entries);
+            verify[complexName] =
+                verifyComplex.bind(null, complexName, [firstDefinedEntry], mismatchCallback);
+        }
     }
 );
 

@@ -23,6 +23,7 @@
         var maskSet = Object.create(null);
         var ancestorMask = maskNew();
         var encoder = createEncoder(featureObj);
+        encoder.optimizeComplexCache = noop;
         encoder.hasFeatures =
             function (mask)
             {
@@ -77,17 +78,23 @@
     {
         var step = 1;
         var progress = 0;
-        featureQueries.forEach(
+        featureQueries.some(
             function (featureQuery)
             {
                 step /= 2;
+                var newProgress = progress + step;
+                if (newProgress === progress)
+                    return true;
                 if (featureQuery.included)
-                    progress += step;
+                    progress = newProgress;
             }
         );
         progress += step;
         return progress;
     }
+    
+    function noop()
+    { }
     
     Object.defineProperties(
         Analyzer.prototype,

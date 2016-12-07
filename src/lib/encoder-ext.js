@@ -16,7 +16,7 @@ expressParse,
 getAppendLength,
 getFigure,
 math_max,
-object_keys
+object_keys,
 */
 
 var CODERS;
@@ -315,7 +315,7 @@ var wrapWithEval;
         createCharCodesEncoding: function (charCodeArrayStr, long, radix)
         {
             var output;
-            var fromCharCode = this.findBestDefinition(FROM_CHAR_CODE);
+            var fromCharCode = this.findDefinition(FROM_CHAR_CODE);
             if (radix)
             {
                 output =
@@ -380,7 +380,7 @@ var wrapWithEval;
                     var firstDigit = radix - amendings;
                     var createParseIntArg;
                     if (amendings > 2)
-                        createParseIntArg = this.findBestDefinition(CREATE_PARSE_INT_ARG);
+                        createParseIntArg = this.findDefinition(CREATE_PARSE_INT_ARG);
                     else
                         createParseIntArg = createParseIntArgDefault;
                     parseIntArg = createParseIntArg(amendings, firstDigit);
@@ -389,7 +389,7 @@ var wrapWithEval;
                     parseIntArg = 'undefined';
                 if (coerceToInt)
                     parseIntArg = '+' + parseIntArg;
-                var formatter = this.findBestDefinition(MAPPER_FORMATTER);
+                var formatter = this.findDefinition(MAPPER_FORMATTER);
                 mapper = formatter('[parseInt(' + parseIntArg + ',' + radix + ')]');
             }
             else
@@ -411,7 +411,7 @@ var wrapWithEval;
         
         createLongCharCodesOutput: function (charCodeArrayStr, fromCharCode, arg)
         {
-            var formatter = this.findBestDefinition(FROM_CHAR_CODE_CALLBACK_FORMATTER);
+            var formatter = this.findDefinition(FROM_CHAR_CODE_CALLBACK_FORMATTER);
             var callback = formatter(fromCharCode, arg);
             var output =
                 charCodeArrayStr + '[' + this.replaceString('map') + '](' +
@@ -498,7 +498,7 @@ var wrapWithEval;
                 );
             if (!keyFigureArrayStr)
                 return;
-            var formatter = this.findBestDefinition(MAPPER_FORMATTER);
+            var formatter = this.findDefinition(MAPPER_FORMATTER);
             var mapper = formatter('.indexOf(undefined)');
             var charIndexArrayStr =
                 this.createJSFuckArrayMapping(keyFigureArrayStr, mapper, figureLegend);
@@ -620,12 +620,13 @@ var wrapWithEval;
         },
         
         // Replaces a JavaScript array with a JSFuck array of strings.
-        // Array elements may not contain "false" in their string representations, because the value
-        // false is used as a separator for the encoding.
+        // Array elements may only contain characters with static definitions in their string
+        // representations and may not contain the substring "false", because the value false is
+        // used as a separator in the encoding.
         replaceFalseFreeArray: function (array, maxLength)
         {
             var str = array.join(false);
-            var replacement = this.replaceString(str, true, true, maxLength);
+            var replacement = this.replaceStaticString(str, maxLength);
             if (replacement)
             {
                 var result =

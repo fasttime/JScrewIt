@@ -23,7 +23,7 @@ object_defineProperty,
 object_freeze,
 object_keys,
 self,
-statusbar
+statusbar,
 */
 
 var Feature;

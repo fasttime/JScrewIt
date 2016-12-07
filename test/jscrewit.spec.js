@@ -1809,7 +1809,7 @@ uneval
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        encoder.replaceString = Function();
+                        encoder.replaceStaticString = Function();
                         expect(encoder.replaceFalseFreeArray([])).toBeUndefined();
                     }
                 );

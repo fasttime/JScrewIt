@@ -43,15 +43,44 @@
         return newAnalyzer;
     }
     
-    function createOptimalFeatureObjMap(replacer, rivalReplacer)
+    function createOptimalFeatureObjMap(replacer, rivalReplacer, progressCallback)
     {
+        function callProgressCallback()
+        {
+            if (progressCallback)
+                progressCallback(analyzer.progress);
+        }
+        
+        function replaceStaticString(str, maxLength)
+        {
+            var replacement = staticStrCache[str];
+            if (replacement)
+            {
+                if (!(replacement.length > maxLength))
+                    return replacement;
+            }
+            else
+            {
+                replacement = this.replaceString(str, true, true, maxLength);
+                if (replacement)
+                {
+                    staticStrCache[str] = replacement;
+                    return replacement;
+                }
+            }
+        }
+        
+        var staticStrCache = Object.create(null);
         var optimalFeatureObjMap;
         var optimalLength = Infinity;
         var analyzer = createAnalyzer();
+        callProgressCallback();
         var encoder;
         while (encoder = analyzer.nextEncoder)
         {
+            encoder.replaceStaticString = replaceStaticString;
             var output = replacer(encoder);
+            callProgressCallback();
             if (output === void 0)
                 continue;
             var length = output.length;
@@ -71,13 +100,17 @@
                 optimalFeatureObjs.push(analyzer.featureObj);
             }
         }
+        callProgressCallback();
         return optimalFeatureObjMap;
     }
     
     function decomplex(encoder, complex)
     {
-        encoder.stringTokenPattern = JScrewIt.debug.createEncoder().createStringTokenPattern();
+        encoder.complexCache[complex] = null;
+        delete encoder.stringTokenPattern;
         var str = encoder.replaceString(complex);
+        delete encoder.complexCache[complex];
+        delete encoder.stringTokenPattern;
         return str;
     }
     
@@ -89,9 +122,10 @@
         return entry;
     }
     
-    function findOptimalFeatures(replacer, rivalReplacer)
+    function findOptimalFeatures(replacer, rivalReplacer, progressCallback)
     {
-        var optimalFeatureObjMap = createOptimalFeatureObjMap(replacer, rivalReplacer);
+        var optimalFeatureObjMap =
+            createOptimalFeatureObjMap(replacer, rivalReplacer, progressCallback);
         if (optimalFeatureObjMap)
         {
             var result =
@@ -99,17 +133,18 @@
                     function (output)
                     {
                         var optimalFeatureObjs = optimalFeatureObjMap[output];
-                        var featureObj = optimalFeatureObjs.reduce(
-                            function (previousFeatureObj, currentFeatureObj)
-                            {
-                                var nextFeatureObj =
-                                    JScrewIt.Feature.commonOf(
-                                        previousFeatureObj,
-                                        currentFeatureObj
-                                    );
-                                return nextFeatureObj;
-                            }
-                        );
+                        var featureObj =
+                            optimalFeatureObjs.reduce(
+                                function (previousFeatureObj, currentFeatureObj)
+                                {
+                                    var nextFeatureObj =
+                                        JScrewIt.Feature.commonOf(
+                                            previousFeatureObj,
+                                            currentFeatureObj
+                                        );
+                                    return nextFeatureObj;
+                                }
+                            );
                         return featureObj;
                     }
                 );
@@ -161,38 +196,35 @@
     
     function verifyComplex(complex, inputEntries, mismatchCallback)
     {
+        function checkEntry(entry)
+        {
+            if (encoder.hasFeatures(entry.mask))
+            {
+                var definition = entry.definition;
+                var solution = encoder.resolve(definition);
+                var length = solution.length;
+                if (length < optimalLength)
+                {
+                    optimalDefinition = definition;
+                    optimalLength = length;
+                }
+            }
+        }
+        
         var actualEntries = JScrewIt.debug.getComplexEntries(complex);
         var analyzer = createAnalyzer();
         var encoder;
         while (encoder = analyzer.nextEncoder)
         {
-            var definition = encoder.findBestDefinition(actualEntries);
-            var solution;
-            var replacement;
-            var featureNames;
-            if (definition)
+            var optimalDefinition = null;
+            var replacement = decomplex(encoder, complex);
+            var optimalLength = replacement.length;
+            inputEntries.forEach(checkEntry);
+            var actualDefinition = encoder.findDefinition(actualEntries) || null;
+            if (actualDefinition !== optimalDefinition)
             {
-                solution = encoder.resolve(definition);
-                replacement = decomplex(encoder, complex);
-                if (solution.length > replacement.length)
-                {
-                    featureNames = analyzer.featureObj.canonicalNames;
-                    mismatchCallback(featureNames);
-                }
-            }
-            else
-            {
-                definition = encoder.findBestDefinition(inputEntries);
-                if (definition)
-                {
-                    solution = encoder.resolve(definition);
-                    replacement = decomplex(encoder, complex);
-                    if (solution.length < replacement.length)
-                    {
-                        featureNames = analyzer.featureObj.canonicalNames;
-                        mismatchCallback(featureNames);
-                    }
-                }
+                var featureNames = analyzer.featureObj.canonicalNames;
+                mismatchCallback(featureNames);
             }
         }
     }
@@ -206,7 +238,7 @@
         {
             var optimalityInfo = getOptimalityInfo(encoder, inputList, replacer);
             analyzer.stopCapture();
-            var actualDefinition = encoder.findBestDefinition(entries);
+            var actualDefinition = encoder.findDefinition(entries);
             var lengthMap = optimalityInfo.lengthMap;
             var optimalLength = optimalityInfo.optimalLength;
             if (lengthMap[actualDefinition] > optimalLength)
