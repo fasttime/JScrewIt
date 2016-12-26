@@ -211,7 +211,7 @@ var wrapWithEval;
                 var output = this.encodeByDenseFigures(inputData, maxLength);
                 return output;
             },
-            6607
+            4717
         ),
         byDict: defineCoder
         (
