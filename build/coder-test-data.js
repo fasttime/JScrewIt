@@ -100,7 +100,12 @@ module.exports =
     ),
     data(
         ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
-        createDictTestString.bind(null, 10),
+        function (length)
+        {
+            var prefix = repeatToFit('01234567', 243);
+            var str = prefix + createDictTestString(2, length - prefix.length);
+            return str;
+        },
         'byDenseFigures'
     ),
     data(
