@@ -1189,6 +1189,28 @@ uneval
             }
         );
         describe(
+            'JScrewIt.debug.createFigurator',
+            function ()
+            {
+                it(
+                    'returns a usable figurator',
+                    function ()
+                    {
+                        var figurator =
+                            JScrewIt.debug.createFigurator(
+                                [
+                                    { value: 'false', sortLength: 4 },
+                                    { value: 'falsetrue', sortLength: 9 }
+                                ]
+                            );
+                        expect(figurator(0).valueOf()).toBe('false');
+                        expect(figurator(1).valueOf()).toBe('falsetrue');
+                        expect(figurator(2).valueOf()).toBe('false0');
+                    }
+                );
+            }
+        );
+        describe(
             'JScrewIt.debug.defineConstant',
             function ()
             {
@@ -1640,7 +1662,7 @@ uneval
             }
         );
         describe(
-            'Encoder#encodeByDblDict',
+            'Encoder#encodeBySparseFigures',
             function ()
             {
                 it(
@@ -1651,7 +1673,7 @@ uneval
                         var input =
                             'The thirty-three thieves thought that they thrilled the throne ' +
                             'throughout Thursday.';
-                        var output = encoder.encodeByDblDict(Object(input));
+                        var output = encoder.encodeBySparseFigures(Object(input));
                         expect(output).toBeJSFuck();
                         expect(evalJSFuck(output)).toBe(input);
                     }
@@ -1661,11 +1683,43 @@ uneval
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        var output1 = encoder.encodeByDblDict(Object('12345'), 10);
+                        var output1 = encoder.encodeBySparseFigures(Object('12345'), 10);
                         expect(output1).toBeUndefined();
-                        var output2 = encoder.encodeByDblDict(Object('12345'), 125);
+                        var output2 = encoder.encodeBySparseFigures(Object('12345'), 125);
                         expect(output2).toBeUndefined();
-                        var output3 = encoder.encodeByDblDict(Object('12345'), 3700);
+                        var output3 = encoder.encodeBySparseFigures(Object('12345'), 3700);
+                        expect(output3).toBeUndefined();
+                    }
+                );
+            }
+        );
+        describe(
+            'Encoder#encodeByDenseFigures',
+            function ()
+            {
+                it(
+                    'returns correct JSFuck',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var input =
+                            'The thirty-three thieves thought that they thrilled the throne ' +
+                            'throughout Thursday.';
+                        var output = encoder.encodeByDenseFigures(Object(input));
+                        expect(output).toBeJSFuck();
+                        expect(evalJSFuck(output)).toBe(input);
+                    }
+                );
+                it(
+                    'returns undefined for too complex input',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var output1 = encoder.encodeByDenseFigures(Object('12345'), 10);
+                        expect(output1).toBeUndefined();
+                        var output2 = encoder.encodeByDenseFigures(Object('12345'), 125);
+                        expect(output2).toBeUndefined();
+                        var output3 = encoder.encodeByDenseFigures(Object('12345'), 23500);
                         expect(output3).toBeUndefined();
                     }
                 );

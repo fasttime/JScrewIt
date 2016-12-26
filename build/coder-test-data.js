@@ -99,6 +99,11 @@ module.exports =
         'byCharCodesRadix4'
     ),
     data(
+        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
+        createDictTestString.bind(null, 10),
+        'byDenseFigures'
+    ),
+    data(
         ['ARRAY_ITERATOR', 'ATOB', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC', 'UNEVAL'],
         repeat.bind(null, String.fromCharCode(59999)),
         'byDict'
@@ -140,6 +145,6 @@ module.exports =
     data(
         ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
         createDictTestString.bind(null, 103),
-        'byDblDict'
-    )
+        'bySparseFigures'
+    ),
 ];
