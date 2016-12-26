@@ -91,7 +91,7 @@ gulp.task(
             'src/lib/definers.js',
             'src/lib/levels.js',
             'src/lib/definitions.js',
-            'src/lib/figures.js',
+            'src/lib/figurator.js',
             'src/lib/screw-buffer.js',
             'src/lib/express-parse.js',
             'src/lib/encoder-base.js',

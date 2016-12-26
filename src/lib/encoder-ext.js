@@ -11,10 +11,10 @@ Encoder,
 array_prototype_forEach,
 array_prototype_map,
 assignNoEnum,
+createFigurator,
 createParseIntArgDefault,
 expressParse,
 getAppendLength,
-getFigure,
 math_max,
 object_keys,
 */
@@ -130,11 +130,53 @@ var wrapWithEval;
         return freqList;
     }
     
-    function initMinCharIndexArrayStrLength(input)
+    function initMinFalseFreeCharIndexArrayStrLength(input)
     {
         var minCharIndexArrayStrLength =
             math_max((input.length - 1) * (SIMPLE.false.length + 1) - 3, 0);
         return minCharIndexArrayStrLength;
+    }
+    
+    function initMinFalseTrueCharIndexArrayStrLength()
+    {
+        return -1;
+    }
+    
+    // Replaces a non-empty JavaScript array with a JSFuck array of strings.
+    // Array elements may only contain characters with static definitions in their string
+    // representations and may not contain the substring "false", because the value false is used as
+    // a separator in the encoding.
+    function replaceFalseFreeArray(array, maxLength)
+    {
+        var str = array.join(false);
+        var replacement = this.replaceStaticString(str, maxLength);
+        if (replacement)
+        {
+            var result =
+                replacement + '[' + this.replaceString('split') + '](' + this.replaceExpr('false') +
+                ')';
+            if (!(result.length > maxLength))
+                return result;
+        }
+    }
+    
+    // Replaces a non-empty JavaScript array with a JSFuck array of strings.
+    // Array elements may only contain characters with static definitions in their string
+    // representations.
+    // All array elements must all start by either "false" or "true" and may not contain the
+    // substrings "false" or "true" in any other position.
+    function replaceFalseTrueArray(array, maxLength)
+    {
+        var str = array.join('');
+        var replacement = this.replaceStaticString(str, maxLength);
+        if (replacement)
+        {
+            var result =
+                replacement + '[' + this.replaceString('split') + '](' +
+                this.replaceExpr('Function("return/(?=false|true)/")()') + ')';
+            if (!(result.length > maxLength))
+                return result;
+        }
     }
     
     CODERS =
@@ -162,14 +204,14 @@ var wrapWithEval;
             },
             39
         ),
-        byDblDict: defineCoder
+        byDenseFigures: defineCoder
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByDblDict(inputData, maxLength);
+                var output = this.encodeByDenseFigures(inputData, maxLength);
                 return output;
             },
-            410
+            6607
         ),
         byDict: defineCoder
         (
@@ -224,6 +266,15 @@ var wrapWithEval;
                 return output;
             },
             783
+        ),
+        bySparseFigures: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeBySparseFigures(inputData, maxLength);
+                return output;
+            },
+            410
         ),
         express: defineCoder
         (
@@ -348,7 +399,7 @@ var wrapWithEval;
             return output;
         },
         
-        createCharKeyArrayString: function (input, charMap, maxLength)
+        createCharKeyArrayString: function (input, charMap, maxLength, replaceCharKeyArray)
         {
             var charKeyArray =
                 array_prototype_map.call(
@@ -359,7 +410,7 @@ var wrapWithEval;
                         return charKey;
                     }
                 );
-            var charKeyArrayStr = this.replaceFalseFreeArray(charKeyArray, maxLength);
+            var charKeyArrayStr = replaceCharKeyArray.call(this, charKeyArray, maxLength);
             return charKeyArrayStr;
         },
         
@@ -459,7 +510,12 @@ var wrapWithEval;
             }
         },
         
-        encodeByDblDict: function (inputData, maxLength)
+        encodeByDblDict: function (
+            initMinCharIndexArrayStrLength,
+            figurator,
+            replaceFigureArray,
+            inputData,
+            maxLength)
         {
             var input = inputData.valueOf();
             var freqList = getFrequencyList(inputData);
@@ -469,7 +525,7 @@ var wrapWithEval;
                 freqList.map(
                     function (freq, index)
                     {
-                        var figure = getFigure(index);
+                        var figure = figurator(index);
                         charMap[freq.char] = figure;
                         minCharIndexArrayStrLength += freq.count * figure.sortLength;
                         return figure;
@@ -487,14 +543,19 @@ var wrapWithEval;
                 return;
             var figureMaxLength = maxLength - legend.length;
             var figureLegend =
-                this.replaceFalseFreeArray(figures, figureMaxLength - minCharIndexArrayStrLength);
+                replaceFigureArray.call(
+                    this,
+                    figures,
+                    figureMaxLength - minCharIndexArrayStrLength
+                );
             if (!figureLegend)
                 return;
             var keyFigureArrayStr =
                 this.createCharKeyArrayString(
                     input,
                     charMap,
-                    figureMaxLength - figureLegend.length
+                    figureMaxLength - figureLegend.length,
+                    replaceFigureArray
                 );
             if (!keyFigureArrayStr)
                 return;
@@ -503,6 +564,19 @@ var wrapWithEval;
             var charIndexArrayStr =
                 this.createJSFuckArrayMapping(keyFigureArrayStr, mapper, figureLegend);
             var output = this.createDictEncoding(legend, charIndexArrayStr, maxLength);
+            return output;
+        },
+        
+        encodeByDenseFigures: function (inputData, maxLength)
+        {
+            var output =
+                this.encodeByDblDict(
+                    initMinFalseTrueCharIndexArrayStrLength,
+                    falseTrueFigurator,
+                    replaceFalseTrueArray,
+                    inputData,
+                    maxLength
+                );
             return output;
         },
         
@@ -518,7 +592,7 @@ var wrapWithEval;
                 freqList[0].count * APPEND_LENGTH_OF_DIGIT_ZERO > APPEND_LENGTH_OF_PLUS_SIGN;
             var reindexMap = createReindexMap(freqList.length, radix, amendings, coerceToInt);
             var charMap = new Empty();
-            var minCharIndexArrayStrLength = initMinCharIndexArrayStrLength(input);
+            var minCharIndexArrayStrLength = initMinFalseFreeCharIndexArrayStrLength(input);
             var dictChars = [];
             freqList.forEach(
                 function (freq, index)
@@ -534,7 +608,12 @@ var wrapWithEval;
             if (!legend)
                 return;
             var charIndexArrayStr =
-                this.createCharKeyArrayString(input, charMap, maxLength - legend.length);
+                this.createCharKeyArrayString(
+                    input,
+                    charMap,
+                    maxLength - legend.length,
+                    replaceFalseFreeArray
+                );
             if (!charIndexArrayStr)
                 return;
             var output =
@@ -545,6 +624,19 @@ var wrapWithEval;
                     radix,
                     amendings,
                     coerceToInt
+                );
+            return output;
+        },
+        
+        encodeBySparseFigures: function (inputData, maxLength)
+        {
+            var output =
+                this.encodeByDblDict(
+                    initMinFalseFreeCharIndexArrayStrLength,
+                    falseFreeFigurator,
+                    replaceFalseFreeArray,
+                    inputData,
+                    maxLength
                 );
             return output;
         },
@@ -590,7 +682,8 @@ var wrapWithEval;
                     input,
                     { forceString: forceString, bond: bond },
                     [
-                        'byDblDict',
+                        'byDenseFigures',
+                        'bySparseFigures',
                         'byDictRadix5AmendedBy3',
                         'byDictRadix4AmendedBy2',
                         'byDictRadix4AmendedBy1',
@@ -619,23 +712,7 @@ var wrapWithEval;
             return output;
         },
         
-        // Replaces a JavaScript array with a JSFuck array of strings.
-        // Array elements may only contain characters with static definitions in their string
-        // representations and may not contain the substring "false", because the value false is
-        // used as a separator in the encoding.
-        replaceFalseFreeArray: function (array, maxLength)
-        {
-            var str = array.join(false);
-            var replacement = this.replaceStaticString(str, maxLength);
-            if (replacement)
-            {
-                var result =
-                    replacement + '[' + this.replaceString('split') + '](' +
-                    this.replaceExpr('false') + ')';
-                if (!(result.length > maxLength))
-                    return result;
-            }
-        },
+        replaceFalseFreeArray: replaceFalseFreeArray,
     };
     
     assignNoEnum(Encoder.prototype, encoderProtoSource);
@@ -663,6 +740,10 @@ var wrapWithEval;
             return replacement;
         }
     };
+    
+    var falseFreeFigurator = createFigurator([{ value: '', sortLength: 0 }]);
+    var falseTrueFigurator =
+        createFigurator([{ value: 'false', sortLength: 4 }, { value: 'true', sortLength: 5 }]);
     
     wrapWithCall =
         function (str)
