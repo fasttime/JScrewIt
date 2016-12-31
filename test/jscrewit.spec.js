@@ -577,12 +577,14 @@ uneval
                                     );
                                 }
                                 
+                                test('missing dots in properties of decimal literals', '0.f');
                                 test('octal literals', '0o42');
                                 test('binary literals', '0b101010');
                                 test('octal escape sequences', '"\\1"');
                                 test('extended Unicode escape sequences', '"\\u{1}"');
                                 test('legacy octal literals', '010');
                                 test('legacy octal-like literals', '09');
+                                test('illegal identifiers with escape sequences', 'f\\u0020o');
                                 test('inescapable literals with escape sequences', 'f\\u0061lse');
                                 test('object literal parameters', 'doSomething({})');
                                 test('object literal indexers', 'array[{}]');
