@@ -491,7 +491,7 @@ var expressParse;
         HexIntegerLiteral:
             '0[Xx]#HexDigit+',
         NumericLiteral:
-            '#DecimalLiteral|#HexIntegerLiteral',
+            '#HexIntegerLiteral|#DecimalLiteral',
         Separator:
             '#SeparatorChar|\\/\\/.*(?!.)|\\/\\*[\\s\\S]*?\\*\\/',
         SeparatorChar:
@@ -529,7 +529,7 @@ var expressParse;
         'yield',        // may be an identifier in non-strict mode
     ];
     
-    var constValueRegExp        = makeRegExp('(?:#NumericLiteral|#ConstIdentifier)(?![\\w$])');
+    var constValueRegExp        = makeRegExp('(?:#NumericLiteral|#ConstIdentifier)');
     var rawIdentifierRegExp     = makeRegExp('(?:[$0-9A-Z_a-z]|#UnicodeEscapeSequence)+');
     var separatorOrColonRegExp  = makeRegExp('(?:#Separator|;)*');
     var separatorRegExp         = makeRegExp('#Separator*');
