@@ -1193,19 +1193,71 @@ uneval
             function ()
             {
                 it(
-                    'returns a usable figurator',
+                    'returns a figurator with usable joiners',
+                    function ()
+                    {
+                        var startValues = [''];
+                        for (; ;)
+                        {
+                            var figurator = JScrewIt.debug.createFigurator(startValues);
+                            var joiner;
+                            for (var index = 0; ; ++index)
+                            {
+                                var figure = figurator(index);
+                                joiner = figure.joiner;
+                                expect(joiner).not.toBe(figure.valueOf());
+                                if (startValues.indexOf(joiner) < 0)
+                                    break;
+                            }
+                            if (joiner == null)
+                                break;
+                            startValues.push(joiner);
+                        }
+                    }
+                );
+                it(
+                    'returns a figurator that filters start values from figures',
                     function ()
                     {
                         var figurator =
                             JScrewIt.debug.createFigurator(
                                 [
-                                    { value: 'false', sortLength: 4 },
-                                    { value: 'falsetrue', sortLength: 9 }
+                                    '',
+                                    'false',
+                                    'true',
+                                    '0',
+                                    'undefined',
+                                    '1',
+                                    'NaN',
+                                    '2',
+                                    'f',
+                                    't',
+                                    '3',
+                                    'r',
+                                    'u',
+                                    'n',
+                                    'l',
+                                    '4',
+                                    'd',
+                                    's',
+                                    'e',
+                                    '5',
+                                    'i',
+                                    '6',
+                                    '7',
+                                    '8',
+                                    '9',
                                 ]
                             );
-                        expect(figurator(0).valueOf()).toBe('false');
-                        expect(figurator(1).valueOf()).toBe('falsetrue');
-                        expect(figurator(2).valueOf()).toBe('false0');
+                        for (var index = 0; ; ++index)
+                        {
+                            var figure = figurator(index);
+                            var sortLength = figure.sortLength;
+                            if (sortLength > 50)
+                                break;
+                            if (sortLength >= 50)
+                                expect(figure.valueOf()).not.toBe('NaN');
+                        }
                     }
                 );
             }
@@ -1721,6 +1773,47 @@ uneval
                         expect(output2).toBeUndefined();
                         var output3 = encoder.encodeByDenseFigures(Object('12345'), 23500);
                         expect(output3).toBeUndefined();
+                    }
+                );
+                it(
+                    'uses an ad-hoc delimiter for the figure legend',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var figureLegendDelimiters;
+                        encoder.callGetFigureLegendDelimiters =
+                            function (getFigureLegendDelimiters, figurator, figures)
+                            {
+                                figureLegendDelimiters =
+                                    getFigureLegendDelimiters(figurator, figures);
+                                return figureLegendDelimiters;
+                            };
+                        var inputData = Object('foo');
+                        encoder.encodeByDenseFigures(inputData);
+                        expect(figureLegendDelimiters[1]).toEqual({ joiner: '0', separator: '0' });
+                    }
+                );
+                it(
+                    'uses no ad-hoc delimiter for the figure legend',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var figureLegendDelimiters;
+                        encoder.callGetFigureLegendDelimiters =
+                            function (getFigureLegendDelimiters, figurator, figures)
+                            {
+                                figurator =
+                                    function ()
+                                    {
+                                        return Object('');
+                                    };
+                                figureLegendDelimiters =
+                                    getFigureLegendDelimiters(figurator, figures);
+                                return figureLegendDelimiters;
+                            };
+                        var inputData = Object('foo');
+                        encoder.encodeByDenseFigures(inputData);
+                        expect(figureLegendDelimiters.length).toBe(1);
                     }
                 );
             }

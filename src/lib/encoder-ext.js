@@ -95,6 +95,16 @@ var wrapWithEval;
         return codingName;
     }
     
+    function getDenseFigureLegendDelimiters(figurator, figures)
+    {
+        var delimiters = [FALSE_TRUE_DELIMITER];
+        var lastFigure = figurator(figures.length - 1);
+        var joiner = lastFigure.joiner;
+        if (joiner != null)
+            delimiters.push({ joiner: joiner, separator: joiner });
+        return delimiters;
+    }
+    
     function getFrequencyList(inputData)
     {
         var freqList = inputData.freqList;
@@ -130,6 +140,12 @@ var wrapWithEval;
         return freqList;
     }
     
+    function getSparseFigureLegendDelimiters()
+    {
+        var delimiters = [FALSE_FREE_DELIMITER];
+        return delimiters;
+    }
+    
     function initMinFalseFreeCharIndexArrayStrLength(input)
     {
         var minCharIndexArrayStrLength =
@@ -148,35 +164,8 @@ var wrapWithEval;
     // a separator in the encoding.
     function replaceFalseFreeArray(array, maxLength)
     {
-        var str = array.join(false);
-        var replacement = this.replaceStaticString(str, maxLength);
-        if (replacement)
-        {
-            var result =
-                replacement + '[' + this.replaceString('split') + '](' + this.replaceExpr('false') +
-                ')';
-            if (!(result.length > maxLength))
-                return result;
-        }
-    }
-    
-    // Replaces a non-empty JavaScript array with a JSFuck array of strings.
-    // Array elements may only contain characters with static definitions in their string
-    // representations.
-    // All array elements must all start by either "false" or "true" and may not contain the
-    // substrings "false" or "true" in any other position.
-    function replaceFalseTrueArray(array, maxLength)
-    {
-        var str = array.join('');
-        var replacement = this.replaceStaticString(str, maxLength);
-        if (replacement)
-        {
-            var result =
-                replacement + '[' + this.replaceString('split') + '](' +
-                this.replaceExpr('Function("return/(?=false|true)/")()') + ')';
-            if (!(result.length > maxLength))
-                return result;
-        }
+        var result = this.replaceStringArray(array, [FALSE_FREE_DELIMITER], maxLength);
+        return result;
     }
     
     CODERS =
@@ -363,6 +352,12 @@ var wrapWithEval;
             return output;
         },
         
+        callGetFigureLegendDelimiters: function (getFigureLegendDelimiters, figurator, figures)
+        {
+            var figureLegendDelimiters = getFigureLegendDelimiters(figurator, figures);
+            return figureLegendDelimiters;
+        },
+        
         createCharCodesEncoding: function (charCodeArrayStr, long, radix)
         {
             var output;
@@ -399,7 +394,7 @@ var wrapWithEval;
             return output;
         },
         
-        createCharKeyArrayString: function (input, charMap, maxLength, replaceCharKeyArray)
+        createCharKeyArrayString: function (input, charMap, maxLength, delimiters)
         {
             var charKeyArray =
                 array_prototype_map.call(
@@ -410,7 +405,7 @@ var wrapWithEval;
                         return charKey;
                     }
                 );
-            var charKeyArrayStr = replaceCharKeyArray.call(this, charKeyArray, maxLength);
+            var charKeyArrayStr = this.replaceStringArray(charKeyArray, delimiters, maxLength);
             return charKeyArrayStr;
         },
         
@@ -513,7 +508,8 @@ var wrapWithEval;
         encodeByDblDict: function (
             initMinCharIndexArrayStrLength,
             figurator,
-            replaceFigureArray,
+            getFigureLegendDelimiters,
+            keyFigureArrayDelimiters,
             inputData,
             maxLength)
         {
@@ -541,11 +537,13 @@ var wrapWithEval;
             var legend = this.encodeDictLegend(dictChars, maxLength - minCharIndexArrayStrLength);
             if (!legend)
                 return;
+            var figureLegendDelimiters =
+                this.callGetFigureLegendDelimiters(getFigureLegendDelimiters, figurator, figures);
             var figureMaxLength = maxLength - legend.length;
             var figureLegend =
-                replaceFigureArray.call(
-                    this,
+                this.replaceStringArray(
                     figures,
+                    figureLegendDelimiters,
                     figureMaxLength - minCharIndexArrayStrLength
                 );
             if (!figureLegend)
@@ -555,7 +553,7 @@ var wrapWithEval;
                     input,
                     charMap,
                     figureMaxLength - figureLegend.length,
-                    replaceFigureArray
+                    keyFigureArrayDelimiters
                 );
             if (!keyFigureArrayStr)
                 return;
@@ -573,7 +571,8 @@ var wrapWithEval;
                 this.encodeByDblDict(
                     initMinFalseTrueCharIndexArrayStrLength,
                     falseTrueFigurator,
-                    replaceFalseTrueArray,
+                    getDenseFigureLegendDelimiters,
+                    [FALSE_TRUE_DELIMITER],
                     inputData,
                     maxLength
                 );
@@ -612,7 +611,7 @@ var wrapWithEval;
                     input,
                     charMap,
                     maxLength - legend.length,
-                    replaceFalseFreeArray
+                    [FALSE_FREE_DELIMITER]
                 );
             if (!charIndexArrayStr)
                 return;
@@ -634,7 +633,8 @@ var wrapWithEval;
                 this.encodeByDblDict(
                     initMinFalseFreeCharIndexArrayStrLength,
                     falseFreeFigurator,
-                    replaceFalseFreeArray,
+                    getSparseFigureLegendDelimiters,
+                    [FALSE_FREE_DELIMITER],
                     inputData,
                     maxLength
                 );
@@ -713,9 +713,49 @@ var wrapWithEval;
         },
         
         replaceFalseFreeArray: replaceFalseFreeArray,
+        
+        replaceStringArray: function (array, delimiters, maxLength)
+        {
+            var splitExpr = this.replaceString('split', false, false, maxLength);
+            if (splitExpr)
+            {
+                maxLength -= splitExpr.length + 4;
+                var optimalReplacement;
+                var optimalSeparatorExpr;
+                delimiters.forEach(
+                    function (delimiter)
+                    {
+                        var str = array.join(delimiter.joiner);
+                        var replacement = this.replaceStaticString(str, maxLength);
+                        if (replacement)
+                        {
+                            var separatorExpr = this.replaceExpr(delimiter.separator);
+                            var bulkLength = replacement.length + separatorExpr.length;
+                            if (!(bulkLength > maxLength))
+                            {
+                                maxLength = bulkLength;
+                                optimalReplacement = replacement;
+                                optimalSeparatorExpr = separatorExpr;
+                            }
+                        }
+                    },
+                    this
+                );
+                if (optimalReplacement)
+                {
+                    var result =
+                        optimalReplacement + '[' + splitExpr + '](' + optimalSeparatorExpr + ')';
+                    return result;
+                }
+            }
+        }
     };
     
     assignNoEnum(Encoder.prototype, encoderProtoSource);
+    
+    var FALSE_FREE_DELIMITER = { joiner: 'false', separator: 'false' };
+    
+    var FALSE_TRUE_DELIMITER = { joiner: '', separator: 'Function("return/(?=false|true)/")()' };
     
     var REPLACERS =
     {
@@ -741,9 +781,8 @@ var wrapWithEval;
         }
     };
     
-    var falseFreeFigurator = createFigurator([{ value: '', sortLength: 0 }]);
-    var falseTrueFigurator =
-        createFigurator([{ value: 'false', sortLength: 4 }, { value: 'true', sortLength: 5 }]);
+    var falseFreeFigurator = createFigurator([''], 'false');
+    var falseTrueFigurator = createFigurator(['false', 'true'], '');
     
     wrapWithCall =
         function (str)
