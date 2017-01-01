@@ -7,6 +7,7 @@ var array_prototype_map;
 var array_prototype_push;
 var assignNoEnum;
 var createConstructor;
+var esToString;
 var json_parse;
 var json_stringify;
 var math_abs;
@@ -51,6 +52,15 @@ var object_getOwnPropertyDescriptor;
             var constructor = Function();
             constructor.prototype = prototype;
             return constructor;
+        };
+    
+    esToString =
+        function (arg)
+        {
+            if (typeof arg === 'symbol')
+                throw new TypeError('Cannot convert a symbol to a string');
+            var str = String(arg);
+            return str;
         };
     
     json_parse      = JSON.parse;

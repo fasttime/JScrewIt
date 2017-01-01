@@ -4,6 +4,7 @@ Empty,
 Encoder,
 Feature,
 assignNoEnum,
+esToString,
 module,
 self,
 trimJS,
@@ -29,11 +30,11 @@ var setUp;
      *
      * @param {FeatureElement|CompatibleFeatureArray} [options.features=JScrewIt.Feature.DEFAULT]
      * <p>
-     * Specifies the features available on the engines that evaluate the encoded output.</p>
+     * Specifies the features available in the engines that evaluate the encoded output.</p>
      * <p>
      * If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](Features.md#DEFAULT) is
      * assumed: this ensures maximum compatibility but also generates the largest code.
-     * To generate shorter code, specify all features available on all target engines
+     * To generate shorter code, specify all features available in all target engines
      * explicitly.</p>
      *
      * @param {string} [options.runAs=express-eval]
@@ -108,6 +109,7 @@ var setUp;
     
     function encode(input, options)
     {
+        input = esToString(input);
         options = options || { };
         var features = options.features;
         var runAsData;
@@ -118,7 +120,6 @@ var setUp;
             runAsData = filterRunAs(options.wrapWith, 'wrapWith');
         var wrapper = runAsData[0];
         var coderNames = runAsData[1];
-        input = String(input);
         if (options.trimCode)
             input = trimJS(input);
         var perfInfo = options.perfInfo;

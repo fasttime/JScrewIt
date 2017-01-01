@@ -5,28 +5,24 @@
     function formatItem(value)
     {
         var text;
-        if (typeof value === 'string')
-            text = '"' + value + '"';
-        else if (value === 0 && 1 / value < 0)
-            text = '-0';
-        else if (Array.isArray(value))
+        var type = typeof value;
+        try
         {
-            try
-            {
+            if (type === 'string')
+                text = '"' + value + '"';
+            else if (value === 0 && 1 / value < 0)
+                text = '-0';
+            else if (Array.isArray(value))
                 text = value.length ? '[…]' : '[]';
-            }
-            catch (error)
-            { }
-        }
-        else
-        {
-            try
-            {
+            // In Node.js 0.12, calling String with a symbol argument throws a TypeError.
+            // Since this script is only used in browsers this is not a true problem, but still.
+            else if (type !== 'symbol')
                 text = String(value);
-            }
-            catch (error)
-            { }
+            else
+                text = value.toString();
         }
+        catch (error)
+        { }
         return text;
     }
     
