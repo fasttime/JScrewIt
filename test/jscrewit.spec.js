@@ -4,6 +4,7 @@ global
 EMU_FEATURES,
 Audio,
 Node,
+Symbol,
 atob,
 btoa,
 document,
@@ -572,7 +573,7 @@ uneval
                                                     input,
                                                     { runAs: 'express' }
                                                 );
-                                            expect(fn).toThrow(Error('Encoding failed'));
+                                            expect(fn).toThrowStrictly(Error, 'Encoding failed');
                                         }
                                     );
                                 }
@@ -705,7 +706,7 @@ uneval
                             {
                                 JScrewIt.encode('', { features: ['NO_IE_SRC', 'IE_SRC'] });
                             };
-                        expect(fn).toThrow(Error('Incompatible features'));
+                        expect(fn).toThrowStrictly(Error, 'Incompatible features');
                     }
                 );
                 it(
@@ -717,7 +718,7 @@ uneval
                             {
                                 JScrewIt.encode('', { runAs: null });
                             };
-                        expect(fn).toThrow(Error('Invalid value for option runAs'));
+                        expect(fn).toThrowStrictly(Error, 'Invalid value for option runAs');
                     }
                 );
                 it(
@@ -739,9 +740,23 @@ uneval
                             {
                                 JScrewIt.encode('', { wrapWith: true });
                             };
-                        expect(fn).toThrow(Error('Invalid value for option wrapWith'));
+                        expect(fn).toThrowStrictly(Error, 'Invalid value for option wrapWith');
                     }
                 );
+                if (typeof Symbol !== 'undefined')
+                {
+                    it(
+                        'throws a TypeError when the first argument is a symbol',
+                        function ()
+                        {
+                            var fn = JScrewIt.encode.bind(null, Symbol());
+                            expect(fn).toThrowStrictly(
+                                TypeError,
+                                'Cannot convert a symbol to a string'
+                            );
+                        }
+                    );
+                }
             }
         );
         describe(
@@ -789,7 +804,7 @@ uneval
                             function ()
                             {
                                 var fn = Feature.bind(Feature, '???');
-                                expect(fn).toThrow(Error('Unknown feature "???"'));
+                                expect(fn).toThrowStrictly(Error, 'Unknown feature "???"');
                             }
                         );
                         it(
@@ -797,7 +812,7 @@ uneval
                             function ()
                             {
                                 var fn = Feature.bind(Feature, ['IE_SRC', 'NO_IE_SRC']);
-                                expect(fn).toThrow(Error('Incompatible features'));
+                                expect(fn).toThrowStrictly(Error, 'Incompatible features');
                             }
                         );
                         it(
@@ -818,7 +833,7 @@ uneval
                                         'ENTRIES_PLAIN',
                                         'NO_OLD_SAFARI_ARRAY_ITERATOR'
                                     );
-                                expect(fn).toThrow(Error('Incompatible features'));
+                                expect(fn).toThrowStrictly(Error, 'Incompatible features');
                             }
                         );
                     }
@@ -935,7 +950,7 @@ uneval
                             function ()
                             {
                                 var fn = Feature.prototype.includes.bind(Feature.DEFAULT, '???');
-                                expect(fn).toThrow(Error('Unknown feature "???"'));
+                                expect(fn).toThrowStrictly(Error, 'Unknown feature "???"');
                             }
                         );
                         it(
@@ -947,7 +962,7 @@ uneval
                                         Feature.DEFAULT,
                                         ['IE_SRC', 'NO_IE_SRC']
                                     );
-                                expect(fn).toThrow(Error('Incompatible features'));
+                                expect(fn).toThrowStrictly(Error, 'Incompatible features');
                             }
                         );
                     }
@@ -1062,7 +1077,7 @@ uneval
                             function ()
                             {
                                 var fn = Feature.areEqual.bind(null, '???');
-                                expect(fn).toThrow(Error('Unknown feature "???"'));
+                                expect(fn).toThrowStrictly(Error, 'Unknown feature "???"');
                             }
                         );
                         it(
@@ -1070,7 +1085,7 @@ uneval
                             function ()
                             {
                                 var fn = Feature.areEqual.bind(null, ['IE_SRC', 'NO_IE_SRC']);
-                                expect(fn).toThrow(Error('Incompatible features'));
+                                expect(fn).toThrowStrictly(Error, 'Incompatible features');
                             }
                         );
                         it(
@@ -1130,7 +1145,7 @@ uneval
                             function ()
                             {
                                 var fn = Feature.commonOf.bind(null, '???');
-                                expect(fn).toThrow(Error('Unknown feature "???"'));
+                                expect(fn).toThrowStrictly(Error, 'Unknown feature "???"');
                             }
                         );
                         it(
@@ -1138,7 +1153,7 @@ uneval
                             function ()
                             {
                                 var fn = Feature.commonOf.bind(null, ['IE_SRC', 'NO_IE_SRC']);
-                                expect(fn).toThrow(Error('Incompatible features'));
+                                expect(fn).toThrowStrictly(Error, 'Incompatible features');
                             }
                         );
                         it(
@@ -1167,7 +1182,7 @@ uneval
                                         'ANY_WINDOW',
                                         ['WINDOW', 'DOMWINDOW']
                                     );
-                                expect(fn).toThrow(Error('Incompatible features'));
+                                expect(fn).toThrowStrictly(Error, 'Incompatible features');
                             }
                         );
                     }
@@ -1213,6 +1228,7 @@ uneval
                             }
                             if (joiner == null)
                                 break;
+                            expect(startValues).not.toContain(joiner);
                             startValues.push(joiner);
                         }
                     }
@@ -1273,7 +1289,7 @@ uneval
                     function ()
                     {
                         var fn = JScrewIt.debug.defineConstant.bind(null, null, 'X:X', '0');
-                        expect(fn).toThrow(SyntaxError('Invalid identifier "X:X"'));
+                        expect(fn).toThrowStrictly(SyntaxError, 'Invalid identifier "X:X"');
                     }
                 );
             }
@@ -1669,9 +1685,7 @@ uneval
                             {
                                 encoder.exec('{}', void 0, ['express']);
                             }
-                        ).toThrow(
-                            new Error('Encoding failed')
-                        );
+                        ).toThrowStrictly(Error, 'Encoding failed');
                         expect('codingLog' in encoder).toBeFalsy();
                     }
                 );
@@ -2197,8 +2211,9 @@ uneval
                     'circular reference',
                     function ()
                     {
-                        expect(debugReplacer('B')).toThrow(
-                            SyntaxError('Circular reference detected: B < C < B')
+                        expect(debugReplacer('B')).toThrowStrictly(
+                            SyntaxError,
+                            'Circular reference detected: B < C < B'
                         );
                     }
                 );
@@ -2210,8 +2225,9 @@ uneval
                             'in a definition',
                             function ()
                             {
-                                expect(debugReplacer('A')).toThrow(
-                                    SyntaxError('Undefined identifier FILL in the definition of A')
+                                expect(debugReplacer('A')).toThrowStrictly(
+                                    SyntaxError,
+                                    'Undefined identifier FILL in the definition of A'
                                 );
                             }
                         );
@@ -2219,8 +2235,9 @@ uneval
                             'inline',
                             function ()
                             {
-                                expect(debugReplacer('valueOf')).toThrow(
-                                    SyntaxError('Undefined identifier valueOf')
+                                expect(debugReplacer('valueOf')).toThrowStrictly(
+                                    SyntaxError,
+                                    'Undefined identifier valueOf'
                                 );
                             }
                         );
@@ -2234,8 +2251,9 @@ uneval
                             'in a definition',
                             function ()
                             {
-                                expect(debugReplacer('D')).toThrow(
-                                    SyntaxError('Syntax error in the definition of D')
+                                expect(debugReplacer('D')).toThrowStrictly(
+                                    SyntaxError,
+                                    'Syntax error in the definition of D'
                                 );
                             }
                         );
@@ -2243,8 +2261,9 @@ uneval
                             'inline',
                             function ()
                             {
-                                expect(debugReplacer('?')).toThrow(
-                                    SyntaxError('Syntax error')
+                                expect(debugReplacer('?')).toThrowStrictly(
+                                    SyntaxError,
+                                    'Syntax error'
                                 );
                             }
                         );
@@ -2258,8 +2277,9 @@ uneval
                             'in a definition',
                             function ()
                             {
-                                expect(debugReplacer('E')).toThrow(
-                                    SyntaxError('Syntax error in the definition of E')
+                                expect(debugReplacer('E')).toThrowStrictly(
+                                    SyntaxError,
+                                    'Syntax error in the definition of E'
                                 );
                             }
                         );
@@ -2267,8 +2287,9 @@ uneval
                             'inline',
                             function ()
                             {
-                                expect(debugReplacer('"\\xx"')).toThrow(
-                                    SyntaxError('Syntax error')
+                                expect(debugReplacer('"\\xx"')).toThrowStrictly(
+                                    SyntaxError,
+                                    'Syntax error'
                                 );
                             }
                         );
@@ -2282,8 +2303,9 @@ uneval
                             'in a definition',
                             function ()
                             {
-                                expect(debugReplacer('F')).toThrow(
-                                    SyntaxError('String too complex in the definition of F')
+                                expect(debugReplacer('F')).toThrowStrictly(
+                                    SyntaxError,
+                                    'String too complex in the definition of F'
                                 );
                             }
                         );
@@ -2291,8 +2313,9 @@ uneval
                             'inline',
                             function ()
                             {
-                                expect(debugReplacer('"too complex"')).toThrow(
-                                    SyntaxError('String too complex')
+                                expect(debugReplacer('"too complex"')).toThrowStrictly(
+                                    SyntaxError,
+                                    'String too complex'
                                 );
                             }
                         );
@@ -2314,7 +2337,7 @@ uneval
                             {
                                 encoder.resolveExprAt('', 42, void 0, []);
                             }
-                        ).toThrow(SyntaxError('Missing padding entries for index 42'));
+                        ).toThrowStrictly(SyntaxError, 'Missing padding entries for index 42');
                     }
                 );
             }
@@ -2333,7 +2356,7 @@ uneval
                             {
                                 encoder.getPaddingBlock({ blocks: [] }, -1);
                             }
-                        ).toThrow(SyntaxError('Undefined padding block with length -1'));
+                        ).toThrowStrictly(SyntaxError, 'Undefined padding block with length -1');
                     }
                 );
             }

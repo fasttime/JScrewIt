@@ -24,6 +24,7 @@ createParseIntArgByReduce,
 createParseIntArgByReduceArrow,
 createParseIntArgDefault,
 define,
+esToString,
 featureFromMask,
 getValidFeatureMask,
 hasOuterPlus,
@@ -106,7 +107,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                 throw new SyntaxError('Invalid identifier ' + json_stringify(constant));
             if (!encoder.hasOwnProperty('constantDefinitions'))
                 encoder.constantDefinitions = object_create(CONSTANTS);
-            var entries = [define(String(definition))];
+            var entries = [define(esToString(definition))];
             encoder.constantDefinitions[constant] = entries;
         }
         

@@ -10,6 +10,7 @@ array_prototype_push,
 assignNoEnum,
 console,
 document,
+esToString,
 history,
 json_stringify,
 maskAnd,
@@ -235,7 +236,7 @@ var validMaskFromArrayOrStringOrFeature;
             mask = arg.mask;
         else
         {
-            var name = String(arg);
+            var name = esToString(arg);
             var featureObj = ALL[name];
             if (!featureObj)
                 throw new Error('Unknown feature ' + json_stringify(name));

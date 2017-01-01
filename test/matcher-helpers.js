@@ -97,7 +97,60 @@
             if (pass)
                 return this.assertions.pass(message);
             this.assertions.fail(message);
-        }
+        },
+        toThrowStrictly: function ()
+        {
+            var error;
+            var fn = this.value;
+            try
+            {
+                fn();
+            }
+            catch (newError)
+            {
+                error = newError;
+            }
+            Array.prototype.forEach.call(
+                arguments,
+                function (arg)
+                {
+                    var message;
+                    var type = typeof arg;
+                    switch (type)
+                    {
+                    case 'function':
+                        var prototype = arg.prototype;
+                        if (Object.getPrototypeOf(error) === prototype)
+                            break;
+                        message =
+                            this.generateMessage(
+                                fn,
+                                this.expr,
+                                'to throw an error of type',
+                                prototype.name
+                            );
+                        this.assertions.fail(message);
+                        return;
+                    case 'string':
+                        if (error.message === arg)
+                            break;
+                        message =
+                            this.generateMessage(
+                                fn,
+                                this.expr,
+                                'to throw an error with message',
+                                arg
+                            );
+                        this.assertions.fail(message);
+                        return;
+                    default:
+                        throw new TypeError('Unsupported argument type ' + type);
+                    }
+                },
+                this
+            );
+            return this.assertions.pass();
+        },
     };
     
     Object.keys(MATCHERS).forEach(
