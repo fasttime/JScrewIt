@@ -104,7 +104,7 @@ gulp.task(
         var stream =
             gulp
             .src(SRC)
-            .pipe(replace(/^\/*[^]*?\*\/\s*\n/, ''))
+            .pipe(replace(/^\/\*[^]*?\*\/\s*\n/, ''))
             .pipe(concat('jscrewit.js'))
             .pipe(insert.prepend('// JScrewIt ' + pkg.version + ' – http://jscrew.it\n'))
             .pipe(gulp.dest('lib'));
