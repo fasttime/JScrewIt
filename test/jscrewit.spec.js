@@ -273,7 +273,8 @@ uneval
                     'ARRAY_ITERATOR',
                     function ()
                     {
-                        this.toBeArrayIterator();
+                        var arrayIteratorPrototype = Object.getPrototypeOf([].entries());
+                        this.toHavePrototype(arrayIteratorPrototype);
                     }
                 );
                 testConstant(
