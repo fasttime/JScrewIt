@@ -16,7 +16,6 @@ assignNoEnum,
 createConstructor,
 createSolution,
 expressParse,
-hasOuterPlus,
 json_stringify,
 maskIncludes,
 math_abs,
@@ -285,9 +284,11 @@ var resolveSimple;
             if (!solution)
                 this.throwSyntaxError('Undefined identifier ' + identifier);
             var groupingRequired =
-                bondStrength && hasOuterPlus(solution) ||
-                bondStrength > BOND_STRENGTH_WEAK && solution[0] === '!';
-            var replacement = groupingRequired ? '(' + solution + ')' : solution + '';
+                bondStrength && solution.hasOuterPlus ||
+                bondStrength > BOND_STRENGTH_WEAK && solution.charAt(0) === '!';
+            var replacement = solution.replacement;
+            if (groupingRequired)
+                replacement = '(' + replacement + ')';
             return replacement;
         },
         

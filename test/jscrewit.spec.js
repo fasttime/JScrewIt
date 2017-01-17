@@ -1309,56 +1309,6 @@ uneval
             }
         );
         describe(
-            'JScrewIt.debug.hasOuterPlus is',
-            function ()
-            {
-                it(
-                    'true for leading plus',
-                    function ()
-                    {
-                        var solution = Object('+[]');
-                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(true);
-                        expect(solution.outerPlus).toBe(true);
-                    }
-                );
-                it(
-                    'true for middle plus',
-                    function ()
-                    {
-                        var solution = Object('[]+[]');
-                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(true);
-                        expect(solution.outerPlus).toBe(true);
-                    }
-                );
-                it(
-                    'false for inner plus',
-                    function ()
-                    {
-                        var solution = Object('(+[])');
-                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(false);
-                        expect(solution.outerPlus).toBe(false);
-                    }
-                );
-                it(
-                    'false for leading !+',
-                    function ()
-                    {
-                        var solution = Object('!+[]');
-                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(false);
-                        expect(solution.outerPlus).toBe(false);
-                    }
-                );
-                it(
-                    'cached',
-                    function ()
-                    {
-                        var solution = { outerPlus: true };
-                        expect(JScrewIt.debug.hasOuterPlus(solution)).toBe(true);
-                    }
-                );
-            }
-        );
-        describe(
             'JScrewIt.debug.trimJS',
             function ()
             {
@@ -1435,18 +1385,70 @@ uneval
             }
         );
         describe(
+            'Solution#hasOuterPlus is',
+            function ()
+            {
+                it(
+                    'true for leading plus',
+                    function ()
+                    {
+                        var solution = JScrewIt.debug.createSolution('+[]');
+                        expect(solution.hasOuterPlus).toBe(true);
+                    }
+                );
+                it(
+                    'true for middle plus',
+                    function ()
+                    {
+                        var solution = JScrewIt.debug.createSolution('[]+[]');
+                        expect(solution.hasOuterPlus).toBe(true);
+                    }
+                );
+                it(
+                    'false for inner plus',
+                    function ()
+                    {
+                        var solution = JScrewIt.debug.createSolution('(+[])');
+                        expect(solution.hasOuterPlus).toBe(false);
+                    }
+                );
+                it(
+                    'false for leading !+',
+                    function ()
+                    {
+                        var solution = JScrewIt.debug.createSolution('!+[]');
+                        expect(solution.hasOuterPlus).toBe(false);
+                    }
+                );
+                it(
+                    'cached upon creation',
+                    function ()
+                    {
+                        var solution = JScrewIt.debug.createSolution('', void 0, true);
+                        expect(solution.hasOwnProperty('hasOuterPlus')).toBeTruthy();
+                        expect(solution.hasOuterPlus).toBe(true);
+                    }
+                );
+                it(
+                    'cached upon first access',
+                    function ()
+                    {
+                        var solution = JScrewIt.debug.createSolution('+');
+                        expect(solution.hasOwnProperty('hasOuterPlus')).toBeFalsy();
+                        void solution.hasOuterPlus;
+                        expect(solution.hasOwnProperty('hasOuterPlus')).toBeTruthy();
+                        expect(solution.hasOuterPlus).toBe(true);
+                    }
+                );
+            }
+        );
+        describe(
             'ScrewBuffer',
             function ()
             {
                 function createCommaSolution()
                 {
-                    var block = '.concat';
-                    var replacement = '[[]]' + block + '([[]])';
-                    var solution = Object(replacement);
-                    solution.level = LEVEL_STRING;
-                    solution.outerPlus = false;
-                    var appendLength = block.length - 1;
-                    solution.bridge = { block: block, appendLength: appendLength };
+                    var solution = JScrewIt.debug.createBridgeSolution('.concat');
                     return solution;
                 }
                 
@@ -1459,12 +1461,9 @@ uneval
                     expect(buffer + '').toBe(expectedStr);
                 }
                 
-                var solutionA = Object('[![]+[]][+[]]');
-                solutionA.level = LEVEL_STRING;
-                var solution0 = Object('+[]');
-                solution0.level = LEVEL_NUMERIC;
-                var solutionFalse = Object('![]');
-                solutionFalse.level = LEVEL_NUMERIC;
+                var solutionA = JScrewIt.debug.createSolution('[![]+[]][+[]]', LEVEL_STRING);
+                var solution0 = JScrewIt.debug.createSolution('+[]', LEVEL_NUMERIC);
+                var solutionFalse = JScrewIt.debug.createSolution('![]', LEVEL_NUMERIC);
                 var solutionComma = createCommaSolution();
                 
                 describe(
@@ -1564,8 +1563,11 @@ uneval
                         var buffer = JScrewIt.debug.createScrewBuffer(false, true, 7);
                         for (var index = 0; index < 26; ++index)
                         {
-                            var solution = Object(String.fromCharCode(65 + index));
-                            solution.level = LEVEL_OBJECT;
+                            var solution =
+                                JScrewIt.debug.createSolution(
+                                    String.fromCharCode(65 + index),
+                                    LEVEL_OBJECT
+                                );
                             buffer.append(solution);
                         }
                         test(

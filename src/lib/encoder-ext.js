@@ -14,7 +14,7 @@ assignNoEnum,
 createFigurator,
 createParseIntArgDefault,
 expressParse,
-getAppendLength,
+
 math_max,
 object_keys,
 */
@@ -52,7 +52,7 @@ var wrapWithEval;
             for (index = 0; index < amendings; ++index)
             {
                 var digit = firstDigit + index;
-                digitLengths[digit] = getAppendLength(SIMPLE[AMENDINGS[index]]);
+                digitLengths[digit] = SIMPLE[AMENDINGS[index]].appendLength;
                 pattern += digit;
             }
             pattern += ']';
