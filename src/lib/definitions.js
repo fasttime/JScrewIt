@@ -7,6 +7,7 @@ LEVEL_UNDEFINED,
 Empty,
 Feature,
 createDefinitionEntry,
+createSolution,
 define,
 noProto,
 object_defineProperty,
@@ -43,10 +44,10 @@ var SIMPLE;
 
 var JSFUCK_INFINITY;
 
+var createBridgeSolution;
 var createParseIntArgByReduce;
 var createParseIntArgByReduceArrow;
 var createParseIntArgDefault;
-var createSolution;
 
 (function ()
 {
@@ -232,11 +233,8 @@ var createSolution;
     
     function commaDefinition()
     {
-        var block = '[' + this.replaceString('concat') + ']';
-        var replacement = '[[]]' + block + '([[]])';
-        var solution = createSolution(replacement, LEVEL_OBJECT, false);
-        var appendLength = block.length - 1;
-        solution.bridge = { block: block, appendLength: appendLength };
+        var bridge = '[' + this.replaceString('concat') + ']';
+        var solution = createBridgeSolution(bridge);
         return solution;
     }
     
@@ -1351,6 +1349,17 @@ var createSolution;
         ],
     });
     
+    createBridgeSolution =
+        function (bridge)
+        {
+            var replacement = '[[]]' + bridge + '([[]])';
+            var solution = createSolution(replacement, LEVEL_OBJECT, false);
+            var appendLength = bridge.length - 1;
+            solution.appendLength = appendLength;
+            solution.bridge = bridge;
+            return solution;
+        };
+    
     createParseIntArgByReduce =
         function (amendings, firstDigit)
         {
@@ -1440,15 +1449,6 @@ var createSolution;
     OPTIMAL_B = [define('B'), define('b', ENTRIES_OBJ)];
     
     SIMPLE = new Empty();
-    
-    createSolution =
-        function (replacement, level, outerPlus)
-        {
-            var solution = Object(replacement);
-            solution.level = level;
-            solution.outerPlus = outerPlus;
-            return solution;
-        };
     
     // Create definitions for digits
     for (var digit = 0; digit <= 9; ++digit)

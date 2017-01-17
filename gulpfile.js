@@ -89,7 +89,7 @@ gulp.task(
             'src/lib/mask.js',
             'src/lib/features.js',
             'src/lib/definers.js',
-            'src/lib/levels.js',
+            'src/lib/solution.js',
             'src/lib/definitions.js',
             'src/lib/figurator.js',
             'src/lib/screw-buffer.js',

@@ -2,6 +2,8 @@
 
 'use strict';
 
+var debug = require('../lib/jscrewit').debug;
+
 function Interruption(blocker)
 {
     this.blocker = blocker;
@@ -27,7 +29,7 @@ function createExceptionalCharMap(toDoCharMap)
 
 function createToDoCharMap()
 {
-    var getCharacterEntries = requireJScrewIt().debug.getCharacterEntries;
+    var getCharacterEntries = debug.getCharacterEntries;
     var toDoCharMap = createEmpty();
     for (var charCode = 0; charCode <= 0xffff; ++charCode)
     {
@@ -123,7 +125,7 @@ function multiSolve(char, doneCharMap, exceptionalChars)
     
     var Analyzer = require('./analyzer');
     var analyzer = new Analyzer();
-    var maskAnd = requireJScrewIt().debug.maskAnd;
+    var maskAnd = debug.maskAnd;
     var entryIndexSet = createEmpty();
     var outputMap = createEmpty();
     for (var encoder; encoder = analyzer.nextEncoder;)
@@ -154,7 +156,7 @@ function parse(json)
     {
         if (typeof value === 'object' && 'replacement' in value)
         {
-            var solution = Object(value.replacement);
+            var solution = createSolution(value.replacement);
             for (var propName in value)
             {
                 if (propName !== 'replacement')
@@ -165,6 +167,7 @@ function parse(json)
         return value;
     }
     
+    var createSolution = debug.createSolution;
     var charMap = JSON.parse(json, reviver);
     return charMap;
 }
@@ -182,40 +185,11 @@ function prepareEncoder(encoder, charResolver)
         };
 }
 
-function requireJScrewIt()
-{
-    var JScrewIt = require('../lib/jscrewit');
-    return JScrewIt;
-}
-
 function stringify(charMap)
 {
-    function createSolutionProxy(solution)
-    {
-        function toJSON()
-        {
-            var json = { replacement: String(solution) };
-            var keys = Object.keys(solution);
-            for (var index = keys.length; index-- > 0;)
-            {
-                var key = keys[index];
-                if (/^\d/.test(key))
-                    return json;
-                json[key] = solution[key];
-            }
-        }
-        
-        var proxy = { toJSON: toJSON };
-        return proxy;
-    }
-    
     var json = { };
     for (var char in charMap)
-    {
-        var solutions = charMap[char];
-        json[char] = solutions.map(createSolutionProxy);
-    }
-    
+        json[char] = charMap[char];
     var str = JSON.stringify(json);
     return str;
 }
