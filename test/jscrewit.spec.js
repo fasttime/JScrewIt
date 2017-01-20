@@ -537,6 +537,15 @@ uneval
                                 // Post-increments
                                 test('post-increments', '[0][0]++', '[+[]][+[]]++');
                                 test(
+                                    'post-increments separated by a space', '[0][0] ++',
+                                    '[+[]][+[]]++'
+                                );
+                                test(
+                                    'post-increments separated by a one-line multi-line comment',
+                                    '[0][0]/**/++',
+                                    '[+[]][+[]]++'
+                                );
+                                test(
                                     'modified grouped post-increments',
                                     '!([0][0]++)',
                                     '![+[]][+[]]++'
@@ -599,6 +608,18 @@ uneval
                                 test('post-incremented arrays', '[]++');
                                 test('post-incremented indetifiers', 'a++');
                                 test('post-increments followed by an operation', '[0][0]++[0]');
+                                test(
+                                    'post-increments separated by a line terminator',
+                                    '[0][0]\n++'
+                                );
+                                test(
+                                    'post-increments separated by a single-line comment',
+                                    '[0][0]//\u2028++'
+                                );
+                                test(
+                                    'post-increments separated by a multi-line comment',
+                                    '[0][0]/*\u2029*/++'
+                                );
                                 test('double post-increments', '([0][0]++)++');
                                 test(
                                     'unmodified unmatched grouping parentheses around constant',
