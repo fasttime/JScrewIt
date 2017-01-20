@@ -11,7 +11,8 @@
 // * ASCII property getters in dot notation
 // * Property getters in bracket notation
 // * Function calls without parameters and with one parameter
-// * The unary operators "!", "+", and to a limited extent "-" and "++" (pre- and post-increment)
+// * The unary operators "!", "+", and to a limited extent "-" and "++" (prefix and postfix
+//   increment)
 // * The binary operators "+" and to a limited extent "-"
 // * Grouping parentheses
 // * White spaces and line terminators
@@ -274,10 +275,15 @@ var expressParse;
         unit.ops = ops = (unit.ops || []).concat(ops);
         if (ops.length && !unit.mod && !unit.pmod)
         {
-            var pmod = read(parseInfo, /^\+\+/);
-            unit.pmod = pmod;
-            if (pmod)
-                unit.arithmetic = true;
+            if (/^.*$/.test(parseInfo.separator))
+            {
+                var pmod = read(parseInfo, /^\+\+/);
+                if (pmod)
+                {
+                    unit.pmod = pmod;
+                    unit.arithmetic = true;
+                }
+            }
         }
         var next = appendTerm(parseInfo, unit);
         return next;
@@ -390,7 +396,12 @@ var expressParse;
         if (matches)
         {
             var match = matches[0];
-            parseInfo.data = data.slice(match.length).replace(separatorRegExp, '');
+            data = data.slice(match.length);
+            var separator = separatorRegExp.exec(data)[0];
+            if (separator)
+                data = data.slice(separator.length);
+            parseInfo.data = data;
+            parseInfo.separator = separator;
             return match;
         }
     }
@@ -493,7 +504,7 @@ var expressParse;
         NumericLiteral:
             '#HexIntegerLiteral|#DecimalLiteral',
         Separator:
-            '#SeparatorChar|\\/\\/.*(?!.)|\\/\\*[\\s\\S]*?\\*\\/',
+            '#SeparatorChar|//.*(?!.)|/\\*[\\s\\S]*?\\*/',
         SeparatorChar:
             '[\\s\uFEFF]', // U+FEFF is missed by /\s/ in Android Browser < 4.1.x.
         SingleQuotedString:
