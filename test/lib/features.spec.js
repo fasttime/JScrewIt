@@ -1,0 +1,570 @@
+/* eslint-env mocha */
+/* global emuDo, expect, module, require, self */
+
+(function ()
+{
+    'use strict';
+    
+    function testFeatureObj(featureName)
+    {
+        var featureObj = Feature[featureName];
+        
+        describe(
+            featureName,
+            function ()
+            {
+                it(
+                    'is named correctly',
+                    function ()
+                    {
+                        var name = featureObj.name;
+                        expect(name).toBeString();
+                        expect(featureObj).toBe(Feature[name]);
+                        expect(featureObj).toBe(Feature.ALL[name]);
+                    }
+                );
+                it(
+                    'has description string',
+                    function ()
+                    {
+                        expect(featureObj.description).toBeString();
+                    }
+                );
+                it(
+                    'has a mask consisting of two 32-bit integers',
+                    function ()
+                    {
+                        var mask = featureObj.mask;
+                        expect(mask).toBeArray();
+                        expect(Object.isFrozen(mask)).toBeTruthy();
+                        expect(mask.length).toBe(2);
+                        expect(mask[0]).toBeInt32();
+                        expect(mask[1]).toBeInt32();
+                    }
+                );
+                it(
+                    'has elementaryNames string array',
+                    function ()
+                    {
+                        var elementaryNames = featureObj.elementaryNames;
+                        expect(elementaryNames).toBeArray();
+                        elementaryNames.forEach(
+                            function (name)
+                            {
+                                expect(name).toBeString();
+                            }
+                        );
+                    }
+                );
+                it(
+                    'has canonicalNames string array',
+                    function ()
+                    {
+                        var canonicalNames = featureObj.canonicalNames;
+                        expect(canonicalNames).toBeArray();
+                        var elementaryNames = featureObj.elementaryNames;
+                        expect(elementaryNames).toBeArray();
+                        canonicalNames.forEach(
+                            function (name)
+                            {
+                                expect(elementaryNames).toContain(name);
+                            }
+                        );
+                    }
+                );
+                var check = featureObj.check;
+                if (check !== void 0)
+                {
+                    it(
+                        'has a nonempty mask',
+                        function ()
+                        {
+                            expect(JScrewIt.debug.maskIsEmpty(featureObj.mask)).toBe(false);
+                        }
+                    );
+                    it(
+                        'is checkable',
+                        function ()
+                        {
+                            var available = check();
+                            expect(available).toBeBoolean();
+                            if (!available)
+                            {
+                                available = emuDo([featureObj.name], check);
+                                expect(available).toBe(true);
+                            }
+                        }
+                    );
+                }
+                var engine = featureObj.engine;
+                if (engine !== void 0)
+                {
+                    it(
+                        'has engine string',
+                        function ()
+                        {
+                            expect(engine).toBeString();
+                        }
+                    );
+                    it(
+                        'is not checkable',
+                        function ()
+                        {
+                            expect(check).toBeUndefined();
+                        }
+                    );
+                }
+            }
+        );
+    }
+    
+    var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
+    var Feature = JScrewIt.Feature;
+    
+    describe(
+        'JScrewIt.Feature',
+        function ()
+        {
+            describe(
+                'constructor',
+                function ()
+                {
+                    it(
+                        'accepts mixed arguments',
+                        function ()
+                        {
+                            var maskUnion = JScrewIt.debug.maskUnion;
+                            var feature =
+                                Feature(
+                                    ['NAME', Feature.WINDOW],
+                                    {
+                                        toString: function ()
+                                        {
+                                            return 'HTMLDOCUMENT';
+                                        },
+                                        valueOf: function ()
+                                        {
+                                            return 42;
+                                        }
+                                    },
+                                    Feature.NO_IE_SRC,
+                                    []
+                                );
+                            var expectedMask =
+                                maskUnion(
+                                    maskUnion(
+                                        maskUnion(Feature.NAME.mask, Feature.WINDOW.mask),
+                                        Feature.HTMLDOCUMENT.mask
+                                    ),
+                                    Feature.NO_IE_SRC.mask
+                                );
+                            expect(feature.mask).toEqual(expectedMask);
+                        }
+                    );
+                    it(
+                        'throws an Error for unknown features',
+                        function ()
+                        {
+                            var fn = Feature.bind(Feature, '???');
+                            expect(fn).toThrowStrictly(Error, 'Unknown feature "???"');
+                        }
+                    );
+                    it(
+                        'throws an Error for incompatible feature arrays',
+                        function ()
+                        {
+                            var fn = Feature.bind(Feature, ['IE_SRC', 'NO_IE_SRC']);
+                            expect(fn).toThrowStrictly(Error, 'Incompatible features');
+                        }
+                    );
+                    it(
+                        'can be invoked with the new operator',
+                        function ()
+                        {
+                            var featureObj = new Feature();
+                            expect(featureObj.constructor).toBe(Feature);
+                        }
+                    );
+                    it(
+                        'throws an Error for incompatible features',
+                        function ()
+                        {
+                            var fn =
+                                Feature.bind(
+                                    Feature,
+                                    'ENTRIES_PLAIN',
+                                    'NO_OLD_SAFARI_ARRAY_ITERATOR'
+                                );
+                            expect(fn).toThrowStrictly(Error, 'Incompatible features');
+                        }
+                    );
+                }
+            );
+            describe(
+                'contains only well-formed obejcts:',
+                function ()
+                {
+                    var featureNames = Object.keys(Feature).sort();
+                    featureNames.forEach(testFeatureObj);
+                }
+            );
+            describe(
+                'contains correct information for the feature',
+                function ()
+                {
+                    function test(actualFeatureName, expectedFeatureNames)
+                    {
+                        it(
+                            actualFeatureName,
+                            function ()
+                            {
+                                // Default environemnt
+                                var actualFeature = Feature.ALL[actualFeatureName];
+                                var featureNames =
+                                    Feature.commonOf.apply(null, expectedFeatureNames);
+                                var expectedFeature = Feature(featureNames);
+                                testExpectations(actualFeature, expectedFeature);
+                                
+                                // Web Worker
+                                var actualFeatureWW = actualFeature.restrict('web-worker');
+                                var restrictedFeatures =
+                                    expectedFeatureNames.map(
+                                        function (featureName)
+                                        {
+                                            var feature = Feature.ALL[featureName];
+                                            var restrictedFeature = feature.restrict('web-worker');
+                                            return restrictedFeature;
+                                        }
+                                    );
+                                var expectedFeatureWW =
+                                    Feature.commonOf.apply(null, restrictedFeatures);
+                                testExpectations(actualFeatureWW, expectedFeatureWW);
+                            }
+                        );
+                    }
+                    
+                    function testExpectations(actualFeature, expectedFeature)
+                    {
+                        var actualElementaryNames = actualFeature.elementaryNames;
+                        var expectedElementaryNames = expectedFeature.elementaryNames;
+                        expect(actualElementaryNames).toEqual(expectedElementaryNames);
+                        var actualCanonicalNames = expectedFeature.canonicalNames;
+                        var expectedCanonicalNames = actualFeature.canonicalNames;
+                        expect(actualCanonicalNames).toEqual(expectedCanonicalNames);
+                        expect(actualFeature.mask).toEqual(expectedFeature.mask);
+                    }
+                    
+                    it(
+                        'DEFAULT',
+                        function ()
+                        {
+                            var featureObj = Feature.DEFAULT;
+                            expect(featureObj.canonicalNames).toEqual([]);
+                            expect(featureObj.elementaryNames).toEqual([]);
+                            expect(featureObj.mask).toEqual([0, 0]);
+                        }
+                    );
+                    test('BROWSER', ['ANDRO40', 'CHROME52', 'EDGE', 'FF31', 'IE9', 'SAFARI70']);
+                    test('COMPACT', ['CHROME52', 'EDGE', 'FF31', 'SAFARI100']);
+                    it(
+                        'AUTO',
+                        function ()
+                        {
+                            var featureObj = Feature.AUTO;
+                            var canonicalNameCount = featureObj.canonicalNames.length;
+                            var elementaryNameCount = featureObj.elementaryNames.length;
+                            expect(canonicalNameCount).toBeGreaterThan(0);
+                            expect(elementaryNameCount).not.toBeLessThan(canonicalNameCount);
+                            expect(featureObj.mask).not.toEqual([0, 0]);
+                        }
+                    );
+                }
+            );
+            describe(
+                '#includes',
+                function ()
+                {
+                    it(
+                        'accepts mixed arguments',
+                        function ()
+                        {
+                            var actual =
+                                Feature.COMPACT.includes(
+                                    ['NAME', Feature.WINDOW],
+                                    'HTMLDOCUMENT',
+                                    Feature.NO_IE_SRC,
+                                    []
+                                );
+                            expect(actual).toBe(true);
+                        }
+                    );
+                    it(
+                        'returns true if no arguments are specified',
+                        function ()
+                        {
+                            var actual = Feature.AUTO.includes();
+                            expect(actual).toBe(true);
+                        }
+                    );
+                    it(
+                        'throws an Error for unknown features',
+                        function ()
+                        {
+                            var fn = Feature.prototype.includes.bind(Feature.DEFAULT, '???');
+                            expect(fn).toThrowStrictly(Error, 'Unknown feature "???"');
+                        }
+                    );
+                    it(
+                        'throws an Error for incompatible feature arrays',
+                        function ()
+                        {
+                            var fn =
+                                Feature.prototype.includes.bind(
+                                    Feature.DEFAULT,
+                                    ['IE_SRC', 'NO_IE_SRC']
+                                );
+                            expect(fn).toThrowStrictly(Error, 'Incompatible features');
+                        }
+                    );
+                }
+            );
+            describe(
+                '#restrict',
+                function ()
+                {
+                    it(
+                        'restricts a feature in all engines',
+                        function ()
+                        {
+                            var featureObj = Feature.WINDOW.restrict('web-worker');
+                            expect(featureObj.mask).toEqual(Feature.DEFAULT.mask);
+                        }
+                    );
+                    it(
+                        'restricts a feature in a particular engine',
+                        function ()
+                        {
+                            var featureObj =
+                                Feature.WINDOW.restrict('web-worker', [Feature.FF31]);
+                            expect(featureObj.mask).toEqual(Feature.SELF_OBJ.mask);
+                        }
+                    );
+                }
+            );
+            describe(
+                '#toString',
+                function ()
+                {
+                    it(
+                        'works for predefined features',
+                        function ()
+                        {
+                            expect(Feature.DEFAULT.toString()).toBe('[Feature DEFAULT]');
+                            expect(Feature.NODE010.toString()).toBe('[Feature NODE010]');
+                            expect(Feature.ATOB.toString()).toBe('[Feature ATOB]');
+                        }
+                    );
+                    it(
+                        'works for custom features',
+                        function ()
+                        {
+                            expect(Feature('DEFAULT').toString()).toBe('[Feature {}]');
+                            expect(Feature('NODE010').toString()).toMatch(
+                                /^\[Feature \{[0-9A-Z_]+(, [0-9A-Z_]+)*\}]$/
+                            );
+                            expect(Feature('ATOB').toString()).toBe('[Feature {ATOB}]');
+                        }
+                    );
+                }
+            );
+            describe(
+                '.areCompatible',
+                function ()
+                {
+                    it(
+                        'returns true if no arguments are specified',
+                        function ()
+                        {
+                            var compatible = Feature.areCompatible([]);
+                            expect(compatible).toBe(true);
+                        }
+                    );
+                    it(
+                        'returns true for any single feature',
+                        function ()
+                        {
+                            var compatible = Feature.areCompatible([Feature.AUTO]);
+                            expect(compatible).toBe(true);
+                        }
+                    );
+                    it(
+                        'returns true for compatible features',
+                        function ()
+                        {
+                            var compatible = Feature.areCompatible(['FILL', 'SELF']);
+                            expect(compatible).toBe(true);
+                        }
+                    );
+                    it(
+                        'returns false for incompatible features',
+                        function ()
+                        {
+                            var compatible = Feature.areCompatible(['V8_SRC', 'IE_SRC']);
+                            expect(compatible).toBe(false);
+                        }
+                    );
+                }
+            );
+            describe(
+                '.areEqual',
+                function ()
+                {
+                    it(
+                        'accepts mixed arguments',
+                        function ()
+                        {
+                            var actual =
+                                Feature.areEqual(
+                                    ['NAME', Feature.WINDOW],
+                                    'HTMLDOCUMENT',
+                                    Feature.NO_IE_SRC,
+                                    []
+                                );
+                            expect(actual).toBe(false);
+                        }
+                    );
+                    it(
+                        'throws an Error for unknown features',
+                        function ()
+                        {
+                            var fn = Feature.areEqual.bind(null, '???');
+                            expect(fn).toThrowStrictly(Error, 'Unknown feature "???"');
+                        }
+                    );
+                    it(
+                        'throws an Error for incompatible feature arrays',
+                        function ()
+                        {
+                            var fn = Feature.areEqual.bind(null, ['IE_SRC', 'NO_IE_SRC']);
+                            expect(fn).toThrowStrictly(Error, 'Incompatible features');
+                        }
+                    );
+                    it(
+                        'returns true if no arguments are specified',
+                        function ()
+                        {
+                            var equal = Feature.areEqual([]);
+                            expect(equal).toBe(true);
+                        }
+                    );
+                    it(
+                        'returns true for any single feature',
+                        function ()
+                        {
+                            var equal = Feature.areEqual([Feature.AUTO]);
+                            expect(equal).toBe(true);
+                        }
+                    );
+                    it(
+                        'returns true for equal features',
+                        function ()
+                        {
+                            var equal = Feature.areEqual(['FILL'], Feature.FILL);
+                            expect(equal).toBe(true);
+                        }
+                    );
+                    it(
+                        'returns false for unequal features',
+                        function ()
+                        {
+                            var equal = Feature.areEqual('V8_SRC', 'IE_SRC');
+                            expect(equal).toBe(false);
+                        }
+                    );
+                }
+            );
+            describe(
+                '.commonOf',
+                function ()
+                {
+                    it(
+                        'accepts mixed arguments',
+                        function ()
+                        {
+                            var featureObj =
+                                Feature.commonOf(
+                                    ['NAME', Feature.WINDOW],
+                                    'HTMLDOCUMENT',
+                                    Feature.NO_IE_SRC,
+                                    []
+                                );
+                            expect(featureObj.mask).toEqual([0, 0]);
+                        }
+                    );
+                    it(
+                        'throws an Error for unknown features',
+                        function ()
+                        {
+                            var fn = Feature.commonOf.bind(null, '???');
+                            expect(fn).toThrowStrictly(Error, 'Unknown feature "???"');
+                        }
+                    );
+                    it(
+                        'throws an Error for incompatible feature arrays',
+                        function ()
+                        {
+                            var fn = Feature.commonOf.bind(null, ['IE_SRC', 'NO_IE_SRC']);
+                            expect(fn).toThrowStrictly(Error, 'Incompatible features');
+                        }
+                    );
+                    it(
+                        'returns null if no arguments are specified',
+                        function ()
+                        {
+                            var featureObj = Feature.commonOf();
+                            expect(featureObj).toBeNull();
+                        }
+                    );
+                    it(
+                        'returns a feature with expected mask',
+                        function ()
+                        {
+                            var featureObj = Feature.commonOf(Feature.AUTO);
+                            expect(featureObj.mask).toEqual(Feature.AUTO.mask);
+                        }
+                    );
+                    it(
+                        'throws an Error for incompatible feature arrays',
+                        function ()
+                        {
+                            var fn =
+                                Feature.commonOf.bind(
+                                    null,
+                                    'ANY_WINDOW',
+                                    ['WINDOW', 'DOMWINDOW']
+                                );
+                            expect(fn).toThrowStrictly(Error, 'Incompatible features');
+                        }
+                    );
+                }
+            );
+        }
+    );
+    describe(
+        'JScrewIt.debug.createFeatureFromMask',
+        function ()
+        {
+            it(
+                'returns null for an incompatible mask',
+                function ()
+                {
+                    var mask =
+                        JScrewIt.debug.maskUnion(Feature.NO_IE_SRC.mask, Feature.IE_SRC.mask);
+                    var featureObj = JScrewIt.debug.createFeatureFromMask(mask);
+                    expect(featureObj).toBeNull();
+                }
+            );
+        }
+    );
+}
+)();

@@ -133,6 +133,7 @@ var validMaskFromArrayOrStringOrFeature;
                     mask[bitIndex >> 5] = 1 << bitIndex++;
                     if (check())
                         maskOr(autoMask, mask);
+                    check = wrapCheck(check);
                 }
                 var includes = includesMap[name] = info.includes || [];
                 includes.forEach(
@@ -283,6 +284,17 @@ var validMaskFromArrayOrStringOrFeature;
         return mask;
     }
     
+    function wrapCheck(check)
+    {
+        var result =
+            function ()
+            {
+                var available = !!check();
+                return available;
+            };
+        return result;
+    }
+    
     var ALL = new Empty();
     
     var FEATURE_INFOS =
@@ -294,7 +306,9 @@ var validMaskFromArrayOrStringOrFeature;
                 '"[object " and ends with "Document]".',
             check: function ()
             {
-                return typeof document === 'object' && /^\[object .*Document]$/.test(document + '');
+                var available =
+                    typeof document === 'object' && /^\[object .*Document]$/.test(document + '');
+                return available;
             },
             attributes: { 'web-worker': 'web-worker-restriction' }
         },
@@ -306,7 +320,8 @@ var validMaskFromArrayOrStringOrFeature;
             check: checkSelfFeature.bind(
                 function (str)
                 {
-                    return /^\[object .*Window]$/.test(str);
+                    var available = /^\[object .*Window]$/.test(str);
+                    return available;
                 }
             ),
             includes: ['SELF_OBJ'],
@@ -319,7 +334,9 @@ var validMaskFromArrayOrStringOrFeature;
                 'with "[object Array" and ends with "]" at index 21 or 22.',
             check: function ()
             {
-                return Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries());
+                var available =
+                    Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries());
+                return available;
             },
             excludes: ['ENTRIES_PLAIN'],
             includes: ['ENTRIES_OBJ']
@@ -343,7 +360,8 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Existence of the global functions atob and btoa.',
             check: function ()
             {
-                return typeof atob === 'function' && typeof btoa === 'function';
+                var available = typeof atob === 'function' && typeof btoa === 'function';
+                return available;
             },
             attributes: { 'web-worker': 'no-atob-in-web-worker' }
         },
@@ -354,7 +372,9 @@ var validMaskFromArrayOrStringOrFeature;
                 '"[object BarProp]".',
             check: function ()
             {
-                return typeof statusbar === 'object' && statusbar + '' === '[object BarProp]';
+                var available =
+                    typeof statusbar === 'object' && statusbar + '' === '[object BarProp]';
+                return available;
             },
             attributes: { 'web-worker': 'web-worker-restriction' }
         },
@@ -387,7 +407,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'the console panel is enabled.',
             check: function ()
             {
-                return typeof console === 'object' && console + '' === '[object Console]';
+                var available = typeof console === 'object' && console + '' === '[object Console]';
+                return available;
             },
             attributes: { 'web-worker': 'no-console-in-web-worker' }
         },
@@ -398,7 +419,9 @@ var validMaskFromArrayOrStringOrFeature;
                 '"[object Document]".',
             check: function ()
             {
-                return typeof document === 'object' && document + '' === '[object Document]';
+                var available =
+                    typeof document === 'object' && document + '' === '[object Document]';
+                return available;
             },
             excludes: ['HTMLDOCUMENT'],
             includes: ['ANY_DOCUMENT'],
@@ -412,7 +435,8 @@ var validMaskFromArrayOrStringOrFeature;
             check: checkSelfFeature.bind(
                 function (str)
                 {
-                    return str + '' === '[object DOMWindow]';
+                    var available = str + '' === '[object DOMWindow]';
+                    return available;
                 }
             ),
             includes: ['ANY_WINDOW'],
@@ -426,7 +450,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'with "[object ".',
             check: function ()
             {
-                return Array.prototype.entries && /^\[object /.test([].entries());
+                var available = Array.prototype.entries && /^\[object /.test([].entries());
+                return available;
             }
         },
         ENTRIES_PLAIN:
@@ -436,7 +461,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'evaluates to "[object Object]".',
             check: function ()
             {
-                return Array.prototype.entries && [].entries() + '' === '[object Object]';
+                var available = Array.prototype.entries && [].entries() + '' === '[object Object]';
+                return available;
             },
             excludes: ['ARRAY_ITERATOR'],
             includes: ['ENTRIES_OBJ']
@@ -484,7 +510,8 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Existence of the native function Array.prototype.fill.',
             check: function ()
             {
-                return Array.prototype.fill;
+                var available = Array.prototype.fill;
+                return available;
             }
         },
         FROM_CODE_POINT:
@@ -492,7 +519,8 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Existence of the function String.fromCodePoint.',
             check: function ()
             {
-                return String.fromCodePoint;
+                var available = String.fromCodePoint;
+                return available;
             }
         },
         GMT:
@@ -505,7 +533,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'engines except Internet Explorer 9 and 10.',
             check: function ()
             {
-                return /^.{25}GMT/.test(Date());
+                var available = /^.{25}GMT/.test(Date());
+                return available;
             }
         },
         HISTORY:
@@ -515,7 +544,8 @@ var validMaskFromArrayOrStringOrFeature;
                 '"[object History]".',
             check: function ()
             {
-                return typeof history === 'object' && history + '' === '[object History]';
+                var available = typeof history === 'object' && history + '' === '[object History]';
+                return available;
             },
             attributes: { 'web-worker': 'web-worker-restriction' }
         },
@@ -526,7 +556,9 @@ var validMaskFromArrayOrStringOrFeature;
                 '"function HTMLAudioElement".',
             check: function ()
             {
-                return typeof Audio !== 'undefined' && /^function HTMLAudioElement/.test(Audio);
+                var available =
+                    typeof Audio !== 'undefined' && /^function HTMLAudioElement/.test(Audio);
+                return available;
             },
             includes: ['NO_IE_SRC'],
             attributes: { 'web-worker': 'web-worker-restriction' }
@@ -538,7 +570,9 @@ var validMaskFromArrayOrStringOrFeature;
                 '"[object HTMLDocument]".',
             check: function ()
             {
-                return typeof document === 'object' && document + '' === '[object HTMLDocument]';
+                var available =
+                    typeof document === 'object' && document + '' === '[object HTMLDocument]';
+                return available;
             },
             excludes: ['DOCUMENT'],
             includes: ['ANY_DOCUMENT'],
@@ -553,7 +587,8 @@ var validMaskFromArrayOrStringOrFeature;
                 '("\\n    ") before the "[native code]" sequence.',
             check: function ()
             {
-                return /^\nfunction Object\(\) \{\n    \[native code]\n\}/.test(Object);
+                var available = /^\nfunction Object\(\) \{\n    \[native code]\n\}/.test(Object);
+                return available;
             },
             includes: ['NO_V8_SRC'],
             excludes: ['NODECONSTRUCTOR', 'NO_IE_SRC']
@@ -575,7 +610,8 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Existence of the global object Intl.',
             check: function ()
             {
-                return typeof Intl === 'object';
+                var available = typeof Intl === 'object';
+                return available;
             }
         },
         LOCALE_INFINITY:
@@ -583,7 +619,8 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Language sensitive string representation of Infinity as "∞".',
             check: function ()
             {
-                return Infinity.toLocaleString() === '∞';
+                var available = Infinity.toLocaleString() === '∞';
+                return available;
             }
         },
         NAME:
@@ -591,7 +628,8 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Existence of the name property for functions.',
             check: function ()
             {
-                return 'name' in Function();
+                var available = 'name' in Function();
+                return available;
             }
         },
         NODECONSTRUCTOR:
@@ -601,7 +639,9 @@ var validMaskFromArrayOrStringOrFeature;
                 'NodeConstructor]".',
             check: function ()
             {
-                return typeof Node !== 'undefined' && Node + '' === '[object NodeConstructor]';
+                var available =
+                    typeof Node !== 'undefined' && Node + '' === '[object NodeConstructor]';
+                return available;
             },
             excludes: ['IE_SRC'],
             attributes: { 'web-worker': 'web-worker-restriction' }
@@ -615,7 +655,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'beginning of the string before "function".',
             check: function ()
             {
-                return /^function Object\(\) \{(\n   )? \[native code]\s\}/.test(Object);
+                var available = /^function Object\(\) \{(\n   )? \[native code]\s\}/.test(Object);
+                return available;
             },
             excludes: ['IE_SRC']
         },
@@ -628,7 +669,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'by four whitespaces ("\\n    ") before the "[native code]" sequence.',
             check: function ()
             {
-                return /^\n?function Object\(\) \{\n    \[native code]\s\}/.test(Object);
+                var available = /^\n?function Object\(\) \{\n    \[native code]\s\}/.test(Object);
+                return available;
             },
             excludes: ['V8_SRC']
         },
@@ -639,7 +681,9 @@ var validMaskFromArrayOrStringOrFeature;
                 'evaluates to "[object Array Iterator]".',
             check: function ()
             {
-                return Array.prototype.entries && [].entries() + '' === '[object Array Iterator]';
+                var available =
+                    Array.prototype.entries && [].entries() + '' === '[object Array Iterator]';
+                return available;
             },
             includes: ['ARRAY_ITERATOR']
         },
@@ -652,7 +696,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'feed ("\\n").',
             check: function ()
             {
-                return (Function() + '')[22] === '\n';
+                var available = (Function() + '')[22] === '\n';
+                return available;
             }
         },
         SELF: 'ANY_WINDOW',
@@ -664,7 +709,8 @@ var validMaskFromArrayOrStringOrFeature;
             check: checkSelfFeature.bind(
                 function (str)
                 {
-                    return /^\[object /.test(str);
+                    var available = /^\[object /.test(str);
+                    return available;
                 }
             ),
             attributes: { 'web-worker': 'safari-bug-21820506' }
@@ -678,7 +724,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'Android Browser versions prior to 4.1.2, where this feature is not available.',
             check: function ()
             {
-                return Object.prototype.toString.call() === '[object Undefined]';
+                var available = Object.prototype.toString.call() === '[object Undefined]';
+                return available;
             }
         },
         UNEVAL:
@@ -686,7 +733,8 @@ var validMaskFromArrayOrStringOrFeature;
             description: 'Existence of the global function uneval.',
             check: function ()
             {
-                return typeof uneval !== 'undefined';
+                var available = typeof uneval !== 'undefined';
+                return available;
             }
         },
         V8_SRC:
@@ -698,7 +746,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'before "function" and a single whitespace before the "[native code]" sequence.',
             check: function ()
             {
-                return /^.{19} \[native code] \}/.test(Object);
+                var available = /^.{19} \[native code] \}/.test(Object);
+                return available;
             },
             includes: ['NO_IE_SRC'],
             excludes: ['NO_V8_SRC']
@@ -711,7 +760,8 @@ var validMaskFromArrayOrStringOrFeature;
             check: checkSelfFeature.bind(
                 function (str)
                 {
-                    return str === '[object Window]';
+                    var available = str === '[object Window]';
+                    return available;
                 }
             ),
             includes: ['ANY_WINDOW'],
