@@ -114,7 +114,7 @@ var setUp;
         var features = options.features;
         var runAsData;
         var runAs = options.runAs;
-        if (runAs !== void 0)
+        if (runAs !== undefined)
             runAsData = filterRunAs(runAs, 'runAs');
         else
             runAsData = filterRunAs(options.wrapWith, 'wrapWith');
@@ -134,7 +134,7 @@ var setUp;
         var CODER_NAMES_EXPRESS = ['express'];
         var CODER_NAMES_TEXT    = ['text'];
         
-        if (input === void 0)
+        if (input === undefined)
             return [wrapWithEval, CODER_NAMES_BOTH];
         switch (input += '')
         {
@@ -171,7 +171,7 @@ var setUp;
     getValidFeatureMask =
         function (features)
         {
-            var mask = features !== void 0 ? validMaskFromArrayOrStringOrFeature(features) : 0;
+            var mask = features !== undefined ? validMaskFromArrayOrStringOrFeature(features) : 0;
             return mask;
         };
     

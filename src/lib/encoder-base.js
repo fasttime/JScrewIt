@@ -16,7 +16,6 @@ assignNoEnum,
 createConstructor,
 createSolution,
 expressParse,
-hasOuterPlus,
 json_stringify,
 maskIncludes,
 math_abs,
@@ -143,7 +142,7 @@ var resolveSimple;
         getPaddingBlock: function (paddingInfo, length)
         {
             var paddingBlock = paddingInfo.blocks[length];
-            if (paddingBlock !== void 0)
+            if (paddingBlock !== undefined)
                 return paddingBlock;
             this.throwSyntaxError('Undefined padding block with length ' + length);
         },
@@ -285,9 +284,11 @@ var resolveSimple;
             if (!solution)
                 this.throwSyntaxError('Undefined identifier ' + identifier);
             var groupingRequired =
-                bondStrength && hasOuterPlus(solution) ||
-                bondStrength > BOND_STRENGTH_WEAK && solution[0] === '!';
-            var replacement = groupingRequired ? '(' + solution + ')' : solution + '';
+                bondStrength && solution.hasOuterPlus ||
+                bondStrength > BOND_STRENGTH_WEAK && solution.charAt(0) === '!';
+            var replacement = solution.replacement;
+            if (groupingRequired)
+                replacement = '(' + replacement + ')';
             return replacement;
         },
         
@@ -453,7 +454,7 @@ var resolveSimple;
         resolveCharacter: function (char)
         {
             var solution = this.charCache[char];
-            if (solution === void 0)
+            if (solution === undefined)
             {
                 this.callResolver(
                     quoteString(char),
@@ -486,7 +487,7 @@ var resolveSimple;
         resolveComplex: function (complex)
         {
             var solution = this.complexCache[complex];
-            if (solution === void 0)
+            if (solution === undefined)
             {
                 this.callResolver(
                     quoteString(complex),
@@ -512,7 +513,7 @@ var resolveSimple;
         resolveConstant: function (constant)
         {
             var solution = this.constCache[constant];
-            if (solution === void 0)
+            if (solution === undefined)
             {
                 this.callResolver(
                     constant,

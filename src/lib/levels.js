@@ -1,4 +1,0 @@
-var LEVEL_NUMERIC   = -1;
-var LEVEL_OBJECT    = 0;
-var LEVEL_STRING    = 1;
-var LEVEL_UNDEFINED = -2;

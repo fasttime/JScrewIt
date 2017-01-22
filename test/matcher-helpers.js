@@ -15,15 +15,6 @@
                 return this.assertions.pass(message);
             this.assertions.fail(message);
         },
-        toBeArrayIterator: function ()
-        {
-            var actual = this.value;
-            var message = this.generateMessage(actual, this.expr, 'to be an Array Iterator object');
-            var pass = Object.getPrototypeOf(actual) === Object.getPrototypeOf([].entries());
-            if (pass)
-                return this.assertions.pass(message);
-            this.assertions.fail(message);
-        },
         toBeBoolean: function ()
         {
             var actual = this.value;
@@ -85,6 +76,15 @@
             var actual = this.value;
             var message = this.generateMessage(actual, this.expr, 'to end with', str);
             var pass = actual.slice(-str.length) === str;
+            if (pass)
+                return this.assertions.pass(message);
+            this.assertions.fail(message);
+        },
+        toHavePrototype: function (prototype)
+        {
+            var actual = Object.getPrototypeOf(this.value);
+            var message = this.generateMessage(actual, this.expr, 'to have prototype', prototype);
+            var pass = actual === prototype;
             if (pass)
                 return this.assertions.pass(message);
             this.assertions.fail(message);
