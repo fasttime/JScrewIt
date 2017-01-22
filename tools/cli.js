@@ -92,7 +92,7 @@ function parseCommandLine(argv)
     function parseFeatures()
     {
         var arg2 = argv[++index];
-        if (arg2 === void 0)
+        if (arg2 === undefined)
             throw Error('option ' + quote(arg) + ' requires an argument');
         options.features = arg2.trim().split(/(?:\s+|\s*,\s*)/);
     }
@@ -125,7 +125,7 @@ function parseCommandLine(argv)
     function parseRunAs()
     {
         var arg2 = argv[++index];
-        if (arg2 === void 0)
+        if (arg2 === undefined)
             throw Error('option ' + quote(arg) + ' requires an argument');
         options.runAs = arg2;
     }

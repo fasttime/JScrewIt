@@ -7,6 +7,7 @@ LEVEL_UNDEFINED,
 Empty,
 Feature,
 createDefinitionEntry,
+createSolution,
 define,
 noProto,
 object_defineProperty,
@@ -43,10 +44,10 @@ var SIMPLE;
 
 var JSFUCK_INFINITY;
 
+var createBridgeSolution;
 var createParseIntArgByReduce;
 var createParseIntArgByReduceArrow;
 var createParseIntArgDefault;
-var createSolution;
 
 (function ()
 {
@@ -232,11 +233,8 @@ var createSolution;
     
     function commaDefinition()
     {
-        var block = '[' + this.replaceString('concat') + ']';
-        var replacement = '[[]]' + block + '([[]])';
-        var solution = createSolution(replacement, LEVEL_OBJECT, false);
-        var appendLength = block.length - 1;
-        solution.bridge = { block: block, appendLength: appendLength };
+        var bridge = '[' + this.replaceString('concat') + ']';
+        var solution = createBridgeSolution(bridge);
         return solution;
     }
     
@@ -1122,20 +1120,20 @@ var createSolution;
         Number:
         [
             define('Number.name', NAME),
-            define(void 0, ENTRIES_OBJ)
+            define(undefined, ENTRIES_OBJ)
         ],
         Object:
         [
             define('Object.name', NAME),
-            define(void 0, CAPITAL_HTML, FILL, SELF_OBJ),
-            define(void 0, CAPITAL_HTML, INCR_CHAR, SELF_OBJ),
-            define(void 0, CAPITAL_HTML, NO_IE_SRC, SELF_OBJ),
-            define(void 0, CAPITAL_HTML, NO_V8_SRC, SELF_OBJ),
+            define(undefined, CAPITAL_HTML, FILL, SELF_OBJ),
+            define(undefined, CAPITAL_HTML, INCR_CHAR, SELF_OBJ),
+            define(undefined, CAPITAL_HTML, NO_IE_SRC, SELF_OBJ),
+            define(undefined, CAPITAL_HTML, NO_V8_SRC, SELF_OBJ),
             define('Object.name', IE_SRC, NAME),
             define('Object.name', INTL, NAME),
             define('Object.name', NAME, V8_SRC),
             define('Object.name', NAME, NO_IE_SRC, NO_V8_SRC),
-            define(void 0, ENTRIES_OBJ)
+            define(undefined, ENTRIES_OBJ)
         ],
         RegExp:
         [
@@ -1144,7 +1142,7 @@ var createSolution;
         String:
         [
             define('String.name', NAME),
-            define(void 0, CAPITAL_HTML, ENTRIES_OBJ)
+            define(undefined, CAPITAL_HTML, ENTRIES_OBJ)
         ],
         'f,a,l,s,e':
         [
@@ -1351,6 +1349,17 @@ var createSolution;
         ],
     });
     
+    createBridgeSolution =
+        function (bridge)
+        {
+            var replacement = '[[]]' + bridge + '([[]])';
+            var solution = createSolution(replacement, LEVEL_OBJECT, false);
+            var appendLength = bridge.length - 1;
+            solution.appendLength = appendLength;
+            solution.bridge = bridge;
+            return solution;
+        };
+    
     createParseIntArgByReduce =
         function (amendings, firstDigit)
         {
@@ -1440,15 +1449,6 @@ var createSolution;
     OPTIMAL_B = [define('B'), define('b', ENTRIES_OBJ)];
     
     SIMPLE = new Empty();
-    
-    createSolution =
-        function (replacement, level, outerPlus)
-        {
-            var solution = Object(replacement);
-            solution.level = level;
-            solution.outerPlus = outerPlus;
-            return solution;
-        };
     
     // Create definitions for digits
     for (var digit = 0; digit <= 9; ++digit)

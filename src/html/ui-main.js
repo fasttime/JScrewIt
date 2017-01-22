@@ -120,7 +120,7 @@ stats,
         {
             content = art('P', String(error));
         }
-        if (value !== void 0)
+        if (value !== undefined)
         {
             var text = formatValue(value);
             var valueType = formatValueType(value);

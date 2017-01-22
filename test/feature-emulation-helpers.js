@@ -345,7 +345,7 @@
                 {
                     var adapter = adapters[index];
                     str = adapter.call(target);
-                    if (str !== void 0)
+                    if (str !== undefined)
                         return str;
                 }
                 str = toString.call(target);
@@ -718,7 +718,7 @@
                     'Object',
                     function ()
                     {
-                        if (this === void 0)
+                        if (this === undefined)
                             return '[object Undefined]';
                     }
                 );

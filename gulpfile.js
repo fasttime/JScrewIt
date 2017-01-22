@@ -89,7 +89,7 @@ gulp.task(
             'src/lib/mask.js',
             'src/lib/features.js',
             'src/lib/definers.js',
-            'src/lib/levels.js',
+            'src/lib/solution.js',
             'src/lib/definitions.js',
             'src/lib/figurator.js',
             'src/lib/screw-buffer.js',
@@ -104,7 +104,7 @@ gulp.task(
         var stream =
             gulp
             .src(SRC)
-            .pipe(replace(/^\/*[^]*?\*\/\s*\n/, ''))
+            .pipe(replace(/^\/\*[^]*?\*\/\s*\n/, ''))
             .pipe(concat('jscrewit.js'))
             .pipe(insert.prepend('// JScrewIt ' + pkg.version + ' – http://jscrew.it\n'))
             .pipe(gulp.dest('lib'));

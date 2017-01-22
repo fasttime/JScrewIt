@@ -43,7 +43,7 @@ function checkCoderFeatureOptimality(
                     if (rivalCoder !== coder)
                     {
                         var output = rivalCoder.call(encoder, inputData, maxLength);
-                        if (output !== void 0)
+                        if (output !== undefined)
                             return output;
                     }
                 }

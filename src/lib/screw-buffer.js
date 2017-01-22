@@ -14,9 +14,6 @@ math_pow,
 
 var ScrewBuffer;
 
-var getAppendLength;
-var hasOuterPlus;
-
 (function ()
 {
     function getNumericJoinCost(level0, level1)
@@ -31,10 +28,9 @@ var hasOuterPlus;
         return result;
     }
     
-    // The solution parameter must already have the outerPlus property set.
     function pushSolution(array, solution)
     {
-        if (solution.outerPlus)
+        if (solution.hasOuterPlus)
             array.push('+(', solution, ')');
         else
             array.push('+', solution);
@@ -152,7 +148,7 @@ var hasOuterPlus;
                     array.push('[', sequenceAsString(index, bridgeIndex - index, '[]'), ']');
                     for (;;)
                     {
-                        array.push(solutions[bridgeIndex].bridge.block, '(');
+                        array.push(solutions[bridgeIndex].bridge, '(');
                         index = bridgeIndex + 1;
                         if (bridgeIndex === lastBridgeIndex)
                             break;
@@ -199,14 +195,14 @@ var hasOuterPlus;
                         levelCenter,
                         levelRight = (solutionRight = solutions[index + 1]).level) ?
                     getNumericJoinCost(levelCenter, levelRight) -
-                    (solutionRight.outerPlus ? 2 : 0) :
+                    (solutionRight.hasOuterPlus ? 2 : 0) :
                     0
                 ) -
                 (
                     leftmost &&
                     isNumericJoin(levelCenter, levelLeft = solutions[index - 1].level) ?
                     getNumericJoinCost(levelLeft, levelCenter) :
-                    solutionCenter.outerPlus ? 2 : 0
+                    solutionCenter.hasOuterPlus ? 2 : 0
                 );
                 return splitCost;
             }
@@ -278,7 +274,7 @@ var hasOuterPlus;
                             return false;
                         bridgeUsed |= !!solution.bridge;
                         solutions.push(solution);
-                        length += getAppendLength(solution);
+                        length += solution.appendLength;
                         return true;
                     },
                     get length()
@@ -342,7 +338,7 @@ var hasOuterPlus;
                             {
                                 var solution = solutions[0];
                                 multiPart = forceString && solution.level < LEVEL_STRING;
-                                str = solution + '';
+                                str = solution.replacement;
                             }
                             else
                             {
@@ -379,44 +375,6 @@ var hasOuterPlus;
                     }
                 }
             );
-        };
-    
-    getAppendLength =
-        // This function assumes that only undefined or numeric solutions can have an outer plus.
-        function (solution)
-        {
-            var length;
-            var bridge = solution.bridge;
-            if (bridge)
-                length = bridge.appendLength;
-            else
-            {
-                var extraLength = hasOuterPlus(solution) ? 3 : 1;
-                length = solution.length + extraLength;
-            }
-            return length;
-        };
-    
-    hasOuterPlus =
-        // Determine whether the specified solution contains a plus sign out of brackets not
-        // preceded by an exclamation mark or by another plus sign.
-        function (solution)
-        {
-            var outerPlus = solution.outerPlus;
-            if (outerPlus == null)
-            {
-                var str = solution;
-                for (;;)
-                {
-                    var newStr = str.replace(/\([^()]*\)|\[[^[\]]*]/g, '.');
-                    if (newStr.length === str.length)
-                        break;
-                    str = newStr;
-                }
-                outerPlus = /(^|[^!+])\+/.test(str);
-                solution.outerPlus = outerPlus;
-            }
-            return outerPlus;
         };
 }
 )();

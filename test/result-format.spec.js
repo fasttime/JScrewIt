@@ -35,12 +35,12 @@
                 test('a sparse array', sparseArray, '[, , , , , "foo"]', 'an array');
                 test('a sparse singleton array', sparseSingletonArray, '[]', 'a one element array');
                 if (typeof document !== 'undefined')
-                    test('document.all', document.all, void 0, 'an object');
+                    test('document.all', document.all, undefined, 'an object');
                 test('a plain object', { }, '[object Object]', 'an object');
-                test('a function', Function(), void 0, 'a function');
+                test('a function', Function(), undefined, 'a function');
                 test('a regular expression', /./, '/./', 'a regular expression');
-                test('a date', new Date(), void 0, 'a date');
-                test('an object that throws errors', badObj, void 0, 'an object');
+                test('a date', new Date(), undefined, 'a date');
+                test('an object that throws errors', badObj, undefined, 'an object');
                 testTypeUnknownObj();
             }
         );
