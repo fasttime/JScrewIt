@@ -81,14 +81,14 @@
             encoder.replaceStaticString = replaceStaticString;
             var output = replacer(encoder);
             callProgressCallback();
-            if (output === void 0)
+            if (output === undefined)
                 continue;
             var length = output.length;
             if (length <= optimalLength)
             {
                 analyzer.stopCapture();
                 var rivalOutput = rivalReplacer(encoder, length);
-                if (rivalOutput !== void 0)
+                if (rivalOutput !== undefined)
                     continue;
                 if (length < optimalLength)
                 {

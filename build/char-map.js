@@ -141,7 +141,7 @@ function multiSolve(char, doneCharMap, exceptionalChars)
             solution.mask = mask;
             outputMap[solution] = solution;
             var entryIndex = solution.entryIndex;
-            if (entryIndex !== void 0)
+            if (entryIndex !== undefined)
                 entryIndexSet[entryIndex] = null;
         }
     }

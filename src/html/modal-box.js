@@ -10,7 +10,7 @@ function showModalBox(content, callback)
         var body = document.body;
         body.removeChild(overlay);
         art(body, art.off('keydown', handleKeydown), art.off('focus', handleFocus, true));
-        if (callback !== void 0)
+        if (callback !== undefined)
             callback();
     }
     

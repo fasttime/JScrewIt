@@ -73,7 +73,7 @@
                     }
                 );
                 var check = featureObj.check;
-                if (check !== void 0)
+                if (check !== undefined)
                 {
                     it(
                         'has a nonempty mask',
@@ -97,7 +97,7 @@
                     );
                 }
                 var engine = featureObj.engine;
-                if (engine !== void 0)
+                if (engine !== undefined)
                 {
                     it(
                         'has engine string',

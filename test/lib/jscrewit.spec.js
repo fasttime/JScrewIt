@@ -391,7 +391,7 @@ uneval,
                                                 '$';
                                             var expectedRegExp = RegExp(regExpPattern);
                                             expect(actual).toMatch(expectedRegExp);
-                                            if (expectedValue !== void 0)
+                                            if (expectedValue !== undefined)
                                                 expect(evalJSFuck(actual)).toBe(expectedValue);
                                         }
                                     );
@@ -820,7 +820,7 @@ uneval,
                         expect(
                             function ()
                             {
-                                encoder.exec('{}', void 0, ['express']);
+                                encoder.exec('{}', undefined, ['express']);
                             }
                         ).toThrowStrictly(Error, 'Encoding failed');
                         expect('codingLog' in encoder).toBeFalsy();
@@ -1005,11 +1005,14 @@ uneval,
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        var output1 = encoder.encodeByDict(Object('12345'), void 0, void 0, 10);
+                        var output1 =
+                            encoder.encodeByDict(Object('12345'), undefined, undefined, 10);
                         expect(output1).toBeUndefined();
-                        var output2 = encoder.encodeByDict(Object('12345'), void 0, void 0, 78);
+                        var output2 =
+                            encoder.encodeByDict(Object('12345'), undefined, undefined, 78);
                         expect(output2).toBeUndefined();
-                        var output3 = encoder.encodeByDict(Object('12345'), void 0, void 0, 200);
+                        var output3 =
+                            encoder.encodeByDict(Object('12345'), undefined, undefined, 200);
                         expect(output3).toBeUndefined();
                     }
                 );
@@ -1472,7 +1475,7 @@ uneval,
                         expect(
                             function ()
                             {
-                                encoder.resolveExprAt('', 42, void 0, []);
+                                encoder.resolveExprAt('', 42, undefined, []);
                             }
                         ).toThrowStrictly(SyntaxError, 'Missing padding entries for index 42');
                     }
@@ -1517,7 +1520,7 @@ uneval,
                                 function getMaxLength(scope)
                                 {
                                     var maxLength = scope.maxLength;
-                                    if (maxLength === void 0)
+                                    if (maxLength === undefined)
                                     {
                                         scope.maxLength = maxLength =
                                             coder.call(encoder, Object('0')).length;
@@ -1600,7 +1603,7 @@ uneval,
     function getFunctionName(fn)
     {
         var name = fn.name;
-        if (name === void 0)
+        if (name === undefined)
             name = /^\s*function ([\w$]+)/.exec(fn)[1];
         return name;
     }

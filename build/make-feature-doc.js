@@ -243,7 +243,7 @@ function getEngineSupportInfo(attributeName, engineEntry)
 function getForcedStrictModeReport(featureObj)
 {
     var restriction = featureObj.attributes['forced-strict-mode'];
-    var report = restriction !== void 0 && reportAsList(restriction, getEngineSupportInfo);
+    var report = restriction !== undefined && reportAsList(restriction, getEngineSupportInfo);
     return report;
 }
 
@@ -288,7 +288,7 @@ function getWebWorkerReport(featureObj)
 {
     var restriction = featureObj.attributes['web-worker'];
     var report =
-        restriction !== void 0 &&
+        restriction !== undefined &&
         (
             restriction === 'web-worker-restriction' ||
             reportAsList(restriction, getEngineSupportInfo)
