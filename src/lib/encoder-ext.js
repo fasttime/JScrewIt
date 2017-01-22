@@ -178,7 +178,7 @@ var wrapWithEval;
                 
                 var input = inputData.valueOf();
                 var long = input.length > MAX_DECODABLE_ARGS;
-                var output = this.encodeByCharCodes(input, long, void 0, maxLength);
+                var output = this.encodeByCharCodes(input, long, undefined, maxLength);
                 return output;
             },
             2
@@ -188,7 +188,7 @@ var wrapWithEval;
             function (inputData, maxLength)
             {
                 var input = inputData.valueOf();
-                var output = this.encodeByCharCodes(input, void 0, 4, maxLength);
+                var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
                 return output;
             },
             39
@@ -206,7 +206,7 @@ var wrapWithEval;
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByDict(inputData, void 0, void 0, maxLength);
+                var output = this.encodeByDict(inputData, undefined, undefined, maxLength);
                 return output;
             },
             3
@@ -290,7 +290,7 @@ var wrapWithEval;
             {
                 var input = inputData.valueOf();
                 var wrapper = inputData.wrapper;
-                var output = this.encodeAndWrapText(input, wrapper, void 0, maxLength);
+                var output = this.encodeAndWrapText(input, wrapper, undefined, maxLength);
                 return output;
             }
         ),
@@ -327,7 +327,7 @@ var wrapWithEval;
                     {
                         this.codingLog = perfInfo.codingLog = [];
                         var before = new Date();
-                        var maxLength = output != null ? output.length : void 0;
+                        var maxLength = output != null ? output.length : NaN;
                         var newOutput = coder.call(this, inputData, maxLength);
                         var time = new Date() - before;
                         this.codingLog = codingLog;

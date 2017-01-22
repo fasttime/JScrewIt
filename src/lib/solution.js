@@ -13,7 +13,7 @@ var createSolution;
     {
         this.replacement    = replacement;
         this.level          = level;
-        if (hasOuterPlus !== void 0)
+        if (hasOuterPlus !== undefined)
             setHasOuterPlus(this, hasOuterPlus);
     }
     

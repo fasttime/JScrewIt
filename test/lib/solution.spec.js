@@ -47,7 +47,7 @@
                 'cached upon creation',
                 function ()
                 {
-                    var solution = JScrewIt.debug.createSolution('', void 0, true);
+                    var solution = JScrewIt.debug.createSolution('', undefined, true);
                     expect(solution.hasOwnProperty('hasOuterPlus')).toBeTruthy();
                     expect(solution.hasOuterPlus).toBe(true);
                 }

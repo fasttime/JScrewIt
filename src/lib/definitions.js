@@ -1120,20 +1120,20 @@ var createParseIntArgDefault;
         Number:
         [
             define('Number.name', NAME),
-            define(void 0, ENTRIES_OBJ)
+            define(undefined, ENTRIES_OBJ)
         ],
         Object:
         [
             define('Object.name', NAME),
-            define(void 0, CAPITAL_HTML, FILL, SELF_OBJ),
-            define(void 0, CAPITAL_HTML, INCR_CHAR, SELF_OBJ),
-            define(void 0, CAPITAL_HTML, NO_IE_SRC, SELF_OBJ),
-            define(void 0, CAPITAL_HTML, NO_V8_SRC, SELF_OBJ),
+            define(undefined, CAPITAL_HTML, FILL, SELF_OBJ),
+            define(undefined, CAPITAL_HTML, INCR_CHAR, SELF_OBJ),
+            define(undefined, CAPITAL_HTML, NO_IE_SRC, SELF_OBJ),
+            define(undefined, CAPITAL_HTML, NO_V8_SRC, SELF_OBJ),
             define('Object.name', IE_SRC, NAME),
             define('Object.name', INTL, NAME),
             define('Object.name', NAME, V8_SRC),
             define('Object.name', NAME, NO_IE_SRC, NO_V8_SRC),
-            define(void 0, ENTRIES_OBJ)
+            define(undefined, ENTRIES_OBJ)
         ],
         RegExp:
         [
@@ -1142,7 +1142,7 @@ var createParseIntArgDefault;
         String:
         [
             define('String.name', NAME),
-            define(void 0, CAPITAL_HTML, ENTRIES_OBJ)
+            define(undefined, CAPITAL_HTML, ENTRIES_OBJ)
         ],
         'f,a,l,s,e':
         [

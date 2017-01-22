@@ -216,7 +216,7 @@ var validMaskFromArrayOrStringOrFeature;
     function isExcludingAttribute(attributeCache, attributeName, featureObjs)
     {
         var result = attributeCache[attributeName];
-        if (result === void 0)
+        if (result === undefined)
         {
             attributeCache[attributeName] =
                 result =
@@ -1469,7 +1469,7 @@ var validMaskFromArrayOrStringOrFeature;
          * @member {string|undefined} JScrewIt.Feature#description
          */
         
-        description: void 0,
+        description: undefined,
         
         /**
          * An array of all elementary feature names included in this feature object, without
@@ -1530,7 +1530,7 @@ var validMaskFromArrayOrStringOrFeature;
          * @member {string|undefined} JScrewIt.Feature#name
          */
         
-        name: void 0,
+        name: undefined,
         
         /**
          * Creates a new feature object from this feature by removing elementary features that are
@@ -1580,8 +1580,8 @@ var validMaskFromArrayOrStringOrFeature;
                     {
                         var attributeValue = featureObj.attributes[environment];
                         if (
-                            attributeValue === void 0 ||
-                            referenceFeatureObjs !== void 0 &&
+                            attributeValue === undefined ||
+                            referenceFeatureObjs !== undefined &&
                             !isExcludingAttribute(
                                 attributeCache,
                                 attributeValue,
@@ -1605,7 +1605,7 @@ var validMaskFromArrayOrStringOrFeature;
         toString: function ()
         {
             var name = this.name;
-            if (name === void 0)
+            if (name === undefined)
                 name = '{' + this.canonicalNames.join(', ') + '}';
             var str = '[Feature ' + name + ']';
             return str;
