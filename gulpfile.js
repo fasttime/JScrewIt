@@ -91,6 +91,7 @@ gulp.task(
             'src/lib/definers.js',
             'src/lib/solution.js',
             'src/lib/definitions.js',
+            'src/lib/clustering-plan.js',
             'src/lib/figurator.js',
             'src/lib/screw-buffer.js',
             'src/lib/express-parse.js',
