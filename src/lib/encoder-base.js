@@ -475,6 +475,7 @@ var resolveSimple;
                             solution = STATIC_ENCODER.resolve(entries);
                             charCache = STATIC_CHAR_CACHE;
                         }
+                        solution.char = char;
                         if (solution.level == null)
                             solution.level = LEVEL_STRING;
                         charCache[char] = solution;

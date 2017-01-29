@@ -1663,8 +1663,9 @@ uneval,
                     function ()
                     {
                         var encoder = getPoolEncoder(Feature.ATOB);
-                        var solution = encoder.defaultResolveCharacter(char);
+                        var solution = encoder.resolveCharacter(char);
                         verifySolution(solution, char, featureSet.ATOB && ['ATOB']);
+                        expect(solution.char).toBe(char);
                         expect(solution.length).not.toBeGreaterThan(
                             getPoolEncoder(Feature.DEFAULT).resolveCharacter(char).length
                         );
@@ -1740,8 +1741,10 @@ uneval,
                 function testEntry(entry, index)
                 {
                     var featureObj = getEntryFeature(entry);
-                    var usingDefaultFeature = Feature.DEFAULT.includes(featureObj);
-                    defaultEntryFound |= usingDefaultFeature;
+                    if (Feature.DEFAULT.includes(featureObj))
+                        defaultEntryFound = true;
+                    if (Feature.ATOB.includes(featureObj))
+                        atobEntryFound = true;
                     emuIt(
                         '(definition ' + index + ')',
                         featureObj,
@@ -1786,7 +1789,8 @@ uneval,
                         function ()
                         {
                             var encoder = getPoolEncoder(Feature.DEFAULT);
-                            var solution = encoder.defaultResolveCharacter(char);
+                            var solution = encoder.resolveCharacter(char);
+                            expect(solution.char).toBe(char);
                             verifySolution(solution, char);
                         }
                     );
@@ -1794,13 +1798,13 @@ uneval,
                 if (entries)
                 {
                     var defaultEntryFound = false;
+                    var atobEntryFound = false;
                     if (entries)
                         entries.forEach(testEntry);
                     if (!defaultEntryFound)
-                    {
                         testDefault();
+                    if (!atobEntryFound)
                         testAtob();
-                    }
                 }
                 else
                 {
