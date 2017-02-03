@@ -370,7 +370,7 @@
                         {
                             expect(Feature('DEFAULT').toString()).toBe('[Feature {}]');
                             expect(Feature('NODE010').toString()).toMatch(
-                                /^\[Feature \{[0-9A-Z_]+(, [0-9A-Z_]+)*\}]$/
+                                /^\[Feature \{[\dA-Z_]+(, [\dA-Z_]+)*\}]$/
                             );
                             expect(Feature('ATOB').toString()).toBe('[Feature {ATOB}]');
                         }
