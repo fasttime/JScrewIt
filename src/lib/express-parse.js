@@ -120,7 +120,7 @@ var expressParse;
         if (rawIdentifier)
         {
             var identifier = json_parse('"' + rawIdentifier + '"');
-            if (/^[$A-Z_a-z][$0-9A-Z_a-z]*$/.test(identifier))
+            if (/^[$A-Z_a-z][$\w]*$/.test(identifier))
             {
                 var escaped = identifier.length < rawIdentifier.length;
                 return { escaped: escaped, identifier: identifier };
@@ -492,7 +492,7 @@ var expressParse;
         ConstIdentifier:
             'Infinity|NaN|false|true|undefined',
         DecimalLiteral:
-            '(?:(?:0|[1-9][0-9]*)(?:\\.[0-9]*)?|\\.[0-9]+)(?:[Ee][+-]?[0-9]+)?',
+            '(?:(?:0|[1-9]\\d*)(?:\\.\\d*)?|\\.\\d+)(?:[Ee][+-]?\\d+)?',
         DoubleQuotedString:
             '"(?:#EscapeSequence|(?!["\\\\]).)*"',
         EscapeSequence:
@@ -541,7 +541,7 @@ var expressParse;
     ];
     
     var constValueRegExp        = makeRegExp('(?:#NumericLiteral|#ConstIdentifier)');
-    var rawIdentifierRegExp     = makeRegExp('(?:[$0-9A-Z_a-z]|#UnicodeEscapeSequence)+');
+    var rawIdentifierRegExp     = makeRegExp('(?:[$\\w]|#UnicodeEscapeSequence)+');
     var separatorOrColonRegExp  = makeRegExp('(?:#Separator|;)*');
     var separatorRegExp         = makeRegExp('#Separator*');
     var strRegExp               = makeRegExp('#SingleQuotedString|#DoubleQuotedString');
