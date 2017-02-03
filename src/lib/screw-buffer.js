@@ -44,8 +44,7 @@ var ScrewBuffer;
                 var rightEndIndex = lastBridgeIndex + 1;
                 var rightEndLength = limit - rightEndIndex;
                 var result =
-                    rightEndLength > 2 ||
-                    rightEndLength > 1 && !isUnluckyRightEnd(rightEndIndex);
+                    rightEndLength > 2 || rightEndLength > 1 && !isUnluckyRightEnd(rightEndIndex);
                 return result;
             }
             
