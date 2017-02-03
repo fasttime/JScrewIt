@@ -104,7 +104,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         function defineConstant(encoder, constant, definition)
         {
             constant += '';
-            if (!/^[$A-Z_a-z][$0-9A-Z_a-z]*$/.test(constant))
+            if (!/^[$A-Z_a-z][$\w]*$/.test(constant))
                 throw new SyntaxError('Invalid identifier ' + json_stringify(constant));
             if (!encoder.hasOwnProperty('constantDefinitions'))
                 encoder.constantDefinitions = object_create(CONSTANTS);
