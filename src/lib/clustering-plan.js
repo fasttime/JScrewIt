@@ -31,13 +31,13 @@ var createClusteringPlan;
         var diff =
             cluster1.saving - cluster2.saving ||
             cluster2.length - cluster1.length ||
-            compareClustersByStart(cluster1, cluster2);
+            compareClustersByStart(cluster2, cluster1);
         return diff;
     }
     
     function compareClustersByStart(cluster1, cluster2)
     {
-        var diff = cluster1.start - cluster2.start;
+        var diff = cluster2.start - cluster1.start;
         return diff;
     }
     

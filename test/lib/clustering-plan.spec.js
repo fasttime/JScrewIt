@@ -79,8 +79,8 @@
                     var bestClusters = plan.conclude();
                     expect(bestClusters).toEqual(
                         [
-                            { start: start1, length: length1, data: data1 },
-                            { start: start2, length: length2, data: data2 }
+                            { start: start2, length: length2, data: data2 },
+                            { start: start1, length: length1, data: data1 }
                         ]
                     );
                 }
@@ -156,7 +156,7 @@
                         }
                     );
                     var bestClusters = plan.conclude();
-                    expect(bestClusters).toEqual([clusters[0], clusters[2], clusters[4]]);
+                    expect(bestClusters).toEqual([clusters[4], clusters[2], clusters[0]]);
                 }
             );
         }
