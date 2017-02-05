@@ -95,6 +95,7 @@ gulp.task(
             'src/lib/figurator.js',
             'src/lib/screw-buffer.js',
             'src/lib/express-parse.js',
+            'src/lib/optimizer.js',
             'src/lib/encoder-base.js',
             'src/lib/encoder-ext.js',
             'src/lib/trim-js.js',

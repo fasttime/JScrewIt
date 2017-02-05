@@ -37,7 +37,7 @@ var ScrewBuffer;
     }
     
     ScrewBuffer =
-        function (bond, forceString, groupThreshold)
+        function (bond, forceString, groupThreshold, optimizer)
         {
             function canSplitRightEndForFree(lastBridgeIndex, limit)
             {
@@ -273,7 +273,10 @@ var ScrewBuffer;
                             return false;
                         bridgeUsed |= !!solution.bridge;
                         solutions.push(solution);
-                        length += solution.appendLength;
+                        length +=
+                            optimizer ?
+                            optimizer.optimizeAppendLength(solution) :
+                            solution.appendLength;
                         return true;
                     },
                     get length()
@@ -328,6 +331,8 @@ var ScrewBuffer;
                             return str;
                         }
                         
+                        if (optimizer)
+                            optimizer.optimizeSolutions(solutions);
                         var multiPart;
                         var str;
                         var solutionCount = solutions.length;

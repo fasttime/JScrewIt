@@ -14,6 +14,7 @@ ScrewBuffer,
 array_isArray,
 assignNoEnum,
 createConstructor,
+createOptimizer,
 createSolution,
 expressParse,
 json_stringify,
@@ -23,9 +24,12 @@ noop,
 object_keys,
 */
 
+var DIGIT_APPEND_LENGTHS;
+
 var Encoder;
 
 var replaceIndexer;
+var replaceMultiDigitString;
 var resolveSimple;
 
 (function ()
@@ -37,6 +41,8 @@ var resolveSimple;
     var ConstCache = createConstructor(STATIC_CONST_CACHE);
     
     var quoteString = json_stringify;
+    
+    DIGIT_APPEND_LENGTHS = [6, 8, 12, 17, 22, 27, 32, 37, 42, 47];
     
     Encoder =
         function (mask)
@@ -370,18 +376,7 @@ var resolveSimple;
                         if (/^\d$/.test(str))
                             output = STATIC_ENCODER.resolveCharacter(str) + '';
                         else
-                        {
-                            str =
-                                str.replace(
-                                    /0{10,}$/,
-                                    function (match)
-                                    {
-                                        var result = 'e' + match.length;
-                                        return result;
-                                    }
-                                );
-                            output = '+(' + STATIC_ENCODER.replaceString(str) + ')';
-                        }
+                            output = replaceMultiDigitString(str);
                         if (bondStrength)
                             output = '(' + output + ')';
                     }
@@ -396,13 +391,15 @@ var resolveSimple;
         
         replaceStaticString: function (str, maxLength)
         {
-            var replacement = STATIC_ENCODER.replaceString(str, true, true, maxLength);
+            var replacement = STATIC_ENCODER.replaceString(str, true, true, false, maxLength);
             return replacement;
         },
         
-        replaceString: function (str, bond, forceString, maxLength)
+        replaceString: function (str, bond, forceString, optimize, maxLength)
         {
-            var buffer = new ScrewBuffer(bond, forceString, this.maxGroupThreshold);
+            var optimizer =
+                optimize && (this.optimizer || (this.optimizer = createOptimizer(this)));
+            var buffer = new ScrewBuffer(bond, forceString, this.maxGroupThreshold, optimizer);
             var match;
             this.optimizeComplexCache(str);
             if (!this.strTokenPattern)
@@ -629,6 +626,22 @@ var resolveSimple;
         function (index)
         {
             var replacement = '[' + STATIC_ENCODER.replaceString(index) + ']';
+            return replacement;
+        };
+    
+    replaceMultiDigitString =
+        function (str)
+        {
+            str =
+                str.replace(
+                    /0{10,}$/,
+                    function (match)
+                    {
+                        var result = 'e' + match.length;
+                        return result;
+                    }
+                );
+            var replacement = '+(' + STATIC_ENCODER.replaceString(str) + ')';
             return replacement;
         };
     
