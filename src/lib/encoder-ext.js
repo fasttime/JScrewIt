@@ -2,6 +2,7 @@
 global
 AMENDINGS,
 CREATE_PARSE_INT_ARG,
+DIGIT_APPEND_LENGTHS,
 FROM_CHAR_CODE,
 FROM_CHAR_CODE_CALLBACK_FORMATTER,
 MAPPER_FORMATTER,
@@ -34,14 +35,14 @@ var wrapWithEval;
                 str,
                 function (digit)
                 {
-                    length += digitLengths[digit];
+                    length += digitAppendLengths[digit];
                 }
             );
             return length;
         }
         
         var index;
-        var digitLengths = [6, 8, 12, 17, 22, 27, 32, 37, 42, 47].slice(0, radix || 10);
+        var digitAppendLengths = DIGIT_APPEND_LENGTHS.slice(0, radix || 10);
         var regExp;
         var replacer;
         if (amendings)
@@ -51,7 +52,7 @@ var wrapWithEval;
             for (index = 0; index < amendings; ++index)
             {
                 var digit = firstDigit + index;
-                digitLengths[digit] = SIMPLE[AMENDINGS[index]].appendLength;
+                digitAppendLengths[digit] = SIMPLE[AMENDINGS[index]].appendLength;
                 pattern += digit;
             }
             pattern += ']';
@@ -279,7 +280,8 @@ var wrapWithEval;
             {
                 var input = inputData.valueOf();
                 var bond = inputData.bond;
-                var output = this.replaceString(input, bond, inputData.forceString, maxLength);
+                var output =
+                    this.replaceString(input, bond, inputData.forceString, true, maxLength);
                 return output;
             }
         ),
@@ -715,7 +717,7 @@ var wrapWithEval;
         
         replaceStringArray: function (array, delimiters, maxLength)
         {
-            var splitExpr = this.replaceString('split', false, false, maxLength);
+            var splitExpr = this.replaceString('split', false, false, false, maxLength);
             if (splitExpr)
             {
                 maxLength -= splitExpr.length + 4;
