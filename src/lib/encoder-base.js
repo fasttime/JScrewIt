@@ -34,6 +34,37 @@ var resolveSimple;
 
 (function ()
 {
+    function createReplaceString(optimize)
+    {
+        function replaceString(encoder, str, bond, forceString)
+        {
+            var replacement = encoder.replaceString(str, optimize, bond, forceString);
+            if (!replacement)
+                encoder.throwSyntaxError('String too complex');
+            return replacement;
+        }
+        
+        return replaceString;
+    }
+    
+    function replaceIdentifier(encoder, identifier, bondStrength)
+    {
+        var solution;
+        if (identifier in encoder.constantDefinitions)
+            solution = encoder.resolveConstant(identifier);
+        else if (identifier in SIMPLE)
+            solution = SIMPLE[identifier];
+        if (!solution)
+            encoder.throwSyntaxError('Undefined identifier ' + identifier);
+        var groupingRequired =
+            bondStrength && solution.hasOuterPlus ||
+            bondStrength > BOND_STRENGTH_WEAK && solution.charAt(0) === '!';
+        var replacement = solution.replacement;
+        if (groupingRequired)
+            replacement = '(' + replacement + ')';
+        return replacement;
+    }
+    
     var STATIC_CHAR_CACHE = new Empty();
     var STATIC_CONST_CACHE = new Empty();
     
@@ -197,12 +228,13 @@ var resolveSimple;
             }
         },
         
-        replaceExpr: function (expr)
+        replaceExpr: function (expr, optimize)
         {
             var unit = expressParse(expr);
             if (!unit)
                 this.throwSyntaxError('Syntax error');
-            var replacement = this.replaceExpressUnit(unit, false, [], NaN, REPLACERS);
+            var replacers = optimize ? OPTIMIZING_REPLACERS : REPLACERS;
+            var replacement = this.replaceExpressUnit(unit, false, [], NaN, replacers);
             return replacement;
         },
         
@@ -278,24 +310,6 @@ var resolveSimple;
                 }
             }
             return output;
-        },
-        
-        replaceIdentifier: function (identifier, bondStrength)
-        {
-            var solution;
-            if (identifier in this.constantDefinitions)
-                solution = this.resolveConstant(identifier);
-            else if (identifier in SIMPLE)
-                solution = SIMPLE[identifier];
-            if (!solution)
-                this.throwSyntaxError('Undefined identifier ' + identifier);
-            var groupingRequired =
-                bondStrength && solution.hasOuterPlus ||
-                bondStrength > BOND_STRENGTH_WEAK && solution.charAt(0) === '!';
-            var replacement = solution.replacement;
-            if (groupingRequired)
-                replacement = '(' + replacement + ')';
-            return replacement;
         },
         
         replacePrimaryExpr: function (unit, bondStrength, unitIndices, maxLength, replacers)
@@ -376,12 +390,12 @@ var resolveSimple;
                         if (/^\d$/.test(str))
                             output = STATIC_ENCODER.resolveCharacter(str) + '';
                         else
-                            output = replaceMultiDigitString(str);
+                            output = '+(' + replaceMultiDigitString(str) + ')';
                         if (bondStrength)
                             output = '(' + output + ')';
                     }
                     else
-                        output = STATIC_ENCODER.replaceIdentifier(value + '', bondStrength);
+                        output = replaceIdentifier(STATIC_ENCODER, value + '', bondStrength);
                     if (output.length > maxLength)
                         return;
                 }
@@ -391,11 +405,11 @@ var resolveSimple;
         
         replaceStaticString: function (str, maxLength)
         {
-            var replacement = STATIC_ENCODER.replaceString(str, true, true, false, maxLength);
+            var replacement = STATIC_ENCODER.replaceString(str, false, true, true, maxLength);
             return replacement;
         },
         
-        replaceString: function (str, bond, forceString, optimize, maxLength)
+        replaceString: function (str, optimize, bond, forceString, maxLength)
         {
             var optimizer =
                 optimize && (this.optimizer || (this.optimizer = createOptimizer(this)));
@@ -446,14 +460,16 @@ var resolveSimple;
             {
                 var expr;
                 var level;
+                var optimize;
                 if (type === 'object')
                 {
-                    expr = definition.expr;
-                    level = definition.level;
+                    expr        = definition.expr;
+                    level       = definition.level;
+                    optimize    = definition.optimize;
                 }
                 else
                     expr = definition;
-                var replacement = this.replaceExpr(expr);
+                var replacement = this.replaceExpr(expr, optimize);
                 solution = createSolution(replacement, level);
             }
             return solution;
@@ -604,21 +620,9 @@ var resolveSimple;
     var BOND_STRENGTH_WEAK      = 1;
     var BOND_STRENGTH_STRONG    = 2;
     
-    var REPLACERS =
-    {
-        identifier: function (encoder, identifier, bondStrength)
-        {
-            var replacement = encoder.replaceIdentifier(identifier, bondStrength);
-            return replacement;
-        },
-        string: function (encoder, str, bond, forceString)
-        {
-            var replacement = encoder.replaceString(str, bond, forceString);
-            if (!replacement)
-                encoder.throwSyntaxError('String too complex');
-            return replacement;
-        }
-    };
+    var OPTIMIZING_REPLACERS = { identifier: replaceIdentifier, string: createReplaceString(true) };
+    
+    var REPLACERS = { identifier: replaceIdentifier, string: createReplaceString(false) };
     
     var STATIC_ENCODER = new Encoder([0, 0]);
     
@@ -641,7 +645,7 @@ var resolveSimple;
                         return result;
                     }
                 );
-            var replacement = '+(' + STATIC_ENCODER.replaceString(str) + ')';
+            var replacement = STATIC_ENCODER.replaceString(str);
             return replacement;
         };
     

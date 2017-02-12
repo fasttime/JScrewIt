@@ -54,8 +54,8 @@ var createOptimizer;
                 {
                     var data = cluster.data;
                     var replacement =
-                        '(' + replaceMultiDigitString(data.decimal) + ')[' + toStringReplacement +
-                        '](' + replaceMultiDigitString(data.radix) + ')';
+                        '(+(' + replaceMultiDigitString(data.decimal) + '))[' +
+                        toStringReplacement + '](' + replaceMultiDigitString(data.radix) + ')';
                     var solution = createSolution(replacement, LEVEL_STRING, false);
                     solutions.splice(cluster.start, cluster.length, solution);
                 }

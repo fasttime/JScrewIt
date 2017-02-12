@@ -1149,7 +1149,8 @@ uneval,
                                     'with no bond and no string forcing',
                                     function ()
                                     {
-                                        var output = encoder.replaceString(expr, false, false);
+                                        var output =
+                                            encoder.replaceString(expr, true, false, false);
                                         expect(output).toStartWith(start0);
                                         expect(output).toEndWith(end0);
                                     }
@@ -1158,7 +1159,7 @@ uneval,
                                     'with bond and no string forcing',
                                     function ()
                                     {
-                                        var output = encoder.replaceString(expr, true, false);
+                                        var output = encoder.replaceString(expr, true, true, false);
                                         expect(output).toStartWith(startSB);
                                         expect(output).toEndWith(endSB);
                                     }
@@ -1167,7 +1168,7 @@ uneval,
                                     'with no bond and string forcing',
                                     function ()
                                     {
-                                        var output = encoder.replaceString(expr, false, true);
+                                        var output = encoder.replaceString(expr, true, false, true);
                                         expect(output).toStartWith(startFS);
                                         expect(output).toEndWith(endFS);
                                     }
@@ -1176,7 +1177,7 @@ uneval,
                                     'with bond and string forcing',
                                     function ()
                                     {
-                                        var output = encoder.replaceString(expr, true, true);
+                                        var output = encoder.replaceString(expr, true, true, true);
                                         expect(output).toStartWith(startSBFS);
                                         expect(output).toEndWith(endSBFS);
                                     }

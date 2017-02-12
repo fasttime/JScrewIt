@@ -224,7 +224,7 @@
                     );
                 }
             );
-            it(
+            it.skip(
                 'encodes a string with multiple bridges',
                 function ()
                 {

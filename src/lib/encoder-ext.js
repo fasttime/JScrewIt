@@ -281,7 +281,7 @@ var wrapWithEval;
                 var input = inputData.valueOf();
                 var bond = inputData.bond;
                 var output =
-                    this.replaceString(input, bond, inputData.forceString, true, maxLength);
+                    this.replaceString(input, true, bond, inputData.forceString, maxLength);
                 return output;
             }
         ),
@@ -384,7 +384,7 @@ var wrapWithEval;
                     output =
                         this.resolveConstant('Function') +
                         '(' +
-                        this.replaceString('return String.' + fromCharCode + '(') +
+                        this.replaceString('return String.' + fromCharCode + '(', true) +
                         '+' +
                         charCodeArrayStr +
                         '+' +
@@ -451,8 +451,8 @@ var wrapWithEval;
         createJSFuckArrayMapping: function (arrayStr, mapper, legend)
         {
             var result =
-                arrayStr + '[' + this.replaceString('map') + '](' + this.replaceExpr(mapper) + '(' +
-                legend + '))';
+                arrayStr + '[' + this.replaceString('map', true) + '](' +
+                this.replaceExpr(mapper, true) + '(' + legend + '))';
             return result;
         },
         
@@ -461,8 +461,8 @@ var wrapWithEval;
             var formatter = this.findDefinition(FROM_CHAR_CODE_CALLBACK_FORMATTER);
             var callback = formatter(fromCharCode, arg);
             var output =
-                charCodeArrayStr + '[' + this.replaceString('map') + '](' +
-                this.replaceExpr('Function("return ' + callback + '")()') + ')[' +
+                charCodeArrayStr + '[' + this.replaceString('map', true) + '](' +
+                this.replaceExpr('Function("return ' + callback + '")()', true) + ')[' +
                 this.replaceString('join') + ']([])';
             return output;
         },
@@ -717,7 +717,7 @@ var wrapWithEval;
         
         replaceStringArray: function (array, delimiters, maxLength)
         {
-            var splitExpr = this.replaceString('split', false, false, false, maxLength);
+            var splitExpr = this.replaceString('split', true, false, false, maxLength);
             if (splitExpr)
             {
                 maxLength -= splitExpr.length + 4;
