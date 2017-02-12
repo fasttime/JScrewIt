@@ -61,7 +61,7 @@
             }
             else
             {
-                replacement = this.replaceString(str, true, true, maxLength);
+                replacement = this.replaceString(str, false, true, true, maxLength);
                 if (replacement)
                 {
                     staticStrCache[str] = replacement;
@@ -108,7 +108,7 @@
     {
         encoder.complexCache[complex] = null;
         delete encoder.stringTokenPattern;
-        var str = encoder.replaceString(complex);
+        var str = encoder.replaceString(complex, true);
         delete encoder.complexCache[complex];
         delete encoder.stringTokenPattern;
         return str;

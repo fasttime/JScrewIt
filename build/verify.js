@@ -356,6 +356,9 @@ verify.CREATE_PARSE_INT_ARG =
     {
         var entries = getEntries('CREATE_PARSE_INT_ARG');
         var availableEntries = getEntries('CREATE_PARSE_INT_ARG:available');
+        findFunctionInEntries(availableEntries, 'createParseIntArgByReduce', 'reduce(function');
+        findFunctionInEntries(availableEntries, 'createParseIntArgByReduceArrow', 'reduce((');
+        findFunctionInEntries(availableEntries, 'createParseIntArgDefault', 'replace(/');
         verifyDefinitions(
             entries,
             availableEntries,
@@ -363,7 +366,7 @@ verify.CREATE_PARSE_INT_ARG =
             function (createParseIntArg)
             {
                 var expr = createParseIntArg(3, 2);
-                var replacement = this.replaceString(expr);
+                var replacement = this.replaceString(expr, true);
                 return replacement;
             }
         );
@@ -376,7 +379,11 @@ verify.FROM_CHAR_CODE =
             getEntries('FROM_CHAR_CODE'),
             [define('fromCharCode'), define('fromCodePoint', 'FROM_CODE_POINT')],
             mismatchCallback,
-            'replaceString'
+            function (str)
+            {
+                var result = this.replaceString(str, true);
+                return result;
+            }
         );
     };
 
@@ -403,7 +410,7 @@ verify.FROM_CHAR_CODE_CALLBACK_FORMATTER =
             function (formatter)
             {
                 var str = formatter('0');
-                var replacement = this.replaceString(str);
+                var replacement = this.replaceString(str, true);
                 return replacement;
             }
         );

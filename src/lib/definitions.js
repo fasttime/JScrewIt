@@ -217,7 +217,7 @@ var createParseIntArgDefault;
         var expr = 'unescape("%u' + hexCode + '")';
         if (hexCode.length > 4)
             expr += '[0]';
-        var result = this.replaceExpr(expr);
+        var result = this.replaceExpr(expr, true);
         return result;
     }
     
@@ -227,7 +227,7 @@ var createParseIntArgDefault;
         var expr = 'unescape("%' + hexCode + '")';
         if (hexCode.length > 2)
             expr += '[0]';
-        var result = this.replaceExpr(expr);
+        var result = this.replaceExpr(expr, true);
         return result;
     }
     
@@ -515,6 +515,14 @@ var createParseIntArgDefault;
         [
             define('U'),
             define('V', ANY_DOCUMENT),
+            define('U', NAME),
+            define('V', ANY_DOCUMENT, ENTRIES_OBJ, FILL, NAME),
+            define('V', ANY_DOCUMENT, ENTRIES_OBJ, NAME, NO_IE_SRC),
+            define('U', FILL, NAME, NO_IE_SRC),
+            define('V', ANY_DOCUMENT, IE_SRC, NAME),
+            define('V', ANY_DOCUMENT, NAME, V8_SRC),
+            define('V', ANY_DOCUMENT, HTMLAUDIOELEMENT, NAME),
+            define('V', ANY_DOCUMENT, NAME, NO_IE_SRC, NO_V8_SRC),
             define('U', UNDEFINED),
             define('W', ANY_WINDOW),
             define('W', ATOB),
@@ -793,14 +801,17 @@ var createParseIntArgDefault;
         [
             define('btoa(true)[1]', ATOB),
             define('"".link()[3]', CAPITAL_HTML),
-            define('(RP_3_NO + Function("return history")())[11]', HISTORY),
+            define(
+                { expr: '(RP_3_NO + Function("return history")())[11]', optimize: true },
+                HISTORY
+            ),
             define('(RP_1_NO + Audio)[10]', HTMLAUDIOELEMENT),
             define('(RP_3_NO + document)[11]', HTMLDOCUMENT)
         ],
         'I': '"Infinity"[0]',
         'J':
         [
-            define('"j".toUpperCase()'),
+            define('"j"[TO_UPPER_CASE]()'),
             define('btoa(true)[2]', ATOB),
             defineDefaultChar('J')
         ],
@@ -841,7 +852,7 @@ var createParseIntArgDefault;
         ],
         'Q':
         [
-            define('"q".toUpperCase()'),
+            define('"q"[TO_UPPER_CASE]()'),
             define('btoa(1)[1]', ATOB),
             defineDefaultChar('Q')
         ],
@@ -858,7 +869,14 @@ var createParseIntArgDefault;
         ],
         'T':
         [
-            define('(Function("try{undefined.false}catch(undefined){return undefined}")()+[])[0]'),
+            define(
+                {
+                    expr:
+                        '(Function("try{undefined.false}catch(undefined){return undefined}")() + ' +
+                        '[])[0]',
+                    optimize: true
+                }
+            ),
             define('btoa(NaN)[0]', ATOB),
             define('"".fontcolor([])[20]', CAPITAL_HTML),
             define('(RP_3_NO + Date())[30]', GMT),
@@ -875,14 +893,14 @@ var createParseIntArgDefault;
         'V':
         [
             define('unescape("%56")'),
-            define('"v".toUpperCase()'),
+            define('"v"[TO_UPPER_CASE]()'),
             define('(document.createElement("video") + [])[12]', ANY_DOCUMENT),
             define('btoa(undefined)[10]', ATOB),
         ],
         'W':
         [
             define('unescape("%57")'),
-            define('"w".toUpperCase()'),
+            define('"w"[TO_UPPER_CASE]()'),
             define('(self + RP_4_N)[SUBSTR]("-11")[0]', ANY_WINDOW),
             define('btoa(undefined)[1]', ATOB),
             define('(self + [])[11]', DOMWINDOW),
@@ -890,13 +908,13 @@ var createParseIntArgDefault;
         ],
         'X':
         [
-            define('"x".toUpperCase()'),
+            define('"x"[TO_UPPER_CASE]()'),
             define('btoa("1true")[1]', ATOB),
             defineDefaultChar('X')
         ],
         'Y':
         [
-            define('"y".toUpperCase()'),
+            define('"y"[TO_UPPER_CASE]()'),
             define('btoa("a")[0]', ATOB),
             defineDefaultChar('Y')
         ],
@@ -1120,7 +1138,7 @@ var createParseIntArgDefault;
         Number:
         [
             define('Number.name', NAME),
-            define(undefined, ENTRIES_OBJ)
+            define(undefined, ENTRIES_OBJ),
         ],
         Object:
         [
@@ -1133,24 +1151,25 @@ var createParseIntArgDefault;
             define('Object.name', INTL, NAME),
             define('Object.name', NAME, V8_SRC),
             define('Object.name', NAME, NO_IE_SRC, NO_V8_SRC),
-            define(undefined, ENTRIES_OBJ)
+            define(undefined, ENTRIES_OBJ),
+            define(undefined, CAPITAL_HTML, NAME),
         ],
         RegExp:
         [
-            define('RegExp.name', NAME)
+            define('RegExp.name', NAME),
         ],
         String:
         [
             define('String.name', NAME),
-            define(undefined, CAPITAL_HTML, ENTRIES_OBJ)
+            define(undefined, CAPITAL_HTML, ENTRIES_OBJ),
         ],
         'f,a,l,s,e':
         [
-            define({ expr: '[].slice.call("false")', level: LEVEL_OBJECT })
+            define({ expr: '[].slice.call("false")', level: LEVEL_OBJECT }),
         ],
         mCh:
         [
-            define('atob("bUNo")', ATOB, ENTRIES_OBJ)
+            define('atob("bUNo")', ATOB, ENTRIES_OBJ),
         ]
     });
     
@@ -1208,11 +1227,11 @@ var createParseIntArgDefault;
         ],
         document:
         [
-            define('Function("return document")()', ANY_DOCUMENT)
+            define({ expr: 'Function("return document")()', optimize: true }, ANY_DOCUMENT)
         ],
         escape:
         [
-            define('Function("return escape")()')
+            define({ expr: 'Function("return escape")()', optimize: true })
         ],
         self:
         [
@@ -1220,7 +1239,7 @@ var createParseIntArgDefault;
         ],
         unescape:
         [
-            define('Function("return unescape")()')
+            define({ expr: 'Function("return unescape")()', optimize: true })
         ],
         uneval:
         [
@@ -1257,9 +1276,13 @@ var createParseIntArgDefault;
             define('"slice"'),
             define('"substr"')
         ],
+        TO_UPPER_CASE:
+        [
+            define({ expr: '"toUpperCase"', optimize: true })
+        ],
         
         // Function body extra padding blocks: prepended to a function to align the function's body
-        // at the same position on different browsers, assuming that the function header is aligned.
+        // at the same position in different engines, assuming that the function header is aligned.
         // The number after "FBEP_" is the maximum character overhead. The letters after the last
         // underscore have the same meaning as in regular padding blocks.
         
@@ -1274,7 +1297,7 @@ var createParseIntArgDefault;
         ],
         
         // Function body padding blocks: prepended to a function to align the function's body at the
-        // same position on different browsers.
+        // same position in different engines.
         // The number after "FBP_" is the maximum character overhead. The letters after the last
         // underscore have the same meaning as in regular padding blocks.
         
@@ -1285,7 +1308,7 @@ var createParseIntArgDefault;
         ],
         
         // Function header shift: used to adjust an indexer to make it point to the same position in
-        // the string representation of a function's header on different browsers.
+        // the string representation of a function's header in different engines.
         // This evaluates to an array containing only the number n - 1 or only the number n, where n
         // is the number after "FH_SHIFT_".
         
@@ -1299,7 +1322,7 @@ var createParseIntArgDefault;
         ],
         
         // Function header padding blocks: prepended to a function to align the function's header
-        // at the same position on different browsers.
+        // at the same position in different engines.
         // The number after "FHP_" is the maximum character overhead.
         // The letters after the last underscore have the same meaning as in regular padding blocks.
         
@@ -1405,13 +1428,17 @@ var createParseIntArgDefault;
     CREATE_PARSE_INT_ARG =
     [
         define(createParseIntArgByReduce),
+        define(createParseIntArgDefault, CAPITAL_HTML, ENTRIES_OBJ, NO_IE_SRC),
+        define(createParseIntArgByReduce, ENTRIES_PLAIN),
+        define(createParseIntArgByReduce, FILL),
+        define(createParseIntArgByReduce, NO_OLD_SAFARI_ARRAY_ITERATOR),
         define(createParseIntArgByReduceArrow, ARROW),
-        define(createParseIntArgByReduce, V8_SRC),
         define(createParseIntArgByReduce, NO_V8_SRC),
+        define(createParseIntArgByReduce, V8_SRC),
         define(createParseIntArgByReduceArrow, ARROW, ENTRIES_OBJ),
         define(createParseIntArgByReduce, FILL, IE_SRC),
         define(createParseIntArgByReduce, FILL, V8_SRC),
-        define(createParseIntArgByReduce, FILL, NO_IE_SRC, NO_V8_SRC)
+        define(createParseIntArgByReduce, FILL, NO_IE_SRC, NO_V8_SRC),
     ];
     
     DEFAULT_16_BIT_CHARACTER_ENCODER =
