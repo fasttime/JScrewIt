@@ -1280,8 +1280,8 @@ var createParseIntArgDefault;
         
         FBP_7_NO:
         [
-            define('+(1 + [0] + [(RP_4_N + FILTER)[40]] + 0 + 0 + 0 + 0 + 0)'),
-            define('+(1 + [0] + [(RP_6_SO + FILL)[40]] + 0 + 0 + 0 + 0 + 0)', FILL),
+            define('+("10" + [(RP_4_N + FILTER)[40]] + 0 + 0 + 0 + 0 + 0)'),
+            define('+("10" + [(RP_6_SO + FILL)[40]] + 0 + 0 + 0 + 0 + 0)', FILL),
         ],
         
         // Function header shift: used to adjust an indexer to make it point to the same position in
