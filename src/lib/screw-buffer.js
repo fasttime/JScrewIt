@@ -67,7 +67,7 @@ var ScrewBuffer;
             return splitIndex;
     }
     
-    function gatherGroup(solutions, localBond, localForceString, bridgeUsed)
+    function gatherGroup(solutions, groupBond, groupForceString, bridgeUsed)
     {
         function appendRightGroup(groupCount)
         {
@@ -88,7 +88,7 @@ var ScrewBuffer;
             var index;
             if (bridgeIndex > 1)
             {
-                var intrinsicSplitCost = localForceString ? -3 : localBond ? 2 : 0;
+                var intrinsicSplitCost = groupForceString ? -3 : groupBond ? 2 : 0;
                 index = findSplitIndex(solutions, intrinsicSplitCost, bridgeIndex, lastBridgeIndex);
             }
             multiPart = index != null;
@@ -118,7 +118,7 @@ var ScrewBuffer;
             }
             var groupCount;
             var rightEndCount = count - index;
-            if (localForceString && !multiPart && rightEndCount > 1)
+            if (groupForceString && !multiPart && rightEndCount > 1)
             {
                 groupCount = rightEndCount > 2 && isUnluckyRightEnd(solutions, index) ? 2 : 1;
                 multiPart = true;
@@ -129,14 +129,14 @@ var ScrewBuffer;
             index += groupCount - 1;
             while (++index < count)
                 pushSolution(array, solutions[index]);
-            if (!multiPart && localForceString)
+            if (!multiPart && groupForceString)
             {
                 array.push('+[]');
                 multiPart = true;
             }
         }
         var str = array.join('');
-        if (localBond && multiPart)
+        if (groupBond && multiPart)
             str = '(' + str + ')';
         return str;
     }
@@ -244,7 +244,7 @@ var ScrewBuffer;
     ScrewBuffer =
         function (bond, forceString, groupThreshold, optimizer)
         {
-            function gather(offset, count, localBond, localForceString)
+            function gather(offset, count, groupBond, groupForceString)
             {
                 var str;
                 if (optimizer)
@@ -252,17 +252,17 @@ var ScrewBuffer;
                     var end = offset + count;
                     var groupSolutions = solutions.slice(offset, end);
                     if (optimizer)
-                        optimizer.optimizeSolutions(groupSolutions);
+                        optimizer.optimizeSolutions(groupSolutions, groupBond);
                     str =
                         groupSolutions.length > 1 ?
-                        gatherGroup(groupSolutions, localBond, localForceString, bridgeUsed) :
+                        gatherGroup(groupSolutions, groupBond, groupForceString, bridgeUsed) :
                         groupSolutions[0] + '';
                 }
                 else
                 {
                     var array = sequence(solutions, offset, count);
                     str = array.join('');
-                    if (localBond)
+                    if (groupBond)
                         str = '(' + str + ')';
                 }
                 return str;
@@ -310,11 +310,11 @@ var ScrewBuffer;
                     },
                     toString: function ()
                     {
-                        function collectOut(offset, count, maxGroupCount, localBond)
+                        function collectOut(offset, count, maxGroupCount, groupBond)
                         {
                             var str;
                             if (count <= groupSize + 1)
-                                str = gather(offset, count, localBond);
+                                str = gather(offset, count, groupBond);
                             else
                             {
                                 maxGroupCount /= 2;
@@ -334,7 +334,7 @@ var ScrewBuffer;
                                         maxGroupCount,
                                         true
                                     );
-                                if (localBond)
+                                if (groupBond)
                                     str = '(' + str + ')';
                             }
                             return str;

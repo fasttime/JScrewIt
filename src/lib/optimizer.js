@@ -111,7 +111,7 @@ var createOptimizer;
             while (++radix <= 36);
         }
         
-        function optimizeClusters(plan, solutions, start, maxClusterLength)
+        function optimizeClusters(plan, solutions, start, maxClusterLength, bond)
         {
             var maxDigitChar = '';
             var discreteAppendLength = 0;
@@ -130,6 +130,10 @@ var createOptimizer;
                     discreteAppendLength > clusterBaseLength)
                 {
                     var minRadix = getMinRadix(maxDigitChar);
+                    // If a bonding is required, an integral cluster can save two additional
+                    // characters by omitting a pair of parentheses.
+                    if (bond && !start && clusterLength === maxClusterLength)
+                        discreteAppendLength += 2;
                     var clusterTooLong =
                         optimizeCluster(plan, start, minRadix, discreteAppendLength, chars);
                     if (clusterTooLong)
@@ -139,19 +143,19 @@ var createOptimizer;
             while (clusterLength < maxClusterLength);
         }
         
-        function optimizeSequence(plan, solutions, start, end)
+        function optimizeSequence(plan, solutions, start, end, bond)
         {
             for (;; ++start)
             {
                 var maxLength = end - start;
                 if (solutions[start].char !== '0')
-                    optimizeClusters(plan, solutions, start, maxLength);
+                    optimizeClusters(plan, solutions, start, maxLength, bond);
                 if (maxLength <= MIN_CLUSTER_LENGTH)
                     break;
             }
         }
         
-        function optimizeSolutions(solutions)
+        function optimizeSolutions(solutions, bond)
         {
             var plan = createClusteringPlan();
             var end;
@@ -169,7 +173,7 @@ var createOptimizer;
                     if (!saving)
                         saving = isSaving(solution);
                     if (saving && end - start >= MIN_CLUSTER_LENGTH)
-                        optimizeSequence(plan, solutions, start, end);
+                        optimizeSequence(plan, solutions, start, end, bond);
                 }
                 else
                     end = undefined;
