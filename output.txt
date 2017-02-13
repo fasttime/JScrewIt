@@ -4439,7 +4439,7 @@ Character "\u009e"
 11047 |  - | NO_V8_SRC
  6451 |  - | V8_SRC
 
-Character "拢"
+Character "£"
 11285 |  - | DEFAULT
  3592 |  0 | ATOB
  1655 |  0 | ATOB, ENTRIES_OBJ
@@ -4524,7 +4524,7 @@ Character "拢"
 11007 |  - | NO_V8_SRC
  6411 |  - | V8_SRC
 
-Character "楼"
+Character "¥"
 11295 |  - | DEFAULT
  3599 |  0 | ATOB
  1662 |  0 | ATOB, ENTRIES_OBJ
@@ -4609,7 +4609,7 @@ Character "楼"
 11017 |  - | NO_V8_SRC
  6421 |  - | V8_SRC
 
-Character "搂"
+Character "§"
 11305 |  - | DEFAULT
  3606 |  0 | ATOB
  1669 |  0 | ATOB, ENTRIES_OBJ
@@ -4694,7 +4694,7 @@ Character "搂"
 11027 |  - | NO_V8_SRC
  6431 |  - | V8_SRC
 
-Character "漏"
+Character "©"
 11315 |  - | DEFAULT
  3595 |  0 | ATOB
  1658 |  0 | ATOB, ENTRIES_OBJ
@@ -4779,7 +4779,7 @@ Character "漏"
 11037 |  - | NO_V8_SRC
  6441 |  - | V8_SRC
 
-Character "卤"
+Character "±"
 12706 |  - | DEFAULT
  3604 |  0 | ATOB
  1667 |  0 | ATOB, ENTRIES_OBJ
@@ -4878,7 +4878,7 @@ Character "卤"
 12428 |  - | NO_V8_SRC
  7115 |  - | V8_SRC
 
-Character "露"
+Character "¶"
 12730 |  - | DEFAULT
  3588 |  0 | ATOB
  1651 |  0 | ATOB, ENTRIES_OBJ
@@ -4977,7 +4977,7 @@ Character "露"
 12452 |  - | NO_V8_SRC
  7139 |  - | V8_SRC
 
-Character "潞"
+Character "º"
 12714 |  - | DEFAULT
  3596 |  0 | ATOB
  1659 |  0 | ATOB, ENTRIES_OBJ
@@ -5076,7 +5076,7 @@ Character "潞"
 12436 |  - | NO_V8_SRC
  7123 |  - | V8_SRC
 
-Character "禄"
+Character "»"
 14144 |  - | DEFAULT
  3590 |  0 | ATOB
  1653 |  0 | ATOB, ENTRIES_OBJ
@@ -5175,7 +5175,7 @@ Character "禄"
 13866 |  - | NO_V8_SRC
  7836 |  - | V8_SRC
 
-Character "脟"
+Character "Ç"
 11581 |  - | DEFAULT
  3605 |  0 | ATOB
  1668 |  0 | ATOB, ENTRIES_OBJ
@@ -5260,7 +5260,7 @@ Character "脟"
 11303 |  - | NO_V8_SRC
  6560 |  - | V8_SRC
 
-Character "脷"
+Character "Ú"
 11291 |  - | DEFAULT
  3600 |  0 | ATOB
  1663 |  0 | ATOB, ENTRIES_OBJ
@@ -5345,7 +5345,7 @@ Character "脷"
 11013 |  - | NO_V8_SRC
  6417 |  - | V8_SRC
 
-Character "脻"
+Character "Ý"
 11298 |  - | DEFAULT
  3602 |  0 | ATOB
  1665 |  0 | ATOB, ENTRIES_OBJ
@@ -5430,7 +5430,7 @@ Character "脻"
 11020 |  - | NO_V8_SRC
  6424 |  - | V8_SRC
 
-Character "芒"
+Character "â"
 11290 |  - | DEFAULT
  3610 |  0 | ATOB
  1673 |  0 | ATOB, ENTRIES_OBJ
@@ -5515,7 +5515,7 @@ Character "芒"
 11012 |  - | NO_V8_SRC
  6416 |  - | V8_SRC
 
-Character "茅"
+Character "é"
 11325 |  - | DEFAULT
  3598 |  0 | ATOB
  1661 |  0 | ATOB, ENTRIES_OBJ
@@ -5600,7 +5600,7 @@ Character "茅"
 11047 |  - | NO_V8_SRC
  6451 |  - | V8_SRC
 
-Character "卯"
+Character "î"
 11304 |  - | DEFAULT
  3604 |  0 | ATOB
  1667 |  0 | ATOB, ENTRIES_OBJ
@@ -5685,7 +5685,7 @@ Character "卯"
 11026 |  - | NO_V8_SRC
  6430 |  - | V8_SRC
 
-Character "枚"
+Character "ö"
 11298 |  - | DEFAULT
  3595 |  0 | ATOB
  1658 |  0 | ATOB, ENTRIES_OBJ
@@ -5770,7 +5770,7 @@ Character "枚"
 11020 |  - | NO_V8_SRC
  6424 |  - | V8_SRC
 
-Character "酶"
+Character "ø"
 11308 |  - | DEFAULT
  3608 |  0 | ATOB
  1671 |  0 | ATOB, ENTRIES_OBJ
@@ -5855,7 +5855,7 @@ Character "酶"
 11030 |  - | NO_V8_SRC
  6434 |  - | V8_SRC
 
-Character "鈭?
+Character "∞"
 11327 |  1 | DEFAULT
  2953 |  0 | ARRAY_ITERATOR, FILL, HTMLAUDIOELEMENT, LOCALE_INFINITY
  2906 |  0 | ARRAY_ITERATOR, FILL, HTMLAUDIOELEMENT, LOCALE_INFINITY, NAME
