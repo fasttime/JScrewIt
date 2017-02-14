@@ -115,7 +115,7 @@ var createParseIntArgDefault;
         ,
         ,
         'FBP_7_NO',
-        'RP_1_NO + [FBP_7_NO]',
+        'FBP_8_NO',
         ,
         'RP_3_NO + [FBP_7_NO]',
         ,
@@ -768,6 +768,8 @@ var createParseIntArgDefault;
         ],
         'D':
         [
+            define('escape((+("10"+(RP_5_N+FILTER+0)[40]+0+0+0)+FILTER)[40])[2]'),
+            define('escape((NaN+(+("10"+(FILL+0)[33]+0+0+0)+FILL))[41])[2]', FILL),
             define('escape("]")[2]'),
             define('escape("}")[2]'),
             define('escape(PLAIN_OBJECT)[20]'),
@@ -1305,6 +1307,11 @@ var createParseIntArgDefault;
         [
             define('+("10" + [(RP_4_N + FILTER)[40]] + 0 + 0 + 0 + 0 + 0)'),
             define('+("10" + [(RP_6_SO + FILL)[40]] + 0 + 0 + 0 + 0 + 0)', FILL),
+        ],
+        FBP_8_NO:
+        [
+            define('+("1000" + (RP_5_N + FILTER + 0)[40] + 0 + 0 + 0)'),
+            define('+("1000" + (FILL + 0)[33] + 0 + 0 + 0)', FILL),
         ],
         
         // Function header shift: used to adjust an indexer to make it point to the same position in
