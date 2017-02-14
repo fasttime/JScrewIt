@@ -768,15 +768,15 @@ var createParseIntArgDefault;
         ],
         'D':
         [
-            // The escaped character may be either ] or }
-            define('escape((+("10"+(RP_5_N+FILTER+0)[40]+0+0+0)+FILTER)[40])[2]'),
-            define('escape((NaN+(+("10"+(FILL+0)[33]+0+0+0)+FILL))[41])[2]', FILL),
+            // [1] The escaped character may be either ] or }
+            define('escape((+("1000" + (RP_5_N + FILTER + 0)[40] + 0) + FILTER)[40])[2]'), // [1]
             define('escape("]")[2]'),
             define('escape("}")[2]'),
             define('escape(PLAIN_OBJECT)[20]'),
             define('(document + RP_1_NO)[SUBSTR]("-10")[0]', ANY_DOCUMENT),
             define('btoa("00")[1]', ATOB),
             define('(RP_3_NO + document)[11]', DOCUMENT),
+            define('escape((RP_3_NO + (+("1000" + (FILL + 0)[33] + 0) + FILL))[41])[2]', FILL), // [1]
             define('(document + [])[12]', HTMLDOCUMENT),
             define('escape(ARRAY_ITERATOR)[30]', NO_OLD_SAFARI_ARRAY_ITERATOR),
             define('escape(FILTER)[50]', V8_SRC),
