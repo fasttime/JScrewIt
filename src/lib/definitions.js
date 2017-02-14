@@ -768,6 +768,7 @@ var createParseIntArgDefault;
         ],
         'D':
         [
+            // The escaped character may be either ] or }
             define('escape((+("10"+(RP_5_N+FILTER+0)[40]+0+0+0)+FILTER)[40])[2]'),
             define('escape((NaN+(+("10"+(FILL+0)[33]+0+0+0)+FILL))[41])[2]', FILL),
             define('escape("]")[2]'),
