@@ -115,7 +115,7 @@ var createParseIntArgDefault;
         ,
         ,
         'FBP_7_NO',
-        'RP_1_NO + [FBP_7_NO]',
+        'FBP_8_NO',
         ,
         'RP_3_NO + [FBP_7_NO]',
         ,
@@ -768,12 +768,18 @@ var createParseIntArgDefault;
         ],
         'D':
         [
+            // * The escaped character may be either "]" or "}".
+            define('escape((+("1000" + (RP_5_N + FILTER + 0)[40] + 0) + FILTER)[40])[2]'), // *
             define('escape("]")[2]'),
             define('escape("}")[2]'),
             define('escape(PLAIN_OBJECT)[20]'),
             define('(document + RP_1_NO)[SUBSTR]("-10")[0]', ANY_DOCUMENT),
             define('btoa("00")[1]', ATOB),
             define('(RP_3_NO + document)[11]', DOCUMENT),
+            define( // *
+                'escape((RP_3_NO + [+("10" + [(RP_6_SO + FILL)[40]] + 0 + 0 + 0)] + FILL)[40])[2]',
+                FILL
+            ),
             define('(document + [])[12]', HTMLDOCUMENT),
             define('escape(ARRAY_ITERATOR)[30]', NO_OLD_SAFARI_ARRAY_ITERATOR),
             define('escape(FILTER)[50]', V8_SRC),
@@ -1305,6 +1311,11 @@ var createParseIntArgDefault;
         [
             define('+("10" + [(RP_4_N + FILTER)[40]] + 0 + 0 + 0 + 0 + 0)'),
             define('+("10" + [(RP_6_SO + FILL)[40]] + 0 + 0 + 0 + 0 + 0)', FILL),
+        ],
+        FBP_8_NO:
+        [
+            define('+("1000" + (RP_5_N + FILTER + 0)[40] + 0 + 0 + 0)'),
+            define('+("1000" + (FILL + 0)[33] + 0 + 0 + 0)', FILL),
         ],
         
         // Function header shift: used to adjust an indexer to make it point to the same position in
