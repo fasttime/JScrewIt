@@ -251,8 +251,7 @@ var ScrewBuffer;
                 {
                     var end = offset + count;
                     var groupSolutions = solutions.slice(offset, end);
-                    if (optimizer)
-                        optimizer.optimizeSolutions(groupSolutions, groupBond);
+                    optimizer.optimizeSolutions(groupSolutions, groupBond);
                     str =
                         groupSolutions.length > 1 ?
                         gatherGroup(groupSolutions, groupBond, groupForceString, bridgeUsed) :
