@@ -96,9 +96,9 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             return featureObj;
         }
         
-        function createScrewBuffer(bond, forceString, groupThreshold)
+        function createScrewBuffer(bond, forceString, groupThreshold, optimizer)
         {
-            var buffer = new ScrewBuffer(bond, forceString, groupThreshold);
+            var buffer = new ScrewBuffer(bond, forceString, groupThreshold, optimizer);
             return buffer;
         }
         

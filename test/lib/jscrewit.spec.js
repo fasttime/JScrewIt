@@ -1093,6 +1093,17 @@ uneval,
                 );
                 
                 it(
+                    'optimizes clusters',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var actual = encoder.encodeExpress('"xx".ww');
+                        var expected =
+                            encoder.replaceExpr('(1221..toString("36"))[1120..toString("34")]');
+                        expect(actual).toBe(expected);
+                    }
+                );
+                it(
                     'writes into codingLog',
                     function ()
                     {
@@ -1128,6 +1139,17 @@ uneval,
             'Encoder#replaceString',
             function ()
             {
+                it(
+                    'supports toString clustering',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var actual = encoder.replaceString('zz', true);
+                        var expected = encoder.replaceExpr('1295..toString("36")');
+                        expect(actual).toBe(expected);
+                    }
+                );
+                
                 describe(
                     'supports bridging',
                     function ()
@@ -1274,6 +1296,7 @@ uneval,
                         );
                     }
                 );
+                
                 it(
                     'returns undefined for too complex input',
                     function ()
