@@ -38,7 +38,7 @@
                             var optimizer = createOptimizer();
                             var solution = { char: 'b', appendLength: 10 };
                             var actual = optimizer.optimizeAppendLength(solution);
-                            expect(actual).toBe(8);
+                            expect(actual).toBe(6);
                         }
                     );
                     it(

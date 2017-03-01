@@ -12,6 +12,7 @@ SIMPLE,
 Empty,
 ScrewBuffer,
 array_isArray,
+array_prototype_forEach,
 assignNoEnum,
 createConstructor,
 createOptimizer,
@@ -24,12 +25,15 @@ noop,
 object_keys,
 */
 
-var DIGIT_APPEND_LENGTHS;
+var APPEND_LENGTH_OF_DIGITS;
+var APPEND_LENGTH_OF_DIGIT_0;
+var APPEND_LENGTH_OF_PLUS_SIGN;
+var APPEND_LENGTH_OF_SMALL_E;
 
 var Encoder;
 
 var replaceIndexer;
-var replaceMultiDigitString;
+var replaceMultiDigitNumber;
 var resolveSimple;
 
 (function ()
@@ -45,6 +49,82 @@ var resolveSimple;
         }
         
         return replaceString;
+    }
+    
+    function evalNumber(preMantissa, lastDigit, exp)
+    {
+        var value = +(preMantissa + lastDigit + 'e' + exp);
+        return value;
+    }
+    
+    function formatPositiveNumber(number)
+    {
+        function getMantissa()
+        {
+            var lastDigitIndex = usefulDigits - 1;
+            var preMantissa = digits.slice(0, lastDigitIndex);
+            var lastDigit = +digits[lastDigitIndex];
+            var value = evalNumber(preMantissa, lastDigit, exp);
+            for (;;)
+            {
+                var decreasedLastDigit = lastDigit - 1;
+                var newValue = evalNumber(preMantissa, decreasedLastDigit, exp);
+                if (newValue !== value)
+                    break;
+                lastDigit = decreasedLastDigit;
+            }
+            var mantissa = preMantissa + lastDigit;
+            return mantissa;
+        }
+        
+        var str;
+        var match = /^(\d+)(?:\.(\d+))?(?:e(.+))?$/.exec(number);
+        var digitsAfterDot = match[2] || '';
+        var digits = (match[1] + digitsAfterDot).replace(/^0+/, '');
+        var usefulDigits = digits.search(/0*$/);
+        var exp = (match[3] | 0) - digitsAfterDot.length + digits.length - usefulDigits;
+        var mantissa = getMantissa();
+        if (exp >= 0)
+        {
+            if (exp < 10)
+                str = mantissa + getExtraZeros(exp);
+            else
+                str = mantissa + 'e' + exp;
+        }
+        else
+        {
+            if (exp >= -mantissa.length)
+                str = mantissa.slice(0, exp) + '.' + mantissa.slice(exp);
+            else
+            {
+                var extraZeroCount = -mantissa.length - exp;
+                var extraLength = APPEND_LENGTH_OF_DOT + APPEND_LENGTH_OF_DIGIT_0 * extraZeroCount;
+                str =
+                    replaceNegativeExponential(mantissa, exp, extraLength) ||
+                    '.' + getExtraZeros(extraZeroCount) + mantissa;
+            }
+        }
+        return str;
+    }
+    
+    function getExtraZeros(count)
+    {
+        var extraZeros = Array(count + 1).join('0');
+        return extraZeros;
+    }
+    
+    function getMultiDigitLength(str)
+    {
+        var appendLength = 0;
+        array_prototype_forEach.call(
+            str,
+            function (digit)
+            {
+                var digitAppendLength = APPEND_LENGTH_OF_DIGITS[digit];
+                appendLength += digitAppendLength;
+            }
+        );
+        return appendLength;
     }
     
     function replaceIdentifier(encoder, identifier, bondStrength)
@@ -65,6 +145,32 @@ var resolveSimple;
         return replacement;
     }
     
+    function replaceNegativeExponential(mantissa, exp, rivalExtraLength)
+    {
+        var extraZeroCount;
+        if (exp % 100 > 7 - 100)
+        {
+            if (exp % 10 > -7)
+                extraZeroCount = 0;
+            else
+                extraZeroCount = 10 + exp % 10;
+        }
+        else
+            extraZeroCount = 100 + exp % 100;
+        mantissa += getExtraZeros(extraZeroCount);
+        exp -= extraZeroCount;
+        var extraLength =
+            APPEND_LENGTH_OF_DIGIT_0 * extraZeroCount +
+            APPEND_LENGTH_OF_SMALL_E +
+            APPEND_LENGTH_OF_MINUS +
+            getMultiDigitLength(-exp + '');
+        if (extraLength < rivalExtraLength)
+        {
+            var str = mantissa + 'e' + exp;
+            return str;
+        }
+    }
+    
     var STATIC_CHAR_CACHE = new Empty();
     var STATIC_CONST_CACHE = new Empty();
     
@@ -73,16 +179,20 @@ var resolveSimple;
     
     var quoteString = json_stringify;
     
-    DIGIT_APPEND_LENGTHS = [6, 8, 12, 17, 22, 27, 32, 37, 42, 47];
+    APPEND_LENGTH_OF_DIGIT_0    = 6;
+    APPEND_LENGTH_OF_PLUS_SIGN  = 71;
+    APPEND_LENGTH_OF_SMALL_E    = 26;
+    
+    APPEND_LENGTH_OF_DIGITS     = [APPEND_LENGTH_OF_DIGIT_0, 8, 12, 17, 22, 27, 32, 37, 42, 47];
     
     Encoder =
         function (mask)
         {
-            this.mask = mask;
-            this.charCache = new CharCache();
-            this.complexCache = new Empty();
-            this.constCache = new ConstCache();
-            this.stack = [];
+            this.mask           = mask;
+            this.charCache      = new CharCache();
+            this.complexCache   = new Empty();
+            this.constCache     = new ConstCache();
+            this.stack          = [];
         };
     
     var encoderProtoSource =
@@ -378,19 +488,20 @@ var resolveSimple;
                 {
                     if (typeof value === 'number' && !isNaN(value))
                     {
+                        var abs = math_abs(value);
                         var negative = value < 0 || 1 / value < 0;
                         var str;
-                        var abs = math_abs(value);
-                        if (abs === Infinity)
+                        if (abs === 0)
+                            str = '0';
+                        else if (abs === Infinity)
                             str = JSFUCK_INFINITY;
                         else
-                            str = (abs + '').replace(/^0(?=\.)|\+/, '');
+                            str = formatPositiveNumber(abs);
                         if (negative)
                             str = '-' + str;
-                        if (/^\d$/.test(str))
-                            output = STATIC_ENCODER.resolveCharacter(str) + '';
-                        else
-                            output = '+(' + replaceMultiDigitString(str) + ')';
+                        output = STATIC_ENCODER.replaceString(str);
+                        if (str.length > 1)
+                            output = '+(' + output + ')';
                         if (bondStrength)
                             output = '(' + output + ')';
                     }
@@ -616,6 +727,9 @@ var resolveSimple;
     
     assignNoEnum(Encoder.prototype, encoderProtoSource);
     
+    var APPEND_LENGTH_OF_DOT    = 73;
+    var APPEND_LENGTH_OF_MINUS  = 154;
+    
     var BOND_STRENGTH_NONE      = 0;
     var BOND_STRENGTH_WEAK      = 1;
     var BOND_STRENGTH_STRONG    = 2;
@@ -633,18 +747,10 @@ var resolveSimple;
             return replacement;
         };
     
-    replaceMultiDigitString =
-        function (str)
+    replaceMultiDigitNumber =
+        function (number)
         {
-            str =
-                str.replace(
-                    /0{10,}$/,
-                    function (match)
-                    {
-                        var result = 'e' + match.length;
-                        return result;
-                    }
-                );
+            var str = formatPositiveNumber(number);
             var replacement = STATIC_ENCODER.replaceString(str);
             return replacement;
         };

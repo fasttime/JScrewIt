@@ -1,40 +1,59 @@
 /*
 global
-DIGIT_APPEND_LENGTHS,
 LEVEL_STRING,
 Empty,
-array_prototype_forEach,
 createClusteringPlan,
 createSolution,
 math_min,
-replaceMultiDigitString,
+replaceMultiDigitNumber,
 */
 
 var createOptimizer;
 
 (function ()
 {
+    // Optimized clusters take the form:
+    //
+    // +(X)["toString"](Y)
+    //
+    // X takes at least DECIMAL_MIN_LENGTHS[maxDigits].
+    //
+    // Y takes at least RADIX_MIN_LENGTHS[minRadix].
+    //
+    // The leading append plus is omitted when the optimized cluster is the first element of a
+    // group.
+    
+    // DECIMAL_MIN_LENGTHS is indexed by maxDigits (the number of digits used to write
+    // MAX_SAFE_INTEGER in base minRadix).
+    // maxDigits may only range from 11 (for minRadix 12) to 15 (for minRadix 36).
+    var DECIMAL_MIN_LENGTHS =
+    [
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        48, // 1e10
+        50, // 1e11
+        54, // 1e12
+        59, // 1e13
+        64, // 1e14
+    ];
     var MAX_SAFE_INTEGER = 0x1fffffffffffff;
     var MIN_CLUSTER_LENGTH = 2;
+    var RADIX_MIN_LENGTHS = [];
+    var RADIX_REPLACEMENTS = [];
     
     function getMinRadix(char)
     {
         var minRadix = parseInt(char, 36) + 1;
         return minRadix;
-    }
-    
-    function getMultiDigitLength(str)
-    {
-        var appendLength = -3;
-        array_prototype_forEach.call(
-            str,
-            function (digit)
-            {
-                var digitAppendLength = DIGIT_APPEND_LENGTHS[digit];
-                appendLength += digitAppendLength;
-            }
-        );
-        return appendLength;
     }
     
     function isClusterable(solution)
@@ -54,8 +73,8 @@ var createOptimizer;
                 {
                     var data = cluster.data;
                     var replacement =
-                        '(+(' + replaceMultiDigitString(data.decimal) + '))[' +
-                        toStringReplacement + '](' + replaceMultiDigitString(data.radix) + ')';
+                        '(+(' + data.decimalReplacement + '))[' + toStringReplacement + '](' +
+                        data.radixReplacement + ')';
                     var solution = createSolution(replacement, LEVEL_STRING, false);
                     solutions.splice(cluster.start, cluster.length, solution);
                 }
@@ -80,7 +99,14 @@ var createOptimizer;
                 {
                     var minRadix = getMinRadix(char);
                     var maxDigits = MAX_SAFE_INTEGER.toString(minRadix).length;
-                    var partLength = (clusterBaseLength + (15 - 1)) / maxDigits + 6 | 0;
+                    var partLength =
+                        (
+                            clusterBaseLength +
+                            DECIMAL_MIN_LENGTHS[maxDigits] +
+                            RADIX_MIN_LENGTHS[minRadix]
+                        ) /
+                        maxDigits |
+                        0;
                     optimizedLengthCache[char] = optimizedLength =
                         math_min(appendLength, partLength);
                 }
@@ -96,15 +122,20 @@ var createOptimizer;
                 var decimal = parseInt(chars, radix);
                 if (decimal > MAX_SAFE_INTEGER)
                     return clusterAppendLength == null;
-                var decimalStr = decimal + '';
-                var radixStr = radix + '';
-                var decimalLength = getMultiDigitLength(decimalStr);
-                var radixLength = getMultiDigitLength(radixStr);
+                var decimalReplacement = replaceMultiDigitNumber(decimal);
+                // Adding 3 for leading "+(" and trailing ")".
+                var decimalLength = decimalReplacement.length + 3;
+                var radixReplacement = RADIX_REPLACEMENTS[radix];
+                var radixLength = radixReplacement.length;
                 var clusterAppendLength = clusterBaseLength + decimalLength + radixLength;
                 var saving = discreteAppendLength - clusterAppendLength;
                 if (saving >= 0)
                 {
-                    var data = { decimal: decimalStr, radix: radixStr };
+                    var data =
+                    {
+                        decimalReplacement: decimalReplacement,
+                        radixReplacement:   radixReplacement
+                    };
                     plan.addCluster(start, chars.length, data, saving);
                 }
             }
@@ -181,13 +212,8 @@ var createOptimizer;
             applyPlan(plan, solutions);
         }
         
-        // Optimized clusters take the form:
-        //
-        // +(+(X))["toString"](Y)
-        //
-        // X takes at least 5 chars for the first digit and 6 for other digits.
-        // Y takes at least 15 chars for "20".
-        var clusterBaseLength = toStringReplacement.length + 10;
+        // Adding 7 for "+(", ")[", "](" and ")"
+        var clusterBaseLength = toStringReplacement.length + 7;
         var optimizedLengthCache = new Empty();
         var optimizer =
             { optimizeAppendLength: optimizeAppendLength, optimizeSolutions: optimizeSolutions };
@@ -201,5 +227,20 @@ var createOptimizer;
             var optimizer = subCreateOptimizer(toStringReplacement);
             return optimizer;
         };
+    
+    (function ()
+    {
+        var minLength = Infinity;
+        for (var radix = 36; radix >= 12; --radix)
+        {
+            var replacement = replaceMultiDigitNumber(radix);
+            var length = replacement.length;
+            if (length < minLength)
+                minLength = length;
+            RADIX_REPLACEMENTS[radix] = replacement;
+            RADIX_MIN_LENGTHS[radix] = minLength;
+        }
+    }
+    )();
 }
 )();
