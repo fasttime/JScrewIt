@@ -2,7 +2,9 @@
 global
 AMENDINGS,
 CREATE_PARSE_INT_ARG,
-DIGIT_APPEND_LENGTHS,
+APPEND_LENGTH_OF_DIGITS,
+APPEND_LENGTH_OF_DIGIT_0,
+APPEND_LENGTH_OF_PLUS_SIGN,
 FROM_CHAR_CODE,
 FROM_CHAR_CODE_CALLBACK_FORMATTER,
 MAPPER_FORMATTER,
@@ -42,7 +44,7 @@ var wrapWithEval;
         }
         
         var index;
-        var digitAppendLengths = DIGIT_APPEND_LENGTHS.slice(0, radix || 10);
+        var digitAppendLengths = APPEND_LENGTH_OF_DIGITS.slice(0, radix || 10);
         var regExp;
         var replacer;
         if (amendings)
@@ -582,14 +584,11 @@ var wrapWithEval;
         
         encodeByDict: function (inputData, radix, amendings, maxLength)
         {
-            var APPEND_LENGTH_OF_DIGIT_ZERO = 6;
-            var APPEND_LENGTH_OF_PLUS_SIGN = 71;
-            
             var input = inputData.valueOf();
             var freqList = getFrequencyList(inputData);
             var coerceToInt =
                 freqList.length &&
-                freqList[0].count * APPEND_LENGTH_OF_DIGIT_ZERO > APPEND_LENGTH_OF_PLUS_SIGN;
+                freqList[0].count * APPEND_LENGTH_OF_DIGIT_0 > APPEND_LENGTH_OF_PLUS_SIGN;
             var reindexMap = createReindexMap(freqList.length, radix, amendings, coerceToInt);
             var charMap = new Empty();
             var minCharIndexArrayStrLength = initMinFalseFreeCharIndexArrayStrLength(input);
