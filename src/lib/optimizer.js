@@ -16,43 +16,23 @@ var createOptimizer;
     //
     // +(X)["toString"](Y)
     //
-    // X takes at least DECIMAL_MIN_LENGTHS[maxDigits].
+    // X is a JSFuck integer between 23 and MAX_SAFE_INTEGER.
     //
-    // Y takes at least RADIX_MIN_LENGTHS[minRadix].
+    // Y takes at least 15 charactes for "20" and at most 46 characters for "36".
     //
     // The leading append plus is omitted when the optimized cluster is the first element of a
     // group.
     
-    // DECIMAL_MIN_LENGTHS is indexed by maxDigits (the number of digits used to write
-    // MAX_SAFE_INTEGER in base minRadix).
-    // maxDigits may only range from 11 (for minRadix 12) to 15 (for minRadix 36).
-    var DECIMAL_MIN_LENGTHS =
-    [
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        48, // 1e10
-        50, // 1e11
-        54, // 1e12
-        59, // 1e13
-        64, // 1e14
-    ];
+    var CLUSTER_EXTRA_LENGTHS = [];
+    var DECIMAL_DIGIT_MAX_COUNTS = [];
+    var MAX_RADIX = 36;
     var MAX_SAFE_INTEGER = 0x1fffffffffffff;
     var MIN_CLUSTER_LENGTH = 2;
-    var RADIX_MIN_LENGTHS = [];
     var RADIX_REPLACEMENTS = [];
     
     function getMinRadix(char)
     {
-        var minRadix = parseInt(char, 36) + 1;
+        var minRadix = parseInt(char, MAX_RADIX) + 1;
         return minRadix;
     }
     
@@ -98,15 +78,10 @@ var createOptimizer;
                 if (optimizedLength == null)
                 {
                     var minRadix = getMinRadix(char);
-                    var maxDigits = MAX_SAFE_INTEGER.toString(minRadix).length;
+                    var clusterExtraLength = CLUSTER_EXTRA_LENGTHS[minRadix];
+                    var decimalDigitMaxCount = DECIMAL_DIGIT_MAX_COUNTS[minRadix];
                     var partLength =
-                        (
-                            clusterBaseLength +
-                            DECIMAL_MIN_LENGTHS[maxDigits] +
-                            RADIX_MIN_LENGTHS[minRadix]
-                        ) /
-                        maxDigits |
-                        0;
+                        (clusterBaseLength + clusterExtraLength) / decimalDigitMaxCount | 0;
                     optimizedLengthCache[char] = optimizedLength =
                         math_min(appendLength, partLength);
                 }
@@ -139,7 +114,7 @@ var createOptimizer;
                     plan.addCluster(start, chars.length, data, saving);
                 }
             }
-            while (++radix <= 36);
+            while (++radix <= MAX_RADIX);
         }
         
         function optimizeClusters(plan, solutions, start, maxClusterLength, bond)
@@ -230,15 +205,40 @@ var createOptimizer;
     
     (function ()
     {
+        // DECIMAL_MIN_LENGTHS is indexed by decimalDigitMaxCount (the number of digits used to
+        // write MAX_SAFE_INTEGER in base radix).
+        // decimalDigitMaxCount may only range from 11 (for radix 36) to 15 (for radix 12).
+        var DECIMAL_MIN_LENGTHS =
+        [
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            48, // 1e10
+            50, // 1e11
+            54, // 1e12
+            ,
+            64, // 1e14
+        ];
+        
         var minLength = Infinity;
-        for (var radix = 36; radix >= 12; --radix)
+        for (var radix = MAX_RADIX; radix >= 12; --radix)
         {
             var replacement = replaceMultiDigitNumber(radix);
             var length = replacement.length;
             if (length < minLength)
                 minLength = length;
             RADIX_REPLACEMENTS[radix] = replacement;
-            RADIX_MIN_LENGTHS[radix] = minLength;
+            var decimalDigitMaxCount = DECIMAL_DIGIT_MAX_COUNTS[radix] =
+                MAX_SAFE_INTEGER.toString(radix).length;
+            CLUSTER_EXTRA_LENGTHS[radix] = DECIMAL_MIN_LENGTHS[decimalDigitMaxCount] + minLength;
         }
     }
     )();
