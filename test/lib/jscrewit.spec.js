@@ -454,7 +454,7 @@ uneval,
                                 test(
                                     'numbers with 10 trailing zeros',
                                     '10000000000',
-                                    '+(1+*+(1)+(0))',
+                                    '+(*+(1)+(0))',
                                     10000000000
                                 );
                                 test(
@@ -484,31 +484,31 @@ uneval,
                                 test(
                                     'numbers represented with a power of 10 exponent',
                                     '1e-37',
-                                    '+(1+*+(4)+(0))',
+                                    '+(1+[0]+*+(4)+(0))',
                                     1e-37
                                 );
                                 test(
                                     'numbers represented with a non power of 10 exponent',
                                     '1e-36',
-                                    '+(1+*+(3)+(6))',
+                                    '+(1+(*)[*]+*+(3)+(6))',
                                     1e-36
                                 );
                                 test(
                                     'numbers represented with a power of 100 exponent',
                                     '1e-293',
-                                    '+(1+*+(3)+(0)+(0))',
+                                    '+(1+[0]+*+(3)+(0)+(0))',
                                     1e-293
                                 );
                                 test(
                                     'numbers represented with a non power of 100 exponent',
                                     '1e-292',
-                                    '+(1+*+(2)+(9)+(2))',
+                                    '+(1+(*)[*]+*+(2)+(9)+(2))',
                                     1e-292
                                 );
                                 test(
                                     'numbers with decrementable last digit',
                                     '5e-324',
-                                    '+(3+*+(3)+(2)+(4))',
+                                    '+(3+(*)[*]+*+(3)+(2)+(4))',
                                     5e-324
                                 );
                                 test('-Infinity', '-Infinity', '+(*)', -Infinity);
