@@ -396,7 +396,7 @@ uneval,
                                                 .replace(/1/g, '+!![]')
                                                 .replace(/[2-9]/g, twoToNineReplacer)
                                                 .replace(/(?=[^!*])/g, '\\')
-                                                .replace(/(?=\*)/g, '.') +
+                                                .replace(/\*/g, ASTERISK_REPLACEMENT) +
                                                 '$';
                                             var expectedRegExp = RegExp(regExpPattern);
                                             expect(actual).toMatch(expectedRegExp);
@@ -405,6 +405,20 @@ uneval,
                                         }
                                     );
                                 }
+                                
+                                var ASTERISK_REPLACEMENT =
+                                    (
+                                    function ()
+                                    {
+                                        var DEPTH = 13;
+                                        
+                                        var replacement =
+                                            repeat('(?:[+!]|[([]', DEPTH) +
+                                            '[+!]*' +
+                                            repeat('[)\\]])*', DEPTH);
+                                        return replacement;
+                                    }
+                                    )();
                                 
                                 // General
                                 test('an empty script', ';\n', '');
