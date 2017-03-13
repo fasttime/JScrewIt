@@ -200,8 +200,7 @@ gulp.task(
         
         var uglifyOpts =
         {
-            compress:
-            { collapse_vars: true, global_defs: { DEBUG: false }, hoist_vars: true },
+            compress: { global_defs: { DEBUG: false }, hoist_vars: true },
             preserveComments: function (node, comment)
             {
                 return comment.pos === 0;
@@ -257,7 +256,7 @@ gulp.task(
             'src/html/tabindex.js',
             'src/html/ui-main.js'
         ];
-        var uglifyOpts = { compress: { collapse_vars: true, hoist_vars: true } };
+        var uglifyOpts = { compress: { hoist_vars: true } };
         var stream =
             gulp
             .src(SRC)
