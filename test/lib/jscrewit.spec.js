@@ -407,8 +407,7 @@ uneval,
                                 }
                                 
                                 var ASTERISK_REPLACEMENT =
-                                    (
-                                    function ()
+                                    (function ()
                                     {
                                         var DEPTH = 13;
                                         

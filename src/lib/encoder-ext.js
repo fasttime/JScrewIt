@@ -193,7 +193,7 @@ var wrapWithEval;
                 var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
                 return output;
             },
-            39
+            34
         ),
         byDenseFigures: defineCoder
         (
@@ -202,7 +202,7 @@ var wrapWithEval;
                 var output = this.encodeByDenseFigures(inputData, maxLength);
                 return output;
             },
-            4717
+            2434
         ),
         byDict: defineCoder
         (
@@ -220,7 +220,7 @@ var wrapWithEval;
                 var output = this.encodeByDict(inputData, 3, 0, maxLength);
                 return output;
             },
-            349
+            245
         ),
         byDictRadix4: defineCoder
         (
@@ -229,7 +229,7 @@ var wrapWithEval;
                 var output = this.encodeByDict(inputData, 4, 0, maxLength);
                 return output;
             },
-            195
+            190
         ),
         byDictRadix4AmendedBy1: defineCoder
         (
@@ -238,7 +238,7 @@ var wrapWithEval;
                 var output = this.encodeByDict(inputData, 4, 1, maxLength);
                 return output;
             },
-            358
+            346
         ),
         byDictRadix4AmendedBy2: defineCoder
         (
@@ -247,7 +247,16 @@ var wrapWithEval;
                 var output = this.encodeByDict(inputData, 4, 2, maxLength);
                 return output;
             },
-            676
+            655
+        ),
+        byDictRadix5AmendedBy2: defineCoder
+        (
+            function (inputData, maxLength)
+            {
+                var output = this.encodeByDict(inputData, 5, 2, maxLength);
+                return output;
+            },
+            767
         ),
         byDictRadix5AmendedBy3: defineCoder
         (
@@ -256,7 +265,7 @@ var wrapWithEval;
                 var output = this.encodeByDict(inputData, 5, 3, maxLength);
                 return output;
             },
-            783
+            805
         ),
         bySparseFigures: defineCoder
         (
@@ -265,7 +274,7 @@ var wrapWithEval;
                 var output = this.encodeBySparseFigures(inputData, maxLength);
                 return output;
             },
-            410
+            339
         ),
         express: defineCoder
         (
@@ -685,6 +694,7 @@ var wrapWithEval;
                         'byDenseFigures',
                         'bySparseFigures',
                         'byDictRadix5AmendedBy3',
+                        'byDictRadix5AmendedBy2',
                         'byDictRadix4AmendedBy2',
                         'byDictRadix4AmendedBy1',
                         'byDictRadix3',
