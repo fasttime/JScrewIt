@@ -375,6 +375,12 @@ uneval,
                             'encodes',
                             function ()
                             {
+                                function twoToNineReplacer(digit)
+                                {
+                                    var replacement = '!![]' + repeat('+!![]', digit - 1);
+                                    return replacement;
+                                }
+                                
                                 function test(description, input, expectedPattern, expectedValue)
                                 {
                                     it(
@@ -386,8 +392,11 @@ uneval,
                                             var regExpPattern =
                                                 '^' +
                                                 expectedPattern
+                                                .replace(/0/g, '+[]')
+                                                .replace(/1/g, '+!![]')
+                                                .replace(/[2-9]/g, twoToNineReplacer)
                                                 .replace(/(?=[^!*])/g, '\\')
-                                                .replace(/(?=\*)/g, '.') +
+                                                .replace(/\*/g, ASTERISK_REPLACEMENT) +
                                                 '$';
                                             var expectedRegExp = RegExp(regExpPattern);
                                             expect(actual).toMatch(expectedRegExp);
@@ -396,6 +405,19 @@ uneval,
                                         }
                                     );
                                 }
+                                
+                                var ASTERISK_REPLACEMENT =
+                                    (function ()
+                                    {
+                                        var DEPTH = 13;
+                                        
+                                        var replacement =
+                                            repeat('(?:[+!]|[([]', DEPTH) +
+                                            '[+!]*' +
+                                            repeat('[)\\]])*', DEPTH);
+                                        return replacement;
+                                    }
+                                    )();
                                 
                                 // General
                                 test('an empty script', ';\n', '');
@@ -417,46 +439,102 @@ uneval,
                                 test('double-quoted strings', '"He\\x6c\\u006Co!"', '*', 'Hello!');
                                 test('single-quoted strings', '\'Hel\\\r\nlo\\0\'', '*', 'Hello\0');
                                 test('empty arrays', '[]', '[]');
-                                test('singleton arrays', '[0]', '[+[]]');
-                                test('sums', '1+1', '+!![]+(+!![])');
+                                test('singleton arrays', '[0]', '[0]');
+                                test('sums', '1+1', '1+(1)');
                                 
-                                // Numbers and constants
-                                test('Infinity', 'Infinity', '+(*)', Infinity);
-                                test('NaN', 'NaN', '+[![]]');
+                                // Boolean and undefined literals
                                 test('false', 'false', '![]');
                                 test('true', 'true', '!![]');
                                 test('undefined', 'undefined', '[][[]]');
+                                
+                                // Numeric expressions
+                                test('Infinity', 'Infinity', '+(*)', Infinity);
+                                test('NaN', 'NaN', '+[![]]');
                                 test('hexadecimal literals', '0x1Fa', '+(*)', 506);
                                 test('signed numbers', '+42', '+(*)', 42);
                                 test(
                                     'numbers with absolute value part starting with "0."',
                                     '-0.9',
-                                    '+((*)[*]+(*)[*]+*)',
+                                    '+((*)[*]+(*)[*]+(9))',
                                     -0.9
                                 );
                                 test(
-                                    'numbers with a positive exponent',
-                                    '1e+100',
-                                    '+(+!![]+(!![]+[])[!![]+!![]+!![]]+(+!![])+(+[])+(+[]))',
-                                    1e+100
+                                    'numbers with 9 trailing zeros',
+                                    '1000000000',
+                                    '+(1+[0]+(0)+(0)+(0)+(0)+(0)+(0)+(0)+(0))',
+                                    1000000000
                                 );
                                 test(
-                                    'numbers with many trailing zeros',
+                                    'numbers with 10 trailing zeros',
                                     '10000000000',
-                                    '+(+!![]+(!![]+[])[!![]+!![]+!![]]+(+!![])+(+[]))',
+                                    '+(*+(1)+(0))',
                                     10000000000
                                 );
+                                test(
+                                    'numbers with dot above 1',
+                                    '12.12',
+                                    '+(1+[2]+*+(1)+(2))',
+                                    12.12
+                                );
+                                test(
+                                    'numbers with dot below 1',
+                                    '0.123',
+                                    '+(*+(1)+(2)+(3))',
+                                    0.123
+                                );
+                                test(
+                                    'numbers below 0.1 represented with a dot',
+                                    '123e-27',
+                                    '+(*+(1)+(2)+(3))',
+                                    123e-27
+                                );
+                                test(
+                                    'numbers below 0.1 represented in expontential notation',
+                                    '123e-28',
+                                    '+(1+[2]+(3)+(0)+(0)+*+(3)+(0))',
+                                    123e-28
+                                );
+                                test(
+                                    'numbers represented with a power of 10 exponent',
+                                    '1e-37',
+                                    '+(1+[0]+*+(4)+(0))',
+                                    1e-37
+                                );
+                                test(
+                                    'numbers represented with a non power of 10 exponent',
+                                    '1e-36',
+                                    '+(1+(*)[*]+*+(3)+(6))',
+                                    1e-36
+                                );
+                                test(
+                                    'numbers represented with a power of 100 exponent',
+                                    '1e-293',
+                                    '+(1+[0]+*+(3)+(0)+(0))',
+                                    1e-293
+                                );
+                                test(
+                                    'numbers represented with a non power of 100 exponent',
+                                    '1e-292',
+                                    '+(1+(*)[*]+*+(2)+(9)+(2))',
+                                    1e-292
+                                );
+                                test(
+                                    'numbers with decrementable last digit',
+                                    '5e-324',
+                                    '+(3+(*)[*]+*+(3)+(2)+(4))',
+                                    5e-324
+                                );
                                 test('-Infinity', '-Infinity', '+(*)', -Infinity);
-                                test('-0', '-0', '+(*)', -0);
+                                test('-0', '-0', '+(*+(0))', -0);
                                 test('-NaN', '-NaN', '+[![]]');
                                 
                                 // Arrays
-                                test('nested arrays', '[[0]]', '[[+[]]]');
+                                test('nested arrays', '[[0]]', '[[0]]');
                                 
                                 // Operations
                                 test('indexers', 'false[+x]', '(![])[+*]');
-                                test('undefined indexers', '0[undefined]', '(+[])[[][[]]]');
-                                test('array of undefined indexers', '0[[undefined]]', '(+[])[[]]');
+                                test('undefined indexers', '0[undefined]', '(0)[[][[]]]');
+                                test('array of undefined indexers', '0[[undefined]]', '(0)[[]]');
                                 test('dot properties', 'Array.isArray', '*(*)()[*]', Array.isArray);
                                 test(
                                     'dot properties with constant-like names',
@@ -484,25 +562,25 @@ uneval,
                                     '(!x)()',
                                     '(!*)()'
                                 );
-                                test('redundant modifiers on constants', '-+ +-!!!+!!42', '+[]');
+                                test('redundant modifiers on constants', '-+ +-!!!+!!42', '0');
                                 test(
                                     'redundant modifiers on non-constants',
                                     '-+ +-!!!-!!+ ++!+""[0]++',
-                                    '+!++!([]+[])[+[]]++'
+                                    '+!++!([]+[])[0]++'
                                 );
                                 
                                 // Groupings
                                 test(
                                     'superfluous grouping parentheses',
                                     '(((a)())([([])])[(+(1)-(+2))].b)',
-                                    '*(*)()()([[]])[+!![]+(+*)][*]'
+                                    '*(*)()()([[]])[1+(+*)][*]'
                                 );
                                 
                                 // Separators
                                 test(
                                     'superfluous separators',
                                     ';a ( ) ( ( [ [ ] ] ) ) [ + 1 - + 2 ] . b;',
-                                    '*(*)()()([[]])[+!![]+(+*)][*]'
+                                    '*(*)()()([[]])[1+(+*)][*]'
                                 );
                                 
                                 // Concatenations
@@ -515,56 +593,49 @@ uneval,
                                 test(
                                     'concatenations of properties of a concatenation',
                                     '(![]+[])[0]+[]',
-                                    '(![]+[])[+[]]+[]',
+                                    '(![]+[])[0]+[]',
                                     'f'
                                 );
                                 
                                 // Sums
-                                test('dissociable sums', '(0+1)+2', '+[]+(+!![])+(!![]+!![])');
-                                test('undissociable sums', '0+(1+2)', '+[]+(+!![]+(!![]+!![]))');
-                                test(
-                                    'sums of modified sums',
-                                    '0+(+(1+2))',
-                                    '+[]+(+(+!![]+(!![]+!![])))'
-                                );
+                                test('dissociable sums', '(0+1)+2', '0+(1)+(2)');
+                                test('undissociable sums', '0+(1+2)', '0+(1+(2))');
+                                test('sums of modified sums', '0+(+(1+2))', '0+(+(1+(2)))');
                                 
                                 // Subtractions
-                                test('string minuhends', '"false" - - 1', '+(![]+[])+(+!![])');
-                                test('', '1+1-(-1)', '+!![]+(+!![])+(+!![])');
+                                test('string minuhends', '"false" - - 1', '+(![]+[])+(1)');
+                                test('', '1+1-(-1)', '1+(1)+(1)');
                                 
                                 // Pre-increments
                                 test('pre-incremented call expression', '++false()', '++(![])()');
-                                test(
-                                    'pre-incremented left-hand expression',
-                                    '++[][0]',
-                                    '++[][+[]]'
-                                );
+                                test('pre-incremented left-hand expression', '++[][0]', '++[][0]');
                                 
                                 // Post-increments
-                                test('post-increments', '[0][0]++', '[+[]][+[]]++');
+                                test('post-increments', '[0][0]++', '[0][0]++');
                                 test(
-                                    'post-increments separated by a space', '[0][0] ++',
-                                    '[+[]][+[]]++'
+                                    'post-increments separated by a space',
+                                    '[0][0] ++',
+                                    '[0][0]++'
                                 );
                                 test(
                                     'post-increments separated by a one-line multi-line comment',
                                     '[0][0]/**/++',
-                                    '[+[]][+[]]++'
+                                    '[0][0]++'
                                 );
                                 test(
                                     'modified grouped post-increments',
                                     '!([0][0]++)',
-                                    '![+[]][+[]]++'
+                                    '![0][0]++'
                                 );
                                 test(
                                     'grouped post-increments with operators',
                                     '([0].a++)[0]',
-                                    '([+[]][(![]+[])[+!![]]]++)[+[]]'
+                                    '([0][(![]+[])[+!![]]]++)[0]'
                                 );
                                 test(
                                     'Post-increment arithmetic subtraction',
                                     '[0][0]++ - 1',
-                                    '[+[]][+[]]+++*',
+                                    '[0][0]+++*',
                                     -1
                                 );
                                 
@@ -1093,6 +1164,17 @@ uneval,
                 );
                 
                 it(
+                    'optimizes clusters',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var actual = encoder.encodeExpress('"xx".ww');
+                        var expected =
+                            encoder.replaceExpr('(1221..toString("36"))[1120..toString("34")]');
+                        expect(actual).toBe(expected);
+                    }
+                );
+                it(
                     'writes into codingLog',
                     function ()
                     {
@@ -1128,6 +1210,17 @@ uneval,
             'Encoder#replaceString',
             function ()
             {
+                it(
+                    'supports toString clustering',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var actual = encoder.replaceString('zz', true);
+                        var expected = encoder.replaceExpr('1295..toString("36")');
+                        expect(actual).toBe(expected);
+                    }
+                );
+                
                 describe(
                     'supports bridging',
                     function ()
@@ -1149,7 +1242,8 @@ uneval,
                                     'with no bond and no string forcing',
                                     function ()
                                     {
-                                        var output = encoder.replaceString(expr, false, false);
+                                        var output =
+                                            encoder.replaceString(expr, true, false, false);
                                         expect(output).toStartWith(start0);
                                         expect(output).toEndWith(end0);
                                     }
@@ -1158,7 +1252,7 @@ uneval,
                                     'with bond and no string forcing',
                                     function ()
                                     {
-                                        var output = encoder.replaceString(expr, true, false);
+                                        var output = encoder.replaceString(expr, true, true, false);
                                         expect(output).toStartWith(startSB);
                                         expect(output).toEndWith(endSB);
                                     }
@@ -1167,7 +1261,7 @@ uneval,
                                     'with no bond and string forcing',
                                     function ()
                                     {
-                                        var output = encoder.replaceString(expr, false, true);
+                                        var output = encoder.replaceString(expr, true, false, true);
                                         expect(output).toStartWith(startFS);
                                         expect(output).toEndWith(endFS);
                                     }
@@ -1176,7 +1270,7 @@ uneval,
                                     'with bond and string forcing',
                                     function ()
                                     {
-                                        var output = encoder.replaceString(expr, true, true);
+                                        var output = encoder.replaceString(expr, true, true, true);
                                         expect(output).toStartWith(startSBFS);
                                         expect(output).toEndWith(endSBFS);
                                     }
@@ -1273,6 +1367,7 @@ uneval,
                         );
                     }
                 );
+                
                 it(
                     'returns undefined for too complex input',
                     function ()
@@ -1669,8 +1764,9 @@ uneval,
                     function ()
                     {
                         var encoder = getPoolEncoder(Feature.ATOB);
-                        var solution = encoder.defaultResolveCharacter(char);
+                        var solution = encoder.resolveCharacter(char);
                         verifySolution(solution, char, featureSet.ATOB && ['ATOB']);
+                        expect(solution.char).toBe(char);
                         expect(solution.length).not.toBeGreaterThan(
                             getPoolEncoder(Feature.DEFAULT).resolveCharacter(char).length
                         );
@@ -1746,8 +1842,10 @@ uneval,
                 function testEntry(entry, index)
                 {
                     var featureObj = getEntryFeature(entry);
-                    var usingDefaultFeature = Feature.DEFAULT.includes(featureObj);
-                    defaultEntryFound |= usingDefaultFeature;
+                    if (Feature.DEFAULT.includes(featureObj))
+                        defaultEntryFound = true;
+                    if (Feature.ATOB.includes(featureObj))
+                        atobEntryFound = true;
                     emuIt(
                         '(definition ' + index + ')',
                         featureObj,
@@ -1792,7 +1890,8 @@ uneval,
                         function ()
                         {
                             var encoder = getPoolEncoder(Feature.DEFAULT);
-                            var solution = encoder.defaultResolveCharacter(char);
+                            var solution = encoder.resolveCharacter(char);
+                            expect(solution.char).toBe(char);
                             verifySolution(solution, char);
                         }
                     );
@@ -1800,13 +1899,13 @@ uneval,
                 if (entries)
                 {
                     var defaultEntryFound = false;
+                    var atobEntryFound = false;
                     if (entries)
                         entries.forEach(testEntry);
                     if (!defaultEntryFound)
-                    {
                         testDefault();
+                    if (!atobEntryFound)
                         testAtob();
-                    }
                 }
                 else
                 {

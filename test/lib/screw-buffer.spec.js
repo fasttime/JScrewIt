@@ -228,7 +228,16 @@
                 'encodes a string with multiple bridges',
                 function ()
                 {
-                    var buffer = createScrewBuffer(false, true, 4);
+                    var optimizer =
+                    {
+                        optimizeAppendLength: function (solution)
+                        {
+                            return solution.appendLength;
+                        },
+                        optimizeSolutions: function ()
+                        { }
+                    };
+                    var buffer = createScrewBuffer(false, true, 4, optimizer);
                     for (var index = 0; index < 5; ++index)
                         buffer.append(solutionComma);
                     test(

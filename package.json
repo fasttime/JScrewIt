@@ -1,6 +1,6 @@
 {
   "name": "jscrewit",
-  "version": "2.5.2",
+  "version": "2.6.0",
   "description": "Converts plain JavaScript into JSFuck code, which consists of only six different characters: ! ( ) + [ ]",
   "keywords": [
     "esoteric",
@@ -46,7 +46,7 @@
     "gulp-rename": "~1.2.2",
     "gulp-replace": "~0.5.4",
     "gulp-spawn-mocha": "~3.1.0",
-    "gulp-uglify": "~2.0.1",
+    "gulp-uglify": "~2.1.0",
     "gulp-util": "~3.0.8",
     "istanbul": "~0.4.5",
     "jsdoc-to-markdown": "~3.0.0",
