@@ -1,4 +1,4 @@
-/* global Empty, array_prototype_push */
+/* global APPEND_LENGTH_OF_DIGIT_0, APPEND_LENGTH_OF_SMALL_E, Empty, array_prototype_push */
 
 function createFigurator(startValues, joiner)
 {
@@ -70,33 +70,33 @@ function createFigurator(startValues, joiner)
     
     var PARTS =
     [
-        createPart('',          0,  false),
-        createPart('false',     4,  true),
-        createPart('true',      5,  true),
-        createPart('0',         6,  true),
-        createPart('undefined', 7,  true),
-        createPart('1',         8,  true),
-        createPart('NaN',       9,  true),
-        createPart('2',         12, true),
-        createPart('f',         14, false),
-        createPart('t',         15, false),
-        createPart('a',         16, false),
-        createPart('3',         17, true),
-        createPart('N',         17, false),
-        createPart('r',         17, false),
-        createPart('u',         17, false),
-        createPart('n',         19, false),
-        createPart('l',         20, false),
-        createPart('4',         22, true),
-        createPart('d',         23, false),
-        createPart('s',         25, false),
-        createPart('e',         26, false),
-        createPart('5',         27, true),
-        createPart('i',         28, false),
-        createPart('6',         32, true),
-        createPart('7',         37, true),
-        createPart('8',         42, true),
-        createPart('9',         47, true),
+        createPart('',          0,                          false),
+        createPart('false',     4,                          true),
+        createPart('true',      5,                          true),
+        createPart('0',         APPEND_LENGTH_OF_DIGIT_0,   true),
+        createPart('undefined', 7,                          true),
+        createPart('1',         8,                          true),
+        createPart('NaN',       9,                          true),
+        createPart('2',         12,                         true),
+        createPart('f',         14,                         false),
+        createPart('t',         15,                         false),
+        createPart('a',         16,                         false),
+        createPart('3',         17,                         true),
+        createPart('N',         17,                         false),
+        createPart('r',         17,                         false),
+        createPart('u',         17,                         false),
+        createPart('n',         19,                         false),
+        createPart('l',         20,                         false),
+        createPart('4',         22,                         true),
+        createPart('d',         23,                         false),
+        createPart('s',         25,                         false),
+        createPart('e',         APPEND_LENGTH_OF_SMALL_E,   false),
+        createPart('5',         27,                         true),
+        createPart('i',         28,                         false),
+        createPart('6',         32,                         true),
+        createPart('7',         37,                         true),
+        createPart('8',         42,                         true),
+        createPart('9',         47,                         true),
     ];
     
     var currentSortLength = 0;
