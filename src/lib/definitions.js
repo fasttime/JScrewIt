@@ -211,6 +211,11 @@ var createParseIntArgDefault;
         return result;
     }
     
+    function charEncodeByCharCode(charCode)
+    {
+        return this.replaceExpr('String.fromCharCode("' + charCode + '")', true);
+    }
+
     function charEncodeByUnescape16(charCode)
     {
         var hexCode = this.hexCodeOf(charCode, 4);
@@ -1447,6 +1452,7 @@ var createParseIntArgDefault;
     DEFAULT_16_BIT_CHARACTER_ENCODER =
     [
         define(charEncodeByUnescape16),
+        define(charEncodeByCharCode, CAPITAL_HTML),
         define(charEncodeByEval, ATOB),
         define(charEncodeByEval, UNEVAL)
     ];
@@ -1454,9 +1460,10 @@ var createParseIntArgDefault;
     DEFAULT_8_BIT_CHARACTER_ENCODER =
     [
         define(charEncodeByUnescape8),
+        define(charEncodeByCharCode, CAPITAL_HTML),
         define(charEncodeByAtob, ATOB)
     ];
-    
+ 
     FROM_CHAR_CODE =
     [
         define('fromCharCode'),
