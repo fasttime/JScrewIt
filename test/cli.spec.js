@@ -6,6 +6,67 @@ var assert = require('assert');
 var cli = require('../tools/cli');
 
 describe(
+    'screw.js',
+    function ()
+    {
+        var exec = require('child_process').exec;
+        
+        function doAssert(actual, expected)
+        {
+            if (expected instanceof RegExp)
+                assert(expected.test(actual), 'expected "' + actual + '" to match ' + expected);
+            else
+                assert.strictEqual(actual, expected);
+        }
+        
+        function test(description, command, expectedStdout, expectedStderr)
+        {
+            it(
+                description,
+                function (done)
+                {
+                    exec(
+                        command,
+                        null,
+                        function (error, stdout, stderr)
+                        {
+                            doAssert(stdout, expectedStdout);
+                            doAssert(stderr, expectedStderr);
+                            done(error);
+                        }
+                    );
+                }
+            );
+        }
+        
+        test(
+            'shows the help message with option "--help"',
+            'node ./screw.js --help',
+            /^Usage: screw.js [^]*\n$/,
+            ''
+        );
+        test(
+            'shows an error message with an invalid option',
+            'node ./screw.js --foo',
+            '',
+            'screw.js: unrecognized option "--foo".\nTry "screw.js --help" for more information.\n'
+        );
+        test(
+            'shows an error message when an invalid feature is specified',
+            'node ./screw.js -f FOO',
+            '',
+            'Unknown feature "FOO"\n'
+        );
+        test(
+            'shows an error message when the input file does not exist',
+            'node ./screw.js ""',
+            '',
+            /^ENOENT\b. no such file or directory\b.* ''\n$/
+        );
+    }
+);
+
+describe(
     'parseCommandLine returns expected results with params',
     function ()
     {
@@ -234,6 +295,19 @@ describe(
                 assert.strictEqual(actual, expected);
             }
         );
+        it(
+            'when original size is 0',
+            function ()
+            {
+                var actual = cli.createReport(0, 0, 0);
+                var expected =
+                    'Original size:    0 bytes\n' +
+                    'Screwed size:     0 bytes\n' +
+                    'Expansion factor: -\n' +
+                    'Encoding time:    < 0.01 s';
+                assert.strictEqual(actual, expected);
+            }
+        );
     }
 );
 
@@ -261,7 +335,7 @@ describe(
                                     coderName: 'coderA',
                                     status: 'used',
                                     outputLength: 100,
-                                    time: 0.123,
+                                    time: 123,
                                     codingLog:
                                     [
                                         makePerfInfoList(
@@ -270,7 +344,7 @@ describe(
                                                 coderName: 'coderA1',
                                                 status: 'used',
                                                 outputLength: 50,
-                                                time: 0.045
+                                                time: 45
                                             }
                                         ),
                                         makePerfInfoList(
@@ -279,7 +353,7 @@ describe(
                                                 coderName: 'coderA2',
                                                 status: 'used',
                                                 outputLength: 25,
-                                                time: 0.067,
+                                                time: 67,
                                                 codingLog:
                                                 [
                                                     makePerfInfoList(
@@ -288,7 +362,7 @@ describe(
                                                             coderName: 'coderA2_extra',
                                                             status: 'used',
                                                             outputLength: 22,
-                                                            time: 0.066
+                                                            time: 66
                                                         }
                                                     )
                                                 ]

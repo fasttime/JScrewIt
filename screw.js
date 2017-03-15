@@ -14,21 +14,24 @@ function getBasename()
 function printErrorMessage(errorMessage)
 {
     var basename = getBasename();
-    var message =
-        basename + ': ' + errorMessage + '.\nTry "' + basename + ' --help" for more information.';
-    console.error(message);
+    console.error(
+        '%s: %s.\nTry "%s --help" for more information.',
+        basename,
+        errorMessage,
+        basename
+    );
 }
 
 function printHelpMessage()
 {
     var message =
-        'Usage: ' + getBasename() + ' [OPTION]... [SOURCE [DESTINATION]]\n' +
+        'Usage: %s [OPTION]... [SOURCE [DESTINATION]]\n' +
         'Encodes JavaScript with JScrewIt.\n' +
         '\n' +
         '  -d, --diagnostic        print diagnostic report\n' +
         '  -f, --features FEATURES use a list of comma separated features\n' +
         '  -t, --trim-code         strip leading and trailing blanks and comments\n' +
-        '  -r, --run-as METHOD     make output runnable with the specified method\n' +
+        '  -r, --run-as METHOD     control generated code type\n' +
         '      --help              display this help and exit\n' +
         '      --version           print version information and exit\n' +
         '\n' +
@@ -46,12 +49,13 @@ function printHelpMessage()
         '  call                    -c, -w\n' +
         '  eval                    -e\n' +
         '  express                 -x\n' +
-        '  express-call (default)  -xc, -xw\n' +
-        '  express-eval            -xe\n' +
+        '  express-call            -xc, -xw\n' +
+        '  express-eval (default)  -xe\n' +
         '  none                    (none available)\n' +
         '\n' +
         'See the JScrewIt feature documentation for a list of all supported features.\n';
-    console.log(message);
+    var basename = getBasename();
+    console.log(message, basename);
 }
 
 function printVersion()
@@ -108,7 +112,7 @@ function prompt()
                 }
                 catch (error)
                 {
-                    console.error(error.message);
+                    console.error('%s', error.message);
                 }
                 return output;
             };
@@ -156,7 +160,7 @@ function prompt()
         }
         catch (error)
         {
-            console.error(error.message);
+            console.error('%s', error.message);
             return;
         }
         if (outputFileName)
