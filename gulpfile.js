@@ -200,7 +200,7 @@ gulp.task(
         
         var uglifyOpts =
         {
-            compress: { global_defs: { DEBUG: false }, hoist_vars: true },
+            compress: { global_defs: { DEBUG: false } },
             preserveComments: function (node, comment)
             {
                 return comment.pos === 0;
@@ -256,13 +256,12 @@ gulp.task(
             'src/html/tabindex.js',
             'src/html/ui-main.js'
         ];
-        var uglifyOpts = { compress: { hoist_vars: true } };
         var stream =
             gulp
             .src(SRC)
             .pipe(concat('ui.js'))
             .pipe(addsrc('src/html/worker.js'))
-            .pipe(uglify(uglifyOpts)).pipe(gulp.dest('html'));
+            .pipe(uglify()).pipe(gulp.dest('html'));
         return stream;
     }
 );

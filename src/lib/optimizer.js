@@ -1,12 +1,4 @@
-/*
-global
-LEVEL_STRING,
-Empty,
-createClusteringPlan,
-createSolution,
-math_min,
-replaceMultiDigitNumber,
-*/
+/* global Empty, math_min, replaceMultiDigitNumber */
 
 var createOptimizer;
 
@@ -45,20 +37,17 @@ var createOptimizer;
     
     function subCreateOptimizer(toStringReplacement)
     {
-        function applyPlan(plan, solutions)
+        function createClusterer(decimalReplacement, radixReplacement)
         {
-            var clusters = plan.conclude();
-            clusters.forEach(
-                function (cluster)
+            var clusterer =
+                function ()
                 {
-                    var data = cluster.data;
                     var replacement =
-                        '(+(' + data.decimalReplacement + '))[' + toStringReplacement + '](' +
-                        data.radixReplacement + ')';
-                    var solution = createSolution(replacement, LEVEL_STRING, false);
-                    solutions.splice(cluster.start, cluster.length, solution);
-                }
-            );
+                        '(+(' + decimalReplacement + '))[' + toStringReplacement + '](' +
+                        radixReplacement + ')';
+                    return replacement;
+                };
+            return clusterer;
         }
         
         function isSaving(solution)
@@ -106,12 +95,8 @@ var createOptimizer;
                 var saving = discreteAppendLength - clusterAppendLength;
                 if (saving >= 0)
                 {
-                    var data =
-                    {
-                        decimalReplacement: decimalReplacement,
-                        radixReplacement:   radixReplacement
-                    };
-                    plan.addCluster(start, chars.length, data, saving);
+                    var clusterer = createClusterer(decimalReplacement, radixReplacement);
+                    plan.addCluster(start, chars.length, clusterer, saving);
                 }
             }
             while (++radix <= MAX_RADIX);
@@ -161,9 +146,8 @@ var createOptimizer;
             }
         }
         
-        function optimizeSolutions(solutions, bond)
+        function optimizeSolutions(plan, solutions, bond)
         {
-            var plan = createClusteringPlan();
             var end;
             var saving;
             for (var start = solutions.length; start > 0;)
@@ -184,7 +168,6 @@ var createOptimizer;
                 else
                     end = undefined;
             }
-            applyPlan(plan, solutions);
         }
         
         // Adding 7 for "+(", ")[", "](" and ")"

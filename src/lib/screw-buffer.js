@@ -5,6 +5,8 @@ LEVEL_OBJECT,
 LEVEL_STRING,
 LEVEL_UNDEFINED,
 assignNoEnum,
+createClusteringPlan,
+createSolution,
 math_max,
 math_pow,
 */
@@ -13,6 +15,8 @@ math_pow,
 // character solutions have none.
 
 var ScrewBuffer;
+
+var optimizeSolutions;
 
 (function ()
 {
@@ -251,7 +255,7 @@ var ScrewBuffer;
                 {
                     var end = offset + count;
                     var groupSolutions = solutions.slice(offset, end);
-                    optimizer.optimizeSolutions(groupSolutions, groupBond);
+                    optimizeSolutions(optimizer, groupSolutions, groupBond);
                     str =
                         groupSolutions.length > 1 ?
                         gatherGroup(groupSolutions, groupBond, groupForceString, bridgeUsed) :
@@ -383,6 +387,23 @@ var ScrewBuffer;
                         }
                         return str;
                     }
+                }
+            );
+        };
+    
+    optimizeSolutions =
+        function (optimizer, solutions, bond)
+        {
+            var plan = createClusteringPlan();
+            optimizer.optimizeSolutions(plan, solutions, bond);
+            var clusters = plan.conclude();
+            clusters.forEach(
+                function (cluster)
+                {
+                    var clusterer = cluster.data;
+                    var replacement = clusterer();
+                    var solution = createSolution(replacement, LEVEL_STRING, false);
+                    solutions.splice(cluster.start, cluster.length, solution);
                 }
             );
         };
