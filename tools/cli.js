@@ -31,11 +31,12 @@ function createDiagnosticReport(codingLog)
 function createReport(originalSize, screwedSize, encodingTime)
 {
     var width = Math.max(widthOf(originalSize), widthOf(screwedSize));
+    var expansionFactorStr = originalSize ? (screwedSize / originalSize).toFixed(2) : '-';
     var encodingTimeStr = timeUtils.formatDuration(encodingTime);
     var report =
         'Original size:    ' + byteCount(originalSize, width) +
         '\nScrewed size:     ' + byteCount(screwedSize, width) +
-        '\nExpansion factor: ' + (screwedSize / originalSize).toFixed(2) +
+        '\nExpansion factor: ' + expansionFactorStr +
         '\nEncoding time:    ' + encodingTimeStr;
     return report;
 }
@@ -58,7 +59,7 @@ function formatCodingLog(codingLog, padding, nextCodingLog)
 
 function formatInt(int)
 {
-    var str = isNaN(int) ? '-' : int;
+    var str = int === undefined ? '-' : int;
     return str;
 }
 
@@ -78,7 +79,7 @@ function formatPerfInfoList(perfInfoList, padding, paddingChars)
             padRight(perfInfo.coderName, 27 - paddingLength) +
             padRight(perfInfo.status, 10) +
             padLeft(formatInt(perfInfo.outputLength), 11) +
-            padLeft(formatInt(Math.round(1000 * perfInfo.time)), 11) +
+            padLeft(formatInt(perfInfo.time), 11) +
             '\n';
         codingLog = perfInfo.codingLog;
         if (codingLog)
