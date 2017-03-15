@@ -148,6 +148,8 @@
                 '#optimizeSolutions',
                 function ()
                 {
+                    var optimizeSolutions = JScrewIt.debug.optimizeSolutions;
+                    
                     it(
                         'optimizes an integral cluster without bonding',
                         function ()
@@ -156,7 +158,7 @@
                             var solutionB = { appendLength: 35, char: 'b' };
                             optimizer.optimizeAppendLength(solutionB);
                             var solutions = [solutionB, solutionB];
-                            optimizer.optimizeSolutions(solutions, false);
+                            optimizeSolutions(optimizer, solutions, false);
                             expect(solutions.length).toBe(1);
                             expect(solutions[0].replacement).toBe(EXPECTED_REPLACEMENT);
                         }
@@ -169,7 +171,7 @@
                             var solutionB = { appendLength: 34, char: 'b' };
                             optimizer.optimizeAppendLength(solutionB);
                             var solutions = [solutionB, solutionB];
-                            optimizer.optimizeSolutions(solutions, false);
+                            optimizeSolutions(optimizer, solutions, false);
                             expect(solutions.length).toBe(2);
                         }
                     );
@@ -181,7 +183,7 @@
                             var solutionB = { appendLength: 34, char: 'b' };
                             optimizer.optimizeAppendLength(solutionB);
                             var solutions = [solutionB, solutionB];
-                            optimizer.optimizeSolutions(solutions, true);
+                            optimizeSolutions(optimizer, solutions, true);
                             expect(solutions.length).toBe(1);
                             expect(solutions[0].replacement).toBe(EXPECTED_REPLACEMENT);
                         }
@@ -195,7 +197,7 @@
                             var solutionB = { appendLength: 34, char: 'b' };
                             optimizer.optimizeAppendLength(solutionB);
                             var solutions = [solution0, solutionB, solutionB];
-                            optimizer.optimizeSolutions(solutions, true);
+                            optimizeSolutions(optimizer, solutions, true);
                             expect(solutions.length).toBe(3);
                         }
                     );
@@ -208,7 +210,7 @@
                             var solutionB = { appendLength: 100,    char: 'b' };
                             optimizer.optimizeAppendLength(solutionB);
                             var solutions = [solution0, solutionB];
-                            optimizer.optimizeSolutions(solutions, false);
+                            optimizeSolutions(optimizer, solutions, false);
                             expect(solutions.length).toBe(2);
                         }
                     );
@@ -221,7 +223,7 @@
                             var solutionZ = { appendLength: 100, char: 'z' };
                             optimizer.optimizeAppendLength(solutionZ);
                             var solutions = arrayFilledWith(solutionZ, 11);
-                            optimizer.optimizeSolutions(solutions, true);
+                            optimizeSolutions(optimizer, solutions, true);
                             expect(solutions.length).toBe(2);
                         }
                     );

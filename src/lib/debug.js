@@ -41,6 +41,7 @@ maskUnion,
 object_create,
 object_freeze,
 object_keys,
+optimizeSolutions,
 setUp,
 trimJS,
 */
@@ -194,6 +195,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                     maskIsEmpty:            maskIsEmpty,
                     maskNew:                maskNew,
                     maskUnion:              maskUnion,
+                    optimizeSolutions:      optimizeSolutions,
                     setUp:                  setUp,
                     trimJS:                 trimJS,
                 }
