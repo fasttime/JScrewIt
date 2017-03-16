@@ -38,19 +38,6 @@ var resolveSimple;
 
 (function ()
 {
-    function createReplaceString(optimize)
-    {
-        function replaceString(encoder, str, bond, forceString)
-        {
-            var replacement = encoder.replaceString(str, optimize, bond, forceString);
-            if (!replacement)
-                encoder.throwSyntaxError('String too complex');
-            return replacement;
-        }
-        
-        return replaceString;
-    }
-    
     function evalNumber(preMantissa, lastDigit, exp)
     {
         var value = +(preMantissa + lastDigit + 'e' + exp);
@@ -125,6 +112,20 @@ var resolveSimple;
             }
         );
         return appendLength;
+    }
+    
+    function getReplacers(optimize)
+    {
+        var replaceString =
+            function (encoder, str, bond, forceString)
+            {
+                var replacement = encoder.replaceString(str, optimize, bond, forceString);
+                if (!replacement)
+                    encoder.throwSyntaxError('String too complex');
+                return replacement;
+            };
+        var replacers = { identifier: replaceIdentifier, string: replaceString };
+        return replacers;
     }
     
     function replaceIdentifier(encoder, identifier, bondStrength)
@@ -354,7 +355,7 @@ var resolveSimple;
             var unit = expressParse(expr);
             if (!unit)
                 this.throwSyntaxError('Syntax error');
-            var replacers = optimize ? OPTIMIZING_REPLACERS : REPLACERS;
+            var replacers = getReplacers(optimize);
             var replacement = this.replaceExpressUnit(unit, false, [], NaN, replacers);
             return replacement;
         },
@@ -744,10 +745,6 @@ var resolveSimple;
     var BOND_STRENGTH_NONE      = 0;
     var BOND_STRENGTH_WEAK      = 1;
     var BOND_STRENGTH_STRONG    = 2;
-    
-    var OPTIMIZING_REPLACERS = { identifier: replaceIdentifier, string: createReplaceString(true) };
-    
-    var REPLACERS = { identifier: replaceIdentifier, string: createReplaceString(false) };
     
     var STATIC_ENCODER = new Encoder([0, 0]);
     
