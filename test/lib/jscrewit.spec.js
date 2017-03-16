@@ -150,9 +150,11 @@ uneval,
                 var charCode;
                 for (charCode = 0; charCode < 256; ++charCode)
                     testCharacter(charCode);
-                testCharacter(8734); // ∞
-                for (; charCode <= 0xffff; charCode <<= 1)
-                    testCharacter(charCode + 0x1f);
+                testCharacter(8734);    // ∞
+                testCharacter(0x010f);  // hex code ending in "f"
+                testCharacter(0x01fa);  // hex code ending in "fa"
+                testCharacter(0x0bbc);  // candidate for toString clustering encoded with "B"
+                testCharacter(0xbbbb);  // candidate for toString clustering encoded with "b"
             }
         );
         describe(

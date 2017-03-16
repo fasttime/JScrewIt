@@ -207,7 +207,7 @@ var createParseIntArgDefault;
         var expr = 'Function("return\\"\\\\u' + hexCode + '\\"")()';
         if (hexCode.length > 4)
             expr += '[0]';
-        var result = this.replaceExpr(expr);
+        var result = this.replaceExpr(expr, true);
         return result;
     }
     
