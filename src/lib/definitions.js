@@ -29,6 +29,7 @@ var FROM_CHAR_CODE;
 var FROM_CHAR_CODE_CALLBACK_FORMATTER;
 var MAPPER_FORMATTER;
 var OPTIMAL_B;
+var OPTIMAL_RETURN_STRING;
 
 var BASE64_ALPHABET_HI_2;
 var BASE64_ALPHABET_HI_4;
@@ -1484,6 +1485,11 @@ var createParseIntArgDefault;
     MAPPER_FORMATTER = [define(mapperFormatterDefault), define(mapperFormatterDblArrow, ARROW)];
     
     OPTIMAL_B = [define('B'), define('b', ENTRIES_OBJ)];
+    
+    OPTIMAL_RETURN_STRING = [
+        define('return(isNaN+false).constructor'),
+        define('return String', CAPITAL_HTML, ENTRIES_OBJ)
+    ]
     
     SIMPLE = new Empty();
     
