@@ -865,12 +865,13 @@ var createParseIntArgDefault;
         ],
         'P':
         [
+            define('unescape("%50")')
+            define('atob("01A")[1]', ATOB),
             define('btoa("".italics())[0]', ATOB),
             define('btoa("".sub())[0]', ATOB),
             define('btoa(PLAIN_OBJECT)[11]', ATOB),
             define('(Function("return statusbar")() + [])[11]', BARPROP),
             define('"0".sup()[10]', CAPITAL_HTML),
-            define('unescape("%50")')
         ],
         'Q':
         [
