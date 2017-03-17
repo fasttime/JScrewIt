@@ -5,6 +5,7 @@ CREATE_PARSE_INT_ARG,
 APPEND_LENGTH_OF_DIGITS,
 APPEND_LENGTH_OF_DIGIT_0,
 APPEND_LENGTH_OF_PLUS_SIGN,
+OPTIMAL_RETURN_STRING,
 FROM_CHAR_CODE,
 FROM_CHAR_CODE_CALLBACK_FORMATTER,
 MAPPER_FORMATTER,
@@ -374,6 +375,7 @@ var wrapWithEval;
         {
             var output;
             var fromCharCode = this.findDefinition(FROM_CHAR_CODE);
+            var return_String = this.findDefinition(OPTIMAL_RETURN_STRING);
             if (radix)
             {
                 output =
@@ -395,7 +397,7 @@ var wrapWithEval;
                     output =
                         this.resolveConstant('Function') +
                         '(' +
-                        this.replaceString('return String.' + fromCharCode + '(', true) +
+                        this.replaceString(return_String + '.' + fromCharCode + '(', true) +
                         '+' +
                         charCodeArrayStr +
                         '+' +

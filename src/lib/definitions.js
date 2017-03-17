@@ -29,6 +29,7 @@ var FROM_CHAR_CODE;
 var FROM_CHAR_CODE_CALLBACK_FORMATTER;
 var MAPPER_FORMATTER;
 var OPTIMAL_B;
+var OPTIMAL_RETURN_STRING;
 
 var BASE64_ALPHABET_HI_2;
 var BASE64_ALPHABET_HI_4;
@@ -211,6 +212,21 @@ var createParseIntArgDefault;
         return result;
     }
     
+    function charEncodeByCharCode(charCode)
+    {
+        return this.replaceExpr(
+            'String.' +
+            this.findDefinition(FROM_CHAR_CODE) +
+            '(' + (
+                charCode < 2 ? ['[]', 'true'][charCode] :
+                charCode < 10 ? charCode :
+                '"' + charCode + '"'
+            ) +
+            ')',
+            true
+        );
+    }
+
     function charEncodeByUnescape16(charCode)
     {
         var hexCode = this.hexCodeOf(charCode, 4);
@@ -854,7 +870,7 @@ var createParseIntArgDefault;
             define('btoa(PLAIN_OBJECT)[11]', ATOB),
             define('(Function("return statusbar")() + [])[11]', BARPROP),
             define('"0".sup()[10]', CAPITAL_HTML),
-            defineDefaultChar('P')
+            define('unescape("%50")')
         ],
         'Q':
         [
@@ -1447,6 +1463,7 @@ var createParseIntArgDefault;
     DEFAULT_16_BIT_CHARACTER_ENCODER =
     [
         define(charEncodeByUnescape16),
+        define(charEncodeByCharCode, CAPITAL_HTML),
         define(charEncodeByEval, ATOB),
         define(charEncodeByEval, UNEVAL)
     ];
@@ -1454,6 +1471,7 @@ var createParseIntArgDefault;
     DEFAULT_8_BIT_CHARACTER_ENCODER =
     [
         define(charEncodeByUnescape8),
+        define(charEncodeByCharCode, CAPITAL_HTML),
         define(charEncodeByAtob, ATOB)
     ];
     
@@ -1477,6 +1495,13 @@ var createParseIntArgDefault;
     MAPPER_FORMATTER = [define(mapperFormatterDefault), define(mapperFormatterDblArrow, ARROW)];
     
     OPTIMAL_B = [define('B'), define('b', ENTRIES_OBJ)];
+    
+    OPTIMAL_RETURN_STRING = [
+        define('return(isNaN+false).constructor'),
+        define('return String', ENTRIES_OBJ, CAPITAL_HTML),
+        define('return(isNaN+false).constructor', FILL, IE_SRC),
+        define('return(isNaN+false).constructor', FILL, NO_IE_SRC)
+    ];
     
     SIMPLE = new Empty();
     
