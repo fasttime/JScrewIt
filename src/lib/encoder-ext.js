@@ -392,19 +392,11 @@ var wrapWithEval;
                 }
                 else
                 {
-                    output = [
-                        this.replaceString('return String.' + fromCharCode + '(', true),
-                        this.replaceString(
-                            'return(isNaN+false).constructor.' + fromCharCode + '(',
-                            true
-                        )
-                    ].sort(function(a,b){
-                        return a.length > b.length;
-                    });
+                    var return_String = this.findDefinition(OPTIMAL_RETURN_STRING);
                     output =
                         this.resolveConstant('Function') +
                         '(' +
-                        output[0] +
+                        this.replaceString(return_String + '.' + fromCharCode + '(', true) +
                         '+' +
                         charCodeArrayStr +
                         '+' +
