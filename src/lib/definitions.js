@@ -706,7 +706,7 @@ var createParseIntArgDefault;
             define('"f,a,l,s,e"[1]'),
             define(commaDefinition)
         ],
-        '-': '(+".0000000001" + [])[2]',
+        '-': '(+".0000001" + [])[2]',
         '.': '(+"11e20" + [])[1]',
         '/':
         [
