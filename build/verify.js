@@ -450,6 +450,17 @@ verify.OPTIMAL_B =
             'resolveCharacter'
         );
     };
+    
+verify.OPTIMAL_RETURN_STRING =
+    function ()
+    {
+        verifyDefinitions(
+            getEntries('OPTIMAL_RETURN_STRING'),
+            ['return(isNaN+false).constructor', 'return String'],
+            mismatchCallback,
+            'replaceString'
+        );
+    };
 
 [
     'byCharCodes',

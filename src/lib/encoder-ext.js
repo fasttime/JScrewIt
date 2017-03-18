@@ -8,6 +8,7 @@ APPEND_LENGTH_OF_PLUS_SIGN,
 FROM_CHAR_CODE,
 FROM_CHAR_CODE_CALLBACK_FORMATTER,
 MAPPER_FORMATTER,
+OPTIMAL_RETURN_STRING,
 SIMPLE,
 Empty,
 Encoder,
@@ -392,10 +393,11 @@ var wrapWithEval;
                 }
                 else
                 {
+                    var returnString = this.findDefinition(OPTIMAL_RETURN_STRING);
                     output =
                         this.resolveConstant('Function') +
                         '(' +
-                        this.replaceString('return String.' + fromCharCode + '(', true) +
+                        this.replaceString(returnString + '.' + fromCharCode + '(', true) +
                         '+' +
                         charCodeArrayStr +
                         '+' +
