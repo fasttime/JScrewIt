@@ -6,7 +6,6 @@ LEVEL_STRING,
 LEVEL_UNDEFINED,
 assignNoEnum,
 createClusteringPlan,
-createSolution,
 math_max,
 math_pow,
 */
@@ -246,16 +245,16 @@ var optimizeSolutions;
     }
     
     ScrewBuffer =
-        function (bond, forceString, groupThreshold, optimizer)
+        function (bond, forceString, groupThreshold, optimizerList)
         {
             function gather(offset, count, groupBond, groupForceString)
             {
                 var str;
-                if (optimizer)
+                if (optimizerList.length)
                 {
                     var end = offset + count;
                     var groupSolutions = solutions.slice(offset, end);
-                    optimizeSolutions(optimizer, groupSolutions, groupBond);
+                    optimizeSolutions(optimizerList, groupSolutions, groupBond);
                     str =
                         groupSolutions.length > 1 ?
                         gatherGroup(groupSolutions, groupBond, groupForceString, bridgeUsed) :
@@ -285,10 +284,16 @@ var optimizeSolutions;
                             return false;
                         bridgeUsed |= !!solution.bridge;
                         solutions.push(solution);
-                        length +=
-                            optimizer ?
-                            optimizer.optimizeAppendLength(solution) :
-                            solution.appendLength;
+                        var appendLength = solution.appendLength;
+                        optimizerList.forEach(
+                            function (optimizer)
+                            {
+                                var currentAppendLength = optimizer.appendLengthOf(solution);
+                                if (currentAppendLength < appendLength)
+                                    appendLength = currentAppendLength;
+                            }
+                        );
+                        length += appendLength;
                         return true;
                     },
                     get length()
@@ -392,17 +397,21 @@ var optimizeSolutions;
         };
     
     optimizeSolutions =
-        function (optimizer, solutions, bond)
+        function (optimizerList, solutions, bond)
         {
             var plan = createClusteringPlan();
-            optimizer.optimizeSolutions(plan, solutions, bond);
+            optimizerList.forEach(
+                function (optimizer)
+                {
+                    optimizer.optimizeSolutions(plan, solutions, bond);
+                }
+            );
             var clusters = plan.conclude();
             clusters.forEach(
                 function (cluster)
                 {
                     var clusterer = cluster.data;
-                    var replacement = clusterer();
-                    var solution = createSolution(replacement, LEVEL_STRING, false);
+                    var solution = clusterer();
                     solutions.splice(cluster.start, cluster.length, solution);
                 }
             );

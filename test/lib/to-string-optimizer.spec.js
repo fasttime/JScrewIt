@@ -16,7 +16,7 @@
     {
         var toStringReplacement = repeat('*', toStringReplacementLength);
         var optimizer = createOptimizer(toStringReplacement);
-        var actual = optimizer.optimizeAppendLength(solution);
+        var actual = optimizer.appendLengthOf(solution);
         expect(actual).toBe(expected);
     }
     
@@ -31,7 +31,7 @@
                 return toStringReplacement;
             }
         };
-        var optimizer = JScrewIt.debug.createOptimizer(encoder);
+        var optimizer = JScrewIt.debug.getToStringOptimizer(encoder);
         return optimizer;
     }
     
@@ -51,7 +51,7 @@
         function ()
         {
             describe(
-                '#optimizeAppendLength',
+                '#appendLengthOf',
                 function ()
                 {
                     it(
@@ -59,10 +59,9 @@
                         function ()
                         {
                             var optimizer = createOptimizer();
-                            var expected = 123;
-                            var solution = { char: 'a', appendLength: expected };
-                            var actual = optimizer.optimizeAppendLength(solution);
-                            expect(actual).toBe(expected);
+                            var solution = { char: 'a', appendLength: 123 };
+                            var actual = optimizer.appendLengthOf(solution);
+                            expect(actual).toBeUndefined();
                         }
                     );
                     it(
@@ -70,22 +69,9 @@
                         function ()
                         {
                             var optimizer = createOptimizer();
-                            var expected = 123;
-                            var solution = { appendLength: expected };
-                            var actual = optimizer.optimizeAppendLength(solution);
-                            expect(actual).toBe(expected);
-                        }
-                    );
-                    it(
-                        'caches lengths',
-                        function ()
-                        {
-                            var optimizer = createOptimizer();
-                            var solution = { char: 'b', appendLength: 5 };
-                            optimizer.optimizeAppendLength(solution);
-                            solution.appendLength = 10;
-                            var actual = optimizer.optimizeAppendLength(solution);
-                            expect(actual).toBe(5);
+                            var solution = { appendLength: 123 };
+                            var actual = optimizer.appendLengthOf(solution);
+                            expect(actual).toBeUndefined();
                         }
                     );
                     
@@ -156,9 +142,9 @@
                         {
                             var optimizer = createOptimizer();
                             var solutionB = { appendLength: 35, char: 'b' };
-                            optimizer.optimizeAppendLength(solutionB);
+                            optimizer.appendLengthOf(solutionB);
                             var solutions = [solutionB, solutionB];
-                            optimizeSolutions(optimizer, solutions, false);
+                            optimizeSolutions([optimizer], solutions, false);
                             expect(solutions.length).toBe(1);
                             expect(solutions[0].replacement).toBe(EXPECTED_REPLACEMENT);
                         }
@@ -169,9 +155,9 @@
                         {
                             var optimizer = createOptimizer();
                             var solutionB = { appendLength: 34, char: 'b' };
-                            optimizer.optimizeAppendLength(solutionB);
+                            optimizer.appendLengthOf(solutionB);
                             var solutions = [solutionB, solutionB];
-                            optimizeSolutions(optimizer, solutions, false);
+                            optimizeSolutions([optimizer], solutions, false);
                             expect(solutions.length).toBe(2);
                         }
                     );
@@ -181,9 +167,9 @@
                         {
                             var optimizer = createOptimizer();
                             var solutionB = { appendLength: 34, char: 'b' };
-                            optimizer.optimizeAppendLength(solutionB);
+                            optimizer.appendLengthOf(solutionB);
                             var solutions = [solutionB, solutionB];
-                            optimizeSolutions(optimizer, solutions, true);
+                            optimizeSolutions([optimizer], solutions, true);
                             expect(solutions.length).toBe(1);
                             expect(solutions[0].replacement).toBe(EXPECTED_REPLACEMENT);
                         }
@@ -195,9 +181,9 @@
                             var optimizer = createOptimizer();
                             var solution0 = { appendLength: 6 };
                             var solutionB = { appendLength: 34, char: 'b' };
-                            optimizer.optimizeAppendLength(solutionB);
+                            optimizer.appendLengthOf(solutionB);
                             var solutions = [solution0, solutionB, solutionB];
-                            optimizeSolutions(optimizer, solutions, true);
+                            optimizeSolutions([optimizer], solutions, true);
                             expect(solutions.length).toBe(3);
                         }
                     );
@@ -208,9 +194,9 @@
                             var optimizer = createOptimizer();
                             var solution0 = { appendLength: 6,      char: '0' };
                             var solutionB = { appendLength: 100,    char: 'b' };
-                            optimizer.optimizeAppendLength(solutionB);
+                            optimizer.appendLengthOf(solutionB);
                             var solutions = [solution0, solutionB];
-                            optimizeSolutions(optimizer, solutions, false);
+                            optimizeSolutions([optimizer], solutions, false);
                             expect(solutions.length).toBe(2);
                         }
                     );
@@ -221,9 +207,9 @@
                             var toStringReplacement = padRight('"toString"', 500);
                             var optimizer = createOptimizer(toStringReplacement);
                             var solutionZ = { appendLength: 100, char: 'z' };
-                            optimizer.optimizeAppendLength(solutionZ);
+                            optimizer.appendLengthOf(solutionZ);
                             var solutions = arrayFilledWith(solutionZ, 11);
-                            optimizeSolutions(optimizer, solutions, true);
+                            optimizeSolutions([optimizer], solutions, true);
                             expect(solutions.length).toBe(2);
                         }
                     );

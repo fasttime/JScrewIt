@@ -96,7 +96,7 @@ gulp.task(
             'src/lib/express-parse.js',
             'src/lib/encoder-base.js',
             'src/lib/figurator.js',
-            'src/lib/optimizer.js',
+            'src/lib/to-string-optimizer.js',
             'src/lib/encoder-ext.js',
             'src/lib/trim-js.js',
             'src/lib/jscrewit-base.js',
