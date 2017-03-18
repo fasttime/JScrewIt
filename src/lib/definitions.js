@@ -782,7 +782,7 @@ var createParseIntArgDefault;
             ),
             define('(document + [])[12]', HTMLDOCUMENT),
             define('escape(ARRAY_ITERATOR)[30]', NO_OLD_SAFARI_ARRAY_ITERATOR),
-            define('escape((FILTER + [][[]] + [][[]] + true + FILTER)[100])[2]', NO_V8_SRC), // *
+            define('escape((FILTER + RP_9_U + RP_9_U + RP_4_N + FILTER)[100])[2]', NO_V8_SRC), // *
             define('escape(FILTER)[50]', V8_SRC),
             define('escape(FILL)[60]', FILL, NO_IE_SRC, NO_V8_SRC)
         ],
@@ -1365,6 +1365,7 @@ var createParseIntArgDefault;
         RP_4_N:     'true',
         RP_5_N:     'false',
         RP_6_SO:    '"0false"',
+        RP_9_U:     'undefined',
         
         // Conditional padding blocks.
         //
