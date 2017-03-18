@@ -22,7 +22,6 @@ assignNoEnum,
 createBridgeSolution,
 createClusteringPlan,
 createFigurator,
-createOptimizer,
 createParseIntArgByReduce,
 createParseIntArgByReduceArrow,
 createParseIntArgDefault,
@@ -30,6 +29,7 @@ createSolution,
 define,
 esToString,
 featureFromMask,
+getToStringOptimizer,
 getValidFeatureMask,
 isMaskCompatible,
 json_stringify,
@@ -98,9 +98,9 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             return featureObj;
         }
         
-        function createScrewBuffer(bond, forceString, groupThreshold, optimizer)
+        function createScrewBuffer(bond, forceString, groupThreshold, optimizerList)
         {
-            var buffer = new ScrewBuffer(bond, forceString, groupThreshold, optimizer);
+            var buffer = new ScrewBuffer(bond, forceString, groupThreshold, optimizerList);
             return buffer;
         }
         
@@ -180,7 +180,6 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                     createEncoder:          createEncoder,
                     createFeatureFromMask:  createFeatureFromMask,
                     createFigurator:        createFigurator,
-                    createOptimizer:        createOptimizer,
                     createScrewBuffer:      createScrewBuffer,
                     createSolution:         createSolution,
                     defineConstant:         defineConstant,
@@ -190,6 +189,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                     getComplexNames:        getComplexNames,
                     getConstantEntries:     getConstantEntries,
                     getEntries:             getEntries,
+                    getToStringOptimizer:   getToStringOptimizer,
                     maskAnd:                maskAnd,
                     maskIncludes:           maskIncludes,
                     maskIsEmpty:            maskIsEmpty,

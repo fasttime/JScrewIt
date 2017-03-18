@@ -15,9 +15,9 @@ array_isArray,
 array_prototype_forEach,
 assignNoEnum,
 createConstructor,
-createOptimizer,
 createSolution,
 expressParse,
+getToStringOptimizer,
 json_stringify,
 maskIncludes,
 math_abs,
@@ -193,6 +193,7 @@ var resolveSimple;
             this.charCache      = new CharCache();
             this.complexCache   = new Empty();
             this.constCache     = new ConstCache();
+            this.optimizers     = new Empty();
             this.stack          = [];
         };
     
@@ -534,9 +535,19 @@ var resolveSimple;
         
         replaceString: function (str, optimize, bond, forceString, maxLength)
         {
+            var optimizeToString;
+            if (typeof optimize === 'object')
+                optimizeToString = !!optimize.toStringOpt;
+            else
+                optimizeToString = !!optimize;
             var optimizer =
-                optimize && (this.optimizer || (this.optimizer = createOptimizer(this)));
-            var buffer = new ScrewBuffer(bond, forceString, this.maxGroupThreshold, optimizer);
+                optimizeToString &&
+                (
+                    this.optimizers.toString ||
+                    (this.optimizers.toString = getToStringOptimizer(this))
+                );
+            var optimizerList = optimizer ? [optimizer] : [];
+            var buffer = new ScrewBuffer(bond, forceString, this.maxGroupThreshold, optimizerList);
             var match;
             this.optimizeComplexCache(str);
             if (!this.strTokenPattern)
