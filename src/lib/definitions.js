@@ -782,6 +782,7 @@ var createParseIntArgDefault;
             ),
             define('(document + [])[12]', HTMLDOCUMENT),
             define('escape(ARRAY_ITERATOR)[30]', NO_OLD_SAFARI_ARRAY_ITERATOR),
+            define('escape((FILTER + [][[]] + [][[]] + true + FILTER)[100])[2]', NO_V8_SRC), // *
             define('escape(FILTER)[50]', V8_SRC),
             define('escape(FILL)[60]', FILL, NO_IE_SRC, NO_V8_SRC)
         ],
