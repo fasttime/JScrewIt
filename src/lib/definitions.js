@@ -1499,7 +1499,7 @@ var createParseIntArgDefault;
     
     OPTIMAL_RETURN_STRING = [
         define('return(isNaN+false).constructor'),
-        define('return String', ENTRIES_OBJ, CAPITAL_HTML),
+        define('return String', CAPITAL_HTML, ENTRIES_OBJ),
         define('return(isNaN+false).constructor', FILL, IE_SRC),
         define('return(isNaN+false).constructor', FILL, NO_IE_SRC)
     ];
