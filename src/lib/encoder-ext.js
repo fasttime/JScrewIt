@@ -375,7 +375,6 @@ var wrapWithEval;
         {
             var output;
             var fromCharCode = this.findDefinition(FROM_CHAR_CODE);
-            var return_String = this.findDefinition(OPTIMAL_RETURN_STRING);
             if (radix)
             {
                 output =
@@ -394,6 +393,7 @@ var wrapWithEval;
                 }
                 else
                 {
+                    var return_String = this.findDefinition(OPTIMAL_RETURN_STRING);
                     output =
                         this.resolveConstant('Function') +
                         '(' +
