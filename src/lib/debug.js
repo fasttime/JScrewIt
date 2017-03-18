@@ -12,6 +12,7 @@ FROM_CHAR_CODE,
 FROM_CHAR_CODE_CALLBACK_FORMATTER,
 MAPPER_FORMATTER,
 OPTIMAL_B,
+OPTIMAL_RETURN_STRING,
 Empty,
 Encoder,
 Feature,
@@ -170,6 +171,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         ENTRIES.FROM_CHAR_CODE_CALLBACK_FORMATTER   = FROM_CHAR_CODE_CALLBACK_FORMATTER;
         ENTRIES.MAPPER_FORMATTER                    = MAPPER_FORMATTER;
         ENTRIES.OPTIMAL_B                           = OPTIMAL_B;
+        ENTRIES.OPTIMAL_RETURN_STRING               = OPTIMAL_RETURN_STRING;
         
         var debug =
             assignNoEnum(
