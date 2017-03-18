@@ -214,17 +214,20 @@ var createParseIntArgDefault;
     
     function charEncodeByCharCode(charCode)
     {
-        return this.replaceExpr(
-            'String.' +
-            this.findDefinition(FROM_CHAR_CODE) +
-            '(' + (
-                charCode < 2 ? ['[]', 'true'][charCode] :
-                charCode < 10 ? charCode :
-                '"' + charCode + '"'
-            ) +
-            ')',
-            true
-        );
+        var replacement =
+            this.replaceExpr(
+                'String.' +
+                this.findDefinition(FROM_CHAR_CODE) +
+                '(' +
+                (
+                    charCode < 2 ? ['[]', 'true'][charCode] :
+                    charCode < 10 ? charCode :
+                    '"' + charCode + '"'
+                ) +
+                ')',
+                true
+            );
+        return replacement;
     }
 
     function charEncodeByUnescape16(charCode)
@@ -871,7 +874,7 @@ var createParseIntArgDefault;
             define('btoa("".sub())[0]', ATOB),
             define('btoa(PLAIN_OBJECT)[11]', ATOB),
             define('(Function("return statusbar")() + [])[11]', BARPROP),
-            define('"0".sup()[10]', CAPITAL_HTML),
+            define('"0".sup()[10]', CAPITAL_HTML)
         ],
         'Q':
         [
@@ -1497,7 +1500,8 @@ var createParseIntArgDefault;
     
     OPTIMAL_B = [define('B'), define('b', ENTRIES_OBJ)];
     
-    OPTIMAL_RETURN_STRING = [
+    OPTIMAL_RETURN_STRING =
+    [
         define('return(isNaN+false).constructor'),
         define('return String', CAPITAL_HTML, ENTRIES_OBJ),
         define('return(isNaN+false).constructor', FILL, IE_SRC),
