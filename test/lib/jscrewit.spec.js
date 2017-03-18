@@ -486,15 +486,15 @@ uneval,
                                 );
                                 test(
                                     'numbers below 0.1 represented with a dot',
-                                    '123e-27',
+                                    '123e-21',
                                     '+(*+(1)+(2)+(3))',
-                                    123e-27
+                                    123e-21
                                 );
                                 test(
                                     'numbers below 0.1 represented in expontential notation',
-                                    '123e-28',
-                                    '+(1+[2]+(3)+(0)+(0)+*+(3)+(0))',
-                                    123e-28
+                                    '123e-22',
+                                    '+(1+[2]+(3)+*+(2)+(2))',
+                                    123e-22
                                 );
                                 test(
                                     'numbers represented with a power of 10 exponent',
