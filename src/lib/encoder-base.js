@@ -751,7 +751,7 @@ var resolveSimple;
     assignNoEnum(Encoder.prototype, encoderProtoSource);
     
     var APPEND_LENGTH_OF_DOT    = 73;
-    var APPEND_LENGTH_OF_MINUS  = 154;
+    var APPEND_LENGTH_OF_MINUS  = 136;
     
     var BOND_STRENGTH_NONE      = 0;
     var BOND_STRENGTH_WEAK      = 1;
