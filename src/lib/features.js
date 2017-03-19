@@ -591,7 +591,7 @@ var validMaskFromArrayOrStringOrFeature;
                 return available;
             },
             includes: ['NO_V8_SRC'],
-            excludes: ['NODECONSTRUCTOR', 'NO_IE_SRC']
+            excludes: ['NO_IE_SRC']
         },
         INCR_CHAR:
         {
@@ -643,7 +643,6 @@ var validMaskFromArrayOrStringOrFeature;
                     typeof Node !== 'undefined' && Node + '' === '[object NodeConstructor]';
                 return available;
             },
-            excludes: ['IE_SRC'],
             attributes: { 'web-worker': 'web-worker-restriction' }
         },
         NO_IE_SRC:
