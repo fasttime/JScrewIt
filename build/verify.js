@@ -458,7 +458,11 @@ verify.OPTIMAL_RETURN_STRING =
             getEntries('OPTIMAL_RETURN_STRING'),
             ['return(isNaN+false).constructor', 'return String'],
             mismatchCallback,
-            'replaceString'
+            function (str)
+            {
+                var result = this.replaceString(str, true);
+                return result;
+            }
         );
     };
 
