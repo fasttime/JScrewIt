@@ -148,7 +148,7 @@ Existence of the global object document having the string representation "\[obje
 _Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera and Android Browser. This feature is not available inside web workers._
 <a name="IE10"></a>
 ### `IE10`
-Features available in Internet Explorer 10 or later.
+Features available in Internet Explorer 10.
 <a name="IE11"></a>
 ### `IE11`
 Features available in Internet Explorer 11.
@@ -157,7 +157,7 @@ Features available in Internet Explorer 11.
 Features available in Internet Explorer 11 on Windows 10.
 <a name="IE9"></a>
 ### `IE9`
-Features available in Internet Explorer 9 or later.
+Features available in Internet Explorer 9 and 10.
 <a name="IE_SRC"></a>
 ### `IE_SRC`
 A string representation of native functions typical for Internet Explorer.<br>
