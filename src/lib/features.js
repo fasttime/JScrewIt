@@ -961,7 +961,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         IE9:
         {
-            engine: 'Internet Explorer 9 or later',
+            engine: 'Internet Explorer 9 and 10',
             includes:
             [
                 'CAPITAL_HTML',
@@ -976,7 +976,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         IE10:
         {
-            engine: 'Internet Explorer 10 or later',
+            engine: 'Internet Explorer 10',
             includes:
             [
                 'ATOB',
