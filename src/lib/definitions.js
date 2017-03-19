@@ -202,49 +202,27 @@ var createParseIntArgDefault;
         return result;
     }
     
+    function charEncodeByCharCodeOrUnescape16(charCode)
+    {
+        var replacement1 = this.replaceCharByCharCode(charCode);
+        var replacement2 = this.replaceCharByUnescape16(charCode);
+        var replacement = replacement1.length < replacement2.length ? replacement1 : replacement2;
+        return replacement;
+    }
+    
+    function charEncodeByCharCodeOrUnescape8(charCode)
+    {
+        var replacement1 = this.replaceCharByCharCode(charCode);
+        var replacement2 = this.replaceCharByUnescape8(charCode);
+        var replacement = replacement1.length < replacement2.length ? replacement1 : replacement2;
+        return replacement;
+    }
+    
     function charEncodeByEval(charCode)
     {
         var hexCode = this.hexCodeOf(charCode, 4);
         var expr = 'Function("return\\"\\\\u' + hexCode + '\\"")()';
         if (hexCode.length > 4)
-            expr += '[0]';
-        var result = this.replaceExpr(expr, true);
-        return result;
-    }
-    
-    function charEncodeByCharCode(charCode)
-    {
-        var replacement =
-            this.replaceExpr(
-                'String.' +
-                this.findDefinition(FROM_CHAR_CODE) +
-                '(' +
-                (
-                    charCode < 2 ? ['[]', 'true'][charCode] :
-                    charCode < 10 ? charCode :
-                    '"' + charCode + '"'
-                ) +
-                ')',
-                true
-            );
-        return replacement;
-    }
-
-    function charEncodeByUnescape16(charCode)
-    {
-        var hexCode = this.hexCodeOf(charCode, 4);
-        var expr = 'unescape("%u' + hexCode + '")';
-        if (hexCode.length > 4)
-            expr += '[0]';
-        var result = this.replaceExpr(expr, true);
-        return result;
-    }
-    
-    function charEncodeByUnescape8(charCode)
-    {
-        var hexCode = this.hexCodeOf(charCode, 2);
-        var expr = 'unescape("%' + hexCode + '")';
-        if (hexCode.length > 2)
             expr += '[0]';
         var result = this.replaceExpr(expr, true);
         return result;
@@ -907,7 +885,8 @@ var createParseIntArgDefault;
             define('"".fontcolor([])[20]', CAPITAL_HTML),
             define('(RP_3_NO + Date())[30]', GMT),
             define('(Audio + [])[10]', HTMLAUDIOELEMENT),
-            define('(RP_1_NO + document)[10]', HTMLDOCUMENT)
+            define('(RP_1_NO + document)[10]', HTMLDOCUMENT),
+            defineDefaultChar('T')
         ],
         'U':
         [
@@ -919,13 +898,15 @@ var createParseIntArgDefault;
         'V':
         [
             define('unescape("%56")'),
+            define('String[FROM_CHAR_CODE]("86")'),
             define('"v"[TO_UPPER_CASE]()'),
             define('(document.createElement("video") + [])[12]', ANY_DOCUMENT),
-            define('btoa(undefined)[10]', ATOB),
+            define('btoa(undefined)[10]', ATOB)
         ],
         'W':
         [
             define('unescape("%57")'),
+            define('String[FROM_CHAR_CODE]("87")'),
             define('"w"[TO_UPPER_CASE]()'),
             define('(self + RP_4_N)[SUBSTR]("-11")[0]', ANY_WINDOW),
             define('btoa(undefined)[1]', ATOB),
@@ -1283,6 +1264,11 @@ var createParseIntArgDefault;
         [
             define('[].filter')
         ],
+        FROM_CHAR_CODE:
+        [
+            define({ expr: '"fromCharCode"', optimize: true }),
+            define({ expr: '"fromCodePoint"', optimize: true }, FROM_CODE_POINT)
+        ],
         PLAIN_OBJECT:
         [
             define('Function("return{}")()'),
@@ -1332,7 +1318,7 @@ var createParseIntArgDefault;
         
         // Function header shift: used to adjust an indexer to make it point to the same position in
         // the string representation of a function's header in different engines.
-        // This evaluates to an array containing only the number n - 1 or only the number n, where n
+        // This evaluates to an array containing only the number 𝑛 - 1 or only the number 𝑛, where 𝑛
         // is the number after "FH_SHIFT_".
         
         FH_SHIFT_1:
@@ -1344,8 +1330,8 @@ var createParseIntArgDefault;
             define('[2 + IS_IE_SRC_N]')
         ],
         
-        // Function header padding blocks: prepended to a function to align the function's header
-        // at the same position in different engines.
+        // Function header padding blocks: prepended to a function to align the function's header at
+        // the same position in different engines.
         // The number after "FHP_" is the maximum character overhead.
         // The letters after the last underscore have the same meaning as in regular padding blocks.
         
@@ -1466,16 +1452,14 @@ var createParseIntArgDefault;
     
     DEFAULT_16_BIT_CHARACTER_ENCODER =
     [
-        define(charEncodeByUnescape16),
-        define(charEncodeByCharCode, CAPITAL_HTML),
+        define(charEncodeByCharCodeOrUnescape16),
         define(charEncodeByEval, ATOB),
         define(charEncodeByEval, UNEVAL)
     ];
     
     DEFAULT_8_BIT_CHARACTER_ENCODER =
     [
-        define(charEncodeByUnescape8),
-        define(charEncodeByCharCode, CAPITAL_HTML),
+        define(charEncodeByCharCodeOrUnescape8),
         define(charEncodeByAtob, ATOB)
     ];
     

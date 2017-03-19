@@ -1777,6 +1777,26 @@ uneval,
             }
         }
         
+        function testCharCode()
+        {
+            if ('CAPITAL_HTML' in featureSet)
+            {
+                it(
+                    '(char code)',
+                    function ()
+                    {
+                        var encoder = getPoolEncoder(Feature.CAPITAL_HTML);
+                        var solution = encoder.resolveCharacter(char);
+                        verifySolution(solution, char, featureSet.CAPITAL_HTML && ['CAPITAL_HTML']);
+                        expect(solution.char).toBe(char);
+                        expect(solution.length).not.toBeGreaterThan(
+                            getPoolEncoder(Feature.DEFAULT).resolveCharacter(char).length
+                        );
+                    }
+                );
+            }
+        }
+        
         function testFEntry(entry, dispositions, varieties)
         {
             var entryFeatureObj = getEntryFeature(entry);
@@ -1905,13 +1925,17 @@ uneval,
                     if (entries)
                         entries.forEach(testEntry);
                     if (!defaultEntryFound)
+                    {
                         testDefault();
+                        testCharCode();
+                    }
                     if (!atobEntryFound)
                         testAtob();
                 }
                 else
                 {
                     testDefault();
+                    testCharCode();
                     testAtob();
                 }
             }

@@ -351,6 +351,36 @@ var resolveSimple;
             }
         },
         
+        replaceCharByCharCode: function (charCode)
+        {
+            var arg =
+                charCode < 2 ? ['[]', 'true'][charCode] :
+                charCode < 10 ? charCode :
+                '"' + charCode + '"';
+            var replacement = this.replaceExpr('String[FROM_CHAR_CODE](' + arg + ')');
+            return replacement;
+        },
+        
+        replaceCharByUnescape16: function (charCode)
+        {
+            var hexCode = this.hexCodeOf(charCode, 4);
+            var expr = 'unescape("%u' + hexCode + '")';
+            if (hexCode.length > 4)
+                expr += '[0]';
+            var replacement = this.replaceExpr(expr, true);
+            return replacement;
+        },
+        
+        replaceCharByUnescape8: function (charCode)
+        {
+            var hexCode = this.hexCodeOf(charCode, 2);
+            var expr = 'unescape("%' + hexCode + '")';
+            if (hexCode.length > 2)
+                expr += '[0]';
+            var replacement = this.replaceExpr(expr, true);
+            return replacement;
+        },
+        
         replaceExpr: function (expr, optimize)
         {
             var unit = expressParse(expr);
