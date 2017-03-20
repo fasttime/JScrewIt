@@ -160,7 +160,7 @@ var createParseIntArgDefault;
         define(null, NO_V8_SRC),
         define({ blocks: R_PADDINGS, shift: 0 }, V8_SRC),
         define({ blocks: R_PADDINGS, shift: 5 }, IE_SRC),
-        define({ blocks: R_PADDINGS, shift: 4 }, NO_IE_SRC, NO_V8_SRC)
+        define({ blocks: R_PADDINGS, shift: 4 }, FF_SRC)
     ];
     
     var FH_PADDING_INFOS =
@@ -210,7 +210,7 @@ var createParseIntArgDefault;
         var result = this.replaceExpr(expr);
         return result;
     }
-    
+
     function charEncodeByUnescape16(charCode)
     {
         var hexCode = this.hexCodeOf(charCode, 4);
@@ -255,7 +255,7 @@ var createParseIntArgDefault;
                     define({ block: 'RP_0_S', indexer: '2 + FH_SHIFT_3' }, NO_V8_SRC),
                     define(3, V8_SRC),
                     define(0, IE_SRC),
-                    define(0, NO_IE_SRC, NO_V8_SRC)
+                    define(0, FF_SRC)
                 ];
                 break;
             case 20:
@@ -269,7 +269,7 @@ var createParseIntArgDefault;
                     ),
                     define(0, V8_SRC),
                     define(5, IE_SRC),
-                    define(6, NO_IE_SRC, NO_V8_SRC)
+                    define(6, FF_SRC)
                 ];
                 break;
             case 23:
@@ -279,7 +279,7 @@ var createParseIntArgDefault;
                     define({ block: 'RP_3_NO', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(0, V8_SRC),
                     define(3, IE_SRC),
-                    define(3, NO_IE_SRC, NO_V8_SRC)
+                    define(3, FF_SRC)
                 ];
                 break;
             case 25:
@@ -289,7 +289,7 @@ var createParseIntArgDefault;
                     define(5, NO_IE_SRC),
                     define({ block: 'RP_1_NO', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(0, IE_SRC),
-                    define(1, NO_IE_SRC, NO_V8_SRC)
+                    define(1, FF_SRC)
                 ];
                 break;
             case 32:
@@ -300,7 +300,7 @@ var createParseIntArgDefault;
                     define({ block: 'RP_4_N', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(0, V8_SRC),
                     define(3, IE_SRC),
-                    define(4, NO_IE_SRC, NO_V8_SRC)
+                    define(4, FF_SRC)
                 ];
                 break;
             case 34:
@@ -311,7 +311,7 @@ var createParseIntArgDefault;
                     define({ block: 'RP_2_SO', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(6, V8_SRC),
                     define(1, IE_SRC),
-                    define(3, NO_IE_SRC, NO_V8_SRC)
+                    define(3, FF_SRC)
                 ];
                 break;
             }
@@ -519,10 +519,10 @@ var createParseIntArgDefault;
             define('V', ANY_DOCUMENT, ENTRIES_OBJ, FILL, NAME),
             define('V', ANY_DOCUMENT, ENTRIES_OBJ, NAME, NO_IE_SRC),
             define('U', FILL, NAME, NO_IE_SRC),
+            define('V', ANY_DOCUMENT, FF_SRC, NAME),
             define('V', ANY_DOCUMENT, IE_SRC, NAME),
             define('V', ANY_DOCUMENT, NAME, V8_SRC),
             define('V', ANY_DOCUMENT, HTMLAUDIOELEMENT, NAME),
-            define('V', ANY_DOCUMENT, NAME, NO_IE_SRC, NO_V8_SRC),
             define('U', UNDEFINED),
             define('W', ANY_WINDOW),
             define('W', ATOB),
@@ -660,11 +660,11 @@ var createParseIntArgDefault;
         [
             defineFHCharAt('ANY_FUNCTION', 8),
             define('(RP_3_NO + ARRAY_ITERATOR)[10]', ENTRIES_OBJ),
+            define('(FILTER + [])[20]', FF_SRC)
             define('(FILTER + [])[21]', NO_V8_SRC),
             define('(RP_1_NO + FILTER)[20]', V8_SRC),
             define('(RP_5_N + FILL)[20]', FILL, NO_IE_SRC),
             define('(FILL + [])[20]', FILL, NO_V8_SRC),
-            define('(FILTER + [])[20]', NO_IE_SRC, NO_V8_SRC)
         ],
         // '!':    ,
         '"':
@@ -783,7 +783,7 @@ var createParseIntArgDefault;
             define('(document + [])[12]', HTMLDOCUMENT),
             define('escape(ARRAY_ITERATOR)[30]', NO_OLD_SAFARI_ARRAY_ITERATOR),
             define('escape(FILTER)[50]', V8_SRC),
-            define('escape(FILL)[60]', FILL, NO_IE_SRC, NO_V8_SRC)
+            define('escape(FILL)[60]', FF_SRC, FILL)
         ],
         'E':
         [
@@ -937,11 +937,11 @@ var createParseIntArgDefault;
         '\\':
         [
             define('uneval("".fontcolor(false))[20]', UNEVAL),
+            define('uneval(FILTER + [])[20]', FF_SRC, UNEVAL),
             define('uneval(ANY_FUNCTION + [])[1]', IE_SRC, UNEVAL),
             define('uneval(+(ANY_FUNCTION + [])[0] + FILTER)[23]', NO_V8_SRC, UNEVAL),
+            define('uneval(RP_3_NO + FILL)[21]', FF_SRC, FILL, UNEVAL)
             define('uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]', FILL, NO_V8_SRC, UNEVAL),
-            define('uneval(FILTER + [])[20]', NO_IE_SRC, NO_V8_SRC, UNEVAL),
-            define('uneval(RP_3_NO + FILL)[21]', FILL, NO_IE_SRC, NO_V8_SRC, UNEVAL)
         ],
         ']':
         [
@@ -1068,11 +1068,11 @@ var createParseIntArgDefault;
         [
             define('atob(true)[2]', ATOB)
         ],
-        '£':
+        '￡':
         [
             define('atob(NaN)[1]', ATOB)
         ],
-        '¥':
+        '￥':
         [
             define('atob("0false")[2]', ATOB)
         ],
@@ -1080,7 +1080,7 @@ var createParseIntArgDefault;
         [
             define('atob("00undefined")[2]', ATOB)
         ],
-        '©':
+        '?':
         [
             define('atob("falsefalse")[1]', ATOB)
         ],
@@ -1088,31 +1088,31 @@ var createParseIntArgDefault;
         [
             define('atob("0false")[3]', ATOB)
         ],
-        '¶':
+        '?':
         [
             define('atob(true)[0]', ATOB)
         ],
-        'º':
+        'o':
         [
             define('atob("undefined0")[0]', ATOB)
         ],
-        '»':
+        '?':
         [
             define('atob(true)[1]', ATOB)
         ],
-        'Ç':
+        '?':
         [
             define('atob("falsefalsefalse")[10]', ATOB)
         ],
-        'Ú':
+        'ú':
         [
             define('atob("0truefalse")[1]', ATOB)
         ],
-        'Ý':
+        'Y':
         [
             define('atob("0undefined")[2]', ATOB)
         ],
-        'â':
+        'a':
         [
             define('atob("falsefalseundefined")[11]', ATOB)
         ],
@@ -1120,15 +1120,15 @@ var createParseIntArgDefault;
         [
             define('atob("0undefined")[1]', ATOB)
         ],
-        'î':
+        '?':
         [
             define('atob("0truefalse")[2]', ATOB)
         ],
-        'ö':
+        '?':
         [
             define('atob("0false")[1]', ATOB)
         ],
-        'ø':
+        '?':
         [
             define('atob("undefinedundefined")[10]', ATOB)
         ],
@@ -1439,9 +1439,9 @@ var createParseIntArgDefault;
         define(createParseIntArgByReduce, NO_V8_SRC),
         define(createParseIntArgByReduce, V8_SRC),
         define(createParseIntArgByReduceArrow, ARROW, ENTRIES_OBJ),
+        define(createParseIntArgByReduce, FILL, FF_SRC),
         define(createParseIntArgByReduce, FILL, IE_SRC),
         define(createParseIntArgByReduce, FILL, V8_SRC),
-        define(createParseIntArgByReduce, FILL, NO_IE_SRC, NO_V8_SRC),
     ];
     
     DEFAULT_16_BIT_CHARACTER_ENCODER =
@@ -1477,7 +1477,7 @@ var createParseIntArgDefault;
     MAPPER_FORMATTER = [define(mapperFormatterDefault), define(mapperFormatterDblArrow, ARROW)];
     
     OPTIMAL_B = [define('B'), define('b', ENTRIES_OBJ)];
-    
+        
     SIMPLE = new Empty();
     
     // Create definitions for digits
