@@ -67,6 +67,7 @@ var createParseIntArgDefault;
     var ESC_HTML_ALL                    = Feature.ESC_HTML_ALL;
     var ESC_HTML_QUOT                   = Feature.ESC_HTML_QUOT;
     var ESC_HTML_QUOT_ONLY              = Feature.ESC_HTML_QUOT_ONLY;
+    var FF_SRC                          = Feature.FF_SRC;
     var FILL                            = Feature.FILL;
     var FROM_CODE_POINT                 = Feature.FROM_CODE_POINT;
     var GMT                             = Feature.GMT;
