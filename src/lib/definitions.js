@@ -1068,11 +1068,11 @@ var createParseIntArgDefault;
         [
             define('atob(true)[2]', ATOB)
         ],
-        '￡':
+        '£':
         [
             define('atob(NaN)[1]', ATOB)
         ],
-        '￥':
+        '¥':
         [
             define('atob("0false")[2]', ATOB)
         ],
@@ -1080,7 +1080,7 @@ var createParseIntArgDefault;
         [
             define('atob("00undefined")[2]', ATOB)
         ],
-        '?':
+        '©':
         [
             define('atob("falsefalse")[1]', ATOB)
         ],
@@ -1088,31 +1088,31 @@ var createParseIntArgDefault;
         [
             define('atob("0false")[3]', ATOB)
         ],
-        '?':
+        '¶':
         [
             define('atob(true)[0]', ATOB)
         ],
-        'o':
+        'º':
         [
             define('atob("undefined0")[0]', ATOB)
         ],
-        '?':
+        '»':
         [
             define('atob(true)[1]', ATOB)
         ],
-        '?':
+        'Ç':
         [
             define('atob("falsefalsefalse")[10]', ATOB)
         ],
-        'ú':
+        'Ú':
         [
             define('atob("0truefalse")[1]', ATOB)
         ],
-        'Y':
+        'Ý':
         [
             define('atob("0undefined")[2]', ATOB)
         ],
-        'a':
+        'â':
         [
             define('atob("falsefalseundefined")[11]', ATOB)
         ],
@@ -1120,15 +1120,15 @@ var createParseIntArgDefault;
         [
             define('atob("0undefined")[1]', ATOB)
         ],
-        '?':
+        'î':
         [
             define('atob("0truefalse")[2]', ATOB)
         ],
-        '?':
+        'ö':
         [
             define('atob("0false")[1]', ATOB)
         ],
-        '?':
+        'ø':
         [
             define('atob("undefinedundefined")[10]', ATOB)
         ],
