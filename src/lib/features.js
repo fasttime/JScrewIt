@@ -109,6 +109,25 @@ var validMaskFromArrayOrStringOrFeature;
         return result;
     }
     
+    function completeExclusions(name)
+    {
+        var info = FEATURE_INFOS[name];
+        var excludes = info.excludes;
+        if (excludes)
+        {
+            var featureObj = ALL[name];
+            var mask = featureObj.mask;
+            excludes.forEach(
+                function (exclude)
+                {
+                    var excludeMask = completeFeature(exclude);
+                    var incompatibleMask = maskUnion(mask, excludeMask);
+                    incompatibleMaskMap[incompatibleMask] = incompatibleMask;
+                }
+            );
+        }
+    }
+    
     function completeFeature(name)
     {
         var mask;
@@ -117,7 +136,6 @@ var validMaskFromArrayOrStringOrFeature;
             mask = featureObj.mask;
         else
         {
-            var excludes;
             var info = FEATURE_INFOS[name];
             if (typeof info === 'string')
             {
@@ -143,7 +161,6 @@ var validMaskFromArrayOrStringOrFeature;
                         maskOr(mask, includeMask);
                     }
                 );
-                excludes = info.excludes;
                 var description;
                 var engine = info.engine;
                 if (engine == null)
@@ -156,17 +173,6 @@ var validMaskFromArrayOrStringOrFeature;
                     elementaryFeatureObjs.push(featureObj);
             }
             registerFeature(name, featureObj);
-            if (excludes)
-            {
-                excludes.forEach(
-                    function (exclude)
-                    {
-                        var excludeMask = completeFeature(exclude);
-                        var incompatibleMask = maskUnion(mask, excludeMask);
-                        incompatibleMasks.push(incompatibleMask);
-                    }
-                );
-            }
         }
         return mask;
     }
@@ -1651,7 +1657,7 @@ var validMaskFromArrayOrStringOrFeature;
         function (mask)
         {
             var compatible =
-                incompatibleMasks.every(
+                incompatibleMaskList.every(
                     function (incompatibleMask)
                     {
                         var result = !maskIncludes(mask, incompatibleMask);
@@ -1680,10 +1686,19 @@ var validMaskFromArrayOrStringOrFeature;
     var bitIndex = 0;
     var elementaryFeatureObjs = [];
     var includesMap = new Empty();
-    var incompatibleMasks = [];
+    var incompatibleMaskMap = new Empty();
     
     var featureNames = object_keys(FEATURE_INFOS);
     featureNames.forEach(completeFeature);
+    featureNames.forEach(completeExclusions);
+    var incompatibleMaskList =
+        object_keys(incompatibleMaskMap).map(
+            function (key)
+            {
+                var mask = incompatibleMaskMap[key];
+                return mask;
+            }
+        );
     elementaryFeatureObjs.sort();
     var autoFeatureObj =
         createFeature('AUTO', 'All features available in the current engine.', autoMask);
