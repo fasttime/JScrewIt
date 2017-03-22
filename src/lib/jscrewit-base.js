@@ -65,12 +65,12 @@ var setUp;
      * Applies the code generation process of both <code>"express"</code> and <code>"call"</code>
      * and returns the shortest output.</dd>
      *
-     * <dt><code>"express-eval"</code></dt>
+     * <dt><code>"express-eval"</code> (default)</dt>
      * <dd>
      * Applies the code generation process of both <code>"express"</code> and <code>"eval"</code>
      * and returns the shortest output.</dd>
      *
-     * <dt><code>"none"</code> (default)</dt>
+     * <dt><code>"none"</code></dt>
      * <dd>
      * Produces JSFuck code that translates to the specified input string (except for trimmed parts
      * when used in conjunction with the option <code>trimCode</code>).
