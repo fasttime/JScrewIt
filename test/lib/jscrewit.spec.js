@@ -1678,23 +1678,25 @@ uneval,
     
     function getEmuFeatureNames(featureObj)
     {
-        var featureNames = featureObj.elementaryNames;
         if (
-            featureNames.every(
+            !featureObj.elementaryNames.every(
                 function (featureName)
                 {
-                    return featureName in featureSet;
+                    var supportable = featureName in featureSet;
+                    return supportable;
                 }
             )
         )
-        {
-            return featureNames.filter(
+            return; // There are unsupportable features.
+        var emuFeatureNames =
+            EMU_FEATURES.filter(
                 function (featureName)
                 {
-                    return featureSet[featureName];
+                    var emulated = featureSet[featureName] && featureObj.includes(featureName);
+                    return emulated;
                 }
             );
-        }
+        return emuFeatureNames;
     }
     
     function getEntryFeature(entry)

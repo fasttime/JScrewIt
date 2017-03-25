@@ -85,7 +85,6 @@
     
     function emuDo(emuFeatures, callback)
     {
-        var result;
         var context = Object.create(null);
         try
         {
@@ -95,7 +94,8 @@
                     EMU_FEATURE_INFOS[featureName].setUp.call(context);
                 }
             );
-            result = callback();
+            var result = callback();
+            return result;
         }
         finally
         {
@@ -103,7 +103,6 @@
             if (backupMap)
                 restoreAll(backupMap, global);
         }
-        return result;
     }
     
     function emuEval(emuFeatures, jsFuck)
@@ -240,25 +239,6 @@
         return result;
     }
     
-    function makeEmuFeatureFunctionSource(regExp, replacement)
-    {
-        var result =
-        {
-            setUp: function ()
-            {
-                var oldToString = Function.prototype.toString;
-                var newToString =
-                    function ()
-                    {
-                        var str = oldToString.call(this).replace(regExp, replacement);
-                        return str;
-                    };
-                override(this, 'Function.prototype.toString', { value: newToString });
-            }
-        };
-        return result;
-    }
-    
     function makeEmuFeatureHtml(methodNames, adapter, regExp)
     {
         var result =
@@ -277,6 +257,51 @@
                     },
                     this
                 );
+            }
+        };
+        return result;
+    }
+    
+    function makeEmuFeatureNativeFunctionSource()
+    {
+        var args = Array.from(arguments);
+        var result =
+        {
+            setUp: function ()
+            {
+                var nativeFunctionSourceInfos = this.nativeFunctionSourceInfos;
+                if (nativeFunctionSourceInfos)
+                {
+                    this.nativeFunctionSourceInfos =
+                        nativeFunctionSourceInfos.filter(
+                            function (nativeFunctionSourceInfo)
+                            {
+                                var keep = args.indexOf(nativeFunctionSourceInfo) >= 0;
+                                return keep;
+                            }
+                        );
+                }
+                else
+                {
+                    this.nativeFunctionSourceInfos = args;
+                    var context = this;
+                    var adapter =
+                        function ()
+                        {
+                            var str = context.Function.toString.call(this);
+                            var match =
+                                /^\n?(function \w+\(\) \{)\s+\[native code]\s+}\n?$/.exec(str);
+                            if (match)
+                            {
+                                var nativeFunctionSourceInfo = context.nativeFunctionSourceInfos[0];
+                                var body = nativeFunctionSourceInfo.body;
+                                var delimiter = nativeFunctionSourceInfo.delimiter;
+                                str = delimiter + match[1] + body + '}' + delimiter;
+                                return str;
+                            }
+                        };
+                    registerToStringAdapter(this, 'Function', adapter);
+                }
             }
         };
         return result;
@@ -409,6 +434,10 @@
     
     var ARROW_REGEXP =
         /(\([^(]*\)|[\w$]+)=>(\{.*?\}|(?:\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\)|[^,()])*)/g;
+    
+    var NATIVE_FUNCTION_SOURCE_INFO_FF = { body: '\n    [native code]\n',    delimiter: ''   };
+    var NATIVE_FUNCTION_SOURCE_INFO_IE = { body: '\n    [native code]\n',    delimiter: '\n' };
+    var NATIVE_FUNCTION_SOURCE_INFO_V8 = { body: ' [native code] ',          delimiter: ''   };
     
     var EMU_FEATURE_INFOS =
     {
@@ -562,6 +591,7 @@
             },
             /&quot;<>/
         ),
+        FF_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_FF),
         FILL:
         {
             setUp: function ()
@@ -621,10 +651,7 @@
             }
         },
         HTMLDOCUMENT: makeEmuFeatureDocument('[object HTMLDocument]', /^\[object HTMLDocument]$/),
-        IE_SRC: makeEmuFeatureFunctionSource(
-            /^(.*)\{\s+\[native code]\s+\}$/,
-            '\n$1{\n    [native code]\n}'
-        ),
+        IE_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_IE),
         INTL:
         {
             setUp: function ()
@@ -685,7 +712,14 @@
                 override(this, 'Node.toString', { value: toString });
             }
         },
-        NO_IE_SRC: makeEmuFeatureFunctionSource(/^\n/, ''),
+        NO_FF_SRC: makeEmuFeatureNativeFunctionSource(
+            NATIVE_FUNCTION_SOURCE_INFO_IE,
+            NATIVE_FUNCTION_SOURCE_INFO_V8
+        ),
+        NO_IE_SRC: makeEmuFeatureNativeFunctionSource(
+            NATIVE_FUNCTION_SOURCE_INFO_FF,
+            NATIVE_FUNCTION_SOURCE_INFO_V8
+        ),
         NO_OLD_SAFARI_ARRAY_ITERATOR: makeEmuFeatureEntries(
             '[object Array Iterator]',
             /^\[object Array Iterator]$/
@@ -707,7 +741,10 @@
                 );
             }
         },
-        NO_V8_SRC: makeEmuFeatureFunctionSource(/\{ \[native code] \}$/, '{\n    [native code]\n}'),
+        NO_V8_SRC: makeEmuFeatureNativeFunctionSource(
+            NATIVE_FUNCTION_SOURCE_INFO_FF,
+            NATIVE_FUNCTION_SOURCE_INFO_IE
+        ),
         SELF_OBJ: makeEmuFeatureSelf('[object Object]', /^\[object /),
         UNDEFINED:
         {
@@ -749,10 +786,7 @@
                 override(this, 'uneval', { value: uneval });
             }
         },
-        V8_SRC: makeEmuFeatureFunctionSource(
-            /^\n?(.*)\{\n    \[native code]\n\}\n?$/,
-            '$1{ [native code] }'
-        ),
+        V8_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_V8),
         WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object Window]$/)
     };
     
