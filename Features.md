@@ -115,6 +115,10 @@ _An alias for [`FF31`](#FF31)._
 <a name="FF31"></a>
 ### `FF31`
 Features available in Firefox 31 or later.
+<a name="FF_SRC"></a>
+### `FF_SRC`
+A string representation of native functions typical for FireFox.<br>
+Remarkable traits are the lack of a line feed character \("\\n"\) in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 <a name="FILL"></a>
 ### `FILL`
 Existence of the native function Array.prototype.fill.
@@ -162,8 +166,6 @@ Features available in Internet Explorer 9 and 10.
 ### `IE_SRC`
 A string representation of native functions typical for Internet Explorer.<br>
 Remarkable traits are the presence of a line feed character \("\\n"\) in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
-
-_Available in Internet Explorer._
 <a name="INCR_CHAR"></a>
 ### `INCR_CHAR`
 The ability to use unary increment operators with string characters, like in \( ++"some string"\[0\] \): this will result in a TypeError in strict mode in ECMAScript compliant engines.
@@ -201,6 +203,12 @@ Features available in Node.js 5.0 or later.
 Existence of the global object Node having the string representation "\[object NodeConstructor\]".
 
 _Available in Safari before 10.0+. This feature is not available inside web workers._
+<a name="NO_FF_SRC"></a>
+### `NO_FF_SRC`
+A string representation of native functions typical for both IE and V8.<br>
+A most remarkable trait of this feature is the presence of a line feed being followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence if and only if there is a line feed at the beginning.
+
+_Available in Chrome, Edge, Internet Explorer, Opera, Android Browser and Node.js._
 <a name="NO_IE_SRC"></a>
 ### `NO_IE_SRC`
 A string representation of native functions typical for most engines with the notable exception of Internet Explorer.<br>
@@ -262,8 +270,6 @@ _Available in Firefox._
 ### `V8_SRC`
 A string representation of native functions typical for the V8 engine, but also found in Edge.<br>
 Remarkable traits are the lack of characters in the beginning of the string before "function" and a single whitespace before the "\[native code\]" sequence.
-
-_Available in Chrome, Edge, Opera, Android Browser and Node.js._
 <a name="WINDOW"></a>
 ### `WINDOW`
 Existence of the global object self having the string representation "\[object Window\]".
@@ -299,12 +305,12 @@ This table lists features available in the most common engines.
 <li><a href="#INTL"><code>INTL</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
 <li><a href="#NAME"><code>NAME</code></a>
-<li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a> and <a href="#V8_SRC"><code>V8_SRC</code></a>)
+<li><a href="#NO_FF_SRC"><code>NO_FF_SRC</code></a>
+<li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a>)
 <li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
-<li><a href="#V8_SRC"><code>V8_SRC</code></a>
 <li><a href="#WINDOW"><code>WINDOW</code></a>
 </ul>
 </td>
@@ -332,11 +338,11 @@ This table lists features available in the most common engines.
 <li><a href="#INTL"><code>INTL</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
 <li><a href="#NAME"><code>NAME</code></a>
-<li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#V8_SRC"><code>V8_SRC</code></a>)
+<li><a href="#NO_FF_SRC"><code>NO_FF_SRC</code></a>
+<li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a>
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
-<li><a href="#V8_SRC"><code>V8_SRC</code></a>
 <li><a href="#WINDOW"><code>WINDOW</code></a>
 </ul>
 </td>
@@ -388,12 +394,12 @@ This table lists features available in the most common engines.
 <li><a href="#GMT"><code>GMT</code></a> (Internet Explorer 11)
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a> (Internet Explorer 11)
-<li><a href="#IE_SRC"><code>IE_SRC</code></a>
 <li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="#INTL"><code>INTL</code></a> (Internet Explorer 11)
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Internet Explorer 11 on Windows 10)
+<li><a href="#NO_FF_SRC"><code>NO_FF_SRC</code></a>
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
-<li><a href="#NO_V8_SRC"><code>NO_V8_SRC</code></a> (implied by <a href="#IE_SRC"><code>IE_SRC</code></a>)
+<li><a href="#NO_V8_SRC"><code>NO_V8_SRC</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
 <li><a href="#WINDOW"><code>WINDOW</code></a>
@@ -452,11 +458,11 @@ This table lists features available in the most common engines.
 <li><a href="#INTL"><code>INTL</code></a> (Android Browser 4.4+)
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Android Browser 4.4+)
 <li><a href="#NAME"><code>NAME</code></a>
-<li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a> and <a href="#V8_SRC"><code>V8_SRC</code></a>)
+<li><a href="#NO_FF_SRC"><code>NO_FF_SRC</code></a>
+<li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a>)
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#DOMWINDOW"><code>DOMWINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a> (Android Browser 4.1+)
-<li><a href="#V8_SRC"><code>V8_SRC</code></a>
 <li><a href="#WINDOW"><code>WINDOW</code></a> (Android Browser 4.4+)
 </ul>
 </td>
@@ -478,11 +484,11 @@ This table lists features available in the most common engines.
 <li><a href="#INTL"><code>INTL</code></a> (Node.js 0.12+)
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Node.js 0.12+)
 <li><a href="#NAME"><code>NAME</code></a>
-<li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#V8_SRC"><code>V8_SRC</code></a>)
+<li><a href="#NO_FF_SRC"><code>NO_FF_SRC</code></a>
+<li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a>
 <li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Node.js 0.12+)
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
-<li><a href="#V8_SRC"><code>V8_SRC</code></a>
 </ul>
 </td>
 </tr>
