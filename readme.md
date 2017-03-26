@@ -140,21 +140,29 @@ shorter.
 The way to tell JScrewIt to use a particular set of features is by specifying a value for the
 `features` option in the second parameter passed to `encode`.
 
-For instance, the generic `alert(1)` example is 1893 chracters long.
+For instance, a generic `alert(1)` example for an unspecified environment is 1905 chracters long.
 
 ```js
-var output = JScrewIt.encode("alert(1)"); // output is 1893 characters
+var output = JScrewIt.encode("alert(1)"); // output is 1905 characters
 ```
 
-But if we specify that we are only interested in code that runs in an up to date Firefox browser,
-the output length shrinks to about 50%:
+We can save a few characters by indicating that our code is only supposed to run in a browser.
+We do this using the feature [`BROWSER`](Features.md#BROWSER):
+
+```js
+var options = { features: "BROWSER" };
+var output = JScrewIt.encode("alert(1)", options); // 1893 characters
+```
+
+But if we are only interested in code that runs in an up to date Firefox browser, the output length
+shrinks to about 50%:
 
 ```js
 var options = { features: "FF31" };
 var output = JScrewIt.encode("alert(1)", options); // 960 characters now
 ```
 
-Here we have used a particular feature: [`FF31`](Features.md#FF31).
+Here we have used another feature: [`FF31`](Features.md#FF31).
 This feature produces the shortest possible code that runs in current Firefox browsers.
 
 We can specify more than one feature using an array, e.g.
