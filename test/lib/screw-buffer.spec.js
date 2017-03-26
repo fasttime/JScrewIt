@@ -5,9 +5,42 @@
 {
     'use strict';
     
+    function createTestOptimizer(solution)
+    {
+        var clusterer =
+            function ()
+            {
+                return solution;
+            };
+        var optimizer =
+        {
+            appendLengthOf: function ()
+            {
+                return 0;
+            },
+            optimizeSolutions: function (plan)
+            {
+                plan.addCluster(0, 2, clusterer, 1);
+            }
+        };
+        return optimizer;
+    }
+    
+    function test(buffer, expectedStr, tolerance)
+    {
+        var actualLength = buffer.length;
+        var expectedLength = expectedStr.length;
+        expect(actualLength).not.toBeGreaterThan(expectedLength);
+        expect(actualLength).toBe(expectedLength - tolerance);
+        expect(buffer + '').toBe(expectedStr);
+    }
+    
+    var EMPTY_APPEND_LENGTH = 3;
+    
     var LEVEL_NUMERIC   = -1;
     var LEVEL_OBJECT    = 0;
     var LEVEL_STRING    = 1;
+    var LEVEL_UNDEFINED = -2;
     
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     
@@ -21,22 +54,15 @@
                 return solution;
             }
             
-            function test(buffer, expectedStr, tolerance)
-            {
-                var actualLength = buffer.length;
-                var expectedLength = expectedStr.length;
-                expect(actualLength).not.toBeGreaterThan(expectedLength);
-                expect(actualLength).not.toBeLessThan(expectedLength - (tolerance ^ 0));
-                expect(buffer + '').toBe(expectedStr);
-            }
-            
             function testShortEncodings(
                 description,
                 bond,
                 forceString,
                 expected0,
                 expected1,
-                expected2)
+                expected2,
+                expected3,
+                expected4)
             {
                 describe(
                     description,
@@ -47,7 +73,8 @@
                             function ()
                             {
                                 var buffer = createScrewBuffer(bond, forceString, 10, []);
-                                test(buffer, expected0);
+                                expect(buffer.length).toBe(-EMPTY_APPEND_LENGTH);
+                                expect(buffer + '').toBe(expected0);
                             }
                         );
                         it(
@@ -56,7 +83,9 @@
                             {
                                 var buffer = createScrewBuffer(bond, forceString, 10, []);
                                 expect(buffer.append(solutionA)).toBe(true);
-                                test(buffer, expected1);
+                                expect(buffer.length)
+                                    .toBe(solutionA.appendLength - EMPTY_APPEND_LENGTH);
+                                expect(buffer + '').toBe(expected1);
                             }
                         );
                         it(
@@ -65,7 +94,33 @@
                             {
                                 var buffer = createScrewBuffer(bond, forceString, 10, []);
                                 expect(buffer.append(solution0)).toBe(true);
-                                test(buffer, expected2);
+                                expect(buffer.length)
+                                    .toBe(solution0.appendLength - EMPTY_APPEND_LENGTH);
+                                expect(buffer + '').toBe(expected2);
+                            }
+                        );
+                        it(
+                            'encodes a string cluster',
+                            function ()
+                            {
+                                var buffer =
+                                    createScrewBuffer(bond, forceString, 10, [strTestOptimizer]);
+                                expect(buffer.append(solutionA)).toBe(true);
+                                expect(buffer.append(solutionA)).toBe(true);
+                                expect(buffer.length).toBe(-EMPTY_APPEND_LENGTH);
+                                expect(buffer + '').toBe(expected3);
+                            }
+                        );
+                        it(
+                            'encodes a nonstring cluster',
+                            function ()
+                            {
+                                var buffer =
+                                    createScrewBuffer(bond, forceString, 10, [objTestOptimizer]);
+                                expect(buffer.append(solutionA)).toBe(true);
+                                expect(buffer.append(solutionA)).toBe(true);
+                                expect(buffer.length).toBe(-EMPTY_APPEND_LENGTH);
+                                expect(buffer + '').toBe(expected4);
                             }
                         );
                     }
@@ -77,6 +132,11 @@
             var solution0 = JScrewIt.debug.createSolution('+[]', LEVEL_NUMERIC);
             var solutionFalse = JScrewIt.debug.createSolution('![]', LEVEL_NUMERIC);
             var solutionComma = createCommaSolution();
+            var solutionUndefined = JScrewIt.debug.createSolution('[][[]]', LEVEL_UNDEFINED);
+            var strTestOptimizer =
+                createTestOptimizer(JScrewIt.debug.createSolution('""', LEVEL_STRING));
+            var objTestOptimizer =
+                createTestOptimizer(JScrewIt.debug.createSolution('{}', LEVEL_OBJECT));
             
             describe(
                 'length does not exceed string length when joining solutions with outer plus',
@@ -112,7 +172,9 @@
                 false,
                 '[]',
                 '[![]+[]][+[]]',
-                '+[]'
+                '+[]',
+                '""',
+                '{}'
             );
             
             testShortEncodings(
@@ -121,7 +183,9 @@
                 true,
                 '[]+[]',
                 '[![]+[]][+[]]',
-                '+[]+[]'
+                '+[]+[]',
+                '""',
+                '{}+[]'
             );
             
             testShortEncodings(
@@ -130,7 +194,9 @@
                 false,
                 '[]',
                 '[![]+[]][+[]]',
-                '+[]'
+                '+[]',
+                '""',
+                '{}'
             );
             
             testShortEncodings(
@@ -139,9 +205,11 @@
                 true,
                 '([]+[])',
                 '[![]+[]][+[]]',
-                '(+[]+[])'
+                '(+[]+[])',
+                '""',
+                '({}+[])'
             );
-             
+            
             (function ()
             {
                 var buffer = JScrewIt.debug.createScrewBuffer(false, true, 4, []);
@@ -204,6 +272,33 @@
                 );
             })();
             it(
+                'encodes a numeric level solution with an undefined level solution',
+                function ()
+                {
+                    var buffer = createScrewBuffer(false, false, 4, []);
+                    buffer.append(solution0);
+                    buffer.append(solutionUndefined);
+                    expect(buffer.length)
+                        .toBe(
+                            solution0.appendLength + solutionUndefined.appendLength -
+                            EMPTY_APPEND_LENGTH
+                        );
+                    expect(buffer + '').toBe('[+[]]+[][[]]');
+                }
+            );
+            it(
+                'encodes two undefined level solutions',
+                function ()
+                {
+                    var buffer = createScrewBuffer(false, false, 4, []);
+                    buffer.append(solutionUndefined);
+                    buffer.append(solutionUndefined);
+                    expect(buffer.length)
+                        .toBe(2 * solutionUndefined.appendLength - EMPTY_APPEND_LENGTH);
+                    expect(buffer + '').toBe('[][[]]+[]+[][[]]');
+                }
+            );
+            it(
                 'encodes a string with incomplete groups',
                 function ()
                 {
@@ -228,8 +323,7 @@
                 'encodes a string with multiple bridges',
                 function ()
                 {
-                    var optimizer = { appendLengthOf: Function(), optimizeSolutions: Function() };
-                    var buffer = createScrewBuffer(false, true, 4, [optimizer]);
+                    var buffer = createScrewBuffer(false, true, 4, []);
                     for (var index = 0; index < 5; ++index)
                         buffer.append(solutionComma);
                     test(
@@ -238,6 +332,22 @@
                         '[[]].concat([[]]).concat([[]])',
                         47
                     );
+                }
+            );
+            it(
+                'considers the lowest append length when solutions are appended',
+                function ()
+                {
+                    var optimizer =
+                    {
+                        appendLengthOf: function ()
+                        {
+                            return solutionA.appendLength + 1;
+                        }
+                    };
+                    var buffer = createScrewBuffer(false, false, 10, [optimizer]);
+                    buffer.append(solutionA);
+                    expect(buffer.length).toBe(solutionA.appendLength - EMPTY_APPEND_LENGTH);
                 }
             );
         }
