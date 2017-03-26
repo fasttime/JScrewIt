@@ -67,6 +67,7 @@ var createParseIntArgDefault;
     var ESC_HTML_ALL                    = Feature.ESC_HTML_ALL;
     var ESC_HTML_QUOT                   = Feature.ESC_HTML_QUOT;
     var ESC_HTML_QUOT_ONLY              = Feature.ESC_HTML_QUOT_ONLY;
+    var FF_SRC                          = Feature.FF_SRC;
     var FILL                            = Feature.FILL;
     var FROM_CODE_POINT                 = Feature.FROM_CODE_POINT;
     var GMT                             = Feature.GMT;
@@ -161,7 +162,7 @@ var createParseIntArgDefault;
         define(null, NO_V8_SRC),
         define({ blocks: R_PADDINGS, shift: 0 }, V8_SRC),
         define({ blocks: R_PADDINGS, shift: 5 }, IE_SRC),
-        define({ blocks: R_PADDINGS, shift: 4 }, NO_IE_SRC, NO_V8_SRC)
+        define({ blocks: R_PADDINGS, shift: 4 }, FF_SRC)
     ];
     
     var FH_PADDING_INFOS =
@@ -252,7 +253,7 @@ var createParseIntArgDefault;
                     define({ block: 'RP_0_S', indexer: '2 + FH_SHIFT_3' }, NO_V8_SRC),
                     define(3, V8_SRC),
                     define(0, IE_SRC),
-                    define(0, NO_IE_SRC, NO_V8_SRC)
+                    define(0, FF_SRC)
                 ];
                 break;
             case 20:
@@ -266,7 +267,7 @@ var createParseIntArgDefault;
                     ),
                     define(0, V8_SRC),
                     define(5, IE_SRC),
-                    define(6, NO_IE_SRC, NO_V8_SRC)
+                    define(6, FF_SRC)
                 ];
                 break;
             case 23:
@@ -276,7 +277,7 @@ var createParseIntArgDefault;
                     define({ block: 'RP_3_NO', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(0, V8_SRC),
                     define(3, IE_SRC),
-                    define(3, NO_IE_SRC, NO_V8_SRC)
+                    define(3, FF_SRC)
                 ];
                 break;
             case 25:
@@ -286,7 +287,7 @@ var createParseIntArgDefault;
                     define(5, NO_IE_SRC),
                     define({ block: 'RP_1_NO', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(0, IE_SRC),
-                    define(1, NO_IE_SRC, NO_V8_SRC)
+                    define(1, FF_SRC)
                 ];
                 break;
             case 32:
@@ -297,7 +298,7 @@ var createParseIntArgDefault;
                     define({ block: 'RP_4_N', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(0, V8_SRC),
                     define(3, IE_SRC),
-                    define(4, NO_IE_SRC, NO_V8_SRC)
+                    define(4, FF_SRC)
                 ];
                 break;
             case 34:
@@ -308,7 +309,7 @@ var createParseIntArgDefault;
                     define({ block: 'RP_2_SO', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(6, V8_SRC),
                     define(1, IE_SRC),
-                    define(3, NO_IE_SRC, NO_V8_SRC)
+                    define(3, FF_SRC)
                 ];
                 break;
             }
@@ -516,10 +517,10 @@ var createParseIntArgDefault;
             define('V', ANY_DOCUMENT, ENTRIES_OBJ, FILL, NAME),
             define('V', ANY_DOCUMENT, ENTRIES_OBJ, NAME, NO_IE_SRC),
             define('U', FILL, NAME, NO_IE_SRC),
+            define('V', ANY_DOCUMENT, FF_SRC, NAME),
             define('V', ANY_DOCUMENT, HTMLAUDIOELEMENT, NAME),
             define('V', ANY_DOCUMENT, IE_SRC, NAME),
             define('V', ANY_DOCUMENT, NAME, V8_SRC),
-            define('V', ANY_DOCUMENT, NAME, NO_IE_SRC, NO_V8_SRC),
             define('U', UNDEFINED),
             define('U', BARPROP, CONSOLE, FROM_CODE_POINT),
             define('U', BARPROP, FROM_CODE_POINT, NODECONSTRUCTOR),
@@ -659,11 +660,11 @@ var createParseIntArgDefault;
         [
             defineFHCharAt('ANY_FUNCTION', 8),
             define('(RP_3_NO + ARRAY_ITERATOR)[10]', ENTRIES_OBJ),
+            define('(FILTER + [])[20]', FF_SRC),
             define('(FILTER + [])[21]', NO_V8_SRC),
             define('(RP_1_NO + FILTER)[20]', V8_SRC),
             define('(RP_5_N + FILL)[20]', FILL, NO_IE_SRC),
-            define('(FILL + [])[20]', FILL, NO_V8_SRC),
-            define('(FILTER + [])[20]', NO_IE_SRC, NO_V8_SRC)
+            define('(FILL + [])[20]', FILL, NO_V8_SRC)
         ],
         // '!':    ,
         '"':
@@ -782,7 +783,7 @@ var createParseIntArgDefault;
             define('(document + [])[12]', HTMLDOCUMENT),
             define('escape(ARRAY_ITERATOR)[30]', NO_OLD_SAFARI_ARRAY_ITERATOR),
             define('escape(FILTER)[50]', V8_SRC),
-            define('escape(FILL)[60]', FILL, NO_IE_SRC, NO_V8_SRC)
+            define('escape(FILL)[60]', FF_SRC, FILL)
         ],
         'E':
         [
@@ -940,11 +941,11 @@ var createParseIntArgDefault;
         '\\':
         [
             define('uneval("".fontcolor(false))[20]', UNEVAL),
+            define('uneval(FILTER + [])[20]', FF_SRC, UNEVAL),
             define('uneval(ANY_FUNCTION + [])[1]', IE_SRC, UNEVAL),
             define('uneval(+(ANY_FUNCTION + [])[0] + FILTER)[23]', NO_V8_SRC, UNEVAL),
-            define('uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]', FILL, NO_V8_SRC, UNEVAL),
-            define('uneval(FILTER + [])[20]', NO_IE_SRC, NO_V8_SRC, UNEVAL),
-            define('uneval(RP_3_NO + FILL)[21]', FILL, NO_IE_SRC, NO_V8_SRC, UNEVAL)
+            define('uneval(RP_3_NO + FILL)[21]', FF_SRC, FILL, UNEVAL),
+            define('uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]', FILL, NO_V8_SRC, UNEVAL)
         ],
         ']':
         [
@@ -1447,9 +1448,9 @@ var createParseIntArgDefault;
         define(createParseIntArgByReduce, NO_V8_SRC),
         define(createParseIntArgByReduce, V8_SRC),
         define(createParseIntArgByReduceArrow, ARROW, ENTRIES_OBJ),
+        define(createParseIntArgByReduce, FILL, FF_SRC),
         define(createParseIntArgByReduce, FILL, IE_SRC),
-        define(createParseIntArgByReduce, FILL, V8_SRC),
-        define(createParseIntArgByReduce, FILL, NO_IE_SRC, NO_V8_SRC),
+        define(createParseIntArgByReduce, FILL, V8_SRC)
     ];
     
     DEFAULT_16_BIT_CHARACTER_ENCODER =

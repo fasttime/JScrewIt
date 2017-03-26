@@ -109,6 +109,25 @@ var validMaskFromArrayOrStringOrFeature;
         return result;
     }
     
+    function completeExclusions(name)
+    {
+        var info = FEATURE_INFOS[name];
+        var excludes = info.excludes;
+        if (excludes)
+        {
+            var featureObj = ALL[name];
+            var mask = featureObj.mask;
+            excludes.forEach(
+                function (exclude)
+                {
+                    var excludeMask = completeFeature(exclude);
+                    var incompatibleMask = maskUnion(mask, excludeMask);
+                    incompatibleMaskMap[incompatibleMask] = incompatibleMask;
+                }
+            );
+        }
+    }
+    
     function completeFeature(name)
     {
         var mask;
@@ -117,7 +136,6 @@ var validMaskFromArrayOrStringOrFeature;
             mask = featureObj.mask;
         else
         {
-            var excludes;
             var info = FEATURE_INFOS[name];
             if (typeof info === 'string')
             {
@@ -143,7 +161,6 @@ var validMaskFromArrayOrStringOrFeature;
                         maskOr(mask, includeMask);
                     }
                 );
-                excludes = info.excludes;
                 var description;
                 var engine = info.engine;
                 if (engine == null)
@@ -156,17 +173,6 @@ var validMaskFromArrayOrStringOrFeature;
                     elementaryFeatureObjs.push(featureObj);
             }
             registerFeature(name, featureObj);
-            if (excludes)
-            {
-                excludes.forEach(
-                    function (exclude)
-                    {
-                        var excludeMask = completeFeature(exclude);
-                        var incompatibleMask = maskUnion(mask, excludeMask);
-                        incompatibleMasks.push(incompatibleMask);
-                    }
-                );
-            }
         }
         return mask;
     }
@@ -423,8 +429,8 @@ var validMaskFromArrayOrStringOrFeature;
                     typeof document === 'object' && document + '' === '[object Document]';
                 return available;
             },
-            excludes: ['HTMLDOCUMENT'],
             includes: ['ANY_DOCUMENT'],
+            excludes: ['HTMLDOCUMENT'],
             attributes: { 'web-worker': 'web-worker-restriction' }
         },
         DOMWINDOW:
@@ -464,8 +470,8 @@ var validMaskFromArrayOrStringOrFeature;
                 var available = Array.prototype.entries && [].entries() + '' === '[object Object]';
                 return available;
             },
-            excludes: ['ARRAY_ITERATOR'],
-            includes: ['ENTRIES_OBJ']
+            includes: ['ENTRIES_OBJ'],
+            excludes: ['ARRAY_ITERATOR']
         },
         ESC_HTML_ALL:
         {
@@ -478,8 +484,8 @@ var validMaskFromArrayOrStringOrFeature;
                 var available = ~''.fontcolor('"<>').indexOf('&quot;&lt;&gt;');
                 return available;
             },
-            excludes: ['ESC_HTML_QUOT_ONLY'],
-            includes: ['ESC_HTML_QUOT']
+            includes: ['ESC_HTML_QUOT'],
+            excludes: ['ESC_HTML_QUOT_ONLY']
         },
         ESC_HTML_QUOT:
         {
@@ -502,8 +508,18 @@ var validMaskFromArrayOrStringOrFeature;
                 var available = ~''.fontcolor('"<>').indexOf('&quot;<>');
                 return available;
             },
-            excludes: ['ESC_HTML_ALL'],
-            includes: ['ESC_HTML_QUOT']
+            includes: ['ESC_HTML_QUOT'],
+            excludes: ['ESC_HTML_ALL']
+        },
+        FF_SRC:
+        {
+            description:
+                'A string representation of native functions typical for Firefox and Safari.\n' +
+                'Remarkable traits are the lack of line feed characters at the beginning and at ' +
+                'the end of the string and the presence of a line feed followed by four ' +
+                'whitespaces ("\\n    ") before the "[native code]" sequence.',
+            includes: ['NO_IE_SRC', 'NO_V8_SRC'],
+            excludes: ['NO_FF_SRC']
         },
         FILL:
         {
@@ -574,23 +590,18 @@ var validMaskFromArrayOrStringOrFeature;
                     typeof document === 'object' && document + '' === '[object HTMLDocument]';
                 return available;
             },
-            excludes: ['DOCUMENT'],
             includes: ['ANY_DOCUMENT'],
+            excludes: ['DOCUMENT'],
             attributes: { 'web-worker': 'web-worker-restriction' }
         },
         IE_SRC:
         {
             description:
                 'A string representation of native functions typical for Internet Explorer.\n' +
-                'Remarkable traits are the presence of a line feed character ("\\n") in the ' +
-                'beginning of the string before "function" and a line feed with four whitespaces ' +
-                '("\\n    ") before the "[native code]" sequence.',
-            check: function ()
-            {
-                var available = /^\nfunction Object\(\) \{\n    \[native code]\n\}/.test(Object);
-                return available;
-            },
-            includes: ['NO_V8_SRC'],
+                'Remarkable traits are the presence of a line feed character ("\\n") at the ' +
+                'beginning and at the end of the string and a line feed followed by four ' +
+                'whitespaces ("\\n    ") before the "[native code]" sequence.',
+            includes: ['NO_FF_SRC', 'NO_V8_SRC'],
             excludes: ['NO_IE_SRC']
         },
         INCR_CHAR:
@@ -645,13 +656,25 @@ var validMaskFromArrayOrStringOrFeature;
             },
             attributes: { 'web-worker': 'web-worker-restriction' }
         },
+        NO_FF_SRC:
+        {
+            description:
+                'A string representation of native functions typical for V8 and Edge or for ' +
+                'Internet Explorer but not for Firefox and Safari.',
+            check: function ()
+            {
+                var available = /^(\n?)function Object\(\) \{\1 +\[native code]\s\}/.test(Object);
+                return available;
+            },
+            excludes: ['FF_SRC']
+        },
         NO_IE_SRC:
         {
             description:
                 'A string representation of native functions typical for most engines with the ' +
                 'notable exception of Internet Explorer.\n' +
-                'A remarkable trait of this feature is the lack of extra characters in the ' +
-                'beginning of the string before "function".',
+                'A remarkable trait of this feature is the lack of line feed characters at the ' +
+                'beginning and at the end of the string.',
             check: function ()
             {
                 var available = /^function Object\(\) \{(\n   )? \[native code]\s\}/.test(Object);
@@ -662,8 +685,8 @@ var validMaskFromArrayOrStringOrFeature;
         NO_V8_SRC:
         {
             description:
-                'A string representation of native functions typical for most engines except ' +
-                'V8.\n' +
+                'A string representation of native functions typical for Firefox, Internet ' +
+                'Explorer and Safari.\n' +
                 'A most remarkable trait of this feature is the presence of a line feed followed ' +
                 'by four whitespaces ("\\n    ") before the "[native code]" sequence.',
             check: function ()
@@ -741,14 +764,10 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'A string representation of native functions typical for the V8 engine, but also ' +
                 'found in Edge.\n' +
-                'Remarkable traits are the lack of characters in the beginning of the string ' +
-                'before "function" and a single whitespace before the "[native code]" sequence.',
-            check: function ()
-            {
-                var available = /^.{19} \[native code] \}/.test(Object);
-                return available;
-            },
-            includes: ['NO_IE_SRC'],
+                'Remarkable traits are the lack of line feed characters at the beginning and at ' +
+                'the end of the string and the presence of a single whitespace before the ' +
+                '"[native code]" sequence.',
+            includes: ['NO_FF_SRC', 'NO_IE_SRC'],
             excludes: ['NO_V8_SRC']
         },
         WINDOW:
@@ -940,6 +959,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'FF_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -949,10 +969,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
-                'NO_IE_SRC',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',
-                'NO_V8_SRC',
                 'UNDEFINED',
                 'UNEVAL',
                 'WINDOW'
@@ -1114,14 +1132,13 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'FF_SRC',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'NAME',
                 'NODECONSTRUCTOR',
-                'NO_IE_SRC',
-                'NO_V8_SRC',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -1143,6 +1160,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'FF_SRC',
                 'FILL',
                 'GMT',
                 'HISTORY',
@@ -1150,8 +1168,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'NAME',
                 'NODECONSTRUCTOR',
-                'NO_IE_SRC',
-                'NO_V8_SRC',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -1173,6 +1189,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'FF_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -1181,10 +1198,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'NAME',
                 'NODECONSTRUCTOR',
-                'NO_IE_SRC',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',
-                'NO_V8_SRC',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -1206,6 +1221,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'FF_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -1213,10 +1229,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'NAME',
-                'NO_IE_SRC',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',
-                'NO_V8_SRC',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -1637,7 +1651,7 @@ var validMaskFromArrayOrStringOrFeature;
         function (mask)
         {
             var compatible =
-                incompatibleMasks.every(
+                incompatibleMaskList.every(
                     function (incompatibleMask)
                     {
                         var result = !maskIncludes(mask, incompatibleMask);
@@ -1666,10 +1680,19 @@ var validMaskFromArrayOrStringOrFeature;
     var bitIndex = 0;
     var elementaryFeatureObjs = [];
     var includesMap = new Empty();
-    var incompatibleMasks = [];
+    var incompatibleMaskMap = new Empty();
     
     var featureNames = object_keys(FEATURE_INFOS);
     featureNames.forEach(completeFeature);
+    featureNames.forEach(completeExclusions);
+    var incompatibleMaskList =
+        object_keys(incompatibleMaskMap).map(
+            function (key)
+            {
+                var mask = incompatibleMaskMap[key];
+                return mask;
+            }
+        );
     elementaryFeatureObjs.sort();
     var autoFeatureObj =
         createFeature('AUTO', 'All features available in the current engine.', autoMask);
