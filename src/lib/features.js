@@ -514,10 +514,10 @@ var validMaskFromArrayOrStringOrFeature;
         FF_SRC:
         {
             description:
-                'A string representation of native functions typical for FireFox.\n' +
-                'Remarkable traits are the lack of a line feed character ("\\n") in the ' +
-                'beginning of the string before "function" and a line feed with four whitespaces ' +
-                '("\\n    ") before the "[native code]" sequence.',
+                'A string representation of native functions typical for Firefox and Safari.\n' +
+                'Remarkable traits are the lack of line feed characters at the beginning and at ' +
+                'the end of the string and the presence of a line feed followed by four ' +
+                'whitespaces ("\\n    ") before the "[native code]" sequence.',
             includes: ['NO_IE_SRC', 'NO_V8_SRC'],
             excludes: ['NO_FF_SRC']
         },
@@ -598,9 +598,9 @@ var validMaskFromArrayOrStringOrFeature;
         {
             description:
                 'A string representation of native functions typical for Internet Explorer.\n' +
-                'Remarkable traits are the presence of a line feed character ("\\n") in the ' +
-                'beginning of the string before "function" and a line feed with four whitespaces ' +
-                '("\\n    ") before the "[native code]" sequence.',
+                'Remarkable traits are the presence of a line feed character ("\\n") at the ' +
+                'beginning and at the end of the string and a line feed followed by four ' +
+                'whitespaces ("\\n    ") before the "[native code]" sequence.',
             includes: ['NO_FF_SRC', 'NO_V8_SRC'],
             excludes: ['NO_IE_SRC']
         },
@@ -659,10 +659,8 @@ var validMaskFromArrayOrStringOrFeature;
         NO_FF_SRC:
         {
             description:
-                'A string representation of native functions typical for both IE and V8.\n' +
-                'A most remarkable trait of this feature is the presence of a line feed being ' +
-                'followed by four whitespaces ("\\n    ") before the "[native code]" sequence ' +
-                'if and only if there is a line feed at the beginning.',
+                'A string representation of native functions typical for V8 and Edge or for ' +
+                'Internet Explorer but not for Firefox and Safari.',
             check: function ()
             {
                 var available = /^(\n?)function Object\(\) \{\1 +\[native code]\s\}/.test(Object);
@@ -675,8 +673,8 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'A string representation of native functions typical for most engines with the ' +
                 'notable exception of Internet Explorer.\n' +
-                'A remarkable trait of this feature is the lack of extra characters in the ' +
-                'beginning of the string before "function".',
+                'A remarkable trait of this feature is the lack of line feed characters at the ' +
+                'beginning and at the end of the string.',
             check: function ()
             {
                 var available = /^function Object\(\) \{(\n   )? \[native code]\s\}/.test(Object);
@@ -687,8 +685,8 @@ var validMaskFromArrayOrStringOrFeature;
         NO_V8_SRC:
         {
             description:
-                'A string representation of native functions typical for most engines except ' +
-                'V8.\n' +
+                'A string representation of native functions typical for Firefox, Internet ' +
+                'Explorer and Safari.\n' +
                 'A most remarkable trait of this feature is the presence of a line feed followed ' +
                 'by four whitespaces ("\\n    ") before the "[native code]" sequence.',
             check: function ()
@@ -766,8 +764,9 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'A string representation of native functions typical for the V8 engine, but also ' +
                 'found in Edge.\n' +
-                'Remarkable traits are the lack of characters in the beginning of the string ' +
-                'before "function" and a single whitespace before the "[native code]" sequence.',
+                'Remarkable traits are the lack of line feed characters at the beginning and at ' +
+                'the end of the string and the presence of a single whitespace before the ' +
+                '"[native code]" sequence.',
             includes: ['NO_FF_SRC', 'NO_IE_SRC'],
             excludes: ['NO_V8_SRC']
         },
@@ -960,6 +959,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'FF_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -969,10 +969,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
-                'NO_IE_SRC',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',
-                'NO_V8_SRC',
                 'UNDEFINED',
                 'UNEVAL',
                 'WINDOW'
@@ -1134,14 +1132,13 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'FF_SRC',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'NAME',
                 'NODECONSTRUCTOR',
-                'NO_IE_SRC',
-                'NO_V8_SRC',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -1163,6 +1160,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'FF_SRC',
                 'FILL',
                 'GMT',
                 'HISTORY',
@@ -1170,8 +1168,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'NAME',
                 'NODECONSTRUCTOR',
-                'NO_IE_SRC',
-                'NO_V8_SRC',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -1193,6 +1189,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'FF_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -1201,10 +1198,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'NAME',
                 'NODECONSTRUCTOR',
-                'NO_IE_SRC',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',
-                'NO_V8_SRC',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -1226,6 +1221,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'FF_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -1233,10 +1229,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'NAME',
-                'NO_IE_SRC',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',
-                'NO_V8_SRC',
                 'UNDEFINED',
                 'WINDOW'
             ],

@@ -117,8 +117,8 @@ _An alias for [`FF31`](#FF31)._
 Features available in Firefox 31 or later.
 <a name="FF_SRC"></a>
 ### `FF_SRC`
-A string representation of native functions typical for FireFox.<br>
-Remarkable traits are the lack of a line feed character \("\\n"\) in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
+A string representation of native functions typical for Firefox and Safari.<br>
+Remarkable traits are the lack of line feed characters at the beginning and at the end of the string and the presence of a line feed followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 <a name="FILL"></a>
 ### `FILL`
 Existence of the native function Array.prototype.fill.
@@ -165,7 +165,7 @@ Features available in Internet Explorer 9 and 10.
 <a name="IE_SRC"></a>
 ### `IE_SRC`
 A string representation of native functions typical for Internet Explorer.<br>
-Remarkable traits are the presence of a line feed character \("\\n"\) in the beginning of the string before "function" and a line feed with four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
+Remarkable traits are the presence of a line feed character \("\\n"\) at the beginning and at the end of the string and a line feed followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 <a name="INCR_CHAR"></a>
 ### `INCR_CHAR`
 The ability to use unary increment operators with string characters, like in \( ++"some string"\[0\] \): this will result in a TypeError in strict mode in ECMAScript compliant engines.
@@ -205,14 +205,13 @@ Existence of the global object Node having the string representation "\[object N
 _Available in Safari before 10.0+. This feature is not available inside web workers._
 <a name="NO_FF_SRC"></a>
 ### `NO_FF_SRC`
-A string representation of native functions typical for both IE and V8.<br>
-A most remarkable trait of this feature is the presence of a line feed being followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence if and only if there is a line feed at the beginning.
+A string representation of native functions typical for V8 and Edge or for Internet Explorer but not for Firefox and Safari.
 
 _Available in Chrome, Edge, Internet Explorer, Opera, Android Browser and Node.js._
 <a name="NO_IE_SRC"></a>
 ### `NO_IE_SRC`
 A string representation of native functions typical for most engines with the notable exception of Internet Explorer.<br>
-A remarkable trait of this feature is the lack of extra characters in the beginning of the string before "function".
+A remarkable trait of this feature is the lack of line feed characters at the beginning and at the end of the string.
 
 _Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js._
 <a name="NO_OLD_SAFARI_ARRAY_ITERATOR"></a>
@@ -228,7 +227,7 @@ More specifically, in this representation, the character at index 22 is a line f
 _Available in Chrome, Edge, Firefox, Internet Explorer, Safari 9.0+, Opera, Android Browser and Node.js._
 <a name="NO_V8_SRC"></a>
 ### `NO_V8_SRC`
-A string representation of native functions typical for most engines except V8.<br>
+A string representation of native functions typical for Firefox, Internet Explorer and Safari.<br>
 A most remarkable trait of this feature is the presence of a line feed followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 
 _Available in Firefox, Internet Explorer and Safari._
@@ -269,7 +268,7 @@ _Available in Firefox._
 <a name="V8_SRC"></a>
 ### `V8_SRC`
 A string representation of native functions typical for the V8 engine, but also found in Edge.<br>
-Remarkable traits are the lack of characters in the beginning of the string before "function" and a single whitespace before the "\[native code\]" sequence.
+Remarkable traits are the lack of line feed characters at the beginning and at the end of the string and the presence of a single whitespace before the "\[native code\]" sequence.
 <a name="WINDOW"></a>
 ### `WINDOW`
 Existence of the global object self having the string representation "\[object Window\]".
