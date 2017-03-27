@@ -23,20 +23,7 @@ var getToStringOptimizer;
     var MIN_SOLUTION_SPAN = 2;
     var RADIX_REPLACEMENTS = [];
     
-    function getMinRadix(char)
-    {
-        var minRadix = parseInt(char, MAX_RADIX) + 1;
-        return minRadix;
-    }
-    
-    function isClusterable(solution)
-    {
-        var char = solution.char;
-        var clusterable = char != null && /[\da-z]/.test(char);
-        return clusterable;
-    }
-    
-    function subCreateOptimizer(toStringReplacement)
+    function createOptimizer(toStringReplacement)
     {
         function appendLengthOf(solution)
         {
@@ -174,11 +161,24 @@ var getToStringOptimizer;
         return optimizer;
     }
     
+    function getMinRadix(char)
+    {
+        var minRadix = parseInt(char, MAX_RADIX) + 1;
+        return minRadix;
+    }
+    
+    function isClusterable(solution)
+    {
+        var char = solution.char;
+        var clusterable = char != null && /[\da-z]/.test(char);
+        return clusterable;
+    }
+    
     getToStringOptimizer =
         function (encoder)
         {
             var toStringReplacement = encoder.replaceString('toString');
-            var optimizer = subCreateOptimizer(toStringReplacement);
+            var optimizer = createOptimizer(toStringReplacement);
             return optimizer;
         };
     
