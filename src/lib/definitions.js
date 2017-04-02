@@ -80,6 +80,7 @@ var createParseIntArgDefault;
     var LOCALE_INFINITY                 = Feature.LOCALE_INFINITY;
     var NAME                            = Feature.NAME;
     var NODECONSTRUCTOR                 = Feature.NODECONSTRUCTOR;
+    var NO_FF_SRC                       = Feature.NO_FF_SRC;
     var NO_IE_SRC                       = Feature.NO_IE_SRC;
     var NO_OLD_SAFARI_ARRAY_ITERATOR    = Feature.NO_OLD_SAFARI_ARRAY_ITERATOR;
     var NO_OLD_SAFARI_LF                = Feature.NO_OLD_SAFARI_LF;
@@ -89,6 +90,23 @@ var createParseIntArgDefault;
     var UNEVAL                          = Feature.UNEVAL;
     var V8_SRC                          = Feature.V8_SRC;
     var WINDOW                          = Feature.WINDOW;
+    
+    var FB_NO_FF_PADDINGS =
+    [
+        ,
+        ,
+        ,
+        ,
+        ,
+        'FBP_5_U',
+        ,
+        ,
+        ,
+        'FBP_9_U',
+        '[RP_1_NO] + FBP_9_U',
+        ,
+        '[RP_3_NO] + FBP_9_U',
+    ];
     
     var FB_NO_IE_PADDINGS =
     [
@@ -158,6 +176,7 @@ var createParseIntArgDefault;
     var FB_PADDING_INFOS =
     [
         define({ blocks: FB_PADDINGS, shift: 0 }),
+        define({ blocks: FB_NO_FF_PADDINGS, shift: 0 }, NO_FF_SRC),
         define({ blocks: FB_NO_IE_PADDINGS, shift: 0 }, NO_IE_SRC),
         define(null, NO_V8_SRC),
         define({ blocks: R_PADDINGS, shift: 0 }, V8_SRC),
@@ -274,6 +293,7 @@ var createParseIntArgDefault;
                 paddingEntries =
                 [
                     define(7),
+                    define(9, NO_FF_SRC),
                     define({ block: 'RP_3_NO', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(0, V8_SRC),
                     define(3, IE_SRC),
@@ -284,6 +304,7 @@ var createParseIntArgDefault;
                 paddingEntries =
                 [
                     define(7),
+                    define(5, NO_FF_SRC),
                     define(5, NO_IE_SRC),
                     define({ block: 'RP_1_NO', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(0, IE_SRC),
@@ -294,6 +315,7 @@ var createParseIntArgDefault;
                 paddingEntries =
                 [
                     define(8),
+                    define(9, NO_FF_SRC),
                     define(9, NO_IE_SRC),
                     define({ block: 'RP_4_N', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(0, V8_SRC),
@@ -305,6 +327,7 @@ var createParseIntArgDefault;
                 paddingEntries =
                 [
                     define(7),
+                    define(9, NO_FF_SRC),
                     define(9, NO_IE_SRC),
                     define({ block: 'RP_2_SO', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(6, V8_SRC),
@@ -661,8 +684,10 @@ var createParseIntArgDefault;
             defineFHCharAt('ANY_FUNCTION', 8),
             define('(RP_3_NO + ARRAY_ITERATOR)[10]', ENTRIES_OBJ),
             define('(FILTER + [])[20]', FF_SRC),
+            define('(+(ANY_FUNCTION + [])[0] + FILTER)[22]', NO_FF_SRC),
             define('(FILTER + [])[21]', NO_V8_SRC),
             define('(RP_1_NO + FILTER)[20]', V8_SRC),
+            define('(+(ANY_FUNCTION + [])[0] + FILL)[20]', FILL, NO_FF_SRC),
             define('(RP_5_N + FILL)[20]', FILL, NO_IE_SRC),
             define('(FILL + [])[20]', FILL, NO_V8_SRC)
         ],
@@ -682,7 +707,7 @@ var createParseIntArgDefault;
         ],
         '&':
         [
-            define('"".fontcolor("".fontcolor())[13]', ESC_HTML_ALL),
+            define('"".fontcolor("".italics())[22]', ESC_HTML_ALL),
             define('"".fontcolor("".sub())[20]', ESC_HTML_ALL),
             define('"".fontcolor("\\"")[13]', ESC_HTML_QUOT),
             define('"".fontcolor("".fontcolor([]))[31]', ESC_HTML_QUOT_ONLY),
@@ -1308,6 +1333,15 @@ var createParseIntArgDefault;
         // The number after "FBP_" is the maximum character overhead. The letters after the last
         // underscore have the same meaning as in regular padding blocks.
         
+        FBP_5_U:
+        [
+            define('[[false][+!!(+(ANY_FUNCTION + [])[0] + true)]]', NO_FF_SRC),
+        ],
+        FBP_6_NO:
+        [
+            define('+(1 + [(RP_4_N + FILTER)[40]] + 0 + 0 + 0 + 0 + 0)', NO_FF_SRC),
+            define('+(1 + [(RP_6_SO + FILL)[40]] + 0 + 0 + 0 + 0 + 0)', FILL, NO_FF_SRC),
+        ],
         FBP_7_NO:
         [
             define('+("10" + [(RP_4_N + FILTER)[40]] + 0 + 0 + 0 + 0 + 0)'),
@@ -1317,6 +1351,10 @@ var createParseIntArgDefault;
         [
             define('+("1000" + (RP_5_N + FILTER + 0)[40] + 0 + 0 + 0)'),
             define('+("1000" + (FILL + 0)[33] + 0 + 0 + 0)', FILL),
+        ],
+        FBP_9_U:
+        [
+            define('[true][+(ANY_FUNCTION + [])[0]]', NO_FF_SRC),
         ],
         
         // Function header shift: used to adjust an indexer to make it point to the same position in

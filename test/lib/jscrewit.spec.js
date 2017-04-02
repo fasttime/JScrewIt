@@ -1828,20 +1828,22 @@ uneval,
         var FB_DISPOSITIONS =
         [
             [],
+            ['FF_SRC'],
             ['IE_SRC'],
             ['V8_SRC'],
+            ['NO_FF_SRC'],
             ['NO_IE_SRC'],
             ['NO_V8_SRC'],
-            ['NO_IE_SRC', 'NO_V8_SRC'],
             ['FILL'],
+            ['FILL', 'FF_SRC'],
             ['FILL', 'IE_SRC'],
             ['FILL', 'V8_SRC'],
+            ['FILL', 'NO_FF_SRC'],
             ['FILL', 'NO_IE_SRC'],
             ['FILL', 'NO_V8_SRC'],
-            ['FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
         ];
         
-        var FB_VARIETIES = [['IE_SRC'], ['V8_SRC'], ['NO_IE_SRC', 'NO_V8_SRC']];
+        var FB_VARIETIES = [['FF_SRC'], ['IE_SRC'], ['V8_SRC']];
         
         var FH_DISPOSITIONS =
         [
