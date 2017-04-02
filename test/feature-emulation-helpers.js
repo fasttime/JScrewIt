@@ -264,7 +264,7 @@
     
     function makeEmuFeatureNativeFunctionSource()
     {
-        var args = Array.from(arguments);
+        var args = Array.prototype.slice.call(arguments);
         var result =
         {
             setUp: function ()
