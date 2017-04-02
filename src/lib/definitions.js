@@ -746,7 +746,7 @@ var createParseIntArgDefault;
         ],
         ';':
         [
-            define('"".fontcolor(true + "".fontcolor())[20]', ESC_HTML_ALL),
+            define('"".fontcolor("".italics())[21]', ESC_HTML_ALL),
             define('"".fontcolor(true + "".sub())[20]', ESC_HTML_ALL),
             define('"".fontcolor("NaN\\"")[21]', ESC_HTML_QUOT),
             define('"".fontcolor("".fontcolor())[30]', ESC_HTML_QUOT_ONLY),
@@ -1040,6 +1040,9 @@ var createParseIntArgDefault;
         'q':
         [
             define('212..toString("31")[1]'),
+            define('"".fontcolor(0 + "".fontcolor())[30]', ESC_HTML_ALL),
+            define('"".fontcolor("0false\\"")[20]', ESC_HTML_QUOT),
+            define('"".fontcolor(true + "".fontcolor())[30]', ESC_HTML_QUOT_ONLY),
             defineDefaultChar('q')
         ],
         'r': '"true"[1]',
