@@ -91,7 +91,7 @@
                             if (!available)
                             {
                                 available = emuDo([featureObj.name], check);
-                                expect(available).toBe(true);
+                                expect(available).toBe(true, 'Emulation doesn\'t work');
                             }
                         }
                     );

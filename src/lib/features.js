@@ -511,6 +511,30 @@ var validMaskFromArrayOrStringOrFeature;
             includes: ['ESC_HTML_QUOT'],
             excludes: ['ESC_HTML_ALL']
         },
+        ESC_REGEXP_LF:
+        {
+            description:
+                'Having regular expressions created with the RegExp constructor use escape ' +
+                'sequences starting with a backslash to format line feed characters ("\\n") ' +
+                'in their string representation.',
+            check: function ()
+            {
+                var available = (RegExp('\n') + '')[1] === '\\';
+                return available;
+            }
+        },
+        ESC_REGEXP_SLASH:
+        {
+            description:
+                'Having regular expressions created with the RegExp constructor use escape ' +
+                'sequences starting with a backslash to format slashes ("/") in their string ' +
+                'representation.',
+            check: function ()
+            {
+                var available = (RegExp('/') + '')[1] === '\\';
+                return available;
+            }
+        },
         FF_SRC:
         {
             description:
@@ -818,6 +842,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'ENTRIES_OBJ',
                 'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_SLASH',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -903,6 +928,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ATOB',
                 'BARPROP',
                 'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_SLASH',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -931,6 +957,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
                 'ENTRIES_PLAIN',
                 'FILL',
                 'FROM_CODE_POINT',
@@ -959,6 +987,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
                 'FF_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
@@ -984,6 +1014,8 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'CAPITAL_HTML',
                 'DOCUMENT',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
                 'HISTORY',
                 'IE_SRC',
                 'INCR_CHAR',
@@ -1001,6 +1033,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'CAPITAL_HTML',
                 'CONSOLE',
                 'DOCUMENT',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
                 'HISTORY',
                 'IE_SRC',
                 'INCR_CHAR',
@@ -1018,6 +1052,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'ATOB',
                 'CAPITAL_HTML',
                 'CONSOLE',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -1038,6 +1074,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'ATOB',
                 'CAPITAL_HTML',
                 'CONSOLE',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -1089,6 +1127,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ARROW',
                 'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_SLASH',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -1109,6 +1148,7 @@ var validMaskFromArrayOrStringOrFeature;
             [
                 'ARROW',
                 'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_SLASH',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -1132,6 +1172,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
                 'FF_SRC',
                 'GMT',
                 'HISTORY',
@@ -1160,6 +1202,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
                 'FF_SRC',
                 'FILL',
                 'GMT',
@@ -1189,6 +1233,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
                 'FF_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
@@ -1221,6 +1267,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
                 'FF_SRC',
                 'FILL',
                 'FROM_CODE_POINT',

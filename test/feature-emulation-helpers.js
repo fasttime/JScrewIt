@@ -307,6 +307,38 @@
         return result;
     }
     
+    function makeEmuFeatureEscRegExp(char, escSeq)
+    {
+        var result =
+        {
+            setUp: function ()
+            {
+                if ((RegExp(char) + '')[1] !== '\\')
+                {
+                    var newRegExp =
+                        (function (oldRegExp)
+                        {
+                            function RegExp(pattern, flags)
+                            {
+                                if (pattern !== undefined)
+                                    pattern = (pattern + '').replace(charRegExp, escSeq);
+                                var obj = oldRegExp(pattern, flags);
+                                return obj;
+                            }
+                            
+                            var charRegExp = oldRegExp(char, 'g');
+                            RegExp.prototype = oldRegExp.prototype;
+                            return RegExp;
+                        }
+                        )(RegExp);
+                    override(this, 'RegExp.prototype.constructor', { value: newRegExp });
+                    override(this, 'RegExp', { value: newRegExp });
+                }
+            }
+        };
+        return result;
+    }
+    
     function makeEmuFeatureSelf(str, regExp)
     {
         var result =
@@ -468,7 +500,6 @@
                         }
                         
                         Function.prototype = oldFunction.prototype;
-                        
                         return Function;
                     }
                     )(Function);
@@ -591,6 +622,8 @@
             },
             /&quot;<>/
         ),
+        ESC_REGEXP_LF: makeEmuFeatureEscRegExp('\n', '\\n'),
+        ESC_REGEXP_SLASH: makeEmuFeatureEscRegExp('/', '\\/'),
         FF_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_FF),
         FILL:
         {
