@@ -294,6 +294,13 @@ uneval,
                     }
                 );
                 testConstant(
+                    'FROM_CHAR_CODE',
+                    function ()
+                    {
+                        this.toMatch(/^from(?:CharCode|CodePoint)$/);
+                    }
+                );
+                testConstant(
                     'PLAIN_OBJECT',
                     function ()
                     {
@@ -304,7 +311,21 @@ uneval,
                     'SUBSTR',
                     function ()
                     {
-                        this.toMatch(/^slice|substr$/);
+                        this.toMatch(/^(?:slice|substr)$/);
+                    }
+                );
+                testConstant(
+                    'TO_STRING',
+                    function ()
+                    {
+                        this.toBe('toString');
+                    }
+                );
+                testConstant(
+                    'TO_UPPER_CASE',
+                    function ()
+                    {
+                        this.toBe('toUpperCase');
                     }
                 );
             }
