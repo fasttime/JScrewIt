@@ -922,8 +922,8 @@ var createParseIntArgDefault;
         [
             define('btoa("1NaN")[1]', ATOB),
             define('"".sub()[2]', CAPITAL_HTML),
-            define('(RP_3_NO + PLAIN_OBJECT.toString.call())[11]', UNDEFINED),
-            define('(RP_3_NO + ARRAY_ITERATOR.toString.call())[11]', ENTRIES_OBJ, UNDEFINED)
+            define('(RP_3_NO + PLAIN_OBJECT[TO_STRING].call())[11]', UNDEFINED),
+            define('(RP_3_NO + ARRAY_ITERATOR[TO_STRING].call())[11]', ENTRIES_OBJ, UNDEFINED)
         ],
         'V':
         [
@@ -1016,7 +1016,7 @@ var createParseIntArgDefault;
         ],
         'h':
         [
-            define('101..toString("21")[1]'),
+            define('101[TO_STRING]("21")[1]'),
             define('btoa("0false")[3]', ATOB)
         ],
         'i': '([RP_5_N] + undefined)[10]',
@@ -1029,7 +1029,7 @@ var createParseIntArgDefault;
         ],
         'k':
         [
-            define('20..toString("21")'),
+            define('20[TO_STRING]("21")'),
             defineDefaultChar('k')
         ],
         'l': '"false"[2]',
@@ -1046,12 +1046,12 @@ var createParseIntArgDefault;
         ],
         'p':
         [
-            define('211..toString("31")[1]'),
+            define('211[TO_STRING]("31")[1]'),
             define('(RP_3_NO + btoa(undefined))[10]', ATOB)
         ],
         'q':
         [
-            define('212..toString("31")[1]'),
+            define('212[TO_STRING]("31")[1]'),
             define('"".fontcolor(0 + "".fontcolor())[30]', ESC_HTML_ALL),
             define('"".fontcolor("0false\\"")[20]', ESC_HTML_QUOT),
             define('"".fontcolor(true + "".fontcolor())[30]', ESC_HTML_QUOT_ONLY),
@@ -1067,7 +1067,7 @@ var createParseIntArgDefault;
         ],
         'w':
         [
-            define('32..toString("33")'),
+            define('32[TO_STRING]("33")'),
             define('(self + [])[SUBSTR]("-2")[0]', ANY_WINDOW),
             define('atob("undefined0")[1]', ATOB),
             define('(RP_4_N + self)[20]', DOMWINDOW),
@@ -1075,13 +1075,13 @@ var createParseIntArgDefault;
         ],
         'x':
         [
-            define('101..toString("34")[1]'),
+            define('101[TO_STRING]("34")[1]'),
             define('btoa("falsefalse")[10]', ATOB)
         ],
         'y': '(RP_3_NO + [Infinity])[10]',
         'z':
         [
-            define('35..toString("36")'),
+            define('35[TO_STRING]("36")'),
             define('btoa("falsefalse")[11]', ATOB)
         ],
         '{':
@@ -1322,6 +1322,10 @@ var createParseIntArgDefault;
         [
             define('"slice"'),
             define('"substr"')
+        ],
+        TO_STRING:
+        [
+            define('"toString"')
         ],
         TO_UPPER_CASE:
         [
