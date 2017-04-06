@@ -3,7 +3,6 @@ global
 CHARACTERS,
 COMPLEX,
 CONSTANTS,
-DEFAULT_16_BIT_CHARACTER_ENCODER,
 DEFAULT_8_BIT_CHARACTER_ENCODER,
 JSFUCK_INFINITY,
 LEVEL_STRING,
@@ -14,6 +13,7 @@ ScrewBuffer,
 array_isArray,
 array_prototype_forEach,
 assignNoEnum,
+charEncodeDefault,
 createConstructor,
 createSolution,
 expressParse,
@@ -236,12 +236,11 @@ var resolveSimple;
         defaultResolveCharacter: function (char)
         {
             var charCode = char.charCodeAt();
-            var entries;
+            var defaultCharacterEncoder;
             if (charCode < 0x100)
-                entries = DEFAULT_8_BIT_CHARACTER_ENCODER;
+                defaultCharacterEncoder = this.findDefinition(DEFAULT_8_BIT_CHARACTER_ENCODER);
             else
-                entries = DEFAULT_16_BIT_CHARACTER_ENCODER;
-            var defaultCharacterEncoder = this.findDefinition(entries);
+                defaultCharacterEncoder = charEncodeDefault;
             var replacement = defaultCharacterEncoder.call(this, charCode);
             var solution = createSolution(replacement, LEVEL_STRING, false);
             return solution;
@@ -302,19 +301,20 @@ var resolveSimple;
             return included;
         },
         
-        hexCodeOf: function (charCode, length)
+        hexCodeOf: function (charCode, hexDigitCount)
         {
             var optimalB = this.findDefinition(OPTIMAL_B);
             var charCodeStr = charCode.toString(16);
             var hexCodeSmallB =
-                getExtraZeros(length - charCodeStr.length) + charCodeStr.replace(/fa?$/, 'false');
+                getExtraZeros(hexDigitCount - charCodeStr.length) +
+                charCodeStr.replace(/fa?$/, 'false');
             var hexCode = hexCodeSmallB.replace(/b/g, optimalB);
             if (optimalB !== 'b' && /(?=.*b.*b)(?=.*c)|(?=.*b.*b.*b)/.test(charCodeStr))
             {
                 // optimalB is not "b", but the character code is a candidate for toString
                 // clustering, which only works with "b".
-                var replacementSmallB = this.replaceString('u' + hexCodeSmallB, true);
-                var replacement = this.replaceString('u' + hexCode);
+                var replacementSmallB = this.replaceString('f' + hexCodeSmallB, true);
+                var replacement = this.replaceString('f' + hexCode);
                 if (replacementSmallB.length < replacement.length)
                     hexCode = hexCodeSmallB;
             }
@@ -361,23 +361,51 @@ var resolveSimple;
             return replacement;
         },
         
-        replaceCharByUnescape16: function (charCode)
+        replaceCharByEscSeq: function (charCode)
         {
-            var hexCode = this.hexCodeOf(charCode, 4);
-            var expr = 'unescape("%u' + hexCode + '")';
-            if (hexCode.length > 4)
+            var escCode;
+            var appendIndexer;
+            var optimize;
+            if (charCode >= 0xfd || charCode in LOW_UNICODE_ESC_SEQ_CODES)
+            {
+                escCode = 'u' + this.hexCodeOf(charCode, 4);
+                appendIndexer = escCode.length > 5;
+                optimize = true;
+            }
+            else
+            {
+                escCode = charCode.toString(8);
+                appendIndexer = false;
+                optimize = false;
+            }
+            var expr = 'Function("return\\"\\\\' + escCode + '\\"")()';
+            if (appendIndexer)
                 expr += '[0]';
-            var replacement = this.replaceExpr(expr, true);
+            var replacement = this.replaceExpr(expr, optimize);
             return replacement;
         },
         
-        replaceCharByUnescape8: function (charCode)
+        replaceCharByUnescape: function (charCode)
         {
-            var hexCode = this.hexCodeOf(charCode, 2);
+            var hexCode;
+            var appendIndexer;
+            var optimize;
+            if (charCode < 0x100)
+            {
+                hexCode = this.hexCodeOf(charCode, 2);
+                appendIndexer = hexCode.length > 2;
+                optimize = false;
+            }
+            else
+            {
+                hexCode = 'u' + this.hexCodeOf(charCode, 4);
+                appendIndexer = hexCode.length > 5;
+                optimize = true;
+            }
             var expr = 'unescape("%' + hexCode + '")';
-            if (hexCode.length > 2)
+            if (appendIndexer)
                 expr += '[0]';
-            var replacement = this.replaceExpr(expr, true);
+            var replacement = this.replaceExpr(expr, optimize);
             return replacement;
         },
         
@@ -786,6 +814,18 @@ var resolveSimple;
     var BOND_STRENGTH_NONE      = 0;
     var BOND_STRENGTH_WEAK      = 1;
     var BOND_STRENGTH_STRONG    = 2;
+    
+    var LOW_UNICODE_ESC_SEQ_CODES = new Empty();
+    
+    [
+        0x0f, 0x1f, 0x2f, 0x3f, 0x6f, 0x7f, 0xaf, 0xdf, 0xef,
+        0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xfa
+    ].forEach(
+        function (charCode)
+        {
+            LOW_UNICODE_ESC_SEQ_CODES[charCode] = null;
+        }
+    );
     
     var STATIC_ENCODER = new Encoder([0, 0]);
     
