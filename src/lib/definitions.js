@@ -6,6 +6,7 @@ LEVEL_STRING,
 LEVEL_UNDEFINED,
 Empty,
 Feature,
+array_prototype_forEach,
 createDefinitionEntry,
 createSolution,
 define,
@@ -23,7 +24,6 @@ resolveSimple,
 
 var AMENDINGS;
 var CREATE_PARSE_INT_ARG;
-var DEFAULT_16_BIT_CHARACTER_ENCODER;
 var DEFAULT_8_BIT_CHARACTER_ENCODER;
 var FROM_CHAR_CODE;
 var FROM_CHAR_CODE_CALLBACK_FORMATTER;
@@ -45,6 +45,7 @@ var SIMPLE;
 
 var JSFUCK_INFINITY;
 
+var charEncodeDefault;
 var createBridgeSolution;
 var createParseIntArgByReduce;
 var createParseIntArgByReduceArrow;
@@ -199,7 +200,6 @@ var createParseIntArgDefault;
         var postfix1 = '(' + this.replaceString(param1) + ')';
         if (param1.length > 2)
             postfix1 += replaceIndexer(0);
-        var length1 = postfix1.length;
         
         var param2Left = this.findBase64AlphabetDefinition(BASE64_ALPHABET_LO_4[charCode >> 4]);
         var param2Right = this.findBase64AlphabetDefinition(BASE64_ALPHABET_HI_4[charCode & 0x0f]);
@@ -207,47 +207,16 @@ var createParseIntArgDefault;
         var index2 = 1 + (param2Left.length - 2) / 4 * 3;
         var indexer2 = replaceIndexer(index2);
         var postfix2 = '(' + this.replaceString(param2) + ')' + indexer2;
-        var length2 = postfix2.length;
         
         var param3Left = BASE64_ALPHABET_LO_2[charCode >> 6];
         var param3 = param3Left + BASE64_ALPHABET_HI_6[charCode & 0x3f];
         var index3 = 2 + (param3Left.length - 3) / 4 * 3;
         var indexer3 = replaceIndexer(index3);
         var postfix3 = '(' + this.replaceString(param3) + ')' + indexer3;
-        var length3 = postfix3.length;
         
-        var postfix =
-            length1 <= length2 && length1 <= length3 ?
-            postfix1 :
-            length2 <= length3 ? postfix2 : postfix3;
-        var result = this.resolveConstant('atob') + postfix;
-        return result;
-    }
-    
-    function charEncodeByCharCodeOrUnescape16(charCode)
-    {
-        var replacement1 = this.replaceCharByCharCode(charCode);
-        var replacement2 = this.replaceCharByUnescape16(charCode);
-        var replacement = replacement1.length < replacement2.length ? replacement1 : replacement2;
+        var postfix = shortestOf(postfix1, postfix2, postfix3);
+        var replacement = this.resolveConstant('atob') + postfix;
         return replacement;
-    }
-    
-    function charEncodeByCharCodeOrUnescape8(charCode)
-    {
-        var replacement1 = this.replaceCharByCharCode(charCode);
-        var replacement2 = this.replaceCharByUnescape8(charCode);
-        var replacement = replacement1.length < replacement2.length ? replacement1 : replacement2;
-        return replacement;
-    }
-    
-    function charEncodeByEval(charCode)
-    {
-        var hexCode = this.hexCodeOf(charCode, 4);
-        var expr = 'Function("return\\"\\\\u' + hexCode + '\\"")()';
-        if (hexCode.length > 4)
-            expr += '[0]';
-        var result = this.replaceExpr(expr, true);
-        return result;
     }
     
     function commaDefinition()
@@ -513,6 +482,25 @@ var createParseIntArgDefault;
             while (--digit > 1);
             return replacement;
         }
+    }
+    
+    function shortestOf()
+    {
+        var shortestObj;
+        var shortestLength = Infinity;
+        array_prototype_forEach.call(
+            arguments,
+            function (obj)
+            {
+                var length = obj.length;
+                if (length < shortestLength)
+                {
+                    shortestObj = obj;
+                    shortestLength = length;
+                }
+            }
+        );
+        return shortestObj;
     }
     
     AMENDINGS = ['true', 'undefined', 'NaN'];
@@ -967,6 +955,9 @@ var createParseIntArgDefault;
         ],
         '\\':
         [
+            define('unescape("%5c")'),
+            define('String[FROM_CHAR_CODE]("92")'),
+            define('atob("01y")[1]', ATOB),
             define('(RegExp("\\n") + [])[1]', ESC_REGEXP_LF),
             define('(RP_5_N + RegExp("".italics()))[10]', ESC_REGEXP_SLASH),
             define('(RP_3_NO + RegExp("".sub()))[10]', ESC_REGEXP_SLASH),
@@ -981,8 +972,7 @@ var createParseIntArgDefault;
             define('(RP_3_NO + RegExp(FILL))[21]', ESC_REGEXP_LF, FF_SRC, FILL),
             define('(+(ANY_FUNCTION + [])[0] + RegExp(FILL))[21]', ESC_REGEXP_LF, FILL, NO_V8_SRC),
             define('uneval(RP_3_NO + FILL)[21]', FF_SRC, FILL, UNEVAL),
-            define('uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]', FILL, NO_V8_SRC, UNEVAL),
-            defineDefaultChar('\\')
+            define('uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]', FILL, NO_V8_SRC, UNEVAL)
         ],
         ']':
         [
@@ -1441,6 +1431,16 @@ var createParseIntArgDefault;
         ],
     });
     
+    charEncodeDefault =
+        function (charCode)
+        {
+            var replacement1 = this.replaceCharByCharCode(charCode);
+            var replacement2 = this.replaceCharByUnescape(charCode);
+            var replacement3 = this.replaceCharByEscSeq(charCode);
+            var replacement = shortestOf(replacement1, replacement2, replacement3);
+            return replacement;
+        };
+    
     createBridgeSolution =
         function (bridge)
         {
@@ -1510,16 +1510,9 @@ var createParseIntArgDefault;
         define(createParseIntArgByReduce, FILL, V8_SRC)
     ];
     
-    DEFAULT_16_BIT_CHARACTER_ENCODER =
-    [
-        define(charEncodeByCharCodeOrUnescape16),
-        define(charEncodeByEval, ATOB),
-        define(charEncodeByEval, UNEVAL)
-    ];
-    
     DEFAULT_8_BIT_CHARACTER_ENCODER =
     [
-        define(charEncodeByCharCodeOrUnescape8),
+        define(charEncodeDefault),
         define(charEncodeByAtob, ATOB)
     ];
     
