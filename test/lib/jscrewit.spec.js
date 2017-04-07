@@ -1834,7 +1834,7 @@ uneval,
             );
         }
         
-        function testFEntry(entry, dispositions, varieties)
+        function verifyFEntry(entry, dispositions, varieties)
         {
             var entryFeatureObj = getEntryFeature(entry);
             dispositions.forEach(
@@ -1865,6 +1865,7 @@ uneval,
             [],
             ['FF_SRC'],
             ['IE_SRC'],
+            ['INCR_CHAR'],
             ['V8_SRC'],
             ['NO_FF_SRC'],
             ['NO_IE_SRC'],
@@ -1872,10 +1873,15 @@ uneval,
             ['FILL'],
             ['FILL', 'FF_SRC'],
             ['FILL', 'IE_SRC'],
+            ['FILL', 'INCR_CHAR'],
             ['FILL', 'V8_SRC'],
             ['FILL', 'NO_FF_SRC'],
             ['FILL', 'NO_IE_SRC'],
             ['FILL', 'NO_V8_SRC'],
+            ['INCR_CHAR', 'NO_FF_SRC'],
+            ['INCR_CHAR', 'NO_V8_SRC'],
+            ['FILL', 'INCR_CHAR', 'NO_FF_SRC'],
+            ['FILL', 'INCR_CHAR', 'NO_V8_SRC'],
         ];
         
         var FB_VARIETIES = [['FF_SRC'], ['IE_SRC'], ['V8_SRC']];
@@ -1884,9 +1890,11 @@ uneval,
         [
             [],
             ['IE_SRC'],
+            ['INCR_CHAR'],
             ['NO_IE_SRC'],
             ['FILL'],
             ['FILL', 'IE_SRC'],
+            ['FILL', 'INCR_CHAR'],
             ['FILL', 'NO_IE_SRC'],
         ];
         
@@ -1922,10 +1930,10 @@ uneval,
                                 case 'charDefaultDefinition':
                                     break;
                                 case 'definitionFB':
-                                    testFEntry(entry, FB_DISPOSITIONS, FB_VARIETIES);
+                                    verifyFEntry(entry, FB_DISPOSITIONS, FB_VARIETIES);
                                     return;
                                 case 'definitionFH':
-                                    testFEntry(entry, FH_DISPOSITIONS, FH_VARIETIES);
+                                    verifyFEntry(entry, FH_DISPOSITIONS, FH_VARIETIES);
                                     return;
                                 default:
                                     expect().fail(
