@@ -1,9 +1,14 @@
 /*
 global
+BASE64_ALPHABET_HI_2,
+BASE64_ALPHABET_HI_4,
+BASE64_ALPHABET_HI_6,
+BASE64_ALPHABET_LO_2,
+BASE64_ALPHABET_LO_4,
+BASE64_ALPHABET_LO_6,
 CHARACTERS,
 COMPLEX,
 CONSTANTS,
-DEFAULT_8_BIT_CHARACTER_ENCODER,
 JSFUCK_INFINITY,
 LEVEL_STRING,
 OPTIMAL_B,
@@ -13,7 +18,6 @@ ScrewBuffer,
 array_isArray,
 array_prototype_forEach,
 assignNoEnum,
-charEncodeDefault,
 createConstructor,
 createSolution,
 expressParse,
@@ -32,7 +36,6 @@ var APPEND_LENGTH_OF_SMALL_E;
 
 var Encoder;
 
-var replaceIndexer;
 var replaceMultiDigitNumber;
 var resolveSimple;
 
@@ -146,6 +149,12 @@ var resolveSimple;
         return replacement;
     }
     
+    function replaceIndexer(index)
+    {
+        var replacement = '[' + STATIC_ENCODER.replaceString(index) + ']';
+        return replacement;
+    }
+    
     function replaceNegativeExponential(mantissa, exp, rivalExtraLength)
     {
         var extraZeroCount;
@@ -170,6 +179,24 @@ var resolveSimple;
             var str = mantissa + 'e' + exp;
             return str;
         }
+    }
+    
+    function shortestOf(objs)
+    {
+        var shortestObj;
+        var shortestLength = Infinity;
+        objs.forEach(
+            function (obj)
+            {
+                var length = obj.length;
+                if (length < shortestLength)
+                {
+                    shortestObj = obj;
+                    shortestLength = length;
+                }
+            }
+        );
+        return shortestObj;
     }
     
     var STATIC_CHAR_CACHE = new Empty();
@@ -227,6 +254,35 @@ var resolveSimple;
         
         constantDefinitions: CONSTANTS,
         
+        createCharDefaultSolution: function (charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
+        {
+            var replacement;
+            if (atobOpt && this.findDefinition(CONSTANTS.atob))
+                replacement = this.replaceCharByAtob(charCode);
+            else
+            {
+                var replacements = [];
+                if (charCodeOpt)
+                {
+                    replacement = this.replaceCharByCharCode(charCode);
+                    replacements.push(replacement);
+                }
+                if (escSeqOpt)
+                {
+                    replacement = this.replaceCharByEscSeq(charCode);
+                    replacements.push(replacement);
+                }
+                if (unescapeOpt)
+                {
+                    replacement = this.replaceCharByUnescape(charCode);
+                    replacements.push(replacement);
+                }
+                replacement = shortestOf(replacements);
+            }
+            var solution = createSolution(replacement, LEVEL_STRING, false);
+            return solution;
+        },
+        
         createStringTokenRegExp: function ()
         {
             var regExp = RegExp(this.strTokenPattern, 'g');
@@ -236,13 +292,8 @@ var resolveSimple;
         defaultResolveCharacter: function (char)
         {
             var charCode = char.charCodeAt();
-            var defaultCharacterEncoder;
-            if (charCode < 0x100)
-                defaultCharacterEncoder = this.findDefinition(DEFAULT_8_BIT_CHARACTER_ENCODER);
-            else
-                defaultCharacterEncoder = charEncodeDefault;
-            var replacement = defaultCharacterEncoder.call(this, charCode);
-            var solution = createSolution(replacement, LEVEL_STRING, false);
+            var solution =
+                this.createCharDefaultSolution(charCode, charCode < 0x100, true, true, true);
             return solution;
         },
         
@@ -349,6 +400,33 @@ var resolveSimple;
                 }
                 this.optimizeComplexCache = noop;
             }
+        },
+        
+        replaceCharByAtob: function (charCode)
+        {
+            var param1 =
+                BASE64_ALPHABET_LO_6[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
+            var postfix1 = '(' + this.replaceString(param1) + ')';
+            if (param1.length > 2)
+                postfix1 += replaceIndexer(0);
+            
+            var param2Left = this.findBase64AlphabetDefinition(BASE64_ALPHABET_LO_4[charCode >> 4]);
+            var param2Right =
+                this.findBase64AlphabetDefinition(BASE64_ALPHABET_HI_4[charCode & 0x0f]);
+            var param2 = param2Left + param2Right;
+            var index2 = 1 + (param2Left.length - 2) / 4 * 3;
+            var indexer2 = replaceIndexer(index2);
+            var postfix2 = '(' + this.replaceString(param2) + ')' + indexer2;
+            
+            var param3Left = BASE64_ALPHABET_LO_2[charCode >> 6];
+            var param3 = param3Left + BASE64_ALPHABET_HI_6[charCode & 0x3f];
+            var index3 = 2 + (param3Left.length - 3) / 4 * 3;
+            var indexer3 = replaceIndexer(index3);
+            var postfix3 = '(' + this.replaceString(param3) + ')' + indexer3;
+            
+            var postfix = shortestOf([postfix1, postfix2, postfix3]);
+            var replacement = this.resolveConstant('atob') + postfix;
+            return replacement;
         },
         
         replaceCharByCharCode: function (charCode)
@@ -828,13 +906,6 @@ var resolveSimple;
     );
     
     var STATIC_ENCODER = new Encoder([0, 0]);
-    
-    replaceIndexer =
-        function (index)
-        {
-            var replacement = '[' + STATIC_ENCODER.replaceString(index) + ']';
-            return replacement;
-        };
     
     replaceMultiDigitNumber =
         function (number)

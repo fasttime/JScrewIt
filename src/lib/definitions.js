@@ -6,13 +6,11 @@ LEVEL_STRING,
 LEVEL_UNDEFINED,
 Empty,
 Feature,
-array_prototype_forEach,
 createDefinitionEntry,
 createSolution,
 define,
 noProto,
 object_defineProperty,
-replaceIndexer,
 resolveSimple,
 */
 
@@ -24,7 +22,6 @@ resolveSimple,
 
 var AMENDINGS;
 var CREATE_PARSE_INT_ARG;
-var DEFAULT_8_BIT_CHARACTER_ENCODER;
 var FROM_CHAR_CODE;
 var FROM_CHAR_CODE_CALLBACK_FORMATTER;
 var MAPPER_FORMATTER;
@@ -45,7 +42,6 @@ var SIMPLE;
 
 var JSFUCK_INFINITY;
 
-var charEncodeDefault;
 var createBridgeSolution;
 var createParseIntArgByReduce;
 var createParseIntArgByReduceArrow;
@@ -194,31 +190,6 @@ var createParseIntArgDefault;
         define({ blocks: R_PADDINGS, shift: 1 }, IE_SRC)
     ];
     
-    function charEncodeByAtob(charCode)
-    {
-        var param1 = BASE64_ALPHABET_LO_6[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
-        var postfix1 = '(' + this.replaceString(param1) + ')';
-        if (param1.length > 2)
-            postfix1 += replaceIndexer(0);
-        
-        var param2Left = this.findBase64AlphabetDefinition(BASE64_ALPHABET_LO_4[charCode >> 4]);
-        var param2Right = this.findBase64AlphabetDefinition(BASE64_ALPHABET_HI_4[charCode & 0x0f]);
-        var param2 = param2Left + param2Right;
-        var index2 = 1 + (param2Left.length - 2) / 4 * 3;
-        var indexer2 = replaceIndexer(index2);
-        var postfix2 = '(' + this.replaceString(param2) + ')' + indexer2;
-        
-        var param3Left = BASE64_ALPHABET_LO_2[charCode >> 6];
-        var param3 = param3Left + BASE64_ALPHABET_HI_6[charCode & 0x3f];
-        var index3 = 2 + (param3Left.length - 3) / 4 * 3;
-        var indexer3 = replaceIndexer(index3);
-        var postfix3 = '(' + this.replaceString(param3) + ')' + indexer3;
-        
-        var postfix = shortestOf(postfix1, postfix2, postfix3);
-        var replacement = this.resolveConstant('atob') + postfix;
-        return replacement;
-    }
-    
     function commaDefinition()
     {
         var bridge = '[' + this.replaceString('concat') + ']';
@@ -325,21 +296,40 @@ var createParseIntArgDefault;
         return definitionFH;
     }
     
-    function createDefaultCharDefinition(char)
+    function createCharDefaultDefinition(charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
     {
-        function defaultCharDefinition()
+        function charDefaultDefinition()
         {
-            var solution = this.defaultResolveCharacter(char);
+            var solution =
+                this.createCharDefaultSolution(
+                    charCode,
+                    atobOpt,
+                    charCodeOpt,
+                    escSeqOpt,
+                    unescapeOpt
+                );
             return solution;
         }
         
-        return defaultCharDefinition;
+        return charDefaultDefinition;
     }
     
-    function defineDefaultChar(char)
+    function defineCharDefault(char, opts)
     {
-        var definition = createDefaultCharDefinition(char);
-        var entry = define(definition);
+        function checkOpt(optName)
+        {
+            var opt = !(opts && optName in opts && !opts[optName]);
+            return opt;
+        }
+        
+        var charCode    = char.charCodeAt();
+        var atobOpt     = checkOpt('atob');
+        var charCodeOpt = checkOpt('charCode');
+        var escSeqOpt   = checkOpt('escSeq');
+        var unescapeOpt = checkOpt('unescape');
+        var definition =
+            createCharDefaultDefinition(charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt);
+        var entry = createDefinitionEntry(definition, arguments, 2);
         return entry;
     }
     
@@ -482,25 +472,6 @@ var createParseIntArgDefault;
             while (--digit > 1);
             return replacement;
         }
-    }
-    
-    function shortestOf()
-    {
-        var shortestObj;
-        var shortestLength = Infinity;
-        array_prototype_forEach.call(
-            arguments,
-            function (obj)
-            {
-                var length = obj.length;
-                if (length < shortestLength)
-                {
-                    shortestObj = obj;
-                    shortestLength = length;
-                }
-            }
-        );
-        return shortestObj;
     }
     
     AMENDINGS = ['true', 'undefined', 'NaN'];
@@ -701,7 +672,7 @@ var createParseIntArgDefault;
             define('"".fontcolor("".sub())[20]', ESC_HTML_ALL),
             define('"".fontcolor("\\"")[13]', ESC_HTML_QUOT),
             define('"".fontcolor("".fontcolor([]))[31]', ESC_HTML_QUOT_ONLY),
-            defineDefaultChar('&')
+            defineCharDefault('&')
         ],
         // '\'':   ,
         '(':
@@ -732,7 +703,7 @@ var createParseIntArgDefault;
         ':':
         [
             define('(RegExp() + [])[3]'),
-            defineDefaultChar(':')
+            defineCharDefault(':')
         ],
         ';':
         [
@@ -740,7 +711,7 @@ var createParseIntArgDefault;
             define('"".fontcolor(true + "".sub())[20]', ESC_HTML_ALL),
             define('"".fontcolor("NaN\\"")[21]', ESC_HTML_QUOT),
             define('"".fontcolor("".fontcolor())[30]', ESC_HTML_QUOT_ONLY),
-            defineDefaultChar(';')
+            defineCharDefault(';')
         ],
         '<':
         [
@@ -759,7 +730,7 @@ var createParseIntArgDefault;
         '?':
         [
             define('(RegExp() + [])[2]'),
-            defineDefaultChar('?')
+            defineCharDefault('?')
         ],
         // '@':    ,
         'A':
@@ -834,7 +805,7 @@ var createParseIntArgDefault;
         [
             define('"j"[TO_UPPER_CASE]()'),
             define('btoa(true)[2]', ATOB),
-            defineDefaultChar('J')
+            defineCharDefault('J', { atob: false })
         ],
         'K':
         [
@@ -864,19 +835,19 @@ var createParseIntArgDefault;
         ],
         'P':
         [
-            define('unescape("%50")'),
             define('atob("01A")[1]', ATOB),
             define('btoa("".italics())[0]', ATOB),
             define('btoa("".sub())[0]', ATOB),
             define('btoa(PLAIN_OBJECT)[11]', ATOB),
             define('(Function("return statusbar")() + [])[11]', BARPROP),
-            define('"0".sup()[10]', CAPITAL_HTML)
+            define('"0".sup()[10]', CAPITAL_HTML),
+            defineCharDefault('P', { atob: false, charCode: false, escSeq: false })
         ],
         'Q':
         [
             define('"q"[TO_UPPER_CASE]()'),
             define('btoa(1)[1]', ATOB),
-            defineDefaultChar('Q')
+            defineCharDefault('Q', { atob: false })
         ],
         'R':
         [
@@ -904,7 +875,7 @@ var createParseIntArgDefault;
             define('(RP_3_NO + Date())[30]', GMT),
             define('(Audio + [])[10]', HTMLAUDIOELEMENT),
             define('(RP_1_NO + document)[10]', HTMLDOCUMENT),
-            defineDefaultChar('T')
+            defineCharDefault('T', { atob: false })
         ],
         'U':
         [
@@ -915,33 +886,31 @@ var createParseIntArgDefault;
         ],
         'V':
         [
-            define('unescape("%56")'),
-            define('String[FROM_CHAR_CODE]("86")'),
             define('"v"[TO_UPPER_CASE]()'),
             define('(document.createElement("video") + [])[12]', ANY_DOCUMENT),
-            define('btoa(undefined)[10]', ATOB)
+            define('btoa(undefined)[10]', ATOB),
+            defineCharDefault('V', { atob: false })
         ],
         'W':
         [
-            define('unescape("%57")'),
-            define('String[FROM_CHAR_CODE]("87")'),
             define('"w"[TO_UPPER_CASE]()'),
             define('(self + RP_4_N)[SUBSTR]("-11")[0]', ANY_WINDOW),
             define('btoa(undefined)[1]', ATOB),
             define('(self + [])[11]', DOMWINDOW),
-            define('(RP_3_NO + self)[11]', WINDOW)
+            define('(RP_3_NO + self)[11]', WINDOW),
+            defineCharDefault('W', { atob: false })
         ],
         'X':
         [
             define('"x"[TO_UPPER_CASE]()'),
             define('btoa("1true")[1]', ATOB),
-            defineDefaultChar('X')
+            defineCharDefault('X', { atob: false })
         ],
         'Y':
         [
             define('"y"[TO_UPPER_CASE]()'),
             define('btoa("a")[0]', ATOB),
-            defineDefaultChar('Y')
+            defineCharDefault('Y', { atob: false })
         ],
         'Z':
         [
@@ -955,8 +924,6 @@ var createParseIntArgDefault;
         ],
         '\\':
         [
-            define('unescape("%5c")'),
-            define('String[FROM_CHAR_CODE]("92")'),
             define('atob("01y")[1]', ATOB),
             define('(RegExp("\\n") + [])[1]', ESC_REGEXP_LF),
             define('(RP_5_N + RegExp("".italics()))[10]', ESC_REGEXP_SLASH),
@@ -972,7 +939,8 @@ var createParseIntArgDefault;
             define('(RP_3_NO + RegExp(FILL))[21]', ESC_REGEXP_LF, FF_SRC, FILL),
             define('(+(ANY_FUNCTION + [])[0] + RegExp(FILL))[21]', ESC_REGEXP_LF, FILL, NO_V8_SRC),
             define('uneval(RP_3_NO + FILL)[21]', FF_SRC, FILL, UNEVAL),
-            define('uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]', FILL, NO_V8_SRC, UNEVAL)
+            define('uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]', FILL, NO_V8_SRC, UNEVAL),
+            defineCharDefault('\\', { atob: false, escSeq: false })
         ],
         ']':
         [
@@ -1020,7 +988,7 @@ var createParseIntArgDefault;
         'k':
         [
             define('20[TO_STRING]("21")'),
-            defineDefaultChar('k')
+            defineCharDefault('k')
         ],
         'l': '"false"[2]',
         'm':
@@ -1045,7 +1013,7 @@ var createParseIntArgDefault;
             define('"".fontcolor(0 + "".fontcolor())[30]', ESC_HTML_ALL),
             define('"".fontcolor("0false\\"")[20]', ESC_HTML_QUOT),
             define('"".fontcolor(true + "".fontcolor())[30]', ESC_HTML_QUOT_ONLY),
-            defineDefaultChar('q')
+            defineCharDefault('q')
         ],
         'r': '"true"[1]',
         's': '"false"[3]',
@@ -1169,7 +1137,7 @@ var createParseIntArgDefault;
         '∞':
         [
             define('Infinity.toLocaleString()', LOCALE_INFINITY),
-            defineDefaultChar('∞')
+            defineCharDefault('∞')
         ]
     });
     
@@ -1431,16 +1399,6 @@ var createParseIntArgDefault;
         ],
     });
     
-    charEncodeDefault =
-        function (charCode)
-        {
-            var replacement1 = this.replaceCharByCharCode(charCode);
-            var replacement2 = this.replaceCharByUnescape(charCode);
-            var replacement3 = this.replaceCharByEscSeq(charCode);
-            var replacement = shortestOf(replacement1, replacement2, replacement3);
-            return replacement;
-        };
-    
     createBridgeSolution =
         function (bridge)
         {
@@ -1508,12 +1466,6 @@ var createParseIntArgDefault;
         define(createParseIntArgByReduce, FILL, FF_SRC),
         define(createParseIntArgByReduce, FILL, IE_SRC),
         define(createParseIntArgByReduce, FILL, V8_SRC)
-    ];
-    
-    DEFAULT_8_BIT_CHARACTER_ENCODER =
-    [
-        define(charEncodeDefault),
-        define(charEncodeByAtob, ATOB)
     ];
     
     FROM_CHAR_CODE =
