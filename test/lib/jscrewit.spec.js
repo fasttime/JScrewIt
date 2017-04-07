@@ -1782,16 +1782,16 @@ uneval,
     {
         function testAtob()
         {
-            if ('ATOB' in featureSet)
+            if (charCode < 0x100 && 'ATOB' in featureSet)
             {
                 it(
                     '(atob)',
                     function ()
                     {
                         var encoder = getPoolEncoder(Feature.ATOB);
-                        var solution = encoder.resolveCharacter(char);
+                        var solution =
+                            encoder.createCharDefaultSolution(charCode, true, false, false, false);
                         verifySolution(solution, char, featureSet.ATOB && ['ATOB']);
-                        expect(solution.char).toBe(char);
                         expect(solution.length).not.toBeGreaterThan(
                             getPoolEncoder(Feature.DEFAULT).resolveCharacter(char).length
                         );
@@ -1800,24 +1800,38 @@ uneval,
             }
         }
         
-        function testCharCode()
+        function testDefault()
         {
-            if ('CAPITAL_HTML' in featureSet)
-            {
-                it(
-                    '(char code)',
-                    function ()
-                    {
-                        var encoder = getPoolEncoder(Feature.CAPITAL_HTML);
-                        var solution = encoder.resolveCharacter(char);
-                        verifySolution(solution, char, featureSet.CAPITAL_HTML && ['CAPITAL_HTML']);
-                        expect(solution.char).toBe(char);
-                        expect(solution.length).not.toBeGreaterThan(
-                            getPoolEncoder(Feature.DEFAULT).resolveCharacter(char).length
-                        );
-                    }
-                );
-            }
+            it(
+                '(charCode)',
+                function ()
+                {
+                    var encoder = getPoolEncoder(Feature.DEFAULT);
+                    var solution =
+                        encoder.createCharDefaultSolution(charCode, false, true, false, false);
+                    verifySolution(solution, char);
+                }
+            );
+            it(
+                '(escSeq)',
+                function ()
+                {
+                    var encoder = getPoolEncoder(Feature.DEFAULT);
+                    var solution =
+                        encoder.createCharDefaultSolution(charCode, false, false, true, false);
+                    verifySolution(solution, char);
+                }
+            );
+            it(
+                '(unescape)',
+                function ()
+                {
+                    var encoder = getPoolEncoder(Feature.DEFAULT);
+                    var solution =
+                        encoder.createCharDefaultSolution(charCode, false, false, false, true);
+                    verifySolution(solution, char);
+                }
+            );
         }
         
         function testFEntry(entry, dispositions, varieties)
@@ -1905,7 +1919,7 @@ uneval,
                                 switch (name)
                                 {
                                 case 'commaDefinition':
-                                case 'defaultCharDefinition':
+                                case 'charDefaultDefinition':
                                     break;
                                 case 'definitionFB':
                                     testFEntry(entry, FB_DISPOSITIONS, FB_VARIETIES);
@@ -1930,18 +1944,6 @@ uneval,
                     );
                 }
                 
-                var testDefault =
-                    it.bind(
-                        null,
-                        '(default)',
-                        function ()
-                        {
-                            var encoder = getPoolEncoder(Feature.DEFAULT);
-                            var solution = encoder.resolveCharacter(char);
-                            expect(solution.char).toBe(char);
-                            verifySolution(solution, char);
-                        }
-                    );
                 var entries = JScrewIt.debug.getCharacterEntries(char);
                 if (entries)
                 {
@@ -1950,17 +1952,13 @@ uneval,
                     if (entries)
                         entries.forEach(testEntry);
                     if (!defaultEntryFound)
-                    {
                         testDefault();
-                        testCharCode();
-                    }
                     if (!atobEntryFound)
                         testAtob();
                 }
                 else
                 {
                     testDefault();
-                    testCharCode();
                     testAtob();
                 }
             }
