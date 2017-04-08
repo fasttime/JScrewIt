@@ -169,7 +169,7 @@ var createParseIntArgDefault;
     var FB_EXPR_INFOS =
     [
         define({ expr: 'FILTER', shift: 6 }),
-        define({ expr: 'FILL', shift: 4 }, FILL)
+        define({ expr: 'FILL', shift: 4 }, FILL),
     ];
     
     var FB_PADDING_INFOS =
@@ -180,14 +180,14 @@ var createParseIntArgDefault;
         define(null, NO_V8_SRC),
         define({ blocks: R_PADDINGS, shift: 0 }, V8_SRC),
         define({ blocks: R_PADDINGS, shift: 5 }, IE_SRC),
-        define({ blocks: R_PADDINGS, shift: 4 }, FF_SRC)
+        define({ blocks: R_PADDINGS, shift: 4 }, FF_SRC),
     ];
     
     var FH_PADDING_INFOS =
     [
         define({ blocks: FH_PADDINGS, shift: 0 }),
         define({ blocks: R_PADDINGS, shift: 0 }, NO_IE_SRC),
-        define({ blocks: R_PADDINGS, shift: 1 }, IE_SRC)
+        define({ blocks: R_PADDINGS, shift: 1 }, IE_SRC),
     ];
     
     function commaDefinition()
@@ -214,7 +214,7 @@ var createParseIntArgDefault;
                     define({ block: 'RP_0_S', indexer: '2 + FH_SHIFT_3' }, NO_V8_SRC),
                     define(3, V8_SRC),
                     define(0, IE_SRC),
-                    define(0, FF_SRC)
+                    define(0, FF_SRC),
                 ];
                 break;
             case 20:
@@ -228,7 +228,7 @@ var createParseIntArgDefault;
                     ),
                     define(0, V8_SRC),
                     define(5, IE_SRC),
-                    define(6, FF_SRC)
+                    define(6, FF_SRC),
                 ];
                 break;
             case 23:
@@ -239,7 +239,7 @@ var createParseIntArgDefault;
                     define({ block: 'RP_3_NO', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(0, V8_SRC),
                     define(3, IE_SRC),
-                    define(3, FF_SRC)
+                    define(3, FF_SRC),
                 ];
                 break;
             case 25:
@@ -250,7 +250,7 @@ var createParseIntArgDefault;
                     define(5, NO_IE_SRC),
                     define({ block: 'RP_1_NO', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(0, IE_SRC),
-                    define(1, FF_SRC)
+                    define(1, FF_SRC),
                 ];
                 break;
             case 32:
@@ -262,7 +262,7 @@ var createParseIntArgDefault;
                     define({ block: 'RP_4_N', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(0, V8_SRC),
                     define(3, IE_SRC),
-                    define(4, FF_SRC)
+                    define(4, FF_SRC),
                 ];
                 break;
             case 34:
@@ -275,7 +275,7 @@ var createParseIntArgDefault;
                     define({ block: 'RP_2_SO', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
                     define(6, V8_SRC),
                     define(1, IE_SRC),
-                    define(3, FF_SRC)
+                    define(3, FF_SRC),
                 ];
                 break;
             }
@@ -352,7 +352,7 @@ var createParseIntArgDefault;
             [
                 define(7),
                 define(0, NO_IE_SRC),
-                define(6, IE_SRC)
+                define(6, IE_SRC),
             ];
             break;
         case 6:
@@ -361,7 +361,7 @@ var createParseIntArgDefault;
             [
                 define(5),
                 define(4, NO_IE_SRC),
-                define(3, IE_SRC)
+                define(3, IE_SRC),
             ];
             break;
         case 8:
@@ -369,7 +369,7 @@ var createParseIntArgDefault;
             entries =
             [
                 define(3),
-                define(1, IE_SRC)
+                define(1, IE_SRC),
             ];
             break;
         case 9:
@@ -378,7 +378,7 @@ var createParseIntArgDefault;
             [
                 define({ block: 'RP_1_NO', indexer: (index + 1) / 10 + ' + FH_SHIFT_1' }),
                 define(1, NO_IE_SRC),
-                define(0, IE_SRC)
+                define(0, IE_SRC),
             ];
             break;
         case 11:
@@ -386,7 +386,7 @@ var createParseIntArgDefault;
             [
                 define(9),
                 define(0, NO_IE_SRC),
-                define(0, IE_SRC)
+                define(0, IE_SRC),
             ];
             break;
         case 12:
@@ -394,27 +394,27 @@ var createParseIntArgDefault;
             [
                 define(8),
                 define(0, NO_IE_SRC),
-                define(0, IE_SRC)
+                define(0, IE_SRC),
             ];
             break;
         case 14:
             entries =
             [
                 define(6),
-                define(5, IE_SRC)
+                define(5, IE_SRC),
             ];
             break;
         case 15:
             entries =
             [
                 define(5),
-                define(4, IE_SRC)
+                define(4, IE_SRC),
             ];
             break;
         case 17:
             entries =
             [
-                define(3)
+                define(3),
             ];
             break;
         }
@@ -485,7 +485,7 @@ var createParseIntArgDefault;
             define('A'),
             define('C', CAPITAL_HTML),
             define('B', CAPITAL_HTML, ENTRIES_OBJ),
-            define('A', ARRAY_ITERATOR)
+            define('A', ARRAY_ITERATOR),
         ],
         'F',
         'Infinity',
@@ -493,7 +493,7 @@ var createParseIntArgDefault;
         [
             define('S'),
             define('R', CAPITAL_HTML),
-            define('S', ENTRIES_OBJ)
+            define('S', ENTRIES_OBJ),
         ],
         [
             define('U'),
@@ -511,7 +511,7 @@ var createParseIntArgDefault;
             define('U', BARPROP, FROM_CODE_POINT, NODECONSTRUCTOR),
             define('W', ANY_WINDOW),
             define('W', ATOB),
-            define('U', CAPITAL_HTML)
+            define('U', CAPITAL_HTML),
         ],
         'a',
         'false',
@@ -601,13 +601,13 @@ var createParseIntArgDefault;
         [
             define('0B'),
             define('0R', CAPITAL_HTML),
-            define('0B', ENTRIES_OBJ)
+            define('0B', ENTRIES_OBJ),
         ],
         '0i',
         [
             define('0j'),
             define('0T', CAPITAL_HTML),
-            define('0j', ENTRIES_OBJ)
+            define('0j', ENTRIES_OBJ),
         ],
         '00',
         '01',
@@ -630,7 +630,7 @@ var createParseIntArgDefault;
         '\t':
         [
             define('Function("return\\"\\\\true\\"")()[0]'),
-            defineCharDefault('\t', { escSeq: false })
+            defineCharDefault('\t', { escSeq: false }),
         ],
         '\n':
         [
@@ -638,23 +638,23 @@ var createParseIntArgDefault;
             define('(ANY_FUNCTION + [])[0]', IE_SRC),
             define('(Function() + [])[22]', NO_OLD_SAFARI_LF),
             defineFHCharAt('FILTER', 19, NO_V8_SRC),
-            defineFHCharAt('FILL', 17, FILL, NO_V8_SRC)
+            defineFHCharAt('FILL', 17, FILL, NO_V8_SRC),
         ],
         
         '\f':
         [
             define('Function("return\\"\\\\false\\"")()[0]'),
-            defineCharDefault('\f', { escSeq: false })
+            defineCharDefault('\f', { escSeq: false }),
         ],
         '\r':
         [
             define('Function("return\\"\\\\r\\"")()'),
-            defineCharDefault('\r', { escSeq: false })
+            defineCharDefault('\r', { escSeq: false }),
         ],
         
         '\x1e':
         [
-            define('(RP_5_N + atob("NaNfalse"))[10]', ATOB)
+            define('(RP_5_N + atob("NaNfalse"))[10]', ATOB),
         ],
         
         ' ':
@@ -667,12 +667,12 @@ var createParseIntArgDefault;
             define('(RP_1_NO + FILTER)[20]', V8_SRC),
             define('(+(ANY_FUNCTION + [])[0] + FILL)[20]', FILL, NO_FF_SRC),
             define('(RP_5_N + FILL)[20]', FILL, NO_IE_SRC),
-            define('(FILL + [])[20]', FILL, NO_V8_SRC)
+            define('(FILL + [])[20]', FILL, NO_V8_SRC),
         ],
         // '!':    ,
         '"':
         [
-            define('"".fontcolor()[12]')
+            define('"".fontcolor()[12]'),
         ],
         // '#':    ,
         // '$':    ,
@@ -681,7 +681,7 @@ var createParseIntArgDefault;
             define('escape(FILTER)[20]'),
             define('atob("000l")[2]', ATOB),
             define('escape(FILL)[21]', FILL),
-            define('escape(ANY_FUNCTION)[0]', IE_SRC)
+            define('escape(ANY_FUNCTION)[0]', IE_SRC),
         ],
         '&':
         [
@@ -689,38 +689,38 @@ var createParseIntArgDefault;
             define('"".fontcolor("".sub())[20]', ESC_HTML_ALL),
             define('"".fontcolor("\\"")[13]', ESC_HTML_QUOT),
             define('"".fontcolor("".fontcolor([]))[31]', ESC_HTML_QUOT_ONLY),
-            defineCharDefault('&')
+            defineCharDefault('&'),
         ],
         // '\'':   ,
         '(':
         [
             defineFHCharAt('FILTER', 15),
-            defineFHCharAt('FILL', 13, FILL)
+            defineFHCharAt('FILL', 13, FILL),
         ],
         ')':
         [
             defineFHCharAt('FILTER', 16),
-            defineFHCharAt('FILL', 14, FILL)
+            defineFHCharAt('FILL', 14, FILL),
         ],
         // '*':    ,
         '+': '(1e100 + [])[2]',
         ',':
         [
             define('"f,a,l,s,e"[1]'),
-            define(commaDefinition)
+            define(commaDefinition),
         ],
         '-': '(+".0000001" + [])[2]',
         '.': '(+"11e20" + [])[1]',
         '/':
         [
             define('"0false".italics()[10]'),
-            define('"true".sub()[10]')
+            define('"true".sub()[10]'),
         ],
         // '0'...'9':
         ':':
         [
             define('(RegExp() + [])[3]'),
-            defineCharDefault(':')
+            defineCharDefault(':'),
         ],
         ';':
         [
@@ -728,37 +728,37 @@ var createParseIntArgDefault;
             define('"".fontcolor(true + "".sub())[20]', ESC_HTML_ALL),
             define('"".fontcolor("NaN\\"")[21]', ESC_HTML_QUOT),
             define('"".fontcolor("".fontcolor())[30]', ESC_HTML_QUOT_ONLY),
-            defineCharDefault(';')
+            defineCharDefault(';'),
         ],
         '<':
         [
             define('"".italics()[0]'),
-            define('"".sub()[0]')
+            define('"".sub()[0]'),
         ],
         '=':
         [
-            define('"".fontcolor()[11]')
+            define('"".fontcolor()[11]'),
         ],
         '>':
         [
             define('"".italics()[2]'),
-            define('"".sub()[10]')
+            define('"".sub()[10]'),
         ],
         '?':
         [
             define('(RegExp() + [])[2]'),
-            defineCharDefault('?')
+            defineCharDefault('?'),
         ],
         // '@':    ,
         'A':
         [
             defineFHCharAt('Array', 9),
-            define('(RP_3_NO + ARRAY_ITERATOR)[11]', ARRAY_ITERATOR)
+            define('(RP_3_NO + ARRAY_ITERATOR)[11]', ARRAY_ITERATOR),
         ],
         'B':
         [
             defineFHCharAt('Boolean', 9),
-            define('"".sub()[3]', CAPITAL_HTML)
+            define('"".sub()[3]', CAPITAL_HTML),
         ],
         'C':
         [
@@ -767,7 +767,7 @@ var createParseIntArgDefault;
             define('atob("00NaNfalse")[1]', ATOB),
             define('(RP_4_N + "".fontcolor())[10]', CAPITAL_HTML),
             define('(RP_3_NO + Function("return console")())[11]', CONSOLE),
-            define('(Node + [])[12]', NODECONSTRUCTOR)
+            define('(Node + [])[12]', NODECONSTRUCTOR),
         ],
         'D':
         [
@@ -786,25 +786,25 @@ var createParseIntArgDefault;
             define('(document + [])[12]', HTMLDOCUMENT),
             define('escape(ARRAY_ITERATOR)[30]', NO_OLD_SAFARI_ARRAY_ITERATOR),
             define('escape(FILTER)[50]', V8_SRC),
-            define('escape(FILL)[60]', FF_SRC, FILL)
+            define('escape(FILL)[60]', FF_SRC, FILL),
         ],
         'E':
         [
             defineFHCharAt('RegExp', 12),
             define('btoa("0NaN")[1]', ATOB),
             define('(RP_5_N + "".link())[10]', CAPITAL_HTML),
-            define('(RP_3_NO + Audio)[21]', HTMLAUDIOELEMENT)
+            define('(RP_3_NO + Audio)[21]', HTMLAUDIOELEMENT),
         ],
         'F':
         [
             defineFHCharAt('Function', 9),
-            define('"".fontcolor()[1]', CAPITAL_HTML)
+            define('"".fontcolor()[1]', CAPITAL_HTML),
         ],
         'G':
         [
             define('btoa("0false")[1]', ATOB),
             define('"0".big()[10]', CAPITAL_HTML),
-            define('(RP_5_N + Date())[30]', GMT)
+            define('(RP_5_N + Date())[30]', GMT),
         ],
         'H':
         [
@@ -815,25 +815,25 @@ var createParseIntArgDefault;
                 HISTORY
             ),
             define('(RP_1_NO + Audio)[10]', HTMLAUDIOELEMENT),
-            define('(RP_3_NO + document)[11]', HTMLDOCUMENT)
+            define('(RP_3_NO + document)[11]', HTMLDOCUMENT),
         ],
         'I': '"Infinity"[0]',
         'J':
         [
             define('"j"[TO_UPPER_CASE]()'),
             define('btoa(true)[2]', ATOB),
-            defineCharDefault('J', { atob: false })
+            defineCharDefault('J', { atob: false }),
         ],
         'K':
         [
-            define('(RP_5_N + "".strike())[10]', CAPITAL_HTML)
+            define('(RP_5_N + "".strike())[10]', CAPITAL_HTML),
         ],
         'L':
         [
             define('btoa(".")[0]', ATOB),
             define('(RP_3_NO + "".fontcolor())[11]', CAPITAL_HTML),
             define('(Audio + [])[12]', HTMLAUDIOELEMENT),
-            define('(document + [])[11]', HTMLDOCUMENT)
+            define('(document + [])[11]', HTMLDOCUMENT),
         ],
         'M':
         [
@@ -841,14 +841,14 @@ var createParseIntArgDefault;
             define('"".small()[2]', CAPITAL_HTML),
             define('(RP_4_N + Date())[30]', GMT),
             define('(Audio + [])[11]', HTMLAUDIOELEMENT),
-            define('(document + [])[10]', HTMLDOCUMENT)
+            define('(document + [])[10]', HTMLDOCUMENT),
         ],
         'N': '"NaN"[0]',
         'O':
         [
             define('(RP_3_NO + PLAIN_OBJECT)[11]'),
             define('btoa(NaN)[3]', ATOB),
-            define('"".fontcolor()[2]', CAPITAL_HTML)
+            define('"".fontcolor()[2]', CAPITAL_HTML),
         ],
         'P':
         [
@@ -858,24 +858,24 @@ var createParseIntArgDefault;
             define('btoa(PLAIN_OBJECT)[11]', ATOB),
             define('(Function("return statusbar")() + [])[11]', BARPROP),
             define('"0".sup()[10]', CAPITAL_HTML),
-            defineCharDefault('P', { atob: false, charCode: false, escSeq: false })
+            defineCharDefault('P', { atob: false, charCode: false, escSeq: false }),
         ],
         'Q':
         [
             define('"q"[TO_UPPER_CASE]()'),
             define('btoa(1)[1]', ATOB),
-            defineCharDefault('Q', { atob: false })
+            defineCharDefault('Q', { atob: false }),
         ],
         'R':
         [
             defineFHCharAt('RegExp', 9),
             define('btoa("0true")[2]', ATOB),
-            define('"".fontcolor()[10]', CAPITAL_HTML)
+            define('"".fontcolor()[10]', CAPITAL_HTML),
         ],
         'S':
         [
             defineFHCharAt('String', 9),
-            define('"".sub()[1]', CAPITAL_HTML)
+            define('"".sub()[1]', CAPITAL_HTML),
         ],
         'T':
         [
@@ -892,21 +892,21 @@ var createParseIntArgDefault;
             define('(RP_3_NO + Date())[30]', GMT),
             define('(Audio + [])[10]', HTMLAUDIOELEMENT),
             define('(RP_1_NO + document)[10]', HTMLDOCUMENT),
-            defineCharDefault('T', { atob: false })
+            defineCharDefault('T', { atob: false }),
         ],
         'U':
         [
             define('btoa("1NaN")[1]', ATOB),
             define('"".sub()[2]', CAPITAL_HTML),
             define('(RP_3_NO + PLAIN_OBJECT[TO_STRING].call())[11]', UNDEFINED),
-            define('(RP_3_NO + ARRAY_ITERATOR[TO_STRING].call())[11]', ENTRIES_OBJ, UNDEFINED)
+            define('(RP_3_NO + ARRAY_ITERATOR[TO_STRING].call())[11]', ENTRIES_OBJ, UNDEFINED),
         ],
         'V':
         [
             define('"v"[TO_UPPER_CASE]()'),
             define('(document.createElement("video") + [])[12]', ANY_DOCUMENT),
             define('btoa(undefined)[10]', ATOB),
-            defineCharDefault('V', { atob: false })
+            defineCharDefault('V', { atob: false }),
         ],
         'W':
         [
@@ -915,29 +915,29 @@ var createParseIntArgDefault;
             define('btoa(undefined)[1]', ATOB),
             define('(self + [])[11]', DOMWINDOW),
             define('(RP_3_NO + self)[11]', WINDOW),
-            defineCharDefault('W', { atob: false })
+            defineCharDefault('W', { atob: false }),
         ],
         'X':
         [
             define('"x"[TO_UPPER_CASE]()'),
             define('btoa("1true")[1]', ATOB),
-            defineCharDefault('X', { atob: false })
+            defineCharDefault('X', { atob: false }),
         ],
         'Y':
         [
             define('"y"[TO_UPPER_CASE]()'),
             define('btoa("a")[0]', ATOB),
-            defineCharDefault('Y', { atob: false })
+            defineCharDefault('Y', { atob: false }),
         ],
         'Z':
         [
             define('btoa(false)[0]', ATOB),
-            define('(RP_3_NO + "".fontsize())[11]', CAPITAL_HTML)
+            define('(RP_3_NO + "".fontsize())[11]', CAPITAL_HTML),
         ],
         '[':
         [
             defineFBCharAt(14),
-            define('(ARRAY_ITERATOR + [])[0]', ENTRIES_OBJ)
+            define('(ARRAY_ITERATOR + [])[0]', ENTRIES_OBJ),
         ],
         '\\':
         [
@@ -957,17 +957,17 @@ var createParseIntArgDefault;
             define('(+(ANY_FUNCTION + [])[0] + RegExp(FILL))[21]', ESC_REGEXP_LF, FILL, NO_V8_SRC),
             define('uneval(RP_3_NO + FILL)[21]', FF_SRC, FILL, UNEVAL),
             define('uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]', FILL, NO_V8_SRC, UNEVAL),
-            defineCharDefault('\\', { atob: false, escSeq: false })
+            defineCharDefault('\\', { atob: false, escSeq: false }),
         ],
         ']':
         [
             defineFBCharAt(26),
             define('(RP_6_SO + PLAIN_OBJECT)[20]'),
-            define('(ARRAY_ITERATOR + [])[22]', NO_OLD_SAFARI_ARRAY_ITERATOR)
+            define('(ARRAY_ITERATOR + [])[22]', NO_OLD_SAFARI_ARRAY_ITERATOR),
         ],
         '^':
         [
-            define('atob("undefined0")[2]', ATOB)
+            define('atob("undefined0")[2]', ATOB),
         ],
         // '_':    ,
         // '`':    ,
@@ -975,24 +975,24 @@ var createParseIntArgDefault;
         'b':
         [
             defineFHCharAt('Number', 12),
-            define('(ARRAY_ITERATOR + [])[2]', ENTRIES_OBJ)
+            define('(ARRAY_ITERATOR + [])[2]', ENTRIES_OBJ),
         ],
         'c':
         [
             defineFHCharAt('ANY_FUNCTION', 3),
-            define('(RP_5_N + ARRAY_ITERATOR)[10]', ENTRIES_OBJ)
+            define('(RP_5_N + ARRAY_ITERATOR)[10]', ENTRIES_OBJ),
         ],
         'd': '"undefined"[2]',
         'e': '"true"[3]',
         'f': '"false"[0]',
         'g':
         [
-            defineFHCharAt('String', 14)
+            defineFHCharAt('String', 14),
         ],
         'h':
         [
             define('101[TO_STRING]("21")[1]'),
-            define('btoa("0false")[3]', ATOB)
+            define('btoa("0false")[3]', ATOB),
         ],
         'i': '([RP_5_N] + undefined)[10]',
         'j':
@@ -1000,29 +1000,29 @@ var createParseIntArgDefault;
             define('(PLAIN_OBJECT + [])[10]'),
             define('(ARRAY_ITERATOR + [])[3]', ENTRIES_OBJ),
             define('(Node + [])[3]', NODECONSTRUCTOR),
-            define('(self + [])[3]', SELF_OBJ)
+            define('(self + [])[3]', SELF_OBJ),
         ],
         'k':
         [
             define('20[TO_STRING]("21")'),
-            defineCharDefault('k')
+            defineCharDefault('k'),
         ],
         'l': '"false"[2]',
         'm':
         [
             defineFHCharAt('Number', 11),
-            define('(RP_6_SO + Function())[20]')
+            define('(RP_6_SO + Function())[20]'),
         ],
         'n': '"undefined"[1]',
         'o':
         [
             defineFHCharAt('ANY_FUNCTION', 6),
-            define('(ARRAY_ITERATOR + [])[1]', ENTRIES_OBJ)
+            define('(ARRAY_ITERATOR + [])[1]', ENTRIES_OBJ),
         ],
         'p':
         [
             define('211[TO_STRING]("31")[1]'),
-            define('(RP_3_NO + btoa(undefined))[10]', ATOB)
+            define('(RP_3_NO + btoa(undefined))[10]', ATOB),
         ],
         'q':
         [
@@ -1030,7 +1030,7 @@ var createParseIntArgDefault;
             define('"".fontcolor(0 + "".fontcolor())[30]', ESC_HTML_ALL),
             define('"".fontcolor("0false\\"")[20]', ESC_HTML_QUOT),
             define('"".fontcolor(true + "".fontcolor())[30]', ESC_HTML_QUOT_ONLY),
-            defineCharDefault('q')
+            defineCharDefault('q'),
         ],
         'r': '"true"[1]',
         's': '"false"[3]',
@@ -1038,7 +1038,7 @@ var createParseIntArgDefault;
         'u': '"undefined"[0]',
         'v':
         [
-            defineFBCharAt(19)
+            defineFBCharAt(19),
         ],
         'w':
         [
@@ -1046,115 +1046,115 @@ var createParseIntArgDefault;
             define('(self + [])[SUBSTR]("-2")[0]', ANY_WINDOW),
             define('atob("undefined0")[1]', ATOB),
             define('(RP_4_N + self)[20]', DOMWINDOW),
-            define('(self + [])[13]', WINDOW)
+            define('(self + [])[13]', WINDOW),
         ],
         'x':
         [
             define('101[TO_STRING]("34")[1]'),
-            define('btoa("falsefalse")[10]', ATOB)
+            define('btoa("falsefalse")[10]', ATOB),
         ],
         'y': '(RP_3_NO + [Infinity])[10]',
         'z':
         [
             define('35[TO_STRING]("36")'),
-            define('btoa("falsefalse")[11]', ATOB)
+            define('btoa("falsefalse")[11]', ATOB),
         ],
         '{':
         [
             defineFHCharAt('FILTER', 18),
-            defineFHCharAt('FILL', 16, FILL)
+            defineFHCharAt('FILL', 16, FILL),
         ],
         // '|':    ,
         '}':
         [
-            defineFBCharAt(28)
+            defineFBCharAt(28),
         ],
         // '~':    ,
         
         '\x8a':
         [
-            define('(RP_4_N + atob("NaNundefined"))[10]', ATOB)
+            define('(RP_4_N + atob("NaNundefined"))[10]', ATOB),
         ],
         '\x8d':
         [
-            define('atob("0NaN")[2]', ATOB)
+            define('atob("0NaN")[2]', ATOB),
         ],
         '\x96':
         [
-            define('atob("00false")[3]', ATOB)
+            define('atob("00false")[3]', ATOB),
         ],
         '\x9e':
         [
-            define('atob(true)[2]', ATOB)
+            define('atob(true)[2]', ATOB),
         ],
         '£':
         [
-            define('atob(NaN)[1]', ATOB)
+            define('atob(NaN)[1]', ATOB),
         ],
         '¥':
         [
-            define('atob("0false")[2]', ATOB)
+            define('atob("0false")[2]', ATOB),
         ],
         '§':
         [
-            define('atob("00undefined")[2]', ATOB)
+            define('atob("00undefined")[2]', ATOB),
         ],
         '©':
         [
-            define('atob("falsefalse")[1]', ATOB)
+            define('atob("falsefalse")[1]', ATOB),
         ],
         '±':
         [
-            define('atob("0false")[3]', ATOB)
+            define('atob("0false")[3]', ATOB),
         ],
         '¶':
         [
-            define('atob(true)[0]', ATOB)
+            define('atob(true)[0]', ATOB),
         ],
         'º':
         [
-            define('atob("undefined0")[0]', ATOB)
+            define('atob("undefined0")[0]', ATOB),
         ],
         '»':
         [
-            define('atob(true)[1]', ATOB)
+            define('atob(true)[1]', ATOB),
         ],
         'Ç':
         [
-            define('atob("falsefalsefalse")[10]', ATOB)
+            define('atob("falsefalsefalse")[10]', ATOB),
         ],
         'Ú':
         [
-            define('atob("0truefalse")[1]', ATOB)
+            define('atob("0truefalse")[1]', ATOB),
         ],
         'Ý':
         [
-            define('atob("0undefined")[2]', ATOB)
+            define('atob("0undefined")[2]', ATOB),
         ],
         'â':
         [
-            define('atob("falsefalseundefined")[11]', ATOB)
+            define('atob("falsefalseundefined")[11]', ATOB),
         ],
         'é':
         [
-            define('atob("0undefined")[1]', ATOB)
+            define('atob("0undefined")[1]', ATOB),
         ],
         'î':
         [
-            define('atob("0truefalse")[2]', ATOB)
+            define('atob("0truefalse")[2]', ATOB),
         ],
         'ö':
         [
-            define('atob("0false")[1]', ATOB)
+            define('atob("0false")[1]', ATOB),
         ],
         'ø':
         [
-            define('atob("undefinedundefined")[10]', ATOB)
+            define('atob("undefinedundefined")[10]', ATOB),
         ],
         '∞':
         [
             define('Infinity.toLocaleString()', LOCALE_INFINITY),
-            defineCharDefault('∞')
+            defineCharDefault('∞'),
         ]
     });
     
@@ -1196,71 +1196,71 @@ var createParseIntArgDefault;
         
         Array:
         [
-            define('[].constructor')
+            define('[].constructor'),
         ],
         Audio:
         [
-            define('Function("return Audio")()', HTMLAUDIOELEMENT)
+            define('Function("return Audio")()', HTMLAUDIOELEMENT),
         ],
         Boolean:
         [
-            define('false.constructor')
+            define('false.constructor'),
         ],
         Date:
         [
-            define('Function("return Date")()')
+            define('Function("return Date")()'),
         ],
         Function:
         [
-            define('ANY_FUNCTION.constructor')
+            define('ANY_FUNCTION.constructor'),
         ],
         Node:
         [
-            define('Function("return Node")()', NODECONSTRUCTOR)
+            define('Function("return Node")()', NODECONSTRUCTOR),
         ],
         Number:
         [
-            define('0..constructor')
+            define('0..constructor'),
         ],
         Object:
         [
-            define('PLAIN_OBJECT.constructor')
+            define('PLAIN_OBJECT.constructor'),
         ],
         RegExp:
         [
-            define('Function("return/false/")().constructor')
+            define('Function("return/false/")().constructor'),
         ],
         String:
         [
-            define('"".constructor')
+            define('"".constructor'),
         ],
         atob:
         [
-            define('Function("return atob")()', ATOB)
+            define('Function("return atob")()', ATOB),
         ],
         btoa:
         [
-            define('Function("return btoa")()', ATOB)
+            define('Function("return btoa")()', ATOB),
         ],
         document:
         [
-            define({ expr: 'Function("return document")()', optimize: true }, ANY_DOCUMENT)
+            define({ expr: 'Function("return document")()', optimize: true }, ANY_DOCUMENT),
         ],
         escape:
         [
-            define({ expr: 'Function("return escape")()', optimize: true })
+            define({ expr: 'Function("return escape")()', optimize: true }),
         ],
         self:
         [
-            define('Function("return self")()', SELF_OBJ)
+            define('Function("return self")()', SELF_OBJ),
         ],
         unescape:
         [
-            define({ expr: 'Function("return unescape")()', optimize: true })
+            define({ expr: 'Function("return unescape")()', optimize: true }),
         ],
         uneval:
         [
-            define('Function("return uneval")()', UNEVAL)
+            define('Function("return uneval")()', UNEVAL),
         ],
         
         // Custom definitions
@@ -1268,43 +1268,43 @@ var createParseIntArgDefault;
         ANY_FUNCTION:
         [
             define('FILTER'),
-            define('FILL', FILL)
+            define('FILL', FILL),
         ],
         ARRAY_ITERATOR:
         [
-            define('[].entries()', ENTRIES_OBJ)
+            define('[].entries()', ENTRIES_OBJ),
         ],
         FILL:
         [
-            define('[].fill', FILL)
+            define('[].fill', FILL),
         ],
         FILTER:
         [
-            define('[].filter')
+            define('[].filter'),
         ],
         FROM_CHAR_CODE:
         [
             define({ expr: '"fromCharCode"', optimize: true }),
-            define({ expr: '"fromCodePoint"', optimize: true }, FROM_CODE_POINT)
+            define({ expr: '"fromCodePoint"', optimize: true }, FROM_CODE_POINT),
         ],
         PLAIN_OBJECT:
         [
             define('Function("return{}")()'),
             define('ARRAY_ITERATOR', ENTRIES_PLAIN),
-            define('Function("return Intl")()', INTL)
+            define('Function("return Intl")()', INTL),
         ],
         SUBSTR:
         [
             define('"slice"'),
-            define('"substr"')
+            define('"substr"'),
         ],
         TO_STRING:
         [
-            define('"toString"')
+            define('"toString"'),
         ],
         TO_UPPER_CASE:
         [
-            define({ expr: '"toUpperCase"', optimize: true })
+            define({ expr: '"toUpperCase"', optimize: true }),
         ],
         
         // Function body extra padding blocks: prepended to a function to align the function's body
@@ -1315,11 +1315,11 @@ var createParseIntArgDefault;
         FBEP_4_S:
         [
             define('[[true][+(RP_3_NO + FILTER)[30]]]'),
-            define('[[true][+(RP_5_N + FILL)[30]]]', FILL)
+            define('[[true][+(RP_5_N + FILL)[30]]]', FILL),
         ],
         FBEP_9_U:
         [
-            define('[false][+(ANY_FUNCTION + [])[20]]')
+            define('[false][+(ANY_FUNCTION + [])[20]]'),
         ],
         
         // Function body padding blocks: prepended to a function to align the function's body at the
@@ -1353,11 +1353,11 @@ var createParseIntArgDefault;
         
         FH_SHIFT_1:
         [
-            define('[+IS_IE_SRC_N]')
+            define('[+IS_IE_SRC_N]'),
         ],
         FH_SHIFT_3:
         [
-            define('[2 + IS_IE_SRC_N]')
+            define('[2 + IS_IE_SRC_N]'),
         ],
         
         // Function header padding blocks: prepended to a function to align the function's header at
@@ -1368,16 +1368,16 @@ var createParseIntArgDefault;
         FHP_3_NO:
         [
             define('+(1 + [+(ANY_FUNCTION + [])[0]])'),
-            define('+(++(ANY_FUNCTION + [])[0] + [0])', INCR_CHAR)
+            define('+(++(ANY_FUNCTION + [])[0] + [0])', INCR_CHAR),
         ],
         FHP_5_N:
         [
-            define('IS_IE_SRC_N')
+            define('IS_IE_SRC_N'),
         ],
         FHP_8_S:
         [
             define('[FHP_3_NO] + RP_5_N'),
-            define('FHP_5_N + [RP_3_NO]', INCR_CHAR)
+            define('FHP_5_N + [RP_3_NO]', INCR_CHAR),
         ],
         
         // Regular padding blocks.
@@ -1408,7 +1408,7 @@ var createParseIntArgDefault;
         IS_IE_SRC_N:
         [
             define('!!(+(ANY_FUNCTION + [])[0] + true)'),
-            define('!!++(ANY_FUNCTION + [])[0]', INCR_CHAR)
+            define('!!++(ANY_FUNCTION + [])[0]', INCR_CHAR),
         ],
     });
     
@@ -1478,7 +1478,7 @@ var createParseIntArgDefault;
         define(createParseIntArgByReduceArrow, ARROW, ENTRIES_OBJ),
         define(createParseIntArgByReduce, FILL, FF_SRC),
         define(createParseIntArgByReduce, FILL, IE_SRC),
-        define(createParseIntArgByReduce, FILL, V8_SRC)
+        define(createParseIntArgByReduce, FILL, V8_SRC),
     ];
     
     FROM_CHAR_CODE =
@@ -1487,13 +1487,13 @@ var createParseIntArgDefault;
         define('fromCodePoint', ATOB, FROM_CODE_POINT),
         define('fromCodePoint', BARPROP, FROM_CODE_POINT),
         define('fromCodePoint', CAPITAL_HTML, FROM_CODE_POINT),
-        define('fromCharCode', ATOB, CAPITAL_HTML, ENTRIES_OBJ)
+        define('fromCharCode', ATOB, CAPITAL_HTML, ENTRIES_OBJ),
     ];
     
     FROM_CHAR_CODE_CALLBACK_FORMATTER =
     [
         define(fromCharCodeCallbackFormatterDefault),
-        define(fromCharCodeCallbackFormatterArrow, ARROW)
+        define(fromCharCodeCallbackFormatterArrow, ARROW),
     ];
     
     JSFUCK_INFINITY = '1e1000';
@@ -1507,7 +1507,7 @@ var createParseIntArgDefault;
         define('return(isNaN+false).constructor'),
         define('return String', CAPITAL_HTML, ENTRIES_OBJ),
         define('return(isNaN+false).constructor', FILL, IE_SRC),
-        define('return(isNaN+false).constructor', FILL, NO_IE_SRC)
+        define('return(isNaN+false).constructor', FILL, NO_IE_SRC),
     ];
     
     SIMPLE = new Empty();
