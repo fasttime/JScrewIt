@@ -761,6 +761,17 @@ var validMaskFromArrayOrStringOrFeature;
             ),
             attributes: { 'web-worker': 'safari-bug-21820506' }
         },
+        STATUS:
+        {
+            description:
+                'Existence of the global string status.',
+            check: function ()
+            {
+                var available = typeof status === 'string';
+                return available;
+            },
+            attributes: { 'web-worker': 'web-worker-restriction' }
+        },
         UNDEFINED:
         {
             description:
@@ -821,7 +832,7 @@ var validMaskFromArrayOrStringOrFeature;
             description:
                 'Features available in all browsers.\n' +
                 'No support for Node.js.',
-            includes: ['ANY_DOCUMENT', 'ANY_WINDOW', 'HISTORY', 'INCR_CHAR'],
+            includes: ['ANY_DOCUMENT', 'ANY_WINDOW', 'HISTORY', 'INCR_CHAR', 'STATUS'],
             attributes:
             {
                 'char-increment-restriction': null,
@@ -852,6 +863,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NO_IE_SRC',
                 'NO_OLD_SAFARI_LF',
+                'STATUS',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -872,6 +884,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
+                'STATUS',
                 'V8_SRC'
             ]
         },
@@ -890,6 +903,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
+                'STATUS',
                 'UNDEFINED',
                 'V8_SRC'
             ]
@@ -912,6 +926,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
+                'STATUS',
                 'UNDEFINED',
                 'V8_SRC',
                 'WINDOW'
@@ -941,6 +956,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',
+                'STATUS',
                 'UNDEFINED',
                 'V8_SRC',
                 'WINDOW'
@@ -970,6 +986,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_LF',
+                'STATUS',
                 'UNDEFINED',
                 'V8_SRC',
                 'WINDOW'
@@ -1001,6 +1018,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',
+                'STATUS',
                 'UNDEFINED',
                 'UNEVAL',
                 'WINDOW'
@@ -1020,6 +1038,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'IE_SRC',
                 'INCR_CHAR',
                 'NO_OLD_SAFARI_LF',
+                'STATUS',
                 'UNDEFINED',
                 'WINDOW'
             ]
@@ -1039,6 +1058,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'IE_SRC',
                 'INCR_CHAR',
                 'NO_OLD_SAFARI_LF',
+                'STATUS',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -1061,6 +1081,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'INTL',
                 'NO_OLD_SAFARI_LF',
+                'STATUS',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -1084,6 +1105,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'INTL',
                 'LOCALE_INFINITY',
                 'NO_OLD_SAFARI_LF',
+                'STATUS',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -1181,6 +1203,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'NAME',
                 'NODECONSTRUCTOR',
+                'STATUS',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -1212,6 +1235,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'NAME',
                 'NODECONSTRUCTOR',
+                'STATUS',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -1246,6 +1270,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'NODECONSTRUCTOR',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',
+                'STATUS',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -1279,6 +1304,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',
+                'STATUS',
                 'UNDEFINED',
                 'WINDOW'
             ],
