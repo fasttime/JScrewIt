@@ -35,7 +35,8 @@ var object_getOwnPropertyDescriptor;
         function (target, source)
         {
             var descriptors = { };
-            object_keys(source).forEach(
+            var names = object_keys(source);
+            names.forEach(
                 function (name)
                 {
                     var descriptor = object_getOwnPropertyDescriptor(source, name);

@@ -1,5 +1,6 @@
 /*
 global
+APPEND_LENGTH_OF_EMPTY,
 LEVEL_NUMERIC,
 LEVEL_OBJECT,
 LEVEL_STRING,
@@ -274,7 +275,7 @@ var optimizeSolutions;
             }
             
             var bridgeUsed;
-            var length = -3;
+            var length = -APPEND_LENGTH_OF_EMPTY;
             var maxSolutionCount = math_pow(2, groupThreshold - 1);
             var solutions = [];
             

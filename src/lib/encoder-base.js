@@ -21,6 +21,8 @@ assignNoEnum,
 createConstructor,
 createSolution,
 expressParse,
+featureFromMask,
+getComplexOptimizer,
 getToStringOptimizer,
 json_stringify,
 maskIncludes,
@@ -31,6 +33,7 @@ object_keys,
 
 var APPEND_LENGTH_OF_DIGITS;
 var APPEND_LENGTH_OF_DIGIT_0;
+var APPEND_LENGTH_OF_EMPTY;
 var APPEND_LENGTH_OF_PLUS_SIGN;
 var APPEND_LENGTH_OF_SMALL_E;
 
@@ -208,6 +211,7 @@ var resolveSimple;
     var quoteString = json_stringify;
     
     APPEND_LENGTH_OF_DIGIT_0    = 6;
+    APPEND_LENGTH_OF_EMPTY      = 3; // Append length of the empty array
     APPEND_LENGTH_OF_PLUS_SIGN  = 71;
     APPEND_LENGTH_OF_SMALL_E    = 26;
     
@@ -218,7 +222,6 @@ var resolveSimple;
         {
             this.mask           = mask;
             this.charCache      = new CharCache();
-            this.complexCache   = new Empty();
             this.constCache     = new ConstCache();
             this.optimizers     = new Empty();
             this.stack          = [];
@@ -236,7 +239,12 @@ var resolveSimple;
                 if (~stackIndex)
                 {
                     var chain = stack.slice(stackIndex);
-                    throw new SyntaxError('Circular reference detected: ' + chain.join(' < '));
+                    var feature = featureFromMask(this.mask);
+                    var message =
+                        'Circular reference detected: ' + chain.join(' < ') + ' – ' + feature;
+                    var error = new SyntaxError(message);
+                    assignNoEnum(error, { chain: chain, feature: feature });
+                    throw error;
                 }
                 resolver.call(this);
             }
@@ -244,12 +252,6 @@ var resolveSimple;
             {
                 stack.pop();
             }
-        },
-        
-        complexFilterCallback: function (complex)
-        {
-            var result = this.complexCache[complex] !== null;
-            return result;
         },
         
         constantDefinitions: CONSTANTS,
@@ -281,12 +283,6 @@ var resolveSimple;
             }
             var solution = createSolution(replacement, LEVEL_STRING, false);
             return solution;
-        },
-        
-        createStringTokenRegExp: function ()
-        {
-            var regExp = RegExp(this.strTokenPattern, 'g');
-            return regExp;
         },
         
         defaultResolveCharacter: function (char)
@@ -384,24 +380,6 @@ var resolveSimple;
         // than the grouping threshold setting.
         maxGroupThreshold: 1800,
         
-        optimizeComplexCache: function (str)
-        {
-            if (str.length >= 100)
-            {
-                for (var complex in COMPLEX)
-                {
-                    if (!(complex in this.complexCache))
-                    {
-                        var entries = COMPLEX[complex];
-                        var definition = this.findDefinition(entries);
-                        if (!definition)
-                            this.complexCache[complex] = null;
-                    }
-                }
-                this.optimizeComplexCache = noop;
-            }
-        },
-        
         replaceCharByAtob: function (charCode)
         {
             var param1 =
@@ -459,7 +437,7 @@ var resolveSimple;
             var expr = 'Function("return\\"\\\\' + escCode + '\\"")()';
             if (appendIndexer)
                 expr += '[0]';
-            var replacement = this.replaceExpr(expr, optimize);
+            var replacement = this.replaceExpr(expr, { toStringOpt: optimize });
             return replacement;
         },
         
@@ -483,7 +461,7 @@ var resolveSimple;
             var expr = 'unescape("%' + hexCode + '")';
             if (appendIndexer)
                 expr += '[0]';
-            var replacement = this.replaceExpr(expr, optimize);
+            var replacement = this.replaceExpr(expr, { toStringOpt: optimize });
             return replacement;
         },
         
@@ -671,24 +649,50 @@ var resolveSimple;
         
         replaceString: function (str, optimize, bond, forceString, maxLength)
         {
-            var optimizeToString;
-            if (typeof optimize === 'object')
-                optimizeToString = !!optimize.toStringOpt;
-            else
-                optimizeToString = !!optimize;
-            var optimizer =
-                optimizeToString &&
-                (
-                    this.optimizers.toString ||
-                    (this.optimizers.toString = getToStringOptimizer(this))
-                );
-            var optimizerList = optimizer ? [optimizer] : [];
+            var optimizerList = [];
+            if (optimize)
+            {
+                var optimizeComplex;
+                var optimizeToString;
+                if (typeof optimize === 'object')
+                {
+                    optimizeComplex     = !!optimize.complexOpt;
+                    optimizeToString    = !!optimize.toStringOpt;
+                }
+                else
+                    optimizeComplex = optimizeToString = true;
+                var optimizers = this.optimizers;
+                var optimizer;
+                if (optimizeComplex)
+                {
+                    var complexOptimizers = optimizers.complex;
+                    if (!complexOptimizers)
+                        complexOptimizers = optimizers.complex = new Empty();
+                    for (var complex in COMPLEX)
+                    {
+                        var entry = COMPLEX[complex];
+                        if (this.hasFeatures(entry.mask) && str.indexOf(complex) >= 0)
+                        {
+                            optimizer =
+                                complexOptimizers[complex] ||
+                                (
+                                    complexOptimizers[complex] =
+                                    getComplexOptimizer(this, complex, entry.definition)
+                                );
+                            optimizerList.push(optimizer);
+                        }
+                    }
+                }
+                if (optimizeToString)
+                {
+                    optimizer =
+                        optimizers.toString || (optimizers.toString = getToStringOptimizer(this));
+                    optimizerList.push(optimizer);
+                }
+            }
             var buffer = new ScrewBuffer(bond, forceString, this.maxGroupThreshold, optimizerList);
             var match;
-            this.optimizeComplexCache(str);
-            if (!this.strTokenPattern)
-                this.updateStringTokenPattern();
-            var regExp = this.createStringTokenRegExp();
+            var regExp = RegExp(STR_TOKEN_PATTERN, 'g');
             while (match = regExp.exec(str))
             {
                 if (buffer.length > maxLength)
@@ -697,20 +701,10 @@ var resolveSimple;
                 var solution;
                 if (token = match[2])
                     solution = this.resolveCharacter(token);
-                else if (token = match[1])
-                    solution = SIMPLE[token];
                 else
                 {
-                    token = match[0];
-                    solution = this.resolveComplex(token);
-                    if (!solution)
-                    {
-                        var lastIndex = regExp.lastIndex - token.length;
-                        this.updateStringTokenPattern();
-                        regExp = this.createStringTokenRegExp();
-                        regExp.lastIndex = lastIndex;
-                        continue;
-                    }
+                    token = match[1];
+                    solution = SIMPLE[token];
                 }
                 if (!buffer.append(solution))
                     return;
@@ -779,32 +773,6 @@ var resolveSimple;
             return solution;
         },
         
-        resolveComplex: function (complex)
-        {
-            var solution = this.complexCache[complex];
-            if (solution === undefined)
-            {
-                this.callResolver(
-                    quoteString(complex),
-                    function ()
-                    {
-                        var entries = COMPLEX[complex];
-                        var definition = this.findDefinition(entries);
-                        if (definition)
-                        {
-                            solution = this.resolve(definition);
-                            if (solution.level == null)
-                                solution.level = LEVEL_STRING;
-                        }
-                        else
-                            solution = null;
-                        this.complexCache[complex] = solution;
-                    }
-                );
-            }
-            return solution;
-        },
-        
         resolveConstant: function (constant)
         {
             var solution = this.constCache[constant];
@@ -865,23 +833,6 @@ var resolveSimple;
                 message += ' in the definition of ' + stack[stackLength - 1];
             throw new SyntaxError(message);
         },
-        
-        updateStringTokenPattern: function ()
-        {
-            function mapCallback(complex)
-            {
-                var str = complex + '|';
-                return str;
-            }
-            
-            var strTokenPattern =
-                '(' + object_keys(SIMPLE).join('|') + ')|' +
-                object_keys(COMPLEX)
-                .filter(this.complexFilterCallback, this)
-                .map(mapCallback).join('') +
-                '([\\s\\S])';
-            this.strTokenPattern = strTokenPattern;
-        },
     };
     
     assignNoEnum(Encoder.prototype, encoderProtoSource);
@@ -906,6 +857,8 @@ var resolveSimple;
     );
     
     var STATIC_ENCODER = new Encoder([0, 0]);
+    
+    var STR_TOKEN_PATTERN = '(' + object_keys(SIMPLE).join('|') + ')|([\\s\\S])';
     
     replaceMultiDigitNumber =
         function (number)

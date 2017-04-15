@@ -30,6 +30,7 @@ createSolution,
 define,
 esToString,
 featureFromMask,
+getComplexOptimizer,
 getToStringOptimizer,
 getValidFeatureMask,
 isMaskCompatible,
@@ -52,6 +53,24 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
 {
     (function ()
     {
+        function clone(obj)
+        {
+            if (typeof obj === 'object')
+            {
+                var target = { };
+                var names = object_keys(obj);
+                names.forEach(
+                    function (name)
+                    {
+                        var value = clone(obj[name]);
+                        target[name] = value;
+                    }
+                );
+                return target;
+            }
+            return obj;
+        }
+        
         function cloneEntries(inputEntries)
         {
             var outputEntries;
@@ -66,7 +85,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                         inputEntries.map(
                             function (entry)
                             {
-                                entry = createEntryClone(entry.definition, entry.mask);
+                                entry = cloneEntry(entry);
                                 return entry;
                             }
                         );
@@ -74,6 +93,12 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                 outputEntries.singleton = singleton;
             }
             return outputEntries;
+        }
+        
+        function cloneEntry(entry)
+        {
+            entry = createEntryClone(entry.definition, entry.mask);
+            return entry;
         }
         
         function createEncoder(features)
@@ -86,8 +111,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         
         function createEntryClone(definition, mask)
         {
-            if (typeof definition === 'object')
-                definition = object_freeze(definition);
+            definition = clone(definition);
             mask = mask.slice();
             var entry = { definition: definition, mask: mask };
             return entry;
@@ -127,9 +151,9 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             return CODERS;
         }
         
-        function getComplexEntries(complex)
+        function getComplexEntry(complex)
         {
-            var entries = cloneEntries(COMPLEX[complex]);
+            var entries = cloneEntry(COMPLEX[complex]);
             return entries;
         }
         
@@ -187,7 +211,8 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                     defineConstant:         defineConstant,
                     getCharacterEntries:    getCharacterEntries,
                     getCoders:              getCoders,
-                    getComplexEntries:      getComplexEntries,
+                    getComplexEntry:        getComplexEntry,
+                    getComplexOptimizer:    getComplexOptimizer,
                     getComplexNames:        getComplexNames,
                     getConstantEntries:     getConstantEntries,
                     getEntries:             getEntries,

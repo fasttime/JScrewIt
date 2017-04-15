@@ -401,7 +401,7 @@ var wrapWithEval;
                         '+' +
                         charCodeArrayStr +
                         '+' +
-                        this.replaceString(')') +
+                        this.resolveCharacter(')') +
                         ')()';
                 }
             }

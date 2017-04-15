@@ -161,44 +161,27 @@ uneval,
             'Complex definitions of',
             function ()
             {
-                JScrewIt.debug.getComplexNames().forEach(
-                    function (complex)
-                    {
-                        function testEntry(entry, index)
+                function test(complex)
+                {
+                    var desc = JSON.stringify(complex);
+                    var entry = JScrewIt.debug.getComplexEntry(complex);
+                    var featureObj = getEntryFeature(entry);
+                    emuIt(
+                        desc,
+                        featureObj,
+                        function (emuFeatures)
                         {
+                            var encoder = getPoolEncoder(featureObj);
                             var definition = entry.definition;
-                            if (definition)
-                            {
-                                var featureObj = getEntryFeature(entry);
-                                emuIt(
-                                    '(definition ' + index + ')',
-                                    featureObj,
-                                    function (emuFeatures)
-                                    {
-                                        var encoder = getPoolEncoder(featureObj);
-                                        var solution = encoder.resolveComplex(complex);
-                                        verifySolution(solution, complex, emuFeatures);
-                                        var expectedLevel = definition.level;
-                                        if (expectedLevel == null)
-                                            expectedLevel = LEVEL_STRING;
-                                        expect(solution.level)
-                                            .toBe(expectedLevel, 'Solution level mismatch');
-                                    }
-                                );
-                            }
+                            var solution = encoder.resolve(definition);
+                            expect(solution.level)
+                                .toBe(definition.level, 'Solution level mismatch');
+                            verifySolution(solution, complex, emuFeatures);
                         }
-                        
-                        var desc = JSON.stringify(complex);
-                        describe(
-                            desc,
-                            function ()
-                            {
-                                var entries = JScrewIt.debug.getComplexEntries(complex);
-                                entries.forEach(testEntry);
-                            }
-                        );
-                    }
-                );
+                    );
+                }
+                
+                JScrewIt.debug.getComplexNames().forEach(test);
             }
         );
         describe(
@@ -1262,7 +1245,7 @@ uneval,
                             function fn()
                             {
                                 it(
-                                    'with no bond and no string forcing',
+                                    'without bonding or string forcing',
                                     function ()
                                     {
                                         var output =
@@ -1272,7 +1255,7 @@ uneval,
                                     }
                                 );
                                 it(
-                                    'with bond and no string forcing',
+                                    'with bonding',
                                     function ()
                                     {
                                         var output = encoder.replaceString(expr, true, true, false);
@@ -1281,7 +1264,7 @@ uneval,
                                     }
                                 );
                                 it(
-                                    'with no bond and string forcing',
+                                    'with string forcing',
                                     function ()
                                     {
                                         var output = encoder.replaceString(expr, true, false, true);
@@ -1290,7 +1273,7 @@ uneval,
                                     }
                                 );
                                 it(
-                                    'with bond and string forcing',
+                                    'with bonding and string forcing',
                                     function ()
                                     {
                                         var output = encoder.replaceString(expr, true, true, true);
@@ -1400,51 +1383,6 @@ uneval,
                         expect(encoder.replaceString('123')).toBeUndefined();
                     }
                 );
-                
-                describe(
-                    'replaces complex input for',
-                    function ()
-                    {
-                        function findFirstDefinedEntry(entries)
-                        {
-                            var entry;
-                            while (entry = entries.shift())
-                            {
-                                if (entry.definition)
-                                    return entry;
-                            }
-                        }
-                        
-                        function test(complex, features)
-                        {
-                            it(
-                                complex,
-                                function ()
-                                {
-                                    var encoder = JScrewIt.debug.createEncoder(features);
-                                    var expectedOutput = encoder.resolveComplex(complex) + '';
-                                    var actualOutput = encoder.replaceString(complex);
-                                    expect(actualOutput).toBe(
-                                        expectedOutput,
-                                        'expected ' + expectedOutput.length + ' chars but found ' +
-                                        actualOutput.length
-                                    );
-                                }
-                            );
-                        }
-                        
-                        JScrewIt.debug.getComplexNames().forEach(
-                            function (complexName)
-                            {
-                                var entries = JScrewIt.debug.getComplexEntries(complexName);
-                                var firstDefinedEntry = findFirstDefinedEntry(entries);
-                                var mask = firstDefinedEntry.mask;
-                                var featureObj = JScrewIt.debug.createFeatureFromMask(mask);
-                                test(complexName, featureObj);
-                            }
-                        );
-                    }
-                );
             }
         );
         describe(
@@ -1477,7 +1415,7 @@ uneval,
                     {
                         expect(debugReplacer('B')).toThrowStrictly(
                             SyntaxError,
-                            'Circular reference detected: B < C < B'
+                            'Circular reference detected: B < C < B – [Feature {}]'
                         );
                     }
                 );
@@ -2015,8 +1953,6 @@ uneval,
         var actual = emuEval(emuFeatures || [], output) + '';
         expect(actual).toBe(expected);
     }
-    
-    var LEVEL_STRING = 1;
     
     var Feature;
     var encoderCache = Object.create(null);

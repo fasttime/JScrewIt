@@ -177,7 +177,7 @@ var getToStringOptimizer;
     getToStringOptimizer =
         function (encoder)
         {
-            var toStringReplacement = encoder.replaceString('toString');
+            var toStringReplacement = encoder.resolveConstant('TO_STRING') + '';
             var optimizer = createOptimizer(toStringReplacement);
             return optimizer;
         };

@@ -39,7 +39,7 @@
         expect(buffer + '').toBe(expectedStr);
     }
     
-    var EMPTY_APPEND_LENGTH = -3;
+    var INITIAL_APPEND_LENGTH = -3;
     
     var LEVEL_NUMERIC   = -1;
     var LEVEL_OBJECT    = 0;
@@ -72,7 +72,7 @@
                             function ()
                             {
                                 var buffer = createScrewBuffer(bond, forceString, 10, []);
-                                verifyBuffer(buffer, expectedStr0, EMPTY_APPEND_LENGTH);
+                                verifyBuffer(buffer, expectedStr0, INITIAL_APPEND_LENGTH);
                             }
                         );
                         it(
@@ -80,7 +80,7 @@
                             function ()
                             {
                                 var buffer = createScrewBuffer(bond, forceString, 10, []);
-                                var expectedLength = EMPTY_APPEND_LENGTH + solutionA.appendLength;
+                                var expectedLength = INITIAL_APPEND_LENGTH + solutionA.appendLength;
                                 expect(buffer.append(solutionA)).toBe(true);
                                 verifyBuffer(buffer, expectedStr1, expectedLength);
                             }
@@ -91,7 +91,7 @@
                             {
                                 var buffer = createScrewBuffer(bond, forceString, 10, []);
                                 expect(buffer.append(solution0)).toBe(true);
-                                var expectedLength = EMPTY_APPEND_LENGTH + solution0.appendLength;
+                                var expectedLength = INITIAL_APPEND_LENGTH + solution0.appendLength;
                                 verifyBuffer(buffer, expectedStr2, expectedLength);
                             }
                         );
@@ -103,7 +103,7 @@
                                     createScrewBuffer(bond, forceString, 10, [strTestOptimizer]);
                                 expect(buffer.append(solutionA)).toBe(true);
                                 expect(buffer.append(solutionA)).toBe(true);
-                                verifyBuffer(buffer, expectedStr3, EMPTY_APPEND_LENGTH);
+                                verifyBuffer(buffer, expectedStr3, INITIAL_APPEND_LENGTH);
                             }
                         );
                         it(
@@ -114,7 +114,7 @@
                                     createScrewBuffer(bond, forceString, 10, [objTestOptimizer]);
                                 expect(buffer.append(solutionA)).toBe(true);
                                 expect(buffer.append(solutionA)).toBe(true);
-                                verifyBuffer(buffer, expectedStr4, EMPTY_APPEND_LENGTH);
+                                verifyBuffer(buffer, expectedStr4, INITIAL_APPEND_LENGTH);
                             }
                         );
                     }
@@ -132,7 +132,7 @@
             var objTestOptimizer = createTestOptimizer(createSolution('{}', LEVEL_OBJECT));
                         
             testShortEncodings(
-                'with no bond and no string forcing',
+                'without bonding or string forcing',
                 false,
                 false,
                 '[]',
@@ -142,7 +142,7 @@
                 '{}'
             );
             testShortEncodings(
-                'with no bond and string forcing',
+                'with string forcing',
                 false,
                 true,
                 '[]+[]',
@@ -152,7 +152,7 @@
                 '{}+[]'
             );
             testShortEncodings(
-                'with bond and no string forcing',
+                'with bonding',
                 true,
                 false,
                 '[]',
@@ -162,7 +162,7 @@
                 '{}'
             );
             testShortEncodings(
-                'with bond and string forcing',
+                'with bonding and string forcing',
                 true,
                 true,
                 '([]+[])',
@@ -175,7 +175,7 @@
             (function ()
             {
                 var buffer = JScrewIt.debug.createScrewBuffer(false, true, 4, []);
-                var expectedLength = EMPTY_APPEND_LENGTH;
+                var expectedLength = INITIAL_APPEND_LENGTH;
                 
                 it(
                     'encodes a string in a single group',
@@ -251,7 +251,7 @@
                     buffer.append(solution0);
                     buffer.append(solutionUndefined);
                     var expectedLength =
-                        EMPTY_APPEND_LENGTH + solution0.appendLength +
+                        INITIAL_APPEND_LENGTH + solution0.appendLength +
                         solutionUndefined.appendLength;
                     verifyBuffer(buffer, '[+[]]+[][[]]', expectedLength);
                 }
@@ -263,7 +263,7 @@
                     var buffer = createScrewBuffer(false, false, 4, []);
                     buffer.append(solutionUndefined);
                     buffer.append(solutionUndefined);
-                    var expectedLength = EMPTY_APPEND_LENGTH + 2 * solutionUndefined.appendLength;
+                    var expectedLength = INITIAL_APPEND_LENGTH + 2 * solutionUndefined.appendLength;
                     verifyBuffer(buffer, '[][[]]+[]+[][[]]', expectedLength);
                 }
             );
@@ -278,7 +278,7 @@
                             createSolution(String.fromCharCode(65 + index), LEVEL_OBJECT);
                         buffer.append(solution);
                     }
-                    var expectedLength = EMPTY_APPEND_LENGTH + 26 * 2;
+                    var expectedLength = INITIAL_APPEND_LENGTH + 26 * 2;
                     verifyBuffer(
                         buffer,
                         'A+B+C+D+E+(F+G+H+I+J)+(K+L+M+N+(O+P+Q+R)+(S+T+U+V+(W+X+Y+Z)))',
@@ -293,7 +293,7 @@
                     var buffer = createScrewBuffer(false, true, 4, []);
                     for (var index = 0; index < 5; ++index)
                         buffer.append(solutionComma);
-                    var expectedLength = EMPTY_APPEND_LENGTH + 5 * solutionComma.appendLength;
+                    var expectedLength = INITIAL_APPEND_LENGTH + 5 * solutionComma.appendLength;
                     verifyBuffer(
                         buffer,
                         '[[]].concat([[]]).concat([[]]).concat([[]])+' +
@@ -315,7 +315,7 @@
                     };
                     var buffer = createScrewBuffer(false, false, 10, [optimizer]);
                     buffer.append(solutionA);
-                    expect(buffer.length).toBe(EMPTY_APPEND_LENGTH + solutionA.appendLength);
+                    expect(buffer.length).toBe(INITIAL_APPEND_LENGTH + solutionA.appendLength);
                 }
             );
             describe(

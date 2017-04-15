@@ -706,7 +706,7 @@ var createParseIntArgDefault;
         '+': '(1e100 + [])[2]',
         ',':
         [
-            define('"f,a,l,s,e"[1]'),
+            define('([].slice.call("false") + [])[1]'),
             define(commaDefinition),
         ],
         '-': '(+".0000001" + [])[2]',
@@ -1153,41 +1153,22 @@ var createParseIntArgDefault;
         ],
         '∞':
         [
-            define('Infinity.toLocaleString()', LOCALE_INFINITY),
+            define(
+                { expr: 'Infinity.toLocaleString()', optimize: { complexOpt: true } },
+                LOCALE_INFINITY
+            ),
             defineCharDefault('∞'),
-        ]
+        ],
     });
     
     COMPLEX = noProto
     ({
-        Number:
-        [
-            define({ expr: 'Number.name', optimize: true }, NAME),
-            define(undefined, ENTRIES_OBJ),
-        ],
-        Object:
-        [
-            define({ expr: 'Object.name', optimize: true }, NAME),
-            define(undefined, CAPITAL_HTML),
-            define(undefined, ENTRIES_OBJ),
-        ],
-        RegExp:
-        [
-            define({ expr: 'RegExp.name', optimize: true }, NAME),
-        ],
-        String:
-        [
-            define('String.name', NAME),
-            define(undefined, CAPITAL_HTML, ENTRIES_OBJ),
-        ],
-        'f,a,l,s,e':
-        [
-            define({ expr: '[].slice.call("false")', level: LEVEL_OBJECT }),
-        ],
-        mCh:
-        [
-            define('atob("bUNo")', ATOB, ENTRIES_OBJ),
-        ]
+        Number:         define({ expr: 'Number.name', optimize: { toStringOpt: true } }, NAME),
+        Object:         define({ expr: 'Object.name', optimize: { toStringOpt: true } }, NAME),
+        RegExp:         define({ expr: 'RegExp.name', optimize: { toStringOpt: true } }, NAME),
+        String:         define('String.name', NAME),
+        'f,a,l,s,e':    define({ expr: '[].slice.call("false")', level: LEVEL_OBJECT }),
+        mCh:            define('atob("bUNo")', Feature.ATOB),
     });
     
     CONSTANTS = noProto
@@ -1244,11 +1225,14 @@ var createParseIntArgDefault;
         ],
         document:
         [
-            define({ expr: 'Function("return document")()', optimize: true }, ANY_DOCUMENT),
+            define(
+                { expr: 'Function("return document")()', optimize: { toStringOpt: true } },
+                ANY_DOCUMENT
+            ),
         ],
         escape:
         [
-            define({ expr: 'Function("return escape")()', optimize: true }),
+            define({ expr: 'Function("return escape")()', optimize: { toStringOpt: true } }),
         ],
         self:
         [
@@ -1256,7 +1240,7 @@ var createParseIntArgDefault;
         ],
         unescape:
         [
-            define({ expr: 'Function("return unescape")()', optimize: true }),
+            define({ expr: 'Function("return unescape")()', optimize: { toStringOpt: true } }),
         ],
         uneval:
         [
@@ -1285,7 +1269,7 @@ var createParseIntArgDefault;
         FROM_CHAR_CODE:
         [
             define({ expr: '"fromCharCode"', optimize: true }),
-            define({ expr: '"fromCodePoint"', optimize: true }, FROM_CODE_POINT),
+            define({ expr: '"fromCodePoint"', optimize: { toStringOpt: true } }, FROM_CODE_POINT),
         ],
         PLAIN_OBJECT:
         [
@@ -1300,11 +1284,11 @@ var createParseIntArgDefault;
         ],
         TO_STRING:
         [
-            define('"toString"'),
+            define({ expr: '"toString"', optimize: { complexOpt: true } }),
         ],
         TO_UPPER_CASE:
         [
-            define({ expr: '"toUpperCase"', optimize: true }),
+            define({ expr: '"toUpperCase"', optimize: { toStringOpt: true } }),
         ],
         
         // Function body extra padding blocks: prepended to a function to align the function's body

@@ -26,9 +26,9 @@
             toStringReplacement = '"toString"';
         var encoder =
         {
-            replaceString: function ()
+            resolveConstant: function ()
             {
-                return toStringReplacement;
+                return Object(toStringReplacement);
             }
         };
         var optimizer = JScrewIt.debug.getToStringOptimizer(encoder);
@@ -150,7 +150,7 @@
                         }
                     );
                     it(
-                        'does not optimize an integral cluster',
+                        'does not optimize an integral cluster without bonding',
                         function ()
                         {
                             var optimizer = createOptimizer();
