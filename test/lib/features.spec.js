@@ -328,6 +328,21 @@
                     );
                 }
             );
+            it(
+                '#inspect works as expected',
+                function ()
+                {
+                    var stylize =
+                        function (str, styleType)
+                        {
+                            var result = { str: str, styleType: styleType };
+                            return result;
+                        };
+                    var actual = Feature.DEFAULT.inspect(0, { stylize: stylize });
+                    var expected = { str: '[Feature DEFAULT]', styleType: 'jscrewit-feature' };
+                    expect(actual).toEqual(expected);
+                }
+            );
             describe(
                 '#restrict',
                 function ()

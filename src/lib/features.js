@@ -1582,6 +1582,14 @@ var validMaskFromArrayOrStringOrFeature;
             return included;
         },
         
+        // Called by Node.js to format features for output to the console.
+        inspect: function (recurseTimes, ctx)
+        {
+            var str = this.toString();
+            var result = ctx.stylize(str, 'jscrewit-feature');
+            return result;
+        },
+        
         /**
          * The primary name of this feature object, useful for identification purpose.
          *

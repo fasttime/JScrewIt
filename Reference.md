@@ -32,13 +32,13 @@ in no particular order.</p>
             * [.elementaryNames](#JScrewIt.Feature+elementaryNames) : <code>Array.&lt;string&gt;</code>
             * [.name](#JScrewIt.Feature+name) : <code>string</code> \| <code>undefined</code>
             * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
-            * [.restrict(environment, [referenceFeatureObjs])](#JScrewIt.Feature+restrict) ⇒ <code>[Feature](#JScrewIt.Feature)</code>
+            * [.restrict(environment, [referenceFeatureObjs])](#JScrewIt.Feature+restrict) ⇒ [<code>Feature</code>](#JScrewIt.Feature)
             * [.toString()](#JScrewIt.Feature+toString) ⇒ <code>string</code>
         * _static_
             * [.ALL](#JScrewIt.Feature.ALL) : <code>object</code>
             * [.areCompatible([features])](#JScrewIt.Feature.areCompatible) ⇒ <code>boolean</code>
             * [.areEqual([...feature])](#JScrewIt.Feature.areEqual) ⇒ <code>boolean</code>
-            * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ <code>[Feature](#JScrewIt.Feature)</code> \| <code>null</code>
+            * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ [<code>Feature</code>](#JScrewIt.Feature) \| <code>null</code>
     * [.encode(input, [options])](#JScrewIt.encode) ⇒ <code>string</code>
 
 <a name="JScrewIt.Feature"></a>
@@ -67,7 +67,7 @@ Not all features can be available at the same time: some features are necessaril
 incompatible, meaning that they mutually exclude each other, and thus their union cannot be
 constructed.
 
-**Kind**: static class of <code>[JScrewIt](#JScrewIt)</code>  
+**Kind**: static class of [<code>JScrewIt</code>](#JScrewIt)  
 
 * [.Feature](#JScrewIt.Feature)
     * [new Feature([...feature])](#new_JScrewIt.Feature_new)
@@ -77,13 +77,13 @@ constructed.
         * [.elementaryNames](#JScrewIt.Feature+elementaryNames) : <code>Array.&lt;string&gt;</code>
         * [.name](#JScrewIt.Feature+name) : <code>string</code> \| <code>undefined</code>
         * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
-        * [.restrict(environment, [referenceFeatureObjs])](#JScrewIt.Feature+restrict) ⇒ <code>[Feature](#JScrewIt.Feature)</code>
+        * [.restrict(environment, [referenceFeatureObjs])](#JScrewIt.Feature+restrict) ⇒ [<code>Feature</code>](#JScrewIt.Feature)
         * [.toString()](#JScrewIt.Feature+toString) ⇒ <code>string</code>
     * _static_
         * [.ALL](#JScrewIt.Feature.ALL) : <code>object</code>
         * [.areCompatible([features])](#JScrewIt.Feature.areCompatible) ⇒ <code>boolean</code>
         * [.areEqual([...feature])](#JScrewIt.Feature.areEqual) ⇒ <code>boolean</code>
-        * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ <code>[Feature](#JScrewIt.Feature)</code> \| <code>null</code>
+        * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ [<code>Feature</code>](#JScrewIt.Feature) \| <code>null</code>
 
 <a name="new_JScrewIt.Feature_new"></a>
 
@@ -102,7 +102,7 @@ If no arguments are specified, the new feature object will be equivalent to
 
 | Param | Type |
 | --- | --- |
-| [...feature] | <code>[FeatureElement](#FeatureElement)</code> \| <code>[CompatibleFeatureArray](#CompatibleFeatureArray)</code> | 
+| [...feature] | [<code>FeatureElement</code>](#FeatureElement) \| [<code>CompatibleFeatureArray</code>](#CompatibleFeatureArray) | 
 
 **Example**  
 The following statements are equivalent, and will all construct a new feature object
@@ -126,7 +126,7 @@ new JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW
 An array of all elementary feature names included in this feature object, without aliases
 and implied features.
 
-**Kind**: instance property of <code>[Feature](#JScrewIt.Feature)</code>  
+**Kind**: instance property of [<code>Feature</code>](#JScrewIt.Feature)  
 <a name="JScrewIt.Feature+description"></a>
 
 #### feature.description : <code>string</code> \| <code>undefined</code>
@@ -135,14 +135,14 @@ A short description of this feature object in plain English.
 All predefined features have a description.
 If desired, custom features may be assigned a description, too.
 
-**Kind**: instance property of <code>[Feature](#JScrewIt.Feature)</code>  
+**Kind**: instance property of [<code>Feature</code>](#JScrewIt.Feature)  
 <a name="JScrewIt.Feature+elementaryNames"></a>
 
 #### feature.elementaryNames : <code>Array.&lt;string&gt;</code>
 An array of all elementary feature names included in this feature object, without
 aliases.
 
-**Kind**: instance property of <code>[Feature](#JScrewIt.Feature)</code>  
+**Kind**: instance property of [<code>Feature</code>](#JScrewIt.Feature)  
 <a name="JScrewIt.Feature+name"></a>
 
 #### feature.name : <code>string</code> \| <code>undefined</code>
@@ -151,43 +151,43 @@ The primary name of this feature object, useful for identification purpose.
 All predefined features have a name.
 If desired, custom features may be assigned a name, too.
 
-**Kind**: instance property of <code>[Feature](#JScrewIt.Feature)</code>  
+**Kind**: instance property of [<code>Feature</code>](#JScrewIt.Feature)  
 <a name="JScrewIt.Feature+includes"></a>
 
 #### feature.includes([...feature]) ⇒ <code>boolean</code>
 Determines whether this feature object includes all of the specified features.
 
-**Kind**: instance method of <code>[Feature](#JScrewIt.Feature)</code>  
+**Kind**: instance method of [<code>Feature</code>](#JScrewIt.Feature)  
 **Returns**: <code>boolean</code> - `true` if this feature object includes all of the specified features; otherwise, `false`.
 If no arguments are specified, the return value is `true`.  
 
 | Param | Type |
 | --- | --- |
-| [...feature] | <code>[FeatureElement](#FeatureElement)</code> \| <code>[CompatibleFeatureArray](#CompatibleFeatureArray)</code> | 
+| [...feature] | [<code>FeatureElement</code>](#FeatureElement) \| [<code>CompatibleFeatureArray</code>](#CompatibleFeatureArray) | 
 
 <a name="JScrewIt.Feature+restrict"></a>
 
-#### feature.restrict(environment, [referenceFeatureObjs]) ⇒ <code>[Feature](#JScrewIt.Feature)</code>
+#### feature.restrict(environment, [referenceFeatureObjs]) ⇒ [<code>Feature</code>](#JScrewIt.Feature)
 Creates a new feature object from this feature by removing elementary features that are
 not available inside a particular environment.
 
 This method is useful to selectively exclude features that are available inside a web
 worker.
 
-**Kind**: instance method of <code>[Feature](#JScrewIt.Feature)</code>  
-**Returns**: <code>[Feature](#JScrewIt.Feature)</code> - A feature object.  
+**Kind**: instance method of [<code>Feature</code>](#JScrewIt.Feature)  
+**Returns**: [<code>Feature</code>](#JScrewIt.Feature) - A feature object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | environment | <code>string</code> | The environment to which this feature should be restricted. Two environments are currently supported. <dl> <dt><code>"forced-strict-mode"</code></dt> <dd> Removes features that are not available in environments that require strict mode code.</dd> <dt><code>"web-worker"</code></dt> <dd>Removes features that are not available inside web workers.</dd> </dl> |
-| [referenceFeatureObjs] | <code>[Array.&lt;Feature&gt;](#JScrewIt.Feature)</code> | An array of predefined feature objects, each corresponding to a particular engine in which the restriction should be enacted. If this parameter is omitted, the restriction is enacted in all engines. |
+| [referenceFeatureObjs] | [<code>Array.&lt;Feature&gt;</code>](#JScrewIt.Feature) | An array of predefined feature objects, each corresponding to a particular engine in which the restriction should be enacted. If this parameter is omitted, the restriction is enacted in all engines. |
 
 <a name="JScrewIt.Feature+toString"></a>
 
 #### feature.toString() ⇒ <code>string</code>
 Returns a string representation of this feature object.
 
-**Kind**: instance method of <code>[Feature](#JScrewIt.Feature)</code>  
+**Kind**: instance method of [<code>Feature</code>](#JScrewIt.Feature)  
 **Returns**: <code>string</code> - A string representation of this feature object.  
 <a name="JScrewIt.Feature.ALL"></a>
 
@@ -196,7 +196,7 @@ A map of predefined feature objects accessed by name or alias.
 
 For an exhaustive list of all features, see the [Feature Reference](Features.md).
 
-**Kind**: static property of <code>[Feature](#JScrewIt.Feature)</code>  
+**Kind**: static property of [<code>Feature</code>](#JScrewIt.Feature)  
 **Example**  
 This will produce an array with the names and aliases of all predefined features.
 
@@ -214,13 +214,13 @@ featureObj === JScrewIt.Feature.ALL[featureObj.name]
 #### Feature.areCompatible([features]) ⇒ <code>boolean</code>
 Determines whether the specified features are compatible with each other.
 
-**Kind**: static method of <code>[Feature](#JScrewIt.Feature)</code>  
+**Kind**: static method of [<code>Feature</code>](#JScrewIt.Feature)  
 **Returns**: <code>boolean</code> - `true` if the specified features are compatible with each other; otherwise, `false`.
 If the array argument contains less than two features, the return value is `true`.  
 
 | Param | Type |
 | --- | --- |
-| [features] | <code>[Array.&lt;FeatureElement&gt;](#FeatureElement)</code> | 
+| [features] | [<code>Array.&lt;FeatureElement&gt;</code>](#FeatureElement) | 
 
 **Example**  
 ```js
@@ -240,13 +240,13 @@ Determines whether all of the specified features are equivalent.
 Different features are considered equivalent if they include the same set of elementary
 features, regardless of any other difference.
 
-**Kind**: static method of <code>[Feature](#JScrewIt.Feature)</code>  
+**Kind**: static method of [<code>Feature</code>](#JScrewIt.Feature)  
 **Returns**: <code>boolean</code> - `true` if all of the specified features are equivalent; otherwise, `false`.
 If less than two arguments are specified, the return value is `true`.  
 
 | Param | Type |
 | --- | --- |
-| [...feature] | <code>[FeatureElement](#FeatureElement)</code> \| <code>[CompatibleFeatureArray](#CompatibleFeatureArray)</code> | 
+| [...feature] | [<code>FeatureElement</code>](#FeatureElement) \| [<code>CompatibleFeatureArray</code>](#CompatibleFeatureArray) | 
 
 **Example**  
 ```js
@@ -260,15 +260,15 @@ JScrewIt.Feature.areEqual("DEFAULT", [])
 ```
 <a name="JScrewIt.Feature.commonOf"></a>
 
-#### Feature.commonOf([...feature]) ⇒ <code>[Feature](#JScrewIt.Feature)</code> \| <code>null</code>
+#### Feature.commonOf([...feature]) ⇒ [<code>Feature</code>](#JScrewIt.Feature) \| <code>null</code>
 Creates a new feature object equivalent to the intersection of the specified features.
 
-**Kind**: static method of <code>[Feature](#JScrewIt.Feature)</code>  
-**Returns**: <code>[Feature](#JScrewIt.Feature)</code> \| <code>null</code> - A feature object, or `null` if no arguments are specified.  
+**Kind**: static method of [<code>Feature</code>](#JScrewIt.Feature)  
+**Returns**: [<code>Feature</code>](#JScrewIt.Feature) \| <code>null</code> - A feature object, or `null` if no arguments are specified.  
 
 | Param | Type |
 | --- | --- |
-| [...feature] | <code>[FeatureElement](#FeatureElement)</code> \| <code>[CompatibleFeatureArray](#CompatibleFeatureArray)</code> | 
+| [...feature] | [<code>FeatureElement</code>](#FeatureElement) \| [<code>CompatibleFeatureArray</code>](#CompatibleFeatureArray) | 
 
 **Example**  
 This will create a new feature object equivalent to [`NAME`](Features.md#NAME).
@@ -290,7 +290,7 @@ var newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
 ### JScrewIt.encode(input, [options]) ⇒ <code>string</code>
 Encodes a given string into JSFuck.
 
-**Kind**: static method of <code>[JScrewIt](#JScrewIt)</code>  
+**Kind**: static method of [<code>JScrewIt</code>](#JScrewIt)  
 **Returns**: <code>string</code> - The encoded string.  
 **Throws**:
 
@@ -307,14 +307,14 @@ Also, an out of memory condition may occur when processing very large data.
 | --- | --- | --- | --- |
 | input | <code>string</code> |  | The string to encode. |
 | [options] | <code>object</code> | <code>{ }</code> | An optional object specifying encoding options. |
-| [options.features] | <code>[FeatureElement](#FeatureElement)</code> \| <code>[CompatibleFeatureArray](#CompatibleFeatureArray)</code> | <code>JScrewIt.Feature.DEFAULT</code> | <p> Specifies the features available in the engines that evaluate the encoded output.</p> <p> If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](Features.md#DEFAULT) is assumed: this ensures maximum compatibility but also generates the largest code. To generate shorter code, specify all features available in all target engines explicitly.</p> |
+| [options.features] | [<code>FeatureElement</code>](#FeatureElement) \| [<code>CompatibleFeatureArray</code>](#CompatibleFeatureArray) | <code>JScrewIt.Feature.DEFAULT</code> | <p> Specifies the features available in the engines that evaluate the encoded output.</p> <p> If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](Features.md#DEFAULT) is assumed: this ensures maximum compatibility but also generates the largest code. To generate shorter code, specify all features available in all target engines explicitly.</p> |
 | [options.runAs] | <code>string</code> | <code>&quot;express-eval&quot;</code> | This option controls the type of code generated from the given input. Allowed values are listed below. <dl> <dt><code>"call"</code></dt> <dd> Produces code evaluating to a call to a function whose body contains the specified input string.</dd> <dt><code>"eval"</code></dt> <dd> Produces code evaluating to the result of invoking <code>eval</code> with the specified input string as parameter.</dd> <dt><code>"express"</code></dt> <dd> Attempts to interpret the specified string as JavaScript code and produce functionally equivalent JSFuck code. Fails if the specified string cannot be expressed as JavaScript, or if no functionally equivalent JSFuck code can be generated.</dd> <dt><code>"express-call"</code></dt> <dd> Applies the code generation process of both <code>"express"</code> and <code>"call"</code> and returns the shortest output.</dd> <dt><code>"express-eval"</code> (default)</dt> <dd> Applies the code generation process of both <code>"express"</code> and <code>"eval"</code> and returns the shortest output.</dd> <dt><code>"none"</code></dt> <dd> Produces JSFuck code that translates to the specified input string (except for trimmed parts when used in conjunction with the option <code>trimCode</code>). Unlike other methods, <code>"none"</code> does not generate executable code but just a plain string. </dd> </dl> |
 | [options.trimCode] | <code>boolean</code> | <code>false</code> | <p> If this parameter is truthy, lines in the beginning and in the end of the file containing nothing but space characters and JavaScript comments are removed from the generated output. A newline terminator in the last preserved line is also removed.</p> <p> This option is especially useful to strip banner comments and trailing newline characters which are sometimes found in minified scripts.</p> <p> Using this option may produce unexpected results if the input is not well-formed JavaScript code.</p> |
 | [options.wrapWith] | <code>string</code> | <code>&quot;express-eval&quot;</code> | An alias for `runAs`. |
 
 <a name="FeatureElement"></a>
 
-## FeatureElement : <code>[Feature](#JScrewIt.Feature)</code> \| <code>string</code>
+## FeatureElement : [<code>Feature</code>](#JScrewIt.Feature) \| <code>string</code>
 A feature object or name or alias of a predefined feature.
 
 **Kind**: global typedef  
@@ -324,7 +324,7 @@ A feature object or name or alias of a predefined feature.
 
 <a name="CompatibleFeatureArray"></a>
 
-## CompatibleFeatureArray : <code>[Array.&lt;FeatureElement&gt;](#FeatureElement)</code>
+## CompatibleFeatureArray : [<code>Array.&lt;FeatureElement&gt;</code>](#FeatureElement)
 An array containing any number of feature objects or names or aliases of predefined features,
 in no particular order.
 

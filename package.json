@@ -45,15 +45,15 @@
     "gulp-insert": "~0.5.0",
     "gulp-rename": "~1.2.2",
     "gulp-replace": "~0.5.4",
-    "gulp-spawn-mocha": "~3.1.0",
+    "gulp-spawn-mocha": "~3.3.0",
     "gulp-uglify": "~2.1.2",
     "gulp-util": "~3.0.8",
     "istanbul": "~0.4.5",
     "jsdoc-to-markdown": "~3.0.0",
-    "mocha": "~3.2.0",
+    "mocha": "~3.4.2",
     "mocha-matrix": "~0.1.1",
-    "progress": "~1.1.8",
-    "proxyquire": "~1.7.11",
+    "progress": "~2.0.0",
+    "proxyquire": "~1.8.0",
     "run-sequence": "~1.2.2"
   }
 }
