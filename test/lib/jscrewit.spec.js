@@ -429,9 +429,9 @@ uneval,
                                 test('an empty script', ';\n', '');
                                 test(
                                     'all separators',
-                                    '\t\n\v\f\r \xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004' +
-                                    '\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f' +
-                                    '\u3000\ufeff/*lorem\n/*///ipsum\n0',
+                                    '\t\n\v\f\r \xa0\u1680\u2000\u2001\u2002\u2003\u2004\u2005' +
+                                    '\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000' +
+                                    '\ufeff/*lorem\n/*///ipsum\n0',
                                     '+[]'
                                 );
                                 test('identifiers', 'String', '*(*)()', String);
@@ -671,6 +671,7 @@ uneval,
                                     );
                                 }
                                 
+                                test('the Mongolian vowel separator', '\u180e');
                                 test('missing dots in properties of decimal literals', '0.f');
                                 test('octal literals', '0o42');
                                 test('binary literals', '0b101010');
