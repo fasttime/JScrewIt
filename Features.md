@@ -24,7 +24,7 @@ _Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Androi
 ### `ARRAY_ITERATOR`
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
 
-_Available in Chrome, Firefox, Safari 7.1+, Opera and Node.js 0.12+._
+_Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 0.12+._
 <a name="ARROW"></a>
 ### `ARROW`
 Support for arrow functions.
@@ -54,10 +54,10 @@ The property that the various string methods returning HTML code such as String.
 _Available in Internet Explorer._
 <a name="CHROME"></a>
 ### `CHROME`
-_An alias for [`CHROME52`](#CHROME52)._
-<a name="CHROME52"></a>
-### `CHROME52`
-Features available in Chrome 52 and Opera 39 or later.
+_An alias for [`CHROME59`](#CHROME59)._
+<a name="CHROME59"></a>
+### `CHROME59`
+Features available in Chrome 59 and Opera 46 or later.
 <a name="COMPACT"></a>
 ### `COMPACT`
 All new browsers' features.<br>
@@ -83,17 +83,10 @@ Existence of the global object self having the string representation "\[object D
 _Available in Android Browser before 4.4+. This feature is not available inside web workers._
 <a name="EDGE"></a>
 ### `EDGE`
-Features available in Edge.
-<a name="ENTRIES_OBJ"></a>
-### `ENTRIES_OBJ`
-The property that the string representation of Array.prototype.entries\(\) starts with "\[object ".
-
-_Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 0.12+._
-<a name="ENTRIES_PLAIN"></a>
-### `ENTRIES_PLAIN`
-The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Object\]".
-
-_Available in Edge._
+_An alias for [`EDGE40`](#EDGE40)._
+<a name="EDGE40"></a>
+### `EDGE40`
+Features available in Edge 40 or later.
 <a name="ESC_HTML_ALL"></a>
 ### `ESC_HTML_ALL`
 The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
@@ -121,10 +114,10 @@ Having regular expressions created with the RegExp constructor use escape sequen
 _Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Node.js 4+._
 <a name="FF"></a>
 ### `FF`
-_An alias for [`FF31`](#FF31)._
-<a name="FF31"></a>
-### `FF31`
-Features available in Firefox 31 or later.
+_An alias for [`FF54`](#FF54)._
+<a name="FF54"></a>
+### `FF54`
+Features available in Firefox 54 or later.
 <a name="FF_SRC"></a>
 ### `FF_SRC`
 A string representation of native functions typical for Firefox and Safari.<br>
@@ -154,7 +147,7 @@ _Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Androi
 ### `HTMLAUDIOELEMENT`
 Existence of the global object Audio whose string representation starts with "function HTMLAudioElement".
 
-_Available in Chrome, Opera and Android Browser 4.4+. This feature is not available inside web workers._
+_Available in Android Browser 4.4+. This feature is not available inside web workers._
 <a name="HTMLDOCUMENT"></a>
 ### `HTMLDOCUMENT`
 Existence of the global object document having the string representation "\[object HTMLDocument\]".
@@ -228,13 +221,12 @@ _Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
 ### `NO_OLD_SAFARI_ARRAY_ITERATOR`
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
 
-_Available in Chrome, Firefox, Safari 9.0+, Opera and Node.js 0.12+._
+_Available in Chrome, Edge, Firefox, Safari 9.0+, Opera and Node.js 0.12+._
 <a name="NO_OLD_SAFARI_LF"></a>
 ### `NO_OLD_SAFARI_LF`
-A string representation of dynamically generated functions typical for most engines with the notable exception of Safari versions prior to 9.<br>
-More specifically, in this representation, the character at index 22 is a line feed \("\\n"\).
+A string representation of dynamically generated functions where the character at index 22 is a line feed \("\\n"\).
 
-_Available in Chrome, Edge, Firefox, Internet Explorer, Safari 9.0+, Opera, Android Browser and Node.js._
+_Available in Chrome, Internet Explorer, Safari 9.0+, Opera, Android Browser and Node.js._
 <a name="NO_V8_SRC"></a>
 ### `NO_V8_SRC`
 A string representation of native functions typical for Firefox, Internet Explorer and Safari.<br>
@@ -292,7 +284,7 @@ This table lists features available in the most common engines.
 <th>Features</th>
 </tr>
 <tr>
-<td>Chrome 52+, Opera 39+</td>
+<td>Chrome 59+, Opera 46+</td>
 <td>
 <ul>
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
@@ -301,7 +293,6 @@ This table lists features available in the most common engines.
 <li><a href="#ARROW"><code>ARROW</code></a>
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
-<li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
@@ -309,14 +300,13 @@ This table lists features available in the most common engines.
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HISTORY"><code>HISTORY</code></a>
-<li><a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="#INTL"><code>INTL</code></a>
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NO_FF_SRC"><code>NO_FF_SRC</code></a>
-<li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a>)
+<li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a>
 <li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
@@ -326,17 +316,16 @@ This table lists features available in the most common engines.
 </td>
 </tr>
 <tr>
-<td>Edge</td>
+<td>Edge 40+</td>
 <td>
 <ul>
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
 <li><a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="#WINDOW"><code>WINDOW</code></a>)
+<li><a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#ARROW"><code>ARROW</code></a>
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
 <li><a href="#CONSOLE"><code>CONSOLE</code></a>
-<li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ENTRIES_PLAIN"><code>ENTRIES_PLAIN</code></a>)
-<li><a href="#ENTRIES_PLAIN"><code>ENTRIES_PLAIN</code></a>
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="#ESC_REGEXP_LF"><code>ESC_REGEXP_LF</code></a>
@@ -352,7 +341,7 @@ This table lists features available in the most common engines.
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NO_FF_SRC"><code>NO_FF_SRC</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a>
-<li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
+<li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
 <li><a href="#WINDOW"><code>WINDOW</code></a>
@@ -360,7 +349,7 @@ This table lists features available in the most common engines.
 </td>
 </tr>
 <tr>
-<td>Firefox 31+</td>
+<td>Firefox 54+</td>
 <td>
 <ul>
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
@@ -370,7 +359,6 @@ This table lists features available in the most common engines.
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
 <li><a href="#CONSOLE"><code>CONSOLE</code></a>
-<li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="#ESC_REGEXP_LF"><code>ESC_REGEXP_LF</code></a>
@@ -386,7 +374,6 @@ This table lists features available in the most common engines.
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a>
 <li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>
-<li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#NO_V8_SRC"><code>NO_V8_SRC</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
@@ -433,7 +420,6 @@ This table lists features available in the most common engines.
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
 <li><a href="#CONSOLE"><code>CONSOLE</code></a>
-<li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="#ESC_REGEXP_LF"><code>ESC_REGEXP_LF</code></a>
@@ -491,7 +477,6 @@ This table lists features available in the most common engines.
 <ul>
 <li><a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
 <li><a href="#ARROW"><code>ARROW</code></a> (Node.js 4+)
-<li><a href="#ENTRIES_OBJ"><code>ENTRIES_OBJ</code></a> (implied by <a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> and <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
 <li><a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a> (not in Node.js 0.12+)
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a> and <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a> (Node.js 0.12+)

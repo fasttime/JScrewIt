@@ -59,8 +59,6 @@ var createParseIntArgDefault;
     var CONSOLE                         = Feature.CONSOLE;
     var DOCUMENT                        = Feature.DOCUMENT;
     var DOMWINDOW                       = Feature.DOMWINDOW;
-    var ENTRIES_OBJ                     = Feature.ENTRIES_OBJ;
-    var ENTRIES_PLAIN                   = Feature.ENTRIES_PLAIN;
     var ESC_HTML_ALL                    = Feature.ESC_HTML_ALL;
     var ESC_HTML_QUOT                   = Feature.ESC_HTML_QUOT;
     var ESC_HTML_QUOT_ONLY              = Feature.ESC_HTML_QUOT_ONLY;
@@ -484,7 +482,7 @@ var createParseIntArgDefault;
         [
             define('A'),
             define('C', CAPITAL_HTML),
-            define('B', CAPITAL_HTML, ENTRIES_OBJ),
+            define('B', ARRAY_ITERATOR, CAPITAL_HTML),
             define('A', ARRAY_ITERATOR),
         ],
         'F',
@@ -493,14 +491,14 @@ var createParseIntArgDefault;
         [
             define('S'),
             define('R', CAPITAL_HTML),
-            define('S', ENTRIES_OBJ),
+            define('S', ARRAY_ITERATOR),
         ],
         [
             define('U'),
             define('V', ANY_DOCUMENT),
             define('U', NAME),
-            define('V', ANY_DOCUMENT, ENTRIES_OBJ, FILL, NAME),
-            define('V', ANY_DOCUMENT, ENTRIES_OBJ, NAME, NO_IE_SRC),
+            define('V', ANY_DOCUMENT, ARRAY_ITERATOR, FILL, NAME),
+            define('V', ANY_DOCUMENT, ARRAY_ITERATOR, NAME, NO_IE_SRC),
             define('U', FILL, NAME, NO_IE_SRC),
             define('V', ANY_DOCUMENT, FF_SRC, NAME),
             define('V', ANY_DOCUMENT, HTMLAUDIOELEMENT, NAME),
@@ -601,13 +599,13 @@ var createParseIntArgDefault;
         [
             define('0B'),
             define('0R', CAPITAL_HTML),
-            define('0B', ENTRIES_OBJ),
+            define('0B', ARRAY_ITERATOR),
         ],
         '0i',
         [
             define('0j'),
             define('0T', CAPITAL_HTML),
-            define('0j', ENTRIES_OBJ),
+            define('0j', ARRAY_ITERATOR),
         ],
         '00',
         '01',
@@ -660,7 +658,7 @@ var createParseIntArgDefault;
         ' ':
         [
             defineFHCharAt('ANY_FUNCTION', 8),
-            define('(RP_3_NO + ARRAY_ITERATOR)[10]', ENTRIES_OBJ),
+            define('(RP_3_NO + ARRAY_ITERATOR)[10]', ARRAY_ITERATOR),
             define('(FILTER + [])[20]', FF_SRC),
             define('(+(ANY_FUNCTION + [])[0] + FILTER)[22]', NO_FF_SRC),
             define('(FILTER + [])[21]', NO_V8_SRC),
@@ -899,7 +897,7 @@ var createParseIntArgDefault;
             define('btoa("1NaN")[1]', ATOB),
             define('"".sub()[2]', CAPITAL_HTML),
             define('(RP_3_NO + PLAIN_OBJECT[TO_STRING].call())[11]', UNDEFINED),
-            define('(RP_3_NO + ARRAY_ITERATOR[TO_STRING].call())[11]', ENTRIES_OBJ, UNDEFINED),
+            define('(RP_3_NO + ARRAY_ITERATOR[TO_STRING].call())[11]', ARRAY_ITERATOR, UNDEFINED),
         ],
         'V':
         [
@@ -937,7 +935,7 @@ var createParseIntArgDefault;
         '[':
         [
             defineFBCharAt(14),
-            define('(ARRAY_ITERATOR + [])[0]', ENTRIES_OBJ),
+            define('(ARRAY_ITERATOR + [])[0]', ARRAY_ITERATOR),
         ],
         '\\':
         [
@@ -975,12 +973,12 @@ var createParseIntArgDefault;
         'b':
         [
             defineFHCharAt('Number', 12),
-            define('(ARRAY_ITERATOR + [])[2]', ENTRIES_OBJ),
+            define('(ARRAY_ITERATOR + [])[2]', ARRAY_ITERATOR),
         ],
         'c':
         [
             defineFHCharAt('ANY_FUNCTION', 3),
-            define('(RP_5_N + ARRAY_ITERATOR)[10]', ENTRIES_OBJ),
+            define('(RP_5_N + ARRAY_ITERATOR)[10]', ARRAY_ITERATOR),
         ],
         'd': '"undefined"[2]',
         'e': '"true"[3]',
@@ -998,7 +996,7 @@ var createParseIntArgDefault;
         'j':
         [
             define('(PLAIN_OBJECT + [])[10]'),
-            define('(ARRAY_ITERATOR + [])[3]', ENTRIES_OBJ),
+            define('(ARRAY_ITERATOR + [])[3]', ARRAY_ITERATOR),
             define('(Node + [])[3]', NODECONSTRUCTOR),
             define('(self + [])[3]', SELF_OBJ),
         ],
@@ -1017,7 +1015,7 @@ var createParseIntArgDefault;
         'o':
         [
             defineFHCharAt('ANY_FUNCTION', 6),
-            define('(ARRAY_ITERATOR + [])[1]', ENTRIES_OBJ),
+            define('(ARRAY_ITERATOR + [])[1]', ARRAY_ITERATOR),
         ],
         'p':
         [
@@ -1256,7 +1254,7 @@ var createParseIntArgDefault;
         ],
         ARRAY_ITERATOR:
         [
-            define('[].entries()', ENTRIES_OBJ),
+            define('[].entries()', ARRAY_ITERATOR),
         ],
         FILL:
         [
@@ -1274,7 +1272,6 @@ var createParseIntArgDefault;
         PLAIN_OBJECT:
         [
             define('Function("return{}")()'),
-            define('ARRAY_ITERATOR', ENTRIES_PLAIN),
             define('Function("return Intl")()', INTL),
         ],
         SUBSTR:
@@ -1452,14 +1449,13 @@ var createParseIntArgDefault;
     CREATE_PARSE_INT_ARG =
     [
         define(createParseIntArgByReduce),
-        define(createParseIntArgDefault, CAPITAL_HTML, ENTRIES_OBJ, NO_IE_SRC),
-        define(createParseIntArgByReduce, ENTRIES_PLAIN),
+        define(createParseIntArgDefault, CAPITAL_HTML, ARRAY_ITERATOR, NO_IE_SRC),
         define(createParseIntArgByReduce, FILL),
         define(createParseIntArgByReduce, NO_OLD_SAFARI_ARRAY_ITERATOR),
         define(createParseIntArgByReduceArrow, ARROW),
         define(createParseIntArgByReduce, NO_V8_SRC),
         define(createParseIntArgByReduce, V8_SRC),
-        define(createParseIntArgByReduceArrow, ARROW, ENTRIES_OBJ),
+        define(createParseIntArgByReduceArrow, ARRAY_ITERATOR, ARROW),
         define(createParseIntArgByReduce, FILL, FF_SRC),
         define(createParseIntArgByReduce, FILL, IE_SRC),
         define(createParseIntArgByReduce, FILL, V8_SRC),
@@ -1471,7 +1467,7 @@ var createParseIntArgDefault;
         define('fromCodePoint', ATOB, FROM_CODE_POINT),
         define('fromCodePoint', BARPROP, FROM_CODE_POINT),
         define('fromCodePoint', CAPITAL_HTML, FROM_CODE_POINT),
-        define('fromCharCode', ATOB, CAPITAL_HTML, ENTRIES_OBJ),
+        define('fromCharCode', ARRAY_ITERATOR, ATOB, CAPITAL_HTML),
     ];
     
     FROM_CHAR_CODE_CALLBACK_FORMATTER =
@@ -1484,12 +1480,12 @@ var createParseIntArgDefault;
     
     MAPPER_FORMATTER = [define(mapperFormatterDefault), define(mapperFormatterDblArrow, ARROW)];
     
-    OPTIMAL_B = [define('B'), define('b', ENTRIES_OBJ)];
+    OPTIMAL_B = [define('B'), define('b', ARRAY_ITERATOR)];
     
     OPTIMAL_RETURN_STRING =
     [
         define('return(isNaN+false).constructor'),
-        define('return String', CAPITAL_HTML, ENTRIES_OBJ),
+        define('return String', ARRAY_ITERATOR, CAPITAL_HTML),
         define('return(isNaN+false).constructor', FILL, IE_SRC),
         define('return(isNaN+false).constructor', FILL, NO_IE_SRC),
     ];

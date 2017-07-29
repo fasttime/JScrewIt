@@ -11,21 +11,21 @@ function createEngineSelectionBox()
             name: 'Chrome',
             versions:
             [
-                { feature: 'CHROME52', number: '52+' },
+                { feature: 'CHROME59', number: '59+' },
             ]
         },
         {
             name: 'Edge',
             versions:
             [
-                { feature: 'EDGE' },
+                { feature: 'EDGE40', number: '40+' },
             ]
         },
         {
             name: 'Firefox',
             versions:
             [
-                { feature: 'FF31', number: '31+' },
+                { feature: 'FF54', number: '54+' },
             ]
         },
         {
@@ -52,7 +52,7 @@ function createEngineSelectionBox()
             name: 'Opera',
             versions:
             [
-                { feature: 'CHROME52', number: '39+' },
+                { feature: 'CHROME59', number: '46+' },
             ]
         },
         {

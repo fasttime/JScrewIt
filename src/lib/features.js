@@ -343,9 +343,7 @@ var validMaskFromArrayOrStringOrFeature;
                 var available =
                     Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries());
                 return available;
-            },
-            excludes: ['ENTRIES_PLAIN'],
-            includes: ['ENTRIES_OBJ']
+            }
         },
         ARROW:
         {
@@ -448,30 +446,6 @@ var validMaskFromArrayOrStringOrFeature;
             includes: ['ANY_WINDOW'],
             excludes: ['WINDOW'],
             attributes: { 'web-worker': 'web-worker-restriction' }
-        },
-        ENTRIES_OBJ:
-        {
-            description:
-                'The property that the string representation of Array.prototype.entries() starts ' +
-                'with "[object ".',
-            check: function ()
-            {
-                var available = Array.prototype.entries && /^\[object /.test([].entries());
-                return available;
-            }
-        },
-        ENTRIES_PLAIN:
-        {
-            description:
-                'The property that the string representation of Array.prototype.entries() ' +
-                'evaluates to "[object Object]".',
-            check: function ()
-            {
-                var available = Array.prototype.entries && [].entries() + '' === '[object Object]';
-                return available;
-            },
-            includes: ['ENTRIES_OBJ'],
-            excludes: ['ARRAY_ITERATOR']
         },
         ESC_HTML_ALL:
         {
@@ -736,10 +710,8 @@ var validMaskFromArrayOrStringOrFeature;
         NO_OLD_SAFARI_LF:
         {
             description:
-                'A string representation of dynamically generated functions typical for most ' +
-                'engines with the notable exception of Safari versions prior to 9.\n' +
-                'More specifically, in this representation, the character at index 22 is a line ' +
-                'feed ("\\n").',
+                'A string representation of dynamically generated functions where the character ' +
+                'at index 22 is a line feed ("\\n").',
             check: function ()
             {
                 var available = (Function() + '')[22] === '\n';
@@ -840,7 +812,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'ARROW',
                 'ATOB',
                 'BARPROP',
-                'ENTRIES_OBJ',
                 'ESC_HTML_QUOT_ONLY',
                 'ESC_REGEXP_SLASH',
                 'FILL',
@@ -851,7 +822,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'NAME',
                 'NO_IE_SRC',
-                'NO_OLD_SAFARI_LF',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'UNDEFINED',
                 'WINDOW'
             ],
@@ -918,10 +889,10 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'no-console-in-web-worker': null, 'web-worker-restriction': null }
         },
-        CHROME: 'CHROME52',
-        CHROME52:
+        CHROME: 'CHROME59',
+        CHROME59:
         {
-            engine: 'Chrome 52 and Opera 39 or later',
+            engine: 'Chrome 59 and Opera 46 or later',
             includes:
             [
                 'ARROW',
@@ -933,7 +904,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'FROM_CODE_POINT',
                 'GMT',
                 'HISTORY',
-                'HTMLAUDIOELEMENT',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'INTL',
@@ -947,9 +917,10 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null }
         },
-        EDGE:
+        EDGE: 'EDGE40',
+        EDGE40:
         {
-            engine: 'Edge',
+            engine: 'Edge 40 or later',
             includes:
             [
                 'ARROW',
@@ -959,7 +930,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'ESC_HTML_QUOT_ONLY',
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
-                'ENTRIES_PLAIN',
                 'FILL',
                 'FROM_CODE_POINT',
                 'GMT',
@@ -969,17 +939,17 @@ var validMaskFromArrayOrStringOrFeature;
                 'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
-                'NO_OLD_SAFARI_LF',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'UNDEFINED',
                 'V8_SRC',
                 'WINDOW'
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null }
         },
-        FF: 'FF31',
-        FF31:
+        FF: 'FF54',
+        FF54:
         {
-            engine: 'Firefox 31 or later',
+            engine: 'Firefox 54 or later',
             includes:
             [
                 'ARROW',
@@ -1000,7 +970,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
-                'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'UNEVAL',
                 'WINDOW'

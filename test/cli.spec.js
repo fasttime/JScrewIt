@@ -241,11 +241,11 @@ describe(
             }
         );
         test(
-            ['-ct', 'infile', '--features', 'FF31', 'outfile'],
+            ['-ct', 'infile', '--features', 'FF', 'outfile'],
             {
                 inputFileName: 'infile',
                 outputFileName: 'outfile',
-                options: { features: ['FF31'], trimCode: true, runAs: 'call' }
+                options: { features: ['FF'], trimCode: true, runAs: 'call' }
             }
         );
         testError(['infile', 'outfile', 'etc.'], /unexpected argument "etc."/);

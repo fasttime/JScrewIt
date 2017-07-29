@@ -596,8 +596,6 @@
         },
         DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object Document]$/),
         DOMWINDOW: makeEmuFeatureSelf('[object DOMWindow]', /^\[object DOMWindow]$/),
-        ENTRIES_OBJ: makeEmuFeatureEntries('[object Object]', /^\[object /),
-        ENTRIES_PLAIN: makeEmuFeatureEntries('[object Object]', /^\[object Object]$/),
         ESC_HTML_ALL: makeEmuFeatureEscHtml(
             function (str)
             {
@@ -768,7 +766,7 @@
                     function ()
                     {
                         var str = context.Function.toString.call(this);
-                        if (str === 'function anonymous() { \n}')
+                        if (/function anonymous\(\n?\) {\s+}/.test(str))
                             return 'function anonymous() {\n\n}';
                     }
                 );

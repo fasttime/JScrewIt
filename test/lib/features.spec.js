@@ -189,12 +189,7 @@
                         'throws an Error for incompatible features',
                         function ()
                         {
-                            var fn =
-                                Feature.bind(
-                                    Feature,
-                                    'ENTRIES_PLAIN',
-                                    'NO_OLD_SAFARI_ARRAY_ITERATOR'
-                                );
+                            var fn = Feature.bind(Feature, 'DOMWINDOW', 'WINDOW');
                             expect(fn).toThrowStrictly(Error, 'Incompatible features');
                         }
                     );
@@ -264,8 +259,8 @@
                             expect(featureObj.mask).toEqual([0, 0]);
                         }
                     );
-                    test('BROWSER', ['ANDRO40', 'CHROME52', 'EDGE', 'FF31', 'IE9', 'SAFARI70']);
-                    test('COMPACT', ['CHROME52', 'EDGE', 'FF31', 'SAFARI100']);
+                    test('BROWSER', ['ANDRO40', 'CHROME59', 'EDGE40', 'FF54', 'IE9', 'SAFARI70']);
+                    test('COMPACT', ['CHROME59', 'EDGE40', 'FF54', 'SAFARI100']);
                     it(
                         'AUTO',
                         function ()
@@ -360,7 +355,7 @@
                         function ()
                         {
                             var featureObj =
-                                Feature.WINDOW.restrict('web-worker', [Feature.FF31]);
+                                Feature.WINDOW.restrict('web-worker', [Feature.FF54]);
                             expect(featureObj.mask).toEqual(Feature.SELF_OBJ.mask);
                         }
                     );

@@ -151,18 +151,18 @@ We do this using the feature [`BROWSER`](Features.md#BROWSER):
 
 ```js
 var options = { features: "BROWSER" };
-var output = JScrewIt.encode("alert(1)", options); // 1893 characters
+var output = JScrewIt.encode("alert(1)", options); // 1890 characters
 ```
 
 But if we are only interested in code that runs in an up to date Firefox browser, the output length
 shrinks to about 50%:
 
 ```js
-var options = { features: "FF31" };
+var options = { features: "FF" };
 var output = JScrewIt.encode("alert(1)", options); // 960 characters now
 ```
 
-Here we have used another feature: [`FF31`](Features.md#FF31).
+Here we have used another feature: [`FF`](Features.md#FF).
 This feature produces the shortest possible code that runs in current Firefox browsers.
 
 We can specify more than one feature using an array, e.g.
@@ -222,12 +222,12 @@ their intersection.
 
 JScrewIt itself and the code it generates are compatible with the JavaScript engines listed below.
 
-- Chrome 52+
-- Edge
-- Firefox 31+
+- Chrome 59+
+- Edge 40+
+- Firefox 54+
 - Internet Explorer 9+
 - Safari 7.0+
-- Opera 39+
+- Opera 46+
 - Android Browser 4.x
 - Node.js
 

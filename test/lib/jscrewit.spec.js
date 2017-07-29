@@ -1122,9 +1122,9 @@ uneval,
                         
                         var input = 'ABC';
                         var inputData = Object(input);
-                        test('createParseIntArgDefault', ['ATOB', 'ENTRIES_OBJ']);
+                        test('createParseIntArgDefault', ['ARRAY_ITERATOR', 'ATOB']);
                         test('createParseIntArgByReduce', 'DEFAULT');
-                        test('createParseIntArgByReduceArrow', ['ARROW', 'ENTRIES_OBJ']);
+                        test('createParseIntArgByReduceArrow', ['ARRAY_ITERATOR', 'ARROW']);
                     }
                 );
             }

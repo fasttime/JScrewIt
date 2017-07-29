@@ -95,12 +95,12 @@ var createAntiRadix4TestString;
 module.exports =
 [
     data(
-        ['ATOB', 'CAPITAL_HTML', 'ENTRIES_OBJ', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
+        ['ARRAY_ITERATOR', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
         repeat.bind(null, String.fromCharCode(59999)),
         'byCharCodes'
     ),
     data(
-        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
+        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
         function (length)
         {
             var CHAR_CODES =
@@ -138,41 +138,32 @@ module.exports =
         'byDict'
     ),
     data(
-        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'V8_SRC'],
+        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'V8_SRC'],
         createDictTestString.bind(null, 121),
         'byDictRadix3'
     ),
     data(
-        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'V8_SRC'],
+        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'V8_SRC'],
         createDictTestString.bind(null, 89),
         'byDictRadix4'
     ),
     data(
-        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'V8_SRC'],
+        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'V8_SRC'],
         createDictTestString.bind(null, 129),
         'byDictRadix4AmendedBy1'
     ),
     data(
-        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'V8_SRC'],
+        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'V8_SRC'],
         createInvertedDictTestString.bind(null, 367),
         'byDictRadix4AmendedBy2'
     ),
     data(
-        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'ENTRIES_PLAIN', 'FILL', 'V8_SRC'],
+        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'V8_SRC'],
         createAntiRadix4TestString.bind(null, 479),
         'byDictRadix5AmendedBy2'
     ),
     data(
-        [
-            'ARROW',
-            'BARPROP',
-            'ENTRIES_PLAIN',
-            'FILL',
-            'FROM_CODE_POINT',
-            'NAME',
-            'NODECONSTRUCTOR',
-            'V8_SRC'
-        ],
+        ['ARROW', 'BARPROP', 'FILL', 'FROM_CODE_POINT', 'NAME', 'NODECONSTRUCTOR', 'V8_SRC'],
         createAntiRadix4TestString.bind(null, 473),
         'byDictRadix5AmendedBy3'
     ),
