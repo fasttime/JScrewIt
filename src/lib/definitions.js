@@ -88,6 +88,7 @@ var mapperFormatterDefault;
     var NO_OLD_SAFARI_LF                = Feature.NO_OLD_SAFARI_LF;
     var NO_V8_SRC                       = Feature.NO_V8_SRC;
     var SELF_OBJ                        = Feature.SELF_OBJ;
+    var STATUS                          = Feature.STATUS;
     var UNDEFINED                       = Feature.UNDEFINED;
     var UNEVAL                          = Feature.UNEVAL;
     var V8_SRC                          = Feature.V8_SRC;
@@ -1517,6 +1518,7 @@ var mapperFormatterDefault;
         define('return String', ARRAY_ITERATOR, CAPITAL_HTML),
         define('return(isNaN+false).constructor', FILL, IE_SRC),
         define('return(isNaN+false).constructor', FILL, NO_IE_SRC),
+        define('return status.constructor', STATUS),
     ];
 
     SIMPLE = new Empty();
