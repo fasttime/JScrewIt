@@ -3,7 +3,7 @@
 (function ()
 {
     'use strict';
-    
+
     var MATCHERS =
     {
         toBeArray: function ()
@@ -152,7 +152,7 @@
             return this.assertions.pass();
         },
     };
-    
+
     Object.keys(MATCHERS).forEach(
         function (name)
         {

@@ -1,27 +1,19 @@
-/* global assignNoEnum, object_defineProperty */
+/* global assignNoEnum, object_create, object_defineProperty */
 
 var LEVEL_NUMERIC   = -1;
 var LEVEL_OBJECT    = 0;
 var LEVEL_STRING    = 1;
 var LEVEL_UNDEFINED = -2;
 
-var createSolution;
+var Solution;
 
 (function ()
 {
-    function Solution(replacement, level, hasOuterPlus)
-    {
-        this.replacement    = replacement;
-        this.level          = level;
-        if (hasOuterPlus !== undefined)
-            setHasOuterPlus(this, hasOuterPlus);
-    }
-    
     function setHasOuterPlus(solution, hasOuterPlus)
     {
         object_defineProperty(solution, 'hasOuterPlus', { value: hasOuterPlus });
     }
-    
+
     var solutionProtoSource =
     {
         get appendLength()
@@ -63,14 +55,15 @@ var createSolution;
             return this.replacement;
         }
     };
-    
+
+    Solution =
+    function (replacement, level, hasOuterPlus)
+    {
+        this.replacement    = replacement;
+        this.level          = level;
+        if (hasOuterPlus !== undefined)
+            setHasOuterPlus(this, hasOuterPlus);
+    };
     assignNoEnum(Solution.prototype, solutionProtoSource);
-    
-    createSolution =
-        function (replacement, level, hasOuterPlus)
-        {
-            var solution = new Solution(replacement, level, hasOuterPlus);
-            return solution;
-        };
 }
 )();

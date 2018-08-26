@@ -13,7 +13,7 @@ var define;
             var entry = { definition: definition, mask: mask };
             return entry;
         };
-    
+
     define =
         function (definition)
         {

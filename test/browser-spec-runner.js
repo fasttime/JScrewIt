@@ -14,7 +14,7 @@ showFeatureSupport
 (function ()
 {
     'use strict';
-    
+
     function addBarButtons()
     {
         function addBarButton(caption, onclick)
@@ -23,7 +23,7 @@ showFeatureSupport
             button.textContent = caption;
             button.onclick = onclick;
         }
-        
+
         var bar = document.querySelector('#buttonBar');
         if (bar)
         {
@@ -65,7 +65,7 @@ showFeatureSupport
             );
         }
     }
-    
+
     function addFeatureLists()
     {
         var info = document.querySelector('#featureList');
@@ -89,7 +89,7 @@ showFeatureSupport
             notice += ' Features with the marker “†” are excluded when strict mode is enforced.';
         info.appendChild(document.createElement('I')).textContent = notice;
     }
-    
+
     function createOutput(compatibilities)
     {
         function appendLengths(name, input)
@@ -112,7 +112,7 @@ showFeatureSupport
                 }
             );
         }
-        
+
         function appendLengthsRange(min, max, namer)
         {
             namer =
@@ -128,7 +128,7 @@ showFeatureSupport
                 appendLengths(name, char);
             }
         }
-        
+
         var result = '     ';
         compatibilities.forEach(
             function (compatibility)
@@ -179,13 +179,13 @@ showFeatureSupport
         appendLengths('A…Z', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
         return result;
     }
-    
+
     function handleLoad()
     {
         if (!--waitCount)
             handleLoadAndWorkerMessage();
     }
-    
+
     function handleLoadAndWorkerMessage()
     {
         addFeatureLists();
@@ -208,14 +208,14 @@ showFeatureSupport
             }
         );
     }
-    
+
     function handleWorkerMessage(evt)
     {
         webWorkerFeatureObj = JScrewIt.Feature(evt.data);
         if (!--waitCount)
             handleLoadAndWorkerMessage();
     }
-    
+
     function initWorker()
     {
         if (typeof Worker === 'undefined')
@@ -232,7 +232,7 @@ showFeatureSupport
         worker.onmessage = handleWorkerMessage;
         return 2;
     }
-    
+
     function listFeatures(info, label, featureNames, isCategoryMarked)
     {
         if (featureNames.length)
@@ -252,7 +252,7 @@ showFeatureSupport
                             span.appendChild(document.createTextNode(marker));
                         return marked;
                     }
-                    
+
                     if (index)
                     {
                         span.appendChild(document.createTextNode(','));
@@ -273,14 +273,14 @@ showFeatureSupport
             );
         }
     }
-    
+
     function padBoth(str, length)
     {
         str += '';
         var result = padRight(padLeft(str, length + str.length >> 1), length);
         return result;
     }
-    
+
     function popup(url, name, width, height)
     {
         var left = screenX + 50;
@@ -291,12 +291,12 @@ showFeatureSupport
         var window = open(url, name, features);
         return window;
     }
-    
+
     function setFavicon(href)
     {
         document.querySelector('link[rel="icon"]').href = href;
     }
-    
+
     // In Internet Explorer 10, Mocha will occasionally set the globals $0, $1, $2, $3 and $4 and
     // recognize them as leaked while running unit tests.
     mocha.setup({ globals: ['$0', '$1', '$2', '$3', '$4'], reporter: Matrix, ui: 'bdd' });

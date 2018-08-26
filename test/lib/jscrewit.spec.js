@@ -22,21 +22,21 @@ uneval,
 (function ()
 {
     'use strict';
-    
+
     function decodeEntry(entry)
     {
         var featureObj = getEntryFeature(entry);
         var solution = decodeEntryWithFeature(entry, featureObj);
         return solution;
     }
-    
+
     function decodeEntryWithFeature(entry, featureObj)
     {
         var encoder = getPoolEncoder(featureObj);
         var solution = encoder.resolve(entry.definition);
         return solution;
     }
-    
+
     function describeEncodeTest(compatibility)
     {
         var featureObj = Feature[compatibility];
@@ -110,7 +110,7 @@ uneval,
             );
         }
     }
-    
+
     function describeTests()
     {
         describe(
@@ -175,12 +175,12 @@ uneval,
                             var definition = entry.definition;
                             var solution = encoder.resolve(definition);
                             expect(solution.level)
-                                .toBe(definition.level, 'Solution level mismatch');
+                            .toBe(definition.level, 'Solution level mismatch');
                             verifySolution(solution, complex, emuFeatures);
                         }
                     );
                 }
-                
+
                 JScrewIt.debug.getComplexNames().forEach(test);
             }
         );
@@ -246,7 +246,7 @@ uneval,
                         this.toBe(uneval);
                     }
                 );
-                
+
                 testConstant(
                     'ANY_FUNCTION',
                     function ()
@@ -336,7 +336,7 @@ uneval,
                                 }
                             );
                         }
-                        
+
                         test('none', /^\[]\+\[]$/);
                         test('call', /\(\)\(\)$/);
                         test('eval', /\(\)$/);
@@ -359,7 +359,7 @@ uneval,
                                 }
                             );
                         }
-                        
+
                         it(
                             'none',
                             function ()
@@ -386,7 +386,7 @@ uneval,
                                     var replacement = '!![]' + repeat('+!![]', digit - 1);
                                     return replacement;
                                 }
-                                
+
                                 function test(description, input, expectedPattern, expectedValue)
                                 {
                                     it(
@@ -411,12 +411,12 @@ uneval,
                                         }
                                     );
                                 }
-                                
+
                                 var ASTERISK_REPLACEMENT =
                                     (function ()
                                     {
                                         var DEPTH = 13;
-                                        
+
                                         var replacement =
                                             repeat('(?:[+!]|[([]', DEPTH) +
                                             '[+!]*' +
@@ -424,7 +424,7 @@ uneval,
                                         return replacement;
                                     }
                                     )();
-                                
+
                                 // General
                                 test('an empty script', ';\n', '');
                                 test(
@@ -447,12 +447,12 @@ uneval,
                                 test('empty arrays', '[]', '[]');
                                 test('singleton arrays', '[0]', '[0]');
                                 test('sums', '1+1', '1+(1)');
-                                
+
                                 // Boolean and undefined literals
                                 test('false', 'false', '![]');
                                 test('true', 'true', '!![]');
                                 test('undefined', 'undefined', '[][[]]');
-                                
+
                                 // Numeric expressions
                                 test('Infinity', 'Infinity', '+(*)', Infinity);
                                 test('NaN', 'NaN', '+[![]]');
@@ -533,10 +533,10 @@ uneval,
                                 test('-Infinity', '-Infinity', '+(*)', -Infinity);
                                 test('-0', '-0', '+(*+(0))', -0);
                                 test('-NaN', '-NaN', '+[![]]');
-                                
+
                                 // Arrays
                                 test('nested arrays', '[[0]]', '[[0]]');
-                                
+
                                 // Operations
                                 test('indexers', 'false[+x]', '(![])[+*]');
                                 test('undefined indexers', '0[undefined]', '(0)[[][[]]]');
@@ -554,7 +554,7 @@ uneval,
                                     '*(*)()(*)',
                                     '%25%5E'
                                 );
-                                
+
                                 // Modifiers
                                 test('modified constants', '!-0', '!![]');
                                 test('modified strings', '+"false"', '+(![]+[])');
@@ -574,21 +574,21 @@ uneval,
                                     '-+ +-!!!-!!+ ++!+""[0]++',
                                     '+!++!([]+[])[0]++'
                                 );
-                                
+
                                 // Groupings
                                 test(
                                     'superfluous grouping parentheses',
                                     '(((a)())([([])])[(+(1)-(+2))].b)',
                                     '*(*)()()([[]])[1+(+*)][*]'
                                 );
-                                
+
                                 // Separators
                                 test(
                                     'superfluous separators',
                                     ';a ( ) ( ( [ [ ] ] ) ) [ + 1 - + 2 ] . b;',
                                     '*(*)()()([[]])[1+(+*)][*]'
                                 );
-                                
+
                                 // Concatenations
                                 test(
                                     'concatenations of a modified concatenation',
@@ -602,20 +602,20 @@ uneval,
                                     '(![]+[])[0]+[]',
                                     'f'
                                 );
-                                
+
                                 // Sums
                                 test('dissociable sums', '(0+1)+2', '0+(1)+(2)');
                                 test('undissociable sums', '0+(1+2)', '0+(1+(2))');
                                 test('sums of modified sums', '0+(+(1+2))', '0+(+(1+(2)))');
-                                
+
                                 // Subtractions
                                 test('string minuhends', '"false" - - 1', '+(![]+[])+(1)');
                                 test('', '1+1-(-1)', '1+(1)+(1)');
-                                
+
                                 // Pre-increments
                                 test('pre-incremented call expression', '++false()', '++(![])()');
                                 test('pre-incremented left-hand expression', '++[][0]', '++[][0]');
-                                
+
                                 // Post-increments
                                 test('post-increments', '[0][0]++', '[0][0]++');
                                 test(
@@ -644,7 +644,7 @@ uneval,
                                     '[0][0]+++*',
                                     -1
                                 );
-                                
+
                                 // Limits
                                 var str = nestedBrackets(1000);
                                 test('deep nestings', str, str);
@@ -670,7 +670,7 @@ uneval,
                                         }
                                     );
                                 }
-                                
+
                                 test('the Mongolian vowel separator', '\u180e');
                                 test('missing dots in properties of decimal literals', '0.f');
                                 test('octal literals', '0o42');
@@ -775,7 +775,7 @@ uneval,
                         );
                     }
                 );
-                
+
                 it(
                     'encodes undefined for missing parameter',
                     function ()
@@ -1100,7 +1100,7 @@ uneval,
                         expect(output3).toBeUndefined();
                     }
                 );
-                
+
                 describe(
                     'returns correct JSFuck with',
                     function ()
@@ -1119,7 +1119,7 @@ uneval,
                                 }
                             );
                         }
-                        
+
                         var input = 'ABC';
                         var inputData = Object(input);
                         test('createParseIntArgDefault', ['ARRAY_ITERATOR', 'ATOB']);
@@ -1157,7 +1157,7 @@ uneval,
                                 }
                             );
                         }
-                        
+
                         test('with an empty script', '');
                         test('with a call operation', '""[0]()');
                         test('with a param-call operation', '""(0)[""]');
@@ -1169,7 +1169,7 @@ uneval,
                         test('with a sum of modified sums', 'a+(+(b+c))');
                     }
                 );
-                
+
                 it(
                     'optimizes clusters',
                     function ()
@@ -1227,7 +1227,7 @@ uneval,
                         expect(actual).toBe(expected);
                     }
                 );
-                
+
                 describe(
                     'supports bridging',
                     function ()
@@ -1241,7 +1241,8 @@ uneval,
                             startFS,
                             endFS,
                             startSBFS,
-                            endSBFS)
+                            endSBFS
+                        )
                         {
                             function fn()
                             {
@@ -1283,10 +1284,10 @@ uneval,
                                     }
                                 );
                             }
-                            
+
                             describe('with "' + expr + '"', fn);
                         }
-                        
+
                         var encoder = JScrewIt.debug.createEncoder(['FILL', 'NO_IE_SRC']);
                         test(
                             ',0',
@@ -1374,7 +1375,7 @@ uneval,
                         );
                     }
                 );
-                
+
                 it(
                     'returns undefined for too complex input',
                     function ()
@@ -1392,7 +1393,7 @@ uneval,
             {
                 var encoder = JScrewIt.debug.createEncoder();
                 encoder.replaceString = Function();
-                
+
                 function debugReplacer(input)
                 {
                     var result =
@@ -1402,14 +1403,14 @@ uneval,
                         };
                     return result;
                 }
-                
+
                 JScrewIt.debug.defineConstant(encoder, 'A', 'FILL');
                 JScrewIt.debug.defineConstant(encoder, 'B', 'C');
                 JScrewIt.debug.defineConstant(encoder, 'C', 'B');
                 JScrewIt.debug.defineConstant(encoder, 'D', '?');
                 JScrewIt.debug.defineConstant(encoder, 'E', '"\\xx"');
                 JScrewIt.debug.defineConstant(encoder, 'F', '"too complex"');
-                
+
                 it(
                     'circular reference',
                     function ()
@@ -1590,7 +1591,7 @@ uneval,
                                     }
                                     return maxLength;
                                 }
-                                
+
                                 it(
                                     'returns correct JSFuck',
                                     function ()
@@ -1628,14 +1629,14 @@ uneval,
             }
         );
     }
-    
+
     function emuIt(description, featureObj, fn)
     {
         var emuFeatures = getEmuFeatureNames(featureObj);
         if (emuFeatures)
             it(description, fn.bind(null, emuFeatures));
     }
-    
+
     function getEmuFeatureNames(featureObj)
     {
         if (
@@ -1658,13 +1659,13 @@ uneval,
             );
         return emuFeatureNames;
     }
-    
+
     function getEntryFeature(entry)
     {
         var featureObj = JScrewIt.debug.createFeatureFromMask(entry.mask);
         return featureObj;
     }
-    
+
     function getFunctionName(fn)
     {
         var name = fn.name;
@@ -1672,7 +1673,7 @@ uneval,
             name = /^\s*function ([\w$]+)/.exec(fn)[1];
         return name;
     }
-    
+
     function getPoolEncoder(featureObj)
     {
         var key = featureObj.canonicalNames.join('+');
@@ -1681,7 +1682,7 @@ uneval,
             encoderCache[key] = encoder = JScrewIt.debug.createEncoder(featureObj);
         return encoder;
     }
-    
+
     function init()
     {
         Feature = JScrewIt.Feature;
@@ -1700,7 +1701,7 @@ uneval,
         );
         describeTests();
     }
-    
+
     function isExpected(expected)
     {
         var result =
@@ -1710,13 +1711,13 @@ uneval,
             };
         return result;
     }
-    
+
     function nestedBrackets(count)
     {
         var str = repeat('[', count) + repeat(']', count);
         return str;
     }
-    
+
     function testCharacter(charCode)
     {
         function testAtob()
@@ -1738,7 +1739,7 @@ uneval,
                 );
             }
         }
-        
+
         function testDefault()
         {
             it(
@@ -1772,7 +1773,7 @@ uneval,
                 }
             );
         }
-        
+
         function verifyFEntry(entry, dispositions, varieties)
         {
             var entryFeatureObj = getEntryFeature(entry);
@@ -1798,7 +1799,7 @@ uneval,
                 }
             );
         }
-        
+
         var FB_DISPOSITIONS =
         [
             [],
@@ -1822,9 +1823,9 @@ uneval,
             ['FILL', 'INCR_CHAR', 'NO_FF_SRC'],
             ['FILL', 'INCR_CHAR', 'NO_V8_SRC'],
         ];
-        
+
         var FB_VARIETIES = [['FF_SRC'], ['IE_SRC'], ['V8_SRC']];
-        
+
         var FH_DISPOSITIONS =
         [
             [],
@@ -1836,9 +1837,9 @@ uneval,
             ['FILL', 'INCR_CHAR'],
             ['FILL', 'NO_IE_SRC'],
         ];
-        
+
         var FH_VARIETIES = [['IE_SRC'], ['NO_IE_SRC']];
-        
+
         var char = String.fromCharCode(charCode);
         var desc =
             charCode >= 0x7f && charCode <= 0xa0 || charCode === 0xad ?
@@ -1890,7 +1891,7 @@ uneval,
                         }
                     );
                 }
-                
+
                 var entries = JScrewIt.debug.getCharacterEntries(char);
                 if (entries)
                 {
@@ -1911,7 +1912,7 @@ uneval,
             }
         );
     }
-    
+
     function testConstant(constant, validator)
     {
         describe(
@@ -1945,7 +1946,7 @@ uneval,
             }
         );
     }
-    
+
     function verifySolution(solution, expected, emuFeatures)
     {
         expect(typeof solution).toBe('object');
@@ -1954,7 +1955,7 @@ uneval,
         var actual = emuEval(emuFeatures || [], output) + '';
         expect(actual).toBe(expected);
     }
-    
+
     var Feature;
     var encoderCache = Object.create(null);
     var featureSet;

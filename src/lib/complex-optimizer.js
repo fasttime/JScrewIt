@@ -6,7 +6,7 @@ var getComplexOptimizer;
 {
     var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")"
     var NOOP_OPTIMIZER = { appendLengthOf: noop, optimizeSolutions: noop };
-    
+
     function createOptimizer(
         complex,
         complexSolution,
@@ -21,12 +21,12 @@ var getComplexOptimizer;
             if (char != null && char in charSet)
                 return optimizedCharAppendLength;
         }
-        
+
         function clusterer()
         {
             return complexSolution;
         }
-        
+
         function matchComplex(solutions, start)
         {
             for (var index = 0; index < complexLength; ++index)
@@ -39,7 +39,7 @@ var getComplexOptimizer;
             }
             return true;
         }
-        
+
         function optimizeSolutions(plan, solutions, bond, forceString)
         {
             for (var index = 0, limit = solutions.length - complexLength; index <= limit; ++index)
@@ -59,12 +59,12 @@ var getComplexOptimizer;
                 }
             }
         }
-        
+
         var complexLength = complex.length;
         var optimizer = { appendLengthOf: appendLengthOf, optimizeSolutions: optimizeSolutions };
         return optimizer;
     }
-    
+
     function createCharSet(charInfos, index)
     {
         var charSet = new Empty();
@@ -73,7 +73,7 @@ var getComplexOptimizer;
             charSet[charInfo.char] = null;
         return charSet;
     }
-    
+
     getComplexOptimizer =
         function (encoder, complex, definition)
         {

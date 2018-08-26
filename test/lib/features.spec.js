@@ -4,11 +4,11 @@
 (function ()
 {
     'use strict';
-    
+
     function testFeatureObj(featureName)
     {
         var featureObj = Feature[featureName];
-        
+
         describe(
             featureName,
             function ()
@@ -117,10 +117,10 @@
             }
         );
     }
-    
+
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Feature = JScrewIt.Feature;
-    
+
     describe(
         'JScrewIt.Feature',
         function ()
@@ -219,7 +219,7 @@
                                     Feature.commonOf.apply(null, expectedFeatureNames);
                                 var expectedFeature = Feature(featureNames);
                                 testExpectations(actualFeature, expectedFeature);
-                                
+
                                 // Web Worker
                                 var actualFeatureWW = actualFeature.restrict('web-worker');
                                 var restrictedFeatures =
@@ -237,7 +237,7 @@
                             }
                         );
                     }
-                    
+
                     function testExpectations(actualFeature, expectedFeature)
                     {
                         var actualElementaryNames = actualFeature.elementaryNames;
@@ -248,7 +248,7 @@
                         expect(actualCanonicalNames).toEqual(expectedCanonicalNames);
                         expect(actualFeature.mask).toEqual(expectedFeature.mask);
                     }
-                    
+
                     it(
                         'DEFAULT',
                         function ()

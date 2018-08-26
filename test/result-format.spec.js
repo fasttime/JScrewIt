@@ -4,7 +4,7 @@
 (function ()
 {
     'use strict';
-    
+
     function describeTests()
     {
         describe(
@@ -16,7 +16,7 @@
                 var sparseSingletonArray = [];
                 sparseSingletonArray.length = 1;
                 var badObj = { toString: throwError };
-                
+
                 test('a number', 1, '1');
                 test('0', 0, '0');
                 test('-0', -0, '-0');
@@ -45,7 +45,7 @@
             }
         );
     }
-    
+
     function test(description, input, expectedValue, expectedValueType, doBefore, doAfter)
     {
         describe(
@@ -78,14 +78,14 @@
             }
         );
     }
-    
+
     function testTypeUnknownObj()
     {
         function callTest(doBefore, doAfter)
         {
             test('a strange object', obj, 'foo', 'an object', doBefore, doAfter);
         }
-        
+
         var obj = new Date();
         obj.toString =
             function ()
@@ -120,15 +120,15 @@
             }
         );
     }
-    
+
     function throwError()
     {
         throw Error();
     }
-    
+
     var formatValue;
     var formatValueType;
-    
+
     if (typeof module !== 'undefined')
     {
         require('expectations');

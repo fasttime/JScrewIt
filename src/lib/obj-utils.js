@@ -30,7 +30,7 @@ var object_getOwnPropertyDescriptor;
     array_prototype_forEach = Array.prototype.forEach;
     array_prototype_map     = Array.prototype.map;
     array_prototype_push    = Array.prototype.push;
-    
+
     assignNoEnum =
         function (target, source)
         {
@@ -47,7 +47,7 @@ var object_getOwnPropertyDescriptor;
             object_defineProperties(target, descriptors);
             return target;
         };
-    
+
     createConstructor =
         function (prototype)
         {
@@ -55,7 +55,7 @@ var object_getOwnPropertyDescriptor;
             constructor.prototype = prototype;
             return constructor;
         };
-    
+
     esToString =
         function (arg)
         {
@@ -64,15 +64,15 @@ var object_getOwnPropertyDescriptor;
             var str = String(arg);
             return str;
         };
-    
+
     json_parse      = JSON.parse;
     json_stringify  = JSON.stringify;
-    
+
     math_abs    = Math.abs;
     math_max    = Math.max;
     math_min    = Math.min;
     math_pow    = Math.pow;
-    
+
     noProto =
         function (obj)
         {
@@ -85,16 +85,16 @@ var object_getOwnPropertyDescriptor;
             );
             return result;
         };
-    
+
     noop = Function();
-    
+
     object_create                   = Object.create;
     object_defineProperties         = Object.defineProperties;
     object_defineProperty           = Object.defineProperty;
     object_freeze                   = Object.freeze;
     object_getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
     object_keys                     = Object.keys;
-    
+
     Empty = createConstructor(object_create(null));
 }
 )();

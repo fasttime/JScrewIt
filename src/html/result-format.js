@@ -1,7 +1,7 @@
 (function (root)
 {
     'use strict';
-    
+
     function formatItem(value)
     {
         var text;
@@ -25,7 +25,7 @@
         { }
         return text;
     }
-    
+
     function getStringTag(value)
     {
         var str;
@@ -40,7 +40,7 @@
         var strTag = str.slice(8, -1);
         return strTag;
     }
-    
+
     root.formatValue =
         function (value)
         {
@@ -58,7 +58,7 @@
                 text = formatItem(value);
             return text;
         };
-    
+
     root.formatValueType =
         function (value)
         {

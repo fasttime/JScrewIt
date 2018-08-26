@@ -52,7 +52,7 @@
     "jsdoc-to-markdown": "~3.0.0",
     "mocha": "~3.4.2",
     "mocha-matrix": "~0.1.1",
-    "progress": "~2.0.0",
+    "progress": "~1.1.8",
     "proxyquire": "~1.8.0",
     "run-sequence": "~1.2.2"
   }

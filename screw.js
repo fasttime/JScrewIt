@@ -72,7 +72,7 @@ function prompt()
 (function ()
 {
     var cli = require('./tools/cli');
-    
+
     var command;
     try
     {
@@ -93,13 +93,13 @@ function prompt()
         printVersion();
         return;
     }
-    
+
     var inputFileName   = command.inputFileName;
     var outputFileName  = command.outputFileName;
     var options         = command.options;
-    
+
     var JScrewIt = require('./lib/jscrewit');
-    
+
     if (inputFileName == null)
     {
         var tryEncode =
@@ -139,7 +139,7 @@ function prompt()
     {
         var fs = require('fs');
         var timeUtils = require('./tools/time-utils');
-        
+
         var input;
         var output;
         var encodingTime;

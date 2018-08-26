@@ -25,7 +25,7 @@ var createClusteringPlan;
         if (this.maxLength < length)
             this.maxLength = length;
     }
-    
+
     function compareClustersByQuality(cluster1, cluster2)
     {
         var diff =
@@ -34,13 +34,13 @@ var createClusteringPlan;
             compareClustersByStart(cluster2, cluster1);
         return diff;
     }
-    
+
     function compareClustersByStart(cluster1, cluster2)
     {
         var diff = cluster2.start - cluster1.start;
         return diff;
     }
-    
+
     function conclude()
     {
         var clusters    = this.clusters.sort(compareClustersByQuality);
@@ -53,13 +53,13 @@ var createClusteringPlan;
         bestClusters.sort(compareClustersByStart);
         return bestClusters;
     }
-    
+
     function getOrCreateStartLink(startLinks, start)
     {
         var startLink = startLinks[start] || (startLinks[start] = []);
         return startLink;
     }
-    
+
     function pickBestCluster(startLinks, clusters, maxLength)
     {
         var cluster;
@@ -72,7 +72,7 @@ var createClusteringPlan;
             }
         }
     }
-    
+
     function unlinkClusters(startLinks, maxLength, cluster)
     {
         var startLink;
@@ -99,7 +99,7 @@ var createClusteringPlan;
             }
         }
     }
-    
+
     function unlinkClustersFromLength(startLink, fromLength)
     {
         for (var length = startLink.length; length-- > fromLength;)
@@ -109,7 +109,7 @@ var createClusteringPlan;
                 delete cluster.saving;
         }
     }
-    
+
     createClusteringPlan =
         function ()
         {

@@ -31,14 +31,14 @@ var expressParse;
         op.type = 'get';
         appendOp(parseInfo, op);
     }
-    
+
     function appendOp(parseInfo, op)
     {
         var opsStack = parseInfo.opsStack;
         var ops = opsStack[opsStack.length - 1];
         ops.push(op);
     }
-    
+
     function appendTerm(parseInfo, term)
     {
         var unit = popUnit(parseInfo);
@@ -78,7 +78,7 @@ var expressParse;
         pushUnit(parseInfo, unit);
         return parsePrimaryExpr;
     }
-    
+
     function applyMod(unit, mod)
     {
         if (!unit.mod && 'value' in unit && unit.arithmetic && !unit.pmod)
@@ -113,7 +113,7 @@ var expressParse;
             unit.arithmetic = true;
         }
     }
-    
+
     function defaultReadIdentifierData(parseInfo)
     {
         var rawIdentifier = read(parseInfo, rawIdentifierRegExp);
@@ -127,19 +127,19 @@ var expressParse;
             }
         }
     }
-    
+
     function escapeMod(mod)
     {
         var escapedMod = mod.replace(/\+\+/g, '#');
         return escapedMod;
     }
-    
+
     function evalExpr(expr)
     {
         var value = Function('return ' + expr)();
         return value;
     }
-    
+
     function finalizeArrayElement(unit, parseInfo)
     {
         if (finalizeUnit(unit) && readSquareBracketRight(parseInfo))
@@ -148,7 +148,7 @@ var expressParse;
             return parseNextOp;
         }
     }
-    
+
     function finalizeGroup(unit, parseInfo)
     {
         if (readParenthesisRight(parseInfo))
@@ -157,7 +157,7 @@ var expressParse;
             return parseNextOp;
         }
     }
-    
+
     function finalizeIndexer(op, parseInfo)
     {
         if (finalizeUnit(op) && readSquareBracketRight(parseInfo))
@@ -166,7 +166,7 @@ var expressParse;
             return parseNextOp;
         }
     }
-    
+
     function finalizeParamCall(op, parseInfo)
     {
         if (finalizeUnit(op) && readParenthesisRight(parseInfo))
@@ -176,7 +176,7 @@ var expressParse;
             return parseNextOp;
         }
     }
-    
+
     function finalizeUnit(unit)
     {
         var mod = unit.mod || '';
@@ -186,7 +186,7 @@ var expressParse;
             return unit;
         }
     }
-    
+
     function isReturnableIdentifier(identifier, escaped)
     {
         var returnable =
@@ -194,13 +194,13 @@ var expressParse;
             (!escaped || INESCAPABLE_WORDS.indexOf(identifier) < 0);
         return returnable;
     }
-    
+
     function isUndecoratedUnit(unit)
     {
         var undecorated = !(unit.mod || unit.ops.length);
         return undecorated;
     }
-    
+
     function joinMods(mod1, mod2, trimTrailingPlus)
     {
         var mod =
@@ -215,26 +215,26 @@ var expressParse;
             mod = mod.replace(/\+$/, '');
         return mod;
     }
-    
+
     function makeRegExp(richPattern)
     {
         var pattern = '^(?:' + replacePattern(richPattern) + ')';
         var regExp = RegExp(pattern);
         return regExp;
     }
-    
+
     function newOps(parseInfo, unit)
     {
         pushNewOps(parseInfo);
         pushUnit(parseInfo, unit);
     }
-    
+
     function parse(parseInfo)
     {
         for (var next = parseUnit; typeof next === 'function'; next = next(parseInfo));
         return next;
     }
-    
+
     function parseNextOp(parseInfo)
     {
         if (readParenthesisLeft(parseInfo))
@@ -288,7 +288,7 @@ var expressParse;
         var next = appendTerm(parseInfo, unit);
         return next;
     }
-    
+
     function parsePrimaryExpr(parseInfo)
     {
         var strExpr = read(parseInfo, strRegExp);
@@ -331,11 +331,11 @@ var expressParse;
             }
         }
     }
-    
+
     function parseUnit(parseInfo)
     {
         var MAX_PARSABLE_NESTINGS = 1000;
-        
+
         if (parseInfo.finalizerStack.length <= MAX_PARSABLE_NESTINGS)
         {
             var mod = readMod(parseInfo, '');
@@ -344,51 +344,51 @@ var expressParse;
             return parsePrimaryExpr;
         }
     }
-    
+
     function popFinalizer(parseInfo)
     {
         var ret = parseInfo.finalizerStack.pop();
         return ret;
     }
-    
+
     function popMod(parseInfo)
     {
         var mod = parseInfo.modStack.pop();
         return mod;
     }
-    
+
     function popOps(parseInfo)
     {
         var ops = parseInfo.opsStack.pop();
         return ops;
     }
-    
+
     function popUnit(parseInfo)
     {
         var unit = parseInfo.unitStack.pop();
         return unit;
     }
-    
+
     function pushFinalizer(parseInfo, finalizer)
     {
         parseInfo.finalizerStack.push(finalizer);
     }
-    
+
     function pushMod(parseInfo, mod)
     {
         parseInfo.modStack.push(mod);
     }
-    
+
     function pushNewOps(parseInfo)
     {
         parseInfo.opsStack.push([]);
     }
-    
+
     function pushUnit(parseInfo, unit)
     {
         parseInfo.unitStack.push(unit);
     }
-    
+
     function read(parseInfo, regExp)
     {
         var data = parseInfo.data;
@@ -405,7 +405,7 @@ var expressParse;
             return match;
         }
     }
-    
+
     function readMod(parseInfo, mod)
     {
         var newMod;
@@ -413,48 +413,48 @@ var expressParse;
             mod = joinMods(mod, escapeMod(newMod));
         return mod;
     }
-    
+
     function readParenthesisLeft(parseInfo)
     {
         var match = read(parseInfo, /^\(/);
         return match;
     }
-    
+
     function readParenthesisRight(parseInfo)
     {
         var match = read(parseInfo, /^\)/);
         return match;
     }
-    
+
     function readSeparatorOrColon(parseInfo)
     {
         parseInfo.data = parseInfo.data.replace(separatorOrColonRegExp, '');
     }
-    
+
     function readSquareBracketLeft(parseInfo)
     {
         var match = read(parseInfo, /^\[/);
         return match;
     }
-    
+
     function readSquareBracketRight(parseInfo)
     {
         var match = read(parseInfo, /^]/);
         return match;
     }
-    
+
     function replaceAndGroupToken(unused, tokenName)
     {
         var replacement = '(?:' + replaceToken(tokenName) + ')';
         return replacement;
     }
-    
+
     function replacePattern(richPattern)
     {
         var pattern = richPattern.replace(/#(\w+)/g, replaceAndGroupToken);
         return pattern;
     }
-    
+
     function replaceToken(tokenName)
     {
         var replacement = tokenCache[tokenName];
@@ -465,7 +465,7 @@ var expressParse;
         }
         return replacement;
     }
-    
+
     function stringifyUnit(unit)
     {
         var inArray = false;
@@ -480,13 +480,13 @@ var expressParse;
             inArray = true;
         }
     }
-    
+
     function unescapeMod(mod)
     {
         var unescapedMod = mod.replace(/#/g, '++');
         return unescapedMod;
     }
-    
+
     var tokens =
     {
         ConstIdentifier:
@@ -514,12 +514,12 @@ var expressParse;
         UnicodeEscapeSequence:
             '\\\\u#HexDigit{4}',
     };
-    
+
     var tokenCache = new Empty();
-    
+
     // Reserved words and that cannot be written with escape sequences.
     var INESCAPABLE_WORDS = ['false', 'null', 'true'];
-    
+
     // This list includes reserved words and identifiers that would cause a change in a script's
     // behavior when placed after a return statement inside a Function invocation.
     // Unwanted changes include producing a syntax error where none is expected or a difference in
@@ -541,13 +541,13 @@ var expressParse;
         'with',         // : with(x);
         'yield',        // may be an identifier in non-strict mode
     ];
-    
+
     var constValueRegExp        = makeRegExp('(?:#NumericLiteral|#ConstIdentifier)');
     var rawIdentifierRegExp     = makeRegExp('(?:[$\\w]|#UnicodeEscapeSequence)+');
     var separatorOrColonRegExp  = makeRegExp('(?:#Separator|;)*');
     var separatorRegExp         = makeRegExp('#Separator*');
     var strRegExp               = makeRegExp('#SingleQuotedString|#DoubleQuotedString');
-    
+
     expressParse =
         function (input)
         {

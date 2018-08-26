@@ -8,14 +8,14 @@ function createFigurator(startValues, joiner)
         figure.sortLength = sortLength;
         return figure;
     }
-    
+
     function createPart(value, sortLength, isJoiner)
     {
         var part = createFigure(value, sortLength);
         part.isJoiner = isJoiner;
         return part;
     }
-    
+
     function figurator(index)
     {
         while (figures.length <= index)
@@ -28,7 +28,7 @@ function createFigurator(startValues, joiner)
         var figure = figures[index];
         return figure;
     }
-    
+
     function growFigures(part)
     {
         var oldFigureSortLength = currentSortLength - part.sortLength;
@@ -44,7 +44,7 @@ function createFigurator(startValues, joiner)
             );
         }
     }
-    
+
     function pushFigure(value, sortLength, part)
     {
         if (!(value in usedValueSet))
@@ -67,7 +67,7 @@ function createFigurator(startValues, joiner)
             }
         }
     }
-    
+
     var PARTS =
     [
         createPart('',          0,                          false),
@@ -98,7 +98,7 @@ function createFigurator(startValues, joiner)
         createPart('8',         42,                         true),
         createPart('9',         47,                         true),
     ];
-    
+
     var currentSortLength = 0;
     var figureList = [];
     var figures = [];
@@ -115,6 +115,6 @@ function createFigurator(startValues, joiner)
                     return true;
             }
         );
-    
+
     return figurator;
 }

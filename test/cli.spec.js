@@ -10,7 +10,7 @@ describe(
     function ()
     {
         var exec = require('child_process').exec;
-        
+
         function doAssert(actual, expected)
         {
             if (expected instanceof RegExp)
@@ -18,7 +18,7 @@ describe(
             else
                 assert.strictEqual(actual, expected);
         }
-        
+
         function test(description, command, expectedStdout, expectedStderr)
         {
             it(
@@ -38,7 +38,7 @@ describe(
                 }
             );
         }
-        
+
         test(
             'shows the help message with option "--help"',
             'node ./screw.js --help',
@@ -61,7 +61,7 @@ describe(
             'shows an error message when the input file does not exist',
             'node ./screw.js ""',
             '',
-            /^ENOENT\b. no such file or directory\b.* ''\n$/
+            /^ENOENT\b. no such file or directory\b.*\n$/
         );
     }
 );
@@ -82,7 +82,7 @@ describe(
                 }
             );
         }
-        
+
         function testError(params, error)
         {
             it(
@@ -100,7 +100,7 @@ describe(
                 }
             );
         }
-        
+
         test(
             [],
             {
@@ -167,8 +167,8 @@ describe(
                 options: { features: ['ATOB', 'SELF'] }
             }
         );
-        testError(['-f'], 'option "-f" requires an argument');
-        testError(['--features'], 'option "--features" requires an argument');
+        testError(['-f'], Error('option "-f" requires an argument'));
+        testError(['--features'], Error('option "--features" requires an argument'));
         test(
             ['-r', 'express'],
             {
@@ -185,8 +185,8 @@ describe(
                 options: { runAs: 'express' }
             }
         );
-        testError(['-r'], 'option "-r" requires an argument');
-        testError(['--run-as'], 'option "--run-as" requires an argument');
+        testError(['-r'], Error('option "-r" requires an argument'));
+        testError(['--run-as'], Error('option "--run-as" requires an argument'));
         test(
             ['-t'],
             {
@@ -321,7 +321,7 @@ describe(
             perfInfoList.name = name;
             return perfInfoList;
         }
-        
+
         it(
             'works as expected',
             function ()

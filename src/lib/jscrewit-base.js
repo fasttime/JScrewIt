@@ -106,7 +106,7 @@ var setUp;
      *
      * Also, an out of memory condition may occur when processing very large data.
      */
-    
+
     function encode(input, options)
     {
         input = esToString(input);
@@ -127,13 +127,13 @@ var setUp;
         var output = encoder.exec(input, wrapper, coderNames, perfInfo);
         return output;
     }
-    
+
     function filterRunAs(input, name)
     {
         var CODER_NAMES_BOTH    = ['text', 'express'];
         var CODER_NAMES_EXPRESS = ['express'];
         var CODER_NAMES_TEXT    = ['text'];
-        
+
         if (input === undefined)
             return [wrapWithEval, CODER_NAMES_BOTH];
         switch (input += '')
@@ -153,7 +153,7 @@ var setUp;
         }
         throw new Error('Invalid value for option ' + name);
     }
-    
+
     function getEncoder(features)
     {
         var mask = getValidFeatureMask(features);
@@ -162,28 +162,28 @@ var setUp;
             encoders[mask] = encoder = new Encoder(mask);
         return encoder;
     }
-    
+
     var encoders = new Empty();
-    
+
     /** @namespace JScrewIt */
     JScrewIt = assignNoEnum({ }, { Feature: Feature, encode: encode });
-    
+
     getValidFeatureMask =
         function (features)
         {
             var mask = features !== undefined ? validMaskFromArrayOrStringOrFeature(features) : 0;
             return mask;
         };
-    
+
     setUp =
         function (self)
         {
             if (self != null)
                 self.JScrewIt = JScrewIt;
         };
-    
+
     setUp(typeof self !== 'undefined' ? /* istanbul ignore next */ self : null);
-    
+
     // istanbul ignore else
     if (typeof module !== 'undefined')
         module.exports = JScrewIt;

@@ -4,9 +4,9 @@
 (function ()
 {
     'use strict';
-    
+
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
-    
+
     describe(
         'JScrewIt.debug.trimJS',
         function ()

@@ -4,14 +4,14 @@
 (function ()
 {
     'use strict';
-    
+
     function arrayFilledWith(element, length)
     {
         var array = Array(length);
         while (length) array[--length] = element;
         return array;
     }
-    
+
     function checkLength(toStringReplacementLength, solution, expected)
     {
         var toStringReplacement = repeat('*', toStringReplacementLength);
@@ -19,7 +19,7 @@
         var actual = optimizer.appendLengthOf(solution);
         expect(actual).toBe(expected);
     }
-    
+
     function createOptimizer(toStringReplacement)
     {
         if (toStringReplacement === undefined)
@@ -34,18 +34,18 @@
         var optimizer = JScrewIt.debug.getToStringOptimizer(encoder);
         return optimizer;
     }
-    
+
     function nextMultipleOf(minValue, divisor)
     {
         var nextMultiple = Math.ceil(minValue / divisor) * divisor;
         return nextMultiple;
     }
-    
+
     var EXPECTED_REPLACEMENT =
         '(+(!![]+!![]+[!![]+!![]+!![]]+(+!![])))["toString"](!![]+!![]+[+[]])';
-    
+
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
-    
+
     describe(
         'Optimizer',
         function ()
@@ -74,7 +74,7 @@
                             expect(actual).toBeUndefined();
                         }
                     );
-                    
+
                     describe(
                         'optimizes',
                         function ()
@@ -110,7 +110,7 @@
                                     }
                                 );
                             }
-                            
+
                             test('b', 64, 15);
                             test('c', 64, 15);
                             test('g', 54, 15);
@@ -129,13 +129,13 @@
                     );
                 }
             );
-            
+
             describe(
                 '#optimizeSolutions',
                 function ()
                 {
                     var optimizeSolutions = JScrewIt.debug.optimizeSolutions;
-                    
+
                     it(
                         'optimizes an integral cluster without bonding',
                         function ()

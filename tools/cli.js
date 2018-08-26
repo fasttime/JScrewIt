@@ -97,7 +97,7 @@ function parseCommandLine(argv)
             throw Error('option ' + quote(arg) + ' requires an argument');
         options.features = arg2.trim().split(/(?:\s+|\s*,\s*)/);
     }
-    
+
     function parseFlag(char)
     {
         switch (char)
@@ -122,7 +122,7 @@ function parseCommandLine(argv)
             throw Error('unrecognized flag ' + quote(char));
         }
     }
-    
+
     function parseRunAs()
     {
         var arg2 = argv[++index];
@@ -130,14 +130,14 @@ function parseCommandLine(argv)
             throw Error('option ' + quote(arg) + ' requires an argument');
         options.runAs = arg2;
     }
-    
+
     var inputFileName;
     var outputFileName;
     var options = { };
     var arg;
     var express;
     var wrapMode;
-    
+
     for (var index = 2; index < argv.length; ++index)
     {
         arg = argv[index];

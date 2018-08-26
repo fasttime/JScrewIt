@@ -4,59 +4,67 @@
 (function ()
 {
     'use strict';
-    
+
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
-    
-    describe(
+    var Solution = JScrewIt.debug.Solution;
+
+    describe
+    (
         'Solution#hasOuterPlus is',
         function ()
         {
-            it(
+            it
+            (
                 'true for leading plus',
                 function ()
                 {
-                    var solution = JScrewIt.debug.createSolution('+[]');
+                    var solution = new Solution('+[]');
                     expect(solution.hasOuterPlus).toBe(true);
                 }
             );
-            it(
+            it
+            (
                 'true for middle plus',
                 function ()
                 {
-                    var solution = JScrewIt.debug.createSolution('[]+[]');
+                    var solution = new Solution('[]+[]');
                     expect(solution.hasOuterPlus).toBe(true);
                 }
             );
-            it(
+            it
+            (
                 'false for inner plus',
                 function ()
                 {
-                    var solution = JScrewIt.debug.createSolution('(+[])');
+                    var solution = new Solution('(+[])');
                     expect(solution.hasOuterPlus).toBe(false);
                 }
             );
-            it(
+            it
+            (
                 'false for leading !+',
                 function ()
                 {
-                    var solution = JScrewIt.debug.createSolution('!+[]');
+                    var solution = new Solution('!+[]');
                     expect(solution.hasOuterPlus).toBe(false);
                 }
             );
-            it(
+            it
+            (
                 'cached upon creation',
                 function ()
                 {
-                    var solution = JScrewIt.debug.createSolution('', undefined, true);
+                    var solution = new Solution('', undefined, true);
                     expect(solution.hasOwnProperty('hasOuterPlus')).toBeTruthy();
                     expect(solution.hasOuterPlus).toBe(true);
                 }
             );
-            it(
+            it
+            (
                 'cached upon first access',
                 function ()
                 {
-                    var solution = JScrewIt.debug.createSolution('+');
+                    var solution = new Solution('+');
                     expect(solution.hasOwnProperty('hasOuterPlus')).toBeFalsy();
                     void solution.hasOuterPlus;
                     expect(solution.hasOwnProperty('hasOuterPlus')).toBeTruthy();

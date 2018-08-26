@@ -6,32 +6,32 @@
 function createButton(text)
 {
     'use strict';
-    
+
     function deactivate()
     {
         button.className = 'button focusable';
         setCaptureListeners('off');
     }
-    
+
     function handleClick(evt)
     {
         if (isDisabled())
             evt.stopImmediatePropagation();
         evt.preventDefault();
     }
-    
+
     function handleDocumentMousemove(evt)
     {
         if (evt.target !== button && isActive()) // capture lost
             deactivate();
     }
-    
+
     function handleDocumentMouseout(evt)
     {
         if (!evt.relatedTarget && isActive()) // capture lost
             deactivate();
     }
-    
+
     function handleKeydown(evt)
     {
         if (evt.keyCode === 13) // Enter
@@ -40,7 +40,7 @@ function createButton(text)
             evt.preventDefault();
         }
     }
-    
+
     function handleKeyup(evt)
     {
         if (evt.keyCode === 32) // Space
@@ -49,7 +49,7 @@ function createButton(text)
             evt.preventDefault();
         }
     }
-    
+
     function handleMousedown(evt)
     {
         if (evt.which === 1 && !isDisabled() && !isActive())
@@ -59,7 +59,7 @@ function createButton(text)
             setCaptureListeners('on');
         }
     }
-    
+
     function handleMouseup(evt)
     {
         if (evt.which === 1 && isActive())
@@ -68,19 +68,19 @@ function createButton(text)
             deactivate();
         }
     }
-    
+
     function isActive()
     {
         var active = /\bactive\b/.test(button.className);
         return active;
     }
-    
+
     function isDisabled()
     {
         var disabled = !hasTabindex(button);
         return disabled;
     }
-    
+
     function setCaptureListeners(methodName)
     {
         var method = art[methodName];
@@ -90,7 +90,7 @@ function createButton(text)
             method('mouseout', handleDocumentMouseout)
         );
     }
-    
+
     var button =
         art(
             'SPAN',

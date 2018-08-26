@@ -4,7 +4,7 @@
 (function ()
 {
     'use strict';
-    
+
     function createOptimizer(appendLength, level)
     {
         if (appendLength === undefined)
@@ -27,7 +27,7 @@
         var optimizer = JScrewIt.debug.getComplexOptimizer(encoder, 'feet');
         return optimizer;
     }
-    
+
     var EXPECTED_REPLACEMENT = '"feet"';
     var LEVEL_OBJECT = 0;
     var SOLUTIONS =
@@ -37,9 +37,9 @@
         t: { appendLength: 15, char: 't' },
         u: { appendLength: 17, char: 'u' },
     };
-    
+
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
-    
+
     describe(
         'Optimizer',
         function ()
@@ -74,7 +74,7 @@
                     );
                 }
             );
-            
+
             describe(
                 '#optimizeSolutions',
                 function ()
@@ -84,7 +84,7 @@
                         testDo(description, opt);
                         testDont(description, opt);
                     }
-                    
+
                     function testDo(description, opt)
                     {
                         it(
@@ -122,7 +122,7 @@
                             }
                         );
                     }
-                    
+
                     function testDont(description, opt)
                     {
                         it(
@@ -154,7 +154,7 @@
                             }
                         );
                     }
-                    
+
                     test(
                         'a string integral cluster without bonding or string forcing',
                         { complexAppendLength: 80 }

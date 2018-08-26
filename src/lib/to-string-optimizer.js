@@ -1,4 +1,4 @@
-/* global LEVEL_STRING, Empty, createSolution, replaceMultiDigitNumber */
+/* global LEVEL_STRING, Empty, Solution, replaceMultiDigitNumber */
 
 var getToStringOptimizer;
 
@@ -14,7 +14,7 @@ var getToStringOptimizer;
     //
     // The leading append plus is omitted when the optimized cluster is the first element of a
     // group.
-    
+
     var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")"
     var CLUSTER_EXTRA_LENGTHS = [];
     var DECIMAL_DIGIT_MAX_COUNTS = [];
@@ -22,7 +22,7 @@ var getToStringOptimizer;
     var MAX_SAFE_INTEGER = 0x1fffffffffffff;
     var MIN_SOLUTION_SPAN = 2;
     var RADIX_REPLACEMENTS = [];
-    
+
     function createOptimizer(toStringReplacement)
     {
         function appendLengthOf(solution)
@@ -43,7 +43,7 @@ var getToStringOptimizer;
                 return appendLength;
             }
         }
-        
+
         function createClusterer(decimalReplacement, radixReplacement)
         {
             var clusterer =
@@ -52,19 +52,19 @@ var getToStringOptimizer;
                     var replacement =
                         '(+(' + decimalReplacement + '))[' + toStringReplacement + '](' +
                         radixReplacement + ')';
-                    var solution = createSolution(replacement, LEVEL_STRING, false);
+                    var solution = new Solution(replacement, LEVEL_STRING, false);
                     return solution;
                 };
             return clusterer;
         }
-        
+
         function isExpensive(solution)
         {
             var char = solution.char;
             var expensive = appendLengthCache[char] <= solution.appendLength;
             return expensive;
         }
-        
+
         function optimizeCluster(plan, start, radix, discreteAppendLength, chars)
         {
             do
@@ -87,7 +87,7 @@ var getToStringOptimizer;
             }
             while (++radix <= MAX_RADIX);
         }
-        
+
         function optimizeClusters(plan, solutions, start, maxSolutionSpan, bond)
         {
             var maxDigitChar = '';
@@ -117,7 +117,7 @@ var getToStringOptimizer;
             }
             while (solutionSpan < maxSolutionSpan);
         }
-        
+
         function optimizeSequence(plan, solutions, start, end, bond)
         {
             for (;; ++start)
@@ -129,7 +129,7 @@ var getToStringOptimizer;
                     break;
             }
         }
-        
+
         function optimizeSolutions(plan, solutions, bond)
         {
             var end;
@@ -153,27 +153,27 @@ var getToStringOptimizer;
                     end = undefined;
             }
         }
-        
+
         // Adding 7 for "+(", ")[", "](" and ")"
         var clusterBaseLength = toStringReplacement.length + 7;
         var appendLengthCache = new Empty();
         var optimizer = { appendLengthOf: appendLengthOf, optimizeSolutions: optimizeSolutions };
         return optimizer;
     }
-    
+
     function getMinRadix(char)
     {
         var minRadix = parseInt(char, MAX_RADIX) + 1;
         return minRadix;
     }
-    
+
     function isClusterable(solution)
     {
         var char = solution.char;
         var clusterable = char != null && /[\da-z]/.test(char);
         return clusterable;
     }
-    
+
     getToStringOptimizer =
         function (encoder)
         {
@@ -181,7 +181,7 @@ var getToStringOptimizer;
             var optimizer = createOptimizer(toStringReplacement);
             return optimizer;
         };
-    
+
     (function ()
     {
         // DECIMAL_MIN_LENGTHS is indexed by decimalDigitMaxCount (the number of digits used to
@@ -206,7 +206,7 @@ var getToStringOptimizer;
             ,
             64, // 1e14
         ];
-        
+
         var minLength = Infinity;
         for (var radix = MAX_RADIX; radix >= 12; --radix)
         {

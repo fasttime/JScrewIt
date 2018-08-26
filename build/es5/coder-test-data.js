@@ -59,7 +59,7 @@ var createAntiRadix4TestString;
     function initAntiRadix4CharCodes()
     {
         var RADIX_4_APPEND_LENGTHS = [6, 8, 12, 17];
-        
+
         var infos = Array(0x10000);
         for (var charCode = 0; charCode < 0x10000; ++charCode)
         {
@@ -77,9 +77,9 @@ var createAntiRadix4TestString;
         );
         antiRadix4CharCodes = infos.map(getCharCodeOf);
     }
-    
+
     var antiRadix4CharCodes;
-    
+
     createAntiRadix4TestString =
         function (variety, length)
         {
@@ -94,26 +94,26 @@ var createAntiRadix4TestString;
 
 module.exports =
 [
-    data(
+    data
+    (
         ['ARRAY_ITERATOR', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
         repeat.bind(null, String.fromCharCode(59999)),
         'byCharCodes'
     ),
-    data(
-        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
+    data
+    (
+        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
         function (length)
         {
             var CHAR_CODES =
-            [
-                49989, 49988, 59989, 37889, 59988, 37888, 38999, 38998, 29989, 38997,
-                37989, 59969, 58889, 57989, 58898
-            ];
+            [49989, 49988, 59989, 37889, 59988, 37888, 38999, 38998, 29989, 38997, 37989];
             var str = repeatToFit(String.fromCharCode.apply(null, CHAR_CODES), length);
             return str;
         },
         'byCharCodesRadix4'
     ),
-    data(
+    data
+    (
         [
             'ARRAY_ITERATOR',
             'ARROW',
@@ -122,7 +122,7 @@ module.exports =
             'FILL',
             'NO_IE_SRC',
             'NO_V8_SRC',
-            'UNEVAL'
+            'UNEVAL',
         ],
         function (length)
         {
@@ -132,42 +132,69 @@ module.exports =
         },
         'byDenseFigures'
     ),
-    data(
+    data
+    (
         ['ARRAY_ITERATOR', 'ATOB', 'FILL', 'NAME', 'NO_IE_SRC', 'NO_V8_SRC', 'UNEVAL'],
         repeat.bind(null, String.fromCharCode(59999)),
         'byDict'
     ),
-    data(
-        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'V8_SRC'],
+    data
+    (
+        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_FF_SRC', 'NO_IE_SRC'],
         createDictTestString.bind(null, 121),
         'byDictRadix3'
     ),
-    data(
-        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'V8_SRC'],
-        createDictTestString.bind(null, 89),
+    data
+    (
+        [
+            'ARROW',
+            'CAPITAL_HTML',
+            'FILL',
+            'FROM_CODE_POINT',
+            'NAME',
+            'NO_FF_SRC',
+            'NO_IE_SRC',
+            'SELF_OBJ',
+        ],
+        createDictTestString.bind(null, 82),
         'byDictRadix4'
     ),
-    data(
-        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'V8_SRC'],
+    data
+    (
+        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_FF_SRC', 'NO_IE_SRC'],
         createDictTestString.bind(null, 129),
         'byDictRadix4AmendedBy1'
     ),
-    data(
-        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'V8_SRC'],
+    data
+    (
+        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_FF_SRC', 'NO_IE_SRC'],
         createInvertedDictTestString.bind(null, 367),
         'byDictRadix4AmendedBy2'
     ),
-    data(
-        ['ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'V8_SRC'],
+    data
+    (
+        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_FF_SRC', 'NO_IE_SRC'],
         createAntiRadix4TestString.bind(null, 479),
         'byDictRadix5AmendedBy2'
     ),
-    data(
-        ['ARROW', 'BARPROP', 'FILL', 'FROM_CODE_POINT', 'NAME', 'NODECONSTRUCTOR', 'V8_SRC'],
+    data
+    (
+        [
+            'ARRAY_ITERATOR',
+            'ARROW',
+            'BARPROP',
+            'FILL',
+            'FROM_CODE_POINT',
+            'NAME',
+            'NODECONSTRUCTOR',
+            'NO_FF_SRC',
+            'NO_IE_SRC',
+        ],
         createAntiRadix4TestString.bind(null, 473),
         'byDictRadix5AmendedBy3'
     ),
-    data(
+    data
+    (
         ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
         createDictTestString.bind(null, 57),
         'bySparseFigures'

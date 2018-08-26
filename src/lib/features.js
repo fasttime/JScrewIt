@@ -48,7 +48,7 @@ var validMaskFromArrayOrStringOrFeature;
             compatible = true;
         return compatible;
     }
-    
+
     function areEqual()
     {
         var mask;
@@ -71,7 +71,7 @@ var validMaskFromArrayOrStringOrFeature;
             );
         return equal;
     }
-    
+
     function checkSelfFeature()
     {
         // self + '' throws an error inside a web worker in Safari 8 and 9.
@@ -87,7 +87,7 @@ var validMaskFromArrayOrStringOrFeature;
         var available = this(str);
         return available;
     }
-    
+
     function commonOf()
     {
         var result;
@@ -108,7 +108,7 @@ var validMaskFromArrayOrStringOrFeature;
             result = null;
         return result;
     }
-    
+
     function completeExclusions(name)
     {
         var info = FEATURE_INFOS[name];
@@ -127,7 +127,7 @@ var validMaskFromArrayOrStringOrFeature;
             );
         }
     }
-    
+
     function completeFeature(name)
     {
         var mask;
@@ -176,13 +176,13 @@ var validMaskFromArrayOrStringOrFeature;
         }
         return mask;
     }
-    
+
     function createEngineFeatureDescription(engine)
     {
         var description = 'Features available in ' + engine + '.';
         return description;
     }
-    
+
     function createFeature(name, description, mask, check, engine, attributes)
     {
         attributes = object_freeze(attributes || { });
@@ -200,7 +200,7 @@ var validMaskFromArrayOrStringOrFeature;
         initMask(featureObj, mask);
         return featureObj;
     }
-    
+
     function featureArrayToMask(array)
     {
         var mask = maskNew();
@@ -213,12 +213,12 @@ var validMaskFromArrayOrStringOrFeature;
         );
         return mask;
     }
-    
+
     function initMask(featureObj, mask)
     {
         object_defineProperty(featureObj, 'mask', { value: object_freeze(mask) });
     }
-    
+
     function isExcludingAttribute(attributeCache, attributeName, featureObjs)
     {
         var result = attributeCache[attributeName];
@@ -235,7 +235,7 @@ var validMaskFromArrayOrStringOrFeature;
         }
         return result;
     }
-    
+
     function maskFromStringOrFeature(arg)
     {
         var mask;
@@ -251,20 +251,20 @@ var validMaskFromArrayOrStringOrFeature;
         }
         return mask;
     }
-    
+
     function registerFeature(name, featureObj)
     {
         var descriptor = { enumerable: true, value: featureObj };
         object_defineProperty(Feature, name, descriptor);
         object_defineProperty(ALL, name, descriptor);
     }
-    
+
     function validateMask(mask)
     {
         if (!isMaskCompatible(mask))
             throw new Error('Incompatible features');
     }
-    
+
     function validMaskFromArguments(args)
     {
         var mask = maskNew();
@@ -289,7 +289,7 @@ var validMaskFromArrayOrStringOrFeature;
             validateMask(mask);
         return mask;
     }
-    
+
     function wrapCheck(check)
     {
         var result =
@@ -300,9 +300,9 @@ var validMaskFromArrayOrStringOrFeature;
             };
         return result;
     }
-    
+
     var ALL = new Empty();
-    
+
     var FEATURE_INFOS =
     {
         ANY_DOCUMENT:
@@ -782,7 +782,7 @@ var validMaskFromArrayOrStringOrFeature;
             excludes: ['DOMWINDOW'],
             attributes: { 'web-worker': 'web-worker-restriction' }
         },
-        
+
         DEFAULT:
         {
             description:
@@ -1254,7 +1254,7 @@ var validMaskFromArrayOrStringOrFeature;
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null }
         }
     };
-    
+
     /**
      * A feature object or name or alias of a predefined feature.
      *
@@ -1263,7 +1263,7 @@ var validMaskFromArrayOrStringOrFeature;
      * @throws {Error}
      * The specified value is neither a feature object nor a name or alias of a predefined feature.
      */
-    
+
     /**
      * An array containing any number of feature objects or names or aliases of predefined features,
      * in no particular order.
@@ -1274,7 +1274,7 @@ var validMaskFromArrayOrStringOrFeature;
      *
      * @throws {Error} The specified features are not compatible with each other.
      */
-    
+
     /**
      * Creates a new feature object from the union of the specified features.
      *
@@ -1330,7 +1330,7 @@ var validMaskFromArrayOrStringOrFeature;
      * incompatible, meaning that they mutually exclude each other, and thus their union cannot be
      * constructed.
      */
-    
+
     Feature =
         function ()
         {
@@ -1339,7 +1339,7 @@ var validMaskFromArrayOrStringOrFeature;
             initMask(featureObj, mask);
             return featureObj;
         };
-    
+
     var FEATURE_PROPS =
     {
         /**
@@ -1363,9 +1363,9 @@ var validMaskFromArrayOrStringOrFeature;
          * featureObj === JScrewIt.Feature.ALL[featureObj.name]
          * ```
          */
-        
+
         ALL: ALL,
-        
+
         /**
          * Determines whether the specified features are compatible with each other.
          *
@@ -1389,9 +1389,9 @@ var validMaskFromArrayOrStringOrFeature;
          * JScrewIt.Feature.areCompatible([JScrewIt.Feature.DEFAULT, JScrewIt.Feature.FILL])
          * ```
          */
-        
+
         areCompatible: areCompatible,
-        
+
         /**
          * Determines whether all of the specified features are equivalent.
          *
@@ -1418,9 +1418,9 @@ var validMaskFromArrayOrStringOrFeature;
          * JScrewIt.Feature.areEqual("DEFAULT", [])
          * ```
          */
-        
+
         areEqual: areEqual,
-        
+
         /**
          * Creates a new feature object equivalent to the intersection of the specified features.
          *
@@ -1448,11 +1448,11 @@ var validMaskFromArrayOrStringOrFeature;
          * var newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
          * ```
          */
-        
+
         commonOf: commonOf
     };
     assignNoEnum(Feature, FEATURE_PROPS);
-    
+
     var FEATURE_PROTO_PROPS =
     {
         /**
@@ -1461,7 +1461,7 @@ var validMaskFromArrayOrStringOrFeature;
          *
          * @member {string[]} JScrewIt.Feature#canonicalNames
          */
-        
+
         get canonicalNames()
         {
             var mask = this.mask;
@@ -1489,7 +1489,7 @@ var validMaskFromArrayOrStringOrFeature;
             var names = object_keys(featureNameSet).sort();
             return names;
         },
-        
+
         /**
          * A short description of this feature object in plain English.
          *
@@ -1498,16 +1498,16 @@ var validMaskFromArrayOrStringOrFeature;
          *
          * @member {string|undefined} JScrewIt.Feature#description
          */
-        
+
         description: undefined,
-        
+
         /**
          * An array of all elementary feature names included in this feature object, without
          * aliases.
          *
          * @member {string[]} JScrewIt.Feature#elementaryNames
          */
-        
+
         get elementaryNames()
         {
             var names = [];
@@ -1522,7 +1522,7 @@ var validMaskFromArrayOrStringOrFeature;
             );
             return names;
         },
-        
+
         /**
          * Determines whether this feature object includes all of the specified features.
          *
@@ -1534,7 +1534,7 @@ var validMaskFromArrayOrStringOrFeature;
          * `true` if this feature object includes all of the specified features; otherwise, `false`.
          * If no arguments are specified, the return value is `true`.
          */
-        
+
         includes: function ()
         {
             var mask = this.mask;
@@ -1550,7 +1550,7 @@ var validMaskFromArrayOrStringOrFeature;
                 );
             return included;
         },
-        
+
         // Called by Node.js to format features for output to the console.
         inspect: function (recurseTimes, ctx)
         {
@@ -1558,7 +1558,7 @@ var validMaskFromArrayOrStringOrFeature;
             var result = ctx.stylize(str, 'jscrewit-feature');
             return result;
         },
-        
+
         /**
          * The primary name of this feature object, useful for identification purpose.
          *
@@ -1567,9 +1567,9 @@ var validMaskFromArrayOrStringOrFeature;
          *
          * @member {string|undefined} JScrewIt.Feature#name
          */
-        
+
         name: undefined,
-        
+
         /**
          * Creates a new feature object from this feature by removing elementary features that are
          * not available inside a particular environment.
@@ -1603,7 +1603,7 @@ var validMaskFromArrayOrStringOrFeature;
          * @returns {JScrewIt.Feature}
          * A feature object.
          */
-        
+
         restrict: function (environment, referenceFeatureObjs)
         {
             var resultMask = maskNew();
@@ -1623,7 +1623,9 @@ var validMaskFromArrayOrStringOrFeature;
                             !isExcludingAttribute(
                                 attributeCache,
                                 attributeValue,
-                                referenceFeatureObjs))
+                                referenceFeatureObjs
+                            )
+                        )
                             maskOr(resultMask, otherMask);
                     }
                 }
@@ -1631,7 +1633,7 @@ var validMaskFromArrayOrStringOrFeature;
             var result = featureFromMask(resultMask);
             return result;
         },
-        
+
         /**
          * Returns a string representation of this feature object.
          *
@@ -1639,7 +1641,7 @@ var validMaskFromArrayOrStringOrFeature;
          *
          * @returns {string} A string representation of this feature object.
          */
-        
+
         toString: function ()
         {
             var name = this.name;
@@ -1650,7 +1652,7 @@ var validMaskFromArrayOrStringOrFeature;
         }
     };
     assignNoEnum(Feature.prototype, FEATURE_PROTO_PROPS);
-    
+
     featureFromMask =
         function (mask)
         {
@@ -1658,7 +1660,7 @@ var validMaskFromArrayOrStringOrFeature;
             initMask(featureObj, mask);
             return featureObj;
         };
-    
+
     featuresToMask =
         function (featureObjs)
         {
@@ -1671,7 +1673,7 @@ var validMaskFromArrayOrStringOrFeature;
             );
             return mask;
         };
-    
+
     isMaskCompatible =
         function (mask)
         {
@@ -1685,7 +1687,7 @@ var validMaskFromArrayOrStringOrFeature;
                 );
             return compatible;
         };
-    
+
     validMaskFromArrayOrStringOrFeature =
         function (arg)
         {
@@ -1700,13 +1702,13 @@ var validMaskFromArrayOrStringOrFeature;
                 mask = maskFromStringOrFeature(arg);
             return mask;
         };
-    
+
     var autoMask = maskNew();
     var bitIndex = 0;
     var elementaryFeatureObjs = [];
     var includesMap = new Empty();
     var incompatibleMaskMap = new Empty();
-    
+
     var featureNames = object_keys(FEATURE_INFOS);
     featureNames.forEach(completeFeature);
     featureNames.forEach(completeExclusions);

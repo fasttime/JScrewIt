@@ -4,13 +4,13 @@
 (function ()
 {
     'use strict';
-    
+
     function createCommaSolution()
     {
         var solution = JScrewIt.debug.createBridgeSolution('.concat');
         return solution;
     }
-        
+
     function createTestOptimizer(solution)
     {
         var clusterer =
@@ -31,23 +31,23 @@
         };
         return optimizer;
     }
-    
+
     function verifyBuffer(buffer, expectedStr, expectedLength)
     {
         var actualLength = buffer.length;
         expect(actualLength).toBe(expectedLength);
         expect(buffer + '').toBe(expectedStr);
     }
-    
+
     var INITIAL_APPEND_LENGTH = -3;
-    
+
     var LEVEL_NUMERIC   = -1;
     var LEVEL_OBJECT    = 0;
     var LEVEL_STRING    = 1;
     var LEVEL_UNDEFINED = -2;
-    
+
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
-    
+
     describe(
         'ScrewBuffer',
         function ()
@@ -120,17 +120,17 @@
                     }
                 );
             }
-            
+
             var createScrewBuffer = JScrewIt.debug.createScrewBuffer;
-            var createSolution = JScrewIt.debug.createSolution;
-            var solutionA = createSolution('[![]+[]][+[]]', LEVEL_STRING);
-            var solution0 = createSolution('+[]', LEVEL_NUMERIC);
-            var solutionFalse = createSolution('![]', LEVEL_NUMERIC);
+            var Solution = JScrewIt.debug.Solution;
+            var solutionA = new Solution('[![]+[]][+[]]', LEVEL_STRING);
+            var solution0 = new Solution('+[]', LEVEL_NUMERIC);
+            var solutionFalse = new Solution('![]', LEVEL_NUMERIC);
             var solutionComma = createCommaSolution();
-            var solutionUndefined = createSolution('[][[]]', LEVEL_UNDEFINED);
-            var strTestOptimizer = createTestOptimizer(createSolution('""', LEVEL_STRING));
-            var objTestOptimizer = createTestOptimizer(createSolution('{}', LEVEL_OBJECT));
-                        
+            var solutionUndefined = new Solution('[][[]]', LEVEL_UNDEFINED);
+            var strTestOptimizer = createTestOptimizer(new Solution('""', LEVEL_STRING));
+            var objTestOptimizer = createTestOptimizer(new Solution('{}', LEVEL_OBJECT));
+
             testShortEncodings(
                 'without bonding or string forcing',
                 false,
@@ -171,12 +171,12 @@
                 '""',
                 '({}+[])'
             );
-            
+
             (function ()
             {
                 var buffer = JScrewIt.debug.createScrewBuffer(false, true, 4, []);
                 var expectedLength = INITIAL_APPEND_LENGTH;
-                
+
                 it(
                     'encodes a string in a single group',
                     function ()
@@ -242,7 +242,7 @@
                     }
                 );
             })();
-            
+
             it(
                 'encodes a numeric level solution with an undefined level solution',
                 function ()
@@ -274,8 +274,7 @@
                     var buffer = createScrewBuffer(false, true, 7, []);
                     for (var index = 0; index < 26; ++index)
                     {
-                        var solution =
-                            createSolution(String.fromCharCode(65 + index), LEVEL_OBJECT);
+                        var solution = new Solution(String.fromCharCode(65 + index), LEVEL_OBJECT);
                         buffer.append(solution);
                     }
                     var expectedLength = INITIAL_APPEND_LENGTH + 26 * 2;

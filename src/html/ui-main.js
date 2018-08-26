@@ -20,7 +20,7 @@ stats,
 (function ()
 {
     'use strict';
-    
+
     function createWorker()
     {
         if (typeof Worker !== 'undefined')
@@ -33,7 +33,7 @@ stats,
             { }
         }
     }
-    
+
     function encode()
     {
         var output;
@@ -50,7 +50,7 @@ stats,
         }
         updateOutput(output);
     }
-    
+
     function encodeAsync()
     {
         var options = getOptions();
@@ -65,13 +65,13 @@ stats,
         }
         inputArea.onkeyup = null;
     }
-    
+
     function getOptions()
     {
         var options = { features: currentFeatureObj.canonicalNames };
         return options;
     }
-    
+
     function handleCompInput()
     {
         var selectedIndex = compMenu.selectedIndex;
@@ -91,13 +91,13 @@ stats,
             roll.rollTo(+!compatibility);
         }
     }
-    
+
     function handleInputAreaKeyUp(evt)
     {
         if (evt.keyCode !== 9) // Tab
             encodeAsync();
     }
-    
+
     function handleReaderLoadEnd()
     {
         loadFileButton.disabled = false;
@@ -107,7 +107,7 @@ stats,
         inputArea.oninput();
         inputArea.disabled = false;
     }
-    
+
     function handleRun()
     {
         var content;
@@ -165,7 +165,7 @@ stats,
             );
         }
     }
-    
+
     function handleWorkerMessage(evt)
     {
         if (queuedData)
@@ -184,7 +184,7 @@ stats,
             setWaitingForWorker(false);
         }
     }
-    
+
     function init()
     {
         document.querySelector('body>*>div').style.display = 'block';
@@ -266,7 +266,7 @@ stats,
             inputArea.setSelectionRange(0x7fffffff, 0x7fffffff);
         inputArea.focus();
     }
-    
+
     function loadFile()
     {
         var file = this.files[0];
@@ -280,37 +280,37 @@ stats,
             reader.readAsText(file);
         }
     }
-    
+
     function noEncode()
     {
         if (outputSet)
             updateStats(true);
     }
-    
+
     function resetOutput()
     {
         outputSet = false;
         outputArea.value = '';
         stats.textContent = '…';
     }
-    
+
     function setWaitingForWorker(value)
     {
         waitingForWorker = value;
         outputArea.disabled = value;
     }
-    
+
     function updateError(error)
     {
         showModalBox(art('P', String(error)));
     }
-    
+
     function updateOutput(output)
     {
         outputArea.value = output;
         updateStats();
     }
-    
+
     function updateStats(newOutOfSync)
     {
         var length = outputArea.value.length;
@@ -325,9 +325,9 @@ stats,
         outputSet = true;
         stats.innerHTML = html;
     }
-    
+
     var Feature = JScrewIt.Feature;
-    
+
     var currentFeatureObj;
     var engineSelectionBox;
     var loadFileButton;
@@ -337,7 +337,7 @@ stats,
     var roll;
     var waitingForWorker;
     var worker;
-    
+
     document.addEventListener('DOMContentLoaded', init);
     createWorker();
 }

@@ -3,14 +3,14 @@
 (function (root)
 {
     'use strict';
-    
+
     function isAvailableMarked(featureName, environment, environmentFeatureObj)
     {
         var featureObj = Feature[featureName];
         var restricted = !environmentFeatureObj.includes(featureObj);
         return restricted;
     }
-    
+
     function isCharacteristicMarked(featureName, environment, environmentFeatureObj)
     {
         var featureObj = Feature[featureName];
@@ -18,7 +18,7 @@
         var restricted = !Feature.areEqual(environmentFeatureObj, restrictedFeatureObj);
         return restricted;
     }
-    
+
     function isCompatibleMarked(featureName, environment, environmentFeatureObj)
     {
         var featureObj = Feature[featureName];
@@ -26,12 +26,12 @@
         var restricted = !environmentFeatureObj.includes(restrictedFeatureObj);
         return restricted;
     }
-    
+
     function isEmuMarked()
     {
         return false;
     }
-    
+
     function listFeatures(callback, label, featureNames, isCategoryMarked)
     {
         var count = featureNames.length;
@@ -44,7 +44,7 @@
             );
         }
     }
-    
+
     function showFeatureSupport(callback)
     {
         listFeatures(callback, 'Characteristic', characteristicList, isCharacteristicMarked);
@@ -52,14 +52,14 @@
         listFeatures(callback, 'Available', availableList, isAvailableMarked);
         listFeatures(callback, 'Emulated', emuList, isEmuMarked);
     }
-    
+
     var Feature;
-    
+
     var availableList;
     var characteristicList;
     var compatibleList;
     var emuList;
-    
+
     (function ()
     {
         function getForcedStrictModeFeatureObj()
@@ -81,7 +81,7 @@
             }
             return forcedStrictModeFeatureObj;
         }
-        
+
         function testCharIncrement()
         {
             try
@@ -94,7 +94,7 @@
             }
             return true;
         }
-        
+
         var JScrewIt;
         if (typeof self !== 'undefined')
             JScrewIt = self.JScrewIt;

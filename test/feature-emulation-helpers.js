@@ -3,12 +3,12 @@
 (function (global)
 {
     'use strict';
-    
+
     var Base64 =
     {
         // private property
         _keyStr: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
-        
+
         // public method for encoding
         encode:
         function (input)
@@ -19,10 +19,10 @@
             {
                 var chr1 = input.charCodeAt(index++);
                 var enc1 = chr1 >> 2;
-                
+
                 var chr2 = input.charCodeAt(index++);
                 var enc2 = (chr1 & 3) << 4 | chr2 >> 4;
-                
+
                 var enc3;
                 var enc4;
                 if (isNaN(chr2))
@@ -36,15 +36,15 @@
                     else
                         enc4 = chr3 & 63;
                 }
-                
+
                 output +=
                     this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
                     this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
             }
-            
+
             return output;
         },
-        
+
         // public method for decoding
         decode:
         function (input)
@@ -57,14 +57,14 @@
                 var enc2 = this._keyStr.indexOf(input.charAt(index++));
                 var chr1 = enc1 << 2 | enc2 >> 4;
                 output += String.fromCharCode(chr1);
-                
+
                 var pos3 = input.charAt(index++);
                 var enc3 = this._keyStr.indexOf(pos3);
                 if (!pos3 || enc3 === 64)
                     break;
                 var chr2 = (enc2 & 15) << 4 | enc3 >> 2;
                 output += String.fromCharCode(chr2);
-                
+
                 var pos4 = input.charAt(index++);
                 var enc4 = this._keyStr.indexOf(pos4);
                 if (!pos4 || enc4 === 64)
@@ -72,17 +72,17 @@
                 var chr3 = (enc3 & 3) << 6 | enc4;
                 output += String.fromCharCode(chr3);
             }
-            
+
             return output;
         },
     };
-    
+
     function createBackupMap()
     {
         var backupMap = Object.create(null);
         return backupMap;
     }
-    
+
     function emuDo(emuFeatures, callback)
     {
         var context = Object.create(null);
@@ -104,7 +104,7 @@
                 restoreAll(backupMap, global);
         }
     }
-    
+
     function emuEval(emuFeatures, jsFuck)
     {
         var result =
@@ -117,14 +117,14 @@
             );
         return result;
     }
-    
+
     function evalJSFuck(jsFuck)
     {
         var body = 'return ' + String(jsFuck);
         var result = Function(body)();
         return result;
     }
-    
+
     function fromCodePoint()
     {
         var codeUnits = [];
@@ -148,7 +148,7 @@
         var result = String.fromCharCode.apply(null, codeUnits);
         return result;
     }
-    
+
     function makeEmuFeatureDocument(str, regExp)
     {
         var result =
@@ -182,7 +182,7 @@
         };
         return result;
     }
-    
+
     function makeEmuFeatureEntries(str, regExp)
     {
         var result =
@@ -215,7 +215,7 @@
         };
         return result;
     }
-    
+
     function makeEmuFeatureEscHtml(replacer, regExp)
     {
         var result =
@@ -231,14 +231,14 @@
                         str = str.slice(0, index) + value + str.slice(index);
                         return str;
                     }
-                    
+
                     return adaptedMethod;
                 },
                 regExp
             );
         return result;
     }
-    
+
     function makeEmuFeatureHtml(methodNames, adapter, regExp)
     {
         var result =
@@ -261,7 +261,7 @@
         };
         return result;
     }
-    
+
     function makeEmuFeatureNativeFunctionSource()
     {
         var args = Array.prototype.slice.call(arguments);
@@ -306,7 +306,7 @@
         };
         return result;
     }
-    
+
     function makeEmuFeatureEscRegExp(char, escSeq)
     {
         var result =
@@ -325,7 +325,7 @@
                                 var obj = oldRegExp(pattern, flags);
                                 return obj;
                             }
-                            
+
                             var charRegExp = oldRegExp(char, 'g');
                             RegExp.prototype = oldRegExp.prototype;
                             return RegExp;
@@ -338,7 +338,7 @@
         };
         return result;
     }
-    
+
     function makeEmuFeatureSelf(str, regExp)
     {
         var result =
@@ -362,7 +362,7 @@
         };
         return result;
     }
-    
+
     function override(context, path, descriptor)
     {
         var properties = context.BACKUP || (context.BACKUP = createBackupMap());
@@ -388,7 +388,7 @@
         descriptor.configurable = true;
         Object.defineProperty(obj, name, descriptor);
     }
-    
+
     function overrideToString(context, typeName)
     {
         var toString = global[typeName].prototype.toString;
@@ -419,14 +419,14 @@
         value.call = callToString;
         override(context, typeName + '.prototype.toString', { value: value });
     }
-    
+
     function registerToStringAdapter(context, typeName, adapter)
     {
         if (!context[typeName])
             overrideToString(context, typeName);
         context[typeName].adapters.push(adapter);
     }
-    
+
     function replaceArrowFunctions(expr)
     {
         expr =
@@ -444,7 +444,7 @@
             );
         return expr;
     }
-    
+
     function restoreAll(properties, obj)
     {
         for (var name in properties)
@@ -463,14 +463,14 @@
             }
         }
     }
-    
+
     var ARROW_REGEXP =
         /(\([^(]*\)|[\w$]+)=>(\{.*?\}|(?:\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\)|[^,()])*)/g;
-    
+
     var NATIVE_FUNCTION_SOURCE_INFO_FF = { body: '\n    [native code]\n',    delimiter: ''   };
     var NATIVE_FUNCTION_SOURCE_INFO_IE = { body: '\n    [native code]\n',    delimiter: '\n' };
     var NATIVE_FUNCTION_SOURCE_INFO_V8 = { body: ' [native code] ',          delimiter: ''   };
-    
+
     var EMU_FEATURE_INFOS =
     {
         ANY_DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object .*Document]$/),
@@ -491,14 +491,14 @@
                             var fnObj = oldFunction.apply(null, arguments);
                             return fnObj;
                         }
-                        
+
                         function fixBody(body)
                         {
                             if (typeof body === 'string')
                                 body = replaceArrowFunctions(body);
                             return body;
                         }
-                        
+
                         Function.prototype = oldFunction.prototype;
                         return Function;
                     }
@@ -573,7 +573,7 @@
                         );
                     return str;
                 }
-                
+
                 return adaptedMethod;
             }
         ),
@@ -820,7 +820,7 @@
         V8_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_V8),
         WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object Window]$/)
     };
-    
+
     var EMU_FEATURES =
         Object.keys(EMU_FEATURE_INFOS).filter(
             function (featureName)
@@ -830,7 +830,7 @@
                 return result;
             }
         );
-    
+
     var exports =
     {
         EMU_FEATURES:   EMU_FEATURES,
@@ -838,7 +838,7 @@
         emuEval:        emuEval,
         evalJSFuck:     evalJSFuck,
     };
-    
+
     Object.keys(exports).forEach(
         function (name)
         {

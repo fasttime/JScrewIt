@@ -43,7 +43,7 @@ var wrapWithEval;
             );
             return length;
         }
-        
+
         var index;
         var digitAppendLengths = APPEND_LENGTH_OF_DIGITS.slice(0, radix || 10);
         var regExp;
@@ -85,19 +85,19 @@ var wrapWithEval;
         );
         return range;
     }
-    
+
     function defineCoder(coder, minInputLength)
     {
         coder.MIN_INPUT_LENGTH = minInputLength;
         return coder;
     }
-    
+
     function getCodingName(unitIndices)
     {
         var codingName = unitIndices.length ? unitIndices.join(':') : '0';
         return codingName;
     }
-    
+
     function getDenseFigureLegendDelimiters(figurator, figures)
     {
         var delimiters = [FALSE_TRUE_DELIMITER];
@@ -107,7 +107,7 @@ var wrapWithEval;
             delimiters.push({ joiner: joiner, separator: joiner });
         return delimiters;
     }
-    
+
     function getFrequencyList(inputData)
     {
         var freqList = inputData.freqList;
@@ -142,25 +142,25 @@ var wrapWithEval;
         }
         return freqList;
     }
-    
+
     function getSparseFigureLegendDelimiters()
     {
         var delimiters = [FALSE_FREE_DELIMITER];
         return delimiters;
     }
-    
+
     function initMinFalseFreeCharIndexArrayStrLength(input)
     {
         var minCharIndexArrayStrLength =
             math_max((input.length - 1) * (SIMPLE.false.length + 1) - 3, 0);
         return minCharIndexArrayStrLength;
     }
-    
+
     function initMinFalseTrueCharIndexArrayStrLength()
     {
         return -1;
     }
-    
+
     // Replaces a non-empty JavaScript array with a JSFuck array of strings.
     // Array elements may only contain characters with static definitions in their string
     // representations and may not contain the substring "false", because the value false is used as
@@ -170,7 +170,7 @@ var wrapWithEval;
         var result = this.replaceStringArray(array, [FALSE_FREE_DELIMITER], maxLength);
         return result;
     }
-    
+
     CODERS =
     {
         byCharCodes: defineCoder
@@ -178,7 +178,7 @@ var wrapWithEval;
             function (inputData, maxLength)
             {
                 var MAX_DECODABLE_ARGS = 65533; // limit imposed by Internet Explorer
-                
+
                 var input = inputData.valueOf();
                 var long = input.length > MAX_DECODABLE_ARGS;
                 var output = this.encodeByCharCodes(input, long, undefined, maxLength);
@@ -230,7 +230,7 @@ var wrapWithEval;
                 var output = this.encodeByDict(inputData, 4, 0, maxLength);
                 return output;
             },
-            190
+            193
         ),
         byDictRadix4AmendedBy1: defineCoder
         (
@@ -308,7 +308,7 @@ var wrapWithEval;
             }
         ),
     };
-    
+
     var encoderProtoSource =
     {
         callCoders: function (input, options, coderNames, codingName)
@@ -364,13 +364,13 @@ var wrapWithEval;
             );
             return output;
         },
-        
+
         callGetFigureLegendDelimiters: function (getFigureLegendDelimiters, figurator, figures)
         {
             var figureLegendDelimiters = getFigureLegendDelimiters(figurator, figures);
             return figureLegendDelimiters;
         },
-        
+
         createCharCodesEncoding: function (charCodeArrayStr, long, radix)
         {
             var output;
@@ -407,7 +407,7 @@ var wrapWithEval;
             }
             return output;
         },
-        
+
         createCharKeyArrayString: function (input, charMap, maxLength, delimiters)
         {
             var charKeyArray =
@@ -422,14 +422,15 @@ var wrapWithEval;
             var charKeyArrayStr = this.replaceStringArray(charKeyArray, delimiters, maxLength);
             return charKeyArrayStr;
         },
-        
+
         createDictEncoding: function (
             legend,
             charIndexArrayStr,
             maxLength,
             radix,
             amendings,
-            coerceToInt)
+            coerceToInt
+        )
         {
             var mapper;
             if (radix)
@@ -460,7 +461,7 @@ var wrapWithEval;
             if (!(output.length > maxLength))
                 return output;
         },
-        
+
         createJSFuckArrayMapping: function (arrayStr, mapper, legend)
         {
             var result =
@@ -468,7 +469,7 @@ var wrapWithEval;
                 this.replaceExpr(mapper, true) + '(' + legend + '))';
             return result;
         },
-        
+
         createLongCharCodesOutput: function (charCodeArrayStr, fromCharCode, arg)
         {
             var formatter = this.findDefinition(FROM_CHAR_CODE_CALLBACK_FORMATTER);
@@ -479,7 +480,7 @@ var wrapWithEval;
                 this.replaceString('join') + ']([])';
             return output;
         },
-        
+
         encodeAndWrapText: function (input, wrapper, codingName, maxLength)
         {
             var output;
@@ -496,7 +497,7 @@ var wrapWithEval;
             if (!(output.length > maxLength))
                 return output;
         },
-        
+
         encodeByCharCodes: function (input, long, radix, maxLength)
         {
             var cache = new Empty();
@@ -518,14 +519,15 @@ var wrapWithEval;
                     return output;
             }
         },
-        
+
         encodeByDblDict: function (
             initMinCharIndexArrayStrLength,
             figurator,
             getFigureLegendDelimiters,
             keyFigureArrayDelimiters,
             inputData,
-            maxLength)
+            maxLength
+        )
         {
             var input = inputData.valueOf();
             var freqList = getFrequencyList(inputData);
@@ -578,7 +580,7 @@ var wrapWithEval;
             var output = this.createDictEncoding(legend, charIndexArrayStr, maxLength);
             return output;
         },
-        
+
         encodeByDenseFigures: function (inputData, maxLength)
         {
             var output =
@@ -592,7 +594,7 @@ var wrapWithEval;
                 );
             return output;
         },
-        
+
         encodeByDict: function (inputData, radix, amendings, maxLength)
         {
             var input = inputData.valueOf();
@@ -637,7 +639,7 @@ var wrapWithEval;
                 );
             return output;
         },
-        
+
         encodeBySparseFigures: function (inputData, maxLength)
         {
             var output =
@@ -651,7 +653,7 @@ var wrapWithEval;
                 );
             return output;
         },
-        
+
         encodeDictLegend: function (dictChars, maxLength)
         {
             if (!(maxLength < 0))
@@ -668,7 +670,7 @@ var wrapWithEval;
                     return output;
             }
         },
-        
+
         encodeExpress: function (input, maxLength)
         {
             var unit = expressParse(input);
@@ -685,7 +687,7 @@ var wrapWithEval;
                 return output;
             }
         },
-        
+
         encodeText: function (input, bond, forceString, codingName, maxLength)
         {
             var output =
@@ -711,7 +713,7 @@ var wrapWithEval;
             if (output != null && !(output.length > maxLength))
                 return output;
         },
-        
+
         exec: function (input, wrapper, coderNames, perfInfo)
         {
             var codingLog = this.codingLog = [];
@@ -723,9 +725,9 @@ var wrapWithEval;
                 throw new Error('Encoding failed');
             return output;
         },
-        
+
         replaceFalseFreeArray: replaceFalseFreeArray,
-        
+
         replaceStringArray: function (array, delimiters, maxLength)
         {
             var splitExpr = this.replaceString('split', true, false, false, maxLength);
@@ -762,13 +764,13 @@ var wrapWithEval;
             }
         }
     };
-    
+
     assignNoEnum(Encoder.prototype, encoderProtoSource);
-    
+
     var FALSE_FREE_DELIMITER = { joiner: 'false', separator: 'false' };
-    
+
     var FALSE_TRUE_DELIMITER = { joiner: '', separator: 'Function("return/(?=false|true)/")()' };
-    
+
     var REPLACERS =
     {
         identifier:
@@ -792,16 +794,16 @@ var wrapWithEval;
             return replacement;
         }
     };
-    
+
     var falseFreeFigurator = createFigurator([''], 'false');
     var falseTrueFigurator = createFigurator(['false', 'true'], '');
-    
+
     wrapWithCall =
         function (str)
         {
             return this.resolveConstant('Function') + '(' + str + ')()';
         };
-    
+
     wrapWithEval =
         function (str)
         {

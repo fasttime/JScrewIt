@@ -18,6 +18,7 @@ Encoder,
 Feature,
 JScrewIt,
 ScrewBuffer,
+Solution,
 array_isArray,
 assignNoEnum,
 createBridgeSolution,
@@ -26,15 +27,18 @@ createFigurator,
 createParseIntArgByReduce,
 createParseIntArgByReduceArrow,
 createParseIntArgDefault,
-createSolution,
 define,
 esToString,
 featureFromMask,
+fromCharCodeCallbackFormatterArrow,
+fromCharCodeCallbackFormatterDefault,
 getComplexOptimizer,
 getToStringOptimizer,
 getValidFeatureMask,
 isMaskCompatible,
 json_stringify,
+mapperFormatterDblArrow,
+mapperFormatterDefault,
 maskAnd,
 maskIncludes,
 maskIsEmpty,
@@ -70,7 +74,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             }
             return obj;
         }
-        
+
         function cloneEntries(inputEntries)
         {
             var outputEntries;
@@ -94,13 +98,13 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             }
             return outputEntries;
         }
-        
+
         function cloneEntry(entry)
         {
             entry = createEntryClone(entry.definition, entry.mask);
             return entry;
         }
-        
+
         function createEncoder(features)
         {
             var mask = getValidFeatureMask(features);
@@ -108,7 +112,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             encoder.codingLog = [];
             return encoder;
         }
-        
+
         function createEntryClone(definition, mask)
         {
             definition = clone(definition);
@@ -116,19 +120,19 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             var entry = { definition: definition, mask: mask };
             return entry;
         }
-        
+
         function createFeatureFromMask(mask)
         {
             var featureObj = isMaskCompatible(mask) ? featureFromMask(mask) : null;
             return featureObj;
         }
-        
+
         function createScrewBuffer(bond, forceString, groupThreshold, optimizerList)
         {
             var buffer = new ScrewBuffer(bond, forceString, groupThreshold, optimizerList);
             return buffer;
         }
-        
+
         function defineConstant(encoder, constant, definition)
         {
             constant += '';
@@ -139,49 +143,45 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             var entries = [define(esToString(definition))];
             encoder.constantDefinitions[constant] = entries;
         }
-        
+
         function getCharacterEntries(char)
         {
             var entries = cloneEntries(CHARACTERS[char]);
             return entries;
         }
-        
+
         function getCoders()
         {
             return CODERS;
         }
-        
+
         function getComplexEntry(complex)
         {
             var entries = cloneEntry(COMPLEX[complex]);
             return entries;
         }
-        
+
         function getComplexNames()
         {
             var names = object_keys(COMPLEX).sort();
             return names;
         }
-        
+
         function getConstantEntries(constant)
         {
             var entries = cloneEntries(CONSTANTS[constant]);
             return entries;
         }
-        
+
         function getEntries(name)
         {
             var entries = cloneEntries(ENTRIES[name]);
             return entries;
         }
-        
-        var CREATE_PARSE_INT_ARG_AVAILABLE =
-        [
-            define(createParseIntArgDefault),
-            define(createParseIntArgByReduce),
-            define(createParseIntArgByReduceArrow, Feature.ARROW)
-        ];
-        
+
+        var ARROW           = Feature.ARROW;
+        var FROM_CODE_POINT = Feature.FROM_CODE_POINT;
+
         // Exported entries
         var ENTRIES = new Empty();
         ENTRIES['BASE64_ALPHABET_HI_4:0']           = BASE64_ALPHABET_HI_4[0];
@@ -190,43 +190,64 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         ENTRIES['BASE64_ALPHABET_LO_4:1']           = BASE64_ALPHABET_LO_4[1];
         ENTRIES['BASE64_ALPHABET_LO_4:3']           = BASE64_ALPHABET_LO_4[3];
         ENTRIES.CREATE_PARSE_INT_ARG                = CREATE_PARSE_INT_ARG;
-        ENTRIES['CREATE_PARSE_INT_ARG:available']   = CREATE_PARSE_INT_ARG_AVAILABLE;
+        ENTRIES['CREATE_PARSE_INT_ARG:available'] =
+        [
+            define(createParseIntArgDefault),
+            define(createParseIntArgByReduce),
+            define(createParseIntArgByReduceArrow, ARROW),
+        ];
         ENTRIES.FROM_CHAR_CODE                      = FROM_CHAR_CODE;
+        ENTRIES['FROM_CHAR_CODE:available'] =
+        [
+            define('fromCharCode'),
+            define('fromCodePoint', FROM_CODE_POINT),
+        ];
         ENTRIES.FROM_CHAR_CODE_CALLBACK_FORMATTER   = FROM_CHAR_CODE_CALLBACK_FORMATTER;
+        ENTRIES['FROM_CHAR_CODE_CALLBACK_FORMATTER:available'] =
+        [
+            define(fromCharCodeCallbackFormatterDefault),
+            define(fromCharCodeCallbackFormatterArrow, ARROW),
+        ];
         ENTRIES.MAPPER_FORMATTER                    = MAPPER_FORMATTER;
+        ENTRIES['MAPPER_FORMATTER:available'] =
+        [
+            define(mapperFormatterDefault),
+            define(mapperFormatterDblArrow, ARROW),
+        ];
         ENTRIES.OPTIMAL_B                           = OPTIMAL_B;
         ENTRIES.OPTIMAL_RETURN_STRING               = OPTIMAL_RETURN_STRING;
-        
+
         var debug =
-            assignNoEnum(
-                { },
-                {
-                    createBridgeSolution:   createBridgeSolution,
-                    createClusteringPlan:   createClusteringPlan,
-                    createEncoder:          createEncoder,
-                    createFeatureFromMask:  createFeatureFromMask,
-                    createFigurator:        createFigurator,
-                    createScrewBuffer:      createScrewBuffer,
-                    createSolution:         createSolution,
-                    defineConstant:         defineConstant,
-                    getCharacterEntries:    getCharacterEntries,
-                    getCoders:              getCoders,
-                    getComplexEntry:        getComplexEntry,
-                    getComplexOptimizer:    getComplexOptimizer,
-                    getComplexNames:        getComplexNames,
-                    getConstantEntries:     getConstantEntries,
-                    getEntries:             getEntries,
-                    getToStringOptimizer:   getToStringOptimizer,
-                    maskAnd:                maskAnd,
-                    maskIncludes:           maskIncludes,
-                    maskIsEmpty:            maskIsEmpty,
-                    maskNew:                maskNew,
-                    maskUnion:              maskUnion,
-                    optimizeSolutions:      optimizeSolutions,
-                    setUp:                  setUp,
-                    trimJS:                 trimJS,
-                }
-            );
+        assignNoEnum
+        (
+            { },
+            {
+                Solution:               Solution,
+                createBridgeSolution:   createBridgeSolution,
+                createClusteringPlan:   createClusteringPlan,
+                createEncoder:          createEncoder,
+                createFeatureFromMask:  createFeatureFromMask,
+                createFigurator:        createFigurator,
+                createScrewBuffer:      createScrewBuffer,
+                defineConstant:         defineConstant,
+                getCharacterEntries:    getCharacterEntries,
+                getCoders:              getCoders,
+                getComplexEntry:        getComplexEntry,
+                getComplexOptimizer:    getComplexOptimizer,
+                getComplexNames:        getComplexNames,
+                getConstantEntries:     getConstantEntries,
+                getEntries:             getEntries,
+                getToStringOptimizer:   getToStringOptimizer,
+                maskAnd:                maskAnd,
+                maskIncludes:           maskIncludes,
+                maskIsEmpty:            maskIsEmpty,
+                maskNew:                maskNew,
+                maskUnion:              maskUnion,
+                optimizeSolutions:      optimizeSolutions,
+                setUp:                  setUp,
+                trimJS:                 trimJS,
+            }
+        );
         assignNoEnum(JScrewIt, { debug: debug });
     }
     )();

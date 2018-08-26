@@ -4,20 +4,20 @@
 (function ()
 {
     'use strict';
-    
+
     function A003314(n)
     {
         var log2 = binLog(n);
         var result = n * (log2 + 2) - (1 << log2 + 1);
         return result;
     }
-    
+
     function binLog(n)
     {
         for (var result = 0; n >>= 1; ++result);
         return result;
     }
-    
+
     function disableForm(disabled)
     {
         var elements = form.elements;
@@ -29,7 +29,7 @@
         Array.prototype.forEach.call(elements, callback);
         form.className = disabled ? 'disabled' : '';
     }
-    
+
     function handleLoad()
     {
         form.addEventListener('submit', handleSubmit);
@@ -52,7 +52,7 @@
             }
         );
     }
-    
+
     function handleSubmit(evt)
     {
         evt.preventDefault();
@@ -107,7 +107,7 @@
             12
         );
     }
-    
+
     function log(maxGroupThreshold, groupings, callDepth, ok)
     {
         var html =
@@ -115,7 +115,7 @@
             ': FGT ' + maxGroupThreshold + ', groupings ' + groupings + ', call depth ' + callDepth;
         logger.insertBefore(document.createElement('DIV'), logger.firstChild).innerHTML = html;
     }
-    
+
     function randomString(length)
     {
         var str = '';
@@ -126,7 +126,7 @@
         }
         return str;
     }
-    
+
     function runExtremeTest(maxGroupThreshold, groupings)
     {
         var encoder = JScrewIt.debug.createEncoder();
@@ -146,7 +146,7 @@
             return false;
         }
     }
-    
+
     addEventListener('load', handleLoad);
 }
 )();

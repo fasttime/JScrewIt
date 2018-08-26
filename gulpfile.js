@@ -9,7 +9,7 @@ gulp.task(
     function ()
     {
         var del = require('del');
-        
+
         var PATTERNS = ['char-map.json', 'output.txt'];
         var stream = del(PATTERNS);
         return stream;
@@ -21,7 +21,7 @@ gulp.task(
     function ()
     {
         var del = require('del');
-        
+
         var PATTERNS =
         [
             'Features.md',
@@ -41,8 +41,9 @@ gulp.task(
     function ()
     {
         var gherkinlint = require('gulp-gherkin-lint');
-        
-        var stream = gulp.src('test/acceptance/**').pipe(gherkinlint());
+
+        var src = 'test/acceptance/**';
+        var stream = gulp.src(src).pipe(gherkinlint());
         return stream;
     }
 );
@@ -52,11 +53,10 @@ gulp.task(
     function ()
     {
         var lint = require('gulp-fasttime-lint');
-        
+
+        var src = 'src/lib/**/*.js';
         var stream =
-            gulp
-            .src('src/lib/**/*.js')
-            .pipe(lint({ parserOptions: { ecmaFeatures: { impliedStrict: true } } }));
+        gulp.src(src).pipe(lint({ parserOptions: { ecmaFeatures: { impliedStrict: true } } }));
         return stream;
     }
 );
@@ -66,9 +66,27 @@ gulp.task(
     function ()
     {
         var lint = require('gulp-fasttime-lint');
-        
-        var SRC = ['*.js', 'build/**/*.js', 'src/html/**/*.js', 'test/**/*.js', 'tools/**/*.js'];
-        var stream = gulp.src(SRC).pipe(lint());
+
+        var src = ['*.js', 'build/es5/*.js', 'src/html/**/*.js', 'test/**/*.js', 'tools/**/*.js'];
+        var stream = gulp.src(src).pipe(lint());
+        return stream;
+    }
+);
+
+gulp.task(
+    'lint:build',
+    function ()
+    {
+        var lint = require('gulp-fasttime-lint');
+
+        var options =
+        {
+            envs: ['node'],
+            parserOptions: { ecmaVersion: 6 },
+            rules: { strict: ['error', 'global'] },
+        };
+        var src = ['build/*.js', '!build/verify.js'];
+        var stream = gulp.src(src).pipe(lint(options));
         return stream;
     }
 );
@@ -81,7 +99,7 @@ gulp.task(
         var insert = require('gulp-insert');
         var pkg = require('./package.json');
         var replace = require('gulp-replace');
-        
+
         var SRC =
         [
             'src/lib/preamble',
@@ -121,7 +139,7 @@ gulp.task(
     {
         var gutil = require('gulp-util');
         var featureInfo = require('./test/feature-info');
-        
+
         console.log();
         var anyMarked;
         var forcedStrictModeFeatureObj = featureInfo.forcedStrictModeFeatureObj;
@@ -141,7 +159,7 @@ gulp.task(
                     anyMarked |= marked;
                     return featureName;
                 }
-                
+
                 console.log(
                     gutil.colors.bold(label) +
                     featureNames.map(formatFeatureName).join(', ')
@@ -159,36 +177,9 @@ gulp.task(
     function ()
     {
         var mocha = require('gulp-spawn-mocha');
-        
+
         var stream = gulp.src('test/**/*.spec.js').pipe(mocha({ istanbul: true }));
         return stream;
-    }
-);
-
-gulp.task(
-    'scan-char-defs',
-    function ()
-    {
-        var gutil = require('gulp-util');
-        var runScan = require('./build/scan-char-defs');
-        
-        var colors = gutil.colors;
-        var defsUnused = runScan();
-        if (defsUnused)
-        {
-            var error =
-                new gutil.PluginError(
-                    module.filename,
-                    'There are unused character definitions. See output.txt for details.'
-                );
-            error.toString =
-                function ()
-                {
-                    return colors.red(this.message);
-                };
-            throw error;
-        }
-        gutil.log(colors.green('All character definitions used.'));
     }
 );
 
@@ -198,7 +189,7 @@ gulp.task(
     {
         var rename = require('gulp-rename');
         var uglify = require('gulp-uglify');
-        
+
         var uglifyOpts =
         {
             compress: { global_defs: { DEBUG: false } },
@@ -223,7 +214,7 @@ gulp.task(
     {
         var fs = require('fs');
         var makeArt = require('art-js');
-        
+
         fs.mkdir(
             'tmp-src',
             function (error)
@@ -245,7 +236,7 @@ gulp.task(
         var addsrc = require('gulp-add-src');
         var concat = require('gulp-concat');
         var uglify = require('gulp-uglify');
-        
+
         var SRC =
         [
             'tmp-src/art.js',
@@ -273,7 +264,7 @@ gulp.task(
     {
         var fsThen = require('fs-then-native');
         var jsdoc2md = require('jsdoc-to-markdown');
-        
+
         var stream =
             jsdoc2md
             .render({ files: 'lib/jscrewit.js' })
@@ -294,7 +285,7 @@ gulp.task(
     {
         var fs = require('fs');
         var makeFeatureDoc = require('./build/make-feature-doc');
-        
+
         var featureDoc = makeFeatureDoc();
         fs.writeFile('Features.md', featureDoc, callback);
     }
@@ -305,30 +296,12 @@ gulp.task(
     function (callback)
     {
         var runSequence = require('run-sequence');
-        
-        runSequence(
-            ['clean:default', 'gherkin-lint', 'lint:lib', 'lint:other'],
-            'concat',
-            'feature-info',
-            'test',
-            ['feature-doc', 'jsdoc2md', 'uglify:html', 'uglify:lib'],
-            callback
-        );
-    }
-);
 
-gulp.task(
-    'full',
-    function (callback)
-    {
-        var runSequence = require('run-sequence');
-        
         runSequence(
-            ['clean:char-defs-output', 'clean:default', 'gherkin-lint', 'lint:lib', 'lint:other'],
+            ['clean:default', 'gherkin-lint', 'lint:lib', 'lint:other', 'lint:build'],
             'concat',
             'feature-info',
             'test',
-            'scan-char-defs',
             ['feature-doc', 'jsdoc2md', 'uglify:html', 'uglify:lib'],
             callback
         );

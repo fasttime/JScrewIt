@@ -4,7 +4,7 @@
 function createRoll()
 {
     'use strict';
-    
+
     function init()
     {
         var container = art('DIV');
@@ -21,7 +21,7 @@ function createRoll()
         compStyle.height = '0';
         compStyle.overflowY = 'hidden';
     }
-    
+
     function progress()
     {
         var now = +new Date();
@@ -35,7 +35,7 @@ function createRoll()
         compStyle.height = opening === 1 ? '' : comp.scrollHeight * opening + 'px';
         containerStyle.display = opening === 0 ? 'none' : '';
     }
-    
+
     function rollTo(newEndOpening)
     {
         if (newEndOpening === opening)
@@ -54,14 +54,14 @@ function createRoll()
                 interval = setInterval(progress, 0);
         }
     }
-    
+
     function stop()
     {
         clearInterval(interval);
         interval = null;
         openSign = 0;
     }
-    
+
     var comp;
     var compStyle;
     var containerStyle;
@@ -71,7 +71,7 @@ function createRoll()
     var opening = 0;
     var startOpening;
     var startTime;
-    
+
     init();
     return comp;
 }

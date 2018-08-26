@@ -4,7 +4,7 @@
 function showModalBox(content, callback)
 {
     'use strict';
-    
+
     function close()
     {
         var body = document.body;
@@ -13,18 +13,18 @@ function showModalBox(content, callback)
         if (callback !== undefined)
             callback();
     }
-    
+
     function grabFocus()
     {
         focusableContainer.focus();
     }
-    
+
     function handleFocus(evt)
     {
         if (!focusableContainer.contains(evt.target))
             grabFocus();
     }
-    
+
     function handleKeydown(evt)
     {
         var keyCode = evt.keyCode;
@@ -38,10 +38,10 @@ function showModalBox(content, callback)
             }
         }
     }
-    
+
     var BOX_BORDER_RADIUS   = 23;
     var BOX_MARGIN          = 2;
-    
+
     var focusableContainer =
         art(
             'DIV',

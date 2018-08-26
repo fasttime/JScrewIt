@@ -53,7 +53,7 @@ describe(
     function ()
     {
         var timeUtils = proxyquire(modulePath, { });
-        
+
         it(
             'formats durations shorter than 0.005 s',
             function ()

@@ -4,7 +4,7 @@
 function createEngineSelectionBox()
 {
     'use strict';
-    
+
     var ENGINE_INFO_LIST =
     [
         {
@@ -75,9 +75,9 @@ function createEngineSelectionBox()
             ]
         }
     ];
-    
+
     var FORCED_STRICT_MODE_CAPTION = 'Generate strict mode code';
-    
+
     var FORCED_STRICT_MODE_HELP =
         '<p>The option <dfn>' + FORCED_STRICT_MODE_CAPTION + '</dfn> instructs JScrewIt to avoid ' +
         'optimizations that don\'t work in strict mode JavaScript code. Check this option only ' +
@@ -94,18 +94,18 @@ function createEngineSelectionBox()
         '</ul>' +
         '<p>In most other cases, this option is not required, even if your script contains a top ' +
         'level <code>"use strict"</code> statement.';
-    
+
     var WEB_WORKER_CAPTION = 'Support web workers';
-    
+
     var WEB_WORKER_HELP =
         '<p>Web workers are part of a standard HTML technology used to perform background tasks ' +
         'in JavaScript.' +
         '<p>Check the option <dfn>' + WEB_WORKER_CAPTION + '</dfn> only if your code needs to ' +
         'run inside a web worker. To create or use a web worker in your code, this option is not ' +
         'required.';
-    
+
     var QUESTION_MARK_SIZE = '10.5pt';
-    
+
     function createCheckBox(text, inputProps)
     {
         var checkBox =
@@ -116,14 +116,14 @@ function createEngineSelectionBox()
             );
         return checkBox;
     }
-    
+
     function createQuestionMark(innerHTML)
     {
         function showHelp()
         {
             showModalBox(contentBlock);
         }
-        
+
         var contentBlock = art('DIV', { className: 'help-text' });
         contentBlock.innerHTML = innerHTML;
         var questionMark =
@@ -155,14 +155,14 @@ function createEngineSelectionBox()
             );
         return questionMark;
     }
-    
+
     function dispatchInputEvent()
     {
         var evt = document.createEvent('Event');
         evt.initEvent('input', true, false);
         comp.dispatchEvent(evt);
     }
-    
+
     function handleAllEngineChange()
     {
         var checked = allEngineInput.checked;
@@ -174,7 +174,7 @@ function createEngineSelectionBox()
             }
         );
     }
-    
+
     function handleAllEngineChangeAsync()
     {
         setTimeout(
@@ -185,7 +185,7 @@ function createEngineSelectionBox()
             }
         );
     }
-    
+
     function init()
     {
         var allEngineField =
@@ -279,7 +279,7 @@ function createEngineSelectionBox()
         webWorkerInput = webWorkerField.querySelector('INPUT');
         updateCurrentFeatureObj();
     }
-    
+
     function updateCurrentFeatureObj()
     {
         var Feature = JScrewIt.Feature;
@@ -306,20 +306,20 @@ function createEngineSelectionBox()
         if (forcedStrictModeInput.checked)
             currentFeatureObj = currentFeatureObj.restrict('forced-strict-mode', featureObjs);
     }
-    
+
     function updateStatus()
     {
         updateCurrentFeatureObj();
         dispatchInputEvent();
     }
-    
+
     var allEngineInput;
     var comp;
     var currentFeatureObj;
     var engineVersionInputs;
     var forcedStrictModeInput;
     var webWorkerInput;
-    
+
     init();
     return comp;
 }

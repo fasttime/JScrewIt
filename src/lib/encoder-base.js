@@ -15,11 +15,11 @@ OPTIMAL_B,
 SIMPLE,
 Empty,
 ScrewBuffer,
+Solution,
 array_isArray,
 array_prototype_forEach,
 assignNoEnum,
 createConstructor,
-createSolution,
 expressParse,
 featureFromMask,
 getComplexOptimizer,
@@ -49,7 +49,7 @@ var resolveSimple;
         var value = +(preMantissa + lastDigit + 'e' + exp);
         return value;
     }
-    
+
     function formatPositiveNumber(number)
     {
         function getMantissa()
@@ -69,7 +69,7 @@ var resolveSimple;
             var mantissa = preMantissa + lastDigit;
             return mantissa;
         }
-        
+
         var str;
         var match = /^(\d+)(?:\.(\d+))?(?:e(.+))?$/.exec(number);
         var digitsAfterDot = match[2] || '';
@@ -99,13 +99,13 @@ var resolveSimple;
         }
         return str;
     }
-    
+
     function getExtraZeros(count)
     {
         var extraZeros = Array(count + 1).join('0');
         return extraZeros;
     }
-    
+
     function getMultiDigitLength(str)
     {
         var appendLength = 0;
@@ -119,7 +119,7 @@ var resolveSimple;
         );
         return appendLength;
     }
-    
+
     function getReplacers(optimize)
     {
         var replaceString =
@@ -133,7 +133,7 @@ var resolveSimple;
         var replacers = { identifier: replaceIdentifier, string: replaceString };
         return replacers;
     }
-    
+
     function replaceIdentifier(encoder, identifier, bondStrength)
     {
         var solution;
@@ -151,13 +151,13 @@ var resolveSimple;
             replacement = '(' + replacement + ')';
         return replacement;
     }
-    
+
     function replaceIndexer(index)
     {
         var replacement = '[' + STATIC_ENCODER.replaceString(index) + ']';
         return replacement;
     }
-    
+
     function replaceNegativeExponential(mantissa, exp, rivalExtraLength)
     {
         var extraZeroCount;
@@ -183,7 +183,7 @@ var resolveSimple;
             return str;
         }
     }
-    
+
     function shortestOf(objs)
     {
         var shortestObj;
@@ -201,22 +201,22 @@ var resolveSimple;
         );
         return shortestObj;
     }
-    
+
     var STATIC_CHAR_CACHE = new Empty();
     var STATIC_CONST_CACHE = new Empty();
-    
+
     var CharCache = createConstructor(STATIC_CHAR_CACHE);
     var ConstCache = createConstructor(STATIC_CONST_CACHE);
-    
+
     var quoteString = json_stringify;
-    
+
     APPEND_LENGTH_OF_DIGIT_0    = 6;
     APPEND_LENGTH_OF_EMPTY      = 3; // Append length of the empty array
     APPEND_LENGTH_OF_PLUS_SIGN  = 71;
     APPEND_LENGTH_OF_SMALL_E    = 26;
-    
+
     APPEND_LENGTH_OF_DIGITS     = [APPEND_LENGTH_OF_DIGIT_0, 8, 12, 17, 22, 27, 32, 37, 42, 47];
-    
+
     Encoder =
         function (mask)
         {
@@ -226,7 +226,7 @@ var resolveSimple;
             this.optimizers     = new Empty();
             this.stack          = [];
         };
-    
+
     var encoderProtoSource =
     {
         callResolver: function (stackName, resolver)
@@ -253,9 +253,9 @@ var resolveSimple;
                 stack.pop();
             }
         },
-        
+
         constantDefinitions: CONSTANTS,
-        
+
         createCharDefaultSolution: function (charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
         {
             var replacement;
@@ -281,18 +281,18 @@ var resolveSimple;
                 }
                 replacement = shortestOf(replacements);
             }
-            var solution = createSolution(replacement, LEVEL_STRING, false);
+            var solution = new Solution(replacement, LEVEL_STRING, false);
             return solution;
         },
-        
+
         defaultResolveCharacter: function (char)
         {
             var charCode = char.charCodeAt();
-            var solution =
-                this.createCharDefaultSolution(charCode, charCode < 0x100, true, true, true);
+            var atobOpt = charCode < 0x100;
+            var solution = this.createCharDefaultSolution(charCode, atobOpt, true, true, true);
             return solution;
         },
-        
+
         findBase64AlphabetDefinition: function (element)
         {
             var definition;
@@ -302,7 +302,7 @@ var resolveSimple;
                 definition = element;
             return definition;
         },
-        
+
         findDefinition: function (entries)
         {
             for (var entryIndex = entries.length; entryIndex--;)
@@ -312,7 +312,7 @@ var resolveSimple;
                     return entry.definition;
             }
         },
-        
+
         findOptimalSolution: function (entries)
         {
             var result;
@@ -333,7 +333,7 @@ var resolveSimple;
             );
             return result;
         },
-        
+
         getPaddingBlock: function (paddingInfo, length)
         {
             var paddingBlock = paddingInfo.blocks[length];
@@ -341,13 +341,13 @@ var resolveSimple;
                 return paddingBlock;
             this.throwSyntaxError('Undefined padding block with length ' + length);
         },
-        
+
         hasFeatures: function (mask)
         {
             var included = maskIncludes(this.mask, mask);
             return included;
         },
-        
+
         hexCodeOf: function (charCode, hexDigitCount)
         {
             var optimalB = this.findDefinition(OPTIMAL_B);
@@ -367,7 +367,7 @@ var resolveSimple;
             }
             return hexCode;
         },
-        
+
         // The maximum value that can be safely used as the first group threshold of a ScrewBuffer.
         // "Safely" means such that the extreme decoding test is passed in all engines.
         // This value is typically limited by the free memory available on the stack, and since the
@@ -379,7 +379,7 @@ var resolveSimple;
         // non-reproducible manner, although the issue seems to be related to the output size rather
         // than the grouping threshold setting.
         maxGroupThreshold: 1800,
-        
+
         replaceCharByAtob: function (charCode)
         {
             var param1 =
@@ -387,7 +387,7 @@ var resolveSimple;
             var postfix1 = '(' + this.replaceString(param1) + ')';
             if (param1.length > 2)
                 postfix1 += replaceIndexer(0);
-            
+
             var param2Left = this.findBase64AlphabetDefinition(BASE64_ALPHABET_LO_4[charCode >> 4]);
             var param2Right =
                 this.findBase64AlphabetDefinition(BASE64_ALPHABET_HI_4[charCode & 0x0f]);
@@ -395,18 +395,18 @@ var resolveSimple;
             var index2 = 1 + (param2Left.length - 2) / 4 * 3;
             var indexer2 = replaceIndexer(index2);
             var postfix2 = '(' + this.replaceString(param2) + ')' + indexer2;
-            
+
             var param3Left = BASE64_ALPHABET_LO_2[charCode >> 6];
             var param3 = param3Left + BASE64_ALPHABET_HI_6[charCode & 0x3f];
             var index3 = 2 + (param3Left.length - 3) / 4 * 3;
             var indexer3 = replaceIndexer(index3);
             var postfix3 = '(' + this.replaceString(param3) + ')' + indexer3;
-            
+
             var postfix = shortestOf([postfix1, postfix2, postfix3]);
             var replacement = this.resolveConstant('atob') + postfix;
             return replacement;
         },
-        
+
         replaceCharByCharCode: function (charCode)
         {
             var arg =
@@ -416,7 +416,7 @@ var resolveSimple;
             var replacement = this.replaceExpr('String[FROM_CHAR_CODE](' + arg + ')');
             return replacement;
         },
-        
+
         replaceCharByEscSeq: function (charCode)
         {
             var escCode;
@@ -440,7 +440,7 @@ var resolveSimple;
             var replacement = this.replaceExpr(expr, { toStringOpt: optimize });
             return replacement;
         },
-        
+
         replaceCharByUnescape: function (charCode)
         {
             var hexCode;
@@ -464,7 +464,7 @@ var resolveSimple;
             var replacement = this.replaceExpr(expr, { toStringOpt: optimize });
             return replacement;
         },
-        
+
         replaceExpr: function (expr, optimize)
         {
             var unit = expressParse(expr);
@@ -474,7 +474,7 @@ var resolveSimple;
             var replacement = this.replaceExpressUnit(unit, false, [], NaN, replacers);
             return replacement;
         },
-        
+
         replaceExpressUnit: function (unit, bond, unitIndices, maxLength, replacers)
         {
             var mod = unit.mod || '';
@@ -548,7 +548,7 @@ var resolveSimple;
             }
             return output;
         },
-        
+
         replacePrimaryExpr: function (unit, bondStrength, unitIndices, maxLength, replacers)
         {
             var output;
@@ -640,13 +640,13 @@ var resolveSimple;
             }
             return output;
         },
-        
+
         replaceStaticString: function (str, maxLength)
         {
             var replacement = STATIC_ENCODER.replaceString(str, false, true, true, maxLength);
             return replacement;
         },
-        
+
         replaceString: function (str, optimize, bond, forceString, maxLength)
         {
             var optimizerList = [];
@@ -713,7 +713,7 @@ var resolveSimple;
             if (!(result.length > maxLength))
                 return result;
         },
-        
+
         resolve: function (definition)
         {
             var solution;
@@ -734,11 +734,11 @@ var resolveSimple;
                 else
                     expr = definition;
                 var replacement = this.replaceExpr(expr, optimize);
-                solution = createSolution(replacement, level);
+                solution = new Solution(replacement, level);
             }
             return solution;
         },
-        
+
         resolveCharacter: function (char)
         {
             var solution = this.charCache[char];
@@ -761,6 +761,7 @@ var resolveSimple;
                         else
                         {
                             solution = STATIC_ENCODER.resolve(entries);
+                            solution.entryIndex = 'static';
                             charCache = STATIC_CHAR_CACHE;
                         }
                         solution.char = char;
@@ -772,7 +773,7 @@ var resolveSimple;
             }
             return solution;
         },
-        
+
         resolveConstant: function (constant)
         {
             var solution = this.constCache[constant];
@@ -800,7 +801,7 @@ var resolveSimple;
             }
             return solution;
         },
-        
+
         resolveExprAt: function (expr, index, entries, paddingInfos)
         {
             if (!entries)
@@ -821,10 +822,10 @@ var resolveSimple;
             }
             var fullExpr = '(' + paddingBlock + '+' + expr + ')[' + indexer + ']';
             var replacement = this.replaceExpr(fullExpr);
-            var solution = createSolution(replacement, LEVEL_STRING, false);
+            var solution = new Solution(replacement, LEVEL_STRING, false);
             return solution;
         },
-        
+
         throwSyntaxError: function (message)
         {
             var stack = this.stack;
@@ -834,18 +835,18 @@ var resolveSimple;
             throw new SyntaxError(message);
         },
     };
-    
+
     assignNoEnum(Encoder.prototype, encoderProtoSource);
-    
+
     var APPEND_LENGTH_OF_DOT    = 73;
     var APPEND_LENGTH_OF_MINUS  = 136;
-    
+
     var BOND_STRENGTH_NONE      = 0;
     var BOND_STRENGTH_WEAK      = 1;
     var BOND_STRENGTH_STRONG    = 2;
-    
+
     var LOW_UNICODE_ESC_SEQ_CODES = new Empty();
-    
+
     [
         0x0f, 0x1f, 0x2f, 0x3f, 0x6f, 0x7f, 0xaf, 0xdf, 0xef,
         0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xfa
@@ -855,11 +856,11 @@ var resolveSimple;
             LOW_UNICODE_ESC_SEQ_CODES[charCode] = null;
         }
     );
-    
+
     var STATIC_ENCODER = new Encoder([0, 0]);
-    
+
     var STR_TOKEN_PATTERN = '(' + object_keys(SIMPLE).join('|') + ')|([\\s\\S])';
-    
+
     replaceMultiDigitNumber =
         function (number)
         {
@@ -867,7 +868,7 @@ var resolveSimple;
             var replacement = STATIC_ENCODER.replaceString(str);
             return replacement;
         };
-    
+
     resolveSimple =
         function (simple, definition)
         {

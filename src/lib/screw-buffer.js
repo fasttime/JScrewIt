@@ -29,7 +29,7 @@ var optimizeSolutions;
             rightEndLength > 1 && !isUnluckyRightEnd(solutions, rightEndIndex);
         return result;
     }
-    
+
     function findLastBridge(solutions)
     {
         for (var index = solutions.length; index--;)
@@ -39,7 +39,7 @@ var optimizeSolutions;
                 return index;
         }
     }
-    
+
     function findNextBridge(solutions, index)
     {
         for (;; ++index)
@@ -49,7 +49,7 @@ var optimizeSolutions;
                 return index;
         }
     }
-    
+
     function findSplitIndex(solutions, intrinsicSplitCost, firstBridgeIndex, lastBridgeIndex)
     {
         var index = 1;
@@ -70,14 +70,14 @@ var optimizeSolutions;
             !(optimalSplitCost > 0 && canSplitRightEndForFree(solutions, lastBridgeIndex)))
             return splitIndex;
     }
-    
+
     function gatherGroup(solutions, groupBond, groupForceString, bridgeUsed)
     {
         function appendRightGroup(groupCount)
         {
             array.push(sequenceAsString(solutions, index, groupCount, '[[]]'), ')');
         }
-        
+
         var array;
         var multiPart;
         var notStr;
@@ -159,13 +159,13 @@ var optimizeSolutions;
             str = '(' + str + ')';
         return str;
     }
-    
+
     function getNumericJoinCost(level0, level1)
     {
         var joinCost = level0 > LEVEL_UNDEFINED || level1 > LEVEL_UNDEFINED ? 2 : 3;
         return joinCost;
     }
-    
+
     function getSplitCostAt(solutions, index, leftmost, rightmost)
     {
         var solutionCenter = solutions[index];
@@ -177,9 +177,11 @@ var optimizeSolutions;
         (
             rightmost && levelCenter < LEVEL_NUMERIC ?
             3 :
-            isNumericJoin(
+            isNumericJoin
+            (
                 levelCenter,
-                levelRight = (solutionRight = solutions[index + 1]).level) ?
+                levelRight = (solutionRight = solutions[index + 1]).level
+            ) ?
             getNumericJoinCost(levelCenter, levelRight) -
             (solutionRight.hasOuterPlus ? 2 : 0) :
             0
@@ -192,13 +194,13 @@ var optimizeSolutions;
         );
         return splitCost;
     }
-    
+
     function isNumericJoin(level0, level1)
     {
         var result = level0 < LEVEL_OBJECT && level1 < LEVEL_OBJECT;
         return result;
     }
-    
+
     function isUnluckyRightEnd(solutions, firstIndex)
     {
         var result =
@@ -206,7 +208,7 @@ var optimizeSolutions;
             solutions[firstIndex + 1].level > LEVEL_UNDEFINED;
         return result;
     }
-    
+
     function pushSolution(array, solution)
     {
         if (solution.hasOuterPlus)
@@ -214,7 +216,7 @@ var optimizeSolutions;
         else
             array.push('+', solution);
     }
-    
+
     function sequence(solutions, offset, count)
     {
         var array;
@@ -241,7 +243,7 @@ var optimizeSolutions;
         }
         return array;
     }
-    
+
     function sequenceAsString(solutions, offset, count, emptyReplacement)
     {
         var str;
@@ -259,7 +261,7 @@ var optimizeSolutions;
             str = emptyReplacement;
         return str;
     }
-    
+
     ScrewBuffer =
         function (bond, forceString, groupThreshold, optimizerList)
         {
@@ -273,12 +275,12 @@ var optimizeSolutions;
                 str = gatherGroup(groupSolutions, groupBond, groupForceString, bridgeUsed);
                 return str;
             }
-            
+
             var bridgeUsed;
             var length = -APPEND_LENGTH_OF_EMPTY;
             var maxSolutionCount = math_pow(2, groupThreshold - 1);
             var solutions = [];
-            
+
             assignNoEnum(
                 this,
                 {
@@ -335,7 +337,7 @@ var optimizeSolutions;
                             }
                             return str;
                         }
-                        
+
                         var multiPart;
                         var str;
                         var solutionCount = solutions.length;
@@ -383,7 +385,7 @@ var optimizeSolutions;
                 }
             );
         };
-    
+
     optimizeSolutions =
         function (optimizerList, solutions, bond, forceString)
         {
