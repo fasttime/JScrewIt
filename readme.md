@@ -8,7 +8,7 @@ JSFuck is an encoding technique that uses only the six characters `!` `(` `)` `+
 syntactically correct JavaScript that can still run in a browser or another JavaScript engine
 without any additional software.
 
-Play now with [**jscrew.it**](http://jscrew.it), or give a look at
+Play now with [**jscrew.it**](https://jscrew.it), or give a look at
 [jQuery *Screwed*](https://github.com/fasttime/jquery-screwed) for a true example: a working version
 of jQuery consisting of only six different characters.
 
@@ -50,7 +50,7 @@ The following source will do an `alert(1)` in any browser, including Internet Ex
 )[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]]+(!![
 ]+[])[+!![]]])[+!![]+[+!![]]]+(![]+[])[+!![]]+(![]+[])[!![]+!![]]+(!![]+[])[!![]
 +!![]+!![]]+(!![]+[])[+!![]]+(!![]+[])[+[]])()(+!![])
-``` 
+```
 
 ## Setup Instructions
 
@@ -233,8 +233,8 @@ JScrewIt itself and the code it generates are compatible with the JavaScript eng
 
 ## Links
 
-* [JScrewIt](http://jscrew.it) online encoder
+* [JScrewIt](https://jscrew.it) online encoder
 * [JSFuck](https://en.wikipedia.org/wiki/JSFuck) on Wikipedia
-* [JSFuck](http://esolangs.org/wiki/JSFuck) on Esolang
+* [JSFuck](https://esolangs.org/wiki/JSFuck) on Esolang
 * [jsfuck.com](http://www.jsfuck.com)
 * [jQuery *Screwed*](https://github.com/fasttime/jquery-screwed)
