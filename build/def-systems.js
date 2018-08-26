@@ -2,7 +2,7 @@
 
 const JScrewIt = require('..');
 
-const { getEntries } = JScrewIt.debug;
+const { Feature, debug: { getEntries } } = JScrewIt;
 
 const rawDefSystems =
 {
@@ -55,14 +55,19 @@ const rawDefSystems =
     OPTIMAL_B: 'Bb',
     OPTIMAL_RETURN_STRING:
     {
-        availableEntries: [define('return(isNaN+false).constructor'), define('return String')],
+        availableEntries:
+        [
+            define('return(isNaN+false).constructor'),
+            define('return String'),
+            define('return status.constructor', 'STATUS'),
+        ],
         replaceVariant: (encoder, str) => encoder.replaceString(str, true),
     },
 };
 
 function define(definition, ...features)
 {
-    const { mask } = JScrewIt.Feature(features);
+    const { mask } = Feature(features);
     const entry = { definition, mask };
     return entry;
 }

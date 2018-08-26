@@ -777,6 +777,13 @@
             NATIVE_FUNCTION_SOURCE_INFO_IE
         ),
         SELF_OBJ: makeEmuFeatureSelf('[object Object]', /^\[object /),
+        STATUS:
+        {
+            setUp: function ()
+            {
+                override(this, 'status', { value: '' });
+            }
+        },
         UNDEFINED:
         {
             setUp: function ()

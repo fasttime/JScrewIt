@@ -256,6 +256,11 @@ _An alias for [`ANY_WINDOW`](#ANY_WINDOW)._
 Existence of the global object self whose string representation starts with "\[object ".
 
 _Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.0+._
+<a name="STATUS"></a>
+### `STATUS`
+Existence of the global string status.
+
+_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers._
 <a name="UNDEFINED"></a>
 ### `UNDEFINED`
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".<br>
@@ -310,6 +315,7 @@ This table lists features available in the most common engines.
 <li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
+<li><a href="#STATUS"><code>STATUS</code></a>
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
 <li><a href="#WINDOW"><code>WINDOW</code></a>
 </ul>
@@ -343,6 +349,7 @@ This table lists features available in the most common engines.
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a>
 <li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
+<li><a href="#STATUS"><code>STATUS</code></a>
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
 <li><a href="#WINDOW"><code>WINDOW</code></a>
 </ul>
@@ -376,6 +383,7 @@ This table lists features available in the most common engines.
 <li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="#NO_V8_SRC"><code>NO_V8_SRC</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
+<li><a href="#STATUS"><code>STATUS</code></a>
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
 <li><a href="#UNEVAL"><code>UNEVAL</code></a>
 <li><a href="#WINDOW"><code>WINDOW</code></a>
@@ -404,6 +412,7 @@ This table lists features available in the most common engines.
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#NO_V8_SRC"><code>NO_V8_SRC</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
+<li><a href="#STATUS"><code>STATUS</code></a>
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
 <li><a href="#WINDOW"><code>WINDOW</code></a>
 </ul>
@@ -437,6 +446,7 @@ This table lists features available in the most common engines.
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a> (Safari 9.0+)
 <li><a href="#NO_V8_SRC"><code>NO_V8_SRC</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
+<li><a href="#STATUS"><code>STATUS</code></a>
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
 <li><a href="#WINDOW"><code>WINDOW</code></a>
 </ul>
@@ -466,6 +476,7 @@ This table lists features available in the most common engines.
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a>)
 <li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#DOMWINDOW"><code>DOMWINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
+<li><a href="#STATUS"><code>STATUS</code></a>
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a> (Android Browser 4.1+)
 <li><a href="#WINDOW"><code>WINDOW</code></a> (Android Browser 4.4+)
 </ul>
