@@ -1,5 +1,7 @@
-char-map.json
-coverage/
-node_modules/
-npm-debug.log
-tmp-src/
+.*
+!/.npmrc
+/char-map.json
+/coverage
+/node_modules
+/npm-debug.log
+/tmp-src
