@@ -5,18 +5,6 @@
 var gulp = require('gulp');
 
 gulp.task(
-    'clean:char-defs-output',
-    function ()
-    {
-        var del = require('del');
-
-        var PATTERNS = ['char-map.json', 'output.txt'];
-        var stream = del(PATTERNS);
-        return stream;
-    }
-);
-
-gulp.task(
     'clean:default',
     function ()
     {
