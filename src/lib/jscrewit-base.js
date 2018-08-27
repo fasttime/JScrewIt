@@ -5,6 +5,7 @@ Encoder,
 Feature,
 assignNoEnum,
 esToString,
+maskNew,
 module,
 self,
 trimJS,
@@ -171,7 +172,8 @@ var setUp;
     getValidFeatureMask =
         function (features)
         {
-            var mask = features !== undefined ? validMaskFromArrayOrStringOrFeature(features) : 0;
+            var mask =
+            features !== undefined ? validMaskFromArrayOrStringOrFeature(features) : maskNew();
             return mask;
         };
 

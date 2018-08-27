@@ -5,7 +5,8 @@
 var assert = require('assert');
 var cli = require('../tools/cli');
 
-describe(
+describe
+(
     'screw.js',
     function ()
     {
@@ -21,11 +22,13 @@ describe(
 
         function test(description, command, expectedStdout, expectedStderr)
         {
-            it(
+            it
+            (
                 description,
                 function (done)
                 {
-                    exec(
+                    exec
+                    (
                         command,
                         null,
                         function (error, stdout, stderr)
@@ -39,25 +42,29 @@ describe(
             );
         }
 
-        test(
+        test
+        (
             'shows the help message with option "--help"',
             'node ./screw.js --help',
             /^Usage: screw.js [^]*\n$/,
             ''
         );
-        test(
+        test
+        (
             'shows an error message with an invalid option',
             'node ./screw.js --foo',
             '',
             'screw.js: unrecognized option "--foo".\nTry "screw.js --help" for more information.\n'
         );
-        test(
+        test
+        (
             'shows an error message when an invalid feature is specified',
             'node ./screw.js -f FOO',
             '',
             'Unknown feature "FOO"\n'
         );
-        test(
+        test
+        (
             'shows an error message when the input file does not exist',
             'node ./screw.js ""',
             '',
@@ -66,13 +73,15 @@ describe(
     }
 );
 
-describe(
+describe
+(
     'parseCommandLine returns expected results with params',
     function ()
     {
         function test(params, expected)
         {
-            it(
+            it
+            (
                 '"' + params.join(' ') + '"',
                 function ()
                 {
@@ -83,25 +92,46 @@ describe(
             );
         }
 
-        function testError(params, error)
+        function testError(params, expectedErrorMsg)
         {
-            it(
+            it
+            (
                 '"' + params.join(' ') + '"',
                 function ()
                 {
                     var argv = [null, '../screw.js'].concat(params);
-                    assert.throws(
-                        function ()
+                    try
+                    {
+                        cli.parseCommandLine(argv);
+                    }
+                    catch (error)
+                    {
+                        assert.strictEqual(Object.getPrototypeOf(error), Error.prototype);
+                        if (expectedErrorMsg !== undefined)
                         {
-                            cli.parseCommandLine(argv);
-                        },
-                        error
-                    );
+                            var actualErrorMsg = error.message;
+                            if (expectedErrorMsg instanceof RegExp)
+                            {
+                                assert
+                                (
+                                    expectedErrorMsg.test(actualErrorMsg),
+                                    'Expecting error message to match ' + expectedErrorMsg
+                                );
+                            }
+                            else if (typeof expectedErrorMsg === 'string')
+                                assert.strictEqual(actualErrorMsg, expectedErrorMsg);
+                            else
+                                throw Error('Invalid value for argument expectedErrorMsg');
+                        }
+                        return;
+                    }
+                    assert.fail('Error expected');
                 }
             );
         }
 
-        test(
+        test
+        (
             [],
             {
                 inputFileName: undefined,
@@ -111,7 +141,8 @@ describe(
         );
         test(['--help'], 'help');
         test(['--version'], 'version');
-        test(
+        test
+        (
             ['-c'],
             {
                 inputFileName: undefined,
@@ -119,7 +150,8 @@ describe(
                 options: { runAs: 'call' }
             }
         );
-        test(
+        test
+        (
             ['-w'],
             {
                 inputFileName: undefined,
@@ -127,7 +159,8 @@ describe(
                 options: { runAs: 'call' }
             }
         );
-        test(
+        test
+        (
             ['-e'],
             {
                 inputFileName: undefined,
@@ -135,7 +168,8 @@ describe(
                 options: { runAs: 'eval' }
             }
         );
-        test(
+        test
+        (
             ['-d'],
             {
                 inputFileName: undefined,
@@ -143,7 +177,8 @@ describe(
                 options: { perfInfo: { } }
             }
         );
-        test(
+        test
+        (
             ['--diagnostic'],
             {
                 inputFileName: undefined,
@@ -151,7 +186,8 @@ describe(
                 options: { perfInfo: { } }
             }
         );
-        test(
+        test
+        (
             ['-f', 'ATOB,SELF'],
             {
                 inputFileName: undefined,
@@ -159,7 +195,8 @@ describe(
                 options: { features: ['ATOB', 'SELF'] }
             }
         );
-        test(
+        test
+        (
             ['--features', 'ATOB,SELF'],
             {
                 inputFileName: undefined,
@@ -167,9 +204,10 @@ describe(
                 options: { features: ['ATOB', 'SELF'] }
             }
         );
-        testError(['-f'], Error('option "-f" requires an argument'));
-        testError(['--features'], Error('option "--features" requires an argument'));
-        test(
+        testError(['-f'], 'option "-f" requires an argument');
+        testError(['--features'], 'option "--features" requires an argument');
+        test
+        (
             ['-r', 'express'],
             {
                 inputFileName: undefined,
@@ -177,7 +215,8 @@ describe(
                 options: { runAs: 'express' }
             }
         );
-        test(
+        test
+        (
             ['--run-as', 'express'],
             {
                 inputFileName: undefined,
@@ -185,9 +224,10 @@ describe(
                 options: { runAs: 'express' }
             }
         );
-        testError(['-r'], Error('option "-r" requires an argument'));
-        testError(['--run-as'], Error('option "--run-as" requires an argument'));
-        test(
+        testError(['-r'], 'option "-r" requires an argument');
+        testError(['--run-as'], 'option "--run-as" requires an argument');
+        test
+        (
             ['-t'],
             {
                 inputFileName: undefined,
@@ -195,7 +235,8 @@ describe(
                 options: { trimCode: true }
             }
         );
-        test(
+        test
+        (
             ['--trim-code'],
             {
                 inputFileName: undefined,
@@ -203,7 +244,8 @@ describe(
                 options: { trimCode: true }
             }
         );
-        test(
+        test
+        (
             ['-x'],
             {
                 inputFileName: undefined,
@@ -211,7 +253,8 @@ describe(
                 options: { runAs: 'express' }
             }
         );
-        test(
+        test
+        (
             ['-ctx'],
             {
                 inputFileName: undefined,
@@ -220,11 +263,10 @@ describe(
             }
         );
         testError(['-y'], /unrecognized flag "y"/);
-        testError(
-            ['--allyourbasearebelongtous'],
-            /unrecognized option "--allyourbasearebelongtous"/
-        );
-        test(
+        testError
+        (['--allyourbasearebelongtous'], /unrecognized option "--allyourbasearebelongtous"/);
+        test
+        (
             ['infile'],
             {
                 inputFileName: 'infile',
@@ -232,7 +274,8 @@ describe(
                 options: { }
             }
         );
-        test(
+        test
+        (
             ['infile', 'outfile'],
             {
                 inputFileName: 'infile',
@@ -240,7 +283,8 @@ describe(
                 options: { }
             }
         );
-        test(
+        test
+        (
             ['-ct', 'infile', '--features', 'FF', 'outfile'],
             {
                 inputFileName: 'infile',
@@ -252,66 +296,72 @@ describe(
     }
 );
 
-describe(
+describe
+(
     'createReport',
     function ()
     {
-        it(
+        it
+        (
             'when screwed size is larger than original size',
             function ()
             {
                 var actual = cli.createReport(90, 2345, 0.987);
                 var expected =
-                    'Original size:      90 bytes\n' +
-                    'Screwed size:     2345 bytes\n' +
-                    'Expansion factor: 26.06\n' +
-                    'Encoding time:    0.99 s';
+                'Original size:      90 bytes\n' +
+                'Screwed size:     2345 bytes\n' +
+                'Expansion factor: 26.06\n' +
+                'Encoding time:    0.99 s';
                 assert.strictEqual(actual, expected);
             }
         );
-        it(
+        it
+        (
             'when screwed size is smaller than original size',
             function ()
             {
                 var actual = cli.createReport(100, 99, 0.005);
                 var expected =
-                    'Original size:    100 bytes\n' +
-                    'Screwed size:      99 bytes\n' +
-                    'Expansion factor: 0.99\n' +
-                    'Encoding time:    0.01 s';
+                'Original size:    100 bytes\n' +
+                'Screwed size:      99 bytes\n' +
+                'Expansion factor: 0.99\n' +
+                'Encoding time:    0.01 s';
                 assert.strictEqual(actual, expected);
             }
         );
-        it(
+        it
+        (
             'when original size is 1',
             function ()
             {
                 var actual = cli.createReport(1, 6, 0.004);
                 var expected =
-                    'Original size:    1 byte\n' +
-                    'Screwed size:     6 bytes\n' +
-                    'Expansion factor: 6.00\n' +
-                    'Encoding time:    < 0.01 s';
+                'Original size:    1 byte\n' +
+                'Screwed size:     6 bytes\n' +
+                'Expansion factor: 6.00\n' +
+                'Encoding time:    < 0.01 s';
                 assert.strictEqual(actual, expected);
             }
         );
-        it(
+        it
+        (
             'when original size is 0',
             function ()
             {
                 var actual = cli.createReport(0, 0, 0);
                 var expected =
-                    'Original size:    0 bytes\n' +
-                    'Screwed size:     0 bytes\n' +
-                    'Expansion factor: -\n' +
-                    'Encoding time:    < 0.01 s';
+                'Original size:    0 bytes\n' +
+                'Screwed size:     0 bytes\n' +
+                'Expansion factor: -\n' +
+                'Encoding time:    < 0.01 s';
                 assert.strictEqual(actual, expected);
             }
         );
     }
 );
 
-describe(
+describe
+(
     'createDiagnosticReport',
     function ()
     {
@@ -322,72 +372,78 @@ describe(
             return perfInfoList;
         }
 
-        it(
+        it
+        (
             'works as expected',
             function ()
             {
                 var actual =
-                    cli.createDiagnosticReport(
-                        [
-                            makePerfInfoList(
-                                null,
-                                {
-                                    coderName: 'coderA',
-                                    status: 'used',
-                                    outputLength: 100,
-                                    time: 123,
-                                    codingLog:
-                                    [
-                                        makePerfInfoList(
-                                            'lorem',
-                                            {
-                                                coderName: 'coderA1',
-                                                status: 'used',
-                                                outputLength: 50,
-                                                time: 45
-                                            }
-                                        ),
-                                        makePerfInfoList(
-                                            'ipsum',
-                                            {
-                                                coderName: 'coderA2',
-                                                status: 'used',
-                                                outputLength: 25,
-                                                time: 67,
-                                                codingLog:
-                                                [
-                                                    makePerfInfoList(
-                                                        'dolor',
-                                                        {
-                                                            coderName: 'coderA2_extra',
-                                                            status: 'used',
-                                                            outputLength: 22,
-                                                            time: 66
-                                                        }
-                                                    )
-                                                ]
-                                            }
-                                        )
-                                    ]
-                                },
-                                { coderName: 'coderB', status: 'skipped' }
-                            )
-                        ]
-                    );
+                cli.createDiagnosticReport
+                (
+                    [
+                        makePerfInfoList
+                        (
+                            null,
+                            {
+                                coderName: 'coderA',
+                                status: 'used',
+                                outputLength: 100,
+                                time: 123,
+                                codingLog:
+                                [
+                                    makePerfInfoList
+                                    (
+                                        'lorem',
+                                        {
+                                            coderName: 'coderA1',
+                                            status: 'used',
+                                            outputLength: 50,
+                                            time: 45
+                                        }
+                                    ),
+                                    makePerfInfoList
+                                    (
+                                        'ipsum',
+                                        {
+                                            coderName: 'coderA2',
+                                            status: 'used',
+                                            outputLength: 25,
+                                            time: 67,
+                                            codingLog:
+                                            [
+                                                makePerfInfoList
+                                                (
+                                                    'dolor',
+                                                    {
+                                                        coderName: 'coderA2_extra',
+                                                        status: 'used',
+                                                        outputLength: 22,
+                                                        time: 66
+                                                    }
+                                                )
+                                            ]
+                                        }
+                                    )
+                                ]
+                            },
+                            { coderName: 'coderB', status: 'skipped' }
+                        )
+                    ]
+                );
                 var expected =
-                    '\n' +
-                    'Coder                       Status         Length  Time (ms)\n' +
-                    '────────────────────────────────────────────────────────────\n' +
-                    '(default)\n' +
-                    '├coderA                     used              100        123\n' +
-                    '│├lorem\n' +
-                    '││└coderA1                  used               50         45\n' +
-                    '│└ipsum\n' +
-                    '│ └coderA2                  used               25         67\n' +
-                    '│  └dolor\n' +
-                    '│   └coderA2_extra          used               22         66\n' +
-                    '│\n' +
-                    '└coderB                     skipped             -          -\n';
+                '\n' +
+                'Coder                       Status         Length  Time (ms)\n' +
+                '────────────────────────────────────────────────────────────\n' +
+                '(default)\n' +
+                '├coderA                     used              100        123\n' +
+                '│├lorem\n' +
+                '││└coderA1                  used               50         45\n' +
+                '│└ipsum\n' +
+                '│ └coderA2                  used               25         67\n' +
+                '│  └dolor\n' +
+                '│   └coderA2_extra          used               22         66\n' +
+                '│\n' +
+                '└coderB                     skipped             -          -\n';
                 assert.strictEqual(actual, expected);
             }
         );

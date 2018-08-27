@@ -12,7 +12,6 @@ var json_parse;
 var json_stringify;
 var math_abs;
 var math_max;
-var math_min;
 var math_pow;
 var noProto;
 var noop;
@@ -70,7 +69,6 @@ var object_getOwnPropertyDescriptor;
 
     math_abs    = Math.abs;
     math_max    = Math.max;
-    math_min    = Math.min;
     math_pow    = Math.pow;
 
     noProto =

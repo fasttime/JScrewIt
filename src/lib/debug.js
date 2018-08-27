@@ -82,7 +82,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             {
                 var singleton = !array_isArray(inputEntries);
                 if (singleton)
-                    outputEntries = [createEntryClone(inputEntries, [0, 0])];
+                    outputEntries = [createEntryClone(inputEntries, EMPTY_MASK)];
                 else
                 {
                     outputEntries =
@@ -181,6 +181,8 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
 
         var ARROW           = Feature.ARROW;
         var FROM_CODE_POINT = Feature.FROM_CODE_POINT;
+
+        var EMPTY_MASK = maskNew();
 
         // Exported entries
         var ENTRIES = new Empty();

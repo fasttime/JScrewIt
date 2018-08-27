@@ -26,6 +26,7 @@ getComplexOptimizer,
 getToStringOptimizer,
 json_stringify,
 maskIncludes,
+maskNew,
 math_abs,
 noop,
 object_keys,
@@ -857,7 +858,7 @@ var resolveSimple;
         }
     );
 
-    var STATIC_ENCODER = new Encoder([0, 0]);
+    var STATIC_ENCODER = new Encoder(maskNew());
 
     var STR_TOKEN_PATTERN = '(' + object_keys(SIMPLE).join('|') + ')|([\\s\\S])';
 

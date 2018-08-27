@@ -122,15 +122,7 @@
                         var prototype = arg.prototype;
                         if (Object.getPrototypeOf(error) === prototype)
                             break;
-                        message =
-                            this.generateMessage(
-                                fn,
-                                this.expr,
-                                'to throw an error of type',
-                                prototype.name
-                            );
-                        this.assertions.fail(message);
-                        return;
+                        throw error;
                     case 'string':
                         if (error.message === arg)
                             break;
