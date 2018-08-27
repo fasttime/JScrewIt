@@ -72,6 +72,7 @@ var mapperFormatterDefault;
     var FF_SRC                          = Feature.FF_SRC;
     var FILL                            = Feature.FILL;
     var FROM_CODE_POINT                 = Feature.FROM_CODE_POINT;
+    var FUNCTION_22_LF                  = Feature.FUNCTION_22_LF;
     var GMT                             = Feature.GMT;
     var HISTORY                         = Feature.HISTORY;
     var HTMLAUDIOELEMENT                = Feature.HTMLAUDIOELEMENT;
@@ -85,7 +86,6 @@ var mapperFormatterDefault;
     var NO_FF_SRC                       = Feature.NO_FF_SRC;
     var NO_IE_SRC                       = Feature.NO_IE_SRC;
     var NO_OLD_SAFARI_ARRAY_ITERATOR    = Feature.NO_OLD_SAFARI_ARRAY_ITERATOR;
-    var NO_OLD_SAFARI_LF                = Feature.NO_OLD_SAFARI_LF;
     var NO_V8_SRC                       = Feature.NO_V8_SRC;
     var SELF_OBJ                        = Feature.SELF_OBJ;
     var STATUS                          = Feature.STATUS;
@@ -492,17 +492,17 @@ var mapperFormatterDefault;
                 ANY_DOCUMENT,
                 ARRAY_ITERATOR,
                 ESC_REGEXP_LF,
-                HTMLAUDIOELEMENT,
-                NO_OLD_SAFARI_LF
+                FUNCTION_22_LF,
+                HTMLAUDIOELEMENT
             ),
             define(
                 'V',
                 ANY_DOCUMENT,
                 ARRAY_ITERATOR,
                 ESC_REGEXP_LF,
+                FUNCTION_22_LF,
                 HTMLAUDIOELEMENT,
-                NO_FF_SRC,
-                NO_OLD_SAFARI_LF
+                NO_FF_SRC
             ),
             define('U', ANY_DOCUMENT, UNDEFINED),
             define('U', CAPITAL_HTML, ESC_REGEXP_LF),
@@ -634,8 +634,8 @@ var mapperFormatterDefault;
         '\n':
         [
             define('(Function() + [])[23]'),
+            define('(Function() + [])[22]', FUNCTION_22_LF),
             define('(ANY_FUNCTION + [])[0]', IE_SRC),
-            define('(Function() + [])[22]', NO_OLD_SAFARI_LF),
             defineFHCharAt('FILTER', 19, NO_V8_SRC),
             defineFHCharAt('FILL', 17, FILL, NO_V8_SRC),
         ],
@@ -943,8 +943,8 @@ var mapperFormatterDefault;
             define('(RP_3_NO + RegExp("".sub()))[10]', ESC_REGEXP_SLASH),
             define('uneval("".fontcolor(false))[20]', UNEVAL),
             define('(RegExp(FILTER) + [])[20]', ESC_REGEXP_LF, FF_SRC),
+            define('(RP_5_N + RegExp(Function()))[30]', ESC_REGEXP_LF, FUNCTION_22_LF),
             define('(RegExp(ANY_FUNCTION) + [])[1]', ESC_REGEXP_LF, IE_SRC),
-            define('(RP_5_N + RegExp(Function()))[30]', ESC_REGEXP_LF, NO_OLD_SAFARI_LF),
             define('(+(ANY_FUNCTION + [])[0] + RegExp(FILTER))[23]', ESC_REGEXP_LF, NO_V8_SRC),
             define('uneval(FILTER + [])[20]', FF_SRC, UNEVAL),
             define('uneval(ANY_FUNCTION + [])[1]', IE_SRC, UNEVAL),

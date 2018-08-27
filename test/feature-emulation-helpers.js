@@ -643,6 +643,23 @@
                 override(this, 'String.fromCodePoint', { value: fromCodePoint });
             }
         },
+        FUNCTION_22_LF:
+        {
+            setUp: function ()
+            {
+                var context = this;
+                registerToStringAdapter(
+                    this,
+                    'Function',
+                    function ()
+                    {
+                        var str = context.Function.toString.call(this);
+                        if (/function anonymous\(\n?\) {\s+}/.test(str))
+                            return 'function anonymous() {\n\n}';
+                    }
+                );
+            }
+        },
         GMT:
         {
             setUp: function ()
@@ -755,23 +772,6 @@
             '[object Array Iterator]',
             /^\[object Array Iterator]$/
         ),
-        NO_OLD_SAFARI_LF:
-        {
-            setUp: function ()
-            {
-                var context = this;
-                registerToStringAdapter(
-                    this,
-                    'Function',
-                    function ()
-                    {
-                        var str = context.Function.toString.call(this);
-                        if (/function anonymous\(\n?\) {\s+}/.test(str))
-                            return 'function anonymous() {\n\n}';
-                    }
-                );
-            }
-        },
         NO_V8_SRC: makeEmuFeatureNativeFunctionSource(
             NATIVE_FUNCTION_SOURCE_INFO_FF,
             NATIVE_FUNCTION_SOURCE_INFO_IE

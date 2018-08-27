@@ -185,24 +185,24 @@ Most typically, it will throw some kind of error at runtime.
 
 It's important to keep in mind that each of the target engines needs to support every feature we
 specify.
-So if we want our JSFuck code to run in Android Browser 4.4, Safari 10 and Node.js 5+, we can only
+So if we want our JSFuck code to run in Android Browser 4.4, Safari 7.0 and Node.js 10+, we can only
 specify features supported by all of these engines.
 These features can be retrieved with
 [`JScrewIt.Feature.commonOf`](Reference.md#JScrewIt.Feature.commonOf).
 
 ```js
-{ features: JScrewIt.Feature.commonOf("ANDRO44", "NODE50", "SAFARI100") }
+{ features: JScrewIt.Feature.commonOf("ANDRO44", "NODE100", "SAFARI70") }
 ```
 
 The features turn out to be [`ESC_HTML_QUOT`](Features.md#ESC_HTML_QUOT), [`GMT`](Features.md#GMT),
 [`INCR_CHAR`](Features.md#INCR_CHAR), [`NAME`](Features.md#NAME),
-[`NO_IE_SRC`](Features.md#NO_IE_SRC), [`NO_OLD_SAFARI_LF`](Features.md#NO_OLD_SAFARI_LF) and
-[`UNDEFINED`](Features.md#UNDEFINED) (a quick way to see this is entering
-`JScrewIt.Feature.commonOf("ANDRO44", "NODE50", "SAFARI100").toString()` in the browser's console).
+[`NO_IE_SRC`](Features.md#NO_IE_SRC) and [`UNDEFINED`](Features.md#UNDEFINED) (a quick way to see
+this is entering `JScrewIt.Feature.commonOf("ANDRO44", "NODE100", "SAFARI70").toString()` in the
+browser's console).
 With this knowledge, we could also rewrite the expression above as follows.
 
 ```js
-{ features: ["ESC_HTML_QUOT", "GMT", "INCR_CHAR", "NAME", "NO_IE_SRC", "NO_OLD_SAFARI_LF", "UNDEFINED"] }
+{ features: ["ESC_HTML_QUOT", "GMT", "INCR_CHAR", "NAME", "NO_IE_SRC", "UNDEFINED"] }
 ```
 
 Finally, note that simply specifying an array of engine features will not achieve the desired
@@ -210,7 +210,7 @@ effect, as it will result in the union of the features available in every engine
 their intersection.
 
 ```diff
-- { features: ["ANDRO44", "NODE50", "SAFARI100"] }
+- { features: ["ANDRO44", "NODE100", "SAFARI70"] }
 ```
 
 ### Further Reading

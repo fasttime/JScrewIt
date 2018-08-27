@@ -132,6 +132,11 @@ _Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 4+._
 Existence of the function String.fromCodePoint.
 
 _Available in Chrome, Edge, Firefox, Safari 9.0+, Opera and Node.js 4+._
+<a name="FUNCTION_22_LF"></a>
+### `FUNCTION_22_LF`
+A string representation of dynamically generated functions where the character at index 22 is a line feed \("\\n"\).
+
+_Available in Internet Explorer, Safari 9.0+, Android Browser and Node.js before 10._
 <a name="GMT"></a>
 ### `GMT`
 Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).<br>
@@ -225,11 +230,6 @@ _Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
 
 _Available in Chrome, Edge, Firefox, Safari 9.0+, Opera and Node.js 0.12+._
-<a name="NO_OLD_SAFARI_LF"></a>
-### `NO_OLD_SAFARI_LF`
-A string representation of dynamically generated functions where the character at index 22 is a line feed \("\\n"\).
-
-_Available in Internet Explorer, Safari 9.0+, Android Browser and Node.js before 10._
 <a name="NO_V8_SRC"></a>
 ### `NO_V8_SRC`
 A string representation of native functions typical for Firefox, Internet Explorer and Safari.<br>
@@ -406,6 +406,7 @@ This table lists features available in the most common engines.
 <li><a href="#DOCUMENT"><code>DOCUMENT</code></a> (not in Internet Explorer 11)
 <li><a href="#ESC_REGEXP_LF"><code>ESC_REGEXP_LF</code></a>
 <li><a href="#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
+<li><a href="#FUNCTION_22_LF"><code>FUNCTION_22_LF</code></a>
 <li><a href="#GMT"><code>GMT</code></a> (Internet Explorer 11)
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a> (Internet Explorer 11)
@@ -413,7 +414,6 @@ This table lists features available in the most common engines.
 <li><a href="#INTL"><code>INTL</code></a> (Internet Explorer 11)
 <li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Internet Explorer 11 on Windows 10)
 <li><a href="#NO_FF_SRC"><code>NO_FF_SRC</code></a>
-<li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#NO_V8_SRC"><code>NO_V8_SRC</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#STATUS"><code>STATUS</code></a>
@@ -439,6 +439,7 @@ This table lists features available in the most common engines.
 <li><a href="#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
 <li><a href="#FILL"><code>FILL</code></a> (Safari 7.1+)
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Safari 9.0+)
+<li><a href="#FUNCTION_22_LF"><code>FUNCTION_22_LF</code></a> (Safari 9.0+)
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
@@ -449,7 +450,6 @@ This table lists features available in the most common engines.
 <li><a href="#NODECONSTRUCTOR"><code>NODECONSTRUCTOR</code></a> (not in Safari 10.0+)
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a>
 <li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Safari 9.0+)
-<li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a> (Safari 9.0+)
 <li><a href="#NO_V8_SRC"><code>NO_V8_SRC</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#STATUS"><code>STATUS</code></a>
@@ -470,6 +470,7 @@ This table lists features available in the most common engines.
 <li><a href="#DOMWINDOW"><code>DOMWINDOW</code></a> (not in Android Browser 4.4)
 <li><a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a>
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a>)
+<li><a href="#FUNCTION_22_LF"><code>FUNCTION_22_LF</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a> (Android Browser 4.4)
@@ -480,7 +481,6 @@ This table lists features available in the most common engines.
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NO_FF_SRC"><code>NO_FF_SRC</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a>)
-<li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#DOMWINDOW"><code>DOMWINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#STATUS"><code>STATUS</code></a>
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a> (Android Browser 4.1+)
@@ -500,6 +500,7 @@ This table lists features available in the most common engines.
 <li><a href="#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a> (Node.js 4+)
 <li><a href="#FILL"><code>FILL</code></a> (Node.js 4+)
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Node.js 4+)
+<li><a href="#FUNCTION_22_LF"><code>FUNCTION_22_LF</code></a> (not in Node.js 10+)
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="#INTL"><code>INTL</code></a> (Node.js 0.12+)
@@ -508,7 +509,6 @@ This table lists features available in the most common engines.
 <li><a href="#NO_FF_SRC"><code>NO_FF_SRC</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a>
 <li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Node.js 0.12+)
-<li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a> (not in Node.js 10+)
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
 </ul>
 </td>

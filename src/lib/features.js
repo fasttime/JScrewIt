@@ -537,6 +537,17 @@ var validMaskFromArrayOrStringOrFeature;
                 return available;
             }
         },
+        FUNCTION_22_LF:
+        {
+            description:
+                'A string representation of dynamically generated functions where the character ' +
+                'at index 22 is a line feed ("\\n").',
+            check: function ()
+            {
+                var available = (Function() + '')[22] === '\n';
+                return available;
+            }
+        },
         GMT:
         {
             description:
@@ -693,17 +704,6 @@ var validMaskFromArrayOrStringOrFeature;
             },
             includes: ['ARRAY_ITERATOR']
         },
-        NO_OLD_SAFARI_LF:
-        {
-            description:
-                'A string representation of dynamically generated functions where the character ' +
-                'at index 22 is a line feed ("\\n").',
-            check: function ()
-            {
-                var available = (Function() + '')[22] === '\n';
-                return available;
-            }
-        },
         NO_V8_SRC:
         {
             description:
@@ -849,12 +849,12 @@ var validMaskFromArrayOrStringOrFeature;
                 'CONSOLE',
                 'DOMWINDOW',
                 'ESC_HTML_ALL',
+                'FUNCTION_22_LF',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'NAME',
-                'NO_OLD_SAFARI_LF',
                 'STATUS',
                 'V8_SRC'
             ]
@@ -868,12 +868,12 @@ var validMaskFromArrayOrStringOrFeature;
                 'CONSOLE',
                 'DOMWINDOW',
                 'ESC_HTML_ALL',
+                'FUNCTION_22_LF',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'NAME',
-                'NO_OLD_SAFARI_LF',
                 'STATUS',
                 'UNDEFINED',
                 'V8_SRC'
@@ -888,6 +888,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'BARPROP',
                 'CONSOLE',
                 'ESC_HTML_ALL',
+                'FUNCTION_22_LF',
                 'GMT',
                 'HISTORY',
                 'HTMLAUDIOELEMENT',
@@ -896,7 +897,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
-                'NO_OLD_SAFARI_LF',
                 'STATUS',
                 'UNDEFINED',
                 'V8_SRC',
@@ -1001,10 +1001,10 @@ var validMaskFromArrayOrStringOrFeature;
                 'DOCUMENT',
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
+                'FUNCTION_22_LF',
                 'HISTORY',
                 'IE_SRC',
                 'INCR_CHAR',
-                'NO_OLD_SAFARI_LF',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW'
@@ -1021,10 +1021,10 @@ var validMaskFromArrayOrStringOrFeature;
                 'DOCUMENT',
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
+                'FUNCTION_22_LF',
                 'HISTORY',
                 'IE_SRC',
                 'INCR_CHAR',
-                'NO_OLD_SAFARI_LF',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW'
@@ -1041,13 +1041,13 @@ var validMaskFromArrayOrStringOrFeature;
                 'CONSOLE',
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
+                'FUNCTION_22_LF',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'IE_SRC',
                 'INCR_CHAR',
                 'INTL',
-                'NO_OLD_SAFARI_LF',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW'
@@ -1064,6 +1064,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'CONSOLE',
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
+                'FUNCTION_22_LF',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -1071,7 +1072,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
-                'NO_OLD_SAFARI_LF',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW'
@@ -1084,10 +1084,10 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ESC_HTML_ALL',
+                'FUNCTION_22_LF',
                 'GMT',
                 'INCR_CHAR',
                 'NAME',
-                'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'V8_SRC'
             ]
@@ -1098,13 +1098,13 @@ var validMaskFromArrayOrStringOrFeature;
             includes:
             [
                 'ESC_HTML_QUOT_ONLY',
+                'FUNCTION_22_LF',
                 'GMT',
                 'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
-                'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'V8_SRC'
             ]
@@ -1119,13 +1119,13 @@ var validMaskFromArrayOrStringOrFeature;
                 'ESC_REGEXP_SLASH',
                 'FILL',
                 'FROM_CODE_POINT',
+                'FUNCTION_22_LF',
                 'GMT',
                 'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
-                'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'V8_SRC'
             ]
@@ -1140,13 +1140,13 @@ var validMaskFromArrayOrStringOrFeature;
                 'ESC_REGEXP_SLASH',
                 'FILL',
                 'FROM_CODE_POINT',
+                'FUNCTION_22_LF',
                 'GMT',
                 'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
-                'NO_OLD_SAFARI_LF',
                 'UNDEFINED',
                 'V8_SRC'
             ],
@@ -1250,6 +1250,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FF_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
+                'FUNCTION_22_LF',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -1257,7 +1258,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NODECONSTRUCTOR',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
-                'NO_OLD_SAFARI_LF',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW'
@@ -1285,13 +1285,13 @@ var validMaskFromArrayOrStringOrFeature;
                 'FF_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
+                'FUNCTION_22_LF',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
-                'NO_OLD_SAFARI_LF',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW'
@@ -1313,6 +1313,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FF_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
+                'FUNCTION_22_LF',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -1321,7 +1322,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
-                'NO_OLD_SAFARI_LF',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW'
