@@ -10,21 +10,21 @@ var ENGINE_ENTRIES =
         name: ['Chrome', 'Opera'],
         versions:
         [
-            { description: ['59+', '46+'], feature: 'CHROME59' }
+            { description: ['59+', '46+'], feature: 'CHROME59' },
         ]
     },
     {
         name: 'Edge',
         versions:
         [
-            { description: '40+', feature: 'EDGE40' }
+            { description: '40+', feature: 'EDGE40' },
         ]
     },
     {
         name: 'Firefox',
         versions:
         [
-            { description: '54+', feature: 'FF54' }
+            { description: '54+', feature: 'FF54' },
         ]
     },
     {
@@ -34,7 +34,7 @@ var ENGINE_ENTRIES =
             { description: '9+', feature: 'IE9' },
             { description: '10+', feature: 'IE10' },
             { description: '11', feature: 'IE11' },
-            { description: '11 on Windows 10', feature: 'IE11_WIN10' }
+            { description: '11 on Windows 10', feature: 'IE11_WIN10' },
         ]
     },
     {
@@ -45,7 +45,8 @@ var ENGINE_ENTRIES =
             { description: '7.1+', feature: 'SAFARI71' },
             { description: '8.0+', feature: 'SAFARI80' },
             { description: '9.0+', feature: 'SAFARI90' },
-            { description: '10.0+', feature: 'SAFARI100' }
+            { description: '10.0+', feature: 'SAFARI100' },
+            { description: '11.0+', feature: 'SAFARI110' },
         ]
     },
     {
@@ -54,7 +55,7 @@ var ENGINE_ENTRIES =
         [
             { description: '4.0+', feature: 'ANDRO40' },
             { description: '4.1+', feature: 'ANDRO41' },
-            { description: '4.4+', feature: 'ANDRO44' }
+            { description: '4.4', feature: 'ANDRO44' },
         ]
     },
     {
@@ -64,7 +65,8 @@ var ENGINE_ENTRIES =
             { description: '0.10+', feature: 'NODE010' },
             { description: '0.12+', feature: 'NODE012' },
             { description: '4+', feature: 'NODE40' },
-            { description: '5+', feature: 'NODE50' }
+            { description: '5+', feature: 'NODE50' },
+            { description: '10+', feature: 'NODE100' },
         ]
     }
 ];
@@ -78,7 +80,7 @@ var ENGINE_REFS =
     { index: 4 },
     { index: 0, subIndex: 1 },
     { index: 5 },
-    { index: 6 }
+    { index: 6 },
 ];
 
 function calculateEngineSupportInfo(engineEntry, filter)
@@ -107,16 +109,15 @@ function calculateEngineSupportInfo(engineEntry, filter)
 function escape(str)
 {
     var result =
-        str
-        .replace(
-            /[\n&()[\\\]]/g,
-            function (char)
-            {
-                if (char === '\n')
-                    return '<br>\n';
-                return '\\' + char;
-            }
-        );
+    str.replace
+    (
+        /[\n&()[\\\]]/g,
+        function (char)
+        {
+            var replacement = char === '\n' ? '<br>\n' : '\\' + char;
+            return replacement;
+        }
+    );
     return result;
 }
 
@@ -149,7 +150,7 @@ function formatAvailability(availability, webWorkerReport, forcedStrictModeRepor
 function formatFeatureName(featureName)
 {
     var result =
-        '<a href="#' + getAnchorName(featureName) + '"><code>' + featureName + '</code></a>';
+    '<a href="#' + getAnchorName(featureName) + '"><code>' + featureName + '</code></a>';
     return result;
 }
 
@@ -180,20 +181,20 @@ function getAnchorName(featureName)
 function getAvailabilityInfo(featureName, engineEntry)
 {
     var availabilityInfoCache =
-        engineEntry.availabilityInfoCache ||
-        (engineEntry.availabilityInfoCache = Object.create(null));
+    engineEntry.availabilityInfoCache || (engineEntry.availabilityInfoCache = Object.create(null));
     var availabilityInfo =
-        availabilityInfoCache[featureName] ||
+    availabilityInfoCache[featureName] ||
+    (
+        availabilityInfoCache[featureName] =
+        calculateEngineSupportInfo
         (
-            availabilityInfoCache[featureName] =
-            calculateEngineSupportInfo(
-                engineEntry,
-                function (engineFeatureObj)
-                {
-                    return engineFeatureObj.includes(featureName);
-                }
-            )
-        );
+            engineEntry,
+            function (engineFeatureObj)
+            {
+                return engineFeatureObj.includes(featureName);
+            }
+        )
+    );
     return availabilityInfo;
 }
 
@@ -202,14 +203,15 @@ function getCombinedDescription(engineEntry, versionIndex)
     function formatVersionedNames(names)
     {
         var str =
-            names.map(
-                function (name, subIndex)
-                {
-                    var indexedDescription = description[subIndex];
-                    var versionedName = getVersionedName(name, indexedDescription);
-                    return versionedName;
-                }
-            ).join(', ');
+        names.map
+        (
+            function (name, subIndex)
+            {
+                var indexedDescription = description[subIndex];
+                var versionedName = getVersionedName(name, indexedDescription);
+                return versionedName;
+            }
+        ).join(', ');
         return str;
     }
 
@@ -223,20 +225,21 @@ function getCombinedDescription(engineEntry, versionIndex)
     var versionEntry = engineEntry.versions[versionIndex];
     var description = versionEntry.description;
     var combinedDescription =
-        Array.isArray(name) ? formatVersionedNames(name) : getVersionedName(name, description);
+    Array.isArray(name) ? formatVersionedNames(name) : getVersionedName(name, description);
     return combinedDescription;
 }
 
 function getEngineSupportInfo(attributeName, engineEntry)
 {
     var result =
-        calculateEngineSupportInfo(
-            engineEntry,
-            function (engineFeatureObj)
-            {
-                return attributeName in engineFeatureObj.attributes;
-            }
-        );
+    calculateEngineSupportInfo
+    (
+        engineEntry,
+        function (engineFeatureObj)
+        {
+            return attributeName in engineFeatureObj.attributes;
+        }
+    );
     return result;
 }
 
@@ -288,21 +291,14 @@ function getWebWorkerReport(featureObj)
 {
     var restriction = featureObj.attributes['web-worker'];
     var report =
-        restriction !== undefined &&
-        (
-            restriction === 'web-worker-restriction' ||
-            reportAsList(restriction, getEngineSupportInfo)
-        );
+    restriction !== undefined &&
+    (restriction === 'web-worker-restriction' || reportAsList(restriction, getEngineSupportInfo));
     return report;
 }
 
 function printRow(label, assignmentMap)
 {
-    var result =
-        '<tr>\n' +
-        '<td>' + label + '</td>\n' +
-        '<td>\n' +
-        '<ul>\n';
+    var result = '<tr>\n<td>' + label + '</td>\n<td>\n<ul>\n';
     var features = Object.keys(assignmentMap).sort();
     for (var index = 0; index < features.length; ++index)
     {
@@ -326,137 +322,134 @@ function printRow(label, assignmentMap)
         }
         result += '\n';
     }
-    result +=
-        '</ul>\n' +
-        '</td>\n' +
-        '</tr>\n';
+    result += '</ul>\n</td>\n</tr>\n';
     return result;
 }
 
 function reportAsList(property, filter)
 {
     var availability =
-        ENGINE_REFS.map(
-            function (engineRef)
+    ENGINE_REFS.map
+    (
+        function (engineRef)
+        {
+            var engineEntry = ENGINE_ENTRIES[engineRef.index];
+            var availabilityInfo = filter(property, engineEntry);
+            var firstAvail = availabilityInfo.firstAvail;
+            if (firstAvail != null)
             {
-                var engineEntry = ENGINE_ENTRIES[engineRef.index];
-                var availabilityInfo = filter(property, engineEntry);
-                var firstAvail = availabilityInfo.firstAvail;
-                if (firstAvail != null)
+                var subIndex = engineRef.subIndex;
+                var getBySubIndex =
+                function (obj)
                 {
-                    var subIndex = engineRef.subIndex;
-                    var getBySubIndex =
-                        function (obj)
-                        {
-                            var result = subIndex == null ? obj : obj[subIndex];
-                            return result;
-                        };
-                    var versions = engineEntry.versions;
-                    var getDescription =
-                        function (versionIndex)
-                        {
-                            var description = versions[versionIndex].description;
-                            var result = getBySubIndex(description);
-                            return result;
-                        };
-                    var availEntry = getBySubIndex(engineEntry.name);
-                    if (firstAvail)
-                        availEntry += ' ' + getDescription(firstAvail);
-                    var firstUnavail = availabilityInfo.firstUnavail;
-                    if (firstUnavail)
-                        availEntry += ' before ' + getDescription(firstUnavail);
-                    return availEntry;
-                }
+                    var result = subIndex == null ? obj : obj[subIndex];
+                    return result;
+                };
+                var versions = engineEntry.versions;
+                var getDescription =
+                function (versionIndex)
+                {
+                    var description = versions[versionIndex].description;
+                    var result = getBySubIndex(description);
+                    return result;
+                };
+                var availEntry = getBySubIndex(engineEntry.name);
+                if (firstAvail)
+                    availEntry += ' ' + getDescription(firstAvail);
+                var firstUnavail = availabilityInfo.firstUnavail;
+                if (firstUnavail)
+                    availEntry += ' before ' + getDescription(firstUnavail).replace(/\+$/, '');
+                return availEntry;
             }
-        ).filter(
-            function (availEntry)
-            {
-                return availEntry != null;
-            }
-        );
+        }
+    )
+    .filter
+    (
+        function (availEntry)
+        {
+            return availEntry != null;
+        }
+    );
     return availability;
 }
 
 module.exports =
-    function ()
-    {
-        var Feature = JScrewIt.Feature;
-        var allFeatureMap = Feature.ALL;
-
-        var content =
-            '# JScrewIt Feature Reference\n' +
-            '## Feature List\n' +
-            'This section lists all features along with their descriptions.\n';
-        Object.keys(allFeatureMap).sort().forEach(
-            function (featureName)
+function ()
+{
+    var Feature = JScrewIt.Feature;
+    var allFeatureMap = Feature.ALL;
+    var content =
+    '# JScrewIt Feature Reference\n' +
+    '## Feature List\n' +
+    'This section lists all features along with their descriptions.\n';
+    Object.keys(allFeatureMap).sort().forEach
+    (
+        function (featureName)
+        {
+            var subContent;
+            var featureObj = allFeatureMap[featureName];
+            var name = featureObj.name;
+            if (name === featureName)
             {
-                var subContent;
-                var featureObj = allFeatureMap[featureName];
-                var name = featureObj.name;
-                if (name === featureName)
+                var description = featureObj.description;
+                subContent = escape(description);
+                if (featureObj.check)
                 {
-                    var description = featureObj.description;
-                    subContent = escape(description);
-                    if (featureObj.check)
-                    {
-                        var availability = reportAsList(featureName, getAvailabilityInfo);
-                        var webWorkerReport = getWebWorkerReport(featureObj);
-                        var forcedStrictModeReport = getForcedStrictModeReport(featureObj);
-                        subContent +=
-                            '\n\n_' +
-                            formatAvailability(
-                                availability,
-                                webWorkerReport,
-                                forcedStrictModeReport
-                            ) +
-                            '_';
-                    }
+                    var availability = reportAsList(featureName, getAvailabilityInfo);
+                    var webWorkerReport = getWebWorkerReport(featureObj);
+                    var forcedStrictModeReport = getForcedStrictModeReport(featureObj);
+                    subContent +=
+                    '\n\n_' +
+                    formatAvailability(availability, webWorkerReport, forcedStrictModeReport) + '_';
                 }
-                else
-                    subContent = '_An alias for ' + formatFeatureNameMD(name) + '._';
-                content +=
-                    '<a name="' + getAnchorName(featureName) + '"></a>\n' +
-                    '### `' + featureName + '`\n' + subContent + '\n';
             }
-        );
-        content +=
-            '## Engine Support\n' +
-            'This table lists features available in the most common engines.\n' +
-            '<table>\n' +
-            '<tr>\n' +
-            '<th>Target</th>\n' +
-            '<th>Features</th>\n' +
-            '</tr>\n';
-        ENGINE_ENTRIES.forEach(
-            function (engineEntry)
+            else
+                subContent = '_An alias for ' + formatFeatureNameMD(name) + '._';
+            content +=
+            '<a name="' + getAnchorName(featureName) + '"></a>\n' +
+            '### `' + featureName + '`\n' +
+            subContent + '\n';
+        }
+    );
+    content +=
+    '## Engine Support\n' +
+    'This table lists features available in the most common engines.\n' +
+    '<table>\n' +
+    '<tr>\n' +
+    '<th>Target</th>\n' +
+    '<th>Features</th>\n' +
+    '</tr>\n';
+    ENGINE_ENTRIES.forEach
+    (
+        function (engineEntry)
+        {
+            var assignmentMap = Object.create(null);
+            var featureName;
+            for (featureName in allFeatureMap)
             {
-                var assignmentMap = Object.create(null);
-                var featureName;
-                for (featureName in allFeatureMap)
+                var featureObj = Feature[featureName];
+                if (featureObj.check && featureObj.name === featureName)
                 {
-                    var featureObj = Feature[featureName];
-                    if (featureObj.check && featureObj.name === featureName)
+                    var versioning = getVersioningFor(featureName, engineEntry);
+                    if (versioning != null)
                     {
-                        var versioning = getVersioningFor(featureName, engineEntry);
-                        if (versioning != null)
-                        {
-                            var assignments = { versioning: versioning };
-                            assignmentMap[featureName] = assignments;
-                        }
+                        var assignments = { versioning: versioning };
+                        assignmentMap[featureName] = assignments;
                     }
                 }
-                for (featureName in assignmentMap)
-                {
-                    if (Feature[featureName].check)
-                    {
-                        var impliers = getImpliers(featureName, assignmentMap);
-                        if (impliers)
-                            assignmentMap[featureName].impliers = impliers;
-                    }
-                }
-                content += printRow(getCombinedDescription(engineEntry, 0), assignmentMap);
             }
-        );
-        content += '</table>\n';
-        return content;
-    };
+            for (featureName in assignmentMap)
+            {
+                if (Feature[featureName].check)
+                {
+                    var impliers = getImpliers(featureName, assignmentMap);
+                    if (impliers)
+                        assignmentMap[featureName].impliers = impliers;
+                }
+            }
+            content += printRow(getCombinedDescription(engineEntry, 0), assignmentMap);
+        }
+    );
+    content += '</table>\n';
+    return content;
+};

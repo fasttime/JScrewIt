@@ -842,7 +842,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         ANDRO40:
         {
-            engine: 'Android Browser 4.0 to 4.3',
+            engine: 'Android Browser 4.0',
             includes:
             [
                 'ATOB',
@@ -881,7 +881,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         ANDRO44:
         {
-            engine: 'Android Browser 4.4 or later',
+            engine: 'Android Browser 4.4',
             includes:
             [
                 'ATOB',
@@ -925,7 +925,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
-                'NO_OLD_SAFARI_LF',
                 'STATUS',
                 'UNDEFINED',
                 'V8_SRC',
@@ -942,7 +941,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'ARROW',
                 'ATOB',
                 'BARPROP',
-                'CONSOLE',
                 'ESC_HTML_QUOT_ONLY',
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
@@ -996,7 +994,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         IE9:
         {
-            engine: 'Internet Explorer 9 and 10',
+            engine: 'Internet Explorer 9',
             includes:
             [
                 'CAPITAL_HTML',
@@ -1096,7 +1094,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         NODE012:
         {
-            engine: 'Node.js 0.12 or later',
+            engine: 'Node.js 0.12',
             includes:
             [
                 'ESC_HTML_QUOT_ONLY',
@@ -1113,7 +1111,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         NODE40:
         {
-            engine: 'Node.js 4.0 or later',
+            engine: 'Node.js 4',
             includes:
             [
                 'ARROW',
@@ -1134,7 +1132,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         NODE50:
         {
-            engine: 'Node.js 5.0 or later',
+            engine: 'Node.js 5 to 9',
             includes:
             [
                 'ARROW',
@@ -1149,6 +1147,27 @@ var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',
+                'UNDEFINED',
+                'V8_SRC'
+            ],
+            attributes: { 'char-increment-restriction': null }
+        },
+        NODE100:
+        {
+            engine: 'Node.js 10 or later',
+            includes:
+            [
+                'ARROW',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_SLASH',
+                'FILL',
+                'FROM_CODE_POINT',
+                'GMT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'UNDEFINED',
                 'V8_SRC'
             ],
@@ -1270,6 +1289,36 @@ var validMaskFromArrayOrStringOrFeature;
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'NO_OLD_SAFARI_LF',
+                'STATUS',
+                'UNDEFINED',
+                'WINDOW'
+            ],
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null }
+        },
+        SAFARI110:
+        {
+            engine: 'Safari 11 or later',
+            includes:
+            [
+                'ARROW',
+                'ATOB',
+                'BARPROP',
+                'CONSOLE',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'FF_SRC',
+                'FILL',
+                'FROM_CODE_POINT',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'NO_OLD_SAFARI_LF',

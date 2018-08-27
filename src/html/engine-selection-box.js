@@ -46,6 +46,7 @@ function createEngineSelectionBox()
                 { feature: 'SAFARI71', number: '7.1–8.0' },
                 { feature: 'SAFARI90', number: '9.0' },
                 { feature: 'SAFARI100', number: '10.0' },
+                { feature: 'SAFARI110', number: '11.0+' },
             ]
         },
         {
@@ -71,7 +72,8 @@ function createEngineSelectionBox()
                 { feature: 'NODE010', number: '0.10' },
                 { feature: 'NODE012', number: '0.12' },
                 { feature: 'NODE40', number: '4' },
-                { feature: 'NODE50', number: '5+' }
+                { feature: 'NODE50', number: '5' },
+                { feature: 'NODE50', number: '10+' },
             ]
         }
     ];

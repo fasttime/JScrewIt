@@ -3,13 +3,13 @@
 This section lists all features along with their descriptions.
 <a name="ANDRO40"></a>
 ### `ANDRO40`
-Features available in Android Browser 4.0 to 4.3.
+Features available in Android Browser 4.0.
 <a name="ANDRO41"></a>
 ### `ANDRO41`
 Features available in Android Browser 4.1 to 4.3.
 <a name="ANDRO44"></a>
 ### `ANDRO44`
-Features available in Android Browser 4.4 or later.
+Features available in Android Browser 4.4.
 <a name="ANY_DOCUMENT"></a>
 ### `ANY_DOCUMENT`
 Existence of the global object document whose string representation starts with "\[object " and ends with "Document\]".
@@ -34,7 +34,7 @@ _Available in Chrome, Edge, Firefox, Safari 10.0+, Opera and Node.js 4+._
 ### `ATOB`
 Existence of the global functions atob and btoa.
 
-_Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari before 10.0+._
+_Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari before 10.0._
 <a name="AUTO"></a>
 ### `AUTO`
 All features available in the current engine.
@@ -42,7 +42,7 @@ All features available in the current engine.
 ### `BARPROP`
 Existence of the global object statusbar having the string representation "\[object BarProp\]".
 
-_Available in Chrome, Edge, Firefox, Safari, Opera and Android Browser 4.4+. This feature is not available inside web workers._
+_Available in Chrome, Edge, Firefox, Safari, Opera and Android Browser 4.4. This feature is not available inside web workers._
 <a name="BROWSER"></a>
 ### `BROWSER`
 Features available in all browsers.<br>
@@ -67,7 +67,7 @@ No support for Node.js and older browsers like Internet Explorer, Safari 9 or An
 Existence of the global object console having the string representation "\[object Console\]".<br>
 This feature may become unavailable when Firebug or Firebug Lite is open and the console panel is enabled.
 
-_Available in Edge, Firefox, Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1+ and Android Browser 4.4+._
+_Available in Firefox, Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4._
 <a name="DEFAULT"></a>
 ### `DEFAULT`
 Minimum feature level, compatible with all supported engines in all environments.
@@ -80,7 +80,7 @@ _Available in Internet Explorer before 11. This feature is not available inside 
 ### `DOMWINDOW`
 Existence of the global object self having the string representation "\[object DOMWindow\]".
 
-_Available in Android Browser before 4.4+. This feature is not available inside web workers._
+_Available in Android Browser before 4.4. This feature is not available inside web workers._
 <a name="EDGE"></a>
 ### `EDGE`
 _An alias for [`EDGE40`](#EDGE40)._
@@ -91,7 +91,7 @@ Features available in Edge 40 or later.
 ### `ESC_HTML_ALL`
 The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
 
-_Available in Android Browser and Node.js before 0.12+._
+_Available in Android Browser and Node.js before 0.12._
 <a name="ESC_HTML_QUOT"></a>
 ### `ESC_HTML_QUOT`
 The property that double quotation marks in the argument of String.prototype.fontcolor are escaped as "\&quot;".
@@ -147,7 +147,7 @@ _Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Androi
 ### `HTMLAUDIOELEMENT`
 Existence of the global object Audio whose string representation starts with "function HTMLAudioElement".
 
-_Available in Android Browser 4.4+. This feature is not available inside web workers._
+_Available in Android Browser 4.4. This feature is not available inside web workers._
 <a name="HTMLDOCUMENT"></a>
 ### `HTMLDOCUMENT`
 Existence of the global object document having the string representation "\[object HTMLDocument\]".
@@ -164,7 +164,7 @@ Features available in Internet Explorer 11.
 Features available in Internet Explorer 11 on Windows 10.
 <a name="IE9"></a>
 ### `IE9`
-Features available in Internet Explorer 9 and 10.
+Features available in Internet Explorer 9.
 <a name="IE_SRC"></a>
 ### `IE_SRC`
 A string representation of native functions typical for Internet Explorer.<br>
@@ -178,12 +178,12 @@ _Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android B
 ### `INTL`
 Existence of the global object Intl.
 
-_Available in Chrome, Edge, Firefox, Internet Explorer 11, Opera, Android Browser 4.4+ and Node.js 0.12+._
+_Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 11.0+, Opera, Android Browser 4.4 and Node.js 0.12+._
 <a name="LOCALE_INFINITY"></a>
 ### `LOCALE_INFINITY`
 Language sensitive string representation of Infinity as "∞".
 
-_Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Opera, Android Browser 4.4+ and Node.js 0.12+._
+_Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 11.0+, Opera, Android Browser 4.4 and Node.js 0.12+._
 <a name="NAME"></a>
 ### `NAME`
 Existence of the name property for functions.
@@ -194,18 +194,21 @@ _Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
 Features available in Node.js 0.10.
 <a name="NODE012"></a>
 ### `NODE012`
-Features available in Node.js 0.12 or later.
+Features available in Node.js 0.12.
+<a name="NODE100"></a>
+### `NODE100`
+Features available in Node.js 10 or later.
 <a name="NODE40"></a>
 ### `NODE40`
-Features available in Node.js 4.0 or later.
+Features available in Node.js 4.
 <a name="NODE50"></a>
 ### `NODE50`
-Features available in Node.js 5.0 or later.
+Features available in Node.js 5 to 9.
 <a name="NODECONSTRUCTOR"></a>
 ### `NODECONSTRUCTOR`
 Existence of the global object Node having the string representation "\[object NodeConstructor\]".
 
-_Available in Safari before 10.0+. This feature is not available inside web workers._
+_Available in Safari before 10.0. This feature is not available inside web workers._
 <a name="NO_FF_SRC"></a>
 ### `NO_FF_SRC`
 A string representation of native functions typical for V8 and Edge or for Internet Explorer but not for Firefox and Safari.
@@ -226,7 +229,7 @@ _Available in Chrome, Edge, Firefox, Safari 9.0+, Opera and Node.js 0.12+._
 ### `NO_OLD_SAFARI_LF`
 A string representation of dynamically generated functions where the character at index 22 is a line feed \("\\n"\).
 
-_Available in Chrome, Internet Explorer, Safari 9.0+, Opera, Android Browser and Node.js._
+_Available in Internet Explorer, Safari 9.0+, Android Browser and Node.js before 10._
 <a name="NO_V8_SRC"></a>
 ### `NO_V8_SRC`
 A string representation of native functions typical for Firefox, Internet Explorer and Safari.<br>
@@ -236,6 +239,9 @@ _Available in Firefox, Internet Explorer and Safari._
 <a name="SAFARI100"></a>
 ### `SAFARI100`
 Features available in Safari 10.
+<a name="SAFARI110"></a>
+### `SAFARI110`
+Features available in Safari 11 or later.
 <a name="SAFARI70"></a>
 ### `SAFARI70`
 Features available in Safari 7.0.
@@ -255,7 +261,7 @@ _An alias for [`ANY_WINDOW`](#ANY_WINDOW)._
 ### `SELF_OBJ`
 Existence of the global object self whose string representation starts with "\[object ".
 
-_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.0+._
+_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.0._
 <a name="STATUS"></a>
 ### `STATUS`
 Existence of the global string status.
@@ -280,7 +286,7 @@ Remarkable traits are the lack of line feed characters at the beginning and at t
 ### `WINDOW`
 Existence of the global object self having the string representation "\[object Window\]".
 
-_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser 4.4+. This feature is not available inside web workers._
+_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser 4.4. This feature is not available inside web workers._
 ## Engine Support
 This table lists features available in the most common engines.
 <table>
@@ -313,7 +319,6 @@ This table lists features available in the most common engines.
 <li><a href="#NO_FF_SRC"><code>NO_FF_SRC</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a>
 <li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>
-<li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#STATUS"><code>STATUS</code></a>
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
@@ -331,7 +336,6 @@ This table lists features available in the most common engines.
 <li><a href="#ARROW"><code>ARROW</code></a>
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
-<li><a href="#CONSOLE"><code>CONSOLE</code></a>
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="#ESC_REGEXP_LF"><code>ESC_REGEXP_LF</code></a>
@@ -439,6 +443,8 @@ This table lists features available in the most common engines.
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>
+<li><a href="#INTL"><code>INTL</code></a> (Safari 11.0+)
+<li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Safari 11.0+)
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NODECONSTRUCTOR"><code>NODECONSTRUCTOR</code></a> (not in Safari 10.0+)
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a>
@@ -459,18 +465,18 @@ This table lists features available in the most common engines.
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
 <li><a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="#DOMWINDOW"><code>DOMWINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#ATOB"><code>ATOB</code></a>
-<li><a href="#BARPROP"><code>BARPROP</code></a> (Android Browser 4.4+)
+<li><a href="#BARPROP"><code>BARPROP</code></a> (Android Browser 4.4)
 <li><a href="#CONSOLE"><code>CONSOLE</code></a>
-<li><a href="#DOMWINDOW"><code>DOMWINDOW</code></a> (not in Android Browser 4.4+)
+<li><a href="#DOMWINDOW"><code>DOMWINDOW</code></a> (not in Android Browser 4.4)
 <li><a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a>
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a>)
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HISTORY"><code>HISTORY</code></a>
-<li><a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a> (Android Browser 4.4+)
+<li><a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a> (Android Browser 4.4)
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>
-<li><a href="#INTL"><code>INTL</code></a> (Android Browser 4.4+)
-<li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Android Browser 4.4+)
+<li><a href="#INTL"><code>INTL</code></a> (Android Browser 4.4)
+<li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Android Browser 4.4)
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NO_FF_SRC"><code>NO_FF_SRC</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#HTMLAUDIOELEMENT"><code>HTMLAUDIOELEMENT</code></a>)
@@ -478,7 +484,7 @@ This table lists features available in the most common engines.
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#DOMWINDOW"><code>DOMWINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#STATUS"><code>STATUS</code></a>
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a> (Android Browser 4.1+)
-<li><a href="#WINDOW"><code>WINDOW</code></a> (Android Browser 4.4+)
+<li><a href="#WINDOW"><code>WINDOW</code></a> (Android Browser 4.4)
 </ul>
 </td>
 </tr>
@@ -502,7 +508,7 @@ This table lists features available in the most common engines.
 <li><a href="#NO_FF_SRC"><code>NO_FF_SRC</code></a>
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a>
 <li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Node.js 0.12+)
-<li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a>
+<li><a href="#NO_OLD_SAFARI_LF"><code>NO_OLD_SAFARI_LF</code></a> (not in Node.js 10+)
 <li><a href="#UNDEFINED"><code>UNDEFINED</code></a>
 </ul>
 </td>
