@@ -72,6 +72,7 @@ var mapperFormatterDefault;
     var FF_SRC                          = Feature.FF_SRC;
     var FILL                            = Feature.FILL;
     var FROM_CODE_POINT                 = Feature.FROM_CODE_POINT;
+    var FUNCTION_19_LF                  = Feature.FUNCTION_19_LF;
     var FUNCTION_22_LF                  = Feature.FUNCTION_22_LF;
     var GMT                             = Feature.GMT;
     var HISTORY                         = Feature.HISTORY;
@@ -492,6 +493,23 @@ var mapperFormatterDefault;
                 ANY_DOCUMENT,
                 ARRAY_ITERATOR,
                 ESC_REGEXP_LF,
+                FUNCTION_19_LF,
+                HTMLAUDIOELEMENT
+            ),
+            define(
+                'V',
+                ANY_DOCUMENT,
+                ARRAY_ITERATOR,
+                ESC_REGEXP_LF,
+                FUNCTION_19_LF,
+                HTMLAUDIOELEMENT,
+                NO_FF_SRC
+            ),
+            define(
+                'X',
+                ANY_DOCUMENT,
+                ARRAY_ITERATOR,
+                ESC_REGEXP_LF,
                 FUNCTION_22_LF,
                 HTMLAUDIOELEMENT
             ),
@@ -634,6 +652,7 @@ var mapperFormatterDefault;
         '\n':
         [
             define('(Function() + [])[23]'),
+            define('(RP_1_NO + Function())[20]', FUNCTION_19_LF),
             define('(Function() + [])[22]', FUNCTION_22_LF),
             define('(ANY_FUNCTION + [])[0]', IE_SRC),
             defineFHCharAt('FILTER', 19, NO_V8_SRC),
@@ -943,6 +962,7 @@ var mapperFormatterDefault;
             define('(RP_3_NO + RegExp("".sub()))[10]', ESC_REGEXP_SLASH),
             define('uneval("".fontcolor(false))[20]', UNEVAL),
             define('(RegExp(FILTER) + [])[20]', ESC_REGEXP_LF, FF_SRC),
+            define('(RegExp(Function()) + [])[20]', ESC_REGEXP_LF, FUNCTION_19_LF),
             define('(RP_5_N + RegExp(Function()))[30]', ESC_REGEXP_LF, FUNCTION_22_LF),
             define('(RegExp(ANY_FUNCTION) + [])[1]', ESC_REGEXP_LF, IE_SRC),
             define('(+(ANY_FUNCTION + [])[0] + RegExp(FILTER))[23]', ESC_REGEXP_LF, NO_V8_SRC),
