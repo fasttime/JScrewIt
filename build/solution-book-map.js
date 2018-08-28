@@ -6,7 +6,8 @@ const charMapRoot = `${__dirname}/../char-map.json`;
 const { debug } = JScrewIt;
 const solutionBookMap = module.exports = new Map();
 const typeKey = '__type';
-Object.assign(
+Object.assign
+(
     solutionBookMap,
     {
         clear:              clearSolutionBookMap,
@@ -51,7 +52,8 @@ function createParseReviver()
     function jsonParseMap(obj)
     {
         const entries = Object.entries(obj);
-        entries.forEach(
+        entries.forEach
+        (
             entry =>
             {
                 entry[0] = entry[0].replace(/^___/, '__');

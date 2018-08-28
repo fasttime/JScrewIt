@@ -6,7 +6,8 @@ function indexChars(solutionBookMap)
 {
     const progress = require('./progress');
 
-    progress(
+    progress
+    (
         'Scanning character definitions',
         bar =>
         solutionBookMap.index
@@ -53,7 +54,8 @@ const chars = new Set();
         level9:     '\t\f&:;?EHKQ∞',
         level10:    'V',
     };
-    Object.values(levels).reduce(
+    Object.values(levels).reduce
+    (
         (accumulator, str, index) =>
         {
             accumulator += str;
@@ -107,6 +109,21 @@ const chars = new Set();
             for (const char of arg)
                 chars.add(char);
         }
+    }
+}
+{
+    const { getCharacterEntries } = require('..').debug;
+
+    const unindexableChars = [...chars].filter(char => !getCharacterEntries(char));
+    if (unindexableChars.length)
+    {
+        console.error
+        (
+            'Unindexable characters specified: %s',
+            unindexableChars.map(JSON.stringify).join(', ')
+        );
+        process.exitCode = 1;
+        return;
     }
 }
 {
