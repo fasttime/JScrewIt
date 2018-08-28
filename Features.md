@@ -54,10 +54,10 @@ The property that the various string methods returning HTML code such as String.
 _Available in Internet Explorer._
 <a name="CHROME"></a>
 ### `CHROME`
-_An alias for [`CHROME59`](#CHROME59)._
-<a name="CHROME59"></a>
-### `CHROME59`
-Features available in Chrome 59 and Opera 46 or later.
+_An alias for [`CHROME66`](#CHROME66)._
+<a name="CHROME66"></a>
+### `CHROME66`
+Features available in Chrome 66 and Opera 53 or later.
 <a name="COMPACT"></a>
 ### `COMPACT`
 All new browsers' features.<br>
@@ -132,6 +132,11 @@ _Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 4+._
 Existence of the function String.fromCodePoint.
 
 _Available in Chrome, Edge, Firefox, Safari 9.0+, Opera and Node.js 4+._
+<a name="FUNCTION_19_LF"></a>
+### `FUNCTION_19_LF`
+A string representation of dynamically generated functions where the character at index 19 is a line feed \("\\n"\).
+
+_Available in Chrome, Edge, Firefox, Opera and Node.js 10+._
 <a name="FUNCTION_22_LF"></a>
 ### `FUNCTION_22_LF`
 A string representation of dynamically generated functions where the character at index 22 is a line feed \("\\n"\).
@@ -295,7 +300,7 @@ This table lists features available in the most common engines.
 <th>Features</th>
 </tr>
 <tr>
-<td>Chrome 59+, Opera 46+</td>
+<td>Chrome 66+, Opera 53+</td>
 <td>
 <ul>
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
@@ -309,6 +314,7 @@ This table lists features available in the most common engines.
 <li><a href="#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
 <li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
+<li><a href="#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
@@ -342,6 +348,7 @@ This table lists features available in the most common engines.
 <li><a href="#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
 <li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
+<li><a href="#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
@@ -376,6 +383,7 @@ This table lists features available in the most common engines.
 <li><a href="#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
 <li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
+<li><a href="#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
@@ -500,6 +508,7 @@ This table lists features available in the most common engines.
 <li><a href="#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a> (Node.js 4+)
 <li><a href="#FILL"><code>FILL</code></a> (Node.js 4+)
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Node.js 4+)
+<li><a href="#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a> (Node.js 10+)
 <li><a href="#FUNCTION_22_LF"><code>FUNCTION_22_LF</code></a> (not in Node.js 10+)
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>

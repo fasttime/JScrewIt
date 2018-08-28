@@ -537,6 +537,17 @@ var validMaskFromArrayOrStringOrFeature;
                 return available;
             }
         },
+        FUNCTION_19_LF:
+        {
+            description:
+                'A string representation of dynamically generated functions where the character ' +
+                'at index 19 is a line feed ("\\n").',
+            check: function ()
+            {
+                var available = (Function() + '')[19] === '\n';
+                return available;
+            }
+        },
         FUNCTION_22_LF:
         {
             description:
@@ -831,6 +842,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
                 'NAME',
                 'NO_IE_SRC',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -904,10 +917,10 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'no-console-in-web-worker': null, 'web-worker-restriction': null }
         },
-        CHROME: 'CHROME59',
-        CHROME59:
+        CHROME: 'CHROME66',
+        CHROME66:
         {
-            engine: 'Chrome 59 and Opera 46 or later',
+            engine: 'Chrome 66 and Opera 53 or later',
             includes:
             [
                 'ARROW',
@@ -917,6 +930,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ESC_REGEXP_SLASH',
                 'FILL',
                 'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -946,6 +960,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ESC_REGEXP_SLASH',
                 'FILL',
                 'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -977,6 +992,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'FF_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -1162,6 +1178,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ESC_REGEXP_SLASH',
                 'FILL',
                 'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
                 'GMT',
                 'INCR_CHAR',
                 'INTL',

@@ -259,8 +259,8 @@
                             expect(featureObj.mask).toEqual([0, 0]);
                         }
                     );
-                    test('BROWSER', ['ANDRO40', 'CHROME59', 'EDGE40', 'FF54', 'IE9', 'SAFARI70']);
-                    test('COMPACT', ['CHROME59', 'EDGE40', 'FF54', 'SAFARI100']);
+                    test('BROWSER', ['ANDRO40', 'CHROME66', 'EDGE40', 'FF54', 'IE9', 'SAFARI70']);
+                    test('COMPACT', ['CHROME66', 'EDGE40', 'FF54', 'SAFARI110']);
                     it(
                         'AUTO',
                         function ()

@@ -339,6 +339,30 @@
         return result;
     }
 
+    function makeEmuFeatureFunctionLF(replacement)
+    {
+        var result =
+        {
+            setUp:
+            function ()
+            {
+                var context = this;
+                registerToStringAdapter
+                (
+                    this,
+                    'Function',
+                    function ()
+                    {
+                        var str = context.Function.toString.call(this);
+                        if (/function anonymous\(\n?\) {\s+}/.test(str))
+                            return replacement;
+                    }
+                );
+            }
+        };
+        return result;
+    }
+
     function makeEmuFeatureSelf(str, regExp)
     {
         var result =
@@ -643,23 +667,8 @@
                 override(this, 'String.fromCodePoint', { value: fromCodePoint });
             }
         },
-        FUNCTION_22_LF:
-        {
-            setUp: function ()
-            {
-                var context = this;
-                registerToStringAdapter(
-                    this,
-                    'Function',
-                    function ()
-                    {
-                        var str = context.Function.toString.call(this);
-                        if (/function anonymous\(\n?\) {\s+}/.test(str))
-                            return 'function anonymous() {\n\n}';
-                    }
-                );
-            }
-        },
+        FUNCTION_19_LF: makeEmuFeatureFunctionLF('function anonymous(\n) {\n\n}'),
+        FUNCTION_22_LF: makeEmuFeatureFunctionLF('function anonymous() {\n\n}'),
         GMT:
         {
             setUp: function ()
