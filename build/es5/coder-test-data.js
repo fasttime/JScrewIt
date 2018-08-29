@@ -31,7 +31,8 @@ function getAppendLength(int, appendLengths)
 {
     var appendLength = 0;
     var str = int.toString(appendLengths.length);
-    Array.prototype.forEach.call(
+    Array.prototype.forEach.call
+    (
         str,
         function (char)
         {
@@ -67,11 +68,12 @@ var createAntiRadix4TestString;
             var info = { appendLength: appendLength, charCode: charCode };
             infos[charCode] = info;
         }
-        infos.sort(
+        infos.sort
+        (
             function (info1, info2)
             {
                 var diff =
-                    info2.appendLength - info1.appendLength || info1.charCode - info2.charCode;
+                info2.appendLength - info1.appendLength || info1.charCode - info2.charCode;
                 return diff;
             }
         );
@@ -96,7 +98,7 @@ module.exports =
 [
     data
     (
-        ['ARRAY_ITERATOR', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
+        ['ARRAY_ITERATOR', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC', 'STATUS'],
         repeat.bind(null, String.fromCharCode(59999)),
         'byCharCodes'
     ),
@@ -122,7 +124,7 @@ module.exports =
             'FILL',
             'NO_IE_SRC',
             'NO_V8_SRC',
-            'UNEVAL',
+            'STATUS',
         ],
         function (length)
         {
@@ -140,7 +142,16 @@ module.exports =
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_FF_SRC', 'NO_IE_SRC'],
+        [
+            'ARRAY_ITERATOR',
+            'ARROW',
+            'ATOB',
+            'CAPITAL_HTML',
+            'FILL',
+            'NO_FF_SRC',
+            'NO_IE_SRC',
+            'STATUS',
+        ],
         createDictTestString.bind(null, 121),
         'byDictRadix3'
     ),
@@ -155,13 +166,23 @@ module.exports =
             'NO_FF_SRC',
             'NO_IE_SRC',
             'SELF_OBJ',
+            'STATUS',
         ],
         createDictTestString.bind(null, 82),
         'byDictRadix4'
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_FF_SRC', 'NO_IE_SRC'],
+        [
+            'ARRAY_ITERATOR',
+            'ARROW',
+            'ATOB',
+            'CAPITAL_HTML',
+            'FILL',
+            'NO_FF_SRC',
+            'NO_IE_SRC',
+            'STATUS',
+        ],
         createDictTestString.bind(null, 129),
         'byDictRadix4AmendedBy1'
     ),
@@ -173,7 +194,16 @@ module.exports =
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_FF_SRC', 'NO_IE_SRC'],
+        [
+            'ARRAY_ITERATOR',
+            'ARROW',
+            'ATOB',
+            'CAPITAL_HTML',
+            'FILL',
+            'NO_FF_SRC',
+            'NO_IE_SRC',
+            'STATUS',
+        ],
         createAntiRadix4TestString.bind(null, 479),
         'byDictRadix5AmendedBy2'
     ),
@@ -189,13 +219,23 @@ module.exports =
             'NODECONSTRUCTOR',
             'NO_FF_SRC',
             'NO_IE_SRC',
+            'STATUS',
         ],
         createAntiRadix4TestString.bind(null, 473),
         'byDictRadix5AmendedBy3'
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
+        [
+            'ARRAY_ITERATOR',
+            'ARROW',
+            'ATOB',
+            'CAPITAL_HTML',
+            'FILL',
+            'NO_IE_SRC',
+            'NO_V8_SRC',
+            'STATUS',
+        ],
         createDictTestString.bind(null, 57),
         'bySparseFigures'
     ),
