@@ -497,6 +497,14 @@ var mapperFormatterDefault;
                 HTMLAUDIOELEMENT
             ),
             define(
+                'X',
+                ANY_DOCUMENT,
+                ARRAY_ITERATOR,
+                ESC_REGEXP_LF,
+                FUNCTION_22_LF,
+                HTMLAUDIOELEMENT
+            ),
+            define(
                 'V',
                 ANY_DOCUMENT,
                 ARRAY_ITERATOR,
@@ -504,14 +512,6 @@ var mapperFormatterDefault;
                 FUNCTION_19_LF,
                 HTMLAUDIOELEMENT,
                 NO_FF_SRC
-            ),
-            define(
-                'X',
-                ANY_DOCUMENT,
-                ARRAY_ITERATOR,
-                ESC_REGEXP_LF,
-                FUNCTION_22_LF,
-                HTMLAUDIOELEMENT
             ),
             define(
                 'V',
