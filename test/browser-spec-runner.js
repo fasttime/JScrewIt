@@ -28,7 +28,8 @@ showFeatureSupport
         if (bar)
         {
             var outputWindow;
-            addBarButton(
+            addBarButton
+            (
                 'View lengths',
                 function ()
                 {
@@ -49,7 +50,8 @@ showFeatureSupport
                 }
             );
             var extremeTestWindow;
-            addBarButton(
+            addBarButton
+            (
                 'Extreme test',
                 function ()
                 {
@@ -58,7 +60,7 @@ showFeatureSupport
                     if (!extremeTestWindow || extremeTestWindow.closed !== false)
                     {
                         extremeTestWindow =
-                            popup('ExtremeTest.html', 'extremeTestWindow', 600, 600);
+                        popup('extreme-test.html', 'extremeTestWindow', 600, 600);
                     }
                     extremeTestWindow.focus();
                 }
@@ -77,8 +79,8 @@ showFeatureSupport
             if (webWorkerFeatureObj)
             {
                 notice =
-                    'Web workers are supported. Features with the marker “*” are ' +
-                    'excluded inside web workers.';
+                'Web workers are supported. ' +
+                'Features with the marker “*” are excluded inside web workers.';
             }
             else
                 notice = 'Web workers are supported, but not right here.';
@@ -116,11 +118,11 @@ showFeatureSupport
         function appendLengthsRange(min, max, namer)
         {
             namer =
-                namer ||
-                function ()
-                {
-                    return '`' + String.fromCharCode(charCode) + '`';
-                };
+            namer ||
+            function ()
+            {
+                return '`' + String.fromCharCode(charCode) + '`';
+            };
             for (var charCode = min; charCode <= max; ++charCode)
             {
                 var name = namer(charCode);
@@ -130,7 +132,8 @@ showFeatureSupport
         }
 
         var result = '     ';
-        compatibilities.forEach(
+        compatibilities.forEach
+        (
             function (compatibility)
             {
                 result += padBoth(compatibility, 8);
@@ -145,7 +148,8 @@ showFeatureSupport
             'DLE',  'DC1',  'DC2',  'DC3',  'DC4',  'NAK',  'SYN',  'ETB',
             'CAN',  'EM',   'SUB',  'ESC',  'FS',   'GS',   'RS',   'US'
         ];
-        appendLengthsRange(
+        appendLengthsRange
+        (
             0,
             31,
             function (charCode)
@@ -162,7 +166,8 @@ showFeatureSupport
             'DCS',  'PU1',  'PU2',  'STS',  'CCH',  'MW',   'SPA',  'EPA',
             'SOS',  'SGCI', 'SCI',  'CSI',  'ST',   'OSC',  'PM',   'APC'
         ];
-        appendLengthsRange(
+        appendLengthsRange
+        (
             128,
             159,
             function (charCode)
@@ -191,7 +196,8 @@ showFeatureSupport
         addFeatureLists();
         addBarButtons();
         var runner = mocha.run();
-        runner.on(
+        runner.on
+        (
             'fail',
             function ()
             {
@@ -199,7 +205,8 @@ showFeatureSupport
                     setFavicon('favicon-fail.ico');
             }
         );
-        runner.on(
+        runner.on
+        (
             'end',
             function ()
             {
@@ -241,13 +248,14 @@ showFeatureSupport
             var div = info.appendChild(document.createElement('DIV'));
             div.textContent = label;
             var span;
-            featureNames.forEach(
+            featureNames.forEach
+            (
                 function (featureName, index)
                 {
                     function addMarker(marker, environment, environmentFeatureObj)
                     {
                         var marked =
-                            isCategoryMarked(featureName, environment, environmentFeatureObj);
+                        isCategoryMarked(featureName, environment, environmentFeatureObj);
                         if (marked)
                             span.appendChild(document.createTextNode(marker));
                         return marked;
@@ -260,9 +268,10 @@ showFeatureSupport
                     }
                     span = div.appendChild(document.createElement('SPAN'));
                     var code =
-                        span.appendChild(document.createElement('SPAN')).appendChild(
-                            document.createElement('CODE')
-                        );
+                    span.appendChild(document.createElement('SPAN')).appendChild
+                    (
+                        document.createElement('CODE')
+                    );
                     var featureObj = Feature[featureName];
                     code.textContent = featureName;
                     code.title = featureObj.description;
@@ -286,8 +295,8 @@ showFeatureSupport
         var left = screenX + 50;
         var top = screenY + 50;
         var features =
-            'resizable,scrollbars,width=' + width + ',height=' + height + ',left=' + left +
-            ',top=' + top;
+        'resizable,scrollbars,width=' + width + ',height=' + height + ',left=' + left + ',top=' +
+        top;
         var window = open(url, name, features);
         return window;
     }
