@@ -45,8 +45,7 @@ function createEngineSelectionBox()
                 { feature: 'SAFARI70', number: '7.0' },
                 { feature: 'SAFARI71', number: '7.1–8.0' },
                 { feature: 'SAFARI90', number: '9.0' },
-                { feature: 'SAFARI100', number: '10.0' },
-                { feature: 'SAFARI110', number: '11.0+' },
+                { feature: 'SAFARI100', number: '10.0+' },
             ]
         },
         {

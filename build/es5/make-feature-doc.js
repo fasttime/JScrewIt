@@ -46,7 +46,6 @@ var ENGINE_ENTRIES =
             { description: '8.0+', feature: 'SAFARI80' },
             { description: '9.0+', feature: 'SAFARI90' },
             { description: '10.0+', feature: 'SAFARI100' },
-            { description: '11.0+', feature: 'SAFARI110' },
         ]
     },
     {

@@ -1289,35 +1289,7 @@ var validMaskFromArrayOrStringOrFeature;
         },
         SAFARI100:
         {
-            engine: 'Safari 10',
-            includes:
-            [
-                'ARROW',
-                'ATOB',
-                'BARPROP',
-                'CONSOLE',
-                'ESC_HTML_QUOT_ONLY',
-                'ESC_REGEXP_LF',
-                'ESC_REGEXP_SLASH',
-                'FF_SRC',
-                'FILL',
-                'FROM_CODE_POINT',
-                'FUNCTION_22_LF',
-                'GMT',
-                'HISTORY',
-                'HTMLDOCUMENT',
-                'INCR_CHAR',
-                'NAME',
-                'NO_OLD_SAFARI_ARRAY_ITERATOR',
-                'STATUS',
-                'UNDEFINED',
-                'WINDOW'
-            ],
-            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null }
-        },
-        SAFARI110:
-        {
-            engine: 'Safari 11 or later',
+            engine: 'Safari 10 or later',
             includes:
             [
                 'ARROW',

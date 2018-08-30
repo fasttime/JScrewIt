@@ -260,7 +260,7 @@
                         }
                     );
                     test('BROWSER', ['ANDRO40', 'CHROME66', 'EDGE40', 'FF54', 'IE9', 'SAFARI70']);
-                    test('COMPACT', ['CHROME66', 'EDGE40', 'FF54', 'SAFARI110']);
+                    test('COMPACT', ['CHROME66', 'EDGE40', 'FF54', 'SAFARI100']);
                     it(
                         'AUTO',
                         function ()

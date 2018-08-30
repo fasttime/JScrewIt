@@ -188,12 +188,12 @@ _Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android B
 ### `INTL`
 Existence of the global object Intl.
 
-_Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 11.0+, Opera, Android Browser 4.4 and Node.js 0.12+._
+_Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10.0+, Opera, Android Browser 4.4 and Node.js 0.12+._
 <a name="LOCALE_INFINITY"></a>
 ### `LOCALE_INFINITY`
 Language sensitive string representation of Infinity as "∞".
 
-_Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 11.0+, Opera, Android Browser 4.4 and Node.js 0.12+._
+_Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10.0+, Opera, Android Browser 4.4 and Node.js 0.12+._
 <a name="NAME"></a>
 ### `NAME`
 Existence of the name property for functions.
@@ -243,10 +243,7 @@ A most remarkable trait of this feature is the presence of a line feed followed 
 _Available in Firefox, Internet Explorer and Safari._
 <a name="SAFARI100"></a>
 ### `SAFARI100`
-Features available in Safari 10.
-<a name="SAFARI110"></a>
-### `SAFARI110`
-Features available in Safari 11 or later.
+Features available in Safari 10 or later.
 <a name="SAFARI70"></a>
 ### `SAFARI70`
 Features available in Safari 7.0.
@@ -452,8 +449,8 @@ This table lists features available in the most common engines.
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>
-<li><a href="#INTL"><code>INTL</code></a> (Safari 11.0+)
-<li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Safari 11.0+)
+<li><a href="#INTL"><code>INTL</code></a> (Safari 10.0+)
+<li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Safari 10.0+)
 <li><a href="#NAME"><code>NAME</code></a>
 <li><a href="#NODECONSTRUCTOR"><code>NODECONSTRUCTOR</code></a> (not in Safari 10.0+)
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a>
