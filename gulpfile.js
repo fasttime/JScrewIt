@@ -4,13 +4,14 @@
 
 var gulp = require('gulp');
 
-gulp.task(
+gulp.task
+(
     'clean:default',
     function ()
     {
         var del = require('del');
 
-        var PATTERNS =
+        var patterns =
         [
             'Features.md',
             'Reference.md',
@@ -19,12 +20,13 @@ gulp.task(
             'lib/**/*.js',
             'tmp-src'
         ];
-        var stream = del(PATTERNS);
+        var stream = del(patterns);
         return stream;
     }
 );
 
-gulp.task(
+gulp.task
+(
     'gherkin-lint',
     function ()
     {
@@ -36,7 +38,8 @@ gulp.task(
     }
 );
 
-gulp.task(
+gulp.task
+(
     'lint:lib',
     function ()
     {
@@ -49,7 +52,8 @@ gulp.task(
     }
 );
 
-gulp.task(
+gulp.task
+(
     'lint:other',
     function ()
     {
@@ -61,25 +65,27 @@ gulp.task(
     }
 );
 
-gulp.task(
+gulp.task
+(
     'lint:build',
     function ()
     {
         var lint = require('gulp-fasttime-lint');
 
+        var src = ['build/*.js', '!build/verify.js'];
         var options =
         {
             envs: ['node'],
             parserOptions: { ecmaVersion: 6 },
             rules: { strict: ['error', 'global'] },
         };
-        var src = ['build/*.js', '!build/verify.js'];
         var stream = gulp.src(src).pipe(lint(options));
         return stream;
     }
 );
 
-gulp.task(
+gulp.task
+(
     'concat',
     function ()
     {
@@ -88,7 +94,7 @@ gulp.task(
         var pkg = require('./package.json');
         var replace = require('gulp-replace');
 
-        var SRC =
+        var src =
         [
             'src/lib/preamble',
             'src/lib/obj-utils.js',
@@ -111,17 +117,18 @@ gulp.task(
             'src/lib/postamble'
         ];
         var stream =
-            gulp
-            .src(SRC)
-            .pipe(replace(/^\/\*[^]*?\*\/\s*\n/, ''))
-            .pipe(concat('jscrewit.js'))
-            .pipe(insert.prepend('// JScrewIt ' + pkg.version + ' – https://jscrew.it\n'))
-            .pipe(gulp.dest('lib'));
+        gulp
+        .src(src)
+        .pipe(replace(/^\/\*[^]*?\*\/\s*\n/, ''))
+        .pipe(concat('jscrewit.js'))
+        .pipe(insert.prepend('// JScrewIt ' + pkg.version + ' – https://jscrew.it\n'))
+        .pipe(gulp.dest('lib'));
         return stream;
     }
 );
 
-gulp.task(
+gulp.task
+(
     'feature-info',
     function ()
     {
@@ -131,24 +138,22 @@ gulp.task(
         console.log();
         var anyMarked;
         var forcedStrictModeFeatureObj = featureInfo.forcedStrictModeFeatureObj;
-        featureInfo.showFeatureSupport(
+        featureInfo.showFeatureSupport
+        (
             function (label, featureNames, isCategoryMarked)
             {
                 function formatFeatureName(featureName)
                 {
                     var marked =
-                        isCategoryMarked(
-                            featureName,
-                            'forced-strict-mode',
-                            forcedStrictModeFeatureObj
-                        );
+                    isCategoryMarked(featureName, 'forced-strict-mode', forcedStrictModeFeatureObj);
                     if (marked)
                         featureName += '¹';
                     anyMarked |= marked;
                     return featureName;
                 }
 
-                console.log(
+                console.log
+                (
                     gutil.colors.bold(label) +
                     featureNames.map(formatFeatureName).join(', ')
                 );
@@ -160,7 +165,8 @@ gulp.task(
     }
 );
 
-gulp.task(
+gulp.task
+(
     'test',
     function ()
     {
@@ -171,7 +177,8 @@ gulp.task(
     }
 );
 
-gulp.task(
+gulp.task
+(
     'uglify:lib',
     function ()
     {
@@ -187,23 +194,25 @@ gulp.task(
             }
         };
         var stream =
-            gulp
-            .src('lib/jscrewit.js')
-            .pipe(uglify(uglifyOpts))
-            .pipe(rename({ extname: '.min.js' }))
-            .pipe(gulp.dest('lib'));
+        gulp
+        .src('lib/jscrewit.js')
+        .pipe(uglify(uglifyOpts))
+        .pipe(rename({ extname: '.min.js' }))
+        .pipe(gulp.dest('lib'));
         return stream;
     }
 );
 
-gulp.task(
+gulp.task
+(
     'make-art',
     function (callback)
     {
         var fs = require('fs');
         var makeArt = require('art-js');
 
-        fs.mkdir(
+        fs.mkdir
+        (
             'tmp-src',
             function (error)
             {
@@ -216,7 +225,8 @@ gulp.task(
     }
 );
 
-gulp.task(
+gulp.task
+(
     'uglify:html',
     ['make-art'],
     function ()
@@ -225,7 +235,7 @@ gulp.task(
         var concat = require('gulp-concat');
         var uglify = require('gulp-uglify');
 
-        var SRC =
+        var src =
         [
             'tmp-src/art.js',
             'src/html/button.js',
@@ -237,16 +247,17 @@ gulp.task(
             'src/html/ui-main.js'
         ];
         var stream =
-            gulp
-            .src(SRC)
-            .pipe(concat('ui.js'))
-            .pipe(addsrc('src/html/worker.js'))
-            .pipe(uglify()).pipe(gulp.dest('html'));
+        gulp
+        .src(src)
+        .pipe(concat('ui.js'))
+        .pipe(addsrc('src/html/worker.js'))
+        .pipe(uglify()).pipe(gulp.dest('html'));
         return stream;
     }
 );
 
-gulp.task(
+gulp.task
+(
     'jsdoc2md',
     function ()
     {
@@ -254,20 +265,22 @@ gulp.task(
         var jsdoc2md = require('jsdoc-to-markdown');
 
         var stream =
-            jsdoc2md
-            .render({ files: 'lib/jscrewit.js' })
-            .then(
-                function (output)
-                {
-                    var promise = fsThen.writeFile('Reference.md', output);
-                    return promise;
-                }
-            );
+        jsdoc2md
+        .render({ files: 'lib/jscrewit.js' })
+        .then
+        (
+            function (output)
+            {
+                var promise = fsThen.writeFile('Reference.md', output);
+                return promise;
+            }
+        );
         return stream;
     }
 );
 
-gulp.task(
+gulp.task
+(
     'feature-doc',
     function (callback)
     {
@@ -279,13 +292,15 @@ gulp.task(
     }
 );
 
-gulp.task(
+gulp.task
+(
     'default',
     function (callback)
     {
         var runSequence = require('run-sequence');
 
-        runSequence(
+        runSequence
+        (
             ['clean:default', 'gherkin-lint', 'lint:lib', 'lint:other', 'lint:build'],
             'concat',
             'feature-info',
