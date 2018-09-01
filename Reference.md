@@ -32,7 +32,7 @@ in no particular order.</p>
             * [.elementaryNames](#JScrewIt.Feature+elementaryNames) : <code>Array.&lt;string&gt;</code>
             * [.name](#JScrewIt.Feature+name) : <code>string</code> \| <code>undefined</code>
             * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
-            * [.restrict(environment, [referenceFeatureObjs])](#JScrewIt.Feature+restrict) ⇒ [<code>Feature</code>](#JScrewIt.Feature)
+            * [.restrict(environment, [engineFeatureObjs])](#JScrewIt.Feature+restrict) ⇒ [<code>Feature</code>](#JScrewIt.Feature)
             * [.toString()](#JScrewIt.Feature+toString) ⇒ <code>string</code>
         * _static_
             * [.ALL](#JScrewIt.Feature.ALL) : <code>object</code>
@@ -77,7 +77,7 @@ constructed.
         * [.elementaryNames](#JScrewIt.Feature+elementaryNames) : <code>Array.&lt;string&gt;</code>
         * [.name](#JScrewIt.Feature+name) : <code>string</code> \| <code>undefined</code>
         * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
-        * [.restrict(environment, [referenceFeatureObjs])](#JScrewIt.Feature+restrict) ⇒ [<code>Feature</code>](#JScrewIt.Feature)
+        * [.restrict(environment, [engineFeatureObjs])](#JScrewIt.Feature+restrict) ⇒ [<code>Feature</code>](#JScrewIt.Feature)
         * [.toString()](#JScrewIt.Feature+toString) ⇒ <code>string</code>
     * _static_
         * [.ALL](#JScrewIt.Feature.ALL) : <code>object</code>
@@ -167,7 +167,7 @@ If no arguments are specified, the return value is `true`.
 
 <a name="JScrewIt.Feature+restrict"></a>
 
-#### feature.restrict(environment, [referenceFeatureObjs]) ⇒ [<code>Feature</code>](#JScrewIt.Feature)
+#### feature.restrict(environment, [engineFeatureObjs]) ⇒ [<code>Feature</code>](#JScrewIt.Feature)
 Creates a new feature object from this feature by removing elementary features that are
 not available inside a particular environment.
 
@@ -180,7 +180,7 @@ worker.
 | Param | Type | Description |
 | --- | --- | --- |
 | environment | <code>string</code> | The environment to which this feature should be restricted. Two environments are currently supported. <dl> <dt><code>"forced-strict-mode"</code></dt> <dd> Removes features that are not available in environments that require strict mode code.</dd> <dt><code>"web-worker"</code></dt> <dd>Removes features that are not available inside web workers.</dd> </dl> |
-| [referenceFeatureObjs] | [<code>Array.&lt;Feature&gt;</code>](#JScrewIt.Feature) | An array of predefined feature objects, each corresponding to a particular engine in which the restriction should be enacted. If this parameter is omitted, the restriction is enacted in all engines. |
+| [engineFeatureObjs] | [<code>Array.&lt;Feature&gt;</code>](#JScrewIt.Feature) | An array of predefined feature objects, each corresponding to a particular engine in which the restriction should be enacted. If this parameter is omitted, the restriction is enacted in all engines. |
 
 <a name="JScrewIt.Feature+toString"></a>
 
