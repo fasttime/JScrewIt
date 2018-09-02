@@ -18,7 +18,7 @@ gulp.task
             'coverage',
             'html/**/*.js',
             'lib/**/*.js',
-            'tmp-src'
+            'tmp-src',
         ];
         var stream = del(patterns);
         return stream;
@@ -114,7 +114,7 @@ gulp.task
             'src/lib/trim-js.js',
             'src/lib/jscrewit-base.js',
             'src/lib/debug.js',
-            'src/lib/postamble'
+            'src/lib/postamble',
         ];
         var stream =
         gulp
@@ -188,9 +188,12 @@ gulp.task
         var uglifyOpts =
         {
             compress: { global_defs: { DEBUG: false } },
-            preserveComments: function (node, comment)
+            output:
             {
-                return comment.pos === 0;
+                comments: function (node, comment)
+                {
+                    return comment.pos === 0;
+                }
             }
         };
         var stream =
@@ -244,7 +247,7 @@ gulp.task
             'src/html/result-format.js',
             'src/html/roll.js',
             'src/html/tabindex.js',
-            'src/html/ui-main.js'
+            'src/html/ui-main.js',
         ];
         var stream =
         gulp
