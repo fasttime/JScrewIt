@@ -54,7 +54,7 @@
 
 :focus.focusable, :focus>.focusable { box-shadow: 0 0 2px 2px rgba(0, 127, 255, .75); }
 
-@-moz-document url-prefix() { #outputArea { white-space: pre-wrap; } } /* Hack for Firefox */
+@supports (-moz-appearance: none) { #outputArea { white-space: pre-wrap; } } /* Hack for Firefox */
 
 /* Hack for Chrome and Opera */
 @media screen and (min-resolution: 1e-323dpcm) { #outputArea { white-space: normal; } }
