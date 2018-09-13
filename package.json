@@ -20,7 +20,8 @@
     "lib",
     "output.txt",
     "screw.js",
-    "tools"
+    "tools",
+    "!.*"
   ],
   "main": "lib/jscrewit",
   "bin": "screw.js",
