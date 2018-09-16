@@ -168,10 +168,11 @@ function indexChars(chars, startProgress, updateProgress, missingCharacter)
     {
         const definitionCount = getCharacterEntries(char).length;
         const solutionIndex = new Map();
-        fillSolutionIndex(solutionIndex, char);
+        const usedCharSet = fillSolutionIndex(solutionIndex, char);
+        const usedChars = [...usedCharSet].sort();
         const solutions = [...solutionIndex.values()];
         solutions.sort(compareSolutions);
-        const solutionBook = { jscrewitTimestamp, definitionCount, solutions };
+        const solutionBook = { jscrewitTimestamp, definitionCount, usedChars, solutions };
         solutionBookMap.set(char, solutionBook);
         ++charsDone;
     }
@@ -223,6 +224,8 @@ function indexChars(chars, startProgress, updateProgress, missingCharacter)
             addSolutionToIndex(solutionIndex, output, analyzer.featureObj);
             updateProgress(analyzer.progress, charsDone);
         }
+        const { usedCharSet } = analyzer;
+        return usedCharSet;
     }
 }
 

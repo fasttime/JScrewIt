@@ -19,6 +19,12 @@ function isSolutionApplicable({ masks }, analyzer, encoder)
 module.exports =
 class OptimizedAnalyzer extends Analyzer
 {
+    constructor()
+    {
+        super();
+        this.usedCharSet = new Set();
+    }
+
     missingCharacter()
     { }
 
@@ -27,11 +33,11 @@ class OptimizedAnalyzer extends Analyzer
         const encoder = super.nextEncoder;
         if (encoder)
         {
-            const analyzer = this;
             const { resolveCharacter } = encoder;
             encoder.resolveCharacter =
             char =>
             {
+                this.usedCharSet.add(char);
                 const solutionBook = solutionBookMap.get(char);
                 if (solutionBook)
                 {
@@ -44,7 +50,7 @@ class OptimizedAnalyzer extends Analyzer
                         if
                         (
                             length <= knownLength &&
-                            isSolutionApplicable(solution, analyzer, encoder)
+                            isSolutionApplicable(solution, this, encoder)
                         )
                         {
                             if (length < knownLength)
@@ -60,7 +66,7 @@ class OptimizedAnalyzer extends Analyzer
                         throw new Error('No single determinate solution found.');
                     return knownSolution;
                 }
-                analyzer.missingCharacter(char);
+                this.missingCharacter(char);
                 const solution = resolveCharacter.call(encoder, char);
                 return solution;
             };
