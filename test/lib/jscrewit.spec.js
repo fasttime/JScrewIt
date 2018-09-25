@@ -1228,6 +1228,27 @@ uneval,
                         expect(actual).toBe(expected);
                     }
                 );
+                it(
+                    'respects the maxLength limit on the first solution',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var firstSolution = encoder.resolveCharacter('1');
+                        var options = { firstSolution: firstSolution, maxLength: 0 };
+                        var actual = encoder.replaceString('', options);
+                        expect(actual).toBeUndefined();
+                    }
+                );
+                it(
+                    'respects the maxLength limit after the last solution',
+                    function ()
+                    {
+                        var encoder = JScrewIt.debug.createEncoder();
+                        var options = { maxLength: 12 };
+                        var actual = encoder.replaceString('f', options);
+                        expect(actual).toBeUndefined();
+                    }
+                );
 
                 describe(
                     'supports bridging',

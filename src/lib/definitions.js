@@ -227,10 +227,8 @@ var mapperFormatterDefault;
                 paddingEntries =
                 [
                     define(10),
-                    define(
-                        { block: 'RP_6_SO', indexer: 1 + index / 10 + ' + FH_SHIFT_1' },
-                        NO_V8_SRC
-                    ),
+                    define
+                    ({ block: 'RP_6_SO', indexer: 1 + index / 10 + ' + FH_SHIFT_1' }, NO_V8_SRC),
                     define(0, V8_SRC),
                     define(5, IE_SRC),
                     define(6, FF_SRC),
@@ -307,13 +305,7 @@ var mapperFormatterDefault;
         function charDefaultDefinition()
         {
             var solution =
-                this.createCharDefaultSolution(
-                    charCode,
-                    atobOpt,
-                    charCodeOpt,
-                    escSeqOpt,
-                    unescapeOpt
-                );
+            this.createCharDefaultSolution(charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt);
             return solution;
         }
 
@@ -334,7 +326,7 @@ var mapperFormatterDefault;
         var escSeqOpt   = checkOpt('escSeq', true);
         var unescapeOpt = checkOpt('unescape', true);
         var definition =
-            createCharDefaultDefinition(charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt);
+        createCharDefaultDefinition(charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt);
         var entry = createDefinitionEntry(definition, arguments, 2);
         return entry;
     }
@@ -488,23 +480,12 @@ var mapperFormatterDefault;
             define('V', ANY_DOCUMENT),
             define('U', ANY_DOCUMENT, ARRAY_ITERATOR, INCR_CHAR, NAME, NO_V8_SRC),
             define('V', ANY_DOCUMENT, FILL),
-            define(
-                'X',
-                ANY_DOCUMENT,
-                ARRAY_ITERATOR,
-                ESC_REGEXP_LF,
-                FUNCTION_19_LF,
-                HTMLAUDIOELEMENT
-            ),
-            define(
-                'X',
-                ANY_DOCUMENT,
-                ARRAY_ITERATOR,
-                ESC_REGEXP_LF,
-                FUNCTION_22_LF,
-                HTMLAUDIOELEMENT
-            ),
-            define(
+            define
+            ('X', ANY_DOCUMENT, ARRAY_ITERATOR, ESC_REGEXP_LF, FUNCTION_19_LF, HTMLAUDIOELEMENT),
+            define
+            ('X', ANY_DOCUMENT, ARRAY_ITERATOR, ESC_REGEXP_LF, FUNCTION_22_LF, HTMLAUDIOELEMENT),
+            define
+            (
                 'V',
                 ANY_DOCUMENT,
                 ARRAY_ITERATOR,
@@ -513,7 +494,8 @@ var mapperFormatterDefault;
                 HTMLAUDIOELEMENT,
                 NO_FF_SRC
             ),
-            define(
+            define
+            (
                 'V',
                 ANY_DOCUMENT,
                 ARRAY_ITERATOR,
@@ -646,7 +628,7 @@ var mapperFormatterDefault;
     ({
         '\t':
         [
-            define('Function("return\\"\\\\true\\"")()[0]'),
+            define('Function("return\\"" + ESCAPING_BACKSLASH + "true\\"")()[0]'),
             defineCharDefault('\t', { escSeq: false }),
         ],
         '\n':
@@ -661,12 +643,12 @@ var mapperFormatterDefault;
 
         '\f':
         [
-            define('Function("return\\"\\\\false\\"")()[0]'),
+            define('Function("return\\"" + ESCAPING_BACKSLASH + "false\\"")()[0]'),
             defineCharDefault('\f', { escSeq: false }),
         ],
         '\r':
         [
-            define('Function("return\\"\\\\r\\"")()'),
+            define('Function("return\\"" + ESCAPING_BACKSLASH + "r\\"")()'),
             defineCharDefault('\r', { escSeq: false }),
         ],
 
@@ -796,7 +778,8 @@ var mapperFormatterDefault;
             define('(document + [])[SUBSTR]("-10")[1]', ANY_DOCUMENT),
             define('btoa("00")[1]', ATOB),
             define('(RP_3_NO + document)[11]', DOCUMENT),
-            define( // *
+            define // *
+            (
                 'escape((RP_3_NO + [+("10" + [(RP_6_SO + FILL)[40]] + 0 + 0 + 0)] + FILL)[40])[2]',
                 FILL
             ),
@@ -827,10 +810,8 @@ var mapperFormatterDefault;
         [
             define('btoa(true)[1]', ATOB),
             define('"".link()[3]', CAPITAL_HTML),
-            define(
-                { expr: '(RP_3_NO + Function("return history")())[11]', optimize: true },
-                HISTORY
-            ),
+            define
+            ({ expr: '(RP_3_NO + Function("return history")())[11]', optimize: true }, HISTORY),
             define('(RP_1_NO + Audio)[10]', HTMLAUDIOELEMENT),
             define('(RP_3_NO + document)[11]', HTMLDOCUMENT),
         ],
@@ -869,6 +850,7 @@ var mapperFormatterDefault;
         ],
         'P':
         [
+            define('Function("return\\"" + ESCAPING_BACKSLASH + "120\\"")()'),
             define('atob("01A")[1]', ATOB),
             define('btoa("".italics())[0]', ATOB),
             define('(Function("return statusbar")() + [])[11]', BARPROP),
@@ -894,11 +876,12 @@ var mapperFormatterDefault;
         ],
         'T':
         [
-            define(
+            define
+            (
                 {
                     expr:
-                        '(Function("try{undefined.false}catch(undefined){return undefined}")() + ' +
-                        '[])[0]',
+                    '(Function("try{undefined.false}catch(undefined){return undefined}")() + ' +
+                    '[])[0]',
                     optimize: true
                 }
             ),
@@ -956,24 +939,8 @@ var mapperFormatterDefault;
         ],
         '\\':
         [
-            define('atob("01y")[1]', ATOB),
-            define('(RegExp("\\n") + [])[1]', ESC_REGEXP_LF),
-            define('(RP_5_N + RegExp("".italics()))[10]', ESC_REGEXP_SLASH),
-            define('(RP_3_NO + RegExp("".sub()))[10]', ESC_REGEXP_SLASH),
-            define('uneval("".fontcolor(false))[20]', UNEVAL),
-            define('(RegExp(FILTER) + [])[20]', ESC_REGEXP_LF, FF_SRC),
-            define('(RegExp(Function()) + [])[20]', ESC_REGEXP_LF, FUNCTION_19_LF),
-            define('(RP_5_N + RegExp(Function()))[30]', ESC_REGEXP_LF, FUNCTION_22_LF),
-            define('(RegExp(ANY_FUNCTION) + [])[1]', ESC_REGEXP_LF, IE_SRC),
-            define('(+(ANY_FUNCTION + [])[0] + RegExp(FILTER))[23]', ESC_REGEXP_LF, NO_V8_SRC),
-            define('uneval(FILTER + [])[20]', FF_SRC, UNEVAL),
-            define('uneval(ANY_FUNCTION + [])[1]', IE_SRC, UNEVAL),
-            define('uneval(+(ANY_FUNCTION + [])[0] + FILTER)[23]', NO_V8_SRC, UNEVAL),
-            define('(RP_3_NO + RegExp(FILL))[21]', ESC_REGEXP_LF, FF_SRC, FILL),
-            define('(+(ANY_FUNCTION + [])[0] + RegExp(FILL))[21]', ESC_REGEXP_LF, FILL, NO_V8_SRC),
-            define('uneval(RP_3_NO + FILL)[21]', FF_SRC, FILL, UNEVAL),
-            define('uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]', FILL, NO_V8_SRC, UNEVAL),
-            defineCharDefault('\\', { atob: false, escSeq: false }),
+            define('ESCAPING_BACKSLASH'),
+            defineCharDefault('\\', { atob: false, escSeq: false, unescape: false }),
         ],
         ']':
         [
@@ -1168,7 +1135,8 @@ var mapperFormatterDefault;
         ],
         '∞':
         [
-            define(
+            define
+            (
                 { expr: 'Infinity.toLocaleString()', optimize: { complexOpt: true } },
                 LOCALE_INFINITY
             ),
@@ -1240,7 +1208,8 @@ var mapperFormatterDefault;
         ],
         document:
         [
-            define(
+            define
+            (
                 { expr: 'Function("return document")()', optimize: { toStringOpt: true } },
                 ANY_DOCUMENT
             ),
@@ -1272,6 +1241,27 @@ var mapperFormatterDefault;
         ARRAY_ITERATOR:
         [
             define('[].entries()', ARRAY_ITERATOR),
+        ],
+        ESCAPING_BACKSLASH:
+        [
+            define('atob("01y")[1]', ATOB),
+            define('(RegExp("\\n") + [])[1]', ESC_REGEXP_LF),
+            define('(RP_5_N + RegExp("".italics()))[10]', ESC_REGEXP_SLASH),
+            define('(RP_3_NO + RegExp("".sub()))[10]', ESC_REGEXP_SLASH),
+            define('uneval("".fontcolor(false))[20]', UNEVAL),
+            define('(RegExp(FILTER) + [])[20]', ESC_REGEXP_LF, FF_SRC),
+            define('(RegExp(Function()) + [])[20]', ESC_REGEXP_LF, FUNCTION_19_LF),
+            define('(RP_5_N + RegExp(Function()))[30]', ESC_REGEXP_LF, FUNCTION_22_LF),
+            define('(RegExp(ANY_FUNCTION) + [])[1]', ESC_REGEXP_LF, IE_SRC),
+            define('(+(ANY_FUNCTION + [])[0] + RegExp(FILTER))[23]', ESC_REGEXP_LF, NO_V8_SRC),
+            define('uneval(FILTER + [])[20]', FF_SRC, UNEVAL),
+            define('uneval(ANY_FUNCTION + [])[1]', IE_SRC, UNEVAL),
+            define('uneval(+(ANY_FUNCTION + [])[0] + FILTER)[23]', NO_V8_SRC, UNEVAL),
+            define('(RP_3_NO + RegExp(FILL))[21]', ESC_REGEXP_LF, FF_SRC, FILL),
+            define('(+(ANY_FUNCTION + [])[0] + RegExp(FILL))[21]', ESC_REGEXP_LF, FILL, NO_V8_SRC),
+            define('uneval(RP_3_NO + FILL)[21]', FF_SRC, FILL, UNEVAL),
+            define('uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]', FILL, NO_V8_SRC, UNEVAL),
+            defineCharDefault('\\', { atob: false, charCode: false, escSeq: false }),
         ],
         FILL:
         [
@@ -1421,18 +1411,28 @@ var mapperFormatterDefault;
         return solution;
     };
 
+    function createParseIntArg(amendings, reducerStr)
+    {
+        var parseIntArg =
+        '[' +
+        AMENDINGS.slice(0, amendings).map
+        (
+            function (amending)
+            {
+                return '/' + amending + '/g';
+            }
+        )
+        .join() +
+        '].reduce(' + reducerStr + ',undefined)';
+        return parseIntArg;
+    }
+
     createParseIntArgByReduce =
     function (amendings, firstDigit)
     {
         var parseIntArg =
-            '[' +
-            AMENDINGS.slice(0, amendings).map(
-                function (amending)
-                {
-                    return '/' + amending + '/g';
-                }
-            ).join() +
-            '].reduce(function(f,a,l,s,e){return f.replace(a,' + firstDigit + '+l)},undefined)';
+        createParseIntArg
+        (amendings, 'function(f,a,l,s,e){return f.replace(a,' + firstDigit + '+l)}');
         return parseIntArg;
     };
 
@@ -1440,14 +1440,7 @@ var mapperFormatterDefault;
     function (amendings, firstDigit)
     {
         var parseIntArg =
-            '[' +
-            AMENDINGS.slice(0, amendings).map(
-                function (amending)
-                {
-                    return '/' + amending + '/g';
-                }
-            ).join() +
-            '].reduce((f,a,l,s,e)=>f.replace(a,' + firstDigit + '+l),undefined)';
+        createParseIntArg(amendings, '(f,a,l,s,e)=>f.replace(a,' + firstDigit + '+l)');
         return parseIntArg;
     };
 
@@ -1467,15 +1460,10 @@ var mapperFormatterDefault;
     [
         define(createParseIntArgByReduce),
         define(createParseIntArgDefault, ARRAY_ITERATOR, CAPITAL_HTML, NO_IE_SRC),
+        define(createParseIntArgByReduce, FILL),
         define(createParseIntArgByReduce, NO_FF_SRC),
         define(createParseIntArgByReduce, NO_V8_SRC),
-        define(createParseIntArgByReduce, FILL),
-        define(
-            createParseIntArgByReduce,
-            CAPITAL_HTML,
-            NO_IE_SRC,
-            NO_OLD_SAFARI_ARRAY_ITERATOR
-        ),
+        define(createParseIntArgByReduce, CAPITAL_HTML, NO_IE_SRC, NO_OLD_SAFARI_ARRAY_ITERATOR),
         define(createParseIntArgByReduceArrow, ARROW),
         define(createParseIntArgByReduce, ARROW, NO_FF_SRC),
         define(createParseIntArgByReduce, ARROW, NO_V8_SRC),

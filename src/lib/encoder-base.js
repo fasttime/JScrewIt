@@ -10,7 +10,9 @@ CHARACTERS,
 COMPLEX,
 CONSTANTS,
 JSFUCK_INFINITY,
+LEVEL_NUMERIC,
 LEVEL_STRING,
+LEVEL_UNDEFINED,
 OPTIMAL_B,
 SIMPLE,
 Empty,
@@ -28,7 +30,7 @@ json_stringify,
 maskIncludes,
 maskNew,
 math_abs,
-noop,
+math_max,
 object_keys,
 */
 
@@ -124,17 +126,38 @@ var resolveSimple;
 
     function getReplacers(optimize)
     {
-        var strReplacer =
-        function (encoder, str, bond, forceString)
+        var replaceString =
+        function (encoder, str, options)
         {
-            var options = { bond: bond, forceString: forceString, optimize: optimize };
+            options.optimize = optimize;
             var replacement = encoder.replaceString(str, options);
             if (!replacement)
                 encoder.throwSyntaxError('String too complex');
             return replacement;
         };
-        var replacers = { identifier: replaceIdentifier, string: strReplacer };
+        var strReplacer =
+        function (encoder, str, bond, forceString)
+        {
+            var options = { bond: bond, forceString: forceString };
+            var replacement = replaceString(encoder, str, options);
+            return replacement;
+        };
+        var strAppender =
+        function (encoder, str, firstSolution)
+        {
+            var options = { firstSolution: firstSolution, forceString: true };
+            var replacement = replaceString(encoder, str, options);
+            return replacement;
+        };
+        var replacers =
+        { appendString: strAppender, identifier: replaceIdentifier, string: strReplacer };
         return replacers;
+    }
+
+    function isStringUnit(unit)
+    {
+        var strUnit = typeof unit.value === 'string' && !unit.mod && !unit.pmod && !unit.ops.length;
+        return strUnit;
     }
 
     function replaceIdentifier(encoder, identifier, bondStrength)
@@ -439,7 +462,7 @@ var resolveSimple;
                 appendIndexer = false;
                 optimize = false;
             }
-            var expr = 'Function("return\\"\\\\' + escCode + '\\"")()';
+            var expr = 'Function("return\\"" + ESCAPING_BACKSLASH + "' + escCode + '\\"")()';
             if (appendIndexer)
                 expr += '[0]';
             var replacement = this.replaceExpr(expr, { toStringOpt: optimize });
@@ -546,24 +569,46 @@ var resolveSimple;
 
         replacePrimaryExpr: function (unit, bondStrength, unitIndices, maxLength, replacers)
         {
+            var MIN_APPEND_LENGTH = 3;
+
             var output;
             var terms;
             var identifier;
+            var strAppender = replacers.appendString;
             if (terms = unit.terms)
             {
                 var count = terms.length;
                 var maxCoreLength = maxLength - (bondStrength ? 2 : 0);
+                var minOutputLevel = LEVEL_UNDEFINED;
                 for (var index = 0; index < count; ++index)
                 {
                     var term = terms[index];
                     var termUnitIndices = count > 1 ? unitIndices.concat(index) : unitIndices;
-                    var maxTermLength = maxCoreLength - 3 * (count - index - 1);
-                    var termOutput =
-                    this.replaceExpressUnit(term, index, termUnitIndices, maxTermLength, replacers);
-                    if (!termOutput)
-                        return;
-                    output = index ? output + '+' + termOutput : termOutput;
-                    maxCoreLength -= termOutput.length + 1;
+                    if (strAppender && isStringUnit(term))
+                    {
+                        var firstSolution =
+                        output ? new Solution(output, minOutputLevel) : undefined;
+                        output = strAppender(this, term.value, firstSolution);
+                        minOutputLevel = LEVEL_STRING;
+                    }
+                    else
+                    {
+                        var maxTermLength =
+                        maxCoreLength - (output ? output.length + 1 : 0) -
+                        MIN_APPEND_LENGTH * (count - index - 1);
+                        var termOutput =
+                        this.replaceExpressUnit
+                        (term, index, termUnitIndices, maxTermLength, replacers);
+                        if (!termOutput)
+                            return;
+                        if (output)
+                        {
+                            output += '+' + termOutput;
+                            minOutputLevel = math_max(minOutputLevel, LEVEL_NUMERIC);
+                        }
+                        else
+                            output = termOutput;
+                    }
                 }
                 if (bondStrength)
                     output = '(' + output + ')';
@@ -638,20 +683,6 @@ var resolveSimple;
          *
          * @param {object} [options={ }] An optional object specifying replacement options.
          *
-         * @param {boolean|object<string, boolean|*>} [options.optimize=false]
-         * <p>
-         * Specifies which optimizations should be attempted.</p>
-         * <p>
-         * Optimizations may reduce the length of the replacement string, but they also reduce the
-         * performance and may lead to unwanted circular dependencies when resolving
-         * definitions.</p>
-         * <p>
-         * This parameter can be set to a boolean value in order to turn all optimizations on
-         * (`true`) or off (`false`).
-         * In order to turn specific optimizations on or off, specify an object that maps
-         * optimization names with the suffix "Opt" to booleans, or to any other optimization
-         * specific kind of data.</p>
-         *
          * @param {boolean} [options.bond=false]
          * <p>
          * Indicates whether the replacement expression should be bonded.</p>
@@ -664,6 +695,9 @@ var resolveSimple;
          * with `!`.</p>
          * <p>
          * Any expression becomes bonded when enclosed into parentheses.</p>
+         *
+         * @param {Solution} [options.firstSolution]
+         * An optional solution to be prepended to the replacement string.
          *
          * @param {boolean} [options.forceString=false]
          * <p>
@@ -679,6 +713,20 @@ var resolveSimple;
          * `undefined`.</p>
          * <p>
          * If this parameter is `NaN`, then no length limit is imposed.</p>
+         *
+         * @param {boolean|object<string, boolean|*>} [options.optimize=false]
+         * <p>
+         * Specifies which optimizations should be attempted.</p>
+         * <p>
+         * Optimizations may reduce the length of the replacement string, but they also reduce the
+         * performance and may lead to unwanted circular dependencies when resolving
+         * definitions.</p>
+         * <p>
+         * This parameter can be set to a boolean value in order to turn all optimizations on
+         * (`true`) or off (`false`).
+         * In order to turn specific optimizations on or off, specify an object that maps
+         * optimization names with the suffix "Opt" to booleans, or to any other optimization
+         * specific kind of data.</p>
          *
          * @returns {string} The replacement string.
          */
@@ -731,13 +779,18 @@ var resolveSimple;
             var buffer =
             new ScrewBuffer
             (options.bond, options.forceString, this.maxGroupThreshold, optimizerList);
+            var firstSolution = options.firstSolution;
             var maxLength = options.maxLength;
+            if (firstSolution)
+            {
+                buffer.append(firstSolution);
+                if (buffer.length > maxLength)
+                    return;
+            }
             var match;
             var regExp = RegExp(STR_TOKEN_PATTERN, 'g');
             while (match = regExp.exec(str))
             {
-                if (buffer.length > maxLength)
-                    return;
                 var token;
                 var solution;
                 if (token = match[2])
@@ -747,7 +800,7 @@ var resolveSimple;
                     token = match[1];
                     solution = SIMPLE[token];
                 }
-                if (!buffer.append(solution))
+                if (!buffer.append(solution) || buffer.length > maxLength)
                     return;
             }
             var result = buffer + '';

@@ -798,7 +798,7 @@ var wrapWithEval;
             var codingName = getCodingName(unitIndices);
             var replacement = encoder.encodeText(str, bond, forceString, codingName, maxLength);
             return replacement;
-        }
+        },
     };
 
     var falseFreeFigurator = createFigurator([''], 'false');
