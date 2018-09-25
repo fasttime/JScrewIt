@@ -98,7 +98,6 @@ var setUp;
      * @returns {string} The encoded string.
      *
      * @throws
-     *
      * An `Error` is thrown under the following circumstances.
      *  - The specified string cannot be encoded with the specified options.
      *  - Some unknown features were specified.

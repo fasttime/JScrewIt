@@ -133,7 +133,7 @@
         encoder.maxGroupThreshold = maxGroupThreshold;
         var length = maxGroupThreshold * groupings - A003314(groupings);
         var input = '\uEA5F' + randomString(length - 1);
-        var legend = encoder.replaceString(input, true, false, true);
+        var legend = encoder.replaceString(input, { forceString: true, optimize: true });
         var charIndexArrayStr = encoder.replaceFalseFreeArray(['']);
         var output = encoder.createDictEncoding(legend, charIndexArrayStr, NaN, 5, 3, true);
         try

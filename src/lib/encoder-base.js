@@ -94,8 +94,8 @@ var resolveSimple;
                 var extraZeroCount = -mantissa.length - exp;
                 var extraLength = APPEND_LENGTH_OF_DOT + APPEND_LENGTH_OF_DIGIT_0 * extraZeroCount;
                 str =
-                    replaceNegativeExponential(mantissa, exp, extraLength) ||
-                    '.' + getExtraZeros(extraZeroCount) + mantissa;
+                replaceNegativeExponential(mantissa, exp, extraLength) ||
+                '.' + getExtraZeros(extraZeroCount) + mantissa;
             }
         }
         return str;
@@ -110,7 +110,8 @@ var resolveSimple;
     function getMultiDigitLength(str)
     {
         var appendLength = 0;
-        array_prototype_forEach.call(
+        array_prototype_forEach.call
+        (
             str,
             function (digit)
             {
@@ -123,15 +124,16 @@ var resolveSimple;
 
     function getReplacers(optimize)
     {
-        var replaceString =
-            function (encoder, str, bond, forceString)
-            {
-                var replacement = encoder.replaceString(str, optimize, bond, forceString);
-                if (!replacement)
-                    encoder.throwSyntaxError('String too complex');
-                return replacement;
-            };
-        var replacers = { identifier: replaceIdentifier, string: replaceString };
+        var strReplacer =
+        function (encoder, str, bond, forceString)
+        {
+            var options = { bond: bond, forceString: forceString, optimize: optimize };
+            var replacement = encoder.replaceString(str, options);
+            if (!replacement)
+                encoder.throwSyntaxError('String too complex');
+            return replacement;
+        };
+        var replacers = { identifier: replaceIdentifier, string: strReplacer };
         return replacers;
     }
 
@@ -145,8 +147,8 @@ var resolveSimple;
         if (!solution)
             encoder.throwSyntaxError('Undefined identifier ' + identifier);
         var groupingRequired =
-            bondStrength && solution.hasOuterPlus ||
-            bondStrength > BOND_STRENGTH_WEAK && solution.charAt(0) === '!';
+        bondStrength && solution.hasOuterPlus ||
+        bondStrength > BOND_STRENGTH_WEAK && solution.charAt(0) === '!';
         var replacement = solution.replacement;
         if (groupingRequired)
             replacement = '(' + replacement + ')';
@@ -174,10 +176,10 @@ var resolveSimple;
         mantissa += getExtraZeros(extraZeroCount);
         exp -= extraZeroCount;
         var extraLength =
-            APPEND_LENGTH_OF_DIGIT_0 * extraZeroCount +
-            APPEND_LENGTH_OF_SMALL_E +
-            APPEND_LENGTH_OF_MINUS +
-            getMultiDigitLength(-exp + '');
+        APPEND_LENGTH_OF_DIGIT_0 * extraZeroCount +
+        APPEND_LENGTH_OF_SMALL_E +
+        APPEND_LENGTH_OF_MINUS +
+        getMultiDigitLength(-exp + '');
         if (extraLength < rivalExtraLength)
         {
             var str = mantissa + 'e' + exp;
@@ -189,7 +191,8 @@ var resolveSimple;
     {
         var shortestObj;
         var shortestLength = Infinity;
-        objs.forEach(
+        objs.forEach
+        (
             function (obj)
             {
                 var length = obj.length;
@@ -219,14 +222,14 @@ var resolveSimple;
     APPEND_LENGTH_OF_DIGITS     = [APPEND_LENGTH_OF_DIGIT_0, 8, 12, 17, 22, 27, 32, 37, 42, 47];
 
     Encoder =
-        function (mask)
-        {
-            this.mask           = mask;
-            this.charCache      = new CharCache();
-            this.constCache     = new ConstCache();
-            this.optimizers     = new Empty();
-            this.stack          = [];
-        };
+    function (mask)
+    {
+        this.mask       = mask;
+        this.charCache  = new CharCache();
+        this.constCache = new ConstCache();
+        this.optimizers = new Empty();
+        this.stack      = [];
+    };
 
     var encoderProtoSource =
     {
@@ -242,7 +245,7 @@ var resolveSimple;
                     var chain = stack.slice(stackIndex);
                     var feature = featureFromMask(this.mask);
                     var message =
-                        'Circular reference detected: ' + chain.join(' < ') + ' – ' + feature;
+                    'Circular reference detected: ' + chain.join(' < ') + ' – ' + feature;
                     var error = new SyntaxError(message);
                     assignNoEnum(error, { chain: chain, feature: feature });
                     throw error;
@@ -317,7 +320,8 @@ var resolveSimple;
         findOptimalSolution: function (entries)
         {
             var result;
-            entries.forEach(
+            entries.forEach
+            (
                 function (entry, entryIndex)
                 {
                     if (this.hasFeatures(entry.mask))
@@ -354,14 +358,14 @@ var resolveSimple;
             var optimalB = this.findDefinition(OPTIMAL_B);
             var charCodeStr = charCode.toString(16);
             var hexCodeSmallB =
-                getExtraZeros(hexDigitCount - charCodeStr.length) +
-                charCodeStr.replace(/fa?$/, 'false');
+            getExtraZeros(hexDigitCount - charCodeStr.length) +
+            charCodeStr.replace(/fa?$/, 'false');
             var hexCode = hexCodeSmallB.replace(/b/g, optimalB);
             if (optimalB !== 'b' && /(?=.*b.*b)(?=.*c)|(?=.*b.*b.*b)/.test(charCodeStr))
             {
                 // optimalB is not "b", but the character code is a candidate for toString
                 // clustering, which only works with "b".
-                var replacementSmallB = this.replaceString('f' + hexCodeSmallB, true);
+                var replacementSmallB = this.replaceString('f' + hexCodeSmallB, { optimize: true });
                 var replacement = this.replaceString('f' + hexCode);
                 if (replacementSmallB.length < replacement.length)
                     hexCode = hexCodeSmallB;
@@ -384,14 +388,14 @@ var resolveSimple;
         replaceCharByAtob: function (charCode)
         {
             var param1 =
-                BASE64_ALPHABET_LO_6[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
+            BASE64_ALPHABET_LO_6[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
             var postfix1 = '(' + this.replaceString(param1) + ')';
             if (param1.length > 2)
                 postfix1 += replaceIndexer(0);
 
             var param2Left = this.findBase64AlphabetDefinition(BASE64_ALPHABET_LO_4[charCode >> 4]);
             var param2Right =
-                this.findBase64AlphabetDefinition(BASE64_ALPHABET_HI_4[charCode & 0x0f]);
+            this.findBase64AlphabetDefinition(BASE64_ALPHABET_HI_4[charCode & 0x0f]);
             var param2 = param2Left + param2Right;
             var index2 = 1 + (param2Left.length - 2) / 4 * 3;
             var indexer2 = replaceIndexer(index2);
@@ -411,9 +415,9 @@ var resolveSimple;
         replaceCharByCharCode: function (charCode)
         {
             var arg =
-                charCode < 2 ? ['[]', 'true'][charCode] :
-                charCode < 10 ? charCode :
-                '"' + charCode + '"';
+            charCode < 2 ? ['[]', 'true'][charCode] :
+            charCode < 10 ? charCode :
+            '"' + charCode + '"';
             var replacement = this.replaceExpr('String[FROM_CHAR_CODE](' + arg + ')');
             return replacement;
         },
@@ -482,20 +486,15 @@ var resolveSimple;
             var pmod = unit.pmod || '';
             var groupingRequired = bond && mod[0] === '+';
             var maxCoreLength =
-                maxLength - (mod ? (groupingRequired ? 2 : 0) + mod.length : 0) - pmod.length;
+            maxLength - (mod ? (groupingRequired ? 2 : 0) + mod.length : 0) - pmod.length;
             var ops = unit.ops;
             var opCount = ops.length;
             var primaryExprBondStrength =
-                opCount || pmod ?
-                BOND_STRENGTH_STRONG : bond || mod ? BOND_STRENGTH_WEAK : BOND_STRENGTH_NONE;
+            opCount || pmod ?
+            BOND_STRENGTH_STRONG : bond || mod ? BOND_STRENGTH_WEAK : BOND_STRENGTH_NONE;
             var output =
-                this.replacePrimaryExpr(
-                    unit,
-                    primaryExprBondStrength,
-                    unitIndices,
-                    maxCoreLength,
-                    replacers
-                );
+            this.replacePrimaryExpr
+            (unit, primaryExprBondStrength, unitIndices, maxCoreLength, replacers);
             if (output)
             {
                 for (var index = 0; index < opCount; ++index)
@@ -518,18 +517,13 @@ var resolveSimple;
                         {
                             var strReplacer = replacers.string;
                             opOutput =
-                                strReplacer(this, str, false, false, opUnitIndices, maxOpLength);
+                            strReplacer(this, str, false, false, opUnitIndices, maxOpLength);
                         }
                         else
                         {
                             opOutput =
-                                this.replaceExpressUnit(
-                                    op,
-                                    false,
-                                    opUnitIndices,
-                                    maxOpLength,
-                                    replacers
-                                );
+                            this.replaceExpressUnit
+                            (op, false, opUnitIndices, maxOpLength, replacers);
                         }
                         if (!opOutput)
                             return;
@@ -565,13 +559,7 @@ var resolveSimple;
                     var termUnitIndices = count > 1 ? unitIndices.concat(index) : unitIndices;
                     var maxTermLength = maxCoreLength - 3 * (count - index - 1);
                     var termOutput =
-                        this.replaceExpressUnit(
-                            term,
-                            index,
-                            termUnitIndices,
-                            maxTermLength,
-                            replacers
-                        );
+                    this.replaceExpressUnit(term, index, termUnitIndices, maxTermLength, replacers);
                     if (!termOutput)
                         return;
                     output = index ? output + '+' + termOutput : termOutput;
@@ -583,8 +571,7 @@ var resolveSimple;
             else if (identifier = unit.identifier)
             {
                 var identifierReplacer = replacers.identifier;
-                output =
-                    identifierReplacer(this, identifier, bondStrength, unitIndices, maxLength);
+                output = identifierReplacer(this, identifier, bondStrength, unitIndices, maxLength);
             }
             else
             {
@@ -599,13 +586,8 @@ var resolveSimple;
                     if (value.length)
                     {
                         var replacement =
-                            this.replaceExpressUnit(
-                                value[0],
-                                false,
-                                unitIndices,
-                                maxLength - 2,
-                                replacers
-                            );
+                        this.replaceExpressUnit
+                        (value[0], false, unitIndices, maxLength - 2, replacers);
                         if (replacement)
                             output = '[' + replacement + ']';
                     }
@@ -644,12 +626,67 @@ var resolveSimple;
 
         replaceStaticString: function (str, maxLength)
         {
-            var replacement = STATIC_ENCODER.replaceString(str, false, true, true, maxLength);
+            var options = { bond: true, forceString: true, maxLength: maxLength };
+            var replacement = STATIC_ENCODER.replaceString(str, options);
             return replacement;
         },
 
-        replaceString: function (str, optimize, bond, forceString, maxLength)
+        /**
+         * Replace a given string with equivalent JSFuck code.
+         *
+         * @param {string} str The string to replace.
+         *
+         * @param {object} [options={ }] An optional object specifying replacement options.
+         *
+         * @param {boolean|object<string, boolean|*>} [options.optimize=false]
+         * <p>
+         * Specifies which optimizations should be attempted.</p>
+         * <p>
+         * Optimizations may reduce the length of the replacement string, but they also reduce the
+         * performance and may lead to unwanted circular dependencies when resolving
+         * definitions.</p>
+         * <p>
+         * This parameter can be set to a boolean value in order to turn all optimizations on
+         * (`true`) or off (`false`).
+         * In order to turn specific optimizations on or off, specify an object that maps
+         * optimization names with the suffix "Opt" to booleans, or to any other optimization
+         * specific kind of data.</p>
+         *
+         * @param {boolean} [options.bond=false]
+         * <p>
+         * Indicates whether the replacement expression should be bonded.</p>
+         * <p>
+         * An expression is bonded if it can be treated as a single unit by any valid operators
+         * placed immediately before or after it.
+         * E.g. `[][[]]` is bonded but `![]` is not, because `![][[]]` is different from
+         * `(![])[[]]`.
+         * More exactly, a bonded expression does not contain an outer plus and does not start
+         * with `!`.</p>
+         * <p>
+         * Any expression becomes bonded when enclosed into parentheses.</p>
+         *
+         * @param {boolean} [options.forceString=false]
+         * <p>
+         * Indicates whether the replacement expression should evaluate to a string.</p>
+         * <p>
+         * Any expression can be converted into a string by appending `+[]`.</p>
+         *
+         * @param {number} [options.maxLength=(NaN)]
+         * <p>
+         * The maximum length of the replacement expression.</p>
+         * <p>
+         * If the replacement expression exceeds the specified length, the return value is
+         * `undefined`.</p>
+         * <p>
+         * If this parameter is `NaN`, then no length limit is imposed.</p>
+         *
+         * @returns {string} The replacement string.
+         */
+
+        replaceString: function (str, options)
         {
+            options = options || { };
+            var optimize = options.optimize;
             var optimizerList = [];
             if (optimize)
             {
@@ -675,11 +712,11 @@ var resolveSimple;
                         if (this.hasFeatures(entry.mask) && str.indexOf(complex) >= 0)
                         {
                             optimizer =
-                                complexOptimizers[complex] ||
-                                (
-                                    complexOptimizers[complex] =
-                                    getComplexOptimizer(this, complex, entry.definition)
-                                );
+                            complexOptimizers[complex] ||
+                            (
+                                complexOptimizers[complex] =
+                                getComplexOptimizer(this, complex, entry.definition)
+                            );
                             optimizerList.push(optimizer);
                         }
                     }
@@ -687,11 +724,14 @@ var resolveSimple;
                 if (optimizeToString)
                 {
                     optimizer =
-                        optimizers.toString || (optimizers.toString = getToStringOptimizer(this));
+                    optimizers.toString || (optimizers.toString = getToStringOptimizer(this));
                     optimizerList.push(optimizer);
                 }
             }
-            var buffer = new ScrewBuffer(bond, forceString, this.maxGroupThreshold, optimizerList);
+            var buffer =
+            new ScrewBuffer
+            (options.bond, options.forceString, this.maxGroupThreshold, optimizerList);
+            var maxLength = options.maxLength;
             var match;
             var regExp = RegExp(STR_TOKEN_PATTERN, 'g');
             while (match = regExp.exec(str))
@@ -745,7 +785,8 @@ var resolveSimple;
             var solution = this.charCache[char];
             if (solution === undefined)
             {
-                this.callResolver(
+                this.callResolver
+                (
                     quoteString(char),
                     function ()
                     {
@@ -780,7 +821,8 @@ var resolveSimple;
             var solution = this.constCache[constant];
             if (solution === undefined)
             {
-                this.callResolver(
+                this.callResolver
+                (
                     constant,
                     function ()
                     {
@@ -851,7 +893,9 @@ var resolveSimple;
     [
         0x0f, 0x1f, 0x2f, 0x3f, 0x6f, 0x7f, 0xaf, 0xdf, 0xef,
         0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xfa
-    ].forEach(
+    ]
+    .forEach
+    (
         function (charCode)
         {
             LOW_UNICODE_ESC_SEQ_CODES[charCode] = null;
@@ -863,25 +907,26 @@ var resolveSimple;
     var STR_TOKEN_PATTERN = '(' + object_keys(SIMPLE).join('|') + ')|([\\s\\S])';
 
     replaceMultiDigitNumber =
-        function (number)
-        {
-            var str = formatPositiveNumber(number);
-            var replacement = STATIC_ENCODER.replaceString(str);
-            return replacement;
-        };
+    function (number)
+    {
+        var str = formatPositiveNumber(number);
+        var replacement = STATIC_ENCODER.replaceString(str);
+        return replacement;
+    };
 
     resolveSimple =
-        function (simple, definition)
-        {
-            var solution;
-            STATIC_ENCODER.callResolver(
-                simple,
-                function ()
-                {
-                    solution = STATIC_ENCODER.resolve(definition);
-                }
-            );
-            return solution;
-        };
+    function (simple, definition)
+    {
+        var solution;
+        STATIC_ENCODER.callResolver
+        (
+            simple,
+            function ()
+            {
+                solution = STATIC_ENCODER.resolve(definition);
+            }
+        );
+        return solution;
+    };
 }
 )();

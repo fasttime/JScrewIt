@@ -1460,7 +1460,6 @@ var validMaskFromArrayOrStringOrFeature;
          * @member {object} JScrewIt.Feature.ALL
          *
          * @example
-         *
          * This will produce an array with the names and aliases of all predefined features.
          *
          * ```js
@@ -1542,7 +1541,6 @@ var validMaskFromArrayOrStringOrFeature;
          * A feature object, or `null` if no arguments are specified.
          *
          * @example
-         *
          * This will create a new feature object equivalent to [`NAME`](Features.md#NAME).
          *
          * ```js

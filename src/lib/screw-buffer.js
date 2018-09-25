@@ -5,6 +5,7 @@ LEVEL_NUMERIC,
 LEVEL_OBJECT,
 LEVEL_STRING,
 LEVEL_UNDEFINED,
+Solution,
 assignNoEnum,
 createClusteringPlan,
 math_max,
@@ -25,8 +26,7 @@ var optimizeSolutions;
         var rightEndIndex = lastBridgeIndex + 1;
         var rightEndLength = solutions.length - rightEndIndex;
         var result =
-            rightEndLength > 2 ||
-            rightEndLength > 1 && !isUnluckyRightEnd(solutions, rightEndIndex);
+        rightEndLength > 2 || rightEndLength > 1 && !isUnluckyRightEnd(solutions, rightEndIndex);
         return result;
     }
 
@@ -65,9 +65,11 @@ var optimizeSolutions;
                 splitIndex = index;
             }
         }
-        if (
+        if
+        (
             optimalSplitCost + intrinsicSplitCost < 0 &&
-            !(optimalSplitCost > 0 && canSplitRightEndForFree(solutions, lastBridgeIndex)))
+            !(optimalSplitCost > 0 && canSplitRightEndForFree(solutions, lastBridgeIndex))
+        )
             return splitIndex;
     }
 
@@ -98,7 +100,7 @@ var optimizeSolutions;
                 {
                     var intrinsicSplitCost = groupForceString ? -3 : groupBond ? 2 : 0;
                     index =
-                        findSplitIndex(solutions, intrinsicSplitCost, bridgeIndex, lastBridgeIndex);
+                    findSplitIndex(solutions, intrinsicSplitCost, bridgeIndex, lastBridgeIndex);
                 }
                 multiPart = index != null;
                 if (multiPart)
@@ -107,8 +109,7 @@ var optimizeSolutions;
                     // length.
                     var preBridgeCount = index;
                     array =
-                        preBridgeCount > 1 ?
-                        sequence(solutions, 0, preBridgeCount) : [solutions[0]];
+                    preBridgeCount > 1 ? sequence(solutions, 0, preBridgeCount) : [solutions[0]];
                     array.push('+');
                 }
                 else
@@ -204,8 +205,8 @@ var optimizeSolutions;
     function isUnluckyRightEnd(solutions, firstIndex)
     {
         var result =
-            solutions[firstIndex].level < LEVEL_NUMERIC &&
-            solutions[firstIndex + 1].level > LEVEL_UNDEFINED;
+        solutions[firstIndex].level < LEVEL_NUMERIC &&
+        solutions[firstIndex + 1].level > LEVEL_UNDEFINED;
         return result;
     }
 
@@ -262,149 +263,146 @@ var optimizeSolutions;
         return str;
     }
 
+    var EMPTY_SOLUTION = new Solution('[]', LEVEL_OBJECT, false);
+
     ScrewBuffer =
-        function (bond, forceString, groupThreshold, optimizerList)
+    function (bond, forceString, groupThreshold, optimizerList)
+    {
+        function gather(offset, count, groupBond, groupForceString)
         {
-            function gather(offset, count, groupBond, groupForceString)
+            var str;
+            var end = offset + count;
+            var groupSolutions = solutions.slice(offset, end);
+            if (optimizerList.length)
+                optimizeSolutions(optimizerList, groupSolutions, groupBond, groupForceString);
+            str = gatherGroup(groupSolutions, groupBond, groupForceString, bridgeUsed);
+            return str;
+        }
+
+        var bridgeUsed;
+        var length = -APPEND_LENGTH_OF_EMPTY;
+        var maxSolutionCount = math_pow(2, groupThreshold - 1);
+        var solutions = [];
+
+        assignNoEnum
+        (
+            this,
             {
-                var str;
-                var end = offset + count;
-                var groupSolutions = solutions.slice(offset, end);
-                if (optimizerList.length)
-                    optimizeSolutions(optimizerList, groupSolutions, groupBond, groupForceString);
-                str = gatherGroup(groupSolutions, groupBond, groupForceString, bridgeUsed);
-                return str;
-            }
-
-            var bridgeUsed;
-            var length = -APPEND_LENGTH_OF_EMPTY;
-            var maxSolutionCount = math_pow(2, groupThreshold - 1);
-            var solutions = [];
-
-            assignNoEnum(
-                this,
+                append: function (solution)
                 {
-                    append: function (solution)
-                    {
-                        if (solutions.length >= maxSolutionCount)
-                            return false;
-                        bridgeUsed |= !!solution.bridge;
-                        solutions.push(solution);
-                        var appendLength = solution.appendLength;
-                        optimizerList.forEach(
-                            function (optimizer)
-                            {
-                                var currentAppendLength = optimizer.appendLengthOf(solution);
-                                if (currentAppendLength < appendLength)
-                                    appendLength = currentAppendLength;
-                            }
-                        );
-                        length += appendLength;
-                        return true;
-                    },
-                    get length()
-                    {
-                        return length;
-                    },
-                    toString: function ()
-                    {
-                        function collectOut(offset, count, maxGroupCount, groupBond)
+                    if (solutions.length >= maxSolutionCount)
+                        return false;
+                    bridgeUsed |= !!solution.bridge;
+                    solutions.push(solution);
+                    var appendLength = solution.appendLength;
+                    optimizerList.forEach
+                    (
+                        function (optimizer)
                         {
-                            var str;
-                            if (count <= groupSize + 1)
-                                str = gather(offset, count, groupBond);
-                            else
-                            {
-                                maxGroupCount /= 2;
-                                var halfCount = groupSize * maxGroupCount;
-                                var capacity = 2 * halfCount - count;
-                                var leftEndCount =
-                                    math_max(
-                                        halfCount - capacity + capacity % (groupSize - 1),
-                                        (maxGroupCount / 2 ^ 0) * (groupSize + 1)
-                                    );
-                                str =
-                                    collectOut(offset, leftEndCount, maxGroupCount) +
-                                    '+' +
-                                    collectOut(
-                                        offset + leftEndCount,
-                                        count - leftEndCount,
-                                        maxGroupCount,
-                                        true
-                                    );
-                                if (groupBond)
-                                    str = '(' + str + ')';
-                            }
-                            return str;
+                            var currentAppendLength = optimizer.appendLengthOf(solution);
+                            if (currentAppendLength < appendLength)
+                                appendLength = currentAppendLength;
                         }
-
-                        var multiPart;
+                    );
+                    length += appendLength;
+                    return true;
+                },
+                get length()
+                {
+                    return length;
+                },
+                toString: function ()
+                {
+                    function collectOut(offset, count, maxGroupCount, groupBond)
+                    {
                         var str;
-                        var solutionCount = solutions.length;
-                        if (solutionCount < 2)
-                        {
-                            if (solutionCount)
-                            {
-                                var solution = solutions[0];
-                                multiPart = forceString && solution.level < LEVEL_STRING;
-                                str = solution.replacement;
-                            }
-                            else
-                            {
-                                multiPart = forceString;
-                                str = '[]';
-                            }
-                            if (multiPart)
-                            {
-                                str += '+[]';
-                                if (bond)
-                                    str = '(' + str + ')';
-                            }
-                        }
+                        if (count <= groupSize + 1)
+                            str = gather(offset, count, groupBond);
                         else
                         {
-                            if (solutionCount <= groupThreshold)
-                                str = gather(0, solutionCount, bond, forceString);
-                            else
-                            {
-                                var groupSize = groupThreshold;
-                                var maxGroupCount = 2;
-                                for (;;)
-                                {
-                                    --groupSize;
-                                    var maxSolutionCountForDepth = groupSize * maxGroupCount;
-                                    if (solutionCount <= maxSolutionCountForDepth)
-                                        break;
-                                    maxGroupCount *= 2;
-                                }
-                                str = collectOut(0, solutionCount, maxGroupCount, bond);
-                            }
+                            maxGroupCount /= 2;
+                            var halfCount = groupSize * maxGroupCount;
+                            var capacity = 2 * halfCount - count;
+                            var leftEndCount =
+                            math_max
+                            (
+                                halfCount - capacity + capacity % (groupSize - 1),
+                                (maxGroupCount / 2 ^ 0) * (groupSize + 1)
+                            );
+                            str =
+                            collectOut(offset, leftEndCount, maxGroupCount) +
+                            '+' +
+                            collectOut
+                            (offset + leftEndCount, count - leftEndCount, maxGroupCount, true);
+                            if (groupBond)
+                                str = '(' + str + ')';
                         }
                         return str;
                     }
+
+                    var multiPart;
+                    var str;
+                    var solutionCount = solutions.length;
+                    if (solutionCount < 2)
+                    {
+                        var solution = solutions[0] || EMPTY_SOLUTION;
+                        multiPart = forceString && solution.level < LEVEL_STRING;
+                        str = solution.replacement;
+                        if (multiPart)
+                            str += '+[]';
+                        if
+                        (
+                            bond &&
+                            (multiPart || solution.hasOuterPlus || solution.charAt(0) === '!')
+                        )
+                            str = '(' + str + ')';
+                    }
+                    else
+                    {
+                        if (solutionCount <= groupThreshold)
+                            str = gather(0, solutionCount, bond, forceString);
+                        else
+                        {
+                            var groupSize = groupThreshold;
+                            var maxGroupCount = 2;
+                            for (;;)
+                            {
+                                --groupSize;
+                                var maxSolutionCountForDepth = groupSize * maxGroupCount;
+                                if (solutionCount <= maxSolutionCountForDepth)
+                                    break;
+                                maxGroupCount *= 2;
+                            }
+                            str = collectOut(0, solutionCount, maxGroupCount, bond);
+                        }
+                    }
+                    return str;
                 }
-            );
-        };
+            }
+        );
+    };
 
     optimizeSolutions =
-        function (optimizerList, solutions, bond, forceString)
-        {
-            var plan = createClusteringPlan();
-            optimizerList.forEach(
-                function (optimizer)
-                {
-                    optimizer.optimizeSolutions(plan, solutions, bond, forceString);
-                }
-            );
-            var clusters = plan.conclude();
-            clusters.forEach(
-                function (cluster)
-                {
-                    var clusterer = cluster.data;
-                    var solution = clusterer();
-                    solutions.splice(cluster.start, cluster.length, solution);
-                }
-            );
-        };
+    function (optimizerList, solutions, bond, forceString)
+    {
+        var plan = createClusteringPlan();
+        optimizerList.forEach
+        (
+            function (optimizer)
+            {
+                optimizer.optimizeSolutions(plan, solutions, bond, forceString);
+            }
+        );
+        var clusters = plan.conclude();
+        clusters.forEach
+        (
+            function (cluster)
+            {
+                var clusterer = cluster.data;
+                var solution = clusterer();
+                solutions.splice(cluster.start, cluster.length, solution);
+            }
+        );
+    };
 }
 )();

@@ -128,7 +128,8 @@
             if (encoder.hasFeatures(entryMask))
             {
                 var complexSolution = encoder.resolve(definition);
-                var replacement = encoder.replaceString(complex, { toStringOpt: true }, true);
+                var options = { bond: true, optimize: { toStringOpt: true } };
+                var replacement = encoder.replaceString(complex, options);
                 if (complexSolution.length < replacement.length)
                     return true;
             }

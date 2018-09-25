@@ -207,6 +207,7 @@ uneval,
                     }
                 );
                 testConstant('Number', isExpected(Number));
+                testConstant('Object', isExpected(Object));
                 testConstant('RegExp', isExpected(RegExp));
                 testConstant('String', isExpected(String));
                 testConstant(
@@ -1222,7 +1223,7 @@ uneval,
                     function ()
                     {
                         var encoder = JScrewIt.debug.createEncoder();
-                        var actual = encoder.replaceString('zz', true);
+                        var actual = encoder.replaceString('zz', { optimize: true });
                         var expected = encoder.replaceExpr('1295..toString("36")');
                         expect(actual).toBe(expected);
                     }
@@ -1250,8 +1251,9 @@ uneval,
                                     'without bonding or string forcing',
                                     function ()
                                     {
-                                        var output =
-                                            encoder.replaceString(expr, true, false, false);
+                                        var options =
+                                        { bond: false, forceString: false, optimize: true };
+                                        var output = encoder.replaceString(expr, options);
                                         expect(output).toStartWith(start0);
                                         expect(output).toEndWith(end0);
                                     }
@@ -1260,7 +1262,9 @@ uneval,
                                     'with bonding',
                                     function ()
                                     {
-                                        var output = encoder.replaceString(expr, true, true, false);
+                                        var options =
+                                        { bond: true, forceString: false, optimize: true };
+                                        var output = encoder.replaceString(expr, options);
                                         expect(output).toStartWith(startSB);
                                         expect(output).toEndWith(endSB);
                                     }
@@ -1269,7 +1273,9 @@ uneval,
                                     'with string forcing',
                                     function ()
                                     {
-                                        var output = encoder.replaceString(expr, true, false, true);
+                                        var options =
+                                        { bond: false, forceString: true, optimize: true };
+                                        var output = encoder.replaceString(expr, options);
                                         expect(output).toStartWith(startFS);
                                         expect(output).toEndWith(endFS);
                                     }
@@ -1278,7 +1284,9 @@ uneval,
                                     'with bonding and string forcing',
                                     function ()
                                     {
-                                        var output = encoder.replaceString(expr, true, true, true);
+                                        var options =
+                                        { bond: true, forceString: true, optimize: true };
+                                        var output = encoder.replaceString(expr, options);
                                         expect(output).toStartWith(startSBFS);
                                         expect(output).toEndWith(endSBFS);
                                     }

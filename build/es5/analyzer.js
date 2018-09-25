@@ -103,7 +103,8 @@
         }
         else
         {
-            replacement = this.replaceString(str, false, true, true, maxLength);
+            var options = { bond: true, forceString: true, maxLength: maxLength };
+            replacement = this.replaceString(str, options);
             if (replacement)
             {
                 staticStrCache[str] = replacement;

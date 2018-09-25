@@ -19,14 +19,14 @@ const rawDefSystems =
         (encoder, createParseIntArg) =>
         {
             const str = createParseIntArg(3, 2);
-            const replacement = encoder.replaceString(str, true);
+            const replacement = encoder.replaceString(str, { optimize: true });
             return replacement;
         },
     },
     FROM_CHAR_CODE:
     {
         availableEntries: getEntries('FROM_CHAR_CODE:available'),
-        replaceVariant: (encoder, str) => encoder.replaceString(str, true),
+        replaceVariant: (encoder, str) => encoder.replaceString(str, { optimize: true }),
     },
     FROM_CHAR_CODE_CALLBACK_FORMATTER:
     {
@@ -36,7 +36,7 @@ const rawDefSystems =
         (encoder, fromCharCodeCallbackFormatter) =>
         {
             const str = fromCharCodeCallbackFormatter('0');
-            const replacement = encoder.replaceString(str, true);
+            const replacement = encoder.replaceString(str, { optimize: true });
             return replacement;
         },
     },
@@ -61,7 +61,7 @@ const rawDefSystems =
             define('return String'),
             define('return status.constructor', 'STATUS'),
         ],
-        replaceVariant: (encoder, str) => encoder.replaceString(str, true),
+        replaceVariant: (encoder, str) => encoder.replaceString(str, { optimize: true }),
     },
 };
 

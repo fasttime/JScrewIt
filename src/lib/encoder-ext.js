@@ -291,9 +291,14 @@ var wrapWithEval;
             function (inputData, maxLength)
             {
                 var input = inputData.valueOf();
-                var bond = inputData.bond;
-                var output =
-                    this.replaceString(input, true, bond, inputData.forceString, maxLength);
+                var options =
+                {
+                    bond: inputData.bond,
+                    forceString: inputData.forceString,
+                    maxLength: maxLength,
+                    optimize: true,
+                };
+                var output = this.replaceString(input, options);
                 return output;
             }
         ),
@@ -389,20 +394,21 @@ var wrapWithEval;
                 if (long)
                 {
                     output =
-                        this.createLongCharCodesOutput(charCodeArrayStr, fromCharCode, 'undefined');
+                    this.createLongCharCodesOutput(charCodeArrayStr, fromCharCode, 'undefined');
                 }
                 else
                 {
                     var returnString = this.findDefinition(OPTIMAL_RETURN_STRING);
+                    var str = returnString + '.' + fromCharCode + '(';
                     output =
-                        this.resolveConstant('Function') +
-                        '(' +
-                        this.replaceString(returnString + '.' + fromCharCode + '(', true) +
-                        '+' +
-                        charCodeArrayStr +
-                        '+' +
-                        this.resolveCharacter(')') +
-                        ')()';
+                    this.resolveConstant('Function') +
+                    '(' +
+                    this.replaceString(str, { optimize: true }) +
+                    '+' +
+                    charCodeArrayStr +
+                    '+' +
+                    this.resolveCharacter(')') +
+                    ')()';
                 }
             }
             return output;
@@ -465,8 +471,8 @@ var wrapWithEval;
         createJSFuckArrayMapping: function (arrayStr, mapper, legend)
         {
             var result =
-                arrayStr + '[' + this.replaceString('map', true) + '](' +
-                this.replaceExpr(mapper, true) + '(' + legend + '))';
+            arrayStr + '[' + this.replaceString('map', { optimize: true }) + '](' +
+            this.replaceExpr(mapper, true) + '(' + legend + '))';
             return result;
         },
 
@@ -475,9 +481,9 @@ var wrapWithEval;
             var formatter = this.findDefinition(FROM_CHAR_CODE_CALLBACK_FORMATTER);
             var callback = formatter(fromCharCode, arg);
             var output =
-                charCodeArrayStr + '[' + this.replaceString('map', true) + '](' +
-                this.replaceExpr('Function("return ' + callback + '")()', true) + ')[' +
-                this.replaceString('join') + ']([])';
+            charCodeArrayStr + '[' + this.replaceString('map', { optimize: true }) + '](' +
+            this.replaceExpr('Function("return ' + callback + '")()', true) + ')[' +
+            this.replaceString('join') + ']([])';
             return output;
         },
 
@@ -730,7 +736,7 @@ var wrapWithEval;
 
         replaceStringArray: function (array, delimiters, maxLength)
         {
-            var splitExpr = this.replaceString('split', true, false, false, maxLength);
+            var splitExpr = this.replaceString('split', { maxLength: maxLength, optimize: true });
             if (splitExpr)
             {
                 maxLength -= splitExpr.length + 4;

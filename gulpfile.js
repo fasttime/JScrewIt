@@ -60,7 +60,8 @@ gulp.task
         var lint = require('gulp-fasttime-lint');
 
         var src = ['*.js', 'build/es5/*.js', 'src/html/**/*.js', 'test/**/*.js', 'tools/**/*.js'];
-        var stream = gulp.src(src).pipe(lint());
+        var options = { rules: { 'space-before-function-paren': 'off' } };
+        var stream = gulp.src(src).pipe(lint(options));
         return stream;
     }
 );
