@@ -779,10 +779,7 @@ var mapperFormatterDefault;
             define('btoa("00")[1]', ATOB),
             define('(RP_3_NO + document)[11]', DOCUMENT),
             define // *
-            (
-                'escape((RP_3_NO + [+("10" + [(RP_6_SO + FILL)[40]] + 0 + 0 + 0)] + FILL)[40])[2]',
-                FILL
-            ),
+            ('escape((RP_3_NO + [+("10" + [(RP_6_SO + FILL)[40]] + "000")] + FILL)[40])[2]', FILL),
             define('(document + [])[12]', HTMLDOCUMENT),
             define('escape(ARRAY_ITERATOR)[30]', NO_OLD_SAFARI_ARRAY_ITERATOR),
             define('escape(FILTER)[50]', V8_SRC),
@@ -940,7 +937,7 @@ var mapperFormatterDefault;
         '\\':
         [
             define('ESCAPING_BACKSLASH'),
-            defineCharDefault('\\', { atob: false, escSeq: false, unescape: false }),
+            defineCharDefault('\\', { escSeq: false, unescape: false }),
         ],
         ']':
         [
@@ -1244,7 +1241,6 @@ var mapperFormatterDefault;
         ],
         ESCAPING_BACKSLASH:
         [
-            define('atob("01y")[1]', ATOB),
             define('(RegExp("\\n") + [])[1]', ESC_REGEXP_LF),
             define('(RP_5_N + RegExp("".italics()))[10]', ESC_REGEXP_SLASH),
             define('(RP_3_NO + RegExp("".sub()))[10]', ESC_REGEXP_SLASH),
@@ -1321,13 +1317,13 @@ var mapperFormatterDefault;
         ],
         FBP_7_NO:
         [
-            define('+("10" + [(RP_4_N + FILTER)[40]] + 0 + 0 + 0 + 0 + 0)'),
-            define('+("10" + [(RP_6_SO + FILL)[40]] + 0 + 0 + 0 + 0 + 0)', FILL),
+            define('+("10" + [(RP_4_N + FILTER)[40]] + "00000")'),
+            define('+("10" + [(RP_6_SO + FILL)[40]] + "00000")', FILL),
         ],
         FBP_8_NO:
         [
-            define('+("1000" + (RP_5_N + FILTER + 0)[40] + 0 + 0 + 0)'),
-            define('+("1000" + (FILL + 0)[33] + 0 + 0 + 0)', FILL),
+            define('+("1000" + (RP_5_N + FILTER + 0)[40] + "000")'),
+            define('+("1000" + (FILL + 0)[33] + "000")', FILL),
         ],
         FBP_9_U:
         [

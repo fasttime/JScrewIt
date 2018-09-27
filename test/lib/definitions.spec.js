@@ -459,6 +459,14 @@ uneval,
             );
             testConstant
             (
+                'ESCAPING_BACKSLASH',
+                function ()
+                {
+                    this.toBe('\\');
+                }
+            );
+            testConstant
+            (
                 'FILL',
                 function ()
                 {
