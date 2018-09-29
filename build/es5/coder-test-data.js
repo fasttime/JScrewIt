@@ -104,7 +104,16 @@ module.exports =
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC'],
+        [
+            'ARRAY_ITERATOR',
+            'ARROW',
+            'ATOB',
+            'CAPITAL_HTML',
+            'FILL',
+            'NO_IE_SRC',
+            'NO_V8_SRC',
+            'STATUS',
+        ],
         function (length)
         {
             var CHAR_CODES =

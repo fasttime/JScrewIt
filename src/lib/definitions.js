@@ -46,8 +46,12 @@ var createBridgeSolution;
 var createParseIntArgByReduce;
 var createParseIntArgByReduceArrow;
 var createParseIntArgDefault;
-var fromCharCodeCallbackFormatterArrow;
-var fromCharCodeCallbackFormatterDefault;
+var fromCharCodeCallbackFormatterArrow1;
+var fromCharCodeCallbackFormatterArrow2;
+var fromCharCodeCallbackFormatterArrowStatus;
+var fromCharCodeCallbackFormatterDefault1;
+var fromCharCodeCallbackFormatterDefault2;
+var fromCharCodeCallbackFormatterStatus;
 
 var mapperFormatterDblArrow;
 var mapperFormatterDefault;
@@ -1474,27 +1478,89 @@ var mapperFormatterDefault;
     [
         define('fromCharCode'),
         define('fromCodePoint', BARPROP, FROM_CODE_POINT),
+        define('fromCodePoint', ESC_REGEXP_SLASH, FROM_CODE_POINT),
+        define('fromCodePoint', FROM_CODE_POINT, UNEVAL),
+        define('fromCodePoint', ESC_REGEXP_LF, FROM_CODE_POINT, NO_V8_SRC),
+        define('fromCharCode', CONSOLE, FROM_CODE_POINT, UNEVAL),
+        define('fromCharCode', FROM_CODE_POINT, NODECONSTRUCTOR, UNEVAL),
         define('fromCodePoint', CAPITAL_HTML, FROM_CODE_POINT),
+        define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, IE_SRC),
+        define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, IE_SRC),
+        define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, NO_IE_SRC),
+        define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, NO_IE_SRC),
+        define('fromCharCode', ESC_REGEXP_SLASH, FILL, FROM_CODE_POINT, IE_SRC),
         define('fromCodePoint', ATOB, FROM_CODE_POINT),
+        define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_V8_SRC),
+        define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_V8_SRC),
+        define('fromCharCode', ESC_REGEXP_LF, FF_SRC, FROM_CODE_POINT, NAME),
+        define('fromCharCode', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, IE_SRC, NAME),
+        define('fromCodePoint', ESC_REGEXP_LF, FF_SRC, FILL, FROM_CODE_POINT, NAME),
+        define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_LF, FF_SRC, FROM_CODE_POINT, NAME),
+        define('fromCharCode', CONSOLE, ESC_REGEXP_SLASH, FROM_CODE_POINT),
+        define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, NODECONSTRUCTOR),
         define('fromCharCode', ARRAY_ITERATOR, ATOB, CAPITAL_HTML, FROM_CODE_POINT),
+        define('fromCharCode', CONSOLE, ESC_REGEXP_LF, FROM_CODE_POINT, NO_V8_SRC),
+        define('fromCharCode', ESC_REGEXP_LF, FROM_CODE_POINT, NODECONSTRUCTOR, NO_V8_SRC),
+        define('fromCharCode', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_IE_SRC),
     ];
 
-    fromCharCodeCallbackFormatterArrow =
+    fromCharCodeCallbackFormatterArrow1 =
     function (fromCharCode, arg)
     {
-        return 'undefined=>String.' + fromCharCode + '(' + arg + ')';
+        var expr = 'undefined=>String.' + fromCharCode + '(' + arg + ')';
+        return expr;
     };
 
-    fromCharCodeCallbackFormatterDefault =
+    fromCharCodeCallbackFormatterArrow2 =
     function (fromCharCode, arg)
     {
-        return 'function(undefined){return String.' + fromCharCode + '(' + arg + ')}';
+        var expr = 'undefined=>(isNaN+false).constructor.' + fromCharCode + '(' + arg + ')';
+        return expr;
+    };
+
+    fromCharCodeCallbackFormatterArrowStatus =
+    function (fromCharCode, arg)
+    {
+        var expr = 'undefined=>status.constructor.' + fromCharCode + '(' + arg + ')';
+        return expr;
+    };
+
+    fromCharCodeCallbackFormatterDefault1 =
+    function (fromCharCode, arg)
+    {
+        var expr = 'function(undefined){return String.' + fromCharCode + '(' + arg + ')}';
+        return expr;
+    };
+
+    fromCharCodeCallbackFormatterDefault2 =
+    function (fromCharCode, arg)
+    {
+        var expr =
+        'function(undefined){return(isNaN+false).constructor.' + fromCharCode + '(' + arg + ')}';
+        return expr;
+    };
+
+    fromCharCodeCallbackFormatterStatus =
+    function (fromCharCode, arg)
+    {
+        var expr =
+        'function(undefined){return status.constructor.' + fromCharCode + '(' + arg + ')}';
+        return expr;
     };
 
     FROM_CHAR_CODE_CALLBACK_FORMATTER =
     [
-        define(fromCharCodeCallbackFormatterDefault),
-        define(fromCharCodeCallbackFormatterArrow, ARROW),
+        define(fromCharCodeCallbackFormatterDefault2),
+        define(fromCharCodeCallbackFormatterArrow2, ARROW),
+        define(fromCharCodeCallbackFormatterDefault1, ARRAY_ITERATOR, CAPITAL_HTML),
+        define(fromCharCodeCallbackFormatterDefault2, ARRAY_ITERATOR, CAPITAL_HTML, FILL, IE_SRC),
+        define
+        (fromCharCodeCallbackFormatterDefault2, ARRAY_ITERATOR, CAPITAL_HTML, FILL, NO_IE_SRC),
+        define(fromCharCodeCallbackFormatterStatus, STATUS),
+        define(fromCharCodeCallbackFormatterArrowStatus, ARROW, STATUS),
+        define(fromCharCodeCallbackFormatterArrow1, ARRAY_ITERATOR, ARROW, CAPITAL_HTML),
+        define
+        (fromCharCodeCallbackFormatterArrowStatus, ARRAY_ITERATOR, ARROW, CAPITAL_HTML, STATUS),
     ];
 
     JSFUCK_INFINITY = '1e1000';

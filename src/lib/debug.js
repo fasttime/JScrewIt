@@ -30,8 +30,12 @@ createParseIntArgDefault,
 define,
 esToString,
 featureFromMask,
-fromCharCodeCallbackFormatterArrow,
-fromCharCodeCallbackFormatterDefault,
+fromCharCodeCallbackFormatterArrow1,
+fromCharCodeCallbackFormatterArrow2,
+fromCharCodeCallbackFormatterArrowStatus,
+fromCharCodeCallbackFormatterDefault1,
+fromCharCodeCallbackFormatterDefault2,
+fromCharCodeCallbackFormatterStatus,
 getComplexOptimizer,
 getToStringOptimizer,
 getValidFeatureMask,
@@ -63,7 +67,8 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             {
                 var target = { };
                 var names = object_keys(obj);
-                names.forEach(
+                names.forEach
+                (
                     function (name)
                     {
                         var value = clone(obj[name]);
@@ -86,13 +91,14 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                 else
                 {
                     outputEntries =
-                        inputEntries.map(
-                            function (entry)
-                            {
-                                entry = cloneEntry(entry);
-                                return entry;
-                            }
-                        );
+                    inputEntries.map
+                    (
+                        function (entry)
+                        {
+                            entry = cloneEntry(entry);
+                            return entry;
+                        }
+                    );
                 }
                 outputEntries.singleton = singleton;
             }
@@ -181,6 +187,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
 
         var ARROW           = Feature.ARROW;
         var FROM_CODE_POINT = Feature.FROM_CODE_POINT;
+        var STATUS          = Feature.STATUS;
 
         var EMPTY_MASK = maskNew();
 
@@ -207,8 +214,12 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         ENTRIES.FROM_CHAR_CODE_CALLBACK_FORMATTER   = FROM_CHAR_CODE_CALLBACK_FORMATTER;
         ENTRIES['FROM_CHAR_CODE_CALLBACK_FORMATTER:available'] =
         [
-            define(fromCharCodeCallbackFormatterDefault),
-            define(fromCharCodeCallbackFormatterArrow, ARROW),
+            define(fromCharCodeCallbackFormatterDefault1),
+            define(fromCharCodeCallbackFormatterDefault2),
+            define(fromCharCodeCallbackFormatterStatus, STATUS),
+            define(fromCharCodeCallbackFormatterArrow1, ARROW),
+            define(fromCharCodeCallbackFormatterArrow2, ARROW),
+            define(fromCharCodeCallbackFormatterArrowStatus, ARROW, STATUS),
         ];
         ENTRIES.MAPPER_FORMATTER                    = MAPPER_FORMATTER;
         ENTRIES['MAPPER_FORMATTER:available'] =

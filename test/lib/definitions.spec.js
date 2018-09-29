@@ -523,5 +523,31 @@ uneval,
             );
         }
     );
+    describe
+    (
+        'Definitions of FROM_CHAR_CODE_CALLBACK_FORMATTER',
+        function ()
+        {
+            function testFormatter(entry)
+            {
+                var formatter = entry.definition;
+                emuIt
+                (
+                    getFunctionName(formatter),
+                    getEntryFeature(entry),
+                    function (emuFeatures)
+                    {
+                        var formatterExpr = formatter('fromCharCode', '1,16,256,4096');
+                        var actual =
+                        emuDo(emuFeatures || [], Function('return ' + formatterExpr)());
+                        expect(actual).toBe('\x01\x10\u0100\u1000');
+                    }
+                );
+            }
+
+            var entries = JScrewIt.debug.getEntries('FROM_CHAR_CODE_CALLBACK_FORMATTER:available');
+            entries.forEach(testFormatter);
+        }
+    );
 }
 )();

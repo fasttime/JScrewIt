@@ -479,10 +479,10 @@ var wrapWithEval;
         createLongCharCodesOutput: function (charCodeArrayStr, fromCharCode, arg)
         {
             var formatter = this.findDefinition(FROM_CHAR_CODE_CALLBACK_FORMATTER);
-            var callback = formatter(fromCharCode, arg);
+            var formatterExpr = formatter(fromCharCode, arg);
             var output =
             charCodeArrayStr + '[' + this.replaceString('map', { optimize: true }) + '](' +
-            this.replaceExpr('Function("return ' + callback + '")()', true) + ')[' +
+            this.replaceExpr('Function("return ' + formatterExpr + '")()', true) + ')[' +
             this.replaceString('join') + ']([])';
             return output;
         },
