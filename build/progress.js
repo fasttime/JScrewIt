@@ -44,11 +44,12 @@ function progress(label, fn)
         };
     }
     const bar =
-    new ProgressBar(
+    new ProgressBar
+    (
         `${label} :bar :percent :etas`,
         {
             clear:      true,
-            complete:   chalk.bgBlack(' '),
+            complete:   chalk.bgBlue(' '),
             incomplete: chalk.bgWhite(' '),
             total:      Number.MAX_SAFE_INTEGER,
             width:      20,

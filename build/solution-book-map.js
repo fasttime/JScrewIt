@@ -162,7 +162,6 @@ function indexChars(chars, startProgress, updateProgress, missingCharacter)
     const path = require.resolve(jscrewitPath);
     const stats = fs.statSync(path);
     const jscrewitTimestamp = Date.parse(stats.mtime);
-    const ignoredCharSet = new Set(chars);
     let charsDone = 0;
     for (const char of chars)
     {
@@ -209,6 +208,7 @@ function indexChars(chars, startProgress, updateProgress, missingCharacter)
     {
         startProgress(char);
         const analyzer = new Analyzer();
+        const ignoredCharSet = new Set(chars);
         analyzer.missingCharacter =
         char =>
         {

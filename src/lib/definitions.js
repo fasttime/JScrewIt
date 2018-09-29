@@ -937,7 +937,7 @@ var mapperFormatterDefault;
         '\\':
         [
             define('ESCAPING_BACKSLASH'),
-            defineCharDefault('\\', { escSeq: false, unescape: false }),
+            defineCharDefault('\\', { atob: false, escSeq: false, unescape: false }),
         ],
         ']':
         [
@@ -1080,7 +1080,7 @@ var mapperFormatterDefault;
         ],
         '©':
         [
-            define('atob("falsefalse")[1]', ATOB),
+            define('atob("false0")[1]', ATOB),
         ],
         '±':
         [
@@ -1241,6 +1241,7 @@ var mapperFormatterDefault;
         ],
         ESCAPING_BACKSLASH:
         [
+            define('atob("01y")[1]', ATOB),
             define('(RegExp("\\n") + [])[1]', ESC_REGEXP_LF),
             define('(RP_5_N + RegExp("".italics()))[10]', ESC_REGEXP_SLASH),
             define('(RP_3_NO + RegExp("".sub()))[10]', ESC_REGEXP_SLASH),
