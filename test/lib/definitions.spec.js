@@ -15,6 +15,7 @@ getEmuFeatureNames,
 module,
 require,
 self,
+sidebar,
 uneval,
 */
 
@@ -429,6 +430,14 @@ uneval,
                 function ()
                 {
                     this.toBe(self);
+                }
+            );
+            testConstant
+            (
+                'sidebar',
+                function ()
+                {
+                    this.toBe(sidebar);
                 }
             );
             testConstant('unescape', isExpected(unescape));
