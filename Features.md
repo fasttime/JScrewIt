@@ -112,6 +112,11 @@ _Available in Edge, Firefox, Internet Explorer and Safari._
 Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format slashes \("/"\) in their string representation.
 
 _Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Node.js 4+._
+<a name="EXTERNAL"></a>
+### `EXTERNAL`
+Existence of the global object sidebar having the string representation "\[object External\]".
+
+_Available in Firefox. This feature is not available inside web workers._
 <a name="FF"></a>
 ### `FF`
 _An alias for [`FF54`](#FF54)._
@@ -378,6 +383,7 @@ This table lists features available in the most common engines.
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="#ESC_REGEXP_LF"><code>ESC_REGEXP_LF</code></a>
 <li><a href="#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
+<li><a href="#EXTERNAL"><code>EXTERNAL</code></a>
 <li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a>

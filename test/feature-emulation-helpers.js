@@ -616,6 +616,16 @@
         ),
         ESC_REGEXP_LF: makeEmuFeatureEscRegExp('\n', '\\n'),
         ESC_REGEXP_SLASH: makeEmuFeatureEscRegExp('/', '\\/'),
+        EXTERNAL:
+        function ()
+        {
+            var toString =
+            function ()
+            {
+                return '[object External]';
+            };
+            override(this, 'sidebar', { value: { toString: toString } });
+        },
         FF_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_FF),
         FILL:
         function ()

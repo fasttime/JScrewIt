@@ -25,6 +25,7 @@ object_defineProperty,
 object_freeze,
 object_keys,
 self,
+sidebar,
 statusbar,
 */
 
@@ -386,8 +387,8 @@ var validMaskFromArrayOrStringOrFeature;
         BARPROP:
         {
             description:
-            'Existence of the global object statusbar having the string representation ' +
-            '"[object BarProp]".',
+            'Existence of the global object statusbar having the string representation "[object ' +
+            'BarProp]".',
             check:
             function ()
             {
@@ -531,6 +532,19 @@ var validMaskFromArrayOrStringOrFeature;
                 var available = (RegExp('/') + '')[1] === '\\';
                 return available;
             },
+        },
+        EXTERNAL:
+        {
+            description:
+            'Existence of the global object sidebar having the string representation "[object ' +
+            'External]".',
+            check:
+            function ()
+            {
+                var available = typeof sidebar === 'object' && sidebar + '' === '[object External]';
+                return available;
+            },
+            attributes: { 'web-worker': 'web-worker-restriction' },
         },
         FF_SRC:
         {
@@ -1035,6 +1049,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'ESC_HTML_QUOT_ONLY',
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
+                'EXTERNAL',
                 'FF_SRC',
                 'FILL',
                 'FROM_CODE_POINT',
