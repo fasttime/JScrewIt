@@ -14,6 +14,8 @@
                 text = '-0';
             else if (Array.isArray(value))
                 text = value.length ? '[…]' : '[]';
+            else if (type === 'bigint')
+                text = value + 'n';
             // In Node.js 0.12, calling String with a symbol argument throws a TypeError.
             // Since this script is only used in browsers this is not a true problem, but still.
             else if (type !== 'symbol')
@@ -42,66 +44,66 @@
     }
 
     root.formatValue =
-        function (value)
+    function (value)
+    {
+        var text;
+        if (Array.isArray(value))
         {
-            var text;
-            if (Array.isArray(value))
+            try
             {
-                try
-                {
-                    text = '[' + value.map(formatItem).join(', ') + ']';
-                }
-                catch (error)
-                { }
+                text = '[' + value.map(formatItem).join(', ') + ']';
             }
-            else
-                text = formatItem(value);
-            return text;
-        };
+            catch (error)
+            { }
+        }
+        else
+            text = formatItem(value);
+        return text;
+    };
 
     root.formatValueType =
-        function (value)
+    function (value)
+    {
+        var valueType;
+        if (value !== null)
         {
-            var valueType;
-            if (value !== null)
+            var type = typeof value;
+            // document.all has type "undefined".
+            if  (type === 'function' || type === 'object' || type === 'undefined')
             {
-                var type = typeof value;
-                // document.all has type "undefined".
-                if  (type === 'function' || type === 'object' || type === 'undefined')
+                var strTag = getStringTag(value);
+                switch (strTag)
                 {
-                    var strTag = getStringTag(value);
-                    switch (strTag)
+                case 'Array':
+                    switch (value.length)
                     {
-                    case 'Array':
-                        switch (value.length)
-                        {
-                        case 0:
-                            valueType = 'an empty array';
-                            break;
-                        case 1:
-                            valueType = 'a one element array';
-                            break;
-                        default:
-                            valueType = 'an array';
-                            break;
-                        }
+                    case 0:
+                        valueType = 'an empty array';
                         break;
-                    case 'Date':
-                        valueType = 'a date';
+                    case 1:
+                        valueType = 'a one element array';
                         break;
                     default:
-                        // RegExp objects have type "function" in older Android Browsers
-                        if (value instanceof RegExp)
-                            valueType = 'a regular expression';
-                        else if (type === 'function')
-                            valueType = 'a function';
-                        else
-                            valueType = 'an object';
+                        valueType = 'an array';
                         break;
                     }
+                    break;
+                case 'Date':
+                    valueType = 'a date';
+                    break;
+                default:
+                    // RegExp objects have type "function" in older Android Browsers
+                    if (value instanceof RegExp)
+                        valueType = 'a regular expression';
+                    else if (type === 'function')
+                        valueType = 'a function';
+                    else
+                        valueType = 'an object';
+                    break;
                 }
             }
-            return valueType;
-        };
+        }
+        return valueType;
+    };
 }
 )(this);

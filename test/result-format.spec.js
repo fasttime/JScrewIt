@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* global Symbol, document, expect, require, self */
+/* global BigInt, Symbol, document, expect, require, self */
 
 (function ()
 {
@@ -7,7 +7,8 @@
 
     function describeTests()
     {
-        describe(
+        describe
+        (
             'Given',
             function ()
             {
@@ -28,6 +29,8 @@
                 test('null', null, 'null');
                 if (typeof Symbol !== 'undefined')
                     test('a symbol', Symbol('foo'), 'Symbol(foo)');
+                if (typeof BigInt !== 'undefined')
+                    test('a bigint', BigInt(1), '1n');
                 test('an empty array', [], '[]', 'an empty array');
                 test('a one element array', [''], '[""]', 'a one element array');
                 test('an array with more elements', [1, 2], '[1, 2]', 'an array');
@@ -48,7 +51,8 @@
 
     function test(description, input, expectedValue, expectedValueType, doBefore, doAfter)
     {
-        describe(
+        describe
+        (
             description,
             function ()
             {
@@ -58,7 +62,8 @@
                     after(doAfter);
                 if (expectedValue != null)
                 {
-                    it(
+                    it
+                    (
                         'formatValue returns the expected result',
                         function ()
                         {
@@ -67,7 +72,8 @@
                         }
                     );
                 }
-                it(
+                it
+                (
                     'formatValueType returns the expected result',
                     function ()
                     {
@@ -88,10 +94,10 @@
 
         var obj = new Date();
         obj.toString =
-            function ()
-            {
-                return 'foo';
-            };
+        function ()
+        {
+            return 'foo';
+        };
         if (typeof Symbol !== 'undefined')
         {
             var toStringTag = Symbol.toStringTag;
@@ -103,16 +109,17 @@
             }
         }
         var toString = Object.prototype.toString;
-        callTest(
+        callTest
+        (
             function ()
             {
                 toString.call =
-                    function (arg)
-                    {
-                        if (arg !== obj)
-                            return Function.prototype.call.call(toString, null, arg);
-                        throwError();
-                    };
+                function (arg)
+                {
+                    if (arg !== obj)
+                        return Function.prototype.call.call(toString, null, arg);
+                    throwError();
+                };
             },
             function ()
             {
