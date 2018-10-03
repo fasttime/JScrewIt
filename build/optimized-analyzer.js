@@ -8,8 +8,8 @@ function isSolutionApplicable({ masks }, analyzer, encoder)
     let applicable = false;
     for (const mask of masks)
     {
-        // Must call hasFeatures with the mask of every solution with a viable length, not stop on
-        // the first match.
+        // Must call hasFeatures with every mask of the provided solution, not stop on the first
+        // match.
         if (encoder.hasFeatures(mask) && analyzer.doesNotExclude(mask))
             applicable = true;
     }
@@ -41,28 +41,33 @@ class OptimizedAnalyzer extends Analyzer
                 const solutionBook = solutionBookMap.get(char);
                 if (solutionBook)
                 {
-                    let knownSolution;
+                    let knownSolution = null;
                     let knownLength = Infinity;
+                    let knownEntryIndex;
                     const { solutions } = solutionBook;
                     for (const solution of solutions)
                     {
-                        const { length } = solution;
+                        const { entryIndex, length } = solution;
                         if
                         (
-                            length <= knownLength &&
+                            (
+                                length < knownLength ||
+                                length === knownLength && entryIndex <= knownEntryIndex
+                            ) &&
                             isSolutionApplicable(solution, this, encoder)
                         )
                         {
-                            if (length < knownLength)
-                            {
-                                knownSolution = solution;
-                                knownLength = length;
-                            }
-                            else
+                            if (length === knownLength && entryIndex === knownEntryIndex)
                                 knownSolution = null;
+                            else
+                            {
+                                knownSolution   = solution;
+                                knownLength     = length;
+                                knownEntryIndex = entryIndex;
+                            }
                         }
                     }
-                    if (knownSolution == null)
+                    if (!knownSolution)
                         throw new Error('No single determinate solution found.');
                     return knownSolution;
                 }
