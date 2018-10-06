@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 /* global expect, module, require, self */
 
+'use strict';
+
 (function ()
 {
-    'use strict';
-
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Solution = JScrewIt.debug.Solution;
 

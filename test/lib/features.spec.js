@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 /* global emuDo, expect, module, require, self */
 
+'use strict';
+
 (function ()
 {
-    'use strict';
-
     function testFeatureObj(featureName)
     {
         var featureObj = Feature[featureName];

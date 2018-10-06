@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 /* global BigInt, Symbol, document, expect, require, self */
 
+'use strict';
+
 (function ()
 {
-    'use strict';
-
     function describeTests()
     {
         describe

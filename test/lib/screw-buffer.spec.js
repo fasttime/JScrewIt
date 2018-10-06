@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 /* global expect, module, require, self */
 
+'use strict';
+
 (function ()
 {
-    'use strict';
-
     function createCommaSolution()
     {
         var solution = JScrewIt.debug.createBridgeSolution('.concat');

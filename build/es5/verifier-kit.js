@@ -1,9 +1,9 @@
 /* global module, require, self */
 
+'use strict';
+
 (function ()
 {
-    'use strict';
-
     function createAnalyzer()
     {
         require('../solution-book-map').load();

@@ -5,8 +5,6 @@
 
 function createButton(text)
 {
-    'use strict';
-
     function deactivate()
     {
         button.className = 'button focusable';
@@ -84,7 +82,8 @@ function createButton(text)
     function setCaptureListeners(methodName)
     {
         var method = art[methodName];
-        art(
+        art
+        (
             document,
             method('mousemove', handleDocumentMousemove),
             method('mouseout', handleDocumentMouseout)
@@ -92,23 +91,25 @@ function createButton(text)
     }
 
     var button =
-        art(
-            'SPAN',
-            { className: 'button focusable' },
-            setTabindex,
-            art.on('click', handleClick),
-            art.on('keydown', handleKeydown),
-            art.on('keyup', handleKeyup),
-            art.on('mouseup', handleMouseup),
-            art('SPAN', text),
-            art('SPAN')
-        );
+    art
+    (
+        'SPAN',
+        { className: 'button focusable' },
+        setTabindex,
+        art.on('click', handleClick),
+        art.on('keydown', handleKeydown),
+        art.on('keyup', handleKeyup),
+        art.on('mouseup', handleMouseup),
+        art('SPAN', text),
+        art('SPAN')
+    );
     if (button.msMatchesSelector)
     {
         button.firstChild.setAttribute('unselectable', 'on');
         art(button, art.on('mousedown', handleMousedown));
     }
-    Object.defineProperty(
+    Object.defineProperty
+    (
         button,
         'disabled',
         {
@@ -120,7 +121,7 @@ function createButton(text)
             },
             set: function (value)
             {
-                value = !!value;
+                value = Boolean(value);
                 if (value !== isDisabled())
                 {
                     if (value)
@@ -139,35 +140,39 @@ function createButton(text)
                     button.className = '';
                     button.className = 'button focusable';
                 }
-            }
+            },
         }
     );
     return button;
 }
 
-art.css(
+art.css
+(
     '.button',
     {
         background: '#e0e0e0',
         color:      '#212121',
         cursor:     'default',
         display:    'inline-block',
-        position:   'relative'
+        position:   'relative',
     }
 );
 art.css('.button, .button>:last-child', { 'border-radius': '.1em' });
 art.css('.button.active, .button[tabindex]:active', { background: '#29b3e5' });
-art.css(
+art.css
+(
     '.button.active>:first-child, .button[tabindex]:active>:first-child',
     { left: '.1em', top: '.1em' }
 );
-art.css(
+art.css
+(
     '.button.active>:last-child, .button[tabindex]:active>:last-child',
     { 'border-color': '#0088b6' }
 );
 art.css('.button:not([tabindex])', { background: '#e9e9e9', color: '#707070' });
 art.css('.button:not([tabindex])>:last-child', { 'border-color': '#bababa' });
-art.css(
+art.css
+(
     '.button>:first-child',
     {
         display:                'inline-block',
@@ -176,10 +181,11 @@ art.css(
         'user-select':          'none',
         '-moz-user-select':     'none',
         '-ms-user-select':      'none',
-        '-webkit-user-select':  'none'
+        '-webkit-user-select':  'none',
     }
 );
-art.css(
+art.css
+(
     '.button>:last-child',
     {
         'border-color': '#707070',
@@ -190,11 +196,9 @@ art.css(
         left:           '0',
         right:          '0',
         top:            '0',
-        bottom:         '0'
+        bottom:         '0',
     }
 );
 art.css('.button[tabindex]:hover:not(.active):not(:active)', { background: '#a3f4ff' });
-art.css(
-    '.button[tabindex]:hover:not(.active):not(:active)>:last-child',
-    { 'border-color': '#189fdd' }
-);
+art.css
+('.button[tabindex]:hover:not(.active):not(:active)>:last-child', { 'border-color': '#189fdd' });

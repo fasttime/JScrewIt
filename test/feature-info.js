@@ -1,9 +1,9 @@
 /* global EMU_FEATURES, module, require, self */
 
+'use strict';
+
 (function (root)
 {
-    'use strict';
-
     function isAvailableMarked(featureName, environment, environmentFeatureObj)
     {
         var featureObj = Feature[featureName];

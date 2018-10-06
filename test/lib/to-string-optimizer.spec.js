@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 /* global expect, module, padRight, repeat, require, self */
 
+'use strict';
+
 (function ()
 {
-    'use strict';
-
     function arrayFilledWith(element, length)
     {
         var array = Array(length);

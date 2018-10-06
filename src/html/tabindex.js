@@ -2,8 +2,6 @@
 
 function hasTabindex(element)
 {
-    'use strict';
-
     var result = element.hasAttribute('tabindex');
     return result;
 }

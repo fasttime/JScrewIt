@@ -13,10 +13,10 @@ require,
 self,
 */
 
+'use strict';
+
 (function ()
 {
-    'use strict';
-
     function describeEncodeTest(compatibility)
     {
         var featureObj = Feature[compatibility];

@@ -8,13 +8,13 @@ mocha,
 padLeft,
 padRight,
 repeat,
-showFeatureSupport
+showFeatureSupport,
 */
+
+'use strict';
 
 (function ()
 {
-    'use strict';
-
     function addBarButtons()
     {
         function addBarButton(caption, onclick)
@@ -97,7 +97,8 @@ showFeatureSupport
         function appendLengths(name, input)
         {
             result += '\n' + padRight(name, 4);
-            compatibilities.forEach(
+            compatibilities.forEach
+            (
                 function (compatibility)
                 {
                     var content;
@@ -269,9 +270,7 @@ showFeatureSupport
                     span = div.appendChild(document.createElement('SPAN'));
                     var code =
                     span.appendChild(document.createElement('SPAN')).appendChild
-                    (
-                        document.createElement('CODE')
-                    );
+                    (document.createElement('CODE'));
                     var featureObj = Feature[featureName];
                     code.textContent = featureName;
                     code.title = featureObj.description;

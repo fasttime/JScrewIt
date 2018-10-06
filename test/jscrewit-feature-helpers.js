@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 /* global EMU_FEATURES, global, require, self */
 
+'use strict';
+
 (function (global)
 {
-    'use strict';
-
     function emuIt(description, featureObj, fn)
     {
         var emuFeatures = getEmuFeatureNames(featureObj);

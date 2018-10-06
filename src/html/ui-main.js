@@ -19,8 +19,6 @@ stats,
 
 (function ()
 {
-    'use strict';
-
     function createWorker()
     {
         if (typeof Worker !== 'undefined')
@@ -127,28 +125,27 @@ stats,
             if (text)
             {
                 var intro =
-                    valueType ? 'Evaluation result is ' + valueType + ':' : 'Evaluation result is';
+                valueType ? 'Evaluation result is ' + valueType + ':' : 'Evaluation result is';
                 content =
-                    art(
-                        'DIV',
-                        art('P', intro),
-                        art(
-                            'P',
-                            { style: { overflowX: 'auto' } },
-                            art(
-                                'DIV',
-                                {
-                                    style:
-                                    {
-                                        display:    'inline-block',
-                                        textAlign:  'left',
-                                        whiteSpace: 'pre'
-                                    }
-                                },
-                                text
-                            )
+                art
+                (
+                    'DIV',
+                    art('P', intro),
+                    art
+                    (
+                        'P',
+                        { style: { overflowX: 'auto' } },
+                        art
+                        (
+                            'DIV',
+                            {
+                                style:
+                                { display: 'inline-block', textAlign: 'left', whiteSpace: 'pre' },
+                            },
+                            text
                         )
-                    );
+                    )
+                );
             }
             else
                 content = art('DIV', art('P', 'Evaluation result is ' + valueType + '.'));
@@ -156,7 +153,8 @@ stats,
         if (content != null)
         {
             var runThisButton = this;
-            showModalBox(
+            showModalBox
+            (
                 content,
                 function ()
                 {
@@ -190,9 +188,11 @@ stats,
         document.querySelector('body>*>div').style.display = 'block';
         inputArea.value = inputArea.defaultValue;
         outputArea.oninput = updateStats;
-        art(
+        art
+        (
             stats.parentNode,
-            art(
+            art
+            (
                 createButton('Run this'),
                 { style: { bottom: '0', fontSize: '10pt', position: 'absolute', right: '0' } },
                 art.on('click', handleRun)
@@ -226,16 +226,17 @@ stats,
         if (typeof File !== 'undefined')
         {
             var loadFileInput =
-                art(
-                    'INPUT',
-                    { accept: '.js', style: { display: 'none' }, type: 'file' },
-                    art.on('change', loadFile)
-                );
+            art
+            (
+                'INPUT',
+                { accept: '.js', style: { display: 'none' }, type: 'file' },
+                art.on('change', loadFile)
+            );
             // In older Android Browser version, HTMLElement objects don't have a "click" property;
             // HTMLInputElement objects do.
             var openLoadFileDialog = HTMLInputElement.prototype.click.bind(loadFileInput);
             loadFileButton =
-                art(createButton('Load file…'), art.on('click', openLoadFileDialog));
+            art(createButton('Load file…'), art.on('click', openLoadFileDialog));
             art(controls, loadFileButton, loadFileInput);
         }
         inputArea.oninput = changeHandler;
@@ -246,9 +247,11 @@ stats,
         compMenu.onkeydown = setTimeout.bind(null, compHandler);
         engineSelectionBox = art(createEngineSelectionBox(), art.on('input', compHandler));
         roll = createRoll();
-        art(
+        art
+        (
             roll.container,
-            art(
+            art
+            (
                 'DIV',
                 { className: 'frame' },
                 art('SPAN', 'Custom Compatibility Selection'),

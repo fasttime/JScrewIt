@@ -3,8 +3,6 @@
 
 function createRoll()
 {
-    'use strict';
-
     function init()
     {
         var container = art('DIV');
@@ -12,11 +10,8 @@ function createRoll()
         containerStyle.display = 'none';
         comp = art('DIV', container);
         comp.container = container;
-        Object.defineProperty(
-            comp,
-            'rollTo',
-            { configurable: true, value: rollTo, writable: true }
-        );
+        Object.defineProperty
+        (comp, 'rollTo', { configurable: true, value: rollTo, writable: true });
         compStyle = comp.style;
         compStyle.height = '0';
         compStyle.overflowY = 'hidden';

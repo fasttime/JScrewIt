@@ -1,9 +1,9 @@
 /* global document, global, self */
 
+'use strict';
+
 (function (global)
 {
-    'use strict';
-
     function createBackupMap()
     {
         var backupMap = Object.create(null);

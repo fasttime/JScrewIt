@@ -3,8 +3,6 @@
 
 function showModalBox(content, callback)
 {
-    'use strict';
-
     function close()
     {
         var body = document.body;
@@ -43,81 +41,83 @@ function showModalBox(content, callback)
     var BOX_MARGIN          = 2;
 
     var focusableContainer =
-        art(
+    art
+    (
+        'DIV',
+        {
+            style:
+            {
+                borderRadius:   BOX_BORDER_RADIUS + BOX_MARGIN + 'px',
+                display:        'inline-block',
+                maxWidth:       '500px',
+                width:          '100%',
+            },
+        },
+        setTabindex,
+        art
+        (
             'DIV',
             {
+                className: 'focusable',
+                id: 'modalBox',
                 style:
                 {
-                    borderRadius:   BOX_BORDER_RADIUS + BOX_MARGIN + 'px',
-                    display:        'inline-block',
-                    maxWidth:       '500px',
-                    width:          '100%'
-                }
-            },
-            setTabindex,
-            art(
-                'DIV',
-                {
-                    className: 'focusable',
-                    id: 'modalBox',
-                    style:
-                    {
-                        background:     'whitesmoke',
-                        border:         '10px solid blue',
-                        borderRadius:   BOX_BORDER_RADIUS + 'px',
-                        margin:         BOX_MARGIN + 'px'
-                    }
+                    background:     'whitesmoke',
+                    border:         '10px solid blue',
+                    borderRadius:   BOX_BORDER_RADIUS + 'px',
+                    margin:         BOX_MARGIN + 'px',
                 },
-                art(
+            },
+            art
+            (
+                'DIV',
+                { style: { margin: '1.5em 1.5em .25em', overflow: 'hidden' } },
+                content,
+                art
+                (
                     'DIV',
-                    { style: { margin: '1.5em 1.5em .25em', overflow: 'hidden' } },
-                    content,
-                    art(
-                        'DIV',
-                        { style: { margin: '1.25em 0' } },
-                        art(
-                            createButton('OK'),
-                            { style: { maxWidth: '5em', width: '100%' } },
-                            art.on('click', close)
-                        )
+                    { style: { margin: '1.25em 0' } },
+                    art
+                    (
+                        createButton('OK'),
+                        { style: { maxWidth: '5em', width: '100%' } },
+                        art.on('click', close)
                     )
                 )
             )
-        );
-    var overlay =
-        art(
-            'DIV',
-            {
-                style:
-                {
-                    background: 'rgba(0, 0, 0, .25)',
-                    overflow:   'auto',
-                    position:   'fixed',
-                    textAlign:  'center',
-                    left:       '0',
-                    top:        '0',
-                    bottom:     '0',
-                    width:      '100%'
-                }
-            },
-            art(
-                'DIV',
-                {
-                    style: { display: 'table', tableLayout: 'fixed', width: '100%', height: '100%' }
-                },
-                art(
-                    'DIV',
-                    { style: { display: 'table-cell', verticalAlign: 'middle' } },
-                    focusableContainer
-                )
-            )
-        );
-    art(
-        document.body,
-        overlay,
-        art.on('focus', handleFocus, true),
-        art.on('keydown', handleKeydown)
+        )
     );
+    var overlay =
+    art
+    (
+        'DIV',
+        {
+            style:
+            {
+                background: 'rgba(0, 0, 0, .25)',
+                overflow:   'auto',
+                position:   'fixed',
+                textAlign:  'center',
+                left:       '0',
+                top:        '0',
+                bottom:     '0',
+                width:      '100%',
+            },
+        },
+        art
+        (
+            'DIV',
+            { style: { display: 'table', tableLayout: 'fixed', width: '100%', height: '100%' } },
+            art
+            (
+                'DIV',
+                { style: { display: 'table-cell', verticalAlign: 'middle' } },
+                focusableContainer
+            )
+        )
+    );
+    art
+    (document.body, overlay, art.on('focus', handleFocus, true), art.on('keydown', handleKeydown));
     setTimeout(grabFocus);
 }
 

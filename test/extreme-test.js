@@ -1,10 +1,10 @@
 /* eslint no-alert: off, no-undef: off */
 /* eslint-env browser */
 
+'use strict';
+
 (function ()
 {
-    'use strict';
-
     function A003314(n)
     {
         var log2 = binLog(n);

@@ -19,10 +19,10 @@ sidebar,
 uneval,
 */
 
+'use strict';
+
 (function ()
 {
-    'use strict';
-
     function decodeEntry(entry)
     {
         var featureObj = getEntryFeature(entry);

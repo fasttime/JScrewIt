@@ -1,9 +1,9 @@
 /* global global, self */
 
+'use strict';
+
 (function (global)
 {
-    'use strict';
-
     function padLeft(str, length)
     {
         str += '';

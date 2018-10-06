@@ -6,7 +6,7 @@ var gulp = require('gulp');
 
 gulp.task
 (
-    'clean:default',
+    'clean',
     function ()
     {
         var del = require('del');
@@ -32,36 +32,21 @@ gulp.task
     {
         var gherkinlint = require('gulp-gherkin-lint');
 
-        var src = 'test/acceptance/**';
-        var stream = gulp.src(src).pipe(gherkinlint());
+        var stream = gulp.src('test/acceptance/**').pipe(gherkinlint());
         return stream;
     }
 );
 
 gulp.task
 (
-    'lint:lib',
+    'lint:src',
     function ()
     {
         var lint = require('gulp-fasttime-lint');
 
-        var src = 'src/lib/**/*.js';
-        var stream =
-        gulp.src(src).pipe(lint({ parserOptions: { ecmaFeatures: { impliedStrict: true } } }));
-        return stream;
-    }
-);
-
-gulp.task
-(
-    'lint:other',
-    function ()
-    {
-        var lint = require('gulp-fasttime-lint');
-
-        var src = ['*.js', 'build/es5/*.js', 'src/html/**/*.js', 'test/**/*.js', 'tools/**/*.js'];
-        var options = { rules: { 'space-before-function-paren': 'off' } };
-        var stream = gulp.src(src).pipe(lint(options));
+        var lintOpts =
+        { parserOptions: { ecmaFeatures: { impliedStrict: true } }, rules: { strict: 'off' } };
+        var stream = gulp.src('src/**/*.js').pipe(lint(lintOpts));
         return stream;
     }
 );
@@ -73,14 +58,21 @@ gulp.task
     {
         var lint = require('gulp-fasttime-lint');
 
-        var src = ['build/*.js', '!build/verify.js'];
-        var options =
-        {
-            envs: ['node'],
-            parserOptions: { ecmaVersion: 6 },
-            rules: { strict: ['error', 'global'] },
-        };
-        var stream = gulp.src(src).pipe(lint(options));
+        var lintOpts = { envs: ['node'], parserOptions: { ecmaVersion: 6 } };
+        var stream = gulp.src(['build/*.js', '!build/verify.js']).pipe(lint(lintOpts));
+        return stream;
+    }
+);
+
+gulp.task
+(
+    'lint:other',
+    function ()
+    {
+        var lint = require('gulp-fasttime-lint');
+
+        var stream =
+        gulp.src(['*.js', 'build/es5/*.js', 'test/**/*.js', 'tools/**/*.js']).pipe(lint());
         return stream;
     }
 );
@@ -97,7 +89,7 @@ gulp.task
 
         var src =
         [
-            'src/lib/preamble',
+            'src/preamble',
             'src/lib/obj-utils.js',
             'src/lib/mask.js',
             'src/lib/features.js',
@@ -115,7 +107,7 @@ gulp.task
             'src/lib/trim-js.js',
             'src/lib/jscrewit-base.js',
             'src/lib/debug.js',
-            'src/lib/postamble',
+            'src/postamble',
         ];
         var stream =
         gulp
@@ -195,7 +187,7 @@ gulp.task
                 {
                     return comment.pos === 0;
                 }
-            }
+            },
         };
         var stream =
         gulp
@@ -241,14 +233,16 @@ gulp.task
 
         var src =
         [
+            'src/html/result-format.js',
+            'src/preamble',
             'tmp-src/art.js',
             'src/html/button.js',
             'src/html/engine-selection-box.js',
             'src/html/modal-box.js',
-            'src/html/result-format.js',
             'src/html/roll.js',
             'src/html/tabindex.js',
             'src/html/ui-main.js',
+            'src/postamble',
         ];
         var stream =
         gulp
@@ -305,7 +299,7 @@ gulp.task
 
         runSequence
         (
-            ['clean:default', 'gherkin-lint', 'lint:lib', 'lint:other', 'lint:build'],
+            ['clean', 'gherkin-lint', 'lint:build', 'lint:src', 'lint:other'],
             'concat',
             'feature-info',
             'test',

@@ -57,25 +57,25 @@ The following source will do an `alert(1)` in any browser, including Internet Ex
 ### In the Browser
 
 To use JScrewIt in your project, download
-[jscrewit.js](https://github.com/fasttime/JScrewIt/blob/master/lib/jscrewit.js) or
-[jscrewit.min.js](https://github.com/fasttime/JScrewIt/blob/master/lib/jscrewit.min.js) from GitHub
+[jscrewit.js](https://raw.githubusercontent.com/fasttime/JScrewIt/master/lib/jscrewit.js) or
+[jscrewit.min.js](https://raw.githubusercontent.com/fasttime/JScrewIt/master/lib/jscrewit.min.js) from GitHub
 and include it in your HTML file.
 
 ```html
 <script src="jscrewit.js"></script>
 ```
 
-Alternatively, you can hotlink the online file.
+Alternatively, you can hotlink the current stable version using a CDN of your choice.
 
 ```html
-<script src="https://rawgithub.com/fasttime/JScrewIt/master/lib/jscrewit.min.js"></script>
+<script src="https://gitcdn.xyz/repo/fasttime/JScrewIt/master/lib/jscrewit.min.js"></script>
 ```
 
 ### In Node.js
 
 If you are using Node.js, you can install JScrewIt with [npm](https://www.npmjs.org).
 
-```
+```console
 npm install jscrewit
 ```
 
