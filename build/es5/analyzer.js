@@ -78,7 +78,8 @@
     {
         var step = 1;
         var progress = 0;
-        featureQueries.some(
+        featureQueries.some
+        (
             function (featureQuery)
             {
                 step /= 2;
@@ -115,7 +116,8 @@
 
     var staticStrCache = Object.create(null);
 
-    Object.defineProperties(
+    Object.defineProperties
+    (
         Analyzer.prototype,
         {
             doesNotExclude:
@@ -131,7 +133,7 @@
                             return false;
                     }
                     return true;
-                }
+                },
             },
             next:
             {
@@ -141,7 +143,7 @@
                     var encoder = this.nextEncoder;
                     var result = encoder ? { value: encoder } : { done: true };
                     return result;
-                }
+                },
             },
             nextEncoder:
             {
@@ -154,7 +156,7 @@
                     var encoder =
                     this.encoder = createModifiedEncoder(this.featureObj, featureQueries);
                     return encoder;
-                }
+                },
             },
             progress:
             {
@@ -164,7 +166,7 @@
                     var featureQueries = this.featureQueries;
                     var progress = featureQueries ? getProgress(featureQueries) : 0;
                     return progress;
-                }
+                },
             },
             stopCapture:
             {
@@ -174,8 +176,8 @@
                     var encoder = this.encoder;
                     if (encoder)
                         delete encoder.hasFeatures;
-                }
-            }
+                },
+            },
         }
     );
 

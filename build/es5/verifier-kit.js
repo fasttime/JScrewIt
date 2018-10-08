@@ -112,7 +112,7 @@
         {
             optimalDefinitions: optimalDefinitions,
             optimalLength: optimalLength,
-            lengthMap: lengthMap
+            lengthMap: lengthMap,
         };
         return optimalityInfo;
     }
@@ -176,7 +176,7 @@
     {
         findOptimalFeatures:    findOptimalFeatures,
         verifyComplex:          verifyComplex,
-        verifyDefinitions:      verifyDefinitions
+        verifyDefinitions:      verifyDefinitions,
     };
     if (typeof self !== 'undefined')
     {

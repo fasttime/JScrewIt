@@ -29,7 +29,7 @@
             resolveConstant: function ()
             {
                 return Object(toStringReplacement);
-            }
+            },
         };
         var optimizer = JScrewIt.debug.getToStringOptimizer(encoder);
         return optimizer;

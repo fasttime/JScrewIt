@@ -147,7 +147,7 @@ showFeatureSupport,
             'NUL',  'SOH',  'STX',  'ETX',  'EOT',  'ENQ',  'ACK',  'BEL',
             'BS',   'HT',   'LF',   'VT',   'FF',   'CR',   'SO',   'SI',
             'DLE',  'DC1',  'DC2',  'DC3',  'DC4',  'NAK',  'SYN',  'ETB',
-            'CAN',  'EM',   'SUB',  'ESC',  'FS',   'GS',   'RS',   'US'
+            'CAN',  'EM',   'SUB',  'ESC',  'FS',   'GS',   'RS',   'US',
         ];
         appendLengthsRange
         (
@@ -165,7 +165,7 @@ showFeatureSupport,
             'PAD',  'HOP',  'BPH',  'NBH',  'IND',  'NEL',  'SSA',  'ESA',
             'HTS',  'HTJ',  'VTS',  'PLD',  'PLU',  'RI',   'SS2',  'SS3',
             'DCS',  'PU1',  'PU2',  'STS',  'CCH',  'MW',   'SPA',  'EPA',
-            'SOS',  'SGCI', 'SCI',  'CSI',  'ST',   'OSC',  'PM',   'APC'
+            'SOS',  'SGCI', 'SCI',  'CSI',  'ST',   'OSC',  'PM',   'APC',
         ];
         appendLengthsRange
         (

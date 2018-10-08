@@ -546,7 +546,7 @@
                 'small',
                 'strike',
                 'sub',
-                'sup'
+                'sup',
             ],
             function (method)
             {

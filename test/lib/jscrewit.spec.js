@@ -655,7 +655,7 @@ self,
                         valueOf: function ()
                         {
                             return '0';
-                        }
+                        },
                     };
                     var output = JScrewIt.encode(obj);
                     expect(output).toBe('+!![]');

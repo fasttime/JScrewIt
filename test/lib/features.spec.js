@@ -145,7 +145,7 @@
                                         valueOf: function ()
                                         {
                                             return 42;
-                                        }
+                                        },
                                     },
                                     Feature.NO_IE_SRC,
                                     []

@@ -80,7 +80,7 @@
                     expect(bestClusters).toEqual(
                         [
                             { start: start2, length: length2, data: data2 },
-                            { start: start1, length: length1, data: data1 }
+                            { start: start1, length: length1, data: data1 },
                         ]
                     );
                 }
@@ -145,7 +145,7 @@
                         { length: 2, saving: 7 },
                         { length: 2, saving: 9 },
                         { length: 2, saving: 8 },
-                        { length: 1, saving: 5 }
+                        { length: 1, saving: 5 },
                     ];
                     clusters.forEach(
                         function (cluster, start)

@@ -136,7 +136,7 @@ describe
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { }
+                options: { },
             }
         );
         test(['--help'], 'help');
@@ -147,7 +147,7 @@ describe
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { runAs: 'call' }
+                options: { runAs: 'call' },
             }
         );
         test
@@ -156,7 +156,7 @@ describe
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { runAs: 'call' }
+                options: { runAs: 'call' },
             }
         );
         test
@@ -165,7 +165,7 @@ describe
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { runAs: 'eval' }
+                options: { runAs: 'eval' },
             }
         );
         test
@@ -174,7 +174,7 @@ describe
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { perfInfo: { } }
+                options: { perfInfo: { } },
             }
         );
         test
@@ -183,7 +183,7 @@ describe
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { perfInfo: { } }
+                options: { perfInfo: { } },
             }
         );
         test
@@ -192,7 +192,7 @@ describe
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { features: ['ATOB', 'SELF'] }
+                options: { features: ['ATOB', 'SELF'] },
             }
         );
         test
@@ -201,7 +201,7 @@ describe
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { features: ['ATOB', 'SELF'] }
+                options: { features: ['ATOB', 'SELF'] },
             }
         );
         testError(['-f'], 'option "-f" requires an argument');
@@ -212,7 +212,7 @@ describe
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { runAs: 'express' }
+                options: { runAs: 'express' },
             }
         );
         test
@@ -221,7 +221,7 @@ describe
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { runAs: 'express' }
+                options: { runAs: 'express' },
             }
         );
         testError(['-r'], 'option "-r" requires an argument');
@@ -232,7 +232,7 @@ describe
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { trimCode: true }
+                options: { trimCode: true },
             }
         );
         test
@@ -241,7 +241,7 @@ describe
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { trimCode: true }
+                options: { trimCode: true },
             }
         );
         test
@@ -250,7 +250,7 @@ describe
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { runAs: 'express' }
+                options: { runAs: 'express' },
             }
         );
         test
@@ -259,7 +259,7 @@ describe
             {
                 inputFileName: undefined,
                 outputFileName: undefined,
-                options: { trimCode: true, runAs: 'express-call' }
+                options: { trimCode: true, runAs: 'express-call' },
             }
         );
         testError(['-y'], /unrecognized flag "y"/);
@@ -271,7 +271,7 @@ describe
             {
                 inputFileName: 'infile',
                 outputFileName: undefined,
-                options: { }
+                options: { },
             }
         );
         test
@@ -280,7 +280,7 @@ describe
             {
                 inputFileName: 'infile',
                 outputFileName: 'outfile',
-                options: { }
+                options: { },
             }
         );
         test
@@ -289,7 +289,7 @@ describe
             {
                 inputFileName: 'infile',
                 outputFileName: 'outfile',
-                options: { features: ['FF'], trimCode: true, runAs: 'call' }
+                options: { features: ['FF'], trimCode: true, runAs: 'call' },
             }
         );
         testError(['infile', 'outfile', 'etc.'], /unexpected argument "etc."/);
@@ -398,7 +398,7 @@ describe
                                             coderName: 'coderA1',
                                             status: 'used',
                                             outputLength: 50,
-                                            time: 45
+                                            time: 45,
                                         }
                                     ),
                                     makePerfInfoList
@@ -418,16 +418,16 @@ describe
                                                         coderName: 'coderA2_extra',
                                                         status: 'used',
                                                         outputLength: 22,
-                                                        time: 66
+                                                        time: 66,
                                                     }
-                                                )
-                                            ]
+                                                ),
+                                            ],
                                         }
-                                    )
-                                ]
+                                    ),
+                                ],
                             },
                             { coderName: 'coderB', status: 'skipped' }
-                        )
+                        ),
                     ]
                 );
                 var expected =

@@ -557,7 +557,7 @@ var expressParse;
                 modStack: [],
                 opsStack: [],
                 finalizerStack: [finalizeUnit],
-                unitStack: []
+                unitStack: [],
             };
             readSeparatorOrColon(parseInfo);
             if (!parseInfo.data)

@@ -1311,7 +1311,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'no-atob-in-web-worker': null,
                 'safari-bug-21820506': null,
                 'web-worker-restriction': null,
-            }
+            },
         },
         SAFARI80: 'SAFARI71',
         SAFARI90:

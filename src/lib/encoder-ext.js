@@ -712,7 +712,7 @@ var wrapWithEval;
                         'byDict',
                         'byCharCodesRadix4',
                         'byCharCodes',
-                        'plain'
+                        'plain',
                     ],
                     codingName
                 );
@@ -768,7 +768,7 @@ var wrapWithEval;
                     return result;
                 }
             }
-        }
+        },
     };
 
     assignNoEnum(Encoder.prototype, encoderProtoSource);

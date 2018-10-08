@@ -377,7 +377,7 @@ var optimizeSolutions;
                         }
                     }
                     return str;
-                }
+                },
             }
         );
     };

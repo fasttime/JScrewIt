@@ -53,7 +53,7 @@ var Solution;
         toString: function ()
         {
             return this.replacement;
-        }
+        },
     };
 
     Solution =

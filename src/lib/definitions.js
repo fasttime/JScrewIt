@@ -916,7 +916,7 @@ var mapperFormatterDefault;
                     expr:
                     '(Function("try{undefined.false}catch(undefined){return undefined}")() + ' +
                     '[])[0]',
-                    optimize: true
+                    optimize: true,
                 }
             ),
             define('btoa(NaN)[0]', ATOB),
@@ -1531,7 +1531,7 @@ var mapperFormatterDefault;
         define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_V8_SRC),
         define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_V8_SRC),
         define('fromCharCode', ESC_REGEXP_LF, FF_SRC, FROM_CODE_POINT, NAME),
-        define('fromCharCode', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, IE_SRC, NAME),
+        define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, IE_SRC, NAME),
         define('fromCodePoint', ESC_REGEXP_LF, FF_SRC, FILL, FROM_CODE_POINT, NAME),
         define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_LF, FF_SRC, FROM_CODE_POINT, NAME),
         define('fromCharCode', CONSOLE, ESC_REGEXP_SLASH, FROM_CODE_POINT),

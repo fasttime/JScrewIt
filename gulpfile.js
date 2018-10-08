@@ -59,7 +59,7 @@ gulp.task
         var lint = require('gulp-fasttime-lint');
 
         var lintOpts = { envs: ['node'], parserOptions: { ecmaVersion: 6 } };
-        var stream = gulp.src(['build/*.js', '!build/verify.js']).pipe(lint(lintOpts));
+        var stream = gulp.src('build/*.js').pipe(lint(lintOpts));
         return stream;
     }
 );
@@ -183,10 +183,11 @@ gulp.task
             compress: { global_defs: { DEBUG: false } },
             output:
             {
-                comments: function (node, comment)
+                comments:
+                function (node, comment)
                 {
                     return comment.pos === 0;
-                }
+                },
             },
         };
         var stream =

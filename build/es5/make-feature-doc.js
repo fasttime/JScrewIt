@@ -11,21 +11,21 @@ var ENGINE_ENTRIES =
         versions:
         [
             { description: ['66+', '53+'], feature: 'CHROME66' },
-        ]
+        ],
     },
     {
         name: 'Edge',
         versions:
         [
             { description: '40+', feature: 'EDGE40' },
-        ]
+        ],
     },
     {
         name: 'Firefox',
         versions:
         [
             { description: '54+', feature: 'FF54' },
-        ]
+        ],
     },
     {
         name: 'Internet Explorer',
@@ -35,7 +35,7 @@ var ENGINE_ENTRIES =
             { description: '10+', feature: 'IE10' },
             { description: '11', feature: 'IE11' },
             { description: '11 on Windows 10', feature: 'IE11_WIN10' },
-        ]
+        ],
     },
     {
         name: 'Safari',
@@ -46,7 +46,7 @@ var ENGINE_ENTRIES =
             { description: '8.0+', feature: 'SAFARI80' },
             { description: '9.0+', feature: 'SAFARI90' },
             { description: '10.0+', feature: 'SAFARI100' },
-        ]
+        ],
     },
     {
         name: 'Android Browser',
@@ -55,7 +55,7 @@ var ENGINE_ENTRIES =
             { description: '4.0+', feature: 'ANDRO40' },
             { description: '4.1+', feature: 'ANDRO41' },
             { description: '4.4', feature: 'ANDRO44' },
-        ]
+        ],
     },
     {
         name: 'Node.js',
@@ -66,8 +66,8 @@ var ENGINE_ENTRIES =
             { description: '4+', feature: 'NODE40' },
             { description: '5+', feature: 'NODE50' },
             { description: '10+', feature: 'NODE100' },
-        ]
-    }
+        ],
+    },
 ];
 
 var ENGINE_REFS =

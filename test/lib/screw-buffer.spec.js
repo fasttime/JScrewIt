@@ -27,7 +27,7 @@
             optimizeSolutions: function (plan)
             {
                 plan.addCluster(0, 2, clusterer, 1);
-            }
+            },
         };
         return optimizer;
     }
@@ -354,7 +354,7 @@
                         appendLengthOf: function ()
                         {
                             return solutionA.appendLength + 1;
-                        }
+                        },
                     };
                     var buffer = createScrewBuffer(false, false, 10, [optimizer]);
                     buffer.append(solutionA);
