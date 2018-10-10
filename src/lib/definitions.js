@@ -491,8 +491,6 @@ var mapperFormatterDefault;
             define('V', ANY_DOCUMENT, EXTERNAL),
             define('V', ANY_DOCUMENT, FILL),
             define
-            ('X', ANY_DOCUMENT, ARRAY_ITERATOR, ESC_REGEXP_LF, FUNCTION_22_LF, HTMLAUDIOELEMENT),
-            define
             (
                 'X',
                 ANY_DOCUMENT,
@@ -503,6 +501,8 @@ var mapperFormatterDefault;
                 FUNCTION_19_LF,
                 NO_FF_SRC
             ),
+            define
+            ('X', ANY_DOCUMENT, ARRAY_ITERATOR, ESC_REGEXP_LF, FUNCTION_22_LF, HTMLAUDIOELEMENT),
             define
             (
                 'V',
@@ -525,12 +525,9 @@ var mapperFormatterDefault;
                 HTMLAUDIOELEMENT,
                 NO_FF_SRC
             ),
-            define
-            ('U', ANY_DOCUMENT, BARPROP, CONSOLE, EXTERNAL, FF_SRC, FILL, FROM_CODE_POINT),
-            define
-            ('U', ANY_DOCUMENT, BARPROP, CONSOLE, EXTERNAL, FILL, FROM_CODE_POINT, IE_SRC),
-            define
-            ('U', ANY_DOCUMENT, BARPROP, CONSOLE, EXTERNAL, FILL, FROM_CODE_POINT, V8_SRC),
+            define('U', ANY_DOCUMENT, BARPROP, CONSOLE, EXTERNAL, FF_SRC, FILL, FROM_CODE_POINT),
+            define('U', ANY_DOCUMENT, BARPROP, CONSOLE, EXTERNAL, FILL, FROM_CODE_POINT, IE_SRC),
+            define('U', ANY_DOCUMENT, BARPROP, CONSOLE, EXTERNAL, FILL, FROM_CODE_POINT, V8_SRC),
             define
             (
                 'V',
@@ -542,11 +539,10 @@ var mapperFormatterDefault;
                 FUNCTION_19_LF,
                 V8_SRC
             ),
+            define('U', ANY_DOCUMENT, UNDEFINED),
             define('U', ESC_REGEXP_LF, UNDEFINED),
             define('W', ANY_WINDOW),
-            define('U', ANY_DOCUMENT, UNDEFINED),
             define('U', ANY_WINDOW, CAPITAL_HTML),
-            define('W', ANY_DOCUMENT, ANY_WINDOW, UNDEFINED),
         ],
         'a',
         'false',
@@ -1530,12 +1526,12 @@ var mapperFormatterDefault;
         define('fromCodePoint', ATOB, FROM_CODE_POINT),
         define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_V8_SRC),
         define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_V8_SRC),
-        define('fromCharCode', ESC_REGEXP_LF, FF_SRC, FROM_CODE_POINT, NAME),
         define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, IE_SRC, NAME),
-        define('fromCodePoint', ESC_REGEXP_LF, FF_SRC, FILL, FROM_CODE_POINT, NAME),
+        define('fromCharCode', ESC_REGEXP_LF, FF_SRC, FROM_CODE_POINT, NAME),
         define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_LF, FF_SRC, FROM_CODE_POINT, NAME),
-        define('fromCharCode', CONSOLE, ESC_REGEXP_SLASH, FROM_CODE_POINT),
+        define('fromCodePoint', ESC_REGEXP_LF, FF_SRC, FILL, FROM_CODE_POINT, NAME),
         define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, NODECONSTRUCTOR),
+        define('fromCharCode', CONSOLE, ESC_REGEXP_SLASH, FROM_CODE_POINT),
         define('fromCharCode', ARRAY_ITERATOR, ATOB, CAPITAL_HTML, FROM_CODE_POINT),
         define('fromCharCode', CONSOLE, ESC_REGEXP_LF, FROM_CODE_POINT, NO_V8_SRC),
         define('fromCharCode', ESC_REGEXP_LF, FROM_CODE_POINT, NODECONSTRUCTOR, NO_V8_SRC),
@@ -1594,11 +1590,9 @@ var mapperFormatterDefault;
         define(fromCharCodeCallbackFormatterDefault2, ARRAY_ITERATOR, CAPITAL_HTML, FILL, IE_SRC),
         define
         (fromCharCodeCallbackFormatterDefault2, ARRAY_ITERATOR, CAPITAL_HTML, FILL, NO_IE_SRC),
+        define(fromCharCodeCallbackFormatterArrow1, ARRAY_ITERATOR, ARROW, CAPITAL_HTML),
         define(fromCharCodeCallbackFormatterStatus, STATUS),
         define(fromCharCodeCallbackFormatterArrowStatus, ARROW, STATUS),
-        define(fromCharCodeCallbackFormatterArrow1, ARRAY_ITERATOR, ARROW, CAPITAL_HTML),
-        define
-        (fromCharCodeCallbackFormatterArrowStatus, ARRAY_ITERATOR, ARROW, CAPITAL_HTML, STATUS),
     ];
 
     JSFUCK_INFINITY = '1e1000';
