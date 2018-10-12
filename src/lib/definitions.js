@@ -491,6 +491,8 @@ var mapperFormatterDefault;
             define('V', ANY_DOCUMENT, EXTERNAL),
             define('V', ANY_DOCUMENT, FILL),
             define
+            ('X', ANY_DOCUMENT, ARRAY_ITERATOR, ESC_REGEXP_LF, FUNCTION_22_LF, HTMLAUDIOELEMENT),
+            define
             (
                 'X',
                 ANY_DOCUMENT,
@@ -502,8 +504,6 @@ var mapperFormatterDefault;
                 NO_FF_SRC
             ),
             define
-            ('X', ANY_DOCUMENT, ARRAY_ITERATOR, ESC_REGEXP_LF, FUNCTION_22_LF, HTMLAUDIOELEMENT),
-            define
             (
                 'V',
                 ANY_DOCUMENT,
@@ -511,7 +511,7 @@ var mapperFormatterDefault;
                 ESC_REGEXP_LF,
                 FUNCTION_22_LF,
                 HTMLAUDIOELEMENT,
-                NO_FF_SRC
+                V8_SRC
             ),
             define
             ('X', ANY_DOCUMENT, ARRAY_ITERATOR, ESC_REGEXP_LF, FUNCTION_19_LF, HTMLAUDIOELEMENT),
@@ -523,7 +523,7 @@ var mapperFormatterDefault;
                 ESC_REGEXP_LF,
                 FUNCTION_19_LF,
                 HTMLAUDIOELEMENT,
-                NO_FF_SRC
+                V8_SRC
             ),
             define('U', ANY_DOCUMENT, BARPROP, CONSOLE, EXTERNAL, FF_SRC, FILL, FROM_CODE_POINT),
             define('U', ANY_DOCUMENT, BARPROP, CONSOLE, EXTERNAL, FILL, FROM_CODE_POINT, IE_SRC),
@@ -1495,15 +1495,15 @@ var mapperFormatterDefault;
     [
         define(createParseIntArgByReduce),
         define(createParseIntArgDefault, ARRAY_ITERATOR, CAPITAL_HTML, NO_IE_SRC),
+        define(createParseIntArgByReduce, FF_SRC),
         define(createParseIntArgByReduce, FILL),
-        define(createParseIntArgByReduce, NO_FF_SRC),
-        define(createParseIntArgByReduce, NO_V8_SRC),
-        define(createParseIntArgByReduce, CAPITAL_HTML, NO_IE_SRC, NO_OLD_SAFARI_ARRAY_ITERATOR),
+        define(createParseIntArgByReduce, NO_OLD_SAFARI_ARRAY_ITERATOR),
+        define(createParseIntArgByReduce, V8_SRC),
         define(createParseIntArgByReduceArrow, ARROW),
         define(createParseIntArgByReduce, ARROW, NO_FF_SRC),
         define(createParseIntArgByReduce, ARROW, NO_V8_SRC),
         define(createParseIntArgByReduceArrow, ARRAY_ITERATOR, ARROW),
-        define(createParseIntArgByReduce, ARRAY_ITERATOR, ARROW, FILL, FF_SRC),
+        define(createParseIntArgByReduce, ARRAY_ITERATOR, ARROW, FF_SRC, FILL),
         define(createParseIntArgByReduce, ARRAY_ITERATOR, ARROW, FILL, IE_SRC),
         define(createParseIntArgByReduce, ARRAY_ITERATOR, ARROW, FILL, V8_SRC),
     ];
@@ -1522,16 +1522,16 @@ var mapperFormatterDefault;
         define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, IE_SRC),
         define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, NO_IE_SRC),
         define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, NO_IE_SRC),
-        define('fromCharCode', ESC_REGEXP_SLASH, FILL, FROM_CODE_POINT, IE_SRC),
+        define('fromCharCode', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FILL, FROM_CODE_POINT, IE_SRC),
         define('fromCodePoint', ATOB, FROM_CODE_POINT),
         define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_V8_SRC),
         define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_V8_SRC),
-        define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, IE_SRC, NAME),
         define('fromCharCode', ESC_REGEXP_LF, FF_SRC, FROM_CODE_POINT, NAME),
+        define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, IE_SRC, NAME),
         define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_LF, FF_SRC, FROM_CODE_POINT, NAME),
         define('fromCodePoint', ESC_REGEXP_LF, FF_SRC, FILL, FROM_CODE_POINT, NAME),
-        define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, NODECONSTRUCTOR),
         define('fromCharCode', CONSOLE, ESC_REGEXP_SLASH, FROM_CODE_POINT),
+        define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, NODECONSTRUCTOR),
         define('fromCharCode', ARRAY_ITERATOR, ATOB, CAPITAL_HTML, FROM_CODE_POINT),
         define('fromCharCode', CONSOLE, ESC_REGEXP_LF, FROM_CODE_POINT, NO_V8_SRC),
         define('fromCharCode', ESC_REGEXP_LF, FROM_CODE_POINT, NODECONSTRUCTOR, NO_V8_SRC),

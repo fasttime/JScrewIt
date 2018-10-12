@@ -15,6 +15,7 @@ const rawDefSystems =
     {
         availableEntries: getEntries('CREATE_PARSE_INT_ARG:available'),
         formatVariant: ({ name }) => name,
+        indent: 8,
         replaceVariant:
         (encoder, createParseIntArg) =>
         {
@@ -26,12 +27,14 @@ const rawDefSystems =
     FROM_CHAR_CODE:
     {
         availableEntries: getEntries('FROM_CHAR_CODE:available'),
+        indent: 8,
         replaceVariant: (encoder, str) => encoder.replaceString(str, { optimize: true }),
     },
     FROM_CHAR_CODE_CALLBACK_FORMATTER:
     {
         availableEntries: getEntries('FROM_CHAR_CODE_CALLBACK_FORMATTER:available'),
         formatVariant: ({ name }) => name,
+        indent: 8,
         replaceVariant:
         (encoder, fromCharCodeCallbackFormatter) =>
         {
@@ -44,6 +47,7 @@ const rawDefSystems =
     {
         availableEntries: getEntries('MAPPER_FORMATTER:available'),
         formatVariant: ({ name }) => name,
+        indent: 8,
         replaceVariant:
         (encoder, mapperFormatter) =>
         {
@@ -52,7 +56,12 @@ const rawDefSystems =
             return replacement;
         },
     },
-    OPTIMAL_B: 'Bb',
+    OPTIMAL_B:
+    {
+        availableEntries: [define('B'), define('b')],
+        indent: 8,
+        replaceVariant: (encoder, char) => encoder.resolveCharacter(char).replacement,
+    },
     OPTIMAL_RETURN_STRING:
     {
         availableEntries:
@@ -61,6 +70,7 @@ const rawDefSystems =
             define('return String'),
             define('return status.constructor', 'STATUS'),
         ],
+        indent: 8,
         replaceVariant: (encoder, str) => encoder.replaceString(str, { optimize: true }),
     },
 };
@@ -91,7 +101,7 @@ function getDefSystem(defSystemName)
             availableEntries = [...rawDefSystem].map(char => define(char));
             replaceVariant = (encoder, char) => encoder.resolveCharacter(char).replacement;
         }
-        defSystem = { availableEntries, replaceVariant };
+        defSystem = { availableEntries, indent: 12, replaceVariant };
     }
     else
         defSystem = rawDefSystem;
