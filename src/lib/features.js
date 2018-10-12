@@ -173,9 +173,11 @@ var validMaskFromArrayOrStringOrFeature;
                     description = info.description;
                 else
                     description = createEngineFeatureDescription(engine);
-                featureObj = createFeature(name, description, mask, check, engine, info.attributes);
-                if (check)
-                    elementaryFeatureObjs.push(featureObj);
+                var elementary = check || info.excludes;
+                featureObj =
+                createFeature(name, description, mask, check, engine, info.attributes, elementary);
+                if (elementary)
+                    ELEMENTARY.push(featureObj);
             }
             registerFeature(name, featureObj);
         }
@@ -188,21 +190,20 @@ var validMaskFromArrayOrStringOrFeature;
         return description;
     }
 
-    function createFeature(name, description, mask, check, engine, attributes)
+    function createFeature(name, description, mask, check, engine, attributes, elementary)
     {
         attributes = object_freeze(attributes || { });
-        var featureObj =
-        object_create
-        (
-            Feature.prototype,
-            {
-                attributes:     { value: attributes },
-                check:          { value: check },
-                description:    { value: description },
-                engine:         { value: engine },
-                name:           { value: name },
-            }
-        );
+        var descriptors =
+        {
+            attributes:     { value: attributes },
+            check:          { value: check },
+            description:    { value: description },
+            engine:         { value: engine },
+            name:           { value: name },
+        };
+        if (elementary)
+            descriptors.elementary = { value: true };
+        var featureObj = object_create(Feature.prototype, descriptors);
         initMask(featureObj, mask);
         return featureObj;
     }
@@ -264,7 +265,7 @@ var validMaskFromArrayOrStringOrFeature;
     {
         var descriptor = { enumerable: true, value: featureObj };
         object_defineProperty(Feature, name, descriptor);
-        object_defineProperty(ALL, name, descriptor);
+        ALL[name] = featureObj;
     }
 
     function validateMask(mask)
@@ -311,6 +312,7 @@ var validMaskFromArrayOrStringOrFeature;
     }
 
     var ALL = new Empty();
+    var ELEMENTARY = [];
 
     var FEATURE_INFOS =
     {
@@ -1442,8 +1444,10 @@ var validMaskFromArrayOrStringOrFeature;
      * Besides these predefined features, it is possible to construct custom features from the union
      * or intersection of other features.
      *
-     * Among the predefined features, there are some special ones called *elementary* features that
-     * cannot be expressed as a union of any number of other elementary features.
+     * Among the predefined features, there are some special ones called *elementary* features.
+     * Elementary features either cannot be expressed as a union of any number of other features, or
+     * they are different from such a union in that they exclude some other feature not excluded by
+     * their elementary components.
      * All other features, called *composite* features, can be constructed as a union of zero or
      * more elementary features.
      * Two of the predefined composite features are particularly important:
@@ -1468,7 +1472,7 @@ var validMaskFromArrayOrStringOrFeature;
     var FEATURE_PROPS =
     {
         /**
-         * A map of predefined feature objects accessed by name or alias.
+         * An immutable mapping of all predefined feature objects accessed by name or alias.
          *
          * For an exhaustive list of all features, see the [Feature Reference](Features.md).
          *
@@ -1489,6 +1493,14 @@ var validMaskFromArrayOrStringOrFeature;
          */
 
         ALL: ALL,
+
+        /**
+         * An immutable array of all elementary feature objects ordered by name.
+         *
+         * @member {object} JScrewIt.Feature.ELEMENTARY
+         */
+
+        ELEMENTARY: ELEMENTARY,
 
         /**
          * Determines whether the specified features are compatible with each other.
@@ -1590,7 +1602,7 @@ var validMaskFromArrayOrStringOrFeature;
             var mask = this.mask;
             var featureNameSet = new Empty();
             var allIncludes = [];
-            elementaryFeatureObjs.forEach
+            ELEMENTARY.forEach
             (
                 function (featureObj)
                 {
@@ -1627,6 +1639,14 @@ var validMaskFromArrayOrStringOrFeature;
         description: undefined,
 
         /**
+         * A boolean value indicating whether this is an elementary feature object.
+         *
+         * @member {boolean} JScrewIt.Feature#elementary
+         */
+
+        elementary: false,
+
+        /**
          * An array of all elementary feature names included in this feature object, without
          * aliases.
          *
@@ -1637,7 +1657,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             var names = [];
             var mask = this.mask;
-            elementaryFeatureObjs.forEach
+            ELEMENTARY.forEach
             (
                 function (featureObj)
                 {
@@ -1739,7 +1759,7 @@ var validMaskFromArrayOrStringOrFeature;
             var resultMask = maskNew();
             var thisMask = this.mask;
             var attributeCache = new Empty();
-            elementaryFeatureObjs.forEach
+            ELEMENTARY.forEach
             (
                 function (featureObj)
                 {
@@ -1836,7 +1856,6 @@ var validMaskFromArrayOrStringOrFeature;
 
     var autoMask = maskNew();
     var bitIndex = 0;
-    var elementaryFeatureObjs = [];
     var includesMap = new Empty();
     var incompatibleMaskMap = new Empty();
 
@@ -1852,9 +1871,18 @@ var validMaskFromArrayOrStringOrFeature;
             return mask;
         }
     );
-    elementaryFeatureObjs.sort();
+    ELEMENTARY.sort
+    (
+        function (feature1, feature2)
+        {
+            var result = feature1.name < feature2.name ? -1 : 1;
+            return result;
+        }
+    );
+    object_freeze(ELEMENTARY);
     var autoFeatureObj =
     createFeature('AUTO', 'All features available in the current engine.', autoMask);
     registerFeature('AUTO', autoFeatureObj);
+    object_freeze(ALL);
 }
 )();

@@ -9,11 +9,13 @@
     {
         var featureObj = Feature[featureName];
 
-        describe(
+        describe
+        (
             featureName,
             function ()
             {
-                it(
+                it
+                (
                     'is named correctly',
                     function ()
                     {
@@ -23,14 +25,24 @@
                         expect(featureObj).toBe(Feature.ALL[name]);
                     }
                 );
-                it(
-                    'has description string',
+                it
+                (
+                    'has description string property',
                     function ()
                     {
                         expect(featureObj.description).toBeString();
                     }
                 );
-                it(
+                it
+                (
+                    'has elementary boolean property',
+                    function ()
+                    {
+                        expect(featureObj.elementary).toBeBoolean();
+                    }
+                );
+                it
+                (
                     'has a mask consisting of two 32-bit integers',
                     function ()
                     {
@@ -42,13 +54,15 @@
                         expect(mask[1]).toBeInt32();
                     }
                 );
-                it(
+                it
+                (
                     'has elementaryNames string array',
                     function ()
                     {
                         var elementaryNames = featureObj.elementaryNames;
                         expect(elementaryNames).toBeArray();
-                        elementaryNames.forEach(
+                        elementaryNames.forEach
+                        (
                             function (name)
                             {
                                 expect(name).toBeString();
@@ -56,7 +70,8 @@
                         );
                     }
                 );
-                it(
+                it
+                (
                     'has canonicalNames string array',
                     function ()
                     {
@@ -64,7 +79,8 @@
                         expect(canonicalNames).toBeArray();
                         var elementaryNames = featureObj.elementaryNames;
                         expect(elementaryNames).toBeArray();
-                        canonicalNames.forEach(
+                        canonicalNames.forEach
+                        (
                             function (name)
                             {
                                 expect(elementaryNames).toContain(name);
@@ -72,17 +88,22 @@
                         );
                     }
                 );
-                var check = featureObj.check;
-                if (check !== undefined)
+                if (featureObj.elementary)
                 {
-                    it(
+                    it
+                    (
                         'has a nonempty mask',
                         function ()
                         {
                             expect(JScrewIt.debug.maskIsEmpty(featureObj.mask)).toBe(false);
                         }
                     );
-                    it(
+                }
+                var check = featureObj.check;
+                if (check)
+                {
+                    it
+                    (
                         'is checkable',
                         function ()
                         {
@@ -99,14 +120,16 @@
                 var engine = featureObj.engine;
                 if (engine !== undefined)
                 {
-                    it(
+                    it
+                    (
                         'has engine string',
                         function ()
                         {
                             expect(engine).toBeString();
                         }
                     );
-                    it(
+                    it
+                    (
                         'is not checkable',
                         function ()
                         {
@@ -121,47 +144,54 @@
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Feature = JScrewIt.Feature;
 
-    describe(
+    describe
+    (
         'JScrewIt.Feature',
         function ()
         {
-            describe(
+            describe
+            (
                 'constructor',
                 function ()
                 {
-                    it(
+                    it
+                    (
                         'accepts mixed arguments',
                         function ()
                         {
                             var maskUnion = JScrewIt.debug.maskUnion;
                             var feature =
-                                Feature(
-                                    ['NAME', Feature.WINDOW],
+                            Feature
+                            (
+                                ['NAME', Feature.WINDOW],
+                                {
+                                    toString: function ()
                                     {
-                                        toString: function ()
-                                        {
-                                            return 'HTMLDOCUMENT';
-                                        },
-                                        valueOf: function ()
-                                        {
-                                            return 42;
-                                        },
+                                        return 'HTMLDOCUMENT';
                                     },
-                                    Feature.NO_IE_SRC,
-                                    []
-                                );
+                                    valueOf: function ()
+                                    {
+                                        return 42;
+                                    },
+                                },
+                                Feature.NO_IE_SRC,
+                                []
+                            );
                             var expectedMask =
-                                maskUnion(
-                                    maskUnion(
-                                        maskUnion(Feature.NAME.mask, Feature.WINDOW.mask),
-                                        Feature.HTMLDOCUMENT.mask
-                                    ),
-                                    Feature.NO_IE_SRC.mask
-                                );
+                            maskUnion
+                            (
+                                maskUnion
+                                (
+                                    maskUnion(Feature.NAME.mask, Feature.WINDOW.mask),
+                                    Feature.HTMLDOCUMENT.mask
+                                ),
+                                Feature.NO_IE_SRC.mask
+                            );
                             expect(feature.mask).toEqual(expectedMask);
                         }
                     );
-                    it(
+                    it
+                    (
                         'throws an Error for unknown features',
                         function ()
                         {
@@ -169,7 +199,8 @@
                             expect(fn).toThrowStrictly(Error, 'Unknown feature "???"');
                         }
                     );
-                    it(
+                    it
+                    (
                         'throws an Error for incompatible feature arrays',
                         function ()
                         {
@@ -177,7 +208,8 @@
                             expect(fn).toThrowStrictly(Error, 'Incompatible features');
                         }
                     );
-                    it(
+                    it
+                    (
                         'can be invoked with the new operator',
                         function ()
                         {
@@ -185,7 +217,8 @@
                             expect(featureObj.constructor).toBe(Feature);
                         }
                     );
-                    it(
+                    it
+                    (
                         'throws an Error for incompatible features',
                         function ()
                         {
@@ -195,7 +228,8 @@
                     );
                 }
             );
-            describe(
+            describe
+            (
                 'contains only well-formed obejcts:',
                 function ()
                 {
@@ -203,36 +237,39 @@
                     featureNames.forEach(testFeatureObj);
                 }
             );
-            describe(
+            describe
+            (
                 'contains correct information for the feature',
                 function ()
                 {
                     function test(actualFeatureName, expectedFeatureNames)
                     {
-                        it(
+                        it
+                        (
                             actualFeatureName,
                             function ()
                             {
                                 // Default environemnt
                                 var actualFeature = Feature.ALL[actualFeatureName];
                                 var featureNames =
-                                    Feature.commonOf.apply(null, expectedFeatureNames);
+                                Feature.commonOf.apply(null, expectedFeatureNames);
                                 var expectedFeature = Feature(featureNames);
                                 testExpectations(actualFeature, expectedFeature);
 
                                 // Web Worker
                                 var actualFeatureWW = actualFeature.restrict('web-worker');
                                 var restrictedFeatures =
-                                    expectedFeatureNames.map(
-                                        function (featureName)
-                                        {
-                                            var feature = Feature.ALL[featureName];
-                                            var restrictedFeature = feature.restrict('web-worker');
-                                            return restrictedFeature;
-                                        }
-                                    );
+                                expectedFeatureNames.map
+                                (
+                                    function (featureName)
+                                    {
+                                        var feature = Feature.ALL[featureName];
+                                        var restrictedFeature = feature.restrict('web-worker');
+                                        return restrictedFeature;
+                                    }
+                                );
                                 var expectedFeatureWW =
-                                    Feature.commonOf.apply(null, restrictedFeatures);
+                                Feature.commonOf.apply(null, restrictedFeatures);
                                 testExpectations(actualFeatureWW, expectedFeatureWW);
                             }
                         );
@@ -249,7 +286,8 @@
                         expect(actualFeature.mask).toEqual(expectedFeature.mask);
                     }
 
-                    it(
+                    it
+                    (
                         'DEFAULT',
                         function ()
                         {
@@ -261,7 +299,8 @@
                     );
                     test('BROWSER', ['ANDRO40', 'CHROME66', 'EDGE40', 'FF54', 'IE9', 'SAFARI70']);
                     test('COMPACT', ['CHROME66', 'EDGE40', 'FF54', 'SAFARI100']);
-                    it(
+                    it
+                    (
                         'AUTO',
                         function ()
                         {
@@ -275,25 +314,33 @@
                     );
                 }
             );
-            describe(
+            it
+            (
+                '#canonicalNames works as expected',
+                function ()
+                {
+                    var feature = Feature('HTMLDOCUMENT', 'NO_IE_SRC', 'NO_V8_SRC');
+                    expect(feature.canonicalNames).toEqual(['FF_SRC', 'HTMLDOCUMENT']);
+                }
+            );
+            describe
+            (
                 '#includes',
                 function ()
                 {
-                    it(
+                    it
+                    (
                         'accepts mixed arguments',
                         function ()
                         {
                             var actual =
-                                Feature.COMPACT.includes(
-                                    ['NAME', Feature.WINDOW],
-                                    'HTMLDOCUMENT',
-                                    Feature.NO_IE_SRC,
-                                    []
-                                );
+                            Feature.COMPACT.includes
+                            (['NAME', Feature.WINDOW], 'HTMLDOCUMENT', Feature.NO_IE_SRC, []);
                             expect(actual).toBe(true);
                         }
                     );
-                    it(
+                    it
+                    (
                         'returns true if no arguments are specified',
                         function ()
                         {
@@ -301,7 +348,8 @@
                             expect(actual).toBe(true);
                         }
                     );
-                    it(
+                    it
+                    (
                         'throws an Error for unknown features',
                         function ()
                         {
@@ -309,40 +357,42 @@
                             expect(fn).toThrowStrictly(Error, 'Unknown feature "???"');
                         }
                     );
-                    it(
+                    it
+                    (
                         'throws an Error for incompatible feature arrays',
                         function ()
                         {
                             var fn =
-                                Feature.prototype.includes.bind(
-                                    Feature.DEFAULT,
-                                    ['IE_SRC', 'NO_IE_SRC']
-                                );
+                            Feature.prototype.includes.bind
+                            (Feature.DEFAULT, ['IE_SRC', 'NO_IE_SRC']);
                             expect(fn).toThrowStrictly(Error, 'Incompatible features');
                         }
                     );
                 }
             );
-            it(
+            it
+            (
                 '#inspect works as expected',
                 function ()
                 {
                     var stylize =
-                        function (str, styleType)
-                        {
-                            var result = { str: str, styleType: styleType };
-                            return result;
-                        };
+                    function (str, styleType)
+                    {
+                        var result = { str: str, styleType: styleType };
+                        return result;
+                    };
                     var actual = Feature.DEFAULT.inspect(0, { stylize: stylize });
                     var expected = { str: '[Feature DEFAULT]', styleType: 'jscrewit-feature' };
                     expect(actual).toEqual(expected);
                 }
             );
-            describe(
+            describe
+            (
                 '#restrict',
                 function ()
                 {
-                    it(
+                    it
+                    (
                         'restricts a feature in all engines',
                         function ()
                         {
@@ -350,22 +400,24 @@
                             expect(featureObj.mask).toEqual(Feature.DEFAULT.mask);
                         }
                     );
-                    it(
+                    it
+                    (
                         'restricts a feature in a particular engine',
                         function ()
                         {
-                            var featureObj =
-                                Feature.WINDOW.restrict('web-worker', [Feature.FF54]);
+                            var featureObj = Feature.WINDOW.restrict('web-worker', [Feature.FF54]);
                             expect(featureObj.mask).toEqual(Feature.SELF_OBJ.mask);
                         }
                     );
                 }
             );
-            describe(
+            describe
+            (
                 '#toString',
                 function ()
                 {
-                    it(
+                    it
+                    (
                         'works for predefined features',
                         function ()
                         {
@@ -374,24 +426,84 @@
                             expect(Feature.ATOB.toString()).toBe('[Feature ATOB]');
                         }
                     );
-                    it(
+                    it
+                    (
                         'works for custom features',
                         function ()
                         {
                             expect(Feature('DEFAULT').toString()).toBe('[Feature {}]');
-                            expect(Feature('NODE010').toString()).toMatch(
-                                /^\[Feature \{[\dA-Z_]+(, [\dA-Z_]+)*\}]$/
-                            );
+                            expect(Feature('NODE010').toString()).toMatch
+                            (/^\[Feature \{[\dA-Z_]+(, [\dA-Z_]+)*\}]$/);
                             expect(Feature('ATOB').toString()).toBe('[Feature {ATOB}]');
                         }
                     );
                 }
             );
-            describe(
+            describe
+            (
+                '.ALL',
+                function ()
+                {
+                    it
+                    (
+                        'is frozen',
+                        function ()
+                        {
+                            expect(Object.isFrozen(Feature.ALL)).toBeTruthy();
+                        }
+                    );
+                    it
+                    (
+                        'has no inherited properties',
+                        function ()
+                        {
+                            var obj = Feature.ALL;
+                            while ((obj = Object.getPrototypeOf(obj)) !== null)
+                                expect(Object.getOwnPropertyNames(obj)).toEqual([]);
+                        }
+                    );
+                }
+            );
+            describe
+            (
+                '.ELEMENTARY',
+                function ()
+                {
+                    it
+                    (
+                        'is frozen',
+                        function ()
+                        {
+                            expect(Object.isFrozen(Feature.ELEMENTARY)).toBeTruthy();
+                        }
+                    );
+                    it
+                    (
+                        'is sorted by name',
+                        function ()
+                        {
+                            Feature.ELEMENTARY.reduce
+                            (
+                                function (prevFeature, nextFeature)
+                                {
+                                    var prevName = prevFeature.name;
+                                    var nextName = nextFeature.name;
+                                    expect(prevName < nextName).toBeTruthy
+                                    ('"' + prevName + '" and "' + nextName + '" are not in order');
+                                    return nextFeature;
+                                }
+                            );
+                        }
+                    );
+                }
+            );
+            describe
+            (
                 '.areCompatible',
                 function ()
                 {
-                    it(
+                    it
+                    (
                         'returns true if no arguments are specified',
                         function ()
                         {
@@ -399,7 +511,8 @@
                             expect(compatible).toBe(true);
                         }
                     );
-                    it(
+                    it
+                    (
                         'returns true for any single feature',
                         function ()
                         {
@@ -407,7 +520,8 @@
                             expect(compatible).toBe(true);
                         }
                     );
-                    it(
+                    it
+                    (
                         'returns true for compatible features',
                         function ()
                         {
@@ -415,7 +529,8 @@
                             expect(compatible).toBe(true);
                         }
                     );
-                    it(
+                    it
+                    (
                         'returns false for incompatible features',
                         function ()
                         {
@@ -425,25 +540,24 @@
                     );
                 }
             );
-            describe(
+            describe
+            (
                 '.areEqual',
                 function ()
                 {
-                    it(
+                    it
+                    (
                         'accepts mixed arguments',
                         function ()
                         {
                             var actual =
-                                Feature.areEqual(
-                                    ['NAME', Feature.WINDOW],
-                                    'HTMLDOCUMENT',
-                                    Feature.NO_IE_SRC,
-                                    []
-                                );
+                            Feature.areEqual
+                            (['NAME', Feature.WINDOW], 'HTMLDOCUMENT', Feature.NO_IE_SRC, []);
                             expect(actual).toBe(false);
                         }
                     );
-                    it(
+                    it
+                    (
                         'throws an Error for unknown features',
                         function ()
                         {
@@ -451,7 +565,8 @@
                             expect(fn).toThrowStrictly(Error, 'Unknown feature "???"');
                         }
                     );
-                    it(
+                    it
+                    (
                         'throws an Error for incompatible feature arrays',
                         function ()
                         {
@@ -459,7 +574,8 @@
                             expect(fn).toThrowStrictly(Error, 'Incompatible features');
                         }
                     );
-                    it(
+                    it
+                    (
                         'returns true if no arguments are specified',
                         function ()
                         {
@@ -467,7 +583,8 @@
                             expect(equal).toBe(true);
                         }
                     );
-                    it(
+                    it
+                    (
                         'returns true for any single feature',
                         function ()
                         {
@@ -475,7 +592,8 @@
                             expect(equal).toBe(true);
                         }
                     );
-                    it(
+                    it
+                    (
                         'returns true for equal features',
                         function ()
                         {
@@ -483,7 +601,8 @@
                             expect(equal).toBe(true);
                         }
                     );
-                    it(
+                    it
+                    (
                         'returns false for unequal features',
                         function ()
                         {
@@ -493,25 +612,24 @@
                     );
                 }
             );
-            describe(
+            describe
+            (
                 '.commonOf',
                 function ()
                 {
-                    it(
+                    it
+                    (
                         'accepts mixed arguments',
                         function ()
                         {
                             var featureObj =
-                                Feature.commonOf(
-                                    ['NAME', Feature.WINDOW],
-                                    'HTMLDOCUMENT',
-                                    Feature.NO_IE_SRC,
-                                    []
-                                );
+                            Feature.commonOf
+                            (['NAME', Feature.WINDOW], 'HTMLDOCUMENT', Feature.NO_IE_SRC, []);
                             expect(featureObj.mask).toEqual([0, 0]);
                         }
                     );
-                    it(
+                    it
+                    (
                         'throws an Error for unknown features',
                         function ()
                         {
@@ -519,7 +637,8 @@
                             expect(fn).toThrowStrictly(Error, 'Unknown feature "???"');
                         }
                     );
-                    it(
+                    it
+                    (
                         'throws an Error for incompatible feature arrays',
                         function ()
                         {
@@ -527,7 +646,8 @@
                             expect(fn).toThrowStrictly(Error, 'Incompatible features');
                         }
                     );
-                    it(
+                    it
+                    (
                         'returns null if no arguments are specified',
                         function ()
                         {
@@ -535,7 +655,8 @@
                             expect(featureObj).toBeNull();
                         }
                     );
-                    it(
+                    it
+                    (
                         'returns a feature with expected mask',
                         function ()
                         {
@@ -543,16 +664,13 @@
                             expect(featureObj.mask).toEqual(Feature.AUTO.mask);
                         }
                     );
-                    it(
+                    it
+                    (
                         'throws an Error for incompatible feature arrays',
                         function ()
                         {
                             var fn =
-                                Feature.commonOf.bind(
-                                    null,
-                                    'ANY_WINDOW',
-                                    ['WINDOW', 'DOMWINDOW']
-                                );
+                            Feature.commonOf.bind(null, 'ANY_WINDOW', ['WINDOW', 'DOMWINDOW']);
                             expect(fn).toThrowStrictly(Error, 'Incompatible features');
                         }
                     );
@@ -560,16 +678,18 @@
             );
         }
     );
-    describe(
+    describe
+    (
         'JScrewIt.debug.createFeatureFromMask',
         function ()
         {
-            it(
+            it
+            (
                 'returns null for an incompatible mask',
                 function ()
                 {
                     var mask =
-                        JScrewIt.debug.maskUnion(Feature.NO_IE_SRC.mask, Feature.IE_SRC.mask);
+                    JScrewIt.debug.maskUnion(Feature.NO_IE_SRC.mask, Feature.IE_SRC.mask);
                     var featureObj = JScrewIt.debug.createFeatureFromMask(mask);
                     expect(featureObj).toBeNull();
                 }

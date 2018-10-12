@@ -29,6 +29,7 @@ in no particular order.</p>
         * _instance_
             * [.canonicalNames](#JScrewIt.Feature+canonicalNames) : <code>Array.&lt;string&gt;</code>
             * [.description](#JScrewIt.Feature+description) : <code>string</code> \| <code>undefined</code>
+            * [.elementary](#JScrewIt.Feature+elementary) : <code>boolean</code>
             * [.elementaryNames](#JScrewIt.Feature+elementaryNames) : <code>Array.&lt;string&gt;</code>
             * [.name](#JScrewIt.Feature+name) : <code>string</code> \| <code>undefined</code>
             * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
@@ -36,6 +37,7 @@ in no particular order.</p>
             * [.toString()](#JScrewIt.Feature+toString) ⇒ <code>string</code>
         * _static_
             * [.ALL](#JScrewIt.Feature.ALL) : <code>object</code>
+            * [.ELEMENTARY](#JScrewIt.Feature.ELEMENTARY) : <code>object</code>
             * [.areCompatible([features])](#JScrewIt.Feature.areCompatible) ⇒ <code>boolean</code>
             * [.areEqual([...feature])](#JScrewIt.Feature.areEqual) ⇒ <code>boolean</code>
             * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ [<code>Feature</code>](#JScrewIt.Feature) \| <code>null</code>
@@ -54,8 +56,10 @@ name is the feature's name or an alias thereof.
 Besides these predefined features, it is possible to construct custom features from the union
 or intersection of other features.
 
-Among the predefined features, there are some special ones called *elementary* features that
-cannot be expressed as a union of any number of other elementary features.
+Among the predefined features, there are some special ones called *elementary* features.
+Elementary features either cannot be expressed as a union of any number of other features, or
+they are different from such a union in that they exclude some other feature not excluded by
+their elementary components.
 All other features, called *composite* features, can be constructed as a union of zero or
 more elementary features.
 Two of the predefined composite features are particularly important:
@@ -74,6 +78,7 @@ constructed.
     * _instance_
         * [.canonicalNames](#JScrewIt.Feature+canonicalNames) : <code>Array.&lt;string&gt;</code>
         * [.description](#JScrewIt.Feature+description) : <code>string</code> \| <code>undefined</code>
+        * [.elementary](#JScrewIt.Feature+elementary) : <code>boolean</code>
         * [.elementaryNames](#JScrewIt.Feature+elementaryNames) : <code>Array.&lt;string&gt;</code>
         * [.name](#JScrewIt.Feature+name) : <code>string</code> \| <code>undefined</code>
         * [.includes([...feature])](#JScrewIt.Feature+includes) ⇒ <code>boolean</code>
@@ -81,6 +86,7 @@ constructed.
         * [.toString()](#JScrewIt.Feature+toString) ⇒ <code>string</code>
     * _static_
         * [.ALL](#JScrewIt.Feature.ALL) : <code>object</code>
+        * [.ELEMENTARY](#JScrewIt.Feature.ELEMENTARY) : <code>object</code>
         * [.areCompatible([features])](#JScrewIt.Feature.areCompatible) ⇒ <code>boolean</code>
         * [.areEqual([...feature])](#JScrewIt.Feature.areEqual) ⇒ <code>boolean</code>
         * [.commonOf([...feature])](#JScrewIt.Feature.commonOf) ⇒ [<code>Feature</code>](#JScrewIt.Feature) \| <code>null</code>
@@ -134,6 +140,12 @@ A short description of this feature object in plain English.
 
 All predefined features have a description.
 If desired, custom features may be assigned a description, too.
+
+**Kind**: instance property of [<code>Feature</code>](#JScrewIt.Feature)  
+<a name="JScrewIt.Feature+elementary"></a>
+
+#### feature.elementary : <code>boolean</code>
+A boolean value indicating whether this is an elementary feature object.
 
 **Kind**: instance property of [<code>Feature</code>](#JScrewIt.Feature)  
 <a name="JScrewIt.Feature+elementaryNames"></a>
@@ -192,7 +204,7 @@ Returns a string representation of this feature object.
 <a name="JScrewIt.Feature.ALL"></a>
 
 #### Feature.ALL : <code>object</code>
-A map of predefined feature objects accessed by name or alias.
+An immutable mapping of all predefined feature objects accessed by name or alias.
 
 For an exhaustive list of all features, see the [Feature Reference](Features.md).
 
@@ -209,6 +221,12 @@ This will determine if a particular feature object is predefined or not.
 ```js
 featureObj === JScrewIt.Feature.ALL[featureObj.name]
 ```
+<a name="JScrewIt.Feature.ELEMENTARY"></a>
+
+#### Feature.ELEMENTARY : <code>object</code>
+An immutable array of all elementary feature objects ordered by name.
+
+**Kind**: static property of [<code>Feature</code>](#JScrewIt.Feature)  
 <a name="JScrewIt.Feature.areCompatible"></a>
 
 #### Feature.areCompatible([features]) ⇒ <code>boolean</code>

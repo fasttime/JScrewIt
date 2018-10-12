@@ -377,6 +377,7 @@ function ()
 {
     var Feature = JScrewIt.Feature;
     var allFeatureMap = Feature.ALL;
+    var elementaryFeatures = Feature.ELEMENTARY;
     var content =
     '# JScrewIt Feature Reference\n' +
     '## Feature List\n' +
@@ -392,7 +393,7 @@ function ()
             {
                 var description = featureObj.description;
                 subContent = escape(description);
-                if (featureObj.check)
+                if (featureObj.elementary)
                 {
                     var availability = reportAsList(featureName, getAvailabilityInfo);
                     var webWorkerReport = getWebWorkerReport(featureObj);
@@ -424,11 +425,11 @@ function ()
         {
             var assignmentMap = Object.create(null);
             var featureName;
-            for (featureName in allFeatureMap)
-            {
-                var featureObj = Feature[featureName];
-                if (featureObj.check && featureObj.name === featureName)
+            elementaryFeatures.forEach
+            (
+                function (featureObj)
                 {
+                    var featureName = featureObj.name;
                     var versioning = getVersioningFor(featureName, engineEntry);
                     if (versioning != null)
                     {
@@ -436,15 +437,12 @@ function ()
                         assignmentMap[featureName] = assignments;
                     }
                 }
-            }
+            );
             for (featureName in assignmentMap)
             {
-                if (Feature[featureName].check)
-                {
-                    var impliers = getImpliers(featureName, assignmentMap);
-                    if (impliers)
-                        assignmentMap[featureName].impliers = impliers;
-                }
+                var impliers = getImpliers(featureName, assignmentMap);
+                if (impliers)
+                    assignmentMap[featureName].impliers = impliers;
             }
             content += printRow(getCombinedDescription(engineEntry, 0), assignmentMap);
         }
