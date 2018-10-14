@@ -7,9 +7,7 @@
 const JScrewIt      = require('..');
 const chalk         = require('chalk');
 const defSystems    = require('./def-systems');
-const kit           = require('./es5/verifier-kit');
 
-const { findOptimalFeatures, verifyComplex, verifyDefinitions } = kit;
 require('../tools/text-utils');
 const timeUtils = require('../tools/time-utils');
 
@@ -51,22 +49,19 @@ function checkMinInputLength(features, createInput, coders, coder, minLength)
     {
         let bestCoderName;
         let bestLength = Infinity;
-        coderNames.forEach
-        (
-            coderName =>
+        for (const coderName of coderNames)
+        {
+            const thisCoder = coders[coderName];
+            if (thisCoder !== coder)
             {
-                const thisCoder = coders[coderName];
-                if (thisCoder !== coder)
+                const { length } = thisCoder.call(encoder, inputData);
+                if (length < bestLength)
                 {
-                    const { length } = thisCoder.call(encoder, inputData);
-                    if (length < bestLength)
-                    {
-                        bestCoderName = coderName;
-                        bestLength = length;
-                    }
+                    bestCoderName = coderName;
+                    bestLength = length;
                 }
             }
-        );
+        }
         const result = { coderName: bestCoderName, length: bestLength };
         return result;
     }
@@ -106,13 +101,120 @@ function compareRoutineNames(name1, name2)
     return 0;
 }
 
+function createAnalyzer()
+{
+    require('./solution-book-map').load();
+    const Analyzer = require('./optimized-analyzer');
+
+    const analyzer = new Analyzer();
+    return analyzer;
+}
+
+function createOptimalFeatureObjMap(replacer, rivalReplacer, progressCallback)
+{
+    function callProgressCallback()
+    {
+        if (progressCallback)
+            progressCallback(analyzer.progress);
+    }
+
+    let optimalFeatureObjMap;
+    let optimalLength = Infinity;
+    const analyzer = createAnalyzer();
+    callProgressCallback();
+    let encoder;
+    while (encoder = analyzer.nextEncoder)
+    {
+        const output = replacer(encoder);
+        callProgressCallback();
+        if (output === undefined)
+            continue;
+        const { length } = output;
+        if (length <= optimalLength)
+        {
+            analyzer.stopCapture();
+            const rivalOutput = rivalReplacer(encoder, length);
+            if (rivalOutput !== undefined)
+                continue;
+            if (length < optimalLength)
+            {
+                optimalFeatureObjMap = { __proto__: null };
+                optimalLength = length;
+            }
+            const optimalFeatureObjs =
+            optimalFeatureObjMap[output] || (optimalFeatureObjMap[output] = []);
+            optimalFeatureObjs.push(analyzer.featureObj);
+        }
+    }
+    callProgressCallback();
+    return optimalFeatureObjMap;
+}
+
 function findCoderTestData(coderName)
 {
-    const CODER_TEST_DATA_LIST = require('./es5/coder-test-data');
+    const CODER_TEST_DATA_LIST = require('./coder-test-data');
 
     const coderTestData =
     CODER_TEST_DATA_LIST.find(coderTestData => coderTestData.coderName === coderName);
     return coderTestData;
+}
+
+function findOptimalFeatures(replacer, rivalReplacer, progressCallback)
+{
+    const optimalFeatureObjMap =
+    createOptimalFeatureObjMap(replacer, rivalReplacer, progressCallback);
+    if (optimalFeatureObjMap)
+    {
+        const result =
+        Object.keys(optimalFeatureObjMap).map
+        (
+            output =>
+            {
+                const optimalFeatureObjs = optimalFeatureObjMap[output];
+                const featureObj =
+                optimalFeatureObjs.reduce
+                (
+                    (previousFeatureObj, currentFeatureObj) =>
+                    {
+                        const nextFeatureObj =
+                        JScrewIt.Feature.commonOf(previousFeatureObj, currentFeatureObj);
+                        return nextFeatureObj;
+                    }
+                );
+                return featureObj;
+            }
+        );
+        return result;
+    }
+}
+
+function getOptimalityInfo(encoder, inputList, replaceVariant)
+{
+    function considerInput(entry)
+    {
+        if (!encoder.hasFeatures(entry.mask))
+            return;
+        const { definition } = entry;
+        const solution = replaceVariant(encoder, definition);
+        const { length } = solution;
+        if (length <= optimalLength)
+        {
+            if (length < optimalLength)
+            {
+                optimalDefinitions = [];
+                optimalLength = length;
+            }
+            optimalDefinitions.push(definition);
+        }
+        lengthMap[definition] = length;
+    }
+
+    let optimalDefinitions;
+    const lengthMap = { __proto__: null };
+    let optimalLength = Infinity;
+    inputList.forEach(considerInput);
+    const optimalityInfo = { lengthMap, optimalDefinitions, optimalLength };
+    return optimalityInfo;
 }
 
 function isCapital(name)
@@ -146,7 +248,7 @@ function main()
         {
             const duration = timeUtils.timeThis(routine);
             const durationStr = timeUtils.formatDuration(duration);
-            console.log(`${durationStr} elapsed.`);
+            console.log('%s elapsed.', durationStr);
             return;
         }
     }
@@ -164,7 +266,7 @@ function printHelpMessage()
     (
         Object.keys(verify).sort(compareRoutineNames).reduce
         (
-            (str, routineName) => `${str}\n* ${routineName}`,
+            (str, routineName) => `${str}\n• ${routineName}`,
             'Please, specify one of the implemented verification routines:'
         )
     );
@@ -220,6 +322,26 @@ function verifyCoder(coderName)
     return result;
 }
 
+function verifyComplex(complex, entry)
+{
+    let encoder;
+    const analyzer = createAnalyzer();
+    const entryMask = entry.mask;
+    const { definition } = entry;
+    while (encoder = analyzer.nextEncoder)
+    {
+        if (encoder.hasFeatures(entryMask))
+        {
+            const complexSolution = encoder.resolve(definition);
+            const options = { bond: true, optimize: { toStringOpt: true } };
+            const replacement = encoder.replaceString(complex, options);
+            if (complexSolution.length < replacement.length)
+                return true;
+        }
+    }
+    return false;
+}
+
 function verifyDefSystem(defSystemName)
 {
     const defSystem = defSystems[defSystemName];
@@ -231,6 +353,42 @@ function verifyDefSystem(defSystemName)
         (organizedEntries, availableEntries, mismatchCallback, replaceVariant, formatVariant);
     };
     return verify;
+}
+
+function verifyDefinitions(entries, inputList, mismatchCallback, replaceVariant, formatVariant)
+{
+    let mismatchCount = 0;
+    const analyzer = createAnalyzer();
+    let encoder;
+    if (formatVariant == null)
+        formatVariant = String;
+    while (encoder = analyzer.nextEncoder)
+    {
+        const optimalityInfo = getOptimalityInfo(encoder, inputList, replaceVariant);
+        analyzer.stopCapture();
+        const { lengthMap } = optimalityInfo;
+        const actualDefinition = encoder.findDefinition(entries);
+        const actualLength = lengthMap[actualDefinition];
+        if (actualLength == null)
+            throw Error('No available definition matches');
+        const { optimalLength } = optimalityInfo;
+        if (lengthMap[actualDefinition] > optimalLength)
+        {
+            const featureNames = analyzer.featureObj.canonicalNames;
+            const { optimalDefinitions } = optimalityInfo;
+            optimalDefinitions.sort();
+            mismatchCallback
+            (
+                `${++mismatchCount}.`,
+                featureNames.join(', '),
+                formatVariant(actualDefinition),
+                `(${lengthMap[actualDefinition]})`,
+                optimalDefinitions.map(formatVariant),
+                `(${optimalLength})`,
+                '\x1e'
+            );
+        }
+    }
 }
 
 const verify = { __proto__: null };

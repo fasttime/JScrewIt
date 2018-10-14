@@ -24,25 +24,14 @@ assignNoEnum,
 createBridgeSolution,
 createClusteringPlan,
 createFigurator,
-createParseIntArgByReduce,
-createParseIntArgByReduceArrow,
-createParseIntArgDefault,
 define,
 esToString,
 featureFromMask,
-fromCharCodeCallbackFormatterArrow1,
-fromCharCodeCallbackFormatterArrow2,
-fromCharCodeCallbackFormatterArrowStatus,
-fromCharCodeCallbackFormatterDefault1,
-fromCharCodeCallbackFormatterDefault2,
-fromCharCodeCallbackFormatterStatus,
 getComplexOptimizer,
 getToStringOptimizer,
 getValidFeatureMask,
 isMaskCompatible,
 json_stringify,
-mapperFormatterDblArrow,
-mapperFormatterDefault,
 maskAnd,
 maskIncludes,
 maskIsEmpty,
@@ -185,9 +174,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             return entries;
         }
 
-        var ARROW           = Feature.ARROW;
         var FROM_CODE_POINT = Feature.FROM_CODE_POINT;
-        var STATUS          = Feature.STATUS;
 
         var EMPTY_MASK = maskNew();
 
@@ -199,12 +186,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         ENTRIES['BASE64_ALPHABET_LO_4:1']           = BASE64_ALPHABET_LO_4[1];
         ENTRIES['BASE64_ALPHABET_LO_4:3']           = BASE64_ALPHABET_LO_4[3];
         ENTRIES.CREATE_PARSE_INT_ARG                = CREATE_PARSE_INT_ARG;
-        ENTRIES['CREATE_PARSE_INT_ARG:available'] =
-        [
-            define(createParseIntArgDefault),
-            define(createParseIntArgByReduce),
-            define(createParseIntArgByReduceArrow, ARROW),
-        ];
+        ENTRIES['CREATE_PARSE_INT_ARG:available']   = CREATE_PARSE_INT_ARG.available;
         ENTRIES.FROM_CHAR_CODE                      = FROM_CHAR_CODE;
         ENTRIES['FROM_CHAR_CODE:available'] =
         [
@@ -213,20 +195,9 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         ];
         ENTRIES.FROM_CHAR_CODE_CALLBACK_FORMATTER   = FROM_CHAR_CODE_CALLBACK_FORMATTER;
         ENTRIES['FROM_CHAR_CODE_CALLBACK_FORMATTER:available'] =
-        [
-            define(fromCharCodeCallbackFormatterDefault1),
-            define(fromCharCodeCallbackFormatterDefault2),
-            define(fromCharCodeCallbackFormatterStatus, STATUS),
-            define(fromCharCodeCallbackFormatterArrow1, ARROW),
-            define(fromCharCodeCallbackFormatterArrow2, ARROW),
-            define(fromCharCodeCallbackFormatterArrowStatus, ARROW, STATUS),
-        ];
+        FROM_CHAR_CODE_CALLBACK_FORMATTER.available;
         ENTRIES.MAPPER_FORMATTER                    = MAPPER_FORMATTER;
-        ENTRIES['MAPPER_FORMATTER:available'] =
-        [
-            define(mapperFormatterDefault),
-            define(mapperFormatterDblArrow, ARROW),
-        ];
+        ENTRIES['MAPPER_FORMATTER:available']       = MAPPER_FORMATTER.available;
         ENTRIES.OPTIMAL_B                           = OPTIMAL_B;
         ENTRIES.OPTIMAL_RETURN_STRING               = OPTIMAL_RETURN_STRING;
 

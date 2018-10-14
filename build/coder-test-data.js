@@ -1,12 +1,11 @@
 /* eslint-env node */
-/* global repeat */
 
 'use strict';
 
 function createDictTestString(variety, length)
 {
-    var str = '';
-    for (var index = variety; index > 0;)
+    let str = '';
+    for (let index = variety; index > 0;)
         str += String.fromCharCode(0xffff - --index);
     str = repeatToFit(str, length);
     return str;
@@ -14,8 +13,8 @@ function createDictTestString(variety, length)
 
 function createInvertedDictTestString(variety, length)
 {
-    var str = '';
-    for (var index = 0; index < variety; ++index)
+    let str = '';
+    for (let index = 0; index < variety; ++index)
         str += String.fromCharCode(0xffff - index);
     str = repeatToFit(str, length);
     return str;
@@ -23,56 +22,48 @@ function createInvertedDictTestString(variety, length)
 
 function data(features, createInput, coderName)
 {
-    var result = { features: features, createInput: createInput, coderName: coderName };
+    const result = { coderName, createInput, features };
     return result;
 }
 
 function getAppendLength(int, appendLengths)
 {
-    var appendLength = 0;
-    var str = int.toString(appendLengths.length);
-    Array.prototype.forEach.call
-    (
-        str,
-        function (char)
-        {
-            appendLength += appendLengths[char];
-        }
-    );
+    let appendLength = 0;
+    const str = int.toString(appendLengths.length);
+    [...str].forEach(char => appendLength += appendLengths[char]);
     return appendLength;
 }
 
-function getCharCodeOf(info)
+function getCharCodeOf({ charCode })
 {
-    return info.charCode;
+    return charCode;
 }
 
 function repeatToFit(str, length)
 {
-    var result = repeat(str, Math.ceil(length / str.length)).slice(0, length);
+    const result = str.repeat(Math.ceil(length / str.length)).slice(0, length);
     return result;
 }
 
-var createAntiRadix4TestString;
+let createAntiRadix4TestString;
 
-(function ()
 {
     function initAntiRadix4CharCodes()
     {
-        var RADIX_4_APPEND_LENGTHS = [6, 8, 12, 17];
+        const RADIX_4_APPEND_LENGTHS = [6, 8, 12, 17];
 
-        var infos = Array(0x10000);
-        for (var charCode = 0; charCode < 0x10000; ++charCode)
+        const infos = Array(0x10000);
+        for (let charCode = 0; charCode < 0x10000; ++charCode)
         {
-            var appendLength = getAppendLength(charCode, RADIX_4_APPEND_LENGTHS);
-            var info = { appendLength: appendLength, charCode: charCode };
+            const appendLength = getAppendLength(charCode, RADIX_4_APPEND_LENGTHS);
+            const info = { appendLength, charCode };
             infos[charCode] = info;
         }
         infos.sort
         (
-            function (info1, info2)
+            (info1, info2) =>
             {
-                var diff =
+                const diff =
                 info2.appendLength - info1.appendLength || info1.charCode - info2.charCode;
                 return diff;
             }
@@ -80,26 +71,25 @@ var createAntiRadix4TestString;
         antiRadix4CharCodes = infos.map(getCharCodeOf);
     }
 
-    var antiRadix4CharCodes;
+    let antiRadix4CharCodes;
 
     createAntiRadix4TestString =
-        function (variety, length)
-        {
-            if (!antiRadix4CharCodes)
-                initAntiRadix4CharCodes();
-            var str = String.fromCharCode.apply(null, antiRadix4CharCodes.slice(0, variety));
-            str = repeatToFit(str, length);
-            return str;
-        };
+    (variety, length) =>
+    {
+        if (!antiRadix4CharCodes)
+            initAntiRadix4CharCodes();
+        let str = String.fromCharCode(...antiRadix4CharCodes.slice(0, variety));
+        str = repeatToFit(str, length);
+        return str;
+    };
 }
-)();
 
 module.exports =
 [
     data
     (
         ['ARRAY_ITERATOR', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC', 'STATUS'],
-        repeat.bind(null, String.fromCharCode(59999)),
+        length => String.fromCharCode(59999).repeat(length),
         'byCharCodes'
     ),
     data
@@ -114,11 +104,11 @@ module.exports =
             'NO_V8_SRC',
             'STATUS',
         ],
-        function (length)
+        length =>
         {
-            var CHAR_CODES =
+            const CHAR_CODES =
             [49989, 49988, 59989, 37889, 59988, 37888, 38999, 38998, 29989, 38997, 37989];
-            var str = repeatToFit(String.fromCharCode.apply(null, CHAR_CODES), length);
+            const str = repeatToFit(String.fromCharCode(...CHAR_CODES), length);
             return str;
         },
         'byCharCodesRadix4'
@@ -135,10 +125,10 @@ module.exports =
             'NO_V8_SRC',
             'STATUS',
         ],
-        function (length)
+        length =>
         {
-            var prefix = repeatToFit('01234567', 176);
-            var str = prefix + createDictTestString(2, length - prefix.length);
+            const prefix = repeatToFit('01234567', 176);
+            const str = prefix + createDictTestString(2, length - prefix.length);
             return str;
         },
         'byDenseFigures'
@@ -146,7 +136,7 @@ module.exports =
     data
     (
         ['ARRAY_ITERATOR', 'ATOB', 'FILL', 'NAME', 'NO_IE_SRC', 'NO_V8_SRC', 'UNEVAL'],
-        repeat.bind(null, String.fromCharCode(59999)),
+        length => String.fromCharCode(59999).repeat(length),
         'byDict'
     ),
     data

@@ -43,18 +43,7 @@ var SIMPLE;
 var JSFUCK_INFINITY;
 
 var createBridgeSolution;
-var createParseIntArgByReduce;
-var createParseIntArgByReduceArrow;
 var createParseIntArgDefault;
-var fromCharCodeCallbackFormatterArrow1;
-var fromCharCodeCallbackFormatterArrow2;
-var fromCharCodeCallbackFormatterArrowStatus;
-var fromCharCodeCallbackFormatterDefault1;
-var fromCharCodeCallbackFormatterDefault2;
-var fromCharCodeCallbackFormatterStatus;
-
-var mapperFormatterDblArrow;
-var mapperFormatterDefault;
 
 (function ()
 {
@@ -317,6 +306,22 @@ var mapperFormatterDefault;
         return charDefaultDefinition;
     }
 
+    function createCreateParseIntArgByReduce(amendings, reducerStr)
+    {
+        var parseIntArg =
+        '[' +
+        AMENDINGS.slice(0, amendings).map
+        (
+            function (amending)
+            {
+                return '/' + amending + '/g';
+            }
+        )
+        .join() +
+        '].reduce(' + reducerStr + ',undefined)';
+        return parseIntArg;
+    }
+
     function defineCharDefault(char, opts)
     {
         function checkOpt(optName, defaultOpt)
@@ -423,6 +428,19 @@ var mapperFormatterDefault;
         var definition = createCharAtDefinitionFH(expr, index, entries, FH_PADDING_INFOS);
         var entry = createDefinitionEntry(definition, arguments, 2);
         return entry;
+    }
+
+    function defineList(available, entries)
+    {
+        entries.available = available;
+        entries.forEach
+        (
+            function (entry)
+            {
+                entry.definition = available[entry.definition].definition;
+            }
+        );
+        return entries;
     }
 
     function defineSimple(simple, expr, level)
@@ -1446,39 +1464,6 @@ var mapperFormatterDefault;
         return solution;
     };
 
-    function createParseIntArg(amendings, reducerStr)
-    {
-        var parseIntArg =
-        '[' +
-        AMENDINGS.slice(0, amendings).map
-        (
-            function (amending)
-            {
-                return '/' + amending + '/g';
-            }
-        )
-        .join() +
-        '].reduce(' + reducerStr + ',undefined)';
-        return parseIntArg;
-    }
-
-    createParseIntArgByReduce =
-    function (amendings, firstDigit)
-    {
-        var parseIntArg =
-        createParseIntArg
-        (amendings, 'function(f,a,l,s,e){return f.replace(a,' + firstDigit + '+l)}');
-        return parseIntArg;
-    };
-
-    createParseIntArgByReduceArrow =
-    function (amendings, firstDigit)
-    {
-        var parseIntArg =
-        createParseIntArg(amendings, '(f,a,l,s,e)=>f.replace(a,' + firstDigit + '+l)');
-        return parseIntArg;
-    };
-
     createParseIntArgDefault =
     function (amendings, firstDigit)
     {
@@ -1492,21 +1477,48 @@ var mapperFormatterDefault;
     };
 
     CREATE_PARSE_INT_ARG =
-    [
-        define(createParseIntArgByReduce),
-        define(createParseIntArgDefault, ARRAY_ITERATOR, CAPITAL_HTML, NO_IE_SRC),
-        define(createParseIntArgByReduce, FF_SRC),
-        define(createParseIntArgByReduce, FILL),
-        define(createParseIntArgByReduce, NO_OLD_SAFARI_ARRAY_ITERATOR),
-        define(createParseIntArgByReduce, V8_SRC),
-        define(createParseIntArgByReduceArrow, ARROW),
-        define(createParseIntArgByReduce, ARROW, NO_FF_SRC),
-        define(createParseIntArgByReduce, ARROW, NO_V8_SRC),
-        define(createParseIntArgByReduceArrow, ARRAY_ITERATOR, ARROW),
-        define(createParseIntArgByReduce, ARRAY_ITERATOR, ARROW, FF_SRC, FILL),
-        define(createParseIntArgByReduce, ARRAY_ITERATOR, ARROW, FILL, IE_SRC),
-        define(createParseIntArgByReduce, ARRAY_ITERATOR, ARROW, FILL, V8_SRC),
-    ];
+    defineList
+    (
+        [
+            define(createParseIntArgDefault),
+            define
+            (
+                function (amendings, firstDigit)
+                {
+                    var parseIntArg =
+                    createCreateParseIntArgByReduce
+                    (amendings, 'function(f,a,l,s,e){return f.replace(a,' + firstDigit + '+l)}');
+                    return parseIntArg;
+                }
+            ),
+            define
+            (
+                function (amendings, firstDigit)
+                {
+                    var parseIntArg =
+                    createCreateParseIntArgByReduce
+                    (amendings, '(f,a,l,s,e)=>f.replace(a,' + firstDigit + '+l)');
+                    return parseIntArg;
+                },
+                ARROW
+            ),
+        ],
+        [
+            define(1),
+            define(0, ARRAY_ITERATOR, CAPITAL_HTML, NO_IE_SRC),
+            define(1, FF_SRC),
+            define(1, FILL),
+            define(1, NO_OLD_SAFARI_ARRAY_ITERATOR),
+            define(1, V8_SRC),
+            define(2, ARROW),
+            define(1, ARROW, NO_FF_SRC),
+            define(1, ARROW, NO_V8_SRC),
+            define(2, ARRAY_ITERATOR, ARROW),
+            define(1, ARRAY_ITERATOR, ARROW, FF_SRC, FILL),
+            define(1, ARRAY_ITERATOR, ARROW, FILL, IE_SRC),
+            define(1, ARRAY_ITERATOR, ARROW, FILL, V8_SRC),
+        ]
+    );
 
     FROM_CHAR_CODE =
     [
@@ -1538,80 +1550,109 @@ var mapperFormatterDefault;
         define('fromCharCode', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_IE_SRC),
     ];
 
-    fromCharCodeCallbackFormatterArrow1 =
-    function (fromCharCode, arg)
-    {
-        var expr = 'undefined=>String.' + fromCharCode + '(' + arg + ')';
-        return expr;
-    };
-
-    fromCharCodeCallbackFormatterArrow2 =
-    function (fromCharCode, arg)
-    {
-        var expr = 'undefined=>(isNaN+false).constructor.' + fromCharCode + '(' + arg + ')';
-        return expr;
-    };
-
-    fromCharCodeCallbackFormatterArrowStatus =
-    function (fromCharCode, arg)
-    {
-        var expr = 'undefined=>status.constructor.' + fromCharCode + '(' + arg + ')';
-        return expr;
-    };
-
-    fromCharCodeCallbackFormatterDefault1 =
-    function (fromCharCode, arg)
-    {
-        var expr = 'function(undefined){return String.' + fromCharCode + '(' + arg + ')}';
-        return expr;
-    };
-
-    fromCharCodeCallbackFormatterDefault2 =
-    function (fromCharCode, arg)
-    {
-        var expr =
-        'function(undefined){return(isNaN+false).constructor.' + fromCharCode + '(' + arg + ')}';
-        return expr;
-    };
-
-    fromCharCodeCallbackFormatterStatus =
-    function (fromCharCode, arg)
-    {
-        var expr =
-        'function(undefined){return status.constructor.' + fromCharCode + '(' + arg + ')}';
-        return expr;
-    };
-
     FROM_CHAR_CODE_CALLBACK_FORMATTER =
-    [
-        define(fromCharCodeCallbackFormatterDefault2),
-        define(fromCharCodeCallbackFormatterArrow2, ARROW),
-        define(fromCharCodeCallbackFormatterDefault1, ARRAY_ITERATOR, CAPITAL_HTML),
-        define(fromCharCodeCallbackFormatterDefault2, ARRAY_ITERATOR, CAPITAL_HTML, FILL, IE_SRC),
-        define
-        (fromCharCodeCallbackFormatterDefault2, ARRAY_ITERATOR, CAPITAL_HTML, FILL, NO_IE_SRC),
-        define(fromCharCodeCallbackFormatterArrow1, ARRAY_ITERATOR, ARROW, CAPITAL_HTML),
-        define(fromCharCodeCallbackFormatterStatus, STATUS),
-        define(fromCharCodeCallbackFormatterArrowStatus, ARROW, STATUS),
-    ];
+    defineList
+    (
+        [
+            define
+            (
+                function (fromCharCode, arg)
+                {
+                    var expr =
+                    'function(undefined){return String.' + fromCharCode + '(' + arg + ')}';
+                    return expr;
+                }
+            ),
+            define
+            (
+                function (fromCharCode, arg)
+                {
+                    var expr =
+                    'function(undefined){return(isNaN+false).constructor.' + fromCharCode + '(' +
+                    arg + ')}';
+                    return expr;
+                }
+            ),
+            define
+            (
+                function (fromCharCode, arg)
+                {
+                    var expr = 'undefined=>String.' + fromCharCode + '(' + arg + ')';
+                    return expr;
+                },
+                ARROW
+            ),
+            define
+            (
+                function (fromCharCode, arg)
+                {
+                    var expr =
+                    'undefined=>(isNaN+false).constructor.' + fromCharCode + '(' + arg + ')';
+                    return expr;
+                },
+                ARROW
+            ),
+            define
+            (
+                function (fromCharCode, arg)
+                {
+                    var expr = 'undefined=>status.constructor.' + fromCharCode + '(' + arg + ')';
+                    return expr;
+                },
+                ARROW, STATUS
+            ),
+            define
+            (
+                function (fromCharCode, arg)
+                {
+                    var expr =
+                    'function(undefined){return status.constructor.' + fromCharCode + '(' + arg +
+                    ')}';
+                    return expr;
+                },
+                STATUS
+            ),
+        ],
+        [
+            define(1),
+            define(3, ARROW),
+            define(0, ARRAY_ITERATOR, CAPITAL_HTML),
+            define(1, ARRAY_ITERATOR, CAPITAL_HTML, FILL, IE_SRC),
+            define(1, ARRAY_ITERATOR, CAPITAL_HTML, FILL, NO_IE_SRC),
+            define(2, ARRAY_ITERATOR, ARROW, CAPITAL_HTML),
+            define(5, STATUS),
+            define(4, ARROW, STATUS),
+        ]
+    );
 
     JSFUCK_INFINITY = '1e1000';
 
-    mapperFormatterDblArrow =
-    function (arg)
-    {
-        var mapper = 'Function("return falsefalse=>undefined=>falsefalse' + arg + '")()';
-        return mapper;
-    };
-
-    mapperFormatterDefault =
-    function (arg)
-    {
-        var mapper = 'Function("return function(undefined){return this' + arg + '}")().bind';
-        return mapper;
-    };
-
-    MAPPER_FORMATTER = [define(mapperFormatterDefault), define(mapperFormatterDblArrow, ARROW)];
+    MAPPER_FORMATTER =
+    defineList
+    (
+        [
+            define
+            (
+                function (arg)
+                {
+                    var mapper =
+                    'Function("return function(undefined){return this' + arg + '}")().bind';
+                    return mapper;
+                }
+            ),
+            define
+            (
+                function (arg)
+                {
+                    var mapper =
+                    'Function("return falsefalse=>undefined=>falsefalse' + arg + '")()';
+                    return mapper;
+                },
+                ARROW
+            ),
+        ],
+        [define(0), define(1, ARROW)]
+    );
 
     OPTIMAL_B = [define('B'), define('b', ARRAY_ITERATOR)];
 

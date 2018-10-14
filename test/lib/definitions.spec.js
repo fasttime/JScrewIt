@@ -537,18 +537,26 @@ uneval,
         'Definitions of FROM_CHAR_CODE_CALLBACK_FORMATTER',
         function ()
         {
-            function testFormatter(entry)
+            function testFormatter(entry, index)
             {
                 var formatter = entry.definition;
                 emuIt
                 (
-                    getFunctionName(formatter),
+                    String(index),
                     getEntryFeature(entry),
                     function (emuFeatures)
                     {
                         var formatterExpr = formatter('fromCharCode', '1,16,256,4096');
                         var actual =
-                        emuDo(emuFeatures || [], Function('return ' + formatterExpr)());
+                        emuDo
+                        (
+                            emuFeatures || [],
+                            function ()
+                            {
+                                var actual = Function('return ' + formatterExpr)()();
+                                return actual;
+                            }
+                        );
                         expect(actual).toBe('\x01\x10\u0100\u1000');
                     }
                 );

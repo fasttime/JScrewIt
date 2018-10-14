@@ -26,7 +26,8 @@
 
     var exports = { padLeft: padLeft, padRight: padRight, repeat: repeat };
 
-    Object.keys(exports).forEach(
+    Object.keys(exports).forEach
+    (
         function (name)
         {
             global[name] = exports[name];

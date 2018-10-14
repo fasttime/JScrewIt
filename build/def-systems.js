@@ -14,8 +14,7 @@ const rawDefSystems =
     CREATE_PARSE_INT_ARG:
     {
         availableEntries: getEntries('CREATE_PARSE_INT_ARG:available'),
-        formatVariant: ({ name }) => name,
-        indent: 8,
+        formatVariant: 'index',
         replaceVariant:
         (encoder, createParseIntArg) =>
         {
@@ -33,8 +32,7 @@ const rawDefSystems =
     FROM_CHAR_CODE_CALLBACK_FORMATTER:
     {
         availableEntries: getEntries('FROM_CHAR_CODE_CALLBACK_FORMATTER:available'),
-        formatVariant: ({ name }) => name,
-        indent: 8,
+        formatVariant: 'index',
         replaceVariant:
         (encoder, fromCharCodeCallbackFormatter) =>
         {
@@ -46,8 +44,7 @@ const rawDefSystems =
     MAPPER_FORMATTER:
     {
         availableEntries: getEntries('MAPPER_FORMATTER:available'),
-        formatVariant: ({ name }) => name,
-        indent: 8,
+        formatVariant: 'index',
         replaceVariant:
         (encoder, mapperFormatter) =>
         {
@@ -75,6 +72,14 @@ const rawDefSystems =
     },
 };
 
+function createFormatVariantByIndex(availableEntries)
+{
+    const map = new Map();
+    availableEntries.forEach(({ definition }, index) => map.set(definition, index));
+    const formatVariant = Map.prototype.get.bind(map);
+    return formatVariant;
+}
+
 function define(definition, ...features)
 {
     const { mask } = Feature(features);
@@ -84,30 +89,37 @@ function define(definition, ...features)
 
 function getDefSystem(defSystemName)
 {
-    const rawDefSystem = rawDefSystems[defSystemName];
     let defSystem;
-    if (rawDefSystem[Symbol.iterator])
     {
-        let availableEntries;
-        let replaceVariant;
-        if (Array.isArray(rawDefSystem))
+        const rawDefSystem = rawDefSystems[defSystemName];
+        if (rawDefSystem[Symbol.iterator])
         {
-            availableEntries =
-            rawDefSystem.map(entry => typeof entry === 'object' ? entry : define(entry));
-            replaceVariant = (encoder, str) => encoder.replaceString(str);
+            let availableEntries;
+            let replaceVariant;
+            if (Array.isArray(rawDefSystem))
+            {
+                availableEntries =
+                rawDefSystem.map(entry => typeof entry === 'object' ? entry : define(entry));
+                replaceVariant = (encoder, str) => encoder.replaceString(str);
+            }
+            else
+            {
+                availableEntries = [...rawDefSystem].map(char => define(char));
+                replaceVariant = (encoder, char) => encoder.resolveCharacter(char).replacement;
+            }
+            defSystem = { availableEntries, indent: 12, replaceVariant };
         }
         else
-        {
-            availableEntries = [...rawDefSystem].map(char => define(char));
-            replaceVariant = (encoder, char) => encoder.resolveCharacter(char).replacement;
-        }
-        defSystem = { availableEntries, indent: 12, replaceVariant };
+            defSystem = rawDefSystem;
     }
-    else
-        defSystem = rawDefSystem;
     defSystem.organizedEntries = getEntries(defSystemName);
-    if (!defSystem.formatVariant)
-        defSystem.formatVariant = variant => `'${variant}'`;
+    {
+        const { formatVariant } = defSystem;
+        if (!formatVariant)
+            defSystem.formatVariant = variant => `'${variant}'`;
+        else if (formatVariant === 'index')
+            defSystem.formatVariant = createFormatVariantByIndex(defSystem.availableEntries);
+    }
     return defSystem;
 }
 

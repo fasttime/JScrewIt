@@ -224,6 +224,7 @@ function isRedundantNode(node)
 function printDefinitions(definitionSets, { indent, formatVariant })
 {
     let definitionCount = 0;
+    const indentStr = ' '.repeat(indent);
     console.log('\n---\n');
     for (const definitionSet of definitionSets)
     {
@@ -234,12 +235,15 @@ function printDefinitions(definitionSets, { indent, formatVariant })
             const args = [formatVariant(variant), ...feature.canonicalNames];
             let str = args.join(', ');
             if (str.length > 97 - indent)
-                str = `\n(\n    ${args.join(',\n    ')}\n)`;
+            {
+                str =
+                `\n${indentStr}(${args.map(arg => `\n${indentStr}    ${arg}`)}\n${indentStr})`;
+            }
             else if (str.length > 91 - indent)
-                str = `\n(${str})`;
+                str = `\n${indentStr}(${str})`;
             else
                 str = `(${str})`;
-            console.log('define%s,', str);
+            console.log('%sdefine%s,', indentStr, str);
         }
         definitionCount += definitionSet.size;
     }
@@ -253,7 +257,7 @@ function printHelpMessage(defSystems)
     (
         [
             'Please, specify one of the following definition systems:',
-            ...Object.keys(defSystems).map(defSystemName => `* ${defSystemName}`),
+            ...Object.keys(defSystems).map(defSystemName => `• ${defSystemName}`),
         ]
         .join('\n')
     );

@@ -239,9 +239,9 @@ function printHelp()
     'char-index help\n' +
     '\n' +
     'Characters can be specified in different ways:\n' +
-    '- ABC       Characters "A", "B" and "C"\n' +
-    '- U+0123    Character with hexadecimal code 123\n' +
-    '- {level7}  Characters in the level7 character set';
+    '• ABC       Characters "A", "B" and "C"\n' +
+    '• U+0123    Character with hexadecimal code 123\n' +
+    '• {level7}  Characters in the level7 character set';
     console.log(help);
 }
 

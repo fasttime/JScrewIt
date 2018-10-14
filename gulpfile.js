@@ -59,7 +59,7 @@ gulp.task
         var lint = require('gulp-fasttime-lint');
 
         var lintOpts = { envs: ['node'], parserOptions: { ecmaVersion: 6 } };
-        var stream = gulp.src('build/*.js').pipe(lint(lintOpts));
+        var stream = gulp.src('build/**/*.js').pipe(lint(lintOpts));
         return stream;
     }
 );
@@ -72,7 +72,7 @@ gulp.task
         var lint = require('gulp-fasttime-lint');
 
         var stream =
-        gulp.src(['*.js', 'build/es5/*.js', 'test/**/*.js', 'tools/**/*.js']).pipe(lint());
+        gulp.src(['*.js', 'test/**/*.js', 'tools/**/*.js']).pipe(lint());
         return stream;
     }
 );
