@@ -13,13 +13,12 @@ document,
 esToString,
 history,
 json_stringify,
-maskAnd,
 maskAreEqual,
 maskIncludes,
+maskIntersection,
 maskNew,
-maskNewInverted,
-maskOr,
 maskUnion,
+maskWithBit,
 object_create,
 object_defineProperty,
 object_freeze,
@@ -96,14 +95,17 @@ var validMaskFromArrayOrStringOrFeature;
         var result;
         if (arguments.length)
         {
-            var mask = maskNewInverted();
+            var mask;
             array_prototype_forEach.call
             (
                 arguments,
                 function (arg)
                 {
                     var otherMask = validMaskFromArrayOrStringOrFeature(arg);
-                    maskAnd(mask, otherMask);
+                    if (mask != null)
+                        mask = maskIntersection(mask, otherMask);
+                    else
+                        mask = otherMask;
                 }
             );
             result = featureFromMask(mask);
@@ -149,22 +151,23 @@ var validMaskFromArrayOrStringOrFeature;
             }
             else
             {
-                mask = maskNew();
                 var check = info.check;
                 if (check)
                 {
-                    mask[bitIndex >> 5] = 1 << bitIndex++;
+                    mask = maskWithBit(bitIndex++);
                     if (check())
-                        maskOr(autoMask, mask);
+                        autoMask = maskUnion(autoMask, mask);
                     check = wrapCheck(check);
                 }
+                else
+                    mask = maskNew();
                 var includes = includesMap[name] = info.includes || [];
                 includes.forEach
                 (
                     function (include)
                     {
                         var includeMask = completeFeature(include);
-                        maskOr(mask, includeMask);
+                        mask = maskUnion(mask, includeMask);
                     }
                 );
                 var description;
@@ -216,7 +219,7 @@ var validMaskFromArrayOrStringOrFeature;
             function (feature)
             {
                 var otherMask = maskFromStringOrFeature(feature);
-                maskOr(mask, otherMask);
+                mask = maskUnion(mask, otherMask);
             }
         );
         return mask;
@@ -291,7 +294,7 @@ var validMaskFromArrayOrStringOrFeature;
                 }
                 else
                     otherMask = maskFromStringOrFeature(arg);
-                maskOr(mask, otherMask);
+                mask = maskUnion(mask, otherMask);
             }
         );
         validationNeeded |= args.length > 1;
@@ -1774,7 +1777,7 @@ var validMaskFromArrayOrStringOrFeature;
                             engineFeatureObjs !== undefined &&
                             !isExcludingAttribute(attributeCache, attributeValue, engineFeatureObjs)
                         )
-                            maskOr(resultMask, otherMask);
+                            resultMask = maskUnion(resultMask, otherMask);
                     }
                 }
             );
@@ -1818,7 +1821,7 @@ var validMaskFromArrayOrStringOrFeature;
         (
             function (featureObj)
             {
-                maskOr(mask, featureObj.mask);
+                mask = maskUnion(mask, featureObj.mask);
             }
         );
         return mask;

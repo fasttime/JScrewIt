@@ -32,7 +32,6 @@ getToStringOptimizer,
 getValidFeatureMask,
 isMaskCompatible,
 json_stringify,
-maskAnd,
 maskIncludes,
 maskIsEmpty,
 maskNew,
@@ -74,22 +73,10 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             var outputEntries;
             if (inputEntries)
             {
-                var singleton = !array_isArray(inputEntries);
-                if (singleton)
-                    outputEntries = [createEntryClone(inputEntries, EMPTY_MASK)];
+                if (array_isArray(inputEntries))
+                    outputEntries = inputEntries.map(cloneEntry);
                 else
-                {
-                    outputEntries =
-                    inputEntries.map
-                    (
-                        function (entry)
-                        {
-                            entry = cloneEntry(entry);
-                            return entry;
-                        }
-                    );
-                }
-                outputEntries.singleton = singleton;
+                    outputEntries = [createEntryClone(inputEntries, EMPTY_MASK)];
             }
             return outputEntries;
         }
@@ -111,8 +98,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         function createEntryClone(definition, mask)
         {
             definition = clone(definition);
-            mask = mask.slice();
-            var entry = { definition: definition, mask: mask };
+            var entry = { definition: definition, mask: object_freeze(mask) };
             return entry;
         }
 
@@ -222,7 +208,6 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                 getConstantEntries:     getConstantEntries,
                 getEntries:             getEntries,
                 getToStringOptimizer:   getToStringOptimizer,
-                maskAnd:                maskAnd,
                 maskIncludes:           maskIncludes,
                 maskIsEmpty:            maskIsEmpty,
                 maskNew:                maskNew,

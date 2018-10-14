@@ -1,21 +1,14 @@
-var maskAnd;
 var maskAreEqual;
 var maskIncludes;
+var maskIntersection;
 var maskIsEmpty;
 var maskNew;
 var maskNewInverted;
-var maskOr;
 var maskUnion;
+var maskWithBit;
 
 (function ()
 {
-    maskAnd =
-    function (thisMask, mask)
-    {
-        thisMask[0] &= mask[0];
-        thisMask[1] &= mask[1];
-    };
-
     maskAreEqual =
     function (mask1, mask2)
     {
@@ -24,13 +17,21 @@ var maskUnion;
     };
 
     maskIncludes =
-    function (thisMask, mask)
+    function (includingMask, includedMask)
     {
-        var mask0;
-        var mask1;
+        var part0;
+        var part1;
         var included =
-        ((mask0 = mask[0]) & thisMask[0]) === mask0 && ((mask1 = mask[1]) & thisMask[1]) === mask1;
+        ((part0 = includedMask[0]) & includingMask[0]) === part0 &&
+        ((part1 = includedMask[1]) & includingMask[1]) === part1;
         return included;
+    };
+
+    maskIntersection =
+    function (mask1, mask2)
+    {
+        var mask = [mask1[0] & mask2[0], mask1[1] & mask2[1]];
+        return mask;
     };
 
     maskIsEmpty =
@@ -47,24 +48,18 @@ var maskUnion;
         return mask;
     };
 
-    maskNewInverted =
-    function ()
-    {
-        var mask = [~0, ~0];
-        return mask;
-    };
-
-    maskOr =
-    function (thisMask, mask)
-    {
-        thisMask[0] |= mask[0];
-        thisMask[1] |= mask[1];
-    };
-
     maskUnion =
     function (mask1, mask2)
     {
         var mask = [mask1[0] | mask2[0], mask1[1] | mask2[1]];
+        return mask;
+    };
+
+    maskWithBit =
+    function (bitIndex)
+    {
+        var mask = [0, 0];
+        mask[bitIndex >> 5] |= 1 << bitIndex;
         return mask;
     };
 }
