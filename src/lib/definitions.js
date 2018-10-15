@@ -66,6 +66,7 @@ var createParseIntArgDefault;
     var EXTERNAL                        = Feature.EXTERNAL;
     var FF_SRC                          = Feature.FF_SRC;
     var FILL                            = Feature.FILL;
+    var FLAT                            = Feature.FLAT;
     var FROM_CODE_POINT                 = Feature.FROM_CODE_POINT;
     var FUNCTION_19_LF                  = Feature.FUNCTION_19_LF;
     var FUNCTION_22_LF                  = Feature.FUNCTION_22_LF;
@@ -170,6 +171,7 @@ var createParseIntArgDefault;
     [
         define({ expr: 'FILTER', shift: 6 }),
         define({ expr: 'FILL', shift: 4 }, FILL),
+        define({ expr: 'FLAT', shift: 4 }, FLAT),
     ];
 
     var FB_PADDING_INFOS =
@@ -677,6 +679,7 @@ var createParseIntArgDefault;
             define('(ANY_FUNCTION + [])[0]', IE_SRC),
             defineFHCharAt('FILTER', 19, NO_V8_SRC),
             defineFHCharAt('FILL', 17, FILL, NO_V8_SRC),
+            defineFHCharAt('FLAT', 17, FLAT, NO_V8_SRC),
         ],
 
         '\f':
@@ -706,6 +709,9 @@ var createParseIntArgDefault;
             define('(+(ANY_FUNCTION + [])[0] + FILL)[20]', FILL, NO_FF_SRC),
             define('(RP_5_N + FILL)[20]', FILL, NO_IE_SRC),
             define('(FILL + [])[20]', FILL, NO_V8_SRC),
+            define('(+(ANY_FUNCTION + [])[0] + FLAT)[20]', FLAT, NO_FF_SRC),
+            define('(RP_5_N + FLAT)[20]', FLAT, NO_IE_SRC),
+            define('(FLAT + [])[20]', FLAT, NO_V8_SRC),
         ],
         // '!':    ,
         '"':
@@ -719,6 +725,7 @@ var createParseIntArgDefault;
             define('escape(FILTER)[20]'),
             define('atob("000l")[2]', ATOB),
             define('escape(FILL)[21]', FILL),
+            define('escape(FLAT)[21]', FLAT),
             define('escape(ANY_FUNCTION)[0]', IE_SRC),
         ],
         '&':
@@ -734,11 +741,13 @@ var createParseIntArgDefault;
         [
             defineFHCharAt('FILTER', 15),
             defineFHCharAt('FILL', 13, FILL),
+            defineFHCharAt('FLAT', 13, FLAT),
         ],
         ')':
         [
             defineFHCharAt('FILTER', 16),
             defineFHCharAt('FILL', 14, FILL),
+            defineFHCharAt('FLAT', 14, FLAT),
         ],
         // '*':    ,
         '+': '(1e100 + [])[2]',
@@ -818,10 +827,13 @@ var createParseIntArgDefault;
             define('(RP_3_NO + document)[11]', DOCUMENT),
             define // *
             ('escape((RP_3_NO + [+("10" + [(RP_6_SO + FILL)[40]] + "000")] + FILL)[40])[2]', FILL),
+            define // *
+            ('escape((RP_3_NO + [+("10" + [(RP_6_SO + FLAT)[40]] + "000")] + FLAT)[40])[2]', FLAT),
             define('(document + [])[12]', HTMLDOCUMENT),
             define('escape(ARRAY_ITERATOR)[30]', NO_OLD_SAFARI_ARRAY_ITERATOR),
             define('escape(FILTER)[50]', V8_SRC),
             define('escape(FILL)[60]', FF_SRC, FILL),
+            define('escape(FLAT)[60]', FF_SRC, FLAT),
         ],
         'E':
         [
@@ -1082,6 +1094,7 @@ var createParseIntArgDefault;
         [
             defineFHCharAt('FILTER', 18),
             defineFHCharAt('FILL', 16, FILL),
+            defineFHCharAt('FLAT', 16, FLAT),
         ],
         // '|':    ,
         '}':
@@ -1278,6 +1291,7 @@ var createParseIntArgDefault;
         [
             define('FILTER'),
             define('FILL', FILL),
+            define('FLAT', FLAT),
         ],
         ARRAY_ITERATOR:
         [
@@ -1299,9 +1313,13 @@ var createParseIntArgDefault;
             define('uneval(ANY_FUNCTION + [])[1]', IE_SRC, UNEVAL),
             define('uneval(+(ANY_FUNCTION + [])[0] + FILTER)[23]', NO_V8_SRC, UNEVAL),
             define('(RP_3_NO + RegExp(FILL))[21]', ESC_REGEXP_LF, FF_SRC, FILL),
+            define('(RP_3_NO + RegExp(FLAT))[21]', ESC_REGEXP_LF, FF_SRC, FLAT),
             define('(+(ANY_FUNCTION + [])[0] + RegExp(FILL))[21]', ESC_REGEXP_LF, FILL, NO_V8_SRC),
+            define('(+(ANY_FUNCTION + [])[0] + RegExp(FLAT))[21]', ESC_REGEXP_LF, FLAT, NO_V8_SRC),
             define('uneval(RP_3_NO + FILL)[21]', FF_SRC, FILL, UNEVAL),
+            define('uneval(RP_3_NO + FLAT)[21]', FF_SRC, FLAT, UNEVAL),
             define('uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]', FILL, NO_V8_SRC, UNEVAL),
+            define('uneval(+(ANY_FUNCTION + [])[0] + FLAT)[21]', FLAT, NO_V8_SRC, UNEVAL),
             defineCharDefault('\\', { atob: false, charCode: false, escSeq: false }),
         ],
         FILL:
@@ -1311,6 +1329,10 @@ var createParseIntArgDefault;
         FILTER:
         [
             define('[].filter'),
+        ],
+        FLAT:
+        [
+            define('[].flat', FLAT),
         ],
         FROM_CHAR_CODE:
         [
@@ -1345,6 +1367,7 @@ var createParseIntArgDefault;
         [
             define('[[true][+(RP_3_NO + FILTER)[30]]]'),
             define('[[true][+(RP_5_N + FILL)[30]]]', FILL),
+            define('[[true][+(RP_5_N + FLAT)[30]]]', FLAT),
         ],
         FBEP_9_U:
         [
@@ -1364,11 +1387,13 @@ var createParseIntArgDefault;
         [
             define('+("10" + [(RP_4_N + FILTER)[40]] + "00000")'),
             define('+("10" + [(RP_6_SO + FILL)[40]] + "00000")', FILL),
+            define('+("10" + [(RP_6_SO + FLAT)[40]] + "00000")', FLAT),
         ],
         FBP_8_NO:
         [
             define('+("1000" + (RP_5_N + FILTER + 0)[40] + "000")'),
             define('+("1000" + (FILL + 0)[33] + "000")', FILL),
+            define('+("1000" + (FLAT + 0)[33] + "000")', FLAT),
         ],
         FBP_9_U:
         [

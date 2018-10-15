@@ -164,24 +164,34 @@ uneval,
         [
             [],
             ['FF_SRC'],
+            ['FILL'],
+            ['FLAT'],
             ['IE_SRC'],
             ['INCR_CHAR'],
-            ['V8_SRC'],
             ['NO_FF_SRC'],
             ['NO_IE_SRC'],
             ['NO_V8_SRC'],
-            ['FILL'],
-            ['FILL', 'FF_SRC'],
+            ['V8_SRC'],
+            ['FF_SRC', 'FILL'],
+            ['FF_SRC', 'FLAT'],
             ['FILL', 'IE_SRC'],
             ['FILL', 'INCR_CHAR'],
-            ['FILL', 'V8_SRC'],
             ['FILL', 'NO_FF_SRC'],
             ['FILL', 'NO_IE_SRC'],
             ['FILL', 'NO_V8_SRC'],
+            ['FILL', 'V8_SRC'],
+            ['FLAT', 'IE_SRC'],
+            ['FLAT', 'INCR_CHAR'],
+            ['FLAT', 'NO_FF_SRC'],
+            ['FLAT', 'NO_IE_SRC'],
+            ['FLAT', 'NO_V8_SRC'],
+            ['FLAT', 'V8_SRC'],
             ['INCR_CHAR', 'NO_FF_SRC'],
             ['INCR_CHAR', 'NO_V8_SRC'],
             ['FILL', 'INCR_CHAR', 'NO_FF_SRC'],
             ['FILL', 'INCR_CHAR', 'NO_V8_SRC'],
+            ['FLAT', 'INCR_CHAR', 'NO_FF_SRC'],
+            ['FLAT', 'INCR_CHAR', 'NO_V8_SRC'],
         ];
 
         var FB_VARIETIES = [['FF_SRC'], ['IE_SRC'], ['V8_SRC']];
@@ -189,13 +199,17 @@ uneval,
         var FH_DISPOSITIONS =
         [
             [],
+            ['FILL'],
+            ['FLAT'],
             ['IE_SRC'],
             ['INCR_CHAR'],
             ['NO_IE_SRC'],
-            ['FILL'],
             ['FILL', 'IE_SRC'],
             ['FILL', 'INCR_CHAR'],
             ['FILL', 'NO_IE_SRC'],
+            ['FLAT', 'IE_SRC'],
+            ['FLAT', 'INCR_CHAR'],
+            ['FLAT', 'NO_IE_SRC'],
         ];
 
         var FH_VARIETIES = [['IE_SRC'], ['NO_IE_SRC']];
@@ -488,6 +502,14 @@ uneval,
                 function ()
                 {
                     this.toBe(Array.prototype.filter);
+                }
+            );
+            testConstant
+            (
+                'FLAT',
+                function ()
+                {
+                    this.toBe(Array.prototype.flat);
                 }
             );
             testConstant
