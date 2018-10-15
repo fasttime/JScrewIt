@@ -79,6 +79,22 @@
         return result;
     }
 
+    function makeEmuFeatureArrayPrototypeFunction(name)
+    {
+        var setUp =
+        function ()
+        {
+            var fn = Function();
+            fn.toString =
+            function ()
+            {
+                return (Array.prototype.join + '').replace(/\bjoin\b/, name);
+            };
+            override(this, 'Array.prototype.' + name, { value: fn });
+        };
+        return setUp;
+    }
+
     function makeEmuFeatureDocument(str, regExp)
     {
         var setUp =
@@ -169,6 +185,57 @@
         return setUp;
     }
 
+    function makeEmuFeatureEscRegExp(char, escSeq)
+    {
+        var setUp =
+        function ()
+        {
+            if ((RegExp(char) + '')[1] !== '\\')
+            {
+                var newRegExp =
+                (function (oldRegExp)
+                {
+                    function RegExp(pattern, flags)
+                    {
+                        if (pattern !== undefined)
+                            pattern = (pattern + '').replace(charRegExp, escSeq);
+                        var obj = oldRegExp(pattern, flags);
+                        return obj;
+                    }
+
+                    var charRegExp = oldRegExp(char, 'g');
+                    RegExp.prototype = oldRegExp.prototype;
+                    return RegExp;
+                }
+                )(RegExp);
+                override(this, 'RegExp.prototype.constructor', { value: newRegExp });
+                override(this, 'RegExp', { value: newRegExp });
+            }
+        };
+        return setUp;
+    }
+
+    function makeEmuFeatureFunctionLF(replacement)
+    {
+        var setUp =
+        function ()
+        {
+            var context = this;
+            registerToStringAdapter
+            (
+                this,
+                'Function',
+                function ()
+                {
+                    var str = context.Function.toString.call(this);
+                    if (/function anonymous\(\n?\) {\s+}/.test(str))
+                        return replacement;
+                }
+            );
+        };
+        return setUp;
+    }
+
     function makeEmuFeatureHtml(methodNames, adapter, regExp)
     {
         var setUp =
@@ -230,57 +297,6 @@
                 };
                 registerToStringAdapter(this, 'Function', adapter);
             }
-        };
-        return setUp;
-    }
-
-    function makeEmuFeatureEscRegExp(char, escSeq)
-    {
-        var setUp =
-        function ()
-        {
-            if ((RegExp(char) + '')[1] !== '\\')
-            {
-                var newRegExp =
-                (function (oldRegExp)
-                {
-                    function RegExp(pattern, flags)
-                    {
-                        if (pattern !== undefined)
-                            pattern = (pattern + '').replace(charRegExp, escSeq);
-                        var obj = oldRegExp(pattern, flags);
-                        return obj;
-                    }
-
-                    var charRegExp = oldRegExp(char, 'g');
-                    RegExp.prototype = oldRegExp.prototype;
-                    return RegExp;
-                }
-                )(RegExp);
-                override(this, 'RegExp.prototype.constructor', { value: newRegExp });
-                override(this, 'RegExp', { value: newRegExp });
-            }
-        };
-        return setUp;
-    }
-
-    function makeEmuFeatureFunctionLF(replacement)
-    {
-        var setUp =
-        function ()
-        {
-            var context = this;
-            registerToStringAdapter
-            (
-                this,
-                'Function',
-                function ()
-                {
-                    var str = context.Function.toString.call(this);
-                    if (/function anonymous\(\n?\) {\s+}/.test(str))
-                        return replacement;
-                }
-            );
         };
         return setUp;
     }
@@ -627,17 +643,8 @@
             override(this, 'sidebar', { value: { toString: toString } });
         },
         FF_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_FF),
-        FILL:
-        function ()
-        {
-            var fill = Function();
-            fill.toString =
-            function ()
-            {
-                return (Array.prototype.join + '').replace(/\bjoin\b/, 'fill');
-            };
-            override(this, 'Array.prototype.fill', { value: fill });
-        },
+        FILL: makeEmuFeatureArrayPrototypeFunction('fill'),
+        FLAT: makeEmuFeatureArrayPrototypeFunction('flat'),
         FROM_CODE_POINT:
         function ()
         {

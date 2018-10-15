@@ -11,6 +11,7 @@ const ENGINE_ENTRIES =
         versions:
         [
             { description: ['66+', '53+'], feature: 'CHROME66' },
+            { description: ['69+', '56+'], feature: 'CHROME69' },
         ],
     },
     {
@@ -25,6 +26,7 @@ const ENGINE_ENTRIES =
         versions:
         [
             { description: '54+', feature: 'FF54' },
+            { description: '62+', feature: 'FF62' },
         ],
     },
     {
@@ -43,9 +45,10 @@ const ENGINE_ENTRIES =
         [
             { description: '7.0+', feature: 'SAFARI70' },
             { description: '7.1+', feature: 'SAFARI71' },
-            { description: '8.0+', feature: 'SAFARI80' },
-            { description: '9.0+', feature: 'SAFARI90' },
-            { description: '10.0+', feature: 'SAFARI100' },
+            { description: '8+', feature: 'SAFARI80' },
+            { description: '9+', feature: 'SAFARI90' },
+            { description: '10+', feature: 'SAFARI100' },
+            { description: '12+', feature: 'SAFARI120' },
         ],
     },
     {

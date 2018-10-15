@@ -571,6 +571,16 @@ var validMaskFromArrayOrStringOrFeature;
                 return available;
             },
         },
+        FLAT:
+        {
+            description: 'Existence of the native function Array.prototype.flat.',
+            check:
+            function ()
+            {
+                var available = Array.prototype.flat;
+                return available;
+            },
+        },
         FROM_CODE_POINT:
         {
             description: 'Existence of the function String.fromCodePoint.',
@@ -1011,6 +1021,35 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
+        CHROME69:
+        {
+            engine: 'Chrome 69 and Opera 56 or later',
+            includes:
+            [
+                'ARROW',
+                'ATOB',
+                'BARPROP',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_SLASH',
+                'FILL',
+                'FLAT',
+                'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'STATUS',
+                'UNDEFINED',
+                'V8_SRC',
+                'WINDOW',
+            ],
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
+        },
         EDGE: 'EDGE40',
         EDGE40:
         {
@@ -1057,6 +1096,39 @@ var validMaskFromArrayOrStringOrFeature;
                 'EXTERNAL',
                 'FF_SRC',
                 'FILL',
+                'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'STATUS',
+                'UNDEFINED',
+                'UNEVAL',
+                'WINDOW',
+            ],
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
+        },
+        FF62:
+        {
+            engine: 'Firefox 62 or later',
+            includes:
+            [
+                'ARROW',
+                'ATOB',
+                'BARPROP',
+                'CONSOLE',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'EXTERNAL',
+                'FF_SRC',
+                'FILL',
+                'FLAT',
                 'FROM_CODE_POINT',
                 'FUNCTION_19_LF',
                 'GMT',
@@ -1367,6 +1439,37 @@ var validMaskFromArrayOrStringOrFeature;
                 'ESC_REGEXP_SLASH',
                 'FF_SRC',
                 'FILL',
+                'FROM_CODE_POINT',
+                'FUNCTION_22_LF',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'STATUS',
+                'UNDEFINED',
+                'WINDOW',
+            ],
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
+        },
+        SAFARI120:
+        {
+            engine: 'Safari 12 or later',
+            includes:
+            [
+                'ARROW',
+                'ATOB',
+                'BARPROP',
+                'CONSOLE',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'FF_SRC',
+                'FILL',
+                'FLAT',
                 'FROM_CODE_POINT',
                 'FUNCTION_22_LF',
                 'GMT',

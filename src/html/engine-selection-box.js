@@ -9,7 +9,8 @@ function createEngineSelectionBox()
             name: 'Chrome',
             versions:
             [
-                { feature: 'CHROME66', number: '66+' },
+                { feature: 'CHROME66', number: '66–68' },
+                { feature: 'CHROME69', number: '69+' },
             ],
         },
         {
@@ -23,7 +24,8 @@ function createEngineSelectionBox()
             name: 'Firefox',
             versions:
             [
-                { feature: 'FF54', number: '54+' },
+                { feature: 'FF54', number: '54–61' },
+                { feature: 'FF62', number: '62+' },
             ],
         },
         {
@@ -41,16 +43,18 @@ function createEngineSelectionBox()
             versions:
             [
                 { feature: 'SAFARI70', number: '7.0' },
-                { feature: 'SAFARI71', number: '7.1–8.0' },
-                { feature: 'SAFARI90', number: '9.0' },
-                { feature: 'SAFARI100', number: '10.0+' },
+                { feature: 'SAFARI71', number: '7.1–8' },
+                { feature: 'SAFARI90', number: '9' },
+                { feature: 'SAFARI100', number: '10–11' },
+                { feature: 'SAFARI120', number: '12+' },
             ],
         },
         {
             name: 'Opera',
             versions:
             [
-                { feature: 'CHROME66', number: '53+' },
+                { feature: 'CHROME66', number: '53–55' },
+                { feature: 'CHROME69', number: '56+' },
             ],
         },
         {
@@ -70,7 +74,7 @@ function createEngineSelectionBox()
                 { feature: 'NODE012', number: '0.12' },
                 { feature: 'NODE40', number: '4' },
                 { feature: 'NODE50', number: '5' },
-                { feature: 'NODE50', number: '10+' },
+                { feature: 'NODE100', number: '10+' },
             ],
         },
     ];

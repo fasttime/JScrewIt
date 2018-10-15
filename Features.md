@@ -29,12 +29,12 @@ _Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 0.12+._
 ### `ARROW`
 Support for arrow functions.
 
-_Available in Chrome, Edge, Firefox, Safari 10.0+, Opera and Node.js 4+._
+_Available in Chrome, Edge, Firefox, Safari 10+, Opera and Node.js 4+._
 <a name="ATOB"></a>
 ### `ATOB`
 Existence of the global functions atob and btoa.
 
-_Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari before 10.0._
+_Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari before 10._
 <a name="AUTO"></a>
 ### `AUTO`
 All features available in the current engine.
@@ -58,6 +58,9 @@ _An alias for [`CHROME66`](#CHROME66)._
 <a name="CHROME66"></a>
 ### `CHROME66`
 Features available in Chrome 66 and Opera 53 or later.
+<a name="CHROME69"></a>
+### `CHROME69`
+Features available in Chrome 69 and Opera 56 or later.
 <a name="COMPACT"></a>
 ### `COMPACT`
 All new browsers' features.<br>
@@ -123,6 +126,9 @@ _An alias for [`FF54`](#FF54)._
 <a name="FF54"></a>
 ### `FF54`
 Features available in Firefox 54 or later.
+<a name="FF62"></a>
+### `FF62`
+Features available in Firefox 62 or later.
 <a name="FF_SRC"></a>
 ### `FF_SRC`
 A string representation of native functions typical for Firefox and Safari.<br>
@@ -134,11 +140,16 @@ _Available in Firefox and Safari._
 Existence of the native function Array.prototype.fill.
 
 _Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 4+._
+<a name="FLAT"></a>
+### `FLAT`
+Existence of the native function Array.prototype.flat.
+
+_Available in Chrome 69+, Firefox 62+, Safari 12+ and Opera 56+._
 <a name="FROM_CODE_POINT"></a>
 ### `FROM_CODE_POINT`
 Existence of the function String.fromCodePoint.
 
-_Available in Chrome, Edge, Firefox, Safari 9.0+, Opera and Node.js 4+._
+_Available in Chrome, Edge, Firefox, Safari 9+, Opera and Node.js 4+._
 <a name="FUNCTION_19_LF"></a>
 ### `FUNCTION_19_LF`
 A string representation of dynamically generated functions where the character at index 19 is a line feed \("\\n"\).
@@ -148,7 +159,7 @@ _Available in Chrome, Edge, Firefox, Opera and Node.js 10+._
 ### `FUNCTION_22_LF`
 A string representation of dynamically generated functions where the character at index 22 is a line feed \("\\n"\).
 
-_Available in Internet Explorer, Safari 9.0+, Android Browser and Node.js before 10._
+_Available in Internet Explorer, Safari 9+, Android Browser and Node.js before 10._
 <a name="GMT"></a>
 ### `GMT`
 Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).<br>
@@ -197,12 +208,12 @@ _Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android B
 ### `INTL`
 Existence of the global object Intl.
 
-_Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10.0+, Opera, Android Browser 4.4 and Node.js 0.12+._
+_Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4 and Node.js 0.12+._
 <a name="LOCALE_INFINITY"></a>
 ### `LOCALE_INFINITY`
 Language sensitive string representation of Infinity as "∞".
 
-_Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10.0+, Opera, Android Browser 4.4 and Node.js 0.12+._
+_Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4 and Node.js 0.12+._
 <a name="NAME"></a>
 ### `NAME`
 Existence of the name property for functions.
@@ -227,7 +238,7 @@ Features available in Node.js 5 to 9.
 ### `NODECONSTRUCTOR`
 Existence of the global object Node having the string representation "\[object NodeConstructor\]".
 
-_Available in Safari before 10.0. This feature is not available inside web workers._
+_Available in Safari before 10. This feature is not available inside web workers._
 <a name="NO_FF_SRC"></a>
 ### `NO_FF_SRC`
 A string representation of native functions typical for V8 and Edge or for Internet Explorer but not for Firefox and Safari.
@@ -243,7 +254,7 @@ _Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
 ### `NO_OLD_SAFARI_ARRAY_ITERATOR`
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
 
-_Available in Chrome, Edge, Firefox, Safari 9.0+, Opera and Node.js 0.12+._
+_Available in Chrome, Edge, Firefox, Safari 9+, Opera and Node.js 0.12+._
 <a name="NO_V8_SRC"></a>
 ### `NO_V8_SRC`
 A string representation of native functions typical for Firefox, Internet Explorer and Safari.<br>
@@ -253,6 +264,9 @@ _Available in Firefox, Internet Explorer and Safari._
 <a name="SAFARI100"></a>
 ### `SAFARI100`
 Features available in Safari 10 or later.
+<a name="SAFARI120"></a>
+### `SAFARI120`
+Features available in Safari 12 or later.
 <a name="SAFARI70"></a>
 ### `SAFARI70`
 Features available in Safari 7.0.
@@ -272,7 +286,7 @@ _An alias for [`ANY_WINDOW`](#ANY_WINDOW)._
 ### `SELF_OBJ`
 Existence of the global object self whose string representation starts with "\[object ".
 
-_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.0._
+_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10._
 <a name="STATUS"></a>
 ### `STATUS`
 Existence of the global string status.
@@ -321,6 +335,7 @@ This table lists features available in the most common engines.
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
 <li><a href="#FILL"><code>FILL</code></a>
+<li><a href="#FLAT"><code>FLAT</code></a> (Chrome 69+, Opera 56+)
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
@@ -394,6 +409,7 @@ This table lists features available in the most common engines.
 <li><a href="#EXTERNAL"><code>EXTERNAL</code></a>
 <li><a href="#FF_SRC"><code>FF_SRC</code></a>
 <li><a href="#FILL"><code>FILL</code></a>
+<li><a href="#FLAT"><code>FLAT</code></a> (Firefox 62+)
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a>
 <li><a href="#GMT"><code>GMT</code></a>
@@ -450,7 +466,7 @@ This table lists features available in the most common engines.
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
 <li><a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
-<li><a href="#ARROW"><code>ARROW</code></a> (Safari 10.0+)
+<li><a href="#ARROW"><code>ARROW</code></a> (Safari 10+)
 <li><a href="#ATOB"><code>ATOB</code></a>
 <li><a href="#BARPROP"><code>BARPROP</code></a>
 <li><a href="#CONSOLE"><code>CONSOLE</code></a>
@@ -460,18 +476,19 @@ This table lists features available in the most common engines.
 <li><a href="#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
 <li><a href="#FF_SRC"><code>FF_SRC</code></a>
 <li><a href="#FILL"><code>FILL</code></a> (Safari 7.1+)
-<li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Safari 9.0+)
-<li><a href="#FUNCTION_22_LF"><code>FUNCTION_22_LF</code></a> (Safari 9.0+)
+<li><a href="#FLAT"><code>FLAT</code></a> (Safari 12+)
+<li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Safari 9+)
+<li><a href="#FUNCTION_22_LF"><code>FUNCTION_22_LF</code></a> (Safari 9+)
 <li><a href="#GMT"><code>GMT</code></a>
 <li><a href="#HISTORY"><code>HISTORY</code></a>
 <li><a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="#INCR_CHAR"><code>INCR_CHAR</code></a>
-<li><a href="#INTL"><code>INTL</code></a> (Safari 10.0+)
-<li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Safari 10.0+)
+<li><a href="#INTL"><code>INTL</code></a> (Safari 10+)
+<li><a href="#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Safari 10+)
 <li><a href="#NAME"><code>NAME</code></a>
-<li><a href="#NODECONSTRUCTOR"><code>NODECONSTRUCTOR</code></a> (not in Safari 10.0+)
+<li><a href="#NODECONSTRUCTOR"><code>NODECONSTRUCTOR</code></a> (not in Safari 10+)
 <li><a href="#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="#FF_SRC"><code>FF_SRC</code></a>)
-<li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Safari 9.0+)
+<li><a href="#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Safari 9+)
 <li><a href="#NO_V8_SRC"><code>NO_V8_SRC</code></a> (implied by <a href="#FF_SRC"><code>FF_SRC</code></a>)
 <li><a href="#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="#WINDOW"><code>WINDOW</code></a>)
 <li><a href="#STATUS"><code>STATUS</code></a>
