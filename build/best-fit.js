@@ -208,6 +208,23 @@ function dropIndirectSpecializations(node)
     }
 }
 
+function featureDifference(featureAll, featureSome)
+{
+    const { Feature } = require('..');
+
+    const elementaryNames =
+    featureAll.elementaryNames.filter
+    (
+        elementaryName =>
+        {
+            const result = !featureSome.includes(elementaryName);
+            return result;
+        }
+    );
+    const featureComplement = Feature(elementaryNames);
+    return featureComplement;
+}
+
 function isRedundantNode(node)
 {
     const { varSet, generalizations } = node;
@@ -221,15 +238,27 @@ function isRedundantNode(node)
     return true;
 }
 
-function printDefinitions(definitionSets, { indent, formatVariant })
+function printDefinitions(definitionSets, { indent, formatVariant, variantToMinMaskMap })
 {
+    const { Feature, debug: { createFeatureFromMask } } = require('..');
+
     let definitionCount = 0;
     const indentStr = ' '.repeat(indent);
     console.log('\n---\n');
     for (const definitionSet of definitionSets)
     {
         const variant = definitionSet.varSet.any;
-        const features = [...definitionSet].sort(compareFeatures);
+        const minFeature =
+        variantToMinMaskMap ?
+        createFeatureFromMask(variantToMinMaskMap.get(variant)) :
+        Feature.DEFAULT;
+        const features = [];
+        for (const definitionSetFeature of definitionSet)
+        {
+            const feature = featureDifference(definitionSetFeature, minFeature);
+            features.push(feature);
+        }
+        features.sort(compareFeatures);
         for (const feature of features)
         {
             const args = [formatVariant(variant), ...feature.canonicalNames];
@@ -348,8 +377,8 @@ function runJoin(nodes)
                         specializations.add(node1);
                 }
                 dropIndirectSpecializations(node0);
-                for (const specialNode of specializations)
-                    specialNode.generalizations.add(node0);
+                for (const { generalizations } of specializations)
+                    generalizations.add(node0);
                 edgeCount += specializations.size;
                 ++done;
                 bar.update(done / nodeCount);
@@ -422,21 +451,6 @@ into
 
 function simplifyDefinitions(definitionSets)
 {
-    function createFeatureC(featureAB, featureABC)
-    {
-        const elementaryNames =
-        featureABC.elementaryNames.filter
-        (
-            elementaryName =>
-            {
-                const result = !featureAB.includes(elementaryName);
-                return result;
-            }
-        );
-        const featureAC = Feature(elementaryNames);
-        return featureAC;
-    }
-
     function getFeaturesABC(featuresAB, features2, featureC)
     {
         const featuresABC = [];
@@ -486,7 +500,7 @@ function simplifyDefinitions(definitionSets)
                         {
                             if (feature2.includes(feature1))
                             {
-                                const featureC = createFeatureC(feature1, feature2);
+                                const featureC = featureDifference(feature2, feature1);
                                 const featuresABC =
                                 getFeaturesABC(definitions1, definitionSet2, featureC);
                                 if (featuresABC)
@@ -513,10 +527,10 @@ function simplifyDefinitions(definitionSets)
         const defSystem = defSystems[defSystemName];
         if (defSystem)
         {
-            const timeUtils = require('../tools/time-utils');
+            const { formatDuration, timeThis } = require('../tools/time-utils');
 
-            const duration = timeUtils.timeThis(() => run(defSystem));
-            const durationStr = timeUtils.formatDuration(duration);
+            const duration = timeThis(() => run(defSystem));
+            const durationStr = formatDuration(duration);
             console.log('%s elapsed.', durationStr);
             return;
         }

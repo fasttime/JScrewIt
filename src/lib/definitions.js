@@ -7,8 +7,9 @@ LEVEL_UNDEFINED,
 Empty,
 Feature,
 Solution,
-createDefinitionEntry,
 define,
+defineList,
+defineWithArrayLike,
 noProto,
 object_defineProperty,
 resolveSimple,
@@ -337,7 +338,7 @@ var createParseIntArgDefault;
         var unescapeOpt = checkOpt('unescape', true);
         var definition =
         createCharDefaultDefinition(charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt);
-        var entry = createDefinitionEntry(definition, arguments, 2);
+        var entry = defineWithArrayLike(definition, arguments, 2);
         return entry;
     }
 
@@ -426,21 +427,8 @@ var createParseIntArgDefault;
             break;
         }
         var definition = createCharAtDefinitionFH(expr, index, entries, FH_PADDING_INFOS);
-        var entry = createDefinitionEntry(definition, arguments, 2);
+        var entry = defineWithArrayLike(definition, arguments, 2);
         return entry;
-    }
-
-    function defineList(available, entries)
-    {
-        entries.available = available;
-        entries.forEach
-        (
-            function (entry)
-            {
-                entry.definition = available[entry.definition].definition;
-            }
-        );
-        return entries;
     }
 
     function defineSimple(simple, expr, level)
@@ -1510,10 +1498,10 @@ var createParseIntArgDefault;
             define(1, FILL),
             define(1, NO_OLD_SAFARI_ARRAY_ITERATOR),
             define(1, V8_SRC),
-            define(2, ARROW),
+            define(2),
             define(1, ARROW, NO_FF_SRC),
             define(1, ARROW, NO_V8_SRC),
-            define(2, ARRAY_ITERATOR, ARROW),
+            define(2, ARRAY_ITERATOR),
             define(1, ARRAY_ITERATOR, ARROW, FF_SRC, FILL),
             define(1, ARRAY_ITERATOR, ARROW, FILL, IE_SRC),
             define(1, ARRAY_ITERATOR, ARROW, FILL, V8_SRC),
@@ -1521,34 +1509,38 @@ var createParseIntArgDefault;
     );
 
     FROM_CHAR_CODE =
-    [
-        define('fromCharCode'),
-        define('fromCodePoint', BARPROP, FROM_CODE_POINT),
-        define('fromCodePoint', ESC_REGEXP_SLASH, FROM_CODE_POINT),
-        define('fromCodePoint', FROM_CODE_POINT, UNEVAL),
-        define('fromCodePoint', ESC_REGEXP_LF, FROM_CODE_POINT, NO_V8_SRC),
-        define('fromCharCode', CONSOLE, FROM_CODE_POINT, UNEVAL),
-        define('fromCharCode', FROM_CODE_POINT, NODECONSTRUCTOR, UNEVAL),
-        define('fromCodePoint', CAPITAL_HTML, FROM_CODE_POINT),
-        define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, IE_SRC),
-        define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, IE_SRC),
-        define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, NO_IE_SRC),
-        define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, NO_IE_SRC),
-        define('fromCharCode', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FILL, FROM_CODE_POINT, IE_SRC),
-        define('fromCodePoint', ATOB, FROM_CODE_POINT),
-        define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_V8_SRC),
-        define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_V8_SRC),
-        define('fromCharCode', ESC_REGEXP_LF, FF_SRC, FROM_CODE_POINT, NAME),
-        define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, IE_SRC, NAME),
-        define('fromCodePoint', ARRAY_ITERATOR, ESC_REGEXP_LF, FF_SRC, FROM_CODE_POINT, NAME),
-        define('fromCodePoint', ESC_REGEXP_LF, FF_SRC, FILL, FROM_CODE_POINT, NAME),
-        define('fromCharCode', CONSOLE, ESC_REGEXP_SLASH, FROM_CODE_POINT),
-        define('fromCharCode', ESC_REGEXP_SLASH, FROM_CODE_POINT, NODECONSTRUCTOR),
-        define('fromCharCode', ARRAY_ITERATOR, ATOB, CAPITAL_HTML, FROM_CODE_POINT),
-        define('fromCharCode', CONSOLE, ESC_REGEXP_LF, FROM_CODE_POINT, NO_V8_SRC),
-        define('fromCharCode', ESC_REGEXP_LF, FROM_CODE_POINT, NODECONSTRUCTOR, NO_V8_SRC),
-        define('fromCharCode', ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_IE_SRC),
-    ];
+    defineList
+    (
+        [define('fromCharCode'), define('fromCodePoint', FROM_CODE_POINT)],
+        [
+            define(0),
+            define(1, BARPROP),
+            define(1, ESC_REGEXP_SLASH),
+            define(1, UNEVAL),
+            define(1, ESC_REGEXP_LF, NO_V8_SRC),
+            define(0, CONSOLE, FROM_CODE_POINT, UNEVAL),
+            define(0, FROM_CODE_POINT, NODECONSTRUCTOR, UNEVAL),
+            define(1, CAPITAL_HTML),
+            define(0, ESC_REGEXP_SLASH, FROM_CODE_POINT, IE_SRC),
+            define(1, ARRAY_ITERATOR, ESC_REGEXP_SLASH, IE_SRC),
+            define(0, ESC_REGEXP_SLASH, FROM_CODE_POINT, NO_IE_SRC),
+            define(1, ARRAY_ITERATOR, ESC_REGEXP_SLASH, NO_IE_SRC),
+            define(0, ARRAY_ITERATOR, ESC_REGEXP_SLASH, FILL, FROM_CODE_POINT, IE_SRC),
+            define(1, ATOB),
+            define(0, ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_V8_SRC),
+            define(1, ARRAY_ITERATOR, ESC_REGEXP_SLASH, NAME, NO_V8_SRC),
+            define(0, ESC_REGEXP_LF, FF_SRC, FROM_CODE_POINT, NAME),
+            define(0, ESC_REGEXP_SLASH, FROM_CODE_POINT, IE_SRC, NAME),
+            define(1, ARRAY_ITERATOR, ESC_REGEXP_LF, FF_SRC, NAME),
+            define(1, ESC_REGEXP_LF, FF_SRC, FILL, NAME),
+            define(0, CONSOLE, ESC_REGEXP_SLASH, FROM_CODE_POINT),
+            define(0, ESC_REGEXP_SLASH, FROM_CODE_POINT, NODECONSTRUCTOR),
+            define(0, ARRAY_ITERATOR, ATOB, CAPITAL_HTML, FROM_CODE_POINT),
+            define(0, CONSOLE, ESC_REGEXP_LF, FROM_CODE_POINT, NO_V8_SRC),
+            define(0, ESC_REGEXP_LF, FROM_CODE_POINT, NODECONSTRUCTOR, NO_V8_SRC),
+            define(0, ARRAY_ITERATOR, ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_IE_SRC),
+        ]
+    );
 
     FROM_CHAR_CODE_CALLBACK_FORMATTER =
     defineList
@@ -1596,15 +1588,6 @@ var createParseIntArgDefault;
             (
                 function (fromCharCode, arg)
                 {
-                    var expr = 'undefined=>status.constructor.' + fromCharCode + '(' + arg + ')';
-                    return expr;
-                },
-                ARROW, STATUS
-            ),
-            define
-            (
-                function (fromCharCode, arg)
-                {
                     var expr =
                     'function(undefined){return status.constructor.' + fromCharCode + '(' + arg +
                     ')}';
@@ -1612,16 +1595,25 @@ var createParseIntArgDefault;
                 },
                 STATUS
             ),
+            define
+            (
+                function (fromCharCode, arg)
+                {
+                    var expr = 'undefined=>status.constructor.' + fromCharCode + '(' + arg + ')';
+                    return expr;
+                },
+                ARROW, STATUS
+            ),
         ],
         [
             define(1),
-            define(3, ARROW),
+            define(3),
             define(0, ARRAY_ITERATOR, CAPITAL_HTML),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FILL, IE_SRC),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FILL, NO_IE_SRC),
-            define(2, ARRAY_ITERATOR, ARROW, CAPITAL_HTML),
-            define(5, STATUS),
-            define(4, ARROW, STATUS),
+            define(2, ARRAY_ITERATOR, CAPITAL_HTML),
+            define(4),
+            define(5),
         ]
     );
 
@@ -1651,19 +1643,27 @@ var createParseIntArgDefault;
                 ARROW
             ),
         ],
-        [define(0), define(1, ARROW)]
+        [define(0), define(1)]
     );
 
-    OPTIMAL_B = [define('B'), define('b', ARRAY_ITERATOR)];
+    OPTIMAL_B = defineList([define('B'), define('b')], [define(0), define(1, ARRAY_ITERATOR)]);
 
     OPTIMAL_RETURN_STRING =
-    [
-        define('return(isNaN+false).constructor'),
-        define('return String', ARRAY_ITERATOR, CAPITAL_HTML),
-        define('return(isNaN+false).constructor', FILL, IE_SRC),
-        define('return(isNaN+false).constructor', FILL, NO_IE_SRC),
-        define('return status.constructor', STATUS),
-    ];
+    defineList
+    (
+        [
+            define('return String'),
+            define('return(isNaN+false).constructor'),
+            define('return status.constructor', STATUS),
+        ],
+        [
+            define(1),
+            define(0, ARRAY_ITERATOR, CAPITAL_HTML),
+            define(1, FILL, IE_SRC),
+            define(1, FILL, NO_IE_SRC),
+            define(2),
+        ]
+    );
 
     SIMPLE = new Empty();
 

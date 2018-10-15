@@ -12,64 +12,29 @@ const rawDefSystems =
     'BASE64_ALPHABET_LO_4:1': ['0B', '0R', '0h', '0x'],
     'BASE64_ALPHABET_LO_4:3': ['0D', '0T', '0j', '0z'],
     CREATE_PARSE_INT_ARG:
+    (encoder, createParseIntArg) =>
     {
-        availableEntries: getEntries('CREATE_PARSE_INT_ARG:available'),
-        formatVariant: 'index',
-        replaceVariant:
-        (encoder, createParseIntArg) =>
-        {
-            const str = createParseIntArg(3, 2);
-            const replacement = encoder.replaceString(str, { optimize: true });
-            return replacement;
-        },
+        const str = createParseIntArg(3, 2);
+        const replacement = encoder.replaceString(str, { optimize: true });
+        return replacement;
     },
-    FROM_CHAR_CODE:
-    {
-        availableEntries: getEntries('FROM_CHAR_CODE:available'),
-        indent: 8,
-        replaceVariant: (encoder, str) => encoder.replaceString(str, { optimize: true }),
-    },
+    FROM_CHAR_CODE: (encoder, str) => encoder.replaceString(str, { optimize: true }),
     FROM_CHAR_CODE_CALLBACK_FORMATTER:
+    (encoder, fromCharCodeCallbackFormatter) =>
     {
-        availableEntries: getEntries('FROM_CHAR_CODE_CALLBACK_FORMATTER:available'),
-        formatVariant: 'index',
-        replaceVariant:
-        (encoder, fromCharCodeCallbackFormatter) =>
-        {
-            const str = fromCharCodeCallbackFormatter('0');
-            const replacement = encoder.replaceString(str, { optimize: true });
-            return replacement;
-        },
+        const str = fromCharCodeCallbackFormatter('0');
+        const replacement = encoder.replaceString(str, { optimize: true });
+        return replacement;
     },
     MAPPER_FORMATTER:
+    (encoder, mapperFormatter) =>
     {
-        availableEntries: getEntries('MAPPER_FORMATTER:available'),
-        formatVariant: 'index',
-        replaceVariant:
-        (encoder, mapperFormatter) =>
-        {
-            const expr = mapperFormatter('[undefined]');
-            const replacement = encoder.replaceExpr(expr);
-            return replacement;
-        },
+        const expr = mapperFormatter('[undefined]');
+        const replacement = encoder.replaceExpr(expr);
+        return replacement;
     },
-    OPTIMAL_B:
-    {
-        availableEntries: [define('B'), define('b')],
-        indent: 8,
-        replaceVariant: (encoder, char) => encoder.resolveCharacter(char).replacement,
-    },
-    OPTIMAL_RETURN_STRING:
-    {
-        availableEntries:
-        [
-            define('return(isNaN+false).constructor'),
-            define('return String'),
-            define('return status.constructor', 'STATUS'),
-        ],
-        indent: 8,
-        replaceVariant: (encoder, str) => encoder.replaceString(str, { optimize: true }),
-    },
+    OPTIMAL_B: (encoder, char) => encoder.resolveCharacter(char).replacement,
+    OPTIMAL_RETURN_STRING: (encoder, str) => encoder.replaceString(str, { optimize: true }),
 };
 
 function createFormatVariantByIndex(availableEntries)
@@ -91,11 +56,13 @@ function getDefSystem(defSystemName)
 {
     let defSystem;
     {
+        let availableEntries;
+        let replaceVariant;
+        let formatVariant;
+        let variantToMinMaskMap;
         const rawDefSystem = rawDefSystems[defSystemName];
         if (rawDefSystem[Symbol.iterator])
         {
-            let availableEntries;
-            let replaceVariant;
             if (Array.isArray(rawDefSystem))
             {
                 availableEntries =
@@ -107,19 +74,21 @@ function getDefSystem(defSystemName)
                 availableEntries = [...rawDefSystem].map(char => define(char));
                 replaceVariant = (encoder, char) => encoder.resolveCharacter(char).replacement;
             }
-            defSystem = { availableEntries, indent: 12, replaceVariant };
+            formatVariant = variant => `'${variant}'`;
         }
         else
-            defSystem = rawDefSystem;
+        {
+            availableEntries = getEntries(`${defSystemName}:available`);
+            replaceVariant = rawDefSystem;
+            formatVariant = createFormatVariantByIndex(availableEntries);
+            variantToMinMaskMap = new Map();
+            availableEntries.forEach
+            (({ definition, mask }) => variantToMinMaskMap.set(definition, mask));
+        }
+        defSystem = { availableEntries, formatVariant, replaceVariant, variantToMinMaskMap };
     }
+    defSystem.indent = 12;
     defSystem.organizedEntries = getEntries(defSystemName);
-    {
-        const { formatVariant } = defSystem;
-        if (!formatVariant)
-            defSystem.formatVariant = variant => `'${variant}'`;
-        else if (formatVariant === 'index')
-            defSystem.formatVariant = createFormatVariantByIndex(defSystem.availableEntries);
-    }
     return defSystem;
 }
 
