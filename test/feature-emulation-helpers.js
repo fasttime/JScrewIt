@@ -64,7 +64,7 @@
             {
                 var codePoint = Number(arg);
                 if ((codePoint & 0x1fffff) !== codePoint || codePoint > 0x10ffff)
-                    throw RangeError(codePoint + ' is not a valid code point');
+                    throw new RangeError(codePoint + ' is not a valid code point');
                 if (codePoint <= 0xffff)
                     codeUnits.push(codePoint);
                 else

@@ -8,18 +8,23 @@ function doAdd()
     {
         const progress = require('./progress');
 
-        progress
-        (
-            'Scanning character definitions',
-            bar =>
-            solutionBookMap.index
+        for (const char of charSet)
+        {
+            console.log('Indexing character %s', formatCharacter(char));
+            progress
             (
-                charSet,
-                char => console.log('Indexing character %s', formatCharacter(char)),
-                progress => bar.update(progress),
-                char => console.warn('Required character %s not indexed', formatCharacter(char))
-            )
-        );
+                'Scanning character definitions',
+                bar =>
+                solutionBookMap.index
+                (
+                    char,
+                    progress => bar.update(progress),
+                    char => console.warn('Required character %s not indexed', formatCharacter(char))
+                )
+            );
+            if (!noSave)
+                solutionBookMap.save();
+        }
     }
 
     function run()
@@ -28,8 +33,6 @@ function doAdd()
         for (const char of charSet)
             solutionBookMap.delete(char);
         indexCharacters(solutionBookMap);
-        if (!noSave)
-            solutionBookMap.save();
     }
 
     let noLoad = false;

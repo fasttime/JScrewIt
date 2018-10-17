@@ -13,7 +13,7 @@ Object.assign
         clear:              clearSolutionBookMap,
         entries:            entryIterator,
         forEach,
-        index:              indexChars,
+        index:              indexChar,
         keys:               charIterator,
         load:               loadSolutionBookMap,
         loadTime:           undefined,
@@ -154,17 +154,15 @@ function forEach(callback, thisArg)
         callback.call(thisArg, value, key, solutionBookMap);
 }
 
-function indexChars(chars, startProgress, updateProgress, missingCharacter)
+function indexChar(char, updateProgress, missingCharacter)
 {
     const Analyzer = require('./optimized-analyzer');
     const { getCharacterEntries, maskIncludes } = debug;
-    const fs = requireFS();
-    const path = require.resolve(jscrewitPath);
-    const stats = fs.statSync(path);
-    const jscrewitTimestamp = Date.parse(stats.mtime);
-    let charsDone = 0;
-    for (const char of chars)
     {
+        const fs = requireFS();
+        const path = require.resolve(jscrewitPath);
+        const { mtime } = fs.statSync(path);
+        const jscrewitTimestamp = Date.parse(mtime);
         const definitionCount = getCharacterEntries(char).length;
         const solutionIndex = new Map();
         const usedCharSet = fillSolutionIndex(solutionIndex, char);
@@ -173,7 +171,6 @@ function indexChars(chars, startProgress, updateProgress, missingCharacter)
         solutions.sort(compareSolutions);
         const solutionBook = { jscrewitTimestamp, definitionCount, usedChars, solutions };
         solutionBookMap.set(char, solutionBook);
-        ++charsDone;
     }
 
     function addMask({ masks }, mask)
@@ -206,9 +203,8 @@ function indexChars(chars, startProgress, updateProgress, missingCharacter)
 
     function fillSolutionIndex(solutionIndex, char)
     {
-        startProgress(char);
         const analyzer = new Analyzer();
-        const ignoredCharSet = new Set(chars);
+        const ignoredCharSet = new Set(char);
         analyzer.missingCharacter =
         char =>
         {
@@ -222,7 +218,7 @@ function indexChars(chars, startProgress, updateProgress, missingCharacter)
         {
             const output = encoder.resolveCharacter(char);
             addSolutionToIndex(solutionIndex, output, analyzer.featureObj);
-            updateProgress(analyzer.progress, charsDone);
+            updateProgress(analyzer.progress);
         }
         const { usedCharSet } = analyzer;
         return usedCharSet;

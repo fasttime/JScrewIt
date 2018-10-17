@@ -23,7 +23,7 @@
     "tools",
     "!.*"
   ],
-  "main": "lib/jscrewit",
+  "main": "lib/jscrewit.js",
   "bin": "screw.js",
   "repository": {
     "type": "git",

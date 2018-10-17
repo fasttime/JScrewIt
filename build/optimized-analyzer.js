@@ -68,7 +68,7 @@ class OptimizedAnalyzer extends Analyzer
                         }
                     }
                     if (!knownSolution)
-                        throw new Error('No single determinate solution found.');
+                        knownSolution = resolveCharacter.call(encoder, char);
                     return knownSolution;
                 }
                 this.missingCharacter(char);

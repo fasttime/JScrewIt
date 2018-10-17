@@ -117,7 +117,7 @@ function throwFeatureCollisionError()
     // feature.
     // In this case, the minimal common feature may not be characteristic for the set of features
     // generating the solution, and a new characterization may be necessary.
-    throw new Error('Feature collision');
+    throw Error('Feature collision');
 }
 
 {

@@ -87,7 +87,7 @@ function getDefSystem(defSystemName)
         }
         defSystem = { availableEntries, formatVariant, replaceVariant, variantToMinMaskMap };
     }
-    defSystem.indent = 12;
+    defSystem.indent = 8;
     defSystem.organizedEntries = getEntries(defSystemName);
     return defSystem;
 }

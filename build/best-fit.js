@@ -167,7 +167,7 @@ function createVarSet(entries)
 
         get mask()
         {
-            throw new TypeError('No mask set');
+            throw TypeError('No mask set');
         }
 
         get variants()
@@ -240,11 +240,10 @@ function isRedundantNode(node)
 
 function printDefinitions(definitionSets, { indent, formatVariant, variantToMinMaskMap })
 {
+    const LINE_LENGTH = 100;
     const { Feature, debug: { createFeatureFromMask } } = require('..');
 
-    let definitionCount = 0;
-    const indentStr = ' '.repeat(indent);
-    console.log('\n---\n');
+    const argsList = [];
     for (const definitionSet of definitionSets)
     {
         const variant = definitionSet.varSet.any;
@@ -258,26 +257,45 @@ function printDefinitions(definitionSets, { indent, formatVariant, variantToMinM
             const feature = featureDifference(definitionSetFeature, minFeature);
             features.push(feature);
         }
-        features.sort(compareFeatures);
-        for (const feature of features)
+        const formattedVariant = formatVariant(variant);
+        features
+        .sort(compareFeatures)
+        .forEach
+        (
+            feature =>
+            {
+                const args = [formattedVariant, ...feature.canonicalNames];
+                argsList.push(args);
+            }
+        );
+    }
+    const indentStr = ' '.repeat(indent);
+    console.log('\n---\n');
+    const str = `[${argsList.map(args => `define(${args.join(', ')})`).join(', ')}]`;
+    if (str.length <= LINE_LENGTH - indent)
+        console.log('%s%s', indentStr, str);
+    else
+    {
+        console.log('%s[', indentStr);
+        for (const args of argsList)
         {
-            const args = [formatVariant(variant), ...feature.canonicalNames];
             let str = args.join(', ');
-            if (str.length > 97 - indent)
+            if (str.length > LINE_LENGTH - 3 - indent)
             {
                 str =
-                `\n${indentStr}(${args.map(arg => `\n${indentStr}    ${arg}`)}\n${indentStr})`;
+                `\n${indentStr}    (${args.map(arg => `\n${indentStr}        ${arg}`)}` +
+                `\n${indentStr}    )`;
             }
-            else if (str.length > 91 - indent)
-                str = `\n${indentStr}(${str})`;
+            else if (str.length > LINE_LENGTH - 9 - indent)
+                str = `\n${indentStr}    (${str})`;
             else
                 str = `(${str})`;
-            console.log('%sdefine%s,', indentStr, str);
+            console.log('%s    define%s,', indentStr, str);
         }
-        definitionCount += definitionSet.size;
+        console.log('%s]', indentStr);
     }
     console.log('\n---\n');
-    console.log('%d definition(s) listed.', definitionCount);
+    console.log('%d definition(s) listed.', argsList.length);
 }
 
 function printHelpMessage(defSystems)
@@ -496,7 +514,8 @@ function simplifyDefinitions(definitionSets)
                 {
                     for (const feature1 of definitions1)
                     {
-                        for (const feature2 of definitionSet2)
+                        // Iterating over a copy of the set to be modified.
+                        for (const feature2 of [...definitionSet2])
                         {
                             if (feature2.includes(feature1))
                             {
