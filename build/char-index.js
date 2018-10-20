@@ -10,18 +10,21 @@ function doAdd()
 
         for (const char of charSet)
         {
-            console.log('Indexing character %s', formatCharacter(char));
+            const formattedCharacter = formatCharacter(char);
+            solutionBookMap.delete(char);
             progress
             (
-                'Scanning character definitions',
+                `Indexing character ${formattedCharacter}`,
                 bar =>
                 solutionBookMap.index
                 (
                     char,
                     progress => bar.update(progress),
-                    char => console.warn('Required character %s not indexed', formatCharacter(char))
+                    char =>
+                    console.warn('Required character %s not indexed', formatCharacter(char))
                 )
             );
+            console.log('Character %s indexed', formattedCharacter);
             if (!noSave)
                 solutionBookMap.save();
         }
@@ -30,8 +33,6 @@ function doAdd()
     function run()
     {
         const solutionBookMap = getSolutionBookMap(!noLoad);
-        for (const char of charSet)
-            solutionBookMap.delete(char);
         indexCharacters(solutionBookMap);
     }
 
@@ -67,8 +68,11 @@ function doAdd()
 
 function doLevel()
 {
-    const solutionBookMap = getSolutionBookMap();
-    while (solutionBookMap.size)
+    const fs = require('fs');
+    const path = require('path');
+
+    let output = '';
+    for (const solutionBookMap = getSolutionBookMap(); solutionBookMap.size;)
     {
         const independentChars = [];
         for (const [char, solutionBook] of solutionBookMap.entries())
@@ -78,7 +82,12 @@ function doLevel()
                 independentChars.push(char);
         }
         independentChars.forEach(char => solutionBookMap.delete(char));
-        console.log(formatCharacters(independentChars));
+        output += `${formatCharacters(independentChars)}\n`;
+    }
+    process.stdout.write(output);
+    {
+        const outputFileName = path.join(__dirname, '..', '.char-index-level');
+        fs.writeFileSync(outputFileName, output);
     }
 }
 
@@ -97,14 +106,7 @@ function doUses()
 
 function doWanted()
 {
-    const solutionBookMap = getSolutionBookMap();
-    const wantedChars = [];
-    for (let charCode = 0; charCode <= 0xffff; ++charCode)
-    {
-        const char = String.fromCharCode(charCode);
-        if (isCharacterDefined(char) && !solutionBookMap.has(char))
-            wantedChars.push(char);
-    }
+    const wantedChars = getWantedCharacters();
     console.log(formatCharacters(wantedChars));
 }
 
@@ -145,6 +147,19 @@ function getSolutionBookMap(load = true)
     return solutionBookMap;
 }
 
+function getWantedCharacters()
+{
+    const solutionBookMap = getSolutionBookMap();
+    const wantedChars = [];
+    for (let charCode = 0; charCode <= 0xffff; ++charCode)
+    {
+        const char = String.fromCharCode(charCode);
+        if (isCharacterDefined(char) && !solutionBookMap.has(char))
+            wantedChars.push(char);
+    }
+    return wantedChars;
+}
+
 function isCharacterDefined(char)
 {
     const { getCharacterEntries } = require('..').debug;
@@ -157,36 +172,19 @@ function parseArguments(parseSequence)
 {
     const charSet = new Set();
     {
-        const levels =
+        const LOGICAL_SETS =
         {
             __proto__:  null,
-            static:     '+-.0123456789INadefilnrstuy',
-            level1:     ' ()[]cov{}',
-            level2:     '\n",=AFbgjm',
-            level3:     '/<>BOS',
-            level4:     'Rhpwxz',
-            level5:     '%CD',
-            level6:     'P',
-            level7:     '\r\x1eGLMUZ^kq\x8a\x8d\x96\x9e£¥§©±¶º»ÇÚÝâéîöø',
-            level8:     '\fEHJKQTWXY∞',
-            level9:     '\t&:;?V\\',
+            static:     () => '+-.0123456789INadefilnrstuy',
+            wanted:     getWantedCharacters,
         };
-        Object.values(levels).reduce
-        (
-            (accumulator, str, index) =>
-            {
-                accumulator += str;
-                levels[`deep${index}`] = accumulator;
-                return accumulator;
-            }
-        );
         for (let index = 3; index < argCount; ++index)
         {
             const arg = argv[index];
             const matches = /^\s*(?:--(.*)|{(.*)}|U\+([\dA-F]{4}))\s*$/i.exec(arg);
             if (matches)
             {
-                const [, sequence, level, hexCode] = matches;
+                const [, sequence, logicalSet, hexCode] = matches;
                 if (sequence != null)
                 {
                     if (!parseSequence(sequence))
@@ -195,16 +193,19 @@ function parseArguments(parseSequence)
                         throw ARG_ERROR;
                     }
                 }
-                else if (level != null)
+                else if (logicalSet != null)
                 {
-                    const chars = levels[level];
-                    if (!chars)
+                    const charsProvider = LOGICAL_SETS[logicalSet];
+                    if (!charsProvider)
                     {
-                        console.log('Unknown level "%s"', level);
+                        console.error('Unknown logical set "%s"', logicalSet);
                         throw ARG_ERROR;
                     }
-                    for (const char of chars)
-                        charSet.add(char);
+                    {
+                        const chars = charsProvider();
+                        for (const char of chars)
+                            charSet.add(char);
+                    }
                 }
                 else
                 {
@@ -244,7 +245,7 @@ function printHelp()
     'Characters can be specified in different ways:\n' +
     '• ABC       Characters "A", "B" and "C"\n' +
     '• U+0123    Character with hexadecimal code 123\n' +
-    '• {level7}  Characters in the level7 character set';
+    '• {static}  Characters in the static set';
     console.log(help);
 }
 
@@ -254,35 +255,38 @@ const { argv } = process;
 const argCount = argv.length;
 if (argCount < 3)
     printHelp();
-const [,, command] = argv;
-try
+else
 {
-    switch (command)
+    const [,, command] = argv;
+    try
     {
-    case 'add':
-        doAdd();
-        break;
-    case 'help':
-        printHelp();
-        break;
-    case 'level':
-        doLevel();
-        break;
-    case 'uses':
-        doUses();
-        break;
-    case 'wanted':
-        doWanted();
-        break;
-    default:
-        console.error
-        ('char-index: \'%s\' is not a valid command. See \'char-index help\'.', command);
-        throw ARG_ERROR;
+        switch (command)
+        {
+        case 'add':
+            doAdd();
+            break;
+        case 'help':
+            printHelp();
+            break;
+        case 'level':
+            doLevel();
+            break;
+        case 'uses':
+            doUses();
+            break;
+        case 'wanted':
+            doWanted();
+            break;
+        default:
+            console.error
+            ('char-index: \'%s\' is not a valid command. See \'char-index help\'.', command);
+            throw ARG_ERROR;
+        }
     }
-}
-catch (error)
-{
-    if (error !== ARG_ERROR)
-        throw error;
-    process.exitCode = 1;
+    catch (error)
+    {
+        if (error !== ARG_ERROR)
+            throw error;
+        process.exitCode = 1;
+    }
 }

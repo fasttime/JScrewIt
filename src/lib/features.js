@@ -464,7 +464,7 @@ var validMaskFromArrayOrStringOrFeature;
             (
                 function (str)
                 {
-                    var available = str + '' === '[object DOMWindow]';
+                    var available = str === '[object DOMWindow]';
                     return available;
                 }
             ),

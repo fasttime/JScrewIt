@@ -283,7 +283,7 @@ function printOptimalFeatureReport(features, optimalFeatureObjs)
             logOk('Preset features are optimal.');
         else
         {
-            const output = 'Preset features are suboptimal. Optimal features are:';
+            let output = 'Preset features are suboptimal. Optimal features are:';
             for (const optimalFeatureObj of optimalFeatureObjs)
                 output += `\n${optimalFeatureObj}`;
             logWarn(output);

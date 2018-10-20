@@ -79,12 +79,11 @@
         return result;
     }
 
-    function makeEmuFeatureArrayPrototypeFunction(name)
+    function makeEmuFeatureArrayPrototypeFunction(name, fn)
     {
         var setUp =
         function ()
         {
-            var fn = Function();
             fn.toString =
             function ()
             {
@@ -643,8 +642,25 @@
             override(this, 'sidebar', { value: { toString: toString } });
         },
         FF_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_FF),
-        FILL: makeEmuFeatureArrayPrototypeFunction('fill'),
-        FLAT: makeEmuFeatureArrayPrototypeFunction('flat'),
+        FILL: makeEmuFeatureArrayPrototypeFunction('fill', Function()),
+        FLAT:
+        makeEmuFeatureArrayPrototypeFunction
+        (
+            'flat',
+            function ()
+            {
+                var array = [];
+                Array.prototype.forEach.call
+                (
+                    this,
+                    function (element)
+                    {
+                        array = array.concat(element);
+                    }
+                );
+                return array;
+            }
+        ),
         FROM_CODE_POINT:
         function ()
         {

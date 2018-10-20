@@ -88,26 +88,21 @@ module.exports =
 [
     data
     (
-        ['ARRAY_ITERATOR', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_IE_SRC', 'NO_V8_SRC', 'STATUS'],
+        ['ARRAY_ITERATOR', 'ATOB', 'CAPITAL_HTML', 'FF_SRC', 'FLAT', 'STATUS'],
         length => String.fromCharCode(59999).repeat(length),
         'byCharCodes'
     ),
     data
     (
-        [
-            'ARRAY_ITERATOR',
-            'ARROW',
-            'ATOB',
-            'CAPITAL_HTML',
-            'FILL',
-            'NO_IE_SRC',
-            'NO_V8_SRC',
-            'STATUS',
-        ],
+        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FF_SRC', 'FLAT', 'STATUS'],
         length =>
         {
             const CHAR_CODES =
-            [49989, 49988, 59989, 37889, 59988, 37888, 38999, 38998, 29989, 38997, 37989];
+            [
+                49989,  49988,  37889,  59989,  37888,  59988,  38998,  38999,  29989,  37989,
+                38997,  57989,  58889,  58898,  58899,  59969,  9989,   19989,  38989,  39989,
+                58897,  17989,  28998,  28999,  29988,  37988,  38996,  58689,
+            ];
             const str = repeatToFit(String.fromCharCode(...CHAR_CODES), length);
             return str;
         },
@@ -115,16 +110,7 @@ module.exports =
     ),
     data
     (
-        [
-            'ARRAY_ITERATOR',
-            'ARROW',
-            'ATOB',
-            'CAPITAL_HTML',
-            'FILL',
-            'NO_IE_SRC',
-            'NO_V8_SRC',
-            'STATUS',
-        ],
+        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FF_SRC', 'FLAT', 'UNEVAL'],
         length =>
         {
             const prefix = repeatToFit('01234567', 176);
@@ -135,23 +121,14 @@ module.exports =
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ATOB', 'FILL', 'NAME', 'NO_IE_SRC', 'NO_V8_SRC', 'UNEVAL'],
+        ['ARRAY_ITERATOR', 'ATOB', 'FF_SRC', 'FLAT', 'NAME', 'UNEVAL'],
         length => String.fromCharCode(59999).repeat(length),
         'byDict'
     ),
     data
     (
-        [
-            'ARRAY_ITERATOR',
-            'ARROW',
-            'ATOB',
-            'CAPITAL_HTML',
-            'FILL',
-            'NO_FF_SRC',
-            'NO_IE_SRC',
-            'STATUS',
-        ],
-        createDictTestString.bind(null, 121),
+        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FLAT', 'STATUS', 'V8_SRC'],
+        createDictTestString.bind(null, 123),
         'byDictRadix3'
     ),
     data
@@ -159,48 +136,37 @@ module.exports =
         [
             'ARROW',
             'CAPITAL_HTML',
-            'FILL',
+            'FLAT',
             'FROM_CODE_POINT',
             'NAME',
-            'NO_FF_SRC',
-            'NO_IE_SRC',
             'SELF_OBJ',
             'STATUS',
+            'V8_SRC',
         ],
-        createDictTestString.bind(null, 82),
+        createDictTestString.bind(null, 77),
         'byDictRadix4'
     ),
     data
     (
-        [
-            'ARRAY_ITERATOR',
-            'ARROW',
-            'ATOB',
-            'CAPITAL_HTML',
-            'FILL',
-            'NO_FF_SRC',
-            'NO_IE_SRC',
-            'STATUS',
-        ],
+        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FLAT', 'STATUS', 'V8_SRC'],
         createDictTestString.bind(null, 129),
         'byDictRadix4AmendedBy1'
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_FF_SRC', 'NO_IE_SRC'],
-        createInvertedDictTestString.bind(null, 367),
+        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FLAT', 'STATUS', 'V8_SRC'],
+        createInvertedDictTestString.bind(null, 300),
         'byDictRadix4AmendedBy2'
     ),
     data
     (
         [
-            'ARRAY_ITERATOR',
             'ARROW',
             'ATOB',
             'CAPITAL_HTML',
-            'FILL',
-            'NO_FF_SRC',
+            'FLAT',
             'NO_IE_SRC',
+            'NO_OLD_SAFARI_ARRAY_ITERATOR',
             'STATUS',
         ],
         createAntiRadix4TestString.bind(null, 479),
@@ -208,34 +174,14 @@ module.exports =
     ),
     data
     (
-        [
-            'ARRAY_ITERATOR',
-            'ARROW',
-            'BARPROP',
-            'FILL',
-            'FROM_CODE_POINT',
-            'NAME',
-            'NODECONSTRUCTOR',
-            'NO_FF_SRC',
-            'NO_IE_SRC',
-            'STATUS',
-        ],
-        createAntiRadix4TestString.bind(null, 473),
+        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FLAT', 'STATUS', 'V8_SRC'],
+        createAntiRadix4TestString.bind(null, 470),
         'byDictRadix5AmendedBy3'
     ),
     data
     (
-        [
-            'ARRAY_ITERATOR',
-            'ARROW',
-            'ATOB',
-            'CAPITAL_HTML',
-            'FILL',
-            'NO_IE_SRC',
-            'NO_V8_SRC',
-            'STATUS',
-        ],
-        createDictTestString.bind(null, 57),
+        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FF_SRC', 'FLAT', 'STATUS'],
+        createDictTestString.bind(null, 55),
         'bySparseFigures'
     ),
 ];

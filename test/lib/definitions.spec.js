@@ -522,6 +522,14 @@ uneval,
             );
             testConstant
             (
+                'F_A_L_S_E',
+                function ()
+                {
+                    this.toEqual(['f', 'a', 'l', 's', 'e']);
+                }
+            );
+            testConstant
+            (
                 'PLAIN_OBJECT',
                 function ()
                 {

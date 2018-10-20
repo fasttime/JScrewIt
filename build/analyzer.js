@@ -11,6 +11,8 @@
         constructor()
         {
             this.featureObj = JScrewIt.Feature.DEFAULT;
+            this.unitCache = new Map();
+            this.staticStrCache = new Map();
         }
 
         doesNotExclude(mask)
@@ -38,7 +40,9 @@
                 return null;
             const featureQueries = this.featureQueries = [];
             const encoder =
-            this.encoder = createModifiedEncoder(this.featureObj, featureQueries);
+            this.encoder =
+            createModifiedEncoder
+            (this.featureObj, featureQueries, this.unitCache, this.staticStrCache);
             return encoder;
         }
 
@@ -64,30 +68,67 @@
         this.ancestorMask = ancestorMask;
     }
 
-    function createModifiedEncoder(featureObj, featureQueries)
+    function createModifiedEncoder(featureObj, featureQueries, unitCache, staticStrCache)
     {
-        const maskSet = new Set();
-        let ancestorMask = maskNew();
         const encoder = createEncoder(featureObj);
-        encoder.hasFeatures =
-        function (mask)
         {
-            const included = maskIncludes(encoder.mask, mask);
-            if (!maskIsEmpty(mask))
+            const { expressParse } = encoder;
+            encoder.expressParse =
+            function (expr)
             {
-                const key = getMaskKey(mask);
-                if (!maskSet.has(key))
+                let unit = unitCache.get(expr);
+                if (!unit)
                 {
-                    maskSet.add(key);
-                    const featureQuery = new FeatureQueryInfo(mask, included, ancestorMask);
-                    featureQueries.push(featureQuery);
+                    unit = expressParse.call(this, expr);
+                    unitCache.set(expr, unit);
                 }
-            }
-            if (included)
-                ancestorMask = maskUnion(mask, ancestorMask);
-            return included;
-        };
-        encoder.replaceStaticString = replaceStaticString;
+                return unit;
+            };
+        }
+        {
+            const maskSet = new Set();
+            let ancestorMask = maskNew();
+            encoder.hasFeatures =
+            function (mask)
+            {
+                const included = maskIncludes(encoder.mask, mask);
+                if (!maskIsEmpty(mask))
+                {
+                    const key = getMaskKey(mask);
+                    if (!maskSet.has(key))
+                    {
+                        maskSet.add(key);
+                        const featureQuery = new FeatureQueryInfo(mask, included, ancestorMask);
+                        featureQueries.push(featureQuery);
+                    }
+                }
+                if (included)
+                    ancestorMask = maskUnion(mask, ancestorMask);
+                return included;
+            };
+        }
+        {
+            const { replaceStaticString } = encoder;
+            encoder.replaceStaticString =
+            function (str, maxLength)
+            {
+                let replacement = staticStrCache.get(str);
+                if (replacement)
+                {
+                    if (!(replacement.length > maxLength))
+                        return replacement;
+                }
+                else
+                {
+                    replacement = replaceStaticString.call(this, str, maxLength);
+                    if (replacement)
+                    {
+                        staticStrCache.set(str, replacement);
+                        return replacement;
+                    }
+                }
+            };
+        }
         return encoder;
     }
 
@@ -140,26 +181,6 @@
         return progress;
     }
 
-    function replaceStaticString(str, maxLength)
-    {
-        let replacement = staticStrCache[str];
-        if (replacement)
-        {
-            if (!(replacement.length > maxLength))
-                return replacement;
-        }
-        else
-        {
-            const options = { bond: true, forceString: true, maxLength };
-            replacement = this.replaceString(str, options);
-            if (replacement)
-            {
-                staticStrCache[str] = replacement;
-                return replacement;
-            }
-        }
-    }
-
     if (typeof self !== 'undefined')
     {
         ({ JScrewIt } = self);
@@ -171,8 +192,6 @@
         JScrewIt = require('..');
         module.exports = Analyzer;
     }
-
-    const staticStrCache = { __proto__: null };
 
     const { createEncoder, createFeatureFromMask, maskIncludes, maskIsEmpty, maskNew, maskUnion } =
     JScrewIt.debug;

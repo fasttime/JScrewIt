@@ -256,7 +256,8 @@ var resolveSimple;
 
     var encoderProtoSource =
     {
-        callResolver: function (stackName, resolver)
+        callResolver:
+        function (stackName, resolver)
         {
             var stack = this.stack;
             var stackIndex = stack.indexOf(stackName);
@@ -283,7 +284,8 @@ var resolveSimple;
 
         constantDefinitions: CONSTANTS,
 
-        createCharDefaultSolution: function (charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
+        createCharDefaultSolution:
+        function (charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
         {
             var replacement;
             if (atobOpt && this.findDefinition(CONSTANTS.atob))
@@ -312,7 +314,8 @@ var resolveSimple;
             return solution;
         },
 
-        defaultResolveCharacter: function (char)
+        defaultResolveCharacter:
+        function (char)
         {
             var charCode = char.charCodeAt();
             var atobOpt = charCode < 0x100;
@@ -320,7 +323,15 @@ var resolveSimple;
             return solution;
         },
 
-        findBase64AlphabetDefinition: function (element)
+        expressParse:
+        function (expr)
+        {
+            var unit = expressParse(expr);
+            return unit;
+        },
+
+        findBase64AlphabetDefinition:
+        function (element)
         {
             var definition;
             if (array_isArray(element))
@@ -330,7 +341,8 @@ var resolveSimple;
             return definition;
         },
 
-        findDefinition: function (entries)
+        findDefinition:
+        function (entries)
         {
             for (var entryIndex = entries.length; entryIndex--;)
             {
@@ -340,7 +352,8 @@ var resolveSimple;
             }
         },
 
-        findOptimalSolution: function (entries)
+        findOptimalSolution:
+        function (entries)
         {
             var result;
             entries.forEach
@@ -362,7 +375,8 @@ var resolveSimple;
             return result;
         },
 
-        getPaddingBlock: function (paddingInfo, length)
+        getPaddingBlock:
+        function (paddingInfo, length)
         {
             var paddingBlock = paddingInfo.blocks[length];
             if (paddingBlock !== undefined)
@@ -370,13 +384,15 @@ var resolveSimple;
             this.throwSyntaxError('Undefined padding block with length ' + length);
         },
 
-        hasFeatures: function (mask)
+        hasFeatures:
+        function (mask)
         {
             var included = maskIncludes(this.mask, mask);
             return included;
         },
 
-        hexCodeOf: function (charCode, hexDigitCount)
+        hexCodeOf:
+        function (charCode, hexDigitCount)
         {
             var optimalB = this.findDefinition(OPTIMAL_B);
             var charCodeStr = charCode.toString(16);
@@ -408,7 +424,8 @@ var resolveSimple;
         // than the grouping threshold setting.
         maxGroupThreshold: 1800,
 
-        replaceCharByAtob: function (charCode)
+        replaceCharByAtob:
+        function (charCode)
         {
             var param1 =
             BASE64_ALPHABET_LO_6[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
@@ -435,7 +452,8 @@ var resolveSimple;
             return replacement;
         },
 
-        replaceCharByCharCode: function (charCode)
+        replaceCharByCharCode:
+        function (charCode)
         {
             var arg =
             charCode < 2 ? ['[]', 'true'][charCode] :
@@ -445,7 +463,8 @@ var resolveSimple;
             return replacement;
         },
 
-        replaceCharByEscSeq: function (charCode)
+        replaceCharByEscSeq:
+        function (charCode)
         {
             var escCode;
             var appendIndexer;
@@ -469,7 +488,8 @@ var resolveSimple;
             return replacement;
         },
 
-        replaceCharByUnescape: function (charCode)
+        replaceCharByUnescape:
+        function (charCode)
         {
             var hexCode;
             var appendIndexer;
@@ -493,9 +513,10 @@ var resolveSimple;
             return replacement;
         },
 
-        replaceExpr: function (expr, optimize)
+        replaceExpr:
+        function (expr, optimize)
         {
-            var unit = expressParse(expr);
+            var unit = this.expressParse(expr);
             if (!unit)
                 this.throwSyntaxError('Syntax error');
             var replacers = getReplacers(optimize);
@@ -503,7 +524,8 @@ var resolveSimple;
             return replacement;
         },
 
-        replaceExpressUnit: function (unit, bond, unitIndices, maxLength, replacers)
+        replaceExpressUnit:
+        function (unit, bond, unitIndices, maxLength, replacers)
         {
             var mod = unit.mod || '';
             var pmod = unit.pmod || '';
@@ -567,7 +589,8 @@ var resolveSimple;
             return output;
         },
 
-        replacePrimaryExpr: function (unit, bondStrength, unitIndices, maxLength, replacers)
+        replacePrimaryExpr:
+        function (unit, bondStrength, unitIndices, maxLength, replacers)
         {
             var MIN_APPEND_LENGTH = 3;
 
@@ -669,7 +692,8 @@ var resolveSimple;
             return output;
         },
 
-        replaceStaticString: function (str, maxLength)
+        replaceStaticString:
+        function (str, maxLength)
         {
             var options = { bond: true, forceString: true, maxLength: maxLength };
             var replacement = STATIC_ENCODER.replaceString(str, options);
@@ -731,7 +755,8 @@ var resolveSimple;
          * @returns {string} The replacement string.
          */
 
-        replaceString: function (str, options)
+        replaceString:
+        function (str, options)
         {
             options = options || { };
             var optimize = options.optimize;
@@ -808,7 +833,8 @@ var resolveSimple;
                 return result;
         },
 
-        resolve: function (definition)
+        resolve:
+        function (definition)
         {
             var solution;
             var type = typeof definition;
@@ -833,7 +859,8 @@ var resolveSimple;
             return solution;
         },
 
-        resolveCharacter: function (char)
+        resolveCharacter:
+        function (char)
         {
             var solution = this.charCache[char];
             if (solution === undefined)
@@ -869,7 +896,8 @@ var resolveSimple;
             return solution;
         },
 
-        resolveConstant: function (constant)
+        resolveConstant:
+        function (constant)
         {
             var solution = this.constCache[constant];
             if (solution === undefined)
@@ -898,7 +926,8 @@ var resolveSimple;
             return solution;
         },
 
-        resolveExprAt: function (expr, index, entries, paddingInfos)
+        resolveExprAt:
+        function (expr, index, entries, paddingInfos)
         {
             if (!entries)
                 this.throwSyntaxError('Missing padding entries for index ' + index);
@@ -922,7 +951,8 @@ var resolveSimple;
             return solution;
         },
 
-        throwSyntaxError: function (message)
+        throwSyntaxError:
+        function (message)
         {
             var stack = this.stack;
             var stackLength = stack.length;

@@ -498,8 +498,9 @@ var createParseIntArgDefault;
             define('U', ANY_DOCUMENT, ARRAY_ITERATOR, INCR_CHAR, NAME, NO_V8_SRC),
             define('V', ANY_DOCUMENT, EXTERNAL),
             define('V', ANY_DOCUMENT, FILL),
+            define('V', ANY_DOCUMENT, FLAT),
             define
-            ('X', ANY_DOCUMENT, ARRAY_ITERATOR, ESC_REGEXP_LF, FUNCTION_22_LF, HTMLAUDIOELEMENT),
+            ('X', ANY_DOCUMENT, ARRAY_ITERATOR, ESC_REGEXP_LF, EXTERNAL, FLAT, FUNCTION_19_LF),
             define
             (
                 'X',
@@ -511,6 +512,42 @@ var createParseIntArgDefault;
                 FUNCTION_19_LF,
                 NO_FF_SRC
             ),
+            define
+            (
+                'V',
+                ANY_DOCUMENT,
+                ARRAY_ITERATOR,
+                ESC_REGEXP_LF,
+                EXTERNAL,
+                FLAT,
+                FUNCTION_19_LF,
+                NO_FF_SRC
+            ),
+            define
+            (
+                'X',
+                ANY_DOCUMENT,
+                ARRAY_ITERATOR,
+                ESC_REGEXP_LF,
+                EXTERNAL,
+                FLAT,
+                FUNCTION_22_LF,
+                INCR_CHAR
+            ),
+            define
+            (
+                'V',
+                ANY_DOCUMENT,
+                ARRAY_ITERATOR,
+                ESC_REGEXP_LF,
+                EXTERNAL,
+                FLAT,
+                FUNCTION_22_LF,
+                INCR_CHAR,
+                NO_FF_SRC
+            ),
+            define
+            ('X', ANY_DOCUMENT, ARRAY_ITERATOR, ESC_REGEXP_LF, FUNCTION_22_LF, HTMLAUDIOELEMENT),
             define
             (
                 'V',
@@ -546,6 +583,17 @@ var createParseIntArgDefault;
                 FILL,
                 FUNCTION_19_LF,
                 V8_SRC
+            ),
+            define
+            (
+                'V',
+                ANY_DOCUMENT,
+                ARRAY_ITERATOR,
+                ESC_REGEXP_LF,
+                EXTERNAL,
+                FLAT,
+                FUNCTION_19_LF,
+                NO_IE_SRC
             ),
             define('U', ANY_DOCUMENT, UNDEFINED),
             define('U', ESC_REGEXP_LF, UNDEFINED),
@@ -753,7 +801,7 @@ var createParseIntArgDefault;
         '+': '(1e100 + [])[2]',
         ',':
         [
-            define('([].slice.call("false") + [])[1]'),
+            define('(F_A_L_S_E + [])[1]'),
             define(commaDefinition),
         ],
         '-': '(+".0000001" + [])[2]',
@@ -1200,7 +1248,7 @@ var createParseIntArgDefault;
         Object:         define({ expr: 'Object.name', optimize: { toStringOpt: true } }, NAME),
         RegExp:         define({ expr: 'RegExp.name', optimize: { toStringOpt: true } }, NAME),
         String:         define('String.name', NAME),
-        'f,a,l,s,e':    define({ expr: '[].slice.call("false")', level: LEVEL_OBJECT }),
+        'f,a,l,s,e':    define({ expr: 'F_A_L_S_E', level: LEVEL_OBJECT }),
         mCh:            define('atob("bUNo")', Feature.ATOB),
     });
 
@@ -1338,6 +1386,11 @@ var createParseIntArgDefault;
         [
             define({ expr: '"fromCharCode"', optimize: true }),
             define({ expr: '"fromCodePoint"', optimize: { toStringOpt: true } }, FROM_CODE_POINT),
+        ],
+        F_A_L_S_E:
+        [
+            define('[].slice.call("false")'),
+            define('[].flat.call("false")', FLAT),
         ],
         PLAIN_OBJECT:
         [
@@ -1521,6 +1574,7 @@ var createParseIntArgDefault;
             define(0, ARRAY_ITERATOR, CAPITAL_HTML, NO_IE_SRC),
             define(1, FF_SRC),
             define(1, FILL),
+            define(1, FLAT),
             define(1, NO_OLD_SAFARI_ARRAY_ITERATOR),
             define(1, V8_SRC),
             define(2),
@@ -1530,6 +1584,8 @@ var createParseIntArgDefault;
             define(1, ARRAY_ITERATOR, ARROW, FF_SRC, FILL),
             define(1, ARRAY_ITERATOR, ARROW, FILL, IE_SRC),
             define(1, ARRAY_ITERATOR, ARROW, FILL, V8_SRC),
+            define(1, ARRAY_ITERATOR, ARROW, FLAT, NO_V8_SRC),
+            define(1, ARRAY_ITERATOR, ARROW, FLAT, V8_SRC),
         ]
     );
 
@@ -1550,7 +1606,9 @@ var createParseIntArgDefault;
             define(1, ARRAY_ITERATOR, ESC_REGEXP_SLASH, IE_SRC),
             define(0, ESC_REGEXP_SLASH, FROM_CODE_POINT, NO_IE_SRC),
             define(1, ARRAY_ITERATOR, ESC_REGEXP_SLASH, NO_IE_SRC),
+            define(0, ESC_REGEXP_SLASH, FLAT, FROM_CODE_POINT, NO_IE_SRC),
             define(0, ARRAY_ITERATOR, ESC_REGEXP_SLASH, FILL, FROM_CODE_POINT, IE_SRC),
+            define(0, ARRAY_ITERATOR, ESC_REGEXP_SLASH, FLAT, FROM_CODE_POINT, IE_SRC),
             define(1, ATOB),
             define(0, ESC_REGEXP_SLASH, FROM_CODE_POINT, NAME, NO_V8_SRC),
             define(1, ARRAY_ITERATOR, ESC_REGEXP_SLASH, NAME, NO_V8_SRC),
@@ -1558,6 +1616,7 @@ var createParseIntArgDefault;
             define(0, ESC_REGEXP_SLASH, FROM_CODE_POINT, IE_SRC, NAME),
             define(1, ARRAY_ITERATOR, ESC_REGEXP_LF, FF_SRC, NAME),
             define(1, ESC_REGEXP_LF, FF_SRC, FILL, NAME),
+            define(1, ESC_REGEXP_LF, FF_SRC, FLAT, NAME),
             define(0, CONSOLE, ESC_REGEXP_SLASH, FROM_CODE_POINT),
             define(0, ESC_REGEXP_SLASH, FROM_CODE_POINT, NODECONSTRUCTOR),
             define(0, ARRAY_ITERATOR, ATOB, CAPITAL_HTML, FROM_CODE_POINT),
@@ -1634,8 +1693,12 @@ var createParseIntArgDefault;
             define(1),
             define(3),
             define(0, ARRAY_ITERATOR, CAPITAL_HTML),
+            define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT),
+            define(0, ARRAY_ITERATOR, CAPITAL_HTML, NO_V8_SRC),
+            define(1, ARRAY_ITERATOR, CAPITAL_HTML, FF_SRC, FLAT),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FILL, IE_SRC),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FILL, NO_IE_SRC),
+            define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT, IE_SRC),
             define(2, ARRAY_ITERATOR, CAPITAL_HTML),
             define(4),
             define(5),
@@ -1684,8 +1747,12 @@ var createParseIntArgDefault;
         [
             define(1),
             define(0, ARRAY_ITERATOR, CAPITAL_HTML),
-            define(1, FILL, IE_SRC),
-            define(1, FILL, NO_IE_SRC),
+            define(1, FLAT),
+            define(0, ARRAY_ITERATOR, CAPITAL_HTML, NO_V8_SRC),
+            define(1, ARRAY_ITERATOR, CAPITAL_HTML, FF_SRC, FLAT),
+            define(1, ARRAY_ITERATOR, CAPITAL_HTML, FILL, IE_SRC),
+            define(1, ARRAY_ITERATOR, CAPITAL_HTML, FILL, NO_IE_SRC),
+            define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT, IE_SRC),
             define(2),
         ]
     );
