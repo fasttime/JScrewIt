@@ -297,8 +297,12 @@
                             expect(featureObj.mask).toEqual([0, 0]);
                         }
                     );
-                    test('BROWSER', ['ANDRO40', 'CHROME66', 'EDGE40', 'FF54', 'IE9', 'SAFARI70']);
-                    test('COMPACT', ['CHROME66', 'EDGE40', 'FF54', 'SAFARI100']);
+                    test
+                    (
+                        'BROWSER',
+                        ['ANDRO_4_0', 'CHROME_66', 'EDGE_40', 'FF_54', 'IE_9', 'SAFARI_7_0']
+                    );
+                    test('COMPACT', ['CHROME_66', 'EDGE_40', 'FF_54', 'SAFARI_10']);
                     it
                     (
                         'AUTO',
@@ -405,7 +409,7 @@
                         'restricts a feature in a particular engine',
                         function ()
                         {
-                            var featureObj = Feature.WINDOW.restrict('web-worker', [Feature.FF54]);
+                            var featureObj = Feature.WINDOW.restrict('web-worker', [Feature.FF_54]);
                             expect(featureObj.mask).toEqual(Feature.SELF_OBJ.mask);
                         }
                     );
@@ -422,7 +426,7 @@
                         function ()
                         {
                             expect(Feature.DEFAULT.toString()).toBe('[Feature DEFAULT]');
-                            expect(Feature.NODE010.toString()).toBe('[Feature NODE010]');
+                            expect(Feature.NODE_0_10.toString()).toBe('[Feature NODE_0_10]');
                             expect(Feature.ATOB.toString()).toBe('[Feature ATOB]');
                         }
                     );
@@ -432,7 +436,7 @@
                         function ()
                         {
                             expect(Feature('DEFAULT').toString()).toBe('[Feature {}]');
-                            expect(Feature('NODE010').toString()).toMatch
+                            expect(Feature('NODE_0_10').toString()).toMatch
                             (/^\[Feature \{[\dA-Z_]+(, [\dA-Z_]+)*\}]$/);
                             expect(Feature('ATOB').toString()).toBe('[Feature {ATOB}]');
                         }

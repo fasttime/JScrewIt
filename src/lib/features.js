@@ -928,7 +928,8 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        ANDRO40:
+        ANDRO40: 'ANDRO_4_0',
+        ANDRO_4_0:
         {
             engine: 'Android Browser 4.0',
             includes:
@@ -947,7 +948,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
             ],
         },
-        ANDRO41:
+        ANDRO41: 'ANDRO_4_1',
+        ANDRO_4_1:
         {
             engine: 'Android Browser 4.1 to 4.3',
             includes:
@@ -967,7 +969,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
             ],
         },
-        ANDRO44:
+        ANDRO44: 'ANDRO_4_4',
+        ANDRO_4_4:
         {
             engine: 'Android Browser 4.4',
             includes:
@@ -992,8 +995,9 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'no-console-in-web-worker': null, 'web-worker-restriction': null },
         },
-        CHROME: 'CHROME66',
-        CHROME66:
+        CHROME: 'CHROME_66',
+        CHROME66: 'CHROME_66',
+        CHROME_66:
         {
             engine: 'Chrome 66 and Opera 53 or later',
             includes:
@@ -1021,7 +1025,8 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        CHROME69:
+        CHROME69: 'CHROME_69',
+        CHROME_69:
         {
             engine: 'Chrome 69 and Opera 56 or later',
             includes:
@@ -1050,8 +1055,9 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        EDGE: 'EDGE40',
-        EDGE40:
+        EDGE: 'EDGE_40',
+        EDGE40: 'EDGE_40',
+        EDGE_40:
         {
             engine: 'Edge 40 or later',
             includes:
@@ -1080,8 +1086,9 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        FF: 'FF54',
-        FF54:
+        FF: 'FF_54',
+        FF54: 'FF_54',
+        FF_54:
         {
             engine: 'Firefox 54 or later',
             includes:
@@ -1113,7 +1120,8 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        FF62:
+        FF62: 'FF_62',
+        FF_62:
         {
             engine: 'Firefox 62 or later',
             includes:
@@ -1146,7 +1154,8 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        IE9:
+        IE9: 'IE_9',
+        IE_9:
         {
             engine: 'Internet Explorer 9',
             includes:
@@ -1164,7 +1173,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'WINDOW',
             ],
         },
-        IE10:
+        IE10: 'IE_10',
+        IE_10:
         {
             engine: 'Internet Explorer 10',
             includes:
@@ -1185,7 +1195,8 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        IE11:
+        IE11: 'IE_11',
+        IE_11:
         {
             engine: 'Internet Explorer 11',
             includes:
@@ -1208,7 +1219,8 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        IE11_WIN10:
+        IE11_WIN10: 'IE_11_WIN_10',
+        IE_11_WIN_10:
         {
             engine: 'Internet Explorer 11 on Windows 10',
             includes:
@@ -1232,7 +1244,8 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        NODE010:
+        NODE010: 'NODE_0_10',
+        NODE_0_10:
         {
             engine: 'Node.js 0.10',
             includes:
@@ -1246,7 +1259,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
             ],
         },
-        NODE012:
+        NODE012: 'NODE_0_12',
+        NODE_0_12:
         {
             engine: 'Node.js 0.12',
             includes:
@@ -1263,7 +1277,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
             ],
         },
-        NODE40:
+        NODE40: 'NODE_4',
+        NODE_4:
         {
             engine: 'Node.js 4',
             includes:
@@ -1284,7 +1299,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
             ],
         },
-        NODE50:
+        NODE50: 'NODE_5',
+        NODE_5:
         {
             engine: 'Node.js 5 to 9',
             includes:
@@ -1306,7 +1322,8 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null },
         },
-        NODE100:
+        NODE100: 'NODE_10',
+        NODE_10:
         {
             engine: 'Node.js 10 or later',
             includes:
@@ -1328,7 +1345,8 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null },
         },
-        SAFARI70:
+        SAFARI70: 'SAFARI_7_0',
+        SAFARI_7_0:
         {
             engine: 'Safari 7.0',
             includes:
@@ -1358,7 +1376,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'web-worker-restriction': null,
             },
         },
-        SAFARI71:
+        SAFARI71: 'SAFARI_7_1',
+        SAFARI_7_1:
         {
             engine: 'Safari 7.1 and Safari 8',
             includes:
@@ -1390,8 +1409,10 @@ var validMaskFromArrayOrStringOrFeature;
                 'web-worker-restriction': null,
             },
         },
-        SAFARI80: 'SAFARI71',
-        SAFARI90:
+        SAFARI80: 'SAFARI_7_1',
+        SAFARI_8: 'SAFARI_7_1',
+        SAFARI90: 'SAFARI_9',
+        SAFARI_9:
         {
             engine: 'Safari 9',
             includes:
@@ -1425,7 +1446,8 @@ var validMaskFromArrayOrStringOrFeature;
                 'web-worker-restriction': null,
             },
         },
-        SAFARI100:
+        SAFARI100: 'SAFARI_10',
+        SAFARI_10:
         {
             engine: 'Safari 10 or later',
             includes:
@@ -1455,7 +1477,8 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        SAFARI120:
+        SAFARI120: 'SAFARI_12',
+        SAFARI_12:
         {
             engine: 'Safari 12 or later',
             includes:

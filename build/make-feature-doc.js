@@ -10,65 +10,65 @@ const ENGINE_ENTRIES =
         name: ['Chrome', 'Opera'],
         versions:
         [
-            { description: ['66+', '53+'], feature: 'CHROME66' },
-            { description: ['69+', '56+'], feature: 'CHROME69' },
+            { description: ['66+', '53+'], feature: 'CHROME_66' },
+            { description: ['69+', '56+'], feature: 'CHROME_69' },
         ],
     },
     {
         name: 'Edge',
         versions:
         [
-            { description: '40+', feature: 'EDGE40' },
+            { description: '40+', feature: 'EDGE_40' },
         ],
     },
     {
         name: 'Firefox',
         versions:
         [
-            { description: '54+', feature: 'FF54' },
-            { description: '62+', feature: 'FF62' },
+            { description: '54+', feature: 'FF_54' },
+            { description: '62+', feature: 'FF_62' },
         ],
     },
     {
         name: 'Internet Explorer',
         versions:
         [
-            { description: '9+', feature: 'IE9' },
-            { description: '10+', feature: 'IE10' },
-            { description: '11', feature: 'IE11' },
-            { description: '11 on Windows 10', feature: 'IE11_WIN10' },
+            { description: '9+', feature: 'IE_9' },
+            { description: '10+', feature: 'IE_10' },
+            { description: '11', feature: 'IE_11' },
+            { description: '11 on Windows 10', feature: 'IE_11_WIN_10' },
         ],
     },
     {
         name: 'Safari',
         versions:
         [
-            { description: '7.0+', feature: 'SAFARI70' },
-            { description: '7.1+', feature: 'SAFARI71' },
-            { description: '8+', feature: 'SAFARI80' },
-            { description: '9+', feature: 'SAFARI90' },
-            { description: '10+', feature: 'SAFARI100' },
-            { description: '12+', feature: 'SAFARI120' },
+            { description: '7.0+', feature: 'SAFARI_7_0' },
+            { description: '7.1+', feature: 'SAFARI_7_1' },
+            { description: '8+', feature: 'SAFARI_8' },
+            { description: '9+', feature: 'SAFARI_9' },
+            { description: '10+', feature: 'SAFARI_10' },
+            { description: '12+', feature: 'SAFARI_12' },
         ],
     },
     {
         name: 'Android Browser',
         versions:
         [
-            { description: '4.0+', feature: 'ANDRO40' },
-            { description: '4.1+', feature: 'ANDRO41' },
-            { description: '4.4', feature: 'ANDRO44' },
+            { description: '4.0+', feature: 'ANDRO_4_0' },
+            { description: '4.1+', feature: 'ANDRO_4_1' },
+            { description: '4.4', feature: 'ANDRO_4_4' },
         ],
     },
     {
         name: 'Node.js',
         versions:
         [
-            { description: '0.10+', feature: 'NODE010' },
-            { description: '0.12+', feature: 'NODE012' },
-            { description: '4+', feature: 'NODE40' },
-            { description: '5+', feature: 'NODE50' },
-            { description: '10+', feature: 'NODE100' },
+            { description: '0.10+', feature: 'NODE_0_10' },
+            { description: '0.12+', feature: 'NODE_0_12' },
+            { description: '4+', feature: 'NODE_4' },
+            { description: '5+', feature: 'NODE_5' },
+            { description: '10+', feature: 'NODE_10' },
         ],
     },
 ];

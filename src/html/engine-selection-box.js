@@ -9,72 +9,72 @@ function createEngineSelectionBox()
             name: 'Chrome',
             versions:
             [
-                { feature: 'CHROME66', number: '66–68' },
-                { feature: 'CHROME69', number: '69+' },
+                { feature: 'CHROME_66', number: '66–68' },
+                { feature: 'CHROME_69', number: '69+' },
             ],
         },
         {
             name: 'Edge',
             versions:
             [
-                { feature: 'EDGE40', number: '40+' },
+                { feature: 'EDGE_40', number: '40+' },
             ],
         },
         {
             name: 'Firefox',
             versions:
             [
-                { feature: 'FF54', number: '54–61' },
-                { feature: 'FF62', number: '62+' },
+                { feature: 'FF_54', number: '54–61' },
+                { feature: 'FF_62', number: '62+' },
             ],
         },
         {
             name: 'Internet Explorer',
             versions:
             [
-                { feature: 'IE9', number: '9' },
-                { feature: 'IE10', number: '10' },
-                { feature: 'IE11', number: '11' },
-                { feature: 'IE11_WIN10', number: '11 (W10)' },
+                { feature: 'IE_9', number: '9' },
+                { feature: 'IE_10', number: '10' },
+                { feature: 'IE_11', number: '11' },
+                { feature: 'IE_11_WIN_10', number: '11 (W10)' },
             ],
         },
         {
             name: 'Safari',
             versions:
             [
-                { feature: 'SAFARI70', number: '7.0' },
-                { feature: 'SAFARI71', number: '7.1–8' },
-                { feature: 'SAFARI90', number: '9' },
-                { feature: 'SAFARI100', number: '10–11' },
-                { feature: 'SAFARI120', number: '12+' },
+                { feature: 'SAFARI_7_0', number: '7.0' },
+                { feature: 'SAFARI_7_1', number: '7.1–8' },
+                { feature: 'SAFARI_9', number: '9' },
+                { feature: 'SAFARI_10', number: '10–11' },
+                { feature: 'SAFARI_12', number: '12+' },
             ],
         },
         {
             name: 'Opera',
             versions:
             [
-                { feature: 'CHROME66', number: '53–55' },
-                { feature: 'CHROME69', number: '56+' },
+                { feature: 'CHROME_66', number: '53–55' },
+                { feature: 'CHROME_69', number: '56+' },
             ],
         },
         {
             name: 'Android Browser',
             versions:
             [
-                { feature: 'ANDRO40', number: '4.0' },
-                { feature: 'ANDRO41', number: '4.1–4.3' },
-                { feature: 'ANDRO44', number: '4.4' },
+                { feature: 'ANDRO_4_0', number: '4.0' },
+                { feature: 'ANDRO_4_1', number: '4.1–4.3' },
+                { feature: 'ANDRO_4_4', number: '4.4' },
             ],
         },
         {
             name: 'Node.js',
             versions:
             [
-                { feature: 'NODE010', number: '0.10' },
-                { feature: 'NODE012', number: '0.12' },
-                { feature: 'NODE40', number: '4' },
-                { feature: 'NODE50', number: '5' },
-                { feature: 'NODE100', number: '10+' },
+                { feature: 'NODE_0_10', number: '0.10' },
+                { feature: 'NODE_0_12', number: '0.12' },
+                { feature: 'NODE_4', number: '4' },
+                { feature: 'NODE_5', number: '5' },
+                { feature: 'NODE_10', number: '10+' },
             ],
         },
     ];

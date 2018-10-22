@@ -58,8 +58,8 @@ The following source will do an `alert(1)` in any browser, including Internet Ex
 
 To use JScrewIt in your project, download
 [jscrewit.js](https://raw.githubusercontent.com/fasttime/JScrewIt/master/lib/jscrewit.js) or
-[jscrewit.min.js](https://raw.githubusercontent.com/fasttime/JScrewIt/master/lib/jscrewit.min.js) from GitHub
-and include it in your HTML file.
+[jscrewit.min.js](https://raw.githubusercontent.com/fasttime/JScrewIt/master/lib/jscrewit.min.js)
+from GitHub and include it in your HTML file.
 
 ```html
 <script src="jscrewit.js"></script>
@@ -191,13 +191,13 @@ These features can be retrieved with
 [`JScrewIt.Feature.commonOf`](Reference.md#JScrewIt.Feature.commonOf).
 
 ```js
-{ features: JScrewIt.Feature.commonOf("ANDRO44", "NODE100", "SAFARI70") }
+{ features: JScrewIt.Feature.commonOf("ANDRO_4_4", "NODE_10", "SAFARI_7_0") }
 ```
 
 The features turn out to be [`ESC_HTML_QUOT`](Features.md#ESC_HTML_QUOT), [`GMT`](Features.md#GMT),
 [`INCR_CHAR`](Features.md#INCR_CHAR), [`NAME`](Features.md#NAME),
 [`NO_IE_SRC`](Features.md#NO_IE_SRC) and [`UNDEFINED`](Features.md#UNDEFINED) (a quick way to see
-this is entering `JScrewIt.Feature.commonOf("ANDRO44", "NODE100", "SAFARI70").toString()` in the
+this is entering `JScrewIt.Feature.commonOf("ANDRO_4_4", "NODE_10", "SAFARI_7_0").toString()` in the
 browser's console).
 With this knowledge, we could also rewrite the expression above as follows.
 
@@ -210,7 +210,7 @@ effect, as it will result in the union of the features available in every engine
 their intersection.
 
 ```diff
-- { features: ["ANDRO44", "NODE100", "SAFARI70"] }
+- { features: ["ANDRO_4_4", "NODE_10", "SAFARI_7_0"] }
 ```
 
 ### Further Reading
