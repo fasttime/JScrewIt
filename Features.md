@@ -168,7 +168,7 @@ _Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 4+._
 ### `FLAT`
 Existence of the native function Array.prototype.flat.
 
-_Available in Chrome 69+, Firefox 62+, Safari 12+ and Opera 56+._
+_Available in Chrome 69+, Firefox 62+, Safari 12+, Opera 56+ and Node.js 11+._
 <a name="FROM_CODE_POINT"></a>
 ### `FROM_CODE_POINT`
 Existence of the function String.fromCodePoint.
@@ -283,7 +283,10 @@ Features available in Node.js 0.10.
 Features available in Node.js 0.12.
 <a name="NODE_10"></a>
 ### `NODE_10`
-Features available in Node.js 10 or later.
+Features available in Node.js 10.
+<a name="NODE_11"></a>
+### `NODE_11`
+Features available in Node.js 11 or later.
 <a name="NODE_4"></a>
 ### `NODE_4`
 Features available in Node.js 4.
@@ -608,6 +611,7 @@ This table lists features available in the most common engines.
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a> (Node.js 0.12+)
 <li><a href="#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a> (Node.js 4+)
 <li><a href="#FILL"><code>FILL</code></a> (Node.js 4+)
+<li><a href="#FLAT"><code>FLAT</code></a> (Node.js 11+)
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Node.js 4+)
 <li><a href="#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a> (Node.js 10+)
 <li><a href="#FUNCTION_22_LF"><code>FUNCTION_22_LF</code></a> (not in Node.js 10+)

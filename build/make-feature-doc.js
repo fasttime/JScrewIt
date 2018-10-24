@@ -69,6 +69,7 @@ const ENGINE_ENTRIES =
             { description: '4+', feature: 'NODE_4' },
             { description: '5+', feature: 'NODE_5' },
             { description: '10+', feature: 'NODE_10' },
+            { description: '11+', feature: 'NODE_11' },
         ],
     },
 ];

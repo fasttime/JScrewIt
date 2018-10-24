@@ -1325,13 +1325,36 @@ var validMaskFromArrayOrStringOrFeature;
         NODE100: 'NODE_10',
         NODE_10:
         {
-            engine: 'Node.js 10 or later',
+            engine: 'Node.js 10',
             includes:
             [
                 'ARROW',
                 'ESC_HTML_QUOT_ONLY',
                 'ESC_REGEXP_SLASH',
                 'FILL',
+                'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
+                'GMT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'UNDEFINED',
+                'V8_SRC',
+            ],
+            attributes: { 'char-increment-restriction': null },
+        },
+        NODE_11:
+        {
+            engine: 'Node.js 11 or later',
+            includes:
+            [
+                'ARROW',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_SLASH',
+                'FILL',
+                'FLAT',
                 'FROM_CODE_POINT',
                 'FUNCTION_19_LF',
                 'GMT',
