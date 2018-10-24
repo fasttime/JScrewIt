@@ -92,7 +92,7 @@
                     valueType = 'a date';
                     break;
                 default:
-                    // RegExp objects have type "function" in older Android Browsers
+                    // RegExp objects have type "function" in older Android Browser versions.
                     if (value instanceof RegExp)
                         valueType = 'a regular expression';
                     else if (type === 'function')

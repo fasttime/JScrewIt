@@ -9,72 +9,72 @@ function createEngineSelectionBox()
             name: 'Chrome',
             versions:
             [
-                { feature: 'CHROME_66', number: '66–68' },
-                { feature: 'CHROME_69', number: '69+' },
+                { featureName: 'CHROME_66', number: '66–68' },
+                { featureName: 'CHROME_69', number: '69+' },
             ],
         },
         {
             name: 'Edge',
             versions:
             [
-                { feature: 'EDGE_40', number: '40+' },
+                { featureName: 'EDGE_40', number: '40+' },
             ],
         },
         {
             name: 'Firefox',
             versions:
             [
-                { feature: 'FF_54', number: '54–61' },
-                { feature: 'FF_62', number: '62+' },
+                { featureName: 'FF_54', number: '54–61' },
+                { featureName: 'FF_62', number: '62+' },
             ],
         },
         {
             name: 'Internet Explorer',
             versions:
             [
-                { feature: 'IE_9', number: '9' },
-                { feature: 'IE_10', number: '10' },
-                { feature: 'IE_11', number: '11' },
-                { feature: 'IE_11_WIN_10', number: '11 (W10)' },
+                { featureName: 'IE_9', number: '9' },
+                { featureName: 'IE_10', number: '10' },
+                { featureName: 'IE_11', number: '11' },
+                { featureName: 'IE_11_WIN_10', number: '11 (W10)' },
             ],
         },
         {
             name: 'Safari',
             versions:
             [
-                { feature: 'SAFARI_7_0', number: '7.0' },
-                { feature: 'SAFARI_7_1', number: '7.1–8' },
-                { feature: 'SAFARI_9', number: '9' },
-                { feature: 'SAFARI_10', number: '10–11' },
-                { feature: 'SAFARI_12', number: '12+' },
+                { featureName: 'SAFARI_7_0', number: '7.0' },
+                { featureName: 'SAFARI_7_1', number: '7.1–8' },
+                { featureName: 'SAFARI_9', number: '9' },
+                { featureName: 'SAFARI_10', number: '10–11' },
+                { featureName: 'SAFARI_12', number: '12+' },
             ],
         },
         {
             name: 'Opera',
             versions:
             [
-                { feature: 'CHROME_66', number: '53–55' },
-                { feature: 'CHROME_69', number: '56+' },
+                { featureName: 'CHROME_66', number: '53–55' },
+                { featureName: 'CHROME_69', number: '56+' },
             ],
         },
         {
             name: 'Android Browser',
             versions:
             [
-                { feature: 'ANDRO_4_0', number: '4.0' },
-                { feature: 'ANDRO_4_1', number: '4.1–4.3' },
-                { feature: 'ANDRO_4_4', number: '4.4' },
+                { featureName: 'ANDRO_4_0', number: '4.0' },
+                { featureName: 'ANDRO_4_1', number: '4.1–4.3' },
+                { featureName: 'ANDRO_4_4', number: '4.4' },
             ],
         },
         {
             name: 'Node.js',
             versions:
             [
-                { feature: 'NODE_0_10', number: '0.10' },
-                { feature: 'NODE_0_12', number: '0.12' },
-                { feature: 'NODE_4', number: '4' },
-                { feature: 'NODE_5', number: '5' },
-                { feature: 'NODE_10', number: '10+' },
+                { featureName: 'NODE_0_10', number: '0.10' },
+                { featureName: 'NODE_0_12', number: '0.12' },
+                { featureName: 'NODE_4', number: '4' },
+                { featureName: 'NODE_5', number: '5' },
+                { featureName: 'NODE_10', number: '10+' },
             ],
         },
     ];
@@ -114,8 +114,14 @@ function createEngineSelectionBox()
         art
         (
             'LABEL',
-            art('INPUT', { style: { margin: '0 .25em 0 0' }, type: 'checkbox' }, inputProps),
-            text
+            { style: { display: 'inline-table' } },
+            art
+            (
+                'SPAN',
+                { style: { display: 'table-cell', verticalAlign: 'middle' } },
+                art('INPUT', { style: { margin: '0 .25em 0 0' }, type: 'checkbox' }, inputProps)
+            ),
+            art('SPAN', { style: { display: 'table-cell' } }, text)
         );
         return checkBox;
     }
@@ -126,6 +132,11 @@ function createEngineSelectionBox()
         {
             showModalBox(contentBlock);
         }
+
+        // Older Android Browser versions have problems in mixing elements with display style
+        // 'inline-block' and 'inline-table' in the same line, so we'll stick to 'inline-table'
+        // here.
+        var DISPLAY_STYLE = 'inline-block';
 
         var contentBlock = art('DIV', { className: 'help-text' });
         contentBlock.innerHTML = innerHTML;
@@ -141,7 +152,7 @@ function createEngineSelectionBox()
                     borderRadius:   '1em',
                     color:          'white',
                     cursor:         'pointer',
-                    display:        'inline-block',
+                    display:        DISPLAY_STYLE,
                     fontSize:       '8pt',
                     fontWeight:     'bold',
                     lineHeight:     QUESTION_MARK_SIZE,
@@ -149,7 +160,6 @@ function createEngineSelectionBox()
                     textAlign:      'center',
                     top:            '-1.5pt',
                     width:          QUESTION_MARK_SIZE,
-                    height:         QUESTION_MARK_SIZE,
                 },
                 title: 'Learn more…',
             },
@@ -198,7 +208,7 @@ function createEngineSelectionBox()
         art
         (
             createCheckBox('Select/deselect all'),
-            { style: { display: 'inline-block', margin: '0 0 .5em' } },
+            { style: { margin: '0 0 .5em' } },
             art.on('change', handleAllEngineChange),
             art.on(['keyup', 'mouseup'], handleAllEngineChangeAsync)
         );
@@ -209,7 +219,13 @@ function createEngineSelectionBox()
         art
         (
             'FIELDSET',
-            { className: 'engine-selection-box' },
+            {
+                className: 'engine-selection-box',
+                get feature()
+                {
+                    return currentFeature;
+                },
+            },
             art
             (
                 'DIV',
@@ -225,13 +241,7 @@ function createEngineSelectionBox()
                 art('DIV', webWorkerField, ' ', createQuestionMark(WEB_WORKER_HELP)),
                 art('DIV', forcedStrictModeField, ' ', createQuestionMark(FORCED_STRICT_MODE_HELP)),
                 art.on('change', updateStatus)
-            ),
-            {
-                get featureObj()
-                {
-                    return currentFeatureObj;
-                },
-            }
+            )
         );
         ENGINE_INFO_LIST.forEach
         (
@@ -265,7 +275,8 @@ function createEngineSelectionBox()
                     }
                     var versionCheckBox =
                     version ?
-                    createCheckBox(version.number, { checked: true, feature: version.feature }) :
+                    createCheckBox
+                    (version.number, { checked: true, featureName: version.featureName }) :
                     null;
                     art
                     (
@@ -280,13 +291,13 @@ function createEngineSelectionBox()
         engineVersionInputs = engineFieldBox.querySelectorAll('INPUT');
         forcedStrictModeInput = forcedStrictModeField.querySelector('INPUT');
         webWorkerInput = webWorkerField.querySelector('INPUT');
-        updateCurrentFeatureObj();
+        updateCurrentFeature();
     }
 
-    function updateCurrentFeatureObj()
+    function updateCurrentFeature()
     {
         var Feature = JScrewIt.Feature;
-        var featureObjs =
+        var features =
         Array.prototype.filter.call
         (
             engineVersionInputs,
@@ -300,28 +311,28 @@ function createEngineSelectionBox()
             function (input)
             {
                 ++checkedCount;
-                return Feature[input.feature];
+                return Feature[input.featureName];
             }
         );
-        var checkedCount = featureObjs.length;
+        var checkedCount = features.length;
         allEngineInput.checked = checkedCount;
         allEngineInput.indeterminate = checkedCount && checkedCount < engineVersionInputs.length;
-        currentFeatureObj = Feature.commonOf.apply(null, featureObjs) || Feature.DEFAULT;
+        currentFeature = Feature.commonOf.apply(null, features) || Feature.DEFAULT;
         if (webWorkerInput.checked)
-            currentFeatureObj = currentFeatureObj.restrict('web-worker', featureObjs);
+            currentFeature = currentFeature.restrict('web-worker', features);
         if (forcedStrictModeInput.checked)
-            currentFeatureObj = currentFeatureObj.restrict('forced-strict-mode', featureObjs);
+            currentFeature = currentFeature.restrict('forced-strict-mode', features);
     }
 
     function updateStatus()
     {
-        updateCurrentFeatureObj();
+        updateCurrentFeature();
         dispatchInputEvent();
     }
 
     var allEngineInput;
     var comp;
-    var currentFeatureObj;
+    var currentFeature;
     var engineVersionInputs;
     var forcedStrictModeInput;
     var webWorkerInput;

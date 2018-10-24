@@ -66,7 +66,7 @@ stats,
 
     function getOptions()
     {
-        var options = { features: currentFeatureObj.canonicalNames };
+        var options = { features: currentFeature.canonicalNames };
         return options;
     }
 
@@ -76,11 +76,10 @@ stats,
         var compatibility = compMenu.options[selectedIndex].value;
         // If the option "Custom…" is not selected, the feature object can be determined directly
         // from the selected option; otherwise, it must be retrieved from the engineSelectionBox.
-        var featureObj =
-            compatibility ? Feature[compatibility] : engineSelectionBox.featureObj;
-        if (outOfSync || !Feature.areEqual(featureObj, currentFeatureObj))
+        var feature = compatibility ? Feature[compatibility] : engineSelectionBox.feature;
+        if (outOfSync || !Feature.areEqual(feature, currentFeature))
         {
-            currentFeatureObj = featureObj;
+            currentFeature = feature;
             this();
         }
         if (selectedIndex !== compMenu.previousIndex)
@@ -202,10 +201,10 @@ stats,
         {
             var COMPACT = Feature.COMPACT;
             if (Feature.AUTO.includes(COMPACT))
-                currentFeatureObj = COMPACT;
+                currentFeature = COMPACT;
             else
-                currentFeatureObj = Feature.BROWSER;
-            compMenu.value = currentFeatureObj.name;
+                currentFeature = Feature.BROWSER;
+            compMenu.value = currentFeature.name;
             compMenu.previousIndex = compMenu.selectedIndex;
         }
         )();
@@ -232,7 +231,7 @@ stats,
                 { accept: '.js', style: { display: 'none' }, type: 'file' },
                 art.on('change', loadFile)
             );
-            // In older Android Browser version, HTMLElement objects don't have a "click" property;
+            // In older Android Browser versions, HTMLElement objects don't have a "click" property;
             // HTMLInputElement objects do.
             var openLoadFileDialog = HTMLInputElement.prototype.click.bind(loadFileInput);
             loadFileButton =
@@ -331,7 +330,7 @@ stats,
 
     var Feature = JScrewIt.Feature;
 
-    var currentFeatureObj;
+    var currentFeature;
     var engineSelectionBox;
     var loadFileButton;
     var outOfSync;
