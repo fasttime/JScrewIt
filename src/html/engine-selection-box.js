@@ -137,7 +137,7 @@ function createEngineSelectionBox()
         // Older Android Browser versions have problems in mixing elements with display style
         // 'inline-block' and 'inline-table' in the same line, so we'll stick to 'inline-table'
         // here.
-        var DISPLAY_STYLE = 'inline-block';
+        var DISPLAY_STYLE = 'inline-table';
 
         var contentBlock = art('DIV', { className: 'help-text' });
         contentBlock.innerHTML = innerHTML;
