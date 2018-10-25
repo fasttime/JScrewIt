@@ -995,36 +995,7 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'no-console-in-web-worker': null, 'web-worker-restriction': null },
         },
-        CHROME: 'CHROME_66',
-        CHROME66: 'CHROME_66',
-        CHROME_66:
-        {
-            engine: 'Chrome 66 and Opera 53 or later',
-            includes:
-            [
-                'ARROW',
-                'ATOB',
-                'BARPROP',
-                'ESC_HTML_QUOT_ONLY',
-                'ESC_REGEXP_SLASH',
-                'FILL',
-                'FROM_CODE_POINT',
-                'FUNCTION_19_LF',
-                'GMT',
-                'HISTORY',
-                'HTMLDOCUMENT',
-                'INCR_CHAR',
-                'INTL',
-                'LOCALE_INFINITY',
-                'NAME',
-                'NO_OLD_SAFARI_ARRAY_ITERATOR',
-                'STATUS',
-                'UNDEFINED',
-                'V8_SRC',
-                'WINDOW',
-            ],
-            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
-        },
+        CHROME: 'CHROME_69',
         CHROME69: 'CHROME_69',
         CHROME_69:
         {
@@ -1086,8 +1057,8 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        FF: 'FF_54',
         FF54: 'FF_54',
+        FF_ESR: 'FF_54',
         FF_54:
         {
             engine: 'Firefox 54 or later',
@@ -1120,6 +1091,7 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
+        FF: 'FF_62',
         FF62: 'FF_62',
         FF_62:
         {
@@ -1500,6 +1472,7 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
+        SAFARI: 'SAFARI_12',
         SAFARI120: 'SAFARI_12',
         SAFARI_12:
         {

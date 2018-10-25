@@ -63,16 +63,10 @@ The property that the various string methods returning HTML code such as String.
 _Available in Internet Explorer._
 <a name="CHROME"></a>
 ### `CHROME`
-_An alias for [`CHROME_66`](#CHROME_66)._
-<a name="CHROME66"></a>
-### `CHROME66`
-_An alias for [`CHROME_66`](#CHROME_66)._
+_An alias for [`CHROME_69`](#CHROME_69)._
 <a name="CHROME69"></a>
 ### `CHROME69`
 _An alias for [`CHROME_69`](#CHROME_69)._
-<a name="CHROME_66"></a>
-### `CHROME_66`
-Features available in Chrome 66 and Opera 53 or later.
 <a name="CHROME_69"></a>
 ### `CHROME_69`
 Features available in Chrome 69 and Opera 56 or later.
@@ -140,7 +134,7 @@ Existence of the global object sidebar having the string representation "\[objec
 _Available in Firefox. This feature is not available inside web workers._
 <a name="FF"></a>
 ### `FF`
-_An alias for [`FF_54`](#FF_54)._
+_An alias for [`FF_62`](#FF_62)._
 <a name="FF54"></a>
 ### `FF54`
 _An alias for [`FF_54`](#FF_54)._
@@ -153,6 +147,9 @@ Features available in Firefox 54 or later.
 <a name="FF_62"></a>
 ### `FF_62`
 Features available in Firefox 62 or later.
+<a name="FF_ESR"></a>
+### `FF_ESR`
+_An alias for [`FF_54`](#FF_54)._
 <a name="FF_SRC"></a>
 ### `FF_SRC`
 A string representation of native functions typical for Firefox and Safari.<br>
@@ -168,7 +165,7 @@ _Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 4+._
 ### `FLAT`
 Existence of the native function Array.prototype.flat.
 
-_Available in Chrome 69+, Firefox 62+, Safari 12+, Opera 56+ and Node.js 11+._
+_Available in Chrome, Firefox 62+, Safari 12+, Opera and Node.js 11+._
 <a name="FROM_CODE_POINT"></a>
 ### `FROM_CODE_POINT`
 Existence of the function String.fromCodePoint.
@@ -315,6 +312,9 @@ A string representation of native functions typical for Firefox, Internet Explor
 A most remarkable trait of this feature is the presence of a line feed followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 
 _Available in Firefox, Internet Explorer and Safari._
+<a name="SAFARI"></a>
+### `SAFARI`
+_An alias for [`SAFARI_12`](#SAFARI_12)._
 <a name="SAFARI100"></a>
 ### `SAFARI100`
 _An alias for [`SAFARI_10`](#SAFARI_10)._
@@ -394,7 +394,7 @@ This table lists features available in the most common engines.
 <th>Features</th>
 </tr>
 <tr>
-<td>Chrome 66+, Opera 53+</td>
+<td>Chrome 69+, Opera 56+</td>
 <td>
 <ul>
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
@@ -407,7 +407,7 @@ This table lists features available in the most common engines.
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
 <li><a href="#FILL"><code>FILL</code></a>
-<li><a href="#FLAT"><code>FLAT</code></a> (Chrome 69+, Opera 56+)
+<li><a href="#FLAT"><code>FLAT</code></a>
 <li><a href="#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a>
 <li><a href="#GMT"><code>GMT</code></a>

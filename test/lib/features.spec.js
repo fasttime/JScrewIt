@@ -300,9 +300,19 @@
                     test
                     (
                         'BROWSER',
-                        ['ANDRO_4_0', 'CHROME_66', 'EDGE_40', 'FF_54', 'IE_9', 'SAFARI_7_0']
+                        [
+                            'ANDRO_4_0',
+                            'ANDRO_4_4',
+                            'CHROME',
+                            'EDGE',
+                            'FF_ESR',
+                            'IE_9',
+                            'IE_11',
+                            'SAFARI_7_0',
+                            'SAFARI_10',
+                        ]
                     );
-                    test('COMPACT', ['CHROME_66', 'EDGE_40', 'FF_54', 'SAFARI_10']);
+                    test('COMPACT', ['CHROME', 'EDGE', 'FF', 'SAFARI']);
                     it
                     (
                         'AUTO',

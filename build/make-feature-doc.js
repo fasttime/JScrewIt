@@ -10,7 +10,6 @@ const ENGINE_ENTRIES =
         name: ['Chrome', 'Opera'],
         versions:
         [
-            { description: ['66+', '53+'], feature: 'CHROME_66' },
             { description: ['69+', '56+'], feature: 'CHROME_69' },
         ],
     },

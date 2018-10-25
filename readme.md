@@ -155,11 +155,11 @@ var output = JScrewIt.encode("alert(1)", options); // 1890 characters
 ```
 
 But if we are only interested in code that runs in an up to date Firefox browser, the output length
-shrinks to about 50%:
+shrinks to less than 50%:
 
 ```js
 var options = { features: "FF" };
-var output = JScrewIt.encode("alert(1)", options); // 960 characters now
+var output = JScrewIt.encode("alert(1)", options); // 858 characters now
 ```
 
 Here we have used another feature: [`FF`](Features.md#FF).
@@ -222,12 +222,12 @@ their intersection.
 
 JScrewIt itself and the code it generates are compatible with the JavaScript engines listed below.
 
-- Chrome 66+
+- Chrome 69+
 - Edge 40+
 - Firefox 54+
 - Internet Explorer 9+
 - Safari 7.0+
-- Opera 53+
+- Opera 56+
 - Android Browser 4.x
 - Node.js
 
