@@ -9,13 +9,10 @@ function (evt)
     'use strict';
 
     var inData = evt.data;
-    var input = inData.input;
-    var options = inData.options;
-
-    var outData = { };
+    var outData = { taskId: inData.taskId };
     try
     {
-        outData.output = JScrewIt.encode(input, options);
+        outData.output = JScrewIt.encode(inData.input, inData.options);
     }
     catch (error)
     {

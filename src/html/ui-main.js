@@ -21,15 +21,8 @@ stats,
 {
     function createWorker()
     {
-        if (typeof Worker !== 'undefined')
-        {
-            try
-            {
-                worker = new Worker('html/worker.js');
-            }
-            catch (error)
-            { }
-        }
+        worker = new Worker('html/worker.js');
+        worker.onmessage = handleWorkerMessage;
     }
 
     function encode()
@@ -52,15 +45,16 @@ stats,
     function encodeAsync()
     {
         var options = getOptions();
-        var data = { input: inputArea.value, options: options };
         if (waitingForWorker)
-            queuedData = data;
-        else
         {
-            worker.postMessage(data);
-            resetOutput();
-            setWaitingForWorker(true);
+            worker.terminate();
+            createWorker();
+            taskId = taskId + 1 | 0;
         }
+        var data = { input: inputArea.value, options: options, taskId: taskId };
+        worker.postMessage(data);
+        resetOutput();
+        setWaitingForWorker(true);
         inputArea.onkeyup = null;
     }
 
@@ -165,14 +159,9 @@ stats,
 
     function handleWorkerMessage(evt)
     {
-        if (queuedData)
+        var data = evt.data;
+        if (data.taskId === taskId)
         {
-            worker.postMessage(queuedData);
-            queuedData = null;
-        }
-        else
-        {
-            var data = evt.data;
             var error = data.error;
             if (error)
                 updateError(data.error);
@@ -212,7 +201,6 @@ stats,
         if (worker)
         {
             changeHandler = encodeAsync;
-            worker.onmessage = handleWorkerMessage;
             encodeAsync();
         }
         else
@@ -335,12 +323,20 @@ stats,
     var loadFileButton;
     var outOfSync;
     var outputSet;
-    var queuedData;
     var roll;
+    var taskId = 0;
     var waitingForWorker;
     var worker;
 
     document.addEventListener('DOMContentLoaded', init);
-    createWorker();
+    if (typeof Worker !== 'undefined')
+    {
+        try
+        {
+            createWorker();
+        }
+        catch (error)
+        { }
+    }
 }
 )();
