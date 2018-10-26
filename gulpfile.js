@@ -224,11 +224,40 @@ gulp.task
 
 gulp.task
 (
-    'uglify:html',
-    ['make-art'],
+    'make-worker',
     function ()
     {
-        var addsrc = require('gulp-add-src');
+        var through = require('through2');
+        var uglify = require('gulp-uglify');
+
+        var stream =
+        gulp
+        .src('src/html/worker.js')
+        .pipe(uglify())
+        .pipe
+        (
+            through.obj
+            (
+                function (chunk, encoding, callback)
+                {
+                    var contents =
+                    'var WORKER_SRC = ' + JSON.stringify(String(chunk.contents)) + ';\n';
+                    chunk.contents = Buffer.from(contents);
+                    callback(null, chunk);
+                }
+            )
+        )
+        .pipe(gulp.dest('tmp-src'));
+        return stream;
+    }
+);
+
+gulp.task
+(
+    'uglify:html',
+    ['make-art', 'make-worker'],
+    function ()
+    {
         var concat = require('gulp-concat');
         var uglify = require('gulp-uglify');
 
@@ -237,6 +266,7 @@ gulp.task
             'src/html/result-format.js',
             'src/preamble',
             'tmp-src/art.js',
+            'tmp-src/worker.js',
             'src/html/button.js',
             'src/html/engine-selection-box.js',
             'src/html/modal-box.js',
@@ -245,12 +275,7 @@ gulp.task
             'src/html/ui-main.js',
             'src/postamble',
         ];
-        var stream =
-        gulp
-        .src(src)
-        .pipe(concat('ui.js'))
-        .pipe(addsrc('src/html/worker.js'))
-        .pipe(uglify()).pipe(gulp.dest('html'));
+        var stream = gulp.src(src).pipe(concat('ui.js')).pipe(uglify()).pipe(gulp.dest('html'));
         return stream;
     }
 );

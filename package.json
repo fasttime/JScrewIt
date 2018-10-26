@@ -39,7 +39,6 @@
     "expectations": "~0.7.1",
     "fs-then-native": "~2.0.0",
     "gulp": "~3.9.1",
-    "gulp-add-src": "~1.0.0",
     "gulp-concat": "~2.6.0",
     "gulp-fasttime-lint": "~0.4.1",
     "gulp-gherkin-lint": "~0.0.2",

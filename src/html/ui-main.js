@@ -1,6 +1,7 @@
 /* eslint-env browser */
 /*
 global
+WORKER_SRC,
 JScrewIt,
 alert,
 art,
@@ -23,9 +24,11 @@ stats,
     {
         if (typeof Worker !== 'undefined')
         {
+            var blob =
+            URL.createObjectURL(new Blob([WORKER_SRC], { type: 'application/javascript' }));
             try
             {
-                worker = new Worker('html/worker.js');
+                worker = new Worker(blob);
             }
             catch (error)
             { }
