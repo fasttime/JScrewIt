@@ -20,18 +20,26 @@ stats,
 
 (function ()
 {
+    var JS_MIME_TYPE = 'application/javascript';
+
+    function createJSObjectURL(src)
+    {
+        var url = URL.createObjectURL(new Blob([src], { type: JS_MIME_TYPE }));
+        return url;
+    }
+
     function createWorker()
     {
         if (typeof Worker !== 'undefined')
         {
-            var blob =
-            URL.createObjectURL(new Blob([WORKER_SRC], { type: 'application/javascript' }));
+            var url = createJSObjectURL(WORKER_SRC);
             try
             {
-                worker = new Worker(blob);
+                worker = new Worker(url);
             }
             catch (error)
             { }
+            URL.revokeObjectURL(url);
         }
     }
 
@@ -272,6 +280,11 @@ stats,
         inputArea.focus();
     }
 
+    function initLater()
+    {
+        document.addEventListener('DOMContentLoaded', init);
+    }
+
     function loadFile()
     {
         var file = this.files[0];
@@ -343,7 +356,39 @@ stats,
     var waitingForWorker;
     var worker;
 
-    document.addEventListener('DOMContentLoaded', init);
     createWorker();
+    if (worker)
+    {
+        (function ()
+        {
+            var request = new XMLHttpRequest();
+            request.open('GET', 'lib/jscrewit.min.js', true);
+            request.overrideMimeType(JS_MIME_TYPE);
+            request.onerror =
+            function ()
+            {
+                worker.terminate();
+                worker = undefined;
+            };
+            request.onload =
+            function ()
+            {
+                var url = createJSObjectURL(request.responseText);
+                worker.postMessage({ url: url });
+            };
+            request.onloadend =
+            function ()
+            {
+                if (document.readyState === 'loading')
+                    initLater();
+                else
+                    init();
+            };
+            request.send();
+        }
+        )();
+    }
+    else
+        initLater();
 }
 )();
