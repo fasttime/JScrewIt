@@ -3,7 +3,6 @@
 global
 WORKER_SRC,
 JScrewIt,
-alert,
 art,
 compMenu,
 controls,
@@ -22,17 +21,11 @@ stats,
 {
     var JS_MIME_TYPE = 'application/javascript';
 
-    function createJSObjectURL(src)
-    {
-        var url = URL.createObjectURL(new Blob([src], { type: JS_MIME_TYPE }));
-        return url;
-    }
-
     function createWorker()
     {
         if (typeof Worker !== 'undefined')
         {
-            var url = createJSObjectURL(WORKER_SRC);
+            var url = URL.createObjectURL(new Blob([WORKER_SRC], { type: JS_MIME_TYPE }));
             try
             {
                 worker = new Worker(url);
@@ -54,7 +47,7 @@ stats,
         catch (error)
         {
             resetOutput();
-            updateError(error + '');
+            updateError(error);
             return;
         }
         updateOutput(output);
@@ -362,8 +355,6 @@ stats,
         (function ()
         {
             var request = new XMLHttpRequest();
-            request.open('GET', 'lib/jscrewit.min.js', true);
-            request.overrideMimeType(JS_MIME_TYPE);
             request.onerror =
             function ()
             {
@@ -373,7 +364,7 @@ stats,
             request.onload =
             function ()
             {
-                var url = createJSObjectURL(request.responseText);
+                var url = URL.createObjectURL(request.response);
                 worker.postMessage({ url: url });
             };
             request.onloadend =
@@ -384,6 +375,9 @@ stats,
                 else
                     init();
             };
+            request.responseType = 'blob';
+            request.open('GET', 'lib/jscrewit.min.js', true);
+            request.overrideMimeType(JS_MIME_TYPE);
             request.send();
         }
         )();
