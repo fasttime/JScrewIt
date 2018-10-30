@@ -44,7 +44,7 @@ stats,
         catch (error)
         {
             resetOutput();
-            updateError(error);
+            updateError(String(error));
             return;
         }
         updateOutput(output);
@@ -53,8 +53,7 @@ stats,
     function encodeAsync()
     {
         var options = getOptions();
-        taskId = taskId + 1 | 0;
-        var data = { input: inputArea.value, options: options, taskId: taskId };
+        var data = { input: inputArea.value, options: options };
         if (waitingForWorker)
         {
             worker.terminate();
@@ -169,15 +168,12 @@ stats,
     function handleWorkerMessage(evt)
     {
         var data = evt.data;
-        if (data.taskId === taskId)
-        {
-            var error = data.error;
-            if (error)
-                updateError(data.error);
-            else
-                updateOutput(data.output);
-            setWaitingForWorker(false);
-        }
+        var error = data.error;
+        if (error)
+            updateError(error);
+        else
+            updateOutput(data.output);
+        setWaitingForWorker(false);
     }
 
     function init()
@@ -306,7 +302,7 @@ stats,
 
     function updateError(error)
     {
-        showModalBox(art('P', String(error)));
+        showModalBox(art('P', error));
     }
 
     function updateOutput(output)
@@ -339,12 +335,11 @@ stats,
     var outOfSync;
     var outputSet;
     var roll;
-    var taskId = 0;
     var waitingForWorker;
     var worker;
     var workerURL;
 
-    if (typeof Worker !== 'undefined')
+    if (typeof Worker === 'function')
     {
         workerURL = URL.createObjectURL(new Blob([WORKER_SRC], { type: JS_MIME_TYPE }));
         try

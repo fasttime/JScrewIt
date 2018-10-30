@@ -13,14 +13,16 @@ function (evt)
     var input = inData.input;
     if (input != null)
     {
-        var outData = { taskId: inData.taskId };
+        var outData;
         try
         {
-            outData.output = JScrewIt.encode(input, inData.options);
+            var output = JScrewIt.encode(input, inData.options);
+            outData = { output: output };
         }
         catch (error)
         {
-            outData.error = error + '';
+            var errorStr = String(error);
+            outData = { error: errorStr };
         }
         postMessage(outData);
     }
