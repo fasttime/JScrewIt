@@ -1,22 +1,27 @@
 /* eslint-env worker */
 /* global JScrewIt */
 
-importScripts('../lib/jscrewit.min.js');
-
 self.onmessage =
 function (evt)
 {
     'use strict';
 
     var inData = evt.data;
-    var outData = { taskId: inData.taskId };
-    try
+    var url = inData.url;
+    if (url != null)
+        importScripts(url);
+    var input = inData.input;
+    if (input != null)
     {
-        outData.output = JScrewIt.encode(inData.input, inData.options);
+        var outData = { taskId: inData.taskId };
+        try
+        {
+            outData.output = JScrewIt.encode(input, inData.options);
+        }
+        catch (error)
+        {
+            outData.error = error + '';
+        }
+        postMessage(outData);
     }
-    catch (error)
-    {
-        outData.error = error + '';
-    }
-    postMessage(outData);
 };

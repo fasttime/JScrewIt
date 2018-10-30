@@ -1,8 +1,8 @@
 /* eslint-env browser */
 /*
 global
+WORKER_SRC,
 JScrewIt,
-alert,
 art,
 compMenu,
 controls,
@@ -19,10 +19,18 @@ stats,
 
 (function ()
 {
+    var JS_MIME_TYPE = 'application/javascript';
+
     function createWorker()
     {
-        worker = new Worker('html/worker.js');
+        worker = new Worker(workerURL);
         worker.onmessage = handleWorkerMessage;
+    }
+
+    function destroyWorkerURL()
+    {
+        URL.revokeObjectURL(workerURL);
+        workerURL = undefined;
     }
 
     function encode()
@@ -36,7 +44,7 @@ stats,
         catch (error)
         {
             resetOutput();
-            updateError(error + '');
+            updateError(error);
             return;
         }
         updateOutput(output);
@@ -45,13 +53,14 @@ stats,
     function encodeAsync()
     {
         var options = getOptions();
+        taskId = taskId + 1 | 0;
+        var data = { input: inputArea.value, options: options, taskId: taskId };
         if (waitingForWorker)
         {
             worker.terminate();
             createWorker();
-            taskId = taskId + 1 | 0;
+            data.url = jscrewitURL;
         }
-        var data = { input: inputArea.value, options: options, taskId: taskId };
         worker.postMessage(data);
         resetOutput();
         setWaitingForWorker(true);
@@ -257,6 +266,11 @@ stats,
         inputArea.focus();
     }
 
+    function initLater()
+    {
+        document.addEventListener('DOMContentLoaded', init);
+    }
+
     function loadFile()
     {
         var file = this.files[0];
@@ -320,6 +334,7 @@ stats,
 
     var currentFeature;
     var engineSelectionBox;
+    var jscrewitURL;
     var loadFileButton;
     var outOfSync;
     var outputSet;
@@ -327,16 +342,54 @@ stats,
     var taskId = 0;
     var waitingForWorker;
     var worker;
+    var workerURL;
 
-    document.addEventListener('DOMContentLoaded', init);
     if (typeof Worker !== 'undefined')
     {
+        workerURL = URL.createObjectURL(new Blob([WORKER_SRC], { type: JS_MIME_TYPE }));
         try
         {
             createWorker();
         }
         catch (error)
-        { }
+        {
+            destroyWorkerURL();
+        }
     }
+    if (worker)
+    {
+        (function ()
+        {
+            var request = new XMLHttpRequest();
+            request.onerror =
+            function ()
+            {
+                worker.terminate();
+                worker = undefined;
+                destroyWorkerURL();
+            };
+            request.onload =
+            function ()
+            {
+                jscrewitURL = URL.createObjectURL(request.response);
+                worker.postMessage({ url: jscrewitURL });
+            };
+            request.onloadend =
+            function ()
+            {
+                if (document.readyState === 'loading')
+                    initLater();
+                else
+                    init();
+            };
+            request.responseType = 'blob';
+            request.open('GET', 'lib/jscrewit.min.js', true);
+            request.overrideMimeType(JS_MIME_TYPE);
+            request.send();
+        }
+        )();
+    }
+    else
+        initLater();
 }
 )();
