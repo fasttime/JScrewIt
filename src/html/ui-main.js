@@ -234,9 +234,6 @@ stats,
         inputArea.oninput = changeHandler;
         var compHandler = handleCompInput.bind(changeHandler);
         compMenu.onchange = compHandler;
-        // Firefox does not always trigger a change event when an option is selected using the
-        // keyboard; we must handle keydown events asynchronously, too.
-        compMenu.onkeydown = setTimeout.bind(null, compHandler);
         engineSelectionBox = art(createEngineSelectionBox(), art.on('input', compHandler));
         roll = createRoll();
         art
@@ -339,7 +336,7 @@ stats,
     var worker;
     var workerURL;
 
-    if (typeof Worker === 'function')
+    if (typeof Worker !== 'undefined') // In older versions of Safari, typeof Worker is "object".
     {
         workerURL = URL.createObjectURL(new Blob([WORKER_SRC], { type: JS_MIME_TYPE }));
         try
@@ -377,9 +374,9 @@ stats,
                 else
                     init();
             };
-            request.responseType = 'blob';
             request.open('GET', 'lib/jscrewit.min.js', true);
             request.overrideMimeType(JS_MIME_TYPE);
+            request.responseType = 'blob';
             request.send();
         }
         )();
