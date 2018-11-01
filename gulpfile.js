@@ -263,9 +263,9 @@ gulp.task
 
         var src =
         [
+            'tmp-src/art.js',
             'src/html/result-format.js',
             'src/preamble',
-            'tmp-src/art.js',
             'tmp-src/worker.js',
             'src/html/button.js',
             'src/html/engine-selection-box.js',

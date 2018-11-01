@@ -1,11 +1,11 @@
 /* eslint-env worker */
 /* global JScrewIt */
 
+'use strict';
+
 self.onmessage =
 function (evt)
 {
-    'use strict';
-
     var inData = evt.data;
     var url = inData.url;
     if (url != null)

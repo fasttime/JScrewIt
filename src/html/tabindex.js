@@ -8,14 +8,10 @@ function hasTabindex(element)
 
 function removeTabindex(element)
 {
-    'use strict';
-
     element.removeAttribute('tabindex');
 }
 
 function setTabindex(element)
 {
-    'use strict';
-
     element.setAttribute('tabindex', 0);
 }

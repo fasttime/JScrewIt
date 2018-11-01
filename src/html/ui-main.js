@@ -180,7 +180,7 @@ stats,
     {
         document.querySelector('body>*>div').style.display = 'block';
         inputArea.value = inputArea.defaultValue;
-        outputArea.oninput = updateStats;
+        art(outputArea, art.on('input', updateStats));
         art
         (
             stats.parentNode,
@@ -233,7 +233,7 @@ stats,
         }
         inputArea.oninput = changeHandler;
         var compHandler = handleCompInput.bind(changeHandler);
-        compMenu.onchange = compHandler;
+        art(compMenu, art.on('change', compHandler));
         engineSelectionBox = art(createEngineSelectionBox(), art.on('input', compHandler));
         roll = createRoll();
         art
