@@ -180,7 +180,8 @@ stats,
     {
         document.querySelector('main>div').style.display = 'block';
         inputArea.value = inputArea.defaultValue;
-        art(outputArea, art.on('input', updateStats));
+        var outputAreaRows = isBlink() ? 1 : 10;
+        art(outputArea, { rows: outputAreaRows }, art.on('input', updateStats));
         art
         (
             stats.parentNode,
@@ -262,6 +263,13 @@ stats,
     function initLater()
     {
         document.addEventListener('DOMContentLoaded', init);
+    }
+
+    function isBlink()
+    {
+        var chrome = self.chrome;
+        var blink = chrome && chrome.csi;
+        return blink;
     }
 
     function loadFile()
