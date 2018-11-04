@@ -178,7 +178,7 @@ stats,
 
     function init()
     {
-        document.querySelector('body>*>div').style.display = 'block';
+        document.querySelector('main>div').style.display = 'block';
         inputArea.value = inputArea.defaultValue;
         art(outputArea, art.on('input', updateStats));
         art

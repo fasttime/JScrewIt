@@ -1,8 +1,7 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang='en'>
 <head>
 <meta charset='utf-8'>
-<base target='_top'>
 <link rel='apple-touch-icon' href='html/screw.svg'>
 <link rel='author' href='https://github.com/fasttime'>
 <link rel='icon' href='html/favicon.ico'>
@@ -38,17 +37,17 @@
 
 #controls>*:not(:last-child) { margin-right: 1em; }
 
-#main { margin: 0 auto; max-width: 720px; text-align: justify; }
+main { display: block; margin: 0 auto; max-width: 720px; text-align: justify; }
 
-#main>div { display: none; }
+main>div { display: none; }
 
-#main header { height: 100px; position: relative; width: 100%; }
+main header { height: 100px; position: relative; width: 100%; }
 
-#main h1 { font-size: 2em; font-weight: normal; left: 115px; position: absolute; top: 40px; }
+main h1 { font-size: 2em; font-weight: normal; left: 115px; position: absolute; top: 40px; }
 
-#main img { background: blue; }
+main img { background: blue; }
 
-#main textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; }
+main textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; }
 
 #outputArea { white-space: pre; word-break: break-all; }
 
@@ -69,7 +68,7 @@ body, select { font-size: 13.5pt; }
 <title>JScrewIt – Write any JavaScript with six characters: ! ( ) + [ ]</title>
 
 <body>
-<div id='main'>
+<main>
     <header>
         <h1>JScrewIt</h1>
         <img alt src='html/screw.svg' width='100' height='100'>
@@ -118,4 +117,4 @@ body, select { font-size: 13.5pt; }
     <noscript>
         <p>You must enable JavaScript to use JScrewIt.
     </noscript>
-</div>
+</main>
