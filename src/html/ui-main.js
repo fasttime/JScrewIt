@@ -176,12 +176,36 @@ stats,
         setWaitingForWorker(false);
     }
 
+    function ignoreRepeatedMouseEvent(evt)
+    {
+        // evt.toElement is null in Internet Explorer and Edge.
+        var repeated = evt.toElement !== null && evt.detail >= 2;
+        if (repeated)
+            evt.preventDefault();
+        return repeated;
+    }
+
     function init()
     {
         document.querySelector('main>div').style.display = 'block';
         inputArea.value = inputArea.defaultValue;
         var outputAreaRows = isBlink() ? 1 : 10;
-        art(outputArea, { rows: outputAreaRows }, art.on('input', updateStats));
+        art
+        (
+            outputArea,
+            { rows: outputAreaRows },
+            art.on
+            (
+                'mousedown',
+                function (evt)
+                {
+                    if (ignoreRepeatedMouseEvent(evt))
+                        outputArea.select();
+                }
+            ),
+            art.on('mouseup', ignoreRepeatedMouseEvent),
+            art.on('input', updateStats)
+        );
         art
         (
             stats.parentNode,
@@ -252,7 +276,7 @@ stats,
         if (inputArea.createTextRange)
         {
             var range = inputArea.createTextRange();
-            range.move('textedit', 1);
+            range.move('textedit');
             range.select();
         }
         else
