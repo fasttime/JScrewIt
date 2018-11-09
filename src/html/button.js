@@ -50,7 +50,7 @@ function createButton(text)
 
     function handleMousedown(evt)
     {
-        if (evt.which === 1 && !isDisabled() && !isActive())
+        if (evt.button === 0 && !isDisabled() && !isActive())
         {
             button.setCapture();
             button.className = 'active button focusable';
@@ -60,7 +60,7 @@ function createButton(text)
 
     function handleMouseup(evt)
     {
-        if (evt.which === 1 && isActive())
+        if (evt.button === 0 && isActive())
         {
             document.releaseCapture();
             deactivate();
@@ -94,32 +94,14 @@ function createButton(text)
     art
     (
         'SPAN',
-        { className: 'button focusable' },
-        setTabindex,
-        art.on('click', handleClick),
-        art.on('keydown', handleKeydown),
-        art.on('keyup', handleKeyup),
-        art.on('mouseup', handleMouseup),
-        art('SPAN', text),
-        art('SPAN')
-    );
-    if (button.msMatchesSelector)
-    {
-        button.firstChild.setAttribute('unselectable', 'on');
-        art(button, art.on('mousedown', handleMousedown));
-    }
-    Object.defineProperty
-    (
-        button,
-        'disabled',
         {
-            configurable: true,
-            get: function ()
+            className: 'button focusable',
+            get disabled()
             {
                 var value = isDisabled();
                 return value;
             },
-            set: function (value)
+            set disabled(value)
             {
                 value = Boolean(value);
                 if (value !== isDisabled())
@@ -141,8 +123,20 @@ function createButton(text)
                     button.className = 'button focusable';
                 }
             },
-        }
+        },
+        setTabindex,
+        art.on('click', handleClick),
+        art.on('keydown', handleKeydown),
+        art.on('keyup', handleKeyup),
+        art.on('mouseup', handleMouseup),
+        art('SPAN', text),
+        art('SPAN')
     );
+    if (button.msMatchesSelector)
+    {
+        button.firstChild.setAttribute('unselectable', 'on');
+        art(button, art.on('mousedown', handleMousedown));
+    }
     return button;
 }
 
@@ -165,10 +159,7 @@ art.css
     { left: '.1em', top: '.1em' }
 );
 art.css
-(
-    '.button.active>:last-child, .button[tabindex]:active>:last-child',
-    { 'border-color': '#0088b6' }
-);
+('.button.active>:last-child, .button[tabindex]:active>:last-child', { 'border-color': '#0088b6' });
 art.css('.button:not([tabindex])', { background: '#e9e9e9', color: '#707070' });
 art.css('.button:not([tabindex])>:last-child', { 'border-color': '#bababa' });
 art.css

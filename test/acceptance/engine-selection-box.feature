@@ -1,6 +1,6 @@
 Feature: Engine selection box
 
-  Backgound:
+  Background:
     Given UI ready
 
   @appearance

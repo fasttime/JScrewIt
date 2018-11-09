@@ -1,6 +1,6 @@
 Feature: User interface
 
-  Backgound:
+  Background:
     Given UI ready
 
   @appearance

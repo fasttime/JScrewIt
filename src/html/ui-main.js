@@ -248,14 +248,7 @@ stats,
             )
         );
         art(controls.parentNode, roll);
-        if (inputArea.createTextRange)
-        {
-            var range = inputArea.createTextRange();
-            range.move('textedit', 1);
-            range.select();
-        }
-        else
-            inputArea.setSelectionRange(0x7fffffff, 0x7fffffff);
+        inputArea.selectionStart = 0x7fffffff;
         inputArea.focus();
     }
 
@@ -312,7 +305,7 @@ stats,
     {
         var length = outputArea.value.length;
         var html = length === 1 ? '1 char' : length + ' chars';
-        outOfSync = !!newOutOfSync;
+        outOfSync = Boolean(newOutOfSync);
         if (newOutOfSync)
         {
             if (worker)
