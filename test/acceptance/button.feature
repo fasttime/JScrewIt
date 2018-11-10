@@ -22,7 +22,7 @@ Feature: Button
 
   @appearance
   Scenario: Disabled appearance
-    Given a focused button
+    Given a disabled button
     Then the button should be grayed out
 
   @appearance

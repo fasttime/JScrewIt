@@ -132,7 +132,7 @@ function createButton(text)
         art('SPAN', text),
         art('SPAN')
     );
-    if (button.msMatchesSelector)
+    if (button.setCapture) // setCapture is only defined in Internet Explorer.
     {
         button.firstChild.setAttribute('unselectable', 'on');
         art(button, art.on('mousedown', handleMousedown));
