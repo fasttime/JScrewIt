@@ -55,9 +55,6 @@ main textarea { display: block; font: 12pt monospace; resize: vertical; width: 1
 
 @supports (-moz-appearance: none) { #outputArea { white-space: pre-wrap; } } /* Hack for Firefox */
 
-/* Hack for Chrome and Opera */
-@media screen and (min-resolution: 1e-323dpcm) { #outputArea { white-space: normal; } }
-
 [tabindex] { outline: none; }
 
 body { background: white; color: black; font-family: Arial, sans-serif; margin: 5px; }
@@ -106,7 +103,7 @@ body, select { font-size: 13.5pt; }
 
             <label class='frame'>
                 <span>Output</span>
-                <textarea id='outputArea' rows='10' spellcheck='false'></textarea>
+                <textarea id='outputArea' spellcheck='false'></textarea>
                 <span class='actions'>
                     <span id='stats'>…</span>
                 </span>

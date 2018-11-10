@@ -97,6 +97,36 @@ stats,
             encodeAsync();
     }
 
+    function handleOutputAreaMouseDown(evt)
+    {
+        if (ignoreRepeatedMainMouseButtonEvent(evt))
+        {
+            var outputLength = outputArea.value.length;
+            if (outputArea.selectionStart !== 0 || outputArea.selectionEnd !== outputLength)
+            {
+                outputArea.selectionStart = 0;
+                outputArea.selectionEnd = outputLength;
+                if ('scrollTopMax' in outputArea) // Hack for Firefox
+                {
+                    var scrollTop = outputArea.scrollTop;
+                    art
+                    (
+                        outputArea,
+                        art.on
+                        (
+                            'scroll',
+                            function ()
+                            {
+                                outputArea.scrollTop = scrollTop;
+                            },
+                            { once: true }
+                        )
+                    );
+                }
+            }
+        }
+    }
+
     function handleReaderLoadEnd()
     {
         loadFileButton.disabled = false;
@@ -176,11 +206,38 @@ stats,
         setWaitingForWorker(false);
     }
 
+    function ignoreRepeatedMainMouseButtonEvent(evt)
+    {
+        var repeated;
+        var target = evt.target;
+        if ('runtimeStyle' in target) // Hack for Internet Explorer
+        {
+            var lastMainMouseButtonEventTimeStamp = target.lastMainMouseButtonEventTimeStamp;
+            var currentTimeStamp = evt.button === 0 ? evt.timeStamp : undefined;
+            target.lastMainMouseButtonEventTimeStamp = currentTimeStamp;
+            repeated = currentTimeStamp - lastMainMouseButtonEventTimeStamp <= 500;
+        }
+        else
+            repeated = evt.detail >= 2 && evt.button === 0;
+        if (repeated)
+            evt.preventDefault();
+        return repeated;
+    }
+
     function init()
     {
         document.querySelector('main>div').style.display = 'block';
         inputArea.value = inputArea.defaultValue;
-        art(outputArea, art.on('input', updateStats));
+        var outputAreaProps =
+        isBlink() ? { rows: 1, style: { overflowX: 'scroll' } } : { rows: 10 };
+        art
+        (
+            outputArea,
+            outputAreaProps,
+            art.on('mousedown', handleOutputAreaMouseDown),
+            art.on('mouseup', ignoreRepeatedMainMouseButtonEvent),
+            art.on('input', updateStats)
+        );
         art
         (
             stats.parentNode,
@@ -255,6 +312,13 @@ stats,
     function initLater()
     {
         document.addEventListener('DOMContentLoaded', init);
+    }
+
+    function isBlink()
+    {
+        var chrome = self.chrome;
+        var blink = chrome && chrome.csi;
+        return blink;
     }
 
     function loadFile()
