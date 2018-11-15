@@ -535,6 +535,8 @@ self,
                             test('binary literals', '0b101010');
                             test('octal escape sequences', '"\\1"');
                             test('extended Unicode escape sequences', '"\\u{1}"');
+                            test('the unescaped character U+2028 in a string literal', '"\u2028"');
+                            test('the unescaped character U+2029 in a string literal', '"\u2029"');
                             test('legacy octal literals', '010');
                             test('legacy octal-like literals', '09');
                             test('illegal identifiers with escape sequences', 'f\\u0020o');
