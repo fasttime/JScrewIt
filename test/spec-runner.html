@@ -3,7 +3,7 @@
 <head>
 <meta charset='utf-8'>
 <link rel='icon' href='favicon-pending.ico'>
-<link rel='stylesheet' href='../node_modules/mocha-matrix/mocha-matrix.css'>
+<link rel='stylesheet' href='../node_modules/mocha-bar/mocha-bar.css'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
 <meta name='viewport' content='width=device-width'>
 <script src='../node_modules/mocha/mocha.js'></script>
@@ -14,7 +14,7 @@
 <script src='jscrewit-feature-helpers.js'></script>
 <script src='matcher-helpers.js'></script>
 <script src='feature-info.js'></script>
-<script src='../node_modules/mocha-matrix/index.js'></script>
+<script src='../node_modules/mocha-bar/mocha-bar.js'></script>
 <script src='browser-spec-runner.js'></script>
 <script src='../src/html/result-format.js'></script>
 <script src='result-format.spec.js'></script>
@@ -69,19 +69,12 @@
 
 #mocha { margin-top: 25px; }
 
-body>header
-{
-    background: #eee;
-    border-radius: 10px;
-    margin: 0 60px;
-    min-width: 200px;
-    padding: 10px;
-}
+body { margin: 1.33em; }
 
-@media screen and (max-device-width: 480px)
-{
-    body>header { margin: 0 10px; }
-}
+body>header
+{ background: #eee; border-radius: 10px; margin: 0 60px; min-width: 200px; padding: 10px; }
+
+@media screen and (max-device-width: 480px) { body>header { margin: 0 10px; } }
 
 h1 { font-family: sans-serif; text-align: center; }
 
