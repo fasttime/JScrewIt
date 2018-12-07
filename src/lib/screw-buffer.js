@@ -288,7 +288,8 @@ var optimizeSolutions;
         (
             this,
             {
-                append: function (solution)
+                append:
+                function (solution)
                 {
                     if (solutions.length >= maxSolutionCount)
                         return false;
@@ -311,7 +312,8 @@ var optimizeSolutions;
                 {
                     return length;
                 },
-                toString: function ()
+                toString:
+                function ()
                 {
                     function collectOut(offset, count, maxGroupCount, groupBond)
                     {

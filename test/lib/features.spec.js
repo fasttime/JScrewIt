@@ -165,11 +165,13 @@
                             (
                                 ['NAME', Feature.WINDOW],
                                 {
-                                    toString: function ()
+                                    toString:
+                                    function ()
                                     {
                                         return 'HTMLDOCUMENT';
                                     },
-                                    valueOf: function ()
+                                    valueOf:
+                                    function ()
                                     {
                                         return 42;
                                     },

@@ -7,11 +7,13 @@
 {
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
 
-    describe(
+    describe
+    (
         'JScrewIt.debug.createFigurator',
         function ()
         {
-            it(
+            it
+            (
                 'returns a figurator with usable joiners',
                 function ()
                 {
@@ -35,40 +37,42 @@
                     }
                 }
             );
-            it(
+            it
+            (
                 'returns a figurator that filters start values from figures',
                 function ()
                 {
                     var figurator =
-                        JScrewIt.debug.createFigurator(
-                            [
-                                '',
-                                'false',
-                                'true',
-                                '0',
-                                'undefined',
-                                '1',
-                                'NaN',
-                                '2',
-                                'f',
-                                't',
-                                '3',
-                                'r',
-                                'u',
-                                'n',
-                                'l',
-                                '4',
-                                'd',
-                                's',
-                                'e',
-                                '5',
-                                'i',
-                                '6',
-                                '7',
-                                '8',
-                                '9',
-                            ]
-                        );
+                    JScrewIt.debug.createFigurator
+                    (
+                        [
+                            '',
+                            'false',
+                            'true',
+                            '0',
+                            'undefined',
+                            '1',
+                            'NaN',
+                            '2',
+                            'f',
+                            't',
+                            '3',
+                            'r',
+                            'u',
+                            'n',
+                            'l',
+                            '4',
+                            'd',
+                            's',
+                            'e',
+                            '5',
+                            'i',
+                            '6',
+                            '7',
+                            '8',
+                            '9',
+                        ]
+                    );
                     for (var index = 0; ; ++index)
                     {
                         var figure = figurator(index);

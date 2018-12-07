@@ -3,23 +3,21 @@ var trimJS;
 (function ()
 {
     var regExp =
-        RegExp(
-            '(?:(?!.)\\s)+(?:\\s|\uFEFF|//(?:(?!\\*/|`).)*(?!.)|/\\*(?:(?!`)(?:[^*]|\\*[^/]))*?\\' +
-            '*/)*$'
-        );
+    RegExp
+    ('(?:(?!.)\\s)+(?:\\s|\uFEFF|//(?:(?!\\*/|`).)*(?!.)|/\\*(?:(?!`)(?:[^*]|\\*[^/]))*?\\*/)*$');
 
     trimJS =
-        function (str)
+    function (str)
+    {
+        str = str.replace(/^(?:\s|\uFEFF|\/\/.*(?!.)|\/\*[\s\S]*?\*\/)*(?!.)\s/, '');
+        var match = regExp.exec(str);
+        if (match)
         {
-            str = str.replace(/^(?:\s|\uFEFF|\/\/.*(?!.)|\/\*[\s\S]*?\*\/)*(?!.)\s/, '');
-            var match = regExp.exec(str);
-            if (match)
-            {
-                var index = match.index;
-                if (str[index - 1] !== '\\')
-                    str = str.slice(0, index);
-            }
-            return str;
-        };
+            var index = match.index;
+            if (str[index - 1] !== '\\')
+                str = str.slice(0, index);
+        }
+        return str;
+    };
 }
 )();

@@ -11,14 +11,16 @@
             appendLength = 60;
         var encoder =
         {
-            resolve: function ()
+            resolve:
+            function ()
             {
                 var solution =
-                    { appendLength: appendLength, level: level, replacement: EXPECTED_REPLACEMENT };
+                { appendLength: appendLength, level: level, replacement: EXPECTED_REPLACEMENT };
                 solution.appendLength = appendLength;
                 return solution;
             },
-            resolveCharacter: function (char)
+            resolveCharacter:
+            function (char)
             {
                 var solution = SOLUTIONS[char];
                 return solution;
@@ -40,15 +42,18 @@
 
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
 
-    describe(
+    describe
+    (
         'Optimizer',
         function ()
         {
-            describe(
+            describe
+            (
                 '#appendLengthOf',
                 function ()
                 {
-                    it(
+                    it
+                    (
                         'optimizes characters that are part of the complex',
                         function ()
                         {
@@ -56,7 +61,8 @@
                             expect(optimizer.appendLengthOf(SOLUTIONS.e)).toBe(15);
                         }
                     );
-                    it(
+                    it
+                    (
                         'does not optimize characters that are not part of the complex',
                         function ()
                         {
@@ -64,7 +70,8 @@
                             expect(optimizer.appendLengthOf(SOLUTIONS.u)).toBeUndefined();
                         }
                     );
-                    it(
+                    it
+                    (
                         'does not optimize sufficiently short characters',
                         function ()
                         {
@@ -75,7 +82,8 @@
                 }
             );
 
-            describe(
+            describe
+            (
                 '#optimizeSolutions',
                 function ()
                 {
@@ -87,37 +95,35 @@
 
                     function testDo(description, opt)
                     {
-                        it(
+                        it
+                        (
                             'optimizes ' + description,
                             function ()
                             {
                                 var complexAppendLength = opt.complexAppendLength;
                                 var complexLevel = opt.complexLevel;
                                 var solutions =
-                                    opt.solutions ||
-                                    [SOLUTIONS.f, SOLUTIONS.e, SOLUTIONS.e, SOLUTIONS.t];
+                                opt.solutions ||
+                                [SOLUTIONS.f, SOLUTIONS.e, SOLUTIONS.e, SOLUTIONS.t];
                                 var bond = opt.bond;
                                 var forceString = opt.forceString;
                                 var verify =
-                                    opt.verifyDo ||
-                                    function ()
-                                    {
-                                        expect(solutions.length).toBe(1);
-                                        expect(solutions[0].replacement).toBe(EXPECTED_REPLACEMENT);
-                                    };
+                                opt.verifyDo ||
+                                function ()
+                                {
+                                    expect(solutions.length).toBe(1);
+                                    expect(solutions[0].replacement).toBe(EXPECTED_REPLACEMENT);
+                                };
                                 var optimizer = createOptimizer(complexAppendLength, complexLevel);
-                                solutions.forEach(
+                                solutions.forEach
+                                (
                                     function (solution)
                                     {
                                         optimizer.appendLengthOf(solution);
                                     }
                                 );
-                                JScrewIt.debug.optimizeSolutions(
-                                    [optimizer],
-                                    solutions,
-                                    bond,
-                                    forceString
-                                );
+                                JScrewIt.debug.optimizeSolutions
+                                ([optimizer], solutions, bond, forceString);
                                 verify(solutions);
                             }
                         );
@@ -125,7 +131,8 @@
 
                     function testDont(description, opt)
                     {
-                        it(
+                        it
+                        (
                             'does not optimize ' + description,
                             function ()
                             {
@@ -138,51 +145,55 @@
                                 var forceString = opt.forceString;
                                 var expectedSolutionCount = solutions.length;
                                 var optimizer = createOptimizer(complexAppendLength, complexLevel);
-                                solutions.forEach(
+                                solutions.forEach
+                                (
                                     function (solution)
                                     {
                                         optimizer.appendLengthOf(solution);
                                     }
                                 );
-                                JScrewIt.debug.optimizeSolutions(
-                                    [optimizer],
-                                    solutions,
-                                    bond,
-                                    forceString
-                                );
+                                JScrewIt.debug.optimizeSolutions
+                                ([optimizer], solutions, bond, forceString);
                                 expect(solutions.length).toBe(expectedSolutionCount);
                             }
                         );
                     }
 
-                    test(
+                    test
+                    (
                         'a string integral cluster without bonding or string forcing',
                         { complexAppendLength: 80 }
                     );
-                    test(
+                    test
+                    (
                         'an object integral cluster without bonding or string forcing',
                         { complexAppendLength: 80, complexLevel: LEVEL_OBJECT }
                     );
-                    test(
+                    test
+                    (
                         'an integral cluster with bonding',
                         { bond: true, complexAppendLength: 82 }
                     );
-                    test(
+                    test
+                    (
                         'an integral string cluster with string forcing',
                         { complexAppendLength: 80, forceString: true }
                     );
-                    test(
+                    test
+                    (
                         'an integral object cluster with string forcing',
                         { complexAppendLength: 77, complexLevel: LEVEL_OBJECT, forceString: true }
                     );
-                    test(
+                    test
+                    (
                         'a partial cluster with bonding',
                         {
                             bond:                   true,
                             complexAppendLength:    80,
                             solutions:
                             [SOLUTIONS.u, SOLUTIONS.f, SOLUTIONS.e, SOLUTIONS.e, SOLUTIONS.t],
-                            verifyDo: function (solutions)
+                            verifyDo:
+                            function (solutions)
                             {
                                 expect(solutions.length).toBe(2);
                                 expect(solutions[0]).toBe(SOLUTIONS.u);
@@ -190,7 +201,8 @@
                             },
                         }
                     );
-                    test(
+                    test
+                    (
                         'a partial object cluster with string forcing',
                         {
                             complexAppendLength:    80,
@@ -198,7 +210,8 @@
                             forceString:            true,
                             solutions:
                             [SOLUTIONS.u, SOLUTIONS.f, SOLUTIONS.e, SOLUTIONS.e, SOLUTIONS.t],
-                            verifyDo: function (solutions)
+                            verifyDo:
+                            function (solutions)
                             {
                                 expect(solutions.length).toBe(2);
                                 expect(solutions[0]).toBe(SOLUTIONS.u);

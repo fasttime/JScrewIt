@@ -7,13 +7,8 @@ var getComplexOptimizer;
     var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")"
     var NOOP_OPTIMIZER = { appendLengthOf: noop, optimizeSolutions: noop };
 
-    function createOptimizer(
-        complex,
-        complexSolution,
-        charSet,
-        optimizedCharAppendLength,
-        appendLengthDiff
-    )
+    function createOptimizer
+    (complex, complexSolution, charSet, optimizedCharAppendLength, appendLengthDiff)
     {
         function appendLengthOf(solution)
         {
@@ -75,70 +70,67 @@ var getComplexOptimizer;
     }
 
     getComplexOptimizer =
-        function (encoder, complex, definition)
-        {
-            var optimizer;
-            var discreteAppendLength = 0;
-            var charMap = new Empty();
-            var charInfos = [];
-            array_prototype_forEach.call(
-                complex,
-                function (char)
+    function (encoder, complex, definition)
+    {
+        var optimizer;
+        var discreteAppendLength = 0;
+        var charMap = new Empty();
+        var charInfos = [];
+        array_prototype_forEach.call
+        (
+            complex,
+            function (char)
+            {
+                var charSolution = encoder.resolveCharacter(char);
+                var charAppendLength = charSolution.appendLength;
+                discreteAppendLength += charAppendLength;
+                var charInfo = charMap[char];
+                if (charInfo)
+                    ++charInfo.count;
+                else
                 {
-                    var charSolution = encoder.resolveCharacter(char);
-                    var charAppendLength = charSolution.appendLength;
-                    discreteAppendLength += charAppendLength;
-                    var charInfo = charMap[char];
-                    if (charInfo)
-                        ++charInfo.count;
-                    else
-                    {
-                        charInfo = charMap[char] =
-                            { appendLength: charAppendLength, char: char, count: 1 };
-                        charInfos.push(charInfo);
-                    }
+                    charInfo = charMap[char] =
+                    { appendLength: charAppendLength, char: char, count: 1 };
+                    charInfos.push(charInfo);
+                }
+            }
+        );
+        var complexSolution = encoder.resolve(definition);
+        if (complexSolution.level == null)
+            complexSolution.level = LEVEL_STRING;
+        var solutionAppendLength = complexSolution.appendLength;
+        var appendLengthDiff = discreteAppendLength - solutionAppendLength;
+        if (appendLengthDiff + BOND_EXTRA_LENGTH > 0)
+        {
+            charInfos.sort
+            (
+                function (charInfo1, charInfo2)
+                {
+                    var result = charInfo1.appendLength - charInfo2.appendLength;
+                    return result;
                 }
             );
-            var complexSolution = encoder.resolve(definition);
-            if (complexSolution.level == null)
-                complexSolution.level = LEVEL_STRING;
-            var solutionAppendLength = complexSolution.appendLength;
-            var appendLengthDiff = discreteAppendLength - solutionAppendLength;
-            if (appendLengthDiff + BOND_EXTRA_LENGTH > 0)
+            var restLength = solutionAppendLength;
+            var restCount = complex.length;
+            for (var index = 0; restCount; ++index)
             {
-                charInfos.sort(
-                    function (charInfo1, charInfo2)
-                    {
-                        var result = charInfo1.appendLength - charInfo2.appendLength;
-                        return result;
-                    }
-                );
-                var restLength = solutionAppendLength;
-                var restCount = complex.length;
-                for (var index = 0; restCount; ++index)
-                {
-                    var charInfo = charInfos[index];
-                    var charAppendLength = charInfo.appendLength;
-                    if (charAppendLength * restCount > restLength)
-                        break;
-                    var count = charInfo.count;
-                    restLength -= charAppendLength * count;
-                    restCount -= count;
-                }
-                var optimizedCharAppendLength = restLength / restCount | 0;
-                var charSet = createCharSet(charInfos, index);
-                optimizer =
-                    createOptimizer(
-                        complex,
-                        complexSolution,
-                        charSet,
-                        optimizedCharAppendLength,
-                        appendLengthDiff
-                    );
+                var charInfo = charInfos[index];
+                var charAppendLength = charInfo.appendLength;
+                if (charAppendLength * restCount > restLength)
+                    break;
+                var count = charInfo.count;
+                restLength -= charAppendLength * count;
+                restCount -= count;
             }
-            else
-                optimizer = NOOP_OPTIMIZER;
-            return optimizer;
-        };
+            var optimizedCharAppendLength = restLength / restCount | 0;
+            var charSet = createCharSet(charInfos, index);
+            optimizer =
+            createOptimizer
+            (complex, complexSolution, charSet, optimizedCharAppendLength, appendLengthDiff);
+        }
+        else
+            optimizer = NOOP_OPTIMIZER;
+        return optimizer;
+    };
 }
 )();

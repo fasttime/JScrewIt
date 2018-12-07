@@ -650,11 +650,13 @@ self,
                 {
                     var obj =
                     {
-                        toString: function ()
+                        toString:
+                        function ()
                         {
                             return '1';
                         },
-                        valueOf: function ()
+                        valueOf:
+                        function ()
                         {
                             return '0';
                         },

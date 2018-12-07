@@ -22,10 +22,10 @@
     {
         var elements = form.elements;
         var callback =
-            function (element)
-            {
-                element.disabled = disabled;
-            };
+        function (element)
+        {
+            element.disabled = disabled;
+        };
         Array.prototype.forEach.call(elements, callback);
         form.className = disabled ? 'disabled' : '';
     }
@@ -33,12 +33,14 @@
     function handleLoad()
     {
         form.addEventListener('submit', handleSubmit);
-        Array.prototype.forEach.call(
+        Array.prototype.forEach.call
+        (
             document.querySelectorAll('.label'),
             function (label)
             {
                 var input = label.querySelector('input');
-                label.addEventListener(
+                label.addEventListener
+                (
                     'mousedown',
                     function (evt)
                     {
@@ -75,7 +77,8 @@
         var maxGroupings = Math.pow(2, maxGroupThreshold - 1);
         if (groupings > maxGroupings)
         {
-            alert(
+            alert
+            (
                 'A first group threshold of ' + maxGroupThreshold + ' only allows for up to ' +
                 maxGroupings + ' groupings.'
             );
@@ -90,14 +93,15 @@
         groupingsField.value = groupings;
         callDepthField.value = callDepth;
         var call =
-            function ()
-            {
-                return runExtremeTest(maxGroupThreshold, groupings);
-            };
+        function ()
+        {
+            return runExtremeTest(maxGroupThreshold, groupings);
+        };
         for (var index = 0; index < callDepth; ++index)
             call = Function.prototype.call.bind(call);
         disableForm(true);
-        setTimeout(
+        setTimeout
+        (
             function ()
             {
                 var ok = call();
@@ -111,8 +115,8 @@
     function log(maxGroupThreshold, groupings, callDepth, ok)
     {
         var html =
-            (ok ? '<span class="success">Success</span>' : '<span class="failed">Failed</span>') +
-            ': FGT ' + maxGroupThreshold + ', groupings ' + groupings + ', call depth ' + callDepth;
+        (ok ? '<span class="success">Success</span>' : '<span class="failed">Failed</span>') +
+        ': FGT ' + maxGroupThreshold + ', groupings ' + groupings + ', call depth ' + callDepth;
         logger.insertBefore(document.createElement('DIV'), logger.firstChild).innerHTML = html;
     }
 

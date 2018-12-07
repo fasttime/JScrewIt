@@ -15,16 +15,17 @@ function byteCount(size, width)
 function createDiagnosticReport(codingLog)
 {
     var report =
-        '\nCoder                       Status         Length  Time (ms)\n' +
-        repeat('─', 60) + '\n' +
-        codingLog.reduce(
-            function (str, perfInfoList)
-            {
-                str += formatPerfInfoList(perfInfoList, '', ['', '']);
-                return str;
-            },
-            ''
-        );
+    '\nCoder                       Status         Length  Time (ms)\n' +
+    repeat('─', 60) + '\n' +
+    codingLog.reduce
+    (
+        function (str, perfInfoList)
+        {
+            str += formatPerfInfoList(perfInfoList, '', ['', '']);
+            return str;
+        },
+        ''
+    );
     return report;
 }
 
@@ -34,10 +35,10 @@ function createReport(originalSize, screwedSize, encodingTime)
     var expansionFactorStr = originalSize ? (screwedSize / originalSize).toFixed(2) : '-';
     var encodingTimeStr = timeUtils.formatDuration(encodingTime);
     var report =
-        'Original size:    ' + byteCount(originalSize, width) +
-        '\nScrewed size:     ' + byteCount(screwedSize, width) +
-        '\nExpansion factor: ' + expansionFactorStr +
-        '\nEncoding time:    ' + encodingTimeStr;
+    'Original size:    ' + byteCount(originalSize, width) +
+    '\nScrewed size:     ' + byteCount(screwedSize, width) +
+    '\nExpansion factor: ' + expansionFactorStr +
+    '\nEncoding time:    ' + encodingTimeStr;
     return report;
 }
 
@@ -75,12 +76,12 @@ function formatPerfInfoList(perfInfoList, padding, paddingChars)
         var perfInfo = perfInfoList[index];
         var next = index < count - 1;
         str +=
-            padding + (next ? '├' : '└') +
-            padRight(perfInfo.coderName, 27 - paddingLength) +
-            padRight(perfInfo.status, 10) +
-            padLeft(formatInt(perfInfo.outputLength), 11) +
-            padLeft(formatInt(perfInfo.time), 11) +
-            '\n';
+        padding + (next ? '├' : '└') +
+        padRight(perfInfo.coderName, 27 - paddingLength) +
+        padRight(perfInfo.status, 10) +
+        padLeft(formatInt(perfInfo.outputLength), 11) +
+        padLeft(formatInt(perfInfo.time), 11) +
+        '\n';
         codingLog = perfInfo.codingLog;
         if (codingLog)
             str += formatCodingLog(codingLog, padding, next);

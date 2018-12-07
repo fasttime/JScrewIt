@@ -136,7 +136,7 @@ var setUp;
 
         if (input === undefined)
             return [wrapWithEval, CODER_NAMES_BOTH];
-        switch (input += '')
+        switch (String(input))
         {
         case 'call':
             return [wrapWithCall, CODER_NAMES_TEXT];
@@ -169,19 +169,19 @@ var setUp;
     JScrewIt = assignNoEnum({ }, { Feature: Feature, encode: encode });
 
     getValidFeatureMask =
-        function (features)
-        {
-            var mask =
-            features !== undefined ? validMaskFromArrayOrStringOrFeature(features) : maskNew();
-            return mask;
-        };
+    function (features)
+    {
+        var mask =
+        features !== undefined ? validMaskFromArrayOrStringOrFeature(features) : maskNew();
+        return mask;
+    };
 
     setUp =
-        function (self)
-        {
-            if (self != null)
-                self.JScrewIt = JScrewIt;
-        };
+    function (self)
+    {
+        if (self != null)
+            self.JScrewIt = JScrewIt;
+    };
 
     setUp(typeof self !== 'undefined' ? /* istanbul ignore next */ self : null);
 

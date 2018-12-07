@@ -26,7 +26,8 @@
             toStringReplacement = '"toString"';
         var encoder =
         {
-            resolveConstant: function ()
+            resolveConstant:
+            function ()
             {
                 return Object(toStringReplacement);
             },
@@ -42,19 +43,22 @@
     }
 
     var EXPECTED_REPLACEMENT =
-        '(+(!![]+!![]+[!![]+!![]+!![]]+(+!![])))["toString"](!![]+!![]+[+[]])';
+    '(+(!![]+!![]+[!![]+!![]+!![]]+(+!![])))["toString"](!![]+!![]+[+[]])';
 
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
 
-    describe(
+    describe
+    (
         'Optimizer',
         function ()
         {
-            describe(
+            describe
+            (
                 '#appendLengthOf',
                 function ()
                 {
-                    it(
+                    it
+                    (
                         'does not optimize statically encoded small letters',
                         function ()
                         {
@@ -64,7 +68,8 @@
                             expect(actual).toBeUndefined();
                         }
                     );
-                    it(
+                    it
+                    (
                         'does not optimize non-hexatridecimal digits',
                         function ()
                         {
@@ -75,34 +80,37 @@
                         }
                     );
 
-                    describe(
+                    describe
+                    (
                         'optimizes',
                         function ()
                         {
                             function test(char, decimalMinLength, radixMinLength)
                             {
-                                it(
+                                it
+                                (
                                     '"' + char + '"',
                                     function ()
                                     {
                                         var minRadix = parseInt(char, 36) + 1;
                                         var maxDecimalDigits =
-                                            Math.ceil(
-                                                Math.log(0x1fffffffffffff) / Math.log(minRadix)
-                                            );
+                                        Math.ceil
+                                        (Math.log(0x1fffffffffffff) / Math.log(minRadix));
                                         // 7 for "+(", ")[", "](" and ")"
                                         var bulkLength = 7 + decimalMinLength + radixMinLength;
                                         var enough =
-                                            nextMultipleOf(bulkLength, maxDecimalDigits) +
-                                            maxDecimalDigits;
+                                        nextMultipleOf(bulkLength, maxDecimalDigits) +
+                                        maxDecimalDigits;
                                         var toStringReplacementLength = enough - bulkLength;
                                         var solution = { char: char, appendLength: Infinity };
-                                        checkLength(
+                                        checkLength
+                                        (
                                             toStringReplacementLength,
                                             solution,
                                             enough / maxDecimalDigits
                                         );
-                                        checkLength(
+                                        checkLength
+                                        (
                                             toStringReplacementLength - 1,
                                             solution,
                                             enough / maxDecimalDigits - 1
@@ -130,13 +138,15 @@
                 }
             );
 
-            describe(
+            describe
+            (
                 '#optimizeSolutions',
                 function ()
                 {
                     var optimizeSolutions = JScrewIt.debug.optimizeSolutions;
 
-                    it(
+                    it
+                    (
                         'optimizes an integral cluster without bonding',
                         function ()
                         {
@@ -149,7 +159,8 @@
                             expect(solutions[0].replacement).toBe(EXPECTED_REPLACEMENT);
                         }
                     );
-                    it(
+                    it
+                    (
                         'does not optimize an integral cluster without bonding',
                         function ()
                         {
@@ -161,7 +172,8 @@
                             expect(solutions.length).toBe(2);
                         }
                     );
-                    it(
+                    it
+                    (
                         'optimizes an integral cluster with bonding',
                         function ()
                         {
@@ -174,7 +186,8 @@
                             expect(solutions[0].replacement).toBe(EXPECTED_REPLACEMENT);
                         }
                     );
-                    it(
+                    it
+                    (
                         'does not optimize a partial cluster with bonding',
                         function ()
                         {
@@ -187,7 +200,8 @@
                             expect(solutions.length).toBe(3);
                         }
                     );
-                    it(
+                    it
+                    (
                         'does not optimize a cluster where the first solution is "0"',
                         function ()
                         {
@@ -200,7 +214,8 @@
                             expect(solutions.length).toBe(2);
                         }
                     );
-                    it(
+                    it
+                    (
                         'does not cluster with decimals above MAX_SAFE_INTEGER',
                         function ()
                         {

@@ -35,7 +35,8 @@ function createFigurator(startValues, joiner)
         var oldFigures = figureList[oldFigureSortLength];
         if (oldFigures)
         {
-            oldFigures.forEach(
+            oldFigures.forEach
+            (
                 function (oldFigure)
                 {
                     var newValue = oldFigure + part;
@@ -105,16 +106,17 @@ function createFigurator(startValues, joiner)
     var joinerIndex = 0;
     var usedValueSet = new Empty();
     var appendableParts =
-        PARTS.filter(
-            function (part)
-            {
-                var value = part.valueOf();
-                if (startValues.indexOf(value) >= 0)
-                    pushFigure(value, part.sortLength, part);
-                else if (value !== joiner)
-                    return true;
-            }
-        );
+    PARTS.filter
+    (
+        function (part)
+        {
+            var value = part.valueOf();
+            if (startValues.indexOf(value) >= 0)
+                pushFigure(value, part.sortLength, part);
+            else if (value !== joiner)
+                return true;
+        }
+    );
 
     return figurator;
 }

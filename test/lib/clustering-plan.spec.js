@@ -7,11 +7,13 @@
 {
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
 
-    describe(
+    describe
+    (
         'JScrewIt.debug.createClusteringPlan',
         function ()
         {
-            it(
+            it
+            (
                 'works as expected when empty',
                 function ()
                 {
@@ -20,7 +22,8 @@
                     expect(bestClusters).toEqual([]);
                 }
             );
-            it(
+            it
+            (
                 'works as expected with one cluster',
                 function ()
                 {
@@ -33,7 +36,8 @@
                     expect(bestClusters).toEqual([{ start: start, length: length, data: data }]);
                 }
             );
-            it(
+            it
+            (
                 'updates a cluster with a lower saving',
                 function ()
                 {
@@ -48,7 +52,8 @@
                     expect(bestClusters).toEqual([{ start: start, length: length, data: data2 }]);
                 }
             );
-            it(
+            it
+            (
                 'does not update a cluster with an equal saving',
                 function ()
                 {
@@ -63,7 +68,8 @@
                     expect(bestClusters).toEqual([{ start: start, length: length, data: data1 }]);
                 }
             );
-            it(
+            it
+            (
                 'works as expected with two disjoint clusters',
                 function ()
                 {
@@ -77,7 +83,8 @@
                     plan.addCluster(start1, length1, data1, 5);
                     plan.addCluster(start2, length2, data2, 6);
                     var bestClusters = plan.conclude();
-                    expect(bestClusters).toEqual(
+                    expect(bestClusters).toEqual
+                    (
                         [
                             { start: start2, length: length2, data: data2 },
                             { start: start1, length: length1, data: data1 },
@@ -85,7 +92,8 @@
                     );
                 }
             );
-            it(
+            it
+            (
                 'works as expected with two clusters overlapping like ▀█▄',
                 function ()
                 {
@@ -101,7 +109,8 @@
                     expect(bestClusters).toEqual([{ start: start2, length: length, data: data2 }]);
                 }
             );
-            it(
+            it
+            (
                 'works as expected with two clusters overlapping like █▀',
                 function ()
                 {
@@ -117,7 +126,8 @@
                     expect(bestClusters).toEqual([{ start: start, length: length2, data: data2 }]);
                 }
             );
-            it(
+            it
+            (
                 'works as expected with two clusters overlapping like ▀█',
                 function ()
                 {
@@ -134,7 +144,8 @@
                     expect(bestClusters).toEqual([{ start: start2, length: length2, data: data2 }]);
                 }
             );
-            it(
+            it
+            (
                 'only returns non-overlapping clusters',
                 function ()
                 {
@@ -147,7 +158,8 @@
                         { length: 2, saving: 8 },
                         { length: 1, saving: 5 },
                     ];
-                    clusters.forEach(
+                    clusters.forEach
+                    (
                         function (cluster, start)
                         {
                             plan.addCluster(start, cluster.length, start, cluster.saving);

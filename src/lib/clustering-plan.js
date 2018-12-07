@@ -19,7 +19,7 @@ var createClusteringPlan;
         else
         {
             cluster =
-                startLink[length] = { start: start, length: length, data: data, saving: saving };
+            startLink[length] = { start: start, length: length, data: data, saving: saving };
             this.clusters.push(cluster);
         }
         if (this.maxLength < length)
@@ -29,9 +29,9 @@ var createClusteringPlan;
     function compareClustersByQuality(cluster1, cluster2)
     {
         var diff =
-            cluster1.saving - cluster2.saving ||
-            cluster2.length - cluster1.length ||
-            compareClustersByStart(cluster2, cluster1);
+        cluster1.saving - cluster2.saving ||
+        cluster2.length - cluster1.length ||
+        compareClustersByStart(cluster2, cluster1);
         return diff;
     }
 
@@ -111,17 +111,17 @@ var createClusteringPlan;
     }
 
     createClusteringPlan =
-        function ()
+    function ()
+    {
+        var plan =
         {
-            var plan =
-            {
-                addCluster: addCluster,
-                clusters:   [],
-                conclude:   conclude,
-                maxLength:  0,
-                startLinks: new Empty(),
-            };
-            return plan;
+            addCluster: addCluster,
+            clusters:   [],
+            conclude:   conclude,
+            maxLength:  0,
+            startLinks: new Empty(),
         };
+        return plan;
+    };
 }
 )();

@@ -37,8 +37,8 @@ var getToStringOptimizer;
                     var clusterExtraLength = CLUSTER_EXTRA_LENGTHS[minRadix];
                     var decimalDigitMaxCount = DECIMAL_DIGIT_MAX_COUNTS[minRadix];
                     appendLength =
-                        appendLengthCache[char] =
-                        (clusterBaseLength + clusterExtraLength) / decimalDigitMaxCount | 0;
+                    appendLengthCache[char] =
+                    (clusterBaseLength + clusterExtraLength) / decimalDigitMaxCount | 0;
                 }
                 return appendLength;
             }
@@ -47,14 +47,14 @@ var getToStringOptimizer;
         function createClusterer(decimalReplacement, radixReplacement)
         {
             var clusterer =
-                function ()
-                {
-                    var replacement =
-                        '(+(' + decimalReplacement + '))[' + toStringReplacement + '](' +
-                        radixReplacement + ')';
-                    var solution = new Solution(replacement, LEVEL_STRING, false);
-                    return solution;
-                };
+            function ()
+            {
+                var replacement =
+                '(+(' + decimalReplacement + '))[' + toStringReplacement + '](' + radixReplacement +
+                ')';
+                var solution = new Solution(replacement, LEVEL_STRING, false);
+                return solution;
+            };
             return clusterer;
         }
 
@@ -110,7 +110,7 @@ var getToStringOptimizer;
                     if (bond && !start && solutionSpan === maxSolutionSpan)
                         discreteAppendLength += BOND_EXTRA_LENGTH;
                     var clusterTooLong =
-                        optimizeCluster(plan, start, minRadix, discreteAppendLength, chars);
+                    optimizeCluster(plan, start, minRadix, discreteAppendLength, chars);
                     if (clusterTooLong)
                         break;
                 }
@@ -175,12 +175,12 @@ var getToStringOptimizer;
     }
 
     getToStringOptimizer =
-        function (encoder)
-        {
-            var toStringReplacement = encoder.resolveConstant('TO_STRING') + '';
-            var optimizer = createOptimizer(toStringReplacement);
-            return optimizer;
-        };
+    function (encoder)
+    {
+        var toStringReplacement = encoder.resolveConstant('TO_STRING') + '';
+        var optimizer = createOptimizer(toStringReplacement);
+        return optimizer;
+    };
 
     (function ()
     {
@@ -216,7 +216,7 @@ var getToStringOptimizer;
                 minLength = length;
             RADIX_REPLACEMENTS[radix] = replacement;
             var decimalDigitMaxCount = DECIMAL_DIGIT_MAX_COUNTS[radix] =
-                MAX_SAFE_INTEGER.toString(radix).length;
+            MAX_SAFE_INTEGER.toString(radix).length;
             CLUSTER_EXTRA_LENGTHS[radix] = DECIMAL_MIN_LENGTHS[decimalDigitMaxCount] + minLength;
         }
     }

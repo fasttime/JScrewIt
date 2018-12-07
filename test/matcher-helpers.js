@@ -6,7 +6,8 @@
 {
     var MATCHERS =
     {
-        toBeArray: function ()
+        toBeArray:
+        function ()
         {
             var actual = this.value;
             var message = this.generateMessage(actual, this.expr, 'to be an array');
@@ -15,7 +16,8 @@
                 return this.assertions.pass(message);
             this.assertions.fail(message);
         },
-        toBeBoolean: function ()
+        toBeBoolean:
+        function ()
         {
             var actual = this.value;
             var message = this.generateMessage(actual, this.expr, 'to be a boolean');
@@ -24,7 +26,8 @@
                 return this.assertions.pass(message);
             this.assertions.fail(message);
         },
-        toBeInt32: function ()
+        toBeInt32:
+        function ()
         {
             var actual = this.value;
             var message = this.generateMessage(actual, this.expr, 'to be a 32-bit integer');
@@ -33,7 +36,8 @@
                 return this.assertions.pass(message);
             this.assertions.fail(message);
         },
-        toBeJSFuck: function ()
+        toBeJSFuck:
+        function ()
         {
             var actual = this.value;
             var message = this.generateMessage(actual, this.expr, 'to be JSFuck code');
@@ -42,18 +46,20 @@
                 return this.assertions.pass(message);
             this.assertions.fail(message);
         },
-        toBeNativeFunction: function ()
+        toBeNativeFunction:
+        function ()
         {
             var actual = this.value;
             var message = this.generateMessage(actual, this.expr, 'to be a native function');
             var pass =
-                typeof actual === 'function' &&
-                /^\s*function [\w$]+\(\)\s*\{\s*\[native code]\s*\}\s*$/.test(actual);
+            typeof actual === 'function' &&
+            /^\s*function [\w$]+\(\)\s*\{\s*\[native code]\s*\}\s*$/.test(actual);
             if (pass)
                 return this.assertions.pass(message);
             this.assertions.fail(message);
         },
-        toBePlainObject: function ()
+        toBePlainObject:
+        function ()
         {
             var actual = this.value;
             var message = this.generateMessage(actual, this.expr, 'to be a plain object');
@@ -62,7 +68,8 @@
                 return this.assertions.pass(message);
             this.assertions.fail(message);
         },
-        toBeString: function ()
+        toBeString:
+        function ()
         {
             var actual = this.value;
             var message = this.generateMessage(actual, this.expr, 'to be a string');
@@ -71,7 +78,8 @@
                 return this.assertions.pass(message);
             this.assertions.fail(message);
         },
-        toEndWith: function (str)
+        toEndWith:
+        function (str)
         {
             var actual = this.value;
             var message = this.generateMessage(actual, this.expr, 'to end with', str);
@@ -80,7 +88,8 @@
                 return this.assertions.pass(message);
             this.assertions.fail(message);
         },
-        toHavePrototype: function (prototype)
+        toHavePrototype:
+        function (prototype)
         {
             var actual = Object.getPrototypeOf(this.value);
             var message = this.generateMessage(actual, this.expr, 'to have prototype', prototype);
@@ -89,7 +98,8 @@
                 return this.assertions.pass(message);
             this.assertions.fail(message);
         },
-        toStartWith: function (str)
+        toStartWith:
+        function (str)
         {
             var actual = this.value;
             var message = this.generateMessage(actual, this.expr, 'to start with', str);
@@ -98,7 +108,8 @@
                 return this.assertions.pass(message);
             this.assertions.fail(message);
         },
-        toThrowStrictly: function ()
+        toThrowStrictly:
+        function ()
         {
             var error;
             var fn = this.value;
@@ -110,7 +121,8 @@
             {
                 error = newError;
             }
-            Array.prototype.forEach.call(
+            Array.prototype.forEach.call
+            (
                 arguments,
                 function (arg)
                 {
@@ -127,12 +139,7 @@
                         if (error.message === arg)
                             break;
                         message =
-                            this.generateMessage(
-                                fn,
-                                this.expr,
-                                'to throw an error with message',
-                                arg
-                            );
+                        this.generateMessage(fn, this.expr, 'to throw an error with message', arg);
                         this.assertions.fail(message);
                         return;
                     default:
@@ -145,7 +152,8 @@
         },
     };
 
-    Object.keys(MATCHERS).forEach(
+    Object.keys(MATCHERS).forEach
+    (
         function (name)
         {
             var matcher = MATCHERS[name];

@@ -37,7 +37,8 @@
         var count = featureNames.length;
         if (count)
         {
-            callback(
+            callback
+            (
                 label + ' ' + (count === 1 ? 'feature' : 'features') + ': ',
                 featureNames,
                 isCategoryMarked
@@ -70,13 +71,14 @@
             else
             {
                 var forcedStrictModeFeatureNames =
-                    AUTO.elementaryNames.filter(
-                        function (featureName)
-                        {
-                            var result = featureName !== 'INCR_CHAR';
-                            return result;
-                        }
-                    );
+                AUTO.elementaryNames.filter
+                (
+                    function (featureName)
+                    {
+                        var result = featureName !== 'INCR_CHAR';
+                        return result;
+                    }
+                );
                 forcedStrictModeFeatureObj = Feature(forcedStrictModeFeatureNames);
             }
             return forcedStrictModeFeatureObj;
@@ -112,13 +114,14 @@
         characteristicList = [];
         compatibleList = [];
         emuList =
-            EMU_FEATURES.filter(
-                function (featureName)
-                {
-                    var result = !AUTO.includes(featureName);
-                    return result;
-                }
-            );
+        EMU_FEATURES.filter
+        (
+            function (featureName)
+            {
+                var result = !AUTO.includes(featureName);
+                return result;
+            }
+        );
         for (var featureName in ALL)
         {
             var featureObj = ALL[featureName];

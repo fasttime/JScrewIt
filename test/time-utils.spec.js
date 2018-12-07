@@ -7,40 +7,45 @@ var proxyquire = require('proxyquire').noPreserveCache();
 
 var modulePath = '../tools/time-utils';
 
-describe(
+describe
+(
     'timeThis executes the callback and returns a non-negative duration',
     function ()
     {
-        it(
+        it
+        (
             'when process module is available',
             function ()
             {
                 var timeUtils = proxyquire(modulePath, { });
                 var callbackCalled = false;
                 var actual =
-                    timeUtils.timeThis(
-                        function ()
-                        {
-                            callbackCalled = true;
-                        }
-                    );
+                timeUtils.timeThis
+                (
+                    function ()
+                    {
+                        callbackCalled = true;
+                    }
+                );
                 assert(callbackCalled);
                 assert(isFinite(actual) && actual >= 0);
             }
         );
-        it(
+        it
+        (
             'when process module is not available',
             function ()
             {
                 var timeUtils = proxyquire(modulePath, { process: null });
                 var callbackCalled = false;
                 var actual =
-                    timeUtils.timeThis(
-                        function ()
-                        {
-                            callbackCalled = true;
-                        }
-                    );
+                timeUtils.timeThis
+                (
+                    function ()
+                    {
+                        callbackCalled = true;
+                    }
+                );
                 assert(callbackCalled);
                 assert(isFinite(actual) && actual >= 0);
             }
@@ -48,13 +53,15 @@ describe(
     }
 );
 
-describe(
+describe
+(
     'formatDuration',
     function ()
     {
         var timeUtils = proxyquire(modulePath, { });
 
-        it(
+        it
+        (
             'formats durations shorter than 0.005 s',
             function ()
             {
@@ -62,7 +69,8 @@ describe(
                 assert.strictEqual(actual, '< 0.01 s');
             }
         );
-        it(
+        it
+        (
             'formats durations of 0.005 s',
             function ()
             {
@@ -70,7 +78,8 @@ describe(
                 assert.strictEqual(actual, '0.01 s');
             }
         );
-        it(
+        it
+        (
             'formats durations longer than 0.005 s',
             function ()
             {

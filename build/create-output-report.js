@@ -28,7 +28,8 @@ function createOutputReport()
     const logLine = line => fs.writeSync(fd, `${line}\n`);
     try
     {
-        logLine(
+        logLine
+        (
             'This is a report of all character encodings produced by JScrewIt using different\n' +
             'features.\n' +
             'The lines after a character headline contain encoding length, definition entry\n' +
@@ -48,8 +49,8 @@ function formatChar(char)
 {
     const charCode = char.charCodeAt();
     const str =
-        charCode >= 0x7f && charCode <= 0xa0 || charCode === 0xad ?
-        `"\\u00${charCode.toString(16)}"` : JSON.stringify(char);
+    charCode >= 0x7f && charCode <= 0xa0 || charCode === 0xad ?
+    `"\\u00${charCode.toString(16)}"` : JSON.stringify(char);
     return str;
 }
 
@@ -81,7 +82,8 @@ function printCharacterReport(logLine, char, definitionCount, solutions)
     logLine(`\nCharacter ${desc}`);
     if (notAllDefsUsed)
         logLine('Not all definitions used!');
-    namedSolutions.forEach(
+    namedSolutions.forEach
+    (
         ({ canonicalNames, entryIndex, length }) =>
         {
             const lengthStr = String(length).padStart(5);
@@ -101,7 +103,8 @@ function scanCharDefs(logLine)
 
     solutionBookMap.load();
     let notAllDefsUsed = false;
-    solutionBookMap.forEach(
+    solutionBookMap.forEach
+    (
         ({ definitionCount, solutions }, char) =>
         {
             if (printCharacterReport(logLine, char, definitionCount, solutions))

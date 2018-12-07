@@ -20,11 +20,13 @@
         };
         var optimizer =
         {
-            appendLengthOf: function ()
+            appendLengthOf:
+            function ()
             {
                 return 0;
             },
-            optimizeSolutions: function (plan)
+            optimizeSolutions:
+            function (plan)
             {
                 plan.addCluster(0, 2, clusterer, 1);
             },
@@ -351,7 +353,8 @@
                 {
                     var optimizer =
                     {
-                        appendLengthOf: function ()
+                        appendLengthOf:
+                        function ()
                         {
                             return solutionA.appendLength + 1;
                         },

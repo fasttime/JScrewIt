@@ -26,7 +26,8 @@ var Solution;
         {
             object_defineProperty(this, 'appendLength', { enumerable: true, value: appendLength });
         },
-        charAt: function (index)
+        charAt:
+        function (index)
         {
             return this.replacement[index];
         },
@@ -50,7 +51,8 @@ var Solution;
         {
             return this.replacement.length;
         },
-        toString: function ()
+        toString:
+        function ()
         {
             return this.replacement;
         },

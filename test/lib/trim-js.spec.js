@@ -7,11 +7,13 @@
 {
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
 
-    describe(
+    describe
+    (
         'JScrewIt.debug.trimJS',
         function ()
         {
-            it(
+            it
+            (
                 'trims spaces',
                 function ()
                 {
@@ -21,7 +23,8 @@
                     expect(actual).toBe(expected);
                 }
             );
-            it(
+            it
+            (
                 'trims single-line comments',
                 function ()
                 {
@@ -31,7 +34,8 @@
                     expect(actual).toBe(expected);
                 }
             );
-            it(
+            it
+            (
                 'trims multiline comments',
                 function ()
                 {
@@ -41,7 +45,8 @@
                     expect(actual).toBe(expected);
                 }
             );
-            it(
+            it
+            (
                 'trims empty script comments',
                 function ()
                 {
@@ -51,7 +56,8 @@
                     expect(actual).toBe(expected);
                 }
             );
-            it(
+            it
+            (
                 'does not remove comments between code',
                 function ()
                 {
@@ -61,7 +67,8 @@
                     expect(actual).toBe(expected);
                 }
             );
-            it(
+            it
+            (
                 'does not remove false comment in multiline string',
                 function ()
                 {
@@ -71,7 +78,8 @@
                     expect(actual).toBe(expected);
                 }
             );
-            it(
+            it
+            (
                 'does not remove false comment in template string',
                 function ()
                 {

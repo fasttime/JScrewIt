@@ -190,8 +190,8 @@ var expressParse;
     function isReturnableIdentifier(identifier, escaped)
     {
         var returnable =
-            UNRETURNABLE_WORDS.indexOf(identifier) < 0 &&
-            (!escaped || INESCAPABLE_WORDS.indexOf(identifier) < 0);
+        UNRETURNABLE_WORDS.indexOf(identifier) < 0 &&
+        (!escaped || INESCAPABLE_WORDS.indexOf(identifier) < 0);
         return returnable;
     }
 
@@ -204,13 +204,13 @@ var expressParse;
     function joinMods(mod1, mod2, trimTrailingPlus)
     {
         var mod =
-            (mod1 + mod2)
-            .replace(/\+\+|--/, '+')
-            .replace(/\+-|-\+/, '-')
-            .replace(/!-/, '!+')
-            .replace(/\+#/, '#')
-            .replace(/!\+!/, '!!')
-            .replace('!!!', '!');
+        (mod1 + mod2)
+        .replace(/\+\+|--/, '+')
+        .replace(/\+-|-\+/, '-')
+        .replace(/!-/, '!+')
+        .replace(/\+#/, '#')
+        .replace(/!\+!/, '!!')
+        .replace('!!!', '!');
         if (trimTrailingPlus)
             mod = mod.replace(/\+$/, '');
         return mod;
