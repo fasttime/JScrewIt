@@ -1,4 +1,5 @@
 .*
+!.git*
 !/.npmrc
 /char-map.json
 /coverage
