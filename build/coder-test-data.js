@@ -11,12 +11,26 @@ function createDictTestString(variety, length)
     return str;
 }
 
-function createInvertedDictTestString(variety, length)
+function createTestStringProRadix4AntiRadix10(length)
 {
-    let str = '';
-    for (let index = 0; index < variety; ++index)
-        str += String.fromCharCode(0xffff - index);
-    str = repeatToFit(str, length);
+    const elements = [];
+    {
+        const { createEncoder } = require('..').debug;
+        const encoder = createEncoder();
+        for (let charCode = 0; charCode <= 0xffff; ++charCode)
+        {
+            const base4Str = charCode.toString(4);
+            const base10Str = charCode.toString();
+            const base4Length = encoder.replaceString(base4Str).length;
+            const base10Length = encoder.replaceString(base10Str).length;
+            const element = Object(charCode);
+            element.score = base10Length - base4Length;
+            elements.push(element);
+        }
+    }
+    elements.sort(({ score: score1 }, { score: score2 }) => score2 - score1);
+    elements.splice(length);
+    const str = String.fromCharCode(...elements);
     return str;
 }
 
@@ -97,13 +111,8 @@ module.exports =
         ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FF_SRC', 'FLAT', 'STATUS'],
         length =>
         {
-            const CHAR_CODES =
-            [
-                49989,  49988,  37889,  59989,  37888,  59988,  38998,  38999,  29989,  37989,
-                38997,  57989,  58889,  58898,  58899,  59969,  9989,   19989,  38989,  39989,
-                58897,  17989,  28998,  28999,  29988,  37988,  38996,  58689,
-            ];
-            const str = repeatToFit(String.fromCharCode(...CHAR_CODES), length);
+            let str = createTestStringProRadix4AntiRadix10(8);
+            str = repeatToFit(str, length);
             return str;
         },
         'byCharCodesRadix4'
@@ -155,7 +164,7 @@ module.exports =
     data
     (
         ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FLAT', 'STATUS', 'V8_SRC'],
-        createInvertedDictTestString.bind(null, 300),
+        createDictTestString.bind(null, 300),
         'byDictRadix4AmendedBy2'
     ),
     data

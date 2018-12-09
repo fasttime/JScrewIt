@@ -369,7 +369,7 @@ stats,
     {
         var length = outputArea.value.length;
         var html = length === 1 ? '1 char' : length + ' chars';
-        outOfSync = Boolean(newOutOfSync);
+        outOfSync = !!newOutOfSync;
         if (newOutOfSync)
         {
             if (worker)

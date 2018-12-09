@@ -284,7 +284,7 @@ showFeatureSupport,
 
     function padBoth(str, length)
     {
-        str += '';
+        str = String(str);
         var result = padRight(padLeft(str, length + str.length >> 1), length);
         return result;
     }

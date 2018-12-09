@@ -1,4 +1,4 @@
-/* global Empty, array_isArray, json_parse */
+/* global Empty, _Array_isArray, _Function, _JSON_parse, _String */
 
 // Recognized syntax elements include:
 //
@@ -119,7 +119,7 @@ var expressParse;
         var rawIdentifier = read(parseInfo, rawIdentifierRegExp);
         if (rawIdentifier)
         {
-            var identifier = json_parse('"' + rawIdentifier + '"');
+            var identifier = _JSON_parse('"' + rawIdentifier + '"');
             if (/^[$A-Z_a-z][$\w]*$/.test(identifier))
             {
                 var escaped = identifier.length < rawIdentifier.length;
@@ -136,7 +136,7 @@ var expressParse;
 
     function evalExpr(expr)
     {
-        var value = Function('return ' + expr)();
+        var value = _Function('return ' + expr)();
         return value;
     }
 
@@ -472,8 +472,8 @@ var expressParse;
         while ('value' in unit && isUndecoratedUnit(unit))
         {
             var value = unit.value;
-            if (!array_isArray(value))
-                return value == null && inArray ? '' : value + '';
+            if (!_Array_isArray(value))
+                return value == null && inArray ? '' : _String(value);
             unit = value[0];
             if (!unit)
                 return '';

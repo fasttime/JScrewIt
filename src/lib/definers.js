@@ -1,4 +1,4 @@
-/* global featuresToMask, maskUnion */
+/* global _Array, featuresToMask, maskUnion */
 
 var define;
 var defineList;
@@ -41,7 +41,7 @@ var defineWithArrayLike;
     defineWithArrayLike =
     function (definition, featureArgs, startIndex)
     {
-        var features = Array.prototype.slice.call(featureArgs, startIndex);
+        var features = _Array.prototype.slice.call(featureArgs, startIndex);
         var mask = featuresToMask(features);
         var entry = createDefinitionEntry(definition, mask);
         return entry;

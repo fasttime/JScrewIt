@@ -353,7 +353,7 @@ uneval,
         expect(typeof solution).toBe('object');
         var output = String(solution);
         expect(output).toBeJSFuck();
-        var actual = emuEval(emuFeatures || [], output) + '';
+        var actual = String(emuEval(emuFeatures || [], output));
         expect(actual).toBe(expected);
     }
 

@@ -1,4 +1,4 @@
-/* global LEVEL_STRING, Empty, Solution, replaceMultiDigitNumber */
+/* global LEVEL_STRING, Empty, Solution, _String, replaceMultiDigitNumber */
 
 var getToStringOptimizer;
 
@@ -177,7 +177,7 @@ var getToStringOptimizer;
     getToStringOptimizer =
     function (encoder)
     {
-        var toStringReplacement = encoder.resolveConstant('TO_STRING') + '';
+        var toStringReplacement = _String(encoder.resolveConstant('TO_STRING'));
         var optimizer = createOptimizer(toStringReplacement);
         return optimizer;
     };

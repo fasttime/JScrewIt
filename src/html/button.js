@@ -103,7 +103,7 @@ function createButton(text)
             },
             set disabled(value)
             {
-                value = Boolean(value);
+                value = !!value;
                 if (value !== isDisabled())
                 {
                     if (value)

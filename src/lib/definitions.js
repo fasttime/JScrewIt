@@ -7,11 +7,11 @@ LEVEL_UNDEFINED,
 Empty,
 Feature,
 Solution,
+_Object_defineProperty,
 define,
 defineList,
 defineWithArrayLike,
 noProto,
-object_defineProperty,
 resolveSimple,
 */
 
@@ -439,11 +439,11 @@ var createParseIntArgDefault;
         {
             var definition = { expr: expr, level: level };
             var solution = resolveSimple(simple, definition);
-            object_defineProperty(SIMPLE, simple, { value: solution });
+            _Object_defineProperty(SIMPLE, simple, { value: solution });
             return solution;
         }
 
-        object_defineProperty(SIMPLE, simple, { configurable: true, enumerable: true, get: get });
+        _Object_defineProperty(SIMPLE, simple, { configurable: true, enumerable: true, get: get });
     }
 
     function replaceDigit(digit)
@@ -712,7 +712,8 @@ var createParseIntArgDefault;
 
     BASE64_ALPHABET_LO_6 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
-    CHARACTERS = noProto
+    CHARACTERS =
+    noProto
     ({
         '\t':
         [
@@ -1242,7 +1243,8 @@ var createParseIntArgDefault;
         ],
     });
 
-    COMPLEX = noProto
+    COMPLEX =
+    noProto
     ({
         Number:         define({ expr: 'Number.name', optimize: { toStringOpt: true } }, NAME),
         Object:         define({ expr: 'Object.name', optimize: { toStringOpt: true } }, NAME),
@@ -1252,7 +1254,8 @@ var createParseIntArgDefault;
         mCh:            define('atob("bUNo")', Feature.ATOB),
     });
 
-    CONSTANTS = noProto
+    CONSTANTS =
+    noProto
     ({
         // JavaScript globals
 

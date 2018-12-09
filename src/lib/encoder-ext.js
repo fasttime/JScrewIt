@@ -12,14 +12,16 @@ OPTIMAL_RETURN_STRING,
 SIMPLE,
 Empty,
 Encoder,
-array_prototype_forEach,
-array_prototype_map,
+_Array_prototype_forEach,
+_Array_prototype_map,
+_Error,
+_Math_max,
+_Object,
+_Object_keys,
 assignNoEnum,
 createFigurator,
 createParseIntArgDefault,
 expressParse,
-math_max,
-object_keys,
 */
 
 var CODERS;
@@ -34,7 +36,7 @@ var wrapWithEval;
         function getSortLength()
         {
             var length = 0;
-            array_prototype_forEach.call
+            _Array_prototype_forEach.call
             (
                 str,
                 function (digit)
@@ -72,7 +74,7 @@ var wrapWithEval;
         {
             var str = coerceToInt && !index ? '' : index.toString(radix);
             var reindexStr = amendings ? str.replace(regExp, replacer) : str;
-            var reindex = range[index] = Object(reindexStr);
+            var reindex = range[index] = _Object(reindexStr);
             reindex.sortLength = getSortLength();
             reindex.index = index;
         }
@@ -116,7 +118,7 @@ var wrapWithEval;
         if (!freqList)
         {
             var charMap = new Empty();
-            array_prototype_forEach.call
+            _Array_prototype_forEach.call
             (
                 inputData,
                 function (char)
@@ -128,7 +130,7 @@ var wrapWithEval;
                     .count++;
                 }
             );
-            var charList = object_keys(charMap);
+            var charList = _Object_keys(charMap);
             inputData.freqList =
             freqList =
             charList.map
@@ -160,7 +162,7 @@ var wrapWithEval;
     function initMinFalseFreeCharIndexArrayStrLength(input)
     {
         var minCharIndexArrayStrLength =
-        math_max((input.length - 1) * (SIMPLE.false.length + 1) - 3, 0);
+        _Math_max((input.length - 1) * (SIMPLE.false.length + 1) - 3, 0);
         return minCharIndexArrayStrLength;
     }
 
@@ -348,8 +350,8 @@ var wrapWithEval;
             perfInfoList.name = codingName;
             perfInfoList.inputLength = inputLength;
             codingLog.push(perfInfoList);
-            var inputData = Object(input);
-            object_keys(options).forEach
+            var inputData = _Object(input);
+            _Object_keys(options).forEach
             (
                 function (optName)
                 {
@@ -442,7 +444,7 @@ var wrapWithEval;
         function (input, charMap, maxLength, delimiters)
         {
             var charKeyArray =
-            array_prototype_map.call
+            _Array_prototype_map.call
             (
                 input,
                 function (char)
@@ -532,7 +534,7 @@ var wrapWithEval;
         {
             var cache = new Empty();
             var charCodeArray =
-            array_prototype_map.call
+            _Array_prototype_map.call
             (
                 input,
                 function (char)
@@ -751,7 +753,7 @@ var wrapWithEval;
                 perfInfo.codingLog = codingLog;
             delete this.codingLog;
             if (output == null)
-                throw new Error('Encoding failed');
+                throw new _Error('Encoding failed');
             return output;
         },
 

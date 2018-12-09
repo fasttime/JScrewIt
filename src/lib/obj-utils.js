@@ -1,57 +1,93 @@
 var Empty;
 
-var array_isArray;
-var array_prototype_every;
-var array_prototype_forEach;
-var array_prototype_map;
-var array_prototype_push;
+var _Array;
+var _Array_isArray;
+var _Array_prototype_every;
+var _Array_prototype_forEach;
+var _Array_prototype_map;
+var _Array_prototype_push;
+var _Error;
+var _Function;
+var _JSON_parse;
+var _JSON_stringify;
+var _Math_abs;
+var _Math_max;
+var _Math_pow;
+var _Object;
+var _Object_create;
+var _Object_defineProperties;
+var _Object_defineProperty;
+var _Object_freeze;
+var _Object_keys;
+var _Object_getOwnPropertyDescriptor;
+var _String;
+var _SyntaxError;
 var assignNoEnum;
 var createConstructor;
 var esToString;
-var json_parse;
-var json_stringify;
-var math_abs;
-var math_max;
-var math_pow;
 var noProto;
 var noop;
-var object_create;
-var object_defineProperties;
-var object_defineProperty;
-var object_freeze;
-var object_keys;
-var object_getOwnPropertyDescriptor;
 
 (function ()
 {
-    array_isArray           = Array.isArray;
-    array_prototype_every   = Array.prototype.every;
-    array_prototype_forEach = Array.prototype.forEach;
-    array_prototype_map     = Array.prototype.map;
-    array_prototype_push    = Array.prototype.push;
+    var _Array_prototype;
+    var _TypeError;
+
+    _Array                              = Array;
+    _Array_isArray                      = _Array.isArray;
+    _Array_prototype                    = _Array.prototype;
+    _Array_prototype_every              = _Array_prototype.every;
+    _Array_prototype_forEach            = _Array_prototype.forEach;
+    _Array_prototype_map                = _Array_prototype.map;
+    _Array_prototype_push               = _Array_prototype.push;
+
+    _Error                              = Error;
+
+    _Function                           = Function;
+
+    _JSON_parse                         = JSON.parse;
+    _JSON_stringify                     = JSON.stringify;
+
+    _Math_abs                           = Math.abs;
+    _Math_max                           = Math.max;
+    _Math_pow                           = Math.pow;
+
+    _Object                             = Object;
+    _Object_create                      = _Object.create;
+    _Object_defineProperties            = _Object.defineProperties;
+    _Object_defineProperty              = _Object.defineProperty;
+    _Object_freeze                      = _Object.freeze;
+    _Object_getOwnPropertyDescriptor    = _Object.getOwnPropertyDescriptor;
+    _Object_keys                        = _Object.keys;
+
+    _String                             = String;
+
+    _SyntaxError                        = SyntaxError;
+
+    _TypeError                          = TypeError;
 
     assignNoEnum =
     function (target, source)
     {
         var descriptors = { };
-        var names = object_keys(source);
+        var names = _Object_keys(source);
         names.forEach
         (
             function (name)
             {
-                var descriptor = object_getOwnPropertyDescriptor(source, name);
+                var descriptor = _Object_getOwnPropertyDescriptor(source, name);
                 descriptor.enumerable = false;
                 descriptors[name] = descriptor;
             }
         );
-        object_defineProperties(target, descriptors);
+        _Object_defineProperties(target, descriptors);
         return target;
     };
 
     createConstructor =
     function (prototype)
     {
-        var constructor = Function();
+        var constructor = _Function();
         constructor.prototype = prototype;
         return constructor;
     };
@@ -60,23 +96,16 @@ var object_getOwnPropertyDescriptor;
     function (arg)
     {
         if (typeof arg === 'symbol')
-            throw new TypeError('Cannot convert a symbol to a string');
-        var str = String(arg);
+            throw new _TypeError('Cannot convert a symbol to a string');
+        var str = _String(arg);
         return str;
     };
-
-    json_parse      = JSON.parse;
-    json_stringify  = JSON.stringify;
-
-    math_abs    = Math.abs;
-    math_max    = Math.max;
-    math_pow    = Math.pow;
 
     noProto =
     function (obj)
     {
         var result = new Empty();
-        object_keys(obj).forEach
+        _Object_keys(obj).forEach
         (
             function (name)
             {
@@ -86,15 +115,8 @@ var object_getOwnPropertyDescriptor;
         return result;
     };
 
-    noop = Function();
+    noop = _Function();
 
-    object_create                   = Object.create;
-    object_defineProperties         = Object.defineProperties;
-    object_defineProperty           = Object.defineProperty;
-    object_freeze                   = Object.freeze;
-    object_getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-    object_keys                     = Object.keys;
-
-    Empty = createConstructor(object_freeze(object_create(null)));
+    Empty = createConstructor(_Object_freeze(_Object_create(null)));
 }
 )();

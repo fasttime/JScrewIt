@@ -1,10 +1,17 @@
-/* global APPEND_LENGTH_OF_DIGIT_0, APPEND_LENGTH_OF_SMALL_E, Empty, array_prototype_push */
+/*
+global
+APPEND_LENGTH_OF_DIGIT_0,
+APPEND_LENGTH_OF_SMALL_E,
+Empty,
+_Array_prototype_push,
+_Object,
+*/
 
 function createFigurator(startValues, joiner)
 {
     function createFigure(value, sortLength)
     {
-        var figure = Object(value);
+        var figure = _Object(value);
         figure.sortLength = sortLength;
         return figure;
     }
@@ -23,7 +30,7 @@ function createFigurator(startValues, joiner)
             appendableParts.forEach(growFigures);
             var newFigures = figureList[currentSortLength++];
             if (newFigures)
-                array_prototype_push.apply(figures, newFigures);
+                _Array_prototype_push.apply(figures, newFigures);
         }
         var figure = figures[index];
         return figure;

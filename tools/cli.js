@@ -205,7 +205,7 @@ function quote(arg)
 
 function widthOf(size)
 {
-    return (size + '').length;
+    return String(size).length;
 }
 
 module.exports =

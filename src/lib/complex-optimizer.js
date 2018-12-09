@@ -1,4 +1,4 @@
-/* global APPEND_LENGTH_OF_EMPTY, LEVEL_STRING, Empty, array_prototype_forEach, noop */
+/* global APPEND_LENGTH_OF_EMPTY, LEVEL_STRING, Empty, _Array_prototype_forEach, noop */
 
 var getComplexOptimizer;
 
@@ -76,7 +76,7 @@ var getComplexOptimizer;
         var discreteAppendLength = 0;
         var charMap = new Empty();
         var charInfos = [];
-        array_prototype_forEach.call
+        _Array_prototype_forEach.call
         (
             complex,
             function (char)

@@ -62,7 +62,7 @@
             arguments,
             function (arg)
             {
-                var codePoint = Number(arg);
+                var codePoint = +arg;
                 if ((codePoint & 0x1fffff) !== codePoint || codePoint > 0x10ffff)
                     throw new RangeError(codePoint + ' is not a valid code point');
                 if (codePoint <= 0xffff)
@@ -87,7 +87,8 @@
             fn.toString =
             function ()
             {
-                return (Array.prototype.join + '').replace(/\bjoin\b/, name);
+                var str = String(Array.prototype.join).replace(/\bjoin\b/, name);
+                return str;
             };
             override(this, 'Array.prototype.' + name, { value: fn });
         };
@@ -110,7 +111,7 @@
                 function (tagName)
                 {
                     var elementStr =
-                    (tagName + '').toLowerCase() === 'video' ?
+                    String(tagName).toLowerCase() === 'video' ?
                     '[object HTMLVideoElement]' : '[object HTMLUnknownElement]';
                     return elementStr;
                 };
@@ -171,7 +172,7 @@
                 function adaptedMethod(value)
                 {
                     var str = method.call(this, '');
-                    value = replacer(value + '');
+                    value = replacer(String(value));
                     var index = str.lastIndexOf('"');
                     str = str.slice(0, index) + value + str.slice(index);
                     return str;
@@ -197,7 +198,7 @@
                     function RegExp(pattern, flags)
                     {
                         if (pattern !== undefined)
-                            pattern = (pattern + '').replace(charRegExp, escSeq);
+                            pattern = String(pattern).replace(charRegExp, escSeq);
                         var obj = oldRegExp(pattern, flags);
                         return obj;
                     }
@@ -474,7 +475,7 @@
             function btoa(input)
             {
                 var output = '';
-                input += '';
+                input = String(input);
                 for (var index = 0; index < input.length;)
                 {
                     var chr1 = input.charCodeAt(index++);
@@ -504,7 +505,7 @@
             function atob(input)
             {
                 var output = '';
-                input += '';
+                input = String(input);
                 for (var index = 0; index < input.length;)
                 {
                     var enc1 = BASE64_CHARS.indexOf(input.charAt(index++));

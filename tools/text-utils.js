@@ -6,14 +6,14 @@
 {
     function padLeft(str, length)
     {
-        str += '';
+        str = String(str);
         var result = repeat(' ', length - str.length) + str;
         return result;
     }
 
     function padRight(str, length)
     {
-        str += '';
+        str = String(str);
         var result = str + repeat(' ', length - str.length);
         return result;
     }

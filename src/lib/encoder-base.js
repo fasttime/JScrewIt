@@ -18,20 +18,23 @@ SIMPLE,
 Empty,
 ScrewBuffer,
 Solution,
-array_isArray,
-array_prototype_forEach,
+_Array,
+_Array_isArray,
+_Array_prototype_forEach,
+_JSON_stringify,
+_Math_abs,
+_Math_max,
+_Object_keys,
+_String,
+_SyntaxError,
 assignNoEnum,
 createConstructor,
 expressParse,
 featureFromMask,
 getComplexOptimizer,
 getToStringOptimizer,
-json_stringify,
 maskIncludes,
 maskNew,
-math_abs,
-math_max,
-object_keys,
 */
 
 var APPEND_LENGTH_OF_DIGITS;
@@ -105,14 +108,14 @@ var resolveSimple;
 
     function getExtraZeros(count)
     {
-        var extraZeros = Array(count + 1).join('0');
+        var extraZeros = _Array(count + 1).join('0');
         return extraZeros;
     }
 
     function getMultiDigitLength(str)
     {
         var appendLength = 0;
-        array_prototype_forEach.call
+        _Array_prototype_forEach.call
         (
             str,
             function (digit)
@@ -202,7 +205,7 @@ var resolveSimple;
         APPEND_LENGTH_OF_DIGIT_0 * extraZeroCount +
         APPEND_LENGTH_OF_SMALL_E +
         APPEND_LENGTH_OF_MINUS +
-        getMultiDigitLength(-exp + '');
+        getMultiDigitLength(_String(-exp));
         if (extraLength < rivalExtraLength)
         {
             var str = mantissa + 'e' + exp;
@@ -235,7 +238,7 @@ var resolveSimple;
     var CharCache = createConstructor(STATIC_CHAR_CACHE);
     var ConstCache = createConstructor(STATIC_CONST_CACHE);
 
-    var quoteString = json_stringify;
+    var quoteString = _JSON_stringify;
 
     APPEND_LENGTH_OF_DIGIT_0    = 6;
     APPEND_LENGTH_OF_EMPTY      = 3; // Append length of the empty array
@@ -270,7 +273,7 @@ var resolveSimple;
                     var feature = featureFromMask(this.mask);
                     var message =
                     'Circular reference detected: ' + chain.join(' < ') + ' – ' + feature;
-                    var error = new SyntaxError(message);
+                    var error = new _SyntaxError(message);
                     assignNoEnum(error, { chain: chain, feature: feature });
                     throw error;
                 }
@@ -334,7 +337,7 @@ var resolveSimple;
         function (element)
         {
             var definition;
-            if (array_isArray(element))
+            if (_Array_isArray(element))
                 definition = this.findDefinition(element);
             else
                 definition = element;
@@ -627,7 +630,7 @@ var resolveSimple;
                         if (output)
                         {
                             output += '+' + termOutput;
-                            minOutputLevel = math_max(minOutputLevel, LEVEL_NUMERIC);
+                            minOutputLevel = _Math_max(minOutputLevel, LEVEL_NUMERIC);
                         }
                         else
                             output = termOutput;
@@ -649,7 +652,7 @@ var resolveSimple;
                     var strReplacer = replacers.string;
                     output = strReplacer(this, value, bondStrength, true, unitIndices, maxLength);
                 }
-                else if (array_isArray(value))
+                else if (_Array_isArray(value))
                 {
                     if (value.length)
                     {
@@ -666,7 +669,7 @@ var resolveSimple;
                 {
                     if (typeof value === 'number' && !isNaN(value))
                     {
-                        var abs = math_abs(value);
+                        var abs = _Math_abs(value);
                         var negative = value < 0 || 1 / value < 0;
                         var str;
                         if (abs === 0)
@@ -684,7 +687,7 @@ var resolveSimple;
                             output = '(' + output + ')';
                     }
                     else
-                        output = replaceIdentifier(STATIC_ENCODER, value + '', bondStrength);
+                        output = replaceIdentifier(STATIC_ENCODER, _String(value), bondStrength);
                     if (output.length > maxLength)
                         return;
                 }
@@ -828,7 +831,7 @@ var resolveSimple;
                 if (!buffer.append(solution) || buffer.length > maxLength)
                     return;
             }
-            var result = buffer + '';
+            var result = _String(buffer);
             if (!(result.length > maxLength))
                 return result;
         },
@@ -872,7 +875,7 @@ var resolveSimple;
                     {
                         var charCache;
                         var entries = CHARACTERS[char];
-                        if (!entries || array_isArray(entries))
+                        if (!entries || _Array_isArray(entries))
                         {
                             if (entries)
                                 solution = this.findOptimalSolution(entries);
@@ -909,7 +912,7 @@ var resolveSimple;
                     {
                         var constCache;
                         var entries = this.constantDefinitions[constant];
-                        if (array_isArray(entries))
+                        if (_Array_isArray(entries))
                         {
                             solution = this.findOptimalSolution(entries);
                             constCache = this.constCache;
@@ -958,7 +961,7 @@ var resolveSimple;
             var stackLength = stack.length;
             if (stackLength)
                 message += ' in the definition of ' + stack[stackLength - 1];
-            throw new SyntaxError(message);
+            throw new _SyntaxError(message);
         },
     };
 
@@ -987,7 +990,7 @@ var resolveSimple;
 
     var STATIC_ENCODER = new Encoder(maskNew());
 
-    var STR_TOKEN_PATTERN = '(' + object_keys(SIMPLE).join('|') + ')|([\\s\\S])';
+    var STR_TOKEN_PATTERN = '(' + _Object_keys(SIMPLE).join('|') + ')|([\\s\\S])';
 
     replaceMultiDigitNumber =
     function (number)

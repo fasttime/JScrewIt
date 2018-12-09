@@ -164,7 +164,7 @@ function isCharacterDefined(char)
 {
     const { getCharacterEntries } = require('..').debug;
 
-    const charDefined = Boolean(getCharacterEntries(char));
+    const charDefined = !!getCharacterEntries(char);
     return charDefined;
 }
 

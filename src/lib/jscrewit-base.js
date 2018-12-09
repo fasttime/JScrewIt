@@ -3,6 +3,8 @@ global
 Empty,
 Encoder,
 Feature,
+_Error,
+_String,
 assignNoEnum,
 esToString,
 maskNew,
@@ -136,7 +138,7 @@ var setUp;
 
         if (input === undefined)
             return [wrapWithEval, CODER_NAMES_BOTH];
-        switch (String(input))
+        switch (_String(input))
         {
         case 'call':
             return [wrapWithCall, CODER_NAMES_TEXT];
@@ -151,7 +153,7 @@ var setUp;
         case 'none':
             return [, CODER_NAMES_TEXT];
         }
-        throw new Error('Invalid value for option ' + name);
+        throw new _Error('Invalid value for option ' + name);
     }
 
     function getEncoder(features)

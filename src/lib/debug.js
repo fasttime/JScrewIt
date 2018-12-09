@@ -18,7 +18,13 @@ Encoder,
 JScrewIt,
 ScrewBuffer,
 Solution,
-array_isArray,
+_Array_isArray,
+_JSON_stringify,
+_Object_create,
+_Object_freeze,
+_Object_keys,
+_String,
+_SyntaxError,
 assignNoEnum,
 createBridgeSolution,
 createClusteringPlan,
@@ -30,14 +36,10 @@ getComplexOptimizer,
 getToStringOptimizer,
 getValidFeatureMask,
 isMaskCompatible,
-json_stringify,
 maskIncludes,
 maskIsEmpty,
 maskNew,
 maskUnion,
-object_create,
-object_freeze,
-object_keys,
 optimizeSolutions,
 setUp,
 trimJS,
@@ -53,7 +55,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             if (typeof obj === 'object')
             {
                 var target = { };
-                var names = object_keys(obj);
+                var names = _Object_keys(obj);
                 names.forEach
                 (
                     function (name)
@@ -72,7 +74,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             var outputEntries;
             if (inputEntries)
             {
-                if (array_isArray(inputEntries))
+                if (_Array_isArray(inputEntries))
                     outputEntries = inputEntries.map(cloneEntry);
                 else
                     outputEntries = [createEntryClone(inputEntries, EMPTY_MASK)];
@@ -97,7 +99,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         function createEntryClone(definition, mask)
         {
             definition = clone(definition);
-            var entry = { definition: definition, mask: object_freeze(mask) };
+            var entry = { definition: definition, mask: _Object_freeze(mask) };
             return entry;
         }
 
@@ -115,11 +117,11 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
 
         function defineConstant(encoder, constant, definition)
         {
-            constant += '';
+            constant = _String(constant);
             if (!/^[$A-Z_a-z][$\w]*$/.test(constant))
-                throw new SyntaxError('Invalid identifier ' + json_stringify(constant));
+                throw new _SyntaxError('Invalid identifier ' + _JSON_stringify(constant));
             if (!encoder.hasOwnProperty('constantDefinitions'))
-                encoder.constantDefinitions = object_create(CONSTANTS);
+                encoder.constantDefinitions = _Object_create(CONSTANTS);
             var entries = [define(esToString(definition))];
             encoder.constantDefinitions[constant] = entries;
         }
@@ -143,7 +145,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
 
         function getComplexNames()
         {
-            var names = object_keys(COMPLEX).sort();
+            var names = _Object_keys(COMPLEX).sort();
             return names;
         }
 

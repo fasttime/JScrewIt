@@ -38,7 +38,7 @@
     {
         var actualLength = buffer.length;
         expect(actualLength).toBe(expectedLength);
-        expect(buffer + '').toBe(expectedStr);
+        expect(String(buffer)).toBe(expectedStr);
     }
 
     var INITIAL_APPEND_LENGTH = -3;

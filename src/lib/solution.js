@@ -1,4 +1,4 @@
-/* global assignNoEnum, object_create, object_defineProperty */
+/* global assignNoEnum, _Object_create, _Object_defineProperty */
 
 var LEVEL_NUMERIC   = -1;
 var LEVEL_OBJECT    = 0;
@@ -11,7 +11,7 @@ var Solution;
 {
     function setHasOuterPlus(solution, hasOuterPlus)
     {
-        object_defineProperty(solution, 'hasOuterPlus', { value: hasOuterPlus });
+        _Object_defineProperty(solution, 'hasOuterPlus', { value: hasOuterPlus });
     }
 
     var solutionProtoSource =
@@ -24,7 +24,7 @@ var Solution;
         },
         set appendLength(appendLength)
         {
-            object_defineProperty(this, 'appendLength', { enumerable: true, value: appendLength });
+            _Object_defineProperty(this, 'appendLength', { enumerable: true, value: appendLength });
         },
         charAt:
         function (index)

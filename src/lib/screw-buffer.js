@@ -6,10 +6,10 @@ LEVEL_OBJECT,
 LEVEL_STRING,
 LEVEL_UNDEFINED,
 Solution,
+_Math_max,
+_Math_pow,
 assignNoEnum,
 createClusteringPlan,
-math_max,
-math_pow,
 */
 
 // This implementation assumes that all numeric solutions have an outer plus, and all other
@@ -281,7 +281,7 @@ var optimizeSolutions;
 
         var bridgeUsed;
         var length = -APPEND_LENGTH_OF_EMPTY;
-        var maxSolutionCount = math_pow(2, groupThreshold - 1);
+        var maxSolutionCount = _Math_pow(2, groupThreshold - 1);
         var solutions = [];
 
         assignNoEnum
@@ -293,7 +293,8 @@ var optimizeSolutions;
                 {
                     if (solutions.length >= maxSolutionCount)
                         return false;
-                    bridgeUsed |= !!solution.bridge;
+                    if (solution.bridge)
+                        bridgeUsed = true;
                     solutions.push(solution);
                     var appendLength = solution.appendLength;
                     optimizerList.forEach
@@ -326,7 +327,7 @@ var optimizeSolutions;
                             var halfCount = groupSize * maxGroupCount;
                             var capacity = 2 * halfCount - count;
                             var leftEndCount =
-                            math_max
+                            _Math_max
                             (
                                 halfCount - capacity + capacity % (groupSize - 1),
                                 (maxGroupCount / 2 ^ 0) * (groupSize + 1)
