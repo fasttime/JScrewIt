@@ -1,4 +1,4 @@
-/* global Empty, _Array_isArray, _Function, _JSON_parse, _String */
+/* global _Array_isArray, _Function, _JSON_parse, _RegExp, _String, createEmpty */
 
 // Recognized syntax elements include:
 //
@@ -219,7 +219,7 @@ var expressParse;
     function makeRegExp(richPattern)
     {
         var pattern = '^(?:' + replacePattern(richPattern) + ')';
-        var regExp = RegExp(pattern);
+        var regExp = _RegExp(pattern);
         return regExp;
     }
 
@@ -515,7 +515,7 @@ var expressParse;
         '\\\\u#HexDigit{4}',
     };
 
-    var tokenCache = new Empty();
+    var tokenCache = createEmpty();
 
     // Reserved words and that cannot be written with escape sequences.
     var INESCAPABLE_WORDS = ['false', 'null', 'true'];

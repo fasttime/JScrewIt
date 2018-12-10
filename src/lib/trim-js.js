@@ -1,9 +1,11 @@
+/* global _RegExp */
+
 var trimJS;
 
 (function ()
 {
     var regExp =
-    RegExp
+    _RegExp
     ('(?:(?!.)\\s)+(?:\\s|\uFEFF|//(?:(?!\\*/|`).)*(?!.)|/\\*(?:(?!`)(?:[^*]|\\*[^/]))*?\\*/)*$');
 
     trimJS =

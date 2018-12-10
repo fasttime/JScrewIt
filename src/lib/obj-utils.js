@@ -1,11 +1,11 @@
-var Empty;
-
 var _Array;
 var _Array_isArray;
+var _Array_prototype;
 var _Array_prototype_every;
 var _Array_prototype_forEach;
 var _Array_prototype_map;
 var _Array_prototype_push;
+var _Date;
 var _Error;
 var _Function;
 var _JSON_parse;
@@ -20,17 +20,20 @@ var _Object_defineProperty;
 var _Object_freeze;
 var _Object_keys;
 var _Object_getOwnPropertyDescriptor;
+var _RegExp;
 var _String;
 var _SyntaxError;
+var _isNaN;
+var _parseInt;
 var assignNoEnum;
 var createConstructor;
+var createEmpty;
 var esToString;
 var noProto;
 var noop;
 
 (function ()
 {
-    var _Array_prototype;
     var _TypeError;
 
     _Array                              = Array;
@@ -40,6 +43,8 @@ var noop;
     _Array_prototype_forEach            = _Array_prototype.forEach;
     _Array_prototype_map                = _Array_prototype.map;
     _Array_prototype_push               = _Array_prototype.push;
+
+    _Date                               = Date;
 
     _Error                              = Error;
 
@@ -60,11 +65,17 @@ var noop;
     _Object_getOwnPropertyDescriptor    = _Object.getOwnPropertyDescriptor;
     _Object_keys                        = _Object.keys;
 
+    _RegExp                             = RegExp;
+
     _String                             = String;
 
     _SyntaxError                        = SyntaxError;
 
     _TypeError                          = TypeError;
+
+    _isNaN                              = isNaN;
+
+    _parseInt                           = parseInt;
 
     assignNoEnum =
     function (target, source)
@@ -92,6 +103,8 @@ var noop;
         return constructor;
     };
 
+    createEmpty = _Object_create.bind(null, null);
+
     esToString =
     function (arg)
     {
@@ -104,7 +117,7 @@ var noop;
     noProto =
     function (obj)
     {
-        var result = new Empty();
+        var result = createEmpty();
         _Object_keys(obj).forEach
         (
             function (name)
@@ -116,7 +129,5 @@ var noop;
     };
 
     noop = _Function();
-
-    Empty = createConstructor(_Object_freeze(_Object_create(null)));
 }
 )();

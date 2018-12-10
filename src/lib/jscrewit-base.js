@@ -1,11 +1,11 @@
 /*
 global
-Empty,
 Encoder,
 Feature,
 _Error,
 _String,
 assignNoEnum,
+createEmpty,
 esToString,
 maskNew,
 module,
@@ -165,7 +165,7 @@ var setUp;
         return encoder;
     }
 
-    var encoders = new Empty();
+    var encoders = createEmpty();
 
     /** @namespace JScrewIt */
     JScrewIt = assignNoEnum({ }, { Feature: Feature, encode: encode });

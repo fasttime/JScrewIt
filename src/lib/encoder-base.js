@@ -15,7 +15,6 @@ LEVEL_STRING,
 LEVEL_UNDEFINED,
 OPTIMAL_B,
 SIMPLE,
-Empty,
 ScrewBuffer,
 Solution,
 _Array,
@@ -25,10 +24,13 @@ _JSON_stringify,
 _Math_abs,
 _Math_max,
 _Object_keys,
+_RegExp,
 _String,
 _SyntaxError,
+_isNaN,
 assignNoEnum,
 createConstructor,
+createEmpty,
 expressParse,
 featureFromMask,
 getComplexOptimizer,
@@ -232,8 +234,8 @@ var resolveSimple;
         return shortestObj;
     }
 
-    var STATIC_CHAR_CACHE = new Empty();
-    var STATIC_CONST_CACHE = new Empty();
+    var STATIC_CHAR_CACHE = createEmpty();
+    var STATIC_CONST_CACHE = createEmpty();
 
     var CharCache = createConstructor(STATIC_CHAR_CACHE);
     var ConstCache = createConstructor(STATIC_CONST_CACHE);
@@ -253,7 +255,7 @@ var resolveSimple;
         this.mask       = mask;
         this.charCache  = new CharCache();
         this.constCache = new ConstCache();
-        this.optimizers = new Empty();
+        this.optimizers = createEmpty();
         this.stack      = [];
     };
 
@@ -667,7 +669,7 @@ var resolveSimple;
                 }
                 else
                 {
-                    if (typeof value === 'number' && !isNaN(value))
+                    if (typeof value === 'number' && !_isNaN(value))
                     {
                         var abs = _Math_abs(value);
                         var negative = value < 0 || 1 / value < 0;
@@ -781,7 +783,7 @@ var resolveSimple;
                 {
                     var complexOptimizers = optimizers.complex;
                     if (!complexOptimizers)
-                        complexOptimizers = optimizers.complex = new Empty();
+                        complexOptimizers = optimizers.complex = createEmpty();
                     for (var complex in COMPLEX)
                     {
                         var entry = COMPLEX[complex];
@@ -816,7 +818,7 @@ var resolveSimple;
                     return;
             }
             var match;
-            var regExp = RegExp(STR_TOKEN_PATTERN, 'g');
+            var regExp = _RegExp(STR_TOKEN_PATTERN, 'g');
             while (match = regExp.exec(str))
             {
                 var token;
@@ -974,7 +976,7 @@ var resolveSimple;
     var BOND_STRENGTH_WEAK      = 1;
     var BOND_STRENGTH_STRONG    = 2;
 
-    var LOW_UNICODE_ESC_SEQ_CODES = new Empty();
+    var LOW_UNICODE_ESC_SEQ_CODES = createEmpty();
 
     [
         0x0f, 0x1f, 0x2f, 0x3f, 0x6f, 0x7f, 0xaf, 0xdf, 0xef,

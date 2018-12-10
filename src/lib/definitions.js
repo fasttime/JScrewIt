@@ -4,10 +4,10 @@ LEVEL_NUMERIC,
 LEVEL_OBJECT,
 LEVEL_STRING,
 LEVEL_UNDEFINED,
-Empty,
 Feature,
 Solution,
 _Object_defineProperty,
+createEmpty,
 define,
 defineList,
 defineWithArrayLike,
@@ -1760,7 +1760,7 @@ var createParseIntArgDefault;
         ]
     );
 
-    SIMPLE = new Empty();
+    SIMPLE = createEmpty();
 
     // Create definitions for digits
     for (var digit = 0; digit <= 9; ++digit)

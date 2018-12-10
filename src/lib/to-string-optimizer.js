@@ -1,4 +1,4 @@
-/* global LEVEL_STRING, Empty, Solution, _String, replaceMultiDigitNumber */
+/* global LEVEL_STRING, Solution, _String, _parseInt, createEmpty, replaceMultiDigitNumber */
 
 var getToStringOptimizer;
 
@@ -69,7 +69,7 @@ var getToStringOptimizer;
         {
             do
             {
-                var decimal = parseInt(chars, radix);
+                var decimal = _parseInt(chars, radix);
                 if (decimal > MAX_SAFE_INTEGER)
                     return clusterAppendLength == null;
                 var decimalReplacement = replaceMultiDigitNumber(decimal);
@@ -156,14 +156,14 @@ var getToStringOptimizer;
 
         // Adding 7 for "+(", ")[", "](" and ")"
         var clusterBaseLength = toStringReplacement.length + 7;
-        var appendLengthCache = new Empty();
+        var appendLengthCache = createEmpty();
         var optimizer = { appendLengthOf: appendLengthOf, optimizeSolutions: optimizeSolutions };
         return optimizer;
     }
 
     function getMinRadix(char)
     {
-        var minRadix = parseInt(char, MAX_RADIX) + 1;
+        var minRadix = _parseInt(char, MAX_RADIX) + 1;
         return minRadix;
     }
 

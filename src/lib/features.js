@@ -1,7 +1,6 @@
 /*
 global
 Audio,
-Empty,
 Node,
 _Array_isArray,
 _Array_prototype_every,
@@ -15,6 +14,7 @@ _Object_freeze,
 _Object_keys,
 assignNoEnum,
 console,
+createEmpty,
 document,
 esToString,
 history,
@@ -315,7 +315,7 @@ var validMaskFromArrayOrStringOrFeature;
         return result;
     }
 
-    var ALL = new Empty();
+    var ALL = createEmpty();
     var ELEMENTARY = [];
 
     var FEATURE_INFOS =
@@ -1726,7 +1726,7 @@ var validMaskFromArrayOrStringOrFeature;
         get canonicalNames()
         {
             var mask = this.mask;
-            var featureNameSet = new Empty();
+            var featureNameSet = createEmpty();
             var allIncludes = [];
             ELEMENTARY.forEach
             (
@@ -1884,7 +1884,7 @@ var validMaskFromArrayOrStringOrFeature;
         {
             var resultMask = maskNew();
             var thisMask = this.mask;
-            var attributeCache = new Empty();
+            var attributeCache = createEmpty();
             ELEMENTARY.forEach
             (
                 function (featureObj)
@@ -1982,8 +1982,8 @@ var validMaskFromArrayOrStringOrFeature;
 
     var autoMask = maskNew();
     var bitIndex = 0;
-    var includesMap = new Empty();
-    var incompatibleMaskMap = new Empty();
+    var includesMap = createEmpty();
+    var incompatibleMaskMap = createEmpty();
 
     var featureNames = _Object_keys(FEATURE_INFOS);
     featureNames.forEach(completeFeature);

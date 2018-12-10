@@ -10,15 +10,17 @@ FROM_CHAR_CODE_CALLBACK_FORMATTER,
 MAPPER_FORMATTER,
 OPTIMAL_RETURN_STRING,
 SIMPLE,
-Empty,
 Encoder,
 _Array_prototype_forEach,
 _Array_prototype_map,
+_Date,
 _Error,
 _Math_max,
 _Object,
 _Object_keys,
+_RegExp,
 assignNoEnum,
+createEmpty,
 createFigurator,
 createParseIntArgDefault,
 expressParse,
@@ -62,7 +64,7 @@ var wrapWithEval;
                 pattern += digit;
             }
             pattern += ']';
-            regExp = RegExp(pattern, 'g');
+            regExp = _RegExp(pattern, 'g');
             replacer =
             function (match)
             {
@@ -117,7 +119,7 @@ var wrapWithEval;
         var freqList = inputData.freqList;
         if (!freqList)
         {
-            var charMap = new Empty();
+            var charMap = createEmpty();
             _Array_prototype_forEach.call
             (
                 inputData,
@@ -371,10 +373,10 @@ var wrapWithEval;
                     else
                     {
                         this.codingLog = perfInfo.codingLog = [];
-                        var before = new Date();
+                        var before = new _Date();
                         var maxLength = output != null ? output.length : NaN;
                         var newOutput = coder.call(this, inputData, maxLength);
-                        var time = new Date() - before;
+                        var time = new _Date() - before;
                         this.codingLog = codingLog;
                         perfInfo.time = time;
                         if (newOutput != null)
@@ -532,7 +534,7 @@ var wrapWithEval;
         encodeByCharCodes:
         function (input, long, radix, maxLength)
         {
-            var cache = new Empty();
+            var cache = createEmpty();
             var charCodeArray =
             _Array_prototype_map.call
             (
@@ -565,7 +567,7 @@ var wrapWithEval;
         {
             var input = inputData.valueOf();
             var freqList = getFrequencyList(inputData);
-            var charMap = new Empty();
+            var charMap = createEmpty();
             var minCharIndexArrayStrLength = initMinCharIndexArrayStrLength(input);
             var figures =
             freqList.map
@@ -635,7 +637,7 @@ var wrapWithEval;
             freqList.length &&
             freqList[0].count * APPEND_LENGTH_OF_DIGIT_0 > APPEND_LENGTH_OF_PLUS_SIGN;
             var reindexMap = createReindexMap(freqList.length, radix, amendings, coerceToInt);
-            var charMap = new Empty();
+            var charMap = createEmpty();
             var minCharIndexArrayStrLength = initMinFalseFreeCharIndexArrayStrLength(input);
             var dictChars = [];
             freqList.forEach

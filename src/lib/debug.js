@@ -13,7 +13,6 @@ FROM_CHAR_CODE_CALLBACK_FORMATTER,
 MAPPER_FORMATTER,
 OPTIMAL_B,
 OPTIMAL_RETURN_STRING,
-Empty,
 Encoder,
 JScrewIt,
 ScrewBuffer,
@@ -28,6 +27,7 @@ _SyntaxError,
 assignNoEnum,
 createBridgeSolution,
 createClusteringPlan,
+createEmpty,
 createFigurator,
 define,
 esToString,
@@ -164,7 +164,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         var EMPTY_MASK = maskNew();
 
         // Miscellaneous entries
-        var ENTRIES = new Empty();
+        var ENTRIES = createEmpty();
         ENTRIES['BASE64_ALPHABET_HI_4:0']                       = BASE64_ALPHABET_HI_4[0];
         ENTRIES['BASE64_ALPHABET_HI_4:4']                       = BASE64_ALPHABET_HI_4[4];
         ENTRIES['BASE64_ALPHABET_HI_4:5']                       = BASE64_ALPHABET_HI_4[5];

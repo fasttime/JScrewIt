@@ -1,4 +1,4 @@
-/* global APPEND_LENGTH_OF_EMPTY, LEVEL_STRING, Empty, _Array_prototype_forEach, noop */
+/* global APPEND_LENGTH_OF_EMPTY, LEVEL_STRING, _Array_prototype_forEach, createEmpty, noop */
 
 var getComplexOptimizer;
 
@@ -62,7 +62,7 @@ var getComplexOptimizer;
 
     function createCharSet(charInfos, index)
     {
-        var charSet = new Empty();
+        var charSet = createEmpty();
         var charInfo;
         while (charInfo = charInfos[index++])
             charSet[charInfo.char] = null;
@@ -74,7 +74,7 @@ var getComplexOptimizer;
     {
         var optimizer;
         var discreteAppendLength = 0;
-        var charMap = new Empty();
+        var charMap = createEmpty();
         var charInfos = [];
         _Array_prototype_forEach.call
         (

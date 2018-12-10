@@ -1,4 +1,4 @@
-/* global Empty */
+/* global createEmpty */
 
 var createClusteringPlan;
 
@@ -119,7 +119,7 @@ var createClusteringPlan;
             clusters:   [],
             conclude:   conclude,
             maxLength:  0,
-            startLinks: new Empty(),
+            startLinks: createEmpty(),
         };
         return plan;
     };

@@ -2,9 +2,9 @@
 global
 APPEND_LENGTH_OF_DIGIT_0,
 APPEND_LENGTH_OF_SMALL_E,
-Empty,
 _Array_prototype_push,
 _Object,
+createEmpty,
 */
 
 function createFigurator(startValues, joiner)
@@ -111,7 +111,7 @@ function createFigurator(startValues, joiner)
     var figureList = [];
     var figures = [];
     var joinerIndex = 0;
-    var usedValueSet = new Empty();
+    var usedValueSet = createEmpty();
     var appendableParts =
     PARTS.filter
     (
