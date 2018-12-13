@@ -23,7 +23,6 @@ var _Object_getOwnPropertyDescriptor;
 var _RegExp;
 var _String;
 var _SyntaxError;
-var _isNaN;
 var _parseInt;
 var assignNoEnum;
 var createConstructor;
@@ -72,8 +71,6 @@ var noop;
     _SyntaxError                        = SyntaxError;
 
     _TypeError                          = TypeError;
-
-    _isNaN                              = isNaN;
 
     _parseInt                           = parseInt;
 
