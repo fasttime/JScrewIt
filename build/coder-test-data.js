@@ -1,5 +1,3 @@
-/* eslint-env node */
-
 'use strict';
 
 function createDictTestString(variety, length)
