@@ -1,7 +1,7 @@
 /* eslint-env browser */
 /* global art, hasTabindex, removeTabindex, setTabindex */
 
-// Not much more than a collection of hacks for IE.
+// A large part of this code consists of hacks for Internet Explorer.
 
 function createButton(text)
 {
@@ -118,7 +118,8 @@ function createButton(text)
                     }
                     else
                         art(button, setTabindex);
-                    // Make sure the class does change so a refresh is triggered in IE and Edge.
+                    // Make sure the class does change so a refresh is triggered in Internet
+                    // Explorer and Edge.
                     button.className = '';
                     button.className = 'button focusable';
                 }

@@ -1,15 +1,6 @@
 # JScrewIt Feature Reference
 ## Feature List
 This section lists all features along with their descriptions.
-<a name="ANDRO40"></a>
-### `ANDRO40`
-_An alias for [`ANDRO_4_0`](#ANDRO_4_0)._
-<a name="ANDRO41"></a>
-### `ANDRO41`
-_An alias for [`ANDRO_4_1`](#ANDRO_4_1)._
-<a name="ANDRO44"></a>
-### `ANDRO44`
-_An alias for [`ANDRO_4_4`](#ANDRO_4_4)._
 <a name="ANDRO_4_0"></a>
 ### `ANDRO_4_0`
 Features available in Android Browser 4.0.
@@ -64,9 +55,6 @@ _Available in Internet Explorer._
 <a name="CHROME"></a>
 ### `CHROME`
 _An alias for [`CHROME_69`](#CHROME_69)._
-<a name="CHROME69"></a>
-### `CHROME69`
-_An alias for [`CHROME_69`](#CHROME_69)._
 <a name="CHROME_69"></a>
 ### `CHROME_69`
 Features available in Chrome 69 and Opera 56 or later.
@@ -95,9 +83,6 @@ Existence of the global object self having the string representation "\[object D
 _Available in Android Browser before 4.4. This feature is not available inside web workers._
 <a name="EDGE"></a>
 ### `EDGE`
-_An alias for [`EDGE_40`](#EDGE_40)._
-<a name="EDGE40"></a>
-### `EDGE40`
 _An alias for [`EDGE_40`](#EDGE_40)._
 <a name="EDGE_40"></a>
 ### `EDGE_40`
@@ -134,12 +119,6 @@ Existence of the global object sidebar having the string representation "\[objec
 _Available in Firefox. This feature is not available inside web workers._
 <a name="FF"></a>
 ### `FF`
-_An alias for [`FF_62`](#FF_62)._
-<a name="FF54"></a>
-### `FF54`
-_An alias for [`FF_54`](#FF_54)._
-<a name="FF62"></a>
-### `FF62`
 _An alias for [`FF_62`](#FF_62)._
 <a name="FF_54"></a>
 ### `FF_54`
@@ -202,18 +181,6 @@ _Available in Android Browser 4.4. This feature is not available inside web work
 Existence of the global object document having the string representation "\[object HTMLDocument\]".
 
 _Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera and Android Browser. This feature is not available inside web workers._
-<a name="IE10"></a>
-### `IE10`
-_An alias for [`IE_10`](#IE_10)._
-<a name="IE11"></a>
-### `IE11`
-_An alias for [`IE_11`](#IE_11)._
-<a name="IE11_WIN10"></a>
-### `IE11_WIN10`
-_An alias for [`IE_11_WIN_10`](#IE_11_WIN_10)._
-<a name="IE9"></a>
-### `IE9`
-_An alias for [`IE_9`](#IE_9)._
 <a name="IE_10"></a>
 ### `IE_10`
 Features available in Internet Explorer 10.
@@ -252,21 +219,6 @@ _Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 
 Existence of the name property for functions.
 
 _Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js._
-<a name="NODE010"></a>
-### `NODE010`
-_An alias for [`NODE_0_10`](#NODE_0_10)._
-<a name="NODE012"></a>
-### `NODE012`
-_An alias for [`NODE_0_12`](#NODE_0_12)._
-<a name="NODE100"></a>
-### `NODE100`
-_An alias for [`NODE_10`](#NODE_10)._
-<a name="NODE40"></a>
-### `NODE40`
-_An alias for [`NODE_4`](#NODE_4)._
-<a name="NODE50"></a>
-### `NODE50`
-_An alias for [`NODE_5`](#NODE_5)._
 <a name="NODECONSTRUCTOR"></a>
 ### `NODECONSTRUCTOR`
 Existence of the global object Node having the string representation "\[object NodeConstructor\]".
@@ -315,24 +267,6 @@ _Available in Firefox, Internet Explorer and Safari._
 <a name="SAFARI"></a>
 ### `SAFARI`
 _An alias for [`SAFARI_12`](#SAFARI_12)._
-<a name="SAFARI100"></a>
-### `SAFARI100`
-_An alias for [`SAFARI_10`](#SAFARI_10)._
-<a name="SAFARI120"></a>
-### `SAFARI120`
-_An alias for [`SAFARI_12`](#SAFARI_12)._
-<a name="SAFARI70"></a>
-### `SAFARI70`
-_An alias for [`SAFARI_7_0`](#SAFARI_7_0)._
-<a name="SAFARI71"></a>
-### `SAFARI71`
-_An alias for [`SAFARI_7_1`](#SAFARI_7_1)._
-<a name="SAFARI80"></a>
-### `SAFARI80`
-_An alias for [`SAFARI_7_1`](#SAFARI_7_1)._
-<a name="SAFARI90"></a>
-### `SAFARI90`
-_An alias for [`SAFARI_9`](#SAFARI_9)._
 <a name="SAFARI_10"></a>
 ### `SAFARI_10`
 Features available in Safari 10 or later.

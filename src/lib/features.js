@@ -929,7 +929,6 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        ANDRO40: 'ANDRO_4_0',
         ANDRO_4_0:
         {
             engine: 'Android Browser 4.0',
@@ -949,7 +948,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
             ],
         },
-        ANDRO41: 'ANDRO_4_1',
         ANDRO_4_1:
         {
             engine: 'Android Browser 4.1 to 4.3',
@@ -970,7 +968,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
             ],
         },
-        ANDRO44: 'ANDRO_4_4',
         ANDRO_4_4:
         {
             engine: 'Android Browser 4.4',
@@ -997,7 +994,6 @@ var validMaskFromArrayOrStringOrFeature;
             attributes: { 'no-console-in-web-worker': null, 'web-worker-restriction': null },
         },
         CHROME: 'CHROME_69',
-        CHROME69: 'CHROME_69',
         CHROME_69:
         {
             engine: 'Chrome 69 and Opera 56 or later',
@@ -1028,7 +1024,6 @@ var validMaskFromArrayOrStringOrFeature;
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
         EDGE: 'EDGE_40',
-        EDGE40: 'EDGE_40',
         EDGE_40:
         {
             engine: 'Edge 40 or later',
@@ -1058,7 +1053,6 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        FF54: 'FF_54',
         FF_ESR: 'FF_54',
         FF_54:
         {
@@ -1093,7 +1087,6 @@ var validMaskFromArrayOrStringOrFeature;
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
         FF: 'FF_62',
-        FF62: 'FF_62',
         FF_62:
         {
             engine: 'Firefox 62 or later',
@@ -1127,7 +1120,6 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        IE9: 'IE_9',
         IE_9:
         {
             engine: 'Internet Explorer 9',
@@ -1146,7 +1138,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'WINDOW',
             ],
         },
-        IE10: 'IE_10',
         IE_10:
         {
             engine: 'Internet Explorer 10',
@@ -1168,7 +1159,6 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        IE11: 'IE_11',
         IE_11:
         {
             engine: 'Internet Explorer 11',
@@ -1192,7 +1182,6 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        IE11_WIN10: 'IE_11_WIN_10',
         IE_11_WIN_10:
         {
             engine: 'Internet Explorer 11 on Windows 10',
@@ -1217,7 +1206,6 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        NODE010: 'NODE_0_10',
         NODE_0_10:
         {
             engine: 'Node.js 0.10',
@@ -1232,7 +1220,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
             ],
         },
-        NODE012: 'NODE_0_12',
         NODE_0_12:
         {
             engine: 'Node.js 0.12',
@@ -1250,7 +1237,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
             ],
         },
-        NODE40: 'NODE_4',
         NODE_4:
         {
             engine: 'Node.js 4',
@@ -1272,7 +1258,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
             ],
         },
-        NODE50: 'NODE_5',
         NODE_5:
         {
             engine: 'Node.js 5 to 9',
@@ -1295,7 +1280,6 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null },
         },
-        NODE100: 'NODE_10',
         NODE_10:
         {
             engine: 'Node.js 10',
@@ -1341,7 +1325,6 @@ var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null },
         },
-        SAFARI70: 'SAFARI_7_0',
         SAFARI_7_0:
         {
             engine: 'Safari 7.0',
@@ -1372,7 +1355,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'web-worker-restriction': null,
             },
         },
-        SAFARI71: 'SAFARI_7_1',
         SAFARI_7_1:
         {
             engine: 'Safari 7.1 and Safari 8',
@@ -1405,9 +1387,7 @@ var validMaskFromArrayOrStringOrFeature;
                 'web-worker-restriction': null,
             },
         },
-        SAFARI80: 'SAFARI_7_1',
         SAFARI_8: 'SAFARI_7_1',
-        SAFARI90: 'SAFARI_9',
         SAFARI_9:
         {
             engine: 'Safari 9',
@@ -1442,7 +1422,6 @@ var validMaskFromArrayOrStringOrFeature;
                 'web-worker-restriction': null,
             },
         },
-        SAFARI100: 'SAFARI_10',
         SAFARI_10:
         {
             engine: 'Safari 10 or later',
@@ -1474,7 +1453,6 @@ var validMaskFromArrayOrStringOrFeature;
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
         SAFARI: 'SAFARI_12',
-        SAFARI120: 'SAFARI_12',
         SAFARI_12:
         {
             engine: 'Safari 12 or later',

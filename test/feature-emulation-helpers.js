@@ -375,8 +375,8 @@
             var str = callToString(this);
             return str;
         };
-        // The IE 9 implementation of the call method sets the global object as this when no
-        // arguments are specified.
+        // The Internet Explorer 9 implementation of the call method sets the global object as this
+        // when no arguments are specified.
         value.call = callToString;
         override(context, typeName + '.prototype.toString', { value: value });
     }
@@ -586,7 +586,7 @@
         CONSOLE:
         function ()
         {
-            // Workaround for IE9...
+            // Workaround for Internet Explorer 9...
             var console = global.console;
             if (!console || !Object.getPrototypeOf(console))
                 override(this, 'console', { value: Object.create(console || null) });
@@ -716,7 +716,7 @@
             function ()
             {
                 var result;
-                switch (+this) // In IE 9, +this is different from this.
+                switch (+this) // In Internet Explorer 9, +this is different from this.
                 {
                 case Infinity:
                     result = '∞';
