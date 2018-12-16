@@ -23,12 +23,12 @@ _Array_prototype_forEach,
 _JSON_stringify,
 _Math_abs,
 _Math_max,
+_Object_create,
 _Object_keys,
 _RegExp,
 _String,
 _SyntaxError,
 assignNoEnum,
-createConstructor,
 createEmpty,
 expressParse,
 featureFromMask,
@@ -236,9 +236,6 @@ var resolveSimple;
     var STATIC_CHAR_CACHE = createEmpty();
     var STATIC_CONST_CACHE = createEmpty();
 
-    var CharCache = createConstructor(STATIC_CHAR_CACHE);
-    var ConstCache = createConstructor(STATIC_CONST_CACHE);
-
     var quoteString = _JSON_stringify;
 
     APPEND_LENGTH_OF_DIGIT_0    = 6;
@@ -252,8 +249,8 @@ var resolveSimple;
     function (mask)
     {
         this.mask       = mask;
-        this.charCache  = new CharCache();
-        this.constCache = new ConstCache();
+        this.charCache  = _Object_create(STATIC_CHAR_CACHE);
+        this.constCache = _Object_create(STATIC_CONST_CACHE);
         this.optimizers = createEmpty();
         this.stack      = [];
     };

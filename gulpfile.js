@@ -108,7 +108,7 @@ task
         .src(SRC)
         .pipe(replace(/^\/\*[^]*?\*\/\s*\n/, ''))
         .pipe(concat('jscrewit.js'))
-        .pipe(insert.prepend('// JScrewIt ' + pkg.version + ' – https://jscrew.it\n'))
+        .pipe(insert.prepend('// JScrewIt ' + pkg.version + ' – https://jscrew.it\n\n'))
         .pipe(dest('lib'));
         return stream;
     }

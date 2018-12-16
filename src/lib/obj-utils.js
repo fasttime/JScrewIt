@@ -25,7 +25,6 @@ var _String;
 var _SyntaxError;
 var _parseInt;
 var assignNoEnum;
-var createConstructor;
 var createEmpty;
 var esToString;
 var noProto;
@@ -90,14 +89,6 @@ var noop;
         );
         _Object_defineProperties(target, descriptors);
         return target;
-    };
-
-    createConstructor =
-    function (prototype)
-    {
-        var constructor = _Function();
-        constructor.prototype = prototype;
-        return constructor;
     };
 
     createEmpty = _Object_create.bind(null, null);
