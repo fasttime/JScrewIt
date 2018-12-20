@@ -42,7 +42,8 @@ function getAppendLength(int, appendLengths)
 {
     let appendLength = 0;
     const str = int.toString(appendLengths.length);
-    [...str].forEach(char => appendLength += appendLengths[char]);
+    for (const char of str)
+        appendLength += appendLengths[char];
     return appendLength;
 }
 

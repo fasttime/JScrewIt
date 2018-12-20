@@ -4,11 +4,11 @@
 
 var gulp = require('gulp');
 
-var dest = gulp.dest;
-var parallel = gulp.parallel;
-var series = gulp.series;
-var src = gulp.src;
-var task = gulp.task;
+var dest        = gulp.dest;
+var parallel    = gulp.parallel;
+var series      = gulp.series;
+var src         = gulp.src;
+var task        = gulp.task;
 
 task
 (
