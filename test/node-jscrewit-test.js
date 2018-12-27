@@ -4,7 +4,8 @@
 
 require('expectations');
 require('../tools/text-utils');
-require('./feature-emulation-helpers');
-require('./jscrewit-feature-helpers');
-require('./matcher-helpers');
+require('./helpers/feature-emulation.helpers');
+require('./helpers/jscrewit-feature.helpers');
+require('./helpers/matcher.helpers');
+require('./helpers/maybe.helpers');
 module.exports = require('..');

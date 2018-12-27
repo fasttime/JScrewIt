@@ -103,7 +103,7 @@
         if (typeof module !== 'undefined')
         {
             JScrewIt = require('../lib/jscrewit');
-            require('./feature-emulation-helpers');
+            require('./helpers/feature-emulation.helpers');
         }
         Feature = JScrewIt.Feature;
         var ALL = Feature.ALL;

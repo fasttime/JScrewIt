@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* global BigInt, Symbol, document, expect, require, self */
+/* global BigInt, Symbol, document, expect, maybeDescribe, require, self */
 
 'use strict';
 
@@ -27,18 +27,34 @@
                 test('a string', 'foo', '"foo"');
                 test('a multiline string', 'foo\nbar', '"foo\nbar"');
                 test('null', null, 'null');
-                if (typeof Symbol !== 'undefined')
-                    test('a symbol', Symbol('foo'), 'Symbol(foo)');
-                if (typeof BigInt !== 'undefined')
-                    test('a bigint', BigInt(1), '1n');
+                maybeTest
+                (
+                    typeof Symbol !== 'undefined',
+                    'a symbol',
+                    typeof Symbol !== 'undefined' && Symbol('foo'),
+                    'Symbol(foo)'
+                );
+                maybeTest
+                (
+                    typeof BigInt !== 'undefined',
+                    'a bigint',
+                    typeof BigInt !== 'undefined' && BigInt(1),
+                    '1n'
+                );
                 test('an empty array', [], '[]', 'an empty array');
                 test('a one element array', [''], '[""]', 'a one element array');
                 test('an array with more elements', [1, 2], '[1, 2]', 'an array');
                 test('a nesting of arrays', [[], [{ }]], '[[], […]]', 'an array');
                 test('a sparse array', sparseArray, '[, , , , , "foo"]', 'an array');
                 test('a sparse singleton array', sparseSingletonArray, '[]', 'a one element array');
-                if (typeof document !== 'undefined')
-                    test('document.all', document.all, undefined, 'an object');
+                maybeTest
+                (
+                    typeof document !== 'undefined',
+                    'document.all',
+                    typeof document !== 'undefined' && document.all,
+                    undefined,
+                    'an object'
+                );
                 test('a plain object', { }, '[object Object]', 'an object');
                 test('a function', Function(), undefined, 'a function');
                 test('a regular expression', /./, '/./', 'a regular expression');
@@ -49,10 +65,12 @@
         );
     }
 
-    function test(description, input, expectedValue, expectedValueType, doBefore, doAfter)
+    function maybeTest
+    (condition, description, input, expectedValue, expectedValueType, doBefore, doAfter)
     {
-        describe
+        maybeDescribe
         (
+            condition,
             description,
             function ()
             {
@@ -83,6 +101,11 @@
                 );
             }
         );
+    }
+
+    function test(description, input, expectedValue, expectedValueType, doBefore, doAfter)
+    {
+        maybeTest(true, description, input, expectedValue, expectedValueType, doBefore, doAfter);
     }
 
     function testTypeUnknownObj()
@@ -139,6 +162,7 @@
     if (typeof module !== 'undefined')
     {
         require('expectations');
+        require('./helpers/maybe.helpers');
         var resultFormat = require('../src/html/result-format');
         formatValue = resultFormat.formatValue;
         formatValueType = resultFormat.formatValueType;

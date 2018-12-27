@@ -694,23 +694,5 @@
             );
         }
     );
-    describe
-    (
-        'JScrewIt.debug.createFeatureFromMask',
-        function ()
-        {
-            it
-            (
-                'returns null for an incompatible mask',
-                function ()
-                {
-                    var mask =
-                    JScrewIt.debug.maskUnion(Feature.NO_IE_SRC.mask, Feature.IE_SRC.mask);
-                    var featureObj = JScrewIt.debug.createFeatureFromMask(mask);
-                    expect(featureObj).toBeNull();
-                }
-            );
-        }
-    );
 }
 )();

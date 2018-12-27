@@ -94,8 +94,7 @@
                                     {
                                         var minRadix = parseInt(char, 36) + 1;
                                         var maxDecimalDigits =
-                                        Math.ceil
-                                        (Math.log(0x1fffffffffffff) / Math.log(minRadix));
+                                        Math.ceil(Math.log(0x1fffffffffffff) / Math.log(minRadix));
                                         // 7 for "+(", ")[", "](" and ")"
                                         var bulkLength = 7 + decimalMinLength + radixMinLength;
                                         var enough =
