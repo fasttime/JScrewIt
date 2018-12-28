@@ -20,7 +20,7 @@ describe
                 assert.strictEqual(actual, expected);
         }
 
-        function test(description, command, expectedStdout, expectedStderr)
+        function test(description, command, expectedStdout, expectedStderr, expectedExitCode)
         {
             it
             (
@@ -35,7 +35,23 @@ describe
                         {
                             doAssert(stdout, expectedStdout);
                             doAssert(stderr, expectedStderr);
-                            done(error);
+                        }
+                    )
+                    .on
+                    (
+                        'exit',
+                        function (actualExitCode)
+                        {
+                            try
+                            {
+                                assert.strictEqual(actualExitCode, expectedExitCode);
+                            }
+                            catch (error)
+                            {
+                                done(error);
+                                return;
+                            }
+                            done();
                         }
                     );
                 }
@@ -47,28 +63,32 @@ describe
             'shows the help message with option "--help"',
             'node ./screw.js --help',
             /^Usage: screw.js [^]*\n$/,
-            ''
+            '',
+            0
         );
         test
         (
             'shows an error message with an invalid option',
             'node ./screw.js --foo',
             '',
-            'screw.js: unrecognized option "--foo".\nTry "screw.js --help" for more information.\n'
+            'screw.js: unrecognized option "--foo".\nTry "screw.js --help" for more information.\n',
+            1
         );
         test
         (
             'shows an error message when an invalid feature is specified',
             'node ./screw.js -f FOO',
             '',
-            'Unknown feature "FOO"\n'
+            'Unknown feature "FOO"\n',
+            1
         );
         test
         (
             'shows an error message when the input file does not exist',
             'node ./screw.js ""',
             '',
-            /^ENOENT\b. no such file or directory\b.*\n$/
+            /^ENOENT\b. no such file or directory\b.*\n$/,
+            1
         );
     }
 );

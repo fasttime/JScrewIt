@@ -4,6 +4,11 @@
 
 'use strict';
 
+function fail()
+{
+    process.exit(1);
+}
+
 function getBasename()
 {
     var path = require('path');
@@ -77,7 +82,7 @@ function prompt()
     catch (error)
     {
         printErrorMessage(error.message);
-        return;
+        fail();
     }
     if (command === 'help')
     {
@@ -113,7 +118,7 @@ function prompt()
             return output;
         };
         if (tryEncode('') == null) // validate options
-            return;
+            fail();
         var readline = require('readline');
         var rl = readline.createInterface({ input: process.stdin, terminal: false });
         rl.on
@@ -159,7 +164,7 @@ function prompt()
         catch (error)
         {
             console.error('%s', error.message);
-            return;
+            fail();
         }
         if (outputFileName)
         {
