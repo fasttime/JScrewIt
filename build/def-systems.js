@@ -100,7 +100,7 @@ function getDefSystem(defSystemName)
         (
             defSystems,
             defSystemName,
-            { enumerable: true, get: getDefSystem.bind(null, defSystemName) }
+            { enumerable: true, get: getDefSystem.bind(null, defSystemName) },
         );
     }
     module.exports = defSystems;

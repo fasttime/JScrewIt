@@ -103,7 +103,7 @@ function calculateEngineSupportInfo(engineEntry, filter)
                 if (firstAvail != null && firstUnavail == null)
                     firstUnavail = versionIndex;
             }
-        }
+        },
     );
     const availabilityInfo = { firstAvail, firstUnavail };
     return availabilityInfo;
@@ -197,7 +197,7 @@ function getCombinedDescription(engineEntry, versionIndex)
                 const indexedDescription = description[subIndex];
                 const versionedName = getVersionedName(name, indexedDescription);
                 return versionedName;
-            }
+            },
         )
         .join(', ');
         return str;
@@ -338,7 +338,7 @@ function reportAsList(property, filter)
                     availEntry += ` before ${getDescription(firstUnavail).replace(/\+$/, '')}`;
                 return availEntry;
             }
-        }
+        },
     )
     .filter(availEntry => availEntry != null);
     return availability;
@@ -381,7 +381,7 @@ function ()
             `<a name="${getAnchorName(featureName)}"></a>\n` +
             `### \`${featureName}\`\n` +
             `${subContent}\n`;
-        }
+        },
     );
     content +=
     '## Engine Support\n' +
@@ -406,7 +406,7 @@ function ()
                     const assignments = { versioning };
                     assignmentMap[featureName] = assignments;
                 }
-            }
+            },
         );
         for (featureName in assignmentMap)
         {

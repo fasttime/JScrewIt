@@ -60,8 +60,8 @@ task
             },
             {
                 src: 'build/**/*.js',
-                envs: ['node'],
-                parserOptions: { ecmaVersion: 6 },
+                envs: 'node',
+                parserOptions: { ecmaVersion: 8 },
             },
             {
                 src: ['*.js', 'test/**/*.js', 'tools/**/*.js'],
@@ -110,7 +110,7 @@ task
         .src(SRC)
         .pipe(replace(/^\/\*[^]*?\*\/\s*\n/, ''))
         .pipe(concat('jscrewit.js'))
-        .pipe(insert.prepend('// JScrewIt ' + pkg.version + ' – https://jscrew.it\n\n'))
+        .pipe(insert.prepend('// JScrewIt ' + pkg.version + ' – ' + pkg.homepage + '\n\n'))
         .pipe(dest('lib'));
         return stream;
     }

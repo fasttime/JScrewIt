@@ -21,8 +21,8 @@ function doAdd()
                     char,
                     progress => bar.update(progress),
                     char =>
-                    console.warn('Required character %s not indexed', formatCharacter(char))
-                )
+                    console.warn('Required character %s not indexed', formatCharacter(char)),
+                ),
             );
             console.log('Character %s indexed', formattedCharacter);
             if (!noSave)
@@ -55,7 +55,7 @@ function doAdd()
                 return false;
             }
             return true;
-        }
+        },
     );
     {
         const timeUtils = require('../tools/time-utils');

@@ -79,7 +79,7 @@ let createAntiRadix4TestString;
                 const diff =
                 info2.appendLength - info1.appendLength || info1.charCode - info2.charCode;
                 return diff;
-            }
+            },
         );
         antiRadix4CharCodes = infos.map(getCharCodeOf);
     }
@@ -103,7 +103,7 @@ module.exports =
     (
         ['ARRAY_ITERATOR', 'ATOB', 'CAPITAL_HTML', 'FF_SRC', 'FLAT', 'STATUS'],
         length => String.fromCharCode(59999).repeat(length),
-        'byCharCodes'
+        'byCharCodes',
     ),
     data
     (
@@ -114,7 +114,7 @@ module.exports =
             str = repeatToFit(str, length);
             return str;
         },
-        'byCharCodesRadix4'
+        'byCharCodesRadix4',
     ),
     data
     (
@@ -125,19 +125,19 @@ module.exports =
             const str = prefix + createDictTestString(2, length - prefix.length);
             return str;
         },
-        'byDenseFigures'
+        'byDenseFigures',
     ),
     data
     (
         ['ARRAY_ITERATOR', 'ATOB', 'FF_SRC', 'FLAT', 'NAME', 'UNEVAL'],
         length => String.fromCharCode(59999).repeat(length),
-        'byDict'
+        'byDict',
     ),
     data
     (
         ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FLAT', 'STATUS', 'V8_SRC'],
         createDictTestString.bind(null, 123),
-        'byDictRadix3'
+        'byDictRadix3',
     ),
     data
     (
@@ -152,19 +152,19 @@ module.exports =
             'V8_SRC',
         ],
         createDictTestString.bind(null, 77),
-        'byDictRadix4'
+        'byDictRadix4',
     ),
     data
     (
         ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FLAT', 'STATUS', 'V8_SRC'],
         createDictTestString.bind(null, 129),
-        'byDictRadix4AmendedBy1'
+        'byDictRadix4AmendedBy1',
     ),
     data
     (
         ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FLAT', 'STATUS', 'V8_SRC'],
         createDictTestString.bind(null, 300),
-        'byDictRadix4AmendedBy2'
+        'byDictRadix4AmendedBy2',
     ),
     data
     (
@@ -178,18 +178,18 @@ module.exports =
             'STATUS',
         ],
         createAntiRadix4TestString.bind(null, 479),
-        'byDictRadix5AmendedBy2'
+        'byDictRadix5AmendedBy2',
     ),
     data
     (
         ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FLAT', 'STATUS', 'V8_SRC'],
         createAntiRadix4TestString.bind(null, 470),
-        'byDictRadix5AmendedBy3'
+        'byDictRadix5AmendedBy3',
     ),
     data
     (
         ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FF_SRC', 'FLAT', 'STATUS'],
         createDictTestString.bind(null, 55),
-        'bySparseFigures'
+        'bySparseFigures',
     ),
 ];

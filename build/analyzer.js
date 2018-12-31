@@ -175,7 +175,7 @@
                     return true;
                 if (featureQuery.included)
                     progress = newProgress;
-            }
+            },
         );
         progress += step;
         return progress;

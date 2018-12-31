@@ -19,7 +19,7 @@ Object.assign
         loadTime:           undefined,
         save:               saveSolutionBookMap,
         [Symbol.iterator]:  entryIterator,
-    }
+    },
 );
 
 function charIterator()
@@ -57,7 +57,7 @@ function createParseReviver()
             entry =>
             {
                 entry[0] = entry[0].replace(/^___/, '__');
-            }
+            },
         );
         const map = new Map(entries);
         return map;

@@ -219,7 +219,7 @@ function featureDifference(featureAll, featureSome)
         {
             const result = !featureSome.includes(elementaryName);
             return result;
-        }
+        },
     );
     const featureComplement = Feature(elementaryNames);
     return featureComplement;
@@ -266,7 +266,7 @@ function printDefinitions(definitionSets, { indent, formatVariant, variantToMinM
             {
                 const args = [formattedVariant, ...feature.canonicalNames];
                 argsList.push(args);
-            }
+            },
         );
     }
     const indentStr = ' '.repeat(indent);
@@ -306,7 +306,7 @@ function printHelpMessage(defSystems)
             'Please, specify one of the following definition systems:',
             ...Object.keys(defSystems).map(defSystemName => `• ${defSystemName}`),
         ]
-        .join('\n')
+        .join('\n'),
     );
 }
 
@@ -367,7 +367,7 @@ function runAnalysis(defSystem)
                 nodes.add(node);
                 bar.update(analyzer.progress);
             }
-        }
+        },
     );
     return nodes;
 }
@@ -401,7 +401,7 @@ function runJoin(nodes)
                 ++done;
                 bar.update(done / nodeCount);
             }
-        }
+        },
     );
     let stage = 0;
     reportStage();

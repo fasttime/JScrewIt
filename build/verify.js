@@ -177,10 +177,10 @@ function findOptimalFeatures(replacer, rivalReplacer, progressCallback)
                         const nextFeatureObj =
                         JScrewIt.Feature.commonOf(previousFeatureObj, currentFeatureObj);
                         return nextFeatureObj;
-                    }
+                    },
                 );
                 return featureObj;
-            }
+            },
         );
         return result;
     }
@@ -265,8 +265,8 @@ function printHelpMessage()
         Object.keys(verify).sort(compareRoutineNames).reduce
         (
             (str, routineName) => `${str}\n• ${routineName}`,
-            'Please, specify one of the implemented verification routines:'
-        )
+            'Please, specify one of the implemented verification routines:',
+        ),
     );
 }
 
@@ -313,7 +313,7 @@ function verifyCoder(coderName)
                 optimalFeatureObjs =
                 checkCoderFeatureOptimality
                 (createInput, coders, coder, minLength, progressCallback);
-            }
+            },
         );
         printOptimalFeatureReport(features, optimalFeatureObjs);
     };
@@ -383,7 +383,7 @@ function verifyDefinitions(entries, inputList, mismatchCallback, replaceVariant,
                 `(${lengthMap[actualDefinition]})`,
                 optimalDefinitions.map(formatVariant),
                 `(${optimalLength})`,
-                '\x1e'
+                '\x1e',
             );
         }
     }
@@ -408,7 +408,7 @@ JScrewIt.debug.getComplexNames().forEach
                     logWarn('Not useful.');
             };
         }
-    }
+    },
 );
 
 verify['BASE64_ALPHABET_HI_4:0'] = verifyDefSystem('BASE64_ALPHABET_HI_4:0');
@@ -451,7 +451,7 @@ verify.OPTIMAL_RETURN_STRING = verifyDefSystem('OPTIMAL_RETURN_STRING');
     coderName =>
     {
         verify[coderName] = verifyCoder(coderName);
-    }
+    },
 );
 
 main();

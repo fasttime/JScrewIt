@@ -179,4 +179,5 @@ function prompt()
             console.log(report);
         }
     }
-})();
+}
+)();

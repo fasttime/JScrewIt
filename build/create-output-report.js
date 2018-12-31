@@ -34,7 +34,7 @@ function createOutputReport()
             'features.\n' +
             'The lines after a character headline contain encoding length, definition entry\n' +
             'index and minimal feature list for each encoding of that character.\n' +
-            'Only characters with explicit definitions are listed.'
+            'Only characters with explicit definitions are listed.',
         );
         const notAllDefsUsed = scanCharDefs(logLine);
         return notAllDefsUsed;
@@ -92,7 +92,7 @@ function printCharacterReport(logLine, char, definitionCount, solutions)
             const featureStr = formatFeatureNames(canonicalNames);
             const line = `${lengthStr} | ${entryIndexStr} | ${featureStr}`;
             logLine(line);
-        }
+        },
     );
     return notAllDefsUsed;
 }
@@ -109,7 +109,7 @@ function scanCharDefs(logLine)
         {
             if (printCharacterReport(logLine, char, definitionCount, solutions))
                 notAllDefsUsed = true;
-        }
+        },
     );
     return notAllDefsUsed;
 }
