@@ -88,6 +88,8 @@ var resolveSimple;
         {
             if (exp < 10)
                 str = mantissa + getExtraZeros(exp);
+            else if (exp % 100 === 99 && (exp > 99 || mantissa[1]))
+                str = mantissa.replace(/.$/, '.$&e') + (exp + 1);
             else
                 str = mantissa + 'e' + exp;
         }

@@ -200,6 +200,7 @@ self,
                                         .replace(/0/g, '+[]')
                                         .replace(/1/g, '+!![]')
                                         .replace(/[2-9]/g, twoToNineReplacer)
+                                        .replace(/"e"/g, '(!![]+[])[!![]+!![]+!![]]')
                                         .replace(/(?=[^!*])/g, '\\')
                                         .replace(/\*/g, ASTERISK_REPLACEMENT) +
                                         '$';
@@ -275,7 +276,7 @@ self,
                             (
                                 'numbers with 10 trailing zeros',
                                 '10000000000',
-                                '+(*+(1)+(0))',
+                                '+(*+"e"+(1)+(0))',
                                 10000000000
                             );
                             test
@@ -303,42 +304,65 @@ self,
                             (
                                 'numbers below 0.1 represented in expontential notation',
                                 '123e-22',
-                                '+(1+[2]+(3)+*+(2)+(2))',
+                                '+(1+[2]+(3)+"e"+*+(2)+(2))',
                                 123e-22
                             );
                             test
                             (
-                                'numbers represented with a power of 10 exponent',
+                                'numbers with positive exponent ending in 99 and single digit ' +
+                                'mantissa',
+                                '1e99',
+                                '+(1+"e"+(9)+(9))',
+                                1e99
+                            );
+                            test
+                            (
+                                'numbers with positive exponent ending in 99 and multiple digit ' +
+                                'mantissa',
+                                '12e99',
+                                '+(1+*+(2)+"e"+(1)+(0)+(0))',
+                                12e99
+                            );
+                            test
+                            (
+                                'numbers with positive 3-digit exponent ending in 99',
+                                '1e199',
+                                '+(*+(1)+"e"+(2)+(0)+(0))',
+                                1e199
+                            );
+                            test
+                            (
+                                'numbers represented with a negative multiple of 10 exponent',
                                 '1e-37',
-                                '+(1+[0]+*+(4)+(0))',
+                                '+(1+*+"e"+*+(4)+(0))',
                                 1e-37
                             );
                             test
                             (
-                                'numbers represented with a non power of 10 exponent',
+                                'numbers represented with a negative non-multiple of 10 exponent',
                                 '1e-36',
-                                '+(1+(*)[*]+*+(3)+(6))',
+                                '+(1+"e"+*+(3)+(6))',
                                 1e-36
                             );
                             test
                             (
-                                'numbers represented with a power of 100 exponent',
+                                'numbers represented with a negative multiple of 100 exponent',
                                 '1e-293',
-                                '+(1+[0]+*+(3)+(0)+(0))',
+                                '+(1+*+"e"+*+(3)+(0)+(0))',
                                 1e-293
                             );
                             test
                             (
-                                'numbers represented with a non power of 100 exponent',
+                                'numbers represented with a negative non-multiple of 100 exponent',
                                 '1e-292',
-                                '+(1+(*)[*]+*+(2)+(9)+(2))',
+                                '+(1+"e"+*+(2)+(9)+(2))',
                                 1e-292
                             );
                             test
                             (
                                 'numbers with decrementable last digit',
                                 '5e-324',
-                                '+(3+(*)[*]+*+(3)+(2)+(4))',
+                                '+(3+"e"+*+(3)+(2)+(4))',
                                 5e-324
                             );
                             test('-Infinity', '-Infinity', '+(*)', -Infinity);
