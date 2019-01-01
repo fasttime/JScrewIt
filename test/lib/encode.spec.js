@@ -44,7 +44,7 @@ self,
                             expect(perfInfo.codingLog).toBeArray();
                         }
                     );
-                    var expression2 = 'decodeURI(encodeURI("♠♥♦♣"))';
+                    var expression2 = 'Array.prototype.slice.call(["", ""])';
                     it
                     (
                         JSON.stringify(expression2) + ' (with runAs: "eval")',
@@ -55,7 +55,7 @@ self,
                             { features: compatibility, perfInfo: perfInfo, runAs: 'eval' };
                             var output = encode(expression2, options);
                             var actual = emuEval(emuFeatures, output);
-                            expect(actual).toBe('♠♥♦♣');
+                            expect(actual).toEqual(['', '']);
                             expect(perfInfo.codingLog).toBeArray();
                         }
                     );
@@ -166,7 +166,7 @@ self,
                         }
                     );
                     test('call', /\(!!\[]\+!!\[]\)\(\)$/);
-                    test('eval', /\(!!\[]\+!!\[]\)$/);
+                    test('eval', /\(!!\[]\+!!\[]\+\[]\)$/);
                     test('express', /^!!\[]\+!!\[]$/);
                 }
             );

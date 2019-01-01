@@ -519,7 +519,8 @@ var wrapWithEval;
             var output;
             if (!wrapper || input)
             {
-                output = this.encodeText(input, false, !wrapper, codingName, maxLength);
+                var forceString = !wrapper || wrapper.forceString;
+                output = this.encodeText(input, false, forceString, codingName, maxLength);
                 if (output == null)
                     return;
             }
@@ -834,6 +835,7 @@ var wrapWithEval;
         var output = this.resolveConstant('Function') + '(' + str + ')()';
         return output;
     };
+    wrapWithCall.forceString = false;
 
     wrapWithEval =
     function (str)
@@ -841,5 +843,6 @@ var wrapWithEval;
         var output = this.replaceExpr('Function("return eval")()') + '(' + str + ')';
         return output;
     };
+    wrapWithEval.forceString = true;
 }
 )();
