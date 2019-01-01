@@ -409,7 +409,7 @@ describe
                                 status: 'used',
                                 outputLength: 100,
                                 time: 123,
-                                codingLog:
+                                perfLog:
                                 [
                                     makePerfInfoList
                                     (
@@ -429,7 +429,7 @@ describe
                                             status: 'used',
                                             outputLength: 25,
                                             time: 67,
-                                            codingLog:
+                                            perfLog:
                                             [
                                                 makePerfInfoList
                                                 (

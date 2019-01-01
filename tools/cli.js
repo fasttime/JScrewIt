@@ -12,12 +12,12 @@ function byteCount(size, width)
     return str;
 }
 
-function createDiagnosticReport(codingLog)
+function createDiagnosticReport(perfLog)
 {
     var report =
     '\nStrategy                    Status         Length  Time (ms)\n' +
     repeat('─', 60) + '\n' +
-    codingLog.reduce
+    perfLog.reduce
     (
         function (str, perfInfoList)
         {
@@ -42,14 +42,14 @@ function createReport(originalSize, screwedSize, encodingTime)
     return report;
 }
 
-function formatCodingLog(codingLog, padding, nextCodingLog)
+function formatCodingLog(perfLog, padding, nextCodingLog)
 {
     padding += nextCodingLog ? '│' : ' ';
     var str = '';
-    var count = codingLog.length;
+    var count = perfLog.length;
     for (var index = 0; index < count; ++index)
     {
-        var perfInfoList = codingLog[index];
+        var perfInfoList = perfLog[index];
         var nextPerfInfoList = index < count - 1;
         str += formatPerfInfoList(perfInfoList, padding, nextPerfInfoList ? '├│' : '└ ');
     }
@@ -66,11 +66,12 @@ function formatInt(int)
 
 function formatPerfInfoList(perfInfoList, padding, paddingChars)
 {
+    // In the current implementation, perfInfoList.name can be either undefined or a unit path.
     var str = padding + paddingChars[0] + (perfInfoList.name || '(default)') + '\n';
     padding += paddingChars[1];
     var count = perfInfoList.length;
     var paddingLength = padding.length;
-    var codingLog;
+    var perfLog;
     for (var index = 0; index < count; ++index)
     {
         var perfInfo = perfInfoList[index];
@@ -82,9 +83,9 @@ function formatPerfInfoList(perfInfoList, padding, paddingChars)
         padLeft(formatInt(perfInfo.outputLength), 11) +
         padLeft(formatInt(perfInfo.time), 11) +
         '\n';
-        codingLog = perfInfo.codingLog;
-        if (codingLog)
-            str += formatCodingLog(codingLog, padding, next);
+        perfLog = perfInfo.perfLog;
+        if (perfLog)
+            str += formatCodingLog(perfLog, padding, next);
     }
     return str;
 }

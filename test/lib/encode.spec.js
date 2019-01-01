@@ -41,7 +41,7 @@ self,
                             var output = encode(expression1, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe('Hello%2C%20World%21');
-                            expect(perfInfo.codingLog).toBeArray();
+                            expect(perfInfo.perfLog).toBeArray();
                         }
                     );
                     var expression2 = 'Array.prototype.slice.call(["", ""])';
@@ -56,7 +56,7 @@ self,
                             var output = encode(expression2, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toEqual(['', '']);
-                            expect(perfInfo.codingLog).toBeArray();
+                            expect(perfInfo.perfLog).toBeArray();
                         }
                     );
                     var expression3 = 'Boolean true';
@@ -71,7 +71,7 @@ self,
                             var output = encode(expression3, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(expression3);
-                            expect(perfInfo.codingLog).toBeArray();
+                            expect(perfInfo.perfLog).toBeArray();
                         }
                     );
                     var expression4 = repeat('☺', 20);
@@ -86,7 +86,7 @@ self,
                             var output = encode(expression4, options);
                             var actual = emuEval(emuFeatures, output);
                             expect(actual).toBe(expression4);
-                            expect(perfInfo.codingLog).toBeArray();
+                            expect(perfInfo.perfLog).toBeArray();
                         }
                     );
                 }

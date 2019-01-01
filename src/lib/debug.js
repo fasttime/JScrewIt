@@ -92,7 +92,7 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         {
             var mask = getValidFeatureMask(features);
             var encoder = new Encoder(mask);
-            encoder.codingLog = [];
+            encoder.perfLog = [];
             return encoder;
         }
 

@@ -110,7 +110,7 @@
                         }
                     )
                     .toThrowStrictly(Error, 'Encoding failed');
-                    expect('codingLog' in encoder).toBeFalsy();
+                    expect('perfLog' in encoder).toBeFalsy();
                 }
             );
         }
@@ -364,14 +364,14 @@
                                 var encoder = JScrewIt.debug.createEncoder();
                                 var output = encoder.encodeExpress(input);
                                 var length = output.length;
-                                var codingLogLength = encoder.codingLog.length;
+                                var perfLogLength = encoder.perfLog.length;
                                 output = encoder.encodeExpress(input, length);
                                 expect(output).not.toBeUndefined();
-                                encoder.codingLog = [];
+                                encoder.perfLog = [];
                                 output = encoder.encodeExpress(input, length - 1);
                                 expect(output).toBeUndefined();
-                                var expectedCodingLogLength = Math.max(codingLogLength, 0);
-                                expect(encoder.codingLog.length).toBe(expectedCodingLogLength);
+                                var expectedCodingLogLength = Math.max(perfLogLength, 0);
+                                expect(encoder.perfLog.length).toBe(expectedCodingLogLength);
                             }
                         );
                     }
@@ -401,18 +401,18 @@
             );
             it
             (
-                'writes into codingLog',
+                'writes into perfLog',
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     encoder.encodeExpress('"A"()("B1" + "B2")["C"].D');
-                    var codingLog = encoder.codingLog;
-                    expect(codingLog.length).toBe(5);
-                    expect(codingLog[0].name).toBe('0');
-                    expect(codingLog[1].name).toBe('2:0');
-                    expect(codingLog[2].name).toBe('2:1');
-                    expect(codingLog[3].name).toBe('3');
-                    expect(codingLog[4].name).toBe('4');
+                    var perfLog = encoder.perfLog;
+                    expect(perfLog.length).toBe(5);
+                    expect(perfLog[0].name).toBe('0');
+                    expect(perfLog[1].name).toBe('2:0');
+                    expect(perfLog[2].name).toBe('2:1');
+                    expect(perfLog[3].name).toBe('3');
+                    expect(perfLog[4].name).toBe('4');
                 }
             );
         }

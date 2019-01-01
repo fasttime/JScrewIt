@@ -98,12 +98,6 @@ var wrapWithEval;
         return strategy;
     }
 
-    function getCodingName(unitIndices)
-    {
-        var codingName = unitIndices.length ? unitIndices.join(':') : '0';
-        return codingName;
-    }
-
     function getDenseFigureLegendDelimiters(figurator, figures)
     {
         var delimiters = [FALSE_TRUE_DELIMITER];
@@ -159,6 +153,13 @@ var wrapWithEval;
     {
         var delimiters = [FALSE_FREE_DELIMITER];
         return delimiters;
+    }
+
+    // The unit path consists of the string of colon-separated unit indices.
+    function getUnitPath(unitIndices)
+    {
+        var unitPath = unitIndices.length ? unitIndices.join(':') : '0';
+        return unitPath;
     }
 
     function initMinFalseFreeCharIndexArrayStrLength(input)
@@ -350,15 +351,15 @@ var wrapWithEval;
         },
 
         callStrategies:
-        function (input, options, strategyNames, codingName)
+        function (input, options, strategyNames, unitPath)
         {
             var output;
             var inputLength = input.length;
-            var codingLog = this.codingLog;
+            var perfLog = this.perfLog;
             var perfInfoList = [];
-            perfInfoList.name = codingName;
+            perfInfoList.name = unitPath;
             perfInfoList.inputLength = inputLength;
-            codingLog.push(perfInfoList);
+            perfLog.push(perfInfoList);
             var inputData = _Object(input);
             _Object_keys(options).forEach
             (
@@ -379,12 +380,12 @@ var wrapWithEval;
                         perfStatus = 'skipped';
                     else
                     {
-                        this.codingLog = perfInfo.codingLog = [];
+                        this.perfLog = perfInfo.perfLog = [];
                         var before = new _Date();
                         var maxLength = output != null ? output.length : NaN;
                         var newOutput = strategy.call(this, inputData, maxLength);
                         var time = new _Date() - before;
-                        this.codingLog = codingLog;
+                        this.perfLog = perfLog;
                         perfInfo.time = time;
                         if (newOutput != null)
                         {
@@ -514,13 +515,13 @@ var wrapWithEval;
         },
 
         encodeAndWrapText:
-        function (input, wrapper, codingName, maxLength)
+        function (input, wrapper, unitPath, maxLength)
         {
             var output;
             if (!wrapper || input)
             {
                 var forceString = !wrapper || wrapper.forceString;
-                output = this.encodeText(input, false, forceString, codingName, maxLength);
+                output = this.encodeText(input, false, forceString, unitPath, maxLength);
                 if (output == null)
                     return;
             }
@@ -720,7 +721,7 @@ var wrapWithEval;
         },
 
         encodeText:
-        function (input, bond, forceString, codingName, maxLength)
+        function (input, bond, forceString, unitPath, maxLength)
         {
             var output =
             this.callStrategies
@@ -741,7 +742,7 @@ var wrapWithEval;
                     'byCharCodes',
                     'plain',
                 ],
-                codingName
+                unitPath
             );
             if (output != null && !(output.length > maxLength))
                 return output;
@@ -750,11 +751,11 @@ var wrapWithEval;
         exec:
         function (input, wrapper, strategyNames, perfInfo)
         {
-            var codingLog = this.codingLog = [];
+            var perfLog = this.perfLog = [];
             var output = this.callStrategies(input, { wrapper: wrapper }, strategyNames);
             if (perfInfo)
-                perfInfo.codingLog = codingLog;
-            delete this.codingLog;
+                perfInfo.perfLog = perfLog;
+            delete this.perfLog;
             if (output == null)
                 throw new _Error('Encoding failed');
             return output;
@@ -812,16 +813,16 @@ var wrapWithEval;
         identifier:
         function (encoder, identifier, bondStrength, unitIndices, maxLength)
         {
-            var codingName = getCodingName(unitIndices);
+            var unitPath = getUnitPath(unitIndices);
             var replacement =
-            encoder.encodeAndWrapText('return ' + identifier, wrapWithCall, codingName, maxLength);
+            encoder.encodeAndWrapText('return ' + identifier, wrapWithCall, unitPath, maxLength);
             return replacement;
         },
         string:
         function (encoder, str, bond, forceString, unitIndices, maxLength)
         {
-            var codingName = getCodingName(unitIndices);
-            var replacement = encoder.encodeText(str, bond, forceString, codingName, maxLength);
+            var unitPath = getUnitPath(unitIndices);
+            var replacement = encoder.encodeText(str, bond, forceString, unitPath, maxLength);
             return replacement;
         },
     };

@@ -169,10 +169,10 @@ function prompt()
         if (outputFileName)
         {
             var perfInfo = options.perfInfo;
-            var codingLog = perfInfo && perfInfo.codingLog;
-            if (codingLog)
+            var perfLog = perfInfo && perfInfo.perfLog;
+            if (perfLog)
             {
-                var diagnosticReport = cli.createDiagnosticReport(codingLog);
+                var diagnosticReport = cli.createDiagnosticReport(perfLog);
                 console.log(diagnosticReport);
             }
             var report = cli.createReport(input.length, output.length, encodingTime);
