@@ -51,6 +51,7 @@
     "jsdoc-to-markdown": "~4.0.1",
     "mocha": "~3.5.3",
     "mocha-bar": "~0.0.3",
-    "proxyquire": "~2.1.0"
+    "proxyquire": "~2.1.0",
+    "semver": "~5.6.0"
   }
 }

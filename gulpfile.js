@@ -2,13 +2,36 @@
 
 'use strict';
 
-var gulp = require('gulp');
+var gulp    = require('gulp');
+var semver  = require('semver');
 
-var dest        = gulp.dest;
+var legacyTask  = gulp.task;
 var parallel    = gulp.parallel;
 var series      = gulp.series;
 var src         = gulp.src;
-var task        = gulp.task;
+
+var task;
+if (semver.satisfies(process.version, '>=6.0.0'))
+{
+    var dest = gulp.dest;
+
+    task = legacyTask;
+}
+else
+{
+    task =
+    function (taskName)
+    {
+        legacyTask
+        (
+            taskName,
+            function (callback)
+            {
+                callback('Task not available in Node.js < 6');
+            }
+        );
+    };
+}
 
 task
 (
@@ -116,7 +139,7 @@ task
     }
 );
 
-task
+legacyTask
 (
     'feature-info',
     function (callback)
@@ -151,7 +174,7 @@ task
     }
 );
 
-task
+legacyTask
 (
     'test',
     function ()
