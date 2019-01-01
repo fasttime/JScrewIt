@@ -13,7 +13,7 @@ function createTestStringProRadix4AntiRadix10(length)
 {
     const elements = [];
     {
-        const { createEncoder } = require('..').debug;
+        const { createEncoder } = require('../lib/jscrewit').debug;
         const encoder = createEncoder();
         for (let charCode = 0; charCode <= 0xffff; ++charCode)
         {
@@ -32,9 +32,9 @@ function createTestStringProRadix4AntiRadix10(length)
     return str;
 }
 
-function data(features, createInput, coderName)
+function data(features, createInput, strategyName)
 {
-    const result = { coderName, createInput, features };
+    const result = { strategyName, createInput, features };
     return result;
 }
 

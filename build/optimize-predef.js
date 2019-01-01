@@ -210,7 +210,7 @@ function dropIndirectSpecializations(node)
 
 function featureDifference(featureAll, featureSome)
 {
-    const { Feature } = require('..');
+    const { Feature } = require('../lib/jscrewit');
 
     const elementaryNames =
     featureAll.elementaryNames.filter
@@ -241,7 +241,7 @@ function isRedundantNode(node)
 function printDefinitions(definitionSets, { indent, formatVariant, variantToMinMaskMap })
 {
     const LINE_LENGTH = 100;
-    const { Feature, debug: { createFeatureFromMask } } = require('..');
+    const { Feature, debug: { createFeatureFromMask } } = require('../lib/jscrewit');
 
     const argsList = [];
     for (const definitionSet of definitionSets)
@@ -298,34 +298,34 @@ function printDefinitions(definitionSets, { indent, formatVariant, variantToMinM
     console.log('%d definition(s) listed.', argsList.length);
 }
 
-function printHelpMessage(defSystems)
+function printHelpMessage(predefTestDataMapObj)
 {
     console.error
     (
         [
             'Please, specify one of the following definition systems:',
-            ...Object.keys(defSystems).map(defSystemName => `• ${defSystemName}`),
+            ...Object.keys(predefTestDataMapObj).map(predefName => `• ${predefName}`),
         ]
         .join('\n'),
     );
 }
 
-function run(defSystem)
+function run(predefTestData)
 {
-    const nodes = runAnalysis(defSystem);
+    const nodes = runAnalysis(predefTestData);
     runJoin(nodes);
     const definitionSets = createDefinitions(nodes);
     simplifyDefinitions(definitionSets);
-    printDefinitions(definitionSets, defSystem);
+    printDefinitions(definitionSets, predefTestData);
 }
 
-function runAnalysis(defSystem)
+function runAnalysis(predefTestData)
 {
     require('./solution-book-map').load();
     const Analyzer = require('./optimized-analyzer');
 
     const nodes = new Set();
-    const { availableEntries, replaceVariant } = defSystem;
+    const { availableEntries, replaceVariant } = predefTestData;
     const VarSet = createVarSet(availableEntries);
     progress
     (
@@ -494,7 +494,7 @@ function simplifyDefinitions(definitionSets)
         return featuresABC;
     }
 
-    const { Feature } = require('..');
+    const { Feature } = require('../lib/jscrewit');
 
     for
     (
@@ -538,21 +538,21 @@ function simplifyDefinitions(definitionSets)
 }
 
 {
-    const defSystems = require('./def-systems');
+    const PREDEF_TEST_DATA_MAP_OBJ = require('./predef-test-data');
 
-    const [,, defSystemName] = process.argv;
-    if (defSystemName != null)
+    const [,, predefName] = process.argv;
+    if (predefName != null)
     {
-        const defSystem = defSystems[defSystemName];
-        if (defSystem)
+        const predefTestData = PREDEF_TEST_DATA_MAP_OBJ[predefName];
+        if (predefTestData)
         {
             const { formatDuration, timeThis } = require('../tools/time-utils');
 
-            const duration = timeThis(() => run(defSystem));
+            const duration = timeThis(() => run(predefTestData));
             const durationStr = formatDuration(duration);
             console.log('%s elapsed.', durationStr);
             return;
         }
     }
-    printHelpMessage(defSystems);
+    printHelpMessage(PREDEF_TEST_DATA_MAP_OBJ);
 }

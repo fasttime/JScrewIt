@@ -845,16 +845,16 @@
         {
             var encoder = JScrewIt.debug.createEncoder();
             var text = 'Lorem ipsum dolor sit amet';
-            var coders = JScrewIt.debug.getCoders();
-            var coderNames = Object.keys(coders);
-            coderNames.forEach
+            var strategies = JScrewIt.debug.getStrategies();
+            var strategyNames = Object.keys(strategies);
+            strategyNames.forEach
             (
-                function (coderName)
+                function (strategyName)
                 {
-                    var coder = coders[coderName];
+                    var strategy = strategies[strategyName];
                     describe
                     (
-                        coderName,
+                        strategyName,
                         function ()
                         {
                             function getMaxLength(scope)
@@ -863,7 +863,7 @@
                                 if (maxLength === undefined)
                                 {
                                     scope.maxLength = maxLength =
-                                    coder.call(encoder, Object('0')).length;
+                                    strategy.call(encoder, Object('0')).length;
                                 }
                                 return maxLength;
                             }
@@ -874,8 +874,8 @@
                                 function ()
                                 {
                                     var input =
-                                    coderName !== 'express' ? text : JSON.stringify(text);
-                                    var output = coder.call(encoder, Object(input));
+                                    strategyName !== 'express' ? text : JSON.stringify(text);
+                                    var output = strategy.call(encoder, Object(input));
                                     expect(output).toBeJSFuck();
                                     expect(evalJSFuck(output)).toBe(text);
                                 }
@@ -886,7 +886,7 @@
                                 function ()
                                 {
                                     var maxLength = getMaxLength(this);
-                                    var output = coder.call(encoder, Object('0'), maxLength - 1);
+                                    var output = strategy.call(encoder, Object('0'), maxLength - 1);
                                     expect(output).toBeUndefined();
                                 }
                             );
@@ -896,7 +896,7 @@
                                 function ()
                                 {
                                     var maxLength = getMaxLength(this);
-                                    var output = coder.call(encoder, Object('0'), maxLength);
+                                    var output = strategy.call(encoder, Object('0'), maxLength);
                                     expect(output).toBeString();
                                 }
                             );

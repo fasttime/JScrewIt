@@ -121,37 +121,37 @@ var setUp;
         else
             runAsData = filterRunAs(options.wrapWith, 'wrapWith');
         var wrapper = runAsData[0];
-        var coderNames = runAsData[1];
+        var strategyNames = runAsData[1];
         if (options.trimCode)
             input = trimJS(input);
         var perfInfo = options.perfInfo;
         var encoder = getEncoder(features);
-        var output = encoder.exec(input, wrapper, coderNames, perfInfo);
+        var output = encoder.exec(input, wrapper, strategyNames, perfInfo);
         return output;
     }
 
     function filterRunAs(input, name)
     {
-        var CODER_NAMES_BOTH    = ['text', 'express'];
-        var CODER_NAMES_EXPRESS = ['express'];
-        var CODER_NAMES_TEXT    = ['text'];
+        var STRATEGY_NAMES_BOTH     = ['text', 'express'];
+        var STRATEGY_NAMES_EXPRESS  = ['express'];
+        var STRATEGY_NAMES_TEXT     = ['text'];
 
         if (input === undefined)
-            return [wrapWithEval, CODER_NAMES_BOTH];
+            return [wrapWithEval, STRATEGY_NAMES_BOTH];
         switch (_String(input))
         {
         case 'call':
-            return [wrapWithCall, CODER_NAMES_TEXT];
+            return [wrapWithCall, STRATEGY_NAMES_TEXT];
         case 'eval':
-            return [wrapWithEval, CODER_NAMES_TEXT];
+            return [wrapWithEval, STRATEGY_NAMES_TEXT];
         case 'express':
-            return [, CODER_NAMES_EXPRESS];
+            return [, STRATEGY_NAMES_EXPRESS];
         case 'express-call':
-            return [wrapWithCall, CODER_NAMES_BOTH];
+            return [wrapWithCall, STRATEGY_NAMES_BOTH];
         case 'express-eval':
-            return [wrapWithEval, CODER_NAMES_BOTH];
+            return [wrapWithEval, STRATEGY_NAMES_BOTH];
         case 'none':
-            return [, CODER_NAMES_TEXT];
+            return [, STRATEGY_NAMES_TEXT];
         }
         throw new _Error('Invalid value for option ' + name);
     }

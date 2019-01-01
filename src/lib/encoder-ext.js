@@ -1,10 +1,10 @@
 /*
 global
 AMENDINGS,
-CREATE_PARSE_INT_ARG,
 APPEND_LENGTH_OF_DIGITS,
 APPEND_LENGTH_OF_DIGIT_0,
 APPEND_LENGTH_OF_PLUS_SIGN,
+CREATE_PARSE_INT_ARG,
 FROM_CHAR_CODE,
 FROM_CHAR_CODE_CALLBACK_FORMATTER,
 MAPPER_FORMATTER,
@@ -26,7 +26,7 @@ createParseIntArgDefault,
 expressParse,
 */
 
-var CODERS;
+var STRATEGIES;
 
 var wrapWithCall;
 var wrapWithEval;
@@ -92,10 +92,10 @@ var wrapWithEval;
         return range;
     }
 
-    function defineCoder(coder, minInputLength)
+    function defineStrategy(strategy, minInputLength)
     {
-        coder.MIN_INPUT_LENGTH = minInputLength;
-        return coder;
+        strategy.MIN_INPUT_LENGTH = minInputLength;
+        return strategy;
     }
 
     function getCodingName(unitIndices)
@@ -183,10 +183,10 @@ var wrapWithEval;
         return result;
     }
 
-    CODERS =
+    STRATEGIES =
     {
         byCharCodes:
-        defineCoder
+        defineStrategy
         (
             function (inputData, maxLength)
             {
@@ -200,7 +200,7 @@ var wrapWithEval;
             2
         ),
         byCharCodesRadix4:
-        defineCoder
+        defineStrategy
         (
             function (inputData, maxLength)
             {
@@ -211,7 +211,7 @@ var wrapWithEval;
             31
         ),
         byDenseFigures:
-        defineCoder
+        defineStrategy
         (
             function (inputData, maxLength)
             {
@@ -221,7 +221,7 @@ var wrapWithEval;
             2224
         ),
         byDict:
-        defineCoder
+        defineStrategy
         (
             function (inputData, maxLength)
             {
@@ -231,7 +231,7 @@ var wrapWithEval;
             3
         ),
         byDictRadix3:
-        defineCoder
+        defineStrategy
         (
             function (inputData, maxLength)
             {
@@ -241,7 +241,7 @@ var wrapWithEval;
             240
         ),
         byDictRadix4:
-        defineCoder
+        defineStrategy
         (
             function (inputData, maxLength)
             {
@@ -251,7 +251,7 @@ var wrapWithEval;
             177
         ),
         byDictRadix4AmendedBy1:
-        defineCoder
+        defineStrategy
         (
             function (inputData, maxLength)
             {
@@ -261,7 +261,7 @@ var wrapWithEval;
             312
         ),
         byDictRadix4AmendedBy2:
-        defineCoder
+        defineStrategy
         (
             function (inputData, maxLength)
             {
@@ -271,7 +271,7 @@ var wrapWithEval;
             560
         ),
         byDictRadix5AmendedBy2:
-        defineCoder
+        defineStrategy
         (
             function (inputData, maxLength)
             {
@@ -281,7 +281,7 @@ var wrapWithEval;
             756
         ),
         byDictRadix5AmendedBy3:
-        defineCoder
+        defineStrategy
         (
             function (inputData, maxLength)
             {
@@ -291,7 +291,7 @@ var wrapWithEval;
             742
         ),
         bySparseFigures:
-        defineCoder
+        defineStrategy
         (
             function (inputData, maxLength)
             {
@@ -301,7 +301,7 @@ var wrapWithEval;
             328
         ),
         express:
-        defineCoder
+        defineStrategy
         (
             function (inputData, maxLength)
             {
@@ -311,7 +311,7 @@ var wrapWithEval;
             }
         ),
         plain:
-        defineCoder
+        defineStrategy
         (
             function (inputData, maxLength)
             {
@@ -328,7 +328,7 @@ var wrapWithEval;
             }
         ),
         text:
-        defineCoder
+        defineStrategy
         (
             function (inputData, maxLength)
             {
@@ -342,8 +342,15 @@ var wrapWithEval;
 
     var encoderProtoSource =
     {
-        callCoders:
-        function (input, options, coderNames, codingName)
+        callGetFigureLegendDelimiters:
+        function (getFigureLegendDelimiters, figurator, figures)
+        {
+            var figureLegendDelimiters = getFigureLegendDelimiters(figurator, figures);
+            return figureLegendDelimiters;
+        },
+
+        callStrategies:
+        function (input, options, strategyNames, codingName)
         {
             var output;
             var inputLength = input.length;
@@ -361,21 +368,21 @@ var wrapWithEval;
                 }
             );
             var usedPerfInfo;
-            coderNames.forEach
+            strategyNames.forEach
             (
-                function (coderName)
+                function (strategyName)
                 {
-                    var coder = CODERS[coderName];
-                    var perfInfo = { coderName: coderName };
+                    var strategy = STRATEGIES[strategyName];
+                    var perfInfo = { strategyName: strategyName };
                     var perfStatus;
-                    if (inputLength < coder.MIN_INPUT_LENGTH)
+                    if (inputLength < strategy.MIN_INPUT_LENGTH)
                         perfStatus = 'skipped';
                     else
                     {
                         this.codingLog = perfInfo.codingLog = [];
                         var before = new _Date();
                         var maxLength = output != null ? output.length : NaN;
-                        var newOutput = coder.call(this, inputData, maxLength);
+                        var newOutput = strategy.call(this, inputData, maxLength);
                         var time = new _Date() - before;
                         this.codingLog = codingLog;
                         perfInfo.time = time;
@@ -397,13 +404,6 @@ var wrapWithEval;
                 this
             );
             return output;
-        },
-
-        callGetFigureLegendDelimiters:
-        function (getFigureLegendDelimiters, figurator, figures)
-        {
-            var figureLegendDelimiters = getFigureLegendDelimiters(figurator, figures);
-            return figureLegendDelimiters;
         },
 
         createCharCodesEncoding:
@@ -688,7 +688,7 @@ var wrapWithEval;
             {
                 var input = dictChars.join('');
                 var output =
-                this.callCoders
+                this.callStrategies
                 (
                     input,
                     { forceString: true },
@@ -722,7 +722,7 @@ var wrapWithEval;
         function (input, bond, forceString, codingName, maxLength)
         {
             var output =
-            this.callCoders
+            this.callStrategies
             (
                 input,
                 { forceString: forceString, bond: bond },
@@ -747,10 +747,10 @@ var wrapWithEval;
         },
 
         exec:
-        function (input, wrapper, coderNames, perfInfo)
+        function (input, wrapper, strategyNames, perfInfo)
         {
             var codingLog = this.codingLog = [];
-            var output = this.callCoders(input, { wrapper: wrapper }, coderNames);
+            var output = this.callStrategies(input, { wrapper: wrapper }, strategyNames);
             if (perfInfo)
                 perfInfo.codingLog = codingLog;
             delete this.codingLog;

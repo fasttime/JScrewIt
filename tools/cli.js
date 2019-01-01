@@ -15,7 +15,7 @@ function byteCount(size, width)
 function createDiagnosticReport(codingLog)
 {
     var report =
-    '\nCoder                       Status         Length  Time (ms)\n' +
+    '\nStrategy                    Status         Length  Time (ms)\n' +
     repeat('─', 60) + '\n' +
     codingLog.reduce
     (
@@ -77,7 +77,7 @@ function formatPerfInfoList(perfInfoList, padding, paddingChars)
         var next = index < count - 1;
         str +=
         padding + (next ? '├' : '└') +
-        padRight(perfInfo.coderName, 27 - paddingLength) +
+        padRight(perfInfo.strategyName, 27 - paddingLength) +
         padRight(perfInfo.status, 10) +
         padLeft(formatInt(perfInfo.outputLength), 11) +
         padLeft(formatInt(perfInfo.time), 11) +

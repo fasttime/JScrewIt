@@ -3,7 +3,6 @@ global
 BASE64_ALPHABET_HI_4,
 BASE64_ALPHABET_LO_4,
 CHARACTERS,
-CODERS,
 COMPLEX,
 CONSTANTS,
 CREATE_PARSE_INT_ARG,
@@ -13,6 +12,7 @@ FROM_CHAR_CODE_CALLBACK_FORMATTER,
 MAPPER_FORMATTER,
 OPTIMAL_B,
 OPTIMAL_RETURN_STRING,
+STRATEGIES,
 Encoder,
 JScrewIt,
 ScrewBuffer,
@@ -132,11 +132,6 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
             return entries;
         }
 
-        function getCoders()
-        {
-            return CODERS;
-        }
-
         function getComplexEntry(complex)
         {
             var entries = cloneEntry(COMPLEX[complex]);
@@ -159,6 +154,11 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         {
             var entries = cloneEntries(ENTRIES[name]);
             return entries;
+        }
+
+        function getStrategies()
+        {
+            return STRATEGIES;
         }
 
         var EMPTY_MASK = maskNew();
@@ -198,12 +198,12 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                 createScrewBuffer:      createScrewBuffer,
                 defineConstant:         defineConstant,
                 getCharacterEntries:    getCharacterEntries,
-                getCoders:              getCoders,
                 getComplexEntry:        getComplexEntry,
-                getComplexOptimizer:    getComplexOptimizer,
                 getComplexNames:        getComplexNames,
+                getComplexOptimizer:    getComplexOptimizer,
                 getConstantEntries:     getConstantEntries,
                 getEntries:             getEntries,
+                getStrategies:          getStrategies,
                 getToStringOptimizer:   getToStringOptimizer,
                 maskIncludes:           maskIncludes,
                 maskIsEmpty:            maskIsEmpty,

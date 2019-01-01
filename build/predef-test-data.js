@@ -4,8 +4,9 @@ const JScrewIt = require('..');
 
 const { Feature, debug: { getEntries } } = JScrewIt;
 
-const rawDefSystems =
+const RAW_PREDEFS =
 {
+    __proto__: null,
     'BASE64_ALPHABET_HI_4:0': 'ABCD',
     'BASE64_ALPHABET_HI_4:4': 'QRST',
     'BASE64_ALPHABET_HI_4:5': 'UVWX',
@@ -52,56 +53,55 @@ function define(definition, ...features)
     return entry;
 }
 
-function getDefSystem(defSystemName)
+function getPredef(predefName)
 {
-    let defSystem;
+    let predef;
     {
         let availableEntries;
         let replaceVariant;
         let formatVariant;
         let variantToMinMaskMap;
-        const rawDefSystem = rawDefSystems[defSystemName];
-        if (rawDefSystem[Symbol.iterator])
+        const rawPredef = RAW_PREDEFS[predefName];
+        if (rawPredef[Symbol.iterator])
         {
-            if (Array.isArray(rawDefSystem))
+            if (Array.isArray(rawPredef))
             {
                 availableEntries =
-                rawDefSystem.map(entry => typeof entry === 'object' ? entry : define(entry));
+                rawPredef.map(entry => typeof entry === 'object' ? entry : define(entry));
                 replaceVariant = (encoder, str) => encoder.replaceString(str);
             }
             else
             {
-                availableEntries = [...rawDefSystem].map(char => define(char));
+                availableEntries = [...rawPredef].map(char => define(char));
                 replaceVariant = (encoder, char) => encoder.resolveCharacter(char).replacement;
             }
             formatVariant = variant => `'${variant}'`;
         }
         else
         {
-            availableEntries = getEntries(`${defSystemName}:available`);
-            replaceVariant = rawDefSystem;
+            availableEntries = getEntries(`${predefName}:available`);
+            replaceVariant = rawPredef;
             formatVariant = createFormatVariantByIndex(availableEntries);
             variantToMinMaskMap = new Map();
             availableEntries.forEach
             (({ definition, mask }) => variantToMinMaskMap.set(definition, mask));
         }
-        defSystem = { availableEntries, formatVariant, replaceVariant, variantToMinMaskMap };
+        predef = { availableEntries, formatVariant, replaceVariant, variantToMinMaskMap };
     }
-    defSystem.indent = 8;
-    defSystem.organizedEntries = getEntries(defSystemName);
-    return defSystem;
+    predef.indent = 8;
+    predef.organizedEntries = getEntries(predefName);
+    return predef;
 }
 
 {
-    const defSystems = { __proto__: null };
-    for (const defSystemName in rawDefSystems)
+    const PREDEF_TEST_DATA_MAP_OBJ = module.exports = { __proto__: null };
+    for (const predefName in RAW_PREDEFS)
     {
         Object.defineProperty
         (
-            defSystems,
-            defSystemName,
-            { enumerable: true, get: getDefSystem.bind(null, defSystemName) },
+            PREDEF_TEST_DATA_MAP_OBJ,
+            predefName,
+            { enumerable: true, get: getPredef.bind(null, predefName) },
         );
     }
-    module.exports = defSystems;
 }

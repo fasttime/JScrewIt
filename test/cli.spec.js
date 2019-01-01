@@ -405,7 +405,7 @@ describe
                         (
                             null,
                             {
-                                coderName: 'coderA',
+                                strategyName: 'strategyA',
                                 status: 'used',
                                 outputLength: 100,
                                 time: 123,
@@ -415,7 +415,7 @@ describe
                                     (
                                         'lorem',
                                         {
-                                            coderName: 'coderA1',
+                                            strategyName: 'strategyA1',
                                             status: 'used',
                                             outputLength: 50,
                                             time: 45,
@@ -425,7 +425,7 @@ describe
                                     (
                                         'ipsum',
                                         {
-                                            coderName: 'coderA2',
+                                            strategyName: 'strategyA2',
                                             status: 'used',
                                             outputLength: 25,
                                             time: 67,
@@ -435,7 +435,7 @@ describe
                                                 (
                                                     'dolor',
                                                     {
-                                                        coderName: 'coderA2_extra',
+                                                        strategyName: 'strategyA2_extra',
                                                         status: 'used',
                                                         outputLength: 22,
                                                         time: 66,
@@ -446,24 +446,24 @@ describe
                                     ),
                                 ],
                             },
-                            { coderName: 'coderB', status: 'skipped' }
+                            { strategyName: 'strategyB', status: 'skipped' }
                         ),
                     ]
                 );
                 var expected =
                 '\n' +
-                'Coder                       Status         Length  Time (ms)\n' +
+                'Strategy                    Status         Length  Time (ms)\n' +
                 '────────────────────────────────────────────────────────────\n' +
                 '(default)\n' +
-                '├coderA                     used              100        123\n' +
+                '├strategyA                  used              100        123\n' +
                 '│├lorem\n' +
-                '││└coderA1                  used               50         45\n' +
+                '││└strategyA1               used               50         45\n' +
                 '│└ipsum\n' +
-                '│ └coderA2                  used               25         67\n' +
+                '│ └strategyA2               used               25         67\n' +
                 '│  └dolor\n' +
-                '│   └coderA2_extra          used               22         66\n' +
+                '│   └strategyA2_extra       used               22         66\n' +
                 '│\n' +
-                '└coderB                     skipped             -          -\n';
+                '└strategyB                  skipped             -          -\n';
                 assert.strictEqual(actual, expected);
             }
         );

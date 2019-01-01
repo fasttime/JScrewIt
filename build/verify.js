@@ -2,35 +2,81 @@
 
 'use strict';
 
-const JScrewIt      = require('..');
-const chalk         = require('chalk');
-const defSystems    = require('./def-systems');
+const JScrewIt  = require('..');
+const chalk     = require('chalk');
 
 require('../tools/text-utils');
 const timeUtils = require('../tools/time-utils');
 
-function checkCoderFeatureOptimality(createInput, coders, coder, minLength, progressCallback)
+function checkMinInputLength(features, createInput, strategies, strategy, minLength)
+{
+    function findBestStrategy(inputData)
+    {
+        let bestStrategyName;
+        let bestLength = Infinity;
+        for (const strategyName of strategyNames)
+        {
+            const thisStrategy = strategies[strategyName];
+            if (thisStrategy !== strategy)
+            {
+                const { length } = thisStrategy.call(encoder, inputData);
+                if (length < bestLength)
+                {
+                    bestStrategyName = strategyName;
+                    bestLength = length;
+                }
+            }
+        }
+        const result = { strategyName: bestStrategyName, length: bestLength };
+        return result;
+    }
+
+    const encoder = JScrewIt.debug.createEncoder(features);
+    const inputDataShort = Object(createInput(minLength - 1));
+    const inputDataFit = Object(createInput(minLength));
+    const strategyNames = Object.keys(strategies).filter(isRivalStrategyName);
+    let ok = true;
+    const outputFit = strategy.call(encoder, inputDataFit);
+    const bestDataFit = findBestStrategy(inputDataFit);
+    if (bestDataFit.length <= outputFit.length)
+    {
+        ok = false;
+        logWarn(`MIN_INPUT_LENGTH is too small for ${bestDataFit.strategyName}.`);
+    }
+    const outputShort = strategy.call(encoder, inputDataShort);
+    const bestDataShort = findBestStrategy(inputDataShort);
+    if (bestDataShort.length > outputShort.length)
+    {
+        ok = false;
+        logWarn(`MIN_INPUT_LENGTH is too large for ${bestDataShort.strategyName}.`);
+    }
+    if (ok)
+        logOk('MIN_INPUT_LENGTH is ok.');
+}
+
+function checkStrategyFeatureOptimality
+(createInput, strategies, strategy, minLength, progressCallback)
 {
     const input = createInput(minLength);
     const replacer =
     encoder =>
     {
         const inputData = Object(input);
-        const output = coder.call(encoder, inputData);
+        const output = strategy.call(encoder, inputData);
         return output;
     };
     const rivalReplacer =
     (encoder, maxLength) =>
     {
         const inputData = Object(input);
-        for (const coderName in coders)
+        for (const strategyName in strategies)
         {
-            if (isRivalCoderName(coderName))
+            if (isRivalStrategyName(strategyName))
             {
-                const rivalCoder = coders[coderName];
-                if (rivalCoder !== coder)
+                const rivalStrategy = strategies[strategyName];
+                if (rivalStrategy !== strategy)
                 {
-                    const output = rivalCoder.call(encoder, inputData, maxLength);
+                    const output = rivalStrategy.call(encoder, inputData, maxLength);
                     if (output !== undefined)
                         return output;
                 }
@@ -39,52 +85,6 @@ function checkCoderFeatureOptimality(createInput, coders, coder, minLength, prog
     };
     const optimalFeatureObjs = findOptimalFeatures(replacer, rivalReplacer, progressCallback);
     return optimalFeatureObjs;
-}
-
-function checkMinInputLength(features, createInput, coders, coder, minLength)
-{
-    function findBestCoder(inputData)
-    {
-        let bestCoderName;
-        let bestLength = Infinity;
-        for (const coderName of coderNames)
-        {
-            const thisCoder = coders[coderName];
-            if (thisCoder !== coder)
-            {
-                const { length } = thisCoder.call(encoder, inputData);
-                if (length < bestLength)
-                {
-                    bestCoderName = coderName;
-                    bestLength = length;
-                }
-            }
-        }
-        const result = { coderName: bestCoderName, length: bestLength };
-        return result;
-    }
-
-    const encoder = JScrewIt.debug.createEncoder(features);
-    const inputDataShort = Object(createInput(minLength - 1));
-    const inputDataFit = Object(createInput(minLength));
-    const coderNames = Object.keys(coders).filter(isRivalCoderName);
-    let ok = true;
-    const outputFit = coder.call(encoder, inputDataFit);
-    const bestDataFit = findBestCoder(inputDataFit);
-    if (bestDataFit.length <= outputFit.length)
-    {
-        ok = false;
-        logWarn(`MIN_INPUT_LENGTH is too small for ${bestDataFit.coderName}.`);
-    }
-    const outputShort = coder.call(encoder, inputDataShort);
-    const bestDataShort = findBestCoder(inputDataShort);
-    if (bestDataShort.length > outputShort.length)
-    {
-        ok = false;
-        logWarn(`MIN_INPUT_LENGTH is too large for ${bestDataShort.coderName}.`);
-    }
-    if (ok)
-        logOk('MIN_INPUT_LENGTH is ok.');
 }
 
 function compareRoutineNames(name1, name2)
@@ -148,15 +148,6 @@ function createOptimalFeatureObjMap(replacer, rivalReplacer, progressCallback)
     return optimalFeatureObjMap;
 }
 
-function findCoderTestData(coderName)
-{
-    const CODER_TEST_DATA_LIST = require('./coder-test-data');
-
-    const coderTestData =
-    CODER_TEST_DATA_LIST.find(coderTestData => coderTestData.coderName === coderName);
-    return coderTestData;
-}
-
 function findOptimalFeatures(replacer, rivalReplacer, progressCallback)
 {
     const optimalFeatureObjMap =
@@ -184,6 +175,16 @@ function findOptimalFeatures(replacer, rivalReplacer, progressCallback)
         );
         return result;
     }
+}
+
+function findStrategyTestData(strategyName)
+{
+    const STRATEGY_TEST_DATA_LIST = require('./strategy-test-data');
+
+    const strategyTestData =
+    STRATEGY_TEST_DATA_LIST.find
+    (strategyTestData => strategyTestData.strategyName === strategyName);
+    return strategyTestData;
 }
 
 function getOptimalityInfo(encoder, inputList, replaceVariant)
@@ -221,9 +222,9 @@ function isCapital(name)
     return capital;
 }
 
-function isRivalCoderName(coderName)
+function isRivalStrategyName(strategyName)
 {
-    return coderName !== 'express' && coderName !== 'text';
+    return strategyName !== 'express' && strategyName !== 'text';
 }
 
 function logOk(str)
@@ -291,35 +292,6 @@ function printOptimalFeatureReport(features, optimalFeatureObjs)
         logWarn('No optimal features found.');
 }
 
-function verifyCoder(coderName)
-{
-    const result =
-    () =>
-    {
-        const coderTestData = findCoderTestData(coderName);
-        const { createInput, features } = coderTestData;
-        const coders = JScrewIt.debug.getCoders();
-        const coder = coders[coderName];
-        const minLength = coder.MIN_INPUT_LENGTH;
-        checkMinInputLength(features, createInput, coders, coder, minLength);
-        const progress = require('./progress');
-        let optimalFeatureObjs;
-        progress
-        (
-            'Scanning preset features',
-            bar =>
-            {
-                const progressCallback = progress => bar.update(progress);
-                optimalFeatureObjs =
-                checkCoderFeatureOptimality
-                (createInput, coders, coder, minLength, progressCallback);
-            },
-        );
-        printOptimalFeatureReport(features, optimalFeatureObjs);
-    };
-    return result;
-}
-
 function verifyComplex(complex, entry)
 {
     let encoder;
@@ -338,19 +310,6 @@ function verifyComplex(complex, entry)
         }
     }
     return false;
-}
-
-function verifyDefSystem(defSystemName)
-{
-    const defSystem = defSystems[defSystemName];
-    const { availableEntries, formatVariant, organizedEntries, replaceVariant } = defSystem;
-    const verify =
-    () =>
-    {
-        verifyDefinitions
-        (organizedEntries, availableEntries, mismatchCallback, replaceVariant, formatVariant);
-    };
-    return verify;
 }
 
 function verifyDefinitions(entries, inputList, mismatchCallback, replaceVariant, formatVariant)
@@ -389,6 +348,50 @@ function verifyDefinitions(entries, inputList, mismatchCallback, replaceVariant,
     }
 }
 
+function verifyPredef(predefName)
+{
+    const verify =
+    () =>
+    {
+        const PREDEF_TEST_DATA_MAP_OBJ = require('./predef-test-data');
+
+        const { availableEntries, formatVariant, organizedEntries, replaceVariant } =
+        PREDEF_TEST_DATA_MAP_OBJ[predefName];
+        verifyDefinitions
+        (organizedEntries, availableEntries, mismatchCallback, replaceVariant, formatVariant);
+    };
+    return verify;
+}
+
+function verifyStrategy(strategyName)
+{
+    const result =
+    () =>
+    {
+        const strategyTestData = findStrategyTestData(strategyName);
+        const { createInput, features } = strategyTestData;
+        const strategies = JScrewIt.debug.getStrategies();
+        const strategy = strategies[strategyName];
+        const minLength = strategy.MIN_INPUT_LENGTH;
+        checkMinInputLength(features, createInput, strategies, strategy, minLength);
+        const progress = require('./progress');
+        let optimalFeatureObjs;
+        progress
+        (
+            'Scanning preset features',
+            bar =>
+            {
+                const progressCallback = progress => bar.update(progress);
+                optimalFeatureObjs =
+                checkStrategyFeatureOptimality
+                (createInput, strategies, strategy, minLength, progressCallback);
+            },
+        );
+        printOptimalFeatureReport(features, optimalFeatureObjs);
+    };
+    return result;
+}
+
 const verify = { __proto__: null };
 
 JScrewIt.debug.getComplexNames().forEach
@@ -411,27 +414,27 @@ JScrewIt.debug.getComplexNames().forEach
     },
 );
 
-verify['BASE64_ALPHABET_HI_4:0'] = verifyDefSystem('BASE64_ALPHABET_HI_4:0');
+verify['BASE64_ALPHABET_HI_4:0'] = verifyPredef('BASE64_ALPHABET_HI_4:0');
 
-verify['BASE64_ALPHABET_HI_4:4'] = verifyDefSystem('BASE64_ALPHABET_HI_4:4');
+verify['BASE64_ALPHABET_HI_4:4'] = verifyPredef('BASE64_ALPHABET_HI_4:4');
 
-verify['BASE64_ALPHABET_HI_4:5'] = verifyDefSystem('BASE64_ALPHABET_HI_4:5');
+verify['BASE64_ALPHABET_HI_4:5'] = verifyPredef('BASE64_ALPHABET_HI_4:5');
 
-verify['BASE64_ALPHABET_LO_4:1'] = verifyDefSystem('BASE64_ALPHABET_LO_4:1');
+verify['BASE64_ALPHABET_LO_4:1'] = verifyPredef('BASE64_ALPHABET_LO_4:1');
 
-verify['BASE64_ALPHABET_LO_4:3'] = verifyDefSystem('BASE64_ALPHABET_LO_4:3');
+verify['BASE64_ALPHABET_LO_4:3'] = verifyPredef('BASE64_ALPHABET_LO_4:3');
 
-verify.CREATE_PARSE_INT_ARG = verifyDefSystem('CREATE_PARSE_INT_ARG');
+verify.CREATE_PARSE_INT_ARG = verifyPredef('CREATE_PARSE_INT_ARG');
 
-verify.FROM_CHAR_CODE = verifyDefSystem('FROM_CHAR_CODE');
+verify.FROM_CHAR_CODE = verifyPredef('FROM_CHAR_CODE');
 
-verify.FROM_CHAR_CODE_CALLBACK_FORMATTER = verifyDefSystem('FROM_CHAR_CODE_CALLBACK_FORMATTER');
+verify.FROM_CHAR_CODE_CALLBACK_FORMATTER = verifyPredef('FROM_CHAR_CODE_CALLBACK_FORMATTER');
 
-verify.MAPPER_FORMATTER = verifyDefSystem('MAPPER_FORMATTER');
+verify.MAPPER_FORMATTER = verifyPredef('MAPPER_FORMATTER');
 
-verify.OPTIMAL_B = verifyDefSystem('OPTIMAL_B');
+verify.OPTIMAL_B = verifyPredef('OPTIMAL_B');
 
-verify.OPTIMAL_RETURN_STRING = verifyDefSystem('OPTIMAL_RETURN_STRING');
+verify.OPTIMAL_RETURN_STRING = verifyPredef('OPTIMAL_RETURN_STRING');
 
 [
     'byCharCodes',
@@ -448,9 +451,9 @@ verify.OPTIMAL_RETURN_STRING = verifyDefSystem('OPTIMAL_RETURN_STRING');
 ]
 .forEach
 (
-    coderName =>
+    strategyName =>
     {
-        verify[coderName] = verifyCoder(coderName);
+        verify[strategyName] = verifyStrategy(strategyName);
     },
 );
 
