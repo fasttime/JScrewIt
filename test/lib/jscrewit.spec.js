@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* global emuEval, emuIt, evalJSFuck, expect, module, require, self */
+/* global emuEval, emuIt, evalJSFuck, expect, global, module, require, self */
 
 'use strict';
 
@@ -15,13 +15,26 @@
         {
             it
             (
-                'is set up correctly',
+                'is set up correctly in the browser',
                 function ()
                 {
-                    var self = { };
-                    JScrewIt.debug.setUp(self);
-                    expect(self.JScrewIt).toBe(JScrewIt);
-                    expect(Object.getOwnPropertyNames(self)).toEqual(['JScrewIt']);
+                    try
+                    {
+                        if (typeof module !== 'undefined')
+                        {
+                            var proxyquire = require('proxyquire');
+
+                            global.self = { };
+                            var JScrewIt = proxyquire('../..', { });
+                            expect(self.JScrewIt).toBe(JScrewIt);
+                        }
+                        expect(self.hasOwnProperty('JScrewIt')).toBeTruthy();
+                    }
+                    finally
+                    {
+                        if (typeof module !== 'undefined')
+                            delete global.self;
+                    }
                 }
             );
             it

@@ -2,54 +2,25 @@
 
 'use strict';
 
-var assert = require('assert');
-var proxyquire = require('proxyquire').noPreserveCache();
+var assert      = require('assert');
+var timeUtils   = require('../tools/time-utils');
 
-var modulePath = '../tools/time-utils';
-
-describe
+it
 (
     'timeThis executes the callback and returns a non-negative duration',
     function ()
     {
-        it
+        var callbackCalled = false;
+        var actual =
+        timeUtils.timeThis
         (
-            'when process module is available',
             function ()
             {
-                var timeUtils = proxyquire(modulePath, { });
-                var callbackCalled = false;
-                var actual =
-                timeUtils.timeThis
-                (
-                    function ()
-                    {
-                        callbackCalled = true;
-                    }
-                );
-                assert(callbackCalled);
-                assert(isFinite(actual) && actual >= 0);
+                callbackCalled = true;
             }
         );
-        it
-        (
-            'when process module is not available',
-            function ()
-            {
-                var timeUtils = proxyquire(modulePath, { process: null });
-                var callbackCalled = false;
-                var actual =
-                timeUtils.timeThis
-                (
-                    function ()
-                    {
-                        callbackCalled = true;
-                    }
-                );
-                assert(callbackCalled);
-                assert(isFinite(actual) && actual >= 0);
-            }
-        );
+        assert(callbackCalled);
+        assert(isFinite(actual) && actual >= 0);
     }
 );
 
@@ -58,8 +29,6 @@ describe
     'formatDuration',
     function ()
     {
-        var timeUtils = proxyquire(modulePath, { });
-
         it
         (
             'formats durations shorter than 0.005 s',

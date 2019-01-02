@@ -18,7 +18,6 @@ wrapWithEval,
 
 var JScrewIt;
 var getValidFeatureMask;
-var setUp;
 
 (function ()
 {
@@ -178,14 +177,8 @@ var setUp;
         return mask;
     };
 
-    setUp =
-    function (self)
-    {
-        if (self != null)
-            self.JScrewIt = JScrewIt;
-    };
-
-    setUp(typeof self !== 'undefined' ? /* istanbul ignore next */ self : null);
+    if (typeof self !== 'undefined')
+        self.JScrewIt = JScrewIt;
 
     // istanbul ignore else
     if (typeof module !== 'undefined')

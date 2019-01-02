@@ -41,7 +41,6 @@ maskIsEmpty,
 maskNew,
 maskUnion,
 optimizeSolutions,
-setUp,
 trimJS,
 */
 
@@ -210,7 +209,6 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
                 maskNew:                maskNew,
                 maskUnion:              maskUnion,
                 optimizeSolutions:      optimizeSolutions,
-                setUp:                  setUp,
                 trimJS:                 trimJS,
             }
         );

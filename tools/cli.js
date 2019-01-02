@@ -66,7 +66,8 @@ function formatInt(int)
 
 function formatPerfInfoList(perfInfoList, padding, paddingChars)
 {
-    // In the current implementation, perfInfoList.name can be either undefined or a unit path.
+    // In the current implementation, perfInfoList.name can be either undefined, a unit path or
+    // "legend".
     var str = padding + paddingChars[0] + (perfInfoList.name || '(default)') + '\n';
     padding += paddingChars[1];
     var count = perfInfoList.length;
