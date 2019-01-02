@@ -1,6 +1,4 @@
-# JScrewIt
-
-[![NPM](https://nodei.co/npm/jscrewit.png?compact=true)](https://nodei.co/npm/jscrewit/)
+# JScrewIt · [![](https://badge.fury.io/js/jscrewit.svg)](https://www.npmjs.com/package/jscrewit)
 
 Use **JScrewIt** to convert your JavaScript code into
 [JSFuck](https://en.wikipedia.org/wiki/JSFuck).
@@ -25,7 +23,7 @@ features.
 
 The following source will do an `alert(1)` in any browser, including Internet Explorer:
 
-```js
+```
 [][(![]+[])[+[]]+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+
 (!![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]][(+(+!![]+[+([][(![]+[])[+[]]+([![]]+
 [][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]
