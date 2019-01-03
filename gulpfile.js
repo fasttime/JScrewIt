@@ -128,6 +128,7 @@ task
             'src/lib/debug.js',
             'src/postamble',
         ];
+
         var stream =
         gulp
         .src(SRC)
@@ -279,6 +280,7 @@ function makeUI()
         'src/html/ui-main.js',
         'src/postamble',
     ];
+
     var stream = src(SRC).pipe(concat('ui.js')).pipe(uglify()).pipe(dest('html'));
     return stream;
 }
@@ -306,9 +308,9 @@ task
         var fsThen = require('fs-then-native');
         var jsdoc2md = require('jsdoc-to-markdown');
 
-        var stream =
+        var promise =
         jsdoc2md
-        .render({ files: 'lib/jscrewit.js' })
+        .render({ files: ['src/lib/features.js', 'src/lib/jscrewit-base.js'] })
         .then
         (
             function (output)
@@ -317,6 +319,22 @@ task
                 return promise;
             }
         );
+        return promise;
+    }
+);
+
+// The docs task is not executed by the default task because the files it generates are not included
+// in the repository or in a distribution package.
+task
+(
+    'docs',
+    function ()
+    {
+        var jsdoc = require('gulp-jsdoc3');
+
+        var stream =
+        src('lib/jscrewit.js', { read: false })
+        .pipe(jsdoc({ opts: { destination: 'docs' } }));
         return stream;
     }
 );

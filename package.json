@@ -30,7 +30,8 @@
     "url": "https://github.com/fasttime/JScrewIt.git"
   },
   "scripts": {
-    "build": "npm install && gulp"
+    "build": "npm install && gulp",
+    "docs": "gulp docs"
   },
   "devDependencies": {
     "art-js": "~0.7.2",
@@ -43,6 +44,7 @@
     "gulp-fasttime-lint": "~0.7.0",
     "gulp-gherkin-lint": "~0.0.2",
     "gulp-insert": "~0.5.0",
+    "gulp-jsdoc3": "~2.0.0",
     "gulp-rename": "~1.4.0",
     "gulp-replace": "~1.0.0",
     "gulp-spawn-mocha": "~5.0.1",
