@@ -11,7 +11,7 @@ var series      = gulp.series;
 var src         = gulp.src;
 
 var task;
-if (semver.satisfies(process.version, '>=6.0.0'))
+if (semver.satisfies(process.version, '>=8.0.0'))
 {
     var dest = gulp.dest;
 
@@ -27,7 +27,7 @@ else
             taskName,
             function (callback)
             {
-                callback('Task not available in Node.js < 6');
+                callback('Task not available in Node.js < 8');
             }
         );
     };
@@ -305,9 +305,11 @@ task
     'jsdoc2md',
     function ()
     {
-        var fsThen = require('fs-then-native');
-        var jsdoc2md = require('jsdoc-to-markdown');
+        var fs          = require('fs');
+        var jsdoc2md    = require('jsdoc-to-markdown');
+        var util        = require('util');
 
+        var writeFile = util.promisify(fs.writeFile);
         var promise =
         jsdoc2md
         .render({ files: ['src/lib/features.js', 'src/lib/jscrewit-base.js'] })
@@ -315,7 +317,7 @@ task
         (
             function (output)
             {
-                var promise = fsThen.writeFile('Reference.md', output);
+                var promise = writeFile('Reference.md', output);
                 return promise;
             }
         );
