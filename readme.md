@@ -1,4 +1,4 @@
-# JScrewIt · [![](https://badge.fury.io/js/jscrewit.svg)](https://www.npmjs.com/package/jscrewit)
+# JScrewIt · [![npm version][npm badge]][npm url]
 
 Use **JScrewIt** to convert your JavaScript code into
 [JSFuck](https://en.wikipedia.org/wiki/JSFuck).
@@ -236,3 +236,6 @@ JScrewIt itself and the code it generates are compatible with the JavaScript eng
 * [JSFuck](https://esolangs.org/wiki/JSFuck) on Esolang
 * [jsfuck.com](http://www.jsfuck.com)
 * [jQuery *Screwed*](https://github.com/fasttime/jquery-screwed)
+
+[npm badge]: https://badge.fury.io/js/jscrewit.svg
+[npm url]: https://www.npmjs.com/package/jscrewit
