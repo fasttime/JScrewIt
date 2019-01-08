@@ -341,7 +341,7 @@ var wrapWithEval;
         ),
     };
 
-    var encoderProtoSource =
+    var protoSource =
     {
         callGetFigureLegendDelimiters:
         function (getFigureLegendDelimiters, figurator, figures)
@@ -802,7 +802,7 @@ var wrapWithEval;
         },
     };
 
-    assignNoEnum(Encoder.prototype, encoderProtoSource);
+    assignNoEnum(Encoder.prototype, protoSource);
 
     var FALSE_FREE_DELIMITER = { joiner: 'false', separator: 'false' };
 

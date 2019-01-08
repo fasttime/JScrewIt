@@ -1573,7 +1573,7 @@ var validMaskFromArrayOrStringOrFeature;
         return featureObj;
     };
 
-    var FEATURE_PROPS =
+    var constructorSource =
     {
         /**
          * An immutable mapping of all predefined feature objects accessed by name or alias.
@@ -1690,9 +1690,9 @@ var validMaskFromArrayOrStringOrFeature;
 
         commonOf: commonOf,
     };
-    assignNoEnum(Feature, FEATURE_PROPS);
+    assignNoEnum(Feature, constructorSource);
 
-    var FEATURE_PROTO_PROPS =
+    var protoSource =
     {
         /**
          * An array of all elementary feature names included in this feature object, without aliases
@@ -1904,7 +1904,7 @@ var validMaskFromArrayOrStringOrFeature;
             return str;
         },
     };
-    assignNoEnum(Feature.prototype, FEATURE_PROTO_PROPS);
+    assignNoEnum(Feature.prototype, protoSource);
 
     featureFromMask =
     function (mask)

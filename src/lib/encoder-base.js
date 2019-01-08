@@ -44,7 +44,11 @@ var APPEND_LENGTH_OF_EMPTY;
 var APPEND_LENGTH_OF_PLUS_SIGN;
 var APPEND_LENGTH_OF_SMALL_E;
 
-/** @namespace Encoder */
+/**
+ * @private
+ * @class Encoder
+ */
+
 var Encoder;
 
 var replaceMultiDigitNumber;
@@ -258,7 +262,7 @@ var resolveSimple;
         this.stack      = [];
     };
 
-    var encoderProtoSource =
+    var protoSource =
     {
         callResolver:
         function (stackName, resolver)
@@ -707,7 +711,7 @@ var resolveSimple;
         /**
          * Replace a given string with equivalent JSFuck code.
          *
-         * @function Encoder.replaceString
+         * @function Encoder#replaceString
          *
          * @param {string} str The string to replace.
          *
@@ -968,7 +972,7 @@ var resolveSimple;
         },
     };
 
-    assignNoEnum(Encoder.prototype, encoderProtoSource);
+    assignNoEnum(Encoder.prototype, protoSource);
 
     var APPEND_LENGTH_OF_DOT    = 73;
     var APPEND_LENGTH_OF_MINUS  = 136;

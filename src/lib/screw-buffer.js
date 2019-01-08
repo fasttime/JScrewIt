@@ -343,13 +343,12 @@ var optimizeSolutions;
                         return str;
                     }
 
-                    var multiPart;
                     var str;
                     var solutionCount = solutions.length;
                     if (solutionCount < 2)
                     {
                         var solution = solutions[0] || EMPTY_SOLUTION;
-                        multiPart = forceString && solution.level < LEVEL_STRING;
+                        var multiPart = forceString && solution.level < LEVEL_STRING;
                         str = solution.replacement;
                         if (multiPart)
                             str += '+[]';

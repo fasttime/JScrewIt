@@ -130,8 +130,7 @@ task
         ];
 
         var stream =
-        gulp
-        .src(SRC)
+        src(SRC)
         .pipe(replace(/^\/\*[^]*?\*\/\s*\n/, ''))
         .pipe(concat('jscrewit.js'))
         .pipe(insert.prepend('// JScrewIt ' + pkg.version + ' – ' + pkg.homepage + '\n\n'))
@@ -208,8 +207,7 @@ task
             },
         };
         var stream =
-        gulp
-        .src('lib/jscrewit.js')
+        src('lib/jscrewit.js')
         .pipe(uglify(uglifyOpts))
         .pipe(rename({ extname: '.min.js' }))
         .pipe(dest('lib'));
@@ -241,8 +239,7 @@ function makeWorker()
     var uglify = require('gulp-uglify');
 
     var stream =
-    gulp
-    .src('src/html/worker.js')
+    src('src/html/worker.js')
     .pipe(uglify())
     .pipe
     (
@@ -311,8 +308,7 @@ task
 
         var writeFile = util.promisify(fs.writeFile);
         var promise =
-        jsdoc2md
-        .render({ files: ['src/lib/features.js', 'src/lib/jscrewit-base.js'] })
+        jsdoc2md.render({ files: 'lib/jscrewit.js' })
         .then
         (
             function (output)
@@ -336,7 +332,17 @@ task
 
         var stream =
         src('lib/jscrewit.js', { read: false })
-        .pipe(jsdoc({ opts: { destination: 'docs' } }));
+        .pipe
+        (
+            jsdoc
+            (
+                {
+                    opts: { access: 'all', destination: 'docs' },
+                    plugins: ['plugins/markdown'],
+                    tags: { allowUnknownTags: false },
+                }
+            )
+        );
         return stream;
     }
 );

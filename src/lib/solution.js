@@ -14,7 +14,7 @@ var Solution;
         _Object_defineProperty(solution, 'hasOuterPlus', { value: hasOuterPlus });
     }
 
-    var solutionProtoSource =
+    var protoSource =
     {
         get appendLength()
         {
@@ -66,6 +66,6 @@ var Solution;
         if (hasOuterPlus !== undefined)
             setHasOuterPlus(this, hasOuterPlus);
     };
-    assignNoEnum(Solution.prototype, solutionProtoSource);
+    assignNoEnum(Solution.prototype, protoSource);
 }
 )();
