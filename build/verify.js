@@ -312,40 +312,49 @@ function verifyComplex(complex, entry)
     return false;
 }
 
-function verifyDefinitions(entries, inputList, mismatchCallback, replaceVariant, formatVariant)
+function verifyDefinitions
+(entries, inputList, mismatchCallback, replaceVariant, formatVariant)
 {
+    const progress = require('./progress');
+
+    let encoder;
     let mismatchCount = 0;
     const analyzer = createAnalyzer();
-    let encoder;
-    if (formatVariant == null)
-        formatVariant = String;
-    while (encoder = analyzer.nextEncoder)
-    {
-        const optimalityInfo = getOptimalityInfo(encoder, inputList, replaceVariant);
-        analyzer.stopCapture();
-        const { lengthMap } = optimalityInfo;
-        const actualDefinition = encoder.findDefinition(entries);
-        const actualLength = lengthMap[actualDefinition];
-        if (actualLength == null)
-            throw Error('No available definition matches');
-        const { optimalLength } = optimalityInfo;
-        if (lengthMap[actualDefinition] > optimalLength)
+    progress
+    (
+        'Scanning definitions',
+        bar =>
         {
-            const featureNames = analyzer.featureObj.canonicalNames;
-            const { optimalDefinitions } = optimalityInfo;
-            optimalDefinitions.sort();
-            mismatchCallback
-            (
-                `${++mismatchCount}.`,
-                featureNames.join(', '),
-                formatVariant(actualDefinition),
-                `(${lengthMap[actualDefinition]})`,
-                optimalDefinitions.map(formatVariant),
-                `(${optimalLength})`,
-                '\x1e',
-            );
-        }
-    }
+            while (encoder = analyzer.nextEncoder)
+            {
+                const optimalityInfo = getOptimalityInfo(encoder, inputList, replaceVariant);
+                analyzer.stopCapture();
+                const { lengthMap } = optimalityInfo;
+                const actualDefinition = encoder.findDefinition(entries);
+                const actualLength = lengthMap[actualDefinition];
+                if (actualLength == null)
+                    throw Error('No available definition matches');
+                const { optimalLength } = optimalityInfo;
+                if (lengthMap[actualDefinition] > optimalLength)
+                {
+                    const featureNames = analyzer.featureObj.canonicalNames;
+                    const { optimalDefinitions } = optimalityInfo;
+                    optimalDefinitions.sort();
+                    mismatchCallback
+                    (
+                        `${++mismatchCount}.`,
+                        featureNames.join(', '),
+                        formatVariant(actualDefinition),
+                        `(${lengthMap[actualDefinition]})`,
+                        optimalDefinitions.map(formatVariant),
+                        `(${optimalLength})`,
+                        '\x1e',
+                    );
+                }
+                bar.update(analyzer.progress);
+            }
+        },
+    );
 }
 
 function verifyPredef(predefName)
