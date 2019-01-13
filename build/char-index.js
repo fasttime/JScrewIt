@@ -91,6 +91,54 @@ function doLevel()
     }
 }
 
+function doSort()
+{
+    function parseCounter()
+    {
+        let counter;
+        const [,,, arg] = argv;
+        switch (arg)
+        {
+        case 'jscrewit-timestamp':
+            counter = ({ jscrewitTimestamp }) => jscrewitTimestamp;
+            break;
+        case 'max-length':
+            counter = ({ solutions }) => Math.max(...solutions.map(({ length }) => length));
+            break;
+        case 'min-length':
+            counter = ({ solutions }) => Math.min(...solutions.map(({ length }) => length));
+            break;
+        case 'solutions':
+            counter = ({ solutions: { length } }) => length;
+            break;
+        default:
+            console.error('Unexpected argument "%s"', arg);
+            throw ARG_ERROR;
+        }
+        return counter;
+    }
+
+    const entries = [];
+    {
+        const counter = parseCounter();
+        const solutionBookMap = getSolutionBookMap();
+        for (const [char, solutionBook] of solutionBookMap.entries())
+        {
+            const count = counter(solutionBook);
+            const entry = { char, count };
+            entries.push(entry);
+        }
+    }
+    entries.sort(({ count: count1 }, { count: count2 }) => count1 - count2);
+    const maxCountLength = String(entries[entries.length - 1].count).length;
+    for (const { char, count } of entries)
+    {
+        const formattedChar = formatCharacter(char).padEnd(6);
+        const formattedCount = String(count).padStart(maxCountLength);
+        console.log('%s %s', formattedChar, formattedCount);
+    }
+}
+
 function doUses()
 {
     const charSet = parseArguments(() => false);
@@ -238,6 +286,7 @@ function printHelp()
     const help =
     'char-index add [--new] [--test] <chars>\n' +
     'char-index level\n' +
+    'char-index sort [jscrewit-timestamp|max-length|min-length|solutions]\n' +
     'char-index uses <chars>\n' +
     'char-index wanted\n' +
     'char-index help\n' +
@@ -257,31 +306,28 @@ if (argCount < 3)
     printHelp();
 else
 {
+    const COMMANDS =
+    {
+        __proto__:  null,
+        add:        doAdd,
+        help:       printHelp,
+        level:      doLevel,
+        sort:       doSort,
+        uses:       doUses,
+        wanted:     doWanted,
+    };
+
     const [,, command] = argv;
+    const commandCall = COMMANDS[command];
     try
     {
-        switch (command)
+        if (!commandCall)
         {
-        case 'add':
-            doAdd();
-            break;
-        case 'help':
-            printHelp();
-            break;
-        case 'level':
-            doLevel();
-            break;
-        case 'uses':
-            doUses();
-            break;
-        case 'wanted':
-            doWanted();
-            break;
-        default:
             console.error
             ('char-index: \'%s\' is not a valid command. See \'char-index help\'.', command);
             throw ARG_ERROR;
         }
+        commandCall();
     }
     catch (error)
     {
