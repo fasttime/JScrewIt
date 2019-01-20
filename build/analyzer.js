@@ -108,8 +108,8 @@
             };
         }
         {
-            const { replaceStaticString } = encoder;
-            encoder.replaceStaticString =
+            const { replaceJoinedArrayString } = encoder;
+            encoder.replaceJoinedArrayString =
             function (str, maxLength)
             {
                 let replacement = staticStrCache.get(str);
@@ -120,7 +120,7 @@
                 }
                 else
                 {
-                    replacement = replaceStaticString.call(this, str, maxLength);
+                    replacement = replaceJoinedArrayString.call(this, str, maxLength);
                     if (replacement)
                     {
                         staticStrCache.set(str, replacement);

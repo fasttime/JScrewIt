@@ -52,6 +52,7 @@ var APPEND_LENGTH_OF_SMALL_E;
 var Encoder;
 
 var replaceMultiDigitNumber;
+var replaceStaticString;
 var resolveSimple;
 
 (function ()
@@ -191,7 +192,7 @@ var resolveSimple;
 
     function replaceIndexer(index)
     {
-        var replacement = '[' + STATIC_ENCODER.replaceString(index) + ']';
+        var replacement = '[' + replaceStaticString(index) + ']';
         return replacement;
     }
 
@@ -685,7 +686,7 @@ var resolveSimple;
                             str = formatPositiveNumber(abs);
                         if (negative)
                             str = '-' + str;
-                        output = STATIC_ENCODER.replaceString(str);
+                        output = replaceStaticString(str);
                         if (str.length > 1)
                             output = '+(' + output + ')';
                         if (bondStrength)
@@ -700,69 +701,61 @@ var resolveSimple;
             return output;
         },
 
-        replaceStaticString:
-        function (str, maxLength)
-        {
-            var options = { bond: true, forceString: true, maxLength: maxLength };
-            var replacement = STATIC_ENCODER.replaceString(str, options);
-            return replacement;
-        },
-
         /**
-         * Replace a given string with equivalent JSFuck code.
+         * Replaces a given string with equivalent JSFuck code.
          *
          * @function Encoder#replaceString
          *
-         * @param {string} str The string to replace.
+         * @param {string} str
+         * The string to replace.
          *
-         * @param {object} [options={ }] An optional object specifying replacement options.
+         * @param {object} [options={ }]
+         * An optional object specifying replacement options.
          *
          * @param {boolean} [options.bond=false]
-         * <p>
-         * Indicates whether the replacement expression should be bonded.</p>
-         * <p>
+         * Indicates whether the replacement expression should be bonded.
+         *
          * An expression is bonded if it can be treated as a single unit by any valid operators
          * placed immediately before or after it.
          * E.g. `[][[]]` is bonded but `![]` is not, because `![][[]]` is different from
          * `(![])[[]]`.
          * More exactly, a bonded expression does not contain an outer plus and does not start
-         * with `!`.</p>
-         * <p>
-         * Any expression becomes bonded when enclosed into parentheses.</p>
+         * with `!`.
+         *
+         * Any expression becomes bonded when enclosed into parentheses.
          *
          * @param {Solution} [options.firstSolution]
          * An optional solution to be prepended to the replacement string.
          *
          * @param {boolean} [options.forceString=false]
-         * <p>
-         * Indicates whether the replacement expression should evaluate to a string.</p>
-         * <p>
-         * Any expression can be converted into a string by appending `+[]`.</p>
+         * Indicates whether the replacement expression should evaluate to a string.
+         *
+         * If this parameter is falsy, the value of the replacement expression may not be equal to
+         * the input string, but will have the same string representation.
          *
          * @param {number} [options.maxLength=(NaN)]
-         * <p>
-         * The maximum length of the replacement expression.</p>
-         * <p>
+         * The maximum length of the replacement expression.
+         *
          * If the replacement expression exceeds the specified length, the return value is
-         * `undefined`.</p>
-         * <p>
-         * If this parameter is `NaN`, then no length limit is imposed.</p>
+         * `undefined`.
+         *
+         * If this parameter is `NaN`, then no length limit is imposed.
          *
          * @param {boolean|object<string, boolean|*>} [options.optimize=false]
-         * <p>
-         * Specifies which optimizations should be attempted.</p>
-         * <p>
+         * Specifies which optimizations should be attempted.
+         *
          * Optimizations may reduce the length of the replacement string, but they also reduce the
          * performance and may lead to unwanted circular dependencies when resolving
-         * definitions.</p>
-         * <p>
+         * definitions.
+         *
          * This parameter can be set to a boolean value in order to turn all optimizations on
          * (`true`) or off (`false`).
          * In order to turn specific optimizations on or off, specify an object that maps
          * optimization names with the suffix "Opt" to booleans, or to any other optimization
-         * specific kind of data.</p>
+         * specific kind of data.
          *
-         * @returns {string} The replacement string.
+         * @returns {string|undefined}
+         * The replacement string or `undefined`.
          */
 
         replaceString:
@@ -1003,7 +996,14 @@ var resolveSimple;
     function (number)
     {
         var str = formatPositiveNumber(number);
-        var replacement = STATIC_ENCODER.replaceString(str);
+        var replacement = replaceStaticString(str);
+        return replacement;
+    };
+
+    replaceStaticString =
+    function (str, options)
+    {
+        var replacement = STATIC_ENCODER.replaceString(str, options);
         return replacement;
     };
 

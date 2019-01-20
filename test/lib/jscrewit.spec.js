@@ -288,7 +288,7 @@
         {
             it
             (
-                'returns correct JSFuck with integer coercing',
+                'returns correct JSFuck with integer coercion',
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
@@ -332,27 +332,31 @@
                 'returns correct JSFuck with',
                 function ()
                 {
-                    function test(createParseIntArgName, features)
+                    function test(entry, index)
                     {
-                        var featureObj = Feature(features);
+                        var featureObj = JScrewIt.debug.createFeatureFromMask(entry.mask);
                         emuIt
                         (
-                            createParseIntArgName,
+                            'CREATE_PARSE_INT_ARG[' + index + ']',
                             featureObj,
                             function (emuFeatures)
                             {
                                 var encoder = JScrewIt.debug.createEncoder(featureObj);
+                                encoder.getCreateParseIntArg =
+                                function ()
+                                {
+                                    return entry.definition;
+                                };
                                 var output = encoder.encodeByDict(inputData, 5, 3);
                                 expect(emuEval(emuFeatures, output)).toBe(input);
                             }
                         );
                     }
 
-                    var input = 'ABC';
+                    var input = '123';
                     var inputData = Object(input);
-                    test('createParseIntArgDefault', ['ARRAY_ITERATOR', 'ATOB']);
-                    test('createParseIntArgByReduce', 'DEFAULT');
-                    test('createParseIntArgByReduceArrow', ['ARRAY_ITERATOR', 'ARROW']);
+                    var entries = JScrewIt.debug.getEntries('CREATE_PARSE_INT_ARG:available');
+                    entries.forEach(test);
                 }
             );
         }
@@ -441,8 +445,8 @@
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    encoder.replaceStaticString = Function();
-                    expect(encoder.replaceFalseFreeArray([])).toBeUndefined();
+                    encoder.replaceString = Function();
+                    expect(encoder.replaceFalseFreeArray([1, 2])).toBeUndefined();
                 }
             );
         }
@@ -666,6 +670,101 @@
                     var encoder = JScrewIt.debug.createEncoder();
                     encoder.maxGroupThreshold = 2;
                     expect(encoder.replaceString('123')).toBeUndefined();
+                }
+            );
+        }
+    );
+    describe
+    (
+        'Encoder#replaceStringArray',
+        function ()
+        {
+            it
+            (
+                'replaces element "undefined"',
+                function ()
+                {
+                    var array = ['undefined', 'undefined'];
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var output = encoder.replaceStringArray(array, []);
+                    expect(evalJSFuck(output)).toEqual(array);
+                }
+            );
+            it
+            (
+                'replaces element "" without string forcing',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var output = encoder.replaceStringArray(['', ''], [], false);
+                    expect(evalJSFuck(output)).toEqual([[], []]);
+                }
+            );
+            it
+            (
+                'replaces element "" with string forcing',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var output = encoder.replaceStringArray([''], [], true);
+                    expect(output).toBe('[[]+[]]');
+                }
+            );
+            it
+            (
+                'replaces all static characters',
+                function ()
+                {
+                    var array =
+                    [
+                        '+', '-', '.', '0', '1', '2', '3', '4', '5', '6',
+                        '7', '8', '9', 'I', 'N', 'a', 'd', 'e', 'f', 'i',
+                        'l', 'n', 'r', 's', 't', 'u', 'y',
+                    ];
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var output =
+                    encoder.replaceStringArray(array, [{ joiner: '', separator: '[]' }]);
+                    expect(evalJSFuck(output)).toEqual(array);
+                }
+            );
+            it
+            (
+                'does not replace a single element over length limit',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var output = encoder.replaceStringArray([''], [], false, 0);
+                    expect(output).toBeUndefined();
+                }
+            );
+            it
+            (
+                'does not replace multiple elements over low length limit',
+                function ()
+                {
+                    var array = ['1', '2', '3', '4', '5'];
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var splitReplacementLength =
+                    encoder.replaceString('split', { optimize: true }).length;
+                    var output =
+                    encoder.replaceStringArray
+                    (array, [{ joiner: '', separator: '[]' }], false, splitReplacementLength);
+                    expect(output).toBeUndefined();
+                }
+            );
+            it
+            (
+                'does not replace multiple elements over high length limit',
+                function ()
+                {
+                    var array = ['1', '2', '3', '4', '5'];
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var splitReplacementLength =
+                    encoder.replaceString('split', { optimize: true }).length + 89;
+                    var output =
+                    encoder.replaceStringArray
+                    (array, [{ joiner: '', separator: '[]' }], false, splitReplacementLength);
+                    expect(output).toBeUndefined();
                 }
             );
         }

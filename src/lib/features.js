@@ -1891,7 +1891,8 @@ var validMaskFromArrayOrStringOrFeature;
          *
          * @function JScrewIt.Feature#toString
          *
-         * @returns {string} A string representation of this feature object.
+         * @returns {string}
+         * A string representation of this feature object.
          */
 
         toString:

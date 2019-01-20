@@ -24,6 +24,7 @@ createEmpty,
 createFigurator,
 createParseIntArgDefault,
 expressParse,
+replaceStaticString,
 */
 
 var STRATEGIES;
@@ -174,18 +175,25 @@ var wrapWithEval;
         return -1;
     }
 
-    // Replaces a non-empty JavaScript array with a JSFuck array of strings.
-    // Array elements may only contain characters with static definitions in their string
-    // representations and may not contain the substring "false", because the value false is used as
-    // a separator in the encoding.
-    function replaceFalseFreeArray(array, maxLength)
-    {
-        var result = this.replaceStringArray(array, [FALSE_FREE_DELIMITER], maxLength);
-        return result;
-    }
-
     STRATEGIES =
     {
+        /* -------------------------------------------------------------------------------------- *\
+
+        Encodes "NINE" as:
+
+        Function("return String.fromCharCode(" + [78, 73, 78, 69] + ")")()
+
+        (short version)
+
+        Or:
+
+        [78, 73, 78, 69].map(Function(
+        "return function(undefined){return String.fromCharCode(undefined)}")()).join([])
+
+        (long version)
+
+        \* -------------------------------------------------------------------------------------- */
+
         byCharCodes:
         defineStrategy
         (
@@ -200,6 +208,16 @@ var wrapWithEval;
             },
             2
         ),
+
+        /* -------------------------------------------------------------------------------------- *\
+
+        Encodes "NINE" as:
+
+        [1032, 1021, 1032, 1011].map(Function(
+        "return function(undefined){return String.fromCharCode(parseInt(undefined,4))}")()).join([])
+
+        \* -------------------------------------------------------------------------------------- */
+
         byCharCodesRadix4:
         defineStrategy
         (
@@ -211,6 +229,17 @@ var wrapWithEval;
             },
             31
         ),
+
+        /* -------------------------------------------------------------------------------------- *\
+
+        Encodes "NINE" as:
+
+        ["false", "false0", "false", "true"].map(Function(
+        "return function(undefined){return this.indexOf(undefined)}")().bind(["false", "true",
+        "false0"])).map("".charAt.bind("NEI")).join([])
+
+        \* -------------------------------------------------------------------------------------- */
+
         byDenseFigures:
         defineStrategy
         (
@@ -221,6 +250,15 @@ var wrapWithEval;
             },
             2224
         ),
+
+        /* -------------------------------------------------------------------------------------- *\
+
+        Encodes "NINE" as:
+
+        [0, 2, 0, 1].map("".charAt.bind("NEI")).join([])
+
+        \* -------------------------------------------------------------------------------------- */
+
         byDict:
         defineStrategy
         (
@@ -231,6 +269,25 @@ var wrapWithEval;
             },
             3
         ),
+
+        /* -------------------------------------------------------------------------------------- *\
+
+        Encodes "THREE" as:
+
+        [10, 1, 2, 0, 0].map(Function(
+        "return function(undefined){return this[parseInt(undefined,3)]}")().bind("EHRT")).join([])
+
+        (simple)
+
+        Or:
+
+        [10, 1, 2, [], []].map(Function(
+        "return function(undefined){return this[parseInt(+undefined,3)]}")().bind("EHRT")).join([])
+
+        (with coercion)
+
+        \* -------------------------------------------------------------------------------------- */
+
         byDictRadix3:
         defineStrategy
         (
@@ -241,6 +298,25 @@ var wrapWithEval;
             },
             240
         ),
+
+        /* -------------------------------------------------------------------------------------- *\
+
+        Encodes "TWELVE" as:
+
+        [2, 3, 0, 1, 10, 0].map(Function(
+        "return function(undefined){return this[parseInt(undefined,4)]}")().bind("ELTWV")).join([])
+
+        (simple)
+
+        Or:
+
+        [2, 3, [], 1, 10, []].map(Function(
+        "return function(undefined){return this[parseInt(+undefined,4)]}")().bind("ELTWV")).join([])
+
+        (with coercion)
+
+        \* -------------------------------------------------------------------------------------- */
+
         byDictRadix4:
         defineStrategy
         (
@@ -251,6 +327,27 @@ var wrapWithEval;
             },
             177
         ),
+
+        /* -------------------------------------------------------------------------------------- *\
+
+        Encodes "TWELVE" as:
+
+        ["1", "10", "true", "0", "2", "true"].map(Function(
+        "return function(undefined){return this[parseInt(undefined.replace(/true/g,3),4)]}")().bind(
+        "LTVEW")).join([])
+
+        (simple)
+
+        Or:
+
+        ["1", "10", "", "true", "2", ""].map(Function(
+        "return function(undefined){return this[parseInt(+undefined.replace(/true/g,3),4)]}")().bind
+        ("ETVLW")).join([])
+
+        (with coercion)
+
+        \* -------------------------------------------------------------------------------------- */
+
         byDictRadix4AmendedBy1:
         defineStrategy
         (
@@ -261,6 +358,27 @@ var wrapWithEval;
             },
             312
         ),
+
+        /* -------------------------------------------------------------------------------------- *\
+
+        Encodes "TWELVE" as:
+
+        ["undefined", "10", "true", "0", "1", "true"].map(Function(
+        "return function(undefined){return this[parseInt(undefined.replace(/true/g,2).replace(/un" +
+        "defined/g,3),4)]}")().bind("LVETW")).join([])
+
+        (simple)
+
+        Or:
+
+        ["undefined", "10", "", "true", "1", ""].map(Function(
+        "return function(undefined){return this[parseInt(+undefined.replace(/true/g,2).replace(/u" +
+        "ndefined/g,3),4)]}")().bind("EVLTW")).join([])
+
+        (with coercion)
+
+        \* -------------------------------------------------------------------------------------- */
+
         byDictRadix4AmendedBy2:
         defineStrategy
         (
@@ -271,6 +389,27 @@ var wrapWithEval;
             },
             560
         ),
+
+        /* -------------------------------------------------------------------------------------- *\
+
+        Encodes "SIXTEEN" as:
+
+        ["1", "0", "10", "2", "true", "true", "undefined"].map(Function(
+        "return function(undefined){return this[parseInt(undefined.replace(/true/g,3).replace(/un" +
+        "defined/g,4),5)]}")().bind("ISTENX")).join([])
+
+        (simple)
+
+        Or:
+
+        ["1", "true", "10", "2", "", "", "undefined"].map(Function(
+        "return function(undefined){return this[parseInt(+undefined.replace(/true/g,3).replace(/u" +
+        "ndefined/g,4),5)]}")().bind("ESTINX")).join([])
+
+        (with coercion)
+
+        \* -------------------------------------------------------------------------------------- */
+
         byDictRadix5AmendedBy2:
         defineStrategy
         (
@@ -281,6 +420,27 @@ var wrapWithEval;
             },
             756
         ),
+
+        /* -------------------------------------------------------------------------------------- *\
+
+        Encodes "SIXTEEN" as:
+
+        ["1", "0", "10", "NaN", "true", "true", "undefined"].map(Function(
+        "return function(undefined){return this[parseInt([/true/g,/undefined/g,/NaN/g].reduce(fun" +
+        "ction(f,a,l,s,e){return f.replace(a,2+l)},undefined),5)]}")().bind("ISENTX")).join([])
+
+        (simple)
+
+        Or:
+
+        ["1", "true", "10", "NaN", "", "", "undefined"].map(Function(
+        "return function(undefined){return this[parseInt(+[/true/g,/undefined/g,/NaN/g].reduce(fu" +
+        "nction(f,a,l,s,e){return f.replace(a,2+l)},undefined),5)]}")().bind("ESINTX")).join([])
+
+        (with coercion)
+
+        \* -------------------------------------------------------------------------------------- */
+
         byDictRadix5AmendedBy3:
         defineStrategy
         (
@@ -291,6 +451,17 @@ var wrapWithEval;
             },
             742
         ),
+
+        /* -------------------------------------------------------------------------------------- *\
+
+        Encodes "NINE" as:
+
+        ["", "0", "", "true"].map(Function(
+        "return function(undefined){return this.indexOf(undefined)}")().bind(["", "true", "0"])).map
+        ("".charAt.bind("NEI")).join([])
+
+        \* -------------------------------------------------------------------------------------- */
+
         bySparseFigures:
         defineStrategy
         (
@@ -301,6 +472,13 @@ var wrapWithEval;
             },
             328
         ),
+
+        /* -------------------------------------------------------------------------------------- *\
+
+        Encodes any JavaScript expression recognized by the express parser.
+
+        \* -------------------------------------------------------------------------------------- */
+
         express:
         defineStrategy
         (
@@ -311,6 +489,13 @@ var wrapWithEval;
                 return output;
             }
         ),
+
+        /* -------------------------------------------------------------------------------------- *\
+
+        Encodes any text as a string using only the mininal set of optimizations.
+
+        \* -------------------------------------------------------------------------------------- */
+
         plain:
         defineStrategy
         (
@@ -328,6 +513,13 @@ var wrapWithEval;
                 return output;
             }
         ),
+
+        /* -------------------------------------------------------------------------------------- *\
+
+        Encodes any text by trying out all plausible strategies.
+
+        \* -------------------------------------------------------------------------------------- */
+
         text:
         defineStrategy
         (
@@ -444,7 +636,7 @@ var wrapWithEval;
         },
 
         createCharKeyArrayString:
-        function (input, charMap, maxLength, delimiters)
+        function (input, charMap, delimiters, forceString, maxLength)
         {
             var charKeyArray =
             _Array_prototype_map.call
@@ -456,7 +648,8 @@ var wrapWithEval;
                     return charKey;
                 }
             );
-            var charKeyArrayStr = this.replaceStringArray(charKeyArray, delimiters, maxLength);
+            var charKeyArrayStr =
+            this.replaceStringArray(charKeyArray, delimiters, forceString, maxLength);
             return charKeyArrayStr;
         },
 
@@ -470,11 +663,8 @@ var wrapWithEval;
                 if (amendings)
                 {
                     var firstDigit = radix - amendings;
-                    var createParseIntArg;
-                    if (amendings > 2)
-                        createParseIntArg = this.findDefinition(CREATE_PARSE_INT_ARG);
-                    else
-                        createParseIntArg = createParseIntArgDefault;
+                    var createParseIntArg =
+                    createParseIntArg = this.getCreateParseIntArg(amendings);
                     parseIntArg = createParseIntArg(amendings, firstDigit);
                 }
                 else
@@ -598,12 +788,12 @@ var wrapWithEval;
             var figureMaxLength = maxLength - legend.length;
             var figureLegend =
             this.replaceStringArray
-            (figures, figureLegendDelimiters, figureMaxLength - minCharIndexArrayStrLength);
+            (figures, figureLegendDelimiters, true, figureMaxLength - minCharIndexArrayStrLength);
             if (!figureLegend)
                 return;
             var keyFigureArrayStr =
             this.createCharKeyArrayString
-            (input, charMap, figureMaxLength - figureLegend.length, keyFigureArrayDelimiters);
+            (input, charMap, keyFigureArrayDelimiters, true, figureMaxLength - figureLegend.length);
             if (!keyFigureArrayStr)
                 return;
             var formatter = this.findDefinition(MAPPER_FORMATTER);
@@ -635,10 +825,11 @@ var wrapWithEval;
         {
             var input = inputData.valueOf();
             var freqList = getFrequencyList(inputData);
+            var freqListLength = freqList.length;
             var coerceToInt =
-            freqList.length &&
+            freqListLength &&
             freqList[0].count * APPEND_LENGTH_OF_DIGIT_0 > APPEND_LENGTH_OF_PLUS_SIGN;
-            var reindexMap = createReindexMap(freqList.length, radix, amendings, coerceToInt);
+            var reindexMap = createReindexMap(freqListLength, radix, amendings, coerceToInt);
             var charMap = createEmpty();
             var minCharIndexArrayStrLength = initMinFalseFreeCharIndexArrayStrLength(input);
             var dictChars = [];
@@ -658,7 +849,7 @@ var wrapWithEval;
                 return;
             var charIndexArrayStr =
             this.createCharKeyArrayString
-            (input, charMap, maxLength - legend.length, [FALSE_FREE_DELIMITER]);
+            (input, charMap, [FALSE_FREE_DELIMITER], amendings, maxLength - legend.length);
             if (!charIndexArrayStr)
                 return;
             var output =
@@ -761,15 +952,97 @@ var wrapWithEval;
             return output;
         },
 
-        replaceFalseFreeArray: replaceFalseFreeArray,
+        getCreateParseIntArg:
+        function (amendings)
+        {
+            var createParseIntArg;
+            if (amendings > 2)
+                createParseIntArg = this.findDefinition(CREATE_PARSE_INT_ARG);
+            else
+                createParseIntArg = createParseIntArgDefault;
+            return createParseIntArg;
+        },
+
+        // Array elements may not contain the substring "false", because the value false could
+        // be used as a separator in the encoding.
+        replaceFalseFreeArray:
+        function (array, maxLength)
+        {
+            var result = this.replaceStringArray(array, [FALSE_FREE_DELIMITER], false, maxLength);
+            return result;
+        },
+
+        replaceJoinedArrayString:
+        function (str, maxLength)
+        {
+            var options = { bond: true, forceString: true, maxLength: maxLength };
+            var replacement = replaceStaticString(str, options);
+            return replacement;
+        },
+
+        /**
+         * Replaces a given array of strings with equivalent JSFuck code.
+         *
+         * Array elements may only contain characters with static definitions in their string
+         * representations.
+         *
+         * @function Encoder#replaceStringArray
+         *
+         * @param {string[]} array
+         * The string array to replace. Empty arrays are not supported.
+         *
+         * @param {object[]} delimiters
+         * An array of delimiters.
+         *
+         * Each delimiter has two string properties: a `joiner` and a `separator`.
+         *
+         * The encoder can insert a joiner between any two adjacent elements to mark the boundary
+         * between them. The splitter is an express-parsable expression used to split the
+         * concatenated string back into its elements. It can be any expression evaluating to the
+         * same value as the joiner, or to a regular expression.
+         *
+         * At most one delimiter will be used.
+         *
+         * @param {boolean} [forceString=false]
+         * Indicates whether the elements in the replacement expression should evaluate to strings.
+         *
+         * If this argument is falsy, the elements in the replacement expression may not be equal
+         * to those in the input array, but will have the same string representation. Also, the
+         * string representation of value of the whole replacement expression will be the same as
+         * the string representation of the input string.
+         *
+         * @param {number} [maxLength=(NaN)]
+         * The maximum length of the replacement expression.
+         *
+         * If the replacement expression exceeds the specified length, the return value is
+         * `undefined`.
+         *
+         * If this parameter is `NaN`, then no length limit is imposed.
+         *
+         * @returns {string|undefined}
+         * The replacement string or `undefined`.
+         */
 
         replaceStringArray:
-        function (array, delimiters, maxLength)
+        function (array, delimiters, forceString, maxLength)
         {
-            var splitExpr = this.replaceString('split', { maxLength: maxLength, optimize: true });
-            if (splitExpr)
+            var replacement;
+            var count = array.length;
+            if (count > 1)
             {
-                maxLength -= splitExpr.length + 4;
+                if (count > 3) // Don't even try the split strategy for 3 or less elements.
+                {
+                    var splitReplacement =
+                    this.replaceString('split', { maxLength: maxLength, optimize: true });
+                }
+                var concatReplacement =
+                this.replaceString('concat', { maxLength: maxLength, optimize: true });
+            }
+            if (splitReplacement)
+            // Strategy 1: (array[0] + joiner + array[1] + joiner + array[2]...).split(separator)
+            {
+                // 4 is for the additional overhead of "[" + "](" + ")".
+                var maxBulkLength = maxLength - (splitReplacement.length + 4);
                 var optimalReplacement;
                 var optimalSeparatorExpr;
                 delimiters.forEach
@@ -777,15 +1050,15 @@ var wrapWithEval;
                     function (delimiter)
                     {
                         var str = array.join(delimiter.joiner);
-                        var replacement = this.replaceStaticString(str, maxLength);
-                        if (replacement)
+                        var strReplacement = this.replaceJoinedArrayString(str, maxBulkLength);
+                        if (strReplacement)
                         {
                             var separatorExpr = this.replaceExpr(delimiter.separator);
-                            var bulkLength = replacement.length + separatorExpr.length;
-                            if (!(bulkLength > maxLength))
+                            var bulkLength = strReplacement.length + separatorExpr.length;
+                            if (!(bulkLength > maxBulkLength))
                             {
-                                maxLength = bulkLength;
-                                optimalReplacement = replacement;
+                                maxBulkLength = bulkLength;
+                                optimalReplacement = strReplacement;
                                 optimalSeparatorExpr = separatorExpr;
                             }
                         }
@@ -794,11 +1067,50 @@ var wrapWithEval;
                 );
                 if (optimalReplacement)
                 {
-                    var result =
-                    optimalReplacement + '[' + splitExpr + '](' + optimalSeparatorExpr + ')';
-                    return result;
+                    replacement =
+                    optimalReplacement + '[' + splitReplacement + '](' + optimalSeparatorExpr + ')';
+                    maxLength = replacement.length;
                 }
             }
+            if
+            (
+                count <= 1 ||
+                concatReplacement &&
+                // 4 is the length of the shortest possible replacement "[[]]".
+                // 7 is the length of the shortest possible additional overhead for each following
+                // array element, as in "[" + "](+[])" or "[" + "](![])".
+                (!replacement || 4 + (concatReplacement.length + 7) * (count - 1) < maxLength)
+            )
+            // Strategy 2: [array[0]].concat(array[1]).concat(array[2])...
+            {
+                var arrayReplacement;
+                var options = { forceString: forceString };
+                if
+                (
+                    !array.some
+                    (
+                        function (element)
+                        {
+                            var elementReplacement = replaceStaticString(element, options);
+                            if (elementReplacement === '[][[]]')
+                                elementReplacement += '+[]';
+                            if (arrayReplacement)
+                            {
+                                if (elementReplacement === '[]')
+                                    elementReplacement = '[[]]';
+                                arrayReplacement +=
+                                '[' + concatReplacement + '](' + elementReplacement + ')';
+                            }
+                            else
+                                arrayReplacement = '[' + elementReplacement + ']';
+                            var result = arrayReplacement.length > maxLength;
+                            return result;
+                        }
+                    )
+                )
+                    replacement = arrayReplacement;
+            }
+            return replacement;
         },
     };
 

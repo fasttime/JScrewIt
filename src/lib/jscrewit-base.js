@@ -26,9 +26,11 @@ var getValidFeatureMask;
      *
      * @function JScrewIt.encode
      *
-     * @param {string} input The string to encode.
+     * @param {string} input
+     * The string to encode.
      *
-     * @param {object} [options={ }] An optional object specifying encoding options.
+     * @param {object} [options={ }]
+     * An optional object specifying encoding options.
      *
      * @param {FeatureElement|CompatibleFeatureArray} [options.features=JScrewIt.Feature.DEFAULT]
      * <p>
@@ -94,9 +96,11 @@ var getValidFeatureMask;
      * Using this option may produce unexpected results if the input is not well-formed JavaScript
      * code.</p>
      *
-     * @param {string} [options.wrapWith=express-eval] An alias for `runAs`.
+     * @param {string} [options.wrapWith=express-eval]
+     * An alias for `runAs`.
      *
-     * @returns {string} The encoded string.
+     * @returns {string}
+     * The encoded string.
      *
      * @throws
      * An `Error` is thrown under the following circumstances.
