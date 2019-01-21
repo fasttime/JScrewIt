@@ -34,7 +34,7 @@
     "docs": "gulp docs"
   },
   "devDependencies": {
-    "art-js": "~0.7.2",
+    "art-js": "~0.7.3",
     "chalk": "~1.1.3",
     "del": "~3.0.0",
     "expectations": "~0.7.1",

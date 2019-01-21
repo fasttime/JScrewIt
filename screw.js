@@ -99,7 +99,7 @@ function prompt()
     var outputFileName  = command.outputFileName;
     var options         = command.options;
 
-    var JScrewIt = require('./lib/jscrewit');
+    var JScrewIt = require('.');
 
     if (inputFileName == null)
     {

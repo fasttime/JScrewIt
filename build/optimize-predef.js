@@ -210,7 +210,7 @@ function dropIndirectSpecializations(node)
 
 function featureDifference(featureAll, featureSome)
 {
-    const { Feature } = require('../lib/jscrewit');
+    const { Feature } = require('..');
 
     const elementaryNames =
     featureAll.elementaryNames.filter
@@ -241,7 +241,7 @@ function isRedundantNode(node)
 function printDefinitions(definitionSets, { indent, formatVariant, variantToMinMaskMap })
 {
     const LINE_LENGTH = 100;
-    const { Feature, debug: { createFeatureFromMask } } = require('../lib/jscrewit');
+    const { Feature, debug: { createFeatureFromMask } } = require('..');
 
     const argsList = [];
     for (const definitionSet of definitionSets)
@@ -494,7 +494,7 @@ function simplifyDefinitions(definitionSets)
         return featuresABC;
     }
 
-    const { Feature } = require('../lib/jscrewit');
+    const { Feature } = require('..');
 
     for
     (

@@ -102,7 +102,7 @@
             JScrewIt = self.JScrewIt;
         if (typeof module !== 'undefined')
         {
-            JScrewIt = require('../lib/jscrewit');
+            JScrewIt = require('..');
             require('./helpers/feature-emulation.helpers');
         }
         Feature = JScrewIt.Feature;

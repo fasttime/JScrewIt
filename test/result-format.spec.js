@@ -115,7 +115,7 @@
             test('a strange object', obj, 'foo', 'an object', doBefore, doAfter);
         }
 
-        var obj = new Date();
+        var obj = Object.create(new Date());
         obj.toString =
         function ()
         {

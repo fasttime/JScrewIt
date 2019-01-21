@@ -13,7 +13,7 @@ function createTestStringProRadix4AntiRadix10(length)
 {
     const elements = [];
     {
-        const { createEncoder } = require('../lib/jscrewit').debug;
+        const { createEncoder } = require('..').debug;
         const encoder = createEncoder();
         for (let charCode = 0; charCode <= 0xffff; ++charCode)
         {

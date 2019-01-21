@@ -28,21 +28,6 @@
         return text;
     }
 
-    function getStringTag(value)
-    {
-        var str;
-        try
-        {
-            str = Object.prototype.toString.call(value);
-        }
-        catch (error)
-        {
-            return;
-        }
-        var strTag = str.slice(8, -1);
-        return strTag;
-    }
-
     root.formatValue =
     function (value)
     {
@@ -71,10 +56,9 @@
             // document.all has type "undefined".
             if  (type === 'function' || type === 'object' || type === 'undefined')
             {
-                var strTag = getStringTag(value);
-                switch (strTag)
+                var prototype = Object.getPrototypeOf(value);
+                if (prototype === Array.prototype)
                 {
-                case 'Array':
                     switch (value.length)
                     {
                     case 0:
@@ -87,20 +71,15 @@
                         valueType = 'an array';
                         break;
                     }
-                    break;
-                case 'Date':
-                    valueType = 'a date';
-                    break;
-                default:
-                    // RegExp objects have type "function" in older Android Browser versions.
-                    if (value instanceof RegExp)
-                        valueType = 'a regular expression';
-                    else if (type === 'function')
-                        valueType = 'a function';
-                    else
-                        valueType = 'an object';
-                    break;
                 }
+                else if (prototype === Date.prototype)
+                    valueType = 'a date';
+                else if (prototype === RegExp.prototype)
+                    valueType = 'a regular expression';
+                else if (type === 'function')
+                    valueType = 'a function';
+                else
+                    valueType = 'an object';
             }
         }
         return valueType;
