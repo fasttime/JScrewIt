@@ -3,7 +3,6 @@ var maskIncludes;
 var maskIntersection;
 var maskIsEmpty;
 var maskNew;
-var maskNewInverted;
 var maskUnion;
 var maskWithBit;
 
