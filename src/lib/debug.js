@@ -5,7 +5,6 @@ BASE64_ALPHABET_LO_4,
 CHARACTERS,
 COMPLEX,
 CONSTANTS,
-CREATE_PARSE_INT_ARG,
 DEBUG,
 FROM_CHAR_CODE,
 FROM_CHAR_CODE_CALLBACK_FORMATTER,
@@ -169,8 +168,6 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         ENTRIES['BASE64_ALPHABET_HI_4:5']                       = BASE64_ALPHABET_HI_4[5];
         ENTRIES['BASE64_ALPHABET_LO_4:1']                       = BASE64_ALPHABET_LO_4[1];
         ENTRIES['BASE64_ALPHABET_LO_4:3']                       = BASE64_ALPHABET_LO_4[3];
-        ENTRIES.CREATE_PARSE_INT_ARG                            = CREATE_PARSE_INT_ARG;
-        ENTRIES['CREATE_PARSE_INT_ARG:available']               = CREATE_PARSE_INT_ARG.available;
         ENTRIES.FROM_CHAR_CODE                                  = FROM_CHAR_CODE;
         ENTRIES['FROM_CHAR_CODE:available']                     = FROM_CHAR_CODE.available;
         ENTRIES.FROM_CHAR_CODE_CALLBACK_FORMATTER               = FROM_CHAR_CODE_CALLBACK_FORMATTER;

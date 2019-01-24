@@ -22,7 +22,6 @@ resolveSimple,
 // used must be defined itself, too, in a constant definition.
 
 var AMENDINGS;
-var CREATE_PARSE_INT_ARG;
 var FROM_CHAR_CODE;
 var FROM_CHAR_CODE_CALLBACK_FORMATTER;
 var MAPPER_FORMATTER;
@@ -44,7 +43,6 @@ var SIMPLE;
 var JSFUCK_INFINITY;
 
 var createBridgeSolution;
-var createParseIntArgDefault;
 
 (function ()
 {
@@ -307,22 +305,6 @@ var createParseIntArgDefault;
         }
 
         return charDefaultDefinition;
-    }
-
-    function createCreateParseIntArgByReduce(amendings, reducerStr)
-    {
-        var parseIntArg =
-        '[' +
-        AMENDINGS.slice(0, amendings).map
-        (
-            function (amending)
-            {
-                return '/' + amending + '/g';
-            }
-        )
-        .join() +
-        '].reduce(' + reducerStr + ',undefined)';
-        return parseIntArg;
     }
 
     function defineCharDefault(char, opts)
@@ -1534,65 +1516,6 @@ var createParseIntArgDefault;
         solution.bridge = bridge;
         return solution;
     };
-
-    createParseIntArgDefault =
-    function (amendings, firstDigit)
-    {
-        var parseIntArg = 'undefined';
-        for (var index = 0; index < amendings; ++index)
-        {
-            var digit = firstDigit + index;
-            parseIntArg += '.replace(/' + AMENDINGS[index] + '/g,' + digit + ')';
-        }
-        return parseIntArg;
-    };
-
-    CREATE_PARSE_INT_ARG =
-    defineList
-    (
-        [
-            define(createParseIntArgDefault),
-            define
-            (
-                function (amendings, firstDigit)
-                {
-                    var parseIntArg =
-                    createCreateParseIntArgByReduce
-                    (amendings, 'function(f,a,l,s,e){return f.replace(a,' + firstDigit + '+l)}');
-                    return parseIntArg;
-                }
-            ),
-            define
-            (
-                function (amendings, firstDigit)
-                {
-                    var parseIntArg =
-                    createCreateParseIntArgByReduce
-                    (amendings, '(f,a,l,s,e)=>f.replace(a,' + firstDigit + '+l)');
-                    return parseIntArg;
-                },
-                ARROW
-            ),
-        ],
-        [
-            define(1),
-            define(0, ARRAY_ITERATOR, CAPITAL_HTML, NO_IE_SRC),
-            define(1, FF_SRC),
-            define(1, FILL),
-            define(1, FLAT),
-            define(1, NO_OLD_SAFARI_ARRAY_ITERATOR),
-            define(1, V8_SRC),
-            define(2),
-            define(1, ARROW, NO_FF_SRC),
-            define(1, ARROW, NO_V8_SRC),
-            define(2, ARRAY_ITERATOR),
-            define(1, ARRAY_ITERATOR, ARROW, FF_SRC, FILL),
-            define(1, ARRAY_ITERATOR, ARROW, FILL, IE_SRC),
-            define(1, ARRAY_ITERATOR, ARROW, FILL, V8_SRC),
-            define(1, ARRAY_ITERATOR, ARROW, FLAT, NO_V8_SRC),
-            define(1, ARRAY_ITERATOR, ARROW, FLAT, V8_SRC),
-        ]
-    );
 
     FROM_CHAR_CODE =
     defineList

@@ -5,6 +5,24 @@
 
 (function ()
 {
+    function testFreqListCache(fn)
+    {
+        it
+        (
+            'caches freqList',
+            function ()
+            {
+                var encoder = JScrewIt.debug.createEncoder();
+                var inputData = Object('');
+                fn.call(encoder, inputData);
+                var freqList = inputData.freqList;
+                expect(freqList).toBeArray();
+                fn.call(encoder, inputData);
+                expect(inputData.freqList).toBe(freqList);
+            }
+        );
+    }
+
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Feature = JScrewIt.Feature;
 
@@ -106,30 +124,6 @@
     );
     describe
     (
-        'Encoder#exec',
-        function ()
-        {
-            it
-            (
-                'gently fails for unencodable input',
-                function ()
-                {
-                    var encoder = JScrewIt.debug.createEncoder();
-                    expect
-                    (
-                        function ()
-                        {
-                            encoder.exec('{}', undefined, ['express']);
-                        }
-                    )
-                    .toThrowStrictly(Error, 'Encoding failed');
-                    expect('perfLog' in encoder).toBeFalsy();
-                }
-            );
-        }
-    );
-    describe
-    (
         'Encoder#encodeByCharCodes',
         function ()
         {
@@ -172,41 +166,6 @@
     );
     describe
     (
-        'Encoder#encodeBySparseFigures',
-        function ()
-        {
-            it
-            (
-                'returns correct JSFuck',
-                function ()
-                {
-                    var encoder = JScrewIt.debug.createEncoder();
-                    var input =
-                    'The thirty-three thieves thought that they thrilled the throne throughout ' +
-                    'Thursday.';
-                    var output = encoder.encodeBySparseFigures(Object(input));
-                    expect(output).toBeJSFuck();
-                    expect(evalJSFuck(output)).toBe(input);
-                }
-            );
-            it
-            (
-                'returns undefined for too complex input',
-                function ()
-                {
-                    var encoder = JScrewIt.debug.createEncoder();
-                    var output1 = encoder.encodeBySparseFigures(Object('12345'), 10);
-                    expect(output1).toBeUndefined();
-                    var output2 = encoder.encodeBySparseFigures(Object('12345'), 125);
-                    expect(output2).toBeUndefined();
-                    var output3 = encoder.encodeBySparseFigures(Object('12345'), 3700);
-                    expect(output3).toBeUndefined();
-                }
-            );
-        }
-    );
-    describe
-    (
         'Encoder#encodeByDenseFigures',
         function ()
         {
@@ -240,43 +199,50 @@
             );
             it
             (
-                'uses an ad-hoc delimiter for the figure legend',
+                'uses an ad-hoc insertion for the figure legend',
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var figureLegendDelimiters;
-                    encoder.callGetFigureLegendDelimiters =
-                    function (getFigureLegendDelimiters, figurator, figures)
+                    var figureLegendInsertions;
+                    encoder.callGetFigureLegendInsertions =
+                    function (getFigureLegendInsertions, figurator, figures)
                     {
-                        figureLegendDelimiters = getFigureLegendDelimiters(figurator, figures);
-                        return figureLegendDelimiters;
+                        figureLegendInsertions = getFigureLegendInsertions(figurator, figures);
+                        return figureLegendInsertions;
                     };
                     var inputData = Object('foo');
                     encoder.encodeByDenseFigures(inputData);
-                    expect(figureLegendDelimiters[1]).toEqual({ joiner: '0', separator: '0' });
+                    expect(figureLegendInsertions[1]).toEqual({ joiner: '0', separator: '0' });
                 }
             );
             it
             (
-                'uses no ad-hoc delimiter for the figure legend',
+                'uses no ad-hoc insertion for the figure legend',
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var figureLegendDelimiters;
-                    encoder.callGetFigureLegendDelimiters =
-                    function (getFigureLegendDelimiters, figurator, figures)
+                    var figureLegendInsertions;
+                    encoder.callGetFigureLegendInsertions =
+                    function (getFigureLegendInsertions, figurator, figures)
                     {
                         figurator =
                         function ()
                         {
                             return Object('');
                         };
-                        figureLegendDelimiters = getFigureLegendDelimiters(figurator, figures);
-                        return figureLegendDelimiters;
+                        figureLegendInsertions = getFigureLegendInsertions(figurator, figures);
+                        return figureLegendInsertions;
                     };
                     var inputData = Object('foo');
                     encoder.encodeByDenseFigures(inputData);
-                    expect(figureLegendDelimiters.length).toBe(1);
+                    expect(figureLegendInsertions.length).toBe(1);
+                }
+            );
+            testFreqListCache
+            (
+                function (inputData)
+                {
+                    this.encodeByDenseFigures(inputData, 0);
                 }
             );
         }
@@ -327,36 +293,53 @@
                     expect(output3).toBeUndefined();
                 }
             );
-            describe
+            testFreqListCache
             (
-                'returns correct JSFuck with',
+                function (inputData)
+                {
+                    this.encodeByDict(inputData, undefined, undefined, 0);
+                }
+            );
+        }
+    );
+    describe
+    (
+        'Encoder#encodeBySparseFigures',
+        function ()
+        {
+            it
+            (
+                'returns correct JSFuck',
                 function ()
                 {
-                    function test(entry, index)
-                    {
-                        var featureObj = JScrewIt.debug.createFeatureFromMask(entry.mask);
-                        emuIt
-                        (
-                            'CREATE_PARSE_INT_ARG[' + index + ']',
-                            featureObj,
-                            function (emuFeatures)
-                            {
-                                var encoder = JScrewIt.debug.createEncoder(featureObj);
-                                encoder.getCreateParseIntArg =
-                                function ()
-                                {
-                                    return entry.definition;
-                                };
-                                var output = encoder.encodeByDict(inputData, 5, 3);
-                                expect(emuEval(emuFeatures, output)).toBe(input);
-                            }
-                        );
-                    }
-
-                    var input = '123';
-                    var inputData = Object(input);
-                    var entries = JScrewIt.debug.getEntries('CREATE_PARSE_INT_ARG:available');
-                    entries.forEach(test);
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var input =
+                    'The thirty-three thieves thought that they thrilled the throne throughout ' +
+                    'Thursday.';
+                    var output = encoder.encodeBySparseFigures(Object(input));
+                    expect(output).toBeJSFuck();
+                    expect(evalJSFuck(output)).toBe(input);
+                }
+            );
+            it
+            (
+                'returns undefined for too complex input',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var output1 = encoder.encodeBySparseFigures(Object('12345'), 10);
+                    expect(output1).toBeUndefined();
+                    var output2 = encoder.encodeBySparseFigures(Object('12345'), 125);
+                    expect(output2).toBeUndefined();
+                    var output3 = encoder.encodeBySparseFigures(Object('12345'), 3700);
+                    expect(output3).toBeUndefined();
+                }
+            );
+            testFreqListCache
+            (
+                function (inputData)
+                {
+                    this.encodeBySparseFigures(inputData, 0);
                 }
             );
         }
@@ -430,6 +413,53 @@
                     expect(perfLog[2].name).toBe('2:1');
                     expect(perfLog[3].name).toBe('3');
                     expect(perfLog[4].name).toBe('4');
+                }
+            );
+        }
+    );
+    describe
+    (
+        'Encoder#exec',
+        function ()
+        {
+            it
+            (
+                'gently fails for unencodable input',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    expect
+                    (
+                        function ()
+                        {
+                            encoder.exec('{}', undefined, ['express']);
+                        }
+                    )
+                    .toThrowStrictly(Error, 'Encoding failed');
+                    expect('perfLog' in encoder).toBeFalsy();
+                }
+            );
+        }
+    );
+    describe
+    (
+        'Encoder#getPaddingBlock throws a SyntaxError for',
+        function ()
+        {
+            it
+            (
+                'undefined padding',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    expect
+                    (
+                        function ()
+                        {
+                            encoder.getPaddingBlock({ blocks: [] }, -1);
+                        }
+                    )
+                    .toThrowStrictly(SyntaxError, 'Undefined padding block with length -1');
                 }
             );
         }
@@ -696,7 +726,7 @@
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var output = encoder.replaceStringArray(['', ''], [], false);
+                    var output = encoder.replaceStringArray(['', ''], [], null, false);
                     expect(evalJSFuck(output)).toEqual([[], []]);
                 }
             );
@@ -706,7 +736,7 @@
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var output = encoder.replaceStringArray([''], [], true);
+                    var output = encoder.replaceStringArray([''], [], null, true);
                     expect(output).toBe('[[]+[]]');
                 }
             );
@@ -729,41 +759,74 @@
             );
             it
             (
-                'does not replace a single element over length limit',
+                'applies substitutions',
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var output = encoder.replaceStringArray([''], [], false, 0);
+                    encoder.getConcatReplacement = Function();
+                    var output =
+                    encoder.replaceStringArray
+                    (
+                        ['102', '30', '04', '0', 'true'],
+                        [{ separator: 'false', joiner: 'false' }],
+                        [
+                            { separator: '0', joiner: 'undefined' },
+                            { separator: 'true', joiner: '+' },
+                        ]
+                    );
+                    expect(evalJSFuck(output))
+                    .toEqual(['1undefined2', '3undefined', 'undefined4', 'undefined', '+']);
+                }
+            );
+            it
+            (
+                'does not replace "split" and "concat" when maxLength is low',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var output =
+                    encoder.replaceStringArray
+                    (['', '', '', ''], [{ separator: 'false', joiner: 'false' }], null, false, 0);
                     expect(output).toBeUndefined();
                 }
             );
             it
             (
-                'does not replace multiple elements over low length limit',
+                'does not replace "join" when maxLength is low',
                 function ()
                 {
-                    var array = ['1', '2', '3', '4', '5'];
                     var encoder = JScrewIt.debug.createEncoder();
-                    var splitReplacementLength =
-                    encoder.replaceString('split', { optimize: true }).length;
                     var output =
                     encoder.replaceStringArray
-                    (array, [{ joiner: '', separator: '[]' }], false, splitReplacementLength);
+                    (
+                        [''],
+                        [{ separator: 'false', joiner: 'false' }],
+                        [{ separator: '0', joiner: '1' }],
+                        false,
+                        7000
+                    );
                     expect(output).toBeUndefined();
                 }
             );
             it
             (
-                'does not replace multiple elements over high length limit',
+                'does not replace a joined string when maxLength is low',
                 function ()
                 {
-                    var array = ['1', '2', '3', '4', '5'];
                     var encoder = JScrewIt.debug.createEncoder();
-                    var splitReplacementLength =
-                    encoder.replaceString('split', { optimize: true }).length + 89;
                     var output =
                     encoder.replaceStringArray
-                    (array, [{ joiner: '', separator: '[]' }], false, splitReplacementLength);
+                    (Array(50).fill('0'), [{ separator: '[]', joiner: '' }], [], false, 3500);
+                    expect(output).toBeUndefined();
+                }
+            );
+            it
+            (
+                'does not replace a single element with the concat strategy when maxLength is low',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var output = encoder.replaceStringArray([''], [], null, false, 0);
                     expect(output).toBeUndefined();
                 }
             );
@@ -929,30 +992,7 @@
     );
     describe
     (
-        'Encoder#getPaddingBlock throws a SyntaxError for',
-        function ()
-        {
-            it
-            (
-                'undefined padding',
-                function ()
-                {
-                    var encoder = JScrewIt.debug.createEncoder();
-                    expect
-                    (
-                        function ()
-                        {
-                            encoder.getPaddingBlock({ blocks: [] }, -1);
-                        }
-                    )
-                    .toThrowStrictly(SyntaxError, 'Undefined padding block with length -1');
-                }
-            );
-        }
-    );
-    describe
-    (
-        'Encoding',
+        'Strategy',
         function ()
         {
             var encoder = JScrewIt.debug.createEncoder();

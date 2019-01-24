@@ -4,7 +4,6 @@ AMENDINGS,
 APPEND_LENGTH_OF_DIGITS,
 APPEND_LENGTH_OF_DIGIT_0,
 APPEND_LENGTH_OF_PLUS_SIGN,
-CREATE_PARSE_INT_ARG,
 FROM_CHAR_CODE,
 FROM_CHAR_CODE_CALLBACK_FORMATTER,
 MAPPER_FORMATTER,
@@ -22,7 +21,6 @@ _RegExp,
 assignNoEnum,
 createEmpty,
 createFigurator,
-createParseIntArgDefault,
 expressParse,
 replaceStaticString,
 */
@@ -60,8 +58,8 @@ var wrapWithEval;
             var pattern = '[';
             for (index = 0; index < amendings; ++index)
             {
-                var digit = firstDigit + index;
                 digitAppendLengths[digit] = SIMPLE[AMENDINGS[index]].appendLength;
+                var digit = firstDigit + index;
                 pattern += digit;
             }
             pattern += ']';
@@ -99,14 +97,14 @@ var wrapWithEval;
         return strategy;
     }
 
-    function getDenseFigureLegendDelimiters(figurator, figures)
+    function getDenseFigureLegendInsertions(figurator, figures)
     {
-        var delimiters = [FALSE_TRUE_DELIMITER];
+        var insertions = [FALSE_TRUE_DELIMITER];
         var lastFigure = figurator(figures.length - 1);
         var joiner = lastFigure.joiner;
         if (joiner != null)
-            delimiters.push({ joiner: joiner, separator: joiner });
-        return delimiters;
+            insertions.push({ joiner: joiner, separator: joiner });
+        return insertions;
     }
 
     function getFrequencyList(inputData)
@@ -150,10 +148,10 @@ var wrapWithEval;
         return freqList;
     }
 
-    function getSparseFigureLegendDelimiters()
+    function getSparseFigureLegendInsertions()
     {
-        var delimiters = [FALSE_FREE_DELIMITER];
-        return delimiters;
+        var insertions = [FALSE_FREE_DELIMITER];
+        return insertions;
     }
 
     // The unit path consists of the string of colon-separated unit indices.
@@ -173,6 +171,13 @@ var wrapWithEval;
     function initMinFalseTrueCharIndexArrayStrLength()
     {
         return -1;
+    }
+
+    function undefinedAsString(replacement)
+    {
+        if (replacement === '[][[]]')
+            replacement += '+[]';
+        return replacement;
     }
 
     STRATEGIES =
@@ -255,7 +260,15 @@ var wrapWithEval;
 
         Encodes "NINE" as:
 
-        [0, 2, 0, 1].map("".charAt.bind("NEI")).join([])
+        "false2falsefalse1".split(false).map("".charAt.bind("NEI")).join([])
+
+        (split strategy)
+
+        Or:
+
+        [0].concat(2).concat(0).concat(1).map("".charAt.bind("NEI")).join([])
+
+        (concat strategy)
 
         \* -------------------------------------------------------------------------------------- */
 
@@ -274,17 +287,24 @@ var wrapWithEval;
 
         Encodes "THREE" as:
 
-        [10, 1, 2, 0, 0].map(Function(
+        "10false1false2false0false0".split(false).map(Function(
         "return function(undefined){return this[parseInt(undefined,3)]}")().bind("EHRT")).join([])
 
-        (simple)
+        (split strategy)
 
         Or:
 
-        [10, 1, 2, [], []].map(Function(
+        "10false1false2falsefalse".split(false).map(Function(
         "return function(undefined){return this[parseInt(+undefined,3)]}")().bind("EHRT")).join([])
 
-        (with coercion)
+        (split strategy, with coercion)
+
+        Or:
+
+        ["10"].concat(1).concat(2).concat(0).concat(0).map(Function(
+        "return function(undefined){return this[parseInt(undefined,3)]}")().bind("EHRT")).join([])
+
+        (concat strategy)
 
         \* -------------------------------------------------------------------------------------- */
 
@@ -303,17 +323,24 @@ var wrapWithEval;
 
         Encodes "TWELVE" as:
 
-        [2, 3, 0, 1, 10, 0].map(Function(
+        "2false3false0false1false10false0".split(false).map(Function(
         "return function(undefined){return this[parseInt(undefined,4)]}")().bind("ELTWV")).join([])
 
-        (simple)
+        (split strategy)
 
         Or:
 
-        [2, 3, [], 1, 10, []].map(Function(
+        "2false3falsefalse1false10falsefalse".split(false).map(Function(
         "return function(undefined){return this[parseInt(+undefined,4)]}")().bind("ELTWV")).join([])
 
-        (with coercion)
+        (split strategy, with coercion)
+
+        Or:
+
+        [2].concat(3).concat(0).concat(1).concat("10").concat(0).map(Function(
+        "return function(undefined){return this[parseInt(undefined,4)]}")().bind("ELTWV")).join([])
+
+        (concat strategy)
 
         \* -------------------------------------------------------------------------------------- */
 
@@ -332,17 +359,15 @@ var wrapWithEval;
 
         Encodes "TWELVE" as:
 
-        ["1", "10", "true", "0", "2", "true"].map(Function(
-        "return function(undefined){return this[parseInt(undefined.replace(/true/g,3),4)]}")().bind(
-        "LTVEW")).join([])
+        "1false10falsetruefalse0false2falsetrue".split(true).join(3).split(false).map(Function(
+        "return function(undefined){return this[parseInt(undefined,4)]}")().bind("LTVEW")).join([])
 
         (simple)
 
         Or:
 
-        ["1", "10", "", "true", "2", ""].map(Function(
-        "return function(undefined){return this[parseInt(+undefined.replace(/true/g,3),4)]}")().bind
-        ("ETVLW")).join([])
+        "1false10falsefalsetruefalse2false".split(true).join(3).split(false).map(Function(
+        "return function(undefined){return this[parseInt(+undefined,4)]}")().bind("ETVLW")).join([])
 
         (with coercion)
 
@@ -363,17 +388,17 @@ var wrapWithEval;
 
         Encodes "TWELVE" as:
 
-        ["undefined", "10", "true", "0", "1", "true"].map(Function(
-        "return function(undefined){return this[parseInt(undefined.replace(/true/g,2).replace(/un" +
-        "defined/g,3),4)]}")().bind("LVETW")).join([])
+        "undefinedfalse10falsetruefalse0false1falsetrue".split(true).join(2).split("undefined").join
+        (3).split(false).map(Function(
+        "return function(undefined){return this[parseInt(undefined,4)]}")().bind("LVETW")).join([])
 
         (simple)
 
         Or:
 
-        ["undefined", "10", "", "true", "1", ""].map(Function(
-        "return function(undefined){return this[parseInt(+undefined.replace(/true/g,2).replace(/u" +
-        "ndefined/g,3),4)]}")().bind("EVLTW")).join([])
+        "undefinedfalse10falsefalsetruefalse1false".split(true).join(2).split("undefined").join(3).
+        split(false).map(Function("return function(undefined){return this[parseInt(+undefined,4)]}")
+        ().bind("EVLTW")).join([])
 
         (with coercion)
 
@@ -394,17 +419,18 @@ var wrapWithEval;
 
         Encodes "SIXTEEN" as:
 
-        ["1", "0", "10", "2", "true", "true", "undefined"].map(Function(
-        "return function(undefined){return this[parseInt(undefined.replace(/true/g,3).replace(/un" +
-        "defined/g,4),5)]}")().bind("ISTENX")).join([])
+        "1false0false10false2falsetruefalsetruefalseundefined".split(true).join(3).split("undefined"
+        ).join(4).split(false).map(Function(
+        "return function(undefined){return this[parseInt(undefined,5)]}")().bind("ISTENX")).join([])
 
         (simple)
 
         Or:
 
-        ["1", "true", "10", "2", "", "", "undefined"].map(Function(
-        "return function(undefined){return this[parseInt(+undefined.replace(/true/g,3).replace(/u" +
-        "ndefined/g,4),5)]}")().bind("ESTINX")).join([])
+        "1falsetruefalse10false2falsefalsefalseundefined".split(true).join(3).split("undefined").
+        join(4).split(false).map(Function(
+        "return function(undefined){return this[parseInt(+undefined,5)]}")().bind("ESTINX")).join([]
+        )
 
         (with coercion)
 
@@ -425,17 +451,18 @@ var wrapWithEval;
 
         Encodes "SIXTEEN" as:
 
-        ["1", "0", "10", "NaN", "true", "true", "undefined"].map(Function(
-        "return function(undefined){return this[parseInt([/true/g,/undefined/g,/NaN/g].reduce(fun" +
-        "ction(f,a,l,s,e){return f.replace(a,2+l)},undefined),5)]}")().bind("ISENTX")).join([])
+        "1false0false10falseNaNfalsetruefalsetruefalseundefined".split(true).join(2).split(
+        "undefined").join(3).split(NaN).join(4).split(false).map(Function(
+        "return function(undefined){return this[parseInt(undefined,5)]}")().bind("ISENTX")).join([])
 
         (simple)
 
         Or:
 
-        ["1", "true", "10", "NaN", "", "", "undefined"].map(Function(
-        "return function(undefined){return this[parseInt(+[/true/g,/undefined/g,/NaN/g].reduce(fu" +
-        "nction(f,a,l,s,e){return f.replace(a,2+l)},undefined),5)]}")().bind("ESINTX")).join([])
+        "1falsetruefalse10falseNaNfalsefalsefalseundefined".split(true).join(2).split("undefined").
+        join(3).split(NaN).join(4).split(false).map(Function(
+        "return function(undefined){return this[parseInt(+undefined,5)]}")().bind("ESINTX")).join([]
+        )
 
         (with coercion)
 
@@ -535,11 +562,11 @@ var wrapWithEval;
 
     var protoSource =
     {
-        callGetFigureLegendDelimiters:
-        function (getFigureLegendDelimiters, figurator, figures)
+        callGetFigureLegendInsertions:
+        function (getFigureLegendInsertions, figurator, figures)
         {
-            var figureLegendDelimiters = getFigureLegendDelimiters(figurator, figures);
-            return figureLegendDelimiters;
+            var figureLegendInsertions = getFigureLegendInsertions(figurator, figures);
+            return figureLegendInsertions;
         },
 
         callStrategies:
@@ -636,7 +663,7 @@ var wrapWithEval;
         },
 
         createCharKeyArrayString:
-        function (input, charMap, delimiters, forceString, maxLength)
+        function (input, charMap, insertions, substitutions, forceString, maxLength)
         {
             var charKeyArray =
             _Array_prototype_map.call
@@ -649,28 +676,18 @@ var wrapWithEval;
                 }
             );
             var charKeyArrayStr =
-            this.replaceStringArray(charKeyArray, delimiters, forceString, maxLength);
+            this.replaceStringArray
+            (charKeyArray, insertions, substitutions, forceString, maxLength);
             return charKeyArrayStr;
         },
 
         createDictEncoding:
-        function (legend, charIndexArrayStr, maxLength, radix, amendings, coerceToInt)
+        function (legend, charIndexArrayStr, maxLength, radix, coerceToInt)
         {
             var mapper;
             if (radix)
             {
-                var parseIntArg;
-                if (amendings)
-                {
-                    var firstDigit = radix - amendings;
-                    var createParseIntArg =
-                    createParseIntArg = this.getCreateParseIntArg(amendings);
-                    parseIntArg = createParseIntArg(amendings, firstDigit);
-                }
-                else
-                    parseIntArg = 'undefined';
-                if (coerceToInt)
-                    parseIntArg = '+' + parseIntArg;
+                var parseIntArg = (coerceToInt ? '+' : '') + 'undefined';
                 var formatter = this.findDefinition(MAPPER_FORMATTER);
                 mapper = formatter('[parseInt(' + parseIntArg + ',' + radix + ')]');
             }
@@ -751,8 +768,8 @@ var wrapWithEval;
         (
             initMinCharIndexArrayStrLength,
             figurator,
-            getFigureLegendDelimiters,
-            keyFigureArrayDelimiters,
+            getFigureLegendInsertions,
+            keyFigureArrayInsertions,
             inputData,
             maxLength
         )
@@ -783,17 +800,30 @@ var wrapWithEval;
             var legend = this.encodeDictLegend(dictChars, maxLength - minCharIndexArrayStrLength);
             if (!legend)
                 return;
-            var figureLegendDelimiters =
-            this.callGetFigureLegendDelimiters(getFigureLegendDelimiters, figurator, figures);
+            var figureLegendInsertions =
+            this.callGetFigureLegendInsertions(getFigureLegendInsertions, figurator, figures);
             var figureMaxLength = maxLength - legend.length;
             var figureLegend =
             this.replaceStringArray
-            (figures, figureLegendDelimiters, true, figureMaxLength - minCharIndexArrayStrLength);
+            (
+                figures,
+                figureLegendInsertions,
+                null,
+                true,
+                figureMaxLength - minCharIndexArrayStrLength
+            );
             if (!figureLegend)
                 return;
             var keyFigureArrayStr =
             this.createCharKeyArrayString
-            (input, charMap, keyFigureArrayDelimiters, true, figureMaxLength - figureLegend.length);
+            (
+                input,
+                charMap,
+                keyFigureArrayInsertions,
+                null,
+                true,
+                figureMaxLength - figureLegend.length
+            );
             if (!keyFigureArrayStr)
                 return;
             var formatter = this.findDefinition(MAPPER_FORMATTER);
@@ -812,7 +842,7 @@ var wrapWithEval;
             (
                 initMinFalseTrueCharIndexArrayStrLength,
                 falseTrueFigurator,
-                getDenseFigureLegendDelimiters,
+                getDenseFigureLegendInsertions,
                 [FALSE_TRUE_DELIMITER],
                 inputData,
                 maxLength
@@ -826,7 +856,10 @@ var wrapWithEval;
             var input = inputData.valueOf();
             var freqList = getFrequencyList(inputData);
             var freqListLength = freqList.length;
+            // Integer coercion is for free without a radix, otherwise it costs a replaced plus
+            // sign.
             var coerceToInt =
+            !radix ||
             freqListLength &&
             freqList[0].count * APPEND_LENGTH_OF_DIGIT_0 > APPEND_LENGTH_OF_PLUS_SIGN;
             var reindexMap = createReindexMap(freqListLength, radix, amendings, coerceToInt);
@@ -847,14 +880,33 @@ var wrapWithEval;
             var legend = this.encodeDictLegend(dictChars, maxLength - minCharIndexArrayStrLength);
             if (!legend)
                 return;
+            if (amendings)
+            {
+                var substitutions = [];
+                var firstDigit = radix - amendings;
+                for (var index = 0; index < amendings; ++index)
+                {
+                    var separator = String(AMENDINGS[index]);
+                    var digit = firstDigit + index;
+                    var joiner = String(digit);
+                    var substitution = { separator: separator, joiner: joiner };
+                    substitutions.push(substitution);
+                }
+            }
             var charIndexArrayStr =
             this.createCharKeyArrayString
-            (input, charMap, [FALSE_FREE_DELIMITER], amendings, maxLength - legend.length);
+            (
+                input,
+                charMap,
+                [FALSE_FREE_DELIMITER],
+                substitutions,
+                false,
+                maxLength - legend.length
+            );
             if (!charIndexArrayStr)
                 return;
             var output =
-            this.createDictEncoding
-            (legend, charIndexArrayStr, maxLength, radix, amendings, coerceToInt);
+            this.createDictEncoding(legend, charIndexArrayStr, maxLength, radix, coerceToInt);
             return output;
         },
 
@@ -866,7 +918,7 @@ var wrapWithEval;
             (
                 initMinFalseFreeCharIndexArrayStrLength,
                 falseFreeFigurator,
-                getSparseFigureLegendDelimiters,
+                getSparseFigureLegendInsertions,
                 [FALSE_FREE_DELIMITER],
                 inputData,
                 maxLength
@@ -952,23 +1004,13 @@ var wrapWithEval;
             return output;
         },
 
-        getCreateParseIntArg:
-        function (amendings)
-        {
-            var createParseIntArg;
-            if (amendings > 2)
-                createParseIntArg = this.findDefinition(CREATE_PARSE_INT_ARG);
-            else
-                createParseIntArg = createParseIntArgDefault;
-            return createParseIntArg;
-        },
-
         // Array elements may not contain the substring "false", because the value false could
         // be used as a separator in the encoding.
         replaceFalseFreeArray:
         function (array, maxLength)
         {
-            var result = this.replaceStringArray(array, [FALSE_FREE_DELIMITER], false, maxLength);
+            var result =
+            this.replaceStringArray(array, [FALSE_FREE_DELIMITER], null, false, maxLength);
             return result;
         },
 
@@ -981,6 +1023,22 @@ var wrapWithEval;
         },
 
         /**
+         * An object that exposes properties used to split a string into an array of strings or to
+         * join array elements into a string.
+         *
+         * @private
+         * @typedef Delimiter
+         *
+         * @property {string} separator
+         * An express-parsable expression used as an argument for `String.prototype.split` to split
+         * a string into an array of strings.
+         *
+         * @property {number} joiner
+         * The joiner can be any string. A joiner is inserted between adjacent strings in an array
+         * in order to join them into a single string.
+         */
+
+        /**
          * Replaces a given array of strings with equivalent JSFuck code.
          *
          * Array elements may only contain characters with static definitions in their string
@@ -991,25 +1049,33 @@ var wrapWithEval;
          * @param {string[]} array
          * The string array to replace. Empty arrays are not supported.
          *
-         * @param {object[]} delimiters
-         * An array of delimiters.
+         * @param {Delimiter[]} insertions
+         * An array of delimiters of which at most one will be used to compose a joined string and
+         * split it into an array of strings.
          *
-         * Each delimiter has two string properties: a `joiner` and a `separator`.
+         * The encoder can pick an insertion and insert a joiner between any two adjacent elements
+         * to mark the boundary between them. The separator is then used to split the concatenated
+         * string back into its elements.
          *
-         * The encoder can insert a joiner between any two adjacent elements to mark the boundary
-         * between them. The splitter is an express-parsable expression used to split the
-         * concatenated string back into its elements. It can be any expression evaluating to the
-         * same value as the joiner, or to a regular expression.
+         * @param {Delimiter[]|null} [substitutions]
+         * An array of delimiters, specifying substitutions to be applied to the input elements.
          *
-         * At most one delimiter will be used.
+         * All substitutions are applied on each element of the input array, in the order they are
+         * specified.
+         *
+         * Substitutions are expensive in two ways: they create additional overhead and prevent
+         * certain optimizations for short arrays to be made. To allow all optimizations to be
+         * performed, omit this argument or set it to null instead of specifying an empty array.
          *
          * @param {boolean} [forceString=false]
          * Indicates whether the elements in the replacement expression should evaluate to strings.
          *
          * If this argument is falsy, the elements in the replacement expression may not be equal
-         * to those in the input array, but will have the same string representation. Also, the
-         * string representation of value of the whole replacement expression will be the same as
-         * the string representation of the input string.
+         * to those in the input array, but will have the same string representation.
+         *
+         * Regardless of this argument, the string representation of the value of the whole
+         * replacement expression will be always the same as the string representation of the input
+         * array.
          *
          * @param {number} [maxLength=(NaN)]
          * The maximum length of the replacement expression.
@@ -1024,62 +1090,126 @@ var wrapWithEval;
          */
 
         replaceStringArray:
-        function (array, delimiters, forceString, maxLength)
+        function (array, insertions, substitutions, forceString, maxLength)
         {
             var replacement;
             var count = array.length;
-            if (count > 1)
+            // Don't even try the split strategy for 3 or less elements if the concat strategy can
+            // be applied.
+            if (substitutions || count > 3)
             {
-                if (count > 3) // Don't even try the split strategy for 3 or less elements.
+                var preReplacement =
+                function ()
                 {
+                    // Length of the shortest string replacement "([]+[])".
+                    var STRING_REPLACEMENT_MIN_LENGTH = 7;
+
+                    // This is for the overhead of "[" + "](" + ")" plus the length of the shortest
+                    // separator replacement "[]".
+                    var SEPARATOR_MIN_OVERHEAD = 6;
+
+                    // This is for the overhead of "[" + "](" + ")" plus the length of the shortest
+                    // joiner replacement "[]".
+                    var JOINER_MIN_OVERHEAD = 6;
+
+                    var joinCount = substitutions ? substitutions.length : 0;
+                    var splitCount = joinCount + 1;
+                    var maxSplitReplacementLength =
+                    (maxLength - STRING_REPLACEMENT_MIN_LENGTH) / splitCount -
+                    SEPARATOR_MIN_OVERHEAD;
                     var splitReplacement =
-                    this.replaceString('split', { maxLength: maxLength, optimize: true });
+                    this.replaceString
+                    ('split', { maxLength: maxSplitReplacementLength, optimize: true });
+                    if (!splitReplacement)
+                        return;
+
+                    var preReplacement = '';
+                    if (joinCount)
+                    {
+                        var maxJoinReplacementLength =
+                        (
+                            maxLength - STRING_REPLACEMENT_MIN_LENGTH -
+                            splitCount * (splitReplacement.length + SEPARATOR_MIN_OVERHEAD)
+                        ) /
+                        joinCount -
+                        JOINER_MIN_OVERHEAD;
+                        var joinReplacement =
+                        this.replaceString('join', { maxLength: maxJoinReplacementLength });
+                        if (!joinReplacement)
+                            return;
+
+                        substitutions.forEach
+                        (
+                            function (substitution)
+                            {
+                                var separatorReplacement =
+                                undefinedAsString(this.replaceExpr(substitution.separator));
+                                var joinerReplacement =
+                                undefinedAsString(this.replaceString(substitution.joiner));
+                                preReplacement +=
+                                '[' + splitReplacement + '](' + separatorReplacement + ')[' +
+                                joinReplacement + '](' + joinerReplacement + ')';
+                            },
+                            this
+                        );
+                    }
+                    preReplacement += '[' + splitReplacement + ']';
+                    return preReplacement;
                 }
+                .call(this);
+            }
+            if (!substitutions && count > 1)
+            {
                 var concatReplacement =
                 this.replaceString('concat', { maxLength: maxLength, optimize: true });
             }
-            if (splitReplacement)
+            if (preReplacement)
             // Strategy 1: (array[0] + joiner + array[1] + joiner + array[2]...).split(separator)
             {
-                // 4 is for the additional overhead of "[" + "](" + ")".
-                var maxBulkLength = maxLength - (splitReplacement.length + 4);
-                var optimalReplacement;
-                var optimalSeparatorExpr;
-                delimiters.forEach
+                // 2 is for the additional overhead of "(" + ")".
+                var maxBulkLength = maxLength - (preReplacement.length + 2);
+                var optimalStrReplacement;
+                var optimalSeparatorReplacement;
+                insertions.forEach
                 (
-                    function (delimiter)
+                    function (insertion)
                     {
-                        var str = array.join(delimiter.joiner);
+                        var str = array.join(insertion.joiner);
                         var strReplacement = this.replaceJoinedArrayString(str, maxBulkLength);
-                        if (strReplacement)
+                        if (!strReplacement)
+                            return;
+
+                        var separatorReplacement =
+                        undefinedAsString(this.replaceExpr(insertion.separator));
+                        var bulkLength = strReplacement.length + separatorReplacement.length;
+                        if (!(bulkLength > maxBulkLength))
                         {
-                            var separatorExpr = this.replaceExpr(delimiter.separator);
-                            var bulkLength = strReplacement.length + separatorExpr.length;
-                            if (!(bulkLength > maxBulkLength))
-                            {
-                                maxBulkLength = bulkLength;
-                                optimalReplacement = strReplacement;
-                                optimalSeparatorExpr = separatorExpr;
-                            }
+                            maxBulkLength = bulkLength;
+                            optimalStrReplacement = strReplacement;
+                            optimalSeparatorReplacement = separatorReplacement;
                         }
                     },
                     this
                 );
-                if (optimalReplacement)
+                if (optimalStrReplacement)
                 {
                     replacement =
-                    optimalReplacement + '[' + splitReplacement + '](' + optimalSeparatorExpr + ')';
-                    maxLength = replacement.length;
+                    optimalStrReplacement + preReplacement + '(' + optimalSeparatorReplacement +
+                    ')';
+                    maxLength = replacement.length - 1;
                 }
             }
             if
             (
-                count <= 1 ||
-                concatReplacement &&
-                // 4 is the length of the shortest possible replacement "[[]]".
-                // 7 is the length of the shortest possible additional overhead for each following
-                // array element, as in "[" + "](+[])" or "[" + "](![])".
-                (!replacement || 4 + (concatReplacement.length + 7) * (count - 1) < maxLength)
+                !substitutions &&
+                (
+                    count <= 1 ||
+                    concatReplacement &&
+                    // 4 is the length of the shortest possible replacement "[[]]".
+                    // 7 is the length of the shortest possible additional overhead for each
+                    // following array element, as in "[" + "](+[])" or "[" + "](![])".
+                    !(4 + (concatReplacement.length + 7) * (count - 1) > maxLength)
+                )
             )
             // Strategy 2: [array[0]].concat(array[1]).concat(array[2])...
             {
@@ -1091,9 +1221,8 @@ var wrapWithEval;
                     (
                         function (element)
                         {
-                            var elementReplacement = replaceStaticString(element, options);
-                            if (elementReplacement === '[][[]]')
-                                elementReplacement += '+[]';
+                            var elementReplacement =
+                            undefinedAsString(replaceStaticString(element, options));
                             if (arrayReplacement)
                             {
                                 if (elementReplacement === '[]')
