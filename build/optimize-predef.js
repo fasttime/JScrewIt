@@ -303,7 +303,7 @@ function printHelpMessage(predefTestDataMapObj)
     console.error
     (
         [
-            'Please, specify one of the following definition systems:',
+            'Please, specify one of the following predefinitions:',
             ...Object.keys(predefTestDataMapObj).map(predefName => `• ${predefName}`),
         ]
         .join('\n'),

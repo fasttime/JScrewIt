@@ -10,6 +10,35 @@ const timeUtils = require('../tools/time-utils');
 
 function checkMinInputLength(features, createInput, strategies, strategy, minLength)
 {
+    function checkOtherStrategies(inputData)
+    {
+        let tooSmall = false;
+        const { length } = strategy.call(encoder, inputData);
+        for (const strategyName of strategyNames)
+        {
+            const thisStrategy = strategies[strategyName];
+            if (thisStrategy !== strategy)
+            {
+                const thisLength = thisStrategy.call(encoder, inputData).length;
+                const diff = thisLength - length;
+                let diffStr;
+                if (diff > 0)
+                    diffStr = `+${diff}`;
+                else
+                {
+                    diffStr = chalk.bold(diff);
+                    tooSmall = true;
+                }
+                console.log('%s%s', strategyName.padEnd(25), diffStr);
+            }
+        }
+        if (tooSmall)
+        {
+            ok = false;
+            logWarn('MIN_INPUT_LENGTH is too small.');
+        }
+    }
+
     function findBestStrategy(inputData)
     {
         let bestStrategyName;
@@ -36,13 +65,7 @@ function checkMinInputLength(features, createInput, strategies, strategy, minLen
     const inputDataFit = Object(createInput(minLength));
     const strategyNames = Object.keys(strategies).filter(isRivalStrategyName);
     let ok = true;
-    const outputFit = strategy.call(encoder, inputDataFit);
-    const bestDataFit = findBestStrategy(inputDataFit);
-    if (bestDataFit.length <= outputFit.length)
-    {
-        ok = false;
-        logWarn(`MIN_INPUT_LENGTH is too small for ${bestDataFit.strategyName}.`);
-    }
+    checkOtherStrategies(inputDataFit);
     const outputShort = strategy.call(encoder, inputDataShort);
     const bestDataShort = findBestStrategy(inputDataShort);
     if (bestDataShort.length > outputShort.length)
@@ -52,39 +75,6 @@ function checkMinInputLength(features, createInput, strategies, strategy, minLen
     }
     if (ok)
         logOk('MIN_INPUT_LENGTH is ok.');
-}
-
-function checkStrategyFeatureOptimality
-(createInput, strategies, strategy, minLength, progressCallback)
-{
-    const input = createInput(minLength);
-    const replacer =
-    encoder =>
-    {
-        const inputData = Object(input);
-        const output = strategy.call(encoder, inputData);
-        return output;
-    };
-    const rivalReplacer =
-    (encoder, maxLength) =>
-    {
-        const inputData = Object(input);
-        for (const strategyName in strategies)
-        {
-            if (isRivalStrategyName(strategyName))
-            {
-                const rivalStrategy = strategies[strategyName];
-                if (rivalStrategy !== strategy)
-                {
-                    const output = rivalStrategy.call(encoder, inputData, maxLength);
-                    if (output !== undefined)
-                        return output;
-                }
-            }
-        }
-    };
-    const optimalFeatureObjs = findOptimalFeatures(replacer, rivalReplacer, progressCallback);
-    return optimalFeatureObjs;
 }
 
 function compareRoutineNames(name1, name2)
@@ -106,85 +96,6 @@ function createAnalyzer()
 
     const analyzer = new Analyzer();
     return analyzer;
-}
-
-function createOptimalFeatureObjMap(replacer, rivalReplacer, progressCallback)
-{
-    function callProgressCallback()
-    {
-        if (progressCallback)
-            progressCallback(analyzer.progress);
-    }
-
-    let optimalFeatureObjMap;
-    let optimalLength = Infinity;
-    const analyzer = createAnalyzer();
-    callProgressCallback();
-    let encoder;
-    while (encoder = analyzer.nextEncoder)
-    {
-        const output = replacer(encoder);
-        callProgressCallback();
-        if (output === undefined)
-            continue;
-        const { length } = output;
-        if (length <= optimalLength)
-        {
-            analyzer.stopCapture();
-            const rivalOutput = rivalReplacer(encoder, length);
-            if (rivalOutput !== undefined)
-                continue;
-            if (length < optimalLength)
-            {
-                optimalFeatureObjMap = { __proto__: null };
-                optimalLength = length;
-            }
-            const optimalFeatureObjs =
-            optimalFeatureObjMap[output] || (optimalFeatureObjMap[output] = []);
-            optimalFeatureObjs.push(analyzer.featureObj);
-        }
-    }
-    callProgressCallback();
-    return optimalFeatureObjMap;
-}
-
-function findOptimalFeatures(replacer, rivalReplacer, progressCallback)
-{
-    const optimalFeatureObjMap =
-    createOptimalFeatureObjMap(replacer, rivalReplacer, progressCallback);
-    if (optimalFeatureObjMap)
-    {
-        const result =
-        Object.keys(optimalFeatureObjMap).map
-        (
-            output =>
-            {
-                const optimalFeatureObjs = optimalFeatureObjMap[output];
-                const featureObj =
-                optimalFeatureObjs.reduce
-                (
-                    (previousFeatureObj, currentFeatureObj) =>
-                    {
-                        const nextFeatureObj =
-                        JScrewIt.Feature.commonOf(previousFeatureObj, currentFeatureObj);
-                        return nextFeatureObj;
-                    },
-                );
-                return featureObj;
-            },
-        );
-        return result;
-    }
-}
-
-function findStrategyTestData(strategyName)
-{
-    const STRATEGY_TEST_DATA_LIST = require('./strategy-test-data');
-
-    const strategyTestData =
-    STRATEGY_TEST_DATA_LIST.find
-    (strategyTestData => strategyTestData.strategyName === strategyName);
-    return strategyTestData;
 }
 
 function getOptimalityInfo(encoder, inputList, replaceVariant)
@@ -271,27 +182,6 @@ function printHelpMessage()
     );
 }
 
-function printOptimalFeatureReport(features, optimalFeatureObjs)
-{
-    if (optimalFeatureObjs)
-    {
-        const featureObj = JScrewIt.Feature(features);
-        const featureMatches =
-        optimalFeatureObj => JScrewIt.Feature.areEqual(optimalFeatureObj, featureObj);
-        if (optimalFeatureObjs.some(featureMatches))
-            logOk('Preset features are optimal.');
-        else
-        {
-            let output = 'Preset features are suboptimal. Optimal features are:';
-            for (const optimalFeatureObj of optimalFeatureObjs)
-                output += `\n${optimalFeatureObj}`;
-            logWarn(output);
-        }
-    }
-    else
-        logWarn('No optimal features found.');
-}
-
 function verifyComplex(complex, entry)
 {
     let encoder;
@@ -372,31 +262,16 @@ function verifyPredef(predefName)
     return verify;
 }
 
-function verifyStrategy(strategyName)
+function verifyStrategy(strategyTestData)
 {
     const result =
     () =>
     {
-        const strategyTestData = findStrategyTestData(strategyName);
-        const { createInput, features } = strategyTestData;
+        const { createInput, features, strategyName } = strategyTestData;
         const strategies = JScrewIt.debug.getStrategies();
         const strategy = strategies[strategyName];
         const minLength = strategy.MIN_INPUT_LENGTH;
         checkMinInputLength(features, createInput, strategies, strategy, minLength);
-        const progress = require('./progress');
-        let optimalFeatureObjs;
-        progress
-        (
-            'Scanning preset features',
-            bar =>
-            {
-                const progressCallback = progress => bar.update(progress);
-                optimalFeatureObjs =
-                checkStrategyFeatureOptimality
-                (createInput, strategies, strategy, minLength, progressCallback);
-            },
-        );
-        printOptimalFeatureReport(features, optimalFeatureObjs);
     };
     return result;
 }
@@ -443,25 +318,11 @@ verify.OPTIMAL_B = verifyPredef('OPTIMAL_B');
 
 verify.OPTIMAL_RETURN_STRING = verifyPredef('OPTIMAL_RETURN_STRING');
 
-[
-    'byCharCodes',
-    'byCharCodesRadix4',
-    'byDenseFigures',
-    'byDict',
-    'byDictRadix3',
-    'byDictRadix4',
-    'byDictRadix4AmendedBy1',
-    'byDictRadix4AmendedBy2',
-    'byDictRadix5AmendedBy2',
-    'byDictRadix5AmendedBy3',
-    'bySparseFigures',
-]
-.forEach
-(
-    strategyName =>
-    {
-        verify[strategyName] = verifyStrategy(strategyName);
-    },
-);
+{
+    const STRATEGY_TEST_DATA_LIST = require('./strategy-test-data');
+
+    for (const strategyTestData of STRATEGY_TEST_DATA_LIST)
+        verify[strategyTestData.strategyName] = verifyStrategy(strategyTestData);
+}
 
 main();

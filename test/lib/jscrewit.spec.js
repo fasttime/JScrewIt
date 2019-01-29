@@ -822,7 +822,7 @@
             );
             it
             (
-                'does not replace a single element with the concat strategy when maxLength is low',
+                'does not replace a single element with the concat approach when maxLength is low',
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();

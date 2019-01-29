@@ -49,7 +49,7 @@ var wrapWithEval;
         }
 
         var index;
-        var digitAppendLengths = APPEND_LENGTH_OF_DIGITS.slice(0, radix || 10);
+        var digitAppendLengths = APPEND_LENGTH_OF_DIGITS.slice(0, radix);
         var regExp;
         var replacer;
         if (amendings)
@@ -253,7 +253,7 @@ var wrapWithEval;
                 var output = this.encodeByDenseFigures(inputData, maxLength);
                 return output;
             },
-            2224
+            2239
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -287,36 +287,29 @@ var wrapWithEval;
 
         Encodes "THREE" as:
 
-        "10false1false2false0false0".split(false).map(Function(
+        "10false1falsetruefalse0false0".split(true).join(2).split(false).map(Function(
         "return function(undefined){return this[parseInt(undefined,3)]}")().bind("EHRT")).join([])
 
-        (split strategy)
+        (simple)
 
         Or:
 
-        "10false1false2falsefalse".split(false).map(Function(
+        "10false1falsetruefalsefalse".split(true).join(2).split(false).map(Function(
         "return function(undefined){return this[parseInt(+undefined,3)]}")().bind("EHRT")).join([])
 
-        (split strategy, with coercion)
-
-        Or:
-
-        ["10"].concat(1).concat(2).concat(0).concat(0).map(Function(
-        "return function(undefined){return this[parseInt(undefined,3)]}")().bind("EHRT")).join([])
-
-        (concat strategy)
+        (with coercion)
 
         \* -------------------------------------------------------------------------------------- */
 
-        byDictRadix3:
+        byDictRadix3AmendedBy1:
         defineStrategy
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByDict(inputData, 3, 0, maxLength);
+                var output = this.encodeByDict(inputData, 3, 1, maxLength);
                 return output;
             },
-            240
+            182
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -352,36 +345,7 @@ var wrapWithEval;
                 var output = this.encodeByDict(inputData, 4, 0, maxLength);
                 return output;
             },
-            177
-        ),
-
-        /* -------------------------------------------------------------------------------------- *\
-
-        Encodes "TWELVE" as:
-
-        "1false10falsetruefalse0false2falsetrue".split(true).join(3).split(false).map(Function(
-        "return function(undefined){return this[parseInt(undefined,4)]}")().bind("LTVEW")).join([])
-
-        (simple)
-
-        Or:
-
-        "1false10falsefalsetruefalse2false".split(true).join(3).split(false).map(Function(
-        "return function(undefined){return this[parseInt(+undefined,4)]}")().bind("ETVLW")).join([])
-
-        (with coercion)
-
-        \* -------------------------------------------------------------------------------------- */
-
-        byDictRadix4AmendedBy1:
-        defineStrategy
-        (
-            function (inputData, maxLength)
-            {
-                var output = this.encodeByDict(inputData, 4, 1, maxLength);
-                return output;
-            },
-            312
+            178
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -412,39 +376,44 @@ var wrapWithEval;
                 var output = this.encodeByDict(inputData, 4, 2, maxLength);
                 return output;
             },
-            560
+            298
         ),
 
         /* -------------------------------------------------------------------------------------- *\
 
         Encodes "SIXTEEN" as:
 
-        "1false0false10false2falsetruefalsetruefalseundefined".split(true).join(3).split("undefined"
-        ).join(4).split(false).map(Function(
-        "return function(undefined){return this[parseInt(undefined,5)]}")().bind("ISTENX")).join([])
+        "10false1false4false3false0false0false2".split(false).map(Function(
+        "return function(undefined){return this[parseInt(undefined,5)]}")().bind("EINTXS")).join([])
 
-        (simple)
+        (split strategy)
 
         Or:
 
-        "1falsetruefalse10false2falsefalsefalseundefined".split(true).join(3).split("undefined").
-        join(4).split(false).map(Function(
-        "return function(undefined){return this[parseInt(+undefined,5)]}")().bind("ESTINX")).join([]
+        "10false1false4false3falsefalsefalse2".split(false).map(Function(
+        "return function(undefined){return this[parseInt(+undefined,5)]}")().bind("EINTXS")).join([]
         )
 
-        (with coercion)
+        (split strategy, with coercion)
+
+        Or:
+
+        ["10"].concat(1).concat(4).concat(3).concat(0).concat(0).concat(2).map(Function(
+        "return function(undefined){return this[parseInt(undefined,5)]}")().bind("EINTXS")).join([])
+
+        (concat strategy)
 
         \* -------------------------------------------------------------------------------------- */
 
-        byDictRadix5AmendedBy2:
+        byDictRadix5:
         defineStrategy
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByDict(inputData, 5, 2, maxLength);
+                var output = this.encodeByDict(inputData, 5, 0, maxLength);
                 return output;
             },
-            756
+            224
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -476,7 +445,7 @@ var wrapWithEval;
                 var output = this.encodeByDict(inputData, 5, 3, maxLength);
                 return output;
             },
-            742
+            603
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -497,7 +466,7 @@ var wrapWithEval;
                 var output = this.encodeBySparseFigures(inputData, maxLength);
                 return output;
             },
-            328
+            388
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -862,7 +831,8 @@ var wrapWithEval;
             !radix ||
             freqListLength &&
             freqList[0].count * APPEND_LENGTH_OF_DIGIT_0 > APPEND_LENGTH_OF_PLUS_SIGN;
-            var reindexMap = createReindexMap(freqListLength, radix, amendings, coerceToInt);
+            var radixNum = radix || 10;
+            var reindexMap = createReindexMap(freqListLength, radixNum, amendings, coerceToInt);
             var charMap = createEmpty();
             var minCharIndexArrayStrLength = initMinFalseFreeCharIndexArrayStrLength(input);
             var dictChars = [];
@@ -883,7 +853,7 @@ var wrapWithEval;
             if (amendings)
             {
                 var substitutions = [];
-                var firstDigit = radix - amendings;
+                var firstDigit = radixNum - amendings;
                 for (var index = 0; index < amendings; ++index)
                 {
                     var separator = String(AMENDINGS[index]);
@@ -975,10 +945,9 @@ var wrapWithEval;
                     'byDenseFigures',
                     'bySparseFigures',
                     'byDictRadix5AmendedBy3',
-                    'byDictRadix5AmendedBy2',
                     'byDictRadix4AmendedBy2',
-                    'byDictRadix4AmendedBy1',
-                    'byDictRadix3',
+                    'byDictRadix5',
+                    'byDictRadix3AmendedBy1',
                     'byDictRadix4',
                     'byDict',
                     'byCharCodesRadix4',
@@ -1094,7 +1063,7 @@ var wrapWithEval;
         {
             var replacement;
             var count = array.length;
-            // Don't even try the split strategy for 3 or less elements if the concat strategy can
+            // Don't even try the split approach for 3 or less elements if the concat approach can
             // be applied.
             if (substitutions || count > 3)
             {
@@ -1164,7 +1133,7 @@ var wrapWithEval;
                 this.replaceString('concat', { maxLength: maxLength, optimize: true });
             }
             if (preReplacement)
-            // Strategy 1: (array[0] + joiner + array[1] + joiner + array[2]...).split(separator)
+            // Approach 1: (array[0] + joiner + array[1] + joiner + array[2]...).split(separator)
             {
                 // 2 is for the additional overhead of "(" + ")".
                 var maxBulkLength = maxLength - (preReplacement.length + 2);
@@ -1211,7 +1180,7 @@ var wrapWithEval;
                     !(4 + (concatReplacement.length + 7) * (count - 1) > maxLength)
                 )
             )
-            // Strategy 2: [array[0]].concat(array[1]).concat(array[2])...
+            // Approach 2: [array[0]].concat(array[1]).concat(array[2])...
             {
                 var arrayReplacement;
                 var options = { forceString: forceString };
