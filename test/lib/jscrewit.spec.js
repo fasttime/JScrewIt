@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* global emuEval, emuIt, evalJSFuck, expect, global, module, require, self */
+/* global emuEval, emuIt, evalJSFuck, expect, global, module, repeat, require, self */
 
 'use strict';
 
@@ -384,7 +384,7 @@
                     test('with an empty array', '""([])');
                     test('with a singleton array', '""([0])');
                     test('with a sum', '1+1');
-                    test('with a sum of modified sums', 'a+(+(b+c))');
+                    test('with a sum of modified sums', 'a+(+("b"+[c]))');
                 }
             );
             it
@@ -816,7 +816,7 @@
                     var encoder = JScrewIt.debug.createEncoder();
                     var output =
                     encoder.replaceStringArray
-                    (Array(50).fill('0'), [{ separator: '[]', joiner: '' }], [], false, 3500);
+                    (repeat('0', 50).split(''), [{ separator: '[]', joiner: '' }], [], false, 3500);
                     expect(output).toBeUndefined();
                 }
             );
