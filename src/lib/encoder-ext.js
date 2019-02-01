@@ -18,6 +18,7 @@ _Math_max,
 _Object,
 _Object_keys,
 _RegExp,
+_String,
 assignNoEnum,
 createEmpty,
 createFigurator,
@@ -856,9 +857,9 @@ var wrapWithEval;
                 var firstDigit = radixNum - amendings;
                 for (var index = 0; index < amendings; ++index)
                 {
-                    var separator = String(AMENDINGS[index]);
+                    var separator = AMENDINGS[index];
                     var digit = firstDigit + index;
-                    var joiner = String(digit);
+                    var joiner = _String(digit);
                     var substitution = { separator: separator, joiner: joiner };
                     substitutions.push(substitution);
                 }
