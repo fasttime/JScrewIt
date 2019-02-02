@@ -41,6 +41,7 @@ maskNew,
 var APPEND_LENGTH_OF_DIGITS;
 var APPEND_LENGTH_OF_DIGIT_0;
 var APPEND_LENGTH_OF_EMPTY;
+var APPEND_LENGTH_OF_FALSE;
 var APPEND_LENGTH_OF_PLUS_SIGN;
 var APPEND_LENGTH_OF_SMALL_E;
 
@@ -247,6 +248,7 @@ var resolveSimple;
     var quoteString = _JSON_stringify;
 
     APPEND_LENGTH_OF_DIGIT_0    = 6;
+    APPEND_LENGTH_OF_FALSE      = 4;
     APPEND_LENGTH_OF_EMPTY      = 3; // Append length of the empty array
     APPEND_LENGTH_OF_PLUS_SIGN  = 71;
     APPEND_LENGTH_OF_SMALL_E    = 26;

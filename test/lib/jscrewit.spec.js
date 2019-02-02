@@ -93,6 +93,31 @@
     );
     describe
     (
+        'JScrewIt.debug.createReindexMap',
+        function ()
+        {
+            it
+            (
+                'works without integer coercion',
+                function ()
+                {
+                    var reindexMap = JScrewIt.debug.createReindexMap(5, 5, 3, false);
+                    expect(reindexMap).toEqual(['true', '0', 'undefined', '1', 'NaN']);
+                }
+            );
+            it
+            (
+                'works with integer coercion',
+                function ()
+                {
+                    var reindexMap = JScrewIt.debug.createReindexMap(5, 5, 3, true);
+                    expect(reindexMap).toEqual(['', 'true', 'undefined', '1', 'NaN']);
+                }
+            );
+        }
+    );
+    describe
+    (
         'JScrewIt.debug.defineConstant',
         function ()
         {

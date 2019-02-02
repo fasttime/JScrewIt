@@ -73,7 +73,7 @@ module.exports =
         ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FLAT', 'NO_IE_SRC'],
         length =>
         {
-            const prefix = repeatToFit('0123456', 199);
+            const prefix = repeatToFit('012345678', 463);
             const str = prefix + createDictTestString(2, length - prefix.length);
             return str;
         },
@@ -100,7 +100,7 @@ module.exports =
     data
     (
         ['ARRAY_ITERATOR', 'ARROW', 'CAPITAL_HTML', 'FLAT', 'V8_SRC'],
-        createDictTestString.bind(null, 155),
+        createDictTestString.bind(null, 152),
         'byDictRadix4AmendedBy2',
     ),
     data
@@ -112,7 +112,7 @@ module.exports =
     data
     (
         ['ARRAY_ITERATOR', 'ARROW', 'CAPITAL_HTML', 'FLAT', 'STATUS', 'V8_SRC'],
-        createDictTestString.bind(null, 358),
+        createDictTestString.bind(null, 388),
         'byDictRadix5AmendedBy3',
     ),
     data

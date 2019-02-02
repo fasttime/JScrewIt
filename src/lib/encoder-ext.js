@@ -3,6 +3,7 @@ global
 AMENDINGS,
 APPEND_LENGTH_OF_DIGITS,
 APPEND_LENGTH_OF_DIGIT_0,
+APPEND_LENGTH_OF_FALSE,
 APPEND_LENGTH_OF_PLUS_SIGN,
 FROM_CHAR_CODE,
 FROM_CHAR_CODE_CALLBACK_FORMATTER,
@@ -28,70 +29,12 @@ replaceStaticString,
 
 var STRATEGIES;
 
+var createReindexMap;
 var wrapWithCall;
 var wrapWithEval;
 
 (function ()
 {
-    function createReindexMap(count, radix, amendings, coerceToInt)
-    {
-        function getSortLength()
-        {
-            var length = 0;
-            _Array_prototype_forEach.call
-            (
-                str,
-                function (digit)
-                {
-                    length += digitAppendLengths[digit];
-                }
-            );
-            return length;
-        }
-
-        var index;
-        var digitAppendLengths = APPEND_LENGTH_OF_DIGITS.slice(0, radix);
-        var regExp;
-        var replacer;
-        if (amendings)
-        {
-            var firstDigit = radix - amendings;
-            var pattern = '[';
-            for (index = 0; index < amendings; ++index)
-            {
-                digitAppendLengths[digit] = SIMPLE[AMENDINGS[index]].appendLength;
-                var digit = firstDigit + index;
-                pattern += digit;
-            }
-            pattern += ']';
-            regExp = _RegExp(pattern, 'g');
-            replacer =
-            function (match)
-            {
-                return AMENDINGS[match - firstDigit];
-            };
-        }
-        var range = [];
-        for (index = 0; index < count; ++index)
-        {
-            var str = coerceToInt && !index ? '' : index.toString(radix);
-            var reindexStr = amendings ? str.replace(regExp, replacer) : str;
-            var reindex = range[index] = _Object(reindexStr);
-            reindex.sortLength = getSortLength();
-            reindex.index = index;
-        }
-        range.sort
-        (
-            function (reindex1, reindex2)
-            {
-                var result =
-                reindex1.sortLength - reindex2.sortLength || reindex1.index - reindex2.index;
-                return result;
-            }
-        );
-        return range;
-    }
-
     function defineStrategy(strategy, minInputLength)
     {
         strategy.MIN_INPUT_LENGTH = minInputLength;
@@ -165,7 +108,7 @@ var wrapWithEval;
     function initMinFalseFreeCharIndexArrayStrLength(input)
     {
         var minCharIndexArrayStrLength =
-        _Math_max((input.length - 1) * (SIMPLE.false.length + 1) - 3, 0);
+        _Math_max((input.length - 1) * APPEND_LENGTH_OF_FALSE - 3, 0);
         return minCharIndexArrayStrLength;
     }
 
@@ -254,7 +197,7 @@ var wrapWithEval;
                 var output = this.encodeByDenseFigures(inputData, maxLength);
                 return output;
             },
-            2239
+            2369
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -288,15 +231,15 @@ var wrapWithEval;
 
         Encodes "THREE" as:
 
-        "10false1falsetruefalse0false0".split(true).join(2).split(false).map(Function(
-        "return function(undefined){return this[parseInt(undefined,3)]}")().bind("EHRT")).join([])
+        "10false0false1falsetruefalsetrue".split(true).join(2).split(false).map(Function(
+        "return function(undefined){return this[parseInt(undefined,3)]}")().bind("HRET")).join([])
 
         (simple)
 
         Or:
 
-        "10false1falsetruefalsefalse".split(true).join(2).split(false).map(Function(
-        "return function(undefined){return this[parseInt(+undefined,3)]}")().bind("EHRT")).join([])
+        "10falsetruefalse1falsefalse".split(true).join(2).split(false).map(Function(
+        "return function(undefined){return this[parseInt(+undefined,3)]}")().bind("ERHT")).join([])
 
         (with coercion)
 
@@ -377,7 +320,7 @@ var wrapWithEval;
                 var output = this.encodeByDict(inputData, 4, 2, maxLength);
                 return output;
             },
-            298
+            303
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -446,7 +389,7 @@ var wrapWithEval;
                 var output = this.encodeByDict(inputData, 5, 3, maxLength);
                 return output;
             },
-            603
+            646
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -467,7 +410,7 @@ var wrapWithEval;
                 var output = this.encodeBySparseFigures(inputData, maxLength);
                 return output;
             },
-            388
+            391
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -1092,7 +1035,6 @@ var wrapWithEval;
                     ('split', { maxLength: maxSplitReplacementLength, optimize: true });
                     if (!splitReplacement)
                         return;
-
                     var preReplacement = '';
                     if (joinCount)
                     {
@@ -1107,7 +1049,6 @@ var wrapWithEval;
                         this.replaceString('join', { maxLength: maxJoinReplacementLength });
                         if (!joinReplacement)
                             return;
-
                         substitutions.forEach
                         (
                             function (substitution)
@@ -1148,7 +1089,6 @@ var wrapWithEval;
                         var strReplacement = this.replaceJoinedArrayString(str, maxBulkLength);
                         if (!strReplacement)
                             return;
-
                         var separatorReplacement =
                         undefinedAsString(this.replaceExpr(insertion.separator));
                         var bulkLength = strReplacement.length + separatorReplacement.length;
@@ -1240,6 +1180,66 @@ var wrapWithEval;
 
     var falseFreeFigurator = createFigurator([''], 'false');
     var falseTrueFigurator = createFigurator(['false', 'true'], '');
+
+    createReindexMap =
+    function (count, radix, amendings, coerceToInt)
+    {
+        function getSortLength()
+        {
+            var length = 0;
+            _Array_prototype_forEach.call
+            (
+                str,
+                function (digit)
+                {
+                    length += digitAppendLengths[digit];
+                }
+            );
+            return length;
+        }
+
+        var index;
+        var digitAppendLengths = APPEND_LENGTH_OF_DIGITS.slice(0, radix);
+        var regExp;
+        var replacer;
+        if (amendings)
+        {
+            var firstDigit = radix - amendings;
+            var pattern = '[';
+            for (index = 0; index < amendings; ++index)
+            {
+                var digit = firstDigit + index;
+                digitAppendLengths[digit] = SIMPLE[AMENDINGS[index]].appendLength;
+                pattern += digit;
+            }
+            pattern += ']';
+            regExp = _RegExp(pattern, 'g');
+            replacer =
+            function (match)
+            {
+                return AMENDINGS[match - firstDigit];
+            };
+        }
+        var range = [];
+        for (index = 0; index < count; ++index)
+        {
+            var str = coerceToInt && !index ? '' : index.toString(radix);
+            var reindexStr = amendings ? str.replace(regExp, replacer) : str;
+            var reindex = range[index] = _Object(reindexStr);
+            reindex.sortLength = getSortLength();
+            reindex.index = index;
+        }
+        range.sort
+        (
+            function (reindex1, reindex2)
+            {
+                var result =
+                reindex1.sortLength - reindex2.sortLength || reindex1.index - reindex2.index;
+                return result;
+            }
+        );
+        return range;
+    };
 
     wrapWithCall =
     function (str)
