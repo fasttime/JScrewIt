@@ -1,6 +1,6 @@
 {
   "name": "jscrewit",
-  "version": "2.9.3",
+  "version": "2.9.4",
   "description": "Converts plain JavaScript into JSFuck code, which consists of only six different characters: ! ( ) + [ ]",
   "keywords": [
     "esoteric",
