@@ -100,7 +100,13 @@ module.exports =
     data
     (
         ['ARRAY_ITERATOR', 'ARROW', 'CAPITAL_HTML', 'FLAT', 'V8_SRC'],
-        createDictTestString.bind(null, 152),
+        createDictTestString.bind(null, 120),
+        'byDictRadix4AmendedBy1',
+    ),
+    data
+    (
+        ['ARRAY_ITERATOR', 'ARROW', 'CAPITAL_HTML', 'FLAT', 'V8_SRC'],
+        createDictTestString.bind(null, 156),
         'byDictRadix4AmendedBy2',
     ),
     data
