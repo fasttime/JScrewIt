@@ -793,7 +793,7 @@ var wrapWithEval;
         },
 
         encodeByDict:
-        function (inputData, radix, amendings, maxLength)
+        function (inputData, radix, amendingCount, maxLength)
         {
             var input = inputData.valueOf();
             var freqList = getFrequencyList(inputData);
@@ -805,7 +805,7 @@ var wrapWithEval;
             freqListLength &&
             freqList[0].count * APPEND_LENGTH_OF_DIGIT_0 > APPEND_LENGTH_OF_PLUS_SIGN;
             var radixNum = radix || 10;
-            var reindexMap = createReindexMap(freqListLength, radixNum, amendings, coerceToInt);
+            var reindexMap = createReindexMap(freqListLength, radixNum, amendingCount, coerceToInt);
             var charMap = createEmpty();
             var minCharIndexArrayStrLength = initMinFalseFreeCharIndexArrayStrLength(input);
             var dictChars = [];
@@ -823,11 +823,11 @@ var wrapWithEval;
             var legend = this.encodeDictLegend(dictChars, maxLength - minCharIndexArrayStrLength);
             if (!legend)
                 return;
-            if (amendings)
+            if (amendingCount)
             {
                 var substitutions = [];
-                var firstDigit = radixNum - amendings;
-                for (var index = 0; index < amendings; ++index)
+                var firstDigit = radixNum - amendingCount;
+                for (var index = 0; index < amendingCount; ++index)
                 {
                     var separator = AMENDINGS[index];
                     var digit = firstDigit + index;
@@ -1212,7 +1212,7 @@ var wrapWithEval;
     var falseTrueFigurator = createFigurator(['false', 'true'], '');
 
     createReindexMap =
-    function (count, radix, amendings, coerceToInt)
+    function (count, radix, amendingCount, coerceToInt)
     {
         function getSortLength()
         {
@@ -1232,11 +1232,11 @@ var wrapWithEval;
         var digitAppendLengths = APPEND_LENGTH_OF_DIGITS.slice(0, radix);
         var regExp;
         var replacer;
-        if (amendings)
+        if (amendingCount)
         {
-            var firstDigit = radix - amendings;
+            var firstDigit = radix - amendingCount;
             var pattern = '[';
-            for (index = 0; index < amendings; ++index)
+            for (index = 0; index < amendingCount; ++index)
             {
                 var digit = firstDigit + index;
                 digitAppendLengths[digit] = SIMPLE[AMENDINGS[index]].appendLength;
@@ -1254,7 +1254,7 @@ var wrapWithEval;
         for (index = 0; index < count; ++index)
         {
             var str = coerceToInt && !index ? '' : index.toString(radix);
-            var reindexStr = amendings ? str.replace(regExp, replacer) : str;
+            var reindexStr = amendingCount ? str.replace(regExp, replacer) : str;
             var reindex = range[index] = _Object(reindexStr);
             reindex.sortLength = getSortLength();
             reindex.index = index;
