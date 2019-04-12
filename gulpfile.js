@@ -49,8 +49,8 @@ task
             'lib/**/*.js',
             'tmp-src',
         ];
-        var stream = del(patterns);
-        return stream;
+        var promise = del(patterns);
+        return promise;
     }
 );
 
