@@ -177,12 +177,36 @@ legacyTask
 legacyTask
 (
     'test',
-    function ()
+    function (callback)
     {
-        var mocha = require('gulp-spawn-mocha');
+        var fork = require('child_process').fork;
 
-        var stream = src('test/**/*.spec.js').pipe(mocha({ istanbul: true }));
-        return stream;
+        var resolve = require.resolve;
+        var nycPath = resolve('nyc/bin/nyc');
+        var mochaPath = resolve('mocha/bin/mocha');
+        var cmd =
+        fork
+        (
+            nycPath,
+            [
+                '--include=lib',
+                '--include=src',
+                '--include=tools',
+                '--reporter=html',
+                '--reporter=text-summary',
+                '--',
+                mochaPath,
+                'test/**/*.spec.js',
+            ]
+        );
+        cmd.on
+        (
+            'exit',
+            function (code)
+            {
+                callback(code && 'Test failed');
+            }
+        );
     }
 );
 
