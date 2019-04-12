@@ -54,10 +54,16 @@ The property that the various string methods returning HTML code such as String.
 _Available in Internet Explorer._
 <a name="CHROME"></a>
 ### `CHROME`
-_An alias for [`CHROME_69`](#CHROME_69)._
+_An alias for [`CHROME_73`](#CHROME_73)._
 <a name="CHROME_69"></a>
 ### `CHROME_69`
 Features available in Chrome 69 and Opera 56 or later.
+<a name="CHROME_73"></a>
+### `CHROME_73`
+Features available in Chrome 73 and Opera 60 or later.
+<a name="CHROME_PREV"></a>
+### `CHROME_PREV`
+_An alias for [`CHROME_69`](#CHROME_69)._
 <a name="COMPACT"></a>
 ### `COMPACT`
 All new browsers' features.<br>
@@ -87,6 +93,9 @@ _An alias for [`EDGE_40`](#EDGE_40)._
 <a name="EDGE_40"></a>
 ### `EDGE_40`
 Features available in Edge 40 or later.
+<a name="EDGE_PREV"></a>
+### `EDGE_PREV`
+_An alias for [`EDGE_40`](#EDGE_40)._
 <a name="ESC_HTML_ALL"></a>
 ### `ESC_HTML_ALL`
 The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
