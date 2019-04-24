@@ -48,11 +48,12 @@
     "gulp-jsdoc3": "~2.0.0",
     "gulp-rename": "~1.4.0",
     "gulp-replace": "~1.0.0",
+    "gulp-spawn-mocha": "~5.0.1",
     "gulp-uglify": "~3.0.2",
+    "istanbul": "~0.4.5",
     "jsdoc-to-markdown": "~4.0.1",
     "mocha": "~3.5.3",
     "mocha-bar": "~0.0.3",
-    "nyc": "~14.0.0",
     "proxyquire": "~2.1.0",
     "semver": "~6.0.0"
   }
