@@ -55,7 +55,8 @@ describe
                         }
                     );
                 }
-            );
+            )
+            .timeout(5000);
         }
 
         test

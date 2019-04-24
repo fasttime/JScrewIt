@@ -8,7 +8,7 @@ const ENGINE_ENTRIES =
         name: ['Chrome', 'Opera'],
         versions:
         [
-            { description: ['69+', '56+'], feature: 'CHROME_69' },
+            { description: ['73+', '60+'], feature: 'CHROME_73' },
         ],
     },
     {
@@ -67,6 +67,7 @@ const ENGINE_ENTRIES =
             { description: '5+', feature: 'NODE_5' },
             { description: '10+', feature: 'NODE_10' },
             { description: '11+', feature: 'NODE_11' },
+            { description: '12+', feature: 'NODE_12' },
         ],
     },
 ];

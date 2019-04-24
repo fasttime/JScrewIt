@@ -55,15 +55,12 @@ _Available in Internet Explorer._
 <a name="CHROME"></a>
 ### `CHROME`
 _An alias for [`CHROME_73`](#CHROME_73)._
-<a name="CHROME_69"></a>
-### `CHROME_69`
-Features available in Chrome 69 and Opera 56 or later.
 <a name="CHROME_73"></a>
 ### `CHROME_73`
 Features available in Chrome 73 and Opera 60 or later.
 <a name="CHROME_PREV"></a>
 ### `CHROME_PREV`
-_An alias for [`CHROME_69`](#CHROME_69)._
+_An alias for [`CHROME_73`](#CHROME_73)._
 <a name="COMPACT"></a>
 ### `COMPACT`
 All new browsers' features.<br>
@@ -115,7 +112,7 @@ _Available in Chrome, Edge, Firefox, Safari, Opera and Node.js 0.12+._
 ### `ESC_REGEXP_LF`
 Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format line feed characters \("\\n"\) in their string representation.
 
-_Available in Edge, Firefox, Internet Explorer and Safari._
+_Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Node.js 12+._
 <a name="ESC_REGEXP_SLASH"></a>
 ### `ESC_REGEXP_SLASH`
 Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format slashes \("/"\) in their string representation.
@@ -244,7 +241,10 @@ Features available in Node.js 0.12.
 Features available in Node.js 10.
 <a name="NODE_11"></a>
 ### `NODE_11`
-Features available in Node.js 11 or later.
+Features available in Node.js 11.
+<a name="NODE_12"></a>
+### `NODE_12`
+Features available in Node.js 12 or later.
 <a name="NODE_4"></a>
 ### `NODE_4`
 Features available in Node.js 4.
@@ -337,7 +337,7 @@ This table lists features available in the most common engines.
 <th>Features</th>
 </tr>
 <tr>
-<td>Chrome 69+, Opera 56+</td>
+<td>Chrome 73+, Opera 60+</td>
 <td>
 <ul>
 <li><a href="#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
@@ -348,6 +348,7 @@ This table lists features available in the most common engines.
 <li><a href="#BARPROP"><code>BARPROP</code></a>
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
+<li><a href="#ESC_REGEXP_LF"><code>ESC_REGEXP_LF</code></a>
 <li><a href="#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
 <li><a href="#FILL"><code>FILL</code></a>
 <li><a href="#FLAT"><code>FLAT</code></a>
@@ -552,6 +553,7 @@ This table lists features available in the most common engines.
 <li><a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a> (not in Node.js 0.12+)
 <li><a href="#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a> and <a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a> (Node.js 0.12+)
+<li><a href="#ESC_REGEXP_LF"><code>ESC_REGEXP_LF</code></a> (Node.js 12+)
 <li><a href="#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a> (Node.js 4+)
 <li><a href="#FILL"><code>FILL</code></a> (Node.js 4+)
 <li><a href="#FLAT"><code>FLAT</code></a> (Node.js 11+)
