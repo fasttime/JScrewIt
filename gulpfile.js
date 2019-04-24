@@ -308,7 +308,8 @@ task
 
         var writeFile = util.promisify(fs.writeFile);
         var promise =
-        jsdoc2md.render({ files: 'lib/jscrewit.js' })
+        jsdoc2md
+        .render({ files: 'lib/jscrewit.js' })
         .then
         (
             function (output)
