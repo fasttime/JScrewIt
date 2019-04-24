@@ -220,12 +220,12 @@ their intersection.
 
 JScrewIt itself and the code it generates are compatible with the JavaScript engines listed below.
 
-- Chrome 69+
+- Chrome 73+
 - Edge 40+
 - Firefox 54+
 - Internet Explorer 9+
 - Safari 7.0+
-- Opera 56+
+- Opera 60+
 - Android Browser 4.x
 - Node.js
 
