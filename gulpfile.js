@@ -196,7 +196,7 @@ task
 
         var uglifyOpts =
         {
-            compress: { global_defs: { DEBUG: false } },
+            compress: { global_defs: { DEBUG: false }, passes: 2 },
             output:
             {
                 comments:
