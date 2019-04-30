@@ -12,9 +12,10 @@
   "license": "ISC",
   "author": "Francesco Trotta <ft@fasttime.org> (https://github.com/fasttime)",
   "files": [
-    "*.md",
-    "html",
+    "Features.md",
     "JScrewIt.html",
+    "doc",
+    "html",
     "lib",
     "output.txt",
     "screw.js",
@@ -22,9 +23,11 @@
     "!.*"
   ],
   "main": "lib/jscrewit.js",
+  "types": "lib/jscrewit.d.ts",
   "bin": "screw.js",
   "directories": {
     "lib": "lib",
+    "doc": "doc",
     "test": "test"
   },
   "repository": {
@@ -49,12 +52,14 @@
     "gulp-rename": "~1.4.0",
     "gulp-replace": "~1.0.0",
     "gulp-spawn-mocha": "~5.0.1",
+    "gulp-typedoc": "~2.2.2",
     "gulp-uglify": "~3.0.2",
     "istanbul": "~0.4.5",
-    "jsdoc-to-markdown": "~4.0.1",
     "mocha": "~3.5.3",
     "mocha-bar": "~0.0.3",
     "proxyquire": "~2.1.0",
-    "semver": "~6.0.0"
+    "semver": "~6.0.0",
+    "typedoc": "~0.14.2",
+    "typedoc-plugin-markdown": "~1.2.0"
   }
 }

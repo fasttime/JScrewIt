@@ -1,4 +1,4 @@
-/* eslint-env node */
+/* eslint-env es6, node */
 
 'use strict';
 
@@ -11,7 +11,7 @@ var series      = gulp.series;
 var src         = gulp.src;
 
 var task;
-if (semver.satisfies(process.version, '>=8.0.0'))
+if (semver.satisfies(process.version, '>=10.0.0'))
 {
     var dest = gulp.dest;
 
@@ -27,7 +27,7 @@ else
             taskName,
             function (callback)
             {
-                callback('Task not available in Node.js < 8');
+                callback('Task not available in Node.js < 10');
             }
         );
     };
@@ -43,10 +43,11 @@ task
         var patterns =
         [
             'Features.md',
-            'Reference.md',
             'coverage',
+            'doc',
             'html/**/*.js',
             'lib/**/*.js',
+            'lib/feature-all.d.ts',
             'tmp-src',
         ];
         var promise = del(patterns);
@@ -90,6 +91,10 @@ task
                 src: ['*.js', 'test/**/*.js', 'tools/**/*.js'],
                 // process.exitCode is not supported in Node.js 0.10.
                 rules: { 'no-process-exit': 'off' },
+            },
+            {
+                src: 'lib/**/*.ts',
+                parserOptions: { project: 'tsconfig.json' },
             }
         );
         return stream;
@@ -289,36 +294,13 @@ task
     'feature-doc',
     function (callback)
     {
-        var fs = require('fs');
+        var writeFile = require('fs').promises.writeFile;
         var makeFeatureDoc = require('./build/make-feature-doc');
 
         var featureDoc = makeFeatureDoc();
-        fs.writeFile('Features.md', featureDoc, callback);
-    }
-);
-
-task
-(
-    'jsdoc2md',
-    function ()
-    {
-        var fs          = require('fs');
-        var jsdoc2md    = require('jsdoc-to-markdown');
-        var util        = require('util');
-
-        var writeFile = util.promisify(fs.writeFile);
-        var promise =
-        jsdoc2md
-        .render({ files: 'lib/jscrewit.js' })
-        .then
-        (
-            function (output)
-            {
-                var promise = writeFile('Reference.md', output);
-                return promise;
-            }
-        );
-        return promise;
+        var promiseMd = writeFile('Features.md', featureDoc.contentMd);
+        var promiseTs = writeFile('lib/feature-all.d.ts', featureDoc.contentTs);
+        Promise.all([promiseMd, promiseTs]).then(() => callback(), callback);
     }
 );
 
@@ -350,6 +332,29 @@ task
 
 task
 (
+    'typedoc',
+    function ()
+    {
+        var typedoc = require('gulp-typedoc');
+
+        var opts =
+        {
+            excludeExternals:       true,
+            excludePrivate:         false,
+            includeDeclarations:    true,
+            name:                   'JScrewIt',
+            out:                    'doc',
+            readme:                 'none',
+            theme:                  'markdown',
+        };
+        var stream =
+        src('lib/*.d.ts', { read: false }).pipe(typedoc(opts));
+        return stream;
+    }
+);
+
+task
+(
     'default',
     series
     (
@@ -357,6 +362,7 @@ task
         'concat',
         'feature-info',
         'test',
-        parallel('uglify:html', 'uglify:lib', 'feature-doc', 'jsdoc2md')
+        parallel('uglify:html', 'uglify:lib', 'feature-doc'),
+        'typedoc'
     )
 );

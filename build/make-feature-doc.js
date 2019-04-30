@@ -110,9 +110,10 @@ function calculateEngineSupportInfo(engineEntry, filter)
     return availabilityInfo;
 }
 
-function escape(str)
+function escape(str, newLineSeparator)
 {
-    const result = str.replace(/[\n&()[\\\]]/g, char => char === '\n' ? '<br>\n' : `\\${char}`);
+    const result =
+    str.replace(/[\n&()[\\\]]/g, char => char === '\n' ? newLineSeparator : `\\${char}`);
     return result;
 }
 
@@ -145,12 +146,6 @@ function formatAvailability(availability, webWorkerReport, forcedStrictModeRepor
 function formatFeatureName(featureName)
 {
     const result = `<a href="#${getAnchorName(featureName)}"><code>${featureName}</code></a>`;
-    return result;
-}
-
-function formatFeatureNameMD(featureName)
-{
-    const result = `[\`${featureName}\`](#${getAnchorName(featureName)})`;
     return result;
 }
 
@@ -351,41 +346,40 @@ function ()
     const { Feature } = JScrewIt;
     const allFeatureMap = Feature.ALL;
     const elementaryFeatures = Feature.ELEMENTARY;
-    let content =
-    '# JScrewIt Feature Reference\n' +
-    '## Feature List\n' +
-    'This section lists all features along with their descriptions.\n';
+    let contentTs =
+    '/* eslint-disable max-len */\n' +
+    '\n' +
+    'interface FeatureAll\n{';
     Object.keys(allFeatureMap).sort().forEach
     (
         featureName =>
         {
-            let subContent;
+            let subContentTs;
             const featureObj = allFeatureMap[featureName];
             const { name } = featureObj;
             if (name === featureName)
             {
                 const { description } = featureObj;
-                subContent = escape(description);
+                subContentTs = `\n     * ${escape(description, '\n     *\n     * ')}\n     `;
                 if (featureObj.elementary)
                 {
                     const availability = reportAsList(featureName, getAvailabilityInfo);
                     const webWorkerReport = getWebWorkerReport(featureObj);
                     const forcedStrictModeReport = getForcedStrictModeReport(featureObj);
-                    subContent +=
-                    '\n\n_' +
-                    `${formatAvailability(availability, webWorkerReport, forcedStrictModeReport)}_`;
+                    const formattedAvailability =
+                    formatAvailability(availability, webWorkerReport, forcedStrictModeReport);
+                    subContentTs +=
+                    `*\n     * @reamarks\n     *\n     * ${formattedAvailability}\n     `;
                 }
             }
             else
-                subContent = `_An alias for ${formatFeatureNameMD(name)}._`;
-            content +=
-            `<a name="${getAnchorName(featureName)}"></a>\n` +
-            `### \`${featureName}\`\n` +
-            `${subContent}\n`;
+                subContentTs = ` An alias for \`${name}\`. `;
+            contentTs += `\n    /**${subContentTs}*/\n    ${featureName}: Feature;\n`;
         },
     );
-    content +=
-    '## Engine Support\n' +
+    contentTs += '}\n';
+    let contentMd =
+    '# JScrewIt Feature Reference\n' +
     'This table lists features available in the most common engines.\n' +
     '<table>\n' +
     '<tr>\n' +
@@ -415,8 +409,9 @@ function ()
             if (impliers)
                 assignmentMap[featureName].impliers = impliers;
         }
-        content += printRow(getCombinedDescription(engineEntry, 0), assignmentMap);
+        contentMd += printRow(getCombinedDescription(engineEntry, 0), assignmentMap);
     }
-    content += '</table>\n';
-    return content;
+    contentMd += '</table>\n';
+    const returnValue = { contentMd, contentTs };
+    return returnValue;
 };
