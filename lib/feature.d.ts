@@ -1,3 +1,5 @@
+/// <reference path='feature-all.d.ts'/>
+
 /**
  * An array containing any number of feature objects or names or aliases of predefined features, in
  * no particular order.
@@ -6,7 +8,8 @@
  *
  * @remarks
  *
- * An error is thrown if the specified features are not mutually compatible.
+ * Methods that accept parameters of this type throw an error if the specified features are not
+ * mutually compatible.
  */
 type CompatibleFeatureArray = Readonly<FeatureElement[]>;
 
@@ -15,11 +18,11 @@ type CompatibleFeatureArray = Readonly<FeatureElement[]>;
  * length of its output are available in a particular JavaScript engine.
  *
  * JScrewIt comes with a set of predefined feature objects exposed as property values of
- * [[JScrewIt.Feature]] or `JScrewIt.Feature.ALL`, where the property name is the feature's name or
- * an alias thereof.
+ * [`JScrewIt.Feature`](jscrewit.md#feature) or [`JScrewIt.Feature.ALL`](featureconstructor.md#all),
+ * where the property name is the feature's name or an alias thereof.
  *
- * Besides these predefined features, it is possible to construct custom features from the union
- * or intersection of other features.
+ * Besides these predefined features, it is possible to construct custom features from the union or
+ * intersection of other features.
  *
  * Among the predefined features, there are some special ones called *elementary* features.
  * Elementary features either cannot be expressed as a union of any number of other features, or
@@ -28,9 +31,9 @@ type CompatibleFeatureArray = Readonly<FeatureElement[]>;
  * All other features, called *composite* features, can be constructed as a union of zero or more
  * elementary features.
  * Two of the predefined composite features are particularly important:
- * [`DEFAULT`](_feature_d_.featureall.md#DEFAULT) is the empty feature, indicating that no
- * elementary feature is available at all; [`AUTO`](_feature_d_.featureall.md#AUTO) is the union of
- * all elementary features available in the current engine.
+ * [`DEFAULT`](featureall.md#DEFAULT) is the empty feature, indicating that no elementary feature is
+ * available at all; [`AUTO`](featureall.md#AUTO) is the union of all elementary features available
+ * in the current engine.
  *
  * Not all features can be available at the same time: some features are necessarily incompatible,
  * meaning that they mutually exclude each other, and thus their union cannot be constructed.
@@ -114,9 +117,6 @@ interface FeatureConstructor extends FeatureAll
     /**
      * An immutable mapping of all predefined feature objects accessed by name or alias.
      *
-     * For an exhaustive list of all features, see the
-     * [Feature Reference](_feature_d_.featureall.md).
-     *
      * @example
      *
      * This will produce an array with the names and aliases of all predefined features.
@@ -142,13 +142,13 @@ interface FeatureConstructor extends FeatureAll
      * The constructor can be used with or without the `new` operator, e.g.
      * `new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
      * If no arguments are specified, the new feature object will be equivalent to
-     * [`DEFAULT`](_feature_d_.featureall.md#DEFAULT).
+     * [`DEFAULT`](featureall.md#DEFAULT).
      *
      * @example
      *
      * The following statements are equivalent, and will all construct a new feature object
-     * including both [`ANY_DOCUMENT`](_feature_d_.featureall.md#ANY_DOCUMENT) and
-     * [`ANY_WINDOW`](_feature_d_.featureall.md#ANY_WINDOW).
+     * including both [`ANY_DOCUMENT`](featureall.md#ANY_DOCUMENT) and
+     * [`ANY_WINDOW`](featureall.md#ANY_WINDOW).
      *
      * ```js
      * JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
@@ -162,10 +162,9 @@ interface FeatureConstructor extends FeatureAll
      * JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW]);
      * ```
      *
-     * @remarks
+     * @throws
      *
-     * An error is thrown if any of the specified arguments is neither a feature object nor a name
-     * or alias of a predefined feature, or if the specified features are not mutually compatible.
+     * An error is thrown if any of the specified features are not mutually compatible.
      */
     new (...features: (FeatureElement | CompatibleFeatureArray)[]): Feature;
 
@@ -175,13 +174,13 @@ interface FeatureConstructor extends FeatureAll
      * The constructor can be used with or without the `new` operator, e.g.
      * `new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
      * If no arguments are specified, the new feature object will be equivalent to
-     * [`DEFAULT`](_feature_d_.featureall.md#DEFAULT).
+     * [`DEFAULT`](featureall.md#DEFAULT).
      *
      * @example
      *
      * The following statements are equivalent, and will all construct a new feature object
-     * including both [`ANY_DOCUMENT`](_feature_d_.featureall.md#ANY_DOCUMENT) and
-     * [`ANY_WINDOW`](_feature_d_.featureall.md#ANY_WINDOW).
+     * including both [`ANY_DOCUMENT`](featureall.md#ANY_DOCUMENT) and
+     * [`ANY_WINDOW`](featureall.md#ANY_WINDOW).
      *
      * ```js
      * new JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
@@ -195,10 +194,9 @@ interface FeatureConstructor extends FeatureAll
      * new JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW]);
      * ```
      *
-     * @remarks
+     * @throws
      *
-     * An error is thrown if any of the specified arguments is neither a feature object nor a name
-     * or alias of a predefined feature, or if the specified features are not mutually compatible.
+     * An error is thrown if any of the specified features are not mutually compatible.
      */
     (...features: (FeatureElement | CompatibleFeatureArray)[]): Feature;
 
@@ -258,17 +256,16 @@ interface FeatureConstructor extends FeatureAll
      *
      * @example
      *
-     * This will create a new feature object equivalent to [`NAME`](_feature_d_.featureall.md#NAME).
+     * This will create a new feature object equivalent to [`NAME`](featureall.md#NAME).
      *
      * ```js
      * var newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
      * ```
      *
      * This will create a new feature object equivalent to
-     * [`ANY_DOCUMENT`](_feature_d_.featureall.md#ANY_DOCUMENT).
-     * This is because both [`HTMLDOCUMENT`](_feature_d_.featureall.md#HTMLDOCUMENT) and
-     * [`DOCUMENT`](_feature_d_.featureall.md#DOCUMENT) imply
-     * [`ANY_DOCUMENT`](_feature_d_.featureall.md#ANY_DOCUMENT).
+     * [`ANY_DOCUMENT`](featureall.md#ANY_DOCUMENT).
+     * This is because both [`HTMLDOCUMENT`](featureall.md#HTMLDOCUMENT) and
+     * [`DOCUMENT`](featureall.md#DOCUMENT) imply [`ANY_DOCUMENT`](featureall.md#ANY_DOCUMENT).
      *
      * ```js
      * var newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
@@ -282,9 +279,12 @@ interface FeatureConstructor extends FeatureAll
  *
  * @remarks
  *
- * An error is thrown if the specified value is neither a feature object nor a name or alias of a
- * predefined feature.
+ * Methods that accept parameters of this type throw an error if the specified value is neither a
+ * feature object nor a name or alias of a predefined feature.
  */
-type FeatureElement = Feature | string;
+type FeatureElement = Feature | PredefinedFeatureName;
 
 interface JScrewIt { Feature: FeatureConstructor; }
+
+/** Name or alias of a predefined feature. */
+type PredefinedFeatureName = keyof FeatureAll;

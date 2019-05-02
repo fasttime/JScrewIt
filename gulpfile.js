@@ -93,8 +93,13 @@ task
                 rules: { 'no-process-exit': 'off' },
             },
             {
-                src: 'lib/**/*.ts',
+                src: ['lib/**/*.ts', '!lib/feature-all.d.ts'],
                 parserOptions: { project: 'tsconfig.json' },
+                rules:
+                {
+                    '@typescript-eslint/no-triple-slash-reference': 'off',
+                    'spaced-comment': ['error', 'always', { markers: ['/'] }],
+                },
             }
         );
         return stream;
@@ -304,51 +309,26 @@ task
     }
 );
 
-// The docs task is not executed by the default task because the files it generates are not included
-// in the repository or in a distribution package.
-task
-(
-    'docs',
-    function ()
-    {
-        var jsdoc = require('gulp-jsdoc3');
-
-        var stream =
-        src('lib/jscrewit.js', { read: false })
-        .pipe
-        (
-            jsdoc
-            (
-                {
-                    opts: { access: 'all', destination: 'docs' },
-                    plugins: ['plugins/markdown'],
-                    tags: { allowUnknownTags: false },
-                }
-            )
-        );
-        return stream;
-    }
-);
-
 task
 (
     'typedoc',
     function ()
     {
+        var pkg = require('./package.json');
         var typedoc = require('gulp-typedoc');
 
         var opts =
         {
             excludeExternals:       true,
-            excludePrivate:         false,
+            gitRevision:            pkg.version,
             includeDeclarations:    true,
+            mode:                   'file',
             name:                   'JScrewIt',
             out:                    'doc',
             readme:                 'none',
             theme:                  'markdown',
         };
-        var stream =
-        src('lib/*.d.ts', { read: false }).pipe(typedoc(opts));
+        var stream = src('lib', { read: false }).pipe(typedoc(opts));
         return stream;
     }
 );
@@ -365,4 +345,30 @@ task
         parallel('uglify:html', 'uglify:lib', 'feature-doc'),
         'typedoc'
     )
+);
+
+// The docs task is not executed by the default task because the files it generates are not included
+// in the repository or in a distribution package.
+task
+(
+    'jsdoc',
+    function ()
+    {
+        var jsdoc = require('gulp-jsdoc3');
+
+        var stream =
+        src('lib/jscrewit.js', { read: false })
+        .pipe
+        (
+            jsdoc
+            (
+                {
+                    opts: { destination: 'jsdoc' },
+                    plugins: ['plugins/markdown'],
+                    tags: { allowUnknownTags: false },
+                }
+            )
+        );
+        return stream;
+    }
 );

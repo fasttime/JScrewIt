@@ -79,7 +79,6 @@ var getValidFeatureMask;
 
     var encoders = createEmpty();
 
-    /** @namespace JScrewIt */
     JScrewIt = assignNoEnum({ }, { Feature: Feature, encode: encode });
 
     getValidFeatureMask =

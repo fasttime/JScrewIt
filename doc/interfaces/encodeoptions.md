@@ -1,4 +1,4 @@
-[JScrewIt](../README.md) > ["encode.d"](../modules/_encode_d_.md) > [EncodeOptions](../interfaces/_encode_d_.encodeoptions.md)
+[JScrewIt](../README.md) > [EncodeOptions](../interfaces/encodeoptions.md)
 
 # Interface: EncodeOptions
 
@@ -10,10 +10,10 @@
 
 ### Properties
 
-* [features](_encode_d_.encodeoptions.md#features)
-* [runAs](_encode_d_.encodeoptions.md#runas)
-* [trimCode](_encode_d_.encodeoptions.md#trimcode)
-* [wrapWith](_encode_d_.encodeoptions.md#wrapwith)
+* [features](encodeoptions.md#features)
+* [runAs](encodeoptions.md#runas)
+* [trimCode](encodeoptions.md#trimcode)
+* [wrapWith](encodeoptions.md#wrapwith)
 
 ---
 
@@ -23,13 +23,13 @@
 
 ### `<Optional>` features
 
-**● features**: *[FeatureElement](../modules/_feature_d_.md#featureelement) \| [CompatibleFeatureArray](../modules/_feature_d_.md#compatiblefeaturearray)*
+**● features**: *[FeatureElement](../#featureelement) \| [CompatibleFeatureArray](../#compatiblefeaturearray)*
 
-*Defined in encode.d.ts:11*
+*Defined in [encode.d.ts:13](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L13)*
 
 Specifies the features available in the engines that evaluate the encoded output.
 
-If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](_feature_d_.featureconstructor.md#DEFAULT) is assumed: this ensures maximum compatibility but also generates the largest code. To generate shorter code, specify all features available in all target engines explicitly.
+If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](featureconstructor.md#default) is assumed: this ensures maximum compatibility but also generates the largest code. To generate shorter code, specify all features available in all target engines explicitly.
 
 ___
 <a id="runas"></a>
@@ -38,7 +38,7 @@ ___
 
 **● runAs**: *"call" \| "eval" \| "express" \| "express-call" \| "express-eval" \| "none"*
 
-*Defined in encode.d.ts:56*
+*Defined in [encode.d.ts:58](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L58)*
 
 This option controls the type of code generated from the given input. Allowed values are listed below.
 
@@ -73,7 +73,7 @@ ___
 
 **● trimCode**: *`boolean`*
 
-*Defined in encode.d.ts:69*
+*Defined in [encode.d.ts:71](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L71)*
 
 If this parameter is truthy, lines in the beginning and in the end of the file containing nothing but space characters and JavaScript comments are removed from the generated output. A newline terminator in the last preserved line is also removed.
 
@@ -88,7 +88,7 @@ ___
 
 **● wrapWith**: *"call" \| "eval" \| "express" \| "express-call" \| "express-eval" \| "none"*
 
-*Defined in encode.d.ts:72*
+*Defined in [encode.d.ts:74](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L74)*
 
 An alias for `runAs`
 

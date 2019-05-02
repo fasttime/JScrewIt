@@ -45,10 +45,7 @@ var APPEND_LENGTH_OF_FALSE;
 var APPEND_LENGTH_OF_PLUS_SIGN;
 var APPEND_LENGTH_OF_SMALL_E;
 
-/**
- * @private
- * @class Encoder
- */
+/** @class Encoder */
 
 var Encoder;
 

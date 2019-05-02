@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/// <reference path='feature.d.ts'/>
 
 interface FeatureAll
 {

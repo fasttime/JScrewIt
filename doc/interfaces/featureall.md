@@ -1,4 +1,4 @@
-[JScrewIt](../README.md) > ["feature-all.d"](../modules/_feature_all_d_.md) > [FeatureAll](../interfaces/_feature_all_d_.featureall.md)
+[JScrewIt](../README.md) > [FeatureAll](../interfaces/featureall.md)
 
 # Interface: FeatureAll
 
@@ -6,90 +6,90 @@
 
 **FeatureAll**
 
-↳  [FeatureConstructor](_feature_d_.featureconstructor.md)
+↳  [FeatureConstructor](featureconstructor.md)
 
 ## Index
 
 ### Properties
 
-* [ANDRO_4_0](_feature_all_d_.featureall.md#andro_4_0)
-* [ANDRO_4_1](_feature_all_d_.featureall.md#andro_4_1)
-* [ANDRO_4_4](_feature_all_d_.featureall.md#andro_4_4)
-* [ANY_DOCUMENT](_feature_all_d_.featureall.md#any_document)
-* [ANY_WINDOW](_feature_all_d_.featureall.md#any_window)
-* [ARRAY_ITERATOR](_feature_all_d_.featureall.md#array_iterator)
-* [ARROW](_feature_all_d_.featureall.md#arrow)
-* [ATOB](_feature_all_d_.featureall.md#atob)
-* [AUTO](_feature_all_d_.featureall.md#auto)
-* [BARPROP](_feature_all_d_.featureall.md#barprop)
-* [BROWSER](_feature_all_d_.featureall.md#browser)
-* [CAPITAL_HTML](_feature_all_d_.featureall.md#capital_html)
-* [CHROME](_feature_all_d_.featureall.md#chrome)
-* [CHROME_73](_feature_all_d_.featureall.md#chrome_73)
-* [CHROME_PREV](_feature_all_d_.featureall.md#chrome_prev)
-* [COMPACT](_feature_all_d_.featureall.md#compact)
-* [CONSOLE](_feature_all_d_.featureall.md#console)
-* [DEFAULT](_feature_all_d_.featureall.md#default)
-* [DOCUMENT](_feature_all_d_.featureall.md#document)
-* [DOMWINDOW](_feature_all_d_.featureall.md#domwindow)
-* [EDGE](_feature_all_d_.featureall.md#edge)
-* [EDGE_40](_feature_all_d_.featureall.md#edge_40)
-* [EDGE_PREV](_feature_all_d_.featureall.md#edge_prev)
-* [ESC_HTML_ALL](_feature_all_d_.featureall.md#esc_html_all)
-* [ESC_HTML_QUOT](_feature_all_d_.featureall.md#esc_html_quot)
-* [ESC_HTML_QUOT_ONLY](_feature_all_d_.featureall.md#esc_html_quot_only)
-* [ESC_REGEXP_LF](_feature_all_d_.featureall.md#esc_regexp_lf)
-* [ESC_REGEXP_SLASH](_feature_all_d_.featureall.md#esc_regexp_slash)
-* [EXTERNAL](_feature_all_d_.featureall.md#external)
-* [FF](_feature_all_d_.featureall.md#ff)
-* [FF_54](_feature_all_d_.featureall.md#ff_54)
-* [FF_62](_feature_all_d_.featureall.md#ff_62)
-* [FF_ESR](_feature_all_d_.featureall.md#ff_esr)
-* [FF_SRC](_feature_all_d_.featureall.md#ff_src)
-* [FILL](_feature_all_d_.featureall.md#fill)
-* [FLAT](_feature_all_d_.featureall.md#flat)
-* [FROM_CODE_POINT](_feature_all_d_.featureall.md#from_code_point)
-* [FUNCTION_19_LF](_feature_all_d_.featureall.md#function_19_lf)
-* [FUNCTION_22_LF](_feature_all_d_.featureall.md#function_22_lf)
-* [GMT](_feature_all_d_.featureall.md#gmt)
-* [HISTORY](_feature_all_d_.featureall.md#history)
-* [HTMLAUDIOELEMENT](_feature_all_d_.featureall.md#htmlaudioelement)
-* [HTMLDOCUMENT](_feature_all_d_.featureall.md#htmldocument)
-* [IE_10](_feature_all_d_.featureall.md#ie_10)
-* [IE_11](_feature_all_d_.featureall.md#ie_11)
-* [IE_11_WIN_10](_feature_all_d_.featureall.md#ie_11_win_10)
-* [IE_9](_feature_all_d_.featureall.md#ie_9)
-* [IE_SRC](_feature_all_d_.featureall.md#ie_src)
-* [INCR_CHAR](_feature_all_d_.featureall.md#incr_char)
-* [INTL](_feature_all_d_.featureall.md#intl)
-* [LOCALE_INFINITY](_feature_all_d_.featureall.md#locale_infinity)
-* [NAME](_feature_all_d_.featureall.md#name)
-* [NODECONSTRUCTOR](_feature_all_d_.featureall.md#nodeconstructor)
-* [NODE_0_10](_feature_all_d_.featureall.md#node_0_10)
-* [NODE_0_12](_feature_all_d_.featureall.md#node_0_12)
-* [NODE_10](_feature_all_d_.featureall.md#node_10)
-* [NODE_11](_feature_all_d_.featureall.md#node_11)
-* [NODE_12](_feature_all_d_.featureall.md#node_12)
-* [NODE_4](_feature_all_d_.featureall.md#node_4)
-* [NODE_5](_feature_all_d_.featureall.md#node_5)
-* [NO_FF_SRC](_feature_all_d_.featureall.md#no_ff_src)
-* [NO_IE_SRC](_feature_all_d_.featureall.md#no_ie_src)
-* [NO_OLD_SAFARI_ARRAY_ITERATOR](_feature_all_d_.featureall.md#no_old_safari_array_iterator)
-* [NO_V8_SRC](_feature_all_d_.featureall.md#no_v8_src)
-* [SAFARI](_feature_all_d_.featureall.md#safari)
-* [SAFARI_10](_feature_all_d_.featureall.md#safari_10)
-* [SAFARI_12](_feature_all_d_.featureall.md#safari_12)
-* [SAFARI_7_0](_feature_all_d_.featureall.md#safari_7_0)
-* [SAFARI_7_1](_feature_all_d_.featureall.md#safari_7_1)
-* [SAFARI_8](_feature_all_d_.featureall.md#safari_8)
-* [SAFARI_9](_feature_all_d_.featureall.md#safari_9)
-* [SELF](_feature_all_d_.featureall.md#self)
-* [SELF_OBJ](_feature_all_d_.featureall.md#self_obj)
-* [STATUS](_feature_all_d_.featureall.md#status)
-* [UNDEFINED](_feature_all_d_.featureall.md#undefined)
-* [UNEVAL](_feature_all_d_.featureall.md#uneval)
-* [V8_SRC](_feature_all_d_.featureall.md#v8_src)
-* [WINDOW](_feature_all_d_.featureall.md#window)
+* [ANDRO_4_0](featureall.md#andro_4_0)
+* [ANDRO_4_1](featureall.md#andro_4_1)
+* [ANDRO_4_4](featureall.md#andro_4_4)
+* [ANY_DOCUMENT](featureall.md#any_document)
+* [ANY_WINDOW](featureall.md#any_window)
+* [ARRAY_ITERATOR](featureall.md#array_iterator)
+* [ARROW](featureall.md#arrow)
+* [ATOB](featureall.md#atob)
+* [AUTO](featureall.md#auto)
+* [BARPROP](featureall.md#barprop)
+* [BROWSER](featureall.md#browser)
+* [CAPITAL_HTML](featureall.md#capital_html)
+* [CHROME](featureall.md#chrome)
+* [CHROME_73](featureall.md#chrome_73)
+* [CHROME_PREV](featureall.md#chrome_prev)
+* [COMPACT](featureall.md#compact)
+* [CONSOLE](featureall.md#console)
+* [DEFAULT](featureall.md#default)
+* [DOCUMENT](featureall.md#document)
+* [DOMWINDOW](featureall.md#domwindow)
+* [EDGE](featureall.md#edge)
+* [EDGE_40](featureall.md#edge_40)
+* [EDGE_PREV](featureall.md#edge_prev)
+* [ESC_HTML_ALL](featureall.md#esc_html_all)
+* [ESC_HTML_QUOT](featureall.md#esc_html_quot)
+* [ESC_HTML_QUOT_ONLY](featureall.md#esc_html_quot_only)
+* [ESC_REGEXP_LF](featureall.md#esc_regexp_lf)
+* [ESC_REGEXP_SLASH](featureall.md#esc_regexp_slash)
+* [EXTERNAL](featureall.md#external)
+* [FF](featureall.md#ff)
+* [FF_54](featureall.md#ff_54)
+* [FF_62](featureall.md#ff_62)
+* [FF_ESR](featureall.md#ff_esr)
+* [FF_SRC](featureall.md#ff_src)
+* [FILL](featureall.md#fill)
+* [FLAT](featureall.md#flat)
+* [FROM_CODE_POINT](featureall.md#from_code_point)
+* [FUNCTION_19_LF](featureall.md#function_19_lf)
+* [FUNCTION_22_LF](featureall.md#function_22_lf)
+* [GMT](featureall.md#gmt)
+* [HISTORY](featureall.md#history)
+* [HTMLAUDIOELEMENT](featureall.md#htmlaudioelement)
+* [HTMLDOCUMENT](featureall.md#htmldocument)
+* [IE_10](featureall.md#ie_10)
+* [IE_11](featureall.md#ie_11)
+* [IE_11_WIN_10](featureall.md#ie_11_win_10)
+* [IE_9](featureall.md#ie_9)
+* [IE_SRC](featureall.md#ie_src)
+* [INCR_CHAR](featureall.md#incr_char)
+* [INTL](featureall.md#intl)
+* [LOCALE_INFINITY](featureall.md#locale_infinity)
+* [NAME](featureall.md#name)
+* [NODECONSTRUCTOR](featureall.md#nodeconstructor)
+* [NODE_0_10](featureall.md#node_0_10)
+* [NODE_0_12](featureall.md#node_0_12)
+* [NODE_10](featureall.md#node_10)
+* [NODE_11](featureall.md#node_11)
+* [NODE_12](featureall.md#node_12)
+* [NODE_4](featureall.md#node_4)
+* [NODE_5](featureall.md#node_5)
+* [NO_FF_SRC](featureall.md#no_ff_src)
+* [NO_IE_SRC](featureall.md#no_ie_src)
+* [NO_OLD_SAFARI_ARRAY_ITERATOR](featureall.md#no_old_safari_array_iterator)
+* [NO_V8_SRC](featureall.md#no_v8_src)
+* [SAFARI](featureall.md#safari)
+* [SAFARI_10](featureall.md#safari_10)
+* [SAFARI_12](featureall.md#safari_12)
+* [SAFARI_7_0](featureall.md#safari_7_0)
+* [SAFARI_7_1](featureall.md#safari_7_1)
+* [SAFARI_8](featureall.md#safari_8)
+* [SAFARI_9](featureall.md#safari_9)
+* [SELF](featureall.md#self)
+* [SELF_OBJ](featureall.md#self_obj)
+* [STATUS](featureall.md#status)
+* [UNDEFINED](featureall.md#undefined)
+* [UNEVAL](featureall.md#uneval)
+* [V8_SRC](featureall.md#v8_src)
+* [WINDOW](featureall.md#window)
 
 ---
 
@@ -99,9 +99,9 @@
 
 ###  ANDRO_4_0
 
-**● ANDRO_4_0**: *[Feature](_feature_d_.feature.md)*
+**● ANDRO_4_0**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:8*
+*Defined in [feature-all.d.ts:8](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L8)*
 
 Features available in Android Browser 4.0.
 
@@ -110,9 +110,9 @@ ___
 
 ###  ANDRO_4_1
 
-**● ANDRO_4_1**: *[Feature](_feature_d_.feature.md)*
+**● ANDRO_4_1**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:13*
+*Defined in [feature-all.d.ts:13](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L13)*
 
 Features available in Android Browser 4.1 to 4.3.
 
@@ -121,9 +121,9 @@ ___
 
 ###  ANDRO_4_4
 
-**● ANDRO_4_4**: *[Feature](_feature_d_.feature.md)*
+**● ANDRO_4_4**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:18*
+*Defined in [feature-all.d.ts:18](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L18)*
 
 Features available in Android Browser 4.4.
 
@@ -132,9 +132,9 @@ ___
 
 ###  ANY_DOCUMENT
 
-**● ANY_DOCUMENT**: *[Feature](_feature_d_.feature.md)*
+**● ANY_DOCUMENT**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:27*
+*Defined in [feature-all.d.ts:27](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L27)*
 
 Existence of the global object document whose string representation starts with "\[object " and ends with "Document\]".
 
@@ -145,9 +145,9 @@ ___
 
 ###  ANY_WINDOW
 
-**● ANY_WINDOW**: *[Feature](_feature_d_.feature.md)*
+**● ANY_WINDOW**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:36*
+*Defined in [feature-all.d.ts:36](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L36)*
 
 Existence of the global object self whose string representation starts with "\[object " and ends with "Window\]".
 
@@ -158,9 +158,9 @@ ___
 
 ###  ARRAY_ITERATOR
 
-**● ARRAY_ITERATOR**: *[Feature](_feature_d_.feature.md)*
+**● ARRAY_ITERATOR**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:45*
+*Defined in [feature-all.d.ts:45](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L45)*
 
 The property that the string representation of Array.prototype.entries() starts with "\[object Array" and ends with "\]" at index 21 or 22.
 
@@ -171,9 +171,9 @@ ___
 
 ###  ARROW
 
-**● ARROW**: *[Feature](_feature_d_.feature.md)*
+**● ARROW**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:54*
+*Defined in [feature-all.d.ts:54](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L54)*
 
 Support for arrow functions.
 
@@ -184,9 +184,9 @@ ___
 
 ###  ATOB
 
-**● ATOB**: *[Feature](_feature_d_.feature.md)*
+**● ATOB**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:63*
+*Defined in [feature-all.d.ts:63](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L63)*
 
 Existence of the global functions atob and btoa.
 
@@ -197,9 +197,9 @@ ___
 
 ###  AUTO
 
-**● AUTO**: *[Feature](_feature_d_.feature.md)*
+**● AUTO**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:68*
+*Defined in [feature-all.d.ts:68](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L68)*
 
 All features available in the current engine.
 
@@ -208,9 +208,9 @@ ___
 
 ###  BARPROP
 
-**● BARPROP**: *[Feature](_feature_d_.feature.md)*
+**● BARPROP**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:77*
+*Defined in [feature-all.d.ts:77](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L77)*
 
 Existence of the global object statusbar having the string representation "\[object BarProp\]".
 
@@ -221,9 +221,9 @@ ___
 
 ###  BROWSER
 
-**● BROWSER**: *[Feature](_feature_d_.feature.md)*
+**● BROWSER**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:84*
+*Defined in [feature-all.d.ts:84](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L84)*
 
 Features available in all browsers.
 
@@ -234,9 +234,9 @@ ___
 
 ###  CAPITAL_HTML
 
-**● CAPITAL_HTML**: *[Feature](_feature_d_.feature.md)*
+**● CAPITAL_HTML**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:93*
+*Defined in [feature-all.d.ts:93](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L93)*
 
 The property that the various string methods returning HTML code such as String.prototype.big or String.prototype.link have both the tag name and attributes written in capital letters.
 
@@ -247,9 +247,9 @@ ___
 
 ###  CHROME
 
-**● CHROME**: *[Feature](_feature_d_.feature.md)*
+**● CHROME**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:96*
+*Defined in [feature-all.d.ts:96](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L96)*
 
 An alias for `CHROME_73`.
 
@@ -258,9 +258,9 @@ ___
 
 ###  CHROME_73
 
-**● CHROME_73**: *[Feature](_feature_d_.feature.md)*
+**● CHROME_73**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:101*
+*Defined in [feature-all.d.ts:101](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L101)*
 
 Features available in Chrome 73 and Opera 60 or later.
 
@@ -269,9 +269,9 @@ ___
 
 ###  CHROME_PREV
 
-**● CHROME_PREV**: *[Feature](_feature_d_.feature.md)*
+**● CHROME_PREV**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:104*
+*Defined in [feature-all.d.ts:104](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L104)*
 
 An alias for `CHROME_73`.
 
@@ -280,9 +280,9 @@ ___
 
 ###  COMPACT
 
-**● COMPACT**: *[Feature](_feature_d_.feature.md)*
+**● COMPACT**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:111*
+*Defined in [feature-all.d.ts:111](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L111)*
 
 All new browsers' features.
 
@@ -293,9 +293,9 @@ ___
 
 ###  CONSOLE
 
-**● CONSOLE**: *[Feature](_feature_d_.feature.md)*
+**● CONSOLE**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:122*
+*Defined in [feature-all.d.ts:122](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L122)*
 
 Existence of the global object console having the string representation "\[object Console\]".
 
@@ -308,9 +308,9 @@ ___
 
 ###  DEFAULT
 
-**● DEFAULT**: *[Feature](_feature_d_.feature.md)*
+**● DEFAULT**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:127*
+*Defined in [feature-all.d.ts:127](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L127)*
 
 Minimum feature level, compatible with all supported engines in all environments.
 
@@ -319,9 +319,9 @@ ___
 
 ###  DOCUMENT
 
-**● DOCUMENT**: *[Feature](_feature_d_.feature.md)*
+**● DOCUMENT**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:136*
+*Defined in [feature-all.d.ts:136](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L136)*
 
 Existence of the global object document having the string representation "\[object Document\]".
 
@@ -332,9 +332,9 @@ ___
 
 ###  DOMWINDOW
 
-**● DOMWINDOW**: *[Feature](_feature_d_.feature.md)*
+**● DOMWINDOW**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:145*
+*Defined in [feature-all.d.ts:145](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L145)*
 
 Existence of the global object self having the string representation "\[object DOMWindow\]".
 
@@ -345,9 +345,9 @@ ___
 
 ###  EDGE
 
-**● EDGE**: *[Feature](_feature_d_.feature.md)*
+**● EDGE**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:148*
+*Defined in [feature-all.d.ts:148](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L148)*
 
 An alias for `EDGE_40`.
 
@@ -356,9 +356,9 @@ ___
 
 ###  EDGE_40
 
-**● EDGE_40**: *[Feature](_feature_d_.feature.md)*
+**● EDGE_40**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:153*
+*Defined in [feature-all.d.ts:153](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L153)*
 
 Features available in Edge 40 or later.
 
@@ -367,9 +367,9 @@ ___
 
 ###  EDGE_PREV
 
-**● EDGE_PREV**: *[Feature](_feature_d_.feature.md)*
+**● EDGE_PREV**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:156*
+*Defined in [feature-all.d.ts:156](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L156)*
 
 An alias for `EDGE_40`.
 
@@ -378,9 +378,9 @@ ___
 
 ###  ESC_HTML_ALL
 
-**● ESC_HTML_ALL**: *[Feature](_feature_d_.feature.md)*
+**● ESC_HTML_ALL**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:165*
+*Defined in [feature-all.d.ts:165](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L165)*
 
 The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
 
@@ -391,9 +391,9 @@ ___
 
 ###  ESC_HTML_QUOT
 
-**● ESC_HTML_QUOT**: *[Feature](_feature_d_.feature.md)*
+**● ESC_HTML_QUOT**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:174*
+*Defined in [feature-all.d.ts:174](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L174)*
 
 The property that double quotation marks in the argument of String.prototype.fontcolor are escaped as """.
 
@@ -404,9 +404,9 @@ ___
 
 ###  ESC_HTML_QUOT_ONLY
 
-**● ESC_HTML_QUOT_ONLY**: *[Feature](_feature_d_.feature.md)*
+**● ESC_HTML_QUOT_ONLY**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:183*
+*Defined in [feature-all.d.ts:183](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L183)*
 
 The property that only double quotation marks and no other characters in the argument of String.prototype.fontcolor are escaped into HTML entities.
 
@@ -417,9 +417,9 @@ ___
 
 ###  ESC_REGEXP_LF
 
-**● ESC_REGEXP_LF**: *[Feature](_feature_d_.feature.md)*
+**● ESC_REGEXP_LF**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:192*
+*Defined in [feature-all.d.ts:192](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L192)*
 
 Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format line feed characters ("\\n") in their string representation.
 
@@ -430,9 +430,9 @@ ___
 
 ###  ESC_REGEXP_SLASH
 
-**● ESC_REGEXP_SLASH**: *[Feature](_feature_d_.feature.md)*
+**● ESC_REGEXP_SLASH**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:201*
+*Defined in [feature-all.d.ts:201](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L201)*
 
 Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format slashes ("/") in their string representation.
 
@@ -443,9 +443,9 @@ ___
 
 ###  EXTERNAL
 
-**● EXTERNAL**: *[Feature](_feature_d_.feature.md)*
+**● EXTERNAL**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:210*
+*Defined in [feature-all.d.ts:210](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L210)*
 
 Existence of the global object sidebar having the string representation "\[object External\]".
 
@@ -456,9 +456,9 @@ ___
 
 ###  FF
 
-**● FF**: *[Feature](_feature_d_.feature.md)*
+**● FF**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:213*
+*Defined in [feature-all.d.ts:213](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L213)*
 
 An alias for `FF_62`.
 
@@ -467,9 +467,9 @@ ___
 
 ###  FF_54
 
-**● FF_54**: *[Feature](_feature_d_.feature.md)*
+**● FF_54**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:218*
+*Defined in [feature-all.d.ts:218](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L218)*
 
 Features available in Firefox 54 or later.
 
@@ -478,9 +478,9 @@ ___
 
 ###  FF_62
 
-**● FF_62**: *[Feature](_feature_d_.feature.md)*
+**● FF_62**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:223*
+*Defined in [feature-all.d.ts:223](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L223)*
 
 Features available in Firefox 62 or later.
 
@@ -489,9 +489,9 @@ ___
 
 ###  FF_ESR
 
-**● FF_ESR**: *[Feature](_feature_d_.feature.md)*
+**● FF_ESR**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:226*
+*Defined in [feature-all.d.ts:226](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L226)*
 
 An alias for `FF_54`.
 
@@ -500,9 +500,9 @@ ___
 
 ###  FF_SRC
 
-**● FF_SRC**: *[Feature](_feature_d_.feature.md)*
+**● FF_SRC**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:237*
+*Defined in [feature-all.d.ts:237](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L237)*
 
 A string representation of native functions typical for Firefox and Safari.
 
@@ -515,9 +515,9 @@ ___
 
 ###  FILL
 
-**● FILL**: *[Feature](_feature_d_.feature.md)*
+**● FILL**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:246*
+*Defined in [feature-all.d.ts:246](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L246)*
 
 Existence of the native function Array.prototype.fill.
 
@@ -528,9 +528,9 @@ ___
 
 ###  FLAT
 
-**● FLAT**: *[Feature](_feature_d_.feature.md)*
+**● FLAT**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:255*
+*Defined in [feature-all.d.ts:255](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L255)*
 
 Existence of the native function Array.prototype.flat.
 
@@ -541,9 +541,9 @@ ___
 
 ###  FROM_CODE_POINT
 
-**● FROM_CODE_POINT**: *[Feature](_feature_d_.feature.md)*
+**● FROM_CODE_POINT**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:264*
+*Defined in [feature-all.d.ts:264](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L264)*
 
 Existence of the function String.fromCodePoint.
 
@@ -554,9 +554,9 @@ ___
 
 ###  FUNCTION_19_LF
 
-**● FUNCTION_19_LF**: *[Feature](_feature_d_.feature.md)*
+**● FUNCTION_19_LF**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:273*
+*Defined in [feature-all.d.ts:273](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L273)*
 
 A string representation of dynamically generated functions where the character at index 19 is a line feed ("\\n").
 
@@ -567,9 +567,9 @@ ___
 
 ###  FUNCTION_22_LF
 
-**● FUNCTION_22_LF**: *[Feature](_feature_d_.feature.md)*
+**● FUNCTION_22_LF**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:282*
+*Defined in [feature-all.d.ts:282](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L282)*
 
 A string representation of dynamically generated functions where the character at index 22 is a line feed ("\\n").
 
@@ -580,9 +580,9 @@ ___
 
 ###  GMT
 
-**● GMT**: *[Feature](_feature_d_.feature.md)*
+**● GMT**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:293*
+*Defined in [feature-all.d.ts:293](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L293)*
 
 Presence of the text "GMT" after the first 25 characters in the string returned by Date().
 
@@ -595,9 +595,9 @@ ___
 
 ###  HISTORY
 
-**● HISTORY**: *[Feature](_feature_d_.feature.md)*
+**● HISTORY**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:302*
+*Defined in [feature-all.d.ts:302](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L302)*
 
 Existence of the global object history having the string representation "\[object History\]".
 
@@ -608,9 +608,9 @@ ___
 
 ###  HTMLAUDIOELEMENT
 
-**● HTMLAUDIOELEMENT**: *[Feature](_feature_d_.feature.md)*
+**● HTMLAUDIOELEMENT**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:311*
+*Defined in [feature-all.d.ts:311](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L311)*
 
 Existence of the global object Audio whose string representation starts with "function HTMLAudioElement".
 
@@ -621,9 +621,9 @@ ___
 
 ###  HTMLDOCUMENT
 
-**● HTMLDOCUMENT**: *[Feature](_feature_d_.feature.md)*
+**● HTMLDOCUMENT**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:320*
+*Defined in [feature-all.d.ts:320](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L320)*
 
 Existence of the global object document having the string representation "\[object HTMLDocument\]".
 
@@ -634,9 +634,9 @@ ___
 
 ###  IE_10
 
-**● IE_10**: *[Feature](_feature_d_.feature.md)*
+**● IE_10**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:325*
+*Defined in [feature-all.d.ts:325](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L325)*
 
 Features available in Internet Explorer 10.
 
@@ -645,9 +645,9 @@ ___
 
 ###  IE_11
 
-**● IE_11**: *[Feature](_feature_d_.feature.md)*
+**● IE_11**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:330*
+*Defined in [feature-all.d.ts:330](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L330)*
 
 Features available in Internet Explorer 11.
 
@@ -656,9 +656,9 @@ ___
 
 ###  IE_11_WIN_10
 
-**● IE_11_WIN_10**: *[Feature](_feature_d_.feature.md)*
+**● IE_11_WIN_10**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:335*
+*Defined in [feature-all.d.ts:335](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L335)*
 
 Features available in Internet Explorer 11 on Windows 10.
 
@@ -667,9 +667,9 @@ ___
 
 ###  IE_9
 
-**● IE_9**: *[Feature](_feature_d_.feature.md)*
+**● IE_9**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:340*
+*Defined in [feature-all.d.ts:340](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L340)*
 
 Features available in Internet Explorer 9.
 
@@ -678,9 +678,9 @@ ___
 
 ###  IE_SRC
 
-**● IE_SRC**: *[Feature](_feature_d_.feature.md)*
+**● IE_SRC**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:351*
+*Defined in [feature-all.d.ts:351](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L351)*
 
 A string representation of native functions typical for Internet Explorer.
 
@@ -693,9 +693,9 @@ ___
 
 ###  INCR_CHAR
 
-**● INCR_CHAR**: *[Feature](_feature_d_.feature.md)*
+**● INCR_CHAR**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:360*
+*Defined in [feature-all.d.ts:360](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L360)*
 
 The ability to use unary increment operators with string characters, like in ( ++"some string"\[0\] ): this will result in a TypeError in strict mode in ECMAScript compliant engines.
 
@@ -706,9 +706,9 @@ ___
 
 ###  INTL
 
-**● INTL**: *[Feature](_feature_d_.feature.md)*
+**● INTL**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:369*
+*Defined in [feature-all.d.ts:369](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L369)*
 
 Existence of the global object Intl.
 
@@ -719,9 +719,9 @@ ___
 
 ###  LOCALE_INFINITY
 
-**● LOCALE_INFINITY**: *[Feature](_feature_d_.feature.md)*
+**● LOCALE_INFINITY**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:378*
+*Defined in [feature-all.d.ts:378](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L378)*
 
 Language sensitive string representation of Infinity as "∞".
 
@@ -732,9 +732,9 @@ ___
 
 ###  NAME
 
-**● NAME**: *[Feature](_feature_d_.feature.md)*
+**● NAME**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:387*
+*Defined in [feature-all.d.ts:387](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L387)*
 
 Existence of the name property for functions.
 
@@ -745,9 +745,9 @@ ___
 
 ###  NODECONSTRUCTOR
 
-**● NODECONSTRUCTOR**: *[Feature](_feature_d_.feature.md)*
+**● NODECONSTRUCTOR**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:396*
+*Defined in [feature-all.d.ts:396](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L396)*
 
 Existence of the global object Node having the string representation "\[object NodeConstructor\]".
 
@@ -758,9 +758,9 @@ ___
 
 ###  NODE_0_10
 
-**● NODE_0_10**: *[Feature](_feature_d_.feature.md)*
+**● NODE_0_10**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:401*
+*Defined in [feature-all.d.ts:401](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L401)*
 
 Features available in Node.js 0.10.
 
@@ -769,9 +769,9 @@ ___
 
 ###  NODE_0_12
 
-**● NODE_0_12**: *[Feature](_feature_d_.feature.md)*
+**● NODE_0_12**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:406*
+*Defined in [feature-all.d.ts:406](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L406)*
 
 Features available in Node.js 0.12.
 
@@ -780,9 +780,9 @@ ___
 
 ###  NODE_10
 
-**● NODE_10**: *[Feature](_feature_d_.feature.md)*
+**● NODE_10**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:411*
+*Defined in [feature-all.d.ts:411](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L411)*
 
 Features available in Node.js 10.
 
@@ -791,9 +791,9 @@ ___
 
 ###  NODE_11
 
-**● NODE_11**: *[Feature](_feature_d_.feature.md)*
+**● NODE_11**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:416*
+*Defined in [feature-all.d.ts:416](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L416)*
 
 Features available in Node.js 11.
 
@@ -802,9 +802,9 @@ ___
 
 ###  NODE_12
 
-**● NODE_12**: *[Feature](_feature_d_.feature.md)*
+**● NODE_12**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:421*
+*Defined in [feature-all.d.ts:421](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L421)*
 
 Features available in Node.js 12 or later.
 
@@ -813,9 +813,9 @@ ___
 
 ###  NODE_4
 
-**● NODE_4**: *[Feature](_feature_d_.feature.md)*
+**● NODE_4**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:426*
+*Defined in [feature-all.d.ts:426](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L426)*
 
 Features available in Node.js 4.
 
@@ -824,9 +824,9 @@ ___
 
 ###  NODE_5
 
-**● NODE_5**: *[Feature](_feature_d_.feature.md)*
+**● NODE_5**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:431*
+*Defined in [feature-all.d.ts:431](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L431)*
 
 Features available in Node.js 5 to 9.
 
@@ -835,9 +835,9 @@ ___
 
 ###  NO_FF_SRC
 
-**● NO_FF_SRC**: *[Feature](_feature_d_.feature.md)*
+**● NO_FF_SRC**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:440*
+*Defined in [feature-all.d.ts:440](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L440)*
 
 A string representation of native functions typical for V8 and Edge or for Internet Explorer but not for Firefox and Safari.
 
@@ -848,9 +848,9 @@ ___
 
 ###  NO_IE_SRC
 
-**● NO_IE_SRC**: *[Feature](_feature_d_.feature.md)*
+**● NO_IE_SRC**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:451*
+*Defined in [feature-all.d.ts:451](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L451)*
 
 A string representation of native functions typical for most engines with the notable exception of Internet Explorer.
 
@@ -863,9 +863,9 @@ ___
 
 ###  NO_OLD_SAFARI_ARRAY_ITERATOR
 
-**● NO_OLD_SAFARI_ARRAY_ITERATOR**: *[Feature](_feature_d_.feature.md)*
+**● NO_OLD_SAFARI_ARRAY_ITERATOR**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:460*
+*Defined in [feature-all.d.ts:460](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L460)*
 
 The property that the string representation of Array.prototype.entries() evaluates to "\[object Array Iterator\]".
 
@@ -876,9 +876,9 @@ ___
 
 ###  NO_V8_SRC
 
-**● NO_V8_SRC**: *[Feature](_feature_d_.feature.md)*
+**● NO_V8_SRC**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:471*
+*Defined in [feature-all.d.ts:471](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L471)*
 
 A string representation of native functions typical for Firefox, Internet Explorer and Safari.
 
@@ -891,9 +891,9 @@ ___
 
 ###  SAFARI
 
-**● SAFARI**: *[Feature](_feature_d_.feature.md)*
+**● SAFARI**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:474*
+*Defined in [feature-all.d.ts:474](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L474)*
 
 An alias for `SAFARI_12`.
 
@@ -902,9 +902,9 @@ ___
 
 ###  SAFARI_10
 
-**● SAFARI_10**: *[Feature](_feature_d_.feature.md)*
+**● SAFARI_10**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:479*
+*Defined in [feature-all.d.ts:479](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L479)*
 
 Features available in Safari 10 or later.
 
@@ -913,9 +913,9 @@ ___
 
 ###  SAFARI_12
 
-**● SAFARI_12**: *[Feature](_feature_d_.feature.md)*
+**● SAFARI_12**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:484*
+*Defined in [feature-all.d.ts:484](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L484)*
 
 Features available in Safari 12 or later.
 
@@ -924,9 +924,9 @@ ___
 
 ###  SAFARI_7_0
 
-**● SAFARI_7_0**: *[Feature](_feature_d_.feature.md)*
+**● SAFARI_7_0**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:489*
+*Defined in [feature-all.d.ts:489](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L489)*
 
 Features available in Safari 7.0.
 
@@ -935,9 +935,9 @@ ___
 
 ###  SAFARI_7_1
 
-**● SAFARI_7_1**: *[Feature](_feature_d_.feature.md)*
+**● SAFARI_7_1**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:494*
+*Defined in [feature-all.d.ts:494](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L494)*
 
 Features available in Safari 7.1 and Safari 8.
 
@@ -946,9 +946,9 @@ ___
 
 ###  SAFARI_8
 
-**● SAFARI_8**: *[Feature](_feature_d_.feature.md)*
+**● SAFARI_8**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:497*
+*Defined in [feature-all.d.ts:497](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L497)*
 
 An alias for `SAFARI_7_1`.
 
@@ -957,9 +957,9 @@ ___
 
 ###  SAFARI_9
 
-**● SAFARI_9**: *[Feature](_feature_d_.feature.md)*
+**● SAFARI_9**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:502*
+*Defined in [feature-all.d.ts:502](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L502)*
 
 Features available in Safari 9.
 
@@ -968,9 +968,9 @@ ___
 
 ###  SELF
 
-**● SELF**: *[Feature](_feature_d_.feature.md)*
+**● SELF**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:505*
+*Defined in [feature-all.d.ts:505](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L505)*
 
 An alias for `ANY_WINDOW`.
 
@@ -979,9 +979,9 @@ ___
 
 ###  SELF_OBJ
 
-**● SELF_OBJ**: *[Feature](_feature_d_.feature.md)*
+**● SELF_OBJ**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:514*
+*Defined in [feature-all.d.ts:514](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L514)*
 
 Existence of the global object self whose string representation starts with "\[object ".
 
@@ -992,9 +992,9 @@ ___
 
 ###  STATUS
 
-**● STATUS**: *[Feature](_feature_d_.feature.md)*
+**● STATUS**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:523*
+*Defined in [feature-all.d.ts:523](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L523)*
 
 Existence of the global string status.
 
@@ -1005,9 +1005,9 @@ ___
 
 ###  UNDEFINED
 
-**● UNDEFINED**: *[Feature](_feature_d_.feature.md)*
+**● UNDEFINED**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:534*
+*Defined in [feature-all.d.ts:534](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L534)*
 
 The property that Object.prototype.toString.call() evaluates to "\[object Undefined\]".
 
@@ -1020,9 +1020,9 @@ ___
 
 ###  UNEVAL
 
-**● UNEVAL**: *[Feature](_feature_d_.feature.md)*
+**● UNEVAL**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:543*
+*Defined in [feature-all.d.ts:543](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L543)*
 
 Existence of the global function uneval.
 
@@ -1033,9 +1033,9 @@ ___
 
 ###  V8_SRC
 
-**● V8_SRC**: *[Feature](_feature_d_.feature.md)*
+**● V8_SRC**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:554*
+*Defined in [feature-all.d.ts:554](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L554)*
 
 A string representation of native functions typical for the V8 engine, but also found in Edge.
 
@@ -1048,9 +1048,9 @@ ___
 
 ###  WINDOW
 
-**● WINDOW**: *[Feature](_feature_d_.feature.md)*
+**● WINDOW**: *[Feature](feature.md)*
 
-*Defined in feature-all.d.ts:563*
+*Defined in [feature-all.d.ts:563](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L563)*
 
 Existence of the global object self having the string representation "\[object Window\]".
 

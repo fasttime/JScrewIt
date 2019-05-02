@@ -145,7 +145,10 @@ function formatAvailability(availability, webWorkerReport, forcedStrictModeRepor
 
 function formatFeatureName(featureName)
 {
-    const result = `<a href="#${getAnchorName(featureName)}"><code>${featureName}</code></a>`;
+    const TARGET = 'doc/interfaces/featureall.md';
+
+    const result =
+    `<a href="${TARGET}#${getAnchorName(featureName)}"><code>${featureName}</code></a>`;
     return result;
 }
 
@@ -341,13 +344,13 @@ function reportAsList(property, filter)
 }
 
 module.exports =
-function ()
+() =>
 {
     const { Feature } = JScrewIt;
     const allFeatureMap = Feature.ALL;
     const elementaryFeatures = Feature.ELEMENTARY;
     let contentTs =
-    '/* eslint-disable max-len */\n' +
+    '/// <reference path=\'feature.d.ts\'/>\n' +
     '\n' +
     'interface FeatureAll\n{';
     Object.keys(allFeatureMap).sort().forEach

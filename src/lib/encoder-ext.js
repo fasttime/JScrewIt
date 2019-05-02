@@ -969,7 +969,6 @@ var wrapWithEval;
          * An object that exposes properties used to split a string into an array of strings or to
          * join array elements into a string.
          *
-         * @private
          * @typedef Delimiter
          *
          * @property {string} separator

@@ -1,11 +1,13 @@
+/// <reference path='feature.d.ts'/>
+
 interface EncodeOptions
 {
     /**
      * Specifies the features available in the engines that evaluate the encoded output.
      *
      * If this parameter is unspecified,
-     * [`JScrewIt.Feature.DEFAULT`](_feature_d_.featureconstructor.md#DEFAULT) is assumed: this
-     * ensures maximum compatibility but also generates the largest code.
+     * [`JScrewIt.Feature.DEFAULT`](featureconstructor.md#default) is assumed: this ensures maximum
+     * compatibility but also generates the largest code.
      * To generate shorter code, specify all features available in all target engines explicitly.
      */
     features?: FeatureElement | CompatibleFeatureArray;
@@ -89,7 +91,7 @@ interface JScrewIt
      *
      * The encoded string.
      *
-     * @remarks
+     * @throws
      *
      * An `Error` is thrown under the following circumstances.
      *  - The specified string cannot be encoded with the specified options.

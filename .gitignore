@@ -3,7 +3,7 @@
 !/.npmrc
 /char-map.json
 /coverage
-/docs
+/jsdoc
 /node_modules
 /npm-debug.log
 /tmp-src
