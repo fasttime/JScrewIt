@@ -145,7 +145,7 @@ function formatAvailability(availability, webWorkerReport, forcedStrictModeRepor
 
 function formatFeatureName(featureName)
 {
-    const TARGET = 'doc/interfaces/featureall.md';
+    const TARGET = 'doc/interfaces/_jscrewit_.featureall.md';
 
     const result =
     `<a href="${TARGET}#${getAnchorName(featureName)}"><code>${featureName}</code></a>`;
@@ -349,10 +349,14 @@ module.exports =
     const { Feature } = JScrewIt;
     const allFeatureMap = Feature.ALL;
     const elementaryFeatures = Feature.ELEMENTARY;
+    const predefinedFeatureNames = [];
     let contentTs =
     '/// <reference path=\'feature.d.ts\'/>\n' +
     '\n' +
-    'interface FeatureAll\n{';
+    'declare module \'jscrewit\'\n' +
+    '{\n' +
+    '    interface FeatureAll\n' +
+    '    {';
     Object.keys(allFeatureMap).sort().forEach
     (
         featureName =>
@@ -362,25 +366,38 @@ module.exports =
             const { name } = featureObj;
             if (name === featureName)
             {
-                const { description } = featureObj;
-                subContentTs = `\n     * ${escape(description, '\n     *\n     * ')}\n     `;
-                if (featureObj.elementary)
+                const { description, elementary } = featureObj;
+                subContentTs =
+                `\n         * ${escape(description, '\n         *\n         * ')}\n         `;
+                if (elementary)
                 {
                     const availability = reportAsList(featureName, getAvailabilityInfo);
                     const webWorkerReport = getWebWorkerReport(featureObj);
                     const forcedStrictModeReport = getForcedStrictModeReport(featureObj);
-                    const formattedAvailability =
-                    formatAvailability(availability, webWorkerReport, forcedStrictModeReport);
-                    subContentTs +=
-                    `*\n     * @reamarks\n     *\n     * ${formattedAvailability}\n     `;
+                    {
+                        const formattedAvailability =
+                        formatAvailability(availability, webWorkerReport, forcedStrictModeReport);
+                        subContentTs +=
+                        '*\n         * @reamarks\n         *\n' +
+                        `         * ${formattedAvailability}\n         `;
+                    }
                 }
+                predefinedFeatureNames.push(featureName);
             }
             else
                 subContentTs = ` An alias for \`${name}\`. `;
-            contentTs += `\n    /**${subContentTs}*/\n    ${featureName}: Feature;\n`;
+            contentTs +=
+            `\n        /**${subContentTs}*/\n        ${featureName}: PredefinedFeature;\n`;
         },
     );
-    contentTs += '}\n';
+    contentTs +=
+    '    }\n' +
+    '\n' +
+    '    /** Name of a predefined feature. */\n' +
+    '    type PredefinedFeatureName =\n' +
+    `${predefinedFeatureNames.map(featureName => `    | '${featureName}'\n`).join('')}` +
+    '    ;\n' +
+    '}\n';
     let contentMd =
     '# JScrewIt Feature Reference\n' +
     'This table lists features available in the most common engines.\n' +

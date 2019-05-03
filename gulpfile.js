@@ -94,7 +94,7 @@ task
             },
             {
                 src: ['lib/**/*.ts', '!lib/feature-all.d.ts'],
-                parserOptions: { project: 'tsconfig.json' },
+                parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
                 rules:
                 {
                     '@typescript-eslint/no-triple-slash-reference': 'off',
