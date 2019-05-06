@@ -523,6 +523,49 @@
                         'returns true if no arguments are specified',
                         function ()
                         {
+                            var compatible = Feature.areCompatible();
+                            expect(compatible).toBe(true);
+                        }
+                    );
+                    it
+                    (
+                        'returns true for any single feature',
+                        function ()
+                        {
+                            var compatible = Feature.areCompatible(Feature.AUTO);
+                            expect(compatible).toBe(true);
+                        }
+                    );
+                    it
+                    (
+                        'returns true for compatible features',
+                        function ()
+                        {
+                            var compatible = Feature.areCompatible('FILL', 'SELF');
+                            expect(compatible).toBe(true);
+                        }
+                    );
+                    it
+                    (
+                        'returns false for incompatible features',
+                        function ()
+                        {
+                            var compatible = Feature.areCompatible('V8_SRC', 'IE_SRC');
+                            expect(compatible).toBe(false);
+                        }
+                    );
+                }
+            );
+            describe
+            (
+                '.areCompatible (legacy usage)',
+                function ()
+                {
+                    it
+                    (
+                        'returns true if no arguments are specified',
+                        function ()
+                        {
                             var compatible = Feature.areCompatible([]);
                             expect(compatible).toBe(true);
                         }

@@ -38,12 +38,15 @@ var validMaskFromArrayOrStringOrFeature;
 
 (function ()
 {
-    function areCompatible(features)
+    function areCompatible()
     {
+        var arg0;
+        var features =
+        arguments.length === 1 && _Array_isArray(arg0 = arguments[0]) ? arg0 : arguments;
         var compatible;
         if (features.length > 1)
         {
-            var mask = featureArrayToMask(features);
+            var mask = featureArrayLikeToMask(features);
             compatible = isMaskCompatible(mask);
         }
         else
@@ -212,11 +215,12 @@ var validMaskFromArrayOrStringOrFeature;
         return featureObj;
     }
 
-    function featureArrayToMask(array)
+    function featureArrayLikeToMask(arrayLike)
     {
         var mask = maskNew();
-        array.forEach
+        _Array_prototype_forEach.call
         (
+            arrayLike,
             function (feature)
             {
                 var otherMask = maskFromStringOrFeature(feature);
@@ -290,7 +294,7 @@ var validMaskFromArrayOrStringOrFeature;
                 var otherMask;
                 if (_Array_isArray(arg))
                 {
-                    otherMask = featureArrayToMask(arg);
+                    otherMask = featureArrayLikeToMask(arg);
                     validationNeeded |= arg.length > 1;
                 }
                 else
@@ -1698,7 +1702,7 @@ var validMaskFromArrayOrStringOrFeature;
         var mask;
         if (_Array_isArray(arg))
         {
-            mask = featureArrayToMask(arg);
+            mask = featureArrayLikeToMask(arg);
             if (arg.length > 1)
                 validateMask(mask);
         }

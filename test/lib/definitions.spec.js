@@ -146,7 +146,7 @@ uneval,
                         function (varietyFeatureNames)
                         {
                             var varietyFeatureObj = Feature(varietyFeatureNames);
-                            if (Feature.areCompatible([varietyFeatureObj, solutionFeatureObj]))
+                            if (Feature.areCompatible(varietyFeatureObj, solutionFeatureObj))
                             {
                                 var testableFeatureObj =
                                 Feature(varietyFeatureObj, solutionFeatureObj);

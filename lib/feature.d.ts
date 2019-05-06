@@ -216,21 +216,21 @@ declare module 'jscrewit'
          * @returns
          *
          * `true` if the specified features are mutually compatible; otherwise, `false`.
-         * If the array argument contains less than two features, the return value is `true`.
+         * If less than two features are specified, the return value is `true`.
          *
          * @example
          *
          * ```js
          * // false: only one of "V8_SRC" or "IE_SRC" may be available.
-         * JScrewIt.Feature.areCompatible(["V8_SRC", "IE_SRC"])
+         * JScrewIt.Feature.areCompatible("V8_SRC", "IE_SRC")
          * ```
          *
          * ```js
          * // true
-         * JScrewIt.Feature.areCompatible([JScrewIt.Feature.DEFAULT, JScrewIt.Feature.FILL])
+         * JScrewIt.Feature.areCompatible(JScrewIt.Feature.DEFAULT, JScrewIt.Feature.FILL)
          * ```
          */
-        areCompatible(features: ReadonlyArray<FeatureElement>): boolean;
+        areCompatible(...features: FeatureElement[]): boolean;
 
         /**
          * Determines whether all of the specified features are equivalent.

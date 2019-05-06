@@ -46,7 +46,7 @@ function run(strategyTestData)
         const excludedFeatureNameSet = new Set();
         for (const featureObj of ELEMENTARY)
         {
-            if (!areCompatible([featureObj, featureObjB]))
+            if (!areCompatible(featureObj, featureObjB))
             {
                 for (const featureName of featureObj.elementaryNames)
                     excludedFeatureNameSet.add(featureName);

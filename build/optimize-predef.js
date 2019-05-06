@@ -479,7 +479,7 @@ function simplifyDefinitions(definitionSets)
             for (const feature2 of features2)
             {
                 const features = [featureAB, featureC];
-                if (Feature.areCompatible(features))
+                if (Feature.areCompatible(...features))
                 {
                     const featureABC = Feature(features);
                     if (Feature.areEqual(feature2, featureABC))

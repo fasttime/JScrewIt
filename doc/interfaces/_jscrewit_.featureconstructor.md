@@ -1339,7 +1339,7 @@ ___
 
 ###  areCompatible
 
-▸ **areCompatible**(features: *`ReadonlyArray`<[FeatureElement](../modules/_jscrewit_.md#featureelement)>*): `boolean`
+▸ **areCompatible**(...features: *[FeatureElement](../modules/_jscrewit_.md#featureelement)[]*): `boolean`
 
 *Defined in [feature.d.ts:233](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L233)*
 
@@ -1347,24 +1347,24 @@ Determines whether the specified features are mutually compatible.
 
 *__example__*: ```js
 // false: only one of "V8_SRC" or "IE_SRC" may be available.
-JScrewIt.Feature.areCompatible(["V8_SRC", "IE_SRC"])
+JScrewIt.Feature.areCompatible("V8_SRC", "IE_SRC")
 ```
 
 ```js
 // true
-JScrewIt.Feature.areCompatible([JScrewIt.Feature.DEFAULT, JScrewIt.Feature.FILL])
+JScrewIt.Feature.areCompatible(JScrewIt.Feature.DEFAULT, JScrewIt.Feature.FILL)
 ```
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| features | `ReadonlyArray`<[FeatureElement](../modules/_jscrewit_.md#featureelement)> |
+| `Rest` features | [FeatureElement](../modules/_jscrewit_.md#featureelement)[] |
 
 **Returns:** `boolean`
 
 `true` if the specified features are mutually compatible; otherwise, `false`.
-If the array argument contains less than two features, the return value is `true`.
+If less than two features are specified, the return value is `true`.
 
 ___
 <a id="areequal"></a>
