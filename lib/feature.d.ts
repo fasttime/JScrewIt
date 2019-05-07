@@ -270,7 +270,7 @@ declare module 'jscrewit'
          * [`NAME`](_jscrewit_.featureall.md#NAME).
          *
          * ```js
-         * var newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
+         * const newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
          * ```
          *
          * This will create a new feature object equivalent to
@@ -280,7 +280,7 @@ declare module 'jscrewit'
          * [`ANY_DOCUMENT`](_jscrewit_.featureall.md#ANY_DOCUMENT).
          *
          * ```js
-         * var newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
+         * const newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
          * ```
          */
         commonOf(...features: (FeatureElement | CompatibleFeatureArray)[]):

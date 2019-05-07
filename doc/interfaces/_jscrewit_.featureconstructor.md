@@ -1414,13 +1414,13 @@ Creates a new feature object equivalent to the intersection of the specified fea
 *__example__*: This will create a new feature object equivalent to [`NAME`](_jscrewit_.featureall.md#NAME).
 
 ```js
-var newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
+const newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
 ```
 
 This will create a new feature object equivalent to [`ANY_DOCUMENT`](_jscrewit_.featureall.md#ANY_DOCUMENT). This is because both [`HTMLDOCUMENT`](_jscrewit_.featureall.md#HTMLDOCUMENT) and [`DOCUMENT`](_jscrewit_.featureall.md#DOCUMENT) imply [`ANY_DOCUMENT`](_jscrewit_.featureall.md#ANY_DOCUMENT).
 
 ```js
-var newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
+const newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
 ```
 
 **Parameters:**

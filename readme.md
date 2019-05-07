@@ -77,11 +77,18 @@ If you are using Node.js, you can install JScrewIt with [npm](https://www.npmjs.
 npm install jscrewit
 ```
 
-Then you can include it in your code.
+Then you can import it in your code in the usual way.
 
 ```js
-var JScrewIt = require("jscrewit");
+const JScrewIt = require("jscrewit"); // CommonJS syntax
 ```
+or
+```js
+import JScrewIt from "jscrewit"; // ECMAScript module syntax
+```
+
+JScrewIt comes with bundled TypeScript declarations: you can use it in TypeScript without installing
+any additional packages.
 
 ## Usage
 
@@ -90,7 +97,7 @@ var JScrewIt = require("jscrewit");
 This will encode the `alert(1)` example shown above and run it using `eval`.
 
 ```js
-var output = JScrewIt.encode("alert(1)");
+const output = JScrewIt.encode("alert(1)");
 eval(output);
 ```
 
@@ -98,8 +105,8 @@ To encode just a plain string rather than an executable script, enclose the text
 quotes, like when introducing a string literal in JavaScript code.
 
 ```js
-var output = JScrewIt.encode("'Hello, world!'");
-var input = eval(output); // input contains the string "Hello, world!".
+const output = JScrewIt.encode("'Hello, world!'");
+const input = eval(output); // input contains the string "Hello, world!".
 ```
 
 You can also use escape sequences to encode newlines and other characters.
@@ -108,7 +115,7 @@ writing a "sting in a string".
 
 
 ```js
-var output = JScrewIt.encode("\"1.\\n2.\\n\\u263A\"");
+const output = JScrewIt.encode("\"1.\\n2.\\n\\u263A\"");
 /*
 1.
 2.
@@ -119,7 +126,7 @@ var output = JScrewIt.encode("\"1.\\n2.\\n\\u263A\"");
 `JScrewIt.encode` also accepts an optional second parameter containing options that control various
 aspects of the encoding.
 These are covered in detail in the [relative section](doc/interfaces/_jscrewit_.encodeoptions.md) in
-the API reference.
+the API Reference.
 
 ### Features
 
@@ -142,34 +149,32 @@ The way to tell JScrewIt to use a particular set of features is by specifying a 
 For instance, a generic `alert(1)` example for an unspecified environment is 1905 chracters long.
 
 ```js
-var output = JScrewIt.encode("alert(1)"); // output is 1905 characters
+const output = JScrewIt.encode("alert(1)"); // output is 1905 characters
 ```
 
 We can save a few characters by indicating that our code is only supposed to run in a browser.
 We do this using the feature [`BROWSER`](doc/interfaces/_jscrewit_.featureall.md#BROWSER):
 
 ```js
-var options = { features: "BROWSER" };
-var output = JScrewIt.encode("alert(1)", options); // 1890 characters
+const options = { features: "BROWSER" };
+const output = JScrewIt.encode("alert(1)", options); // 1890 characters
 ```
 
 But if we are only interested in code that runs in an up to date Firefox browser, the output length
 shrinks to less than 50%:
-
 ```js
-var options = { features: "FF" };
-var output = JScrewIt.encode("alert(1)", options); // 858 characters now
+const options = { features: "FF" };
+const output = JScrewIt.encode("alert(1)", options); // 858 characters now
 ```
 
 Here we have used another feature: [`FF`](doc/interfaces/_jscrewit_.featureall.md#FF).
 This feature produces the shortest possible code that runs in current Firefox browsers.
 
 We can specify more than one feature using an array, e.g.
-
 ```js
-var input = "document.body.style.background='red'";
-var options = { features: ["ATOB", "WINDOW"] };
-var output = JScrewIt.encode(input, options);
+const input = "document.body.style.background='red'";
+const options = { features: ["ATOB", "WINDOW"] };
+const output = JScrewIt.encode(input, options);
 ```
 
 As opposed to the previous example, the features specified here refer to certain abilities that may
