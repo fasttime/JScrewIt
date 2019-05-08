@@ -57,19 +57,7 @@ task
 
 task
 (
-    'gherkin-lint',
-    function ()
-    {
-        var gherkinlint = require('gulp-gherkin-lint');
-
-        var stream = src('test/acceptance/**').pipe(gherkinlint());
-        return stream;
-    }
-);
-
-task
-(
-    'js-lint',
+    'lint',
     function ()
     {
         var lint = require('gulp-fasttime-lint');
@@ -100,7 +88,8 @@ task
                     '@typescript-eslint/no-triple-slash-reference': 'off',
                     'spaced-comment': ['error', 'always', { markers: ['/'] }],
                 },
-            }
+            },
+            { src: 'test/acceptance/**/*.feature' }
         );
         return stream;
     }
@@ -233,9 +222,10 @@ function makeArt(callback)
     fs.mkdir
     (
         'tmp-src',
+        { recursive: true },
         function (error)
         {
-            if (error && error.code !== 'EEXIST')
+            if (error)
                 callback(error);
             else
                 makeArt.async('tmp-src/art.js', { css: true, off: true, on: true }, callback);
@@ -338,7 +328,7 @@ task
     'default',
     series
     (
-        parallel('clean', 'gherkin-lint', 'js-lint'),
+        parallel('clean', 'lint'),
         'concat',
         'feature-info',
         'test',
