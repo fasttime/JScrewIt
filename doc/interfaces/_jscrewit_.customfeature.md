@@ -34,7 +34,7 @@
 
 **● Feature**: *[FeatureConstructor](_jscrewit_.featureconstructor.md)*
 
-*Defined in [feature.d.ts:123](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L123)*
+*Defined in [feature.d.ts:127](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L127)*
 
 ___
 <a id="canonicalnames"></a>
@@ -135,7 +135,7 @@ ___
 
 ###  restrict
 
-▸ **restrict**(environment: *`string`*, engineFeatureObjs?: *`ReadonlyArray`<[PredefinedFeature](_jscrewit_.predefinedfeature.md)>*): [CustomFeature](_jscrewit_.customfeature.md)
+▸ **restrict**(environment: *"forced-strict-mode" \| "web-worker"*, engineFeatureObjs?: *`ReadonlyArray`<[PredefinedFeature](_jscrewit_.predefinedfeature.md)>*): [CustomFeature](_jscrewit_.customfeature.md)
 
 *Inherited from [Feature](_jscrewit_.feature.md).[restrict](_jscrewit_.feature.md#restrict)*
 
@@ -149,7 +149,7 @@ This method is useful to selectively exclude features that are not available ins
 
 | Name | Type | Description |
 | ------ | ------ | ------ |
-| environment | `string` |  <br><br>The environment to which this feature should be restricted. Two environments are currently supported.<br><br><dl><br><br><dt><code>"forced-strict-mode"</code></dt> <dd> Removes features that are not available in environments that require strict mode code. </dd><br><br><dt><code>"web-worker"</code></dt> <dd>Removes features that are not available inside web workers.</dd><br><br></dl> |
+| environment | "forced-strict-mode" \| "web-worker" |  <br><br>The environment to which this feature should be restricted. Two environments are currently supported.<br><br><dl><br><br><dt><code>"forced-strict-mode"</code></dt> <dd> Removes features that are not available in environments that require strict mode code. </dd><br><br><dt><code>"web-worker"</code></dt> <dd>Removes features that are not available inside web workers.</dd><br><br></dl> |
 | `Optional` engineFeatureObjs | `ReadonlyArray`<[PredefinedFeature](_jscrewit_.predefinedfeature.md)> |  <br><br>An array of predefined feature objects, each corresponding to a particular engine in which the restriction should be enacted. If this parameter is omitted, the restriction is enacted in all engines. |
 
 **Returns:** [CustomFeature](_jscrewit_.customfeature.md)

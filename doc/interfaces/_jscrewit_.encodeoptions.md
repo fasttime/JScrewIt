@@ -90,7 +90,7 @@ ___
 
 *Defined in [encode.d.ts:83](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L83)*
 
-An alias for `runAs`
+An alias for `runAs`.
 
 ___
 

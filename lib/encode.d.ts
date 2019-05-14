@@ -79,7 +79,7 @@ declare module 'jscrewit'
          */
         trimCode?: boolean;
 
-        /** An alias for `runAs` */
+        /** An alias for `runAs`. */
         wrapWith?: 'call' | 'eval' | 'express' | 'express-call' | 'express-eval' | 'none';
     }
 
@@ -108,5 +108,5 @@ declare module 'jscrewit'
      *
      * Also, an out of memory condition may occur when processing very large data.
      */
-    const encode: (input: string, options?: EncodeOptions) => string;
+    function encode(input: string, options?: EncodeOptions): string;
 }

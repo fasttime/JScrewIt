@@ -116,7 +116,11 @@ declare module 'jscrewit'
          * which the restriction should be enacted.
          * If this parameter is omitted, the restriction is enacted in all engines.
          */
-        restrict(environment: string, engineFeatureObjs?: ReadonlyArray<PredefinedFeature>):
+        restrict
+        (
+            environment: 'forced-strict-mode' | 'web-worker',
+            engineFeatureObjs?: ReadonlyArray<PredefinedFeature>,
+        ):
         CustomFeature;
     }
 

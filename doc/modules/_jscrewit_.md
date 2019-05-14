@@ -20,7 +20,7 @@
 * [PredefinedFeatureName](_jscrewit_.md#predefinedfeaturename)
 * [PredefinedFeatureNameOrAlias](_jscrewit_.md#predefinedfeaturenameoralias)
 
-### Variables
+### Functions
 
 * [encode](_jscrewit_.md#encode)
 
@@ -49,7 +49,7 @@ ___
 
 **Ƭ FeatureElement**: *[Feature](../interfaces/_jscrewit_.feature.md) \| [PredefinedFeatureNameOrAlias](_jscrewit_.md#predefinedfeaturenameoralias)*
 
-*Defined in [feature.d.ts:298](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L298)*
+*Defined in [feature.d.ts:302](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L302)*
 
 A feature object or name or alias of a predefined feature.
 
@@ -73,29 +73,23 @@ ___
 
 **Ƭ PredefinedFeatureNameOrAlias**: *`keyof FeatureAll`*
 
-*Defined in [feature.d.ts:307](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L307)*
+*Defined in [feature.d.ts:311](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L311)*
 
 Name or alias of a predefined feature.
 
 ___
 
-## Variables
+## Functions
 
 <a id="encode"></a>
 
-### `<Const>` encode
+###  encode
 
-**● encode**: *`function`*
+▸ **encode**(input: *`string`*, options?: *[EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md)*): `string`
 
 *Defined in [encode.d.ts:111](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L111)*
 
 Encodes a given string into JSFuck.
-
-*__param__*: The string to encode.
-
-*__param__*: An optional object specifying encoding options.
-
-*__returns__*: The encoded string.
 
 *__throws__*: An `Error` is thrown under the following circumstances.
 
@@ -106,17 +100,16 @@ Encodes a given string into JSFuck.
 
 Also, an out of memory condition may occur when processing very large data.
 
-#### Type declaration
-▸(input: *`string`*, options?: *[EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md)*): `string`
-
 **Parameters:**
 
-| Name | Type |
-| ------ | ------ |
-| input | `string` |
-| `Optional` options | [EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md) |
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| input | `string` |  <br><br>The string to encode. |
+| `Optional` options | [EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md) |  <br><br>An optional object specifying encoding options. |
 
 **Returns:** `string`
+
+The encoded string.
 
 ___
 
