@@ -187,7 +187,7 @@ legacyTask
 
 task
 (
-    'uglify:lib',
+    'minify:lib',
     function ()
     {
         var rename = require('gulp-rename');
@@ -278,11 +278,12 @@ function makeUI()
         'src/postamble',
     ];
 
-    var stream = src(SRC).pipe(concat('ui.js')).pipe(uglify()).pipe(dest('html'));
+    var stream =
+    src(SRC).pipe(concat('ui.js')).pipe(uglify({ compress: { passes: 3 } })).pipe(dest('html'));
     return stream;
 }
 
-task('uglify:html', series(parallel(makeArt, makeWorker), makeUI));
+task('minify:html', series(parallel(makeArt, makeWorker), makeUI));
 
 task
 (
@@ -332,7 +333,7 @@ task
         'concat',
         'feature-info',
         'test',
-        parallel('uglify:html', 'uglify:lib', 'feature-doc'),
+        parallel('minify:html', 'minify:lib', 'feature-doc'),
         'typedoc'
     )
 );
