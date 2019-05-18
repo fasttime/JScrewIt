@@ -59,6 +59,6 @@
     "proxyquire": "~2.1.0",
     "semver": "~6.0.0",
     "typedoc": "~0.14.2",
-    "typedoc-plugin-markdown": "~1.2.0"
+    "typedoc-plugin-markdown": "~1.2.1"
   }
 }

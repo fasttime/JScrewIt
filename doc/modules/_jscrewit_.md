@@ -108,7 +108,6 @@ Also, an out of memory condition may occur when processing very large data.
 | `Optional` options | [EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md) |  <br><br>An optional object specifying encoding options. |
 
 **Returns:** `string`
-
 The encoded string.
 
 ___
