@@ -41,7 +41,7 @@ task
             {
                 src: ['gulpfile.js', 'build/**/*.js', '!build/legacy/**'],
                 envs: 'node',
-                parserOptions: { ecmaVersion: 8 },
+                parserOptions: { ecmaVersion: 9 },
             },
             {
                 src: ['build/legacy/**/*.js', 'screw.js', 'test/**/*.js', 'tools/**/*.js'],

@@ -229,10 +229,12 @@ function parseArguments(parseSequence)
         for (let index = 3; index < argCount; ++index)
         {
             const arg = argv[index];
-            const matches = /^\s*(?:--(.*)|{(.*)}|U\+([\dA-F]{4}))\s*$/i.exec(arg);
+            const matches =
+            /^\s*(?:--(?<sequence>.*)|{(?<logicalSet>.*)}|U\+(?<hexCode>[\dA-F]{4}))\s*$/i
+            .exec(arg);
             if (matches)
             {
-                const [, sequence, logicalSet, hexCode] = matches;
+                const { sequence, logicalSet, hexCode } = matches.groups;
                 if (sequence != null)
                 {
                     if (!parseSequence(sequence))
