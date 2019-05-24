@@ -1,46 +1,15 @@
-/* eslint-env es6, node */
-
 'use strict';
 
-var gulp    = require('gulp');
-var semver  = require('semver');
-
-var legacyTask  = gulp.task;
-var parallel    = gulp.parallel;
-var series      = gulp.series;
-var src         = gulp.src;
-
-var task;
-if (semver.satisfies(process.version, '>=10.0.0'))
-{
-    var dest = gulp.dest;
-
-    task = legacyTask;
-}
-else
-{
-    task =
-    function (taskName)
-    {
-        legacyTask
-        (
-            taskName,
-            function (callback)
-            {
-                callback('Task not available in Node.js < 10');
-            }
-        );
-    };
-}
+const { dest, parallel, series, src, task } = require('gulp');
 
 task
 (
     'clean',
-    function ()
+    async () =>
     {
-        var del = require('del');
+        const del = require('del');
 
-        var patterns =
+        const patterns =
         [
             'Features.md',
             'coverage',
@@ -50,19 +19,18 @@ task
             'lib/feature-all.d.ts',
             'tmp-src',
         ];
-        var promise = del(patterns);
-        return promise;
-    }
+        await del(patterns);
+    },
 );
 
 task
 (
     'lint',
-    function ()
+    () =>
     {
-        var lint = require('gulp-fasttime-lint');
+        const lint = require('gulp-fasttime-lint');
 
-        var stream =
+        const stream =
         lint
         (
             {
@@ -71,12 +39,12 @@ task
                 rules: { strict: 'off' },
             },
             {
-                src: 'build/**/*.js',
+                src: ['gulpfile.js', 'build/**/*.js', '!build/legacy/**'],
                 envs: 'node',
                 parserOptions: { ecmaVersion: 8 },
             },
             {
-                src: ['*.js', 'test/**/*.js', 'tools/**/*.js'],
+                src: ['build/legacy/**/*.js', 'screw.js', 'test/**/*.js', 'tools/**/*.js'],
                 // process.exitCode is not supported in Node.js 0.10.
                 rules: { 'no-process-exit': 'off' },
             },
@@ -89,23 +57,23 @@ task
                     'spaced-comment': ['error', 'always', { markers: ['/'] }],
                 },
             },
-            { src: 'test/acceptance/**/*.feature' }
+            { src: 'test/acceptance/**/*.feature' },
         );
         return stream;
-    }
+    },
 );
 
 task
 (
     'concat',
-    function ()
+    () =>
     {
-        var concat = require('gulp-concat');
-        var insert = require('gulp-insert');
-        var pkg = require('./package.json');
-        var replace = require('gulp-replace');
+        const { homepage, version } = require('./package.json');
+        const concat                = require('gulp-concat');
+        const { prepend }           = require('gulp-insert');
+        const replace               = require('gulp-replace');
 
-        var SRC =
+        const srcGlobs =
         [
             'src/preamble',
             'src/lib/obj-utils.js',
@@ -127,132 +95,102 @@ task
             'src/lib/debug.js',
             'src/postamble',
         ];
-
-        var stream =
-        src(SRC)
+        const stream =
+        src(srcGlobs)
         .pipe(replace(/^\/\*[^]*?\*\/\s*\n/, ''))
         .pipe(concat('jscrewit.js'))
-        .pipe(insert.prepend('// JScrewIt ' + pkg.version + ' – ' + pkg.homepage + '\n\n'))
+        .pipe(prepend(`// JScrewIt ${version} – ${homepage}\n\n`))
         .pipe(dest('lib'));
         return stream;
-    }
+    },
 );
 
-legacyTask
-(
-    'feature-info',
-    function (callback)
-    {
-        var chalk = require('chalk');
-        var featureInfo = require('./test/feature-info');
-
-        console.log();
-        var anyMarked;
-        var forcedStrictModeFeatureObj = featureInfo.forcedStrictModeFeatureObj;
-        featureInfo.showFeatureSupport
-        (
-            function (label, featureNames, isCategoryMarked)
-            {
-                function formatFeatureName(featureName)
-                {
-                    var marked =
-                    isCategoryMarked(featureName, 'forced-strict-mode', forcedStrictModeFeatureObj);
-                    if (marked)
-                        featureName += '¹';
-                    anyMarked |= marked;
-                    return featureName;
-                }
-
-                console.log(chalk.bold(label) + featureNames.map(formatFeatureName).join(', '));
-            }
-        );
-        if (anyMarked)
-            console.log('(¹) Feature excluded when strict mode is enforced.');
-        console.log();
-        callback();
-    }
-);
-
-legacyTask
+task
 (
     'test',
-    function ()
+    callback =>
     {
-        var mocha = require('gulp-spawn-mocha');
+        const { fork } = require('child_process');
 
-        var stream = src('test/**/*.spec.js').pipe(mocha({ istanbul: true }));
-        return stream;
-    }
+        const { resolve } = require;
+        const nycPath = resolve('nyc/bin/nyc');
+        const mochaPath = resolve('mocha/bin/mocha');
+        const forkArgs =
+        [
+            '--include=lib',
+            '--include=src',
+            '--include=tools',
+            '--reporter=html',
+            '--reporter=text-summary',
+            '--',
+            mochaPath,
+            'test/**/*.spec.js',
+        ];
+        const cmd = fork(nycPath, forkArgs);
+        cmd.on('exit', code => callback(code && 'Test failed'));
+    },
 );
 
 task
 (
     'minify:lib',
-    function ()
+    () =>
     {
-        var rename = require('gulp-rename');
-        var uglify = require('gulp-uglify');
+        const rename = require('gulp-rename');
+        const uglify = require('gulp-uglify');
 
-        var uglifyOpts =
+        const uglifyOpts =
         {
             compress: { global_defs: { DEBUG: false }, passes: 2 },
-            output:
-            {
-                comments:
-                function (node, comment)
-                {
-                    return comment.pos === 0;
-                },
-            },
+            output: { comments: (node, comment) => comment.pos === 0 },
         };
-        var stream =
+        const stream =
         src('lib/jscrewit.js')
         .pipe(uglify(uglifyOpts))
         .pipe(rename({ extname: '.min.js' }))
         .pipe(dest('lib'));
         return stream;
-    }
+    },
 );
 
 function makeArt(callback)
 {
-    var fs = require('fs');
-    var makeArt = require('art-js');
+    const makeArt   = require('art-js');
+    const fs        = require('fs');
 
     fs.mkdir
     (
         'tmp-src',
         { recursive: true },
-        function (error)
+        error =>
         {
             if (error)
                 callback(error);
             else
                 makeArt.async('tmp-src/art.js', { css: true, off: true, on: true }, callback);
-        }
+        },
     );
 }
 
 function makeWorker()
 {
-    var through = require('through2');
-    var uglify = require('gulp-uglify');
+    const uglify    = require('gulp-uglify');
+    const through   = require('through2');
 
-    var stream =
+    const stream =
     src('src/html/worker.js')
     .pipe(uglify())
     .pipe
     (
         through.obj
         (
-            function (chunk, encoding, callback)
+            (chunk, encoding, callback) =>
             {
-                var contents =
-                'var WORKER_SRC = ' + JSON.stringify(String(chunk.contents)) + ';\n';
+                const contents = `var WORKER_SRC = ${JSON.stringify(String(chunk.contents))};\n`;
                 chunk.contents = Buffer.from(contents);
                 callback(null, chunk);
-            }
-        )
+            },
+        ),
     )
     .pipe(dest('tmp-src'));
     return stream;
@@ -260,10 +198,10 @@ function makeWorker()
 
 function makeUI()
 {
-    var concat = require('gulp-concat');
-    var uglify = require('gulp-uglify');
+    const concat    = require('gulp-concat');
+    const uglify    = require('gulp-uglify');
 
-    var SRC =
+    const srcGlobs =
     [
         'tmp-src/art.js',
         'src/html/result-format.js',
@@ -277,9 +215,11 @@ function makeUI()
         'src/html/ui-main.js',
         'src/postamble',
     ];
-
-    var stream =
-    src(SRC).pipe(concat('ui.js')).pipe(uglify({ compress: { passes: 3 } })).pipe(dest('html'));
+    const stream =
+    src(srcGlobs)
+    .pipe(concat('ui.js'))
+    .pipe(uglify({ compress: { passes: 3 } }))
+    .pipe(dest('html'));
     return stream;
 }
 
@@ -288,30 +228,30 @@ task('minify:html', series(parallel(makeArt, makeWorker), makeUI));
 task
 (
     'feature-doc',
-    function (callback)
+    async () =>
     {
-        var writeFile = require('fs').promises.writeFile;
-        var makeFeatureDoc = require('./build/make-feature-doc');
+        const makeFeatureDoc                = require('./build/make-feature-doc');
+        const { promises: { writeFile } }   = require('fs');
 
-        var featureDoc = makeFeatureDoc();
-        var promiseMd = writeFile('Features.md', featureDoc.contentMd);
-        var promiseTs = writeFile('lib/feature-all.d.ts', featureDoc.contentTs);
-        Promise.all([promiseMd, promiseTs]).then(() => callback(), callback);
-    }
+        const { contentMd, contentTs } = makeFeatureDoc();
+        const promiseMd = writeFile('Features.md', contentMd);
+        const promiseTs = writeFile('lib/feature-all.d.ts', contentTs);
+        await Promise.all([promiseMd, promiseTs]);
+    },
 );
 
 task
 (
     'typedoc',
-    function ()
+    () =>
     {
-        var pkg = require('./package.json');
-        var typedoc = require('gulp-typedoc');
+        const { version }   = require('./package.json');
+        const typedoc       = require('gulp-typedoc');
 
-        var opts =
+        const typedocOpts =
         {
             excludeExternals:       true,
-            gitRevision:            pkg.version,
+            gitRevision:            version,
             includeDeclarations:    true,
             mode:                   'file',
             name:                   'JScrewIt',
@@ -319,9 +259,9 @@ task
             readme:                 'none',
             theme:                  'markdown',
         };
-        var stream = src('lib', { read: false }).pipe(typedoc(opts));
+        const stream = src('lib', { read: false }).pipe(typedoc(typedocOpts));
         return stream;
-    }
+    },
 );
 
 task
@@ -331,11 +271,10 @@ task
     (
         parallel('clean', 'lint'),
         'concat',
-        'feature-info',
         'test',
         parallel('minify:html', 'minify:lib', 'feature-doc'),
-        'typedoc'
-    )
+        'typedoc',
+    ),
 );
 
 // The docs task is not executed by the default task because the files it generates are not included
@@ -343,11 +282,11 @@ task
 task
 (
     'jsdoc',
-    function ()
+    () =>
     {
-        var jsdoc = require('gulp-jsdoc3');
+        const jsdoc = require('gulp-jsdoc3');
 
-        var stream =
+        const stream =
         src('lib/jscrewit.js', { read: false })
         .pipe
         (
@@ -357,9 +296,9 @@ task
                     opts: { destination: 'jsdoc' },
                     plugins: ['plugins/markdown'],
                     tags: { allowUnknownTags: false },
-                }
-            )
+                },
+            ),
         );
         return stream;
-    }
+    },
 );
