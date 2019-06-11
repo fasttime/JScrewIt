@@ -40,10 +40,10 @@
                     {
                         if (typeof module !== 'undefined')
                         {
-                            var proxyquire = require('proxyquire');
+                            var subrequire = require('subrequire');
 
                             global.self = { };
-                            var JScrewIt = proxyquire('../..', { });
+                            var JScrewIt = subrequire('../..');
                             expect(self.JScrewIt).toBe(JScrewIt);
                         }
                         expect(self.hasOwnProperty('JScrewIt')).toBeTruthy();

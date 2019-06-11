@@ -126,8 +126,8 @@ task
             mochaPath,
             'test/**/*.spec.js',
         ];
-        const cmd = fork(nycPath, forkArgs);
-        cmd.on('exit', code => callback(code && 'Test failed'));
+        const childProcess = fork(nycPath, forkArgs);
+        childProcess.on('exit', code => callback(code && 'Test failed'));
     },
 );
 
@@ -153,23 +153,13 @@ task
     },
 );
 
-function makeArt(callback)
+async function makeArt()
 {
-    const makeArt   = require('art-js');
-    const fs        = require('fs');
+    const { promise }               = require('art-js');
+    const { promises: { mkdir } }   = require('fs');
 
-    fs.mkdir
-    (
-        'tmp-src',
-        { recursive: true },
-        error =>
-        {
-            if (error)
-                callback(error);
-            else
-                makeArt.async('tmp-src/art.js', { css: true, off: true, on: true }, callback);
-        },
-    );
+    await mkdir('tmp-src', { recursive: true });
+    await promise('tmp-src/art.js', { css: true, off: true, on: true });
 }
 
 function makeWorker()
