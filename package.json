@@ -59,6 +59,6 @@
     "nyc": "~14.1.1",
     "subrequire": "~0.0.0",
     "typedoc": "~0.14.2",
-    "typedoc-plugin-markdown": "~1.2.1"
+    "typedoc-plugin-markdown": "~2.0.5"
   }
 }

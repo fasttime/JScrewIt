@@ -1,96 +1,120 @@
-[JScrewIt](../README.md) > ["jscrewit"](../modules/_jscrewit_.md) > [EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md)
+> ## [JScrewIt](../README.md)
+
+["jscrewit"](../modules/_jscrewit_.md) / [EncodeOptions](_jscrewit_.encodeoptions.md) /
 
 # Interface: EncodeOptions
 
 ## Hierarchy
 
-**EncodeOptions**
+* **EncodeOptions**
 
-## Index
+### Index
 
-### Properties
+#### Properties
 
-* [features](_jscrewit_.encodeoptions.md#features)
-* [runAs](_jscrewit_.encodeoptions.md#runas)
-* [trimCode](_jscrewit_.encodeoptions.md#trimcode)
-* [wrapWith](_jscrewit_.encodeoptions.md#wrapwith)
-
----
+* [features](_jscrewit_.encodeoptions.md#optional-features)
+* [runAs](_jscrewit_.encodeoptions.md#optional-runas)
+* [trimCode](_jscrewit_.encodeoptions.md#optional-trimcode)
+* [wrapWith](_jscrewit_.encodeoptions.md#optional-wrapwith)
 
 ## Properties
 
-<a id="features"></a>
+### `Optional` features
 
-### `<Optional>` features
-
-**● features**: *[FeatureElement](../modules/_jscrewit_.md#featureelement) \| [CompatibleFeatureArray](../modules/_jscrewit_.md#compatiblefeaturearray)*
+● **features**? : *[FeatureElement](../modules/_jscrewit_.md#featureelement) | [CompatibleFeatureArray](../modules/_jscrewit_.md#compatiblefeaturearray)*
 
 *Defined in [encode.d.ts:16](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L16)*
 
 Specifies the features available in the engines that evaluate the encoded output.
 
-If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](_jscrewit_.featureconstructor.md#default) is assumed: this ensures maximum compatibility but also generates the largest code. To generate shorter code, specify all features available in all target engines explicitly.
+If this parameter is unspecified,
+[`JScrewIt.Feature.DEFAULT`](_jscrewit_.featureconstructor.md#default) is assumed: this
+ensures maximum compatibility but also generates the largest code.
+To generate shorter code, specify all features available in all target engines
+explicitly.
 
 ___
-<a id="runas"></a>
 
-### `<Optional>` runAs
+### `Optional` runAs
 
-**● runAs**: *"call" \| "eval" \| "express" \| "express-call" \| "express-eval" \| "none"*
+● **runAs**? : *"call" | "eval" | "express" | "express-call" | "express-eval" | "none"*
 
 *Defined in [encode.d.ts:66](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L66)*
 
-This option controls the type of code generated from the given input. Allowed values are listed below.
+This option controls the type of code generated from the given input.
+Allowed values are listed below.
 
-`"call"`
+<dl>
 
-Produces code evaluating to a call to a function whose body contains the specified input string.
+<dt><code>"call"</code></dt>
+<dd>
+Produces code evaluating to a call to a function whose body contains the specified input
+string.
+</dd>
 
-`"eval"`
+<dt><code>"eval"</code></dt>
+<dd>
+Produces code evaluating to the result of invoking <code>eval</code> with the specified
+input string as parameter.
+</dd>
 
-Produces code evaluating to the result of invoking `eval` with the specified input string as parameter.
+<dt><code>"express"</code></dt>
+<dd>
+Attempts to interpret the specified string as JavaScript code and produce functionally
+equivalent JSFuck code.
+Fails if the specified string cannot be expressed as JavaScript, or if no functionally
+equivalent JSFuck code can be generated.
+</dd>
 
-`"express"`
+<dt><code>"express-call"</code></dt>
+<dd>
+Applies the code generation process of both <code>"express"</code> and
+<code>"call"</code> and returns the shortest output.
+</dd>
 
-Attempts to interpret the specified string as JavaScript code and produce functionally equivalent JSFuck code. Fails if the specified string cannot be expressed as JavaScript, or if no functionally equivalent JSFuck code can be generated.
+<dt><code>"express-eval"</code> (default)</dt>
+<dd>
+Applies the code generation process of both <code>"express"</code> and
+<code>"eval"</code> and returns the shortest output.
+</dd>
 
-`"express-call"`
+<dt><code>"none"</code></dt>
+<dd>
+Produces JSFuck code that translates to the specified input string (except for trimmed
+parts when used in conjunction with the option <code>trimCode</code>).
+Unlike other methods, <code>"none"</code> does not generate executable code but just a
+plain string.
+</dd>
 
-Applies the code generation process of both `"express"` and `"call"` and returns the shortest output.
-
-`"express-eval"` (default)
-
-Applies the code generation process of both `"express"` and `"eval"` and returns the shortest output.
-
-`"none"`
-
-Produces JSFuck code that translates to the specified input string (except for trimmed parts when used in conjunction with the option `trimCode`). Unlike other methods, `"none"` does not generate executable code but just a plain string.
+</dl>
 
 ___
-<a id="trimcode"></a>
 
-### `<Optional>` trimCode
+### `Optional` trimCode
 
-**● trimCode**: *`boolean`*
+● **trimCode**? : *boolean*
 
 *Defined in [encode.d.ts:80](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L80)*
 
-If this parameter is truthy, lines in the beginning and in the end of the file containing nothing but space characters and JavaScript comments are removed from the generated output. A newline terminator in the last preserved line is also removed.
+If this parameter is truthy, lines in the beginning and in the end of the file containing
+nothing but space characters and JavaScript comments are removed from the generated
+output.
+A newline terminator in the last preserved line is also removed.
 
-This option is especially useful to strip banner comments and trailing newline characters which are sometimes found in minified scripts.
+This option is especially useful to strip banner comments and trailing newline characters
+which are sometimes found in minified scripts.
 
-Using this option may produce unexpected results if the input is not well-formed JavaScript code.
+Using this option may produce unexpected results if the input is not well-formed
+JavaScript code.
 
 ___
-<a id="wrapwith"></a>
 
-### `<Optional>` wrapWith
+### `Optional` wrapWith
 
-**● wrapWith**: *"call" \| "eval" \| "express" \| "express-call" \| "express-eval" \| "none"*
+● **wrapWith**? : *"call" | "eval" | "express" | "express-call" | "express-eval" | "none"*
 
 *Defined in [encode.d.ts:83](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L83)*
 
 An alias for `runAs`.
 
 ___
-

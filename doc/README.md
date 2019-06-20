@@ -1,11 +1,7 @@
+> ## [JScrewIt](README.md)
 
-#  JScrewIt
+### Index
 
-## Index
-
-### Modules
+#### Modules
 
 * ["jscrewit"](modules/_jscrewit_.md)
-
----
-
