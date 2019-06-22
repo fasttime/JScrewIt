@@ -55,7 +55,7 @@ ___
 
 *Overrides [Feature](_jscrewit_.feature.md).[description](_jscrewit_.feature.md#optional-description)*
 
-*Defined in [feature.d.ts:306](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L306)*
+*Defined in [feature.d.ts:301](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L301)*
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 *Overrides [Feature](_jscrewit_.feature.md).[name](_jscrewit_.feature.md#optional-name)*
 
-*Defined in [feature.d.ts:307](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L307)*
+*Defined in [feature.d.ts:302](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L302)*
 
 ___
 

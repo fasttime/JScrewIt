@@ -7,9 +7,8 @@ declare module 'jscrewit'
         /**
          * Specifies the features available in the engines that evaluate the encoded output.
          *
-         * If this parameter is unspecified,
-         * [`JScrewIt.Feature.DEFAULT`](_jscrewit_.featureconstructor.md#default) is assumed: this
-         * ensures maximum compatibility but also generates the largest code.
+         * If this parameter is unspecified, <code>[[DEFAULT|JScrewIt.Feature.DEFAULT]]</code> is
+         * assumed: this ensures maximum compatibility but also generates the largest code.
          * To generate shorter code, specify all features available in all target engines
          * explicitly.
          */

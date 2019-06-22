@@ -20,7 +20,6 @@
 * [CompatibleFeatureArray](_jscrewit_.md#compatiblefeaturearray)
 * [FeatureElement](_jscrewit_.md#featureelement)
 * [PredefinedFeatureName](_jscrewit_.md#predefinedfeaturename)
-* [PredefinedFeatureNameOrAlias](_jscrewit_.md#predefinedfeaturenameoralias)
 
 #### Functions
 
@@ -48,11 +47,11 @@ ___
 
 ###  FeatureElement
 
-Ƭ **FeatureElement**: *[Feature](../interfaces/_jscrewit_.feature.md) | [PredefinedFeatureNameOrAlias](_jscrewit_.md#predefinedfeaturenameoralias)*
+Ƭ **FeatureElement**: *[Feature](../interfaces/_jscrewit_.feature.md) | keyof FeatureAll*
 
-*Defined in [feature.d.ts:302](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L302)*
+*Defined in [feature.d.ts:297](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L297)*
 
-A feature object or name or alias of a predefined feature.
+A feature object or a name or alias of a predefined feature.
 
 **`remarks`** 
 
@@ -71,23 +70,13 @@ Name of a predefined feature.
 
 ___
 
-###  PredefinedFeatureNameOrAlias
-
-Ƭ **PredefinedFeatureNameOrAlias**: *keyof FeatureAll*
-
-*Defined in [feature.d.ts:311](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L311)*
-
-Name or alias of a predefined feature.
-
-___
-
 ## Functions
 
 ###  encode
 
 ▸ **encode**(`input`: string, `options?`: [EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md)): *string*
 
-*Defined in [encode.d.ts:111](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L111)*
+*Defined in [encode.d.ts:110](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L110)*
 
 Encodes a given string into JSFuck.
 

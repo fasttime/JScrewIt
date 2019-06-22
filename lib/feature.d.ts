@@ -22,8 +22,8 @@ declare module 'jscrewit'
      * length of its output are available in a particular JavaScript engine.
      *
      * JScrewIt comes with a set of predefined feature objects exposed as property values of
-     * `JScrewIt.Feature` or [`JScrewIt.Feature.ALL`](_jscrewit_.featureconstructor.md#all), where
-     * the property name is the feature's name or an alias thereof.
+     * `JScrewIt.Feature` or <code>[[ALL|JScrewIt.Feature.ALL]]</code>, where the property name is
+     * the feature's name or an alias thereof.
      *
      * Besides these predefined features, it is possible to construct custom features from the union
      * or intersection of other features.
@@ -34,10 +34,10 @@ declare module 'jscrewit'
      * their elementary components.
      * All other features, called *composite* features, can be constructed as a union of zero or
      * more elementary features.
-     * Two of the predefined composite features are particularly important:
-     * [`DEFAULT`](_jscrewit_.featureall.md#DEFAULT) is the empty feature, indicating that no
-     * elementary feature is available at all; [`AUTO`](_jscrewit_.featureall.md#AUTO) is the union
-     * of all elementary features available in the current engine.
+     * Two of the predefined composite features are particularly important: <code>[[DEFAULT]]</code>
+     * is the empty feature, indicating that no elementary feature is available at all;
+     * <code>[[AUTO]]</code> is the union of all elementary features available in the current
+     * engine.
      *
      * Not all features can be available at the same time: some features are necessarily
      * incompatible, meaning that they mutually exclude each other, and thus their union cannot be
@@ -156,13 +156,12 @@ declare module 'jscrewit'
          * The constructor can be used with or without the `new` operator, e.g.
          * `new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
          * If no arguments are specified, the new feature object will be equivalent to
-         * [`DEFAULT`](_jscrewit_.featureall.md#DEFAULT).
+         * <code>[[DEFAULT]]</code>.
          *
          * @example
          *
          * The following statements are equivalent, and will all construct a new feature object
-         * including both [`ANY_DOCUMENT`](_jscrewit_.featureall.md#ANY_DOCUMENT) and
-         * [`ANY_WINDOW`](_jscrewit_.featureall.md#ANY_WINDOW).
+         * including both <code>[[ANY_DOCUMENT]]</code> and <code>[[ANY_WINDOW]]</code>.
          *
          * ```js
          * JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
@@ -188,13 +187,12 @@ declare module 'jscrewit'
          * The constructor can be used with or without the `new` operator, e.g.
          * `new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
          * If no arguments are specified, the new feature object will be equivalent to
-         * [`DEFAULT`](_jscrewit_.featureall.md#DEFAULT).
+         * <code>[[DEFAULT]]</code>.
          *
          * @example
          *
          * The following statements are equivalent, and will all construct a new feature object
-         * including both [`ANY_DOCUMENT`](_jscrewit_.featureall.md#ANY_DOCUMENT) and
-         * [`ANY_WINDOW`](_jscrewit_.featureall.md#ANY_WINDOW).
+         * including both <code>[[ANY_DOCUMENT]]</code> and <code>[[ANY_WINDOW]]</code>.
          *
          * ```js
          * new JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
@@ -270,18 +268,15 @@ declare module 'jscrewit'
          *
          * @example
          *
-         * This will create a new feature object equivalent to
-         * [`NAME`](_jscrewit_.featureall.md#NAME).
+         * This will create a new feature object equivalent to <code>[[NAME]]</code>.
          *
          * ```js
          * const newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
          * ```
          *
-         * This will create a new feature object equivalent to
-         * [`ANY_DOCUMENT`](_jscrewit_.featureall.md#ANY_DOCUMENT).
-         * This is because both [`HTMLDOCUMENT`](_jscrewit_.featureall.md#HTMLDOCUMENT) and
-         * [`DOCUMENT`](_jscrewit_.featureall.md#DOCUMENT) imply
-         * [`ANY_DOCUMENT`](_jscrewit_.featureall.md#ANY_DOCUMENT).
+         * This will create a new feature object equivalent to <code>[[ANY_DOCUMENT]]</code>.
+         * This is because both <code>[[HTMLDOCUMENT]]</code> and <code>[[DOCUMENT]]</code> imply
+         * <code>[[ANY_DOCUMENT]]</code>.
          *
          * ```js
          * const newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
@@ -292,21 +287,18 @@ declare module 'jscrewit'
     }
 
     /**
-     * A feature object or name or alias of a predefined feature.
+     * A feature object or a name or alias of a predefined feature.
      *
      * @remarks
      *
      * Methods that accept parameters of this type throw an error if the specified value is neither
      * a feature object nor a name or alias of a predefined feature.
      */
-    type FeatureElement = Feature | PredefinedFeatureNameOrAlias;
+    type FeatureElement = Feature | keyof FeatureAll;
 
     interface PredefinedFeature extends Feature
     {
         readonly description: string;
         readonly name: PredefinedFeatureName;
     }
-
-    /** Name or alias of a predefined feature. */
-    type PredefinedFeatureNameOrAlias = keyof FeatureAll;
 }

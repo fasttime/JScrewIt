@@ -51,7 +51,7 @@ ___
 
 ### `Optional` description
 
-● **description**? : *string*
+● **description**? : *undefined | string*
 
 *Inherited from [Feature](_jscrewit_.feature.md).[description](_jscrewit_.feature.md#optional-description)*
 
@@ -89,7 +89,7 @@ ___
 
 ### `Optional` name
 
-● **name**? : *string*
+● **name**? : *undefined | string*
 
 *Inherited from [Feature](_jscrewit_.feature.md).[name](_jscrewit_.feature.md#optional-name)*
 

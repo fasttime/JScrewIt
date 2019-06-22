@@ -23,13 +23,12 @@
 
 ● **features**? : *[FeatureElement](../modules/_jscrewit_.md#featureelement) | [CompatibleFeatureArray](../modules/_jscrewit_.md#compatiblefeaturearray)*
 
-*Defined in [encode.d.ts:16](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L16)*
+*Defined in [encode.d.ts:15](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L15)*
 
 Specifies the features available in the engines that evaluate the encoded output.
 
-If this parameter is unspecified,
-[`JScrewIt.Feature.DEFAULT`](_jscrewit_.featureconstructor.md#default) is assumed: this
-ensures maximum compatibility but also generates the largest code.
+If this parameter is unspecified, <code>[JScrewIt.Feature.DEFAULT](_jscrewit_.featureall.md#default)</code> is
+assumed: this ensures maximum compatibility but also generates the largest code.
 To generate shorter code, specify all features available in all target engines
 explicitly.
 
@@ -39,7 +38,7 @@ ___
 
 ● **runAs**? : *"call" | "eval" | "express" | "express-call" | "express-eval" | "none"*
 
-*Defined in [encode.d.ts:66](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L66)*
+*Defined in [encode.d.ts:65](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L65)*
 
 This option controls the type of code generated from the given input.
 Allowed values are listed below.
@@ -92,9 +91,9 @@ ___
 
 ### `Optional` trimCode
 
-● **trimCode**? : *boolean*
+● **trimCode**? : *undefined | false | true*
 
-*Defined in [encode.d.ts:80](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L80)*
+*Defined in [encode.d.ts:79](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L79)*
 
 If this parameter is truthy, lines in the beginning and in the end of the file containing
 nothing but space characters and JavaScript comments are removed from the generated
@@ -113,7 +112,7 @@ ___
 
 ● **wrapWith**? : *"call" | "eval" | "express" | "express-call" | "express-eval" | "none"*
 
-*Defined in [encode.d.ts:83](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L83)*
+*Defined in [encode.d.ts:82](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/encode.d.ts#L82)*
 
 An alias for `runAs`.
 

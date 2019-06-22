@@ -8,8 +8,8 @@ Objects of this type indicate which of the capabilities that JScrewIt can use to
 length of its output are available in a particular JavaScript engine.
 
 JScrewIt comes with a set of predefined feature objects exposed as property values of
-`JScrewIt.Feature` or [`JScrewIt.Feature.ALL`](_jscrewit_.featureconstructor.md#all), where
-the property name is the feature's name or an alias thereof.
+`JScrewIt.Feature` or <code>[JScrewIt.Feature.ALL](_jscrewit_.featureconstructor.md#all)</code>, where the property name is
+the feature's name or an alias thereof.
 
 Besides these predefined features, it is possible to construct custom features from the union
 or intersection of other features.
@@ -20,10 +20,10 @@ they are different from such a union in that they exclude some other feature not
 their elementary components.
 All other features, called *composite* features, can be constructed as a union of zero or
 more elementary features.
-Two of the predefined composite features are particularly important:
-[`DEFAULT`](_jscrewit_.featureall.md#DEFAULT) is the empty feature, indicating that no
-elementary feature is available at all; [`AUTO`](_jscrewit_.featureall.md#AUTO) is the union
-of all elementary features available in the current engine.
+Two of the predefined composite features are particularly important: <code>[DEFAULT](_jscrewit_.featureall.md#default)</code>
+is the empty feature, indicating that no elementary feature is available at all;
+<code>[AUTO](_jscrewit_.featureall.md#auto)</code> is the union of all elementary features available in the current
+engine.
 
 Not all features can be available at the same time: some features are necessarily
 incompatible, meaning that they mutually exclude each other, and thus their union cannot be
@@ -67,7 +67,7 @@ ___
 
 ### `Optional` description
 
-● **description**? : *string*
+● **description**? : *undefined | string*
 
 *Defined in [feature.d.ts:60](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L60)*
 
@@ -101,7 +101,7 @@ ___
 
 ### `Optional` name
 
-● **name**? : *string*
+● **name**? : *undefined | string*
 
 *Defined in [feature.d.ts:77](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L77)*
 

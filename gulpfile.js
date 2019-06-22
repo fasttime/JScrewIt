@@ -248,6 +248,7 @@ task
             out:                    'doc',
             readme:                 'none',
             theme:                  'markdown',
+            tsconfig:               'tsconfig.json',
         };
         const stream = src('lib', { read: false }).pipe(typedoc(typedocOpts));
         return stream;
