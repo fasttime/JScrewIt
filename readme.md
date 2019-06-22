@@ -63,10 +63,10 @@ from GitHub and include it in your HTML file.
 <script src="jscrewit.js"></script>
 ```
 
-Alternatively, you can hotlink the current stable version using a CDN of your choice.
+Alternatively, you can hotlink the latest version using a CDN of your choice.
 
 ```html
-<script src="https://gitcdn.xyz/repo/fasttime/JScrewIt/master/lib/jscrewit.min.js"></script>
+<script src="https://cdn.statically.io/gh/fasttime/JScrewIt/master/lib/jscrewit.min.js"></script>
 ```
 
 ### In Node.js
