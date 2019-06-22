@@ -14,7 +14,7 @@
 
 ▸ (...`features`: [Feature](_jscrewit_.feature.md) | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF" | `ReadonlyArray<Feature | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF">`[]): *[CustomFeature](_jscrewit_.customfeature.md)*
 
-*Defined in [feature.d.ts:182](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L182)*
+*Defined in [feature.d.ts:182](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature.d.ts#L182)*
 
 Creates a new feature object from the union of the specified features.
 
@@ -153,7 +153,7 @@ Name | Type |
 
 \+ **new FeatureConstructor**(...`features`: [Feature](_jscrewit_.feature.md) | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF" | `ReadonlyArray<Feature | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF">`[]): *[CustomFeature](_jscrewit_.customfeature.md)*
 
-*Defined in [feature.d.ts:151](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L151)*
+*Defined in [feature.d.ts:151](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature.d.ts#L151)*
 
 Creates a new feature object from the union of the specified features.
 
@@ -199,7 +199,7 @@ ___
 
 ● **ALL**: *[FeatureAll](_jscrewit_.featureall.md)*
 
-*Defined in [feature.d.ts:148](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L148)*
+*Defined in [feature.d.ts:148](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature.d.ts#L148)*
 
 An immutable mapping of all predefined feature objects accessed by name or alias.
 
@@ -225,7 +225,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ANDRO_4_0](_jscrewit_.featureall.md#andro_4_0)*
 
-*Defined in [feature-all.d.ts:10](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L10)*
+*Defined in [feature-all.d.ts:10](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L10)*
 
 Features available in Android Browser 4.0.
 
@@ -237,7 +237,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ANDRO_4_1](_jscrewit_.featureall.md#andro_4_1)*
 
-*Defined in [feature-all.d.ts:15](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L15)*
+*Defined in [feature-all.d.ts:15](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L15)*
 
 Features available in Android Browser 4.1 to 4.3.
 
@@ -249,7 +249,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ANDRO_4_4](_jscrewit_.featureall.md#andro_4_4)*
 
-*Defined in [feature-all.d.ts:20](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L20)*
+*Defined in [feature-all.d.ts:20](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L20)*
 
 Features available in Android Browser 4.4.
 
@@ -261,7 +261,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ANY_DOCUMENT](_jscrewit_.featureall.md#any_document)*
 
-*Defined in [feature-all.d.ts:29](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L29)*
+*Defined in [feature-all.d.ts:29](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L29)*
 
 Existence of the global object document whose string representation starts with "\[object " and ends with "Document\]".
 
@@ -277,7 +277,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ANY_WINDOW](_jscrewit_.featureall.md#any_window)*
 
-*Defined in [feature-all.d.ts:38](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L38)*
+*Defined in [feature-all.d.ts:38](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L38)*
 
 Existence of the global object self whose string representation starts with "\[object " and ends with "Window\]".
 
@@ -293,7 +293,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ARRAY_ITERATOR](_jscrewit_.featureall.md#array_iterator)*
 
-*Defined in [feature-all.d.ts:47](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L47)*
+*Defined in [feature-all.d.ts:47](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L47)*
 
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
 
@@ -309,7 +309,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ARROW](_jscrewit_.featureall.md#arrow)*
 
-*Defined in [feature-all.d.ts:56](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L56)*
+*Defined in [feature-all.d.ts:56](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L56)*
 
 Support for arrow functions.
 
@@ -325,7 +325,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ATOB](_jscrewit_.featureall.md#atob)*
 
-*Defined in [feature-all.d.ts:65](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L65)*
+*Defined in [feature-all.d.ts:65](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L65)*
 
 Existence of the global functions atob and btoa.
 
@@ -341,7 +341,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[AUTO](_jscrewit_.featureall.md#auto)*
 
-*Defined in [feature-all.d.ts:70](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L70)*
+*Defined in [feature-all.d.ts:70](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L70)*
 
 All features available in the current engine.
 
@@ -353,7 +353,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[BARPROP](_jscrewit_.featureall.md#barprop)*
 
-*Defined in [feature-all.d.ts:79](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L79)*
+*Defined in [feature-all.d.ts:79](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L79)*
 
 Existence of the global object statusbar having the string representation "\[object BarProp\]".
 
@@ -369,7 +369,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[BROWSER](_jscrewit_.featureall.md#browser)*
 
-*Defined in [feature-all.d.ts:86](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L86)*
+*Defined in [feature-all.d.ts:86](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L86)*
 
 Features available in all browsers.
 
@@ -383,7 +383,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CAPITAL_HTML](_jscrewit_.featureall.md#capital_html)*
 
-*Defined in [feature-all.d.ts:95](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L95)*
+*Defined in [feature-all.d.ts:95](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L95)*
 
 The property that the various string methods returning HTML code such as String.prototype.big or String.prototype.link have both the tag name and attributes written in capital letters.
 
@@ -399,7 +399,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CHROME](_jscrewit_.featureall.md#chrome)*
 
-*Defined in [feature-all.d.ts:98](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L98)*
+*Defined in [feature-all.d.ts:98](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L98)*
 
 An alias for `CHROME_73`.
 
@@ -411,7 +411,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CHROME_73](_jscrewit_.featureall.md#chrome_73)*
 
-*Defined in [feature-all.d.ts:103](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L103)*
+*Defined in [feature-all.d.ts:103](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L103)*
 
 Features available in Chrome 73 and Opera 60 or later.
 
@@ -423,7 +423,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CHROME_PREV](_jscrewit_.featureall.md#chrome_prev)*
 
-*Defined in [feature-all.d.ts:106](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L106)*
+*Defined in [feature-all.d.ts:106](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L106)*
 
 An alias for `CHROME_73`.
 
@@ -435,7 +435,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[COMPACT](_jscrewit_.featureall.md#compact)*
 
-*Defined in [feature-all.d.ts:113](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L113)*
+*Defined in [feature-all.d.ts:113](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L113)*
 
 All new browsers' features.
 
@@ -449,7 +449,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CONSOLE](_jscrewit_.featureall.md#console)*
 
-*Defined in [feature-all.d.ts:124](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L124)*
+*Defined in [feature-all.d.ts:124](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L124)*
 
 Existence of the global object console having the string representation "\[object Console\]".
 
@@ -467,7 +467,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[DEFAULT](_jscrewit_.featureall.md#default)*
 
-*Defined in [feature-all.d.ts:129](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L129)*
+*Defined in [feature-all.d.ts:129](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L129)*
 
 Minimum feature level, compatible with all supported engines in all environments.
 
@@ -479,7 +479,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[DOCUMENT](_jscrewit_.featureall.md#document)*
 
-*Defined in [feature-all.d.ts:138](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L138)*
+*Defined in [feature-all.d.ts:138](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L138)*
 
 Existence of the global object document having the string representation "\[object Document\]".
 
@@ -495,7 +495,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[DOMWINDOW](_jscrewit_.featureall.md#domwindow)*
 
-*Defined in [feature-all.d.ts:147](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L147)*
+*Defined in [feature-all.d.ts:147](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L147)*
 
 Existence of the global object self having the string representation "\[object DOMWindow\]".
 
@@ -511,7 +511,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[EDGE](_jscrewit_.featureall.md#edge)*
 
-*Defined in [feature-all.d.ts:150](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L150)*
+*Defined in [feature-all.d.ts:150](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L150)*
 
 An alias for `EDGE_40`.
 
@@ -523,7 +523,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[EDGE_40](_jscrewit_.featureall.md#edge_40)*
 
-*Defined in [feature-all.d.ts:155](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L155)*
+*Defined in [feature-all.d.ts:155](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L155)*
 
 Features available in Edge 40 or later.
 
@@ -535,7 +535,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[EDGE_PREV](_jscrewit_.featureall.md#edge_prev)*
 
-*Defined in [feature-all.d.ts:158](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L158)*
+*Defined in [feature-all.d.ts:158](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L158)*
 
 An alias for `EDGE_40`.
 
@@ -545,7 +545,7 @@ ___
 
 ● **ELEMENTARY**: *`ReadonlyArray<PredefinedFeature>`*
 
-*Defined in [feature.d.ts:151](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L151)*
+*Defined in [feature.d.ts:151](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature.d.ts#L151)*
 
 An immutable array of all elementary feature objects ordered by name.
 
@@ -557,7 +557,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ESC_HTML_ALL](_jscrewit_.featureall.md#esc_html_all)*
 
-*Defined in [feature-all.d.ts:167](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L167)*
+*Defined in [feature-all.d.ts:167](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L167)*
 
 The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
 
@@ -573,7 +573,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ESC_HTML_QUOT](_jscrewit_.featureall.md#esc_html_quot)*
 
-*Defined in [feature-all.d.ts:176](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L176)*
+*Defined in [feature-all.d.ts:176](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L176)*
 
 The property that double quotation marks in the argument of String.prototype.fontcolor are escaped as "\&quot;".
 
@@ -589,7 +589,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ESC_HTML_QUOT_ONLY](_jscrewit_.featureall.md#esc_html_quot_only)*
 
-*Defined in [feature-all.d.ts:185](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L185)*
+*Defined in [feature-all.d.ts:185](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L185)*
 
 The property that only double quotation marks and no other characters in the argument of String.prototype.fontcolor are escaped into HTML entities.
 
@@ -605,7 +605,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ESC_REGEXP_LF](_jscrewit_.featureall.md#esc_regexp_lf)*
 
-*Defined in [feature-all.d.ts:194](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L194)*
+*Defined in [feature-all.d.ts:194](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L194)*
 
 Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format line feed characters \("\\n"\) in their string representation.
 
@@ -621,7 +621,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ESC_REGEXP_SLASH](_jscrewit_.featureall.md#esc_regexp_slash)*
 
-*Defined in [feature-all.d.ts:203](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L203)*
+*Defined in [feature-all.d.ts:203](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L203)*
 
 Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format slashes \("/"\) in their string representation.
 
@@ -637,7 +637,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[EXTERNAL](_jscrewit_.featureall.md#external)*
 
-*Defined in [feature-all.d.ts:212](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L212)*
+*Defined in [feature-all.d.ts:212](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L212)*
 
 Existence of the global object sidebar having the string representation "\[object External\]".
 
@@ -653,7 +653,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FF](_jscrewit_.featureall.md#ff)*
 
-*Defined in [feature-all.d.ts:215](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L215)*
+*Defined in [feature-all.d.ts:215](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L215)*
 
 An alias for `FF_62`.
 
@@ -665,7 +665,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FF_54](_jscrewit_.featureall.md#ff_54)*
 
-*Defined in [feature-all.d.ts:220](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L220)*
+*Defined in [feature-all.d.ts:220](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L220)*
 
 Features available in Firefox 54 or later.
 
@@ -677,7 +677,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FF_62](_jscrewit_.featureall.md#ff_62)*
 
-*Defined in [feature-all.d.ts:225](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L225)*
+*Defined in [feature-all.d.ts:225](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L225)*
 
 Features available in Firefox 62 or later.
 
@@ -689,7 +689,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FF_ESR](_jscrewit_.featureall.md#ff_esr)*
 
-*Defined in [feature-all.d.ts:228](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L228)*
+*Defined in [feature-all.d.ts:228](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L228)*
 
 An alias for `FF_54`.
 
@@ -701,7 +701,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FF_SRC](_jscrewit_.featureall.md#ff_src)*
 
-*Defined in [feature-all.d.ts:239](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L239)*
+*Defined in [feature-all.d.ts:239](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L239)*
 
 A string representation of native functions typical for Firefox and Safari.
 
@@ -719,7 +719,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FILL](_jscrewit_.featureall.md#fill)*
 
-*Defined in [feature-all.d.ts:248](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L248)*
+*Defined in [feature-all.d.ts:248](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L248)*
 
 Existence of the native function Array.prototype.fill.
 
@@ -735,7 +735,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FLAT](_jscrewit_.featureall.md#flat)*
 
-*Defined in [feature-all.d.ts:257](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L257)*
+*Defined in [feature-all.d.ts:257](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L257)*
 
 Existence of the native function Array.prototype.flat.
 
@@ -751,7 +751,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FROM_CODE_POINT](_jscrewit_.featureall.md#from_code_point)*
 
-*Defined in [feature-all.d.ts:266](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L266)*
+*Defined in [feature-all.d.ts:266](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L266)*
 
 Existence of the function String.fromCodePoint.
 
@@ -767,7 +767,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FUNCTION_19_LF](_jscrewit_.featureall.md#function_19_lf)*
 
-*Defined in [feature-all.d.ts:275](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L275)*
+*Defined in [feature-all.d.ts:275](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L275)*
 
 A string representation of dynamically generated functions where the character at index 19 is a line feed \("\\n"\).
 
@@ -783,7 +783,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FUNCTION_22_LF](_jscrewit_.featureall.md#function_22_lf)*
 
-*Defined in [feature-all.d.ts:284](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L284)*
+*Defined in [feature-all.d.ts:284](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L284)*
 
 A string representation of dynamically generated functions where the character at index 22 is a line feed \("\\n"\).
 
@@ -799,7 +799,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[GMT](_jscrewit_.featureall.md#gmt)*
 
-*Defined in [feature-all.d.ts:295](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L295)*
+*Defined in [feature-all.d.ts:295](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L295)*
 
 Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
 
@@ -817,7 +817,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[HISTORY](_jscrewit_.featureall.md#history)*
 
-*Defined in [feature-all.d.ts:304](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L304)*
+*Defined in [feature-all.d.ts:304](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L304)*
 
 Existence of the global object history having the string representation "\[object History\]".
 
@@ -833,7 +833,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[HTMLAUDIOELEMENT](_jscrewit_.featureall.md#htmlaudioelement)*
 
-*Defined in [feature-all.d.ts:313](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L313)*
+*Defined in [feature-all.d.ts:313](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L313)*
 
 Existence of the global object Audio whose string representation starts with "function HTMLAudioElement".
 
@@ -849,7 +849,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[HTMLDOCUMENT](_jscrewit_.featureall.md#htmldocument)*
 
-*Defined in [feature-all.d.ts:322](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L322)*
+*Defined in [feature-all.d.ts:322](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L322)*
 
 Existence of the global object document having the string representation "\[object HTMLDocument\]".
 
@@ -865,7 +865,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[IE_10](_jscrewit_.featureall.md#ie_10)*
 
-*Defined in [feature-all.d.ts:327](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L327)*
+*Defined in [feature-all.d.ts:327](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L327)*
 
 Features available in Internet Explorer 10.
 
@@ -877,7 +877,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[IE_11](_jscrewit_.featureall.md#ie_11)*
 
-*Defined in [feature-all.d.ts:332](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L332)*
+*Defined in [feature-all.d.ts:332](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L332)*
 
 Features available in Internet Explorer 11.
 
@@ -889,7 +889,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[IE_11_WIN_10](_jscrewit_.featureall.md#ie_11_win_10)*
 
-*Defined in [feature-all.d.ts:337](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L337)*
+*Defined in [feature-all.d.ts:337](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L337)*
 
 Features available in Internet Explorer 11 on Windows 10.
 
@@ -901,7 +901,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[IE_9](_jscrewit_.featureall.md#ie_9)*
 
-*Defined in [feature-all.d.ts:342](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L342)*
+*Defined in [feature-all.d.ts:342](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L342)*
 
 Features available in Internet Explorer 9.
 
@@ -913,7 +913,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[IE_SRC](_jscrewit_.featureall.md#ie_src)*
 
-*Defined in [feature-all.d.ts:353](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L353)*
+*Defined in [feature-all.d.ts:353](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L353)*
 
 A string representation of native functions typical for Internet Explorer.
 
@@ -931,7 +931,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[INCR_CHAR](_jscrewit_.featureall.md#incr_char)*
 
-*Defined in [feature-all.d.ts:362](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L362)*
+*Defined in [feature-all.d.ts:362](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L362)*
 
 The ability to use unary increment operators with string characters, like in \( ++"some string"\[0\] \): this will result in a TypeError in strict mode in ECMAScript compliant engines.
 
@@ -947,7 +947,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[INTL](_jscrewit_.featureall.md#intl)*
 
-*Defined in [feature-all.d.ts:371](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L371)*
+*Defined in [feature-all.d.ts:371](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L371)*
 
 Existence of the global object Intl.
 
@@ -963,7 +963,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[LOCALE_INFINITY](_jscrewit_.featureall.md#locale_infinity)*
 
-*Defined in [feature-all.d.ts:380](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L380)*
+*Defined in [feature-all.d.ts:380](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L380)*
 
 Language sensitive string representation of Infinity as "∞".
 
@@ -979,7 +979,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NAME](_jscrewit_.featureall.md#name)*
 
-*Defined in [feature-all.d.ts:389](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L389)*
+*Defined in [feature-all.d.ts:389](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L389)*
 
 Existence of the name property for functions.
 
@@ -995,7 +995,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODECONSTRUCTOR](_jscrewit_.featureall.md#nodeconstructor)*
 
-*Defined in [feature-all.d.ts:398](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L398)*
+*Defined in [feature-all.d.ts:398](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L398)*
 
 Existence of the global object Node having the string representation "\[object NodeConstructor\]".
 
@@ -1011,7 +1011,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_0_10](_jscrewit_.featureall.md#node_0_10)*
 
-*Defined in [feature-all.d.ts:403](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L403)*
+*Defined in [feature-all.d.ts:403](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L403)*
 
 Features available in Node.js 0.10.
 
@@ -1023,7 +1023,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_0_12](_jscrewit_.featureall.md#node_0_12)*
 
-*Defined in [feature-all.d.ts:408](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L408)*
+*Defined in [feature-all.d.ts:408](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L408)*
 
 Features available in Node.js 0.12.
 
@@ -1035,7 +1035,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_10](_jscrewit_.featureall.md#node_10)*
 
-*Defined in [feature-all.d.ts:413](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L413)*
+*Defined in [feature-all.d.ts:413](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L413)*
 
 Features available in Node.js 10.
 
@@ -1047,7 +1047,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_11](_jscrewit_.featureall.md#node_11)*
 
-*Defined in [feature-all.d.ts:418](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L418)*
+*Defined in [feature-all.d.ts:418](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L418)*
 
 Features available in Node.js 11.
 
@@ -1059,7 +1059,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_12](_jscrewit_.featureall.md#node_12)*
 
-*Defined in [feature-all.d.ts:423](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L423)*
+*Defined in [feature-all.d.ts:423](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L423)*
 
 Features available in Node.js 12 or later.
 
@@ -1071,7 +1071,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_4](_jscrewit_.featureall.md#node_4)*
 
-*Defined in [feature-all.d.ts:428](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L428)*
+*Defined in [feature-all.d.ts:428](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L428)*
 
 Features available in Node.js 4.
 
@@ -1083,7 +1083,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_5](_jscrewit_.featureall.md#node_5)*
 
-*Defined in [feature-all.d.ts:433](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L433)*
+*Defined in [feature-all.d.ts:433](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L433)*
 
 Features available in Node.js 5 to 9.
 
@@ -1095,7 +1095,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NO_FF_SRC](_jscrewit_.featureall.md#no_ff_src)*
 
-*Defined in [feature-all.d.ts:442](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L442)*
+*Defined in [feature-all.d.ts:442](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L442)*
 
 A string representation of native functions typical for V8 and Edge or for Internet Explorer but not for Firefox and Safari.
 
@@ -1111,7 +1111,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NO_IE_SRC](_jscrewit_.featureall.md#no_ie_src)*
 
-*Defined in [feature-all.d.ts:453](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L453)*
+*Defined in [feature-all.d.ts:453](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L453)*
 
 A string representation of native functions typical for most engines with the notable exception of Internet Explorer.
 
@@ -1129,7 +1129,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NO_OLD_SAFARI_ARRAY_ITERATOR](_jscrewit_.featureall.md#no_old_safari_array_iterator)*
 
-*Defined in [feature-all.d.ts:462](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L462)*
+*Defined in [feature-all.d.ts:462](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L462)*
 
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
 
@@ -1145,7 +1145,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NO_V8_SRC](_jscrewit_.featureall.md#no_v8_src)*
 
-*Defined in [feature-all.d.ts:473](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L473)*
+*Defined in [feature-all.d.ts:473](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L473)*
 
 A string representation of native functions typical for Firefox, Internet Explorer and Safari.
 
@@ -1163,7 +1163,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI](_jscrewit_.featureall.md#safari)*
 
-*Defined in [feature-all.d.ts:476](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L476)*
+*Defined in [feature-all.d.ts:476](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L476)*
 
 An alias for `SAFARI_12`.
 
@@ -1175,7 +1175,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI_10](_jscrewit_.featureall.md#safari_10)*
 
-*Defined in [feature-all.d.ts:481](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L481)*
+*Defined in [feature-all.d.ts:481](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L481)*
 
 Features available in Safari 10 or later.
 
@@ -1187,7 +1187,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI_12](_jscrewit_.featureall.md#safari_12)*
 
-*Defined in [feature-all.d.ts:486](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L486)*
+*Defined in [feature-all.d.ts:486](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L486)*
 
 Features available in Safari 12 or later.
 
@@ -1199,7 +1199,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI_7_0](_jscrewit_.featureall.md#safari_7_0)*
 
-*Defined in [feature-all.d.ts:491](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L491)*
+*Defined in [feature-all.d.ts:491](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L491)*
 
 Features available in Safari 7.0.
 
@@ -1211,7 +1211,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI_7_1](_jscrewit_.featureall.md#safari_7_1)*
 
-*Defined in [feature-all.d.ts:496](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L496)*
+*Defined in [feature-all.d.ts:496](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L496)*
 
 Features available in Safari 7.1 and Safari 8.
 
@@ -1223,7 +1223,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI_8](_jscrewit_.featureall.md#safari_8)*
 
-*Defined in [feature-all.d.ts:499](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L499)*
+*Defined in [feature-all.d.ts:499](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L499)*
 
 An alias for `SAFARI_7_1`.
 
@@ -1235,7 +1235,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI_9](_jscrewit_.featureall.md#safari_9)*
 
-*Defined in [feature-all.d.ts:504](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L504)*
+*Defined in [feature-all.d.ts:504](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L504)*
 
 Features available in Safari 9.
 
@@ -1247,7 +1247,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SELF](_jscrewit_.featureall.md#self)*
 
-*Defined in [feature-all.d.ts:507](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L507)*
+*Defined in [feature-all.d.ts:507](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L507)*
 
 An alias for `ANY_WINDOW`.
 
@@ -1259,7 +1259,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SELF_OBJ](_jscrewit_.featureall.md#self_obj)*
 
-*Defined in [feature-all.d.ts:516](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L516)*
+*Defined in [feature-all.d.ts:516](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L516)*
 
 Existence of the global object self whose string representation starts with "\[object ".
 
@@ -1275,7 +1275,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[STATUS](_jscrewit_.featureall.md#status)*
 
-*Defined in [feature-all.d.ts:525](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L525)*
+*Defined in [feature-all.d.ts:525](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L525)*
 
 Existence of the global string status.
 
@@ -1291,7 +1291,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[UNDEFINED](_jscrewit_.featureall.md#undefined)*
 
-*Defined in [feature-all.d.ts:536](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L536)*
+*Defined in [feature-all.d.ts:536](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L536)*
 
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
 
@@ -1309,7 +1309,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[UNEVAL](_jscrewit_.featureall.md#uneval)*
 
-*Defined in [feature-all.d.ts:545](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L545)*
+*Defined in [feature-all.d.ts:545](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L545)*
 
 Existence of the global function uneval.
 
@@ -1325,7 +1325,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[V8_SRC](_jscrewit_.featureall.md#v8_src)*
 
-*Defined in [feature-all.d.ts:556](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L556)*
+*Defined in [feature-all.d.ts:556](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L556)*
 
 A string representation of native functions typical for the V8 engine, but also found in Edge.
 
@@ -1343,7 +1343,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[WINDOW](_jscrewit_.featureall.md#window)*
 
-*Defined in [feature-all.d.ts:565](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature-all.d.ts#L565)*
+*Defined in [feature-all.d.ts:565](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L565)*
 
 Existence of the global object self having the string representation "\[object Window\]".
 
@@ -1359,7 +1359,7 @@ ___
 
 ▸ **areCompatible**(...`features`: [FeatureElement](../modules/_jscrewit_.md#featureelement)[]): *boolean*
 
-*Defined in [feature.d.ts:235](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L235)*
+*Defined in [feature.d.ts:235](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature.d.ts#L235)*
 
 Determines whether the specified features are mutually compatible.
 
@@ -1392,7 +1392,7 @@ ___
 
 ▸ **areEqual**(...`features`: [Feature](_jscrewit_.feature.md) | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF" | `ReadonlyArray<Feature | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF">`[]): *boolean*
 
-*Defined in [feature.d.ts:260](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L260)*
+*Defined in [feature.d.ts:260](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature.d.ts#L260)*
 
 Determines whether all of the specified features are equivalent.
 
@@ -1428,7 +1428,7 @@ ___
 
 ▸ **commonOf**(...`features`: [Feature](_jscrewit_.feature.md) | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF" | `ReadonlyArray<Feature | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF">`[]): *[CustomFeature](_jscrewit_.customfeature.md) | null*
 
-*Defined in [feature.d.ts:285](https://github.com/fasttime/JScrewIt/blob/2.9.6/lib/feature.d.ts#L285)*
+*Defined in [feature.d.ts:285](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature.d.ts#L285)*
 
 Creates a new feature object equivalent to the intersection of the specified features.
 
