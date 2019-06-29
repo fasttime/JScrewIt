@@ -1,4 +1,4 @@
-> ## [JScrewIt](../README.md)
+> **[JScrewIt](../README.md)**
 
 ["jscrewit"](../modules/_jscrewit_.md) / [FeatureConstructor](_jscrewit_.featureconstructor.md) /
 
@@ -12,7 +12,7 @@
 
 ## Callable
 
-▸ (...`features`: [Feature](_jscrewit_.feature.md) | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF" | `ReadonlyArray<Feature | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF">`[]): *[CustomFeature](_jscrewit_.customfeature.md)*
+▸ (...`features`: *[Feature](_jscrewit_.feature.md) | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF" | `ReadonlyArray<Feature | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF">`[]*): *[CustomFeature](_jscrewit_.customfeature.md)*
 
 *Defined in [feature.d.ts:182](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature.d.ts#L182)*
 
@@ -151,7 +151,7 @@ Name | Type |
 
 ###  constructor
 
-\+ **new FeatureConstructor**(...`features`: [Feature](_jscrewit_.feature.md) | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF" | `ReadonlyArray<Feature | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF">`[]): *[CustomFeature](_jscrewit_.customfeature.md)*
+\+ **new FeatureConstructor**(...`features`: *[Feature](_jscrewit_.feature.md) | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF" | `ReadonlyArray<Feature | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF">`[]*): *[CustomFeature](_jscrewit_.customfeature.md)*
 
 *Defined in [feature.d.ts:151](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature.d.ts#L151)*
 
@@ -191,13 +191,11 @@ Name | Type |
 
 **Returns:** *[CustomFeature](_jscrewit_.customfeature.md)*
 
-___
-
 ## Properties
 
 ###  ALL
 
-● **ALL**: *[FeatureAll](_jscrewit_.featureall.md)*
+• **ALL**: *[FeatureAll](_jscrewit_.featureall.md)*
 
 *Defined in [feature.d.ts:148](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature.d.ts#L148)*
 
@@ -221,7 +219,7 @@ ___
 
 ###  ANDRO_4_0
 
-● **ANDRO_4_0**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ANDRO_4_0**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ANDRO_4_0](_jscrewit_.featureall.md#andro_4_0)*
 
@@ -233,7 +231,7 @@ ___
 
 ###  ANDRO_4_1
 
-● **ANDRO_4_1**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ANDRO_4_1**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ANDRO_4_1](_jscrewit_.featureall.md#andro_4_1)*
 
@@ -245,7 +243,7 @@ ___
 
 ###  ANDRO_4_4
 
-● **ANDRO_4_4**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ANDRO_4_4**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ANDRO_4_4](_jscrewit_.featureall.md#andro_4_4)*
 
@@ -257,7 +255,7 @@ ___
 
 ###  ANY_DOCUMENT
 
-● **ANY_DOCUMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ANY_DOCUMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ANY_DOCUMENT](_jscrewit_.featureall.md#any_document)*
 
@@ -273,7 +271,7 @@ ___
 
 ###  ANY_WINDOW
 
-● **ANY_WINDOW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ANY_WINDOW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ANY_WINDOW](_jscrewit_.featureall.md#any_window)*
 
@@ -289,7 +287,7 @@ ___
 
 ###  ARRAY_ITERATOR
 
-● **ARRAY_ITERATOR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ARRAY_ITERATOR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ARRAY_ITERATOR](_jscrewit_.featureall.md#array_iterator)*
 
@@ -305,7 +303,7 @@ ___
 
 ###  ARROW
 
-● **ARROW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ARROW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ARROW](_jscrewit_.featureall.md#arrow)*
 
@@ -321,7 +319,7 @@ ___
 
 ###  ATOB
 
-● **ATOB**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ATOB**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ATOB](_jscrewit_.featureall.md#atob)*
 
@@ -337,7 +335,7 @@ ___
 
 ###  AUTO
 
-● **AUTO**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **AUTO**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[AUTO](_jscrewit_.featureall.md#auto)*
 
@@ -349,7 +347,7 @@ ___
 
 ###  BARPROP
 
-● **BARPROP**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **BARPROP**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[BARPROP](_jscrewit_.featureall.md#barprop)*
 
@@ -365,7 +363,7 @@ ___
 
 ###  BROWSER
 
-● **BROWSER**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **BROWSER**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[BROWSER](_jscrewit_.featureall.md#browser)*
 
@@ -379,7 +377,7 @@ ___
 
 ###  CAPITAL_HTML
 
-● **CAPITAL_HTML**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **CAPITAL_HTML**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CAPITAL_HTML](_jscrewit_.featureall.md#capital_html)*
 
@@ -395,7 +393,7 @@ ___
 
 ###  CHROME
 
-● **CHROME**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **CHROME**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CHROME](_jscrewit_.featureall.md#chrome)*
 
@@ -407,7 +405,7 @@ ___
 
 ###  CHROME_73
 
-● **CHROME_73**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **CHROME_73**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CHROME_73](_jscrewit_.featureall.md#chrome_73)*
 
@@ -419,7 +417,7 @@ ___
 
 ###  CHROME_PREV
 
-● **CHROME_PREV**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **CHROME_PREV**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CHROME_PREV](_jscrewit_.featureall.md#chrome_prev)*
 
@@ -431,7 +429,7 @@ ___
 
 ###  COMPACT
 
-● **COMPACT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **COMPACT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[COMPACT](_jscrewit_.featureall.md#compact)*
 
@@ -445,7 +443,7 @@ ___
 
 ###  CONSOLE
 
-● **CONSOLE**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **CONSOLE**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CONSOLE](_jscrewit_.featureall.md#console)*
 
@@ -463,7 +461,7 @@ ___
 
 ###  DEFAULT
 
-● **DEFAULT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **DEFAULT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[DEFAULT](_jscrewit_.featureall.md#default)*
 
@@ -475,7 +473,7 @@ ___
 
 ###  DOCUMENT
 
-● **DOCUMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **DOCUMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[DOCUMENT](_jscrewit_.featureall.md#document)*
 
@@ -491,7 +489,7 @@ ___
 
 ###  DOMWINDOW
 
-● **DOMWINDOW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **DOMWINDOW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[DOMWINDOW](_jscrewit_.featureall.md#domwindow)*
 
@@ -507,7 +505,7 @@ ___
 
 ###  EDGE
 
-● **EDGE**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **EDGE**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[EDGE](_jscrewit_.featureall.md#edge)*
 
@@ -519,7 +517,7 @@ ___
 
 ###  EDGE_40
 
-● **EDGE_40**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **EDGE_40**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[EDGE_40](_jscrewit_.featureall.md#edge_40)*
 
@@ -531,7 +529,7 @@ ___
 
 ###  EDGE_PREV
 
-● **EDGE_PREV**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **EDGE_PREV**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[EDGE_PREV](_jscrewit_.featureall.md#edge_prev)*
 
@@ -543,7 +541,7 @@ ___
 
 ###  ELEMENTARY
 
-● **ELEMENTARY**: *`ReadonlyArray<PredefinedFeature>`*
+• **ELEMENTARY**: *`ReadonlyArray<PredefinedFeature>`*
 
 *Defined in [feature.d.ts:151](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature.d.ts#L151)*
 
@@ -553,7 +551,7 @@ ___
 
 ###  ESC_HTML_ALL
 
-● **ESC_HTML_ALL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ESC_HTML_ALL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ESC_HTML_ALL](_jscrewit_.featureall.md#esc_html_all)*
 
@@ -569,7 +567,7 @@ ___
 
 ###  ESC_HTML_QUOT
 
-● **ESC_HTML_QUOT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ESC_HTML_QUOT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ESC_HTML_QUOT](_jscrewit_.featureall.md#esc_html_quot)*
 
@@ -585,7 +583,7 @@ ___
 
 ###  ESC_HTML_QUOT_ONLY
 
-● **ESC_HTML_QUOT_ONLY**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ESC_HTML_QUOT_ONLY**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ESC_HTML_QUOT_ONLY](_jscrewit_.featureall.md#esc_html_quot_only)*
 
@@ -601,7 +599,7 @@ ___
 
 ###  ESC_REGEXP_LF
 
-● **ESC_REGEXP_LF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ESC_REGEXP_LF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ESC_REGEXP_LF](_jscrewit_.featureall.md#esc_regexp_lf)*
 
@@ -617,7 +615,7 @@ ___
 
 ###  ESC_REGEXP_SLASH
 
-● **ESC_REGEXP_SLASH**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ESC_REGEXP_SLASH**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[ESC_REGEXP_SLASH](_jscrewit_.featureall.md#esc_regexp_slash)*
 
@@ -633,7 +631,7 @@ ___
 
 ###  EXTERNAL
 
-● **EXTERNAL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **EXTERNAL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[EXTERNAL](_jscrewit_.featureall.md#external)*
 
@@ -649,7 +647,7 @@ ___
 
 ###  FF
 
-● **FF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FF](_jscrewit_.featureall.md#ff)*
 
@@ -661,7 +659,7 @@ ___
 
 ###  FF_54
 
-● **FF_54**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FF_54**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FF_54](_jscrewit_.featureall.md#ff_54)*
 
@@ -673,7 +671,7 @@ ___
 
 ###  FF_62
 
-● **FF_62**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FF_62**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FF_62](_jscrewit_.featureall.md#ff_62)*
 
@@ -685,7 +683,7 @@ ___
 
 ###  FF_ESR
 
-● **FF_ESR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FF_ESR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FF_ESR](_jscrewit_.featureall.md#ff_esr)*
 
@@ -697,7 +695,7 @@ ___
 
 ###  FF_SRC
 
-● **FF_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FF_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FF_SRC](_jscrewit_.featureall.md#ff_src)*
 
@@ -715,7 +713,7 @@ ___
 
 ###  FILL
 
-● **FILL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FILL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FILL](_jscrewit_.featureall.md#fill)*
 
@@ -731,7 +729,7 @@ ___
 
 ###  FLAT
 
-● **FLAT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FLAT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FLAT](_jscrewit_.featureall.md#flat)*
 
@@ -747,7 +745,7 @@ ___
 
 ###  FROM_CODE_POINT
 
-● **FROM_CODE_POINT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FROM_CODE_POINT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FROM_CODE_POINT](_jscrewit_.featureall.md#from_code_point)*
 
@@ -763,7 +761,7 @@ ___
 
 ###  FUNCTION_19_LF
 
-● **FUNCTION_19_LF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FUNCTION_19_LF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FUNCTION_19_LF](_jscrewit_.featureall.md#function_19_lf)*
 
@@ -779,7 +777,7 @@ ___
 
 ###  FUNCTION_22_LF
 
-● **FUNCTION_22_LF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FUNCTION_22_LF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FUNCTION_22_LF](_jscrewit_.featureall.md#function_22_lf)*
 
@@ -795,7 +793,7 @@ ___
 
 ###  GMT
 
-● **GMT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **GMT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[GMT](_jscrewit_.featureall.md#gmt)*
 
@@ -813,7 +811,7 @@ ___
 
 ###  HISTORY
 
-● **HISTORY**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **HISTORY**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[HISTORY](_jscrewit_.featureall.md#history)*
 
@@ -829,7 +827,7 @@ ___
 
 ###  HTMLAUDIOELEMENT
 
-● **HTMLAUDIOELEMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **HTMLAUDIOELEMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[HTMLAUDIOELEMENT](_jscrewit_.featureall.md#htmlaudioelement)*
 
@@ -845,7 +843,7 @@ ___
 
 ###  HTMLDOCUMENT
 
-● **HTMLDOCUMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **HTMLDOCUMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[HTMLDOCUMENT](_jscrewit_.featureall.md#htmldocument)*
 
@@ -861,7 +859,7 @@ ___
 
 ###  IE_10
 
-● **IE_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **IE_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[IE_10](_jscrewit_.featureall.md#ie_10)*
 
@@ -873,7 +871,7 @@ ___
 
 ###  IE_11
 
-● **IE_11**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **IE_11**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[IE_11](_jscrewit_.featureall.md#ie_11)*
 
@@ -885,7 +883,7 @@ ___
 
 ###  IE_11_WIN_10
 
-● **IE_11_WIN_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **IE_11_WIN_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[IE_11_WIN_10](_jscrewit_.featureall.md#ie_11_win_10)*
 
@@ -897,7 +895,7 @@ ___
 
 ###  IE_9
 
-● **IE_9**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **IE_9**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[IE_9](_jscrewit_.featureall.md#ie_9)*
 
@@ -909,7 +907,7 @@ ___
 
 ###  IE_SRC
 
-● **IE_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **IE_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[IE_SRC](_jscrewit_.featureall.md#ie_src)*
 
@@ -927,7 +925,7 @@ ___
 
 ###  INCR_CHAR
 
-● **INCR_CHAR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **INCR_CHAR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[INCR_CHAR](_jscrewit_.featureall.md#incr_char)*
 
@@ -943,7 +941,7 @@ ___
 
 ###  INTL
 
-● **INTL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **INTL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[INTL](_jscrewit_.featureall.md#intl)*
 
@@ -959,7 +957,7 @@ ___
 
 ###  LOCALE_INFINITY
 
-● **LOCALE_INFINITY**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **LOCALE_INFINITY**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[LOCALE_INFINITY](_jscrewit_.featureall.md#locale_infinity)*
 
@@ -975,7 +973,7 @@ ___
 
 ###  NAME
 
-● **NAME**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NAME**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NAME](_jscrewit_.featureall.md#name)*
 
@@ -991,7 +989,7 @@ ___
 
 ###  NODECONSTRUCTOR
 
-● **NODECONSTRUCTOR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODECONSTRUCTOR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODECONSTRUCTOR](_jscrewit_.featureall.md#nodeconstructor)*
 
@@ -1007,7 +1005,7 @@ ___
 
 ###  NODE_0_10
 
-● **NODE_0_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODE_0_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_0_10](_jscrewit_.featureall.md#node_0_10)*
 
@@ -1019,7 +1017,7 @@ ___
 
 ###  NODE_0_12
 
-● **NODE_0_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODE_0_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_0_12](_jscrewit_.featureall.md#node_0_12)*
 
@@ -1031,7 +1029,7 @@ ___
 
 ###  NODE_10
 
-● **NODE_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODE_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_10](_jscrewit_.featureall.md#node_10)*
 
@@ -1043,7 +1041,7 @@ ___
 
 ###  NODE_11
 
-● **NODE_11**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODE_11**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_11](_jscrewit_.featureall.md#node_11)*
 
@@ -1055,7 +1053,7 @@ ___
 
 ###  NODE_12
 
-● **NODE_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODE_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_12](_jscrewit_.featureall.md#node_12)*
 
@@ -1067,7 +1065,7 @@ ___
 
 ###  NODE_4
 
-● **NODE_4**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODE_4**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_4](_jscrewit_.featureall.md#node_4)*
 
@@ -1079,7 +1077,7 @@ ___
 
 ###  NODE_5
 
-● **NODE_5**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODE_5**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_5](_jscrewit_.featureall.md#node_5)*
 
@@ -1091,7 +1089,7 @@ ___
 
 ###  NO_FF_SRC
 
-● **NO_FF_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NO_FF_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NO_FF_SRC](_jscrewit_.featureall.md#no_ff_src)*
 
@@ -1107,7 +1105,7 @@ ___
 
 ###  NO_IE_SRC
 
-● **NO_IE_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NO_IE_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NO_IE_SRC](_jscrewit_.featureall.md#no_ie_src)*
 
@@ -1125,7 +1123,7 @@ ___
 
 ###  NO_OLD_SAFARI_ARRAY_ITERATOR
 
-● **NO_OLD_SAFARI_ARRAY_ITERATOR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NO_OLD_SAFARI_ARRAY_ITERATOR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NO_OLD_SAFARI_ARRAY_ITERATOR](_jscrewit_.featureall.md#no_old_safari_array_iterator)*
 
@@ -1141,7 +1139,7 @@ ___
 
 ###  NO_V8_SRC
 
-● **NO_V8_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NO_V8_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NO_V8_SRC](_jscrewit_.featureall.md#no_v8_src)*
 
@@ -1159,7 +1157,7 @@ ___
 
 ###  SAFARI
 
-● **SAFARI**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SAFARI**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI](_jscrewit_.featureall.md#safari)*
 
@@ -1171,7 +1169,7 @@ ___
 
 ###  SAFARI_10
 
-● **SAFARI_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SAFARI_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI_10](_jscrewit_.featureall.md#safari_10)*
 
@@ -1183,7 +1181,7 @@ ___
 
 ###  SAFARI_12
 
-● **SAFARI_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SAFARI_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI_12](_jscrewit_.featureall.md#safari_12)*
 
@@ -1195,7 +1193,7 @@ ___
 
 ###  SAFARI_7_0
 
-● **SAFARI_7_0**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SAFARI_7_0**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI_7_0](_jscrewit_.featureall.md#safari_7_0)*
 
@@ -1207,7 +1205,7 @@ ___
 
 ###  SAFARI_7_1
 
-● **SAFARI_7_1**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SAFARI_7_1**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI_7_1](_jscrewit_.featureall.md#safari_7_1)*
 
@@ -1219,7 +1217,7 @@ ___
 
 ###  SAFARI_8
 
-● **SAFARI_8**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SAFARI_8**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI_8](_jscrewit_.featureall.md#safari_8)*
 
@@ -1231,7 +1229,7 @@ ___
 
 ###  SAFARI_9
 
-● **SAFARI_9**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SAFARI_9**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI_9](_jscrewit_.featureall.md#safari_9)*
 
@@ -1243,7 +1241,7 @@ ___
 
 ###  SELF
 
-● **SELF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SELF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SELF](_jscrewit_.featureall.md#self)*
 
@@ -1255,7 +1253,7 @@ ___
 
 ###  SELF_OBJ
 
-● **SELF_OBJ**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SELF_OBJ**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SELF_OBJ](_jscrewit_.featureall.md#self_obj)*
 
@@ -1271,7 +1269,7 @@ ___
 
 ###  STATUS
 
-● **STATUS**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **STATUS**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[STATUS](_jscrewit_.featureall.md#status)*
 
@@ -1287,7 +1285,7 @@ ___
 
 ###  UNDEFINED
 
-● **UNDEFINED**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **UNDEFINED**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[UNDEFINED](_jscrewit_.featureall.md#undefined)*
 
@@ -1305,7 +1303,7 @@ ___
 
 ###  UNEVAL
 
-● **UNEVAL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **UNEVAL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[UNEVAL](_jscrewit_.featureall.md#uneval)*
 
@@ -1321,7 +1319,7 @@ ___
 
 ###  V8_SRC
 
-● **V8_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **V8_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[V8_SRC](_jscrewit_.featureall.md#v8_src)*
 
@@ -1339,7 +1337,7 @@ ___
 
 ###  WINDOW
 
-● **WINDOW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **WINDOW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[WINDOW](_jscrewit_.featureall.md#window)*
 
@@ -1351,13 +1349,11 @@ Existence of the global object self having the string representation "\[object W
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser 4.4. This feature is not available inside web workers.
 
-___
-
 ## Methods
 
 ###  areCompatible
 
-▸ **areCompatible**(...`features`: [FeatureElement](../modules/_jscrewit_.md#featureelement)[]): *boolean*
+▸ **areCompatible**(...`features`: *[FeatureElement](../modules/_jscrewit_.md#featureelement)[]*): *boolean*
 
 *Defined in [feature.d.ts:235](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature.d.ts#L235)*
 
@@ -1390,7 +1386,7 @@ ___
 
 ###  areEqual
 
-▸ **areEqual**(...`features`: [Feature](_jscrewit_.feature.md) | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF" | `ReadonlyArray<Feature | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF">`[]): *boolean*
+▸ **areEqual**(...`features`: *[Feature](_jscrewit_.feature.md) | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF" | `ReadonlyArray<Feature | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF">`[]*): *boolean*
 
 *Defined in [feature.d.ts:260](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature.d.ts#L260)*
 
@@ -1426,7 +1422,7 @@ ___
 
 ###  commonOf
 
-▸ **commonOf**(...`features`: [Feature](_jscrewit_.feature.md) | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF" | `ReadonlyArray<Feature | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF">`[]): *[CustomFeature](_jscrewit_.customfeature.md) | null*
+▸ **commonOf**(...`features`: *[Feature](_jscrewit_.feature.md) | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF" | `ReadonlyArray<Feature | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_54" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF">`[]*): *[CustomFeature](_jscrewit_.customfeature.md) | null*
 
 *Defined in [feature.d.ts:285](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature.d.ts#L285)*
 
@@ -1457,5 +1453,3 @@ Name | Type |
 **Returns:** *[CustomFeature](_jscrewit_.customfeature.md) | null*
 
 A feature object, or `null` if no arguments are specified.
-
-___

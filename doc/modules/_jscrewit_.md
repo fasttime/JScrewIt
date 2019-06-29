@@ -1,4 +1,4 @@
-> ## [JScrewIt](../README.md)
+> **[JScrewIt](../README.md)**
 
 ["jscrewit"](_jscrewit_.md) /
 
@@ -68,13 +68,11 @@ ___
 
 Name of a predefined feature.
 
-___
-
 ## Functions
 
 ###  encode
 
-▸ **encode**(`input`: string, `options?`: [EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md)): *string*
+▸ **encode**(`input`: *string*, `options?`: *[EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md)*): *string*
 
 *Defined in [encode.d.ts:110](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/encode.d.ts#L110)*
 
@@ -83,10 +81,10 @@ Encodes a given string into JSFuck.
 **`throws`** 
 
 An `Error` is thrown under the following circumstances.
-- The specified string cannot be encoded with the specified options.
-- Some unknown features were specified.
-- A combination of mutually incompatible features was specified.
-- The option `runAs` (or `wrapWith`) was specified with an invalid value.
+ - The specified string cannot be encoded with the specified options.
+ - Some unknown features were specified.
+ - A combination of mutually incompatible features was specified.
+ - The option `runAs` (or `wrapWith`) was specified with an invalid value.
 
 Also, an out of memory condition may occur when processing very large data.
 
@@ -100,5 +98,3 @@ Name | Type | Description |
 **Returns:** *string*
 
 The encoded string.
-
-___

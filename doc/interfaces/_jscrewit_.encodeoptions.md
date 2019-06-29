@@ -1,4 +1,4 @@
-> ## [JScrewIt](../README.md)
+> **[JScrewIt](../README.md)**
 
 ["jscrewit"](../modules/_jscrewit_.md) / [EncodeOptions](_jscrewit_.encodeoptions.md) /
 
@@ -21,7 +21,7 @@
 
 ### `Optional` features
 
-● **features**? : *[FeatureElement](../modules/_jscrewit_.md#featureelement) | [CompatibleFeatureArray](../modules/_jscrewit_.md#compatiblefeaturearray)*
+• **features**? : *[FeatureElement](../modules/_jscrewit_.md#featureelement) | [CompatibleFeatureArray](../modules/_jscrewit_.md#compatiblefeaturearray)*
 
 *Defined in [encode.d.ts:15](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/encode.d.ts#L15)*
 
@@ -36,7 +36,7 @@ ___
 
 ### `Optional` runAs
 
-● **runAs**? : *"call" | "eval" | "express" | "express-call" | "express-eval" | "none"*
+• **runAs**? : *"call" | "eval" | "express" | "express-call" | "express-eval" | "none"*
 
 *Defined in [encode.d.ts:65](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/encode.d.ts#L65)*
 
@@ -91,7 +91,7 @@ ___
 
 ### `Optional` trimCode
 
-● **trimCode**? : *undefined | false | true*
+• **trimCode**? : *undefined | false | true*
 
 *Defined in [encode.d.ts:79](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/encode.d.ts#L79)*
 
@@ -110,10 +110,8 @@ ___
 
 ### `Optional` wrapWith
 
-● **wrapWith**? : *"call" | "eval" | "express" | "express-call" | "express-eval" | "none"*
+• **wrapWith**? : *"call" | "eval" | "express" | "express-call" | "express-eval" | "none"*
 
 *Defined in [encode.d.ts:82](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/encode.d.ts#L82)*
 
 An alias for `runAs`.
-
-___

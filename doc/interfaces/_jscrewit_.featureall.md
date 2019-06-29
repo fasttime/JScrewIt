@@ -1,4 +1,4 @@
-> ## [JScrewIt](../README.md)
+> **[JScrewIt](../README.md)**
 
 ["jscrewit"](../modules/_jscrewit_.md) / [FeatureAll](_jscrewit_.featureall.md) /
 
@@ -97,7 +97,7 @@
 
 ###  ANDRO_4_0
 
-● **ANDRO_4_0**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ANDRO_4_0**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:10](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L10)*
 
@@ -107,7 +107,7 @@ ___
 
 ###  ANDRO_4_1
 
-● **ANDRO_4_1**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ANDRO_4_1**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:15](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L15)*
 
@@ -117,7 +117,7 @@ ___
 
 ###  ANDRO_4_4
 
-● **ANDRO_4_4**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ANDRO_4_4**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:20](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L20)*
 
@@ -127,7 +127,7 @@ ___
 
 ###  ANY_DOCUMENT
 
-● **ANY_DOCUMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ANY_DOCUMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:29](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L29)*
 
@@ -141,7 +141,7 @@ ___
 
 ###  ANY_WINDOW
 
-● **ANY_WINDOW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ANY_WINDOW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:38](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L38)*
 
@@ -155,7 +155,7 @@ ___
 
 ###  ARRAY_ITERATOR
 
-● **ARRAY_ITERATOR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ARRAY_ITERATOR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:47](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L47)*
 
@@ -169,7 +169,7 @@ ___
 
 ###  ARROW
 
-● **ARROW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ARROW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:56](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L56)*
 
@@ -183,7 +183,7 @@ ___
 
 ###  ATOB
 
-● **ATOB**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ATOB**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:65](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L65)*
 
@@ -197,7 +197,7 @@ ___
 
 ###  AUTO
 
-● **AUTO**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **AUTO**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:70](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L70)*
 
@@ -207,7 +207,7 @@ ___
 
 ###  BARPROP
 
-● **BARPROP**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **BARPROP**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:79](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L79)*
 
@@ -221,7 +221,7 @@ ___
 
 ###  BROWSER
 
-● **BROWSER**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **BROWSER**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:86](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L86)*
 
@@ -233,7 +233,7 @@ ___
 
 ###  CAPITAL_HTML
 
-● **CAPITAL_HTML**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **CAPITAL_HTML**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:95](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L95)*
 
@@ -247,7 +247,7 @@ ___
 
 ###  CHROME
 
-● **CHROME**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **CHROME**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:98](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L98)*
 
@@ -257,7 +257,7 @@ ___
 
 ###  CHROME_73
 
-● **CHROME_73**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **CHROME_73**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:103](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L103)*
 
@@ -267,7 +267,7 @@ ___
 
 ###  CHROME_PREV
 
-● **CHROME_PREV**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **CHROME_PREV**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:106](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L106)*
 
@@ -277,7 +277,7 @@ ___
 
 ###  COMPACT
 
-● **COMPACT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **COMPACT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:113](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L113)*
 
@@ -289,7 +289,7 @@ ___
 
 ###  CONSOLE
 
-● **CONSOLE**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **CONSOLE**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:124](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L124)*
 
@@ -305,7 +305,7 @@ ___
 
 ###  DEFAULT
 
-● **DEFAULT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **DEFAULT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:129](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L129)*
 
@@ -315,7 +315,7 @@ ___
 
 ###  DOCUMENT
 
-● **DOCUMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **DOCUMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:138](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L138)*
 
@@ -329,7 +329,7 @@ ___
 
 ###  DOMWINDOW
 
-● **DOMWINDOW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **DOMWINDOW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:147](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L147)*
 
@@ -343,7 +343,7 @@ ___
 
 ###  EDGE
 
-● **EDGE**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **EDGE**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:150](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L150)*
 
@@ -353,7 +353,7 @@ ___
 
 ###  EDGE_40
 
-● **EDGE_40**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **EDGE_40**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:155](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L155)*
 
@@ -363,7 +363,7 @@ ___
 
 ###  EDGE_PREV
 
-● **EDGE_PREV**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **EDGE_PREV**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:158](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L158)*
 
@@ -373,7 +373,7 @@ ___
 
 ###  ESC_HTML_ALL
 
-● **ESC_HTML_ALL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ESC_HTML_ALL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:167](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L167)*
 
@@ -387,7 +387,7 @@ ___
 
 ###  ESC_HTML_QUOT
 
-● **ESC_HTML_QUOT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ESC_HTML_QUOT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:176](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L176)*
 
@@ -401,7 +401,7 @@ ___
 
 ###  ESC_HTML_QUOT_ONLY
 
-● **ESC_HTML_QUOT_ONLY**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ESC_HTML_QUOT_ONLY**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:185](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L185)*
 
@@ -415,7 +415,7 @@ ___
 
 ###  ESC_REGEXP_LF
 
-● **ESC_REGEXP_LF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ESC_REGEXP_LF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:194](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L194)*
 
@@ -429,7 +429,7 @@ ___
 
 ###  ESC_REGEXP_SLASH
 
-● **ESC_REGEXP_SLASH**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **ESC_REGEXP_SLASH**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:203](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L203)*
 
@@ -443,7 +443,7 @@ ___
 
 ###  EXTERNAL
 
-● **EXTERNAL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **EXTERNAL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:212](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L212)*
 
@@ -457,7 +457,7 @@ ___
 
 ###  FF
 
-● **FF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:215](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L215)*
 
@@ -467,7 +467,7 @@ ___
 
 ###  FF_54
 
-● **FF_54**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FF_54**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:220](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L220)*
 
@@ -477,7 +477,7 @@ ___
 
 ###  FF_62
 
-● **FF_62**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FF_62**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:225](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L225)*
 
@@ -487,7 +487,7 @@ ___
 
 ###  FF_ESR
 
-● **FF_ESR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FF_ESR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:228](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L228)*
 
@@ -497,7 +497,7 @@ ___
 
 ###  FF_SRC
 
-● **FF_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FF_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:239](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L239)*
 
@@ -513,7 +513,7 @@ ___
 
 ###  FILL
 
-● **FILL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FILL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:248](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L248)*
 
@@ -527,7 +527,7 @@ ___
 
 ###  FLAT
 
-● **FLAT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FLAT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:257](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L257)*
 
@@ -541,7 +541,7 @@ ___
 
 ###  FROM_CODE_POINT
 
-● **FROM_CODE_POINT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FROM_CODE_POINT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:266](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L266)*
 
@@ -555,7 +555,7 @@ ___
 
 ###  FUNCTION_19_LF
 
-● **FUNCTION_19_LF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FUNCTION_19_LF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:275](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L275)*
 
@@ -569,7 +569,7 @@ ___
 
 ###  FUNCTION_22_LF
 
-● **FUNCTION_22_LF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **FUNCTION_22_LF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:284](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L284)*
 
@@ -583,7 +583,7 @@ ___
 
 ###  GMT
 
-● **GMT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **GMT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:295](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L295)*
 
@@ -599,7 +599,7 @@ ___
 
 ###  HISTORY
 
-● **HISTORY**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **HISTORY**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:304](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L304)*
 
@@ -613,7 +613,7 @@ ___
 
 ###  HTMLAUDIOELEMENT
 
-● **HTMLAUDIOELEMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **HTMLAUDIOELEMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:313](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L313)*
 
@@ -627,7 +627,7 @@ ___
 
 ###  HTMLDOCUMENT
 
-● **HTMLDOCUMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **HTMLDOCUMENT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:322](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L322)*
 
@@ -641,7 +641,7 @@ ___
 
 ###  IE_10
 
-● **IE_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **IE_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:327](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L327)*
 
@@ -651,7 +651,7 @@ ___
 
 ###  IE_11
 
-● **IE_11**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **IE_11**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:332](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L332)*
 
@@ -661,7 +661,7 @@ ___
 
 ###  IE_11_WIN_10
 
-● **IE_11_WIN_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **IE_11_WIN_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:337](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L337)*
 
@@ -671,7 +671,7 @@ ___
 
 ###  IE_9
 
-● **IE_9**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **IE_9**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:342](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L342)*
 
@@ -681,7 +681,7 @@ ___
 
 ###  IE_SRC
 
-● **IE_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **IE_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:353](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L353)*
 
@@ -697,7 +697,7 @@ ___
 
 ###  INCR_CHAR
 
-● **INCR_CHAR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **INCR_CHAR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:362](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L362)*
 
@@ -711,7 +711,7 @@ ___
 
 ###  INTL
 
-● **INTL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **INTL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:371](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L371)*
 
@@ -725,7 +725,7 @@ ___
 
 ###  LOCALE_INFINITY
 
-● **LOCALE_INFINITY**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **LOCALE_INFINITY**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:380](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L380)*
 
@@ -739,7 +739,7 @@ ___
 
 ###  NAME
 
-● **NAME**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NAME**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:389](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L389)*
 
@@ -753,7 +753,7 @@ ___
 
 ###  NODECONSTRUCTOR
 
-● **NODECONSTRUCTOR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODECONSTRUCTOR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:398](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L398)*
 
@@ -767,7 +767,7 @@ ___
 
 ###  NODE_0_10
 
-● **NODE_0_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODE_0_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:403](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L403)*
 
@@ -777,7 +777,7 @@ ___
 
 ###  NODE_0_12
 
-● **NODE_0_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODE_0_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:408](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L408)*
 
@@ -787,7 +787,7 @@ ___
 
 ###  NODE_10
 
-● **NODE_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODE_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:413](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L413)*
 
@@ -797,7 +797,7 @@ ___
 
 ###  NODE_11
 
-● **NODE_11**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODE_11**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:418](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L418)*
 
@@ -807,7 +807,7 @@ ___
 
 ###  NODE_12
 
-● **NODE_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODE_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:423](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L423)*
 
@@ -817,7 +817,7 @@ ___
 
 ###  NODE_4
 
-● **NODE_4**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODE_4**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:428](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L428)*
 
@@ -827,7 +827,7 @@ ___
 
 ###  NODE_5
 
-● **NODE_5**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NODE_5**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:433](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L433)*
 
@@ -837,7 +837,7 @@ ___
 
 ###  NO_FF_SRC
 
-● **NO_FF_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NO_FF_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:442](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L442)*
 
@@ -851,7 +851,7 @@ ___
 
 ###  NO_IE_SRC
 
-● **NO_IE_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NO_IE_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:453](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L453)*
 
@@ -867,7 +867,7 @@ ___
 
 ###  NO_OLD_SAFARI_ARRAY_ITERATOR
 
-● **NO_OLD_SAFARI_ARRAY_ITERATOR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NO_OLD_SAFARI_ARRAY_ITERATOR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:462](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L462)*
 
@@ -881,7 +881,7 @@ ___
 
 ###  NO_V8_SRC
 
-● **NO_V8_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **NO_V8_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:473](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L473)*
 
@@ -897,7 +897,7 @@ ___
 
 ###  SAFARI
 
-● **SAFARI**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SAFARI**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:476](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L476)*
 
@@ -907,7 +907,7 @@ ___
 
 ###  SAFARI_10
 
-● **SAFARI_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SAFARI_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:481](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L481)*
 
@@ -917,7 +917,7 @@ ___
 
 ###  SAFARI_12
 
-● **SAFARI_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SAFARI_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:486](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L486)*
 
@@ -927,7 +927,7 @@ ___
 
 ###  SAFARI_7_0
 
-● **SAFARI_7_0**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SAFARI_7_0**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:491](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L491)*
 
@@ -937,7 +937,7 @@ ___
 
 ###  SAFARI_7_1
 
-● **SAFARI_7_1**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SAFARI_7_1**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:496](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L496)*
 
@@ -947,7 +947,7 @@ ___
 
 ###  SAFARI_8
 
-● **SAFARI_8**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SAFARI_8**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:499](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L499)*
 
@@ -957,7 +957,7 @@ ___
 
 ###  SAFARI_9
 
-● **SAFARI_9**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SAFARI_9**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:504](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L504)*
 
@@ -967,7 +967,7 @@ ___
 
 ###  SELF
 
-● **SELF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SELF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:507](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L507)*
 
@@ -977,7 +977,7 @@ ___
 
 ###  SELF_OBJ
 
-● **SELF_OBJ**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **SELF_OBJ**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:516](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L516)*
 
@@ -991,7 +991,7 @@ ___
 
 ###  STATUS
 
-● **STATUS**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **STATUS**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:525](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L525)*
 
@@ -1005,7 +1005,7 @@ ___
 
 ###  UNDEFINED
 
-● **UNDEFINED**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **UNDEFINED**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:536](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L536)*
 
@@ -1021,7 +1021,7 @@ ___
 
 ###  UNEVAL
 
-● **UNEVAL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **UNEVAL**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:545](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L545)*
 
@@ -1035,7 +1035,7 @@ ___
 
 ###  V8_SRC
 
-● **V8_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **V8_SRC**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:556](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L556)*
 
@@ -1051,7 +1051,7 @@ ___
 
 ###  WINDOW
 
-● **WINDOW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+• **WINDOW**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 *Defined in [feature-all.d.ts:565](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/feature-all.d.ts#L565)*
 
@@ -1060,5 +1060,3 @@ Existence of the global object self having the string representation "\[object W
 **`reamarks`** 
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser 4.4. This feature is not available inside web workers.
-
-___

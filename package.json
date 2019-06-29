@@ -55,10 +55,10 @@
     "mocha": "~3.5.3",
     "mocha-bar": "~0.0.3",
     "nyc": "~14.1.1",
-    "rollup": "~1.16.2",
+    "rollup": "~1.16.3",
     "rollup-plugin-cleanup": "~3.1.1",
     "subrequire": "~0.0.0",
     "typedoc": "~0.14.2",
-    "typedoc-plugin-markdown": "~2.0.6"
+    "typedoc-plugin-markdown": "~2.0.7"
   }
 }
