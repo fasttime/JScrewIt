@@ -1,23 +1,24 @@
-/*
-global
-APPEND_LENGTH_OF_EMPTY,
-LEVEL_NUMERIC,
-LEVEL_OBJECT,
-LEVEL_STRING,
-LEVEL_UNDEFINED,
-Solution,
-_Math_max,
-_Math_pow,
-assignNoEnum,
-createClusteringPlan,
-*/
+import createClusteringPlan
+from './clustering-plan';
+import { _Math_max, _Math_pow, assignNoEnum }                                   from './obj-utils';
+import { LEVEL_NUMERIC, LEVEL_OBJECT, LEVEL_STRING, LEVEL_UNDEFINED, Solution } from './solution';
 
 // This implementation assumes that all numeric solutions have an outer plus, and all other
 // character solutions have none.
 
-var ScrewBuffer;
+export var APPEND_LENGTH_OF_DIGIT_0     = 6;
+export var APPEND_LENGTH_OF_DOT         = 73;
+export var APPEND_LENGTH_OF_FALSE       = 4;
+export var APPEND_LENGTH_OF_EMPTY       = 3; // Append length of the empty array.
+export var APPEND_LENGTH_OF_MINUS       = 136;
+export var APPEND_LENGTH_OF_PLUS_SIGN   = 71;
+export var APPEND_LENGTH_OF_SMALL_E     = 26;
 
-var optimizeSolutions;
+export var APPEND_LENGTH_OF_DIGITS = [APPEND_LENGTH_OF_DIGIT_0, 8, 12, 17, 22, 27, 32, 37, 42, 47];
+
+export var ScrewBuffer;
+
+export var optimizeSolutions;
 
 (function ()
 {
@@ -105,8 +106,7 @@ var optimizeSolutions;
                 multiPart = index != null;
                 if (multiPart)
                 {
-                    // Keep the first solutions out of the concat context to reduce output
-                    // length.
+                    // Keep the first solutions out of the concat context to reduce output length.
                     var preBridgeCount = index;
                     array =
                     preBridgeCount > 1 ? sequence(solutions, 0, preBridgeCount) : [solutions[0]];
@@ -178,13 +178,8 @@ var optimizeSolutions;
         (
             rightmost && levelCenter < LEVEL_NUMERIC ?
             3 :
-            isNumericJoin
-            (
-                levelCenter,
-                levelRight = (solutionRight = solutions[index + 1]).level
-            ) ?
-            getNumericJoinCost(levelCenter, levelRight) -
-            (solutionRight.hasOuterPlus ? 2 : 0) :
+            isNumericJoin(levelCenter, levelRight = (solutionRight = solutions[index + 1]).level) ?
+            getNumericJoinCost(levelCenter, levelRight) - (solutionRight.hasOuterPlus ? 2 : 0) :
             0
         ) -
         (

@@ -1,57 +1,57 @@
-/*
-global
-BASE64_ALPHABET_HI_2,
-BASE64_ALPHABET_HI_4,
-BASE64_ALPHABET_HI_6,
-BASE64_ALPHABET_LO_2,
-BASE64_ALPHABET_LO_4,
-BASE64_ALPHABET_LO_6,
-CHARACTERS,
-COMPLEX,
-CONSTANTS,
-JSFUCK_INFINITY,
-LEVEL_NUMERIC,
-LEVEL_STRING,
-LEVEL_UNDEFINED,
-OPTIMAL_B,
-SIMPLE,
-ScrewBuffer,
-Solution,
-_Array,
-_Array_isArray,
-_Array_prototype_forEach,
-_JSON_stringify,
-_Math_abs,
-_Math_max,
-_Object_create,
-_Object_keys,
-_RegExp,
-_String,
-_SyntaxError,
-assignNoEnum,
-createEmpty,
-expressParse,
-featureFromMask,
-getComplexOptimizer,
-getToStringOptimizer,
-maskIncludes,
-maskNew,
-*/
-
-var APPEND_LENGTH_OF_DIGITS;
-var APPEND_LENGTH_OF_DIGIT_0;
-var APPEND_LENGTH_OF_EMPTY;
-var APPEND_LENGTH_OF_FALSE;
-var APPEND_LENGTH_OF_PLUS_SIGN;
-var APPEND_LENGTH_OF_SMALL_E;
+import
+{
+    BASE64_ALPHABET_HI_2,
+    BASE64_ALPHABET_HI_4,
+    BASE64_ALPHABET_HI_6,
+    BASE64_ALPHABET_LO_2,
+    BASE64_ALPHABET_LO_4,
+    BASE64_ALPHABET_LO_6,
+    CHARACTERS,
+    CONSTANTS,
+    JSFUCK_INFINITY,
+    OPTIMAL_B,
+    SIMPLE,
+}
+from './definitions';
+import expressParse                                                 from './express-parse';
+import { featureFromMask }                                          from './features';
+import { maskIncludes, maskNew }                                    from './mask';
+import
+{
+    _Array,
+    _Array_isArray,
+    _Array_prototype_forEach,
+    _JSON_stringify,
+    _Math_abs,
+    _Math_max,
+    _Object_create,
+    _Object_defineProperty,
+    _Object_keys,
+    _RegExp,
+    _String,
+    _SyntaxError,
+    assignNoEnum,
+    createEmpty,
+}
+from './obj-utils';
+import
+{
+    APPEND_LENGTH_OF_DIGITS,
+    APPEND_LENGTH_OF_DIGIT_0,
+    APPEND_LENGTH_OF_DOT,
+    APPEND_LENGTH_OF_MINUS,
+    APPEND_LENGTH_OF_SMALL_E,
+    ScrewBuffer,
+}
+from './screw-buffer';
+import { LEVEL_NUMERIC, LEVEL_STRING, LEVEL_UNDEFINED, Solution }   from './solution';
 
 /** @class Encoder */
 
-var Encoder;
+export var Encoder;
 
-var replaceMultiDigitNumber;
-var replaceStaticString;
-var resolveSimple;
+export var replaceMultiDigitNumber;
+export var replaceStaticString;
 
 (function ()
 {
@@ -175,7 +175,7 @@ var resolveSimple;
         var solution;
         if (identifier in encoder.constantDefinitions)
             solution = encoder.resolveConstant(identifier);
-        else if (identifier in SIMPLE)
+        else if (SIMPLE.propertyIsEnumerable(identifier))
             solution = SIMPLE[identifier];
         if (!solution)
             encoder.throwSyntaxError('Undefined identifier ' + identifier);
@@ -220,6 +220,20 @@ var resolveSimple;
         }
     }
 
+    function resolveSimple(simple, definition)
+    {
+        var solution;
+        STATIC_ENCODER.callResolver
+        (
+            simple,
+            function ()
+            {
+                solution = STATIC_ENCODER.resolve(definition);
+            }
+        );
+        return solution;
+    }
+
     function shortestOf(objs)
     {
         var shortestObj;
@@ -243,14 +257,6 @@ var resolveSimple;
     var STATIC_CONST_CACHE = createEmpty();
 
     var quoteString = _JSON_stringify;
-
-    APPEND_LENGTH_OF_DIGIT_0    = 6;
-    APPEND_LENGTH_OF_FALSE      = 4;
-    APPEND_LENGTH_OF_EMPTY      = 3; // Append length of the empty array
-    APPEND_LENGTH_OF_PLUS_SIGN  = 71;
-    APPEND_LENGTH_OF_SMALL_E    = 26;
-
-    APPEND_LENGTH_OF_DIGITS     = [APPEND_LENGTH_OF_DIGIT_0, 8, 12, 17, 22, 27, 32, 37, 42, 47];
 
     Encoder =
     function (mask)
@@ -383,6 +389,12 @@ var resolveSimple;
             return result;
         },
 
+        getOptimizerList:
+        function ()
+        {
+            return [];
+        },
+
         getPaddingBlock:
         function (paddingInfo, length)
         {
@@ -464,9 +476,8 @@ var resolveSimple;
         function (charCode)
         {
             var arg =
-            charCode < 2 ? ['[]', 'true'][charCode] :
-            charCode < 10 ? charCode :
-            '"' + charCode + '"';
+            charCode < 2 ?
+            ['[]', 'true'][charCode] : charCode < 10 ? charCode : '"' + charCode + '"';
             var replacement = this.replaceExpr('String[FROM_CHAR_CODE](' + arg + ')');
             return replacement;
         },
@@ -718,8 +729,8 @@ var resolveSimple;
          * placed immediately before or after it.
          * E.g. `[][[]]` is bonded but `![]` is not, because `![][[]]` is different from
          * `(![])[[]]`.
-         * More exactly, a bonded expression does not contain an outer plus and does not start
-         * with `!`.
+         * More exactly, a bonded expression does not contain an outer plus and does not start with
+         * `!`.
          *
          * Any expression becomes bonded when enclosed into parentheses.
          *
@@ -744,8 +755,7 @@ var resolveSimple;
          * Specifies which optimizations should be attempted.
          *
          * Optimizations may reduce the length of the replacement string, but they also reduce the
-         * performance and may lead to unwanted circular dependencies when resolving
-         * definitions.
+         * performance and may lead to unwanted circular dependencies when resolving definitions.
          *
          * This parameter can be set to a boolean value in order to turn all optimizations on
          * (`true`) or off (`false`).
@@ -761,48 +771,7 @@ var resolveSimple;
         function (str, options)
         {
             options = options || { };
-            var optimize = options.optimize;
-            var optimizerList = [];
-            if (optimize)
-            {
-                var optimizeComplex;
-                var optimizeToString;
-                if (typeof optimize === 'object')
-                {
-                    optimizeComplex     = !!optimize.complexOpt;
-                    optimizeToString    = !!optimize.toStringOpt;
-                }
-                else
-                    optimizeComplex = optimizeToString = true;
-                var optimizers = this.optimizers;
-                var optimizer;
-                if (optimizeComplex)
-                {
-                    var complexOptimizers = optimizers.complex;
-                    if (!complexOptimizers)
-                        complexOptimizers = optimizers.complex = createEmpty();
-                    for (var complex in COMPLEX)
-                    {
-                        var entry = COMPLEX[complex];
-                        if (this.hasFeatures(entry.mask) && str.indexOf(complex) >= 0)
-                        {
-                            optimizer =
-                            complexOptimizers[complex] ||
-                            (
-                                complexOptimizers[complex] =
-                                getComplexOptimizer(this, complex, entry.definition)
-                            );
-                            optimizerList.push(optimizer);
-                        }
-                    }
-                }
-                if (optimizeToString)
-                {
-                    optimizer =
-                    optimizers.toString || (optimizers.toString = getToStringOptimizer(this));
-                    optimizerList.push(optimizer);
-                }
-            }
+            var optimizerList = this.getOptimizerList(str, options.optimize);
             var buffer =
             new ScrewBuffer
             (options.bond, options.forceString, this.maxGroupThreshold, optimizerList);
@@ -966,9 +935,6 @@ var resolveSimple;
 
     assignNoEnum(Encoder.prototype, protoSource);
 
-    var APPEND_LENGTH_OF_DOT    = 73;
-    var APPEND_LENGTH_OF_MINUS  = 136;
-
     var BOND_STRENGTH_NONE      = 0;
     var BOND_STRENGTH_WEAK      = 1;
     var BOND_STRENGTH_STRONG    = 2;
@@ -1006,19 +972,6 @@ var resolveSimple;
         return replacement;
     };
 
-    resolveSimple =
-    function (simple, definition)
-    {
-        var solution;
-        STATIC_ENCODER.callResolver
-        (
-            simple,
-            function ()
-            {
-                solution = STATIC_ENCODER.resolve(definition);
-            }
-        );
-        return solution;
-    };
+    _Object_defineProperty(SIMPLE, 'resolveSimple', { value: resolveSimple });
 }
 )();

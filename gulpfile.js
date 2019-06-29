@@ -34,7 +34,33 @@ task
         lint
         (
             {
-                src: 'src/**/*.js',
+                src: 'src/lib/**/*.js',
+                parserOptions: { sourceType: 'module' },
+                rules:
+                {
+                    indent:
+                    [
+                        'error',
+                        4,
+                        {
+                            CallExpression: { arguments: 'first' },
+                            FunctionDeclaration: { parameters: 'first' },
+                            FunctionExpression: { parameters: 'first' },
+                            MemberExpression: 0,
+                            VariableDeclarator: 0,
+                            ignoredNodes:
+                            [
+                                'ArrowFunctionExpression',
+                                'ClassDeclaration[superClass]',
+                                'ConditionalExpression',
+                                'ImportDeclaration',
+                            ],
+                        },
+                    ],
+                },
+            },
+            {
+                src: 'src/html/**/*.js',
                 parserOptions: { ecmaFeatures: { impliedStrict: true } },
                 rules: { strict: 'off' },
             },
@@ -65,43 +91,26 @@ task
 
 task
 (
-    'concat',
-    () =>
+    'bundle',
+    async () =>
     {
         const { homepage, version } = require('./package.json');
-        const concat                = require('gulp-concat');
-        const { prepend }           = require('gulp-insert');
-        const replace               = require('gulp-replace');
+        const rollup                = require('rollup');
+        const cleanup               = require('rollup-plugin-cleanup');
 
-        const srcGlobs =
-        [
-            'src/preamble',
-            'src/lib/obj-utils.js',
-            'src/lib/mask.js',
-            'src/lib/features.js',
-            'src/lib/definers.js',
-            'src/lib/solution.js',
-            'src/lib/definitions.js',
-            'src/lib/clustering-plan.js',
-            'src/lib/screw-buffer.js',
-            'src/lib/express-parse.js',
-            'src/lib/encoder-base.js',
-            'src/lib/figurator.js',
-            'src/lib/complex-optimizer.js',
-            'src/lib/to-string-optimizer.js',
-            'src/lib/encoder-ext.js',
-            'src/lib/trim-js.js',
-            'src/lib/jscrewit-base.js',
-            'src/lib/debug.js',
-            'src/postamble',
-        ];
-        const stream =
-        src(srcGlobs)
-        .pipe(replace(/^\/\*[^]*?\*\/\s*\n/, ''))
-        .pipe(concat('jscrewit.js'))
-        .pipe(prepend(`// JScrewIt ${version} – ${homepage}\n\n`))
-        .pipe(dest('lib'));
-        return stream;
+        const inputOptions =
+        {
+            input: 'src/lib/debug.js',
+            plugins: [cleanup({ comments: [/^(?!\*\s*global\b)/], maxEmptyLines: -1 })],
+        };
+        const bundle = await rollup.rollup(inputOptions);
+        const outputOptions =
+        {
+            banner: `// JScrewIt ${version} – ${homepage}\n`,
+            file: 'lib/jscrewit.js',
+            format: 'iife',
+        };
+        await bundle.write(outputOptions);
     },
 );
 
@@ -195,7 +204,7 @@ function makeUI()
     [
         'tmp-src/art.js',
         'src/html/result-format.js',
-        'src/preamble',
+        'src/html/preamble',
         'tmp-src/worker.js',
         'src/html/button.js',
         'src/html/engine-selection-box.js',
@@ -203,7 +212,7 @@ function makeUI()
         'src/html/roll.js',
         'src/html/tabindex.js',
         'src/html/ui-main.js',
-        'src/postamble',
+        'src/html/postamble',
     ];
     const stream =
     src(srcGlobs)
@@ -261,7 +270,7 @@ task
     series
     (
         parallel('clean', 'lint'),
-        'concat',
+        'bundle',
         'test',
         parallel('minify:html', 'minify:lib', 'feature-doc'),
         'typedoc',

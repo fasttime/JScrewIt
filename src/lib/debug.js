@@ -1,48 +1,47 @@
-/*
-global
-BASE64_ALPHABET_HI_4,
-BASE64_ALPHABET_LO_4,
-CHARACTERS,
-COMPLEX,
-CONSTANTS,
-DEBUG,
-FROM_CHAR_CODE,
-FROM_CHAR_CODE_CALLBACK_FORMATTER,
-MAPPER_FORMATTER,
-OPTIMAL_B,
-OPTIMAL_RETURN_STRING,
-STRATEGIES,
-Encoder,
-JScrewIt,
-ScrewBuffer,
-Solution,
-_Array_isArray,
-_JSON_stringify,
-_Object_create,
-_Object_freeze,
-_Object_keys,
-_String,
-_SyntaxError,
-assignNoEnum,
-createBridgeSolution,
-createClusteringPlan,
-createEmpty,
-createFigurator,
-createReindexMap,
-define,
-esToString,
-featureFromMask,
-getComplexOptimizer,
-getToStringOptimizer,
-getValidFeatureMask,
-isMaskCompatible,
-maskIncludes,
-maskIsEmpty,
-maskNew,
-maskUnion,
-optimizeSolutions,
-trimJS,
-*/
+/* global DEBUG */
+
+import createClusteringPlan                                 from './clustering-plan';
+import createComplexOptimizer                               from './complex-optimizer';
+import { define }                                           from './definers';
+import
+{
+    BASE64_ALPHABET_HI_4,
+    BASE64_ALPHABET_LO_4,
+    CHARACTERS,
+    COMPLEX,
+    CONSTANTS,
+    FROM_CHAR_CODE,
+    FROM_CHAR_CODE_CALLBACK_FORMATTER,
+    MAPPER_FORMATTER,
+    OPTIMAL_B,
+    OPTIMAL_RETURN_STRING,
+    createBridgeSolution,
+}
+from './definitions';
+import { Encoder }                                          from './encoder-base';
+import { STRATEGIES, createReindexMap }                     from './encoder-ext';
+import { featureFromMask, isMaskCompatible }                from './features';
+import createFigurator                                      from './figurator';
+import { JScrewIt, getValidFeatureMask }                    from './jscrewit-base';
+import { maskIncludes, maskIsEmpty, maskNew, maskUnion }    from './mask';
+import
+{
+    _Array_isArray,
+    _JSON_stringify,
+    _Object_create,
+    _Object_freeze,
+    _Object_keys,
+    _String,
+    _SyntaxError,
+    assignNoEnum,
+    createEmpty,
+    esToString,
+}
+from './obj-utils';
+import { ScrewBuffer, optimizeSolutions }                   from './screw-buffer';
+import { Solution }                                         from './solution';
+import createToStringOptimizer                              from './to-string-optimizer';
+import trimJS                                               from './trim-js';
 
 // istanbul ignore else
 if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
@@ -186,29 +185,29 @@ if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
         (
             { },
             {
-                Solution:               Solution,
-                createBridgeSolution:   createBridgeSolution,
-                createClusteringPlan:   createClusteringPlan,
-                createEncoder:          createEncoder,
-                createFeatureFromMask:  createFeatureFromMask,
-                createFigurator:        createFigurator,
-                createReindexMap:       createReindexMap,
-                createScrewBuffer:      createScrewBuffer,
-                defineConstant:         defineConstant,
-                getCharacterEntries:    getCharacterEntries,
-                getComplexEntry:        getComplexEntry,
-                getComplexNames:        getComplexNames,
-                getComplexOptimizer:    getComplexOptimizer,
-                getConstantEntries:     getConstantEntries,
-                getEntries:             getEntries,
-                getStrategies:          getStrategies,
-                getToStringOptimizer:   getToStringOptimizer,
-                maskIncludes:           maskIncludes,
-                maskIsEmpty:            maskIsEmpty,
-                maskNew:                maskNew,
-                maskUnion:              maskUnion,
-                optimizeSolutions:      optimizeSolutions,
-                trimJS:                 trimJS,
+                Solution:                   Solution,
+                createBridgeSolution:       createBridgeSolution,
+                createClusteringPlan:       createClusteringPlan,
+                createComplexOptimizer:     createComplexOptimizer,
+                createEncoder:              createEncoder,
+                createFeatureFromMask:      createFeatureFromMask,
+                createFigurator:            createFigurator,
+                createReindexMap:           createReindexMap,
+                createScrewBuffer:          createScrewBuffer,
+                createToStringOptimizer:    createToStringOptimizer,
+                defineConstant:             defineConstant,
+                getCharacterEntries:        getCharacterEntries,
+                getComplexEntry:            getComplexEntry,
+                getComplexNames:            getComplexNames,
+                getConstantEntries:         getConstantEntries,
+                getEntries:                 getEntries,
+                getStrategies:              getStrategies,
+                maskIncludes:               maskIncludes,
+                maskIsEmpty:                maskIsEmpty,
+                maskNew:                    maskNew,
+                maskUnion:                  maskUnion,
+                optimizeSolutions:          optimizeSolutions,
+                trimJS:                     trimJS,
             }
         );
         assignNoEnum(JScrewIt, { debug: debug });

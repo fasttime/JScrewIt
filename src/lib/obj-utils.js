@@ -1,121 +1,80 @@
-var _Array;
-var _Array_isArray;
-var _Array_prototype;
-var _Array_prototype_every;
-var _Array_prototype_forEach;
-var _Array_prototype_map;
-var _Array_prototype_push;
-var _Date;
-var _Error;
-var _Function;
-var _JSON_parse;
-var _JSON_stringify;
-var _Math_abs;
-var _Math_max;
-var _Math_pow;
-var _Object;
-var _Object_create;
-var _Object_defineProperties;
-var _Object_defineProperty;
-var _Object_freeze;
-var _Object_keys;
-var _Object_getOwnPropertyDescriptor;
-var _RegExp;
-var _String;
-var _SyntaxError;
-var _parseInt;
-var assignNoEnum;
-var createEmpty;
-var esToString;
-var noProto;
-var noop;
+export var _Array                           = Array;
+export var _Array_isArray                   = _Array.isArray;
+export var _Array_prototype                 = _Array.prototype;
+export var _Array_prototype_every           = _Array_prototype.every;
+export var _Array_prototype_forEach         = _Array_prototype.forEach;
+export var _Array_prototype_map             = _Array_prototype.map;
+export var _Array_prototype_push            = _Array_prototype.push;
 
-(function ()
+export var _Date                            = Date;
+
+export var _Error                           = Error;
+
+export var _Function                        = Function;
+
+export var _JSON_parse                      = JSON.parse;
+export var _JSON_stringify                  = JSON.stringify;
+
+export var _Math_abs                        = Math.abs;
+export var _Math_max                        = Math.max;
+export var _Math_pow                        = Math.pow;
+
+export var _Object                          = Object;
+export var _Object_create                   = _Object.create;
+export var _Object_defineProperties         = _Object.defineProperties;
+export var _Object_defineProperty           = _Object.defineProperty;
+export var _Object_freeze                   = _Object.freeze;
+export var _Object_getOwnPropertyDescriptor = _Object.getOwnPropertyDescriptor;
+export var _Object_keys                     = _Object.keys;
+
+export var _RegExp                          = RegExp;
+
+export var _String                          = String;
+
+export var _SyntaxError                     = SyntaxError;
+
+export var _TypeError                       = TypeError;
+
+export var _parseInt                        = parseInt;
+
+export function assignNoEnum(target, source)
 {
-    var _TypeError;
-
-    _Array                              = Array;
-    _Array_isArray                      = _Array.isArray;
-    _Array_prototype                    = _Array.prototype;
-    _Array_prototype_every              = _Array_prototype.every;
-    _Array_prototype_forEach            = _Array_prototype.forEach;
-    _Array_prototype_map                = _Array_prototype.map;
-    _Array_prototype_push               = _Array_prototype.push;
-
-    _Date                               = Date;
-
-    _Error                              = Error;
-
-    _Function                           = Function;
-
-    _JSON_parse                         = JSON.parse;
-    _JSON_stringify                     = JSON.stringify;
-
-    _Math_abs                           = Math.abs;
-    _Math_max                           = Math.max;
-    _Math_pow                           = Math.pow;
-
-    _Object                             = Object;
-    _Object_create                      = _Object.create;
-    _Object_defineProperties            = _Object.defineProperties;
-    _Object_defineProperty              = _Object.defineProperty;
-    _Object_freeze                      = _Object.freeze;
-    _Object_getOwnPropertyDescriptor    = _Object.getOwnPropertyDescriptor;
-    _Object_keys                        = _Object.keys;
-
-    _RegExp                             = RegExp;
-
-    _String                             = String;
-
-    _SyntaxError                        = SyntaxError;
-
-    _TypeError                          = TypeError;
-
-    _parseInt                           = parseInt;
-
-    assignNoEnum =
-    function (target, source)
-    {
-        var descriptors = { };
-        var names = _Object_keys(source);
-        names.forEach
-        (
-            function (name)
-            {
-                var descriptor = _Object_getOwnPropertyDescriptor(source, name);
-                descriptor.enumerable = false;
-                descriptors[name] = descriptor;
-            }
-        );
-        _Object_defineProperties(target, descriptors);
-        return target;
-    };
-
-    createEmpty = _Object_create.bind(null, null);
-
-    esToString =
-    function (arg)
-    {
-        if (typeof arg === 'symbol')
-            throw new _TypeError('Cannot convert a symbol to a string');
-        var str = _String(arg);
-        return str;
-    };
-
-    noProto =
-    function (obj)
-    {
-        var result = createEmpty();
-        _Object_keys(obj).forEach
-        (
-            function (name)
-            {
-                result[name] = obj[name];
-            }
-        );
-        return result;
-    };
-
-    noop = _Function();
+    var descriptors = { };
+    var names = _Object_keys(source);
+    names.forEach
+    (
+        function (name)
+        {
+            var descriptor = _Object_getOwnPropertyDescriptor(source, name);
+            descriptor.enumerable = false;
+            descriptors[name] = descriptor;
+        }
+    );
+    _Object_defineProperties(target, descriptors);
+    return target;
 }
-)();
+
+export var createEmpty = _Object_create.bind(null, null);
+
+export function esToString(arg)
+{
+    if (typeof arg === 'symbol')
+        throw new _TypeError('Cannot convert a symbol to a string');
+    var str = _String(arg);
+    return str;
+}
+
+export function noProto(obj)
+{
+    var result = createEmpty();
+    _Object_keys(obj).forEach
+    (
+        function (name)
+        {
+            result[name] = obj[name];
+        }
+    );
+    return result;
+}
+
+export var noop = _Function();

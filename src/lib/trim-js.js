@@ -1,4 +1,4 @@
-/* global _RegExp */
+import { _RegExp } from './obj-utils';
 
 var trimJS;
 
@@ -23,3 +23,5 @@ var trimJS;
     };
 }
 )();
+
+export default trimJS;

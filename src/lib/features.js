@@ -1,40 +1,43 @@
-/*
-global
-Audio,
-Node,
-_Array_isArray,
-_Array_prototype_every,
-_Array_prototype_forEach,
-_Array_prototype_push,
-_Error,
-_JSON_stringify,
-_Object_create,
-_Object_defineProperty,
-_Object_freeze,
-_Object_keys,
-assignNoEnum,
-console,
-createEmpty,
-document,
-esToString,
-history,
-maskAreEqual,
-maskIncludes,
-maskIntersection,
-maskNew,
-maskUnion,
-maskWithBit,
-self,
-sidebar,
-statusbar,
-*/
+/* global Audio, Node, console, document, history, self, sidebar, statusbar */
 
-var Feature;
+import { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskUnion, maskWithBit }
+from './mask';
+import
+{
+    _Array_isArray,
+    _Array_prototype_every,
+    _Array_prototype_forEach,
+    _Array_prototype_push,
+    _Error,
+    _JSON_stringify,
+    _Object_create,
+    _Object_defineProperty,
+    _Object_freeze,
+    _Object_keys,
+    assignNoEnum,
+    createEmpty,
+    esToString,
+}
+from './obj-utils';
 
-var featureFromMask;
-var featuresToMask;
-var isMaskCompatible;
-var validMaskFromArrayOrStringOrFeature;
+export function featuresToMask(featureObjs)
+{
+    var mask = maskNew();
+    featureObjs.forEach
+    (
+        function (featureObj)
+        {
+            mask = maskUnion(mask, featureObj.mask);
+        }
+    );
+    return mask;
+}
+
+export var Feature;
+
+export var featureFromMask;
+export var isMaskCompatible;
+export var validMaskFromArrayOrStringOrFeature;
 
 (function ()
 {
@@ -1665,20 +1668,6 @@ var validMaskFromArrayOrStringOrFeature;
         var featureObj = _Object_create(Feature.prototype);
         initMask(featureObj, mask);
         return featureObj;
-    };
-
-    featuresToMask =
-    function (featureObjs)
-    {
-        var mask = maskNew();
-        featureObjs.forEach
-        (
-            function (featureObj)
-            {
-                mask = maskUnion(mask, featureObj.mask);
-            }
-        );
-        return mask;
     };
 
     isMaskCompatible =

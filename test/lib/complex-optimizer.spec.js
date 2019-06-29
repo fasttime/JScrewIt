@@ -26,7 +26,7 @@
                 return solution;
             },
         };
-        var optimizer = JScrewIt.debug.getComplexOptimizer(encoder, 'feet');
+        var optimizer = JScrewIt.debug.createComplexOptimizer(encoder, 'feet');
         return optimizer;
     }
 

@@ -1,10 +1,12 @@
-/* global APPEND_LENGTH_OF_EMPTY, LEVEL_STRING, _Array_prototype_forEach, createEmpty, noop */
+import { _Array_prototype_forEach, createEmpty, noop }  from './obj-utils';
+import { APPEND_LENGTH_OF_EMPTY }                       from './screw-buffer';
+import { LEVEL_STRING }                                 from './solution';
 
-var getComplexOptimizer;
+var createComplexOptimizer;
 
 (function ()
 {
-    var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")"
+    var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
     var NOOP_OPTIMIZER = { appendLengthOf: noop, optimizeSolutions: noop };
 
     function createOptimizer
@@ -69,7 +71,7 @@ var getComplexOptimizer;
         return charSet;
     }
 
-    getComplexOptimizer =
+    createComplexOptimizer =
     function (encoder, complex, definition)
     {
         var optimizer;
@@ -134,3 +136,5 @@ var getComplexOptimizer;
     };
 }
 )();
+
+export default createComplexOptimizer;

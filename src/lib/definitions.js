@@ -1,48 +1,57 @@
-/*
-global
-LEVEL_NUMERIC,
-LEVEL_OBJECT,
-LEVEL_STRING,
-LEVEL_UNDEFINED,
-Feature,
-Solution,
-_Object_defineProperty,
-createEmpty,
-define,
-defineList,
-defineWithArrayLike,
-noProto,
-resolveSimple,
-*/
-
 // As of version 2.1.0, definitions are interpreted using JScrewIt's own express parser, which can
 // handle and optimize a useful subset of the JavaScript syntax.
 // See express-parse.js for details about constructs recognized by express.
 // Compared to generic purpose encoding, definition encoding differs mainly in that every identifier
 // used must be defined itself, too, in a constant definition.
 
-var AMENDINGS;
-var FROM_CHAR_CODE;
-var FROM_CHAR_CODE_CALLBACK_FORMATTER;
-var MAPPER_FORMATTER;
-var OPTIMAL_B;
-var OPTIMAL_RETURN_STRING;
+import { define, defineList, defineWithArrayLike }                  from './definers';
+import { Feature }                                                  from './features';
+import { _Object_defineProperty, noProto }                          from './obj-utils';
+import { LEVEL_NUMERIC, LEVEL_OBJECT, LEVEL_UNDEFINED, Solution }   from './solution';
 
-var BASE64_ALPHABET_HI_2;
-var BASE64_ALPHABET_HI_4;
-var BASE64_ALPHABET_HI_6;
-var BASE64_ALPHABET_LO_2;
-var BASE64_ALPHABET_LO_4;
-var BASE64_ALPHABET_LO_6;
+function defineSimple(simple, expr, level)
+{
+    function get()
+    {
+        var definition = { expr: expr, level: level };
+        var solution = SIMPLE.resolveSimple(simple, definition);
+        _Object_defineProperty(SIMPLE, simple, { value: solution });
+        return solution;
+    }
 
-var CHARACTERS;
-var COMPLEX;
-var CONSTANTS;
-var SIMPLE;
+    _Object_defineProperty(SIMPLE, simple, { configurable: true, enumerable: true, get: get });
+}
 
-var JSFUCK_INFINITY;
+export var AMENDINGS = ['true', 'undefined', 'NaN'];
 
-var createBridgeSolution;
+export var JSFUCK_INFINITY = '1e1000';
+
+export var SIMPLE = { };
+
+defineSimple('false',       '![]',              LEVEL_NUMERIC);
+defineSimple('true',        '!![]',             LEVEL_NUMERIC);
+defineSimple('undefined',   '[][[]]',           LEVEL_UNDEFINED);
+defineSimple('NaN',         '+[false]',         LEVEL_NUMERIC);
+defineSimple('Infinity',    JSFUCK_INFINITY,    LEVEL_NUMERIC);
+
+export var FROM_CHAR_CODE;
+export var FROM_CHAR_CODE_CALLBACK_FORMATTER;
+export var MAPPER_FORMATTER;
+export var OPTIMAL_B;
+export var OPTIMAL_RETURN_STRING;
+
+export var BASE64_ALPHABET_HI_2;
+export var BASE64_ALPHABET_HI_4;
+export var BASE64_ALPHABET_HI_6;
+export var BASE64_ALPHABET_LO_2;
+export var BASE64_ALPHABET_LO_4;
+export var BASE64_ALPHABET_LO_6;
+
+export var CHARACTERS;
+export var COMPLEX;
+export var CONSTANTS;
+
+export var createBridgeSolution;
 
 (function ()
 {
@@ -415,19 +424,6 @@ var createBridgeSolution;
         return entry;
     }
 
-    function defineSimple(simple, expr, level)
-    {
-        function get()
-        {
-            var definition = { expr: expr, level: level };
-            var solution = resolveSimple(simple, definition);
-            _Object_defineProperty(SIMPLE, simple, { value: solution });
-            return solution;
-        }
-
-        _Object_defineProperty(SIMPLE, simple, { configurable: true, enumerable: true, get: get });
-    }
-
     function replaceDigit(digit)
     {
         switch (digit)
@@ -444,8 +440,6 @@ var createBridgeSolution;
             return replacement;
         }
     }
-
-    AMENDINGS = ['true', 'undefined', 'NaN'];
 
     BASE64_ALPHABET_HI_2 = ['NaN', 'false', 'undefined', '0'];
 
@@ -1623,8 +1617,6 @@ var createBridgeSolution;
         ]
     );
 
-    JSFUCK_INFINITY = '1e1000';
-
     MAPPER_FORMATTER =
     defineList
     (
@@ -1675,19 +1667,11 @@ var createBridgeSolution;
         ]
     );
 
-    SIMPLE = createEmpty();
-
     // Create definitions for digits
     for (var digit = 0; digit <= 9; ++digit)
     {
         var expr = replaceDigit(digit);
         CHARACTERS[digit] = { expr: expr, level: LEVEL_NUMERIC };
     }
-
-    defineSimple('false',       '![]',              LEVEL_NUMERIC);
-    defineSimple('true',        '!![]',             LEVEL_NUMERIC);
-    defineSimple('undefined',   '[][[]]',           LEVEL_UNDEFINED);
-    defineSimple('NaN',         '+[false]',         LEVEL_NUMERIC);
-    defineSimple('Infinity',    JSFUCK_INFINITY,    LEVEL_NUMERIC);
 }
 )();

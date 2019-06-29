@@ -32,7 +32,7 @@
                 return Object(toStringReplacement);
             },
         };
-        var optimizer = JScrewIt.debug.getToStringOptimizer(encoder);
+        var optimizer = JScrewIt.debug.createToStringOptimizer(encoder);
         return optimizer;
     }
 

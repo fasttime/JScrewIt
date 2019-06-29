@@ -280,19 +280,20 @@ function printDefinitions(definitionSets, { indent, formatVariant, variantToMinM
         for (const args of argsList)
         {
             let str = args.join(', ');
-            if (str.length > LINE_LENGTH - 3 - indent)
+            const restLength = LINE_LENGTH - str.length - indent;
+            if (restLength >= 13)
+                str = `(${str})`;
+            else if (restLength >= 7)
+                str = `\n${indentStr}    (${str})`;
+            else
             {
                 str =
                 `\n${indentStr}    (${args.map(arg => `\n${indentStr}        ${arg}`)}` +
                 `\n${indentStr}    )`;
             }
-            else if (str.length > LINE_LENGTH - 9 - indent)
-                str = `\n${indentStr}    (${str})`;
-            else
-                str = `(${str})`;
             console.log('%s    define%s,', indentStr, str);
         }
-        console.log('%s]', indentStr);
+        console.log('%s],', indentStr);
     }
     console.log('\n---\n');
     console.log('%d definition(s) listed.', argsList.length);

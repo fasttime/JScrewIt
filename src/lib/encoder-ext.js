@@ -1,37 +1,59 @@
-/*
-global
-AMENDINGS,
-APPEND_LENGTH_OF_DIGITS,
-APPEND_LENGTH_OF_DIGIT_0,
-APPEND_LENGTH_OF_FALSE,
-APPEND_LENGTH_OF_PLUS_SIGN,
-FROM_CHAR_CODE,
-FROM_CHAR_CODE_CALLBACK_FORMATTER,
-MAPPER_FORMATTER,
-OPTIMAL_RETURN_STRING,
-SIMPLE,
-Encoder,
-_Array_prototype_forEach,
-_Array_prototype_map,
-_Date,
-_Error,
-_Math_max,
-_Object,
-_Object_keys,
-_RegExp,
-_String,
-assignNoEnum,
-createEmpty,
-createFigurator,
-expressParse,
-replaceStaticString,
-*/
+import
+{
+    AMENDINGS,
+    FROM_CHAR_CODE,
+    FROM_CHAR_CODE_CALLBACK_FORMATTER,
+    MAPPER_FORMATTER,
+    OPTIMAL_RETURN_STRING,
+    SIMPLE,
+}
+from './definitions';
+import { Encoder, replaceStaticString } from './encoder-base';
+import expressParse                     from './express-parse';
+import createFigurator                  from './figurator';
+import
+{
+    _Array_prototype_forEach,
+    _Array_prototype_map,
+    _Date,
+    _Error,
+    _Math_max,
+    _Object,
+    _Object_keys,
+    _RegExp,
+    _String,
+    assignNoEnum,
+    createEmpty,
+}
+from './obj-utils';
+import
+{
+    APPEND_LENGTH_OF_DIGITS,
+    APPEND_LENGTH_OF_DIGIT_0,
+    APPEND_LENGTH_OF_FALSE,
+    APPEND_LENGTH_OF_PLUS_SIGN,
+}
+from './screw-buffer';
 
-var STRATEGIES;
+export function wrapWithCall(str)
+{
+    var output = this.resolveConstant('Function') + '(' + str + ')()';
+    return output;
+}
 
-var createReindexMap;
-var wrapWithCall;
-var wrapWithEval;
+wrapWithCall.forceString = false;
+
+export function wrapWithEval(str)
+{
+    var output = this.replaceExpr('Function("return eval")()') + '(' + str + ')';
+    return output;
+}
+
+wrapWithEval.forceString = true;
+
+export var STRATEGIES;
+
+export var createReindexMap;
 
 (function ()
 {
@@ -947,8 +969,8 @@ var wrapWithEval;
             return output;
         },
 
-        // Array elements may not contain the substring "false", because the value false could
-        // be used as a separator in the encoding.
+        // Array elements may not contain the substring "false", because the value false could be
+        // used as a separator in the encoding.
         replaceFalseFreeArray:
         function (array, maxLength)
         {
@@ -1012,8 +1034,8 @@ var wrapWithEval;
          * @param {boolean} [forceString=false]
          * Indicates whether the elements in the replacement expression should evaluate to strings.
          *
-         * If this argument is falsy, the elements in the replacement expression may not be equal
-         * to those in the input array, but will have the same string representation.
+         * If this argument is falsy, the elements in the replacement expression may not be equal to
+         * those in the input array, but will have the same string representation.
          *
          * Regardless of this argument, the string representation of the value of the whole
          * replacement expression will be always the same as the string representation of the input
@@ -1269,21 +1291,5 @@ var wrapWithEval;
         );
         return range;
     };
-
-    wrapWithCall =
-    function (str)
-    {
-        var output = this.resolveConstant('Function') + '(' + str + ')()';
-        return output;
-    };
-    wrapWithCall.forceString = false;
-
-    wrapWithEval =
-    function (str)
-    {
-        var output = this.replaceExpr('Function("return eval")()') + '(' + str + ')';
-        return output;
-    };
-    wrapWithEval.forceString = true;
 }
 )();
