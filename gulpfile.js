@@ -36,28 +36,6 @@ task
             {
                 src: 'src/lib/**/*.js',
                 parserOptions: { sourceType: 'module' },
-                rules:
-                {
-                    indent:
-                    [
-                        'error',
-                        4,
-                        {
-                            CallExpression: { arguments: 'first' },
-                            FunctionDeclaration: { parameters: 'first' },
-                            FunctionExpression: { parameters: 'first' },
-                            MemberExpression: 0,
-                            VariableDeclarator: 0,
-                            ignoredNodes:
-                            [
-                                'ArrowFunctionExpression',
-                                'ClassDeclaration[superClass]',
-                                'ConditionalExpression',
-                                'ImportDeclaration',
-                            ],
-                        },
-                    ],
-                },
             },
             {
                 src: 'src/html/**/*.js',

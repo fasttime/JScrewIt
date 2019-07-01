@@ -47,7 +47,7 @@
     "expectations": "~1.0.0",
     "gulp": "~4.0.2",
     "gulp-concat": "~2.6.1",
-    "gulp-fasttime-lint": "~0.10.2",
+    "gulp-fasttime-lint": "~0.11.1",
     "gulp-jsdoc3": "~2.0.0",
     "gulp-rename": "~1.4.0",
     "gulp-typedoc": "~2.2.2",
