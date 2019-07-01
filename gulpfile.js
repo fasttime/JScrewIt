@@ -67,28 +67,45 @@ task
     },
 );
 
+async function bundle(file)
+{
+    const { homepage, version } = require('./package.json');
+    const rollup                = require('rollup');
+    const cleanup               = require('rollup-plugin-cleanup');
+
+    const inputOptions =
+    {
+        input: 'src/lib/debug.js',
+        plugins: [cleanup({ comments: [/^(?!\*\s*global\b)/], maxEmptyLines: -1 })],
+    };
+    const bundle = await rollup.rollup(inputOptions);
+    const outputOptions =
+    { banner: `// JScrewIt ${version} – ${homepage}\n`, file, format: 'iife' };
+    const { output: [{ code }] } = await bundle.write(outputOptions);
+    return code;
+}
+
 task
 (
     'bundle',
     async () =>
     {
-        const { homepage, version } = require('./package.json');
-        const rollup                = require('rollup');
-        const cleanup               = require('rollup-plugin-cleanup');
+        const { parse } = require('acorn');
+        const { red }   = require('chalk');
 
-        const inputOptions =
+        const OUTPUT_FILE = 'lib/jscrewit.js';
+
+        const code = await bundle(OUTPUT_FILE);
+        try
         {
-            input: 'src/lib/debug.js',
-            plugins: [cleanup({ comments: [/^(?!\*\s*global\b)/], maxEmptyLines: -1 })],
-        };
-        const bundle = await rollup.rollup(inputOptions);
-        const outputOptions =
+            parse(code, { ecmaVersion: 5 });
+        }
+        catch (error)
         {
-            banner: `// JScrewIt ${version} – ${homepage}\n`,
-            file: 'lib/jscrewit.js',
-            format: 'iife',
-        };
-        await bundle.write(outputOptions);
+            console.error(red('The file \'%s\' is not a valid ECMAScript 5 script.'), OUTPUT_FILE);
+            error.showStack = false;
+            throw error;
+        }
     },
 );
 
