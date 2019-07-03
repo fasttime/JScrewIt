@@ -1,7 +1,7 @@
 /* eslint-env browser */
 /* global art */
 
-function createRoll()
+export default function createRoll()
 {
     function init()
     {

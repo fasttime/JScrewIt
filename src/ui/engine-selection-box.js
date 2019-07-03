@@ -1,7 +1,10 @@
 /* eslint-env browser */
-/* global JScrewIt, art, setTabindex, showModalBox */
+/* global JScrewIt, art */
 
-function createEngineSelectionBox()
+import showModalBox     from './modal-box';
+import { setTabindex }  from './tabindex';
+
+export default function createEngineSelectionBox()
 {
     var ENGINE_INFO_LIST =
     [

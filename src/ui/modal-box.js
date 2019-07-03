@@ -1,7 +1,10 @@
 /* eslint-env browser */
-/* global art, createButton, setTabindex */
+/* global art */
 
-function showModalBox(content, callback)
+import createButton     from './button';
+import { setTabindex }  from './tabindex';
+
+export default function showModalBox(content, callback)
 {
     function close()
     {

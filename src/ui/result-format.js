@@ -1,6 +1,8 @@
-(function (root)
+/* eslint-env browser */
+
+(function ()
 {
-    'use strict';
+    'use strict'; // eslint-disable-line strict
 
     function formatItem(value)
     {
@@ -28,7 +30,7 @@
         return text;
     }
 
-    root.formatValue =
+    self.formatValue =
     function (value)
     {
         var text;
@@ -46,7 +48,7 @@
         return text;
     };
 
-    root.formatValueType =
+    self.formatValueType =
     function (value)
     {
         var valueType;
@@ -85,4 +87,4 @@
         return valueType;
     };
 }
-)(this);
+)();

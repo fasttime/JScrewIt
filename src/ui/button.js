@@ -1,9 +1,11 @@
 /* eslint-env browser */
-/* global art, hasTabindex, removeTabindex, setTabindex */
+/* global art */
 
 // A large part of this code consists of hacks for Internet Explorer.
 
-function createButton(text)
+import { hasTabindex, removeTabindex, setTabindex } from './tabindex';
+
+export default function createButton(text)
 {
     function deactivate()
     {

@@ -72,7 +72,7 @@ Name of a predefined feature.
 
 ###  encode
 
-▸ **encode**(`input`: *string*, `options?`: *[EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md)*): *string*
+▸ **encode**(`input`: string, `options?`: [EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md)): *string*
 
 *Defined in [encode.d.ts:110](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/encode.d.ts#L110)*
 

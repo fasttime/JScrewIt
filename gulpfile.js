@@ -14,9 +14,9 @@ task
             'Features.md',
             'coverage',
             'doc',
-            'html/**/*.js',
             'lib/**/*.js',
             'lib/feature-all.d.ts',
+            'ui/**/*.js',
             'tmp-src',
         ];
         await del(patterns);
@@ -34,13 +34,8 @@ task
         lint
         (
             {
-                src: 'src/lib/**/*.js',
+                src: ['src/**/*.js', '!src/ui/worker.js'],
                 parserOptions: { sourceType: 'module' },
-            },
-            {
-                src: 'src/html/**/*.js',
-                parserOptions: { ecmaFeatures: { impliedStrict: true } },
-                rules: { strict: 'off' },
             },
             {
                 src: ['gulpfile.js', 'build/**/*.js', '!build/legacy/**'],
@@ -48,7 +43,14 @@ task
                 parserOptions: { ecmaVersion: 9 },
             },
             {
-                src: ['build/legacy/**/*.js', 'screw.js', 'test/**/*.js', 'tools/**/*.js'],
+                src:
+                [
+                    'build/legacy/**/*.js',
+                    'screw.js',
+                    'src/ui/worker.js',
+                    'test/**/*.js',
+                    'tools/**/*.js',
+                ],
                 // process.exitCode is not supported in Node.js 0.10.
                 rules: { 'no-process-exit': 'off' },
             },
@@ -67,47 +69,84 @@ task
     },
 );
 
-async function bundle(file)
+async function bundle(inputOptions, outputFile, banner)
 {
-    const { homepage, version } = require('./package.json');
-    const rollup                = require('rollup');
-    const cleanup               = require('rollup-plugin-cleanup');
+    const { parse }     = require('acorn');
+    const { red }       = require('chalk');
+    const { rollup }    = require('rollup');
 
-    const inputOptions =
-    {
-        input: 'src/lib/debug.js',
-        plugins: [cleanup({ comments: [/^(?!\*\s*global\b)/], maxEmptyLines: -1 })],
-    };
-    const bundle = await rollup.rollup(inputOptions);
-    const outputOptions =
-    { banner: `// JScrewIt ${version} – ${homepage}\n`, file, format: 'iife' };
+    const bundle = await rollup(inputOptions);
+    const outputOptions = { banner, file: outputFile, format: 'iife' };
     const { output: [{ code }] } = await bundle.write(outputOptions);
-    return code;
+    try
+    {
+        parse(code, { ecmaVersion: 5 });
+    }
+    catch (error)
+    {
+        console.error(red('The file \'%s\' is not a valid ECMAScript 5 script.'), outputFile);
+        error.showStack = false;
+        throw error;
+    }
 }
 
 task
 (
-    'bundle',
+    'bundle:lib',
     async () =>
     {
-        const { parse } = require('acorn');
-        const { red }   = require('chalk');
+        const { homepage, version } = require('./package.json');
+        const cleanup               = require('rollup-plugin-cleanup');
 
-        const OUTPUT_FILE = 'lib/jscrewit.js';
-
-        const code = await bundle(OUTPUT_FILE);
-        try
+        const inputOptions =
         {
-            parse(code, { ecmaVersion: 5 });
-        }
-        catch (error)
-        {
-            console.error(red('The file \'%s\' is not a valid ECMAScript 5 script.'), OUTPUT_FILE);
-            error.showStack = false;
-            throw error;
-        }
+            input: 'src/lib/jscrewit-main.js',
+            plugins: [cleanup({ comments: [/^(?!\*\s*global\b)/], maxEmptyLines: -1 })],
+        };
+        await bundle(inputOptions, 'lib/jscrewit.js', `// JScrewIt ${version} – ${homepage}\n`);
     },
 );
+
+async function makeArt()
+{
+    const { promise }               = require('art-js');
+    const { promises: { mkdir } }   = require('fs');
+
+    await mkdir('tmp-src', { recursive: true });
+    await promise('tmp-src/art.js', { css: true, off: true, on: true });
+}
+
+function makeWorker()
+{
+    const uglify    = require('gulp-uglify');
+    const through   = require('through2');
+
+    const stream =
+    src('src/ui/worker.js')
+    .pipe(uglify())
+    .pipe
+    (
+        through.obj
+        (
+            (chunk, encoding, callback) =>
+            {
+                const contents = `export default ${JSON.stringify(String(chunk.contents))};\n`;
+                chunk.contents = Buffer.from(contents);
+                callback(null, chunk);
+            },
+        ),
+    )
+    .pipe(dest('tmp-src'));
+    return stream;
+}
+
+async function bundleUI()
+{
+    const inputOptions = { input: 'src/ui/ui-main.js' };
+    await bundle(inputOptions, 'tmp-src/ui.js');
+}
+
+task('bundle:ui', series(parallel(makeArt, makeWorker), bundleUI));
 
 task
 (
@@ -157,67 +196,18 @@ task
     },
 );
 
-async function makeArt()
-{
-    const { promise }               = require('art-js');
-    const { promises: { mkdir } }   = require('fs');
+task
+(
+    'minify:ui',
+    () =>
+    {
+        const uglify = require('gulp-uglify');
 
-    await mkdir('tmp-src', { recursive: true });
-    await promise('tmp-src/art.js', { css: true, off: true, on: true });
-}
-
-function makeWorker()
-{
-    const uglify    = require('gulp-uglify');
-    const through   = require('through2');
-
-    const stream =
-    src('src/html/worker.js')
-    .pipe(uglify())
-    .pipe
-    (
-        through.obj
-        (
-            (chunk, encoding, callback) =>
-            {
-                const contents = `var WORKER_SRC = ${JSON.stringify(String(chunk.contents))};\n`;
-                chunk.contents = Buffer.from(contents);
-                callback(null, chunk);
-            },
-        ),
-    )
-    .pipe(dest('tmp-src'));
-    return stream;
-}
-
-function makeUI()
-{
-    const concat    = require('gulp-concat');
-    const uglify    = require('gulp-uglify');
-
-    const srcGlobs =
-    [
-        'tmp-src/art.js',
-        'src/html/result-format.js',
-        'src/html/preamble',
-        'tmp-src/worker.js',
-        'src/html/button.js',
-        'src/html/engine-selection-box.js',
-        'src/html/modal-box.js',
-        'src/html/roll.js',
-        'src/html/tabindex.js',
-        'src/html/ui-main.js',
-        'src/html/postamble',
-    ];
-    const stream =
-    src(srcGlobs)
-    .pipe(concat('ui.js'))
-    .pipe(uglify({ compress: { passes: 3 } }))
-    .pipe(dest('html'));
-    return stream;
-}
-
-task('minify:html', series(parallel(makeArt, makeWorker), makeUI));
+        const stream =
+        src('tmp-src/ui.js').pipe(uglify({ compress: { passes: 3 } })).pipe(dest('ui'));
+        return stream;
+    },
+);
 
 task
 (
@@ -265,9 +255,9 @@ task
     series
     (
         parallel('clean', 'lint'),
-        'bundle',
+        parallel('bundle:lib', 'bundle:ui'),
         'test',
-        parallel('minify:html', 'minify:lib', 'feature-doc'),
+        parallel('minify:lib', 'minify:ui', 'feature-doc'),
         'typedoc',
     ),
 );

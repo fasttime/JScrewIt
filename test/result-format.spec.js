@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* global BigInt, Symbol, document, expect, maybeDescribe, require, self */
+/* global BigInt, Symbol, document, expect, global, maybeDescribe, require, self */
 
 'use strict';
 
@@ -159,13 +159,15 @@
     var formatValue;
     var formatValueType;
 
-    if (typeof module !== 'undefined')
+    if (typeof self === 'undefined')
     {
         require('expectations');
         require('./helpers/maybe.helpers');
-        var resultFormat = require('../src/html/result-format');
-        formatValue = resultFormat.formatValue;
-        formatValueType = resultFormat.formatValueType;
+        global.self = { };
+        require('../src/ui/result-format');
+        formatValue = self.formatValue;
+        formatValueType = self.formatValueType;
+        delete global.self;
     }
     else
     {

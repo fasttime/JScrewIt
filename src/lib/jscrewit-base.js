@@ -1,5 +1,7 @@
 /* global module, self */
 
+import './optimizer';
+
 import { Encoder }                                                  from './encoder-base';
 import { wrapWithCall, wrapWithEval }                               from './encoder-ext';
 import { Feature, validMaskFromArrayOrStringOrFeature }             from './features';
@@ -79,5 +81,3 @@ if (typeof self !== 'undefined')
 // istanbul ignore else
 if (typeof module !== 'undefined')
     module.exports = JScrewIt;
-
-import './optimizer';
