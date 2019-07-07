@@ -788,7 +788,7 @@ export var createBridgeSolution;
             define('"0false".italics()[10]'),
             define('"true".sub()[10]'),
         ],
-        // '0'...'9':
+        // '0'…'9':
         ':':
         [
             define('(RegExp() + [])[3]'),

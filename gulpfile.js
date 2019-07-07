@@ -11,13 +11,14 @@ task
 
         const patterns =
         [
+            '.nyc_output',
+            '.tmp-src',
             'Features.md',
             'coverage',
             'doc',
             'lib/**/*.js',
             'lib/feature-all.d.ts',
             'ui/**/*.js',
-            'tmp-src',
         ];
         await del(patterns);
     },
@@ -112,38 +113,37 @@ async function makeArt()
     const { promise }               = require('art-js');
     const { promises: { mkdir } }   = require('fs');
 
-    await mkdir('tmp-src', { recursive: true });
-    await promise('tmp-src/art.js', { css: true, off: true, on: true });
+    await mkdir('.tmp-src', { recursive: true });
+    await promise('.tmp-src/art.js', { css: true, off: true, on: true });
 }
 
 function makeWorker()
 {
+    const tap       = require('gulp-tap');
     const uglify    = require('gulp-uglify');
-    const through   = require('through2');
 
     const stream =
     src('src/ui/worker.js')
     .pipe(uglify())
     .pipe
     (
-        through.obj
+        tap
         (
-            (chunk, encoding, callback) =>
+            chunk =>
             {
-                const contents = `export default ${JSON.stringify(String(chunk.contents))};\n`;
-                chunk.contents = Buffer.from(contents);
-                callback(null, chunk);
+                const str = `export default ${JSON.stringify(String(chunk.contents))};\n`;
+                chunk.contents = Buffer.from(str);
             },
         ),
     )
-    .pipe(dest('tmp-src'));
+    .pipe(dest('.tmp-src'));
     return stream;
 }
 
 async function bundleUI()
 {
     const inputOptions = { input: 'src/ui/ui-main.js' };
-    await bundle(inputOptions, 'tmp-src/ui.js');
+    await bundle(inputOptions, '.tmp-src/ui.js');
 }
 
 task('bundle:ui', series(parallel(makeArt, makeWorker), bundleUI));
@@ -204,7 +204,7 @@ task
         const uglify = require('gulp-uglify');
 
         const stream =
-        src('tmp-src/ui.js').pipe(uglify({ compress: { passes: 3 } })).pipe(dest('ui'));
+        src('.tmp-src/ui.js').pipe(uglify({ compress: { passes: 3 } })).pipe(dest('ui'));
         return stream;
     },
 );

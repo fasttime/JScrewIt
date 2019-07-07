@@ -12,10 +12,10 @@ outputArea,
 stats,
 */
 
-import '../../tmp-src/art';
+import '../../.tmp-src/art';
 import './result-format';
 
-import WORKER_SRC               from '../../tmp-src/worker';
+import WORKER_SRC               from '../../.tmp-src/worker';
 import createButton             from './button';
 import createEngineSelectionBox from './engine-selection-box';
 import showModalBox             from './modal-box';
