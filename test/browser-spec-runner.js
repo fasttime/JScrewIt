@@ -219,7 +219,9 @@ showFeatureSupport,
 
     function handleWorkerMessage(evt)
     {
-        webWorkerFeatureObj = JScrewIt.Feature(evt.data);
+        var data = evt.data;
+        if (data)
+            webWorkerFeatureObj = JScrewIt.Feature(data);
         if (!--waitCount)
             handleLoadAndWorkerMessage();
     }
@@ -237,7 +239,7 @@ showFeatureSupport,
         {
             return 1;
         }
-        worker.onmessage = handleWorkerMessage;
+        worker.onerror = worker.onmessage = handleWorkerMessage;
         return 2;
     }
 
