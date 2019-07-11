@@ -167,6 +167,7 @@ task
             '--reporter=text-summary',
             '--',
             mochaPath,
+            '--check-leaks',
             'test/**/*.spec.js',
         ];
         const childProcess = fork(nycPath, forkArgs);

@@ -2,8 +2,9 @@
 
 'use strict';
 
-var assert = require('assert');
-var cli = require('../tools/cli');
+var cli     = require('../tools/cli');
+var assert  = require('assert');
+var path    = require('path');
 
 describe
 (
@@ -30,7 +31,7 @@ describe
                     exec
                     (
                         command,
-                        null,
+                        options,
                         function (error, stdout, stderr)
                         {
                             doAssert(stdout, expectedStdout);
@@ -58,6 +59,8 @@ describe
             )
             .timeout(5000);
         }
+
+        var options = { cwd: path.dirname(__dirname) };
 
         test
         (

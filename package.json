@@ -38,7 +38,7 @@
     "build": "npm install && gulp",
     "docs": "gulp docs",
     "feature-info": "build/legacy/feature-info.js",
-    "test": "mocha test/{*,*/*}.spec.js"
+    "test": "mocha --check-leaks test/{*,*/*}.spec.js"
   },
   "devDependencies": {
     "acorn": "~6.2.0",
