@@ -37,9 +37,9 @@ constructed.
 
   * [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
-### Index
+## Index
 
-#### Properties
+### Properties
 
 * [canonicalNames](_jscrewit_.feature.md#canonicalnames)
 * [description](_jscrewit_.feature.md#optional-description)
@@ -47,7 +47,7 @@ constructed.
 * [elementaryNames](_jscrewit_.feature.md#elementarynames)
 * [name](_jscrewit_.feature.md#optional-name)
 
-#### Methods
+### Methods
 
 * [includes](_jscrewit_.feature.md#includes)
 * [restrict](_jscrewit_.feature.md#restrict)

@@ -52,13 +52,13 @@ Name | Type |
 
 **Returns:** *[CustomFeature](_jscrewit_.customfeature.md)*
 
-### Index
+## Index
 
-#### Constructors
+### Constructors
 
 * [constructor](_jscrewit_.featureconstructor.md#constructor)
 
-#### Properties
+### Properties
 
 * [ALL](_jscrewit_.featureconstructor.md#all)
 * [ANDRO_4_0](_jscrewit_.featureconstructor.md#andro_4_0)
@@ -141,7 +141,7 @@ Name | Type |
 * [V8_SRC](_jscrewit_.featureconstructor.md#v8_src)
 * [WINDOW](_jscrewit_.featureconstructor.md#window)
 
-#### Methods
+### Methods
 
 * [areCompatible](_jscrewit_.featureconstructor.md#arecompatible)
 * [areEqual](_jscrewit_.featureconstructor.md#areequal)

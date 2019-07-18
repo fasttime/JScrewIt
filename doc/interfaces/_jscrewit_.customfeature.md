@@ -10,9 +10,9 @@
 
   * **CustomFeature**
 
-### Index
+## Index
 
-#### Properties
+### Properties
 
 * [Feature](_jscrewit_.customfeature.md#feature)
 * [canonicalNames](_jscrewit_.customfeature.md#canonicalnames)
@@ -21,7 +21,7 @@
 * [elementaryNames](_jscrewit_.customfeature.md#elementarynames)
 * [name](_jscrewit_.customfeature.md#optional-name)
 
-#### Methods
+### Methods
 
 * [includes](_jscrewit_.customfeature.md#includes)
 * [restrict](_jscrewit_.customfeature.md#restrict)

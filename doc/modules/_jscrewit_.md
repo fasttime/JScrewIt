@@ -4,9 +4,9 @@
 
 # Module: "jscrewit"
 
-### Index
+## Index
 
-#### Interfaces
+### Interfaces
 
 * [CustomFeature](../interfaces/_jscrewit_.customfeature.md)
 * [EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md)
@@ -15,13 +15,13 @@
 * [FeatureConstructor](../interfaces/_jscrewit_.featureconstructor.md)
 * [PredefinedFeature](../interfaces/_jscrewit_.predefinedfeature.md)
 
-#### Type aliases
+### Type aliases
 
 * [CompatibleFeatureArray](_jscrewit_.md#compatiblefeaturearray)
 * [FeatureElement](_jscrewit_.md#featureelement)
 * [PredefinedFeatureName](_jscrewit_.md#predefinedfeaturename)
 
-#### Functions
+### Functions
 
 * [encode](_jscrewit_.md#encode)
 

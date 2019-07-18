@@ -8,9 +8,9 @@
 
 * **EncodeOptions**
 
-### Index
+## Index
 
-#### Properties
+### Properties
 
 * [features](_jscrewit_.encodeoptions.md#optional-features)
 * [runAs](_jscrewit_.encodeoptions.md#optional-runas)

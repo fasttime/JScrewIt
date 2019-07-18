@@ -60,8 +60,8 @@ task
                 parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
                 rules:
                 {
-                    '@typescript-eslint/no-triple-slash-reference': 'off',
-                    'spaced-comment': ['error', 'always', { markers: ['/'] }],
+                    '@typescript-eslint/triple-slash-reference': ['error', { path: 'always' }],
+                    'spaced-comment': ['error', 'always', { line: { markers: ['/'] } }],
                 },
             },
             { src: 'test/acceptance/**/*.feature' },

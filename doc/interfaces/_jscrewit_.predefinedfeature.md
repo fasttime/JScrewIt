@@ -10,9 +10,9 @@
 
   * **PredefinedFeature**
 
-### Index
+## Index
 
-#### Properties
+### Properties
 
 * [Feature](_jscrewit_.predefinedfeature.md#feature)
 * [canonicalNames](_jscrewit_.predefinedfeature.md#canonicalnames)
@@ -21,7 +21,7 @@
 * [elementaryNames](_jscrewit_.predefinedfeature.md#elementarynames)
 * [name](_jscrewit_.predefinedfeature.md#name)
 
-#### Methods
+### Methods
 
 * [includes](_jscrewit_.predefinedfeature.md#includes)
 * [restrict](_jscrewit_.predefinedfeature.md#restrict)
