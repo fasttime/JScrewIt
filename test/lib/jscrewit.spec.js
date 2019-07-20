@@ -40,11 +40,13 @@
                     {
                         if (typeof module !== 'undefined')
                         {
-                            var subrequire = require('subrequire');
+                            var postrequire = require('postrequire');
 
                             global.self = { };
-                            var JScrewIt = subrequire('../..');
-                            expect(self.JScrewIt).toBe(JScrewIt);
+                            var browserJScrewIt = postrequire('../..');
+                            // Not sure why global.paths is being defined in Node.js 0.10 and 0.12.
+                            delete global.paths;
+                            expect(self.JScrewIt).toBe(browserJScrewIt);
                         }
                         expect(self.hasOwnProperty('JScrewIt')).toBeTruthy();
                     }

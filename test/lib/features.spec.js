@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* global emuDo, expect, module, require, self */
+/* global emuDo, expect, global, maybeIt, module, require, self */
 
 'use strict';
 
@@ -388,18 +388,11 @@
             );
             it
             (
-                '#inspect works as expected',
+                '#inspect can be called with only one argument',
                 function ()
                 {
-                    var stylize =
-                    function (str, styleType)
-                    {
-                        var result = { str: str, styleType: styleType };
-                        return result;
-                    };
-                    var actual = Feature.DEFAULT.inspect(0, { stylize: stylize });
-                    var expected = { str: '[Feature DEFAULT]', styleType: 'jscrewit-feature' };
-                    expect(actual).toEqual(expected);
+                    var actual = Feature.GMT.inspect(0);
+                    expect(actual).toBe('[Feature GMT]');
                 }
             );
             describe
@@ -733,6 +726,40 @@
                             expect(fn).toThrowStrictly(Error, 'Incompatible features');
                         }
                     );
+                }
+            );
+            it
+            (
+                'inspection works as expected',
+                function ()
+                {
+                    var util = require('util');
+
+                    var actual = util.inspect(Feature.DEFAULT);
+                    expect(actual).toBe('[Feature DEFAULT]');
+                }
+            );
+            maybeIt
+            (
+                typeof module !== 'undefined',
+                'util.inspect.custom is not required',
+                function ()
+                {
+                    var postrequire = require('postrequire');
+                    var inspect = require('util').inspect;
+
+                    var inspectKey = inspect.custom;
+                    inspect.custom = undefined;
+                    try
+                    {
+                        postrequire('../..');
+                        // Not sure why global.paths is being defined in Node.js 0.10 and 0.12.
+                        delete global.paths;
+                    }
+                    finally
+                    {
+                        inspect.custom = inspectKey;
+                    }
                 }
             );
         }

@@ -1,4 +1,4 @@
-/* global Audio, Node, console, document, history, self, sidebar, statusbar */
+/* global Audio, Node, console, document, history, require, self, sidebar, statusbar */
 
 import { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskUnion, maskWithBit }
 from './mask';
@@ -66,16 +66,16 @@ export var validMaskFromArrayOrStringOrFeature;
             arguments,
             function (arg, index)
             {
-                var result;
+                var returnValue;
                 var otherMask = validMaskFromArrayOrStringOrFeature(arg);
                 if (index)
-                    result = maskAreEqual(otherMask, mask);
+                    returnValue = maskAreEqual(otherMask, mask);
                 else
                 {
                     mask = otherMask;
-                    result = true;
+                    returnValue = true;
                 }
-                return result;
+                return returnValue;
             }
         );
         return equal;
@@ -99,7 +99,7 @@ export var validMaskFromArrayOrStringOrFeature;
 
     function commonOf()
     {
-        var result;
+        var returnValue;
         if (arguments.length)
         {
             var mask;
@@ -115,11 +115,11 @@ export var validMaskFromArrayOrStringOrFeature;
                         mask = otherMask;
                 }
             );
-            result = featureFromMask(mask);
+            returnValue = featureFromMask(mask);
         }
         else
-            result = null;
-        return result;
+            returnValue = null;
+        return returnValue;
     }
 
     function completeExclusions(name)
@@ -213,7 +213,7 @@ export var validMaskFromArrayOrStringOrFeature;
         };
         if (elementary)
             descriptors.elementary = { value: true };
-        var featureObj = _Object_create(Feature.prototype, descriptors);
+        var featureObj = _Object_create(featurePrototype, descriptors);
         initMask(featureObj, mask);
         return featureObj;
     }
@@ -238,13 +238,35 @@ export var validMaskFromArrayOrStringOrFeature;
         _Object_defineProperty(featureObj, 'mask', { value: _Object_freeze(mask) });
     }
 
+    /**
+     * Node.js custom inspection function.
+     * Set on `Feature.prototype` with name `"inspect"` for Node.js ≤ 8.6.x and with symbol
+     * `Symbol.for("nodejs.util.inspect.custom")` for Node.js ≥ 6.6.x.
+     *
+     * @function inspect
+     *
+     * @see
+     * {@link https://tiny.cc/j4wz9y|Custom inspection functions on Objects} for further
+     * information.
+     */
+    function inspect(depth, opts)
+    {
+        var returnValue;
+        var str = this.toString();
+        if (opts !== undefined) // opts can be undefined in Node.js 0.10.0.
+            returnValue = opts.stylize(str, 'jscrewit-feature');
+        else
+            returnValue = str;
+        return returnValue;
+    }
+
     function isExcludingAttribute(attributeCache, attributeName, featureObjs)
     {
-        var result = attributeCache[attributeName];
-        if (result === undefined)
+        var returnValue = attributeCache[attributeName];
+        if (returnValue === undefined)
         {
             attributeCache[attributeName] =
-            result =
+            returnValue =
             featureObjs.some
             (
                 function (featureObj)
@@ -253,7 +275,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 }
             );
         }
-        return result;
+        return returnValue;
     }
 
     function maskFromStringOrFeature(arg)
@@ -313,13 +335,13 @@ export var validMaskFromArrayOrStringOrFeature;
 
     function wrapCheck(check)
     {
-        var result =
+        var returnValue =
         function ()
         {
             var available = !!check();
             return available;
         };
-        return result;
+        return returnValue;
     }
 
     var ALL = createEmpty();
@@ -1525,7 +1547,7 @@ export var validMaskFromArrayOrStringOrFeature;
     function ()
     {
         var mask = validMaskFromArguments(arguments);
-        var featureObj = this instanceof Feature ? this : _Object_create(Feature.prototype);
+        var featureObj = this instanceof Feature ? this : _Object_create(featurePrototype);
         initMask(featureObj, mask);
         return featureObj;
     };
@@ -1538,7 +1560,10 @@ export var validMaskFromArrayOrStringOrFeature;
         areEqual:       areEqual,
         commonOf:       commonOf,
     };
+
     assignNoEnum(Feature, constructorSource);
+
+    var featurePrototype = Feature.prototype;
 
     var protoSource =
     {
@@ -1603,21 +1628,14 @@ export var validMaskFromArrayOrStringOrFeature;
                 function (arg)
                 {
                     var otherMask = validMaskFromArrayOrStringOrFeature(arg);
-                    var result = maskIncludes(mask, otherMask);
-                    return result;
+                    var returnValue = maskIncludes(mask, otherMask);
+                    return returnValue;
                 }
             );
             return included;
         },
 
-        // Called by Node.js to format features for output to the console.
-        inspect:
-        function (recurseTimes, ctx)
-        {
-            var str = this.toString();
-            var result = ctx.stylize(str, 'jscrewit-feature');
-            return result;
-        },
+        inspect: inspect,
 
         name: undefined,
 
@@ -1646,8 +1664,8 @@ export var validMaskFromArrayOrStringOrFeature;
                     }
                 }
             );
-            var result = featureFromMask(resultMask);
-            return result;
+            var returnValue = featureFromMask(resultMask);
+            return returnValue;
         },
 
         toString:
@@ -1660,12 +1678,24 @@ export var validMaskFromArrayOrStringOrFeature;
             return str;
         },
     };
-    assignNoEnum(Feature.prototype, protoSource);
+
+    assignNoEnum(featurePrototype, protoSource);
+    try
+    {
+        var inspectKey = require('util').inspect.custom;
+    }
+    catch (error)
+    { }
+    if (inspectKey)
+    {
+        _Object_defineProperty
+        (featurePrototype, inspectKey, { configurable: true, value: inspect, writable: true });
+    }
 
     featureFromMask =
     function (mask)
     {
-        var featureObj = _Object_create(Feature.prototype);
+        var featureObj = _Object_create(featurePrototype);
         initMask(featureObj, mask);
         return featureObj;
     };
@@ -1678,8 +1708,8 @@ export var validMaskFromArrayOrStringOrFeature;
         (
             function (incompatibleMask)
             {
-                var result = !maskIncludes(mask, incompatibleMask);
-                return result;
+                var returnValue = !maskIncludes(mask, incompatibleMask);
+                return returnValue;
             }
         );
         return compatible;
@@ -1721,8 +1751,8 @@ export var validMaskFromArrayOrStringOrFeature;
     (
         function (feature1, feature2)
         {
-            var result = feature1.name < feature2.name ? -1 : 1;
-            return result;
+            var returnValue = feature1.name < feature2.name ? -1 : 1;
+            return returnValue;
         }
     );
     _Object_freeze(ELEMENTARY);
