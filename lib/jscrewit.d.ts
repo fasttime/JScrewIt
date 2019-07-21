@@ -1,3 +1,5 @@
+// Type definitions for JScrewIt
+
 /// <reference path='encode.d.ts'/>
 /// <reference path='feature.d.ts'/>
 
