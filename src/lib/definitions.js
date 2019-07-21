@@ -898,6 +898,7 @@ export var createBridgeSolution;
         'K':
         [
             define('(RP_5_N + "".strike())[10]', CAPITAL_HTML),
+            defineCharDefault('K'),
         ],
         'L':
         [
