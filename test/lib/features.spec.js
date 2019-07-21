@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* global emuDo, expect, global, maybeIt, module, require, self */
+/* global emuDo, expect, global, maybeIt, module, reloadJScrewIt, require, self */
 
 'use strict';
 
@@ -728,8 +728,9 @@
                     );
                 }
             );
-            it
+            maybeIt
             (
+                typeof module !== 'undefined',
                 'inspection works as expected',
                 function ()
                 {
@@ -745,16 +746,13 @@
                 'util.inspect.custom is not required',
                 function ()
                 {
-                    var postrequire = require('postrequire');
                     var inspect = require('util').inspect;
 
                     var inspectKey = inspect.custom;
                     inspect.custom = undefined;
                     try
                     {
-                        postrequire('../..');
-                        // Not sure why global.paths is being defined in Node.js 0.10 and 0.12.
-                        delete global.paths;
+                        reloadJScrewIt();
                     }
                     finally
                     {

@@ -1,5 +1,17 @@
 /* eslint-env mocha */
-/* global emuEval, emuIt, evalJSFuck, expect, global, module, repeat, require, self */
+/*
+global
+emuEval,
+emuIt,
+evalJSFuck,
+expect,
+global,
+module,
+reloadJScrewIt,
+repeat,
+require,
+self,
+*/
 
 'use strict';
 
@@ -40,13 +52,9 @@
                     {
                         if (typeof module !== 'undefined')
                         {
-                            var postrequire = require('postrequire');
-
                             global.self = { };
-                            var browserJScrewIt = postrequire('../..');
-                            // Not sure why global.paths is being defined in Node.js 0.10 and 0.12.
-                            delete global.paths;
-                            expect(self.JScrewIt).toBe(browserJScrewIt);
+                            var newJScrewIt = reloadJScrewIt();
+                            expect(self.JScrewIt).toBe(newJScrewIt);
                         }
                         expect(self.hasOwnProperty('JScrewIt')).toBeTruthy();
                     }
