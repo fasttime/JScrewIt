@@ -23,7 +23,7 @@
 
 • **features**? : *[FeatureElement](../modules/_jscrewit_.md#featureelement) | [CompatibleFeatureArray](../modules/_jscrewit_.md#compatiblefeaturearray)*
 
-*Defined in [encode.d.ts:15](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/encode.d.ts#L15)*
+*Defined in [encode.d.ts:15](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/encode.d.ts#L15)*
 
 Specifies the features available in the engines that evaluate the encoded output.
 
@@ -38,7 +38,7 @@ ___
 
 • **runAs**? : *"call" | "eval" | "express" | "express-call" | "express-eval" | "none"*
 
-*Defined in [encode.d.ts:65](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/encode.d.ts#L65)*
+*Defined in [encode.d.ts:65](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/encode.d.ts#L65)*
 
 This option controls the type of code generated from the given input.
 Allowed values are listed below.
@@ -93,7 +93,7 @@ ___
 
 • **trimCode**? : *undefined | false | true*
 
-*Defined in [encode.d.ts:79](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/encode.d.ts#L79)*
+*Defined in [encode.d.ts:79](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/encode.d.ts#L79)*
 
 If this parameter is truthy, lines in the beginning and in the end of the file containing
 nothing but space characters and JavaScript comments are removed from the generated
@@ -112,6 +112,6 @@ ___
 
 • **wrapWith**? : *"call" | "eval" | "express" | "express-call" | "express-eval" | "none"*
 
-*Defined in [encode.d.ts:82](https://github.com/fasttime/JScrewIt/blob/2.10.0/lib/encode.d.ts#L82)*
+*Defined in [encode.d.ts:82](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/encode.d.ts#L82)*
 
 An alias for `runAs`.
