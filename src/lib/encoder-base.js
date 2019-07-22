@@ -44,7 +44,7 @@ import
     ScrewBuffer,
 }
 from './screw-buffer';
-import { LEVEL_NUMERIC, LEVEL_STRING, LEVEL_UNDEFINED, Solution }   from './solution';
+import Solution, { LEVEL_NUMERIC, LEVEL_STRING, LEVEL_UNDEFINED }   from './solution';
 
 /** @class Encoder */
 

@@ -39,7 +39,7 @@ import
 }
 from './obj-utils';
 import { ScrewBuffer, optimizeSolutions }                   from './screw-buffer';
-import { Solution }                                         from './solution';
+import Solution                                             from './solution';
 import createToStringOptimizer                              from './to-string-optimizer';
 import trimJS                                               from './trim-js';
 

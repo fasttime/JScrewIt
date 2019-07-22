@@ -10,7 +10,7 @@
 
 import { replaceMultiDigitNumber }          from './encoder-base';
 import { _String, _parseInt, createEmpty }  from './obj-utils';
-import { LEVEL_STRING, Solution }           from './solution';
+import Solution, { LEVEL_STRING }           from './solution';
 
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
 var CLUSTER_EXTRA_LENGTHS = [];
