@@ -13,9 +13,15 @@ declare module 'jscrewit'
      * Methods that accept parameters of this type throw an error if the specified features are not
      * mutually compatible.
      */
-    type CompatibleFeatureArray = ReadonlyArray<FeatureElement>;
+    type CompatibleFeatureArray = readonly FeatureElement[];
 
     interface CustomFeature extends Feature { readonly elementary: false; }
+
+    interface ElementaryFeature extends PredefinedFeature
+    {
+        readonly elementary:    true;
+        readonly name:          ElementaryFeatureName;
+    }
 
     /**
      * Objects of this type indicate which of the capabilities that JScrewIt can use to minimize the
@@ -49,7 +55,7 @@ declare module 'jscrewit'
          * An array of all elementary feature names included in this feature object, without aliases
          * and implied features.
          */
-        readonly canonicalNames: string[];
+        readonly canonicalNames: ElementaryFeatureName[];
 
         /**
          * A short description of this feature object in plain English.
@@ -66,7 +72,7 @@ declare module 'jscrewit'
          * An array of all elementary feature names included in this feature object, without
          * aliases.
          */
-        readonly elementaryNames: string[];
+        readonly elementaryNames: ElementaryFeatureName[];
 
         /**
          * The primary name of this feature object, useful for identification purpose.
@@ -118,8 +124,8 @@ declare module 'jscrewit'
          */
         restrict
         (
-            environment: 'forced-strict-mode' | 'web-worker',
-            engineFeatureObjs?: ReadonlyArray<PredefinedFeature>,
+            environment:        'forced-strict-mode' | 'web-worker',
+            engineFeatureObjs?: readonly PredefinedFeature[],
         ):
         CustomFeature;
     }
@@ -148,7 +154,7 @@ declare module 'jscrewit'
         readonly ALL: FeatureAll;
 
         /** An immutable array of all elementary feature objects ordered by name. */
-        readonly ELEMENTARY: ReadonlyArray<PredefinedFeature>;
+        readonly ELEMENTARY: readonly ElementaryFeature[];
 
         /**
          * Creates a new feature object from the union of the specified features.
@@ -298,7 +304,7 @@ declare module 'jscrewit'
 
     interface PredefinedFeature extends Feature
     {
-        readonly description: string;
-        readonly name: PredefinedFeatureName;
+        readonly description:   string;
+        readonly name:          PredefinedFeatureName;
     }
 }

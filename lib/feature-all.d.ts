@@ -26,7 +26,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
          */
-        ANY_DOCUMENT: PredefinedFeature;
+        ANY_DOCUMENT: ElementaryFeature;
 
         /**
          * Existence of the global object self whose string representation starts with "\[object " and ends with "Window\]".
@@ -35,7 +35,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
          */
-        ANY_WINDOW: PredefinedFeature;
+        ANY_WINDOW: ElementaryFeature;
 
         /**
          * The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
@@ -44,7 +44,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 0.12+.
          */
-        ARRAY_ITERATOR: PredefinedFeature;
+        ARRAY_ITERATOR: ElementaryFeature;
 
         /**
          * Support for arrow functions.
@@ -53,7 +53,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Safari 10+, Opera and Node.js 4+.
          */
-        ARROW: PredefinedFeature;
+        ARROW: ElementaryFeature;
 
         /**
          * Existence of the global functions atob and btoa.
@@ -62,7 +62,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari before 10.
          */
-        ATOB: PredefinedFeature;
+        ATOB: ElementaryFeature;
 
         /**
          * All features available in the current engine.
@@ -76,7 +76,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Safari, Opera and Android Browser 4.4. This feature is not available inside web workers.
          */
-        BARPROP: PredefinedFeature;
+        BARPROP: ElementaryFeature;
 
         /**
          * Features available in all browsers.
@@ -92,7 +92,7 @@ declare module 'jscrewit'
          *
          * Available in Internet Explorer.
          */
-        CAPITAL_HTML: PredefinedFeature;
+        CAPITAL_HTML: ElementaryFeature;
 
         /** An alias for `CHROME_73`. */
         CHROME: PredefinedFeature;
@@ -121,7 +121,7 @@ declare module 'jscrewit'
          *
          * Available in Firefox, Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
          */
-        CONSOLE: PredefinedFeature;
+        CONSOLE: ElementaryFeature;
 
         /**
          * Minimum feature level, compatible with all supported engines in all environments.
@@ -135,7 +135,7 @@ declare module 'jscrewit'
          *
          * Available in Internet Explorer before 11. This feature is not available inside web workers.
          */
-        DOCUMENT: PredefinedFeature;
+        DOCUMENT: ElementaryFeature;
 
         /**
          * Existence of the global object self having the string representation "\[object DOMWindow\]".
@@ -144,7 +144,7 @@ declare module 'jscrewit'
          *
          * Available in Android Browser before 4.4. This feature is not available inside web workers.
          */
-        DOMWINDOW: PredefinedFeature;
+        DOMWINDOW: ElementaryFeature;
 
         /** An alias for `EDGE_40`. */
         EDGE: PredefinedFeature;
@@ -164,7 +164,7 @@ declare module 'jscrewit'
          *
          * Available in Android Browser and Node.js before 0.12.
          */
-        ESC_HTML_ALL: PredefinedFeature;
+        ESC_HTML_ALL: ElementaryFeature;
 
         /**
          * The property that double quotation marks in the argument of String.prototype.fontcolor are escaped as "\&quot;".
@@ -173,7 +173,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
          */
-        ESC_HTML_QUOT: PredefinedFeature;
+        ESC_HTML_QUOT: ElementaryFeature;
 
         /**
          * The property that only double quotation marks and no other characters in the argument of String.prototype.fontcolor are escaped into HTML entities.
@@ -182,7 +182,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Safari, Opera and Node.js 0.12+.
          */
-        ESC_HTML_QUOT_ONLY: PredefinedFeature;
+        ESC_HTML_QUOT_ONLY: ElementaryFeature;
 
         /**
          * Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format line feed characters \("\\n"\) in their string representation.
@@ -191,7 +191,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Node.js 12+.
          */
-        ESC_REGEXP_LF: PredefinedFeature;
+        ESC_REGEXP_LF: ElementaryFeature;
 
         /**
          * Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format slashes \("/"\) in their string representation.
@@ -200,7 +200,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Node.js 4+.
          */
-        ESC_REGEXP_SLASH: PredefinedFeature;
+        ESC_REGEXP_SLASH: ElementaryFeature;
 
         /**
          * Existence of the global object sidebar having the string representation "\[object External\]".
@@ -209,7 +209,7 @@ declare module 'jscrewit'
          *
          * Available in Firefox. This feature is not available inside web workers.
          */
-        EXTERNAL: PredefinedFeature;
+        EXTERNAL: ElementaryFeature;
 
         /** An alias for `FF_62`. */
         FF: PredefinedFeature;
@@ -236,7 +236,7 @@ declare module 'jscrewit'
          *
          * Available in Firefox and Safari.
          */
-        FF_SRC: PredefinedFeature;
+        FF_SRC: ElementaryFeature;
 
         /**
          * Existence of the native function Array.prototype.fill.
@@ -245,7 +245,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 4+.
          */
-        FILL: PredefinedFeature;
+        FILL: ElementaryFeature;
 
         /**
          * Existence of the native function Array.prototype.flat.
@@ -254,7 +254,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Firefox 62+, Safari 12+, Opera and Node.js 11+.
          */
-        FLAT: PredefinedFeature;
+        FLAT: ElementaryFeature;
 
         /**
          * Existence of the function String.fromCodePoint.
@@ -263,7 +263,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Safari 9+, Opera and Node.js 4+.
          */
-        FROM_CODE_POINT: PredefinedFeature;
+        FROM_CODE_POINT: ElementaryFeature;
 
         /**
          * A string representation of dynamically generated functions where the character at index 19 is a line feed \("\\n"\).
@@ -272,7 +272,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Opera and Node.js 10+.
          */
-        FUNCTION_19_LF: PredefinedFeature;
+        FUNCTION_19_LF: ElementaryFeature;
 
         /**
          * A string representation of dynamically generated functions where the character at index 22 is a line feed \("\\n"\).
@@ -281,7 +281,7 @@ declare module 'jscrewit'
          *
          * Available in Internet Explorer, Safari 9+, Android Browser and Node.js before 10.
          */
-        FUNCTION_22_LF: PredefinedFeature;
+        FUNCTION_22_LF: ElementaryFeature;
 
         /**
          * Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
@@ -292,7 +292,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, Android Browser and Node.js.
          */
-        GMT: PredefinedFeature;
+        GMT: ElementaryFeature;
 
         /**
          * Existence of the global object history having the string representation "\[object History\]".
@@ -301,7 +301,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
          */
-        HISTORY: PredefinedFeature;
+        HISTORY: ElementaryFeature;
 
         /**
          * Existence of the global object Audio whose string representation starts with "function HTMLAudioElement".
@@ -310,7 +310,7 @@ declare module 'jscrewit'
          *
          * Available in Android Browser 4.4. This feature is not available inside web workers.
          */
-        HTMLAUDIOELEMENT: PredefinedFeature;
+        HTMLAUDIOELEMENT: ElementaryFeature;
 
         /**
          * Existence of the global object document having the string representation "\[object HTMLDocument\]".
@@ -319,7 +319,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera and Android Browser. This feature is not available inside web workers.
          */
-        HTMLDOCUMENT: PredefinedFeature;
+        HTMLDOCUMENT: ElementaryFeature;
 
         /**
          * Features available in Internet Explorer 10.
@@ -350,7 +350,7 @@ declare module 'jscrewit'
          *
          * Available in Internet Explorer.
          */
-        IE_SRC: PredefinedFeature;
+        IE_SRC: ElementaryFeature;
 
         /**
          * The ability to use unary increment operators with string characters, like in \( ++"some string"\[0\] \): this will result in a TypeError in strict mode in ECMAScript compliant engines.
@@ -359,7 +359,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser and Node.js. This feature is not available when strict mode is enforced in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Node.js 5+.
          */
-        INCR_CHAR: PredefinedFeature;
+        INCR_CHAR: ElementaryFeature;
 
         /**
          * Existence of the global object Intl.
@@ -368,7 +368,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4 and Node.js 0.12+.
          */
-        INTL: PredefinedFeature;
+        INTL: ElementaryFeature;
 
         /**
          * Language sensitive string representation of Infinity as "∞".
@@ -377,7 +377,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4 and Node.js 0.12+.
          */
-        LOCALE_INFINITY: PredefinedFeature;
+        LOCALE_INFINITY: ElementaryFeature;
 
         /**
          * Existence of the name property for functions.
@@ -386,7 +386,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
          */
-        NAME: PredefinedFeature;
+        NAME: ElementaryFeature;
 
         /**
          * Existence of the global object Node having the string representation "\[object NodeConstructor\]".
@@ -395,7 +395,7 @@ declare module 'jscrewit'
          *
          * Available in Safari before 10. This feature is not available inside web workers.
          */
-        NODECONSTRUCTOR: PredefinedFeature;
+        NODECONSTRUCTOR: ElementaryFeature;
 
         /**
          * Features available in Node.js 0.10.
@@ -439,7 +439,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Internet Explorer, Opera, Android Browser and Node.js.
          */
-        NO_FF_SRC: PredefinedFeature;
+        NO_FF_SRC: ElementaryFeature;
 
         /**
          * A string representation of native functions typical for most engines with the notable exception of Internet Explorer.
@@ -450,7 +450,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
          */
-        NO_IE_SRC: PredefinedFeature;
+        NO_IE_SRC: ElementaryFeature;
 
         /**
          * The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
@@ -459,7 +459,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Safari 9+, Opera and Node.js 0.12+.
          */
-        NO_OLD_SAFARI_ARRAY_ITERATOR: PredefinedFeature;
+        NO_OLD_SAFARI_ARRAY_ITERATOR: ElementaryFeature;
 
         /**
          * A string representation of native functions typical for Firefox, Internet Explorer and Safari.
@@ -470,7 +470,7 @@ declare module 'jscrewit'
          *
          * Available in Firefox, Internet Explorer and Safari.
          */
-        NO_V8_SRC: PredefinedFeature;
+        NO_V8_SRC: ElementaryFeature;
 
         /** An alias for `SAFARI_12`. */
         SAFARI: PredefinedFeature;
@@ -504,7 +504,7 @@ declare module 'jscrewit'
         SAFARI_9: PredefinedFeature;
 
         /** An alias for `ANY_WINDOW`. */
-        SELF: PredefinedFeature;
+        SELF: ElementaryFeature;
 
         /**
          * Existence of the global object self whose string representation starts with "\[object ".
@@ -513,7 +513,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.
          */
-        SELF_OBJ: PredefinedFeature;
+        SELF_OBJ: ElementaryFeature;
 
         /**
          * Existence of the global string status.
@@ -522,7 +522,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
          */
-        STATUS: PredefinedFeature;
+        STATUS: ElementaryFeature;
 
         /**
          * The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
@@ -533,7 +533,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+ and Node.js.
          */
-        UNDEFINED: PredefinedFeature;
+        UNDEFINED: ElementaryFeature;
 
         /**
          * Existence of the global function uneval.
@@ -542,7 +542,7 @@ declare module 'jscrewit'
          *
          * Available in Firefox.
          */
-        UNEVAL: PredefinedFeature;
+        UNEVAL: ElementaryFeature;
 
         /**
          * A string representation of native functions typical for the V8 engine, but also found in Edge.
@@ -553,7 +553,7 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Opera, Android Browser and Node.js.
          */
-        V8_SRC: PredefinedFeature;
+        V8_SRC: ElementaryFeature;
 
         /**
          * Existence of the global object self having the string representation "\[object Window\]".
@@ -562,38 +562,27 @@ declare module 'jscrewit'
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser 4.4. This feature is not available inside web workers.
          */
-        WINDOW: PredefinedFeature;
+        WINDOW: ElementaryFeature;
     }
 
-    /** Name of a predefined feature. */
-    type PredefinedFeatureName =
-    | 'ANDRO_4_0'
-    | 'ANDRO_4_1'
-    | 'ANDRO_4_4'
+    /** Name of an elementary feature. */
+    type ElementaryFeatureName =
     | 'ANY_DOCUMENT'
     | 'ANY_WINDOW'
     | 'ARRAY_ITERATOR'
     | 'ARROW'
     | 'ATOB'
-    | 'AUTO'
     | 'BARPROP'
-    | 'BROWSER'
     | 'CAPITAL_HTML'
-    | 'CHROME_73'
-    | 'COMPACT'
     | 'CONSOLE'
-    | 'DEFAULT'
     | 'DOCUMENT'
     | 'DOMWINDOW'
-    | 'EDGE_40'
     | 'ESC_HTML_ALL'
     | 'ESC_HTML_QUOT'
     | 'ESC_HTML_QUOT_ONLY'
     | 'ESC_REGEXP_LF'
     | 'ESC_REGEXP_SLASH'
     | 'EXTERNAL'
-    | 'FF_54'
-    | 'FF_62'
     | 'FF_SRC'
     | 'FILL'
     | 'FLAT'
@@ -604,16 +593,42 @@ declare module 'jscrewit'
     | 'HISTORY'
     | 'HTMLAUDIOELEMENT'
     | 'HTMLDOCUMENT'
-    | 'IE_10'
-    | 'IE_11'
-    | 'IE_11_WIN_10'
-    | 'IE_9'
     | 'IE_SRC'
     | 'INCR_CHAR'
     | 'INTL'
     | 'LOCALE_INFINITY'
     | 'NAME'
     | 'NODECONSTRUCTOR'
+    | 'NO_FF_SRC'
+    | 'NO_IE_SRC'
+    | 'NO_OLD_SAFARI_ARRAY_ITERATOR'
+    | 'NO_V8_SRC'
+    | 'SELF_OBJ'
+    | 'STATUS'
+    | 'UNDEFINED'
+    | 'UNEVAL'
+    | 'V8_SRC'
+    | 'WINDOW'
+    ;
+
+    /** Name of a predefined feature. */
+    type PredefinedFeatureName =
+    ElementaryFeatureName
+    | 'ANDRO_4_0'
+    | 'ANDRO_4_1'
+    | 'ANDRO_4_4'
+    | 'AUTO'
+    | 'BROWSER'
+    | 'CHROME_73'
+    | 'COMPACT'
+    | 'DEFAULT'
+    | 'EDGE_40'
+    | 'FF_54'
+    | 'FF_62'
+    | 'IE_10'
+    | 'IE_11'
+    | 'IE_11_WIN_10'
+    | 'IE_9'
     | 'NODE_0_10'
     | 'NODE_0_12'
     | 'NODE_10'
@@ -621,20 +636,10 @@ declare module 'jscrewit'
     | 'NODE_12'
     | 'NODE_4'
     | 'NODE_5'
-    | 'NO_FF_SRC'
-    | 'NO_IE_SRC'
-    | 'NO_OLD_SAFARI_ARRAY_ITERATOR'
-    | 'NO_V8_SRC'
     | 'SAFARI_10'
     | 'SAFARI_12'
     | 'SAFARI_7_0'
     | 'SAFARI_7_1'
     | 'SAFARI_9'
-    | 'SELF_OBJ'
-    | 'STATUS'
-    | 'UNDEFINED'
-    | 'UNEVAL'
-    | 'V8_SRC'
-    | 'WINDOW'
     ;
 }
