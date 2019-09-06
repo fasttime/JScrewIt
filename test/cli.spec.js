@@ -11,7 +11,7 @@ describe
     'screw.js',
     function ()
     {
-        var exec = require('child_process').exec;
+        var execFile = require('child_process').execFile;
 
         function doAssert(actual, expected)
         {
@@ -21,30 +21,35 @@ describe
                 assert.strictEqual(actual, expected);
         }
 
-        function test(description, command, expectedStdout, expectedStderr, expectedExitCode)
+        function test
+        (
+            description,
+            screwArgs,
+            childProcessHandler,
+            expectedStdout,
+            expectedStderr,
+            expectedExitCode
+        )
         {
+            var actualExitCode;
+            var args = ['./screw.js'].concat(screwArgs);
             it
             (
                 description,
                 function (done)
                 {
-                    exec
+                    var childProcess =
+                    execFile
                     (
-                        command,
+                        process.execPath,
+                        args,
                         options,
                         function (error, stdout, stderr)
                         {
-                            doAssert(stdout, expectedStdout);
-                            doAssert(stderr, expectedStderr);
-                        }
-                    )
-                    .on
-                    (
-                        'exit',
-                        function (actualExitCode)
-                        {
                             try
                             {
+                                doAssert(stdout, expectedStdout);
+                                doAssert(stderr, expectedStderr);
                                 assert.strictEqual(actualExitCode, expectedExitCode);
                             }
                             catch (error)
@@ -54,7 +59,17 @@ describe
                             }
                             done();
                         }
+                    )
+                    .on
+                    (
+                        'exit',
+                        function (exitCode)
+                        {
+                            actualExitCode = exitCode;
+                        }
                     );
+                    if (childProcessHandler)
+                        childProcessHandler(childProcess);
                 }
             )
             .timeout(5000);
@@ -65,15 +80,26 @@ describe
         test
         (
             'shows the help message with option "--help"',
-            'node ./screw.js --help',
+            ['--help'],
+            null,
             /^Usage: screw.js [^]*\n$/,
             '',
             0
         );
         test
         (
+            'shows the version number with option "--version"',
+            ['--version'],
+            null,
+            /^JScrewIt \d+\.\d+\.\d+\n$/,
+            '',
+            0
+        );
+        test
+        (
             'shows an error message with an invalid option',
-            'node ./screw.js --foo',
+            ['--foo'],
+            null,
             '',
             'screw.js: unrecognized option "--foo".\nTry "screw.js --help" for more information.\n',
             1
@@ -81,7 +107,8 @@ describe
         test
         (
             'shows an error message when an invalid feature is specified',
-            'node ./screw.js -f FOO',
+            ['-f', 'FOO'],
+            null,
             '',
             'Unknown feature "FOO"\n',
             1
@@ -89,10 +116,50 @@ describe
         test
         (
             'shows an error message when the input file does not exist',
-            'node ./screw.js ""',
+            ['""'],
+            null,
             '',
             /^ENOENT\b. no such file or directory\b.*\n$/,
             1
+        );
+        test
+        (
+            'prints the encoded input interactively',
+            [],
+            function (childProcess)
+            {
+                childProcess.stdin.write('10\n');
+                childProcess.stdin.end();
+            },
+            'SCREW> +(+!![]+[+[]])\nSCREW> ',
+            '',
+            0
+        );
+        test
+        (
+            'prints an error message interactively',
+            ['-x'],
+            function (childProcess)
+            {
+                childProcess.stdin.write('?\n');
+                childProcess.stdin.end();
+            },
+            'SCREW> SCREW> ',
+            'Encoding failed\n',
+            0
+        );
+        test
+        (
+            'ignores empty input interactively',
+            [],
+            function (childProcess)
+            {
+                childProcess.stdin.write('\n');
+                childProcess.stdin.end();
+            },
+            'SCREW> SCREW> ',
+            '',
+            0
         );
     }
 );

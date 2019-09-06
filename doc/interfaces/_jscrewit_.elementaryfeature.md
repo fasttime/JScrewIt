@@ -1,42 +1,31 @@
 **[JScrewIt](../README.md)**
 
-[Globals](../README.md) › ["jscrewit"](../modules/_jscrewit_.md) › [PredefinedFeature](_jscrewit_.predefinedfeature.md)
+[Globals](../README.md) › ["jscrewit"](../modules/_jscrewit_.md) › [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
-# Interface: PredefinedFeature
+# Interface: ElementaryFeature
 
 ## Hierarchy
 
-* [Feature](_jscrewit_.feature.md)
+  * [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
-  * **PredefinedFeature**
-
-  * [ElementaryFeature](_jscrewit_.elementaryfeature.md)
+  * **ElementaryFeature**
 
 ## Index
 
 ### Properties
 
-* [Feature](_jscrewit_.predefinedfeature.md#feature)
-* [canonicalNames](_jscrewit_.predefinedfeature.md#canonicalnames)
-* [description](_jscrewit_.predefinedfeature.md#description)
-* [elementary](_jscrewit_.predefinedfeature.md#elementary)
-* [elementaryNames](_jscrewit_.predefinedfeature.md#elementarynames)
-* [name](_jscrewit_.predefinedfeature.md#name)
+* [canonicalNames](_jscrewit_.elementaryfeature.md#canonicalnames)
+* [description](_jscrewit_.elementaryfeature.md#description)
+* [elementary](_jscrewit_.elementaryfeature.md#elementary)
+* [elementaryNames](_jscrewit_.elementaryfeature.md#elementarynames)
+* [name](_jscrewit_.elementaryfeature.md#name)
 
 ### Methods
 
-* [includes](_jscrewit_.predefinedfeature.md#includes)
-* [restrict](_jscrewit_.predefinedfeature.md#restrict)
+* [includes](_jscrewit_.elementaryfeature.md#includes)
+* [restrict](_jscrewit_.elementaryfeature.md#restrict)
 
 ## Properties
-
-###  Feature
-
-• **Feature**: *[FeatureConstructor](_jscrewit_.featureconstructor.md)*
-
-*Defined in [feature.d.ts:133](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L133)*
-
-___
 
 ###  canonicalNames
 
@@ -55,6 +44,8 @@ ___
 
 • **description**: *string*
 
+*Inherited from [PredefinedFeature](_jscrewit_.predefinedfeature.md).[description](_jscrewit_.predefinedfeature.md#description)*
+
 *Overrides [Feature](_jscrewit_.feature.md).[description](_jscrewit_.feature.md#optional-description)*
 
 *Defined in [feature.d.ts:307](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L307)*
@@ -63,13 +54,11 @@ ___
 
 ###  elementary
 
-• **elementary**: *boolean*
+• **elementary**: *true*
 
-*Inherited from [Feature](_jscrewit_.feature.md).[elementary](_jscrewit_.feature.md#elementary)*
+*Overrides [Feature](_jscrewit_.feature.md).[elementary](_jscrewit_.feature.md#elementary)*
 
-*Defined in [feature.d.ts:69](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L69)*
-
-A boolean value indicating whether this is an elementary feature object.
+*Defined in [feature.d.ts:22](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L22)*
 
 ___
 
@@ -88,11 +77,11 @@ ___
 
 ###  name
 
-• **name**: *[PredefinedFeatureName](../modules/_jscrewit_.md#predefinedfeaturename)*
+• **name**: *[ElementaryFeatureName](../modules/_jscrewit_.md#elementaryfeaturename)*
 
-*Overrides [Feature](_jscrewit_.feature.md).[name](_jscrewit_.feature.md#optional-name)*
+*Overrides [PredefinedFeature](_jscrewit_.predefinedfeature.md).[name](_jscrewit_.predefinedfeature.md#name)*
 
-*Defined in [feature.d.ts:308](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L308)*
+*Defined in [feature.d.ts:23](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L23)*
 
 ## Methods
 

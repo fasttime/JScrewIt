@@ -166,7 +166,7 @@ function prompt()
             console.error('%s', error.message);
             fail();
         }
-        if (outputFileName)
+        if (outputFileName != null)
         {
             var perfInfo = options.perfInfo;
             var perfLog = perfInfo && perfInfo.perfLog;

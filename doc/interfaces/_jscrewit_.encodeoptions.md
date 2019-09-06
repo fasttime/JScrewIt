@@ -1,6 +1,6 @@
-> **[JScrewIt](../README.md)**
+**[JScrewIt](../README.md)**
 
-["jscrewit"](../modules/_jscrewit_.md) / [EncodeOptions](_jscrewit_.encodeoptions.md) /
+[Globals](../README.md) › ["jscrewit"](../modules/_jscrewit_.md) › [EncodeOptions](_jscrewit_.encodeoptions.md)
 
 # Interface: EncodeOptions
 
