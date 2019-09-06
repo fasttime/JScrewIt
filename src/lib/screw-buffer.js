@@ -265,12 +265,11 @@ export var optimizeSolutions;
     {
         function gather(offset, count, groupBond, groupForceString)
         {
-            var str;
             var end = offset + count;
             var groupSolutions = solutions.slice(offset, end);
             if (optimizerList.length)
                 optimizeSolutions(optimizerList, groupSolutions, groupBond, groupForceString);
-            str = gatherGroup(groupSolutions, groupBond, groupForceString, bridgeUsed);
+            var str = gatherGroup(groupSolutions, groupBond, groupForceString, bridgeUsed);
             return str;
         }
 
