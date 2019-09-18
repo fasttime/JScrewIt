@@ -4,14 +4,31 @@
 
 var cli     = require('../tools/cli');
 var assert  = require('assert');
-var path    = require('path');
 
 describe
 (
     'screw.js',
     function ()
     {
-        var execFile = require('child_process').execFile;
+        var childProcessExports = require('child_process');
+        var fs                  = require('fs');
+        var os                  = require('os');
+        var path                = require('path');
+
+        function createOutputFileName()
+        {
+            var tmpDir = os.tmpdir();
+            do
+            {
+                var fileName = '';
+                do
+                    fileName += (Math.random() * 36 | 0).toString(36);
+                while (fileName.length < 10);
+                var outputFileName = path.join(tmpDir, fileName);
+            }
+            while (fs.existsSync(outputFileName));
+            return outputFileName;
+        }
 
         function doAssert(actual, expected)
         {
@@ -28,6 +45,7 @@ describe
             childProcessHandler,
             expectedStdout,
             expectedStderr,
+            expectedFiles,
             expectedExitCode
         )
         {
@@ -39,7 +57,7 @@ describe
                 function (done)
                 {
                     var childProcess =
-                    execFile
+                    childProcessExports.execFile
                     (
                         process.execPath,
                         args,
@@ -50,6 +68,12 @@ describe
                             {
                                 doAssert(stdout, expectedStdout);
                                 doAssert(stderr, expectedStderr);
+                                for (var filePath in expectedFiles)
+                                {
+                                    var actualContent = fs.readFileSync(filePath).toString();
+                                    var expectedContent = expectedFiles[filePath];
+                                    assert.strictEqual(actualContent, expectedContent);
+                                }
                                 assert.strictEqual(actualExitCode, expectedExitCode);
                             }
                             catch (error)
@@ -84,6 +108,7 @@ describe
             null,
             /^Usage: screw.js [^]*\n$/,
             '',
+            null,
             0
         );
         test
@@ -93,6 +118,7 @@ describe
             null,
             /^JScrewIt \d+\.\d+\.\d+\n$/,
             '',
+            null,
             0
         );
         test
@@ -102,6 +128,7 @@ describe
             null,
             '',
             'screw.js: unrecognized option "--foo".\nTry "screw.js --help" for more information.\n',
+            null,
             1
         );
         test
@@ -111,6 +138,7 @@ describe
             null,
             '',
             'Unknown feature "FOO"\n',
+            null,
             1
         );
         test
@@ -120,6 +148,7 @@ describe
             null,
             '',
             /^ENOENT\b. no such file or directory\b.*\n$/,
+            null,
             1
         );
         test
@@ -133,6 +162,7 @@ describe
             },
             'SCREW> +(+!![]+[+[]])\nSCREW> ',
             '',
+            null,
             0
         );
         test
@@ -146,6 +176,7 @@ describe
             },
             'SCREW> SCREW> ',
             'Encoding failed\n',
+            null,
             0
         );
         test
@@ -159,6 +190,43 @@ describe
             },
             'SCREW> SCREW> ',
             '',
+            null,
+            0
+        );
+        test
+        (
+            'encodes a file and shows the output',
+            ['test/fixture.txt'],
+            null,
+            '+[]\n',
+            '',
+            null,
+            0
+        );
+        var outputFileName1 = createOutputFileName();
+        var expectedFiles1 = { };
+        expectedFiles1[outputFileName1] = '+[]';
+        test
+        (
+            'encodes a file and writes the output to a file',
+            ['test/fixture.txt', outputFileName1],
+            null,
+            /^Original size: .*\nScrewed size: .*\nExpansion factor: .*\nEncoding time: .*\n$/,
+            '',
+            expectedFiles1,
+            0
+        );
+        var outputFileName2 = createOutputFileName();
+        var expectedFiles2 = { };
+        expectedFiles2[outputFileName2] = '+[]';
+        test
+        (
+            'encodes a file, writes the output to a file and prints a diagnostic report',
+            ['-d', 'test/fixture.txt', outputFileName2],
+            null,
+            /\n\nOriginal size: .*\nScrewed size: .*\nExpansion factor: .*\nEncoding time: .*\n$/,
+            '',
+            expectedFiles2,
             0
         );
     }

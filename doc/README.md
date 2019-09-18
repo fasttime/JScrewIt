@@ -1,6 +1,6 @@
-**[JScrewIt](README.md)**
+[JScrewIt](README.md)
 
-[Globals](README.md)
+# JScrewIt
 
 ## Index
 

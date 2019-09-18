@@ -1,6 +1,4 @@
-**[JScrewIt](../README.md)**
-
-[Globals](../README.md) › ["jscrewit"](_jscrewit_.md)
+[JScrewIt](../README.md) › ["jscrewit"](_jscrewit_.md)
 
 # Module: "jscrewit"
 
@@ -65,7 +63,7 @@ ___
 
 Ƭ **FeatureElement**: *[Feature](../interfaces/_jscrewit_.feature.md) | keyof FeatureAll*
 
-*Defined in [feature.d.ts:303](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L303)*
+*Defined in [feature.d.ts:306](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L306)*
 
 A feature object or a name or alias of a predefined feature.
 
@@ -90,7 +88,7 @@ Name of a predefined feature.
 
 • **Feature**: *[FeatureConstructor](../interfaces/_jscrewit_.featureconstructor.md)*
 
-*Defined in [feature.d.ts:133](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L133)*
+*Defined in [feature.d.ts:136](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L136)*
 
 ## Functions
 

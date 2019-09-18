@@ -1,6 +1,4 @@
-**[JScrewIt](../README.md)**
-
-[Globals](../README.md) › ["jscrewit"](../modules/_jscrewit_.md) › [EncodeOptions](_jscrewit_.encodeoptions.md)
+[JScrewIt](../README.md) › ["jscrewit"](../modules/_jscrewit_.md) › [EncodeOptions](_jscrewit_.encodeoptions.md)
 
 # Interface: EncodeOptions
 
@@ -81,7 +79,7 @@ Applies the code generation process of both <code>"express"</code> and
 <dd>
 Produces JSFuck code that translates to the specified input string (except for trimmed
 parts when used in conjunction with the option <code>trimCode</code>).
-Unlike other methods, <code>"none"</code> does not generate executable code but just a
+Unlike other methods, <code>"none"</code> does not generate executable code, but rather a
 plain string.
 </dd>
 

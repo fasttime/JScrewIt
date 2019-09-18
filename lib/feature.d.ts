@@ -15,7 +15,10 @@ declare module 'jscrewit'
      */
     type CompatibleFeatureArray = readonly FeatureElement[];
 
-    interface CustomFeature extends Feature { readonly elementary: false; }
+    interface CustomFeature extends Feature
+    {
+        readonly elementary: false;
+    }
 
     interface ElementaryFeature extends PredefinedFeature
     {
