@@ -256,7 +256,7 @@
                                 var featureNames =
                                 Feature.commonOf.apply(null, expectedFeatureNames);
                                 var expectedFeature = Feature(featureNames);
-                                testExpectations(actualFeature, expectedFeature);
+                                verifyExpectations(actualFeature, expectedFeature);
 
                                 // Web Worker
                                 var actualFeatureWW = actualFeature.restrict('web-worker');
@@ -272,12 +272,12 @@
                                 );
                                 var expectedFeatureWW =
                                 Feature.commonOf.apply(null, restrictedFeatures);
-                                testExpectations(actualFeatureWW, expectedFeatureWW);
+                                verifyExpectations(actualFeatureWW, expectedFeatureWW);
                             }
                         );
                     }
 
-                    function testExpectations(actualFeature, expectedFeature)
+                    function verifyExpectations(actualFeature, expectedFeature)
                     {
                         var actualElementaryNames = actualFeature.elementaryNames;
                         var expectedElementaryNames = expectedFeature.elementaryNames;
