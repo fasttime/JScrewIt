@@ -165,6 +165,8 @@ task
             '--',
             mochaPath,
             '--check-leaks',
+            '--require=ebdd',
+            '--ui=ebdd',
             'test/**/*.spec.js',
         ];
         const childProcess = fork(nycPath, forkArgs);

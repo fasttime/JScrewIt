@@ -38,196 +38,181 @@ describe
                 assert.strictEqual(actual, expected);
         }
 
-        function test
-        (
-            description,
-            screwArgs,
-            childProcessHandler,
-            expectedStdout,
-            expectedStderr,
-            expectedFiles,
-            expectedExitCode
-        )
-        {
-            var actualExitCode;
-            var args = ['./screw.js'].concat(screwArgs);
-            it
-            (
-                description,
-                function (done)
-                {
-                    var childProcess =
-                    childProcessExports.execFile
-                    (
-                        process.execPath,
-                        args,
-                        options,
-                        function (error, stdout, stderr)
-                        {
-                            try
-                            {
-                                doAssert(stdout, expectedStdout);
-                                doAssert(stderr, expectedStderr);
-                                for (var filePath in expectedFiles)
-                                {
-                                    var actualContent = fs.readFileSync(filePath).toString();
-                                    var expectedContent = expectedFiles[filePath];
-                                    assert.strictEqual(actualContent, expectedContent);
-                                }
-                                assert.strictEqual(actualExitCode, expectedExitCode);
-                            }
-                            catch (error)
-                            {
-                                done(error);
-                                return;
-                            }
-                            done();
-                        }
-                    )
-                    .on
-                    (
-                        'exit',
-                        function (exitCode)
-                        {
-                            actualExitCode = exitCode;
-                        }
-                    );
-                    if (childProcessHandler)
-                        childProcessHandler(childProcess);
-                }
-            )
-            .timeout(5000);
-        }
-
         var options = { cwd: path.dirname(__dirname) };
-
-        test
-        (
-            'shows the help message with option "--help"',
-            ['--help'],
-            null,
-            /^Usage: screw.js [^]*\n$/,
-            '',
-            null,
-            0
-        );
-        test
-        (
-            'shows the version number with option "--version"',
-            ['--version'],
-            null,
-            /^JScrewIt \d+\.\d+\.\d+\n$/,
-            '',
-            null,
-            0
-        );
-        test
-        (
-            'shows an error message with an invalid option',
-            ['--foo'],
-            null,
-            '',
-            'screw.js: unrecognized option "--foo".\nTry "screw.js --help" for more information.\n',
-            null,
-            1
-        );
-        test
-        (
-            'shows an error message when an invalid feature is specified',
-            ['-f', 'FOO'],
-            null,
-            '',
-            'Unknown feature "FOO"\n',
-            null,
-            1
-        );
-        test
-        (
-            'shows an error message when the input file does not exist',
-            ['""'],
-            null,
-            '',
-            /^ENOENT\b. no such file or directory\b.*\n$/,
-            null,
-            1
-        );
-        test
-        (
-            'prints the encoded input interactively',
-            [],
-            function (childProcess)
-            {
-                childProcess.stdin.write('10\n');
-                childProcess.stdin.end();
-            },
-            'SCREW> +(+!![]+[+[]])\nSCREW> ',
-            '',
-            null,
-            0
-        );
-        test
-        (
-            'prints an error message interactively',
-            ['-x'],
-            function (childProcess)
-            {
-                childProcess.stdin.write('?\n');
-                childProcess.stdin.end();
-            },
-            'SCREW> SCREW> ',
-            'Encoding failed\n',
-            null,
-            0
-        );
-        test
-        (
-            'ignores empty input interactively',
-            [],
-            function (childProcess)
-            {
-                childProcess.stdin.write('\n');
-                childProcess.stdin.end();
-            },
-            'SCREW> SCREW> ',
-            '',
-            null,
-            0
-        );
-        test
-        (
-            'encodes a file and shows the output',
-            ['test/fixture.txt'],
-            null,
-            '+[]\n',
-            '',
-            null,
-            0
-        );
         var outputFileName1 = createOutputFileName();
         var expectedFiles1 = { };
         expectedFiles1[outputFileName1] = '+[]';
-        test
-        (
-            'encodes a file and writes the output to a file',
-            ['test/fixture.txt', outputFileName1],
-            null,
-            /^Original size: .*\nScrewed size: .*\nExpansion factor: .*\nEncoding time: .*\n$/,
-            '',
-            expectedFiles1,
-            0
-        );
         var outputFileName2 = createOutputFileName();
         var expectedFiles2 = { };
         expectedFiles2[outputFileName2] = '+[]';
-        test
+        var paramDataList =
+        [
+            {
+                description:            'shows the help message with option "--help"',
+                screwArgs:              ['--help'],
+                expectedStdout:         /^Usage: screw.js [^]*\n$/,
+                expectedStderr:         '',
+                expectedExitCode:       0,
+            },
+            {
+                description:            'shows the version number with option "--version"',
+                screwArgs:              ['--version'],
+                expectedStdout:         /^JScrewIt \d+\.\d+\.\d+\n$/,
+                expectedStderr:         '',
+                expectedExitCode:       0,
+            },
+            {
+                description:            'shows an error message with an invalid option',
+                screwArgs:              ['--foo'],
+                expectedStdout:         '',
+                expectedStderr:
+                'screw.js: unrecognized option "--foo".\n' +
+                'Try "screw.js --help" for more information.\n',
+                expectedExitCode:       1,
+            },
+            {
+                description:
+                'shows an error message when an invalid feature is specified',
+                screwArgs:              ['-f', 'FOO'],
+                expectedStdout:         '',
+                expectedStderr:         'Unknown feature "FOO"\n',
+                expectedExitCode:       1,
+            },
+            {
+                description:            'shows an error message when the input file does not exist',
+                screwArgs:              ['""'],
+                expectedStdout:         '',
+                expectedStderr:         /^ENOENT\b. no such file or directory\b.*\n$/,
+                expectedExitCode:       1,
+            },
+            {
+                description:            'prints the encoded input interactively',
+                screwArgs:              [],
+                childProcessHandler:
+                function (childProcess)
+                {
+                    childProcess.stdin.write('10\n');
+                    childProcess.stdin.end();
+                },
+                expectedStdout:         'SCREW> +(+!![]+[+[]])\nSCREW> ',
+                expectedStderr:         '',
+                expectedExitCode:       0,
+            },
+            {
+                description:            'prints an error message interactively',
+                screwArgs:              ['-x'],
+                childProcessHandler:
+                function (childProcess)
+                {
+                    childProcess.stdin.write('?\n');
+                    childProcess.stdin.end();
+                },
+                expectedStdout:         'SCREW> SCREW> ',
+                expectedStderr:         'Encoding failed\n',
+                expectedExitCode:       0,
+            },
+            {
+                description:            'ignores empty input interactively',
+                screwArgs:              [],
+                childProcessHandler:
+                function (childProcess)
+                {
+                    childProcess.stdin.write('\n');
+                    childProcess.stdin.end();
+                },
+                expectedStdout:         'SCREW> SCREW> ',
+                expectedStderr:         '',
+                expectedExitCode:       0,
+            },
+            {
+                description:            'encodes a file and shows the output',
+                screwArgs:              ['test/fixture.txt'],
+                expectedStdout:         '+[]\n',
+                expectedStderr:         '',
+                expectedExitCode:       0,
+            },
+            {
+                description:            'encodes a file and writes the output to a file',
+                screwArgs:              ['test/fixture.txt', outputFileName1],
+                expectedStdout:
+                /^Original size: .*\nScrewed size: .*\nExpansion factor: .*\nEncoding time: .*\n$/,
+                expectedStderr:         '',
+                expectedFiles:          expectedFiles1,
+                expectedExitCode:       0,
+            },
+            {
+                description:
+                'encodes a file, writes the output to a file and prints a diagnostic report',
+                screwArgs:              ['-d', 'test/fixture.txt', outputFileName2],
+                expectedStdout:
+                RegExp
+                (
+                    '\n\n' +
+                    'Original size: .*\n' +
+                    'Screwed size: .*\n' +
+                    'Expansion factor: .*\n' +
+                    'Encoding time: .*\n' +
+                    '$'
+                ),
+                expectedStderr:         '',
+                expectedFiles:          expectedFiles2,
+                expectedExitCode:       0,
+            },
+        ];
+
+        it.per(paramDataList)
         (
-            'encodes a file, writes the output to a file and prints a diagnostic report',
-            ['-d', 'test/fixture.txt', outputFileName2],
-            null,
-            /\n\nOriginal size: .*\nScrewed size: .*\nExpansion factor: .*\nEncoding time: .*\n$/,
-            '',
-            expectedFiles2,
-            0
+            '#.description',
+            function (paramData, done)
+            {
+                this.timeout(5000);
+                var screwArgs           = paramData.screwArgs;
+                var childProcessHandler = paramData.childProcessHandler;
+                var expectedStdout      = paramData.expectedStdout;
+                var expectedStderr      = paramData.expectedStderr;
+                var expectedFiles       = paramData.expectedFiles;
+                var expectedExitCode    = paramData.expectedExitCode;
+                var actualExitCode;
+                var args = ['./screw.js'].concat(screwArgs);
+                var childProcess =
+                childProcessExports.execFile
+                (
+                    process.execPath,
+                    args,
+                    options,
+                    function (error, stdout, stderr)
+                    {
+                        try
+                        {
+                            doAssert(stdout, expectedStdout);
+                            doAssert(stderr, expectedStderr);
+                            for (var filePath in expectedFiles)
+                            {
+                                var actualContent = fs.readFileSync(filePath).toString();
+                                var expectedContent = expectedFiles[filePath];
+                                assert.strictEqual(actualContent, expectedContent);
+                            }
+                            assert.strictEqual(actualExitCode, expectedExitCode);
+                        }
+                        catch (error)
+                        {
+                            done(error);
+                            return;
+                        }
+                        done();
+                    }
+                )
+                .on
+                (
+                    'exit',
+                    function (exitCode)
+                    {
+                        actualExitCode = exitCode;
+                    }
+                );
+                if (childProcessHandler)
+                    childProcessHandler(childProcess);
+            }
         );
     }
 );
