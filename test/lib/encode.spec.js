@@ -656,7 +656,7 @@ self,
                     expect(fn).toThrowStrictly(Error, 'Invalid value for option wrapWith');
                 }
             );
-            it.if(typeof Symbol !== 'undefined')
+            it.when(typeof Symbol !== 'undefined')
             (
                 'throws a TypeError when the first argument is a symbol',
                 function ()

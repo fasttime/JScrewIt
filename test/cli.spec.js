@@ -165,7 +165,6 @@ describe
             '#.description',
             function (paramData, done)
             {
-                this.timeout(5000);
                 var screwArgs           = paramData.screwArgs;
                 var childProcessHandler = paramData.childProcessHandler;
                 var expectedStdout      = paramData.expectedStdout;
@@ -213,7 +212,8 @@ describe
                 if (childProcessHandler)
                     childProcessHandler(childProcess);
             }
-        );
+        )
+        .timeout(5000);
     }
 );
 
@@ -224,219 +224,260 @@ describe
     {
         function test(params, expected)
         {
-            it
-            (
-                '"' + params.join(' ') + '"',
-                function ()
-                {
-                    var argv = [null, '../screw.js'].concat(params);
-                    var actual = cli.parseCommandLine(argv);
-                    assert.deepEqual(actual, expected);
-                }
-            );
+            var argv = [null, '../screw.js'].concat(params);
+            var actual = cli.parseCommandLine(argv);
+            assert.deepEqual(actual, expected);
         }
 
         function testError(params, expectedErrorMsg)
         {
-            it
-            (
-                '"' + params.join(' ') + '"',
-                function ()
+            var argv = [null, '../screw.js'].concat(params);
+            try
+            {
+                cli.parseCommandLine(argv);
+            }
+            catch (error)
+            {
+                assert.strictEqual(Object.getPrototypeOf(error), Error.prototype);
+                if (expectedErrorMsg !== undefined)
                 {
-                    var argv = [null, '../screw.js'].concat(params);
-                    try
+                    var actualErrorMsg = error.message;
+                    if (expectedErrorMsg instanceof RegExp)
                     {
-                        cli.parseCommandLine(argv);
+                        assert
+                        (
+                            expectedErrorMsg.test(actualErrorMsg),
+                            'Expecting error message to match ' + expectedErrorMsg
+                        );
                     }
-                    catch (error)
-                    {
-                        assert.strictEqual(Object.getPrototypeOf(error), Error.prototype);
-                        if (expectedErrorMsg !== undefined)
-                        {
-                            var actualErrorMsg = error.message;
-                            if (expectedErrorMsg instanceof RegExp)
-                            {
-                                assert
-                                (
-                                    expectedErrorMsg.test(actualErrorMsg),
-                                    'Expecting error message to match ' + expectedErrorMsg
-                                );
-                            }
-                            else if (typeof expectedErrorMsg === 'string')
-                                assert.strictEqual(actualErrorMsg, expectedErrorMsg);
-                            else
-                                throw Error('Invalid value for argument expectedErrorMsg');
-                        }
-                        return;
-                    }
-                    assert.fail('Error expected');
+                    else if (typeof expectedErrorMsg === 'string')
+                        assert.strictEqual(actualErrorMsg, expectedErrorMsg);
+                    else
+                        throw Error('Invalid value for argument expectedErrorMsg');
                 }
-            );
+                return;
+            }
+            assert.fail('Error expected');
         }
 
-        test
-        (
-            [],
+        var paramDataList =
+        [
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { },
+                params: [],
+                expected:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { },
+                },
+            },
+            {
+                params: ['--help'],
+                expected: 'help',
+            },
+            {
+                params: ['--version'],
+                expected: 'version',
+            },
+            {
+                params: ['-c'],
+                expected:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { runAs: 'call' },
+                },
+            },
+            {
+                params: ['-w'],
+                expected:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { runAs: 'call' },
+                },
+            },
+            {
+                params: ['-e'],
+                expected:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { runAs: 'eval' },
+                },
+            },
+            {
+                params: ['-d'],
+                expected:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { perfInfo: { } },
+                },
+            },
+            {
+                params: ['--diagnostic'],
+                expected:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { perfInfo: { } },
+                },
+            },
+            {
+                params: ['-f', 'ATOB,SELF'],
+                expected:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { features: ['ATOB', 'SELF'] },
+                },
+            },
+            {
+                params: ['--features', 'ATOB,SELF'],
+                expected:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { features: ['ATOB', 'SELF'] },
+                },
+            },
+            {
+                params: ['-f'],
+                expectedErrorMsg: 'option "-f" requires an argument',
+            },
+            {
+                params: ['--features'],
+                expectedErrorMsg: 'option "--features" requires an argument',
+            },
+            {
+                params: ['-r', 'express'],
+                expected:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { runAs: 'express' },
+                },
+            },
+            {
+                params: ['--run-as', 'express'],
+                expected:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { runAs: 'express' },
+                },
+            },
+            {
+                params: ['-r'],
+                expectedErrorMsg: 'option "-r" requires an argument',
+            },
+            {
+                params: ['--run-as'],
+                expectedErrorMsg: 'option "--run-as" requires an argument',
+            },
+            {
+                params: ['-t'],
+                expected:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { trimCode: true },
+                },
+            },
+            {
+                params: ['--trim-code'],
+                expected:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { trimCode: true },
+                },
+            },
+            {
+                params: ['-x'],
+                expected:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { runAs: 'express' },
+                },
+            },
+            {
+                params: ['-ctx'],
+                expected:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { trimCode: true, runAs: 'express-call' },
+                },
+            },
+            {
+                params: ['-y'],
+                expectedErrorMsg: /unrecognized flag "y"/,
+            },
+            {
+                params: ['--allyourbasearebelongtous'],
+                expectedErrorMsg: /unrecognized option "--allyourbasearebelongtous"/,
+            },
+            {
+                params: ['infile'],
+                expected:
+                {
+                    inputFileName: 'infile',
+                    outputFileName: undefined,
+                    options: { },
+                },
+            },
+            {
+                params: ['infile', 'outfile'],
+                expected:
+                {
+                    inputFileName: 'infile',
+                    outputFileName: 'outfile',
+                    options: { },
+                },
+            },
+            {
+                params: ['-ct', 'infile', '--features', 'FF', 'outfile'],
+                expected:
+                {
+                    inputFileName: 'infile',
+                    outputFileName: 'outfile',
+                    options: { features: ['FF'], trimCode: true, runAs: 'call' },
+                },
+            },
+            {
+                params: ['infile', 'outfile', 'etc.'],
+                expectedErrorMsg: /unexpected argument "etc."/,
+            },
+        ];
+        paramDataList.forEach
+        (
+            function (paramData)
+            {
+                paramData.description = '"' + paramData.params.join(' ') + '"';
             }
         );
-        test(['--help'], 'help');
-        test(['--version'], 'version');
-        test
+
+        it.per(paramDataList)
         (
-            ['-c'],
+            '#.description',
+            function (paramData)
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { runAs: 'call' },
+                var params = paramData.params;
+                if ('expected' in paramData)
+                {
+                    var expected = paramData.expected;
+                    test(params, expected);
+                }
+                else
+                {
+                    var expectedErrorMsg = paramData.expectedErrorMsg;
+                    testError(params, expectedErrorMsg);
+                }
             }
         );
-        test
-        (
-            ['-w'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { runAs: 'call' },
-            }
-        );
-        test
-        (
-            ['-e'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { runAs: 'eval' },
-            }
-        );
-        test
-        (
-            ['-d'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { perfInfo: { } },
-            }
-        );
-        test
-        (
-            ['--diagnostic'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { perfInfo: { } },
-            }
-        );
-        test
-        (
-            ['-f', 'ATOB,SELF'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { features: ['ATOB', 'SELF'] },
-            }
-        );
-        test
-        (
-            ['--features', 'ATOB,SELF'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { features: ['ATOB', 'SELF'] },
-            }
-        );
-        testError(['-f'], 'option "-f" requires an argument');
-        testError(['--features'], 'option "--features" requires an argument');
-        test
-        (
-            ['-r', 'express'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { runAs: 'express' },
-            }
-        );
-        test
-        (
-            ['--run-as', 'express'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { runAs: 'express' },
-            }
-        );
-        testError(['-r'], 'option "-r" requires an argument');
-        testError(['--run-as'], 'option "--run-as" requires an argument');
-        test
-        (
-            ['-t'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { trimCode: true },
-            }
-        );
-        test
-        (
-            ['--trim-code'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { trimCode: true },
-            }
-        );
-        test
-        (
-            ['-x'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { runAs: 'express' },
-            }
-        );
-        test
-        (
-            ['-ctx'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { trimCode: true, runAs: 'express-call' },
-            }
-        );
-        testError(['-y'], /unrecognized flag "y"/);
-        testError
-        (['--allyourbasearebelongtous'], /unrecognized option "--allyourbasearebelongtous"/);
-        test
-        (
-            ['infile'],
-            {
-                inputFileName: 'infile',
-                outputFileName: undefined,
-                options: { },
-            }
-        );
-        test
-        (
-            ['infile', 'outfile'],
-            {
-                inputFileName: 'infile',
-                outputFileName: 'outfile',
-                options: { },
-            }
-        );
-        test
-        (
-            ['-ct', 'infile', '--features', 'FF', 'outfile'],
-            {
-                inputFileName: 'infile',
-                outputFileName: 'outfile',
-                options: { features: ['FF'], trimCode: true, runAs: 'call' },
-            }
-        );
-        testError(['infile', 'outfile', 'etc.'], /unexpected argument "etc."/);
     }
 );
 

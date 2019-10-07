@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* global BigInt, Symbol, document, expect, global, require, self, testIf */
+/* global BigInt, Symbol, document, expect, global, require, self, when */
 
 'use strict';
 
@@ -96,12 +96,12 @@
                 ['a string', 'foo', '"foo"'],
                 ['a multiline string', 'foo\nbar', '"foo\nbar"'],
                 ['null', null, 'null'],
-                testIf
+                when
                 (
                     typeof Symbol !== 'undefined',
                     ['a symbol', typeof Symbol !== 'undefined' && Symbol('foo'), 'Symbol(foo)']
                 ),
-                testIf
+                when
                 (
                     typeof BigInt !== 'undefined',
                     ['a bigint', typeof BigInt !== 'undefined' && BigInt(1), '1n']
@@ -117,7 +117,7 @@
                     '[]',
                     'a one element array',
                 ],
-                testIf
+                when
                 (
                     typeof document !== 'undefined',
                     ['document.all', typeof document !== 'undefined' && document.all, , 'an object']

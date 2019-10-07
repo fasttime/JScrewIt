@@ -734,7 +734,7 @@
                     );
                 }
             );
-            it.if(typeof module !== 'undefined')
+            it.when(typeof module !== 'undefined')
             (
                 'inspection works as expected',
                 function ()
@@ -745,7 +745,7 @@
                     expect(actual).toBe('[Feature DEFAULT]');
                 }
             );
-            it.if(typeof module !== 'undefined')
+            it.when(typeof module !== 'undefined')
             (
                 'util.inspect.custom is not required',
                 function ()
