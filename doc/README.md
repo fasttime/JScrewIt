@@ -1,4 +1,6 @@
-> **[JScrewIt](README.md)**
+[JScrewIt](README.md)
+
+# JScrewIt
 
 ## Index
 

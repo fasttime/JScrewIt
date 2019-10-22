@@ -1,6 +1,4 @@
-> **[JScrewIt](../README.md)**
-
-["jscrewit"](../modules/_jscrewit_.md) / [EncodeOptions](_jscrewit_.encodeoptions.md) /
+[JScrewIt](../README.md) › ["jscrewit"](../modules/_jscrewit_.md) › [EncodeOptions](_jscrewit_.encodeoptions.md)
 
 # Interface: EncodeOptions
 

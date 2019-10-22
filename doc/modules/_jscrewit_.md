@@ -1,6 +1,4 @@
-> **[JScrewIt](../README.md)**
-
-["jscrewit"](_jscrewit_.md) /
+[JScrewIt](../README.md) › ["jscrewit"](_jscrewit_.md)
 
 # Module: "jscrewit"
 
@@ -21,6 +19,10 @@
 * [FeatureElement](_jscrewit_.md#featureelement)
 * [PredefinedFeatureName](_jscrewit_.md#predefinedfeaturename)
 
+### Variables
+
+* [Feature](_jscrewit_.md#const-feature)
+
 ### Functions
 
 * [encode](_jscrewit_.md#encode)
@@ -29,7 +31,7 @@
 
 ###  CompatibleFeatureArray
 
-Ƭ **CompatibleFeatureArray**: *`ReadonlyArray<FeatureElement>`*
+Ƭ **CompatibleFeatureArray**: *keyof FeatureElement[]*
 
 *Defined in [feature.d.ts:16](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L16)*
 
@@ -49,7 +51,7 @@ ___
 
 Ƭ **FeatureElement**: *[Feature](../interfaces/_jscrewit_.feature.md) | keyof FeatureAll*
 
-*Defined in [feature.d.ts:297](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L297)*
+*Defined in [feature.d.ts:300](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L300)*
 
 A feature object or a name or alias of a predefined feature.
 
@@ -67,6 +69,14 @@ ___
 *Defined in [feature-all.d.ts:569](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature-all.d.ts#L569)*
 
 Name of a predefined feature.
+
+## Variables
+
+### `Const` Feature
+
+• **Feature**: *[FeatureConstructor](../interfaces/_jscrewit_.featureconstructor.md)*
+
+*Defined in [feature.d.ts:130](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L130)*
 
 ## Functions
 

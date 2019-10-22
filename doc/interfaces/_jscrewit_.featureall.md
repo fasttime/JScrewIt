@@ -1,6 +1,4 @@
-> **[JScrewIt](../README.md)**
-
-["jscrewit"](../modules/_jscrewit_.md) / [FeatureAll](_jscrewit_.featureall.md) /
+[JScrewIt](../README.md) › ["jscrewit"](../modules/_jscrewit_.md) › [FeatureAll](_jscrewit_.featureall.md)
 
 # Interface: FeatureAll
 
@@ -8,7 +6,7 @@
 
 * **FeatureAll**
 
-  * [FeatureConstructor](_jscrewit_.featureconstructor.md)
+  ↳ [FeatureConstructor](_jscrewit_.featureconstructor.md)
 
 ## Index
 

@@ -13,9 +13,12 @@ declare module 'jscrewit'
      * Methods that accept parameters of this type throw an error if the specified features are not
      * mutually compatible.
      */
-    type CompatibleFeatureArray = ReadonlyArray<FeatureElement>;
+    type CompatibleFeatureArray = readonly FeatureElement[];
 
-    interface CustomFeature extends Feature { readonly elementary: false; }
+    interface CustomFeature extends Feature
+    {
+        readonly elementary: false;
+    }
 
     /**
      * Objects of this type indicate which of the capabilities that JScrewIt can use to minimize the
@@ -119,7 +122,7 @@ declare module 'jscrewit'
         restrict
         (
             environment: 'forced-strict-mode' | 'web-worker',
-            engineFeatureObjs?: ReadonlyArray<PredefinedFeature>,
+            engineFeatureObjs?: readonly PredefinedFeature[],
         ):
         CustomFeature;
     }
@@ -148,7 +151,7 @@ declare module 'jscrewit'
         readonly ALL: FeatureAll;
 
         /** An immutable array of all elementary feature objects ordered by name. */
-        readonly ELEMENTARY: ReadonlyArray<PredefinedFeature>;
+        readonly ELEMENTARY: readonly PredefinedFeature[];
 
         /**
          * Creates a new feature object from the union of the specified features.
@@ -298,7 +301,7 @@ declare module 'jscrewit'
 
     interface PredefinedFeature extends Feature
     {
-        readonly description: string;
-        readonly name: PredefinedFeatureName;
+        readonly description:   string;
+        readonly name:          PredefinedFeatureName;
     }
 }

@@ -1599,7 +1599,8 @@ export var createBridgeSolution;
                     var expr = 'undefined=>status.constructor.' + fromCharCode + '(' + arg + ')';
                     return expr;
                 },
-                ARROW, STATUS
+                ARROW,
+                STATUS
             ),
         ],
         [
