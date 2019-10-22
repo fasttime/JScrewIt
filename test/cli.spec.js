@@ -222,11 +222,11 @@ describe
     'parseCommandLine returns expected results with params',
     function ()
     {
-        function test(params, expected)
+        function test(params, expectedResult)
         {
             var argv = [null, '../screw.js'].concat(params);
-            var actual = cli.parseCommandLine(argv);
-            assert.deepEqual(actual, expected);
+            var actualResult = cli.parseCommandLine(argv);
+            assert.deepEqual(actualResult, expectedResult);
         }
 
         function testError(params, expectedErrorMsg)
@@ -264,7 +264,7 @@ describe
         [
             {
                 params: [],
-                expected:
+                expectedResult:
                 {
                     inputFileName: undefined,
                     outputFileName: undefined,
@@ -273,15 +273,15 @@ describe
             },
             {
                 params: ['--help'],
-                expected: 'help',
+                expectedResult: 'help',
             },
             {
                 params: ['--version'],
-                expected: 'version',
+                expectedResult: 'version',
             },
             {
                 params: ['-c'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: undefined,
                     outputFileName: undefined,
@@ -290,7 +290,7 @@ describe
             },
             {
                 params: ['-w'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: undefined,
                     outputFileName: undefined,
@@ -299,7 +299,7 @@ describe
             },
             {
                 params: ['-e'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: undefined,
                     outputFileName: undefined,
@@ -308,7 +308,7 @@ describe
             },
             {
                 params: ['-d'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: undefined,
                     outputFileName: undefined,
@@ -317,7 +317,7 @@ describe
             },
             {
                 params: ['--diagnostic'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: undefined,
                     outputFileName: undefined,
@@ -326,7 +326,7 @@ describe
             },
             {
                 params: ['-f', 'ATOB,SELF'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: undefined,
                     outputFileName: undefined,
@@ -335,7 +335,7 @@ describe
             },
             {
                 params: ['--features', 'ATOB,SELF'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: undefined,
                     outputFileName: undefined,
@@ -352,7 +352,7 @@ describe
             },
             {
                 params: ['-r', 'express'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: undefined,
                     outputFileName: undefined,
@@ -361,7 +361,7 @@ describe
             },
             {
                 params: ['--run-as', 'express'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: undefined,
                     outputFileName: undefined,
@@ -378,7 +378,7 @@ describe
             },
             {
                 params: ['-t'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: undefined,
                     outputFileName: undefined,
@@ -387,7 +387,7 @@ describe
             },
             {
                 params: ['--trim-code'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: undefined,
                     outputFileName: undefined,
@@ -396,7 +396,7 @@ describe
             },
             {
                 params: ['-x'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: undefined,
                     outputFileName: undefined,
@@ -405,7 +405,7 @@ describe
             },
             {
                 params: ['-ctx'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: undefined,
                     outputFileName: undefined,
@@ -422,7 +422,7 @@ describe
             },
             {
                 params: ['infile'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: 'infile',
                     outputFileName: undefined,
@@ -431,7 +431,7 @@ describe
             },
             {
                 params: ['infile', 'outfile'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: 'infile',
                     outputFileName: 'outfile',
@@ -440,7 +440,7 @@ describe
             },
             {
                 params: ['-ct', 'infile', '--features', 'FF', 'outfile'],
-                expected:
+                expectedResult:
                 {
                     inputFileName: 'infile',
                     outputFileName: 'outfile',
@@ -466,10 +466,10 @@ describe
             function (paramData)
             {
                 var params = paramData.params;
-                if ('expected' in paramData)
+                if ('expectedResult' in paramData)
                 {
-                    var expected = paramData.expected;
-                    test(params, expected);
+                    var expectedResult = paramData.expectedResult;
+                    test(params, expectedResult);
                 }
                 else
                 {
