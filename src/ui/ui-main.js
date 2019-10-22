@@ -394,23 +394,33 @@ var waitingForWorker;
 var worker;
 var workerURL;
 
-if (typeof Worker !== 'undefined') // In older versions of Safari, typeof Worker is "object".
+(function ()
 {
-    workerURL = URL.createObjectURL(new Blob([WORKER_SRC], { type: JS_MIME_TYPE }));
+    var request;
     try
     {
-        createWorker();
+        request = new XMLHttpRequest();
+        request.open('GET', 'lib/jscrewit.min.js', true);
     }
     catch (error)
     {
-        destroyWorkerURL();
+        request = undefined;
     }
-}
-if (worker)
-{
-    (function ()
+    // In older versions of Safari, typeof Worker is "object".
+    if (request && typeof Worker !== 'undefined')
     {
-        var request = new XMLHttpRequest();
+        workerURL = URL.createObjectURL(new Blob([WORKER_SRC], { type: JS_MIME_TYPE }));
+        try
+        {
+            createWorker();
+        }
+        catch (error)
+        {
+            destroyWorkerURL();
+        }
+    }
+    if (worker)
+    {
         request.onerror =
         function ()
         {
@@ -421,8 +431,13 @@ if (worker)
         request.onload =
         function ()
         {
-            jscrewitURL = URL.createObjectURL(request.response);
-            worker.postMessage({ url: jscrewitURL });
+            if (request.status < 400)
+            {
+                jscrewitURL = URL.createObjectURL(request.response);
+                worker.postMessage({ url: jscrewitURL });
+            }
+            else
+                this.onerror();
         };
         request.onloadend =
         function ()
@@ -432,12 +447,11 @@ if (worker)
             else
                 init();
         };
-        request.open('GET', 'lib/jscrewit.min.js', true);
         request.overrideMimeType(JS_MIME_TYPE);
         request.responseType = 'blob';
         request.send();
     }
-    )();
+    else
+        initLater();
 }
-else
-    initLater();
+)();

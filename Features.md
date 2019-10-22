@@ -77,7 +77,7 @@ This table lists features available in the most common engines.
 </td>
 </tr>
 <tr>
-<td>Firefox 54+</td>
+<td>Firefox 62+</td>
 <td>
 <ul>
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="doc/interfaces/_jscrewit_.featureall.md#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
@@ -94,7 +94,7 @@ This table lists features available in the most common engines.
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#EXTERNAL"><code>EXTERNAL</code></a>
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#FF_SRC"><code>FF_SRC</code></a>
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#FILL"><code>FILL</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#FLAT"><code>FLAT</code></a> (Firefox 62+)
+<li><a href="doc/interfaces/_jscrewit_.featureall.md#FLAT"><code>FLAT</code></a>
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a>
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#GMT"><code>GMT</code></a>

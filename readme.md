@@ -232,7 +232,7 @@ JScrewIt itself and the code it generates are compatible with the JavaScript eng
 
 - Chrome 73+
 - Edge 40+
-- Firefox 54+
+- Firefox 62+
 - Internet Explorer 9+
 - Safari 7.0+
 - Opera 60+
