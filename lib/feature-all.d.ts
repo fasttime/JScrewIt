@@ -215,16 +215,11 @@ declare module 'jscrewit'
         FF: PredefinedFeature;
 
         /**
-         * Features available in Firefox 54 or later.
-         */
-        FF_54: PredefinedFeature;
-
-        /**
          * Features available in Firefox 62 or later.
          */
         FF_62: PredefinedFeature;
 
-        /** An alias for `FF_54`. */
+        /** An alias for `FF_62`. */
         FF_ESR: PredefinedFeature;
 
         /**
@@ -252,7 +247,7 @@ declare module 'jscrewit'
          *
          * @reamarks
          *
-         * Available in Chrome, Firefox 62+, Safari 12+, Opera and Node.js 11+.
+         * Available in Chrome, Firefox, Safari 12+, Opera and Node.js 11+.
          */
         FLAT: PredefinedFeature;
 
@@ -592,7 +587,6 @@ declare module 'jscrewit'
     | 'ESC_REGEXP_LF'
     | 'ESC_REGEXP_SLASH'
     | 'EXTERNAL'
-    | 'FF_54'
     | 'FF_62'
     | 'FF_SRC'
     | 'FILL'

@@ -22,7 +22,6 @@ const ENGINE_ENTRIES =
         name: 'Firefox',
         versions:
         [
-            { description: '54+', feature: 'FF_54' },
             { description: '62+', feature: 'FF_62' },
         ],
     },
