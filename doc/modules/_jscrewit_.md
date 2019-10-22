@@ -33,7 +33,7 @@
 
 Ƭ **CompatibleFeatureArray**: *keyof FeatureElement[]*
 
-*Defined in [feature.d.ts:16](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L16)*
+*Defined in [feature.d.ts:16](https://github.com/fasttime/JScrewIt/blob/2.11.0/lib/feature.d.ts#L16)*
 
 An array containing any number of feature objects or names or aliases of predefined features,
 in no particular order.
@@ -51,7 +51,7 @@ ___
 
 Ƭ **FeatureElement**: *[Feature](../interfaces/_jscrewit_.feature.md) | keyof FeatureAll*
 
-*Defined in [feature.d.ts:300](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L300)*
+*Defined in [feature.d.ts:300](https://github.com/fasttime/JScrewIt/blob/2.11.0/lib/feature.d.ts#L300)*
 
 A feature object or a name or alias of a predefined feature.
 
@@ -66,7 +66,7 @@ ___
 
 Ƭ **PredefinedFeatureName**: *"ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "AUTO" | "BARPROP" | "BROWSER" | "CAPITAL_HTML" | "CHROME_73" | "COMPACT" | "CONSOLE" | "DEFAULT" | "DOCUMENT" | "DOMWINDOW" | "EDGE_40" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_62" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW"*
 
-*Defined in [feature-all.d.ts:564](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature-all.d.ts#L564)*
+*Defined in [feature-all.d.ts:564](https://github.com/fasttime/JScrewIt/blob/2.11.0/lib/feature-all.d.ts#L564)*
 
 Name of a predefined feature.
 
@@ -76,7 +76,7 @@ Name of a predefined feature.
 
 • **Feature**: *[FeatureConstructor](../interfaces/_jscrewit_.featureconstructor.md)*
 
-*Defined in [feature.d.ts:130](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/feature.d.ts#L130)*
+*Defined in [feature.d.ts:130](https://github.com/fasttime/JScrewIt/blob/2.11.0/lib/feature.d.ts#L130)*
 
 ## Functions
 
@@ -84,7 +84,7 @@ Name of a predefined feature.
 
 ▸ **encode**(`input`: string, `options?`: [EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md)): *string*
 
-*Defined in [encode.d.ts:110](https://github.com/fasttime/JScrewIt/blob/2.10.1/lib/encode.d.ts#L110)*
+*Defined in [encode.d.ts:110](https://github.com/fasttime/JScrewIt/blob/2.11.0/lib/encode.d.ts#L110)*
 
 Encodes a given string into JSFuck.
 
