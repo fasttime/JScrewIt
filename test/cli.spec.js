@@ -4,14 +4,31 @@
 
 var cli     = require('../tools/cli');
 var assert  = require('assert');
-var path    = require('path');
 
 describe
 (
     'screw.js',
     function ()
     {
-        var exec = require('child_process').exec;
+        var childProcessExports = require('child_process');
+        var fs                  = require('fs');
+        var os                  = require('os');
+        var path                = require('path');
+
+        function createOutputFileName()
+        {
+            var tmpDir = os.tmpdir();
+            do
+            {
+                var fileName = '';
+                do
+                    fileName += (Math.random() * 36 | 0).toString(36);
+                while (fileName.length < 10);
+                var outputFileName = path.join(tmpDir, fileName);
+            }
+            while (fs.existsSync(outputFileName));
+            return outputFileName;
+        }
 
         function doAssert(actual, expected)
         {
@@ -21,30 +38,42 @@ describe
                 assert.strictEqual(actual, expected);
         }
 
-        function test(description, command, expectedStdout, expectedStderr, expectedExitCode)
+        function test
+        (
+            description,
+            screwArgs,
+            childProcessHandler,
+            expectedStdout,
+            expectedStderr,
+            expectedFiles,
+            expectedExitCode
+        )
         {
+            var actualExitCode;
+            var args = ['./screw.js'].concat(screwArgs);
             it
             (
                 description,
                 function (done)
                 {
-                    exec
+                    var childProcess =
+                    childProcessExports.execFile
                     (
-                        command,
+                        process.execPath,
+                        args,
                         options,
                         function (error, stdout, stderr)
                         {
-                            doAssert(stdout, expectedStdout);
-                            doAssert(stderr, expectedStderr);
-                        }
-                    )
-                    .on
-                    (
-                        'exit',
-                        function (actualExitCode)
-                        {
                             try
                             {
+                                doAssert(stdout, expectedStdout);
+                                doAssert(stderr, expectedStderr);
+                                for (var filePath in expectedFiles)
+                                {
+                                    var actualContent = fs.readFileSync(filePath).toString();
+                                    var expectedContent = expectedFiles[filePath];
+                                    assert.strictEqual(actualContent, expectedContent);
+                                }
                                 assert.strictEqual(actualExitCode, expectedExitCode);
                             }
                             catch (error)
@@ -54,7 +83,17 @@ describe
                             }
                             done();
                         }
+                    )
+                    .on
+                    (
+                        'exit',
+                        function (exitCode)
+                        {
+                            actualExitCode = exitCode;
+                        }
                     );
+                    if (childProcessHandler)
+                        childProcessHandler(childProcess);
                 }
             )
             .timeout(5000);
@@ -65,34 +104,130 @@ describe
         test
         (
             'shows the help message with option "--help"',
-            'node ./screw.js --help',
+            ['--help'],
+            null,
             /^Usage: screw.js [^]*\n$/,
             '',
+            null,
+            0
+        );
+        test
+        (
+            'shows the version number with option "--version"',
+            ['--version'],
+            null,
+            /^JScrewIt \d+\.\d+\.\d+\n$/,
+            '',
+            null,
             0
         );
         test
         (
             'shows an error message with an invalid option',
-            'node ./screw.js --foo',
+            ['--foo'],
+            null,
             '',
             'screw.js: unrecognized option "--foo".\nTry "screw.js --help" for more information.\n',
+            null,
             1
         );
         test
         (
             'shows an error message when an invalid feature is specified',
-            'node ./screw.js -f FOO',
+            ['-f', 'FOO'],
+            null,
             '',
             'Unknown feature "FOO"\n',
+            null,
             1
         );
         test
         (
             'shows an error message when the input file does not exist',
-            'node ./screw.js ""',
+            ['""'],
+            null,
             '',
             /^ENOENT\b. no such file or directory\b.*\n$/,
+            null,
             1
+        );
+        test
+        (
+            'prints the encoded input interactively',
+            [],
+            function (childProcess)
+            {
+                childProcess.stdin.write('10\n');
+                childProcess.stdin.end();
+            },
+            'SCREW> +(+!![]+[+[]])\nSCREW> ',
+            '',
+            null,
+            0
+        );
+        test
+        (
+            'prints an error message interactively',
+            ['-x'],
+            function (childProcess)
+            {
+                childProcess.stdin.write('?\n');
+                childProcess.stdin.end();
+            },
+            'SCREW> SCREW> ',
+            'Encoding failed\n',
+            null,
+            0
+        );
+        test
+        (
+            'ignores empty input interactively',
+            [],
+            function (childProcess)
+            {
+                childProcess.stdin.write('\n');
+                childProcess.stdin.end();
+            },
+            'SCREW> SCREW> ',
+            '',
+            null,
+            0
+        );
+        test
+        (
+            'encodes a file and shows the output',
+            ['test/fixture.txt'],
+            null,
+            '+[]\n',
+            '',
+            null,
+            0
+        );
+        var outputFileName1 = createOutputFileName();
+        var expectedFiles1 = { };
+        expectedFiles1[outputFileName1] = '+[]';
+        test
+        (
+            'encodes a file and writes the output to a file',
+            ['test/fixture.txt', outputFileName1],
+            null,
+            /^Original size: .*\nScrewed size: .*\nExpansion factor: .*\nEncoding time: .*\n$/,
+            '',
+            expectedFiles1,
+            0
+        );
+        var outputFileName2 = createOutputFileName();
+        var expectedFiles2 = { };
+        expectedFiles2[outputFileName2] = '+[]';
+        test
+        (
+            'encodes a file, writes the output to a file and prints a diagnostic report',
+            ['-d', 'test/fixture.txt', outputFileName2],
+            null,
+            /\n\nOriginal size: .*\nScrewed size: .*\nExpansion factor: .*\nEncoding time: .*\n$/,
+            '',
+            expectedFiles2,
+            0
         );
     }
 );

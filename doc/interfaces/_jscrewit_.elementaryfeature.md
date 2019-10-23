@@ -1,60 +1,35 @@
-[JScrewIt](../README.md) › ["jscrewit"](../modules/_jscrewit_.md) › [Feature](_jscrewit_.feature.md)
+[JScrewIt](../README.md) › ["jscrewit"](../modules/_jscrewit_.md) › [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
-# Interface: Feature
-
-Objects of this type indicate which of the capabilities that JScrewIt can use to minimize the
-length of its output are available in a particular JavaScript engine.
-
-JScrewIt comes with a set of predefined feature objects exposed as property values of
-`JScrewIt.Feature` or <code>[JScrewIt.Feature.ALL](_jscrewit_.featureconstructor.md#all)</code>, where the property name is
-the feature's name or an alias thereof.
-
-Besides these predefined features, it is possible to construct custom features from the union
-or intersection of other features.
-
-Among the predefined features, there are some special ones called *elementary* features.
-Elementary features either cannot be expressed as a union of any number of other features, or
-they are different from such a union in that they exclude some other feature not excluded by
-their elementary components.
-All other features, called *composite* features, can be constructed as a union of zero or
-more elementary features.
-Two of the predefined composite features are particularly important: <code>[DEFAULT](_jscrewit_.featureall.md#default)</code>
-is the empty feature, indicating that no elementary feature is available at all;
-<code>[AUTO](_jscrewit_.featureall.md#auto)</code> is the union of all elementary features available in the current
-engine.
-
-Not all features can be available at the same time: some features are necessarily
-incompatible, meaning that they mutually exclude each other, and thus their union cannot be
-constructed.
+# Interface: ElementaryFeature
 
 ## Hierarchy
 
-* **Feature**
-
-  ↳ [CustomFeature](_jscrewit_.customfeature.md)
-
   ↳ [PredefinedFeature](_jscrewit_.predefinedfeature.md)
+
+  ↳ **ElementaryFeature**
 
 ## Index
 
 ### Properties
 
-* [canonicalNames](_jscrewit_.feature.md#canonicalnames)
-* [description](_jscrewit_.feature.md#optional-description)
-* [elementary](_jscrewit_.feature.md#elementary)
-* [elementaryNames](_jscrewit_.feature.md#elementarynames)
-* [name](_jscrewit_.feature.md#optional-name)
+* [canonicalNames](_jscrewit_.elementaryfeature.md#canonicalnames)
+* [description](_jscrewit_.elementaryfeature.md#description)
+* [elementary](_jscrewit_.elementaryfeature.md#elementary)
+* [elementaryNames](_jscrewit_.elementaryfeature.md#elementarynames)
+* [name](_jscrewit_.elementaryfeature.md#name)
 
 ### Methods
 
-* [includes](_jscrewit_.feature.md#includes)
-* [restrict](_jscrewit_.feature.md#restrict)
+* [includes](_jscrewit_.elementaryfeature.md#includes)
+* [restrict](_jscrewit_.elementaryfeature.md#restrict)
 
 ## Properties
 
 ###  canonicalNames
 
 • **canonicalNames**: *[ElementaryFeatureName](../modules/_jscrewit_.md#elementaryfeaturename)[]*
+
+*Inherited from [Feature](_jscrewit_.feature.md).[canonicalNames](_jscrewit_.feature.md#canonicalnames)*
 
 *Defined in [feature.d.ts:61](https://github.com/fasttime/JScrewIt/blob/2.11.0/lib/feature.d.ts#L61)*
 
@@ -63,32 +38,33 @@ and implied features.
 
 ___
 
-### `Optional` description
+###  description
 
-• **description**? : *undefined | string*
+• **description**: *string*
 
-*Defined in [feature.d.ts:69](https://github.com/fasttime/JScrewIt/blob/2.11.0/lib/feature.d.ts#L69)*
+*Inherited from [PredefinedFeature](_jscrewit_.predefinedfeature.md).[description](_jscrewit_.predefinedfeature.md#description)*
 
-A short description of this feature object in plain English.
+*Overrides [Feature](_jscrewit_.feature.md).[description](_jscrewit_.feature.md#optional-description)*
 
-All predefined features have a description.
-If desired, custom features may be assigned a description, too.
+*Defined in [feature.d.ts:310](https://github.com/fasttime/JScrewIt/blob/2.11.0/lib/feature.d.ts#L310)*
 
 ___
 
 ###  elementary
 
-• **elementary**: *boolean*
+• **elementary**: *true*
 
-*Defined in [feature.d.ts:72](https://github.com/fasttime/JScrewIt/blob/2.11.0/lib/feature.d.ts#L72)*
+*Overrides [Feature](_jscrewit_.feature.md).[elementary](_jscrewit_.feature.md#elementary)*
 
-A boolean value indicating whether this is an elementary feature object.
+*Defined in [feature.d.ts:25](https://github.com/fasttime/JScrewIt/blob/2.11.0/lib/feature.d.ts#L25)*
 
 ___
 
 ###  elementaryNames
 
 • **elementaryNames**: *[ElementaryFeatureName](../modules/_jscrewit_.md#elementaryfeaturename)[]*
+
+*Inherited from [Feature](_jscrewit_.feature.md).[elementaryNames](_jscrewit_.feature.md#elementarynames)*
 
 *Defined in [feature.d.ts:78](https://github.com/fasttime/JScrewIt/blob/2.11.0/lib/feature.d.ts#L78)*
 
@@ -97,22 +73,21 @@ aliases.
 
 ___
 
-### `Optional` name
+###  name
 
-• **name**? : *undefined | string*
+• **name**: *[ElementaryFeatureName](../modules/_jscrewit_.md#elementaryfeaturename)*
 
-*Defined in [feature.d.ts:86](https://github.com/fasttime/JScrewIt/blob/2.11.0/lib/feature.d.ts#L86)*
+*Overrides [PredefinedFeature](_jscrewit_.predefinedfeature.md).[name](_jscrewit_.predefinedfeature.md#name)*
 
-The primary name of this feature object, useful for identification purpose.
-
-All predefined features have a name.
-If desired, custom features may be assigned a name, too.
+*Defined in [feature.d.ts:26](https://github.com/fasttime/JScrewIt/blob/2.11.0/lib/feature.d.ts#L26)*
 
 ## Methods
 
 ###  includes
 
 ▸ **includes**(...`features`: [Feature](_jscrewit_.feature.md) | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "BARPROP" | "CAPITAL_HTML" | "CONSOLE" | "DOCUMENT" | "DOMWINDOW" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "AUTO" | "BROWSER" | "CHROME_73" | "COMPACT" | "DEFAULT" | "EDGE_40" | "FF_62" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF" | ReadonlyArray‹[Feature](_jscrewit_.feature.md) | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "BARPROP" | "CAPITAL_HTML" | "CONSOLE" | "DOCUMENT" | "DOMWINDOW" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "AUTO" | "BROWSER" | "CHROME_73" | "COMPACT" | "DEFAULT" | "EDGE_40" | "FF_62" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF"›[]): *boolean*
+
+*Inherited from [Feature](_jscrewit_.feature.md).[includes](_jscrewit_.feature.md#includes)*
 
 *Defined in [feature.d.ts:96](https://github.com/fasttime/JScrewIt/blob/2.11.0/lib/feature.d.ts#L96)*
 
@@ -134,6 +109,8 @@ ___
 ###  restrict
 
 ▸ **restrict**(`environment`: "forced-strict-mode" | "web-worker", `engineFeatureObjs?`: keyof PredefinedFeature[]): *[CustomFeature](_jscrewit_.customfeature.md)*
+
+*Inherited from [Feature](_jscrewit_.feature.md).[restrict](_jscrewit_.feature.md#restrict)*
 
 *Defined in [feature.d.ts:128](https://github.com/fasttime/JScrewIt/blob/2.11.0/lib/feature.d.ts#L128)*
 

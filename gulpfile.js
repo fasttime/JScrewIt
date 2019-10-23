@@ -160,9 +160,6 @@ task
         const mochaPath = resolve('mocha/bin/mocha');
         const forkArgs =
         [
-            '--include=lib',
-            '--include=src',
-            '--include=tools',
             '--reporter=html',
             '--reporter=text-summary',
             '--',

@@ -1,7 +1,7 @@
 import createClusteringPlan
 from './clustering-plan';
 import { _Math_max, _Math_pow, assignNoEnum }                                   from './obj-utils';
-import { LEVEL_NUMERIC, LEVEL_OBJECT, LEVEL_STRING, LEVEL_UNDEFINED, Solution } from './solution';
+import Solution, { LEVEL_NUMERIC, LEVEL_OBJECT, LEVEL_STRING, LEVEL_UNDEFINED } from './solution';
 
 // This implementation assumes that all numeric solutions have an outer plus, and all other
 // character solutions have none.
@@ -265,12 +265,11 @@ export var optimizeSolutions;
     {
         function gather(offset, count, groupBond, groupForceString)
         {
-            var str;
             var end = offset + count;
             var groupSolutions = solutions.slice(offset, end);
             if (optimizerList.length)
                 optimizeSolutions(optimizerList, groupSolutions, groupBond, groupForceString);
-            str = gatherGroup(groupSolutions, groupBond, groupForceString, bridgeUsed);
+            var str = gatherGroup(groupSolutions, groupBond, groupForceString, bridgeUsed);
             return str;
         }
 

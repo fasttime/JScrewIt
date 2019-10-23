@@ -7,7 +7,7 @@
 import { define, defineList, defineWithArrayLike }                  from './definers';
 import { Feature }                                                  from './features';
 import { _Object_defineProperty, noProto }                          from './obj-utils';
-import { LEVEL_NUMERIC, LEVEL_OBJECT, LEVEL_UNDEFINED, Solution }   from './solution';
+import Solution, { LEVEL_NUMERIC, LEVEL_OBJECT, LEVEL_UNDEFINED }   from './solution';
 
 function defineSimple(simple, expr, level)
 {

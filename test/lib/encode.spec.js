@@ -454,7 +454,7 @@ self,
 
                             // Subtractions
                             test('string minuhends', '"false" - - 1', '+(![]+[])+(1)');
-                            test('', '1+1-(-1)', '1+(1)+(1)');
+                            test('composite minuhends', '1+1-(-1)', '1+(1)+(1)');
 
                             // Pre-increments
                             test('pre-incremented call expression', '++false()', '++(![])()');
@@ -488,7 +488,7 @@ self,
                             );
                             test
                             (
-                                'Post-increment arithmetic subtraction',
+                                'post-increment arithmetic subtraction',
                                 '[0][0]++ - 1',
                                 '[0][0]+++*',
                                 -1

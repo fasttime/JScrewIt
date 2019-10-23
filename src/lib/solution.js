@@ -10,7 +10,7 @@ function setHasOuterPlus(solution, hasOuterPlus)
     _Object_defineProperty(solution, 'hasOuterPlus', { value: hasOuterPlus });
 }
 
-export function Solution(replacement, level, hasOuterPlus)
+export default function Solution(replacement, level, hasOuterPlus)
 {
     this.replacement    = replacement;
     this.level          = level;

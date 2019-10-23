@@ -44,7 +44,7 @@ import
     ScrewBuffer,
 }
 from './screw-buffer';
-import { LEVEL_NUMERIC, LEVEL_STRING, LEVEL_UNDEFINED, Solution }   from './solution';
+import Solution, { LEVEL_NUMERIC, LEVEL_STRING, LEVEL_UNDEFINED }   from './solution';
 
 /** @class Encoder */
 
@@ -190,7 +190,7 @@ export var replaceStaticString;
 
     function replaceIndexer(index)
     {
-        var replacement = '[' + replaceStaticString(index) + ']';
+        var replacement = '[' + replaceStaticString(_String(index)) + ']';
         return replacement;
     }
 
@@ -833,7 +833,8 @@ export var replaceStaticString;
         resolveCharacter:
         function (char)
         {
-            var solution = this.charCache[char];
+            var charCache = this.charCache;
+            var solution = charCache[char];
             if (solution === undefined)
             {
                 this.callResolver
@@ -841,7 +842,6 @@ export var replaceStaticString;
                     quoteString(char),
                     function ()
                     {
-                        var charCache;
                         var entries = CHARACTERS[char];
                         if (!entries || _Array_isArray(entries))
                         {
@@ -849,7 +849,6 @@ export var replaceStaticString;
                                 solution = this.findOptimalSolution(entries);
                             if (!solution)
                                 solution = this.defaultResolveCharacter(char);
-                            charCache = this.charCache;
                         }
                         else
                         {
@@ -870,7 +869,8 @@ export var replaceStaticString;
         resolveConstant:
         function (constant)
         {
-            var solution = this.constCache[constant];
+            var constCache = this.constCache;
+            var solution = constCache[constant];
             if (solution === undefined)
             {
                 this.callResolver
@@ -878,13 +878,9 @@ export var replaceStaticString;
                     constant,
                     function ()
                     {
-                        var constCache;
                         var entries = this.constantDefinitions[constant];
                         if (_Array_isArray(entries))
-                        {
                             solution = this.findOptimalSolution(entries);
-                            constCache = this.constCache;
-                        }
                         else
                         {
                             solution = STATIC_ENCODER.resolve(entries);

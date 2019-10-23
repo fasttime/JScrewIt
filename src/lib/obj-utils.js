@@ -54,7 +54,7 @@ export function assignNoEnum(target, source)
     return target;
 }
 
-export var createEmpty = _Object_create.bind(null, null);
+export var createEmpty = _Object_create.bind(null, null, undefined);
 
 export function esToString(arg)
 {

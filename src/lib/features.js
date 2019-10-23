@@ -310,7 +310,7 @@ export var validMaskFromArrayOrStringOrFeature;
     function validMaskFromArguments(args)
     {
         var mask = maskNew();
-        var validationNeeded = false;
+        var validationNeeded = 0;
         _Array_prototype_forEach.call
         (
             args,

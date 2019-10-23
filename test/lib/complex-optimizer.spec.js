@@ -139,8 +139,8 @@
                                 var complexAppendLength = (opt.complexAppendLength | 0) + 1;
                                 var complexLevel = opt.complexLevel;
                                 var solutions =
-                                    opt.solutions ||
-                                    [SOLUTIONS.f, SOLUTIONS.e, SOLUTIONS.e, SOLUTIONS.t];
+                                opt.solutions ||
+                                [SOLUTIONS.f, SOLUTIONS.e, SOLUTIONS.e, SOLUTIONS.t];
                                 var bond = opt.bond;
                                 var forceString = opt.forceString;
                                 var expectedSolutionCount = solutions.length;

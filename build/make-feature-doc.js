@@ -348,7 +348,7 @@ module.exports =
     const { Feature } = JScrewIt;
     const allFeatureMap = Feature.ALL;
     const elementaryFeatures = Feature.ELEMENTARY;
-    const predefinedFeatureNames = [];
+    const compositeFeatureNames = [];
     let contentTs =
     '/// <reference path=\'feature.d.ts\'/>\n' +
     '\n' +
@@ -362,7 +362,7 @@ module.exports =
         {
             let subContentTs;
             const featureObj = allFeatureMap[featureName];
-            const { name } = featureObj;
+            const { elementary, name } = featureObj;
             if (name === featureName)
             {
                 const { description, elementary } = featureObj;
@@ -381,20 +381,27 @@ module.exports =
                         `         * ${formattedAvailability}\n         `;
                     }
                 }
-                predefinedFeatureNames.push(featureName);
+                else
+                    compositeFeatureNames.push(featureName);
             }
             else
                 subContentTs = ` An alias for \`${name}\`. `;
-            contentTs +=
-            `\n        /**${subContentTs}*/\n        ${featureName}: PredefinedFeature;\n`;
+            const typeName = elementary ? 'ElementaryFeature' : 'PredefinedFeature';
+            contentTs += `\n        /**${subContentTs}*/\n        ${featureName}: ${typeName};\n`;
         },
     );
     contentTs +=
     '    }\n' +
     '\n' +
+    '    /** Name of an elementary feature. */\n' +
+    '    type ElementaryFeatureName =\n' +
+    `${Feature.ELEMENTARY.map(({ name }) => `    | '${name}'\n`).join('')}` +
+    '    ;\n' +
+    '\n' +
     '    /** Name of a predefined feature. */\n' +
     '    type PredefinedFeatureName =\n' +
-    `${predefinedFeatureNames.map(featureName => `    | '${featureName}'\n`).join('')}` +
+    '    ElementaryFeatureName\n' +
+    `${compositeFeatureNames.map(featureName => `    | '${featureName}'\n`).join('')}` +
     '    ;\n' +
     '}\n';
     let contentMd =
