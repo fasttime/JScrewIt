@@ -1,5 +1,5 @@
-/* eslint-env mocha */
-/* global BigInt, Symbol, document, expect, global, require, self, when */
+/* eslint-env ebdd/ebdd */
+/* global BigInt, Symbol, document, expect, global, require, self */
 
 'use strict';
 

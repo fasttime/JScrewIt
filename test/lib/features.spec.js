@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+/* eslint-env ebdd/ebdd */
 /* global emuDo, expect, global, module, reloadJScrewIt, require, self */
 
 'use strict';

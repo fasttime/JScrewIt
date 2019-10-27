@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+/* eslint-env ebdd/ebdd */
 /* global EMU_FEATURES, global, require, self */
 
 'use strict';

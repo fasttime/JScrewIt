@@ -52,6 +52,7 @@ task
                     'test/**/*.js',
                     'tools/**/*.js',
                 ],
+                plugins: 'ebdd',
                 // process.exitCode is not supported in Node.js 0.10.
                 rules: { 'no-process-exit': 'off' },
             },
