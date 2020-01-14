@@ -182,7 +182,7 @@ task
 
         const uglifyOpts =
         {
-            compress: { global_defs: { DEBUG: false }, passes: 2 },
+            compress: { global_defs: { DEBUG: false }, passes: 3 },
             output: { comments: (node, comment) => comment.pos === 0 },
         };
         const stream =
@@ -238,8 +238,8 @@ task
             mode:                   'file',
             name:                   'JScrewIt',
             out:                    'doc',
+            plugin:                 'typedoc-plugin-markdown',
             readme:                 'none',
-            theme:                  'markdown',
             tsconfig:               'tsconfig.json',
         };
         const stream = src('lib', { read: false }).pipe(typedoc(typedocOpts));

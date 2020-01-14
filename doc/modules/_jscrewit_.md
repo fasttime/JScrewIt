@@ -61,7 +61,7 @@ ___
 
 ###  FeatureElement
 
-Ƭ **FeatureElement**: *[Feature](../interfaces/_jscrewit_.feature.md) | keyof FeatureAll*
+Ƭ **FeatureElement**: *[Feature](../interfaces/_jscrewit_.customfeature.md#feature) | keyof FeatureAll*
 
 *Defined in [feature.d.ts:306](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L306)*
 
