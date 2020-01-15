@@ -16,6 +16,7 @@ const ENGINE_ENTRIES =
         versions:
         [
             { description: '40+', feature: 'EDGE_40' },
+            { description: '79+', feature: 'CHROME_73' },
         ],
     },
     {
