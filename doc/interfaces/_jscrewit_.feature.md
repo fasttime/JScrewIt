@@ -52,7 +52,7 @@ constructed.
 
 • **canonicalNames**: *[ElementaryFeatureName](../modules/_jscrewit_.md#elementaryfeaturename)[]*
 
-*Defined in [feature.d.ts:61](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L61)*
+*Defined in [feature.d.ts:61](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature.d.ts#L61)*
 
 An array of all elementary feature names included in this feature object, without aliases
 and implied features.
@@ -63,7 +63,7 @@ ___
 
 • **description**? : *undefined | string*
 
-*Defined in [feature.d.ts:69](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L69)*
+*Defined in [feature.d.ts:69](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature.d.ts#L69)*
 
 A short description of this feature object in plain English.
 
@@ -76,7 +76,7 @@ ___
 
 • **elementary**: *boolean*
 
-*Defined in [feature.d.ts:72](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L72)*
+*Defined in [feature.d.ts:72](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature.d.ts#L72)*
 
 A boolean value indicating whether this is an elementary feature object.
 
@@ -86,7 +86,7 @@ ___
 
 • **elementaryNames**: *[ElementaryFeatureName](../modules/_jscrewit_.md#elementaryfeaturename)[]*
 
-*Defined in [feature.d.ts:78](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L78)*
+*Defined in [feature.d.ts:78](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature.d.ts#L78)*
 
 An array of all elementary feature names included in this feature object, without
 aliases.
@@ -97,7 +97,7 @@ ___
 
 • **name**? : *undefined | string*
 
-*Defined in [feature.d.ts:86](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L86)*
+*Defined in [feature.d.ts:86](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature.d.ts#L86)*
 
 The primary name of this feature object, useful for identification purpose.
 
@@ -110,7 +110,7 @@ If desired, custom features may be assigned a name, too.
 
 ▸ **includes**(...`features`: [Feature](_jscrewit_.customfeature.md#feature) | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "BARPROP" | "CAPITAL_HTML" | "CONSOLE" | "DOCUMENT" | "DOMWINDOW" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "AUTO" | "BROWSER" | "CHROME_73" | "COMPACT" | "DEFAULT" | "EDGE_40" | "FF_62" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF" | ReadonlyArray‹[Feature](_jscrewit_.customfeature.md#feature) | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "BARPROP" | "CAPITAL_HTML" | "CONSOLE" | "DOCUMENT" | "DOMWINDOW" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "UNEVAL" | "V8_SRC" | "WINDOW" | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "AUTO" | "BROWSER" | "CHROME_73" | "COMPACT" | "DEFAULT" | "EDGE_40" | "FF_62" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "CHROME" | "CHROME_PREV" | "EDGE" | "EDGE_PREV" | "FF" | "FF_ESR" | "SAFARI" | "SAFARI_8" | "SELF"›[]): *boolean*
 
-*Defined in [feature.d.ts:96](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L96)*
+*Defined in [feature.d.ts:96](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature.d.ts#L96)*
 
 Determines whether this feature object includes all of the specified features.
 
@@ -131,7 +131,7 @@ ___
 
 ▸ **restrict**(`environment`: "forced-strict-mode" | "web-worker", `engineFeatureObjs?`: keyof PredefinedFeature[]): *[CustomFeature](_jscrewit_.customfeature.md)*
 
-*Defined in [feature.d.ts:128](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L128)*
+*Defined in [feature.d.ts:128](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature.d.ts#L128)*
 
 Creates a new feature object from this feature by removing elementary features that are
 not available inside a particular environment.

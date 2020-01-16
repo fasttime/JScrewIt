@@ -30,7 +30,7 @@
 
 • **Feature**: *[FeatureConstructor](_jscrewit_.featureconstructor.md)*
 
-*Defined in [feature.d.ts:136](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L136)*
+*Defined in [feature.d.ts:136](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature.d.ts#L136)*
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 *Inherited from [CustomFeature](_jscrewit_.customfeature.md).[canonicalNames](_jscrewit_.customfeature.md#canonicalnames)*
 
-*Defined in [feature.d.ts:61](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L61)*
+*Defined in [feature.d.ts:61](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature.d.ts#L61)*
 
 An array of all elementary feature names included in this feature object, without aliases
 and implied features.
@@ -53,7 +53,7 @@ ___
 
 *Inherited from [CustomFeature](_jscrewit_.customfeature.md).[description](_jscrewit_.customfeature.md#optional-description)*
 
-*Defined in [feature.d.ts:69](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L69)*
+*Defined in [feature.d.ts:69](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature.d.ts#L69)*
 
 A short description of this feature object in plain English.
 
@@ -68,7 +68,7 @@ ___
 
 *Overrides [Feature](_jscrewit_.feature.md).[elementary](_jscrewit_.feature.md#elementary)*
 
-*Defined in [feature.d.ts:20](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L20)*
+*Defined in [feature.d.ts:20](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature.d.ts#L20)*
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 *Inherited from [CustomFeature](_jscrewit_.customfeature.md).[elementaryNames](_jscrewit_.customfeature.md#elementarynames)*
 
-*Defined in [feature.d.ts:78](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L78)*
+*Defined in [feature.d.ts:78](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature.d.ts#L78)*
 
 An array of all elementary feature names included in this feature object, without
 aliases.
@@ -91,7 +91,7 @@ ___
 
 *Inherited from [CustomFeature](_jscrewit_.customfeature.md).[name](_jscrewit_.customfeature.md#optional-name)*
 
-*Defined in [feature.d.ts:86](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L86)*
+*Defined in [feature.d.ts:86](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature.d.ts#L86)*
 
 The primary name of this feature object, useful for identification purpose.
 
@@ -106,7 +106,7 @@ If desired, custom features may be assigned a name, too.
 
 *Inherited from [CustomFeature](_jscrewit_.customfeature.md).[includes](_jscrewit_.customfeature.md#includes)*
 
-*Defined in [feature.d.ts:96](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L96)*
+*Defined in [feature.d.ts:96](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature.d.ts#L96)*
 
 Determines whether this feature object includes all of the specified features.
 
@@ -129,7 +129,7 @@ ___
 
 *Inherited from [CustomFeature](_jscrewit_.customfeature.md).[restrict](_jscrewit_.customfeature.md#restrict)*
 
-*Defined in [feature.d.ts:128](https://github.com/fasttime/JScrewIt/blob/2.11.1/lib/feature.d.ts#L128)*
+*Defined in [feature.d.ts:128](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature.d.ts#L128)*
 
 Creates a new feature object from this feature by removing elementary features that are
 not available inside a particular environment.
