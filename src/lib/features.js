@@ -774,8 +774,8 @@ export var validMaskFromArrayOrStringOrFeature;
         NO_FF_SRC:
         {
             description:
-            'A string representation of native functions typical for V8 and Edge 40 or for ' +
-            'Internet Explorer but not for Firefox and Safari.',
+            'A string representation of native functions typical for V8 or for Internet Explorer ' +
+            'but not for Firefox and Safari.',
             check:
             function ()
             {
@@ -883,8 +883,7 @@ export var validMaskFromArrayOrStringOrFeature;
         V8_SRC:
         {
             description:
-            'A string representation of native functions typical for the V8 engine, but also ' +
-            'found in Edge 40.\n' +
+            'A string representation of native functions typical for the V8 engine.\n' +
             'Remarkable traits are the lack of line feed characters at the beginning and at the ' +
             'end of the string and the presence of a single whitespace before the "[native ' +
             'code]" sequence.',
@@ -1028,7 +1027,7 @@ export var validMaskFromArrayOrStringOrFeature;
         CHROME: 'CHROME_73',
         CHROME_73:
         {
-            engine: 'Chrome 73 and Opera 60 or later',
+            engine: 'Chrome 73, Edge 79 and Opera 60 or later',
             includes:
             [
                 'ARROW',
@@ -1039,37 +1038,6 @@ export var validMaskFromArrayOrStringOrFeature;
                 'ESC_REGEXP_SLASH',
                 'FILL',
                 'FLAT',
-                'FROM_CODE_POINT',
-                'FUNCTION_19_LF',
-                'GMT',
-                'HISTORY',
-                'HTMLDOCUMENT',
-                'INCR_CHAR',
-                'INTL',
-                'LOCALE_INFINITY',
-                'NAME',
-                'NO_OLD_SAFARI_ARRAY_ITERATOR',
-                'STATUS',
-                'UNDEFINED',
-                'V8_SRC',
-                'WINDOW',
-            ],
-            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
-        },
-        EDGE: 'CHROME_73',
-        EDGE_PREV: 'EDGE_40',
-        EDGE_40:
-        {
-            engine: 'Edge 40 to 44',
-            includes:
-            [
-                'ARROW',
-                'ATOB',
-                'BARPROP',
-                'ESC_HTML_QUOT_ONLY',
-                'ESC_REGEXP_LF',
-                'ESC_REGEXP_SLASH',
-                'FILL',
                 'FROM_CODE_POINT',
                 'FUNCTION_19_LF',
                 'GMT',

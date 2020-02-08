@@ -306,7 +306,6 @@
                             'ANDRO_4_0',
                             'ANDRO_4_4',
                             'CHROME_PREV',
-                            'EDGE_PREV',
                             'FF_ESR',
                             'IE_9',
                             'IE_11',
@@ -314,7 +313,7 @@
                             'SAFARI_10',
                         ]
                     );
-                    test('COMPACT', ['CHROME', 'EDGE', 'FF', 'SAFARI']);
+                    test('COMPACT', ['CHROME', 'FF', 'SAFARI']);
                     it
                     (
                         'AUTO',

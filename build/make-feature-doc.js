@@ -5,18 +5,10 @@ const JScrewIt = require('..');
 const ENGINE_ENTRIES =
 [
     {
-        name: ['Chrome', 'Opera'],
+        name: ['Chrome', 'Edge', 'Opera'],
         versions:
         [
-            { description: ['73+', '60+'], feature: 'CHROME_73' },
-        ],
-    },
-    {
-        name: 'Edge',
-        versions:
-        [
-            { description: '40+', feature: 'EDGE_40' },
-            { description: '79+', feature: 'CHROME_73' },
+            { description: ['73+', '79+', '60+'], feature: 'CHROME_73' },
         ],
     },
     {
@@ -75,13 +67,13 @@ const ENGINE_ENTRIES =
 const ENGINE_REFS =
 [
     { index: 0, subIndex: 0 },
+    { index: 0, subIndex: 1 },
     { index: 1 },
     { index: 2 },
     { index: 3 },
+    { index: 0, subIndex: 2 },
     { index: 4 },
-    { index: 0, subIndex: 1 },
     { index: 5 },
-    { index: 6 },
 ];
 
 function calculateEngineSupportInfo(engineEntry, filter)

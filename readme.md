@@ -231,7 +231,7 @@ their intersection.
 JScrewIt itself and the code it generates are compatible with the JavaScript engines listed below.
 
 - Chrome 73+
-- Edge 40+
+- Edge 79+
 - Firefox 62+
 - Internet Explorer 9+
 - Safari 7.0+

@@ -32,9 +32,6 @@
 * [DEFAULT](_jscrewit_.featureall.md#default)
 * [DOCUMENT](_jscrewit_.featureall.md#document)
 * [DOMWINDOW](_jscrewit_.featureall.md#domwindow)
-* [EDGE](_jscrewit_.featureall.md#edge)
-* [EDGE_40](_jscrewit_.featureall.md#edge_40)
-* [EDGE_PREV](_jscrewit_.featureall.md#edge_prev)
 * [ESC_HTML_ALL](_jscrewit_.featureall.md#esc_html_all)
 * [ESC_HTML_QUOT](_jscrewit_.featureall.md#esc_html_quot)
 * [ESC_HTML_QUOT_ONLY](_jscrewit_.featureall.md#esc_html_quot_only)
@@ -258,7 +255,7 @@ ___
 
 *Defined in [feature-all.d.ts:103](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L103)*
 
-Features available in Chrome 73 and Opera 60 or later.
+Features available in Chrome 73, Edge 79 and Opera 60 or later.
 
 ___
 
@@ -338,41 +335,11 @@ Available in Android Browser before 4.4. This feature is not available inside we
 
 ___
 
-###  EDGE
-
-• **EDGE**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
-
-*Defined in [feature-all.d.ts:150](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L150)*
-
-An alias for `CHROME_73`.
-
-___
-
-###  EDGE_40
-
-• **EDGE_40**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
-
-*Defined in [feature-all.d.ts:155](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L155)*
-
-Features available in Edge 40 to 44.
-
-___
-
-###  EDGE_PREV
-
-• **EDGE_PREV**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
-
-*Defined in [feature-all.d.ts:158](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L158)*
-
-An alias for `EDGE_40`.
-
-___
-
 ###  ESC_HTML_ALL
 
 • **ESC_HTML_ALL**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:167](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L167)*
+*Defined in [feature-all.d.ts:156](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L156)*
 
 The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
 
@@ -386,7 +353,7 @@ ___
 
 • **ESC_HTML_QUOT**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:176](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L176)*
+*Defined in [feature-all.d.ts:165](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L165)*
 
 The property that double quotation marks in the argument of String.prototype.fontcolor are escaped as "\&quot;".
 
@@ -400,7 +367,7 @@ ___
 
 • **ESC_HTML_QUOT_ONLY**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:185](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L185)*
+*Defined in [feature-all.d.ts:174](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L174)*
 
 The property that only double quotation marks and no other characters in the argument of String.prototype.fontcolor are escaped into HTML entities.
 
@@ -414,7 +381,7 @@ ___
 
 • **ESC_REGEXP_LF**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:194](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L194)*
+*Defined in [feature-all.d.ts:183](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L183)*
 
 Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format line feed characters \("\\n"\) in their string representation.
 
@@ -428,7 +395,7 @@ ___
 
 • **ESC_REGEXP_SLASH**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:203](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L203)*
+*Defined in [feature-all.d.ts:192](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L192)*
 
 Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format slashes \("/"\) in their string representation.
 
@@ -442,7 +409,7 @@ ___
 
 • **EXTERNAL**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:212](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L212)*
+*Defined in [feature-all.d.ts:201](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L201)*
 
 Existence of the global object sidebar having the string representation "\[object External\]".
 
@@ -456,7 +423,7 @@ ___
 
 • **FF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:215](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L215)*
+*Defined in [feature-all.d.ts:204](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L204)*
 
 An alias for `FF_62`.
 
@@ -466,7 +433,7 @@ ___
 
 • **FF_62**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:220](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L220)*
+*Defined in [feature-all.d.ts:209](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L209)*
 
 Features available in Firefox 62 or later.
 
@@ -476,7 +443,7 @@ ___
 
 • **FF_ESR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:223](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L223)*
+*Defined in [feature-all.d.ts:212](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L212)*
 
 An alias for `FF_62`.
 
@@ -486,7 +453,7 @@ ___
 
 • **FF_SRC**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:234](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L234)*
+*Defined in [feature-all.d.ts:223](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L223)*
 
 A string representation of native functions typical for Firefox and Safari.
 
@@ -502,7 +469,7 @@ ___
 
 • **FILL**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:243](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L243)*
+*Defined in [feature-all.d.ts:232](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L232)*
 
 Existence of the native function Array.prototype.fill.
 
@@ -516,13 +483,13 @@ ___
 
 • **FLAT**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:252](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L252)*
+*Defined in [feature-all.d.ts:241](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L241)*
 
 Existence of the native function Array.prototype.flat.
 
 **`reamarks`** 
 
-Available in Chrome, Edge 79+, Firefox, Safari 12+, Opera and Node.js 11+.
+Available in Chrome, Edge, Firefox, Safari 12+, Opera and Node.js 11+.
 
 ___
 
@@ -530,7 +497,7 @@ ___
 
 • **FROM_CODE_POINT**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:261](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L261)*
+*Defined in [feature-all.d.ts:250](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L250)*
 
 Existence of the function String.fromCodePoint.
 
@@ -544,7 +511,7 @@ ___
 
 • **FUNCTION_19_LF**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:270](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L270)*
+*Defined in [feature-all.d.ts:259](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L259)*
 
 A string representation of dynamically generated functions where the character at index 19 is a line feed \("\\n"\).
 
@@ -558,7 +525,7 @@ ___
 
 • **FUNCTION_22_LF**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:279](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L279)*
+*Defined in [feature-all.d.ts:268](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L268)*
 
 A string representation of dynamically generated functions where the character at index 22 is a line feed \("\\n"\).
 
@@ -572,7 +539,7 @@ ___
 
 • **GMT**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:290](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L290)*
+*Defined in [feature-all.d.ts:279](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L279)*
 
 Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
 
@@ -588,7 +555,7 @@ ___
 
 • **HISTORY**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:299](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L299)*
+*Defined in [feature-all.d.ts:288](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L288)*
 
 Existence of the global object history having the string representation "\[object History\]".
 
@@ -602,7 +569,7 @@ ___
 
 • **HTMLAUDIOELEMENT**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:308](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L308)*
+*Defined in [feature-all.d.ts:297](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L297)*
 
 Existence of the global object Audio whose string representation starts with "function HTMLAudioElement".
 
@@ -616,7 +583,7 @@ ___
 
 • **HTMLDOCUMENT**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:317](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L317)*
+*Defined in [feature-all.d.ts:306](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L306)*
 
 Existence of the global object document having the string representation "\[object HTMLDocument\]".
 
@@ -630,7 +597,7 @@ ___
 
 • **IE_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:322](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L322)*
+*Defined in [feature-all.d.ts:311](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L311)*
 
 Features available in Internet Explorer 10.
 
@@ -640,7 +607,7 @@ ___
 
 • **IE_11**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:327](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L327)*
+*Defined in [feature-all.d.ts:316](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L316)*
 
 Features available in Internet Explorer 11.
 
@@ -650,7 +617,7 @@ ___
 
 • **IE_11_WIN_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:332](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L332)*
+*Defined in [feature-all.d.ts:321](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L321)*
 
 Features available in Internet Explorer 11 on Windows 10.
 
@@ -660,7 +627,7 @@ ___
 
 • **IE_9**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:337](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L337)*
+*Defined in [feature-all.d.ts:326](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L326)*
 
 Features available in Internet Explorer 9.
 
@@ -670,7 +637,7 @@ ___
 
 • **IE_SRC**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:348](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L348)*
+*Defined in [feature-all.d.ts:337](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L337)*
 
 A string representation of native functions typical for Internet Explorer.
 
@@ -686,7 +653,7 @@ ___
 
 • **INCR_CHAR**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:357](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L357)*
+*Defined in [feature-all.d.ts:346](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L346)*
 
 The ability to use unary increment operators with string characters, like in \( ++"some string"\[0\] \): this will result in a TypeError in strict mode in ECMAScript compliant engines.
 
@@ -700,7 +667,7 @@ ___
 
 • **INTL**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:366](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L366)*
+*Defined in [feature-all.d.ts:355](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L355)*
 
 Existence of the global object Intl.
 
@@ -714,7 +681,7 @@ ___
 
 • **LOCALE_INFINITY**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:375](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L375)*
+*Defined in [feature-all.d.ts:364](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L364)*
 
 Language sensitive string representation of Infinity as "∞".
 
@@ -728,7 +695,7 @@ ___
 
 • **NAME**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:384](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L384)*
+*Defined in [feature-all.d.ts:373](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L373)*
 
 Existence of the name property for functions.
 
@@ -742,7 +709,7 @@ ___
 
 • **NODECONSTRUCTOR**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:393](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L393)*
+*Defined in [feature-all.d.ts:382](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L382)*
 
 Existence of the global object Node having the string representation "\[object NodeConstructor\]".
 
@@ -756,7 +723,7 @@ ___
 
 • **NODE_0_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:398](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L398)*
+*Defined in [feature-all.d.ts:387](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L387)*
 
 Features available in Node.js 0.10.
 
@@ -766,7 +733,7 @@ ___
 
 • **NODE_0_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:403](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L403)*
+*Defined in [feature-all.d.ts:392](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L392)*
 
 Features available in Node.js 0.12.
 
@@ -776,7 +743,7 @@ ___
 
 • **NODE_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:408](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L408)*
+*Defined in [feature-all.d.ts:397](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L397)*
 
 Features available in Node.js 10.
 
@@ -786,7 +753,7 @@ ___
 
 • **NODE_11**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:413](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L413)*
+*Defined in [feature-all.d.ts:402](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L402)*
 
 Features available in Node.js 11.
 
@@ -796,7 +763,7 @@ ___
 
 • **NODE_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:418](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L418)*
+*Defined in [feature-all.d.ts:407](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L407)*
 
 Features available in Node.js 12 or later.
 
@@ -806,7 +773,7 @@ ___
 
 • **NODE_4**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:423](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L423)*
+*Defined in [feature-all.d.ts:412](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L412)*
 
 Features available in Node.js 4.
 
@@ -816,7 +783,7 @@ ___
 
 • **NODE_5**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:428](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L428)*
+*Defined in [feature-all.d.ts:417](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L417)*
 
 Features available in Node.js 5 to 9.
 
@@ -826,9 +793,9 @@ ___
 
 • **NO_FF_SRC**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:437](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L437)*
+*Defined in [feature-all.d.ts:426](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L426)*
 
-A string representation of native functions typical for V8 and Edge 40 or for Internet Explorer but not for Firefox and Safari.
+A string representation of native functions typical for V8 or for Internet Explorer but not for Firefox and Safari.
 
 **`reamarks`** 
 
@@ -840,7 +807,7 @@ ___
 
 • **NO_IE_SRC**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:448](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L448)*
+*Defined in [feature-all.d.ts:437](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L437)*
 
 A string representation of native functions typical for most engines with the notable exception of Internet Explorer.
 
@@ -856,7 +823,7 @@ ___
 
 • **NO_OLD_SAFARI_ARRAY_ITERATOR**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:457](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L457)*
+*Defined in [feature-all.d.ts:446](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L446)*
 
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
 
@@ -870,7 +837,7 @@ ___
 
 • **NO_V8_SRC**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:468](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L468)*
+*Defined in [feature-all.d.ts:457](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L457)*
 
 A string representation of native functions typical for Firefox, Internet Explorer and Safari.
 
@@ -886,7 +853,7 @@ ___
 
 • **SAFARI**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:471](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L471)*
+*Defined in [feature-all.d.ts:460](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L460)*
 
 An alias for `SAFARI_12`.
 
@@ -896,7 +863,7 @@ ___
 
 • **SAFARI_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:476](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L476)*
+*Defined in [feature-all.d.ts:465](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L465)*
 
 Features available in Safari 10 or later.
 
@@ -906,7 +873,7 @@ ___
 
 • **SAFARI_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:481](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L481)*
+*Defined in [feature-all.d.ts:470](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L470)*
 
 Features available in Safari 12 or later.
 
@@ -916,7 +883,7 @@ ___
 
 • **SAFARI_7_0**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:486](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L486)*
+*Defined in [feature-all.d.ts:475](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L475)*
 
 Features available in Safari 7.0.
 
@@ -926,7 +893,7 @@ ___
 
 • **SAFARI_7_1**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:491](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L491)*
+*Defined in [feature-all.d.ts:480](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L480)*
 
 Features available in Safari 7.1 and Safari 8.
 
@@ -936,7 +903,7 @@ ___
 
 • **SAFARI_8**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:494](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L494)*
+*Defined in [feature-all.d.ts:483](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L483)*
 
 An alias for `SAFARI_7_1`.
 
@@ -946,7 +913,7 @@ ___
 
 • **SAFARI_9**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-*Defined in [feature-all.d.ts:499](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L499)*
+*Defined in [feature-all.d.ts:488](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L488)*
 
 Features available in Safari 9.
 
@@ -956,7 +923,7 @@ ___
 
 • **SELF**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:502](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L502)*
+*Defined in [feature-all.d.ts:491](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L491)*
 
 An alias for `ANY_WINDOW`.
 
@@ -966,7 +933,7 @@ ___
 
 • **SELF_OBJ**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:511](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L511)*
+*Defined in [feature-all.d.ts:500](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L500)*
 
 Existence of the global object self whose string representation starts with "\[object ".
 
@@ -980,7 +947,7 @@ ___
 
 • **STATUS**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:520](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L520)*
+*Defined in [feature-all.d.ts:509](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L509)*
 
 Existence of the global string status.
 
@@ -994,7 +961,7 @@ ___
 
 • **UNDEFINED**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:531](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L531)*
+*Defined in [feature-all.d.ts:520](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L520)*
 
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
 
@@ -1010,7 +977,7 @@ ___
 
 • **UNEVAL**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:540](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L540)*
+*Defined in [feature-all.d.ts:529](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L529)*
 
 Existence of the global function uneval.
 
@@ -1024,9 +991,9 @@ ___
 
 • **V8_SRC**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:551](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L551)*
+*Defined in [feature-all.d.ts:540](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L540)*
 
-A string representation of native functions typical for the V8 engine, but also found in Edge 40.
+A string representation of native functions typical for the V8 engine.
 
 Remarkable traits are the lack of line feed characters at the beginning and at the end of the string and the presence of a single whitespace before the "\[native code\]" sequence.
 
@@ -1040,7 +1007,7 @@ ___
 
 • **WINDOW**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
 
-*Defined in [feature-all.d.ts:560](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L560)*
+*Defined in [feature-all.d.ts:549](https://github.com/fasttime/JScrewIt/blob/2.12.0/lib/feature-all.d.ts#L549)*
 
 Existence of the global object self having the string representation "\[object Window\]".
 

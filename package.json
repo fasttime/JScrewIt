@@ -47,7 +47,7 @@
     "del": "~5.1.0",
     "expectations": "~1.0.0",
     "gulp": "~4.0.2",
-    "gulp-fasttime-lint": "~0.19.0",
+    "gulp-fasttime-lint": "~0.20.0",
     "gulp-jsdoc3": "~2.0.0",
     "gulp-rename": "~2.0.0",
     "gulp-tap": "2.0.0",
@@ -57,9 +57,9 @@
     "mocha-bar": "~0.0.4",
     "nyc": "~15.0.0",
     "postrequire": "~0.1.1",
-    "rollup": "~1.29.0",
+    "rollup": "~1.31.0",
     "rollup-plugin-cleanup": "~3.1.1",
-    "typedoc": "~0.16.5",
+    "typedoc": "~0.16.9",
     "typedoc-plugin-markdown": "~2.2.16"
   }
 }

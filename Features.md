@@ -6,7 +6,7 @@ This table lists features available in the most common engines.
 <th>Features</th>
 </tr>
 <tr>
-<td>Chrome 73+, Opera 60+</td>
+<td>Chrome 73+, Edge 79+, Opera 60+</td>
 <td>
 <ul>
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="doc/interfaces/_jscrewit_.featureall.md#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
@@ -21,42 +21,6 @@ This table lists features available in the most common engines.
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#FILL"><code>FILL</code></a>
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#FLAT"><code>FLAT</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#GMT"><code>GMT</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#HISTORY"><code>HISTORY</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#INCR_CHAR"><code>INCR_CHAR</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#INTL"><code>INTL</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#NAME"><code>NAME</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#NO_FF_SRC"><code>NO_FF_SRC</code></a> (implied by <a href="doc/interfaces/_jscrewit_.featureall.md#V8_SRC"><code>V8_SRC</code></a>)
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="doc/interfaces/_jscrewit_.featureall.md#V8_SRC"><code>V8_SRC</code></a>)
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="doc/interfaces/_jscrewit_.featureall.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="doc/interfaces/_jscrewit_.featureall.md#WINDOW"><code>WINDOW</code></a>)
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#STATUS"><code>STATUS</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#UNDEFINED"><code>UNDEFINED</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#V8_SRC"><code>V8_SRC</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#WINDOW"><code>WINDOW</code></a>
-</ul>
-</td>
-</tr>
-<tr>
-<td>Edge 40+</td>
-<td>
-<ul>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="doc/interfaces/_jscrewit_.featureall.md#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="doc/interfaces/_jscrewit_.featureall.md#WINDOW"><code>WINDOW</code></a>)
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="doc/interfaces/_jscrewit_.featureall.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#ARROW"><code>ARROW</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#ATOB"><code>ATOB</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#BARPROP"><code>BARPROP</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="doc/interfaces/_jscrewit_.featureall.md#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#ESC_REGEXP_LF"><code>ESC_REGEXP_LF</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#FILL"><code>FILL</code></a>
-<li><a href="doc/interfaces/_jscrewit_.featureall.md#FLAT"><code>FLAT</code></a> (Edge 79+)
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a>
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#GMT"><code>GMT</code></a>
