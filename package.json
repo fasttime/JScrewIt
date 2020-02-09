@@ -53,6 +53,7 @@
     "gulp-tap": "2.0.0",
     "gulp-typedoc": "~2.2.4",
     "gulp-uglify": "~3.0.2",
+    "handlebars": "~4.7.3",
     "mocha": "~3.5.3",
     "mocha-bar": "~0.0.4",
     "nyc": "~15.0.0",

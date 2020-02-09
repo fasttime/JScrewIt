@@ -212,12 +212,23 @@ task
     'feature-doc',
     async () =>
     {
-        const makeFeatureDoc                = require('./build/make-feature-doc');
-        const { promises: { writeFile } }   = require('fs');
+        const makeFeatureDoc                        = require('./build/make-feature-doc');
+        const { promises: { readFile, writeFile } } = require('fs');
+        const Handlebars                            = require('handlebars');
 
-        const { contentMd, contentTs } = makeFeatureDoc();
-        const promiseMd = writeFile('Features.md', contentMd);
-        const promiseTs = writeFile('lib/feature-all.d.ts', contentTs);
+        async function writeOutput(inputPath, context, outputPath)
+        {
+            const input = await readFile(inputPath, 'utf8');
+            const template = Handlebars.compile(input, { noEscape: true });
+            const output = template(context);
+            await writeFile(outputPath, output);
+        }
+
+        const { contextMd, contextTs } = makeFeatureDoc();
+        const promiseTs =
+        writeOutput('src/lib/feature-all.d.ts.hbs', contextTs, 'lib/feature-all.d.ts');
+        const promiseMd =
+        writeOutput('src/Features.md.hbs', contextMd, 'Features.md');
         await Promise.all([promiseMd, promiseTs]);
     },
 );

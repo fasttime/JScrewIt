@@ -1,6 +1,6 @@
 'use strict';
 
-const JScrewIt = require('..');
+const { Feature } = require('..');
 
 const ENGINE_ENTRIES =
 [
@@ -80,13 +80,12 @@ function calculateEngineSupportInfo(engineEntry, filter)
 {
     let firstAvail;
     let firstUnavail;
-    const { versions } = engineEntry;
-    versions.forEach
+    engineEntry.versions.forEach
     (
-        (version, versionIndex) =>
+        ({ feature }, versionIndex) =>
         {
-            const engineFeatureName = version.feature;
-            if (filter(JScrewIt.Feature[engineFeatureName]))
+            const engineFeatureObj = Feature[feature];
+            if (filter(engineFeatureObj))
             {
                 if (firstAvail == null)
                     firstAvail = versionIndex;
@@ -139,8 +138,7 @@ function formatFeatureName(featureName)
 {
     const TARGET = 'doc/interfaces/_jscrewit_.featureall.md';
 
-    const result =
-    `<a href="${TARGET}#${getAnchorName(featureName)}"><code>${featureName}</code></a>`;
+    const result = `<a href="${TARGET}#${featureName}"><code>${featureName}</code></a>`;
     return result;
 }
 
@@ -157,11 +155,6 @@ function formatReport(report)
     return result;
 }
 
-function getAnchorName(featureName)
-{
-    return featureName;
-}
-
 function getAvailabilityInfo(featureName, engineEntry)
 {
     const availabilityInfoCache =
@@ -176,12 +169,20 @@ function getAvailabilityInfo(featureName, engineEntry)
     return availabilityInfo;
 }
 
-function getCombinedDescription(engineEntry, versionIndex)
+function getCombinedDescription(engineEntry, versionIndex = 0)
 {
-    function formatVersionedNames(names)
+    function getVersionedName(name, description)
     {
-        const str =
-        names.map
+        const versionedName = description ? `${name} ${description}` : name;
+        return versionedName;
+    }
+
+    let combinedDescription;
+    const { name, versions: { [versionIndex]: { description } } } = engineEntry;
+    if (Array.isArray(name))
+    {
+        combinedDescription =
+        name.map
         (
             (name, subIndex) =>
             {
@@ -191,21 +192,37 @@ function getCombinedDescription(engineEntry, versionIndex)
             },
         )
         .join(', ');
-        return str;
     }
-
-    function getVersionedName(name, description)
-    {
-        const versionedName = description ? `${name} ${description}` : name;
-        return versionedName;
-    }
-
-    const { name } = engineEntry;
-    const versionEntry = engineEntry.versions[versionIndex];
-    const { description } = versionEntry;
-    const combinedDescription =
-    Array.isArray(name) ? formatVersionedNames(name) : getVersionedName(name, description);
+    else
+        combinedDescription = getVersionedName(name, description);
     return combinedDescription;
+}
+
+function getComponentEntries(assignmentMap)
+{
+    const componentEntries = [];
+    const featureNames = Object.keys(assignmentMap).sort();
+    for (const featureName of featureNames)
+    {
+        let componentEntry = formatFeatureName(featureName);
+        const assigments = assignmentMap[featureName];
+        const { impliers, versioning } = assigments;
+        if (versioning || impliers)
+        {
+            componentEntry += ' (';
+            if (impliers)
+            {
+                componentEntry += `implied by ${impliers.map(formatFeatureName).join(' and ')}`;
+                if (versioning)
+                    componentEntry += '; ';
+            }
+            if (versioning)
+                componentEntry += versioning;
+            componentEntry += ')';
+        }
+        componentEntries.push(componentEntry);
+    }
+    return componentEntries;
 }
 
 function getEngineSupportInfo(attributeName, engineEntry)
@@ -216,9 +233,8 @@ function getEngineSupportInfo(attributeName, engineEntry)
     return result;
 }
 
-function getForcedStrictModeReport(featureObj)
+function getForcedStrictModeReport({ attributes: { 'forced-strict-mode': restriction } })
 {
-    const restriction = featureObj.attributes['forced-strict-mode'];
     const report = restriction !== undefined && reportAsList(restriction, getEngineSupportInfo);
     return report;
 }
@@ -228,11 +244,7 @@ function getImpliers(featureName, assignmentMap)
     const impliers = [];
     for (const otherFeatureName in assignmentMap)
     {
-        if
-        (
-            featureName !== otherFeatureName &&
-            JScrewIt.Feature[otherFeatureName].includes(featureName)
-        )
+        if (featureName !== otherFeatureName && Feature[otherFeatureName].includes(featureName))
             impliers.push(otherFeatureName);
     }
     if (impliers.length)
@@ -262,41 +274,12 @@ function getVersioningFor(featureName, engineEntry)
     }
 }
 
-function getWebWorkerReport(featureObj)
+function getWebWorkerReport({ attributes: { 'web-worker': restriction } })
 {
-    const restriction = featureObj.attributes['web-worker'];
     const report =
     restriction !== undefined &&
     (restriction === 'web-worker-restriction' || reportAsList(restriction, getEngineSupportInfo));
     return report;
-}
-
-function printRow(label, assignmentMap)
-{
-    let result = `<tr>\n<td>${label}</td>\n<td>\n<ul>\n`;
-    const featureNames = Object.keys(assignmentMap).sort();
-    for (const featureName of featureNames)
-    {
-        result += `<li>${formatFeatureName(featureName)}`;
-        const assigments = assignmentMap[featureName];
-        const { impliers, versioning } = assigments;
-        if (versioning || impliers)
-        {
-            result += ' (';
-            if (impliers)
-            {
-                result += `implied by ${impliers.map(formatFeatureName).join(' and ')}`;
-                if (versioning)
-                    result += '; ';
-            }
-            if (versioning)
-                result += versioning;
-            result += ')';
-        }
-        result += '\n';
-    }
-    result += '</ul>\n</td>\n</tr>\n';
-    return result;
 }
 
 function reportAsList(property, filter)
@@ -338,29 +321,20 @@ function reportAsList(property, filter)
 module.exports =
 () =>
 {
-    const { Feature } = JScrewIt;
-    const allFeatureMap = Feature.ALL;
-    const elementaryFeatures = Feature.ELEMENTARY;
     const compositeFeatureNames = [];
-    let contentTs =
-    '/// <reference path=\'feature.d.ts\'/>\n' +
-    '\n' +
-    'declare module \'jscrewit\'\n' +
-    '{\n' +
-    '    interface FeatureAll\n' +
-    '    {';
-    Object.keys(allFeatureMap).sort().forEach
+    const featureInfoList =
+    Object.keys(Feature.ALL).sort().map
     (
         featureName =>
         {
-            let subContentTs;
-            const featureObj = allFeatureMap[featureName];
+            let formattedDescription;
+            const featureObj = Feature.ALL[featureName];
             const { elementary, name } = featureObj;
             if (name === featureName)
             {
-                const { description, elementary } = featureObj;
-                subContentTs =
-                `\n         * ${escape(description, '\n         *\n         * ')}\n         `;
+                formattedDescription =
+                '        /**\n' +
+                `         * ${escape(featureObj.description, '\n         *\n         * ')}\n`;
                 if (elementary)
                 {
                     const availability = reportAsList(featureName, getAvailabilityInfo);
@@ -369,68 +343,57 @@ module.exports =
                     {
                         const formattedAvailability =
                         formatAvailability(availability, webWorkerReport, forcedStrictModeReport);
-                        subContentTs +=
-                        '*\n         * @reamarks\n         *\n' +
-                        `         * ${formattedAvailability}\n         `;
+                        formattedDescription +=
+                        '         *\n' +
+                        '         * @reamarks\n' +
+                        '         *\n' +
+                        `         * ${formattedAvailability}\n`;
                     }
                 }
                 else
                     compositeFeatureNames.push(featureName);
+                formattedDescription += '         */';
             }
             else
-                subContentTs = ` An alias for \`${name}\`. `;
+                formattedDescription = `        /** An alias for \`${name}\`. */`;
             const typeName = elementary ? 'ElementaryFeature' : 'PredefinedFeature';
-            contentTs += `\n        /**${subContentTs}*/\n        ${featureName}: ${typeName};\n`;
+            const featureInfo = { featureName, formattedDescription, typeName };
+            return featureInfo;
         },
     );
-    contentTs +=
-    '    }\n' +
-    '\n' +
-    '    /** Name of an elementary feature. */\n' +
-    '    type ElementaryFeatureName =\n' +
-    `${Feature.ELEMENTARY.map(({ name }) => `    | '${name}'\n`).join('')}` +
-    '    ;\n' +
-    '\n' +
-    '    /** Name of a predefined feature. */\n' +
-    '    type PredefinedFeatureName =\n' +
-    '    ElementaryFeatureName\n' +
-    `${compositeFeatureNames.map(featureName => `    | '${featureName}'\n`).join('')}` +
-    '    ;\n' +
-    '}\n';
-    let contentMd =
-    '# JScrewIt Feature Reference\n' +
-    'This table lists features available in the most common engines.\n' +
-    '<table>\n' +
-    '<tr>\n' +
-    '<th>Target</th>\n' +
-    '<th>Features</th>\n' +
-    '</tr>\n';
-    for (const engineEntry of ENGINE_ENTRIES)
-    {
-        const assignmentMap = { __proto__: null };
-        let featureName;
-        elementaryFeatures.forEach
-        (
-            featureObj =>
-            {
-                const featureName = featureObj.name;
-                const versioning = getVersioningFor(featureName, engineEntry);
-                if (versioning != null)
-                {
-                    const assignments = { versioning };
-                    assignmentMap[featureName] = assignments;
-                }
-            },
-        );
-        for (featureName in assignmentMap)
+    const elementaryFeatureNames = Feature.ELEMENTARY.map(({ name }) => name);
+    const contextTs = { compositeFeatureNames, elementaryFeatureNames, featureInfoList };
+    const featureRowContentList =
+    ENGINE_ENTRIES.map
+    (
+        engineEntry =>
         {
-            const impliers = getImpliers(featureName, assignmentMap);
-            if (impliers)
-                assignmentMap[featureName].impliers = impliers;
-        }
-        contentMd += printRow(getCombinedDescription(engineEntry, 0), assignmentMap);
-    }
-    contentMd += '</table>\n';
-    const returnValue = { contentMd, contentTs };
+            const assignmentMap = { __proto__: null };
+            Feature.ELEMENTARY.forEach
+            (
+                ({ name: featureName }) =>
+                {
+                    const versioning = getVersioningFor(featureName, engineEntry);
+                    if (versioning != null)
+                    {
+                        const assignments = { versioning };
+                        assignmentMap[featureName] = assignments;
+                    }
+                },
+            );
+            for (const featureName in assignmentMap)
+            {
+                const impliers = getImpliers(featureName, assignmentMap);
+                if (impliers)
+                    assignmentMap[featureName].impliers = impliers;
+            }
+            const label = getCombinedDescription(engineEntry);
+            const componentEntries = getComponentEntries(assignmentMap);
+            const featureRow = { label, componentEntries };
+            return featureRow;
+        },
+    );
+    const contextMd = { featureRowContentList };
+    const returnValue = { contextMd, contextTs };
     return returnValue;
 };
