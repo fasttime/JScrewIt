@@ -774,8 +774,8 @@ export var validMaskFromArrayOrStringOrFeature;
         NO_FF_SRC:
         {
             description:
-            'A string representation of native functions typical for V8 and Edge or for Internet ' +
-            'Explorer but not for Firefox and Safari.',
+            'A string representation of native functions typical for V8 and Edge 40 or for ' +
+            'Internet Explorer but not for Firefox and Safari.',
             check:
             function ()
             {
@@ -884,7 +884,7 @@ export var validMaskFromArrayOrStringOrFeature;
         {
             description:
             'A string representation of native functions typical for the V8 engine, but also ' +
-            'found in Edge.\n' +
+            'found in Edge 40.\n' +
             'Remarkable traits are the lack of line feed characters at the beginning and at the ' +
             'end of the string and the presence of a single whitespace before the "[native ' +
             'code]" sequence.',
@@ -943,6 +943,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
                 'FILL',
+                'FLAT',
                 'FROM_CODE_POINT',
                 'GMT',
                 'HISTORY',
@@ -1055,11 +1056,11 @@ export var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        EDGE: 'EDGE_40',
+        EDGE: 'CHROME_73',
         EDGE_PREV: 'EDGE_40',
         EDGE_40:
         {
-            engine: 'Edge 40 or later',
+            engine: 'Edge 40 to 44',
             includes:
             [
                 'ARROW',

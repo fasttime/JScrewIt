@@ -146,11 +146,11 @@ declare module 'jscrewit'
          */
         DOMWINDOW: ElementaryFeature;
 
-        /** An alias for `EDGE_40`. */
+        /** An alias for `CHROME_73`. */
         EDGE: PredefinedFeature;
 
         /**
-         * Features available in Edge 40 or later.
+         * Features available in Edge 40 to 44.
          */
         EDGE_40: PredefinedFeature;
 
@@ -247,7 +247,7 @@ declare module 'jscrewit'
          *
          * @reamarks
          *
-         * Available in Chrome, Firefox, Safari 12+, Opera and Node.js 11+.
+         * Available in Chrome, Edge 79+, Firefox, Safari 12+, Opera and Node.js 11+.
          */
         FLAT: ElementaryFeature;
 
@@ -428,7 +428,7 @@ declare module 'jscrewit'
         NODE_5: PredefinedFeature;
 
         /**
-         * A string representation of native functions typical for V8 and Edge or for Internet Explorer but not for Firefox and Safari.
+         * A string representation of native functions typical for V8 and Edge 40 or for Internet Explorer but not for Firefox and Safari.
          *
          * @reamarks
          *
@@ -540,7 +540,7 @@ declare module 'jscrewit'
         UNEVAL: ElementaryFeature;
 
         /**
-         * A string representation of native functions typical for the V8 engine, but also found in Edge.
+         * A string representation of native functions typical for the V8 engine, but also found in Edge 40.
          *
          * Remarkable traits are the lack of line feed characters at the beginning and at the end of the string and the presence of a single whitespace before the "\[native code\]" sequence.
          *

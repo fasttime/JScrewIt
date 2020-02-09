@@ -56,6 +56,7 @@ This table lists features available in the most common engines.
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#ESC_REGEXP_LF"><code>ESC_REGEXP_LF</code></a>
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#FILL"><code>FILL</code></a>
+<li><a href="doc/interfaces/_jscrewit_.featureall.md#FLAT"><code>FLAT</code></a> (Edge 79+)
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a>
 <li><a href="doc/interfaces/_jscrewit_.featureall.md#GMT"><code>GMT</code></a>

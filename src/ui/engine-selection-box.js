@@ -19,7 +19,8 @@ export default function createEngineSelectionBox()
             name: 'Edge',
             versions:
             [
-                { featureName: 'EDGE_40', number: '40+' },
+                { featureName: 'EDGE_40', number: '40–44' },
+                { featureName: 'CHROME_73', number: '79+' },
             ],
         },
         {
