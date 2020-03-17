@@ -136,7 +136,7 @@ function formatAvailability(availability, webWorkerReport, forcedStrictModeRepor
 
 function formatFeatureName(featureName)
 {
-    const TARGET = 'doc/interfaces/_jscrewit_.featureall.md';
+    const TARGET = 'api-doc/README.md';
 
     const result = `<a href="${TARGET}#${featureName}"><code>${featureName}</code></a>`;
     return result;

@@ -14,8 +14,8 @@ task
             '.nyc_output',
             '.tmp-src',
             'Features.md',
+            'api-doc',
             'coverage',
-            'doc',
             'lib/**/*.js',
             'lib/feature-all.d.ts',
             'ui/**/*.js',
@@ -29,7 +29,7 @@ task
     'lint',
     () =>
     {
-        const lint = require('gulp-fasttime-lint');
+        const lint = require('@fasttime/gulp-lint');
 
         const stream =
         lint
@@ -59,10 +59,7 @@ task
                 src: ['lib/**/*.ts', '!lib/feature-all.d.ts'],
                 parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
                 rules:
-                {
-                    '@typescript-eslint/triple-slash-reference': ['error', { path: 'always' }],
-                    'spaced-comment': ['error', 'always', { line: { markers: ['/'] } }],
-                },
+                { '@typescript-eslint/triple-slash-reference': ['error', { path: 'always' }] },
             },
             { src: 'test/acceptance/**/*.feature' },
         );
@@ -238,17 +235,17 @@ task
     'typedoc',
     () =>
     {
-        const { version }   = require('./package.json');
-        const typedoc       = require('gulp-typedoc');
+        const typedoc = require('gulp-typedoc');
 
         const typedocOpts =
         {
             excludeExternals:       true,
-            gitRevision:            version,
+            hideBreadcrumbs:        true,
+            hideSources:            true,
             includeDeclarations:    true,
             mode:                   'file',
             name:                   'JScrewIt',
-            out:                    'doc',
+            out:                    'api-doc',
             plugin:                 'typedoc-plugin-markdown',
             readme:                 'none',
             tsconfig:               'tsconfig.json',

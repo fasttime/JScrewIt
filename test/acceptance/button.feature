@@ -12,12 +12,12 @@ Feature: Button
 
   @appearance
   Scenario: Hovered appearance
-    Gived a hovered button
+    Given a hovered button
     Then the button should have a pale blue appearance
 
   @appearance
   Scenario: Active appearance
-    Gived an active button
+    Given an active button
     Then the button should have a deep blue appearance
 
   @appearance
