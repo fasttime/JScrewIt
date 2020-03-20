@@ -41,6 +41,7 @@
 
 #outputArea { line-break: anywhere; white-space: pre; word-break: break-all; }
 
+/* Overwrite the white-space property in most browsers except Internet Explorer. */
 @supports (white-space: pre-wrap) { #outputArea { white-space: pre-wrap; } }
 
 [tabindex] { outline: none; }

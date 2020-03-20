@@ -58,9 +58,9 @@
     "mocha-bar": "~0.0.4",
     "nyc": "~15.0.0",
     "postrequire": "~0.1.1",
-    "rollup": "~2.0.6",
+    "rollup": "~2.1.0",
     "rollup-plugin-cleanup": "~3.1.1",
-    "typedoc": "~0.17.0",
+    "typedoc": "~0.17.1",
     "typedoc-plugin-markdown": "~2.2.16"
   }
 }
