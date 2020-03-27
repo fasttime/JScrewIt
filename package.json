@@ -41,7 +41,7 @@
     "test": "mocha --check-leaks test/{*,*/*}.spec.js"
   },
   "devDependencies": {
-    "@fasttime/gulp-lint": "~0.23.0",
+    "@fasttime/gulp-lint": "~0.24.0",
     "acorn": "~7.1.0",
     "art-js": "~0.9.2",
     "chalk": "~3.0.0",
@@ -55,12 +55,12 @@
     "gulp-uglify": "~3.0.2",
     "handlebars": "~4.7.3",
     "mocha": "~3.5.3",
-    "mocha-bar": "~0.0.4",
+    "mocha-bar": "~0.1.0",
     "nyc": "~15.0.0",
     "postrequire": "~0.1.1",
-    "rollup": "~2.1.0",
+    "rollup": "~2.2.0",
     "rollup-plugin-cleanup": "~3.1.1",
-    "typedoc": "~0.17.1",
+    "typedoc": "~0.17.3",
     "typedoc-plugin-markdown": "~2.2.16"
   }
 }
