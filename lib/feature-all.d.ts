@@ -208,7 +208,9 @@ declare module 'jscrewit'
          */
         FF_62: PredefinedFeature;
 
-        /** An alias for `FF_62`. */
+        /**
+         * Features available in Firefox 62 to 73.
+         */
         FF_ESR: PredefinedFeature;
 
         /**
@@ -524,7 +526,7 @@ declare module 'jscrewit'
          *
          * @reamarks
          *
-         * Available in Firefox.
+         * Available in Firefox before 74.
          */
         UNEVAL: ElementaryFeature;
 
@@ -607,6 +609,7 @@ declare module 'jscrewit'
     | 'COMPACT'
     | 'DEFAULT'
     | 'FF_62'
+    | 'FF_ESR'
     | 'IE_10'
     | 'IE_11'
     | 'IE_11_WIN_10'

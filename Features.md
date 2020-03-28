@@ -75,7 +75,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/README.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="api-doc/README.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="api-doc/README.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/README.md#STATUS"><code>STATUS</code></a>
 <li><a href="api-doc/README.md#UNDEFINED"><code>UNDEFINED</code></a>
-<li><a href="api-doc/README.md#UNEVAL"><code>UNEVAL</code></a>
+<li><a href="api-doc/README.md#UNEVAL"><code>UNEVAL</code></a> (not in Firefox 74+)
 <li><a href="api-doc/README.md#WINDOW"><code>WINDOW</code></a>
 </ul>
 </td>
