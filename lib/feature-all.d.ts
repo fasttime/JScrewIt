@@ -98,7 +98,7 @@ declare module 'jscrewit'
         CHROME: PredefinedFeature;
 
         /**
-         * Features available in Chrome 73 and Opera 60 or later.
+         * Features available in Chrome 73, Edge 79 and Opera 60 or later.
          */
         CHROME_73: PredefinedFeature;
 
@@ -145,17 +145,6 @@ declare module 'jscrewit'
          * Available in Android Browser before 4.4. This feature is not available inside web workers.
          */
         DOMWINDOW: ElementaryFeature;
-
-        /** An alias for `CHROME_73`. */
-        EDGE: PredefinedFeature;
-
-        /**
-         * Features available in Edge 40 to 44.
-         */
-        EDGE_40: PredefinedFeature;
-
-        /** An alias for `EDGE_40`. */
-        EDGE_PREV: PredefinedFeature;
 
         /**
          * The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
@@ -219,7 +208,9 @@ declare module 'jscrewit'
          */
         FF_62: PredefinedFeature;
 
-        /** An alias for `FF_62`. */
+        /**
+         * Features available in Firefox 62 to 73.
+         */
         FF_ESR: PredefinedFeature;
 
         /**
@@ -247,7 +238,7 @@ declare module 'jscrewit'
          *
          * @reamarks
          *
-         * Available in Chrome, Edge 79+, Firefox, Safari 12+, Opera and Node.js 11+.
+         * Available in Chrome, Edge, Firefox, Safari 12+, Opera and Node.js 11+.
          */
         FLAT: ElementaryFeature;
 
@@ -428,7 +419,7 @@ declare module 'jscrewit'
         NODE_5: PredefinedFeature;
 
         /**
-         * A string representation of native functions typical for V8 and Edge 40 or for Internet Explorer but not for Firefox and Safari.
+         * A string representation of native functions typical for V8 or for Internet Explorer but not for Firefox and Safari.
          *
          * @reamarks
          *
@@ -535,12 +526,12 @@ declare module 'jscrewit'
          *
          * @reamarks
          *
-         * Available in Firefox.
+         * Available in Firefox before 74.
          */
         UNEVAL: ElementaryFeature;
 
         /**
-         * A string representation of native functions typical for the V8 engine, but also found in Edge 40.
+         * A string representation of native functions typical for the V8 engine.
          *
          * Remarkable traits are the lack of line feed characters at the beginning and at the end of the string and the presence of a single whitespace before the "\[native code\]" sequence.
          *
@@ -617,8 +608,8 @@ declare module 'jscrewit'
     | 'CHROME_73'
     | 'COMPACT'
     | 'DEFAULT'
-    | 'EDGE_40'
     | 'FF_62'
+    | 'FF_ESR'
     | 'IE_10'
     | 'IE_11'
     | 'IE_11_WIN_10'

@@ -121,7 +121,7 @@ export default function createButton(text)
                     else
                         art(button, setTabindex);
                     // Make sure the class does change so a refresh is triggered in Internet
-                    // Explorer and Edge 40.
+                    // Explorer.
                     button.className = '';
                     button.className = 'button focusable';
                 }

@@ -14,8 +14,8 @@ task
             '.nyc_output',
             '.tmp-src',
             'Features.md',
+            'api-doc',
             'coverage',
-            'doc',
             'lib/**/*.js',
             'lib/feature-all.d.ts',
             'ui/**/*.js',
@@ -29,7 +29,7 @@ task
     'lint',
     () =>
     {
-        const lint = require('gulp-fasttime-lint');
+        const lint = require('@fasttime/gulp-lint');
 
         const stream =
         lint
@@ -60,10 +60,7 @@ task
                 src: ['lib/**/*.ts', '!lib/feature-all.d.ts'],
                 parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
                 rules:
-                {
-                    '@typescript-eslint/triple-slash-reference': ['error', { path: 'always' }],
-                    'spaced-comment': ['error', 'always', { line: { markers: ['/'] } }],
-                },
+                { '@typescript-eslint/triple-slash-reference': ['error', { path: 'always' }] },
             },
             { src: 'test/acceptance/**/*.feature' },
         );
@@ -215,12 +212,23 @@ task
     'feature-doc',
     async () =>
     {
-        const makeFeatureDoc                = require('./build/make-feature-doc');
-        const { promises: { writeFile } }   = require('fs');
+        const makeFeatureDoc                        = require('./build/make-feature-doc');
+        const { promises: { readFile, writeFile } } = require('fs');
+        const Handlebars                            = require('handlebars');
 
-        const { contentMd, contentTs } = makeFeatureDoc();
-        const promiseMd = writeFile('Features.md', contentMd);
-        const promiseTs = writeFile('lib/feature-all.d.ts', contentTs);
+        async function writeOutput(inputPath, context, outputPath)
+        {
+            const input = await readFile(inputPath, 'utf8');
+            const template = Handlebars.compile(input, { noEscape: true });
+            const output = template(context);
+            await writeFile(outputPath, output);
+        }
+
+        const { contextMd, contextTs } = makeFeatureDoc();
+        const promiseTs =
+        writeOutput('src/lib/feature-all.d.ts.hbs', contextTs, 'lib/feature-all.d.ts');
+        const promiseMd =
+        writeOutput('src/Features.md.hbs', contextMd, 'Features.md');
         await Promise.all([promiseMd, promiseTs]);
     },
 );
@@ -230,17 +238,17 @@ task
     'typedoc',
     () =>
     {
-        const { version }   = require('./package.json');
-        const typedoc       = require('gulp-typedoc');
+        const typedoc = require('gulp-typedoc');
 
         const typedocOpts =
         {
             excludeExternals:       true,
-            gitRevision:            version,
+            hideBreadcrumbs:        true,
+            hideSources:            true,
             includeDeclarations:    true,
             mode:                   'file',
             name:                   'JScrewIt',
-            out:                    'doc',
+            out:                    'api-doc',
             plugin:                 'typedoc-plugin-markdown',
             readme:                 'none',
             tsconfig:               'tsconfig.json',

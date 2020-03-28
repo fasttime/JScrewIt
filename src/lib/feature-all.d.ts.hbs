@@ -1,0 +1,30 @@
+/// <reference path='feature.d.ts'/>
+
+declare module 'jscrewit'
+{
+    interface FeatureAll
+    {
+{{#each featureInfoList}}
+{{#if @index}}
+
+{{/if}}
+{{formattedDescription}}
+        {{featureName}}: {{typeName}};
+{{/each}}
+    }
+
+    /** Name of an elementary feature. */
+    type ElementaryFeatureName =
+{{#each elementaryFeatureNames}}
+    | '{{this}}'
+{{/each}}
+    ;
+
+    /** Name of a predefined feature. */
+    type PredefinedFeatureName =
+    ElementaryFeatureName
+{{#each compositeFeatureNames}}
+    | '{{this}}'
+{{/each}}
+    ;
+}

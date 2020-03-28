@@ -1,0 +1,20 @@
+# JScrewIt Feature Reference
+This table lists features available in the most common engines.
+<table>
+<tr>
+<th>Target</th>
+<th>Features</th>
+</tr>
+{{#each featureRowContentList}}
+<tr>
+<td>{{label}}</td>
+<td>
+<ul>
+{{#each componentEntries}}
+<li>{{this}}
+{{/each}}
+</ul>
+</td>
+</tr>
+{{/each}}
+</table>

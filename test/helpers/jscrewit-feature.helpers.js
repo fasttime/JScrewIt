@@ -8,8 +8,14 @@
     function emuIt(description, featureObj, fn)
     {
         var emuFeatures = getEmuFeatureNames(featureObj);
-        if (emuFeatures)
-            it(description, fn.bind(null, emuFeatures));
+        it.when(emuFeatures)
+        (
+            description,
+            function ()
+            {
+                fn.call(this, emuFeatures);
+            }
+        );
     }
 
     function getEmuFeatureNames(featureObj)
