@@ -33,24 +33,13 @@
     margin-bottom: .25em;
 }
 
-:focus.focusable, :focus>.focusable { box-shadow: 0 0 2px 2px rgba(0, 127, 255, .75); }
-
 #compMenu { width: 15em; }
 
 #controls>*:not(:last-child) { margin-right: 1em; }
 
-#outputArea { line-break: anywhere; white-space: pre; word-break: break-all; }
-
-/* Overwrite the white-space property in most browsers except Internet Explorer. */
-@supports (white-space: pre-wrap) { #outputArea { white-space: pre-wrap; } }
-
-[tabindex] { outline: none; }
-
-body { background: white; color: black; font-family: Arial, sans-serif; margin: 5px; }
-
-body, select { font-size: 13.5pt; }
-
 main { display: block; margin: 0 auto; max-width: 720px; text-align: justify; }
+
+main>div { display: none; }
 
 main header { height: 100px; margin-top: 10px; position: relative; width: 100%; }
 
@@ -60,7 +49,19 @@ main img { background: blue; }
 
 main textarea { display: block; font: 12pt monospace; resize: vertical; width: 100%; }
 
-main>div { display: none; }
+#outputArea { white-space: pre; word-break: break-all; }
+
+:focus.focusable, :focus>.focusable { box-shadow: 0 0 2px 2px rgba(0, 127, 255, .75); }
+
+/* Hack for Firefox and Edge */
+@supports (-moz-appearance: none) or (-ms-ime-align: auto)
+{ #outputArea { white-space: pre-wrap; word-break: keep-all; } }
+
+[tabindex] { outline: none; }
+
+body { background: white; color: black; font-family: Arial, sans-serif; margin: 5px; }
+
+body, select { font-size: 13.5pt; }
 
 </style>
 <title>JScrewIt – Write any JavaScript with six characters: ! ( ) + [ ]</title>
@@ -104,7 +105,7 @@ main>div { display: none; }
 
             <label class='frame'>
                 <span>Output</span>
-                <textarea id='outputArea' rows='10' spellcheck='false'></textarea>
+                <textarea id='outputArea' spellcheck='false'></textarea>
                 <span class='actions'>
                     <span id='stats'>…</span>
                 </span>

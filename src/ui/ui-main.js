@@ -230,9 +230,11 @@ function init()
 {
     document.querySelector('main>div').style.display = 'block';
     inputArea.value = inputArea.defaultValue;
+    var outputAreaProps = isBlink() ? { rows: 1, style: { overflowX: 'scroll' } } : { rows: 10 };
     art
     (
         outputArea,
+        outputAreaProps,
         art.on('mousedown', handleOutputAreaMouseDown),
         art.on('mouseup', ignoreRepeatedMainMouseButtonEvent),
         art.on('input', updateStats)
@@ -311,6 +313,13 @@ function init()
 function initLater()
 {
     document.addEventListener('DOMContentLoaded', init);
+}
+
+function isBlink()
+{
+    var chrome = self.chrome;
+    var blink = chrome && chrome.csi;
+    return blink;
 }
 
 function loadFile()
