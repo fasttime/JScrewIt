@@ -5,133 +5,6 @@
 
 (function ()
 {
-    function testFeatureObj(featureObj)
-    {
-        it
-        (
-            'is named correctly',
-            function ()
-            {
-                var name = featureObj.name;
-                expect(name).toBeString();
-                expect(featureObj).toBe(Feature[name]);
-                expect(featureObj).toBe(Feature.ALL[name]);
-            }
-        );
-        it
-        (
-            'has description string property',
-            function ()
-            {
-                expect(featureObj.description).toBeString();
-            }
-        );
-        it
-        (
-            'has elementary boolean property',
-            function ()
-            {
-                expect(featureObj.elementary).toBeBoolean();
-            }
-        );
-        it
-        (
-            'has a mask consisting of two 32-bit integers',
-            function ()
-            {
-                var mask = featureObj.mask;
-                expect(mask).toBeArray();
-                expect(Object.isFrozen(mask)).toBeTruthy();
-                expect(mask.length).toBe(2);
-                expect(mask[0]).toBeInt32();
-                expect(mask[1]).toBeInt32();
-            }
-        );
-        it
-        (
-            'has elementaryNames string array',
-            function ()
-            {
-                var elementaryNames = featureObj.elementaryNames;
-                expect(elementaryNames).toBeArray();
-                elementaryNames.forEach
-                (
-                    function (name)
-                    {
-                        expect(name).toBeString();
-                    }
-                );
-            }
-        );
-        it
-        (
-            'has canonicalNames string array',
-            function ()
-            {
-                var canonicalNames = featureObj.canonicalNames;
-                expect(canonicalNames).toBeArray();
-                var elementaryNames = featureObj.elementaryNames;
-                expect(elementaryNames).toBeArray();
-                canonicalNames.forEach
-                (
-                    function (name)
-                    {
-                        expect(elementaryNames).toContain(name);
-                    }
-                );
-            }
-        );
-        if (featureObj.elementary)
-        {
-            it
-            (
-                'has a nonempty mask',
-                function ()
-                {
-                    expect(JScrewIt.debug.maskIsEmpty(featureObj.mask)).toBe(false);
-                }
-            );
-        }
-        var check = featureObj.check;
-        if (check)
-        {
-            it
-            (
-                'is checkable',
-                function ()
-                {
-                    var available = check();
-                    expect(available).toBeBoolean();
-                    if (!available)
-                    {
-                        available = emuDo([featureObj.name], check);
-                        expect(available).toBe(true, 'Emulation doesn\'t work');
-                    }
-                }
-            );
-        }
-        var engine = featureObj.engine;
-        if (engine !== undefined)
-        {
-            it
-            (
-                'has engine string',
-                function ()
-                {
-                    expect(engine).toBeString();
-                }
-            );
-            it
-            (
-                'is not checkable',
-                function ()
-                {
-                    expect(check).toBeUndefined();
-                }
-            );
-        }
-    }
-
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Feature = JScrewIt.Feature;
 
@@ -234,7 +107,130 @@
                         function (featureName)
                         {
                             var featureObj = Feature[featureName];
-                            testFeatureObj(featureObj);
+                            it
+                            (
+                                'is named correctly',
+                                function ()
+                                {
+                                    var name = featureObj.name;
+                                    expect(name).toBeString();
+                                    expect(featureObj).toBe(Feature[name]);
+                                    expect(featureObj).toBe(Feature.ALL[name]);
+                                }
+                            );
+                            it
+                            (
+                                'has description string property',
+                                function ()
+                                {
+                                    expect(featureObj.description).toBeString();
+                                }
+                            );
+                            it
+                            (
+                                'has elementary boolean property',
+                                function ()
+                                {
+                                    expect(featureObj.elementary).toBeBoolean();
+                                }
+                            );
+                            it
+                            (
+                                'has a mask consisting of two 32-bit integers',
+                                function ()
+                                {
+                                    var mask = featureObj.mask;
+                                    expect(mask).toBeArray();
+                                    expect(Object.isFrozen(mask)).toBeTruthy();
+                                    expect(mask.length).toBe(2);
+                                    expect(mask[0]).toBeInt32();
+                                    expect(mask[1]).toBeInt32();
+                                }
+                            );
+                            it
+                            (
+                                'has elementaryNames string array',
+                                function ()
+                                {
+                                    var elementaryNames = featureObj.elementaryNames;
+                                    expect(elementaryNames).toBeArray();
+                                    elementaryNames.forEach
+                                    (
+                                        function (name)
+                                        {
+                                            expect(name).toBeString();
+                                        }
+                                    );
+                                }
+                            );
+                            it
+                            (
+                                'has canonicalNames string array',
+                                function ()
+                                {
+                                    var canonicalNames = featureObj.canonicalNames;
+                                    expect(canonicalNames).toBeArray();
+                                    var elementaryNames = featureObj.elementaryNames;
+                                    expect(elementaryNames).toBeArray();
+                                    canonicalNames.forEach
+                                    (
+                                        function (name)
+                                        {
+                                            expect(elementaryNames).toContain(name);
+                                        }
+                                    );
+                                }
+                            );
+                            if (featureObj.elementary)
+                            {
+                                it
+                                (
+                                    'has a nonempty mask',
+                                    function ()
+                                    {
+                                        expect(JScrewIt.debug.maskIsEmpty(featureObj.mask))
+                                        .toBe(false);
+                                    }
+                                );
+                            }
+                            var check = featureObj.check;
+                            if (check)
+                            {
+                                it
+                                (
+                                    'is checkable',
+                                    function ()
+                                    {
+                                        var available = check();
+                                        expect(available).toBeBoolean();
+                                        if (!available)
+                                        {
+                                            available = emuDo([featureObj.name], check);
+                                            expect(available).toBe(true, 'Emulation doesn\'t work');
+                                        }
+                                    }
+                                );
+                            }
+                            var engine = featureObj.engine;
+                            if (engine !== undefined)
+                            {
+                                it
+                                (
+                                    'has engine string',
+                                    function ()
+                                    {
+                                        expect(engine).toBeString();
+                                    }
+                                );
+                                it
+                                (
+                                    'is not checkable',
+                                    function ()
+                                    {
+                                        expect(check).toBeUndefined();
+                                    }
+                                );
+                            }
                         }
                     );
                 }

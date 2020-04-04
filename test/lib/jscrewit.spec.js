@@ -17,24 +17,6 @@ self,
 
 (function ()
 {
-    function testFreqListCache(fn)
-    {
-        it
-        (
-            'caches freqList',
-            function ()
-            {
-                var encoder = JScrewIt.debug.createEncoder();
-                var inputData = Object('');
-                fn.call(encoder, inputData);
-                var freqList = inputData.freqList;
-                expect(freqList).toBeArray();
-                fn.call(encoder, inputData);
-                expect(inputData.freqList).toBe(freqList);
-            }
-        );
-    }
-
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Feature = JScrewIt.Feature;
 
@@ -273,13 +255,6 @@ self,
                     expect(figureLegendInsertions.length).toBe(1);
                 }
             );
-            testFreqListCache
-            (
-                function (inputData)
-                {
-                    this.encodeByDenseFigures(inputData, 0);
-                }
-            );
         }
     );
     describe
@@ -328,13 +303,6 @@ self,
                     expect(output3).toBeUndefined();
                 }
             );
-            testFreqListCache
-            (
-                function (inputData)
-                {
-                    this.encodeByDict(inputData, undefined, undefined, 0);
-                }
-            );
         }
     );
     describe
@@ -368,13 +336,6 @@ self,
                     expect(output2).toBeUndefined();
                     var output3 = encoder.encodeBySparseFigures(Object('12345'), 3700);
                     expect(output3).toBeUndefined();
-                }
-            );
-            testFreqListCache
-            (
-                function (inputData)
-                {
-                    this.encodeBySparseFigures(inputData, 0);
                 }
             );
         }
@@ -1015,61 +976,103 @@ self,
             var text = 'Lorem ipsum dolor sit amet';
             var strategies = JScrewIt.debug.getStrategies();
             var strategyNames = Object.keys(strategies);
-            strategyNames.forEach
+            describe.per(strategyNames)
             (
+                '#',
                 function (strategyName)
                 {
+                    function getMaxLength(scope)
+                    {
+                        var maxLength = scope.maxLength;
+                        if (maxLength === undefined)
+                        {
+                            scope.maxLength = maxLength =
+                            strategy.call(encoder, Object('0')).length;
+                        }
+                        return maxLength;
+                    }
+
                     var strategy = strategies[strategyName];
-                    describe
+                    it
                     (
-                        strategyName,
+                        'returns correct JSFuck',
                         function ()
                         {
-                            function getMaxLength(scope)
-                            {
-                                var maxLength = scope.maxLength;
-                                if (maxLength === undefined)
-                                {
-                                    scope.maxLength = maxLength =
-                                    strategy.call(encoder, Object('0')).length;
-                                }
-                                return maxLength;
-                            }
-
-                            it
-                            (
-                                'returns correct JSFuck',
-                                function ()
-                                {
-                                    var input =
-                                    strategyName !== 'express' ? text : JSON.stringify(text);
-                                    var output = strategy.call(encoder, Object(input));
-                                    expect(output).toBeJSFuck();
-                                    expect(evalJSFuck(output)).toBe(text);
-                                }
-                            );
-                            it
-                            (
-                                'returns undefined when output length exceeds maxLength',
-                                function ()
-                                {
-                                    var maxLength = getMaxLength(this);
-                                    var output = strategy.call(encoder, Object('0'), maxLength - 1);
-                                    expect(output).toBeUndefined();
-                                }
-                            );
-                            it
-                            (
-                                'returns a string when output length equals maxLength',
-                                function ()
-                                {
-                                    var maxLength = getMaxLength(this);
-                                    var output = strategy.call(encoder, Object('0'), maxLength);
-                                    expect(output).toBeString();
-                                }
-                            );
+                            var input = strategyName !== 'express' ? text : JSON.stringify(text);
+                            var output = strategy.call(encoder, Object(input));
+                            expect(output).toBeJSFuck();
+                            expect(evalJSFuck(output)).toBe(text);
                         }
                     );
+                    it
+                    (
+                        'returns undefined when output length exceeds maxLength',
+                        function ()
+                        {
+                            var maxLength = getMaxLength(this);
+                            var output = strategy.call(encoder, Object('0'), maxLength - 1);
+                            expect(output).toBeUndefined();
+                        }
+                    );
+                    it
+                    (
+                        'returns a string when output length equals maxLength',
+                        function ()
+                        {
+                            var maxLength = getMaxLength(this);
+                            var output = strategy.call(encoder, Object('0'), maxLength);
+                            expect(output).toBeString();
+                        }
+                    );
+                }
+            );
+        }
+    );
+    describe
+    (
+        'freqList is cached',
+        function ()
+        {
+            var paramDataList =
+            [
+                {
+                    description: 'encodeByDenseFigures',
+                    fn:
+                    function (inputData)
+                    {
+                        this.encodeByDenseFigures(inputData, 0);
+                    },
+                },
+                {
+                    description: 'encodeByDict',
+                    fn:
+                    function (inputData)
+                    {
+                        this.encodeByDict(inputData, undefined, undefined, 0);
+                    },
+                },
+                {
+                    description: 'encodeBySparseFigures',
+                    fn:
+                    function (inputData)
+                    {
+                        this.encodeBySparseFigures(inputData, 0);
+                    },
+                },
+            ];
+            it.per(paramDataList)
+            (
+                'with #.description',
+                function (paramData)
+                {
+                    var fn = paramData.fn;
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var inputData = Object('');
+                    fn.call(encoder, inputData);
+                    var freqList = inputData.freqList;
+                    expect(freqList).toBeArray();
+                    fn.call(encoder, inputData);
+                    expect(inputData.freqList).toBe(freqList);
                 }
             );
         }
