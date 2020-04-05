@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* global emuDo, expect, global, maybeIt, module, reloadJScrewIt, require, self */
+/* global emuDo, emuIt, expect, global, maybeIt, module, reloadJScrewIt, require, self */
 
 'use strict';
 
@@ -109,11 +109,16 @@
                         {
                             var available = check();
                             expect(available).toBeBoolean();
-                            if (!available)
-                            {
-                                available = emuDo([featureObj.name], check);
-                                expect(available).toBe(true, 'Emulation doesn\'t work');
-                            }
+                        }
+                    );
+                    emuIt
+                    (
+                        'is emulatable',
+                        featureObj,
+                        function (emuFeatures)
+                        {
+                            var available = emuDo(emuFeatures, check);
+                            expect(available).toBe(true, 'Emulation doesn\'t work');
                         }
                     );
                 }

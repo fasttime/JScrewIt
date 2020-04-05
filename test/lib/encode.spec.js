@@ -3,7 +3,6 @@
 global
 Symbol,
 emuEval,
-emuIt,
 evalJSFuck,
 expect,
 getEmuFeatureNames,

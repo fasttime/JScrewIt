@@ -610,7 +610,7 @@ uneval,
                         var actual =
                         emuDo
                         (
-                            emuFeatures || [],
+                            emuFeatures,
                             function ()
                             {
                                 var actual = Function('return ' + formatterExpr)()();
