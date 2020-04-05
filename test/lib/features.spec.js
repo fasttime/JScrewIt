@@ -1,5 +1,5 @@
 /* eslint-env ebdd/ebdd */
-/* global emuDo, expect, global, module, reloadJScrewIt, require, self */
+/* global emuDo, emuIt, expect, global, module, reloadJScrewIt, require, self */
 
 'use strict';
 
