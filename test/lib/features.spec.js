@@ -203,11 +203,16 @@
                                     {
                                         var available = check();
                                         expect(available).toBeBoolean();
-                                        if (!available)
-                                        {
-                                            available = emuDo([featureObj.name], check);
-                                            expect(available).toBe(true, 'Emulation doesn\'t work');
-                                        }
+                                    }
+                                );
+                                emuIt
+                                (
+                                    'is emulatable',
+                                    featureObj,
+                                    function ()
+                                    {
+                                        var available = emuDo(this.test.emuFeatureNames, check);
+                                        expect(available).toBe(true, 'Emulation doesn\'t work');
                                     }
                                 );
                             }

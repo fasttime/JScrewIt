@@ -80,12 +80,12 @@ uneval,
                 (
                     '(atob)',
                     Feature.ATOB,
-                    function (emuFeatures)
+                    function ()
                     {
                         var encoder = getPoolEncoder(Feature.ATOB);
                         var solution =
                         encoder.createCharDefaultSolution(charCode, true, false, false, false);
-                        verifySolution(solution, char, emuFeatures);
+                        verifySolution(solution, char, this.test.emuFeatureNames);
                         expect(solution.length).not.toBeGreaterThan
                         (
                             getPoolEncoder(Feature.DEFAULT).resolveCharacter(char).length
@@ -251,7 +251,7 @@ uneval,
                     (
                         '(definition ' + index + ')',
                         featureObj,
-                        function (emuFeatures)
+                        function ()
                         {
                             var definition = entry.definition;
                             if (typeof definition === 'function')
@@ -281,7 +281,7 @@ uneval,
                                 }
                             }
                             var solution = decodeEntry(entry);
-                            verifySolution(solution, char, emuFeatures);
+                            verifySolution(solution, char, this.test.emuFeatureNames);
                         }
                     );
                 }
@@ -329,13 +329,13 @@ uneval,
         (
             desc,
             featureObj,
-            function (emuFeatures)
+            function ()
             {
                 var encoder = getPoolEncoder(featureObj);
                 var definition = entry.definition;
                 var solution = encoder.resolve(definition);
                 expect(solution.level).toBe(definition.level, 'Solution level mismatch');
-                verifySolution(solution, complex, emuFeatures);
+                verifySolution(solution, complex, this.test.emuFeatureNames);
             }
         );
     }
@@ -357,13 +357,13 @@ uneval,
                         (
                             '(definition ' + index + ')',
                             featureObj,
-                            function (emuFeatures)
+                            function ()
                             {
                                 var output = String(decodeEntry(entry));
                                 expect(output).toBeJSFuck();
                                 emuDo
                                 (
-                                    emuFeatures,
+                                    this.test.emuFeatureNames,
                                     function ()
                                     {
                                         var actual = evalJSFuck(output);
@@ -604,13 +604,13 @@ uneval,
                 (
                     String(index),
                     getEntryFeature(entry),
-                    function (emuFeatures)
+                    function ()
                     {
                         var formatterExpr = formatter('fromCharCode', '1,16,256,4096');
                         var actual =
                         emuDo
                         (
-                            emuFeatures || [],
+                            this.test.emuFeatureNames,
                             function ()
                             {
                                 var actual = Function('return ' + formatterExpr)()();

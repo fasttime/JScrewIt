@@ -7,15 +7,16 @@
 {
     function emuIt(description, featureObj, fn)
     {
-        var emuFeatures = getEmuFeatureNames(featureObj);
-        it.when(emuFeatures)
-        (
-            description,
-            function ()
-            {
-                fn.call(this, emuFeatures);
-            }
-        );
+        var test = it(description, fn);
+        var emuFeatureNames = getEmuFeatureNames(featureObj);
+        if (!emuFeatureNames)
+        {
+            test.fn = null;
+            test.pending = true;
+        }
+        else
+            test.emuFeatureNames = emuFeatureNames;
+        return test;
     }
 
     function getEmuFeatureNames(featureObj)
