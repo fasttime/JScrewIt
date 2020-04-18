@@ -1,6 +1,6 @@
 {
   "name": "jscrewit",
-  "version": "2.13.0",
+  "version": "2.14.0",
   "description": "Converts plain JavaScript into JSFuck code, which consists of only six different characters: ! ( ) + [ ]",
   "keywords": [
     "esoteric",
@@ -41,7 +41,7 @@
     "test": "mocha --check-leaks test/{*,*/*}.spec.js"
   },
   "devDependencies": {
-    "@fasttime/gulp-lint": "~0.25.0",
+    "@fasttime/gulp-lint": "~0.26.0",
     "acorn": "~7.1.1",
     "art-js": "~0.9.2",
     "chalk": "~4.0.0",
@@ -58,9 +58,9 @@
     "mocha-bar": "~0.1.0",
     "nyc": "~15.0.1",
     "postrequire": "~0.1.1",
-    "rollup": "~2.3.3",
+    "rollup": "~2.6.1",
     "rollup-plugin-cleanup": "~3.1.1",
-    "typedoc": "~0.17.3",
+    "typedoc": "~0.17.4",
     "typedoc-plugin-markdown": "~2.2.17"
   }
 }
