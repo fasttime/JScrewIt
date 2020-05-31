@@ -23,9 +23,10 @@ function compareCanonicalNames(solution1, solution2)
 
 function createOutputReport()
 {
-    const fs = require('fs');
-    const fd = fs.openSync(`${__dirname}/../output.txt`, 'w');
-    const logLine = line => fs.writeSync(fd, `${line}\n`);
+    const { closeSync, openSync, writeSync } = require('fs');
+    const path = require('path').resolve(__dirname, '../output.txt');
+    const fd = openSync(path, 'w');
+    const logLine = line => writeSync(fd, `${line}\n`);
     try
     {
         logLine
@@ -41,7 +42,7 @@ function createOutputReport()
     }
     finally
     {
-        fs.closeSync(fd);
+        closeSync(fd);
     }
 }
 
