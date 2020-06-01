@@ -11,7 +11,6 @@ task
 
         const patterns =
         [
-            '.nyc_output',
             '.tmp-src',
             'Features.md',
             'api-doc',
@@ -37,6 +36,18 @@ task
             {
                 src: ['src/**/*.js', '!src/ui/worker.js'],
                 parserOptions: { sourceType: 'module' },
+                rules:
+                {
+                    'lines-around-comment':
+                    [
+                        'error',
+                        {
+                            allowBlockStart: true,
+                            allowObjectStart: true,
+                            ignorePattern: '^\\s*c8 ignore next\\b',
+                        },
+                    ],
+                },
             },
             {
                 src: ['gulpfile.js', 'build/**/*.js', '!build/legacy/**'],
@@ -153,18 +164,17 @@ task
         const { fork } = require('child_process');
 
         const { resolve } = require;
-        const nycPath = resolve('nyc/bin/nyc');
+        const c8Path = resolve('c8/bin/c8');
         const mochaPath = resolve('mocha/bin/mocha');
         const forkArgs =
         [
             '--reporter=html',
             '--reporter=text-summary',
-            '--',
             mochaPath,
             '--check-leaks',
             'test/**/*.spec.js',
         ];
-        const childProcess = fork(nycPath, forkArgs);
+        const childProcess = fork(c8Path, forkArgs);
         childProcess.on('exit', code => callback(code && 'Test failed'));
     },
 );

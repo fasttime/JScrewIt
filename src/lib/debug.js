@@ -43,8 +43,7 @@ import Solution                                             from './solution';
 import createToStringOptimizer                              from './to-string-optimizer';
 import trimJS                                               from './trim-js';
 
-// istanbul ignore else
-if (typeof DEBUG === 'undefined' || /* istanbul ignore next */ DEBUG)
+if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
 {
     (function ()
     {

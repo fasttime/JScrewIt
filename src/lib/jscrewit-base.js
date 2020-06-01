@@ -78,6 +78,5 @@ export function getValidFeatureMask(features)
 if (typeof self !== 'undefined')
     self.JScrewIt = JScrewIt;
 
-// istanbul ignore else
 if (typeof module !== 'undefined')
     module.exports = JScrewIt;

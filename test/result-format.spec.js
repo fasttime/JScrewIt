@@ -16,6 +16,8 @@
                 sparseArray[5] = 'foo';
                 var sparseSingletonArray = [];
                 sparseSingletonArray.length = 1;
+                var unmappableArray = [];
+                unmappableArray.map = null;
                 var badObj = { toString: throwError };
 
                 test('a number', 1, '1');
@@ -47,18 +49,19 @@
                 test('a nesting of arrays', [[], [{ }]], '[[], […]]', 'an array');
                 test('a sparse array', sparseArray, '[, , , , , "foo"]', 'an array');
                 test('a sparse singleton array', sparseSingletonArray, '[]', 'a one element array');
+                test('an unmappable array', unmappableArray, undefined, 'an empty array');
                 maybeTest
                 (
                     typeof document !== 'undefined',
                     'document.all',
                     typeof document !== 'undefined' && document.all,
-                    undefined,
+                    null,
                     'an object'
                 );
                 test('a plain object', { }, '[object Object]', 'an object');
-                test('a function', Function(), undefined, 'a function');
+                test('a function', Function(), null, 'a function');
                 test('a regular expression', /./, '/./', 'a regular expression');
-                test('a date', new Date(), undefined, 'a date');
+                test('a date', new Date(), null, 'a date');
                 test('an object that throws errors', badObj, undefined, 'an object');
                 testTypeUnknownObj();
             }
@@ -78,7 +81,7 @@
                     before(doBefore);
                 if (doAfter)
                     after(doAfter);
-                if (expectedValue != null)
+                if (expectedValue !== null)
                 {
                     it
                     (

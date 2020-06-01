@@ -404,6 +404,7 @@ export var validMaskFromArrayOrStringOrFeature;
                     Function('()=>{}')();
                     return true;
                 }
+                /* c8 ignore next 2 */
                 catch (error)
                 { }
             },
@@ -1652,6 +1653,7 @@ export var validMaskFromArrayOrStringOrFeature;
     {
         var inspectKey = require('util').inspect.custom;
     }
+    /* c8 ignore next 2 */
     catch (error)
     { }
     if (inspectKey)
