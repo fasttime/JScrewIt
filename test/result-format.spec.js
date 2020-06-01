@@ -19,6 +19,13 @@
         return sparseSingletonArray;
     }
 
+    function createUnmappableArray()
+    {
+        var unmappableArray = [];
+        unmappableArray.map = undefined;
+        return unmappableArray;
+    }
+
     function createTypeUnknownObjParamData()
     {
         var obj = Object.create(new Date());
@@ -117,6 +124,7 @@
                     '[]',
                     'a one element array',
                 ],
+                ['an unmappable array', createUnmappableArray(), undefined, 'an empty array'],
                 when
                 (
                     typeof document !== 'undefined',
@@ -126,7 +134,7 @@
                 ['a function', Function(), , 'a function'],
                 ['a regular expression', /./, '/./', 'a regular expression'],
                 ['a date', new Date(), , 'a date'],
-                ['an object that throws errors', { toString: throwError }, , 'an object'],
+                ['an object that throws errors', { toString: throwError }, undefined, 'an object'],
                 createTypeUnknownObjParamData(),
             ];
 
@@ -135,17 +143,18 @@
                 '#[0]',
                 function (paramData)
                 {
-                    var input               = paramData[1];
-                    var expectedValue       = paramData[2];
-                    var expectedValueType   = paramData[3];
-                    var doBefore            = paramData.doBefore;
-                    var doAfter             = paramData.doAfter;
+                    var input                   = paramData[1];
+                    var expectedValueProvided   = 2 in paramData;
+                    var expectedValue           = paramData[2];
+                    var expectedValueType       = paramData[3];
+                    var doBefore                = paramData.doBefore;
+                    var doAfter                 = paramData.doAfter;
 
                     if (doBefore)
                         before(doBefore);
                     if (doAfter)
                         after(doAfter);
-                    if (expectedValue != null)
+                    if (expectedValueProvided)
                     {
                         it
                         (

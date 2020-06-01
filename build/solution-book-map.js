@@ -2,7 +2,7 @@
 
 const jscrewitPath = '..';
 const JScrewIt = require(jscrewitPath);
-const charMapRoot = `${__dirname}/../char-map.json`;
+const charMapRoot = require('path').resolve(__dirname, '../char-map.json');
 const { debug } = JScrewIt;
 const solutionBookMap = module.exports = new Map();
 const typeKey = '__type';

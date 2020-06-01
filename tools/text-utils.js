@@ -34,4 +34,4 @@
         }
     );
 }
-)(typeof self === 'undefined' ? global : /* istanbul ignore next */ self);
+)(typeof self === 'undefined' ? global : /* c8 ignore next */ self);
