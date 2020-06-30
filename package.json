@@ -41,13 +41,13 @@
     "test": "mocha --check-leaks --require=ebdd --ui=ebdd test/{*,*/*}.spec.js"
   },
   "devDependencies": {
-    "@fasttime/gulp-lint": "~0.28.0",
-    "acorn": "~7.2.0",
+    "@fasttime/gulp-lint": "~0.29.0",
+    "acorn": "~7.3.1",
     "art-js": "~0.9.2",
-    "c8": "~7.1.2",
-    "chalk": "~4.0.0",
+    "c8": "~7.2.0",
+    "chalk": "~4.1.0",
     "del": "~5.1.0",
-    "ebdd": "~0.5.0",
+    "ebdd": "~0.6.0",
     "eslint-plugin-ebdd": "~0.1.1",
     "expectations": "~1.0.0",
     "gulp": "~4.0.2",
@@ -60,9 +60,9 @@
     "mocha": "~3.5.3",
     "mocha-bar": "~0.1.0",
     "postrequire": "~1.0.0",
-    "rollup": "~2.12.0",
+    "rollup": "~2.18.1",
     "rollup-plugin-cleanup": "~3.1.1",
     "typedoc": "~0.17.7",
-    "typedoc-plugin-markdown": "~2.2.17"
+    "typedoc-plugin-markdown": "~2.3.1"
   }
 }
