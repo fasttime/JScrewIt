@@ -63,6 +63,7 @@ task
                     'test/**/*.js',
                     'tools/**/*.js',
                 ],
+                plugins: 'ebdd',
                 // process.exitCode is not supported in Node.js 0.10.
                 rules: { 'no-process-exit': 'off' },
             },
@@ -172,6 +173,8 @@ task
             '--reporter=text-summary',
             mochaPath,
             '--check-leaks',
+            '--require=ebdd',
+            '--ui=ebdd',
             'test/**/*.spec.js',
         ];
         const childProcess = fork(c8Path, forkArgs);

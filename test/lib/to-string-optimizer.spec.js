@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+/* eslint-env ebdd/ebdd */
 /* global expect, module, padRight, repeat, require, self */
 
 'use strict';
@@ -85,53 +85,55 @@
                         'optimizes',
                         function ()
                         {
-                            function test(char, decimalMinLength, radixMinLength)
-                            {
-                                it
-                                (
-                                    '"' + char + '"',
-                                    function ()
-                                    {
-                                        var minRadix = parseInt(char, 36) + 1;
-                                        var maxDecimalDigits =
-                                        Math.ceil(Math.log(0x1fffffffffffff) / Math.log(minRadix));
-                                        // 7 for "+(", ")[", "](" and ")"
-                                        var bulkLength = 7 + decimalMinLength + radixMinLength;
-                                        var enough =
-                                        nextMultipleOf(bulkLength, maxDecimalDigits) +
-                                        maxDecimalDigits;
-                                        var toStringReplacementLength = enough - bulkLength;
-                                        var solution = { char: char, appendLength: Infinity };
-                                        checkLength
-                                        (
-                                            toStringReplacementLength,
-                                            solution,
-                                            enough / maxDecimalDigits
-                                        );
-                                        checkLength
-                                        (
-                                            toStringReplacementLength - 1,
-                                            solution,
-                                            enough / maxDecimalDigits - 1
-                                        );
-                                    }
-                                );
-                            }
+                            var paramDataList =
+                            [
+                                { char: 'b', decimalMinLength: 64, radixMinLength: 15 },
+                                { char: 'c', decimalMinLength: 64, radixMinLength: 15 },
+                                { char: 'g', decimalMinLength: 54, radixMinLength: 15 },
+                                { char: 'h', decimalMinLength: 54, radixMinLength: 15 },
+                                { char: 'j', decimalMinLength: 54, radixMinLength: 15 },
+                                { char: 'k', decimalMinLength: 54, radixMinLength: 17 },
+                                { char: 'm', decimalMinLength: 50, radixMinLength: 20 },
+                                { char: 'o', decimalMinLength: 50, radixMinLength: 20 },
+                                { char: 'p', decimalMinLength: 50, radixMinLength: 20 },
+                                { char: 'q', decimalMinLength: 50, radixMinLength: 20 },
+                                { char: 'v', decimalMinLength: 48, radixMinLength: 26 },
+                                { char: 'w', decimalMinLength: 48, radixMinLength: 31 },
+                                { char: 'x', decimalMinLength: 48, radixMinLength: 36 },
+                                { char: 'z', decimalMinLength: 48, radixMinLength: 46 },
+                            ];
 
-                            test('b', 64, 15);
-                            test('c', 64, 15);
-                            test('g', 54, 15);
-                            test('h', 54, 15);
-                            test('j', 54, 15);
-                            test('k', 54, 17);
-                            test('m', 50, 20);
-                            test('o', 50, 20);
-                            test('p', 50, 20);
-                            test('q', 50, 20);
-                            test('v', 48, 26);
-                            test('w', 48, 31);
-                            test('x', 48, 36);
-                            test('z', 48, 46);
+                            it.per(paramDataList)
+                            (
+                                '"#.char"',
+                                function (paramData)
+                                {
+                                    var char                = paramData.char;
+                                    var decimalMinLength    = paramData.decimalMinLength;
+                                    var radixMinLength      = paramData.radixMinLength;
+                                    var minRadix = parseInt(char, 36) + 1;
+                                    var maxDecimalDigits =
+                                    Math.ceil(Math.log(0x1fffffffffffff) / Math.log(minRadix));
+                                    // 7 for "+(", ")[", "](" and ")"
+                                    var bulkLength = 7 + decimalMinLength + radixMinLength;
+                                    var enough =
+                                    nextMultipleOf(bulkLength, maxDecimalDigits) + maxDecimalDigits;
+                                    var toStringReplacementLength = enough - bulkLength;
+                                    var solution = { char: char, appendLength: Infinity };
+                                    checkLength
+                                    (
+                                        toStringReplacementLength,
+                                        solution,
+                                        enough / maxDecimalDigits
+                                    );
+                                    checkLength
+                                    (
+                                        toStringReplacementLength - 1,
+                                        solution,
+                                        enough / maxDecimalDigits - 1
+                                    );
+                                }
+                            );
                         }
                     );
                 }

@@ -1,151 +1,10 @@
-/* eslint-env mocha */
-/* global emuDo, emuIt, expect, global, maybeIt, module, reloadJScrewIt, require, self */
+/* eslint-env ebdd/ebdd */
+/* global emuDo, emuIt, expect, global, module, reloadJScrewIt, require, self */
 
 'use strict';
 
 (function ()
 {
-    function testFeatureObj(featureName)
-    {
-        var featureObj = Feature[featureName];
-
-        describe
-        (
-            featureName,
-            function ()
-            {
-                it
-                (
-                    'is named correctly',
-                    function ()
-                    {
-                        var name = featureObj.name;
-                        expect(name).toBeString();
-                        expect(featureObj).toBe(Feature[name]);
-                        expect(featureObj).toBe(Feature.ALL[name]);
-                    }
-                );
-                it
-                (
-                    'has description string property',
-                    function ()
-                    {
-                        expect(featureObj.description).toBeString();
-                    }
-                );
-                it
-                (
-                    'has elementary boolean property',
-                    function ()
-                    {
-                        expect(featureObj.elementary).toBeBoolean();
-                    }
-                );
-                it
-                (
-                    'has a mask consisting of two 32-bit integers',
-                    function ()
-                    {
-                        var mask = featureObj.mask;
-                        expect(mask).toBeArray();
-                        expect(Object.isFrozen(mask)).toBeTruthy();
-                        expect(mask.length).toBe(2);
-                        expect(mask[0]).toBeInt32();
-                        expect(mask[1]).toBeInt32();
-                    }
-                );
-                it
-                (
-                    'has elementaryNames string array',
-                    function ()
-                    {
-                        var elementaryNames = featureObj.elementaryNames;
-                        expect(elementaryNames).toBeArray();
-                        elementaryNames.forEach
-                        (
-                            function (name)
-                            {
-                                expect(name).toBeString();
-                            }
-                        );
-                    }
-                );
-                it
-                (
-                    'has canonicalNames string array',
-                    function ()
-                    {
-                        var canonicalNames = featureObj.canonicalNames;
-                        expect(canonicalNames).toBeArray();
-                        var elementaryNames = featureObj.elementaryNames;
-                        expect(elementaryNames).toBeArray();
-                        canonicalNames.forEach
-                        (
-                            function (name)
-                            {
-                                expect(elementaryNames).toContain(name);
-                            }
-                        );
-                    }
-                );
-                if (featureObj.elementary)
-                {
-                    it
-                    (
-                        'has a nonempty mask',
-                        function ()
-                        {
-                            expect(JScrewIt.debug.maskIsEmpty(featureObj.mask)).toBe(false);
-                        }
-                    );
-                }
-                var check = featureObj.check;
-                if (check)
-                {
-                    it
-                    (
-                        'is checkable',
-                        function ()
-                        {
-                            var available = check();
-                            expect(available).toBeBoolean();
-                        }
-                    );
-                    emuIt
-                    (
-                        'is emulatable',
-                        featureObj,
-                        function (emuFeatures)
-                        {
-                            var available = emuDo(emuFeatures, check);
-                            expect(available).toBe(true, 'Emulation doesn\'t work');
-                        }
-                    );
-                }
-                var engine = featureObj.engine;
-                if (engine !== undefined)
-                {
-                    it
-                    (
-                        'has engine string',
-                        function ()
-                        {
-                            expect(engine).toBeString();
-                        }
-                    );
-                    it
-                    (
-                        'is not checkable',
-                        function ()
-                        {
-                            expect(check).toBeUndefined();
-                        }
-                    );
-                }
-            }
-        );
-    }
-
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Feature = JScrewIt.Feature;
 
@@ -241,7 +100,144 @@
                 function ()
                 {
                     var featureNames = Object.keys(Feature).sort();
-                    featureNames.forEach(testFeatureObj);
+
+                    describe.per(featureNames)
+                    (
+                        '#',
+                        function (featureName)
+                        {
+                            var featureObj = Feature[featureName];
+                            it
+                            (
+                                'is named correctly',
+                                function ()
+                                {
+                                    var name = featureObj.name;
+                                    expect(name).toBeString();
+                                    expect(featureObj).toBe(Feature[name]);
+                                    expect(featureObj).toBe(Feature.ALL[name]);
+                                }
+                            );
+                            it
+                            (
+                                'has description string property',
+                                function ()
+                                {
+                                    expect(featureObj.description).toBeString();
+                                }
+                            );
+                            it
+                            (
+                                'has elementary boolean property',
+                                function ()
+                                {
+                                    expect(featureObj.elementary).toBeBoolean();
+                                }
+                            );
+                            it
+                            (
+                                'has a mask consisting of two 32-bit integers',
+                                function ()
+                                {
+                                    var mask = featureObj.mask;
+                                    expect(mask).toBeArray();
+                                    expect(Object.isFrozen(mask)).toBeTruthy();
+                                    expect(mask.length).toBe(2);
+                                    expect(mask[0]).toBeInt32();
+                                    expect(mask[1]).toBeInt32();
+                                }
+                            );
+                            it
+                            (
+                                'has elementaryNames string array',
+                                function ()
+                                {
+                                    var elementaryNames = featureObj.elementaryNames;
+                                    expect(elementaryNames).toBeArray();
+                                    elementaryNames.forEach
+                                    (
+                                        function (name)
+                                        {
+                                            expect(name).toBeString();
+                                        }
+                                    );
+                                }
+                            );
+                            it
+                            (
+                                'has canonicalNames string array',
+                                function ()
+                                {
+                                    var canonicalNames = featureObj.canonicalNames;
+                                    expect(canonicalNames).toBeArray();
+                                    var elementaryNames = featureObj.elementaryNames;
+                                    expect(elementaryNames).toBeArray();
+                                    canonicalNames.forEach
+                                    (
+                                        function (name)
+                                        {
+                                            expect(elementaryNames).toContain(name);
+                                        }
+                                    );
+                                }
+                            );
+                            if (featureObj.elementary)
+                            {
+                                it
+                                (
+                                    'has a nonempty mask',
+                                    function ()
+                                    {
+                                        expect(JScrewIt.debug.maskIsEmpty(featureObj.mask))
+                                        .toBe(false);
+                                    }
+                                );
+                            }
+                            var check = featureObj.check;
+                            if (check)
+                            {
+                                it
+                                (
+                                    'is checkable',
+                                    function ()
+                                    {
+                                        var available = check();
+                                        expect(available).toBeBoolean();
+                                    }
+                                );
+                                emuIt
+                                (
+                                    'is emulatable',
+                                    featureObj,
+                                    function ()
+                                    {
+                                        var available = emuDo(this.test.emuFeatureNames, check);
+                                        expect(available).toBe(true, 'Emulation doesn\'t work');
+                                    }
+                                );
+                            }
+                            var engine = featureObj.engine;
+                            if (engine !== undefined)
+                            {
+                                it
+                                (
+                                    'has engine string',
+                                    function ()
+                                    {
+                                        expect(engine).toBeString();
+                                    }
+                                );
+                                it
+                                (
+                                    'is not checkable',
+                                    function ()
+                                    {
+                                        expect(check).toBeUndefined();
+                                    }
+                                );
+                            }
+                        }
+                    );
                 }
             );
             describe
@@ -249,39 +245,6 @@
                 'contains correct information for the feature',
                 function ()
                 {
-                    function test(actualFeatureName, expectedFeatureNames)
-                    {
-                        it
-                        (
-                            actualFeatureName,
-                            function ()
-                            {
-                                // Default environemnt
-                                var actualFeature = Feature.ALL[actualFeatureName];
-                                var featureNames =
-                                Feature.commonOf.apply(null, expectedFeatureNames);
-                                var expectedFeature = Feature(featureNames);
-                                verifyExpectations(actualFeature, expectedFeature);
-
-                                // Web Worker
-                                var actualFeatureWW = actualFeature.restrict('web-worker');
-                                var restrictedFeatures =
-                                expectedFeatureNames.map
-                                (
-                                    function (featureName)
-                                    {
-                                        var feature = Feature.ALL[featureName];
-                                        var restrictedFeature = feature.restrict('web-worker');
-                                        return restrictedFeature;
-                                    }
-                                );
-                                var expectedFeatureWW =
-                                Feature.commonOf.apply(null, restrictedFeatures);
-                                verifyExpectations(actualFeatureWW, expectedFeatureWW);
-                            }
-                        );
-                    }
-
                     function verifyExpectations(actualFeature, expectedFeature)
                     {
                         var actualElementaryNames = actualFeature.elementaryNames;
@@ -304,21 +267,60 @@
                             expect(featureObj.mask).toEqual([0, 0]);
                         }
                     );
-                    test
+                    it.per
                     (
-                        'BROWSER',
                         [
-                            'ANDRO_4_0',
-                            'ANDRO_4_4',
-                            'CHROME_PREV',
-                            'FF_ESR',
-                            'IE_9',
-                            'IE_11',
-                            'SAFARI_7_0',
-                            'SAFARI_10',
+                            {
+                                actualFeatureName: 'BROWSER',
+                                expectedFeatureNames:
+                                [
+                                    'ANDRO_4_0',
+                                    'ANDRO_4_4',
+                                    'CHROME_PREV',
+                                    'FF_ESR',
+                                    'IE_9',
+                                    'IE_11',
+                                    'SAFARI_7_0',
+                                    'SAFARI_10',
+                                ],
+                            },
+                            {
+                                actualFeatureName: 'COMPACT',
+                                expectedFeatureNames: ['CHROME', 'FF', 'SAFARI'],
+                            },
                         ]
+                    )
+                    (
+                        '#.actualFeatureName',
+                        function (paramData)
+                        {
+                            var actualFeatureName       = paramData.actualFeatureName;
+                            var expectedFeatureNames    = paramData.expectedFeatureNames;
+
+                            // Default environemnt
+                            var actualFeature = Feature.ALL[actualFeatureName];
+                            var featureNames =
+                            Feature.commonOf.apply(null, expectedFeatureNames);
+                            var expectedFeature = Feature(featureNames);
+                            verifyExpectations(actualFeature, expectedFeature);
+
+                            // Web Worker
+                            var actualFeatureWW = actualFeature.restrict('web-worker');
+                            var restrictedFeatures =
+                            expectedFeatureNames.map
+                            (
+                                function (featureName)
+                                {
+                                    var feature = Feature.ALL[featureName];
+                                    var restrictedFeature = feature.restrict('web-worker');
+                                    return restrictedFeature;
+                                }
+                            );
+                            var expectedFeatureWW =
+                            Feature.commonOf.apply(null, restrictedFeatures);
+                            verifyExpectations(actualFeatureWW, expectedFeatureWW);
+                        }
                     );
-                    test('COMPACT', ['CHROME', 'FF', 'SAFARI']);
                     it
                     (
                         'AUTO',
@@ -732,9 +734,8 @@
                     );
                 }
             );
-            maybeIt
+            it.when(typeof module !== 'undefined')
             (
-                typeof module !== 'undefined',
                 'inspection works as expected',
                 function ()
                 {
@@ -744,9 +745,8 @@
                     expect(actual).toBe('[Feature DEFAULT]');
                 }
             );
-            maybeIt
+            it.when(typeof module !== 'undefined')
             (
-                typeof module !== 'undefined',
                 'util.inspect.custom is not required',
                 function ()
                 {

@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+/* eslint-env ebdd/ebdd */
 /*
 global
 emuEval,
@@ -17,24 +17,6 @@ self,
 
 (function ()
 {
-    function testFreqListCache(fn)
-    {
-        it
-        (
-            'caches freqList',
-            function ()
-            {
-                var encoder = JScrewIt.debug.createEncoder();
-                var inputData = Object('');
-                fn.call(encoder, inputData);
-                var freqList = inputData.freqList;
-                expect(freqList).toBeArray();
-                fn.call(encoder, inputData);
-                expect(inputData.freqList).toBe(freqList);
-            }
-        );
-    }
-
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Feature = JScrewIt.Feature;
 
@@ -178,13 +160,13 @@ self,
             (
                 'returns correct JSFuck with feature ARROW',
                 Feature.ARROW,
-                function (emuFeatures)
+                function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder(Feature.ARROW);
                     var input = 'Lorem ipsum dolor sit amet';
                     var output = encoder.encodeByCharCodes(input, false, 4);
                     expect(output).toBeJSFuck();
-                    expect(emuEval(emuFeatures, output)).toBe(input);
+                    expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
                 }
             );
             it
@@ -273,13 +255,6 @@ self,
                     expect(figureLegendInsertions.length).toBe(1);
                 }
             );
-            testFreqListCache
-            (
-                function (inputData)
-                {
-                    this.encodeByDenseFigures(inputData, 0);
-                }
-            );
         }
     );
     describe
@@ -305,13 +280,13 @@ self,
             (
                 'returns correct JSFuck with feature ARROW',
                 Feature.ARROW,
-                function (emuFeatures)
+                function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder(Feature.ARROW);
                     var input = 'Lorem ipsum dolor sit amet';
                     var output = encoder.encodeByDict(Object(input), 4);
                     expect(output).toBeJSFuck();
-                    expect(emuEval(emuFeatures, output)).toBe(input);
+                    expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
                 }
             );
             it
@@ -326,13 +301,6 @@ self,
                     expect(output2).toBeUndefined();
                     var output3 = encoder.encodeByDict(Object('12345'), undefined, undefined, 200);
                     expect(output3).toBeUndefined();
-                }
-            );
-            testFreqListCache
-            (
-                function (inputData)
-                {
-                    this.encodeByDict(inputData, undefined, undefined, 0);
                 }
             );
         }
@@ -370,13 +338,6 @@ self,
                     expect(output3).toBeUndefined();
                 }
             );
-            testFreqListCache
-            (
-                function (inputData)
-                {
-                    this.encodeBySparseFigures(inputData, 0);
-                }
-            );
         }
     );
     describe
@@ -389,37 +350,38 @@ self,
                 'respects the maxLength limit',
                 function ()
                 {
-                    function test(description, input)
-                    {
-                        it
-                        (
-                            description,
-                            function ()
-                            {
-                                var encoder = JScrewIt.debug.createEncoder();
-                                var output = encoder.encodeExpress(input);
-                                var length = output.length;
-                                var perfLogLength = encoder.perfLog.length;
-                                output = encoder.encodeExpress(input, length);
-                                expect(output).not.toBeUndefined();
-                                encoder.perfLog = [];
-                                output = encoder.encodeExpress(input, length - 1);
-                                expect(output).toBeUndefined();
-                                var expectedCodingLogLength = Math.max(perfLogLength, 0);
-                                expect(encoder.perfLog.length).toBe(expectedCodingLogLength);
-                            }
-                        );
-                    }
+                    var paramDataList =
+                    [
+                        ['with an empty script', ''],
+                        ['with a call operation', '""[0]()'],
+                        ['with a param-call operation', '""(0)[""]'],
+                        ['with a get operation', '""[0][""]'],
+                        ['with a post-increment', '[0][0]++'],
+                        ['with an empty array', '""([])'],
+                        ['with a singleton array', '""([0])'],
+                        ['with a sum', '1+1'],
+                        ['with a sum of modified sums', 'a+(+("b"+[c]))'],
+                    ];
 
-                    test('with an empty script', '');
-                    test('with a call operation', '""[0]()');
-                    test('with a param-call operation', '""(0)[""]');
-                    test('with a get operation', '""[0][""]');
-                    test('with a post-increment', '[0][0]++');
-                    test('with an empty array', '""([])');
-                    test('with a singleton array', '""([0])');
-                    test('with a sum', '1+1');
-                    test('with a sum of modified sums', 'a+(+("b"+[c]))');
+                    it.per(paramDataList)
+                    (
+                        '#[0]',
+                        function (paramData)
+                        {
+                            var input = paramData[1];
+                            var encoder = JScrewIt.debug.createEncoder();
+                            var output = encoder.encodeExpress(input);
+                            var length = output.length;
+                            var perfLogLength = encoder.perfLog.length;
+                            output = encoder.encodeExpress(input, length);
+                            expect(output).not.toBeUndefined();
+                            encoder.perfLog = [];
+                            output = encoder.encodeExpress(input, length - 1);
+                            expect(output).toBeUndefined();
+                            var expectedCodingLogLength = Math.max(perfLogLength, 0);
+                            expect(encoder.perfLog.length).toBe(expectedCodingLogLength);
+                        }
+                    );
                 }
             );
             it
@@ -562,157 +524,148 @@ self,
                 {
                     function test(expr, _0, _SB, _FS, _SBFS)
                     {
-                        function fn()
-                        {
-                            it
-                            (
-                                'without bonding or string forcing',
-                                function ()
-                                {
-                                    var options =
-                                    { bond: false, forceString: false, optimize: true };
-                                    var output = encoder.replaceString(expr, options);
-                                    expect(output).toStartWith(_0[0]);
-                                    expect(output).toEndWith(_0[1]);
-                                }
-                            );
-                            it
-                            (
-                                'with bonding',
-                                function ()
-                                {
-                                    var options =
-                                    { bond: true, forceString: false, optimize: true };
-                                    var output = encoder.replaceString(expr, options);
-                                    expect(output).toStartWith(_SB[0]);
-                                    expect(output).toEndWith(_SB[1]);
-                                }
-                            );
-                            it
-                            (
-                                'with string forcing',
-                                function ()
-                                {
-                                    var options =
-                                    { bond: false, forceString: true, optimize: true };
-                                    var output = encoder.replaceString(expr, options);
-                                    expect(output).toStartWith(_FS[0]);
-                                    expect(output).toEndWith(_FS[1]);
-                                }
-                            );
-                            it
-                            (
-                                'with bonding and string forcing',
-                                function ()
-                                {
-                                    var options =
-                                    { bond: true, forceString: true, optimize: true };
-                                    var output = encoder.replaceString(expr, options);
-                                    expect(output).toStartWith(_SBFS[0]);
-                                    expect(output).toEndWith(_SBFS[1]);
-                                }
-                            );
-                        }
-
-                        describe('with "' + expr + '"', fn);
+                        it
+                        (
+                            'without bonding or string forcing',
+                            function ()
+                            {
+                                var options = { bond: false, forceString: false, optimize: true };
+                                var output = encoder.replaceString(expr, options);
+                                expect(output).toStartWith(_0[0]);
+                                expect(output).toEndWith(_0[1]);
+                            }
+                        );
+                        it
+                        (
+                            'with bonding',
+                            function ()
+                            {
+                                var options = { bond: true, forceString: false, optimize: true };
+                                var output = encoder.replaceString(expr, options);
+                                expect(output).toStartWith(_SB[0]);
+                                expect(output).toEndWith(_SB[1]);
+                            }
+                        );
+                        it
+                        (
+                            'with string forcing',
+                            function ()
+                            {
+                                var options = { bond: false, forceString: true, optimize: true };
+                                var output = encoder.replaceString(expr, options);
+                                expect(output).toStartWith(_FS[0]);
+                                expect(output).toEndWith(_FS[1]);
+                            }
+                        );
+                        it
+                        (
+                            'with bonding and string forcing',
+                            function ()
+                            {
+                                var options = { bond: true, forceString: true, optimize: true };
+                                var output = encoder.replaceString(expr, options);
+                                expect(output).toStartWith(_SBFS[0]);
+                                expect(output).toEndWith(_SBFS[1]);
+                            }
+                        );
                     }
 
                     var encoder = JScrewIt.debug.createEncoder(['FILL', 'NO_IE_SRC']);
-                    test
+                    var paramDataList =
+                    [
+                        [
+                            ',0',
+                            ['[[]][', '](+[])'],
+                            ['[[]][', '](+[])'],
+                            ['[[]][', '](+[])+[]'],
+                            ['([[]][', '](+[])+[])'],
+                        ],
+                        [
+                            '0,',
+                            ['[+[]][', ']([[]])'],
+                            ['[+[]][', ']([[]])'],
+                            ['[+[]][', ']([[]])+[]'],
+                            ['([+[]][', ']([[]])+[])'],
+                        ],
+                        [
+                            ',',
+                            ['[[]][', ']([[]])'],
+                            ['[[]][', ']([[]])'],
+                            ['[[]][', ']([[]])+[]'],
+                            ['([[]][', ']([[]])+[])'],
+                        ],
+                        [
+                            '0,0',
+                            ['[+[]][', '](+[])'],
+                            ['[+[]][', '](+[])'],
+                            ['[+[]][', '](+[])+[]'],
+                            ['([+[]][', '](+[])+[])'],
+                        ],
+                        [
+                            '00,0',
+                            ['+[]+[+[]][', '](+[])'],
+                            ['[+[]+[+[]]][', '](+[])'],
+                            ['+[]+[+[]][', '](+[])'],
+                            ['(+[]+[+[]][', '](+[]))'],
+                        ],
+                        [
+                            '0a0f,0',
+                            ['+[]+(![]+[])[+!![]]+[+[]+(![]+[])[+[]]][', '](+[])'],
+                            ['[+[]+(![]+[])[+!![]]+(+[])+(![]+[])[+[]]][', '](+[])'],
+                            ['+[]+(![]+[])[+!![]]+[+[]+(![]+[])[+[]]][', '](+[])'],
+                            ['(+[]+(![]+[])[+!![]]+[+[]+(![]+[])[+[]]][', '](+[]))'],
+                        ],
+                        [
+                            '0undefinedundefined,0',
+                            ['[[+[]]+[][[]]+[][[]]][', '](+[])'],
+                            ['[[+[]]+[][[]]+[][[]]][', '](+[])'],
+                            ['+[]+[[][[]]+[]+[][[]]][', '](+[])'],
+                            ['(+[]+[[][[]]+[]+[][[]]][', '](+[]))'],
+                        ],
+                        [
+                            '0undefinedundefined,00',
+                            ['[[+[]]+[][[]]+[][[]]][', '](+[]+[+[]])'],
+                            ['[[+[]]+[][[]]+[][[]]][', '](+[]+[+[]])'],
+                            ['[[+[]]+[][[]]+[][[]]][', '](+[])+(+[])'],
+                            ['([[+[]]+[][[]]+[][[]]][', '](+[])+(+[]))'],
+                        ],
+                        [
+                            '0undefinedundefined,undefined00',
+                            ['[[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]]+(+[]))'],
+                            ['[[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]]+(+[]))'],
+                            ['[[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]])+(+[])'],
+                            ['([[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]])+(+[]))'],
+                        ],
+                        [
+                            '0undefinedundefined,undefinedundefined',
+                            ['[[+[]]+[][[]]+[][[]]][', ']([][[]]+[]+[][[]])'],
+                            ['[[+[]]+[][[]]+[][[]]][', ']([][[]]+[]+[][[]])'],
+                            ['[[+[]]+[][[]]+[][[]]][', ']([][[]]+[])+[][[]]'],
+                            ['([[+[]]+[][[]]+[][[]]][', ']([][[]]+[])+[][[]])'],
+                        ],
+                        [
+                            'undefinedundefined0,0',
+                            ['[][[]]+[[][[]]+[+[]]][', '](+[])'],
+                            ['([][[]]+[[][[]]+[+[]]][', '](+[]))'],
+                            ['[][[]]+[[][[]]+[+[]]][', '](+[])'],
+                            ['([][[]]+[[][[]]+[+[]]][', '](+[]))'],
+                        ],
+                        [
+                            '0,00',
+                            ['[+[]][', '](+[]+[+[]])'],
+                            ['[+[]][', '](+[]+[+[]])'],
+                            ['[+[]][', '](+[])+(+[])'],
+                            ['([+[]][', '](+[])+(+[]))'],
+                        ],
+                    ];
+
+                    describe.per(paramDataList)
                     (
-                        ',0',
-                        ['[[]][', '](+[])'],
-                        ['[[]][', '](+[])'],
-                        ['[[]][', '](+[])+[]'],
-                        ['([[]][', '](+[])+[])']
-                    );
-                    test
-                    (
-                        '0,',
-                        ['[+[]][', ']([[]])'],
-                        ['[+[]][', ']([[]])'],
-                        ['[+[]][', ']([[]])+[]'],
-                        ['([+[]][', ']([[]])+[])']
-                    );
-                    test
-                    (
-                        ',',
-                        ['[[]][', ']([[]])'],
-                        ['[[]][', ']([[]])'],
-                        ['[[]][', ']([[]])+[]'],
-                        ['([[]][', ']([[]])+[])']
-                    );
-                    test
-                    (
-                        '0,0',
-                        ['[+[]][', '](+[])'],
-                        ['[+[]][', '](+[])'],
-                        ['[+[]][', '](+[])+[]'],
-                        ['([+[]][', '](+[])+[])']
-                    );
-                    test
-                    (
-                        '00,0',
-                        ['+[]+[+[]][', '](+[])'],
-                        ['[+[]+[+[]]][', '](+[])'],
-                        ['+[]+[+[]][', '](+[])'],
-                        ['(+[]+[+[]][', '](+[]))']
-                    );
-                    test
-                    (
-                        '0a0f,0',
-                        ['+[]+(![]+[])[+!![]]+[+[]+(![]+[])[+[]]][', '](+[])'],
-                        ['[+[]+(![]+[])[+!![]]+(+[])+(![]+[])[+[]]][', '](+[])'],
-                        ['+[]+(![]+[])[+!![]]+[+[]+(![]+[])[+[]]][', '](+[])'],
-                        ['(+[]+(![]+[])[+!![]]+[+[]+(![]+[])[+[]]][', '](+[]))']
-                    );
-                    test
-                    (
-                        '0undefinedundefined,0',
-                        ['[[+[]]+[][[]]+[][[]]][', '](+[])'],
-                        ['[[+[]]+[][[]]+[][[]]][', '](+[])'],
-                        ['+[]+[[][[]]+[]+[][[]]][', '](+[])'],
-                        ['(+[]+[[][[]]+[]+[][[]]][', '](+[]))']
-                    );
-                    test
-                    (
-                        '0undefinedundefined,00',
-                        ['[[+[]]+[][[]]+[][[]]][', '](+[]+[+[]])'],
-                        ['[[+[]]+[][[]]+[][[]]][', '](+[]+[+[]])'],
-                        ['[[+[]]+[][[]]+[][[]]][', '](+[])+(+[])'],
-                        ['([[+[]]+[][[]]+[][[]]][', '](+[])+(+[]))']
-                    );
-                    test
-                    (
-                        '0undefinedundefined,undefined00',
-                        ['[[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]]+(+[]))'],
-                        ['[[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]]+(+[]))'],
-                        ['[[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]])+(+[])'],
-                        ['([[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]])+(+[]))']
-                    );
-                    test
-                    (
-                        '0undefinedundefined,undefinedundefined',
-                        ['[[+[]]+[][[]]+[][[]]][', ']([][[]]+[]+[][[]])'],
-                        ['[[+[]]+[][[]]+[][[]]][', ']([][[]]+[]+[][[]])'],
-                        ['[[+[]]+[][[]]+[][[]]][', ']([][[]]+[])+[][[]]'],
-                        ['([[+[]]+[][[]]+[][[]]][', ']([][[]]+[])+[][[]])']
-                    );
-                    test
-                    (
-                        'undefinedundefined0,0',
-                        ['[][[]]+[[][[]]+[+[]]][', '](+[])'],
-                        ['([][[]]+[[][[]]+[+[]]][', '](+[]))'],
-                        ['[][[]]+[[][[]]+[+[]]][', '](+[])'],
-                        ['([][[]]+[[][[]]+[+[]]][', '](+[]))']
-                    );
-                    test
-                    (
-                        '0,00',
-                        ['[+[]][', '](+[]+[+[]])'],
-                        ['[+[]][', '](+[]+[+[]])'],
-                        ['[+[]][', '](+[])+(+[])'],
-                        ['([+[]][', '](+[])+(+[]))']
+                        'with "#[0]"',
+                        function (paramData)
+                        {
+                            test.apply(null, paramData);
+                        }
                     );
                 }
             );
@@ -1023,61 +976,103 @@ self,
             var text = 'Lorem ipsum dolor sit amet';
             var strategies = JScrewIt.debug.getStrategies();
             var strategyNames = Object.keys(strategies);
-            strategyNames.forEach
+            describe.per(strategyNames)
             (
+                '#',
                 function (strategyName)
                 {
+                    function getMaxLength(scope)
+                    {
+                        var maxLength = scope.maxLength;
+                        if (maxLength === undefined)
+                        {
+                            scope.maxLength = maxLength =
+                            strategy.call(encoder, Object('0')).length;
+                        }
+                        return maxLength;
+                    }
+
                     var strategy = strategies[strategyName];
-                    describe
+                    it
                     (
-                        strategyName,
+                        'returns correct JSFuck',
                         function ()
                         {
-                            function getMaxLength(scope)
-                            {
-                                var maxLength = scope.maxLength;
-                                if (maxLength === undefined)
-                                {
-                                    scope.maxLength = maxLength =
-                                    strategy.call(encoder, Object('0')).length;
-                                }
-                                return maxLength;
-                            }
-
-                            it
-                            (
-                                'returns correct JSFuck',
-                                function ()
-                                {
-                                    var input =
-                                    strategyName !== 'express' ? text : JSON.stringify(text);
-                                    var output = strategy.call(encoder, Object(input));
-                                    expect(output).toBeJSFuck();
-                                    expect(evalJSFuck(output)).toBe(text);
-                                }
-                            );
-                            it
-                            (
-                                'returns undefined when output length exceeds maxLength',
-                                function ()
-                                {
-                                    var maxLength = getMaxLength(this);
-                                    var output = strategy.call(encoder, Object('0'), maxLength - 1);
-                                    expect(output).toBeUndefined();
-                                }
-                            );
-                            it
-                            (
-                                'returns a string when output length equals maxLength',
-                                function ()
-                                {
-                                    var maxLength = getMaxLength(this);
-                                    var output = strategy.call(encoder, Object('0'), maxLength);
-                                    expect(output).toBeString();
-                                }
-                            );
+                            var input = strategyName !== 'express' ? text : JSON.stringify(text);
+                            var output = strategy.call(encoder, Object(input));
+                            expect(output).toBeJSFuck();
+                            expect(evalJSFuck(output)).toBe(text);
                         }
                     );
+                    it
+                    (
+                        'returns undefined when output length exceeds maxLength',
+                        function ()
+                        {
+                            var maxLength = getMaxLength(this);
+                            var output = strategy.call(encoder, Object('0'), maxLength - 1);
+                            expect(output).toBeUndefined();
+                        }
+                    );
+                    it
+                    (
+                        'returns a string when output length equals maxLength',
+                        function ()
+                        {
+                            var maxLength = getMaxLength(this);
+                            var output = strategy.call(encoder, Object('0'), maxLength);
+                            expect(output).toBeString();
+                        }
+                    );
+                }
+            );
+        }
+    );
+    describe
+    (
+        'freqList is cached',
+        function ()
+        {
+            var paramDataList =
+            [
+                {
+                    description: 'encodeByDenseFigures',
+                    fn:
+                    function (inputData)
+                    {
+                        this.encodeByDenseFigures(inputData, 0);
+                    },
+                },
+                {
+                    description: 'encodeByDict',
+                    fn:
+                    function (inputData)
+                    {
+                        this.encodeByDict(inputData, undefined, undefined, 0);
+                    },
+                },
+                {
+                    description: 'encodeBySparseFigures',
+                    fn:
+                    function (inputData)
+                    {
+                        this.encodeBySparseFigures(inputData, 0);
+                    },
+                },
+            ];
+            it.per(paramDataList)
+            (
+                'with #.description',
+                function (paramData)
+                {
+                    var fn = paramData.fn;
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var inputData = Object('');
+                    fn.call(encoder, inputData);
+                    var freqList = inputData.freqList;
+                    expect(freqList).toBeArray();
+                    fn.call(encoder, inputData);
+                    expect(inputData.freqList).toBe(freqList);
                 }
             );
         }

@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+/* eslint-env ebdd/ebdd */
 /* global expect, module, require, self */
 
 'use strict';
@@ -68,78 +68,68 @@
                 expectedStr5
             )
             {
-                describe
+                it
                 (
-                    description,
+                    'encodes an empty string',
                     function ()
                     {
-                        it
-                        (
-                            'encodes an empty string',
-                            function ()
-                            {
-                                var buffer = createScrewBuffer(bond, forceString, 10, []);
-                                verifyBuffer(buffer, expectedStr0, INITIAL_APPEND_LENGTH);
-                            }
-                        );
-                        it
-                        (
-                            'encodes a single string character',
-                            function ()
-                            {
-                                var buffer = createScrewBuffer(bond, forceString, 10, []);
-                                expect(buffer.append(solutionA)).toBe(true);
-                                var expectedLength = INITIAL_APPEND_LENGTH + solutionA.appendLength;
-                                verifyBuffer(buffer, expectedStr1, expectedLength);
-                            }
-                        );
-                        it
-                        (
-                            'encodes a single nonstring character',
-                            function ()
-                            {
-                                var buffer = createScrewBuffer(bond, forceString, 10, []);
-                                expect(buffer.append(solution0)).toBe(true);
-                                var expectedLength = INITIAL_APPEND_LENGTH + solution0.appendLength;
-                                verifyBuffer(buffer, expectedStr2, expectedLength);
-                            }
-                        );
-                        it
-                        (
-                            'encodes undefined',
-                            function ()
-                            {
-                                var buffer = createScrewBuffer(bond, forceString, 10, []);
-                                expect(buffer.append(solutionUndefined)).toBe(true);
-                                var expectedLength =
-                                INITIAL_APPEND_LENGTH + solutionUndefined.appendLength;
-                                verifyBuffer(buffer, expectedStr3, expectedLength);
-                            }
-                        );
-                        it
-                        (
-                            'encodes a string cluster',
-                            function ()
-                            {
-                                var buffer =
-                                createScrewBuffer(bond, forceString, 10, [strTestOptimizer]);
-                                expect(buffer.append(solutionA)).toBe(true);
-                                expect(buffer.append(solutionA)).toBe(true);
-                                verifyBuffer(buffer, expectedStr4, INITIAL_APPEND_LENGTH);
-                            }
-                        );
-                        it
-                        (
-                            'encodes a nonstring cluster',
-                            function ()
-                            {
-                                var buffer =
-                                createScrewBuffer(bond, forceString, 10, [objTestOptimizer]);
-                                expect(buffer.append(solutionA)).toBe(true);
-                                expect(buffer.append(solutionA)).toBe(true);
-                                verifyBuffer(buffer, expectedStr5, INITIAL_APPEND_LENGTH);
-                            }
-                        );
+                        var buffer = createScrewBuffer(bond, forceString, 10, []);
+                        verifyBuffer(buffer, expectedStr0, INITIAL_APPEND_LENGTH);
+                    }
+                );
+                it
+                (
+                    'encodes a single string character',
+                    function ()
+                    {
+                        var buffer = createScrewBuffer(bond, forceString, 10, []);
+                        expect(buffer.append(solutionA)).toBe(true);
+                        var expectedLength = INITIAL_APPEND_LENGTH + solutionA.appendLength;
+                        verifyBuffer(buffer, expectedStr1, expectedLength);
+                    }
+                );
+                it
+                (
+                    'encodes a single nonstring character',
+                    function ()
+                    {
+                        var buffer = createScrewBuffer(bond, forceString, 10, []);
+                        expect(buffer.append(solution0)).toBe(true);
+                        var expectedLength = INITIAL_APPEND_LENGTH + solution0.appendLength;
+                        verifyBuffer(buffer, expectedStr2, expectedLength);
+                    }
+                );
+                it
+                (
+                    'encodes undefined',
+                    function ()
+                    {
+                        var buffer = createScrewBuffer(bond, forceString, 10, []);
+                        expect(buffer.append(solutionUndefined)).toBe(true);
+                        var expectedLength = INITIAL_APPEND_LENGTH + solutionUndefined.appendLength;
+                        verifyBuffer(buffer, expectedStr3, expectedLength);
+                    }
+                );
+                it
+                (
+                    'encodes a string cluster',
+                    function ()
+                    {
+                        var buffer = createScrewBuffer(bond, forceString, 10, [strTestOptimizer]);
+                        expect(buffer.append(solutionA)).toBe(true);
+                        expect(buffer.append(solutionA)).toBe(true);
+                        verifyBuffer(buffer, expectedStr4, INITIAL_APPEND_LENGTH);
+                    }
+                );
+                it
+                (
+                    'encodes a nonstring cluster',
+                    function ()
+                    {
+                        var buffer = createScrewBuffer(bond, forceString, 10, [objTestOptimizer]);
+                        expect(buffer.append(solutionA)).toBe(true);
+                        expect(buffer.append(solutionA)).toBe(true);
+                        verifyBuffer(buffer, expectedStr5, INITIAL_APPEND_LENGTH);
                     }
                 );
             }
@@ -153,54 +143,61 @@
             var solutionUndefined = new Solution('[][[]]', LEVEL_UNDEFINED);
             var strTestOptimizer = createTestOptimizer(new Solution('""', LEVEL_STRING));
             var objTestOptimizer = createTestOptimizer(new Solution('{}', LEVEL_OBJECT));
+            var paramDataList =
+            [
+                [
+                    'without bonding or string forcing',
+                    false,
+                    false,
+                    '[]',
+                    '[![]+[]][+[]]',
+                    '+[]',
+                    '[][[]]',
+                    '""',
+                    '{}',
+                ],
+                [
+                    'with string forcing',
+                    false,
+                    true,
+                    '[]+[]',
+                    '[![]+[]][+[]]',
+                    '+[]+[]',
+                    '[][[]]+[]',
+                    '""',
+                    '{}+[]',
+                ],
+                [
+                    'with bonding',
+                    true,
+                    false,
+                    '[]',
+                    '[![]+[]][+[]]',
+                    '(+[])',
+                    '[][[]]',
+                    '""',
+                    '{}',
+                ],
+                [
+                    'with bonding and string forcing',
+                    true,
+                    true,
+                    '([]+[])',
+                    '[![]+[]][+[]]',
+                    '(+[]+[])',
+                    '([][[]]+[])',
+                    '""',
+                    '({}+[])',
+                ],
+            ];
 
-            testShortEncodings
+            describe.per(paramDataList)
             (
-                'without bonding or string forcing',
-                false,
-                false,
-                '[]',
-                '[![]+[]][+[]]',
-                '+[]',
-                '[][[]]',
-                '""',
-                '{}'
-            );
-            testShortEncodings
-            (
-                'with string forcing',
-                false,
-                true,
-                '[]+[]',
-                '[![]+[]][+[]]',
-                '+[]+[]',
-                '[][[]]+[]',
-                '""',
-                '{}+[]'
-            );
-            testShortEncodings
-            (
-                'with bonding',
-                true,
-                false,
-                '[]',
-                '[![]+[]][+[]]',
-                '(+[])',
-                '[][[]]',
-                '""',
-                '{}'
-            );
-            testShortEncodings
-            (
-                'with bonding and string forcing',
-                true,
-                true,
-                '([]+[])',
-                '[![]+[]][+[]]',
-                '(+[]+[])',
-                '([][[]]+[])',
-                '""',
-                '({}+[])'
+                '#[0]',
+                function (paramData)
+                {
+                    testShortEncodings.apply(null, paramData);
+                }
             );
 
             (function ()

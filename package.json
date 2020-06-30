@@ -38,7 +38,7 @@
     "build": "npm install && gulp",
     "docs": "gulp docs",
     "feature-info": "build/legacy/feature-info.js",
-    "test": "mocha --check-leaks test/{*,*/*}.spec.js"
+    "test": "mocha --check-leaks --require=ebdd --ui=ebdd test/{*,*/*}.spec.js"
   },
   "devDependencies": {
     "@fasttime/gulp-lint": "~0.28.0",
@@ -47,6 +47,8 @@
     "c8": "~7.1.2",
     "chalk": "~4.0.0",
     "del": "~5.1.0",
+    "ebdd": "~0.5.0",
+    "eslint-plugin-ebdd": "~0.1.1",
     "expectations": "~1.0.0",
     "gulp": "~4.0.2",
     "gulp-jsdoc3": "~3.0.0",

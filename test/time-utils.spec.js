@@ -1,4 +1,4 @@
-/* eslint-env mocha, node */
+/* eslint-env ebdd/ebdd, node */
 
 'use strict';
 

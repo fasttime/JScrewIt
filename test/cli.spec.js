@@ -1,4 +1,4 @@
-/* eslint-env mocha, node */
+/* eslint-env ebdd/ebdd, node */
 
 'use strict';
 
@@ -38,197 +38,182 @@ describe
                 assert.strictEqual(actual, expected);
         }
 
-        function test
-        (
-            description,
-            screwArgs,
-            childProcessHandler,
-            expectedStdout,
-            expectedStderr,
-            expectedFiles,
-            expectedExitCode
-        )
-        {
-            var actualExitCode;
-            var args = ['./screw.js'].concat(screwArgs);
-            it
-            (
-                description,
-                function (done)
-                {
-                    var childProcess =
-                    childProcessExports.execFile
-                    (
-                        process.execPath,
-                        args,
-                        options,
-                        function (error, stdout, stderr)
-                        {
-                            try
-                            {
-                                doAssert(stdout, expectedStdout);
-                                doAssert(stderr, expectedStderr);
-                                for (var filePath in expectedFiles)
-                                {
-                                    var actualContent = fs.readFileSync(filePath).toString();
-                                    var expectedContent = expectedFiles[filePath];
-                                    assert.strictEqual(actualContent, expectedContent);
-                                }
-                                assert.strictEqual(actualExitCode, expectedExitCode);
-                            }
-                            catch (error)
-                            {
-                                done(error);
-                                return;
-                            }
-                            done();
-                        }
-                    )
-                    .on
-                    (
-                        'exit',
-                        function (exitCode)
-                        {
-                            actualExitCode = exitCode;
-                        }
-                    );
-                    if (childProcessHandler)
-                        childProcessHandler(childProcess);
-                }
-            )
-            .timeout(5000);
-        }
-
         var options = { cwd: path.dirname(__dirname) };
-
-        test
-        (
-            'shows the help message with option "--help"',
-            ['--help'],
-            null,
-            /^Usage: screw.js [^]*\n$/,
-            '',
-            null,
-            0
-        );
-        test
-        (
-            'shows the version number with option "--version"',
-            ['--version'],
-            null,
-            /^JScrewIt \d+\.\d+\.\d+\n$/,
-            '',
-            null,
-            0
-        );
-        test
-        (
-            'shows an error message with an invalid option',
-            ['--foo'],
-            null,
-            '',
-            'screw.js: unrecognized option "--foo".\nTry "screw.js --help" for more information.\n',
-            null,
-            1
-        );
-        test
-        (
-            'shows an error message when an invalid feature is specified',
-            ['-f', 'FOO'],
-            null,
-            '',
-            'Unknown feature "FOO"\n',
-            null,
-            1
-        );
-        test
-        (
-            'shows an error message when the input file does not exist',
-            ['""'],
-            null,
-            '',
-            /^ENOENT\b. no such file or directory\b.*\n$/,
-            null,
-            1
-        );
-        test
-        (
-            'prints the encoded input interactively',
-            [],
-            function (childProcess)
-            {
-                childProcess.stdin.write('10\n');
-                childProcess.stdin.end();
-            },
-            'SCREW> +(+!![]+[+[]])\nSCREW> ',
-            '',
-            null,
-            0
-        );
-        test
-        (
-            'prints an error message interactively',
-            ['-x'],
-            function (childProcess)
-            {
-                childProcess.stdin.write('?\n');
-                childProcess.stdin.end();
-            },
-            'SCREW> SCREW> ',
-            'Encoding failed\n',
-            null,
-            0
-        );
-        test
-        (
-            'ignores empty input interactively',
-            [],
-            function (childProcess)
-            {
-                childProcess.stdin.write('\n');
-                childProcess.stdin.end();
-            },
-            'SCREW> SCREW> ',
-            '',
-            null,
-            0
-        );
-        test
-        (
-            'encodes a file and shows the output',
-            ['test/fixture.txt'],
-            null,
-            '+[]\n',
-            '',
-            null,
-            0
-        );
         var outputFileName1 = createOutputFileName();
         var expectedFiles1 = { };
         expectedFiles1[outputFileName1] = '+[]';
-        test
-        (
-            'encodes a file and writes the output to a file',
-            ['test/fixture.txt', outputFileName1],
-            null,
-            /^Original size: .*\nScrewed size: .*\nExpansion factor: .*\nEncoding time: .*\n$/,
-            '',
-            expectedFiles1,
-            0
-        );
         var outputFileName2 = createOutputFileName();
         var expectedFiles2 = { };
         expectedFiles2[outputFileName2] = '+[]';
-        test
+        var paramDataList =
+        [
+            {
+                description:            'shows the help message with option "--help"',
+                screwArgs:              ['--help'],
+                expectedStdout:         /^Usage: screw.js [^]*\n$/,
+                expectedStderr:         '',
+                expectedExitCode:       0,
+            },
+            {
+                description:            'shows the version number with option "--version"',
+                screwArgs:              ['--version'],
+                expectedStdout:         /^JScrewIt \d+\.\d+\.\d+\n$/,
+                expectedStderr:         '',
+                expectedExitCode:       0,
+            },
+            {
+                description:            'shows an error message with an invalid option',
+                screwArgs:              ['--foo'],
+                expectedStdout:         '',
+                expectedStderr:
+                'screw.js: unrecognized option "--foo".\n' +
+                'Try "screw.js --help" for more information.\n',
+                expectedExitCode:       1,
+            },
+            {
+                description:
+                'shows an error message when an invalid feature is specified',
+                screwArgs:              ['-f', 'FOO'],
+                expectedStdout:         '',
+                expectedStderr:         'Unknown feature "FOO"\n',
+                expectedExitCode:       1,
+            },
+            {
+                description:            'shows an error message when the input file does not exist',
+                screwArgs:              ['""'],
+                expectedStdout:         '',
+                expectedStderr:         /^ENOENT\b. no such file or directory\b.*\n$/,
+                expectedExitCode:       1,
+            },
+            {
+                description:            'prints the encoded input interactively',
+                screwArgs:              [],
+                childProcessHandler:
+                function (childProcess)
+                {
+                    childProcess.stdin.write('10\n');
+                    childProcess.stdin.end();
+                },
+                expectedStdout:         'SCREW> +(+!![]+[+[]])\nSCREW> ',
+                expectedStderr:         '',
+                expectedExitCode:       0,
+            },
+            {
+                description:            'prints an error message interactively',
+                screwArgs:              ['-x'],
+                childProcessHandler:
+                function (childProcess)
+                {
+                    childProcess.stdin.write('?\n');
+                    childProcess.stdin.end();
+                },
+                expectedStdout:         'SCREW> SCREW> ',
+                expectedStderr:         'Encoding failed\n',
+                expectedExitCode:       0,
+            },
+            {
+                description:            'ignores empty input interactively',
+                screwArgs:              [],
+                childProcessHandler:
+                function (childProcess)
+                {
+                    childProcess.stdin.write('\n');
+                    childProcess.stdin.end();
+                },
+                expectedStdout:         'SCREW> SCREW> ',
+                expectedStderr:         '',
+                expectedExitCode:       0,
+            },
+            {
+                description:            'encodes a file and shows the output',
+                screwArgs:              ['test/fixture.txt'],
+                expectedStdout:         '+[]\n',
+                expectedStderr:         '',
+                expectedExitCode:       0,
+            },
+            {
+                description:            'encodes a file and writes the output to a file',
+                screwArgs:              ['test/fixture.txt', outputFileName1],
+                expectedStdout:
+                /^Original size: .*\nScrewed size: .*\nExpansion factor: .*\nEncoding time: .*\n$/,
+                expectedStderr:         '',
+                expectedFiles:          expectedFiles1,
+                expectedExitCode:       0,
+            },
+            {
+                description:
+                'encodes a file, writes the output to a file and prints a diagnostic report',
+                screwArgs:              ['-d', 'test/fixture.txt', outputFileName2],
+                expectedStdout:
+                RegExp
+                (
+                    '\n\n' +
+                    'Original size: .*\n' +
+                    'Screwed size: .*\n' +
+                    'Expansion factor: .*\n' +
+                    'Encoding time: .*\n' +
+                    '$'
+                ),
+                expectedStderr:         '',
+                expectedFiles:          expectedFiles2,
+                expectedExitCode:       0,
+            },
+        ];
+
+        it.per(paramDataList)
         (
-            'encodes a file, writes the output to a file and prints a diagnostic report',
-            ['-d', 'test/fixture.txt', outputFileName2],
-            null,
-            /\n\nOriginal size: .*\nScrewed size: .*\nExpansion factor: .*\nEncoding time: .*\n$/,
-            '',
-            expectedFiles2,
-            0
-        );
+            '#.description',
+            function (paramData, done)
+            {
+                var screwArgs           = paramData.screwArgs;
+                var childProcessHandler = paramData.childProcessHandler;
+                var expectedStdout      = paramData.expectedStdout;
+                var expectedStderr      = paramData.expectedStderr;
+                var expectedFiles       = paramData.expectedFiles;
+                var expectedExitCode    = paramData.expectedExitCode;
+                var actualExitCode;
+                var args = ['./screw.js'].concat(screwArgs);
+                var childProcess =
+                childProcessExports.execFile
+                (
+                    process.execPath,
+                    args,
+                    options,
+                    function (error, stdout, stderr)
+                    {
+                        try
+                        {
+                            doAssert(stdout, expectedStdout);
+                            doAssert(stderr, expectedStderr);
+                            for (var filePath in expectedFiles)
+                            {
+                                var actualContent = fs.readFileSync(filePath).toString();
+                                var expectedContent = expectedFiles[filePath];
+                                assert.strictEqual(actualContent, expectedContent);
+                            }
+                            assert.strictEqual(actualExitCode, expectedExitCode);
+                        }
+                        catch (error)
+                        {
+                            done(error);
+                            return;
+                        }
+                        done();
+                    }
+                )
+                .on
+                (
+                    'exit',
+                    function (exitCode)
+                    {
+                        actualExitCode = exitCode;
+                    }
+                );
+                if (childProcessHandler)
+                    childProcessHandler(childProcess);
+            }
+        )
+        .timeout(5000);
     }
 );
 
@@ -237,221 +222,262 @@ describe
     'parseCommandLine returns expected results with params',
     function ()
     {
-        function test(params, expected)
+        function test(params, expectedResult)
         {
-            it
-            (
-                '"' + params.join(' ') + '"',
-                function ()
-                {
-                    var argv = [null, '../screw.js'].concat(params);
-                    var actual = cli.parseCommandLine(argv);
-                    assert.deepEqual(actual, expected);
-                }
-            );
+            var argv = [null, '../screw.js'].concat(params);
+            var actualResult = cli.parseCommandLine(argv);
+            assert.deepEqual(actualResult, expectedResult);
         }
 
         function testError(params, expectedErrorMsg)
         {
-            it
-            (
-                '"' + params.join(' ') + '"',
-                function ()
+            var argv = [null, '../screw.js'].concat(params);
+            try
+            {
+                cli.parseCommandLine(argv);
+            }
+            catch (error)
+            {
+                assert.strictEqual(Object.getPrototypeOf(error), Error.prototype);
+                if (expectedErrorMsg !== undefined)
                 {
-                    var argv = [null, '../screw.js'].concat(params);
-                    try
+                    var actualErrorMsg = error.message;
+                    if (expectedErrorMsg instanceof RegExp)
                     {
-                        cli.parseCommandLine(argv);
+                        assert
+                        (
+                            expectedErrorMsg.test(actualErrorMsg),
+                            'Expecting error message to match ' + expectedErrorMsg
+                        );
                     }
-                    catch (error)
-                    {
-                        assert.strictEqual(Object.getPrototypeOf(error), Error.prototype);
-                        if (expectedErrorMsg !== undefined)
-                        {
-                            var actualErrorMsg = error.message;
-                            if (expectedErrorMsg instanceof RegExp)
-                            {
-                                assert
-                                (
-                                    expectedErrorMsg.test(actualErrorMsg),
-                                    'Expecting error message to match ' + expectedErrorMsg
-                                );
-                            }
-                            else if (typeof expectedErrorMsg === 'string')
-                                assert.strictEqual(actualErrorMsg, expectedErrorMsg);
-                            else
-                                throw Error('Invalid value for argument expectedErrorMsg');
-                        }
-                        return;
-                    }
-                    assert.fail('Error expected');
+                    else if (typeof expectedErrorMsg === 'string')
+                        assert.strictEqual(actualErrorMsg, expectedErrorMsg);
+                    else
+                        throw Error('Invalid value for argument expectedErrorMsg');
                 }
-            );
+                return;
+            }
+            assert.fail('Error expected');
         }
 
-        test
-        (
-            [],
+        var paramDataList =
+        [
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { },
+                params: [],
+                expectedResult:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { },
+                },
+            },
+            {
+                params: ['--help'],
+                expectedResult: 'help',
+            },
+            {
+                params: ['--version'],
+                expectedResult: 'version',
+            },
+            {
+                params: ['-c'],
+                expectedResult:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { runAs: 'call' },
+                },
+            },
+            {
+                params: ['-w'],
+                expectedResult:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { runAs: 'call' },
+                },
+            },
+            {
+                params: ['-e'],
+                expectedResult:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { runAs: 'eval' },
+                },
+            },
+            {
+                params: ['-d'],
+                expectedResult:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { perfInfo: { } },
+                },
+            },
+            {
+                params: ['--diagnostic'],
+                expectedResult:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { perfInfo: { } },
+                },
+            },
+            {
+                params: ['-f', 'ATOB,SELF'],
+                expectedResult:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { features: ['ATOB', 'SELF'] },
+                },
+            },
+            {
+                params: ['--features', 'ATOB,SELF'],
+                expectedResult:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { features: ['ATOB', 'SELF'] },
+                },
+            },
+            {
+                params: ['-f'],
+                expectedErrorMsg: 'option "-f" requires an argument',
+            },
+            {
+                params: ['--features'],
+                expectedErrorMsg: 'option "--features" requires an argument',
+            },
+            {
+                params: ['-r', 'express'],
+                expectedResult:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { runAs: 'express' },
+                },
+            },
+            {
+                params: ['--run-as', 'express'],
+                expectedResult:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { runAs: 'express' },
+                },
+            },
+            {
+                params: ['-r'],
+                expectedErrorMsg: 'option "-r" requires an argument',
+            },
+            {
+                params: ['--run-as'],
+                expectedErrorMsg: 'option "--run-as" requires an argument',
+            },
+            {
+                params: ['-t'],
+                expectedResult:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { trimCode: true },
+                },
+            },
+            {
+                params: ['--trim-code'],
+                expectedResult:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { trimCode: true },
+                },
+            },
+            {
+                params: ['-x'],
+                expectedResult:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { runAs: 'express' },
+                },
+            },
+            {
+                params: ['-ctx'],
+                expectedResult:
+                {
+                    inputFileName: undefined,
+                    outputFileName: undefined,
+                    options: { trimCode: true, runAs: 'express-call' },
+                },
+            },
+            {
+                params: ['-y'],
+                expectedErrorMsg: /unrecognized flag "y"/,
+            },
+            {
+                params: ['--allyourbasearebelongtous'],
+                expectedErrorMsg: /unrecognized option "--allyourbasearebelongtous"/,
+            },
+            {
+                params: ['infile'],
+                expectedResult:
+                {
+                    inputFileName: 'infile',
+                    outputFileName: undefined,
+                    options: { },
+                },
+            },
+            {
+                params: ['infile', 'outfile'],
+                expectedResult:
+                {
+                    inputFileName: 'infile',
+                    outputFileName: 'outfile',
+                    options: { },
+                },
+            },
+            {
+                params: ['-ct', 'infile', '--features', 'FF', 'outfile'],
+                expectedResult:
+                {
+                    inputFileName: 'infile',
+                    outputFileName: 'outfile',
+                    options: { features: ['FF'], trimCode: true, runAs: 'call' },
+                },
+            },
+            {
+                params: ['infile', 'outfile', 'etc.'],
+                expectedErrorMsg: /unexpected argument "etc."/,
+            },
+        ];
+        paramDataList.forEach
+        (
+            function (paramData)
+            {
+                paramData.description = '"' + paramData.params.join(' ') + '"';
             }
         );
-        test(['--help'], 'help');
-        test(['--version'], 'version');
-        test
+
+        it.per(paramDataList)
         (
-            ['-c'],
+            '#.description',
+            function (paramData)
             {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { runAs: 'call' },
+                var params = paramData.params;
+                if ('expectedResult' in paramData)
+                {
+                    var expectedResult = paramData.expectedResult;
+                    test(params, expectedResult);
+                }
+                else
+                {
+                    var expectedErrorMsg = paramData.expectedErrorMsg;
+                    testError(params, expectedErrorMsg);
+                }
             }
         );
-        test
-        (
-            ['-w'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { runAs: 'call' },
-            }
-        );
-        test
-        (
-            ['-e'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { runAs: 'eval' },
-            }
-        );
-        test
-        (
-            ['-d'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { perfInfo: { } },
-            }
-        );
-        test
-        (
-            ['--diagnostic'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { perfInfo: { } },
-            }
-        );
-        test
-        (
-            ['-f', 'ATOB,SELF'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { features: ['ATOB', 'SELF'] },
-            }
-        );
-        test
-        (
-            ['--features', 'ATOB,SELF'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { features: ['ATOB', 'SELF'] },
-            }
-        );
-        testError(['-f'], 'option "-f" requires an argument');
-        testError(['--features'], 'option "--features" requires an argument');
-        test
-        (
-            ['-r', 'express'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { runAs: 'express' },
-            }
-        );
-        test
-        (
-            ['--run-as', 'express'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { runAs: 'express' },
-            }
-        );
-        testError(['-r'], 'option "-r" requires an argument');
-        testError(['--run-as'], 'option "--run-as" requires an argument');
-        test
-        (
-            ['-t'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { trimCode: true },
-            }
-        );
-        test
-        (
-            ['--trim-code'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { trimCode: true },
-            }
-        );
-        test
-        (
-            ['-x'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { runAs: 'express' },
-            }
-        );
-        test
-        (
-            ['-ctx'],
-            {
-                inputFileName: undefined,
-                outputFileName: undefined,
-                options: { trimCode: true, runAs: 'express-call' },
-            }
-        );
-        testError(['-y'], /unrecognized flag "y"/);
-        testError
-        (['--allyourbasearebelongtous'], /unrecognized option "--allyourbasearebelongtous"/);
-        test
-        (
-            ['infile'],
-            {
-                inputFileName: 'infile',
-                outputFileName: undefined,
-                options: { },
-            }
-        );
-        test
-        (
-            ['infile', 'outfile'],
-            {
-                inputFileName: 'infile',
-                outputFileName: 'outfile',
-                options: { },
-            }
-        );
-        test
-        (
-            ['-ct', 'infile', '--features', 'FF', 'outfile'],
-            {
-                inputFileName: 'infile',
-                outputFileName: 'outfile',
-                options: { features: ['FF'], trimCode: true, runAs: 'call' },
-            }
-        );
-        testError(['infile', 'outfile', 'etc.'], /unexpected argument "etc."/);
     }
 );
 

@@ -31,5 +31,5 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install expectations mocha@3 postrequire
+    - run: npm install ebdd expectations mocha@3 postrequire
     - run: npm test
