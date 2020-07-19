@@ -116,12 +116,17 @@ task
     async () =>
     {
         const { homepage, version } = require('./package.json');
+        const { nodeResolve }       = require('@rollup/plugin-node-resolve');
         const cleanup               = require('rollup-plugin-cleanup');
 
         const inputOptions =
         {
             input: 'src/lib/jscrewit-main.js',
-            plugins: [cleanup({ comments: [/^(?!\*\s*global\b)/], maxEmptyLines: -1 })],
+            plugins:
+            [
+                cleanup({ comments: [/^(?!\*\s*global\b)/], maxEmptyLines: -1 }),
+                nodeResolve(),
+            ],
         };
         await bundle(inputOptions, 'lib/jscrewit.js', `// JScrewIt ${version} – ${homepage}\n`);
     },

@@ -40,8 +40,12 @@
     "feature-info": "build/legacy/feature-info.js",
     "test": "mocha --check-leaks --require=ebdd --ui=ebdd test/{*,*/*}.spec.js"
   },
+  "dependencies": {
+    "novem": "latest"
+  },
   "devDependencies": {
     "@fasttime/gulp-lint": "latest",
+    "@rollup/plugin-node-resolve": "latest",
     "acorn": "latest",
     "art-js": "latest",
     "c8": "latest",

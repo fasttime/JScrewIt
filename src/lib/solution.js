@@ -1,4 +1,5 @@
-import { assignNoEnum, _Object_defineProperty } from './obj-utils';
+import { assignNoEnum, _Object_create, _Object_defineProperty } from './obj-utils';
+import { SimpleSolution }                                       from 'novem';
 
 export var LEVEL_NUMERIC    = -1;
 export var LEVEL_OBJECT     = 0;
@@ -35,6 +36,7 @@ var protoSource =
     {
         return this.replacement[index];
     },
+    constructor: Solution,
     // Determine whether the specified solution contains a plus sign out of brackets not preceded by
     // an exclamation mark or by another plus sign.
     get hasOuterPlus()
@@ -62,4 +64,5 @@ var protoSource =
     },
 };
 
-assignNoEnum(Solution.prototype, protoSource);
+var prototype = Solution.prototype = _Object_create(SimpleSolution.prototype);
+assignNoEnum(prototype, protoSource);
