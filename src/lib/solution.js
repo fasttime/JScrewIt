@@ -1,10 +1,25 @@
 import { assignNoEnum, _Object_create, _Object_defineProperty } from './obj-utils';
-import { SimpleSolution }                                       from 'novem';
+import { SimpleSolution, SolutionType }                         from 'novem';
 
 export var LEVEL_NUMERIC    = -1;
 export var LEVEL_OBJECT     = 0;
 export var LEVEL_STRING     = 1;
 export var LEVEL_UNDEFINED  = -2;
+
+function getSolutionType(level, hasOuterPlus)
+{
+    switch (level)
+    {
+    case LEVEL_UNDEFINED:
+        return SolutionType.UNDEFINED;
+    case LEVEL_NUMERIC:
+        return hasOuterPlus ? SolutionType.WEAK_NUMERIC : SolutionType.NUMERIC;
+    case LEVEL_OBJECT:
+        return SolutionType.OBJECT;
+    case LEVEL_STRING:
+        return hasOuterPlus ? SolutionType.WEAK_PREFIXED_STRING : SolutionType.PREFIXED_STRING;
+    }
+}
 
 function setHasOuterPlus(solution, hasOuterPlus)
 {
@@ -13,6 +28,8 @@ function setHasOuterPlus(solution, hasOuterPlus)
 
 export default function Solution(replacement, level, hasOuterPlus)
 {
+    var type = getSolutionType(level, hasOuterPlus);
+    SimpleSolution.call(this, undefined, replacement, type);
     this.replacement    = replacement;
     this.level          = level;
     if (hasOuterPlus !== undefined)
@@ -52,10 +69,6 @@ var protoSource =
         var hasOuterPlus = /(^|[^!+])\+/.test(str);
         setHasOuterPlus(this, hasOuterPlus);
         return hasOuterPlus;
-    },
-    get length()
-    {
-        return this.replacement.length;
     },
     toString:
     function ()
