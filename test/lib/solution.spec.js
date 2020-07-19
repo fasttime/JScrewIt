@@ -8,6 +8,15 @@
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Solution = JScrewIt.debug.Solution;
 
+    it
+    (
+        'Solution#constructor is Solution',
+        function ()
+        {
+            expect(Solution.prototype.constructor).toBe(Solution);
+        }
+    );
+
     describe
     (
         'Solution#hasOuterPlus is',
