@@ -136,13 +136,13 @@
 
             var createScrewBuffer = JScrewIt.debug.createScrewBuffer;
             var Solution = JScrewIt.debug.Solution;
-            var solutionA = new Solution('(![]+[])[+!![]]', LEVEL_STRING);
-            var solution0 = new Solution('+[]', LEVEL_NUMERIC);
-            var solutionFalse = new Solution('![]', LEVEL_NUMERIC);
+            var solutionA = new Solution('a', '(![]+[])[+!![]]', LEVEL_STRING);
+            var solution0 = new Solution('0', '+[]', LEVEL_NUMERIC);
+            var solutionFalse = new Solution('false', '![]', LEVEL_NUMERIC);
             var solutionComma = createCommaSolution();
-            var solutionUndefined = new Solution('[][[]]', LEVEL_UNDEFINED);
-            var strTestOptimizer = createTestOptimizer(new Solution('""', LEVEL_STRING));
-            var objTestOptimizer = createTestOptimizer(new Solution('{}', LEVEL_OBJECT));
+            var solutionUndefined = new Solution('undefined', '[][[]]', LEVEL_UNDEFINED);
+            var strTestOptimizer = createTestOptimizer(new Solution(undefined, '""', LEVEL_STRING));
+            var objTestOptimizer = createTestOptimizer(new Solution(undefined, '{}', LEVEL_OBJECT));
             var paramDataList =
             [
                 [
@@ -314,7 +314,8 @@
                     var buffer = createScrewBuffer(false, true, 7, []);
                     for (var index = 0; index < 26; ++index)
                     {
-                        var solution = new Solution(String.fromCharCode(65 + index), LEVEL_OBJECT);
+                        var solution =
+                        new Solution(undefined, String.fromCharCode(65 + index), LEVEL_OBJECT);
                         buffer.append(solution);
                     }
                     var expectedLength = INITIAL_APPEND_LENGTH + 26 * 2;

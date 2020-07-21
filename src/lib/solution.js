@@ -6,19 +6,26 @@ export var LEVEL_OBJECT     = 0;
 export var LEVEL_STRING     = 1;
 export var LEVEL_UNDEFINED  = -2;
 
-function getSolutionType(level, hasOuterPlus)
+function getSolutionType(solution)
 {
-    switch (level)
+    var type;
+    switch (solution.level)
     {
     case LEVEL_UNDEFINED:
-        return SolutionType.UNDEFINED;
+        type = SolutionType.UNDEFINED;
+        break;
     case LEVEL_NUMERIC:
-        return hasOuterPlus ? SolutionType.WEAK_NUMERIC : SolutionType.NUMERIC;
+        type = solution.hasOuterPlus ? SolutionType.WEAK_NUMERIC : SolutionType.NUMERIC;
+        break;
     case LEVEL_OBJECT:
-        return SolutionType.OBJECT;
+        type = SolutionType.OBJECT;
+        break;
     case LEVEL_STRING:
-        return hasOuterPlus ? SolutionType.WEAK_PREFIXED_STRING : SolutionType.PREFIXED_STRING;
+        type =
+        solution.hasOuterPlus ? SolutionType.WEAK_PREFIXED_STRING : SolutionType.PREFIXED_STRING;
+        break;
     }
+    return type;
 }
 
 function setHasOuterPlus(solution, hasOuterPlus)
@@ -26,14 +33,14 @@ function setHasOuterPlus(solution, hasOuterPlus)
     _Object_defineProperty(solution, 'hasOuterPlus', { value: hasOuterPlus });
 }
 
-export default function Solution(replacement, level, hasOuterPlus)
+export default function Solution(source, replacement, level, hasOuterPlus)
 {
-    var type = getSolutionType(level, hasOuterPlus);
-    SimpleSolution.call(this, undefined, replacement, type);
     this.replacement    = replacement;
     this.level          = level;
     if (hasOuterPlus !== undefined)
         setHasOuterPlus(this, hasOuterPlus);
+    var type = getSolutionType(this);
+    SimpleSolution.call(this, source, replacement, type);
 }
 
 var protoSource =

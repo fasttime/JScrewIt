@@ -34,10 +34,10 @@
     var LEVEL_OBJECT = 0;
     var SOLUTIONS =
     {
-        e: { appendLength: 26, char: 'e' },
-        f: { appendLength: 14, char: 'f' },
-        t: { appendLength: 15, char: 't' },
-        u: { appendLength: 17, char: 'u' },
+        e: { appendLength: 26, source: 'e' },
+        f: { appendLength: 14, source: 'f' },
+        t: { appendLength: 15, source: 't' },
+        u: { appendLength: 17, source: 'u' },
     };
 
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;

@@ -822,7 +822,7 @@ self,
                 var result =
                 function ()
                 {
-                    encoder.resolve(input);
+                    encoder.resolve(input, input);
                 };
                 return result;
             }
@@ -959,7 +959,7 @@ self,
                     (
                         function ()
                         {
-                            encoder.resolveExprAt('', 42, undefined, []);
+                            encoder.resolveExprAt('', '', 42, undefined, []);
                         }
                     )
                     .toThrowStrictly(SyntaxError, 'Missing padding entries for index 42');

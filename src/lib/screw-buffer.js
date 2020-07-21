@@ -258,7 +258,7 @@ export var optimizeSolutions;
         return str;
     }
 
-    var EMPTY_SOLUTION = new Solution('[]', LEVEL_OBJECT, false);
+    var EMPTY_SOLUTION = new Solution('', '[]', LEVEL_OBJECT, false);
 
     ScrewBuffer =
     function (bond, forceString, groupThreshold, optimizerList)

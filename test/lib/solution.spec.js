@@ -27,7 +27,7 @@
                 'true for leading plus',
                 function ()
                 {
-                    var solution = new Solution('+[]');
+                    var solution = new Solution('0', '+[]');
                     expect(solution.hasOuterPlus).toBe(true);
                 }
             );
@@ -36,7 +36,7 @@
                 'true for middle plus',
                 function ()
                 {
-                    var solution = new Solution('[]+[]');
+                    var solution = new Solution('', '[]+[]');
                     expect(solution.hasOuterPlus).toBe(true);
                 }
             );
@@ -45,7 +45,7 @@
                 'false for inner plus',
                 function ()
                 {
-                    var solution = new Solution('(+[])');
+                    var solution = new Solution('0', '(+[])');
                     expect(solution.hasOuterPlus).toBe(false);
                 }
             );
@@ -54,7 +54,7 @@
                 'false for leading !+',
                 function ()
                 {
-                    var solution = new Solution('!+[]');
+                    var solution = new Solution('true', '!+[]');
                     expect(solution.hasOuterPlus).toBe(false);
                 }
             );
@@ -63,7 +63,7 @@
                 'cached upon creation',
                 function ()
                 {
-                    var solution = new Solution('', undefined, true);
+                    var solution = new Solution('', '', undefined, true);
                     expect(solution.hasOwnProperty('hasOuterPlus')).toBeTruthy();
                     expect(solution.hasOuterPlus).toBe(true);
                 }
@@ -73,7 +73,7 @@
                 'cached upon first access',
                 function ()
                 {
-                    var solution = new Solution('+');
+                    var solution = new Solution(undefined, '+');
                     expect(solution.hasOwnProperty('hasOuterPlus')).toBeFalsy();
                     void solution.hasOuterPlus;
                     expect(solution.hasOwnProperty('hasOuterPlus')).toBeTruthy();

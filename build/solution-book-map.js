@@ -65,7 +65,7 @@ function createParseReviver()
 
     function jsonParseSolution(obj)
     {
-        const solution = new Solution(obj.replacement, obj.level, obj.hasOuterPlus);
+        const solution = new Solution(obj.source, obj.replacement, obj.level, obj.hasOuterPlus);
         for (const [key, value] of Object.entries(obj))
         {
             if (!solution.hasOwnProperty(key) && key !== 'features')

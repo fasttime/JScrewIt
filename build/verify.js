@@ -192,7 +192,7 @@ function verifyComplex(complex, entry)
     {
         if (encoder.hasFeatures(entryMask))
         {
-            const complexSolution = encoder.resolve(definition);
+            const complexSolution = encoder.resolve(definition, complex);
             const options = { bond: true, optimize: { toStringOpt: true } };
             const replacement = encoder.replaceString(complex, options);
             if (complexSolution.length < replacement.length)

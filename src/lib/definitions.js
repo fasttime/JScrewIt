@@ -4,10 +4,10 @@
 // Compared to generic purpose encoding, definition encoding differs mainly in that every identifier
 // used must be defined itself, too, in a constant definition.
 
-import { define, defineList, defineWithArrayLike }                  from './definers';
-import { Feature }                                                  from './features';
-import { _Object_defineProperty, noProto }                          from './obj-utils';
-import Solution, { LEVEL_NUMERIC, LEVEL_OBJECT, LEVEL_UNDEFINED }   from './solution';
+import { define, defineList, defineWithArrayLike }                              from './definers';
+import { Feature }                                                              from './features';
+import { _Object_defineProperty, noProto }                                      from './obj-utils';
+import Solution, { LEVEL_NUMERIC, LEVEL_OBJECT, LEVEL_STRING, LEVEL_UNDEFINED } from './solution';
 
 function defineSimple(simple, expr, level)
 {
@@ -199,6 +199,13 @@ export var createBridgeSolution;
         define({ blocks: R_PADDINGS, shift: 1 }, IE_SRC),
     ];
 
+    function backslashDefinition()
+    {
+        var replacement = this.replaceCharByUnescape(0x5C);
+        var solution = new Solution(undefined, replacement, LEVEL_STRING, false);
+        return solution;
+    }
+
     function commaDefinition()
     {
         var bridge = '[' + this.replaceString('concat') + ']';
@@ -208,7 +215,7 @@ export var createBridgeSolution;
 
     function createCharAtDefinitionFB(offset)
     {
-        function definitionFB()
+        function definitionFB(char)
         {
             var functionDefinition = this.findDefinition(FB_EXPR_INFOS);
             var expr = functionDefinition.expr;
@@ -286,7 +293,7 @@ export var createBridgeSolution;
                 ];
                 break;
             }
-            var solution = this.resolveExprAt(expr, index, paddingEntries, FB_PADDING_INFOS);
+            var solution = this.resolveExprAt(char, expr, index, paddingEntries, FB_PADDING_INFOS);
             return solution;
         }
 
@@ -295,42 +302,43 @@ export var createBridgeSolution;
 
     function createCharAtDefinitionFH(expr, index, entries, paddingInfos)
     {
-        function definitionFH()
+        function definitionFH(char)
         {
-            var solution = this.resolveExprAt(expr, index, entries, paddingInfos);
+            var solution = this.resolveExprAt(char, expr, index, entries, paddingInfos);
             return solution;
         }
 
         return definitionFH;
     }
 
-    function createCharDefaultDefinition(charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
+    function createCharDefaultDefinition
+    (atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
     {
-        function charDefaultDefinition()
+        function charDefaultDefinition(char)
         {
+            var charCode = char.charCodeAt();
             var solution =
-            this.createCharDefaultSolution(charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt);
+            this.createCharDefaultSolution
+            (char, charCode, atobOpt && charCode < 0x100, charCodeOpt, escSeqOpt, unescapeOpt);
             return solution;
         }
 
         return charDefaultDefinition;
     }
 
-    function defineCharDefault(char, opts)
+    function defineCharDefault(opts)
     {
-        function checkOpt(optName, defaultOpt)
+        function checkOpt(optName)
         {
-            var opt = opts && optName in opts ? opts[optName] : defaultOpt;
+            var opt = !(opts && optName in opts) || opts[optName];
             return opt;
         }
 
-        var charCode    = char.charCodeAt();
-        var atobOpt     = checkOpt('atob', charCode < 0x100);
-        var charCodeOpt = checkOpt('charCode', true);
-        var escSeqOpt   = checkOpt('escSeq', true);
-        var unescapeOpt = checkOpt('unescape', true);
-        var definition =
-        createCharDefaultDefinition(charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt);
+        var atobOpt     = checkOpt('atob');
+        var charCodeOpt = checkOpt('charCode');
+        var escSeqOpt   = checkOpt('escSeq');
+        var unescapeOpt = checkOpt('unescape');
+        var definition = createCharDefaultDefinition(atobOpt, charCodeOpt, escSeqOpt, unescapeOpt);
         var entry = defineWithArrayLike(definition, arguments, 2);
         return entry;
     }
@@ -694,7 +702,7 @@ export var createBridgeSolution;
         '\t':
         [
             define('Function("return\\"" + ESCAPING_BACKSLASH + "true\\"")()[0]'),
-            defineCharDefault('\t', { escSeq: false }),
+            defineCharDefault({ escSeq: false }),
         ],
         '\n':
         [
@@ -710,12 +718,12 @@ export var createBridgeSolution;
         '\f':
         [
             define('Function("return\\"" + ESCAPING_BACKSLASH + "false\\"")()[0]'),
-            defineCharDefault('\f', { escSeq: false }),
+            defineCharDefault({ escSeq: false }),
         ],
         '\r':
         [
             define('Function("return\\"" + ESCAPING_BACKSLASH + "r\\"")()'),
-            defineCharDefault('\r', { escSeq: false }),
+            defineCharDefault({ escSeq: false }),
         ],
 
         '\x1e':
@@ -759,7 +767,7 @@ export var createBridgeSolution;
             define('"".fontcolor("".sub())[20]', ESC_HTML_ALL),
             define('"".fontcolor("\\"")[13]', ESC_HTML_QUOT),
             define('"".fontcolor("".fontcolor([]))[31]', ESC_HTML_QUOT_ONLY),
-            defineCharDefault('&'),
+            defineCharDefault(),
         ],
         // '\'':   ,
         '(':
@@ -792,7 +800,7 @@ export var createBridgeSolution;
         ':':
         [
             define('(RegExp() + [])[3]'),
-            defineCharDefault(':'),
+            defineCharDefault(),
         ],
         ';':
         [
@@ -800,7 +808,7 @@ export var createBridgeSolution;
             define('"".fontcolor(true + "".sub())[20]', ESC_HTML_ALL),
             define('"".fontcolor("NaN\\"")[21]', ESC_HTML_QUOT),
             define('"".fontcolor("".fontcolor())[30]', ESC_HTML_QUOT_ONLY),
-            defineCharDefault(';'),
+            defineCharDefault(),
         ],
         '<':
         [
@@ -819,7 +827,7 @@ export var createBridgeSolution;
         '?':
         [
             define('(RegExp() + [])[2]'),
-            defineCharDefault('?'),
+            defineCharDefault(),
         ],
         // '@':    ,
         'A':
@@ -893,12 +901,12 @@ export var createBridgeSolution;
         [
             define('"j"[TO_UPPER_CASE]()'),
             define('btoa(true)[2]', ATOB),
-            defineCharDefault('J', { atob: false }),
+            defineCharDefault({ atob: false }),
         ],
         'K':
         [
             define('(RP_5_N + "".strike())[10]', CAPITAL_HTML),
-            defineCharDefault('K'),
+            defineCharDefault(),
         ],
         'L':
         [
@@ -929,13 +937,13 @@ export var createBridgeSolution;
             define('btoa("".italics())[0]', ATOB),
             define('(Function("return statusbar")() + [])[11]', BARPROP),
             define('"0".sup()[10]', CAPITAL_HTML),
-            defineCharDefault('P', { atob: false, charCode: false, escSeq: false }),
+            defineCharDefault({ atob: false, charCode: false, escSeq: false }),
         ],
         'Q':
         [
             define('"q"[TO_UPPER_CASE]()'),
             define('btoa(1)[1]', ATOB),
-            defineCharDefault('Q', { atob: false }),
+            defineCharDefault({ atob: false }),
         ],
         'R':
         [
@@ -964,7 +972,7 @@ export var createBridgeSolution;
             define('(RP_3_NO + Date())[30]', GMT),
             define('(Audio + [])[10]', HTMLAUDIOELEMENT),
             define('(RP_1_NO + document)[10]', HTMLDOCUMENT),
-            defineCharDefault('T', { atob: false }),
+            defineCharDefault({ atob: false }),
         ],
         'U':
         [
@@ -978,7 +986,7 @@ export var createBridgeSolution;
             define('"v"[TO_UPPER_CASE]()'),
             define('(document.createElement("video") + [])[12]', ANY_DOCUMENT),
             define('btoa(undefined)[10]', ATOB),
-            defineCharDefault('V', { atob: false }),
+            defineCharDefault({ atob: false }),
         ],
         'W':
         [
@@ -987,19 +995,19 @@ export var createBridgeSolution;
             define('btoa(undefined)[1]', ATOB),
             define('(self + [])[11]', DOMWINDOW),
             define('(RP_3_NO + self)[11]', WINDOW),
-            defineCharDefault('W', { atob: false }),
+            defineCharDefault({ atob: false }),
         ],
         'X':
         [
             define('"x"[TO_UPPER_CASE]()'),
             define('btoa("1true")[1]', ATOB),
-            defineCharDefault('X', { atob: false }),
+            defineCharDefault({ atob: false }),
         ],
         'Y':
         [
             define('"y"[TO_UPPER_CASE]()'),
             define('btoa("a")[0]', ATOB),
-            defineCharDefault('Y', { atob: false }),
+            defineCharDefault({ atob: false }),
         ],
         'Z':
         [
@@ -1014,7 +1022,7 @@ export var createBridgeSolution;
         '\\':
         [
             define('ESCAPING_BACKSLASH'),
-            defineCharDefault('\\', { atob: false, escSeq: false, unescape: false }),
+            defineCharDefault({ atob: false, escSeq: false, unescape: false }),
         ],
         ']':
         [
@@ -1061,7 +1069,7 @@ export var createBridgeSolution;
         'k':
         [
             define('20[TO_STRING]("21")'),
-            defineCharDefault('k'),
+            defineCharDefault(),
         ],
         'l': '"false"[2]',
         'm':
@@ -1086,7 +1094,7 @@ export var createBridgeSolution;
             define('"".fontcolor(0 + "".fontcolor())[30]', ESC_HTML_ALL),
             define('"".fontcolor("0false\\"")[20]', ESC_HTML_QUOT),
             define('"".fontcolor(true + "".fontcolor())[30]', ESC_HTML_QUOT_ONLY),
-            defineCharDefault('q'),
+            defineCharDefault(),
         ],
         'r': '"true"[1]',
         's': '"false"[3]',
@@ -1216,7 +1224,7 @@ export var createBridgeSolution;
                 { expr: 'Infinity.toLocaleString()', optimize: { complexOpt: true } },
                 LOCALE_INFINITY
             ),
-            defineCharDefault('∞'),
+            defineCharDefault(),
         ],
     });
 
@@ -1350,7 +1358,7 @@ export var createBridgeSolution;
             define('uneval(RP_3_NO + FLAT)[21]', FF_SRC, FLAT, UNEVAL),
             define('uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]', FILL, NO_V8_SRC, UNEVAL),
             define('uneval(+(ANY_FUNCTION + [])[0] + FLAT)[21]', FLAT, NO_V8_SRC, UNEVAL),
-            defineCharDefault('\\', { atob: false, charCode: false, escSeq: false }),
+            define(backslashDefinition),
         ],
         FILL:
         [
@@ -1505,7 +1513,7 @@ export var createBridgeSolution;
     function (bridge)
     {
         var replacement = '[[]]' + bridge + '([[]])';
-        var solution = new Solution(replacement, LEVEL_OBJECT, false);
+        var solution = new Solution(',', replacement, LEVEL_OBJECT, false);
         var appendLength = bridge.length - 1;
         solution.appendLength = appendLength;
         solution.bridge = bridge;

@@ -14,8 +14,8 @@ var createComplexOptimizer;
     {
         function appendLengthOf(solution)
         {
-            var char = solution.char;
-            if (char != null && char in charSet)
+            var source = solution.source;
+            if (source != null && source in charSet)
                 return optimizedCharAppendLength;
         }
 
@@ -31,7 +31,7 @@ var createComplexOptimizer;
                 var solutionIndex = start + index;
                 var solution = solutions[solutionIndex];
                 var complexChar = complex[index];
-                if (solution.char !== complexChar)
+                if (solution.source !== complexChar)
                     return false;
             }
             return true;
@@ -97,7 +97,7 @@ var createComplexOptimizer;
                 }
             }
         );
-        var complexSolution = encoder.resolve(definition);
+        var complexSolution = encoder.resolve(definition, complex);
         if (complexSolution.level == null)
             complexSolution.level = LEVEL_STRING;
         var solutionAppendLength = complexSolution.appendLength;

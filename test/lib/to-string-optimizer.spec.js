@@ -63,7 +63,7 @@
                         function ()
                         {
                             var optimizer = createOptimizer();
-                            var solution = { char: 'a', appendLength: 123 };
+                            var solution = { appendLength: 123, source: 'a' };
                             var actual = optimizer.appendLengthOf(solution);
                             expect(actual).toBeUndefined();
                         }
@@ -119,7 +119,7 @@
                                     var enough =
                                     nextMultipleOf(bulkLength, maxDecimalDigits) + maxDecimalDigits;
                                     var toStringReplacementLength = enough - bulkLength;
-                                    var solution = { char: char, appendLength: Infinity };
+                                    var solution = { source: char, appendLength: Infinity };
                                     checkLength
                                     (
                                         toStringReplacementLength,
@@ -152,7 +152,7 @@
                         function ()
                         {
                             var optimizer = createOptimizer();
-                            var solutionB = { appendLength: 35, char: 'b' };
+                            var solutionB = { appendLength: 35, source: 'b' };
                             optimizer.appendLengthOf(solutionB);
                             var solutions = [solutionB, solutionB];
                             optimizeSolutions([optimizer], solutions, false);
@@ -166,7 +166,7 @@
                         function ()
                         {
                             var optimizer = createOptimizer();
-                            var solutionB = { appendLength: 34, char: 'b' };
+                            var solutionB = { appendLength: 34, source: 'b' };
                             optimizer.appendLengthOf(solutionB);
                             var solutions = [solutionB, solutionB];
                             optimizeSolutions([optimizer], solutions, false);
@@ -179,7 +179,7 @@
                         function ()
                         {
                             var optimizer = createOptimizer();
-                            var solutionB = { appendLength: 34, char: 'b' };
+                            var solutionB = { appendLength: 34, source: 'b' };
                             optimizer.appendLengthOf(solutionB);
                             var solutions = [solutionB, solutionB];
                             optimizeSolutions([optimizer], solutions, true);
@@ -194,7 +194,7 @@
                         {
                             var optimizer = createOptimizer();
                             var solution0 = { appendLength: 6 };
-                            var solutionB = { appendLength: 34, char: 'b' };
+                            var solutionB = { appendLength: 34, source: 'b' };
                             optimizer.appendLengthOf(solutionB);
                             var solutions = [solution0, solutionB, solutionB];
                             optimizeSolutions([optimizer], solutions, true);
@@ -207,8 +207,8 @@
                         function ()
                         {
                             var optimizer = createOptimizer();
-                            var solution0 = { appendLength: 6,      char: '0' };
-                            var solutionB = { appendLength: 100,    char: 'b' };
+                            var solution0 = { appendLength: 6,      source: '0' };
+                            var solutionB = { appendLength: 100,    source: 'b' };
                             optimizer.appendLengthOf(solutionB);
                             var solutions = [solution0, solutionB];
                             optimizeSolutions([optimizer], solutions, false);
@@ -222,7 +222,7 @@
                         {
                             var toStringReplacement = padRight('"toString"', 500);
                             var optimizer = createOptimizer(toStringReplacement);
-                            var solutionZ = { appendLength: 100, char: 'z' };
+                            var solutionZ = { appendLength: 100, source: 'z' };
                             optimizer.appendLengthOf(solutionZ);
                             var solutions = arrayFilledWith(solutionZ, 11);
                             optimizeSolutions([optimizer], solutions, true);

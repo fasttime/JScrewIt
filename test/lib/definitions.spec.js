@@ -23,17 +23,17 @@ uneval,
 
 (function ()
 {
-    function decodeEntry(entry)
+    function decodeEntry(entry, source)
     {
         var featureObj = getEntryFeature(entry);
-        var solution = decodeEntryWithFeature(entry, featureObj);
+        var solution = decodeEntryWithFeature(entry, source, featureObj);
         return solution;
     }
 
-    function decodeEntryWithFeature(entry, featureObj)
+    function decodeEntryWithFeature(entry, source, featureObj)
     {
         var encoder = getPoolEncoder(featureObj);
-        var solution = encoder.resolve(entry.definition);
+        var solution = encoder.resolve(entry.definition, source);
         return solution;
     }
 
@@ -84,7 +84,8 @@ uneval,
                     {
                         var encoder = getPoolEncoder(Feature.ATOB);
                         var solution =
-                        encoder.createCharDefaultSolution(charCode, true, false, false, false);
+                        encoder.createCharDefaultSolution
+                        (char, charCode, true, false, false, false);
                         verifySolution(solution, char, this.test.emuFeatureNames);
                         expect(solution.length).not.toBeGreaterThan
                         (
@@ -104,7 +105,7 @@ uneval,
                 {
                     var encoder = getPoolEncoder(Feature.DEFAULT);
                     var solution =
-                    encoder.createCharDefaultSolution(charCode, false, true, false, false);
+                    encoder.createCharDefaultSolution(char, charCode, false, true, false, false);
                     verifySolution(solution, char);
                 }
             );
@@ -115,7 +116,7 @@ uneval,
                 {
                     var encoder = getPoolEncoder(Feature.DEFAULT);
                     var solution =
-                    encoder.createCharDefaultSolution(charCode, false, false, true, false);
+                    encoder.createCharDefaultSolution(char, charCode, false, false, true, false);
                     verifySolution(solution, char);
                 }
             );
@@ -126,7 +127,7 @@ uneval,
                 {
                     var encoder = getPoolEncoder(Feature.DEFAULT);
                     var solution =
-                    encoder.createCharDefaultSolution(charCode, false, false, false, true);
+                    encoder.createCharDefaultSolution(char, charCode, false, false, false, true);
                     verifySolution(solution, char);
                 }
             );
@@ -140,7 +141,7 @@ uneval,
                 function (additionalFeatureNames)
                 {
                     var solutionFeatureObj = Feature(entryFeatureObj, additionalFeatureNames);
-                    var solution = decodeEntryWithFeature(entry, solutionFeatureObj);
+                    var solution = decodeEntryWithFeature(entry, char, solutionFeatureObj);
                     varieties.forEach
                     (
                         function (varietyFeatureNames)
@@ -280,7 +281,7 @@ uneval,
                                     );
                                 }
                             }
-                            var solution = decodeEntry(entry);
+                            var solution = decodeEntry(entry, char);
                             verifySolution(solution, char, this.test.emuFeatureNames);
                         }
                     );
@@ -333,7 +334,7 @@ uneval,
             {
                 var encoder = getPoolEncoder(featureObj);
                 var definition = entry.definition;
-                var solution = encoder.resolve(definition);
+                var solution = encoder.resolve(definition, complex);
                 expect(solution.level).toBe(definition.level, 'Solution level mismatch');
                 verifySolution(solution, complex, this.test.emuFeatureNames);
             }
@@ -359,14 +360,16 @@ uneval,
                             featureObj,
                             function ()
                             {
-                                var output = String(decodeEntry(entry));
-                                expect(output).toBeJSFuck();
+                                var solution = decodeEntry(entry);
+                                var replacement = solution.replacement;
+                                expect(replacement).toBeJSFuck();
+                                expect(solution.source).toBeUndefined();
                                 emuDo
                                 (
                                     this.test.emuFeatureNames,
                                     function ()
                                     {
-                                        var actual = evalJSFuck(output);
+                                        var actual = evalJSFuck(replacement);
                                         validator.call(expect(actual));
                                     }
                                 );
@@ -385,6 +388,7 @@ uneval,
         expect(output).toBeJSFuck();
         var actual = String(emuEval(emuFeatures || [], output));
         expect(actual).toBe(expected);
+        expect(solution.source).toBe(expected);
     }
 
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;

@@ -24,17 +24,17 @@ function createOptimizer(toStringReplacement)
 {
     function appendLengthOf(solution)
     {
-        var char = solution.char;
-        if (char != null && /[bcghjkmopqvwxz]/.test(char))
+        var source = solution.source;
+        if (source != null && /[bcghjkmopqvwxz]/.test(source))
         {
-            var appendLength = appendLengthCache[char];
+            var appendLength = appendLengthCache[source];
             if (appendLength == null)
             {
-                var minRadix = getMinRadix(char);
+                var minRadix = getMinRadix(source);
                 var clusterExtraLength = CLUSTER_EXTRA_LENGTHS[minRadix];
                 var decimalDigitMaxCount = DECIMAL_DIGIT_MAX_COUNTS[minRadix];
                 appendLength =
-                appendLengthCache[char] =
+                appendLengthCache[source] =
                 (clusterBaseLength + clusterExtraLength) / decimalDigitMaxCount | 0;
             }
             return appendLength;
@@ -49,7 +49,7 @@ function createOptimizer(toStringReplacement)
             var replacement =
             '(+(' + decimalReplacement + '))[' + toStringReplacement + '](' + radixReplacement +
             ')';
-            var solution = new Solution(replacement, LEVEL_STRING, false);
+            var solution = new Solution(undefined, replacement, LEVEL_STRING, false);
             return solution;
         };
         return clusterer;
@@ -57,7 +57,7 @@ function createOptimizer(toStringReplacement)
 
     function isExpensive(solution)
     {
-        var char = solution.char;
+        var char = solution.source;
         var expensive = appendLengthCache[char] <= solution.appendLength;
         return expensive;
     }
@@ -95,7 +95,7 @@ function createOptimizer(toStringReplacement)
         {
             var solution = solutions[start + solutionSpan];
             discreteAppendLength += solution.appendLength;
-            var char = solution.char;
+            var char = solution.source;
             if (maxDigitChar < char)
                 maxDigitChar = char;
             chars += char;
@@ -120,7 +120,7 @@ function createOptimizer(toStringReplacement)
         for (;; ++start)
         {
             var maxSolutionSpan = end - start;
-            if (solutions[start].char !== '0')
+            if (solutions[start].source !== '0')
                 optimizeClusters(plan, solutions, start, maxSolutionSpan, bond);
             if (maxSolutionSpan <= MIN_SOLUTION_SPAN)
                 break;
@@ -166,7 +166,7 @@ function getMinRadix(char)
 
 function isClusterable(solution)
 {
-    var char = solution.char;
+    var char = solution.source;
     var clusterable = char != null && /[\da-z]/.test(char);
     return clusterable;
 }

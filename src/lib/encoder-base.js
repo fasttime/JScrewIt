@@ -228,7 +228,7 @@ export var replaceStaticString;
             simple,
             function ()
             {
-                solution = STATIC_ENCODER.resolve(definition);
+                solution = STATIC_ENCODER.resolve(definition, simple);
             }
         );
         return solution;
@@ -299,7 +299,7 @@ export var replaceStaticString;
         constantDefinitions: CONSTANTS,
 
         createCharDefaultSolution:
-        function (charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
+        function (char, charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
         {
             var replacement;
             if (atobOpt && this.findDefinition(CONSTANTS.atob))
@@ -324,7 +324,7 @@ export var replaceStaticString;
                 }
                 replacement = shortestOf(replacements);
             }
-            var solution = new Solution(replacement, LEVEL_STRING, false);
+            var solution = new Solution(char, replacement, LEVEL_STRING, false);
             return solution;
         },
 
@@ -333,7 +333,8 @@ export var replaceStaticString;
         {
             var charCode = char.charCodeAt();
             var atobOpt = charCode < 0x100;
-            var solution = this.createCharDefaultSolution(charCode, atobOpt, true, true, true);
+            var solution =
+            this.createCharDefaultSolution(char, charCode, atobOpt, true, true, true);
             return solution;
         },
 
@@ -367,7 +368,7 @@ export var replaceStaticString;
         },
 
         findOptimalSolution:
-        function (entries)
+        function (source, entries)
         {
             var result;
             entries.forEach
@@ -376,7 +377,7 @@ export var replaceStaticString;
                 {
                     if (this.hasFeatures(entry.mask))
                     {
-                        var solution = this.resolve(entry.definition);
+                        var solution = this.resolve(entry.definition, source);
                         if (!result || result.length > solution.length)
                         {
                             result = solution;
@@ -629,7 +630,7 @@ export var replaceStaticString;
                     if (strAppender && isStringUnit(term))
                     {
                         var firstSolution =
-                        output ? new Solution(output, minOutputLevel) : undefined;
+                        output ? new Solution(undefined, output, minOutputLevel) : undefined;
                         output = strAppender(this, term.value, firstSolution);
                         minOutputLevel = LEVEL_STRING;
                     }
@@ -805,12 +806,12 @@ export var replaceStaticString;
         },
 
         resolve:
-        function (definition)
+        function (definition, source)
         {
             var solution;
             var type = typeof definition;
             if (type === 'function')
-                solution = definition.call(this);
+                solution = definition.call(this, source);
             else
             {
                 var expr;
@@ -825,7 +826,7 @@ export var replaceStaticString;
                 else
                     expr = definition;
                 var replacement = this.replaceExpr(expr, optimize);
-                solution = new Solution(replacement, level);
+                solution = new Solution(source, replacement, level);
             }
             return solution;
         },
@@ -846,17 +847,16 @@ export var replaceStaticString;
                         if (!entries || _Array_isArray(entries))
                         {
                             if (entries)
-                                solution = this.findOptimalSolution(entries);
+                                solution = this.findOptimalSolution(char, entries);
                             if (!solution)
                                 solution = this.defaultResolveCharacter(char);
                         }
                         else
                         {
-                            solution = STATIC_ENCODER.resolve(entries);
+                            solution = STATIC_ENCODER.resolve(entries, char);
                             solution.entryIndex = 'static';
                             charCache = STATIC_CHAR_CACHE;
                         }
-                        solution.char = char;
                         if (solution.level == null)
                             solution.level = LEVEL_STRING;
                         charCache[char] = solution;
@@ -880,7 +880,7 @@ export var replaceStaticString;
                     {
                         var entries = this.constantDefinitions[constant];
                         if (_Array_isArray(entries))
-                            solution = this.findOptimalSolution(entries);
+                            solution = this.findOptimalSolution(constant, entries);
                         else
                         {
                             solution = STATIC_ENCODER.resolve(entries);
@@ -894,7 +894,7 @@ export var replaceStaticString;
         },
 
         resolveExprAt:
-        function (expr, index, entries, paddingInfos)
+        function (char, expr, index, entries, paddingInfos)
         {
             if (!entries)
                 this.throwSyntaxError('Missing padding entries for index ' + index);
@@ -914,7 +914,7 @@ export var replaceStaticString;
             }
             var fullExpr = '(' + paddingBlock + '+' + expr + ')[' + indexer + ']';
             var replacement = this.replaceExpr(fullExpr);
-            var solution = new Solution(replacement, LEVEL_STRING, false);
+            var solution = new Solution(char, replacement, LEVEL_STRING, false);
             return solution;
         },
 
