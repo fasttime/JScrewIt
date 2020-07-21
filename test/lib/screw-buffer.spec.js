@@ -136,7 +136,7 @@
 
             var createScrewBuffer = JScrewIt.debug.createScrewBuffer;
             var Solution = JScrewIt.debug.Solution;
-            var solutionA = new Solution('[![]+[]][+[]]', LEVEL_STRING);
+            var solutionA = new Solution('(![]+[])[+!![]]', LEVEL_STRING);
             var solution0 = new Solution('+[]', LEVEL_NUMERIC);
             var solutionFalse = new Solution('![]', LEVEL_NUMERIC);
             var solutionComma = createCommaSolution();
@@ -150,7 +150,7 @@
                     false,
                     false,
                     '[]',
-                    '[![]+[]][+[]]',
+                    '(![]+[])[+!![]]',
                     '+[]',
                     '[][[]]',
                     '""',
@@ -161,7 +161,7 @@
                     false,
                     true,
                     '[]+[]',
-                    '[![]+[]][+[]]',
+                    '(![]+[])[+!![]]',
                     '+[]+[]',
                     '[][[]]+[]',
                     '""',
@@ -172,7 +172,7 @@
                     true,
                     false,
                     '[]',
-                    '[![]+[]][+[]]',
+                    '(![]+[])[+!![]]',
                     '(+[])',
                     '[][[]]',
                     '""',
@@ -183,7 +183,7 @@
                     true,
                     true,
                     '([]+[])',
-                    '[![]+[]][+[]]',
+                    '(![]+[])[+!![]]',
                     '(+[]+[])',
                     '([][[]]+[])',
                     '""',
@@ -215,7 +215,7 @@
                         expect(buffer.append(solution0)).toBe(true);
                         expect(buffer.append(solution0)).toBe(true);
                         expectedLength += solutionA.appendLength + 3 * solution0.appendLength;
-                        verifyBuffer(buffer, '[![]+[]][+[]]+(+[])+(+[])+(+[])', expectedLength);
+                        verifyBuffer(buffer, '(![]+[])[+!![]]+(+[])+(+[])+(+[])', expectedLength);
                     }
                 );
                 it
@@ -229,7 +229,7 @@
                         verifyBuffer
                         (
                             buffer,
-                            '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+![])',
+                            '(![]+[])[+!![]]+(+[])+(+[])+(+[]+[![]]+![])',
                             expectedLength
                         );
                     }
@@ -244,7 +244,7 @@
                         verifyBuffer
                         (
                             buffer,
-                            '[![]+[]][+[]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))',
+                            '(![]+[])[+!![]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))',
                             expectedLength
                         );
                     }
@@ -259,7 +259,7 @@
                         verifyBuffer
                         (
                             buffer,
-                            '[![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
+                            '(![]+[])[+!![]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
                             expectedLength
                         );
                     }
@@ -273,7 +273,7 @@
                         verifyBuffer
                         (
                             buffer,
-                            '[![]+[]][+[]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
+                            '(![]+[])[+!![]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
                             expectedLength
                         );
                     }
