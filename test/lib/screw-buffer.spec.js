@@ -227,7 +227,7 @@
                         verifyBuffer
                         (
                             buffer,
-                            '(![]+[])[+!![]]+(+[])+(+[])+(+[]+[![]]+![])',
+                            '(![]+[])[+!![]]+(+[])+(+[])+([+[]]+![]+![])',
                             expectedLength
                         );
                     }
@@ -242,7 +242,7 @@
                         verifyBuffer
                         (
                             buffer,
-                            '(![]+[])[+!![]]+(+[])+(+[])+(+[]+[![]]+(![]+[![]]))',
+                            '(![]+[])[+!![]]+(+[])+(+[])+([+[]]+![]+([![]]+![]))',
                             expectedLength
                         );
                     }
@@ -257,7 +257,7 @@
                         verifyBuffer
                         (
                             buffer,
-                            '(![]+[])[+!![]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
+                            '(![]+[])[+!![]]+(+[])+(+[]+[+[]])+([![]]+![]+([![]]+![]))',
                             expectedLength
                         );
                     }
@@ -271,7 +271,7 @@
                         verifyBuffer
                         (
                             buffer,
-                            '(![]+[])[+!![]]+(+[])+(+[]+[+[]])+(![]+[![]]+(![]+[![]]))',
+                            '(![]+[])[+!![]]+(+[])+(+[]+[+[]])+([![]]+![]+([![]]+![]))',
                             expectedLength
                         );
                     }
@@ -301,7 +301,7 @@
                     buffer.append(solutionUndefined);
                     buffer.append(solutionUndefined);
                     var expectedLength = INITIAL_APPEND_LENGTH + 2 * solutionUndefined.appendLength;
-                    verifyBuffer(buffer, '[][[]]+[]+[][[]]', expectedLength);
+                    verifyBuffer(buffer, '[]+[][[]]+[][[]]', expectedLength);
                 }
             );
             it

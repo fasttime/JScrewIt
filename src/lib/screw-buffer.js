@@ -1,7 +1,8 @@
 import createClusteringPlan                     from './clustering-plan';
 import { _Math_max, _Math_pow, assignNoEnum }   from './obj-utils';
 import Solution                                 from './solution';
-import { SolutionType }                         from 'novem';
+import { DynamicSolution, SolutionType }        from 'novem';
+import { SimpleSolution } from 'novem';
 
 // This implementation assumes that all numeric solutions have an outer plus, and all other
 // character solutions have none.
@@ -22,6 +23,15 @@ export var optimizeSolutions;
 
 (function ()
 {
+    function appendSolutions(solution, solutions, offset, count)
+    {
+        for (var limit = offset + count; offset < limit; ++offset)
+        {
+            var subSolution = solutions[offset];
+            solution.append(subSolution);
+        }
+    }
+
     function canSplitRightEndForFree(solutions, lastBridgeIndex)
     {
         var rightEndIndex = lastBridgeIndex + 1;
@@ -78,12 +88,11 @@ export var optimizeSolutions;
     {
         function appendRightGroup(groupCount)
         {
-            array.push(sequenceAsString(solutions, index, groupCount, '[[]]'), ')');
+            bridgedPartArray.push(sequenceAsString(solutions, index, groupCount, '[[]]'), ')');
         }
 
-        var array;
+        var solution = new DynamicSolution();
         var multiPart;
-        var notStr;
         var count = solutions.length;
         if (count > 1)
         {
@@ -92,7 +101,7 @@ export var optimizeSolutions;
                 lastBridgeIndex = findLastBridge(solutions);
             multiPart = lastBridgeIndex == null;
             if (multiPart)
-                array = sequence(solutions, 0, count);
+                appendSolutions(solution, solutions, 0, count);
             else
             {
                 var bridgeIndex = findNextBridge(solutions, 0);
@@ -106,21 +115,16 @@ export var optimizeSolutions;
                 multiPart = index != null;
                 if (multiPart)
                 {
-                    // Keep the first solutions out of the concat context to reduce output length.
-                    var preBridgeCount = index;
-                    array =
-                    preBridgeCount > 1 ? sequence(solutions, 0, preBridgeCount) : [solutions[0]];
-                    array.push('+');
+                    // Keep the first solutions out of the bridged context to reduce output length.
+                    appendSolutions(solution, solutions, 0, index);
                 }
                 else
-                {
-                    array = [];
                     index = 0;
-                }
-                array.push('[', sequenceAsString(solutions, index, bridgeIndex - index, '[]'), ']');
+                var bridgedPartArray =
+                ['[', sequenceAsString(solutions, index, bridgeIndex - index, '[]'), ']'];
                 for (;;)
                 {
-                    array.push(solutions[bridgeIndex].bridge, '(');
+                    bridgedPartArray.push(solutions[bridgeIndex].bridge, '(');
                     index = bridgeIndex + 1;
                     if (bridgeIndex === lastBridgeIndex)
                         break;
@@ -137,25 +141,25 @@ export var optimizeSolutions;
                 else
                     groupCount = rightEndCount;
                 appendRightGroup(groupCount);
-                index += groupCount - 1;
-                while (++index < count)
-                    pushSolution(array, solutions[index]);
+                var bridgedReplacement = bridgedPartArray.join('');
+                var bridgedSolution =
+                new SimpleSolution(undefined, bridgedReplacement, SolutionType.OBJECT);
+                solution.append(bridgedSolution);
+                index += groupCount;
+                appendSolutions(solution, solutions, index, count - index);
             }
-            notStr = !multiPart;
         }
         else
         {
-            var solution = solutions[0];
-            array = [solution];
+            solution.append(solutions[0]);
             multiPart = false;
-            notStr = !solution.isString;
         }
-        if (notStr && groupForceString)
+        if (!solution.isString && groupForceString)
         {
-            array.push('+[]');
+            solution.append(EMPTY_SOLUTION);
             multiPart = true;
         }
-        var str = array.join('');
+        var str = solution.replacement;
         if (groupBond && multiPart)
             str = '(' + str + ')';
         return str;
@@ -202,53 +206,16 @@ export var optimizeSolutions;
         return result;
     }
 
-    function pushSolution(array, solution)
-    {
-        if (solution.isWeak)
-            array.push('+(', solution, ')');
-        else
-            array.push('+', solution);
-    }
-
-    function sequence(solutions, offset, count)
-    {
-        var array;
-        var solution0 = solutions[offset];
-        var solution1 = solutions[offset + 1];
-        if (solution0.isArithmetic && solution1.isArithmetic)
-        {
-            if (!solution1.isUndefined)
-                array = [solution0, '+[', solution1, ']'];
-            else if (!solution0.isUndefined)
-                array = ['[', solution0, ']+', solution1];
-            else
-                array = [solution0, '+[]+', solution1];
-        }
-        else
-        {
-            array = [solution0];
-            pushSolution(array, solution1);
-        }
-        for (var index = 2; index < count; ++index)
-        {
-            var solution = solutions[offset + index];
-            pushSolution(array, solution);
-        }
-        return array;
-    }
-
     function sequenceAsString(solutions, offset, count, emptyReplacement)
     {
         var str;
         if (count)
         {
-            if (count > 1)
-                str = sequence(solutions, offset, count).join('');
-            else
-            {
-                var solution = solutions[offset];
-                str = solution + (solution.isUndefined ? '+[]' : '');
-            }
+            var solution = new DynamicSolution();
+            appendSolutions(solution, solutions, offset, count);
+            if (solution.isUndefined)
+                solution.prepend(EMPTY_SOLUTION);
+            str = solution.replacement;
         }
         else
             str = emptyReplacement;
