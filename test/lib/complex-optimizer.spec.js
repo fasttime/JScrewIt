@@ -5,7 +5,7 @@
 
 (function ()
 {
-    function createOptimizer(appendLength, level)
+    function createOptimizer(appendLength, solutionType)
     {
         if (appendLength === undefined)
             appendLength = 60;
@@ -15,8 +15,7 @@
             function ()
             {
                 var solution =
-                { appendLength: appendLength, level: level, replacement: EXPECTED_REPLACEMENT };
-                solution.appendLength = appendLength;
+                createSolution(appendLength, undefined, EXPECTED_REPLACEMENT, solutionType);
                 return solution;
             },
             resolveCharacter:
@@ -30,17 +29,25 @@
         return optimizer;
     }
 
-    var EXPECTED_REPLACEMENT = '"feet"';
-    var LEVEL_OBJECT = 0;
-    var SOLUTIONS =
+    function createSolution(appendLength, source, replacement, type)
     {
-        e: { appendLength: 26, source: 'e' },
-        f: { appendLength: 14, source: 'f' },
-        t: { appendLength: 15, source: 't' },
-        u: { appendLength: 17, source: 'u' },
-    };
+        var solution = new JScrewIt.debug.Solution(source, replacement, type);
+        Object.defineProperty(solution, 'appendLength', { value: appendLength });
+        return solution;
+    }
+
+    var EXPECTED_REPLACEMENT = '"feet"';
 
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
+    var SolutionType = JScrewIt.debug.SolutionType;
+
+    var SOLUTIONS =
+    {
+        e: createSolution(26, 'e', undefined, SolutionType.STRING),
+        f: createSolution(14, 'f', undefined, SolutionType.STRING),
+        t: createSolution(15, 't', undefined, SolutionType.STRING),
+        u: createSolution(17, 'u', undefined, SolutionType.STRING),
+    };
 
     describe
     (
@@ -95,7 +102,7 @@
                         ],
                         [
                             'an object integral cluster without bonding or string forcing',
-                            { complexAppendLength: 80, complexLevel: LEVEL_OBJECT },
+                            { complexAppendLength: 80, complexSolutionType: SolutionType.OBJECT },
                         ],
                         [
                             'an integral cluster with bonding',
@@ -109,7 +116,7 @@
                             'an integral object cluster with string forcing',
                             {
                                 complexAppendLength:    77,
-                                complexLevel:           LEVEL_OBJECT,
+                                complexSolutionType:    SolutionType.OBJECT,
                                 forceString:            true,
                             },
                         ],
@@ -133,7 +140,7 @@
                             'a partial object cluster with string forcing',
                             {
                                 complexAppendLength:    80,
-                                complexLevel:           LEVEL_OBJECT,
+                                complexSolutionType:    SolutionType.OBJECT,
                                 forceString:            true,
                                 solutions:
                                 [SOLUTIONS.u, SOLUTIONS.f, SOLUTIONS.e, SOLUTIONS.e, SOLUTIONS.t],
@@ -155,7 +162,9 @@
                         {
                             var opt = paramData[1];
                             var complexAppendLength = opt.complexAppendLength;
-                            var complexLevel = opt.complexLevel;
+                            var complexSolutionType = opt.complexSolutionType;
+                            if (complexSolutionType == null)
+                                complexSolutionType = SolutionType.STRING;
                             var solutions =
                             opt.solutions || [SOLUTIONS.f, SOLUTIONS.e, SOLUTIONS.e, SOLUTIONS.t];
                             var bond = opt.bond;
@@ -167,7 +176,8 @@
                                 expect(solutions.length).toBe(1);
                                 expect(solutions[0].replacement).toBe(EXPECTED_REPLACEMENT);
                             };
-                            var optimizer = createOptimizer(complexAppendLength, complexLevel);
+                            var optimizer =
+                            createOptimizer(complexAppendLength, complexSolutionType);
                             solutions.forEach
                             (
                                 function (solution)
@@ -187,13 +197,16 @@
                         {
                             var opt = paramData[1];
                             var complexAppendLength = (opt.complexAppendLength | 0) + 1;
-                            var complexLevel = opt.complexLevel;
+                            var complexSolutionType = opt.complexSolutionType;
+                            if (complexSolutionType == null)
+                                complexSolutionType = SolutionType.STRING;
                             var solutions =
                             opt.solutions || [SOLUTIONS.f, SOLUTIONS.e, SOLUTIONS.e, SOLUTIONS.t];
                             var bond = opt.bond;
                             var forceString = opt.forceString;
                             var expectedSolutionCount = solutions.length;
-                            var optimizer = createOptimizer(complexAppendLength, complexLevel);
+                            var optimizer =
+                            createOptimizer(complexAppendLength, complexSolutionType);
                             solutions.forEach
                             (
                                 function (solution)

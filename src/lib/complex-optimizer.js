@@ -1,6 +1,5 @@
 import { _Array_prototype_forEach, createEmpty, noop }  from './obj-utils';
 import { APPEND_LENGTH_OF_EMPTY }                       from './screw-buffer';
-import { LEVEL_STRING }                                 from './solution';
 
 var createComplexOptimizer;
 
@@ -46,7 +45,7 @@ var createComplexOptimizer;
                     var saving = appendLengthDiff;
                     if (!limit)
                     {
-                        if (forceString && complexSolution.level < LEVEL_STRING)
+                        if (forceString && !complexSolution.isString)
                             saving -= APPEND_LENGTH_OF_EMPTY;
                         else if (bond)
                             saving += BOND_EXTRA_LENGTH;
@@ -98,8 +97,6 @@ var createComplexOptimizer;
             }
         );
         var complexSolution = encoder.resolve(definition, complex);
-        if (complexSolution.level == null)
-            complexSolution.level = LEVEL_STRING;
         var solutionAppendLength = complexSolution.appendLength;
         var appendLengthDiff = discreteAppendLength - solutionAppendLength;
         if (appendLengthDiff + BOND_EXTRA_LENGTH > 0)

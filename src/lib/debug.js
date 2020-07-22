@@ -42,6 +42,7 @@ import { ScrewBuffer, optimizeSolutions }                   from './screw-buffer
 import Solution                                             from './solution';
 import createToStringOptimizer                              from './to-string-optimizer';
 import trimJS                                               from './trim-js';
+import { SolutionType }                                     from 'novem';
 
 if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
 {
@@ -185,6 +186,7 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
             { },
             {
                 Solution:                   Solution,
+                SolutionType:               SolutionType,
                 createBridgeSolution:       createBridgeSolution,
                 createClusteringPlan:       createClusteringPlan,
                 createComplexOptimizer:     createComplexOptimizer,

@@ -323,6 +323,7 @@ uneval,
 
     function testComplex(complex)
     {
+        var SolutionType = JScrewIt.debug.SolutionType;
         var desc = JSON.stringify(complex);
         var entry = JScrewIt.debug.getComplexEntry(complex);
         var featureObj = getEntryFeature(entry);
@@ -335,7 +336,10 @@ uneval,
                 var encoder = getPoolEncoder(featureObj);
                 var definition = entry.definition;
                 var solution = encoder.resolve(definition, complex);
-                expect(solution.level).toBe(definition.level, 'Solution level mismatch');
+                var expectedSolutionType = definition.solutionType;
+                if (expectedSolutionType == null)
+                    expectedSolutionType = SolutionType.STRING;
+                expect(solution.type).toBe(expectedSolutionType, 'Solution type mismatch');
                 verifySolution(solution, complex, this.test.emuFeatureNames);
             }
         );

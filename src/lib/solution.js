@@ -1,45 +1,13 @@
 import { assignNoEnum, _Object_create, _Object_defineProperty } from './obj-utils';
-import { SimpleSolution, SolutionType }                         from 'novem';
-
-export var LEVEL_NUMERIC    = -1;
-export var LEVEL_OBJECT     = 0;
-export var LEVEL_STRING     = 1;
-export var LEVEL_UNDEFINED  = -2;
-
-function getSolutionType(solution)
-{
-    var type;
-    switch (solution.level)
-    {
-    case LEVEL_UNDEFINED:
-        type = SolutionType.UNDEFINED;
-        break;
-    case LEVEL_NUMERIC:
-        type = solution.hasOuterPlus ? SolutionType.WEAK_NUMERIC : SolutionType.NUMERIC;
-        break;
-    case LEVEL_OBJECT:
-        type = SolutionType.OBJECT;
-        break;
-    case LEVEL_STRING:
-        type =
-        solution.hasOuterPlus ? SolutionType.WEAK_PREFIXED_STRING : SolutionType.PREFIXED_STRING;
-        break;
-    }
-    return type;
-}
+import { SimpleSolution }                                       from 'novem';
 
 function setHasOuterPlus(solution, hasOuterPlus)
 {
     _Object_defineProperty(solution, 'hasOuterPlus', { value: hasOuterPlus });
 }
 
-export default function Solution(source, replacement, level, hasOuterPlus)
+export default function Solution(source, replacement, type)
 {
-    this.replacement    = replacement;
-    this.level          = level;
-    if (hasOuterPlus !== undefined)
-        setHasOuterPlus(this, hasOuterPlus);
-    var type = getSolutionType(this);
     SimpleSolution.call(this, source, replacement, type);
 }
 
@@ -47,7 +15,7 @@ var protoSource =
 {
     get appendLength()
     {
-        var extraLength = this.hasOuterPlus ? 3 : 1;
+        var extraLength = this.isWeak ? 3 : 1;
         var appendLength = this.length + extraLength;
         return appendLength;
     },

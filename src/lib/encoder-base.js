@@ -13,9 +13,9 @@ import
     SIMPLE,
 }
 from './definitions';
-import expressParse                                                 from './express-parse';
-import { featureFromMask }                                          from './features';
-import { maskIncludes, maskNew }                                    from './mask';
+import expressParse                 from './express-parse';
+import { featureFromMask }          from './features';
+import { maskIncludes, maskNew }    from './mask';
 import
 {
     _Array,
@@ -23,7 +23,6 @@ import
     _Array_prototype_forEach,
     _JSON_stringify,
     _Math_abs,
-    _Math_max,
     _Object_create,
     _Object_defineProperty,
     _Object_keys,
@@ -44,7 +43,8 @@ import
     ScrewBuffer,
 }
 from './screw-buffer';
-import Solution, { LEVEL_NUMERIC, LEVEL_STRING, LEVEL_UNDEFINED }   from './solution';
+import Solution                     from './solution';
+import { SolutionType }             from 'novem';
 
 /** @class Encoder */
 
@@ -324,7 +324,7 @@ export var replaceStaticString;
                 }
                 replacement = shortestOf(replacements);
             }
-            var solution = new Solution(char, replacement, LEVEL_STRING, false);
+            var solution = new Solution(char, replacement, SolutionType.STRING);
             return solution;
         },
 
@@ -622,7 +622,7 @@ export var replaceStaticString;
             {
                 var count = terms.length;
                 var maxCoreLength = maxLength - (bondStrength ? 2 : 0);
-                var minOutputLevel = LEVEL_UNDEFINED;
+                var minOutputType = SolutionType.UNDEFINED;
                 for (var index = 0; index < count; ++index)
                 {
                     var term = terms[index];
@@ -630,9 +630,9 @@ export var replaceStaticString;
                     if (strAppender && isStringUnit(term))
                     {
                         var firstSolution =
-                        output ? new Solution(undefined, output, minOutputLevel) : undefined;
+                        output ? new Solution(undefined, output, minOutputType) : undefined;
                         output = strAppender(this, term.value, firstSolution);
-                        minOutputLevel = LEVEL_STRING;
+                        minOutputType = SolutionType.WEAK_PREFIXED_STRING;
                     }
                     else
                     {
@@ -647,7 +647,8 @@ export var replaceStaticString;
                         if (output)
                         {
                             output += '+' + termOutput;
-                            minOutputLevel = _Math_max(minOutputLevel, LEVEL_NUMERIC);
+                            if (minOutputType === SolutionType.UNDEFINED)
+                                minOutputType = SolutionType.WEAK_NUMERIC;
                         }
                         else
                             output = termOutput;
@@ -815,18 +816,20 @@ export var replaceStaticString;
             else
             {
                 var expr;
-                var level;
+                var solutionType;
                 var optimize;
                 if (type === 'object')
                 {
-                    expr        = definition.expr;
-                    level       = definition.level;
-                    optimize    = definition.optimize;
+                    expr            = definition.expr;
+                    solutionType    = definition.solutionType;
+                    optimize        = definition.optimize;
                 }
                 else
                     expr = definition;
                 var replacement = this.replaceExpr(expr, optimize);
-                solution = new Solution(source, replacement, level);
+                if (solutionType == null)
+                    solutionType = SolutionType.STRING;
+                solution = new Solution(source, replacement, solutionType);
             }
             return solution;
         },
@@ -857,8 +860,6 @@ export var replaceStaticString;
                             solution.entryIndex = 'static';
                             charCache = STATIC_CHAR_CACHE;
                         }
-                        if (solution.level == null)
-                            solution.level = LEVEL_STRING;
                         charCache[char] = solution;
                     }
                 );
@@ -914,7 +915,7 @@ export var replaceStaticString;
             }
             var fullExpr = '(' + paddingBlock + '+' + expr + ')[' + indexer + ']';
             var replacement = this.replaceExpr(fullExpr);
-            var solution = new Solution(char, replacement, LEVEL_STRING, false);
+            var solution = new Solution(char, replacement, SolutionType.STRING);
             return solution;
         },
 

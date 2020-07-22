@@ -1,7 +1,7 @@
-import createClusteringPlan
-from './clustering-plan';
-import { _Math_max, _Math_pow, assignNoEnum }                                   from './obj-utils';
-import Solution, { LEVEL_NUMERIC, LEVEL_OBJECT, LEVEL_STRING, LEVEL_UNDEFINED } from './solution';
+import createClusteringPlan                     from './clustering-plan';
+import { _Math_max, _Math_pow, assignNoEnum }   from './obj-utils';
+import Solution                                 from './solution';
+import { SolutionType }                         from 'novem';
 
 // This implementation assumes that all numeric solutions have an outer plus, and all other
 // character solutions have none.
@@ -148,7 +148,7 @@ export var optimizeSolutions;
             var solution = solutions[0];
             array = [solution];
             multiPart = false;
-            notStr = solution.level < LEVEL_STRING;
+            notStr = !solution.isString;
         }
         if (notStr && groupForceString)
         {
@@ -161,53 +161,50 @@ export var optimizeSolutions;
         return str;
     }
 
-    function getNumericJoinCost(level0, level1)
+    function getArithmeticJoinCost(solution0, solution1)
     {
-        var joinCost = level0 > LEVEL_UNDEFINED || level1 > LEVEL_UNDEFINED ? 2 : 3;
+        var joinCost = solution0.isUndefined && solution1.isUndefined ? 3 : 2;
         return joinCost;
     }
 
     function getSplitCostAt(solutions, index, leftmost, rightmost)
     {
         var solutionCenter = solutions[index];
-        var levelCenter = solutionCenter.level;
-        var levelLeft;
-        var levelRight;
+        var solutionLeft;
         var solutionRight;
         var splitCost =
         (
-            rightmost && levelCenter < LEVEL_NUMERIC ?
+            rightmost && solutionCenter.isUndefined ?
             3 :
-            isNumericJoin(levelCenter, levelRight = (solutionRight = solutions[index + 1]).level) ?
-            getNumericJoinCost(levelCenter, levelRight) - (solutionRight.hasOuterPlus ? 2 : 0) :
+            isArithmeticJoin(solutionCenter, solutionRight = solutions[index + 1]) ?
+            getArithmeticJoinCost(solutionCenter, solutionRight) -
+            (solutionRight.isWeak ? 2 : 0) :
             0
         ) -
         (
             leftmost &&
-            isNumericJoin(levelCenter, levelLeft = solutions[index - 1].level) ?
-            getNumericJoinCost(levelLeft, levelCenter) :
-            solutionCenter.hasOuterPlus ? 2 : 0
+            isArithmeticJoin(solutionCenter, solutionLeft = solutions[index - 1]) ?
+            getArithmeticJoinCost(solutionLeft, solutionCenter) :
+            solutionCenter.isWeak ? 2 : 0
         );
         return splitCost;
     }
 
-    function isNumericJoin(level0, level1)
+    function isArithmeticJoin(solution0, solution1)
     {
-        var result = level0 < LEVEL_OBJECT && level1 < LEVEL_OBJECT;
+        var result = solution0.isArithmetic && solution1.isArithmetic;
         return result;
     }
 
     function isUnluckyRightEnd(solutions, firstIndex)
     {
-        var result =
-        solutions[firstIndex].level < LEVEL_NUMERIC &&
-        solutions[firstIndex + 1].level > LEVEL_UNDEFINED;
+        var result = solutions[firstIndex].isUndefined && !solutions[firstIndex + 1].isUndefined;
         return result;
     }
 
     function pushSolution(array, solution)
     {
-        if (solution.hasOuterPlus)
+        if (solution.isWeak)
             array.push('+(', solution, ')');
         else
             array.push('+', solution);
@@ -218,11 +215,11 @@ export var optimizeSolutions;
         var array;
         var solution0 = solutions[offset];
         var solution1 = solutions[offset + 1];
-        if (solution0.level < LEVEL_OBJECT && solution1.level < LEVEL_OBJECT)
+        if (solution0.isArithmetic && solution1.isArithmetic)
         {
-            if (solution1.level > LEVEL_UNDEFINED)
+            if (!solution1.isUndefined)
                 array = [solution0, '+[', solution1, ']'];
-            else if (solution0.level > LEVEL_UNDEFINED)
+            else if (!solution0.isUndefined)
                 array = ['[', solution0, ']+', solution1];
             else
                 array = [solution0, '+[]+', solution1];
@@ -250,7 +247,7 @@ export var optimizeSolutions;
             else
             {
                 var solution = solutions[offset];
-                str = solution + (solution.level < LEVEL_NUMERIC ? '+[]' : '');
+                str = solution + (solution.isUndefined ? '+[]' : '');
             }
         }
         else
@@ -258,7 +255,7 @@ export var optimizeSolutions;
         return str;
     }
 
-    var EMPTY_SOLUTION = new Solution('', '[]', LEVEL_OBJECT, false);
+    var EMPTY_SOLUTION = new Solution('', '[]', SolutionType.OBJECT);
 
     ScrewBuffer =
     function (bond, forceString, groupThreshold, optimizerList)
@@ -342,7 +339,7 @@ export var optimizeSolutions;
                     if (solutionCount < 2)
                     {
                         var solution = solutions[0] || EMPTY_SOLUTION;
-                        var multiPart = forceString && solution.level < LEVEL_STRING;
+                        var multiPart = forceString && !solution.isString;
                         str = solution.replacement;
                         if (multiPart)
                             str += '+[]';

@@ -10,7 +10,8 @@
 
 import { replaceMultiDigitNumber }          from './encoder-base';
 import { _String, _parseInt, createEmpty }  from './obj-utils';
-import Solution, { LEVEL_STRING }           from './solution';
+import Solution                             from './solution';
+import { SolutionType }                     from 'novem';
 
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
 var CLUSTER_EXTRA_LENGTHS = [];
@@ -49,7 +50,7 @@ function createOptimizer(toStringReplacement)
             var replacement =
             '(+(' + decimalReplacement + '))[' + toStringReplacement + '](' + radixReplacement +
             ')';
-            var solution = new Solution(undefined, replacement, LEVEL_STRING, false);
+            var solution = new Solution(undefined, replacement, SolutionType.STRING);
             return solution;
         };
         return clusterer;

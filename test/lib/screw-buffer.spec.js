@@ -43,11 +43,6 @@
 
     var INITIAL_APPEND_LENGTH = -3;
 
-    var LEVEL_NUMERIC   = -1;
-    var LEVEL_OBJECT    = 0;
-    var LEVEL_STRING    = 1;
-    var LEVEL_UNDEFINED = -2;
-
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
 
     describe
@@ -136,13 +131,16 @@
 
             var createScrewBuffer = JScrewIt.debug.createScrewBuffer;
             var Solution = JScrewIt.debug.Solution;
-            var solutionA = new Solution('a', '(![]+[])[+!![]]', LEVEL_STRING);
-            var solution0 = new Solution('0', '+[]', LEVEL_NUMERIC);
-            var solutionFalse = new Solution('false', '![]', LEVEL_NUMERIC);
+            var SolutionType = JScrewIt.debug.SolutionType;
+            var solutionA = new Solution('a', '(![]+[])[+!![]]', SolutionType.STRING);
+            var solution0 = new Solution('0', '+[]', SolutionType.WEAK_NUMERIC);
+            var solutionFalse = new Solution('false', '![]', SolutionType.NUMERIC);
             var solutionComma = createCommaSolution();
-            var solutionUndefined = new Solution('undefined', '[][[]]', LEVEL_UNDEFINED);
-            var strTestOptimizer = createTestOptimizer(new Solution(undefined, '""', LEVEL_STRING));
-            var objTestOptimizer = createTestOptimizer(new Solution(undefined, '{}', LEVEL_OBJECT));
+            var solutionUndefined = new Solution('undefined', '[][[]]', SolutionType.UNDEFINED);
+            var strTestOptimizer =
+            createTestOptimizer(new Solution(undefined, '""', SolutionType.STRING));
+            var objTestOptimizer =
+            createTestOptimizer(new Solution(undefined, '{}', SolutionType.OBJECT));
             var paramDataList =
             [
                 [
@@ -283,7 +281,7 @@
 
             it
             (
-                'encodes a numeric level solution with an undefined level solution',
+                'encodes a weak numeric type solution with an undefined type solution',
                 function ()
                 {
                     var buffer = createScrewBuffer(false, false, 4, []);
@@ -296,7 +294,7 @@
             );
             it
             (
-                'encodes two undefined level solutions',
+                'encodes two undefined type solutions',
                 function ()
                 {
                     var buffer = createScrewBuffer(false, false, 4, []);
@@ -315,7 +313,8 @@
                     for (var index = 0; index < 26; ++index)
                     {
                         var solution =
-                        new Solution(undefined, String.fromCharCode(65 + index), LEVEL_OBJECT);
+                        new Solution
+                        (undefined, String.fromCharCode(65 + index), SolutionType.OBJECT);
                         buffer.append(solution);
                     }
                     var expectedLength = INITIAL_APPEND_LENGTH + 26 * 2;

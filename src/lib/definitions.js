@@ -4,16 +4,17 @@
 // Compared to generic purpose encoding, definition encoding differs mainly in that every identifier
 // used must be defined itself, too, in a constant definition.
 
-import { define, defineList, defineWithArrayLike }                              from './definers';
-import { Feature }                                                              from './features';
-import { _Object_defineProperty, noProto }                                      from './obj-utils';
-import Solution, { LEVEL_NUMERIC, LEVEL_OBJECT, LEVEL_STRING, LEVEL_UNDEFINED } from './solution';
+import { define, defineList, defineWithArrayLike }  from './definers';
+import { Feature }                                  from './features';
+import { _Object_defineProperty, noProto }          from './obj-utils';
+import Solution                                     from './solution';
+import { SolutionType }                             from 'novem';
 
-function defineSimple(simple, expr, level)
+function defineSimple(simple, expr, solutionType)
 {
     function get()
     {
-        var definition = { expr: expr, level: level };
+        var definition = { expr: expr, solutionType: solutionType };
         var solution = SIMPLE.resolveSimple(simple, definition);
         _Object_defineProperty(SIMPLE, simple, { value: solution });
         return solution;
@@ -28,11 +29,11 @@ export var JSFUCK_INFINITY = '1e1000';
 
 export var SIMPLE = { };
 
-defineSimple('false',       '![]',              LEVEL_NUMERIC);
-defineSimple('true',        '!![]',             LEVEL_NUMERIC);
-defineSimple('undefined',   '[][[]]',           LEVEL_UNDEFINED);
-defineSimple('NaN',         '+[false]',         LEVEL_NUMERIC);
-defineSimple('Infinity',    JSFUCK_INFINITY,    LEVEL_NUMERIC);
+defineSimple('false',       '![]',              SolutionType.NUMERIC);
+defineSimple('true',        '!![]',             SolutionType.NUMERIC);
+defineSimple('undefined',   '[][[]]',           SolutionType.UNDEFINED);
+defineSimple('NaN',         '+[false]',         SolutionType.WEAK_NUMERIC);
+defineSimple('Infinity',    JSFUCK_INFINITY,    SolutionType.WEAK_NUMERIC);
 
 export var FROM_CHAR_CODE;
 export var FROM_CHAR_CODE_CALLBACK_FORMATTER;
@@ -202,7 +203,7 @@ export var createBridgeSolution;
     function backslashDefinition()
     {
         var replacement = this.replaceCharByUnescape(0x5C);
-        var solution = new Solution(undefined, replacement, LEVEL_STRING, false);
+        var solution = new Solution(undefined, replacement, SolutionType.STRING);
         return solution;
     }
 
@@ -1235,7 +1236,7 @@ export var createBridgeSolution;
         Object:         define({ expr: 'Object.name', optimize: { toStringOpt: true } }, NAME),
         RegExp:         define({ expr: 'RegExp.name', optimize: { toStringOpt: true } }, NAME),
         String:         define('String.name', NAME),
-        'f,a,l,s,e':    define({ expr: 'F_A_L_S_E', level: LEVEL_OBJECT }),
+        'f,a,l,s,e':    define({ expr: 'F_A_L_S_E', solutionType: SolutionType.OBJECT }),
         fromCharCo:
         define({ expr: '"from3har3o".split(3).join("C")', optimize: { toStringOpt: true } }),
         mCh:            define('atob("bUNo")', Feature.ATOB),
@@ -1513,7 +1514,7 @@ export var createBridgeSolution;
     function (bridge)
     {
         var replacement = '[[]]' + bridge + '([[]])';
-        var solution = new Solution(',', replacement, LEVEL_OBJECT, false);
+        var solution = new Solution(',', replacement, SolutionType.OBJECT);
         var appendLength = bridge.length - 1;
         solution.appendLength = appendLength;
         solution.bridge = bridge;
@@ -1681,7 +1682,7 @@ export var createBridgeSolution;
     for (var digit = 0; digit <= 9; ++digit)
     {
         var expr = replaceDigit(digit);
-        CHARACTERS[digit] = { expr: expr, level: LEVEL_NUMERIC };
+        CHARACTERS[digit] = { expr: expr, solutionType: SolutionType.WEAK_NUMERIC };
     }
 }
 )();

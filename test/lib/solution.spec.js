@@ -7,6 +7,7 @@
 {
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Solution = JScrewIt.debug.Solution;
+    var SolutionType = JScrewIt.debug.SolutionType;
 
     it
     (
@@ -27,7 +28,7 @@
                 'true for leading plus',
                 function ()
                 {
-                    var solution = new Solution('0', '+[]');
+                    var solution = new Solution('0', '+[]', SolutionType.WEAK_NUMERIC);
                     expect(solution.hasOuterPlus).toBe(true);
                 }
             );
@@ -36,7 +37,16 @@
                 'true for middle plus',
                 function ()
                 {
-                    var solution = new Solution('', '[]+[]');
+                    var solution = new Solution('', '[]+[]', SolutionType.STRING);
+                    expect(solution.hasOuterPlus).toBe(true);
+                }
+            );
+            it
+            (
+                'true for trailing double plus',
+                function ()
+                {
+                    var solution = new Solution('', '[][[]]++', SolutionType.NUMERIC);
                     expect(solution.hasOuterPlus).toBe(true);
                 }
             );
@@ -45,7 +55,7 @@
                 'false for inner plus',
                 function ()
                 {
-                    var solution = new Solution('0', '(+[])');
+                    var solution = new Solution('0', '(+[])', SolutionType.NUMERIC);
                     expect(solution.hasOuterPlus).toBe(false);
                 }
             );
@@ -54,18 +64,18 @@
                 'false for leading !+',
                 function ()
                 {
-                    var solution = new Solution('true', '!+[]');
+                    var solution = new Solution('true', '!+[]', SolutionType.NUMERIC);
                     expect(solution.hasOuterPlus).toBe(false);
                 }
             );
             it
             (
-                'cached upon creation',
+                'false for leading !!+',
                 function ()
                 {
-                    var solution = new Solution('', '', undefined, true);
-                    expect(solution.hasOwnProperty('hasOuterPlus')).toBeTruthy();
-                    expect(solution.hasOuterPlus).toBe(true);
+                    var solution =
+                    new Solution('false', '!!+[]', SolutionType.NUMERIC);
+                    expect(solution.hasOuterPlus).toBe(false);
                 }
             );
             it
