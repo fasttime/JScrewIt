@@ -160,7 +160,7 @@ function doWanted()
 
 function formatCharacter(char)
 {
-    if (' #&\'();<>|~'.includes(char))
+    if (' #&\'();<=>?[]{|}~'.includes(char))
         return `"${char}"`;
     if (char === '"' || char === '\\' || char === '`')
         return `"\\${char}"`;
@@ -212,7 +212,7 @@ function isCharacterDefined(char)
 {
     const { getCharacterEntries } = require('..').debug;
 
-    const charDefined = !!getCharacterEntries(char);
+    const charDefined = Boolean(getCharacterEntries(char));
     return charDefined;
 }
 
@@ -296,7 +296,8 @@ function printHelp()
     'Characters can be specified in different ways:\n' +
     '• ABC       Characters "A", "B" and "C"\n' +
     '• U+0123    Character with hexadecimal code 123\n' +
-    '• {static}  Characters in the static set';
+    '• {static}  Characters in the static set\n' +
+    '• {wanted}  Characters defined by JScrewIt but not indexed yet';
     console.log(help);
 }
 
