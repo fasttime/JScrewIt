@@ -45,7 +45,7 @@ function clearSolutionBookMap()
 function createParseReviver()
 {
     const { Feature } = JScrewIt;
-    const { Solution } = debug;
+    const { Solution, SolutionType } = debug;
     const parseReviverMap = new Map([[Map.name, jsonParseMap], [Solution.name, jsonParseSolution]]);
     return parseReviver;
 
@@ -68,9 +68,10 @@ function createParseReviver()
         const solution = new Solution(obj.source, obj.replacement, obj.type);
         for (const [key, value] of Object.entries(obj))
         {
-            if (!solution.hasOwnProperty(key) && key !== 'features')
+            if (!solution.hasOwnProperty(key) && key !== 'type' && key !== 'features')
                 solution[key] = value;
         }
+        solution.type = SolutionType[obj.type];
         solution.masks = obj.features.map(featureNames => new Feature(featureNames).mask);
         return solution;
     }
@@ -91,7 +92,7 @@ function createParseReviver()
 
 function createStringifyReplacer()
 {
-    const { Solution, createFeatureFromMask } = debug;
+    const { Solution, SolutionType, createFeatureFromMask } = debug;
     const stringifyReplacerMap = new Map([[Map, jsonReplaceMap], [Solution, jsonReplaceSolution]]);
     return stringifyReplacer;
 
@@ -115,9 +116,10 @@ function createStringifyReplacer()
         obj[typeKey] = Solution.name;
         for (const [key, value] of Object.entries(solution))
         {
-            if (key !== 'masks')
+            if (key !== 'type' && key !== 'masks')
                 obj[key] = value;
         }
+        obj.type = SolutionType[solution.type];
         obj.features = solution.masks.map(mask => createFeatureFromMask(mask).canonicalNames);
         return obj;
     }
