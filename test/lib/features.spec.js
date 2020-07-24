@@ -420,7 +420,7 @@
                         'restricts a feature in a particular engine',
                         function ()
                         {
-                            var featureObj = Feature.WINDOW.restrict('web-worker', [Feature.FF_62]);
+                            var featureObj = Feature.WINDOW.restrict('web-worker', [Feature.FF_78]);
                             expect(featureObj.mask).toEqual(Feature.SELF_OBJ.mask);
                         }
                     );

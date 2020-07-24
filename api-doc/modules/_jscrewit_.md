@@ -69,7 +69,7 @@ ___
 
 ###  PredefinedFeatureName
 
-Ƭ **PredefinedFeatureName**: *[ElementaryFeatureName](_jscrewit_.md#elementaryfeaturename) | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "AUTO" | "BROWSER" | "CHROME_73" | "COMPACT" | "DEFAULT" | "FF_62" | "FF_ESR" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9"*
+Ƭ **PredefinedFeatureName**: *[ElementaryFeatureName](_jscrewit_.md#elementaryfeaturename) | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "AUTO" | "BROWSER" | "CHROME_73" | "COMPACT" | "DEFAULT" | "FF_62" | "FF_74" | "FF_78" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9"*
 
 Name of a predefined feature.
 

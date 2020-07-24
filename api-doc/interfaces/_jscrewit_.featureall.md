@@ -39,7 +39,10 @@
 * [EXTERNAL](_jscrewit_.featureall.md#external)
 * [FF](_jscrewit_.featureall.md#ff)
 * [FF_62](_jscrewit_.featureall.md#ff_62)
+* [FF_74](_jscrewit_.featureall.md#ff_74)
+* [FF_78](_jscrewit_.featureall.md#ff_78)
 * [FF_ESR](_jscrewit_.featureall.md#ff_esr)
+* [FF_PREV](_jscrewit_.featureall.md#ff_prev)
 * [FF_SRC](_jscrewit_.featureall.md#ff_src)
 * [FILL](_jscrewit_.featureall.md#fill)
 * [FLAT](_jscrewit_.featureall.md#flat)
@@ -258,7 +261,7 @@ This feature may become unavailable when certain browser extensions are active.
 
 **`reamarks`** 
 
-Available in Firefox, Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
+Available in Firefox before 78, Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
 
 ___
 
@@ -370,13 +373,29 @@ ___
 
 • **FF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-An alias for `FF_62`.
+An alias for `FF_78`.
 
 ___
 
 ###  FF_62
 
 • **FF_62**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+
+Features available in Firefox 62 to 73.
+
+___
+
+###  FF_74
+
+• **FF_74**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+
+Features available in Firefox 62 to 77.
+
+___
+
+###  FF_78
+
+• **FF_78**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
 Features available in Firefox 62 or later.
 
@@ -386,7 +405,15 @@ ___
 
 • **FF_ESR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-Features available in Firefox 62 to 73.
+An alias for `FF_62`.
+
+___
+
+###  FF_PREV
+
+• **FF_PREV**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+
+An alias for `FF_74`.
 
 ___
 
