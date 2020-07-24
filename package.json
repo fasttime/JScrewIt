@@ -60,7 +60,7 @@
     "handlebars": "latest",
     "mocha": "3",
     "mocha-bar": "latest",
-    "novem": "0.2.0",
+    "novem": "0.2",
     "postrequire": "latest",
     "rollup": "latest",
     "rollup-plugin-cleanup": "latest",
