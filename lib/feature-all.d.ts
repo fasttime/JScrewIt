@@ -119,7 +119,7 @@ declare module 'jscrewit'
          *
          * @reamarks
          *
-         * Available in Firefox, Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
+         * Available in Firefox before 78, Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
          */
         CONSOLE: ElementaryFeature;
 
@@ -200,18 +200,29 @@ declare module 'jscrewit'
          */
         EXTERNAL: ElementaryFeature;
 
-        /** An alias for `FF_62`. */
+        /** An alias for `FF_78`. */
         FF: PredefinedFeature;
-
-        /**
-         * Features available in Firefox 62 or later.
-         */
-        FF_62: PredefinedFeature;
 
         /**
          * Features available in Firefox 62 to 73.
          */
+        FF_62: PredefinedFeature;
+
+        /**
+         * Features available in Firefox 62 to 77.
+         */
+        FF_74: PredefinedFeature;
+
+        /**
+         * Features available in Firefox 62 or later.
+         */
+        FF_78: PredefinedFeature;
+
+        /** An alias for `FF_62`. */
         FF_ESR: PredefinedFeature;
+
+        /** An alias for `FF_74`. */
+        FF_PREV: PredefinedFeature;
 
         /**
          * A string representation of native functions typical for Firefox and Safari.
@@ -609,7 +620,8 @@ declare module 'jscrewit'
     | 'COMPACT'
     | 'DEFAULT'
     | 'FF_62'
-    | 'FF_ESR'
+    | 'FF_74'
+    | 'FF_78'
     | 'IE_10'
     | 'IE_11'
     | 'IE_11_WIN_10'
