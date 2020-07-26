@@ -183,8 +183,8 @@ export var replaceStaticString;
         if (!solution)
             encoder.throwSyntaxError('Undefined identifier ' + identifier);
         var groupingRequired =
-        bondStrength && solution.hasOuterPlus ||
-        bondStrength > BOND_STRENGTH_WEAK && solution.charAt(0) === '!';
+        bondStrength && solution.isLoose ||
+        bondStrength > BOND_STRENGTH_WEAK && solution.replacement[0] === '!';
         var replacement = solution.replacement;
         if (groupingRequired)
             replacement = '(' + replacement + ')';
