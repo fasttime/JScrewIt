@@ -264,6 +264,18 @@ self,
         {
             it
             (
+                'returns correct JSFuck with radix for short numeric input',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var input = '9';
+                    var output = encoder.encodeByDict(Object(input), 4);
+                    expect(output).toBeJSFuck();
+                    expect(evalJSFuck(output)).toBe(input);
+                }
+            );
+            it
+            (
                 'returns correct JSFuck with integer coercion',
                 function ()
                 {
