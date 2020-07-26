@@ -10,10 +10,10 @@
 
     it
     (
-        'Solution#constructor is Solution',
+        'Solution.name is Solution',
         function ()
         {
-            expect(Solution.prototype.constructor).toBe(Solution);
+            expect(Solution.name).toBe('Solution');
         }
     );
 }

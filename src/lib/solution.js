@@ -1,10 +1,7 @@
-import { assignNoEnum, _Object_create, _Object_defineProperty } from './obj-utils';
-import { SimpleSolution }                                       from 'novem';
+import { assignNoEnum, _Object_defineProperty } from './obj-utils';
+import { SimpleSolution }                       from 'novem';
 
-export default function Solution(source, replacement, type)
-{
-    SimpleSolution.call(this, source, replacement, type);
-}
+_Object_defineProperty(SimpleSolution, 'name', { value: 'Solution' });
 
 var protoSource =
 {
@@ -18,8 +15,8 @@ var protoSource =
     {
         _Object_defineProperty(this, 'appendLength', { enumerable: true, value: appendLength });
     },
-    constructor: Solution,
 };
 
-var prototype = Solution.prototype = _Object_create(SimpleSolution.prototype);
-assignNoEnum(prototype, protoSource);
+assignNoEnum(SimpleSolution.prototype, protoSource);
+
+export default SimpleSolution;

@@ -1,8 +1,7 @@
-import createClusteringPlan                     from './clustering-plan';
-import { _Math_max, _Math_pow, assignNoEnum }   from './obj-utils';
-import Solution                                 from './solution';
-import { DynamicSolution, SolutionType }        from 'novem';
-import { SimpleSolution } from 'novem';
+import createClusteringPlan                                 from './clustering-plan';
+import { _Math_max, _Math_pow, assignNoEnum }               from './obj-utils';
+import Solution                                             from './solution';
+import { EMPTY_SOLUTION, DynamicSolution, SolutionType }    from 'novem';
 
 // This implementation assumes that all numeric solutions have an outer plus, and all other
 // character solutions have none.
@@ -147,7 +146,7 @@ export var optimizeSolutions;
                 appendRightGroup(groupCount);
                 var bridgedReplacement = bridgedPartArray.join('');
                 var bridgedSolution =
-                new SimpleSolution(undefined, bridgedReplacement, SolutionType.OBJECT);
+                new Solution(undefined, bridgedReplacement, SolutionType.OBJECT);
                 solution.append(bridgedSolution);
                 index += groupCount;
                 appendSolutions(solution, solutions, index, count - index);
@@ -225,8 +224,6 @@ export var optimizeSolutions;
             str = emptyReplacement;
         return str;
     }
-
-    var EMPTY_SOLUTION = new Solution('', '[]', SolutionType.OBJECT);
 
     ScrewBuffer =
     function (screwMode, groupThreshold, optimizerList)

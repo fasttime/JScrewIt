@@ -32,7 +32,7 @@
     function createSolution(appendLength, source, replacement, type)
     {
         var solution = new JScrewIt.debug.Solution(source, replacement, type);
-        Object.defineProperty(solution, 'appendLength', { value: appendLength });
+        solution.appendLength = appendLength;
         return solution;
     }
 
