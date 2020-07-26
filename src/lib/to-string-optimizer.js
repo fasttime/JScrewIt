@@ -8,10 +8,10 @@
 //
 // The leading append plus is omitted when the optimized cluster is the first element of a group.
 
-import { replaceMultiDigitNumber }          from './encoder-base';
-import { _String, _parseInt, createEmpty }  from './obj-utils';
-import Solution                             from './solution';
-import { SolutionType }                     from 'novem';
+import { replaceMultiDigitNumber }  from './encoder-base';
+import { _parseInt, createEmpty }   from './obj-utils';
+import Solution                     from './solution';
+import { SolutionType }             from 'novem';
 
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
 var CLUSTER_EXTRA_LENGTHS = [];
@@ -174,7 +174,7 @@ function isClusterable(solution)
 
 export default function createToStringOptimizer(encoder)
 {
-    var toStringReplacement = _String(encoder.resolveConstant('TO_STRING'));
+    var toStringReplacement = encoder.resolveConstant('TO_STRING').replacement;
     var optimizer = createOptimizer(toStringReplacement);
     return optimizer;
 }

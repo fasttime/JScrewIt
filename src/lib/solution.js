@@ -19,11 +19,6 @@ var protoSource =
         _Object_defineProperty(this, 'appendLength', { enumerable: true, value: appendLength });
     },
     constructor: Solution,
-    toString:
-    function ()
-    {
-        return this.replacement;
-    },
 };
 
 var prototype = Solution.prototype = _Object_create(SimpleSolution.prototype);

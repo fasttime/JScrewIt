@@ -388,9 +388,9 @@ uneval,
     function verifySolution(solution, expected, emuFeatures)
     {
         expect(typeof solution).toBe('object');
-        var output = String(solution);
-        expect(output).toBeJSFuck();
-        var actual = String(emuEval(emuFeatures || [], output));
+        var replacement = solution.replacement;
+        expect(replacement).toBeJSFuck();
+        var actual = String(emuEval(emuFeatures || [], replacement));
         expect(actual).toBe(expected);
         expect(solution.source).toBe(expected);
     }

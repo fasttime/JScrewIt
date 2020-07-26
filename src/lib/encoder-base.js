@@ -472,7 +472,7 @@ export var replaceStaticString;
             var postfix3 = '(' + this.replaceString(param3) + ')' + indexer3;
 
             var postfix = shortestOf([postfix1, postfix2, postfix3]);
-            var replacement = this.resolveConstant('atob') + postfix;
+            var replacement = this.resolveConstant('atob').replacement + postfix;
             return replacement;
         },
 

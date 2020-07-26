@@ -24,12 +24,13 @@
     {
         if (toStringReplacement === undefined)
             toStringReplacement = '"toString"';
+        var toStringSolution = { replacement: toStringReplacement };
         var encoder =
         {
             resolveConstant:
             function ()
             {
-                return Object(toStringReplacement);
+                return toStringSolution;
             },
         };
         var optimizer = JScrewIt.debug.createToStringOptimizer(encoder);

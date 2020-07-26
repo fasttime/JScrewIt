@@ -40,7 +40,7 @@ from './screw-buffer';
 
 export function wrapWithCall(str)
 {
-    var output = this.resolveConstant('Function') + '(' + str + ')()';
+    var output = this.resolveConstant('Function').replacement + '(' + str + ')()';
     return output;
 }
 
@@ -611,13 +611,13 @@ export var createReindexMap;
                     var returnString = this.findDefinition(OPTIMAL_RETURN_STRING);
                     var str = returnString + '.' + fromCharCode + '(';
                     output =
-                    this.resolveConstant('Function') +
+                    this.resolveConstant('Function').replacement +
                     '(' +
                     this.replaceString(str, { optimize: true }) +
                     '+' +
                     charCodeArrayStr +
                     '+' +
-                    this.resolveCharacter(')') +
+                    this.resolveCharacter(')').replacement +
                     ')()';
                 }
             }
