@@ -40,6 +40,9 @@ import
     APPEND_LENGTH_OF_DOT,
     APPEND_LENGTH_OF_MINUS,
     APPEND_LENGTH_OF_SMALL_E,
+    SCREW_AS_STRING,
+    SCREW_AS_BONDED_STRING,
+    SCREW_NORMAL,
     ScrewBuffer,
 }
 from './screw-buffer';
@@ -146,16 +149,16 @@ export var replaceStaticString;
             return replacement;
         };
         var strReplacer =
-        function (encoder, str, bond, forceString)
+        function (encoder, str, screwMode)
         {
-            var options = { bond: bond, forceString: forceString };
+            var options = { screwMode: screwMode };
             var replacement = replaceString(encoder, str, options);
             return replacement;
         };
         var strAppender =
         function (encoder, str, firstSolution)
         {
-            var options = { firstSolution: firstSolution, forceString: true };
+            var options = { firstSolution: firstSolution, screwMode: SCREW_AS_STRING };
             var replacement = replaceString(encoder, str, options);
             return replacement;
         };
@@ -582,7 +585,7 @@ export var replaceStaticString;
                         {
                             var strReplacer = replacers.string;
                             opOutput =
-                            strReplacer(this, str, false, false, opUnitIndices, maxOpLength);
+                            strReplacer(this, str, SCREW_NORMAL, opUnitIndices, maxOpLength);
                         }
                         else
                         {
@@ -668,7 +671,8 @@ export var replaceStaticString;
                 if (typeof value === 'string')
                 {
                     var strReplacer = replacers.string;
-                    output = strReplacer(this, value, bondStrength, true, unitIndices, maxLength);
+                    var screwMode = bondStrength ? SCREW_AS_BONDED_STRING : SCREW_AS_STRING;
+                    output = strReplacer(this, value, screwMode, unitIndices, maxLength);
                 }
                 else if (_Array_isArray(value))
                 {
@@ -724,26 +728,8 @@ export var replaceStaticString;
          * @param {object} [options={ }]
          * An optional object specifying replacement options.
          *
-         * @param {boolean} [options.bond=false]
-         * Indicates whether the replacement expression should be bonded.
-         *
-         * An expression is bonded if it can be treated as a single unit by any valid operators
-         * placed immediately before or after it.
-         * E.g. `[][[]]` is bonded but `![]` is not, because `![][[]]` is different from
-         * `(![])[[]]`.
-         * More exactly, a bonded expression does not contain an outer plus and does not start with
-         * `!`.
-         *
-         * Any expression becomes bonded when enclosed into parentheses.
-         *
          * @param {Solution} [options.firstSolution]
          * An optional solution to be prepended to the replacement string.
-         *
-         * @param {boolean} [options.forceString=false]
-         * Indicates whether the replacement expression should evaluate to a string.
-         *
-         * If this parameter is falsy, the value of the replacement expression may not be equal to
-         * the input string, but will have the same string representation.
          *
          * @param {number} [options.maxLength=(NaN)]
          * The maximum length of the replacement expression.
@@ -765,6 +751,32 @@ export var replaceStaticString;
          * optimization names with the suffix "Opt" to booleans, or to any other optimization
          * specific kind of data.
          *
+         * @param {number} [options.screwMode=SCREW_NORMAL]
+         * Specifies how the replacement will be used.
+         *
+         * <dl>
+         *
+         * <dt><code>SCREW_NORMAL</code></dt>
+         * <dd>
+         * Generates code suitable for being used as a function argument or indexer.
+         * The generated replacement is not guaranteed to evaluate to a string but will have the
+         * string representation specified by the input string.
+         * </dd>
+         *
+         * <dt><code>SCREW_AS_STRING</code></dt>
+         * <dd>
+         * Generates code suitable for being used as a standalone string or as the start of a
+         * concatenated string or as an argument to a function that expects a string.
+         * </dd>
+         *
+         * <dt><code>SCREW_AS_BONDED_STRING</code></dt>
+         * <dd>
+         * Generates code suitable for being used with any unary operators, as a property access
+         * target, or in concatenation with any expression.
+         * </dd>
+         *
+         * </dl>
+         *
          * @returns {string|undefined}
          * The replacement string or `undefined`.
          */
@@ -774,9 +786,8 @@ export var replaceStaticString;
         {
             options = options || { };
             var optimizerList = this.getOptimizerList(str, options.optimize);
-            var buffer =
-            new ScrewBuffer
-            (options.bond, options.forceString, this.maxGroupThreshold, optimizerList);
+            var screwMode = options.screwMode || SCREW_NORMAL;
+            var buffer = new ScrewBuffer(screwMode, this.maxGroupThreshold, optimizerList);
             var firstSolution = options.firstSolution;
             var maxLength = options.maxLength;
             if (firstSolution)

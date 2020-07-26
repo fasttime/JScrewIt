@@ -32,6 +32,9 @@ import
     APPEND_LENGTH_OF_DIGIT_0,
     APPEND_LENGTH_OF_FALSE,
     APPEND_LENGTH_OF_PLUS_SIGN,
+    SCREW_AS_BONDED_STRING,
+    SCREW_AS_STRING,
+    SCREW_NORMAL,
 }
 from './screw-buffer';
 
@@ -494,12 +497,7 @@ export var createReindexMap;
             {
                 var input = inputData.valueOf();
                 var options =
-                {
-                    bond:           inputData.bond,
-                    forceString:    inputData.forceString,
-                    maxLength:      maxLength,
-                    optimize:       true,
-                };
+                { maxLength: maxLength, optimize: true, screwMode: inputData.screwMode };
                 var output = this.replaceString(input, options);
                 return output;
             }
@@ -691,8 +689,8 @@ export var createReindexMap;
             var output;
             if (!wrapper || input)
             {
-                var forceString = !wrapper || wrapper.forceString;
-                output = this.encodeText(input, false, forceString, unitPath, maxLength);
+                var screwMode = !wrapper || wrapper.forceString ? SCREW_AS_STRING : SCREW_NORMAL;
+                output = this.encodeText(input, screwMode, unitPath, maxLength);
                 if (output == null)
                     return;
             }
@@ -901,7 +899,7 @@ export var createReindexMap;
                 this.callStrategies
                 (
                     input,
-                    { forceString: true },
+                    { screwMode: SCREW_AS_STRING },
                     ['byCharCodesRadix4', 'byCharCodes', 'plain'],
                     'legend'
                 );
@@ -929,13 +927,13 @@ export var createReindexMap;
         },
 
         encodeText:
-        function (input, bond, forceString, unitPath, maxLength)
+        function (input, screwMode, unitPath, maxLength)
         {
             var output =
             this.callStrategies
             (
                 input,
-                { forceString: forceString, bond: bond },
+                { screwMode: screwMode },
                 [
                     'byDenseFigures',
                     'bySparseFigures',
@@ -982,7 +980,7 @@ export var createReindexMap;
         replaceJoinedArrayString:
         function (str, maxLength)
         {
-            var options = { bond: true, forceString: true, maxLength: maxLength };
+            var options = { maxLength: maxLength, screwMode: SCREW_AS_BONDED_STRING };
             var replacement = replaceStaticString(str, options);
             return replacement;
         },
@@ -1175,7 +1173,7 @@ export var createReindexMap;
             // Approach 2: [array[0]].concat(array[1]).concat(array[2])...
             {
                 var arrayReplacement;
-                var options = { forceString: forceString };
+                var options = { screwMode: forceString ? SCREW_AS_STRING : SCREW_NORMAL };
                 if
                 (
                     !array.some
@@ -1221,10 +1219,10 @@ export var createReindexMap;
             return replacement;
         },
         string:
-        function (encoder, str, bond, forceString, unitIndices, maxLength)
+        function (encoder, str, screwMode, unitIndices, maxLength)
         {
             var unitPath = getUnitPath(unitIndices);
-            var replacement = encoder.encodeText(str, bond, forceString, unitPath, maxLength);
+            var replacement = encoder.encodeText(str, screwMode, unitPath, maxLength);
             return replacement;
         },
     };

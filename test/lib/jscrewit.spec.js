@@ -17,6 +17,10 @@ self,
 
 (function ()
 {
+    var SCREW_NORMAL             = 0;
+    var SCREW_AS_STRING          = 1;
+    var SCREW_AS_BONDED_STRING   = 2;
+
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Feature = JScrewIt.Feature;
 
@@ -522,14 +526,14 @@ self,
                 'supports bridging',
                 function ()
                 {
-                    function test(expr, _0, _SB, _FS, _SBFS)
+                    function test(expr, _0, _FS, _SBFS)
                     {
                         it
                         (
-                            'without bonding or string forcing',
+                            'in normal mode',
                             function ()
                             {
-                                var options = { bond: false, forceString: false, optimize: true };
+                                var options = { screwMode: SCREW_NORMAL, optimize: true };
                                 var output = encoder.replaceString(expr, options);
                                 expect(output).toStartWith(_0[0]);
                                 expect(output).toEndWith(_0[1]);
@@ -537,21 +541,10 @@ self,
                         );
                         it
                         (
-                            'with bonding',
+                            'in force string mode',
                             function ()
                             {
-                                var options = { bond: true, forceString: false, optimize: true };
-                                var output = encoder.replaceString(expr, options);
-                                expect(output).toStartWith(_SB[0]);
-                                expect(output).toEndWith(_SB[1]);
-                            }
-                        );
-                        it
-                        (
-                            'with string forcing',
-                            function ()
-                            {
-                                var options = { bond: false, forceString: true, optimize: true };
+                                var options = { screwMode: SCREW_AS_STRING, optimize: true };
                                 var output = encoder.replaceString(expr, options);
                                 expect(output).toStartWith(_FS[0]);
                                 expect(output).toEndWith(_FS[1]);
@@ -559,10 +552,11 @@ self,
                         );
                         it
                         (
-                            'with bonding and string forcing',
+                            'in force bonded string mode',
                             function ()
                             {
-                                var options = { bond: true, forceString: true, optimize: true };
+                                var options =
+                                { screwMode: SCREW_AS_BONDED_STRING, optimize: true };
                                 var output = encoder.replaceString(expr, options);
                                 expect(output).toStartWith(_SBFS[0]);
                                 expect(output).toEndWith(_SBFS[1]);
@@ -576,13 +570,11 @@ self,
                         [
                             ',0',
                             ['[[]][', '](+[])'],
-                            ['[[]][', '](+[])'],
                             ['[[]][', '](+[])+[]'],
                             ['([[]][', '](+[])+[])'],
                         ],
                         [
                             '0,',
-                            ['[+[]][', ']([[]])'],
                             ['[+[]][', ']([[]])'],
                             ['[+[]][', ']([[]])+[]'],
                             ['([+[]][', ']([[]])+[])'],
@@ -590,13 +582,11 @@ self,
                         [
                             ',',
                             ['[[]][', ']([[]])'],
-                            ['[[]][', ']([[]])'],
                             ['[[]][', ']([[]])+[]'],
                             ['([[]][', ']([[]])+[])'],
                         ],
                         [
                             '0,0',
-                            ['[+[]][', '](+[])'],
                             ['[+[]][', '](+[])'],
                             ['[+[]][', '](+[])+[]'],
                             ['([+[]][', '](+[])+[])'],
@@ -604,20 +594,17 @@ self,
                         [
                             '00,0',
                             ['+[]+[+[]][', '](+[])'],
-                            ['[+[]+[+[]]][', '](+[])'],
                             ['+[]+[+[]][', '](+[])'],
                             ['(+[]+[+[]][', '](+[]))'],
                         ],
                         [
                             '0a0f,0',
                             ['+[]+(![]+[])[+!![]]+[+[]+(![]+[])[+[]]][', '](+[])'],
-                            ['[+[]+(![]+[])[+!![]]+(+[])+(![]+[])[+[]]][', '](+[])'],
                             ['+[]+(![]+[])[+!![]]+[+[]+(![]+[])[+[]]][', '](+[])'],
                             ['(+[]+(![]+[])[+!![]]+[+[]+(![]+[])[+[]]][', '](+[]))'],
                         ],
                         [
                             '0undefinedundefined,0',
-                            ['[[+[]]+[][[]]+[][[]]][', '](+[])'],
                             ['[[+[]]+[][[]]+[][[]]][', '](+[])'],
                             ['+[]+[[]+[][[]]+[][[]]][', '](+[])'],
                             ['(+[]+[[]+[][[]]+[][[]]][', '](+[]))'],
@@ -625,13 +612,11 @@ self,
                         [
                             '0undefinedundefined,00',
                             ['[[+[]]+[][[]]+[][[]]][', '](+[]+[+[]])'],
-                            ['[[+[]]+[][[]]+[][[]]][', '](+[]+[+[]])'],
                             ['[[+[]]+[][[]]+[][[]]][', '](+[])+(+[])'],
                             ['([[+[]]+[][[]]+[][[]]][', '](+[])+(+[]))'],
                         ],
                         [
                             '0undefinedundefined,undefined00',
-                            ['[[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]]+(+[]))'],
                             ['[[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]]+(+[]))'],
                             ['[[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]])+(+[])'],
                             ['([[+[]]+[][[]]+[][[]]][', ']([][[]]+[+[]])+(+[]))'],
@@ -639,20 +624,17 @@ self,
                         [
                             '0undefinedundefined,undefinedundefined',
                             ['[[+[]]+[][[]]+[][[]]][', ']([]+[][[]]+[][[]])'],
-                            ['[[+[]]+[][[]]+[][[]]][', ']([]+[][[]]+[][[]])'],
                             ['[[+[]]+[][[]]+[][[]]][', ']([]+[][[]])+[][[]]'],
                             ['([[+[]]+[][[]]+[][[]]][', ']([]+[][[]])+[][[]])'],
                         ],
                         [
                             'undefinedundefined0,0',
                             ['[][[]]+[[][[]]+[+[]]][', '](+[])'],
-                            ['([][[]]+[[][[]]+[+[]]][', '](+[]))'],
                             ['[][[]]+[[][[]]+[+[]]][', '](+[])'],
                             ['([][[]]+[[][[]]+[+[]]][', '](+[]))'],
                         ],
                         [
                             '0,00',
-                            ['[+[]][', '](+[]+[+[]])'],
                             ['[+[]][', '](+[]+[+[]])'],
                             ['[+[]][', '](+[])+(+[])'],
                             ['([+[]][', '](+[])+(+[]))'],

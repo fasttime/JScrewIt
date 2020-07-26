@@ -5,6 +5,8 @@
 
 (function ()
 {
+    var SCREW_AS_BONDED_STRING = 2;
+
     function A003314(n)
     {
         var log2 = binLog(n);
@@ -137,7 +139,7 @@
         encoder.maxGroupThreshold = maxGroupThreshold;
         var length = maxGroupThreshold * groupings - A003314(groupings);
         var input = '\uEA5F' + randomString(length - 1);
-        var legend = encoder.replaceString(input, { forceString: true, optimize: true });
+        var legend = encoder.replaceString(input, { screwMode: SCREW_AS_BONDED_STRING });
         var charIndexArrayStr = encoder.replaceFalseFreeArray(['']);
         var output = encoder.createDictEncoding(legend, charIndexArrayStr, NaN, 5, 3, true);
         try

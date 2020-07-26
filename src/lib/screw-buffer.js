@@ -17,6 +17,10 @@ export var APPEND_LENGTH_OF_SMALL_E     = 26;
 
 export var APPEND_LENGTH_OF_DIGITS = [APPEND_LENGTH_OF_DIGIT_0, 8, 12, 17, 22, 27, 32, 37, 42, 47];
 
+export var SCREW_NORMAL             = 0;
+export var SCREW_AS_STRING          = 1;
+export var SCREW_AS_BONDED_STRING   = 2;
+
 export var ScrewBuffer;
 
 export var optimizeSolutions;
@@ -225,7 +229,7 @@ export var optimizeSolutions;
     var EMPTY_SOLUTION = new Solution('', '[]', SolutionType.OBJECT);
 
     ScrewBuffer =
-    function (bond, forceString, groupThreshold, optimizerList)
+    function (screwMode, groupThreshold, optimizerList)
     {
         function gather(offset, count, groupBond, groupForceString)
         {
@@ -241,6 +245,8 @@ export var optimizeSolutions;
         var length = -APPEND_LENGTH_OF_EMPTY;
         var maxSolutionCount = _Math_pow(2, groupThreshold - 1);
         var solutions = [];
+        var bond = screwMode === SCREW_AS_BONDED_STRING;
+        var forceString = screwMode !== SCREW_NORMAL;
 
         assignNoEnum
         (
@@ -306,15 +312,10 @@ export var optimizeSolutions;
                     if (solutionCount < 2)
                     {
                         var solution = solutions[0] || EMPTY_SOLUTION;
-                        var multiPart = forceString && !solution.isString;
                         str = solution.replacement;
-                        if (multiPart)
+                        if (forceString && !solution.isString)
                             str += '+[]';
-                        if
-                        (
-                            bond &&
-                            (multiPart || solution.hasOuterPlus || solution.charAt(0) === '!')
-                        )
+                        if (bond && solution.type !== SolutionType.STRING)
                             str = '(' + str + ')';
                     }
                     else

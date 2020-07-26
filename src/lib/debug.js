@@ -107,9 +107,9 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
             return featureObj;
         }
 
-        function createScrewBuffer(bond, forceString, groupThreshold, optimizerList)
+        function createScrewBuffer(screwMode, groupThreshold, optimizerList)
         {
-            var buffer = new ScrewBuffer(bond, forceString, groupThreshold, optimizerList);
+            var buffer = new ScrewBuffer(screwMode, groupThreshold, optimizerList);
             return buffer;
         }
 

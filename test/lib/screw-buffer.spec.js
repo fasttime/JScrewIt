@@ -5,6 +5,10 @@
 
 (function ()
 {
+    var SCREW_NORMAL             = 0;
+    var SCREW_AS_STRING          = 1;
+    var SCREW_AS_BONDED_STRING   = 2;
+
     function createCommaSolution()
     {
         var solution = JScrewIt.debug.createBridgeSolution('.concat');
@@ -53,8 +57,7 @@
             function testShortEncodings
             (
                 description,
-                bond,
-                forceString,
+                screwMode,
                 expectedStr0,
                 expectedStr1,
                 expectedStr2,
@@ -68,7 +71,7 @@
                     'encodes an empty string',
                     function ()
                     {
-                        var buffer = createScrewBuffer(bond, forceString, 10, []);
+                        var buffer = createScrewBuffer(screwMode, 10, []);
                         verifyBuffer(buffer, expectedStr0, INITIAL_APPEND_LENGTH);
                     }
                 );
@@ -77,7 +80,7 @@
                     'encodes a single string character',
                     function ()
                     {
-                        var buffer = createScrewBuffer(bond, forceString, 10, []);
+                        var buffer = createScrewBuffer(screwMode, 10, []);
                         expect(buffer.append(solutionA)).toBe(true);
                         var expectedLength = INITIAL_APPEND_LENGTH + solutionA.appendLength;
                         verifyBuffer(buffer, expectedStr1, expectedLength);
@@ -88,7 +91,7 @@
                     'encodes a single nonstring character',
                     function ()
                     {
-                        var buffer = createScrewBuffer(bond, forceString, 10, []);
+                        var buffer = createScrewBuffer(screwMode, 10, []);
                         expect(buffer.append(solution0)).toBe(true);
                         var expectedLength = INITIAL_APPEND_LENGTH + solution0.appendLength;
                         verifyBuffer(buffer, expectedStr2, expectedLength);
@@ -99,7 +102,7 @@
                     'encodes undefined',
                     function ()
                     {
-                        var buffer = createScrewBuffer(bond, forceString, 10, []);
+                        var buffer = createScrewBuffer(screwMode, 10, []);
                         expect(buffer.append(solutionUndefined)).toBe(true);
                         var expectedLength = INITIAL_APPEND_LENGTH + solutionUndefined.appendLength;
                         verifyBuffer(buffer, expectedStr3, expectedLength);
@@ -110,7 +113,7 @@
                     'encodes a string cluster',
                     function ()
                     {
-                        var buffer = createScrewBuffer(bond, forceString, 10, [strTestOptimizer]);
+                        var buffer = createScrewBuffer(screwMode, 10, [strTestOptimizer]);
                         expect(buffer.append(solutionA)).toBe(true);
                         expect(buffer.append(solutionA)).toBe(true);
                         verifyBuffer(buffer, expectedStr4, INITIAL_APPEND_LENGTH);
@@ -121,7 +124,7 @@
                     'encodes a nonstring cluster',
                     function ()
                     {
-                        var buffer = createScrewBuffer(bond, forceString, 10, [objTestOptimizer]);
+                        var buffer = createScrewBuffer(screwMode, 10, [objTestOptimizer]);
                         expect(buffer.append(solutionA)).toBe(true);
                         expect(buffer.append(solutionA)).toBe(true);
                         verifyBuffer(buffer, expectedStr5, INITIAL_APPEND_LENGTH);
@@ -144,9 +147,8 @@
             var paramDataList =
             [
                 [
-                    'without bonding or string forcing',
-                    false,
-                    false,
+                    'in normal mode',
+                    SCREW_NORMAL,
                     '[]',
                     '(![]+[])[+!![]]',
                     '+[]',
@@ -155,9 +157,8 @@
                     '{}',
                 ],
                 [
-                    'with string forcing',
-                    false,
-                    true,
+                    'in force string mode',
+                    SCREW_AS_STRING,
                     '[]+[]',
                     '(![]+[])[+!![]]',
                     '+[]+[]',
@@ -166,20 +167,8 @@
                     '{}+[]',
                 ],
                 [
-                    'with bonding',
-                    true,
-                    false,
-                    '[]',
-                    '(![]+[])[+!![]]',
-                    '(+[])',
-                    '[][[]]',
-                    '""',
-                    '{}',
-                ],
-                [
-                    'with bonding and string forcing',
-                    true,
-                    true,
+                    'in force bonded string mode',
+                    SCREW_AS_BONDED_STRING,
                     '([]+[])',
                     '(![]+[])[+!![]]',
                     '(+[]+[])',
@@ -200,7 +189,7 @@
 
             (function ()
             {
-                var buffer = JScrewIt.debug.createScrewBuffer(false, true, 4, []);
+                var buffer = JScrewIt.debug.createScrewBuffer(SCREW_AS_STRING, 4, []);
                 var expectedLength = INITIAL_APPEND_LENGTH;
 
                 it
@@ -284,7 +273,7 @@
                 'encodes a weak numeric type solution with an undefined type solution',
                 function ()
                 {
-                    var buffer = createScrewBuffer(false, false, 4, []);
+                    var buffer = createScrewBuffer(SCREW_NORMAL, 4, []);
                     buffer.append(solution0);
                     buffer.append(solutionUndefined);
                     var expectedLength =
@@ -297,7 +286,7 @@
                 'encodes two undefined type solutions',
                 function ()
                 {
-                    var buffer = createScrewBuffer(false, false, 4, []);
+                    var buffer = createScrewBuffer(SCREW_NORMAL, 4, []);
                     buffer.append(solutionUndefined);
                     buffer.append(solutionUndefined);
                     var expectedLength = INITIAL_APPEND_LENGTH + 2 * solutionUndefined.appendLength;
@@ -309,7 +298,7 @@
                 'encodes a string with incomplete groups',
                 function ()
                 {
-                    var buffer = createScrewBuffer(false, true, 7, []);
+                    var buffer = createScrewBuffer(SCREW_AS_STRING, 7, []);
                     for (var index = 0; index < 26; ++index)
                     {
                         var solution =
@@ -331,7 +320,7 @@
                 'encodes a string with multiple bridges',
                 function ()
                 {
-                    var buffer = createScrewBuffer(false, true, 4, []);
+                    var buffer = createScrewBuffer(SCREW_AS_STRING, 4, []);
                     for (var index = 0; index < 5; ++index)
                         buffer.append(solutionComma);
                     var expectedLength = INITIAL_APPEND_LENGTH + 5 * solutionComma.appendLength;
@@ -357,7 +346,7 @@
                             return solutionA.appendLength + 1;
                         },
                     };
-                    var buffer = createScrewBuffer(false, false, 10, [optimizer]);
+                    var buffer = createScrewBuffer(SCREW_NORMAL, 10, [optimizer]);
                     buffer.append(solutionA);
                     expect(buffer.length).toBe(INITIAL_APPEND_LENGTH + solutionA.appendLength);
                 }
@@ -372,7 +361,7 @@
                         'without a bridge',
                         function ()
                         {
-                            var buffer = createScrewBuffer(false, false, 4, []);
+                            var buffer = createScrewBuffer(SCREW_NORMAL, 4, []);
                             buffer.append(solution0);
                             buffer.append(solution0);
                             expect(buffer.length).not.toBeGreaterThan(buffer.toString().length);
@@ -383,7 +372,7 @@
                         'with a bridge',
                         function ()
                         {
-                            var buffer = createScrewBuffer(true, false, 4, []);
+                            var buffer = createScrewBuffer(SCREW_NORMAL, 4, []);
                             buffer.append(solution0);
                             buffer.append(solutionComma);
                             buffer.append(solution0);
