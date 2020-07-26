@@ -1,11 +1,14 @@
 'use strict';
 
-const jscrewitPath = '..';
-const JScrewIt = require(jscrewitPath);
+const JSCREWIT_PATH         = '..';
+const TYPE_KEY              = '__type';
+const TYPE_VALUE_SOLUTION   = 'Solution';
+
+const JScrewIt = require(JSCREWIT_PATH);
 const charMapRoot = require('path').resolve(__dirname, '../novem.char-map.json');
 const { debug } = JScrewIt;
 const solutionBookMap = module.exports = new Map();
-const typeKey = '__type';
+
 Object.assign
 (
     solutionBookMap,
@@ -46,7 +49,8 @@ function createParseReviver()
 {
     const { Feature } = JScrewIt;
     const { Solution, SolutionType } = debug;
-    const parseReviverMap = new Map([[Map.name, jsonParseMap], [Solution.name, jsonParseSolution]]);
+    const parseReviverMap =
+    new Map([[Map.name, jsonParseMap], [TYPE_VALUE_SOLUTION, jsonParseSolution]]);
     return parseReviver;
 
     function jsonParseMap(obj)
@@ -80,8 +84,8 @@ function createParseReviver()
     {
         if (typeof value === 'object')
         {
-            const type = value[typeKey];
-            delete value[typeKey];
+            const type = value[TYPE_KEY];
+            delete value[TYPE_KEY];
             const reviver = parseReviverMap.get(type);
             if (reviver)
                 value = reviver(value);
@@ -98,7 +102,7 @@ function createStringifyReplacer()
 
     function jsonReplaceMap(map)
     {
-        const obj = { __proto__: null, [typeKey]: Map.name };
+        const obj = { __proto__: null, [TYPE_KEY]: Map.name };
         const keys = [];
         for (let key of map.keys())
         {
@@ -106,14 +110,14 @@ function createStringifyReplacer()
             obj[key] = map.get(key);
             keys.push(key);
         }
-        const proxy = new Proxy(obj, { ownKeys: () => [typeKey, ...keys] });
+        const proxy = new Proxy(obj, { ownKeys: () => [TYPE_KEY, ...keys] });
         return proxy;
     }
 
     function jsonReplaceSolution(solution)
     {
         const obj = { __proto__: null };
-        obj[typeKey] = Solution.name;
+        obj[TYPE_KEY] = TYPE_VALUE_SOLUTION;
         for (const [key, value] of Object.entries(solution))
         {
             if (key !== 'type' && key !== 'masks')
@@ -162,7 +166,7 @@ function indexChar(char, updateProgress, missingCharacter)
     const { getCharacterEntries, maskIncludes } = debug;
     {
         const fs = requireFS();
-        const path = require.resolve(jscrewitPath);
+        const path = require.resolve(JSCREWIT_PATH);
         const { mtime } = fs.statSync(path);
         const jscrewitTimestamp = Date.parse(mtime);
         const definitionCount = getCharacterEntries(char).length;

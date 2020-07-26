@@ -1,8 +1,6 @@
 import { assignNoEnum, _Object_defineProperty } from './obj-utils';
 import { SimpleSolution }                       from 'novem';
 
-_Object_defineProperty(SimpleSolution, 'name', { value: 'Solution' });
-
 var protoSource =
 {
     get appendLength()
