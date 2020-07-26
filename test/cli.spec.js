@@ -181,6 +181,21 @@ describe
                     options,
                     function (error, stdout, stderr)
                     {
+                        stderr =
+                        stderr.replace
+                        (
+                            RegExp
+                            (
+                                '^(' +
+                                'Debugger listening on .*\n' +
+                                'For help, see: https://nodejs\\.org/en/docs/inspector\n|' +
+                                'Debugger attached\\.\n|' +
+                                'Waiting for the debugger to disconnect\\.\\.\\.\n' +
+                                ')',
+                                'gm'
+                            ),
+                            ''
+                        );
                         try
                         {
                             doAssert(stdout, expectedStdout);
