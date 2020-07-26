@@ -371,7 +371,7 @@ export var replaceStaticString;
         },
 
         findOptimalSolution:
-        function (source, entries)
+        function (source, entries, defaultSolutionType)
         {
             var result;
             entries.forEach
@@ -380,7 +380,7 @@ export var replaceStaticString;
                 {
                     if (this.hasFeatures(entry.mask))
                     {
-                        var solution = this.resolve(entry.definition, source);
+                        var solution = this.resolve(entry.definition, source, defaultSolutionType);
                         if (!result || result.length > solution.length)
                         {
                             result = solution;
@@ -818,7 +818,7 @@ export var replaceStaticString;
         },
 
         resolve:
-        function (definition, source)
+        function (definition, source, defaultSolutionType)
         {
             var solution;
             var type = typeof definition;
@@ -839,7 +839,10 @@ export var replaceStaticString;
                     expr = definition;
                 var replacement = this.replaceExpr(expr, optimize);
                 if (solutionType == null)
-                    solutionType = SolutionType.STRING;
+                {
+                    solutionType =
+                    defaultSolutionType != null ? defaultSolutionType : SolutionType.STRING;
+                }
                 solution = new Solution(source, replacement, solutionType);
             }
             return solution;
@@ -892,10 +895,14 @@ export var replaceStaticString;
                     {
                         var entries = this.constantDefinitions[constant];
                         if (_Array_isArray(entries))
-                            solution = this.findOptimalSolution(constant, entries);
+                        {
+                            solution =
+                            this.findOptimalSolution(constant, entries, SolutionType.OBJECT);
+                        }
                         else
                         {
-                            solution = STATIC_ENCODER.resolve(entries);
+                            solution =
+                            STATIC_ENCODER.resolve(entries, undefined, SolutionType.OBJECT);
                             constCache = STATIC_CONST_CACHE;
                         }
                         constCache[constant] = solution;

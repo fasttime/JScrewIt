@@ -816,7 +816,7 @@ self,
                 var result =
                 function ()
                 {
-                    encoder.resolve(input, input);
+                    encoder.resolve(input);
                 };
                 return result;
             }

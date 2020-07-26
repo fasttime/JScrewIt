@@ -23,17 +23,17 @@ uneval,
 
 (function ()
 {
-    function decodeEntry(entry, source)
+    function decodeEntry(entry, source, defaultSolutionType)
     {
         var featureObj = getEntryFeature(entry);
-        var solution = decodeEntryWithFeature(entry, source, featureObj);
+        var solution = decodeEntryWithFeature(entry, source, defaultSolutionType, featureObj);
         return solution;
     }
 
-    function decodeEntryWithFeature(entry, source, featureObj)
+    function decodeEntryWithFeature(entry, source, defaultSolutionType, featureObj)
     {
         var encoder = getPoolEncoder(featureObj);
-        var solution = encoder.resolve(entry.definition, source);
+        var solution = encoder.resolve(entry.definition, source, defaultSolutionType);
         return solution;
     }
 
@@ -141,7 +141,8 @@ uneval,
                 function (additionalFeatureNames)
                 {
                     var solutionFeatureObj = Feature(entryFeatureObj, additionalFeatureNames);
-                    var solution = decodeEntryWithFeature(entry, char, solutionFeatureObj);
+                    var solution =
+                    decodeEntryWithFeature(entry, char, undefined, solutionFeatureObj);
                     varieties.forEach
                     (
                         function (varietyFeatureNames)
@@ -323,7 +324,6 @@ uneval,
 
     function testComplex(complex)
     {
-        var SolutionType = JScrewIt.debug.SolutionType;
         var desc = JSON.stringify(complex);
         var entry = JScrewIt.debug.getComplexEntry(complex);
         var featureObj = getEntryFeature(entry);
@@ -345,7 +345,7 @@ uneval,
         );
     }
 
-    function testConstant(constant, validator)
+    function testConstant(constant, validator, expectedSolutionTypes)
     {
         describe
         (
@@ -364,17 +364,30 @@ uneval,
                             featureObj,
                             function ()
                             {
-                                var solution = decodeEntry(entry);
+                                var solution = decodeEntry(entry, undefined, SolutionType.OBJECT);
                                 var replacement = solution.replacement;
                                 expect(replacement).toBeJSFuck();
                                 expect(solution.source).toBeUndefined();
+                                var currentExpectedSolutionTypes;
+                                if (expectedSolutionTypes)
+                                {
+                                    expect(expectedSolutionTypes).toContain(solution.type);
+                                    currentExpectedSolutionTypes = expectedSolutionTypes;
+                                }
+                                else
+                                    currentExpectedSolutionTypes = [solution.type];
                                 emuDo
                                 (
                                     this.test.emuFeatureNames,
                                     function ()
                                     {
                                         var actual = evalJSFuck(replacement);
-                                        validator.call(expect(actual));
+                                        if (validator)
+                                            validator.call(expect(actual));
+                                        var computedSolutionType =
+                                        JScrewIt.debug.calculateSolutionType(replacement);
+                                        expect(currentExpectedSolutionTypes)
+                                        .toContain(computedSolutionType);
                                     }
                                 );
                             }
@@ -397,6 +410,7 @@ uneval,
 
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Feature = JScrewIt.Feature;
+    var SolutionType = JScrewIt.debug.SolutionType;
     var encoderCache = Object.create(null);
 
     describe
@@ -598,6 +612,26 @@ uneval,
                     this.toBe('toUpperCase');
                 }
             );
+
+            testConstant('FBEP_4_S');
+            testConstant('FBEP_9_U', null, [SolutionType.UNDEFINED, SolutionType.NUMERIC]);
+            testConstant('FBP_5_S');
+            testConstant('FBP_7_NO');
+            testConstant('FBP_8_NO');
+            testConstant('FBP_9_U', null, [SolutionType.UNDEFINED, SolutionType.NUMERIC]);
+            testConstant('FH_SHIFT_1');
+            testConstant('FH_SHIFT_3');
+            testConstant('FHP_3_NO');
+            testConstant('FHP_5_N');
+            testConstant('FHP_8_S');
+            testConstant('IS_IE_SRC_N');
+            testConstant('RP_0_S');
+            testConstant('RP_1_NO');
+            testConstant('RP_2_SO');
+            testConstant('RP_3_NO');
+            testConstant('RP_4_N');
+            testConstant('RP_5_N');
+            testConstant('RP_6_SO');
         }
     );
     describe

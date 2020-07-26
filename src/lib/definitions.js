@@ -1338,27 +1338,146 @@ export var createBridgeSolution;
         ],
         ESCAPING_BACKSLASH:
         [
-            define('atob("01y")[1]', ATOB),
-            define('(RegExp("\\n") + [])[1]', ESC_REGEXP_LF),
-            define('(RP_5_N + RegExp("".italics()))[10]', ESC_REGEXP_SLASH),
-            define('(RP_3_NO + RegExp("".sub()))[10]', ESC_REGEXP_SLASH),
-            define('uneval("".fontcolor(false))[20]', UNEVAL),
-            define('(RegExp(FILTER) + [])[20]', ESC_REGEXP_LF, FF_SRC),
-            define('(RegExp(Function()) + [])[20]', ESC_REGEXP_LF, FUNCTION_19_LF),
-            define('(RP_5_N + RegExp(Function()))[30]', ESC_REGEXP_LF, FUNCTION_22_LF),
-            define('(RegExp(ANY_FUNCTION) + [])[1]', ESC_REGEXP_LF, IE_SRC),
-            define('(+(ANY_FUNCTION + [])[0] + RegExp(FILTER))[23]', ESC_REGEXP_LF, NO_V8_SRC),
-            define('uneval(FILTER + [])[20]', FF_SRC, UNEVAL),
-            define('uneval(ANY_FUNCTION + [])[1]', IE_SRC, UNEVAL),
-            define('uneval(+(ANY_FUNCTION + [])[0] + FILTER)[23]', NO_V8_SRC, UNEVAL),
-            define('(RP_3_NO + RegExp(FILL))[21]', ESC_REGEXP_LF, FF_SRC, FILL),
-            define('(RP_3_NO + RegExp(FLAT))[21]', ESC_REGEXP_LF, FF_SRC, FLAT),
-            define('(+(ANY_FUNCTION + [])[0] + RegExp(FILL))[21]', ESC_REGEXP_LF, FILL, NO_V8_SRC),
-            define('(+(ANY_FUNCTION + [])[0] + RegExp(FLAT))[21]', ESC_REGEXP_LF, FLAT, NO_V8_SRC),
-            define('uneval(RP_3_NO + FILL)[21]', FF_SRC, FILL, UNEVAL),
-            define('uneval(RP_3_NO + FLAT)[21]', FF_SRC, FLAT, UNEVAL),
-            define('uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]', FILL, NO_V8_SRC, UNEVAL),
-            define('uneval(+(ANY_FUNCTION + [])[0] + FLAT)[21]', FLAT, NO_V8_SRC, UNEVAL),
+            define({ expr: 'atob("01y")[1]', solutionType: SolutionType.STRING }, ATOB),
+            define
+            ({ expr: '(RegExp("\\n") + [])[1]', solutionType: SolutionType.STRING }, ESC_REGEXP_LF),
+            define
+            (
+                { expr: '(RP_5_N + RegExp("".italics()))[10]', solutionType: SolutionType.STRING },
+                ESC_REGEXP_SLASH
+            ),
+            define
+            (
+                { expr: '(RP_3_NO + RegExp("".sub()))[10]', solutionType: SolutionType.STRING },
+                ESC_REGEXP_SLASH
+            ),
+            define
+            (
+                { expr: 'uneval("".fontcolor(false))[20]', solutionType: SolutionType.STRING },
+                UNEVAL
+            ),
+            define
+            (
+                { expr: '(RegExp(FILTER) + [])[20]', solutionType: SolutionType.STRING },
+                ESC_REGEXP_LF,
+                FF_SRC
+            ),
+            define
+            (
+                { expr: '(RegExp(Function()) + [])[20]', solutionType: SolutionType.STRING },
+                ESC_REGEXP_LF,
+                FUNCTION_19_LF
+            ),
+            define
+            (
+                { expr: '(RP_5_N + RegExp(Function()))[30]', solutionType: SolutionType.STRING },
+                ESC_REGEXP_LF,
+                FUNCTION_22_LF
+            ),
+            define
+            (
+                { expr: '(RegExp(ANY_FUNCTION) + [])[1]', solutionType: SolutionType.STRING },
+                ESC_REGEXP_LF,
+                IE_SRC
+            ),
+            define
+            (
+                {
+                    expr: '(+(ANY_FUNCTION + [])[0] + RegExp(FILTER))[23]',
+                    solutionType: SolutionType.STRING,
+                },
+                ESC_REGEXP_LF,
+                NO_V8_SRC
+            ),
+            define
+            (
+                { expr: 'uneval(FILTER + [])[20]', solutionType: SolutionType.STRING },
+                FF_SRC,
+                UNEVAL
+            ),
+            define
+            (
+                { expr: 'uneval(ANY_FUNCTION + [])[1]', solutionType: SolutionType.STRING },
+                IE_SRC,
+                UNEVAL
+            ),
+            define
+            (
+                {
+                    expr: 'uneval(+(ANY_FUNCTION + [])[0] + FILTER)[23]',
+                    solutionType: SolutionType.STRING,
+                },
+                NO_V8_SRC,
+                UNEVAL
+            ),
+            define
+            (
+                { expr: '(RP_3_NO + RegExp(FILL))[21]', solutionType: SolutionType.STRING },
+                ESC_REGEXP_LF,
+                FF_SRC,
+                FILL
+            ),
+            define
+            (
+                { expr: '(RP_3_NO + RegExp(FLAT))[21]', solutionType: SolutionType.STRING },
+                ESC_REGEXP_LF,
+                FF_SRC,
+                FLAT
+            ),
+            define
+            (
+                {
+                    expr: '(+(ANY_FUNCTION + [])[0] + RegExp(FILL))[21]',
+                    solutionType: SolutionType.STRING,
+                },
+                ESC_REGEXP_LF,
+                FILL,
+                NO_V8_SRC
+            ),
+            define
+            (
+                {
+                    expr: '(+(ANY_FUNCTION + [])[0] + RegExp(FLAT))[21]',
+                    solutionType: SolutionType.STRING,
+                },
+                ESC_REGEXP_LF,
+                FLAT,
+                NO_V8_SRC
+            ),
+            define
+            (
+                { expr: 'uneval(RP_3_NO + FILL)[21]', solutionType: SolutionType.STRING },
+                FF_SRC,
+                FILL,
+                UNEVAL
+            ),
+            define
+            (
+                { expr: 'uneval(RP_3_NO + FLAT)[21]', solutionType: SolutionType.STRING },
+                FF_SRC,
+                FLAT,
+                UNEVAL
+            ),
+            define
+            (
+                {
+                    expr: 'uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]',
+                    solutionType: SolutionType.STRING,
+                },
+                FILL,
+                NO_V8_SRC,
+                UNEVAL
+            ),
+            define
+            (
+                {
+                    expr: 'uneval(+(ANY_FUNCTION + [])[0] + FLAT)[21]',
+                    solutionType: SolutionType.STRING,
+                },
+                FLAT,
+                NO_V8_SRC,
+                UNEVAL
+            ),
             define(backslashDefinition),
         ],
         FILL:
@@ -1375,8 +1494,23 @@ export var createBridgeSolution;
         ],
         FROM_CHAR_CODE:
         [
-            define({ expr: '"fromCharCode"', optimize: true }),
-            define({ expr: '"fromCodePoint"', optimize: { toStringOpt: true } }, FROM_CODE_POINT),
+            define
+            (
+                {
+                    expr: '"fromCharCode"',
+                    optimize: true,
+                    solutionType: SolutionType.COMBINED_STRING,
+                }
+            ),
+            define
+            (
+                {
+                    expr: '"fromCodePoint"',
+                    optimize: { toStringOpt: true },
+                    solutionType: SolutionType.COMBINED_STRING,
+                },
+                FROM_CODE_POINT
+            ),
         ],
         F_A_L_S_E:
         [
@@ -1390,16 +1524,30 @@ export var createBridgeSolution;
         ],
         SUBSTR:
         [
-            define('"slice"'),
-            define('"substr"'),
+            define({ expr: '"slice"', solutionType: SolutionType.COMBINED_STRING }),
+            define({ expr: '"substr"', solutionType: SolutionType.COMBINED_STRING }),
         ],
         TO_STRING:
         [
-            define({ expr: '"toString"', optimize: { complexOpt: true } }),
+            define
+            (
+                {
+                    expr: '"toString"',
+                    optimize: { complexOpt: true },
+                    solutionType: SolutionType.COMBINED_STRING,
+                }
+            ),
         ],
         TO_UPPER_CASE:
         [
-            define({ expr: '"toUpperCase"', optimize: { toStringOpt: true } }),
+            define
+            (
+                {
+                    expr: '"toUpperCase"',
+                    optimize: { toStringOpt: true },
+                    solutionType: SolutionType.COMBINED_STRING,
+                }
+            ),
         ],
 
         // Function body extra padding blocks: prepended to a function to align the function's body
@@ -1415,7 +1563,8 @@ export var createBridgeSolution;
         ],
         FBEP_9_U:
         [
-            define('[false][+(ANY_FUNCTION + [])[20]]'),
+            define
+            ({ expr: '[false][+(ANY_FUNCTION + [])[20]]', solutionType: SolutionType.UNDEFINED }),
         ],
 
         // Function body padding blocks: prepended to a function to align the function's body at the
@@ -1429,19 +1578,63 @@ export var createBridgeSolution;
         ],
         FBP_7_NO:
         [
-            define('+("10" + [(RP_4_N + FILTER)[40]] + "00000")'),
-            define('+("10" + [(RP_6_SO + FILL)[40]] + "00000")', FILL),
-            define('+("10" + [(RP_6_SO + FLAT)[40]] + "00000")', FLAT),
+            define
+            (
+                {
+                    expr: '+("10" + [(RP_4_N + FILTER)[40]] + "00000")',
+                    solutionType: SolutionType.WEAK_NUMERIC,
+                }
+            ),
+            define
+            (
+                {
+                    expr: '+("10" + [(RP_6_SO + FILL)[40]] + "00000")',
+                    solutionType: SolutionType.WEAK_NUMERIC,
+                },
+                FILL
+            ),
+            define
+            (
+                {
+                    expr: '+("10" + [(RP_6_SO + FLAT)[40]] + "00000")',
+                    solutionType: SolutionType.WEAK_NUMERIC,
+                },
+                FLAT
+            ),
         ],
         FBP_8_NO:
         [
-            define('+("1000" + (RP_5_N + FILTER + 0)[40] + "000")'),
-            define('+("1000" + (FILL + 0)[33] + "000")', FILL),
-            define('+("1000" + (FLAT + 0)[33] + "000")', FLAT),
+            define
+            (
+                {
+                    expr: '+("1000" + (RP_5_N + FILTER + 0)[40] + "000")',
+                    solutionType: SolutionType.WEAK_NUMERIC,
+                }
+            ),
+            define
+            (
+                {
+                    expr: '+("1000" + (FILL + 0)[33] + "000")',
+                    solutionType: SolutionType.WEAK_NUMERIC,
+                },
+                FILL
+            ),
+            define
+            (
+                {
+                    expr: '+("1000" + (FLAT + 0)[33] + "000")',
+                    solutionType: SolutionType.WEAK_NUMERIC,
+                },
+                FLAT
+            ),
         ],
         FBP_9_U:
         [
-            define('[true][+(ANY_FUNCTION + [])[0]]', NO_FF_SRC),
+            define
+            (
+                { expr: '[true][+(ANY_FUNCTION + [])[0]]', solutionType: SolutionType.UNDEFINED },
+                NO_FF_SRC
+            ),
         ],
 
         // Function header shift: used to adjust an indexer to make it point to the same position in
@@ -1465,17 +1658,45 @@ export var createBridgeSolution;
 
         FHP_3_NO:
         [
-            define('+(1 + [+(ANY_FUNCTION + [])[0]])'),
-            define('+(++(ANY_FUNCTION + [])[0] + [0])', INCR_CHAR),
+            define
+            (
+                {
+                    expr: '+(1 + [+(ANY_FUNCTION + [])[0]])',
+                    solutionType: SolutionType.WEAK_NUMERIC,
+                }
+            ),
+            define
+            (
+                {
+                    expr: '+(++(ANY_FUNCTION + [])[0] + [0])',
+                    solutionType: SolutionType.WEAK_NUMERIC,
+                },
+                INCR_CHAR
+            ),
         ],
         FHP_5_N:
         [
-            define('IS_IE_SRC_N'),
+            define({ expr: 'IS_IE_SRC_N', solutionType: SolutionType.NUMERIC }),
         ],
         FHP_8_S:
         [
-            define('[FHP_3_NO] + RP_5_N'),
-            define('FHP_5_N + [RP_3_NO]', INCR_CHAR),
+            define({ expr: '[FHP_3_NO] + RP_5_N', solutionType: SolutionType.COMBINED_STRING }),
+            define
+            (
+                { expr: 'FHP_5_N + [RP_3_NO]', solutionType: SolutionType.PREFIXED_STRING },
+                INCR_CHAR
+            ),
+        ],
+
+        // Conditional padding blocks.
+        //
+        // true if feature IE_SRC is available; false otherwise.
+        IS_IE_SRC_N:
+        [
+            define
+            ({ expr: '!!(+(ANY_FUNCTION + [])[0] + true)', solutionType: SolutionType.NUMERIC }),
+            define
+            ({ expr: '!!++(ANY_FUNCTION + [])[0]', solutionType: SolutionType.NUMERIC }, INCR_CHAR),
         ],
 
         // Regular padding blocks.
@@ -1492,22 +1713,13 @@ export var createBridgeSolution;
         // constant should be placed in the beginning whenever possible in order to save an extra
         // pair of brackets in the resolved expressions.
 
-        RP_0_S:     '[]',
-        RP_1_NO:    '0',
-        RP_2_SO:    '"00"',
-        RP_3_NO:    'NaN',
-        RP_4_N:     'true',
-        RP_5_N:     'false',
-        RP_6_SO:    '"0false"',
-
-        // Conditional padding blocks.
-        //
-        // true if feature IE_SRC is available; false otherwise.
-        IS_IE_SRC_N:
-        [
-            define('!!(+(ANY_FUNCTION + [])[0] + true)'),
-            define('!!++(ANY_FUNCTION + [])[0]', INCR_CHAR),
-        ],
+        RP_0_S:     { expr: '[]', solutionType: SolutionType.OBJECT },
+        RP_1_NO:    { expr: '0', solutionType: SolutionType.WEAK_NUMERIC },
+        RP_2_SO:    { expr: '"00"', solutionType: SolutionType.WEAK_PREFIXED_STRING },
+        RP_3_NO:    { expr: 'NaN', solutionType: SolutionType.WEAK_NUMERIC },
+        RP_4_N:     { expr: 'true', solutionType: SolutionType.NUMERIC },
+        RP_5_N:     { expr: 'false', solutionType: SolutionType.NUMERIC },
+        RP_6_SO:    { expr: '"0false"', solutionType: SolutionType.COMBINED_STRING },
     });
 
     createBridgeSolution =
