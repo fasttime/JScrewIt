@@ -173,7 +173,6 @@ task
             '--reporter=text-summary',
             mochaPath,
             '--check-leaks',
-            '--require=ebdd',
             '--ui=ebdd',
             'test/**/*.spec.js',
         ];
