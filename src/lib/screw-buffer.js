@@ -26,144 +26,179 @@ export var optimizeSolutions;
 
 (function ()
 {
-    function appendSolutions(solution, solutions, offset, count)
+    function gatherGroup(solutions, bond, forceString, bridgeUsed)
     {
-        for (var limit = offset + count; offset < limit; ++offset)
+        function appendRightBridgedParts(count)
         {
-            var subSolution = solutions[offset];
-            solution.append(subSolution);
+            var str = sequenceAsString(index, count, '[[]]');
+            bridgedPartArray.push(str, ')');
         }
-    }
 
-    function canSplitRightEndForFree(solutions, lastBridgeIndex)
-    {
-        var rightEndIndex = lastBridgeIndex + 1;
-        var rightEndLength = solutions.length - rightEndIndex;
-        var result =
-        rightEndLength > 2 || rightEndLength > 1 && !isUnluckyRightEnd(solutions, rightEndIndex);
-        return result;
-    }
-
-    function findLastBridge(solutions)
-    {
-        for (var index = solutions.length; index--;)
+        function appendSolutions(solution, offset, count)
         {
-            var solution = solutions[index];
-            if (solution.bridge)
-                return index;
-        }
-    }
-
-    function findNextBridge(solutions, index)
-    {
-        for (;; ++index)
-        {
-            var solution = solutions[index];
-            if (solution.bridge)
-                return index;
-        }
-    }
-
-    function findSplitIndex(solutions, intrinsicSplitCost, firstBridgeIndex, lastBridgeIndex)
-    {
-        var index = 1;
-        var lastIndex = firstBridgeIndex - 1;
-        var optimalSplitCost = getSplitCostAt(solutions, index, true, index === lastIndex);
-        var splitIndex = index;
-        while (++index < firstBridgeIndex)
-        {
-            var splitCost = getSplitCostAt(solutions, index, false, index === lastIndex);
-            if (splitCost < optimalSplitCost)
+            for (var end = offset + count; offset < end; ++offset)
             {
-                optimalSplitCost = splitCost;
-                splitIndex = index;
+                var subSolution = solutions[offset];
+                solution.append(subSolution);
             }
         }
-        if
-        (
-            optimalSplitCost + intrinsicSplitCost < 0 &&
-            !(optimalSplitCost > 0 && canSplitRightEndForFree(solutions, lastBridgeIndex))
-        )
-            return splitIndex;
-    }
 
-    function gatherGroup(solutions, groupBond, groupForceString, bridgeUsed)
-    {
-        function appendRightGroup(groupCount)
+        function canSplitRightEndForFree(lastBridgeIndex)
         {
-            bridgedPartArray.push(sequenceAsString(solutions, index, groupCount, '[[]]'), ')');
+            var rightEndIndex = lastBridgeIndex + 1;
+            var rightEndLength = solutions.length - rightEndIndex;
+            var returnValue =
+            rightEndLength > 2 || rightEndLength > 1 && !isUnluckyRightEnd(rightEndIndex);
+            return returnValue;
+        }
+
+        function findLastBridge()
+        {
+            for (var index = solutions.length; index--;)
+            {
+                var solution = solutions[index];
+                if (solution.bridge)
+                    return index;
+            }
+        }
+
+        function findNextBridge(index)
+        {
+            for (;; ++index)
+            {
+                var solution = solutions[index];
+                if (solution.bridge)
+                    return index;
+            }
+        }
+
+        function findSplitIndex(intrinsicSplitCost, firstBridgeIndex, lastBridgeIndex)
+        {
+            var index = 1;
+            var lastIndex = firstBridgeIndex - 1;
+            var optimalSplitCost = getSplitCostAt(index, true, index === lastIndex);
+            var splitIndex = index;
+            while (++index < firstBridgeIndex)
+            {
+                var splitCost = getSplitCostAt(index, false, index === lastIndex);
+                if (splitCost < optimalSplitCost)
+                {
+                    optimalSplitCost = splitCost;
+                    splitIndex = index;
+                }
+            }
+            if
+            (
+                optimalSplitCost + intrinsicSplitCost < 0 &&
+                !(optimalSplitCost > 0 && canSplitRightEndForFree(lastBridgeIndex))
+            )
+                return splitIndex;
+        }
+
+        function getSplitCostAt(index, leftmost, rightmost)
+        {
+            var solutionCenter = solutions[index];
+            var solutionLeft;
+            var solutionRight;
+            var splitCost =
+            (
+                rightmost && solutionCenter.isUndefined ?
+                3 :
+                isArithmeticJoin(solutionCenter, solutionRight = solutions[index + 1]) ?
+                getArithmeticJoinCost(solutionCenter, solutionRight) -
+                (solutionRight.isWeak ? 2 : 0) :
+                0
+            ) -
+            (
+                leftmost &&
+                isArithmeticJoin(solutionCenter, solutionLeft = solutions[index - 1]) ?
+                getArithmeticJoinCost(solutionLeft, solutionCenter) :
+                solutionCenter.isWeak ? 2 : 0
+            );
+            return splitCost;
+        }
+
+        function isUnluckyRightEnd(firstIndex)
+        {
+            var returnValue =
+            solutions[firstIndex].isUndefined && !solutions[firstIndex + 1].isUndefined;
+            return returnValue;
+        }
+
+        function sequenceAsString(offset, count, emptyReplacement)
+        {
+            var str;
+            if (count)
+            {
+                var solution = new DynamicSolution();
+                appendSolutions(solution, offset, count);
+                if (solution.isUndefined)
+                    solution.prepend(EMPTY_SOLUTION);
+                str = solution.replacement;
+            }
+            else
+                str = emptyReplacement;
+            return str;
         }
 
         var solution = new DynamicSolution();
-        var multiPart;
         var count = solutions.length;
         if (count > 1)
         {
             var lastBridgeIndex;
             if (bridgeUsed)
-                lastBridgeIndex = findLastBridge(solutions);
-            multiPart = lastBridgeIndex == null;
-            if (multiPart)
-                appendSolutions(solution, solutions, 0, count);
+                lastBridgeIndex = findLastBridge();
+            if (lastBridgeIndex == null)
+                appendSolutions(solution, 0, count);
             else
             {
-                var bridgeIndex = findNextBridge(solutions, 0);
+                var bridgeIndex = findNextBridge(0);
                 var index;
                 if (bridgeIndex > 1)
                 {
-                    var intrinsicSplitCost = groupForceString ? -3 : groupBond ? 2 : 0;
-                    index =
-                    findSplitIndex(solutions, intrinsicSplitCost, bridgeIndex, lastBridgeIndex);
+                    var intrinsicSplitCost = forceString ? -3 : bond ? 2 : 0;
+                    index = findSplitIndex(intrinsicSplitCost, bridgeIndex, lastBridgeIndex);
                 }
-                multiPart = index != null;
-                if (multiPart)
+                var singlePart = index == null;
+                if (singlePart)
+                    index = 0;
+                else
                 {
                     // Keep the first solutions out of the bridged context to reduce output length.
-                    appendSolutions(solution, solutions, 0, index);
+                    appendSolutions(solution, 0, index);
                 }
-                else
-                    index = 0;
                 var bridgedPartArray =
-                ['[', sequenceAsString(solutions, index, bridgeIndex - index, '[]'), ']'];
+                ['[', sequenceAsString(index, bridgeIndex - index, '[]'), ']'];
                 for (;;)
                 {
                     bridgedPartArray.push(solutions[bridgeIndex].bridge, '(');
                     index = bridgeIndex + 1;
                     if (bridgeIndex === lastBridgeIndex)
                         break;
-                    bridgeIndex = findNextBridge(solutions, index);
-                    appendRightGroup(bridgeIndex - index);
+                    bridgeIndex = findNextBridge(index);
+                    appendRightBridgedParts(bridgeIndex - index);
                 }
                 var groupCount;
                 var rightEndCount = count - index;
-                if (groupForceString && !multiPart && rightEndCount > 1)
-                {
-                    groupCount = rightEndCount > 2 && isUnluckyRightEnd(solutions, index) ? 2 : 1;
-                    multiPart = true;
-                }
+                if (forceString && singlePart && rightEndCount > 1)
+                    groupCount = rightEndCount > 2 && isUnluckyRightEnd(index) ? 2 : 1;
                 else
                     groupCount = rightEndCount;
-                appendRightGroup(groupCount);
+                appendRightBridgedParts(groupCount);
                 var bridgedReplacement = bridgedPartArray.join('');
                 var bridgedSolution =
                 new Solution(undefined, bridgedReplacement, SolutionType.OBJECT);
                 solution.append(bridgedSolution);
                 index += groupCount;
-                appendSolutions(solution, solutions, index, count - index);
+                appendSolutions(solution, index, count - index);
             }
         }
         else
-        {
             solution.append(solutions[0]);
-            multiPart = false;
-        }
-        if (!solution.isString && groupForceString)
-        {
+        if (!solution.isString && forceString)
             solution.append(EMPTY_SOLUTION);
-            multiPart = true;
-        }
         var str = solution.replacement;
-        if (groupBond && multiPart)
+        if (bond && solution.isLoose)
             str = '(' + str + ')';
         return str;
     }
@@ -174,55 +209,10 @@ export var optimizeSolutions;
         return joinCost;
     }
 
-    function getSplitCostAt(solutions, index, leftmost, rightmost)
-    {
-        var solutionCenter = solutions[index];
-        var solutionLeft;
-        var solutionRight;
-        var splitCost =
-        (
-            rightmost && solutionCenter.isUndefined ?
-            3 :
-            isArithmeticJoin(solutionCenter, solutionRight = solutions[index + 1]) ?
-            getArithmeticJoinCost(solutionCenter, solutionRight) -
-            (solutionRight.isWeak ? 2 : 0) :
-            0
-        ) -
-        (
-            leftmost &&
-            isArithmeticJoin(solutionCenter, solutionLeft = solutions[index - 1]) ?
-            getArithmeticJoinCost(solutionLeft, solutionCenter) :
-            solutionCenter.isWeak ? 2 : 0
-        );
-        return splitCost;
-    }
-
     function isArithmeticJoin(solution0, solution1)
     {
-        var result = solution0.isArithmetic && solution1.isArithmetic;
-        return result;
-    }
-
-    function isUnluckyRightEnd(solutions, firstIndex)
-    {
-        var result = solutions[firstIndex].isUndefined && !solutions[firstIndex + 1].isUndefined;
-        return result;
-    }
-
-    function sequenceAsString(solutions, offset, count, emptyReplacement)
-    {
-        var str;
-        if (count)
-        {
-            var solution = new DynamicSolution();
-            appendSolutions(solution, solutions, offset, count);
-            if (solution.isUndefined)
-                solution.prepend(EMPTY_SOLUTION);
-            str = solution.replacement;
-        }
-        else
-            str = emptyReplacement;
-        return str;
+        var returnValue = solution0.isArithmetic && solution1.isArithmetic;
+        return returnValue;
     }
 
     ScrewBuffer =
@@ -304,35 +294,25 @@ export var optimizeSolutions;
                         return str;
                     }
 
+                    if (!solutions.length)
+                        solutions.push(EMPTY_SOLUTION);
                     var str;
                     var solutionCount = solutions.length;
-                    if (solutionCount < 2)
-                    {
-                        var solution = solutions[0] || EMPTY_SOLUTION;
-                        str = solution.replacement;
-                        if (forceString && !solution.isString)
-                            str += '+[]';
-                        if (bond && solution.type !== SolutionType.STRING)
-                            str = '(' + str + ')';
-                    }
+                    if (solutionCount <= groupThreshold)
+                        str = gather(0, solutionCount, bond, forceString);
                     else
                     {
-                        if (solutionCount <= groupThreshold)
-                            str = gather(0, solutionCount, bond, forceString);
-                        else
+                        var groupSize = groupThreshold;
+                        var maxGroupCount = 2;
+                        for (;;)
                         {
-                            var groupSize = groupThreshold;
-                            var maxGroupCount = 2;
-                            for (;;)
-                            {
-                                --groupSize;
-                                var maxSolutionCountForDepth = groupSize * maxGroupCount;
-                                if (solutionCount <= maxSolutionCountForDepth)
-                                    break;
-                                maxGroupCount *= 2;
-                            }
-                            str = collectOut(0, solutionCount, maxGroupCount, bond);
+                            --groupSize;
+                            var maxSolutionCountForDepth = groupSize * maxGroupCount;
+                            if (solutionCount <= maxSolutionCountForDepth)
+                                break;
+                            maxGroupCount *= 2;
                         }
+                        str = collectOut(0, solutionCount, maxGroupCount, bond);
                     }
                     return str;
                 },

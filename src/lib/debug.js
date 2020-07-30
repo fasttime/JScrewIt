@@ -148,6 +148,12 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
             return entries;
         }
 
+        function getConstantNames()
+        {
+            var names = _Object_keys(CONSTANTS).sort();
+            return names;
+        }
+
         function getEntries(name)
         {
             var entries = cloneEntries(ENTRIES[name]);
@@ -202,6 +208,7 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
                 getComplexEntry:            getComplexEntry,
                 getComplexNames:            getComplexNames,
                 getConstantEntries:         getConstantEntries,
+                getConstantNames:           getConstantNames,
                 getEntries:                 getEntries,
                 getStrategies:              getStrategies,
                 maskIncludes:               maskIncludes,

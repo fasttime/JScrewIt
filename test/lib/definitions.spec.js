@@ -7,7 +7,6 @@ atob,
 btoa,
 document,
 emuDo,
-emuEval,
 emuIt,
 evalJSFuck,
 expect,
@@ -86,11 +85,10 @@ uneval,
                         var solution =
                         encoder.createCharDefaultSolution
                         (char, charCode, true, false, false, false);
-                        verifySolution(solution, char, this.test.emuFeatureNames);
-                        expect(solution.length).not.toBeGreaterThan
-                        (
-                            getPoolEncoder(Feature.DEFAULT).resolveCharacter(char).length
-                        );
+                        verifyStringSolution(solution, char, this.test.emuFeatureNames);
+                        var defaultSolutionLength =
+                        getPoolEncoder(Feature.DEFAULT).resolveCharacter(char).length;
+                        expect(solution.length).not.toBeGreaterThan(defaultSolutionLength);
                     }
                 );
             }
@@ -106,7 +104,7 @@ uneval,
                     var encoder = getPoolEncoder(Feature.DEFAULT);
                     var solution =
                     encoder.createCharDefaultSolution(char, charCode, false, true, false, false);
-                    verifySolution(solution, char);
+                    verifyStringSolution(solution, char);
                 }
             );
             it
@@ -117,7 +115,7 @@ uneval,
                     var encoder = getPoolEncoder(Feature.DEFAULT);
                     var solution =
                     encoder.createCharDefaultSolution(char, charCode, false, false, true, false);
-                    verifySolution(solution, char);
+                    verifyStringSolution(solution, char);
                 }
             );
             it
@@ -128,7 +126,7 @@ uneval,
                     var encoder = getPoolEncoder(Feature.DEFAULT);
                     var solution =
                     encoder.createCharDefaultSolution(char, charCode, false, false, false, true);
-                    verifySolution(solution, char);
+                    verifyStringSolution(solution, char);
                 }
             );
         }
@@ -154,7 +152,7 @@ uneval,
                                 Feature(varietyFeatureObj, solutionFeatureObj);
                                 var emuFeatures = getEmuFeatureNames(testableFeatureObj);
                                 if (emuFeatures)
-                                    verifySolution(solution, char, emuFeatures);
+                                    verifyStringSolution(solution, char, emuFeatures);
                             }
                         }
                     );
@@ -283,7 +281,7 @@ uneval,
                                 }
                             }
                             var solution = decodeEntry(entry, char);
-                            verifySolution(solution, char, this.test.emuFeatureNames);
+                            verifyStringSolution(solution, char, this.test.emuFeatureNames);
                         }
                     );
                 }
@@ -334,62 +332,51 @@ uneval,
             function ()
             {
                 var encoder = getPoolEncoder(featureObj);
-                var definition = entry.definition;
-                var solution = encoder.resolve(definition, complex);
-                var expectedSolutionType = definition.solutionType;
-                if (expectedSolutionType == null)
-                    expectedSolutionType = SolutionType.STRING;
-                expect(solution.type).toBe(expectedSolutionType, 'Solution type mismatch');
-                verifySolution(solution, complex, this.test.emuFeatureNames);
+                var solution = encoder.resolve(entry.definition, complex);
+                verifyStringSolution(solution, complex, this.test.emuFeatureNames);
             }
         );
     }
 
     function testConstant(constant, validator, expectedSolutionTypes)
     {
-        describe
+        var entries = JScrewIt.debug.getConstantEntries(constant);
+        entries.forEach
         (
-            constant,
-            function ()
+            function (entry, index)
             {
-                var entries = JScrewIt.debug.getConstantEntries(constant);
-                entries.forEach
+                var featureObj = getEntryFeature(entry);
+                emuIt
                 (
-                    function (entry, index)
+                    '(definition ' + index + ')',
+                    featureObj,
+                    function ()
                     {
-                        var featureObj = getEntryFeature(entry);
-                        emuIt
+                        var solution = decodeEntry(entry, undefined, SolutionType.OBJECT);
+                        expect(typeof solution).toBe('object');
+                        var replacement = solution.replacement;
+                        expect(replacement).toBeJSFuck();
+                        expect(solution.source).toBeUndefined();
+                        var currentExpectedSolutionTypes;
+                        if (expectedSolutionTypes)
+                        {
+                            expect(expectedSolutionTypes).toContain(solution.type);
+                            currentExpectedSolutionTypes = expectedSolutionTypes;
+                        }
+                        else
+                            currentExpectedSolutionTypes = [solution.type];
+                        emuDo
                         (
-                            '(definition ' + index + ')',
-                            featureObj,
+                            this.test.emuFeatureNames,
                             function ()
                             {
-                                var solution = decodeEntry(entry, undefined, SolutionType.OBJECT);
-                                var replacement = solution.replacement;
-                                expect(replacement).toBeJSFuck();
-                                expect(solution.source).toBeUndefined();
-                                var currentExpectedSolutionTypes;
-                                if (expectedSolutionTypes)
-                                {
-                                    expect(expectedSolutionTypes).toContain(solution.type);
-                                    currentExpectedSolutionTypes = expectedSolutionTypes;
-                                }
-                                else
-                                    currentExpectedSolutionTypes = [solution.type];
-                                emuDo
-                                (
-                                    this.test.emuFeatureNames,
-                                    function ()
-                                    {
-                                        var actual = evalJSFuck(replacement);
-                                        if (validator)
-                                            validator.call(expect(actual));
-                                        var computedSolutionType =
-                                        JScrewIt.debug.calculateSolutionType(replacement);
-                                        expect(currentExpectedSolutionTypes)
-                                        .toContain(computedSolutionType);
-                                    }
-                                );
+                                var actual = evalJSFuck(replacement);
+                                if (validator)
+                                    validator.call(expect(actual));
+                                var computedSolutionType =
+                                JScrewIt.debug.calculateSolutionType(replacement);
+                                expect(currentExpectedSolutionTypes)
+                                .toContain(computedSolutionType, 'Solution type mismatch');
                             }
                         );
                     }
@@ -398,14 +385,23 @@ uneval,
         );
     }
 
-    function verifySolution(solution, expected, emuFeatures)
+    function verifyStringSolution(solution, expected, emuFeatures)
     {
         expect(typeof solution).toBe('object');
         var replacement = solution.replacement;
         expect(replacement).toBeJSFuck();
-        var actual = String(emuEval(emuFeatures || [], replacement));
-        expect(actual).toBe(expected);
         expect(solution.source).toBe(expected);
+        emuDo
+        (
+            emuFeatures || [],
+            function ()
+            {
+                var actual = String(evalJSFuck(replacement));
+                expect(actual).toBe(expected);
+                var computedSolutionType = JScrewIt.debug.calculateSolutionType(replacement);
+                expect(solution.type).toBe(computedSolutionType, 'Solution type mismatch');
+            }
+        );
     }
 
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
@@ -441,197 +437,203 @@ uneval,
         'Constant definitions of',
         function ()
         {
-            testConstant('Array', isExpected(Array));
-            testConstant
-            (
-                'Audio',
-                function ()
+            var paramDataMap =
+            {
+                Array: { validator: isExpected(Array) },
+                Audio:
                 {
-                    this.toBe(Audio);
-                }
-            );
-            testConstant('Boolean', isExpected(Boolean));
-            testConstant('Date', isExpected(Date));
-            testConstant('Function', isExpected(Function));
-            testConstant
-            (
-                'Node',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toBe(Audio);
+                    },
+                },
+                Boolean: { validator: isExpected(Boolean) },
+                Date: { validator: isExpected(Date) },
+                Function: { validator: isExpected(Function) },
+                Node:
                 {
-                    this.toBe(Node);
-                }
-            );
-            testConstant('Number', isExpected(Number));
-            testConstant('Object', isExpected(Object));
-            testConstant('RegExp', isExpected(RegExp));
-            testConstant('String', isExpected(String));
-            testConstant
-            (
-                'atob',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toBe(Node);
+                    },
+                },
+                Number: { validator: isExpected(Number) },
+                Object: { validator: isExpected(Object) },
+                RegExp: { validator: isExpected(RegExp) },
+                String: { validator: isExpected(String) },
+                atob:
                 {
-                    this.toBe(atob);
-                }
-            );
-            testConstant
-            (
-                'btoa',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toBe(atob);
+                    },
+                },
+                btoa:
                 {
-                    this.toBe(btoa);
-                }
-            );
-            testConstant
-            (
-                'document',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toBe(btoa);
+                    },
+                },
+                document:
                 {
-                    this.toBe(document);
-                }
-            );
-            testConstant('escape', isExpected(escape));
-            testConstant
-            (
-                'self',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toBe(document);
+                    },
+                },
+                escape: { validator: isExpected(escape) },
+                self:
                 {
-                    this.toBe(self);
-                }
-            );
-            testConstant
-            (
-                'sidebar',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toBe(self);
+                    },
+                },
+                sidebar:
                 {
-                    this.toBe(sidebar);
-                }
-            );
-            testConstant('unescape', isExpected(unescape));
-            testConstant
-            (
-                'uneval',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toBe(sidebar);
+                    },
+                },
+                unescape: { validator: isExpected(unescape) },
+                uneval:
                 {
-                    this.toBe(uneval);
-                }
-            );
-            testConstant
-            (
-                'ANY_FUNCTION',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toBe(uneval);
+                    },
+                },
+                ANY_FUNCTION:
                 {
-                    this.toBeNativeFunction();
-                }
-            );
-            testConstant
-            (
-                'ARRAY_ITERATOR',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toBeNativeFunction();
+                    },
+                },
+                ARRAY_ITERATOR:
                 {
-                    var arrayIteratorPrototype = Object.getPrototypeOf([].entries());
-                    this.toHavePrototype(arrayIteratorPrototype);
-                }
-            );
-            testConstant
-            (
-                'ESCAPING_BACKSLASH',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        var arrayIteratorPrototype = Object.getPrototypeOf([].entries());
+                        this.toHavePrototype(arrayIteratorPrototype);
+                    },
+                },
+                ESCAPING_BACKSLASH:
                 {
-                    this.toBe('\\');
-                }
-            );
-            testConstant
-            (
-                'FILL',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toBe('\\');
+                    },
+                },
+                FILL:
                 {
-                    this.toBe(Array.prototype.fill);
-                }
-            );
-            testConstant
-            (
-                'FILTER',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toBe(Array.prototype.fill);
+                    },
+                },
+                FILTER:
                 {
-                    this.toBe(Array.prototype.filter);
-                }
-            );
-            testConstant
-            (
-                'FLAT',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toBe(Array.prototype.filter);
+                    },
+                },
+                FLAT:
                 {
-                    this.toBe(Array.prototype.flat);
-                }
-            );
-            testConstant
-            (
-                'FROM_CHAR_CODE',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toBe(Array.prototype.flat);
+                    },
+                },
+                FROM_CHAR_CODE:
                 {
-                    this.toMatch(/^from(?:CharCode|CodePoint)$/);
-                }
-            );
-            testConstant
-            (
-                'F_A_L_S_E',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toMatch(/^from(?:CharCode|CodePoint)$/);
+                    },
+                },
+                F_A_L_S_E:
                 {
-                    this.toEqual(['f', 'a', 'l', 's', 'e']);
-                }
-            );
-            testConstant
-            (
-                'PLAIN_OBJECT',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toEqual(['f', 'a', 'l', 's', 'e']);
+                    },
+                },
+                PLAIN_OBJECT:
                 {
-                    this.toBePlainObject();
-                }
-            );
-            testConstant
-            (
-                'SUBSTR',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toBePlainObject();
+                    },
+                },
+                SUBSTR:
                 {
-                    this.toMatch(/^(?:slice|substr)$/);
-                }
-            );
-            testConstant
-            (
-                'TO_STRING',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toMatch(/^(?:slice|substr)$/);
+                    },
+                },
+                TO_STRING:
                 {
-                    this.toBe('toString');
-                }
-            );
-            testConstant
-            (
-                'TO_UPPER_CASE',
-                function ()
+                    validator:
+                    function ()
+                    {
+                        this.toBe('toString');
+                    },
+                },
+                TO_UPPER_CASE:
                 {
-                    this.toBe('toUpperCase');
-                }
-            );
+                    validator:
+                    function ()
+                    {
+                        this.toBe('toUpperCase');
+                    },
+                },
 
-            testConstant('FBEP_4_S');
-            testConstant('FBEP_9_U', null, [SolutionType.UNDEFINED, SolutionType.NUMERIC]);
-            testConstant('FBP_5_S');
-            testConstant('FBP_7_NO');
-            testConstant('FBP_8_NO');
-            testConstant('FBP_9_U', null, [SolutionType.UNDEFINED, SolutionType.NUMERIC]);
-            testConstant('FH_SHIFT_1');
-            testConstant('FH_SHIFT_3');
-            testConstant('FHP_3_NO');
-            testConstant('FHP_5_N');
-            testConstant('FHP_8_S');
-            testConstant('IS_IE_SRC_N');
-            testConstant('RP_0_S');
-            testConstant('RP_1_NO');
-            testConstant('RP_2_SO');
-            testConstant('RP_3_NO');
-            testConstant('RP_4_N');
-            testConstant('RP_5_N');
-            testConstant('RP_6_SO');
+                FBEP_9_U: { expectedSolutionTypes: [SolutionType.UNDEFINED, SolutionType.NUMERIC] },
+                FBP_9_U: { expectedSolutionTypes: [SolutionType.UNDEFINED, SolutionType.NUMERIC] },
+            };
+            var paramDataList =
+            JScrewIt.debug.getConstantNames().map
+            (
+                function (constant)
+                {
+                    var paramData =
+                    paramDataMap.hasOwnProperty(constant) && paramDataMap[constant] || { };
+                    paramData.constant = constant;
+                    return paramData;
+                }
+            );
+            describe.per(paramDataList)
+            (
+                '#.constant',
+                function (paramData)
+                {
+                    testConstant
+                    (paramData.constant, paramData.validator, paramData.expectedSolutionTypes);
+                }
+            );
         }
     );
     describe

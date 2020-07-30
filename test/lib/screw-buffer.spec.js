@@ -63,7 +63,8 @@
                 expectedStr2,
                 expectedStr3,
                 expectedStr4,
-                expectedStr5
+                expectedStr5,
+                expectedStr6
             )
             {
                 it
@@ -110,13 +111,24 @@
                 );
                 it
                 (
+                    'encodes a loose string',
+                    function ()
+                    {
+                        var buffer = createScrewBuffer(screwMode, 10, []);
+                        expect(buffer.append(solution0False)).toBe(true);
+                        var expectedLength = INITIAL_APPEND_LENGTH + solution0False.appendLength;
+                        verifyBuffer(buffer, expectedStr4, expectedLength);
+                    }
+                );
+                it
+                (
                     'encodes a string cluster',
                     function ()
                     {
                         var buffer = createScrewBuffer(screwMode, 10, [strTestOptimizer]);
                         expect(buffer.append(solutionA)).toBe(true);
                         expect(buffer.append(solutionA)).toBe(true);
-                        verifyBuffer(buffer, expectedStr4, INITIAL_APPEND_LENGTH);
+                        verifyBuffer(buffer, expectedStr5, INITIAL_APPEND_LENGTH);
                     }
                 );
                 it
@@ -127,7 +139,7 @@
                         var buffer = createScrewBuffer(screwMode, 10, [objTestOptimizer]);
                         expect(buffer.append(solutionA)).toBe(true);
                         expect(buffer.append(solutionA)).toBe(true);
-                        verifyBuffer(buffer, expectedStr5, INITIAL_APPEND_LENGTH);
+                        verifyBuffer(buffer, expectedStr6, INITIAL_APPEND_LENGTH);
                     }
                 );
             }
@@ -137,14 +149,18 @@
             var SolutionType = JScrewIt.debug.SolutionType;
             var solutionA = new Solution('a', '(![]+[])[+!![]]', SolutionType.STRING);
             var solution0 = new Solution('0', '+[]', SolutionType.WEAK_NUMERIC);
+            var solution00 = new Solution('00', '+[]+[+[]]', SolutionType.WEAK_PREFIXED_STRING);
+            var solution0False = new Solution('0false', '[+[]]+![]', SolutionType.COMBINED_STRING);
             var solutionFalse = new Solution('false', '![]', SolutionType.NUMERIC);
+            var solutionFalse0 = new Solution('false0', '![]+[+[]]', SolutionType.PREFIXED_STRING);
             var solutionComma = createCommaSolution();
             var solutionUndefined = new Solution('undefined', '[][[]]', SolutionType.UNDEFINED);
             var strTestOptimizer =
             createTestOptimizer(new Solution(undefined, '""', SolutionType.STRING));
             var objTestOptimizer =
             createTestOptimizer(new Solution(undefined, '{}', SolutionType.OBJECT));
-            var paramDataList =
+
+            var shortEncodingsParamDataList =
             [
                 [
                     'in normal mode',
@@ -153,6 +169,7 @@
                     '(![]+[])[+!![]]',
                     '+[]',
                     '[][[]]',
+                    '[+[]]+![]',
                     '""',
                     '{}',
                 ],
@@ -163,6 +180,7 @@
                     '(![]+[])[+!![]]',
                     '+[]+[]',
                     '[][[]]+[]',
+                    '[+[]]+![]',
                     '""',
                     '{}+[]',
                 ],
@@ -173,12 +191,12 @@
                     '(![]+[])[+!![]]',
                     '(+[]+[])',
                     '([][[]]+[])',
+                    '([+[]]+![])',
                     '""',
                     '({}+[])',
                 ],
             ];
-
-            describe.per(paramDataList)
+            describe.per(shortEncodingsParamDataList)
             (
                 '#[0]',
                 function (paramData)
@@ -189,19 +207,46 @@
 
             (function ()
             {
+                function appendSolutions(index)
+                {
+                    while (nextIndex <= index)
+                    {
+                        switch (nextIndex++)
+                        {
+                        case 0:
+                            expect(buffer.append(solutionA)).toBe(true);
+                            expect(buffer.append(solution0)).toBe(true);
+                            expect(buffer.append(solution0)).toBe(true);
+                            expect(buffer.append(solution0)).toBe(true);
+                            expectedLength += solutionA.appendLength + 3 * solution0.appendLength;
+                            break;
+                        case 1:
+                            expect(buffer.append(solutionFalse)).toBe(true);
+                            expect(buffer.append(solutionFalse)).toBe(true);
+                            expectedLength += 2 * solutionFalse.appendLength;
+                            break;
+                        case 2:
+                        case 3:
+                            expect(buffer.append(solutionFalse)).toBe(true);
+                            expectedLength += solutionFalse.appendLength;
+                            break;
+                        case 4:
+                            expect(buffer.append(solutionFalse)).toBe(false);
+                            break;
+                        }
+                    }
+                }
+
                 var buffer = JScrewIt.debug.createScrewBuffer(SCREW_AS_STRING, 4, []);
                 var expectedLength = INITIAL_APPEND_LENGTH;
+                var nextIndex = 0;
 
                 it
                 (
                     'encodes a string in a single group',
                     function ()
                     {
-                        expect(buffer.append(solutionA)).toBe(true);
-                        expect(buffer.append(solution0)).toBe(true);
-                        expect(buffer.append(solution0)).toBe(true);
-                        expect(buffer.append(solution0)).toBe(true);
-                        expectedLength += solutionA.appendLength + 3 * solution0.appendLength;
+                        appendSolutions(0);
                         verifyBuffer(buffer, '(![]+[])[+!![]]+(+[])+(+[])+(+[])', expectedLength);
                     }
                 );
@@ -210,9 +255,7 @@
                     'encodes a string in two groups',
                     function ()
                     {
-                        expect(buffer.append(solutionFalse)).toBe(true);
-                        expect(buffer.append(solutionFalse)).toBe(true);
-                        expectedLength += 2 * solutionFalse.appendLength;
+                        appendSolutions(1);
                         verifyBuffer
                         (
                             buffer,
@@ -226,8 +269,7 @@
                     'encodes a string in nested groups',
                     function ()
                     {
-                        expect(buffer.append(solutionFalse)).toBe(true);
-                        expectedLength += solutionFalse.appendLength;
+                        appendSolutions(2);
                         verifyBuffer
                         (
                             buffer,
@@ -241,8 +283,7 @@
                     'encodes a string with the largest possible number of elements',
                     function ()
                     {
-                        expect(buffer.append(solutionFalse)).toBe(true);
-                        expectedLength += solutionFalse.appendLength;
+                        appendSolutions(3);
                         verifyBuffer
                         (
                             buffer,
@@ -256,7 +297,7 @@
                     'does not encode a string with too many elements',
                     function ()
                     {
-                        expect(buffer.append(solutionFalse)).toBe(false);
+                        appendSolutions(4);
                         verifyBuffer
                         (
                             buffer,
@@ -268,29 +309,82 @@
             }
             )();
 
-            it
+            var concatParamDataList =
+            [
+                {
+                    title:
+                    'encodes a weak numeric type solution followed by an undefined type solution',
+                    solutions: [solution0, solutionUndefined],
+                    expectedReplacement: '[+[]]+[][[]]',
+                },
+                {
+                    title: 'encodes two undefined type solutions',
+                    solutions: [solutionUndefined, solutionUndefined],
+                    expectedReplacement: '[]+[][[]]+[][[]]',
+                },
+                {
+                    title:
+                    'encodes an undefined type solution followed by a prefixed string type ' +
+                    'solution',
+                    solutions: [solutionUndefined, solutionFalse0],
+                    expectedReplacement: '[][[]]+(![]+[+[]])',
+                },
+                {
+                    title:
+                    'encodes a numeric type solution followed by a string type solution',
+                    solutions: [solutionFalse, solutionA],
+                    expectedReplacement: '![]+(![]+[])[+!![]]',
+                },
+                {
+                    title:
+                    'encodes two undefined type solutions followed by a weak numeric type solution',
+                    solutions: [solutionUndefined, solutionUndefined, solution0],
+                    expectedReplacement: '[][[]]+([][[]]+[+[]])',
+                },
+                {
+                    title:
+                    'encodes two undefined type solutions followed by a string type solution',
+                    solutions: [solutionUndefined, solutionUndefined, solutionA],
+                    expectedReplacement: '[][[]]+([][[]]+(![]+[])[+!![]])',
+                },
+                {
+                    title:
+                    'encodes two undefined type solutions followed by a weak prefixed string ' +
+                    'type solution',
+                    solutions: [solutionUndefined, solutionUndefined, solution00],
+                    expectedReplacement: '[][[]]+([][[]]+(+[]+[+[]]))',
+                },
+                {
+                    title:
+                    'encodes a string with a trailing bridge',
+                    solutions:
+                    [
+                        solutionFalse,
+                        solutionFalse,
+                        solutionFalse,
+                        solutionFalse,
+                        solutionFalse,
+                        solutionComma,
+                    ],
+                    expectedReplacement: '[![]]+![]+![]+[[![]]+![]].concat([[]])',
+                },
+            ];
+            it.per(concatParamDataList)
             (
-                'encodes a weak numeric type solution with an undefined type solution',
-                function ()
+                '#.title',
+                function (paramData)
                 {
                     var buffer = createScrewBuffer(SCREW_NORMAL, 4, []);
-                    buffer.append(solution0);
-                    buffer.append(solutionUndefined);
-                    var expectedLength =
-                    INITIAL_APPEND_LENGTH + solution0.appendLength + solutionUndefined.appendLength;
-                    verifyBuffer(buffer, '[+[]]+[][[]]', expectedLength);
-                }
-            );
-            it
-            (
-                'encodes two undefined type solutions',
-                function ()
-                {
-                    var buffer = createScrewBuffer(SCREW_NORMAL, 4, []);
-                    buffer.append(solutionUndefined);
-                    buffer.append(solutionUndefined);
-                    var expectedLength = INITIAL_APPEND_LENGTH + 2 * solutionUndefined.appendLength;
-                    verifyBuffer(buffer, '[]+[][[]]+[][[]]', expectedLength);
+                    var expectedLength = INITIAL_APPEND_LENGTH;
+                    paramData.solutions.forEach
+                    (
+                        function (solution)
+                        {
+                            buffer.append(solution);
+                            expectedLength += solution.appendLength;
+                        }
+                    );
+                    verifyBuffer(buffer, paramData.expectedReplacement, expectedLength);
                 }
             );
             it
