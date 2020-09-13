@@ -871,16 +871,6 @@ export var validMaskFromArrayOrStringOrFeature;
                 return available;
             },
         },
-        UNEVAL:
-        {
-            description: 'Existence of the global function uneval.',
-            check:
-            function ()
-            {
-                var available = typeof uneval !== 'undefined';
-                return available;
-            },
-        },
         V8_SRC:
         {
             description:
@@ -1056,77 +1046,12 @@ export var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        FF_ESR: 'FF_62',
-        FF_62:
-        {
-            engine: 'Firefox 62 to 73',
-            includes:
-            [
-                'ARROW',
-                'ATOB',
-                'BARPROP',
-                'CONSOLE',
-                'ESC_HTML_QUOT_ONLY',
-                'ESC_REGEXP_LF',
-                'ESC_REGEXP_SLASH',
-                'EXTERNAL',
-                'FF_SRC',
-                'FILL',
-                'FLAT',
-                'FROM_CODE_POINT',
-                'FUNCTION_19_LF',
-                'GMT',
-                'HISTORY',
-                'HTMLDOCUMENT',
-                'INCR_CHAR',
-                'INTL',
-                'LOCALE_INFINITY',
-                'NAME',
-                'NO_OLD_SAFARI_ARRAY_ITERATOR',
-                'STATUS',
-                'UNDEFINED',
-                'UNEVAL',
-                'WINDOW',
-            ],
-            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
-        },
-        FF_PREV: 'FF_74',
-        FF_74:
-        {
-            engine: 'Firefox 62 to 77',
-            includes:
-            [
-                'ARROW',
-                'ATOB',
-                'BARPROP',
-                'CONSOLE',
-                'ESC_HTML_QUOT_ONLY',
-                'ESC_REGEXP_LF',
-                'ESC_REGEXP_SLASH',
-                'EXTERNAL',
-                'FF_SRC',
-                'FILL',
-                'FLAT',
-                'FROM_CODE_POINT',
-                'FUNCTION_19_LF',
-                'GMT',
-                'HISTORY',
-                'HTMLDOCUMENT',
-                'INCR_CHAR',
-                'INTL',
-                'LOCALE_INFINITY',
-                'NAME',
-                'NO_OLD_SAFARI_ARRAY_ITERATOR',
-                'STATUS',
-                'UNDEFINED',
-                'WINDOW',
-            ],
-            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
-        },
+        FF_ESR: 'FF_78',
+        FF_PREV: 'FF_78',
         FF: 'FF_78',
         FF_78:
         {
-            engine: 'Firefox 62 or later',
+            engine: 'Firefox 78 or later',
             includes:
             [
                 'ARROW',

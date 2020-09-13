@@ -15,7 +15,6 @@ module,
 require,
 self,
 sidebar,
-uneval,
 */
 
 'use strict';
@@ -505,14 +504,6 @@ uneval,
                     },
                 },
                 unescape: { validator: isExpected(unescape) },
-                uneval:
-                {
-                    validator:
-                    function ()
-                    {
-                        this.toBe(uneval);
-                    },
-                },
                 ANY_FUNCTION:
                 {
                     validator:

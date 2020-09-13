@@ -73,7 +73,7 @@ module.exports =
         ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FLAT', 'NO_IE_SRC'],
         length =>
         {
-            const prefix = repeatToFit('012345678', 463);
+            const prefix = repeatToFit('876543210', 464);
             const str = prefix + createDictTestString(2, length - prefix.length);
             return str;
         },
@@ -81,7 +81,7 @@ module.exports =
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'NO_V8_SRC', 'UNEVAL'],
+        ['ARRAY_ITERATOR', 'NAME', 'NO_V8_SRC'],
         length => String.fromCharCode(59999).repeat(length),
         'byDict',
     ),

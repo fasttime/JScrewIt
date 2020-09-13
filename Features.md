@@ -42,7 +42,7 @@ This table lists features available in the most common engines.
 </td>
 </tr>
 <tr>
-<td>Firefox 62+</td>
+<td>Firefox 78+</td>
 <td>
 <ul>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
@@ -51,7 +51,6 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#ARROW"><code>ARROW</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#ATOB"><code>ATOB</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#BARPROP"><code>BARPROP</code></a>
-<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#CONSOLE"><code>CONSOLE</code></a> (not in Firefox 78+)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#ESC_REGEXP_LF"><code>ESC_REGEXP_LF</code></a>
@@ -75,7 +74,6 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="api-doc/interfaces/_jscrewit_.featureall.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#STATUS"><code>STATUS</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#UNDEFINED"><code>UNDEFINED</code></a>
-<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#UNEVAL"><code>UNEVAL</code></a> (not in Firefox 74+)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#WINDOW"><code>WINDOW</code></a>
 </ul>
 </td>

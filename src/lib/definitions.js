@@ -95,7 +95,6 @@ export var createBridgeSolution;
     var SELF_OBJ                        = Feature.SELF_OBJ;
     var STATUS                          = Feature.STATUS;
     var UNDEFINED                       = Feature.UNDEFINED;
-    var UNEVAL                          = Feature.UNEVAL;
     var V8_SRC                          = Feature.V8_SRC;
     var WINDOW                          = Feature.WINDOW;
 
@@ -471,14 +470,11 @@ export var createBridgeSolution;
             define('U'),
             define('X', ESC_REGEXP_LF),
             define('X', ESC_REGEXP_SLASH),
-            define('X', UNEVAL),
             define('U', ESC_REGEXP_SLASH, UNDEFINED),
-            define('U', UNDEFINED, UNEVAL),
             define('W', ATOB),
             define('U', ATOB, CAPITAL_HTML),
             define('U', CAPITAL_HTML, ESC_REGEXP_LF),
             define('U', CAPITAL_HTML, ESC_REGEXP_SLASH),
-            define('U', CAPITAL_HTML, UNEVAL),
             define('V', ANY_DOCUMENT),
             define('U', ANY_DOCUMENT, ARRAY_ITERATOR, INCR_CHAR, NAME, NO_V8_SRC),
             define('V', ANY_DOCUMENT, EXTERNAL),
@@ -1319,10 +1315,6 @@ export var createBridgeSolution;
         [
             define({ expr: 'Function("return unescape")()', optimize: { toStringOpt: true } }),
         ],
-        uneval:
-        [
-            define('Function("return uneval")()', UNEVAL),
-        ],
 
         // Custom definitions
 
@@ -1350,11 +1342,6 @@ export var createBridgeSolution;
             (
                 { expr: '(RP_3_NO + RegExp("".sub()))[10]', solutionType: SolutionType.STRING },
                 ESC_REGEXP_SLASH
-            ),
-            define
-            (
-                { expr: 'uneval("".fontcolor(false))[20]', solutionType: SolutionType.STRING },
-                UNEVAL
             ),
             define
             (
@@ -1391,27 +1378,6 @@ export var createBridgeSolution;
             ),
             define
             (
-                { expr: 'uneval(FILTER + [])[20]', solutionType: SolutionType.STRING },
-                FF_SRC,
-                UNEVAL
-            ),
-            define
-            (
-                { expr: 'uneval(ANY_FUNCTION + [])[1]', solutionType: SolutionType.STRING },
-                IE_SRC,
-                UNEVAL
-            ),
-            define
-            (
-                {
-                    expr: 'uneval(+(ANY_FUNCTION + [])[0] + FILTER)[23]',
-                    solutionType: SolutionType.STRING,
-                },
-                NO_V8_SRC,
-                UNEVAL
-            ),
-            define
-            (
                 { expr: '(RP_3_NO + RegExp(FILL))[21]', solutionType: SolutionType.STRING },
                 ESC_REGEXP_LF,
                 FF_SRC,
@@ -1443,40 +1409,6 @@ export var createBridgeSolution;
                 ESC_REGEXP_LF,
                 FLAT,
                 NO_V8_SRC
-            ),
-            define
-            (
-                { expr: 'uneval(RP_3_NO + FILL)[21]', solutionType: SolutionType.STRING },
-                FF_SRC,
-                FILL,
-                UNEVAL
-            ),
-            define
-            (
-                { expr: 'uneval(RP_3_NO + FLAT)[21]', solutionType: SolutionType.STRING },
-                FF_SRC,
-                FLAT,
-                UNEVAL
-            ),
-            define
-            (
-                {
-                    expr: 'uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]',
-                    solutionType: SolutionType.STRING,
-                },
-                FILL,
-                NO_V8_SRC,
-                UNEVAL
-            ),
-            define
-            (
-                {
-                    expr: 'uneval(+(ANY_FUNCTION + [])[0] + FLAT)[21]',
-                    solutionType: SolutionType.STRING,
-                },
-                FLAT,
-                NO_V8_SRC,
-                UNEVAL
             ),
             define(backslashDefinition),
         ],
@@ -1742,21 +1674,7 @@ export var createBridgeSolution;
             define(1, ATOB),
             define(1, BARPROP),
             define(1, CAPITAL_HTML),
-            define(1, NO_V8_SRC, UNEVAL),
-            define(0, ARRAY_ITERATOR, FROM_CODE_POINT, NO_V8_SRC, UNEVAL),
-            define(0, FROM_CODE_POINT, INTL, NAME, NO_V8_SRC, UNEVAL),
-            define(0, FROM_CODE_POINT, NAME, NO_V8_SRC, SELF_OBJ, UNEVAL),
-            define(1, FF_SRC, INTL, NAME, UNEVAL),
-            define(1, FF_SRC, NAME, SELF_OBJ, UNEVAL),
-            define(1, IE_SRC, INTL, NAME, UNEVAL),
-            define(1, IE_SRC, NAME, SELF_OBJ, UNEVAL),
-            define(1, FILL, INTL, NAME, NO_V8_SRC, UNEVAL),
-            define(1, FILL, NAME, NO_V8_SRC, SELF_OBJ, UNEVAL),
-            define(1, FLAT, INTL, NAME, NO_V8_SRC, UNEVAL),
-            define(1, FLAT, NAME, NO_V8_SRC, SELF_OBJ, UNEVAL),
             define(0, ARRAY_ITERATOR, ATOB, CAPITAL_HTML, FROM_CODE_POINT),
-            define(0, CONSOLE, FROM_CODE_POINT, NO_V8_SRC, UNEVAL),
-            define(0, FROM_CODE_POINT, NODECONSTRUCTOR, NO_V8_SRC, UNEVAL),
         ]
     );
 
