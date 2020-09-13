@@ -81,7 +81,7 @@ module.exports =
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'NO_V8_SRC', 'UNEVAL'],
+        ['ARRAY_ITERATOR', 'NO_V8_SRC'],
         length => String.fromCharCode(59999).repeat(length),
         'byDict',
     ),

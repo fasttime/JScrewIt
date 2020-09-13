@@ -94,7 +94,6 @@ export var createBridgeSolution;
     var SELF_OBJ                        = Feature.SELF_OBJ;
     var STATUS                          = Feature.STATUS;
     var UNDEFINED                       = Feature.UNDEFINED;
-    var UNEVAL                          = Feature.UNEVAL;
     var V8_SRC                          = Feature.V8_SRC;
     var WINDOW                          = Feature.WINDOW;
 
@@ -462,14 +461,11 @@ export var createBridgeSolution;
             define('U'),
             define('X', ESC_REGEXP_LF),
             define('X', ESC_REGEXP_SLASH),
-            define('X', UNEVAL),
             define('U', ESC_REGEXP_SLASH, UNDEFINED),
-            define('U', UNDEFINED, UNEVAL),
             define('W', ATOB),
             define('U', ATOB, CAPITAL_HTML),
             define('U', CAPITAL_HTML, ESC_REGEXP_LF),
             define('U', CAPITAL_HTML, ESC_REGEXP_SLASH),
-            define('U', CAPITAL_HTML, UNEVAL),
             define('V', ANY_DOCUMENT),
             define('U', ANY_DOCUMENT, ARRAY_ITERATOR, INCR_CHAR, NAME, NO_V8_SRC),
             define('V', ANY_DOCUMENT, EXTERNAL),
@@ -1310,10 +1306,6 @@ export var createBridgeSolution;
         [
             define({ expr: 'Function("return unescape")()', optimize: { toStringOpt: true } }),
         ],
-        uneval:
-        [
-            define('Function("return uneval")()', UNEVAL),
-        ],
 
         // Custom definitions
 
@@ -1333,23 +1325,15 @@ export var createBridgeSolution;
             define('(RegExp("\\n") + [])[1]', ESC_REGEXP_LF),
             define('(RP_5_N + RegExp("".italics()))[10]', ESC_REGEXP_SLASH),
             define('(RP_3_NO + RegExp("".sub()))[10]', ESC_REGEXP_SLASH),
-            define('uneval("".fontcolor(false))[20]', UNEVAL),
             define('(RegExp(FILTER) + [])[20]', ESC_REGEXP_LF, FF_SRC),
             define('(RegExp(Function()) + [])[20]', ESC_REGEXP_LF, FUNCTION_19_LF),
             define('(RP_5_N + RegExp(Function()))[30]', ESC_REGEXP_LF, FUNCTION_22_LF),
             define('(RegExp(ANY_FUNCTION) + [])[1]', ESC_REGEXP_LF, IE_SRC),
             define('(+(ANY_FUNCTION + [])[0] + RegExp(FILTER))[23]', ESC_REGEXP_LF, NO_V8_SRC),
-            define('uneval(FILTER + [])[20]', FF_SRC, UNEVAL),
-            define('uneval(ANY_FUNCTION + [])[1]', IE_SRC, UNEVAL),
-            define('uneval(+(ANY_FUNCTION + [])[0] + FILTER)[23]', NO_V8_SRC, UNEVAL),
             define('(RP_3_NO + RegExp(FILL))[21]', ESC_REGEXP_LF, FF_SRC, FILL),
             define('(RP_3_NO + RegExp(FLAT))[21]', ESC_REGEXP_LF, FF_SRC, FLAT),
             define('(+(ANY_FUNCTION + [])[0] + RegExp(FILL))[21]', ESC_REGEXP_LF, FILL, NO_V8_SRC),
             define('(+(ANY_FUNCTION + [])[0] + RegExp(FLAT))[21]', ESC_REGEXP_LF, FLAT, NO_V8_SRC),
-            define('uneval(RP_3_NO + FILL)[21]', FF_SRC, FILL, UNEVAL),
-            define('uneval(RP_3_NO + FLAT)[21]', FF_SRC, FLAT, UNEVAL),
-            define('uneval(+(ANY_FUNCTION + [])[0] + FILL)[21]', FILL, NO_V8_SRC, UNEVAL),
-            define('uneval(+(ANY_FUNCTION + [])[0] + FLAT)[21]', FLAT, NO_V8_SRC, UNEVAL),
             defineCharDefault('\\', { atob: false, charCode: false, escSeq: false }),
         ],
         FILL:
@@ -1521,21 +1505,7 @@ export var createBridgeSolution;
             define(1, ATOB),
             define(1, BARPROP),
             define(1, CAPITAL_HTML),
-            define(1, NO_V8_SRC, UNEVAL),
-            define(0, ARRAY_ITERATOR, FROM_CODE_POINT, NO_V8_SRC, UNEVAL),
-            define(0, FROM_CODE_POINT, INTL, NAME, NO_V8_SRC, UNEVAL),
-            define(0, FROM_CODE_POINT, NAME, NO_V8_SRC, SELF_OBJ, UNEVAL),
-            define(1, FF_SRC, INTL, NAME, UNEVAL),
-            define(1, FF_SRC, NAME, SELF_OBJ, UNEVAL),
-            define(1, IE_SRC, INTL, NAME, UNEVAL),
-            define(1, IE_SRC, NAME, SELF_OBJ, UNEVAL),
-            define(1, FILL, INTL, NAME, NO_V8_SRC, UNEVAL),
-            define(1, FILL, NAME, NO_V8_SRC, SELF_OBJ, UNEVAL),
-            define(1, FLAT, INTL, NAME, NO_V8_SRC, UNEVAL),
-            define(1, FLAT, NAME, NO_V8_SRC, SELF_OBJ, UNEVAL),
             define(0, ARRAY_ITERATOR, ATOB, CAPITAL_HTML, FROM_CODE_POINT),
-            define(0, CONSOLE, FROM_CODE_POINT, NO_V8_SRC, UNEVAL),
-            define(0, FROM_CODE_POINT, NODECONSTRUCTOR, NO_V8_SRC, UNEVAL),
         ]
     );
 

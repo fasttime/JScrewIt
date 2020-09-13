@@ -786,30 +786,6 @@
                 }
             );
         },
-        UNEVAL:
-        function ()
-        {
-            var uneval =
-            function (obj)
-            {
-                if (typeof obj === 'string')
-                {
-                    var result =
-                    '"' +
-                    obj.replace
-                    (
-                        /[\n"]/g,
-                        function (char)
-                        {
-                            return '\\' + { '\n': 'n', '"': '"' }[char];
-                        }
-                    ) +
-                    '"';
-                    return result;
-                }
-            };
-            override(this, 'uneval', { value: uneval });
-        },
         V8_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_V8),
         WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object Window]$/),
     };

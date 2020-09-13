@@ -119,7 +119,7 @@ declare module 'jscrewit'
          *
          * @reamarks
          *
-         * Available in Firefox before 78, Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
+         * Available in Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
          */
         CONSOLE: ElementaryFeature;
 
@@ -204,24 +204,14 @@ declare module 'jscrewit'
         FF: PredefinedFeature;
 
         /**
-         * Features available in Firefox 62 to 73.
-         */
-        FF_62: PredefinedFeature;
-
-        /**
-         * Features available in Firefox 62 to 77.
-         */
-        FF_74: PredefinedFeature;
-
-        /**
-         * Features available in Firefox 62 or later.
+         * Features available in Firefox 78 or later.
          */
         FF_78: PredefinedFeature;
 
-        /** An alias for `FF_62`. */
+        /** An alias for `FF_78`. */
         FF_ESR: PredefinedFeature;
 
-        /** An alias for `FF_74`. */
+        /** An alias for `FF_78`. */
         FF_PREV: PredefinedFeature;
 
         /**
@@ -533,15 +523,6 @@ declare module 'jscrewit'
         UNDEFINED: ElementaryFeature;
 
         /**
-         * Existence of the global function uneval.
-         *
-         * @reamarks
-         *
-         * Available in Firefox before 74.
-         */
-        UNEVAL: ElementaryFeature;
-
-        /**
          * A string representation of native functions typical for the V8 engine.
          *
          * Remarkable traits are the lack of line feed characters at the beginning and at the end of the string and the presence of a single whitespace before the "\[native code\]" sequence.
@@ -603,7 +584,6 @@ declare module 'jscrewit'
     | 'SELF_OBJ'
     | 'STATUS'
     | 'UNDEFINED'
-    | 'UNEVAL'
     | 'V8_SRC'
     | 'WINDOW'
     ;
@@ -619,8 +599,6 @@ declare module 'jscrewit'
     | 'CHROME_73'
     | 'COMPACT'
     | 'DEFAULT'
-    | 'FF_62'
-    | 'FF_74'
     | 'FF_78'
     | 'IE_10'
     | 'IE_11'

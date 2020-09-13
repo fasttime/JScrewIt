@@ -38,8 +38,6 @@
 * [ESC_REGEXP_SLASH](_jscrewit_.featureall.md#esc_regexp_slash)
 * [EXTERNAL](_jscrewit_.featureall.md#external)
 * [FF](_jscrewit_.featureall.md#ff)
-* [FF_62](_jscrewit_.featureall.md#ff_62)
-* [FF_74](_jscrewit_.featureall.md#ff_74)
 * [FF_78](_jscrewit_.featureall.md#ff_78)
 * [FF_ESR](_jscrewit_.featureall.md#ff_esr)
 * [FF_PREV](_jscrewit_.featureall.md#ff_prev)
@@ -85,7 +83,6 @@
 * [SELF_OBJ](_jscrewit_.featureall.md#self_obj)
 * [STATUS](_jscrewit_.featureall.md#status)
 * [UNDEFINED](_jscrewit_.featureall.md#undefined)
-* [UNEVAL](_jscrewit_.featureall.md#uneval)
 * [V8_SRC](_jscrewit_.featureall.md#v8_src)
 * [WINDOW](_jscrewit_.featureall.md#window)
 
@@ -261,7 +258,7 @@ This feature may become unavailable when certain browser extensions are active.
 
 **`reamarks`** 
 
-Available in Firefox before 78, Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
+Available in Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
 
 ___
 
@@ -377,27 +374,11 @@ An alias for `FF_78`.
 
 ___
 
-###  FF_62
-
-• **FF_62**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
-
-Features available in Firefox 62 to 73.
-
-___
-
-###  FF_74
-
-• **FF_74**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
-
-Features available in Firefox 62 to 77.
-
-___
-
 ###  FF_78
 
 • **FF_78**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-Features available in Firefox 62 or later.
+Features available in Firefox 78 or later.
 
 ___
 
@@ -405,7 +386,7 @@ ___
 
 • **FF_ESR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-An alias for `FF_62`.
+An alias for `FF_78`.
 
 ___
 
@@ -413,7 +394,7 @@ ___
 
 • **FF_PREV**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
 
-An alias for `FF_74`.
+An alias for `FF_78`.
 
 ___
 
@@ -854,18 +835,6 @@ This behavior is specified by ECMAScript, and is enforced by all engines except 
 **`reamarks`** 
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+ and Node.js.
-
-___
-
-###  UNEVAL
-
-• **UNEVAL**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
-
-Existence of the global function uneval.
-
-**`reamarks`** 
-
-Available in Firefox before 74.
 
 ___
 

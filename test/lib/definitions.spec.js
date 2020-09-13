@@ -16,7 +16,6 @@ module,
 require,
 self,
 sidebar,
-uneval,
 */
 
 'use strict';
@@ -485,14 +484,6 @@ uneval,
                 }
             );
             testConstant('unescape', isExpected(unescape));
-            testConstant
-            (
-                'uneval',
-                function ()
-                {
-                    this.toBe(uneval);
-                }
-            );
             testConstant
             (
                 'ANY_FUNCTION',
