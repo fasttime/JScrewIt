@@ -1,3 +1,4 @@
+**[JScrewIt](../README.md)**
 
 # Module: "jscrewit"
 
@@ -22,7 +23,7 @@
 
 ### Variables
 
-* [Feature](_jscrewit_.md#const-feature)
+* [Feature](_jscrewit_.md#feature)
 
 ### Functions
 
@@ -30,9 +31,9 @@
 
 ## Type aliases
 
-###  CompatibleFeatureArray
+### CompatibleFeatureArray
 
-Ƭ **CompatibleFeatureArray**: *keyof FeatureElement[]*
+Ƭ  **CompatibleFeatureArray**: readonly [FeatureElement](_jscrewit_.md#featureelement)[]
 
 An array containing any number of feature objects or names or aliases of predefined features,
 in no particular order.
@@ -46,17 +47,17 @@ mutually compatible.
 
 ___
 
-###  ElementaryFeatureName
+### ElementaryFeatureName
 
-Ƭ **ElementaryFeatureName**: *"ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "BARPROP" | "CAPITAL_HTML" | "CONSOLE" | "DOCUMENT" | "DOMWINDOW" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "V8_SRC" | "WINDOW"*
+Ƭ  **ElementaryFeatureName**: \"ANY\_DOCUMENT\" \| \"ANY\_WINDOW\" \| \"ARRAY\_ITERATOR\" \| \"ARROW\" \| \"ATOB\" \| \"BARPROP\" \| \"CAPITAL\_HTML\" \| \"CONSOLE\" \| \"DOCUMENT\" \| \"DOMWINDOW\" \| \"ESC\_HTML\_ALL\" \| \"ESC\_HTML\_QUOT\" \| \"ESC\_HTML\_QUOT\_ONLY\" \| \"ESC\_REGEXP\_LF\" \| \"ESC\_REGEXP\_SLASH\" \| \"EXTERNAL\" \| \"FF\_SRC\" \| \"FILL\" \| \"FLAT\" \| \"FROM\_CODE\_POINT\" \| \"FUNCTION\_19\_LF\" \| \"FUNCTION\_22\_LF\" \| \"GMT\" \| \"HISTORY\" \| \"HTMLAUDIOELEMENT\" \| \"HTMLDOCUMENT\" \| \"IE\_SRC\" \| \"INCR\_CHAR\" \| \"INTL\" \| \"LOCALE\_INFINITY\" \| \"NAME\" \| \"NODECONSTRUCTOR\" \| \"NO\_FF\_SRC\" \| \"NO\_IE\_SRC\" \| \"NO\_OLD\_SAFARI\_ARRAY\_ITERATOR\" \| \"NO\_V8\_SRC\" \| \"SELF\_OBJ\" \| \"STATUS\" \| \"UNDEFINED\" \| \"V8\_SRC\" \| \"WINDOW\"
 
 Name of an elementary feature.
 
 ___
 
-###  FeatureElement
+### FeatureElement
 
-Ƭ **FeatureElement**: *[Feature](../interfaces/_jscrewit_.customfeature.md#feature) | keyof FeatureAll*
+Ƭ  **FeatureElement**: [Feature](../interfaces/_jscrewit_.customfeature.md#feature) \| keyof [FeatureAll](../interfaces/_jscrewit_.featureall.md)
 
 A feature object or a name or alias of a predefined feature.
 
@@ -67,23 +68,23 @@ a feature object nor a name or alias of a predefined feature.
 
 ___
 
-###  PredefinedFeatureName
+### PredefinedFeatureName
 
-Ƭ **PredefinedFeatureName**: *[ElementaryFeatureName](_jscrewit_.md#elementaryfeaturename) | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "AUTO" | "BROWSER" | "CHROME_73" | "COMPACT" | "DEFAULT" | "FF_78" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9"*
+Ƭ  **PredefinedFeatureName**: [ElementaryFeatureName](_jscrewit_.md#elementaryfeaturename) \| \"ANDRO\_4\_0\" \| \"ANDRO\_4\_1\" \| \"ANDRO\_4\_4\" \| \"AUTO\" \| \"BROWSER\" \| \"CHROME\_73\" \| \"COMPACT\" \| \"DEFAULT\" \| \"FF\_78\" \| \"IE\_10\" \| \"IE\_11\" \| \"IE\_11\_WIN\_10\" \| \"IE\_9\" \| \"NODE\_0\_10\" \| \"NODE\_0\_12\" \| \"NODE\_10\" \| \"NODE\_11\" \| \"NODE\_12\" \| \"NODE\_4\" \| \"NODE\_5\" \| \"SAFARI\_10\" \| \"SAFARI\_12\" \| \"SAFARI\_7\_0\" \| \"SAFARI\_7\_1\" \| \"SAFARI\_9\"
 
 Name of a predefined feature.
 
 ## Variables
 
-### `Const` Feature
+### Feature
 
-• **Feature**: *[FeatureConstructor](../interfaces/_jscrewit_.featureconstructor.md)*
+• `Const` **Feature**: [FeatureConstructor](../interfaces/_jscrewit_.featureconstructor.md)
 
 ## Functions
 
-###  encode
+### encode
 
-▸ **encode**(`input`: string, `options?`: [EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md)): *string*
+▸ **encode**(`input`: string, `options?`: [EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md)): string
 
 Encodes a given string into JSFuck.
 
@@ -97,13 +98,13 @@ An `Error` is thrown under the following circumstances.
 
 Also, an out of memory condition may occur when processing very large data.
 
-**Parameters:**
+#### Parameters:
 
 Name | Type | Description |
 ------ | ------ | ------ |
 `input` | string |   The string to encode.  |
 `options?` | [EncodeOptions](../interfaces/_jscrewit_.encodeoptions.md) |   An optional object specifying encoding options.  |
 
-**Returns:** *string*
+**Returns:** string
 
 The encoded string.

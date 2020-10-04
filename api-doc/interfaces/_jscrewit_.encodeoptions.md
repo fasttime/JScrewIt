@@ -1,3 +1,4 @@
+**[JScrewIt](../README.md)**
 
 # Interface: EncodeOptions
 
@@ -9,16 +10,16 @@
 
 ### Properties
 
-* [features](_jscrewit_.encodeoptions.md#optional-features)
-* [runAs](_jscrewit_.encodeoptions.md#optional-runas)
-* [trimCode](_jscrewit_.encodeoptions.md#optional-trimcode)
-* [wrapWith](_jscrewit_.encodeoptions.md#optional-wrapwith)
+* [features](_jscrewit_.encodeoptions.md#features)
+* [runAs](_jscrewit_.encodeoptions.md#runas)
+* [trimCode](_jscrewit_.encodeoptions.md#trimcode)
+* [wrapWith](_jscrewit_.encodeoptions.md#wrapwith)
 
 ## Properties
 
-### `Optional` features
+### features
 
-• **features**? : *[FeatureElement](../modules/_jscrewit_.md#featureelement) | [CompatibleFeatureArray](../modules/_jscrewit_.md#compatiblefeaturearray)*
+• `Optional` **features**: [FeatureElement](../modules/_jscrewit_.md#featureelement) \| [CompatibleFeatureArray](../modules/_jscrewit_.md#compatiblefeaturearray)
 
 Specifies the features available in the engines that evaluate the encoded output.
 
@@ -29,9 +30,9 @@ explicitly.
 
 ___
 
-### `Optional` runAs
+### runAs
 
-• **runAs**? : *"call" | "eval" | "express" | "express-call" | "express-eval" | "none"*
+• `Optional` **runAs**: \"call\" \| \"eval\" \| \"express\" \| \"express-call\" \| \"express-eval\" \| \"none\"
 
 This option controls the type of code generated from the given input.
 Allowed values are listed below.
@@ -82,9 +83,9 @@ plain string.
 
 ___
 
-### `Optional` trimCode
+### trimCode
 
-• **trimCode**? : *undefined | false | true*
+• `Optional` **trimCode**: undefined \| false \| true
 
 If this parameter is truthy, lines in the beginning and in the end of the file containing
 nothing but space characters and JavaScript comments are removed from the generated
@@ -99,8 +100,8 @@ JavaScript code.
 
 ___
 
-### `Optional` wrapWith
+### wrapWith
 
-• **wrapWith**? : *"call" | "eval" | "express" | "express-call" | "express-eval" | "none"*
+• `Optional` **wrapWith**: \"call\" \| \"eval\" \| \"express\" \| \"express-call\" \| \"express-eval\" \| \"none\"
 
 An alias for `runAs`.
