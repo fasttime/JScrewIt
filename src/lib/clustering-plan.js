@@ -38,14 +38,16 @@ function compareClustersByStart(cluster1, cluster2)
 
 function conclude()
 {
-    var clusters    = this.clusters.sort(compareClustersByQuality);
-    var maxLength   = this.maxLength;
-    var startLinks  = this.startLinks;
     var bestClusters = [];
-    var cluster;
-    while (cluster = pickBestCluster(startLinks, clusters, maxLength))
-        bestClusters.push(cluster);
-    bestClusters.sort(compareClustersByStart);
+    var clusters = this.clusters;
+    if (clusters.length)
+    {
+        clusters.sort(compareClustersByQuality);
+        var cluster;
+        while (cluster = pickBestCluster(this.startLinks, clusters, this.maxLength))
+            bestClusters.push(cluster);
+        bestClusters.sort(compareClustersByStart);
+    }
     return bestClusters;
 }
 

@@ -73,7 +73,7 @@ export default function createEngineSelectionBox()
                 { featureName: 'NODE_0_10', number: '0.10' },
                 { featureName: 'NODE_0_12', number: '0.12' },
                 { featureName: 'NODE_4', number: '4' },
-                { featureName: 'NODE_5', number: '5' },
+                { featureName: 'NODE_5', number: '5–9' },
                 { featureName: 'NODE_10', number: '10' },
                 { featureName: 'NODE_11', number: '11' },
                 { featureName: 'NODE_12', number: '12+' },

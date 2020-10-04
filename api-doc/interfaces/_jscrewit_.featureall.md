@@ -1,3 +1,4 @@
+**[JScrewIt](../README.md)**
 
 # Interface: FeatureAll
 
@@ -11,110 +12,110 @@
 
 ### Properties
 
-* [ANDRO_4_0](_jscrewit_.featureall.md#andro_4_0)
-* [ANDRO_4_1](_jscrewit_.featureall.md#andro_4_1)
-* [ANDRO_4_4](_jscrewit_.featureall.md#andro_4_4)
-* [ANY_DOCUMENT](_jscrewit_.featureall.md#any_document)
-* [ANY_WINDOW](_jscrewit_.featureall.md#any_window)
-* [ARRAY_ITERATOR](_jscrewit_.featureall.md#array_iterator)
+* [ANDRO\_4\_0](_jscrewit_.featureall.md#andro_4_0)
+* [ANDRO\_4\_1](_jscrewit_.featureall.md#andro_4_1)
+* [ANDRO\_4\_4](_jscrewit_.featureall.md#andro_4_4)
+* [ANY\_DOCUMENT](_jscrewit_.featureall.md#any_document)
+* [ANY\_WINDOW](_jscrewit_.featureall.md#any_window)
+* [ARRAY\_ITERATOR](_jscrewit_.featureall.md#array_iterator)
 * [ARROW](_jscrewit_.featureall.md#arrow)
 * [ATOB](_jscrewit_.featureall.md#atob)
 * [AUTO](_jscrewit_.featureall.md#auto)
 * [BARPROP](_jscrewit_.featureall.md#barprop)
 * [BROWSER](_jscrewit_.featureall.md#browser)
-* [CAPITAL_HTML](_jscrewit_.featureall.md#capital_html)
+* [CAPITAL\_HTML](_jscrewit_.featureall.md#capital_html)
 * [CHROME](_jscrewit_.featureall.md#chrome)
-* [CHROME_73](_jscrewit_.featureall.md#chrome_73)
-* [CHROME_PREV](_jscrewit_.featureall.md#chrome_prev)
+* [CHROME\_73](_jscrewit_.featureall.md#chrome_73)
+* [CHROME\_PREV](_jscrewit_.featureall.md#chrome_prev)
 * [COMPACT](_jscrewit_.featureall.md#compact)
 * [CONSOLE](_jscrewit_.featureall.md#console)
 * [DEFAULT](_jscrewit_.featureall.md#default)
 * [DOCUMENT](_jscrewit_.featureall.md#document)
 * [DOMWINDOW](_jscrewit_.featureall.md#domwindow)
-* [ESC_HTML_ALL](_jscrewit_.featureall.md#esc_html_all)
-* [ESC_HTML_QUOT](_jscrewit_.featureall.md#esc_html_quot)
-* [ESC_HTML_QUOT_ONLY](_jscrewit_.featureall.md#esc_html_quot_only)
-* [ESC_REGEXP_LF](_jscrewit_.featureall.md#esc_regexp_lf)
-* [ESC_REGEXP_SLASH](_jscrewit_.featureall.md#esc_regexp_slash)
+* [ESC\_HTML\_ALL](_jscrewit_.featureall.md#esc_html_all)
+* [ESC\_HTML\_QUOT](_jscrewit_.featureall.md#esc_html_quot)
+* [ESC\_HTML\_QUOT\_ONLY](_jscrewit_.featureall.md#esc_html_quot_only)
+* [ESC\_REGEXP\_LF](_jscrewit_.featureall.md#esc_regexp_lf)
+* [ESC\_REGEXP\_SLASH](_jscrewit_.featureall.md#esc_regexp_slash)
 * [EXTERNAL](_jscrewit_.featureall.md#external)
 * [FF](_jscrewit_.featureall.md#ff)
-* [FF_78](_jscrewit_.featureall.md#ff_78)
-* [FF_ESR](_jscrewit_.featureall.md#ff_esr)
-* [FF_PREV](_jscrewit_.featureall.md#ff_prev)
-* [FF_SRC](_jscrewit_.featureall.md#ff_src)
+* [FF\_78](_jscrewit_.featureall.md#ff_78)
+* [FF\_ESR](_jscrewit_.featureall.md#ff_esr)
+* [FF\_PREV](_jscrewit_.featureall.md#ff_prev)
+* [FF\_SRC](_jscrewit_.featureall.md#ff_src)
 * [FILL](_jscrewit_.featureall.md#fill)
 * [FLAT](_jscrewit_.featureall.md#flat)
-* [FROM_CODE_POINT](_jscrewit_.featureall.md#from_code_point)
-* [FUNCTION_19_LF](_jscrewit_.featureall.md#function_19_lf)
-* [FUNCTION_22_LF](_jscrewit_.featureall.md#function_22_lf)
+* [FROM\_CODE\_POINT](_jscrewit_.featureall.md#from_code_point)
+* [FUNCTION\_19\_LF](_jscrewit_.featureall.md#function_19_lf)
+* [FUNCTION\_22\_LF](_jscrewit_.featureall.md#function_22_lf)
 * [GMT](_jscrewit_.featureall.md#gmt)
 * [HISTORY](_jscrewit_.featureall.md#history)
 * [HTMLAUDIOELEMENT](_jscrewit_.featureall.md#htmlaudioelement)
 * [HTMLDOCUMENT](_jscrewit_.featureall.md#htmldocument)
-* [IE_10](_jscrewit_.featureall.md#ie_10)
-* [IE_11](_jscrewit_.featureall.md#ie_11)
-* [IE_11_WIN_10](_jscrewit_.featureall.md#ie_11_win_10)
-* [IE_9](_jscrewit_.featureall.md#ie_9)
-* [IE_SRC](_jscrewit_.featureall.md#ie_src)
-* [INCR_CHAR](_jscrewit_.featureall.md#incr_char)
+* [IE\_10](_jscrewit_.featureall.md#ie_10)
+* [IE\_11](_jscrewit_.featureall.md#ie_11)
+* [IE\_11\_WIN\_10](_jscrewit_.featureall.md#ie_11_win_10)
+* [IE\_9](_jscrewit_.featureall.md#ie_9)
+* [IE\_SRC](_jscrewit_.featureall.md#ie_src)
+* [INCR\_CHAR](_jscrewit_.featureall.md#incr_char)
 * [INTL](_jscrewit_.featureall.md#intl)
-* [LOCALE_INFINITY](_jscrewit_.featureall.md#locale_infinity)
+* [LOCALE\_INFINITY](_jscrewit_.featureall.md#locale_infinity)
 * [NAME](_jscrewit_.featureall.md#name)
 * [NODECONSTRUCTOR](_jscrewit_.featureall.md#nodeconstructor)
-* [NODE_0_10](_jscrewit_.featureall.md#node_0_10)
-* [NODE_0_12](_jscrewit_.featureall.md#node_0_12)
-* [NODE_10](_jscrewit_.featureall.md#node_10)
-* [NODE_11](_jscrewit_.featureall.md#node_11)
-* [NODE_12](_jscrewit_.featureall.md#node_12)
-* [NODE_4](_jscrewit_.featureall.md#node_4)
-* [NODE_5](_jscrewit_.featureall.md#node_5)
-* [NO_FF_SRC](_jscrewit_.featureall.md#no_ff_src)
-* [NO_IE_SRC](_jscrewit_.featureall.md#no_ie_src)
-* [NO_OLD_SAFARI_ARRAY_ITERATOR](_jscrewit_.featureall.md#no_old_safari_array_iterator)
-* [NO_V8_SRC](_jscrewit_.featureall.md#no_v8_src)
+* [NODE\_0\_10](_jscrewit_.featureall.md#node_0_10)
+* [NODE\_0\_12](_jscrewit_.featureall.md#node_0_12)
+* [NODE\_10](_jscrewit_.featureall.md#node_10)
+* [NODE\_11](_jscrewit_.featureall.md#node_11)
+* [NODE\_12](_jscrewit_.featureall.md#node_12)
+* [NODE\_4](_jscrewit_.featureall.md#node_4)
+* [NODE\_5](_jscrewit_.featureall.md#node_5)
+* [NO\_FF\_SRC](_jscrewit_.featureall.md#no_ff_src)
+* [NO\_IE\_SRC](_jscrewit_.featureall.md#no_ie_src)
+* [NO\_OLD\_SAFARI\_ARRAY\_ITERATOR](_jscrewit_.featureall.md#no_old_safari_array_iterator)
+* [NO\_V8\_SRC](_jscrewit_.featureall.md#no_v8_src)
 * [SAFARI](_jscrewit_.featureall.md#safari)
-* [SAFARI_10](_jscrewit_.featureall.md#safari_10)
-* [SAFARI_12](_jscrewit_.featureall.md#safari_12)
-* [SAFARI_7_0](_jscrewit_.featureall.md#safari_7_0)
-* [SAFARI_7_1](_jscrewit_.featureall.md#safari_7_1)
-* [SAFARI_8](_jscrewit_.featureall.md#safari_8)
-* [SAFARI_9](_jscrewit_.featureall.md#safari_9)
+* [SAFARI\_10](_jscrewit_.featureall.md#safari_10)
+* [SAFARI\_12](_jscrewit_.featureall.md#safari_12)
+* [SAFARI\_7\_0](_jscrewit_.featureall.md#safari_7_0)
+* [SAFARI\_7\_1](_jscrewit_.featureall.md#safari_7_1)
+* [SAFARI\_8](_jscrewit_.featureall.md#safari_8)
+* [SAFARI\_9](_jscrewit_.featureall.md#safari_9)
 * [SELF](_jscrewit_.featureall.md#self)
-* [SELF_OBJ](_jscrewit_.featureall.md#self_obj)
+* [SELF\_OBJ](_jscrewit_.featureall.md#self_obj)
 * [STATUS](_jscrewit_.featureall.md#status)
 * [UNDEFINED](_jscrewit_.featureall.md#undefined)
-* [V8_SRC](_jscrewit_.featureall.md#v8_src)
+* [V8\_SRC](_jscrewit_.featureall.md#v8_src)
 * [WINDOW](_jscrewit_.featureall.md#window)
 
 ## Properties
 
-###  ANDRO_4_0
+### ANDRO\_4\_0
 
-• **ANDRO_4_0**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **ANDRO\_4\_0**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Android Browser 4.0.
 
 ___
 
-###  ANDRO_4_1
+### ANDRO\_4\_1
 
-• **ANDRO_4_1**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **ANDRO\_4\_1**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Android Browser 4.1 to 4.3.
 
 ___
 
-###  ANDRO_4_4
+### ANDRO\_4\_4
 
-• **ANDRO_4_4**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **ANDRO\_4\_4**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Android Browser 4.4.
 
 ___
 
-###  ANY_DOCUMENT
+### ANY\_DOCUMENT
 
-• **ANY_DOCUMENT**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **ANY\_DOCUMENT**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global object document whose string representation starts with "\[object " and ends with "Document\]".
 
@@ -124,9 +125,9 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android
 
 ___
 
-###  ANY_WINDOW
+### ANY\_WINDOW
 
-• **ANY_WINDOW**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **ANY\_WINDOW**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global object self whose string representation starts with "\[object " and ends with "Window\]".
 
@@ -136,9 +137,9 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android
 
 ___
 
-###  ARRAY_ITERATOR
+### ARRAY\_ITERATOR
 
-• **ARRAY_ITERATOR**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **ARRAY\_ITERATOR**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
 
@@ -148,9 +149,9 @@ Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 0.12+.
 
 ___
 
-###  ARROW
+### ARROW
 
-• **ARROW**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **ARROW**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Support for arrow functions.
 
@@ -160,9 +161,9 @@ Available in Chrome, Edge, Firefox, Safari 10+, Opera and Node.js 4+.
 
 ___
 
-###  ATOB
+### ATOB
 
-• **ATOB**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **ATOB**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global functions atob and btoa.
 
@@ -172,17 +173,17 @@ Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and And
 
 ___
 
-###  AUTO
+### AUTO
 
-• **AUTO**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **AUTO**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 All features available in the current engine.
 
 ___
 
-###  BARPROP
+### BARPROP
 
-• **BARPROP**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **BARPROP**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global object statusbar having the string representation "\[object BarProp\]".
 
@@ -192,9 +193,9 @@ Available in Chrome, Edge, Firefox, Safari, Opera and Android Browser 4.4. This 
 
 ___
 
-###  BROWSER
+### BROWSER
 
-• **BROWSER**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **BROWSER**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in all browsers.
 
@@ -202,9 +203,9 @@ No support for Node.js.
 
 ___
 
-###  CAPITAL_HTML
+### CAPITAL\_HTML
 
-• **CAPITAL_HTML**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **CAPITAL\_HTML**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 The property that the various string methods returning HTML code such as String.prototype.big or String.prototype.link have both the tag name and attributes written in capital letters.
 
@@ -214,33 +215,33 @@ Available in Internet Explorer.
 
 ___
 
-###  CHROME
+### CHROME
 
-• **CHROME**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **CHROME**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 An alias for `CHROME_73`.
 
 ___
 
-###  CHROME_73
+### CHROME\_73
 
-• **CHROME_73**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **CHROME\_73**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Chrome 73, Edge 79 and Opera 60 or later.
 
 ___
 
-###  CHROME_PREV
+### CHROME\_PREV
 
-• **CHROME_PREV**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **CHROME\_PREV**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 An alias for `CHROME_73`.
 
 ___
 
-###  COMPACT
+### COMPACT
 
-• **COMPACT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **COMPACT**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 All new browsers' features.
 
@@ -248,9 +249,9 @@ No support for Node.js and older browsers like Internet Explorer, Safari 9 or An
 
 ___
 
-###  CONSOLE
+### CONSOLE
 
-• **CONSOLE**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **CONSOLE**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global object console having the string representation "\[object Console\]".
 
@@ -262,17 +263,17 @@ Available in Internet Explorer 10+, Safari and Android Browser. This feature is 
 
 ___
 
-###  DEFAULT
+### DEFAULT
 
-• **DEFAULT**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **DEFAULT**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Minimum feature level, compatible with all supported engines in all environments.
 
 ___
 
-###  DOCUMENT
+### DOCUMENT
 
-• **DOCUMENT**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **DOCUMENT**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global object document having the string representation "\[object Document\]".
 
@@ -282,9 +283,9 @@ Available in Internet Explorer before 11. This feature is not available inside w
 
 ___
 
-###  DOMWINDOW
+### DOMWINDOW
 
-• **DOMWINDOW**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **DOMWINDOW**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global object self having the string representation "\[object DOMWindow\]".
 
@@ -294,9 +295,9 @@ Available in Android Browser before 4.4. This feature is not available inside we
 
 ___
 
-###  ESC_HTML_ALL
+### ESC\_HTML\_ALL
 
-• **ESC_HTML_ALL**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **ESC\_HTML\_ALL**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
 
@@ -306,9 +307,9 @@ Available in Android Browser and Node.js before 0.12.
 
 ___
 
-###  ESC_HTML_QUOT
+### ESC\_HTML\_QUOT
 
-• **ESC_HTML_QUOT**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **ESC\_HTML\_QUOT**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 The property that double quotation marks in the argument of String.prototype.fontcolor are escaped as "\&quot;".
 
@@ -318,9 +319,9 @@ Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
 
 ___
 
-###  ESC_HTML_QUOT_ONLY
+### ESC\_HTML\_QUOT\_ONLY
 
-• **ESC_HTML_QUOT_ONLY**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **ESC\_HTML\_QUOT\_ONLY**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 The property that only double quotation marks and no other characters in the argument of String.prototype.fontcolor are escaped into HTML entities.
 
@@ -330,9 +331,9 @@ Available in Chrome, Edge, Firefox, Safari, Opera and Node.js 0.12+.
 
 ___
 
-###  ESC_REGEXP_LF
+### ESC\_REGEXP\_LF
 
-• **ESC_REGEXP_LF**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **ESC\_REGEXP\_LF**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format line feed characters \("\\n"\) in their string representation.
 
@@ -342,9 +343,9 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Node.js
 
 ___
 
-###  ESC_REGEXP_SLASH
+### ESC\_REGEXP\_SLASH
 
-• **ESC_REGEXP_SLASH**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **ESC\_REGEXP\_SLASH**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format slashes \("/"\) in their string representation.
 
@@ -354,9 +355,9 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Node.js
 
 ___
 
-###  EXTERNAL
+### EXTERNAL
 
-• **EXTERNAL**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **EXTERNAL**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global object sidebar having the string representation "\[object External\]".
 
@@ -366,41 +367,41 @@ Available in Firefox. This feature is not available inside web workers.
 
 ___
 
-###  FF
+### FF
 
-• **FF**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **FF**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 An alias for `FF_78`.
 
 ___
 
-###  FF_78
+### FF\_78
 
-• **FF_78**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **FF\_78**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Firefox 78 or later.
 
 ___
 
-###  FF_ESR
+### FF\_ESR
 
-• **FF_ESR**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
-
-An alias for `FF_78`.
-
-___
-
-###  FF_PREV
-
-• **FF_PREV**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **FF\_ESR**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 An alias for `FF_78`.
 
 ___
 
-###  FF_SRC
+### FF\_PREV
 
-• **FF_SRC**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **FF\_PREV**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
+
+An alias for `FF_78`.
+
+___
+
+### FF\_SRC
+
+•  **FF\_SRC**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 A string representation of native functions typical for Firefox and Safari.
 
@@ -412,9 +413,9 @@ Available in Firefox and Safari.
 
 ___
 
-###  FILL
+### FILL
 
-• **FILL**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **FILL**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the native function Array.prototype.fill.
 
@@ -424,9 +425,9 @@ Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 4+.
 
 ___
 
-###  FLAT
+### FLAT
 
-• **FLAT**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **FLAT**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the native function Array.prototype.flat.
 
@@ -436,9 +437,9 @@ Available in Chrome, Edge, Firefox, Safari 12+, Opera and Node.js 11+.
 
 ___
 
-###  FROM_CODE_POINT
+### FROM\_CODE\_POINT
 
-• **FROM_CODE_POINT**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **FROM\_CODE\_POINT**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the function String.fromCodePoint.
 
@@ -448,9 +449,9 @@ Available in Chrome, Edge, Firefox, Safari 9+, Opera and Node.js 4+.
 
 ___
 
-###  FUNCTION_19_LF
+### FUNCTION\_19\_LF
 
-• **FUNCTION_19_LF**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **FUNCTION\_19\_LF**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 A string representation of dynamically generated functions where the character at index 19 is a line feed \("\\n"\).
 
@@ -460,9 +461,9 @@ Available in Chrome, Edge, Firefox, Opera and Node.js 10+.
 
 ___
 
-###  FUNCTION_22_LF
+### FUNCTION\_22\_LF
 
-• **FUNCTION_22_LF**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **FUNCTION\_22\_LF**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 A string representation of dynamically generated functions where the character at index 22 is a line feed \("\\n"\).
 
@@ -472,9 +473,9 @@ Available in Internet Explorer, Safari 9+, Android Browser and Node.js before 10
 
 ___
 
-###  GMT
+### GMT
 
-• **GMT**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **GMT**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
 
@@ -486,9 +487,9 @@ Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, Android
 
 ___
 
-###  HISTORY
+### HISTORY
 
-• **HISTORY**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **HISTORY**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global object history having the string representation "\[object History\]".
 
@@ -498,9 +499,9 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android
 
 ___
 
-###  HTMLAUDIOELEMENT
+### HTMLAUDIOELEMENT
 
-• **HTMLAUDIOELEMENT**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **HTMLAUDIOELEMENT**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global object Audio whose string representation starts with "function HTMLAudioElement".
 
@@ -510,9 +511,9 @@ Available in Android Browser 4.4. This feature is not available inside web worke
 
 ___
 
-###  HTMLDOCUMENT
+### HTMLDOCUMENT
 
-• **HTMLDOCUMENT**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **HTMLDOCUMENT**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global object document having the string representation "\[object HTMLDocument\]".
 
@@ -522,41 +523,41 @@ Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera and Andr
 
 ___
 
-###  IE_10
+### IE\_10
 
-• **IE_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **IE\_10**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Internet Explorer 10.
 
 ___
 
-###  IE_11
+### IE\_11
 
-• **IE_11**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **IE\_11**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Internet Explorer 11.
 
 ___
 
-###  IE_11_WIN_10
+### IE\_11\_WIN\_10
 
-• **IE_11_WIN_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **IE\_11\_WIN\_10**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Internet Explorer 11 on Windows 10.
 
 ___
 
-###  IE_9
+### IE\_9
 
-• **IE_9**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **IE\_9**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Internet Explorer 9.
 
 ___
 
-###  IE_SRC
+### IE\_SRC
 
-• **IE_SRC**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **IE\_SRC**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 A string representation of native functions typical for Internet Explorer.
 
@@ -568,9 +569,9 @@ Available in Internet Explorer.
 
 ___
 
-###  INCR_CHAR
+### INCR\_CHAR
 
-• **INCR_CHAR**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **INCR\_CHAR**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 The ability to use unary increment operators with string characters, like in \( ++"some string"\[0\] \): this will result in a TypeError in strict mode in ECMAScript compliant engines.
 
@@ -580,9 +581,9 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Br
 
 ___
 
-###  INTL
+### INTL
 
-• **INTL**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **INTL**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global object Intl.
 
@@ -592,9 +593,9 @@ Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, And
 
 ___
 
-###  LOCALE_INFINITY
+### LOCALE\_INFINITY
 
-• **LOCALE_INFINITY**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **LOCALE\_INFINITY**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Language sensitive string representation of Infinity as "∞".
 
@@ -604,9 +605,9 @@ Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 1
 
 ___
 
-###  NAME
+### NAME
 
-• **NAME**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **NAME**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the name property for functions.
 
@@ -616,9 +617,9 @@ Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
 
 ___
 
-###  NODECONSTRUCTOR
+### NODECONSTRUCTOR
 
-• **NODECONSTRUCTOR**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **NODECONSTRUCTOR**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global object Node having the string representation "\[object NodeConstructor\]".
 
@@ -628,65 +629,65 @@ Available in Safari before 10. This feature is not available inside web workers.
 
 ___
 
-###  NODE_0_10
+### NODE\_0\_10
 
-• **NODE_0_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **NODE\_0\_10**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Node.js 0.10.
 
 ___
 
-###  NODE_0_12
+### NODE\_0\_12
 
-• **NODE_0_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **NODE\_0\_12**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Node.js 0.12.
 
 ___
 
-###  NODE_10
+### NODE\_10
 
-• **NODE_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **NODE\_10**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Node.js 10.
 
 ___
 
-###  NODE_11
+### NODE\_11
 
-• **NODE_11**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **NODE\_11**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Node.js 11.
 
 ___
 
-###  NODE_12
+### NODE\_12
 
-• **NODE_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **NODE\_12**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Node.js 12 or later.
 
 ___
 
-###  NODE_4
+### NODE\_4
 
-• **NODE_4**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **NODE\_4**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Node.js 4.
 
 ___
 
-###  NODE_5
+### NODE\_5
 
-• **NODE_5**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **NODE\_5**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Node.js 5 to 9.
 
 ___
 
-###  NO_FF_SRC
+### NO\_FF\_SRC
 
-• **NO_FF_SRC**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **NO\_FF\_SRC**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 A string representation of native functions typical for V8 or for Internet Explorer but not for Firefox and Safari.
 
@@ -696,9 +697,9 @@ Available in Chrome, Edge, Internet Explorer, Opera, Android Browser and Node.js
 
 ___
 
-###  NO_IE_SRC
+### NO\_IE\_SRC
 
-• **NO_IE_SRC**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **NO\_IE\_SRC**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 A string representation of native functions typical for most engines with the notable exception of Internet Explorer.
 
@@ -710,9 +711,9 @@ Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
 
 ___
 
-###  NO_OLD_SAFARI_ARRAY_ITERATOR
+### NO\_OLD\_SAFARI\_ARRAY\_ITERATOR
 
-• **NO_OLD_SAFARI_ARRAY_ITERATOR**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **NO\_OLD\_SAFARI\_ARRAY\_ITERATOR**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
 
@@ -722,9 +723,9 @@ Available in Chrome, Edge, Firefox, Safari 9+, Opera and Node.js 0.12+.
 
 ___
 
-###  NO_V8_SRC
+### NO\_V8\_SRC
 
-• **NO_V8_SRC**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **NO\_V8\_SRC**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 A string representation of native functions typical for Firefox, Internet Explorer and Safari.
 
@@ -736,73 +737,73 @@ Available in Firefox, Internet Explorer and Safari.
 
 ___
 
-###  SAFARI
+### SAFARI
 
-• **SAFARI**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **SAFARI**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 An alias for `SAFARI_12`.
 
 ___
 
-###  SAFARI_10
+### SAFARI\_10
 
-• **SAFARI_10**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **SAFARI\_10**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Safari 10 or later.
 
 ___
 
-###  SAFARI_12
+### SAFARI\_12
 
-• **SAFARI_12**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **SAFARI\_12**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Safari 12 or later.
 
 ___
 
-###  SAFARI_7_0
+### SAFARI\_7\_0
 
-• **SAFARI_7_0**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **SAFARI\_7\_0**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Safari 7.0.
 
 ___
 
-###  SAFARI_7_1
+### SAFARI\_7\_1
 
-• **SAFARI_7_1**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **SAFARI\_7\_1**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Safari 7.1 and Safari 8.
 
 ___
 
-###  SAFARI_8
+### SAFARI\_8
 
-• **SAFARI_8**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **SAFARI\_8**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 An alias for `SAFARI_7_1`.
 
 ___
 
-###  SAFARI_9
+### SAFARI\_9
 
-• **SAFARI_9**: *[PredefinedFeature](_jscrewit_.predefinedfeature.md)*
+•  **SAFARI\_9**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Safari 9.
 
 ___
 
-###  SELF
+### SELF
 
-• **SELF**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **SELF**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 An alias for `ANY_WINDOW`.
 
 ___
 
-###  SELF_OBJ
+### SELF\_OBJ
 
-• **SELF_OBJ**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **SELF\_OBJ**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global object self whose string representation starts with "\[object ".
 
@@ -812,9 +813,9 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android
 
 ___
 
-###  STATUS
+### STATUS
 
-• **STATUS**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **STATUS**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global string status.
 
@@ -824,9 +825,9 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android
 
 ___
 
-###  UNDEFINED
+### UNDEFINED
 
-• **UNDEFINED**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **UNDEFINED**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
 
@@ -838,9 +839,9 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Br
 
 ___
 
-###  V8_SRC
+### V8\_SRC
 
-• **V8_SRC**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **V8\_SRC**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 A string representation of native functions typical for the V8 engine.
 
@@ -852,9 +853,9 @@ Available in Chrome, Edge, Opera, Android Browser and Node.js.
 
 ___
 
-###  WINDOW
+### WINDOW
 
-• **WINDOW**: *[ElementaryFeature](_jscrewit_.elementaryfeature.md)*
+•  **WINDOW**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
 
 Existence of the global object self having the string representation "\[object Window\]".
 

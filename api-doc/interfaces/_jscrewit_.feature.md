@@ -1,3 +1,4 @@
+**[JScrewIt](../README.md)**
 
 # Interface: Feature
 
@@ -5,7 +6,7 @@ Objects of this type indicate which of the capabilities that JScrewIt can use to
 length of its output are available in a particular JavaScript engine.
 
 JScrewIt comes with a set of predefined feature objects exposed as property values of
-`JScrewIt.Feature` or <code>[JScrewIt.Feature.ALL](_jscrewit_.featureconstructor.md#readonly-all)</code>, where the property name is
+`JScrewIt.Feature` or <code>[JScrewIt.Feature.ALL](_jscrewit_.featureconstructor.md#all)</code>, where the property name is
 the feature's name or an alias thereof.
 
 Besides these predefined features, it is possible to construct custom features from the union
@@ -34,11 +35,11 @@ constructed.
 
 ### Properties
 
-* [canonicalNames](_jscrewit_.feature.md#readonly-canonicalnames)
-* [description](_jscrewit_.feature.md#optional-description)
-* [elementary](_jscrewit_.feature.md#readonly-elementary)
-* [elementaryNames](_jscrewit_.feature.md#readonly-elementarynames)
-* [name](_jscrewit_.feature.md#optional-name)
+* [canonicalNames](_jscrewit_.feature.md#canonicalnames)
+* [description](_jscrewit_.feature.md#description)
+* [elementary](_jscrewit_.feature.md#elementary)
+* [elementaryNames](_jscrewit_.feature.md#elementarynames)
+* [name](_jscrewit_.feature.md#name)
 
 ### Methods
 
@@ -47,18 +48,18 @@ constructed.
 
 ## Properties
 
-### `Readonly` canonicalNames
+### canonicalNames
 
-• **canonicalNames**: *[ElementaryFeatureName](../modules/_jscrewit_.md#elementaryfeaturename)[]*
+• `Readonly` **canonicalNames**: [ElementaryFeatureName](../modules/_jscrewit_.md#elementaryfeaturename)[]
 
 An array of all elementary feature names included in this feature object, without aliases
 and implied features.
 
 ___
 
-### `Optional` description
+### description
 
-• **description**? : *undefined | string*
+• `Optional` **description**: undefined \| string
 
 A short description of this feature object in plain English.
 
@@ -67,26 +68,26 @@ If desired, custom features may be assigned a description, too.
 
 ___
 
-### `Readonly` elementary
+### elementary
 
-• **elementary**: *boolean*
+• `Readonly` **elementary**: boolean
 
 A boolean value indicating whether this is an elementary feature object.
 
 ___
 
-### `Readonly` elementaryNames
+### elementaryNames
 
-• **elementaryNames**: *[ElementaryFeatureName](../modules/_jscrewit_.md#elementaryfeaturename)[]*
+• `Readonly` **elementaryNames**: [ElementaryFeatureName](../modules/_jscrewit_.md#elementaryfeaturename)[]
 
 An array of all elementary feature names included in this feature object, without
 aliases.
 
 ___
 
-### `Optional` name
+### name
 
-• **name**? : *undefined | string*
+• `Optional` **name**: undefined \| string
 
 The primary name of this feature object, useful for identification purpose.
 
@@ -95,28 +96,28 @@ If desired, custom features may be assigned a name, too.
 
 ## Methods
 
-###  includes
+### includes
 
-▸ **includes**(...`features`: [Feature](_jscrewit_.customfeature.md#feature) | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "BARPROP" | "CAPITAL_HTML" | "CONSOLE" | "DOCUMENT" | "DOMWINDOW" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "V8_SRC" | "WINDOW" | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "AUTO" | "BROWSER" | "CHROME_73" | "COMPACT" | "DEFAULT" | "FF_78" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "CHROME" | "CHROME_PREV" | "FF" | "FF_ESR" | "FF_PREV" | "SAFARI" | "SAFARI_8" | "SELF" | ReadonlyArray‹[Feature](_jscrewit_.customfeature.md#feature) | "ANY_DOCUMENT" | "ANY_WINDOW" | "ARRAY_ITERATOR" | "ARROW" | "ATOB" | "BARPROP" | "CAPITAL_HTML" | "CONSOLE" | "DOCUMENT" | "DOMWINDOW" | "ESC_HTML_ALL" | "ESC_HTML_QUOT" | "ESC_HTML_QUOT_ONLY" | "ESC_REGEXP_LF" | "ESC_REGEXP_SLASH" | "EXTERNAL" | "FF_SRC" | "FILL" | "FLAT" | "FROM_CODE_POINT" | "FUNCTION_19_LF" | "FUNCTION_22_LF" | "GMT" | "HISTORY" | "HTMLAUDIOELEMENT" | "HTMLDOCUMENT" | "IE_SRC" | "INCR_CHAR" | "INTL" | "LOCALE_INFINITY" | "NAME" | "NODECONSTRUCTOR" | "NO_FF_SRC" | "NO_IE_SRC" | "NO_OLD_SAFARI_ARRAY_ITERATOR" | "NO_V8_SRC" | "SELF_OBJ" | "STATUS" | "UNDEFINED" | "V8_SRC" | "WINDOW" | "ANDRO_4_0" | "ANDRO_4_1" | "ANDRO_4_4" | "AUTO" | "BROWSER" | "CHROME_73" | "COMPACT" | "DEFAULT" | "FF_78" | "IE_10" | "IE_11" | "IE_11_WIN_10" | "IE_9" | "NODE_0_10" | "NODE_0_12" | "NODE_10" | "NODE_11" | "NODE_12" | "NODE_4" | "NODE_5" | "SAFARI_10" | "SAFARI_12" | "SAFARI_7_0" | "SAFARI_7_1" | "SAFARI_9" | "CHROME" | "CHROME_PREV" | "FF" | "FF_ESR" | "FF_PREV" | "SAFARI" | "SAFARI_8" | "SELF"›[]): *boolean*
+▸ **includes**(...`features`: ([FeatureElement](../modules/_jscrewit_.md#featureelement) \| [CompatibleFeatureArray](../modules/_jscrewit_.md#compatiblefeaturearray))[]): boolean
 
 Determines whether this feature object includes all of the specified features.
 
-**Parameters:**
+#### Parameters:
 
 Name | Type |
 ------ | ------ |
-`...features` | [Feature](_jscrewit_.customfeature.md#feature) &#124; "ANY_DOCUMENT" &#124; "ANY_WINDOW" &#124; "ARRAY_ITERATOR" &#124; "ARROW" &#124; "ATOB" &#124; "BARPROP" &#124; "CAPITAL_HTML" &#124; "CONSOLE" &#124; "DOCUMENT" &#124; "DOMWINDOW" &#124; "ESC_HTML_ALL" &#124; "ESC_HTML_QUOT" &#124; "ESC_HTML_QUOT_ONLY" &#124; "ESC_REGEXP_LF" &#124; "ESC_REGEXP_SLASH" &#124; "EXTERNAL" &#124; "FF_SRC" &#124; "FILL" &#124; "FLAT" &#124; "FROM_CODE_POINT" &#124; "FUNCTION_19_LF" &#124; "FUNCTION_22_LF" &#124; "GMT" &#124; "HISTORY" &#124; "HTMLAUDIOELEMENT" &#124; "HTMLDOCUMENT" &#124; "IE_SRC" &#124; "INCR_CHAR" &#124; "INTL" &#124; "LOCALE_INFINITY" &#124; "NAME" &#124; "NODECONSTRUCTOR" &#124; "NO_FF_SRC" &#124; "NO_IE_SRC" &#124; "NO_OLD_SAFARI_ARRAY_ITERATOR" &#124; "NO_V8_SRC" &#124; "SELF_OBJ" &#124; "STATUS" &#124; "UNDEFINED" &#124; "V8_SRC" &#124; "WINDOW" &#124; "ANDRO_4_0" &#124; "ANDRO_4_1" &#124; "ANDRO_4_4" &#124; "AUTO" &#124; "BROWSER" &#124; "CHROME_73" &#124; "COMPACT" &#124; "DEFAULT" &#124; "FF_78" &#124; "IE_10" &#124; "IE_11" &#124; "IE_11_WIN_10" &#124; "IE_9" &#124; "NODE_0_10" &#124; "NODE_0_12" &#124; "NODE_10" &#124; "NODE_11" &#124; "NODE_12" &#124; "NODE_4" &#124; "NODE_5" &#124; "SAFARI_10" &#124; "SAFARI_12" &#124; "SAFARI_7_0" &#124; "SAFARI_7_1" &#124; "SAFARI_9" &#124; "CHROME" &#124; "CHROME_PREV" &#124; "FF" &#124; "FF_ESR" &#124; "FF_PREV" &#124; "SAFARI" &#124; "SAFARI_8" &#124; "SELF" &#124; ReadonlyArray‹[Feature](_jscrewit_.customfeature.md#feature) &#124; "ANY_DOCUMENT" &#124; "ANY_WINDOW" &#124; "ARRAY_ITERATOR" &#124; "ARROW" &#124; "ATOB" &#124; "BARPROP" &#124; "CAPITAL_HTML" &#124; "CONSOLE" &#124; "DOCUMENT" &#124; "DOMWINDOW" &#124; "ESC_HTML_ALL" &#124; "ESC_HTML_QUOT" &#124; "ESC_HTML_QUOT_ONLY" &#124; "ESC_REGEXP_LF" &#124; "ESC_REGEXP_SLASH" &#124; "EXTERNAL" &#124; "FF_SRC" &#124; "FILL" &#124; "FLAT" &#124; "FROM_CODE_POINT" &#124; "FUNCTION_19_LF" &#124; "FUNCTION_22_LF" &#124; "GMT" &#124; "HISTORY" &#124; "HTMLAUDIOELEMENT" &#124; "HTMLDOCUMENT" &#124; "IE_SRC" &#124; "INCR_CHAR" &#124; "INTL" &#124; "LOCALE_INFINITY" &#124; "NAME" &#124; "NODECONSTRUCTOR" &#124; "NO_FF_SRC" &#124; "NO_IE_SRC" &#124; "NO_OLD_SAFARI_ARRAY_ITERATOR" &#124; "NO_V8_SRC" &#124; "SELF_OBJ" &#124; "STATUS" &#124; "UNDEFINED" &#124; "V8_SRC" &#124; "WINDOW" &#124; "ANDRO_4_0" &#124; "ANDRO_4_1" &#124; "ANDRO_4_4" &#124; "AUTO" &#124; "BROWSER" &#124; "CHROME_73" &#124; "COMPACT" &#124; "DEFAULT" &#124; "FF_78" &#124; "IE_10" &#124; "IE_11" &#124; "IE_11_WIN_10" &#124; "IE_9" &#124; "NODE_0_10" &#124; "NODE_0_12" &#124; "NODE_10" &#124; "NODE_11" &#124; "NODE_12" &#124; "NODE_4" &#124; "NODE_5" &#124; "SAFARI_10" &#124; "SAFARI_12" &#124; "SAFARI_7_0" &#124; "SAFARI_7_1" &#124; "SAFARI_9" &#124; "CHROME" &#124; "CHROME_PREV" &#124; "FF" &#124; "FF_ESR" &#124; "FF_PREV" &#124; "SAFARI" &#124; "SAFARI_8" &#124; "SELF"›[] |
+`...features` | ([FeatureElement](../modules/_jscrewit_.md#featureelement) \| [CompatibleFeatureArray](../modules/_jscrewit_.md#compatiblefeaturearray))[] |
 
-**Returns:** *boolean*
+**Returns:** boolean
 
 `true` if this feature object includes all of the specified features; otherwise, `false`.
 If no arguments are specified, the return value is `true`.
 
 ___
 
-###  restrict
+### restrict
 
-▸ **restrict**(`environment`: "forced-strict-mode" | "web-worker", `engineFeatureObjs?`: keyof PredefinedFeature[]): *[CustomFeature](_jscrewit_.customfeature.md)*
+▸ **restrict**(`environment`: \"forced-strict-mode\" \| \"web-worker\", `engineFeatureObjs?`: readonly [PredefinedFeature](_jscrewit_.predefinedfeature.md)[]): [CustomFeature](_jscrewit_.customfeature.md)
 
 Creates a new feature object from this feature by removing elementary features that are
 not available inside a particular environment.
@@ -124,11 +125,11 @@ not available inside a particular environment.
 This method is useful to selectively exclude features that are not available inside a web
 worker.
 
-**Parameters:**
+#### Parameters:
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`environment` | "forced-strict-mode" &#124; "web-worker" |   The environment to which this feature should be restricted. Two environments are currently supported.  <dl>  <dt><code>"forced-strict-mode"</code></dt> <dd> Removes features that are not available in environments that require strict mode code. </dd>  <dt><code>"web-worker"</code></dt> <dd>Removes features that are not available inside web workers.</dd>  </dl>  |
-`engineFeatureObjs?` | keyof PredefinedFeature[] |   An array of predefined feature objects, each corresponding to a particular engine in which the restriction should be enacted. If this parameter is omitted, the restriction is enacted in all engines.  |
+`environment` | \"forced-strict-mode\" \| \"web-worker\" |   The environment to which this feature should be restricted. Two environments are currently supported.  <dl>  <dt><code>"forced-strict-mode"</code></dt> <dd> Removes features that are not available in environments that require strict mode code. </dd>  <dt><code>"web-worker"</code></dt> <dd>Removes features that are not available inside web workers.</dd>  </dl>  |
+`engineFeatureObjs?` | readonly [PredefinedFeature](_jscrewit_.predefinedfeature.md)[] |   An array of predefined feature objects, each corresponding to a particular engine in which the restriction should be enacted. If this parameter is omitted, the restriction is enacted in all engines.  |
 
-**Returns:** *[CustomFeature](_jscrewit_.customfeature.md)*
+**Returns:** [CustomFeature](_jscrewit_.customfeature.md)
