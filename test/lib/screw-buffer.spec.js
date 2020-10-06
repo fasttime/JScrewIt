@@ -9,12 +9,6 @@
     var SCREW_AS_STRING          = 1;
     var SCREW_AS_BONDED_STRING   = 2;
 
-    function createCommaSolution()
-    {
-        var solution = JScrewIt.debug.createBridgeSolution('.concat');
-        return solution;
-    }
-
     function createTestOptimizer(solution)
     {
         var clusterer =
@@ -153,7 +147,6 @@
             var solution0False = new Solution('0false', '[+[]]+![]', SolutionType.COMBINED_STRING);
             var solutionFalse = new Solution('false', '![]', SolutionType.NUMERIC);
             var solutionFalse0 = new Solution('false0', '![]+[+[]]', SolutionType.PREFIXED_STRING);
-            var solutionComma = createCommaSolution();
             var solutionUndefined = new Solution('undefined', '[][[]]', SolutionType.UNDEFINED);
             var strTestOptimizer =
             createTestOptimizer(new Solution(undefined, '""', SolutionType.STRING));
@@ -354,20 +347,6 @@
                     solutions: [solutionUndefined, solutionUndefined, solution00],
                     expectedReplacement: '[][[]]+([][[]]+(+[]+[+[]]))',
                 },
-                {
-                    title:
-                    'encodes a string with a trailing bridge',
-                    solutions:
-                    [
-                        solutionFalse,
-                        solutionFalse,
-                        solutionFalse,
-                        solutionFalse,
-                        solutionFalse,
-                        solutionComma,
-                    ],
-                    expectedReplacement: '[![]]+![]+![]+[[![]]+![]].concat([[]])',
-                },
             ];
             it.per(concatParamDataList)
             (
@@ -411,24 +390,6 @@
             );
             it
             (
-                'encodes a string with multiple bridges',
-                function ()
-                {
-                    var buffer = createScrewBuffer(SCREW_AS_STRING, 4, []);
-                    for (var index = 0; index < 5; ++index)
-                        buffer.append(solutionComma);
-                    var expectedLength = INITIAL_APPEND_LENGTH + 5 * solutionComma.appendLength;
-                    verifyBuffer
-                    (
-                        buffer,
-                        '[[]].concat([[]]).concat([[]]).concat([[]])+' +
-                        '[[]].concat([[]]).concat([[]])',
-                        expectedLength
-                    );
-                }
-            );
-            it
-            (
                 'considers the lowest append length when solutions are appended',
                 function ()
                 {
@@ -445,34 +406,15 @@
                     expect(buffer.length).toBe(INITIAL_APPEND_LENGTH + solutionA.appendLength);
                 }
             );
-            describe
+            it
             (
                 'length does not exceed string length when joining solutions with outer plus',
                 function ()
                 {
-                    it
-                    (
-                        'without a bridge',
-                        function ()
-                        {
-                            var buffer = createScrewBuffer(SCREW_NORMAL, 4, []);
-                            buffer.append(solution0);
-                            buffer.append(solution0);
-                            expect(buffer.length).not.toBeGreaterThan(buffer.toString().length);
-                        }
-                    );
-                    it
-                    (
-                        'with a bridge',
-                        function ()
-                        {
-                            var buffer = createScrewBuffer(SCREW_NORMAL, 4, []);
-                            buffer.append(solution0);
-                            buffer.append(solutionComma);
-                            buffer.append(solution0);
-                            expect(buffer.length).not.toBeGreaterThan(buffer.toString().length);
-                        }
-                    );
+                    var buffer = createScrewBuffer(SCREW_NORMAL, 4, []);
+                    buffer.append(solution0);
+                    buffer.append(solution0);
+                    expect(buffer.length).not.toBeGreaterThan(buffer.toString().length);
                 }
             );
         }

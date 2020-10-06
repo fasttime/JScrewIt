@@ -1,7 +1,6 @@
-import createClusteringPlan                                 from './clustering-plan';
-import { _Math_max, _Math_pow, assignNoEnum }               from './obj-utils';
-import Solution                                             from './solution';
-import { EMPTY_SOLUTION, DynamicSolution, SolutionType }    from 'novem';
+import createClusteringPlan                     from './clustering-plan';
+import { _Math_max, _Math_pow, assignNoEnum }   from './obj-utils';
+import { EMPTY_SOLUTION, DynamicSolution }      from 'novem';
 
 // This implementation assumes that all numeric solutions have an outer plus, and all other
 // character solutions have none.
@@ -26,193 +25,20 @@ export var optimizeSolutions;
 
 (function ()
 {
-    function gatherGroup(solutions, bond, forceString, bridgeUsed)
+    function gatherGroup(solutions, bond, forceString)
     {
-        function appendRightBridgedParts(count)
-        {
-            var str = sequenceAsString(index, count, '[[]]');
-            bridgedPartArray.push(str, ')');
-        }
-
-        function appendSolutions(solution, offset, count)
-        {
-            for (var end = offset + count; offset < end; ++offset)
-            {
-                var subSolution = solutions[offset];
-                solution.append(subSolution);
-            }
-        }
-
-        function canSplitRightEndForFree(lastBridgeIndex)
-        {
-            var rightEndIndex = lastBridgeIndex + 1;
-            var rightEndLength = solutions.length - rightEndIndex;
-            var returnValue =
-            rightEndLength > 2 || rightEndLength > 1 && !isUnluckyRightEnd(rightEndIndex);
-            return returnValue;
-        }
-
-        function findLastBridge()
-        {
-            for (var index = solutions.length; index--;)
-            {
-                var solution = solutions[index];
-                if (solution.bridge)
-                    return index;
-            }
-        }
-
-        function findNextBridge(index)
-        {
-            for (;; ++index)
-            {
-                var solution = solutions[index];
-                if (solution.bridge)
-                    return index;
-            }
-        }
-
-        function findSplitIndex(intrinsicSplitCost, firstBridgeIndex, lastBridgeIndex)
-        {
-            var index = 1;
-            var lastIndex = firstBridgeIndex - 1;
-            var optimalSplitCost = getSplitCostAt(index, true, index === lastIndex);
-            var splitIndex = index;
-            while (++index < firstBridgeIndex)
-            {
-                var splitCost = getSplitCostAt(index, false, index === lastIndex);
-                if (splitCost < optimalSplitCost)
-                {
-                    optimalSplitCost = splitCost;
-                    splitIndex = index;
-                }
-            }
-            if
-            (
-                optimalSplitCost + intrinsicSplitCost < 0 &&
-                !(optimalSplitCost > 0 && canSplitRightEndForFree(lastBridgeIndex))
-            )
-                return splitIndex;
-        }
-
-        function getSplitCostAt(index, leftmost, rightmost)
-        {
-            var solutionCenter = solutions[index];
-            var solutionLeft;
-            var solutionRight;
-            var splitCost =
-            (
-                rightmost && solutionCenter.isUndefined ?
-                3 :
-                isArithmeticJoin(solutionCenter, solutionRight = solutions[index + 1]) ?
-                getArithmeticJoinCost(solutionCenter, solutionRight) -
-                (solutionRight.isWeak ? 2 : 0) :
-                0
-            ) -
-            (
-                leftmost &&
-                isArithmeticJoin(solutionCenter, solutionLeft = solutions[index - 1]) ?
-                getArithmeticJoinCost(solutionLeft, solutionCenter) :
-                solutionCenter.isWeak ? 2 : 0
-            );
-            return splitCost;
-        }
-
-        function isUnluckyRightEnd(firstIndex)
-        {
-            var returnValue =
-            solutions[firstIndex].isUndefined && !solutions[firstIndex + 1].isUndefined;
-            return returnValue;
-        }
-
-        function sequenceAsString(offset, count, emptyReplacement)
-        {
-            var str;
-            if (count)
-            {
-                var solution = new DynamicSolution();
-                appendSolutions(solution, offset, count);
-                if (solution.isUndefined)
-                    solution.prepend(EMPTY_SOLUTION);
-                str = solution.replacement;
-            }
-            else
-                str = emptyReplacement;
-            return str;
-        }
-
         var solution = new DynamicSolution();
-        var count = solutions.length;
-        if (count > 1)
+        for (var index = 0, count = solutions.length; index < count; ++index)
         {
-            var lastBridgeIndex;
-            if (bridgeUsed)
-                lastBridgeIndex = findLastBridge();
-            if (lastBridgeIndex == null)
-                appendSolutions(solution, 0, count);
-            else
-            {
-                var bridgeIndex = findNextBridge(0);
-                var index;
-                if (bridgeIndex > 1)
-                {
-                    var intrinsicSplitCost = forceString ? -3 : bond ? 2 : 0;
-                    index = findSplitIndex(intrinsicSplitCost, bridgeIndex, lastBridgeIndex);
-                }
-                var singlePart = index == null;
-                if (singlePart)
-                    index = 0;
-                else
-                {
-                    // Keep the first solutions out of the bridged context to reduce output length.
-                    appendSolutions(solution, 0, index);
-                }
-                var bridgedPartArray =
-                ['[', sequenceAsString(index, bridgeIndex - index, '[]'), ']'];
-                for (;;)
-                {
-                    bridgedPartArray.push(solutions[bridgeIndex].bridge, '(');
-                    index = bridgeIndex + 1;
-                    if (bridgeIndex === lastBridgeIndex)
-                        break;
-                    bridgeIndex = findNextBridge(index);
-                    appendRightBridgedParts(bridgeIndex - index);
-                }
-                var groupCount;
-                var rightEndCount = count - index;
-                if (forceString && singlePart && rightEndCount > 1)
-                    groupCount = rightEndCount > 2 && isUnluckyRightEnd(index) ? 2 : 1;
-                else
-                    groupCount = rightEndCount;
-                appendRightBridgedParts(groupCount);
-                var bridgedReplacement = bridgedPartArray.join('');
-                var bridgedSolution =
-                new Solution(undefined, bridgedReplacement, SolutionType.OBJECT);
-                solution.append(bridgedSolution);
-                index += groupCount;
-                appendSolutions(solution, index, count - index);
-            }
+            var subSolution = solutions[index];
+            solution.append(subSolution);
         }
-        else
-            solution.append(solutions[0]);
         if (!solution.isString && forceString)
             solution.append(EMPTY_SOLUTION);
         var str = solution.replacement;
         if (bond && solution.isLoose)
             str = '(' + str + ')';
         return str;
-    }
-
-    function getArithmeticJoinCost(solution0, solution1)
-    {
-        var joinCost = solution0.isUndefined && solution1.isUndefined ? 3 : 2;
-        return joinCost;
-    }
-
-    function isArithmeticJoin(solution0, solution1)
-    {
-        var returnValue = solution0.isArithmetic && solution1.isArithmetic;
-        return returnValue;
     }
 
     ScrewBuffer =
@@ -224,11 +50,10 @@ export var optimizeSolutions;
             var groupSolutions = solutions.slice(offset, end);
             if (optimizerList.length)
                 optimizeSolutions(optimizerList, groupSolutions, groupBond, groupForceString);
-            var str = gatherGroup(groupSolutions, groupBond, groupForceString, bridgeUsed);
+            var str = gatherGroup(groupSolutions, groupBond, groupForceString);
             return str;
         }
 
-        var bridgeUsed;
         var length = -APPEND_LENGTH_OF_EMPTY;
         var maxSolutionCount = _Math_pow(2, groupThreshold - 1);
         var solutions = [];
@@ -244,8 +69,6 @@ export var optimizeSolutions;
                 {
                     if (solutions.length >= maxSolutionCount)
                         return false;
-                    if (solution.bridge)
-                        bridgeUsed = true;
                     solutions.push(solution);
                     var appendLength = solution.appendLength;
                     optimizerList.forEach

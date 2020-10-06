@@ -52,8 +52,6 @@ export var CHARACTERS;
 export var COMPLEX;
 export var CONSTANTS;
 
-export var createBridgeSolution;
-
 (function ()
 {
     var ANY_DOCUMENT                    = Feature.ANY_DOCUMENT;
@@ -203,13 +201,6 @@ export var createBridgeSolution;
     {
         var replacement = this.replaceCharByUnescape(0x5C);
         var solution = new Solution(undefined, replacement, SolutionType.STRING);
-        return solution;
-    }
-
-    function commaDefinition()
-    {
-        var bridge = '[' + this.replaceString('concat') + ']';
-        var solution = createBridgeSolution(bridge);
         return solution;
     }
 
@@ -784,7 +775,7 @@ export var createBridgeSolution;
         ',':
         [
             define('(F_A_L_S_E + [])[1]'),
-            define(commaDefinition),
+            define({ expr: '[[]].concat([[]])', solutionType: SolutionType.OBJECT }),
         ],
         '-': '(+".0000001" + [])[2]',
         '.': '(+"11e20" + [])[1]',
@@ -1653,17 +1644,6 @@ export var createBridgeSolution;
         RP_5_N:     { expr: 'false', solutionType: SolutionType.NUMERIC },
         RP_6_SO:    { expr: '"0false"', solutionType: SolutionType.COMBINED_STRING },
     });
-
-    createBridgeSolution =
-    function (bridge)
-    {
-        var replacement = '[[]]' + bridge + '([[]])';
-        var solution = new Solution(',', replacement, SolutionType.OBJECT);
-        var appendLength = bridge.length - 1;
-        solution.appendLength = appendLength;
-        solution.bridge = bridge;
-        return solution;
-    };
 
     FROM_CHAR_CODE =
     defineList

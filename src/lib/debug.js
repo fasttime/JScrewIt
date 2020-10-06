@@ -15,7 +15,6 @@ import
     MAPPER_FORMATTER,
     OPTIMAL_B,
     OPTIMAL_RETURN_STRING,
-    createBridgeSolution,
 }
 from './definitions';
 import { Encoder }                                          from './encoder-base';
@@ -194,7 +193,6 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
                 Solution:                   Solution,
                 SolutionType:               SolutionType,
                 calculateSolutionType:      calculateSolutionType,
-                createBridgeSolution:       createBridgeSolution,
                 createClusteringPlan:       createClusteringPlan,
                 createComplexOptimizer:     createComplexOptimizer,
                 createEncoder:              createEncoder,
