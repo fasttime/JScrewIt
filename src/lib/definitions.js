@@ -843,7 +843,7 @@ export var CONSTANTS;
             define('escape((+("1000" + (RP_5_N + FILTER + 0)[40] + 0) + FILTER)[40])[2]'), // *
             define('escape("]")[2]'),
             define('escape("}")[2]'),
-            define('(document + [])[SUBSTR]("-10")[1]', ANY_DOCUMENT),
+            define('(document + [])[SLICE_OR_SUBSTR]("-10")[1]', ANY_DOCUMENT),
             define('btoa("00")[1]', ATOB),
             define('(RP_3_NO + document)[11]', DOCUMENT),
             define // *
@@ -979,7 +979,7 @@ export var CONSTANTS;
         'W':
         [
             define('"w"[TO_UPPER_CASE]()'),
-            define('(self + RP_4_N)[SUBSTR]("-11")[0]', ANY_WINDOW),
+            define('(self + RP_4_N)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW),
             define('btoa(undefined)[1]', ATOB),
             define('(self + [])[11]', DOMWINDOW),
             define('(RP_3_NO + self)[11]', WINDOW),
@@ -1095,7 +1095,7 @@ export var CONSTANTS;
         'w':
         [
             define('32[TO_STRING]("33")'),
-            define('(self + [])[SUBSTR]("-2")[0]', ANY_WINDOW),
+            define('(self + [])[SLICE_OR_SUBSTR]("-2")[0]', ANY_WINDOW),
             define('atob("undefined0")[1]', ATOB),
             define('(RP_4_N + self)[20]', DOMWINDOW),
             define('(self + [])[13]', WINDOW),
@@ -1437,15 +1437,19 @@ export var CONSTANTS;
         ],
         F_A_L_S_E:
         [
-            define('[].slice.call("false")'),
-            define('[].flat.call("false")', FLAT),
+            define('[][SLICE_OR_FLAT].call("false")'),
         ],
         PLAIN_OBJECT:
         [
             define('Function("return{}")()'),
             define('Function("return Intl")()', INTL),
         ],
-        SUBSTR:
+        SLICE_OR_FLAT:
+        [
+            define({ expr: '"slice"', solutionType: SolutionType.COMBINED_STRING }),
+            define({ expr: '"flat"', solutionType: SolutionType.COMBINED_STRING }, FLAT),
+        ],
+        SLICE_OR_SUBSTR:
         [
             define({ expr: '"slice"', solutionType: SolutionType.COMBINED_STRING }),
             define({ expr: '"substr"', solutionType: SolutionType.COMBINED_STRING }),

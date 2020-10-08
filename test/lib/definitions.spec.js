@@ -577,7 +577,15 @@ sidebar,
                         this.toBePlainObject();
                     },
                 },
-                SUBSTR:
+                SLICE_OR_FLAT:
+                {
+                    validator:
+                    function ()
+                    {
+                        this.toMatch(/^(?:slice|flat)$/);
+                    },
+                },
+                SLICE_OR_SUBSTR:
                 {
                     validator:
                     function ()
