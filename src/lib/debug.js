@@ -22,7 +22,6 @@ import { featureFromMask, isMaskCompatible }                from './features';
 import createFigurator                                      from './figurator';
 import { JScrewIt, getValidFeatureMask }                    from './jscrewit-base';
 import { maskIncludes, maskIsEmpty, maskNew, maskUnion }    from './mask';
-import createComplexOptimizer                               from './optimizers/complex-optimizer';
 import
 {
     _Array_isArray,
@@ -39,6 +38,8 @@ import
 from './obj-utils';
 import { ScrewBuffer, optimizeSolutions }                   from './screw-buffer';
 import Solution                                             from './solution';
+import createCommaOptimizer                                 from './optimizers/comma-optimizer';
+import createComplexOptimizer                               from './optimizers/complex-optimizer';
 import createToStringOptimizer                              from './optimizers/to-string-optimizer';
 import trimJS                                               from './trim-js';
 import { SolutionType, calculateSolutionType }              from 'novem';
@@ -194,6 +195,7 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
                 SolutionType:               SolutionType,
                 calculateSolutionType:      calculateSolutionType,
                 createClusteringPlan:       createClusteringPlan,
+                createCommaOptimizer:       createCommaOptimizer,
                 createComplexOptimizer:     createComplexOptimizer,
                 createEncoder:              createEncoder,
                 createFeatureFromMask:      createFeatureFromMask,

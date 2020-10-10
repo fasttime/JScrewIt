@@ -38,7 +38,8 @@
 
     var EXPECTED_REPLACEMENT = '"feet"';
 
-    var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
+    var JScrewIt =
+    typeof module !== 'undefined' ? require('../../node-jscrewit-test') : self.JScrewIt;
     var SolutionType = JScrewIt.debug.SolutionType;
 
     var SOLUTIONS =
@@ -51,7 +52,7 @@
 
     describe
     (
-        'Optimizer',
+        'Complex optimizer (complex-optimizer)',
         function ()
         {
             describe

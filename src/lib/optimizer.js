@@ -30,8 +30,12 @@ import createToStringOptimizer          from './optimizers/to-string-optimizer';
                 var optimizer;
                 if (optimizeComma)
                 {
-                    optimizer = optimizers.comma || (optimizers.comma = createCommaOptimizer(this));
-                    optimizerList.push(optimizer);
+                    if (str.indexOf(',') >= 0)
+                    {
+                        optimizer =
+                        optimizers.comma || (optimizers.comma = createCommaOptimizer(this));
+                        optimizerList.push(optimizer);
+                    }
                 }
                 if (optimizeComplex)
                 {

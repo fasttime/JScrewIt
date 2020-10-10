@@ -1,6 +1,6 @@
-import { SCREW_AS_STRING }  from '../screw-buffer';
-import Solution             from '../solution';
-import { SolutionType }     from 'novem';
+import { SCREW_AS_STRING, ScrewBuffer }     from '../screw-buffer';
+import Solution                             from '../solution';
+import { SolutionType }                     from 'novem';
 
 function appendLengthOf(solution)
 {
@@ -25,24 +25,41 @@ function countClusterableCommas(solutions, index)
     return commaCount;
 }
 
+function getCommaAppendLength(solutions, start, clusterLength)
+{
+    var commaAppendLength = 0;
+    for (var index = start + clusterLength; (index -= 2) > start;)
+        commaAppendLength += solutions[index].appendLength;
+    return commaAppendLength;
+}
+
 export default function createCommaOptimizer(encoder)
 {
     function createClusterer(solutions, index, commaCount)
     {
-        var bridgeChars = [];
+        var bridgeSolutions = [];
         for (var limit = index + 2 * commaCount; index <= limit; index += 2)
         {
             var solution = solutions[index];
-            bridgeChars.push(solution.source);
+            bridgeSolutions.push(solution);
         }
         var clusterer =
         function ()
         {
-            var source = bridgeChars.join(',');
+            var bridgeChars =
+            bridgeSolutions.map
+            (
+                function (solution)
+                {
+                    return solution.source;
+                }
+            );
+            var source = bridgeChars.join();
             var bridge = bridgeChars.join('');
-            var bridgeReplacement =
-            encoder.replaceString(bridge, { optimize: true, screwMode: SCREW_AS_STRING });
-            var replacement = rampReplacement + '(' + bridgeReplacement + ')';
+            var optimizerList = encoder.getOptimizerList(bridge, true);
+            var buffer = new ScrewBuffer(SCREW_AS_STRING, bridgeSolutions.length, optimizerList);
+            bridgeSolutions.forEach(buffer.append);
+            var replacement = rampReplacement + '(' + buffer + ')';
             var solution = new Solution(source, replacement, SolutionType.OBJECT);
             return solution;
         };
@@ -58,7 +75,7 @@ export default function createCommaOptimizer(encoder)
             if (commaCount)
             {
                 var clusterLength = 2 * commaCount + 1;
-                var saving = commaCount * commaAppendLength - extraLength;
+                var saving = getCommaAppendLength(solutions, index, clusterLength) - extraLength;
                 var singlePart = !index && clusterLength === solutionCount;
                 if (singlePart)
                 {
@@ -81,7 +98,6 @@ export default function createCommaOptimizer(encoder)
         }
     }
 
-    var commaAppendLength = encoder.resolveCharacter(',').appendLength;
     var rampReplacement = encoder.replaceExpr('[][SLICE_OR_FLAT].call');
     // Adding 2 for "(" and ")" around the bridge.
     var extraLength = rampReplacement.length + 2;

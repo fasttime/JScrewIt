@@ -46,11 +46,12 @@
     var EXPECTED_REPLACEMENT =
     '(+(!![]+!![]+[!![]+!![]+!![]]+(+!![])))["toString"](!![]+!![]+[+[]])';
 
-    var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
+    var JScrewIt =
+    typeof module !== 'undefined' ? require('../../node-jscrewit-test') : self.JScrewIt;
 
     describe
     (
-        'Optimizer',
+        '"toString" Optimizer (to-string-optimizer)',
         function ()
         {
             describe
