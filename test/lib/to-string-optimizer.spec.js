@@ -49,7 +49,7 @@
 
     describe
     (
-        'Optimizer',
+        '"toString" optimizer (to-string-optimizer)',
         function ()
         {
             describe

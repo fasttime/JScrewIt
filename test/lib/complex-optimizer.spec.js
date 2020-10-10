@@ -44,7 +44,7 @@
 
     describe
     (
-        'Optimizer',
+        'Complex optimizer (complex-optimizer)',
         function ()
         {
             describe
