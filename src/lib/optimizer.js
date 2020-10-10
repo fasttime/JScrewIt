@@ -1,3 +1,4 @@
+import createCommaOptimizer             from './comma-optimizer';
 import createComplexOptimizer           from './complex-optimizer';
 import { COMPLEX }                      from './definitions';
 import { Encoder }                      from './encoder-base';
@@ -14,17 +15,24 @@ import createToStringOptimizer          from './to-string-optimizer';
             var optimizerList = [];
             if (optimize)
             {
+                var optimizeComma;
                 var optimizeComplex;
                 var optimizeToString;
                 if (typeof optimize === 'object')
                 {
+                    optimizeComma       = !!optimize.comma;
                     optimizeComplex     = !!optimize.complexOpt;
                     optimizeToString    = !!optimize.toStringOpt;
                 }
                 else
-                    optimizeComplex = optimizeToString = true;
+                    optimizeComma = optimizeComplex = optimizeToString = true;
                 var optimizers = this.optimizers;
                 var optimizer;
+                if (optimizeComma)
+                {
+                    optimizer = optimizers.comma || (optimizers.comma = createCommaOptimizer(this));
+                    optimizerList.push(optimizer);
+                }
                 if (optimizeComplex)
                 {
                     var complexOptimizers = optimizers.complex;
