@@ -51,7 +51,7 @@
 
     describe
     (
-        '"toString" Optimizer (to-string-optimizer)',
+        '"toString" optimizer (to-string-optimizer)',
         function ()
         {
             describe
