@@ -1,9 +1,9 @@
-import createCommaOptimizer             from './comma-optimizer';
-import createComplexOptimizer           from './complex-optimizer';
 import { COMPLEX }                      from './definitions';
 import { Encoder }                      from './encoder-base';
 import { assignNoEnum, createEmpty }    from './obj-utils';
-import createToStringOptimizer          from './to-string-optimizer';
+import createCommaOptimizer             from './optimizers/comma-optimizer';
+import createComplexOptimizer           from './optimizers/complex-optimizer';
+import createToStringOptimizer          from './optimizers/to-string-optimizer';
 
 (function ()
 {

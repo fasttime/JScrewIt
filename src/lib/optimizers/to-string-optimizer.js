@@ -8,9 +8,9 @@
 //
 // The leading append plus is omitted when the optimized cluster is the first element of a group.
 
-import { replaceMultiDigitNumber }  from './encoder-base';
-import { _parseInt, createEmpty }   from './obj-utils';
-import Solution                     from './solution';
+import { replaceMultiDigitNumber }  from '../encoder-base';
+import { _parseInt, createEmpty }   from '../obj-utils';
+import Solution                     from '../solution';
 import { SolutionType }             from 'novem';
 
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".

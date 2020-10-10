@@ -1,5 +1,5 @@
-import { SCREW_AS_STRING }  from './screw-buffer';
-import Solution             from './solution';
+import { SCREW_AS_STRING }  from '../screw-buffer';
+import Solution             from '../solution';
 import { SolutionType }     from 'novem';
 
 function appendLengthOf(solution)

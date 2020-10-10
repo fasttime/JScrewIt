@@ -1,7 +1,6 @@
 /* global DEBUG */
 
 import createClusteringPlan                                 from './clustering-plan';
-import createComplexOptimizer                               from './complex-optimizer';
 import { define }                                           from './definers';
 import
 {
@@ -23,6 +22,7 @@ import { featureFromMask, isMaskCompatible }                from './features';
 import createFigurator                                      from './figurator';
 import { JScrewIt, getValidFeatureMask }                    from './jscrewit-base';
 import { maskIncludes, maskIsEmpty, maskNew, maskUnion }    from './mask';
+import createComplexOptimizer                               from './optimizers/complex-optimizer';
 import
 {
     _Array_isArray,
@@ -39,7 +39,7 @@ import
 from './obj-utils';
 import { ScrewBuffer, optimizeSolutions }                   from './screw-buffer';
 import Solution                                             from './solution';
-import createToStringOptimizer                              from './to-string-optimizer';
+import createToStringOptimizer                              from './optimizers/to-string-optimizer';
 import trimJS                                               from './trim-js';
 import { SolutionType, calculateSolutionType }              from 'novem';
 
