@@ -50,7 +50,8 @@ task
                 },
             },
             {
-                src: ['gulpfile.js', 'build/**/*.js', '!build/legacy/**'],
+                src:
+                ['build/**/*.js', 'gulpfile.js', 'test/patch-cov-source.js', '!build/legacy/**'],
                 envs: 'node',
                 parserOptions: { ecmaVersion: 9 },
             },
@@ -62,6 +63,7 @@ task
                     'src/ui/worker.js',
                     'test/**/*.js',
                     'tools/**/*.js',
+                    '!test/patch-cov-source.js',
                 ],
                 plugins: 'ebdd',
                 // process.exitCode is not supported in Node.js 0.10.
@@ -181,7 +183,8 @@ task
             '--ui=ebdd',
             'test/**/*.spec.js',
         ];
-        const childProcess = fork(c8Path, forkArgs);
+        const childProcess =
+        fork(c8Path, forkArgs, { execArgv: ['--require=./test/patch-cov-source'] });
         childProcess.on('exit', code => callback(code && 'Test failed'));
     },
 );
