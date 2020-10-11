@@ -417,6 +417,19 @@
                     expect(buffer.length).not.toBeGreaterThan(buffer.toString().length);
                 }
             );
+            it
+            (
+                '#toString does not modify an empty screw buffer',
+                function ()
+                {
+                    var buffer1 = createScrewBuffer(SCREW_NORMAL, 10, []);
+                    var buffer2 = createScrewBuffer(SCREW_NORMAL, 10, []);
+                    buffer1.toString();
+                    buffer1.append(solution0);
+                    buffer2.append(solution0);
+                    expect(buffer1.toString()).toBe(buffer2.toString());
+                }
+            );
         }
     );
 }

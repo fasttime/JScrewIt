@@ -28,11 +28,19 @@ export var optimizeSolutions;
     function gatherGroup(solutions, bond, forceString)
     {
         var solution = new DynamicSolution();
-        for (var index = 0, count = solutions.length; index < count; ++index)
+        var count = solutions.length;
+        if (count)
         {
-            var subSolution = solutions[index];
-            solution.append(subSolution);
+            var index = 0;
+            do
+            {
+                var subSolution = solutions[index];
+                solution.append(subSolution);
+            }
+            while (++index < count);
         }
+        else
+            solution.append(EMPTY_SOLUTION);
         if (!solution.isString && forceString)
             solution.append(EMPTY_SOLUTION);
         var str = solution.replacement;
@@ -117,8 +125,6 @@ export var optimizeSolutions;
                         return str;
                     }
 
-                    if (!solutions.length)
-                        solutions.push(EMPTY_SOLUTION);
                     var str;
                     var solutionCount = solutions.length;
                     if (solutionCount <= groupThreshold)

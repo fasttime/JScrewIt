@@ -81,7 +81,6 @@
                             expect(actual).toBeUndefined();
                         }
                     );
-
                     describe
                     (
                         'optimizes',
@@ -104,7 +103,6 @@
                                 { char: 'x', decimalMinLength: 48, radixMinLength: 36 },
                                 { char: 'z', decimalMinLength: 48, radixMinLength: 46 },
                             ];
-
                             it.per(paramDataList)
                             (
                                 '"#.char"',
@@ -140,7 +138,6 @@
                     );
                 }
             );
-
             describe
             (
                 '#optimizeSolutions',

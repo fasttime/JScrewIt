@@ -78,7 +78,6 @@
                     );
                 }
             );
-
             describe
             (
                 '#optimizeSolutions',
@@ -171,7 +170,6 @@
                             expect(solutions.length).toBeGreaterThan(1);
                         }
                     );
-
                     describe
                     (
                         'does not optimize a comma in a single part because of string forcing',
@@ -233,7 +231,6 @@
                             it('with bonding', test.bind(null, true));
                         }
                     );
-
                     it
                     (
                         'optimizes a comma in a single part because of bonding',

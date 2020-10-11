@@ -11,14 +11,14 @@ function appendLengthOf(solution)
 function countClusterableCommas(solutions, index)
 {
     var commaCount = 0;
-    if (solutions[index].source.length === 1)
+    if (isSingleCharacterSolution(solutions[index]))
     {
         for
         (
             var end = solutions.length - 2;
             index < end &&
             solutions[++index].source === ',' &&
-            solutions[++index].source.length === 1;
+            isSingleCharacterSolution(solutions[++index]);
         )
             ++commaCount;
     }
@@ -31,6 +31,13 @@ function getCommaAppendLength(solutions, start, clusterLength)
     for (var index = start + clusterLength; (index -= 2) > start;)
         commaAppendLength += solutions[index].appendLength;
     return commaAppendLength;
+}
+
+function isSingleCharacterSolution(solution)
+{
+    var source = solution.source;
+    var returnValue = source && source.length === 1;
+    return returnValue;
 }
 
 export default function createCommaOptimizer(encoder)

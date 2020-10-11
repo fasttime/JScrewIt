@@ -937,5 +937,84 @@ self,
             );
         }
     );
+    describe
+    (
+        'calculateSolutionType',
+        function ()
+        {
+            it
+            (
+                'works with a strong numeric expression',
+                function ()
+                {
+                    expect(JScrewIt.debug.calculateSolutionType('[+[]][+[]]'))
+                    .toBe(JScrewIt.debug.SolutionType.NUMERIC);
+                }
+            );
+            it
+            (
+                'calculateSolutionType fails for an illegal expression',
+                function ()
+                {
+                    expect(JScrewIt.debug.calculateSolutionType.bind(null, ']'))
+                    .toThrowStrictly(SyntaxError);
+                }
+            );
+        }
+    );
+    describe
+    (
+        'DynamicSolution',
+        function ()
+        {
+            it
+            (
+                'is initially empty',
+                function ()
+                {
+                    var solution = new JScrewIt.debug.DynamicSolution();
+                    expect(solution.source).toBe('');
+                    expect(solution.replacement).toBe('[]');
+                    expect(solution.type).toBe(JScrewIt.debug.SolutionType.OBJECT);
+                }
+            );
+            it
+            (
+                '#source is unknown',
+                function ()
+                {
+                    var solution = new JScrewIt.debug.DynamicSolution();
+                    solution.prepend
+                    (
+                        new JScrewIt.debug.Solution
+                        (
+                            '',
+                            '[]',
+                            JScrewIt.debug.SolutionType.OBJECT
+                        )
+                    );
+                    solution.append
+                    (
+                        new JScrewIt.debug.Solution
+                        (
+                            undefined,
+                            '[]',
+                            JScrewIt.debug.SolutionType.OBJECT
+                        )
+                    );
+                    expect(solution.source).toBeUndefined();
+                }
+            );
+            it
+            (
+                '#replacement is idempotent',
+                function ()
+                {
+                    var solution = new JScrewIt.debug.DynamicSolution();
+                    expect(solution.replacement).toBe(solution.replacement);
+                }
+            );
+        }
+    );
 }
 )();

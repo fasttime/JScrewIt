@@ -89,7 +89,6 @@
                     );
                 }
             );
-
             describe
             (
                 '#optimizeSolutions',
@@ -155,7 +154,6 @@
                             },
                         ],
                     ];
-
                     it.per(paramDataList)
                     (
                         'optimizes #[0]',
