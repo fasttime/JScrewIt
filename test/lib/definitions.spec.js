@@ -610,8 +610,10 @@ sidebar,
                     },
                 },
 
-                FBEP_9_U: { expectedSolutionTypes: [SolutionType.UNDEFINED, SolutionType.NUMERIC] },
-                FBP_9_U: { expectedSolutionTypes: [SolutionType.UNDEFINED, SolutionType.NUMERIC] },
+                FBEP_9_U:
+                { expectedSolutionTypes: [SolutionType.UNDEFINED, SolutionType.ALGEBRAIC] },
+                FBP_9_U:
+                { expectedSolutionTypes: [SolutionType.UNDEFINED, SolutionType.ALGEBRAIC] },
             };
             var paramDataList =
             JScrewIt.debug.getConstantNames().map

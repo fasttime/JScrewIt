@@ -651,7 +651,7 @@ export var replaceStaticString;
                         {
                             output += '+' + termOutput;
                             if (minOutputType === SolutionType.UNDEFINED)
-                                minOutputType = SolutionType.WEAK_NUMERIC;
+                                minOutputType = SolutionType.WEAK_ALGEBRAIC;
                         }
                         else
                             output = termOutput;

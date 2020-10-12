@@ -29,11 +29,11 @@ export var JSFUCK_INFINITY = '1e1000';
 
 export var SIMPLE = { };
 
-defineSimple('false',       '![]',              SolutionType.NUMERIC);
-defineSimple('true',        '!![]',             SolutionType.NUMERIC);
+defineSimple('false',       '![]',              SolutionType.ALGEBRAIC);
+defineSimple('true',        '!![]',             SolutionType.ALGEBRAIC);
 defineSimple('undefined',   '[][[]]',           SolutionType.UNDEFINED);
-defineSimple('NaN',         '+[false]',         SolutionType.WEAK_NUMERIC);
-defineSimple('Infinity',    JSFUCK_INFINITY,    SolutionType.WEAK_NUMERIC);
+defineSimple('NaN',         '+[false]',         SolutionType.WEAK_ALGEBRAIC);
+defineSimple('Infinity',    JSFUCK_INFINITY,    SolutionType.WEAK_ALGEBRAIC);
 
 export var FROM_CHAR_CODE;
 export var FROM_CHAR_CODE_CALLBACK_FORMATTER;
@@ -1509,14 +1509,14 @@ export var CONSTANTS;
             (
                 {
                     expr: '+("10" + [(RP_4_N + FILTER)[40]] + "00000")',
-                    solutionType: SolutionType.WEAK_NUMERIC,
+                    solutionType: SolutionType.WEAK_ALGEBRAIC,
                 }
             ),
             define
             (
                 {
                     expr: '+("10" + [(RP_6_SO + FILL)[40]] + "00000")',
-                    solutionType: SolutionType.WEAK_NUMERIC,
+                    solutionType: SolutionType.WEAK_ALGEBRAIC,
                 },
                 FILL
             ),
@@ -1524,7 +1524,7 @@ export var CONSTANTS;
             (
                 {
                     expr: '+("10" + [(RP_6_SO + FLAT)[40]] + "00000")',
-                    solutionType: SolutionType.WEAK_NUMERIC,
+                    solutionType: SolutionType.WEAK_ALGEBRAIC,
                 },
                 FLAT
             ),
@@ -1535,14 +1535,14 @@ export var CONSTANTS;
             (
                 {
                     expr: '+("1000" + (RP_5_N + FILTER + 0)[40] + "000")',
-                    solutionType: SolutionType.WEAK_NUMERIC,
+                    solutionType: SolutionType.WEAK_ALGEBRAIC,
                 }
             ),
             define
             (
                 {
                     expr: '+("1000" + (FILL + 0)[33] + "000")',
-                    solutionType: SolutionType.WEAK_NUMERIC,
+                    solutionType: SolutionType.WEAK_ALGEBRAIC,
                 },
                 FILL
             ),
@@ -1550,7 +1550,7 @@ export var CONSTANTS;
             (
                 {
                     expr: '+("1000" + (FLAT + 0)[33] + "000")',
-                    solutionType: SolutionType.WEAK_NUMERIC,
+                    solutionType: SolutionType.WEAK_ALGEBRAIC,
                 },
                 FLAT
             ),
@@ -1589,21 +1589,21 @@ export var CONSTANTS;
             (
                 {
                     expr: '+(1 + [+(ANY_FUNCTION + [])[0]])',
-                    solutionType: SolutionType.WEAK_NUMERIC,
+                    solutionType: SolutionType.WEAK_ALGEBRAIC,
                 }
             ),
             define
             (
                 {
                     expr: '+(++(ANY_FUNCTION + [])[0] + [0])',
-                    solutionType: SolutionType.WEAK_NUMERIC,
+                    solutionType: SolutionType.WEAK_ALGEBRAIC,
                 },
                 INCR_CHAR
             ),
         ],
         FHP_5_N:
         [
-            define({ expr: 'IS_IE_SRC_N', solutionType: SolutionType.NUMERIC }),
+            define({ expr: 'IS_IE_SRC_N', solutionType: SolutionType.ALGEBRAIC }),
         ],
         FHP_8_S:
         [
@@ -1621,9 +1621,12 @@ export var CONSTANTS;
         IS_IE_SRC_N:
         [
             define
-            ({ expr: '!!(+(ANY_FUNCTION + [])[0] + true)', solutionType: SolutionType.NUMERIC }),
+            ({ expr: '!!(+(ANY_FUNCTION + [])[0] + true)', solutionType: SolutionType.ALGEBRAIC }),
             define
-            ({ expr: '!!++(ANY_FUNCTION + [])[0]', solutionType: SolutionType.NUMERIC }, INCR_CHAR),
+            (
+                { expr: '!!++(ANY_FUNCTION + [])[0]', solutionType: SolutionType.ALGEBRAIC },
+                INCR_CHAR
+            ),
         ],
 
         // Regular padding blocks.
@@ -1640,12 +1643,12 @@ export var CONSTANTS;
         // constant should be placed in the beginning whenever possible in order to save an extra
         // pair of brackets in the resolved expressions.
 
-        RP_0_S:     { expr: '[]', solutionType: SolutionType.OBJECT },
-        RP_1_NO:    { expr: '0', solutionType: SolutionType.WEAK_NUMERIC },
-        RP_2_SO:    { expr: '"00"', solutionType: SolutionType.WEAK_PREFIXED_STRING },
-        RP_3_NO:    { expr: 'NaN', solutionType: SolutionType.WEAK_NUMERIC },
-        RP_4_N:     { expr: 'true', solutionType: SolutionType.NUMERIC },
-        RP_5_N:     { expr: 'false', solutionType: SolutionType.NUMERIC },
+        RP_0_S:     { expr: '[]',       solutionType: SolutionType.OBJECT },
+        RP_1_NO:    { expr: '0',        solutionType: SolutionType.WEAK_ALGEBRAIC },
+        RP_2_SO:    { expr: '"00"',     solutionType: SolutionType.WEAK_PREFIXED_STRING },
+        RP_3_NO:    { expr: 'NaN',      solutionType: SolutionType.WEAK_ALGEBRAIC },
+        RP_4_N:     { expr: 'true',     solutionType: SolutionType.ALGEBRAIC },
+        RP_5_N:     { expr: 'false',    solutionType: SolutionType.ALGEBRAIC },
         RP_6_SO:    { expr: '"0false"', solutionType: SolutionType.COMBINED_STRING },
     });
 
@@ -1796,7 +1799,7 @@ export var CONSTANTS;
     for (var digit = 0; digit <= 9; ++digit)
     {
         var expr = replaceDigit(digit);
-        CHARACTERS[digit] = { expr: expr, solutionType: SolutionType.WEAK_NUMERIC };
+        CHARACTERS[digit] = { expr: expr, solutionType: SolutionType.WEAK_ALGEBRAIC };
     }
 }
 )();

@@ -141,13 +141,20 @@
             var createScrewBuffer = JScrewIt.debug.createScrewBuffer;
             var Solution = JScrewIt.debug.Solution;
             var SolutionType = JScrewIt.debug.SolutionType;
-            var solutionA = new Solution('a', '(![]+[])[+!![]]', SolutionType.STRING);
-            var solution0 = new Solution('0', '+[]', SolutionType.WEAK_NUMERIC);
-            var solution00 = new Solution('00', '+[]+[+[]]', SolutionType.WEAK_PREFIXED_STRING);
-            var solution0False = new Solution('0false', '[+[]]+![]', SolutionType.COMBINED_STRING);
-            var solutionFalse = new Solution('false', '![]', SolutionType.NUMERIC);
-            var solutionFalse0 = new Solution('false0', '![]+[+[]]', SolutionType.PREFIXED_STRING);
-            var solutionUndefined = new Solution('undefined', '[][[]]', SolutionType.UNDEFINED);
+            var solutionA =
+            new Solution('a',           '(![]+[])[+!![]]',  SolutionType.STRING);
+            var solution0 =
+            new Solution('0',           '+[]',              SolutionType.WEAK_ALGEBRAIC);
+            var solution00 =
+            new Solution('00',          '+[]+[+[]]',        SolutionType.WEAK_PREFIXED_STRING);
+            var solution0False =
+            new Solution('0false',      '[+[]]+![]',        SolutionType.COMBINED_STRING);
+            var solutionFalse =
+            new Solution('false',       '![]',              SolutionType.ALGEBRAIC);
+            var solutionFalse0 =
+            new Solution('false0',      '![]+[+[]]',        SolutionType.PREFIXED_STRING);
+            var solutionUndefined =
+            new Solution('undefined',   '[][[]]',           SolutionType.UNDEFINED);
             var strTestOptimizer =
             createTestOptimizer(new Solution(undefined, '""', SolutionType.STRING));
             var objTestOptimizer =
@@ -306,7 +313,7 @@
             [
                 {
                     title:
-                    'encodes a weak numeric type solution followed by an undefined type solution',
+                    'encodes a weak algebraic type solution followed by an undefined type solution',
                     solutions: [solution0, solutionUndefined],
                     expectedReplacement: '[+[]]+[][[]]',
                 },
@@ -324,13 +331,14 @@
                 },
                 {
                     title:
-                    'encodes a numeric type solution followed by a string type solution',
+                    'encodes an algebraic type solution followed by a string type solution',
                     solutions: [solutionFalse, solutionA],
                     expectedReplacement: '![]+(![]+[])[+!![]]',
                 },
                 {
                     title:
-                    'encodes two undefined type solutions followed by a weak numeric type solution',
+                    'encodes two undefined type solutions followed by a weak algebraic type ' +
+                    'solution',
                     solutions: [solutionUndefined, solutionUndefined, solution0],
                     expectedReplacement: '[][[]]+([][[]]+[+[]])',
                 },

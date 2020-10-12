@@ -944,11 +944,11 @@ self,
         {
             it
             (
-                'works with a strong numeric expression',
+                'works with a strong algebraic expression',
                 function ()
                 {
                     expect(JScrewIt.debug.calculateSolutionType('[+[]][+[]]'))
-                    .toBe(JScrewIt.debug.SolutionType.NUMERIC);
+                    .toBe(JScrewIt.debug.SolutionType.ALGEBRAIC);
                 }
             );
             it

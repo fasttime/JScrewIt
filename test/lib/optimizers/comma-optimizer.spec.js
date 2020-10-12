@@ -33,17 +33,28 @@
     var SOLUTIONS =
     {
         A:
-        new Solution('A',       '"A"',                                  SolutionType.STRING),
+        new Solution
+        ('A',       '"A"',                                  SolutionType.STRING),
+
         B:
-        new Solution('B',       '"B"',                                  SolutionType.STRING),
+        new Solution
+        ('B',       '"B"',                                  SolutionType.STRING),
+
         C:
-        new Solution('C',       '"C"',                                  SolutionType.STRING),
+        new Solution
+        ('C',       '"C"',                                  SolutionType.STRING),
+
         COMMA:
-        new Solution(',',       '([].slice.call(![]+[])+[])[+!![]]',    SolutionType.STRING),
+        new Solution
+        (',',       '([].slice.call(![]+[])+[])[+!![]]',    SolutionType.STRING),
+
         ZERO:
-        new Solution('0',       '+![]',                                 SolutionType.WEAK_NUMERIC),
+        new Solution
+        ('0',       '+![]',                                 SolutionType.WEAK_ALGEBRAIC),
+
         false:
-        new Solution('false',   '![]',                                  SolutionType.NUMERIC),
+        new Solution
+        ('false',   '![]',                                  SolutionType.ALGEBRAIC),
     };
 
     describe

@@ -2,9 +2,6 @@ import createClusteringPlan                     from './clustering-plan';
 import { _Math_max, _Math_pow, assignNoEnum }   from './obj-utils';
 import { EMPTY_SOLUTION, DynamicSolution }      from 'novem';
 
-// This implementation assumes that all numeric solutions have an outer plus, and all other
-// character solutions have none.
-
 export var APPEND_LENGTH_OF_DIGIT_0     = 6;
 export var APPEND_LENGTH_OF_DOT         = 73;
 export var APPEND_LENGTH_OF_FALSE       = 4;
