@@ -1,7 +1,7 @@
 .*
 !.git*
 !/.npmrc
-/*char-map.json
+/*.char-map.json
 /coverage
 /jsdoc
 /node_modules

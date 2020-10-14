@@ -1,7 +1,7 @@
 /* global DEBUG */
 
-import createClusteringPlan                                     from './clustering-plan';
-import { define }                                               from './definers';
+import createClusteringPlan                                 from './clustering-plan';
+import { define }                                           from './definers';
 import
 {
     BASE64_ALPHABET_HI_4,
@@ -16,12 +16,12 @@ import
     OPTIMAL_RETURN_STRING,
 }
 from './definitions';
-import { Encoder }                                              from './encoder-base';
-import { STRATEGIES, createReindexMap }                         from './encoder-ext';
-import { featureFromMask, isMaskCompatible }                    from './features';
-import createFigurator                                          from './figurator';
-import { JScrewIt, getValidFeatureMask }                        from './jscrewit-base';
-import { maskIncludes, maskIsEmpty, maskNew, maskUnion }        from './mask';
+import { Encoder }                                          from './encoder-base';
+import { STRATEGIES, createReindexMap }                     from './encoder-ext';
+import { featureFromMask, isMaskCompatible }                from './features';
+import createFigurator                                      from './figurator';
+import { JScrewIt, getValidFeatureMask }                    from './jscrewit-base';
+import { maskIncludes, maskIsEmpty, maskNew, maskUnion }    from './mask';
 import
 {
     _Array_isArray,
@@ -36,15 +36,15 @@ import
     esToString,
 }
 from './obj-utils';
-import { ScrewBuffer, optimizeSolutions }                       from './screw-buffer';
-import Solution                                                 from './solution';
-import createCommaOptimizer                                     from './optimizers/comma-optimizer';
+import createCommaOptimizer                                 from './optimizers/comma-optimizer';
 import createComplexOptimizer
 from './optimizers/complex-optimizer';
 import createToStringOptimizer
 from './optimizers/to-string-optimizer';
-import trimJS                                                   from './trim-js';
-import { DynamicSolution, SolutionType, calculateSolutionType } from 'novem';
+import { ScrewBuffer, optimizeSolutions }                   from './screw-buffer';
+import { DynamicSolution, SimpleSolution }                  from './solution';
+import trimJS                                               from './trim-js';
+import { SolutionType, calculateSolutionType }              from 'novem';
 
 if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
 {
@@ -194,7 +194,7 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
             { },
             {
                 DynamicSolution:            DynamicSolution,
-                Solution:                   Solution,
+                Solution:                   SimpleSolution,
                 SolutionType:               SolutionType,
                 calculateSolutionType:      calculateSolutionType,
                 createClusteringPlan:       createClusteringPlan,

@@ -10,7 +10,7 @@
 
 import { replaceMultiDigitNumber }  from '../encoder-base';
 import { _parseInt, createEmpty }   from '../obj-utils';
-import Solution                     from '../solution';
+import { SimpleSolution }           from '../solution';
 import { SolutionType }             from 'novem';
 
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
@@ -50,7 +50,7 @@ function createOptimizer(toStringReplacement)
             var replacement =
             '(+(' + decimalReplacement + '))[' + toStringReplacement + '](' + radixReplacement +
             ')';
-            var solution = new Solution(undefined, replacement, SolutionType.STRING);
+            var solution = new SimpleSolution(undefined, replacement, SolutionType.STRING);
             return solution;
         };
         return clusterer;
@@ -159,6 +159,18 @@ function createOptimizer(toStringReplacement)
     return optimizer;
 }
 
+export default function createToStringOptimizer(encoder)
+{
+    if (initialize)
+    {
+        initialize();
+        initialize = null;
+    }
+    var toStringReplacement = encoder.resolveConstant('TO_STRING').replacement;
+    var optimizer = createOptimizer(toStringReplacement);
+    return optimizer;
+}
+
 function getMinRadix(char)
 {
     var minRadix = _parseInt(char, MAX_RADIX) + 1;
@@ -172,14 +184,8 @@ function isClusterable(solution)
     return clusterable;
 }
 
-export default function createToStringOptimizer(encoder)
-{
-    var toStringReplacement = encoder.resolveConstant('TO_STRING').replacement;
-    var optimizer = createOptimizer(toStringReplacement);
-    return optimizer;
-}
-
-(function ()
+var initialize =
+function ()
 {
     // DECIMAL_MIN_LENGTHS is indexed by decimalDigitMaxCount (the number of digits used to write
     // MAX_SAFE_INTEGER in base radix).
@@ -216,5 +222,4 @@ export default function createToStringOptimizer(encoder)
         MAX_SAFE_INTEGER.toString(radix).length;
         CLUSTER_EXTRA_LENGTHS[radix] = DECIMAL_MIN_LENGTHS[decimalDigitMaxCount] + minLength;
     }
-}
-)();
+};

@@ -1,5 +1,5 @@
 import { assignNoEnum, _Object_defineProperty } from './obj-utils';
-import { SimpleSolution }                       from 'novem';
+import { AbstractSolution }                     from 'novem';
 
 var protoSource =
 {
@@ -15,6 +15,6 @@ var protoSource =
     },
 };
 
-assignNoEnum(SimpleSolution.prototype, protoSource);
+assignNoEnum(AbstractSolution.prototype, protoSource);
 
-export default SimpleSolution;
+export { DynamicSolution, EMPTY_SOLUTION, LazySolution, SimpleSolution } from 'novem';

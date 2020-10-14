@@ -11,6 +11,7 @@ import
     JSFUCK_INFINITY,
     OPTIMAL_B,
     SIMPLE,
+    initReplaceStaticExpr,
 }
 from './definitions';
 import expressParse                 from './express-parse';
@@ -24,7 +25,6 @@ import
     _JSON_stringify,
     _Math_abs,
     _Object_create,
-    _Object_defineProperty,
     _Object_keys,
     _RegExp,
     _String,
@@ -46,7 +46,7 @@ import
     ScrewBuffer,
 }
 from './screw-buffer';
-import Solution                     from './solution';
+import { SimpleSolution }           from './solution';
 import { SolutionType }             from 'novem';
 
 /** @class Encoder */
@@ -178,7 +178,7 @@ export var replaceStaticString;
         var solution;
         if (identifier in encoder.constantDefinitions)
             solution = encoder.resolveConstant(identifier);
-        else if (SIMPLE.propertyIsEnumerable(identifier))
+        else
             solution = SIMPLE[identifier];
         if (!solution)
             encoder.throwSyntaxError('Undefined identifier ' + identifier);
@@ -223,17 +223,9 @@ export var replaceStaticString;
         }
     }
 
-    function resolveSimple(simple, definition)
+    function replaceStaticExpr(expr)
     {
-        var solution;
-        STATIC_ENCODER.callResolver
-        (
-            simple,
-            function ()
-            {
-                solution = STATIC_ENCODER.resolve(definition, simple);
-            }
-        );
+        var solution = STATIC_ENCODER.replaceExpr(expr);
         return solution;
     }
 
@@ -327,7 +319,7 @@ export var replaceStaticString;
                 }
                 replacement = shortestOf(replacements);
             }
-            var solution = new Solution(char, replacement, SolutionType.STRING);
+            var solution = new SimpleSolution(char, replacement, SolutionType.STRING);
             return solution;
         },
 
@@ -391,12 +383,6 @@ export var replaceStaticString;
                 this
             );
             return result;
-        },
-
-        getOptimizerList:
-        function ()
-        {
-            return [];
         },
 
         getPaddingBlock:
@@ -633,7 +619,7 @@ export var replaceStaticString;
                     if (strAppender && isStringUnit(term))
                     {
                         var firstSolution =
-                        output ? new Solution(undefined, output, minOutputType) : undefined;
+                        output ? new SimpleSolution(undefined, output, minOutputType) : undefined;
                         output = strAppender(this, term.value, firstSolution);
                         minOutputType = SolutionType.WEAK_PREFIXED_STRING;
                     }
@@ -728,7 +714,7 @@ export var replaceStaticString;
          * @param {object} [options={ }]
          * An optional object specifying replacement options.
          *
-         * @param {Solution} [options.firstSolution]
+         * @param {SimpleSolution} [options.firstSolution]
          * An optional solution to be prepended to the replacement string.
          *
          * @param {number} [options.maxLength=(NaN)]
@@ -843,7 +829,7 @@ export var replaceStaticString;
                     solutionType =
                     defaultSolutionType != null ? defaultSolutionType : SolutionType.STRING;
                 }
-                solution = new Solution(source, replacement, solutionType);
+                solution = new SimpleSolution(source, replacement, solutionType);
             }
             return solution;
         },
@@ -933,7 +919,7 @@ export var replaceStaticString;
             }
             var fullExpr = '(' + paddingBlock + '+' + expr + ')[' + indexer + ']';
             var replacement = this.replaceExpr(fullExpr);
-            var solution = new Solution(char, replacement, SolutionType.STRING);
+            var solution = new SimpleSolution(char, replacement, SolutionType.STRING);
             return solution;
         },
 
@@ -987,6 +973,6 @@ export var replaceStaticString;
         return replacement;
     };
 
-    _Object_defineProperty(SIMPLE, 'resolveSimple', { value: resolveSimple });
+    initReplaceStaticExpr(replaceStaticExpr);
 }
 )();

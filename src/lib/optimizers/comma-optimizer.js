@@ -1,5 +1,5 @@
 import { SCREW_AS_STRING, ScrewBuffer }     from '../screw-buffer';
-import Solution                             from '../solution';
+import { SimpleSolution }                   from '../solution';
 import { SolutionType }                     from 'novem';
 
 function appendLengthOf(solution)
@@ -67,7 +67,7 @@ export default function createCommaOptimizer(encoder)
             var buffer = new ScrewBuffer(SCREW_AS_STRING, bridgeSolutions.length, optimizerList);
             bridgeSolutions.forEach(buffer.append);
             var replacement = rampReplacement + '(' + buffer + ')';
-            var solution = new Solution(source, replacement, SolutionType.OBJECT);
+            var solution = new SimpleSolution(source, replacement, SolutionType.OBJECT);
             return solution;
         };
         return clusterer;

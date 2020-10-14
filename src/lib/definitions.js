@@ -6,34 +6,15 @@
 
 import { define, defineList, defineWithArrayLike }  from './definers';
 import { Feature }                                  from './features';
-import { _Object_defineProperty, noProto }          from './obj-utils';
-import Solution                                     from './solution';
+import { createEmpty, noProto }                     from './obj-utils';
+import { LazySolution, SimpleSolution }             from './solution';
 import { SolutionType }                             from 'novem';
-
-function defineSimple(simple, expr, solutionType)
-{
-    function get()
-    {
-        var definition = { expr: expr, solutionType: solutionType };
-        var solution = SIMPLE.resolveSimple(simple, definition);
-        _Object_defineProperty(SIMPLE, simple, { value: solution });
-        return solution;
-    }
-
-    _Object_defineProperty(SIMPLE, simple, { configurable: true, enumerable: true, get: get });
-}
 
 export var AMENDINGS = ['true', 'undefined', 'NaN'];
 
 export var JSFUCK_INFINITY = '1e1000';
 
-export var SIMPLE = { };
-
-defineSimple('false',       '![]',              SolutionType.ALGEBRAIC);
-defineSimple('true',        '!![]',             SolutionType.ALGEBRAIC);
-defineSimple('undefined',   '[][[]]',           SolutionType.UNDEFINED);
-defineSimple('NaN',         '+[false]',         SolutionType.WEAK_ALGEBRAIC);
-defineSimple('Infinity',    JSFUCK_INFINITY,    SolutionType.WEAK_ALGEBRAIC);
+export var SIMPLE = createEmpty();
 
 export var FROM_CHAR_CODE;
 export var FROM_CHAR_CODE_CALLBACK_FORMATTER;
@@ -51,6 +32,46 @@ export var BASE64_ALPHABET_LO_6;
 export var CHARACTERS;
 export var COMPLEX;
 export var CONSTANTS;
+
+var FB_EXPR_INFOS;
+var FB_PADDING_INFOS;
+var FH_PADDING_INFOS;
+var PADDING_ENTRIES_MAP;
+
+function backslashDefinition()
+{
+    var replacement = this.replaceCharByUnescape(0x5C);
+    var solution = new SimpleSolution(undefined, replacement, SolutionType.STRING);
+    return solution;
+}
+
+function createCharAtDefinitionFB(offset)
+{
+    function definitionFB(char)
+    {
+        var functionDefinition = this.findDefinition(FB_EXPR_INFOS);
+        var expr = functionDefinition.expr;
+        var index = offset + functionDefinition.shift;
+        var paddingEntries = PADDING_ENTRIES_MAP[index];
+        var solution = this.resolveExprAt(char, expr, index, paddingEntries, FB_PADDING_INFOS);
+        return solution;
+    }
+
+    return definitionFB;
+}
+
+function createCharAtDefinitionFH(expr, index, entries)
+{
+    function definitionFH(char)
+    {
+        var solution = this.resolveExprAt(char, expr, index, entries, FH_PADDING_INFOS);
+        return solution;
+    }
+
+    return definitionFH;
+}
+
+export var initReplaceStaticExpr;
 
 (function ()
 {
@@ -172,136 +193,6 @@ export var CONSTANTS;
         'RP_6_SO',
     ];
 
-    var FB_EXPR_INFOS =
-    [
-        define({ expr: 'FILTER', shift: 6 }),
-        define({ expr: 'FILL', shift: 4 }, FILL),
-        define({ expr: 'FLAT', shift: 4 }, FLAT),
-    ];
-
-    var FB_PADDING_INFOS =
-    [
-        define({ blocks: FB_PADDINGS, shift: 0 }),
-        define({ blocks: FB_NO_FF_PADDINGS, shift: 0 }, NO_FF_SRC),
-        define({ blocks: FB_NO_IE_PADDINGS, shift: 0 }, NO_IE_SRC),
-        define(null, NO_V8_SRC),
-        define({ blocks: R_PADDINGS, shift: 0 }, V8_SRC),
-        define({ blocks: R_PADDINGS, shift: 5 }, IE_SRC),
-        define({ blocks: R_PADDINGS, shift: 4 }, FF_SRC),
-    ];
-
-    var FH_PADDING_INFOS =
-    [
-        define({ blocks: FH_PADDINGS, shift: 0 }),
-        define({ blocks: R_PADDINGS, shift: 0 }, NO_IE_SRC),
-        define({ blocks: R_PADDINGS, shift: 1 }, IE_SRC),
-    ];
-
-    function backslashDefinition()
-    {
-        var replacement = this.replaceCharByUnescape(0x5C);
-        var solution = new Solution(undefined, replacement, SolutionType.STRING);
-        return solution;
-    }
-
-    function createCharAtDefinitionFB(offset)
-    {
-        function definitionFB(char)
-        {
-            var functionDefinition = this.findDefinition(FB_EXPR_INFOS);
-            var expr = functionDefinition.expr;
-            var index = offset + functionDefinition.shift;
-            var paddingEntries;
-            switch (index)
-            {
-            case 18:
-                paddingEntries =
-                [
-                    define(12),
-                    define({ block: 'RP_0_S', indexer: '2 + FH_SHIFT_3' }, NO_V8_SRC),
-                    define(3, V8_SRC),
-                    define(0, IE_SRC),
-                    define(0, FF_SRC),
-                ];
-                break;
-            case 20:
-            case 30:
-                paddingEntries =
-                [
-                    define(10),
-                    define
-                    ({ block: 'RP_6_SO', indexer: 1 + index / 10 + ' + FH_SHIFT_1' }, NO_V8_SRC),
-                    define(0, V8_SRC),
-                    define(5, IE_SRC),
-                    define(6, FF_SRC),
-                ];
-                break;
-            case 23:
-                paddingEntries =
-                [
-                    define(7),
-                    define(9, NO_FF_SRC),
-                    define({ block: 'RP_3_NO', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
-                    define(0, V8_SRC),
-                    define(3, IE_SRC),
-                    define(3, FF_SRC),
-                ];
-                break;
-            case 25:
-                paddingEntries =
-                [
-                    define(7),
-                    define(5, NO_FF_SRC),
-                    define(5, NO_IE_SRC),
-                    define({ block: 'RP_1_NO', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
-                    define(0, IE_SRC),
-                    define(1, FF_SRC),
-                ];
-                break;
-            case 32:
-                paddingEntries =
-                [
-                    define(8),
-                    define(9, NO_FF_SRC),
-                    define(9, NO_IE_SRC),
-                    define({ block: 'RP_4_N', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
-                    define(0, V8_SRC),
-                    define(3, IE_SRC),
-                    define(4, FF_SRC),
-                ];
-                break;
-            case 34:
-                paddingEntries =
-                [
-                    define(7),
-                    define(9, NO_FF_SRC),
-                    define(6, INCR_CHAR, NO_FF_SRC),
-                    define(9, NO_IE_SRC),
-                    define({ block: 'RP_2_SO', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
-                    define(6, V8_SRC),
-                    define(1, IE_SRC),
-                    define(3, FF_SRC),
-                ];
-                break;
-            }
-            var solution = this.resolveExprAt(char, expr, index, paddingEntries, FB_PADDING_INFOS);
-            return solution;
-        }
-
-        return definitionFB;
-    }
-
-    function createCharAtDefinitionFH(expr, index, entries, paddingInfos)
-    {
-        function definitionFH(char)
-        {
-            var solution = this.resolveExprAt(char, expr, index, entries, paddingInfos);
-            return solution;
-        }
-
-        return definitionFH;
-    }
-
     function createCharDefaultDefinition
     (atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
     {
@@ -315,6 +206,22 @@ export var CONSTANTS;
         }
 
         return charDefaultDefinition;
+    }
+
+    function createLazySolution(source, expr, type)
+    {
+        var solution =
+        new LazySolution
+        (
+            source,
+            function ()
+            {
+                var replacement = replaceStaticExpr(expr);
+                return replacement;
+            },
+            type
+        );
+        return solution;
     }
 
     function defineCharDefault(opts)
@@ -418,9 +325,14 @@ export var CONSTANTS;
             ];
             break;
         }
-        var definition = createCharAtDefinitionFH(expr, index, entries, FH_PADDING_INFOS);
+        var definition = createCharAtDefinitionFH(expr, index, entries);
         var entry = defineWithArrayLike(definition, arguments, 2);
         return entry;
+    }
+
+    function defineSimple(simple, expr, type)
+    {
+        SIMPLE[simple] = createLazySolution(simple, expr, type);
     }
 
     function replaceDigit(digit)
@@ -1652,6 +1564,31 @@ export var CONSTANTS;
         RP_6_SO:    { expr: '"0false"', solutionType: SolutionType.COMBINED_STRING },
     });
 
+    FB_EXPR_INFOS =
+    [
+        define({ expr: 'FILTER', shift: 6 }),
+        define({ expr: 'FILL', shift: 4 }, FILL),
+        define({ expr: 'FLAT', shift: 4 }, FLAT),
+    ];
+
+    FB_PADDING_INFOS =
+    [
+        define({ blocks: FB_PADDINGS, shift: 0 }),
+        define({ blocks: FB_NO_FF_PADDINGS, shift: 0 }, NO_FF_SRC),
+        define({ blocks: FB_NO_IE_PADDINGS, shift: 0 }, NO_IE_SRC),
+        define(null, NO_V8_SRC),
+        define({ blocks: R_PADDINGS, shift: 0 }, V8_SRC),
+        define({ blocks: R_PADDINGS, shift: 5 }, IE_SRC),
+        define({ blocks: R_PADDINGS, shift: 4 }, FF_SRC),
+    ];
+
+    FH_PADDING_INFOS =
+    [
+        define({ blocks: FH_PADDINGS, shift: 0 }),
+        define({ blocks: R_PADDINGS, shift: 0 }, NO_IE_SRC),
+        define({ blocks: R_PADDINGS, shift: 1 }, IE_SRC),
+    ];
+
     FROM_CHAR_CODE =
     defineList
     (
@@ -1794,6 +1731,91 @@ export var CONSTANTS;
             define(2),
         ]
     );
+
+    PADDING_ENTRIES_MAP =
+    {
+        18:
+        [
+            define(12),
+            define({ block: 'RP_0_S', indexer: '2 + FH_SHIFT_3' }, NO_V8_SRC),
+            define(3, V8_SRC),
+            define(0, IE_SRC),
+            define(0, FF_SRC),
+        ],
+        20:
+        [
+            define(10),
+            define
+            ({ block: 'RP_6_SO', indexer: 3 + ' + FH_SHIFT_1' }, NO_V8_SRC),
+            define(0, V8_SRC),
+            define(5, IE_SRC),
+            define(6, FF_SRC),
+        ],
+        23:
+        [
+            define(7),
+            define(9, NO_FF_SRC),
+            define({ block: 'RP_3_NO', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
+            define(0, V8_SRC),
+            define(3, IE_SRC),
+            define(3, FF_SRC),
+        ],
+        25:
+        [
+            define(7),
+            define(5, NO_FF_SRC),
+            define(5, NO_IE_SRC),
+            define({ block: 'RP_1_NO', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
+            define(0, IE_SRC),
+            define(1, FF_SRC),
+        ],
+        30:
+        [
+            define(10),
+            define
+            ({ block: 'RP_6_SO', indexer: 4 + ' + FH_SHIFT_1' }, NO_V8_SRC),
+            define(0, V8_SRC),
+            define(5, IE_SRC),
+            define(6, FF_SRC),
+        ],
+        32:
+        [
+            define(8),
+            define(9, NO_FF_SRC),
+            define(9, NO_IE_SRC),
+            define({ block: 'RP_4_N', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
+            define(0, V8_SRC),
+            define(3, IE_SRC),
+            define(4, FF_SRC),
+        ],
+        34:
+        [
+            define(7),
+            define(9, NO_FF_SRC),
+            define(6, INCR_CHAR, NO_FF_SRC),
+            define(9, NO_IE_SRC),
+            define({ block: 'RP_2_SO', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
+            define(6, V8_SRC),
+            define(1, IE_SRC),
+            define(3, FF_SRC),
+        ],
+    };
+
+    var replaceStaticExpr;
+
+    initReplaceStaticExpr =
+    function (value)
+    {
+        initReplaceStaticExpr = null;
+        replaceStaticExpr = value;
+    };
+
+    // Create simple constant solutions
+    defineSimple('false',       '![]',              SolutionType.ALGEBRAIC);
+    defineSimple('true',        '!![]',             SolutionType.ALGEBRAIC);
+    defineSimple('undefined',   '[][[]]',           SolutionType.UNDEFINED);
+    defineSimple('NaN',         '+[false]',         SolutionType.WEAK_ALGEBRAIC);
+    defineSimple('Infinity',    JSFUCK_INFINITY,    SolutionType.WEAK_ALGEBRAIC);
 
     // Create definitions for digits
     for (var digit = 0; digit <= 9; ++digit)

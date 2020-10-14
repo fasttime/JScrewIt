@@ -1,6 +1,6 @@
 import createClusteringPlan                     from './clustering-plan';
 import { _Math_max, _Math_pow, assignNoEnum }   from './obj-utils';
-import { EMPTY_SOLUTION, DynamicSolution }      from 'novem';
+import { DynamicSolution, EMPTY_SOLUTION }      from './solution';
 
 export var APPEND_LENGTH_OF_DIGIT_0     = 6;
 export var APPEND_LENGTH_OF_DOT         = 73;
