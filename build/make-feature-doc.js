@@ -345,7 +345,7 @@ module.exports =
                         formatAvailability(availability, webWorkerReport, forcedStrictModeReport);
                         formattedDescription +=
                         '         *\n' +
-                        '         * @reamarks\n' +
+                        '         * @remarks\n' +
                         '         *\n' +
                         `         * ${formattedAvailability}\n`;
                     }

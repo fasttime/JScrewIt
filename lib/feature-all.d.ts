@@ -22,7 +22,7 @@ declare module 'jscrewit'
         /**
          * Existence of the global object document whose string representation starts with "\[object " and ends with "Document\]".
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
          */
@@ -31,7 +31,7 @@ declare module 'jscrewit'
         /**
          * Existence of the global object self whose string representation starts with "\[object " and ends with "Window\]".
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
          */
@@ -40,7 +40,7 @@ declare module 'jscrewit'
         /**
          * The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 0.12+.
          */
@@ -49,7 +49,7 @@ declare module 'jscrewit'
         /**
          * Support for arrow functions.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Safari 10+, Opera and Node.js 4+.
          */
@@ -58,7 +58,7 @@ declare module 'jscrewit'
         /**
          * Existence of the global functions atob and btoa.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari before 10.
          */
@@ -72,7 +72,7 @@ declare module 'jscrewit'
         /**
          * Existence of the global object statusbar having the string representation "\[object BarProp\]".
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Safari, Opera and Android Browser 4.4. This feature is not available inside web workers.
          */
@@ -88,7 +88,7 @@ declare module 'jscrewit'
         /**
          * The property that the various string methods returning HTML code such as String.prototype.big or String.prototype.link have both the tag name and attributes written in capital letters.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Internet Explorer.
          */
@@ -117,7 +117,7 @@ declare module 'jscrewit'
          *
          * This feature may become unavailable when certain browser extensions are active.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
          */
@@ -131,7 +131,7 @@ declare module 'jscrewit'
         /**
          * Existence of the global object document having the string representation "\[object Document\]".
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Internet Explorer before 11. This feature is not available inside web workers.
          */
@@ -140,7 +140,7 @@ declare module 'jscrewit'
         /**
          * Existence of the global object self having the string representation "\[object DOMWindow\]".
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Android Browser before 4.4. This feature is not available inside web workers.
          */
@@ -149,7 +149,7 @@ declare module 'jscrewit'
         /**
          * The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Android Browser and Node.js before 0.12.
          */
@@ -158,7 +158,7 @@ declare module 'jscrewit'
         /**
          * The property that double quotation marks in the argument of String.prototype.fontcolor are escaped as "\&quot;".
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
          */
@@ -167,7 +167,7 @@ declare module 'jscrewit'
         /**
          * The property that only double quotation marks and no other characters in the argument of String.prototype.fontcolor are escaped into HTML entities.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Safari, Opera and Node.js 0.12+.
          */
@@ -176,7 +176,7 @@ declare module 'jscrewit'
         /**
          * Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format line feed characters \("\\n"\) in their string representation.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Node.js 12+.
          */
@@ -185,7 +185,7 @@ declare module 'jscrewit'
         /**
          * Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format slashes \("/"\) in their string representation.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Node.js 4+.
          */
@@ -194,7 +194,7 @@ declare module 'jscrewit'
         /**
          * Existence of the global object sidebar having the string representation "\[object External\]".
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Firefox. This feature is not available inside web workers.
          */
@@ -219,7 +219,7 @@ declare module 'jscrewit'
          *
          * Remarkable traits are the lack of line feed characters at the beginning and at the end of the string and the presence of a line feed followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Firefox and Safari.
          */
@@ -228,7 +228,7 @@ declare module 'jscrewit'
         /**
          * Existence of the native function Array.prototype.fill.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 4+.
          */
@@ -237,7 +237,7 @@ declare module 'jscrewit'
         /**
          * Existence of the native function Array.prototype.flat.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Safari 12+, Opera and Node.js 11+.
          */
@@ -246,7 +246,7 @@ declare module 'jscrewit'
         /**
          * Existence of the function String.fromCodePoint.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Safari 9+, Opera and Node.js 4+.
          */
@@ -255,7 +255,7 @@ declare module 'jscrewit'
         /**
          * A string representation of dynamically generated functions where the character at index 19 is a line feed \("\\n"\).
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Opera and Node.js 10+.
          */
@@ -264,7 +264,7 @@ declare module 'jscrewit'
         /**
          * A string representation of dynamically generated functions where the character at index 22 is a line feed \("\\n"\).
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Internet Explorer, Safari 9+, Android Browser and Node.js before 10.
          */
@@ -275,7 +275,7 @@ declare module 'jscrewit'
          *
          * The string representation of dates is implementation dependent, but most engines use a similar format, making this feature available in all supported engines except Internet Explorer 9 and 10.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, Android Browser and Node.js.
          */
@@ -284,7 +284,7 @@ declare module 'jscrewit'
         /**
          * Existence of the global object history having the string representation "\[object History\]".
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
          */
@@ -293,7 +293,7 @@ declare module 'jscrewit'
         /**
          * Existence of the global object Audio whose string representation starts with "function HTMLAudioElement".
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Android Browser 4.4. This feature is not available inside web workers.
          */
@@ -302,7 +302,7 @@ declare module 'jscrewit'
         /**
          * Existence of the global object document having the string representation "\[object HTMLDocument\]".
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera and Android Browser. This feature is not available inside web workers.
          */
@@ -333,7 +333,7 @@ declare module 'jscrewit'
          *
          * Remarkable traits are the presence of a line feed character \("\\n"\) at the beginning and at the end of the string and a line feed followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Internet Explorer.
          */
@@ -342,7 +342,7 @@ declare module 'jscrewit'
         /**
          * The ability to use unary increment operators with string characters, like in \( ++"some string"\[0\] \): this will result in a TypeError in strict mode in ECMAScript compliant engines.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser and Node.js. This feature is not available when strict mode is enforced in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Node.js 5+.
          */
@@ -351,7 +351,7 @@ declare module 'jscrewit'
         /**
          * Existence of the global object Intl.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4 and Node.js 0.12+.
          */
@@ -360,7 +360,7 @@ declare module 'jscrewit'
         /**
          * Language sensitive string representation of Infinity as "∞".
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4 and Node.js 0.12+.
          */
@@ -369,7 +369,7 @@ declare module 'jscrewit'
         /**
          * Existence of the name property for functions.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
          */
@@ -378,7 +378,7 @@ declare module 'jscrewit'
         /**
          * Existence of the global object Node having the string representation "\[object NodeConstructor\]".
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Safari before 10. This feature is not available inside web workers.
          */
@@ -422,7 +422,7 @@ declare module 'jscrewit'
         /**
          * A string representation of native functions typical for V8 or for Internet Explorer but not for Firefox and Safari.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Internet Explorer, Opera, Android Browser and Node.js.
          */
@@ -433,7 +433,7 @@ declare module 'jscrewit'
          *
          * A remarkable trait of this feature is the lack of line feed characters at the beginning and at the end of the string.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
          */
@@ -442,7 +442,7 @@ declare module 'jscrewit'
         /**
          * The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Safari 9+, Opera and Node.js 0.12+.
          */
@@ -453,7 +453,7 @@ declare module 'jscrewit'
          *
          * A most remarkable trait of this feature is the presence of a line feed followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Firefox, Internet Explorer and Safari.
          */
@@ -496,7 +496,7 @@ declare module 'jscrewit'
         /**
          * Existence of the global object self whose string representation starts with "\[object ".
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.
          */
@@ -505,7 +505,7 @@ declare module 'jscrewit'
         /**
          * Existence of the global string status.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
          */
@@ -516,7 +516,7 @@ declare module 'jscrewit'
          *
          * This behavior is specified by ECMAScript, and is enforced by all engines except Android Browser versions prior to 4.1.2, where this feature is not available.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+ and Node.js.
          */
@@ -527,7 +527,7 @@ declare module 'jscrewit'
          *
          * Remarkable traits are the lack of line feed characters at the beginning and at the end of the string and the presence of a single whitespace before the "\[native code\]" sequence.
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Opera, Android Browser and Node.js.
          */
@@ -536,7 +536,7 @@ declare module 'jscrewit'
         /**
          * Existence of the global object self having the string representation "\[object Window\]".
          *
-         * @reamarks
+         * @remarks
          *
          * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser 4.4. This feature is not available inside web workers.
          */
