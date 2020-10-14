@@ -1,5 +1,5 @@
+import { APPEND_LENGTH_OF_DIGIT_0, APPEND_LENGTH_OF_SMALL_E }   from './append-lengths';
 import { _Array_prototype_push, _Object, createEmpty }          from './obj-utils';
-import { APPEND_LENGTH_OF_DIGIT_0, APPEND_LENGTH_OF_SMALL_E }   from './screw-buffer';
 
 export default function createFigurator(startValues, joiner)
 {

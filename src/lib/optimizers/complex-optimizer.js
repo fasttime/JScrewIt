@@ -1,5 +1,5 @@
+import { APPEND_LENGTH_OF_EMPTY }                       from '../append-lengths';
 import { _Array_prototype_forEach, createEmpty, noop }  from '../obj-utils';
-import { APPEND_LENGTH_OF_EMPTY }                       from '../screw-buffer';
 
 var createComplexOptimizer;
 

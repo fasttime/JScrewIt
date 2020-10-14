@@ -1,5 +1,14 @@
 import
 {
+    APPEND_LENGTH_OF_DIGITS,
+    APPEND_LENGTH_OF_DIGIT_0,
+    APPEND_LENGTH_OF_DOT,
+    APPEND_LENGTH_OF_MINUS,
+    APPEND_LENGTH_OF_SMALL_E,
+}
+from './append-lengths';
+import
+{
     BASE64_ALPHABET_HI_2,
     BASE64_ALPHABET_HI_4,
     BASE64_ALPHABET_HI_6,
@@ -34,17 +43,7 @@ import
 }
 from './obj-utils';
 import
-{
-    APPEND_LENGTH_OF_DIGITS,
-    APPEND_LENGTH_OF_DIGIT_0,
-    APPEND_LENGTH_OF_DOT,
-    APPEND_LENGTH_OF_MINUS,
-    APPEND_LENGTH_OF_SMALL_E,
-    SCREW_AS_STRING,
-    SCREW_AS_BONDED_STRING,
-    SCREW_NORMAL,
-    ScrewBuffer,
-}
+{ SCREW_AS_STRING, SCREW_AS_BONDED_STRING, SCREW_NORMAL, ScrewBuffer }
 from './screw-buffer';
 import { SimpleSolution }           from './solution';
 import { SolutionType }             from 'novem';

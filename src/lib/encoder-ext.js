@@ -1,5 +1,13 @@
 import
 {
+    APPEND_LENGTH_OF_DIGITS,
+    APPEND_LENGTH_OF_DIGIT_0,
+    APPEND_LENGTH_OF_FALSE,
+    APPEND_LENGTH_OF_PLUS_SIGN,
+}
+from './append-lengths';
+import
+{
     AMENDINGS,
     FROM_CHAR_CODE,
     FROM_CHAR_CODE_CALLBACK_FORMATTER,
@@ -8,9 +16,9 @@ import
     SIMPLE,
 }
 from './definitions';
-import { Encoder, replaceStaticString } from './encoder-base';
-import expressParse                     from './express-parse';
-import createFigurator                  from './figurator';
+import { Encoder, replaceStaticString }                             from './encoder-base';
+import expressParse                                                 from './express-parse';
+import createFigurator                                              from './figurator';
 import
 {
     _Array_prototype_forEach,
@@ -26,17 +34,7 @@ import
     createEmpty,
 }
 from './obj-utils';
-import
-{
-    APPEND_LENGTH_OF_DIGITS,
-    APPEND_LENGTH_OF_DIGIT_0,
-    APPEND_LENGTH_OF_FALSE,
-    APPEND_LENGTH_OF_PLUS_SIGN,
-    SCREW_AS_BONDED_STRING,
-    SCREW_AS_STRING,
-    SCREW_NORMAL,
-}
-from './screw-buffer';
+import { SCREW_AS_BONDED_STRING, SCREW_AS_STRING, SCREW_NORMAL }    from './screw-buffer';
 
 export function wrapWithCall(str)
 {
