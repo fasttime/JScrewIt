@@ -159,18 +159,6 @@ function createOptimizer(toStringReplacement)
     return optimizer;
 }
 
-export default function createToStringOptimizer(encoder)
-{
-    if (initialize)
-    {
-        initialize();
-        initialize = null;
-    }
-    var toStringReplacement = encoder.resolveConstant('TO_STRING').replacement;
-    var optimizer = createOptimizer(toStringReplacement);
-    return optimizer;
-}
-
 function getMinRadix(char)
 {
     var minRadix = _parseInt(char, MAX_RADIX) + 1;
@@ -182,6 +170,18 @@ function isClusterable(solution)
     var char = solution.source;
     var clusterable = char != null && /[\da-z]/.test(char);
     return clusterable;
+}
+
+export default function (encoder)
+{
+    if (initialize)
+    {
+        initialize();
+        initialize = null;
+    }
+    var toStringReplacement = encoder.resolveConstant('TO_STRING').replacement;
+    var optimizer = createOptimizer(toStringReplacement);
+    return optimizer;
 }
 
 var initialize =

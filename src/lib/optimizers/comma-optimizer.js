@@ -40,7 +40,7 @@ function isSingleCharacterSolution(solution)
     return returnValue;
 }
 
-export default function createCommaOptimizer(encoder)
+export default function (encoder)
 {
     function createClusterer(solutions, index, commaCount)
     {
