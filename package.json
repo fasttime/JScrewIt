@@ -51,6 +51,7 @@
     "ebdd": "latest",
     "eslint-plugin-ebdd": "latest",
     "expectations": "latest",
+    "glob": "*",
     "gulp": "latest",
     "gulp-jsdoc3": "latest",
     "gulp-rename": "latest",

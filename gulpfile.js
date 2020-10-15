@@ -2,6 +2,73 @@
 
 const { dest, parallel, series, src, task } = require('gulp');
 
+async function bundle(inputOptions, outputFile, banner)
+{
+    const { parse }     = require('acorn');
+    const { red }       = require('chalk');
+    const { rollup }    = require('rollup');
+
+    const bundle = await rollup(inputOptions);
+    const outputOptions = { banner, file: outputFile, format: 'iife' };
+    const { output: [{ code }] } = await bundle.write(outputOptions);
+    try
+    {
+        parse(code, { ecmaVersion: 5 });
+    }
+    catch (error)
+    {
+        console.error(red('The file \'%s\' is not a valid ECMAScript 5 script.'), outputFile);
+        error.showStack = false;
+        throw error;
+    }
+}
+
+async function bundleUI()
+{
+    const inputOptions = { input: 'src/ui/ui-main.js' };
+    await bundle(inputOptions, '.tmp-src/ui.js');
+}
+
+async function makeArt()
+{
+    const { promise }               = require('art-js');
+    const { promises: { mkdir } }   = require('fs');
+
+    await mkdir('.tmp-src', { recursive: true });
+    await promise('.tmp-src/art.js', { css: true, off: true, on: true });
+}
+
+function makeWorker()
+{
+    const tap       = require('gulp-tap');
+    const uglify    = require('gulp-uglify');
+
+    const stream =
+    src('src/ui/worker.js')
+    .pipe(uglify())
+    .pipe
+    (
+        tap
+        (
+            chunk =>
+            {
+                const str = `export default ${JSON.stringify(String(chunk.contents))};\n`;
+                chunk.contents = Buffer.from(str);
+            },
+        ),
+    )
+    .pipe(dest('.tmp-src'));
+    return stream;
+}
+
+function readFileAsString(inputPath)
+{
+    const { promises: { readFile } } = require('fs');
+
+    const promise = readFile(inputPath, 'utf8');
+    return promise;
+}
+
 task
 (
     'clean',
@@ -17,6 +84,7 @@ task
             'coverage',
             'lib/**/*.js',
             'lib/feature-all.d.ts',
+            'test/spec-runner.html',
             'ui/**/*.js',
         ];
         await del(patterns);
@@ -81,27 +149,6 @@ task
     },
 );
 
-async function bundle(inputOptions, outputFile, banner)
-{
-    const { parse }     = require('acorn');
-    const { red }       = require('chalk');
-    const { rollup }    = require('rollup');
-
-    const bundle = await rollup(inputOptions);
-    const outputOptions = { banner, file: outputFile, format: 'iife' };
-    const { output: [{ code }] } = await bundle.write(outputOptions);
-    try
-    {
-        parse(code, { ecmaVersion: 5 });
-    }
-    catch (error)
-    {
-        console.error(red('The file \'%s\' is not a valid ECMAScript 5 script.'), outputFile);
-        error.showStack = false;
-        throw error;
-    }
-}
-
 task
 (
     'bundle:lib',
@@ -123,44 +170,6 @@ task
         await bundle(inputOptions, 'lib/jscrewit.js', `// JScrewIt ${version} – ${homepage}\n`);
     },
 );
-
-async function makeArt()
-{
-    const { promise }               = require('art-js');
-    const { promises: { mkdir } }   = require('fs');
-
-    await mkdir('.tmp-src', { recursive: true });
-    await promise('.tmp-src/art.js', { css: true, off: true, on: true });
-}
-
-function makeWorker()
-{
-    const tap       = require('gulp-tap');
-    const uglify    = require('gulp-uglify');
-
-    const stream =
-    src('src/ui/worker.js')
-    .pipe(uglify())
-    .pipe
-    (
-        tap
-        (
-            chunk =>
-            {
-                const str = `export default ${JSON.stringify(String(chunk.contents))};\n`;
-                chunk.contents = Buffer.from(str);
-            },
-        ),
-    )
-    .pipe(dest('.tmp-src'));
-    return stream;
-}
-
-async function bundleUI()
-{
-    const inputOptions = { input: 'src/ui/ui-main.js' };
-    await bundle(inputOptions, '.tmp-src/ui.js');
-}
 
 task('bundle:ui', series(parallel(makeArt, makeWorker), bundleUI));
 
@@ -229,13 +238,13 @@ task
     'feature-doc',
     async () =>
     {
-        const makeFeatureDoc                        = require('./build/make-feature-doc');
-        const { promises: { readFile, writeFile } } = require('fs');
-        const Handlebars                            = require('handlebars');
+        const makeFeatureDoc                = require('./build/make-feature-doc');
+        const { promises: { writeFile } }   = require('fs');
+        const Handlebars                    = require('handlebars');
 
         async function writeOutput(inputPath, context, outputPath)
         {
-            const input = await readFile(inputPath, 'utf8');
+            const input = await readFileAsString(inputPath);
             const template = Handlebars.compile(input, { noEscape: true });
             const output = template(context);
             await writeFile(outputPath, output);
@@ -247,6 +256,36 @@ task
         const promiseMd =
         writeOutput('src/Features.md.hbs', contextMd, 'Features.md');
         await Promise.all([promiseMd, promiseTs]);
+    },
+);
+
+task
+(
+    'make-spec-runner',
+    async () =>
+    {
+        const { promises: { writeFile } }   = require('fs');
+        const glob                          = require('glob');
+        const Handlebars                    = require('handlebars');
+        const { promisify }                 = require('util');
+
+        async function getSpecs()
+        {
+            const specs = await promisify(glob)('**/*.spec.js', { cwd: 'test/lib' });
+            return specs;
+        }
+
+        async function getTemplate()
+        {
+            const input = await readFileAsString('src/test/spec-runner.html.hbs');
+            const template = Handlebars.compile(input);
+            return template;
+        }
+
+        const promises = [getTemplate(), getSpecs()];
+        const [template, specs] = await Promise.all(promises);
+        const output = template({ specs });
+        await writeFile('test/spec-runner.html', output);
     },
 );
 
@@ -283,7 +322,7 @@ task
         parallel('clean', 'lint'),
         parallel('bundle:lib', 'bundle:ui'),
         'test',
-        parallel('minify:lib', 'minify:ui', 'feature-doc'),
+        parallel('minify:lib', 'minify:ui', 'feature-doc', 'make-spec-runner'),
         'typedoc',
     ),
 );
