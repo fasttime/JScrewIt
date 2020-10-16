@@ -20,7 +20,7 @@ import createToStringOptimizer          from './optimizers/to-string-optimizer';
                 var optimizeToString;
                 if (typeof optimize === 'object')
                 {
-                    optimizeComma       = !!optimize.comma;
+                    optimizeComma       = !!optimize.commaOpt;
                     optimizeComplex     = !!optimize.complexOpt;
                     optimizeToString    = !!optimize.toStringOpt;
                 }

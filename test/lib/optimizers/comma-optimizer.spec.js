@@ -9,15 +9,26 @@
     {
         var encoder =
         {
-            getOptimizerList:
-            function ()
-            {
-                return [];
-            },
             replaceExpr:
             function ()
             {
                 return '[].slice.call';
+            },
+            replaceString:
+            function (str, options)
+            {
+                expect(options.optimize).toBe(true);
+                var solution = new DynamicSolution();
+                Array.prototype.forEach.call
+                (
+                    str,
+                    function (char)
+                    {
+                        var subSolution = SOLUTIONS[char];
+                        solution.append(subSolution);
+                    }
+                );
+                return solution.replacement;
             },
         };
         var optimizer = JScrewIt.debug.createCommaOptimizer(encoder);
@@ -27,6 +38,7 @@
     var JScrewIt =
     typeof module !== 'undefined' ? require('../../node-jscrewit-test') : self.JScrewIt;
 
+    var DynamicSolution = JScrewIt.debug.DynamicSolution;
     var Solution        = JScrewIt.debug.Solution;
     var SolutionType    = JScrewIt.debug.SolutionType;
 
@@ -44,11 +56,11 @@
         new Solution
         ('C',       '"C"',                                  SolutionType.STRING),
 
-        COMMA:
+        ',':
         new Solution
         (',',       '([].slice.call(![]+[])+[])[+!![]]',    SolutionType.STRING),
 
-        ZERO:
+        0:
         new Solution
         ('0',       '+![]',                                 SolutionType.WEAK_ALGEBRAIC),
 
@@ -73,7 +85,7 @@
                         function ()
                         {
                             var optimizer = createOptimizer();
-                            var actual = optimizer.appendLengthOf(SOLUTIONS.COMMA);
+                            var actual = optimizer.appendLengthOf(SOLUTIONS[',']);
                             expect(actual).toBe(0);
                         }
                     );
@@ -106,7 +118,7 @@
                             var initSolutions =
                             function ()
                             {
-                                solutions = [SOLUTIONS.A, SOLUTIONS.COMMA, SOLUTIONS.B];
+                                solutions = [SOLUTIONS.A, SOLUTIONS[','], SOLUTIONS.B];
                             };
 
                             // OK.
@@ -154,9 +166,9 @@
                                 solutions =
                                 [
                                     SOLUTIONS.A,
-                                    SOLUTIONS.COMMA,
+                                    SOLUTIONS[','],
                                     SOLUTIONS.B,
-                                    SOLUTIONS.COMMA,
+                                    SOLUTIONS[','],
                                     SOLUTIONS.C,
                                 ];
                             };
@@ -179,6 +191,36 @@
                             solutions.splice(2, 1);
                             optimizeSolutions([optimizer], solutions, false, false);
                             expect(solutions.length).toBeGreaterThan(1);
+                        }
+                    );
+                    it
+                    (
+                        'optimizes adjacent commas',
+                        function ()
+                        {
+                            var optimizer = createOptimizer();
+                            var solutions;
+                            var initSolutions =
+                            function ()
+                            {
+                                solutions =
+                                [
+                                    SOLUTIONS.A,
+                                    SOLUTIONS[','],
+                                    SOLUTIONS[','],
+                                    SOLUTIONS.B,
+                                    SOLUTIONS[','],
+                                    SOLUTIONS.C,
+                                ];
+                            };
+
+                            // OK.
+                            initSolutions();
+                            optimizeSolutions([optimizer], solutions, false, false);
+                            expect(solutions.length).toBe(2);
+                            expect(solutions[1].replacement)
+                            .toBe('[].slice.call(' + SOLUTIONS[','].replacement + '+"B"+"C")');
+                            expect(solutions[1].type).toBe(SolutionType.OBJECT);
                         }
                     );
                     describe
@@ -315,7 +357,7 @@
                             function ()
                             {
                                 solutions =
-                                [SOLUTIONS.false, SOLUTIONS.ZERO, COMMA_SOLUTION, SOLUTIONS.A];
+                                [SOLUTIONS.false, SOLUTIONS[0], COMMA_SOLUTION, SOLUTIONS.A];
                             };
 
                             // OK.

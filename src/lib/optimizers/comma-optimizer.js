@@ -1,6 +1,6 @@
-import { SCREW_AS_STRING, ScrewBuffer }     from '../screw-buffer';
-import { SimpleSolution }                   from '../solution';
-import { SolutionType }                     from 'novem';
+import { SCREW_AS_STRING }  from '../screw-buffer';
+import { SimpleSolution }   from '../solution';
+import { SolutionType }     from 'novem';
 
 function appendLengthOf(solution)
 {
@@ -63,10 +63,9 @@ export default function (encoder)
             );
             var source = bridgeChars.join();
             var bridge = bridgeChars.join('');
-            var optimizerList = encoder.getOptimizerList(bridge, true);
-            var buffer = new ScrewBuffer(SCREW_AS_STRING, bridgeSolutions.length, optimizerList);
-            bridgeSolutions.forEach(buffer.append);
-            var replacement = rampReplacement + '(' + buffer + ')';
+            var bridgeReplacement =
+            encoder.replaceString(bridge, { optimize: true, screwMode: SCREW_AS_STRING });
+            var replacement = rampReplacement + '(' + bridgeReplacement + ')';
             var solution = new SimpleSolution(source, replacement, SolutionType.OBJECT);
             return solution;
         };
@@ -75,34 +74,42 @@ export default function (encoder)
 
     function optimizeSolutions(plan, solutions, bond, forceString)
     {
-        var solutionCount = solutions.length;
-        for (var index = 0, end = solutionCount - 2; index < end;)
+        function passFrom(index)
         {
-            var commaCount = countClusterableCommas(solutions, index);
-            if (commaCount)
+            while (index < end)
             {
-                var clusterLength = 2 * commaCount + 1;
-                var saving = getCommaAppendLength(solutions, index, clusterLength) - extraLength;
-                var singlePart = !index && clusterLength === solutionCount;
-                if (singlePart)
+                var commaCount = countClusterableCommas(solutions, index);
+                if (commaCount)
                 {
-                    if (forceString)
-                        saving -= 3; // "+[]"
-                    else if (bond)
-                        saving += 2; // "(" + ")"
+                    var clusterLength = 2 * commaCount + 1;
+                    var saving =
+                    getCommaAppendLength(solutions, index, clusterLength) - extraLength;
+                    var singlePart = !index && clusterLength === solutionCount;
+                    if (singlePart)
+                    {
+                        if (forceString)
+                            saving -= 3; // "+[]"
+                        else if (bond)
+                            saving += 2; // "(" + ")"
+                    }
+                    if (index && solutions[index].isWeak)
+                        saving += 2; // Save a pair of parentheses.
+                    if (saving > 0)
+                    {
+                        var clusterer = createClusterer(solutions, index, commaCount);
+                        plan.addCluster(index, clusterLength, clusterer, saving);
+                    }
+                    index += clusterLength + 1;
                 }
-                if (index && solutions[index].isWeak)
-                    saving += 2; // Save a pair of parentheses.
-                if (saving > 0)
-                {
-                    var clusterer = createClusterer(solutions, index, commaCount);
-                    plan.addCluster(index, clusterLength, clusterer, saving);
-                }
-                index += clusterLength;
+                else
+                    index += 2;
             }
-            else
-                ++index;
         }
+
+        var solutionCount = solutions.length;
+        var end = solutionCount - 2;
+        passFrom(0);
+        passFrom(1);
     }
 
     var rampReplacement = encoder.replaceExpr('[][SLICE_OR_FLAT].call');

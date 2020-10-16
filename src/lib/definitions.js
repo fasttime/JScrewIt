@@ -1135,7 +1135,6 @@ export var initReplaceStaticExpr;
         Object:         define({ expr: 'Object.name', optimize: { toStringOpt: true } }, NAME),
         RegExp:         define({ expr: 'RegExp.name', optimize: { toStringOpt: true } }, NAME),
         String:         define('String.name', NAME),
-        'f,a,l,s,e':    define({ expr: 'F_A_L_S_E', solutionType: SolutionType.OBJECT }),
         fromCharCo:
         define({ expr: '"from3har3o".split(3).join("C")', optimize: { toStringOpt: true } }),
         mCh:            define('atob("bUNo")', Feature.ATOB),
@@ -1745,8 +1744,7 @@ export var initReplaceStaticExpr;
         20:
         [
             define(10),
-            define
-            ({ block: 'RP_6_SO', indexer: 3 + ' + FH_SHIFT_1' }, NO_V8_SRC),
+            define({ block: 'RP_6_SO', indexer: 3 + ' + FH_SHIFT_1' }, NO_V8_SRC),
             define(0, V8_SRC),
             define(5, IE_SRC),
             define(6, FF_SRC),
@@ -1772,8 +1770,7 @@ export var initReplaceStaticExpr;
         30:
         [
             define(10),
-            define
-            ({ block: 'RP_6_SO', indexer: 4 + ' + FH_SHIFT_1' }, NO_V8_SRC),
+            define({ block: 'RP_6_SO', indexer: 4 + ' + FH_SHIFT_1' }, NO_V8_SRC),
             define(0, V8_SRC),
             define(5, IE_SRC),
             define(6, FF_SRC),
