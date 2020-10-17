@@ -561,14 +561,6 @@ sidebar,
                         this.toMatch(/^from(?:CharCode|CodePoint)$/);
                     },
                 },
-                F_A_L_S_E:
-                {
-                    validator:
-                    function ()
-                    {
-                        this.toEqual(['f', 'a', 'l', 's', 'e']);
-                    },
-                },
                 PLAIN_OBJECT:
                 {
                     validator:

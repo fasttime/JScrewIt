@@ -686,7 +686,7 @@ export var initReplaceStaticExpr;
         '+': '(1e100 + [])[2]',
         ',':
         [
-            define('(F_A_L_S_E + [])[1]'),
+            define('([][SLICE_OR_FLAT].call("false") + [])[1]'),
             define({ expr: '[[]].concat([[]])', solutionType: SolutionType.OBJECT }),
         ],
         '-': '(+".0000001" + [])[2]',
@@ -1121,7 +1121,7 @@ export var initReplaceStaticExpr;
         [
             define
             (
-                { expr: 'Infinity.toLocaleString()', optimize: { complexOpt: true } },
+                { expr: 'Infinity.toLocaleString()', optimize: true },
                 LOCALE_INFINITY
             ),
             defineCharDefault(),
@@ -1345,10 +1345,6 @@ export var initReplaceStaticExpr;
                 },
                 FROM_CODE_POINT
             ),
-        ],
-        F_A_L_S_E:
-        [
-            define('[][SLICE_OR_FLAT].call("false")'),
         ],
         PLAIN_OBJECT:
         [
