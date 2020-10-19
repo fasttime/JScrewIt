@@ -12,6 +12,7 @@ import
     FROM_CHAR_CODE,
     FROM_CHAR_CODE_CALLBACK_FORMATTER,
     MAPPER_FORMATTER,
+    OPTIMAL_ARG_NAME,
     OPTIMAL_RETURN_STRING,
     SIMPLE,
 }
@@ -647,9 +648,11 @@ export var createReindexMap;
             var mapper;
             if (radix)
             {
-                var parseIntArg = (coerceToInt ? '+' : '') + 'undefined';
                 var formatter = this.findDefinition(MAPPER_FORMATTER);
-                mapper = formatter('[parseInt(' + parseIntArg + ',' + radix + ')]');
+                var argName = this.findDefinition(OPTIMAL_ARG_NAME);
+                var parseIntArg = (coerceToInt ? '+' : '') + argName;
+                var accessor = '[parseInt(' + parseIntArg + ',' + radix + ')]';
+                mapper = formatter(argName, accessor);
             }
             else
                 mapper = '"".charAt.bind';
@@ -787,7 +790,9 @@ export var createReindexMap;
             if (!keyFigureArrayStr)
                 return;
             var formatter = this.findDefinition(MAPPER_FORMATTER);
-            var mapper = formatter('.indexOf(undefined)');
+            var argName = 'undefined';
+            var accessor = '.indexOf(' + argName + ')';
+            var mapper = formatter(argName, accessor);
             var charIndexArrayStr =
             this.createJSFuckArrayMapping(keyFigureArrayStr, mapper, figureLegend);
             var output = this.createDictEncoding(legend, charIndexArrayStr, maxLength);

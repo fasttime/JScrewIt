@@ -12,6 +12,7 @@ import
     FROM_CHAR_CODE,
     FROM_CHAR_CODE_CALLBACK_FORMATTER,
     MAPPER_FORMATTER,
+    OPTIMAL_ARG_NAME,
     OPTIMAL_B,
     OPTIMAL_RETURN_STRING,
 }
@@ -183,6 +184,8 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
         FROM_CHAR_CODE_CALLBACK_FORMATTER.available;
         ENTRIES.MAPPER_FORMATTER                                = MAPPER_FORMATTER;
         ENTRIES['MAPPER_FORMATTER:available']                   = MAPPER_FORMATTER.available;
+        ENTRIES.OPTIMAL_ARG_NAME                                = OPTIMAL_ARG_NAME;
+        ENTRIES['OPTIMAL_ARG_NAME:available']                   = OPTIMAL_ARG_NAME.available;
         ENTRIES.OPTIMAL_B                                       = OPTIMAL_B;
         ENTRIES['OPTIMAL_B:available']                          = OPTIMAL_B.available;
         ENTRIES.OPTIMAL_RETURN_STRING                           = OPTIMAL_RETURN_STRING;

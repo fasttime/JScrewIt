@@ -314,6 +314,8 @@ verify.FROM_CHAR_CODE_CALLBACK_FORMATTER = verifyPredef('FROM_CHAR_CODE_CALLBACK
 
 verify.MAPPER_FORMATTER = verifyPredef('MAPPER_FORMATTER');
 
+verify.OPTIMAL_ARG_NAME = verifyPredef('OPTIMAL_ARG_NAME');
+
 verify.OPTIMAL_B = verifyPredef('OPTIMAL_B');
 
 verify.OPTIMAL_RETURN_STRING = verifyPredef('OPTIMAL_RETURN_STRING');

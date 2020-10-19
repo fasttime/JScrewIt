@@ -19,6 +19,7 @@ export var SIMPLE = createEmpty();
 export var FROM_CHAR_CODE;
 export var FROM_CHAR_CODE_CALLBACK_FORMATTER;
 export var MAPPER_FORMATTER;
+export var OPTIMAL_ARG_NAME;
 export var OPTIMAL_B;
 export var OPTIMAL_RETURN_STRING;
 
@@ -1683,25 +1684,33 @@ export var initReplaceStaticExpr;
         [
             define
             (
-                function (arg)
+                function (argName, accessor)
                 {
                     var mapper =
-                    'Function("return function(undefined){return this' + arg + '}")().bind';
+                    'Function("return function(' + argName + '){return this' + accessor +
+                    '}")().bind';
                     return mapper;
                 }
             ),
             define
             (
-                function (arg)
+                function (argName, accessor)
                 {
                     var mapper =
-                    'Function("return falsefalse=>undefined=>falsefalse' + arg + '")()';
+                    'Function("return falsefalse=>' + argName + '=>falsefalse' + accessor + '")()';
                     return mapper;
                 },
                 ARROW
             ),
         ],
         [define(0), define(1)]
+    );
+
+    OPTIMAL_ARG_NAME =
+    defineList
+    (
+        [define('f'), define('undefined')],
+        [define(0), define(1, FILL, IE_SRC), define(1, FILL, NO_IE_SRC), define(0, FLAT)]
     );
 
     OPTIMAL_B = defineList([define('B'), define('b')], [define(0), define(1, ARRAY_ITERATOR)]);
