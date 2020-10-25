@@ -1002,12 +1002,12 @@ export var initReplaceStaticExpr;
     COMPLEX =
     noProto
     ({
-        Number:         define({ expr: 'Number.name', optimize: { toStringOpt: true } }, NAME),
-        Object:         define({ expr: 'Object.name', optimize: { toStringOpt: true } }, NAME),
-        RegExp:         define({ expr: 'RegExp.name', optimize: { toStringOpt: true } }, NAME),
+        Number:         define({ expr: 'Number.name', optimize: { complexOpt: false } }, NAME),
+        Object:         define({ expr: 'Object.name', optimize: { complexOpt: false } }, NAME),
+        RegExp:         define({ expr: 'RegExp.name', optimize: { complexOpt: false } }, NAME),
         String:         define('String.name', NAME),
         fromCharCo:
-        define({ expr: '"from3har3o".split(3).join("C")', optimize: { toStringOpt: true } }),
+        define({ expr: '"from3har3o".split(3).join("C")', optimize: { complexOpt: false } }),
         mCh:            define('atob("bUNo")', Feature.ATOB),
     });
 
@@ -1066,15 +1066,11 @@ export var initReplaceStaticExpr;
         ],
         document:
         [
-            define
-            (
-                { expr: 'Function("return document")()', optimize: { toStringOpt: true } },
-                ANY_DOCUMENT
-            ),
+            define({ expr: 'Function("return document")()', optimize: true }, ANY_DOCUMENT),
         ],
         escape:
         [
-            define({ expr: 'Function("return escape")()', optimize: { toStringOpt: true } }),
+            define({ expr: 'Function("return escape")()', optimize: true }),
         ],
         self:
         [
@@ -1086,7 +1082,7 @@ export var initReplaceStaticExpr;
         ],
         unescape:
         [
-            define({ expr: 'Function("return unescape")()', optimize: { toStringOpt: true } }),
+            define({ expr: 'Function("return unescape")()', optimize: true }),
         ],
 
         // Custom definitions
@@ -1211,7 +1207,7 @@ export var initReplaceStaticExpr;
             (
                 {
                     expr: '"fromCodePoint"',
-                    optimize: { toStringOpt: true },
+                    optimize: true,
                     solutionType: SolutionType.COMBINED_STRING,
                 },
                 FROM_CODE_POINT
@@ -1238,7 +1234,7 @@ export var initReplaceStaticExpr;
             (
                 {
                     expr: '"toString"',
-                    optimize: { complexOpt: true },
+                    optimize: { toStringOpt: false },
                     solutionType: SolutionType.COMBINED_STRING,
                 }
             ),
@@ -1249,7 +1245,7 @@ export var initReplaceStaticExpr;
             (
                 {
                     expr: '"toUpperCase"',
-                    optimize: { toStringOpt: true },
+                    optimize: true,
                     solutionType: SolutionType.COMBINED_STRING,
                 }
             ),

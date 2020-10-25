@@ -5,69 +5,66 @@ import createCommaOptimizer             from './optimizers/comma-optimizer';
 import createComplexOptimizer           from './optimizers/complex-optimizer';
 import createToStringOptimizer          from './optimizers/to-string-optimizer';
 
-(function ()
+function getOptimizerList(str, optimize)
 {
-    var protoSource =
+    var optimizerList = [];
+    if (optimize)
     {
-        getOptimizerList:
-        function (str, optimize)
+        var optimizeComma;
+        var optimizeComplex;
+        var optimizeToString;
+        if (typeof optimize === 'object')
         {
-            var optimizerList = [];
-            if (optimize)
+            optimizeComma       = normalizeOption(optimize.commaOpt);
+            optimizeComplex     = normalizeOption(optimize.complexOpt);
+            optimizeToString    = normalizeOption(optimize.toStringOpt);
+        }
+        else
+            optimizeComma = optimizeComplex = optimizeToString = true;
+        var optimizers = this.optimizers;
+        var optimizer;
+        if (optimizeComma)
+        {
+            if (str.indexOf(',') >= 0)
             {
-                var optimizeComma;
-                var optimizeComplex;
-                var optimizeToString;
-                if (typeof optimize === 'object')
-                {
-                    optimizeComma       = !!optimize.commaOpt;
-                    optimizeComplex     = !!optimize.complexOpt;
-                    optimizeToString    = !!optimize.toStringOpt;
-                }
-                else
-                    optimizeComma = optimizeComplex = optimizeToString = true;
-                var optimizers = this.optimizers;
-                var optimizer;
-                if (optimizeComma)
-                {
-                    if (str.indexOf(',') >= 0)
-                    {
-                        optimizer =
-                        optimizers.comma || (optimizers.comma = createCommaOptimizer(this));
-                        optimizerList.push(optimizer);
-                    }
-                }
-                if (optimizeComplex)
-                {
-                    var complexOptimizers = optimizers.complex;
-                    if (!complexOptimizers)
-                        complexOptimizers = optimizers.complex = createEmpty();
-                    for (var complex in COMPLEX)
-                    {
-                        var entry = COMPLEX[complex];
-                        if (this.hasFeatures(entry.mask) && str.indexOf(complex) >= 0)
-                        {
-                            optimizer =
-                            complexOptimizers[complex] ||
-                            (
-                                complexOptimizers[complex] =
-                                createComplexOptimizer(this, complex, entry.definition)
-                            );
-                            optimizerList.push(optimizer);
-                        }
-                    }
-                }
-                if (optimizeToString)
+                optimizer = optimizers.comma || (optimizers.comma = createCommaOptimizer(this));
+                optimizerList.push(optimizer);
+            }
+        }
+        if (optimizeComplex)
+        {
+            var complexOptimizers = optimizers.complex;
+            if (!complexOptimizers)
+                complexOptimizers = optimizers.complex = createEmpty();
+            for (var complex in COMPLEX)
+            {
+                var entry = COMPLEX[complex];
+                if (this.hasFeatures(entry.mask) && str.indexOf(complex) >= 0)
                 {
                     optimizer =
-                    optimizers.toString || (optimizers.toString = createToStringOptimizer(this));
+                    complexOptimizers[complex] ||
+                    (
+                        complexOptimizers[complex] =
+                        createComplexOptimizer(this, complex, entry.definition)
+                    );
                     optimizerList.push(optimizer);
                 }
             }
-            return optimizerList;
-        },
-    };
-
-    assignNoEnum(Encoder.prototype, protoSource);
+        }
+        if (optimizeToString)
+        {
+            optimizer =
+            optimizers.toString || (optimizers.toString = createToStringOptimizer(this));
+            optimizerList.push(optimizer);
+        }
+    }
+    return optimizerList;
 }
-)();
+
+function normalizeOption(inOpt)
+{
+    var outOpt = inOpt === undefined || !!inOpt;
+    return outOpt;
+}
+
+assignNoEnum(Encoder.prototype, { getOptimizerList: getOptimizerList });

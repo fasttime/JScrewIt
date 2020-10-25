@@ -724,7 +724,7 @@ export var replaceStaticString;
          *
          * If this parameter is `NaN`, then no length limit is imposed.
          *
-         * @param {boolean|object<string, boolean|*>} [options.optimize=false]
+         * @param {boolean|object<string, boolean>} [options.optimize=false]
          * Specifies which optimizations should be attempted.
          *
          * Optimizations may reduce the length of the replacement string, but they also reduce the
@@ -733,8 +733,9 @@ export var replaceStaticString;
          * This parameter can be set to a boolean value in order to turn all optimizations on
          * (`true`) or off (`false`).
          * In order to turn specific optimizations on or off, specify an object that maps
-         * optimization names with the suffix "Opt" to booleans, or to any other optimization
-         * specific kind of data.
+         * optimization names with the suffix "Opt" to a boolean setting.
+         * Currently supported settings are `commaOpt`, `complexOpt` and `toStringOpt`.
+         * When an object is specified, undefined optimization settings default to `true`.
          *
          * @param {number} [options.screwMode=SCREW_NORMAL]
          * Specifies how the replacement will be used.
