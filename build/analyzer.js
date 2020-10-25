@@ -8,11 +8,12 @@
 
     class Analyzer
     {
-        constructor()
+        constructor(ancestorFeatureObj = JScrewIt.Feature.DEFAULT)
         {
-            this.featureObj = JScrewIt.Feature.DEFAULT;
+            this.featureObj = ancestorFeatureObj;
             this.unitCache = new Map();
             this.staticStrCache = new Map();
+            this.ancestorMask = ancestorFeatureObj.mask;
         }
 
         doesNotExclude(mask)
@@ -42,7 +43,13 @@
             const encoder =
             this.encoder =
             createModifiedEncoder
-            (this.featureObj, featureQueries, this.unitCache, this.staticStrCache);
+            (
+                this.featureObj,
+                featureQueries,
+                this.unitCache,
+                this.staticStrCache,
+                this.ancestorMask,
+            );
             return encoder;
         }
 
@@ -68,7 +75,8 @@
         this.ancestorMask = ancestorMask;
     }
 
-    function createModifiedEncoder(featureObj, featureQueries, unitCache, staticStrCache)
+    function createModifiedEncoder
+    (featureObj, featureQueries, unitCache, staticStrCache, ancestorMask)
     {
         const encoder = createEncoder(featureObj);
         {
@@ -87,12 +95,11 @@
         }
         {
             const maskSet = new Set();
-            let ancestorMask = maskNew();
             encoder.hasFeatures =
             function (mask)
             {
                 const included = maskIncludes(encoder.mask, mask);
-                if (!maskIsEmpty(mask))
+                if (!maskIncludes(ancestorMask, mask))
                 {
                     const key = getMaskKey(mask);
                     if (!maskSet.has(key))
@@ -193,7 +200,6 @@
         module.exports = Analyzer;
     }
 
-    const { createEncoder, createFeatureFromMask, maskIncludes, maskIsEmpty, maskNew, maskUnion } =
-    JScrewIt.debug;
+    const { createEncoder, createFeatureFromMask, maskIncludes, maskUnion } = JScrewIt.debug;
 }
 )();

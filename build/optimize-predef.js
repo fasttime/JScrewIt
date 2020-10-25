@@ -326,14 +326,15 @@ function runAnalysis(predefTestData)
     const Analyzer = require('./optimized-analyzer');
 
     const nodes = new Set();
-    const { availableEntries, replaceVariant } = predefTestData;
+    const { availableEntries, commonFeatureObj, replaceVariant, useReverseIteration } =
+    predefTestData;
     const VarSet = createVarSet(availableEntries);
     progress
     (
         'Scanning definitions',
         bar =>
         {
-            const analyzer = new Analyzer();
+            const analyzer = new Analyzer(commonFeatureObj, useReverseIteration);
             let encoder;
             while (encoder = analyzer.nextEncoder)
             {
@@ -357,6 +358,12 @@ function runAnalysis(predefTestData)
                             }
                         }
                     }
+                }
+                if (varSet.isEmpty())
+                {
+                    const { featureObj } = analyzer;
+                    const message = `No definition available for ${featureObj}`;
+                    throw Error(message);
                 }
                 const node =
                 {

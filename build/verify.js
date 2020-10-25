@@ -89,12 +89,12 @@ function compareRoutineNames(name1, name2)
     return 0;
 }
 
-function createAnalyzer()
+function createAnalyzer(ancestorFeatureObj)
 {
     require('./solution-book-map').load();
     const Analyzer = require('./optimized-analyzer');
 
-    const analyzer = new Analyzer();
+    const analyzer = new Analyzer(ancestorFeatureObj);
     return analyzer;
 }
 
@@ -203,13 +203,13 @@ function verifyComplex(complex, entry)
 }
 
 function verifyDefinitions
-(entries, inputList, mismatchCallback, replaceVariant, formatVariant)
+(entries, inputList, mismatchCallback, replaceVariant, formatVariant, ancestorFeatureObj)
 {
     const progress = require('./progress');
 
     let encoder;
     let mismatchCount = 0;
-    const analyzer = createAnalyzer();
+    const analyzer = createAnalyzer(ancestorFeatureObj);
     progress
     (
         'Scanning definitions',
@@ -223,7 +223,11 @@ function verifyDefinitions
                 const actualDefinition = encoder.findDefinition(entries);
                 const actualLength = lengthMap[actualDefinition];
                 if (actualLength == null)
-                    throw Error('No available definition matches');
+                {
+                    const { featureObj } = analyzer;
+                    const message = `No definition available for ${featureObj}`;
+                    throw Error(message);
+                }
                 const { optimalLength } = optimalityInfo;
                 if (lengthMap[actualDefinition] > optimalLength)
                 {
@@ -254,10 +258,24 @@ function verifyPredef(predefName)
     {
         const PREDEF_TEST_DATA_MAP_OBJ = require('./predef-test-data');
 
-        const { availableEntries, formatVariant, organizedEntries, replaceVariant } =
+        const
+        {
+            availableEntries,
+            commonFeatureObj,
+            formatVariant,
+            organizedEntries,
+            replaceVariant,
+        } =
         PREDEF_TEST_DATA_MAP_OBJ[predefName];
         verifyDefinitions
-        (organizedEntries, availableEntries, mismatchCallback, replaceVariant, formatVariant);
+        (
+            organizedEntries,
+            availableEntries,
+            mismatchCallback,
+            replaceVariant,
+            formatVariant,
+            commonFeatureObj,
+        );
     };
     return verify;
 }

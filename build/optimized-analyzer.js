@@ -19,10 +19,11 @@ function isSolutionApplicable({ masks }, analyzer, encoder)
 module.exports =
 class OptimizedAnalyzer extends Analyzer
 {
-    constructor()
+    constructor(ancestorFeatureObj, useReverseIteration = false)
     {
-        super();
+        super(ancestorFeatureObj);
         this.usedCharSet = new Set();
+        this.useReverseIteration = useReverseIteration;
     }
 
     missingCharacter()
@@ -44,7 +45,9 @@ class OptimizedAnalyzer extends Analyzer
                     let knownSolution = null;
                     let knownLength = Infinity;
                     let knownEntryIndex;
-                    const { solutions } = solutionBook;
+                    let { solutions } = solutionBook;
+                    if (this.useReverseIteration)
+                        solutions = [...solutions].reverse();
                     for (const solution of solutions)
                     {
                         const { entryIndex, length } = solution;
