@@ -18,19 +18,15 @@ function compareDiffLists(diffList1, diffList2)
     }
 }
 
-function printHelpMessage()
+function findTestData(strategyName)
 {
-    console.error
-    (
-        [
-            'Please, specify one of the following strategies:',
-            ...STRATEGY_TEST_DATA_LIST.map(({ strategyName }) => `• ${strategyName}`),
-        ]
-        .join('\n'),
-    );
+    const strategyTestData =
+    STRATEGY_TEST_DATA_LIST.find
+    (({ strategyName: thisStrategyName }) => thisStrategyName === strategyName);
+    return strategyTestData;
 }
 
-function run(strategyTestData)
+function optimize(strategyTestData)
 {
     const
     {
@@ -63,7 +59,7 @@ function run(strategyTestData)
         return newFeatureObj;
     }
 
-    function createDiffList({ createInput, strategyName }, featureObj)
+    function createDiffList({ createInput, strategyName, rivalStrategyNames }, featureObj)
     {
         const diffList = [];
         const encoder = createEncoder(featureObj);
@@ -72,7 +68,7 @@ function run(strategyTestData)
         const inputLength = strategy.MIN_INPUT_LENGTH;
         const inputData = Object(createInput(inputLength));
         const { length } = strategy.call(encoder, inputData);
-        for (const { strategyName: thisStrategyName } of STRATEGY_TEST_DATA_LIST)
+        for (const thisStrategyName of rivalStrategyNames)
         {
             const thisStrategy = strategies[thisStrategyName];
             if (thisStrategy !== strategy)
@@ -154,21 +150,16 @@ function run(strategyTestData)
 }
 
 {
-    const [,, strategyName] = process.argv;
-    if (strategyName != null)
-    {
-        const strategyTestData =
-        STRATEGY_TEST_DATA_LIST.find
-        (({ strategyName: thisStrategyName }) => thisStrategyName === strategyName);
-        if (strategyTestData)
-        {
-            const { formatDuration, timeThis } = require('../tools/time-utils');
+    const choose = require('./choose');
 
-            const duration = timeThis(() => run(strategyTestData));
-            const durationStr = formatDuration(duration);
-            console.log('%s elapsed.', durationStr);
-            return;
-        }
-    }
-    printHelpMessage();
+    const callback =
+    strategyName =>
+    {
+        const strategyTestData = findTestData(strategyName);
+        if (!strategyTestData)
+            return `Unknown strategy ${strategyName}.`;
+        optimize(strategyTestData);
+    };
+    const strategyNames = STRATEGY_TEST_DATA_LIST.map(({ strategyName }) => strategyName);
+    choose(callback, 'Strategy to optimize', strategyNames);
 }

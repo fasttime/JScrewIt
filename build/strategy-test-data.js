@@ -2,6 +2,8 @@
 
 let proRadix4AntiRadix10Elements;
 
+const rivalStrategyNames = ['plain'];
+
 function createDictTestString(variety, length)
 {
     let str = '';
@@ -39,8 +41,20 @@ function createTestStringProRadix4AntiRadix10(length)
 
 function data(features, createInput, strategyName)
 {
-    const result = { strategyName, createInput, features };
-    return result;
+    rivalStrategyNames.push(strategyName);
+    const data =
+    {
+        strategyName,
+        createInput,
+        features,
+        get rivalStrategyNames()
+        {
+            const strategyNames =
+            rivalStrategyNames.filter(thisStrategyName => thisStrategyName !== strategyName);
+            return strategyNames;
+        },
+    };
+    return data;
 }
 
 function repeatToFit(str, length)
@@ -93,7 +107,7 @@ module.exports =
     ),
     data
     (
-        ['ARROW', 'FLAT', 'NAME', 'SELF_OBJ', 'V8_SRC'],
+        ['ARROW', 'CONSOLE', 'FLAT', 'NAME', 'SELF_OBJ', 'V8_SRC'],
         createDictTestString.bind(null, 78),
         'byDictRadix4',
     ),
@@ -111,7 +125,7 @@ module.exports =
     ),
     data
     (
-        ['ARROW', 'FLAT', 'V8_SRC'],
+        ['ARROW', 'CONSOLE', 'FLAT', 'V8_SRC'],
         createDictTestString.bind(null, 63),
         'byDictRadix5',
     ),

@@ -6,15 +6,15 @@ const JScrewIt  = require('..');
 const chalk     = require('chalk');
 
 require('../tools/text-utils');
-const timeUtils = require('../tools/time-utils');
 
-function checkMinInputLength(features, createInput, strategies, strategy, minLength)
+function checkMinInputLength
+(features, createInput, strategies, strategy, minLength, rivalStrategyNames)
 {
     function checkOtherStrategies(inputData)
     {
         let tooSmall = false;
         const { length } = strategy.call(encoder, inputData);
-        for (const strategyName of strategyNames)
+        for (const strategyName of rivalStrategyNames)
         {
             const thisStrategy = strategies[strategyName];
             if (thisStrategy !== strategy)
@@ -43,7 +43,7 @@ function checkMinInputLength(features, createInput, strategies, strategy, minLen
     {
         let bestStrategyName;
         let bestLength = Infinity;
-        for (const strategyName of strategyNames)
+        for (const strategyName of rivalStrategyNames)
         {
             const thisStrategy = strategies[strategyName];
             if (thisStrategy !== strategy)
@@ -63,7 +63,6 @@ function checkMinInputLength(features, createInput, strategies, strategy, minLen
     const encoder = JScrewIt.debug.createEncoder(features);
     const inputDataShort = Object(createInput(minLength - 1));
     const inputDataFit = Object(createInput(minLength));
-    const strategyNames = Object.keys(strategies).filter(isRivalStrategyName);
     let ok = true;
     checkOtherStrategies(inputDataFit);
     const outputShort = strategy.call(encoder, inputDataShort);
@@ -75,18 +74,6 @@ function checkMinInputLength(features, createInput, strategies, strategy, minLen
     }
     if (ok)
         logOk('MIN_INPUT_LENGTH is ok.');
-}
-
-function compareRoutineNames(name1, name2)
-{
-    const result = isCapital(name2) - isCapital(name1);
-    if (result)
-        return result;
-    if (name1 > name2)
-        return 1;
-    if (name1 < name2)
-        return -1;
-    return 0;
 }
 
 function createAnalyzer(ancestorFeatureObj)
@@ -127,17 +114,6 @@ function getOptimalityInfo(encoder, inputList, replaceVariant)
     return optimalityInfo;
 }
 
-function isCapital(name)
-{
-    const capital = name.toUpperCase() === name;
-    return capital;
-}
-
-function isRivalStrategyName(strategyName)
-{
-    return strategyName !== 'express' && strategyName !== 'text';
-}
-
 function logOk(str)
 {
     console.log(chalk.green(str));
@@ -148,38 +124,9 @@ function logWarn(str)
     console.log(chalk.yellow(str));
 }
 
-function main()
-{
-    const [,, routineName] = process.argv;
-    if (routineName != null)
-    {
-        const routine = verify[routineName];
-        if (routine)
-        {
-            const duration = timeUtils.timeThis(routine);
-            const durationStr = timeUtils.formatDuration(duration);
-            console.log('%s elapsed.', durationStr);
-            return;
-        }
-    }
-    printHelpMessage();
-}
-
 function mismatchCallback(...args)
 {
     args.forEach(logWarn);
-}
-
-function printHelpMessage()
-{
-    console.error
-    (
-        Object.keys(verify).sort(compareRoutineNames).reduce
-        (
-            (str, routineName) => `${str}\n• ${routineName}`,
-            'Please, specify one of the implemented verification routines:',
-        ),
-    );
 }
 
 function verifyComplex(complex, entry)
@@ -285,11 +232,12 @@ function verifyStrategy(strategyTestData)
     const result =
     () =>
     {
-        const { createInput, features, strategyName } = strategyTestData;
+        const { createInput, features, strategyName, rivalStrategyNames } = strategyTestData;
         const strategies = JScrewIt.debug.getStrategies();
         const strategy = strategies[strategyName];
         const minLength = strategy.MIN_INPUT_LENGTH;
-        checkMinInputLength(features, createInput, strategies, strategy, minLength);
+        checkMinInputLength
+        (features, createInput, strategies, strategy, minLength, rivalStrategyNames);
     };
     return result;
 }
@@ -339,10 +287,21 @@ verify.OPTIMAL_B = verifyPredef('OPTIMAL_B');
 verify.OPTIMAL_RETURN_STRING = verifyPredef('OPTIMAL_RETURN_STRING');
 
 {
+    const choose = require('./choose');
+
     const STRATEGY_TEST_DATA_LIST = require('./strategy-test-data');
 
     for (const strategyTestData of STRATEGY_TEST_DATA_LIST)
         verify[strategyTestData.strategyName] = verifyStrategy(strategyTestData);
-}
 
-main();
+    const callback =
+    routineName =>
+    {
+        const routine = verify[routineName];
+        if (!routine)
+            return `Unknown verification routine ${routineName}.`;
+        routine();
+    };
+    const routineNames = Object.keys(verify);
+    choose(callback, 'Routine to verify', routineNames);
+}

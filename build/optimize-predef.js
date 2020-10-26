@@ -2,7 +2,8 @@
 
 'use strict';
 
-const progress = require('./progress');
+const PREDEF_TEST_DATA_MAP_OBJ  = require('./predef-test-data');
+const progress                  = require('./progress');
 
 function compareFeatures(feature1, feature2)
 {
@@ -238,6 +239,15 @@ function isRedundantNode(node)
     return true;
 }
 
+function optimize(predefTestData)
+{
+    const nodes = runAnalysis(predefTestData);
+    runJoin(nodes);
+    const definitionSets = createDefinitions(nodes);
+    simplifyDefinitions(definitionSets);
+    printDefinitions(definitionSets, predefTestData);
+}
+
 function printDefinitions(definitionSets, { indent, formatVariant, variantToMinMaskMap })
 {
     const LINE_LENGTH = 100;
@@ -297,27 +307,6 @@ function printDefinitions(definitionSets, { indent, formatVariant, variantToMinM
     }
     console.log('\n---\n');
     console.log('%d definition(s) listed.', argsList.length);
-}
-
-function printHelpMessage(predefTestDataMapObj)
-{
-    console.error
-    (
-        [
-            'Please, specify one of the following predefinitions:',
-            ...Object.keys(predefTestDataMapObj).map(predefName => `• ${predefName}`),
-        ]
-        .join('\n'),
-    );
-}
-
-function run(predefTestData)
-{
-    const nodes = runAnalysis(predefTestData);
-    runJoin(nodes);
-    const definitionSets = createDefinitions(nodes);
-    simplifyDefinitions(definitionSets);
-    printDefinitions(definitionSets, predefTestData);
 }
 
 function runAnalysis(predefTestData)
@@ -546,21 +535,16 @@ function simplifyDefinitions(definitionSets)
 }
 
 {
-    const PREDEF_TEST_DATA_MAP_OBJ = require('./predef-test-data');
+    const choose = require('./choose');
 
-    const [,, predefName] = process.argv;
-    if (predefName != null)
+    const callback =
+    predefName =>
     {
         const predefTestData = PREDEF_TEST_DATA_MAP_OBJ[predefName];
-        if (predefTestData)
-        {
-            const { formatDuration, timeThis } = require('../tools/time-utils');
-
-            const duration = timeThis(() => run(predefTestData));
-            const durationStr = formatDuration(duration);
-            console.log('%s elapsed.', durationStr);
-            return;
-        }
-    }
-    printHelpMessage(PREDEF_TEST_DATA_MAP_OBJ);
+        if (!predefTestData)
+            return `Unknown predefinitions ${predefName}.`;
+        optimize(predefTestData);
+    };
+    const predefNames = Object.keys(PREDEF_TEST_DATA_MAP_OBJ);
+    choose(callback, 'Predefinitions to optimize', predefNames);
 }

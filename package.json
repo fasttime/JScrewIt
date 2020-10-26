@@ -59,6 +59,7 @@
     "gulp-typedoc": "latest",
     "gulp-uglify": "latest",
     "handlebars": "latest",
+    "inquirer": "latest",
     "mocha": "3",
     "mocha-bar": "latest",
     "novem": "1.1",
