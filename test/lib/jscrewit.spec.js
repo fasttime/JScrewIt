@@ -290,12 +290,40 @@ self,
             );
             emuIt
             (
+                'returns correct JSFuck with features ARRAY_ITERATOR and ATOB',
+                Feature('ARRAY_ITERATOR', 'ATOB'),
+                function ()
+                {
+                    var encoder =
+                    JScrewIt.debug.createEncoder(Feature('ARRAY_ITERATOR', 'ATOB'));
+                    var input = 'The quick brown fox jumps over the lazy dog';
+                    var output = encoder.encodeByDict(Object(input), 4);
+                    expect(output).toBeJSFuck();
+                    expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
+                }
+            );
+            emuIt
+            (
                 'returns correct JSFuck with feature ARROW',
                 Feature.ARROW,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder(Feature.ARROW);
                     var input = 'Lorem ipsum dolor sit amet';
+                    var output = encoder.encodeByDict(Object(input), 4);
+                    expect(output).toBeJSFuck();
+                    expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
+                }
+            );
+            emuIt
+            (
+                'returns correct JSFuck with feature ARROW, FILL and NO_IE_SRC',
+                Feature('ARROW', 'FILL', 'NO_IE_SRC'),
+                function ()
+                {
+                    var encoder =
+                    JScrewIt.debug.createEncoder(Feature('ARROW', 'FILL', 'NO_IE_SRC'));
+                    var input = 'Never gonna give you up / Never gonna let you down';
                     var output = encoder.encodeByDict(Object(input), 4);
                     expect(output).toBeJSFuck();
                     expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);

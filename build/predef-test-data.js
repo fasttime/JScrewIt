@@ -23,8 +23,8 @@ const RAW_PREDEFS =
     MAPPER_FORMATTER:
     (encoder, mapperFormatter) =>
     {
-        const expr = mapperFormatter('undefined', '[undefined]');
-        const replacement = encoder.replaceExpr(expr);
+        const expr = mapperFormatter('f', '[f]');
+        const replacement = encoder.replaceExpr(expr, true);
         return replacement;
     },
     OPTIMAL_ARG_NAME:
