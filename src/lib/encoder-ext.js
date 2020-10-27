@@ -221,7 +221,7 @@ export var createReindexMap;
                 var output = this.encodeByDenseFigures(inputData, maxLength);
                 return output;
             },
-            2370
+            2369
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -410,7 +410,7 @@ export var createReindexMap;
                 var output = this.encodeByDict(inputData, 5, 0, maxLength);
                 return output;
             },
-            224
+            223
         ),
 
         /* -------------------------------------------------------------------------------------- *\
