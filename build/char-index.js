@@ -6,7 +6,7 @@ function doAdd()
 {
     function indexCharacters(solutionBookMap)
     {
-        const progress = require('./progress');
+        const progress = require('./common/progress');
 
         for (const char of charSet)
         {
@@ -188,7 +188,7 @@ function formatCharacters(chars)
 
 function getSolutionBookMap(load = true)
 {
-    const solutionBookMap = require('./solution-book-map');
+    const solutionBookMap = require('./common/solution-book-map');
 
     if (load)
         solutionBookMap.load();

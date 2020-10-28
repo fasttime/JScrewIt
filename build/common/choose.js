@@ -1,6 +1,6 @@
 'use strict';
 
-const { formatDuration, timeThis }  = require('../tools/time-utils');
+const { formatDuration, timeThis }  = require('../../tools/time-utils');
 const { prompt }                    = require('inquirer');
 const Choices                       = require('inquirer/lib/objects/choices');
 

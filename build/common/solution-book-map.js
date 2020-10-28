@@ -1,11 +1,11 @@
 'use strict';
 
-const JSCREWIT_PATH         = '..';
+const JSCREWIT_PATH         = '../..';
 const TYPE_KEY              = '__type';
 const TYPE_VALUE_SOLUTION   = 'Solution';
 
 const JScrewIt = require(JSCREWIT_PATH);
-const charMapRoot = require('path').resolve(__dirname, '../novem.char-map.json');
+const charMapRoot = require('path').resolve(__dirname, '../../novem.char-map.json');
 const { debug } = JScrewIt;
 const solutionBookMap = module.exports = new Map();
 

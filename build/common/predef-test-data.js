@@ -1,6 +1,6 @@
 'use strict';
 
-const JScrewIt = require('..');
+const JScrewIt = require('../..');
 
 const { Feature, debug: { getEntries } } = JScrewIt;
 

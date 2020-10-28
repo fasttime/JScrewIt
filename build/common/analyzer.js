@@ -196,7 +196,7 @@
 
     if (typeof module !== 'undefined')
     {
-        JScrewIt = require('..');
+        JScrewIt = require('../..');
         module.exports = Analyzer;
     }
 

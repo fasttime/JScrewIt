@@ -1,7 +1,7 @@
 'use strict';
 
-const Analyzer = require('./analyzer');
-const solutionBookMap = require('./solution-book-map');
+const Analyzer          = require('./analyzer');
+const solutionBookMap   = require('./solution-book-map');
 
 function isSolutionApplicable({ masks }, analyzer, encoder)
 {

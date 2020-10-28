@@ -19,7 +19,7 @@ function createTestStringProRadix4AntiRadix10(length)
     {
         proRadix4AntiRadix10Elements = [];
         {
-            const { createEncoder } = require('..').debug;
+            const { createEncoder } = require('../..').debug;
             const encoder = createEncoder();
             for (let charCode = 0; charCode <= 0xffff; ++charCode)
             {

@@ -2,8 +2,10 @@
 
 'use strict';
 
-const PREDEF_TEST_DATA_MAP_OBJ  = require('./predef-test-data');
-const progress                  = require('./progress');
+const JSCREWIT_PATH = '..';
+
+const PREDEF_TEST_DATA_MAP_OBJ  = require('./common/predef-test-data');
+const progress                  = require('./common/progress');
 
 function compareFeatures(feature1, feature2)
 {
@@ -211,7 +213,7 @@ function dropIndirectSpecializations(node)
 
 function featureDifference(featureAll, featureSome)
 {
-    const { Feature } = require('..');
+    const { Feature } = require(JSCREWIT_PATH);
 
     const elementaryNames =
     featureAll.elementaryNames.filter
@@ -251,7 +253,7 @@ function optimize(predefTestData)
 function printDefinitions(definitionSets, { indent, formatVariant, variantToMinMaskMap })
 {
     const LINE_LENGTH = 100;
-    const { Feature, debug: { createFeatureFromMask } } = require('..');
+    const { Feature, debug: { createFeatureFromMask } } = require(JSCREWIT_PATH);
 
     const argsList = [];
     for (const definitionSet of definitionSets)
@@ -311,8 +313,8 @@ function printDefinitions(definitionSets, { indent, formatVariant, variantToMinM
 
 function runAnalysis(predefTestData)
 {
-    require('./solution-book-map').load();
-    const Analyzer = require('./optimized-analyzer');
+    require('./common/solution-book-map').load();
+    const Analyzer = require('./common/optimized-analyzer');
 
     const nodes = new Set();
     const { availableEntries, commonFeatureObj, replaceVariant, useReverseIteration } =
@@ -491,7 +493,7 @@ function simplifyDefinitions(definitionSets)
         return featuresABC;
     }
 
-    const { Feature } = require('..');
+    const { Feature } = require(JSCREWIT_PATH);
 
     for
     (
@@ -535,7 +537,7 @@ function simplifyDefinitions(definitionSets)
 }
 
 {
-    const choose = require('./choose');
+    const choose = require('./common/choose');
 
     const callback =
     predefName =>
