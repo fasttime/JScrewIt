@@ -46,6 +46,12 @@ function backslashDefinition()
     return solution;
 }
 
+function chooseOtherArgName(argName)
+{
+    var otherArgName = argName !== 'undefined' ? 'undefined' : 'falsefalse';
+    return otherArgName;
+}
+
 function createCharAtDefinitionFB(offset)
 {
     function definitionFB(char)
@@ -112,6 +118,7 @@ export var initReplaceStaticExpr;
     var NO_IE_SRC                       = Feature.NO_IE_SRC;
     var NO_OLD_SAFARI_ARRAY_ITERATOR    = Feature.NO_OLD_SAFARI_ARRAY_ITERATOR;
     var NO_V8_SRC                       = Feature.NO_V8_SRC;
+    var PLAIN_INTL                      = Feature.PLAIN_INTL;
     var SELF_OBJ                        = Feature.SELF_OBJ;
     var STATUS                          = Feature.STATUS;
     var UNDEFINED                       = Feature.UNDEFINED;
@@ -700,6 +707,7 @@ export var initReplaceStaticExpr;
             define('(RP_3_NO + PLAIN_OBJECT)[11]'),
             define('btoa(NaN)[3]', ATOB),
             define('"".fontcolor()[2]', CAPITAL_HTML),
+            define('(RP_3_NO + Intl)[11]', PLAIN_INTL),
         ],
         'P':
         [
@@ -751,6 +759,7 @@ export var initReplaceStaticExpr;
             define('"".sub()[2]', CAPITAL_HTML),
             define('(RP_3_NO + PLAIN_OBJECT[TO_STRING].call())[11]', UNDEFINED),
             define('(RP_3_NO + ARRAY_ITERATOR[TO_STRING].call())[11]', ARRAY_ITERATOR, UNDEFINED),
+            define('(RP_3_NO + Intl[TO_STRING].call())[11]', INTL, UNDEFINED),
         ],
         'V':
         [
@@ -834,7 +843,9 @@ export var initReplaceStaticExpr;
         [
             define('(PLAIN_OBJECT + [])[10]'),
             define('(ARRAY_ITERATOR + [])[3]', ARRAY_ITERATOR),
+            define('(Intl + [])[3]', INTL),
             define('(Node + [])[3]', NODECONSTRUCTOR),
+            define('(Intl + [])[10]', PLAIN_INTL),
             define('(self + [])[3]', SELF_OBJ),
         ],
         'k':
@@ -1036,6 +1047,10 @@ export var initReplaceStaticExpr;
         [
             define('ANY_FUNCTION.constructor'),
         ],
+        Intl:
+        [
+            define('Function("return Intl")()', INTL),
+        ],
         Node:
         [
             define('Function("return Node")()', NODECONSTRUCTOR),
@@ -1047,6 +1062,7 @@ export var initReplaceStaticExpr;
         Object:
         [
             define('PLAIN_OBJECT.constructor'),
+            define('Intl.constructor', INTL),
         ],
         RegExp:
         [
@@ -1216,7 +1232,6 @@ export var initReplaceStaticExpr;
         PLAIN_OBJECT:
         [
             define('Function("return{}")()'),
-            define('Function("return Intl")()', INTL),
         ],
         SLICE_OR_FLAT:
         [
@@ -1552,7 +1567,7 @@ export var initReplaceStaticExpr;
             (
                 function (argName, accessor)
                 {
-                    var otherArgName = argName !== 'undefined' ? 'undefined' : 'falsefalse';
+                    var otherArgName = chooseOtherArgName(argName);
                     var mapper =
                     'Function("return function(' + otherArgName + '){return function(' + argName +
                     '){return ' + otherArgName + accessor + '}}")()';
@@ -1573,7 +1588,7 @@ export var initReplaceStaticExpr;
             (
                 function (argName, accessor)
                 {
-                    var otherArgName = argName !== 'undefined' ? 'undefined' : 'falsefalse';
+                    var otherArgName = chooseOtherArgName(argName);
                     var mapper =
                     'Function("return ' + otherArgName + '=>' + argName + '=>' + otherArgName +
                     accessor + '")()';

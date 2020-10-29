@@ -13,6 +13,7 @@ export default function createEngineSelectionBox()
             versions:
             [
                 { featureName: 'CHROME_73', number: '73+' },
+                { featureName: 'CHROME_86', number: '86+' },
             ],
         },
         {
@@ -20,6 +21,7 @@ export default function createEngineSelectionBox()
             versions:
             [
                 { featureName: 'CHROME_73', number: '79+' },
+                { featureName: 'CHROME_86', number: '86+' },
             ],
         },
         {
@@ -55,6 +57,7 @@ export default function createEngineSelectionBox()
             versions:
             [
                 { featureName: 'CHROME_73', number: '60+' },
+                { featureName: 'CHROME_86', number: '73+' },
             ],
         },
         {
@@ -76,7 +79,8 @@ export default function createEngineSelectionBox()
                 { featureName: 'NODE_5', number: '5–9' },
                 { featureName: 'NODE_10', number: '10' },
                 { featureName: 'NODE_11', number: '11' },
-                { featureName: 'NODE_12', number: '12+' },
+                { featureName: 'NODE_12', number: '12–14' },
+                { featureName: 'NODE_15', number: '15+' },
             ],
         },
     ];

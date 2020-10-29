@@ -1,4 +1,4 @@
-/* global Audio, Node, console, document, history, require, self, sidebar, statusbar */
+/* global Audio, Intl, Node, console, document, history, require, self, sidebar, statusbar */
 
 import { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskUnion, maskWithBit }
 from './mask';
@@ -829,6 +829,19 @@ export var validMaskFromArrayOrStringOrFeature;
             },
             excludes: ['V8_SRC'],
         },
+        PLAIN_INTL:
+        {
+            description:
+            'Existence of the global object Intl having the string representation "[object ' +
+            'Object]"',
+            check:
+            function ()
+            {
+                var available = typeof Intl === 'object' && Intl + '' === '[object Object]';
+                return available;
+            },
+            includes: ['INTL'],
+        },
         SELF: 'ANY_WINDOW',
         SELF_OBJ:
         {
@@ -1004,9 +1017,9 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HTMLAUDIOELEMENT',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
-                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
+                'PLAIN_INTL',
                 'STATUS',
                 'UNDEFINED',
                 'V8_SRC',
@@ -1015,10 +1028,40 @@ export var validMaskFromArrayOrStringOrFeature;
             attributes: { 'no-console-in-web-worker': null, 'web-worker-restriction': null },
         },
         CHROME_PREV: 'CHROME_73',
-        CHROME: 'CHROME_73',
         CHROME_73:
         {
-            engine: 'Chrome 73, Edge 79 and Opera 60 or later',
+            engine: 'Chrome 73 to 85, Edge 79 to 85 and Opera 60 to 72',
+            includes:
+            [
+                'ARROW',
+                'ATOB',
+                'BARPROP',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'FILL',
+                'FLAT',
+                'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'INCR_CHAR',
+                'LOCALE_INFINITY',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'PLAIN_INTL',
+                'STATUS',
+                'UNDEFINED',
+                'V8_SRC',
+                'WINDOW',
+            ],
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
+        },
+        CHROME: 'CHROME_86',
+        CHROME_86:
+        {
+            engine: 'Chrome 86 and Edge 86 or later',
             includes:
             [
                 'ARROW',
@@ -1070,10 +1113,10 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
-                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'PLAIN_INTL',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW',
@@ -1135,7 +1178,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'IE_SRC',
                 'INCR_CHAR',
-                'INTL',
+                'PLAIN_INTL',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW',
@@ -1158,8 +1201,8 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'IE_SRC',
                 'INCR_CHAR',
-                'INTL',
                 'LOCALE_INFINITY',
+                'PLAIN_INTL',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW',
@@ -1189,10 +1232,10 @@ export var validMaskFromArrayOrStringOrFeature;
                 'FUNCTION_22_LF',
                 'GMT',
                 'INCR_CHAR',
-                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'PLAIN_INTL',
                 'UNDEFINED',
                 'V8_SRC',
             ],
@@ -1210,10 +1253,10 @@ export var validMaskFromArrayOrStringOrFeature;
                 'FUNCTION_22_LF',
                 'GMT',
                 'INCR_CHAR',
-                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'PLAIN_INTL',
                 'UNDEFINED',
                 'V8_SRC',
             ],
@@ -1231,10 +1274,10 @@ export var validMaskFromArrayOrStringOrFeature;
                 'FUNCTION_22_LF',
                 'GMT',
                 'INCR_CHAR',
-                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'PLAIN_INTL',
                 'UNDEFINED',
                 'V8_SRC',
             ],
@@ -1253,10 +1296,10 @@ export var validMaskFromArrayOrStringOrFeature;
                 'FUNCTION_19_LF',
                 'GMT',
                 'INCR_CHAR',
-                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'PLAIN_INTL',
                 'UNDEFINED',
                 'V8_SRC',
             ],
@@ -1276,10 +1319,10 @@ export var validMaskFromArrayOrStringOrFeature;
                 'FUNCTION_19_LF',
                 'GMT',
                 'INCR_CHAR',
-                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'PLAIN_INTL',
                 'UNDEFINED',
                 'V8_SRC',
             ],
@@ -1287,7 +1330,31 @@ export var validMaskFromArrayOrStringOrFeature;
         },
         NODE_12:
         {
-            engine: 'Node.js 12 or later',
+            engine: 'Node.js 12 to 14',
+            includes:
+            [
+                'ARROW',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'FILL',
+                'FLAT',
+                'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
+                'GMT',
+                'INCR_CHAR',
+                'LOCALE_INFINITY',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'PLAIN_INTL',
+                'UNDEFINED',
+                'V8_SRC',
+            ],
+            attributes: { 'char-increment-restriction': null },
+        },
+        NODE_15:
+        {
+            engine: 'Node.js 15 or later',
             includes:
             [
                 'ARROW',
@@ -1426,10 +1493,10 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
-                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'PLAIN_INTL',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW',
@@ -1458,10 +1525,10 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
-                'INTL',
                 'LOCALE_INFINITY',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'PLAIN_INTL',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW',

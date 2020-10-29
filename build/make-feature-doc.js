@@ -9,6 +9,7 @@ const ENGINE_ENTRIES =
         versions:
         [
             { description: ['73+', '79+', '60+'], feature: 'CHROME_73' },
+            { description: ['86+', '86+'], feature: 'CHROME_86' },
         ],
     },
     {
@@ -60,6 +61,7 @@ const ENGINE_ENTRIES =
             { description: '10+', feature: 'NODE_10' },
             { description: '11+', feature: 'NODE_11' },
             { description: '12+', feature: 'NODE_12' },
+            { description: '15+', feature: 'NODE_15' },
         ],
     },
 ];
@@ -309,7 +311,11 @@ function reportAsList(property, filter)
                     availEntry += ` ${getDescription(firstAvail)}`;
                 const { firstUnavail } = availabilityInfo;
                 if (firstUnavail)
-                    availEntry += ` before ${getDescription(firstUnavail).replace(/\+$/, '')}`;
+                {
+                    const description = getDescription(firstUnavail);
+                    if (description)
+                        availEntry += ` before ${description.replace(/\+$/, '')}`;
+                }
                 return availEntry;
             }
         },

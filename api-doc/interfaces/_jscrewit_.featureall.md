@@ -26,6 +26,7 @@
 * [CAPITAL\_HTML](_jscrewit_.featureall.md#capital_html)
 * [CHROME](_jscrewit_.featureall.md#chrome)
 * [CHROME\_73](_jscrewit_.featureall.md#chrome_73)
+* [CHROME\_86](_jscrewit_.featureall.md#chrome_86)
 * [CHROME\_PREV](_jscrewit_.featureall.md#chrome_prev)
 * [COMPACT](_jscrewit_.featureall.md#compact)
 * [CONSOLE](_jscrewit_.featureall.md#console)
@@ -67,12 +68,14 @@
 * [NODE\_10](_jscrewit_.featureall.md#node_10)
 * [NODE\_11](_jscrewit_.featureall.md#node_11)
 * [NODE\_12](_jscrewit_.featureall.md#node_12)
+* [NODE\_15](_jscrewit_.featureall.md#node_15)
 * [NODE\_4](_jscrewit_.featureall.md#node_4)
 * [NODE\_5](_jscrewit_.featureall.md#node_5)
 * [NO\_FF\_SRC](_jscrewit_.featureall.md#no_ff_src)
 * [NO\_IE\_SRC](_jscrewit_.featureall.md#no_ie_src)
 * [NO\_OLD\_SAFARI\_ARRAY\_ITERATOR](_jscrewit_.featureall.md#no_old_safari_array_iterator)
 * [NO\_V8\_SRC](_jscrewit_.featureall.md#no_v8_src)
+* [PLAIN\_INTL](_jscrewit_.featureall.md#plain_intl)
 * [SAFARI](_jscrewit_.featureall.md#safari)
 * [SAFARI\_10](_jscrewit_.featureall.md#safari_10)
 * [SAFARI\_12](_jscrewit_.featureall.md#safari_12)
@@ -219,7 +222,7 @@ ___
 
 •  **CHROME**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
-An alias for `CHROME_73`.
+An alias for `CHROME_86`.
 
 ___
 
@@ -227,7 +230,15 @@ ___
 
 •  **CHROME\_73**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
-Features available in Chrome 73, Edge 79 and Opera 60 or later.
+Features available in Chrome 73 to 85, Edge 79 to 85 and Opera 60 to 72.
+
+___
+
+### CHROME\_86
+
+•  **CHROME\_86**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
+
+Features available in Chrome 86 and Edge 86 or later.
 
 ___
 
@@ -665,7 +676,15 @@ ___
 
 •  **NODE\_12**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
-Features available in Node.js 12 or later.
+Features available in Node.js 12 to 14.
+
+___
+
+### NODE\_15
+
+•  **NODE\_15**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
+
+Features available in Node.js 15 or later.
 
 ___
 
@@ -734,6 +753,18 @@ A most remarkable trait of this feature is the presence of a line feed followed 
 **`remarks`** 
 
 Available in Firefox, Internet Explorer and Safari.
+
+___
+
+### PLAIN\_INTL
+
+•  **PLAIN\_INTL**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
+
+Existence of the global object Intl having the string representation "\[object Object\]"
+
+**`remarks`** 
+
+Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4 and Node.js 0.12+ before 15.
 
 ___
 

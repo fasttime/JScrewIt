@@ -706,7 +706,21 @@
         INTL:
         function ()
         {
-            override(this, 'Intl', { value: { } });
+            if (!global.Intl)
+            {
+                var Intl = { };
+                override(this, 'Intl', { value: Intl });
+                registerToStringAdapter
+                (
+                    this,
+                    'Object',
+                    function ()
+                    {
+                        if (this === Intl)
+                            return '[object Intl]';
+                    }
+                );
+            }
         },
         LOCALE_INFINITY:
         function ()
@@ -766,6 +780,11 @@
         NO_V8_SRC:
         makeEmuFeatureNativeFunctionSource
         (NATIVE_FUNCTION_SOURCE_INFO_FF, NATIVE_FUNCTION_SOURCE_INFO_IE),
+        PLAIN_INTL:
+        function ()
+        {
+            override(this, 'Intl', { value: { } });
+        },
         SELF_OBJ: makeEmuFeatureSelf('[object Object]', /^\[object /),
         STATUS:
         function ()

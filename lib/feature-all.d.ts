@@ -94,13 +94,18 @@ declare module 'jscrewit'
          */
         CAPITAL_HTML: ElementaryFeature;
 
-        /** An alias for `CHROME_73`. */
+        /** An alias for `CHROME_86`. */
         CHROME: PredefinedFeature;
 
         /**
-         * Features available in Chrome 73, Edge 79 and Opera 60 or later.
+         * Features available in Chrome 73 to 85, Edge 79 to 85 and Opera 60 to 72.
          */
         CHROME_73: PredefinedFeature;
+
+        /**
+         * Features available in Chrome 86 and Edge 86 or later.
+         */
+        CHROME_86: PredefinedFeature;
 
         /** An alias for `CHROME_73`. */
         CHROME_PREV: PredefinedFeature;
@@ -405,9 +410,14 @@ declare module 'jscrewit'
         NODE_11: PredefinedFeature;
 
         /**
-         * Features available in Node.js 12 or later.
+         * Features available in Node.js 12 to 14.
          */
         NODE_12: PredefinedFeature;
+
+        /**
+         * Features available in Node.js 15 or later.
+         */
+        NODE_15: PredefinedFeature;
 
         /**
          * Features available in Node.js 4.
@@ -458,6 +468,15 @@ declare module 'jscrewit'
          * Available in Firefox, Internet Explorer and Safari.
          */
         NO_V8_SRC: ElementaryFeature;
+
+        /**
+         * Existence of the global object Intl having the string representation "\[object Object\]"
+         *
+         * @remarks
+         *
+         * Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4 and Node.js 0.12+ before 15.
+         */
+        PLAIN_INTL: ElementaryFeature;
 
         /** An alias for `SAFARI_12`. */
         SAFARI: PredefinedFeature;
@@ -581,6 +600,7 @@ declare module 'jscrewit'
     | 'NO_IE_SRC'
     | 'NO_OLD_SAFARI_ARRAY_ITERATOR'
     | 'NO_V8_SRC'
+    | 'PLAIN_INTL'
     | 'SELF_OBJ'
     | 'STATUS'
     | 'UNDEFINED'
@@ -597,6 +617,7 @@ declare module 'jscrewit'
     | 'AUTO'
     | 'BROWSER'
     | 'CHROME_73'
+    | 'CHROME_86'
     | 'COMPACT'
     | 'DEFAULT'
     | 'FF_78'
@@ -609,6 +630,7 @@ declare module 'jscrewit'
     | 'NODE_10'
     | 'NODE_11'
     | 'NODE_12'
+    | 'NODE_15'
     | 'NODE_4'
     | 'NODE_5'
     | 'SAFARI_10'

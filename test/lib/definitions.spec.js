@@ -2,6 +2,7 @@
 /*
 global
 Audio,
+Intl,
 Node,
 atob,
 btoa,
@@ -450,6 +451,14 @@ sidebar,
                 Boolean: { validator: isExpected(Boolean) },
                 Date: { validator: isExpected(Date) },
                 Function: { validator: isExpected(Function) },
+                Intl:
+                {
+                    validator:
+                    function ()
+                    {
+                        this.toBe(Intl);
+                    },
+                },
                 Node:
                 {
                     validator:

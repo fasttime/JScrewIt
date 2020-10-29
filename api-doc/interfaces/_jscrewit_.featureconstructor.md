@@ -71,6 +71,7 @@ Name | Type |
 * [CAPITAL\_HTML](_jscrewit_.featureconstructor.md#capital_html)
 * [CHROME](_jscrewit_.featureconstructor.md#chrome)
 * [CHROME\_73](_jscrewit_.featureconstructor.md#chrome_73)
+* [CHROME\_86](_jscrewit_.featureconstructor.md#chrome_86)
 * [CHROME\_PREV](_jscrewit_.featureconstructor.md#chrome_prev)
 * [COMPACT](_jscrewit_.featureconstructor.md#compact)
 * [CONSOLE](_jscrewit_.featureconstructor.md#console)
@@ -113,12 +114,14 @@ Name | Type |
 * [NODE\_10](_jscrewit_.featureconstructor.md#node_10)
 * [NODE\_11](_jscrewit_.featureconstructor.md#node_11)
 * [NODE\_12](_jscrewit_.featureconstructor.md#node_12)
+* [NODE\_15](_jscrewit_.featureconstructor.md#node_15)
 * [NODE\_4](_jscrewit_.featureconstructor.md#node_4)
 * [NODE\_5](_jscrewit_.featureconstructor.md#node_5)
 * [NO\_FF\_SRC](_jscrewit_.featureconstructor.md#no_ff_src)
 * [NO\_IE\_SRC](_jscrewit_.featureconstructor.md#no_ie_src)
 * [NO\_OLD\_SAFARI\_ARRAY\_ITERATOR](_jscrewit_.featureconstructor.md#no_old_safari_array_iterator)
 * [NO\_V8\_SRC](_jscrewit_.featureconstructor.md#no_v8_src)
+* [PLAIN\_INTL](_jscrewit_.featureconstructor.md#plain_intl)
 * [SAFARI](_jscrewit_.featureconstructor.md#safari)
 * [SAFARI\_10](_jscrewit_.featureconstructor.md#safari_10)
 * [SAFARI\_12](_jscrewit_.featureconstructor.md#safari_12)
@@ -361,7 +364,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CHROME](_jscrewit_.featureall.md#chrome)*
 
-An alias for `CHROME_73`.
+An alias for `CHROME_86`.
 
 ___
 
@@ -371,7 +374,17 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CHROME_73](_jscrewit_.featureall.md#chrome_73)*
 
-Features available in Chrome 73, Edge 79 and Opera 60 or later.
+Features available in Chrome 73 to 85, Edge 79 to 85 and Opera 60 to 72.
+
+___
+
+### CHROME\_86
+
+•  **CHROME\_86**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
+
+*Inherited from [FeatureAll](_jscrewit_.featureall.md).[CHROME_86](_jscrewit_.featureall.md#chrome_86)*
+
+Features available in Chrome 86 and Edge 86 or later.
 
 ___
 
@@ -899,7 +912,17 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_12](_jscrewit_.featureall.md#node_12)*
 
-Features available in Node.js 12 or later.
+Features available in Node.js 12 to 14.
+
+___
+
+### NODE\_15
+
+•  **NODE\_15**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
+
+*Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_15](_jscrewit_.featureall.md#node_15)*
+
+Features available in Node.js 15 or later.
 
 ___
 
@@ -980,6 +1003,20 @@ A most remarkable trait of this feature is the presence of a line feed followed 
 **`remarks`** 
 
 Available in Firefox, Internet Explorer and Safari.
+
+___
+
+### PLAIN\_INTL
+
+•  **PLAIN\_INTL**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
+
+*Inherited from [FeatureAll](_jscrewit_.featureall.md).[PLAIN_INTL](_jscrewit_.featureall.md#plain_intl)*
+
+Existence of the global object Intl having the string representation "\[object Object\]"
+
+**`remarks`** 
+
+Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4 and Node.js 0.12+ before 15.
 
 ___
 
