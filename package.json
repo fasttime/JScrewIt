@@ -24,7 +24,9 @@
   ],
   "main": "lib/jscrewit.js",
   "types": "lib/jscrewit.d.ts",
-  "bin": "screw.js",
+  "bin": {
+    "jscrewit": "screw.js"
+  },
   "directories": {
     "lib": "lib",
     "doc": "doc",

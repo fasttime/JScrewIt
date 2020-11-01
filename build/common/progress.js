@@ -58,6 +58,7 @@ class ProgressBar
         this.lastDraw   = undefined;
         this.progress   = 0;
         this.start      = new Date();
+        this.render();
     }
 
     hide()
@@ -146,27 +147,23 @@ async function progress(label, fn)
             writeBars();
         };
     }
+    let indicator;
+    if (label === undefined)
+    {
+        indicator =
+        {
+            newBar(label)
+            {
+                const bar = new ProgressBar(label);
+                return bar;
+            },
+        };
+    }
+    else
+        indicator = new ProgressBar(label);
     try
     {
-        let result;
-        if (label === undefined)
-        {
-            const indicator =
-            {
-                newBar(label)
-                {
-                    const bar = new ProgressBar(label);
-                    return bar;
-                },
-            };
-            result = await fn(indicator);
-        }
-        else
-        {
-            const bar = new ProgressBar(label);
-            bar.render();
-            result = await fn(bar);
-        }
+        const result = await fn(indicator);
         return result;
     }
     finally
