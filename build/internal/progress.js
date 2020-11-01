@@ -2,9 +2,11 @@
 
 const chalk = require('chalk');
 
-const COMPLETE_CHAR     = chalk.bgBlue(' ');
-const INCOMPLETE_CHAR   = chalk.bgWhite(' ');
-const BAR_WIDTH         = 20;
+const COMPLETE_CHAR_PLACEHOLDER     = '\x01';
+const INCOMPLETE_CHAR_PLACEHOLDER   = '\x02';
+const COMPLETE_CHAR                 = chalk.bgBlue(' ');
+const INCOMPLETE_CHAR               = chalk.bgWhite(' ');
+const BAR_WIDTH                     = 20;
 
 function deleteBars()
 {
@@ -35,9 +37,19 @@ function formatTime(millisecs)
 
 function writeBars()
 {
+    const { columns } = stream;
     stream.cursorTo(0);
     stream.clearScreenDown();
-    const lines = bars.map(({ lastDraw }) => lastDraw).join('\n');
+    const lines =
+    bars.map
+    (
+        ({ lastDraw }) =>
+        lastDraw.slice(0, columns)
+        .slice(0, columns)
+        .replaceAll(COMPLETE_CHAR_PLACEHOLDER, COMPLETE_CHAR)
+        .replaceAll(INCOMPLETE_CHAR_PLACEHOLDER, INCOMPLETE_CHAR),
+    )
+    .join('\n');
     stream.write(lines);
 }
 
@@ -83,12 +95,9 @@ class ProgressBar
         .replace('\0percent', `${percent.toFixed(0)}%`);
 
         {
-            // Compute the available space for the bar.
-            const availableSpace = Math.max(0, stream.columns - str.replace('\0bar', '').length);
-            const width = Math.min(BAR_WIDTH, availableSpace);
-            const completeLength = Math.round(width * progress);
-            const complete = COMPLETE_CHAR.repeat(completeLength);
-            const incomplete = INCOMPLETE_CHAR.repeat(width - completeLength);
+            const completeLength = Math.round(BAR_WIDTH * progress);
+            const complete = COMPLETE_CHAR_PLACEHOLDER.repeat(completeLength);
+            const incomplete = INCOMPLETE_CHAR_PLACEHOLDER.repeat(BAR_WIDTH - completeLength);
 
             // Fill in the actual progress bar.
             str = str.replace('\0bar', complete + incomplete);

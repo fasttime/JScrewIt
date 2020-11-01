@@ -8,8 +8,8 @@ const ENGINE_ENTRIES =
         name: ['Chrome', 'Edge', 'Opera'],
         versions:
         [
-            { description: ['73+', '79+', '60+'], feature: 'CHROME_73' },
-            { description: ['86+', '86+'], feature: 'CHROME_86' },
+            { description: ['73+', '79+'], feature: 'CHROME_73' },
+            { description: ['86+', '86+', '72+'], feature: 'CHROME_86' },
         ],
     },
     {
@@ -173,6 +173,16 @@ function getAvailabilityInfo(featureName, engineEntry)
 
 function getCombinedDescription(engineEntry, versionIndex = 0)
 {
+    function getIndexedDescription(mapDescription)
+    {
+        for (let index = versionIndex; ; ++index)
+        {
+            const description = mapDescription(versions[index].description);
+            if (description)
+                return description;
+        }
+    }
+
     function getVersionedName(name, description)
     {
         const versionedName = description ? `${name} ${description}` : name;
@@ -180,7 +190,7 @@ function getCombinedDescription(engineEntry, versionIndex = 0)
     }
 
     let combinedDescription;
-    const { name, versions: { [versionIndex]: { description } } } = engineEntry;
+    const { name, versions } = engineEntry;
     if (Array.isArray(name))
     {
         combinedDescription =
@@ -188,15 +198,18 @@ function getCombinedDescription(engineEntry, versionIndex = 0)
         (
             (name, subIndex) =>
             {
-                const indexedDescription = description[subIndex];
-                const versionedName = getVersionedName(name, indexedDescription);
+                const description = getIndexedDescription(description => description[subIndex]);
+                const versionedName = getVersionedName(name, description);
                 return versionedName;
             },
         )
         .join(', ');
     }
     else
+    {
+        const description = getIndexedDescription(description => description);
         combinedDescription = getVersionedName(name, description);
+    }
     return combinedDescription;
 }
 

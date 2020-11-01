@@ -374,7 +374,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CHROME_73](_jscrewit_.featureall.md#chrome_73)*
 
-Features available in Chrome 73 to 85, Edge 79 to 85 and Opera 60 to 72.
+Features available in Chrome 73 to 85 and Edge 79 to 85.
 
 ___
 
@@ -384,7 +384,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CHROME_86](_jscrewit_.featureall.md#chrome_86)*
 
-Features available in Chrome 86 and Edge 86 or later.
+Features available in Chrome 86, Edge 86 and Opera 72 or later.
 
 ___
 
@@ -1016,7 +1016,7 @@ Existence of the global object Intl having the string representation "\[object O
 
 **`remarks`** 
 
-Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4 and Node.js 0.12+ before 15.
+Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+, Opera before 72, Android Browser 4.4 and Node.js 0.12+ before 15.
 
 ___
 

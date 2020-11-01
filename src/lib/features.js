@@ -1030,7 +1030,7 @@ export var validMaskFromArrayOrStringOrFeature;
         CHROME_PREV: 'CHROME_73',
         CHROME_73:
         {
-            engine: 'Chrome 73 to 85, Edge 79 to 85 and Opera 60 to 72',
+            engine: 'Chrome 73 to 85 and Edge 79 to 85',
             includes:
             [
                 'ARROW',
@@ -1061,7 +1061,7 @@ export var validMaskFromArrayOrStringOrFeature;
         CHROME: 'CHROME_86',
         CHROME_86:
         {
-            engine: 'Chrome 86 and Edge 86 or later',
+            engine: 'Chrome 86, Edge 86 and Opera 72 or later',
             includes:
             [
                 'ARROW',
