@@ -37,16 +37,8 @@ function writeBars()
 {
     stream.cursorTo(0);
     stream.clearScreenDown();
-    bars.forEach
-    (
-        (bar, index) =>
-        {
-            if (index)
-                stream.moveCursor(0, 1);
-            stream.cursorTo(0);
-            stream.write(bar.lastDraw);
-        },
-    );
+    const lines = bars.map(({ lastDraw }) => lastDraw).join('\n');
+    stream.write(lines);
 }
 
 class ProgressBar
@@ -70,7 +62,9 @@ class ProgressBar
             bars.splice(bars.indexOf(this), 1);
             stream.moveCursor(0, -bars.length);
             this.lastDraw = undefined;
+            stream.cork();
             writeBars();
+            stream.uncork();
         }
     }
 
@@ -102,12 +96,14 @@ class ProgressBar
 
         if (this.lastDraw !== str)
         {
+            stream.cork();
             if (bars.length > 1)
                 stream.moveCursor(0, 1 - bars.length);
             if (this.lastDraw === undefined)
                 bars.push(this);
             this.lastDraw = str;
             writeBars();
+            stream.uncork();
         }
     }
 
@@ -144,7 +140,9 @@ async function progress(label, fn)
         {
             deleteBars();
             value(...args);
+            stream.cork();
             writeBars();
+            stream.uncork();
         };
     }
     let indicator;
