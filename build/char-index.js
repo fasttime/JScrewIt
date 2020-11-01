@@ -36,7 +36,7 @@ async function doAdd()
 
     async function indexCharacters()
     {
-        const progress = require('./common/progress');
+        const progress = require('./internal/progress');
 
         const solutionBookMap = getSolutionBookMap(!noLoad);
         await progress
@@ -58,7 +58,7 @@ async function doAdd()
             const { join }      = require('path');
             const { Worker }    = require('worker_threads');
 
-            const workerFileName = join(__dirname, 'common/char-index-worker.js');
+            const workerFileName = join(__dirname, 'internal/char-index-worker.js');
             const serializedSolutionBookMap = solutionBookMap.serialize(solutionBookMap);
             const worker =
             new Worker(workerFileName, { workerData: { char, serializedSolutionBookMap } });
@@ -269,7 +269,7 @@ function formatCharacters(chars)
 
 function getSolutionBookMap(load = true)
 {
-    const solutionBookMap = require('./common/solution-book-map');
+    const solutionBookMap = require('./internal/solution-book-map');
 
     if (load)
         solutionBookMap.load();

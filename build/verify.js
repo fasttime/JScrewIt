@@ -78,8 +78,8 @@ function checkMinInputLength
 
 function createAnalyzer(ancestorFeatureObj)
 {
-    require('./common/solution-book-map').load();
-    const Analyzer = require('./common/optimized-analyzer');
+    require('./internal/solution-book-map').load();
+    const Analyzer = require('./internal/optimized-analyzer');
 
     const analyzer = new Analyzer(ancestorFeatureObj);
     return analyzer;
@@ -152,7 +152,7 @@ function verifyComplex(complex, entry)
 function verifyDefinitions
 (entries, inputList, mismatchCallback, replaceVariant, formatVariant, ancestorFeatureObj)
 {
-    const progress = require('./common/progress');
+    const progress = require('./internal/progress');
 
     let encoder;
     let mismatchCount = 0;
@@ -203,7 +203,7 @@ function verifyPredef(predefName)
     const verify =
     () =>
     {
-        const PREDEF_TEST_DATA_MAP_OBJ = require('./common/predef-test-data');
+        const PREDEF_TEST_DATA_MAP_OBJ = require('./internal/predef-test-data');
 
         const
         {
@@ -287,8 +287,8 @@ verify.OPTIMAL_B = verifyPredef('OPTIMAL_B');
 verify.OPTIMAL_RETURN_STRING = verifyPredef('OPTIMAL_RETURN_STRING');
 
 {
-    const choose                    = require('./common/choose');
-    const STRATEGY_TEST_DATA_LIST   = require('./common/strategy-test-data');
+    const choose                    = require('./internal/choose');
+    const STRATEGY_TEST_DATA_LIST   = require('./internal/strategy-test-data');
 
     for (const strategyTestData of STRATEGY_TEST_DATA_LIST)
         verify[strategyTestData.strategyName] = verifyStrategy(strategyTestData);

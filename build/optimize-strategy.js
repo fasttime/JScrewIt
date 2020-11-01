@@ -2,7 +2,7 @@
 
 'use strict';
 
-const STRATEGY_TEST_DATA_LIST = require('./common/strategy-test-data');
+const STRATEGY_TEST_DATA_LIST = require('./internal/strategy-test-data');
 
 function compareDiffLists(diffList1, diffList2)
 {
@@ -150,7 +150,7 @@ function optimize(strategyTestData)
 }
 
 {
-    const choose = require('./common/choose');
+    const choose = require('./internal/choose');
 
     const callback =
     strategyName =>

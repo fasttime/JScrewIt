@@ -100,7 +100,7 @@ function printCharacterReport(logLine, char, definitionCount, solutions)
 
 function scanCharDefs(logLine)
 {
-    const solutionBookMap = require('./common/solution-book-map');
+    const solutionBookMap = require('./internal/solution-book-map');
 
     solutionBookMap.load();
     let notAllDefsUsed = false;

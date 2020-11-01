@@ -301,6 +301,7 @@ task
             excludeExternals:       true,
             hideBreadcrumbs:        true,
             hideSources:            true,
+            ignoreCompilerErrors:   true,
             includeDeclarations:    true,
             mode:                   'file',
             name:                   'JScrewIt',

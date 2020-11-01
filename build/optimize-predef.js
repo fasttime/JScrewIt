@@ -4,8 +4,8 @@
 
 const JSCREWIT_PATH = '..';
 
-const PREDEF_TEST_DATA_MAP_OBJ  = require('./common/predef-test-data');
-const progress                  = require('./common/progress');
+const PREDEF_TEST_DATA_MAP_OBJ  = require('./internal/predef-test-data');
+const progress                  = require('./internal/progress');
 
 function compareFeatures(feature1, feature2)
 {
@@ -313,8 +313,8 @@ function printDefinitions(definitionSets, { indent, formatVariant, variantToMinM
 
 function runAnalysis(predefTestData)
 {
-    require('./common/solution-book-map').load();
-    const Analyzer = require('./common/optimized-analyzer');
+    require('./internal/solution-book-map').load();
+    const Analyzer = require('./internal/optimized-analyzer');
 
     const nodes = new Set();
     const { availableEntries, commonFeatureObj, replaceVariant, useReverseIteration } =
@@ -537,7 +537,7 @@ function simplifyDefinitions(definitionSets)
 }
 
 {
-    const choose = require('./common/choose');
+    const choose = require('./internal/choose');
 
     const callback =
     predefName =>
