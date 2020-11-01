@@ -1,4 +1,5 @@
 /* eslint-env node */
+/* global Promise */
 
 'use strict';
 
@@ -9,16 +10,35 @@ function (duration)
     return str;
 };
 
-var timeThis;
-
-timeThis =
-function (callback)
+exports.timeThis =
+function (fn)
 {
     var begin = process.hrtime();
-    callback();
+    fn();
     var time = process.hrtime(begin);
     var duration = time[0] + time[1] / 1e9;
     return duration;
 };
 
-exports.timeThis = timeThis;
+exports.timeThisAsync =
+function (fn)
+{
+    var begin = process.hrtime();
+    var executor =
+    function (resolve, reject)
+    {
+        fn()
+        .then
+        (
+            function ()
+            {
+                var time = process.hrtime(begin);
+                var duration = time[0] + time[1] / 1e9;
+                resolve(duration);
+            }
+        )
+        .catch(reject);
+    };
+    var promise = new Promise(executor);
+    return promise;
+};

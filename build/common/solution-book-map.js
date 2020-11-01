@@ -4,8 +4,9 @@ const JSCREWIT_PATH         = '../..';
 const TYPE_KEY              = '__type';
 const TYPE_VALUE_SOLUTION   = 'Solution';
 
-const JScrewIt = require(JSCREWIT_PATH);
-const charMapRoot = require('path').resolve(__dirname, '../../novem.char-map.json');
+const JScrewIt      = require(JSCREWIT_PATH);
+const charMapRoot   = require('path').resolve(__dirname, '../../novem.char-map.json');
+
 const { debug } = JScrewIt;
 const solutionBookMap = module.exports = new Map();
 
@@ -14,6 +15,7 @@ Object.assign
     solutionBookMap,
     {
         clear:              clearSolutionBookMap,
+        deserialize,
         entries:            entryIterator,
         forEach,
         index:              indexChar,
@@ -21,6 +23,7 @@ Object.assign
         load:               loadSolutionBookMap,
         loadTime:           undefined,
         save:               saveSolutionBookMap,
+        serialize,
         [Symbol.iterator]:  entryIterator,
     },
 );
@@ -144,6 +147,13 @@ function createStringifyReplacer()
     }
 }
 
+function deserialize(jsonStr)
+{
+    const parseReviver = createParseReviver();
+    const obj = JSON.parse(jsonStr, parseReviver);
+    return obj;
+}
+
 function entryIterator()
 {
     const compareEntries = ([char1], [char2]) => char1.charCodeAt() - char2.charCodeAt();
@@ -163,6 +173,7 @@ function forEach(callback, thisArg)
 function indexChar(char, updateProgress, missingCharacter)
 {
     const Analyzer = require('./optimized-analyzer');
+
     const { getCharacterEntries, maskIncludes } = debug;
     {
         const fs = requireFS();
@@ -177,6 +188,7 @@ function indexChar(char, updateProgress, missingCharacter)
         solutions.sort(compareSolutions);
         const solutionBook = { jscrewitTimestamp, definitionCount, usedChars, solutions };
         solutionBookMap.set(char, solutionBook);
+        return solutionBook;
     }
 
     function addMask({ masks }, mask)
@@ -231,27 +243,38 @@ function indexChar(char, updateProgress, missingCharacter)
     }
 }
 
-function loadSolutionBookMap(reload)
+function loadNewSolutionBookMap(serializedSolutionBookMap)
 {
-    if (reload || !solutionBookMap.loadTime)
+    const fs = requireFS();
+
+    if (serializedSolutionBookMap == null)
     {
-        const fs = requireFS();
         try
         {
-            const jsonString = fs.readFileSync(charMapRoot);
-            const parseReviver = createParseReviver();
-            const tmpMap = JSON.parse(jsonString, parseReviver);
-            solutionBookMap.clear();
-            for (const [key, value] of tmpMap.entries())
-                solutionBookMap.set(key, value);
-            solutionBookMap.loadTime = new Date();
+            serializedSolutionBookMap = fs.readFileSync(charMapRoot);
         }
         catch (error)
         {
             if (error.code !== 'ENOENT')
                 throw error;
-            solutionBookMap.clear();
+            const newMap = new Map();
+            return newMap();
         }
+    }
+    const parseReviver = createParseReviver();
+    const newMap = JSON.parse(serializedSolutionBookMap, parseReviver);
+    return newMap;
+}
+
+function loadSolutionBookMap(serializedSolutionBookMap)
+{
+    if (serializedSolutionBookMap != null || !solutionBookMap.loadTime)
+    {
+        const newMap = loadNewSolutionBookMap(serializedSolutionBookMap);
+        solutionBookMap.clear();
+        for (const [key, value] of newMap.entries())
+            solutionBookMap.set(key, value);
+        solutionBookMap.loadTime = new Date();
     }
     return solutionBookMap;
 }
@@ -268,4 +291,11 @@ function saveSolutionBookMap()
     const jsonString = JSON.stringify(solutionBookMap, stringifyReplacer, 4);
     const fs = requireFS();
     fs.writeFileSync(charMapRoot, jsonString);
+}
+
+function serialize(obj)
+{
+    const stringifyReplacer = createStringifyReplacer();
+    const jsonStr = JSON.stringify(obj, stringifyReplacer);
+    return jsonStr;
 }

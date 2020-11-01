@@ -2,65 +2,146 @@
 
 'use strict';
 
-function doAdd()
+async function doAdd()
 {
-    function indexCharacters(solutionBookMap)
+    function * generateQueue(indicator, solutionBookMap)
+    {
+        const queue = new Set();
+        for (const char of charSet)
+        {
+            const promise =
+            (
+                async noSave =>
+                {
+                    const formattedCharacter = formatCharacter(char);
+                    const bar = indicator.newBar(`Indexing character ${formattedCharacter}`);
+                    const serializedSolutionBook = await runWorker(solutionBookMap, bar, char);
+                    bar.hide();
+                    const solutionBook = solutionBookMap.deserialize(serializedSolutionBook);
+                    solutionBookMap.set(char, solutionBook);
+                    console.log('Character %s indexed', formattedCharacter);
+                    if (!noSave)
+                        solutionBookMap.save();
+                    queue.delete(promise);
+                }
+            )
+            (noSave);
+            queue.add(promise);
+            if (queue.size >= concurrency)
+                yield queue;
+        }
+        while (queue.size)
+            yield queue;
+    }
+
+    async function indexCharacters()
     {
         const progress = require('./common/progress');
 
-        for (const char of charSet)
-        {
-            const formattedCharacter = formatCharacter(char);
-            solutionBookMap.delete(char);
-            progress
-            (
-                `Indexing character ${formattedCharacter}`,
-                bar =>
-                solutionBookMap.index
-                (
-                    char,
-                    progress => bar.update(progress),
-                    char =>
-                    console.warn('Required character %s not indexed', formatCharacter(char)),
-                ),
-            );
-            console.log('Character %s indexed', formattedCharacter);
-            if (!noSave)
-                solutionBookMap.save();
-        }
+        const solutionBookMap = getSolutionBookMap(!noLoad);
+        await progress
+        (
+            async indicator =>
+            {
+                const generator = generateQueue(indicator, solutionBookMap);
+                for (const queue of generator)
+                    await Promise.race(queue);
+            },
+        );
     }
 
-    function run()
+    function runWorker(solutionBookMap, bar, char)
     {
-        const solutionBookMap = getSolutionBookMap(!noLoad);
-        indexCharacters(solutionBookMap);
+        const executor =
+        (resolve, reject) =>
+        {
+            const { join }      = require('path');
+            const { Worker }    = require('worker_threads');
+
+            const workerFileName = join(__dirname, 'common/char-index-worker.js');
+            const serializedSolutionBookMap = solutionBookMap.serialize(solutionBookMap);
+            const worker =
+            new Worker(workerFileName, { workerData: { char, serializedSolutionBookMap } });
+            worker.on
+            (
+                'message',
+                ({ progress, missingChar, serializedSolutionBook }) =>
+                {
+                    if (progress != null)
+                        bar.update(progress);
+                    if (missingChar != null)
+                    {
+                        console.warn
+                        (
+                            'Character %s required by %s is not indexed',
+                            formatCharacter(missingChar),
+                            formatCharacter(char),
+                        );
+                    }
+                    if (serializedSolutionBook != null)
+                        resolve(serializedSolutionBook);
+                },
+            );
+            worker.on('error', reject);
+            worker.on
+            (
+                'exit',
+                code => reject(new Error(`Worker stopped unexpectedly with exit code ${code}`)),
+            );
+        };
+        const promise = new Promise(executor);
+        return promise;
     }
 
     let noLoad = false;
     let noSave = false;
+    let concurrency;
     const charSet =
     parseArguments
     (
         sequence =>
         {
-            switch (sequence)
+            const match = /concurrency(?:=(?<concurrency>.*))?/.exec(sequence);
+            if (match)
             {
-            case 'new':
-                noLoad = true;
-                break;
-            case 'test':
-                noSave = true;
-                break;
-            default:
-                return false;
+                concurrency = Number(match.groups.concurrency);
+                if (concurrency !== Math.floor(concurrency) || concurrency < 1 || concurrency > 10)
+                {
+                    console.error('Concurrency must specify an integer between 1 and 10', sequence);
+                    throw ARG_ERROR;
+                }
+            }
+            else
+            {
+                switch (sequence)
+                {
+                case 'new':
+                    noLoad = true;
+                    break;
+                case 'test':
+                    noSave = true;
+                    break;
+                default:
+                    return false;
+                }
             }
             return true;
         },
     );
+    if (!concurrency)
+    {
+        const { cpus } = require('os');
+        const cpuCount = cpus().length;
+        if (cpuCount < 3)
+            concurrency = cpuCount;
+        else
+            concurrency = Math.min(Math.ceil(cpuCount / 2), 10);
+    }
+
     {
         const timeUtils = require('../tools/time-utils');
 
-        const duration = timeUtils.timeThis(run);
+        const duration = await timeUtils.timeThisAsync(indexCharacters);
         const durationStr = timeUtils.formatDuration(duration);
         console.log('%s elapsed.', durationStr);
     }
@@ -322,20 +403,24 @@ else
 
     const [,, command] = argv;
     const commandCall = COMMANDS[command];
-    try
+    (async () =>
     {
-        if (!commandCall)
+        try
         {
-            console.error
-            ('char-index: \'%s\' is not a valid command. See \'char-index help\'.', command);
-            throw ARG_ERROR;
+            if (!commandCall)
+            {
+                console.error
+                ('char-index: \'%s\' is not a valid command. See \'char-index help\'.', command);
+                throw ARG_ERROR;
+            }
+            await commandCall();
         }
-        commandCall();
+        catch (error)
+        {
+            if (error !== ARG_ERROR)
+                throw error;
+            process.exitCode = 1;
+        }
     }
-    catch (error)
-    {
-        if (error !== ARG_ERROR)
-            throw error;
-        process.exitCode = 1;
-    }
+    )();
 }

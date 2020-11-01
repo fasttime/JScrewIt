@@ -1,25 +1,53 @@
 /* eslint-env ebdd/ebdd, node */
+/* global Promise */
 
 'use strict';
 
 var assert      = require('assert');
 var timeUtils   = require('../tools/time-utils');
 
+it.when(typeof Promise === 'function')
+(
+    'timeThisAsync executes the function and returns a non-negative duration',
+    function (done)
+    {
+        var fnCalled = false;
+        timeUtils.timeThisAsync
+        (
+            function ()
+            {
+                fnCalled = true;
+                return Promise.resolve();
+            }
+        )
+        .then
+        (
+            function (actual)
+            {
+                assert(fnCalled);
+                assert(isFinite(actual) && actual >= 0);
+                done();
+            }
+        )
+        .catch(done);
+    }
+);
+
 it
 (
-    'timeThis executes the callback and returns a non-negative duration',
+    'timeThis executes the function and returns a non-negative duration',
     function ()
     {
-        var callbackCalled = false;
+        var fnCalled = false;
         var actual =
         timeUtils.timeThis
         (
             function ()
             {
-                callbackCalled = true;
+                fnCalled = true;
             }
         );
-        assert(callbackCalled);
+        assert(fnCalled);
         assert(isFinite(actual) && actual >= 0);
     }
 );

@@ -6,6 +6,14 @@ const COMPLETE_CHAR     = chalk.bgBlue(' ');
 const INCOMPLETE_CHAR   = chalk.bgWhite(' ');
 const BAR_WIDTH         = 20;
 
+function deleteBars()
+{
+    if (bars.length > 1)
+        stream.moveCursor(0, 1 - bars.length);
+    stream.cursorTo(0);
+    stream.clearScreenDown();
+}
+
 function formatTime(millisecs)
 {
     let str;
@@ -25,33 +33,48 @@ function formatTime(millisecs)
     return str;
 }
 
+function writeBars()
+{
+    stream.cursorTo(0);
+    stream.clearScreenDown();
+    bars.forEach
+    (
+        (bar, index) =>
+        {
+            if (index)
+                stream.moveCursor(0, 1);
+            stream.cursorTo(0);
+            stream.write(bar.lastDraw);
+        },
+    );
+}
+
 class ProgressBar
 {
-    constructor(fmt)
+    constructor(label)
     {
-        this.fmt        = fmt;
-        this.stream     = process.stdout;
+        const prefix = label == null ? '' : `${String(label).replace(/[\0-\x08\x0a-\x1f]/g, '')} `;
+        this.format     = `${prefix}\0bar \0percent / \0eta left`;
+        this.lastDraw   = undefined;
         this.progress   = 0;
-        this.lastDraw   = '';
         this.start      = new Date();
     }
 
     hide()
     {
-        const { stream } = this;
         if (!stream.isTTY)
             return;
         if (this.lastDraw)
         {
-            stream.clearLine();
-            stream.cursorTo(0);
-            this.lastDraw = '';
+            bars.splice(bars.indexOf(this), 1);
+            stream.moveCursor(0, -bars.length);
+            this.lastDraw = undefined;
+            writeBars();
         }
     }
 
     render()
     {
-        const { stream } = this;
         if (!stream.isTTY)
             return;
         const { progress } = this;
@@ -60,7 +83,9 @@ class ProgressBar
 
         // Populate the bar template with percentages and timestamps.
         let str =
-        this.fmt.replace('\0eta', formatTime(eta)).replace('\0percent', `${percent.toFixed(0)}%`);
+        this.format
+        .replace('\0eta', formatTime(eta))
+        .replace('\0percent', `${percent.toFixed(0)}%`);
 
         {
             // Compute the available space for the bar.
@@ -76,10 +101,12 @@ class ProgressBar
 
         if (this.lastDraw !== str)
         {
-            stream.clearLine();
-            stream.cursorTo(0);
-            stream.write(str);
+            if (bars.length > 1)
+                stream.moveCursor(0, 1 - bars.length);
+            if (this.lastDraw === undefined)
+                bars.push(this);
             this.lastDraw = str;
+            writeBars();
         }
     }
 
@@ -92,9 +119,16 @@ class ProgressBar
     }
 }
 
-function progress(label, fn)
+const stream = process.stdout;
+const bars = [];
+
+async function progress(label, fn)
 {
-    label = String(label).replace(/[\0-\x08\x0a-\x1f]/g, '');
+    if (fn === undefined)
+    {
+        fn = label;
+        label = undefined;
+    }
     // 'count', 'group', 'groupCollapsed', 'table', 'timeEnd' and 'timeLog' use 'log'.
     // 'trace' uses 'error'.
     // 'assert' uses 'warn'.
@@ -107,21 +141,38 @@ function progress(label, fn)
         console[propertyName] =
         (...args) =>
         {
-            bar.hide();
+            deleteBars();
             value(...args);
-            bar.render();
+            writeBars();
         };
     }
-    const bar = new ProgressBar(`${label} \0bar \0percent / \0eta left`);
-    bar.render();
     try
     {
-        const result = fn(bar);
+        let result;
+        if (label === undefined)
+        {
+            const indicator =
+            {
+                newBar(label)
+                {
+                    const bar = new ProgressBar(label);
+                    return bar;
+                },
+            };
+            result = await fn(indicator);
+        }
+        else
+        {
+            const bar = new ProgressBar(label);
+            bar.render();
+            result = await fn(bar);
+        }
         return result;
     }
     finally
     {
-        bar.hide();
+        deleteBars();
+        bars.splice(0, Infinity);
         for (const [propertyName, value] of originalValues)
             console[propertyName] = value;
     }
