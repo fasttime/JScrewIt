@@ -109,7 +109,7 @@ const output = JScrewIt.encode("'Hello, world!'");
 const input = eval(output); // input contains the string "Hello, world!".
 ```
 
-You can also use escape sequences to encode newlines and other characters.
+We can also use escape sequences to encode newlines and other characters.
 Note that the initial backslash in an escape sequence must be escaped with another backslash when
 writing a "sting in a string".
 
@@ -133,8 +133,8 @@ These are covered in detail in the
 One peculiarity of JScrewIt is the ability to generate JSFuck code that is customized for a
 particular set of JavaScript engines (web browsers or Node.js).
 This optimized code is shorter than generic JSFuck code but does not work everywhere.
-To make use of this optimization, you have to specify which *features* the decoder engine is
-expected to support.
+To make use of this optimization, we have to specify which *features* the decoder engine is expected
+to support.
 
 In order to understand how this works, let's consider the JavaScript functions `atob` and `btoa`.
 Not all browsers support these functions: without any further information, JScrewIt will assume that
@@ -231,16 +231,39 @@ their intersection.
 
 JScrewIt itself and the code it generates are compatible with the JavaScript engines listed below.
 
-- Chrome 73+
-- Edge 79+
-- Firefox 78+
-- Internet Explorer 9+
-- Safari 7.0+
-- Opera 72+
-- Android Browser 4.x
-- Node.js
+ ![Chrome](https://api.iconify.design/mdi:google-chrome.svg) Chrome 73+
+<br>
+ ![Safari](https://api.iconify.design/mdi:apple-safari.svg) Safari 7.0+
+<br>
+ ![Edge](https://api.iconify.design/mdi:microsoft-edge.svg) Edge 79+
+<br>
+ ![Firefox](https://api.iconify.design/mdi:firefox.svg) Firefox 78+
+<br>
+ ![Opera](https://api.iconify.design/mdi:opera.svg) Opera 72+
+<br>
+ ![Internet Explorer](https://api.iconify.design/mdi:microsoft-internet-explorer.svg) Internet
+Explorer 9+
+<br>
+ ![Android Browser](https://api.iconify.design/mdi:android.svg) Android Browser 4.x
+<br>
+ ![Node.js](https://api.iconify.design/mdi:nodejs.svg) Node.js (all versions)
 
-## Links
+### Engine support policy
+
+Only the most recent stable version of Chrome, Edge, Firefox and Opera are guaranteed to be
+supported at any time, as detailed below.
+- Chrome: (Current - 1) and Current
+- Edge: (Current - 1) and Current
+- Firefox: (Current - 1) and Current, ESR
+- Opera: Current
+
+Expect compatibility with these browsers to change in future releases of JScrewIt, while the current
+browser versions become replaced by newer ones.
+
+Compatibility with older versions of Internet Explorer, Safari, Android Browser and Node.js is
+stable and not expected to change until the next major release of JScrewIt.
+
+## Interesting Links
 
 * [JScrewIt](https://jscrew.it) online encoder
 * [JSFuck](https://en.wikipedia.org/wiki/JSFuck) on Wikipedia
