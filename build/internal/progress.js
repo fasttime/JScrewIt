@@ -10,10 +10,12 @@ const BAR_WIDTH                     = 20;
 
 function deleteBars()
 {
+    stream.cork();
     if (bars.length > 1)
         stream.moveCursor(0, 1 - bars.length);
     stream.cursorTo(0);
     stream.clearScreenDown();
+    stream.uncork();
 }
 
 function formatTime(millisecs)
@@ -35,8 +37,11 @@ function formatTime(millisecs)
     return str;
 }
 
-function writeBars()
+function writeBars(dy)
 {
+    stream.cork();
+    if (dy)
+        stream.moveCursor(0, dy);
     const { columns } = stream;
     stream.cursorTo(0);
     stream.clearScreenDown();
@@ -44,13 +49,14 @@ function writeBars()
     bars.map
     (
         ({ lastDraw }) =>
-        lastDraw.slice(0, columns)
+        lastDraw
         .slice(0, columns)
         .replaceAll(COMPLETE_CHAR_PLACEHOLDER, COMPLETE_CHAR)
         .replaceAll(INCOMPLETE_CHAR_PLACEHOLDER, INCOMPLETE_CHAR),
     )
     .join('\n');
     stream.write(lines);
+    stream.uncork();
 }
 
 class ProgressBar
@@ -72,11 +78,8 @@ class ProgressBar
         if (this.lastDraw)
         {
             bars.splice(bars.indexOf(this), 1);
-            stream.moveCursor(0, -bars.length);
             this.lastDraw = undefined;
-            stream.cork();
-            writeBars();
-            stream.uncork();
+            writeBars(-bars.length);
         }
     }
 
@@ -105,14 +108,11 @@ class ProgressBar
 
         if (this.lastDraw !== str)
         {
-            stream.cork();
-            if (bars.length > 1)
-                stream.moveCursor(0, 1 - bars.length);
+            const dy = Math.min(1 - bars.length, 0);
             if (this.lastDraw === undefined)
                 bars.push(this);
             this.lastDraw = str;
-            writeBars();
-            stream.uncork();
+            writeBars(dy);
         }
     }
 
@@ -147,11 +147,14 @@ async function progress(label, fn)
         console[propertyName] =
         (...args) =>
         {
-            deleteBars();
-            value(...args);
-            stream.cork();
-            writeBars();
-            stream.uncork();
+            if (stream.isTTY)
+            {
+                deleteBars();
+                value(...args);
+                writeBars();
+            }
+            else
+                value(...args);
         };
     }
     let indicator;
@@ -175,7 +178,8 @@ async function progress(label, fn)
     }
     finally
     {
-        deleteBars();
+        if (stream.isTTY)
+            deleteBars();
         bars.splice(0, Infinity);
         for (const [propertyName, value] of originalValues)
             console[propertyName] = value;
