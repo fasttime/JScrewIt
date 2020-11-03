@@ -273,9 +273,9 @@ showFeatureSupport,
                     var code =
                     span.appendChild(document.createElement('SPAN')).appendChild
                     (document.createElement('CODE'));
-                    var featureObj = Feature[featureName];
+                    var featureDescription = Feature.descriptionFor(featureName);
                     code.textContent = featureName;
-                    code.title = featureObj.description;
+                    code.title = featureDescription;
                     if (webWorkerFeatureObj)
                         addMarker('*', 'web-worker', webWorkerFeatureObj);
                     anyDaggers |= addMarker('†', 'forced-strict-mode', forcedStrictModeFeatureObj);

@@ -120,10 +120,11 @@
                             );
                             it
                             (
-                                'has description string property',
+                                'has a description string associated',
                                 function ()
                                 {
-                                    expect(featureObj.description).toBeString();
+                                    var description = Feature.descriptionFor(featureName);
+                                    expect(description).toBeString();
                                 }
                             );
                             it
@@ -357,7 +358,12 @@
                         {
                             var actual =
                             Feature.COMPACT.includes
-                            (['NAME', Feature.WINDOW], 'HTMLDOCUMENT', Feature.NO_IE_SRC, []);
+                            (
+                                ['NAME', Feature.WINDOW],
+                                Object('HTMLDOCUMENT'),
+                                Feature.NO_IE_SRC,
+                                []
+                            );
                             expect(actual).toBe(true);
                         }
                     );
@@ -610,7 +616,12 @@
                         {
                             var actual =
                             Feature.areEqual
-                            (['NAME', Feature.WINDOW], 'HTMLDOCUMENT', Feature.NO_IE_SRC, []);
+                            (
+                                ['NAME', Feature.WINDOW],
+                                Object('HTMLDOCUMENT'),
+                                Feature.NO_IE_SRC,
+                                []
+                            );
                             expect(actual).toBe(false);
                         }
                     );
@@ -682,7 +693,12 @@
                         {
                             var featureObj =
                             Feature.commonOf
-                            (['NAME', Feature.WINDOW], 'HTMLDOCUMENT', Feature.NO_IE_SRC, []);
+                            (
+                                ['NAME', Feature.WINDOW],
+                                Object('HTMLDOCUMENT'),
+                                Feature.NO_IE_SRC,
+                                []
+                            );
                             expect(featureObj.mask).toEqual([0, 0]);
                         }
                     );
@@ -730,6 +746,32 @@
                             var fn =
                             Feature.commonOf.bind(null, 'ANY_WINDOW', ['WINDOW', 'DOMWINDOW']);
                             expect(fn).toThrowStrictly(Error, 'Incompatible features');
+                        }
+                    );
+                }
+            );
+            describe
+            (
+                '.descriptionFor',
+                function ()
+                {
+                    it
+                    (
+                        'converts the argument into a string',
+                        function ()
+                        {
+                            var name = Object('DEFAULT');
+                            var description = Feature.descriptionFor(name);
+                            expect(description).toBeString();
+                        }
+                    );
+                    it
+                    (
+                        'throws an error for an unknown feature',
+                        function ()
+                        {
+                            var fn = Feature.descriptionFor.bind(null, '???');
+                            expect(fn).toThrowStrictly(Error, 'Unknown feature "???"');
                         }
                     );
                 }

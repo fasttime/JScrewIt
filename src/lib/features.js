@@ -150,46 +150,56 @@ export var validMaskFromArrayOrStringOrFeature;
             mask = featureObj.mask;
         else
         {
+            var description;
             var info = FEATURE_INFOS[name];
             if (typeof info === 'string')
             {
                 mask = completeFeature(info);
                 featureObj = ALL[info];
+                description = DESCRIPTION_MAP[info];
             }
             else
             {
-                var check = info.check;
-                if (check)
-                {
-                    mask = maskWithBit(bitIndex++);
-                    if (check())
-                        autoMask = maskUnion(autoMask, mask);
-                    check = wrapCheck(check);
-                }
-                else
-                    mask = maskNew();
-                var includes = includesMap[name] = info.includes || [];
-                includes.forEach
-                (
-                    function (include)
-                    {
-                        var includeMask = completeFeature(include);
-                        mask = maskUnion(mask, includeMask);
-                    }
-                );
-                var description;
                 var engine = info.engine;
                 if (engine == null)
                     description = info.description;
                 else
                     description = createEngineFeatureDescription(engine);
-                var elementary = check || info.excludes;
-                featureObj =
-                createFeature(name, description, mask, check, engine, info.attributes, elementary);
-                if (elementary)
-                    ELEMENTARY.push(featureObj);
+                var aliasFor = info.aliasFor;
+                if (aliasFor != null)
+                {
+                    mask = completeFeature(aliasFor);
+                    featureObj = ALL[aliasFor];
+                }
+                else
+                {
+                    var check = info.check;
+                    if (check)
+                    {
+                        mask = maskWithBit(bitIndex++);
+                        if (check())
+                            autoMask = maskUnion(autoMask, mask);
+                        check = wrapCheck(check);
+                    }
+                    else
+                        mask = maskNew();
+                    var includes = includesMap[name] = info.includes || [];
+                    includes.forEach
+                    (
+                        function (include)
+                        {
+                            var includeMask = completeFeature(include);
+                            mask = maskUnion(mask, includeMask);
+                        }
+                    );
+                    var elementary = check || info.excludes;
+                    featureObj =
+                    createFeature(name, mask, check, engine, info.attributes, elementary);
+                    if (elementary)
+                        ELEMENTARY.push(featureObj);
+                }
             }
-            registerFeature(name, featureObj);
+            registerFeature(name, description, featureObj);
         }
         return mask;
     }
@@ -200,14 +210,13 @@ export var validMaskFromArrayOrStringOrFeature;
         return description;
     }
 
-    function createFeature(name, description, mask, check, engine, attributes, elementary)
+    function createFeature(name, mask, check, engine, attributes, elementary)
     {
         attributes = _Object_freeze(attributes || { });
         var descriptors =
         {
             attributes:     { value: attributes },
             check:          { value: check },
-            description:    { value: description },
             engine:         { value: engine },
             name:           { value: name },
         };
@@ -216,6 +225,15 @@ export var validMaskFromArrayOrStringOrFeature;
         var featureObj = _Object_create(featurePrototype, descriptors);
         initMask(featureObj, mask);
         return featureObj;
+    }
+
+    function descriptionFor(name)
+    {
+        name = esToString(name);
+        var description = DESCRIPTION_MAP[name];
+        if (description == null)
+            throw new _Error('Unknown feature ' + _JSON_stringify(name));
+        return description;
     }
 
     function featureArrayLikeToMask(arrayLike)
@@ -294,11 +312,12 @@ export var validMaskFromArrayOrStringOrFeature;
         return mask;
     }
 
-    function registerFeature(name, featureObj)
+    function registerFeature(name, description, featureObj)
     {
         var descriptor = { enumerable: true, value: featureObj };
         _Object_defineProperty(Feature, name, descriptor);
         ALL[name] = featureObj;
+        DESCRIPTION_MAP[name] = description;
     }
 
     function validateMask(mask)
@@ -345,6 +364,7 @@ export var validMaskFromArrayOrStringOrFeature;
     }
 
     var ALL = createEmpty();
+    var DESCRIPTION_MAP = createEmpty();
     var ELEMENTARY = [];
 
     var FEATURE_INFOS =
@@ -1027,7 +1047,11 @@ export var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'no-console-in-web-worker': null, 'web-worker-restriction': null },
         },
-        CHROME_PREV: 'CHROME_73',
+        CHROME_PREV:
+        {
+            engine: 'the previous to current versions of Chrome and Edge',
+            aliasFor: 'CHROME_73',
+        },
         CHROME_73:
         {
             engine: 'Chrome 73 to 85 and Edge 79 to 85',
@@ -1058,7 +1082,11 @@ export var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        CHROME: 'CHROME_86',
+        CHROME:
+        {
+            engine: 'the current stable versions of Chrome, Edge and Opera',
+            aliasFor: 'CHROME_86',
+        },
         CHROME_86:
         {
             engine: 'Chrome 86, Edge 86 and Opera 72 or later',
@@ -1089,9 +1117,21 @@ export var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        FF_ESR: 'FF_78',
-        FF_PREV: 'FF_78',
-        FF: 'FF_78',
+        FF_ESR:
+        {
+            engine: 'the current version of Firefox ESR',
+            aliasFor: 'FF_78',
+        },
+        FF_PREV:
+        {
+            engine: 'the previous to current version of Firefox',
+            aliasFor: 'FF_78',
+        },
+        FF:
+        {
+            engine: 'the current stable version of Firefox',
+            aliasFor: 'FF_78',
+        },
         FF_78:
         {
             engine: 'Firefox 78 or later',
@@ -1503,7 +1543,11 @@ export var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        SAFARI: 'SAFARI_12',
+        SAFARI:
+        {
+            engine: 'the current stable version of Safari',
+            aliasFor: 'SAFARI_12',
+        },
         SAFARI_12:
         {
             engine: 'Safari 12 or later',
@@ -1553,6 +1597,7 @@ export var validMaskFromArrayOrStringOrFeature;
         areCompatible:  areCompatible,
         areEqual:       areEqual,
         commonOf:       commonOf,
+        descriptionFor: descriptionFor,
     };
 
     assignNoEnum(Feature, constructorSource);
@@ -1590,8 +1635,6 @@ export var validMaskFromArrayOrStringOrFeature;
             var names = _Object_keys(featureNameSet).sort();
             return names;
         },
-
-        description: undefined,
 
         elementary: false,
 
@@ -1752,8 +1795,8 @@ export var validMaskFromArrayOrStringOrFeature;
     );
     _Object_freeze(ELEMENTARY);
     var autoFeatureObj =
-    createFeature('AUTO', 'All features available in the current engine.', autoMask);
-    registerFeature('AUTO', autoFeatureObj);
+    createFeature('AUTO', autoMask);
+    registerFeature('AUTO', 'All features available in the current engine.', autoFeatureObj);
     _Object_freeze(ALL);
 }
 )();

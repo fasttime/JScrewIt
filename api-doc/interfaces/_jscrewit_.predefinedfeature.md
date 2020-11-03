@@ -16,7 +16,6 @@
 
 * [Feature](_jscrewit_.predefinedfeature.md#feature)
 * [canonicalNames](_jscrewit_.predefinedfeature.md#canonicalnames)
-* [description](_jscrewit_.predefinedfeature.md#description)
 * [elementary](_jscrewit_.predefinedfeature.md#elementary)
 * [elementaryNames](_jscrewit_.predefinedfeature.md#elementarynames)
 * [name](_jscrewit_.predefinedfeature.md#name)
@@ -42,14 +41,6 @@ ___
 
 An array of all elementary feature names included in this feature object, without aliases
 and implied features.
-
-___
-
-### description
-
-• `Readonly` **description**: string
-
-*Overrides [CustomFeature](_jscrewit_.customfeature.md).[description](_jscrewit_.customfeature.md#description)*
 
 ___
 

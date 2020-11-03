@@ -36,7 +36,6 @@ constructed.
 ### Properties
 
 * [canonicalNames](_jscrewit_.feature.md#canonicalnames)
-* [description](_jscrewit_.feature.md#description)
 * [elementary](_jscrewit_.feature.md#elementary)
 * [elementaryNames](_jscrewit_.feature.md#elementarynames)
 * [name](_jscrewit_.feature.md#name)
@@ -54,17 +53,6 @@ constructed.
 
 An array of all elementary feature names included in this feature object, without aliases
 and implied features.
-
-___
-
-### description
-
-• `Optional` **description**: undefined \| string
-
-A short description of this feature object in plain English.
-
-All predefined features have a description.
-If desired, custom features may be assigned a description, too.
 
 ___
 
@@ -91,8 +79,9 @@ ___
 
 The primary name of this feature object, useful for identification purpose.
 
-All predefined features have a name.
-If desired, custom features may be assigned a name, too.
+All predefined features have a name; custom features may be optionally assigned a name,
+too.
+If a name is assigned, it will be used when the feature is converted into a string.
 
 ## Methods
 

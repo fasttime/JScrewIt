@@ -60,14 +60,6 @@ declare module 'jscrewit'
          */
         readonly canonicalNames: ElementaryFeatureName[];
 
-        /**
-         * A short description of this feature object in plain English.
-         *
-         * All predefined features have a description.
-         * If desired, custom features may be assigned a description, too.
-         */
-        description?: string;
-
         /** A boolean value indicating whether this is an elementary feature object. */
         readonly elementary: boolean;
 
@@ -80,8 +72,9 @@ declare module 'jscrewit'
         /**
          * The primary name of this feature object, useful for identification purpose.
          *
-         * All predefined features have a name.
-         * If desired, custom features may be assigned a name, too.
+         * All predefined features have a name; custom features may be optionally assigned a name,
+         * too.
+         * If a name is assigned, it will be used when the feature is converted into a string.
          */
         name?: string;
 
@@ -293,6 +286,24 @@ declare module 'jscrewit'
          */
         commonOf(...features: (FeatureElement | CompatibleFeatureArray)[]):
         CustomFeature | null;
+
+        /**
+         * Returns a short description of a predefined feature in plain English.
+         *
+         * @param name
+         *
+         * A name or alias of a predefined feature.
+         *
+         * @remarks
+         *
+         * Different names or aliases of the same feature may have different descriptions.
+         *
+         * @throws
+         *
+         * An error is thrown if the specified argument is not a name or alias of a predefined
+         * feature.
+         */
+        descriptionFor(name: keyof FeatureAll): string;
     }
 
     /**
@@ -307,7 +318,6 @@ declare module 'jscrewit'
 
     interface PredefinedFeature extends Feature
     {
-        readonly description:   string;
-        readonly name:          PredefinedFeatureName;
+        readonly name: PredefinedFeatureName;
     }
 }

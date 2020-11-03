@@ -141,6 +141,7 @@ Name | Type |
 * [areCompatible](_jscrewit_.featureconstructor.md#arecompatible)
 * [areEqual](_jscrewit_.featureconstructor.md#areequal)
 * [commonOf](_jscrewit_.featureconstructor.md#commonof)
+* [descriptionFor](_jscrewit_.featureconstructor.md#descriptionfor)
 
 ## Constructors
 
@@ -364,6 +365,8 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CHROME](_jscrewit_.featureall.md#chrome)*
 
+Features available in the current stable versions of Chrome, Edge and Opera.
+
 An alias for `CHROME_86`.
 
 ___
@@ -393,6 +396,8 @@ ___
 •  **CHROME\_PREV**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[CHROME_PREV](_jscrewit_.featureall.md#chrome_prev)*
+
+Features available in the previous to current versions of Chrome and Edge.
 
 An alias for `CHROME_73`.
 
@@ -562,6 +567,8 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FF](_jscrewit_.featureall.md#ff)*
 
+Features available in the current stable version of Firefox.
+
 An alias for `FF_78`.
 
 ___
@@ -582,6 +589,8 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FF_ESR](_jscrewit_.featureall.md#ff_esr)*
 
+Features available in the current version of Firefox ESR.
+
 An alias for `FF_78`.
 
 ___
@@ -591,6 +600,8 @@ ___
 •  **FF\_PREV**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FF_PREV](_jscrewit_.featureall.md#ff_prev)*
+
+Features available in the previous to current version of Firefox.
 
 An alias for `FF_78`.
 
@@ -1026,6 +1037,8 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI](_jscrewit_.featureall.md#safari)*
 
+Features available in the current stable version of Safari.
+
 An alias for `SAFARI_12`.
 
 ___
@@ -1270,3 +1283,28 @@ Name | Type |
 **Returns:** [CustomFeature](_jscrewit_.customfeature.md) \| null
 
 A feature object, or `null` if no arguments are specified.
+
+___
+
+### descriptionFor
+
+▸ **descriptionFor**(`name`: keyof [FeatureAll](_jscrewit_.featureall.md)): string
+
+Returns a short description of a predefined feature in plain English.
+
+**`remarks`** 
+
+Different names or aliases of the same feature may have different descriptions.
+
+**`throws`** 
+
+An error is thrown if the specified argument is not a name or alias of a predefined
+feature.
+
+#### Parameters:
+
+Name | Type | Description |
+------ | ------ | ------ |
+`name` | keyof [FeatureAll](_jscrewit_.featureall.md) |   A name or alias of a predefined feature.  |
+
+**Returns:** string

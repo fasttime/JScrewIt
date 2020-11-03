@@ -222,6 +222,8 @@ ___
 
 •  **CHROME**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
+Features available in the current stable versions of Chrome, Edge and Opera.
+
 An alias for `CHROME_86`.
 
 ___
@@ -245,6 +247,8 @@ ___
 ### CHROME\_PREV
 
 •  **CHROME\_PREV**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
+
+Features available in the previous to current versions of Chrome and Edge.
 
 An alias for `CHROME_73`.
 
@@ -382,6 +386,8 @@ ___
 
 •  **FF**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
+Features available in the current stable version of Firefox.
+
 An alias for `FF_78`.
 
 ___
@@ -398,6 +404,8 @@ ___
 
 •  **FF\_ESR**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
+Features available in the current version of Firefox ESR.
+
 An alias for `FF_78`.
 
 ___
@@ -405,6 +413,8 @@ ___
 ### FF\_PREV
 
 •  **FF\_PREV**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
+
+Features available in the previous to current version of Firefox.
 
 An alias for `FF_78`.
 
@@ -771,6 +781,8 @@ ___
 ### SAFARI
 
 •  **SAFARI**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
+
+Features available in the current stable version of Safari.
 
 An alias for `SAFARI_12`.
 

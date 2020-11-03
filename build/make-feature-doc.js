@@ -348,12 +348,13 @@ module.exports =
         {
             let formattedDescription;
             const featureObj = Feature.ALL[featureName];
-            const { elementary, name } = featureObj;
-            if (name === featureName)
+            const { elementary, name: targetFeatureName } = featureObj;
+            const featureDescription = Feature.descriptionFor(featureName);
+            if (featureName === targetFeatureName)
             {
                 formattedDescription =
                 '        /**\n' +
-                `         * ${escape(featureObj.description, '\n         *\n         * ')}\n`;
+                `         * ${escape(featureDescription, '\n         *\n         * ')}\n`;
                 if (elementary)
                 {
                     const availability = reportAsList(featureName, getAvailabilityInfo);
@@ -374,7 +375,20 @@ module.exports =
                 formattedDescription += '         */';
             }
             else
-                formattedDescription = `        /** An alias for \`${name}\`. */`;
+            {
+                const targetDescription = Feature.descriptionFor(targetFeatureName);
+                if (featureDescription === targetDescription)
+                    formattedDescription = `        /** An alias for \`${targetFeatureName}\`. */`;
+                else
+                {
+                    formattedDescription =
+                    '        /**\n' +
+                    `         * ${escape(featureDescription, '\n         *\n         * ')}\n` +
+                    '         *\n' +
+                    `         * An alias for \`${targetFeatureName}\`.\n` +
+                    '         */';
+                }
+            }
             const typeName = elementary ? 'ElementaryFeature' : 'PredefinedFeature';
             const featureInfo = { featureName, formattedDescription, typeName };
             return featureInfo;

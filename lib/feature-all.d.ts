@@ -94,7 +94,11 @@ declare module 'jscrewit'
          */
         CAPITAL_HTML: ElementaryFeature;
 
-        /** An alias for `CHROME_86`. */
+        /**
+         * Features available in the current stable versions of Chrome, Edge and Opera.
+         *
+         * An alias for `CHROME_86`.
+         */
         CHROME: PredefinedFeature;
 
         /**
@@ -107,7 +111,11 @@ declare module 'jscrewit'
          */
         CHROME_86: PredefinedFeature;
 
-        /** An alias for `CHROME_73`. */
+        /**
+         * Features available in the previous to current versions of Chrome and Edge.
+         *
+         * An alias for `CHROME_73`.
+         */
         CHROME_PREV: PredefinedFeature;
 
         /**
@@ -205,7 +213,11 @@ declare module 'jscrewit'
          */
         EXTERNAL: ElementaryFeature;
 
-        /** An alias for `FF_78`. */
+        /**
+         * Features available in the current stable version of Firefox.
+         *
+         * An alias for `FF_78`.
+         */
         FF: PredefinedFeature;
 
         /**
@@ -213,10 +225,18 @@ declare module 'jscrewit'
          */
         FF_78: PredefinedFeature;
 
-        /** An alias for `FF_78`. */
+        /**
+         * Features available in the current version of Firefox ESR.
+         *
+         * An alias for `FF_78`.
+         */
         FF_ESR: PredefinedFeature;
 
-        /** An alias for `FF_78`. */
+        /**
+         * Features available in the previous to current version of Firefox.
+         *
+         * An alias for `FF_78`.
+         */
         FF_PREV: PredefinedFeature;
 
         /**
@@ -478,7 +498,11 @@ declare module 'jscrewit'
          */
         PLAIN_INTL: ElementaryFeature;
 
-        /** An alias for `SAFARI_12`. */
+        /**
+         * Features available in the current stable version of Safari.
+         *
+         * An alias for `SAFARI_12`.
+         */
         SAFARI: PredefinedFeature;
 
         /**
