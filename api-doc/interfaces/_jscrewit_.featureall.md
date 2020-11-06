@@ -234,6 +234,14 @@ ___
 
 Features available in Chrome 73 to 85 and Edge 79 to 85.
 
+**`remarks`** 
+
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME_PREV` instead of `CHROME_73` for long term support.
+
+**`see`** 
+
+[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
+
 ___
 
 ### CHROME\_86
@@ -241,6 +249,14 @@ ___
 •  **CHROME\_86**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Chrome 86, Edge 86 and Opera 72 or later.
+
+**`remarks`** 
+
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME` instead of `CHROME_86` for long term support.
+
+**`see`** 
+
+[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
 
 ___
 
@@ -397,6 +413,14 @@ ___
 •  **FF\_78**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
 Features available in Firefox 78 or later.
+
+**`remarks`** 
+
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF`, `FF_ESR`, or `FF_PREV` instead of `FF_78` for long term support.
+
+**`see`** 
+
+[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
 
 ___
 

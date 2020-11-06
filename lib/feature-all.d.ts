@@ -4,19 +4,13 @@ declare module 'jscrewit'
 {
     interface FeatureAll
     {
-        /**
-         * Features available in Android Browser 4.0.
-         */
+        /** Features available in Android Browser 4.0. */
         ANDRO_4_0: PredefinedFeature;
 
-        /**
-         * Features available in Android Browser 4.1 to 4.3.
-         */
+        /** Features available in Android Browser 4.1 to 4.3. */
         ANDRO_4_1: PredefinedFeature;
 
-        /**
-         * Features available in Android Browser 4.4.
-         */
+        /** Features available in Android Browser 4.4. */
         ANDRO_4_4: PredefinedFeature;
 
         /**
@@ -64,9 +58,7 @@ declare module 'jscrewit'
          */
         ATOB: ElementaryFeature;
 
-        /**
-         * All features available in the current engine.
-         */
+        /** All features available in the current engine. */
         AUTO: PredefinedFeature;
 
         /**
@@ -103,11 +95,27 @@ declare module 'jscrewit'
 
         /**
          * Features available in Chrome 73 to 85 and Edge 79 to 85.
+         *
+         * @remarks
+         *
+         * This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME_PREV` instead of `CHROME_73` for long term support.
+         *
+         * @see
+         *
+         * [Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
          */
         CHROME_73: PredefinedFeature;
 
         /**
          * Features available in Chrome 86, Edge 86 and Opera 72 or later.
+         *
+         * @remarks
+         *
+         * This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME` instead of `CHROME_86` for long term support.
+         *
+         * @see
+         *
+         * [Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
          */
         CHROME_86: PredefinedFeature;
 
@@ -136,9 +144,7 @@ declare module 'jscrewit'
          */
         CONSOLE: ElementaryFeature;
 
-        /**
-         * Minimum feature level, compatible with all supported engines in all environments.
-         */
+        /** Minimum feature level, compatible with all supported engines in all environments. */
         DEFAULT: PredefinedFeature;
 
         /**
@@ -222,6 +228,14 @@ declare module 'jscrewit'
 
         /**
          * Features available in Firefox 78 or later.
+         *
+         * @remarks
+         *
+         * This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF`, `FF_ESR`, or `FF_PREV` instead of `FF_78` for long term support.
+         *
+         * @see
+         *
+         * [Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
          */
         FF_78: PredefinedFeature;
 
@@ -333,24 +347,16 @@ declare module 'jscrewit'
          */
         HTMLDOCUMENT: ElementaryFeature;
 
-        /**
-         * Features available in Internet Explorer 10.
-         */
+        /** Features available in Internet Explorer 10. */
         IE_10: PredefinedFeature;
 
-        /**
-         * Features available in Internet Explorer 11.
-         */
+        /** Features available in Internet Explorer 11. */
         IE_11: PredefinedFeature;
 
-        /**
-         * Features available in Internet Explorer 11 on Windows 10.
-         */
+        /** Features available in Internet Explorer 11 on Windows 10. */
         IE_11_WIN_10: PredefinedFeature;
 
-        /**
-         * Features available in Internet Explorer 9.
-         */
+        /** Features available in Internet Explorer 9. */
         IE_9: PredefinedFeature;
 
         /**
@@ -409,44 +415,28 @@ declare module 'jscrewit'
          */
         NODECONSTRUCTOR: ElementaryFeature;
 
-        /**
-         * Features available in Node.js 0.10.
-         */
+        /** Features available in Node.js 0.10. */
         NODE_0_10: PredefinedFeature;
 
-        /**
-         * Features available in Node.js 0.12.
-         */
+        /** Features available in Node.js 0.12. */
         NODE_0_12: PredefinedFeature;
 
-        /**
-         * Features available in Node.js 10.
-         */
+        /** Features available in Node.js 10. */
         NODE_10: PredefinedFeature;
 
-        /**
-         * Features available in Node.js 11.
-         */
+        /** Features available in Node.js 11. */
         NODE_11: PredefinedFeature;
 
-        /**
-         * Features available in Node.js 12 to 14.
-         */
+        /** Features available in Node.js 12 to 14. */
         NODE_12: PredefinedFeature;
 
-        /**
-         * Features available in Node.js 15 or later.
-         */
+        /** Features available in Node.js 15 or later. */
         NODE_15: PredefinedFeature;
 
-        /**
-         * Features available in Node.js 4.
-         */
+        /** Features available in Node.js 4. */
         NODE_4: PredefinedFeature;
 
-        /**
-         * Features available in Node.js 5 to 9.
-         */
+        /** Features available in Node.js 5 to 9. */
         NODE_5: PredefinedFeature;
 
         /**
@@ -505,32 +495,22 @@ declare module 'jscrewit'
          */
         SAFARI: PredefinedFeature;
 
-        /**
-         * Features available in Safari 10 or later.
-         */
+        /** Features available in Safari 10 or later. */
         SAFARI_10: PredefinedFeature;
 
-        /**
-         * Features available in Safari 12 or later.
-         */
+        /** Features available in Safari 12 or later. */
         SAFARI_12: PredefinedFeature;
 
-        /**
-         * Features available in Safari 7.0.
-         */
+        /** Features available in Safari 7.0. */
         SAFARI_7_0: PredefinedFeature;
 
-        /**
-         * Features available in Safari 7.1 and Safari 8.
-         */
+        /** Features available in Safari 7.1 and Safari 8. */
         SAFARI_7_1: PredefinedFeature;
 
         /** An alias for `SAFARI_7_1`. */
         SAFARI_8: PredefinedFeature;
 
-        /**
-         * Features available in Safari 9.
-         */
+        /** Features available in Safari 9. */
         SAFARI_9: PredefinedFeature;
 
         /** An alias for `ANY_WINDOW`. */

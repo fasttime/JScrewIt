@@ -946,9 +946,9 @@ export var validMaskFromArrayOrStringOrFeature;
             includes: ['ANY_DOCUMENT', 'ANY_WINDOW', 'HISTORY', 'INCR_CHAR', 'STATUS'],
             attributes:
             {
-                'char-increment-restriction': null,
-                'safari-bug-21820506': null,
-                'web-worker-restriction': null,
+                'char-increment-restriction':   null,
+                'safari-bug-21820506':          null,
+                'web-worker-restriction':       null,
             },
         },
         COMPACT:
@@ -1080,7 +1080,12 @@ export var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
                 'WINDOW',
             ],
-            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
+            attributes:
+            {
+                'char-increment-restriction':   null,
+                'unstable':                     null,
+                'web-worker-restriction':       null,
+            },
         },
         CHROME:
         {
@@ -1115,7 +1120,12 @@ export var validMaskFromArrayOrStringOrFeature;
                 'V8_SRC',
                 'WINDOW',
             ],
-            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
+            attributes:
+            {
+                'char-increment-restriction':   null,
+                'unstable':                     null,
+                'web-worker-restriction':       null,
+            },
         },
         FF_ESR:
         {
@@ -1161,7 +1171,12 @@ export var validMaskFromArrayOrStringOrFeature;
                 'UNDEFINED',
                 'WINDOW',
             ],
-            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
+            attributes:
+            {
+                'char-increment-restriction':   null,
+                'unstable':                     null,
+                'web-worker-restriction':       null,
+            },
         },
         IE_9:
         {
@@ -1440,10 +1455,10 @@ export var validMaskFromArrayOrStringOrFeature;
             ],
             attributes:
             {
-                'char-increment-restriction': null,
-                'no-atob-in-web-worker': null,
-                'no-console-in-web-worker': null,
-                'web-worker-restriction': null,
+                'char-increment-restriction':   null,
+                'no-atob-in-web-worker':        null,
+                'no-console-in-web-worker':     null,
+                'web-worker-restriction':       null,
             },
         },
         SAFARI_7_1:
@@ -1472,10 +1487,10 @@ export var validMaskFromArrayOrStringOrFeature;
             ],
             attributes:
             {
-                'char-increment-restriction': null,
-                'no-atob-in-web-worker': null,
-                'safari-bug-21820506': null,
-                'web-worker-restriction': null,
+                'char-increment-restriction':   null,
+                'no-atob-in-web-worker':        null,
+                'safari-bug-21820506':          null,
+                'web-worker-restriction':       null,
             },
         },
         SAFARI_8: 'SAFARI_7_1',
@@ -1507,10 +1522,10 @@ export var validMaskFromArrayOrStringOrFeature;
             ],
             attributes:
             {
-                'char-increment-restriction': null,
-                'no-atob-in-web-worker': null,
-                'safari-bug-21820506': null,
-                'web-worker-restriction': null,
+                'char-increment-restriction':   null,
+                'no-atob-in-web-worker':        null,
+                'safari-bug-21820506':          null,
+                'web-worker-restriction':       null,
             },
         },
         SAFARI_10:

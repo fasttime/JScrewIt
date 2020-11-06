@@ -103,11 +103,16 @@ function calculateEngineSupportInfo(engineEntry, filter)
     return availabilityInfo;
 }
 
-function escape(str, newLineSeparator)
+function escape(str)
 {
-    const result =
-    str.replace(/[\n&()[\\\]]/g, char => char === '\n' ? newLineSeparator : `\\${char}`);
-    return result;
+    const returnValue = str.replace(/[&()[\\\]]/g, '\\$&');
+    return returnValue;
+}
+
+function escapeMultiline(str)
+{
+    const lines = escape(str).split('\n');
+    return lines;
 }
 
 function formatAvailability(availability, webWorkerReport, forcedStrictModeReport)
@@ -136,6 +141,22 @@ function formatAvailability(availability, webWorkerReport, forcedStrictModeRepor
     return result;
 }
 
+function formatDescriptionLines(descriptionLines)
+{
+    let formattedDescription;
+    if (descriptionLines.length > 1)
+    {
+        const joinedLines =
+        descriptionLines
+        .map(descriptionLine => `         * ${descriptionLine}\n`)
+        .join('         *\n');
+        formattedDescription = `        /**\n${joinedLines}         */`;
+    }
+    else
+        formattedDescription = `        /** ${descriptionLines[0]} */`;
+    return formattedDescription;
+}
+
 function formatFeatureName(featureName)
 {
     const TARGET = 'api-doc/interfaces/_jscrewit_.featureall.md';
@@ -155,6 +176,16 @@ function formatReport(report)
         result = `${report.join(', ')} and ${lastEntry}`;
     }
     return result;
+}
+
+function getAliasesOf(featureObj)
+{
+    const aliases =
+    Object
+    .keys(Feature.ALL)
+    .filter(name => Feature.ALL[name] === featureObj && name !== featureObj.name)
+    .sort();
+    return aliases;
 }
 
 function getAvailabilityInfo(featureName, engineEntry)
@@ -340,21 +371,23 @@ function reportAsList(property, filter)
 module.exports =
 () =>
 {
+    const aliasFormatter = new Intl.ListFormat('en', { type: 'disjunction' });
+    const engineSupportPolicyLink =
+    'https://github.com/fasttime/JScrewIt#engine-support-policy';
+
     const compositeFeatureNames = [];
     const featureInfoList =
     Object.keys(Feature.ALL).sort().map
     (
         featureName =>
         {
-            let formattedDescription;
+            const descriptionLines = [];
             const featureObj = Feature.ALL[featureName];
             const { elementary, name: targetFeatureName } = featureObj;
             const featureDescription = Feature.descriptionFor(featureName);
             if (featureName === targetFeatureName)
             {
-                formattedDescription =
-                '        /**\n' +
-                `         * ${escape(featureDescription, '\n         *\n         * ')}\n`;
+                descriptionLines.push(...escapeMultiline(featureDescription));
                 if (elementary)
                 {
                     const availability = reportAsList(featureName, getAvailabilityInfo);
@@ -363,32 +396,39 @@ module.exports =
                     {
                         const formattedAvailability =
                         formatAvailability(availability, webWorkerReport, forcedStrictModeReport);
-                        formattedDescription +=
-                        '         *\n' +
-                        '         * @remarks\n' +
-                        '         *\n' +
-                        `         * ${formattedAvailability}\n`;
+                        descriptionLines.push('@remarks', formattedAvailability);
                     }
                 }
                 else
+                {
+                    if ('unstable' in featureObj.attributes)
+                    {
+                        const formattedAliases =
+                        aliasFormatter
+                        .format(getAliasesOf(featureObj).map(alias => `\`${alias}\``));
+                        const formattedFeatureName = `\`${featureName}\``;
+                        descriptionLines.push
+                        (
+                            '@remarks',
+                            'This feature may be replaced or removed in the near future when ' +
+                            'current browser versions become obsolete. ' +
+                            `Use ${formattedAliases} instead of ${formattedFeatureName} for long ` +
+                            'term support.',
+                            '@see',
+                            `[Engine Support Policy](${engineSupportPolicyLink})`,
+                        );
+                    }
                     compositeFeatureNames.push(featureName);
-                formattedDescription += '         */';
+                }
             }
             else
             {
                 const targetDescription = Feature.descriptionFor(targetFeatureName);
-                if (featureDescription === targetDescription)
-                    formattedDescription = `        /** An alias for \`${targetFeatureName}\`. */`;
-                else
-                {
-                    formattedDescription =
-                    '        /**\n' +
-                    `         * ${escape(featureDescription, '\n         *\n         * ')}\n` +
-                    '         *\n' +
-                    `         * An alias for \`${targetFeatureName}\`.\n` +
-                    '         */';
-                }
+                if (featureDescription !== targetDescription)
+                    descriptionLines.push(...escapeMultiline(featureDescription));
+                descriptionLines.push(`An alias for \`${targetFeatureName}\`.`);
             }
+            const formattedDescription = formatDescriptionLines(descriptionLines);
             const typeName = elementary ? 'ElementaryFeature' : 'PredefinedFeature';
             const featureInfo = { featureName, formattedDescription, typeName };
             return featureInfo;

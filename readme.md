@@ -248,7 +248,7 @@ Explorer 9+
 <br>
  ![Node.js](https://api.iconify.design/mdi:nodejs.svg) Node.js (all versions)
 
-### Engine support policy
+### Engine Support Policy
 
 Only the most recent stable version of Chrome, Edge, Firefox and Opera are guaranteed to be
 supported at any time, as detailed below.
