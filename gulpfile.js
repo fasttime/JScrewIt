@@ -29,6 +29,19 @@ async function bundleUI()
     await bundle(inputOptions, '.tmp-src/ui.js');
 }
 
+async function createFileFromTemplate(createContextModuleId, templateSrcPath, outputPath)
+{
+    const { promises: { writeFile } }   = require('fs');
+    const Handlebars                    = require('handlebars');
+    const createContext                 = require(createContextModuleId);
+
+    const input = await readFileAsString(templateSrcPath);
+    const template = Handlebars.compile(input, { noEscape: true });
+    const context = createContext();
+    const output = template(context);
+    await writeFile(outputPath, output);
+}
+
 async function makeArt()
 {
     const { promise }               = require('art-js');
@@ -235,28 +248,16 @@ task
 
 task
 (
-    'feature-doc',
-    async () =>
-    {
-        const makeFeatureDoc                = require('./build/make-feature-doc');
-        const { promises: { writeFile } }   = require('fs');
-        const Handlebars                    = require('handlebars');
+    'make-feature-doc',
+    () => createFileFromTemplate('./build/make-feature-doc', 'src/Features.md.hbs', 'Features.md'),
+);
 
-        async function writeOutput(inputPath, context, outputPath)
-        {
-            const input = await readFileAsString(inputPath);
-            const template = Handlebars.compile(input, { noEscape: true });
-            const output = template(context);
-            await writeFile(outputPath, output);
-        }
-
-        const { contextMd, contextTs } = makeFeatureDoc();
-        const promiseTs =
-        writeOutput('src/lib/feature-all.d.ts.hbs', contextTs, 'lib/feature-all.d.ts');
-        const promiseMd =
-        writeOutput('src/Features.md.hbs', contextMd, 'Features.md');
-        await Promise.all([promiseMd, promiseTs]);
-    },
+task
+(
+    'make-feature-types',
+    () =>
+    createFileFromTemplate
+    ('./build/make-feature-types', 'src/lib/feature-all.d.ts.hbs', 'lib/feature-all.d.ts'),
 );
 
 task
@@ -323,8 +324,14 @@ task
         parallel('clean', 'lint'),
         parallel('bundle:lib', 'bundle:ui'),
         'test',
-        parallel('minify:lib', 'minify:ui', 'feature-doc', 'make-spec-runner'),
-        'typedoc',
+        parallel
+        (
+            'minify:lib',
+            'minify:ui',
+            series('make-feature-types', 'typedoc'),
+            'make-feature-doc',
+            'make-spec-runner',
+        ),
     ),
 );
 
