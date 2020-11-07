@@ -1,7 +1,7 @@
 'use strict';
 
 const { Feature }                                       = require('..');
-const { ENGINE_ENTRIES, calculateEngineSupportInfo }    = require('./internal/engine-data');
+const { getAvailabilityByFeature, getEngineEntries }    = require('./internal/engine-data');
 
 function formatFeatureName(featureName)
 {
@@ -9,14 +9,6 @@ function formatFeatureName(featureName)
 
     const result = `<a href="${TARGET}#${featureName}"><code>${featureName}</code></a>`;
     return result;
-}
-
-function getAvailabilityInfo(featureName, engineEntry)
-{
-    const availabilityInfo =
-    calculateEngineSupportInfo
-    (engineEntry, engineFeatureObj => engineFeatureObj.includes(featureName));
-    return availabilityInfo;
 }
 
 function getCombinedDescription(engineEntry, versionIndex = 0)
@@ -61,33 +53,6 @@ function getCombinedDescription(engineEntry, versionIndex = 0)
     return combinedDescription;
 }
 
-function getComponentEntries(assignmentMap)
-{
-    const componentEntries = [];
-    const featureNames = Object.keys(assignmentMap).sort();
-    for (const featureName of featureNames)
-    {
-        let componentEntry = formatFeatureName(featureName);
-        const assigments = assignmentMap[featureName];
-        const { impliers, versioning } = assigments;
-        if (versioning || impliers)
-        {
-            componentEntry += ' (';
-            if (impliers)
-            {
-                componentEntry += `implied by ${impliers.map(formatFeatureName).join(' and ')}`;
-                if (versioning)
-                    componentEntry += '; ';
-            }
-            if (versioning)
-                componentEntry += versioning;
-            componentEntry += ')';
-        }
-        componentEntries.push(componentEntry);
-    }
-    return componentEntries;
-}
-
 function getImpliers(featureName, assignmentMap)
 {
     const impliers = [];
@@ -102,7 +67,7 @@ function getImpliers(featureName, assignmentMap)
 
 function getVersioningFor(featureName, engineEntry)
 {
-    const availabilityInfo = getAvailabilityInfo(featureName, engineEntry);
+    const availabilityInfo = getAvailabilityByFeature(featureName, engineEntry);
     const { firstAvail } = availabilityInfo;
     if (firstAvail != null)
     {
@@ -126,8 +91,40 @@ function getVersioningFor(featureName, engineEntry)
 module.exports =
 () =>
 {
+    const AND_FORMATTER = new Intl.ListFormat('en');
+
+    function getComponentEntries(assignmentMap)
+    {
+        const componentEntries = [];
+        const featureNames = Object.keys(assignmentMap).sort();
+        for (const featureName of featureNames)
+        {
+            let componentEntry = formatFeatureName(featureName);
+            const assigments = assignmentMap[featureName];
+            const { impliers, versioning } = assigments;
+            if (versioning || impliers)
+            {
+                componentEntry += ' (';
+                if (impliers)
+                {
+                    const featureNameList =
+                    AND_FORMATTER.format(impliers.map(formatFeatureName));
+                    componentEntry += `implied by ${featureNameList}`;
+                    if (versioning)
+                        componentEntry += '; ';
+                }
+                if (versioning)
+                    componentEntry += versioning;
+                componentEntry += ')';
+            }
+            componentEntries.push(componentEntry);
+        }
+        return componentEntries;
+    }
+
     const featureRowContentList =
-    ENGINE_ENTRIES.map
+    getEngineEntries()
+    .map
     (
         engineEntry =>
         {

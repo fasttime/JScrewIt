@@ -18,7 +18,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
+         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
          */
         ANY_DOCUMENT: ElementaryFeature;
 
@@ -27,7 +27,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
+         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
          */
         ANY_WINDOW: ElementaryFeature;
 
@@ -36,7 +36,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 0.12+.
+         * Available in Chrome, Edge, Firefox, Safari 7.1+, Opera, and Node.js 0.12+.
          */
         ARRAY_ITERATOR: ElementaryFeature;
 
@@ -45,7 +45,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Safari 10+, Opera and Node.js 4+.
+         * Available in Chrome, Edge, Firefox, Safari 10+, Opera, and Node.js 4+.
          */
         ARROW: ElementaryFeature;
 
@@ -54,7 +54,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari before 10.
+         * Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, and Android Browser. This feature is not available inside web workers in Safari before 10.
          */
         ATOB: ElementaryFeature;
 
@@ -66,7 +66,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Safari, Opera and Android Browser 4.4. This feature is not available inside web workers.
+         * Available in Chrome, Edge, Firefox, Safari, Opera, and Android Browser 4.4. This feature is not available inside web workers.
          */
         BARPROP: ElementaryFeature;
 
@@ -140,7 +140,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
+         * Available in Internet Explorer 10+, Safari, and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
          */
         CONSOLE: ElementaryFeature;
 
@@ -179,7 +179,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
+         * Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
          */
         ESC_HTML_QUOT: ElementaryFeature;
 
@@ -188,7 +188,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Safari, Opera and Node.js 0.12+.
+         * Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js 0.12+.
          */
         ESC_HTML_QUOT_ONLY: ElementaryFeature;
 
@@ -197,7 +197,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Node.js 12+.
+         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js 12+.
          */
         ESC_REGEXP_LF: ElementaryFeature;
 
@@ -206,7 +206,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Node.js 4+.
+         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js 4+.
          */
         ESC_REGEXP_SLASH: ElementaryFeature;
 
@@ -269,7 +269,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 4+.
+         * Available in Chrome, Edge, Firefox, Safari 7.1+, Opera, and Node.js 4+.
          */
         FILL: ElementaryFeature;
 
@@ -278,7 +278,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Safari 12+, Opera and Node.js 11+.
+         * Available in Chrome, Edge, Firefox, Safari 12+, Opera, and Node.js 11+.
          */
         FLAT: ElementaryFeature;
 
@@ -287,7 +287,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Safari 9+, Opera and Node.js 4+.
+         * Available in Chrome, Edge, Firefox, Safari 9+, Opera, and Node.js 4+.
          */
         FROM_CODE_POINT: ElementaryFeature;
 
@@ -296,7 +296,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Opera and Node.js 10+.
+         * Available in Chrome, Edge, Firefox, Opera, and Node.js 10+.
          */
         FUNCTION_19_LF: ElementaryFeature;
 
@@ -305,7 +305,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Internet Explorer, Safari 9+, Android Browser and Node.js before 10.
+         * Available in Internet Explorer, Safari 9+, Android Browser, and Node.js before 10.
          */
         FUNCTION_22_LF: ElementaryFeature;
 
@@ -316,7 +316,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, Android Browser and Node.js.
+         * Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, Android Browser, and Node.js.
          */
         GMT: ElementaryFeature;
 
@@ -325,7 +325,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
+         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
          */
         HISTORY: ElementaryFeature;
 
@@ -343,7 +343,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera and Android Browser. This feature is not available inside web workers.
+         * Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, and Android Browser. This feature is not available inside web workers.
          */
         HTMLDOCUMENT: ElementaryFeature;
 
@@ -375,7 +375,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser and Node.js. This feature is not available when strict mode is enforced in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Node.js 5+.
+         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser, and Node.js. This feature is not available when strict mode is enforced in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, and Node.js 5+.
          */
         INCR_CHAR: ElementaryFeature;
 
@@ -384,7 +384,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4 and Node.js 0.12+.
+         * Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, and Node.js 0.12+.
          */
         INTL: ElementaryFeature;
 
@@ -393,7 +393,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4 and Node.js 0.12+.
+         * Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4, and Node.js 0.12+.
          */
         LOCALE_INFINITY: ElementaryFeature;
 
@@ -402,7 +402,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
+         * Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
          */
         NAME: ElementaryFeature;
 
@@ -444,7 +444,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Internet Explorer, Opera, Android Browser and Node.js.
+         * Available in Chrome, Edge, Internet Explorer, Opera, Android Browser, and Node.js.
          */
         NO_FF_SRC: ElementaryFeature;
 
@@ -455,7 +455,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
+         * Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
          */
         NO_IE_SRC: ElementaryFeature;
 
@@ -464,7 +464,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Safari 9+, Opera and Node.js 0.12+.
+         * Available in Chrome, Edge, Firefox, Safari 9+, Opera, and Node.js 0.12+.
          */
         NO_OLD_SAFARI_ARRAY_ITERATOR: ElementaryFeature;
 
@@ -475,7 +475,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Firefox, Internet Explorer and Safari.
+         * Available in Firefox, Internet Explorer, and Safari.
          */
         NO_V8_SRC: ElementaryFeature;
 
@@ -484,7 +484,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+, Opera before 72, Android Browser 4.4 and Node.js 0.12+ before 15.
+         * Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+, Opera before 72, Android Browser 4.4, and Node.js 0.12+ before 15.
          */
         PLAIN_INTL: ElementaryFeature;
 
@@ -521,7 +521,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.
+         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.
          */
         SELF_OBJ: ElementaryFeature;
 
@@ -530,7 +530,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
+         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
          */
         STATUS: ElementaryFeature;
 
@@ -541,7 +541,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+ and Node.js.
+         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+, and Node.js.
          */
         UNDEFINED: ElementaryFeature;
 
@@ -552,7 +552,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Opera, Android Browser and Node.js.
+         * Available in Chrome, Edge, Opera, Android Browser, and Node.js.
          */
         V8_SRC: ElementaryFeature;
 
@@ -561,7 +561,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser 4.4. This feature is not available inside web workers.
+         * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser 4.4. This feature is not available inside web workers.
          */
         WINDOW: ElementaryFeature;
     }

@@ -249,7 +249,7 @@ Existence of the global object document whose string representation starts with 
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
 
 ___
 
@@ -263,7 +263,7 @@ Existence of the global object self whose string representation starts with "\[o
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
 
 ___
 
@@ -277,7 +277,7 @@ The property that the string representation of Array.prototype.entries\(\) start
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Safari 7.1+, Opera, and Node.js 0.12+.
 
 ___
 
@@ -291,7 +291,7 @@ Support for arrow functions.
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Safari 10+, Opera and Node.js 4+.
+Available in Chrome, Edge, Firefox, Safari 10+, Opera, and Node.js 4+.
 
 ___
 
@@ -305,7 +305,7 @@ Existence of the global functions atob and btoa.
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari before 10.
+Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, and Android Browser. This feature is not available inside web workers in Safari before 10.
 
 ___
 
@@ -329,7 +329,7 @@ Existence of the global object statusbar having the string representation "\[obj
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Safari, Opera and Android Browser 4.4. This feature is not available inside web workers.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Android Browser 4.4. This feature is not available inside web workers.
 
 ___
 
@@ -443,7 +443,7 @@ This feature may become unavailable when certain browser extensions are active.
 
 **`remarks`** 
 
-Available in Internet Explorer 10+, Safari and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
+Available in Internet Explorer 10+, Safari, and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
 
 ___
 
@@ -517,7 +517,7 @@ The property that double quotation marks in the argument of String.prototype.fon
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
+Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
 
 ___
 
@@ -531,7 +531,7 @@ The property that only double quotation marks and no other characters in the arg
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Safari, Opera and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js 0.12+.
 
 ___
 
@@ -545,7 +545,7 @@ Having regular expressions created with the RegExp constructor use escape sequen
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Node.js 12+.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js 12+.
 
 ___
 
@@ -559,7 +559,7 @@ Having regular expressions created with the RegExp constructor use escape sequen
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Node.js 4+.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js 4+.
 
 ___
 
@@ -657,7 +657,7 @@ Existence of the native function Array.prototype.fill.
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Safari 7.1+, Opera and Node.js 4+.
+Available in Chrome, Edge, Firefox, Safari 7.1+, Opera, and Node.js 4+.
 
 ___
 
@@ -671,7 +671,7 @@ Existence of the native function Array.prototype.flat.
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Safari 12+, Opera and Node.js 11+.
+Available in Chrome, Edge, Firefox, Safari 12+, Opera, and Node.js 11+.
 
 ___
 
@@ -685,7 +685,7 @@ Existence of the function String.fromCodePoint.
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Safari 9+, Opera and Node.js 4+.
+Available in Chrome, Edge, Firefox, Safari 9+, Opera, and Node.js 4+.
 
 ___
 
@@ -699,7 +699,7 @@ A string representation of dynamically generated functions where the character a
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Opera and Node.js 10+.
+Available in Chrome, Edge, Firefox, Opera, and Node.js 10+.
 
 ___
 
@@ -713,7 +713,7 @@ A string representation of dynamically generated functions where the character a
 
 **`remarks`** 
 
-Available in Internet Explorer, Safari 9+, Android Browser and Node.js before 10.
+Available in Internet Explorer, Safari 9+, Android Browser, and Node.js before 10.
 
 ___
 
@@ -729,7 +729,7 @@ The string representation of dates is implementation dependent, but most engines
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, Android Browser and Node.js.
+Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, Android Browser, and Node.js.
 
 ___
 
@@ -743,7 +743,7 @@ Existence of the global object history having the string representation "\[objec
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
 
 ___
 
@@ -771,7 +771,7 @@ Existence of the global object document having the string representation "\[obje
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera and Android Browser. This feature is not available inside web workers.
+Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, and Android Browser. This feature is not available inside web workers.
 
 ___
 
@@ -841,7 +841,7 @@ The ability to use unary increment operators with string characters, like in \( 
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser and Node.js. This feature is not available when strict mode is enforced in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera and Node.js 5+.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser, and Node.js. This feature is not available when strict mode is enforced in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, and Node.js 5+.
 
 ___
 
@@ -855,7 +855,7 @@ Existence of the global object Intl.
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4 and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, and Node.js 0.12+.
 
 ___
 
@@ -869,7 +869,7 @@ Language sensitive string representation of Infinity as "∞".
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4 and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4, and Node.js 0.12+.
 
 ___
 
@@ -883,7 +883,7 @@ Existence of the name property for functions.
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
+Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
 
 ___
 
@@ -991,7 +991,7 @@ A string representation of native functions typical for V8 or for Internet Explo
 
 **`remarks`** 
 
-Available in Chrome, Edge, Internet Explorer, Opera, Android Browser and Node.js.
+Available in Chrome, Edge, Internet Explorer, Opera, Android Browser, and Node.js.
 
 ___
 
@@ -1007,7 +1007,7 @@ A remarkable trait of this feature is the lack of line feed characters at the be
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser and Node.js.
+Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
 
 ___
 
@@ -1021,7 +1021,7 @@ The property that the string representation of Array.prototype.entries\(\) evalu
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Safari 9+, Opera and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Safari 9+, Opera, and Node.js 0.12+.
 
 ___
 
@@ -1037,7 +1037,7 @@ A most remarkable trait of this feature is the presence of a line feed followed 
 
 **`remarks`** 
 
-Available in Firefox, Internet Explorer and Safari.
+Available in Firefox, Internet Explorer, and Safari.
 
 ___
 
@@ -1051,7 +1051,7 @@ Existence of the global object Intl having the string representation "\[object O
 
 **`remarks`** 
 
-Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+, Opera before 72, Android Browser 4.4 and Node.js 0.12+ before 15.
+Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+, Opera before 72, Android Browser 4.4, and Node.js 0.12+ before 15.
 
 ___
 
@@ -1147,7 +1147,7 @@ Existence of the global object self whose string representation starts with "\[o
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.
 
 ___
 
@@ -1161,7 +1161,7 @@ Existence of the global string status.
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser. This feature is not available inside web workers.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
 
 ___
 
@@ -1177,7 +1177,7 @@ This behavior is specified by ECMAScript, and is enforced by all engines except 
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+ and Node.js.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+, and Node.js.
 
 ___
 
@@ -1193,7 +1193,7 @@ Remarkable traits are the lack of line feed characters at the beginning and at t
 
 **`remarks`** 
 
-Available in Chrome, Edge, Opera, Android Browser and Node.js.
+Available in Chrome, Edge, Opera, Android Browser, and Node.js.
 
 ___
 
@@ -1207,7 +1207,7 @@ Existence of the global object self having the string representation "\[object W
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera and Android Browser 4.4. This feature is not available inside web workers.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser 4.4. This feature is not available inside web workers.
 
 ## Methods
 

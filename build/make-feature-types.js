@@ -1,19 +1,8 @@
 'use strict';
 
-const { Feature }                                       = require('..');
-const { ENGINE_ENTRIES, calculateEngineSupportInfo }    = require('./internal/engine-data');
-
-const ENGINE_REFS =
-[
-    { index: 0, subIndex: 0 },
-    { index: 0, subIndex: 1 },
-    { index: 1 },
-    { index: 2 },
-    { index: 3 },
-    { index: 0, subIndex: 2 },
-    { index: 4 },
-    { index: 5 },
-];
+const { Feature } = require('..');
+const { calculateAvailabilityInfo, getAvailabilityByFeature, getEngineEntries } =
+require('./internal/engine-data');
 
 function escape(str)
 {
@@ -25,32 +14,6 @@ function escapeMultiline(str)
 {
     const lines = escape(str).split('\n');
     return lines;
-}
-
-function formatAvailability(availability, webWorkerReport, forcedStrictModeReport)
-{
-    function appendNote(report, environmentDescription)
-    {
-        if (report)
-        {
-            result += ` This feature is not available ${environmentDescription}`;
-            if (report !== true)
-                result += ` in ${formatReport(report)}`;
-            result += '.';
-        }
-    }
-
-    let result;
-    const { length } = availability;
-    if (length)
-    {
-        result = `Available in ${formatReport(availability)}.`;
-        appendNote(webWorkerReport, 'inside web workers');
-        appendNote(forcedStrictModeReport, 'when strict mode is enforced');
-    }
-    else
-        result = 'This feature is not available in any of the supported engines.';
-    return result;
 }
 
 function formatDescriptionLines(descriptionLines)
@@ -69,19 +32,6 @@ function formatDescriptionLines(descriptionLines)
     return formattedDescription;
 }
 
-function formatReport(report)
-{
-    let result;
-    if (report.length === 1)
-        [result] = report;
-    else
-    {
-        const lastEntry = report.pop();
-        result = `${report.join(', ')} and ${lastEntry}`;
-    }
-    return result;
-}
-
 function getAliasesOf(featureObj)
 {
     const aliases =
@@ -92,88 +42,127 @@ function getAliasesOf(featureObj)
     return aliases;
 }
 
-function getAvailabilityInfo(featureName, engineEntry)
+function getAvailabilityByRestriction(attributeName, engineEntry)
 {
-    const availabilityInfoCache =
-    engineEntry.availabilityInfoCache || (engineEntry.availabilityInfoCache = { __proto__: null });
     const availabilityInfo =
-    availabilityInfoCache[featureName] ||
-    (
-        availabilityInfoCache[featureName] =
-        calculateEngineSupportInfo
-        (engineEntry, engineFeatureObj => engineFeatureObj.includes(featureName))
-    );
-    return availabilityInfo;
-}
-
-function getEngineSupportInfo(attributeName, engineEntry)
-{
-    const result =
-    calculateEngineSupportInfo
+    calculateAvailabilityInfo
     (engineEntry, engineFeatureObj => attributeName in engineFeatureObj.attributes);
-    return result;
-}
-
-function getForcedStrictModeReport({ attributes: { 'forced-strict-mode': restriction } })
-{
-    const report = restriction !== undefined && reportAsList(restriction, getEngineSupportInfo);
-    return report;
-}
-
-function getWebWorkerReport({ attributes: { 'web-worker': restriction } })
-{
-    const report =
-    restriction !== undefined &&
-    (restriction === 'web-worker-restriction' || reportAsList(restriction, getEngineSupportInfo));
-    return report;
-}
-
-function reportAsList(property, filter)
-{
-    const availability =
-    ENGINE_REFS.map
-    (
-        engineRef =>
-        {
-            const engineEntry = ENGINE_ENTRIES[engineRef.index];
-            const availabilityInfo = filter(property, engineEntry);
-            const { firstAvail } = availabilityInfo;
-            if (firstAvail != null)
-            {
-                const { subIndex } = engineRef;
-                const getBySubIndex = obj => subIndex == null ? obj : obj[subIndex];
-                const { versions } = engineEntry;
-                const getDescription =
-                versionIndex =>
-                {
-                    const { description } = versions[versionIndex];
-                    const result = getBySubIndex(description);
-                    return result;
-                };
-                let availEntry = getBySubIndex(engineEntry.name);
-                if (firstAvail)
-                    availEntry += ` ${getDescription(firstAvail)}`;
-                const { firstUnavail } = availabilityInfo;
-                if (firstUnavail)
-                {
-                    const description = getDescription(firstUnavail);
-                    if (description)
-                        availEntry += ` before ${description.replace(/\+$/, '')}`;
-                }
-                return availEntry;
-            }
-        },
-    )
-    .filter(availEntry => availEntry != null);
-    return availability;
+    return availabilityInfo;
 }
 
 module.exports =
 () =>
 {
-    const aliasFormatter = new Intl.ListFormat('en', { type: 'disjunction' });
-    const engineSupportPolicyLink =
+    const AND_FORMATTER = new Intl.ListFormat('en');
+    const OR_FORMATTER  = new Intl.ListFormat('en', { type: 'disjunction' });
+
+    const ENGINE_ENTRIES = getEngineEntries();
+
+    const ENGINE_REFS =
+    [
+        { index: 0, subIndex: 0 },
+        { index: 0, subIndex: 1 },
+        { index: 1 },
+        { index: 2 },
+        { index: 3 },
+        { index: 0, subIndex: 2 },
+        { index: 4 },
+        { index: 5 },
+    ];
+
+    const ENGINE_SUPPORT_POLICY_LINK =
     'https://github.com/fasttime/JScrewIt#engine-support-policy';
+
+    function formatAvailability(availability, webWorkerReport, forcedStrictModeReport)
+    {
+        function appendNote(report, environmentDescription)
+        {
+            if (report)
+            {
+                result += ` This feature is not available ${environmentDescription}`;
+                if (report !== true)
+                    result += ` in ${formatReport(report)}`;
+                result += '.';
+            }
+        }
+
+        let result;
+        const { length } = availability;
+        if (length)
+        {
+            result = `Available in ${formatReport(availability)}.`;
+            appendNote(webWorkerReport, 'inside web workers');
+            appendNote(forcedStrictModeReport, 'when strict mode is enforced');
+        }
+        else
+            result = 'This feature is not available in any of the supported engines.';
+        return result;
+    }
+
+    function formatReport(report)
+    {
+        const formattedReport = AND_FORMATTER.format(report);
+        return formattedReport;
+    }
+
+    function getForcedStrictModeReport({ attributes: { 'forced-strict-mode': restriction } })
+    {
+        const report =
+        restriction !== undefined && reportAsList(restriction, getAvailabilityByRestriction);
+        return report;
+    }
+
+    function getWebWorkerReport({ attributes: { 'web-worker': restriction } })
+    {
+        const report =
+        restriction !== undefined &&
+        (
+            restriction === 'web-worker-restriction' ||
+            reportAsList(restriction, getAvailabilityByRestriction)
+        );
+        return report;
+    }
+
+    function reportAsList(property, filter)
+    {
+        const availability =
+        ENGINE_REFS.map
+        (
+            engineRef =>
+            {
+                const engineEntry = ENGINE_ENTRIES[engineRef.index];
+                const availabilityInfo = filter(property, engineEntry);
+                const { firstAvail } = availabilityInfo;
+                if (firstAvail != null)
+                {
+                    const { subIndex } = engineRef;
+                    const getBySubIndex = obj => subIndex == null ? obj : obj[subIndex];
+                    const { versions } = engineEntry;
+                    const getDescription =
+                    versionIndex =>
+                    {
+                        const { description } = versions[versionIndex];
+                        const result = getBySubIndex(description);
+                        return result;
+                    };
+                    let availEntry = getBySubIndex(engineEntry.name);
+                    if (firstAvail)
+                        availEntry += ` ${getDescription(firstAvail)}`;
+                    const { firstUnavail } = availabilityInfo;
+                    if (firstUnavail)
+                    {
+                        const description = getDescription(firstUnavail);
+                        if (description)
+                            availEntry += ` before ${description.replace(/\+$/, '')}`;
+                    }
+                    return availEntry;
+                }
+            },
+        )
+        .filter(availEntry => availEntry != null);
+        return availability;
+    }
+
     const compositeFeatureNames = [];
     const featureInfoList =
     Object.keys(Feature.ALL).sort().map
@@ -189,7 +178,7 @@ module.exports =
                 descriptionLines.push(...escapeMultiline(featureDescription));
                 if (elementary)
                 {
-                    const availability = reportAsList(featureName, getAvailabilityInfo);
+                    const availability = reportAsList(featureName, getAvailabilityByFeature);
                     const webWorkerReport = getWebWorkerReport(featureObj);
                     const forcedStrictModeReport = getForcedStrictModeReport(featureObj);
                     {
@@ -203,8 +192,7 @@ module.exports =
                     if ('unstable' in featureObj.attributes)
                     {
                         const formattedAliases =
-                        aliasFormatter
-                        .format(getAliasesOf(featureObj).map(alias => `\`${alias}\``));
+                        OR_FORMATTER.format(getAliasesOf(featureObj).map(alias => `\`${alias}\``));
                         const formattedFeatureName = `\`${featureName}\``;
                         descriptionLines.push
                         (
@@ -214,7 +202,7 @@ module.exports =
                             `Use ${formattedAliases} instead of ${formattedFeatureName} for long ` +
                             'term support.',
                             '@see',
-                            `[Engine Support Policy](${engineSupportPolicyLink})`,
+                            `[Engine Support Policy](${ENGINE_SUPPORT_POLICY_LINK})`,
                         );
                     }
                     compositeFeatureNames.push(featureName);
