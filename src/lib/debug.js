@@ -133,6 +133,12 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
             return entries;
         }
 
+        function getCharacters()
+        {
+            var chars = _Object_keys(CHARACTERS).sort();
+            return chars;
+        }
+
         function getComplexEntry(complex)
         {
             var entry = cloneEntry(COMPLEX[complex]);
@@ -211,6 +217,7 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
                 createToStringOptimizer:    createToStringOptimizer,
                 defineConstant:             defineConstant,
                 getCharacterEntries:        getCharacterEntries,
+                getCharacters:              getCharacters,
                 getComplexEntry:            getComplexEntry,
                 getComplexNames:            getComplexNames,
                 getConstantEntries:         getConstantEntries,

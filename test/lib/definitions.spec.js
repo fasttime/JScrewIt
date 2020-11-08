@@ -417,7 +417,15 @@ sidebar,
             var charCode;
             for (charCode = 0; charCode < 256; ++charCode)
                 testCharacter(charCode);
-            testCharacter(8734);    // ∞
+            JScrewIt.debug.getCharacters().forEach
+            (
+                function (char)
+                {
+                    var charCode = char.charCodeAt();
+                    if (charCode >= 256)
+                        testCharacter(charCode);
+                }
+            );
             testCharacter(0x010f);  // hex code ending in "f"
             testCharacter(0x01fa);  // hex code ending in "fa"
             testCharacter(0x0bbc);  // candidate for toString clustering encoded with "B"
