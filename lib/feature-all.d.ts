@@ -398,6 +398,15 @@ declare module 'jscrewit'
         LOCALE_INFINITY: ElementaryFeature;
 
         /**
+         * Features shared by all engines capable of localized number formatting, including output of Arabic digits, the Arabic decimal separator "٫", the first three letters of the Arabic string representation of NaN \("ليس"\), Persian digits and the Persian digit group separator "٬".
+         *
+         * @remarks
+         *
+         * Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, and Node.js 13+.
+         */
+        LOCALE_NUMERALS: ElementaryFeature;
+
+        /**
          * Existence of the name property for functions.
          *
          * @remarks
@@ -427,8 +436,11 @@ declare module 'jscrewit'
         /** Features available in Node.js 11. */
         NODE_11: PredefinedFeature;
 
-        /** Features available in Node.js 12 to 14. */
+        /** Features available in Node.js 12. */
         NODE_12: PredefinedFeature;
+
+        /** Features available in Node.js 13 and 14. */
+        NODE_13: PredefinedFeature;
 
         /** Features available in Node.js 15 or later. */
         NODE_15: PredefinedFeature;
@@ -526,6 +538,15 @@ declare module 'jscrewit'
         SELF_OBJ: ElementaryFeature;
 
         /**
+         * Support for the two-letter locale name "ar".
+         *
+         * @remarks
+         *
+         * Available in Firefox, Internet Explorer 11, Safari 10+, Android Browser 4.4, and Node.js 13+.
+         */
+        SHORT_LOCALES: ElementaryFeature;
+
+        /**
          * Existence of the global string status.
          *
          * @remarks
@@ -598,6 +619,7 @@ declare module 'jscrewit'
     | 'INCR_CHAR'
     | 'INTL'
     | 'LOCALE_INFINITY'
+    | 'LOCALE_NUMERALS'
     | 'NAME'
     | 'NODECONSTRUCTOR'
     | 'NO_FF_SRC'
@@ -606,6 +628,7 @@ declare module 'jscrewit'
     | 'NO_V8_SRC'
     | 'PLAIN_INTL'
     | 'SELF_OBJ'
+    | 'SHORT_LOCALES'
     | 'STATUS'
     | 'UNDEFINED'
     | 'V8_SRC'
@@ -634,6 +657,7 @@ declare module 'jscrewit'
     | 'NODE_10'
     | 'NODE_11'
     | 'NODE_12'
+    | 'NODE_13'
     | 'NODE_15'
     | 'NODE_4'
     | 'NODE_5'

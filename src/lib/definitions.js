@@ -6,7 +6,7 @@
 
 import { define, defineList, defineWithArrayLike }  from './definers';
 import { Feature }                                  from './features';
-import { createEmpty, noProto }                     from './obj-utils';
+import { _String, createEmpty, noProto }            from './obj-utils';
 import { LazySolution, SimpleSolution }             from './solution';
 import { SolutionType }                             from 'novem';
 
@@ -112,6 +112,7 @@ export var initReplaceStaticExpr;
     var INCR_CHAR                       = Feature.INCR_CHAR;
     var INTL                            = Feature.INTL;
     var LOCALE_INFINITY                 = Feature.LOCALE_INFINITY;
+    var LOCALE_NUMERALS                 = Feature.LOCALE_NUMERALS;
     var NAME                            = Feature.NAME;
     var NODECONSTRUCTOR                 = Feature.NODECONSTRUCTOR;
     var NO_FF_SRC                       = Feature.NO_FF_SRC;
@@ -120,6 +121,7 @@ export var initReplaceStaticExpr;
     var NO_V8_SRC                       = Feature.NO_V8_SRC;
     var PLAIN_INTL                      = Feature.PLAIN_INTL;
     var SELF_OBJ                        = Feature.SELF_OBJ;
+    var SHORT_LOCALES                   = Feature.SHORT_LOCALES;
     var STATUS                          = Feature.STATUS;
     var UNDEFINED                       = Feature.UNDEFINED;
     var V8_SRC                          = Feature.V8_SRC;
@@ -336,6 +338,29 @@ export var initReplaceStaticExpr;
         var definition = createCharAtDefinitionFH(expr, index, entries);
         var entry = defineWithArrayLike(definition, arguments, 2);
         return entry;
+    }
+
+    function defineLocalizedNumeral(locale, number, index)
+    {
+        var expr = '(' + number + ')[TO_LOCALE_STRING](' + locale + ')';
+        if (index != null)
+            expr += '[' + index + ']';
+        var entry = define(expr, LOCALE_NUMERALS);
+        return entry;
+    }
+
+    function defineLocalizedNumerals(locale, zeroCharCode)
+    {
+        var fromCharCode = _String.fromCharCode;
+        for (var digit = 0; digit <= 9; ++digit)
+        {
+            var char = fromCharCode(zeroCharCode + digit);
+            CHARACTERS[char] =
+            [
+                defineLocalizedNumeral(locale, digit),
+                defineCharDefault(),
+            ];
+        }
     }
 
     function defineSimple(simple, expr, type)
@@ -999,13 +1024,34 @@ export var initReplaceStaticExpr;
         [
             define('atob("undefinedundefined")[10]', ATOB),
         ],
+        'س':
+        [
+            defineLocalizedNumeral('LOCALE_AR', NaN, 2),
+            defineCharDefault(),
+        ],
+        'ل':
+        [
+            defineLocalizedNumeral('LOCALE_AR', NaN, 0),
+            defineCharDefault(),
+        ],
+        'ي':
+        [
+            defineLocalizedNumeral('LOCALE_AR', NaN, 1),
+            defineCharDefault(),
+        ],
+        '٫':
+        [
+            defineLocalizedNumeral('LOCALE_AR', 0.1, 1),
+            defineCharDefault(),
+        ],
+        '٬':
+        [
+            defineLocalizedNumeral('"fa"', 1000, 1),
+            defineCharDefault(),
+        ],
         '∞':
         [
-            define
-            (
-                { expr: 'Infinity.toLocaleString()', optimize: true },
-                LOCALE_INFINITY
-            ),
+            define('Infinity[TO_LOCALE_STRING]()', LOCALE_INFINITY),
             defineCharDefault(),
         ],
     });
@@ -1229,6 +1275,11 @@ export var initReplaceStaticExpr;
                 FROM_CODE_POINT
             ),
         ],
+        LOCALE_AR:
+        [
+            define({ expr: '"ar-td"', solutionType: SolutionType.COMBINED_STRING }),
+            define({ expr: '"ar"', solutionType: SolutionType.COMBINED_STRING }, SHORT_LOCALES),
+        ],
         PLAIN_OBJECT:
         [
             define('Function("return{}")()'),
@@ -1242,6 +1293,17 @@ export var initReplaceStaticExpr;
         [
             define({ expr: '"slice"', solutionType: SolutionType.COMBINED_STRING }),
             define({ expr: '"substr"', solutionType: SolutionType.COMBINED_STRING }),
+        ],
+        TO_LOCALE_STRING:
+        [
+            define
+            (
+                {
+                    expr: '"toLocaleString"',
+                    optimize: true,
+                    solutionType: SolutionType.COMBINED_STRING,
+                }
+            ),
         ],
         TO_STRING:
         [
@@ -1733,5 +1795,9 @@ export var initReplaceStaticExpr;
         var expr = replaceDigit(digit);
         CHARACTERS[digit] = { expr: expr, solutionType: SolutionType.WEAK_ALGEBRAIC };
     }
+
+    // Define localized digits
+    defineLocalizedNumerals('LOCALE_AR', 0x0660);
+    defineLocalizedNumerals('"fa"', 0x6f0);
 }
 )();

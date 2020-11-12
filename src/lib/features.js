@@ -768,6 +768,38 @@ export var validMaskFromArrayOrStringOrFeature;
                 return available;
             },
         },
+        LOCALE_NUMERALS:
+        {
+            description:
+            'Features shared by all engines capable of localized number formatting, including ' +
+            'output of Arabic digits, the Arabic decimal separator "٫", the first three letters ' +
+            'of the Arabic string representation of NaN ("ليس"), Persian digits and the Persian ' +
+            'digit group separator "٬".',
+            check:
+            function ()
+            {
+                function checkNumeral(locale, number, pattern)
+                {
+                    var localizedNumeral = number.toLocaleString(locale);
+                    var returnValue = matches(localizedNumeral, pattern);
+                    return returnValue;
+                }
+
+                function matches(str, pattern)
+                {
+                    var returnValue = str.slice(0, pattern.length) === pattern;
+                    return returnValue;
+                }
+
+                var available =
+                Number.prototype.toLocaleString &&
+                checkNumeral('ar-td', 890.12, '٨٩٠٫١٢') &&
+                checkNumeral('ar-td', 345.67, '٣٤٥٫٦٧') &&
+                checkNumeral('ar-td', NaN, 'ليس') &&
+                checkNumeral('fa', 9876543210, '۹٬۸۷۶٬۵۴۳٬۲۱۰');
+                return available;
+            },
+        },
         NAME:
         {
             description: 'Existence of the name property for functions.',
@@ -879,6 +911,28 @@ export var validMaskFromArrayOrStringOrFeature;
             ),
             attributes: { 'web-worker': 'safari-bug-21820506' },
         },
+        SHORT_LOCALES:
+        {
+            description: 'Support for the two-letter locale name "ar".',
+            check:
+            function ()
+            {
+                function compareLocalized(number)
+                {
+                    var localizedNumeral = number.toLocaleString('ar');
+                    var returnValue =
+                    localizedNumeral === number.toLocaleString('ar-td') &&
+                    localizedNumeral !== number.toLocaleString();
+                    return returnValue;
+                }
+
+                var available =
+                Number.prototype.toLocaleString &&
+                compareLocalized(9876430.125) &&
+                compareLocalized(NaN);
+                return available;
+            },
+        },
         STATUS:
         {
             description: 'Existence of the global string status.',
@@ -974,6 +1028,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
+                'LOCALE_NUMERALS',
                 'NAME',
                 'NO_IE_SRC',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -1038,8 +1093,10 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
+                'LOCALE_NUMERALS',
                 'NAME',
                 'PLAIN_INTL',
+                'SHORT_LOCALES',
                 'STATUS',
                 'UNDEFINED',
                 'V8_SRC',
@@ -1072,6 +1129,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
+                'LOCALE_NUMERALS',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
@@ -1113,6 +1171,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
+                'LOCALE_NUMERALS',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'STATUS',
@@ -1164,9 +1223,11 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
+                'LOCALE_NUMERALS',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
+                'SHORT_LOCALES',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW',
@@ -1233,7 +1294,9 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'IE_SRC',
                 'INCR_CHAR',
+                'LOCALE_NUMERALS',
                 'PLAIN_INTL',
+                'SHORT_LOCALES',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW',
@@ -1257,7 +1320,9 @@ export var validMaskFromArrayOrStringOrFeature;
                 'IE_SRC',
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
+                'LOCALE_NUMERALS',
                 'PLAIN_INTL',
+                'SHORT_LOCALES',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW',
@@ -1385,7 +1450,7 @@ export var validMaskFromArrayOrStringOrFeature;
         },
         NODE_12:
         {
-            engine: 'Node.js 12 to 14',
+            engine: 'Node.js 12',
             includes:
             [
                 'ARROW',
@@ -1402,6 +1467,32 @@ export var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
+                'UNDEFINED',
+                'V8_SRC',
+            ],
+            attributes: { 'char-increment-restriction': null },
+        },
+        NODE_13:
+        {
+            engine: 'Node.js 13 and 14',
+            includes:
+            [
+                'ARROW',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'FILL',
+                'FLAT',
+                'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
+                'GMT',
+                'INCR_CHAR',
+                'LOCALE_INFINITY',
+                'LOCALE_NUMERALS',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'PLAIN_INTL',
+                'SHORT_LOCALES',
                 'UNDEFINED',
                 'V8_SRC',
             ],
@@ -1424,8 +1515,10 @@ export var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
+                'LOCALE_NUMERALS',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'SHORT_LOCALES',
                 'UNDEFINED',
                 'V8_SRC',
             ],
@@ -1549,9 +1642,11 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
+                'LOCALE_NUMERALS',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
+                'SHORT_LOCALES',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW',
@@ -1585,9 +1680,11 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
+                'LOCALE_NUMERALS',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
+                'SHORT_LOCALES',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW',

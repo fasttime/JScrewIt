@@ -106,6 +106,7 @@ exports.getEngineEntries =
                 { description: '10+', feature: 'NODE_10' },
                 { description: '11+', feature: 'NODE_11' },
                 { description: '12+', feature: 'NODE_12' },
+                { description: '13+', feature: 'NODE_13' },
                 { description: '15+', feature: 'NODE_15' },
             ],
         },

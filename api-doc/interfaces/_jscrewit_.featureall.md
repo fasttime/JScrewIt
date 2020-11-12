@@ -61,6 +61,7 @@
 * [INCR\_CHAR](_jscrewit_.featureall.md#incr_char)
 * [INTL](_jscrewit_.featureall.md#intl)
 * [LOCALE\_INFINITY](_jscrewit_.featureall.md#locale_infinity)
+* [LOCALE\_NUMERALS](_jscrewit_.featureall.md#locale_numerals)
 * [NAME](_jscrewit_.featureall.md#name)
 * [NODECONSTRUCTOR](_jscrewit_.featureall.md#nodeconstructor)
 * [NODE\_0\_10](_jscrewit_.featureall.md#node_0_10)
@@ -68,6 +69,7 @@
 * [NODE\_10](_jscrewit_.featureall.md#node_10)
 * [NODE\_11](_jscrewit_.featureall.md#node_11)
 * [NODE\_12](_jscrewit_.featureall.md#node_12)
+* [NODE\_13](_jscrewit_.featureall.md#node_13)
 * [NODE\_15](_jscrewit_.featureall.md#node_15)
 * [NODE\_4](_jscrewit_.featureall.md#node_4)
 * [NODE\_5](_jscrewit_.featureall.md#node_5)
@@ -85,6 +87,7 @@
 * [SAFARI\_9](_jscrewit_.featureall.md#safari_9)
 * [SELF](_jscrewit_.featureall.md#self)
 * [SELF\_OBJ](_jscrewit_.featureall.md#self_obj)
+* [SHORT\_LOCALES](_jscrewit_.featureall.md#short_locales)
 * [STATUS](_jscrewit_.featureall.md#status)
 * [UNDEFINED](_jscrewit_.featureall.md#undefined)
 * [V8\_SRC](_jscrewit_.featureall.md#v8_src)
@@ -650,6 +653,18 @@ Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 1
 
 ___
 
+### LOCALE\_NUMERALS
+
+•  **LOCALE\_NUMERALS**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
+
+Features shared by all engines capable of localized number formatting, including output of Arabic digits, the Arabic decimal separator "٫", the first three letters of the Arabic string representation of NaN \("ليس"\), Persian digits and the Persian digit group separator "٬".
+
+**`remarks`** 
+
+Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, and Node.js 13+.
+
+___
+
 ### NAME
 
 •  **NAME**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
@@ -710,7 +725,15 @@ ___
 
 •  **NODE\_12**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
-Features available in Node.js 12 to 14.
+Features available in Node.js 12.
+
+___
+
+### NODE\_13
+
+•  **NODE\_13**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
+
+Features available in Node.js 13 and 14.
 
 ___
 
@@ -877,6 +900,18 @@ Existence of the global object self whose string representation starts with "\[o
 **`remarks`** 
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.
+
+___
+
+### SHORT\_LOCALES
+
+•  **SHORT\_LOCALES**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
+
+Support for the two-letter locale name "ar".
+
+**`remarks`** 
+
+Available in Firefox, Internet Explorer 11, Safari 10+, Android Browser 4.4, and Node.js 13+.
 
 ___
 

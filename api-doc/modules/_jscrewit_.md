@@ -49,7 +49,7 @@ ___
 
 ### ElementaryFeatureName
 
-Ƭ  **ElementaryFeatureName**: \"ANY\_DOCUMENT\" \| \"ANY\_WINDOW\" \| \"ARRAY\_ITERATOR\" \| \"ARROW\" \| \"ATOB\" \| \"BARPROP\" \| \"CAPITAL\_HTML\" \| \"CONSOLE\" \| \"DOCUMENT\" \| \"DOMWINDOW\" \| \"ESC\_HTML\_ALL\" \| \"ESC\_HTML\_QUOT\" \| \"ESC\_HTML\_QUOT\_ONLY\" \| \"ESC\_REGEXP\_LF\" \| \"ESC\_REGEXP\_SLASH\" \| \"EXTERNAL\" \| \"FF\_SRC\" \| \"FILL\" \| \"FLAT\" \| \"FROM\_CODE\_POINT\" \| \"FUNCTION\_19\_LF\" \| \"FUNCTION\_22\_LF\" \| \"GMT\" \| \"HISTORY\" \| \"HTMLAUDIOELEMENT\" \| \"HTMLDOCUMENT\" \| \"IE\_SRC\" \| \"INCR\_CHAR\" \| \"INTL\" \| \"LOCALE\_INFINITY\" \| \"NAME\" \| \"NODECONSTRUCTOR\" \| \"NO\_FF\_SRC\" \| \"NO\_IE\_SRC\" \| \"NO\_OLD\_SAFARI\_ARRAY\_ITERATOR\" \| \"NO\_V8\_SRC\" \| \"PLAIN\_INTL\" \| \"SELF\_OBJ\" \| \"STATUS\" \| \"UNDEFINED\" \| \"V8\_SRC\" \| \"WINDOW\"
+Ƭ  **ElementaryFeatureName**: \"ANY\_DOCUMENT\" \| \"ANY\_WINDOW\" \| \"ARRAY\_ITERATOR\" \| \"ARROW\" \| \"ATOB\" \| \"BARPROP\" \| \"CAPITAL\_HTML\" \| \"CONSOLE\" \| \"DOCUMENT\" \| \"DOMWINDOW\" \| \"ESC\_HTML\_ALL\" \| \"ESC\_HTML\_QUOT\" \| \"ESC\_HTML\_QUOT\_ONLY\" \| \"ESC\_REGEXP\_LF\" \| \"ESC\_REGEXP\_SLASH\" \| \"EXTERNAL\" \| \"FF\_SRC\" \| \"FILL\" \| \"FLAT\" \| \"FROM\_CODE\_POINT\" \| \"FUNCTION\_19\_LF\" \| \"FUNCTION\_22\_LF\" \| \"GMT\" \| \"HISTORY\" \| \"HTMLAUDIOELEMENT\" \| \"HTMLDOCUMENT\" \| \"IE\_SRC\" \| \"INCR\_CHAR\" \| \"INTL\" \| \"LOCALE\_INFINITY\" \| \"LOCALE\_NUMERALS\" \| \"NAME\" \| \"NODECONSTRUCTOR\" \| \"NO\_FF\_SRC\" \| \"NO\_IE\_SRC\" \| \"NO\_OLD\_SAFARI\_ARRAY\_ITERATOR\" \| \"NO\_V8\_SRC\" \| \"PLAIN\_INTL\" \| \"SELF\_OBJ\" \| \"SHORT\_LOCALES\" \| \"STATUS\" \| \"UNDEFINED\" \| \"V8\_SRC\" \| \"WINDOW\"
 
 Name of an elementary feature.
 
@@ -70,7 +70,7 @@ ___
 
 ### PredefinedFeatureName
 
-Ƭ  **PredefinedFeatureName**: [ElementaryFeatureName](_jscrewit_.md#elementaryfeaturename) \| \"ANDRO\_4\_0\" \| \"ANDRO\_4\_1\" \| \"ANDRO\_4\_4\" \| \"AUTO\" \| \"BROWSER\" \| \"CHROME\_73\" \| \"CHROME\_86\" \| \"COMPACT\" \| \"DEFAULT\" \| \"FF\_78\" \| \"IE\_10\" \| \"IE\_11\" \| \"IE\_11\_WIN\_10\" \| \"IE\_9\" \| \"NODE\_0\_10\" \| \"NODE\_0\_12\" \| \"NODE\_10\" \| \"NODE\_11\" \| \"NODE\_12\" \| \"NODE\_15\" \| \"NODE\_4\" \| \"NODE\_5\" \| \"SAFARI\_10\" \| \"SAFARI\_12\" \| \"SAFARI\_7\_0\" \| \"SAFARI\_7\_1\" \| \"SAFARI\_9\"
+Ƭ  **PredefinedFeatureName**: [ElementaryFeatureName](_jscrewit_.md#elementaryfeaturename) \| \"ANDRO\_4\_0\" \| \"ANDRO\_4\_1\" \| \"ANDRO\_4\_4\" \| \"AUTO\" \| \"BROWSER\" \| \"CHROME\_73\" \| \"CHROME\_86\" \| \"COMPACT\" \| \"DEFAULT\" \| \"FF\_78\" \| \"IE\_10\" \| \"IE\_11\" \| \"IE\_11\_WIN\_10\" \| \"IE\_9\" \| \"NODE\_0\_10\" \| \"NODE\_0\_12\" \| \"NODE\_10\" \| \"NODE\_11\" \| \"NODE\_12\" \| \"NODE\_13\" \| \"NODE\_15\" \| \"NODE\_4\" \| \"NODE\_5\" \| \"SAFARI\_10\" \| \"SAFARI\_12\" \| \"SAFARI\_7\_0\" \| \"SAFARI\_7\_1\" \| \"SAFARI\_9\"
 
 Name of a predefined feature.
 
