@@ -4,6 +4,10 @@
 
 (function (global)
 {
+    // In Android Browser some objects without a prototype don't work well with arbitrary property
+    // names; objects with an empty prototype are fine.
+    var EMPTY_PROTO = Object.freeze(Object.create(null));
+
     function createBackupMap()
     {
         var backupMap = Object.create(null);
@@ -12,7 +16,7 @@
 
     function emuDo(emuFeatures, callback)
     {
-        var context = Object.create(null);
+        var context = Object.create(EMPTY_PROTO);
         try
         {
             emuFeatures.forEach
