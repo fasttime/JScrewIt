@@ -54,6 +54,29 @@
         return result;
     }
 
+    function formatNumber(number, locale)
+    {
+        var returnValue;
+        switch (locale)
+        {
+        case 'ar-td':
+            number = Number(number);
+            if (isNaN(number))
+                returnValue = 'ليس رقم';
+            else
+                returnValue = rebaseDigits(String(number), 0x660).replace(/\./g, '٫');
+            return returnValue;
+        case 'fa':
+            number = Number(number);
+            if (!isNaN(number))
+            {
+                returnValue =
+                rebaseDigits(String(number).replace(/\d(?=(?:\d{3})+\b)/g, '$&٬'), 0x06f0);
+            }
+            return returnValue;
+        }
+    }
+
     function fromCodePoint()
     {
         var codeUnits = [];
@@ -227,7 +250,7 @@
                 'Function',
                 function ()
                 {
-                    var str = context.Function.toString.call(this);
+                    var str = context['Function#toString'].function.call(this);
                     if (/function anonymous\(\n?\) {\s+}/.test(str))
                         return replacement;
                 }
@@ -284,7 +307,7 @@
                 var adapter =
                 function ()
                 {
-                    var str = context.Function.toString.call(this);
+                    var str = context['Function#toString'].function.call(this);
                     var match = /^\n?(function \w+\(\) \{)\s+\[native code]\s+}\n?$/.exec(str);
                     if (match)
                     {
@@ -350,42 +373,63 @@
         Object.defineProperty(obj, name, descriptor);
     }
 
-    function overrideToString(context, typeName)
+    function rebaseDigits(str, charCode0)
     {
-        var toString = global[typeName].prototype.toString;
-        var adapters = [];
-        context[typeName] = { adapters: adapters, toString: toString };
-        var callToString =
-        function (target)
-        {
-            var str;
-            for (var index = adapters.length; index-- > 0;)
+        var returnValue =
+        str.replace
+        (
+            /\d/g,
+            function (digit)
             {
-                var adapter = adapters[index];
-                str = adapter.call(target);
-                if (str !== undefined)
-                    return str;
+                var charCode = +digit + charCode0;
+                var char = String.fromCharCode(charCode);
+                return char;
             }
-            str = toString.call(target);
-            return str;
-        };
-        var value =
-        function ()
+        );
+        return returnValue;
+    }
+
+    function registerMethodAdapter(context, typeName, methodName, adapter)
+    {
+        var contextKey = typeName + '#' + methodName;
+        if (!context[contextKey])
         {
-            var str = callToString(this);
-            return str;
-        };
-        // The Internet Explorer 9 implementation of the call method sets the global object as this
-        // when no arguments are specified.
-        value.call = callToString;
-        override(context, typeName + '.prototype.toString', { value: value });
+            var fn = global[typeName].prototype[methodName];
+            var adapters = [];
+            context[contextKey] = { adapters: adapters, function: fn };
+            var callMethod =
+            function ()
+            {
+                var returnValue;
+                for (var index = adapters.length; index-- > 0;)
+                {
+                    var adapter = adapters[index];
+                    returnValue = Function.prototype.call.apply(adapter, arguments);
+                    if (returnValue !== undefined)
+                        return returnValue;
+                }
+                returnValue = Function.prototype.call.apply(fn, arguments);
+                return returnValue;
+            };
+            var value =
+            function ()
+            {
+                var args = [this];
+                Array.prototype.push.apply(args, arguments);
+                var returnValue = callMethod.apply(null, args);
+                return returnValue;
+            };
+            // The Internet Explorer 9 implementation of the call method sets the global object as
+            // this when no arguments are specified.
+            value.call = callMethod;
+            override(context, typeName + '.prototype.' + methodName, { value: value });
+        }
+        context[contextKey].adapters.push(adapter);
     }
 
     function registerToStringAdapter(context, typeName, adapter)
     {
-        if (!context[typeName])
-            overrideToString(context, typeName);
-        context[typeName].adapters.push(adapter);
+        registerMethodAdapter(context, typeName, 'toString', adapter);
     }
 
     function replaceArrowFunctions(expr)
@@ -746,6 +790,21 @@
             };
             override(this, 'Number.prototype.toLocaleString', { value: value });
         },
+        LOCALE_NUMERALS:
+        function ()
+        {
+            registerMethodAdapter
+            (
+                this,
+                'Number',
+                'toLocaleString',
+                function (locale)
+                {
+                    var returnValue = formatNumber(this, locale);
+                    return returnValue;
+                }
+            );
+        },
         NAME:
         function ()
         {
@@ -786,6 +845,23 @@
             override(this, 'Intl', { value: { } });
         },
         SELF_OBJ: makeEmuFeatureSelf('[object Object]', /^\[object /),
+        SHORT_LOCALES:
+        function ()
+        {
+            registerMethodAdapter
+            (
+                this,
+                'Number',
+                'toLocaleString',
+                function (locale)
+                {
+                    if (locale === 'ar')
+                        locale = 'ar-td';
+                    var returnValue = formatNumber(this, locale);
+                    return returnValue;
+                }
+            );
+        },
         STATUS:
         function ()
         {
