@@ -70,7 +70,7 @@ ___
 
 ### PredefinedFeatureName
 
-Ƭ  **PredefinedFeatureName**: [ElementaryFeatureName](_jscrewit_.md#elementaryfeaturename) \| \"ANDRO\_4\_0\" \| \"ANDRO\_4\_1\" \| \"ANDRO\_4\_4\" \| \"AUTO\" \| \"BROWSER\" \| \"CHROME\_73\" \| \"CHROME\_86\" \| \"COMPACT\" \| \"DEFAULT\" \| \"FF\_78\" \| \"IE\_10\" \| \"IE\_11\" \| \"IE\_11\_WIN\_10\" \| \"IE\_9\" \| \"NODE\_0\_10\" \| \"NODE\_0\_12\" \| \"NODE\_10\" \| \"NODE\_11\" \| \"NODE\_12\" \| \"NODE\_13\" \| \"NODE\_15\" \| \"NODE\_4\" \| \"NODE\_5\" \| \"SAFARI\_10\" \| \"SAFARI\_12\" \| \"SAFARI\_7\_0\" \| \"SAFARI\_7\_1\" \| \"SAFARI\_9\"
+Ƭ  **PredefinedFeatureName**: [ElementaryFeatureName](_jscrewit_.md#elementaryfeaturename) \| \"ANDRO\_4\_0\" \| \"ANDRO\_4\_1\" \| \"ANDRO\_4\_4\" \| \"AUTO\" \| \"BROWSER\" \| \"CHROME\_73\" \| \"CHROME\_86\" \| \"COMPACT\" \| \"DEFAULT\" \| \"FF\_78\" \| \"IE\_10\" \| \"IE\_11\" \| \"IE\_11\_WIN\_10\" \| \"IE\_9\" \| \"NODE\_0\_10\" \| \"NODE\_0\_12\" \| \"NODE\_10\" \| \"NODE\_11\" \| \"NODE\_12\" \| \"NODE\_13\" \| \"NODE\_15\" \| \"NODE\_4\" \| \"NODE\_5\" \| \"SAFARI\_10\" \| \"SAFARI\_12\" \| \"SAFARI\_14\_0\_1\" \| \"SAFARI\_7\_0\" \| \"SAFARI\_7\_1\" \| \"SAFARI\_9\"
 
 Name of a predefined feature.
 

@@ -49,7 +49,8 @@ export default function createEngineSelectionBox()
                 { featureName: 'SAFARI_7_1', number: '7.1–8' },
                 { featureName: 'SAFARI_9', number: '9' },
                 { featureName: 'SAFARI_10', number: '10–11' },
-                { featureName: 'SAFARI_12', number: '12+' },
+                { featureName: 'SAFARI_12', number: '12–14.0.0' },
+                { featureName: 'SAFARI_14_0_1', number: '14.0.1+' },
             ],
         },
         {

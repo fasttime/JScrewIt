@@ -1660,7 +1660,7 @@ export var validMaskFromArrayOrStringOrFeature;
         },
         SAFARI_12:
         {
-            engine: 'Safari 12 or later',
+            engine: 'Safari 12 to 14.0.0',
             includes:
             [
                 'ARROW',
@@ -1684,6 +1684,39 @@ export var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
+                'SHORT_LOCALES',
+                'STATUS',
+                'UNDEFINED',
+                'WINDOW',
+            ],
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
+        },
+        SAFARI_14_0_1:
+        {
+            engine: 'Safari 14.0.1 or later',
+            includes:
+            [
+                'ARROW',
+                'ATOB',
+                'BARPROP',
+                'CONSOLE',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'FF_SRC',
+                'FILL',
+                'FLAT',
+                'FROM_CODE_POINT',
+                'FUNCTION_22_LF',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
+                'LOCALE_NUMERALS',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'SHORT_LOCALES',
                 'STATUS',
                 'UNDEFINED',

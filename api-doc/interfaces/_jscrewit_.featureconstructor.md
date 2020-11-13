@@ -127,6 +127,7 @@ Name | Type |
 * [SAFARI](_jscrewit_.featureconstructor.md#safari)
 * [SAFARI\_10](_jscrewit_.featureconstructor.md#safari_10)
 * [SAFARI\_12](_jscrewit_.featureconstructor.md#safari_12)
+* [SAFARI\_14\_0\_1](_jscrewit_.featureconstructor.md#safari_14_0_1)
 * [SAFARI\_7\_0](_jscrewit_.featureconstructor.md#safari_7_0)
 * [SAFARI\_7\_1](_jscrewit_.featureconstructor.md#safari_7_1)
 * [SAFARI\_8](_jscrewit_.featureconstructor.md#safari_8)
@@ -1078,7 +1079,7 @@ Existence of the global object Intl having the string representation "\[object O
 
 **`remarks`** 
 
-Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+, Opera before 72, Android Browser 4.4, and Node.js 0.12+ before 15.
+Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+ before 14.0.1, Opera before 72, Android Browser 4.4, and Node.js 0.12+ before 15.
 
 ___
 
@@ -1110,7 +1111,17 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI_12](_jscrewit_.featureall.md#safari_12)*
 
-Features available in Safari 12 or later.
+Features available in Safari 12 to 14.0.0.
+
+___
+
+### SAFARI\_14\_0\_1
+
+•  **SAFARI\_14\_0\_1**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
+
+*Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI_14_0_1](_jscrewit_.featureall.md#safari_14_0_1)*
+
+Features available in Safari 14.0.1 or later.
 
 ___
 

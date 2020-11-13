@@ -496,7 +496,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+, Opera before 72, Android Browser 4.4, and Node.js 0.12+ before 15.
+         * Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+ before 14.0.1, Opera before 72, Android Browser 4.4, and Node.js 0.12+ before 15.
          */
         PLAIN_INTL: ElementaryFeature;
 
@@ -510,8 +510,11 @@ declare module 'jscrewit'
         /** Features available in Safari 10 or later. */
         SAFARI_10: PredefinedFeature;
 
-        /** Features available in Safari 12 or later. */
+        /** Features available in Safari 12 to 14.0.0. */
         SAFARI_12: PredefinedFeature;
+
+        /** Features available in Safari 14.0.1 or later. */
+        SAFARI_14_0_1: PredefinedFeature;
 
         /** Features available in Safari 7.0. */
         SAFARI_7_0: PredefinedFeature;
@@ -663,6 +666,7 @@ declare module 'jscrewit'
     | 'NODE_5'
     | 'SAFARI_10'
     | 'SAFARI_12'
+    | 'SAFARI_14_0_1'
     | 'SAFARI_7_0'
     | 'SAFARI_7_1'
     | 'SAFARI_9'

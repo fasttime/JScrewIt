@@ -84,6 +84,7 @@ exports.getEngineEntries =
                 { description: '9+', feature: 'SAFARI_9' },
                 { description: '10+', feature: 'SAFARI_10' },
                 { description: '12+', feature: 'SAFARI_12' },
+                { description: '14.0.1+', feature: 'SAFARI_14_0_1' },
             ],
         },
         {
