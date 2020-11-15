@@ -578,6 +578,14 @@ sidebar,
                         this.toMatch(/^from(?:CharCode|CodePoint)$/);
                     },
                 },
+                LOCALE_AR:
+                {
+                    validator:
+                    function ()
+                    {
+                        this.toMatch(/^ar(-td)?$/);
+                    },
+                },
                 PLAIN_OBJECT:
                 {
                     validator:
