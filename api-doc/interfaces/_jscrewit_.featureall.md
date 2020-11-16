@@ -832,7 +832,7 @@ ___
 
 Features available in the current stable version of Safari.
 
-An alias for `SAFARI_12`.
+An alias for `SAFARI_14_0_1`.
 
 ___
 

@@ -278,14 +278,10 @@ function getSolutionBookMap(load = true)
 
 function getWantedCharacters()
 {
+    const { getCharacters } = require('..').debug;
+
     const solutionBookMap = getSolutionBookMap();
-    const wantedChars = [];
-    for (let charCode = 0; charCode <= 0xffff; ++charCode)
-    {
-        const char = String.fromCharCode(charCode);
-        if (isCharacterDefined(char) && !solutionBookMap.has(char))
-            wantedChars.push(char);
-    }
+    const wantedChars = getCharacters().filter(char => !solutionBookMap.has(char));
     return wantedChars;
 }
 

@@ -152,52 +152,44 @@ export var validMaskFromArrayOrStringOrFeature;
         {
             var description;
             var info = FEATURE_INFOS[name];
-            if (typeof info === 'string')
+            var engine = info.engine;
+            if (engine == null)
+                description = info.description;
+            else
+                description = createEngineFeatureDescription(engine);
+            var aliasFor = info.aliasFor;
+            if (aliasFor != null)
             {
-                mask = completeFeature(info);
-                featureObj = ALL[info];
-                description = DESCRIPTION_MAP[info];
+                mask = completeFeature(aliasFor);
+                featureObj = ALL[aliasFor];
+                if (description == null)
+                    description = DESCRIPTION_MAP[aliasFor];
             }
             else
             {
-                var engine = info.engine;
-                if (engine == null)
-                    description = info.description;
-                else
-                    description = createEngineFeatureDescription(engine);
-                var aliasFor = info.aliasFor;
-                if (aliasFor != null)
+                var check = info.check;
+                if (check)
                 {
-                    mask = completeFeature(aliasFor);
-                    featureObj = ALL[aliasFor];
+                    mask = maskWithBit(bitIndex++);
+                    if (check())
+                        autoMask = maskUnion(autoMask, mask);
+                    check = wrapCheck(check);
                 }
                 else
-                {
-                    var check = info.check;
-                    if (check)
+                    mask = maskNew();
+                var includes = includesMap[name] = info.includes || [];
+                includes.forEach
+                (
+                    function (include)
                     {
-                        mask = maskWithBit(bitIndex++);
-                        if (check())
-                            autoMask = maskUnion(autoMask, mask);
-                        check = wrapCheck(check);
+                        var includeMask = completeFeature(include);
+                        mask = maskUnion(mask, includeMask);
                     }
-                    else
-                        mask = maskNew();
-                    var includes = includesMap[name] = info.includes || [];
-                    includes.forEach
-                    (
-                        function (include)
-                        {
-                            var includeMask = completeFeature(include);
-                            mask = maskUnion(mask, includeMask);
-                        }
-                    );
-                    var elementary = check || info.excludes;
-                    featureObj =
-                    createFeature(name, mask, check, engine, info.attributes, elementary);
-                    if (elementary)
-                        ELEMENTARY.push(featureObj);
-                }
+                );
+                var elementary = check || info.excludes;
+                featureObj = createFeature(name, mask, check, engine, info.attributes, elementary);
+                if (elementary)
+                    ELEMENTARY.push(featureObj);
             }
             registerFeature(name, description, featureObj);
         }
@@ -894,7 +886,7 @@ export var validMaskFromArrayOrStringOrFeature;
             },
             includes: ['INTL'],
         },
-        SELF: 'ANY_WINDOW',
+        SELF: { aliasFor: 'ANY_WINDOW' },
         SELF_OBJ:
         {
             description:
@@ -1586,7 +1578,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'web-worker-restriction':       null,
             },
         },
-        SAFARI_8: 'SAFARI_7_1',
+        SAFARI_8: { aliasFor: 'SAFARI_7_1' },
         SAFARI_9:
         {
             engine: 'Safari 9',
@@ -1653,11 +1645,6 @@ export var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        SAFARI:
-        {
-            engine: 'the current stable version of Safari',
-            aliasFor: 'SAFARI_12',
-        },
         SAFARI_12:
         {
             engine: 'Safari 12 to 14.0.0',
@@ -1690,6 +1677,11 @@ export var validMaskFromArrayOrStringOrFeature;
                 'WINDOW',
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
+        },
+        SAFARI:
+        {
+            engine: 'the current stable version of Safari',
+            aliasFor: 'SAFARI_14_0_1',
         },
         SAFARI_14_0_1:
         {

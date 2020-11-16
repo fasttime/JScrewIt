@@ -592,8 +592,8 @@ export var initReplaceStaticExpr;
             define('([][SLICE_OR_FLAT].call("false") + [])[1]'),
             define({ expr: '[[]].concat([[]])', solutionType: SolutionType.OBJECT }),
         ],
-        '-': '(+".0000001" + [])[2]',
-        '.': '(+"11e20" + [])[1]',
+        '-': '(.0000001 + [])[2]',
+        '.': '(11e20 + [])[1]',
         '/':
         [
             define('"0false".italics()[10]'),

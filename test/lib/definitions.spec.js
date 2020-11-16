@@ -131,6 +131,51 @@ sidebar,
             );
         }
 
+        function testEntry(entry, index)
+        {
+            var featureObj = getEntryFeature(entry);
+            if (Feature.DEFAULT.includes(featureObj))
+                defaultEntryFound = true;
+            if (Feature.ATOB.includes(featureObj))
+                atobEntryFound = true;
+            emuIt
+            (
+                '(definition ' + index + ')',
+                featureObj,
+                function ()
+                {
+                    var definition = entry.definition;
+                    if (typeof definition === 'function')
+                    {
+                        var name = getFunctionName(definition);
+                        switch (name)
+                        {
+                        case 'commaDefinition':
+                        case 'charDefaultDefinition':
+                            break;
+                        case 'definitionFB':
+                            verifyFEntry(entry, FB_DISPOSITIONS, FB_VARIETIES);
+                            return;
+                        case 'definitionFH':
+                            verifyFEntry(entry, FH_DISPOSITIONS, FH_VARIETIES);
+                            return;
+                        default:
+                            expect().fail
+                            (
+                                function ()
+                                {
+                                    var message = 'Unexpected definition function name ' + name;
+                                    return message;
+                                }
+                            );
+                        }
+                    }
+                    var solution = decodeEntry(entry, char);
+                    verifyStringSolution(solution, char, this.test.emuFeatureNames);
+                }
+            );
+        }
+
         function verifyFEntry(entry, dispositions, varieties)
         {
             var entryFeatureObj = getEntryFeature(entry);
@@ -232,92 +277,36 @@ sidebar,
         };
 
         var char = String.fromCharCode(charCode);
-        var desc =
-        charCode >= 0x7f && charCode <= 0xa0 || charCode === 0xad ?
-        '"\\u00' + charCode.toString(16) + '"' : JSON.stringify(char);
-        describe
-        (
-            desc,
-            function ()
-            {
-                function testEntry(entry, index)
+        var entries = JScrewIt.debug.getCharacterEntries(char);
+        if (entries)
+        {
+            var defaultEntryFound = false;
+            var atobEntryFound = false;
+            if (entries)
+                entries.forEach(testEntry);
+            if (!defaultEntryFound)
+                testDefault();
+            if (!atobEntryFound)
+                testAtob();
+        }
+        else
+        {
+            testDefault();
+            testAtob();
+        }
+        if (SPECIAL_CASES_MAP.hasOwnProperty(char))
+        {
+            var specialCases = SPECIAL_CASES_MAP[char];
+            var descriptions = Object.keys(specialCases);
+            descriptions.forEach
+            (
+                function (description)
                 {
-                    var featureObj = getEntryFeature(entry);
-                    if (Feature.DEFAULT.includes(featureObj))
-                        defaultEntryFound = true;
-                    if (Feature.ATOB.includes(featureObj))
-                        atobEntryFound = true;
-                    emuIt
-                    (
-                        '(definition ' + index + ')',
-                        featureObj,
-                        function ()
-                        {
-                            var definition = entry.definition;
-                            if (typeof definition === 'function')
-                            {
-                                var name = getFunctionName(definition);
-                                switch (name)
-                                {
-                                case 'commaDefinition':
-                                case 'charDefaultDefinition':
-                                    break;
-                                case 'definitionFB':
-                                    verifyFEntry(entry, FB_DISPOSITIONS, FB_VARIETIES);
-                                    return;
-                                case 'definitionFH':
-                                    verifyFEntry(entry, FH_DISPOSITIONS, FH_VARIETIES);
-                                    return;
-                                default:
-                                    expect().fail
-                                    (
-                                        function ()
-                                        {
-                                            var message =
-                                            'Unexpected definition function name ' + name;
-                                            return message;
-                                        }
-                                    );
-                                }
-                            }
-                            var solution = decodeEntry(entry, char);
-                            verifyStringSolution(solution, char, this.test.emuFeatureNames);
-                        }
-                    );
+                    var specialCase = specialCases[description];
+                    it(description, specialCase);
                 }
-
-                var entries = JScrewIt.debug.getCharacterEntries(char);
-                if (entries)
-                {
-                    var defaultEntryFound = false;
-                    var atobEntryFound = false;
-                    if (entries)
-                        entries.forEach(testEntry);
-                    if (!defaultEntryFound)
-                        testDefault();
-                    if (!atobEntryFound)
-                        testAtob();
-                }
-                else
-                {
-                    testDefault();
-                    testAtob();
-                }
-                if (SPECIAL_CASES_MAP.hasOwnProperty(char))
-                {
-                    var specialCases = SPECIAL_CASES_MAP[char];
-                    var descriptions = Object.keys(specialCases);
-                    descriptions.forEach
-                    (
-                        function (description)
-                        {
-                            var specialCase = specialCases[description];
-                            it(description, specialCase);
-                        }
-                    );
-                }
-            }
-        );
+            );
+        }
     }
 
     function testComplex(complex)
@@ -414,22 +403,44 @@ sidebar,
         'Character definitions of',
         function ()
         {
-            var charCode;
-            for (charCode = 0; charCode < 256; ++charCode)
-                testCharacter(charCode);
+            var charCodeSet = Object.create(null);
+            for (var charCode = 0; charCode < 256; ++charCode)
+                charCodeSet[charCode] = null;
             JScrewIt.debug.getCharacters().forEach
             (
                 function (char)
                 {
                     var charCode = char.charCodeAt();
-                    if (charCode >= 256)
-                        testCharacter(charCode);
+                    charCodeSet[charCode] = null;
                 }
             );
-            testCharacter(0x010f);  // hex code ending in "f"
-            testCharacter(0x01fa);  // hex code ending in "fa"
-            testCharacter(0x0bbc);  // candidate for toString clustering encoded with "B"
-            testCharacter(0xbbbb);  // candidate for toString clustering encoded with "b"
+            charCodeSet[0x010f] = null;  // hex code ending in "f"
+            charCodeSet[0x01fa] = null;  // hex code ending in "fa"
+            charCodeSet[0x0bbc] = null;  // candidate for toString clustering encoded with "B"
+            charCodeSet[0xbbbb] = null;  // candidate for toString clustering encoded with "b"
+            var charCodes = Object.keys(charCodeSet);
+
+            describe.per
+            (
+                charCodes,
+                function (charCode)
+                {
+                    charCode = Number(charCode);
+                    var title =
+                    charCode >= 0x7f && charCode <= 0xa0 || charCode === 0xad ?
+                    '"\\u00' + charCode.toString(16) + '"' :
+                    JSON.stringify(String.fromCharCode(charCode));
+                    var info = { charCode: charCode, title: title };
+                    return info;
+                }
+            )
+            (
+                '#.title',
+                function (info)
+                {
+                    testCharacter(info.charCode);
+                }
+            );
         }
     );
     describe
