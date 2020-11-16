@@ -736,12 +736,11 @@ export var initReplaceStaticExpr;
         ],
         'P':
         [
-            define('Function("return\\"" + ESCAPING_BACKSLASH + "120\\"")()'),
             define('atob("01A")[1]', ATOB),
             define('btoa("".italics())[0]', ATOB),
             define('(Function("return statusbar")() + [])[11]', BARPROP),
             define('"0".sup()[10]', CAPITAL_HTML),
-            defineCharDefault({ atob: false, charCode: false, escSeq: false }),
+            defineCharDefault({ atob: false, charCode: false }),
         ],
         'Q':
         [

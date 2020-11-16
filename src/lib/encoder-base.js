@@ -492,7 +492,8 @@ export var replaceStaticString;
             var expr = 'Function("return\\"" + ESCAPING_BACKSLASH + "' + escCode + '\\"")()';
             if (appendIndexer)
                 expr += '[0]';
-            var replacement = this.replaceExpr(expr, { toStringOpt: optimize });
+            var replacement =
+            this.replaceExpr(expr, { commaOpt: false, complexOpt: true, toStringOpt: optimize });
             return replacement;
         },
 
