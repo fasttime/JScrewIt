@@ -590,7 +590,7 @@ export var initReplaceStaticExpr;
         '+': '(1e100 + [])[2]',
         ',':
         [
-            define('([][SLICE_OR_FLAT].call("false") + [])[1]'),
+            define('(F_A_L_S_E + [])[1]'),
             define({ expr: '[[]].concat([[]])', solutionType: SolutionType.OBJECT }),
         ],
         '-': '(.0000001 + [])[2]',
@@ -648,6 +648,7 @@ export var initReplaceStaticExpr;
         [
             define('escape("".italics())[2]'),
             define('escape("".sub())[2]'),
+            define('escape(F_A_L_S_E)[11]'),
             define('atob("00NaNfalse")[1]', ATOB),
             define('(RP_4_N + "".fontcolor())[10]', CAPITAL_HTML),
             define('(RP_3_NO + Function("return console")())[11]', CONSOLE),
@@ -1276,6 +1277,10 @@ export var initReplaceStaticExpr;
                 },
                 FROM_CODE_POINT
             ),
+        ],
+        F_A_L_S_E:
+        [
+            define('[][SLICE_OR_FLAT].call("false")'),
         ],
         LOCALE_AR:
         [
