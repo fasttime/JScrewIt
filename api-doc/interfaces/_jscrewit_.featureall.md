@@ -78,9 +78,11 @@
 * [NO\_OLD\_SAFARI\_ARRAY\_ITERATOR](_jscrewit_.featureall.md#no_old_safari_array_iterator)
 * [NO\_V8\_SRC](_jscrewit_.featureall.md#no_v8_src)
 * [PLAIN\_INTL](_jscrewit_.featureall.md#plain_intl)
+* [REGEXP\_STRING\_ITERATOR](_jscrewit_.featureall.md#regexp_string_iterator)
 * [SAFARI](_jscrewit_.featureall.md#safari)
 * [SAFARI\_10](_jscrewit_.featureall.md#safari_10)
 * [SAFARI\_12](_jscrewit_.featureall.md#safari_12)
+* [SAFARI\_13](_jscrewit_.featureall.md#safari_13)
 * [SAFARI\_14\_0\_1](_jscrewit_.featureall.md#safari_14_0_1)
 * [SAFARI\_7\_0](_jscrewit_.featureall.md#safari_7_0)
 * [SAFARI\_7\_1](_jscrewit_.featureall.md#safari_7_1)
@@ -734,7 +736,7 @@ ___
 
 •  **NODE\_13**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
-Features available in Node.js 13 and 14.
+Features available in Node.js 13 and Node.js 14.
 
 ___
 
@@ -826,6 +828,18 @@ Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Sa
 
 ___
 
+### REGEXP\_STRING\_ITERATOR
+
+•  **REGEXP\_STRING\_ITERATOR**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
+
+The property that the string representation of String.prototype.matchAll\(\) evaluates to "\[object RegExp String Iterator\]".
+
+**`remarks`** 
+
+Available in Chrome, Edge, Firefox, Safari 13+, Opera, and Node.js 12+.
+
+___
+
 ### SAFARI
 
 •  **SAFARI**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
@@ -840,7 +854,7 @@ ___
 
 •  **SAFARI\_10**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
-Features available in Safari 10 or later.
+Features available in Safari 10 and Safari 11.
 
 ___
 
@@ -848,7 +862,15 @@ ___
 
 •  **SAFARI\_12**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
 
-Features available in Safari 12 to 14.0.0.
+Features available in Safari 12.
+
+___
+
+### SAFARI\_13
+
+•  **SAFARI\_13**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
+
+Features available in Safari 13 and Safari 14.0.0.
 
 ___
 

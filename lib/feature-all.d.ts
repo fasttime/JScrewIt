@@ -439,7 +439,7 @@ declare module 'jscrewit'
         /** Features available in Node.js 12. */
         NODE_12: PredefinedFeature;
 
-        /** Features available in Node.js 13 and 14. */
+        /** Features available in Node.js 13 and Node.js 14. */
         NODE_13: PredefinedFeature;
 
         /** Features available in Node.js 15 or later. */
@@ -501,17 +501,29 @@ declare module 'jscrewit'
         PLAIN_INTL: ElementaryFeature;
 
         /**
+         * The property that the string representation of String.prototype.matchAll\(\) evaluates to "\[object RegExp String Iterator\]".
+         *
+         * @remarks
+         *
+         * Available in Chrome, Edge, Firefox, Safari 13+, Opera, and Node.js 12+.
+         */
+        REGEXP_STRING_ITERATOR: ElementaryFeature;
+
+        /**
          * Features available in the current stable version of Safari.
          *
          * An alias for `SAFARI_14_0_1`.
          */
         SAFARI: PredefinedFeature;
 
-        /** Features available in Safari 10 or later. */
+        /** Features available in Safari 10 and Safari 11. */
         SAFARI_10: PredefinedFeature;
 
-        /** Features available in Safari 12 to 14.0.0. */
+        /** Features available in Safari 12. */
         SAFARI_12: PredefinedFeature;
+
+        /** Features available in Safari 13 and Safari 14.0.0. */
+        SAFARI_13: PredefinedFeature;
 
         /** Features available in Safari 14.0.1 or later. */
         SAFARI_14_0_1: PredefinedFeature;
@@ -630,6 +642,7 @@ declare module 'jscrewit'
     | 'NO_OLD_SAFARI_ARRAY_ITERATOR'
     | 'NO_V8_SRC'
     | 'PLAIN_INTL'
+    | 'REGEXP_STRING_ITERATOR'
     | 'SELF_OBJ'
     | 'SHORT_LOCALES'
     | 'STATUS'
@@ -666,6 +679,7 @@ declare module 'jscrewit'
     | 'NODE_5'
     | 'SAFARI_10'
     | 'SAFARI_12'
+    | 'SAFARI_13'
     | 'SAFARI_14_0_1'
     | 'SAFARI_7_0'
     | 'SAFARI_7_1'

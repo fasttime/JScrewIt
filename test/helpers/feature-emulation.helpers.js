@@ -283,6 +283,41 @@
         return setUp;
     }
 
+    function makeEmuFeatureMatchAll()
+    {
+        var str = '[object RegExp String Iterator]';
+        var setUp =
+        function ()
+        {
+            if (String.prototype.matchAll && ''.matchAll() + '' === str)
+                return;
+            var regExpStringIteratorProto = this.regExpStringIteratorProto = { };
+            var regExpStringIterator = Object.create(regExpStringIteratorProto);
+            var matchAll =
+            function ()
+            {
+                return regExpStringIterator;
+            };
+            override(this, 'String.prototype.matchAll', { value: matchAll });
+            var context = this;
+            registerToStringAdapter
+            (
+                this,
+                'Object',
+                function ()
+                {
+                    if
+                    (
+                        this instanceof Object &&
+                        Object.getPrototypeOf(this) === context.regExpStringIteratorProto
+                    )
+                        return str;
+                }
+            );
+        };
+        return setUp;
+    }
+
     function makeEmuFeatureNativeFunctionSource()
     {
         var args = Array.prototype.slice.call(arguments);
@@ -846,6 +881,7 @@
         {
             override(this, 'Intl', { value: { } });
         },
+        REGEXP_STRING_ITERATOR: makeEmuFeatureMatchAll(),
         SELF_OBJ: makeEmuFeatureSelf('[object Object]', /^\[object /),
         SHORT_LOCALES:
         function ()

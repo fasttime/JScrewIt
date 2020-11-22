@@ -119,6 +119,7 @@ export var initReplaceStaticExpr;
     var NO_IE_SRC                       = Feature.NO_IE_SRC;
     var NO_OLD_SAFARI_ARRAY_ITERATOR    = Feature.NO_OLD_SAFARI_ARRAY_ITERATOR;
     var NO_V8_SRC                       = Feature.NO_V8_SRC;
+    var REGEXP_STRING_ITERATOR          = Feature.REGEXP_STRING_ITERATOR;
     var PLAIN_INTL                      = Feature.PLAIN_INTL;
     var SELF_OBJ                        = Feature.SELF_OBJ;
     var SHORT_LOCALES                   = Feature.SHORT_LOCALES;
@@ -753,6 +754,8 @@ export var initReplaceStaticExpr;
             defineFHCharAt('RegExp', 9),
             define('btoa("0true")[2]', ATOB),
             define('"".fontcolor()[10]', CAPITAL_HTML),
+            define
+            ({ expr: '(RP_3_NO + "".matchAll())[11]', optimize: true }, REGEXP_STRING_ITERATOR),
         ],
         'S':
         [

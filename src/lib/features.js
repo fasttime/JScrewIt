@@ -886,6 +886,20 @@ export var validMaskFromArrayOrStringOrFeature;
             },
             includes: ['INTL'],
         },
+        REGEXP_STRING_ITERATOR:
+        {
+            description:
+            'The property that the string representation of String.prototype.matchAll() ' +
+            'evaluates to "[object RegExp String Iterator]".',
+            check:
+            function ()
+            {
+                var available =
+                String.prototype.matchAll &&
+                ''.matchAll() + '' === '[object RegExp String Iterator]';
+                return available;
+            },
+        },
         SELF: { aliasFor: 'ANY_WINDOW' },
         SELF_OBJ:
         {
@@ -1024,6 +1038,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NO_IE_SRC',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'REGEXP_STRING_ITERATOR',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW',
@@ -1125,6 +1140,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
+                'REGEXP_STRING_ITERATOR',
                 'STATUS',
                 'UNDEFINED',
                 'V8_SRC',
@@ -1166,6 +1182,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'LOCALE_NUMERALS',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'REGEXP_STRING_ITERATOR',
                 'STATUS',
                 'UNDEFINED',
                 'V8_SRC',
@@ -1219,6 +1236,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
+                'REGEXP_STRING_ITERATOR',
                 'SHORT_LOCALES',
                 'STATUS',
                 'UNDEFINED',
@@ -1459,6 +1477,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
+                'REGEXP_STRING_ITERATOR',
                 'UNDEFINED',
                 'V8_SRC',
             ],
@@ -1466,7 +1485,7 @@ export var validMaskFromArrayOrStringOrFeature;
         },
         NODE_13:
         {
-            engine: 'Node.js 13 and 14',
+            engine: 'Node.js 13 and Node.js 14',
             includes:
             [
                 'ARROW',
@@ -1484,6 +1503,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
+                'REGEXP_STRING_ITERATOR',
                 'SHORT_LOCALES',
                 'UNDEFINED',
                 'V8_SRC',
@@ -1510,6 +1530,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'LOCALE_NUMERALS',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'REGEXP_STRING_ITERATOR',
                 'SHORT_LOCALES',
                 'UNDEFINED',
                 'V8_SRC',
@@ -1615,7 +1636,7 @@ export var validMaskFromArrayOrStringOrFeature;
         },
         SAFARI_10:
         {
-            engine: 'Safari 10 or later',
+            engine: 'Safari 10 and Safari 11',
             includes:
             [
                 'ARROW',
@@ -1647,7 +1668,7 @@ export var validMaskFromArrayOrStringOrFeature;
         },
         SAFARI_12:
         {
-            engine: 'Safari 12 to 14.0.0',
+            engine: 'Safari 12',
             includes:
             [
                 'ARROW',
@@ -1671,6 +1692,40 @@ export var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
+                'SHORT_LOCALES',
+                'STATUS',
+                'UNDEFINED',
+                'WINDOW',
+            ],
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
+        },
+        SAFARI_13:
+        {
+            engine: 'Safari 13 and Safari 14.0.0',
+            includes:
+            [
+                'ARROW',
+                'ATOB',
+                'BARPROP',
+                'CONSOLE',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'FF_SRC',
+                'FILL',
+                'FLAT',
+                'FROM_CODE_POINT',
+                'FUNCTION_22_LF',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'INCR_CHAR',
+                'LOCALE_INFINITY',
+                'LOCALE_NUMERALS',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'PLAIN_INTL',
+                'REGEXP_STRING_ITERATOR',
                 'SHORT_LOCALES',
                 'STATUS',
                 'UNDEFINED',
@@ -1709,6 +1764,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'LOCALE_NUMERALS',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'REGEXP_STRING_ITERATOR',
                 'SHORT_LOCALES',
                 'STATUS',
                 'UNDEFINED',

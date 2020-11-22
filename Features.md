@@ -35,6 +35,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#V8_SRC"><code>V8_SRC</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#PLAIN_INTL"><code>PLAIN_INTL</code></a> (not in Chrome 86+, Edge 86+, Opera 72+)
+<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="api-doc/interfaces/_jscrewit_.featureall.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#STATUS"><code>STATUS</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#UNDEFINED"><code>UNDEFINED</code></a>
@@ -75,6 +76,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#NO_V8_SRC"><code>NO_V8_SRC</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#FF_SRC"><code>FF_SRC</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#PLAIN_INTL"><code>PLAIN_INTL</code></a>
+<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="api-doc/interfaces/_jscrewit_.featureall.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#STATUS"><code>STATUS</code></a>
@@ -148,6 +150,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Safari 9+)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#NO_V8_SRC"><code>NO_V8_SRC</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#FF_SRC"><code>FF_SRC</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#PLAIN_INTL"><code>PLAIN_INTL</code></a> (Safari 10+, not in Safari 14.0.1+)
+<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a> (Safari 13+)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="api-doc/interfaces/_jscrewit_.featureall.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a> (Safari 10+)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#STATUS"><code>STATUS</code></a>
@@ -216,6 +219,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#V8_SRC"><code>V8_SRC</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Node.js 0.12+)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#PLAIN_INTL"><code>PLAIN_INTL</code></a> (Node.js 0.12+, not in Node.js 15+)
+<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a> (Node.js 12+)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a> (Node.js 13+)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#UNDEFINED"><code>UNDEFINED</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#V8_SRC"><code>V8_SRC</code></a>
