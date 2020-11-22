@@ -533,6 +533,7 @@ export var initReplaceStaticExpr;
         '\x1e':
         [
             define('(RP_5_N + atob("NaNfalse"))[10]', ATOB),
+            defineCharDefault({ atob: false }),
         ],
 
         ' ':
@@ -1164,6 +1165,7 @@ export var initReplaceStaticExpr;
         ],
         ESCAPING_BACKSLASH:
         [
+            define(backslashDefinition),
             define({ expr: 'atob("01y")[1]', solutionType: SolutionType.STRING }, ATOB),
             define
             ({ expr: '(RegExp("\\n") + [])[1]', solutionType: SolutionType.STRING }, ESC_REGEXP_LF),
@@ -1244,7 +1246,6 @@ export var initReplaceStaticExpr;
                 FLAT,
                 NO_V8_SRC
             ),
-            define(backslashDefinition),
         ],
         FILL:
         [

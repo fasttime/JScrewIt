@@ -159,29 +159,7 @@
         {
             if (Array.prototype.entries && regExp.test([].entries()))
                 return;
-            var arrayIteratorProto = this.arrayIteratorProto = { };
-            var arrayIterator = Object.create(arrayIteratorProto);
-            var entries =
-            function ()
-            {
-                return arrayIterator;
-            };
-            override(this, 'Array.prototype.entries', { value: entries });
-            var context = this;
-            registerToStringAdapter
-            (
-                this,
-                'Object',
-                function ()
-                {
-                    if
-                    (
-                        this instanceof Object &&
-                        Object.getPrototypeOf(this) === context.arrayIteratorProto
-                    )
-                        return str;
-                }
-            );
+            registerObjectFactory(this, 'Array.prototype.entries', str);
         };
         return setUp;
     }
@@ -291,29 +269,7 @@
         {
             if (String.prototype.matchAll && ''.matchAll() + '' === str)
                 return;
-            var regExpStringIteratorProto = this.regExpStringIteratorProto = { };
-            var regExpStringIterator = Object.create(regExpStringIteratorProto);
-            var matchAll =
-            function ()
-            {
-                return regExpStringIterator;
-            };
-            override(this, 'String.prototype.matchAll', { value: matchAll });
-            var context = this;
-            registerToStringAdapter
-            (
-                this,
-                'Object',
-                function ()
-                {
-                    if
-                    (
-                        this instanceof Object &&
-                        Object.getPrototypeOf(this) === context.regExpStringIteratorProto
-                    )
-                        return str;
-                }
-            );
+            registerObjectFactory(this, 'String.prototype.matchAll', str);
         };
         return setUp;
     }
@@ -462,6 +418,27 @@
             override(context, typeName + '.prototype.' + methodName, { value: value });
         }
         context[contextKey].adapters.push(adapter);
+    }
+
+    function registerObjectFactory(context, path, str)
+    {
+        var obj = { };
+        var factory =
+        function ()
+        {
+            return obj;
+        };
+        override(context, path, { value: factory });
+        registerToStringAdapter
+        (
+            context,
+            'Object',
+            function ()
+            {
+                if (this === obj)
+                    return str;
+            }
+        );
     }
 
     function registerToStringAdapter(context, typeName, adapter)
