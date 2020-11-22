@@ -25,7 +25,6 @@
 * [BROWSER](_jscrewit_.featureall.md#browser)
 * [CAPITAL\_HTML](_jscrewit_.featureall.md#capital_html)
 * [CHROME](_jscrewit_.featureall.md#chrome)
-* [CHROME\_73](_jscrewit_.featureall.md#chrome_73)
 * [CHROME\_86](_jscrewit_.featureall.md#chrome_86)
 * [CHROME\_PREV](_jscrewit_.featureall.md#chrome_prev)
 * [COMPACT](_jscrewit_.featureall.md#compact)
@@ -234,22 +233,6 @@ An alias for `CHROME_86`.
 
 ___
 
-### CHROME\_73
-
-•  **CHROME\_73**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
-
-Features available in Chrome 73 to 85 and Edge 79 to 85.
-
-**`remarks`** 
-
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME_PREV` instead of `CHROME_73` for long term support.
-
-**`see`** 
-
-[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
-
-___
-
 ### CHROME\_86
 
 •  **CHROME\_86**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
@@ -258,7 +241,7 @@ Features available in Chrome 86, Edge 86 and Opera 72 or later.
 
 **`remarks`** 
 
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME` instead of `CHROME_86` for long term support.
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME` or `CHROME_PREV` instead of `CHROME_86` for long term support.
 
 **`see`** 
 
@@ -272,7 +255,7 @@ ___
 
 Features available in the previous to current versions of Chrome and Edge.
 
-An alias for `CHROME_73`.
+An alias for `CHROME_86`.
 
 ___
 
@@ -824,7 +807,7 @@ Existence of the global object Intl having the string representation "\[object O
 
 **`remarks`** 
 
-Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+ before 14.0.1, Opera before 72, Android Browser 4.4, and Node.js 0.12+ before 15.
+Available in Firefox, Internet Explorer 11, Safari 10+ before 14.0.1, Android Browser 4.4, and Node.js 0.12+ before 15.
 
 ___
 

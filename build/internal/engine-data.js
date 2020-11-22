@@ -53,7 +53,6 @@ exports.getEngineEntries =
             name: ['Chrome', 'Edge', 'Opera'],
             versions:
             [
-                { description: ['73+', '79+'], feature: 'CHROME_73' },
                 { description: ['86+', '86+', '72+'], feature: 'CHROME_86' },
             ],
         },

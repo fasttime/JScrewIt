@@ -251,7 +251,7 @@ declare module 'jscrewit'
          *
          * ```js
          * // false
-         * JScrewIt.Feature.areEqual(JScrewIt.Feature.CHROME, JScrewIt.Feature.FIREFOX)
+         * JScrewIt.Feature.areEqual(JScrewIt.Feature.CHROME, JScrewIt.Feature.FF)
          * ```
          *
          * ```js
