@@ -61,6 +61,7 @@ exports.getEngineEntries =
             versions:
             [
                 { description: '78+', feature: 'FF_78' },
+                { description: '83+', feature: 'FF_83' },
             ],
         },
         {

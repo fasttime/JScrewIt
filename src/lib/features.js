@@ -1186,14 +1186,9 @@ export var validMaskFromArrayOrStringOrFeature;
             engine: 'the previous to current version of Firefox',
             aliasFor: 'FF_78',
         },
-        FF:
-        {
-            engine: 'the current stable version of Firefox',
-            aliasFor: 'FF_78',
-        },
         FF_78:
         {
-            engine: 'Firefox 78 or later',
+            engine: 'Firefox 78 to 82',
             includes:
             [
                 'ARROW',
@@ -1218,6 +1213,50 @@ export var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
+                'REGEXP_STRING_ITERATOR',
+                'SHORT_LOCALES',
+                'STATUS',
+                'WINDOW',
+            ],
+            attributes:
+            {
+                'char-increment-restriction':   null,
+                'unstable':                     null,
+                'web-worker-restriction':       null,
+            },
+        },
+        FF:
+        {
+            engine: 'the current stable version of Firefox',
+            aliasFor: 'FF_83',
+        },
+        FF_83:
+        {
+            engine: 'Firefox 83 or later',
+            includes:
+            [
+                'ARROW',
+                'ATOB',
+                'BARPROP',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'EXTERNAL',
+                'FF_SRC',
+                'FILL',
+                'FLAT',
+                'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
+                'GLOBAL_UNDEFINED',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
+                'LOCALE_NUMERALS',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'REGEXP_STRING_ITERATOR',
                 'SHORT_LOCALES',
                 'STATUS',
