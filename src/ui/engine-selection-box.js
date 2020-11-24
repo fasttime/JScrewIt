@@ -28,7 +28,8 @@ export default function createEngineSelectionBox()
             name: 'Firefox',
             versions:
             [
-                { featureName: 'FF_78', number: '78+' },
+                { featureName: 'FF_78', number: '78–82' },
+                { featureName: 'FF_83', number: '83+' },
             ],
         },
         {

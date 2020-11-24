@@ -1188,14 +1188,9 @@ export var validMaskFromArrayOrStringOrFeature;
             engine: 'the previous to current version of Firefox',
             aliasFor: 'FF_78',
         },
-        FF:
-        {
-            engine: 'the current stable version of Firefox',
-            aliasFor: 'FF_78',
-        },
         FF_78:
         {
-            engine: 'Firefox 78 or later',
+            engine: 'Firefox 78 to 82',
             includes:
             [
                 'ARROW',
@@ -1219,6 +1214,49 @@ export var validMaskFromArrayOrStringOrFeature;
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
+                'SHORT_LOCALES',
+                'STATUS',
+                'UNDEFINED',
+                'WINDOW',
+            ],
+            attributes:
+            {
+                'char-increment-restriction':   null,
+                'unstable':                     null,
+                'web-worker-restriction':       null,
+            },
+        },
+        FF:
+        {
+            engine: 'the current stable version of Firefox',
+            aliasFor: 'FF_83',
+        },
+        FF_83:
+        {
+            engine: 'Firefox 83 or later',
+            includes:
+            [
+                'ARROW',
+                'ATOB',
+                'BARPROP',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'EXTERNAL',
+                'FF_SRC',
+                'FILL',
+                'FLAT',
+                'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
+                'LOCALE_NUMERALS',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'SHORT_LOCALES',
                 'STATUS',
                 'UNDEFINED',
@@ -1466,7 +1504,7 @@ export var validMaskFromArrayOrStringOrFeature;
         },
         NODE_13:
         {
-            engine: 'Node.js 13 and 14',
+            engine: 'Node.js 13 and Node.js 14',
             includes:
             [
                 'ARROW',
@@ -1615,7 +1653,7 @@ export var validMaskFromArrayOrStringOrFeature;
         },
         SAFARI_10:
         {
-            engine: 'Safari 10 or later',
+            engine: 'Safari 10',
             includes:
             [
                 'ARROW',

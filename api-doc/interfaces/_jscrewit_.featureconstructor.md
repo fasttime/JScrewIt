@@ -87,6 +87,7 @@ Name | Type |
 * [EXTERNAL](_jscrewit_.featureconstructor.md#external)
 * [FF](_jscrewit_.featureconstructor.md#ff)
 * [FF\_78](_jscrewit_.featureconstructor.md#ff_78)
+* [FF\_83](_jscrewit_.featureconstructor.md#ff_83)
 * [FF\_ESR](_jscrewit_.featureconstructor.md#ff_esr)
 * [FF\_PREV](_jscrewit_.featureconstructor.md#ff_prev)
 * [FF\_SRC](_jscrewit_.featureconstructor.md#ff_src)
@@ -589,7 +590,7 @@ ___
 
 Features available in the current stable version of Firefox.
 
-An alias for `FF_78`.
+An alias for `FF_83`.
 
 ___
 
@@ -599,11 +600,29 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[FF_78](_jscrewit_.featureall.md#ff_78)*
 
-Features available in Firefox 78 or later.
+Features available in Firefox 78 to 82.
 
 **`remarks`** 
 
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF`, `FF_ESR`, or `FF_PREV` instead of `FF_78` for long term support.
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF_ESR` or `FF_PREV` instead of `FF_78` for long term support.
+
+**`see`** 
+
+[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
+
+___
+
+### FF\_83
+
+•  **FF\_83**: [PredefinedFeature](_jscrewit_.predefinedfeature.md)
+
+*Inherited from [FeatureAll](_jscrewit_.featureall.md).[FF_83](_jscrewit_.featureall.md#ff_83)*
+
+Features available in Firefox 83 or later.
+
+**`remarks`** 
+
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF` instead of `FF_83` for long term support.
 
 **`see`** 
 
@@ -975,7 +994,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[NODE_13](_jscrewit_.featureall.md#node_13)*
 
-Features available in Node.js 13 and 14.
+Features available in Node.js 13 and Node.js 14.
 
 ___
 
@@ -1079,7 +1098,7 @@ Existence of the global object Intl having the string representation "\[object O
 
 **`remarks`** 
 
-Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+ before 14.0.1, Opera before 72, Android Browser 4.4, and Node.js 0.12+ before 15.
+Available in Chrome before 86, Edge before 86, Firefox before 83, Internet Explorer 11, Safari 10+ before 14.0.1, Opera before 72, Android Browser 4.4, and Node.js 0.12+ before 15.
 
 ___
 
@@ -1101,7 +1120,7 @@ ___
 
 *Inherited from [FeatureAll](_jscrewit_.featureall.md).[SAFARI_10](_jscrewit_.featureall.md#safari_10)*
 
-Features available in Safari 10 or later.
+Features available in Safari 10.
 
 ___
 
@@ -1307,7 +1326,7 @@ features, regardless of any other difference.
 
 ```js
 // false
-JScrewIt.Feature.areEqual(JScrewIt.Feature.CHROME, JScrewIt.Feature.FIREFOX)
+JScrewIt.Feature.areEqual(JScrewIt.Feature.CHROME, JScrewIt.Feature.FF)
 ```
 
 ```js

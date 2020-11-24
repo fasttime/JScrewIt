@@ -222,22 +222,35 @@ declare module 'jscrewit'
         /**
          * Features available in the current stable version of Firefox.
          *
-         * An alias for `FF_78`.
+         * An alias for `FF_83`.
          */
         FF: PredefinedFeature;
 
         /**
-         * Features available in Firefox 78 or later.
+         * Features available in Firefox 78 to 82.
          *
          * @remarks
          *
-         * This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF`, `FF_ESR`, or `FF_PREV` instead of `FF_78` for long term support.
+         * This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF_ESR` or `FF_PREV` instead of `FF_78` for long term support.
          *
          * @see
          *
          * [Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
          */
         FF_78: PredefinedFeature;
+
+        /**
+         * Features available in Firefox 83 or later.
+         *
+         * @remarks
+         *
+         * This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF` instead of `FF_83` for long term support.
+         *
+         * @see
+         *
+         * [Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
+         */
+        FF_83: PredefinedFeature;
 
         /**
          * Features available in the current version of Firefox ESR.
@@ -439,7 +452,7 @@ declare module 'jscrewit'
         /** Features available in Node.js 12. */
         NODE_12: PredefinedFeature;
 
-        /** Features available in Node.js 13 and 14. */
+        /** Features available in Node.js 13 and Node.js 14. */
         NODE_13: PredefinedFeature;
 
         /** Features available in Node.js 15 or later. */
@@ -496,7 +509,7 @@ declare module 'jscrewit'
          *
          * @remarks
          *
-         * Available in Chrome before 86, Edge before 86, Firefox, Internet Explorer 11, Safari 10+ before 14.0.1, Opera before 72, Android Browser 4.4, and Node.js 0.12+ before 15.
+         * Available in Chrome before 86, Edge before 86, Firefox before 83, Internet Explorer 11, Safari 10+ before 14.0.1, Opera before 72, Android Browser 4.4, and Node.js 0.12+ before 15.
          */
         PLAIN_INTL: ElementaryFeature;
 
@@ -507,7 +520,7 @@ declare module 'jscrewit'
          */
         SAFARI: PredefinedFeature;
 
-        /** Features available in Safari 10 or later. */
+        /** Features available in Safari 10. */
         SAFARI_10: PredefinedFeature;
 
         /** Features available in Safari 12 to 14.0.0. */
@@ -651,6 +664,7 @@ declare module 'jscrewit'
     | 'COMPACT'
     | 'DEFAULT'
     | 'FF_78'
+    | 'FF_83'
     | 'IE_10'
     | 'IE_11'
     | 'IE_11_WIN_10'
