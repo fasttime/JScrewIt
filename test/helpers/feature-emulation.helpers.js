@@ -224,10 +224,9 @@
         function ()
         {
             var context = this;
-            registerToStringAdapter
+            registerFunctionToStringAdapter
             (
                 this,
-                'Function',
                 function ()
                 {
                     var str = context['Function#toString'].function.call(this);
@@ -311,7 +310,7 @@
                         return str;
                     }
                 };
-                registerToStringAdapter(this, 'Function', adapter);
+                registerFunctionToStringAdapter(this, adapter);
             }
         };
         return setUp;
@@ -382,6 +381,57 @@
         return returnValue;
     }
 
+    function registerDefaultToStringAdapter(context, adapter)
+    {
+        var contextKey = 'Object#toString';
+        if (!context[contextKey])
+        {
+            var _Object_prototype_toString = Object.prototype.toString;
+            var adapters = [];
+            context[contextKey] = { adapters: adapters, function: _Object_prototype_toString };
+            var callToString =
+            function (thisValue, args)
+            {
+                var returnValue;
+                for (var index = adapters.length; index-- > 0;)
+                {
+                    var adapter = adapters[index];
+                    returnValue = adapter.apply(thisValue, args);
+                    if (returnValue !== undefined)
+                        return returnValue;
+                }
+                returnValue = _Object_prototype_toString.apply(thisValue, args);
+                return returnValue;
+            };
+            var toString =
+            function ()
+            {
+                var str = callToString(this, arguments);
+                return str;
+            };
+            var toStringNoGlobal =
+            function ()
+            {
+                // Some old browsers set the global object instead of undefined as this.
+                var thisValue = this === global ? undefined : this;
+                var str = callToString(thisValue, arguments);
+                return str;
+            };
+            var get =
+            function ()
+            {
+                return this === global ? toString : toStringNoGlobal;
+            };
+            override(context, 'Object.prototype.toString', { get: get });
+        }
+        context[contextKey].adapters.push(adapter);
+    }
+
+    function registerFunctionToStringAdapter(context, adapter)
+    {
+        registerMethodAdapter(context, 'Function', 'toString', adapter);
+    }
+
     function registerMethodAdapter(context, typeName, methodName, adapter)
     {
         var contextKey = typeName + '#' + methodName;
@@ -390,31 +440,20 @@
             var fn = global[typeName].prototype[methodName];
             var adapters = [];
             context[contextKey] = { adapters: adapters, function: fn };
-            var callMethod =
+            var value =
             function ()
             {
                 var returnValue;
                 for (var index = adapters.length; index-- > 0;)
                 {
                     var adapter = adapters[index];
-                    returnValue = Function.prototype.call.apply(adapter, arguments);
+                    returnValue = adapter.apply(this, arguments);
                     if (returnValue !== undefined)
                         return returnValue;
                 }
-                returnValue = Function.prototype.call.apply(fn, arguments);
+                returnValue = fn.apply(this, arguments);
                 return returnValue;
             };
-            var value =
-            function ()
-            {
-                var args = [this];
-                Array.prototype.push.apply(args, arguments);
-                var returnValue = callMethod.apply(null, args);
-                return returnValue;
-            };
-            // The Internet Explorer 9 implementation of the call method sets the global object as
-            // this when no arguments are specified.
-            value.call = callMethod;
             override(context, typeName + '.prototype.' + methodName, { value: value });
         }
         context[contextKey].adapters.push(adapter);
@@ -429,21 +468,15 @@
             return obj;
         };
         override(context, path, { value: factory });
-        registerToStringAdapter
+        registerDefaultToStringAdapter
         (
             context,
-            'Object',
             function ()
             {
                 if (this === obj)
                     return str;
             }
         );
-    }
-
-    function registerToStringAdapter(context, typeName, adapter)
-    {
-        registerMethodAdapter(context, typeName, 'toString', adapter);
     }
 
     function replaceArrowFunctions(expr)
@@ -768,10 +801,9 @@
             {
                 var Intl = { };
                 override(this, 'Intl', { value: Intl });
-                registerToStringAdapter
+                registerDefaultToStringAdapter
                 (
                     this,
-                    'Object',
                     function ()
                     {
                         if (this === Intl)
@@ -885,10 +917,9 @@
         UNDEFINED:
         function ()
         {
-            registerToStringAdapter
+            registerDefaultToStringAdapter
             (
                 this,
-                'Object',
                 function ()
                 {
                     if (this === undefined)

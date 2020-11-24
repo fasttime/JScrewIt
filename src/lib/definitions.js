@@ -104,6 +104,7 @@ export var initReplaceStaticExpr;
     var FROM_CODE_POINT                 = Feature.FROM_CODE_POINT;
     var FUNCTION_19_LF                  = Feature.FUNCTION_19_LF;
     var FUNCTION_22_LF                  = Feature.FUNCTION_22_LF;
+    var GLOBAL_UNDEFINED                = Feature.GLOBAL_UNDEFINED;
     var GMT                             = Feature.GMT;
     var HISTORY                         = Feature.HISTORY;
     var HTMLAUDIOELEMENT                = Feature.HTMLAUDIOELEMENT;
@@ -786,9 +787,9 @@ export var initReplaceStaticExpr;
         [
             define('btoa("1NaN")[1]', ATOB),
             define('"".sub()[2]', CAPITAL_HTML),
-            define('(RP_3_NO + PLAIN_OBJECT[TO_STRING].call())[11]', UNDEFINED),
-            define('(RP_3_NO + ARRAY_ITERATOR[TO_STRING].call())[11]', ARRAY_ITERATOR, UNDEFINED),
-            define('(RP_3_NO + Intl[TO_STRING].call())[11]', INTL, UNDEFINED),
+            define('(RP_3_NO + Function("return toString")()())[11]', GLOBAL_UNDEFINED),
+            define('(RP_3_NO + Function("return{}.toString")()())[11]', UNDEFINED),
+            define('(RP_3_NO + Function("return Intl.toString")()())[11]', INTL, UNDEFINED),
         ],
         'V':
         [

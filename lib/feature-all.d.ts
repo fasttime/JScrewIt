@@ -297,6 +297,15 @@ declare module 'jscrewit'
         FUNCTION_22_LF: ElementaryFeature;
 
         /**
+         * Having the global function toString return the string "\[object Undefined\]" when invoked without a binding.
+         *
+         * @remarks
+         *
+         * Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
+         */
+        GLOBAL_UNDEFINED: ElementaryFeature;
+
+        /**
          * Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
          *
          * The string representation of dates is implementation dependent, but most engines use a similar format, making this feature available in all supported engines except Internet Explorer 9 and 10.
@@ -613,6 +622,7 @@ declare module 'jscrewit'
     | 'FROM_CODE_POINT'
     | 'FUNCTION_19_LF'
     | 'FUNCTION_22_LF'
+    | 'GLOBAL_UNDEFINED'
     | 'GMT'
     | 'HISTORY'
     | 'HTMLAUDIOELEMENT'

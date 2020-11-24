@@ -15,7 +15,7 @@
     {
         var featureObj = Feature[featureName];
         var restrictedFeatureObj = Feature.AUTO.restrict(environment, [featureObj]);
-        var restricted = !Feature.areEqual(environmentFeatureObj, restrictedFeatureObj);
+        var restricted = !environmentFeatureObj.includes(restrictedFeatureObj);
         return restricted;
     }
 

@@ -94,6 +94,7 @@ Name | Type |
 * [FROM\_CODE\_POINT](_jscrewit_.featureconstructor.md#from_code_point)
 * [FUNCTION\_19\_LF](_jscrewit_.featureconstructor.md#function_19_lf)
 * [FUNCTION\_22\_LF](_jscrewit_.featureconstructor.md#function_22_lf)
+* [GLOBAL\_UNDEFINED](_jscrewit_.featureconstructor.md#global_undefined)
 * [GMT](_jscrewit_.featureconstructor.md#gmt)
 * [HISTORY](_jscrewit_.featureconstructor.md#history)
 * [HTMLAUDIOELEMENT](_jscrewit_.featureconstructor.md#htmlaudioelement)
@@ -701,6 +702,20 @@ A string representation of dynamically generated functions where the character a
 **`remarks`** 
 
 Available in Internet Explorer, Safari 9+, Android Browser, and Node.js before 10.
+
+___
+
+### GLOBAL\_UNDEFINED
+
+•  **GLOBAL\_UNDEFINED**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
+
+*Inherited from [FeatureAll](_jscrewit_.featureall.md).[GLOBAL_UNDEFINED](_jscrewit_.featureall.md#global_undefined)*
+
+Having the global function toString return the string "\[object Undefined\]" when invoked without a binding.
+
+**`remarks`** 
+
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ___
 

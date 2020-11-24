@@ -23,6 +23,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#FLAT"><code>FLAT</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a>
+<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#GMT"><code>GMT</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#HISTORY"><code>HISTORY</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
@@ -37,7 +38,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="api-doc/interfaces/_jscrewit_.featureall.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#STATUS"><code>STATUS</code></a>
-<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#UNDEFINED"><code>UNDEFINED</code></a>
+<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#UNDEFINED"><code>UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#V8_SRC"><code>V8_SRC</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#WINDOW"><code>WINDOW</code></a>
 </ul>
@@ -63,6 +64,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#FLAT"><code>FLAT</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a>
+<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#GMT"><code>GMT</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#HISTORY"><code>HISTORY</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
@@ -79,7 +81,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="api-doc/interfaces/_jscrewit_.featureall.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#STATUS"><code>STATUS</code></a>
-<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#UNDEFINED"><code>UNDEFINED</code></a>
+<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#UNDEFINED"><code>UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#WINDOW"><code>WINDOW</code></a>
 </ul>
 </td>
@@ -136,6 +138,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#FLAT"><code>FLAT</code></a> (Safari 12+)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Safari 9+)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#FUNCTION_22_LF"><code>FUNCTION_22_LF</code></a> (Safari 9+)
+<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#GMT"><code>GMT</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#HISTORY"><code>HISTORY</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
@@ -153,7 +156,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="api-doc/interfaces/_jscrewit_.featureall.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a> (Safari 10+)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#STATUS"><code>STATUS</code></a>
-<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#UNDEFINED"><code>UNDEFINED</code></a>
+<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#UNDEFINED"><code>UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#WINDOW"><code>WINDOW</code></a>
 </ul>
 </td>
@@ -208,6 +211,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Node.js 4+)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a> (Node.js 10+)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#FUNCTION_22_LF"><code>FUNCTION_22_LF</code></a> (not in Node.js 10+)
+<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#GMT"><code>GMT</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#INTL"><code>INTL</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#PLAIN_INTL"><code>PLAIN_INTL</code></a>; Node.js 0.12+)
@@ -220,7 +224,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#PLAIN_INTL"><code>PLAIN_INTL</code></a> (Node.js 0.12+, not in Node.js 15+)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a> (Node.js 12+)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a> (Node.js 13+)
-<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#UNDEFINED"><code>UNDEFINED</code></a>
+<li><a href="api-doc/interfaces/_jscrewit_.featureall.md#UNDEFINED"><code>UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/_jscrewit_.featureall.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>)
 <li><a href="api-doc/interfaces/_jscrewit_.featureall.md#V8_SRC"><code>V8_SRC</code></a>
 </ul>
 </td>
