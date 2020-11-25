@@ -120,8 +120,9 @@ export var initReplaceStaticExpr;
     var NO_IE_SRC                       = Feature.NO_IE_SRC;
     var NO_OLD_SAFARI_ARRAY_ITERATOR    = Feature.NO_OLD_SAFARI_ARRAY_ITERATOR;
     var NO_V8_SRC                       = Feature.NO_V8_SRC;
-    var REGEXP_STRING_ITERATOR          = Feature.REGEXP_STRING_ITERATOR;
+    var OBJECT_UNDEFINED                = Feature.OBJECT_UNDEFINED;
     var PLAIN_INTL                      = Feature.PLAIN_INTL;
+    var REGEXP_STRING_ITERATOR          = Feature.REGEXP_STRING_ITERATOR;
     var SELF_OBJ                        = Feature.SELF_OBJ;
     var SHORT_LOCALES                   = Feature.SHORT_LOCALES;
     var STATUS                          = Feature.STATUS;
@@ -788,8 +789,10 @@ export var initReplaceStaticExpr;
             define('btoa("1NaN")[1]', ATOB),
             define('"".sub()[2]', CAPITAL_HTML),
             define('(RP_3_NO + Function("return toString")()())[11]', GLOBAL_UNDEFINED),
-            define('(RP_3_NO + Function("return{}.toString")()())[11]', UNDEFINED),
-            define('(RP_3_NO + Function("return Intl.toString")()())[11]', INTL, UNDEFINED),
+            define('(RP_3_NO + Function("return{}.toString")()())[11]', OBJECT_UNDEFINED),
+            define('(RP_3_NO + PLAIN_OBJECT[TO_STRING].call())[11]', UNDEFINED),
+            define('(RP_3_NO + Function("return Intl.toString")()())[11]', INTL, OBJECT_UNDEFINED),
+            define('(RP_3_NO + Intl[TO_STRING].call())[11]', INTL, UNDEFINED),
         ],
         'V':
         [

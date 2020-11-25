@@ -674,7 +674,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 var available = getToString()() === '[object Undefined]';
                 return available;
             },
-            includes: ['UNDEFINED'],
+            includes: ['OBJECT_UNDEFINED'],
         },
         GMT:
         {
@@ -891,6 +891,20 @@ export var validMaskFromArrayOrStringOrFeature;
             },
             excludes: ['V8_SRC'],
         },
+        OBJECT_UNDEFINED:
+        {
+            description:
+            'Having the function Object.prototype.toString return the string "[object ' +
+            'Undefined]" when invoked without a binding.',
+            check:
+            function ()
+            {
+                var toString = Object.prototype.toString;
+                var available = toString() === '[object Undefined]';
+                return available;
+            },
+            includes: ['UNDEFINED'],
+        },
         PLAIN_INTL:
         {
             description:
@@ -1097,8 +1111,8 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'NAME',
+                'OBJECT_UNDEFINED',
                 'STATUS',
-                'UNDEFINED',
                 'V8_SRC',
             ],
         },
@@ -1120,10 +1134,10 @@ export var validMaskFromArrayOrStringOrFeature;
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS',
                 'NAME',
+                'OBJECT_UNDEFINED',
                 'PLAIN_INTL',
                 'SHORT_LOCALES',
                 'STATUS',
-                'UNDEFINED',
                 'V8_SRC',
                 'WINDOW',
             ],
@@ -1302,8 +1316,8 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HISTORY',
                 'IE_SRC',
                 'INCR_CHAR',
+                'OBJECT_UNDEFINED',
                 'STATUS',
-                'UNDEFINED',
                 'WINDOW',
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
@@ -1325,10 +1339,10 @@ export var validMaskFromArrayOrStringOrFeature;
                 'IE_SRC',
                 'INCR_CHAR',
                 'LOCALE_NUMERALS',
+                'OBJECT_UNDEFINED',
                 'PLAIN_INTL',
                 'SHORT_LOCALES',
                 'STATUS',
-                'UNDEFINED',
                 'WINDOW',
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
@@ -1351,10 +1365,10 @@ export var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS',
+                'OBJECT_UNDEFINED',
                 'PLAIN_INTL',
                 'SHORT_LOCALES',
                 'STATUS',
-                'UNDEFINED',
                 'WINDOW',
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },

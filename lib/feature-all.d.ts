@@ -501,6 +501,15 @@ declare module 'jscrewit'
         NO_V8_SRC: ElementaryFeature;
 
         /**
+         * Having the function Object.prototype.toString return the string "\[object Undefined\]" when invoked without a binding.
+         *
+         * @remarks
+         *
+         * Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser 4.1+, and Node.js.
+         */
+        OBJECT_UNDEFINED: ElementaryFeature;
+
+        /**
          * Existence of the global object Intl having the string representation "\[object Object\]"
          *
          * @remarks
@@ -651,6 +660,7 @@ declare module 'jscrewit'
     | 'NO_IE_SRC'
     | 'NO_OLD_SAFARI_ARRAY_ITERATOR'
     | 'NO_V8_SRC'
+    | 'OBJECT_UNDEFINED'
     | 'PLAIN_INTL'
     | 'REGEXP_STRING_ITERATOR'
     | 'SELF_OBJ'

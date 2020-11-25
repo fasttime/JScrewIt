@@ -124,6 +124,7 @@ Name | Type |
 * [NO\_IE\_SRC](_jscrewit_.featureconstructor.md#no_ie_src)
 * [NO\_OLD\_SAFARI\_ARRAY\_ITERATOR](_jscrewit_.featureconstructor.md#no_old_safari_array_iterator)
 * [NO\_V8\_SRC](_jscrewit_.featureconstructor.md#no_v8_src)
+* [OBJECT\_UNDEFINED](_jscrewit_.featureconstructor.md#object_undefined)
 * [PLAIN\_INTL](_jscrewit_.featureconstructor.md#plain_intl)
 * [REGEXP\_STRING\_ITERATOR](_jscrewit_.featureconstructor.md#regexp_string_iterator)
 * [SAFARI](_jscrewit_.featureconstructor.md#safari)
@@ -1083,6 +1084,20 @@ A most remarkable trait of this feature is the presence of a line feed followed 
 **`remarks`** 
 
 Available in Firefox, Internet Explorer, and Safari.
+
+___
+
+### OBJECT\_UNDEFINED
+
+•  **OBJECT\_UNDEFINED**: [ElementaryFeature](_jscrewit_.elementaryfeature.md)
+
+*Inherited from [FeatureAll](_jscrewit_.featureall.md).[OBJECT_UNDEFINED](_jscrewit_.featureall.md#object_undefined)*
+
+Having the function Object.prototype.toString return the string "\[object Undefined\]" when invoked without a binding.
+
+**`remarks`** 
+
+Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser 4.1+, and Node.js.
 
 ___
 

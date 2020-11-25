@@ -885,6 +885,19 @@
         NO_V8_SRC:
         makeEmuFeatureNativeFunctionSource
         (NATIVE_FUNCTION_SOURCE_INFO_FF, NATIVE_FUNCTION_SOURCE_INFO_IE),
+        OBJECT_UNDEFINED:
+        function ()
+        {
+            registerDefaultToStringAdapter
+            (
+                this,
+                function ()
+                {
+                    if (this === undefined)
+                        return '[object Undefined]';
+                }
+            );
+        },
         PLAIN_INTL:
         function ()
         {
