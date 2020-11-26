@@ -666,11 +666,7 @@ export var validMaskFromArrayOrStringOrFeature;
             check:
             function ()
             {
-                function getToString()
-                {
-                    return toString;
-                }
-
+                var getToString = Function('return toString');
                 var available = getToString()() === '[object Undefined]';
                 return available;
             },

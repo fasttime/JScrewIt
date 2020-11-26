@@ -4,10 +4,31 @@
 
 (function (global)
 {
-    function createBackupMap()
+    function callAdapters(adapterList, thisValue, args)
     {
-        var backupMap = Object.create(null);
-        return backupMap;
+        var returnValue;
+        for (var index = adapterList.length; index-- > 0;)
+        {
+            var adapter = adapterList[index];
+            returnValue = adapter.apply(thisValue, args);
+            if (returnValue !== undefined)
+                return returnValue;
+        }
+        var fn = adapterList.function;
+        returnValue = fn.apply(thisValue, args);
+        return returnValue;
+    }
+
+    function createDefaultInterceptorDescriptor(adapterList)
+    {
+        function value()
+        {
+            var returnValue = callAdapters(adapterList, this, arguments);
+            return returnValue;
+        }
+
+        var descriptor = { value: value, writable: true };
+        return descriptor;
     }
 
     function emuDo(emuFeatures, callback)
@@ -29,9 +50,9 @@
         }
         finally
         {
-            var backupMap = context.BACKUP;
-            if (backupMap)
-                restoreAll(backupMap, global);
+            var backupList = context.BACKUP;
+            if (backupList)
+                restoreAll(backupList);
         }
     }
 
@@ -102,6 +123,24 @@
         );
         var result = String.fromCharCode.apply(null, codeUnits);
         return result;
+    }
+
+    function intercept(context, interceptor, adapter)
+    {
+        var adapterListMap =
+        context.ADAPTERS || (context.ADAPTERS = Object.create(Object.create(null)));
+        var path = interceptor.path;
+        var adapterList = adapterListMap[path];
+        if (!adapterList)
+        {
+            var createDescriptor = interceptor.createDescriptor;
+            adapterList = [];
+            adapterListMap[path] = adapterList;
+            var newDescriptor = createDescriptor(adapterList, context);
+            var oldDescriptor = override(context, path, newDescriptor);
+            adapterList.function = oldDescriptor.value;
+        }
+        adapterList.push(adapter);
     }
 
     function makeEmuFeatureArrayPrototypeFunction(name, fn)
@@ -229,7 +268,8 @@
                 this,
                 function ()
                 {
-                    var str = context['Function#toString'].function.call(this);
+                    var fn = context.ADAPTERS['Function.prototype.toString'].function;
+                    var str = fn.call(this);
                     if (/function anonymous\(\n?\) {\s+}/.test(str))
                         return replacement;
                 }
@@ -299,7 +339,8 @@
                 var adapter =
                 function ()
                 {
-                    var str = context['Function#toString'].function.call(this);
+                    var fn = context.ADAPTERS['Function.prototype.toString'].function;
+                    var str = fn.call(this);
                     var match = /^\n?(function \w+\(\) \{)\s+\[native code]\s+}\n?$/.exec(str);
                     if (match)
                     {
@@ -340,7 +381,7 @@
 
     function override(context, path, descriptor)
     {
-        var properties = context.BACKUP || (context.BACKUP = createBackupMap());
+        var backupList = context.BACKUP || (context.BACKUP = []);
         var components = path.split('.');
         var name = components.pop();
         var obj =
@@ -348,21 +389,21 @@
         (
             function (parent, childName)
             {
-                var backupData = properties[childName] || (properties[childName] = { });
-                properties =
-                backupData.properties || (backupData.properties = createBackupMap());
                 return parent[childName];
             },
             global
         );
-        var backupData = properties[name] || (properties[name] = { });
-        if (!('descriptor' in backupData))
+        var oldDescriptor = Object.getOwnPropertyDescriptor(obj, name);
+        var backupData = { obj: obj, name: name, descriptor: oldDescriptor };
+        backupList.push(backupData);
+        if (descriptor)
         {
-            var oldDescriptor = Object.getOwnPropertyDescriptor(obj, name);
-            backupData.descriptor = oldDescriptor;
+            descriptor.configurable = true;
+            Object.defineProperty(obj, name, descriptor);
         }
-        descriptor.configurable = true;
-        Object.defineProperty(obj, name, descriptor);
+        else
+            delete obj[name];
+        return oldDescriptor;
     }
 
     function rebaseDigits(str, charCode0)
@@ -383,80 +424,22 @@
 
     function registerDefaultToStringAdapter(context, adapter)
     {
-        var contextKey = 'Object#toString';
-        if (!context[contextKey])
-        {
-            var _Object_prototype_toString = Object.prototype.toString;
-            var adapters = [];
-            context[contextKey] = { adapters: adapters, function: _Object_prototype_toString };
-            var callToString =
-            function (thisValue, args)
-            {
-                var returnValue;
-                for (var index = adapters.length; index-- > 0;)
-                {
-                    var adapter = adapters[index];
-                    returnValue = adapter.apply(thisValue, args);
-                    if (returnValue !== undefined)
-                        return returnValue;
-                }
-                returnValue = _Object_prototype_toString.apply(thisValue, args);
-                return returnValue;
-            };
-            var toString =
-            function ()
-            {
-                var str = callToString(this, arguments);
-                return str;
-            };
-            var toStringNoGlobal =
-            function ()
-            {
-                // Some old browsers set the global object instead of undefined as this.
-                var thisValue = this === global ? undefined : this;
-                var str = callToString(thisValue, arguments);
-                return str;
-            };
-            var get =
-            function ()
-            {
-                return this === global ? toString : toStringNoGlobal;
-            };
-            override(context, 'Object.prototype.toString', { get: get });
-        }
-        context[contextKey].adapters.push(adapter);
+        intercept(context, DEFAULT_TO_STRING_INTERCEPTOR, adapter);
+    }
+
+    function registerFunctionAdapter(context, adapter)
+    {
+        intercept(context, FUNCTION_INTERCEPTOR, adapter);
     }
 
     function registerFunctionToStringAdapter(context, adapter)
     {
-        registerMethodAdapter(context, 'Function', 'toString', adapter);
+        intercept(context, FUNCTION_TO_STRING_INTERCEPTOR, adapter);
     }
 
-    function registerMethodAdapter(context, typeName, methodName, adapter)
+    function registerNumberToLocaleStringAdapter(context, adapter)
     {
-        var contextKey = typeName + '#' + methodName;
-        if (!context[contextKey])
-        {
-            var fn = global[typeName].prototype[methodName];
-            var adapters = [];
-            context[contextKey] = { adapters: adapters, function: fn };
-            var value =
-            function ()
-            {
-                var returnValue;
-                for (var index = adapters.length; index-- > 0;)
-                {
-                    var adapter = adapters[index];
-                    returnValue = adapter.apply(this, arguments);
-                    if (returnValue !== undefined)
-                        return returnValue;
-                }
-                returnValue = fn.apply(this, arguments);
-                return returnValue;
-            };
-            override(context, typeName + '.prototype.' + methodName, { value: value });
-        }
-        context[contextKey].adapters.push(adapter);
+        intercept(context, NUMBER_TO_LOCALE_STRING_INTERCEPTOR, adapter);
     }
 
     function registerObjectFactory(context, path, str)
@@ -498,24 +481,82 @@
         return expr;
     }
 
-    function restoreAll(properties, obj)
+    function restoreAll(backupList)
     {
-        for (var name in properties)
+        var backupData;
+        while (backupData = backupList.pop())
         {
-            var backupData = properties[name];
-            var subProperties = backupData.properties;
-            if (subProperties)
-                restoreAll(subProperties, obj[name]);
-            if ('descriptor' in backupData)
-            {
-                var descriptor = backupData.descriptor;
-                if (descriptor)
-                    Object.defineProperty(obj, name, descriptor);
-                else
-                    delete obj[name];
-            }
+            var obj = backupData.obj;
+            var name = backupData.name;
+            var descriptor = backupData.descriptor;
+            if (descriptor)
+                Object.defineProperty(obj, name, descriptor);
+            else
+                delete obj[name];
         }
     }
+
+    var DEFAULT_TO_STRING_INTERCEPTOR =
+    {
+        path: 'Object.prototype.toString',
+        createDescriptor:
+        function (adapterList)
+        {
+            function get()
+            {
+                var returnValue = this === global ? toString : toStringNoGlobal;
+                return returnValue;
+            }
+
+            function toString()
+            {
+                var str = callAdapters(adapterList, this, arguments);
+                return str;
+            }
+
+            function toStringNoGlobal()
+            {
+                // Some old browsers set the global object instead of undefined as this.
+                var thisValue = this === global ? undefined : this;
+                var str = callAdapters(adapterList, thisValue, arguments);
+                return str;
+            }
+
+            var descriptor = { get: get };
+            return descriptor;
+        },
+    };
+
+    var FUNCTION_INTERCEPTOR =
+    {
+        path: 'Function',
+        createDescriptor:
+        function (adapterList, context)
+        {
+            function Function()
+            {
+                var fn = callAdapters(adapterList, this, arguments);
+                return fn;
+            }
+
+            Function.prototype = global.Function.prototype;
+            var descriptor = { value: Function, writable: true };
+            override(context, 'Function.prototype.constructor', descriptor);
+            return descriptor;
+        },
+    };
+
+    var FUNCTION_TO_STRING_INTERCEPTOR =
+    {
+        path: 'Function.prototype.toString',
+        createDescriptor: createDefaultInterceptorDescriptor,
+    };
+
+    var NUMBER_TO_LOCALE_STRING_INTERCEPTOR =
+    {
+        path: 'Number.prototype.toLocaleString',
+        createDescriptor: createDefaultInterceptorDescriptor,
+    };
 
     var ARROW_REGEXP =
     /(\([^(]*\)|[\w$]+)=>(\{.*?\}|(?:\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\)|[^,()])*)/g;
@@ -532,31 +573,27 @@
         ARROW:
         function ()
         {
-            var newFunction =
-            (function (oldFunction)
-            {
-                function Function()
+            var context = this;
+            registerFunctionAdapter
+            (
+                this,
+                function ()
                 {
-                    var lastArgIndex = arguments.length - 1;
-                    if (lastArgIndex >= 0)
-                        arguments[lastArgIndex] = fixBody(arguments[lastArgIndex]);
-                    var fnObj = oldFunction.apply(null, arguments);
+                    var bodyIndex = arguments.length - 1;
+                    if (bodyIndex < 0)
+                        return;
+                    var oldBody = arguments[bodyIndex];
+                    if (typeof oldBody !== 'string')
+                        return;
+                    var newBody = replaceArrowFunctions(oldBody);
+                    if (newBody === oldBody)
+                        return;
+                    var fn = context.ADAPTERS.Function.function;
+                    arguments[bodyIndex] = newBody;
+                    var fnObj = fn.apply(this, arguments);
                     return fnObj;
                 }
-
-                function fixBody(body)
-                {
-                    if (typeof body === 'string')
-                        body = replaceArrowFunctions(body);
-                    return body;
-                }
-
-                Function.prototype = oldFunction.prototype;
-                return Function;
-            }
-            )(Function);
-            override(this, 'Function.prototype.constructor', { value: newFunction });
-            override(this, 'Function', { value: newFunction });
+            );
         },
         ATOB:
         function ()
@@ -760,6 +797,33 @@
         },
         FUNCTION_19_LF: makeEmuFeatureFunctionLF('function anonymous(\n) {\n\n}'),
         FUNCTION_22_LF: makeEmuFeatureFunctionLF('function anonymous() {\n\n}'),
+        GLOBAL_UNDEFINED:
+        function ()
+        {
+            function toString()
+            {
+                return '[object Undefined]';
+            }
+
+            registerFunctionAdapter
+            (
+                this,
+                function (body)
+                {
+                    if (arguments.length !== 1)
+                        return;
+                    if (body === 'return toString')
+                    {
+                        var returnValue =
+                        function ()
+                        {
+                            return toString;
+                        };
+                        return returnValue;
+                    }
+                }
+            );
+        },
         GMT:
         function ()
         {
@@ -815,35 +879,27 @@
         LOCALE_INFINITY:
         function ()
         {
-            var toLocaleString = Number.prototype.toLocaleString;
-            var value =
-            function ()
-            {
-                var result;
-                switch (+this) // In Internet Explorer 9, +this is different from this.
+            registerNumberToLocaleStringAdapter
+            (
+                this,
+                function ()
                 {
-                case Infinity:
-                    result = '∞';
-                    break;
-                case -Infinity:
-                    result = '-∞';
-                    break;
-                default:
-                    result = toLocaleString.apply(this, arguments);
-                    break;
+                    switch (+this) // In Internet Explorer 9, +this is different from this.
+                    {
+                    case Infinity:
+                        return '∞';
+                    case -Infinity:
+                        return '-∞';
+                    }
                 }
-                return result;
-            };
-            override(this, 'Number.prototype.toLocaleString', { value: value });
+            );
         },
         LOCALE_NUMERALS:
         function ()
         {
-            registerMethodAdapter
+            registerNumberToLocaleStringAdapter
             (
                 this,
-                'Number',
-                'toLocaleString',
                 function (locale)
                 {
                     var returnValue = formatNumber(this, locale);
@@ -908,11 +964,9 @@
         SHORT_LOCALES:
         function ()
         {
-            registerMethodAdapter
+            registerNumberToLocaleStringAdapter
             (
                 this,
-                'Number',
-                'toLocaleString',
                 function (locale)
                 {
                     if (locale === 'ar')
