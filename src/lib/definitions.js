@@ -791,6 +791,7 @@ export var initReplaceStaticExpr;
             define('(RP_3_NO + Function("return toString")()())[11]', GLOBAL_UNDEFINED),
             define('(RP_3_NO + Function("return{}.toString")()())[11]', OBJECT_UNDEFINED),
             define('(RP_3_NO + PLAIN_OBJECT[TO_STRING].call())[11]', UNDEFINED),
+            define('(RP_3_NO + ARRAY_ITERATOR[TO_STRING].call())[11]', ARRAY_ITERATOR, UNDEFINED),
             define('(RP_3_NO + Function("return Intl.toString")()())[11]', INTL, OBJECT_UNDEFINED),
             define('(RP_3_NO + Intl[TO_STRING].call())[11]', INTL, UNDEFINED),
         ],
