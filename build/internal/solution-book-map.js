@@ -15,6 +15,7 @@ Object.assign
     solutionBookMap,
     {
         clear:              clearSolutionBookMap,
+        compareSolutions,
         deserialize,
         entries:            entryIterator,
         forEach,
@@ -38,7 +39,22 @@ function compareSolutions(solution1, solution2)
 {
     let diff = solution1.length - solution2.length;
     if (!diff)
-        diff = solution1.entryIndex - solution2.entryIndex;
+    {
+        const entryCode1 = solution1.entryCode;
+        const entryCode2 = solution2.entryCode;
+        {
+            const entryIndex1 = typeof entryCode1 === 'number' ? entryCode1 : -1;
+            const entryIndex2 = typeof entryCode2 === 'number' ? entryCode2 : -1;
+            diff = entryIndex1 - entryIndex2;
+            if (!diff)
+            {
+                if (entryCode1 < entryCode2)
+                    diff = -1;
+                else if (entryCode1 > entryCode2)
+                    diff = 1;
+            }
+        }
+    }
     return diff;
 }
 
@@ -174,19 +190,18 @@ function indexChar(char, updateProgress, missingCharacter)
 {
     const Analyzer = require('./optimized-analyzer');
 
-    const { getCharacterEntries, maskIncludes } = debug;
+    const { maskIncludes } = debug;
     {
         const fs = requireFS();
         const path = require.resolve(JSCREWIT_PATH);
         const { mtime } = fs.statSync(path);
         const jscrewitTimestamp = Date.parse(mtime);
-        const definitionCount = getCharacterEntries(char).length;
         const solutionIndex = new Map();
         const usedCharSet = fillSolutionIndex(solutionIndex, char);
         const usedChars = [...usedCharSet].sort();
         const solutions = [...solutionIndex.values()];
         solutions.sort(compareSolutions);
-        const solutionBook = { jscrewitTimestamp, definitionCount, usedChars, solutions };
+        const solutionBook = { jscrewitTimestamp, usedChars, solutions };
         solutionBookMap.set(char, solutionBook);
         return solutionBook;
     }

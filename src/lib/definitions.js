@@ -535,7 +535,6 @@ export var initReplaceStaticExpr;
         '\x1e':
         [
             define('(RP_5_N + atob("NaNfalse"))[10]', ATOB),
-            defineCharDefault({ atob: false }),
         ],
 
         ' ':

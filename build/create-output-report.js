@@ -2,7 +2,7 @@
 
 'use strict';
 
-const { createFeatureFromMask } = require('..').debug;
+const { debug: { createFeatureFromMask, getCharacterEntries } } = require('..');
 
 function compareCanonicalNames(solution1, solution2)
 {
@@ -34,7 +34,14 @@ function createOutputReport()
             'This is a report of all character encodings produced by JScrewIt using different\n' +
             'features.\n' +
             'The lines after a character headline contain encoding length, definition entry\n' +
-            'index and minimal feature list for each encoding of that character.\n' +
+            'code and minimal feature list for each encoding of that character.\n' +
+            'The definition entry code is either the zero-based index of the entry used to\n' +
+            'produce the encoding, or a letter indicating how else the encoding was produced.\n' +
+            '  A: by calling atob\n' +
+            '  C: by calling String.fromCharCode or String.fromCodePoint\n' +
+            '  E: with an escape sequence\n' +
+            '  S: from a static custom definition\n' +
+            '  U: by calling unescape\n' +
             'Only characters with explicit definitions are listed.',
         );
         const notAllDefsUsed = scanCharDefs(logLine);
@@ -61,37 +68,53 @@ function formatFeatureNames(featureNames)
     return str;
 }
 
-function printCharacterReport(logLine, char, definitionCount, solutions)
+function getEntryCodeString(entryCode)
+{
+    if (typeof entryCode === 'number')
+    {
+        const entryCodeStr = String(entryCode);
+        return entryCodeStr;
+    }
+    const entryCodeStr = ENTRY_CODE_TO_STR_MAP_OBJ[entryCode];
+    if (entryCodeStr)
+        return entryCodeStr;
+    return '-';
+}
+
+function printCharacterReport(logLine, char, customEntryCount, defaultEntryPresent, solutions)
 {
     const namedSolutions = [];
     const entryIndexSet = new Set();
+    let defaultDefinitionUsed = false;
     for (const solution of solutions)
     {
-        for (const mask of solution.masks)
+        const { entryCode, masks } = solution;
+        for (const mask of masks)
         {
             const namedSolution = Object.create(solution);
             namedSolution.canonicalNames = createFeatureFromMask(mask).canonicalNames;
             namedSolutions.push(namedSolution);
         }
-        const { entryIndex } = solution;
-        if (entryIndex != null)
-            entryIndexSet.add(entryIndex);
+        if (typeof entryCode === 'number' || entryCode === 'static')
+            entryIndexSet.add(entryCode);
+        else
+            defaultDefinitionUsed = true;
     }
     namedSolutions.sort(compareCanonicalNames);
     const desc = formatChar(char);
-    const notAllDefsUsed = definitionCount > entryIndexSet.size;
+    const notAllDefsUsed =
+    customEntryCount > entryIndexSet.size || defaultEntryPresent && !defaultDefinitionUsed;
     logLine(`\nCharacter ${desc}`);
     if (notAllDefsUsed)
         logLine('Not all definitions used!');
     namedSolutions.forEach
     (
-        ({ canonicalNames, entryIndex, length }) =>
+        ({ canonicalNames, entryCode, length }) =>
         {
             const lengthStr = String(length).padStart(5);
-            const entryIndexStr =
-            (typeof entryIndex === 'number' ? String(entryIndex) : '-').padStart(2);
+            const entryCodeStr = getEntryCodeString(entryCode).padStart(2);
             const featureStr = formatFeatureNames(canonicalNames);
-            const line = `${lengthStr} | ${entryIndexStr} | ${featureStr}`;
+            const line = `${lengthStr} | ${entryCodeStr} | ${featureStr}`;
             logLine(line);
         },
     );
@@ -106,9 +129,23 @@ function scanCharDefs(logLine)
     let notAllDefsUsed = false;
     solutionBookMap.forEach
     (
-        ({ definitionCount, solutions }, char) =>
+        ({ solutions }, char) =>
         {
-            if (printCharacterReport(logLine, char, definitionCount, solutions))
+            let customEntryCount = 0;
+            let defaultEntryPresent = false;
+            const entries = getCharacterEntries(char);
+            for (const entry of entries)
+            {
+                if (entry.definition.name === 'charDefaultDefinition')
+                    defaultEntryPresent = true;
+                else
+                    ++customEntryCount;
+            }
+            if
+            (
+                printCharacterReport
+                (logLine, char, customEntryCount, defaultEntryPresent, solutions)
+            )
                 notAllDefsUsed = true;
         },
     );
@@ -123,6 +160,16 @@ function throwFeatureCollisionError()
     // generating the solution, and a new characterization may be necessary.
     throw Error('Feature collision');
 }
+
+const ENTRY_CODE_TO_STR_MAP_OBJ =
+{
+    __proto__: null,
+    'atob':         'A',
+    'char-code':    'C',
+    'esc-seq':      'E',
+    'static':       'S',
+    'unescape':     'U',
+};
 
 {
     const chalk = require('chalk');

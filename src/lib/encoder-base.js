@@ -295,30 +295,38 @@ export var replaceStaticString;
         createCharDefaultSolution:
         function (char, charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
         {
-            var replacement;
+            var solution;
             if (atobOpt && this.findDefinition(CONSTANTS.atob))
-                replacement = this.replaceCharByAtob(charCode);
+            {
+                solution =
+                this.resolveCharByDefaultMethod(char, charCode, 'replaceCharByAtob', 'atob');
+            }
             else
             {
-                var replacements = [];
+                var solutions = [];
                 if (charCodeOpt)
                 {
-                    replacement = this.replaceCharByCharCode(charCode);
-                    replacements.push(replacement);
+                    solution =
+                    this.resolveCharByDefaultMethod
+                    (char, charCode, 'replaceCharByCharCode', 'char-code');
+                    solutions.push(solution);
                 }
                 if (escSeqOpt)
                 {
-                    replacement = this.replaceCharByEscSeq(charCode);
-                    replacements.push(replacement);
+                    solution =
+                    this.resolveCharByDefaultMethod
+                    (char, charCode, 'replaceCharByEscSeq', 'esc-seq');
+                    solutions.push(solution);
                 }
                 if (unescapeOpt)
                 {
-                    replacement = this.replaceCharByUnescape(charCode);
-                    replacements.push(replacement);
+                    solution =
+                    this.resolveCharByDefaultMethod
+                    (char, charCode, 'replaceCharByUnescape', 'unescape');
+                    solutions.push(solution);
                 }
-                replacement = shortestOf(replacements);
+                solution = shortestOf(solutions);
             }
-            var solution = new SimpleSolution(char, replacement, SolutionType.STRING);
             return solution;
         },
 
@@ -364,7 +372,7 @@ export var replaceStaticString;
         findOptimalSolution:
         function (source, entries, defaultSolutionType)
         {
-            var result;
+            var optimalSolution;
             entries.forEach
             (
                 function (entry, entryIndex)
@@ -372,16 +380,17 @@ export var replaceStaticString;
                     if (this.hasFeatures(entry.mask))
                     {
                         var solution = this.resolve(entry.definition, source, defaultSolutionType);
-                        if (!result || result.length > solution.length)
+                        if (!optimalSolution || optimalSolution.length > solution.length)
                         {
-                            result = solution;
-                            solution.entryIndex = entryIndex;
+                            optimalSolution = solution;
+                            if (optimalSolution.entryCode == null)
+                                optimalSolution.entryCode = entryIndex;
                         }
                     }
                 },
                 this
             );
-            return result;
+            return optimalSolution;
         },
 
         getPaddingBlock:
@@ -835,6 +844,15 @@ export var replaceStaticString;
             return solution;
         },
 
+        resolveCharByDefaultMethod:
+        function (char, charCode, replaceChar, entryCode)
+        {
+            var replacement = this[replaceChar](charCode);
+            var solution = new SimpleSolution(char, replacement, SolutionType.STRING);
+            solution.entryCode = entryCode;
+            return solution;
+        },
+
         resolveCharacter:
         function (char)
         {
@@ -858,7 +876,7 @@ export var replaceStaticString;
                         else
                         {
                             solution = STATIC_ENCODER.resolve(entries, char);
-                            solution.entryIndex = 'static';
+                            solution.entryCode = 'static';
                             charCache = STATIC_CHAR_CACHE;
                         }
                         charCache[char] = solution;

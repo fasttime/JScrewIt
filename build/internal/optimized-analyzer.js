@@ -43,31 +43,20 @@ class OptimizedAnalyzer extends Analyzer
                 if (solutionBook)
                 {
                     let knownSolution = null;
-                    let knownLength = Infinity;
-                    let knownEntryIndex;
                     let { solutions } = solutionBook;
                     if (this.useReverseIteration)
                         solutions = [...solutions].reverse();
                     for (const solution of solutions)
                     {
-                        const { entryIndex, length } = solution;
-                        if
-                        (
-                            (
-                                length < knownLength ||
-                                length === knownLength && entryIndex <= knownEntryIndex
-                            ) &&
-                            isSolutionApplicable(solution, this, encoder)
-                        )
+                        const comparison =
+                        knownSolution ?
+                        solutionBookMap.compareSolutions(solution, knownSolution) : -1;
+                        if (comparison <= 0 && isSolutionApplicable(solution, this, encoder))
                         {
-                            if (length === knownLength && entryIndex === knownEntryIndex)
+                            if (comparison === 0)
                                 knownSolution = null;
                             else
-                            {
                                 knownSolution   = solution;
-                                knownLength     = length;
-                                knownEntryIndex = entryIndex;
-                            }
                         }
                     }
                     if (!knownSolution)
