@@ -205,13 +205,13 @@ The features turn out to be
 [`INCR_CHAR`](api-doc/interfaces/_jscrewit_.featureall.md#INCR_CHAR),
 [`NAME`](api-doc/interfaces/_jscrewit_.featureall.md#NAME),
 [`NO_IE_SRC`](api-doc/interfaces/_jscrewit_.featureall.md#NO_IE_SRC) and
-[`UNDEFINED`](api-doc/interfaces/_jscrewit_.featureall.md#UNDEFINED) (a quick way to see this is
-entering `JScrewIt.Feature.commonOf("ANDRO_4_4", "NODE_10", "SAFARI_7_0").toString()` in the
-browser's console).
+[`OBJECT_UNDEFINED`](api-doc/interfaces/_jscrewit_.featureall.md#OBJECT_UNDEFINED) (a quick way to
+see this is entering `JScrewIt.Feature.commonOf("ANDRO_4_4", "NODE_10", "SAFARI_7_0").toString()` in
+the browser's console).
 With this knowledge, we could also rewrite the expression above as follows.
 
 ```js
-{ features: ["ESC_HTML_QUOT", "GMT", "INCR_CHAR", "NAME", "NO_IE_SRC", "UNDEFINED"] }
+{ features: ["ESC_HTML_QUOT", "GMT", "INCR_CHAR", "NAME", "NO_IE_SRC", "OBJECT_UNDEFINED"] }
 ```
 
 Finally, note that simply specifying an array of engine features will not achieve the desired
