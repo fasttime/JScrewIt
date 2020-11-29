@@ -246,7 +246,11 @@ function formatCharacter(char)
     if (char === '\\' || char === '`')
         return `"\\${char}"`;
     const charCode = char.charCodeAt();
-    if (charCode >= 0x20 && charCode <= 0x7e && charCode !== 0x22 || charCode >= 0xa0)
+    if
+    (
+        charCode >= 0x20 && charCode <= 0x7e && charCode !== 0x22 ||
+        charCode >= 0xa0 && !/(?=\p{L})(?=\p{sc=Arab})/u.test(char)
+    )
         return char;
     return `U+${charCode.toString(16).toUpperCase().padStart(4, '0')}`;
 }
@@ -307,7 +311,7 @@ function parseArguments(parseSequence)
         {
             const arg = argv[index];
             const matches =
-            /^\s*(?:--(?<sequence>.*)|\*(?<logicalSet>.*)\*|U\+(?<hexCode>[\dA-F]{4}))\s*$/i
+            /^\s*(?:--(?<sequence>.*)|:(?<logicalSet>.*):|U\+(?<hexCode>[\dA-F]{4}))\s*$/i
             .exec(arg);
             if (matches)
             {
@@ -373,8 +377,8 @@ function printHelp()
     'Characters can be specified in different ways:\n' +
     '• ABC       Characters "A", "B" and "C"\n' +
     '• U+0123    Character with hexadecimal code 123\n' +
-    '• *static*  Characters in the static set\n' +
-    '• *wanted*  Characters defined by JScrewIt but not indexed yet';
+    '• :static:  Characters in the static set\n' +
+    '• :wanted:  Characters defined by JScrewIt but not indexed yet';
     console.log(help);
 }
 
