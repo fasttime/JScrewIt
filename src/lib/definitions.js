@@ -138,13 +138,13 @@ export var initReplaceStaticExpr;
         ,
         ,
         'FBP_5_S',
-        'RP_1_NO + FBP_5_S',
+        'RP_1_WA + FBP_5_S',
         ,
         ,
         'FBP_9_U',
-        '[RP_1_NO] + FBP_9_U',
+        '[RP_1_WA] + FBP_9_U',
         ,
-        '[RP_3_NO] + FBP_9_U',
+        '[RP_3_WA] + FBP_9_U',
     ];
 
     var FB_NO_IE_PADDINGS =
@@ -154,14 +154,14 @@ export var initReplaceStaticExpr;
         ,
         ,
         ,
-        'RP_1_NO + FBEP_4_S',
+        'RP_1_WA + FBEP_4_S',
         ,
-        'RP_3_NO + FBEP_4_S',
+        'RP_3_WA + FBEP_4_S',
         ,
         'FBEP_9_U',
-        '[RP_1_NO] + FBEP_9_U',
+        '[RP_1_WA] + FBEP_9_U',
         ,
-        '[RP_3_NO] + FBEP_9_U',
+        '[RP_3_WA] + FBEP_9_U',
     ];
 
     var FB_PADDINGS =
@@ -173,12 +173,12 @@ export var initReplaceStaticExpr;
         ,
         ,
         ,
-        'FBP_7_NO',
-        'FBP_8_NO',
+        'FBP_7_WA',
+        'FBP_8_WA',
         ,
-        'RP_3_NO + [FBP_7_NO]',
+        'RP_3_WA + [FBP_7_WA]',
         ,
-        'RP_5_N + [FBP_7_NO]',
+        'RP_5_A + [FBP_7_WA]',
     ];
 
     var FH_PADDINGS =
@@ -186,24 +186,24 @@ export var initReplaceStaticExpr;
         ,
         ,
         ,
-        'FHP_3_NO',
+        'FHP_3_WA',
         ,
-        'FHP_5_N',
-        'FHP_5_N + [RP_1_NO]',
-        'FHP_3_NO + [RP_4_N]',
+        'FHP_5_A',
+        'FHP_5_A + [RP_1_WA]',
+        'FHP_3_WA + [RP_4_A]',
         'FHP_8_S',
-        'FHP_5_N + [RP_4_N]',
+        'FHP_5_A + [RP_4_A]',
     ];
 
     var R_PADDINGS =
     [
         'RP_0_S',
-        'RP_1_NO',
+        'RP_1_WA',
         ,
-        'RP_3_NO',
-        'RP_4_N',
-        'RP_5_N',
-        'RP_6_SO',
+        'RP_3_WA',
+        'RP_4_A',
+        'RP_5_A',
+        'RP_6_S',
     ];
 
     function createCharDefaultDefinition
@@ -296,7 +296,7 @@ export var initReplaceStaticExpr;
         case 19:
             entries =
             [
-                define({ block: 'RP_1_NO', indexer: (index + 1) / 10 + ' + FH_SHIFT_1' }),
+                define({ block: 'RP_1_WA', indexer: (index + 1) / 10 + ' + FH_SHIFT_1' }),
                 define(1, NO_IE_SRC),
                 define(0, IE_SRC),
             ];
@@ -513,7 +513,7 @@ export var initReplaceStaticExpr;
         '\n':
         [
             define('(Function() + [])[23]'),
-            define('(RP_1_NO + Function())[20]', FUNCTION_19_LF),
+            define('(RP_1_WA + Function())[20]', FUNCTION_19_LF),
             define('(Function() + [])[22]', FUNCTION_22_LF),
             define('(ANY_FUNCTION + [])[0]', IE_SRC),
             defineFHCharAt('FILTER', 19, NO_V8_SRC),
@@ -534,22 +534,22 @@ export var initReplaceStaticExpr;
 
         '\x1e':
         [
-            define('(RP_5_N + atob("NaNfalse"))[10]', ATOB),
+            define('(RP_5_A + atob("NaNfalse"))[10]', ATOB),
         ],
 
         ' ':
         [
             defineFHCharAt('ANY_FUNCTION', 8),
-            define('(RP_3_NO + ARRAY_ITERATOR)[10]', ARRAY_ITERATOR),
+            define('(RP_3_WA + ARRAY_ITERATOR)[10]', ARRAY_ITERATOR),
             define('(FILTER + [])[20]', FF_SRC),
             define('(+(ANY_FUNCTION + [])[0] + FILTER)[22]', NO_FF_SRC),
             define('(FILTER + [])[21]', NO_V8_SRC),
-            define('(RP_1_NO + FILTER)[20]', V8_SRC),
+            define('(RP_1_WA + FILTER)[20]', V8_SRC),
             define('(+(ANY_FUNCTION + [])[0] + FILL)[20]', FILL, NO_FF_SRC),
-            define('(RP_5_N + FILL)[20]', FILL, NO_IE_SRC),
+            define('(RP_5_A + FILL)[20]', FILL, NO_IE_SRC),
             define('(FILL + [])[20]', FILL, NO_V8_SRC),
             define('(+(ANY_FUNCTION + [])[0] + FLAT)[20]', FLAT, NO_FF_SRC),
-            define('(RP_5_N + FLAT)[20]', FLAT, NO_IE_SRC),
+            define('(RP_5_A + FLAT)[20]', FLAT, NO_IE_SRC),
             define('(FLAT + [])[20]', FLAT, NO_V8_SRC),
         ],
         // '!':    ,
@@ -639,7 +639,7 @@ export var initReplaceStaticExpr;
         'A':
         [
             defineFHCharAt('Array', 9),
-            define('(RP_3_NO + ARRAY_ITERATOR)[11]', ARRAY_ITERATOR),
+            define('(RP_3_WA + ARRAY_ITERATOR)[11]', ARRAY_ITERATOR),
         ],
         'B':
         [
@@ -652,23 +652,23 @@ export var initReplaceStaticExpr;
             define('escape("".sub())[2]'),
             define('escape(F_A_L_S_E)[11]'),
             define('atob("00NaNfalse")[1]', ATOB),
-            define('(RP_4_N + "".fontcolor())[10]', CAPITAL_HTML),
-            define('(RP_3_NO + Function("return console")())[11]', CONSOLE),
+            define('(RP_4_A + "".fontcolor())[10]', CAPITAL_HTML),
+            define('(RP_3_WA + Function("return console")())[11]', CONSOLE),
             define('(Node + [])[12]', NODECONSTRUCTOR),
         ],
         'D':
         [
-            // * The escaped character may be either "]" or "}".
-            define('escape((+("1000" + (RP_5_N + FILTER + 0)[40] + 0) + FILTER)[40])[2]'), // *
+            // • The escaped character may be either "]" or "}".
+            define('escape((+("1000" + (RP_5_A + FILTER + 0)[40] + 0) + FILTER)[40])[2]'), // *
             define('escape("]")[2]'),
             define('escape("}")[2]'),
             define('(document + [])[SLICE_OR_SUBSTR]("-10")[1]', ANY_DOCUMENT),
             define('btoa("00")[1]', ATOB),
-            define('(RP_3_NO + document)[11]', DOCUMENT),
+            define('(RP_3_WA + document)[11]', DOCUMENT),
             define // *
-            ('escape((RP_3_NO + [+("10" + [(RP_6_SO + FILL)[40]] + "000")] + FILL)[40])[2]', FILL),
+            ('escape((RP_3_WA + [+("10" + [(RP_6_S + FILL)[40]] + "000")] + FILL)[40])[2]', FILL),
             define // *
-            ('escape((RP_3_NO + [+("10" + [(RP_6_SO + FLAT)[40]] + "000")] + FLAT)[40])[2]', FLAT),
+            ('escape((RP_3_WA + [+("10" + [(RP_6_S + FLAT)[40]] + "000")] + FLAT)[40])[2]', FLAT),
             define('(document + [])[12]', HTMLDOCUMENT),
             define('escape(ARRAY_ITERATOR)[30]', NO_OLD_SAFARI_ARRAY_ITERATOR),
             define('escape(FILTER)[50]', V8_SRC),
@@ -679,9 +679,9 @@ export var initReplaceStaticExpr;
         [
             defineFHCharAt('RegExp', 12),
             define('btoa("0NaN")[1]', ATOB),
-            define('(RP_5_N + "".link())[10]', CAPITAL_HTML),
-            define('(RP_3_NO + sidebar)[11]', EXTERNAL),
-            define('(RP_3_NO + Audio)[21]', HTMLAUDIOELEMENT),
+            define('(RP_5_A + "".link())[10]', CAPITAL_HTML),
+            define('(RP_3_WA + sidebar)[11]', EXTERNAL),
+            define('(RP_3_WA + Audio)[21]', HTMLAUDIOELEMENT),
         ],
         'F':
         [
@@ -692,16 +692,16 @@ export var initReplaceStaticExpr;
         [
             define('btoa("0false")[1]', ATOB),
             define('"0".big()[10]', CAPITAL_HTML),
-            define('(RP_5_N + Date())[30]', GMT),
+            define('(RP_5_A + Date())[30]', GMT),
         ],
         'H':
         [
             define('btoa(true)[1]', ATOB),
             define('"".link()[3]', CAPITAL_HTML),
             define
-            ({ expr: '(RP_3_NO + Function("return history")())[11]', optimize: true }, HISTORY),
-            define('(RP_1_NO + Audio)[10]', HTMLAUDIOELEMENT),
-            define('(RP_3_NO + document)[11]', HTMLDOCUMENT),
+            ({ expr: '(RP_3_WA + Function("return history")())[11]', optimize: true }, HISTORY),
+            define('(RP_1_WA + Audio)[10]', HTMLAUDIOELEMENT),
+            define('(RP_3_WA + document)[11]', HTMLDOCUMENT),
         ],
         'I': '"Infinity"[0]',
         'J':
@@ -712,13 +712,13 @@ export var initReplaceStaticExpr;
         ],
         'K':
         [
-            define('(RP_5_N + "".strike())[10]', CAPITAL_HTML),
+            define('(RP_5_A + "".strike())[10]', CAPITAL_HTML),
             defineCharDefault(),
         ],
         'L':
         [
             define('btoa(".")[0]', ATOB),
-            define('(RP_3_NO + "".fontcolor())[11]', CAPITAL_HTML),
+            define('(RP_3_WA + "".fontcolor())[11]', CAPITAL_HTML),
             define('(Audio + [])[12]', HTMLAUDIOELEMENT),
             define('(document + [])[11]', HTMLDOCUMENT),
         ],
@@ -726,17 +726,17 @@ export var initReplaceStaticExpr;
         [
             define('btoa(0)[0]', ATOB),
             define('"".small()[2]', CAPITAL_HTML),
-            define('(RP_4_N + Date())[30]', GMT),
+            define('(RP_4_A + Date())[30]', GMT),
             define('(Audio + [])[11]', HTMLAUDIOELEMENT),
             define('(document + [])[10]', HTMLDOCUMENT),
         ],
         'N': '"NaN"[0]',
         'O':
         [
-            define('(RP_3_NO + PLAIN_OBJECT)[11]'),
+            define('(RP_3_WA + PLAIN_OBJECT)[11]'),
             define('btoa(NaN)[3]', ATOB),
             define('"".fontcolor()[2]', CAPITAL_HTML),
-            define('(RP_3_NO + Intl)[11]', PLAIN_INTL),
+            define('(RP_3_WA + Intl)[11]', PLAIN_INTL),
         ],
         'P':
         [
@@ -758,7 +758,7 @@ export var initReplaceStaticExpr;
             define('btoa("0true")[2]', ATOB),
             define('"".fontcolor()[10]', CAPITAL_HTML),
             define
-            ({ expr: '(RP_3_NO + "".matchAll())[11]', optimize: true }, REGEXP_STRING_ITERATOR),
+            ({ expr: '(RP_3_WA + "".matchAll())[11]', optimize: true }, REGEXP_STRING_ITERATOR),
         ],
         'S':
         [
@@ -778,21 +778,21 @@ export var initReplaceStaticExpr;
             ),
             define('btoa(NaN)[0]', ATOB),
             define('"".fontcolor([])[20]', CAPITAL_HTML),
-            define('(RP_3_NO + Date())[30]', GMT),
+            define('(RP_3_WA + Date())[30]', GMT),
             define('(Audio + [])[10]', HTMLAUDIOELEMENT),
-            define('(RP_1_NO + document)[10]', HTMLDOCUMENT),
+            define('(RP_1_WA + document)[10]', HTMLDOCUMENT),
             defineCharDefault({ atob: false }),
         ],
         'U':
         [
             define('btoa("1NaN")[1]', ATOB),
             define('"".sub()[2]', CAPITAL_HTML),
-            define('(RP_3_NO + Function("return toString")()())[11]', GLOBAL_UNDEFINED),
-            define('(RP_3_NO + Function("return{}.toString")()())[11]', OBJECT_UNDEFINED),
-            define('(RP_3_NO + PLAIN_OBJECT[TO_STRING].call())[11]', UNDEFINED),
-            define('(RP_3_NO + ARRAY_ITERATOR[TO_STRING].call())[11]', ARRAY_ITERATOR, UNDEFINED),
-            define('(RP_3_NO + Function("return Intl.toString")()())[11]', INTL, OBJECT_UNDEFINED),
-            define('(RP_3_NO + Intl[TO_STRING].call())[11]', INTL, UNDEFINED),
+            define('(RP_3_WA + Function("return toString")()())[11]', GLOBAL_UNDEFINED),
+            define('(RP_3_WA + Function("return{}.toString")()())[11]', OBJECT_UNDEFINED),
+            define('(RP_3_WA + PLAIN_OBJECT[TO_STRING].call())[11]', UNDEFINED),
+            define('(RP_3_WA + ARRAY_ITERATOR[TO_STRING].call())[11]', ARRAY_ITERATOR, UNDEFINED),
+            define('(RP_3_WA + Function("return Intl.toString")()())[11]', INTL, OBJECT_UNDEFINED),
+            define('(RP_3_WA + Intl[TO_STRING].call())[11]', INTL, UNDEFINED),
         ],
         'V':
         [
@@ -804,10 +804,10 @@ export var initReplaceStaticExpr;
         'W':
         [
             define('"w"[TO_UPPER_CASE]()'),
-            define('(self + RP_4_N)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW),
+            define('(self + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW),
             define('btoa(undefined)[1]', ATOB),
             define('(self + [])[11]', DOMWINDOW),
-            define('(RP_3_NO + self)[11]', WINDOW),
+            define('(RP_3_WA + self)[11]', WINDOW),
             defineCharDefault({ atob: false }),
         ],
         'X':
@@ -825,7 +825,7 @@ export var initReplaceStaticExpr;
         'Z':
         [
             define('btoa(false)[0]', ATOB),
-            define('(RP_3_NO + "".fontsize())[11]', CAPITAL_HTML),
+            define('(RP_3_WA + "".fontsize())[11]', CAPITAL_HTML),
         ],
         '[':
         [
@@ -857,7 +857,7 @@ export var initReplaceStaticExpr;
         'c':
         [
             defineFHCharAt('ANY_FUNCTION', 3),
-            define('(RP_5_N + ARRAY_ITERATOR)[10]', ARRAY_ITERATOR),
+            define('(RP_5_A + ARRAY_ITERATOR)[10]', ARRAY_ITERATOR),
         ],
         'd': '"undefined"[2]',
         'e': '"true"[3]',
@@ -871,7 +871,7 @@ export var initReplaceStaticExpr;
             define('101[TO_STRING]("21")[1]'),
             define('btoa("0false")[3]', ATOB),
         ],
-        'i': '([RP_5_N] + undefined)[10]',
+        'i': '([RP_5_A] + undefined)[10]',
         'j':
         [
             define('(PLAIN_OBJECT + [])[10]'),
@@ -890,7 +890,7 @@ export var initReplaceStaticExpr;
         'm':
         [
             defineFHCharAt('Number', 11),
-            define('(RP_6_SO + Function())[20]'),
+            define('(RP_6_S + Function())[20]'),
         ],
         'n': '"undefined"[1]',
         'o':
@@ -901,7 +901,7 @@ export var initReplaceStaticExpr;
         'p':
         [
             define('211[TO_STRING]("31")[1]'),
-            define('(RP_3_NO + btoa(undefined))[10]', ATOB),
+            define('(RP_3_WA + btoa(undefined))[10]', ATOB),
         ],
         'q':
         [
@@ -924,16 +924,16 @@ export var initReplaceStaticExpr;
             define('32[TO_STRING]("33")'),
             define('(self + [])[SLICE_OR_SUBSTR]("-2")[0]', ANY_WINDOW),
             define('atob("undefined0")[1]', ATOB),
-            define('(RP_4_N + self)[20]', DOMWINDOW),
+            define('(RP_4_A + self)[20]', DOMWINDOW),
             define('(self + [])[13]', WINDOW),
         ],
         'x':
         [
             define('101[TO_STRING]("34")[1]'),
             define('btoa("falsefalse")[10]', ATOB),
-            define('(RP_1_NO + sidebar)[10]', EXTERNAL),
+            define('(RP_1_WA + sidebar)[10]', EXTERNAL),
         ],
-        'y': '(RP_3_NO + [Infinity])[10]',
+        'y': '(RP_3_WA + [Infinity])[10]',
         'z':
         [
             define('35[TO_STRING]("36")'),
@@ -954,7 +954,7 @@ export var initReplaceStaticExpr;
 
         '\x8a':
         [
-            define('(RP_4_N + atob("NaNundefined"))[10]', ATOB),
+            define('(RP_4_A + atob("NaNundefined"))[10]', ATOB),
         ],
         '\x8d':
         [
@@ -1175,12 +1175,12 @@ export var initReplaceStaticExpr;
             ({ expr: '(RegExp("\\n") + [])[1]', solutionType: SolutionType.STRING }, ESC_REGEXP_LF),
             define
             (
-                { expr: '(RP_5_N + RegExp("".italics()))[10]', solutionType: SolutionType.STRING },
+                { expr: '(RP_5_A + RegExp("".italics()))[10]', solutionType: SolutionType.STRING },
                 ESC_REGEXP_SLASH
             ),
             define
             (
-                { expr: '(RP_3_NO + RegExp("".sub()))[10]', solutionType: SolutionType.STRING },
+                { expr: '(RP_3_WA + RegExp("".sub()))[10]', solutionType: SolutionType.STRING },
                 ESC_REGEXP_SLASH
             ),
             define
@@ -1197,7 +1197,7 @@ export var initReplaceStaticExpr;
             ),
             define
             (
-                { expr: '(RP_5_N + RegExp(Function()))[30]', solutionType: SolutionType.STRING },
+                { expr: '(RP_5_A + RegExp(Function()))[30]', solutionType: SolutionType.STRING },
                 ESC_REGEXP_LF,
                 FUNCTION_22_LF
             ),
@@ -1218,14 +1218,14 @@ export var initReplaceStaticExpr;
             ),
             define
             (
-                { expr: '(RP_3_NO + RegExp(FILL))[21]', solutionType: SolutionType.STRING },
+                { expr: '(RP_3_WA + RegExp(FILL))[21]', solutionType: SolutionType.STRING },
                 ESC_REGEXP_LF,
                 FF_SRC,
                 FILL
             ),
             define
             (
-                { expr: '(RP_3_NO + RegExp(FLAT))[21]', solutionType: SolutionType.STRING },
+                { expr: '(RP_3_WA + RegExp(FLAT))[21]', solutionType: SolutionType.STRING },
                 ESC_REGEXP_LF,
                 FF_SRC,
                 FLAT
@@ -1342,14 +1342,15 @@ export var initReplaceStaticExpr;
 
         // Function body extra padding blocks: prepended to a function to align the function's body
         // at the same position in different engines, assuming that the function header is aligned.
-        // The number after "FBEP_" is the maximum character overhead. The letters after the last
-        // underscore have the same meaning as in regular padding blocks.
+        // The number after "FBEP_" is the maximum character overhead.
+        // The postfix that follows the maximum character overhead has the same meaning as in
+        // regular padding blocks.
 
         FBEP_4_S:
         [
-            define('[[true][+(RP_3_NO + FILTER)[30]]]'),
-            define('[[true][+(RP_5_N + FILL)[30]]]', FILL),
-            define('[[true][+(RP_5_N + FLAT)[30]]]', FLAT),
+            define('[[true][+(RP_3_WA + FILTER)[30]]]'),
+            define('[[true][+(RP_5_A + FILL)[30]]]', FILL),
+            define('[[true][+(RP_5_A + FLAT)[30]]]', FLAT),
         ],
         FBEP_9_U:
         [
@@ -1359,26 +1360,27 @@ export var initReplaceStaticExpr;
 
         // Function body padding blocks: prepended to a function to align the function's body at the
         // same position in different engines.
-        // The number after "FBP_" is the maximum character overhead. The letters after the last
-        // underscore have the same meaning as in regular padding blocks.
+        // The number after "FBP_" is the maximum character overhead.
+        // The postfix that follows the maximum character overhead has the same meaning as in
+        // regular padding blocks.
 
         FBP_5_S:
         [
-            define('[[false][+IS_IE_SRC_N]]', NO_FF_SRC),
+            define('[[false][+IS_IE_SRC_A]]', NO_FF_SRC),
         ],
-        FBP_7_NO:
+        FBP_7_WA:
         [
             define
             (
                 {
-                    expr: '+("10" + [(RP_4_N + FILTER)[40]] + "00000")',
+                    expr: '+("10" + [(RP_4_A + FILTER)[40]] + "00000")',
                     solutionType: SolutionType.WEAK_ALGEBRAIC,
                 }
             ),
             define
             (
                 {
-                    expr: '+("10" + [(RP_6_SO + FILL)[40]] + "00000")',
+                    expr: '+("10" + [(RP_6_S + FILL)[40]] + "00000")',
                     solutionType: SolutionType.WEAK_ALGEBRAIC,
                 },
                 FILL
@@ -1386,18 +1388,18 @@ export var initReplaceStaticExpr;
             define
             (
                 {
-                    expr: '+("10" + [(RP_6_SO + FLAT)[40]] + "00000")',
+                    expr: '+("10" + [(RP_6_S + FLAT)[40]] + "00000")',
                     solutionType: SolutionType.WEAK_ALGEBRAIC,
                 },
                 FLAT
             ),
         ],
-        FBP_8_NO:
+        FBP_8_WA:
         [
             define
             (
                 {
-                    expr: '+("1000" + (RP_5_N + FILTER + 0)[40] + "000")',
+                    expr: '+("1000" + (RP_5_A + FILTER + 0)[40] + "000")',
                     solutionType: SolutionType.WEAK_ALGEBRAIC,
                 }
             ),
@@ -1434,19 +1436,20 @@ export var initReplaceStaticExpr;
 
         FH_SHIFT_1:
         [
-            define('[+IS_IE_SRC_N]'),
+            define('[+IS_IE_SRC_A]'),
         ],
         FH_SHIFT_3:
         [
-            define('[2 + IS_IE_SRC_N]'),
+            define('[2 + IS_IE_SRC_A]'),
         ],
 
         // Function header padding blocks: prepended to a function to align the function's header at
         // the same position in different engines.
         // The number after "FHP_" is the maximum character overhead.
-        // The letters after the last underscore have the same meaning as in regular padding blocks.
+        // The postfix that follows the maximum character overhead has the same meaning as in
+        // regular padding blocks.
 
-        FHP_3_NO:
+        FHP_3_WA:
         [
             define
             (
@@ -1464,16 +1467,16 @@ export var initReplaceStaticExpr;
                 INCR_CHAR
             ),
         ],
-        FHP_5_N:
+        FHP_5_A:
         [
-            define({ expr: 'IS_IE_SRC_N', solutionType: SolutionType.ALGEBRAIC }),
+            define({ expr: 'IS_IE_SRC_A', solutionType: SolutionType.ALGEBRAIC }),
         ],
         FHP_8_S:
         [
-            define({ expr: '[FHP_3_NO] + RP_5_N', solutionType: SolutionType.COMBINED_STRING }),
+            define({ expr: '[FHP_3_WA] + RP_5_A', solutionType: SolutionType.COMBINED_STRING }),
             define
             (
-                { expr: 'FHP_5_N + [RP_3_NO]', solutionType: SolutionType.PREFIXED_STRING },
+                { expr: 'FHP_5_A + [RP_3_WA]', solutionType: SolutionType.PREFIXED_STRING },
                 INCR_CHAR
             ),
         ],
@@ -1481,7 +1484,7 @@ export var initReplaceStaticExpr;
         // Conditional padding blocks.
         //
         // true if feature IE_SRC is available; false otherwise.
-        IS_IE_SRC_N:
+        IS_IE_SRC_A:
         [
             define
             ({ expr: '!!(+(ANY_FUNCTION + [])[0] + true)', solutionType: SolutionType.ALGEBRAIC }),
@@ -1495,24 +1498,21 @@ export var initReplaceStaticExpr;
         // Regular padding blocks.
         //
         // The number after "RP_" is the character overhead.
-        // The postifx "_S" in the name indicates that the constant always evaluates to a string or
-        // an array.
-        // The postfix "_N" in the name indicates that the constant does not always evaluate to a
-        // string or an array, but it never evaluates to undefined.
-        // The postfix "_U" in the name indicates that the constant can evaluate to undefined.
-        // A trailing "O" as in "_NO" and "_SO" is appended to the name if the constant resolves to
-        // an expression containing a plus sign ("+") out of brackets not preceded by an exclamation
-        // mark ("!"). When concatenating such a constant with other expressions, the outer plus
-        // constant should be placed in the beginning whenever possible in order to save an extra
-        // pair of brackets in the resolved expressions.
+        // The postifx that follows it indicates the solution type.
+        //
+        // • "_U":  environment hybrid undefined and algebraic
+        // • "_A":  algebraic
+        // • "_WA": weak algebraic
+        // • "_S":  object, prefixed string or combined string
+        // • "_WS": weak prefixed string
 
         RP_0_S:     { expr: '[]',       solutionType: SolutionType.OBJECT },
-        RP_1_NO:    { expr: '0',        solutionType: SolutionType.WEAK_ALGEBRAIC },
-        RP_2_SO:    { expr: '"00"',     solutionType: SolutionType.WEAK_PREFIXED_STRING },
-        RP_3_NO:    { expr: 'NaN',      solutionType: SolutionType.WEAK_ALGEBRAIC },
-        RP_4_N:     { expr: 'true',     solutionType: SolutionType.ALGEBRAIC },
-        RP_5_N:     { expr: 'false',    solutionType: SolutionType.ALGEBRAIC },
-        RP_6_SO:    { expr: '"0false"', solutionType: SolutionType.COMBINED_STRING },
+        RP_1_WA:    { expr: '0',        solutionType: SolutionType.WEAK_ALGEBRAIC },
+        RP_2_WS:    { expr: '"00"',     solutionType: SolutionType.WEAK_PREFIXED_STRING },
+        RP_3_WA:    { expr: 'NaN',      solutionType: SolutionType.WEAK_ALGEBRAIC },
+        RP_4_A:     { expr: 'true',     solutionType: SolutionType.ALGEBRAIC },
+        RP_5_A:     { expr: 'false',    solutionType: SolutionType.ALGEBRAIC },
+        RP_6_S:     { expr: '"0false"', solutionType: SolutionType.COMBINED_STRING },
     });
 
     FB_EXPR_INFOS =
@@ -1731,7 +1731,7 @@ export var initReplaceStaticExpr;
         20:
         [
             define(10),
-            define({ block: 'RP_6_SO', indexer: 3 + ' + FH_SHIFT_1' }, NO_V8_SRC),
+            define({ block: 'RP_6_S', indexer: 3 + ' + FH_SHIFT_1' }, NO_V8_SRC),
             define(0, V8_SRC),
             define(5, IE_SRC),
             define(6, FF_SRC),
@@ -1740,7 +1740,7 @@ export var initReplaceStaticExpr;
         [
             define(7),
             define(9, NO_FF_SRC),
-            define({ block: 'RP_3_NO', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
+            define({ block: 'RP_3_WA', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
             define(0, V8_SRC),
             define(3, IE_SRC),
             define(3, FF_SRC),
@@ -1750,14 +1750,14 @@ export var initReplaceStaticExpr;
             define(7),
             define(5, NO_FF_SRC),
             define(5, NO_IE_SRC),
-            define({ block: 'RP_1_NO', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
+            define({ block: 'RP_1_WA', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
             define(0, IE_SRC),
             define(1, FF_SRC),
         ],
         30:
         [
             define(10),
-            define({ block: 'RP_6_SO', indexer: 4 + ' + FH_SHIFT_1' }, NO_V8_SRC),
+            define({ block: 'RP_6_S', indexer: 4 + ' + FH_SHIFT_1' }, NO_V8_SRC),
             define(0, V8_SRC),
             define(5, IE_SRC),
             define(6, FF_SRC),
@@ -1767,7 +1767,7 @@ export var initReplaceStaticExpr;
             define(8),
             define(9, NO_FF_SRC),
             define(9, NO_IE_SRC),
-            define({ block: 'RP_4_N', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
+            define({ block: 'RP_4_A', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
             define(0, V8_SRC),
             define(3, IE_SRC),
             define(4, FF_SRC),
@@ -1778,7 +1778,7 @@ export var initReplaceStaticExpr;
             define(9, NO_FF_SRC),
             define(6, INCR_CHAR, NO_FF_SRC),
             define(9, NO_IE_SRC),
-            define({ block: 'RP_2_SO', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
+            define({ block: 'RP_2_WS', indexer: '4 + FH_SHIFT_1' }, NO_V8_SRC),
             define(6, V8_SRC),
             define(1, IE_SRC),
             define(3, FF_SRC),

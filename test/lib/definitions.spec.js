@@ -458,207 +458,136 @@ sidebar,
         {
             var paramDataMap =
             {
-                Array: { validator: isExpected(Array) },
+                Array: isExpected(Array),
                 Audio:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBe(Audio);
-                    },
+                    this.toBe(Audio);
                 },
-                Boolean: { validator: isExpected(Boolean) },
-                Date: { validator: isExpected(Date) },
-                Function: { validator: isExpected(Function) },
+                Boolean: isExpected(Boolean),
+                Date: isExpected(Date),
+                Function: isExpected(Function),
                 Intl:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBe(Intl);
-                    },
+                    this.toBe(Intl);
                 },
                 Node:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBe(Node);
-                    },
+                    this.toBe(Node);
                 },
-                Number: { validator: isExpected(Number) },
-                Object: { validator: isExpected(Object) },
-                RegExp: { validator: isExpected(RegExp) },
-                String: { validator: isExpected(String) },
+                Number: isExpected(Number),
+                Object: isExpected(Object),
+                RegExp: isExpected(RegExp),
+                String: isExpected(String),
                 atob:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBe(atob);
-                    },
+                    this.toBe(atob);
                 },
                 btoa:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBe(btoa);
-                    },
+                    this.toBe(btoa);
                 },
                 document:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBe(document);
-                    },
+                    this.toBe(document);
                 },
-                escape: { validator: isExpected(escape) },
+                escape: isExpected(escape),
                 self:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBe(self);
-                    },
+                    this.toBe(self);
                 },
                 sidebar:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBe(sidebar);
-                    },
+                    this.toBe(sidebar);
                 },
-                unescape: { validator: isExpected(unescape) },
+                unescape: isExpected(unescape),
                 ANY_FUNCTION:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBeNativeFunction();
-                    },
+                    this.toBeNativeFunction();
                 },
                 ARRAY_ITERATOR:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        var arrayIteratorPrototype = Object.getPrototypeOf([].entries());
-                        this.toHavePrototype(arrayIteratorPrototype);
-                    },
+                    var arrayIteratorPrototype = Object.getPrototypeOf([].entries());
+                    this.toHavePrototype(arrayIteratorPrototype);
                 },
                 ESCAPING_BACKSLASH:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBe('\\');
-                    },
+                    this.toBe('\\');
                 },
                 FILL:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBe(Array.prototype.fill);
-                    },
+                    this.toBe(Array.prototype.fill);
                 },
                 FILTER:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBe(Array.prototype.filter);
-                    },
+                    this.toBe(Array.prototype.filter);
                 },
                 FLAT:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBe(Array.prototype.flat);
-                    },
+                    this.toBe(Array.prototype.flat);
                 },
                 FROM_CHAR_CODE:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toMatch(/^from(?:CharCode|CodePoint)$/);
-                    },
+                    this.toMatch(/^from(?:CharCode|CodePoint)$/);
                 },
                 F_A_L_S_E:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toEqual(['f', 'a', 'l', 's', 'e']);
-                    },
+                    this.toEqual(['f', 'a', 'l', 's', 'e']);
                 },
                 LOCALE_AR:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toMatch(/^ar(-td)?$/);
-                    },
+                    this.toMatch(/^ar(-td)?$/);
                 },
                 PLAIN_OBJECT:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBePlainObject();
-                    },
+                    this.toBePlainObject();
                 },
                 SLICE_OR_FLAT:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toMatch(/^(?:slice|flat)$/);
-                    },
+                    this.toMatch(/^(?:slice|flat)$/);
                 },
                 SLICE_OR_SUBSTR:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toMatch(/^(?:slice|substr)$/);
-                    },
+                    this.toMatch(/^(?:slice|substr)$/);
                 },
                 TO_STRING:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBe('toString');
-                    },
+                    this.toBe('toString');
                 },
                 TO_UPPER_CASE:
+                function ()
                 {
-                    validator:
-                    function ()
-                    {
-                        this.toBe('toUpperCase');
-                    },
+                    this.toBe('toUpperCase');
                 },
-
-                FBEP_9_U:
-                { expectedSolutionTypes: [SolutionType.UNDEFINED, SolutionType.ALGEBRAIC] },
-                FBP_9_U:
-                { expectedSolutionTypes: [SolutionType.UNDEFINED, SolutionType.ALGEBRAIC] },
             };
             var paramDataList =
             JScrewIt.debug.getConstantNames().map
             (
                 function (constant)
                 {
-                    var paramData =
-                    paramDataMap.hasOwnProperty(constant) && paramDataMap[constant] || { };
-                    paramData.constant = constant;
+                    var validator =
+                    paramDataMap.hasOwnProperty(constant) && paramDataMap[constant] || null;
+                    var paramData = { constant: constant, validator: validator };
                     return paramData;
                 }
             );
@@ -667,8 +596,26 @@ sidebar,
                 '#.constant',
                 function (paramData)
                 {
-                    testConstant
-                    (paramData.constant, paramData.validator, paramData.expectedSolutionTypes);
+                    var constant = paramData.constant;
+                    var expectedSolutionTypes;
+                    if (/_U$/.test(constant))
+                        expectedSolutionTypes = [SolutionType.UNDEFINED, SolutionType.ALGEBRAIC];
+                    else if (/_A$/.test(constant))
+                        expectedSolutionTypes = [SolutionType.ALGEBRAIC];
+                    else if (/_WA$/.test(constant))
+                        expectedSolutionTypes = [SolutionType.WEAK_ALGEBRAIC];
+                    else if (/_S$/.test(constant))
+                    {
+                        expectedSolutionTypes =
+                        [
+                            SolutionType.OBJECT,
+                            SolutionType.PREFIXED_STRING,
+                            SolutionType.COMBINED_STRING,
+                        ];
+                    }
+                    else if (/_WS$/.test(constant))
+                        expectedSolutionTypes = [SolutionType.WEAK_PREFIXED_STRING];
+                    testConstant(constant, paramData.validator, expectedSolutionTypes);
                 }
             );
         }
