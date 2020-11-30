@@ -95,8 +95,8 @@ export default function createEngineSelectionBox()
     'the following circumstances.' +
     '<ul>' +
     '<li>To encode a string or a number and embed it in a JavaScript file in a place where ' +
-    'strict mode code is expected, like in a scope containing a use strict directive or in a ' +
-    'class body.' +
+    'strict mode code is expected, like in a scope containing a <code>"use strict"</code> ' +
+    'statement or in a class body.' +
     '<li>To encode a script and run it in Node.js with the option <code>--use_strict</code>.' +
     '<li>To encode an ECMAScript module. Note that module support in JSFuck is <em>very</em> ' +
     'limited, as <code>import</code> and <code>export</code> statements don\'t work at all. ' +
