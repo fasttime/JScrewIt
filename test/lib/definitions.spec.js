@@ -259,23 +259,6 @@ sidebar,
 
         var FH_VARIETIES = [['IE_SRC'], ['NO_IE_SRC']];
 
-        var SPECIAL_CASES_MAP =
-        {
-            'K':
-            {
-                'complete':
-                function ()
-                {
-                    var featureNames = ['ARRAY_ITERATOR', 'ATOB', 'CAPITAL_HTML'];
-                    var featureObj = Feature(featureNames);
-                    var encoder = getPoolEncoder(featureObj);
-                    var actualLength = encoder.resolveCharacter('K').length;
-                    var defaultLength = encoder.defaultResolveCharacter('K').length;
-                    expect(actualLength).not.toBeGreaterThan(defaultLength);
-                },
-            },
-        };
-
         var char = String.fromCharCode(charCode);
         var entries = JScrewIt.debug.getCharacterEntries(char);
         if (entries)
@@ -293,19 +276,6 @@ sidebar,
         {
             testDefault();
             testAtob();
-        }
-        if (SPECIAL_CASES_MAP.hasOwnProperty(char))
-        {
-            var specialCases = SPECIAL_CASES_MAP[char];
-            var descriptions = Object.keys(specialCases);
-            descriptions.forEach
-            (
-                function (description)
-                {
-                    var specialCase = specialCases[description];
-                    it(description, specialCase);
-                }
-            );
         }
     }
 
