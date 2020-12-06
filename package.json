@@ -39,7 +39,7 @@
   "scripts": {
     "build": "npm install && gulp",
     "docs": "gulp docs",
-    "feature-info": "node build/legacy/feature-info.js",
+    "feature-info": "node dev/legacy/feature-info.js",
     "test": "mocha --check-leaks --ui=ebdd test/{*,*/*}.spec.js"
   },
   "devDependencies": {

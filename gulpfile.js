@@ -131,15 +131,14 @@ task
                 },
             },
             {
-                src:
-                ['build/**/*.js', 'gulpfile.js', 'test/patch-cov-source.js', '!build/legacy/**'],
+                src: ['dev/**/*.js', 'gulpfile.js', 'test/patch-cov-source.js', '!dev/legacy/**'],
                 envs: 'node',
                 parserOptions: { ecmaVersion: 9 },
             },
             {
                 src:
                 [
-                    'build/legacy/**/*.js',
+                    'dev/legacy/**/*.js',
                     'screw.js',
                     'src/ui/worker.js',
                     'test/**/*.js',
@@ -249,7 +248,7 @@ task
 task
 (
     'make-feature-doc',
-    () => createFileFromTemplate('./build/make-feature-doc', 'src/Features.md.hbs', 'Features.md'),
+    () => createFileFromTemplate('./dev/make-feature-doc', 'src/Features.md.hbs', 'Features.md'),
 );
 
 task
@@ -257,7 +256,7 @@ task
     'make-feature-types',
     () =>
     createFileFromTemplate
-    ('./build/make-feature-types', 'src/lib/feature-all.d.ts.hbs', 'lib/feature-all.d.ts'),
+    ('./dev/make-feature-types', 'src/lib/feature-all.d.ts.hbs', 'lib/feature-all.d.ts'),
 );
 
 task
