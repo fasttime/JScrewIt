@@ -1,0 +1,171 @@
+#!/usr/bin/env node
+
+import { Client }                                           from 'basic-ftp';
+import { constants as fsConstants, promises as fsPromises } from 'fs';
+import { dirname }                                          from 'path';
+import { Readable }                                         from 'stream';
+import { fileURLToPath }                                    from 'url';
+
+const JSCREWIT_MIN_PATH = 'lib/jscrewit.min.js';
+const REMOTE_HOME = '/html';
+
+{
+    const path = fileURLToPath(import.meta.url);
+    const __dirname = dirname(dirname(path));
+    process.chdir(__dirname);
+}
+(async () =>
+{
+    {
+        const promises = [verifyReadable(JSCREWIT_MIN_PATH), verifyReadable('ui/ui.js')];
+        const results = await Promise.all(promises);
+        const anyError = results.some(result => !result);
+        if (anyError)
+        {
+            console.error('Please, run \'npm run build\' before deploying.');
+            process.exitCode = 1;
+            return;
+        }
+    }
+    const ftpAccessOptions = await readFTPAccessOptions();
+    if (ftpAccessOptions == null)
+        return;
+    const client = new Client();
+    try
+    {
+        await client.access(ftpAccessOptions);
+
+        await client.ensureDir(REMOTE_HOME);
+        const readable = await createIndex();
+        await client.uploadFrom(readable, 'index.html');
+
+        await client.ensureDir('lib');
+        await client.clearWorkingDir();
+        await client.uploadFrom(JSCREWIT_MIN_PATH, 'jscrewit.min.js');
+
+        await client.ensureDir('../ui');
+        await client.clearWorkingDir();
+        await client.uploadFromDir('ui');
+    }
+    catch (error)
+    {
+        console.error(error);
+    }
+    finally
+    {
+        client.close();
+    }
+}
+)();
+
+async function createIndex()
+{
+    const input = await readFile('JScrewIt.html');
+    const { groups: { start, end } } = input.match(/^(?<start>.*)\n\n(?<end><body>.*)\n$/s);
+    const output =
+    `${start}
+<!-- Fork me ribbon style element inserted -->
+<style>
+
+#forkmeongithub
+{
+    background: #00c;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .333);
+    color: white;
+    display: none;
+    font: bold 12.5px/36px sans-serif;
+    position: fixed;
+    right: calc(60px * (1 - 1.414) - 36px / 2 - (6px + 3px) * 1.414);
+    text-align: center;
+    text-decoration: none;
+    top: calc(60px - 36px / 2);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-transition: font .25s;
+    transition: font .25s;
+    width: calc((60px + (6px + 3px)) * 2 * 1.414 + 36px);
+}
+
+@media screen and (min-width: 800px) { #forkmeongithub { display: block; } }
+
+#forkmeongithub::after { bottom: 1px; }
+
+#forkmeongithub::before { top: 1px; }
+
+#forkmeongithub::after, #forkmeongithub::before
+{
+    background: #eee;
+    content: '';
+    display: block;
+    height: 1.33px;
+    left: 0;
+    position: absolute;
+    right: 0;
+}
+
+#forkmeongithub:hover { font-size: 15px; }
+
+#forkmeongithub:active:hover { background: #c60; }
+
+</style>
+<!-- End of insertion -->
+${end}
+<!-- Fork me ribbon HTML inserted -->
+<a id='forkmeongithub' href='https://github.com/fasttime/JScrewIt'>Fork me on GitHub</a>
+<!-- End of insertion -->
+`;
+
+    const readable = Readable.from([output]);
+    return readable;
+}
+
+async function readFTPAccessOptions()
+{
+    const FILE_NAME = '.ftp-access-options.json';
+
+    let content;
+    try
+    {
+        content = await readFile(FILE_NAME);
+    }
+    catch (error)
+    {
+        if (error.code === 'ENOENT')
+        {
+            console.error
+            (
+                `Please, create a file named '${FILE_NAME}' in JScrewIt folder with basic-ftp ` +
+                'access options.',
+            );
+            return;
+        }
+        throw error;
+    }
+    const ftpAccessOptions = JSON.parse(content);
+    return ftpAccessOptions;
+}
+
+function readFile(path)
+{
+    const promise = fsPromises.readFile(path, 'utf-8');
+    return promise;
+}
+
+async function verifyReadable(filename)
+{
+    try
+    {
+        await fsPromises.access(filename, fsConstants.R_OK);
+    }
+    catch (error)
+    {
+        if (error.code === 'ENOENT')
+        {
+            console.error(`File '${filename}' not found in JScrewIt folder.`);
+            return false;
+        }
+        throw error;
+    }
+    return true;
+}

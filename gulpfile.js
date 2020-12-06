@@ -133,7 +133,12 @@ task
             {
                 src: ['dev/**/*.js', 'gulpfile.js', 'test/patch-cov-source.js', '!dev/legacy/**'],
                 envs: 'node',
-                parserOptions: { ecmaVersion: 9 },
+                parserOptions: { ecmaVersion: 2020 },
+            },
+            {
+                src: ['dev/**/*.mjs'],
+                envs: 'node',
+                parserOptions: { ecmaVersion: 2020, sourceType: 'module' },
             },
             {
                 src:
