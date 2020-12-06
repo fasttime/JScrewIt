@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import { Client }                                           from 'basic-ftp';
-import { constants as fsConstants, promises as fsPromises } from 'fs';
-import { dirname }                                          from 'path';
-import { Readable }                                         from 'stream';
-import { fileURLToPath }                                    from 'url';
+import { Client }                                                           from 'basic-ftp';
+import { constants as fsConstants, promises as fsPromises, readFileSync }   from 'fs';
+import { dirname }                                                          from 'path';
+import { Readable }                                                         from 'stream';
+import { fileURLToPath }                                                    from 'url';
 
 const JSCREWIT_MIN_PATH = 'lib/jscrewit.min.js';
 const REMOTE_HOME = '/html';
@@ -16,20 +16,17 @@ const REMOTE_HOME = '/html';
 }
 (async () =>
 {
+    if (!await verifyBuild())
     {
-        const promises = [verifyReadable(JSCREWIT_MIN_PATH), verifyReadable('ui/ui.js')];
-        const results = await Promise.all(promises);
-        const anyError = results.some(result => !result);
-        if (anyError)
-        {
-            console.error('Please, run \'npm run build\' before deploying.');
-            process.exitCode = 1;
-            return;
-        }
-    }
-    const ftpAccessOptions = await readFTPAccessOptions();
-    if (ftpAccessOptions == null)
+        process.exitCode = 1;
         return;
+    }
+    const ftpAccessOptions = readFTPAccessOptions();
+    if (ftpAccessOptions == null)
+    {
+        process.exitCode = 1;
+        return;
+    }
     const client = new Client();
     try
     {
@@ -120,24 +117,18 @@ ${end}
     return readable;
 }
 
-async function readFTPAccessOptions()
+function readFTPAccessOptions()
 {
-    const FILE_NAME = '.ftp-access-options.json';
-
     let content;
     try
     {
-        content = await readFile(FILE_NAME);
+        content = readFileSync(process.stdin.fd, 'utf-8');
     }
     catch (error)
     {
-        if (error.code === 'ENOENT')
+        if (error.code === 'EAGAIN')
         {
-            console.error
-            (
-                `Please, create a file named '${FILE_NAME}' in JScrewIt folder with basic-ftp ` +
-                'access options.',
-            );
+            console.error('Please, provide basic-ftp access options in JSON format through stdin.');
             return;
         }
         throw error;
@@ -150,6 +141,19 @@ function readFile(path)
 {
     const promise = fsPromises.readFile(path, 'utf-8');
     return promise;
+}
+
+async function verifyBuild()
+{
+    const promises = [verifyReadable(JSCREWIT_MIN_PATH), verifyReadable('ui/ui.js')];
+    const results = await Promise.all(promises);
+    const anyError = results.some(result => !result);
+    if (anyError)
+    {
+        console.error('Please, run \'npm run build\' before deploying.');
+        return false;
+    }
+    return true;
 }
 
 async function verifyReadable(filename)
