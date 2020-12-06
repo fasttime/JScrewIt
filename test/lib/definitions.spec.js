@@ -486,8 +486,8 @@ sidebar,
                 ARRAY_ITERATOR:
                 function ()
                 {
-                    var arrayIteratorPrototype = Object.getPrototypeOf([].entries());
-                    this.toHavePrototype(arrayIteratorPrototype);
+                    var prototype = Object.getPrototypeOf([].entries());
+                    this.toHavePrototype(prototype);
                 },
                 ESCAPING_BACKSLASH:
                 function ()
@@ -528,6 +528,12 @@ sidebar,
                 function ()
                 {
                     this.toBePlainObject();
+                },
+                REGEXP_STRING_ITERATOR:
+                function ()
+                {
+                    var prototype = Object.getPrototypeOf(''.matchAll());
+                    this.toHavePrototype(prototype);
                 },
                 SLICE_OR_FLAT:
                 function ()

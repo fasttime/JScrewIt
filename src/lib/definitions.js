@@ -682,6 +682,7 @@ export var initReplaceStaticExpr;
             define('(RP_5_A + "".link())[10]', CAPITAL_HTML),
             define('(RP_3_WA + sidebar)[11]', EXTERNAL),
             define('(RP_3_WA + Audio)[21]', HTMLAUDIOELEMENT),
+            define('(REGEXP_STRING_ITERATOR + [])[11]', REGEXP_STRING_ITERATOR),
         ],
         'F':
         [
@@ -757,8 +758,7 @@ export var initReplaceStaticExpr;
             defineFHCharAt('RegExp', 9),
             define('btoa("0true")[2]', ATOB),
             define('"".fontcolor()[10]', CAPITAL_HTML),
-            define
-            ({ expr: '(RP_3_WA + "".matchAll())[11]', optimize: true }, REGEXP_STRING_ITERATOR),
+            define('(RP_3_WA + REGEXP_STRING_ITERATOR)[11]', REGEXP_STRING_ITERATOR),
         ],
         'S':
         [
@@ -1295,6 +1295,10 @@ export var initReplaceStaticExpr;
         PLAIN_OBJECT:
         [
             define('Function("return{}")()'),
+        ],
+        REGEXP_STRING_ITERATOR:
+        [
+            define({ expr: '"".matchAll()', optimize: true }, REGEXP_STRING_ITERATOR),
         ],
         SLICE_OR_FLAT:
         [
