@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 
-import { Client }                                                           from 'basic-ftp';
-import { constants as fsConstants, promises as fsPromises, readFileSync }   from 'fs';
-import { dirname }                                                          from 'path';
-import { Readable }                                                         from 'stream';
-import { fileURLToPath }                                                    from 'url';
+import { Client }           from 'basic-ftp';
+
+import { constants as fsConstants, promises as fsPromises, fstatSync, readFileSync }
+from 'fs';
+
+import { dirname }          from 'path';
+import { Readable }         from 'stream';
+import { fileURLToPath }    from 'url';
 
 const JSCREWIT_MIN_PATH = 'lib/jscrewit.min.js';
 const REMOTE_HOME = '/html';
@@ -122,11 +125,16 @@ function readFTPAccessOptions()
     let content;
     try
     {
-        content = readFileSync(process.stdin.fd, 'utf-8');
+        const { fd } = process.stdin;
+        // Fail with code "EISDIR" on Windows if stdin is not ready.
+        fstatSync(fd);
+        // Fail with code "EAGAIN" on Unix if stdin is not ready.
+        content = readFileSync(fd, 'utf-8');
     }
     catch (error)
     {
-        if (error.code === 'EAGAIN')
+        const { code } = error;
+        if (code === 'EISDIR' || code === 'EAGAIN')
         {
             console.error('Please, provide basic-ftp access options in JSON format through stdin.');
             return;
