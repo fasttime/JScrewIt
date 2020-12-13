@@ -2,7 +2,6 @@
 /*
 global
 JScrewIt,
-art,
 compMenu,
 controls,
 formatValue,
@@ -12,9 +11,9 @@ outputArea,
 stats,
 */
 
-import '../../.tmp-src/art';
 import './result-format';
 
+import art                      from '../../.tmp-src/art';
 import WORKER_SRC               from '../../.tmp-src/worker';
 import createButton             from './button';
 import createEngineSelectionBox from './engine-selection-box';

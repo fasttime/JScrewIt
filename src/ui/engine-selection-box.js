@@ -1,6 +1,7 @@
 /* eslint-env browser */
-/* global JScrewIt, art */
+/* global JScrewIt */
 
+import art              from '../../.tmp-src/art';
 import showModalBox     from './modal-box';
 import { setTabindex }  from './tabindex';
 

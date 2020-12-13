@@ -1,6 +1,6 @@
 /* eslint-env browser */
-/* global art */
 
+import art              from '../../.tmp-src/art';
 import createButton     from './button';
 import { setTabindex }  from './tabindex';
 

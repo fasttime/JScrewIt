@@ -1,5 +1,6 @@
 /* eslint-env browser */
-/* global art */
+
+import art from '../../.tmp-src/art';
 
 export default function createRoll()
 {

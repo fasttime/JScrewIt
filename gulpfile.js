@@ -44,11 +44,9 @@ async function createFileFromTemplate(createContextModuleId, templateSrcPath, ou
 
 async function makeArt()
 {
-    const { promise }               = require('art-js');
-    const { promises: { mkdir } }   = require('fs');
+    const { promise } = require('art-js');
 
-    await mkdir('.tmp-src', { recursive: true });
-    await promise('.tmp-src/art.js', { css: true, off: true, on: true });
+    await promise('.tmp-src', { art: { css: true, off: true, on: true }, esModule: true });
 }
 
 function makeWorker()
