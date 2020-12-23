@@ -106,10 +106,7 @@ async function doAdd()
             {
                 concurrency = Number(match.groups.concurrency);
                 if (concurrency !== Math.floor(concurrency) || concurrency < 1 || concurrency > 10)
-                {
-                    console.error('Concurrency must specify an integer between 1 and 10', sequence);
-                    throw ARG_ERROR;
-                }
+                    fail('Concurrency must specify an integer between 1 and 10', sequence);
             }
             else
             {
@@ -178,6 +175,8 @@ function doSort()
     {
         let counter;
         const [,,, arg] = argv;
+        if (arg == null)
+            fail('Missing required argument');
         switch (arg)
         {
         case 'jscrewit-timestamp':
@@ -193,8 +192,7 @@ function doSort()
             counter = ({ solutions: { length } }) => length;
             break;
         default:
-            console.error('Unexpected argument "%s"', arg);
-            throw ARG_ERROR;
+            fail('Unexpected argument "%s"', arg);
         }
         return counter;
     }
@@ -237,6 +235,12 @@ function doWanted()
 {
     const wantedChars = getWantedCharacters();
     console.log(formatCharacters(wantedChars));
+}
+
+function fail(message, ...optionalParams)
+{
+    console.error(message, ...optionalParams);
+    throw ARG_ERROR;
 }
 
 function formatCharacter(char)
@@ -319,19 +323,13 @@ function parseArguments(parseSequence)
                 if (sequence != null)
                 {
                     if (!parseSequence(sequence))
-                    {
-                        console.error('Unknown sequence "%s"', sequence);
-                        throw ARG_ERROR;
-                    }
+                        fail('Unknown sequence "%s"', sequence);
                 }
                 else if (logicalSet != null)
                 {
                     const charsProvider = LOGICAL_SETS[logicalSet];
                     if (!charsProvider)
-                    {
-                        console.error('Unknown logical set "%s"', logicalSet);
-                        throw ARG_ERROR;
-                    }
+                        fail('Unknown logical set "%s"', logicalSet);
                     {
                         const chars = charsProvider();
                         for (const char of chars)
@@ -352,13 +350,14 @@ function parseArguments(parseSequence)
             }
         }
     }
+    if (!charSet.size)
+        fail('No characters specified');
     {
         const unindexableChars = [...charSet].filter(char => !isCharacterDefined(char));
         if (unindexableChars.length)
         {
-            console.error
-            ('Unindexable characters specified: %s', formatCharacters(unindexableChars));
-            throw ARG_ERROR;
+            const formattedCharacters = formatCharacters(unindexableChars);
+            fail('Unindexable characters specified: %s', formattedCharacters);
         }
     }
     return charSet;
@@ -409,9 +408,8 @@ else
         {
             if (!commandCall)
             {
-                console.error
+                fail
                 ('char-index: \'%s\' is not a valid command. See \'char-index help\'.', command);
-                throw ARG_ERROR;
             }
             await commandCall();
         }
