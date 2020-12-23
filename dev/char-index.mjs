@@ -1,6 +1,12 @@
 #!/usr/bin/env node
 
-'use strict';
+import JScrewIt         from '../lib/jscrewit.js';
+import timeUtils        from '../tools/time-utils.js';
+import progress         from './internal/progress.js';
+import solutionBookMap  from './internal/solution-book-map.js';
+import { promises }     from 'fs';
+import { cpus }         from 'os';
+import { Worker }       from 'worker_threads';
 
 async function doAdd()
 {
@@ -36,8 +42,6 @@ async function doAdd()
 
     async function indexCharacters()
     {
-        const progress = require('./internal/progress');
-
         const solutionBookMap = getSolutionBookMap(!noLoad);
         await progress
         (
@@ -55,13 +59,10 @@ async function doAdd()
         const executor =
         (resolve, reject) =>
         {
-            const { join }      = require('path');
-            const { Worker }    = require('worker_threads');
-
-            const workerFileName = join(__dirname, 'internal/char-index-worker.js');
+            const workerURL = new URL('internal/char-index-worker.js', import.meta.url);
             const serializedSolutionBookMap = solutionBookMap.serialize(solutionBookMap);
             const worker =
-            new Worker(workerFileName, { workerData: { char, serializedSolutionBookMap } });
+            new Worker(workerURL, { workerData: { char, serializedSolutionBookMap } });
             worker.on
             (
                 'message',
@@ -127,28 +128,21 @@ async function doAdd()
     );
     if (!concurrency)
     {
-        const { cpus } = require('os');
         const cpuCount = cpus().length;
         if (cpuCount < 3)
             concurrency = cpuCount;
         else
             concurrency = Math.min(Math.ceil(cpuCount / 2), 10);
     }
-
     {
-        const timeUtils = require('../tools/time-utils');
-
         const duration = await timeUtils.timeThisAsync(indexCharacters);
         const durationStr = timeUtils.formatDuration(duration);
         console.log('%s elapsed.', durationStr);
     }
 }
 
-function doLevel()
+async function doLevel()
 {
-    const fs = require('fs');
-    const path = require('path');
-
     let output = '';
     for (const solutionBookMap = getSolutionBookMap(); solutionBookMap.size;)
     {
@@ -164,8 +158,9 @@ function doLevel()
     }
     process.stdout.write(output);
     {
-        const outputFileName = path.join(__dirname, '..', '.char-index-level');
-        fs.writeFileSync(outputFileName, output);
+        const { writeFile } = promises;
+        const outputURL = new URL('../.char-index-level', import.meta.url);
+        await writeFile(outputURL, output);
     }
 }
 
@@ -277,8 +272,6 @@ function formatCharacters(chars)
 
 function getSolutionBookMap(load = true)
 {
-    const solutionBookMap = require('./internal/solution-book-map');
-
     if (load)
         solutionBookMap.load();
     return solutionBookMap;
@@ -286,8 +279,7 @@ function getSolutionBookMap(load = true)
 
 function getWantedCharacters()
 {
-    const { getCharacters } = require('..').debug;
-
+    const { getCharacters } = JScrewIt.debug;
     const solutionBookMap = getSolutionBookMap();
     const wantedChars = getCharacters().filter(char => !solutionBookMap.has(char));
     return wantedChars;
@@ -295,8 +287,7 @@ function getWantedCharacters()
 
 function isCharacterDefined(char)
 {
-    const { getCharacterEntries } = require('..').debug;
-
+    const { getCharacterEntries } = JScrewIt.debug;
     const charDefined = !!getCharacterEntries(char);
     return charDefined;
 }
