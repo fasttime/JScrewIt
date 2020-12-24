@@ -13,8 +13,8 @@ stats,
 
 import './result-format';
 
-import art                      from '../../.tmp-src/art';
-import WORKER_SRC               from '../../.tmp-src/worker';
+import art                      from '../../.tmp-out/art';
+import WORKER_SRC               from '../../.tmp-out/worker';
 import createButton             from './button';
 import createEngineSelectionBox from './engine-selection-box';
 import showModalBox             from './modal-box';

@@ -1,0 +1,82 @@
+name: novem Node.js CI
+
+on: [push, pull_request]
+
+defaults:
+
+  run:
+
+    working-directory: packages/novem
+
+jobs:
+
+  lint:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+    - run: npm install
+    - run: gulp lint
+
+  test:
+
+    name: test (Node.js ${{ matrix.node-version }})
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm test
+
+  prepare-legacy-test:
+
+    name: prepare legacy test
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+    - run: npm install
+    - run: node dev/prepare-legacy-test
+    - uses: actions/upload-artifact@v2
+      with:
+        name: node-legacy
+        path: packages/novem/test/node-legacy
+
+  legacy-test:
+
+    name: legacy test (Node.js ${{ matrix.node-version }})
+
+    needs: prepare-legacy-test
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [0.10.x, 0.12.x, 4.x, 6.x, 8.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - uses: actions/download-artifact@v2
+      with:
+        name: node-legacy
+        path: packages/novem/test/node-legacy
+    - run: npm run legacy-test

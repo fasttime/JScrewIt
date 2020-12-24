@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "declaration": false,
+    "module": "CommonJS",
+    "outDir": "node-legacy"
+  },
+  "extends": "../tsconfig.json",
+  "include": [
+    "../src",
+    "spec"
+  ]
+}

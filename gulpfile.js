@@ -26,7 +26,7 @@ async function bundle(inputOptions, outputFile, banner)
 async function bundleUI()
 {
     const inputOptions = { input: 'src/ui/ui-main.js' };
-    await bundle(inputOptions, '.tmp-src/ui.js');
+    await bundle(inputOptions, '.tmp-out/ui.js');
 }
 
 async function createFileFromTemplate(createContextModuleId, templateSrcPath, outputPath)
@@ -46,7 +46,7 @@ async function makeArt()
 {
     const { promise } = require('art-js');
 
-    await promise('.tmp-src', { art: { css: true, off: true, on: true }, esModule: true });
+    await promise('.tmp-out', { art: { css: true, off: true, on: true }, esModule: true });
 }
 
 function makeWorker()
@@ -68,7 +68,7 @@ function makeWorker()
             },
         ),
     )
-    .pipe(dest('.tmp-src'));
+    .pipe(dest('.tmp-out'));
     return stream;
 }
 
@@ -89,7 +89,7 @@ task
 
         const patterns =
         [
-            '.tmp-src',
+            '.tmp-out',
             'Features.md',
             'api-doc',
             'coverage',
@@ -243,7 +243,7 @@ task
         const uglify = require('gulp-uglify');
 
         const stream =
-        src('.tmp-src/ui.js').pipe(uglify({ compress: { passes: 3 } })).pipe(dest('ui'));
+        src('.tmp-out/ui.js').pipe(uglify({ compress: { passes: 3 } })).pipe(dest('ui'));
         return stream;
     },
 );

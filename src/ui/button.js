@@ -2,7 +2,7 @@
 
 // A large part of this code consists of hacks for Internet Explorer.
 
-import art                                          from '../../.tmp-src/art';
+import art                                          from '../../.tmp-out/art';
 import { hasTabindex, removeTabindex, setTabindex } from './tabindex';
 
 export default function createButton(text)

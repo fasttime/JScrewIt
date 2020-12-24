@@ -1,8 +1,10 @@
 .*
 !.git*
-!/.npmrc
+!.npmrc
 /*.char-map.json
-/coverage
 /jsdoc
-/node_modules
-/npm-debug.log
+/packages/**/lib
+/packages/**/test/node-legacy
+npm-debug.log
+coverage/
+node_modules/
