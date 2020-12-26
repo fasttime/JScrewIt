@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "esModuleInterop": true,
+    "module": "ES2020",
+    "strict": true,
+    "target": "ES5",
+    "useDefineForClassFields": true
+  },
+  "exclude": [
+    "test/node-legacy"
+  ],
+  "include": [
+    "src",
+    "test"
+  ]
+}

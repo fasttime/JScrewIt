@@ -2,7 +2,6 @@ import gulpLint             from '@fasttime/gulp-lint';
 import { fork }             from 'child_process';
 import fs                   from 'fs';
 import gulp                 from 'gulp';
-import gulpIgnore           from 'gulp-ignore';
 import gulpTypescript       from 'gulp-typescript';
 import mergeStream          from 'merge-stream';
 import { createRequire }    from 'module';
@@ -54,6 +53,7 @@ export function test(callback)
         '--reporter=text-summary',
         mochaPath,
         '--check-leaks',
+        '--global=__coverage__',
         '--require=ts-node/register',
         '--ui=ebdd',
         'test/spec/**/*.spec.ts',
@@ -67,10 +67,7 @@ export function test(callback)
 export function compile()
 {
     const { dts, js } = src('src/**/*.ts').pipe(gulpTypescript.createProject('tsconfig.json')());
-    const condition = ['novem.d.ts', 'solution.d.ts', 'solution-type.d.ts'];
-    const stream =
-    mergeStream
-    (dts.pipe(gulpIgnore.include(condition)).pipe(dest('lib')), js.pipe(dest('.tmp-out')));
+    const stream = mergeStream(dts.pipe(dest('lib')), js.pipe(dest('.tmp-out')));
     return stream;
 }
 
@@ -81,7 +78,7 @@ export async function bundle()
 
     const inputOptions =
     {
-        input: '.tmp-out/novem.js',
+        input: '.tmp-out/quinquaginta-duo.js',
         onwarn(warning)
         {
             if (warning.code !== 'THIS_IS_UNDEFINED')
@@ -90,7 +87,11 @@ export async function bundle()
         plugins: [rollupPluginCleanup({ comments: /^(?!\/ *@ts-)/ })],
     };
     const outputOptions =
-    { banner: `// novem ${version} – ${homepage}\n`, file: 'lib/novem.js', format: 'esm' };
+    {
+        banner: `// quinquaginta-duo ${version} – ${homepage}\n`,
+        file:   'lib/quinquaginta-duo.js',
+        format: 'esm',
+    };
     const bundle = await rollup(inputOptions);
     await bundle.write(outputOptions);
 }
