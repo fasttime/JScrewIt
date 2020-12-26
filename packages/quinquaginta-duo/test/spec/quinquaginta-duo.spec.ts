@@ -95,7 +95,7 @@ function loadQuinquagintaDuoWithoutBigInt(): void
     if (typeof BigInt === 'function')
     {
         const { BigInt } = global;
-        global.BigInt = undefined as unknown as BigIntConstructor;
+        global.BigInt = undefined as never;
         try
         {
             loadQuinquagintaDuo();
@@ -161,6 +161,7 @@ describe.per
                     const unionMask = maskUnion(nextMask, prevMask);
                     prevMask = unionMask;
                 }
+                assert.throws(() => maskNext(prevMask), RangeError);
             },
         );
 
@@ -188,7 +189,7 @@ describe.per
             {
                 const mask0 = maskNew();
                 let prevHighMask = mask0;
-                let lowMask = maskNext(prevHighMask);
+                let lowMask = maskNext(mask0);
                 for (let count = 0; count < 51; ++count)
                 {
                     const topMask = maskNext(lowMask);
