@@ -31,7 +31,10 @@ export let maskNext: (mask: Mask) => Mask;
 /** Returns a new mask that is the union of two specified masks. */
 export let maskUnion: (mask1: Mask, mask2: Mask) => Mask;
 
-/** Returns a primitive value uniquely associated with the specified mask. */
+/**
+ * Returns a primitive value associated with the specified mask.
+ * The string representation of the primitive value is guaranteed to be unique for each mask.
+ */
 export const maskValue = (mask: Mask): unknown => mask;
 
 function ensureMaskNotFull(mask: Mask): void
@@ -49,10 +52,12 @@ if (typeof BigInt === 'function')
 
     maskIncludes =
     (includingMask: Mask, includedMask: Mask): boolean =>
-    ((includingMask as never) & (includedMask as never)) === includedMask as never;
+    ((includingMask as unknown as bigint) & (includedMask as unknown as bigint)) as unknown ===
+    includedMask;
 
     maskIntersection =
-    (mask1: Mask, mask2: Mask): Mask => ((mask1 as never) & (mask2 as never)) as never;
+    (mask1: Mask, mask2: Mask): Mask =>
+    ((mask1 as unknown as bigint) & (mask2 as unknown as bigint)) as never;
 
     maskNext = (mask: Mask): Mask =>
     {
@@ -64,7 +69,8 @@ if (typeof BigInt === 'function')
     };
 
     maskUnion =
-    (mask1: Mask, mask2: Mask): Mask => ((mask1 as never) | (mask2 as never)) as never;
+    (mask1: Mask, mask2: Mask): Mask =>
+    ((mask1 as unknown as bigint) | (mask2 as unknown as bigint)) as never;
 }
 else
 {
@@ -97,7 +103,7 @@ else
     maskIntersection =
     (mask1: Mask, mask2: Mask): Mask =>
     (
-        ((mask1 as never) & (mask2 as never) & BIT_MASK_31) +
+        ((mask1 as unknown as number) & (mask2 as unknown as number) & BIT_MASK_31) +
         ((mask1 as never) / BIN_POW_31 & (mask2 as never) / BIN_POW_31) * BIN_POW_31
     ) as never;
 
@@ -113,7 +119,7 @@ else
     maskUnion =
     (mask1: Mask, mask2: Mask): Mask =>
     (
-        (((mask1 as never) | (mask2 as never)) & BIT_MASK_31) +
+        (((mask1 as unknown as number) | (mask2 as unknown as number)) & BIT_MASK_31) +
         ((mask1 as never) / BIN_POW_31 | (mask2 as never) / BIN_POW_31) * BIN_POW_31
     ) as never;
 }
