@@ -1,6 +1,7 @@
 .*
 !.git*
 !.npmrc
+*.cpuprofile
 /*.char-map.json
 /jsdoc
 /packages/**/lib

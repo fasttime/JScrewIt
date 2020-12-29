@@ -1,27 +1,23 @@
-import type * as QuinquagintaDuo    from '../../src/quinquaginta-duo';
-import assert                       from 'assert';
-import postrequire                  from 'postrequire';
+import { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion, maskValue }
+from '../../src/quinquaginta-duo';
+import type Mask                    from '../../src/quinquaginta-duo';
+import assert, { AssertionError }   from 'assert';
 
-const EMPTY_OBJ = Object.create(null) as { };
-
-type Mask = QuinquagintaDuo.default;
-
-let { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion, maskValue } =
-clear<typeof QuinquagintaDuo>();
+function assertFail
+(message: string, stackStartFn: Function, actual?: unknown, expected?: unknown): never
+{
+    const options = { message, actual, expected, stackStartFn, stackStartFunction: stackStartFn };
+    const error: Error = new AssertionError(options);
+    throw error;
+}
 
 function assertMaskEmpty(actual: Mask): void
 {
     const expected = maskNew();
     if (!maskAreEqual(actual, expected))
     {
-        assert.fail
-        (
-            Number(actual),
-            Number(expected),
-            `Expected ${formatMask(actual)} to be empty`,
-            undefined,
-            assertMaskEmpty,
-        );
+        const message = `Expected ${formatMask(actual)} to be empty`;
+        assertFail(message, assertMaskEmpty, actual, expected);
     }
 }
 
@@ -29,14 +25,8 @@ function assertMaskEqual(actual: Mask, expected: Mask): void
 {
     if (!maskAreEqual(actual, expected))
     {
-        assert.fail
-        (
-            Number(actual),
-            Number(expected),
-            `Expected ${formatMask(actual)} to be equal to ${formatMask(expected)}`,
-            undefined,
-            assertMaskEqual,
-        );
+        const message = `Expected ${formatMask(actual)} to be equal to ${formatMask(expected)}`;
+        assertFail(message, assertMaskEqual, actual, expected);
     }
 }
 
@@ -44,14 +34,8 @@ function assertMaskInclude(actual: Mask, includedMask: Mask): void
 {
     if (!maskIncludes(actual, includedMask))
     {
-        assert.fail
-        (
-            Number(actual),
-            undefined,
-            `Expected ${formatMask(actual)} to include ${formatMask(includedMask)}`,
-            undefined,
-            assertMaskInclude,
-        );
+        const message = `Expected ${formatMask(actual)} to include ${formatMask(includedMask)}`;
+        assertFail(message, assertMaskInclude, actual);
     }
 }
 
@@ -60,20 +44,9 @@ function assertMaskNotEmpty(actual: Mask): void
     const expected = maskNew();
     if (maskAreEqual(actual, expected))
     {
-        assert.fail
-        (
-            Number(actual),
-            Number(expected),
-            `Expected ${formatMask(actual)} to be non-empty`,
-            undefined,
-            assertMaskNotEmpty,
-        );
+        const message = `Expected ${formatMask(actual)} to be non-empty`;
+        assertFail(message, assertMaskNotEmpty, actual);
     }
-}
-
-function clear<T extends { }>(): T
-{
-    return EMPTY_OBJ as T;
 }
 
 function formatMask(mask: Mask): string
@@ -82,60 +55,11 @@ function formatMask(mask: Mask): string
     return str;
 }
 
-function loadQuinquagintaDuo(): void
-{
-    (
-        { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion, maskValue } =
-        postrequire('../../src/quinquaginta-duo') as typeof QuinquagintaDuo
-    );
-}
-
-function loadQuinquagintaDuoWithoutBigInt(): void
-{
-    if (typeof BigInt === 'function')
-    {
-        const { BigInt } = global;
-        global.BigInt = undefined as never;
-        try
-        {
-            loadQuinquagintaDuo();
-        }
-        finally
-        {
-            global.BigInt = BigInt;
-        }
-    }
-    else
-        loadQuinquagintaDuo();
-}
-
-function unloadQuinquagintaDuo(): void
-{
-    (
-        { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion, maskValue } =
-        clear()
-    );
-}
-
-describe.per
+describe
 (
-    [
-        when
-        (
-            typeof BigInt === 'function',
-            { title: 'when bigint is available', beforeHook: loadQuinquagintaDuo },
-        ),
-        { title: 'when bigint is not available', beforeHook: loadQuinquagintaDuoWithoutBigInt },
-    ],
-)
-(
-    '#.title',
-    ({ beforeHook }) =>
+    'quinquaginta-duo',
+    () =>
     {
-        before(beforeHook);
-
-        after(unloadQuinquagintaDuo);
-
         it
         (
             'maskNew',
