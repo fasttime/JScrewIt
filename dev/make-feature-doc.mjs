@@ -1,11 +1,11 @@
-'use strict';
+import JScrewIt                                         from '../lib/jscrewit.js';
+import { getAvailabilityByFeature, getEngineEntries }   from './internal/engine-data.js';
 
-const { Feature }                                       = require('..');
-const { getAvailabilityByFeature, getEngineEntries }    = require('./internal/engine-data');
+const { Feature } = JScrewIt;
 
 function formatFeatureName(featureName)
 {
-    const TARGET = 'api-doc/interfaces/_jscrewit_.featureall.md';
+    const TARGET = 'api-doc/interfaces/featureall.md';
 
     const result = `<a href="${TARGET}#${featureName}"><code>${featureName}</code></a>`;
     return result;
@@ -88,7 +88,7 @@ function getVersioningFor(featureName, engineEntry)
     }
 }
 
-module.exports =
+export default
 () =>
 {
     const AND_FORMATTER = new Intl.ListFormat('en');

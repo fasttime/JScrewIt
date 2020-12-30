@@ -33,8 +33,8 @@ async function createFileFromTemplate(createContextModuleId, templateSrcPath, ou
 {
     const { promises: { writeFile } }   = require('fs');
     const Handlebars                    = require('handlebars');
-    const createContext                 = require(createContextModuleId);
 
+    const { default: createContext } = await import(createContextModuleId);
     const input = await readFileAsString(templateSrcPath);
     const template = Handlebars.compile(input, { noEscape: true });
     const context = createContext();
@@ -156,7 +156,11 @@ task
                 src: ['lib/**/*.ts', '!lib/feature-all.d.ts'],
                 parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
                 rules:
-                { '@typescript-eslint/triple-slash-reference': ['error', { path: 'always' }] },
+                {
+                    // Type imports not available in TypeScript < 3.8.
+                    '@typescript-eslint/consistent-type-imports':
+                    ['error', { prefer: 'no-type-imports' }],
+                },
             },
             { src: 'test/acceptance/**/*.feature' },
         );
@@ -251,7 +255,8 @@ task
 task
 (
     'make-feature-doc',
-    () => createFileFromTemplate('./dev/make-feature-doc', 'src/Features.md.hbs', 'Features.md'),
+    () =>
+    createFileFromTemplate('./dev/make-feature-doc.mjs', 'src/Features.md.hbs', 'Features.md'),
 );
 
 task
@@ -259,7 +264,7 @@ task
     'make-feature-types',
     () =>
     createFileFromTemplate
-    ('./dev/make-feature-types', 'src/lib/feature-all.d.ts.hbs', 'lib/feature-all.d.ts'),
+    ('./dev/make-feature-types.mjs', 'src/lib/feature-all.d.ts.hbs', 'lib/feature-all.d.ts'),
 );
 
 task
@@ -301,12 +306,9 @@ task
 
         const typedocOpts =
         {
-            excludeExternals:       true,
+            disableSources:         true,
+            entryPoints:            'lib/jscrewit.d.ts',
             hideBreadcrumbs:        true,
-            hideSources:            true,
-            ignoreCompilerErrors:   true,
-            includeDeclarations:    true,
-            mode:                   'file',
             name:                   'JScrewIt',
             out:                    'api-doc',
             plugin:                 'typedoc-plugin-markdown',
