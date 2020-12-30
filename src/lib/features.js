@@ -1,7 +1,7 @@
 /* global Audio, Intl, Node, console, document, history, require, self, sidebar, statusbar */
 
-import { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskUnion, maskWithBit }
-from './mask';
+import { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion, maskValue }
+from 'quinquaginta-duo';
 import
 {
     _Array_isArray,
@@ -136,7 +136,8 @@ export var validMaskFromArrayOrStringOrFeature;
                 {
                     var excludeMask = completeFeature(exclude);
                     var incompatibleMask = maskUnion(mask, excludeMask);
-                    incompatibleMaskMap[incompatibleMask] = incompatibleMask;
+                    var incompatibleMaskKey = maskValue(mask);
+                    incompatibleMaskMap[incompatibleMaskKey] = incompatibleMask;
                 }
             );
         }
@@ -170,7 +171,8 @@ export var validMaskFromArrayOrStringOrFeature;
                 var check = info.check;
                 if (check)
                 {
-                    mask = maskWithBit(bitIndex++);
+                    mask = maskNext(unionMask);
+                    unionMask = maskUnion(unionMask, mask);
                     if (check())
                         autoMask = maskUnion(autoMask, mask);
                     check = wrapCheck(check);
@@ -1992,9 +1994,9 @@ export var validMaskFromArrayOrStringOrFeature;
     };
 
     var autoMask = maskNew();
-    var bitIndex = 0;
     var includesMap = createEmpty();
     var incompatibleMaskMap = createEmpty();
+    var unionMask = maskNew();
 
     var featureNames = _Object_keys(FEATURE_INFOS);
     featureNames.forEach(completeFeature);

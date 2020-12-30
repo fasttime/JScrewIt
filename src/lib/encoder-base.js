@@ -25,7 +25,6 @@ import
 from './definitions';
 import expressParse                 from './express-parse';
 import { featureFromMask }          from './features';
-import { maskIncludes, maskNew }    from './mask';
 import
 {
     _Array,
@@ -47,6 +46,7 @@ import
 from './screw-buffer';
 import { SimpleSolution }           from './solution';
 import { SolutionType }             from 'novem';
+import { maskIncludes, maskNew }    from 'quinquaginta-duo';
 
 /** @class Encoder */
 

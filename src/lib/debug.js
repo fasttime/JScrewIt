@@ -1,7 +1,7 @@
 /* global DEBUG */
 
-import createClusteringPlan                                 from './clustering-plan';
-import { define }                                           from './definers';
+import createClusteringPlan                     from './clustering-plan';
+import { define }                               from './definers';
 import
 {
     BASE64_ALPHABET_HI_4,
@@ -17,12 +17,11 @@ import
     OPTIMAL_RETURN_STRING,
 }
 from './definitions';
-import { Encoder }                                          from './encoder-base';
-import { STRATEGIES, createReindexMap }                     from './encoder-ext';
-import { featureFromMask, isMaskCompatible }                from './features';
-import createFigurator                                      from './figurator';
-import { JScrewIt, getValidFeatureMask }                    from './jscrewit-base';
-import { maskIncludes, maskIsEmpty, maskNew, maskUnion }    from './mask';
+import { Encoder }                              from './encoder-base';
+import { STRATEGIES, createReindexMap }         from './encoder-ext';
+import { featureFromMask, isMaskCompatible }    from './features';
+import createFigurator                          from './figurator';
+import { JScrewIt, getValidFeatureMask }        from './jscrewit-base';
 import
 {
     _Array_isArray,
@@ -37,15 +36,15 @@ import
     esToString,
 }
 from './obj-utils';
-import createCommaOptimizer                                 from './optimizers/comma-optimizer';
-import createComplexOptimizer
-from './optimizers/complex-optimizer';
-import createToStringOptimizer
-from './optimizers/to-string-optimizer';
-import { ScrewBuffer, optimizeSolutions }                   from './screw-buffer';
-import { DynamicSolution, SimpleSolution }                  from './solution';
-import trimJS                                               from './trim-js';
-import { SolutionType, calculateSolutionType }              from 'novem';
+import createCommaOptimizer                     from './optimizers/comma-optimizer';
+import createComplexOptimizer                   from './optimizers/complex-optimizer';
+import createToStringOptimizer                  from './optimizers/to-string-optimizer';
+import { ScrewBuffer, optimizeSolutions }       from './screw-buffer';
+import { DynamicSolution, SimpleSolution }      from './solution';
+import trimJS                                   from './trim-js';
+import { SolutionType, calculateSolutionType }  from 'novem';
+import { maskAreEqual, maskIncludes, maskNew, maskNext, maskUnion, maskValue }
+from 'quinquaginta-duo';
 
 if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
 {
@@ -224,10 +223,12 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
                 getConstantNames:           getConstantNames,
                 getEntries:                 getEntries,
                 getStrategies:              getStrategies,
+                maskAreEqual:               maskAreEqual,
                 maskIncludes:               maskIncludes,
-                maskIsEmpty:                maskIsEmpty,
                 maskNew:                    maskNew,
+                maskNext:                   maskNext,
                 maskUnion:                  maskUnion,
+                maskValue:                  maskValue,
                 optimizeSolutions:          optimizeSolutions,
                 trimJS:                     trimJS,
             }

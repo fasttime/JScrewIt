@@ -5,9 +5,9 @@ import './optimizer';
 import { Encoder }                                                  from './encoder-base';
 import { wrapWithCall, wrapWithEval }                               from './encoder-ext';
 import { Feature, validMaskFromArrayOrStringOrFeature }             from './features';
-import { maskNew }                                                  from './mask';
 import { _Error, _String, assignNoEnum, createEmpty, esToString }   from './obj-utils';
 import trimJS                                                       from './trim-js';
+import { maskNew, maskValue }                                       from 'quinquaginta-duo';
 
 function encode(input, options)
 {
@@ -59,9 +59,10 @@ function filterRunAs(input, name)
 function getEncoder(features)
 {
     var mask = getValidFeatureMask(features);
-    var encoder = encoders[mask];
+    var key = maskValue(mask);
+    var encoder = encoders[key];
     if (!encoder)
-        encoders[mask] = encoder = new Encoder(mask);
+        encoders[key] = encoder = new Encoder(mask);
     return encoder;
 }
 

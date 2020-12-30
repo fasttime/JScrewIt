@@ -3,5 +3,8 @@
     "noEmit": true,
     "strict": true,
     "types": []
-  }
+  },
+  "include": [
+    "lib"
+  ]
 }

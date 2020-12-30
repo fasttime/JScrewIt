@@ -137,15 +137,11 @@
                             );
                             it
                             (
-                                'has a mask consisting of two 32-bit integers',
+                                'has a valid mask',
                                 function ()
                                 {
                                     var mask = featureObj.mask;
-                                    expect(mask).toBeArray();
-                                    expect(Object.isFrozen(mask)).toBeTruthy();
-                                    expect(mask.length).toBe(2);
-                                    expect(mask[0]).toBeInt32();
-                                    expect(mask[1]).toBeInt32();
+                                    expect(mask).toBeInt52();
                                 }
                             );
                             it
@@ -189,7 +185,9 @@
                                     'has a nonempty mask',
                                     function ()
                                     {
-                                        expect(JScrewIt.debug.maskIsEmpty(featureObj.mask))
+                                        var newMask = JScrewIt.debug.maskNew();
+                                        expect
+                                        (JScrewIt.debug.maskAreEqual(featureObj.mask, newMask))
                                         .toBe(false);
                                     }
                                 );
@@ -262,10 +260,11 @@
                         'DEFAULT',
                         function ()
                         {
+                            var newMask = JScrewIt.debug.maskNew();
                             var featureObj = Feature.DEFAULT;
                             expect(featureObj.canonicalNames).toEqual([]);
                             expect(featureObj.elementaryNames).toEqual([]);
-                            expect(featureObj.mask).toEqual([0, 0]);
+                            expect(featureObj.mask).toEqual(newMask);
                         }
                     );
                     it.per
@@ -327,12 +326,13 @@
                         'AUTO',
                         function ()
                         {
+                            var newMask = JScrewIt.debug.maskNew();
                             var featureObj = Feature.AUTO;
                             var canonicalNameCount = featureObj.canonicalNames.length;
                             var elementaryNameCount = featureObj.elementaryNames.length;
                             expect(canonicalNameCount).toBeGreaterThan(0);
                             expect(elementaryNameCount).not.toBeLessThan(canonicalNameCount);
-                            expect(featureObj.mask).not.toEqual([0, 0]);
+                            expect(featureObj.mask).not.toEqual(newMask);
                         }
                     );
                 }
@@ -691,6 +691,7 @@
                         'accepts mixed arguments',
                         function ()
                         {
+                            var newMask = JScrewIt.debug.maskNew();
                             var featureObj =
                             Feature.commonOf
                             (
@@ -699,7 +700,7 @@
                                 Feature.NO_IE_SRC,
                                 []
                             );
-                            expect(featureObj.mask).toEqual([0, 0]);
+                            expect(featureObj.mask).toEqual(newMask);
                         }
                     );
                     it

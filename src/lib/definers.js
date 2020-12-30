@@ -1,6 +1,6 @@
 import { featuresToMask }   from './features';
-import { maskUnion }        from './mask';
 import { _Array_prototype } from './obj-utils';
+import { maskUnion }        from 'quinquaginta-duo';
 
 function createDefinitionEntry(definition, mask)
 {

@@ -101,7 +101,7 @@
                 const included = maskIncludes(encoder.mask, mask);
                 if (!maskIncludes(ancestorMask, mask))
                 {
-                    const key = getMaskKey(mask);
+                    const key = maskValue(mask);
                     if (!maskSet.has(key))
                     {
                         maskSet.add(key);
@@ -137,12 +137,6 @@
             };
         }
         return encoder;
-    }
-
-    function getMaskKey(mask)
-    {
-        const key = String(mask);
-        return key;
     }
 
     function getNewFeatureData(analyzer)
@@ -200,6 +194,7 @@
         module.exports = Analyzer;
     }
 
-    const { createEncoder, createFeatureFromMask, maskIncludes, maskUnion } = JScrewIt.debug;
+    const { createEncoder, createFeatureFromMask, maskIncludes, maskUnion, maskValue } =
+    JScrewIt.debug;
 }
 )();

@@ -67,6 +67,7 @@
     "mocha-bar": "latest",
     "novem": "1.1",
     "postrequire": "latest",
+    "quinquaginta-duo": "1.0",
     "rollup": "latest",
     "rollup-plugin-cleanup": "latest",
     "typedoc": "latest",

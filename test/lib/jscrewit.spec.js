@@ -141,6 +141,28 @@ self,
     );
     describe
     (
+        'JScrewIt.debug.maskNext',
+        function ()
+        {
+            it
+            (
+                'throws for full mask',
+                function ()
+                {
+                    var unionMask = JScrewIt.debug.maskNew();
+                    for (var index = 0; index < 52; ++index)
+                    {
+                        var nextMask = JScrewIt.debug.maskNext(unionMask);
+                        unionMask = JScrewIt.debug.maskUnion(unionMask, nextMask);
+                    }
+                    var fn = JScrewIt.debug.maskNext.bind(null, unionMask);
+                    expect(fn).toThrowStrictly(RangeError, 'Mask full');
+                }
+            );
+        }
+    );
+    describe
+    (
         'Encoder#encodeByCharCodes',
         function ()
         {

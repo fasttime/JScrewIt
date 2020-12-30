@@ -52,7 +52,7 @@ sidebar,
 
     function getPoolEncoder(featureObj)
     {
-        var key = featureObj.canonicalNames.join('+');
+        var key = JScrewIt.debug.maskValue(featureObj.mask);
         var encoder = encoderCache[key];
         if (!encoder)
             encoderCache[key] = encoder = JScrewIt.debug.createEncoder(featureObj);

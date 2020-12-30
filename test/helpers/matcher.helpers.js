@@ -26,12 +26,14 @@
                 return this.assertions.pass(message);
             this.assertions.fail(message);
         },
-        toBeInt32:
+        toBeInt52:
         function ()
         {
             var actual = this.value;
-            var message = this.generateMessage(actual, this.expr, 'to be a 32-bit integer');
-            var pass = actual === (actual ^ 0);
+            var message = this.generateMessage(actual, this.expr, 'to be a 52-bit integer number');
+            var pass =
+            typeof actual === 'number' &&
+            actual === (actual & 0x7fffffff) + (actual / 0x80000000 & 0x1fffff) * 0x80000000;
             if (pass)
                 return this.assertions.pass(message);
             this.assertions.fail(message);
