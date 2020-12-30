@@ -1,5 +1,5 @@
 import JScrewIt                                         from '../lib/jscrewit.js';
-import { getAvailabilityByFeature, getEngineEntries }   from './internal/engine-data.js';
+import { getAvailabilityByFeature, getEngineEntries }   from './internal/engine-data.mjs';
 
 const { Feature } = JScrewIt;
 

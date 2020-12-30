@@ -1,8 +1,8 @@
-'use strict';
+import JScrewIt from '../../lib/jscrewit.js';
 
-const { Feature } = require('../..');
+const { Feature } = JScrewIt;
 
-function calculateAvailabilityInfo(engineEntry, filterFeature)
+export function calculateAvailabilityInfo(engineEntry, filterFeature)
 {
     let firstAvail;
     let firstUnavail;
@@ -27,9 +27,7 @@ function calculateAvailabilityInfo(engineEntry, filterFeature)
     return availabilityInfo;
 }
 
-exports.calculateAvailabilityInfo = calculateAvailabilityInfo;
-
-exports.getAvailabilityByFeature =
+export const getAvailabilityByFeature =
 (featureName, engineEntry) =>
 {
     const availabilityInfoCache =
@@ -44,7 +42,7 @@ exports.getAvailabilityByFeature =
     return availabilityInfo;
 };
 
-exports.getEngineEntries =
+export const getEngineEntries =
 () =>
 {
     const ENGINE_ENTRIES =

@@ -34,8 +34,8 @@ async function createFileFromTemplate(createContextModuleId, templateSrcPath, ou
     const { promises: { writeFile } }   = require('fs');
     const Handlebars                    = require('handlebars');
 
-    const { default: createContext } = await import(createContextModuleId);
-    const input = await readFileAsString(templateSrcPath);
+    const promises = [import(createContextModuleId), readFileAsString(templateSrcPath)];
+    const [{ default: createContext }, input] = await Promise.all(promises);
     const template = Handlebars.compile(input, { noEscape: true });
     const context = createContext();
     const output = template(context);
