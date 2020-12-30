@@ -1,4 +1,4 @@
-/* global module, self */
+/* global exports, module, self */
 
 import './optimizer';
 
@@ -79,4 +79,10 @@ if (typeof self !== 'undefined')
     self.JScrewIt = JScrewIt;
 
 if (typeof module !== 'undefined')
+{
     module.exports = JScrewIt;
+
+    // Dummy statements to allow named exports when JScrewIt is imported by ES modules.
+    exports.Feature = null;
+    exports.encode  = null;
+}

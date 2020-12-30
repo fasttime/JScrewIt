@@ -1,6 +1,4 @@
-import JScrewIt from '../../lib/jscrewit.js';
-
-const { Feature } = JScrewIt;
+import { Feature } from '../../lib/jscrewit.js';
 
 export function calculateAvailabilityInfo(engineEntry, filterFeature)
 {
