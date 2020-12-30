@@ -1,9 +1,7 @@
-import JScrewIt from '../lib/jscrewit.js';
+import { Feature } from '../lib/jscrewit.js';
 
 import { calculateAvailabilityInfo, getAvailabilityByFeature, getEngineEntries }
 from './internal/engine-data.mjs';
-
-const { Feature } = JScrewIt;
 
 const INDENT = '    ';
 

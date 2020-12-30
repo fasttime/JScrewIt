@@ -306,14 +306,14 @@ task
 
         const typedocOpts =
         {
-            disableSources:         true,
-            entryPoints:            'lib/jscrewit.d.ts',
-            hideBreadcrumbs:        true,
-            name:                   'JScrewIt',
-            out:                    'api-doc',
-            plugin:                 'typedoc-plugin-markdown',
-            readme:                 'none',
-            tsconfig:               'tsconfig.json',
+            disableSources:     true,
+            entryPoints:        'lib/jscrewit.d.ts',
+            hideBreadcrumbs:    true,
+            name:               'JScrewIt',
+            out:                'api-doc',
+            plugin:             'typedoc-plugin-markdown',
+            readme:             'none',
+            tsconfig:           'tsconfig.json',
         };
         const stream = src('lib', { read: false }).pipe(typedoc(typedocOpts));
         return stream;

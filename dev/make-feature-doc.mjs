@@ -1,7 +1,5 @@
-import JScrewIt                                         from '../lib/jscrewit.js';
+import { Feature }                                      from '../lib/jscrewit.js';
 import { getAvailabilityByFeature, getEngineEntries }   from './internal/engine-data.mjs';
-
-const { Feature } = JScrewIt;
 
 function formatFeatureName(featureName)
 {
