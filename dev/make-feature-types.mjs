@@ -1,7 +1,7 @@
 import JScrewIt from '../lib/jscrewit.js';
 
 import { calculateAvailabilityInfo, getAvailabilityByFeature, getEngineEntries }
-from './internal/engine-data.js';
+from './internal/engine-data.mjs';
 
 const { Feature } = JScrewIt;
 
