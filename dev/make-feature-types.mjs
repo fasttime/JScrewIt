@@ -1,8 +1,11 @@
-'use strict';
+import JScrewIt from '../lib/jscrewit.js';
 
-const { Feature } = require('..');
-const { calculateAvailabilityInfo, getAvailabilityByFeature, getEngineEntries } =
-require('./internal/engine-data');
+import { calculateAvailabilityInfo, getAvailabilityByFeature, getEngineEntries }
+from './internal/engine-data.js';
+
+const { Feature } = JScrewIt;
+
+const INDENT = '    ';
 
 function escape(str)
 {
@@ -23,12 +26,12 @@ function formatDescriptionLines(descriptionLines)
     {
         const joinedLines =
         descriptionLines
-        .map(descriptionLine => `         * ${descriptionLine}\n`)
-        .join('         *\n');
-        formattedDescription = `        /**\n${joinedLines}         */`;
+        .map(descriptionLine => `${INDENT} * ${descriptionLine}\n`)
+        .join(`${INDENT} *\n`);
+        formattedDescription = `${INDENT}/**\n${joinedLines}${INDENT} */`;
     }
     else
-        formattedDescription = `        /** ${descriptionLines[0]} */`;
+        formattedDescription = `${INDENT}/** ${descriptionLines[0]} */`;
     return formattedDescription;
 }
 
@@ -50,7 +53,7 @@ function getAvailabilityByRestriction(attributeName, engineEntry)
     return availabilityInfo;
 }
 
-module.exports =
+export default
 () =>
 {
     const AND_FORMATTER = new Intl.ListFormat('en');

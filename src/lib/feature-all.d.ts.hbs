@@ -1,30 +1,27 @@
-/// <reference path='feature.d.ts'/>
+import { ElementaryFeature, PredefinedFeature } from './feature';
 
-declare module 'jscrewit'
+export interface FeatureAll
 {
-    interface FeatureAll
-    {
 {{#each featureInfoList}}
 {{#if @index}}
 
 {{/if}}
 {{formattedDescription}}
-        {{featureName}}: {{typeName}};
+    {{featureName}}: {{typeName}};
 {{/each}}
-    }
-
-    /** Name of an elementary feature. */
-    type ElementaryFeatureName =
-{{#each elementaryFeatureNames}}
-    | '{{this}}'
-{{/each}}
-    ;
-
-    /** Name of a predefined feature. */
-    type PredefinedFeatureName =
-    ElementaryFeatureName
-{{#each compositeFeatureNames}}
-    | '{{this}}'
-{{/each}}
-    ;
 }
+
+/** Name of an elementary feature. */
+type ElementaryFeatureName =
+{{#each elementaryFeatureNames}}
+| '{{this}}'
+{{/each}}
+;
+
+/** Name of a predefined feature. */
+type PredefinedFeatureName =
+ElementaryFeatureName
+{{#each compositeFeatureNames}}
+| '{{this}}'
+{{/each}}
+;

@@ -1,9 +1,25 @@
 // Type definitions for JScrewIt
 
-/// <reference path='encode.d.ts'/>
-/// <reference path='feature.d.ts'/>
+import { encode }   from './encode';
+import { Feature }  from './feature';
 
-import * as JScrewIt from 'jscrewit';
+export * from './encode';
+export * from './feature';
+export * from './feature-all';
 
-export = JScrewIt;
-export as namespace JScrewIt;
+interface JScrewIt
+{
+    Feature:    typeof Feature;
+    encode:     typeof encode;
+}
+
+declare global
+{
+    /** Global JScrewIt object, available in browsers. */
+    const JScrewIt: JScrewIt;
+}
+
+declare const JScrewIt: JScrewIt;
+
+/** JScrewIt object, available in Node.js. */
+export default JScrewIt;
