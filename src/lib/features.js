@@ -247,7 +247,7 @@ export var validMaskFromArrayOrStringOrFeature;
 
     function initMask(featureObj, mask)
     {
-        _Object_defineProperty(featureObj, 'mask', { value: _Object_freeze(mask) });
+        _Object_defineProperty(featureObj, 'mask', { value: mask });
     }
 
     /**

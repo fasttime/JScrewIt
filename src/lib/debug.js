@@ -27,7 +27,6 @@ import
     _Array_isArray,
     _JSON_stringify,
     _Object_create,
-    _Object_freeze,
     _Object_keys,
     _String,
     _SyntaxError,
@@ -75,17 +74,11 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
             if (inputEntries)
             {
                 if (_Array_isArray(inputEntries))
-                    outputEntries = inputEntries.map(cloneEntry);
+                    outputEntries = inputEntries.map(clone);
                 else
                     outputEntries = [createEntryClone(inputEntries, EMPTY_MASK)];
             }
             return outputEntries;
-        }
-
-        function cloneEntry(entry)
-        {
-            entry = createEntryClone(entry.definition, entry.mask);
-            return entry;
         }
 
         function createEncoder(features)
@@ -99,7 +92,7 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
         function createEntryClone(definition, mask)
         {
             definition = clone(definition);
-            var entry = { definition: definition, mask: _Object_freeze(mask) };
+            var entry = { definition: definition, mask: mask };
             return entry;
         }
 
@@ -140,7 +133,7 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
 
         function getComplexEntry(complex)
         {
-            var entry = cloneEntry(COMPLEX[complex]);
+            var entry = clone(COMPLEX[complex]);
             return entry;
         }
 
