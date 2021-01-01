@@ -21,7 +21,6 @@ export var _Math_pow                        = Math.pow;
 
 export var _Object                          = Object;
 export var _Object_create                   = _Object.create;
-export var _Object_defineProperties         = _Object.defineProperties;
 export var _Object_defineProperty           = _Object.defineProperty;
 export var _Object_freeze                   = _Object.freeze;
 export var _Object_getOwnPropertyDescriptor = _Object.getOwnPropertyDescriptor;
@@ -39,7 +38,6 @@ export var _parseInt                        = parseInt;
 
 export function assignNoEnum(target, source)
 {
-    var descriptors = { };
     var names = _Object_keys(source);
     names.forEach
     (
@@ -47,10 +45,9 @@ export function assignNoEnum(target, source)
         {
             var descriptor = _Object_getOwnPropertyDescriptor(source, name);
             descriptor.enumerable = false;
-            descriptors[name] = descriptor;
+            _Object_defineProperty(target, name, descriptor);
         }
     );
-    _Object_defineProperties(target, descriptors);
     return target;
 }
 

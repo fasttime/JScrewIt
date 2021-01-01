@@ -13,7 +13,6 @@ global.reloadJScrewIt =
 function ()
 {
     var newJScrewIt = postrequire('..');
-    delete global.paths; // Not sure why global.paths is being defined in Node.js 0.10 and 0.12.
     return newJScrewIt;
 };
 

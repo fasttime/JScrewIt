@@ -545,6 +545,19 @@ self,
         'Encoder#replaceString',
         function ()
         {
+            function isStickyRegExpSupported()
+            {
+                try
+                {
+                    RegExp('', 'y');
+                }
+                catch (error)
+                {
+                    return false;
+                }
+                return true;
+            }
+
             it
             (
                 'supports toString clustering',
@@ -587,6 +600,32 @@ self,
                     var encoder = JScrewIt.debug.createEncoder();
                     encoder.maxGroupThreshold = 2;
                     expect(encoder.replaceString('123')).toBeUndefined();
+                }
+            );
+            it.when(module !== 'undefined' && isStickyRegExpSupported())
+            (
+                'works well when sticky regular expressions are not supported',
+                function ()
+                {
+                    var RegExp = global.RegExp;
+                    global.RegExp =
+                    function (pattern, flags)
+                    {
+                        if (flags && /y/.test(flags))
+                            throw SyntaxError();
+                        var regExp = RegExp(pattern, flags);
+                        return regExp;
+                    };
+                    try
+                    {
+                        var newJScrewIt = reloadJScrewIt();
+                        var encoder = newJScrewIt.debug.createEncoder();
+                        expect(encoder.replaceString('00NaNfalse')).toBe('+[]+[+[]]+(+[![]])+![]');
+                    }
+                    finally
+                    {
+                        global.RegExp = RegExp;
+                    }
                 }
             );
         }

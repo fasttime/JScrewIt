@@ -792,18 +792,20 @@ export var replaceStaticString;
                 if (buffer.length > maxLength)
                     return;
             }
-            var match;
-            var regExp = _RegExp(STR_TOKEN_PATTERN, 'g');
-            while (match = regExp.exec(str))
+            var length = str.length;
+            for (var index = 0; index < length;)
             {
-                var token;
                 var solution;
-                if (token = match[2])
-                    solution = this.resolveCharacter(token);
+                var simple = matchSimpleAt(str, index);
+                if (simple)
+                {
+                    index += simple.length;
+                    solution = SIMPLE[simple];
+                }
                 else
                 {
-                    token = match[1];
-                    solution = SIMPLE[token];
+                    var char = str[index++];
+                    solution = this.resolveCharacter(char);
                 }
                 if (!buffer.append(solution) || buffer.length > maxLength)
                     return;
@@ -975,7 +977,34 @@ export var replaceStaticString;
 
     var STATIC_ENCODER = new Encoder(maskNew());
 
-    var STR_TOKEN_PATTERN = '(' + _Object_keys(SIMPLE).join('|') + ')|([\\s\\S])';
+    var matchSimpleAt;
+
+    try
+    {
+        var pattern = _Object_keys(SIMPLE).join('|');
+        var regExp = _RegExp(pattern, 'y');
+        matchSimpleAt =
+        function (str, index)
+        {
+            regExp.lastIndex = index;
+            var match = str.match(regExp);
+            if (match)
+                return match[0];
+        };
+    }
+    catch (error)
+    {
+        matchSimpleAt =
+        function (str, index)
+        {
+            for (var simple in SIMPLE)
+            {
+                var substr = str.substr(index, simple.length);
+                if (substr === simple)
+                    return simple;
+            }
+        };
+    }
 
     replaceMultiDigitNumber =
     function (number)

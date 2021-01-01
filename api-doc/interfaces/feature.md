@@ -70,7 +70,7 @@ ___
 
 ### name
 
-• `Optional` **name**: *string*
+• `Optional` **name**: *undefined* \| *string*
 
 The primary name of this feature object, useful for identification purpose.
 

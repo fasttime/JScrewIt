@@ -15,10 +15,10 @@
 
 ### Feature
 
-• **Feature**: *typeof* [*Feature*](../README.md#feature)
+• **Feature**: [*FeatureConstructor*](featureconstructor.md)
 
 ___
 
 ### encode
 
-• **encode**: *typeof* [*encode*](../README.md#encode)
+• **encode**: (`input`: *string*, `options?`: [*EncodeOptions*](encodeoptions.md)) => *string*
