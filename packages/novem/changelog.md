@@ -1,3 +1,9 @@
+<a name="1.2.0"></a>
+## [1.2.0](https://github.com/fasttime/novem/releases/tag/1.2.0) (2021-01-01)
+
+* Repository merged into the JScrewIt.
+* Performance improvements.
+
 <a name="1.1.2"></a>
 ## [1.1.2](https://github.com/fasttime/novem/releases/tag/1.1.2) (2020-12-24)
 

@@ -44,11 +44,6 @@ export class DynamicSolution extends AbstractSolution
     private _replacement?:          string;
     private readonly _solutions:    Solution[] = [];
 
-    public constructor()
-    {
-        super();
-    }
-
     public append(solution: Solution): void
     {
         this._replacement = undefined;
