@@ -1,9 +1,9 @@
-const BIN_POW_31    = 0x80000000;
-const BIN_POW_32    = 0x100000000;
-const BIN_POW_51    = 0x8000000000000;
-const BIT_MASK_31   = 0x7fffffff;
+const BIN_POW_31    = 0x8000_0000;
+const BIN_POW_32    = 0x1_0000_0000;
+const BIN_POW_51    = 0x8_0000_0000_0000;
+const BIT_MASK_31   = 0x7fff_ffff;
 
-const EMPTY_MASK: Mask  = 0 as never;
+const EMPTY_MASK: Mask = 0 as never;
 
 /** A vector of boolean elements, intended for efficient bulk operations. */
 export default interface Mask
