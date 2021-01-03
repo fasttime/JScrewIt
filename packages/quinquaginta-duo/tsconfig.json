@@ -5,7 +5,7 @@
     "module": "ES2020",
     "strict": true,
     "target": "ES5",
-    "useDefineForClassFields": true
+    "useDefineForClassFields": false, // Define semantics disabled for performance reasons.
   },
   "exclude": [
     "test/node-legacy"

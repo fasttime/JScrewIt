@@ -42,7 +42,7 @@ import { ScrewBuffer, optimizeSolutions }       from './screw-buffer';
 import { DynamicSolution, SimpleSolution }      from './solution';
 import trimJS                                   from './trim-js';
 import { SolutionType, calculateSolutionType }  from 'novem';
-import { maskAreEqual, maskIncludes, maskNew, maskNext, maskUnion, maskValue }
+import { MaskMap, MaskSet, maskAreEqual, maskIncludes, maskNew, maskNext, maskUnion }
 from 'quinquaginta-duo';
 
 if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
@@ -195,6 +195,8 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
             { },
             {
                 DynamicSolution:            DynamicSolution,
+                MaskMap:                    MaskMap,
+                MaskSet:                    MaskSet,
                 Solution:                   SimpleSolution,
                 SolutionType:               SolutionType,
                 calculateSolutionType:      calculateSolutionType,
@@ -221,7 +223,6 @@ if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
                 maskNew:                    maskNew,
                 maskNext:                   maskNext,
                 maskUnion:                  maskUnion,
-                maskValue:                  maskValue,
                 optimizeSolutions:          optimizeSolutions,
                 trimJS:                     trimJS,
             }

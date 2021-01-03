@@ -52,10 +52,13 @@ sidebar,
 
     function getPoolEncoder(featureObj)
     {
-        var key = JScrewIt.debug.maskValue(featureObj.mask);
-        var encoder = encoderCache[key];
+        var mask = featureObj.mask;
+        var encoder = encoderCache.get(mask);
         if (!encoder)
-            encoderCache[key] = encoder = JScrewIt.debug.createEncoder(featureObj);
+        {
+            encoder = JScrewIt.debug.createEncoder(featureObj);
+            encoderCache.set(mask, encoder);
+        }
         return encoder;
     }
 
@@ -366,7 +369,7 @@ sidebar,
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Feature = JScrewIt.Feature;
     var SolutionType = JScrewIt.debug.SolutionType;
-    var encoderCache = Object.create(null);
+    var encoderCache = new JScrewIt.debug.MaskMap();
 
     describe
     (

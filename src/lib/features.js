@@ -1,6 +1,6 @@
 /* global Audio, Intl, Node, console, document, history, require, self, sidebar, statusbar */
 
-import { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion, maskValue }
+import { MaskSet, maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
 from 'quinquaginta-duo';
 import
 {
@@ -122,25 +122,35 @@ export var validMaskFromArrayOrStringOrFeature;
         return returnValue;
     }
 
-    function completeExclusions(name)
+    function completeExclusions()
     {
-        var info = FEATURE_INFOS[name];
-        var excludes = info.excludes;
-        if (excludes)
-        {
-            var featureObj = ALL[name];
-            var mask = featureObj.mask;
-            excludes.forEach
-            (
-                function (exclude)
+        var incompatibleMaskSet = new MaskSet();
+        featureNames.forEach
+        (
+            function (name)
+            {
+                var info = FEATURE_INFOS[name];
+                var excludes = info.excludes;
+                if (excludes)
                 {
-                    var excludeMask = completeFeature(exclude);
-                    var incompatibleMask = maskUnion(mask, excludeMask);
-                    var incompatibleMaskKey = maskValue(mask);
-                    incompatibleMaskMap[incompatibleMaskKey] = incompatibleMask;
+                    var featureObj = ALL[name];
+                    var mask = featureObj.mask;
+                    excludes.forEach
+                    (
+                        function (exclude)
+                        {
+                            var excludeMask = completeFeature(exclude);
+                            var incompatibleMask = maskUnion(mask, excludeMask);
+                            if (!incompatibleMaskSet.has(incompatibleMask))
+                            {
+                                incompatibleMaskList.push(incompatibleMask);
+                                incompatibleMaskSet.add(incompatibleMask);
+                            }
+                        }
+                    );
                 }
-            );
-        }
+            }
+        );
     }
 
     function completeFeature(name)
@@ -1995,21 +2005,12 @@ export var validMaskFromArrayOrStringOrFeature;
 
     var autoMask = maskNew();
     var includesMap = createEmpty();
-    var incompatibleMaskMap = createEmpty();
+    var incompatibleMaskList = [];
     var unionMask = maskNew();
 
     var featureNames = _Object_keys(FEATURE_INFOS);
     featureNames.forEach(completeFeature);
-    featureNames.forEach(completeExclusions);
-    var incompatibleMaskList =
-    _Object_keys(incompatibleMaskMap).map
-    (
-        function (key)
-        {
-            var mask = incompatibleMaskMap[key];
-            return mask;
-        }
-    );
+    completeExclusions();
     ELEMENTARY.sort
     (
         function (feature1, feature2)
@@ -2019,8 +2020,7 @@ export var validMaskFromArrayOrStringOrFeature;
         }
     );
     _Object_freeze(ELEMENTARY);
-    var autoFeatureObj =
-    createFeature('AUTO', autoMask);
+    var autoFeatureObj = createFeature('AUTO', autoMask);
     registerFeature('AUTO', 'All features available in the current engine.', autoFeatureObj);
     _Object_freeze(ALL);
 }

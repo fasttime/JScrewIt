@@ -810,9 +810,9 @@ export var replaceStaticString;
                 if (!buffer.append(solution) || buffer.length > maxLength)
                     return;
             }
-            var result = _String(buffer);
-            if (!(result.length > maxLength))
-                return result;
+            var replacement = _String(buffer);
+            if (!(replacement.length > maxLength))
+                return replacement;
         },
 
         resolve:

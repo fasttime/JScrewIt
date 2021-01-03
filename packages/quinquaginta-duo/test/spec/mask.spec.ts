@@ -1,13 +1,13 @@
-import { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion, maskValue }
-from '../../src/quinquaginta-duo';
-import type Mask                    from '../../src/quinquaginta-duo';
+import { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
+from '../../src/mask';
+import type { Mask }                from '../../src/mask';
 import assert, { AssertionError }   from 'assert';
 
 function assertFail
 (message: string, stackStartFn: Function, actual?: unknown, expected?: unknown): never
 {
     const options = { message, actual, expected, stackStartFn, stackStartFunction: stackStartFn };
-    const error: Error = new AssertionError(options);
+    const error = new AssertionError(options);
     throw error;
 }
 
@@ -51,7 +51,7 @@ function assertMaskNotEmpty(actual: Mask): void
 
 function formatMask(mask: Mask): string
 {
-    const str = `mask ${String(maskValue(mask))}`;
+    const str = `mask ${String(mask)}`;
     return str;
 }
 
@@ -128,31 +128,6 @@ describe
                     }
                     prevHighMask = nextHighMask;
                     lowMask = maskUnion(lowMask, topMask);
-                }
-            },
-        );
-
-        it
-        (
-            'maskValue',
-            () =>
-            {
-                const valueSet: { [Key in PropertyKey]: unknown; } = { __proto__: null };
-                let prevMask = maskNew();
-                for (let count = 0; count < 52; ++count)
-                {
-                    const prevValue = maskValue(prevMask);
-                    const nextMask = maskNext(prevMask);
-                    const nextValue = maskValue(nextMask);
-                    valueSet[prevValue as never] = null;
-                    if (nextValue as never in valueSet)
-                    {
-                        assert.fail
-                        (`Expected mask value ${String(nextValue)} to be unique but it is not`);
-                    }
-                    valueSet[nextValue as never] = null;
-                    const unionMask = maskUnion(nextMask, prevMask);
-                    prevMask = unionMask;
                 }
             },
         );

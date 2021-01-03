@@ -94,17 +94,16 @@
             };
         }
         {
-            const maskSet = new Set();
+            const maskSet = new MaskSet();
             encoder.hasFeatures =
             function (mask)
             {
                 const included = maskIncludes(encoder.mask, mask);
                 if (!maskIncludes(ancestorMask, mask))
                 {
-                    const key = maskValue(mask);
-                    if (!maskSet.has(key))
+                    if (!maskSet.has(mask))
                     {
-                        maskSet.add(key);
+                        maskSet.add(mask);
                         const featureQuery = new FeatureQueryInfo(mask, included, ancestorMask);
                         featureQueries.push(featureQuery);
                     }
@@ -194,7 +193,7 @@
         module.exports = Analyzer;
     }
 
-    const { createEncoder, createFeatureFromMask, maskIncludes, maskUnion, maskValue } =
+    const { MaskSet, createEncoder, createFeatureFromMask, maskIncludes, maskUnion } =
     JScrewIt.debug;
 }
 )();

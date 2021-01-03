@@ -2,12 +2,12 @@
 
 import './optimizer';
 
-import { Encoder }                                                  from './encoder-base';
-import { wrapWithCall, wrapWithEval }                               from './encoder-ext';
-import { Feature, validMaskFromArrayOrStringOrFeature }             from './features';
-import { _Error, _String, assignNoEnum, createEmpty, esToString }   from './obj-utils';
-import trimJS                                                       from './trim-js';
-import { maskNew, maskValue }                                       from 'quinquaginta-duo';
+import { Encoder }                                      from './encoder-base';
+import { wrapWithCall, wrapWithEval }                   from './encoder-ext';
+import { Feature, validMaskFromArrayOrStringOrFeature } from './features';
+import { _Error, _String, assignNoEnum, esToString }    from './obj-utils';
+import trimJS                                           from './trim-js';
+import { MaskMap, maskNew }                             from 'quinquaginta-duo';
 
 function encode(input, options)
 {
@@ -59,14 +59,16 @@ function filterRunAs(input, name)
 function getEncoder(features)
 {
     var mask = getValidFeatureMask(features);
-    var key = maskValue(mask);
-    var encoder = encoders[key];
+    var encoder = encoderCache.get(mask);
     if (!encoder)
-        encoders[key] = encoder = new Encoder(mask);
+    {
+        encoder = new Encoder(mask);
+        encoderCache.set(mask, encoder);
+    }
     return encoder;
 }
 
-var encoders = createEmpty();
+var encoderCache = new MaskMap();
 
 export var JScrewIt = assignNoEnum({ }, { Feature: Feature, encode: encode });
 
