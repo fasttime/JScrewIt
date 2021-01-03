@@ -27,6 +27,7 @@
     "@fasttime/gulp-lint": "latest",
     "@types/ebdd": "npm:ebdd@latest",
     "@types/mocha": "latest",
+    "@types/node": "latest",
     "ebdd": "latest",
     "eslint-plugin-ebdd": "latest",
     "gulp": "latest",
