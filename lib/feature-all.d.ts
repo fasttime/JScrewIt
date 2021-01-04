@@ -569,7 +569,7 @@ export interface FeatureAll
     SELF_OBJ: ElementaryFeature;
 
     /**
-     * Support for the two-letter locale name "ar".
+     * Support for the two-letter locale name "ar" to format decimal numbers as Arabic numerals.
      *
      * @remarks
      *

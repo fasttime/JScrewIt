@@ -1034,17 +1034,17 @@ export var initReplaceStaticExpr;
         ],
         'س':
         [
-            defineLocalizedNumeral('LOCALE_AR', NaN, 2),
+            defineLocalizedNumeral('"ar"', NaN, 2),
             defineCharDefault(),
         ],
         'ل':
         [
-            defineLocalizedNumeral('LOCALE_AR', NaN, 0),
+            defineLocalizedNumeral('"ar"', NaN, 0),
             defineCharDefault(),
         ],
         'ي':
         [
-            defineLocalizedNumeral('LOCALE_AR', NaN, 1),
+            defineLocalizedNumeral('"ar"', NaN, 1),
             defineCharDefault(),
         ],
         '٫':

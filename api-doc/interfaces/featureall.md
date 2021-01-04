@@ -962,7 +962,7 @@ ___
 
 • **SHORT\_LOCALES**: [*ElementaryFeature*](elementaryfeature.md)
 
-Support for the two-letter locale name "ar".
+Support for the two-letter locale name "ar" to format decimal numbers as Arabic numerals.
 
 **`remarks`** 
 

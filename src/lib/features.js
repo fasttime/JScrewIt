@@ -959,7 +959,9 @@ export var validMaskFromArrayOrStringOrFeature;
         },
         SHORT_LOCALES:
         {
-            description: 'Support for the two-letter locale name "ar".',
+            description:
+            'Support for the two-letter locale name "ar" to format decimal numbers as Arabic ' +
+            'numerals.',
             check:
             function ()
             {
