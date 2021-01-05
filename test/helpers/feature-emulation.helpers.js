@@ -82,6 +82,11 @@
         var returnValue;
         switch (locale)
         {
+        case 'ar':
+            number = Number(number);
+            if (isNaN(number))
+                return 'ليس رقم';
+            break;
         case 'ar-td':
             number = Number(number);
             if (isNaN(number))
