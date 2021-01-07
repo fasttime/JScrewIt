@@ -602,7 +602,7 @@ self,
                     expect(encoder.replaceString('123')).toBeUndefined();
                 }
             );
-            it.when(module !== 'undefined' && isStickyRegExpSupported())
+            it.when(typeof module !== 'undefined' && isStickyRegExpSupported())
             (
                 'works well when sticky regular expressions are not supported',
                 function ()
