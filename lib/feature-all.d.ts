@@ -405,13 +405,24 @@ export interface FeatureAll
     LOCALE_INFINITY: ElementaryFeature;
 
     /**
-     * Features shared by all engines capable of localized number formatting, including output of Arabic digits, the Arabic decimal separator "٫", the first three letters of the Arabic string representation of NaN \("ليس"\), Persian digits and the Persian digit group separator "٬".
+     * Features shared by all engines capable of localized number formatting, including output of Arabic digits, the Arabic decimal separator "٫", the letters in the first word of the Arabic string representation of NaN \("ليس"\), Persian digits and the Persian digit group separator "٬".
      *
      * @remarks
      *
      * Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, and Node.js 13+.
      */
     LOCALE_NUMERALS: ElementaryFeature;
+
+    /**
+     * Extended localized number formatting.
+     *
+     * This includes all features of LOCALE_NUMERALS plus the output of the first three letters in the second word of the Arabic string representation of NaN \("رقم"\), Bengali digits and the letters in the Russian string representation of NaN \("не число"\).
+     *
+     * @remarks
+     *
+     * Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4, and Node.js 13+.
+     */
+    LOCALE_NUMERALS_EXT: ElementaryFeature;
 
     /**
      * Existence of the name property for functions.
@@ -652,6 +663,7 @@ type ElementaryFeatureName =
 | 'INTL'
 | 'LOCALE_INFINITY'
 | 'LOCALE_NUMERALS'
+| 'LOCALE_NUMERALS_EXT'
 | 'NAME'
 | 'NODECONSTRUCTOR'
 | 'NO_FF_SRC'

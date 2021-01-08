@@ -77,32 +77,32 @@
         return result;
     }
 
-    function formatNumber(number, locale)
+    function formatLocaleNumeral(number, charCode0, groupLength, separator, dotReplacement)
     {
-        var returnValue;
-        switch (locale)
+        var parts = String(number).match(/(-?)(\d*)(\.?)(.*)/);
+        parts.shift();
+        var int = rebaseDigits(parts[1], charCode0);
+        var regExp;
+        switch (groupLength)
         {
-        case 'ar':
-            number = Number(number);
-            if (isNaN(number))
-                return 'ليس رقم';
+        case 2:
+            regExp = /(?=(..)+.$)/g;
             break;
-        case 'ar-td':
-            number = Number(number);
-            if (isNaN(number))
-                returnValue = 'ليس رقم';
-            else
-                returnValue = rebaseDigits(String(number), 0x660).replace(/\./g, '٫');
-            return returnValue;
-        case 'fa':
-            number = Number(number);
-            if (!isNaN(number))
-            {
-                returnValue =
-                rebaseDigits(String(number).replace(/\d(?=(?:\d{3})+\b)/g, '$&٬'), 0x06f0);
-            }
-            return returnValue;
+        case 3:
+            regExp = /(?=(...)+$)/g;
+            break;
         }
+        if (regExp)
+        {
+            var replacement = (separator || ',') + '$&';
+            int = int.replace(regExp, replacement);
+        }
+        parts[1] = int;
+        if (dotReplacement)
+            parts[2] = parts[2] && dotReplacement;
+        parts[3] = rebaseDigits(parts[3], charCode0);
+        var returnValue = parts.join('');
+        return returnValue;
     }
 
     function fromCodePoint()
@@ -411,10 +411,10 @@
         return oldDescriptor;
     }
 
-    function rebaseDigits(str, charCode0)
+    function rebaseDigits(digits, charCode0)
     {
         var returnValue =
-        str.replace
+        digits.replace
         (
             /\d/g,
             function (digit)
@@ -902,12 +902,76 @@
         LOCALE_NUMERALS:
         function ()
         {
+            var context = this;
             registerNumberToLocaleStringAdapter
             (
                 this,
                 function (locale)
                 {
-                    var returnValue = formatNumber(this, locale);
+                    var returnValue;
+                    var number;
+                    switch (locale)
+                    {
+                    case 'ar':
+                        number = Number(this);
+                        if (isNaN(number))
+                            returnValue = context.arabicNaNString || 'ليس';
+                        else if (context.shortLocales)
+                        {
+                            returnValue =
+                            formatLocaleNumeral(number, 0x660, undefined, undefined, '٫');
+                        }
+                        break;
+                    case 'ar-td':
+                        number = Number(this);
+                        if (isNaN(number))
+                            returnValue = context.arabicNaNString || 'ليس';
+                        else
+                        {
+                            returnValue =
+                            formatLocaleNumeral(number, 0x660, undefined, undefined, '٫');
+                        }
+                        break;
+                    case 'fa':
+                        number = Number(this);
+                        if (!isNaN(number))
+                            returnValue = formatLocaleNumeral(number, 0x06f0, 3, '٬');
+                        break;
+                    }
+                    return returnValue;
+                }
+            );
+        },
+        LOCALE_NUMERALS_EXT:
+        function ()
+        {
+            this.arabicNaNString = 'ليس\xa0رقم';
+            registerNumberToLocaleStringAdapter
+            (
+                this,
+                function (locale)
+                {
+                    var returnValue;
+                    var number;
+                    switch (locale)
+                    {
+                    case 'ar':
+                    case 'ar-td':
+                        number = Number(this);
+                        if (isNaN(number))
+                            returnValue = 'ليس\xa0رقم';
+                        break;
+                    case 'bn':
+                        number = Number(this);
+                        if (!isNaN(number))
+                            returnValue = formatLocaleNumeral(number, 0x9e6, 2, ',', '.');
+                        break;
+                    case 'ru':
+                        number = Number(this);
+                        if (isNaN(number))
+                            returnValue = 'не\xa0число';
+                        break;
+                    }
                     return returnValue;
                 }
             );
@@ -969,17 +1033,7 @@
         SHORT_LOCALES:
         function ()
         {
-            registerNumberToLocaleStringAdapter
-            (
-                this,
-                function (locale)
-                {
-                    if (locale === 'ar')
-                        locale = 'ar-td';
-                    var returnValue = formatNumber(this, locale);
-                    return returnValue;
-                }
-            );
+            this.shortLocales = true;
         },
         STATUS:
         function ()

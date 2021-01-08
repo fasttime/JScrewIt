@@ -4,11 +4,11 @@
 // Compared to generic purpose encoding, definition encoding differs mainly in that every identifier
 // used must be defined itself, too, in a constant definition.
 
-import { define, defineList, defineWithArrayLike }  from './definers';
-import { Feature }                                  from './features';
-import { _String, createEmpty, noProto }            from './obj-utils';
-import { LazySolution, SimpleSolution }             from './solution';
-import { SolutionType }                             from 'novem';
+import { callWithArgs, define, defineList } from './definers';
+import { Feature }                          from './features';
+import { _String, createEmpty, noProto }    from './obj-utils';
+import { LazySolution, SimpleSolution }     from './solution';
+import { SolutionType }                     from 'novem';
 
 export var AMENDINGS = ['true', 'undefined', 'NaN'];
 
@@ -114,6 +114,7 @@ export var initReplaceStaticExpr;
     var INTL                            = Feature.INTL;
     var LOCALE_INFINITY                 = Feature.LOCALE_INFINITY;
     var LOCALE_NUMERALS                 = Feature.LOCALE_NUMERALS;
+    var LOCALE_NUMERALS_EXT             = Feature.LOCALE_NUMERALS_EXT;
     var NAME                            = Feature.NAME;
     var NODECONSTRUCTOR                 = Feature.NODECONSTRUCTOR;
     var NO_FF_SRC                       = Feature.NO_FF_SRC;
@@ -250,7 +251,7 @@ export var initReplaceStaticExpr;
         var escSeqOpt   = checkOpt('escSeq');
         var unescapeOpt = checkOpt('unescape');
         var definition = createCharDefaultDefinition(atobOpt, charCodeOpt, escSeqOpt, unescapeOpt);
-        var entry = defineWithArrayLike(definition, arguments, 2);
+        var entry = define(definition);
         return entry;
     }
 
@@ -339,7 +340,7 @@ export var initReplaceStaticExpr;
             break;
         }
         var definition = createCharAtDefinitionFH(expr, index, entries);
-        var entry = defineWithArrayLike(definition, arguments, 2);
+        var entry = callWithArgs(define, definition, arguments, 2);
         return entry;
     }
 
@@ -348,22 +349,8 @@ export var initReplaceStaticExpr;
         var expr = '(' + number + ')[TO_LOCALE_STRING](' + locale + ')';
         if (index != null)
             expr += '[' + index + ']';
-        var entry = define(expr, LOCALE_NUMERALS);
+        var entry = callWithArgs(define, expr, LOCALE_NUMERALS, arguments, 3);
         return entry;
-    }
-
-    function defineLocalizedNumerals(locale, zeroCharCode)
-    {
-        var fromCharCode = _String.fromCharCode;
-        for (var digit = 0; digit <= 9; ++digit)
-        {
-            var char = fromCharCode(zeroCharCode + digit);
-            CHARACTERS[char] =
-            [
-                defineLocalizedNumeral(locale, digit),
-                defineCharDefault(),
-            ];
-        }
     }
 
     function defineSimple(simple, expr, type)
@@ -385,6 +372,25 @@ export var initReplaceStaticExpr;
                 replacement += '+!![]';
             while (--digit > 1);
             return replacement;
+        }
+    }
+
+    function useLocaleNumeralDefinition(char, locale, number, index)
+    {
+        CHARACTERS[char] =
+        [
+            callWithArgs(defineLocalizedNumeral, locale, number, index, arguments, 4),
+            defineCharDefault(),
+        ];
+    }
+
+    function useLocaleNumeralDigitDefinitions(locale, zeroCharCode)
+    {
+        var fromCharCode = _String.fromCharCode;
+        for (var digit = 0; digit <= 9; ++digit)
+        {
+            var char = fromCharCode(zeroCharCode + digit);
+            callWithArgs(useLocaleNumeralDefinition, char, locale, digit, undefined, arguments, 2);
         }
     }
 
@@ -1031,31 +1037,6 @@ export var initReplaceStaticExpr;
         'ø':
         [
             define('atob("undefinedundefined")[10]', ATOB),
-        ],
-        'س':
-        [
-            defineLocalizedNumeral('"ar"', NaN, 2),
-            defineCharDefault(),
-        ],
-        'ل':
-        [
-            defineLocalizedNumeral('"ar"', NaN, 0),
-            defineCharDefault(),
-        ],
-        'ي':
-        [
-            defineLocalizedNumeral('"ar"', NaN, 1),
-            defineCharDefault(),
-        ],
-        '٫':
-        [
-            defineLocalizedNumeral('LOCALE_AR', 0.1, 1),
-            defineCharDefault(),
-        ],
-        '٬':
-        [
-            defineLocalizedNumeral('"fa"', 1000, 1),
-            defineCharDefault(),
         ],
         '∞':
         [
@@ -1812,8 +1793,24 @@ export var initReplaceStaticExpr;
         CHARACTERS[digit] = { expr: expr, solutionType: SolutionType.WEAK_ALGEBRAIC };
     }
 
-    // Define localized digits
-    defineLocalizedNumerals('LOCALE_AR', 0x0660);
-    defineLocalizedNumerals('"fa"', 0x6f0);
+    // Localized numeral definitions
+    useLocaleNumeralDigitDefinitions('LOCALE_AR', 0x0660);
+    useLocaleNumeralDefinition('٫', 'LOCALE_AR', 0.1, 1);
+    useLocaleNumeralDefinition('ل', '"ar"', NaN, 0);
+    useLocaleNumeralDefinition('ي', '"ar"', NaN, 1);
+    useLocaleNumeralDefinition('س', '"ar"', NaN, 2);
+    useLocaleNumeralDefinition('ر', '"ar"', NaN, 4, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDefinition('ق', '"ar"', NaN, 5, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDefinition('م', '"ar"', NaN, 6, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDigitDefinitions('"bn"', 0x9e6, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDigitDefinitions('"fa"', 0x6f0);
+    useLocaleNumeralDefinition('٬', '"fa"', 1000, 1);
+    useLocaleNumeralDefinition('н', '"ru"', NaN, 0, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDefinition('е', '"ru"', NaN, 1, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDefinition('ч', '"ru"', NaN, 3, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDefinition('и', '"ru"', NaN, 4, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDefinition('с', '"ru"', NaN, 5, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDefinition('л', '"ru"', NaN, 6, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDefinition('о', '"ru"', NaN, 7, LOCALE_NUMERALS_EXT);
 }
 )();

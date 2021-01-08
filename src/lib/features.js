@@ -81,6 +81,13 @@ export var validMaskFromArrayOrStringOrFeature;
         return equal;
     }
 
+    function checkLocaleNumeral(locale, number, regExp)
+    {
+        var localizedNumeral = number.toLocaleString(locale);
+        var returnValue = regExp.test(localizedNumeral);
+        return returnValue;
+    }
+
     function checkSelfFeature()
     {
         // self + '' throws an error inside a web worker in Safari 8 and 9.
@@ -790,33 +797,43 @@ export var validMaskFromArrayOrStringOrFeature;
         {
             description:
             'Features shared by all engines capable of localized number formatting, including ' +
-            'output of Arabic digits, the Arabic decimal separator "٫", the first three letters ' +
-            'of the Arabic string representation of NaN ("ليس"), Persian digits and the Persian ' +
-            'digit group separator "٬".',
+            'output of Arabic digits, the Arabic decimal separator "٫", the letters in the first ' +
+            'word of the Arabic string representation of NaN ("ليس"), Persian digits and the ' +
+            'Persian digit group separator "٬".',
             check:
             function ()
             {
-                function checkNumeral(locale, number, pattern)
-                {
-                    var localizedNumeral = number.toLocaleString(locale);
-                    var returnValue = matches(localizedNumeral, pattern);
-                    return returnValue;
-                }
-
-                function matches(str, pattern)
-                {
-                    var returnValue = str.slice(0, pattern.length) === pattern;
-                    return returnValue;
-                }
-
                 var available =
                 Number.prototype.toLocaleString &&
-                checkNumeral('ar-td', 890.12, '٨٩٠٫١٢') &&
-                checkNumeral('ar-td', 345.67, '٣٤٥٫٦٧') &&
-                checkNumeral('ar-td', NaN, 'ليس') &&
-                checkNumeral('fa', 9876543210, '۹٬۸۷۶٬۵۴۳٬۲۱۰');
+                checkLocaleNumeral('ar', NaN, /^ليس/) &&
+                checkLocaleNumeral('ar-td', 890.12, /^٨٩٠٫١٢/) &&
+                checkLocaleNumeral('ar-td', 345.67, /^٣٤٥٫٦٧/) &&
+                checkLocaleNumeral('fa', 9876543210, /^۹٬۸۷۶٬۵۴۳٬۲۱۰/);
                 return available;
             },
+        },
+        LOCALE_NUMERALS_EXT:
+        {
+            description:
+            'Extended localized number formatting.\n' +
+            'This includes all features of LOCALE_NUMERALS plus the output of the first three ' +
+            'letters in the second word of the Arabic string representation of NaN ("رقم"), ' +
+            'Bengali digits and the letters in the Russian string representation of NaN ("не\xa0' +
+            'число").',
+            check:
+            function ()
+            {
+                var available =
+                Number.prototype.toLocaleString &&
+                checkLocaleNumeral('ar', NaN, /^ليس.رقم/) &&
+                checkLocaleNumeral('ar-td', 890.12, /^٨٩٠٫١٢/) &&
+                checkLocaleNumeral('ar-td', 345.67, /^٣٤٥٫٦٧/) &&
+                checkLocaleNumeral('bn', 1234567890, /^১,২৩,৪৫,৬৭,৮৯০/) &&
+                checkLocaleNumeral('fa', 9876543210, /^۹٬۸۷۶٬۵۴۳٬۲۱۰/) &&
+                checkLocaleNumeral('ru', NaN, /^не.число/);
+                return available;
+            },
+            includes: ['LOCALE_NUMERALS'],
         },
         NAME:
         {
@@ -965,21 +982,15 @@ export var validMaskFromArrayOrStringOrFeature;
             check:
             function ()
             {
-                function compareLocalized(number)
-                {
-                    var localizedNumeral = number.toLocaleString('ar');
-                    var returnValue =
-                    localizedNumeral === number.toLocaleString('ar-td') &&
-                    localizedNumeral !== number.toLocaleString();
-                    return returnValue;
-                }
+                var NUMBER = 9876430.125;
 
+                var localizedNumeral = NUMBER.toLocaleString('ar');
                 var available =
-                Number.prototype.toLocaleString &&
-                compareLocalized(9876430.125) &&
-                compareLocalized(NaN);
+                localizedNumeral === NUMBER.toLocaleString('ar-td') &&
+                localizedNumeral !== NUMBER.toLocaleString('en');
                 return available;
             },
+            includes: ['LOCALE_NUMERALS'],
         },
         STATUS:
         {
@@ -1077,7 +1088,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
-                'LOCALE_NUMERALS',
+                'LOCALE_NUMERALS_EXT',
                 'NAME',
                 'NO_IE_SRC',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -1142,7 +1153,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
-                'LOCALE_NUMERALS',
+                'LOCALE_NUMERALS_EXT',
                 'NAME',
                 'OBJECT_UNDEFINED',
                 'PLAIN_INTL',
@@ -1185,7 +1196,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
-                'LOCALE_NUMERALS',
+                'LOCALE_NUMERALS_EXT',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'REGEXP_STRING_ITERATOR',
@@ -1233,7 +1244,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
-                'LOCALE_NUMERALS',
+                'LOCALE_NUMERALS_EXT',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
@@ -1278,7 +1289,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
-                'LOCALE_NUMERALS',
+                'LOCALE_NUMERALS_EXT',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'REGEXP_STRING_ITERATOR',
@@ -1374,7 +1385,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'IE_SRC',
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
-                'LOCALE_NUMERALS',
+                'LOCALE_NUMERALS_EXT',
                 'OBJECT_UNDEFINED',
                 'PLAIN_INTL',
                 'SHORT_LOCALES',
@@ -1544,7 +1555,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'GMT',
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
-                'LOCALE_NUMERALS',
+                'LOCALE_NUMERALS_EXT',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
@@ -1572,7 +1583,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
-                'LOCALE_NUMERALS',
+                'LOCALE_NUMERALS_EXT',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'REGEXP_STRING_ITERATOR',
@@ -1700,7 +1711,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
-                'LOCALE_NUMERALS',
+                'LOCALE_NUMERALS_EXT',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
@@ -1733,7 +1744,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
-                'LOCALE_NUMERALS',
+                'LOCALE_NUMERALS_EXT',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
@@ -1766,7 +1777,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
-                'LOCALE_NUMERALS',
+                'LOCALE_NUMERALS_EXT',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
@@ -1806,7 +1817,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 'INCR_CHAR',
                 'INTL',
                 'LOCALE_INFINITY',
-                'LOCALE_NUMERALS',
+                'LOCALE_NUMERALS_EXT',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'REGEXP_STRING_ITERATOR',

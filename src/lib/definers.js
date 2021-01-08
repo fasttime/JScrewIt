@@ -1,6 +1,19 @@
-import { featuresToMask }   from './features';
-import { _Array_prototype } from './obj-utils';
-import { maskUnion }        from 'quinquaginta-duo';
+import { featuresToMask }                           from './features';
+import { _Array_prototype, _Array_prototype_push }  from './obj-utils';
+import { maskUnion }                                from 'quinquaginta-duo';
+
+export function callWithArgs(defineFn)
+{
+    var args = arguments;
+    var featureArgsIndex = args.length - 2;
+    var featureArgs = args[featureArgsIndex];
+    var featureStartIndex = args[featureArgsIndex + 1];
+    var defineFnArgs = sliceArgs(args, 1, featureArgsIndex);
+    var features = sliceArgs(featureArgs, featureStartIndex);
+    _Array_prototype_push.apply(defineFnArgs, features);
+    var entry = defineFn.apply(null, defineFnArgs);
+    return entry;
+}
 
 function createDefinitionEntry(definition, mask)
 {
@@ -10,7 +23,9 @@ function createDefinitionEntry(definition, mask)
 
 export function define(definition)
 {
-    var entry = defineWithArrayLike(definition, arguments, 1);
+    var features = sliceArgs(arguments, 1);
+    var mask = featuresToMask(features);
+    var entry = createDefinitionEntry(definition, mask);
     return entry;
 }
 
@@ -32,10 +47,8 @@ export function defineList(availableEntries, indexEntries)
     return effectiveEntries;
 }
 
-export function defineWithArrayLike(definition, featureArgs, startIndex)
+function sliceArgs(args, startIndex, endIndex)
 {
-    var features = _Array_prototype.slice.call(featureArgs, startIndex);
-    var mask = featuresToMask(features);
-    var entry = createDefinitionEntry(definition, mask);
-    return entry;
+    var array = _Array_prototype.slice.call(args, startIndex, endIndex);
+    return array;
 }
