@@ -983,16 +983,23 @@ export var replaceStaticString;
     {
         var pattern = _Object_keys(SIMPLE).join('|');
         var regExp = _RegExp(pattern, 'y');
-        matchSimpleAt =
-        function (str, index)
+        // In Android Browser 4.0, the RegExp constructor ignores the unrecognized flag instead
+        // of throwing a SyntaxError.
+        if (regExp.flags)
         {
-            regExp.lastIndex = index;
-            var match = str.match(regExp);
-            if (match)
-                return match[0];
-        };
+            matchSimpleAt =
+            function (str, index)
+            {
+                regExp.lastIndex = index;
+                var match = str.match(regExp);
+                if (match)
+                    return match[0];
+            };
+        }
     }
     catch (error)
+    { }
+    if (!matchSimpleAt)
     {
         matchSimpleAt =
         function (str, index)
