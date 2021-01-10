@@ -1,33 +1,33 @@
 # JScrewIt
 
-## Index
+## Table of contents
 
 ### Interfaces
 
-* [CustomFeature](interfaces/customfeature.md)
-* [ElementaryFeature](interfaces/elementaryfeature.md)
-* [EncodeOptions](interfaces/encodeoptions.md)
-* [Feature](interfaces/feature.md)
-* [FeatureAll](interfaces/featureall.md)
-* [FeatureConstructor](interfaces/featureconstructor.md)
-* [PredefinedFeature](interfaces/predefinedfeature.md)
-* [default](interfaces/default.md)
+- [CustomFeature](interfaces/customfeature.md)
+- [ElementaryFeature](interfaces/elementaryfeature.md)
+- [EncodeOptions](interfaces/encodeoptions.md)
+- [Feature](interfaces/feature.md)
+- [FeatureAll](interfaces/featureall.md)
+- [FeatureConstructor](interfaces/featureconstructor.md)
+- [PredefinedFeature](interfaces/predefinedfeature.md)
+- [default](interfaces/default.md)
 
 ### Type aliases
 
-* [CompatibleFeatureArray](README.md#compatiblefeaturearray)
-* [ElementaryFeatureName](README.md#elementaryfeaturename)
-* [FeatureElement](README.md#featureelement)
-* [PredefinedFeatureName](README.md#predefinedfeaturename)
+- [CompatibleFeatureArray](README.md#compatiblefeaturearray)
+- [ElementaryFeatureName](README.md#elementaryfeaturename)
+- [FeatureElement](README.md#featureelement)
+- [PredefinedFeatureName](README.md#predefinedfeaturename)
 
 ### Variables
 
-* [Feature](README.md#feature)
-* [default](README.md#default)
+- [Feature](README.md#feature)
+- [default](README.md#default)
 
 ### Functions
 
-* [encode](README.md#encode)
+- [encode](README.md#encode)
 
 ## Type aliases
 
@@ -78,13 +78,13 @@ Name of a predefined feature.
 
 ### Feature
 
-• `Let` **Feature**: [*FeatureConstructor*](interfaces/featureconstructor.md)
+• **Feature**: [*FeatureConstructor*](interfaces/featureconstructor.md)
 
 ___
 
 ### default
 
-• `Let` **default**: [*default*](README.md#default)
+• **default**: [*default*](README.md#default)
 
 ## Functions
 

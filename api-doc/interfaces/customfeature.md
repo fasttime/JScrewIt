@@ -6,19 +6,19 @@
 
   ↳ **CustomFeature**
 
-## Index
+## Table of contents
 
 ### Properties
 
-* [canonicalNames](customfeature.md#canonicalnames)
-* [elementary](customfeature.md#elementary)
-* [elementaryNames](customfeature.md#elementarynames)
-* [name](customfeature.md#name)
+- [canonicalNames](customfeature.md#canonicalnames)
+- [elementary](customfeature.md#elementary)
+- [elementaryNames](customfeature.md#elementarynames)
+- [name](customfeature.md#name)
 
 ### Methods
 
-* [includes](customfeature.md#includes)
-* [restrict](customfeature.md#restrict)
+- [includes](customfeature.md#includes)
+- [restrict](customfeature.md#restrict)
 
 ## Properties
 

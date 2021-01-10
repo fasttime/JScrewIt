@@ -818,8 +818,8 @@ export var validMaskFromArrayOrStringOrFeature;
             'Extended localized number formatting.\n' +
             'This includes all features of LOCALE_NUMERALS plus the output of the first three ' +
             'letters in the second word of the Arabic string representation of NaN ("رقم"), ' +
-            'Bengali digits and the letters in the Russian string representation of NaN ("не\xa0' +
-            'число").',
+            'Bengali digits, the letters in the Russian string representation of NaN ("не\xa0' +
+            'число") and the letters in the Persian string representation of NaN ("ناعدد").',
             check:
             function ()
             {
@@ -830,6 +830,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 checkLocaleNumeral('ar-td', 345.67, /^٣٤٥٫٦٧/) &&
                 checkLocaleNumeral('bn', 1234567890, /^১,২৩,৪৫,৬৭,৮৯০/) &&
                 checkLocaleNumeral('fa', 9876543210, /^۹٬۸۷۶٬۵۴۳٬۲۱۰/) &&
+                checkLocaleNumeral('fa', NaN, /^ناعد/) &&
                 checkLocaleNumeral('ru', NaN, /^не.число/);
                 return available;
             },

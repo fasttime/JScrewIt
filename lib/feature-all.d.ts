@@ -416,7 +416,7 @@ export interface FeatureAll
     /**
      * Extended localized number formatting.
      *
-     * This includes all features of LOCALE_NUMERALS plus the output of the first three letters in the second word of the Arabic string representation of NaN \("رقم"\), Bengali digits and the letters in the Russian string representation of NaN \("не число"\).
+     * This includes all features of LOCALE_NUMERALS plus the output of the first three letters in the second word of the Arabic string representation of NaN \("رقم"\), Bengali digits, the letters in the Russian string representation of NaN \("не число"\) and the letters in the Persian string representation of NaN \("ناعدد"\).
      *
      * @remarks
      *

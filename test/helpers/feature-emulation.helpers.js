@@ -966,6 +966,11 @@
                         if (!isNaN(number))
                             returnValue = formatLocaleNumeral(number, 0x9e6, 2, ',', '.');
                         break;
+                    case 'fa':
+                        number = Number(this);
+                        if (isNaN(number))
+                            returnValue = 'ناعدد';
+                        break;
                     case 'ru':
                         number = Number(this);
                         if (isNaN(number))
@@ -1034,6 +1039,23 @@
         function ()
         {
             this.shortLocales = true;
+            registerNumberToLocaleStringAdapter
+            (
+                this,
+                function (locale)
+                {
+                    if (locale === 'ar' || locale === 'ar-td')
+                    {
+                        var number = Number(this);
+                        if (!isNaN(number))
+                        {
+                            var returnValue =
+                            formatLocaleNumeral(number, 0x660, undefined, undefined, '٫');
+                            return returnValue;
+                        }
+                    }
+                }
+            );
         },
         STATUS:
         function ()

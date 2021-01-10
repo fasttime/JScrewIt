@@ -4,14 +4,14 @@
 
 * **EncodeOptions**
 
-## Index
+## Table of contents
 
 ### Properties
 
-* [features](encodeoptions.md#features)
-* [runAs](encodeoptions.md#runas)
-* [trimCode](encodeoptions.md#trimcode)
-* [wrapWith](encodeoptions.md#wrapwith)
+- [features](encodeoptions.md#features)
+- [runAs](encodeoptions.md#runas)
+- [trimCode](encodeoptions.md#trimcode)
+- [wrapWith](encodeoptions.md#wrapwith)
 
 ## Properties
 

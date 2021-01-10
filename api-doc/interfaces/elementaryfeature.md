@@ -6,19 +6,19 @@
 
   ↳ **ElementaryFeature**
 
-## Index
+## Table of contents
 
 ### Properties
 
-* [canonicalNames](elementaryfeature.md#canonicalnames)
-* [elementary](elementaryfeature.md#elementary)
-* [elementaryNames](elementaryfeature.md#elementarynames)
-* [name](elementaryfeature.md#name)
+- [canonicalNames](elementaryfeature.md#canonicalnames)
+- [elementary](elementaryfeature.md#elementary)
+- [elementaryNames](elementaryfeature.md#elementarynames)
+- [name](elementaryfeature.md#name)
 
 ### Methods
 
-* [includes](elementaryfeature.md#includes)
-* [restrict](elementaryfeature.md#restrict)
+- [includes](elementaryfeature.md#includes)
+- [restrict](elementaryfeature.md#restrict)
 
 ## Properties
 

@@ -27,19 +27,19 @@ meaning that they mutually exclude each other, and thus their union cannot be co
 
 * **Feature**
 
-## Index
+## Table of contents
 
 ### Properties
 
-* [canonicalNames](feature.md#canonicalnames)
-* [elementary](feature.md#elementary)
-* [elementaryNames](feature.md#elementarynames)
-* [name](feature.md#name)
+- [canonicalNames](feature.md#canonicalnames)
+- [elementary](feature.md#elementary)
+- [elementaryNames](feature.md#elementarynames)
+- [name](feature.md#name)
 
 ### Methods
 
-* [includes](feature.md#includes)
-* [restrict](feature.md#restrict)
+- [includes](feature.md#includes)
+- [restrict](feature.md#restrict)
 
 ## Properties
 

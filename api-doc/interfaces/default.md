@@ -4,12 +4,12 @@
 
 * **default**
 
-## Index
+## Table of contents
 
 ### Properties
 
-* [Feature](default.md#feature)
-* [encode](default.md#encode)
+- [Feature](default.md#feature)
+- [encode](default.md#encode)
 
 ## Properties
 

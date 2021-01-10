@@ -8,19 +8,19 @@
 
   ↳↳ [*ElementaryFeature*](elementaryfeature.md)
 
-## Index
+## Table of contents
 
 ### Properties
 
-* [canonicalNames](predefinedfeature.md#canonicalnames)
-* [elementary](predefinedfeature.md#elementary)
-* [elementaryNames](predefinedfeature.md#elementarynames)
-* [name](predefinedfeature.md#name)
+- [canonicalNames](predefinedfeature.md#canonicalnames)
+- [elementary](predefinedfeature.md#elementary)
+- [elementaryNames](predefinedfeature.md#elementarynames)
+- [name](predefinedfeature.md#name)
 
 ### Methods
 
-* [includes](predefinedfeature.md#includes)
-* [restrict](predefinedfeature.md#restrict)
+- [includes](predefinedfeature.md#includes)
+- [restrict](predefinedfeature.md#restrict)
 
 ## Properties
 
