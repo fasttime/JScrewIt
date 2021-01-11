@@ -977,8 +977,6 @@ export var replaceStaticString;
 
     var STATIC_ENCODER = new Encoder(maskNew());
 
-    var matchSimpleAt;
-
     try
     {
         var pattern = _Object_keys(SIMPLE).join('|');
@@ -987,7 +985,7 @@ export var replaceStaticString;
         // of throwing a SyntaxError.
         if (regExp.flags)
         {
-            matchSimpleAt =
+            var matchSimpleAt =
             function (str, index)
             {
                 regExp.lastIndex = index;

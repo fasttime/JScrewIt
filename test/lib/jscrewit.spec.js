@@ -35,8 +35,7 @@ self,
                         if (typeof module !== 'undefined')
                         {
                             global.self = { };
-                            var newJScrewIt = reloadJScrewIt();
-                            expect(self.JScrewIt).toBe(newJScrewIt);
+                            reloadJScrewIt({ module: undefined, require: undefined });
                         }
                         expect(self.hasOwnProperty('JScrewIt')).toBeTruthy();
                     }

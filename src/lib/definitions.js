@@ -4,11 +4,11 @@
 // Compared to generic purpose encoding, definition encoding differs mainly in that every identifier
 // used must be defined itself, too, in a constant definition.
 
-import { callWithArgs, define, defineList } from './definers';
-import { Feature }                          from './features';
-import { _String, createEmpty, noProto }    from './obj-utils';
-import { LazySolution, SimpleSolution }     from './solution';
-import { SolutionType }                     from 'novem';
+import { callWithFeatures, define, defineList } from './definers';
+import { Feature }                              from './features';
+import { _String, createEmpty, noProto }        from './obj-utils';
+import { LazySolution, SimpleSolution }         from './solution';
+import { SolutionType }                         from 'novem';
 
 export var AMENDINGS = ['true', 'undefined', 'NaN'];
 
@@ -340,7 +340,7 @@ export var initReplaceStaticExpr;
             break;
         }
         var definition = createCharAtDefinitionFH(expr, index, entries);
-        var entry = callWithArgs(define, definition, arguments, 2);
+        var entry = callWithFeatures(define, definition, arguments, 2);
         return entry;
     }
 
@@ -349,7 +349,7 @@ export var initReplaceStaticExpr;
         var expr = '(' + number + ')[TO_LOCALE_STRING](' + locale + ')';
         if (index != null)
             expr += '[' + index + ']';
-        var entry = callWithArgs(define, expr, LOCALE_NUMERALS, arguments, 3);
+        var entry = callWithFeatures(define, expr, LOCALE_NUMERALS, arguments, 3);
         return entry;
     }
 
@@ -379,7 +379,7 @@ export var initReplaceStaticExpr;
     {
         CHARACTERS[char] =
         [
-            callWithArgs(defineLocalizedNumeral, locale, number, index, arguments, 4),
+            callWithFeatures(defineLocalizedNumeral, locale, number, index, arguments, 4),
             defineCharDefault(),
         ];
     }
@@ -390,7 +390,8 @@ export var initReplaceStaticExpr;
         for (var digit = 0; digit <= 9; ++digit)
         {
             var char = fromCharCode(zeroCharCode + digit);
-            callWithArgs(useLocaleNumeralDefinition, char, locale, digit, undefined, arguments, 2);
+            callWithFeatures
+            (useLocaleNumeralDefinition, char, locale, digit, undefined, arguments, 2);
         }
     }
 
@@ -1802,8 +1803,8 @@ export var initReplaceStaticExpr;
     useLocaleNumeralDefinition('ر', '"ar"', NaN, 4, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('ق', '"ar"', NaN, 5, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('م', '"ar"', NaN, 6, LOCALE_NUMERALS_EXT);
-    useLocaleNumeralDigitDefinitions('"bn"', 0x9e6, LOCALE_NUMERALS_EXT);
-    useLocaleNumeralDigitDefinitions('"fa"', 0x6f0);
+    useLocaleNumeralDigitDefinitions('"bn"', 0x09e6, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDigitDefinitions('"fa"', 0x06f0);
     useLocaleNumeralDefinition('٬', '"fa"', 1000, 1);
     useLocaleNumeralDefinition('ن', '"fa"', NaN, 0, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('ا', '"fa"', NaN, 1, LOCALE_NUMERALS_EXT);

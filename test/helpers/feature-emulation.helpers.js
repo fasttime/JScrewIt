@@ -919,7 +919,7 @@
                         else if (context.shortLocales)
                         {
                             returnValue =
-                            formatLocaleNumeral(number, 0x660, undefined, undefined, '٫');
+                            formatLocaleNumeral(number, 0x0660, undefined, undefined, '٫');
                         }
                         break;
                     case 'ar-td':
@@ -929,7 +929,7 @@
                         else
                         {
                             returnValue =
-                            formatLocaleNumeral(number, 0x660, undefined, undefined, '٫');
+                            formatLocaleNumeral(number, 0x0660, undefined, undefined, '٫');
                         }
                         break;
                     case 'fa':
@@ -964,7 +964,7 @@
                     case 'bn':
                         number = Number(this);
                         if (!isNaN(number))
-                            returnValue = formatLocaleNumeral(number, 0x9e6, 2, ',', '.');
+                            returnValue = formatLocaleNumeral(number, 0x09e6, 2);
                         break;
                     case 'fa':
                         number = Number(this);

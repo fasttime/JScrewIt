@@ -10,9 +10,9 @@ require('./helpers/matcher.helpers');
 var postrequire = require('postrequire');
 
 global.reloadJScrewIt =
-function ()
+function (stubs)
 {
-    var newJScrewIt = postrequire('..');
+    var newJScrewIt = postrequire('..', stubs);
     return newJScrewIt;
 };
 

@@ -91,10 +91,9 @@ export var validMaskFromArrayOrStringOrFeature;
     function checkSelfFeature()
     {
         // self + '' throws an error inside a web worker in Safari 8 and 9.
-        var str;
         try
         {
-            str = self + '';
+            var str = self + '';
         }
         catch (error)
         {
@@ -435,7 +434,6 @@ export var validMaskFromArrayOrStringOrFeature;
                     Function('()=>{}')();
                     return true;
                 }
-                /* c8 ignore next 2 */
                 catch (error)
                 { }
             },
@@ -808,7 +806,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 checkLocaleNumeral('ar', NaN, /^ليس/) &&
                 checkLocaleNumeral('ar-td', 890.12, /^٨٩٠٫١٢/) &&
                 checkLocaleNumeral('ar-td', 345.67, /^٣٤٥٫٦٧/) &&
-                checkLocaleNumeral('fa', 9876543210, /^۹٬۸۷۶٬۵۴۳٬۲۱۰/);
+                checkLocaleNumeral('fa', 1234567890, /^۱٬۲۳۴٬۵۶۷٬۸۹۰/);
                 return available;
             },
         },
@@ -829,7 +827,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 checkLocaleNumeral('ar-td', 890.12, /^٨٩٠٫١٢/) &&
                 checkLocaleNumeral('ar-td', 345.67, /^٣٤٥٫٦٧/) &&
                 checkLocaleNumeral('bn', 1234567890, /^১,২৩,৪৫,৬৭,৮৯০/) &&
-                checkLocaleNumeral('fa', 9876543210, /^۹٬۸۷۶٬۵۴۳٬۲۱۰/) &&
+                checkLocaleNumeral('fa', 1234567890, /^۱٬۲۳۴٬۵۶۷٬۸۹۰/) &&
                 checkLocaleNumeral('fa', NaN, /^ناعد/) &&
                 checkLocaleNumeral('ru', NaN, /^не.число/);
                 return available;
@@ -1970,7 +1968,6 @@ export var validMaskFromArrayOrStringOrFeature;
     {
         var inspectKey = require('util').inspect.custom;
     }
-    /* c8 ignore next 2 */
     catch (error)
     { }
     if (inspectKey)

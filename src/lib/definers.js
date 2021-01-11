@@ -2,7 +2,7 @@ import { featuresToMask }                           from './features';
 import { _Array_prototype, _Array_prototype_push }  from './obj-utils';
 import { maskUnion }                                from 'quinquaginta-duo';
 
-export function callWithArgs(defineFn)
+export function callWithFeatures(defineFn)
 {
     var args = arguments;
     var featureArgsIndex = args.length - 2;

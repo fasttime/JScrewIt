@@ -3,7 +3,7 @@
 
 'use strict';
 
-(function ()
+(function (global)
 {
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Feature = JScrewIt.Feature;
@@ -335,6 +335,29 @@
                             expect(featureObj.mask).not.toEqual(newMask);
                         }
                     );
+                }
+            );
+            it
+            (
+                'ARROW check returns false',
+                function ()
+                {
+                    var Function = global.Function;
+                    global.Function =
+                    function ()
+                    {
+                        throw SyntaxError();
+                    };
+                    try
+                    {
+                        var check = Feature.ARROW.check;
+                        var available = check();
+                        expect(available).toBe(false);
+                    }
+                    finally
+                    {
+                        global.Function = Function;
+                    }
                 }
             );
             it
@@ -810,4 +833,4 @@
         }
     );
 }
-)();
+)(typeof self === 'undefined' ? global : self);
