@@ -227,7 +227,7 @@ task
 
         const uglifyOpts =
         {
-            compress: { global_defs: { DEBUG: false }, passes: 3 },
+            compress: { global_defs: { NO_DEBUG: true }, passes: 3 },
             output: { comments: (node, comment) => comment.pos === 0 },
         };
         const stream =

@@ -804,8 +804,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 var available =
                 Number.prototype.toLocaleString &&
                 checkLocaleNumeral('ar', NaN, /^ليس/) &&
-                checkLocaleNumeral('ar-td', 890.12, /^٨٩٠٫١٢/) &&
-                checkLocaleNumeral('ar-td', 345.67, /^٣٤٥٫٦٧/) &&
+                checkLocaleNumeral('ar-td', 234567890.1, /^٢٣٤٬?٥٦٧٬?٨٩٠٫١/) &&
                 checkLocaleNumeral('fa', 1234567890, /^۱٬۲۳۴٬۵۶۷٬۸۹۰/);
                 return available;
             },
@@ -824,8 +823,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 var available =
                 Number.prototype.toLocaleString &&
                 checkLocaleNumeral('ar', NaN, /^ليس.رقم/) &&
-                checkLocaleNumeral('ar-td', 890.12, /^٨٩٠٫١٢/) &&
-                checkLocaleNumeral('ar-td', 345.67, /^٣٤٥٫٦٧/) &&
+                checkLocaleNumeral('ar-td', 234567890.1, /^٢٣٤٬?٥٦٧٬?٨٩٠٫١/) &&
                 checkLocaleNumeral('bn', 1234567890, /^১,২৩,৪৫,৬৭,৮৯০/) &&
                 checkLocaleNumeral('fa', 1234567890, /^۱٬۲۳۴٬۵۶۷٬۸۹۰/) &&
                 checkLocaleNumeral('fa', NaN, /^ناعد/) &&

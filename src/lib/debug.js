@@ -45,7 +45,7 @@ import { SolutionType, calculateSolutionType }  from 'novem';
 import { MaskMap, MaskSet, maskAreEqual, maskIncludes, maskNew, maskNext, maskUnion }
 from 'quinquaginta-duo';
 
-if (typeof DEBUG === 'undefined' || /* c8 ignore next */ DEBUG)
+if (typeof NO_DEBUG === 'undefined')
 {
     (function ()
     {
