@@ -6,6 +6,6 @@
 /jsdoc
 /packages/**/lib
 /packages/**/test/node-legacy
-npm-debug.log
 coverage/
 node_modules/
+npm-debug.log
