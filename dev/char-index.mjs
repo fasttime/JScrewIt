@@ -26,8 +26,10 @@ async function doAdd()
                     const solutionBook = solutionBookMap.deserialize(serializedSolutionBook);
                     solutionBookMap.set(char, solutionBook);
                     console.log('Character %s indexed', formattedCharacter);
+                    if (hasUnusedDefinitions(solutionBook, char))
+                        console.log('Not all definitions used!');
                     if (!noSave)
-                        solutionBookMap.save();
+                        await solutionBookMap.save();
                     queue.delete(promise);
                 }
             )
@@ -42,7 +44,7 @@ async function doAdd()
 
     async function indexCharacters()
     {
-        const solutionBookMap = getSolutionBookMap(!noLoad);
+        const solutionBookMap = loadSolutionBookMap(!noLoad);
         await progress
         (
             async indicator =>
@@ -141,10 +143,19 @@ async function doAdd()
     }
 }
 
+async function doDelete()
+{
+    const charSet = parseArguments(() => false);
+    const solutionBookMap = loadSolutionBookMap();
+    charSet.forEach(char => solutionBookMap.delete(char));
+    await solutionBookMap.save();
+    console.log('Done.');
+}
+
 async function doLevel()
 {
     let output = '';
-    for (const solutionBookMap = getSolutionBookMap(); solutionBookMap.size;)
+    for (const solutionBookMap = loadSolutionBookMap(); solutionBookMap.size;)
     {
         const independentChars = [];
         for (const [char, solutionBook] of solutionBookMap.entries())
@@ -162,6 +173,12 @@ async function doLevel()
         const outputURL = new URL('../.char-index-level', import.meta.url);
         await writeFile(outputURL, output);
     }
+}
+
+function doList()
+{
+    const charSet = parseArguments(() => false);
+    console.log(formatCharacters(charSet));
 }
 
 function doSort()
@@ -195,7 +212,7 @@ function doSort()
     const entries = [];
     {
         const counter = parseCounter();
-        const solutionBookMap = getSolutionBookMap();
+        const solutionBookMap = loadSolutionBookMap();
         for (const [char, solutionBook] of solutionBookMap.entries())
         {
             const count = counter(solutionBook);
@@ -216,7 +233,7 @@ function doSort()
 function doUses()
 {
     const charSet = parseArguments(() => false);
-    const solutionBookMap = getSolutionBookMap();
+    const solutionBookMap = loadSolutionBookMap();
     const dependentChars = [];
     for (const [char, solutionBook] of solutionBookMap)
     {
@@ -224,12 +241,6 @@ function doUses()
             dependentChars.push(char);
     }
     console.log(formatCharacters(dependentChars));
-}
-
-function doWanted()
-{
-    const wantedChars = getWantedCharacters();
-    console.log(formatCharacters(wantedChars));
 }
 
 function fail(message, ...optionalParams)
@@ -270,19 +281,54 @@ function formatCharacters(chars)
     return str;
 }
 
-function getSolutionBookMap(load = true)
+function getOverdefinedCharacters()
 {
-    if (load)
-        solutionBookMap.load();
-    return solutionBookMap;
+    const overdefinedChars = [];
+    const solutionBookMap = loadSolutionBookMap();
+    solutionBookMap.forEach
+    (
+        (solutionBook, char) =>
+        {
+            if (hasUnusedDefinitions(solutionBook, char))
+                overdefinedChars.push(char);
+        },
+    );
+    return overdefinedChars;
 }
 
 function getWantedCharacters()
 {
     const { getCharacters } = JScrewIt.debug;
-    const solutionBookMap = getSolutionBookMap();
+    const solutionBookMap = loadSolutionBookMap();
     const wantedChars = getCharacters().filter(char => !solutionBookMap.has(char));
     return wantedChars;
+}
+
+function hasUnusedDefinitions({ solutions }, char)
+{
+    const { getCharacterEntries } = JScrewIt.debug;
+    let customEntryCount = 0;
+    let defaultEntryPresent = false;
+    const entries = getCharacterEntries(char);
+    for (const entry of entries)
+    {
+        if (entry.definition.name === 'charDefaultDefinition')
+            defaultEntryPresent = true;
+        else
+            ++customEntryCount;
+    }
+    const entryIndexSet = new Set();
+    let defaultDefinitionUsed = false;
+    for (const { entryCode } of solutions)
+    {
+        if (typeof entryCode === 'number' || entryCode === 'static')
+            entryIndexSet.add(entryCode);
+        else
+            defaultDefinitionUsed = true;
+    }
+    const notAllDefsUsed =
+    customEntryCount > entryIndexSet.size || defaultEntryPresent && !defaultDefinitionUsed;
+    return notAllDefsUsed;
 }
 
 function isCharacterDefined(char)
@@ -292,6 +338,13 @@ function isCharacterDefined(char)
     return charDefined;
 }
 
+function loadSolutionBookMap(load = true)
+{
+    if (load)
+        solutionBookMap.load();
+    return solutionBookMap;
+}
+
 function parseArguments(parseSequence)
 {
     const charSet = new Set();
@@ -299,8 +352,9 @@ function parseArguments(parseSequence)
         const LOGICAL_SETS =
         {
             __proto__:  null,
-            static:     () => '+-.0123456789INadefilnrstuy',
-            wanted:     getWantedCharacters,
+            overdefined:    getOverdefinedCharacters,
+            static:         () => '+-.0123456789INadefilnrstuy',
+            wanted:         getWantedCharacters,
         };
         for (let index = 3; index < argCount; ++index)
         {
@@ -358,17 +412,19 @@ function printHelp()
 {
     const help =
     'char-index add [--new] [--test] <chars>\n' +
+    'char-index delete <chars>\n' +
     'char-index level\n' +
+    'char-index list <chars>\n' +
     'char-index sort [jscrewit-timestamp|max-length|min-length|solutions]\n' +
     'char-index uses <chars>\n' +
-    'char-index wanted\n' +
     'char-index help\n' +
     '\n' +
     'Characters can be specified in different ways:\n' +
-    '• ABC       Characters "A", "B" and "C"\n' +
-    '• U+0123    Character with hexadecimal code 123\n' +
-    '• :static:  Characters in the static set\n' +
-    '• :wanted:  Characters defined by JScrewIt but not indexed yet';
+    '• ABC            Characters "A", "B" and "C"\n' +
+    '• U+0123         Character with hexadecimal code 123\n' +
+    '• :static:       Characters in the static set\n' +
+    '• :wanted:       Characters defined by JScrewIt but not indexed yet\n' +
+    '• :overdefined:  Characters with unused definitions';
     console.log(help);
 }
 
@@ -384,11 +440,12 @@ else
     {
         __proto__:  null,
         add:        doAdd,
+        delete:     doDelete,
         help:       printHelp,
         level:      doLevel,
+        list:       doList,
         sort:       doSort,
         uses:       doUses,
-        wanted:     doWanted,
     };
 
     const [,, command] = argv;

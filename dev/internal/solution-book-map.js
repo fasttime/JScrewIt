@@ -300,12 +300,12 @@ function requireFS()
     return fs;
 }
 
-function saveSolutionBookMap()
+async function saveSolutionBookMap()
 {
     const stringifyReplacer = createStringifyReplacer();
     const jsonString = JSON.stringify(solutionBookMap, stringifyReplacer, 4);
     const fs = requireFS();
-    fs.writeFileSync(charMapRoot, jsonString);
+    await fs.promises.writeFile(charMapRoot, jsonString);
 }
 
 function serialize(obj)
