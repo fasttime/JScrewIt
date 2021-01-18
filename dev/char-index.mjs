@@ -21,10 +21,9 @@ async function doAdd()
                 {
                     const formattedCharacter = formatCharacter(char);
                     const bar = indicator.newBar(`Indexing ${formattedCharacter.padEnd(6)}`);
-                    const serializedSolutionBook = await runWorker(solutionBookMap, bar, char);
+                    const solutionBook = await runWorker(solutionBookMap, bar, char);
                     bar.hide();
-                    const solutionBook = solutionBookMap.deserialize(serializedSolutionBook);
-                    solutionBookMap.set(char, solutionBook);
+                    solutionBookMap.importBook(char, solutionBook);
                     console.log('Character %s indexed', formattedCharacter);
                     if (hasUnusedDefinitions(solutionBook, char))
                         console.log('Not all definitions used!');
@@ -62,13 +61,11 @@ async function doAdd()
         (resolve, reject) =>
         {
             const workerURL = new URL('internal/char-index-worker.js', import.meta.url);
-            const serializedSolutionBookMap = solutionBookMap.serialize(solutionBookMap);
-            const worker =
-            new Worker(workerURL, { workerData: { char, serializedSolutionBookMap } });
+            const worker = new Worker(workerURL, { workerData: { char, solutionBookMap } });
             worker.on
             (
                 'message',
-                ({ progress, missingChar, serializedSolutionBook }) =>
+                ({ progress, missingChar, solutionBook }) =>
                 {
                     if (progress != null)
                         bar.update(progress);
@@ -81,8 +78,8 @@ async function doAdd()
                             formatCharacter(char),
                         );
                     }
-                    if (serializedSolutionBook != null)
-                        resolve(serializedSolutionBook);
+                    if (solutionBook != null)
+                        resolve(solutionBook);
                 },
             );
             worker.on('error', reject);
@@ -158,7 +155,7 @@ async function doLevel()
     for (const solutionBookMap = loadSolutionBookMap(); solutionBookMap.size;)
     {
         const independentChars = [];
-        for (const [char, solutionBook] of solutionBookMap.entries())
+        for (const [char, solutionBook] of solutionBookMap)
         {
             const { usedChars } = solutionBook;
             if (usedChars.every(usedChar => usedChar === char || !solutionBookMap.has(usedChar)))
@@ -213,7 +210,7 @@ function doSort()
     {
         const counter = parseCounter();
         const solutionBookMap = loadSolutionBookMap();
-        for (const [char, solutionBook] of solutionBookMap.entries())
+        for (const [char, solutionBook] of solutionBookMap)
         {
             const count = counter(solutionBook);
             const entry = { char, count };
@@ -285,14 +282,11 @@ function getOverdefinedCharacters()
 {
     const overdefinedChars = [];
     const solutionBookMap = loadSolutionBookMap();
-    solutionBookMap.forEach
-    (
-        (solutionBook, char) =>
-        {
-            if (hasUnusedDefinitions(solutionBook, char))
-                overdefinedChars.push(char);
-        },
-    );
+    for (const [char, solutionBook] of solutionBookMap)
+    {
+        if (hasUnusedDefinitions(solutionBook, char))
+            overdefinedChars.push(char);
+    }
     return overdefinedChars;
 }
 

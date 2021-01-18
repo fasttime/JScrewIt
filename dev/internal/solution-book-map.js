@@ -5,10 +5,11 @@ const TYPE_KEY              = '__type';
 const TYPE_VALUE_SOLUTION   = 'Solution';
 
 const JScrewIt      = require(JSCREWIT_PATH);
-const charMapRoot   = require('path').resolve(__dirname, '../../novem.char-map.json');
+const SortedMap     = require('./sorted-map');
 
+const charMapRoot   = require('path').resolve(__dirname, '../../novem.char-map.json');
 const { debug } = JScrewIt;
-const solutionBookMap = module.exports = new Map();
+const solutionBookMap = module.exports = new SortedMap();
 
 Object.assign
 (
@@ -16,24 +17,13 @@ Object.assign
     {
         clear:              clearSolutionBookMap,
         compareSolutions,
-        deserialize,
-        entries:            entryIterator,
-        forEach,
+        importBook,
         index:              indexChar,
-        keys:               charIterator,
         load:               loadSolutionBookMap,
         loadTime:           undefined,
         save:               saveSolutionBookMap,
-        serialize,
-        [Symbol.iterator]:  entryIterator,
     },
 );
-
-function charIterator()
-{
-    const iterator = [...Map.prototype.keys.call(solutionBookMap)].sort()[Symbol.iterator]();
-    return iterator;
-}
 
 function compareSolutions(solution1, solution2)
 {
@@ -60,7 +50,7 @@ function compareSolutions(solution1, solution2)
 
 function clearSolutionBookMap()
 {
-    Map.prototype.clear.call(solutionBookMap);
+    SortedMap.prototype.clear.call(solutionBookMap);
     solutionBookMap.loadTime = undefined;
 }
 
@@ -69,22 +59,8 @@ function createParseReviver()
     const { Feature } = JScrewIt;
     const { Solution, SolutionType } = debug;
     const parseReviverMap =
-    new Map([[Map.name, jsonParseMap], [TYPE_VALUE_SOLUTION, jsonParseSolution]]);
+    new Map([[TYPE_VALUE_SOLUTION, jsonParseSolution], [SortedMap.name, jsonParseSortedMap]]);
     return parseReviver;
-
-    function jsonParseMap(obj)
-    {
-        const entries = Object.entries(obj);
-        entries.forEach
-        (
-            entry =>
-            {
-                entry[0] = entry[0].replace(/^___/, '__');
-            },
-        );
-        const map = new Map(entries);
-        return map;
-    }
 
     function jsonParseSolution(obj)
     {
@@ -97,6 +73,20 @@ function createParseReviver()
         solution.type = SolutionType[obj.type];
         solution.masks = obj.features.map(featureNames => new Feature(featureNames).mask);
         return solution;
+    }
+
+    function jsonParseSortedMap(obj)
+    {
+        const entries = Object.entries(obj);
+        entries.forEach
+        (
+            entry =>
+            {
+                entry[0] = entry[0].replace(/^___/, '__');
+            },
+        );
+        const map = new SortedMap(entries);
+        return map;
     }
 
     function parseReviver(key, value)
@@ -116,22 +106,9 @@ function createParseReviver()
 function createStringifyReplacer()
 {
     const { Solution, SolutionType, createFeatureFromMask } = debug;
-    const stringifyReplacerMap = new Map([[Map, jsonReplaceMap], [Solution, jsonReplaceSolution]]);
+    const stringifyReplacerMap =
+    new SortedMap([[Solution, jsonReplaceSolution], [SortedMap, jsonReplaceSortedMap]]);
     return stringifyReplacer;
-
-    function jsonReplaceMap(map)
-    {
-        const obj = { __proto__: null, [TYPE_KEY]: Map.name };
-        const keys = [];
-        for (let key of map.keys())
-        {
-            key = key.replace(/^__/, '___');
-            obj[key] = map.get(key);
-            keys.push(key);
-        }
-        const proxy = new Proxy(obj, { ownKeys: () => [TYPE_KEY, ...keys] });
-        return proxy;
-    }
 
     function jsonReplaceSolution(solution)
     {
@@ -145,6 +122,20 @@ function createStringifyReplacer()
         obj.type = SolutionType[solution.type];
         obj.features = solution.masks.map(mask => createFeatureFromMask(mask).canonicalNames);
         return obj;
+    }
+
+    function jsonReplaceSortedMap(map)
+    {
+        const obj = { __proto__: null, [TYPE_KEY]: SortedMap.name };
+        const keys = [];
+        for (let key of map.keys())
+        {
+            key = key.replace(/^__/, '___');
+            obj[key] = map.get(key);
+            keys.push(key);
+        }
+        const proxy = new Proxy(obj, { ownKeys: () => [TYPE_KEY, ...keys] });
+        return proxy;
     }
 
     function stringifyReplacer(key, value)
@@ -161,29 +152,6 @@ function createStringifyReplacer()
         }
         return value;
     }
-}
-
-function deserialize(jsonStr)
-{
-    const parseReviver = createParseReviver();
-    const obj = JSON.parse(jsonStr, parseReviver);
-    return obj;
-}
-
-function entryIterator()
-{
-    const compareEntries = ([char1], [char2]) => char1.charCodeAt() - char2.charCodeAt();
-    const iterator =
-    [...Map.prototype.entries.call(solutionBookMap)].sort(compareEntries)[Symbol.iterator]();
-    return iterator;
-}
-
-function forEach(callback, thisArg)
-{
-    if (typeof callback !== 'function')
-        throw TypeError('First argument must be a function');
-    for (const [key, value] of solutionBookMap)
-        callback.call(thisArg, value, key, solutionBookMap);
 }
 
 function indexChar(char, updateProgress, missingCharacter)
@@ -258,36 +226,45 @@ function indexChar(char, updateProgress, missingCharacter)
     }
 }
 
-function loadNewSolutionBookMap(serializedSolutionBookMap)
+function importBook(char, solutionBook)
+{
+    const { setPrototypeOf } = Object;
+    const { Solution: { prototype: solutionPrototype } } = debug;
+
+    const { solutions } = solutionBook;
+    for (const solution of solutions)
+        setPrototypeOf(solution, solutionPrototype);
+    solutionBookMap.set(char, solutionBook);
+}
+
+function loadNewSolutionBookMap()
 {
     const fs = requireFS();
 
-    if (serializedSolutionBookMap == null)
+    let jsonString;
+    try
     {
-        try
-        {
-            serializedSolutionBookMap = fs.readFileSync(charMapRoot);
-        }
-        catch (error)
-        {
-            if (error.code !== 'ENOENT')
-                throw error;
-            const newMap = new Map();
-            return newMap();
-        }
+        jsonString = fs.readFileSync(charMapRoot);
+    }
+    catch (error)
+    {
+        if (error.code !== 'ENOENT')
+            throw error;
+        const newMap = new SortedMap();
+        return newMap();
     }
     const parseReviver = createParseReviver();
-    const newMap = JSON.parse(serializedSolutionBookMap, parseReviver);
+    const newMap = JSON.parse(jsonString, parseReviver);
     return newMap;
 }
 
-function loadSolutionBookMap(serializedSolutionBookMap)
+function loadSolutionBookMap()
 {
-    if (serializedSolutionBookMap != null || !solutionBookMap.loadTime)
+    if (!solutionBookMap.loadTime)
     {
-        const newMap = loadNewSolutionBookMap(serializedSolutionBookMap);
+        const newMap = loadNewSolutionBookMap();
         solutionBookMap.clear();
-        for (const [key, value] of newMap.entries())
+        for (const [key, value] of newMap)
             solutionBookMap.set(key, value);
         solutionBookMap.loadTime = new Date();
     }
@@ -306,11 +283,4 @@ async function saveSolutionBookMap()
     const jsonString = JSON.stringify(solutionBookMap, stringifyReplacer, 4);
     const fs = requireFS();
     await fs.promises.writeFile(charMapRoot, jsonString);
-}
-
-function serialize(obj)
-{
-    const stringifyReplacer = createStringifyReplacer();
-    const jsonStr = JSON.stringify(obj, stringifyReplacer);
-    return jsonStr;
 }
