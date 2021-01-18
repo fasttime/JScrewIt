@@ -7,8 +7,8 @@ boolean elements that masks can handle in this implementation.
 
 ## Overview
 
-A mask is an immutable, transparent data structure used to operate on multiple boolean values at
-once.
+A mask is an immutable, serializable, transparent data structure used to operate on multiple boolean
+values at once.
 Masks should only be accessed using the mask functions provided by quinquaginta-duo.
 Do not make any assumptions about the internal representation of masks, their type or truthiness.
 For performance reasons, mask functions do not check that their arguments are valid masks.
