@@ -10,9 +10,8 @@ Play now with [**jscrew.it**](https://jscrew.it), or give a look at
 [jQuery *Screwed*](https://github.com/fasttime/jquery-screwed) for a true example: a working version
 of jQuery consisting of only six different characters.
 
-JScrewIt was born as a fork of [aemkei's JSFuck](https://github.com/aemkei/jsfuck) and has
-developed into one of the most powerful JSFuck encoders on the web, including a number of unique
-features.
+JScrewIt was born as a fork of [aemkei's JSFuck](https://github.com/aemkei/jsfuck) and has developed
+into one of the most powerful JSFuck encoders on the web, including a number of unique features.
 * Options to optimize code for a particular set of JavaScript engines or even just for your browser:
   the more specific your engine choice, the shorter the code you'll get.
 * Support for all modern JavaScript engines (and a few older ones, too).
@@ -55,18 +54,19 @@ The following source will do an `alert(1)` in any browser, including Internet Ex
 ### In the Browser
 
 To use JScrewIt in your project, download
-[jscrewit.js](https://raw.githubusercontent.com/fasttime/JScrewIt/master/lib/jscrewit.js) or
-[jscrewit.min.js](https://raw.githubusercontent.com/fasttime/JScrewIt/master/lib/jscrewit.min.js)
-from GitHub and include it in your HTML file.
+[jscrewit.js](https://cdn.jsdelivr.net/npm/jscrewit/lib/jscrewit.js) (uncompressed, development
+version) or
+[jscrewit.min.js](https://cdn.jsdelivr.net/npm/jscrewit/lib/jscrewit.min.js) (compressed,
+productive version) from npm and include it in your HTML file.
 
 ```html
 <script src="jscrewit.js"></script>
 ```
 
-Alternatively, you can hotlink the latest version using a CDN of your choice.
+Alternatively, just hotlink the latest version on npm using a CDN of your choice.
 
 ```html
-<script src="https://cdn.statically.io/gh/fasttime/JScrewIt/master/lib/jscrewit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jscrewit"></script>
 ```
 
 ### In Node.js
