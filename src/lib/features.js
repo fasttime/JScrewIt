@@ -438,6 +438,16 @@ export var validMaskFromArrayOrStringOrFeature;
                 { }
             },
         },
+        AT:
+        {
+            description: 'Existence of the native function Array.prototype.at.',
+            check:
+            function ()
+            {
+                var available = Array.prototype.at;
+                return available;
+            },
+        },
         ATOB:
         {
             description: 'Existence of the global functions atob and btoa.',

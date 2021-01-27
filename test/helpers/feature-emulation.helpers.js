@@ -600,6 +600,18 @@
                 }
             );
         },
+        AT:
+        makeEmuFeatureArrayPrototypeFunction
+        (
+            'at',
+            function (index)
+            {
+                if (index < 0)
+                    index += this.length;
+                var element = this[element];
+                return element;
+            }
+        ),
         ATOB:
         function ()
         {

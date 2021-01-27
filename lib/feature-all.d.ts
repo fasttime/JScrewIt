@@ -48,6 +48,15 @@ export interface FeatureAll
     ARROW: ElementaryFeature;
 
     /**
+     * Existence of the native function Array.prototype.at.
+     *
+     * @remarks
+     *
+     * This feature is not available in any of the supported engines.
+     */
+    AT: ElementaryFeature;
+
+    /**
      * Existence of the global functions atob and btoa.
      *
      * @remarks
@@ -635,6 +644,7 @@ type ElementaryFeatureName =
 | 'ANY_WINDOW'
 | 'ARRAY_ITERATOR'
 | 'ARROW'
+| 'AT'
 | 'ATOB'
 | 'BARPROP'
 | 'CAPITAL_HTML'

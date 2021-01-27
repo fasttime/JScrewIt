@@ -86,6 +86,7 @@ export var initReplaceStaticExpr;
     var ANY_WINDOW                      = Feature.ANY_WINDOW;
     var ARRAY_ITERATOR                  = Feature.ARRAY_ITERATOR;
     var ARROW                           = Feature.ARROW;
+    var AT                              = Feature.AT;
     var ATOB                            = Feature.ATOB;
     var BARPROP                         = Feature.BARPROP;
     var CAPITAL_HTML                    = Feature.CAPITAL_HTML;
@@ -1148,6 +1149,10 @@ export var initReplaceStaticExpr;
         ARRAY_ITERATOR:
         [
             define('[].entries()', ARRAY_ITERATOR),
+        ],
+        AT:
+        [
+            define('[].at', AT),
         ],
         ESCAPING_BACKSLASH:
         [

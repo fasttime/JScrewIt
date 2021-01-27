@@ -492,6 +492,11 @@ sidebar,
                     var prototype = Object.getPrototypeOf([].entries());
                     this.toHavePrototype(prototype);
                 },
+                AT:
+                function ()
+                {
+                    this.toBe(Array.prototype.at);
+                },
                 ESCAPING_BACKSLASH:
                 function ()
                 {
