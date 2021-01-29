@@ -147,6 +147,8 @@ export var initReplaceStaticExpr;
         '[RP_1_WA] + FBP_9_U',
         ,
         '[RP_3_WA] + FBP_9_U',
+        ,
+        '[RP_5_A] + FBP_9_U',
     ];
 
     var FB_NO_IE_PADDINGS =
@@ -164,6 +166,8 @@ export var initReplaceStaticExpr;
         '[RP_1_WA] + FBEP_9_U',
         ,
         '[RP_3_WA] + FBEP_9_U',
+        ,
+        '[RP_5_A] + FBEP_9_U',
     ];
 
     var FB_PADDINGS =
@@ -1143,6 +1147,7 @@ export var initReplaceStaticExpr;
         ANY_FUNCTION:
         [
             define('FILTER'),
+            define('AT', AT),
             define('FILL', FILL),
             define('FLAT', FLAT),
         ],
@@ -1340,13 +1345,20 @@ export var initReplaceStaticExpr;
         FBEP_4_S:
         [
             define('[[true][+(RP_3_WA + FILTER)[30]]]'),
+            define('[[true][+(RP_0_S + AT)[23]]]', AT),
             define('[[true][+(RP_5_A + FILL)[30]]]', FILL),
             define('[[true][+(RP_5_A + FLAT)[30]]]', FLAT),
         ],
         FBEP_9_U:
         [
             define
-            ({ expr: '[false][+(ANY_FUNCTION + [])[20]]', solutionType: SolutionType.UNDEFINED }),
+            ({ expr: '[false][+(RP_0_S + FILTER)[20]]', solutionType: SolutionType.UNDEFINED }),
+            define
+            ({ expr: '[false][+(RP_4_A + AT)[20]]', solutionType: SolutionType.UNDEFINED }, AT),
+            define
+            ({ expr: '[false][+(RP_0_S + FILL)[20]]', solutionType: SolutionType.UNDEFINED }, FILL),
+            define
+            ({ expr: '[false][+(RP_0_S + FLAT)[20]]', solutionType: SolutionType.UNDEFINED }, FLAT),
         ],
 
         // Function body padding blocks: prepended to a function to align the function's body at the
@@ -1367,6 +1379,14 @@ export var initReplaceStaticExpr;
                     expr: '+("10" + [(RP_4_A + FILTER)[40]] + "00000")',
                     solutionType: SolutionType.WEAK_ALGEBRAIC,
                 }
+            ),
+            define
+            (
+                {
+                    expr: '+("10" + [(RP_0_S + AT)[32]] + "00000")',
+                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                },
+                AT
             ),
             define
             (
@@ -1397,6 +1417,14 @@ export var initReplaceStaticExpr;
             define
             (
                 {
+                    expr: '+("1000" + (AT + 0)[31] + "000")',
+                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                },
+                AT
+            ),
+            define
+            (
+                {
                     expr: '+("1000" + (FILL + 0)[33] + "000")',
                     solutionType: SolutionType.WEAK_ALGEBRAIC,
                 },
@@ -1415,7 +1443,10 @@ export var initReplaceStaticExpr;
         [
             define
             (
-                { expr: '[true][+(ANY_FUNCTION + [])[0]]', solutionType: SolutionType.UNDEFINED },
+                {
+                    expr: '[true][+(RP_0_S + ANY_FUNCTION)[0]]',
+                    solutionType: SolutionType.UNDEFINED,
+                },
                 NO_FF_SRC
             ),
         ],
@@ -1511,6 +1542,7 @@ export var initReplaceStaticExpr;
         define({ expr: 'FILTER', shift: 6 }),
         define({ expr: 'FILL', shift: 4 }, FILL),
         define({ expr: 'FLAT', shift: 4 }, FLAT),
+        define({ expr: 'AT', shift: 2 }, AT),
     ];
 
     FB_PADDING_INFOS =
@@ -1711,6 +1743,17 @@ export var initReplaceStaticExpr;
 
     PADDING_ENTRIES_MAP =
     {
+        16:
+        [
+            define(7),
+            define(14, NO_FF_SRC),
+            define(5, INCR_CHAR, NO_FF_SRC),
+            define(14, NO_IE_SRC),
+            define({ block: 'RP_0_S', indexer: '2 + FH_SHIFT_1' }, NO_V8_SRC),
+            define(4, V8_SRC),
+            define(0, IE_SRC),
+            define(0, FF_SRC),
+        ],
         18:
         [
             define(12),
@@ -1726,6 +1769,16 @@ export var initReplaceStaticExpr;
             define(0, V8_SRC),
             define(5, IE_SRC),
             define(6, FF_SRC),
+        ],
+        21:
+        [
+            define(10),
+            define(9, NO_FF_SRC),
+            define(9, NO_IE_SRC),
+            define({ block: 'RP_5_A', indexer: 3 + ' + FH_SHIFT_1' }, NO_V8_SRC),
+            define(0, V8_SRC),
+            define(4, IE_SRC),
+            define(5, FF_SRC),
         ],
         23:
         [
@@ -1744,6 +1797,14 @@ export var initReplaceStaticExpr;
             define({ block: 'RP_1_WA', indexer: '3 + FH_SHIFT_1' }, NO_V8_SRC),
             define(0, IE_SRC),
             define(1, FF_SRC),
+        ],
+        28:
+        [
+            define(12),
+            define({ block: 'RP_0_S', indexer: '3 + FH_SHIFT_3' }, NO_V8_SRC),
+            define(3, V8_SRC),
+            define(0, IE_SRC),
+            define(0, FF_SRC),
         ],
         30:
         [
