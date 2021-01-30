@@ -19,6 +19,7 @@ import
     CONSTANTS,
     JSFUCK_INFINITY,
     OPTIMAL_B,
+    R_PADDINGS,
     SIMPLE,
     initReplaceStaticExpr,
 }
@@ -394,12 +395,12 @@ export var replaceStaticString;
         },
 
         getPaddingBlock:
-        function (paddingInfo, length)
+        function (length)
         {
-            var paddingBlock = paddingInfo.blocks[length];
+            var paddingBlock = R_PADDINGS[length];
             if (paddingBlock !== undefined)
                 return paddingBlock;
-            this.throwSyntaxError('Undefined padding block with length ' + length);
+            this.throwSyntaxError('Undefined regular padding block with length ' + length);
         },
 
         hasFeatures:
@@ -920,25 +921,25 @@ export var replaceStaticString;
         },
 
         resolveExprAt:
-        function (char, expr, index, entries, paddingInfos)
+        function (char, expr, index, paddingEntries, paddingShifts)
         {
-            if (!entries)
+            if (!paddingEntries)
                 this.throwSyntaxError('Missing padding entries for index ' + index);
-            var paddingDefinition = this.findDefinition(entries);
+            var paddingDefinition = this.findDefinition(paddingEntries);
             var paddingBlock;
-            var indexer;
+            var shiftedIndex;
             if (typeof paddingDefinition === 'number')
             {
-                var paddingInfo = this.findDefinition(paddingInfos);
-                paddingBlock = this.getPaddingBlock(paddingInfo, paddingDefinition);
-                indexer = index + paddingDefinition + paddingInfo.shift;
+                var paddingShift = this.findDefinition(paddingShifts);
+                paddingBlock = this.getPaddingBlock(paddingDefinition);
+                shiftedIndex = index + paddingDefinition + paddingShift;
             }
             else
             {
                 paddingBlock = paddingDefinition.block;
-                indexer = paddingDefinition.indexer;
+                shiftedIndex = paddingDefinition.index;
             }
-            var fullExpr = '(' + paddingBlock + '+' + expr + ')[' + indexer + ']';
+            var fullExpr = '(' + paddingBlock + '+' + expr + ')[' + shiftedIndex + ']';
             var replacement = this.replaceExpr(fullExpr);
             var solution = new SimpleSolution(char, replacement, SolutionType.STRING);
             return solution;

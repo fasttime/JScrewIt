@@ -514,10 +514,10 @@ self,
                     (
                         function ()
                         {
-                            encoder.getPaddingBlock({ blocks: [] }, -1);
+                            encoder.getPaddingBlock(2);
                         }
                     )
-                    .toThrowStrictly(SyntaxError, 'Undefined padding block with length -1');
+                    .toThrowStrictly(SyntaxError, 'Undefined regular padding block with length 2');
                 }
             );
         }
