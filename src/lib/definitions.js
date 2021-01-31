@@ -95,6 +95,7 @@ function getFBPaddingEntries(index)
     var paddingEntries = FB_PADDING_ENTRIES_MAP[index];
     if (!paddingEntries)
     {
+        var AT          = Feature.AT;
         var FF_SRC      = Feature.FF_SRC;
         var IE_SRC      = Feature.IE_SRC;
         var INCR_CHAR   = Feature.INCR_CHAR;
@@ -109,9 +110,10 @@ function getFBPaddingEntries(index)
             paddingEntries =
             [
                 define({ block: 'FBP_7_WA', index: 23 }),
+                define({ block: 'FBEP_4_S', index: '2 + FH_SHIFT_1' }, INCR_CHAR),
                 define({ block: '[RP_5_A] + FBP_9_U', index: 30 }, NO_FF_SRC),
                 define({ block: 'FBP_5_S', index: 21 }, INCR_CHAR, NO_FF_SRC),
-                define({ block: '[RP_5_A] + FBEP_9_U', index: 30 }, NO_IE_SRC),
+                define({ block: 'FBEP_4_S', index: 20 }, NO_IE_SRC),
                 define({ block: 'RP_0_S', index: '2 + FH_SHIFT_1' }, NO_V8_SRC),
                 define(0, FF_SRC),
                 define(0, IE_SRC),
@@ -123,8 +125,10 @@ function getFBPaddingEntries(index)
             paddingEntries =
             [
                 define({ block: 'RP_5_A + [FBP_7_WA]', index: index + 12 }),
+                define({ block: 'RP_4_A + [FBP_8_WA]', index: index + 12 }, AT),
                 define({ block: '[RP_3_WA] + FBP_9_U', index: index + 12 }, NO_FF_SRC),
                 define({ block: '[RP_3_WA] + FBEP_9_U', index: index + 12 }, NO_IE_SRC),
+                define({ block: 'FBEP_4_S', index: index + 4 }, AT, NO_IE_SRC),
                 define({ block: 'RP_0_S', index: (index + 2) / 10 + ' + FH_SHIFT_3' }, NO_V8_SRC),
                 define(0, FF_SRC),
                 define(0, IE_SRC),
@@ -136,6 +140,13 @@ function getFBPaddingEntries(index)
             paddingEntries =
             [
                 define({ block: 'RP_3_WA + [FBP_7_WA]', index: index + 10 }),
+                define({ block: 'RP_3_WA + [FBP_8_WA]', index: index + 11 }, AT),
+                define
+                (
+                    { block: '[RP_1_WA] + FBEP_9_U', index: (index + 10) / 10 + ' + FH_SHIFT_1' },
+                    AT,
+                    INCR_CHAR
+                ),
                 define({ block: '[RP_1_WA] + FBP_9_U', index: index + 10 }, NO_FF_SRC),
                 define({ block: '[RP_1_WA] + FBEP_9_U', index: index + 10 }, NO_IE_SRC),
                 define({ block: 'RP_6_S', index: (index + 10) / 10 + ' + FH_SHIFT_1' }, NO_V8_SRC),
@@ -147,7 +158,7 @@ function getFBPaddingEntries(index)
         case 21:
             paddingEntries =
             [
-                define({ block: 'RP_3_WA + [FBP_7_WA]', index: 31 }),
+                define({ block: 'FBEP_9_U', index: '3 + FH_SHIFT_1' }),
                 define({ block: 'FBP_9_U', index: 30 }, NO_FF_SRC),
                 define({ block: 'FBEP_9_U', index: 30 }, NO_IE_SRC),
                 define({ block: 'RP_5_A', index: '3 + FH_SHIFT_1' }, NO_V8_SRC),
@@ -161,7 +172,7 @@ function getFBPaddingEntries(index)
             [
                 define({ block: 'FBP_7_WA', index: 30 }),
                 define({ block: 'FBP_9_U', index: 32 }, NO_FF_SRC),
-                define({ block: 'RP_3_WA + FBEP_4_S', index: 30 }, NO_IE_SRC),
+                define({ block: 'FBEP_9_U', index: 32 }, NO_IE_SRC),
                 define({ block: 'RP_3_WA', index: '3 + FH_SHIFT_1' }, NO_V8_SRC),
                 define(3, FF_SRC),
                 define(3, IE_SRC),
@@ -1408,7 +1419,7 @@ var replaceStaticExpr;
         FBEP_4_S:
         [
             define('[[true][+(RP_3_WA + FILTER)[30]]]'),
-            define('[[true][+(RP_0_S + AT)[23]]]', AT),
+            define('[[true][+(RP_1_WA + AT)[30]]]', AT),
             define('[[true][+(RP_5_A + FILL)[30]]]', FILL),
             define('[[true][+(RP_5_A + FLAT)[30]]]', FLAT),
         ],
@@ -1539,14 +1550,14 @@ var replaceStaticExpr;
             define
             (
                 {
-                    expr: '+(1 + [+(ANY_FUNCTION + [])[0]])',
+                    expr: '+(1 + [+(RP_0_S + ANY_FUNCTION)[0]])',
                     solutionType: SolutionType.WEAK_ALGEBRAIC,
                 }
             ),
             define
             (
                 {
-                    expr: '+(++(ANY_FUNCTION + [])[0] + [0])',
+                    expr: '+(++(RP_0_S + ANY_FUNCTION)[0] + [0])',
                     solutionType: SolutionType.WEAK_ALGEBRAIC,
                 },
                 INCR_CHAR
@@ -1572,10 +1583,15 @@ var replaceStaticExpr;
         IS_IE_SRC_A:
         [
             define
-            ({ expr: '!!(+(ANY_FUNCTION + [])[0] + true)', solutionType: SolutionType.ALGEBRAIC }),
+            (
+                {
+                    expr: '!!(+(RP_0_S + ANY_FUNCTION)[0] + true)',
+                    solutionType: SolutionType.ALGEBRAIC,
+                }
+            ),
             define
             (
-                { expr: '!!++(ANY_FUNCTION + [])[0]', solutionType: SolutionType.ALGEBRAIC },
+                { expr: '!!++(RP_0_S + ANY_FUNCTION)[0]', solutionType: SolutionType.ALGEBRAIC },
                 INCR_CHAR
             ),
         ],
