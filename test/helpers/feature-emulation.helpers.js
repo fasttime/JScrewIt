@@ -601,17 +601,28 @@
             );
         },
         AT:
-        makeEmuFeatureArrayPrototypeFunction
-        (
-            'at',
+        function ()
+        {
+            var name = 'at';
+            var fn =
             function (index)
             {
+                index |= 0;
                 if (index < 0)
                     index += this.length;
-                var element = this[element];
+                var element = this[index];
                 return element;
-            }
-        ),
+            };
+            fn.toString =
+            function ()
+            {
+                var str = String(Array.prototype.join).replace(/\bjoin\b/, name);
+                return str;
+            };
+            var descriptor = { value: fn };
+            override(this, 'Array.prototype.' + name, descriptor);
+            override(this, 'String.prototype.' + name, descriptor);
+        },
         ATOB:
         function ()
         {
