@@ -598,10 +598,10 @@ var replaceStaticExpr;
         ],
         '\n':
         [
-            define('(Function() + [])[23]'),
+            define('(RP_0_S + Function())[23]'),
             define('(RP_1_WA + Function())[20]', FUNCTION_19_LF),
-            define('(Function() + [])[22]', FUNCTION_22_LF),
-            define('(ANY_FUNCTION + [])[0]', IE_SRC),
+            define('(RP_0_S + Function())[22]', FUNCTION_22_LF),
+            define('(RP_0_S + ANY_FUNCTION)[0]', IE_SRC),
             defineFHCharAt('FILTER', 19, NO_V8_SRC),
             defineFHCharAt('FILL', 17, FILL, NO_V8_SRC),
             defineFHCharAt('FLAT', 17, FLAT, NO_V8_SRC),
@@ -627,16 +627,16 @@ var replaceStaticExpr;
         [
             defineFHCharAt('ANY_FUNCTION', 8),
             define('(RP_3_WA + ARRAY_ITERATOR)[10]', ARRAY_ITERATOR),
-            define('(FILTER + [])[20]', FF_SRC),
-            define('(+(ANY_FUNCTION + [])[0] + FILTER)[22]', NO_FF_SRC),
-            define('(FILTER + [])[21]', NO_V8_SRC),
+            define('(RP_0_S + FILTER)[20]', FF_SRC),
+            define('(+(RP_0_S + ANY_FUNCTION)[0] + FILTER)[22]', NO_FF_SRC),
+            define('(RP_0_S + FILTER)[21]', NO_V8_SRC),
             define('(RP_1_WA + FILTER)[20]', V8_SRC),
-            define('(+(ANY_FUNCTION + [])[0] + FILL)[20]', FILL, NO_FF_SRC),
+            define('(+(RP_0_S + ANY_FUNCTION)[0] + FILL)[20]', FILL, NO_FF_SRC),
             define('(RP_5_A + FILL)[20]', FILL, NO_IE_SRC),
-            define('(FILL + [])[20]', FILL, NO_V8_SRC),
-            define('(+(ANY_FUNCTION + [])[0] + FLAT)[20]', FLAT, NO_FF_SRC),
+            define('(RP_0_S + FILL)[20]', FILL, NO_V8_SRC),
+            define('(+(RP_0_S + ANY_FUNCTION)[0] + FLAT)[20]', FLAT, NO_FF_SRC),
             define('(RP_5_A + FLAT)[20]', FLAT, NO_IE_SRC),
-            define('(FLAT + [])[20]', FLAT, NO_V8_SRC),
+            define('(RP_0_S + FLAT)[20]', FLAT, NO_V8_SRC),
         ],
         // '!':    ,
         '"':
@@ -678,7 +678,7 @@ var replaceStaticExpr;
         '+': '(1e100 + [])[2]',
         ',':
         [
-            define('(F_A_L_S_E + [])[1]'),
+            define('(RP_0_S + F_A_L_S_E)[1]'),
             define({ expr: '[[]].concat([[]])', solutionType: SolutionType.OBJECT }),
         ],
         '-': '(.0000001 + [])[2]',
@@ -691,7 +691,7 @@ var replaceStaticExpr;
         // '0'…'9':
         ':':
         [
-            define('(RegExp() + [])[3]'),
+            define('(RP_0_S + RegExp())[3]'),
             defineCharDefault(),
         ],
         ';':
@@ -718,7 +718,7 @@ var replaceStaticExpr;
         ],
         '?':
         [
-            define('(RegExp() + [])[2]'),
+            define('(RP_0_S + RegExp())[2]'),
             defineCharDefault(),
         ],
         // '@':    ,
@@ -740,7 +740,7 @@ var replaceStaticExpr;
             define('atob("00NaNfalse")[1]', ATOB),
             define('(RP_4_A + "".fontcolor())[10]', CAPITAL_HTML),
             define('(RP_3_WA + Function("return console")())[11]', CONSOLE),
-            define('(Node + [])[12]', NODECONSTRUCTOR),
+            define('(RP_0_S + Node)[12]', NODECONSTRUCTOR),
         ],
         'D':
         [
@@ -748,14 +748,14 @@ var replaceStaticExpr;
             define('escape((+("1000" + (RP_5_A + FILTER + 0)[40] + 0) + FILTER)[40])[2]'), // *
             define('escape("]")[2]'),
             define('escape("}")[2]'),
-            define('(document + [])[SLICE_OR_SUBSTR]("-10")[1]', ANY_DOCUMENT),
+            define('(document + RP_0_S)[SLICE_OR_SUBSTR]("-10")[1]', ANY_DOCUMENT),
             define('btoa("00")[1]', ATOB),
             define('(RP_3_WA + document)[11]', DOCUMENT),
             define // *
             ('escape((RP_3_WA + [+("10" + [(RP_6_S + FILL)[40]] + "000")] + FILL)[40])[2]', FILL),
             define // *
             ('escape((RP_3_WA + [+("10" + [(RP_6_S + FLAT)[40]] + "000")] + FLAT)[40])[2]', FLAT),
-            define('(document + [])[12]', HTMLDOCUMENT),
+            define('(RP_0_S + document)[12]', HTMLDOCUMENT),
             define('escape(ARRAY_ITERATOR)[30]', NO_OLD_SAFARI_ARRAY_ITERATOR),
             define('escape(FILTER)[50]', V8_SRC),
             define('escape(FILL)[60]', FF_SRC, FILL),
@@ -768,7 +768,7 @@ var replaceStaticExpr;
             define('(RP_5_A + "".link())[10]', CAPITAL_HTML),
             define('(RP_3_WA + sidebar)[11]', EXTERNAL),
             define('(RP_3_WA + Audio)[21]', HTMLAUDIOELEMENT),
-            define('(REGEXP_STRING_ITERATOR + [])[11]', REGEXP_STRING_ITERATOR),
+            define('(RP_0_S + REGEXP_STRING_ITERATOR)[11]', REGEXP_STRING_ITERATOR),
         ],
         'F':
         [
@@ -806,16 +806,16 @@ var replaceStaticExpr;
         [
             define('btoa(".")[0]', ATOB),
             define('(RP_3_WA + "".fontcolor())[11]', CAPITAL_HTML),
-            define('(Audio + [])[12]', HTMLAUDIOELEMENT),
-            define('(document + [])[11]', HTMLDOCUMENT),
+            define('(RP_0_S + Audio)[12]', HTMLAUDIOELEMENT),
+            define('(RP_0_S + document)[11]', HTMLDOCUMENT),
         ],
         'M':
         [
             define('btoa(0)[0]', ATOB),
             define('"".small()[2]', CAPITAL_HTML),
             define('(RP_4_A + Date())[30]', GMT),
-            define('(Audio + [])[11]', HTMLAUDIOELEMENT),
-            define('(document + [])[10]', HTMLDOCUMENT),
+            define('(RP_0_S + Audio)[11]', HTMLAUDIOELEMENT),
+            define('(RP_0_S + document)[10]', HTMLDOCUMENT),
         ],
         'N': '"NaN"[0]',
         'O':
@@ -829,7 +829,7 @@ var replaceStaticExpr;
         [
             define('atob("01A")[1]', ATOB),
             define('btoa("".italics())[0]', ATOB),
-            define('(Function("return statusbar")() + [])[11]', BARPROP),
+            define('(RP_0_S + Function("return statusbar")())[11]', BARPROP),
             define('"0".sup()[10]', CAPITAL_HTML),
             defineCharDefault({ atob: false, charCode: false }),
         ],
@@ -865,7 +865,7 @@ var replaceStaticExpr;
             define('btoa(NaN)[0]', ATOB),
             define('"".fontcolor([])[20]', CAPITAL_HTML),
             define('(RP_3_WA + Date())[30]', GMT),
-            define('(Audio + [])[10]', HTMLAUDIOELEMENT),
+            define('(RP_0_S + Audio)[10]', HTMLAUDIOELEMENT),
             define('(RP_1_WA + document)[10]', HTMLDOCUMENT),
             defineCharDefault({ atob: false }),
         ],
@@ -883,7 +883,7 @@ var replaceStaticExpr;
         'V':
         [
             define('"v"[TO_UPPER_CASE]()'),
-            define('(document.createElement("video") + [])[12]', ANY_DOCUMENT),
+            define('(RP_0_S + document.createElement("video"))[12]', ANY_DOCUMENT),
             define('btoa(undefined)[10]', ATOB),
             defineCharDefault({ atob: false }),
         ],
@@ -892,7 +892,7 @@ var replaceStaticExpr;
             define('"w"[TO_UPPER_CASE]()'),
             define('(self + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW),
             define('btoa(undefined)[1]', ATOB),
-            define('(self + [])[11]', DOMWINDOW),
+            define('(RP_0_S + self)[11]', DOMWINDOW),
             define('(RP_3_WA + self)[11]', WINDOW),
             defineCharDefault({ atob: false }),
         ],
@@ -916,7 +916,7 @@ var replaceStaticExpr;
         '[':
         [
             defineFBCharAt(14),
-            define('(ARRAY_ITERATOR + [])[0]', ARRAY_ITERATOR),
+            define('(RP_0_S + ARRAY_ITERATOR)[0]', ARRAY_ITERATOR),
         ],
         '\\':
         [
@@ -926,7 +926,7 @@ var replaceStaticExpr;
         ']':
         [
             defineFBCharAt(26),
-            define('(ARRAY_ITERATOR + [])[22]', NO_OLD_SAFARI_ARRAY_ITERATOR),
+            define('(RP_0_S + ARRAY_ITERATOR)[22]', NO_OLD_SAFARI_ARRAY_ITERATOR),
         ],
         '^':
         [
@@ -938,7 +938,7 @@ var replaceStaticExpr;
         'b':
         [
             defineFHCharAt('Number', 12),
-            define('(ARRAY_ITERATOR + [])[2]', ARRAY_ITERATOR),
+            define('(RP_0_S + ARRAY_ITERATOR)[2]', ARRAY_ITERATOR),
         ],
         'c':
         [
@@ -960,12 +960,12 @@ var replaceStaticExpr;
         'i': '([RP_5_A] + undefined)[10]',
         'j':
         [
-            define('(PLAIN_OBJECT + [])[10]'),
-            define('(ARRAY_ITERATOR + [])[3]', ARRAY_ITERATOR),
-            define('(Intl + [])[3]', INTL),
-            define('(Node + [])[3]', NODECONSTRUCTOR),
-            define('(Intl + [])[10]', PLAIN_INTL),
-            define('(self + [])[3]', SELF_OBJ),
+            define('(RP_0_S + PLAIN_OBJECT)[10]'),
+            define('(RP_0_S + ARRAY_ITERATOR)[3]', ARRAY_ITERATOR),
+            define('(RP_0_S + Intl)[3]', INTL),
+            define('(RP_0_S + Node)[3]', NODECONSTRUCTOR),
+            define('(RP_0_S + Intl)[10]', PLAIN_INTL),
+            define('(RP_0_S + self)[3]', SELF_OBJ),
         ],
         'k':
         [
@@ -982,7 +982,7 @@ var replaceStaticExpr;
         'o':
         [
             defineFHCharAt('ANY_FUNCTION', 6),
-            define('(ARRAY_ITERATOR + [])[1]', ARRAY_ITERATOR),
+            define('(RP_0_S + ARRAY_ITERATOR)[1]', ARRAY_ITERATOR),
         ],
         'p':
         [
@@ -1008,10 +1008,10 @@ var replaceStaticExpr;
         'w':
         [
             define('32[TO_STRING]("33")'),
-            define('(self + [])[SLICE_OR_SUBSTR]("-2")[0]', ANY_WINDOW),
+            define('(self + RP_0_S)[SLICE_OR_SUBSTR]("-2")[0]', ANY_WINDOW),
             define('atob("undefined0")[1]', ATOB),
             define('(RP_4_A + self)[20]', DOMWINDOW),
-            define('(self + [])[13]', WINDOW),
+            define('(RP_0_S + self)[13]', WINDOW),
         ],
         'x':
         [
@@ -1238,7 +1238,10 @@ var replaceStaticExpr;
             define(backslashDefinition),
             define({ expr: 'atob("01y")[1]', solutionType: SolutionType.STRING }, ATOB),
             define
-            ({ expr: '(RegExp("\\n") + [])[1]', solutionType: SolutionType.STRING }, ESC_REGEXP_LF),
+            (
+                { expr: '(RP_0_S + RegExp("\\n"))[1]', solutionType: SolutionType.STRING },
+                ESC_REGEXP_LF
+            ),
             define
             (
                 { expr: '(RP_5_A + RegExp("".italics()))[10]', solutionType: SolutionType.STRING },
@@ -1251,13 +1254,13 @@ var replaceStaticExpr;
             ),
             define
             (
-                { expr: '(RegExp(FILTER) + [])[20]', solutionType: SolutionType.STRING },
+                { expr: '(RP_0_S + RegExp(FILTER))[20]', solutionType: SolutionType.STRING },
                 ESC_REGEXP_LF,
                 FF_SRC
             ),
             define
             (
-                { expr: '(RegExp(Function()) + [])[20]', solutionType: SolutionType.STRING },
+                { expr: '(RP_0_S + RegExp(Function()))[20]', solutionType: SolutionType.STRING },
                 ESC_REGEXP_LF,
                 FUNCTION_19_LF
             ),
@@ -1269,14 +1272,14 @@ var replaceStaticExpr;
             ),
             define
             (
-                { expr: '(RegExp(ANY_FUNCTION) + [])[1]', solutionType: SolutionType.STRING },
+                { expr: '(RP_0_S + RegExp(ANY_FUNCTION))[1]', solutionType: SolutionType.STRING },
                 ESC_REGEXP_LF,
                 IE_SRC
             ),
             define
             (
                 {
-                    expr: '(+(ANY_FUNCTION + [])[0] + RegExp(FILTER))[23]',
+                    expr: '(+(RP_0_S + ANY_FUNCTION)[0] + RegExp(FILTER))[23]',
                     solutionType: SolutionType.STRING,
                 },
                 ESC_REGEXP_LF,
@@ -1299,7 +1302,7 @@ var replaceStaticExpr;
             define
             (
                 {
-                    expr: '(+(ANY_FUNCTION + [])[0] + RegExp(FILL))[21]',
+                    expr: '(+(RP_0_S + ANY_FUNCTION)[0] + RegExp(FILL))[21]',
                     solutionType: SolutionType.STRING,
                 },
                 ESC_REGEXP_LF,
@@ -1309,7 +1312,7 @@ var replaceStaticExpr;
             define
             (
                 {
-                    expr: '(+(ANY_FUNCTION + [])[0] + RegExp(FLAT))[21]',
+                    expr: '(+(RP_0_S + ANY_FUNCTION)[0] + RegExp(FLAT))[21]',
                     solutionType: SolutionType.STRING,
                 },
                 ESC_REGEXP_LF,
