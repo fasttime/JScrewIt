@@ -191,7 +191,7 @@ self,
                             var ASTERISK_REPLACEMENT =
                             (function ()
                             {
-                                var DEPTH = 13;
+                                var DEPTH = 14;
 
                                 var replacement =
                                 repeat('(?:[+!]|[([]', DEPTH) + '[+!]*' + repeat('[)\\]])*', DEPTH);

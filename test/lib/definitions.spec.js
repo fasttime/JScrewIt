@@ -162,6 +162,9 @@ sidebar,
                         case 'definitionFH':
                             verifyFEntry(entry, FH_DISPOSITIONS, FH_VARIETIES);
                             return;
+                        case 'definitionFX':
+                            verifyFEntry(entry, FX_DISPOSITIONS, FX_VARIETIES);
+                            return;
                         default:
                             expect().fail
                             (
@@ -268,6 +271,10 @@ sidebar,
         ];
 
         var FH_VARIETIES = [['IE_SRC'], ['NO_IE_SRC']];
+
+        var FX_DISPOSITIONS = [[], ['IE_SRC'], ['INCR_CHAR'], ['NO_IE_SRC']];
+
+        var FX_VARIETIES = [['IE_SRC'], ['NO_IE_SRC']];
 
         var char = String.fromCharCode(charCode);
         var entries = JScrewIt.debug.getCharacterEntries(char);
@@ -533,6 +540,11 @@ sidebar,
                 function ()
                 {
                     this.toEqual(['f', 'a', 'l', 's', 'e']);
+                },
+                IS_IE_SRC_A:
+                function ()
+                {
+                    this.toBeBoolean();
                 },
                 LOCALE_AR:
                 function ()

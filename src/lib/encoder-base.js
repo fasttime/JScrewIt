@@ -18,6 +18,7 @@ import
     CHARACTERS,
     CONSTANTS,
     JSFUCK_INFINITY,
+    NATIVE_FUNCTION_INFOS,
     OPTIMAL_B,
     R_PADDINGS,
     SIMPLE,
@@ -856,6 +857,47 @@ export var replaceStaticString;
             return solution;
         },
 
+        resolveCharInExpr:
+        function (char, expr, index, paddingEntries, paddingShifts)
+        {
+            if (!paddingEntries)
+                this.throwSyntaxError('Missing padding entries for index ' + index);
+            var paddingDefinition = this.findDefinition(paddingEntries);
+            var paddingBlock;
+            var shiftedIndex;
+            if (typeof paddingDefinition === 'number')
+            {
+                var paddingShift = this.findDefinition(paddingShifts);
+                paddingBlock = this.getPaddingBlock(paddingDefinition);
+                shiftedIndex = index + paddingDefinition + paddingShift;
+            }
+            else
+            {
+                paddingBlock = paddingDefinition.block;
+                shiftedIndex = paddingDefinition.index;
+            }
+            var fullExpr = '(' + paddingBlock + '+' + expr + ')[' + shiftedIndex + ']';
+            var replacement = this.replaceExpr(fullExpr);
+            var solution = new SimpleSolution(char, replacement, SolutionType.STRING);
+            return solution;
+        },
+
+        resolveCharInNativeFunction:
+        function (char, offset, getPaddingEntries, paddingShifts)
+        {
+            var nativeFunctionInfo = this.nativeFunctionInfo;
+            if (!nativeFunctionInfo)
+            {
+                nativeFunctionInfo = this.findDefinition(NATIVE_FUNCTION_INFOS);
+                this.nativeFunctionInfo = nativeFunctionInfo;
+            }
+            var expr = nativeFunctionInfo.expr;
+            var index = offset + nativeFunctionInfo.shift;
+            var paddingEntries = getPaddingEntries(index);
+            var solution = this.resolveCharInExpr(char, expr, index, paddingEntries, paddingShifts);
+            return solution;
+        },
+
         resolveCharacter:
         function (char)
         {
@@ -917,31 +959,6 @@ export var replaceStaticString;
                     }
                 );
             }
-            return solution;
-        },
-
-        resolveExprAt:
-        function (char, expr, index, paddingEntries, paddingShifts)
-        {
-            if (!paddingEntries)
-                this.throwSyntaxError('Missing padding entries for index ' + index);
-            var paddingDefinition = this.findDefinition(paddingEntries);
-            var paddingBlock;
-            var shiftedIndex;
-            if (typeof paddingDefinition === 'number')
-            {
-                var paddingShift = this.findDefinition(paddingShifts);
-                paddingBlock = this.getPaddingBlock(paddingDefinition);
-                shiftedIndex = index + paddingDefinition + paddingShift;
-            }
-            else
-            {
-                paddingBlock = paddingDefinition.block;
-                shiftedIndex = paddingDefinition.index;
-            }
-            var fullExpr = '(' + paddingBlock + '+' + expr + ')[' + shiftedIndex + ']';
-            var replacement = this.replaceExpr(fullExpr);
-            var solution = new SimpleSolution(char, replacement, SolutionType.STRING);
             return solution;
         },
 

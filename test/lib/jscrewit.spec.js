@@ -894,7 +894,7 @@ self,
     );
     describe
     (
-        'Encoder#resolveExprAt throws a SyntaxError for',
+        'Encoder#resolveCharInExpr throws a SyntaxError for',
         function ()
         {
             it
@@ -907,7 +907,7 @@ self,
                     (
                         function ()
                         {
-                            encoder.resolveExprAt('', '', 42, undefined, []);
+                            encoder.resolveCharInExpr('', '', 42, undefined, []);
                         }
                     )
                     .toThrowStrictly(SyntaxError, 'Missing padding entries for index 42');
@@ -1037,6 +1037,15 @@ self,
                 {
                     expect(JScrewIt.debug.calculateSolutionType('[+[]][+[]]'))
                     .toBe(JScrewIt.debug.SolutionType.ALGEBRAIC);
+                }
+            );
+            it
+            (
+                'works with a prefixed string expression',
+                function ()
+                {
+                    expect(JScrewIt.debug.calculateSolutionType('![]+[+[]]'))
+                    .toBe(JScrewIt.debug.SolutionType.PREFIXED_STRING);
                 }
             );
             it

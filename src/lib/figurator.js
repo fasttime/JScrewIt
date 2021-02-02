@@ -56,7 +56,7 @@ export default function createFigurator(startValues, joiner)
             var figure = createFigure(value, sortLength);
             figures.push(figure);
             part.isJoiner = false;
-            for (; ; ++joinerIndex)
+            for (;; ++joinerIndex)
             {
                 var joinerPart = PARTS[joinerIndex];
                 if (!joinerPart)

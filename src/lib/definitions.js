@@ -44,10 +44,11 @@ export var BASE64_ALPHABET_LO_6;
 export var CHARACTERS;
 export var COMPLEX;
 export var CONSTANTS;
+export var NATIVE_FUNCTION_INFOS;
 
 var FB_PADDING_ENTRIES_MAP = createEmpty();
+var FH_PADDING_ENTRIES_MAP = createEmpty();
 
-var FB_EXPR_INFOS;
 var FB_R_PADDING_SHIFTS;
 var FH_R_PADDING_SHIFTS;
 
@@ -64,26 +65,36 @@ function chooseOtherArgName(argName)
     return otherArgName;
 }
 
-function createCharAtDefinitionFB(offset)
+function createCharAtFnPosDefinition(expr, index, paddingEntries)
+{
+    function definitionFX(char)
+    {
+        var solution =
+        this.resolveCharInExpr(char, expr, index, paddingEntries, FH_R_PADDING_SHIFTS);
+        return solution;
+    }
+
+    return definitionFX;
+}
+
+function createCharInFBDefinition(offset)
 {
     function definitionFB(char)
     {
-        var functionDefinition = this.findDefinition(FB_EXPR_INFOS);
-        var expr = functionDefinition.expr;
-        var index = offset + functionDefinition.shift;
-        var paddingEntries = getFBPaddingEntries(index);
-        var solution = this.resolveExprAt(char, expr, index, paddingEntries, FB_R_PADDING_SHIFTS);
+        var solution =
+        this.resolveCharInNativeFunction(char, offset, getFBPaddingEntries, FB_R_PADDING_SHIFTS);
         return solution;
     }
 
     return definitionFB;
 }
 
-function createCharAtDefinitionFH(expr, index, paddingEntries)
+function createCharInFHDefinition(offset)
 {
     function definitionFH(char)
     {
-        var solution = this.resolveExprAt(char, expr, index, paddingEntries, FH_R_PADDING_SHIFTS);
+        var solution =
+        this.resolveCharInNativeFunction(char, offset, getFHPaddingEntries, FH_R_PADDING_SHIFTS);
         return solution;
     }
 
@@ -142,13 +153,9 @@ function getFBPaddingEntries(index)
                 define({ block: 'RP_3_WA + [FBP_7_WA]', index: index + 10 }),
                 define({ block: 'RP_3_WA + [FBP_8_WA]', index: index + 11 }, AT),
                 define
-                (
-                    { block: '[RP_1_WA] + FBEP_9_U', index: (index + 10) / 10 + ' + FH_SHIFT_1' },
-                    AT,
-                    INCR_CHAR
-                ),
+                ({ block: 'FBEP_10_S', index: (index + 10) / 10 + ' + FH_SHIFT_1' }, AT, INCR_CHAR),
                 define({ block: '[RP_1_WA] + FBP_9_U', index: index + 10 }, NO_FF_SRC),
-                define({ block: '[RP_1_WA] + FBEP_9_U', index: index + 10 }, NO_IE_SRC),
+                define({ block: 'FBEP_10_S', index: index + 10 }, NO_IE_SRC),
                 define({ block: 'RP_6_S', index: (index + 10) / 10 + ' + FH_SHIFT_1' }, NO_V8_SRC),
                 define(6, FF_SRC),
                 define(5, IE_SRC),
@@ -218,6 +225,103 @@ function getFBPaddingEntries(index)
             break;
         }
         FB_PADDING_ENTRIES_MAP[index] = paddingEntries;
+    }
+    return paddingEntries;
+}
+
+function getFHPaddingEntries(index)
+{
+    var paddingEntries = FH_PADDING_ENTRIES_MAP[index];
+    if (!paddingEntries)
+    {
+        var IE_SRC      = Feature.IE_SRC;
+        var INCR_CHAR   = Feature.INCR_CHAR;
+        var NO_IE_SRC   = Feature.NO_IE_SRC;
+
+        switch (index)
+        {
+        case 3:
+        case 13:
+            paddingEntries =
+            [
+                define({ block: 'RP_4_A + [FHP_3_WA]', index: index + 7 }),
+                define({ block: 'FHP_8_S', index: index + 8 }, INCR_CHAR),
+                define(6, IE_SRC),
+                define(0, NO_IE_SRC),
+            ];
+            break;
+        case 6:
+        case 16:
+            paddingEntries =
+            [
+                define({ block: 'FHP_5_A', index: index + 5 }),
+                define(3, IE_SRC),
+                define(4, NO_IE_SRC),
+            ];
+            break;
+        case 8:
+        case 18:
+            paddingEntries =
+            [
+                define({ block: 'FHP_3_WA', index: index + 3 }),
+                define({ block: 'RP_3_WA', index: (index + 2) / 10 + ' + FH_SHIFT_2' }, INCR_CHAR),
+                define(1, IE_SRC),
+                define(3, NO_IE_SRC),
+            ];
+            break;
+        case 9:
+        case 19:
+            paddingEntries =
+            [
+                define({ block: 'RP_1_WA', index: (index + 1) / 10 + ' + FH_SHIFT_1' }),
+                define(0, IE_SRC),
+                define(1, NO_IE_SRC),
+            ];
+            break;
+        case 11:
+            paddingEntries =
+            [
+                define({ block: 'RP_0_S', index: '1 + FH_SHIFT_2' }),
+                define(0, IE_SRC),
+                define(0, NO_IE_SRC),
+            ];
+            break;
+        case 12:
+            paddingEntries =
+            [
+                define({ block: 'RP_5_A + [FHP_3_WA]', index: 20 }),
+                define({ block: 'FHP_8_S', index: 20 }, INCR_CHAR),
+                define(0, IE_SRC),
+                define(0, NO_IE_SRC),
+            ];
+            break;
+        case 14:
+            paddingEntries =
+            [
+                define({ block: '[RP_1_WA] + FHP_5_A', index: 20 }),
+                define(5, IE_SRC),
+                define(6, NO_IE_SRC),
+            ];
+            break;
+        case 15:
+            paddingEntries =
+            [
+                define({ block: 'FHP_5_A', index: 20 }),
+                define(4, IE_SRC),
+                define(5, NO_IE_SRC),
+            ];
+            break;
+        case 17:
+            paddingEntries =
+            [
+                define({ block: 'FHP_3_WA', index: 20 }),
+                define({ block: 'RP_3_WA', index: 2 + ' + FH_SHIFT_1' }, INCR_CHAR),
+                define(3, IE_SRC),
+                define(3, NO_IE_SRC),
+            ];
+            break;
+        }
+        FH_PADDING_ENTRIES_MAP[index] = paddingEntries;
     }
     return paddingEntries;
 }
@@ -312,6 +416,14 @@ var replaceStaticExpr;
         return solution;
     }
 
+    function defineCharAtFnPos(expr, index)
+    {
+        var paddingEntries = getFHPaddingEntries(index);
+        var definition = createCharAtFnPosDefinition(expr, index, paddingEntries);
+        var entry = callWithFeatures(define, definition, arguments, 2);
+        return entry;
+    }
+
     function defineCharDefault(opts)
     {
         function checkOpt(optName)
@@ -329,97 +441,17 @@ var replaceStaticExpr;
         return entry;
     }
 
-    function defineFBCharAt(offset)
+    function defineCharInFB(offset)
     {
-        var definition = createCharAtDefinitionFB(offset);
+        var definition = createCharInFBDefinition(offset);
         var entry = define(definition);
         return entry;
     }
 
-    function defineFHCharAt(expr, index)
+    function defineCharInFH(offset)
     {
-        var paddingEntries;
-        switch (index)
-        {
-        case 3:
-        case 13:
-            paddingEntries =
-            [
-                define({ block: 'FHP_3_WA + [RP_4_A]', index: index + 7 }),
-                define(6, IE_SRC),
-                define(0, NO_IE_SRC),
-            ];
-            break;
-        case 6:
-        case 16:
-            paddingEntries =
-            [
-                define({ block: 'FHP_5_A', index: index + 5 }),
-                define(3, IE_SRC),
-                define(4, NO_IE_SRC),
-            ];
-            break;
-        case 8:
-        case 18:
-            paddingEntries =
-            [
-                define({ block: 'FHP_3_WA', index: index + 3 }),
-                define(1, IE_SRC),
-                define(3, NO_IE_SRC),
-            ];
-            break;
-        case 9:
-        case 19:
-            paddingEntries =
-            [
-                define({ block: 'RP_1_WA', index: (index + 1) / 10 + ' + FH_SHIFT_1' }),
-                define(0, IE_SRC),
-                define(1, NO_IE_SRC),
-            ];
-            break;
-        case 11:
-            paddingEntries =
-            [
-                define({ block: 'FHP_5_A + [RP_4_A]', index: index + 9 }),
-                define(0, IE_SRC),
-                define(0, NO_IE_SRC),
-            ];
-            break;
-        case 12:
-            paddingEntries =
-            [
-                define({ block: 'FHP_8_S', index: index + 8 }),
-                define(0, IE_SRC),
-                define(0, NO_IE_SRC),
-            ];
-            break;
-        case 14:
-            paddingEntries =
-            [
-                define({ block: 'FHP_5_A + [RP_1_WA]', index: index + 6 }),
-                define(5, IE_SRC),
-                define(6, NO_IE_SRC),
-            ];
-            break;
-        case 15:
-            paddingEntries =
-            [
-                define({ block: 'FHP_5_A', index: index + 5 }),
-                define(4, IE_SRC),
-                define(5, NO_IE_SRC),
-            ];
-            break;
-        case 17:
-            paddingEntries =
-            [
-                define({ block: 'FHP_3_WA', index: index + 3 }),
-                define(3, IE_SRC),
-                define(3, NO_IE_SRC),
-            ];
-            break;
-        }
-        var definition = createCharAtDefinitionFH(expr, index, paddingEntries);
-        var entry = callWithFeatures(define, definition, arguments, 2);
+        var definition = createCharInFHDefinition(offset);
+        var entry = callWithFeatures(define, definition, arguments, 1);
         return entry;
     }
 
@@ -602,9 +634,7 @@ var replaceStaticExpr;
             define('(RP_1_WA + Function())[20]', FUNCTION_19_LF),
             define('(RP_0_S + Function())[22]', FUNCTION_22_LF),
             define('(RP_0_S + ANY_FUNCTION)[0]', IE_SRC),
-            defineFHCharAt('FILTER', 19, NO_V8_SRC),
-            defineFHCharAt('FILL', 17, FILL, NO_V8_SRC),
-            defineFHCharAt('FLAT', 17, FLAT, NO_V8_SRC),
+            defineCharInFH(13, NO_V8_SRC),
         ],
 
         '\f':
@@ -625,7 +655,7 @@ var replaceStaticExpr;
 
         ' ':
         [
-            defineFHCharAt('ANY_FUNCTION', 8),
+            defineCharAtFnPos('ANY_FUNCTION', 8),
             define('(RP_3_WA + ARRAY_ITERATOR)[10]', ARRAY_ITERATOR),
             define('(RP_0_S + FILTER)[20]', FF_SRC),
             define('(+(RP_0_S + ANY_FUNCTION)[0] + FILTER)[22]', NO_FF_SRC),
@@ -664,15 +694,11 @@ var replaceStaticExpr;
         // '\'':   ,
         '(':
         [
-            defineFHCharAt('FILTER', 15),
-            defineFHCharAt('FILL', 13, FILL),
-            defineFHCharAt('FLAT', 13, FLAT),
+            defineCharInFH(9),
         ],
         ')':
         [
-            defineFHCharAt('FILTER', 16),
-            defineFHCharAt('FILL', 14, FILL),
-            defineFHCharAt('FLAT', 14, FLAT),
+            defineCharInFH(10),
         ],
         // '*':    ,
         '+': '(1e100 + [])[2]',
@@ -724,12 +750,12 @@ var replaceStaticExpr;
         // '@':    ,
         'A':
         [
-            defineFHCharAt('Array', 9),
+            defineCharAtFnPos('Array', 9),
             define('(RP_3_WA + ARRAY_ITERATOR)[11]', ARRAY_ITERATOR),
         ],
         'B':
         [
-            defineFHCharAt('Boolean', 9),
+            defineCharAtFnPos('Boolean', 9),
             define('"".sub()[3]', CAPITAL_HTML),
         ],
         'C':
@@ -763,7 +789,7 @@ var replaceStaticExpr;
         ],
         'E':
         [
-            defineFHCharAt('RegExp', 12),
+            defineCharAtFnPos('RegExp', 12),
             define('btoa("0NaN")[1]', ATOB),
             define('(RP_5_A + "".link())[10]', CAPITAL_HTML),
             define('(RP_3_WA + sidebar)[11]', EXTERNAL),
@@ -772,7 +798,7 @@ var replaceStaticExpr;
         ],
         'F':
         [
-            defineFHCharAt('Function', 9),
+            defineCharAtFnPos('Function', 9),
             define('"".fontcolor()[1]', CAPITAL_HTML),
         ],
         'G':
@@ -841,14 +867,14 @@ var replaceStaticExpr;
         ],
         'R':
         [
-            defineFHCharAt('RegExp', 9),
+            defineCharAtFnPos('RegExp', 9),
             define('btoa("0true")[2]', ATOB),
             define('"".fontcolor()[10]', CAPITAL_HTML),
             define('(RP_3_WA + REGEXP_STRING_ITERATOR)[11]', REGEXP_STRING_ITERATOR),
         ],
         'S':
         [
-            defineFHCharAt('String', 9),
+            defineCharAtFnPos('String', 9),
             define('"".sub()[1]', CAPITAL_HTML),
         ],
         'T':
@@ -915,7 +941,7 @@ var replaceStaticExpr;
         ],
         '[':
         [
-            defineFBCharAt(14),
+            defineCharInFB(14),
             define('(RP_0_S + ARRAY_ITERATOR)[0]', ARRAY_ITERATOR),
         ],
         '\\':
@@ -925,7 +951,7 @@ var replaceStaticExpr;
         ],
         ']':
         [
-            defineFBCharAt(26),
+            defineCharInFB(26),
             define('(RP_0_S + ARRAY_ITERATOR)[22]', NO_OLD_SAFARI_ARRAY_ITERATOR),
         ],
         '^':
@@ -937,12 +963,12 @@ var replaceStaticExpr;
         'a': '"false"[1]',
         'b':
         [
-            defineFHCharAt('Number', 12),
+            defineCharAtFnPos('Number', 12),
             define('(RP_0_S + ARRAY_ITERATOR)[2]', ARRAY_ITERATOR),
         ],
         'c':
         [
-            defineFHCharAt('ANY_FUNCTION', 3),
+            defineCharAtFnPos('ANY_FUNCTION', 3),
             define('(RP_5_A + ARRAY_ITERATOR)[10]', ARRAY_ITERATOR),
         ],
         'd': '"undefined"[2]',
@@ -950,7 +976,7 @@ var replaceStaticExpr;
         'f': '"false"[0]',
         'g':
         [
-            defineFHCharAt('String', 14),
+            defineCharAtFnPos('String', 14),
         ],
         'h':
         [
@@ -975,13 +1001,13 @@ var replaceStaticExpr;
         'l': '"false"[2]',
         'm':
         [
-            defineFHCharAt('Number', 11),
+            defineCharAtFnPos('Number', 11),
             define('(RP_6_S + Function())[20]'),
         ],
         'n': '"undefined"[1]',
         'o':
         [
-            defineFHCharAt('ANY_FUNCTION', 6),
+            defineCharAtFnPos('ANY_FUNCTION', 6),
             define('(RP_0_S + ARRAY_ITERATOR)[1]', ARRAY_ITERATOR),
         ],
         'p':
@@ -1003,7 +1029,7 @@ var replaceStaticExpr;
         'u': '"undefined"[0]',
         'v':
         [
-            defineFBCharAt(19),
+            defineCharInFB(19),
         ],
         'w':
         [
@@ -1027,14 +1053,12 @@ var replaceStaticExpr;
         ],
         '{':
         [
-            defineFHCharAt('FILTER', 18),
-            defineFHCharAt('FILL', 16, FILL),
-            defineFHCharAt('FLAT', 16, FLAT),
+            defineCharInFH(12),
         ],
         // '|':    ,
         '}':
         [
-            defineFBCharAt(28),
+            defineCharInFB(28),
         ],
         // '~':    ,
 
@@ -1437,6 +1461,10 @@ var replaceStaticExpr;
             define
             ({ expr: '[false][+(RP_0_S + FLAT)[20]]', solutionType: SolutionType.UNDEFINED }, FLAT),
         ],
+        FBEP_10_S:
+        [
+            define({ expr: '[RP_1_WA] + FBEP_9_U', solutionType: SolutionType.COMBINED_STRING }),
+        ],
 
         // Function body padding blocks: prepended to a function to align the function's body at the
         // same position in different engines.
@@ -1537,6 +1565,10 @@ var replaceStaticExpr;
         [
             define('[+IS_IE_SRC_A]'),
         ],
+        FH_SHIFT_2:
+        [
+            define('[true + IS_IE_SRC_A]'),
+        ],
         FH_SHIFT_3:
         [
             define('[2 + IS_IE_SRC_A]'),
@@ -1572,10 +1604,11 @@ var replaceStaticExpr;
         ],
         FHP_8_S:
         [
-            define({ expr: '[FHP_3_WA] + RP_5_A', solutionType: SolutionType.COMBINED_STRING }),
+            // Unused default definition.
+            // define({ expr: 'RP_5_A + [FHP_3_WA]', solutionType: SolutionType.PREFIXED_STRING }),
             define
             (
-                { expr: 'FHP_5_A + [RP_3_WA]', solutionType: SolutionType.PREFIXED_STRING },
+                { expr: '[RP_3_WA] + FHP_5_A', solutionType: SolutionType.COMBINED_STRING },
                 INCR_CHAR
             ),
         ],
@@ -1618,14 +1651,6 @@ var replaceStaticExpr;
         RP_5_A:     { expr: 'false',    solutionType: SolutionType.ALGEBRAIC },
         RP_6_S:     { expr: '"0false"', solutionType: SolutionType.COMBINED_STRING },
     });
-
-    FB_EXPR_INFOS =
-    [
-        define({ expr: 'FILTER', shift: 6 }),
-        define({ expr: 'FILL', shift: 4 }, FILL),
-        define({ expr: 'FLAT', shift: 4 }, FLAT),
-        define({ expr: 'AT', shift: 2 }, AT),
-    ];
 
     FB_R_PADDING_SHIFTS = [define(4, FF_SRC), define(5, IE_SRC), define(0, V8_SRC)];
 
@@ -1778,6 +1803,14 @@ var replaceStaticExpr;
             define(2),
         ]
     );
+
+    NATIVE_FUNCTION_INFOS =
+    [
+        define({ expr: 'FILTER', shift: 6 }),
+        define({ expr: 'FILL', shift: 4 }, FILL),
+        define({ expr: 'FLAT', shift: 4 }, FLAT),
+        define({ expr: 'AT', shift: 2 }, AT),
+    ];
 
     OPTIMAL_ARG_NAME =
     defineList

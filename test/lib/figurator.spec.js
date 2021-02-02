@@ -18,7 +18,7 @@
                 function ()
                 {
                     var startValues = [''];
-                    for (; ;)
+                    for (;;)
                     {
                         var figurator = JScrewIt.debug.createFigurator(startValues);
                         var joiner;
