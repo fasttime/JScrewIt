@@ -924,7 +924,7 @@ export var createReindexMap;
                         output = '';
                 }
                 else
-                    output = this.replaceExpressUnit(unit, false, [], maxLength, REPLACERS);
+                    output = this._replaceExpressUnit(unit, false, [], maxLength, REPLACERS);
                 return output;
             }
         },

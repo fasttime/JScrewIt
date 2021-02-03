@@ -4,11 +4,11 @@
 // Compared to generic purpose encoding, definition encoding differs mainly in that every identifier
 // used must be defined itself, too, in a constant definition.
 
-import { callWithFeatures, define, defineList } from './definers';
-import { Feature }                              from './features';
-import { _String, createEmpty, noProto }        from './obj-utils';
-import { LazySolution, SimpleSolution }         from './solution';
-import { SolutionType }                         from 'novem';
+import { define, defineList, makeCallableWithFeatures } from './definers';
+import { Feature }                                      from './features';
+import { _String, createEmpty, noProto }                from './obj-utils';
+import { LazySolution, SimpleSolution }                 from './solution';
+import { SolutionType }                                 from 'novem';
 
 export var AMENDINGS = ['true', 'undefined', 'NaN'];
 
@@ -82,7 +82,7 @@ function createCharInFBDefinition(offset)
     function definitionFB(char)
     {
         var solution =
-        this.resolveCharInNativeFunction(char, offset, getFBPaddingEntries, FB_R_PADDING_SHIFTS);
+        this.$resolveCharInNativeFunction(char, offset, getFBPaddingEntries, FB_R_PADDING_SHIFTS);
         return solution;
     }
 
@@ -94,11 +94,27 @@ function createCharInFHDefinition(offset)
     function definitionFH(char)
     {
         var solution =
-        this.resolveCharInNativeFunction(char, offset, getFHPaddingEntries, FH_R_PADDING_SHIFTS);
+        this.$resolveCharInNativeFunction(char, offset, getFHPaddingEntries, FH_R_PADDING_SHIFTS);
         return solution;
     }
 
     return definitionFH;
+}
+
+function createLazySolution(source, expr, type)
+{
+    var solution =
+    new LazySolution
+    (
+        source,
+        function ()
+        {
+            var replacement = replaceStaticExpr(expr);
+            return replacement;
+        },
+        type
+    );
+    return solution;
 }
 
 function getFBPaddingEntries(index)
@@ -400,27 +416,11 @@ var replaceStaticExpr;
         return charDefaultDefinition;
     }
 
-    function createLazySolution(source, expr, type)
-    {
-        var solution =
-        new LazySolution
-        (
-            source,
-            function ()
-            {
-                var replacement = replaceStaticExpr(expr);
-                return replacement;
-            },
-            type
-        );
-        return solution;
-    }
-
     function defineCharAtFnPos(expr, index)
     {
         var paddingEntries = getFHPaddingEntries(index);
         var definition = createCharAtFnPosDefinition(expr, index, paddingEntries);
-        var entry = callWithFeatures(define, definition, arguments, 2);
+        var entry = define.$callWithFeatures(definition, arguments, 2);
         return entry;
     }
 
@@ -451,7 +451,7 @@ var replaceStaticExpr;
     function defineCharInFH(offset)
     {
         var definition = createCharInFHDefinition(offset);
-        var entry = callWithFeatures(define, definition, arguments, 1);
+        var entry = define.$callWithFeatures(definition, arguments, 1);
         return entry;
     }
 
@@ -460,7 +460,7 @@ var replaceStaticExpr;
         var expr = '(' + number + ')[TO_LOCALE_STRING](' + locale + ')';
         if (index != null)
             expr += '[' + index + ']';
-        var entry = callWithFeatures(define, expr, LOCALE_NUMERALS, arguments, 3);
+        var entry = define.$callWithFeatures(expr, LOCALE_NUMERALS, arguments, 3);
         return entry;
     }
 
@@ -490,7 +490,7 @@ var replaceStaticExpr;
     {
         CHARACTERS[char] =
         [
-            callWithFeatures(defineLocalizedNumeral, locale, number, index, arguments, 4),
+            defineLocalizedNumeral.$callWithFeatures(locale, number, index, arguments, 4),
             defineCharDefault(),
         ];
     }
@@ -501,8 +501,8 @@ var replaceStaticExpr;
         for (var digit = 0; digit <= 9; ++digit)
         {
             var char = fromCharCode(zeroCharCode + digit);
-            callWithFeatures
-            (useLocaleNumeralDefinition, char, locale, digit, undefined, arguments, 2);
+            useLocaleNumeralDefinition
+            .$callWithFeatures(char, locale, digit, undefined, arguments, 2);
         }
     }
 
@@ -1855,6 +1855,9 @@ var replaceStaticExpr;
         var expr = replaceDigit(digit);
         CHARACTERS[digit] = { expr: expr, solutionType: SolutionType.WEAK_ALGEBRAIC };
     }
+
+    makeCallableWithFeatures(defineLocalizedNumeral);
+    makeCallableWithFeatures(useLocaleNumeralDefinition);
 
     // Localized numeral definitions
     useLocaleNumeralDigitDefinitions('LOCALE_AR', 0x0660);
