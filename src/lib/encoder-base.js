@@ -890,19 +890,19 @@ var matchSimpleAt;
         {
             if (!paddingEntries)
                 throwSyntaxError(this, 'Missing padding entries for index ' + index);
-            var paddingDefinition = this.findDefinition(paddingEntries);
+            var padding = this.findDefinition(paddingEntries);
             var paddingBlock;
             var shiftedIndex;
-            if (typeof paddingDefinition === 'number')
+            if (typeof padding === 'number')
             {
                 var paddingShift = this.findDefinition(paddingShifts);
-                paddingBlock = this.getPaddingBlock(paddingDefinition);
-                shiftedIndex = index + paddingDefinition + paddingShift;
+                paddingBlock = this.getPaddingBlock(padding);
+                shiftedIndex = index + padding + paddingShift;
             }
             else
             {
-                paddingBlock = paddingDefinition.block;
-                shiftedIndex = paddingDefinition.index;
+                paddingBlock = padding.block;
+                shiftedIndex = padding.shiftedIndex;
             }
             var fullExpr = '(' + paddingBlock + '+' + expr + ')[' + shiftedIndex + ']';
             var replacement = this.replaceExpr(fullExpr);

@@ -117,6 +117,13 @@ function createLazySolution(source, expr, type)
     return solution;
 }
 
+function definePadding(block, shiftedIndex)
+{
+    var padding = { block: block, shiftedIndex: shiftedIndex };
+    var paddingEntry = define.$callWithFeatures(padding, arguments, 2);
+    return paddingEntry;
+}
+
 function getFBPaddingEntries(index)
 {
     var paddingEntries = FB_PADDING_ENTRIES_MAP[index];
@@ -135,10 +142,10 @@ function getFBPaddingEntries(index)
         case 16:
             paddingEntries =
             [
-                define({ block: 'FBEP_4_S', index: '2 + FH_SHIFT_1' }),
-                define({ block: 'FBP_5_S', index: 21 }, NO_FF_SRC),
-                define({ block: 'FBEP_4_S', index: 20 }, NO_IE_SRC),
-                define({ block: 'RP_0_S', index: '2 + FH_SHIFT_1' }, NO_V8_SRC),
+                definePadding('FBEP_4_S', '2 + FH_SHIFT_1'),
+                definePadding('FBP_5_S', 21, NO_FF_SRC),
+                definePadding('FBEP_4_S', 20, NO_IE_SRC),
+                definePadding('RP_0_S', '2 + FH_SHIFT_1', NO_V8_SRC),
                 define(0, FF_SRC),
                 define(0, IE_SRC),
                 define(4, V8_SRC),
@@ -148,12 +155,12 @@ function getFBPaddingEntries(index)
         case 28:
             paddingEntries =
             [
-                define({ block: 'RP_5_A + [FBP_7_WA]', index: index + 12 }),
-                define({ block: 'RP_4_A + [FBP_8_WA]', index: index + 12 }, AT),
-                define({ block: '[RP_3_WA] + FBP_9_U', index: index + 12 }, NO_FF_SRC),
-                define({ block: '[RP_3_WA] + FBEP_9_U', index: index + 12 }, NO_IE_SRC),
-                define({ block: 'FBEP_4_S', index: index + 4 }, Feature.INCR_CHAR, NO_IE_SRC),
-                define({ block: 'RP_0_S', index: (index + 2) / 10 + ' + FH_SHIFT_3' }, NO_V8_SRC),
+                definePadding('RP_5_A + [FBP_7_WA]', index + 12),
+                definePadding('RP_4_A + [FBP_8_WA]', index + 12, AT),
+                definePadding('[RP_3_WA] + FBP_9_U', index + 12, NO_FF_SRC),
+                definePadding('[RP_3_WA] + FBEP_9_U', index + 12, NO_IE_SRC),
+                definePadding('FBEP_4_S', index + 4, Feature.INCR_CHAR, NO_IE_SRC),
+                definePadding('RP_0_S', (index + 2) / 10 + ' + FH_SHIFT_3', NO_V8_SRC),
                 define(0, FF_SRC),
                 define(0, IE_SRC),
                 define(3, V8_SRC),
@@ -163,11 +170,11 @@ function getFBPaddingEntries(index)
         case 30:
             paddingEntries =
             [
-                define({ block: 'RP_3_WA + [FBP_7_WA]', index: index + 10 }),
-                define({ block: 'FBEP_10_S', index: (index + 10) / 10 + ' + FH_SHIFT_1' }, AT),
-                define({ block: '[RP_1_WA] + FBP_9_U', index: index + 10 }, NO_FF_SRC),
-                define({ block: 'FBEP_10_S', index: index + 10 }, NO_IE_SRC),
-                define({ block: 'RP_6_S', index: (index + 10) / 10 + ' + FH_SHIFT_1' }, NO_V8_SRC),
+                definePadding('RP_3_WA + [FBP_7_WA]', index + 10),
+                definePadding('FBEP_10_S', (index + 10) / 10 + ' + FH_SHIFT_1', AT),
+                definePadding('[RP_1_WA] + FBP_9_U', index + 10, NO_FF_SRC),
+                definePadding('FBEP_10_S', index + 10, NO_IE_SRC),
+                definePadding('RP_6_S', (index + 10) / 10 + ' + FH_SHIFT_1', NO_V8_SRC),
                 define(6, FF_SRC),
                 define(5, IE_SRC),
                 define(0, V8_SRC),
@@ -176,10 +183,10 @@ function getFBPaddingEntries(index)
         case 21:
             paddingEntries =
             [
-                define({ block: 'FBEP_9_U', index: '3 + FH_SHIFT_1' }),
-                define({ block: 'FBP_9_U', index: 30 }, NO_FF_SRC),
-                define({ block: 'FBEP_9_U', index: 30 }, NO_IE_SRC),
-                define({ block: 'RP_5_A', index: '3 + FH_SHIFT_1' }, NO_V8_SRC),
+                definePadding('FBEP_9_U', '3 + FH_SHIFT_1'),
+                definePadding('FBP_9_U', 30, NO_FF_SRC),
+                definePadding('FBEP_9_U', 30, NO_IE_SRC),
+                definePadding('RP_5_A', '3 + FH_SHIFT_1', NO_V8_SRC),
                 define(5, FF_SRC),
                 define(4, IE_SRC),
                 define(0, V8_SRC),
@@ -188,10 +195,10 @@ function getFBPaddingEntries(index)
         case 23:
             paddingEntries =
             [
-                define({ block: 'FBP_7_WA', index: 30 }),
-                define({ block: 'FBP_9_U', index: 32 }, NO_FF_SRC),
-                define({ block: 'FBEP_9_U', index: 32 }, NO_IE_SRC),
-                define({ block: 'RP_3_WA', index: '3 + FH_SHIFT_1' }, NO_V8_SRC),
+                definePadding('FBP_7_WA', 30),
+                definePadding('FBP_9_U', 32, NO_FF_SRC),
+                definePadding('FBEP_9_U', 32, NO_IE_SRC),
+                definePadding('RP_3_WA', '3 + FH_SHIFT_1', NO_V8_SRC),
                 define(3, FF_SRC),
                 define(3, IE_SRC),
                 define(0, V8_SRC),
@@ -200,10 +207,10 @@ function getFBPaddingEntries(index)
         case 25:
             paddingEntries =
             [
-                define({ block: 'FBP_7_WA', index: 32 }),
-                define({ block: 'FBP_5_S', index: 30 }, NO_FF_SRC),
-                define({ block: 'RP_1_WA + FBEP_4_S', index: 30 }, NO_IE_SRC),
-                define({ block: 'RP_1_WA', index: '3 + FH_SHIFT_1' }, NO_V8_SRC),
+                definePadding('FBP_7_WA', 32),
+                definePadding('FBP_5_S', 30, NO_FF_SRC),
+                definePadding('RP_1_WA + FBEP_4_S', 30, NO_IE_SRC),
+                definePadding('RP_1_WA', '3 + FH_SHIFT_1', NO_V8_SRC),
                 define(1, FF_SRC),
                 define(0, IE_SRC),
                 define(5, V8_SRC),
@@ -212,10 +219,10 @@ function getFBPaddingEntries(index)
         case 32:
             paddingEntries =
             [
-                define({ block: 'FBP_8_WA', index: 40 }),
-                define({ block: 'FBP_9_U', index: 41 }, NO_FF_SRC),
-                define({ block: 'FBEP_9_U', index: 41 }, NO_IE_SRC),
-                define({ block: 'RP_4_A', index: '4 + FH_SHIFT_1' }, NO_V8_SRC),
+                definePadding('FBP_8_WA', 40),
+                definePadding('FBP_9_U', 41, NO_FF_SRC),
+                definePadding('FBEP_9_U', 41, NO_IE_SRC),
+                definePadding('RP_4_A', '4 + FH_SHIFT_1', NO_V8_SRC),
                 define(4, FF_SRC),
                 define(3, IE_SRC),
                 define(0, V8_SRC),
@@ -224,10 +231,10 @@ function getFBPaddingEntries(index)
         case 34:
             paddingEntries =
             [
-                define({ block: 'FBP_7_WA', index: 41 }),
-                define({ block: 'RP_1_WA + FBP_5_S', index: 40 }, NO_FF_SRC),
-                define({ block: 'FBEP_9_U', index: 43 }, NO_IE_SRC),
-                define({ block: 'RP_2_WS', index: '4 + FH_SHIFT_1' }, NO_V8_SRC),
+                definePadding('FBP_7_WA', 41),
+                definePadding('RP_1_WA + FBP_5_S', 40, NO_FF_SRC),
+                definePadding('FBEP_9_U', 43, NO_IE_SRC),
+                definePadding('RP_2_WS', '4 + FH_SHIFT_1', NO_V8_SRC),
                 define(3, FF_SRC),
                 define(1, IE_SRC),
                 define(6, V8_SRC),
@@ -254,8 +261,8 @@ function getFHPaddingEntries(index)
         case 13:
             paddingEntries =
             [
-                define({ block: 'RP_4_A + [FHP_3_WA]', index: index + 7 }),
-                define({ block: 'FHP_8_S', index: index + 8 }, INCR_CHAR),
+                definePadding('RP_4_A + [FHP_3_WA]', index + 7),
+                definePadding('FHP_8_S', index + 8, INCR_CHAR),
                 define(6, IE_SRC),
                 define(0, NO_IE_SRC),
             ];
@@ -264,7 +271,7 @@ function getFHPaddingEntries(index)
         case 16:
             paddingEntries =
             [
-                define({ block: 'FHP_5_A', index: index + 5 }),
+                definePadding('FHP_5_A', index + 5),
                 define(3, IE_SRC),
                 define(4, NO_IE_SRC),
             ];
@@ -273,8 +280,8 @@ function getFHPaddingEntries(index)
         case 18:
             paddingEntries =
             [
-                define({ block: 'FHP_3_WA', index: index + 3 }),
-                define({ block: 'RP_2_WS', index: (index + 2) / 10 + ' + FH_SHIFT_1' }, INCR_CHAR),
+                definePadding('FHP_3_WA', index + 3),
+                definePadding('RP_2_WS', (index + 2) / 10 + ' + FH_SHIFT_1', INCR_CHAR),
                 define(1, IE_SRC),
                 define(3, NO_IE_SRC),
             ];
@@ -283,7 +290,7 @@ function getFHPaddingEntries(index)
         case 19:
             paddingEntries =
             [
-                define({ block: 'RP_1_WA', index: (index + 1) / 10 + ' + FH_SHIFT_1' }),
+                definePadding('RP_1_WA', (index + 1) / 10 + ' + FH_SHIFT_1'),
                 define(0, IE_SRC),
                 define(1, NO_IE_SRC),
             ];
@@ -291,7 +298,7 @@ function getFHPaddingEntries(index)
         case 11:
             paddingEntries =
             [
-                define({ block: 'RP_0_S', index: '1 + FH_SHIFT_2' }),
+                definePadding('RP_0_S', '1 + FH_SHIFT_2'),
                 define(0, IE_SRC),
                 define(0, NO_IE_SRC),
             ];
@@ -299,7 +306,7 @@ function getFHPaddingEntries(index)
         case 12:
             paddingEntries =
             [
-                define({ block: 'FHP_8_S', index: 20 }),
+                definePadding('FHP_8_S', 20),
                 define(0, IE_SRC),
                 define(0, NO_IE_SRC),
             ];
@@ -307,7 +314,7 @@ function getFHPaddingEntries(index)
         case 14:
             paddingEntries =
             [
-                define({ block: '[RP_1_WA] + FHP_5_A', index: 20 }),
+                definePadding('[RP_1_WA] + FHP_5_A', 20),
                 define(5, IE_SRC),
                 define(6, NO_IE_SRC),
             ];
@@ -315,7 +322,7 @@ function getFHPaddingEntries(index)
         case 15:
             paddingEntries =
             [
-                define({ block: 'FHP_5_A', index: 20 }),
+                definePadding('FHP_5_A', 20),
                 define(4, IE_SRC),
                 define(5, NO_IE_SRC),
             ];
@@ -323,8 +330,8 @@ function getFHPaddingEntries(index)
         case 17:
             paddingEntries =
             [
-                define({ block: 'FHP_3_WA', index: 20 }),
-                define({ block: 'RP_3_WA', index: 2 + ' + FH_SHIFT_1' }, INCR_CHAR),
+                definePadding('FHP_3_WA', 20),
+                definePadding('RP_3_WA', 2 + ' + FH_SHIFT_1', INCR_CHAR),
                 define(3, IE_SRC),
                 define(3, NO_IE_SRC),
             ];
