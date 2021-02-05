@@ -1,5 +1,5 @@
 import { COMPLEX }                      from './definitions';
-import { Encoder }                      from './encoder-base';
+import { Encoder }                      from './encoder/encoder-base';
 import { assignNoEnum, createEmpty }    from './obj-utils';
 import createCommaOptimizer             from './optimizers/comma-optimizer';
 import createComplexOptimizer           from './optimizers/complex-optimizer';

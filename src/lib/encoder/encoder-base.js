@@ -6,30 +6,21 @@ import
     APPEND_LENGTH_OF_MINUS,
     APPEND_LENGTH_OF_SMALL_E,
 }
-from './append-lengths';
+from '../append-lengths';
 import
 {
-    BASE64_ALPHABET_HI_2,
-    BASE64_ALPHABET_HI_4,
-    BASE64_ALPHABET_HI_6,
-    BASE64_ALPHABET_LO_2,
-    BASE64_ALPHABET_LO_4,
-    BASE64_ALPHABET_LO_6,
     CHARACTERS,
     CONSTANTS,
     JSFUCK_INFINITY,
     NATIVE_FUNCTION_INFOS,
-    OPTIMAL_B,
     R_PADDINGS,
     SIMPLE,
-    initReplaceStaticExpr,
 }
-from './definitions';
-import expressParse                 from './express-parse';
-import { featureFromMask }          from './features';
+from '../definitions';
+import expressParse                 from '../express-parse';
+import { featureFromMask }          from '../features';
 import
 {
-    _Array,
     _Array_isArray,
     _Array_prototype_forEach,
     _JSON_stringify,
@@ -42,15 +33,20 @@ import
     assignNoEnum,
     createEmpty,
 }
-from './obj-utils';
+from '../obj-utils';
 import
 { SCREW_AS_STRING, SCREW_AS_BONDED_STRING, SCREW_NORMAL, ScrewBuffer }
-from './screw-buffer';
-import { SimpleSolution }           from './solution';
+from '../screw-buffer';
+import { SimpleSolution }           from '../solution';
+import { extraZeros, initStaticEncoder, replaceStaticString, shortestOf }
+from './encoder-utils';
+import replaceCharByAtob            from './replace-char-by-atob';
+import replaceCharByCharCode        from './replace-char-by-char-code';
+import replaceCharByEscSeq          from './replace-char-by-esc-seq';
+import replaceCharByUnescape        from './replace-char-by-unescape';
 import { SolutionType }             from 'novem';
 import { maskIncludes, maskNew }    from 'quinquaginta-duo';
 
-var LOW_UNICODE_ESC_SEQ_CODES;
 var STATIC_CHAR_CACHE;
 var STATIC_CONST_CACHE;
 var STATIC_ENCODER;
@@ -108,16 +104,6 @@ function evalNumber(preMantissa, lastDigit, exp)
     return value;
 }
 
-function findBase64AlphabetDefinition(encoder, element)
-{
-    var definition;
-    if (_Array_isArray(element))
-        definition = encoder.findDefinition(element);
-    else
-        definition = element;
-    return definition;
-}
-
 function findOptimalSolution(encoder, source, entries, defaultSolutionType)
 {
     var optimalSolution;
@@ -171,7 +157,7 @@ function formatPositiveNumber(number)
     if (exp >= 0)
     {
         if (exp < 10)
-            str = mantissa + getExtraZeros(exp);
+            str = mantissa + extraZeros(exp);
         else if (exp % 100 === 99 && (exp > 99 || mantissa[1]))
             str = mantissa.replace(/.$/, '.$&e') + (exp + 1);
         else
@@ -187,16 +173,10 @@ function formatPositiveNumber(number)
             var extraLength = APPEND_LENGTH_OF_DOT + APPEND_LENGTH_OF_DIGIT_0 * extraZeroCount;
             str =
             replaceNegativeExponential(mantissa, exp, extraLength) ||
-            '.' + getExtraZeros(extraZeroCount) + mantissa;
+            '.' + extraZeros(extraZeroCount) + mantissa;
         }
     }
     return str;
-}
-
-function getExtraZeros(count)
-{
-    var extraZeros = _Array(count + 1).join('0');
-    return extraZeros;
 }
 
 function getMultiDigitLength(str)
@@ -244,25 +224,6 @@ function getReplacers(optimize)
     return replacers;
 }
 
-function hexCodeOf(encoder, charCode, hexDigitCount)
-{
-    var optimalB = encoder.findDefinition(OPTIMAL_B);
-    var charCodeStr = charCode.toString(16);
-    var hexCodeSmallB =
-    getExtraZeros(hexDigitCount - charCodeStr.length) + charCodeStr.replace(/fa?$/, 'false');
-    var hexCode = hexCodeSmallB.replace(/b/g, optimalB);
-    if (optimalB !== 'b' && /(?=.*b.*b)(?=.*c)|(?=.*b.*b.*b)/.test(charCodeStr))
-    {
-        // optimalB is not "b", but the character code is a candidate for toString clustering,
-        // which only works with "b".
-        var replacementSmallB = encoder.replaceString('f' + hexCodeSmallB, { optimize: true });
-        var replacement = encoder.replaceString('f' + hexCode);
-        if (replacementSmallB.length < replacement.length)
-            hexCode = hexCodeSmallB;
-    }
-    return hexCode;
-}
-
 function isStringUnit(unit)
 {
     var strUnit = typeof unit.value === 'string' && !unit.mod && !unit.pmod && !unit.ops.length;
@@ -287,22 +248,10 @@ function replaceIdentifier(encoder, identifier, bondStrength)
     return replacement;
 }
 
-function replaceIndexer(index)
-{
-    var replacement = '[' + replaceStaticString(_String(index)) + ']';
-    return replacement;
-}
-
 export function replaceMultiDigitNumber(number)
 {
     var str = formatPositiveNumber(number);
     var replacement = replaceStaticString(str);
-    return replacement;
-}
-
-export function replaceStaticString(str, options)
-{
-    var replacement = STATIC_ENCODER.replaceString(str, options);
     return replacement;
 }
 
@@ -318,7 +267,7 @@ function replaceNegativeExponential(mantissa, exp, rivalExtraLength)
     }
     else
         extraZeroCount = 100 + exp % 100;
-    mantissa += getExtraZeros(extraZeroCount);
+    mantissa += extraZeros(extraZeroCount);
     exp -= extraZeroCount;
     var extraLength =
     APPEND_LENGTH_OF_DIGIT_0 * extraZeroCount +
@@ -330,31 +279,6 @@ function replaceNegativeExponential(mantissa, exp, rivalExtraLength)
         var str = mantissa + 'e' + exp;
         return str;
     }
-}
-
-function replaceStaticExpr(expr)
-{
-    var solution = STATIC_ENCODER.replaceExpr(expr);
-    return solution;
-}
-
-function shortestOf(objs)
-{
-    var shortestObj;
-    var shortestLength = Infinity;
-    objs.forEach
-    (
-        function (obj)
-        {
-            var length = obj.length;
-            if (length < shortestLength)
-            {
-                shortestObj = obj;
-                shortestLength = length;
-            }
-        }
-    );
-    return shortestObj;
 }
 
 function replacePrimaryExpr(encoder, unit, bondStrength, unitIndices, maxLength, replacers)
@@ -462,7 +386,7 @@ function replacePrimaryExpr(encoder, unit, bondStrength, unitIndices, maxLength,
 
 function resolveCharByDefaultMethod(encoder, char, charCode, replaceChar, entryCode)
 {
-    var replacement = encoder[replaceChar](charCode);
+    var replacement = replaceChar.call(encoder, charCode);
     var solution = new SimpleSolution(char, replacement, SolutionType.STRING);
     solution.entryCode = entryCode;
     return solution;
@@ -483,6 +407,14 @@ var matchSimpleAt;
 {
     var protoSource =
     {
+        $replaceCharByAtob: replaceCharByAtob,
+
+        $replaceCharByCharCode: replaceCharByCharCode,
+
+        $replaceCharByEscSeq: replaceCharByEscSeq,
+
+        $replaceCharByUnescape: replaceCharByUnescape,
+
         $resolveCharInNativeFunction:
         function (char, offset, getPaddingEntries, paddingShifts)
         {
@@ -573,7 +505,7 @@ var matchSimpleAt;
             if (atobOpt && this.findDefinition(CONSTANTS.atob))
             {
                 solution =
-                resolveCharByDefaultMethod(this, char, charCode, 'replaceCharByAtob', 'atob');
+                resolveCharByDefaultMethod(this, char, charCode, replaceCharByAtob, 'atob');
             }
             else
             {
@@ -582,21 +514,21 @@ var matchSimpleAt;
                 {
                     solution =
                     resolveCharByDefaultMethod
-                    (this, char, charCode, 'replaceCharByCharCode', 'char-code');
+                    (this, char, charCode, replaceCharByCharCode, 'char-code');
                     solutions.push(solution);
                 }
                 if (escSeqOpt)
                 {
                     solution =
                     resolveCharByDefaultMethod
-                    (this, char, charCode, 'replaceCharByEscSeq', 'esc-seq');
+                    (this, char, charCode, replaceCharByEscSeq, 'esc-seq');
                     solutions.push(solution);
                 }
                 if (unescapeOpt)
                 {
                     solution =
                     resolveCharByDefaultMethod
-                    (this, char, charCode, 'replaceCharByUnescape', 'unescape');
+                    (this, char, charCode, replaceCharByUnescape, 'unescape');
                     solutions.push(solution);
                 }
                 solution = shortestOf(solutions);
@@ -649,96 +581,6 @@ var matchSimpleAt;
         // non-reproducible manner, although the issue seems to be related to the output size rather
         // than the grouping threshold setting.
         maxGroupThreshold: 1800,
-
-        replaceCharByAtob:
-        function (charCode)
-        {
-            var param1 =
-            BASE64_ALPHABET_LO_6[charCode >> 2] + BASE64_ALPHABET_HI_2[charCode & 0x03];
-            var postfix1 = '(' + this.replaceString(param1) + ')';
-            if (param1.length > 2)
-                postfix1 += replaceIndexer(0);
-
-            var param2Left =
-            findBase64AlphabetDefinition(this, BASE64_ALPHABET_LO_4[charCode >> 4]);
-            var param2Right =
-            findBase64AlphabetDefinition(this, BASE64_ALPHABET_HI_4[charCode & 0x0f]);
-            var param2 = param2Left + param2Right;
-            var index2 = 1 + (param2Left.length - 2) / 4 * 3;
-            var indexer2 = replaceIndexer(index2);
-            var postfix2 = '(' + this.replaceString(param2) + ')' + indexer2;
-
-            var param3Left = BASE64_ALPHABET_LO_2[charCode >> 6];
-            var param3 = param3Left + BASE64_ALPHABET_HI_6[charCode & 0x3f];
-            var index3 = 2 + (param3Left.length - 3) / 4 * 3;
-            var indexer3 = replaceIndexer(index3);
-            var postfix3 = '(' + this.replaceString(param3) + ')' + indexer3;
-
-            var postfix = shortestOf([postfix1, postfix2, postfix3]);
-            var replacement = this.resolveConstant('atob').replacement + postfix;
-            return replacement;
-        },
-
-        replaceCharByCharCode:
-        function (charCode)
-        {
-            var arg =
-            charCode < 2 ?
-            ['[]', 'true'][charCode] : charCode < 10 ? charCode : '"' + charCode + '"';
-            var replacement = this.replaceExpr('String[FROM_CHAR_CODE](' + arg + ')');
-            return replacement;
-        },
-
-        replaceCharByEscSeq:
-        function (charCode)
-        {
-            var escCode;
-            var appendIndexer;
-            var optimize;
-            if (charCode >= 0xfd || charCode in LOW_UNICODE_ESC_SEQ_CODES)
-            {
-                escCode = 'u' + hexCodeOf(this, charCode, 4);
-                appendIndexer = escCode.length > 5;
-                optimize = true;
-            }
-            else
-            {
-                escCode = charCode.toString(8);
-                appendIndexer = false;
-                optimize = false;
-            }
-            var expr = 'Function("return\\"" + ESCAPING_BACKSLASH + "' + escCode + '\\"")()';
-            if (appendIndexer)
-                expr += '[0]';
-            var replacement =
-            this.replaceExpr(expr, { commaOpt: false, complexOpt: true, toStringOpt: optimize });
-            return replacement;
-        },
-
-        replaceCharByUnescape:
-        function (charCode)
-        {
-            var hexCode;
-            var appendIndexer;
-            var optimize;
-            if (charCode < 0x100)
-            {
-                hexCode = hexCodeOf(this, charCode, 2);
-                appendIndexer = hexCode.length > 2;
-                optimize = false;
-            }
-            else
-            {
-                hexCode = 'u' + hexCodeOf(this, charCode, 4);
-                appendIndexer = hexCode.length > 5;
-                optimize = true;
-            }
-            var expr = 'unescape("%' + hexCode + '")';
-            if (appendIndexer)
-                expr += '[0]';
-            var replacement = this.replaceExpr(expr, { toStringOpt: optimize });
-            return replacement;
-        },
 
         replaceExpr:
         function (expr, optimize)
@@ -979,20 +821,6 @@ var matchSimpleAt;
 
     assignNoEnum(Encoder.prototype, protoSource);
 
-    LOW_UNICODE_ESC_SEQ_CODES = createEmpty();
-
-    [
-        0x0f, 0x1f, 0x2f, 0x3f, 0x6f, 0x7f, 0xaf, 0xdf, 0xef,
-        0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xfa,
-    ]
-    .forEach
-    (
-        function (charCode)
-        {
-            LOW_UNICODE_ESC_SEQ_CODES[charCode] = null;
-        }
-    );
-
     STATIC_CHAR_CACHE = createEmpty();
     STATIC_CONST_CACHE = createEmpty();
     STATIC_ENCODER = new Encoder(maskNew());
@@ -1031,6 +859,6 @@ var matchSimpleAt;
         };
     }
 
-    initReplaceStaticExpr(replaceStaticExpr);
+    initStaticEncoder(STATIC_ENCODER);
 }
 )();

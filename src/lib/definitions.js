@@ -5,6 +5,7 @@
 // used must be defined itself, too, in a constant definition.
 
 import { define, defineList, makeCallableWithFeatures } from './definers';
+import { replaceStaticExpr }                            from './encoder/encoder-utils';
 import { Feature }                                      from './features';
 import { _String, createEmpty, noProto }                from './obj-utils';
 import { LazySolution, SimpleSolution }                 from './solution';
@@ -54,7 +55,7 @@ var FH_R_PADDING_SHIFTS;
 
 function backslashDefinition()
 {
-    var replacement = this.replaceCharByUnescape(0x5C);
+    var replacement = this.$replaceCharByUnescape(0x5C);
     var solution = new SimpleSolution(undefined, replacement, SolutionType.STRING);
     return solution;
 }
@@ -341,13 +342,6 @@ function getFHPaddingEntries(index)
     }
     return paddingEntries;
 }
-
-export function initReplaceStaticExpr(value)
-{
-    replaceStaticExpr = value;
-}
-
-var replaceStaticExpr;
 
 (function ()
 {

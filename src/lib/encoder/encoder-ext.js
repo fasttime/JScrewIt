@@ -5,7 +5,7 @@ import
     APPEND_LENGTH_OF_FALSE,
     APPEND_LENGTH_OF_PLUS_SIGN,
 }
-from './append-lengths';
+from '../append-lengths';
 import
 {
     AMENDINGS,
@@ -16,10 +16,9 @@ import
     OPTIMAL_RETURN_STRING,
     SIMPLE,
 }
-from './definitions';
-import { Encoder, replaceStaticString }                             from './encoder-base';
-import expressParse                                                 from './express-parse';
-import createFigurator                                              from './figurator';
+from '../definitions';
+import expressParse                                                 from '../express-parse';
+import createFigurator                                              from '../figurator';
 import
 {
     _Array_prototype_forEach,
@@ -34,8 +33,435 @@ import
     assignNoEnum,
     createEmpty,
 }
-from './obj-utils';
-import { SCREW_AS_BONDED_STRING, SCREW_AS_STRING, SCREW_NORMAL }    from './screw-buffer';
+from '../obj-utils';
+import { SCREW_AS_BONDED_STRING, SCREW_AS_STRING, SCREW_NORMAL }    from '../screw-buffer';
+import { Encoder }                                                  from './encoder-base';
+import { replaceStaticString }                                      from './encoder-utils';
+
+var FALSE_FREE_DELIMITER = { joiner: 'false', separator: 'false' };
+var FALSE_TRUE_DELIMITER = { joiner: '', separator: 'Function("return/(?=false|true)/")()' };
+
+var REPLACERS =
+{
+    identifier:
+    function (encoder, identifier, bondStrength, unitIndices, maxLength)
+    {
+        var unitPath = getUnitPath(unitIndices);
+        var replacement =
+        encodeAndWrapText(encoder, 'return ' + identifier, wrapWithCall, unitPath, maxLength);
+        return replacement;
+    },
+    string:
+    function (encoder, str, screwMode, unitIndices, maxLength)
+    {
+        var unitPath = getUnitPath(unitIndices);
+        var replacement = encodeText(encoder, str, screwMode, unitPath, maxLength);
+        return replacement;
+    },
+};
+
+export var STRATEGIES;
+
+function callStrategies(encoder, input, options, strategyNames, unitPath)
+{
+    var output;
+    var inputLength = input.length;
+    var perfLog = encoder.perfLog;
+    var perfInfoList = [];
+    perfInfoList.name = unitPath;
+    perfInfoList.inputLength = inputLength;
+    perfLog.push(perfInfoList);
+    var inputData = _Object(input);
+    _Object_keys(options).forEach
+    (
+        function (optName)
+        {
+            inputData[optName] = options[optName];
+        }
+    );
+    var usedPerfInfo;
+    strategyNames.forEach
+    (
+        function (strategyName)
+        {
+            var strategy = STRATEGIES[strategyName];
+            var perfInfo = { strategyName: strategyName };
+            var perfStatus;
+            if (inputLength < strategy.MIN_INPUT_LENGTH)
+                perfStatus = 'skipped';
+            else
+            {
+                encoder.perfLog = perfInfo.perfLog = [];
+                var before = new _Date();
+                var maxLength = output != null ? output.length : NaN;
+                var newOutput = strategy.call(encoder, inputData, maxLength);
+                var time = new _Date() - before;
+                encoder.perfLog = perfLog;
+                perfInfo.time = time;
+                if (newOutput != null)
+                {
+                    output = newOutput;
+                    if (usedPerfInfo)
+                        usedPerfInfo.status = 'superseded';
+                    usedPerfInfo = perfInfo;
+                    perfInfo.outputLength = newOutput.length;
+                    perfStatus = 'used';
+                }
+                else
+                    perfStatus = 'incomplete';
+            }
+            perfInfo.status = perfStatus;
+            perfInfoList.push(perfInfo);
+        }
+    );
+    return output;
+}
+
+function createCharCodesEncoding(encoder, charCodeArrayStr, long, radix)
+{
+    var output;
+    var fromCharCode = encoder.findDefinition(FROM_CHAR_CODE);
+    if (radix)
+    {
+        output =
+        createLongCharCodesOutput
+        (encoder, charCodeArrayStr, fromCharCode, 'parseInt(undefined,' + radix + ')');
+    }
+    else
+    {
+        if (long)
+        {
+            output =
+            createLongCharCodesOutput(encoder, charCodeArrayStr, fromCharCode, 'undefined');
+        }
+        else
+        {
+            var returnString = encoder.findDefinition(OPTIMAL_RETURN_STRING);
+            var str = returnString + '.' + fromCharCode + '(';
+            output =
+            encoder.resolveConstant('Function').replacement +
+            '(' +
+            encoder.replaceString(str, { optimize: true }) +
+            '+' +
+            charCodeArrayStr +
+            '+' +
+            encoder.resolveCharacter(')').replacement +
+            ')()';
+        }
+    }
+    return output;
+}
+
+function createCharKeyArrayString
+(encoder, input, charMap, insertions, substitutions, forceString, maxLength)
+{
+    var charKeyArray =
+    _Array_prototype_map.call
+    (
+        input,
+        function (char)
+        {
+            var charKey = charMap[char];
+            return charKey;
+        }
+    );
+    var charKeyArrayStr =
+    encoder.replaceStringArray(charKeyArray, insertions, substitutions, forceString, maxLength);
+    return charKeyArrayStr;
+}
+
+function createJSFuckArrayMapping(encoder, arrayStr, mapper, legend)
+{
+    var result =
+    arrayStr + '[' + encoder.replaceString('map', { optimize: true }) + '](' +
+    encoder.replaceExpr(mapper, true) + '(' + legend + '))';
+    return result;
+}
+
+function createLongCharCodesOutput(encoder, charCodeArrayStr, fromCharCode, arg)
+{
+    var formatter = encoder.findDefinition(FROM_CHAR_CODE_CALLBACK_FORMATTER);
+    var formatterExpr = formatter(fromCharCode, arg);
+    var output =
+    charCodeArrayStr + '[' + encoder.replaceString('map', { optimize: true }) + '](' +
+    encoder.replaceExpr('Function("return ' + formatterExpr + '")()', true) + ')[' +
+    encoder.replaceString('join') + ']([])';
+    return output;
+}
+
+export function createReindexMap(count, radix, amendingCount, coerceToInt)
+{
+    function getSortLength()
+    {
+        var length = 0;
+        _Array_prototype_forEach.call
+        (
+            str,
+            function (digit)
+            {
+                length += digitAppendLengths[digit];
+            }
+        );
+        return length;
+    }
+
+    var index;
+    var digitAppendLengths = APPEND_LENGTH_OF_DIGITS.slice(0, radix);
+    var regExp;
+    var replacer;
+    if (amendingCount)
+    {
+        var firstDigit = radix - amendingCount;
+        var pattern = '[';
+        for (index = 0; index < amendingCount; ++index)
+        {
+            var digit = firstDigit + index;
+            digitAppendLengths[digit] = SIMPLE[AMENDINGS[index]].appendLength;
+            pattern += digit;
+        }
+        pattern += ']';
+        regExp = _RegExp(pattern, 'g');
+        replacer =
+        function (match)
+        {
+            return AMENDINGS[match - firstDigit];
+        };
+    }
+    var range = [];
+    for (index = 0; index < count; ++index)
+    {
+        var str = coerceToInt && !index ? '' : index.toString(radix);
+        var reindexStr = amendingCount ? str.replace(regExp, replacer) : str;
+        var reindex = range[index] = _Object(reindexStr);
+        reindex.sortLength = getSortLength();
+        reindex.index = index;
+    }
+    range.sort
+    (
+        function (reindex1, reindex2)
+        {
+            var result =
+            reindex1.sortLength - reindex2.sortLength || reindex1.index - reindex2.index;
+            return result;
+        }
+    );
+    return range;
+}
+
+function encodeAndWrapText(encoder, input, wrapper, unitPath, maxLength)
+{
+    var output;
+    if (!wrapper || input)
+    {
+        var screwMode = !wrapper || wrapper.forceString ? SCREW_AS_STRING : SCREW_NORMAL;
+        output = encodeText(encoder, input, screwMode, unitPath, maxLength);
+        if (output == null)
+            return;
+    }
+    else
+        output = '';
+    if (wrapper)
+        output = wrapper.call(encoder, output);
+    if (!(output.length > maxLength))
+        return output;
+}
+
+function encodeByDblDict
+(
+    encoder,
+    initMinCharIndexArrayStrLength,
+    figurator,
+    getFigureLegendInsertions,
+    keyFigureArrayInsertions,
+    inputData,
+    maxLength
+)
+{
+    var input = inputData.valueOf();
+    var freqList = getFrequencyList(inputData);
+    var charMap = createEmpty();
+    var minCharIndexArrayStrLength = initMinCharIndexArrayStrLength(input);
+    var figures =
+    freqList.map
+    (
+        function (freq, index)
+        {
+            var figure = figurator(index);
+            charMap[freq.char] = figure;
+            minCharIndexArrayStrLength += freq.count * figure.sortLength;
+            return figure;
+        }
+    );
+    var dictChars =
+    freqList.map
+    (
+        function (freq)
+        {
+            return freq.char;
+        }
+    );
+    var legend = encodeDictLegend(encoder, dictChars, maxLength - minCharIndexArrayStrLength);
+    if (!legend)
+        return;
+    var figureLegendInsertions =
+    encoder.callGetFigureLegendInsertions(getFigureLegendInsertions, figurator, figures);
+    var figureMaxLength = maxLength - legend.length;
+    var figureLegend =
+    encoder.replaceStringArray
+    (figures, figureLegendInsertions, null, true, figureMaxLength - minCharIndexArrayStrLength);
+    if (!figureLegend)
+        return;
+    var keyFigureArrayStr =
+    createCharKeyArrayString
+    (
+        encoder,
+        input,
+        charMap,
+        keyFigureArrayInsertions,
+        null,
+        true,
+        figureMaxLength - figureLegend.length
+    );
+    if (!keyFigureArrayStr)
+        return;
+    var formatter = encoder.findDefinition(MAPPER_FORMATTER);
+    var argName = 'undefined';
+    var accessor = '.indexOf(' + argName + ')';
+    var mapper = formatter(argName, accessor);
+    var charIndexArrayStr =
+    createJSFuckArrayMapping(encoder, keyFigureArrayStr, mapper, figureLegend);
+    var output = encoder.createDictEncoding(legend, charIndexArrayStr, maxLength);
+    return output;
+}
+
+function encodeDictLegend(encoder, dictChars, maxLength)
+{
+    if (!(maxLength < 0))
+    {
+        var input = dictChars.join('');
+        var output =
+        callStrategies
+        (
+            encoder,
+            input,
+            { screwMode: SCREW_AS_STRING },
+            ['byCharCodesRadix4', 'byCharCodes', 'plain'],
+            'legend'
+        );
+        if (output && !(output.length > maxLength))
+            return output;
+    }
+}
+
+function encodeText(encoder, input, screwMode, unitPath, maxLength)
+{
+    var output =
+    callStrategies
+    (
+        encoder,
+        input,
+        { screwMode: screwMode },
+        [
+            'byDenseFigures',
+            'bySparseFigures',
+            'byDictRadix5AmendedBy3',
+            'byDictRadix4AmendedBy2',
+            'byDictRadix4AmendedBy1',
+            'byDictRadix5',
+            'byDictRadix3AmendedBy1',
+            'byDictRadix4',
+            'byDict',
+            'byCharCodesRadix4',
+            'byCharCodes',
+            'plain',
+        ],
+        unitPath
+    );
+    if (output != null && !(output.length > maxLength))
+        return output;
+}
+
+function getDenseFigureLegendInsertions(figurator, figures)
+{
+    var insertions = [FALSE_TRUE_DELIMITER];
+    var lastFigure = figurator(figures.length - 1);
+    var joiner = lastFigure.joiner;
+    if (joiner != null)
+        insertions.push({ joiner: joiner, separator: joiner });
+    return insertions;
+}
+
+function getFrequencyList(inputData)
+{
+    var freqList = inputData.freqList;
+    if (!freqList)
+    {
+        var charMap = createEmpty();
+        _Array_prototype_forEach.call
+        (
+            inputData,
+            function (char)
+            {
+                (
+                    charMap[char] ||
+                    (charMap[char] = { char: char, charCode: char.charCodeAt(), count: 0 })
+                )
+                .count++;
+            }
+        );
+        var charList = _Object_keys(charMap);
+        inputData.freqList =
+        freqList =
+        charList.map
+        (
+            function (char)
+            {
+                var freq = charMap[char];
+                return freq;
+            }
+        )
+        .sort
+        (
+            function (freq1, freq2)
+            {
+                var diff = freq2.count - freq1.count || freq1.charCode - freq2.charCode;
+                return diff;
+            }
+        );
+    }
+    return freqList;
+}
+
+function getSparseFigureLegendInsertions()
+{
+    var insertions = [FALSE_FREE_DELIMITER];
+    return insertions;
+}
+
+// The unit path consists of the string of colon-separated unit indices.
+function getUnitPath(unitIndices)
+{
+    var unitPath = unitIndices.length ? unitIndices.join(':') : '0';
+    return unitPath;
+}
+
+function initMinFalseFreeCharIndexArrayStrLength(input)
+{
+    var minCharIndexArrayStrLength = _Math_max((input.length - 1) * APPEND_LENGTH_OF_FALSE - 3, 0);
+    return minCharIndexArrayStrLength;
+}
+
+function initMinFalseTrueCharIndexArrayStrLength()
+{
+    return -1;
+}
+
+function undefinedAsString(replacement)
+{
+    if (replacement === '[][[]]')
+        replacement += '+[]';
+    return replacement;
+}
 
 export function wrapWithCall(str)
 {
@@ -53,9 +479,8 @@ export function wrapWithEval(str)
 
 wrapWithEval.forceString = true;
 
-export var STRATEGIES;
-
-export var createReindexMap;
+var falseFreeFigurator = createFigurator([''], 'false');
+var falseTrueFigurator = createFigurator(['false', 'true'], '');
 
 (function ()
 {
@@ -63,89 +488,6 @@ export var createReindexMap;
     {
         strategy.MIN_INPUT_LENGTH = minInputLength;
         return strategy;
-    }
-
-    function getDenseFigureLegendInsertions(figurator, figures)
-    {
-        var insertions = [FALSE_TRUE_DELIMITER];
-        var lastFigure = figurator(figures.length - 1);
-        var joiner = lastFigure.joiner;
-        if (joiner != null)
-            insertions.push({ joiner: joiner, separator: joiner });
-        return insertions;
-    }
-
-    function getFrequencyList(inputData)
-    {
-        var freqList = inputData.freqList;
-        if (!freqList)
-        {
-            var charMap = createEmpty();
-            _Array_prototype_forEach.call
-            (
-                inputData,
-                function (char)
-                {
-                    (
-                        charMap[char] ||
-                        (charMap[char] = { char: char, charCode: char.charCodeAt(), count: 0 })
-                    )
-                    .count++;
-                }
-            );
-            var charList = _Object_keys(charMap);
-            inputData.freqList =
-            freqList =
-            charList.map
-            (
-                function (char)
-                {
-                    var freq = charMap[char];
-                    return freq;
-                }
-            )
-            .sort
-            (
-                function (freq1, freq2)
-                {
-                    var diff = freq2.count - freq1.count || freq1.charCode - freq2.charCode;
-                    return diff;
-                }
-            );
-        }
-        return freqList;
-    }
-
-    function getSparseFigureLegendInsertions()
-    {
-        var insertions = [FALSE_FREE_DELIMITER];
-        return insertions;
-    }
-
-    // The unit path consists of the string of colon-separated unit indices.
-    function getUnitPath(unitIndices)
-    {
-        var unitPath = unitIndices.length ? unitIndices.join(':') : '0';
-        return unitPath;
-    }
-
-    function initMinFalseFreeCharIndexArrayStrLength(input)
-    {
-        var minCharIndexArrayStrLength =
-        _Math_max((input.length - 1) * APPEND_LENGTH_OF_FALSE - 3, 0);
-        return minCharIndexArrayStrLength;
-    }
-
-    function initMinFalseTrueCharIndexArrayStrLength()
-    {
-        return -1;
-    }
-
-    function undefinedAsString(replacement)
-    {
-        if (replacement === '[][[]]')
-            replacement += '+[]';
-        return replacement;
     }
 
     STRATEGIES =
@@ -515,7 +857,7 @@ export var createReindexMap;
             {
                 var input = inputData.valueOf();
                 var wrapper = inputData.wrapper;
-                var output = this.encodeAndWrapText(input, wrapper, undefined, maxLength);
+                var output = encodeAndWrapText(this, input, wrapper, undefined, maxLength);
                 return output;
             }
         ),
@@ -528,118 +870,6 @@ export var createReindexMap;
         {
             var figureLegendInsertions = getFigureLegendInsertions(figurator, figures);
             return figureLegendInsertions;
-        },
-
-        callStrategies:
-        function (input, options, strategyNames, unitPath)
-        {
-            var output;
-            var inputLength = input.length;
-            var perfLog = this.perfLog;
-            var perfInfoList = [];
-            perfInfoList.name = unitPath;
-            perfInfoList.inputLength = inputLength;
-            perfLog.push(perfInfoList);
-            var inputData = _Object(input);
-            _Object_keys(options).forEach
-            (
-                function (optName)
-                {
-                    inputData[optName] = options[optName];
-                }
-            );
-            var usedPerfInfo;
-            strategyNames.forEach
-            (
-                function (strategyName)
-                {
-                    var strategy = STRATEGIES[strategyName];
-                    var perfInfo = { strategyName: strategyName };
-                    var perfStatus;
-                    if (inputLength < strategy.MIN_INPUT_LENGTH)
-                        perfStatus = 'skipped';
-                    else
-                    {
-                        this.perfLog = perfInfo.perfLog = [];
-                        var before = new _Date();
-                        var maxLength = output != null ? output.length : NaN;
-                        var newOutput = strategy.call(this, inputData, maxLength);
-                        var time = new _Date() - before;
-                        this.perfLog = perfLog;
-                        perfInfo.time = time;
-                        if (newOutput != null)
-                        {
-                            output = newOutput;
-                            if (usedPerfInfo)
-                                usedPerfInfo.status = 'superseded';
-                            usedPerfInfo = perfInfo;
-                            perfInfo.outputLength = newOutput.length;
-                            perfStatus = 'used';
-                        }
-                        else
-                            perfStatus = 'incomplete';
-                    }
-                    perfInfo.status = perfStatus;
-                    perfInfoList.push(perfInfo);
-                },
-                this
-            );
-            return output;
-        },
-
-        createCharCodesEncoding:
-        function (charCodeArrayStr, long, radix)
-        {
-            var output;
-            var fromCharCode = this.findDefinition(FROM_CHAR_CODE);
-            if (radix)
-            {
-                output =
-                this.createLongCharCodesOutput
-                (charCodeArrayStr, fromCharCode, 'parseInt(undefined,' + radix + ')');
-            }
-            else
-            {
-                if (long)
-                {
-                    output =
-                    this.createLongCharCodesOutput(charCodeArrayStr, fromCharCode, 'undefined');
-                }
-                else
-                {
-                    var returnString = this.findDefinition(OPTIMAL_RETURN_STRING);
-                    var str = returnString + '.' + fromCharCode + '(';
-                    output =
-                    this.resolveConstant('Function').replacement +
-                    '(' +
-                    this.replaceString(str, { optimize: true }) +
-                    '+' +
-                    charCodeArrayStr +
-                    '+' +
-                    this.resolveCharacter(')').replacement +
-                    ')()';
-                }
-            }
-            return output;
-        },
-
-        createCharKeyArrayString:
-        function (input, charMap, insertions, substitutions, forceString, maxLength)
-        {
-            var charKeyArray =
-            _Array_prototype_map.call
-            (
-                input,
-                function (char)
-                {
-                    var charKey = charMap[char];
-                    return charKey;
-                }
-            );
-            var charKeyArrayStr =
-            this.replaceStringArray
-            (charKeyArray, insertions, substitutions, forceString, maxLength);
-            return charKeyArrayStr;
         },
 
         createDictEncoding:
@@ -657,48 +887,8 @@ export var createReindexMap;
             else
                 mapper = '"".charAt.bind';
             var output =
-            this.createJSFuckArrayMapping(charIndexArrayStr, mapper, legend) + '[' +
+            createJSFuckArrayMapping(this, charIndexArrayStr, mapper, legend) + '[' +
             this.replaceString('join') + ']([])';
-            if (!(output.length > maxLength))
-                return output;
-        },
-
-        createJSFuckArrayMapping:
-        function (arrayStr, mapper, legend)
-        {
-            var result =
-            arrayStr + '[' + this.replaceString('map', { optimize: true }) + '](' +
-            this.replaceExpr(mapper, true) + '(' + legend + '))';
-            return result;
-        },
-
-        createLongCharCodesOutput:
-        function (charCodeArrayStr, fromCharCode, arg)
-        {
-            var formatter = this.findDefinition(FROM_CHAR_CODE_CALLBACK_FORMATTER);
-            var formatterExpr = formatter(fromCharCode, arg);
-            var output =
-            charCodeArrayStr + '[' + this.replaceString('map', { optimize: true }) + '](' +
-            this.replaceExpr('Function("return ' + formatterExpr + '")()', true) + ')[' +
-            this.replaceString('join') + ']([])';
-            return output;
-        },
-
-        encodeAndWrapText:
-        function (input, wrapper, unitPath, maxLength)
-        {
-            var output;
-            if (!wrapper || input)
-            {
-                var screwMode = !wrapper || wrapper.forceString ? SCREW_AS_STRING : SCREW_NORMAL;
-                output = this.encodeText(input, screwMode, unitPath, maxLength);
-                if (output == null)
-                    return;
-            }
-            else
-                output = '';
-            if (wrapper)
-                output = wrapper.call(this, output);
             if (!(output.length > maxLength))
                 return output;
         },
@@ -720,91 +910,19 @@ export var createReindexMap;
             var charCodeArrayStr = this.replaceFalseFreeArray(charCodeArray, maxLength);
             if (charCodeArrayStr)
             {
-                var output = this.createCharCodesEncoding(charCodeArrayStr, long, radix);
+                var output = createCharCodesEncoding(this, charCodeArrayStr, long, radix);
                 if (!(output.length > maxLength))
                     return output;
             }
-        },
-
-        encodeByDblDict:
-        function
-        (
-            initMinCharIndexArrayStrLength,
-            figurator,
-            getFigureLegendInsertions,
-            keyFigureArrayInsertions,
-            inputData,
-            maxLength
-        )
-        {
-            var input = inputData.valueOf();
-            var freqList = getFrequencyList(inputData);
-            var charMap = createEmpty();
-            var minCharIndexArrayStrLength = initMinCharIndexArrayStrLength(input);
-            var figures =
-            freqList.map
-            (
-                function (freq, index)
-                {
-                    var figure = figurator(index);
-                    charMap[freq.char] = figure;
-                    minCharIndexArrayStrLength += freq.count * figure.sortLength;
-                    return figure;
-                }
-            );
-            var dictChars =
-            freqList.map
-            (
-                function (freq)
-                {
-                    return freq.char;
-                }
-            );
-            var legend = this.encodeDictLegend(dictChars, maxLength - minCharIndexArrayStrLength);
-            if (!legend)
-                return;
-            var figureLegendInsertions =
-            this.callGetFigureLegendInsertions(getFigureLegendInsertions, figurator, figures);
-            var figureMaxLength = maxLength - legend.length;
-            var figureLegend =
-            this.replaceStringArray
-            (
-                figures,
-                figureLegendInsertions,
-                null,
-                true,
-                figureMaxLength - minCharIndexArrayStrLength
-            );
-            if (!figureLegend)
-                return;
-            var keyFigureArrayStr =
-            this.createCharKeyArrayString
-            (
-                input,
-                charMap,
-                keyFigureArrayInsertions,
-                null,
-                true,
-                figureMaxLength - figureLegend.length
-            );
-            if (!keyFigureArrayStr)
-                return;
-            var formatter = this.findDefinition(MAPPER_FORMATTER);
-            var argName = 'undefined';
-            var accessor = '.indexOf(' + argName + ')';
-            var mapper = formatter(argName, accessor);
-            var charIndexArrayStr =
-            this.createJSFuckArrayMapping(keyFigureArrayStr, mapper, figureLegend);
-            var output = this.createDictEncoding(legend, charIndexArrayStr, maxLength);
-            return output;
         },
 
         encodeByDenseFigures:
         function (inputData, maxLength)
         {
             var output =
-            this.encodeByDblDict
+            encodeByDblDict
             (
+                this,
                 initMinFalseTrueCharIndexArrayStrLength,
                 falseTrueFigurator,
                 getDenseFigureLegendInsertions,
@@ -843,7 +961,7 @@ export var createReindexMap;
                     dictChars[reindex.index] = char;
                 }
             );
-            var legend = this.encodeDictLegend(dictChars, maxLength - minCharIndexArrayStrLength);
+            var legend = encodeDictLegend(this, dictChars, maxLength - minCharIndexArrayStrLength);
             if (!legend)
                 return;
             if (amendingCount)
@@ -860,8 +978,9 @@ export var createReindexMap;
                 }
             }
             var charIndexArrayStr =
-            this.createCharKeyArrayString
+            createCharKeyArrayString
             (
+                this,
                 input,
                 charMap,
                 [FALSE_FREE_DELIMITER],
@@ -880,8 +999,9 @@ export var createReindexMap;
         function (inputData, maxLength)
         {
             var output =
-            this.encodeByDblDict
+            encodeByDblDict
             (
+                this,
                 initMinFalseFreeCharIndexArrayStrLength,
                 falseFreeFigurator,
                 getSparseFigureLegendInsertions,
@@ -890,25 +1010,6 @@ export var createReindexMap;
                 maxLength
             );
             return output;
-        },
-
-        encodeDictLegend:
-        function (dictChars, maxLength)
-        {
-            if (!(maxLength < 0))
-            {
-                var input = dictChars.join('');
-                var output =
-                this.callStrategies
-                (
-                    input,
-                    { screwMode: SCREW_AS_STRING },
-                    ['byCharCodesRadix4', 'byCharCodes', 'plain'],
-                    'legend'
-                );
-                if (output && !(output.length > maxLength))
-                    return output;
-            }
         },
 
         encodeExpress:
@@ -929,39 +1030,11 @@ export var createReindexMap;
             }
         },
 
-        encodeText:
-        function (input, screwMode, unitPath, maxLength)
-        {
-            var output =
-            this.callStrategies
-            (
-                input,
-                { screwMode: screwMode },
-                [
-                    'byDenseFigures',
-                    'bySparseFigures',
-                    'byDictRadix5AmendedBy3',
-                    'byDictRadix4AmendedBy2',
-                    'byDictRadix4AmendedBy1',
-                    'byDictRadix5',
-                    'byDictRadix3AmendedBy1',
-                    'byDictRadix4',
-                    'byDict',
-                    'byCharCodesRadix4',
-                    'byCharCodes',
-                    'plain',
-                ],
-                unitPath
-            );
-            if (output != null && !(output.length > maxLength))
-                return output;
-        },
-
         exec:
         function (input, wrapper, strategyNames, perfInfo)
         {
             var perfLog = this.perfLog = [];
-            var output = this.callStrategies(input, { wrapper: wrapper }, strategyNames);
+            var output = callStrategies(this, input, { wrapper: wrapper }, strategyNames);
             if (perfInfo)
                 perfInfo.perfLog = perfLog;
             delete this.perfLog;
@@ -1206,91 +1279,5 @@ export var createReindexMap;
     };
 
     assignNoEnum(Encoder.prototype, protoSource);
-
-    var FALSE_FREE_DELIMITER = { joiner: 'false', separator: 'false' };
-
-    var FALSE_TRUE_DELIMITER = { joiner: '', separator: 'Function("return/(?=false|true)/")()' };
-
-    var REPLACERS =
-    {
-        identifier:
-        function (encoder, identifier, bondStrength, unitIndices, maxLength)
-        {
-            var unitPath = getUnitPath(unitIndices);
-            var replacement =
-            encoder.encodeAndWrapText('return ' + identifier, wrapWithCall, unitPath, maxLength);
-            return replacement;
-        },
-        string:
-        function (encoder, str, screwMode, unitIndices, maxLength)
-        {
-            var unitPath = getUnitPath(unitIndices);
-            var replacement = encoder.encodeText(str, screwMode, unitPath, maxLength);
-            return replacement;
-        },
-    };
-
-    var falseFreeFigurator = createFigurator([''], 'false');
-    var falseTrueFigurator = createFigurator(['false', 'true'], '');
-
-    createReindexMap =
-    function (count, radix, amendingCount, coerceToInt)
-    {
-        function getSortLength()
-        {
-            var length = 0;
-            _Array_prototype_forEach.call
-            (
-                str,
-                function (digit)
-                {
-                    length += digitAppendLengths[digit];
-                }
-            );
-            return length;
-        }
-
-        var index;
-        var digitAppendLengths = APPEND_LENGTH_OF_DIGITS.slice(0, radix);
-        var regExp;
-        var replacer;
-        if (amendingCount)
-        {
-            var firstDigit = radix - amendingCount;
-            var pattern = '[';
-            for (index = 0; index < amendingCount; ++index)
-            {
-                var digit = firstDigit + index;
-                digitAppendLengths[digit] = SIMPLE[AMENDINGS[index]].appendLength;
-                pattern += digit;
-            }
-            pattern += ']';
-            regExp = _RegExp(pattern, 'g');
-            replacer =
-            function (match)
-            {
-                return AMENDINGS[match - firstDigit];
-            };
-        }
-        var range = [];
-        for (index = 0; index < count; ++index)
-        {
-            var str = coerceToInt && !index ? '' : index.toString(radix);
-            var reindexStr = amendingCount ? str.replace(regExp, replacer) : str;
-            var reindex = range[index] = _Object(reindexStr);
-            reindex.sortLength = getSortLength();
-            reindex.index = index;
-        }
-        range.sort
-        (
-            function (reindex1, reindex2)
-            {
-                var result =
-                reindex1.sortLength - reindex2.sortLength || reindex1.index - reindex2.index;
-                return result;
-            }
-        );
-        return range;
-    };
 }
 )();

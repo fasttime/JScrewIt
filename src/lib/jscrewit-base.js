@@ -2,8 +2,8 @@
 
 import './optimizer';
 
-import { Encoder }                                      from './encoder-base';
-import { wrapWithCall, wrapWithEval }                   from './encoder-ext';
+import { Encoder }                                      from './encoder/encoder-base';
+import { wrapWithCall, wrapWithEval }                   from './encoder/encoder-ext';
 import { Feature, validMaskFromArrayOrStringOrFeature } from './features';
 import { _Error, _String, assignNoEnum, esToString }    from './obj-utils';
 import trimJS                                           from './trim-js';

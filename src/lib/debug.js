@@ -17,8 +17,8 @@ import
     OPTIMAL_RETURN_STRING,
 }
 from './definitions';
-import { Encoder }                              from './encoder-base';
-import { STRATEGIES, createReindexMap }         from './encoder-ext';
+import { Encoder }                              from './encoder/encoder-base';
+import { STRATEGIES, createReindexMap }         from './encoder/encoder-ext';
 import { featureFromMask, isMaskCompatible }    from './features';
 import createFigurator                          from './figurator';
 import { JScrewIt, getValidFeatureMask }        from './jscrewit-base';
