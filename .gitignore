@@ -2,7 +2,6 @@
 !.git*
 !.npmrc
 *.cpuprofile
-/*.char-map.json
 /jsdoc
 /packages/**/lib
 /packages/**/test/node-legacy

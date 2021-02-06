@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-import JScrewIt         from '../lib/jscrewit.js';
-import timeUtils        from '../tools/time-utils.js';
-import progress         from './internal/progress.js';
-import solutionBookMap  from './internal/solution-book-map.js';
-import { promises }     from 'fs';
-import { cpus }         from 'os';
-import { Worker }       from 'worker_threads';
+import JScrewIt                         from '../lib/jscrewit.js';
+import timeUtils                        from '../tools/time-utils.js';
+import progress                         from './internal/progress.js';
+import solutionBookMap, { NICKNAME }    from './internal/solution-book-map.js';
+import { promises }                     from 'fs';
+import { cpus }                         from 'os';
+import { Worker }                       from 'worker_threads';
 
 async function doAdd()
 {
@@ -167,7 +167,7 @@ async function doLevel()
     process.stdout.write(output);
     {
         const { writeFile } = promises;
-        const outputURL = new URL('../.char-index-level', import.meta.url);
+        const outputURL = new URL(`../.${NICKNAME}.char-index-level`, import.meta.url);
         await writeFile(outputURL, output);
     }
 }

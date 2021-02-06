@@ -1,15 +1,18 @@
 'use strict';
 
 const JSCREWIT_PATH         = '../..';
+const NICKNAME              = 'atai';
 const TYPE_KEY              = '__type';
 const TYPE_VALUE_SOLUTION   = 'Solution';
 
 const JScrewIt      = require(JSCREWIT_PATH);
 const SortedMap     = require('./sorted-map');
 
-const charMapRoot   = require('path').resolve(__dirname, '../../atai.char-map.json');
+const charMapRoot   = require('path').resolve(__dirname, `../../.${NICKNAME}.char-map.json`);
 const { debug } = JScrewIt;
 const solutionBookMap = module.exports = new SortedMap();
+
+module.exports.NICKNAME = NICKNAME;
 
 Object.assign
 (
