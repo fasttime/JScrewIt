@@ -17,7 +17,7 @@ import
     SIMPLE,
 }
 from '../definitions';
-import expressParse                 from '../express-parse';
+import expressParseCached           from '../express-parse-cached';
 import { featureFromMask }          from '../features';
 import
 {
@@ -536,13 +536,6 @@ var matchSimpleAt;
             return solution;
         },
 
-        expressParse:
-        function (expr)
-        {
-            var unit = expressParse(expr);
-            return unit;
-        },
-
         findDefinition:
         function (entries)
         {
@@ -585,8 +578,8 @@ var matchSimpleAt;
         replaceExpr:
         function (expr, optimize)
         {
-            var unit = this.expressParse(expr);
-            if (!unit)
+            var unit = expressParseCached(expr);
+            if (!unit || unit === true)
                 throwSyntaxError(this, 'Syntax error');
             var replacers = getReplacers(optimize);
             var replacement = this._replaceExpressUnit(unit, false, [], NaN, replacers);

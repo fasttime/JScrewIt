@@ -360,13 +360,20 @@
                     }
                 }
             );
-            it
+            describe
             (
-                '#canonicalNames works as expected',
+                '#canonicalNames',
                 function ()
                 {
-                    var feature = Feature('HTMLDOCUMENT', 'NO_IE_SRC', 'NO_V8_SRC');
-                    expect(feature.canonicalNames).toEqual(['FF_SRC', 'HTMLDOCUMENT']);
+                    it
+                    (
+                        'works as expected',
+                        function ()
+                        {
+                            var feature = Feature('HTMLDOCUMENT', 'NO_IE_SRC', 'NO_V8_SRC');
+                            expect(feature.canonicalNames).toEqual(['FF_SRC', 'HTMLDOCUMENT']);
+                        }
+                    );
                 }
             );
             describe
@@ -421,13 +428,20 @@
                     );
                 }
             );
-            it
+            describe
             (
-                '#inspect can be called with only one argument',
+                '#inspect',
                 function ()
                 {
-                    var actual = Feature.GMT.inspect(0);
-                    expect(actual).toBe('[Feature GMT]');
+                    it
+                    (
+                        'can be called with only one argument',
+                        function ()
+                        {
+                            var actual = Feature.GMT.inspect(0);
+                            expect(actual).toBe('[Feature GMT]');
+                        }
+                    );
                 }
             );
             describe

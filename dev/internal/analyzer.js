@@ -11,7 +11,6 @@
         constructor(ancestorFeatureObj = JScrewIt.Feature.DEFAULT)
         {
             this.featureObj = ancestorFeatureObj;
-            this.unitCache = new Map();
             this.staticStrCache = new Map();
             this.ancestorMask = ancestorFeatureObj.mask;
         }
@@ -43,13 +42,7 @@
             const encoder =
             this.encoder =
             createModifiedEncoder
-            (
-                this.featureObj,
-                featureQueries,
-                this.unitCache,
-                this.staticStrCache,
-                this.ancestorMask,
-            );
+            (this.featureObj, featureQueries, this.staticStrCache, this.ancestorMask);
             return encoder;
         }
 
@@ -76,23 +69,9 @@
     }
 
     function createModifiedEncoder
-    (featureObj, featureQueries, unitCache, staticStrCache, ancestorMask)
+    (featureObj, featureQueries, staticStrCache, ancestorMask)
     {
         const encoder = createEncoder(featureObj);
-        {
-            const { expressParse } = encoder;
-            encoder.expressParse =
-            function (expr)
-            {
-                let unit = unitCache.get(expr);
-                if (!unit)
-                {
-                    unit = expressParse.call(this, expr);
-                    unitCache.set(expr, unit);
-                }
-                return unit;
-            };
-        }
         {
             const maskSet = new MaskSet();
             encoder.hasFeatures =

@@ -524,6 +524,33 @@ self,
     );
     describe
     (
+        'Encoder#replaceExpr',
+        function ()
+        {
+            it.when(typeof module !== 'undefined' && global.WeakRef)
+            (
+                'works well when weak references are not supported',
+                function ()
+                {
+                    var WeakRef = global.WeakRef;
+                    global.WeakRef = undefined;
+                    try
+                    {
+                        var newJScrewIt = reloadJScrewIt();
+                        var encoder = newJScrewIt.debug.createEncoder();
+                        var replacement = encoder.replaceExpr('true');
+                        expect(replacement).toBe('!![]');
+                    }
+                    finally
+                    {
+                        global.WeakRef = WeakRef;
+                    }
+                }
+            );
+        }
+    );
+    describe
+    (
         'Encoder#replaceFalseFreeArray',
         function ()
         {
@@ -781,7 +808,17 @@ self,
             JScrewIt.debug.defineConstant(encoder, 'D', '?');
             JScrewIt.debug.defineConstant(encoder, 'E', '"\\xx"');
             JScrewIt.debug.defineConstant(encoder, 'F', '"too complex"');
+            JScrewIt.debug.defineConstant(encoder, 'G', '');
 
+            it
+            (
+                'empty definition',
+                function ()
+                {
+                    expect(debugReplacer('G')).toThrowStrictly
+                    (SyntaxError, 'Syntax error in the definition of G');
+                }
+            );
             it
             (
                 'circular reference',
@@ -1075,40 +1112,54 @@ self,
                     expect(solution.type).toBe(JScrewIt.debug.SolutionType.OBJECT);
                 }
             );
-            it
+            describe
             (
-                '#source is unknown',
+                '#source',
                 function ()
                 {
-                    var solution = new JScrewIt.debug.DynamicSolution();
-                    solution.prepend
+                    it
                     (
-                        new JScrewIt.debug.Solution
-                        (
-                            '',
-                            '[]',
-                            JScrewIt.debug.SolutionType.OBJECT
-                        )
+                        'is unknown',
+                        function ()
+                        {
+                            var solution = new JScrewIt.debug.DynamicSolution();
+                            solution.prepend
+                            (
+                                new JScrewIt.debug.Solution
+                                (
+                                    '',
+                                    '[]',
+                                    JScrewIt.debug.SolutionType.OBJECT
+                                )
+                            );
+                            solution.append
+                            (
+                                new JScrewIt.debug.Solution
+                                (
+                                    undefined,
+                                    '[]',
+                                    JScrewIt.debug.SolutionType.OBJECT
+                                )
+                            );
+                            expect(solution.source).toBeUndefined();
+                        }
                     );
-                    solution.append
-                    (
-                        new JScrewIt.debug.Solution
-                        (
-                            undefined,
-                            '[]',
-                            JScrewIt.debug.SolutionType.OBJECT
-                        )
-                    );
-                    expect(solution.source).toBeUndefined();
                 }
             );
-            it
+            describe
             (
-                '#replacement is idempotent',
+                '#replacement',
                 function ()
                 {
-                    var solution = new JScrewIt.debug.DynamicSolution();
-                    expect(solution.replacement).toBe(solution.replacement);
+                    it
+                    (
+                        'is idempotent',
+                        function ()
+                        {
+                            var solution = new JScrewIt.debug.DynamicSolution();
+                            expect(solution.replacement).toBe(solution.replacement);
+                        }
+                    );
                 }
             );
         }
