@@ -56,7 +56,7 @@ class OptimizedAnalyzer extends Analyzer
                             if (comparison === 0)
                                 knownSolution = null;
                             else
-                                knownSolution   = solution;
+                                knownSolution = solution;
                         }
                     }
                     if (!knownSolution)

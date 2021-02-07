@@ -4,6 +4,7 @@ import JScrewIt                         from '../lib/jscrewit.js';
 import timeUtils                        from '../tools/time-utils.js';
 import progress                         from './internal/progress.js';
 import solutionBookMap, { NICKNAME }    from './internal/solution-book-map.js';
+import chalk                            from 'chalk';
 import { promises }                     from 'fs';
 import { cpus }                         from 'os';
 import { Worker }                       from 'worker_threads';
@@ -21,12 +22,11 @@ async function doAdd()
                 {
                     const formattedCharacter = formatCharacter(char);
                     const bar = indicator.newBar(`Indexing ${formattedCharacter.padEnd(6)}`);
-                    const solutionBook = await runWorker(solutionBookMap, bar, char);
+                    const oldSolutionBook = solutionBookMap.get(char);
+                    const newSolutionBook = await runWorker(solutionBookMap, bar, char);
                     bar.hide();
-                    solutionBookMap.importBook(char, solutionBook);
-                    console.log('Character %s indexed', formattedCharacter);
-                    if (hasUnusedDefinitions(solutionBook, char))
-                        console.log('Not all definitions used!');
+                    solutionBookMap.importBook(char, newSolutionBook);
+                    printIndexReport(char, oldSolutionBook, newSolutionBook);
                     if (!noSave)
                         await solutionBookMap.save();
                     queue.delete(promise);
@@ -41,6 +41,21 @@ async function doAdd()
             yield queue;
     }
 
+    function findSolutionLength({ solutions }, mask)
+    {
+        let knownSolution;
+        for (const solution of solutions)
+        {
+            const comparison =
+            knownSolution ?
+            solutionBookMap.compareSolutions(solution, knownSolution) : -1;
+            if (comparison < 0 && isSolutionApplicable(solution, mask))
+                knownSolution = solution;
+        }
+        const length = knownSolution?.length;
+        return length;
+    }
+
     async function indexCharacters()
     {
         const solutionBookMap = loadSolutionBookMap(!noLoad);
@@ -53,6 +68,69 @@ async function doAdd()
                     await Promise.race(queue);
             },
         );
+    }
+
+    function isSolutionApplicable({ masks }, includingMask)
+    {
+        const { maskIncludes } = JScrewIt.debug;
+        const applicable = masks.some(includedMask => maskIncludes(includingMask, includedMask));
+        return applicable;
+    }
+
+    function printIndexReport(char, oldSolutionBook, newSolutionBook)
+    {
+        const formattedCharacter = formatCharacter(char);
+        console.log
+        (oldSolutionBook ? 'Character %s reindexed' : 'Character %s indexed', formattedCharacter);
+        if (oldSolutionBook)
+        {
+            const { createFeatureFromMask } = JScrewIt.debug;
+            for (const newSolution of newSolutionBook.solutions)
+            {
+                const newLength = newSolution.length;
+                for (const mask of newSolution.masks)
+                {
+                    const oldLength = findSolutionLength(oldSolutionBook, mask);
+                    if (newLength < oldLength)
+                    {
+                        const featureObj = createFeatureFromMask(mask);
+                        console.log
+                        (
+                            chalk.green('New solution for %s is better: %d < %d'),
+                            featureObj,
+                            newLength,
+                            oldLength,
+                        );
+                    }
+                }
+            }
+            for (const oldSolution of oldSolutionBook.solutions)
+            {
+                const oldLength = oldSolution.length;
+                for (const mask of oldSolution.masks)
+                {
+                    const newLength = findSolutionLength(newSolutionBook, mask);
+                    if (newLength === undefined)
+                    {
+                        const featureObj = createFeatureFromMask(mask);
+                        console.log(chalk.red('No solution for %s'), featureObj);
+                    }
+                    else if (newLength > oldLength)
+                    {
+                        const featureObj = createFeatureFromMask(mask);
+                        console.log
+                        (
+                            chalk.red('New solution for %s is worse: %d > %d'),
+                            featureObj,
+                            newLength,
+                            oldLength,
+                        );
+                    }
+                }
+            }
+        }
+        if (hasUnusedDefinitions(newSolutionBook, char))
+            console.log(chalk.red('Not all definitions used!'));
     }
 
     function runWorker(solutionBookMap, bar, char)
@@ -71,9 +149,9 @@ async function doAdd()
                         bar.update(progress);
                     if (missingChar != null)
                     {
-                        console.warn
+                        console.log
                         (
-                            'Character %s required by %s is not indexed',
+                            chalk.yellow('Character %s required by %s is not indexed'),
                             formatCharacter(missingChar),
                             formatCharacter(char),
                         );
