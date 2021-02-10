@@ -753,7 +753,7 @@ function getFHPaddingEntries(index)
         'B':
         [
             defineCharAtFnPos('Boolean', 9),
-            define('"".sub()[3]', CAPITAL_HTML),
+            define('"0".sub()[10]', CAPITAL_HTML),
         ],
         'C':
         [
@@ -856,6 +856,7 @@ function getFHPaddingEntries(index)
         ],
         'P':
         [
+            define('String.fromCharCode("80")'),
             define('atob("01A")[1]', ATOB),
             define('btoa("".italics())[0]', ATOB),
             define('(RP_0_S + Function("return statusbar")())[11]', BARPROP),
@@ -886,8 +887,8 @@ function getFHPaddingEntries(index)
             (
                 {
                     expr:
-                    '(Function("try{undefined.false}catch(undefined){return undefined}")() + ' +
-                    '[])[0]',
+                    '(RP_0_S + ' +
+                    'Function("try{undefined.false}catch(undefined){return undefined}")())[0]',
                     optimize: true,
                 }
             ),
