@@ -305,7 +305,7 @@ function printDefinitions(definitionSets, { indent, formatVariant, variantToMinM
             }
             console.log('%s    define%s,', indentStr, str);
         }
-        console.log('%s],', indentStr);
+        console.log('%s]', indentStr);
     }
     console.log('\n---\n');
     console.log('%d definition(s) listed.', argsList.length);

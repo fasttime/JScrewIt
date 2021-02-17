@@ -1760,11 +1760,14 @@ function getFHPaddingEntries(index)
             define(0, ARRAY_ITERATOR, CAPITAL_HTML),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT),
             define(0, ARRAY_ITERATOR, CAPITAL_HTML, NO_V8_SRC),
+            define(1, ARRAY_ITERATOR, AT, CAPITAL_HTML),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FF_SRC, FLAT),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FILL, IE_SRC),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FILL, NO_IE_SRC),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT, IE_SRC),
             define(2, ARRAY_ITERATOR, CAPITAL_HTML),
+            define(3, ARRAY_ITERATOR, AT, CAPITAL_HTML, IE_SRC),
+            define(3, ARRAY_ITERATOR, AT, CAPITAL_HTML, NO_IE_SRC),
             define(4),
             define(5),
         ]
@@ -1814,6 +1817,8 @@ function getFHPaddingEntries(index)
             define(0, NO_FF_SRC),
             define(0, NO_V8_SRC),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML),
+            define(0, ARRAY_ITERATOR, AT, ATOB),
+            define(0, ARRAY_ITERATOR, AT, CAPITAL_HTML),
             define(0, ARRAY_ITERATOR, ATOB, FILL),
             define(0, ARRAY_ITERATOR, ATOB, FLAT),
             define(0, ARRAY_ITERATOR, ATOB, NO_IE_SRC),
@@ -1837,7 +1842,13 @@ function getFHPaddingEntries(index)
     defineList
     (
         [define('f'), define('undefined')],
-        [define(0), define(1, FILL, IE_SRC), define(1, FILL, NO_IE_SRC), define(0, FLAT)]
+        [
+            define(0),
+            define(1, AT),
+            define(1, FILL, IE_SRC),
+            define(1, FILL, NO_IE_SRC),
+            define(0, FLAT),
+        ]
     );
 
     OPTIMAL_B = defineList([define('B'), define('b')], [define(0), define(1, ARRAY_ITERATOR)]);
@@ -1855,6 +1866,7 @@ function getFHPaddingEntries(index)
             define(0, ARRAY_ITERATOR, CAPITAL_HTML),
             define(1, FLAT),
             define(0, ARRAY_ITERATOR, CAPITAL_HTML, NO_V8_SRC),
+            define(1, ARRAY_ITERATOR, AT, CAPITAL_HTML),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FF_SRC, FLAT),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FILL, IE_SRC),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FILL, NO_IE_SRC),

@@ -128,7 +128,7 @@ class ProgressBar
 const stream = process.stdout;
 const bars = [];
 
-async function progress(label, fn)
+function progress(label, fn)
 {
     if (fn === undefined)
     {
@@ -173,14 +173,14 @@ async function progress(label, fn)
         indicator = new ProgressBar(label);
     try
     {
-        const result = await fn(indicator);
+        const result = fn(indicator);
         return result;
     }
     finally
     {
         if (stream.isTTY)
             deleteBars();
-        bars.splice(0, Infinity);
+        bars.length = 0;
         for (const [propertyName, value] of originalValues)
             console[propertyName] = value;
     }
