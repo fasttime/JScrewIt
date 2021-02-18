@@ -86,6 +86,8 @@ ___
 
 • **default**: [*default*](README.md#default)
 
+JScrewIt object, available in Node.js.
+
 ## Functions
 
 ### encode
@@ -107,7 +109,7 @@ Also, an out of memory condition may occur when processing very large data.
 #### Parameters:
 
 Name | Type | Description |
------- | ------ | ------ |
+:------ | :------ | :------ |
 `input` | *string* |   The string to encode.    |
 `options?` | [*EncodeOptions*](interfaces/encodeoptions.md) |   An optional object specifying encoding options.    |
 

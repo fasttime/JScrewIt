@@ -1,9 +1,5 @@
 # Interface: EncodeOptions
 
-## Hierarchy
-
-* **EncodeOptions**
-
 ## Table of contents
 
 ### Properties

@@ -4,7 +4,7 @@
 
 const { createRequire } = require('module');
 
-const MARKER_LINE = '    var __extends =  (function () {\n';
+const MARKER_LINE = '    var __extends = (function () {\n';
 
 const c8Require = createRequire(require.resolve('c8'));
 const CovLine = c8Require('v8-to-istanbul/lib/line');
