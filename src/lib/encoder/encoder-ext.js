@@ -542,7 +542,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this.encodeByCharCodes(input, undefined, 4, maxLength);
                 return output;
             },
-            31
+            25
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -563,7 +563,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this.encodeByDenseFigures(inputData, maxLength);
                 return output;
             },
-            2369
+            1888
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -619,7 +619,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this.encodeByDict(inputData, 3, 1, maxLength);
                 return output;
             },
-            182
+            153
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -655,7 +655,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this.encodeByDict(inputData, 4, 0, maxLength);
                 return output;
             },
-            178
+            160
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -684,7 +684,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this.encodeByDict(inputData, 4, 1, maxLength);
                 return output;
             },
-            229
+            218
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -715,7 +715,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this.encodeByDict(inputData, 4, 2, maxLength);
                 return output;
             },
-            305
+            279
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -784,7 +784,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this.encodeByDict(inputData, 5, 3, maxLength);
                 return output;
             },
-            646
+            602
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -805,7 +805,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this.encodeBySparseFigures(inputData, maxLength);
                 return output;
             },
-            392
+            347
         ),
 
         /* -------------------------------------------------------------------------------------- *\

@@ -73,10 +73,20 @@ module.exports =
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'CAPITAL_HTML', 'FLAT', 'NO_IE_SRC', 'STATUS'],
+        [
+            'ARRAY_ITERATOR',
+            'ARROW',
+            'AT',
+            'CAPITAL_HTML',
+            'CONSOLE',
+            'FLAT',
+            'NODECONSTRUCTOR',
+            'NO_IE_SRC',
+            'STATUS',
+        ],
         length =>
         {
-            let str = createTestStringProRadix4AntiRadix10(8);
+            let str = createTestStringProRadix4AntiRadix10(6);
             str = repeatToFit(str, length);
             return str;
         },
@@ -84,11 +94,11 @@ module.exports =
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'ATOB', 'CAPITAL_HTML', 'FLAT', 'NO_IE_SRC'],
+        ['ARRAY_ITERATOR', 'ARROW', 'AT', 'ATOB', 'CAPITAL_HTML', 'V8_SRC'],
         length =>
         {
-            const prefix = repeatToFit('012345678', 465);
-            const str = prefix + createDictTestString(2, length - prefix.length);
+            const postfix = repeatToFit('012345678', 422);
+            const str = createDictTestString(2, length - postfix.length) + postfix;
             return str;
         },
         'byDenseFigures',
@@ -101,25 +111,25 @@ module.exports =
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'CAPITAL_HTML', 'FLAT', 'V8_SRC'],
-        createDictTestString.bind(null, 88),
+        ['ARRAY_ITERATOR', 'ARROW', 'AT', 'CAPITAL_HTML', 'FF_SRC', 'FLAT'],
+        createDictTestString.bind(null, 76),
         'byDictRadix3AmendedBy1',
     ),
     data
     (
-        ['ARROW', 'CONSOLE', 'FLAT', 'NAME', 'SELF_OBJ', 'V8_SRC'],
+        ['ARRAY_ITERATOR', 'ARROW', 'AT', 'CONSOLE', 'FLAT', 'IE_SRC', 'SELF_OBJ'],
         createDictTestString.bind(null, 78),
         'byDictRadix4',
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'CAPITAL_HTML', 'FLAT', 'V8_SRC'],
+        ['ARRAY_ITERATOR', 'ARROW', 'AT', 'CAPITAL_HTML', 'CONSOLE', 'FF_SRC', 'FLAT'],
         createDictTestString.bind(null, 120),
         'byDictRadix4AmendedBy1',
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'CAPITAL_HTML', 'FLAT', 'V8_SRC'],
+        ['ARRAY_ITERATOR', 'ARROW', 'AT', 'CAPITAL_HTML', 'FF_SRC', 'FLAT'],
         createDictTestString.bind(null, 156),
         'byDictRadix4AmendedBy2',
     ),
@@ -131,13 +141,13 @@ module.exports =
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'CAPITAL_HTML', 'FLAT', 'STATUS', 'V8_SRC'],
-        createDictTestString.bind(null, 388),
+        ['ARRAY_ITERATOR', 'ARROW', 'AT', 'CAPITAL_HTML', 'FF_SRC', 'FLAT', 'STATUS'],
+        createDictTestString.bind(null, 374),
         'byDictRadix5AmendedBy3',
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'CAPITAL_HTML', 'FLAT', 'NO_IE_SRC'],
+        ['ARRAY_ITERATOR', 'ARROW', 'AT', 'CAPITAL_HTML', 'NAME', 'NO_IE_SRC'],
         createDictTestString.bind(null, 42),
         'bySparseFigures',
     ),
