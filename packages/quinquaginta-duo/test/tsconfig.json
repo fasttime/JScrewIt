@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "declaration": false,
+    "importHelpers": false,
     "module": "CommonJS",
     "outDir": "node-legacy"
   },

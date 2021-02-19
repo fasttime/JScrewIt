@@ -1,6 +1,6 @@
-import { maskNew, maskNext }    from '../../src/mask';
-import { MaskMap, MaskSet }     from '../../src/mask-index';
-import assert                   from 'assert';
+import { maskNew }          from '../../src/mask';
+import { MaskMap, MaskSet } from '../../src/mask-index';
+import assert               from 'assert';
 
 describe
 (
@@ -40,6 +40,19 @@ describe
                 );
             },
         );
+
+        it
+        (
+            'isEmpty',
+            () =>
+            {
+                const map = new MaskMap();
+                const mask = maskNew();
+                assert.strictEqual(map.isEmpty, true);
+                map.set(mask, null);
+                assert.strictEqual(map.isEmpty, false);
+            },
+        );
     },
 );
 
@@ -58,6 +71,19 @@ describe
                 set.add(mask);
                 const actualValue = set.has(mask);
                 assert.strictEqual(actualValue, true);
+            },
+        );
+
+        it
+        (
+            'isEmpty',
+            () =>
+            {
+                const set = new MaskSet();
+                const mask = maskNew();
+                assert.strictEqual(set.isEmpty, true);
+                set.add(mask);
+                assert.strictEqual(set.isEmpty, false);
             },
         );
     },

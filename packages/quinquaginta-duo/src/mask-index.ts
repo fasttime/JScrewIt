@@ -13,11 +13,21 @@ const setEntry =
     map[key] = value;
 };
 
-/** A data structure that maps masks to arbitrary values. */
-export class MaskMap<ValueType>
+export class MaskIndex<ValueType>
 {
-    private readonly _index = createIndex<ValueType>();
+    protected readonly _index = createIndex<ValueType>();
 
+    public get isEmpty(): boolean
+    {
+        for (const mask in this._index) // eslint-disable-line no-unreachable-loop
+            return false;
+        return true;
+    }
+}
+
+/** A data structure that maps masks to arbitrary values. */
+export class MaskMap<ValueType> extends MaskIndex<ValueType>
+{
     /**
      * Retrieves the value associated with a specified mask, or `undefined` if the mask has not been
      * set.
@@ -40,10 +50,8 @@ export class MaskMap<ValueType>
 }
 
 /** A data structure that stores unique masks. */
-export class MaskSet
+export class MaskSet extends MaskIndex<void>
 {
-    private readonly _index = createIndex<null>();
-
     /**
      * Adds a specified mask to the current `MaskSet` object.
      * If the mask has already been added, nothing is done.

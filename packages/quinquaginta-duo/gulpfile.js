@@ -78,13 +78,14 @@ export async function bundle()
 
     const inputOptions =
     {
+        external: ['tslib'],
         input: '.tmp-out/quinquaginta-duo.js',
         onwarn(warning)
         {
             if (warning.code !== 'THIS_IS_UNDEFINED')
                 console.error(warning.message);
         },
-        plugins: [rollupPluginCleanup({ comments: /^(?!\/ *@ts-)/ })],
+        plugins: [rollupPluginCleanup({ comments: /^(?!\/ *(?:@ts-|eslint-disable-line ))/ })],
     };
     const outputOptions =
     {

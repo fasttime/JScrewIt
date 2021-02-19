@@ -81,13 +81,14 @@ export async function bundle()
 
     const inputOptions =
     {
+        external: ['tslib'],
         input: '.tmp-out/novem.js',
         onwarn(warning)
         {
             if (warning.code !== 'THIS_IS_UNDEFINED')
                 console.error(warning.message);
         },
-        plugins: [rollupPluginCleanup({ comments: /^(?!\/ *@ts-)/ })],
+        plugins: [rollupPluginCleanup({ comments: /^(?!\/ *(?:@ts-|eslint-disable-line ))/ })],
     };
     const outputOptions =
     { banner: `// novem ${version} – ${homepage}\n`, file: 'lib/novem.js', format: 'esm' };

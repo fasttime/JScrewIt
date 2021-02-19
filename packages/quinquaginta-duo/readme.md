@@ -10,7 +10,10 @@ boolean elements that masks can handle in this implementation.
 A mask is an immutable, serializable, transparent data structure used to operate on multiple boolean
 values at once.
 Masks should only be accessed using the mask functions provided by quinquaginta-duo.
-Do not make any assumptions about the internal representation of masks, their type or truthiness.
+An exception to this rule is that a mask can be safely compared to undefined or null, because any
+valid mask is different from undefined or null.
+Apart from that, do not make any assumptions about the internal representation of masks, their type
+or truthiness.
 For performance reasons, mask functions do not check that their arguments are valid masks.
 Passing anything other than a mask as an argument to a mask function results in undefined behavior.
 

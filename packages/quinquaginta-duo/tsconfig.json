@@ -2,7 +2,9 @@
   "compilerOptions": {
     "declaration": true,
     "esModuleInterop": true,
+    "importHelpers": true,
     "module": "ES2020",
+    "moduleResolution": "node",
     "strict": true,
     "target": "ES5",
     "useDefineForClassFields": false, // Define semantics disabled for performance reasons.
