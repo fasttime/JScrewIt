@@ -1,9 +1,5 @@
 import type { Mask } from './mask';
 
-const createIndex =
-(Object.create as (...args: [null, undefined]) => unknown).bind(null, null, undefined) as
-<ValueType>() => { [KeyType in string]?: ValueType; };
-
 const keyFor = (mask: Mask): string => `_${mask as never as number}`;
 
 const setEntry =
@@ -13,10 +9,11 @@ const setEntry =
     map[key] = value;
 };
 
-export class MaskIndex<ValueType>
+class MaskIndex<ValueType>
 {
-    protected readonly _index = createIndex<ValueType>();
+    protected readonly _index = Object.create(null) as { [KeyType in string]?: ValueType; };
 
+    /* Determines whether the current collection is empty. */
     public get isEmpty(): boolean
     {
         for (const mask in this._index) // eslint-disable-line no-unreachable-loop
