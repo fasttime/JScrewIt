@@ -1,3 +1,9 @@
+<a name="2.0.0"></a>
+## 2.0.0 (2021-02-20)
+
+* TypeScript emit helpers are no longer included in the generated module but imported from
+  [tslib](https://www.npmjs.com/package/tslib).
+
 <a name="1.2.1"></a>
 ## 1.2.1 (2021-01-01)
 
