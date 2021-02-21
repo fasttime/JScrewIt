@@ -1,3 +1,10 @@
+<a name="3.1.0"></a>
+## 3.1.0 (2021-02-21)
+
+* Added property `size` to `MaskMap` and `MaskSet`.
+* Added method `has` to `MaskMap`.
+* Removed property `isEmpty` from `MaskMap` and `MaskSet`.
+
 <a name="3.0.0"></a>
 ## 3.0.0 (2021-02-20)
 
