@@ -2,23 +2,32 @@ import type { Mask } from './mask';
 
 const keyFor = (mask: Mask): string => `_${mask as never as number}`;
 
-const setEntry =
-<ValueType>(map: { [KeyType in string]?: ValueType; }, mask: Mask, value: ValueType): void =>
-{
-    const key = keyFor(mask);
-    map[key] = value;
-};
-
 class MaskIndex<ValueType>
 {
     protected readonly _index = Object.create(null) as { [KeyType in string]?: ValueType; };
+    private _size = 0;
 
-    /* Determines whether the current collection is empty. */
-    public get isEmpty(): boolean
+    /** Determines whether the current collection contains an entry for a specified mask. */
+    public has(mask: Mask): boolean
     {
-        for (const mask in this._index) // eslint-disable-line no-unreachable-loop
-            return false;
-        return true;
+        const key = keyFor(mask);
+        const returnValue = key in this._index;
+        return returnValue;
+    }
+
+    /* The number of entries in the current collection. */
+    public get size(): number
+    {
+        return this._size;
+    }
+
+    protected _setEntry(mask: Mask, value: ValueType): void
+    {
+        const key = keyFor(mask);
+        const { _index } = this;
+        if (!(key in _index))
+            ++this._size;
+        _index[key] = value;
     }
 }
 
@@ -42,7 +51,7 @@ export class MaskMap<ValueType> extends MaskIndex<ValueType>
      */
     public set(mask: Mask, value: ValueType): void
     {
-        setEntry(this._index, mask, value);
+        this._setEntry(mask, value);
     }
 }
 
@@ -55,14 +64,6 @@ export class MaskSet extends MaskIndex<void>
      */
     public add(mask: Mask): void
     {
-        setEntry(this._index, mask, null);
-    }
-
-    /** Determines whether a specified mask has been added to the current `MaskSet` object. */
-    public has(mask: Mask): boolean
-    {
-        const key = keyFor(mask);
-        const returnValue = key in this._index;
-        return returnValue;
+        this._setEntry(mask, undefined);
     }
 }

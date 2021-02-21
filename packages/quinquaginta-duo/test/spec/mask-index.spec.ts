@@ -43,14 +43,15 @@ describe
 
         it
         (
-            'isEmpty',
+            'size',
             () =>
             {
                 const map = new MaskMap();
                 const mask = maskNew();
-                assert.strictEqual(map.isEmpty, true);
-                map.set(mask, null);
-                assert.strictEqual(map.isEmpty, false);
+                assert.strictEqual(map.size, 0);
+                map.set(mask, true);
+                map.set(mask, undefined);
+                assert.strictEqual(map.size, 1);
             },
         );
     },
@@ -76,14 +77,15 @@ describe
 
         it
         (
-            'isEmpty',
+            'size',
             () =>
             {
                 const set = new MaskSet();
                 const mask = maskNew();
-                assert.strictEqual(set.isEmpty, true);
+                assert.strictEqual(set.size, 0);
                 set.add(mask);
-                assert.strictEqual(set.isEmpty, false);
+                set.add(mask);
+                assert.strictEqual(set.size, 1);
             },
         );
     },
