@@ -12,6 +12,7 @@
 - [FeatureConstructor](interfaces/featureconstructor.md)
 - [PredefinedFeature](interfaces/predefinedfeature.md)
 - [default](interfaces/default.md)
+- [encode](interfaces/encode.md)
 
 ### Type aliases
 
@@ -24,9 +25,6 @@
 
 - [Feature](README.md#feature)
 - [default](README.md#default)
-
-### Functions
-
 - [encode](README.md#encode)
 
 ## Type aliases
@@ -88,31 +86,8 @@ ___
 
 JScrewIt object, available in Node.js.
 
-## Functions
+___
 
 ### encode
 
-▸ **encode**(`input`: *string*, `options?`: [*EncodeOptions*](interfaces/encodeoptions.md)): *string*
-
-Encodes a given string into JSFuck.
-
-**`throws`** 
-
-An `Error` is thrown under the following circumstances.
- - The specified string cannot be encoded with the specified options.
- - Some unknown features were specified.
- - A combination of mutually incompatible features was specified.
- - The option `runAs` (or `wrapWith`) was specified with an invalid value.
-
-Also, an out of memory condition may occur when processing very large data.
-
-#### Parameters:
-
-Name | Type | Description |
-:------ | :------ | :------ |
-`input` | *string* |   The string to encode.    |
-`options?` | [*EncodeOptions*](interfaces/encodeoptions.md) |   An optional object specifying encoding options.    |
-
-**Returns:** *string*
-
-The encoded string.
+• **encode**: [*encode*](README.md#encode)

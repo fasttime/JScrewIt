@@ -2,12 +2,17 @@
 
 import './optimizer';
 
-import { Encoder }                                      from './encoder/encoder-base';
-import { wrapWithCall, wrapWithEval }                   from './encoder/encoder-ext';
-import { Feature, validMaskFromArrayOrStringOrFeature } from './features';
-import { _Error, _String, assignNoEnum, esToString }    from './obj-utils';
-import trimJS                                           from './trim-js';
-import { MaskMap, maskNew }                             from 'quinquaginta-duo';
+import { Encoder }                                                  from './encoder/encoder-base';
+import { wrapWithCall, wrapWithEval }                               from './encoder/encoder-ext';
+import { Feature, validMaskFromArrayOrStringOrFeature }             from './features';
+import { _Error, _String, _setTimeout, assignNoEnum, esToString }   from './obj-utils';
+import trimJS                                                       from './trim-js';
+import { MaskMap, maskNew }                                         from 'quinquaginta-duo';
+
+function cacheEncoder(encoder)
+{
+    encoderCache.set(encoder.mask, encoder);
+}
 
 function encode(input, options)
 {
@@ -56,6 +61,16 @@ function filterRunAs(input, name)
     throw new _Error('Invalid value for option ' + name);
 }
 
+function flushEncoderCache()
+{
+    timeout = undefined;
+    if (!_permanentCaching)
+    {
+        resetEncoderCache();
+        cacheEncoder(lastEncoder);
+    }
+}
+
 function getEncoder(features)
 {
     var mask = getValidFeatureMask(features);
@@ -63,20 +78,54 @@ function getEncoder(features)
     if (!encoder)
     {
         encoder = new Encoder(mask);
-        encoderCache.set(mask, encoder);
+        cacheEncoder(encoder);
+        scheduleFlush();
     }
+    lastEncoder = encoder;
     return encoder;
 }
-
-var encoderCache = new MaskMap();
-
-export var JScrewIt = assignNoEnum({ }, { Feature: Feature, encode: encode });
 
 export function getValidFeatureMask(features)
 {
     var mask = features !== undefined ? validMaskFromArrayOrStringOrFeature(features) : maskNew();
     return mask;
 }
+
+function resetEncoderCache()
+{
+    encoderCache = new MaskMap();
+}
+
+function scheduleFlush()
+{
+    if (!_permanentCaching && !timeout && encoderCache.size > 1)
+        timeout = _setTimeout(flushEncoderCache);
+}
+
+export var JScrewIt = assignNoEnum({ }, { Feature: Feature, encode: encode });
+
+var _permanentCaching = false;
+var encoderCache;
+var lastEncoder;
+var timeout;
+
+resetEncoderCache();
+
+assignNoEnum
+(
+    encode,
+    {
+        get permanentCaching()
+        {
+            return _permanentCaching;
+        },
+        set permanentCaching(value)
+        {
+            _permanentCaching = !!value;
+            scheduleFlush();
+        },
+    }
+);
 
 if (typeof self !== 'undefined')
     self.JScrewIt = JScrewIt;

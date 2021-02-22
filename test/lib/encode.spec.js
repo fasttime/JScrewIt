@@ -10,6 +10,7 @@ module,
 repeat,
 require,
 self,
+setTimeout,
 */
 
 'use strict';
@@ -90,6 +91,28 @@ self,
                 }
             );
         }
+    }
+
+    function encodeAndTestCaching()
+    {
+        var newEncoderCreated = false;
+        var prototype = JScrewIt.debug.MaskMap.prototype;
+        var set = prototype.set;
+        prototype.set =
+        function ()
+        {
+            newEncoderCreated = true;
+            set.apply(this, arguments);
+        };
+        try
+        {
+            encode.apply(null, arguments);
+        }
+        finally
+        {
+            prototype.set = set;
+        }
+        return newEncoderCreated;
     }
 
     function nestedBrackets(count)
@@ -662,6 +685,107 @@ self,
                 {
                     var fn = encode.bind(null, Symbol());
                     expect(fn).toThrowStrictly(TypeError, 'Cannot convert a symbol to a string');
+                }
+            );
+            it
+            (
+                'reuses the last used encoder',
+                function (done)
+                {
+                    encode('1');
+                    setTimeout
+                    (
+                        function ()
+                        {
+                            var newEncoderCreated = encodeAndTestCaching('2');
+                            expect(newEncoderCreated).toBeFalsy();
+                            done();
+                        }
+                    );
+                }
+            );
+            it
+            (
+                'does not reuse the last encoder',
+                function (done)
+                {
+                    encode('1', { features: 'BROWSER' });
+                    setTimeout
+                    (
+                        function ()
+                        {
+                            var newEncoderCreated =
+                            encodeAndTestCaching('2', { features: 'COMPACT' });
+                            expect(newEncoderCreated).toBeTruthy();
+                            done();
+                        }
+                    );
+                }
+            );
+            it
+            (
+                'reuses a previously used encoder',
+                function (done)
+                {
+                    encode.permanentCaching = true;
+                    encode('1', { features: 'BROWSER' });
+                    encode('2', { features: 'COMPACT' });
+                    setTimeout
+                    (
+                        function ()
+                        {
+                            var newEncoderCreated =
+                            encodeAndTestCaching('3', { features: 'BROWSER' });
+                            expect(newEncoderCreated).toBeFalsy();
+                            encode.permanentCaching = false;
+                            done();
+                        }
+                    );
+                }
+            );
+            it
+            (
+                'does not reuse a previously used encoder',
+                function (done)
+                {
+                    encode('1', { features: 'BROWSER' });
+                    encode('2', { features: 'COMPACT' });
+                    setTimeout
+                    (
+                        function ()
+                        {
+                            var newEncoderCreated =
+                            encodeAndTestCaching('3', { features: 'BROWSER' });
+                            expect(newEncoderCreated).toBeTruthy();
+                            done();
+                        }
+                    );
+                }
+            );
+        }
+    );
+    describe
+    (
+        'JScrewIt.encode.permanentCaching',
+        function ()
+        {
+            it
+            (
+                'is initially false',
+                function ()
+                {
+                    expect(encode.permanentCaching).toBe(false);
+                }
+            );
+            it
+            (
+                'is coerced to a boolean',
+                function ()
+                {
+                    encode.permanentCaching = { };
+                    expect(encode.permanentCaching).toBe(true);
+                    encode.permanentCaching = null;
+                    expect(encode.permanentCaching).toBe(false);
                 }
             );
         }

@@ -182,7 +182,7 @@ task
             input: 'src/lib/jscrewit-main.js',
             plugins:
             [
-                cleanup({ comments: [/^(?!\*\s*global\b)/], maxEmptyLines: -1 }),
+                cleanup({ comments: [/^(?!\*(?:!|\s*global\b))/], maxEmptyLines: -1 }),
                 nodeResolve(),
             ],
         };

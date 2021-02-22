@@ -1,3 +1,5 @@
+/* global setTimeout */
+
 export var _Array                           = Array;
 export var _Array_isArray                   = _Array.isArray;
 export var _Array_prototype                 = _Array.prototype;
@@ -35,6 +37,8 @@ export var _SyntaxError                     = SyntaxError;
 export var _TypeError                       = TypeError;
 
 export var _parseInt                        = parseInt;
+
+export var _setTimeout                      = setTimeout;
 
 export function assignNoEnum(target, source)
 {

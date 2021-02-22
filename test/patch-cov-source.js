@@ -4,7 +4,12 @@
 
 const { createRequire } = require('module');
 
-const MARKER_LINE = '    var __extends = (function () {\n';
+const MARKER_LINES =
+{
+    __proto__: null,
+    '    var extendStatics = function(d, b) {\n': 5,
+    '    function __extends(d, b) {\n': 6,
+};
 
 const c8Require = createRequire(require.resolve('c8'));
 const CovLine = c8Require('v8-to-istanbul/lib/line');
@@ -29,8 +34,12 @@ function (source)
         }
         else if (/\/\* c8 ignore next \*\//.test(lineStr))
             ignoreRange(index, index);
-        else if (lineStr === MARKER_LINE)
-            ignoreRange(index, index + 12);
+        else
+        {
+            const count = MARKER_LINES[lineStr];
+            if (count != null)
+                ignoreRange(index, index + count);
+        }
         lines.push(line);
         position += lineStr.length;
     }
