@@ -91,6 +91,13 @@ export function getValidFeatureMask(features)
     return mask;
 }
 
+export function isEncoderInCache(features)
+{
+    var mask = getValidFeatureMask(features);
+    var returnValue = encoderCache.has(mask);
+    return returnValue;
+}
+
 function resetEncoderCache()
 {
     encoderCache = new MaskMap();

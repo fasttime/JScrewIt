@@ -93,28 +93,6 @@ setTimeout,
         }
     }
 
-    function encodeAndTestCaching()
-    {
-        var newEncoderCreated = false;
-        var prototype = JScrewIt.debug.MaskMap.prototype;
-        var set = prototype.set;
-        prototype.set =
-        function ()
-        {
-            newEncoderCreated = true;
-            set.apply(this, arguments);
-        };
-        try
-        {
-            encode.apply(null, arguments);
-        }
-        finally
-        {
-            prototype.set = set;
-        }
-        return newEncoderCreated;
-    }
-
     function nestedBrackets(count)
     {
         var str = repeat('[', count) + repeat(']', count);
@@ -124,6 +102,7 @@ setTimeout,
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Feature = JScrewIt.Feature;
     var encode = JScrewIt.encode;
+    var isEncoderInCache = JScrewIt.debug.isEncoderInCache;
 
     describe
     (
@@ -689,7 +668,7 @@ setTimeout,
             );
             it
             (
-                'reuses the last used encoder',
+                'keeps the last used encoder in the cache',
                 function (done)
                 {
                     encode('1');
@@ -697,8 +676,8 @@ setTimeout,
                     (
                         function ()
                         {
-                            var newEncoderCreated = encodeAndTestCaching('2');
-                            expect(newEncoderCreated).toBeFalsy();
+                            var encoderInCache = isEncoderInCache();
+                            expect(encoderInCache).toBeTruthy();
                             done();
                         }
                     );
@@ -706,25 +685,7 @@ setTimeout,
             );
             it
             (
-                'does not reuse the last encoder',
-                function (done)
-                {
-                    encode('1', { features: 'BROWSER' });
-                    setTimeout
-                    (
-                        function ()
-                        {
-                            var newEncoderCreated =
-                            encodeAndTestCaching('2', { features: 'COMPACT' });
-                            expect(newEncoderCreated).toBeTruthy();
-                            done();
-                        }
-                    );
-                }
-            );
-            it
-            (
-                'reuses a previously used encoder',
+                'keeps a previously used encoder in the cache',
                 function (done)
                 {
                     encode.permanentCaching = true;
@@ -734,9 +695,8 @@ setTimeout,
                     (
                         function ()
                         {
-                            var newEncoderCreated =
-                            encodeAndTestCaching('3', { features: 'BROWSER' });
-                            expect(newEncoderCreated).toBeFalsy();
+                            var encoderInCache = isEncoderInCache('BROWSER');
+                            expect(encoderInCache).toBeTruthy();
                             encode.permanentCaching = false;
                             done();
                         }
@@ -745,7 +705,7 @@ setTimeout,
             );
             it
             (
-                'does not reuse a previously used encoder',
+                'does not keep a previously used encoder in the cache',
                 function (done)
                 {
                     encode('1', { features: 'BROWSER' });
@@ -754,9 +714,8 @@ setTimeout,
                     (
                         function ()
                         {
-                            var newEncoderCreated =
-                            encodeAndTestCaching('3', { features: 'BROWSER' });
-                            expect(newEncoderCreated).toBeTruthy();
+                            var encoderInCache = isEncoderInCache('BROWSER');
+                            expect(encoderInCache).toBeFalsy();
                             done();
                         }
                     );

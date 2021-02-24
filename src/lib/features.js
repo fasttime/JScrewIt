@@ -20,6 +20,139 @@ import
 }
 from './obj-utils';
 
+var ALL                     = createEmpty();
+var DESCRIPTION_MAP         = createEmpty();
+var ELEMENTARY              = [];
+var FEATURE_PROTOTYPE       = Feature.prototype;
+var INCLUDES_MAP            = createEmpty();
+var INCOMPATIBLE_MASK_LIST  = [];
+
+export function Feature()
+{
+    var mask = validMaskFromArguments(arguments);
+    var featureObj = this instanceof Feature ? this : _Object_create(FEATURE_PROTOTYPE);
+    initMask(featureObj, mask);
+    return featureObj;
+}
+
+function areCompatible()
+{
+    var arg0;
+    var features =
+    arguments.length === 1 && _Array_isArray(arg0 = arguments[0]) ? arg0 : arguments;
+    var compatible;
+    if (features.length > 1)
+    {
+        var mask = featureArrayLikeToMask(features);
+        compatible = isMaskCompatible(mask);
+    }
+    else
+        compatible = true;
+    return compatible;
+}
+
+function areEqual()
+{
+    var mask;
+    var equal =
+    _Array_prototype_every.call
+    (
+        arguments,
+        function (arg, index)
+        {
+            var returnValue;
+            var otherMask = validMaskFromArrayOrStringOrFeature(arg);
+            if (index)
+                returnValue = maskAreEqual(otherMask, mask);
+            else
+            {
+                mask = otherMask;
+                returnValue = true;
+            }
+            return returnValue;
+        }
+    );
+    return equal;
+}
+
+function checkLocaleNumeral(locale, number, regExp)
+{
+    var localizedNumeral = number.toLocaleString(locale);
+    var returnValue = regExp.test(localizedNumeral);
+    return returnValue;
+}
+
+function checkSelfFeature()
+{
+    // self + '' throws an error inside a web worker in Safari 8 and 9.
+    try
+    {
+        var str = self + '';
+    }
+    catch (error)
+    {
+        return false;
+    }
+    var available = this(str);
+    return available;
+}
+
+function commonOf()
+{
+    var returnValue;
+    if (arguments.length)
+    {
+        var mask;
+        _Array_prototype_forEach.call
+        (
+            arguments,
+            function (arg)
+            {
+                var otherMask = validMaskFromArrayOrStringOrFeature(arg);
+                if (mask != null)
+                    mask = maskIntersection(mask, otherMask);
+                else
+                    mask = otherMask;
+            }
+        );
+        returnValue = featureFromMask(mask);
+    }
+    else
+        returnValue = null;
+    return returnValue;
+}
+
+function descriptionFor(name)
+{
+    name = esToString(name);
+    var description = DESCRIPTION_MAP[name];
+    if (description == null)
+        throw new _Error('Unknown feature ' + _JSON_stringify(name));
+    return description;
+}
+
+function featureArrayLikeToMask(arrayLike)
+{
+    var mask = maskNew();
+    _Array_prototype_forEach.call
+    (
+        arrayLike,
+        function (feature)
+        {
+            var otherMask = maskFromStringOrFeature(feature);
+            mask = maskUnion(mask, otherMask);
+        }
+    );
+    return mask;
+}
+
+export function featureFromMask(mask)
+{
+    var featureObj = _Object_create(FEATURE_PROTOTYPE);
+    initMask(featureObj, mask);
+    return featureObj;
+}
+
 export function featuresToMask(featureObjs)
 {
     var mask = maskNew();
@@ -33,101 +166,254 @@ export function featuresToMask(featureObjs)
     return mask;
 }
 
-export var Feature;
-
-export var featureFromMask;
-export var isMaskCompatible;
-export var validMaskFromArrayOrStringOrFeature;
-
-(function ()
+function initMask(featureObj, mask)
 {
-    function areCompatible()
-    {
-        var arg0;
-        var features =
-        arguments.length === 1 && _Array_isArray(arg0 = arguments[0]) ? arg0 : arguments;
-        var compatible;
-        if (features.length > 1)
-        {
-            var mask = featureArrayLikeToMask(features);
-            compatible = isMaskCompatible(mask);
-        }
-        else
-            compatible = true;
-        return compatible;
-    }
+    _Object_defineProperty(featureObj, 'mask', { value: mask });
+}
 
-    function areEqual()
+/**
+ * Node.js custom inspection function.
+ * Set on `Feature.prototype` with name `"inspect"` for Node.js ≤ 8.6.x and with symbol
+ * `Symbol.for("nodejs.util.inspect.custom")` for Node.js ≥ 6.6.x.
+ *
+ * @function inspect
+ *
+ * @see
+ * {@link https://tiny.cc/j4wz9y|Custom inspection functions on Objects} for further information.
+ */
+function inspect(depth, opts)
+{
+    var returnValue;
+    var str = this.toString();
+    if (opts !== undefined) // opts can be undefined in Node.js 0.10.0.
+        returnValue = opts.stylize(str, 'jscrewit-feature');
+    else
+        returnValue = str;
+    return returnValue;
+}
+
+function isExcludingAttribute(attributeCache, attributeName, featureObjs)
+{
+    var returnValue = attributeCache[attributeName];
+    if (returnValue === undefined)
     {
-        var mask;
-        var equal =
-        _Array_prototype_every.call
+        attributeCache[attributeName] =
+        returnValue =
+        featureObjs.some
         (
-            arguments,
-            function (arg, index)
+            function (featureObj)
             {
-                var returnValue;
-                var otherMask = validMaskFromArrayOrStringOrFeature(arg);
-                if (index)
-                    returnValue = maskAreEqual(otherMask, mask);
-                else
-                {
-                    mask = otherMask;
-                    returnValue = true;
-                }
-                return returnValue;
+                return attributeName in featureObj.attributes;
             }
         );
-        return equal;
     }
+    return returnValue;
+}
 
-    function checkLocaleNumeral(locale, number, regExp)
+export function isMaskCompatible(mask)
+{
+    var compatible =
+    INCOMPATIBLE_MASK_LIST.every
+    (
+        function (incompatibleMask)
+        {
+            var returnValue = !maskIncludes(mask, incompatibleMask);
+            return returnValue;
+        }
+    );
+    return compatible;
+}
+
+function maskFromStringOrFeature(arg)
+{
+    var mask;
+    if (arg instanceof Feature)
+        mask = arg.mask;
+    else
     {
-        var localizedNumeral = number.toLocaleString(locale);
-        var returnValue = regExp.test(localizedNumeral);
-        return returnValue;
+        var name = esToString(arg);
+        var featureObj = ALL[name];
+        if (!featureObj)
+            throw new _Error('Unknown feature ' + _JSON_stringify(name));
+        mask = featureObj.mask;
     }
+    return mask;
+}
 
-    function checkSelfFeature()
+function validateMask(mask)
+{
+    if (!isMaskCompatible(mask))
+        throw new _Error('Incompatible features');
+}
+
+export function validMaskFromArguments(args)
+{
+    var mask = maskNew();
+    var validationNeeded = 0;
+    _Array_prototype_forEach.call
+    (
+        args,
+        function (arg)
+        {
+            var otherMask;
+            if (_Array_isArray(arg))
+            {
+                otherMask = featureArrayLikeToMask(arg);
+                validationNeeded |= arg.length > 1;
+            }
+            else
+                otherMask = maskFromStringOrFeature(arg);
+            mask = maskUnion(mask, otherMask);
+        }
+    );
+    validationNeeded |= args.length > 1;
+    if (validationNeeded)
+        validateMask(mask);
+    return mask;
+}
+
+export function validMaskFromArrayOrStringOrFeature(arg)
+{
+    var mask;
+    if (_Array_isArray(arg))
     {
-        // self + '' throws an error inside a web worker in Safari 8 and 9.
-        try
-        {
-            var str = self + '';
-        }
-        catch (error)
-        {
-            return false;
-        }
-        var available = this(str);
+        mask = featureArrayLikeToMask(arg);
+        if (arg.length > 1)
+            validateMask(mask);
+    }
+    else
+        mask = maskFromStringOrFeature(arg);
+    return mask;
+}
+
+function wrapCheck(check)
+{
+    var returnValue =
+    function ()
+    {
+        var available = !!check();
         return available;
-    }
+    };
+    return returnValue;
+}
 
-    function commonOf()
+assignNoEnum
+(
+    FEATURE_PROTOTYPE,
     {
-        var returnValue;
-        if (arguments.length)
+        get canonicalNames()
         {
-            var mask;
-            _Array_prototype_forEach.call
+            var mask = this.mask;
+            var featureNameSet = createEmpty();
+            var allIncludes = [];
+            ELEMENTARY.forEach
+            (
+                function (featureObj)
+                {
+                    var included = maskIncludes(mask, featureObj.mask);
+                    if (included)
+                    {
+                        var name = featureObj.name;
+                        featureNameSet[name] = null;
+                        var includes = INCLUDES_MAP[name];
+                        _Array_prototype_push.apply(allIncludes, includes);
+                    }
+                }
+            );
+            allIncludes.forEach
+            (
+                function (name)
+                {
+                    delete featureNameSet[name];
+                }
+            );
+            var names = _Object_keys(featureNameSet).sort();
+            return names;
+        },
+
+        elementary: false,
+
+        get elementaryNames()
+        {
+            var names = [];
+            var mask = this.mask;
+            ELEMENTARY.forEach
+            (
+                function (featureObj)
+                {
+                    var included = maskIncludes(mask, featureObj.mask);
+                    if (included)
+                        names.push(featureObj.name);
+                }
+            );
+            return names;
+        },
+
+        includes:
+        function ()
+        {
+            var mask = this.mask;
+            var included =
+            _Array_prototype_every.call
             (
                 arguments,
                 function (arg)
                 {
                     var otherMask = validMaskFromArrayOrStringOrFeature(arg);
-                    if (mask != null)
-                        mask = maskIntersection(mask, otherMask);
-                    else
-                        mask = otherMask;
+                    var returnValue = maskIncludes(mask, otherMask);
+                    return returnValue;
                 }
             );
-            returnValue = featureFromMask(mask);
-        }
-        else
-            returnValue = null;
-        return returnValue;
-    }
+            return included;
+        },
 
+        inspect: inspect,
+
+        name: undefined,
+
+        restrict:
+        function (environment, engineFeatureObjs)
+        {
+            var resultMask = maskNew();
+            var thisMask = this.mask;
+            var attributeCache = createEmpty();
+            ELEMENTARY.forEach
+            (
+                function (featureObj)
+                {
+                    var otherMask = featureObj.mask;
+                    var included = maskIncludes(thisMask, otherMask);
+                    if (included)
+                    {
+                        var attributeValue = featureObj.attributes[environment];
+                        if
+                        (
+                            attributeValue === undefined ||
+                            engineFeatureObjs !== undefined &&
+                            !isExcludingAttribute(attributeCache, attributeValue, engineFeatureObjs)
+                        )
+                            resultMask = maskUnion(resultMask, otherMask);
+                    }
+                }
+            );
+            var returnValue = featureFromMask(resultMask);
+            return returnValue;
+        },
+
+        toString:
+        function ()
+        {
+            var name = this.name;
+            if (name === undefined)
+                name = '{' + this.canonicalNames.join(', ') + '}';
+            var str = '[Feature ' + name + ']';
+            return str;
+        },
+    }
+);
+
+(function (featureInfos)
+{
     function completeExclusions()
     {
         var incompatibleMaskSet = new MaskSet();
@@ -135,7 +421,7 @@ export var validMaskFromArrayOrStringOrFeature;
         (
             function (name)
             {
-                var info = FEATURE_INFOS[name];
+                var info = featureInfos[name];
                 var excludes = info.excludes;
                 if (excludes)
                 {
@@ -149,7 +435,7 @@ export var validMaskFromArrayOrStringOrFeature;
                             var incompatibleMask = maskUnion(mask, excludeMask);
                             if (!incompatibleMaskSet.has(incompatibleMask))
                             {
-                                incompatibleMaskList.push(incompatibleMask);
+                                INCOMPATIBLE_MASK_LIST.push(incompatibleMask);
                                 incompatibleMaskSet.add(incompatibleMask);
                             }
                         }
@@ -168,7 +454,7 @@ export var validMaskFromArrayOrStringOrFeature;
         else
         {
             var description;
-            var info = FEATURE_INFOS[name];
+            var info = featureInfos[name];
             var engine = info.engine;
             if (engine == null)
                 description = info.description;
@@ -195,7 +481,7 @@ export var validMaskFromArrayOrStringOrFeature;
                 }
                 else
                     mask = maskNew();
-                var includes = includesMap[name] = info.includes || [];
+                var includes = INCLUDES_MAP[name] = info.includes || [];
                 includes.forEach
                 (
                     function (include)
@@ -232,94 +518,9 @@ export var validMaskFromArrayOrStringOrFeature;
         };
         if (elementary)
             descriptors.elementary = { value: true };
-        var featureObj = _Object_create(featurePrototype, descriptors);
+        var featureObj = _Object_create(FEATURE_PROTOTYPE, descriptors);
         initMask(featureObj, mask);
         return featureObj;
-    }
-
-    function descriptionFor(name)
-    {
-        name = esToString(name);
-        var description = DESCRIPTION_MAP[name];
-        if (description == null)
-            throw new _Error('Unknown feature ' + _JSON_stringify(name));
-        return description;
-    }
-
-    function featureArrayLikeToMask(arrayLike)
-    {
-        var mask = maskNew();
-        _Array_prototype_forEach.call
-        (
-            arrayLike,
-            function (feature)
-            {
-                var otherMask = maskFromStringOrFeature(feature);
-                mask = maskUnion(mask, otherMask);
-            }
-        );
-        return mask;
-    }
-
-    function initMask(featureObj, mask)
-    {
-        _Object_defineProperty(featureObj, 'mask', { value: mask });
-    }
-
-    /**
-     * Node.js custom inspection function.
-     * Set on `Feature.prototype` with name `"inspect"` for Node.js ≤ 8.6.x and with symbol
-     * `Symbol.for("nodejs.util.inspect.custom")` for Node.js ≥ 6.6.x.
-     *
-     * @function inspect
-     *
-     * @see
-     * {@link https://tiny.cc/j4wz9y|Custom inspection functions on Objects} for further
-     * information.
-     */
-    function inspect(depth, opts)
-    {
-        var returnValue;
-        var str = this.toString();
-        if (opts !== undefined) // opts can be undefined in Node.js 0.10.0.
-            returnValue = opts.stylize(str, 'jscrewit-feature');
-        else
-            returnValue = str;
-        return returnValue;
-    }
-
-    function isExcludingAttribute(attributeCache, attributeName, featureObjs)
-    {
-        var returnValue = attributeCache[attributeName];
-        if (returnValue === undefined)
-        {
-            attributeCache[attributeName] =
-            returnValue =
-            featureObjs.some
-            (
-                function (featureObj)
-                {
-                    return attributeName in featureObj.attributes;
-                }
-            );
-        }
-        return returnValue;
-    }
-
-    function maskFromStringOrFeature(arg)
-    {
-        var mask;
-        if (arg instanceof Feature)
-            mask = arg.mask;
-        else
-        {
-            var name = esToString(arg);
-            var featureObj = ALL[name];
-            if (!featureObj)
-                throw new _Error('Unknown feature ' + _JSON_stringify(name));
-            mask = featureObj.mask;
-        }
-        return mask;
     }
 
     function registerFeature(name, description, featureObj)
@@ -330,54 +531,49 @@ export var validMaskFromArrayOrStringOrFeature;
         DESCRIPTION_MAP[name] = description;
     }
 
-    function validateMask(mask)
+    var constructorSource =
     {
-        if (!isMaskCompatible(mask))
-            throw new _Error('Incompatible features');
+        ALL:            ALL,
+        ELEMENTARY:     ELEMENTARY,
+        areCompatible:  areCompatible,
+        areEqual:       areEqual,
+        commonOf:       commonOf,
+        descriptionFor: descriptionFor,
+    };
+    assignNoEnum(Feature, constructorSource);
+
+    try
+    {
+        var inspectKey = require('util').inspect.custom;
+    }
+    catch (error)
+    { }
+    if (inspectKey)
+    {
+        _Object_defineProperty
+        (FEATURE_PROTOTYPE, inspectKey, { configurable: true, value: inspect, writable: true });
     }
 
-    function validMaskFromArguments(args)
-    {
-        var mask = maskNew();
-        var validationNeeded = 0;
-        _Array_prototype_forEach.call
-        (
-            args,
-            function (arg)
-            {
-                var otherMask;
-                if (_Array_isArray(arg))
-                {
-                    otherMask = featureArrayLikeToMask(arg);
-                    validationNeeded |= arg.length > 1;
-                }
-                else
-                    otherMask = maskFromStringOrFeature(arg);
-                mask = maskUnion(mask, otherMask);
-            }
-        );
-        validationNeeded |= args.length > 1;
-        if (validationNeeded)
-            validateMask(mask);
-        return mask;
-    }
+    var autoMask = maskNew();
+    var unionMask = maskNew();
 
-    function wrapCheck(check)
-    {
-        var returnValue =
-        function ()
+    var featureNames = _Object_keys(featureInfos);
+    featureNames.forEach(completeFeature);
+    completeExclusions();
+    ELEMENTARY.sort
+    (
+        function (feature1, feature2)
         {
-            var available = !!check();
-            return available;
-        };
-        return returnValue;
-    }
-
-    var ALL = createEmpty();
-    var DESCRIPTION_MAP = createEmpty();
-    var ELEMENTARY = [];
-
-    var FEATURE_INFOS =
+            var returnValue = feature1.name < feature2.name ? -1 : 1;
+            return returnValue;
+        }
+    );
+    _Object_freeze(ELEMENTARY);
+    var autoFeatureObj = createFeature('AUTO', autoMask);
+    registerFeature('AUTO', 'All features available in the current engine.', autoFeatureObj);
+    _Object_freeze(ALL);
+})
+(
     {
         ANY_DOCUMENT:
         {
@@ -1834,213 +2030,5 @@ export var validMaskFromArrayOrStringOrFeature;
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-    };
-
-    Feature =
-    function ()
-    {
-        var mask = validMaskFromArguments(arguments);
-        var featureObj = this instanceof Feature ? this : _Object_create(featurePrototype);
-        initMask(featureObj, mask);
-        return featureObj;
-    };
-
-    var constructorSource =
-    {
-        ALL:            ALL,
-        ELEMENTARY:     ELEMENTARY,
-        areCompatible:  areCompatible,
-        areEqual:       areEqual,
-        commonOf:       commonOf,
-        descriptionFor: descriptionFor,
-    };
-
-    assignNoEnum(Feature, constructorSource);
-
-    var featurePrototype = Feature.prototype;
-
-    var protoSource =
-    {
-        get canonicalNames()
-        {
-            var mask = this.mask;
-            var featureNameSet = createEmpty();
-            var allIncludes = [];
-            ELEMENTARY.forEach
-            (
-                function (featureObj)
-                {
-                    var included = maskIncludes(mask, featureObj.mask);
-                    if (included)
-                    {
-                        var name = featureObj.name;
-                        featureNameSet[name] = null;
-                        var includes = includesMap[name];
-                        _Array_prototype_push.apply(allIncludes, includes);
-                    }
-                }
-            );
-            allIncludes.forEach
-            (
-                function (name)
-                {
-                    delete featureNameSet[name];
-                }
-            );
-            var names = _Object_keys(featureNameSet).sort();
-            return names;
-        },
-
-        elementary: false,
-
-        get elementaryNames()
-        {
-            var names = [];
-            var mask = this.mask;
-            ELEMENTARY.forEach
-            (
-                function (featureObj)
-                {
-                    var included = maskIncludes(mask, featureObj.mask);
-                    if (included)
-                        names.push(featureObj.name);
-                }
-            );
-            return names;
-        },
-
-        includes:
-        function ()
-        {
-            var mask = this.mask;
-            var included =
-            _Array_prototype_every.call
-            (
-                arguments,
-                function (arg)
-                {
-                    var otherMask = validMaskFromArrayOrStringOrFeature(arg);
-                    var returnValue = maskIncludes(mask, otherMask);
-                    return returnValue;
-                }
-            );
-            return included;
-        },
-
-        inspect: inspect,
-
-        name: undefined,
-
-        restrict:
-        function (environment, engineFeatureObjs)
-        {
-            var resultMask = maskNew();
-            var thisMask = this.mask;
-            var attributeCache = createEmpty();
-            ELEMENTARY.forEach
-            (
-                function (featureObj)
-                {
-                    var otherMask = featureObj.mask;
-                    var included = maskIncludes(thisMask, otherMask);
-                    if (included)
-                    {
-                        var attributeValue = featureObj.attributes[environment];
-                        if
-                        (
-                            attributeValue === undefined ||
-                            engineFeatureObjs !== undefined &&
-                            !isExcludingAttribute(attributeCache, attributeValue, engineFeatureObjs)
-                        )
-                            resultMask = maskUnion(resultMask, otherMask);
-                    }
-                }
-            );
-            var returnValue = featureFromMask(resultMask);
-            return returnValue;
-        },
-
-        toString:
-        function ()
-        {
-            var name = this.name;
-            if (name === undefined)
-                name = '{' + this.canonicalNames.join(', ') + '}';
-            var str = '[Feature ' + name + ']';
-            return str;
-        },
-    };
-
-    assignNoEnum(featurePrototype, protoSource);
-    try
-    {
-        var inspectKey = require('util').inspect.custom;
     }
-    catch (error)
-    { }
-    if (inspectKey)
-    {
-        _Object_defineProperty
-        (featurePrototype, inspectKey, { configurable: true, value: inspect, writable: true });
-    }
-
-    featureFromMask =
-    function (mask)
-    {
-        var featureObj = _Object_create(featurePrototype);
-        initMask(featureObj, mask);
-        return featureObj;
-    };
-
-    isMaskCompatible =
-    function (mask)
-    {
-        var compatible =
-        incompatibleMaskList.every
-        (
-            function (incompatibleMask)
-            {
-                var returnValue = !maskIncludes(mask, incompatibleMask);
-                return returnValue;
-            }
-        );
-        return compatible;
-    };
-
-    validMaskFromArrayOrStringOrFeature =
-    function (arg)
-    {
-        var mask;
-        if (_Array_isArray(arg))
-        {
-            mask = featureArrayLikeToMask(arg);
-            if (arg.length > 1)
-                validateMask(mask);
-        }
-        else
-            mask = maskFromStringOrFeature(arg);
-        return mask;
-    };
-
-    var autoMask = maskNew();
-    var includesMap = createEmpty();
-    var incompatibleMaskList = [];
-    var unionMask = maskNew();
-
-    var featureNames = _Object_keys(FEATURE_INFOS);
-    featureNames.forEach(completeFeature);
-    completeExclusions();
-    ELEMENTARY.sort
-    (
-        function (feature1, feature2)
-        {
-            var returnValue = feature1.name < feature2.name ? -1 : 1;
-            return returnValue;
-        }
-    );
-    _Object_freeze(ELEMENTARY);
-    var autoFeatureObj = createFeature('AUTO', autoMask);
-    registerFeature('AUTO', 'All features available in the current engine.', autoFeatureObj);
-    _Object_freeze(ALL);
-}
-)();
+);
