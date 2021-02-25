@@ -47,9 +47,9 @@ import replaceCharByUnescape        from './replace-char-by-unescape';
 import { SolutionType }             from 'novem';
 import { maskIncludes, maskNew }    from 'quinquaginta-duo';
 
-var STATIC_CHAR_CACHE;
-var STATIC_CONST_CACHE;
-var STATIC_ENCODER;
+var STATIC_CHAR_CACHE   = createEmpty();
+var STATIC_CONST_CACHE  = createEmpty();
+var STATIC_ENCODER      = new Encoder(maskNew());
 
 var BOND_STRENGTH_NONE      = 0;
 var BOND_STRENGTH_WEAK      = 1;
@@ -401,11 +401,45 @@ function throwSyntaxError(encoder, message)
     throw new _SyntaxError(message);
 }
 
-var matchSimpleAt;
-
+var matchSimpleAt =
 (function ()
 {
-    var protoSource =
+    try
+    {
+        var pattern = _Object_keys(SIMPLE).join('|');
+        var regExp = _RegExp(pattern, 'y');
+        // In Android Browser 4.0, the RegExp constructor ignores the unrecognized flag instead of
+        // throwing a SyntaxError.
+        if (regExp.flags)
+        {
+            var matchSimpleAt =
+            function (str, index)
+            {
+                regExp.lastIndex = index;
+                var match = str.match(regExp);
+                if (match)
+                    return match[0];
+            };
+            return matchSimpleAt;
+        }
+    }
+    catch (error)
+    { }
+}
+)() ||
+function (str, index)
+{
+    for (var simple in SIMPLE)
+    {
+        var substr = str.substr(index, simple.length);
+        if (substr === simple)
+            return simple;
+    }
+};
+
+assignNoEnum
+(
+    Encoder.prototype,
     {
         $replaceCharByAtob: replaceCharByAtob,
 
@@ -810,48 +844,7 @@ var matchSimpleAt;
             }
             return solution;
         },
-    };
-
-    assignNoEnum(Encoder.prototype, protoSource);
-
-    STATIC_CHAR_CACHE = createEmpty();
-    STATIC_CONST_CACHE = createEmpty();
-    STATIC_ENCODER = new Encoder(maskNew());
-
-    try
-    {
-        var pattern = _Object_keys(SIMPLE).join('|');
-        var regExp = _RegExp(pattern, 'y');
-        // In Android Browser 4.0, the RegExp constructor ignores the unrecognized flag instead
-        // of throwing a SyntaxError.
-        if (regExp.flags)
-        {
-            matchSimpleAt =
-            function (str, index)
-            {
-                regExp.lastIndex = index;
-                var match = str.match(regExp);
-                if (match)
-                    return match[0];
-            };
-        }
     }
-    catch (error)
-    { }
-    if (!matchSimpleAt)
-    {
-        matchSimpleAt =
-        function (str, index)
-        {
-            for (var simple in SIMPLE)
-            {
-                var substr = str.substr(index, simple.length);
-                if (substr === simple)
-                    return simple;
-            }
-        };
-    }
+);
 
-    initStaticEncoder(STATIC_ENCODER);
-}
-)();
+initStaticEncoder(STATIC_ENCODER);

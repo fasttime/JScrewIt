@@ -1,7 +1,5 @@
 /* global Audio, Intl, Node, console, document, history, require, self, sidebar, statusbar */
 
-import { MaskSet, maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
-from 'quinquaginta-duo';
 import
 {
     _Array_isArray,
@@ -19,6 +17,8 @@ import
     esToString,
 }
 from './obj-utils';
+import { MaskSet, maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
+from 'quinquaginta-duo';
 
 var ALL                     = createEmpty();
 var DESCRIPTION_MAP         = createEmpty();

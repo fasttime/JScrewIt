@@ -862,8 +862,12 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
             }
         ),
     };
+}
+)();
 
-    var protoSource =
+assignNoEnum
+(
+    Encoder.prototype,
     {
         callGetFigureLegendInsertions:
         function (getFigureLegendInsertions, figurator, figures)
@@ -1276,8 +1280,5 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
             }
             return replacement;
         },
-    };
-
-    assignNoEnum(Encoder.prototype, protoSource);
-}
-)();
+    }
+);
