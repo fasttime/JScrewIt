@@ -18,10 +18,10 @@ Also, an out of memory condition may occur when processing very large data.
 
 #### Parameters:
 
-Name | Type | Description |
-:------ | :------ | :------ |
-`input` | *string* |   The string to encode.    |
-`options?` | [*EncodeOptions*](encodeoptions.md) |   An optional object specifying encoding options.    |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `input` | *string* | The string to encode. |
+| `options?` | [*EncodeOptions*](encodeoptions.md) | An optional object specifying encoding options. |
 
 **Returns:** *string*
 
