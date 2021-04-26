@@ -293,17 +293,30 @@ function replacePrimaryExpr(encoder, unit, bondStrength, unitIndices, maxLength,
     {
         var count = terms.length;
         var maxCoreLength = maxLength - (bondStrength ? 2 : 0);
-        var minOutputType = SolutionType.UNDEFINED;
+        var canAppendString = false;
         for (var index = 0; index < count; ++index)
         {
             var term = terms[index];
             var termUnitIndices = count > 1 ? unitIndices.concat(index) : unitIndices;
             if (strAppender && isStringUnit(term))
             {
-                var firstSolution =
-                output ? new SimpleSolution(undefined, output, minOutputType) : undefined;
+                var firstSolution;
+                if (output)
+                {
+                    if (!canAppendString)
+                    {
+                        throwSyntaxError
+                        (encoder, 'Cannot append a string to a potentially non-string expression');
+                    }
+                    firstSolution =
+                    new SimpleSolution(undefined, output, SolutionType.WEAK_PREFIXED_STRING);
+                }
+                else
+                {
+                    firstSolution = undefined;
+                    canAppendString = true;
+                }
                 output = strAppender(encoder, term.value, firstSolution);
-                minOutputType = SolutionType.WEAK_PREFIXED_STRING;
             }
             else
             {
@@ -315,11 +328,7 @@ function replacePrimaryExpr(encoder, unit, bondStrength, unitIndices, maxLength,
                 if (!termOutput)
                     return;
                 if (output)
-                {
                     output += '+' + termOutput;
-                    if (minOutputType === SolutionType.UNDEFINED)
-                        minOutputType = SolutionType.WEAK_ALGEBRAIC;
-                }
                 else
                     output = termOutput;
             }

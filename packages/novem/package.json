@@ -39,6 +39,7 @@
     "rollup": "latest",
     "rollup-plugin-cleanup": "latest",
     "ts-node": "latest",
+    "tslib": "latest",
     "typescript": "latest"
   },
   "type": "module"

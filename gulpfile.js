@@ -183,7 +183,7 @@ task
             plugins:
             [
                 cleanup({ comments: [/^(?!\*(?:!|\s*global\b))/], maxEmptyLines: -1 }),
-                nodeResolve(),
+                nodeResolve({ dedupe: ['tslib'] }),
             ],
         };
         await bundle(inputOptions, 'lib/jscrewit.js', `// JScrewIt ${version} – ${homepage}\n`);

@@ -809,6 +809,7 @@ self,
             JScrewIt.debug.defineConstant(encoder, 'E', '"\\xx"');
             JScrewIt.debug.defineConstant(encoder, 'F', '"too complex"');
             JScrewIt.debug.defineConstant(encoder, 'G', '');
+            JScrewIt.debug.defineConstant(encoder, 'H', '0 + ""');
 
             it
             (
@@ -923,6 +924,38 @@ self,
                         {
                             expect(debugReplacer('"too complex"')).toThrowStrictly
                             (SyntaxError, 'String too complex');
+                        }
+                    );
+                }
+            );
+            describe
+            (
+                'string to non-string concatenation',
+                function ()
+                {
+                    it
+                    (
+                        'in a definition',
+                        function ()
+                        {
+                            expect(debugReplacer('H')).toThrowStrictly
+                            (
+                                SyntaxError,
+                                'Cannot append a string to a potentially non-string expression ' +
+                                'in the definition of H'
+                            );
+                        }
+                    );
+                    it
+                    (
+                        'inline',
+                        function ()
+                        {
+                            expect(debugReplacer('0 + ""')).toThrowStrictly
+                            (
+                                SyntaxError,
+                                'Cannot append a string to a potentially non-string expression'
+                            );
                         }
                     );
                 }
