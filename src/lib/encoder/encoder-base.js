@@ -306,7 +306,11 @@ function replacePrimaryExpr(encoder, unit, bondStrength, unitIndices, maxLength,
                     if (!canAppendString)
                     {
                         throwSyntaxError
-                        (encoder, 'Cannot append a string to a potentially non-string expression');
+                        (
+                            encoder,
+                            'Unsupported concatenation of a string to a potentially non-string ' +
+                            'expression'
+                        );
                     }
                     firstSolution =
                     new SimpleSolution(undefined, output, SolutionType.WEAK_PREFIXED_STRING);

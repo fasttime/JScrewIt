@@ -941,8 +941,8 @@ self,
                             expect(debugReplacer('H')).toThrowStrictly
                             (
                                 SyntaxError,
-                                'Cannot append a string to a potentially non-string expression ' +
-                                'in the definition of H'
+                                'Unsupported concatenation of a string to a potentially ' +
+                                'non-string expression in the definition of H'
                             );
                         }
                     );
@@ -954,7 +954,8 @@ self,
                             expect(debugReplacer('0 + ""')).toThrowStrictly
                             (
                                 SyntaxError,
-                                'Cannot append a string to a potentially non-string expression'
+                                'Unsupported concatenation of a string to a potentially ' +
+                                'non-string expression'
                             );
                         }
                     );

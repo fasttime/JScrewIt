@@ -105,8 +105,8 @@ export default function createEngineSelectionBox()
     'limited, as <code>import</code> and <code>export</code> statements don\'t work at all. ' +
     'If your module doesn\'t contain these statements, you can encode it using this option.' +
     '</ul>' +
-    '<p>In most other cases, this option is not required, even if your script contains a top ' +
-    'level <code>"use strict"</code> statement.';
+    '<p>In most other cases, this option is not required, not even to encode a script that ' +
+    'contains a top level <code>"use strict"</code> statement.';
 
     var WEB_WORKER_CAPTION = 'Support web workers';
 
