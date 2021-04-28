@@ -72,6 +72,7 @@
 - [NODE\_12](featureall.md#node_12)
 - [NODE\_13](featureall.md#node_13)
 - [NODE\_15](featureall.md#node_15)
+- [NODE\_16](featureall.md#node_16)
 - [NODE\_4](featureall.md#node_4)
 - [NODE\_5](featureall.md#node_5)
 - [NO\_FF\_SRC](featureall.md#no_ff_src)
@@ -193,7 +194,7 @@ Existence of the global functions atob and btoa.
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, and Android Browser. This feature is not available inside web workers in Safari before 10.
+Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser, and Node.js 16+. This feature is not available inside web workers in Safari before 10.
 
 ___
 
@@ -785,7 +786,15 @@ ___
 
 • **NODE\_15**: [*PredefinedFeature*](predefinedfeature.md)
 
-Features available in Node.js 15 or later.
+Features available in Node.js 15.
+
+___
+
+### NODE\_16
+
+• **NODE\_16**: [*PredefinedFeature*](predefinedfeature.md)
+
+Features available in Node.js 16 or later.
 
 ___
 

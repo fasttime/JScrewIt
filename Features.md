@@ -211,6 +211,7 @@ This table lists features available in the most common engines.
 <ul>
 <li><a href="api-doc/interfaces/featureall.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="api-doc/interfaces/featureall.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
 <li><a href="api-doc/interfaces/featureall.md#ARROW"><code>ARROW</code></a> (Node.js 4+)
+<li><a href="api-doc/interfaces/featureall.md#ATOB"><code>ATOB</code></a> (Node.js 16+)
 <li><a href="api-doc/interfaces/featureall.md#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a> (not in Node.js 0.12+)
 <li><a href="api-doc/interfaces/featureall.md#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="api-doc/interfaces/featureall.md#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a> and <a href="api-doc/interfaces/featureall.md#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="api-doc/interfaces/featureall.md#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a> (Node.js 0.12+)

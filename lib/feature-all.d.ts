@@ -61,7 +61,7 @@ export interface FeatureAll
      *
      * @remarks
      *
-     * Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, and Android Browser. This feature is not available inside web workers in Safari before 10.
+     * Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser, and Node.js 16+. This feature is not available inside web workers in Safari before 10.
      */
     ATOB: ElementaryFeature;
 
@@ -469,8 +469,11 @@ export interface FeatureAll
     /** Features available in Node.js 13 and Node.js 14. */
     NODE_13: PredefinedFeature;
 
-    /** Features available in Node.js 15 or later. */
+    /** Features available in Node.js 15. */
     NODE_15: PredefinedFeature;
+
+    /** Features available in Node.js 16 or later. */
+    NODE_16: PredefinedFeature;
 
     /** Features available in Node.js 4. */
     NODE_4: PredefinedFeature;
@@ -718,6 +721,7 @@ ElementaryFeatureName
 | 'NODE_12'
 | 'NODE_13'
 | 'NODE_15'
+| 'NODE_16'
 | 'NODE_4'
 | 'NODE_5'
 | 'SAFARI_10'

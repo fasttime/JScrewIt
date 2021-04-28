@@ -118,6 +118,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [NODE\_12](featureconstructor.md#node_12)
 - [NODE\_13](featureconstructor.md#node_13)
 - [NODE\_15](featureconstructor.md#node_15)
+- [NODE\_16](featureconstructor.md#node_16)
 - [NODE\_4](featureconstructor.md#node_4)
 - [NODE\_5](featureconstructor.md#node_5)
 - [NO\_FF\_SRC](featureconstructor.md#no_ff_src)
@@ -328,7 +329,7 @@ Existence of the global functions atob and btoa.
 
 **`remarks`** 
 
-Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, and Android Browser. This feature is not available inside web workers in Safari before 10.
+Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser, and Node.js 16+. This feature is not available inside web workers in Safari before 10.
 
 Inherited from: [FeatureAll](featureall.md).[ATOB](featureall.md#atob)
 
@@ -1034,9 +1035,19 @@ ___
 
 • **NODE\_15**: [*PredefinedFeature*](predefinedfeature.md)
 
-Features available in Node.js 15 or later.
+Features available in Node.js 15.
 
 Inherited from: [FeatureAll](featureall.md).[NODE_15](featureall.md#node_15)
+
+___
+
+### NODE\_16
+
+• **NODE\_16**: [*PredefinedFeature*](predefinedfeature.md)
+
+Features available in Node.js 16 or later.
+
+Inherited from: [FeatureAll](featureall.md).[NODE_16](featureall.md#node_16)
 
 ___
 
