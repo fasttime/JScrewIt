@@ -1991,20 +1991,53 @@ assignNoEnum
             ],
             attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
         },
-        SAFARI:
-        {
-            engine: 'the current stable version of Safari',
-            aliasFor: 'SAFARI_14_0_1',
-        },
         SAFARI_14_0_1:
         {
-            engine: 'Safari 14.0.1 or later',
+            engine: 'Safari 14.0.1 to 14.0.3',
             includes:
             [
                 'ARROW',
                 'ATOB',
                 'BARPROP',
                 'CONSOLE',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'FF_SRC',
+                'FILL',
+                'FLAT',
+                'FROM_CODE_POINT',
+                'FUNCTION_22_LF',
+                'GLOBAL_UNDEFINED',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
+                'LOCALE_NUMERALS_EXT',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'REGEXP_STRING_ITERATOR',
+                'SHORT_LOCALES',
+                'STATUS',
+                'WINDOW',
+            ],
+            attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
+        },
+        SAFARI:
+        {
+            engine: 'the current stable version of Safari',
+            aliasFor: 'SAFARI_14_1',
+        },
+        SAFARI_14_1:
+        {
+            engine: 'Safari 14.1 or later',
+            includes:
+            [
+                'ARROW',
+                'ATOB',
+                'BARPROP',
                 'ESC_HTML_QUOT_ONLY',
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',

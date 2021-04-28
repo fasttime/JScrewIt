@@ -132,6 +132,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [SAFARI\_12](featureconstructor.md#safari_12)
 - [SAFARI\_13](featureconstructor.md#safari_13)
 - [SAFARI\_14\_0\_1](featureconstructor.md#safari_14_0_1)
+- [SAFARI\_14\_1](featureconstructor.md#safari_14_1)
 - [SAFARI\_7\_0](featureconstructor.md#safari_7_0)
 - [SAFARI\_7\_1](featureconstructor.md#safari_7_1)
 - [SAFARI\_8](featureconstructor.md#safari_8)
@@ -447,7 +448,7 @@ This feature may become unavailable when certain browser extensions are active.
 
 **`remarks`** 
 
-Available in Internet Explorer 10+, Safari, and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
+Available in Internet Explorer 10+, Safari before 14.1, and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
 
 Inherited from: [FeatureAll](featureall.md).[CONSOLE](featureall.md#console)
 
@@ -1167,7 +1168,7 @@ ___
 
 Features available in the current stable version of Safari.
 
-An alias for `SAFARI_14_0_1`.
+An alias for `SAFARI_14_1`.
 
 Inherited from: [FeatureAll](featureall.md).[SAFARI](featureall.md#safari)
 
@@ -1207,9 +1208,19 @@ ___
 
 • **SAFARI\_14\_0\_1**: [*PredefinedFeature*](predefinedfeature.md)
 
-Features available in Safari 14.0.1 or later.
+Features available in Safari 14.0.1 to 14.0.3.
 
 Inherited from: [FeatureAll](featureall.md).[SAFARI_14_0_1](featureall.md#safari_14_0_1)
+
+___
+
+### SAFARI\_14\_1
+
+• **SAFARI\_14\_1**: [*PredefinedFeature*](predefinedfeature.md)
+
+Features available in Safari 14.1 or later.
+
+Inherited from: [FeatureAll](featureall.md).[SAFARI_14_1](featureall.md#safari_14_1)
 
 ___
 

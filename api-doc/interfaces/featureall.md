@@ -86,6 +86,7 @@
 - [SAFARI\_12](featureall.md#safari_12)
 - [SAFARI\_13](featureall.md#safari_13)
 - [SAFARI\_14\_0\_1](featureall.md#safari_14_0_1)
+- [SAFARI\_14\_1](featureall.md#safari_14_1)
 - [SAFARI\_7\_0](featureall.md#safari_7_0)
 - [SAFARI\_7\_1](featureall.md#safari_7_1)
 - [SAFARI\_8](featureall.md#safari_8)
@@ -294,7 +295,7 @@ This feature may become unavailable when certain browser extensions are active.
 
 **`remarks`** 
 
-Available in Internet Explorer 10+, Safari, and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
+Available in Internet Explorer 10+, Safari before 14.1, and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
 
 ___
 
@@ -898,7 +899,7 @@ ___
 
 Features available in the current stable version of Safari.
 
-An alias for `SAFARI_14_0_1`.
+An alias for `SAFARI_14_1`.
 
 ___
 
@@ -930,7 +931,15 @@ ___
 
 • **SAFARI\_14\_0\_1**: [*PredefinedFeature*](predefinedfeature.md)
 
-Features available in Safari 14.0.1 or later.
+Features available in Safari 14.0.1 to 14.0.3.
+
+___
+
+### SAFARI\_14\_1
+
+• **SAFARI\_14\_1**: [*PredefinedFeature*](predefinedfeature.md)
+
+Features available in Safari 14.1 or later.
 
 ___
 

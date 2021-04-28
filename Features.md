@@ -134,7 +134,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/featureall.md#ARROW"><code>ARROW</code></a> (Safari 10+)
 <li><a href="api-doc/interfaces/featureall.md#ATOB"><code>ATOB</code></a>
 <li><a href="api-doc/interfaces/featureall.md#BARPROP"><code>BARPROP</code></a>
-<li><a href="api-doc/interfaces/featureall.md#CONSOLE"><code>CONSOLE</code></a>
+<li><a href="api-doc/interfaces/featureall.md#CONSOLE"><code>CONSOLE</code></a> (not in Safari 14.1+)
 <li><a href="api-doc/interfaces/featureall.md#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="api-doc/interfaces/featureall.md#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
 <li><a href="api-doc/interfaces/featureall.md#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="api-doc/interfaces/featureall.md#ESC_REGEXP_LF"><code>ESC_REGEXP_LF</code></a>

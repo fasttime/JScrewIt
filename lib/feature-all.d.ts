@@ -134,7 +134,7 @@ export interface FeatureAll
      *
      * @remarks
      *
-     * Available in Internet Explorer 10+, Safari, and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
+     * Available in Internet Explorer 10+, Safari before 14.1, and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
      */
     CONSOLE: ElementaryFeature;
 
@@ -548,7 +548,7 @@ export interface FeatureAll
     /**
      * Features available in the current stable version of Safari.
      *
-     * An alias for `SAFARI_14_0_1`.
+     * An alias for `SAFARI_14_1`.
      */
     SAFARI: PredefinedFeature;
 
@@ -561,8 +561,11 @@ export interface FeatureAll
     /** Features available in Safari 13 and Safari 14.0.0. */
     SAFARI_13: PredefinedFeature;
 
-    /** Features available in Safari 14.0.1 or later. */
+    /** Features available in Safari 14.0.1 to 14.0.3. */
     SAFARI_14_0_1: PredefinedFeature;
+
+    /** Features available in Safari 14.1 or later. */
+    SAFARI_14_1: PredefinedFeature;
 
     /** Features available in Safari 7.0. */
     SAFARI_7_0: PredefinedFeature;
@@ -721,6 +724,7 @@ ElementaryFeatureName
 | 'SAFARI_12'
 | 'SAFARI_13'
 | 'SAFARI_14_0_1'
+| 'SAFARI_14_1'
 | 'SAFARI_7_0'
 | 'SAFARI_7_1'
 | 'SAFARI_9'

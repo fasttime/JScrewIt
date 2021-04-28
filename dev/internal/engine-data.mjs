@@ -82,6 +82,7 @@ export const getEngineEntries =
                 { description: '12+', feature: 'SAFARI_12' },
                 { description: '13+', feature: 'SAFARI_13' },
                 { description: '14.0.1+', feature: 'SAFARI_14_0_1' },
+                { description: '14.1+', feature: 'SAFARI_14_1' },
             ],
         },
         {
