@@ -25,19 +25,15 @@
     padding: .4em;
 }
 
-.frame>*:first-child
-{
-    cursor: default; /* Otherwise Internet Explorer would show an I-beam. */
-    display: inline-block;
-    font-weight: bold;
-    margin-bottom: .25em;
-}
+.frame>:first-child { cursor: default; font-weight: bold; margin-bottom: .25em; }
+
+.frame>span:first-child { display: inline-block; }
 
 :focus.focusable, :focus>.focusable { box-shadow: 0 0 2px 2px rgba(0, 127, 255, .75); }
 
 #compMenu { width: 15em; }
 
-#controls>*:not(:last-child) { margin-right: 1em; }
+#controls>:not(:last-child) { margin-right: 1em; }
 
 #outputArea { line-break: anywhere; white-space: pre; word-break: break-all; }
 

@@ -291,17 +291,26 @@ function init()
     art(compMenu, art.on('change', compHandler));
     engineSelectionBox = art(createEngineSelectionBox(), art.on('input', compHandler));
     roll = createRoll();
-    art
-    (
-        roll.container,
-        art
-        (
-            'DIV',
-            { className: 'frame' },
-            art('SPAN', 'Custom Compatibility Selection'),
-            engineSelectionBox
-        )
-    );
+    (function ()
+    {
+        var FRAME_TITLE = 'Custom Compatibility Selection';
+        var frame = document.createElement('DETAILS');
+        if ('open' in frame)
+        {
+            art
+            (
+                frame,
+                { open: true },
+                art
+                ('SUMMARY', { dir: 'rtl' }, art('SPAN', { style: { float: 'left' } }, FRAME_TITLE))
+            );
+            art.css('details.frame:not([open])>:first-child', { 'margin-bottom': 'initial' });
+        }
+        else
+            frame = art('DIV', art('SPAN', FRAME_TITLE));
+        art(roll.container, art(frame, { className: 'frame' }, engineSelectionBox));
+    }
+    )();
     art(controls.parentNode, roll);
     inputArea.selectionStart = 0x7fffffff;
     inputArea.focus();

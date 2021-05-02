@@ -63,14 +63,16 @@ Feature: Modal box
     Then the focus should never move to an overlayed element
 
   @interaction
-  Scenario: Closing by enter or esc key
+  Scenario Outline: Closing by enter or esc key
     Given a focused modal box
     And a standard keyboard
-    When the user presses one of the following keys:
-      |  key  |
+    When the user presses <key>
+    Then the modal box should close
+
+    Examples:
+      | key   |
       | enter |
       | esc   |
-    Then the modal box should close
 
   @interaction
   Scenario: Closing with the "OK" button
