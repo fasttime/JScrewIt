@@ -81,7 +81,7 @@ If a name is assigned, it will be used when the feature is converted into a stri
 
 Determines whether this feature object includes all of the specified features.
 
-#### Parameters:
+#### Parameters
 
 | Name | Type |
 | :------ | :------ |
@@ -104,7 +104,7 @@ available inside a particular environment.
 This method is useful to selectively exclude features that are not available inside a web
 worker.
 
-#### Parameters:
+#### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |

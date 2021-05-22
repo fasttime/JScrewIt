@@ -38,7 +38,7 @@ no particular order.
 
 All of the specified features need to be compatible, so that their union can be constructed.
 
-**`remarks`** 
+**`remarks`**
 
 Methods that accept parameters of this type throw an error if the specified features are not
 mutually compatible.
@@ -59,7 +59,7 @@ ___
 
 A feature object or a name or alias of a predefined feature.
 
-**`remarks`** 
+**`remarks`**
 
 Methods that accept parameters of this type throw an error if the specified value is neither a
 feature object nor a name or alias of a predefined feature.

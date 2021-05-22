@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-* [*Feature*](../README.md#feature)
+- [*Feature*](../README.md#feature)
 
   ↳ **PredefinedFeature**
 
@@ -69,7 +69,7 @@ Overrides: Feature.name
 
 Determines whether this feature object includes all of the specified features.
 
-#### Parameters:
+#### Parameters
 
 | Name | Type |
 | :------ | :------ |
@@ -94,7 +94,7 @@ available inside a particular environment.
 This method is useful to selectively exclude features that are not available inside a web
 worker.
 
-#### Parameters:
+#### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |

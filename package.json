@@ -42,7 +42,7 @@
     "test": "mocha --check-leaks --ui=ebdd test/{*,*/*}.spec.js"
   },
   "devDependencies": {
-    "@fasttime/gulp-lint": "latest",
+    "@fasttime/lint": "latest",
     "@rollup/plugin-node-resolve": "latest",
     "acorn": "latest",
     "art-js": "latest",
@@ -58,7 +58,6 @@
     "gulp-jsdoc3": "latest",
     "gulp-rename": "latest",
     "gulp-tap": "latest",
-    "gulp-typedoc": "latest",
     "gulp-uglify": "latest",
     "handlebars": "latest",
     "inquirer": "latest",

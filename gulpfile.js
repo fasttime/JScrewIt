@@ -105,11 +105,11 @@ task
 task
 (
     'lint',
-    () =>
+    async () =>
     {
-        const lint = require('@fasttime/gulp-lint');
+        const { lint } = require('@fasttime/lint');
 
-        const stream =
+        await
         lint
         (
             {
@@ -148,7 +148,7 @@ task
                     'tools/**/*.js',
                     '!test/patch-cov-source.js',
                 ],
-                plugins: 'ebdd',
+                plugins: ['ebdd'],
                 // process.exitCode is not supported in Node.js 0.10.
                 rules: { 'no-process-exit': 'off' },
             },
@@ -164,7 +164,6 @@ task
             },
             { src: 'test/acceptance/**/*.feature' },
         );
-        return stream;
     },
 );
 
@@ -300,24 +299,29 @@ task
 
 task
 (
-    'typedoc',
-    () =>
+    'make-api-doc',
+    async () =>
     {
-        const typedoc = require('gulp-typedoc');
+        const { Application, TSConfigReader } = require('typedoc');
 
-        const typedocOpts =
+        const options =
         {
             disableSources:     true,
             entryPoints:        'lib/jscrewit.d.ts',
             hideBreadcrumbs:    true,
             name:               'JScrewIt',
-            out:                'api-doc',
             plugin:             'typedoc-plugin-markdown',
             readme:             'none',
             tsconfig:           'tsconfig.json',
         };
-        const stream = src('lib', { read: false }).pipe(typedoc(typedocOpts));
-        return stream;
+        const app = new Application();
+        app.options.addReader(new TSConfigReader());
+        app.bootstrap(options);
+        const src = app.expandInputFiles(['lib']);
+        const project = app.convert(src);
+        await app.renderer.render(project, 'api-doc');
+        if (app.logger.hasErrors())
+            throw Error('API documentation could not be generated');
     },
 );
 
@@ -333,7 +337,7 @@ task
         (
             'minify:lib',
             'minify:ui',
-            series('make-feature-types', 'typedoc'),
+            series('make-feature-types', 'make-api-doc'),
             'make-feature-doc',
             'make-spec-runner',
         ),

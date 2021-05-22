@@ -6,7 +6,7 @@
 
 Encodes a given string into JSFuck.
 
-**`throws`** 
+**`throws`**
 
 An `Error` is thrown under the following circumstances.
  - The specified string cannot be encoded with the specified options.
@@ -16,7 +16,7 @@ An `Error` is thrown under the following circumstances.
 
 Also, an out of memory condition may occur when processing very large data.
 
-#### Parameters:
+#### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |

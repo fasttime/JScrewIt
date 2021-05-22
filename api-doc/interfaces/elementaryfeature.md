@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-* [*PredefinedFeature*](predefinedfeature.md)
+- [*PredefinedFeature*](predefinedfeature.md)
 
   ↳ **ElementaryFeature**
 
@@ -67,7 +67,7 @@ Overrides: [PredefinedFeature](predefinedfeature.md).[name](predefinedfeature.md
 
 Determines whether this feature object includes all of the specified features.
 
-#### Parameters:
+#### Parameters
 
 | Name | Type |
 | :------ | :------ |
@@ -92,7 +92,7 @@ available inside a particular environment.
 This method is useful to selectively exclude features that are not available inside a web
 worker.
 
-#### Parameters:
+#### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
