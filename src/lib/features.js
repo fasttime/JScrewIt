@@ -1094,13 +1094,19 @@ assignNoEnum
         {
             description:
             'The property that the string representation of Array.prototype.entries() evaluates ' +
-            'to "[object Array Iterator]".',
+            'to "[object Array Iterator]" and that Array.prototype.entries().constructor is the ' +
+            'global function Object.',
             check:
             function ()
             {
-                var available =
-                Array.prototype.entries && [].entries() + '' === '[object Array Iterator]';
-                return available;
+                if (Array.prototype.entries)
+                {
+                    var arrayIterator = [].entries();
+                    var available =
+                    arrayIterator + '' === '[object Array Iterator]' &&
+                    arrayIterator.constructor === Object;
+                    return available;
+                }
             },
             includes: ['ARRAY_ITERATOR'],
         },

@@ -849,8 +849,8 @@ function getFHPaddingEntries(index)
         'N': '"NaN"[0]',
         'O':
         [
-            define('(RP_3_WA + PLAIN_OBJECT)[11]'),
             defineCharAtFnPos('Object', 9),
+            define('(RP_3_WA + PLAIN_OBJECT)[11]'),
             define('btoa(NaN)[3]', ATOB),
             define('"".fontcolor()[2]', CAPITAL_HTML),
             define('(RP_3_WA + Intl)[11]', PLAIN_INTL),
@@ -1209,7 +1209,7 @@ function getFHPaddingEntries(index)
         [
             define('PLAIN_OBJECT.constructor'),
             define('Intl.constructor', INTL),
-            define('[].entries().constructor', ARRAY_ITERATOR),
+            define('[].entries().constructor', NO_OLD_SAFARI_ARRAY_ITERATOR),
         ],
         RegExp:
         [

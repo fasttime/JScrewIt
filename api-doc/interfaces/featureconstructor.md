@@ -1105,7 +1105,7 @@ ___
 
 • **NO\_OLD\_SAFARI\_ARRAY\_ITERATOR**: [*ElementaryFeature*](elementaryfeature.md)
 
-The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
+The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]" and that Array.prototype.entries\(\).constructor is the global function Object.
 
 **`remarks`**
 

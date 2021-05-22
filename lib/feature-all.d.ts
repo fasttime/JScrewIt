@@ -502,7 +502,7 @@ export interface FeatureAll
     NO_IE_SRC: ElementaryFeature;
 
     /**
-     * The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
+     * The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]" and that Array.prototype.entries\(\).constructor is the global function Object.
      *
      * @remarks
      *

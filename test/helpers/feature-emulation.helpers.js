@@ -196,18 +196,6 @@
         return setUp;
     }
 
-    function makeEmuFeatureEntries(str, regExp)
-    {
-        var setUp =
-        function ()
-        {
-            if (Array.prototype.entries && regExp.test([].entries()))
-                return;
-            registerObjectFactory(this, 'Array.prototype.entries', str);
-        };
-        return setUp;
-    }
-
     function makeEmuFeatureEscHtml(replacer, regExp)
     {
         var setUp =
@@ -313,7 +301,7 @@
         {
             if (String.prototype.matchAll && ''.matchAll() + '' === str)
                 return;
-            registerObjectFactory(this, 'String.prototype.matchAll', str);
+            registerObjectFactory(this, 'String.prototype.matchAll', str, Object);
         };
         return setUp;
     }
@@ -447,9 +435,9 @@
         intercept(context, NUMBER_TO_LOCALE_STRING_INTERCEPTOR, adapter);
     }
 
-    function registerObjectFactory(context, path, str)
+    function registerObjectFactory(context, path, str, constructor)
     {
-        var obj = { };
+        var obj = Object.create(constructor.prototype);
         var factory =
         function ()
         {
@@ -574,7 +562,17 @@
     {
         ANY_DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object .*Document]$/),
         ANY_WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object .*Window]$/),
-        ARRAY_ITERATOR: makeEmuFeatureEntries('[object Array Iterator]', /^\[object Array.{8,9}]$/),
+        ARRAY_ITERATOR:
+        function ()
+        {
+            if (Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries()))
+                return;
+            var constructor =
+            function ()
+            { };
+            registerObjectFactory
+            (this, 'Array.prototype.entries', '[object ArrayIterator]', constructor);
+        },
         ARROW:
         function ()
         {
@@ -1034,7 +1032,21 @@
         makeEmuFeatureNativeFunctionSource
         (NATIVE_FUNCTION_SOURCE_INFO_FF, NATIVE_FUNCTION_SOURCE_INFO_V8),
         NO_OLD_SAFARI_ARRAY_ITERATOR:
-        makeEmuFeatureEntries('[object Array Iterator]', /^\[object Array Iterator]$/),
+        function ()
+        {
+            if (Array.prototype.entries)
+            {
+                var arrayIterator = [].entries();
+                if
+                (
+                    /^\[object Array Iterator]$/.test(arrayIterator) &&
+                    arrayIterator.constructor === Object
+                )
+                    return;
+            }
+            registerObjectFactory
+            (this, 'Array.prototype.entries', '[object Array Iterator]', Object);
+        },
         NO_V8_SRC:
         makeEmuFeatureNativeFunctionSource
         (NATIVE_FUNCTION_SOURCE_INFO_FF, NATIVE_FUNCTION_SOURCE_INFO_IE),
