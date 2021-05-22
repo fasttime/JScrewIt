@@ -1209,7 +1209,7 @@ function getFHPaddingEntries(index)
         [
             define('PLAIN_OBJECT.constructor'),
             define('Intl.constructor', INTL),
-            define('[].entries.constructor', ARRAY_ITERATOR),
+            define('[].entries().constructor', ARRAY_ITERATOR),
         ],
         RegExp:
         [
