@@ -138,7 +138,7 @@ async function doAdd()
         const executor =
         (resolve, reject) =>
         {
-            const workerURL = new URL('internal/char-index-worker.js', import.meta.url);
+            const workerURL = new URL('internal/char-index-worker.mjs', import.meta.url);
             const worker = new Worker(workerURL, { workerData: { char, solutionBookMap } });
             worker.on
             (
@@ -160,11 +160,15 @@ async function doAdd()
                         resolve(solutionBook);
                 },
             );
-            worker.on('error', reject);
-            worker.on
+            worker.once('error', reject);
+            worker.once
             (
                 'exit',
-                code => reject(new Error(`Worker stopped unexpectedly with exit code ${code}`)),
+                code =>
+                {
+                    if (code)
+                        reject(new Error(`Worker stopped unexpectedly with exit code ${code}`));
+                },
             );
         };
         const promise = new Promise(executor);

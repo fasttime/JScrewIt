@@ -157,7 +157,7 @@ function createStringifyReplacer()
     }
 }
 
-function indexChar(char, updateProgress, missingCharacter)
+async function indexChar(char, updateProgress, missingCharacter)
 {
     const Analyzer = require('./optimized-analyzer');
 
@@ -168,7 +168,7 @@ function indexChar(char, updateProgress, missingCharacter)
         const { mtime } = fs.statSync(path);
         const jscrewitTimestamp = Date.parse(mtime);
         const solutionIndex = new Map();
-        const usedCharSet = fillSolutionIndex(solutionIndex, char);
+        const usedCharSet = await fillSolutionIndex(solutionIndex, char);
         const usedChars = [...usedCharSet].sort();
         const solutions = [...solutionIndex.values()];
         solutions.sort(compareSolutions);
@@ -205,7 +205,7 @@ function indexChar(char, updateProgress, missingCharacter)
         addMask(currentSolution, mask);
     }
 
-    function fillSolutionIndex(solutionIndex, char)
+    async function fillSolutionIndex(solutionIndex, char)
     {
         const analyzer = new Analyzer();
         const ignoredCharSet = new Set(char);
@@ -218,12 +218,28 @@ function indexChar(char, updateProgress, missingCharacter)
                 ignoredCharSet.add(char);
             }
         };
-        for (let encoder; encoder = analyzer.nextEncoder;)
+        const executor =
+        (resolve, reject) =>
         {
-            const output = encoder.resolveCharacter(char);
-            addSolutionToIndex(solutionIndex, output, analyzer.featureObj);
-            updateProgress(analyzer.progress);
-        }
+            try
+            {
+                const encoder = analyzer.nextEncoder;
+                if (!encoder)
+                    resolve();
+                else
+                {
+                    const output = encoder.resolveCharacter(char);
+                    addSolutionToIndex(solutionIndex, output, analyzer.featureObj);
+                    updateProgress(analyzer.progress);
+                    setImmediate(executor, resolve, reject);
+                }
+            }
+            catch (error)
+            {
+                reject(error);
+            }
+        };
+        await new Promise(executor);
         const { usedCharSet } = analyzer;
         return usedCharSet;
     }
