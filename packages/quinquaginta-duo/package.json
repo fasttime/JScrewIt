@@ -37,7 +37,7 @@
     "nyc": "latest",
     "rollup": "latest",
     "rollup-plugin-cleanup": "latest",
-    "ts-node": "latest",
+    "ts-node": "9",
     "tslib": "latest",
     "typescript": "latest"
   },
