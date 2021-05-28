@@ -379,6 +379,7 @@ function getFHPaddingEntries(index)
     var LOCALE_INFINITY                 = Feature.LOCALE_INFINITY;
     var LOCALE_NUMERALS                 = Feature.LOCALE_NUMERALS;
     var LOCALE_NUMERALS_EXT             = Feature.LOCALE_NUMERALS_EXT;
+    var LOCATION                        = Feature.LOCATION;
     var NAME                            = Feature.NAME;
     var NODECONSTRUCTOR                 = Feature.NODECONSTRUCTOR;
     var NO_FF_SRC                       = Feature.NO_FF_SRC;
@@ -837,6 +838,10 @@ function getFHPaddingEntries(index)
             define('(RP_3_WA + "".fontcolor())[11]', CAPITAL_HTML),
             define('(RP_0_S + Audio)[12]', HTMLAUDIOELEMENT),
             define('(RP_0_S + document)[11]', HTMLDOCUMENT),
+            define
+            ('Function("return toString.call(location)")()[SLICE_OR_SUBSTR]("-10")[1]', LOCATION),
+            define
+            ('(Function("return toString.call(location)")() + RP_1_WA).at("-10")', AT, LOCATION),
         ],
         'M':
         [

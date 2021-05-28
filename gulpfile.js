@@ -226,7 +226,7 @@ task
 
         const uglifyOpts =
         {
-            compress: { global_defs: { NO_DEBUG: true }, passes: 3 },
+            compress: { global_defs: { NO_DEBUG: true }, hoist_funs: true, passes: 4 },
             mangle: { properties: { regex: /^[$_]/ } },
             output: { comments: (node, comment) => comment.pos === 0 },
         };
@@ -247,7 +247,9 @@ task
         const uglify = require('gulp-uglify');
 
         const stream =
-        src('.tmp-out/ui.js').pipe(uglify({ compress: { passes: 3 } })).pipe(dest('ui'));
+        src('.tmp-out/ui.js')
+        .pipe(uglify({ compress: { hoist_funs: true, passes: 3 } }))
+        .pipe(dest('ui'));
         return stream;
     },
 );

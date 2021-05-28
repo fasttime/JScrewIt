@@ -63,6 +63,7 @@
 - [LOCALE\_INFINITY](featureall.md#locale_infinity)
 - [LOCALE\_NUMERALS](featureall.md#locale_numerals)
 - [LOCALE\_NUMERALS\_EXT](featureall.md#locale_numerals_ext)
+- [LOCATION](featureall.md#location)
 - [NAME](featureall.md#name)
 - [NODECONSTRUCTOR](featureall.md#nodeconstructor)
 - [NODE\_0\_10](featureall.md#node_0_10)
@@ -707,6 +708,18 @@ This includes all features of LOCALE_NUMERALS plus the output of the first three
 **`remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4, and Node.js 13+.
+
+___
+
+### LOCATION
+
+• **LOCATION**: [*ElementaryFeature*](elementaryfeature.md)
+
+Existence of the global object location with the property that Object.prototype.toString.call\(location\) evaluates to a string that starts with "\[object " and ends with "Location\]".
+
+**`remarks`**
+
+Available in Chrome, Edge, Firefox, Safari, Opera, and Android Browser.
 
 ___
 

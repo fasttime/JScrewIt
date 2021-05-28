@@ -1,4 +1,17 @@
-/* global Audio, Intl, Node, console, document, history, require, self, sidebar, statusbar */
+/*
+global
+Audio,
+Intl,
+Node,
+console,
+document,
+history,
+location,
+require,
+self,
+sidebar,
+statusbar,
+*/
 
 import
 {
@@ -1038,6 +1051,21 @@ assignNoEnum
             },
             includes: ['LOCALE_NUMERALS'],
         },
+        LOCATION:
+        {
+            description:
+            'Existence of the global object location with the property that ' +
+            'Object.prototype.toString.call(location) evaluates to a string that starts with ' +
+            '"[object " and ends with "Location]".',
+            check:
+            function ()
+            {
+                var available =
+                typeof location === 'object' &&
+                /^\[object .*Location]$/.test(Object.prototype.toString.call(location));
+                return available;
+            },
+        },
         NAME:
         {
             description: 'Existence of the name property for functions.',
@@ -1298,6 +1326,7 @@ assignNoEnum
                 'INTL',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_IE_SRC',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -1321,6 +1350,7 @@ assignNoEnum
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
+                'LOCATION',
                 'NAME',
                 'STATUS',
                 'V8_SRC',
@@ -1340,6 +1370,7 @@ assignNoEnum
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
+                'LOCATION',
                 'NAME',
                 'OBJECT_UNDEFINED',
                 'STATUS',
@@ -1363,6 +1394,7 @@ assignNoEnum
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'OBJECT_UNDEFINED',
                 'PLAIN_INTL',
@@ -1406,6 +1438,7 @@ assignNoEnum
                 'INTL',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'REGEXP_STRING_ITERATOR',
@@ -1454,6 +1487,7 @@ assignNoEnum
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
@@ -1499,6 +1533,7 @@ assignNoEnum
                 'INTL',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'REGEXP_STRING_ITERATOR',
@@ -1846,6 +1881,7 @@ assignNoEnum
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
+                'LOCATION',
                 'NAME',
                 'NODECONSTRUCTOR',
                 'STATUS',
@@ -1878,6 +1914,7 @@ assignNoEnum
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
+                'LOCATION',
                 'NAME',
                 'NODECONSTRUCTOR',
                 'STATUS',
@@ -1912,6 +1949,7 @@ assignNoEnum
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
+                'LOCATION',
                 'NAME',
                 'NODECONSTRUCTOR',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -1949,6 +1987,7 @@ assignNoEnum
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
@@ -1982,6 +2021,7 @@ assignNoEnum
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
@@ -2015,6 +2055,7 @@ assignNoEnum
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
@@ -2050,6 +2091,7 @@ assignNoEnum
                 'INTL',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'REGEXP_STRING_ITERATOR',
@@ -2088,6 +2130,7 @@ assignNoEnum
                 'INTL',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'REGEXP_STRING_ITERATOR',

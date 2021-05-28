@@ -434,6 +434,15 @@ export interface FeatureAll
     LOCALE_NUMERALS_EXT: ElementaryFeature;
 
     /**
+     * Existence of the global object location with the property that Object.prototype.toString.call\(location\) evaluates to a string that starts with "\[object " and ends with "Location\]".
+     *
+     * @remarks
+     *
+     * Available in Chrome, Edge, Firefox, Safari, Opera, and Android Browser.
+     */
+    LOCATION: ElementaryFeature;
+
+    /**
      * Existence of the name property for functions.
      *
      * @remarks
@@ -680,6 +689,7 @@ type ElementaryFeatureName =
 | 'LOCALE_INFINITY'
 | 'LOCALE_NUMERALS'
 | 'LOCALE_NUMERALS_EXT'
+| 'LOCATION'
 | 'NAME'
 | 'NODECONSTRUCTOR'
 | 'NO_FF_SRC'

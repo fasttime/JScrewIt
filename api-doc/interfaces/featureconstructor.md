@@ -109,6 +109,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [LOCALE\_INFINITY](featureconstructor.md#locale_infinity)
 - [LOCALE\_NUMERALS](featureconstructor.md#locale_numerals)
 - [LOCALE\_NUMERALS\_EXT](featureconstructor.md#locale_numerals_ext)
+- [LOCATION](featureconstructor.md#location)
 - [NAME](featureconstructor.md#name)
 - [NODECONSTRUCTOR](featureconstructor.md#nodeconstructor)
 - [NODE\_0\_10](featureconstructor.md#node_0_10)
@@ -940,6 +941,20 @@ This includes all features of LOCALE_NUMERALS plus the output of the first three
 Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4, and Node.js 13+.
 
 Inherited from: [FeatureAll](featureall.md).[LOCALE_NUMERALS_EXT](featureall.md#locale_numerals_ext)
+
+___
+
+### LOCATION
+
+• **LOCATION**: [*ElementaryFeature*](elementaryfeature.md)
+
+Existence of the global object location with the property that Object.prototype.toString.call\(location\) evaluates to a string that starts with "\[object " and ends with "Location\]".
+
+**`remarks`**
+
+Available in Chrome, Edge, Firefox, Safari, Opera, and Android Browser.
+
+Inherited from: [FeatureAll](featureall.md).[LOCATION](featureall.md#location)
 
 ___
 
