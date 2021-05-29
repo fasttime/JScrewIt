@@ -399,6 +399,27 @@
         return oldDescriptor;
     }
 
+    function patchGlobalToString(context)
+    {
+        registerFunctionAdapter
+        (
+            context,
+            function (body)
+            {
+                if (arguments.length !== 1)
+                    return;
+                if (typeof body === 'string')
+                {
+                    body =
+                    body.replace(/^return toString\b/, 'return Object.prototype.toString');
+                    var fn = context.ADAPTERS.Function.function;
+                    var fnObj = fn(body);
+                    return fnObj;
+                }
+            }
+        );
+    }
+
     function rebaseDigits(digits, charCode0)
     {
         var returnValue =
@@ -415,8 +436,14 @@
         return returnValue;
     }
 
-    function registerDefaultToStringAdapter(context, adapter)
+    function registerDefaultToStringAdapter(context, value, str)
     {
+        var adapter =
+        function ()
+        {
+            if (this === value)
+                return str;
+        };
         intercept(context, DEFAULT_TO_STRING_INTERCEPTOR, adapter);
     }
 
@@ -444,15 +471,7 @@
             return obj;
         };
         override(context, path, { value: factory });
-        registerDefaultToStringAdapter
-        (
-            context,
-            function ()
-            {
-                if (this === obj)
-                    return str;
-            }
-        );
+        registerDefaultToStringAdapter(context, obj, str);
     }
 
     function replaceArrowFunctions(expr)
@@ -826,29 +845,9 @@
         GLOBAL_UNDEFINED:
         function ()
         {
-            function toString()
-            {
-                return '[object Undefined]';
-            }
-
-            registerFunctionAdapter
-            (
-                this,
-                function (body)
-                {
-                    if (arguments.length !== 1)
-                        return;
-                    if (body === 'return toString')
-                    {
-                        var returnValue =
-                        function ()
-                        {
-                            return toString;
-                        };
-                        return returnValue;
-                    }
-                }
-            );
+            if (Object.prototype.toString.call() !== '[object Undefined]')
+                registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
+            patchGlobalToString(this);
         },
         GMT:
         function ()
@@ -888,19 +887,7 @@
         function ()
         {
             if (!global.Intl)
-            {
-                var Intl = { };
-                override(this, 'Intl', { value: Intl });
-                registerDefaultToStringAdapter
-                (
-                    this,
-                    function ()
-                    {
-                        if (this === Intl)
-                            return '[object Intl]';
-                    }
-                );
-            }
+                override(this, 'Intl', { value: { } });
         },
         LOCALE_INFINITY:
         function ()
@@ -1002,6 +989,19 @@
                 }
             );
         },
+        LOCATION:
+        function ()
+        {
+            var location = global.location;
+            if (!location)
+            {
+                location = { };
+                override(this, 'location', { value: location });
+            }
+            if (!/^\[object .*Location]$/.test(Object.prototype.toString.call(location)))
+                registerDefaultToStringAdapter(this, location, '[object Location]');
+            patchGlobalToString(this);
+        },
         NAME:
         function ()
         {
@@ -1053,20 +1053,21 @@
         OBJECT_UNDEFINED:
         function ()
         {
-            registerDefaultToStringAdapter
-            (
-                this,
-                function ()
-                {
-                    if (this === undefined)
-                        return '[object Undefined]';
-                }
-            );
+            var toString = Object.prototype.toString;
+            if (toString() !== '[object Undefined]')
+                registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
         },
         PLAIN_INTL:
         function ()
         {
-            override(this, 'Intl', { value: { } });
+            var Intl = global.Intl;
+            if (!Intl)
+            {
+                Intl = { };
+                override(this, 'Intl', { value: Intl });
+            }
+            if (Intl + '' !== '[object Object]')
+                registerDefaultToStringAdapter(this, Intl, '[object Object]');
         },
         REGEXP_STRING_ITERATOR: makeEmuFeatureMatchAll(),
         SELF_OBJ: makeEmuFeatureSelf('[object Object]', /^\[object /),
@@ -1100,15 +1101,8 @@
         UNDEFINED:
         function ()
         {
-            registerDefaultToStringAdapter
-            (
-                this,
-                function ()
-                {
-                    if (this === undefined)
-                        return '[object Undefined]';
-                }
-            );
+            if (Object.prototype.toString.call() !== '[object Undefined]')
+                registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
         },
         V8_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_V8),
         WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object Window]$/),
