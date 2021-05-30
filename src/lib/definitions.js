@@ -673,6 +673,7 @@ function getFHPaddingEntries(index)
         [
             define('document.nodeName[0]',ANY_DOCUMENT),
             defineCharDefault(),
+        ]
         // '$':    ,
         '%':
         [
