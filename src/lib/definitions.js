@@ -670,7 +670,11 @@ function getFHPaddingEntries(index)
         [
             define('"".fontcolor()[12]'),
         ],
-        // '#':    ,
+        '#':
+        [
+            define('document.nodeName[0]',ANY_DOCUMENT),
+            defineCharDefault(),
+        ]
         // '$':    ,
         '%':
         [
