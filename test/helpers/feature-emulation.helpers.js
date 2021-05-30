@@ -1,4 +1,4 @@
-/* global document, global, self */
+/* global global, self */
 
 'use strict';
 
@@ -169,9 +169,10 @@
         var setUp =
         function ()
         {
-            if (global.document)
+            var document = global.document;
+            if (document)
             {
-                if (regExp.test(document + ''))
+                if (regExp.test(document))
                     return;
             }
             else
@@ -184,7 +185,8 @@
                     '[object HTMLVideoElement]' : '[object HTMLUnknownElement]';
                     return elementStr;
                 };
-                override(this, 'document', { value: { createElement: createElement } });
+                document = { createElement: createElement, nodeName: '#document' };
+                override(this, 'document', { value: document });
             }
             var valueOf =
             function ()
