@@ -94,6 +94,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [FROM\_CODE\_POINT](featureconstructor.md#from_code_point)
 - [FUNCTION\_19\_LF](featureconstructor.md#function_19_lf)
 - [FUNCTION\_22\_LF](featureconstructor.md#function_22_lf)
+- [GENERIC\_ARRAY\_TO\_STRING](featureconstructor.md#generic_array_to_string)
 - [GLOBAL\_UNDEFINED](featureconstructor.md#global_undefined)
 - [GMT](featureconstructor.md#gmt)
 - [HISTORY](featureconstructor.md#history)
@@ -741,6 +742,20 @@ A string representation of dynamically generated functions where the character a
 Available in Internet Explorer, Safari 9+, Android Browser, and Node.js before 10.
 
 Inherited from: [FeatureAll](featureall.md).[FUNCTION_22_LF](featureall.md#function_22_lf)
+
+___
+
+### GENERIC\_ARRAY\_TO\_STRING
+
+• **GENERIC\_ARRAY\_TO\_STRING**: [*ElementaryFeature*](elementaryfeature.md)
+
+Ability to call Array.prototype.toString with a non-array binding.
+
+**`remarks`**
+
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+, and Node.js.
+
+Inherited from: [FeatureAll](featureall.md).[GENERIC_ARRAY_TO_STRING](featureall.md#generic_array_to_string)
 
 ___
 

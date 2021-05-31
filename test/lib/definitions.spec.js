@@ -12,6 +12,7 @@ emuIt,
 evalJSFuck,
 expect,
 getEmuFeatureNames,
+location,
 module,
 require,
 self,
@@ -495,6 +496,11 @@ sidebar,
                     this.toBe(document);
                 },
                 escape: isExpected(escape),
+                location:
+                function ()
+                {
+                    this.toBe(location);
+                },
                 self:
                 function ()
                 {

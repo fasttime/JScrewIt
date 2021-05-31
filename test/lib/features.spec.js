@@ -360,6 +360,30 @@
                     }
                 }
             );
+            it
+            (
+                'GENERIC_ARRAY_TO_STRING check returns false',
+                function ()
+                {
+                    var prototype = Array.prototype;
+                    var toString = prototype.toString;
+                    prototype.toString =
+                    function ()
+                    {
+                        throw TypeError();
+                    };
+                    try
+                    {
+                        var check = Feature.GENERIC_ARRAY_TO_STRING.check;
+                        var available = check();
+                        expect(available).toBe(false);
+                    }
+                    finally
+                    {
+                        prototype.toString = toString;
+                    }
+                }
+            );
             describe
             (
                 '#canonicalNames',

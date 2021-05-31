@@ -48,6 +48,7 @@
 - [FROM\_CODE\_POINT](featureall.md#from_code_point)
 - [FUNCTION\_19\_LF](featureall.md#function_19_lf)
 - [FUNCTION\_22\_LF](featureall.md#function_22_lf)
+- [GENERIC\_ARRAY\_TO\_STRING](featureall.md#generic_array_to_string)
 - [GLOBAL\_UNDEFINED](featureall.md#global_undefined)
 - [GMT](featureall.md#gmt)
 - [HISTORY](featureall.md#history)
@@ -538,6 +539,18 @@ A string representation of dynamically generated functions where the character a
 **`remarks`**
 
 Available in Internet Explorer, Safari 9+, Android Browser, and Node.js before 10.
+
+___
+
+### GENERIC\_ARRAY\_TO\_STRING
+
+• **GENERIC\_ARRAY\_TO\_STRING**: [*ElementaryFeature*](elementaryfeature.md)
+
+Ability to call Array.prototype.toString with a non-array binding.
+
+**`remarks`**
+
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+, and Node.js.
 
 ___
 

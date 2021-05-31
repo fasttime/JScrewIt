@@ -31,6 +31,32 @@
         return descriptor;
     }
 
+    function createToStringDescriptor(adapterList)
+    {
+        function get()
+        {
+            var returnValue = this === global ? toString : toStringNoGlobal;
+            return returnValue;
+        }
+
+        function toString()
+        {
+            var str = callAdapters(adapterList, this, arguments);
+            return str;
+        }
+
+        function toStringNoGlobal()
+        {
+            // Some old browsers set the global object instead of undefined as this.
+            var thisValue = this === global ? undefined : this;
+            var str = callAdapters(adapterList, thisValue, arguments);
+            return str;
+        }
+
+        var descriptor = { get: get };
+        return descriptor;
+    }
+
     function emuDo(emuFeatures, callback)
     {
         // In Android Browser, some objects without a prototype don't work well with arbitrary
@@ -446,7 +472,9 @@
             if (this === value)
                 return str;
         };
-        intercept(context, DEFAULT_TO_STRING_INTERCEPTOR, adapter);
+        intercept(context, OBJECT_TO_STRING_INTERCEPTOR, adapter);
+        if (isArrayToStringGeneric)
+            intercept(context, ARRAY_TO_STRING_INTERCEPTOR, adapter);
     }
 
     function registerFunctionAdapter(context, adapter)
@@ -510,36 +538,8 @@
         }
     }
 
-    var DEFAULT_TO_STRING_INTERCEPTOR =
-    {
-        path: 'Object.prototype.toString',
-        createDescriptor:
-        function (adapterList)
-        {
-            function get()
-            {
-                var returnValue = this === global ? toString : toStringNoGlobal;
-                return returnValue;
-            }
-
-            function toString()
-            {
-                var str = callAdapters(adapterList, this, arguments);
-                return str;
-            }
-
-            function toStringNoGlobal()
-            {
-                // Some old browsers set the global object instead of undefined as this.
-                var thisValue = this === global ? undefined : this;
-                var str = callAdapters(adapterList, thisValue, arguments);
-                return str;
-            }
-
-            var descriptor = { get: get };
-            return descriptor;
-        },
-    };
+    var ARRAY_TO_STRING_INTERCEPTOR =
+    { path: 'Array.prototype.toString', createDescriptor: createToStringDescriptor };
 
     var FUNCTION_INTERCEPTOR =
     {
@@ -571,6 +571,9 @@
         path: 'Number.prototype.toLocaleString',
         createDescriptor: createDefaultInterceptorDescriptor,
     };
+
+    var OBJECT_TO_STRING_INTERCEPTOR =
+    { path: 'Object.prototype.toString', createDescriptor: createToStringDescriptor };
 
     var ARROW_REGEXP =
     /(\([^(]*\)|[\w$]+)=>(\{.*?\}|(?:\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\)|[^,()])*)/g;
@@ -844,6 +847,21 @@
         },
         FUNCTION_19_LF: makeEmuFeatureFunctionLF('function anonymous(\n) {\n\n}'),
         FUNCTION_22_LF: makeEmuFeatureFunctionLF('function anonymous() {\n\n}'),
+        GENERIC_ARRAY_TO_STRING:
+        function ()
+        {
+            if (isArrayToStringGeneric)
+                return;
+            var originalFn = Array.prototype.toString;
+            var toString =
+            function ()
+            {
+                var fn = Array.isArray(this) ? originalFn : Object.prototype.toString;
+                var str = fn.apply(this, arguments);
+                return str;
+            };
+            override(this, 'Array.prototype.toString', { value: toString });
+        },
         GLOBAL_UNDEFINED:
         function ()
         {
@@ -1120,6 +1138,17 @@
             return result;
         }
     );
+
+    var isArrayToStringGeneric;
+    try
+    {
+        Array.prototype.toString.call({ });
+        isArrayToStringGeneric = true;
+    }
+    catch (error)
+    {
+        isArrayToStringGeneric = false;
+    }
 
     var exports =
     {

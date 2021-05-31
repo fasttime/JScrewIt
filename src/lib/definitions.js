@@ -368,6 +368,7 @@ function getFHPaddingEntries(index)
     var FROM_CODE_POINT                 = Feature.FROM_CODE_POINT;
     var FUNCTION_19_LF                  = Feature.FUNCTION_19_LF;
     var FUNCTION_22_LF                  = Feature.FUNCTION_22_LF;
+    var GENERIC_ARRAY_TO_STRING         = Feature.GENERIC_ARRAY_TO_STRING;
     var GLOBAL_UNDEFINED                = Feature.GLOBAL_UNDEFINED;
     var GMT                             = Feature.GMT;
     var HISTORY                         = Feature.HISTORY;
@@ -843,9 +844,35 @@ function getFHPaddingEntries(index)
             define('(RP_0_S + Audio)[12]', HTMLAUDIOELEMENT),
             define('(RP_0_S + document)[11]', HTMLDOCUMENT),
             define
-            ('Function("return toString.call(location)")()[SLICE_OR_SUBSTR]("-10")[1]', LOCATION),
+            (
+                {
+                    expr: 'Function("return toString.call(location)")()[SLICE_OR_SUBSTR]("-10")[1]',
+                    optimize: true,
+                },
+                LOCATION
+            ),
             define
-            ('(Function("return toString.call(location)")() + RP_1_WA).at("-10")', AT, LOCATION),
+            (
+                {
+                    expr: '(Function("return toString.call(location)")() + RP_1_WA).at("-10")',
+                    optimize: true,
+                },
+                AT,
+                LOCATION
+            ),
+            define
+            (
+                '[][TO_STRING].call(location)[SLICE_OR_SUBSTR]("-10")[1]',
+                GENERIC_ARRAY_TO_STRING,
+                LOCATION
+            ),
+            define
+            (
+                '([][TO_STRING].call(location) + RP_1_WA).at("-10")',
+                AT,
+                GENERIC_ARRAY_TO_STRING,
+                LOCATION
+            ),
         ],
         'M':
         [
@@ -1243,6 +1270,10 @@ function getFHPaddingEntries(index)
         escape:
         [
             define({ expr: 'Function("return escape")()', optimize: true }),
+        ],
+        location:
+        [
+            define('Function("return location")()', LOCATION),
         ],
         self:
         [

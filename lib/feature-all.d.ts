@@ -317,6 +317,15 @@ export interface FeatureAll
     FUNCTION_22_LF: ElementaryFeature;
 
     /**
+     * Ability to call Array.prototype.toString with a non-array binding.
+     *
+     * @remarks
+     *
+     * Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+, and Node.js.
+     */
+    GENERIC_ARRAY_TO_STRING: ElementaryFeature;
+
+    /**
      * Having the global function toString return the string "\[object Undefined\]" when invoked without a binding.
      *
      * @remarks
@@ -678,6 +687,7 @@ type ElementaryFeatureName =
 | 'FROM_CODE_POINT'
 | 'FUNCTION_19_LF'
 | 'FUNCTION_22_LF'
+| 'GENERIC_ARRAY_TO_STRING'
 | 'GLOBAL_UNDEFINED'
 | 'GMT'
 | 'HISTORY'
