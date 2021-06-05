@@ -171,8 +171,9 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
+                    encoder.maxDecodableArgs = 0;
                     var input = 'Lorem ipsum dolor sit amet';
-                    var output = encoder.encodeByCharCodes(input, true);
+                    var output = encoder.encodeByCharCodes(input);
                     expect(output).toBeJSFuck();
                     expect(evalJSFuck(output)).toBe(input);
                 }
@@ -184,8 +185,9 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder(Feature.ARROW);
+                    encoder.maxDecodableArgs = Infinity;
                     var input = 'Lorem ipsum dolor sit amet';
-                    var output = encoder.encodeByCharCodes(input, false, 4);
+                    var output = encoder.encodeByCharCodes(input, 4);
                     expect(output).toBeJSFuck();
                     expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
                 }
@@ -198,6 +200,27 @@ self,
                     var encoder = JScrewIt.debug.createEncoder();
                     encoder.replaceFalseFreeArray = Function();
                     expect(encoder.encodeByCharCodes('12345')).toBeUndefined();
+                }
+            );
+        }
+    );
+    describe
+    (
+        'Encoder#encodeByCodePoints',
+        function ()
+        {
+            emuIt
+            (
+                'returns correct JSFuck for long input',
+                Feature.FROM_CODE_POINT,
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    encoder.maxDecodableArgs = 0;
+                    var input = '🔴🟥🟠🟧🟡🟨🟢🟩🔵🟦🟣🟪⚫️⬛️⚪️⬜️🟤🟫';
+                    var output = encoder.encodeByCodePoints(input);
+                    expect(output).toBeJSFuck();
+                    expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
                 }
             );
         }
@@ -991,7 +1014,6 @@ self,
         'Strategy',
         function ()
         {
-            var encoder = JScrewIt.debug.createEncoder();
             var text = 'Lorem ipsum dolor sit amet';
             var strategies = JScrewIt.debug.getStrategies();
             var strategyNames = Object.keys(strategies);
@@ -1012,15 +1034,18 @@ self,
                     }
 
                     var strategy = strategies[strategyName];
-                    it
+                    var featureObj = JScrewIt.debug.createFeatureFromMask(strategy.mask);
+                    var encoder = JScrewIt.debug.createEncoder(featureObj);
+                    emuIt
                     (
                         'returns correct JSFuck',
+                        featureObj,
                         function ()
                         {
-                            var input = strategyName !== 'express' ? text : JSON.stringify(text);
+                            var input = strategy.expressionMode ? JSON.stringify(text) : text;
                             var output = strategy.call(encoder, Object(input));
                             expect(output).toBeJSFuck();
-                            expect(evalJSFuck(output)).toBe(text);
+                            expect(emuEval(this.test.emuFeatureNames, output)).toBe(text);
                         }
                     );
                     it

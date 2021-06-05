@@ -32,7 +32,7 @@ function optimize(strategyTestData)
     {
         Feature,
         Feature: { DEFAULT, ELEMENTARY, areCompatible, areEqual, commonOf },
-        debug: { createEncoder, getStrategies },
+        debug: { createEncoder, getStrategies, maskIncludes },
     } =
     require('..');
     const chalk = require('chalk');
@@ -59,13 +59,11 @@ function optimize(strategyTestData)
         return newFeatureObj;
     }
 
-    function createDiffList({ createInput, strategyName, rivalStrategyNames }, featureObj)
+    function createDiffList({ createInput, rivalStrategyNames }, featureObj)
     {
         const diffList = [];
         const encoder = createEncoder(featureObj);
-        const strategies = getStrategies();
-        const strategy = strategies[strategyName];
-        const inputLength = strategy.MIN_INPUT_LENGTH;
+        const inputLength = strategy.minInputLength;
         const inputData = Object(createInput(inputLength));
         const { length } = strategy.call(encoder, inputData);
         for (const thisStrategyName of rivalStrategyNames)
@@ -122,8 +120,11 @@ function optimize(strategyTestData)
 
     let dirty = false;
     let optimalFeatureObj = Feature(...strategyTestData.features);
+    const strategies = getStrategies();
+    const strategy = strategies[strategyTestData.strategyName];
     let optimalDiffList = createDiffList(strategyTestData, optimalFeatureObj);
     const iterable = createFeatureIterable();
+    const requiredMask = strategy.mask;
     for (const featureObj of iterable)
     {
         let newFeatureObj;
@@ -131,6 +132,8 @@ function optimize(strategyTestData)
             newFeatureObj = subtractFeature(optimalFeatureObj, featureObj);
         else
             newFeatureObj = addFeature(optimalFeatureObj, featureObj);
+        if (!maskIncludes(newFeatureObj.mask, requiredMask))
+            continue;
         const newDiffList = createDiffList(strategyTestData, newFeatureObj);
         if (compareDiffLists(newDiffList, optimalDiffList) > 0)
         {

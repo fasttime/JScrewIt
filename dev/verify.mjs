@@ -1,11 +1,14 @@
 #!/usr/bin/env node
 
-'use strict';
-
-const JScrewIt  = require('..');
-const chalk     = require('chalk');
-
-require('../tools/text-utils');
+import choose                   from    './internal/choose.js';
+import Analyzer                 from    './internal/optimized-analyzer.js';
+import PREDEF_TEST_DATA_MAP_OBJ from    './internal/predef-test-data.js';
+import progress                 from    './internal/progress.js';
+import solutionBookMap          from    './internal/solution-book-map.js';
+import STRATEGY_TEST_DATA_LIST  from    './internal/strategy-test-data.js';
+import JScrewIt                 from    '../lib/jscrewit.js';
+import                                  '../tools/text-utils.js';
+import chalk                    from    'chalk';
 
 function checkMinInputLength
 (features, createInput, strategies, strategy, minLength, rivalStrategyNames)
@@ -17,11 +20,13 @@ function checkMinInputLength
         for (const strategyName of rivalStrategyNames)
         {
             const thisStrategy = strategies[strategyName];
-            if (thisStrategy !== strategy)
+            if (thisStrategy === strategy)
+                continue;
+            let diffStr;
+            if (encoder.hasFeatures(thisStrategy.mask))
             {
                 const thisLength = thisStrategy.call(encoder, inputData).length;
                 const diff = thisLength - length;
-                let diffStr;
                 if (diff > 0)
                     diffStr = `+${diff}`;
                 else
@@ -29,13 +34,15 @@ function checkMinInputLength
                     diffStr = chalk.bold(diff);
                     tooSmall = true;
                 }
-                console.log('%s%s', strategyName.padEnd(25), diffStr);
             }
+            else
+                diffStr = 'N/A';
+            console.log('%s%s', strategyName.padEnd(25), diffStr);
         }
         if (tooSmall)
         {
             ok = false;
-            logWarn('MIN_INPUT_LENGTH is too small.');
+            logWarn('minInputLength is too small.');
         }
     }
 
@@ -46,7 +53,9 @@ function checkMinInputLength
         for (const strategyName of rivalStrategyNames)
         {
             const thisStrategy = strategies[strategyName];
-            if (thisStrategy !== strategy)
+            if (thisStrategy === strategy)
+                continue;
+            if (encoder.hasFeatures(thisStrategy.mask))
             {
                 const { length } = thisStrategy.call(encoder, inputData);
                 if (length < bestLength)
@@ -70,17 +79,15 @@ function checkMinInputLength
     if (bestDataShort.length > outputShort.length)
     {
         ok = false;
-        logWarn(`MIN_INPUT_LENGTH is too large for ${bestDataShort.strategyName}.`);
+        logWarn(`minInputLength is too large for ${bestDataShort.strategyName}.`);
     }
     if (ok)
-        logOk('MIN_INPUT_LENGTH is ok.');
+        logOk('minInputLength is ok.');
 }
 
 function createAnalyzer(ancestorFeatureObj)
 {
-    require('./internal/solution-book-map').load();
-    const Analyzer = require('./internal/optimized-analyzer');
-
+    solutionBookMap.load();
     const analyzer = new Analyzer(ancestorFeatureObj);
     return analyzer;
 }
@@ -152,8 +159,6 @@ function verifyComplex(complex, entry)
 function verifyDefinitions
 (entries, inputList, mismatchCallback, replaceVariant, formatVariant, ancestorFeatureObj)
 {
-    const progress = require('./internal/progress');
-
     let encoder;
     let mismatchCount = 0;
     const analyzer = createAnalyzer(ancestorFeatureObj);
@@ -203,8 +208,6 @@ function verifyPredef(predefName)
     const verify =
     () =>
     {
-        const PREDEF_TEST_DATA_MAP_OBJ = require('./internal/predef-test-data');
-
         const
         {
             availableEntries,
@@ -235,7 +238,7 @@ function verifyStrategy(strategyTestData)
         const { createInput, features, strategyName, rivalStrategyNames } = strategyTestData;
         const strategies = JScrewIt.debug.getStrategies();
         const strategy = strategies[strategyName];
-        const minLength = strategy.MIN_INPUT_LENGTH;
+        const minLength = strategy.minInputLength;
         checkMinInputLength
         (features, createInput, strategies, strategy, minLength, rivalStrategyNames);
     };
@@ -287,9 +290,6 @@ verify.OPTIMAL_B = verifyPredef('OPTIMAL_B');
 verify.OPTIMAL_RETURN_STRING = verifyPredef('OPTIMAL_RETURN_STRING');
 
 {
-    const choose                    = require('./internal/choose');
-    const STRATEGY_TEST_DATA_LIST   = require('./internal/strategy-test-data');
-
     for (const strategyTestData of STRATEGY_TEST_DATA_LIST)
         verify[strategyTestData.strategyName] = verifyStrategy(strategyTestData);
 
