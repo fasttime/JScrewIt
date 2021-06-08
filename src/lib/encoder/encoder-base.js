@@ -27,11 +27,11 @@ import
     _Math_abs,
     _Object_create,
     _Object_keys,
-    _RegExp,
     _String,
     _SyntaxError,
     assignNoEnum,
     createEmpty,
+    tryCreateRegExp,
 }
 from '../obj-utils';
 import
@@ -417,38 +417,36 @@ function throwSyntaxError(encoder, message)
 var matchSimpleAt =
 (function ()
 {
-    try
+    var matchSimpleAt;
+    var pattern = _Object_keys(SIMPLE).join('|');
+    var regExp = tryCreateRegExp(pattern, 'y');
+    if (regExp)
     {
-        var pattern = _Object_keys(SIMPLE).join('|');
-        var regExp = _RegExp(pattern, 'y');
-        // In Android Browser 4.0, the RegExp constructor ignores the unrecognized flag instead of
-        // throwing a SyntaxError.
-        if (regExp.flags)
+        matchSimpleAt =
+        function (str, index)
         {
-            var matchSimpleAt =
-            function (str, index)
-            {
-                regExp.lastIndex = index;
-                var match = str.match(regExp);
-                if (match)
-                    return match[0];
-            };
-            return matchSimpleAt;
-        }
+            regExp.lastIndex = index;
+            var match = str.match(regExp);
+            if (match)
+                return match[0];
+        };
     }
-    catch (error)
-    { }
-}
-)() ||
-function (str, index)
-{
-    for (var simple in SIMPLE)
+    else
     {
-        var substr = str.substr(index, simple.length);
-        if (substr === simple)
-            return simple;
+        matchSimpleAt =
+        function (str, index)
+        {
+            for (var simple in SIMPLE)
+            {
+                var substr = str.substr(index, simple.length);
+                if (substr === simple)
+                    return simple;
+            }
+        };
     }
-};
+    return matchSimpleAt;
+}
+)();
 
 assignNoEnum
 (

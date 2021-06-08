@@ -173,7 +173,7 @@ self,
                     var encoder = JScrewIt.debug.createEncoder();
                     encoder.maxDecodableArgs = 0;
                     var input = 'Lorem ipsum dolor sit amet';
-                    var output = encoder.encodeByCharCodes(input);
+                    var output = encoder.encodeByCharCodes(Object(input));
                     expect(output).toBeJSFuck();
                     expect(evalJSFuck(output)).toBe(input);
                 }
@@ -187,7 +187,7 @@ self,
                     var encoder = JScrewIt.debug.createEncoder(Feature.ARROW);
                     encoder.maxDecodableArgs = Infinity;
                     var input = 'Lorem ipsum dolor sit amet';
-                    var output = encoder.encodeByCharCodes(input, 4);
+                    var output = encoder.encodeByCharCodes(Object(input), 4);
                     expect(output).toBeJSFuck();
                     expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
                 }
@@ -199,7 +199,8 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     encoder.replaceFalseFreeArray = Function();
-                    expect(encoder.encodeByCharCodes('12345')).toBeUndefined();
+                    var inputData = Object('12345');
+                    expect(encoder.encodeByCharCodes(inputData)).toBeUndefined();
                 }
             );
         }
@@ -209,18 +210,65 @@ self,
         'Encoder#encodeByCodePoints',
         function ()
         {
+            function isUnicodeRegExpSupported()
+            {
+                try
+                {
+                    RegExp('', 'u');
+                }
+                catch (error)
+                {
+                    return false;
+                }
+                return true;
+            }
+
             emuIt
             (
                 'returns correct JSFuck for long input',
                 Feature.FROM_CODE_POINT,
                 function ()
                 {
-                    var encoder = JScrewIt.debug.createEncoder();
+                    var encoder = JScrewIt.debug.createEncoder('FROM_CODE_POINT');
                     encoder.maxDecodableArgs = 0;
                     var input = '🔴🟥🟠🟧🟡🟨🟢🟩🔵🟦🟣🟪⚫️⬛️⚪️⬜️🟤🟫';
-                    var output = encoder.encodeByCodePoints(input);
+                    var output = encoder.encodeByCodePoints(Object(input));
                     expect(output).toBeJSFuck();
                     expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
+                }
+            );
+            emuIt.when(isUnicodeRegExpSupported() || String.prototype.codePointAt)
+            (
+                'works well in legacy mode',
+                Feature.FROM_CODE_POINT,
+                function ()
+                {
+                    var RegExp = global.RegExp;
+                    global.RegExp =
+                    function (pattern, flags)
+                    {
+                        if (flags && /u/.test(flags))
+                            throw SyntaxError();
+                        var regExp = RegExp(pattern, flags);
+                        return regExp;
+                    };
+                    var prototype = String.prototype;
+                    var codePointAt = prototype.codePointAt;
+                    prototype.codePointAt = undefined;
+                    try
+                    {
+                        var newJScrewIt = reloadJScrewIt();
+                        var encoder = newJScrewIt.debug.createEncoder('FROM_CODE_POINT');
+                        var input = '"🅐\n🅩"';
+                        var output = encoder.encodeByCodePoints(Object(input));
+                        expect(output).toBeJSFuck();
+                        expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
+                    }
+                    finally
+                    {
+                        global.RegExp = RegExp;
+                        prototype.codePointAt = codePointAt;
+                    }
                 }
             );
         }
@@ -651,9 +699,9 @@ self,
                     expect(encoder.replaceString('123')).toBeUndefined();
                 }
             );
-            it.when(typeof module !== 'undefined' && isStickyRegExpSupported())
+            it.when(isStickyRegExpSupported())
             (
-                'works well when sticky regular expressions are not supported',
+                'works well in legacy mode',
                 function ()
                 {
                     var RegExp = global.RegExp;

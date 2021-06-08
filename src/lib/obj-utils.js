@@ -78,4 +78,18 @@ export function noProto(obj)
     return result;
 }
 
+export function tryCreateRegExp(pattern, flags)
+{
+    try
+    {
+        var regExp = _RegExp(pattern, flags);
+        // In Android Browser 4.0, the RegExp constructor ignores unrecognized flags instead of
+        // throwing a SyntaxError.
+        if (regExp.flags === flags)
+            return regExp;
+    }
+    catch (error)
+    { }
+}
+
 export var noop = _Function();

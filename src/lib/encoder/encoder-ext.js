@@ -33,6 +33,7 @@ import
     _String,
     assignNoEnum,
     createEmpty,
+    tryCreateRegExp,
 }
 from '../obj-utils';
 import { SCREW_AS_BONDED_STRING, SCREW_AS_STRING, SCREW_NORMAL }    from '../screw-buffer';
@@ -216,9 +217,12 @@ export function createReindexMap(count, radix, amendingCount, coerceToInt)
     return range;
 }
 
-function createStrCodesEncoding(encoder, input, fromCharCode, splitter, radix, maxLength)
+function createStrCodesEncoding(encoder, inputData, fromCharCode, splitter, radix, maxLength)
 {
-    var strCodeArray = splitter(input, radix);
+    var input = inputData.valueOf();
+    var strCodeCacheKey = 'strCodeCache' + (radix ? 'Radix' + radix : '');
+    var cache = inputData[strCodeCacheKey] || (inputData[strCodeCacheKey] = createEmpty());
+    var strCodeArray = splitter(input, radix, cache);
     var strCodeArrayStr = encoder.replaceFalseFreeArray(strCodeArray, maxLength);
     if (strCodeArrayStr)
     {
@@ -467,49 +471,33 @@ function initMinFalseTrueCharIndexArrayStrLength()
     return -1;
 }
 
-function splitIntoCharCodes(str, radix)
+function splitIntoCharCodes(str, radix, cache)
 {
-    var cache = createEmpty();
-    var strCodes =
-    _Array_prototype_map.call
-    (
-        str,
-        function (char)
-        {
-            var strCode = cache[char];
-            if (strCode == null)
-                strCode = cache[char] = char.charCodeAt().toString(radix);
-            return strCode;
-        }
-    );
+    var strCodes = [];
+    var regExp = /[^]/g;
+    for (var match; match = regExp.exec(str);)
+    {
+        var char = match[0];
+        var strCode = cache[char];
+        if (strCode == null)
+            strCode = cache[char] = char.charCodeAt().toString(radix);
+        strCodes.push(strCode);
+    }
     return strCodes;
 }
 
-function splitIntoCodePoints(str, radix)
+function splitIntoCodePoints(str, radix, cache)
 {
-    var cache = createEmpty();
-    var chars = str.match(/[\ud800-\udbff][\udc00-\udfff]|[^]/g);
-    var strCodes =
-    chars.map
-    (
-        function (char)
-        {
-            var strCode = cache[char];
-            if (strCode == null)
-            {
-                if (char.length === 1)
-                    strCode = char.charCodeAt().toString(radix);
-                else
-                {
-                    var highSurrogatePart   = char.charCodeAt(0) - 0xd800 << 10;
-                    var lowSurrogatePart    = char.charCodeAt(1) - 0xdc00;
-                    strCode = (highSurrogatePart + lowSurrogatePart + 0x10000).toString(radix);
-                }
-                cache[char] = strCode;
-            }
-            return strCode;
-        }
-    );
+    var strCodes = [];
+    var regExp = tryCreateRegExp('.', 'gsu') || /[\ud800-\udbff][\udc00-\udfff]|[^]/g;
+    for (var match; match = regExp.exec(str);)
+    {
+        var char = match[0];
+        var strCode = cache[char];
+        if (strCode == null)
+            strCode = cache[char] = codePointOf(char).toString(radix);
+        strCodes.push(strCode);
+    }
     return strCodes;
 }
 
@@ -577,8 +565,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var input = inputData.valueOf();
-                var output = this.encodeByCharCodes(input, undefined, maxLength);
+                var output = this.encodeByCharCodes(inputData, undefined, maxLength);
                 return output;
             },
             2
@@ -598,8 +585,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var input = inputData.valueOf();
-                var output = this.encodeByCharCodes(input, 4, maxLength);
+                var output = this.encodeByCharCodes(inputData, 4, maxLength);
                 return output;
             },
             25
@@ -618,8 +604,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var input = inputData.valueOf();
-                var output = this.encodeByCodePoints(input, undefined, maxLength);
+                var output = this.encodeByCodePoints(inputData, undefined, maxLength);
                 return output;
             },
             2,
@@ -640,8 +625,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var input = inputData.valueOf();
-                var output = this.encodeByCodePoints(input, 4, maxLength);
+                var output = this.encodeByCodePoints(inputData, 4, maxLength);
                 return output;
             },
             38,
@@ -1004,20 +988,21 @@ assignNoEnum
         },
 
         encodeByCharCodes:
-        function (input, radix, maxLength)
+        function (inputData, radix, maxLength)
         {
             var fromCharCode = this.findDefinition(FROM_CHAR_CODE);
             var output =
-            createStrCodesEncoding(this, input, fromCharCode, splitIntoCharCodes, radix, maxLength);
+            createStrCodesEncoding
+            (this, inputData, fromCharCode, splitIntoCharCodes, radix, maxLength);
             return output;
         },
 
         encodeByCodePoints:
-        function (input, radix, maxLength)
+        function (inputData, radix, maxLength)
         {
             var output =
             createStrCodesEncoding
-            (this, input, 'fromCodePoint', splitIntoCodePoints, radix, maxLength);
+            (this, inputData, 'fromCodePoint', splitIntoCodePoints, radix, maxLength);
             return output;
         },
 
@@ -1385,3 +1370,24 @@ assignNoEnum
         },
     }
 );
+
+var codePointOf =
+_String.prototype.codePointAt ?
+function (char)
+{
+    var codePoint = char.codePointAt();
+    return codePoint;
+} :
+function (char)
+{
+    var codePoint;
+    if (char.length < 2)
+        codePoint = char.charCodeAt();
+    else
+    {
+        var highSurrogatePart   = char.charCodeAt(0) - 0xd800 << 10;
+        var lowSurrogatePart    = char.charCodeAt(1) - 0xdc00;
+        codePoint = highSurrogatePart + lowSurrogatePart + 0x10000;
+    }
+    return codePoint;
+};
