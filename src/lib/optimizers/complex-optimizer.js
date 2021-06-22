@@ -1,5 +1,5 @@
-import { APPEND_LENGTH_OF_EMPTY }                       from '../append-lengths';
-import { _Array_prototype_forEach, createEmpty, noop }  from '../obj-utils';
+import { APPEND_LENGTH_OF_EMPTY }                           from '../append-lengths';
+import { _Array_prototype_forEach_call, createEmpty, noop } from '../obj-utils';
 
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
 var NOOP_OPTIMIZER = { appendLengthOf: noop, optimizeSolutions: noop };
@@ -72,7 +72,7 @@ export default function (encoder, complex, definition)
     var discreteAppendLength = 0;
     var charMap = createEmpty();
     var charInfos = [];
-    _Array_prototype_forEach.call
+    _Array_prototype_forEach_call
     (
         complex,
         function (char)

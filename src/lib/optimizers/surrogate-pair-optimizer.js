@@ -63,7 +63,7 @@ export default function (encoder)
             var codePoint = codePointFromSurrogatePair(charCode1, charCode2);
             var replacementByCharCode   = encoder.$replaceCharByCharCode(codePoint);
             var replacementByEscSeq     = encoder.$replaceCharByEscSeq(codePoint);
-            var replacement = shortestOf([replacementByCharCode, replacementByEscSeq]);
+            var replacement = shortestOf(replacementByCharCode, replacementByEscSeq);
             var length = replacement.length;
             var saving = solution1.length + 1 + solution2.length - length;
             if (solutions.length === 2 && bond)

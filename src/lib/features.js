@@ -16,9 +16,9 @@ statusbar,
 import
 {
     _Array_isArray,
-    _Array_prototype_every,
-    _Array_prototype_forEach,
-    _Array_prototype_push,
+    _Array_prototype_every_call,
+    _Array_prototype_forEach_call,
+    _Array_prototype_push_apply,
     _Error,
     _JSON_stringify,
     _Object_create,
@@ -68,7 +68,7 @@ function areEqual()
 {
     var mask;
     var equal =
-    _Array_prototype_every.call
+    _Array_prototype_every_call
     (
         arguments,
         function (arg, index)
@@ -116,7 +116,7 @@ function commonOf()
     if (arguments.length)
     {
         var mask;
-        _Array_prototype_forEach.call
+        _Array_prototype_forEach_call
         (
             arguments,
             function (arg)
@@ -147,7 +147,7 @@ function descriptionFor(name)
 function featureArrayLikeToMask(arrayLike)
 {
     var mask = maskNew();
-    _Array_prototype_forEach.call
+    _Array_prototype_forEach_call
     (
         arrayLike,
         function (feature)
@@ -263,7 +263,7 @@ export function validMaskFromArguments(args)
 {
     var mask = maskNew();
     var validationNeeded = 0;
-    _Array_prototype_forEach.call
+    _Array_prototype_forEach_call
     (
         args,
         function (arg)
@@ -329,7 +329,7 @@ assignNoEnum
                         var name = featureObj.name;
                         featureNameSet[name] = null;
                         var includes = INCLUDES_MAP[name];
-                        _Array_prototype_push.apply(allIncludes, includes);
+                        _Array_prototype_push_apply(allIncludes, includes);
                     }
                 }
             );
@@ -367,7 +367,7 @@ assignNoEnum
         {
             var mask = this.mask;
             var included =
-            _Array_prototype_every.call
+            _Array_prototype_every_call
             (
                 arguments,
                 function (arg)

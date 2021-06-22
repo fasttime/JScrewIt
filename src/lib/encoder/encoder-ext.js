@@ -22,8 +22,8 @@ import { Feature }                                                  from '../fea
 import createFigurator                                              from '../figurator';
 import
 {
-    _Array_prototype_forEach,
-    _Array_prototype_map,
+    _Array_prototype_forEach_call,
+    _Array_prototype_map_call,
     _Date,
     _Error,
     _Math_max,
@@ -125,7 +125,7 @@ function createCharKeyArrayString
 (encoder, input, charMap, insertions, substitutions, forceString, maxLength)
 {
     var charKeyArray =
-    _Array_prototype_map.call
+    _Array_prototype_map_call
     (
         input,
         function (char)
@@ -163,7 +163,7 @@ export function createReindexMap(count, radix, amendingCount, coerceToInt)
     function getSortLength()
     {
         var length = 0;
-        _Array_prototype_forEach.call
+        _Array_prototype_forEach_call
         (
             str,
             function (digit)
@@ -412,7 +412,7 @@ function getFrequencyList(inputData)
     if (!freqList)
     {
         var charMap = createEmpty();
-        _Array_prototype_forEach.call
+        _Array_prototype_forEach_call
         (
             inputData,
             function (char)

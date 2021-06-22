@@ -2,11 +2,11 @@
 
 export var _Array                           = Array;
 export var _Array_isArray                   = _Array.isArray;
-export var _Array_prototype                 = _Array.prototype;
-export var _Array_prototype_every           = _Array_prototype.every;
-export var _Array_prototype_forEach         = _Array_prototype.forEach;
-export var _Array_prototype_map             = _Array_prototype.map;
-export var _Array_prototype_push            = _Array_prototype.push;
+export var _Array_prototype_every_call;
+export var _Array_prototype_forEach_call;
+export var _Array_prototype_map_call;
+export var _Array_prototype_push_apply;
+export var _Array_prototype_slice_call;
 
 export var _Date                            = Date;
 
@@ -94,3 +94,18 @@ export function tryCreateRegExp(pattern, flags)
 }
 
 export var noop = _Function();
+
+(function ()
+{
+    var _Array_prototype            = _Array.prototype;
+    var _Function_prototype         = _Function.prototype;
+    var _Function_prototype_apply   = _Function_prototype.apply;
+    var _Function_prototype_call    = _Function_prototype.call;
+
+    _Array_prototype_every_call     = _Function_prototype_call.bind(_Array_prototype.every);
+    _Array_prototype_forEach_call   = _Function_prototype_call.bind(_Array_prototype.forEach);
+    _Array_prototype_map_call       = _Function_prototype_call.bind(_Array_prototype.map);
+    _Array_prototype_slice_call     = _Function_prototype_call.bind(_Array_prototype.slice);
+    _Array_prototype_push_apply     = _Function_prototype_apply.bind(_Array_prototype.push);
+}
+)();

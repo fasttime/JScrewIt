@@ -1,4 +1,4 @@
-import { _Array } from '../obj-utils';
+import { _Array, _Array_prototype_forEach_call } from '../obj-utils';
 
 export function codePointFromSurrogatePair(highSurrogateCharCode, lowSurrogateCharCode)
 {
@@ -30,12 +30,13 @@ export function replaceStaticString(str, options)
     return replacement;
 }
 
-export function shortestOf(objs)
+export function shortestOf()
 {
     var shortestObj;
     var shortestLength = Infinity;
-    objs.forEach
+    _Array_prototype_forEach_call
     (
+        arguments,
         function (obj)
         {
             var length = obj.length;

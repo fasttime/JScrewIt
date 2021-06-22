@@ -22,7 +22,7 @@ import { featureFromMask }          from '../features';
 import
 {
     _Array_isArray,
-    _Array_prototype_forEach,
+    _Array_prototype_forEach_call,
     _JSON_stringify,
     _Math_abs,
     _Object_create,
@@ -182,7 +182,7 @@ function formatPositiveNumber(number)
 function getMultiDigitLength(str)
 {
     var appendLength = 0;
-    _Array_prototype_forEach.call
+    _Array_prototype_forEach_call
     (
         str,
         function (digit)
@@ -576,7 +576,7 @@ assignNoEnum
                     (this, char, charCode, replaceCharByUnescape, 'unescape');
                     solutions.push(solution);
                 }
-                solution = shortestOf(solutions);
+                solution = shortestOf.apply(null, solutions);
             }
             return solution;
         },
