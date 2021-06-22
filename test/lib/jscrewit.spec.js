@@ -668,6 +668,19 @@ self,
             );
             it
             (
+                'supports surrogate pair clustering',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder(Feature.FROM_CODE_POINT);
+                    var actual = encoder.replaceString('😊', { optimize: true });
+                    var expected =
+                    encoder.replaceExpr
+                    ('Function("return\\"" + ESCAPING_BACKSLASH + "u{1f60a}\\"")()');
+                    expect(actual).toBe(expected);
+                }
+            );
+            it
+            (
                 'respects the maxLength limit on the first solution',
                 function ()
                 {

@@ -548,11 +548,6 @@ sidebar,
                 {
                     this.toBe(Array.prototype.flat);
                 },
-                FROM_CHAR_CODE:
-                function ()
-                {
-                    this.toMatch(/^from(?:CharCode|CodePoint)$/);
-                },
                 F_A_L_S_E:
                 function ()
                 {

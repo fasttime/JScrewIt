@@ -38,7 +38,7 @@ import
 from '../obj-utils';
 import { SCREW_AS_BONDED_STRING, SCREW_AS_STRING, SCREW_NORMAL }    from '../screw-buffer';
 import { Encoder }                                                  from './encoder-base';
-import { replaceStaticString }                                      from './encoder-utils';
+import { codePointFromSurrogatePair, replaceStaticString }          from './encoder-utils';
 
 var FALSE_FREE_DELIMITER = { joiner: 'false', separator: 'false' };
 var FALSE_TRUE_DELIMITER = { joiner: '', separator: 'Function("return/(?=false|true)/")()' };
@@ -1385,9 +1385,9 @@ function (char)
         codePoint = char.charCodeAt();
     else
     {
-        var highSurrogatePart   = char.charCodeAt(0) - 0xd800 << 10;
-        var lowSurrogatePart    = char.charCodeAt(1) - 0xdc00;
-        codePoint = highSurrogatePart + lowSurrogatePart + 0x10000;
+        var highSurrogateCharCode   = char.charCodeAt(0);
+        var lowSurrogateCharCode    = char.charCodeAt(1);
+        codePoint = codePointFromSurrogatePair(highSurrogateCharCode, lowSurrogateCharCode);
     }
     return codePoint;
 };

@@ -1,5 +1,12 @@
 import { _Array } from '../obj-utils';
 
+export function codePointFromSurrogatePair(highSurrogateCharCode, lowSurrogateCharCode)
+{
+    // 0x2400 = 0x10000 - 0xdc00
+    var codePoint = (highSurrogateCharCode - 0xd800 << 10) + lowSurrogateCharCode + 0x2400;
+    return codePoint;
+}
+
 export function extraZeros(count)
 {
     var extraZeros = _Array(count + 1).join('0');

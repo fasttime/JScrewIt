@@ -35,9 +35,6 @@ import
     esToString,
 }
 from './obj-utils';
-import createCommaOptimizer                                 from './optimizers/comma-optimizer';
-import createComplexOptimizer                               from './optimizers/complex-optimizer';
-import createToStringOptimizer                              from './optimizers/to-string-optimizer';
 import { ScrewBuffer, optimizeSolutions }                   from './screw-buffer';
 import { DynamicSolution, SimpleSolution }                  from './solution';
 import trimJS                                               from './trim-js';
@@ -194,38 +191,35 @@ if (typeof NO_DEBUG === 'undefined')
         (
             { },
             {
-                DynamicSolution:            DynamicSolution,
-                MaskMap:                    MaskMap,
-                MaskSet:                    MaskSet,
-                Solution:                   SimpleSolution,
-                SolutionType:               SolutionType,
-                calculateSolutionType:      calculateSolutionType,
-                createClusteringPlan:       createClusteringPlan,
-                createCommaOptimizer:       createCommaOptimizer,
-                createComplexOptimizer:     createComplexOptimizer,
-                createEncoder:              createEncoder,
-                createFeatureFromMask:      createFeatureFromMask,
-                createFigurator:            createFigurator,
-                createReindexMap:           createReindexMap,
-                createScrewBuffer:          createScrewBuffer,
-                createToStringOptimizer:    createToStringOptimizer,
-                defineConstant:             defineConstant,
-                getCharacterEntries:        getCharacterEntries,
-                getCharacters:              getCharacters,
-                getComplexEntry:            getComplexEntry,
-                getComplexNames:            getComplexNames,
-                getConstantEntries:         getConstantEntries,
-                getConstantNames:           getConstantNames,
-                getEntries:                 getEntries,
-                getStrategies:              getStrategies,
-                isEncoderInCache:           isEncoderInCache,
-                maskAreEqual:               maskAreEqual,
-                maskIncludes:               maskIncludes,
-                maskNew:                    maskNew,
-                maskNext:                   maskNext,
-                maskUnion:                  maskUnion,
-                optimizeSolutions:          optimizeSolutions,
-                trimJS:                     trimJS,
+                DynamicSolution:        DynamicSolution,
+                MaskMap:                MaskMap,
+                MaskSet:                MaskSet,
+                Solution:               SimpleSolution,
+                SolutionType:           SolutionType,
+                calculateSolutionType:  calculateSolutionType,
+                createClusteringPlan:   createClusteringPlan,
+                createEncoder:          createEncoder,
+                createFeatureFromMask:  createFeatureFromMask,
+                createFigurator:        createFigurator,
+                createReindexMap:       createReindexMap,
+                createScrewBuffer:      createScrewBuffer,
+                defineConstant:         defineConstant,
+                getCharacterEntries:    getCharacterEntries,
+                getCharacters:          getCharacters,
+                getComplexEntry:        getComplexEntry,
+                getComplexNames:        getComplexNames,
+                getConstantEntries:     getConstantEntries,
+                getConstantNames:       getConstantNames,
+                getEntries:             getEntries,
+                getStrategies:          getStrategies,
+                isEncoderInCache:       isEncoderInCache,
+                maskAreEqual:           maskAreEqual,
+                maskIncludes:           maskIncludes,
+                maskNew:                maskNew,
+                maskNext:               maskNext,
+                maskUnion:              maskUnion,
+                optimizeSolutions:      optimizeSolutions,
+                trimJS:                 trimJS,
             }
         );
 

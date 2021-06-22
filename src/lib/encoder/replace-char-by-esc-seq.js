@@ -8,7 +8,13 @@ export default function replaceCharByEscSeq(charCode)
     var escCode;
     var appendIndexer;
     var toStringOpt;
-    if (charCode >= 0xfd || charCode in LOW_UNICODE_ESC_SEQ_CODES)
+    if (charCode >= 0x10000)
+    {
+        escCode = 'u{' + hexCodeOf(this, charCode) + '}';
+        appendIndexer = false;
+        toStringOpt = true;
+    }
+    else if (charCode >= 0xfd || charCode in LOW_UNICODE_ESC_SEQ_CODES)
     {
         escCode = 'u' + hexCodeOf(this, charCode, 4);
         appendIndexer = escCode.length > 5;
@@ -23,8 +29,7 @@ export default function replaceCharByEscSeq(charCode)
     var expr = 'Function("return\\"" + ESCAPING_BACKSLASH + "' + escCode + '\\"")()';
     if (appendIndexer)
         expr += '[0]';
-    var replacement =
-    this.replaceExpr(expr, { commaOpt: false, complexOpt: false, toStringOpt: toStringOpt });
+    var replacement = this.replaceExpr(expr, { default: false, toStringOpt: toStringOpt });
     return replacement;
 }
 

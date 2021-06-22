@@ -1421,26 +1421,6 @@ function getFHPaddingEntries(index)
         [
             define('[].flat', FLAT),
         ],
-        FROM_CHAR_CODE:
-        [
-            define
-            (
-                {
-                    expr: '"fromCharCode"',
-                    optimize: true,
-                    solutionType: SolutionType.COMBINED_STRING,
-                }
-            ),
-            define
-            (
-                {
-                    expr: '"fromCodePoint"',
-                    optimize: true,
-                    solutionType: SolutionType.COMBINED_STRING,
-                },
-                FROM_CODE_POINT
-            ),
-        ],
         F_A_L_S_E:
         [
             define('[][SLICE_OR_FLAT].call("false")'),

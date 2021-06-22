@@ -20,7 +20,6 @@ export default function replaceCharByUnescape(charCode)
     var expr = 'unescape("%' + hexCode + '")';
     if (appendIndexer)
         expr += '[0]';
-    var replacement =
-    this.replaceExpr(expr, { commaOpt: false, complexOpt: false, toStringOpt: toStringOpt });
+    var replacement = this.replaceExpr(expr, { default: false, toStringOpt: toStringOpt });
     return replacement;
 }
