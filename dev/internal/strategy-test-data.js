@@ -106,7 +106,7 @@ module.exports =
     ),
     data
     (
-        ['CAPITAL_HTML', 'FROM_CODE_POINT', 'NO_V8_SRC', 'STATUS'],
+        ['AT', 'CAPITAL_HTML', 'FF_SRC', 'FROM_CODE_POINT', 'STATUS'],
         length => repeatToFit(String.fromCharCode(55999, 56999), length),
         'byCodePoints',
     ),

@@ -607,7 +607,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this.encodeByCodePoints(inputData, undefined, maxLength);
                 return output;
             },
-            2,
+            3,
             undefined,
             Feature.FROM_CODE_POINT
         ),
