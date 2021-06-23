@@ -13,7 +13,7 @@
 
 ### features
 
-• `Optional` **features**: [*FeatureElement*](../README.md#featureelement) \| [*CompatibleFeatureArray*](../README.md#compatiblefeaturearray)
+• `Optional` **features**: [FeatureElement](../README.md#featureelement) \| [CompatibleFeatureArray](../README.md#compatiblefeaturearray)
 
 Specifies the features available in the engines that evaluate the encoded output.
 
@@ -78,7 +78,7 @@ ___
 
 ### trimCode
 
-• `Optional` **trimCode**: *boolean*
+• `Optional` **trimCode**: `boolean`
 
 If this parameter is truthy, lines in the beginning and in the end of the file containing
 nothing but space characters and JavaScript comments are removed from the generated output.

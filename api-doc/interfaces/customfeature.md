@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- [*Feature*](../README.md#feature)
+- [Feature](../README.md#feature)
 
   ↳ **CustomFeature**
 
@@ -24,12 +24,14 @@
 
 ### canonicalNames
 
-• `Readonly` **canonicalNames**: [*ElementaryFeatureName*](../README.md#elementaryfeaturename)[]
+• `Readonly` **canonicalNames**: [ElementaryFeatureName](../README.md#elementaryfeaturename)[]
 
 An array of all elementary feature names included in this feature object, without aliases and
 implied features.
 
-Inherited from: Feature.canonicalNames
+#### Inherited from
+
+Feature.canonicalNames
 
 ___
 
@@ -37,36 +39,42 @@ ___
 
 • `Readonly` **elementary**: ``false``
 
-Overrides: Feature.elementary
+#### Overrides
+
+Feature.elementary
 
 ___
 
 ### elementaryNames
 
-• `Readonly` **elementaryNames**: [*ElementaryFeatureName*](../README.md#elementaryfeaturename)[]
+• `Readonly` **elementaryNames**: [ElementaryFeatureName](../README.md#elementaryfeaturename)[]
 
 An array of all elementary feature names included in this feature object, without aliases.
 
-Inherited from: Feature.elementaryNames
+#### Inherited from
+
+Feature.elementaryNames
 
 ___
 
 ### name
 
-• `Optional` **name**: *string*
+• `Optional` **name**: `string`
 
 The primary name of this feature object, useful for identification purpose.
 
 All predefined features have a name; custom features may be optionally assigned a name, too.
 If a name is assigned, it will be used when the feature is converted into a string.
 
-Inherited from: Feature.name
+#### Inherited from
+
+Feature.name
 
 ## Methods
 
 ### includes
 
-▸ **includes**(...`features`: ([*FeatureElement*](../README.md#featureelement) \| [*CompatibleFeatureArray*](../README.md#compatiblefeaturearray))[]): *boolean*
+▸ **includes**(...`features`): `boolean`
 
 Determines whether this feature object includes all of the specified features.
 
@@ -74,20 +82,24 @@ Determines whether this feature object includes all of the specified features.
 
 | Name | Type |
 | :------ | :------ |
-| `...features` | ([*FeatureElement*](../README.md#featureelement) \| [*CompatibleFeatureArray*](../README.md#compatiblefeaturearray))[] |
+| `...features` | ([FeatureElement](../README.md#featureelement) \| [CompatibleFeatureArray](../README.md#compatiblefeaturearray))[] |
 
-**Returns:** *boolean*
+#### Returns
+
+`boolean`
 
 `true` if this feature object includes all of the specified features; otherwise, `false`.
 If no arguments are specified, the return value is `true`.
 
-Inherited from: Feature.includes
+#### Inherited from
+
+Feature.includes
 
 ___
 
 ### restrict
 
-▸ **restrict**(`environment`: ``"forced-strict-mode"`` \| ``"web-worker"``, `engineFeatureObjs?`: readonly [*PredefinedFeature*](predefinedfeature.md)[]): [*CustomFeature*](customfeature.md)
+▸ **restrict**(`environment`, `engineFeatureObjs?`): [CustomFeature](customfeature.md)
 
 Creates a new feature object from this feature by removing elementary features that are not
 available inside a particular environment.
@@ -100,8 +112,12 @@ worker.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `environment` | ``"forced-strict-mode"`` \| ``"web-worker"`` | The environment to which this feature should be restricted. Two environments are currently supported.  <dl>  <dt><code>"forced-strict-mode"</code></dt> <dd> Removes features that are not available in environments that require strict mode code. </dd>  <dt><code>"web-worker"</code></dt> <dd>Removes features that are not available inside web workers.</dd>  </dl> |
-| `engineFeatureObjs?` | readonly [*PredefinedFeature*](predefinedfeature.md)[] | An array of predefined feature objects, each corresponding to a particular engine in which the restriction should be enacted. If this parameter is omitted, the restriction is enacted in all engines. |
+| `engineFeatureObjs?` | readonly [PredefinedFeature](predefinedfeature.md)[] | An array of predefined feature objects, each corresponding to a particular engine in which the restriction should be enacted. If this parameter is omitted, the restriction is enacted in all engines. |
 
-**Returns:** [*CustomFeature*](customfeature.md)
+#### Returns
 
-Inherited from: Feature.restrict
+[CustomFeature](customfeature.md)
+
+#### Inherited from
+
+Feature.restrict

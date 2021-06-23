@@ -7,7 +7,7 @@
 {
     function createOptimizer(replacement)
     {
-        function replaceExpr()
+        function replaceChar()
         {
             return replacement;
         }
@@ -15,8 +15,9 @@
         if (replacement === undefined)
             replacement = '"🪛"';
         var encoder = JScrewIt.debug.createEncoder();
-        encoder.replaceExpr = replaceExpr;
-        var optimizer = encoder.createOptimizer('surrogatePair');
+        encoder._replaceCharByCharCode  = replaceChar;
+        encoder._replaceCharByEscSeq    = replaceChar;
+        var optimizer = encoder._createOptimizer('surrogatePair');
         return optimizer;
     }
 

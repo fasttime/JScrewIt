@@ -235,7 +235,7 @@ function createStrCodesEncoding(encoder, inputData, fromCharCode, splitter, radi
         }
         else
         {
-            var long = strCodeArray.length > encoder.maxDecodableArgs;
+            var long = strCodeArray.length > encoder._maxDecodableArgs;
             if (long)
             {
                 output =
@@ -317,7 +317,7 @@ function encodeByDblDict
     if (!legend)
         return;
     var figureLegendInsertions =
-    encoder.callGetFigureLegendInsertions(getFigureLegendInsertions, figurator, figures);
+    encoder._callGetFigureLegendInsertions(getFigureLegendInsertions, figurator, figures);
     var figureMaxLength = maxLength - legend.length;
     var figureLegend =
     encoder.replaceStringArray
@@ -565,7 +565,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByCharCodes(inputData, undefined, maxLength);
+                var output = this._encodeByCharCodes(inputData, undefined, maxLength);
                 return output;
             },
             2
@@ -585,7 +585,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByCharCodes(inputData, 4, maxLength);
+                var output = this._encodeByCharCodes(inputData, 4, maxLength);
                 return output;
             },
             25
@@ -604,7 +604,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByCodePoints(inputData, undefined, maxLength);
+                var output = this._encodeByCodePoints(inputData, undefined, maxLength);
                 return output;
             },
             3,
@@ -625,7 +625,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByCodePoints(inputData, 4, maxLength);
+                var output = this._encodeByCodePoints(inputData, 4, maxLength);
                 return output;
             },
             38,
@@ -648,7 +648,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByDenseFigures(inputData, maxLength);
+                var output = this._encodeByDenseFigures(inputData, maxLength);
                 return output;
             },
             1888
@@ -675,7 +675,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByDict(inputData, undefined, undefined, maxLength);
+                var output = this._encodeByDict(inputData, undefined, undefined, maxLength);
                 return output;
             },
             2
@@ -704,7 +704,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByDict(inputData, 3, 1, maxLength);
+                var output = this._encodeByDict(inputData, 3, 1, maxLength);
                 return output;
             },
             153
@@ -740,7 +740,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByDict(inputData, 4, 0, maxLength);
+                var output = this._encodeByDict(inputData, 4, 0, maxLength);
                 return output;
             },
             160
@@ -769,7 +769,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByDict(inputData, 4, 1, maxLength);
+                var output = this._encodeByDict(inputData, 4, 1, maxLength);
                 return output;
             },
             218
@@ -800,7 +800,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByDict(inputData, 4, 2, maxLength);
+                var output = this._encodeByDict(inputData, 4, 2, maxLength);
                 return output;
             },
             279
@@ -837,7 +837,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByDict(inputData, 5, 0, maxLength);
+                var output = this._encodeByDict(inputData, 5, 0, maxLength);
                 return output;
             },
             223
@@ -869,7 +869,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeByDict(inputData, 5, 3, maxLength);
+                var output = this._encodeByDict(inputData, 5, 3, maxLength);
                 return output;
             },
             602
@@ -890,7 +890,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         (
             function (inputData, maxLength)
             {
-                var output = this.encodeBySparseFigures(inputData, maxLength);
+                var output = this._encodeBySparseFigures(inputData, maxLength);
                 return output;
             },
             347
@@ -908,7 +908,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
             function (inputData, maxLength)
             {
                 var input = inputData.valueOf();
-                var output = this.encodeExpress(input, maxLength);
+                var output = this._encodeExpress(input, maxLength);
                 return output;
             },
             undefined,
@@ -959,35 +959,14 @@ assignNoEnum
 (
     Encoder.prototype,
     {
-        callGetFigureLegendInsertions:
+        _callGetFigureLegendInsertions:
         function (getFigureLegendInsertions, figurator, figures)
         {
             var figureLegendInsertions = getFigureLegendInsertions(figurator, figures);
             return figureLegendInsertions;
         },
 
-        createDictEncoding:
-        function (legend, charIndexArrayStr, maxLength, radix, coerceToInt)
-        {
-            var mapper;
-            if (radix)
-            {
-                var formatter = this.findDefinition(MAPPER_FORMATTER);
-                var argName = this.findDefinition(OPTIMAL_ARG_NAME);
-                var parseIntArg = (coerceToInt ? '+' : '') + argName;
-                var accessor = '[parseInt(' + parseIntArg + ',' + radix + ')]';
-                mapper = formatter(argName, accessor);
-            }
-            else
-                mapper = '"".charAt.bind';
-            var output =
-            createJSFuckArrayMapping(this, charIndexArrayStr, mapper, legend) + '[' +
-            this.replaceString('join') + ']([])';
-            if (!(output.length > maxLength))
-                return output;
-        },
-
-        encodeByCharCodes:
+        _encodeByCharCodes:
         function (inputData, radix, maxLength)
         {
             var fromCharCode = this.findDefinition(FROM_CHAR_CODE);
@@ -997,7 +976,7 @@ assignNoEnum
             return output;
         },
 
-        encodeByCodePoints:
+        _encodeByCodePoints:
         function (inputData, radix, maxLength)
         {
             var output =
@@ -1006,7 +985,7 @@ assignNoEnum
             return output;
         },
 
-        encodeByDenseFigures:
+        _encodeByDenseFigures:
         function (inputData, maxLength)
         {
             var output =
@@ -1023,7 +1002,7 @@ assignNoEnum
             return output;
         },
 
-        encodeByDict:
+        _encodeByDict:
         function (inputData, radix, amendingCount, maxLength)
         {
             var input = inputData.valueOf();
@@ -1085,7 +1064,7 @@ assignNoEnum
             return output;
         },
 
-        encodeBySparseFigures:
+        _encodeBySparseFigures:
         function (inputData, maxLength)
         {
             var output =
@@ -1102,7 +1081,7 @@ assignNoEnum
             return output;
         },
 
-        encodeExpress:
+        _encodeExpress:
         function (input, maxLength)
         {
             var unit = expressParse(input);
@@ -1120,7 +1099,7 @@ assignNoEnum
             }
         },
 
-        exec:
+        _exec:
         function (input, wrapper, strategyNames, perfInfo)
         {
             var perfLog = this.perfLog = [];
@@ -1133,7 +1112,28 @@ assignNoEnum
             return output;
         },
 
-        maxDecodableArgs: 65533, // Limit imposed by Internet Explorer.
+        _maxDecodableArgs: 65533, // Limit imposed by Internet Explorer.
+
+        createDictEncoding:
+        function (legend, charIndexArrayStr, maxLength, radix, coerceToInt)
+        {
+            var mapper;
+            if (radix)
+            {
+                var formatter = this.findDefinition(MAPPER_FORMATTER);
+                var argName = this.findDefinition(OPTIMAL_ARG_NAME);
+                var parseIntArg = (coerceToInt ? '+' : '') + argName;
+                var accessor = '[parseInt(' + parseIntArg + ',' + radix + ')]';
+                mapper = formatter(argName, accessor);
+            }
+            else
+                mapper = '"".charAt.bind';
+            var output =
+            createJSFuckArrayMapping(this, charIndexArrayStr, mapper, legend) + '[' +
+            this.replaceString('join') + ']([])';
+            if (!(output.length > maxLength))
+                return output;
+        },
 
         // Array elements may not contain the substring "false", because the value false could be
         // used as a separator in the encoding.

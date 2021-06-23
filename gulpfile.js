@@ -227,7 +227,7 @@ task
         const uglifyOpts =
         {
             compress: { global_defs: { NO_DEBUG: true }, hoist_funs: true, passes: 4 },
-            mangle: { properties: { regex: /^[$_]/ } },
+            mangle: { properties: { regex: /^_/ } },
             output: { comments: (node, comment) => comment.pos === 0 },
         };
         const stream =

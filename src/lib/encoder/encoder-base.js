@@ -59,16 +59,16 @@ var BOND_STRENGTH_STRONG    = 2;
 
 export function Encoder(mask)
 {
-    this.mask       = mask;
-    this.charCache  = _Object_create(STATIC_CHAR_CACHE);
-    this.constCache = _Object_create(STATIC_CONST_CACHE);
-    this.optimizers = createEmpty();
-    this.stack      = [];
+    this.mask           = mask;
+    this._charCache     = _Object_create(STATIC_CHAR_CACHE);
+    this._constCache    = _Object_create(STATIC_CONST_CACHE);
+    this._optimizers    = createEmpty();
+    this._stack         = [];
 }
 
 function callResolver(encoder, stackName, resolver)
 {
-    var stack = encoder.stack;
+    var stack = encoder._stack;
     var stackIndex = stack.indexOf(stackName);
     stack.push(stackName);
     try
@@ -94,7 +94,7 @@ function defaultResolveCharacter(encoder, char)
 {
     var charCode = char.charCodeAt();
     var atobOpt = charCode < 0x100;
-    var solution = encoder.createCharDefaultSolution(char, charCode, atobOpt, true, true, true);
+    var solution = encoder._createCharDefaultSolution(char, charCode, atobOpt, true, true, true);
     return solution;
 }
 
@@ -407,7 +407,7 @@ function resolveCharByDefaultMethod(encoder, char, charCode, replaceChar, entryC
 
 function throwSyntaxError(encoder, message)
 {
-    var stack = encoder.stack;
+    var stack = encoder._stack;
     var stackLength = stack.length;
     if (stackLength)
         message += ' in the definition of ' + stack[stackLength - 1];
@@ -452,29 +452,60 @@ assignNoEnum
 (
     Encoder.prototype,
     {
-        $replaceCharByAtob: replaceCharByAtob,
-
-        $replaceCharByCharCode: replaceCharByCharCode,
-
-        $replaceCharByEscSeq: replaceCharByEscSeq,
-
-        $replaceCharByUnescape: replaceCharByUnescape,
-
-        $resolveCharInNativeFunction:
-        function (char, offset, getPaddingEntries, paddingShifts)
+        _createCharDefaultSolution:
+        function (char, charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
         {
-            var nativeFunctionInfo = this.nativeFunctionInfo;
-            if (!nativeFunctionInfo)
+            var solution;
+            if (atobOpt && this.findDefinition(CONSTANTS.atob))
             {
-                nativeFunctionInfo = this.findDefinition(NATIVE_FUNCTION_INFOS);
-                this.nativeFunctionInfo = nativeFunctionInfo;
+                solution =
+                resolveCharByDefaultMethod(this, char, charCode, replaceCharByAtob, 'atob');
             }
-            var expr = nativeFunctionInfo.expr;
-            var index = offset + nativeFunctionInfo.shift;
-            var paddingEntries = getPaddingEntries(index);
-            var solution = this.resolveCharInExpr(char, expr, index, paddingEntries, paddingShifts);
+            else
+            {
+                var solutions = [];
+                if (charCodeOpt)
+                {
+                    solution =
+                    resolveCharByDefaultMethod
+                    (this, char, charCode, replaceCharByCharCode, 'char-code');
+                    solutions.push(solution);
+                }
+                if (escSeqOpt)
+                {
+                    solution =
+                    resolveCharByDefaultMethod
+                    (this, char, charCode, replaceCharByEscSeq, 'esc-seq');
+                    solutions.push(solution);
+                }
+                if (unescapeOpt)
+                {
+                    solution =
+                    resolveCharByDefaultMethod
+                    (this, char, charCode, replaceCharByUnescape, 'unescape');
+                    solutions.push(solution);
+                }
+                solution = shortestOf.apply(null, solutions);
+            }
             return solution;
         },
+
+        _getPaddingBlock:
+        function (length)
+        {
+            var paddingBlock = R_PADDINGS[length];
+            if (paddingBlock !== undefined)
+                return paddingBlock;
+            throwSyntaxError(this, 'Undefined regular padding block with length ' + length);
+        },
+
+        _replaceCharByAtob: replaceCharByAtob,
+
+        _replaceCharByCharCode: replaceCharByCharCode,
+
+        _replaceCharByEscSeq: replaceCharByEscSeq,
+
+        _replaceCharByUnescape: replaceCharByUnescape,
 
         _replaceExpressUnit:
         function (unit, bond, unitIndices, maxLength, replacers)
@@ -541,45 +572,49 @@ assignNoEnum
             return output;
         },
 
-        constantDefinitions: CONSTANTS,
-
-        createCharDefaultSolution:
-        function (char, charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
+        _resolveCharInExpr:
+        function (char, expr, index, paddingEntries, paddingShifts)
         {
-            var solution;
-            if (atobOpt && this.findDefinition(CONSTANTS.atob))
+            if (!paddingEntries)
+                throwSyntaxError(this, 'Missing padding entries for index ' + index);
+            var padding = this.findDefinition(paddingEntries);
+            var paddingBlock;
+            var shiftedIndex;
+            if (typeof padding === 'number')
             {
-                solution =
-                resolveCharByDefaultMethod(this, char, charCode, replaceCharByAtob, 'atob');
+                var paddingShift = this.findDefinition(paddingShifts);
+                paddingBlock = this._getPaddingBlock(padding);
+                shiftedIndex = index + padding + paddingShift;
             }
             else
             {
-                var solutions = [];
-                if (charCodeOpt)
-                {
-                    solution =
-                    resolveCharByDefaultMethod
-                    (this, char, charCode, replaceCharByCharCode, 'char-code');
-                    solutions.push(solution);
-                }
-                if (escSeqOpt)
-                {
-                    solution =
-                    resolveCharByDefaultMethod
-                    (this, char, charCode, replaceCharByEscSeq, 'esc-seq');
-                    solutions.push(solution);
-                }
-                if (unescapeOpt)
-                {
-                    solution =
-                    resolveCharByDefaultMethod
-                    (this, char, charCode, replaceCharByUnescape, 'unescape');
-                    solutions.push(solution);
-                }
-                solution = shortestOf.apply(null, solutions);
+                paddingBlock = padding.block;
+                shiftedIndex = padding.shiftedIndex;
             }
+            var fullExpr = '(' + paddingBlock + '+' + expr + ')[' + shiftedIndex + ']';
+            var replacement = this.replaceExpr(fullExpr);
+            var solution = new SimpleSolution(char, replacement, SolutionType.STRING);
             return solution;
         },
+
+        _resolveCharInNativeFunction:
+        function (char, offset, getPaddingEntries, paddingShifts)
+        {
+            var nativeFunctionInfo = this._nativeFunctionInfo;
+            if (!nativeFunctionInfo)
+            {
+                nativeFunctionInfo = this.findDefinition(NATIVE_FUNCTION_INFOS);
+                this._nativeFunctionInfo = nativeFunctionInfo;
+            }
+            var expr = nativeFunctionInfo.expr;
+            var index = offset + nativeFunctionInfo.shift;
+            var paddingEntries = getPaddingEntries(index);
+            var solution =
+            this._resolveCharInExpr(char, expr, index, paddingEntries, paddingShifts);
+            return solution;
+        },
+
+        constantDefinitions: CONSTANTS,
 
         findDefinition:
         function (entries)
@@ -590,15 +625,6 @@ assignNoEnum
                 if (this.hasFeatures(entry.mask))
                     return entry.definition;
             }
-        },
-
-        getPaddingBlock:
-        function (length)
-        {
-            var paddingBlock = R_PADDINGS[length];
-            if (paddingBlock !== undefined)
-                return paddingBlock;
-            throwSyntaxError(this, 'Undefined regular padding block with length ' + length);
         },
 
         hasFeatures:
@@ -702,7 +728,7 @@ assignNoEnum
         function (str, options)
         {
             options = options || { };
-            var optimizerList = this.getOptimizerList(str, options.optimize);
+            var optimizerList = this._getOptimizerList(str, options.optimize);
             var screwMode = options.screwMode || SCREW_NORMAL;
             var buffer = new ScrewBuffer(screwMode, this.maxGroupThreshold, optimizerList);
             var firstSolution = options.firstSolution;
@@ -767,35 +793,10 @@ assignNoEnum
             return solution;
         },
 
-        resolveCharInExpr:
-        function (char, expr, index, paddingEntries, paddingShifts)
-        {
-            if (!paddingEntries)
-                throwSyntaxError(this, 'Missing padding entries for index ' + index);
-            var padding = this.findDefinition(paddingEntries);
-            var paddingBlock;
-            var shiftedIndex;
-            if (typeof padding === 'number')
-            {
-                var paddingShift = this.findDefinition(paddingShifts);
-                paddingBlock = this.getPaddingBlock(padding);
-                shiftedIndex = index + padding + paddingShift;
-            }
-            else
-            {
-                paddingBlock = padding.block;
-                shiftedIndex = padding.shiftedIndex;
-            }
-            var fullExpr = '(' + paddingBlock + '+' + expr + ')[' + shiftedIndex + ']';
-            var replacement = this.replaceExpr(fullExpr);
-            var solution = new SimpleSolution(char, replacement, SolutionType.STRING);
-            return solution;
-        },
-
         resolveCharacter:
         function (char)
         {
-            var charCache = this.charCache;
+            var charCache = this._charCache;
             var solution = charCache[char];
             if (solution === undefined)
             {
@@ -829,7 +830,7 @@ assignNoEnum
         resolveConstant:
         function (constant)
         {
-            var constCache = this.constCache;
+            var constCache = this._constCache;
             var solution = constCache[constant];
             if (solution === undefined)
             {

@@ -49,7 +49,7 @@ export function defineList(availableEntries, indexEntries)
 
 export function makeCallableWithFeatures(fn)
 {
-    fn.$callWithFeatures = callWithFeatures;
+    fn._callWithFeatures = callWithFeatures;
 }
 
 function sliceArgs(args, startIndex, endIndex)

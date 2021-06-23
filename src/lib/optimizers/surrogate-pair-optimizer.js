@@ -4,8 +4,8 @@ import { SimpleSolution, SolutionType }             from 'novem';
 
 function calculateMinSurrogateAppendLength(encoder)
 {
-    var minLengthByCharCode = encoder.$replaceCharByCharCode(100000).length;
-    var minLengthByEscSeq   = encoder.$replaceCharByEscSeq(0x10000).length;
+    var minLengthByCharCode = encoder._replaceCharByCharCode(100000).length;
+    var minLengthByEscSeq   = encoder._replaceCharByEscSeq(0x10000).length;
     var minSurrogateAppendLength = _Math_min(minLengthByCharCode, minLengthByEscSeq) + 1 >> 1;
     return minSurrogateAppendLength;
 }
@@ -61,11 +61,10 @@ export default function (encoder)
             if (!charCode2)
                 continue;
             var codePoint = codePointFromSurrogatePair(charCode1, charCode2);
-            var replacementByCharCode   = encoder.$replaceCharByCharCode(codePoint);
-            var replacementByEscSeq     = encoder.$replaceCharByEscSeq(codePoint);
+            var replacementByCharCode   = encoder._replaceCharByCharCode(codePoint);
+            var replacementByEscSeq     = encoder._replaceCharByEscSeq(codePoint);
             var replacement = shortestOf(replacementByCharCode, replacementByEscSeq);
-            var length = replacement.length;
-            var saving = solution1.length + 1 + solution2.length - length;
+            var saving = solution1.appendLength + solution2.appendLength - replacement.length - 1;
             if (solutions.length === 2 && bond)
                 saving += 2; // "(" + ")"
             if (saving > 0)

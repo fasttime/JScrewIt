@@ -11,14 +11,14 @@ var FROM_CODE_POINT_MASK = Feature.FROM_CODE_POINT.mask;
 
 function addOptimizer(optimizerList, optName, keyData, extraData)
 {
-    var optimizers = this.optimizers;
+    var optimizers = this._optimizers;
     var optKey = optName;
     if (keyData != null)
         optKey += ':' + keyData;
     var optimizer = optimizers[optKey];
     if (!optimizer)
     {
-        optimizer = this.createOptimizer(optName, keyData, extraData);
+        optimizer = this._createOptimizer(optName, keyData, extraData);
         optimizers[optKey] = optimizer;
     }
     optimizerList.push(optimizer);
@@ -101,8 +101,8 @@ assignNoEnum
 (
     Encoder.prototype,
     {
-        _addOptimizer: addOptimizer,
-        createOptimizer: createOptimizer,
-        getOptimizerList: getOptimizerList,
+        _addOptimizer:      addOptimizer,
+        _createOptimizer:   createOptimizer,
+        _getOptimizerList:  getOptimizerList,
     }
 );

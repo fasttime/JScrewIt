@@ -25,7 +25,7 @@
         var encoder = JScrewIt.debug.createEncoder();
         encoder.resolve             = resolve;
         encoder.resolveCharacter    = resolveCharacter;
-        var optimizer = encoder.createOptimizer('complex', 'feet');
+        var optimizer = encoder._createOptimizer('complex', 'feet');
         return optimizer;
     }
 

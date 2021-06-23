@@ -31,7 +31,7 @@
 
 ### CompatibleFeatureArray
 
-Ƭ **CompatibleFeatureArray**: readonly [*FeatureElement*](README.md#featureelement)[]
+Ƭ **CompatibleFeatureArray**: readonly [FeatureElement](README.md#featureelement)[]
 
 An array containing any number of feature objects or names or aliases of predefined features, in
 no particular order.
@@ -55,7 +55,7 @@ ___
 
 ### FeatureElement
 
-Ƭ **FeatureElement**: [*Feature*](README.md#feature) \| keyof [*FeatureAll*](interfaces/featureall.md)
+Ƭ **FeatureElement**: [Feature](README.md#feature) \| keyof [FeatureAll](interfaces/featureall.md)
 
 A feature object or a name or alias of a predefined feature.
 
@@ -68,7 +68,7 @@ ___
 
 ### PredefinedFeatureName
 
-Ƭ **PredefinedFeatureName**: [*ElementaryFeatureName*](README.md#elementaryfeaturename) \| ``"ANDRO_4_0"`` \| ``"ANDRO_4_1"`` \| ``"ANDRO_4_4"`` \| ``"AUTO"`` \| ``"BROWSER"`` \| ``"CHROME_86"`` \| ``"COMPACT"`` \| ``"DEFAULT"`` \| ``"FF_78"`` \| ``"FF_83"`` \| ``"IE_10"`` \| ``"IE_11"`` \| ``"IE_11_WIN_10"`` \| ``"IE_9"`` \| ``"NODE_0_10"`` \| ``"NODE_0_12"`` \| ``"NODE_10"`` \| ``"NODE_11"`` \| ``"NODE_12"`` \| ``"NODE_13"`` \| ``"NODE_15"`` \| ``"NODE_16"`` \| ``"NODE_4"`` \| ``"NODE_5"`` \| ``"SAFARI_10"`` \| ``"SAFARI_12"`` \| ``"SAFARI_13"`` \| ``"SAFARI_14_0_1"`` \| ``"SAFARI_14_1"`` \| ``"SAFARI_7_0"`` \| ``"SAFARI_7_1"`` \| ``"SAFARI_9"``
+Ƭ **PredefinedFeatureName**: [ElementaryFeatureName](README.md#elementaryfeaturename) \| ``"ANDRO_4_0"`` \| ``"ANDRO_4_1"`` \| ``"ANDRO_4_4"`` \| ``"AUTO"`` \| ``"BROWSER"`` \| ``"CHROME_86"`` \| ``"COMPACT"`` \| ``"DEFAULT"`` \| ``"FF_78"`` \| ``"FF_83"`` \| ``"IE_10"`` \| ``"IE_11"`` \| ``"IE_11_WIN_10"`` \| ``"IE_9"`` \| ``"NODE_0_10"`` \| ``"NODE_0_12"`` \| ``"NODE_10"`` \| ``"NODE_11"`` \| ``"NODE_12"`` \| ``"NODE_13"`` \| ``"NODE_15"`` \| ``"NODE_16"`` \| ``"NODE_4"`` \| ``"NODE_5"`` \| ``"SAFARI_10"`` \| ``"SAFARI_12"`` \| ``"SAFARI_13"`` \| ``"SAFARI_14_0_1"`` \| ``"SAFARI_14_1"`` \| ``"SAFARI_7_0"`` \| ``"SAFARI_7_1"`` \| ``"SAFARI_9"``
 
 Name of a predefined feature.
 
@@ -76,13 +76,13 @@ Name of a predefined feature.
 
 ### Feature
 
-• **Feature**: [*FeatureConstructor*](interfaces/featureconstructor.md)
+• **Feature**: [FeatureConstructor](interfaces/featureconstructor.md)
 
 ___
 
 ### default
 
-• **default**: [*default*](README.md#default)
+• **default**: [default](README.md#default)
 
 JScrewIt object, available in Node.js.
 
@@ -90,4 +90,4 @@ ___
 
 ### encode
 
-• **encode**: [*encode*](README.md#encode)
+• **encode**: [encode](README.md#encode)

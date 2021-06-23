@@ -2,7 +2,9 @@
 
 ## Callable
 
-▸ **encode**(`input`: *string*, `options?`: [*EncodeOptions*](encodeoptions.md)): *string*
+### encode
+
+▸ **encode**(`input`, `options?`): `string`
 
 Encodes a given string into JSFuck.
 
@@ -20,10 +22,12 @@ Also, an out of memory condition may occur when processing very large data.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `input` | *string* | The string to encode. |
-| `options?` | [*EncodeOptions*](encodeoptions.md) | An optional object specifying encoding options. |
+| `input` | `string` | The string to encode. |
+| `options?` | [EncodeOptions](encodeoptions.md) | An optional object specifying encoding options. |
 
-**Returns:** *string*
+#### Returns
+
+`string`
 
 The encoded string.
 
@@ -37,7 +41,7 @@ The encoded string.
 
 ### permanentCaching
 
-• **permanentCaching**: *boolean*
+• **permanentCaching**: `boolean`
 
 Determines whether all created encoders are cached permanently.
 

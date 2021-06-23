@@ -31,7 +31,7 @@
         var encoder = JScrewIt.debug.createEncoder();
         encoder.replaceExpr     = replaceExpr;
         encoder.replaceString   = replaceString;
-        var optimizer = encoder.createOptimizer('comma');
+        var optimizer = encoder._createOptimizer('comma');
         return optimizer;
     }
 

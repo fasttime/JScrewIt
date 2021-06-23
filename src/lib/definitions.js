@@ -55,7 +55,7 @@ var FH_R_PADDING_SHIFTS;
 
 function backslashDefinition()
 {
-    var replacement = this.$replaceCharByUnescape(0x5C);
+    var replacement = this._replaceCharByUnescape(0x5C);
     var solution = new SimpleSolution(undefined, replacement, SolutionType.STRING);
     return solution;
 }
@@ -71,7 +71,7 @@ function createCharAtFnPosDefinition(expr, index, paddingEntries)
     function definitionFX(char)
     {
         var solution =
-        this.resolveCharInExpr(char, expr, index, paddingEntries, FH_R_PADDING_SHIFTS);
+        this._resolveCharInExpr(char, expr, index, paddingEntries, FH_R_PADDING_SHIFTS);
         return solution;
     }
 
@@ -83,7 +83,7 @@ function createCharInFBDefinition(offset)
     function definitionFB(char)
     {
         var solution =
-        this.$resolveCharInNativeFunction(char, offset, getFBPaddingEntries, FB_R_PADDING_SHIFTS);
+        this._resolveCharInNativeFunction(char, offset, getFBPaddingEntries, FB_R_PADDING_SHIFTS);
         return solution;
     }
 
@@ -95,7 +95,7 @@ function createCharInFHDefinition(offset)
     function definitionFH(char)
     {
         var solution =
-        this.$resolveCharInNativeFunction(char, offset, getFHPaddingEntries, FH_R_PADDING_SHIFTS);
+        this._resolveCharInNativeFunction(char, offset, getFHPaddingEntries, FH_R_PADDING_SHIFTS);
         return solution;
     }
 
@@ -121,7 +121,7 @@ function createLazySolution(source, expr, type)
 function definePadding(block, shiftedIndex)
 {
     var padding = { block: block, shiftedIndex: shiftedIndex };
-    var paddingEntry = define.$callWithFeatures(padding, arguments, 2);
+    var paddingEntry = define._callWithFeatures(padding, arguments, 2);
     return paddingEntry;
 }
 
@@ -404,7 +404,7 @@ function getFHPaddingEntries(index)
         {
             var charCode = char.charCodeAt();
             var solution =
-            this.createCharDefaultSolution
+            this._createCharDefaultSolution
             (char, charCode, atobOpt && charCode < 0x100, charCodeOpt, escSeqOpt, unescapeOpt);
             return solution;
         }
@@ -416,7 +416,7 @@ function getFHPaddingEntries(index)
     {
         var paddingEntries = getFHPaddingEntries(index);
         var definition = createCharAtFnPosDefinition(expr, index, paddingEntries);
-        var entry = define.$callWithFeatures(definition, arguments, 2);
+        var entry = define._callWithFeatures(definition, arguments, 2);
         return entry;
     }
 
@@ -447,7 +447,7 @@ function getFHPaddingEntries(index)
     function defineCharInFH(offset)
     {
         var definition = createCharInFHDefinition(offset);
-        var entry = define.$callWithFeatures(definition, arguments, 1);
+        var entry = define._callWithFeatures(definition, arguments, 1);
         return entry;
     }
 
@@ -456,7 +456,7 @@ function getFHPaddingEntries(index)
         var expr = '(' + number + ')[TO_LOCALE_STRING](' + locale + ')';
         if (index != null)
             expr += '[' + index + ']';
-        var entry = define.$callWithFeatures(expr, LOCALE_NUMERALS, arguments, 3);
+        var entry = define._callWithFeatures(expr, LOCALE_NUMERALS, arguments, 3);
         return entry;
     }
 
@@ -486,7 +486,7 @@ function getFHPaddingEntries(index)
     {
         CHARACTERS[char] =
         [
-            defineLocalizedNumeral.$callWithFeatures(locale, number, index, arguments, 4),
+            defineLocalizedNumeral._callWithFeatures(locale, number, index, arguments, 4),
             defineCharDefault(),
         ];
     }
@@ -498,7 +498,7 @@ function getFHPaddingEntries(index)
         {
             var char = fromCharCode(zeroCharCode + digit);
             useLocaleNumeralDefinition
-            .$callWithFeatures(char, locale, digit, undefined, arguments, 2);
+            ._callWithFeatures(char, locale, digit, undefined, arguments, 2);
         }
     }
 

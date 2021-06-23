@@ -31,7 +31,7 @@ function encode(input, options)
         input = trimJS(input);
     var perfInfo = options.perfInfo;
     var encoder = getEncoder(features);
-    var output = encoder.exec(input, wrapper, strategyNames, perfInfo);
+    var output = encoder._exec(input, wrapper, strategyNames, perfInfo);
     return output;
 }
 

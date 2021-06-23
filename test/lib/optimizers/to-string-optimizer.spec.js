@@ -32,7 +32,7 @@
         var toStringSolution = { replacement: toStringReplacement };
         var encoder = JScrewIt.debug.createEncoder();
         encoder.resolveConstant = resolveConstant;
-        var optimizer = encoder.createOptimizer('toString');
+        var optimizer = encoder._createOptimizer('toString');
         return optimizer;
     }
 
