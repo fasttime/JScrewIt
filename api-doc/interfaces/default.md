@@ -13,10 +13,10 @@ JScrewIt object, available in Node.js.
 
 ### Feature
 
-• **Feature**: [FeatureConstructor](featureconstructor.md)
+• **Feature**: [`FeatureConstructor`](featureconstructor.md)
 
 ___
 
 ### encode
 
-• **encode**: [encode](../README.md#encode)
+• **encode**: [`encode`](../README.md#encode)

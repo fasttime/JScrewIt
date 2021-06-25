@@ -124,6 +124,38 @@ export const Feature: FeatureConstructor;
 
 export interface FeatureConstructor extends FeatureAll
 {
+
+    /**
+     * Creates a new feature object from the union of the specified features.
+     *
+     * The constructor can be used with or without the `new` operator, e.g.
+     * `new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
+     * If no arguments are specified, the new feature object will be equivalent to
+     * <code>[[DEFAULT]]</code>.
+     *
+     * @example
+     *
+     * The following statements are equivalent, and will all construct a new feature object
+     * including both <code>[[ANY_DOCUMENT]]</code> and <code>[[ANY_WINDOW]]</code>.
+     *
+     * ```js
+     * new JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
+     * ```
+     *
+     * ```js
+     * new JScrewIt.Feature(JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW);
+     * ```
+     *
+     * ```js
+     * new JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW]);
+     * ```
+     *
+     * @throws
+     *
+     * An error is thrown if any of the specified features are not mutually compatible.
+     */
+    (...features: (FeatureElement | CompatibleFeatureArray)[]): CustomFeature;
+
     /**
      * An immutable mapping of all predefined feature objects accessed by name or alias.
      *
@@ -176,37 +208,6 @@ export interface FeatureConstructor extends FeatureAll
      * An error is thrown if any of the specified features are not mutually compatible.
      */
     new (...features: (FeatureElement | CompatibleFeatureArray)[]): CustomFeature;
-
-    /**
-     * Creates a new feature object from the union of the specified features.
-     *
-     * The constructor can be used with or without the `new` operator, e.g.
-     * `new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
-     * If no arguments are specified, the new feature object will be equivalent to
-     * <code>[[DEFAULT]]</code>.
-     *
-     * @example
-     *
-     * The following statements are equivalent, and will all construct a new feature object
-     * including both <code>[[ANY_DOCUMENT]]</code> and <code>[[ANY_WINDOW]]</code>.
-     *
-     * ```js
-     * new JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
-     * ```
-     *
-     * ```js
-     * new JScrewIt.Feature(JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW);
-     * ```
-     *
-     * ```js
-     * new JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW]);
-     * ```
-     *
-     * @throws
-     *
-     * An error is thrown if any of the specified features are not mutually compatible.
-     */
-    (...features: (FeatureElement | CompatibleFeatureArray)[]): CustomFeature;
 
     /**
      * Determines whether the specified features are mutually compatible.

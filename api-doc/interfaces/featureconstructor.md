@@ -2,15 +2,15 @@
 
 ## Hierarchy
 
-- [FeatureAll](featureall.md)
+- [`FeatureAll`](featureall.md)
 
-  ↳ **FeatureConstructor**
+  ↳ **`FeatureConstructor`**
 
 ## Callable
 
 ### FeatureConstructor
 
-▸ **FeatureConstructor**(...`features`): [CustomFeature](customfeature.md)
+▸ **FeatureConstructor**(...`features`): [`CustomFeature`](customfeature.md)
 
 Creates a new feature object from the union of the specified features.
 
@@ -44,11 +44,11 @@ An error is thrown if any of the specified features are not mutually compatible.
 
 | Name | Type |
 | :------ | :------ |
-| `...features` | ([FeatureElement](../README.md#featureelement) \| [CompatibleFeatureArray](../README.md#compatiblefeaturearray))[] |
+| `...features` | ([`FeatureElement`](../README.md#featureelement) \| [`CompatibleFeatureArray`](../README.md#compatiblefeaturearray))[] |
 
 #### Returns
 
-[CustomFeature](customfeature.md)
+[`CustomFeature`](customfeature.md)
 
 ## Table of contents
 
@@ -197,7 +197,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 
 | Name | Type |
 | :------ | :------ |
-| `...features` | ([FeatureElement](../README.md#featureelement) \| [CompatibleFeatureArray](../README.md#compatiblefeaturearray))[] |
+| `...features` | ([`FeatureElement`](../README.md#featureelement) \| [`CompatibleFeatureArray`](../README.md#compatiblefeaturearray))[] |
 
 #### Inherited from
 
@@ -207,7 +207,7 @@ FeatureAll.constructor
 
 ### ALL
 
-• `Readonly` **ALL**: [FeatureAll](featureall.md)
+• `Readonly` **ALL**: [`FeatureAll`](featureall.md)
 
 An immutable mapping of all predefined feature objects accessed by name or alias.
 
@@ -229,7 +229,7 @@ ___
 
 ### ANDRO\_4\_0
 
-• **ANDRO\_4\_0**: [PredefinedFeature](predefinedfeature.md)
+• **ANDRO\_4\_0**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Android Browser 4.0.
 
@@ -241,7 +241,7 @@ ___
 
 ### ANDRO\_4\_1
 
-• **ANDRO\_4\_1**: [PredefinedFeature](predefinedfeature.md)
+• **ANDRO\_4\_1**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Android Browser 4.1 to 4.3.
 
@@ -253,7 +253,7 @@ ___
 
 ### ANDRO\_4\_4
 
-• **ANDRO\_4\_4**: [PredefinedFeature](predefinedfeature.md)
+• **ANDRO\_4\_4**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Android Browser 4.4.
 
@@ -265,7 +265,7 @@ ___
 
 ### ANY\_DOCUMENT
 
-• **ANY\_DOCUMENT**: [ElementaryFeature](elementaryfeature.md)
+• **ANY\_DOCUMENT**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object document whose string representation starts with "\[object " and ends with "Document\]".
 
@@ -281,7 +281,7 @@ ___
 
 ### ANY\_WINDOW
 
-• **ANY\_WINDOW**: [ElementaryFeature](elementaryfeature.md)
+• **ANY\_WINDOW**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object self whose string representation starts with "\[object " and ends with "Window\]".
 
@@ -297,7 +297,7 @@ ___
 
 ### ARRAY\_ITERATOR
 
-• **ARRAY\_ITERATOR**: [ElementaryFeature](elementaryfeature.md)
+• **ARRAY\_ITERATOR**: [`ElementaryFeature`](elementaryfeature.md)
 
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
 
@@ -313,7 +313,7 @@ ___
 
 ### ARROW
 
-• **ARROW**: [ElementaryFeature](elementaryfeature.md)
+• **ARROW**: [`ElementaryFeature`](elementaryfeature.md)
 
 Support for arrow functions.
 
@@ -329,7 +329,7 @@ ___
 
 ### AT
 
-• **AT**: [ElementaryFeature](elementaryfeature.md)
+• **AT**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the native function Array.prototype.at.
 
@@ -345,7 +345,7 @@ ___
 
 ### ATOB
 
-• **ATOB**: [ElementaryFeature](elementaryfeature.md)
+• **ATOB**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global functions atob and btoa.
 
@@ -361,7 +361,7 @@ ___
 
 ### AUTO
 
-• **AUTO**: [PredefinedFeature](predefinedfeature.md)
+• **AUTO**: [`PredefinedFeature`](predefinedfeature.md)
 
 All features available in the current engine.
 
@@ -373,7 +373,7 @@ ___
 
 ### BARPROP
 
-• **BARPROP**: [ElementaryFeature](elementaryfeature.md)
+• **BARPROP**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object statusbar having the string representation "\[object BarProp\]".
 
@@ -389,7 +389,7 @@ ___
 
 ### BROWSER
 
-• **BROWSER**: [PredefinedFeature](predefinedfeature.md)
+• **BROWSER**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in all browsers.
 
@@ -403,7 +403,7 @@ ___
 
 ### CAPITAL\_HTML
 
-• **CAPITAL\_HTML**: [ElementaryFeature](elementaryfeature.md)
+• **CAPITAL\_HTML**: [`ElementaryFeature`](elementaryfeature.md)
 
 The property that the various string methods returning HTML code such as String.prototype.big or String.prototype.link have both the tag name and attributes written in capital letters.
 
@@ -419,7 +419,7 @@ ___
 
 ### CHROME
 
-• **CHROME**: [PredefinedFeature](predefinedfeature.md)
+• **CHROME**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in the current stable versions of Chrome, Edge and Opera.
 
@@ -433,7 +433,7 @@ ___
 
 ### CHROME\_86
 
-• **CHROME\_86**: [PredefinedFeature](predefinedfeature.md)
+• **CHROME\_86**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Chrome 86, Edge 86 and Opera 72 or later.
 
@@ -453,7 +453,7 @@ ___
 
 ### CHROME\_PREV
 
-• **CHROME\_PREV**: [PredefinedFeature](predefinedfeature.md)
+• **CHROME\_PREV**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in the previous to current versions of Chrome and Edge.
 
@@ -467,7 +467,7 @@ ___
 
 ### COMPACT
 
-• **COMPACT**: [PredefinedFeature](predefinedfeature.md)
+• **COMPACT**: [`PredefinedFeature`](predefinedfeature.md)
 
 All new browsers' features.
 
@@ -481,7 +481,7 @@ ___
 
 ### CONSOLE
 
-• **CONSOLE**: [ElementaryFeature](elementaryfeature.md)
+• **CONSOLE**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object console having the string representation "\[object Console\]".
 
@@ -499,7 +499,7 @@ ___
 
 ### DEFAULT
 
-• **DEFAULT**: [PredefinedFeature](predefinedfeature.md)
+• **DEFAULT**: [`PredefinedFeature`](predefinedfeature.md)
 
 Minimum feature level, compatible with all supported engines in all environments.
 
@@ -511,7 +511,7 @@ ___
 
 ### DOCUMENT
 
-• **DOCUMENT**: [ElementaryFeature](elementaryfeature.md)
+• **DOCUMENT**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object document having the string representation "\[object Document\]".
 
@@ -527,7 +527,7 @@ ___
 
 ### DOMWINDOW
 
-• **DOMWINDOW**: [ElementaryFeature](elementaryfeature.md)
+• **DOMWINDOW**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object self having the string representation "\[object DOMWindow\]".
 
@@ -543,7 +543,7 @@ ___
 
 ### ELEMENTARY
 
-• `Readonly` **ELEMENTARY**: readonly [ElementaryFeature](elementaryfeature.md)[]
+• `Readonly` **ELEMENTARY**: readonly [`ElementaryFeature`](elementaryfeature.md)[]
 
 An immutable array of all elementary feature objects ordered by name.
 
@@ -551,7 +551,7 @@ ___
 
 ### ESC\_HTML\_ALL
 
-• **ESC\_HTML\_ALL**: [ElementaryFeature](elementaryfeature.md)
+• **ESC\_HTML\_ALL**: [`ElementaryFeature`](elementaryfeature.md)
 
 The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
 
@@ -567,7 +567,7 @@ ___
 
 ### ESC\_HTML\_QUOT
 
-• **ESC\_HTML\_QUOT**: [ElementaryFeature](elementaryfeature.md)
+• **ESC\_HTML\_QUOT**: [`ElementaryFeature`](elementaryfeature.md)
 
 The property that double quotation marks in the argument of String.prototype.fontcolor are escaped as "\&quot;".
 
@@ -583,7 +583,7 @@ ___
 
 ### ESC\_HTML\_QUOT\_ONLY
 
-• **ESC\_HTML\_QUOT\_ONLY**: [ElementaryFeature](elementaryfeature.md)
+• **ESC\_HTML\_QUOT\_ONLY**: [`ElementaryFeature`](elementaryfeature.md)
 
 The property that only double quotation marks and no other characters in the argument of String.prototype.fontcolor are escaped into HTML entities.
 
@@ -599,7 +599,7 @@ ___
 
 ### ESC\_REGEXP\_LF
 
-• **ESC\_REGEXP\_LF**: [ElementaryFeature](elementaryfeature.md)
+• **ESC\_REGEXP\_LF**: [`ElementaryFeature`](elementaryfeature.md)
 
 Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format line feed characters \("\\n"\) in their string representation.
 
@@ -615,7 +615,7 @@ ___
 
 ### ESC\_REGEXP\_SLASH
 
-• **ESC\_REGEXP\_SLASH**: [ElementaryFeature](elementaryfeature.md)
+• **ESC\_REGEXP\_SLASH**: [`ElementaryFeature`](elementaryfeature.md)
 
 Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format slashes \("/"\) in their string representation.
 
@@ -631,7 +631,7 @@ ___
 
 ### EXTERNAL
 
-• **EXTERNAL**: [ElementaryFeature](elementaryfeature.md)
+• **EXTERNAL**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object sidebar having the string representation "\[object External\]".
 
@@ -647,7 +647,7 @@ ___
 
 ### FF
 
-• **FF**: [PredefinedFeature](predefinedfeature.md)
+• **FF**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in the current stable version of Firefox.
 
@@ -661,7 +661,7 @@ ___
 
 ### FF\_78
 
-• **FF\_78**: [PredefinedFeature](predefinedfeature.md)
+• **FF\_78**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Firefox 78 to 82.
 
@@ -681,7 +681,7 @@ ___
 
 ### FF\_83
 
-• **FF\_83**: [PredefinedFeature](predefinedfeature.md)
+• **FF\_83**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Firefox 83 or later.
 
@@ -701,7 +701,7 @@ ___
 
 ### FF\_ESR
 
-• **FF\_ESR**: [PredefinedFeature](predefinedfeature.md)
+• **FF\_ESR**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in the current version of Firefox ESR.
 
@@ -715,7 +715,7 @@ ___
 
 ### FF\_PREV
 
-• **FF\_PREV**: [PredefinedFeature](predefinedfeature.md)
+• **FF\_PREV**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in the previous to current version of Firefox.
 
@@ -729,7 +729,7 @@ ___
 
 ### FF\_SRC
 
-• **FF\_SRC**: [ElementaryFeature](elementaryfeature.md)
+• **FF\_SRC**: [`ElementaryFeature`](elementaryfeature.md)
 
 A string representation of native functions typical for Firefox and Safari.
 
@@ -747,7 +747,7 @@ ___
 
 ### FILL
 
-• **FILL**: [ElementaryFeature](elementaryfeature.md)
+• **FILL**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the native function Array.prototype.fill.
 
@@ -763,7 +763,7 @@ ___
 
 ### FLAT
 
-• **FLAT**: [ElementaryFeature](elementaryfeature.md)
+• **FLAT**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the native function Array.prototype.flat.
 
@@ -779,7 +779,7 @@ ___
 
 ### FROM\_CODE\_POINT
 
-• **FROM\_CODE\_POINT**: [ElementaryFeature](elementaryfeature.md)
+• **FROM\_CODE\_POINT**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the function String.fromCodePoint.
 
@@ -795,7 +795,7 @@ ___
 
 ### FUNCTION\_19\_LF
 
-• **FUNCTION\_19\_LF**: [ElementaryFeature](elementaryfeature.md)
+• **FUNCTION\_19\_LF**: [`ElementaryFeature`](elementaryfeature.md)
 
 A string representation of dynamically generated functions where the character at index 19 is a line feed \("\\n"\).
 
@@ -811,7 +811,7 @@ ___
 
 ### FUNCTION\_22\_LF
 
-• **FUNCTION\_22\_LF**: [ElementaryFeature](elementaryfeature.md)
+• **FUNCTION\_22\_LF**: [`ElementaryFeature`](elementaryfeature.md)
 
 A string representation of dynamically generated functions where the character at index 22 is a line feed \("\\n"\).
 
@@ -827,7 +827,7 @@ ___
 
 ### GENERIC\_ARRAY\_TO\_STRING
 
-• **GENERIC\_ARRAY\_TO\_STRING**: [ElementaryFeature](elementaryfeature.md)
+• **GENERIC\_ARRAY\_TO\_STRING**: [`ElementaryFeature`](elementaryfeature.md)
 
 Ability to call Array.prototype.toString with a non-array binding.
 
@@ -843,7 +843,7 @@ ___
 
 ### GLOBAL\_UNDEFINED
 
-• **GLOBAL\_UNDEFINED**: [ElementaryFeature](elementaryfeature.md)
+• **GLOBAL\_UNDEFINED**: [`ElementaryFeature`](elementaryfeature.md)
 
 Having the global function toString return the string "\[object Undefined\]" when invoked without a binding.
 
@@ -859,7 +859,7 @@ ___
 
 ### GMT
 
-• **GMT**: [ElementaryFeature](elementaryfeature.md)
+• **GMT**: [`ElementaryFeature`](elementaryfeature.md)
 
 Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
 
@@ -877,7 +877,7 @@ ___
 
 ### HISTORY
 
-• **HISTORY**: [ElementaryFeature](elementaryfeature.md)
+• **HISTORY**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object history having the string representation "\[object History\]".
 
@@ -893,7 +893,7 @@ ___
 
 ### HTMLAUDIOELEMENT
 
-• **HTMLAUDIOELEMENT**: [ElementaryFeature](elementaryfeature.md)
+• **HTMLAUDIOELEMENT**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object Audio whose string representation starts with "function HTMLAudioElement".
 
@@ -909,7 +909,7 @@ ___
 
 ### HTMLDOCUMENT
 
-• **HTMLDOCUMENT**: [ElementaryFeature](elementaryfeature.md)
+• **HTMLDOCUMENT**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object document having the string representation "\[object HTMLDocument\]".
 
@@ -925,7 +925,7 @@ ___
 
 ### IE\_10
 
-• **IE\_10**: [PredefinedFeature](predefinedfeature.md)
+• **IE\_10**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Internet Explorer 10.
 
@@ -937,7 +937,7 @@ ___
 
 ### IE\_11
 
-• **IE\_11**: [PredefinedFeature](predefinedfeature.md)
+• **IE\_11**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Internet Explorer 11.
 
@@ -949,7 +949,7 @@ ___
 
 ### IE\_11\_WIN\_10
 
-• **IE\_11\_WIN\_10**: [PredefinedFeature](predefinedfeature.md)
+• **IE\_11\_WIN\_10**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Internet Explorer 11 on Windows 10.
 
@@ -961,7 +961,7 @@ ___
 
 ### IE\_9
 
-• **IE\_9**: [PredefinedFeature](predefinedfeature.md)
+• **IE\_9**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Internet Explorer 9.
 
@@ -973,7 +973,7 @@ ___
 
 ### IE\_SRC
 
-• **IE\_SRC**: [ElementaryFeature](elementaryfeature.md)
+• **IE\_SRC**: [`ElementaryFeature`](elementaryfeature.md)
 
 A string representation of native functions typical for Internet Explorer.
 
@@ -991,7 +991,7 @@ ___
 
 ### INCR\_CHAR
 
-• **INCR\_CHAR**: [ElementaryFeature](elementaryfeature.md)
+• **INCR\_CHAR**: [`ElementaryFeature`](elementaryfeature.md)
 
 The ability to use unary increment operators with string characters, like in \( ++"some string"\[0\] \): this will result in a TypeError in strict mode in ECMAScript compliant engines.
 
@@ -1007,7 +1007,7 @@ ___
 
 ### INTL
 
-• **INTL**: [ElementaryFeature](elementaryfeature.md)
+• **INTL**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object Intl.
 
@@ -1023,7 +1023,7 @@ ___
 
 ### LOCALE\_INFINITY
 
-• **LOCALE\_INFINITY**: [ElementaryFeature](elementaryfeature.md)
+• **LOCALE\_INFINITY**: [`ElementaryFeature`](elementaryfeature.md)
 
 Language sensitive string representation of Infinity as "∞".
 
@@ -1039,7 +1039,7 @@ ___
 
 ### LOCALE\_NUMERALS
 
-• **LOCALE\_NUMERALS**: [ElementaryFeature](elementaryfeature.md)
+• **LOCALE\_NUMERALS**: [`ElementaryFeature`](elementaryfeature.md)
 
 Features shared by all engines capable of localized number formatting, including output of Arabic digits, the Arabic decimal separator "٫", the letters in the first word of the Arabic string representation of NaN \("ليس"\), Persian digits and the Persian digit group separator "٬".
 
@@ -1055,7 +1055,7 @@ ___
 
 ### LOCALE\_NUMERALS\_EXT
 
-• **LOCALE\_NUMERALS\_EXT**: [ElementaryFeature](elementaryfeature.md)
+• **LOCALE\_NUMERALS\_EXT**: [`ElementaryFeature`](elementaryfeature.md)
 
 Extended localized number formatting.
 
@@ -1073,7 +1073,7 @@ ___
 
 ### LOCATION
 
-• **LOCATION**: [ElementaryFeature](elementaryfeature.md)
+• **LOCATION**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object location with the property that Object.prototype.toString.call\(location\) evaluates to a string that starts with "\[object " and ends with "Location\]".
 
@@ -1089,7 +1089,7 @@ ___
 
 ### NAME
 
-• **NAME**: [ElementaryFeature](elementaryfeature.md)
+• **NAME**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the name property for functions.
 
@@ -1105,7 +1105,7 @@ ___
 
 ### NODECONSTRUCTOR
 
-• **NODECONSTRUCTOR**: [ElementaryFeature](elementaryfeature.md)
+• **NODECONSTRUCTOR**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object Node having the string representation "\[object NodeConstructor\]".
 
@@ -1121,7 +1121,7 @@ ___
 
 ### NODE\_0\_10
 
-• **NODE\_0\_10**: [PredefinedFeature](predefinedfeature.md)
+• **NODE\_0\_10**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Node.js 0.10.
 
@@ -1133,7 +1133,7 @@ ___
 
 ### NODE\_0\_12
 
-• **NODE\_0\_12**: [PredefinedFeature](predefinedfeature.md)
+• **NODE\_0\_12**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Node.js 0.12.
 
@@ -1145,7 +1145,7 @@ ___
 
 ### NODE\_10
 
-• **NODE\_10**: [PredefinedFeature](predefinedfeature.md)
+• **NODE\_10**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Node.js 10.
 
@@ -1157,7 +1157,7 @@ ___
 
 ### NODE\_11
 
-• **NODE\_11**: [PredefinedFeature](predefinedfeature.md)
+• **NODE\_11**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Node.js 11.
 
@@ -1169,7 +1169,7 @@ ___
 
 ### NODE\_12
 
-• **NODE\_12**: [PredefinedFeature](predefinedfeature.md)
+• **NODE\_12**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Node.js 12.
 
@@ -1181,7 +1181,7 @@ ___
 
 ### NODE\_13
 
-• **NODE\_13**: [PredefinedFeature](predefinedfeature.md)
+• **NODE\_13**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Node.js 13 and Node.js 14.
 
@@ -1193,7 +1193,7 @@ ___
 
 ### NODE\_15
 
-• **NODE\_15**: [PredefinedFeature](predefinedfeature.md)
+• **NODE\_15**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Node.js 15.
 
@@ -1205,7 +1205,7 @@ ___
 
 ### NODE\_16
 
-• **NODE\_16**: [PredefinedFeature](predefinedfeature.md)
+• **NODE\_16**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Node.js 16 or later.
 
@@ -1217,7 +1217,7 @@ ___
 
 ### NODE\_4
 
-• **NODE\_4**: [PredefinedFeature](predefinedfeature.md)
+• **NODE\_4**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Node.js 4.
 
@@ -1229,7 +1229,7 @@ ___
 
 ### NODE\_5
 
-• **NODE\_5**: [PredefinedFeature](predefinedfeature.md)
+• **NODE\_5**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Node.js 5 to 9.
 
@@ -1241,7 +1241,7 @@ ___
 
 ### NO\_FF\_SRC
 
-• **NO\_FF\_SRC**: [ElementaryFeature](elementaryfeature.md)
+• **NO\_FF\_SRC**: [`ElementaryFeature`](elementaryfeature.md)
 
 A string representation of native functions typical for V8 or for Internet Explorer but not for Firefox and Safari.
 
@@ -1257,7 +1257,7 @@ ___
 
 ### NO\_IE\_SRC
 
-• **NO\_IE\_SRC**: [ElementaryFeature](elementaryfeature.md)
+• **NO\_IE\_SRC**: [`ElementaryFeature`](elementaryfeature.md)
 
 A string representation of native functions typical for most engines with the notable exception of Internet Explorer.
 
@@ -1275,7 +1275,7 @@ ___
 
 ### NO\_OLD\_SAFARI\_ARRAY\_ITERATOR
 
-• **NO\_OLD\_SAFARI\_ARRAY\_ITERATOR**: [ElementaryFeature](elementaryfeature.md)
+• **NO\_OLD\_SAFARI\_ARRAY\_ITERATOR**: [`ElementaryFeature`](elementaryfeature.md)
 
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]" and that Array.prototype.entries\(\).constructor is the global function Object.
 
@@ -1291,7 +1291,7 @@ ___
 
 ### NO\_V8\_SRC
 
-• **NO\_V8\_SRC**: [ElementaryFeature](elementaryfeature.md)
+• **NO\_V8\_SRC**: [`ElementaryFeature`](elementaryfeature.md)
 
 A string representation of native functions typical for Firefox, Internet Explorer and Safari.
 
@@ -1309,7 +1309,7 @@ ___
 
 ### OBJECT\_UNDEFINED
 
-• **OBJECT\_UNDEFINED**: [ElementaryFeature](elementaryfeature.md)
+• **OBJECT\_UNDEFINED**: [`ElementaryFeature`](elementaryfeature.md)
 
 Having the function Object.prototype.toString return the string "\[object Undefined\]" when invoked without a binding.
 
@@ -1325,7 +1325,7 @@ ___
 
 ### PLAIN\_INTL
 
-• **PLAIN\_INTL**: [ElementaryFeature](elementaryfeature.md)
+• **PLAIN\_INTL**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object Intl having the string representation "\[object Object\]"
 
@@ -1341,7 +1341,7 @@ ___
 
 ### REGEXP\_STRING\_ITERATOR
 
-• **REGEXP\_STRING\_ITERATOR**: [ElementaryFeature](elementaryfeature.md)
+• **REGEXP\_STRING\_ITERATOR**: [`ElementaryFeature`](elementaryfeature.md)
 
 The property that the string representation of String.prototype.matchAll\(\) evaluates to "\[object RegExp String Iterator\]".
 
@@ -1357,7 +1357,7 @@ ___
 
 ### SAFARI
 
-• **SAFARI**: [PredefinedFeature](predefinedfeature.md)
+• **SAFARI**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in the current stable version of Safari.
 
@@ -1371,7 +1371,7 @@ ___
 
 ### SAFARI\_10
 
-• **SAFARI\_10**: [PredefinedFeature](predefinedfeature.md)
+• **SAFARI\_10**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Safari 10 and Safari 11.
 
@@ -1383,7 +1383,7 @@ ___
 
 ### SAFARI\_12
 
-• **SAFARI\_12**: [PredefinedFeature](predefinedfeature.md)
+• **SAFARI\_12**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Safari 12.
 
@@ -1395,7 +1395,7 @@ ___
 
 ### SAFARI\_13
 
-• **SAFARI\_13**: [PredefinedFeature](predefinedfeature.md)
+• **SAFARI\_13**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Safari 13 and Safari 14.0.0.
 
@@ -1407,7 +1407,7 @@ ___
 
 ### SAFARI\_14\_0\_1
 
-• **SAFARI\_14\_0\_1**: [PredefinedFeature](predefinedfeature.md)
+• **SAFARI\_14\_0\_1**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Safari 14.0.1 to 14.0.3.
 
@@ -1419,7 +1419,7 @@ ___
 
 ### SAFARI\_14\_1
 
-• **SAFARI\_14\_1**: [PredefinedFeature](predefinedfeature.md)
+• **SAFARI\_14\_1**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Safari 14.1 or later.
 
@@ -1431,7 +1431,7 @@ ___
 
 ### SAFARI\_7\_0
 
-• **SAFARI\_7\_0**: [PredefinedFeature](predefinedfeature.md)
+• **SAFARI\_7\_0**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Safari 7.0.
 
@@ -1443,7 +1443,7 @@ ___
 
 ### SAFARI\_7\_1
 
-• **SAFARI\_7\_1**: [PredefinedFeature](predefinedfeature.md)
+• **SAFARI\_7\_1**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Safari 7.1 and Safari 8.
 
@@ -1455,7 +1455,7 @@ ___
 
 ### SAFARI\_8
 
-• **SAFARI\_8**: [PredefinedFeature](predefinedfeature.md)
+• **SAFARI\_8**: [`PredefinedFeature`](predefinedfeature.md)
 
 An alias for `SAFARI_7_1`.
 
@@ -1467,7 +1467,7 @@ ___
 
 ### SAFARI\_9
 
-• **SAFARI\_9**: [PredefinedFeature](predefinedfeature.md)
+• **SAFARI\_9**: [`PredefinedFeature`](predefinedfeature.md)
 
 Features available in Safari 9.
 
@@ -1479,7 +1479,7 @@ ___
 
 ### SELF
 
-• **SELF**: [ElementaryFeature](elementaryfeature.md)
+• **SELF**: [`ElementaryFeature`](elementaryfeature.md)
 
 An alias for `ANY_WINDOW`.
 
@@ -1491,7 +1491,7 @@ ___
 
 ### SELF\_OBJ
 
-• **SELF\_OBJ**: [ElementaryFeature](elementaryfeature.md)
+• **SELF\_OBJ**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object self whose string representation starts with "\[object ".
 
@@ -1507,7 +1507,7 @@ ___
 
 ### SHORT\_LOCALES
 
-• **SHORT\_LOCALES**: [ElementaryFeature](elementaryfeature.md)
+• **SHORT\_LOCALES**: [`ElementaryFeature`](elementaryfeature.md)
 
 Support for the two-letter locale name "ar" to format decimal numbers as Arabic numerals.
 
@@ -1523,7 +1523,7 @@ ___
 
 ### STATUS
 
-• **STATUS**: [ElementaryFeature](elementaryfeature.md)
+• **STATUS**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global string status.
 
@@ -1539,7 +1539,7 @@ ___
 
 ### UNDEFINED
 
-• **UNDEFINED**: [ElementaryFeature](elementaryfeature.md)
+• **UNDEFINED**: [`ElementaryFeature`](elementaryfeature.md)
 
 The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
 
@@ -1557,7 +1557,7 @@ ___
 
 ### V8\_SRC
 
-• **V8\_SRC**: [ElementaryFeature](elementaryfeature.md)
+• **V8\_SRC**: [`ElementaryFeature`](elementaryfeature.md)
 
 A string representation of native functions typical for the V8 engine.
 
@@ -1575,7 +1575,7 @@ ___
 
 ### WINDOW
 
-• **WINDOW**: [ElementaryFeature](elementaryfeature.md)
+• **WINDOW**: [`ElementaryFeature`](elementaryfeature.md)
 
 Existence of the global object self having the string representation "\[object Window\]".
 
@@ -1611,7 +1611,7 @@ JScrewIt.Feature.areCompatible(JScrewIt.Feature.DEFAULT, JScrewIt.Feature.FILL)
 
 | Name | Type |
 | :------ | :------ |
-| `...features` | [FeatureElement](../README.md#featureelement)[] |
+| `...features` | [`FeatureElement`](../README.md#featureelement)[] |
 
 #### Returns
 
@@ -1647,7 +1647,7 @@ JScrewIt.Feature.areEqual("DEFAULT", [])
 
 | Name | Type |
 | :------ | :------ |
-| `...features` | ([FeatureElement](../README.md#featureelement) \| [CompatibleFeatureArray](../README.md#compatiblefeaturearray))[] |
+| `...features` | ([`FeatureElement`](../README.md#featureelement) \| [`CompatibleFeatureArray`](../README.md#compatiblefeaturearray))[] |
 
 #### Returns
 
@@ -1660,7 +1660,7 @@ ___
 
 ### commonOf
 
-▸ **commonOf**(...`features`): ``null`` \| [CustomFeature](customfeature.md)
+▸ **commonOf**(...`features`): ``null`` \| [`CustomFeature`](customfeature.md)
 
 Creates a new feature object equivalent to the intersection of the specified features.
 
@@ -1684,11 +1684,11 @@ const newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
 
 | Name | Type |
 | :------ | :------ |
-| `...features` | ([FeatureElement](../README.md#featureelement) \| [CompatibleFeatureArray](../README.md#compatiblefeaturearray))[] |
+| `...features` | ([`FeatureElement`](../README.md#featureelement) \| [`CompatibleFeatureArray`](../README.md#compatiblefeaturearray))[] |
 
 #### Returns
 
-``null`` \| [CustomFeature](customfeature.md)
+``null`` \| [`CustomFeature`](customfeature.md)
 
 A feature object, or `null` if no arguments are specified.
 
@@ -1712,7 +1712,7 @@ An error is thrown if the specified argument is not a name or alias of a predefi
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `name` | keyof [FeatureAll](featureall.md) | A name or alias of a predefined feature. |
+| `name` | keyof [`FeatureAll`](featureall.md) | A name or alias of a predefined feature. |
 
 #### Returns
 

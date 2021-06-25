@@ -23,7 +23,7 @@ Also, an out of memory condition may occur when processing very large data.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `input` | `string` | The string to encode. |
-| `options?` | [EncodeOptions](encodeoptions.md) | An optional object specifying encoding options. |
+| `options?` | [`EncodeOptions`](encodeoptions.md) | An optional object specifying encoding options. |
 
 #### Returns
 
