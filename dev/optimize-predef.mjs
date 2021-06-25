@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-'use strict';
-
-const JSCREWIT_PATH = '..';
-
-const PREDEF_TEST_DATA_MAP_OBJ  = require('./internal/predef-test-data');
-const progress                  = require('./internal/progress');
+import JScrewIt, { Feature }    from '../lib/jscrewit.js';
+import choose                   from './internal/choose.js';
+import Analyzer                 from './internal/optimized-analyzer.js';
+import PREDEF_TEST_DATA_MAP_OBJ from './internal/predef-test-data.js';
+import progress                 from './internal/progress.js';
+import solutionBookMap          from './internal/solution-book-map.js';
 
 function compareFeatures(feature1, feature2)
 {
@@ -213,8 +213,6 @@ function dropIndirectSpecializations(node)
 
 function featureDifference(featureAll, featureSome)
 {
-    const { Feature } = require(JSCREWIT_PATH);
-
     const elementaryNames =
     featureAll.elementaryNames.filter
     (
@@ -253,7 +251,7 @@ function optimize(predefTestData)
 function printDefinitions(definitionSets, { indent, formatVariant, variantToMinMaskMap })
 {
     const LINE_LENGTH = 100;
-    const { Feature, debug: { createFeatureFromMask } } = require(JSCREWIT_PATH);
+    const { createFeatureFromMask } = JScrewIt.debug;
 
     const argsList = [];
     for (const definitionSet of definitionSets)
@@ -313,9 +311,7 @@ function printDefinitions(definitionSets, { indent, formatVariant, variantToMinM
 
 function runAnalysis(predefTestData)
 {
-    require('./internal/solution-book-map').load();
-    const Analyzer = require('./internal/optimized-analyzer');
-
+    solutionBookMap.load();
     const nodes = new Set();
     const { availableEntries, commonFeatureObj, replaceVariant, useReverseIteration } =
     predefTestData;
@@ -493,8 +489,6 @@ function simplifyDefinitions(definitionSets)
         return featuresABC;
     }
 
-    const { Feature } = require(JSCREWIT_PATH);
-
     for
     (
         let definitionSetIndex = definitionSets.length - 3;
@@ -537,8 +531,6 @@ function simplifyDefinitions(definitionSets)
 }
 
 {
-    const choose = require('./internal/choose');
-
     const callback =
     predefName =>
     {

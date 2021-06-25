@@ -155,6 +155,7 @@ if (typeof NO_DEBUG === 'undefined')
         function getEntries(name)
         {
             var entries = cloneEntries(ENTRIES[name]);
+            entries.cacheKey = name;
             return entries;
         }
 
@@ -172,19 +173,23 @@ if (typeof NO_DEBUG === 'undefined')
         ENTRIES['BASE64_ALPHABET_HI_4:5']                       = BASE64_ALPHABET_HI_4[5];
         ENTRIES['BASE64_ALPHABET_LO_4:1']                       = BASE64_ALPHABET_LO_4[1];
         ENTRIES['BASE64_ALPHABET_LO_4:3']                       = BASE64_ALPHABET_LO_4[3];
-        ENTRIES.FROM_CHAR_CODE                                  = FROM_CHAR_CODE;
-        ENTRIES['FROM_CHAR_CODE:available']                     = FROM_CHAR_CODE.available;
-        ENTRIES.FROM_CHAR_CODE_CALLBACK_FORMATTER               = FROM_CHAR_CODE_CALLBACK_FORMATTER;
-        ENTRIES['FROM_CHAR_CODE_CALLBACK_FORMATTER:available']  =
-        FROM_CHAR_CODE_CALLBACK_FORMATTER.available;
-        ENTRIES.MAPPER_FORMATTER                                = MAPPER_FORMATTER;
-        ENTRIES['MAPPER_FORMATTER:available']                   = MAPPER_FORMATTER.available;
-        ENTRIES.OPTIMAL_ARG_NAME                                = OPTIMAL_ARG_NAME;
-        ENTRIES['OPTIMAL_ARG_NAME:available']                   = OPTIMAL_ARG_NAME.available;
-        ENTRIES.OPTIMAL_B                                       = OPTIMAL_B;
-        ENTRIES['OPTIMAL_B:available']                          = OPTIMAL_B.available;
-        ENTRIES.OPTIMAL_RETURN_STRING                           = OPTIMAL_RETURN_STRING;
-        ENTRIES['OPTIMAL_RETURN_STRING:available']              = OPTIMAL_RETURN_STRING.available;
+
+        (function ()
+        {
+            function exposeEntries(name, entries)
+            {
+                ENTRIES[name] = entries;
+                ENTRIES[name + ':available'] = entries.available;
+            }
+
+            exposeEntries('FROM_CHAR_CODE',                     FROM_CHAR_CODE);
+            exposeEntries('FROM_CHAR_CODE_CALLBACK_FORMATTER',  FROM_CHAR_CODE_CALLBACK_FORMATTER);
+            exposeEntries('MAPPER_FORMATTER',                   MAPPER_FORMATTER);
+            exposeEntries('OPTIMAL_ARG_NAME',                   OPTIMAL_ARG_NAME);
+            exposeEntries('OPTIMAL_B',                          OPTIMAL_B);
+            exposeEntries('OPTIMAL_RETURN_STRING',              OPTIMAL_RETURN_STRING);
+        }
+        )();
 
         var debug =
         assignNoEnum

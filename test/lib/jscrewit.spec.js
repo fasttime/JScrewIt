@@ -125,21 +125,6 @@ self,
     );
     describe
     (
-        'JScrewIt.debug.getEntries',
-        function ()
-        {
-            it
-            (
-                'does not throw',
-                function ()
-                {
-                    JScrewIt.debug.getEntries('');
-                }
-            );
-        }
-    );
-    describe
-    (
         'JScrewIt.debug.maskNext',
         function ()
         {
@@ -593,6 +578,58 @@ self,
                         }
                     )
                     .toThrowStrictly(SyntaxError, 'Undefined regular padding block with length 2');
+                }
+            );
+        }
+    );
+    describe
+    (
+        'Encoder#findDefinition',
+        function ()
+        {
+            it
+            (
+                'Adds a cache key to the entry list',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var entries1 = [];
+                    var entries2 = [];
+                    encoder.findDefinition(entries1);
+                    expect(entries1.cacheKey).toBeDefined();
+                    encoder.findDefinition(entries2);
+                    expect(entries2.cacheKey).toBeDefined();
+                    expect(entries2.cacheKey).toNotEqual(entries1.cacheKey);
+                }
+            );
+            it
+            (
+                'Caches an existing definition',
+                function ()
+                {
+                    var EXPECTED_DEFINITION = 42;
+
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var entries = [{ definition: EXPECTED_DEFINITION, mask: Feature.DEFAULT.mask }];
+                    var actualDefinition1 = encoder.findDefinition(entries);
+                    expect(actualDefinition1).toBe(EXPECTED_DEFINITION);
+                    entries[0] = null;
+                    var actualDefinition2 = encoder.findDefinition(entries);
+                    expect(actualDefinition2).toBe(EXPECTED_DEFINITION);
+                }
+            );
+            it
+            (
+                'Caches a missing definition',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var entries = [];
+                    var actualDefinition1 = encoder.findDefinition(entries);
+                    expect(actualDefinition1).toBeUndefined();
+                    entries.push({ definition: 'foo', mask: Feature.DEFAULT.mask });
+                    var actualDefinition2 = encoder.findDefinition(entries);
+                    expect(actualDefinition2).toBeUndefined();
                 }
             );
         }

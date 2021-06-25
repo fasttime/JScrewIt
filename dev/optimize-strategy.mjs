@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
-'use strict';
-
-const STRATEGY_TEST_DATA_LIST = require('./internal/strategy-test-data');
+import JScrewIt, { Feature }    from '../lib/jscrewit.js';
+import choose                   from './internal/choose.js';
+import STRATEGY_TEST_DATA_LIST  from './internal/strategy-test-data.js';
+import chalk                    from 'chalk';
 
 function compareDiffLists(diffList1, diffList2)
 {
@@ -28,14 +29,8 @@ function findTestData(strategyName)
 
 function optimize(strategyTestData)
 {
-    const
-    {
-        Feature,
-        Feature: { DEFAULT, ELEMENTARY, areCompatible, areEqual, commonOf },
-        debug: { createEncoder, getStrategies, maskIncludes },
-    } =
-    require('..');
-    const chalk = require('chalk');
+    const { DEFAULT, ELEMENTARY, areCompatible, areEqual, commonOf } = Feature;
+    const { createEncoder, getStrategies, maskIncludes } = JScrewIt.debug;
 
     function addFeature(featureObjA, featureObjB)
     {
@@ -153,8 +148,6 @@ function optimize(strategyTestData)
 }
 
 {
-    const choose = require('./internal/choose');
-
     const callback =
     strategyName =>
     {

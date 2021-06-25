@@ -18,7 +18,8 @@ import
 }
 from '../definitions';
 import expressParseCached           from '../express-parse-cached';
-import { featureFromMask }          from '../features';
+import { Feature, featureFromMask } from '../features';
+import findDefinition               from './find-definition';
 import
 {
     _Array_isArray,
@@ -47,6 +48,8 @@ import replaceCharByUnescape        from './replace-char-by-unescape';
 import { SolutionType }             from 'novem';
 import { maskIncludes, maskNew }    from 'quinquaginta-duo';
 
+var ATOB_MASK = Feature.ATOB.mask;
+
 var STATIC_CHAR_CACHE   = createEmpty();
 var STATIC_CONST_CACHE  = createEmpty();
 var STATIC_ENCODER      = new Encoder(maskNew());
@@ -59,11 +62,12 @@ var BOND_STRENGTH_STRONG    = 2;
 
 export function Encoder(mask)
 {
-    this.mask           = mask;
-    this._charCache     = _Object_create(STATIC_CHAR_CACHE);
-    this._constCache    = _Object_create(STATIC_CONST_CACHE);
-    this._optimizers    = createEmpty();
-    this._stack         = [];
+    this.mask               = mask;
+    this._charCache         = _Object_create(STATIC_CHAR_CACHE);
+    this._constCache        = _Object_create(STATIC_CONST_CACHE);
+    this._definitionCache   = createEmpty();
+    this._optimizers        = createEmpty();
+    this._stack             = [];
 }
 
 function callResolver(encoder, stackName, resolver)
@@ -456,7 +460,7 @@ assignNoEnum
         function (char, charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
         {
             var solution;
-            if (atobOpt && this.findDefinition(CONSTANTS.atob))
+            if (atobOpt && this.hasFeatures(ATOB_MASK))
             {
                 solution =
                 resolveCharByDefaultMethod(this, char, charCode, replaceCharByAtob, 'atob');
@@ -600,12 +604,7 @@ assignNoEnum
         _resolveCharInNativeFunction:
         function (char, offset, getPaddingEntries, paddingShifts)
         {
-            var nativeFunctionInfo = this._nativeFunctionInfo;
-            if (!nativeFunctionInfo)
-            {
-                nativeFunctionInfo = this.findDefinition(NATIVE_FUNCTION_INFOS);
-                this._nativeFunctionInfo = nativeFunctionInfo;
-            }
+            var nativeFunctionInfo = this.findDefinition(NATIVE_FUNCTION_INFOS);
             var expr = nativeFunctionInfo.expr;
             var index = offset + nativeFunctionInfo.shift;
             var paddingEntries = getPaddingEntries(index);
@@ -616,16 +615,7 @@ assignNoEnum
 
         constantDefinitions: CONSTANTS,
 
-        findDefinition:
-        function (entries)
-        {
-            for (var entryIndex = entries.length; entryIndex--;)
-            {
-                var entry = entries[entryIndex];
-                if (this.hasFeatures(entry.mask))
-                    return entry.definition;
-            }
-        },
+        findDefinition: findDefinition,
 
         hasFeatures:
         function (mask)
