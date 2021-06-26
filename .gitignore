@@ -3,8 +3,12 @@
 !.npmrc
 *.cpuprofile
 /jsdoc
+/lib/**/*.js
+/lib/feature-all.d.ts
 /packages/**/lib
 /packages/**/test/node-legacy
+/test/spec-runner.html
+/ui/**/*.js
 coverage/
 node_modules/
 npm-debug.log
