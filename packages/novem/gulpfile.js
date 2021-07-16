@@ -1,13 +1,13 @@
-import gulpLint                     from '@fasttime/gulp-lint';
-import { fork }                     from 'child_process';
-import { promises as fsPromises }   from 'fs';
-import gulp                         from 'gulp';
-import gulpIgnore                   from 'gulp-ignore';
-import gulpTypescript               from 'gulp-typescript';
-import mergeStream                  from 'merge-stream';
-import { createRequire }            from 'module';
-import { rollup }                   from 'rollup';
-import rollupPluginCleanup          from 'rollup-plugin-cleanup';
+import { lint as lintImpl } from '@fasttime/lint';
+import { fork }             from 'child_process';
+import { rm }               from 'fs/promises';
+import gulp                 from 'gulp';
+import gulpIgnore           from 'gulp-ignore';
+import gulpTypescript       from 'gulp-typescript';
+import mergeStream          from 'merge-stream';
+import { createRequire }    from 'module';
+import { rollup }           from 'rollup';
+import rollupPluginCleanup  from 'rollup-plugin-cleanup';
 
 const { dest, parallel, series, src } = gulp;
 
@@ -15,13 +15,13 @@ export async function clean()
 {
     const paths = ['.nyc_output', '.tmp-out', 'coverage', 'lib', 'test/node-legacy'];
     const options = { force: true, recursive: true };
-    await Promise.all(paths.map(path => fsPromises.rm(path, options)));
+    await Promise.all(paths.map(path => rm(path, options)));
 }
 
-export function lint()
+export async function lint()
 {
-    const stream =
-    gulpLint
+    await
+    lintImpl
     (
         {
             src: 'src/**/*.ts',
@@ -39,7 +39,6 @@ export function lint()
             parserOptions: { ecmaVersion: 2020, sourceType: 'module' },
         },
     );
-    return stream;
 }
 
 export function test(callback)

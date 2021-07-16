@@ -24,7 +24,7 @@
     "test": "TS_NODE_PROJECT=test/tsconfig.json mocha --check-leaks --require=ts-node/register --ui=ebdd test/spec/**/*.spec.ts"
   },
   "devDependencies": {
-    "@fasttime/gulp-lint": "latest",
+    "@fasttime/lint": "latest",
     "@types/ebdd": "npm:ebdd@latest",
     "@types/mocha": "latest",
     "@types/node": "latest",

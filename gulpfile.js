@@ -31,8 +31,8 @@ async function bundleUI()
 
 async function createFileFromTemplate(createContextModuleId, templateSrcPath, outputPath)
 {
-    const { promises: { writeFile } }   = require('fs');
-    const Handlebars                    = require('handlebars');
+    const { writeFile } = require('fs/promises');
+    const Handlebars    = require('handlebars');
 
     const promises = [import(createContextModuleId), readFileAsString(templateSrcPath)];
     const [{ default: createContext }, input] = await Promise.all(promises);
@@ -74,7 +74,7 @@ function makeWorker()
 
 function readFileAsString(inputPath)
 {
-    const { promises: { readFile } } = require('fs');
+    const { readFile } = require('fs/promises');
 
     const promise = readFile(inputPath, 'utf8');
     return promise;
@@ -274,10 +274,10 @@ task
     'make-spec-runner',
     async () =>
     {
-        const { promises: { writeFile } }   = require('fs');
-        const glob                          = require('glob');
-        const Handlebars                    = require('handlebars');
-        const { promisify }                 = require('util');
+        const { writeFile } = require('fs/promises');
+        const glob          = require('glob');
+        const Handlebars    = require('handlebars');
+        const { promisify } = require('util');
 
         async function getSpecs()
         {

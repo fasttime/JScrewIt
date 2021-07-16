@@ -5,7 +5,7 @@ import timeUtils                        from '../tools/time-utils.js';
 import progress                         from './internal/progress.js';
 import solutionBookMap, { NICKNAME }    from './internal/solution-book-map.js';
 import chalk                            from 'chalk';
-import { promises }                     from 'fs';
+import { writeFile }                    from 'fs/promises';
 import { cpus }                         from 'os';
 import { Worker }                       from 'worker_threads';
 
@@ -248,7 +248,6 @@ async function doLevel()
     }
     process.stdout.write(output);
     {
-        const { writeFile } = promises;
         const outputURL = new URL(`../.${NICKNAME}.char-index-level`, import.meta.url);
         await writeFile(outputURL, output);
     }

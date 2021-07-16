@@ -4,13 +4,13 @@
 
 ### Interfaces
 
-- [CustomFeature](interfaces/customfeature.md)
-- [ElementaryFeature](interfaces/elementaryfeature.md)
-- [EncodeOptions](interfaces/encodeoptions.md)
-- [Feature](interfaces/feature.md)
-- [FeatureAll](interfaces/featureall.md)
-- [FeatureConstructor](interfaces/featureconstructor.md)
-- [PredefinedFeature](interfaces/predefinedfeature.md)
+- [CustomFeature](interfaces/CustomFeature.md)
+- [ElementaryFeature](interfaces/ElementaryFeature.md)
+- [EncodeOptions](interfaces/EncodeOptions.md)
+- [Feature](interfaces/Feature.md)
+- [FeatureAll](interfaces/FeatureAll.md)
+- [FeatureConstructor](interfaces/FeatureConstructor.md)
+- [PredefinedFeature](interfaces/PredefinedFeature.md)
 - [default](interfaces/default.md)
 - [encode](interfaces/encode.md)
 
@@ -55,7 +55,7 @@ ___
 
 ### FeatureElement
 
-Ƭ **FeatureElement**: [`Feature`](README.md#feature) \| keyof [`FeatureAll`](interfaces/featureall.md)
+Ƭ **FeatureElement**: [`Feature`](README.md#feature) \| keyof [`FeatureAll`](interfaces/FeatureAll.md)
 
 A feature object or a name or alias of a predefined feature.
 
@@ -76,7 +76,7 @@ Name of a predefined feature.
 
 ### Feature
 
-• **Feature**: [`FeatureConstructor`](interfaces/featureconstructor.md)
+• **Feature**: [`FeatureConstructor`](interfaces/FeatureConstructor.md)
 
 ___
 

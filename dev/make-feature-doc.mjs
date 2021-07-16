@@ -3,7 +3,7 @@ import { getAvailabilityByFeature, getEngineEntries }   from './internal/engine-
 
 function formatFeatureName(featureName)
 {
-    const TARGET = 'api-doc/interfaces/featureall.md';
+    const TARGET = 'api-doc/interfaces/FeatureAll.md';
 
     const result = `<a href="${TARGET}#${featureName}"><code>${featureName}</code></a>`;
     return result;
