@@ -161,10 +161,10 @@ const output = JScrewIt.encode("alert(1)", options); // 1882 characters
 ```
 
 But if we are only interested in code that runs in an up to date Firefox browser, the output length
-shrinks to less than 50%:
+shrinks to about one third:
 ```js
 const options = { features: "FF" };
-const output = JScrewIt.encode("alert(1)", options); // 858 characters now
+const output = JScrewIt.encode("alert(1)", options); // 655 characters now
 ```
 
 Here we have used another feature: [`FF`](api-doc/interfaces/FeatureAll.md#FF).

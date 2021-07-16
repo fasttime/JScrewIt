@@ -90,6 +90,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [FF](FeatureConstructor.md#ff)
 - [FF\_78](FeatureConstructor.md#ff_78)
 - [FF\_83](FeatureConstructor.md#ff_83)
+- [FF\_90](FeatureConstructor.md#ff_90)
 - [FF\_ESR](FeatureConstructor.md#ff_esr)
 - [FF\_PREV](FeatureConstructor.md#ff_prev)
 - [FF\_SRC](FeatureConstructor.md#ff_src)
@@ -335,7 +336,7 @@ Existence of the native function Array.prototype.at.
 
 **`remarks`**
 
-This feature is not available in any of the supported engines.
+Available in Firefox 90+.
 
 #### Inherited from
 
@@ -651,7 +652,7 @@ ___
 
 Features available in the current stable version of Firefox.
 
-An alias for `FF_83`.
+An alias for `FF_90`.
 
 #### Inherited from
 
@@ -667,7 +668,7 @@ Features available in Firefox 78 to 82.
 
 **`remarks`**
 
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF_ESR` or `FF_PREV` instead of `FF_78` for long term support.
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF_ESR` instead of `FF_78` for long term support.
 
 **`see`**
 
@@ -683,11 +684,11 @@ ___
 
 • **FF\_83**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Firefox 83 or later.
+Features available in Firefox 83 to 89.
 
 **`remarks`**
 
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF` instead of `FF_83` for long term support.
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF_PREV` instead of `FF_83` for long term support.
 
 **`see`**
 
@@ -696,6 +697,26 @@ This feature may be replaced or removed in the near future when current browser 
 #### Inherited from
 
 [FeatureAll](FeatureAll.md).[FF_83](FeatureAll.md#ff_83)
+
+___
+
+### FF\_90
+
+• **FF\_90**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Firefox 90 or later.
+
+**`remarks`**
+
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF` instead of `FF_90` for long term support.
+
+**`see`**
+
+[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
+
+#### Inherited from
+
+[FeatureAll](FeatureAll.md).[FF_90](FeatureAll.md#ff_90)
 
 ___
 
@@ -719,7 +740,7 @@ ___
 
 Features available in the previous to current version of Firefox.
 
-An alias for `FF_78`.
+An alias for `FF_83`.
 
 #### Inherited from
 

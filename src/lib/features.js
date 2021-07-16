@@ -1477,11 +1477,6 @@ assignNoEnum
             engine: 'the current version of Firefox ESR',
             aliasFor: 'FF_78',
         },
-        FF_PREV:
-        {
-            engine: 'the previous to current version of Firefox',
-            aliasFor: 'FF_78',
-        },
         FF_78:
         {
             engine: 'Firefox 78 to 82',
@@ -1523,17 +1518,64 @@ assignNoEnum
                 'web-worker-restriction':       null,
             },
         },
-        FF:
+        FF_PREV:
         {
-            engine: 'the current stable version of Firefox',
+            engine: 'the previous to current version of Firefox',
             aliasFor: 'FF_83',
         },
         FF_83:
         {
-            engine: 'Firefox 83 or later',
+            engine: 'Firefox 83 to 89',
             includes:
             [
                 'ARROW',
+                'ATOB',
+                'BARPROP',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'EXTERNAL',
+                'FF_SRC',
+                'FILL',
+                'FLAT',
+                'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
+                'GENERIC_ARRAY_TO_STRING',
+                'GLOBAL_UNDEFINED',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
+                'LOCALE_NUMERALS_EXT',
+                'LOCATION',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'REGEXP_STRING_ITERATOR',
+                'SHORT_LOCALES',
+                'STATUS',
+                'WINDOW',
+            ],
+            attributes:
+            {
+                'char-increment-restriction':   null,
+                'unstable':                     null,
+                'web-worker-restriction':       null,
+            },
+        },
+        FF:
+        {
+            engine: 'the current stable version of Firefox',
+            aliasFor: 'FF_90',
+        },
+        FF_90:
+        {
+            engine: 'Firefox 90 or later',
+            includes:
+            [
+                'ARROW',
+                'AT',
                 'ATOB',
                 'BARPROP',
                 'ESC_HTML_QUOT_ONLY',

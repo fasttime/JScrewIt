@@ -58,6 +58,7 @@ export const getEngineEntries =
             [
                 { description: '78+', feature: 'FF_78' },
                 { description: '83+', feature: 'FF_83' },
+                { description: '90+', feature: 'FF_90' },
             ],
         },
         {

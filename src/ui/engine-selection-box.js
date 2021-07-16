@@ -28,7 +28,8 @@ export default function createEngineSelectionBox()
             versions:
             [
                 { featureName: 'FF_78', number: '78–82' },
-                { featureName: 'FF_83', number: '83+' },
+                { featureName: 'FF_83', number: '83–89' },
+                { featureName: 'FF_90', number: '90+' },
             ],
         },
         {
