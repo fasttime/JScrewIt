@@ -5,8 +5,8 @@
 /jsdoc
 /lib/**/*.js
 /lib/feature-all.d.ts
-/packages/**/lib
-/packages/**/test/node-legacy
+/packages/*/lib
+/packages/*/test/node-legacy
 /test/spec-runner.html
 /ui/**/*.js
 coverage/
