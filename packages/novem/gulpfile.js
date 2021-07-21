@@ -1,15 +1,11 @@
+import make                 from './dev/make-impl.js';
 import { lint as lintImpl } from '@fasttime/lint';
 import { fork }             from 'child_process';
 import { rm }               from 'fs/promises';
 import gulp                 from 'gulp';
-import gulpIgnore           from 'gulp-ignore';
-import gulpTypescript       from 'gulp-typescript';
-import mergeStream          from 'merge-stream';
 import { createRequire }    from 'module';
-import { rollup }           from 'rollup';
-import rollupPluginCleanup  from 'rollup-plugin-cleanup';
 
-const { dest, parallel, series, src } = gulp;
+const { parallel, series } = gulp;
 
 export async function clean()
 {
@@ -63,36 +59,6 @@ export function test(callback)
     childProcess.on('exit', code => callback(code && 'Test failed'));
 }
 
-export function compile()
-{
-    const { dts, js } = src('src/**/*.ts').pipe(gulpTypescript.createProject('tsconfig.json')());
-    const condition = ['novem.d.ts', 'solution.d.ts', 'solution-type.d.ts'];
-    const stream =
-    mergeStream
-    (dts.pipe(gulpIgnore.include(condition)).pipe(dest('lib')), js.pipe(dest('.tmp-out')));
-    return stream;
-}
+export { make };
 
-export async function bundle()
-{
-    const require = createRequire(import.meta.url);
-    const { homepage, version } = require('./package.json');
-
-    const inputOptions =
-    {
-        external: ['tslib'],
-        input: '.tmp-out/novem.js',
-        onwarn(warning)
-        {
-            if (warning.code !== 'THIS_IS_UNDEFINED')
-                console.error(warning.message);
-        },
-        plugins: [rollupPluginCleanup({ comments: /^(?!\/ *(?:@ts-|eslint-disable-line ))/ })],
-    };
-    const outputOptions =
-    { banner: `// novem ${version} – ${homepage}\n`, file: 'lib/novem.js', format: 'esm' };
-    const bundle = await rollup(inputOptions);
-    await bundle.write(outputOptions);
-}
-
-export default series(parallel(clean, lint), test, compile, bundle);
+export default series(parallel(clean, lint), test, make);

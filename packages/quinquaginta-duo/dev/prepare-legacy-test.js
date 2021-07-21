@@ -4,7 +4,7 @@ import { fork, spawn }          from 'child_process';
 import { mkdir, rm, writeFile } from 'fs/promises';
 import { createRequire }        from 'module';
 import { EOL }                  from 'os';
-import { dirname, join }        from 'path';
+import { join }                 from 'path';
 import { fileURLToPath }        from 'url';
 
 const NODE_LEGACY_DIR = 'test/node-legacy';
@@ -39,15 +39,16 @@ async function tsc(url)
 {
     try
     {
-        const { url } = import.meta;
-        const directory = dirname(dirname(fileURLToPath(url)));
-        process.chdir(directory);
+        const pkgURL = new URL('..', import.meta.url);
+        const pkgPath = fileURLToPath(pkgURL);
+        process.chdir(pkgPath);
         await rm(NODE_LEGACY_DIR, { force: true, recursive: true });
-        await Promise.all([tsc(url), npmInstall()]);
+        await Promise.all([tsc(pkgURL), npmInstall()]);
     }
     catch (error)
     {
         console.error(error);
+        process.exitCode = 1;
     }
 }
 )();

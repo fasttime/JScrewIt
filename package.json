@@ -63,13 +63,14 @@
     "inquirer": "latest",
     "mocha": "3",
     "mocha-bar": "latest",
-    "novem": "2.0",
     "postrequire": "latest",
-    "quinquaginta-duo": "3.1",
     "rollup": "latest",
     "rollup-plugin-cleanup": "latest",
     "tslib": "latest",
     "typedoc": "latest",
     "typedoc-plugin-markdown": "latest"
-  }
+  },
+  "workspaces": [
+    "./packages/*"
+  ]
 }

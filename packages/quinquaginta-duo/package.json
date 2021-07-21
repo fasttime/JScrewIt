@@ -1,6 +1,5 @@
 {
   "name": "quinquaginta-duo",
-  "version": "3.1.1",
   "description": "Boolean vector provider for JScrewIt",
   "homepage": "https://github.com/fasttime/JScrewIt/tree/master/packages/quinquaginta-duo",
   "bugs": "https://github.com/fasttime/JScrewIt/issues",
@@ -21,6 +20,7 @@
     "build": "npm install && gulp",
     "legacy-build": "node dev/prepare-legacy-test && npm run legacy-test",
     "legacy-test": "node -- test/node-legacy/node_modules/mocha/bin/mocha --check-leaks --ui=ebdd test/node-legacy/test/spec/**/*.spec.js",
+    "make": "node dev/make",
     "test": "TS_NODE_PROJECT=test/tsconfig.json mocha --check-leaks --require=ts-node/register --ui=ebdd test/spec/**/*.spec.ts"
   },
   "devDependencies": {
@@ -29,8 +29,8 @@
     "@types/node": "latest",
     "ebdd": "latest",
     "eslint-plugin-ebdd": "latest",
+    "fast-glob": "latest",
     "gulp": "latest",
-    "gulp-typescript": "5",
     "merge-stream": "latest",
     "mocha": "latest",
     "nyc": "latest",
@@ -40,5 +40,6 @@
     "tslib": "latest",
     "typescript": "latest"
   },
+  "private": true,
   "type": "module"
 }

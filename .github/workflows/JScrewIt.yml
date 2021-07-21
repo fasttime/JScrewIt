@@ -13,6 +13,8 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: 16.x
+    - run: npm install --workspaces
+    - run: npm run --workspaces make
     - run: npm install
     - run: gulp lint
     - run: gulp bundle:lib
