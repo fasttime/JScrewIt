@@ -74,6 +74,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [CAPITAL\_HTML](FeatureConstructor.md#capital_html)
 - [CHROME](FeatureConstructor.md#chrome)
 - [CHROME\_86](FeatureConstructor.md#chrome_86)
+- [CHROME\_92](FeatureConstructor.md#chrome_92)
 - [CHROME\_PREV](FeatureConstructor.md#chrome_prev)
 - [COMPACT](FeatureConstructor.md#compact)
 - [CONSOLE](FeatureConstructor.md#console)
@@ -336,7 +337,7 @@ Existence of the native function Array.prototype.at.
 
 **`remarks`**
 
-Available in Firefox 90+.
+Available in Chrome 92+, Edge 92+, Firefox 90+, and Opera 78+.
 
 #### Inherited from
 
@@ -424,7 +425,7 @@ ___
 
 Features available in the current stable versions of Chrome, Edge and Opera.
 
-An alias for `CHROME_86`.
+An alias for `CHROME_92`.
 
 #### Inherited from
 
@@ -436,11 +437,11 @@ ___
 
 • **CHROME\_86**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Chrome 86, Edge 86 and Opera 72 or later.
+Features available in Chrome 86 to 91, Edge 86 to 91 and Opera 72 to 77.
 
 **`remarks`**
 
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME` or `CHROME_PREV` instead of `CHROME_86` for long term support.
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME_PREV` instead of `CHROME_86` for long term support.
 
 **`see`**
 
@@ -449,6 +450,26 @@ This feature may be replaced or removed in the near future when current browser 
 #### Inherited from
 
 [FeatureAll](FeatureAll.md).[CHROME_86](FeatureAll.md#chrome_86)
+
+___
+
+### CHROME\_92
+
+• **CHROME\_92**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Chrome 92, Edge 92 and Opera 78 or later.
+
+**`remarks`**
+
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME` instead of `CHROME_92` for long term support.
+
+**`see`**
+
+[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
+
+#### Inherited from
+
+[FeatureAll](FeatureAll.md).[CHROME_92](FeatureAll.md#chrome_92)
 
 ___
 

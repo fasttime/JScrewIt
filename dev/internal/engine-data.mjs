@@ -50,6 +50,7 @@ export const getEngineEntries =
             versions:
             [
                 { description: ['86+', '86+', '72+'], feature: 'CHROME_86' },
+                { description: ['92+', '92+', '78+'], feature: 'CHROME_92' },
             ],
         },
         {

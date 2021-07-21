@@ -1428,17 +1428,57 @@ assignNoEnum
             engine: 'the previous to current versions of Chrome and Edge',
             aliasFor: 'CHROME_86',
         },
-        CHROME:
-        {
-            engine: 'the current stable versions of Chrome, Edge and Opera',
-            aliasFor: 'CHROME_86',
-        },
         CHROME_86:
         {
-            engine: 'Chrome 86, Edge 86 and Opera 72 or later',
+            engine: 'Chrome 86 to 91, Edge 86 to 91 and Opera 72 to 77',
             includes:
             [
                 'ARROW',
+                'ATOB',
+                'BARPROP',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'FILL',
+                'FLAT',
+                'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
+                'GENERIC_ARRAY_TO_STRING',
+                'GLOBAL_UNDEFINED',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
+                'LOCALE_NUMERALS_EXT',
+                'LOCATION',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'REGEXP_STRING_ITERATOR',
+                'STATUS',
+                'V8_SRC',
+                'WINDOW',
+            ],
+            attributes:
+            {
+                'char-increment-restriction':   null,
+                'unstable':                     null,
+                'web-worker-restriction':       null,
+            },
+        },
+        CHROME:
+        {
+            engine: 'the current stable versions of Chrome, Edge and Opera',
+            aliasFor: 'CHROME_92',
+        },
+        CHROME_92:
+        {
+            engine: 'Chrome 92, Edge 92 and Opera 78 or later',
+            includes:
+            [
+                'ARROW',
+                'AT',
                 'ATOB',
                 'BARPROP',
                 'ESC_HTML_QUOT_ONLY',
