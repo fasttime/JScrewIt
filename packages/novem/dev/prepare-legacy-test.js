@@ -31,7 +31,7 @@ async function npmInstall()
 async function tsc(url)
 {
     const tscPath = createRequire(url).resolve('typescript/bin/tsc');
-    const childProcess = fork(tscPath, ['--build', 'test/tsconfig.json']);
+    const childProcess = fork(tscPath, ['--outDir', 'test/node-legacy']);
     await endOf(childProcess);
 }
 

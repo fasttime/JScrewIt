@@ -33,7 +33,7 @@ async function bundle(pkgPath)
 async function compile(pkgPath)
 {
     const { sys } = ts;
-    const libDirPath = join(pkgPath, 'lib');
+    const declarationDir = join(pkgPath, 'lib');
     const program =
     await
     (async () =>
@@ -41,12 +41,15 @@ async function compile(pkgPath)
         const fileNames = await fastGlob('src/**/*.ts', { absolute: true, cwd: pkgPath });
         const tsConfigPath = join(pkgPath, 'tsconfig.json');
         const tsConfig = ts.readConfigFile(tsConfigPath, sys.readFile);
-        const parsed = ts.parseJsonConfigFileContent(tsConfig.config, sys, pkgPath);
-        const compilerOptions = parsed.options;
-        compilerOptions.declarationDir  = libDirPath;
-        compilerOptions.outDir          = join(pkgPath, '.tmp-out');
-        compilerOptions.rootDir         = join(pkgPath, 'src');
-        const program = ts.createProgram(fileNames, compilerOptions);
+        const { options } = ts.parseJsonConfigFileContent(tsConfig.config, sys, pkgPath);
+        options.declaration     = true;
+        options.declarationDir  = declarationDir;
+        options.importHelpers   = true;
+        options.module          = ts.ModuleKind.ES2020;
+        options.outDir          = join(pkgPath, '.tmp-out');
+        options.rootDir         = join(pkgPath, 'src');
+        options.types           = [];
+        const program = ts.createProgram(fileNames, options);
         return program;
     }
     )();
@@ -54,7 +57,7 @@ async function compile(pkgPath)
     const writeFile =
     (path, data, writeByteOrderMark) =>
     {
-        const relativePath = relative(libDirPath, path);
+        const relativePath = relative(declarationDir, path);
         if
         (
             relativePath.startsWith('..') ||

@@ -21,7 +21,7 @@
     "legacy-build": "node dev/prepare-legacy-test && npm run legacy-test",
     "legacy-test": "node -- test/node-legacy/node_modules/mocha/bin/mocha --check-leaks --ui=ebdd test/node-legacy/test/spec/**/*.spec.js",
     "make": "node dev/make",
-    "test": "TS_NODE_PROJECT=test/tsconfig.json mocha --check-leaks --require=ts-node/register --ui=ebdd test/spec/**/*.spec.ts"
+    "test": "mocha --check-leaks --require=ts-node/register --ui=ebdd test/spec/**/*.spec.ts"
   },
   "devDependencies": {
     "@fasttime/lint": "latest",

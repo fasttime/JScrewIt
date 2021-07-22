@@ -53,9 +53,7 @@ export function test(callback)
         '--ui=ebdd',
         'test/spec/**/*.spec.ts',
     ];
-    const forkOpts =
-    { env: { ...process.env, TS_NODE_COMPILER_OPTIONS: '{ "module": "CommonJS" }' } };
-    const childProcess = fork(nycPath, forkArgs, forkOpts);
+    const childProcess = fork(nycPath, forkArgs);
     childProcess.on('exit', code => callback(code && 'Test failed'));
 }
 
