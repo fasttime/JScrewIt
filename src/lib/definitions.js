@@ -783,6 +783,7 @@ function getFHPaddingEntries(index)
             define('escape((RP_4_A + [+("1000" + (AT + 0)[31] + 0)] + AT)[40])[2]', AT), // *
             define('btoa("00")[1]', ATOB),
             define('(RP_3_WA + document)[11]', DOCUMENT),
+            define('(RP_3_WA + self)[11]', DOMWINDOW),
             define // *
             ('escape((NaN + [+("10" + [(RP_6_S + FILL)[40]] + "000")] + FILL)[40])[2]', FILL),
             define // *
@@ -797,7 +798,6 @@ function getFHPaddingEntries(index)
             define('escape(true + AT)[50]', AT, V8_SRC),
             define('escape(FILL)[60]', FF_SRC, FILL),
             define('escape(FLAT)[60]', FF_SRC, FLAT),
-            define('(RP_3_WA + self)[11]', DOMWINDOW),
         ],
         'E':
         [
@@ -881,10 +881,10 @@ function getFHPaddingEntries(index)
         [
             define('btoa(0)[0]', ATOB),
             define('"".small()[2]', CAPITAL_HTML),
+            define('(RP_0_S + self)[10]', DOMWINDOW),
             define('(RP_4_A + Date())[30]', GMT),
             define('(RP_0_S + Audio)[11]', HTMLAUDIOELEMENT),
             define('(RP_0_S + document)[10]', HTMLDOCUMENT),
-            define('(RP_0_S + self)[10]', DOMWINDOW),
         ],
         'N': '"NaN"[0]',
         'O':
@@ -893,8 +893,8 @@ function getFHPaddingEntries(index)
             define('(RP_3_WA + PLAIN_OBJECT)[11]'),
             define('btoa(NaN)[3]', ATOB),
             define('"".fontcolor()[2]', CAPITAL_HTML),
-            define('(RP_3_WA + Intl)[11]', PLAIN_INTL),
             define('(RP_1_WA + self)[10]', DOMWINDOW),
+            define('(RP_3_WA + Intl)[11]', PLAIN_INTL),
         ],
         'P':
         [
