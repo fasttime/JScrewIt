@@ -9,7 +9,7 @@ import { replaceStaticExpr }                            from './encoder/encoder-
 import { Feature }                                      from './features';
 import { _String, createEmpty, noProto }                from './obj-utils';
 import { LazySolution, SimpleSolution }                 from './solution';
-import { SolutionType }                                 from 'novem';
+import { SolutionType }                                 from '~solution';
 
 export var AMENDINGS = ['true', 'undefined', 'NaN'];
 

@@ -1,4 +1,4 @@
-import { LazySolution, SolutionType }   from '../../src/novem';
+import { LazySolution, SolutionType }   from '../../src/index';
 import assert                           from 'assert';
 
 describe

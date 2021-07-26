@@ -1,5 +1,5 @@
 import { assignNoEnum, _Object_defineProperty } from './obj-utils';
-import { AbstractSolution }                     from 'novem';
+import { AbstractSolution }                     from '~solution';
 
 assignNoEnum
 (
@@ -18,4 +18,4 @@ assignNoEnum
     }
 );
 
-export { DynamicSolution, EMPTY_SOLUTION, LazySolution, SimpleSolution } from 'novem';
+export { DynamicSolution, EMPTY_SOLUTION, LazySolution, SimpleSolution } from '~solution';

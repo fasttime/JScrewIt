@@ -31,7 +31,7 @@ import
 }
 from './obj-utils';
 import { MaskSet, maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
-from 'quinquaginta-duo';
+from '~mask';
 
 var ALL                     = createEmpty();
 var DESCRIPTION_MAP         = createEmpty();

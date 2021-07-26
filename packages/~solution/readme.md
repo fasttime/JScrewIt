@@ -1,8 +1,8 @@
-# novem
+# ~solution
 
 This is the solution framework used by [JScrewIt](https://github.com/fasttime/JScrewIt).
-It is named after the word for the number nine in Latin, because in a prior draft of the project
-there were nine solution types.
+It was previously named *novem* after the word for the number nine in Latin, because in a prior
+draft of the project there were nine solution types.
 
 ## Overview
 
@@ -61,5 +61,5 @@ Currently, the following solution types are distinguished.
 
 ## Compatibility
 
-The same JavaScript engines supported by the latest version of JScrewIt are supported by novem.
+The same JavaScript engines supported by the latest version of JScrewIt are supported by ~solution.
 See [here](https://github.com/fasttime/JScrewIt#compatibility).

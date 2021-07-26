@@ -11,7 +11,7 @@
 import { replaceMultiDigitNumber }  from '../encoder/encoder-base';
 import { _parseInt, createEmpty }   from '../obj-utils';
 import { SimpleSolution }           from '../solution';
-import { SolutionType }             from 'novem';
+import { SolutionType }             from '~solution';
 
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
 var CLUSTER_EXTRA_LENGTHS = [];

@@ -1,4 +1,4 @@
-name: quinquaginta-duo Node.js CI
+name: ~solution Node.js CI
 
 on: [push, pull_request]
 
@@ -6,7 +6,7 @@ defaults:
 
   run:
 
-    working-directory: packages/quinquaginta-duo
+    working-directory: packages/~solution
 
 jobs:
 
@@ -56,7 +56,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: node-legacy
-        path: packages/quinquaginta-duo/test/node-legacy
+        path: packages/~solution/test/node-legacy
 
   legacy-test:
 
@@ -78,5 +78,5 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: node-legacy
-        path: packages/quinquaginta-duo/test/node-legacy
+        path: packages/~solution/test/node-legacy
     - run: npm run legacy-test

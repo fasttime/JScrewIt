@@ -38,9 +38,9 @@ from './obj-utils';
 import { ScrewBuffer, optimizeSolutions }                   from './screw-buffer';
 import { DynamicSolution, SimpleSolution }                  from './solution';
 import trimJS                                               from './trim-js';
-import { SolutionType, calculateSolutionType }              from 'novem';
+import { SolutionType, calculateSolutionType }              from '~solution';
 import { MaskMap, MaskSet, maskAreEqual, maskIncludes, maskNew, maskNext, maskUnion }
-from 'quinquaginta-duo';
+from '~mask';
 
 if (typeof NO_DEBUG === 'undefined')
 {

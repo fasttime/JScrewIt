@@ -7,7 +7,7 @@ import { wrapWithCall, wrapWithEval }                               from './enco
 import { Feature, validMaskFromArrayOrStringOrFeature }             from './features';
 import { _Error, _String, _setTimeout, assignNoEnum, esToString }   from './obj-utils';
 import trimJS                                                       from './trim-js';
-import { MaskMap, maskNew }                                         from 'quinquaginta-duo';
+import { MaskMap, maskNew }                                         from '~mask';
 
 function cacheEncoder(encoder)
 {

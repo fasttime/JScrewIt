@@ -1,7 +1,7 @@
 {
-  "name": "novem",
-  "description": "Solution provider for JScrewIt",
-  "homepage": "https://github.com/fasttime/JScrewIt/tree/master/packages/novem",
+  "name": "~mask",
+  "description": "Boolean vector provider for JScrewIt",
+  "homepage": "https://github.com/fasttime/JScrewIt/tree/master/packages/~mask",
   "bugs": "https://github.com/fasttime/JScrewIt/issues",
   "license": "ISC",
   "author": "Francesco Trotta <ft@fasttime.org> (https://github.com/fasttime)",
@@ -9,9 +9,9 @@
     "lib",
     "!.*"
   ],
-  "exports": "./lib/novem.js",
-  "module": "./lib/novem.js",
-  "types": "lib/novem.d.ts",
+  "exports": "./lib/index.js",
+  "module": "./lib/index.js",
+  "types": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"

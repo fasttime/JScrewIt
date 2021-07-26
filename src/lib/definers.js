@@ -1,6 +1,6 @@
 import { featuresToMask }                                           from './features';
 import { _Array_prototype_push_apply, _Array_prototype_slice_call } from './obj-utils';
-import { maskUnion }                                                from 'quinquaginta-duo';
+import { maskUnion }                                                from '~mask';
 
 function callWithFeatures()
 {

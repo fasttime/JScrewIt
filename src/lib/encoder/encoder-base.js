@@ -45,8 +45,8 @@ import replaceCharByAtob            from './replace-char-by-atob';
 import replaceCharByCharCode        from './replace-char-by-char-code';
 import replaceCharByEscSeq          from './replace-char-by-esc-seq';
 import replaceCharByUnescape        from './replace-char-by-unescape';
-import { SolutionType }             from 'novem';
-import { maskIncludes, maskNew }    from 'quinquaginta-duo';
+import { maskIncludes, maskNew }    from '~mask';
+import { SolutionType }             from '~solution';
 
 var ATOB_MASK = Feature.ATOB.mask;
 
