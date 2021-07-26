@@ -244,17 +244,6 @@
                 'contains correct information for the feature',
                 function ()
                 {
-                    function verifyExpectations(actualFeature, expectedFeature)
-                    {
-                        var actualElementaryNames = actualFeature.elementaryNames;
-                        var expectedElementaryNames = expectedFeature.elementaryNames;
-                        expect(actualElementaryNames).toEqual(expectedElementaryNames);
-                        var actualCanonicalNames = expectedFeature.canonicalNames;
-                        var expectedCanonicalNames = actualFeature.canonicalNames;
-                        expect(actualCanonicalNames).toEqual(expectedCanonicalNames);
-                        expect(actualFeature.mask).toEqual(expectedFeature.mask);
-                    }
-
                     it
                     (
                         'DEFAULT',
@@ -267,7 +256,8 @@
                             expect(featureObj.mask).toEqual(newMask);
                         }
                     );
-                    it.per
+
+                    describe.per
                     (
                         [
                             {
@@ -294,33 +284,56 @@
                         '#.actualFeatureName',
                         function (paramData)
                         {
+                            function verifyExpectations(actualFeature, expectedFeature)
+                            {
+                                var actualElementaryNames = actualFeature.elementaryNames;
+                                var expectedElementaryNames = expectedFeature.elementaryNames;
+                                expect(actualElementaryNames).toEqual(expectedElementaryNames);
+                                var actualCanonicalNames = expectedFeature.canonicalNames;
+                                var expectedCanonicalNames = actualFeature.canonicalNames;
+                                expect(actualCanonicalNames).toEqual(expectedCanonicalNames);
+                                expect(actualFeature.mask).toEqual(expectedFeature.mask);
+                            }
+
                             var actualFeatureName       = paramData.actualFeatureName;
                             var expectedFeatureNames    = paramData.expectedFeatureNames;
 
-                            // Default environemnt
-                            var actualFeature = Feature.ALL[actualFeatureName];
-                            var featureNames =
-                            Feature.commonOf.apply(null, expectedFeatureNames);
-                            var expectedFeature = Feature(featureNames);
-                            verifyExpectations(actualFeature, expectedFeature);
-
-                            // Web Worker
-                            var actualFeatureWW = actualFeature.restrict('web-worker');
-                            var restrictedFeatures =
-                            expectedFeatureNames.map
+                            it
                             (
-                                function (featureName)
+                                'in the default environment',
+                                function ()
                                 {
-                                    var feature = Feature.ALL[featureName];
-                                    var restrictedFeature = feature.restrict('web-worker');
-                                    return restrictedFeature;
+                                    var actualFeature = Feature.ALL[actualFeatureName];
+                                    var expectedFeature =
+                                    Feature.commonOf.apply(null, expectedFeatureNames);
+                                    verifyExpectations(actualFeature, expectedFeature);
                                 }
                             );
-                            var expectedFeatureWW =
-                            Feature.commonOf.apply(null, restrictedFeatures);
-                            verifyExpectations(actualFeatureWW, expectedFeatureWW);
+                            it.per(['web-worker', 'forced-strict-mode'])
+                            (
+                                'in the # environment',
+                                function (environment)
+                                {
+                                    var actualFeature =
+                                    Feature.ALL[actualFeatureName].restrict(environment);
+                                    var restrictedFeatures =
+                                    expectedFeatureNames.map
+                                    (
+                                        function (featureName)
+                                        {
+                                            var feature = Feature.ALL[featureName];
+                                            var restrictedFeature = feature.restrict(environment);
+                                            return restrictedFeature;
+                                        }
+                                    );
+                                    var expectedFeature =
+                                    Feature.commonOf.apply(null, restrictedFeatures);
+                                    verifyExpectations(actualFeature, expectedFeature);
+                                }
+                            );
                         }
                     );
+
                     it
                     (
                         'AUTO',
@@ -489,6 +502,15 @@
                         {
                             var featureObj = Feature.WINDOW.restrict('web-worker', [Feature.FF_78]);
                             expect(featureObj.mask).toEqual(Feature.SELF_OBJ.mask);
+                        }
+                    );
+                    it
+                    (
+                        'does not restrict a feature with an unknown environment',
+                        function ()
+                        {
+                            var featureObj = Feature.WINDOW.restrict('?');
+                            expect(featureObj.mask).toEqual(Feature.WINDOW.mask);
                         }
                     );
                 }

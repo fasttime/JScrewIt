@@ -104,8 +104,8 @@ ___
 Creates a new feature object from this feature by removing elementary features that are not
 available inside a particular environment.
 
-This method is useful to selectively exclude features that are not available inside a web
-worker.
+This method is useful to selectively exclude features that are not available in environments
+that require strict mode code, or inside web workers.
 
 #### Parameters
 
