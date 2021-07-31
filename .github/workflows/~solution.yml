@@ -51,8 +51,8 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: 16.x
-    - run: npm install
-    - run: node dev/prepare-legacy-test
+    - run: npm install --prefix ../..
+    - run: npm run prepare-legacy-test
     - uses: actions/upload-artifact@v2
       with:
         name: node-legacy

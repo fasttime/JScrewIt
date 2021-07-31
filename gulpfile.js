@@ -25,7 +25,9 @@ async function bundle(inputOptions, outputFile, banner)
 
 async function bundleUI()
 {
-    const inputOptions = { input: 'src/ui/ui-main.js' };
+    const { nodeResolve } = require('@rollup/plugin-node-resolve');
+
+    const inputOptions = { input: 'src/ui/ui-main.js', plugins: [nodeResolve()] };
     await bundle(inputOptions, '.tmp-out/ui.js');
 }
 
@@ -185,7 +187,8 @@ task
                 nodeResolve({ dedupe: ['tslib'] }),
             ],
         };
-        await bundle(inputOptions, 'lib/jscrewit.js', `// JScrewIt ${version} – ${homepage}\n`);
+        const banner = `// JScrewIt ${version} – ${homepage}\n`;
+        await bundle(inputOptions, 'lib/jscrewit.js', banner);
     },
 );
 
@@ -274,14 +277,13 @@ task
     'make-spec-runner',
     async () =>
     {
+        const fastGlob      = require('fast-glob');
         const { writeFile } = require('fs/promises');
-        const glob          = require('glob');
         const Handlebars    = require('handlebars');
-        const { promisify } = require('util');
 
         async function getSpecs()
         {
-            const specs = await promisify(glob)('**/*.spec.js', { cwd: 'test/lib' });
+            const specs = await fastGlob('**/*.spec.js', { cwd: 'test/lib' });
             return specs;
         }
 

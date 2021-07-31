@@ -53,7 +53,7 @@
     "ebdd": "latest",
     "eslint-plugin-ebdd": "latest",
     "expectations": "latest",
-    "glob": "*",
+    "fast-glob": "latest",
     "gulp": "latest",
     "gulp-jsdoc3": "latest",
     "gulp-rename": "latest",
@@ -68,7 +68,8 @@
     "rollup-plugin-cleanup": "latest",
     "tslib": "latest",
     "typedoc": "latest",
-    "typedoc-plugin-markdown": "latest"
+    "typedoc-plugin-markdown": "latest",
+    "typescript": "latest"
   },
   "workspaces": [
     "./packages/*"

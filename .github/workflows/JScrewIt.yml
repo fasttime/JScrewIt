@@ -14,8 +14,8 @@ jobs:
       with:
         node-version: 16.x
     - run: npm install --workspaces
-    - run: npm run --workspaces make
     - run: npm install
+    - run: npm run --workspaces make
     - run: gulp lint
     - run: gulp bundle:lib
     - uses: actions/upload-artifact@v2

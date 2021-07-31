@@ -1,4 +1,4 @@
-name: ~mask Node.js CI
+name: ~result-format Node.js CI
 
 on: [push, pull_request]
 
@@ -6,7 +6,7 @@ defaults:
 
   run:
 
-    working-directory: packages/~mask
+    working-directory: packages/~result-format
 
 jobs:
 
@@ -56,7 +56,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: node-legacy
-        path: packages/~mask/test/node-legacy
+        path: packages/~result-format/test/node-legacy
 
   legacy-test:
 
@@ -78,5 +78,5 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: node-legacy
-        path: packages/~mask/test/node-legacy
+        path: packages/~result-format/test/node-legacy
     - run: npm run legacy-test

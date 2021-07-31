@@ -6,6 +6,7 @@
     "strict": true,
     "target": "ES5",
     "types": [
+      "ebdd",
       "mocha",
       "node"
     ],

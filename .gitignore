@@ -6,6 +6,7 @@
 /lib/**/*.js
 /lib/feature-all.d.ts
 /packages/*/lib
+/packages/*/test/browser-spec-runner.js
 /packages/*/test/node-legacy
 /test/spec-runner.html
 /ui/**/*.js

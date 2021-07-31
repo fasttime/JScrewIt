@@ -58,8 +58,3 @@ Currently, the following solution types are distinguished.
 | prefixed string      | `![]+([]+![])[+[]]`          |
 | weak prefixed string | `+[]+([]+![])[+[]]`          |
 | combined string      | `([]+![])[+[]]+![]`, `[]+[]` |
-
-## Compatibility
-
-The same JavaScript engines supported by the latest version of JScrewIt are supported by ~solution.
-See [here](https://github.com/fasttime/JScrewIt#compatibility).

@@ -1,15 +1,23 @@
-import make                 from './dev/make-impl.js';
-import { lint as lintImpl } from '@fasttime/lint';
-import { fork }             from 'child_process';
-import { rm }               from 'fs/promises';
-import gulp                 from 'gulp';
-import { createRequire }    from 'module';
+import { makeBrowserSpecRunner, makeLib }   from './dev/make-impl.js';
+import { lint as lintImpl }                 from '@fasttime/lint';
+import { fork }                             from 'child_process';
+import { rm }                               from 'fs/promises';
+import gulp                                 from 'gulp';
+import { createRequire }                    from 'module';
 
 const { parallel, series } = gulp;
 
 export async function clean()
 {
-    const paths = ['.nyc_output', '.tmp-out', 'coverage', 'lib', 'test/node-legacy'];
+    const paths =
+    [
+        '.nyc_output',
+        '.tmp-out',
+        'coverage',
+        'lib',
+        'test/browser-spec-runner.js',
+        'test/node-legacy',
+    ];
     const options = { force: true, recursive: true };
     await Promise.all(paths.map(path => rm(path, options)));
 }
@@ -26,7 +34,7 @@ export async function lint()
         {
             src: 'test/**/*.ts',
             envs: ['ebdd/ebdd', 'mocha'],
-            parserOptions: { project: 'test/tsconfig.json', sourceType: 'module' },
+            parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
             plugins: ['ebdd'],
         },
         {
@@ -57,6 +65,6 @@ export function test(callback)
     childProcess.on('exit', code => callback(code && 'Test failed'));
 }
 
-export { make };
+export { makeLib, makeBrowserSpecRunner };
 
-export default series(parallel(clean, lint), test, make);
+export default series(parallel(clean, lint), test, parallel(makeLib, makeBrowserSpecRunner));

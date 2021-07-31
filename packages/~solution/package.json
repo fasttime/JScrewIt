@@ -18,9 +18,9 @@
   },
   "scripts": {
     "build": "npm install && gulp",
-    "legacy-build": "node dev/prepare-legacy-test && npm run legacy-test",
     "legacy-test": "node -- test/node-legacy/node_modules/mocha/bin/mocha --check-leaks --ui=ebdd test/node-legacy/test/spec/**/*.spec.js",
     "make": "node dev/make",
+    "prepare-legacy-test": "node ../../dev/internal/prepare-package-legacy-test.mjs",
     "test": "mocha --check-leaks --require=ts-node/register --ui=ebdd test/spec/**/*.spec.ts"
   },
   "devDependencies": {
@@ -29,16 +29,10 @@
     "@types/node": "latest",
     "ebdd": "latest",
     "eslint-plugin-ebdd": "latest",
-    "fast-glob": "latest",
     "gulp": "latest",
-    "merge-stream": "latest",
     "mocha": "latest",
     "nyc": "latest",
-    "rollup": "latest",
-    "rollup-plugin-cleanup": "latest",
-    "ts-node": "latest",
-    "tslib": "latest",
-    "typescript": "latest"
+    "ts-node": "latest"
   },
   "private": true,
   "type": "module"

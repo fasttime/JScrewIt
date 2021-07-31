@@ -16,8 +16,3 @@ Apart from that, do not make any assumptions about the internal representation o
 or truthiness.
 For performance reasons, mask functions do not check that their arguments are valid masks.
 Passing anything other than a mask as an argument to a mask function results in undefined behavior.
-
-## Compatibility
-
-The same JavaScript engines supported by the latest version of JScrewIt are supported by ~mask.
-See [here](https://github.com/fasttime/JScrewIt#compatibility).

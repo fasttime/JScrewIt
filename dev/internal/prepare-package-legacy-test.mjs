@@ -1,11 +1,8 @@
-#!/usr/bin/env node
-
 import { fork, spawn }          from 'child_process';
 import { mkdir, rm, writeFile } from 'fs/promises';
 import { createRequire }        from 'module';
 import { EOL }                  from 'os';
 import { join }                 from 'path';
-import { fileURLToPath }        from 'url';
 
 const NODE_LEGACY_DIR = 'test/node-legacy';
 
@@ -28,9 +25,9 @@ async function npmInstall()
     await endOf(childProcess);
 }
 
-async function tsc(url)
+async function tsc()
 {
-    const tscPath = createRequire(url).resolve('typescript/bin/tsc');
+    const tscPath = createRequire(import.meta.url).resolve('typescript/bin/tsc');
     const childProcess = fork(tscPath, ['--outDir', 'test/node-legacy']);
     await endOf(childProcess);
 }
@@ -39,11 +36,8 @@ async function tsc(url)
 {
     try
     {
-        const pkgURL = new URL('..', import.meta.url);
-        const pkgPath = fileURLToPath(pkgURL);
-        process.chdir(pkgPath);
         await rm(NODE_LEGACY_DIR, { force: true, recursive: true });
-        await Promise.all([tsc(pkgURL), npmInstall()]);
+        await Promise.all([tsc(), npmInstall()]);
     }
     catch (error)
     {
