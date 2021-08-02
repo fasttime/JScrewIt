@@ -24,29 +24,29 @@ The following source will do an `alert(1)` in any browser, including Internet Ex
 
 ```
 [][(![]+[])[+[]]+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+
-(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]][(+(+!![]+[+([][(![]+[])[+[]]+([![]]+
-[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]
-]+(!![]+[])[+!![]]]+[])[+[]]])+[!![]]+[][(![]+[])[+[]]+([![]]+[][[]])[+!![]+[+[]
-]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]
-])[+!![]+[+[]]]+(!!++([][(![]+[])[+[]]+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]
-+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]]+[])[+[]]+[][(!
-[]+[])[+[]]+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]
-+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]])[+!![]+[+!![]]]+([][[]]+[])[+!![]]+(![]+[
-])[!![]+!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[+!![]]+([][[]]+[])[+[]]+(+(+!![]+[+(
-[][(![]+[])[+[]]+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+
-(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]]+[])[+[]]])+[!![]]+[][(![]+[])[+[]]+(
+(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]][([+[![]]]+!!++([]+[][(![]+[])[+[]]+(
 [![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![
-]+!![]]+(!![]+[])[+!![]]])[+!![]+[+[]]]+(!![]+[])[+[]]+(!!++([][(![]+[])[+[]]+([
-![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]
-+!![]]+(!![]+[])[+!![]]]+[])[+[]]+[][(![]+[])[+[]]+([![]]+[][[]])[+!![]+[+[]]]+(
-![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]])[+
-!![]+[+!![]]]+(!![]+[])[+!![]]]((!![]+[])[+!![]]+(!![]+[])[!![]+!![]+!![]]+(!![]
-+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!![]]+([][[]]+[])[+!![]]+(+(+!![]+[+([][(!
-[]+[])[+[]]+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]
-+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]]+[])[+[]]])+[][(![]+[])[+[]]+([![]]+[][[]]
-)[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]]+(!![
-]+[])[+!![]]])[+!![]+[+!![]]]+(![]+[])[+!![]]+(![]+[])[!![]+!![]]+(!![]+[])[!![]
-+!![]+!![]]+(!![]+[])[+!![]]+(!![]+[])[+[]])()(+!![])
+]+!![]]+(!![]+[])[+!![]]])[+[]]+[][(![]+[])[+[]]+([![]]+[][[]])[+!![]+[+[]]]+(![
+]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]])[+!!
+[]+[+!![]]]+(!!++([]+[][(![]+[])[+[]]+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+
+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]])[+[]]+[][(![]+[
+])[+[]]+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])
+[!![]+!![]+!![]]+(!![]+[])[+!![]]])[+!![]+[+!![]]]+([][[]]+[])[+!![]]+(![]+[])[!
+![]+!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[+!![]]+([][[]]+[])[+[]]+([+[![]]]+!!++([
+]+[][(![]+[])[+[]]+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]
+]+(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]])[+[]]+[][(![]+[])[+[]]+([![]]+[][[
+]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]]+(!
+![]+[])[+!![]]])[+!![]+[+!![]]]+(!![]+[])[+[]]+(!!++([]+[][(![]+[])[+[]]+([![]]+
+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]
+]+(!![]+[])[+!![]]])[+[]]+[][(![]+[])[+[]]+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[
+!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+!![]]])[+!![]+[+!
+![]]]+(!![]+[])[+!![]]]((!![]+[])[+!![]]+(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+[]
+]+([][[]]+[])[+[]]+(!![]+[])[+!![]]+([][[]]+[])[+!![]]+(+[]+[+[]]+[][(![]+[])[+[
+]]+([![]]+[][[]])[+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]
++!![]+!![]]+(!![]+[])[+!![]]])[+!![]+[+!!++([]+[][(![]+[])[+[]]+([![]]+[][[]])[+
+!![]+[+[]]]+(![]+[])[!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[!![]+!![]+!![]]+(!![]+[
+])[+!![]]])[+[]]]]+(![]+[])[+!![]]+(![]+[])[!![]+!![]]+(!![]+[])[!![]+!![]+!![]]
++(!![]+[])[+!![]]+(!![]+[])[+[]])()(+!![])
 ```
 
 ## Setup Instructions
@@ -80,11 +80,11 @@ npm install jscrewit
 Then you can import it in your code in the usual way.
 
 ```js
-const JScrewIt = require("jscrewit"); // CommonJS syntax
+import JScrewIt from "jscrewit"; // ECMAScript module syntax
 ```
 or
 ```js
-import JScrewIt from "jscrewit"; // ECMAScript module syntax
+const JScrewIt = require("jscrewit"); // CommonJS syntax
 ```
 
 JScrewIt comes with bundled TypeScript declarations: you can use it in TypeScript without installing
@@ -125,7 +125,7 @@ const output = JScrewIt.encode("\"1.\\n2.\\n\\u263A\"");
 
 `JScrewIt.encode` also accepts an optional second parameter containing options that control various
 aspects of the encoding.
-These are covered in detail in the [relative section](api-doc/interfaces/encodeoptions.md) in the
+These are covered in detail in the [relative section](api-doc/interfaces/EncodeOptions.md) in the
 API Reference.
 
 ### Features
@@ -153,21 +153,21 @@ const output = JScrewIt.encode("alert(1)"); // output is 1905 characters
 ```
 
 We can save a few characters by indicating that our code is only supposed to run in a browser.
-We do this using the feature [`BROWSER`](api-doc/interfaces/featureall.md#BROWSER):
+We do this using the feature [`BROWSER`](api-doc/interfaces/FeatureAll.md#BROWSER):
 
 ```js
 const options = { features: "BROWSER" };
-const output = JScrewIt.encode("alert(1)", options); // 1890 characters
+const output = JScrewIt.encode("alert(1)", options); // 1882 characters
 ```
 
 But if we are only interested in code that runs in an up to date Firefox browser, the output length
-shrinks to less than 50%:
+shrinks to about one third:
 ```js
 const options = { features: "FF" };
-const output = JScrewIt.encode("alert(1)", options); // 858 characters now
+const output = JScrewIt.encode("alert(1)", options); // 655 characters now
 ```
 
-Here we have used another feature: [`FF`](api-doc/interfaces/featureall.md#FF).
+Here we have used another feature: [`FF`](api-doc/interfaces/FeatureAll.md#FF).
 This feature produces the shortest possible code that runs in current Firefox browsers.
 
 We can specify more than one feature using an array, e.g.
@@ -179,10 +179,9 @@ const output = JScrewIt.encode(input, options);
 
 As opposed to the previous example, the features specified here refer to certain abilities that may
 be supported by more than one particular class of browsers or JavaScript engines.
-Specifically, [`ATOB`](api-doc/interfaces/featureall.md#ATOB) indicates native support for the
-functions `atob` and `btoa`, while
-[`WINDOW`](api-doc/interfaces/featureall.md#WINDOW) refers to a particular string representation of
-the global object `self`, where available.
+Specifically, [`ATOB`](api-doc/interfaces/FeatureAll.md#ATOB) indicates native support for the
+functions `atob` and `btoa`, while [`WINDOW`](api-doc/interfaces/FeatureAll.md#WINDOW) refers to a
+particular string representation of the global object `self`, where available.
 The code generated by JScrewIt will run fine in engines that support both of these features.
 In engines that don't support both features, the code may not work, and may produce unpredictable
 results.
@@ -190,23 +189,24 @@ Most typically, it will throw some kind of error at runtime.
 
 It's important to keep in mind that each of the target engines needs to support every feature we
 specify.
-So if we want our JSFuck code to run in Android Browser 4.4, Safari 7.0 and Node.js 10+, we can only
+So if we want our JSFuck code to run in Android Browser 4.4, Safari 7.0 and Node.js 13+, we can only
 specify features supported by all of these engines.
 These features can be retrieved with
-[`JScrewIt.Feature.commonOf`](api-doc/interfaces/featureconstructor.md#commonof).
+[`JScrewIt.Feature.commonOf`](api-doc/interfaces/FeatureConstructor.md#commonof).
 
 ```js
-{ features: JScrewIt.Feature.commonOf("ANDRO_4_4", "NODE_10", "SAFARI_7_0") }
+{ features: JScrewIt.Feature.commonOf("ANDRO_4_4", "NODE_13", "SAFARI_7_0") }
 ```
 
 The features turn out to be
-[`ESC_HTML_QUOT`](api-doc/interfaces/featureall.md#ESC_HTML_QUOT),
-[`GMT`](api-doc/interfaces/featureall.md#GMT),
-[`INCR_CHAR`](api-doc/interfaces/featureall.md#INCR_CHAR),
-[`NAME`](api-doc/interfaces/featureall.md#NAME),
-[`NO_IE_SRC`](api-doc/interfaces/featureall.md#NO_IE_SRC) and
-[`OBJECT_UNDEFINED`](api-doc/interfaces/featureall.md#OBJECT_UNDEFINED) (a quick way to see this is
-entering `JScrewIt.Feature.commonOf("ANDRO_4_4", "NODE_10", "SAFARI_7_0").toString()` in the
+[`ESC_HTML_QUOT`](api-doc/interfaces/FeatureAll.md#ESC_HTML_QUOT),
+[`GENERIC_ARRAY_TO_STRING`](api-doc/interfaces/FeatureAll.md#GENERIC_ARRAY_TO_STRING),
+[`GMT`](api-doc/interfaces/FeatureAll.md#GMT),
+[`INCR_CHAR`](api-doc/interfaces/FeatureAll.md#INCR_CHAR),
+[`NAME`](api-doc/interfaces/FeatureAll.md#NAME),
+[`NO_IE_SRC`](api-doc/interfaces/FeatureAll.md#NO_IE_SRC) and
+[`OBJECT_UNDEFINED`](api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED) (a quick way to see this is
+entering `JScrewIt.Feature.commonOf("ANDRO_4_4", "NODE_13", "SAFARI_7_0").toString()` in the
 browser's console).
 With this knowledge, we could also rewrite the expression above as follows.
 
@@ -219,7 +219,7 @@ effect, as it will result in the union of the features available in every engine
 their intersection.
 
 ```diff
-- { features: ["ANDRO_4_4", "NODE_10", "SAFARI_7_0"] }
+- { features: ["ANDRO_4_4", "NODE_13", "SAFARI_7_0"] }
 ```
 
 ### Further Reading

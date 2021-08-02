@@ -1,4 +1,4 @@
-# novem · [![npm version][npm badge]][npm url]
+# novem
 
 This is the solution framework used by [JScrewIt](https://github.com/fasttime/JScrewIt).
 It is named after the word for the number nine in Latin, because in a prior draft of the project
@@ -63,6 +63,3 @@ Currently, the following solution types are distinguished.
 
 The same JavaScript engines supported by the latest version of JScrewIt are supported by novem.
 See [here](https://github.com/fasttime/JScrewIt#compatibility).
-
-[npm badge]: https://badge.fury.io/js/novem.svg
-[npm url]: https://www.npmjs.com/package/novem

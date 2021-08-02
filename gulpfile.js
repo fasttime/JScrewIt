@@ -31,8 +31,8 @@ async function bundleUI()
 
 async function createFileFromTemplate(createContextModuleId, templateSrcPath, outputPath)
 {
-    const { promises: { writeFile } }   = require('fs');
-    const Handlebars                    = require('handlebars');
+    const { writeFile } = require('fs/promises');
+    const Handlebars    = require('handlebars');
 
     const promises = [import(createContextModuleId), readFileAsString(templateSrcPath)];
     const [{ default: createContext }, input] = await Promise.all(promises);
@@ -74,7 +74,7 @@ function makeWorker()
 
 function readFileAsString(inputPath)
 {
-    const { promises: { readFile } } = require('fs');
+    const { readFile } = require('fs/promises');
 
     const promise = readFile(inputPath, 'utf8');
     return promise;
@@ -105,11 +105,11 @@ task
 task
 (
     'lint',
-    () =>
+    async () =>
     {
-        const lint = require('@fasttime/gulp-lint');
+        const { lint } = require('@fasttime/lint');
 
-        const stream =
+        await
         lint
         (
             {
@@ -131,12 +131,12 @@ task
             {
                 src: ['dev/**/*.js', 'gulpfile.js', 'test/patch-cov-source.js', '!dev/legacy/**'],
                 envs: 'node',
-                parserOptions: { ecmaVersion: 2020 },
+                parserOptions: { ecmaVersion: 2021 },
             },
             {
                 src: ['dev/**/*.mjs'],
                 envs: 'node',
-                parserOptions: { ecmaVersion: 2020, sourceType: 'module' },
+                parserOptions: { ecmaVersion: 2021, sourceType: 'module' },
             },
             {
                 src:
@@ -148,7 +148,7 @@ task
                     'tools/**/*.js',
                     '!test/patch-cov-source.js',
                 ],
-                plugins: 'ebdd',
+                plugins: ['ebdd'],
                 // process.exitCode is not supported in Node.js 0.10.
                 rules: { 'no-process-exit': 'off' },
             },
@@ -164,7 +164,6 @@ task
             },
             { src: 'test/acceptance/**/*.feature' },
         );
-        return stream;
     },
 );
 
@@ -227,8 +226,8 @@ task
 
         const uglifyOpts =
         {
-            compress: { global_defs: { NO_DEBUG: true }, passes: 3 },
-            mangle: { properties: { regex: /^[$_]/ } },
+            compress: { global_defs: { NO_DEBUG: true }, hoist_funs: true, passes: 4 },
+            mangle: { properties: { regex: /^_/ } },
             output: { comments: (node, comment) => comment.pos === 0 },
         };
         const stream =
@@ -248,7 +247,9 @@ task
         const uglify = require('gulp-uglify');
 
         const stream =
-        src('.tmp-out/ui.js').pipe(uglify({ compress: { passes: 3 } })).pipe(dest('ui'));
+        src('.tmp-out/ui.js')
+        .pipe(uglify({ compress: { hoist_funs: true, passes: 3 } }))
+        .pipe(dest('ui'));
         return stream;
     },
 );
@@ -273,10 +274,10 @@ task
     'make-spec-runner',
     async () =>
     {
-        const { promises: { writeFile } }   = require('fs');
-        const glob                          = require('glob');
-        const Handlebars                    = require('handlebars');
-        const { promisify }                 = require('util');
+        const { writeFile } = require('fs/promises');
+        const glob          = require('glob');
+        const Handlebars    = require('handlebars');
+        const { promisify } = require('util');
 
         async function getSpecs()
         {
@@ -300,24 +301,29 @@ task
 
 task
 (
-    'typedoc',
-    () =>
+    'make-api-doc',
+    async () =>
     {
-        const typedoc = require('gulp-typedoc');
+        const { Application, TSConfigReader } = require('typedoc');
 
-        const typedocOpts =
+        const options =
         {
             disableSources:     true,
             entryPoints:        'lib/jscrewit.d.ts',
             hideBreadcrumbs:    true,
             name:               'JScrewIt',
-            out:                'api-doc',
             plugin:             'typedoc-plugin-markdown',
             readme:             'none',
             tsconfig:           'tsconfig.json',
         };
-        const stream = src('lib', { read: false }).pipe(typedoc(typedocOpts));
-        return stream;
+        const app = new Application();
+        app.options.addReader(new TSConfigReader());
+        app.bootstrap(options);
+        const src = app.expandInputFiles(['lib']);
+        const project = app.convert(src);
+        await app.renderer.render(project, 'api-doc');
+        if (app.logger.hasErrors())
+            throw Error('API documentation could not be generated');
     },
 );
 
@@ -333,7 +339,7 @@ task
         (
             'minify:lib',
             'minify:ui',
-            series('make-feature-types', 'typedoc'),
+            series('make-feature-types', 'make-api-doc'),
             'make-feature-doc',
             'make-spec-runner',
         ),

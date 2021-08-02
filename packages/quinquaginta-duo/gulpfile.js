@@ -1,26 +1,23 @@
-import gulpLint                     from '@fasttime/gulp-lint';
-import { fork }                     from 'child_process';
-import { promises as fsPromises }   from 'fs';
-import gulp                         from 'gulp';
-import gulpTypescript               from 'gulp-typescript';
-import mergeStream                  from 'merge-stream';
-import { createRequire }            from 'module';
-import { rollup }                   from 'rollup';
-import rollupPluginCleanup          from 'rollup-plugin-cleanup';
+import make                 from './dev/make-impl.js';
+import { lint as lintImpl } from '@fasttime/lint';
+import { fork }             from 'child_process';
+import { rm }               from 'fs/promises';
+import gulp                 from 'gulp';
+import { createRequire }    from 'module';
 
-const { dest, parallel, series, src } = gulp;
+const { parallel, series } = gulp;
 
 export async function clean()
 {
     const paths = ['.nyc_output', '.tmp-out', 'coverage', 'lib', 'test/node-legacy'];
     const options = { force: true, recursive: true };
-    await Promise.all(paths.map(path => fsPromises.rm(path, options)));
+    await Promise.all(paths.map(path => rm(path, options)));
 }
 
-export function lint()
+export async function lint()
 {
-    const stream =
-    gulpLint
+    await
+    lintImpl
     (
         {
             src: 'src/**/*.ts',
@@ -38,7 +35,6 @@ export function lint()
             parserOptions: { ecmaVersion: 2020, sourceType: 'module' },
         },
     );
-    return stream;
 }
 
 export function test(callback)
@@ -58,43 +54,10 @@ export function test(callback)
         '--ui=ebdd',
         'test/spec/**/*.spec.ts',
     ];
-    const forkOpts =
-    { env: { ...process.env, TS_NODE_COMPILER_OPTIONS: '{ "module": "CommonJS" }' } };
-    const childProcess = fork(nycPath, forkArgs, forkOpts);
+    const childProcess = fork(nycPath, forkArgs);
     childProcess.on('exit', code => callback(code && 'Test failed'));
 }
 
-export function compile()
-{
-    const { dts, js } = src('src/**/*.ts').pipe(gulpTypescript.createProject('tsconfig.json')());
-    const stream = mergeStream(dts.pipe(dest('lib')), js.pipe(dest('.tmp-out')));
-    return stream;
-}
+export { make };
 
-export async function bundle()
-{
-    const require = createRequire(import.meta.url);
-    const { homepage, version } = require('./package.json');
-
-    const inputOptions =
-    {
-        external: ['tslib'],
-        input: '.tmp-out/quinquaginta-duo.js',
-        onwarn(warning)
-        {
-            if (warning.code !== 'THIS_IS_UNDEFINED')
-                console.error(warning.message);
-        },
-        plugins: [rollupPluginCleanup({ comments: /^(?!\/ *(?:@ts-|eslint-disable-line ))/ })],
-    };
-    const outputOptions =
-    {
-        banner: `// quinquaginta-duo ${version} – ${homepage}\n`,
-        file:   'lib/quinquaginta-duo.js',
-        format: 'esm',
-    };
-    const bundle = await rollup(inputOptions);
-    await bundle.write(outputOptions);
-}
-
-export default series(parallel(clean, lint), test, compile, bundle);
+export default series(parallel(clean, lint), test, make);

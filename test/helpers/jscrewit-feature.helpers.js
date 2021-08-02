@@ -5,18 +5,24 @@
 
 (function (global)
 {
-    function emuIt(description, featureObj, fn)
+    function emuItWhen(condition)
     {
-        var test = it(description, fn);
-        var emuFeatureNames = getEmuFeatureNames(featureObj);
-        if (!emuFeatureNames)
+        function emuIt(description, featureObj, fn)
         {
-            test.fn = null;
-            test.pending = true;
+            var conditionalIt = condition ? it : it.when;
+            var test = conditionalIt(description, fn);
+            var emuFeatureNames = getEmuFeatureNames(featureObj);
+            if (!emuFeatureNames)
+            {
+                test.fn = null;
+                test.pending = true;
+            }
+            else
+                test.emuFeatureNames = emuFeatureNames;
+            return test;
         }
-        else
-            test.emuFeatureNames = emuFeatureNames;
-        return test;
+
+        return emuIt;
     }
 
     function getEmuFeatureNames(featureObj)
@@ -70,6 +76,8 @@
 
     var featureSet;
 
+    var emuIt = emuItWhen(true);
+    emuIt.when = emuItWhen;
     global.emuIt                = emuIt;
     global.getEmuFeatureNames   = getEmuFeatureNames;
 }

@@ -1,11 +1,24 @@
-/* global Audio, Intl, Node, console, document, history, require, self, sidebar, statusbar */
+/*
+global
+Audio,
+Intl,
+Node,
+console,
+document,
+history,
+location,
+require,
+self,
+sidebar,
+statusbar,
+*/
 
 import
 {
     _Array_isArray,
-    _Array_prototype_every,
-    _Array_prototype_forEach,
-    _Array_prototype_push,
+    _Array_prototype_every_call,
+    _Array_prototype_forEach_call,
+    _Array_prototype_push_apply,
     _Error,
     _JSON_stringify,
     _Object_create,
@@ -55,7 +68,7 @@ function areEqual()
 {
     var mask;
     var equal =
-    _Array_prototype_every.call
+    _Array_prototype_every_call
     (
         arguments,
         function (arg, index)
@@ -103,7 +116,7 @@ function commonOf()
     if (arguments.length)
     {
         var mask;
-        _Array_prototype_forEach.call
+        _Array_prototype_forEach_call
         (
             arguments,
             function (arg)
@@ -134,7 +147,7 @@ function descriptionFor(name)
 function featureArrayLikeToMask(arrayLike)
 {
     var mask = maskNew();
-    _Array_prototype_forEach.call
+    _Array_prototype_forEach_call
     (
         arrayLike,
         function (feature)
@@ -250,7 +263,7 @@ export function validMaskFromArguments(args)
 {
     var mask = maskNew();
     var validationNeeded = 0;
-    _Array_prototype_forEach.call
+    _Array_prototype_forEach_call
     (
         args,
         function (arg)
@@ -316,7 +329,7 @@ assignNoEnum
                         var name = featureObj.name;
                         featureNameSet[name] = null;
                         var includes = INCLUDES_MAP[name];
-                        _Array_prototype_push.apply(allIncludes, includes);
+                        _Array_prototype_push_apply(allIncludes, includes);
                     }
                 }
             );
@@ -354,7 +367,7 @@ assignNoEnum
         {
             var mask = this.mask;
             var included =
-            _Array_prototype_every.call
+            _Array_prototype_every_call
             (
                 arguments,
                 function (arg)
@@ -881,6 +894,21 @@ assignNoEnum
                 return available;
             },
         },
+        GENERIC_ARRAY_TO_STRING:
+        {
+            description: 'Ability to call Array.prototype.toString with a non-array binding.',
+            check:
+            function ()
+            {
+                try
+                {
+                    Array.prototype.toString.call({ });
+                    return true;
+                }
+                catch (error)
+                { }
+            },
+        },
         GLOBAL_UNDEFINED:
         {
             description:
@@ -1038,6 +1066,21 @@ assignNoEnum
             },
             includes: ['LOCALE_NUMERALS'],
         },
+        LOCATION:
+        {
+            description:
+            'Existence of the global object location with the property that ' +
+            'Object.prototype.toString.call(location) evaluates to a string that starts with ' +
+            '"[object " and ends with "Location]".',
+            check:
+            function ()
+            {
+                var available =
+                typeof location === 'object' &&
+                /^\[object .*Location]$/.test(Object.prototype.toString.call(location));
+                return available;
+            },
+        },
         NAME:
         {
             description: 'Existence of the name property for functions.',
@@ -1094,13 +1137,19 @@ assignNoEnum
         {
             description:
             'The property that the string representation of Array.prototype.entries() evaluates ' +
-            'to "[object Array Iterator]".',
+            'to "[object Array Iterator]" and that Array.prototype.entries().constructor is the ' +
+            'global function Object.',
             check:
             function ()
             {
-                var available =
-                Array.prototype.entries && [].entries() + '' === '[object Array Iterator]';
-                return available;
+                if (Array.prototype.entries)
+                {
+                    var arrayIterator = [].entries();
+                    var available =
+                    arrayIterator + '' === '[object Array Iterator]' &&
+                    arrayIterator.constructor === Object;
+                    return available;
+                }
             },
             includes: ['ARRAY_ITERATOR'],
         },
@@ -1284,6 +1333,7 @@ assignNoEnum
                 'FILL',
                 'FLAT',
                 'FROM_CODE_POINT',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'HISTORY',
@@ -1292,6 +1342,7 @@ assignNoEnum
                 'INTL',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_IE_SRC',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -1315,6 +1366,7 @@ assignNoEnum
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
+                'LOCATION',
                 'NAME',
                 'STATUS',
                 'V8_SRC',
@@ -1330,10 +1382,12 @@ assignNoEnum
                 'DOMWINDOW',
                 'ESC_HTML_ALL',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
+                'LOCATION',
                 'NAME',
                 'OBJECT_UNDEFINED',
                 'STATUS',
@@ -1350,6 +1404,7 @@ assignNoEnum
                 'CONSOLE',
                 'ESC_HTML_ALL',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GMT',
                 'HISTORY',
                 'HTMLAUDIOELEMENT',
@@ -1357,6 +1412,7 @@ assignNoEnum
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'OBJECT_UNDEFINED',
                 'PLAIN_INTL',
@@ -1372,14 +1428,9 @@ assignNoEnum
             engine: 'the previous to current versions of Chrome and Edge',
             aliasFor: 'CHROME_86',
         },
-        CHROME:
-        {
-            engine: 'the current stable versions of Chrome, Edge and Opera',
-            aliasFor: 'CHROME_86',
-        },
         CHROME_86:
         {
-            engine: 'Chrome 86, Edge 86 and Opera 72 or later',
+            engine: 'Chrome 86 to 91, Edge 86 to 91 and Opera 72 to 77',
             includes:
             [
                 'ARROW',
@@ -1392,6 +1443,7 @@ assignNoEnum
                 'FLAT',
                 'FROM_CODE_POINT',
                 'FUNCTION_19_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'HISTORY',
@@ -1400,6 +1452,52 @@ assignNoEnum
                 'INTL',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'REGEXP_STRING_ITERATOR',
+                'STATUS',
+                'V8_SRC',
+                'WINDOW',
+            ],
+            attributes:
+            {
+                'char-increment-restriction':   null,
+                'unstable':                     null,
+                'web-worker-restriction':       null,
+            },
+        },
+        CHROME:
+        {
+            engine: 'the current stable versions of Chrome, Edge and Opera',
+            aliasFor: 'CHROME_92',
+        },
+        CHROME_92:
+        {
+            engine: 'Chrome 92, Edge 92 and Opera 78 or later',
+            includes:
+            [
+                'ARROW',
+                'AT',
+                'ATOB',
+                'BARPROP',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'FILL',
+                'FLAT',
+                'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
+                'GENERIC_ARRAY_TO_STRING',
+                'GLOBAL_UNDEFINED',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
+                'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'REGEXP_STRING_ITERATOR',
@@ -1419,11 +1517,6 @@ assignNoEnum
             engine: 'the current version of Firefox ESR',
             aliasFor: 'FF_78',
         },
-        FF_PREV:
-        {
-            engine: 'the previous to current version of Firefox',
-            aliasFor: 'FF_78',
-        },
         FF_78:
         {
             engine: 'Firefox 78 to 82',
@@ -1441,6 +1534,7 @@ assignNoEnum
                 'FLAT',
                 'FROM_CODE_POINT',
                 'FUNCTION_19_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'HISTORY',
@@ -1448,6 +1542,7 @@ assignNoEnum
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
@@ -1463,14 +1558,14 @@ assignNoEnum
                 'web-worker-restriction':       null,
             },
         },
-        FF:
+        FF_PREV:
         {
-            engine: 'the current stable version of Firefox',
+            engine: 'the previous to current version of Firefox',
             aliasFor: 'FF_83',
         },
         FF_83:
         {
-            engine: 'Firefox 83 or later',
+            engine: 'Firefox 83 to 89',
             includes:
             [
                 'ARROW',
@@ -1485,6 +1580,7 @@ assignNoEnum
                 'FLAT',
                 'FROM_CODE_POINT',
                 'FUNCTION_19_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'HISTORY',
@@ -1493,6 +1589,54 @@ assignNoEnum
                 'INTL',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'REGEXP_STRING_ITERATOR',
+                'SHORT_LOCALES',
+                'STATUS',
+                'WINDOW',
+            ],
+            attributes:
+            {
+                'char-increment-restriction':   null,
+                'unstable':                     null,
+                'web-worker-restriction':       null,
+            },
+        },
+        FF:
+        {
+            engine: 'the current stable version of Firefox',
+            aliasFor: 'FF_90',
+        },
+        FF_90:
+        {
+            engine: 'Firefox 90 or later',
+            includes:
+            [
+                'ARROW',
+                'AT',
+                'ATOB',
+                'BARPROP',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'EXTERNAL',
+                'FF_SRC',
+                'FILL',
+                'FLAT',
+                'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
+                'GENERIC_ARRAY_TO_STRING',
+                'GLOBAL_UNDEFINED',
+                'GMT',
+                'HISTORY',
+                'HTMLDOCUMENT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
+                'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'REGEXP_STRING_ITERATOR',
@@ -1517,6 +1661,7 @@ assignNoEnum
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'HISTORY',
                 'IE_SRC',
                 'INCR_CHAR',
@@ -1537,6 +1682,7 @@ assignNoEnum
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'HISTORY',
                 'IE_SRC',
                 'INCR_CHAR',
@@ -1557,6 +1703,7 @@ assignNoEnum
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -1582,6 +1729,7 @@ assignNoEnum
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
@@ -1604,6 +1752,7 @@ assignNoEnum
             [
                 'ESC_HTML_ALL',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'INCR_CHAR',
@@ -1618,6 +1767,7 @@ assignNoEnum
             [
                 'ESC_HTML_QUOT_ONLY',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'INCR_CHAR',
@@ -1639,6 +1789,7 @@ assignNoEnum
                 'FILL',
                 'FROM_CODE_POINT',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'INCR_CHAR',
@@ -1660,6 +1811,7 @@ assignNoEnum
                 'FILL',
                 'FROM_CODE_POINT',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'INCR_CHAR',
@@ -1682,6 +1834,7 @@ assignNoEnum
                 'FILL',
                 'FROM_CODE_POINT',
                 'FUNCTION_19_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'INCR_CHAR',
@@ -1705,6 +1858,7 @@ assignNoEnum
                 'FLAT',
                 'FROM_CODE_POINT',
                 'FUNCTION_19_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'INCR_CHAR',
@@ -1729,6 +1883,7 @@ assignNoEnum
                 'FLAT',
                 'FROM_CODE_POINT',
                 'FUNCTION_19_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'INCR_CHAR',
@@ -1754,6 +1909,7 @@ assignNoEnum
                 'FLAT',
                 'FROM_CODE_POINT',
                 'FUNCTION_19_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'INCR_CHAR',
@@ -1781,6 +1937,7 @@ assignNoEnum
                 'FLAT',
                 'FROM_CODE_POINT',
                 'FUNCTION_19_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'INCR_CHAR',
@@ -1809,6 +1966,7 @@ assignNoEnum
                 'FLAT',
                 'FROM_CODE_POINT',
                 'FUNCTION_19_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'INCR_CHAR',
@@ -1835,11 +1993,13 @@ assignNoEnum
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
                 'FF_SRC',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
+                'LOCATION',
                 'NAME',
                 'NODECONSTRUCTOR',
                 'STATUS',
@@ -1867,11 +2027,13 @@ assignNoEnum
                 'ESC_REGEXP_SLASH',
                 'FF_SRC',
                 'FILL',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
+                'LOCATION',
                 'NAME',
                 'NODECONSTRUCTOR',
                 'STATUS',
@@ -1901,11 +2063,13 @@ assignNoEnum
                 'FILL',
                 'FROM_CODE_POINT',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'HISTORY',
                 'HTMLDOCUMENT',
                 'INCR_CHAR',
+                'LOCATION',
                 'NAME',
                 'NODECONSTRUCTOR',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -1936,6 +2100,7 @@ assignNoEnum
                 'FILL',
                 'FROM_CODE_POINT',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'HISTORY',
@@ -1943,6 +2108,7 @@ assignNoEnum
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
@@ -1969,6 +2135,7 @@ assignNoEnum
                 'FLAT',
                 'FROM_CODE_POINT',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'HISTORY',
@@ -1976,6 +2143,7 @@ assignNoEnum
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
@@ -2002,6 +2170,7 @@ assignNoEnum
                 'FLAT',
                 'FROM_CODE_POINT',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'HISTORY',
@@ -2009,6 +2178,7 @@ assignNoEnum
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'PLAIN_INTL',
@@ -2036,6 +2206,7 @@ assignNoEnum
                 'FLAT',
                 'FROM_CODE_POINT',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'HISTORY',
@@ -2044,6 +2215,7 @@ assignNoEnum
                 'INTL',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'REGEXP_STRING_ITERATOR',
@@ -2074,6 +2246,7 @@ assignNoEnum
                 'FLAT',
                 'FROM_CODE_POINT',
                 'FUNCTION_22_LF',
+                'GENERIC_ARRAY_TO_STRING',
                 'GLOBAL_UNDEFINED',
                 'GMT',
                 'HISTORY',
@@ -2082,6 +2255,7 @@ assignNoEnum
                 'INTL',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'LOCATION',
                 'NAME',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'REGEXP_STRING_ITERATOR',

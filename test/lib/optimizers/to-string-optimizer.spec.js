@@ -22,18 +22,17 @@
 
     function createOptimizer(toStringReplacement)
     {
+        function resolveConstant()
+        {
+            return toStringSolution;
+        }
+
         if (toStringReplacement === undefined)
             toStringReplacement = '"toString"';
         var toStringSolution = { replacement: toStringReplacement };
-        var encoder =
-        {
-            resolveConstant:
-            function ()
-            {
-                return toStringSolution;
-            },
-        };
-        var optimizer = JScrewIt.debug.createToStringOptimizer(encoder);
+        var encoder = JScrewIt.debug.createEncoder();
+        encoder.resolveConstant = resolveConstant;
+        var optimizer = encoder._createOptimizer('toString');
         return optimizer;
     }
 

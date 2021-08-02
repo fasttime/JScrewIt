@@ -74,19 +74,53 @@ showFeatureSupport,
         anyDaggers = false;
         showFeatureSupport(listFeatures.bind(null, info));
         var notice;
-        if (typeof Worker !== 'undefined')
+        var dedicatedWorkerFeature = workerFeatureData.Worker;
+        var sharedWorkerFeature = workerFeatureData.SharedWorker;
+        if (dedicatedWorkerFeature)
         {
-            if (webWorkerFeatureObj)
+            if (sharedWorkerFeature)
+                notice = 'Dedicated workers and shared workers are supported.';
+            else if (sharedWorkerFeature === null)
             {
                 notice =
-                'Web workers are supported. ' +
-                'Features with the marker “*” are excluded inside web workers.';
+                'Dedicated workers are supported; shared workers are also supported, but not ' +
+                'right here.';
             }
             else
-                notice = 'Web workers are supported, but not right here.';
+                notice = 'Dedicated workers are supported, but shared workers are not.';
+        }
+        else if (dedicatedWorkerFeature === null)
+        {
+            if (sharedWorkerFeature)
+            {
+                notice =
+                'Dedicated workers are supported, but not right here; shared workers are ' +
+                'supported.';
+            }
+            else if (sharedWorkerFeature === null)
+                notice = 'Dedicated workers and shared workers are supported, but not right here.';
+            else
+            {
+                notice =
+                'Dedicated workers are supported, but not right here; shared workers are not ' +
+                'supported.';
+            }
         }
         else
-            notice = 'Web workers are not supported.';
+        {
+            if (sharedWorkerFeature)
+                notice = 'Dedicated workers are not supported, but shared workers are.';
+            else if (sharedWorkerFeature === null)
+            {
+                notice =
+                'Dedicated workers are not supported; shared workers are supported, but not ' +
+                'right here.';
+            }
+            else
+                notice = 'Dedicated workers and shared workers are not supported.';
+        }
+        if (dedicatedWorkerFeature || sharedWorkerFeature)
+            notice += ' Features with the marker “*” are excluded inside web workers.';
         if (anyDaggers)
             notice += ' Features with the marker “†” are excluded when strict mode is enforced.';
         info.appendChild(document.createElement('I')).textContent = notice;
@@ -217,37 +251,51 @@ showFeatureSupport,
         );
     }
 
-    function handleWorkerMessage(evt)
+    function initWorker(constructorName)
     {
-        var data = evt.data;
-        if (data)
-            webWorkerFeatureObj = JScrewIt.Feature(data);
-        if (!--waitCount)
-            handleLoadAndWorkerMessage();
-    }
+        function handleWorkerMessage(evt)
+        {
+            var data = evt.data;
+            if (data)
+                workerFeatureData[constructorName] = JScrewIt.Feature(data);
+            if (!--waitCount)
+                handleLoadAndWorkerMessage();
+        }
 
-    function initWorker()
-    {
-        if (typeof Worker === 'undefined')
-            return 1;
+        if (!(constructorName in self))
+            return false;
+        workerFeatureData[constructorName] = null;
         var worker;
         try
         {
-            worker = new Worker('./feature-info-worker.js');
+            worker = new self[constructorName]('./feature-info-worker.js');
         }
         catch (error)
         {
-            return 1;
+            return false;
         }
-        worker.onerror = worker.onmessage = handleWorkerMessage;
-        return 2;
+        var target = 'port' in worker ? worker.port : worker;
+        worker.onerror = target.onmessage = handleWorkerMessage;
+        return true;
     }
 
     function listFeatures(info, label, featureNames, isCategoryMarked)
     {
+        var Feature = JScrewIt.Feature;
+        var webWorkerFeatureObj;
+        var dedicatedWorkerFeatureObj = workerFeatureData.Worker;
+        var sharedWorkerFeatureObj = workerFeatureData.SharedWorker;
+        if (dedicatedWorkerFeatureObj && sharedWorkerFeatureObj)
+        {
+            webWorkerFeatureObj =
+            Feature.commonOf(dedicatedWorkerFeatureObj, sharedWorkerFeatureObj);
+        }
+        else if (dedicatedWorkerFeatureObj)
+            webWorkerFeatureObj = dedicatedWorkerFeatureObj;
+        else if (sharedWorkerFeatureObj)
+            webWorkerFeatureObj = sharedWorkerFeatureObj;
         if (featureNames.length)
         {
-            var Feature = JScrewIt.Feature;
             var div = info.appendChild(document.createElement('DIV'));
             div.textContent = label;
             var span;
@@ -314,7 +362,7 @@ showFeatureSupport,
     mocha.checkLeaks();
     addEventListener('load', handleLoad);
     var anyDaggers;
-    var webWorkerFeatureObj;
-    var waitCount = initWorker();
+    var workerFeatureData = { };
+    var waitCount = 1 + initWorker('Worker') + initWorker('SharedWorker');
 }
 )();

@@ -1,5 +1,5 @@
 import { APPEND_LENGTH_OF_DIGIT_0, APPEND_LENGTH_OF_SMALL_E }   from './append-lengths';
-import { _Array_prototype_push, _Object, createEmpty }          from './obj-utils';
+import { _Array_prototype_push_apply, _Object, createEmpty }    from './obj-utils';
 
 export default function createFigurator(startValues, joiner)
 {
@@ -24,7 +24,7 @@ export default function createFigurator(startValues, joiner)
             appendableParts.forEach(growFigures);
             var newFigures = figureList[currentSortLength++];
             if (newFigures)
-                _Array_prototype_push.apply(figures, newFigures);
+                _Array_prototype_push_apply(figures, newFigures);
         }
         var figure = figures[index];
         return figure;

@@ -171,18 +171,27 @@ function progress(label, fn)
     }
     else
         indicator = new ProgressBar(label);
-    try
-    {
-        const result = fn(indicator);
-        return result;
-    }
-    finally
+    const onfinally =
+    () =>
     {
         if (stream.isTTY)
             deleteBars();
         bars.length = 0;
         for (const [propertyName, value] of originalValues)
             console[propertyName] = value;
+    };
+    let returnValue;
+    try
+    {
+        returnValue = fn(indicator);
+        return returnValue;
+    }
+    finally
+    {
+        if (returnValue instanceof Promise)
+            returnValue.finally(onfinally);
+        else
+            onfinally();
     }
 }
 

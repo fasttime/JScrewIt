@@ -7,31 +7,31 @@
 {
     function createOptimizer()
     {
-        var encoder =
+        function replaceExpr()
         {
-            replaceExpr:
-            function ()
-            {
-                return '[].slice.call';
-            },
-            replaceString:
-            function (str, options)
-            {
-                expect(options.optimize).toBe(true);
-                var solution = new DynamicSolution();
-                Array.prototype.forEach.call
-                (
-                    str,
-                    function (char)
-                    {
-                        var subSolution = SOLUTIONS[char];
-                        solution.append(subSolution);
-                    }
-                );
-                return solution.replacement;
-            },
-        };
-        var optimizer = JScrewIt.debug.createCommaOptimizer(encoder);
+            return '[].slice.call';
+        }
+
+        function replaceString(str, options)
+        {
+            expect(options.optimize).toBe(true);
+            var solution = new DynamicSolution();
+            Array.prototype.forEach.call
+            (
+                str,
+                function (char)
+                {
+                    var subSolution = SOLUTIONS[char];
+                    solution.append(subSolution);
+                }
+            );
+            return solution.replacement;
+        }
+
+        var encoder = JScrewIt.debug.createEncoder();
+        encoder.replaceExpr     = replaceExpr;
+        encoder.replaceString   = replaceString;
+        var optimizer = encoder._createOptimizer('comma');
         return optimizer;
     }
 
@@ -180,7 +180,7 @@
                             expect(solutions[0].replacement).toBe('[].slice.call("A"+"B"+"C")');
                             expect(solutions[0].type).toBe(SolutionType.OBJECT);
 
-                            // Solution between commas is not a single  character.
+                            // Solution between commas is not a single character.
                             initSolutions();
                             solutions[2] = SOLUTIONS.false;
                             optimizeSolutions([optimizer], solutions, false, false);

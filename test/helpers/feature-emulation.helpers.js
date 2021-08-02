@@ -1,4 +1,4 @@
-/* global document, global, self */
+/* global global, self */
 
 'use strict';
 
@@ -28,6 +28,32 @@
         }
 
         var descriptor = { value: value, writable: true };
+        return descriptor;
+    }
+
+    function createToStringDescriptor(adapterList)
+    {
+        function get()
+        {
+            var returnValue = this === global ? toString : toStringNoGlobal;
+            return returnValue;
+        }
+
+        function toString()
+        {
+            var str = callAdapters(adapterList, this, arguments);
+            return str;
+        }
+
+        function toStringNoGlobal()
+        {
+            // Some old browsers set the global object instead of undefined as this.
+            var thisValue = this === global ? undefined : this;
+            var str = callAdapters(adapterList, thisValue, arguments);
+            return str;
+        }
+
+        var descriptor = { get: get };
         return descriptor;
     }
 
@@ -169,9 +195,10 @@
         var setUp =
         function ()
         {
-            if (global.document)
+            var document = global.document;
+            if (document)
             {
-                if (regExp.test(document + ''))
+                if (regExp.test(document))
                     return;
             }
             else
@@ -184,7 +211,8 @@
                     '[object HTMLVideoElement]' : '[object HTMLUnknownElement]';
                     return elementStr;
                 };
-                override(this, 'document', { value: { createElement: createElement } });
+                document = { createElement: createElement, nodeName: '#document' };
+                override(this, 'document', { value: document });
             }
             var valueOf =
             function ()
@@ -192,18 +220,6 @@
                 return str;
             };
             override(this, 'document.valueOf', { value: valueOf });
-        };
-        return setUp;
-    }
-
-    function makeEmuFeatureEntries(str, regExp)
-    {
-        var setUp =
-        function ()
-        {
-            if (Array.prototype.entries && regExp.test([].entries()))
-                return;
-            registerObjectFactory(this, 'Array.prototype.entries', str);
         };
         return setUp;
     }
@@ -313,7 +329,7 @@
         {
             if (String.prototype.matchAll && ''.matchAll() + '' === str)
                 return;
-            registerObjectFactory(this, 'String.prototype.matchAll', str);
+            registerObjectFactory(this, 'String.prototype.matchAll', str, Object);
         };
         return setUp;
     }
@@ -411,6 +427,27 @@
         return oldDescriptor;
     }
 
+    function patchGlobalToString(context)
+    {
+        registerFunctionAdapter
+        (
+            context,
+            function (body)
+            {
+                if (arguments.length !== 1)
+                    return;
+                if (typeof body === 'string')
+                {
+                    body =
+                    body.replace(/^return toString\b/, 'return Object.prototype.toString');
+                    var fn = context.ADAPTERS.Function.function;
+                    var fnObj = fn(body);
+                    return fnObj;
+                }
+            }
+        );
+    }
+
     function rebaseDigits(digits, charCode0)
     {
         var returnValue =
@@ -427,9 +464,17 @@
         return returnValue;
     }
 
-    function registerDefaultToStringAdapter(context, adapter)
+    function registerDefaultToStringAdapter(context, value, str)
     {
-        intercept(context, DEFAULT_TO_STRING_INTERCEPTOR, adapter);
+        var adapter =
+        function ()
+        {
+            if (this === value)
+                return str;
+        };
+        intercept(context, OBJECT_TO_STRING_INTERCEPTOR, adapter);
+        if (isArrayToStringGeneric)
+            intercept(context, ARRAY_TO_STRING_INTERCEPTOR, adapter);
     }
 
     function registerFunctionAdapter(context, adapter)
@@ -447,24 +492,16 @@
         intercept(context, NUMBER_TO_LOCALE_STRING_INTERCEPTOR, adapter);
     }
 
-    function registerObjectFactory(context, path, str)
+    function registerObjectFactory(context, path, str, constructor)
     {
-        var obj = { };
+        var obj = Object.create(constructor.prototype);
         var factory =
         function ()
         {
             return obj;
         };
         override(context, path, { value: factory });
-        registerDefaultToStringAdapter
-        (
-            context,
-            function ()
-            {
-                if (this === obj)
-                    return str;
-            }
-        );
+        registerDefaultToStringAdapter(context, obj, str);
     }
 
     function replaceArrowFunctions(expr)
@@ -501,36 +538,8 @@
         }
     }
 
-    var DEFAULT_TO_STRING_INTERCEPTOR =
-    {
-        path: 'Object.prototype.toString',
-        createDescriptor:
-        function (adapterList)
-        {
-            function get()
-            {
-                var returnValue = this === global ? toString : toStringNoGlobal;
-                return returnValue;
-            }
-
-            function toString()
-            {
-                var str = callAdapters(adapterList, this, arguments);
-                return str;
-            }
-
-            function toStringNoGlobal()
-            {
-                // Some old browsers set the global object instead of undefined as this.
-                var thisValue = this === global ? undefined : this;
-                var str = callAdapters(adapterList, thisValue, arguments);
-                return str;
-            }
-
-            var descriptor = { get: get };
-            return descriptor;
-        },
-    };
+    var ARRAY_TO_STRING_INTERCEPTOR =
+    { path: 'Array.prototype.toString', createDescriptor: createToStringDescriptor };
 
     var FUNCTION_INTERCEPTOR =
     {
@@ -563,6 +572,9 @@
         createDescriptor: createDefaultInterceptorDescriptor,
     };
 
+    var OBJECT_TO_STRING_INTERCEPTOR =
+    { path: 'Object.prototype.toString', createDescriptor: createToStringDescriptor };
+
     var ARROW_REGEXP =
     /(\([^(]*\)|[\w$]+)=>(\{.*?\}|(?:\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\)|[^,()])*)/g;
 
@@ -574,7 +586,17 @@
     {
         ANY_DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object .*Document]$/),
         ANY_WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object .*Window]$/),
-        ARRAY_ITERATOR: makeEmuFeatureEntries('[object Array Iterator]', /^\[object Array.{8,9}]$/),
+        ARRAY_ITERATOR:
+        function ()
+        {
+            if (Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries()))
+                return;
+            var constructor =
+            function ()
+            { };
+            registerObjectFactory
+            (this, 'Array.prototype.entries', '[object ArrayIterator]', constructor);
+        },
         ARROW:
         function ()
         {
@@ -825,32 +847,27 @@
         },
         FUNCTION_19_LF: makeEmuFeatureFunctionLF('function anonymous(\n) {\n\n}'),
         FUNCTION_22_LF: makeEmuFeatureFunctionLF('function anonymous() {\n\n}'),
+        GENERIC_ARRAY_TO_STRING:
+        function ()
+        {
+            if (isArrayToStringGeneric)
+                return;
+            var originalFn = Array.prototype.toString;
+            var toString =
+            function ()
+            {
+                var fn = Array.isArray(this) ? originalFn : Object.prototype.toString;
+                var str = fn.apply(this, arguments);
+                return str;
+            };
+            override(this, 'Array.prototype.toString', { value: toString });
+        },
         GLOBAL_UNDEFINED:
         function ()
         {
-            function toString()
-            {
-                return '[object Undefined]';
-            }
-
-            registerFunctionAdapter
-            (
-                this,
-                function (body)
-                {
-                    if (arguments.length !== 1)
-                        return;
-                    if (body === 'return toString')
-                    {
-                        var returnValue =
-                        function ()
-                        {
-                            return toString;
-                        };
-                        return returnValue;
-                    }
-                }
-            );
+            if (Object.prototype.toString.call() !== '[object Undefined]')
+                registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
+            patchGlobalToString(this);
         },
         GMT:
         function ()
@@ -890,19 +907,7 @@
         function ()
         {
             if (!global.Intl)
-            {
-                var Intl = { };
-                override(this, 'Intl', { value: Intl });
-                registerDefaultToStringAdapter
-                (
-                    this,
-                    function ()
-                    {
-                        if (this === Intl)
-                            return '[object Intl]';
-                    }
-                );
-            }
+                override(this, 'Intl', { value: { } });
         },
         LOCALE_INFINITY:
         function ()
@@ -1004,6 +1009,19 @@
                 }
             );
         },
+        LOCATION:
+        function ()
+        {
+            var location = global.location;
+            if (!location)
+            {
+                location = { };
+                override(this, 'location', { value: location });
+            }
+            if (!/^\[object .*Location]$/.test(Object.prototype.toString.call(location)))
+                registerDefaultToStringAdapter(this, location, '[object Location]');
+            patchGlobalToString(this);
+        },
         NAME:
         function ()
         {
@@ -1034,27 +1052,42 @@
         makeEmuFeatureNativeFunctionSource
         (NATIVE_FUNCTION_SOURCE_INFO_FF, NATIVE_FUNCTION_SOURCE_INFO_V8),
         NO_OLD_SAFARI_ARRAY_ITERATOR:
-        makeEmuFeatureEntries('[object Array Iterator]', /^\[object Array Iterator]$/),
+        function ()
+        {
+            if (Array.prototype.entries)
+            {
+                var arrayIterator = [].entries();
+                if
+                (
+                    /^\[object Array Iterator]$/.test(arrayIterator) &&
+                    arrayIterator.constructor === Object
+                )
+                    return;
+            }
+            registerObjectFactory
+            (this, 'Array.prototype.entries', '[object Array Iterator]', Object);
+        },
         NO_V8_SRC:
         makeEmuFeatureNativeFunctionSource
         (NATIVE_FUNCTION_SOURCE_INFO_FF, NATIVE_FUNCTION_SOURCE_INFO_IE),
         OBJECT_UNDEFINED:
         function ()
         {
-            registerDefaultToStringAdapter
-            (
-                this,
-                function ()
-                {
-                    if (this === undefined)
-                        return '[object Undefined]';
-                }
-            );
+            var toString = Object.prototype.toString;
+            if (toString() !== '[object Undefined]')
+                registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
         },
         PLAIN_INTL:
         function ()
         {
-            override(this, 'Intl', { value: { } });
+            var Intl = global.Intl;
+            if (!Intl)
+            {
+                Intl = { };
+                override(this, 'Intl', { value: Intl });
+            }
+            if (Intl + '' !== '[object Object]')
+                registerDefaultToStringAdapter(this, Intl, '[object Object]');
         },
         REGEXP_STRING_ITERATOR: makeEmuFeatureMatchAll(),
         SELF_OBJ: makeEmuFeatureSelf('[object Object]', /^\[object /),
@@ -1088,15 +1121,8 @@
         UNDEFINED:
         function ()
         {
-            registerDefaultToStringAdapter
-            (
-                this,
-                function ()
-                {
-                    if (this === undefined)
-                        return '[object Undefined]';
-                }
-            );
+            if (Object.prototype.toString.call() !== '[object Undefined]')
+                registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
         },
         V8_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_V8),
         WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object Window]$/),
@@ -1112,6 +1138,17 @@
             return result;
         }
     );
+
+    var isArrayToStringGeneric;
+    try
+    {
+        Array.prototype.toString.call({ });
+        isArrayToStringGeneric = true;
+    }
+    catch (error)
+    {
+        isArrayToStringGeneric = false;
+    }
 
     var exports =
     {

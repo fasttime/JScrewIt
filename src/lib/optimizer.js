@@ -1,9 +1,49 @@
-import { COMPLEX }                      from './definitions';
-import { Encoder }                      from './encoder/encoder-base';
-import { assignNoEnum, createEmpty }    from './obj-utils';
-import createCommaOptimizer             from './optimizers/comma-optimizer';
-import createComplexOptimizer           from './optimizers/complex-optimizer';
-import createToStringOptimizer          from './optimizers/to-string-optimizer';
+import { COMPLEX }                  from './definitions';
+import { Encoder }                  from './encoder/encoder-base';
+import { Feature }                  from './features';
+import { assignNoEnum }             from './obj-utils';
+import createCommaOptimizer         from './optimizers/comma-optimizer';
+import createComplexOptimizer       from './optimizers/complex-optimizer';
+import createSurrogatePairOptimizer from './optimizers/surrogate-pair-optimizer';
+import createToStringOptimizer      from './optimizers/to-string-optimizer';
+
+var FROM_CODE_POINT_MASK = Feature.FROM_CODE_POINT.mask;
+
+function addOptimizer(optimizerList, optName, keyData, extraData)
+{
+    var optimizers = this._optimizers;
+    var optKey = optName;
+    if (keyData != null)
+        optKey += ':' + keyData;
+    var optimizer = optimizers[optKey];
+    if (!optimizer)
+    {
+        optimizer = this._createOptimizer(optName, keyData, extraData);
+        optimizers[optKey] = optimizer;
+    }
+    optimizerList.push(optimizer);
+}
+
+function createOptimizer(optName, keyData, extraData)
+{
+    var optimizer;
+    switch (optName)
+    {
+    case 'comma':
+        optimizer = createCommaOptimizer(this);
+        break;
+    case 'complex':
+        optimizer = createComplexOptimizer(this, keyData, extraData);
+        break;
+    case 'surrogatePair':
+        optimizer = createSurrogatePairOptimizer(this);
+        break;
+    case 'toString':
+        optimizer = createToStringOptimizer(this);
+        break;
+    }
+    return optimizer;
+}
 
 function getOptimizerList(str, optimize)
 {
@@ -12,59 +52,57 @@ function getOptimizerList(str, optimize)
     {
         var optimizeComma;
         var optimizeComplex;
+        var optimizeSurrogatePair;
         var optimizeToString;
         if (typeof optimize === 'object')
         {
-            optimizeComma       = normalizeOption(optimize.commaOpt);
-            optimizeComplex     = normalizeOption(optimize.complexOpt);
-            optimizeToString    = normalizeOption(optimize.toStringOpt);
+            var defaultOptValue = 'default' in optimize ? !!optimize.default : true;
+            var normalizeOption =
+            function (optName)
+            {
+                var optKey = optName + 'Opt';
+                var optValue = optKey in optimize ? !!optimize[optKey] : defaultOptValue;
+                return optValue;
+            };
+            optimizeComma           = normalizeOption('comma');
+            optimizeComplex         = normalizeOption('complex');
+            optimizeSurrogatePair   = normalizeOption('surrogatePair');
+            optimizeToString        = normalizeOption('toString');
         }
         else
-            optimizeComma = optimizeComplex = optimizeToString = true;
-        var optimizers = this.optimizers;
-        var optimizer;
+            optimizeComma = optimizeComplex = optimizeSurrogatePair = optimizeToString = true;
         if (optimizeComma)
         {
             if (str.indexOf(',') >= 0)
-            {
-                optimizer = optimizers.comma || (optimizers.comma = createCommaOptimizer(this));
-                optimizerList.push(optimizer);
-            }
+                this._addOptimizer(optimizerList, 'comma');
         }
         if (optimizeComplex)
         {
-            var complexOptimizers = optimizers.complex;
-            if (!complexOptimizers)
-                complexOptimizers = optimizers.complex = createEmpty();
             for (var complex in COMPLEX)
             {
                 var entry = COMPLEX[complex];
                 if (this.hasFeatures(entry.mask) && str.indexOf(complex) >= 0)
-                {
-                    optimizer =
-                    complexOptimizers[complex] ||
-                    (
-                        complexOptimizers[complex] =
-                        createComplexOptimizer(this, complex, entry.definition)
-                    );
-                    optimizerList.push(optimizer);
-                }
+                    this._addOptimizer(optimizerList, 'complex', complex, entry.definition);
             }
         }
-        if (optimizeToString)
+        if (optimizeSurrogatePair)
         {
-            optimizer =
-            optimizers.toString || (optimizers.toString = createToStringOptimizer(this));
-            optimizerList.push(optimizer);
+            if
+            (this.hasFeatures(FROM_CODE_POINT_MASK) && /[\ud800-\udbff][\udc00-\udfff]/.test(str))
+                this._addOptimizer(optimizerList, 'surrogatePair');
         }
+        if (optimizeToString)
+            this._addOptimizer(optimizerList, 'toString');
     }
     return optimizerList;
 }
 
-function normalizeOption(inOpt)
-{
-    var outOpt = inOpt === undefined || !!inOpt;
-    return outOpt;
-}
-
-assignNoEnum(Encoder.prototype, { getOptimizerList: getOptimizerList });
+assignNoEnum
+(
+    Encoder.prototype,
+    {
+        _addOptimizer:      addOptimizer,
+        _createOptimizer:   createOptimizer,
+        _getOptimizerList:  getOptimizerList,
+    }
+);

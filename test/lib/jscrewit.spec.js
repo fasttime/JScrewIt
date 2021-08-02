@@ -125,21 +125,6 @@ self,
     );
     describe
     (
-        'JScrewIt.debug.getEntries',
-        function ()
-        {
-            it
-            (
-                'does not throw',
-                function ()
-                {
-                    JScrewIt.debug.getEntries('');
-                }
-            );
-        }
-    );
-    describe
-    (
         'JScrewIt.debug.maskNext',
         function ()
         {
@@ -162,7 +147,7 @@ self,
     );
     describe
     (
-        'Encoder#encodeByCharCodes',
+        'Encoder#_encodeByCharCodes',
         function ()
         {
             it
@@ -171,8 +156,9 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
+                    encoder._maxDecodableArgs = 0;
                     var input = 'Lorem ipsum dolor sit amet';
-                    var output = encoder.encodeByCharCodes(input, true);
+                    var output = encoder._encodeByCharCodes(Object(input));
                     expect(output).toBeJSFuck();
                     expect(evalJSFuck(output)).toBe(input);
                 }
@@ -184,8 +170,9 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder(Feature.ARROW);
+                    encoder._maxDecodableArgs = Infinity;
                     var input = 'Lorem ipsum dolor sit amet';
-                    var output = encoder.encodeByCharCodes(input, false, 4);
+                    var output = encoder._encodeByCharCodes(Object(input), 4);
                     expect(output).toBeJSFuck();
                     expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
                 }
@@ -197,14 +184,87 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     encoder.replaceFalseFreeArray = Function();
-                    expect(encoder.encodeByCharCodes('12345')).toBeUndefined();
+                    var inputData = Object('12345');
+                    expect(encoder._encodeByCharCodes(inputData)).toBeUndefined();
                 }
             );
         }
     );
     describe
     (
-        'Encoder#encodeByDenseFigures',
+        'Encoder#_encodeByCodePoints',
+        function ()
+        {
+            function isUnicodeRegExpSupported()
+            {
+                try
+                {
+                    RegExp('', 'u');
+                }
+                catch (error)
+                {
+                    return false;
+                }
+                return true;
+            }
+
+            emuIt
+            (
+                'returns correct JSFuck for long input',
+                Feature.FROM_CODE_POINT,
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder('FROM_CODE_POINT');
+                    encoder._maxDecodableArgs = 0;
+                    var input = '🔴🟥🟠🟧🟡🟨🟢🟩🔵🟦🟣🟪⚫️⬛️⚪️⬜️🟤🟫';
+                    var output = encoder._encodeByCodePoints(Object(input));
+                    expect(output).toBeJSFuck();
+                    expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
+                }
+            );
+            emuIt.when
+            (
+                typeof module !== 'undefined' &&
+                (isUnicodeRegExpSupported() || String.prototype.codePointAt)
+            )
+            (
+                'works well in legacy mode',
+                Feature.FROM_CODE_POINT,
+                function ()
+                {
+                    var RegExp = global.RegExp;
+                    global.RegExp =
+                    function (pattern, flags)
+                    {
+                        if (flags && /u/.test(flags))
+                            throw SyntaxError();
+                        var regExp = RegExp(pattern, flags);
+                        return regExp;
+                    };
+                    var prototype = String.prototype;
+                    var codePointAt = prototype.codePointAt;
+                    prototype.codePointAt = undefined;
+                    try
+                    {
+                        var newJScrewIt = reloadJScrewIt();
+                        var encoder = newJScrewIt.debug.createEncoder('FROM_CODE_POINT');
+                        var input = '"🅐\n🅩"';
+                        var output = encoder._encodeByCodePoints(Object(input));
+                        expect(output).toBeJSFuck();
+                        expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
+                    }
+                    finally
+                    {
+                        global.RegExp = RegExp;
+                        prototype.codePointAt = codePointAt;
+                    }
+                }
+            );
+        }
+    );
+    describe
+    (
+        'Encoder#_encodeByDenseFigures',
         function ()
         {
             it
@@ -216,7 +276,7 @@ self,
                     var input =
                     'The thirty-three thieves thought that they thrilled the throne throughout ' +
                     'Thursday.';
-                    var output = encoder.encodeByDenseFigures(Object(input));
+                    var output = encoder._encodeByDenseFigures(Object(input));
                     expect(output).toBeJSFuck();
                     expect(evalJSFuck(output)).toBe(input);
                 }
@@ -227,11 +287,11 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var output1 = encoder.encodeByDenseFigures(Object('12345'), 10);
+                    var output1 = encoder._encodeByDenseFigures(Object('12345'), 10);
                     expect(output1).toBeUndefined();
-                    var output2 = encoder.encodeByDenseFigures(Object('12345'), 125);
+                    var output2 = encoder._encodeByDenseFigures(Object('12345'), 125);
                     expect(output2).toBeUndefined();
-                    var output3 = encoder.encodeByDenseFigures(Object('12345'), 23500);
+                    var output3 = encoder._encodeByDenseFigures(Object('12345'), 23500);
                     expect(output3).toBeUndefined();
                 }
             );
@@ -242,14 +302,14 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var figureLegendInsertions;
-                    encoder.callGetFigureLegendInsertions =
+                    encoder._callGetFigureLegendInsertions =
                     function (getFigureLegendInsertions, figurator, figures)
                     {
                         figureLegendInsertions = getFigureLegendInsertions(figurator, figures);
                         return figureLegendInsertions;
                     };
                     var inputData = Object('foo');
-                    encoder.encodeByDenseFigures(inputData);
+                    encoder._encodeByDenseFigures(inputData);
                     expect(figureLegendInsertions[1]).toEqual({ joiner: '0', separator: '0' });
                 }
             );
@@ -260,7 +320,7 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var figureLegendInsertions;
-                    encoder.callGetFigureLegendInsertions =
+                    encoder._callGetFigureLegendInsertions =
                     function (getFigureLegendInsertions, figurator, figures)
                     {
                         figurator =
@@ -272,7 +332,7 @@ self,
                         return figureLegendInsertions;
                     };
                     var inputData = Object('foo');
-                    encoder.encodeByDenseFigures(inputData);
+                    encoder._encodeByDenseFigures(inputData);
                     expect(figureLegendInsertions.length).toBe(1);
                 }
             );
@@ -280,7 +340,7 @@ self,
     );
     describe
     (
-        'Encoder#encodeByDict',
+        'Encoder#_encodeByDict',
         function ()
         {
             it
@@ -290,7 +350,7 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var input = '9';
-                    var output = encoder.encodeByDict(Object(input), 4);
+                    var output = encoder._encodeByDict(Object(input), 4);
                     expect(output).toBeJSFuck();
                     expect(evalJSFuck(output)).toBe(input);
                 }
@@ -304,7 +364,7 @@ self,
                     var input =
                     'The thirty-three thieves thought that they thrilled the throne throughout ' +
                     'Thursday.';
-                    var output = encoder.encodeByDict(Object(input), 4);
+                    var output = encoder._encodeByDict(Object(input), 4);
                     expect(output).toBeJSFuck();
                     expect(evalJSFuck(output)).toBe(input);
                 }
@@ -318,7 +378,7 @@ self,
                     var encoder =
                     JScrewIt.debug.createEncoder(Feature('ARRAY_ITERATOR', 'ATOB'));
                     var input = 'The quick brown fox jumps over the lazy dog';
-                    var output = encoder.encodeByDict(Object(input), 4);
+                    var output = encoder._encodeByDict(Object(input), 4);
                     expect(output).toBeJSFuck();
                     expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
                 }
@@ -331,7 +391,7 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder(Feature.ARROW);
                     var input = 'Lorem ipsum dolor sit amet';
-                    var output = encoder.encodeByDict(Object(input), 4);
+                    var output = encoder._encodeByDict(Object(input), 4);
                     expect(output).toBeJSFuck();
                     expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
                 }
@@ -345,7 +405,7 @@ self,
                     var encoder =
                     JScrewIt.debug.createEncoder(Feature('ARROW', 'FILL', 'NO_IE_SRC'));
                     var input = 'Never gonna give you up / Never gonna let you down';
-                    var output = encoder.encodeByDict(Object(input), 4);
+                    var output = encoder._encodeByDict(Object(input), 4);
                     expect(output).toBeJSFuck();
                     expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
                 }
@@ -356,11 +416,11 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var output1 = encoder.encodeByDict(Object('12345'), undefined, undefined, 10);
+                    var output1 = encoder._encodeByDict(Object('12345'), undefined, undefined, 10);
                     expect(output1).toBeUndefined();
-                    var output2 = encoder.encodeByDict(Object('12345'), undefined, undefined, 78);
+                    var output2 = encoder._encodeByDict(Object('12345'), undefined, undefined, 78);
                     expect(output2).toBeUndefined();
-                    var output3 = encoder.encodeByDict(Object('12345'), undefined, undefined, 200);
+                    var output3 = encoder._encodeByDict(Object('12345'), undefined, undefined, 200);
                     expect(output3).toBeUndefined();
                 }
             );
@@ -368,7 +428,7 @@ self,
     );
     describe
     (
-        'Encoder#encodeBySparseFigures',
+        'Encoder#_encodeBySparseFigures',
         function ()
         {
             it
@@ -380,7 +440,7 @@ self,
                     var input =
                     'The thirty-three thieves thought that they thrilled the throne throughout ' +
                     'Thursday.';
-                    var output = encoder.encodeBySparseFigures(Object(input));
+                    var output = encoder._encodeBySparseFigures(Object(input));
                     expect(output).toBeJSFuck();
                     expect(evalJSFuck(output)).toBe(input);
                 }
@@ -391,11 +451,11 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var output1 = encoder.encodeBySparseFigures(Object('12345'), 10);
+                    var output1 = encoder._encodeBySparseFigures(Object('12345'), 10);
                     expect(output1).toBeUndefined();
-                    var output2 = encoder.encodeBySparseFigures(Object('12345'), 125);
+                    var output2 = encoder._encodeBySparseFigures(Object('12345'), 125);
                     expect(output2).toBeUndefined();
-                    var output3 = encoder.encodeBySparseFigures(Object('12345'), 3700);
+                    var output3 = encoder._encodeBySparseFigures(Object('12345'), 3700);
                     expect(output3).toBeUndefined();
                 }
             );
@@ -403,7 +463,7 @@ self,
     );
     describe
     (
-        'Encoder#encodeExpress',
+        'Encoder#_encodeExpress',
         function ()
         {
             describe
@@ -431,13 +491,13 @@ self,
                         {
                             var input = paramData[1];
                             var encoder = JScrewIt.debug.createEncoder();
-                            var output = encoder.encodeExpress(input);
+                            var output = encoder._encodeExpress(input);
                             var length = output.length;
                             var perfLogLength = encoder.perfLog.length;
-                            output = encoder.encodeExpress(input, length);
+                            output = encoder._encodeExpress(input, length);
                             expect(output).not.toBeUndefined();
                             encoder.perfLog = [];
-                            output = encoder.encodeExpress(input, length - 1);
+                            output = encoder._encodeExpress(input, length - 1);
                             expect(output).toBeUndefined();
                             var expectedCodingLogLength = Math.max(perfLogLength, 0);
                             expect(encoder.perfLog.length).toBe(expectedCodingLogLength);
@@ -451,7 +511,7 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var actual = encoder.encodeExpress('"xx".ww');
+                    var actual = encoder._encodeExpress('"xx".ww');
                     var expected =
                     encoder.replaceExpr('(1221..toString("36"))[1120..toString("34")]');
                     expect(actual).toBe(expected);
@@ -463,7 +523,7 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    encoder.encodeExpress('"A"()("B1" + "B2")["C"].D');
+                    encoder._encodeExpress('"A"()("B1" + "B2")["C"].D');
                     var perfLog = encoder.perfLog;
                     expect(perfLog.length).toBe(5);
                     expect(perfLog[0].name).toBe('0');
@@ -477,7 +537,7 @@ self,
     );
     describe
     (
-        'Encoder#exec',
+        'Encoder#_exec',
         function ()
         {
             it
@@ -490,7 +550,7 @@ self,
                     (
                         function ()
                         {
-                            encoder.exec('{}', undefined, ['express']);
+                            encoder._exec('{}', undefined, ['express']);
                         }
                     )
                     .toThrowStrictly(Error, 'Encoding failed');
@@ -501,7 +561,7 @@ self,
     );
     describe
     (
-        'Encoder#getPaddingBlock throws a SyntaxError for',
+        'Encoder#_getPaddingBlock throws a SyntaxError for',
         function ()
         {
             it
@@ -514,10 +574,62 @@ self,
                     (
                         function ()
                         {
-                            encoder.getPaddingBlock(2);
+                            encoder._getPaddingBlock(2);
                         }
                     )
                     .toThrowStrictly(SyntaxError, 'Undefined regular padding block with length 2');
+                }
+            );
+        }
+    );
+    describe
+    (
+        'Encoder#findDefinition',
+        function ()
+        {
+            it
+            (
+                'Adds a cache key to the entry list',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var entries1 = [];
+                    var entries2 = [];
+                    encoder.findDefinition(entries1);
+                    expect(entries1.cacheKey).toBeDefined();
+                    encoder.findDefinition(entries2);
+                    expect(entries2.cacheKey).toBeDefined();
+                    expect(entries2.cacheKey).toNotEqual(entries1.cacheKey);
+                }
+            );
+            it
+            (
+                'Caches an existing definition',
+                function ()
+                {
+                    var EXPECTED_DEFINITION = 42;
+
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var entries = [{ definition: EXPECTED_DEFINITION, mask: Feature.DEFAULT.mask }];
+                    var actualDefinition1 = encoder.findDefinition(entries);
+                    expect(actualDefinition1).toBe(EXPECTED_DEFINITION);
+                    entries[0] = null;
+                    var actualDefinition2 = encoder.findDefinition(entries);
+                    expect(actualDefinition2).toBe(EXPECTED_DEFINITION);
+                }
+            );
+            it
+            (
+                'Caches a missing definition',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var entries = [];
+                    var actualDefinition1 = encoder.findDefinition(entries);
+                    expect(actualDefinition1).toBeUndefined();
+                    entries.push({ definition: 'foo', mask: Feature.DEFAULT.mask });
+                    var actualDefinition2 = encoder.findDefinition(entries);
+                    expect(actualDefinition2).toBeUndefined();
                 }
             );
         }
@@ -597,6 +709,19 @@ self,
             );
             it
             (
+                'supports surrogate pair clustering',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder(Feature.FROM_CODE_POINT);
+                    var actual = encoder.replaceString('😊', { optimize: true });
+                    var expected =
+                    encoder.replaceExpr
+                    ('Function("return\\"" + ESCAPING_BACKSLASH + "u{1f60a}\\"")()');
+                    expect(actual).toBe(expected);
+                }
+            );
+            it
+            (
                 'respects the maxLength limit on the first solution',
                 function ()
                 {
@@ -630,7 +755,7 @@ self,
             );
             it.when(typeof module !== 'undefined' && isStickyRegExpSupported())
             (
-                'works well when sticky regular expressions are not supported',
+                'works well in legacy mode',
                 function ()
                 {
                     var RegExp = global.RegExp;
@@ -978,7 +1103,7 @@ self,
                     (
                         function ()
                         {
-                            encoder.resolveCharInExpr('', '', 42, undefined, []);
+                            encoder._resolveCharInExpr('', '', 42, undefined, []);
                         }
                     )
                     .toThrowStrictly(SyntaxError, 'Missing padding entries for index 42');
@@ -991,7 +1116,6 @@ self,
         'Strategy',
         function ()
         {
-            var encoder = JScrewIt.debug.createEncoder();
             var text = 'Lorem ipsum dolor sit amet';
             var strategies = JScrewIt.debug.getStrategies();
             var strategyNames = Object.keys(strategies);
@@ -1012,15 +1136,18 @@ self,
                     }
 
                     var strategy = strategies[strategyName];
-                    it
+                    var featureObj = JScrewIt.debug.createFeatureFromMask(strategy.mask);
+                    var encoder = JScrewIt.debug.createEncoder(featureObj);
+                    emuIt
                     (
                         'returns correct JSFuck',
+                        featureObj,
                         function ()
                         {
-                            var input = strategyName !== 'express' ? text : JSON.stringify(text);
+                            var input = strategy.expressionMode ? JSON.stringify(text) : text;
                             var output = strategy.call(encoder, Object(input));
                             expect(output).toBeJSFuck();
-                            expect(evalJSFuck(output)).toBe(text);
+                            expect(emuEval(this.test.emuFeatureNames, output)).toBe(text);
                         }
                     );
                     it
@@ -1055,27 +1182,27 @@ self,
             var paramDataList =
             [
                 {
-                    description: 'encodeByDenseFigures',
+                    description: '_encodeByDenseFigures',
                     fn:
                     function (inputData)
                     {
-                        this.encodeByDenseFigures(inputData, 0);
+                        this._encodeByDenseFigures(inputData, 0);
                     },
                 },
                 {
-                    description: 'encodeByDict',
+                    description: '_encodeByDict',
                     fn:
                     function (inputData)
                     {
-                        this.encodeByDict(inputData, undefined, undefined, 0);
+                        this._encodeByDict(inputData, undefined, undefined, 0);
                     },
                 },
                 {
-                    description: 'encodeBySparseFigures',
+                    description: '_encodeBySparseFigures',
                     fn:
                     function (inputData)
                     {
-                        this.encodeBySparseFigures(inputData, 0);
+                        this._encodeBySparseFigures(inputData, 0);
                     },
                 },
             ];

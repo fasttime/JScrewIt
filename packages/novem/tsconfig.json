@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
-    "declaration": true,
     "esModuleInterop": true,
-    "importHelpers": true,
-    "module": "ES2020",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "strict": true,
     "target": "ES5",
+    "types": [
+      "mocha",
+      "node"
+    ],
     "useDefineForClassFields": false, // Define semantics disabled for performance reasons.
   },
   "exclude": [

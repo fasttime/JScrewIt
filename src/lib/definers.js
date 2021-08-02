@@ -1,6 +1,6 @@
-import { featuresToMask }                           from './features';
-import { _Array_prototype, _Array_prototype_push }  from './obj-utils';
-import { maskUnion }                                from 'quinquaginta-duo';
+import { featuresToMask }                                           from './features';
+import { _Array_prototype_push_apply, _Array_prototype_slice_call } from './obj-utils';
+import { maskUnion }                                                from 'quinquaginta-duo';
 
 function callWithFeatures()
 {
@@ -10,7 +10,7 @@ function callWithFeatures()
     var featureStartIndex = args[featureArgsIndex + 1];
     var defineFnArgs = sliceArgs(args, 0, featureArgsIndex);
     var features = sliceArgs(featureArgs, featureStartIndex);
-    _Array_prototype_push.apply(defineFnArgs, features);
+    _Array_prototype_push_apply(defineFnArgs, features);
     var entry = this.apply(null, defineFnArgs);
     return entry;
 }
@@ -49,12 +49,12 @@ export function defineList(availableEntries, indexEntries)
 
 export function makeCallableWithFeatures(fn)
 {
-    fn.$callWithFeatures = callWithFeatures;
+    fn._callWithFeatures = callWithFeatures;
 }
 
 function sliceArgs(args, startIndex, endIndex)
 {
-    var array = _Array_prototype.slice.call(args, startIndex, endIndex);
+    var array = _Array_prototype_slice_call(args, startIndex, endIndex);
     return array;
 }
 

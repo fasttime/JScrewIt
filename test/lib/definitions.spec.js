@@ -12,6 +12,7 @@ emuIt,
 evalJSFuck,
 expect,
 getEmuFeatureNames,
+location,
 module,
 require,
 self,
@@ -86,7 +87,7 @@ sidebar,
                     {
                         var encoder = getPoolEncoder(Feature.ATOB);
                         var solution =
-                        encoder.createCharDefaultSolution
+                        encoder._createCharDefaultSolution
                         (char, charCode, true, false, false, false);
                         verifyStringSolution(solution, char, this.test.emuFeatureNames);
                         var defaultSolutionLength =
@@ -106,7 +107,7 @@ sidebar,
                 {
                     var encoder = getPoolEncoder(Feature.DEFAULT);
                     var solution =
-                    encoder.createCharDefaultSolution(char, charCode, false, true, false, false);
+                    encoder._createCharDefaultSolution(char, charCode, false, true, false, false);
                     verifyStringSolution(solution, char);
                 }
             );
@@ -117,7 +118,7 @@ sidebar,
                 {
                     var encoder = getPoolEncoder(Feature.DEFAULT);
                     var solution =
-                    encoder.createCharDefaultSolution(char, charCode, false, false, true, false);
+                    encoder._createCharDefaultSolution(char, charCode, false, false, true, false);
                     verifyStringSolution(solution, char);
                 }
             );
@@ -128,7 +129,7 @@ sidebar,
                 {
                     var encoder = getPoolEncoder(Feature.DEFAULT);
                     var solution =
-                    encoder.createCharDefaultSolution(char, charCode, false, false, false, true);
+                    encoder._createCharDefaultSolution(char, charCode, false, false, false, true);
                     verifyStringSolution(solution, char);
                 }
             );
@@ -495,6 +496,11 @@ sidebar,
                     this.toBe(document);
                 },
                 escape: isExpected(escape),
+                location:
+                function ()
+                {
+                    this.toBe(location);
+                },
                 self:
                 function ()
                 {
@@ -541,11 +547,6 @@ sidebar,
                 function ()
                 {
                     this.toBe(Array.prototype.flat);
-                },
-                FROM_CHAR_CODE:
-                function ()
-                {
-                    this.toMatch(/^from(?:CharCode|CodePoint)$/);
                 },
                 F_A_L_S_E:
                 function ()

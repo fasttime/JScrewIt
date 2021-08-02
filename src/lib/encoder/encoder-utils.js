@@ -1,4 +1,11 @@
-import { _Array } from '../obj-utils';
+import { _Array, _Array_prototype_forEach_call } from '../obj-utils';
+
+export function codePointFromSurrogatePair(highSurrogateCharCode, lowSurrogateCharCode)
+{
+    // 0x2400 = 0x10000 - 0xdc00
+    var codePoint = (highSurrogateCharCode - 0xd800 << 10) + lowSurrogateCharCode + 0x2400;
+    return codePoint;
+}
 
 export function extraZeros(count)
 {
@@ -23,12 +30,13 @@ export function replaceStaticString(str, options)
     return replacement;
 }
 
-export function shortestOf(objs)
+export function shortestOf()
 {
     var shortestObj;
     var shortestLength = Infinity;
-    objs.forEach
+    _Array_prototype_forEach_call
     (
+        arguments,
         function (obj)
         {
             var length = obj.length;

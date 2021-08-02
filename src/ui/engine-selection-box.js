@@ -13,14 +13,16 @@ export default function createEngineSelectionBox()
             name: 'Chrome',
             versions:
             [
-                { featureName: 'CHROME_86', number: '86+' },
+                { featureName: 'CHROME_86', number: '86–91' },
+                { featureName: 'CHROME_92', number: '92+' },
             ],
         },
         {
             name: 'Edge',
             versions:
             [
-                { featureName: 'CHROME_86', number: '86+' },
+                { featureName: 'CHROME_86', number: '86–91' },
+                { featureName: 'CHROME_92', number: '92+' },
             ],
         },
         {
@@ -28,7 +30,8 @@ export default function createEngineSelectionBox()
             versions:
             [
                 { featureName: 'FF_78', number: '78–82' },
-                { featureName: 'FF_83', number: '83+' },
+                { featureName: 'FF_83', number: '83–89' },
+                { featureName: 'FF_90', number: '90+' },
             ],
         },
         {
@@ -59,7 +62,8 @@ export default function createEngineSelectionBox()
             name: 'Opera',
             versions:
             [
-                { featureName: 'CHROME_86', number: '72+' },
+                { featureName: 'CHROME_86', number: '72–77' },
+                { featureName: 'CHROME_92', number: '78+' },
             ],
         },
         {

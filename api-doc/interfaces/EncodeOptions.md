@@ -4,20 +4,20 @@
 
 ### Properties
 
-- [features](encodeoptions.md#features)
-- [runAs](encodeoptions.md#runas)
-- [trimCode](encodeoptions.md#trimcode)
-- [wrapWith](encodeoptions.md#wrapwith)
+- [features](EncodeOptions.md#features)
+- [runAs](EncodeOptions.md#runas)
+- [trimCode](EncodeOptions.md#trimcode)
+- [wrapWith](EncodeOptions.md#wrapwith)
 
 ## Properties
 
 ### features
 
-• `Optional` **features**: [*FeatureElement*](../README.md#featureelement) \| [*CompatibleFeatureArray*](../README.md#compatiblefeaturearray)
+• `Optional` **features**: [`FeatureElement`](../README.md#featureelement) \| [`CompatibleFeatureArray`](../README.md#compatiblefeaturearray)
 
 Specifies the features available in the engines that evaluate the encoded output.
 
-If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](featureconstructor.md#default) is assumed: this
+If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](FeatureConstructor.md#default) is assumed: this
 ensures maximum compatibility but also generates the largest code.
 To generate shorter code, specify all features available in all target engines explicitly.
 
@@ -78,7 +78,7 @@ ___
 
 ### trimCode
 
-• `Optional` **trimCode**: *boolean*
+• `Optional` **trimCode**: `boolean`
 
 If this parameter is truthy, lines in the beginning and in the end of the file containing
 nothing but space characters and JavaScript comments are removed from the generated output.

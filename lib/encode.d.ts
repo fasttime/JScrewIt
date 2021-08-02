@@ -81,6 +81,33 @@ export interface EncodeOptions
 interface encode
 {
     /**
+     * Encodes a given string into JSFuck.
+     *
+     * @param input
+     *
+     * The string to encode.
+     *
+     * @param options
+     *
+     * An optional object specifying encoding options.
+     *
+     * @returns
+     *
+     * The encoded string.
+     *
+     * @throws
+     *
+     * An `Error` is thrown under the following circumstances.
+     *  - The specified string cannot be encoded with the specified options.
+     *  - Some unknown features were specified.
+     *  - A combination of mutually incompatible features was specified.
+     *  - The option `runAs` (or `wrapWith`) was specified with an invalid value.
+     *
+     * Also, an out of memory condition may occur when processing very large data.
+     */
+    (input: string, options?: EncodeOptions): string;
+
+    /**
      * Determines whether all created encoders are cached permanently.
      *
      * An encoder is a structure used internally by JScrewIt to remember the result of certain
@@ -117,33 +144,6 @@ interface encode
      * with alternating features, it is recommended to keep the default setting of `false`.
      */
     permanentCaching: boolean;
-
-    /**
-     * Encodes a given string into JSFuck.
-     *
-     * @param input
-     *
-     * The string to encode.
-     *
-     * @param options
-     *
-     * An optional object specifying encoding options.
-     *
-     * @returns
-     *
-     * The encoded string.
-     *
-     * @throws
-     *
-     * An `Error` is thrown under the following circumstances.
-     *  - The specified string cannot be encoded with the specified options.
-     *  - Some unknown features were specified.
-     *  - A combination of mutually incompatible features was specified.
-     *  - The option `runAs` (or `wrapWith`) was specified with an invalid value.
-     *
-     * Also, an out of memory condition may occur when processing very large data.
-     */
-    (input: string, options?: EncodeOptions): string;
 }
 
 export const encode: encode;

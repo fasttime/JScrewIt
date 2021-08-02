@@ -7,25 +7,25 @@
 {
     function createOptimizer(appendLength, solutionType)
     {
+        function resolve()
+        {
+            var solution =
+            createSolution(appendLength, undefined, EXPECTED_REPLACEMENT, solutionType);
+            return solution;
+        }
+
+        function resolveCharacter(char)
+        {
+            var solution = SOLUTIONS[char];
+            return solution;
+        }
+
         if (appendLength === undefined)
             appendLength = 60;
-        var encoder =
-        {
-            resolve:
-            function ()
-            {
-                var solution =
-                createSolution(appendLength, undefined, EXPECTED_REPLACEMENT, solutionType);
-                return solution;
-            },
-            resolveCharacter:
-            function (char)
-            {
-                var solution = SOLUTIONS[char];
-                return solution;
-            },
-        };
-        var optimizer = JScrewIt.debug.createComplexOptimizer(encoder, 'feet');
+        var encoder = JScrewIt.debug.createEncoder();
+        encoder.resolve             = resolve;
+        encoder.resolveCharacter    = resolveCharacter;
+        var optimizer = encoder._createOptimizer('complex', 'feet');
         return optimizer;
     }
 

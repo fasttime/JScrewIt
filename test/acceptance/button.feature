@@ -27,16 +27,18 @@ Feature: Button
 
   @appearance
   @interaction
-  Scenario: Disabling
+  Scenario Outline: Disabling
     Given a focused button
-    And the button has one of the following status:
-      | status  |
+    And the button is <state>
+    When the button is programmatically disabled
+    Then the button should not have the focus
+    And the button should update its appearance according to the new state immediately
+
+    Examples:
+      | state   |
       | default |
       | hovered |
       | active  |
-    When the button is programmatically disabled
-    Then the button should not have the focus
-    And the button should update its appearance according to the new status immediately
 
   @interaction
   Scenario: Clicking by spacebar key

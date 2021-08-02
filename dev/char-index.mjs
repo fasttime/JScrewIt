@@ -5,7 +5,7 @@ import timeUtils                        from '../tools/time-utils.js';
 import progress                         from './internal/progress.js';
 import solutionBookMap, { NICKNAME }    from './internal/solution-book-map.js';
 import chalk                            from 'chalk';
-import { promises }                     from 'fs';
+import { writeFile }                    from 'fs/promises';
 import { cpus }                         from 'os';
 import { Worker }                       from 'worker_threads';
 
@@ -138,7 +138,7 @@ async function doAdd()
         const executor =
         (resolve, reject) =>
         {
-            const workerURL = new URL('internal/char-index-worker.js', import.meta.url);
+            const workerURL = new URL('internal/char-index-worker.mjs', import.meta.url);
             const worker = new Worker(workerURL, { workerData: { char, solutionBookMap } });
             worker.on
             (
@@ -160,11 +160,15 @@ async function doAdd()
                         resolve(solutionBook);
                 },
             );
-            worker.on('error', reject);
-            worker.on
+            worker.once('error', reject);
+            worker.once
             (
                 'exit',
-                code => reject(new Error(`Worker stopped unexpectedly with exit code ${code}`)),
+                code =>
+                {
+                    if (code)
+                        reject(new Error(`Worker stopped unexpectedly with exit code ${code}`));
+                },
             );
         };
         const promise = new Promise(executor);
@@ -244,7 +248,6 @@ async function doLevel()
     }
     process.stdout.write(output);
     {
-        const { writeFile } = promises;
         const outputURL = new URL(`../.${NICKNAME}.char-index-level`, import.meta.url);
         await writeFile(outputURL, output);
     }

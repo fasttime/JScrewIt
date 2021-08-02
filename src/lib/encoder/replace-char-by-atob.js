@@ -41,7 +41,7 @@ export default function replaceCharByAtob(charCode)
     var indexer3 = replaceIndexer(index3);
     var postfix3 = '(' + this.replaceString(param3) + ')' + indexer3;
 
-    var postfix = shortestOf([postfix1, postfix2, postfix3]);
+    var postfix = shortestOf(postfix1, postfix2, postfix3);
     var replacement = this.resolveConstant('atob').replacement + postfix;
     return replacement;
 }
