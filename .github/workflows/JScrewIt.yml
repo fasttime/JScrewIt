@@ -13,7 +13,7 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: 16.x
-    - run: npm install --workspaces
+    - run: npm install --ignore-scripts --workspaces
     - run: npm install
     - run: npm run --workspaces make
     - run: gulp lint
