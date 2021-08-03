@@ -947,28 +947,19 @@ function getFHPaddingEntries(index)
             define('"".sub()[2]', CAPITAL_HTML),
             define
             (
-                {
-                    expr: '(RP_3_WA + Function("return toString")()())[11]',
-                    optimize: true,
-                },
+                { expr: '(RP_3_WA + Function("return toString")()())[11]', optimize: true },
                 GLOBAL_UNDEFINED
             ),
             define
             (
-                {
-                    expr: '(RP_3_WA + Function("return{}.toString")()())[11]',
-                    optimize: true,
-                },
+                { expr: '(RP_3_WA + Function("return{}.toString")()())[11]', optimize: true },
                 OBJECT_UNDEFINED
             ),
             define('(RP_3_WA + PLAIN_OBJECT[TO_STRING].call())[11]', UNDEFINED),
             define('(RP_3_WA + ARRAY_ITERATOR[TO_STRING].call())[11]', ARRAY_ITERATOR, UNDEFINED),
             define
             (
-                {
-                    expr: '(RP_3_WA + Function("return Intl.toString")()())[11]',
-                    optimize: true,
-                },
+                { expr: '(RP_3_WA + Function("return Intl.toString")()())[11]', optimize: true },
                 INTL,
                 OBJECT_UNDEFINED
             ),
