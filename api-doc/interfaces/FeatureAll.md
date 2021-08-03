@@ -37,7 +37,6 @@
 - [ESC\_HTML\_QUOT\_ONLY](FeatureAll.md#esc_html_quot_only)
 - [ESC\_REGEXP\_LF](FeatureAll.md#esc_regexp_lf)
 - [ESC\_REGEXP\_SLASH](FeatureAll.md#esc_regexp_slash)
-- [EXTERNAL](FeatureAll.md#external)
 - [FF](FeatureAll.md#ff)
 - [FF\_78](FeatureAll.md#ff_78)
 - [FF\_83](FeatureAll.md#ff_83)
@@ -409,18 +408,6 @@ Having regular expressions created with the RegExp constructor use escape sequen
 **`remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js 4+.
-
-___
-
-### EXTERNAL
-
-• **EXTERNAL**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object sidebar having the string representation "\[object External\]".
-
-**`remarks`**
-
-Available in Firefox. This feature is not available inside web workers.
 
 ___
 

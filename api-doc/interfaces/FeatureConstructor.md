@@ -87,7 +87,6 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [ESC\_HTML\_QUOT\_ONLY](FeatureConstructor.md#esc_html_quot_only)
 - [ESC\_REGEXP\_LF](FeatureConstructor.md#esc_regexp_lf)
 - [ESC\_REGEXP\_SLASH](FeatureConstructor.md#esc_regexp_slash)
-- [EXTERNAL](FeatureConstructor.md#external)
 - [FF](FeatureConstructor.md#ff)
 - [FF\_78](FeatureConstructor.md#ff_78)
 - [FF\_83](FeatureConstructor.md#ff_83)
@@ -648,22 +647,6 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.j
 #### Inherited from
 
 [FeatureAll](FeatureAll.md).[ESC_REGEXP_SLASH](FeatureAll.md#esc_regexp_slash)
-
-___
-
-### EXTERNAL
-
-• **EXTERNAL**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object sidebar having the string representation "\[object External\]".
-
-**`remarks`**
-
-Available in Firefox. This feature is not available inside web workers.
-
-#### Inherited from
-
-[FeatureAll](FeatureAll.md).[EXTERNAL](FeatureAll.md#external)
 
 ___
 

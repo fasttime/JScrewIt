@@ -16,7 +16,6 @@ location,
 module,
 require,
 self,
-sidebar,
 */
 
 'use strict';
@@ -505,11 +504,6 @@ sidebar,
                 function ()
                 {
                     this.toBe(self);
-                },
-                sidebar:
-                function ()
-                {
-                    this.toBe(sidebar);
                 },
                 unescape: isExpected(unescape),
                 ANY_FUNCTION:

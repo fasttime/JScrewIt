@@ -363,7 +363,6 @@ function getFHPaddingEntries(index)
     var ESC_HTML_QUOT_ONLY              = Feature.ESC_HTML_QUOT_ONLY;
     var ESC_REGEXP_LF                   = Feature.ESC_REGEXP_LF;
     var ESC_REGEXP_SLASH                = Feature.ESC_REGEXP_SLASH;
-    var EXTERNAL                        = Feature.EXTERNAL;
     var FF_SRC                          = Feature.FF_SRC;
     var FILL                            = Feature.FILL;
     var FLAT                            = Feature.FLAT;
@@ -804,7 +803,6 @@ function getFHPaddingEntries(index)
             defineCharAtFnPos('RegExp', 12),
             define('btoa("0NaN")[1]', ATOB),
             define('(RP_5_A + "".link())[10]', CAPITAL_HTML),
-            define('(RP_3_WA + sidebar)[11]', EXTERNAL),
             define('(RP_3_WA + Audio)[21]', HTMLAUDIOELEMENT),
             define('(RP_0_S + REGEXP_STRING_ITERATOR)[11]', REGEXP_STRING_ITERATOR),
         ],
@@ -1104,7 +1102,6 @@ function getFHPaddingEntries(index)
         [
             define('101[TO_STRING]("34")[1]'),
             define('btoa("falsefalse")[10]', ATOB),
-            define('(RP_1_WA + sidebar)[10]', EXTERNAL),
         ],
         'y': '(RP_3_WA + [Infinity])[10]',
         'z':
@@ -1296,10 +1293,6 @@ function getFHPaddingEntries(index)
         self:
         [
             define('Function("return self")()', SELF_OBJ),
-        ],
-        sidebar:
-        [
-            define('Function("return sidebar")()', EXTERNAL),
         ],
         unescape:
         [

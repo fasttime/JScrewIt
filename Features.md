@@ -64,7 +64,6 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#ESC_REGEXP_LF"><code>ESC_REGEXP_LF</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
-<li><a href="api-doc/interfaces/FeatureAll.md#EXTERNAL"><code>EXTERNAL</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#FF_SRC"><code>FF_SRC</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#FILL"><code>FILL</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#FLAT"><code>FLAT</code></a>

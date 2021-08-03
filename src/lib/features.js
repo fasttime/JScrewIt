@@ -9,7 +9,6 @@ history,
 location,
 require,
 self,
-sidebar,
 statusbar,
 */
 
@@ -817,19 +816,6 @@ assignNoEnum
                 return available;
             },
         },
-        EXTERNAL:
-        {
-            description:
-            'Existence of the global object sidebar having the string representation "[object ' +
-            'External]".',
-            check:
-            function ()
-            {
-                var available = typeof sidebar === 'object' && sidebar + '' === '[object External]';
-                return available;
-            },
-            attributes: { 'web-worker': 'web-worker-restriction' },
-        },
         FF_SRC:
         {
             description:
@@ -1528,7 +1514,6 @@ assignNoEnum
                 'ESC_HTML_QUOT_ONLY',
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
-                'EXTERNAL',
                 'FF_SRC',
                 'FILL',
                 'FLAT',
@@ -1574,7 +1559,6 @@ assignNoEnum
                 'ESC_HTML_QUOT_ONLY',
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
-                'EXTERNAL',
                 'FF_SRC',
                 'FILL',
                 'FLAT',
@@ -1621,7 +1605,6 @@ assignNoEnum
                 'ESC_HTML_QUOT_ONLY',
                 'ESC_REGEXP_LF',
                 'ESC_REGEXP_SLASH',
-                'EXTERNAL',
                 'FF_SRC',
                 'FILL',
                 'FLAT',
