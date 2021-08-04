@@ -1,5 +1,13 @@
 const PACKAGE_UTILS_URL = '../../../dev/internal/package-utils.mjs';
 
+export async function clean()
+{
+    const { cleanPackage } = await importPackageUtils();
+    const pkgURL = new URL('..', import.meta.url);
+    await
+    cleanPackage(pkgURL, '.nyc_output', '.tmp-out', 'coverage', 'lib', 'test/node-legacy');
+}
+
 const importPackageUtils = () => import(PACKAGE_UTILS_URL);
 
 export async function lint()

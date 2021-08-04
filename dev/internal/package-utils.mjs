@@ -1,11 +1,12 @@
-import { lint }                         from '@fasttime/lint';
-import fastGlob                         from 'fast-glob';
-import { createRequire }                from 'module';
-import { isAbsolute, join, relative }   from 'path';
-import { rollup }                       from 'rollup';
-import rollupPluginCleanup              from 'rollup-plugin-cleanup';
-import ts                               from 'typescript';
-import { fileURLToPath }                from 'url';
+import { lint }                                 from '@fasttime/lint';
+import fastGlob                                 from 'fast-glob';
+import { rm }                                   from 'fs/promises';
+import { createRequire }                        from 'module';
+import { isAbsolute, join, relative, resolve }  from 'path';
+import { rollup }                               from 'rollup';
+import rollupPluginCleanup                      from 'rollup-plugin-cleanup';
+import ts                                       from 'typescript';
+import { fileURLToPath }                        from 'url';
 
 async function bundle(pkgPath)
 {
@@ -29,6 +30,20 @@ export async function bundleJS(inputOptions, outputOptions)
     const bundle = await rollup(inputOptions);
     const { output: [{ code }] } = await bundle.write(outputOptions);
     return code;
+}
+
+export async function cleanPackage(pkgURL, ...paths)
+{
+    const pkgPath = fileURLToPath(pkgURL);
+    const options = { force: true, recursive: true };
+    const cleanPath =
+    async path =>
+    {
+        const resolvedPath = resolve(pkgPath, path);
+        await rm(resolvedPath, options);
+    };
+    const promises = paths.map(cleanPath);
+    await Promise.all(promises);
 }
 
 async function compile(pkgPath, dTsFilter)

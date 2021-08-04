@@ -18,6 +18,7 @@
   },
   "scripts": {
     "build": "npm install && gulp",
+    "clean": "node dev/clean",
     "legacy-test": "node -- test/node-legacy/node_modules/mocha/bin/mocha --check-leaks --ui=ebdd test/node-legacy/test/spec/**/*.spec.js",
     "lint": "node dev/lint",
     "make": "node dev/make",
