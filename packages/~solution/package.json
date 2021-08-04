@@ -25,7 +25,6 @@
     "test": "mocha --check-leaks --require=ts-node/register --ui=ebdd test/spec/**/*.spec.ts"
   },
   "devDependencies": {
-    "@fasttime/lint": "latest",
     "@types/mocha": "latest",
     "@types/node": "latest",
     "ebdd": "latest",
@@ -33,7 +32,8 @@
     "gulp": "latest",
     "mocha": "latest",
     "nyc": "latest",
-    "ts-node": "latest"
+    "ts-node": "latest",
+    "typescript": "latest"
   },
   "private": true,
   "type": "module"

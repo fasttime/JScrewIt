@@ -2,16 +2,4 @@
 
 import { makeBrowserSpecRunner } from './impl.js';
 
-(async () =>
-{
-    try
-    {
-        await makeBrowserSpecRunner();
-    }
-    catch (error)
-    {
-        console.error(error);
-        process.exitCode = 1;
-    }
-}
-)();
+await makeBrowserSpecRunner();

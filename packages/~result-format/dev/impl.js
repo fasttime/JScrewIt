@@ -1,4 +1,3 @@
-import { lint as lintImpl }     from '@fasttime/lint';
 import { join }                 from 'path';
 import rollupPluginNodeBuiltins from 'rollup-plugin-node-builtins';
 import rollupPluginNodeGlobals  from 'rollup-plugin-node-globals';
@@ -6,10 +5,13 @@ import { fileURLToPath }        from 'url';
 
 const PACKAGE_UTILS_URL = '../../../dev/internal/package-utils.mjs';
 
+const importPackageUtils = () => import(PACKAGE_UTILS_URL);
+
 export async function lint()
 {
+    const { lintPackage } = await importPackageUtils();
     await
-    lintImpl
+    lintPackage
     (
         {
             src: 'src/**/*.ts',
@@ -24,7 +26,13 @@ export async function lint()
         {
             src: ['*.js', 'dev/**/*.js'],
             envs: ['node'],
-            parserOptions: { ecmaVersion: 2020, sourceType: 'module' },
+            parser: '@babel/eslint-parser',
+            parserOptions:
+            {
+                babelOptions: { plugins: ['@babel/plugin-syntax-top-level-await'] },
+                ecmaVersion: 2021,
+                requireConfigFile: false,
+            },
         },
     );
 }

@@ -1,3 +1,4 @@
+import { lint }                         from '@fasttime/lint';
 import fastGlob                         from 'fast-glob';
 import { createRequire }                from 'module';
 import { isAbsolute, join, relative }   from 'path';
@@ -62,7 +63,11 @@ export async function compileTS(pkgPath, source, newOptions, writeFile)
     }
     )();
     const emitResult = program.emit(undefined, writeFile);
-    const diagnostics = [...ts.getPreEmitDiagnostics(program), ...emitResult.diagnostics];
+    const diagnostics =
+    [
+        ...ts.getPreEmitDiagnostics(program).filter(({ code }) => code !== 2343),
+        ...emitResult.diagnostics,
+    ];
     if (diagnostics.length)
     {
         const reporter = ts.createDiagnosticReporter(sys, true);
@@ -90,6 +95,8 @@ function getWriteFile(sysWriteFile, declarationDir, dTsFilter)
     };
     return writeFile;
 }
+
+export { lint as lintPackage };
 
 export async function makePackage(pkgURL, dTsFilter)
 {
