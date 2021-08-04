@@ -21,7 +21,9 @@ async function npmInstall()
     const contents = JSON.stringify(pkg, null, 2) + EOL;
     const path = join(NODE_LEGACY_DIR, 'package.json');
     await writeFile(path, contents);
-    const childProcess = spawn('npm', ['install'], { cwd: NODE_LEGACY_DIR, stdio: 'inherit' });
+    const childProcess =
+    // Option "shell" is required on Windows.
+    spawn('npm', ['install', '--silent'], { cwd: NODE_LEGACY_DIR, shell: true, stdio: 'inherit' });
     await endOf(childProcess);
 }
 
