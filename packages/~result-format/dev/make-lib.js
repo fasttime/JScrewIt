@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { makeLib } from './make-impl.js';
+import { makeLib } from './impl.js';
 
 (async () =>
 {

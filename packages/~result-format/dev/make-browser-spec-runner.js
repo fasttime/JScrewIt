@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { makeBrowserSpecRunner } from './make-impl.js';
+import { makeBrowserSpecRunner } from './impl.js';
 
 (async () =>
 {

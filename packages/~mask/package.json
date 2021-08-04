@@ -19,6 +19,7 @@
   "scripts": {
     "build": "npm install && gulp",
     "legacy-test": "node -- test/node-legacy/node_modules/mocha/bin/mocha --check-leaks --ui=ebdd test/node-legacy/test/spec/**/*.spec.js",
+    "lint": "node dev/lint",
     "make": "node dev/make",
     "prepare-legacy-test": "node ../../dev/internal/prepare-package-legacy-test.mjs",
     "test": "mocha --check-leaks --require=ts-node/register --ui=ebdd test/spec/**/*.spec.ts"

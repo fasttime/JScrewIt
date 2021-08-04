@@ -1,9 +1,33 @@
+import { lint as lintImpl }     from '@fasttime/lint';
 import { join }                 from 'path';
 import rollupPluginNodeBuiltins from 'rollup-plugin-node-builtins';
 import rollupPluginNodeGlobals  from 'rollup-plugin-node-globals';
 import { fileURLToPath }        from 'url';
 
 const PACKAGE_UTILS_URL = '../../../dev/internal/package-utils.mjs';
+
+export async function lint()
+{
+    await
+    lintImpl
+    (
+        {
+            src: 'src/**/*.ts',
+            parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
+        },
+        {
+            src: 'test/**/*.ts',
+            envs: ['ebdd/ebdd', 'mocha'],
+            parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
+            plugins: ['ebdd'],
+        },
+        {
+            src: ['*.js', 'dev/**/*.js'],
+            envs: ['node'],
+            parserOptions: { ecmaVersion: 2020, sourceType: 'module' },
+        },
+    );
+}
 
 export async function makeBrowserSpecRunner()
 {

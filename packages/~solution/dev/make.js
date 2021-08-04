@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import make from './make-impl.js';
+import { make } from './impl.js';
 
 (async () =>
 {
