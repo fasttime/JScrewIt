@@ -132,7 +132,9 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [NO\_IE\_SRC](FeatureConstructor.md#no_ie_src)
 - [NO\_OLD\_SAFARI\_ARRAY\_ITERATOR](FeatureConstructor.md#no_old_safari_array_iterator)
 - [NO\_V8\_SRC](FeatureConstructor.md#no_v8_src)
+- [OBJECT\_L\_LOCATION\_CTOR](FeatureConstructor.md#object_l_location_ctor)
 - [OBJECT\_UNDEFINED](FeatureConstructor.md#object_undefined)
+- [OLD\_SAFARI\_LOCATION\_CTOR](FeatureConstructor.md#old_safari_location_ctor)
 - [PLAIN\_INTL](FeatureConstructor.md#plain_intl)
 - [REGEXP\_STRING\_ITERATOR](FeatureConstructor.md#regexp_string_iterator)
 - [SAFARI](FeatureConstructor.md#safari)
@@ -1332,6 +1334,22 @@ Available in Firefox, Internet Explorer, and Safari.
 
 ___
 
+### OBJECT\_L\_LOCATION\_CTOR
+
+• **OBJECT\_L\_LOCATION\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Existence of the global function location.constructor whose string representation starts with "\[object L"
+
+**`remarks`**
+
+Available in Internet Explorer and Safari before 10. This feature is not available inside web workers.
+
+#### Inherited from
+
+[FeatureAll](FeatureAll.md).[OBJECT_L_LOCATION_CTOR](FeatureAll.md#object_l_location_ctor)
+
+___
+
 ### OBJECT\_UNDEFINED
 
 • **OBJECT\_UNDEFINED**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -1345,6 +1363,22 @@ Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Androi
 #### Inherited from
 
 [FeatureAll](FeatureAll.md).[OBJECT_UNDEFINED](FeatureAll.md#object_undefined)
+
+___
+
+### OLD\_SAFARI\_LOCATION\_CTOR
+
+• **OLD\_SAFARI\_LOCATION\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Existence of the global object location.constructor whose string representation starts with "\[object " and ends with "LocationConstructor\]"
+
+**`remarks`**
+
+Available in Safari before 10.
+
+#### Inherited from
+
+[FeatureAll](FeatureAll.md).[OLD_SAFARI_LOCATION_CTOR](FeatureAll.md#old_safari_location_ctor)
 
 ___
 

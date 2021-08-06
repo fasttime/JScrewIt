@@ -400,6 +400,17 @@
         return setUp;
     }
 
+    function mockLocation(context)
+    {
+        var location = global.location;
+        if (!location)
+        {
+            location = { constructor: { } };
+            override(context, 'location', { value: location });
+        }
+        return location;
+    }
+
     function override(context, path, descriptor)
     {
         var backupList = context.BACKUP || (context.BACKUP = []);
@@ -512,7 +523,7 @@
             ARROW_REGEXP,
             function (match, capture1, capture2)
             {
-                var replacement1 = /^\(.*\)$/.test(capture1) ? capture1 : '(' + capture1 + ')';
+                var replacement1 = /^\([\S\s]*\)$/.test(capture1) ? capture1 : '(' + capture1 + ')';
                 var innerExpr = replaceArrowFunctions(capture2);
                 var replacement2 =
                 /^\{[\s\S]*\}$/.test(capture2) ? innerExpr : '{return(' + innerExpr + ')}';
@@ -584,12 +595,12 @@
 
     var EMU_FEATURE_INFOS =
     {
-        ANY_DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object .*Document]$/),
-        ANY_WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object .*Window]$/),
+        ANY_DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object [\S\s]*Document]$/),
+        ANY_WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object [\S\s]*Window]$/),
         ARRAY_ITERATOR:
         function ()
         {
-            if (Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries()))
+            if (Array.prototype.entries && /^\[object Array[\S\s]{8,9}]$/.test([].entries()))
                 return;
             var constructor =
             function ()
@@ -1002,13 +1013,8 @@
         LOCATION:
         function ()
         {
-            var location = global.location;
-            if (!location)
-            {
-                location = { };
-                override(this, 'location', { value: location });
-            }
-            if (!/^\[object .*Location]$/.test(Object.prototype.toString.call(location)))
+            var location = mockLocation(this);
+            if (!/^\[object [\S\s]*Location]$/.test(Object.prototype.toString.call(location)))
                 registerDefaultToStringAdapter(this, location, '[object Location]');
             patchGlobalToString(this);
         },
@@ -1060,12 +1066,49 @@
         NO_V8_SRC:
         makeEmuFeatureNativeFunctionSource
         (NATIVE_FUNCTION_SOURCE_INFO_FF, NATIVE_FUNCTION_SOURCE_INFO_IE),
+        OBJECT_L_LOCATION_CTOR:
+        function ()
+        {
+            var location = mockLocation(this);
+            var str = location.constructor + '';
+            if (!/^\[object L/.test(str))
+            {
+                str = '[object L' + str;
+                var toString =
+                function ()
+                {
+                    return str;
+                };
+                override(this, 'location.constructor.toString', { value: toString });
+            }
+        },
         OBJECT_UNDEFINED:
         function ()
         {
             var toString = Object.prototype.toString;
             if (toString() !== '[object Undefined]')
                 registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
+        },
+        OLD_SAFARI_LOCATION_CTOR:
+        function ()
+        {
+            var location = mockLocation(this);
+            var oldStr = location.constructor + '';
+            var newStr = oldStr;
+            if (!/^\[object /.test(oldStr))
+                newStr = '[object ' + newStr;
+            if (!/LocationConstructor]$/.test(oldStr))
+                newStr += 'LocationConstructor]';
+            if (newStr !== oldStr)
+            {
+                var toString =
+                function ()
+                {
+                    return newStr;
+                };
+                override(this, 'location.constructor.toString', { value: toString });
+                override(this, 'location.constructor.valueOf', { value: toString });
+            }
         },
         PLAIN_INTL:
         function ()

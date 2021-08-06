@@ -120,6 +120,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a> (Internet Explorer 11 on Windows 10)
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_FF_SRC"><code>NO_FF_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#IE_SRC"><code>IE_SRC</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_V8_SRC"><code>NO_V8_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#IE_SRC"><code>IE_SRC</code></a>)
+<li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_L_LOCATION_CTOR"><code>OBJECT_L_LOCATION_CTOR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED"><code>OBJECT_UNDEFINED</code></a> (Internet Explorer 10+)
 <li><a href="api-doc/interfaces/FeatureAll.md#PLAIN_INTL"><code>PLAIN_INTL</code></a> (Internet Explorer 11)
 <li><a href="api-doc/interfaces/FeatureAll.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
@@ -166,7 +167,9 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#FF_SRC"><code>FF_SRC</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Safari 9+)
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_V8_SRC"><code>NO_V8_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#FF_SRC"><code>FF_SRC</code></a>)
+<li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_L_LOCATION_CTOR"><code>OBJECT_L_LOCATION_CTOR</code></a> (not in Safari 10+)
 <li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED"><code>OBJECT_UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>)
+<li><a href="api-doc/interfaces/FeatureAll.md#OLD_SAFARI_LOCATION_CTOR"><code>OLD_SAFARI_LOCATION_CTOR</code></a> (not in Safari 10+)
 <li><a href="api-doc/interfaces/FeatureAll.md#PLAIN_INTL"><code>PLAIN_INTL</code></a> (Safari 10+, not in Safari 14.0.1+)
 <li><a href="api-doc/interfaces/FeatureAll.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a> (Safari 13+)
 <li><a href="api-doc/interfaces/FeatureAll.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)

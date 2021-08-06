@@ -557,6 +557,11 @@ self,
                 {
                     this.toMatch(/^ar(-td)?$/);
                 },
+                LOCATION_CONSTRUCTOR:
+                function ()
+                {
+                    this.toBe(location.constructor);
+                },
                 PLAIN_OBJECT:
                 function ()
                 {

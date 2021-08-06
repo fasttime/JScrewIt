@@ -388,7 +388,9 @@ function getFHPaddingEntries(index)
     var NO_IE_SRC                       = Feature.NO_IE_SRC;
     var NO_OLD_SAFARI_ARRAY_ITERATOR    = Feature.NO_OLD_SAFARI_ARRAY_ITERATOR;
     var NO_V8_SRC                       = Feature.NO_V8_SRC;
+    var OBJECT_L_LOCATION_CTOR          = Feature.OBJECT_L_LOCATION_CTOR;
     var OBJECT_UNDEFINED                = Feature.OBJECT_UNDEFINED;
+    var OLD_SAFARI_LOCATION_CTOR        = Feature.OLD_SAFARI_LOCATION_CTOR;
     var PLAIN_INTL                      = Feature.PLAIN_INTL;
     var REGEXP_STRING_ITERATOR          = Feature.REGEXP_STRING_ITERATOR;
     var SELF_OBJ                        = Feature.SELF_OBJ;
@@ -852,6 +854,12 @@ function getFHPaddingEntries(index)
                 },
                 LOCATION
             ),
+            define('(RP_3_WA + LOCATION_CONSTRUCTOR)[11]', OBJECT_L_LOCATION_CTOR),
+            define
+            (
+                '(LOCATION_CONSTRUCTOR + RP_0_S)[SLICE_OR_SUBSTR]("-20")[0]',
+                OLD_SAFARI_LOCATION_CTOR
+            ),
             define
             (
                 {
@@ -861,6 +869,7 @@ function getFHPaddingEntries(index)
                 AT,
                 LOCATION
             ),
+            define('(LOCATION_CONSTRUCTOR + RP_0_S).at("-20")', AT, OLD_SAFARI_LOCATION_CTOR),
             define
             (
                 '[][TO_STRING].call(location)[SLICE_OR_SUBSTR]("-10")[1]',
@@ -1440,6 +1449,11 @@ function getFHPaddingEntries(index)
         [
             define({ expr: '"ar-td"', solutionType: SolutionType.COMBINED_STRING }),
             define({ expr: '"ar"', solutionType: SolutionType.COMBINED_STRING }, SHORT_LOCALES),
+        ],
+        LOCATION_CONSTRUCTOR:
+        [
+            define('Function("return location")().constructor', OBJECT_L_LOCATION_CTOR),
+            define('Function("return location")().constructor', OLD_SAFARI_LOCATION_CTOR),
         ],
         PLAIN_OBJECT:
         [

@@ -596,7 +596,7 @@ assignNoEnum
             function ()
             {
                 var available =
-                typeof document === 'object' && /^\[object .*Document]$/.test(document + '');
+                typeof document === 'object' && /^\[object [\S\s]*Document]$/.test(document + '');
                 return available;
             },
             attributes: { 'web-worker': 'web-worker-restriction' },
@@ -611,7 +611,7 @@ assignNoEnum
             (
                 function (str)
                 {
-                    var available = /^\[object .*Window]$/.test(str);
+                    var available = /^\[object [\S\s]*Window]$/.test(str);
                     return available;
                 }
             ),
@@ -627,7 +627,7 @@ assignNoEnum
             function ()
             {
                 var available =
-                Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries());
+                Array.prototype.entries && /^\[object Array[\S\s]{8,9}]$/.test([].entries());
                 return available;
             },
         },
@@ -1063,7 +1063,7 @@ assignNoEnum
             {
                 var available =
                 typeof location === 'object' &&
-                /^\[object .*Location]$/.test(Object.prototype.toString.call(location));
+                /^\[object [\S\s]*Location]$/.test(Object.prototype.toString.call(location));
                 return available;
             },
         },
@@ -1154,6 +1154,20 @@ assignNoEnum
             },
             excludes: ['V8_SRC'],
         },
+        OBJECT_L_LOCATION_CTOR:
+        {
+            description:
+            'Existence of the global function location.constructor whose string representation ' +
+            'starts with "[object L"',
+            check:
+            function ()
+            {
+                var available =
+                typeof location === 'object' && /^\[object L/.test(location.constructor);
+                return available;
+            },
+            attributes: { 'web-worker': 'web-worker-restriction' },
+        },
         OBJECT_UNDEFINED:
         {
             description:
@@ -1167,6 +1181,20 @@ assignNoEnum
                 return available;
             },
             includes: ['UNDEFINED'],
+        },
+        OLD_SAFARI_LOCATION_CTOR:
+        {
+            description:
+            'Existence of the global object location.constructor whose string representation ' +
+            'starts with "[object " and ends with "LocationConstructor]"',
+            check:
+            function ()
+            {
+                var available =
+                typeof location === 'object' &&
+                /^\[object [\S\s]*LocationConstructor]$/.test(location.constructor);
+                return available;
+            },
         },
         PLAIN_INTL:
         {
@@ -1648,6 +1676,7 @@ assignNoEnum
                 'HISTORY',
                 'IE_SRC',
                 'INCR_CHAR',
+                'OBJECT_L_LOCATION_CTOR',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW',
@@ -1669,6 +1698,7 @@ assignNoEnum
                 'HISTORY',
                 'IE_SRC',
                 'INCR_CHAR',
+                'OBJECT_L_LOCATION_CTOR',
                 'OBJECT_UNDEFINED',
                 'STATUS',
                 'WINDOW',
@@ -1693,6 +1723,7 @@ assignNoEnum
                 'IE_SRC',
                 'INCR_CHAR',
                 'LOCALE_NUMERALS',
+                'OBJECT_L_LOCATION_CTOR',
                 'OBJECT_UNDEFINED',
                 'PLAIN_INTL',
                 'SHORT_LOCALES',
@@ -1720,6 +1751,7 @@ assignNoEnum
                 'INCR_CHAR',
                 'LOCALE_INFINITY',
                 'LOCALE_NUMERALS_EXT',
+                'OBJECT_L_LOCATION_CTOR',
                 'OBJECT_UNDEFINED',
                 'PLAIN_INTL',
                 'SHORT_LOCALES',
@@ -1985,6 +2017,8 @@ assignNoEnum
                 'LOCATION',
                 'NAME',
                 'NODECONSTRUCTOR',
+                'OBJECT_L_LOCATION_CTOR',
+                'OLD_SAFARI_LOCATION_CTOR',
                 'STATUS',
                 'WINDOW',
             ],
@@ -2019,6 +2053,8 @@ assignNoEnum
                 'LOCATION',
                 'NAME',
                 'NODECONSTRUCTOR',
+                'OBJECT_L_LOCATION_CTOR',
+                'OLD_SAFARI_LOCATION_CTOR',
                 'STATUS',
                 'WINDOW',
             ],
@@ -2056,6 +2092,8 @@ assignNoEnum
                 'NAME',
                 'NODECONSTRUCTOR',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'OBJECT_L_LOCATION_CTOR',
+                'OLD_SAFARI_LOCATION_CTOR',
                 'STATUS',
                 'WINDOW',
             ],
