@@ -31,6 +31,16 @@
         return descriptor;
     }
 
+    function createStaticSupplier(value)
+    {
+        function supplier()
+        {
+            return value;
+        }
+
+        return supplier;
+    }
+
     function createToStringDescriptor(adapterList)
     {
         function get()
@@ -214,11 +224,7 @@
                 document = { createElement: createElement, nodeName: '#document' };
                 override(this, 'document', { value: document });
             }
-            var valueOf =
-            function ()
-            {
-                return str;
-            };
+            var valueOf = createStaticSupplier(str);
             override(this, 'document.valueOf', { value: valueOf });
         };
         return setUp;
@@ -390,11 +396,7 @@
             }
             else
                 override(this, 'self', { value: { } });
-            var valueOf =
-            function ()
-            {
-                return str;
-            };
+            var valueOf = createStaticSupplier(str);
             override(this, 'self.valueOf', { value: valueOf });
         };
         return setUp;
@@ -506,11 +508,7 @@
     function registerObjectFactory(context, path, str, constructor)
     {
         var obj = Object.create(constructor.prototype);
-        var factory =
-        function ()
-        {
-            return obj;
-        };
+        var factory = createStaticSupplier(obj);
         override(context, path, { value: factory });
         registerDefaultToStringAdapter(context, obj, str);
     }
@@ -780,11 +778,7 @@
             if (!console || !Object.getPrototypeOf(console))
                 override(this, 'console', { value: Object.create(console || null) });
             // ...end of the workaround.
-            var toString =
-            function ()
-            {
-                return '[object Console]';
-            };
+            var toString = createStaticSupplier('[object Console]');
             override(this, 'console.toString', { value: toString });
         },
         DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object Document]$/),
@@ -873,21 +867,13 @@
         GMT:
         function ()
         {
-            var Date =
-            function ()
-            {
-                return 'Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)';
-            };
+            var Date = createStaticSupplier('Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)');
             override(this, 'Date', { value: Date });
         },
         HISTORY:
         function ()
         {
-            var toString =
-            function ()
-            {
-                return '[object History]';
-            };
+            var toString = createStaticSupplier('[object History]');
             override(this, 'history', { value: { toString: toString } });
         },
         HTMLAUDIOELEMENT:
@@ -895,11 +881,7 @@
         {
             if (!global.Audio)
                 override(this, 'Audio', { value: { } });
-            var toString =
-            function ()
-            {
-                return 'function HTMLAudioElement';
-            };
+            var toString = createStaticSupplier('function HTMLAudioElement');
             override(this, 'Audio.toString', { value: toString });
         },
         HTMLDOCUMENT: makeEmuFeatureDocument('[object HTMLDocument]', /^\[object HTMLDocument]$/),
@@ -1034,11 +1016,7 @@
         {
             if (!global.Node)
                 override(this, 'Node', { value: { } });
-            var toString =
-            function ()
-            {
-                return '[object NodeConstructor]';
-            };
+            var toString = createStaticSupplier('[object NodeConstructor]');
             override(this, 'Node.toString', { value: toString });
         },
         NO_FF_SRC:
@@ -1074,11 +1052,7 @@
             if (!/^\[object L/.test(str))
             {
                 str = '[object L' + str;
-                var toString =
-                function ()
-                {
-                    return str;
-                };
+                var toString = createStaticSupplier(str);
                 override(this, 'location.constructor.toString', { value: toString });
             }
         },
@@ -1088,6 +1062,12 @@
             var toString = Object.prototype.toString;
             if (toString() !== '[object Undefined]')
                 registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
+        },
+        OBJECT_W_CTOR:
+        function ()
+        {
+            var toString = createStaticSupplier('[object W');
+            override(this, 'constructor.toString', { value: toString });
         },
         OLD_SAFARI_LOCATION_CTOR:
         function ()
@@ -1101,11 +1081,7 @@
                 newStr += 'LocationConstructor]';
             if (newStr !== oldStr)
             {
-                var toString =
-                function ()
-                {
-                    return newStr;
-                };
+                var toString = createStaticSupplier(newStr);
                 override(this, 'location.constructor.toString', { value: toString });
                 override(this, 'location.constructor.valueOf', { value: toString });
             }

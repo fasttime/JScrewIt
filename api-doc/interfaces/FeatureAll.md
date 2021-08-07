@@ -84,6 +84,7 @@
 - [NO\_V8\_SRC](FeatureAll.md#no_v8_src)
 - [OBJECT\_L\_LOCATION\_CTOR](FeatureAll.md#object_l_location_ctor)
 - [OBJECT\_UNDEFINED](FeatureAll.md#object_undefined)
+- [OBJECT\_W\_CTOR](FeatureAll.md#object_w_ctor)
 - [OLD\_SAFARI\_LOCATION\_CTOR](FeatureAll.md#old_safari_location_ctor)
 - [PLAIN\_INTL](FeatureAll.md#plain_intl)
 - [REGEXP\_STRING\_ITERATOR](FeatureAll.md#regexp_string_iterator)
@@ -936,6 +937,18 @@ Having the function Object.prototype.toString return the string "\[object Undefi
 **`remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser 4.1+, and Node.js.
+
+___
+
+### OBJECT\_W\_CTOR
+
+• **OBJECT\_W\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
+
+The property that the string representation of the global object constructor starts with "\[object W"
+
+**`remarks`**
+
+Available in Internet Explorer and Safari before 10. This feature is not available inside web workers in Safari before 10.
 
 ___
 

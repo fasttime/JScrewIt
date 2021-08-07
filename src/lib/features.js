@@ -665,7 +665,7 @@ assignNoEnum
                 var available = typeof atob === 'function' && typeof btoa === 'function';
                 return available;
             },
-            attributes: { 'web-worker': 'no-atob-in-web-worker' },
+            attributes: { 'web-worker': 'old-safari-restriction' },
         },
         BARPROP:
         {
@@ -1182,6 +1182,19 @@ assignNoEnum
             },
             includes: ['UNDEFINED'],
         },
+        OBJECT_W_CTOR:
+        {
+            description:
+            'The property that the string representation of the global object constructor starts ' +
+            'with "[object W"',
+            check:
+            function ()
+            {
+                var available = /^\[object W/.test(constructor);
+                return available;
+            },
+            attributes: { 'web-worker': 'old-safari-restriction' },
+        },
         OLD_SAFARI_LOCATION_CTOR:
         {
             description:
@@ -1677,6 +1690,7 @@ assignNoEnum
                 'IE_SRC',
                 'INCR_CHAR',
                 'OBJECT_L_LOCATION_CTOR',
+                'OBJECT_W_CTOR',
                 'STATUS',
                 'UNDEFINED',
                 'WINDOW',
@@ -1700,6 +1714,7 @@ assignNoEnum
                 'INCR_CHAR',
                 'OBJECT_L_LOCATION_CTOR',
                 'OBJECT_UNDEFINED',
+                'OBJECT_W_CTOR',
                 'STATUS',
                 'WINDOW',
             ],
@@ -1725,6 +1740,7 @@ assignNoEnum
                 'LOCALE_NUMERALS',
                 'OBJECT_L_LOCATION_CTOR',
                 'OBJECT_UNDEFINED',
+                'OBJECT_W_CTOR',
                 'PLAIN_INTL',
                 'SHORT_LOCALES',
                 'STATUS',
@@ -1753,6 +1769,7 @@ assignNoEnum
                 'LOCALE_NUMERALS_EXT',
                 'OBJECT_L_LOCATION_CTOR',
                 'OBJECT_UNDEFINED',
+                'OBJECT_W_CTOR',
                 'PLAIN_INTL',
                 'SHORT_LOCALES',
                 'STATUS',
@@ -2018,6 +2035,7 @@ assignNoEnum
                 'NAME',
                 'NODECONSTRUCTOR',
                 'OBJECT_L_LOCATION_CTOR',
+                'OBJECT_W_CTOR',
                 'OLD_SAFARI_LOCATION_CTOR',
                 'STATUS',
                 'WINDOW',
@@ -2025,8 +2043,8 @@ assignNoEnum
             attributes:
             {
                 'char-increment-restriction':   null,
-                'no-atob-in-web-worker':        null,
                 'no-console-in-web-worker':     null,
+                'old-safari-restriction':       null,
                 'web-worker-restriction':       null,
             },
         },
@@ -2054,6 +2072,7 @@ assignNoEnum
                 'NAME',
                 'NODECONSTRUCTOR',
                 'OBJECT_L_LOCATION_CTOR',
+                'OBJECT_W_CTOR',
                 'OLD_SAFARI_LOCATION_CTOR',
                 'STATUS',
                 'WINDOW',
@@ -2061,7 +2080,7 @@ assignNoEnum
             attributes:
             {
                 'char-increment-restriction':   null,
-                'no-atob-in-web-worker':        null,
+                'old-safari-restriction':       null,
                 'safari-bug-21820506':          null,
                 'web-worker-restriction':       null,
             },
@@ -2093,6 +2112,7 @@ assignNoEnum
                 'NODECONSTRUCTOR',
                 'NO_OLD_SAFARI_ARRAY_ITERATOR',
                 'OBJECT_L_LOCATION_CTOR',
+                'OBJECT_W_CTOR',
                 'OLD_SAFARI_LOCATION_CTOR',
                 'STATUS',
                 'WINDOW',
@@ -2100,7 +2120,7 @@ assignNoEnum
             attributes:
             {
                 'char-increment-restriction':   null,
-                'no-atob-in-web-worker':        null,
+                'old-safari-restriction':       null,
                 'safari-bug-21820506':          null,
                 'web-worker-restriction':       null,
             },
