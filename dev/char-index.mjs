@@ -525,23 +525,16 @@ else
 
     const [,, command] = argv;
     const commandCall = COMMANDS[command];
-    (async () =>
+    try
     {
-        try
-        {
-            if (!commandCall)
-            {
-                fail
-                ('char-index: \'%s\' is not a valid command. See \'char-index help\'.', command);
-            }
-            await commandCall();
-        }
-        catch (error)
-        {
-            if (error !== ARG_ERROR)
-                throw error;
-            process.exitCode = 1;
-        }
+        if (!commandCall)
+            fail('char-index: \'%s\' is not a valid command. See \'char-index help\'.', command);
+        await commandCall();
     }
-    )();
+    catch (error)
+    {
+        if (error !== ARG_ERROR)
+            throw error;
+        process.exitCode = 1;
+    }
 }

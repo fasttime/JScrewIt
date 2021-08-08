@@ -138,7 +138,13 @@ task
             {
                 src: ['dev/**/*.mjs'],
                 envs: 'node',
-                parserOptions: { ecmaVersion: 2021, sourceType: 'module' },
+                parser: '@babel/eslint-parser',
+                parserOptions:
+                {
+                    babelOptions: { plugins: ['@babel/plugin-syntax-top-level-await'] },
+                    ecmaVersion: 2021,
+                    requireConfigFile: false,
+                },
             },
             {
                 src:

@@ -13,28 +13,24 @@ const SEARCH_LINE =
 const REPLACEMENT_LINE =
 '            start + code.original.slice(start, nextNode.start).search(/\\n\\s*$/) + 1;\n';
 
-(async () =>
+const require = createRequire(import.meta.url);
+const { emitWarning } = process;
+process.emitWarning =
+function (warning, type, code, ctor)
 {
-    try
-    {
-        const require = createRequire(import.meta.url);
-        const rollupPath = require.resolve('rollup/dist/shared/rollup.js');
-        const input = await readFile(rollupPath, 'utf8');
-        const index = input.indexOf(SEARCH_LINE);
-        if (index === 0 || index > 0 && input[index - 1] === '\n')
-        {
-            const output =
-            input.slice(0, index) + REPLACEMENT_LINE + input.slice(index + SEARCH_LINE.length);
-            await writeFile(rollupPath, output);
-            console.log('Patching rollup.');
-        }
-        else
-            console.log('Nothing to patch in rollup.');
-    }
-    catch (error)
-    {
-        console.error(error);
-        process.exitCode = 1;
-    }
+    if (code !== 'DEP0148')
+        emitWarning(warning, type, code, ctor);
+};
+const rollupPath = require.resolve('rollup/dist/shared/rollup.js');
+process.emitWarning = emitWarning;
+const input = await readFile(rollupPath, 'utf8');
+const index = input.indexOf(SEARCH_LINE);
+if (index === 0 || index > 0 && input[index - 1] === '\n')
+{
+    const output =
+    input.slice(0, index) + REPLACEMENT_LINE + input.slice(index + SEARCH_LINE.length);
+    await writeFile(rollupPath, output);
+    console.log('Patching rollup.');
 }
-)();
+else
+    console.log('Nothing to patch in rollup.');

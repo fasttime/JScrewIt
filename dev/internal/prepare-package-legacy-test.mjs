@@ -34,17 +34,5 @@ async function tsc()
     await endOf(childProcess);
 }
 
-(async () =>
-{
-    try
-    {
-        await rm(NODE_LEGACY_DIR, { force: true, recursive: true });
-        await Promise.all([tsc(), npmInstall()]);
-    }
-    catch (error)
-    {
-        console.error(error);
-        process.exitCode = 1;
-    }
-}
-)();
+await rm(NODE_LEGACY_DIR, { force: true, recursive: true });
+await Promise.all([tsc(), npmInstall()]);

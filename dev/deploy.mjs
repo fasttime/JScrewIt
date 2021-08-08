@@ -17,46 +17,9 @@ const REMOTE_HOME = '/html';
     const __dirname = dirname(dirname(path));
     process.chdir(__dirname);
 }
-(async () =>
-{
-    if (!await verifyBuild())
-    {
-        process.exitCode = 1;
-        return;
-    }
-    const ftpAccessOptions = readFTPAccessOptions();
-    if (ftpAccessOptions == null)
-    {
-        process.exitCode = 1;
-        return;
-    }
-    const client = new Client();
-    try
-    {
-        await client.access(ftpAccessOptions);
 
-        await client.ensureDir(REMOTE_HOME);
-        const readable = await createIndex();
-        await client.uploadFrom(readable, 'index.html');
-
-        await client.ensureDir('lib');
-        await client.clearWorkingDir();
-        await client.uploadFrom(JSCREWIT_MIN_PATH, 'jscrewit.min.js');
-
-        await client.ensureDir('../ui');
-        await client.clearWorkingDir();
-        await client.uploadFromDir('ui');
-    }
-    catch (error)
-    {
-        console.error(error);
-    }
-    finally
-    {
-        client.close();
-    }
-}
-)();
+if (!await deploy())
+    process.exitCode = 1;
 
 async function createIndex()
 {
@@ -118,6 +81,37 @@ ${end}
 
     const readable = Readable.from([output]);
     return readable;
+}
+
+async function deploy()
+{
+    if (!await verifyBuild())
+        return false;
+    const ftpAccessOptions = readFTPAccessOptions();
+    if (ftpAccessOptions == null)
+        return false;
+    const client = new Client();
+    try
+    {
+        await client.access(ftpAccessOptions);
+
+        await client.ensureDir(REMOTE_HOME);
+        const readable = await createIndex();
+        await client.uploadFrom(readable, 'index.html');
+
+        await client.ensureDir('lib');
+        await client.clearWorkingDir();
+        await client.uploadFrom(JSCREWIT_MIN_PATH, 'jscrewit.min.js');
+
+        await client.ensureDir('../ui');
+        await client.clearWorkingDir();
+        await client.uploadFromDir('ui');
+    }
+    finally
+    {
+        client.close();
+    }
+    return true;
 }
 
 function readFTPAccessOptions()

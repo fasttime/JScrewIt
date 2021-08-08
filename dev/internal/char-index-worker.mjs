@@ -5,7 +5,6 @@ const { char, solutionBookMap: serializedSolutionBookMap } = workerData;
 serializedSolutionBookMap.delete(char);
 for (const [char, solutionBook] of serializedSolutionBookMap)
     solutionBookMap.importBook(char, solutionBook);
-(async () =>
 {
     const solutionBook =
     await
@@ -17,4 +16,3 @@ for (const [char, solutionBook] of serializedSolutionBookMap)
     );
     parentPort.postMessage({ solutionBook });
 }
-)();
