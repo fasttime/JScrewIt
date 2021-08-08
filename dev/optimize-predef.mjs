@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import JScrewIt, { Feature }    from '../lib/jscrewit.js';
-import choose                   from './internal/choose.js';
+import choose                   from './internal/choose.mjs';
 import Analyzer                 from './internal/optimized-analyzer.js';
 import PREDEF_TEST_DATA_MAP_OBJ from './internal/predef-test-data.js';
 import progress                 from './internal/progress.js';
@@ -540,5 +540,5 @@ function simplifyDefinitions(definitionSets)
         optimize(predefTestData);
     };
     const predefNames = Object.keys(PREDEF_TEST_DATA_MAP_OBJ);
-    choose(callback, 'Predefinitions to optimize', predefNames);
+    await choose(callback, 'Predefinitions to optimize', predefNames);
 }

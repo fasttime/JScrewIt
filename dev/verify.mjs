@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import choose                   from    './internal/choose.js';
+import choose                   from    './internal/choose.mjs';
 import Analyzer                 from    './internal/optimized-analyzer.js';
 import PREDEF_TEST_DATA_MAP_OBJ from    './internal/predef-test-data.js';
 import progress                 from    './internal/progress.js';
@@ -289,10 +289,10 @@ verify.OPTIMAL_B = verifyPredef('OPTIMAL_B');
 
 verify.OPTIMAL_RETURN_STRING = verifyPredef('OPTIMAL_RETURN_STRING');
 
-{
-    for (const strategyTestData of STRATEGY_TEST_DATA_LIST)
-        verify[strategyTestData.strategyName] = verifyStrategy(strategyTestData);
+for (const strategyTestData of STRATEGY_TEST_DATA_LIST)
+    verify[strategyTestData.strategyName] = verifyStrategy(strategyTestData);
 
+{
     const callback =
     routineName =>
     {
@@ -302,5 +302,5 @@ verify.OPTIMAL_RETURN_STRING = verifyPredef('OPTIMAL_RETURN_STRING');
         routine();
     };
     const routineNames = Object.keys(verify);
-    choose(callback, 'Routine to verify', routineNames);
+    await choose(callback, 'Routine to verify', routineNames);
 }

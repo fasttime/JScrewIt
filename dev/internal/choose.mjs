@@ -1,8 +1,6 @@
-'use strict';
-
-const { formatDuration, timeThis }  = require('../../tools/time-utils');
-const { prompt }                    = require('inquirer');
-const Choices                       = require('inquirer/lib/objects/choices');
+import { formatDuration, timeThis } from '../../tools/time-utils.js';
+import inquirer                     from 'inquirer';
+import { basename }                 from 'path';
 
 function compareChoices(choice1, choice2)
 {
@@ -39,15 +37,7 @@ function runCallback(callback, choice)
     console.log('%s elapsed.', durationStr);
 }
 
-Choices.prototype.getChoice =
-function (selector)
-{
-    const choice = typeof selector === 'number' ? this.realChoices[selector] : undefined;
-    return choice;
-};
-
-module.exports =
-function (callback, message, choices)
+export default async function (callback, message, choices)
 {
     const { argv } = process;
     const [,, choice] = argv;
@@ -56,8 +46,6 @@ function (callback, message, choices)
         const errorMessage = runCallback(callback, choice);
         if (errorMessage != null)
         {
-            const { basename } = require('path');
-
             const command = basename(argv[1]);
             const fullErrorMessage =
             `${errorMessage}\nRun ${command} without arguments for a list of available options.`;
@@ -70,11 +58,8 @@ function (callback, message, choices)
         choices.sort(compareChoices);
         const question =
         { choices, loop: false, message, name: 'choice', pageSize: Infinity, type: 'rawlist' };
-        (async () =>
-        {
-            const { choice } = await prompt(question);
-            runCallback(callback, choice);
-        }
-        )();
+        const { choice } = await inquirer.prompt(question);
+        runCallback(callback, choice);
     }
-};
+    process.exit();
+}
