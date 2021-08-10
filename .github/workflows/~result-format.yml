@@ -19,8 +19,9 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: 16.x
-    - run: npm install --prefix ../..
-    - run: npm run lint
+    - run: |
+        npm install --prefix ../..
+        npm run lint
 
   test:
 
@@ -37,8 +38,9 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: npm test
+    - run: |
+        npm install
+        npm test
 
   prepare-legacy-test:
 
@@ -51,8 +53,9 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: 16.x
-    - run: npm install --prefix ../..
-    - run: npm run prepare-legacy-test
+    - run: |
+        npm install --prefix ../..
+        npm run prepare-legacy-test
     - uses: actions/upload-artifact@v2
       with:
         name: node-legacy

@@ -1,4 +1,4 @@
-name: ~solution Node.js CI
+name: {{package}} Node.js CI
 
 on: [push, pull_request]
 
@@ -6,7 +6,7 @@ defaults:
 
   run:
 
-    working-directory: packages/~solution
+    working-directory: packages/{{package}}
 
 jobs:
 
@@ -25,7 +25,7 @@ jobs:
 
   test:
 
-    name: test (Node.js ${{ matrix.node-version }})
+    name: test (Node.js $\{{ matrix.node-version }})
 
     runs-on: ubuntu-latest
 
@@ -37,7 +37,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: $\{{ matrix.node-version }}
     - run: |
         npm install
         npm test
@@ -59,11 +59,11 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: node-legacy
-        path: packages/~solution/test/node-legacy
+        path: packages/{{package}}/test/node-legacy
 
   legacy-test:
 
-    name: legacy test (Node.js ${{ matrix.node-version }})
+    name: legacy test (Node.js $\{{ matrix.node-version }})
 
     needs: prepare-legacy-test
 
@@ -77,9 +77,9 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: $\{{ matrix.node-version }}
     - uses: actions/download-artifact@v2
       with:
         name: node-legacy
-        path: packages/~solution/test/node-legacy
+        path: packages/{{package}}/test/node-legacy
     - run: npm run legacy-test

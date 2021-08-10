@@ -265,17 +265,45 @@ task
 
 task
 (
-    'make-feature-doc',
-    () =>
-    createFileFromTemplate('./dev/make-feature-doc.mjs', 'src/Features.md.hbs', 'Features.md'),
-);
-
-task
-(
     'make-feature-types',
     () =>
     createFileFromTemplate
     ('./dev/make-feature-types.mjs', 'src/lib/feature-all.d.ts.hbs', 'lib/feature-all.d.ts'),
+);
+
+task
+(
+    'make-api-doc',
+    async () =>
+    {
+        const { Application, TSConfigReader } = require('typedoc');
+
+        const options =
+        {
+            disableSources:     true,
+            entryPoints:        'lib/jscrewit.d.ts',
+            hideBreadcrumbs:    true,
+            name:               'JScrewIt',
+            plugin:             'typedoc-plugin-markdown',
+            readme:             'none',
+            tsconfig:           'tsconfig.json',
+        };
+        const app = new Application();
+        app.options.addReader(new TSConfigReader());
+        app.bootstrap(options);
+        const src = app.expandInputFiles(['lib']);
+        const project = app.convert(src);
+        await app.renderer.render(project, 'api-doc');
+        if (app.logger.hasErrors())
+            throw Error('API documentation could not be generated');
+    },
+);
+
+task
+(
+    'make-feature-doc',
+    () =>
+    createFileFromTemplate('./dev/make-feature-doc.mjs', 'src/Features.md.hbs', 'Features.md'),
 );
 
 task
@@ -309,29 +337,32 @@ task
 
 task
 (
-    'make-api-doc',
+    'make-workflows',
     async () =>
     {
-        const { Application, TSConfigReader } = require('typedoc');
+        const fastGlob      = require('fast-glob');
+        const { writeFile } = require('fs/promises');
+        const Handlebars    = require('handlebars');
+        const { join }      = require('path');
 
-        const options =
+        async function getTemplate()
         {
-            disableSources:     true,
-            entryPoints:        'lib/jscrewit.d.ts',
-            hideBreadcrumbs:    true,
-            name:               'JScrewIt',
-            plugin:             'typedoc-plugin-markdown',
-            readme:             'none',
-            tsconfig:           'tsconfig.json',
-        };
-        const app = new Application();
-        app.options.addReader(new TSConfigReader());
-        app.bootstrap(options);
-        const src = app.expandInputFiles(['lib']);
-        const project = app.convert(src);
-        await app.renderer.render(project, 'api-doc');
-        if (app.logger.hasErrors())
-            throw Error('API documentation could not be generated');
+            const input = await readFileAsString('src/package.yml.hbs');
+            const template = Handlebars.compile(input, { noEscape: true });
+            return template;
+        }
+
+        async function writeWorkflow(pkgName)
+        {
+            const output = template({ package: pkgName });
+            const path = join('.github/workflows', `${pkgName}.yml`);
+            await writeFile(path, output);
+        }
+
+        const promises = [getTemplate(), fastGlob('*', { cwd: 'packages', onlyDirectories: true })];
+        const [template, pkgNames] = await Promise.all(promises);
+        const writeWorkflowPromises = pkgNames.map(writeWorkflow);
+        await Promise.all(writeWorkflowPromises);
     },
 );
 
@@ -350,6 +381,7 @@ task
             series('make-feature-types', 'make-api-doc'),
             'make-feature-doc',
             'make-spec-runner',
+            'make-workflows',
         ),
     ),
 );
