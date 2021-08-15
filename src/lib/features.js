@@ -1984,12 +1984,42 @@ assignNoEnum
             ],
             attributes: { 'char-increment-restriction': null },
         },
-        NODE_16:
+        NODE_16_0:
         {
-            engine: 'Node.js 16 or later',
+            engine: 'Node.js 16.0 to 16.5',
             includes:
             [
                 'ARROW',
+                'ATOB',
+                'ESC_HTML_QUOT_ONLY',
+                'ESC_REGEXP_LF',
+                'ESC_REGEXP_SLASH',
+                'FILL',
+                'FLAT',
+                'FROM_CODE_POINT',
+                'FUNCTION_19_LF',
+                'GENERIC_ARRAY_TO_STRING',
+                'GLOBAL_UNDEFINED',
+                'GMT',
+                'INCR_CHAR',
+                'INTL',
+                'LOCALE_INFINITY',
+                'LOCALE_NUMERALS_EXT',
+                'NAME',
+                'NO_OLD_SAFARI_ARRAY_ITERATOR',
+                'REGEXP_STRING_ITERATOR',
+                'SHORT_LOCALES',
+                'V8_SRC',
+            ],
+            attributes: { 'char-increment-restriction': null },
+        },
+        NODE_16_6:
+        {
+            engine: 'Node.js 16.6 or later',
+            includes:
+            [
+                'ARROW',
+                'AT',
                 'ATOB',
                 'ESC_HTML_QUOT_ONLY',
                 'ESC_REGEXP_LF',

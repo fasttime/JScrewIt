@@ -75,7 +75,8 @@
 - [NODE\_12](FeatureAll.md#node_12)
 - [NODE\_13](FeatureAll.md#node_13)
 - [NODE\_15](FeatureAll.md#node_15)
-- [NODE\_16](FeatureAll.md#node_16)
+- [NODE\_16\_0](FeatureAll.md#node_16_0)
+- [NODE\_16\_6](FeatureAll.md#node_16_6)
 - [NODE\_4](FeatureAll.md#node_4)
 - [NODE\_5](FeatureAll.md#node_5)
 - [NO\_FF\_SRC](FeatureAll.md#no_ff_src)
@@ -188,7 +189,7 @@ Existence of the native function Array.prototype.at.
 
 **`remarks`**
 
-Available in Chrome 92+, Edge 92+, Firefox 90+, and Opera 78+.
+Available in Chrome 92+, Edge 92+, Firefox 90+, Opera 78+, and Node.js 16.6+.
 
 ___
 
@@ -200,7 +201,7 @@ Existence of the global functions atob and btoa.
 
 **`remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser, and Node.js 16+. This feature is not available inside web workers in Safari before 10.
+Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser, and Node.js 16.0+. This feature is not available inside web workers in Safari before 10.
 
 ___
 
@@ -840,11 +841,19 @@ Features available in Node.js 15.
 
 ___
 
-### NODE\_16
+### NODE\_16\_0
 
-• **NODE\_16**: [`PredefinedFeature`](PredefinedFeature.md)
+• **NODE\_16\_0**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Node.js 16 or later.
+Features available in Node.js 16.0 to 16.5.
+
+___
+
+### NODE\_16\_6
+
+• **NODE\_16\_6**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Node.js 16.6 or later.
 
 ___
 

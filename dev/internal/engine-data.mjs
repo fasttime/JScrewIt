@@ -109,7 +109,8 @@ export const getEngineEntries =
                 { description: '12+', feature: 'NODE_12' },
                 { description: '13+', feature: 'NODE_13' },
                 { description: '15+', feature: 'NODE_15' },
-                { description: '16+', feature: 'NODE_16' },
+                { description: '16.0+', feature: 'NODE_16_0' },
+                { description: '16.6+', feature: 'NODE_16_6' },
             ],
         },
     ];

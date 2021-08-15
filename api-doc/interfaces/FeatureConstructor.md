@@ -125,7 +125,8 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [NODE\_12](FeatureConstructor.md#node_12)
 - [NODE\_13](FeatureConstructor.md#node_13)
 - [NODE\_15](FeatureConstructor.md#node_15)
-- [NODE\_16](FeatureConstructor.md#node_16)
+- [NODE\_16\_0](FeatureConstructor.md#node_16_0)
+- [NODE\_16\_6](FeatureConstructor.md#node_16_6)
 - [NODE\_4](FeatureConstructor.md#node_4)
 - [NODE\_5](FeatureConstructor.md#node_5)
 - [NO\_FF\_SRC](FeatureConstructor.md#no_ff_src)
@@ -339,7 +340,7 @@ Existence of the native function Array.prototype.at.
 
 **`remarks`**
 
-Available in Chrome 92+, Edge 92+, Firefox 90+, and Opera 78+.
+Available in Chrome 92+, Edge 92+, Firefox 90+, Opera 78+, and Node.js 16.6+.
 
 #### Inherited from
 
@@ -355,7 +356,7 @@ Existence of the global functions atob and btoa.
 
 **`remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser, and Node.js 16+. This feature is not available inside web workers in Safari before 10.
+Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser, and Node.js 16.0+. This feature is not available inside web workers in Safari before 10.
 
 #### Inherited from
 
@@ -1231,15 +1232,27 @@ Features available in Node.js 15.
 
 ___
 
-### NODE\_16
+### NODE\_16\_0
 
-• **NODE\_16**: [`PredefinedFeature`](PredefinedFeature.md)
+• **NODE\_16\_0**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Node.js 16 or later.
+Features available in Node.js 16.0 to 16.5.
 
 #### Inherited from
 
-[FeatureAll](FeatureAll.md).[NODE_16](FeatureAll.md#node_16)
+[FeatureAll](FeatureAll.md).[NODE_16_0](FeatureAll.md#node_16_0)
+
+___
+
+### NODE\_16\_6
+
+• **NODE\_16\_6**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Node.js 16.6 or later.
+
+#### Inherited from
+
+[FeatureAll](FeatureAll.md).[NODE_16_6](FeatureAll.md#node_16_6)
 
 ___
 
