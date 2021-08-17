@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import JScrewIt                         from '../lib/jscrewit.js';
+import JScrewIt, { Feature }            from '../lib/jscrewit.js';
 import timeUtils                        from '../tools/time-utils.js';
 import progress                         from './internal/progress.js';
 import solutionBookMap, { NICKNAME }    from './internal/solution-book-map.js';
@@ -84,7 +84,7 @@ async function doAdd()
         (oldSolutionBook ? 'Character %s reindexed' : 'Character %s indexed', formattedCharacter);
         if (oldSolutionBook)
         {
-            const { createFeatureFromMask } = JScrewIt.debug;
+            const featureFromMask = Feature.fromMask;
             for (const newSolution of newSolutionBook.solutions)
             {
                 const newLength = newSolution.length;
@@ -93,7 +93,7 @@ async function doAdd()
                     const oldLength = findSolutionLength(oldSolutionBook, mask);
                     if (newLength < oldLength)
                     {
-                        const featureObj = createFeatureFromMask(mask);
+                        const featureObj = featureFromMask(mask);
                         console.log
                         (
                             chalk.green('New solution for %s is better: %d < %d'),
@@ -112,12 +112,12 @@ async function doAdd()
                     const newLength = findSolutionLength(newSolutionBook, mask);
                     if (newLength === undefined)
                     {
-                        const featureObj = createFeatureFromMask(mask);
+                        const featureObj = featureFromMask(mask);
                         console.log(chalk.red('No solution for %s'), featureObj);
                     }
                     else if (newLength > oldLength)
                     {
-                        const featureObj = createFeatureFromMask(mask);
+                        const featureObj = featureFromMask(mask);
                         console.log
                         (
                             chalk.red('New solution for %s is worse: %d > %d'),

@@ -108,7 +108,8 @@ function createParseReviver()
 
 function createStringifyReplacer()
 {
-    const { Solution, SolutionType, createFeatureFromMask } = debug;
+    const { Solution, SolutionType } = debug;
+    const featureFromMask = JScrewIt.Feature.fromMask;
     const stringifyReplacerMap =
     new SortedMap([[Solution, jsonReplaceSolution], [SortedMap, jsonReplaceSortedMap]]);
     return stringifyReplacer;
@@ -123,7 +124,7 @@ function createStringifyReplacer()
                 obj[key] = value;
         }
         obj.type = SolutionType[solution.type];
-        obj.features = solution.masks.map(mask => createFeatureFromMask(mask).canonicalNames);
+        obj.features = solution.masks.map(mask => featureFromMask(mask).canonicalNames);
         return obj;
     }
 

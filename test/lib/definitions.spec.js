@@ -38,7 +38,7 @@ self,
 
     function getEntryFeature(entry)
     {
-        var featureObj = JScrewIt.debug.createFeatureFromMask(entry.mask);
+        var featureObj = Feature.fromMask(entry.mask);
         return featureObj;
     }
 

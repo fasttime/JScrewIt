@@ -860,6 +860,24 @@
                     );
                 }
             );
+            describe
+            (
+                '.fromMask',
+                function ()
+                {
+                    it
+                    (
+                        'returns null for an incompatible mask',
+                        function ()
+                        {
+                            var mask =
+                            JScrewIt.debug.maskUnion(Feature.NO_IE_SRC.mask, Feature.IE_SRC.mask);
+                            var featureObj = Feature.fromMask(mask);
+                            expect(featureObj).toBeNull();
+                        }
+                    );
+                }
+            );
             it.when(typeof module !== 'undefined')
             (
                 'inspection works as expected',

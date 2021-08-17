@@ -1,7 +1,7 @@
 /* global DEBUG */
 
-import createClusteringPlan                                 from './clustering-plan';
-import { define }                                           from './definers';
+import createClusteringPlan                     from './clustering-plan';
+import { define }                               from './definers';
 import
 {
     BASE64_ALPHABET_HI_4,
@@ -17,11 +17,11 @@ import
     OPTIMAL_RETURN_STRING,
 }
 from './definitions';
-import { Encoder }                                          from './encoder/encoder-base';
-import { STRATEGIES, createReindexMap }                     from './encoder/encoder-ext';
-import { featureFromMask, isMaskCompatible }                from './features';
-import createFigurator                                      from './figurator';
-import { JScrewIt, getValidFeatureMask, isEncoderInCache }  from './jscrewit-base';
+import { Encoder }                              from './encoder/encoder-base';
+import { STRATEGIES, createReindexMap }         from './encoder/encoder-ext';
+import { Feature }                              from './features';
+import createFigurator                          from './figurator';
+import { JScrewIt, isEncoderInCache }           from './jscrewit-base';
 import
 {
     _Array_isArray,
@@ -35,10 +35,10 @@ import
     esToString,
 }
 from './obj-utils';
-import { ScrewBuffer, optimizeSolutions }                   from './screw-buffer';
-import { DynamicSolution, SimpleSolution }                  from './solution';
-import trimJS                                               from './trim-js';
-import { SolutionType, calculateSolutionType }              from '~solution';
+import { ScrewBuffer, optimizeSolutions }       from './screw-buffer';
+import { DynamicSolution, SimpleSolution }      from './solution';
+import trimJS                                   from './trim-js';
+import { SolutionType, calculateSolutionType }  from '~solution';
 import { MaskMap, MaskSet, maskAreEqual, maskIncludes, maskNew, maskNext, maskUnion }
 from '~mask';
 
@@ -91,12 +91,6 @@ if (typeof NO_DEBUG === 'undefined')
             definition = clone(definition);
             var entry = { definition: definition, mask: mask };
             return entry;
-        }
-
-        function createFeatureFromMask(mask)
-        {
-            var featureObj = isMaskCompatible(mask) ? featureFromMask(mask) : null;
-            return featureObj;
         }
 
         function createScrewBuffer(screwMode, groupThreshold, optimizerList)
@@ -174,6 +168,8 @@ if (typeof NO_DEBUG === 'undefined')
         ENTRIES['BASE64_ALPHABET_LO_4:1']                       = BASE64_ALPHABET_LO_4[1];
         ENTRIES['BASE64_ALPHABET_LO_4:3']                       = BASE64_ALPHABET_LO_4[3];
 
+        var getValidFeatureMask = Feature.getValidFeatureMask;
+
         (function ()
         {
             function exposeEntries(name, entries)
@@ -204,7 +200,6 @@ if (typeof NO_DEBUG === 'undefined')
                 calculateSolutionType:  calculateSolutionType,
                 createClusteringPlan:   createClusteringPlan,
                 createEncoder:          createEncoder,
-                createFeatureFromMask:  createFeatureFromMask,
                 createFigurator:        createFigurator,
                 createReindexMap:       createReindexMap,
                 createScrewBuffer:      createScrewBuffer,

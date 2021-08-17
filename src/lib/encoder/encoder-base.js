@@ -18,7 +18,7 @@ import
 }
 from '../definitions';
 import expressParseCached           from '../express-parse-cached';
-import { Feature, featureFromMask } from '../features';
+import { Feature }                  from '../features';
 import findDefinition               from './find-definition';
 import
 {
@@ -57,6 +57,8 @@ var STATIC_ENCODER      = new Encoder(maskNew());
 var BOND_STRENGTH_NONE      = 0;
 var BOND_STRENGTH_WEAK      = 1;
 var BOND_STRENGTH_STRONG    = 2;
+
+var featureFromMask = Feature.fromMask;
 
 /** @class Encoder */
 
