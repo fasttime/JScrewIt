@@ -139,13 +139,13 @@ const IS_TYPE_TEST_INFOS: ParamCollection<IsAttrTestInfo> =
 describe
 (
     'AbstractSolution',
-    () =>
+    (): void =>
     {
         it
         .per
         (
             IS_TYPE_TEST_INFOS,
-            (info: IsAttrTestInfo) =>
+            (info: IsAttrTestInfo): IsAttrTestInfo =>
             {
                 const solutionTypeName = SolutionType[info.solutionType];
                 const returnValue = { ...info, solutionTypeName };
@@ -154,7 +154,7 @@ describe
         )
         (
             '#.isAttrName with type #.solutionTypeName',
-            ({ isAttrName, solutionType, expectedValue }: IsAttrTestInfo) =>
+            ({ isAttrName, solutionType, expectedValue }: IsAttrTestInfo): void =>
             {
                 const solution = new SimpleSolution(undefined, '', solutionType);
                 assert.strictEqual(solution[isAttrName], expectedValue);

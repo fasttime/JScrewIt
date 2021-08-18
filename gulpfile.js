@@ -91,6 +91,7 @@ task
 
         const patterns =
         [
+            '.github/workflows/~*.yml',
             '.tmp-out',
             'Features.md',
             'api-doc',

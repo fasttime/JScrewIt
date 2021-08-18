@@ -1,6 +1,10 @@
 import { SolutionType, calculateSolutionType }  from '../../src/solution-type';
 import assert                                   from 'assert';
 
-it('calculateSolutionType', () => assert.throws(() => calculateSolutionType(''), SyntaxError));
+it
+(
+    'calculateSolutionType',
+    (): void => assert.throws((): unknown => calculateSolutionType(''), SyntaxError),
+);
 
-it('SolutionType is frozen', () => assert(Object.isFrozen(SolutionType)));
+it('SolutionType is frozen', (): void => assert(Object.isFrozen(SolutionType)));

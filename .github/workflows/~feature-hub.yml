@@ -1,4 +1,4 @@
-name: ~mask Node.js CI
+name: ~feature-hub Node.js CI
 
 on: [push, pull_request]
 
@@ -6,7 +6,7 @@ defaults:
 
   run:
 
-    working-directory: packages/~mask
+    working-directory: packages/~feature-hub
 
 jobs:
 
@@ -59,7 +59,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: node-legacy
-        path: packages/~mask/test/node-legacy
+        path: packages/~feature-hub/test/node-legacy
 
   legacy-test:
 
@@ -81,5 +81,5 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: node-legacy
-        path: packages/~mask/test/node-legacy
+        path: packages/~feature-hub/test/node-legacy
     - run: npm run legacy-test

@@ -55,7 +55,7 @@ async function compile(pkgPath, dTsFilter)
         declarationDir,
         outDir:         join(pkgPath, '.tmp-out'),
         rootDir:        join(pkgPath, 'src'),
-        types:          [],
+        types:          ['node'],
     };
     const writeFile = getWriteFile(ts.sys.writeFile, declarationDir, dTsFilter);
     await compileTS(pkgPath, 'src/**/*.ts', newOptions, writeFile);

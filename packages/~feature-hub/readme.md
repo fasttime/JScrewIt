@@ -1,14 +1,16 @@
-# ~mask
+# ~feature-hub
 
-This package provides the implementation of boolean vectors (masks) used by
-[JScrewIt](https://github.com/fasttime/JScrewIt) to represent features.
-It was previously named *quinquaginta-duo* after the word for the number fifty-two in Latin, which
-is the maximum number of boolean elements that masks can handle in this implementation.
+This package provides the framwork used by [JScrewIt](https://github.com/fasttime/JScrewIt) to
+operate with engine features.
+It supersedes the former packages *quinquaginta-duo* and *~mask* previously used as mask
+providers, and extends them with the ability to create feature classes.
 
-## Overview
+## Masks
 
 A mask is an immutable, serializable, transparent data structure used to operate on multiple boolean
 values at once.
+It is conceptually similar to a boolean vector, except that the boolean elements have no numeric
+index associated to them, and can only be accessed using other previously computed masks.
 Masks should only be accessed using the mask functions provided by this package.
 An exception to this rule is that a mask can be safely compared to undefined or null, because any
 valid mask is different from undefined or null.

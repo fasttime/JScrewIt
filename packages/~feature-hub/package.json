@@ -1,7 +1,7 @@
 {
-  "name": "~mask",
-  "description": "Boolean vector provider for JScrewIt",
-  "homepage": "https://github.com/fasttime/JScrewIt/tree/master/packages/~mask",
+  "name": "~feature-hub",
+  "description": "Feature framework for JScrewIt",
+  "homepage": "https://github.com/fasttime/JScrewIt/tree/master/packages/~feature-hub",
   "bugs": "https://github.com/fasttime/JScrewIt/issues",
   "license": "ISC",
   "author": "Francesco Trotta <ft@fasttime.org> (https://github.com/fasttime)",

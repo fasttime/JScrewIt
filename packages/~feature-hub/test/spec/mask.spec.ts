@@ -58,7 +58,7 @@ function formatMask(mask: Mask): string
 it
 (
     'maskNew',
-    () =>
+    (): void =>
     {
         const newMask = maskNew();
         assertMaskEmpty(newMask);
@@ -68,7 +68,7 @@ it
 it
 (
     'maskNext',
-    () =>
+    (): void =>
     {
         let prevMask = maskNew();
         for (let count = 0; count < 52; ++count)
@@ -80,14 +80,14 @@ it
             const unionMask = maskUnion(nextMask, prevMask);
             prevMask = unionMask;
         }
-        assert.throws(() => maskNext(prevMask), RangeError);
+        assert.throws((): Mask => maskNext(prevMask), RangeError);
     },
 );
 
 it
 (
     'maskUnion',
-    () =>
+    (): void =>
     {
         let prevMask = maskNew();
         for (let count = 0; count < 52; ++count)
@@ -104,7 +104,7 @@ it
 it
 (
     'maskIntersection',
-    () =>
+    (): void =>
     {
         const mask0 = maskNew();
         let prevHighMask = mask0;

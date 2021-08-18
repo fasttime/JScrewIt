@@ -5,17 +5,17 @@ import assert               from 'assert';
 describe
 (
     'MaskMap',
-    () =>
+    (): void =>
     {
         describe
         (
             'set',
-            () =>
+            (): void =>
             {
                 it
                 (
                     'adds a new entry',
-                    () =>
+                    (): void =>
                     {
                         const map = new MaskMap();
                         const mask = maskNew();
@@ -28,7 +28,7 @@ describe
                 it
                 (
                     'changes the value of an entry',
-                    () =>
+                    (): void =>
                     {
                         const map = new MaskMap();
                         const mask = maskNew();
@@ -44,7 +44,7 @@ describe
         it
         (
             'size',
-            () =>
+            (): void =>
             {
                 const map = new MaskMap();
                 const mask = maskNew();
@@ -60,12 +60,12 @@ describe
 describe
 (
     'MaskSet',
-    () =>
+    (): void =>
     {
         it
         (
             'add',
-            () =>
+            (): void =>
             {
                 const set = new MaskSet();
                 const mask = maskNew();
@@ -78,7 +78,7 @@ describe
         it
         (
             'size',
-            () =>
+            (): void =>
             {
                 const set = new MaskSet();
                 const mask = maskNew();

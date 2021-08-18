@@ -156,7 +156,7 @@ function matchSolutions(typeSets: readonly TypeSet[], solutions: readonly Soluti
     const test =
     typeSets.every
     (
-        (typeSet: TypeSet, index: number) =>
+        (typeSet: TypeSet, index: number): boolean =>
         {
             const { type } = solutions[index];
             const test = includesType(typeSet, type);

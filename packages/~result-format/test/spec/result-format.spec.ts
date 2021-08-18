@@ -121,7 +121,7 @@ const paramDataList: ParamOrParamInfo<Readonly<ParamData>>[] =
 describe.per(paramDataList)
 (
     'Given #[0]',
-    paramData =>
+    (paramData): void =>
     {
         const { 1: input, 2: expectedValue, 3: expectedValueType, doBefore, doAfter } = paramData;
         const expectedValueProvided = 2 in paramData;
@@ -134,7 +134,7 @@ describe.per(paramDataList)
             it
             (
                 'formatValue returns the expected result',
-                () =>
+                (): void =>
                 {
                     const actualValue = formatValue(input);
                     assert.strictEqual(actualValue, expectedValue);
@@ -144,7 +144,7 @@ describe.per(paramDataList)
         it
         (
             'formatValueType returns the expected result',
-            () =>
+            (): void =>
             {
                 const actualValueType = formatValueType(input);
                 assert.strictEqual(actualValueType, expectedValueType);

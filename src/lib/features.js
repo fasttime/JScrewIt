@@ -1,6 +1,6 @@
 /* global Audio, Intl, Node, console, document, history, location, self, statusbar */
 
-import makeFeatures, { featuresToMask } from './feature-hub';
+import { featuresToMask, makeFeatureClass } from '~feature-hub';
 
 function checkLocaleNumeral(locale, number, regExp)
 {
@@ -25,7 +25,7 @@ function checkSelfFeature()
 }
 
 var Feature =
-makeFeatures
+makeFeatureClass
 (
     {
         ANY_DOCUMENT:

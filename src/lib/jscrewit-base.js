@@ -7,7 +7,7 @@ import { wrapWithCall, wrapWithEval }                               from './enco
 import { Feature }                                                  from './features';
 import { _Error, _String, _setTimeout, assignNoEnum, esToString }   from './obj-utils';
 import trimJS                                                       from './trim-js';
-import { MaskMap }                                                  from '~mask';
+import { MaskMap }                                                  from '~feature-hub';
 
 function cacheEncoder(encoder)
 {

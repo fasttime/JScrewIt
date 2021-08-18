@@ -4,12 +4,12 @@ import assert                           from 'assert';
 describe
 (
     'LazySolution',
-    () =>
+    (): void =>
     {
         it
         (
             'has expected properties',
-            () =>
+            (): void =>
             {
                 const source = 'NaN';
                 const replacement = '[][[]]++';
@@ -24,7 +24,7 @@ describe
         it
         (
             'calls createReplacement',
-            () =>
+            (): void =>
             {
                 let callCount = 0;
                 const createReplacement =
@@ -36,9 +36,9 @@ describe
                 const solution =
                 new LazySolution(undefined, createReplacement, SolutionType.UNDEFINED);
                 assert.strictEqual(callCount, 0);
-                assert.throws(() => void solution.replacement);
+                assert.throws((): void => void solution.replacement);
                 assert.strictEqual(callCount, 1);
-                assert.throws(() => void solution.replacement);
+                assert.throws((): void => void solution.replacement);
                 assert.strictEqual(callCount, 2);
             },
         );

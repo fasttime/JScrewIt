@@ -744,17 +744,17 @@ const MIXED_SOLUTION_TEST_INFOS: ParamCollection<MixedSolutionTestInfo> =
 describe
 (
     'DynamicSolution',
-    () =>
+    (): void =>
     {
         it
         (
             'when containing multiple solutions',
-            () =>
+            (): void =>
             {
                 const solution = new DynamicSolution();
                 ['+![]', '+!![]', '!![]+!![]'].forEach
                 (
-                    (expr: string, index: number) =>
+                    (expr: string, index: number): void =>
                     {
                         solution.append
                         (new SimpleSolution(String(index), expr, SolutionType.WEAK_ALGEBRAIC));
@@ -762,7 +762,7 @@ describe
                 );
                 ['([]+!![])[+[]]', '([]+![])[+!![]]', '([]+![])[+[]]'].forEach
                 (
-                    (expr: string, index: number) =>
+                    (expr: string, index: number): void =>
                     {
                         solution.prepend
                         (new SimpleSolution('taf'[index], expr, SolutionType.STRING));
@@ -781,12 +781,12 @@ describe
         describe
         (
             'source',
-            () =>
+            (): void =>
             {
                 it
                 (
                     'is a string when all contained solutions have a source',
-                    () =>
+                    (): void =>
                     {
                         const solution = new DynamicSolution();
                         solution
@@ -799,7 +799,7 @@ describe
                 it
                 (
                     'is undefined when not all contained solutions have a source',
-                    () =>
+                    (): void =>
                     {
                         const solution = new DynamicSolution();
                         solution
@@ -814,17 +814,17 @@ describe
         describe
         (
             'when containing mixed solutions',
-            () =>
+            (): void =>
             {
                 it.per
                 (
                     MIXED_SOLUTION_TEST_INFOS,
-                    (info: MixedSolutionTestInfo) =>
+                    (info: MixedSolutionTestInfo): MixedSolutionTestInfo =>
                     {
                         const title =
                         info
                         .subSolutions
-                        .map(([,, type]: SolutionInfo) => SolutionType[type])
+                        .map(([,, type]: SolutionInfo): string => SolutionType[type])
                         .join(' + ') ||
                         '(none)';
                         const returnValue = { ...info, title };
@@ -833,7 +833,8 @@ describe
                 )
                 (
                     '#.title',
-                    ({ subSolutions, expectedReplacement, expectedType }: MixedSolutionTestInfo) =>
+                    ({ subSolutions, expectedReplacement, expectedType }: MixedSolutionTestInfo):
+                    void =>
                     {
                         const solution = new DynamicSolution();
                         for (const [source, replacement, type] of subSolutions)
