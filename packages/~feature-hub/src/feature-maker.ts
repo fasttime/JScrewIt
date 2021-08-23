@@ -14,7 +14,6 @@ type CompatibleFeatureArray = readonly FeatureElement[];
 
 interface Feature
 {
-    readonly attributes?:       AttributeMap;
     readonly canonicalNames:    string[];
     readonly mask:              Mask;
     readonly name?:             string;
@@ -23,25 +22,45 @@ interface Feature
 
 interface FeatureConstructor
 {
-    ():     Feature;
-    ALL:    { [featureName: string]: Feature | undefined; };
-    new (): Feature;
+    ():                                                                 Feature;
+
+    readonly ALL:
+    { readonly [name: string]: PredefinedFeature; };
+
+    new ():                                                             Feature;
+    areEqual(...features: (FeatureElement | CompatibleFeatureArray)[]): boolean;
 }
 
 type FeatureElement = Feature | string;
 
-interface FeatureInfo
+type FeatureInfo =
+(
+    {
+        readonly aliasFor:      string;
+    } |
+    {
+        readonly attributes?:   AttributeMap;
+        readonly check?:        () => unknown;
+        readonly excludes?:     readonly string[];
+        readonly includes?:     readonly string[] | IncludeDifferenceMap;
+        readonly inherits?:     string;
+    }
+) &
+({ readonly description?: string; } | { readonly engine?: string; });
+
+interface IncludeDifferenceMap
 {
-    readonly aliasFor?:     string;
-    readonly attributes:    AttributeMap;
-    readonly check?:        () => unknown;
-    readonly description?:  string;
-    readonly engine?:       string;
-    readonly excludes?:     readonly string[];
-    readonly includes?:     readonly string[];
+    readonly [name: string]: boolean;
 }
 
-const _Array_isArray            = Array.isArray;
+interface PredefinedFeature extends Feature
+{
+    readonly attributes:    AttributeMap;
+    readonly name:          string;
+}
+
+const _Array_isArray            = Array.isArray as (value: unknown) => value is readonly unknown[];
+
 const _Error                    = Error;
 const _JSON_stringify           = JSON.stringify;
 const
@@ -121,7 +140,7 @@ function isExcludingAttribute
 (
     attributeCache: { [key: string]: boolean | undefined; },
     attributeName: string,
-    featureObjs: readonly Feature[],
+    featureObjs: readonly PredefinedFeature[],
 ): boolean
 {
     let returnValue = attributeCache[attributeName];
@@ -129,7 +148,7 @@ function isExcludingAttribute
     {
         attributeCache[attributeName] =
         returnValue =
-        featureObjs.some((featureObj): boolean => attributeName in featureObj.attributes!);
+        featureObjs.some((featureObj): boolean => attributeName in featureObj.attributes);
     }
     return returnValue;
 }
@@ -137,12 +156,12 @@ function isExcludingAttribute
 export function makeFeatureClass
 (featureInfos: { readonly [name: string]: FeatureInfo; }): FeatureConstructor
 {
-    const ALL                               = createMap<Feature>();
+    const ALL                               = createMap<PredefinedFeature>();
     const DESCRIPTION_MAP                   = createMap<string>();
-    const ELEMENTARY: Feature[]             = [];
+    const ELEMENTARY: PredefinedFeature[]   = [];
     const FEATURE_PROTOTYPE                 = Feature.prototype as object;
-    const INCLUDES_MAP                      = createMap<readonly string[]>();
     const INCOMPATIBLE_MASK_LIST: Mask[]    = [];
+    let PRISTINE_ELEMENTARY: PredefinedFeature[];
 
     function Feature(this: Feature, ...args: (FeatureElement | CompatibleFeatureArray)[]): Feature
     {
@@ -155,11 +174,11 @@ export function makeFeatureClass
 
     function areCompatible(): boolean
     {
-        let arg0: CompatibleFeatureArray;
+        let arg0: FeatureElement | CompatibleFeatureArray;
         const features =
         (
             arguments.length === 1 &&
-            _Array_isArray(arg0 = arguments[0] as CompatibleFeatureArray) ?
+            _Array_isArray(arg0 = arguments[0] as FeatureElement | CompatibleFeatureArray) ?
             arg0 : arguments
         ) as CompatibleFeatureArray;
         let compatible: boolean;
@@ -225,7 +244,7 @@ export function makeFeatureClass
         engine?: string,
         attributes = { },
         elementary?: unknown,
-    ): Feature
+    ): PredefinedFeature
     {
         _Object_freeze(attributes);
         const descriptors: PropertyDescriptorMap =
@@ -237,7 +256,7 @@ export function makeFeatureClass
         };
         if (elementary)
             descriptors.elementary = { value: true };
-        const featureObj = _Object_create(FEATURE_PROTOTYPE, descriptors) as Feature;
+        const featureObj = _Object_create(FEATURE_PROTOTYPE, descriptors) as PredefinedFeature;
         initMask(featureObj, mask);
         return featureObj;
     }
@@ -305,14 +324,6 @@ export function makeFeatureClass
         return mask;
     }
 
-    function registerFeature(name: string, description: string, featureObj: Feature): void
-    {
-        const descriptor = { enumerable: true, value: featureObj };
-        _Object_defineProperty(Feature, name, descriptor);
-        ALL[name] = featureObj;
-        DESCRIPTION_MAP[name] = description;
-    }
-
     function validMaskFromArguments
     (args: readonly (FeatureElement | CompatibleFeatureArray)[]): Mask
     {
@@ -327,7 +338,7 @@ export function makeFeatureClass
                 validationNeeded ||= arg.length > 1;
             }
             else
-                otherMask = maskFromStringOrFeature(arg as FeatureElement);
+                otherMask = maskFromStringOrFeature(arg);
             mask = maskUnion(mask, otherMask);
         }
         validationNeeded ||= args.length > 1;
@@ -346,7 +357,7 @@ export function makeFeatureClass
                 validateMask(mask);
         }
         else
-            mask = maskFromStringOrFeature(arg as FeatureElement);
+            mask = maskFromStringOrFeature(arg);
         return mask;
     }
 
@@ -363,22 +374,19 @@ export function makeFeatureClass
             get canonicalNames(): string[]
             {
                 const { mask } = this as Feature;
-                const featureNameSet = createMap<null>();
-                const allIncludes: string[] = [];
-                for (const featureObj of ELEMENTARY)
+                const names: string[] = [];
+                let includedMask = maskNew();
+                for (let index = PRISTINE_ELEMENTARY.length; index--;)
                 {
-                    const included = maskIncludes(mask, featureObj.mask);
-                    if (included)
+                    const featureObj = PRISTINE_ELEMENTARY[index];
+                    const featureMask = featureObj.mask;
+                    if (maskIncludes(mask, featureMask) && !maskIncludes(includedMask, featureMask))
                     {
-                        const name = featureObj.name!;
-                        featureNameSet[name] = null;
-                        const includes = INCLUDES_MAP[name];
-                        allIncludes.push(...includes!);
+                        includedMask = maskUnion(includedMask, featureMask);
+                        names.push(featureObj.name);
                     }
                 }
-                for (const name of allIncludes)
-                    delete featureNameSet[name];
-                const names = _Object_keys(featureNameSet).sort();
+                names.sort();
                 return names;
             },
 
@@ -392,7 +400,7 @@ export function makeFeatureClass
                 {
                     const included = maskIncludes(mask, featureObj.mask);
                     if (included)
-                        names.push(featureObj.name!);
+                        names.push(featureObj.name);
                 }
                 return names;
             },
@@ -418,7 +426,8 @@ export function makeFeatureClass
             name: undefined,
 
             restrict
-            (this: Feature, environment: string, engineFeatureObjs?: readonly Feature[]): Feature
+            (this: Feature, environment: string, engineFeatureObjs?: readonly PredefinedFeature[]):
+            Feature
             {
                 let resultMask = maskNew();
                 const thisMask = this.mask;
@@ -429,7 +438,7 @@ export function makeFeatureClass
                     const included = maskIncludes(thisMask, otherMask);
                     if (included)
                     {
-                        const attributeValue = featureObj.attributes![environment];
+                        const attributeValue = featureObj.attributes[environment];
                         if
                         (
                             attributeValue === undefined ||
@@ -462,7 +471,8 @@ export function makeFeatureClass
             const incompatibleMaskSet = new MaskSet();
             for (const name of featureNames)
             {
-                const { excludes } = featureInfos[name];
+                const { excludes } =
+                featureInfos[name] as { readonly excludes?: readonly string[]; };
                 if (excludes)
                 {
                     const { mask } = ALL[name]!;
@@ -490,13 +500,14 @@ export function makeFeatureClass
             {
                 let description: string | undefined;
                 const info = featureInfos[name];
-                const { aliasFor, engine } = info;
+                const { engine } = info as { readonly engine?: string; };
                 if (engine == null)
-                    ({ description } = info);
+                    ({ description } = info as { readonly description?: string; });
                 else
                     description = createEngineFeatureDescription(engine);
-                if (aliasFor != null)
+                if ('aliasFor' in info)
                 {
+                    const { aliasFor } = info;
                     mask = completeFeature(aliasFor);
                     featureObj = ALL[aliasFor]!;
                     if (description == null)
@@ -504,30 +515,57 @@ export function makeFeatureClass
                 }
                 else
                 {
-                    let { check } = info;
+                    const { inherits } = info;
+                    if (inherits != null)
+                        completeFeature(inherits);
+                    let wrappedCheck: (() => boolean) | undefined;
+                    const { check } = info;
                     if (check)
                     {
                         mask = maskNext(unionMask);
                         unionMask = maskUnion(unionMask, mask);
-                        if (check())
-                            autoMask = maskUnion(autoMask, mask);
-                        check = wrapCheck(check);
+                        wrappedCheck = wrapCheck(check);
                     }
                     else
                         mask = maskNew();
-                    const includes = INCLUDES_MAP[name] = info.includes ?? [];
-                    for (const include of includes)
                     {
-                        const includeMask = completeFeature(include);
-                        mask = maskUnion(mask, includeMask);
+                        const { includes } = info;
+                        const includeSet = includeSetMap[name] = createMap<null>();
+                        if (_Array_isArray(includes))
+                        {
+                            for (const include of includes)
+                                includeSet[include] = null;
+                        }
+                        else
+                        {
+                            const inheritedIncludeSet = includeSetMap[inherits!];
+                            for (const include in inheritedIncludeSet)
+                                includeSet[include] = null;
+                            if (includes)
+                            {
+                                const includeDiffNames = _Object_keys(includes);
+                                for (const include of includeDiffNames)
+                                {
+                                    if (includes[include])
+                                        includeSet[include] = null;
+                                    else
+                                        delete includeSet[include];
+                                }
+                            }
+                        }
+                        for (const include in includeSet)
+                        {
+                            const includeMask = completeFeature(include);
+                            mask = maskUnion(mask, includeMask);
+                        }
                     }
-                    const elementary = check ?? info.excludes;
+                    const elementary = wrappedCheck ?? info.excludes;
                     featureObj =
                     createFeature
                     (
                         name,
                         mask,
-                        check as (() => boolean) | undefined,
+                        wrappedCheck,
                         engine,
                         info.attributes,
                         elementary,
@@ -535,7 +573,8 @@ export function makeFeatureClass
                     if (elementary)
                         ELEMENTARY.push(featureObj);
                 }
-                registerFeature(name, description!, featureObj);
+                ALL[name] = featureObj;
+                DESCRIPTION_MAP[name] = description;
             }
             return mask;
         }
@@ -573,16 +612,16 @@ export function makeFeatureClass
                 );
             }
         }
-        let autoMask = maskNew();
-        let unionMask = maskNew();
 
         const featureNames = _Object_keys(featureInfos);
+        const includeSetMap = createMap<{ readonly [name: string]: null | undefined; }>();
+        let unionMask = maskNew();
+
         featureNames.forEach(completeFeature);
         completeExclusions();
-        ELEMENTARY.sort((feature1, feature2): number => feature1.name! < feature2.name! ? -1 : 1);
+        PRISTINE_ELEMENTARY = ELEMENTARY.slice();
+        ELEMENTARY.sort((feature1, feature2): number => feature1.name < feature2.name ? -1 : 1);
         _Object_freeze(ELEMENTARY);
-        const autoFeatureObj = createFeature('AUTO', autoMask);
-        registerFeature('AUTO', 'All features available in the current engine.', autoFeatureObj);
         _Object_freeze(ALL);
     }
     )();
