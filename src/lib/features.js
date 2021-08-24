@@ -902,8 +902,6 @@ var featureInfos =
         engine: 'Chrome 92, Edge 92 and Opera 78 or later',
         inherits: 'CHROME_86',
         includes: { AT: true },
-        attributes:
-        { 'char-increment-restriction': null, 'unstable': null, 'web-worker-restriction': null },
     },
     FF_ESR:
     {
@@ -956,8 +954,6 @@ var featureInfos =
         engine: 'Firefox 83 to 89',
         inherits: 'FF_78',
         includes: { INTL: true, PLAIN_INTL: false },
-        attributes:
-        { 'char-increment-restriction': null, 'unstable': null, 'web-worker-restriction': null },
     },
     FF:
     {
@@ -969,8 +965,6 @@ var featureInfos =
         engine: 'Firefox 90 or later',
         inherits: 'FF_83',
         includes: { AT: true },
-        attributes:
-        { 'char-increment-restriction': null, 'unstable': null, 'web-worker-restriction': null },
     },
     IE_9:
     {
@@ -1013,14 +1007,12 @@ var featureInfos =
             PLAIN_INTL:         true,
             SHORT_LOCALES:      true,
         },
-        attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
     },
     IE_11_WIN_10:
     {
         engine: 'Internet Explorer 11 on Windows 10',
         inherits: 'IE_11',
         includes: { LOCALE_INFINITY: true, LOCALE_NUMERALS: false, LOCALE_NUMERALS_EXT: true },
-        attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
     },
     NODE_0_10:
     {
@@ -1067,49 +1059,42 @@ var featureInfos =
         engine: 'Node.js 10',
         inherits: 'NODE_5',
         includes: { FUNCTION_19_LF: true, FUNCTION_22_LF: false },
-        attributes: { 'char-increment-restriction': null },
     },
     NODE_11:
     {
         engine: 'Node.js 11',
         inherits: 'NODE_10',
         includes: { FLAT: true },
-        attributes: { 'char-increment-restriction': null },
     },
     NODE_12:
     {
         engine: 'Node.js 12',
         inherits: 'NODE_11',
         includes: { ESC_REGEXP_LF: true, REGEXP_STRING_ITERATOR: true },
-        attributes: { 'char-increment-restriction': null },
     },
     NODE_13:
     {
         engine: 'Node.js 13 and Node.js 14',
         inherits: 'NODE_12',
         includes: { LOCALE_NUMERALS_EXT: true, SHORT_LOCALES: true },
-        attributes: { 'char-increment-restriction': null },
     },
     NODE_15:
     {
         engine: 'Node.js 15',
         inherits: 'NODE_13',
         includes: { INTL: true, PLAIN_INTL: false },
-        attributes: { 'char-increment-restriction': null },
     },
     NODE_16_0:
     {
         engine: 'Node.js 16.0 to 16.5',
         inherits: 'NODE_15',
         includes: { ATOB: true },
-        attributes: { 'char-increment-restriction': null },
     },
     NODE_16_6:
     {
         engine: 'Node.js 16.6 or later',
         inherits: 'NODE_16_0',
         includes: { AT: true },
-        attributes: { 'char-increment-restriction': null },
     },
     SAFARI_7_0:
     {
@@ -1151,13 +1136,7 @@ var featureInfos =
         engine: 'Safari 7.1 and Safari 8',
         inherits: 'SAFARI_7_0',
         includes: { ARRAY_ITERATOR: true, FILL: true },
-        attributes:
-        {
-            'char-increment-restriction':   null,
-            'old-safari-restriction':       null,
-            'safari-bug-21820506':          null,
-            'web-worker-restriction':       null,
-        },
+        attributes: { 'no-console-in-web-worker': undefined, 'safari-bug-21820506': null },
     },
     SAFARI_8: { aliasFor: 'SAFARI_7_1' },
     SAFARI_9:
@@ -1170,13 +1149,6 @@ var featureInfos =
             FROM_CODE_POINT:                true,
             FUNCTION_22_LF:                 true,
             NO_OLD_SAFARI_ARRAY_ITERATOR:   true,
-        },
-        attributes:
-        {
-            'char-increment-restriction':   null,
-            'old-safari-restriction':       null,
-            'safari-bug-21820506':          null,
-            'web-worker-restriction':       null,
         },
     },
     SAFARI_10:
@@ -1195,28 +1167,25 @@ var featureInfos =
             PLAIN_INTL:                 true,
             SHORT_LOCALES:              true,
         },
-        attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
+        attributes: { 'old-safari-restriction': undefined, 'safari-bug-21820506': undefined },
     },
     SAFARI_12:
     {
         engine: 'Safari 12',
         inherits: 'SAFARI_10',
         includes: { FLAT: true },
-        attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
     },
     SAFARI_13:
     {
         engine: 'Safari 13 and Safari 14.0.0',
         inherits: 'SAFARI_12',
         includes: { REGEXP_STRING_ITERATOR: true },
-        attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
     },
     SAFARI_14_0_1:
     {
         engine: 'Safari 14.0.1 to 14.0.3',
         inherits: 'SAFARI_13',
         includes: { INTL: true, PLAIN_INTL: false },
-        attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
     },
     SAFARI:
     {
@@ -1228,7 +1197,6 @@ var featureInfos =
         engine: 'Safari 14.1 or later',
         inherits: 'SAFARI_14_0_1',
         includes: { CONSOLE: false },
-        attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
     },
 };
 var autoIncludes =

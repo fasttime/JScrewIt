@@ -54,14 +54,13 @@ describe
                 }
             },
         );
+
         it
         (
             'returns false',
             (): void =>
             {
-                const Feature =
-                makeFeatureClass
-                ({ FOO: { check: noop }, BAR: { check: noop } });
+                const Feature = makeFeatureClass({ FOO: { check: noop }, BAR: { check: noop } });
                 {
                     const actual = Feature.areEqual(Feature.ALL.FOO, Feature.ALL.BAR);
                     assert.equal(actual, false);
@@ -74,6 +73,56 @@ describe
                     const actual = Feature.areEqual('FOO', 'BAR');
                     assert.strictEqual(actual, false);
                 }
+            },
+        );
+    },
+);
+
+describe
+(
+    'Feature.descriptionFor',
+    (): void =>
+    {
+        it
+        (
+            'converts the argument into a string',
+            (): void =>
+            {
+                const expected = 'Lorem ipsum';
+                const Feature = makeFeatureClass({ DEFAULT: { description: expected } });
+                const name = Object('DEFAULT') as unknown;
+                // @ts-expect-error
+                const actual = Feature.descriptionFor(name);
+                assert.strictEqual(actual, expected);
+            },
+        );
+
+        it
+        (
+            'returns undefined for a known feature without description',
+            (): void =>
+            {
+                const Feature = makeFeatureClass({ DEFAULT: { } });
+                const name = Object('DEFAULT') as unknown;
+                // @ts-expect-error
+                const actual = Feature.descriptionFor(name);
+                assert.strictEqual(actual, undefined);
+            },
+        );
+
+        it
+        (
+            'throws an error for an unknown feature',
+            (): void =>
+            {
+                const Feature = makeFeatureClass({ });
+                const fn = (): unknown => Feature.descriptionFor('???');
+                assert.throws
+                (
+                    fn,
+                    (error): boolean =>
+                    error instanceof Error && error.message === 'Unknown feature "???"',
+                );
             },
         );
     },

@@ -168,7 +168,7 @@ if (typeof NO_DEBUG === 'undefined')
         ENTRIES['BASE64_ALPHABET_LO_4:1']                       = BASE64_ALPHABET_LO_4[1];
         ENTRIES['BASE64_ALPHABET_LO_4:3']                       = BASE64_ALPHABET_LO_4[3];
 
-        var getValidFeatureMask = Feature.getValidFeatureMask;
+        var getValidFeatureMask = Feature._getValidFeatureMask;
 
         (function ()
         {

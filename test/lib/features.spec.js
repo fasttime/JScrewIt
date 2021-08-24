@@ -1,5 +1,5 @@
 /* eslint-env ebdd/ebdd */
-/* global emuDo, emuIt, expect, global, module, reloadJScrewIt, require, self */
+/* global Symbol, emuDo, emuIt, expect, global, module, reloadJScrewIt, require, self */
 
 'use strict';
 
@@ -90,6 +90,16 @@
                         {
                             var fn = Feature.bind(Feature, 'DOMWINDOW', 'WINDOW');
                             expect(fn).toThrowStrictly(Error, 'Incompatible features');
+                        }
+                    );
+                    it.when(typeof Symbol !== 'undefined')
+                    (
+                        'throws a TypeError when an argument is a symbol',
+                        function ()
+                        {
+                            var fn = Feature.bind(Feature, Symbol());
+                            expect(fn)
+                            .toThrowStrictly(TypeError, 'Cannot convert a symbol to a string');
                         }
                     );
                 }

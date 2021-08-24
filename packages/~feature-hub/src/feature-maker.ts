@@ -5,10 +5,7 @@ import { MaskSet }                      from './mask-index';
 import type util                        from 'util';
 import type { InspectOptionsStylized }  from 'util';
 
-interface AttributeMap
-{
-    readonly [key: string]: string | null | undefined;
-}
+type AttributeMap = { readonly [AttributeName in string]: string | null; };
 
 type CompatibleFeatureArray = readonly FeatureElement[];
 
@@ -25,10 +22,11 @@ interface FeatureConstructor
     ():                                                                 Feature;
 
     readonly ALL:
-    { readonly [name: string]: PredefinedFeature; };
+    { readonly [FeatureName in string]: PredefinedFeature; };
 
     new ():                                                             Feature;
     areEqual(...features: (FeatureElement | CompatibleFeatureArray)[]): boolean;
+    descriptionFor(name: string):                                       string | undefined;
 }
 
 type FeatureElement = Feature | string;
@@ -39,7 +37,7 @@ type FeatureInfo =
         readonly aliasFor:      string;
     } |
     {
-        readonly attributes?:   AttributeMap;
+        readonly attributes?:   { readonly [AttributeName in string]: string | null | undefined; };
         readonly check?:        () => unknown;
         readonly excludes?:     readonly string[];
         readonly includes?:     readonly string[] | IncludeDifferenceMap;
@@ -48,10 +46,7 @@ type FeatureInfo =
 ) &
 ({ readonly description?: string; } | { readonly engine?: string; });
 
-interface IncludeDifferenceMap
-{
-    readonly [name: string]: boolean;
-}
+type IncludeDifferenceMap = { readonly [FeatureName in string]: boolean; };
 
 interface PredefinedFeature extends Feature
 {
@@ -60,7 +55,6 @@ interface PredefinedFeature extends Feature
 }
 
 const _Array_isArray            = Array.isArray as (value: unknown) => value is readonly unknown[];
-
 const _Error                    = Error;
 const _JSON_stringify           = JSON.stringify;
 const
@@ -92,7 +86,7 @@ function createEngineFeatureDescription(engine: string): string
     return description;
 }
 
-const createMap = <T>(): { [key: string]: T | undefined; } => _Object_create(null) as { };
+const createMap = <T>(): { [Key in string]: T; } => _Object_create(null) as { };
 
 function esToString(arg: unknown): string
 {
@@ -138,7 +132,7 @@ function inspect(this: Feature, depth: never, opts?: InspectOptionsStylized): st
 
 function isExcludingAttribute
 (
-    attributeCache: { [key: string]: boolean | undefined; },
+    attributeCache: { [AttributeName in string]?: boolean; },
     attributeName: string,
     featureObjs: readonly PredefinedFeature[],
 ): boolean
@@ -154,10 +148,10 @@ function isExcludingAttribute
 }
 
 export function makeFeatureClass
-(featureInfos: { readonly [name: string]: FeatureInfo; }): FeatureConstructor
+(featureInfos: { readonly [FeatureName in string]: FeatureInfo; }): FeatureConstructor
 {
     const ALL                               = createMap<PredefinedFeature>();
-    const DESCRIPTION_MAP                   = createMap<string>();
+    const DESCRIPTION_MAP                   = createMap<string | undefined>();
     const ELEMENTARY: PredefinedFeature[]   = [];
     const FEATURE_PROTOTYPE                 = Feature.prototype as object;
     const INCOMPATIBLE_MASK_LIST: Mask[]    = [];
@@ -170,6 +164,12 @@ export function makeFeatureClass
         this instanceof Feature ? this : _Object_create(FEATURE_PROTOTYPE) as Feature;
         initMask(featureObj, mask);
         return featureObj;
+    }
+
+    function _getValidFeatureMask(arg?: FeatureElement | CompatibleFeatureArray): Mask
+    {
+        const mask = arg !== undefined ? validMaskFromArrayOrStringOrFeature(arg) : maskNew();
+        return mask;
     }
 
     function areCompatible(): boolean
@@ -240,9 +240,9 @@ export function makeFeatureClass
     (
         name: string,
         mask: Mask,
-        check?: () => boolean,
-        engine?: string,
-        attributes = { },
+        check: (() => boolean) | undefined,
+        engine: string | undefined,
+        attributes: AttributeMap,
         elementary?: unknown,
     ): PredefinedFeature
     {
@@ -261,12 +261,12 @@ export function makeFeatureClass
         return featureObj;
     }
 
-    function descriptionFor(name: string): string
+    function descriptionFor(name: string): string | undefined
     {
         name = esToString(name);
-        const description = DESCRIPTION_MAP[name];
-        if (description == null)
+        if (!(name in DESCRIPTION_MAP))
             throwUnknownFeatureError(name);
+        const description = DESCRIPTION_MAP[name];
         return description;
     }
 
@@ -294,12 +294,6 @@ export function makeFeatureClass
         return featureObj;
     }
 
-    function getValidFeatureMask(arg?: FeatureElement | CompatibleFeatureArray): Mask
-    {
-        const mask = arg !== undefined ? validMaskFromArrayOrStringOrFeature(arg) : maskNew();
-        return mask;
-    }
-
     function isMaskCompatible(mask: Mask): boolean
     {
         const compatible =
@@ -316,10 +310,9 @@ export function makeFeatureClass
         else
         {
             const name = esToString(arg);
-            const featureObj = ALL[name];
-            if (!featureObj)
+            if (!(name in ALL))
                 throwUnknownFeatureError(name);
-            ({ mask } = featureObj);
+            ({ mask } = ALL[name]);
         }
         return mask;
     }
@@ -431,20 +424,20 @@ export function makeFeatureClass
             {
                 let resultMask = maskNew();
                 const thisMask = this.mask;
-                const attributeCache = createMap() as { [key: string]: boolean | undefined; };
+                const attributeCache = createMap() as { [AttributeName in string]?: boolean; };
                 for (const featureObj of ELEMENTARY)
                 {
                     const otherMask = featureObj.mask;
                     const included = maskIncludes(thisMask, otherMask);
                     if (included)
                     {
-                        const attributeValue = featureObj.attributes[environment];
+                        const { attributes } = featureObj;
                         if
                         (
-                            attributeValue === undefined ||
+                            !(environment in attributes) ||
                             engineFeatureObjs !== undefined &&
                             !isExcludingAttribute
-                            (attributeCache, attributeValue!, engineFeatureObjs)
+                            (attributeCache, attributes[environment]!, engineFeatureObjs)
                         )
                             resultMask = maskUnion(resultMask, otherMask);
                     }
@@ -493,11 +486,11 @@ export function makeFeatureClass
         function completeFeature(name: string): Mask
         {
             let mask: Mask;
-            let featureObj = ALL[name];
-            if (featureObj)
-                ({ mask } = featureObj);
+            if (name in ALL)
+                ({ mask } = ALL[name]);
             else
             {
+                let featureObj: PredefinedFeature;
                 let description: string | undefined;
                 const info = featureInfos[name];
                 const { engine } = info as { readonly engine?: string; };
@@ -559,17 +552,31 @@ export function makeFeatureClass
                             mask = maskUnion(mask, includeMask);
                         }
                     }
+                    const attributes = createMap<string | null>();
+                    if (inherits != null)
+                    {
+                        const inheritedAttributes = ALL[inherits].attributes;
+                        for (const attributeName in inheritedAttributes)
+                            attributes[attributeName] = inheritedAttributes[attributeName];
+                    }
+                    {
+                        const newAttributes = info.attributes;
+                        if (newAttributes)
+                        {
+                            const attributeNames = _Object_keys(newAttributes);
+                            for (const attributeName of attributeNames)
+                            {
+                                const attributeValue = newAttributes[attributeName];
+                                if (attributeValue !== undefined)
+                                    attributes[attributeName] = attributeValue;
+                                else
+                                    delete attributes[attributeName];
+                            }
+                        }
+                    }
                     const elementary = wrappedCheck ?? info.excludes;
                     featureObj =
-                    createFeature
-                    (
-                        name,
-                        mask,
-                        wrappedCheck,
-                        engine,
-                        info.attributes,
-                        elementary,
-                    );
+                    createFeature(name, mask, wrappedCheck, engine, attributes, elementary);
                     if (elementary)
                         ELEMENTARY.push(featureObj);
                 }
@@ -584,12 +591,12 @@ export function makeFeatureClass
             {
                 ALL,
                 ELEMENTARY,
+                _getValidFeatureMask,
                 areCompatible,
                 areEqual,
                 commonOf,
                 descriptionFor,
                 fromMask,
-                getValidFeatureMask,
             };
             assignNoEnum(Feature, constructorSource);
         }
@@ -614,7 +621,7 @@ export function makeFeatureClass
         }
 
         const featureNames = _Object_keys(featureInfos);
-        const includeSetMap = createMap<{ readonly [name: string]: null | undefined; }>();
+        const includeSetMap = createMap<{ readonly [FeatureName in string]: null; }>();
         let unionMask = maskNew();
 
         featureNames.forEach(completeFeature);

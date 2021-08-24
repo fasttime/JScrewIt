@@ -105,7 +105,7 @@ function scheduleFlush()
 
 export var JScrewIt = assignNoEnum({ }, { Feature: Feature, encode: encode });
 
-var getValidFeatureMask = Feature.getValidFeatureMask;
+var getValidFeatureMask = Feature._getValidFeatureMask;
 
 var _permanentCaching = false;
 var encoderCache;
