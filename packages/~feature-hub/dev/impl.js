@@ -37,6 +37,7 @@ export async function lint()
                 requireConfigFile: false,
             },
         },
+        { src: 'test/*.js', envs: ['node'] },
     );
 }
 

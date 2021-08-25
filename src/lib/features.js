@@ -1,7 +1,9 @@
 /* global Audio, Intl, Node, console, document, history, location, self, statusbar */
 
-import { _Object_defineProperty, _Object_keys } from './obj-utils';
-import { featuresToMask, makeFeatureClass }     from '~feature-hub';
+import { _Object_defineProperty, _Object_keys, assignNoEnum, createEmpty }  from './obj-utils';
+import { featuresToMask, makeFeatureClass }                                 from '~feature-hub';
+
+var ELEMENTARY;
 
 function checkLocaleNumeral(locale, number, regExp)
 {
@@ -23,6 +25,55 @@ function checkSelfFeature()
     }
     var available = this(str);
     return available;
+}
+
+function isExcludingAttribute(restrictionCache, restrictionName, featureObjs)
+{
+    var returnValue = restrictionCache[restrictionName];
+    if (returnValue === undefined)
+    {
+        restrictionCache[restrictionName] =
+        returnValue =
+        featureObjs.some
+        (
+            function (featureObj)
+            {
+                var returnValue = restrictionName in featureObj.attributes;
+                return returnValue;
+            }
+        );
+    }
+    return returnValue;
+}
+
+function restrict(environment, engineFeatureObjs)
+{
+    var restrictionCache = createEmpty();
+    var elementaryFeatureObjs =
+    ELEMENTARY.filter
+    (
+        function (elementaryFeatureObj)
+        {
+            var included = this.includes(elementaryFeatureObj);
+            if (included)
+            {
+                var attributes = elementaryFeatureObj.attributes;
+                included =
+                !(
+                    environment in attributes &&
+                    (
+                        engineFeatureObjs === undefined ||
+                        isExcludingAttribute
+                        (restrictionCache, attributes[environment], engineFeatureObjs)
+                    )
+                );
+            }
+            return included;
+        },
+        this
+    );
+    var restrictedFeatureObj = Feature(elementaryFeatureObjs);
+    return restrictedFeatureObj;
 }
 
 var featureInfos =
@@ -1215,13 +1266,20 @@ featureInfos.AUTO =
     includes: autoIncludes,
 };
 var Feature = makeFeatureClass(featureInfos);
-var ALL = Feature.ALL;
-var descriptor = { enumerable: true };
-for (var featureName in ALL)
+featureInfos = null;
+(function ()
 {
-    var featureObj = ALL[featureName];
-    descriptor.value = featureObj;
-    _Object_defineProperty(Feature, featureName, descriptor);
+    ELEMENTARY = Feature.ELEMENTARY;
+    assignNoEnum(Feature.prototype, { restrict: restrict });
+    var ALL = Feature.ALL;
+    var descriptor = { enumerable: true };
+    for (var featureName in ALL)
+    {
+        var featureObj = ALL[featureName];
+        descriptor.value = featureObj;
+        _Object_defineProperty(Feature, featureName, descriptor);
+    }
 }
+)();
 
 export { Feature, featuresToMask };
