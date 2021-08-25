@@ -44,7 +44,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 
 | Name | Type |
 | :------ | :------ |
-| `...features` | ([`FeatureElement`](../README.md#featureelement) \| [`CompatibleFeatureArray`](../README.md#compatiblefeaturearray))[] |
+| `...features` | [`FeatureElementOrCompatibleArray`](../README.md#featureelementorcompatiblearray)[] |
 
 #### Returns
 
@@ -202,7 +202,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 
 | Name | Type |
 | :------ | :------ |
-| `...features` | ([`FeatureElement`](../README.md#featureelement) \| [`CompatibleFeatureArray`](../README.md#compatiblefeaturearray))[] |
+| `...features` | [`FeatureElementOrCompatibleArray`](../README.md#featureelementorcompatiblearray)[] |
 
 #### Inherited from
 
@@ -1736,7 +1736,7 @@ JScrewIt.Feature.areEqual("DEFAULT", [])
 
 | Name | Type |
 | :------ | :------ |
-| `...features` | ([`FeatureElement`](../README.md#featureelement) \| [`CompatibleFeatureArray`](../README.md#compatiblefeaturearray))[] |
+| `...features` | [`FeatureElementOrCompatibleArray`](../README.md#featureelementorcompatiblearray)[] |
 
 #### Returns
 
@@ -1773,7 +1773,7 @@ const newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
 
 | Name | Type |
 | :------ | :------ |
-| `...features` | ([`FeatureElement`](../README.md#featureelement) \| [`CompatibleFeatureArray`](../README.md#compatiblefeaturearray))[] |
+| `...features` | [`FeatureElementOrCompatibleArray`](../README.md#featureelementorcompatiblearray)[] |
 
 #### Returns
 

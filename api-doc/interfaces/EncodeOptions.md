@@ -13,7 +13,7 @@
 
 ### features
 
-• `Optional` **features**: [`FeatureElement`](../README.md#featureelement) \| [`CompatibleFeatureArray`](../README.md#compatiblefeaturearray)
+• `Optional` **features**: [`FeatureElementOrCompatibleArray`](../README.md#featureelementorcompatiblearray)
 
 Specifies the features available in the engines that evaluate the encoded output.
 

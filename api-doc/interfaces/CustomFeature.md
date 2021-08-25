@@ -82,7 +82,7 @@ Determines whether this feature object includes all of the specified features.
 
 | Name | Type |
 | :------ | :------ |
-| `...features` | ([`FeatureElement`](../README.md#featureelement) \| [`CompatibleFeatureArray`](../README.md#compatiblefeaturearray))[] |
+| `...features` | [`FeatureElementOrCompatibleArray`](../README.md#featureelementorcompatiblearray)[] |
 
 #### Returns
 

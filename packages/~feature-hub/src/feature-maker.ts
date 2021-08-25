@@ -7,8 +7,6 @@ import type { InspectOptionsStylized }  from 'util';
 
 type AttributeMap = { readonly [AttributeName in string]: string | null; };
 
-type CompatibleFeatureArray = readonly FeatureElement[];
-
 interface Feature
 {
     readonly canonicalNames:    string[];
@@ -19,17 +17,19 @@ interface Feature
 
 interface FeatureConstructor
 {
-    ():                                                                 Feature;
+    ():                                                         Feature;
 
     readonly ALL:
     { readonly [FeatureName in string]: PredefinedFeature; };
 
-    new ():                                                             Feature;
-    areEqual(...features: (FeatureElement | CompatibleFeatureArray)[]): boolean;
-    descriptionFor(name: string):                                       string | undefined;
+    new ():                                                     Feature;
+    areEqual(...features: FeatureElementOrCompatibleArray[]):   boolean;
+    descriptionFor(name: string):                               string | undefined;
 }
 
 type FeatureElement = Feature | string;
+
+type FeatureElementOrCompatibleArray = FeatureElement | readonly FeatureElement[];
 
 type FeatureInfo =
 (
@@ -157,7 +157,7 @@ export function makeFeatureClass
     const INCOMPATIBLE_MASK_LIST: Mask[]    = [];
     let PRISTINE_ELEMENTARY: PredefinedFeature[];
 
-    function Feature(this: Feature, ...args: (FeatureElement | CompatibleFeatureArray)[]): Feature
+    function Feature(this: Feature, ...args: FeatureElementOrCompatibleArray[]): Feature
     {
         const mask = validMaskFromArguments(args);
         const featureObj =
@@ -166,7 +166,7 @@ export function makeFeatureClass
         return featureObj;
     }
 
-    function _getValidFeatureMask(arg?: FeatureElement | CompatibleFeatureArray): Mask
+    function _getValidFeatureMask(arg?: FeatureElementOrCompatibleArray): Mask
     {
         const mask = arg !== undefined ? validMaskFromArrayOrStringOrFeature(arg) : maskNew();
         return mask;
@@ -174,13 +174,11 @@ export function makeFeatureClass
 
     function areCompatible(): boolean
     {
-        let arg0: FeatureElement | CompatibleFeatureArray;
-        const features =
-        (
-            arguments.length === 1 &&
-            _Array_isArray(arg0 = arguments[0] as FeatureElement | CompatibleFeatureArray) ?
-            arg0 : arguments
-        ) as CompatibleFeatureArray;
+        let arg0: FeatureElement | readonly FeatureElement[];
+        const features: ArrayLike<FeatureElement> =
+        arguments.length === 1 &&
+        _Array_isArray(arg0 = arguments[0] as FeatureElement | readonly FeatureElement[]) ?
+        arg0 : arguments as ArrayLike<FeatureElement>;
         let compatible: boolean;
         if (features.length > 1)
         {
@@ -192,7 +190,7 @@ export function makeFeatureClass
         return compatible;
     }
 
-    function areEqual(...args: (FeatureElement | CompatibleFeatureArray)[]): boolean
+    function areEqual(...args: FeatureElementOrCompatibleArray[]): boolean
     {
         let mask: Mask;
         const equal =
@@ -215,7 +213,7 @@ export function makeFeatureClass
         return equal;
     }
 
-    function commonOf(...args: (FeatureElement | CompatibleFeatureArray)[]): Feature | null
+    function commonOf(...args: FeatureElementOrCompatibleArray[]): Feature | null
     {
         let featureObj: Feature | null;
         if (args.length)
@@ -270,11 +268,13 @@ export function makeFeatureClass
         return description;
     }
 
-    function featureArrayLikeToMask(arrayLike: CompatibleFeatureArray): Mask
+    function featureArrayLikeToMask(features: ArrayLike<FeatureElement>): Mask
     {
         let mask = maskNew();
-        for (const feature of arrayLike)
+        const { length } = features;
+        for (let index = 0; index < length; ++index)
         {
+            const feature = features[index];
             const otherMask = maskFromStringOrFeature(feature);
             mask = maskUnion(mask, otherMask);
         }
@@ -318,7 +318,7 @@ export function makeFeatureClass
     }
 
     function validMaskFromArguments
-    (args: readonly (FeatureElement | CompatibleFeatureArray)[]): Mask
+    (args: readonly FeatureElementOrCompatibleArray[]): Mask
     {
         let mask = maskNew();
         let validationNeeded = false;
@@ -340,7 +340,7 @@ export function makeFeatureClass
         return mask;
     }
 
-    function validMaskFromArrayOrStringOrFeature(arg: FeatureElement | CompatibleFeatureArray): Mask
+    function validMaskFromArrayOrStringOrFeature(arg: FeatureElementOrCompatibleArray): Mask
     {
         let mask: Mask;
         if (_Array_isArray(arg))
@@ -398,7 +398,7 @@ export function makeFeatureClass
                 return names;
             },
 
-            includes(this: Feature, ...args: (FeatureElement | CompatibleFeatureArray)[]): boolean
+            includes(this: Feature, ...args: FeatureElementOrCompatibleArray[]): boolean
             {
                 const { mask } = this;
                 const included =

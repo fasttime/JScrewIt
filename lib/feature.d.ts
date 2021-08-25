@@ -1,18 +1,5 @@
 import { ElementaryFeatureName, FeatureAll, PredefinedFeatureName } from './feature-all';
 
-/**
- * An array containing any number of feature objects or names or aliases of predefined features, in
- * no particular order.
- *
- * All of the specified features need to be compatible, so that their union can be constructed.
- *
- * @remarks
- *
- * Methods that accept parameters of this type throw an error if the specified features are not
- * mutually compatible.
- */
-export type CompatibleFeatureArray = readonly FeatureElement[];
-
 export interface CustomFeature extends Feature
 {
     readonly elementary: false;
@@ -80,7 +67,7 @@ export interface Feature
      * `true` if this feature object includes all of the specified features; otherwise, `false`.
      * If no arguments are specified, the return value is `true`.
      */
-    includes(...features: (FeatureElement | CompatibleFeatureArray)[]): boolean;
+    includes(...features: FeatureElementOrCompatibleArray[]): boolean;
 
     /**
      * Creates a new feature object from this feature by removing elementary features that are not
@@ -154,7 +141,7 @@ export interface FeatureConstructor extends FeatureAll
      *
      * An error is thrown if any of the specified features are not mutually compatible.
      */
-    (...features: (FeatureElement | CompatibleFeatureArray)[]): CustomFeature;
+    (...features: FeatureElementOrCompatibleArray[]): CustomFeature;
 
     /**
      * An immutable mapping of all predefined feature objects accessed by name or alias.
@@ -207,7 +194,7 @@ export interface FeatureConstructor extends FeatureAll
      *
      * An error is thrown if any of the specified features are not mutually compatible.
      */
-    new (...features: (FeatureElement | CompatibleFeatureArray)[]): CustomFeature;
+    new (...features: FeatureElementOrCompatibleArray[]): CustomFeature;
 
     /**
      * Determines whether the specified features are mutually compatible.
@@ -254,7 +241,7 @@ export interface FeatureConstructor extends FeatureAll
      * JScrewIt.Feature.areEqual("DEFAULT", [])
      * ```
      */
-    areEqual(...features: (FeatureElement | CompatibleFeatureArray)[]): boolean;
+    areEqual(...features: FeatureElementOrCompatibleArray[]): boolean;
 
     /**
      * Creates a new feature object equivalent to the intersection of the specified features.
@@ -279,8 +266,7 @@ export interface FeatureConstructor extends FeatureAll
      * const newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
      * ```
      */
-    commonOf(...features: (FeatureElement | CompatibleFeatureArray)[]):
-    CustomFeature | null;
+    commonOf(...features: FeatureElementOrCompatibleArray[]): CustomFeature | null;
 
     /**
      * Returns a short description of a predefined feature in plain English.
@@ -309,6 +295,18 @@ export interface FeatureConstructor extends FeatureAll
  * feature object nor a name or alias of a predefined feature.
  */
 export type FeatureElement = Feature | keyof FeatureAll;
+
+/**
+ * A feature object, a name or alias of a predefined feature, or an array of such values that
+ * defines a union of mutually compatible features.
+ *
+ * @remarks
+ *
+ * Methods that accept parameters of this type throw an error if the specified value is neither a
+ * feature object nor a name or alias of a predefined feature, or if it is an array of values that
+ * does not define a union of mutually compatible features.
+ */
+export type FeatureElementOrCompatibleArray = FeatureElement | readonly FeatureElement[];
 
 export interface PredefinedFeature extends Feature
 {

@@ -1,4 +1,4 @@
-import { CompatibleFeatureArray, FeatureElement } from './feature';
+import { FeatureElementOrCompatibleArray } from './feature';
 
 export interface EncodeOptions
 {
@@ -9,7 +9,7 @@ export interface EncodeOptions
      * ensures maximum compatibility but also generates the largest code.
      * To generate shorter code, specify all features available in all target engines explicitly.
      */
-    features?: FeatureElement | CompatibleFeatureArray;
+    features?: FeatureElementOrCompatibleArray;
 
     /**
      * This option controls the type of code generated from the given input.

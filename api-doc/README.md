@@ -16,9 +16,9 @@
 
 ### Type aliases
 
-- [CompatibleFeatureArray](README.md#compatiblefeaturearray)
 - [ElementaryFeatureName](README.md#elementaryfeaturename)
 - [FeatureElement](README.md#featureelement)
+- [FeatureElementOrCompatibleArray](README.md#featureelementorcompatiblearray)
 - [PredefinedFeatureName](README.md#predefinedfeaturename)
 
 ### Variables
@@ -28,22 +28,6 @@
 - [encode](README.md#encode)
 
 ## Type aliases
-
-### CompatibleFeatureArray
-
-Ƭ **CompatibleFeatureArray**: readonly [`FeatureElement`](README.md#featureelement)[]
-
-An array containing any number of feature objects or names or aliases of predefined features, in
-no particular order.
-
-All of the specified features need to be compatible, so that their union can be constructed.
-
-**`remarks`**
-
-Methods that accept parameters of this type throw an error if the specified features are not
-mutually compatible.
-
-___
 
 ### ElementaryFeatureName
 
@@ -63,6 +47,21 @@ A feature object or a name or alias of a predefined feature.
 
 Methods that accept parameters of this type throw an error if the specified value is neither a
 feature object nor a name or alias of a predefined feature.
+
+___
+
+### FeatureElementOrCompatibleArray
+
+Ƭ **FeatureElementOrCompatibleArray**: [`FeatureElement`](README.md#featureelement) \| readonly [`FeatureElement`](README.md#featureelement)[]
+
+A feature object, a name or alias of a predefined feature, or an array of such values that
+defines a union of mutually compatible features.
+
+**`remarks`**
+
+Methods that accept parameters of this type throw an error if the specified value is neither a
+feature object nor a name or alias of a predefined feature, or if it is an array of values that
+does not define a union of mutually compatible features.
 
 ___
 
