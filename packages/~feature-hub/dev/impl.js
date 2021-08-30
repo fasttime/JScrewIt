@@ -21,7 +21,7 @@ export async function lint()
             parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
         },
         {
-            src: 'test/**/*.ts',
+            src: 'test/spec/**/*.ts',
             envs: ['ebdd/ebdd', 'mocha'],
             parserOptions: { project: 'test/tsconfig.json', sourceType: 'module' },
             plugins: ['ebdd'],

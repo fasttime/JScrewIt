@@ -933,7 +933,7 @@ self,
                 function ()
                 {
                     expect(debugReplacer('B')).toThrowStrictly
-                    (SyntaxError, 'Circular reference detected: B < C < B – [Feature {}]');
+                    (SyntaxError, 'Circular reference detected: B < C < B – [Feature <>]');
                 }
             );
             describe

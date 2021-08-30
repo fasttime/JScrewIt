@@ -5,6 +5,11 @@ import { MaskSet }                      from './mask-index';
 import type util                        from 'util';
 import type { InspectOptionsStylized }  from 'util';
 
+declare module 'util'
+{
+    function inspect(obj: any, options?: InspectOptions): string;
+}
+
 export type AttributeMap = { readonly [AttributeName in string]: string | null; };
 
 export interface Feature
@@ -13,7 +18,7 @@ export interface Feature
     readonly elementary:        boolean;
     readonly elementaryNames:   string[];
     readonly mask:              Mask;
-    readonly name?:             string;
+    name?:                      string;
     toString():                 string;
 }
 
@@ -56,6 +61,8 @@ export type IncludeDifferenceMap = { readonly [FeatureName in string]: boolean; 
 export interface PredefinedFeature extends Feature
 {
     readonly attributes:    AttributeMap;
+    readonly check:         (() => boolean) | undefined;
+    readonly engine:        string | undefined;
     readonly name:          string;
 }
 
@@ -108,6 +115,12 @@ export function featuresToMask(featureObjs: readonly Feature[]): Mask
     return mask;
 }
 
+function indent(text: string): string
+{
+    const returnValue = text.replace(/^/gm, '  ');
+    return returnValue;
+}
+
 function initMask(featureObj: Feature, mask: Mask): void
 {
     _Object_defineProperty(featureObj, 'mask', { value: mask });
@@ -118,21 +131,77 @@ function initMask(featureObj: Feature, mask: Mask): void
  * Set on `Feature.prototype` with name `"inspect"` for Node.js ≤ 8.6.x and with symbol
  * `Symbol.for("nodejs.util.inspect.custom")` for Node.js ≥ 6.6.x.
  *
- * @function inspect
- *
  * @see
  * {@link https://nodejs.org/api/util.html#util_custom_inspection_functions_on_objects} for further
  * information.
  */
+// opts can be undefined in Node.js 0.10.0.
 function inspect(this: Feature, depth: never, opts?: InspectOptionsStylized): string
 {
-    let returnValue: string;
-    const str = this.toString();
-    if (opts !== undefined) // opts can be undefined in Node.js 0.10.0.
-        returnValue = opts.stylize(str, 'special');
-    else
-        returnValue = str;
-    return returnValue;
+    const breakLength = opts?.breakLength ?? 80;
+    const compact = opts?.compact ?? true;
+    let { name } = this;
+    if (name === undefined)
+        name = joinParts(compact, '<', '', this.canonicalNames, ',', '>', breakLength - 3);
+    const parts = [name];
+    if (this.elementary)
+        parts.push('(elementary)');
+    if ((this as PredefinedFeature).check !== undefined)
+        parts.push('(check)');
+    {
+        const container: { [Key in string]: unknown; } = { };
+        const { attributes, engine } = this as PredefinedFeature;
+        if (engine !== undefined)
+            container.engine = engine;
+        if (attributes as AttributeMap | undefined !== undefined)
+            container.attributes = { ...attributes };
+        if (_Object_keys(container).length)
+        {
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            const { inspect } = require('util') as typeof util;
+            const str = inspect(container, opts);
+            parts.push(str);
+        }
+    }
+    const str = joinParts(compact, '[Feature', ' ', parts, '', ']', breakLength - 1);
+    return str;
+}
+
+function joinParts
+(
+    compact: boolean | number,
+    intro: string,
+    preSeparator: string,
+    parts: readonly string[],
+    partSeparator: string,
+    outro: string,
+    maxLength: number,
+):
+string
+{
+    function isMultiline(): boolean
+    {
+        let length =
+        intro.length +
+        preSeparator.length +
+        (parts.length - 1) * (partSeparator.length + 1) +
+        outro.length;
+        for (const part of parts)
+        {
+            if (~part.indexOf('\n'))
+                return true;
+            length += part.replace(/\x1b\[\d+m/g, '').length;
+            if (length > maxLength)
+                return true;
+        }
+        return false;
+    }
+
+    const str =
+    parts.length && (!compact || isMultiline()) ?
+    `${intro}\n${indent(parts.join(`${partSeparator}\n`))}\n${outro}` :
+    `${intro}${preSeparator}${parts.join(`${partSeparator} `)}${outro}`;
+    return str;
 }
 
 export function makeFeatureClass
@@ -403,7 +472,7 @@ export function makeFeatureClass
 
             toString(this: Feature): string
             {
-                const name = this.name ?? `{${this.canonicalNames.join(', ')}}`;
+                const name = this.name ?? `<${this.canonicalNames.join(', ')}>`;
                 const str = `[Feature ${name}]`;
                 return str;
             },
@@ -513,15 +582,18 @@ export function makeFeatureClass
                             attributes[attributeName] = inheritedAttributes[attributeName];
                     }
                     {
-                        const newAttributes = info.attributes;
-                        if (newAttributes)
+                        const infoAttributes = info.attributes;
+                        if (infoAttributes)
                         {
-                            const attributeNames = _Object_keys(newAttributes);
+                            const attributeNames = _Object_keys(infoAttributes);
                             for (const attributeName of attributeNames)
                             {
-                                const attributeValue = newAttributes[attributeName];
+                                const attributeValue = infoAttributes[attributeName];
                                 if (attributeValue !== undefined)
-                                    attributes[attributeName] = attributeValue;
+                                {
+                                    attributes[attributeName] =
+                                    typeof attributeValue === 'string' ? attributeValue : null;
+                                }
                                 else
                                     delete attributes[attributeName];
                             }

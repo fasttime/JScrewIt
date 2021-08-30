@@ -5,6 +5,7 @@ from '../../src/feature-maker';
 
 import { maskAreEqual, maskIntersection, maskNew }  from '../../src/mask';
 import assert                                       from 'assert';
+import type util                                    from 'util';
 
 const noop =
 (): void =>
@@ -358,6 +359,17 @@ describe
 
 it
 (
+    'Feature.prototype.inspect can be called without arguments',
+    (): void =>
+    {
+        const Feature = makeFeatureClass({ });
+        const featureObj = Feature() as Feature & { inspect: () => string; };
+        assert.strictEqual(typeof featureObj.inspect(), 'string');
+    },
+);
+
+it
+(
     'Feature.prototype.toString',
     (): void =>
     {
@@ -376,9 +388,188 @@ it
         assert.strictEqual(BIG.toString(), '[Feature BIG]');
         assert.strictEqual(BIGGER.toString(), '[Feature BIGGER]');
         assert.strictEqual(UNDERLINED.toString(), '[Feature UNDERLINED]');
-        assert.strictEqual(Feature().toString(), '[Feature {}]');
+        assert.strictEqual(Feature().toString(), '[Feature <>]');
         assert.strictEqual
-        (Feature(UNDERLINED, BIG, BIGGER).toString(), '[Feature {BIGGER, UNDERLINED}]');
+        (Feature(UNDERLINED, BIG, BIGGER).toString(), '[Feature <BIGGER, UNDERLINED>]');
+    },
+);
+
+describe.when(typeof module !== 'undefined')
+(
+    'Feature inspection',
+    (): void =>
+    {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const { inspect } = require('util') as typeof util;
+
+        it
+        (
+            'on predefined features',
+            (): void =>
+            {
+                const Feature =
+                makeFeatureClass
+                (
+                    {
+                        FOO: { check: noop },
+                        BAR:
+                        {
+                            engine: 'Flat-six',
+                            check: noop,
+                            attributes: { foo: null, bar: 'Lorem ipsum dolor sit amet' },
+                        },
+                    },
+                );
+                {
+                    const actual = inspect(Feature.ALL.FOO);
+                    assert.strictEqual
+                    (actual, '[Feature FOO (elementary) (check) { attributes: {} }]');
+                }
+                {
+                    const actual = inspect(Feature.ALL.BAR);
+                    const expected1 =
+                    '[Feature\n' +
+                    '  BAR\n' +
+                    '  (elementary)\n' +
+                    '  (check)\n' +
+                    '  {\n' +
+                    '    engine: \'Flat-six\',\n' +
+                    '    attributes: { foo: null, bar: \'Lorem ipsum dolor sit amet\' }\n' +
+                    '  }\n' +
+                    ']';
+                    const expected2 =
+                    '[Feature\n' +
+                    '  BAR\n' +
+                    '  (elementary)\n' +
+                    '  (check)\n' +
+                    '  { engine: \'Flat-six\',\n' +
+                    '    attributes: { foo: null, bar: \'Lorem ipsum dolor sit amet\' } }\n' +
+                    ']';
+                    assert
+                    (actual === expected1 || actual === expected2, `Actual value is:\n${actual}`);
+                }
+            },
+        );
+
+        it
+        (
+            'on custom features',
+            (): void =>
+            {
+                const Feature =
+                makeFeatureClass
+                (
+                    {
+                        FEATURE1: { check: noop },
+                        FEATURE2: { check: noop },
+                        FEATURE3: { check: noop },
+                        FEATURE4: { check: noop },
+                    },
+                );
+                {
+                    const featureObj = Feature();
+                    const actual = inspect(featureObj);
+                    assert.strictEqual(actual, '[Feature <>]');
+                }
+                const [, major, minor] = /^v(\d+)\.(\d+)/.exec(process.version)!;
+                if (+major > 0 || +minor >= 12)
+                {
+                    const featureObj =
+                    Feature
+                    (
+                        Feature.ALL.FEATURE1,
+                        Feature.ALL.FEATURE2,
+                        Feature.ALL.FEATURE3,
+                        Feature.ALL.FEATURE4,
+                    );
+                    {
+                        const actual = inspect(featureObj, { breakLength: 42 });
+                        const expected =
+                        '[Feature\n' +
+                        '  <\n' +
+                        '    FEATURE1,\n' +
+                        '    FEATURE2,\n' +
+                        '    FEATURE3,\n' +
+                        '    FEATURE4\n' +
+                        '  >\n' +
+                        ']';
+                        assert.strictEqual(actual, expected);
+                    }
+                    {
+                        const actual = inspect(featureObj, { breakLength: 43 });
+                        const expected =
+                        '[Feature\n' +
+                        '  <FEATURE1, FEATURE2, FEATURE3, FEATURE4>\n' +
+                        ']';
+                        assert.strictEqual(actual, expected);
+                    }
+                }
+            },
+        );
+
+        it
+        (
+            'on features inside another object',
+            (): void =>
+            {
+                const Feature =
+                makeFeatureClass
+                ({ DEFAULT: { attributes: { foo: null, bar: 'Lorem ipsum dolor sit amet' } } });
+                const featureObj = Feature.ALL.DEFAULT;
+                const actual = inspect([featureObj]);
+                const expected1 =
+                '[\n' +
+                '  [Feature\n' +
+                '    DEFAULT\n' +
+                '    { attributes: { foo: null, bar: \'Lorem ipsum dolor sit amet\' } }\n' +
+                '  ]\n' +
+                ']';
+                const expected2 =
+                '[ [Feature\n' +
+                '  DEFAULT\n' +
+                '  { attributes: { foo: null, bar: \'Lorem ipsum dolor sit amet\' } }\n' +
+                '] ]';
+                const expected3 =
+                '[ [Feature\n' +
+                '    DEFAULT\n' +
+                '    { attributes: { foo: null, bar: \'Lorem ipsum dolor sit amet\' } }\n' +
+                '  ] ]';
+                assert
+                (
+                    actual === expected1 || actual === expected2 || actual === expected3,
+                    `Actual value is:\n${actual}`,
+                );
+            },
+        );
+
+        it
+        (
+            'with custom options',
+            (): void =>
+            {
+                const Feature = makeFeatureClass({ FOO: { check: noop } });
+                {
+                    const featureObj = Feature(Feature.ALL.FOO);
+                    const actual = inspect(featureObj, { compact: undefined });
+                    assert.strictEqual(actual, '[Feature <FOO>]');
+                }
+                {
+                    const featureObj = Feature();
+                    featureObj.name =
+                    '69CHARS69CHARS69CHARS69CHARS69CHARS69CHARS69CHARS69CHARS69CHARS69CHAR';
+                    {
+                        const actual = inspect(featureObj, { breakLength: undefined });
+                        assert.strictEqual(actual, `[Feature ${featureObj.name}]`);
+                    }
+                    featureObj.name =
+                    '70CHARS70CHARS70CHARS70CHARS70CHARS70CHARS70CHARS70CHARS70CHARS70CHARS';
+                    {
+                        const actual = inspect(featureObj, { breakLength: undefined });
+                        assert.strictEqual(actual, `[Feature\n  ${featureObj.name}\n]`);
+                    }
+                }
+            },
+        );
     },
 );
 

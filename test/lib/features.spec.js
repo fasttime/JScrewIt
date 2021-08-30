@@ -372,7 +372,8 @@
                         function ()
                         {
                             var actual = Feature.GMT.inspect(0);
-                            expect(actual).toBe('[Feature GMT]');
+                            expect(actual)
+                            .toBe('[Feature GMT (elementary) (check) { attributes: {} }]');
                         }
                     );
                 }
@@ -480,7 +481,7 @@
                     var util = require('util');
 
                     var actual = util.inspect(Feature.DEFAULT);
-                    expect(actual).toBe('[Feature DEFAULT]');
+                    expect(actual).toBe('[Feature DEFAULT { attributes: {} }]');
                 }
             );
             it.when(typeof module !== 'undefined')

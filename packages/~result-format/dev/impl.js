@@ -31,11 +31,11 @@ export async function lint()
     lintPackage
     (
         {
-            src: 'src/**/*.ts',
+            src: ['src/**/*.ts', 'test/*.ts'],
             parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
         },
         {
-            src: 'test/**/*.ts',
+            src: 'test/spec/**/*.ts',
             envs: ['ebdd/ebdd', 'mocha'],
             parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
             plugins: ['ebdd'],
