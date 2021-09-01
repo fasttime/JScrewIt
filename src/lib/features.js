@@ -1,7 +1,7 @@
 /* global Audio, Intl, Node, console, document, history, location, self, statusbar */
 
 import { _Object_defineProperty, _Object_keys, assignNoEnum, createEmpty }  from './obj-utils';
-import { featuresToMask, makeFeatureClass }                                 from '~feature-hub';
+import { createFeatureClass, featuresToMask }                               from '~feature-hub';
 
 var ELEMENTARY;
 
@@ -1265,7 +1265,7 @@ featureInfos.AUTO =
     description: 'All features available in the current engine.',
     includes: autoIncludes,
 };
-var Feature = makeFeatureClass(featureInfos);
+var Feature = createFeatureClass(featureInfos);
 featureInfos = null;
 (function ()
 {

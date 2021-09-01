@@ -1,4 +1,4 @@
-import { featuresToMask, makeFeatureClass }         from '../../src/feature-maker';
+import { createFeatureClass, featuresToMask }       from '../../src/feature-maker';
 
 import type { Feature, FeatureConstructor, FeatureElement, FeatureElementOrCompatibleArray }
 from '../../src/feature-maker';
@@ -13,11 +13,11 @@ const noop =
 
 it
 (
-    'makeFeatureClass',
+    'createFeatureClass',
     (): void =>
     {
         const Feature =
-        makeFeatureClass
+        createFeatureClass
         (
             {
                 RED:    { includes: ['RED1', 'RED2'], excludes: ['GREEN'] },
@@ -68,7 +68,7 @@ describe
             (): void =>
             {
                 const Feature =
-                makeFeatureClass
+                createFeatureClass
                 ({ FOO: { check: noop }, BAR: { check: noop }, BAZ: { check: noop } });
                 const featureObj = Feature('FOO', 'BAR', 'BAZ');
                 const actualMask = featureObj.mask;
@@ -86,7 +86,7 @@ describe
             'can be invoked with or without the new operator',
             (): void =>
             {
-                const Feature = makeFeatureClass({ });
+                const Feature = createFeatureClass({ });
                 {
                     const featureObj = new Feature();
                     assert(featureObj instanceof Feature);
@@ -103,7 +103,7 @@ describe
             'accepts mixed arguments',
             (): void =>
             {
-                const Feature = makeFeatureClass({ FOO: { }, BAR: { } });
+                const Feature = createFeatureClass({ FOO: { }, BAR: { } });
                 const name =
                 { toString: (): string => 'BAR', valueOf: (): number => 42 } as unknown as string;
                 Feature('FOO', name, [Feature(), Feature.ALL.BAR]);
@@ -122,7 +122,7 @@ describe
             'is frozen',
             (): void =>
             {
-                const Feature = makeFeatureClass({ });
+                const Feature = createFeatureClass({ });
                 assert(Object.isFrozen(Feature.ALL));
             },
         );
@@ -132,7 +132,7 @@ describe
             'has no inherited properties',
             (): void =>
             {
-                const Feature = makeFeatureClass({ });
+                const Feature = createFeatureClass({ });
                 for (let obj: unknown = Feature.ALL; obj !== null; obj = Object.getPrototypeOf(obj))
                     assert.deepEqual(Object.getOwnPropertyNames(obj), []);
             },
@@ -150,7 +150,7 @@ describe
             'is frozen',
             (): void =>
             {
-                const Feature = makeFeatureClass({ });
+                const Feature = createFeatureClass({ });
                 assert(Object.isFrozen(Feature.ELEMENTARY));
             },
         );
@@ -161,7 +161,7 @@ describe
             (): void =>
             {
                 const Feature =
-                makeFeatureClass({ C: { check: noop }, B: { check: noop }, A: { check: noop } });
+                createFeatureClass({ C: { check: noop }, B: { check: noop }, A: { check: noop } });
                 assert.strictEqual(Feature.ELEMENTARY[0], Feature.ALL.A);
                 assert.strictEqual(Feature.ELEMENTARY[1], Feature.ALL.B);
                 assert.strictEqual(Feature.ELEMENTARY[2], Feature.ALL.C);
@@ -197,7 +197,7 @@ describe.per
             'returns true',
             (): void =>
             {
-                const Feature = makeFeatureClass({ FOO: { check: noop } });
+                const Feature = createFeatureClass({ FOO: { check: noop } });
                 {
                     const actual = call(Feature);
                     assert.equal(actual, true);
@@ -223,7 +223,7 @@ describe.per
             (): void =>
             {
                 const Feature =
-                makeFeatureClass
+                createFeatureClass
                 (
                     {
                         FOO: { check: noop, excludes: ['BAR'] },
@@ -240,11 +240,10 @@ describe.per
             'accepts mixed arguments',
             (): void =>
             {
-                const Feature = makeFeatureClass({ FOO: { }, BAR: { } });
+                const Feature = createFeatureClass({ FOO: { }, BAR: { } });
                 const name =
                 { toString: (): string => 'BAR', valueOf: (): number => 42 } as unknown as string;
-                const actual = call(Feature, 'FOO', name, Feature.ALL.BAR);
-                assert.strictEqual(actual, true);
+                call(Feature, 'FOO', name, Feature.ALL.BAR);
             },
         );
     },
@@ -261,7 +260,7 @@ describe
             (): void =>
             {
                 const Feature =
-                makeFeatureClass({ FOO: { check: noop }, BAR: { aliasFor: 'FOO' } });
+                createFeatureClass({ FOO: { check: noop }, BAR: { aliasFor: 'FOO' } });
                 {
                     const actual = Feature.areEqual();
                     assert.equal(actual, true);
@@ -286,7 +285,7 @@ describe
             'returns false',
             (): void =>
             {
-                const Feature = makeFeatureClass({ FOO: { check: noop }, BAR: { check: noop } });
+                const Feature = createFeatureClass({ FOO: { check: noop }, BAR: { check: noop } });
                 const actual = Feature.areEqual('FOO', 'BAR');
                 assert.strictEqual(actual, false);
             },
@@ -297,7 +296,7 @@ describe
             'accepts mixed arguments',
             (): void =>
             {
-                const Feature = makeFeatureClass({ FOO: { }, BAR: { } });
+                const Feature = createFeatureClass({ FOO: { }, BAR: { } });
                 const name =
                 { toString: (): string => 'BAR', valueOf: (): number => 42 } as unknown as string;
                 Feature.areEqual('FOO', name, [Feature(), Feature.ALL.BAR]);
@@ -317,7 +316,7 @@ describe
             (): void =>
             {
                 const Feature =
-                makeFeatureClass
+                createFeatureClass
                 (
                     {
                         FOO: { check: noop, includes: ['BAR'] },
@@ -337,7 +336,7 @@ describe
             'returns null',
             (): void =>
             {
-                const Feature = makeFeatureClass({ });
+                const Feature = createFeatureClass({ });
                 const featureObj = Feature.commonOf();
                 assert.strictEqual(featureObj, null);
             },
@@ -348,10 +347,83 @@ describe
             'accepts mixed arguments',
             (): void =>
             {
-                const Feature = makeFeatureClass({ FOO: { }, BAR: { } });
+                const Feature = createFeatureClass({ FOO: { }, BAR: { } });
                 const name =
                 { toString: (): string => 'BAR', valueOf: (): number => 42 } as unknown as string;
                 Feature.commonOf('FOO', name, [Feature(), Feature.ALL.BAR]);
+            },
+        );
+    },
+);
+
+describe
+(
+    'Feature.prototype.includes',
+    (): void =>
+    {
+        it
+        (
+            'returns true',
+            (): void =>
+            {
+                const Feature =
+                createFeatureClass
+                ({ FOO: { check: noop }, BAR: { check: noop, includes: ['FOO'] } });
+                {
+                    const actual = Feature().includes();
+                    assert.equal(actual, true);
+                }
+                {
+                    const actual = Feature.ALL.FOO.includes();
+                    assert.equal(actual, true);
+                }
+                {
+                    const actual = Feature.ALL.FOO.includes(Feature());
+                    assert.equal(actual, true);
+                }
+                {
+                    const actual = Feature.ALL.FOO.includes('FOO');
+                    assert.equal(actual, true);
+                }
+                {
+                    const actual = Feature.ALL.BAR.includes('FOO');
+                    assert.equal(actual, true);
+                }
+            },
+        );
+
+        it
+        (
+            'returns false',
+            (): void =>
+            {
+                const Feature =
+                createFeatureClass
+                ({ FOO: { check: noop }, BAR: { check: noop }, BAZ: { check: noop } });
+                {
+                    const actual = Feature().includes('FOO');
+                    assert.equal(actual, false);
+                }
+                {
+                    const actual = Feature.ALL.FOO.includes('BAR');
+                    assert.equal(actual, false);
+                }
+                {
+                    const actual = Feature('FOO', 'BAR').includes('BAR', 'BAZ');
+                    assert.equal(actual, false);
+                }
+            },
+        );
+
+        it
+        (
+            'accepts mixed arguments',
+            (): void =>
+            {
+                const Feature = createFeatureClass({ FOO: { }, BAR: { } });
+                const name =
+                { toString: (): string => 'BAR', valueOf: (): number => 42 } as unknown as string;
+                Feature().includes('FOO', name, [Feature(), Feature.ALL.BAR]);
             },
         );
     },
@@ -362,9 +434,10 @@ it
     'Feature.prototype.inspect can be called without arguments',
     (): void =>
     {
-        const Feature = makeFeatureClass({ });
+        const Feature = createFeatureClass({ });
         const featureObj = Feature() as Feature & { inspect: () => string; };
-        assert.strictEqual(typeof featureObj.inspect(), 'string');
+        const actual = typeof featureObj.inspect();
+        assert.strictEqual(actual, 'string');
     },
 );
 
@@ -374,7 +447,7 @@ it
     (): void =>
     {
         const Feature =
-        makeFeatureClass
+        createFeatureClass
         (
             {
                 NORMAL:     { },
@@ -408,7 +481,7 @@ describe.when(typeof module !== 'undefined')
             (): void =>
             {
                 const Feature =
-                makeFeatureClass
+                createFeatureClass
                 (
                     {
                         FOO: { check: noop },
@@ -457,7 +530,7 @@ describe.when(typeof module !== 'undefined')
             (): void =>
             {
                 const Feature =
-                makeFeatureClass
+                createFeatureClass
                 (
                     {
                         FEATURE1: { check: noop },
@@ -513,7 +586,7 @@ describe.when(typeof module !== 'undefined')
             (): void =>
             {
                 const Feature =
-                makeFeatureClass
+                createFeatureClass
                 ({ DEFAULT: { attributes: { foo: null, bar: 'Lorem ipsum dolor sit amet' } } });
                 const featureObj = Feature.ALL.DEFAULT;
                 const actual = inspect([featureObj]);
@@ -547,7 +620,7 @@ describe.when(typeof module !== 'undefined')
             'with custom options',
             (): void =>
             {
-                const Feature = makeFeatureClass({ FOO: { check: noop } });
+                const Feature = createFeatureClass({ FOO: { check: noop } });
                 {
                     const featureObj = Feature(Feature.ALL.FOO);
                     const actual = inspect(featureObj, { compact: undefined });
@@ -608,6 +681,11 @@ const STRING_TEST_DATA =
         (Feature: FeatureConstructor, feature: string): string | undefined =>
         Feature.descriptionFor(feature),
     },
+    {
+        description: 'Feature.prototype.includes',
+        call:
+        (Feature: FeatureConstructor, feature: string): boolean => Feature().includes(feature),
+    },
 ];
 
 describe
@@ -620,7 +698,7 @@ describe
             '#.description',
             ({ call }: typeof STRING_TEST_DATA[number]): void =>
             {
-                const Feature = makeFeatureClass({ FOO: { } });
+                const Feature = createFeatureClass({ FOO: { } });
                 const name =
                 { toString: (): string => 'FOO', valueOf: (): number => 42 } as unknown as string;
                 call(Feature, name);
@@ -639,7 +717,7 @@ describe.when(typeof Symbol !== 'undefined')
             '#.description',
             ({ call }: typeof STRING_TEST_DATA[number]): void =>
             {
-                const Feature = makeFeatureClass({ });
+                const Feature = createFeatureClass({ });
                 const fn = (): unknown => call(Feature, Symbol() as unknown as string);
                 assert.throws
                 (
@@ -663,7 +741,7 @@ describe
             '#.description',
             ({ call }: typeof STRING_TEST_DATA[number]): void =>
             {
-                const Feature = makeFeatureClass({ });
+                const Feature = createFeatureClass({ });
                 const fn = (): unknown => call(Feature, '???');
                 assert.throws
                 (
@@ -702,6 +780,12 @@ const COMPATIBLE_ARRAY_TEST_DATA =
         (Feature: FeatureConstructor, feature: FeatureElementOrCompatibleArray): Feature | null =>
         Feature.commonOf(feature),
     },
+    {
+        description: 'Feature.prototype.includes',
+        call:
+        (Feature: FeatureConstructor, feature: FeatureElementOrCompatibleArray): boolean =>
+        Feature().includes(feature),
+    },
 ];
 
 describe
@@ -715,7 +799,7 @@ describe
             ({ call }: typeof COMPATIBLE_ARRAY_TEST_DATA[number]): void =>
             {
                 const Feature =
-                makeFeatureClass
+                createFeatureClass
                 (
                     {
                         FOO: { check: noop, excludes: ['BAR'] },
