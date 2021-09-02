@@ -8,6 +8,20 @@
     var JScrewIt = typeof module !== 'undefined' ? require('../node-jscrewit-test') : self.JScrewIt;
     var Feature = JScrewIt.Feature;
 
+    expect.addAssertion
+    (
+        'toHaveMask',
+        function (mask)
+        {
+            var featureObj = this.value;
+            var message = this.generateMessage(featureObj, this.expr, 'to have mask', mask);
+            var pass = JScrewIt.debug.maskAreEqual(featureObj.mask, mask);
+            if (pass)
+                return this.assertions.pass(message);
+            this.assertions.fail(message);
+        }
+    );
+
     describe
     (
         'JScrewIt.Feature',
@@ -165,7 +179,7 @@
                             var featureObj = Feature.DEFAULT;
                             expect(featureObj.canonicalNames).toEqual([]);
                             expect(featureObj.elementaryNames).toEqual([]);
-                            expect(featureObj.mask).toEqual(newMask);
+                            expect(featureObj).toHaveMask(newMask);
                         }
                     );
 
@@ -204,7 +218,7 @@
                                 var actualCanonicalNames = expectedFeature.canonicalNames;
                                 var expectedCanonicalNames = actualFeature.canonicalNames;
                                 expect(actualCanonicalNames).toEqual(expectedCanonicalNames);
-                                expect(actualFeature.mask).toEqual(expectedFeature.mask);
+                                expect(actualFeature).toHaveMask(expectedFeature.mask);
                             }
 
                             var actualFeatureName       = paramData.actualFeatureName;
@@ -257,7 +271,7 @@
                             var elementaryNameCount = featureObj.elementaryNames.length;
                             expect(canonicalNameCount).toBeGreaterThan(0);
                             expect(elementaryNameCount).not.toBeLessThan(canonicalNameCount);
-                            expect(featureObj.mask).not.toEqual(newMask);
+                            expect(featureObj).not.toHaveMask(newMask);
                         }
                     );
                 }
@@ -389,7 +403,7 @@
                         function ()
                         {
                             var featureObj = Feature.WINDOW.restrict('web-worker');
-                            expect(featureObj.mask).toEqual(Feature.DEFAULT.mask);
+                            expect(featureObj).toHaveMask(Feature.DEFAULT.mask);
                         }
                     );
                     it
@@ -398,7 +412,7 @@
                         function ()
                         {
                             var featureObj = Feature.WINDOW.restrict('web-worker', [Feature.FF_78]);
-                            expect(featureObj.mask).toEqual(Feature.SELF_OBJ.mask);
+                            expect(featureObj).toHaveMask(Feature.SELF_OBJ.mask);
                         }
                     );
                     it
@@ -407,7 +421,7 @@
                         function ()
                         {
                             var featureObj = Feature.WINDOW.restrict('?');
-                            expect(featureObj.mask).toEqual(Feature.WINDOW.mask);
+                            expect(featureObj).toHaveMask(Feature.WINDOW.mask);
                         }
                     );
                 }
@@ -451,24 +465,6 @@
                         {
                             var fn = Feature.descriptionFor.bind(null);
                             expect(fn).toThrowStrictly(Error, 'Unknown feature "undefined"');
-                        }
-                    );
-                }
-            );
-            describe
-            (
-                '.fromMask',
-                function ()
-                {
-                    it
-                    (
-                        'returns null for an incompatible mask',
-                        function ()
-                        {
-                            var mask =
-                            JScrewIt.debug.maskUnion(Feature.NO_IE_SRC.mask, Feature.IE_SRC.mask);
-                            var featureObj = Feature.fromMask(mask);
-                            expect(featureObj).toBeNull();
                         }
                     );
                 }

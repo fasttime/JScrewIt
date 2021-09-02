@@ -1,11 +1,14 @@
-import { createFeatureClass, featuresToMask }       from '../../src/feature-maker';
+import { createFeatureClass, featuresToMask }   from '../../src/feature-maker';
 
 import type { Feature, FeatureConstructor, FeatureElement, FeatureElementOrCompatibleArray }
 from '../../src/feature-maker';
 
-import { maskAreEqual, maskIntersection, maskNew }  from '../../src/mask';
-import assert                                       from 'assert';
-import type util                                    from 'util';
+import { maskAreEqual, maskIntersection, maskNew, maskNext, maskUnion }
+from '../../src/mask';
+
+import type { Mask }                            from '../../src/mask';
+import assert                                   from 'assert';
+import type util                                from 'util';
 
 const noop =
 (): void =>
@@ -106,7 +109,7 @@ describe
                 const Feature = createFeatureClass({ FOO: { }, BAR: { } });
                 const name =
                 { toString: (): string => 'BAR', valueOf: (): number => 42 } as unknown as string;
-                Feature('FOO', name, [Feature(), Feature.ALL.BAR]);
+                Feature('FOO', name, [Feature(), 'BAR'], [Feature.ALL.BAR]);
             },
         );
     },
@@ -168,6 +171,84 @@ describe
             },
         );
     }
+);
+
+describe
+(
+    'Feature._fromMask',
+    (): void =>
+    {
+        it
+        (
+            'returns a feature',
+            (): void =>
+            {
+                const Feature = createFeatureClass({ FOO: { check: noop }, BAR: { check: noop } });
+                const { mask } = Feature('FOO', 'BAR');
+                const featureObj = Feature._fromMask(mask);
+                assert(featureObj);
+                assert(maskAreEqual(featureObj.mask, mask));
+            }
+        );
+
+        it
+        (
+            'returns null',
+            (): void =>
+            {
+                const Feature =
+                createFeatureClass
+                (
+                    {
+                        FOO: { check: noop, excludes: ['BAR'] },
+                        BAR: { check: noop, excludes: ['FOO'] },
+                    },
+                );
+                {
+                    const mask = maskUnion(Feature.ALL.FOO.mask, Feature.ALL.BAR.mask);
+                    const actual = Feature._fromMask(mask);
+                    assert.strictEqual(actual, null);
+                }
+                {
+                    const mask = maskNext(maskUnion(Feature.ALL.FOO.mask, Feature.ALL.BAR.mask));
+                    const actual = Feature._fromMask(mask);
+                    assert.strictEqual(actual, null);
+                }
+            }
+        );
+    },
+);
+
+it
+(
+    'Feature._getMask',
+    (): void =>
+    {
+        const Feature = createFeatureClass({ FOO: { check: noop }, BAR: { check: noop } });
+        {
+            const actual = Feature._getMask(undefined);
+            assert(maskAreEqual(actual, maskNew()), `Actual value is:\n${actual as unknown}`);
+        }
+        {
+            const actual = Feature._getMask('FOO');
+            assert
+            (maskAreEqual(actual, Feature.ALL.FOO.mask), `Actual value is:\n${actual as unknown}`);
+        }
+        {
+            const actual = Feature._getMask(Feature.ALL.FOO);
+            assert
+            (maskAreEqual(actual, Feature.ALL.FOO.mask), `Actual value is:\n${actual as unknown}`);
+        }
+        {
+            const compatibleFeatureArray = [Feature.ALL.FOO, Feature.ALL.BAR];
+            const actual = Feature._getMask(compatibleFeatureArray);
+            assert
+            (
+                maskAreEqual(actual, featuresToMask(compatibleFeatureArray)),
+                `Actual value is:\n${actual as unknown}`
+            );
+        }
+    },
 );
 
 describe.per
@@ -299,7 +380,7 @@ describe
                 const Feature = createFeatureClass({ FOO: { }, BAR: { } });
                 const name =
                 { toString: (): string => 'BAR', valueOf: (): number => 42 } as unknown as string;
-                Feature.areEqual('FOO', name, [Feature(), Feature.ALL.BAR]);
+                Feature.areEqual('FOO', name, [Feature(), 'BAR'], [Feature.ALL.BAR]);
             },
         );
     },
@@ -350,7 +431,7 @@ describe
                 const Feature = createFeatureClass({ FOO: { }, BAR: { } });
                 const name =
                 { toString: (): string => 'BAR', valueOf: (): number => 42 } as unknown as string;
-                Feature.commonOf('FOO', name, [Feature(), Feature.ALL.BAR]);
+                Feature.commonOf('FOO', name, [Feature(), 'BAR'], [Feature.ALL.BAR]);
             },
         );
     },
@@ -423,13 +504,13 @@ describe
                 const Feature = createFeatureClass({ FOO: { }, BAR: { } });
                 const name =
                 { toString: (): string => 'BAR', valueOf: (): number => 42 } as unknown as string;
-                Feature().includes('FOO', name, [Feature(), Feature.ALL.BAR]);
+                Feature().includes('FOO', name, [Feature(), 'BAR'], [Feature.ALL.BAR]);
             },
         );
     },
 );
 
-it
+it.when(typeof module !== 'undefined')
 (
     'Feature.prototype.inspect can be called without arguments',
     (): void =>
@@ -655,6 +736,10 @@ const STRING_TEST_DATA =
     {
         description: 'new Feature',
         call: (Feature: FeatureConstructor, feature: string): Feature => new Feature(feature),
+    },
+    {
+        description: 'Feature._getMask',
+        call: (Feature: FeatureConstructor, feature: string): Mask => Feature._getMask(feature),
     },
     {
         description: 'Feature.areCompatible (regular signature)',

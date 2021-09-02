@@ -74,7 +74,7 @@ function createParseReviver()
                 solution[key] = value;
         }
         solution.type = SolutionType[obj.type];
-        solution.masks = obj.features.map(featureNames => new Feature(featureNames).mask);
+        solution.masks = obj.features.map(featureNames => Feature(featureNames).mask);
         return solution;
     }
 
@@ -108,8 +108,7 @@ function createParseReviver()
 
 function createStringifyReplacer()
 {
-    const { Solution, SolutionType } = debug;
-    const featureFromMask = JScrewIt.Feature.fromMask;
+    const { Solution, SolutionType, featureFromMask } = debug;
     const stringifyReplacerMap =
     new SortedMap([[Solution, jsonReplaceSolution], [SortedMap, jsonReplaceSortedMap]]);
     return stringifyReplacer;

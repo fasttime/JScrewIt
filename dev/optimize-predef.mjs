@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { Feature }              from '../lib/jscrewit.js';
+import JScrewIt, { Feature }    from '../lib/jscrewit.js';
 import choose                   from './internal/choose.mjs';
 import Analyzer                 from './internal/optimized-analyzer.js';
 import PREDEF_TEST_DATA_MAP_OBJ from './internal/predef-test-data.js';
@@ -250,7 +250,8 @@ function optimize(predefTestData)
 
 function printDefinitions(definitionSets, { indent, formatVariant, variantToMinMaskMap })
 {
-    const { DEFAULT, fromMask: featureFromMask } = Feature;
+    const { featureFromMask } = JScrewIt.debug;
+    const { DEFAULT } = Feature;
     const LINE_LENGTH = 100;
     const argsList = [];
     for (const definitionSet of definitionSets)

@@ -119,7 +119,6 @@
 
     function getNewFeatureData(analyzer)
     {
-        const featureFromMask = JScrewIt.Feature.fromMask;
         const { featureQueries } = analyzer;
         if (!featureQueries)
             return true;
@@ -173,6 +172,6 @@
         module.exports = Analyzer;
     }
 
-    const { MaskSet, createEncoder, maskIncludes, maskUnion } = JScrewIt.debug;
+    const { MaskSet, createEncoder, featureFromMask, maskIncludes, maskUnion } = JScrewIt.debug;
 }
 )();

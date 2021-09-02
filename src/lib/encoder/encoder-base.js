@@ -58,7 +58,7 @@ var BOND_STRENGTH_NONE      = 0;
 var BOND_STRENGTH_WEAK      = 1;
 var BOND_STRENGTH_STRONG    = 2;
 
-var featureFromMask = Feature.fromMask;
+var featureFromMask = Feature._fromMask;
 
 /** @class Encoder */
 

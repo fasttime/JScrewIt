@@ -73,7 +73,7 @@ function flushEncoderCache()
 
 function getEncoder(features)
 {
-    var mask = getValidFeatureMask(features);
+    var mask = getFeatureMask(features);
     var encoder = encoderCache.get(mask);
     if (!encoder)
     {
@@ -87,7 +87,7 @@ function getEncoder(features)
 
 export function isEncoderInCache(features)
 {
-    var mask = getValidFeatureMask(features);
+    var mask = getFeatureMask(features);
     var returnValue = encoderCache.has(mask);
     return returnValue;
 }
@@ -105,7 +105,7 @@ function scheduleFlush()
 
 export var JScrewIt = assignNoEnum({ }, { Feature: Feature, encode: encode });
 
-var getValidFeatureMask = Feature._getValidFeatureMask;
+var getFeatureMask = Feature._getMask;
 
 var _permanentCaching = false;
 var encoderCache;

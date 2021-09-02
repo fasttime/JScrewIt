@@ -107,6 +107,24 @@ self,
     );
     describe
     (
+        'JScrewIt.debug.featureFromMask',
+        function ()
+        {
+            it
+            (
+                'returns null for an incompatible mask',
+                function ()
+                {
+                    var mask =
+                    JScrewIt.debug.maskUnion(Feature.NO_IE_SRC.mask, Feature.IE_SRC.mask);
+                    var featureObj = JScrewIt.debug.featureFromMask(mask);
+                    expect(featureObj).toBeNull();
+                }
+            );
+        }
+    );
+    describe
+    (
         'JScrewIt.debug.maskNext',
         function ()
         {
@@ -1118,7 +1136,7 @@ self,
                     }
 
                     var strategy = strategies[strategyName];
-                    var featureObj = Feature.fromMask(strategy.mask);
+                    var featureObj = JScrewIt.debug.featureFromMask(strategy.mask);
                     var encoder = JScrewIt.debug.createEncoder(featureObj);
                     emuIt
                     (

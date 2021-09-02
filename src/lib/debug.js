@@ -80,7 +80,7 @@ if (typeof NO_DEBUG === 'undefined')
 
         function createEncoder(features)
         {
-            var mask = getValidFeatureMask(features);
+            var mask = getFeatureMask(features);
             var encoder = new Encoder(mask);
             encoder.perfLog = [];
             return encoder;
@@ -168,7 +168,8 @@ if (typeof NO_DEBUG === 'undefined')
         ENTRIES['BASE64_ALPHABET_LO_4:1']                       = BASE64_ALPHABET_LO_4[1];
         ENTRIES['BASE64_ALPHABET_LO_4:3']                       = BASE64_ALPHABET_LO_4[3];
 
-        var getValidFeatureMask = Feature._getValidFeatureMask;
+        var featureFromMask = Feature._fromMask;
+        var getFeatureMask = Feature._getMask;
 
         (function ()
         {
@@ -204,6 +205,7 @@ if (typeof NO_DEBUG === 'undefined')
                 createReindexMap:       createReindexMap,
                 createScrewBuffer:      createScrewBuffer,
                 defineConstant:         defineConstant,
+                featureFromMask:        featureFromMask,
                 getCharacterEntries:    getCharacterEntries,
                 getCharacters:          getCharacters,
                 getComplexEntry:        getComplexEntry,

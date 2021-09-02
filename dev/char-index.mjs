@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import JScrewIt, { Feature }            from '../lib/jscrewit.js';
+import JScrewIt                         from '../lib/jscrewit.js';
 import timeUtils                        from '../tools/time-utils.js';
 import progress                         from './internal/progress.js';
 import solutionBookMap, { NICKNAME }    from './internal/solution-book-map.js';
@@ -84,7 +84,7 @@ async function doAdd()
         (oldSolutionBook ? 'Character %s reindexed' : 'Character %s indexed', formattedCharacter);
         if (oldSolutionBook)
         {
-            const featureFromMask = Feature.fromMask;
+            const { featureFromMask } = JScrewIt.debug;
             for (const newSolution of newSolutionBook.solutions)
             {
                 const newLength = newSolution.length;

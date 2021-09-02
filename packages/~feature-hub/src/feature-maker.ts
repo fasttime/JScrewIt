@@ -30,6 +30,8 @@ export interface FeatureConstructor
     { readonly [FeatureName in string]: PredefinedFeature; };
     readonly ELEMENTARY:                                        readonly PredefinedFeature[];
     new (...features: FeatureElementOrCompatibleArray[]):       Feature;
+    _fromMask(mask: Mask):                                      Feature | null;
+    _getMask(feature?: FeatureElementOrCompatibleArray):        Mask;
     areCompatible(...features: FeatureElement[]):               boolean;
     /** @deprecated */
     areCompatible(features: readonly FeatureElement[]):         boolean;
@@ -118,7 +120,26 @@ export function createFeatureClass
         return featureObj;
     }
 
-    function _getValidFeatureMask(feature?: FeatureElementOrCompatibleArray): Mask
+    function _fromMask(mask: Mask): Feature | null
+    {
+        if (isMaskCompatible(mask))
+        {
+            let includedMask = maskNew();
+            for (const { mask: featureMask } of ELEMENTARY)
+            {
+                if (maskIncludes(mask, featureMask))
+                    includedMask = maskUnion(includedMask, featureMask);
+            }
+            if (maskAreEqual(mask, includedMask))
+            {
+                const featureObj = featureFromMask(mask);
+                return featureObj;
+            }
+        }
+        return null;
+    }
+
+    function _getMask(feature?: FeatureElementOrCompatibleArray): Mask
     {
         const mask =
         feature !== undefined ? validMaskFromArrayOrStringOrFeature(feature) : maskNew();
@@ -235,12 +256,6 @@ export function createFeatureClass
         return featureObj;
     }
 
-    function fromMask(mask: Mask): Feature | null
-    {
-        const featureObj = isMaskCompatible(mask) ? featureFromMask(mask) : null;
-        return featureObj;
-    }
-
     function isMaskCompatible(mask: Mask): boolean
     {
         const compatible =
@@ -251,16 +266,17 @@ export function createFeatureClass
 
     function maskFromStringOrFeature(feature: FeatureElement): Mask
     {
-        let mask: Mask;
+        let featureObj: Feature;
         if (feature instanceof Feature)
-            ({ mask } = feature as Feature);
+            featureObj = feature as Feature;
         else
         {
             const name = esToString(feature);
             if (!(name in ALL))
                 throwUnknownFeatureError(name);
-            ({ mask } = ALL[name]);
+            featureObj = ALL[name];
         }
+        const { mask } = featureObj;
         return mask;
     }
 
@@ -385,7 +401,7 @@ export function createFeatureClass
                 featureInfos[name] as { readonly excludes?: readonly string[]; };
                 if (excludes)
                 {
-                    const { mask } = ALL[name]!;
+                    const { mask } = ALL[name];
                     for (const exclude of excludes)
                     {
                         const excludeMask = completeFeature(exclude);
@@ -511,12 +527,12 @@ export function createFeatureClass
             {
                 ALL,
                 ELEMENTARY,
-                _getValidFeatureMask,
+                _fromMask,
+                _getMask,
                 areCompatible,
                 areEqual,
                 commonOf,
                 descriptionFor,
-                fromMask,
             };
             assignNoEnum(Feature, constructorSource);
         }
