@@ -1,7 +1,7 @@
-import { clean, lint, make }    from './dev/impl.js';
-import { fork }                 from 'child_process';
-import gulp                     from 'gulp';
-import { createRequire }        from 'module';
+import { clean, lint, makeBrowserSpecRunner, makeLib }  from './dev/impl.js';
+import { fork }                                         from 'child_process';
+import gulp                                             from 'gulp';
+import { createRequire }                                from 'module';
 
 const { parallel, series } = gulp;
 
@@ -25,6 +25,6 @@ export function test(callback)
     childProcess.on('exit', code => callback(code && 'Test failed'));
 }
 
-export { clean, lint, make };
+export { clean, lint, makeBrowserSpecRunner, makeLib };
 
-export default series(parallel(clean, lint), test, make);
+export default series(parallel(clean, lint), test, parallel(makeLib, makeBrowserSpecRunner));

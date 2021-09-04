@@ -22,7 +22,9 @@
     "coverage": "nyc --include=src --reporter=html --reporter=text-summary npm test",
     "legacy-test": "node -- test/node-legacy/node_modules/mocha/bin/mocha --check-leaks --require=test/node-legacy-adapter --ui=ebdd test/node-legacy/test/spec/**/*.spec.js",
     "lint": "node dev/lint",
-    "make": "node dev/make",
+    "make": "npm run make-lib",
+    "make-browser-spec-runner": "node dev/make-browser-spec-runner",
+    "make-lib": "node dev/make-lib",
     "prepare-legacy-test": "node ../../dev/internal/prepare-package-legacy-test.mjs",
     "test": "mocha --check-leaks --require=ts-node/register --ui=ebdd test/spec/**/*.spec.ts"
   },
@@ -33,7 +35,11 @@
     "eslint-plugin-ebdd": "latest",
     "gulp": "latest",
     "mocha": "latest",
+    "mocha-bar": "latest",
+    "mocha_3": "npm:mocha@3.5.3",
     "nyc": "latest",
+    "rollup-plugin-node-builtins": "latest",
+    "rollup-plugin-node-globals": "latest",
     "ts-node": "latest",
     "typescript": "latest"
   },

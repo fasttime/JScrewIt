@@ -25,6 +25,6 @@ export function test(callback)
     childProcess.on('exit', code => callback(code && 'Test failed'));
 }
 
-export { clean, lint, makeLib, makeBrowserSpecRunner };
+export { clean, lint, makeBrowserSpecRunner, makeLib };
 
 export default series(parallel(clean, lint), test, parallel(makeLib, makeBrowserSpecRunner));

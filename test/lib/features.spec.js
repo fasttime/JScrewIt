@@ -377,23 +377,6 @@
             );
             describe
             (
-                '#inspect',
-                function ()
-                {
-                    it
-                    (
-                        'can be called with only one argument',
-                        function ()
-                        {
-                            var actual = Feature.GMT.inspect(0);
-                            expect(actual)
-                            .toBe('[Feature GMT (elementary) (check) { attributes: {} }]');
-                        }
-                    );
-                }
-            );
-            describe
-            (
                 '#restrict',
                 function ()
                 {

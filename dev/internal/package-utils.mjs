@@ -53,6 +53,7 @@ async function compile(pkgPath, dTsFilter)
     {
         declaration:    true,
         declarationDir,
+        importHelpers:  true,
         outDir:         join(pkgPath, '.tmp-out'),
         rootDir:        join(pkgPath, 'src'),
         types:          ['node'],
@@ -72,7 +73,7 @@ export async function compileTS(pkgPath, source, newOptions, writeFile)
         const tsConfigPath = join(pkgPath, 'tsconfig.json');
         const tsConfig = ts.readConfigFile(tsConfigPath, sys.readFile);
         const { options } = ts.parseJsonConfigFileContent(tsConfig.config, sys, pkgPath);
-        Object.assign(options, { importHelpers: true, module: ts.ModuleKind.ES2020 }, newOptions);
+        Object.assign(options, { module: ts.ModuleKind.ES2020 }, newOptions);
         const program = ts.createProgram(fileNames, options);
         return program;
     }

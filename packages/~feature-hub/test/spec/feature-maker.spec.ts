@@ -498,13 +498,20 @@ it
     'Feature.prototype.check',
     (): void =>
     {
-        let thisValue: unknown;
+        let actualThis: unknown;
+        const expectedThis =
+        (
+        function (this: unknown): unknown
+        {
+            return this;
+        }
+        )();
         let argCount!: number;
         let checkValue: unknown;
         const check =
         function (this: unknown): unknown
         {
-            thisValue = this;
+            actualThis = this;
             argCount = arguments.length;
             return checkValue;
         };
@@ -515,14 +522,14 @@ it
         {
             checkValue = 0;
             const returnValue = Feature.ALL.FOO.check!();
-            assert.strictEqual(thisValue, undefined);
+            assert.strictEqual(actualThis, expectedThis);
             assert.strictEqual(argCount, 0);
             assert.strictEqual(returnValue, false);
         }
         {
             checkValue = 'yes';
             const returnValue = Feature.ALL.FOO.check!();
-            assert.strictEqual(thisValue, undefined);
+            assert.strictEqual(actualThis, expectedThis);
             assert.strictEqual(argCount, 0);
             assert.strictEqual(returnValue, true);
         }
@@ -655,7 +662,8 @@ describe.when(typeof module !== 'undefined')
                 }
                 finally
                 {
-                    inspect.custom = custom;
+                    if (custom)
+                        inspect.custom = custom;
                 }
             },
         );
@@ -693,13 +701,12 @@ describe.when(typeof module !== 'undefined')
     'Feature inspection',
     (): void =>
     {
-        const { inspect } = getNodeUtil();
-
         it
         (
             'on predefined features',
             (): void =>
             {
+                const { inspect } = getNodeUtil();
                 const Feature =
                 createFeatureClass
                 (
@@ -749,6 +756,7 @@ describe.when(typeof module !== 'undefined')
             'on custom features',
             (): void =>
             {
+                const { inspect } = getNodeUtil();
                 const Feature =
                 createFeatureClass
                 (
@@ -805,6 +813,7 @@ describe.when(typeof module !== 'undefined')
             'on features inside another object',
             (): void =>
             {
+                const { inspect } = getNodeUtil();
                 const Feature =
                 createFeatureClass
                 ({ DEFAULT: { attributes: { foo: null, bar: 'Lorem ipsum dolor sit amet' } } });
@@ -840,6 +849,7 @@ describe.when(typeof module !== 'undefined')
             'with custom options',
             (): void =>
             {
+                const { inspect } = getNodeUtil();
                 const Feature = createFeatureClass({ FOO: { check: noop } });
                 {
                     const featureObj = Feature(Feature.ALL.FOO);
