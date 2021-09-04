@@ -107,46 +107,6 @@ self,
     );
     describe
     (
-        'JScrewIt.debug.featureFromMask',
-        function ()
-        {
-            it
-            (
-                'returns null for an incompatible mask',
-                function ()
-                {
-                    var mask =
-                    JScrewIt.debug.maskUnion(Feature.NO_IE_SRC.mask, Feature.IE_SRC.mask);
-                    var featureObj = JScrewIt.debug.featureFromMask(mask);
-                    expect(featureObj).toBeNull();
-                }
-            );
-        }
-    );
-    describe
-    (
-        'JScrewIt.debug.maskNext',
-        function ()
-        {
-            it
-            (
-                'throws for full mask',
-                function ()
-                {
-                    var unionMask = JScrewIt.debug.maskNew();
-                    for (var index = 0; index < 52; ++index)
-                    {
-                        var nextMask = JScrewIt.debug.maskNext(unionMask);
-                        unionMask = JScrewIt.debug.maskUnion(unionMask, nextMask);
-                    }
-                    var fn = JScrewIt.debug.maskNext.bind(null, unionMask);
-                    expect(fn).toThrowStrictly(RangeError, 'Mask full');
-                }
-            );
-        }
-    );
-    describe
-    (
         'Encoder#_encodeByCharCodes',
         function ()
         {

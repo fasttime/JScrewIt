@@ -18,10 +18,16 @@ async function bundle(pkgPath)
     {
         external: ['tslib'],
         input: inputPath,
-        plugins: [rollupPluginCleanup({ comments: /^(?!\/\s*@ts-)/ })],
+        plugins: [rollupPluginCleanup({ comments: /^(?!\/\s*(?:@ts-|eslint-))/ })],
     };
     const outputPath = join(pkgPath, 'lib/index.js');
-    const outputOptions = { banner: `// ${name} – ${homepage}\n`, file: outputPath, format: 'esm' };
+    const outputOptions =
+    {
+        banner: `// ${name} – ${homepage}\n`,
+        file: outputPath,
+        footer: `\n// End of module ${name}`,
+        format: 'esm',
+    };
     await bundleJS(inputOptions, outputOptions);
 }
 

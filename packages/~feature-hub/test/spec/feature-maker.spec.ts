@@ -27,8 +27,8 @@ it
         (
             {
                 RED:    { includes: ['RED1', 'RED2'], excludes: ['GREEN'] },
-                RED1:   { check: noop },
-                RED2:   { check: noop },
+                RED1:   { engine: 1 as unknown as string, check: noop },
+                RED2:   { engine: 2 as unknown as string, check: noop },
                 GREEN:  { check: noop, excludes: ['RED'] },
                 FOO:
                 {
@@ -51,6 +51,12 @@ it
         assert(maskAreEqual(maskIntersection(RED.mask, GREEN.mask), maskNew()));
         assert(maskAreEqual(FOO.mask, featuresToMask([RED1, GREEN])));
         assert(maskAreEqual(BAR.mask, featuresToMask([RED2, GREEN])));
+        assert.strictEqual(RED.engine, undefined);
+        assert.strictEqual(RED1.engine, '1');
+        assert.strictEqual(RED2.engine, '2');
+        assert.strictEqual(GREEN.engine, undefined);
+        assert.strictEqual(FOO.engine, undefined);
+        assert.strictEqual(BAR.engine, undefined);
         assert.strictEqual(RED.elementary, true);
         assert.strictEqual(RED1.elementary, true);
         assert.strictEqual(RED2.elementary, true);
@@ -490,6 +496,13 @@ it
         assert.strictEqual(Feature.descriptionFor('OFO'), 'foo');
         assert.strictEqual(Feature.descriptionFor('OOF'), 'oof');
         assert.strictEqual(Feature.descriptionFor('BAR'), 'Features available in BAR.');
+        assert.throws
+        (
+            // @ts-expect-error
+            (): string | undefined => Feature.descriptionFor(),
+            (error): boolean =>
+            error instanceof Error && error.message === 'Unknown feature "undefined"',
+        );
     },
 );
 
@@ -632,7 +645,7 @@ describe.when(typeof module !== 'undefined')
             (): void =>
             {
                 const exports: { inspect?: typeof util.inspect; } = getNodeUtil();
-                const { inspect } = exports;
+                const inspect = exports.inspect!;
                 try
                 {
                     delete exports.inspect;

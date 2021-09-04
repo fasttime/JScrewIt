@@ -9,6 +9,7 @@ const MARKER_LINES =
     __proto__: null,
     '    var extendStatics = function(d, b) {\n': 5,
     '    function __extends(d, b) {\n': 6,
+    '    var __assign = function() {\n': 9,
 };
 
 const c8Require = createRequire(require.resolve('c8'));
@@ -21,6 +22,7 @@ function (source)
     const ignoreRange = (from, to) => ignoredRanges.push({ from, to });
     const { lines } = this;
     let position = 0;
+    let embeddedModuleName;
     for (const [index, lineStr] of source.split(/(?<=\r?\n)/).entries())
     {
         const line = new CovLine(index + 1, position, lineStr);
@@ -39,6 +41,19 @@ function (source)
             const count = MARKER_LINES[lineStr];
             if (count != null)
                 ignoreRange(index, index + count);
+        }
+        {
+            const match =
+            /^\s*\/\/ ([-\d\w~]+) – https:\/\/github\.com\/fasttime\/.*/.exec(lineStr);
+            if (match?.[1] === '~feature-hub')
+                [, embeddedModuleName] = match;
+        }
+        if (embeddedModuleName)
+        {
+            line.ignore = true;
+            const match = /^\s*\/\/ End of module ([-\d\w~]+)\s*$/.exec(lineStr);
+            if (match?.[1] === embeddedModuleName)
+                embeddedModuleName = undefined;
         }
         lines.push(line);
         position += lineStr.length;

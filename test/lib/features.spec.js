@@ -1,5 +1,5 @@
 /* eslint-env ebdd/ebdd */
-/* global Symbol, emuDo, emuIt, expect, global, module, reloadJScrewIt, require, self */
+/* global emuDo, emuIt, expect, global, module, require, self */
 
 'use strict';
 
@@ -10,12 +10,17 @@
 
     expect.addAssertion
     (
-        'toHaveMask',
-        function (mask)
+        'toEqualFeature',
+        function (expected)
         {
-            var featureObj = this.value;
-            var message = this.generateMessage(featureObj, this.expr, 'to have mask', mask);
-            var pass = JScrewIt.debug.maskAreEqual(featureObj.mask, mask);
+            var actual = this.value;
+            if (!(actual instanceof Feature))
+                throw new Error('Actual value must be a feature object');
+            if (!(expected instanceof Feature))
+                throw new Error('Expected value must be a feature object');
+            var message =
+            this.generateMessage(actual, this.expr, 'to be equal to feature', expected);
+            var pass = Feature.areEqual(actual, expected);
             if (pass)
                 return this.assertions.pass(message);
             this.assertions.fail(message);
@@ -27,32 +32,6 @@
         'JScrewIt.Feature',
         function ()
         {
-            describe
-            (
-                'constructor',
-                function ()
-                {
-                    it
-                    (
-                        'can be invoked with the new operator',
-                        function ()
-                        {
-                            var featureObj = new Feature();
-                            expect(featureObj.constructor).toBe(Feature);
-                        }
-                    );
-                    it.when(typeof Symbol !== 'undefined')
-                    (
-                        'throws a TypeError when an argument is a symbol',
-                        function ()
-                        {
-                            var fn = Feature.bind(Feature, Symbol());
-                            expect(fn)
-                            .toThrowStrictly(TypeError, 'Cannot convert a symbol to a string');
-                        }
-                    );
-                }
-            );
             describe
             (
                 'contains only well-formed obejcts:',
@@ -87,34 +66,14 @@
                                     expect(description).toBeString();
                                 }
                             );
-                            it
-                            (
-                                'has elementary boolean property',
-                                function ()
-                                {
-                                    expect(featureObj.elementary).toBeBoolean();
-                                }
-                            );
-                            it
-                            (
-                                'has a valid mask',
-                                function ()
-                                {
-                                    var mask = featureObj.mask;
-                                    expect(mask).toBeInt52();
-                                }
-                            );
                             if (featureObj.elementary)
                             {
                                 it
                                 (
-                                    'has a nonempty mask',
+                                    'is not a default feature',
                                     function ()
                                     {
-                                        var newMask = JScrewIt.debug.maskNew();
-                                        expect
-                                        (JScrewIt.debug.maskAreEqual(featureObj.mask, newMask))
-                                        .toBe(false);
+                                        expect(featureObj).not.toEqualFeature(Feature.DEFAULT);
                                     }
                                 );
                             }
@@ -126,8 +85,7 @@
                                     'is checkable',
                                     function ()
                                     {
-                                        var available = check();
-                                        expect(available).toBeBoolean();
+                                        check();
                                     }
                                 );
                                 emuIt
@@ -146,14 +104,6 @@
                             {
                                 it
                                 (
-                                    'has engine string',
-                                    function ()
-                                    {
-                                        expect(engine).toBeString();
-                                    }
-                                );
-                                it
-                                (
                                     'is not checkable',
                                     function ()
                                     {
@@ -165,6 +115,7 @@
                     );
                 }
             );
+
             describe
             (
                 'contains correct information for the feature',
@@ -175,11 +126,8 @@
                         'DEFAULT',
                         function ()
                         {
-                            var newMask = JScrewIt.debug.maskNew();
                             var featureObj = Feature.DEFAULT;
-                            expect(featureObj.canonicalNames).toEqual([]);
                             expect(featureObj.elementaryNames).toEqual([]);
-                            expect(featureObj).toHaveMask(newMask);
                         }
                     );
 
@@ -210,15 +158,9 @@
                         '#.actualFeatureName',
                         function (paramData)
                         {
-                            function verifyExpectations(actualFeature, expectedFeature)
+                            function verifyFeature(actualFeature, expectedFeature)
                             {
-                                var actualElementaryNames = actualFeature.elementaryNames;
-                                var expectedElementaryNames = expectedFeature.elementaryNames;
-                                expect(actualElementaryNames).toEqual(expectedElementaryNames);
-                                var actualCanonicalNames = expectedFeature.canonicalNames;
-                                var expectedCanonicalNames = actualFeature.canonicalNames;
-                                expect(actualCanonicalNames).toEqual(expectedCanonicalNames);
-                                expect(actualFeature).toHaveMask(expectedFeature.mask);
+                                expect(Feature.areEqual(actualFeature, expectedFeature));
                             }
 
                             var actualFeatureName       = paramData.actualFeatureName;
@@ -232,7 +174,7 @@
                                     var actualFeature = Feature.ALL[actualFeatureName];
                                     var expectedFeature =
                                     Feature.commonOf.apply(null, expectedFeatureNames);
-                                    verifyExpectations(actualFeature, expectedFeature);
+                                    verifyFeature(actualFeature, expectedFeature);
                                 }
                             );
                             it.per(['web-worker', 'forced-strict-mode'])
@@ -254,7 +196,7 @@
                                     );
                                     var expectedFeature =
                                     Feature.commonOf.apply(null, restrictedFeatures);
-                                    verifyExpectations(actualFeature, expectedFeature);
+                                    verifyFeature(actualFeature, expectedFeature);
                                 }
                             );
                         }
@@ -265,13 +207,10 @@
                         'AUTO',
                         function ()
                         {
-                            var newMask = JScrewIt.debug.maskNew();
                             var featureObj = Feature.AUTO;
                             var canonicalNameCount = featureObj.canonicalNames.length;
-                            var elementaryNameCount = featureObj.elementaryNames.length;
                             expect(canonicalNameCount).toBeGreaterThan(0);
-                            expect(elementaryNameCount).not.toBeLessThan(canonicalNameCount);
-                            expect(featureObj).not.toHaveMask(newMask);
+                            expect(featureObj).not.toEqualFeature(Feature.DEFAULT);
                         }
                     );
                 }
@@ -325,58 +264,6 @@
             );
             describe
             (
-                '#includes',
-                function ()
-                {
-                    it
-                    (
-                        'accepts mixed arguments',
-                        function ()
-                        {
-                            var actual =
-                            Feature.COMPACT.includes
-                            (
-                                ['NAME', Feature.WINDOW],
-                                Object('HTMLDOCUMENT'),
-                                Feature.NO_IE_SRC,
-                                []
-                            );
-                            expect(actual).toBe(true);
-                        }
-                    );
-                    it
-                    (
-                        'returns true if no arguments are specified',
-                        function ()
-                        {
-                            var actual = Feature.AUTO.includes();
-                            expect(actual).toBe(true);
-                        }
-                    );
-                    it
-                    (
-                        'throws an Error for unknown features',
-                        function ()
-                        {
-                            var fn = Feature.prototype.includes.bind(Feature.DEFAULT, '???');
-                            expect(fn).toThrowStrictly(Error, 'Unknown feature "???"');
-                        }
-                    );
-                    it
-                    (
-                        'throws an Error for incompatible feature arrays',
-                        function ()
-                        {
-                            var fn =
-                            Feature.prototype.includes.bind
-                            (Feature.DEFAULT, ['IE_SRC', 'NO_IE_SRC']);
-                            expect(fn).toThrowStrictly(Error, 'Incompatible features');
-                        }
-                    );
-                }
-            );
-            describe
-            (
                 '#restrict',
                 function ()
                 {
@@ -386,7 +273,7 @@
                         function ()
                         {
                             var featureObj = Feature.WINDOW.restrict('web-worker');
-                            expect(featureObj).toHaveMask(Feature.DEFAULT.mask);
+                            expect(featureObj).toEqualFeature(Feature.DEFAULT);
                         }
                     );
                     it
@@ -395,7 +282,7 @@
                         function ()
                         {
                             var featureObj = Feature.WINDOW.restrict('web-worker', [Feature.FF_78]);
-                            expect(featureObj).toHaveMask(Feature.SELF_OBJ.mask);
+                            expect(featureObj).toEqualFeature(Feature.SELF_OBJ);
                         }
                     );
                     it
@@ -404,82 +291,9 @@
                         function ()
                         {
                             var featureObj = Feature.WINDOW.restrict('?');
-                            expect(featureObj).toHaveMask(Feature.WINDOW.mask);
+                            expect(featureObj).toEqualFeature(Feature.WINDOW);
                         }
                     );
-                }
-            );
-            it
-            (
-                '.areCompatible can be called without arguments',
-                function ()
-                {
-                    Feature.areCompatible();
-                    Feature.areCompatible([]);
-                }
-            );
-            it
-            (
-                '.areEqual returns true for aliases',
-                function ()
-                {
-                    var equal = Feature.areEqual('ANY_WINDOW', 'SELF');
-                    expect(equal).toBe(true);
-                }
-            );
-            it
-            (
-                '.commonOf returns null when called without arguments',
-                function ()
-                {
-                    var actual = Feature.commonOf();
-                    expect(actual).toBeNull();
-                }
-            );
-            describe
-            (
-                '.descriptionFor',
-                function ()
-                {
-                    it
-                    (
-                        'throws an error when called without an argument',
-                        function ()
-                        {
-                            var fn = Feature.descriptionFor.bind(null);
-                            expect(fn).toThrowStrictly(Error, 'Unknown feature "undefined"');
-                        }
-                    );
-                }
-            );
-            it.when(typeof module !== 'undefined')
-            (
-                'inspection works as expected',
-                function ()
-                {
-                    var util = require('util');
-
-                    var actual = util.inspect(Feature.DEFAULT);
-                    expect(actual).toBe('[Feature DEFAULT { attributes: {} }]');
-                }
-            );
-            it.when(typeof module !== 'undefined')
-            (
-                'util.inspect.custom is not required',
-                function ()
-                {
-                    var inspect = require('util').inspect;
-
-                    var inspectKey = inspect.custom;
-                    inspect.custom = undefined;
-                    try
-                    {
-                        reloadJScrewIt();
-                    }
-                    finally
-                    {
-                        inspect.custom = inspectKey;
-                    }
                 }
             );
         }

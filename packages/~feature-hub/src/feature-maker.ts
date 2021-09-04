@@ -113,7 +113,14 @@ export function createFeatureClass
 
     function Feature(this: Feature, ...features: FeatureElementOrCompatibleArray[]): Feature
     {
-        const mask = validMaskFromArguments(features);
+        let mask = maskNew();
+        for (const feature of features)
+        {
+            const otherMask = validMaskFromArrayOrStringOrFeature(feature);
+            mask = maskUnion(mask, otherMask);
+        }
+        if (features.length > 1)
+            validateMask(mask);
         const featureObj =
         this instanceof Feature ? this : _Object_create(FEATURE_PROTOTYPE) as Feature;
         initMask(featureObj, mask);
@@ -210,7 +217,8 @@ export function createFeatureClass
         engine: string | undefined,
         attributes: AttributeMap,
         elementary?: unknown,
-    ): PredefinedFeature
+    ):
+    PredefinedFeature
     {
         _Object_freeze(attributes);
         const descriptors: PropertyDescriptorMap =
@@ -319,29 +327,6 @@ export function createFeatureClass
         return mask;
     }
 
-    function validMaskFromArguments
-    (features: readonly FeatureElementOrCompatibleArray[]): Mask
-    {
-        let mask = maskNew();
-        let validationNeeded = false;
-        for (const feature of features)
-        {
-            let otherMask: Mask;
-            if (_Array_isArray(feature))
-            {
-                otherMask = featureArrayLikeToMask(feature);
-                validationNeeded ||= feature.length > 1;
-            }
-            else
-                otherMask = maskFromStringOrFeature(feature);
-            mask = maskUnion(mask, otherMask);
-        }
-        validationNeeded ||= features.length > 1;
-        if (validationNeeded)
-            validateMask(mask);
-        return mask;
-    }
-
     function validMaskFromArrayOrStringOrFeature(feature: FeatureElementOrCompatibleArray): Mask
     {
         let mask: Mask;
@@ -376,7 +361,7 @@ export function createFeatureClass
         {
             get canonicalNames(): string[]
             {
-                const { mask } = this as unknown as Feature;
+                const { mask } = this;
                 const names: string[] = [];
                 let includedMask = maskNew();
                 for (let index = PRISTINE_ELEMENTARY.length; index--;)
@@ -398,7 +383,7 @@ export function createFeatureClass
             get elementaryNames(): string[]
             {
                 const names: string[] = [];
-                const { mask } = this as unknown as Feature;
+                const { mask } = this;
                 for (const featureObj of ELEMENTARY)
                 {
                     const included = maskIncludes(mask, featureObj.mask);
@@ -408,7 +393,7 @@ export function createFeatureClass
                 return names;
             },
 
-            includes(this: Feature, ...features: FeatureElementOrCompatibleArray[]): boolean
+            includes(...features: FeatureElementOrCompatibleArray[]): boolean
             {
                 const { mask } = this;
                 const included =
@@ -426,13 +411,13 @@ export function createFeatureClass
 
             name: undefined,
 
-            toString(this: Feature): string
+            toString(): string
             {
                 const name = this.name ?? `<${this.canonicalNames.join(', ')}>`;
                 const str = `[Feature ${name}]`;
                 return str;
             },
-        } as { [PropName in string]: unknown; };
+        } as { [PropName in string]: unknown; } & ThisType<Feature>;
         if (utilInspect)
             protoSource.inspect = inspect;
         assignNoEnum(FEATURE_PROTOTYPE, protoSource);
