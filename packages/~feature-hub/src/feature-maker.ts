@@ -57,14 +57,14 @@ export type FeatureInfo =
         readonly inherits?:     string;
     }
 ) &
-({ readonly description?: string; } | { readonly engine?: string; });
+({ readonly description?: string; } | { readonly engine: string; });
 
 export type IncludeDifferenceMap = { readonly [FeatureName in string]: boolean; };
 
 export interface PredefinedFeature extends Feature
 {
     readonly attributes:    AttributeMap;
-    readonly check:         (() => boolean) | undefined;
+    readonly check:         (() => boolean) | null;
     readonly engine:        string | undefined;
     readonly name:          string;
 }
@@ -206,7 +206,7 @@ export function createFeatureClass
     (
         name: string,
         mask: Mask,
-        check: (() => boolean) | undefined,
+        check: (() => boolean) | null,
         engine: string | undefined,
         attributes: AttributeMap,
         elementary?: unknown,
@@ -254,6 +254,45 @@ export function createFeatureClass
         const featureObj = _Object_create(FEATURE_PROTOTYPE) as Feature;
         initMask(featureObj, mask);
         return featureObj;
+    }
+
+    /**
+     * Node.js custom inspection function.
+     * Set on `Feature.prototype` with name `"inspect"` for Node.js ≤ 8.6.x and with symbol
+     * `Symbol.for("nodejs.util.inspect.custom")` for Node.js ≥ 6.6.x.
+     *
+     * @see
+     * {@link https://nodejs.org/api/util.html#util_custom_inspection_functions_on_objects} for
+     * further information.
+     */
+    // opts can be undefined in Node.js 0.10.0.
+    function inspect(this: Feature, depth: never, opts?: InspectOptionsStylized): string
+    {
+        const breakLength = opts?.breakLength ?? 80;
+        const compact = opts?.compact ?? true;
+        let { name } = this;
+        if (name === undefined)
+            name = joinParts(compact, '<', '', this.canonicalNames, ',', '>', breakLength - 3);
+        const parts = [name];
+        if (this.elementary)
+            parts.push('(elementary)');
+        if ((this as PredefinedFeature).check)
+            parts.push('(check)');
+        {
+            const container: { [Key in string]: unknown; } = { };
+            const { attributes, engine } = this as PredefinedFeature;
+            if (engine !== undefined)
+                container.engine = engine;
+            if (attributes as AttributeMap | undefined !== undefined)
+                container.attributes = { ...attributes };
+            if (_Object_keys(container).length)
+            {
+                const str = utilInspect!(container, opts);
+                parts.push(str);
+            }
+        }
+        const str = joinParts(compact, '[Feature', ' ', parts, '', ']', breakLength - 1);
+        return str;
     }
 
     function isMaskCompatible(mask: Mask): boolean
@@ -323,13 +362,21 @@ export function createFeatureClass
             throw new _Error('Incompatible features');
     }
 
-    assignNoEnum
-    (
-        FEATURE_PROTOTYPE,
+    let utilInspect: typeof util.inspect | undefined;
+    try
+    {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        utilInspect = (require('util') as typeof util).inspect;
+    }
+    catch
+    { }
+
+    {
+        const protoSource =
         {
             get canonicalNames(): string[]
             {
-                const { mask } = this as Feature;
+                const { mask } = this as unknown as Feature;
                 const names: string[] = [];
                 let includedMask = maskNew();
                 for (let index = PRISTINE_ELEMENTARY.length; index--;)
@@ -351,7 +398,7 @@ export function createFeatureClass
             get elementaryNames(): string[]
             {
                 const names: string[] = [];
-                const { mask } = this as Feature;
+                const { mask } = this as unknown as Feature;
                 for (const featureObj of ELEMENTARY)
                 {
                     const included = maskIncludes(mask, featureObj.mask);
@@ -377,8 +424,6 @@ export function createFeatureClass
                 return included;
             },
 
-            inspect,
-
             name: undefined,
 
             toString(this: Feature): string
@@ -387,8 +432,11 @@ export function createFeatureClass
                 const str = `[Feature ${name}]`;
                 return str;
             },
-        },
-    );
+        } as { [PropName in string]: unknown; };
+        if (utilInspect)
+            protoSource.inspect = inspect;
+        assignNoEnum(FEATURE_PROTOTYPE, protoSource);
+    }
 
     ((): void =>
     {
@@ -423,37 +471,50 @@ export function createFeatureClass
                 ({ mask } = ALL[name]);
             else
             {
-                let featureObj: PredefinedFeature;
-                let description: string | undefined;
                 const info = featureInfos[name];
-                const { engine } = info as { readonly engine?: string; };
-                if (engine == null)
-                    ({ description } = info as { readonly description?: string; });
-                else
-                    description = createEngineFeatureDescription(engine);
-                if ('aliasFor' in info)
+                let description: string | undefined;
+                let engine: string | undefined;
+                if ('engine' in info)
                 {
-                    const { aliasFor } = info;
-                    mask = completeFeature(aliasFor);
-                    featureObj = ALL[aliasFor]!;
-                    if (description == null)
-                        description = DESCRIPTION_MAP[aliasFor]!;
+                    engine = esToString(info.engine);
+                    description = createEngineFeatureDescription(engine);
                 }
                 else
                 {
-                    const { inherits } = info;
-                    if (inherits != null)
+                    ({ description } = info);
+                    if (description !== undefined)
+                        description = esToString(description);
+                }
+                let featureObj: PredefinedFeature;
+                if ('aliasFor' in info)
+                {
+                    const aliasFor = esToString(info.aliasFor);
+                    mask = completeFeature(aliasFor);
+                    featureObj = ALL[aliasFor];
+                    if (description == null)
+                        description = DESCRIPTION_MAP[aliasFor];
+                }
+                else
+                {
+                    let { inherits } = info;
+                    if (inherits !== undefined)
+                    {
+                        inherits = esToString(inherits);
                         completeFeature(inherits);
-                    let wrappedCheck: (() => boolean) | undefined;
+                    }
+                    let wrappedCheck: (() => boolean) | null;
                     const { check } = info;
-                    if (check)
+                    if (check !== undefined)
                     {
                         mask = maskNext(unionMask);
                         unionMask = maskUnion(unionMask, mask);
                         wrappedCheck = wrapCheck(check);
                     }
                     else
+                    {
                         mask = maskNew();
+                        wrappedCheck = null;
+                    }
                     {
                         const { includes } = info;
                         const includeSet = includeSetMap[name] = createMap<null>();
@@ -464,9 +525,12 @@ export function createFeatureClass
                         }
                         else
                         {
-                            const inheritedIncludeSet = includeSetMap[inherits!];
-                            for (const include in inheritedIncludeSet)
-                                includeSet[include] = null;
+                            if (inherits != null)
+                            {
+                                const inheritedIncludeSet = includeSetMap[inherits];
+                                for (const include in inheritedIncludeSet)
+                                    includeSet[include] = null;
+                            }
                             if (includes)
                             {
                                 const includeDiffNames = _Object_keys(includes);
@@ -494,7 +558,7 @@ export function createFeatureClass
                     }
                     {
                         const infoAttributes = info.attributes;
-                        if (infoAttributes)
+                        if (infoAttributes !== undefined)
                         {
                             const attributeNames = _Object_keys(infoAttributes);
                             for (const attributeName of attributeNames)
@@ -510,7 +574,7 @@ export function createFeatureClass
                             }
                         }
                     }
-                    const elementary = wrappedCheck ?? info.excludes;
+                    const elementary: unknown = wrappedCheck ?? info.excludes;
                     featureObj =
                     createFeature(name, mask, wrappedCheck, engine, attributes, elementary);
                     if (elementary)
@@ -536,15 +600,9 @@ export function createFeatureClass
             };
             assignNoEnum(Feature, constructorSource);
         }
+        if (utilInspect)
         {
-            let inspectKey: symbol | undefined;
-            try
-            {
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                inspectKey = (require('util') as typeof util).inspect.custom;
-            }
-            catch
-            { }
+            const inspectKey = utilInspect.custom as symbol | undefined;
             if (inspectKey)
             {
                 _Object_defineProperty
@@ -598,47 +656,6 @@ function indent(text: string): string
 function initMask(featureObj: Feature, mask: Mask): void
 {
     _Object_defineProperty(featureObj, 'mask', { value: mask });
-}
-
-/**
- * Node.js custom inspection function.
- * Set on `Feature.prototype` with name `"inspect"` for Node.js ≤ 8.6.x and with symbol
- * `Symbol.for("nodejs.util.inspect.custom")` for Node.js ≥ 6.6.x.
- *
- * @see
- * {@link https://nodejs.org/api/util.html#util_custom_inspection_functions_on_objects} for further
- * information.
- */
-// opts can be undefined in Node.js 0.10.0.
-function inspect(this: Feature, depth: never, opts?: InspectOptionsStylized): string
-{
-    const breakLength = opts?.breakLength ?? 80;
-    const compact = opts?.compact ?? true;
-    let { name } = this;
-    if (name === undefined)
-        name = joinParts(compact, '<', '', this.canonicalNames, ',', '>', breakLength - 3);
-    const parts = [name];
-    if (this.elementary)
-        parts.push('(elementary)');
-    if ((this as PredefinedFeature).check !== undefined)
-        parts.push('(check)');
-    {
-        const container: { [Key in string]: unknown; } = { };
-        const { attributes, engine } = this as PredefinedFeature;
-        if (engine !== undefined)
-            container.engine = engine;
-        if (attributes as AttributeMap | undefined !== undefined)
-            container.attributes = { ...attributes };
-        if (_Object_keys(container).length)
-        {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            const { inspect } = require('util') as typeof util;
-            const str = inspect(container, opts);
-            parts.push(str);
-        }
-    }
-    const str = joinParts(compact, '[Feature', ' ', parts, '', ']', breakLength - 1);
-    return str;
 }
 
 function joinParts

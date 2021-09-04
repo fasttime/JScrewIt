@@ -157,7 +157,7 @@
                                     'is not checkable',
                                     function ()
                                     {
-                                        expect(check).toBeUndefined();
+                                        expect(check).toBeNull();
                                     }
                                 );
                             }

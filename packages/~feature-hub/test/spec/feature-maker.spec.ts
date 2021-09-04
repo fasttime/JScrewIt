@@ -10,6 +10,9 @@ import type { Mask }                            from '../../src/mask';
 import assert                                   from 'assert';
 import type util                                from 'util';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const getNodeUtil = (): typeof util => require('util') as typeof util;
+
 const noop =
 (): void =>
 { };
@@ -27,36 +30,67 @@ it
                 RED1:   { check: noop },
                 RED2:   { check: noop },
                 GREEN:  { check: noop, excludes: ['RED'] },
-                FOO:    { includes: ['RED1', 'GREEN'] },
+                FOO:
+                {
+                    includes: ['RED1', 'GREEN'],
+                    attributes: { id: 'foo', foo: null },
+                },
+                BAR:
+                {
+                    inherits: 'FOO',
+                    includes: { RED1: false, RED2: true },
+                    attributes: { id: 'bar', foo: undefined, bar: null },
+                },
             },
         );
-        const { RED, RED1, RED2, GREEN, FOO } = Feature.ALL;
+        const { RED, RED1, RED2, GREEN, FOO, BAR } = Feature.ALL;
         assert(maskAreEqual(RED.mask, featuresToMask([RED1, RED2])));
         assert(maskAreEqual(maskIntersection(RED1.mask, RED2.mask), maskNew()));
         assert(!maskAreEqual(RED1.mask, maskNew()));
         assert(!maskAreEqual(RED2.mask, maskNew()));
         assert(maskAreEqual(maskIntersection(RED.mask, GREEN.mask), maskNew()));
         assert(maskAreEqual(FOO.mask, featuresToMask([RED1, GREEN])));
+        assert(maskAreEqual(BAR.mask, featuresToMask([RED2, GREEN])));
         assert.strictEqual(RED.elementary, true);
         assert.strictEqual(RED1.elementary, true);
         assert.strictEqual(RED2.elementary, true);
         assert.strictEqual(GREEN.elementary, true);
         assert.strictEqual(FOO.elementary, false);
+        assert.strictEqual(BAR.elementary, false);
         assert.deepStrictEqual(RED.canonicalNames, ['RED']);
         assert.deepStrictEqual(RED1.canonicalNames, ['RED1']);
         assert.deepStrictEqual(RED2.canonicalNames, ['RED2']);
         assert.deepStrictEqual(GREEN.canonicalNames, ['GREEN']);
         assert.deepStrictEqual(FOO.canonicalNames, ['GREEN', 'RED1']);
+        assert.deepStrictEqual(BAR.canonicalNames, ['GREEN', 'RED2']);
         assert.deepStrictEqual(RED.elementaryNames, ['RED', 'RED1', 'RED2']);
         assert.deepStrictEqual(RED1.elementaryNames, ['RED1']);
         assert.deepStrictEqual(RED2.elementaryNames, ['RED2']);
         assert.deepStrictEqual(GREEN.elementaryNames, ['GREEN']);
         assert.deepStrictEqual(FOO.elementaryNames, ['GREEN', 'RED1']);
-        assert.deepStrictEqual(RED.name, 'RED');
-        assert.deepStrictEqual(RED1.name, 'RED1');
-        assert.deepStrictEqual(RED2.name, 'RED2');
-        assert.deepStrictEqual(GREEN.name, 'GREEN');
-        assert.deepStrictEqual(FOO.name, 'FOO');
+        assert.deepStrictEqual(BAR.elementaryNames, ['GREEN', 'RED2']);
+        assert.strictEqual(RED.name, 'RED');
+        assert.strictEqual(RED1.name, 'RED1');
+        assert.strictEqual(RED2.name, 'RED2');
+        assert.strictEqual(GREEN.name, 'GREEN');
+        assert.strictEqual(FOO.name, 'FOO');
+        assert.strictEqual(BAR.name, 'BAR');
+        assert.deepStrictEqual(RED.attributes, Object.create(null));
+        assert.deepStrictEqual(RED1.attributes, Object.create(null));
+        assert.deepStrictEqual(RED2.attributes, Object.create(null));
+        assert.deepStrictEqual(GREEN.attributes, Object.create(null));
+        {
+            const expected = Object.create(null) as { [AttributeName in string]: string | null; };
+            expected.id = 'foo';
+            expected.foo = null;
+            assert.deepStrictEqual(FOO.attributes, expected);
+        }
+        {
+            const expected = Object.create(null) as { [AttributeName in string]: string | null; };
+            expected.id = 'bar';
+            expected.bar = null;
+            assert.deepStrictEqual(BAR.attributes, expected);
+        }
     },
 );
 
@@ -437,6 +471,64 @@ describe
     },
 );
 
+it
+(
+    'Feature.descriptionFor',
+    (): void =>
+    {
+        const Feature =
+        createFeatureClass
+        (
+            {
+                FOO: { description: 'foo' },
+                OFO: { aliasFor: 'FOO' },
+                OOF: { aliasFor: 'FOO', description: 'oof' },
+                BAR: { engine: 'BAR' },
+            },
+        );
+        assert.strictEqual(Feature.descriptionFor('FOO'), 'foo');
+        assert.strictEqual(Feature.descriptionFor('OFO'), 'foo');
+        assert.strictEqual(Feature.descriptionFor('OOF'), 'oof');
+        assert.strictEqual(Feature.descriptionFor('BAR'), 'Features available in BAR.');
+    },
+);
+
+it
+(
+    'Feature.prototype.check',
+    (): void =>
+    {
+        let thisValue: unknown;
+        let argCount!: number;
+        let checkValue: unknown;
+        const check =
+        function (this: unknown): unknown
+        {
+            thisValue = this;
+            argCount = arguments.length;
+            return checkValue;
+        };
+        const Feature = createFeatureClass({ FOO: { check }, BAR: { } });
+        assert.strictEqual(typeof Feature.ALL.FOO.check, 'function');
+        assert.strictEqual(Feature.ALL.BAR.check, null);
+        assert(!('check' in Feature('FOO', 'BAR')));
+        {
+            checkValue = 0;
+            const returnValue = Feature.ALL.FOO.check!();
+            assert.strictEqual(thisValue, undefined);
+            assert.strictEqual(argCount, 0);
+            assert.strictEqual(returnValue, false);
+        }
+        {
+            checkValue = 'yes';
+            const returnValue = Feature.ALL.FOO.check!();
+            assert.strictEqual(thisValue, undefined);
+            assert.strictEqual(argCount, 0);
+            assert.strictEqual(returnValue, true);
+        }
+    },
+);
+
 describe
 (
     'Feature.prototype.includes',
@@ -510,15 +602,63 @@ describe
     },
 );
 
-it.when(typeof module !== 'undefined')
+describe.when(typeof module !== 'undefined')
 (
-    'Feature.prototype.inspect can be called without arguments',
+    'Feature.prototype.inspect',
     (): void =>
     {
-        const Feature = createFeatureClass({ });
-        const featureObj = Feature() as Feature & { inspect: () => string; };
-        const actual = typeof featureObj.inspect();
-        assert.strictEqual(actual, 'string');
+        it
+        (
+            'can be called without arguments',
+            (): void =>
+            {
+                const Feature = createFeatureClass({ });
+                const featureObj = Feature() as Feature & { inspect(): string; };
+                const actual = typeof featureObj.inspect();
+                assert.strictEqual(actual, 'string');
+            },
+        );
+
+        it
+        (
+            'does not exist in browsers',
+            (): void =>
+            {
+                const exports: { inspect?: typeof util.inspect; } = getNodeUtil();
+                const { inspect } = exports;
+                try
+                {
+                    delete exports.inspect;
+                    const Feature = createFeatureClass({ });
+                    assert(!('inspect' in Feature.prototype));
+                }
+                finally
+                {
+                    exports.inspect = inspect;
+                }
+            },
+        );
+
+        it
+        (
+            'exists in old versions of Node.js',
+            (): void =>
+            {
+                const { inspect }: { readonly inspect: { custom?: typeof util.inspect.custom; }; } =
+                getNodeUtil();
+                const { custom } = inspect;
+                try
+                {
+                    delete inspect.custom;
+                    const Feature = createFeatureClass({ });
+                    assert('inspect' in Feature.prototype);
+                }
+                finally
+                {
+                    inspect.custom = custom;
+                }
+            },
+        );
     },
 );
 
@@ -553,8 +693,7 @@ describe.when(typeof module !== 'undefined')
     'Feature inspection',
     (): void =>
     {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const { inspect } = require('util') as typeof util;
+        const { inspect } = getNodeUtil();
 
         it
         (
