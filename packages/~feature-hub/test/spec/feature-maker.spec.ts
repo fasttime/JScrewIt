@@ -487,15 +487,13 @@ it
         (
             {
                 FOO: { description: 'foo' },
-                OFO: { aliasFor: 'FOO' },
-                OOF: { aliasFor: 'FOO', description: 'oof' },
-                BAR: { engine: 'BAR' },
+                BAR: { aliasFor: 'FOO' },
+                BAZ: { aliasFor: 'FOO', description: 'baz' },
             },
         );
         assert.strictEqual(Feature.descriptionFor('FOO'), 'foo');
-        assert.strictEqual(Feature.descriptionFor('OFO'), 'foo');
-        assert.strictEqual(Feature.descriptionFor('OOF'), 'oof');
-        assert.strictEqual(Feature.descriptionFor('BAR'), 'Features available in BAR.');
+        assert.strictEqual(Feature.descriptionFor('BAR'), 'foo');
+        assert.strictEqual(Feature.descriptionFor('BAZ'), 'baz');
         assert.throws
         (
             // @ts-expect-error

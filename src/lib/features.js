@@ -4,6 +4,7 @@ import { _Object_defineProperty, _Object_keys, assignNoEnum, createEmpty }  from
 import { createFeatureClass, featuresToMask }                               from '~feature-hub';
 
 var ELEMENTARY;
+var Feature;
 
 function checkLocaleNumeral(locale, number, regExp)
 {
@@ -1250,26 +1251,40 @@ var featureInfos =
         includes: { CONSOLE: false },
     },
 };
-var autoIncludes =
-_Object_keys(featureInfos).filter
-(
-    function (featureName)
-    {
-        var check = featureInfos[featureName].check;
-        var returnValue = check && check();
-        return returnValue;
-    }
-);
-featureInfos.AUTO =
-{
-    description: 'All features available in the current engine.',
-    includes: autoIncludes,
-};
-var Feature = createFeatureClass(featureInfos);
-featureInfos = null;
 (function ()
 {
+    var autoIncludes =
+    _Object_keys(featureInfos).filter
+    (
+        function (featureName)
+        {
+            var featureInfo = featureInfos[featureName];
+            var check = featureInfo.check;
+            var returnValue = check && check();
+            return returnValue;
+        }
+    );
+    featureInfos.AUTO =
+    {
+        engine: 'the current engine',
+        includes: autoIncludes,
+    };
+    _Object_keys(featureInfos).forEach
+    (
+        function (featureName)
+        {
+            var featureInfo = featureInfos[featureName];
+            var engine = featureInfo.engine;
+            if (engine != null)
+            {
+                var description = 'Features available in ' + engine + '.';
+                featureInfo.description = description;
+            }
+        }
+    );
+    Feature = createFeatureClass(featureInfos);
     ELEMENTARY = Feature.ELEMENTARY;
+    featureInfos = null;
     assignNoEnum(Feature.prototype, { restrict: restrict });
     var ALL = Feature.ALL;
     var descriptor = { enumerable: true };

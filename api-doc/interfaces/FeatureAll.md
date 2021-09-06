@@ -209,7 +209,7 @@ ___
 
 • **AUTO**: [`PredefinedFeature`](PredefinedFeature.md)
 
-All features available in the current engine.
+Features available in the current engine.
 
 ___
 

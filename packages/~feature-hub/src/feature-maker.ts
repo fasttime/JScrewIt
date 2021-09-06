@@ -52,12 +52,13 @@ export type FeatureInfo =
     {
         readonly attributes?:   { readonly [AttributeName in string]: string | null | undefined; };
         readonly check?:        () => unknown;
+        readonly engine?:       string;
         readonly excludes?:     readonly string[];
         readonly includes?:     readonly string[] | IncludeDifferenceMap;
         readonly inherits?:     string;
     }
 ) &
-({ readonly description?: string; } | { readonly engine: string; });
+{ readonly description?: string; };
 
 export type IncludeDifferenceMap = { readonly [FeatureName in string]: boolean; };
 
@@ -93,12 +94,6 @@ function assignNoEnum(target: object, source: object): void
         descriptor.enumerable = false;
         _Object_defineProperty(target, name, descriptor);
     }
-}
-
-function createEngineFeatureDescription(engine: string): string
-{
-    const description = `Features available in ${engine}.`;
-    return description;
 }
 
 export function createFeatureClass
@@ -457,19 +452,11 @@ export function createFeatureClass
             else
             {
                 const info = featureInfos[name];
-                let description: string | undefined;
-                let engine: string | undefined;
-                if ('engine' in info)
-                {
-                    engine = esToString(info.engine);
-                    description = createEngineFeatureDescription(engine);
-                }
-                else
-                {
-                    ({ description } = info);
-                    if (description !== undefined)
-                        description = esToString(description);
-                }
+                const getInfoStringField =
+                <FieldNameType extends string>(fieldName: FieldNameType): string | undefined =>
+                fieldName in info ?
+                esToString((info as { [Name in FieldNameType]: unknown; })[fieldName]) : undefined;
+                let description = getInfoStringField('description');
                 let featureObj: PredefinedFeature;
                 if ('aliasFor' in info)
                 {
@@ -481,12 +468,9 @@ export function createFeatureClass
                 }
                 else
                 {
-                    let { inherits } = info;
-                    if (inherits !== undefined)
-                    {
-                        inherits = esToString(inherits);
+                    const inherits = getInfoStringField('inherits');
+                    if (inherits != null)
                         completeFeature(inherits);
-                    }
                     let wrappedCheck: (() => boolean) | null;
                     const { check } = info;
                     if (check !== undefined)
@@ -534,6 +518,7 @@ export function createFeatureClass
                             mask = maskUnion(mask, includeMask);
                         }
                     }
+                    const engine = getInfoStringField('engine');
                     const attributes = createMap<string | null>();
                     if (inherits != null)
                     {

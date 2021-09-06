@@ -34,9 +34,20 @@
         {
             describe
             (
-                'contains only well-formed obejcts:',
+                'names',
                 function ()
                 {
+                    it
+                    (
+                        'are set correctly',
+                        function ()
+                        {
+                            var featureNames = Object.keys(Feature).sort();
+                            var featureAllNames = Object.keys(Feature.ALL).sort();
+                            expect(featureNames).toEqual(featureAllNames);
+                        }
+                    );
+
                     var featureNames = Object.keys(Feature).sort();
 
                     describe.per(featureNames)
@@ -44,17 +55,13 @@
                         '#',
                         function (featureName)
                         {
-                            var featureObj = Feature[featureName];
                             it
                             (
-                                'is named correctly',
+                                'has the expected format',
                                 function ()
                                 {
-                                    var name = featureObj.name;
-                                    expect(name).toBeString();
-                                    expect(name).toMatch(/^[A-Z][\dA-Z_]*$/);
-                                    expect(featureObj).toBe(Feature[name]);
-                                    expect(featureObj).toBe(Feature.ALL[name]);
+                                    expect(featureName).toBeString();
+                                    expect(featureName).toMatch(/^[A-Z][\dA-Z_]*$/);
                                 }
                             );
                             it
@@ -66,6 +73,40 @@
                                     expect(description).toBeString();
                                 }
                             );
+                            it
+                            (
+                                'refers to a predefined feature',
+                                function ()
+                                {
+                                    var expected = Feature[featureName];
+                                    var actual = Feature[expected.name];
+                                    expect(actual).toBe(expected);
+                                }
+                            );
+                        }
+                    );
+                }
+            );
+
+            describe
+            (
+                'values',
+                function ()
+                {
+                    var featureObjs = [];
+                    for (var featureName in Feature.ALL)
+                    {
+                        var featureObj = Feature[featureName];
+                        if (featureObj.name === featureName)
+                            featureObjs.push(featureObj);
+                    }
+                    featureObjs.sort();
+
+                    describe.per(featureObjs)
+                    (
+                        '#.name',
+                        function (featureObj)
+                        {
                             if (featureObj.elementary)
                             {
                                 it
@@ -108,6 +149,16 @@
                                     function ()
                                     {
                                         expect(check).toBeNull();
+                                    }
+                                );
+                                it
+                                (
+                                    'has expected description',
+                                    function ()
+                                    {
+                                        var actual = Feature.descriptionFor(featureObj.name);
+                                        var expected = 'Features available in ' + engine + '.';
+                                        expect(actual).toBe(expected);
                                     }
                                 );
                             }
