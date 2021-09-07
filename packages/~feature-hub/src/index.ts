@@ -1,3 +1,3 @@
-export * from './feature-maker';
+export * from './feature';
 export * from './mask';
 export * from './mask-index';

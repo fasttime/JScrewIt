@@ -1,7 +1,7 @@
-import { createFeatureClass, featuresToMask }   from '../../src/feature-maker';
+import { createFeatureClass, featuresToMask }   from '../../src/feature';
 
 import type { Feature, FeatureConstructor, FeatureElement, FeatureElementOrCompatibleArray }
-from '../../src/feature-maker';
+from '../../src/feature';
 
 import { maskAreEqual, maskIntersection, maskNew, maskNext, maskUnion }
 from '../../src/mask';
