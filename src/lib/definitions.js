@@ -459,7 +459,15 @@ function getFHPaddingEntries(index)
     {
         var expr = '(' + number + ')[TO_LOCALE_STRING](' + locale + ')';
         if (index != null)
-            expr += '[' + index + ']';
+        {
+            if (index > 4)
+            {
+                var paddingBlock = R_PADDINGS[10 - index];
+                expr = '(' + paddingBlock + ' + ' + expr + ')[10]';
+            }
+            else
+                expr += '[' + index + ']';
+        }
         var entry = define._callWithFeatures(expr, LOCALE_NUMERALS, arguments, 3);
         return entry;
     }

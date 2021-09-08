@@ -500,7 +500,7 @@ assignNoEnum
         function (length)
         {
             var paddingBlock = R_PADDINGS[length];
-            if (paddingBlock !== undefined)
+            if (paddingBlock)
                 return paddingBlock;
             throwSyntaxError(this, 'Undefined regular padding block with length ' + length);
         },
@@ -597,7 +597,7 @@ assignNoEnum
                 paddingBlock = padding.block;
                 shiftedIndex = padding.shiftedIndex;
             }
-            var fullExpr = '(' + paddingBlock + '+' + expr + ')[' + shiftedIndex + ']';
+            var fullExpr = '(' + paddingBlock + ' + ' + expr + ')[' + shiftedIndex + ']';
             var replacement = this.replaceExpr(fullExpr);
             var solution = new SimpleSolution(char, replacement, SolutionType.STRING);
             return solution;
