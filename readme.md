@@ -231,7 +231,7 @@ their intersection.
 
 JScrewIt itself and the code it generates are compatible with the JavaScript engines listed below.
 
- ![Chrome](https://api.iconify.design/mdi:google-chrome.svg) Chrome 86+
+ ![Chrome](https://api.iconify.design/mdi:google-chrome.svg) Chrome 92+
 <br>
  ![Safari](https://api.iconify.design/mdi:apple-safari.svg) Safari 7.0+
 <br>
@@ -239,7 +239,7 @@ JScrewIt itself and the code it generates are compatible with the JavaScript eng
 <br>
  ![Firefox](https://api.iconify.design/mdi:firefox.svg) Firefox 78+
 <br>
- ![Opera](https://api.iconify.design/mdi:opera.svg) Opera 72+
+ ![Opera](https://api.iconify.design/mdi:opera.svg) Opera 78+
 <br>
  ![Internet Explorer](https://api.iconify.design/mdi:microsoft-internet-explorer.svg) Internet
 Explorer 9+
