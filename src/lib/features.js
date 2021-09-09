@@ -907,14 +907,20 @@ var featureInfos =
     CHROME_PREV:
     {
         engine: 'the previous to current versions of Chrome and Edge',
-        aliasFor: 'CHROME_86',
+        aliasFor: 'CHROME_92',
     },
-    CHROME_86:
+    CHROME:
     {
-        engine: 'Chrome 86 to 91, Edge 86 to 91 and Opera 72 to 77',
+        engine: 'the current stable versions of Chrome, Edge and Opera',
+        aliasFor: 'CHROME_92',
+    },
+    CHROME_92:
+    {
+        engine: 'Chrome 92, Edge 92 and Opera 78 or later',
         includes:
         [
             'ARROW',
+            'AT',
             'ATOB',
             'BARPROP',
             'ESC_HTML_QUOT_ONLY',
@@ -943,17 +949,6 @@ var featureInfos =
         ],
         attributes:
         { 'char-increment-restriction': null, 'unstable': null, 'web-worker-restriction': null },
-    },
-    CHROME:
-    {
-        engine: 'the current stable versions of Chrome, Edge and Opera',
-        aliasFor: 'CHROME_92',
-    },
-    CHROME_92:
-    {
-        engine: 'Chrome 92, Edge 92 and Opera 78 or later',
-        inherits: 'CHROME_86',
-        includes: { AT: true },
     },
     FF_ESR:
     {

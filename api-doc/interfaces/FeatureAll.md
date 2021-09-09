@@ -24,7 +24,6 @@
 - [BROWSER](FeatureAll.md#browser)
 - [CAPITAL\_HTML](FeatureAll.md#capital_html)
 - [CHROME](FeatureAll.md#chrome)
-- [CHROME\_86](FeatureAll.md#chrome_86)
 - [CHROME\_92](FeatureAll.md#chrome_92)
 - [CHROME\_PREV](FeatureAll.md#chrome_prev)
 - [COMPACT](FeatureAll.md#compact)
@@ -189,7 +188,7 @@ Existence of the native function Array.prototype.at.
 
 **`remarks`**
 
-Available in Chrome 92+, Edge 92+, Firefox 90+, Opera 78+, and Node.js 16.6+.
+Available in Chrome, Edge, Firefox 90+, Opera, and Node.js 16.6+.
 
 ___
 
@@ -257,22 +256,6 @@ An alias for `CHROME_92`.
 
 ___
 
-### CHROME\_86
-
-• **CHROME\_86**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Chrome 86 to 91, Edge 86 to 91 and Opera 72 to 77.
-
-**`remarks`**
-
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME_PREV` instead of `CHROME_86` for long term support.
-
-**`see`**
-
-[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
-
-___
-
 ### CHROME\_92
 
 • **CHROME\_92**: [`PredefinedFeature`](PredefinedFeature.md)
@@ -281,7 +264,7 @@ Features available in Chrome 92, Edge 92 and Opera 78 or later.
 
 **`remarks`**
 
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME` instead of `CHROME_92` for long term support.
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME` or `CHROME_PREV` instead of `CHROME_92` for long term support.
 
 **`see`**
 
@@ -295,7 +278,7 @@ ___
 
 Features available in the previous to current versions of Chrome and Edge.
 
-An alias for `CHROME_86`.
+An alias for `CHROME_92`.
 
 ___
 

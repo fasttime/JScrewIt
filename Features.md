@@ -6,14 +6,14 @@ This table lists features available in the most common engines.
 <th>Features</th>
 </tr>
 <tr>
-<td>Chrome 86+, Edge 86+, Opera 72+</td>
+<td>Chrome 92+, Edge 92+, Opera 78+</td>
 <td>
 <ul>
 <li><a href="api-doc/interfaces/FeatureAll.md#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#ARROW"><code>ARROW</code></a>
-<li><a href="api-doc/interfaces/FeatureAll.md#AT"><code>AT</code></a> (Chrome 92+, Edge 92+, Opera 78+)
+<li><a href="api-doc/interfaces/FeatureAll.md#AT"><code>AT</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#ATOB"><code>ATOB</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#BARPROP"><code>BARPROP</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
