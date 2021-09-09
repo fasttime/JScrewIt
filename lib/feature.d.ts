@@ -30,7 +30,8 @@ export interface ElementaryFeature extends PredefinedFeature
  * elementary features.
  * Two of the predefined composite features are particularly important: <code>[[DEFAULT]]</code> is
  * the empty feature, indicating that no elementary feature is available at all;
- * <code>[[AUTO]]</code> is the union of all elementary features available in the current engine.
+ * <code>[[AUTO]]</code> is the union of all elementary features available in the current
+ * environment.
  *
  * Not all features can be available at the same time: some features are necessarily incompatible,
  * meaning that they mutually exclude each other, and thus their union cannot be constructed.

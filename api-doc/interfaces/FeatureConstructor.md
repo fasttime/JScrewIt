@@ -368,7 +368,7 @@ ___
 
 • **AUTO**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in the current engine.
+Features available in the current environment.
 
 #### Inherited from
 

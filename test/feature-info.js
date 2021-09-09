@@ -125,7 +125,7 @@
         for (var featureName in ALL)
         {
             var featureObj = ALL[featureName];
-            if (featureObj.name === featureName && featureObj.engine)
+            if (featureObj !== AUTO && featureObj.name === featureName && featureObj.engine)
             {
                 if (Feature.areEqual(AUTO, featureObj))
                     characteristicList.push(featureName);

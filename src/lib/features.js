@@ -1266,7 +1266,7 @@ var featureInfos =
     );
     featureInfos.AUTO =
     {
-        engine: 'the current engine',
+        engine: 'the current environment',
         includes: autoIncludes,
     };
     _Object_keys(featureInfos).forEach
