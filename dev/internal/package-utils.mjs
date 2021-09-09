@@ -5,10 +5,19 @@ import { createRequire }                        from 'module';
 import { isAbsolute, join, relative, resolve }  from 'path';
 import { rollup }                               from 'rollup';
 import rollupPluginCleanup                      from 'rollup-plugin-cleanup';
+import rollupPluginNodeBuiltins                 from 'rollup-plugin-node-builtins';
+import rollupPluginNodeGlobals                  from 'rollup-plugin-node-globals';
 import ts                                       from 'typescript';
 import { fileURLToPath }                        from 'url';
 
-async function bundle(pkgPath)
+async function bundle(inputOptions, outputOptions)
+{
+    const bundle = await rollup(inputOptions);
+    const { output: [{ code }] } = await bundle.write(outputOptions);
+    return code;
+}
+
+async function bundleLib(pkgPath)
 {
     const pkgConfigPath = join(pkgPath, 'package.json');
     const require = createRequire(pkgConfigPath);
@@ -28,14 +37,7 @@ async function bundle(pkgPath)
         footer: `\n// End of module ${name}`,
         format: 'esm',
     };
-    await bundleJS(inputOptions, outputOptions);
-}
-
-export async function bundleJS(inputOptions, outputOptions)
-{
-    const bundle = await rollup(inputOptions);
-    const { output: [{ code }] } = await bundle.write(outputOptions);
-    return code;
+    await bundle(inputOptions, outputOptions);
 }
 
 export async function cleanPackage(pkgURL, ...paths)
@@ -52,7 +54,7 @@ export async function cleanPackage(pkgURL, ...paths)
     await Promise.all(promises);
 }
 
-async function compile(pkgPath, dTsFilter)
+async function compileLib(pkgPath, dTsFilter)
 {
     const declarationDir = join(pkgPath, 'lib');
     const newOptions =
@@ -68,7 +70,7 @@ async function compile(pkgPath, dTsFilter)
     await compileTS(pkgPath, 'src/**/*.ts', newOptions, writeFile);
 }
 
-export async function compileTS(pkgPath, source, newOptions, writeFile)
+async function compileTS(pkgPath, source, newOptions, writeFile)
 {
     const { sys } = ts;
     const program =
@@ -99,6 +101,38 @@ export async function compileTS(pkgPath, source, newOptions, writeFile)
         throw Error('TypeScript compilation failed');
 }
 
+export async function doMakeBrowserSpecRunner(pkgURL)
+{
+    const pkgPath = fileURLToPath(pkgURL);
+    {
+        const outDir = join(pkgPath, '.tmp-out');
+        const rootDir = join(pkgPath, '.');
+        const newOptions = { outDir, rootDir };
+        await compileTS(pkgPath, '{src,test}/**/*.ts', newOptions);
+    }
+    {
+        const inputPath = join(pkgPath, '.tmp-out/test/browser-spec-runner.js');
+        const onwarn =
+        warning =>
+        {
+            if (warning.code !== 'THIS_IS_UNDEFINED')
+                console.error(warning.message);
+        };
+        const plugins = [rollupPluginNodeBuiltins(), rollupPluginNodeGlobals({ buffer: false })];
+        const inputOptions = { input: inputPath, onwarn, plugins };
+        const outputPath = join(pkgPath, 'test/browser-spec-runner.js');
+        const outputOptions = { esModule: false, file: outputPath, format: 'iife' };
+        await bundle(inputOptions, outputOptions);
+    }
+}
+
+export async function doMakeLib(pkgURL, dTsFilter)
+{
+    const pkgPath = fileURLToPath(pkgURL);
+    await compileLib(pkgPath, dTsFilter);
+    await bundleLib(pkgPath);
+}
+
 function getWriteFile(sysWriteFile, declarationDir, dTsFilter)
 {
     const writeFile =
@@ -119,10 +153,3 @@ function getWriteFile(sysWriteFile, declarationDir, dTsFilter)
 }
 
 export { lint as lintPackage };
-
-export async function makePackage(pkgURL, dTsFilter)
-{
-    const pkgPath = fileURLToPath(pkgURL);
-    await compile(pkgPath, dTsFilter);
-    await bundle(pkgPath);
-}

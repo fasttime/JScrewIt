@@ -69,6 +69,8 @@
     "postrequire": "latest",
     "rollup": "latest",
     "rollup-plugin-cleanup": "latest",
+    "rollup-plugin-node-builtins": "latest",
+    "rollup-plugin-node-globals": "latest",
     "tslib": "latest",
     "typedoc": "latest",
     "typedoc-plugin-markdown": "latest",

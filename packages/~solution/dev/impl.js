@@ -1,5 +1,3 @@
-const PACKAGE_UTILS_URL = '../../../dev/internal/package-utils.mjs';
-
 export async function clean()
 {
     const { cleanPackage } = await importPackageUtils();
@@ -8,7 +6,7 @@ export async function clean()
     cleanPackage(pkgURL, '.nyc_output', '.tmp-out', 'coverage', 'lib', 'test/node-legacy');
 }
 
-const importPackageUtils = () => import(PACKAGE_UTILS_URL);
+const importPackageUtils = () => import('../../../dev/internal/package-utils.mjs');
 
 export async function lint()
 {
@@ -42,7 +40,7 @@ export async function lint()
 
 export async function make()
 {
-    const { makePackage } = await importPackageUtils();
+    const { doMakeLib } = await importPackageUtils();
     const pkgURL = new URL('..', import.meta.url);
-    await makePackage(pkgURL);
+    await doMakeLib(pkgURL);
 }
