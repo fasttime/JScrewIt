@@ -3,7 +3,16 @@ export async function clean()
     const { cleanPackage } = await importPackageUtils();
     const pkgURL = new URL('..', import.meta.url);
     await
-    cleanPackage(pkgURL, '.nyc_output', '.tmp-out', 'coverage', 'lib', 'test/node-legacy');
+    cleanPackage
+    (
+        pkgURL,
+        '.nyc_output',
+        '.tmp-out',
+        'coverage',
+        'lib',
+        'test/browser-spec-runner.js',
+        'test/node-legacy',
+    );
 }
 
 const importPackageUtils = () => import('../../../dev/internal/package-utils.mjs');
@@ -15,7 +24,7 @@ export async function lint()
     lintPackage
     (
         {
-            src: 'src/**/*.ts',
+            src: ['src/**/*.ts', 'test/*.ts'],
             parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
         },
         {
