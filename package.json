@@ -72,7 +72,7 @@
     "rollup-plugin-node-builtins": "latest",
     "rollup-plugin-node-globals": "latest",
     "tslib": "latest",
-    "typedoc": "latest",
+    "typedoc": "0.21",
     "typedoc-plugin-markdown": "latest",
     "typescript": "latest"
   },
