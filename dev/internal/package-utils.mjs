@@ -1,17 +1,12 @@
-import { lint }                                 from '@fasttime/lint';
-import fastGlob                                 from 'fast-glob';
 import { rm }                                   from 'fs/promises';
 import { createRequire }                        from 'module';
 import { isAbsolute, join, relative, resolve }  from 'path';
-import { rollup }                               from 'rollup';
-import rollupPluginCleanup                      from 'rollup-plugin-cleanup';
-import rollupPluginNodeBuiltins                 from 'rollup-plugin-node-builtins';
-import rollupPluginNodeGlobals                  from 'rollup-plugin-node-globals';
-import ts                                       from 'typescript';
 import { fileURLToPath }                        from 'url';
 
 async function bundle(inputOptions, outputOptions)
 {
+    const { rollup } = await import('rollup');
+
     const bundle = await rollup(inputOptions);
     const { output: [{ code }] } = await bundle.write(outputOptions);
     return code;
@@ -19,6 +14,8 @@ async function bundle(inputOptions, outputOptions)
 
 async function bundleLib(pkgPath)
 {
+    const { default: rollupPluginCleanup } = await import('rollup-plugin-cleanup');
+
     const pkgConfigPath = join(pkgPath, 'package.json');
     const require = createRequire(pkgConfigPath);
     const { homepage, name } = require(pkgConfigPath);
@@ -56,6 +53,8 @@ export async function cleanPackage(pkgURL, ...paths)
 
 async function compileLib(pkgPath, dTsFilter)
 {
+    const { default: ts } = await import('typescript');
+
     const declarationDir = join(pkgPath, 'lib');
     const newOptions =
     {
@@ -72,6 +71,9 @@ async function compileLib(pkgPath, dTsFilter)
 
 async function compileTS(pkgPath, source, newOptions, writeFile)
 {
+    const [{ default: fastGlob }, { default: ts }] =
+    await Promise.all([import('fast-glob'), import('typescript')]);
+
     const { sys } = ts;
     const program =
     await
@@ -103,6 +105,10 @@ async function compileTS(pkgPath, source, newOptions, writeFile)
 
 export async function doMakeBrowserSpecRunner(pkgURL)
 {
+    const [{ default: rollupPluginNodeBuiltins }, { default: rollupPluginNodeGlobals }] =
+    await
+    Promise.all([import('rollup-plugin-node-builtins'), import('rollup-plugin-node-globals')]);
+
     const pkgPath = fileURLToPath(pkgURL);
     {
         const outDir = join(pkgPath, '.tmp-out');
@@ -152,4 +158,10 @@ function getWriteFile(sysWriteFile, declarationDir, dTsFilter)
     return writeFile;
 }
 
-export { lint as lintPackage };
+export async function lintPackage(...configs)
+{
+    const { lint } = await import('@fasttime/lint');
+
+    await lint(...configs);
+}
+

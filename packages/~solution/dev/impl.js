@@ -42,5 +42,5 @@ export async function make()
 {
     const { doMakeLib } = await importPackageUtils();
     const pkgURL = new URL('..', import.meta.url);
-    await doMakeLib(pkgURL);
+    await doMakeLib(pkgURL, ['index.d.ts', 'solution.d.ts', 'solution-type.d.ts']);
 }
