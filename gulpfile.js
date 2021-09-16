@@ -292,8 +292,7 @@ task
         const app = new Application();
         app.options.addReader(new TSConfigReader());
         app.bootstrap(options);
-        const src = app.expandInputFiles(['lib']);
-        const project = app.convert(src);
+        const project = app.convert();
         await app.renderer.render(project, 'api-doc');
         if (app.logger.hasErrors())
             throw Error('API documentation could not be generated');
