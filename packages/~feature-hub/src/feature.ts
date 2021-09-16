@@ -1,9 +1,10 @@
+import type { CompatibilityInfo, EngineVersion, VersionInfo }   from './engine-data';
 import { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
 from './mask';
-import type { Mask }                    from './mask';
-import { MaskSet }                      from './mask-index';
-import type util                        from 'util';
-import type { InspectOptionsStylized }  from 'util';
+import type { Mask }                                            from './mask';
+import { MaskSet }                                              from './mask-index';
+import type util                                                from 'util';
+import type { InspectOptionsStylized }                          from 'util';
 
 declare module 'util'
 {
@@ -26,9 +27,15 @@ export interface Feature
 export interface FeatureConstructor
 {
     (...features: FeatureElementOrCompatibleArray[]):           Feature;
+
     readonly ALL:
     { readonly [FeatureName in string]: PredefinedFeature; };
+
     readonly ELEMENTARY:                                        readonly PredefinedFeature[];
+
+    readonly FAMILIES:
+    { readonly [Family in string]: readonly CompatibilityInfo[]; };
+
     new (...features: FeatureElementOrCompatibleArray[]):       Feature;
     _fromMask(mask: Mask):                                      Feature | null;
     _getMask(feature?: FeatureElementOrCompatibleArray):        Mask;
@@ -56,7 +63,8 @@ export type FeatureInfo =
         readonly excludes?:     readonly string[];
         readonly includes?:     readonly string[] | IncludeDifferenceMap;
         readonly inherits?:     string;
-    }
+    } &
+    ({ } | { readonly families?: readonly string[]; readonly versions: readonly VersionInfo[]; })
 ) &
 { readonly description?: string; };
 
@@ -102,6 +110,7 @@ export function createFeatureClass
     const ALL                               = createMap<PredefinedFeature>();
     const DESCRIPTION_MAP                   = createMap<string | undefined>();
     const ELEMENTARY: PredefinedFeature[]   = [];
+    const FAMILIES                          = createMap<CompatibilityInfo[]>();
     const FEATURE_PROTOTYPE                 = Feature.prototype as object;
     const INCOMPATIBLE_MASK_LIST: Mask[]    = [];
     let PRISTINE_ELEMENTARY: PredefinedFeature[];
@@ -519,6 +528,38 @@ export function createFeatureClass
                         }
                     }
                     const engine = getInfoStringField('engine');
+                    if ('versions' in info)
+                    {
+                        let { families } = info;
+                        const { versions } = info;
+                        if (inherits != null)
+                            families ??= familiesMap[inherits];
+                        if (families)
+                        {
+                            familiesMap[name] = families;
+                            families.forEach
+                            (
+                                (family: string, index: number): void =>
+                                {
+                                    const compatibilities =
+                                    (FAMILIES[family] as CompatibilityInfo[] | undefined) ??
+                                    (FAMILIES[family] = []);
+                                    const versionInfo = versions[index];
+                                    let version: EngineVersion;
+                                    if (_Array_isArray(versionInfo))
+                                        version = { from: versionInfo[0], to: versionInfo[1] };
+                                    else if (typeof versionInfo === 'string')
+                                        version = { value: versionInfo };
+                                    else
+                                        version = { ...versionInfo };
+                                    _Object_freeze(version);
+                                    const compatibility: CompatibilityInfo =
+                                    _Object_freeze({ featureName: name, version });
+                                    compatibilities.push(compatibility);
+                                },
+                            );
+                        }
+                    }
                     const attributes = createMap<string | null>();
                     if (inherits != null)
                     {
@@ -561,6 +602,7 @@ export function createFeatureClass
             {
                 ALL,
                 ELEMENTARY,
+                FAMILIES,
                 _fromMask,
                 _getMask,
                 areCompatible,
@@ -586,6 +628,7 @@ export function createFeatureClass
 
         const featureNames = _Object_keys(featureInfos);
         const includeSetMap = createMap<{ readonly [FeatureName in string]: null; }>();
+        const familiesMap = createMap<readonly string[]>();
         let unionMask = maskNew();
 
         featureNames.forEach(completeFeature);
@@ -594,6 +637,9 @@ export function createFeatureClass
         ELEMENTARY.sort((feature1, feature2): number => feature1.name < feature2.name ? -1 : 1);
         _Object_freeze(ELEMENTARY);
         _Object_freeze(ALL);
+        _Object_freeze(FAMILIES);
+        for (const family in FAMILIES)
+            _Object_freeze(FAMILIES[family]);
     }
     )();
 

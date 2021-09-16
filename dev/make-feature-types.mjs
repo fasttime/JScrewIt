@@ -1,6 +1,6 @@
 import { Feature } from '../lib/jscrewit.js';
 
-import { calculateAvailabilityInfo, getAvailabilityByFeature, getEngineEntries }
+import { calculateAvailabilityInfo, getAvailabilityByFeature, getDescription }
 from './internal/engine-data.mjs';
 
 const INDENT = '    ';
@@ -43,11 +43,11 @@ function getAliasesOf(featureObj)
     return aliases;
 }
 
-function getAvailabilityByRestriction(attributeName, engineEntry)
+function getAvailabilityByRestriction(attributeName, family)
 {
     const availabilityInfo =
     calculateAvailabilityInfo
-    (engineEntry, engineFeatureObj => attributeName in engineFeatureObj.attributes);
+    (family, engineFeatureObj => attributeName in engineFeatureObj.attributes);
     return availabilityInfo;
 }
 
@@ -57,18 +57,16 @@ export default
     const AND_FORMATTER = new Intl.ListFormat('en');
     const OR_FORMATTER  = new Intl.ListFormat('en', { type: 'disjunction' });
 
-    const ENGINE_ENTRIES = getEngineEntries();
-
-    const ENGINE_REFS =
+    const FAMILIES =
     [
-        { index: 0, subIndex: 0 },
-        { index: 0, subIndex: 1 },
-        { index: 1 },
-        { index: 2 },
-        { index: 3 },
-        { index: 0, subIndex: 2 },
-        { index: 4 },
-        { index: 5 },
+        'Chrome',
+        'Edge',
+        'Firefox',
+        'Internet Explorer',
+        'Safari',
+        'Opera',
+        'Android Browser',
+        'Node.js',
     ];
 
     const ENGINE_SUPPORT_POLICY_LINK =
@@ -127,34 +125,27 @@ export default
     function reportAsList(property, filter)
     {
         const availability =
-        ENGINE_REFS.map
+        FAMILIES.map
         (
-            engineRef =>
+            family =>
             {
-                const engineEntry = ENGINE_ENTRIES[engineRef.index];
-                const availabilityInfo = filter(property, engineEntry);
+                const availabilityInfo = filter(property, family);
                 const { firstAvail } = availabilityInfo;
                 if (firstAvail != null)
                 {
-                    const { subIndex } = engineRef;
-                    const getBySubIndex = obj => subIndex == null ? obj : obj[subIndex];
-                    const { versions } = engineEntry;
-                    const getDescription =
-                    versionIndex =>
-                    {
-                        const { description } = versions[versionIndex];
-                        const result = getBySubIndex(description);
-                        return result;
-                    };
-                    let availEntry = getBySubIndex(engineEntry.name);
+                    const compatibilities = Feature.FAMILIES[family];
+                    let availEntry = family;
                     if (firstAvail)
-                        availEntry += ` ${getDescription(firstAvail)}`;
+                    {
+                        const description = getDescription(compatibilities, firstAvail, true);
+                        availEntry += ` ${description}`;
+                    }
                     const { firstUnavail } = availabilityInfo;
                     if (firstUnavail)
                     {
-                        const description = getDescription(firstUnavail);
+                        const description = getDescription(compatibilities, firstUnavail, false);
                         if (description)
-                            availEntry += ` before ${description.replace(/\+$/, '')}`;
+                            availEntry += ` before ${description}`;
                     }
                     return availEntry;
                 }

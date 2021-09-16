@@ -7,88 +7,16 @@ import { setTabindex }  from './tabindex';
 
 export default function createEngineSelectionBox()
 {
-    var ENGINE_INFO_LIST =
+    var ENGINE_FAMILY_LIST =
     [
-        {
-            name: 'Chrome',
-            versions:
-            [
-                { featureName: 'CHROME_92', number: '92+' },
-            ],
-        },
-        {
-            name: 'Edge',
-            versions:
-            [
-                { featureName: 'CHROME_92', number: '92+' },
-            ],
-        },
-        {
-            name: 'Firefox',
-            versions:
-            [
-                { featureName: 'FF_78', number: '78–82' },
-                { featureName: 'FF_83', number: '83–89' },
-                { featureName: 'FF_90', number: '90+' },
-            ],
-        },
-        {
-            name: 'Internet Explorer',
-            versions:
-            [
-                { featureName: 'IE_9', number: '9' },
-                { featureName: 'IE_10', number: '10' },
-                { featureName: 'IE_11', number: '11' },
-                { featureName: 'IE_11_WIN_10', number: '11 (W10)' },
-            ],
-        },
-        {
-            name: 'Safari',
-            versions:
-            [
-                { featureName: 'SAFARI_7_0', number: '7.0' },
-                { featureName: 'SAFARI_7_1', number: '7.1–8' },
-                { featureName: 'SAFARI_9', number: '9' },
-                { featureName: 'SAFARI_10', number: '10–11' },
-                { featureName: 'SAFARI_12', number: '12' },
-                { featureName: 'SAFARI_13', number: '13–14.0.0' },
-                { featureName: 'SAFARI_14_0_1', number: '14.0.1–14.0.3' },
-                { featureName: 'SAFARI_14_1', number: '14.1+' },
-            ],
-        },
-        {
-            name: 'Opera',
-            versions:
-            [
-                { featureName: 'CHROME_92', number: '78+' },
-            ],
-        },
-        {
-            name: 'Android Browser',
-            versions:
-            [
-                { featureName: 'ANDRO_4_0', number: '4.0' },
-                { featureName: 'ANDRO_4_1', number: '4.1–4.3' },
-                { featureName: 'ANDRO_4_4', number: '4.4' },
-            ],
-        },
-        {
-            name: 'Node.js',
-            versions:
-            [
-                { featureName: 'NODE_0_10', number: '0.10' },
-                { featureName: 'NODE_0_12', number: '0.12' },
-                { featureName: 'NODE_4', number: '4' },
-                { featureName: 'NODE_5', number: '5–9' },
-                { featureName: 'NODE_10', number: '10' },
-                { featureName: 'NODE_11', number: '11' },
-                { featureName: 'NODE_12', number: '12' },
-                { featureName: 'NODE_13', number: '13–14' },
-                { featureName: 'NODE_15', number: '15' },
-                { featureName: 'NODE_16_0', number: '16.0–16.5' },
-                { featureName: 'NODE_16_6', number: '16.6+' },
-            ],
-        },
+        'Chrome',
+        'Edge',
+        'Firefox',
+        'Internet Explorer',
+        'Safari',
+        'Opera',
+        'Android Browser',
+        'Node.js',
     ];
 
     var FORCED_STRICT_MODE_CAPTION = 'Generate strict mode code';
@@ -255,22 +183,23 @@ export default function createEngineSelectionBox()
                 art.on('change', updateStatus)
             )
         );
-        ENGINE_INFO_LIST.forEach
+        ENGINE_FAMILY_LIST.forEach
         (
-            function (engineInfo, engineIndex)
+            function (family, familyIndex)
             {
-                var versions = engineInfo.versions;
+                var compatibilities = JScrewIt.Feature.FAMILIES[family];
                 var engineField;
-                var engineFieldProps = engineIndex & 1 ? { className: 'even-field' } : null;
-                var rowSpan = (versions.length + 2) / 3 ^ 0;
+                var engineFieldProps = familyIndex & 1 ? { className: 'even-field' } : null;
+                var rowSpan = (compatibilities.length + 2) / 3 ^ 0;
                 var cellCount = rowSpan * 3;
-                for (var versionIndex = 0; versionIndex < cellCount; ++versionIndex)
+                for
+                (var compatibilityIndex = 0; compatibilityIndex < cellCount; ++compatibilityIndex)
                 {
-                    var version = versions[versionIndex];
-                    if (!(versionIndex % 3))
+                    var compatibility = compatibilities[compatibilityIndex];
+                    if (!(compatibilityIndex % 3))
                     {
                         engineField = art('TR', engineFieldProps);
-                        if (!versionIndex)
+                        if (!compatibilityIndex)
                         {
                             art
                             (
@@ -279,17 +208,30 @@ export default function createEngineSelectionBox()
                                 (
                                     'TD',
                                     { rowSpan: rowSpan, style: { padding: '0 .5em 0 0' } },
-                                    engineInfo.name
+                                    family
                                 )
                             );
                         }
                         art(engineFieldBox, engineField);
                     }
-                    var versionCheckBox =
-                    version ?
-                    createCheckBox
-                    (version.number, { checked: true, featureName: version.featureName }) :
-                    null;
+                    var versionCheckBox = null;
+                    if (compatibility)
+                    {
+                        var versionInfo = compatibility.version;
+                        var version = versionInfo.value;
+                        if (version == null)
+                        {
+                            var from = versionInfo.from;
+                            var to = versionInfo.to;
+                            version = to == null ? from + '+' : from + '–' + to;
+                        }
+                        var shortTag = versionInfo.shortTag;
+                        if (shortTag != null)
+                            version += ' (' + shortTag + ')';
+                        versionCheckBox =
+                        createCheckBox
+                        (version, { checked: true, featureName: compatibility.featureName });
+                    }
                     art
                     (
                         engineField,

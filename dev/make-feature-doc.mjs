@@ -1,5 +1,5 @@
-import { Feature }                                      from '../lib/jscrewit.js';
-import { getAvailabilityByFeature, getEngineEntries }   from './internal/engine-data.mjs';
+import { Feature }                                  from '../lib/jscrewit.js';
+import { getAvailabilityByFeature, getDescription } from './internal/engine-data.mjs';
 
 function formatFeatureName(featureName)
 {
@@ -9,45 +9,17 @@ function formatFeatureName(featureName)
     return result;
 }
 
-function getCombinedDescription(engineEntry, versionIndex = 0)
+function getCombinedDescription(families, compatibilityIndex = 0)
 {
-    function getIndexedDescription(mapDescription)
+    function getVersionedName(name)
     {
-        for (let index = versionIndex; ; ++index)
-        {
-            const description = mapDescription(versions[index].description);
-            if (description)
-                return description;
-        }
-    }
-
-    function getVersionedName(name, description)
-    {
+        const compatibilities = Feature.FAMILIES[name];
+        const description = getDescription(compatibilities, compatibilityIndex, true);
         const versionedName = description ? `${name} ${description}` : name;
         return versionedName;
     }
 
-    let combinedDescription;
-    const { name, versions } = engineEntry;
-    if (Array.isArray(name))
-    {
-        combinedDescription =
-        name.map
-        (
-            (name, subIndex) =>
-            {
-                const description = getIndexedDescription(description => description[subIndex]);
-                const versionedName = getVersionedName(name, description);
-                return versionedName;
-            },
-        )
-        .join(', ');
-    }
-    else
-    {
-        const description = getIndexedDescription(description => description);
-        combinedDescription = getVersionedName(name, description);
-    }
+    const combinedDescription = families.map(getVersionedName).join(', ');
     return combinedDescription;
 }
 
@@ -63,22 +35,23 @@ function getImpliers(featureName, assignmentMap)
         return impliers.sort();
 }
 
-function getVersioningFor(featureName, engineEntry)
+function getVersioningFor(featureName, families)
 {
-    const availabilityInfo = getAvailabilityByFeature(featureName, engineEntry);
+    const [anyFamily] = families;
+    const availabilityInfo = getAvailabilityByFeature(featureName, anyFamily);
     const { firstAvail } = availabilityInfo;
     if (firstAvail != null)
     {
         const notes = [];
         if (firstAvail)
         {
-            const availNote = getCombinedDescription(engineEntry, firstAvail);
+            const availNote = getCombinedDescription(families, firstAvail);
             notes.push(availNote);
         }
         const { firstUnavail } = availabilityInfo;
         if (firstUnavail)
         {
-            const unavailNote = `not in ${getCombinedDescription(engineEntry, firstUnavail)}`;
+            const unavailNote = `not in ${getCombinedDescription(families, firstUnavail)}`;
             notes.push(unavailNote);
         }
         const versioning = notes.join(', ');
@@ -90,6 +63,16 @@ export default
 () =>
 {
     const AND_FORMATTER = new Intl.ListFormat('en');
+
+    const FAMILY_LISTS =
+    [
+        ['Chrome', 'Edge', 'Opera'],
+        ['Firefox'],
+        ['Internet Explorer'],
+        ['Safari'],
+        ['Android Browser'],
+        ['Node.js'],
+    ];
 
     function getComponentEntries(assignmentMap)
     {
@@ -121,17 +104,17 @@ export default
     }
 
     const featureRowContentList =
-    getEngineEntries()
+    FAMILY_LISTS
     .map
     (
-        engineEntry =>
+        families =>
         {
             const assignmentMap = { __proto__: null };
             Feature.ELEMENTARY.forEach
             (
                 ({ name: featureName }) =>
                 {
-                    const versioning = getVersioningFor(featureName, engineEntry);
+                    const versioning = getVersioningFor(featureName, families);
                     if (versioning != null)
                     {
                         const assignments = { versioning };
@@ -145,7 +128,7 @@ export default
                 if (impliers)
                     assignmentMap[featureName].impliers = impliers;
             }
-            const label = getCombinedDescription(engineEntry);
+            const label = getCombinedDescription(families);
             const componentEntries = getComponentEntries(assignmentMap);
             const featureRow = { label, componentEntries };
             return featureRow;
