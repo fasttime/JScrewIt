@@ -27,8 +27,8 @@ it
         (
             {
                 RED:    { includes: ['RED1', 'RED2'], excludes: ['GREEN'] },
-                RED1:   { engine: 1 as unknown as string, check: noop },
-                RED2:   { engine: 2 as unknown as string, check: noop },
+                RED1:   { check: noop },
+                RED2:   { check: noop },
                 GREEN:  { check: noop, excludes: ['RED'] },
                 FOO:
                 {
@@ -51,12 +51,6 @@ it
         assert(maskAreEqual(maskIntersection(RED.mask, GREEN.mask), maskNew()));
         assert(maskAreEqual(FOO.mask, featuresToMask([RED1, GREEN])));
         assert(maskAreEqual(BAR.mask, featuresToMask([RED2, GREEN])));
-        assert.strictEqual(RED.engine, undefined);
-        assert.strictEqual(RED1.engine, '1');
-        assert.strictEqual(RED2.engine, '2');
-        assert.strictEqual(GREEN.engine, undefined);
-        assert.strictEqual(FOO.engine, undefined);
-        assert.strictEqual(BAR.engine, undefined);
         assert.strictEqual(RED.elementary, true);
         assert.strictEqual(RED1.elementary, true);
         assert.strictEqual(RED2.elementary, true);
@@ -208,6 +202,43 @@ describe
                 assert.strictEqual(Feature.ELEMENTARY[0], Feature.ALL.A);
                 assert.strictEqual(Feature.ELEMENTARY[1], Feature.ALL.B);
                 assert.strictEqual(Feature.ELEMENTARY[2], Feature.ALL.C);
+            },
+        );
+    }
+);
+
+describe
+(
+    'Feature.ENGINE',
+    (): void =>
+    {
+        it
+        (
+            'is frozen',
+            (): void =>
+            {
+                const Feature = createFeatureClass({ });
+                assert(Object.isFrozen(Feature.ENGINE));
+            },
+        );
+
+        it
+        (
+            'is sorted by name',
+            (): void =>
+            {
+                const Feature =
+                createFeatureClass
+                (
+                    {
+                        C: { families: [], versions: [] },
+                        B: { families: [], versions: [] },
+                        A: { families: [], versions: [] },
+                    },
+                );
+                assert.strictEqual(Feature.ENGINE[0], Feature.ALL.A);
+                assert.strictEqual(Feature.ENGINE[1], Feature.ALL.B);
+                assert.strictEqual(Feature.ENGINE[2], Feature.ALL.C);
             },
         );
     }
@@ -725,7 +756,6 @@ describe.when(typeof module !== 'undefined')
                         FOO: { check: noop },
                         BAR:
                         {
-                            engine: 'Flat-six',
                             check: noop,
                             attributes: { foo: null, bar: 'Lorem ipsum dolor sit amet' },
                         },
@@ -734,30 +764,18 @@ describe.when(typeof module !== 'undefined')
                 {
                     const actual = inspect(Feature.ALL.FOO);
                     assert.strictEqual
-                    (actual, '[Feature FOO (elementary) (check) { attributes: {} }]');
+                    (actual, '[Feature FOO (elementary) (check) {}]');
                 }
                 {
                     const actual = inspect(Feature.ALL.BAR);
-                    const expected1 =
+                    const expected =
                     '[Feature\n' +
                     '  BAR\n' +
                     '  (elementary)\n' +
                     '  (check)\n' +
-                    '  {\n' +
-                    '    engine: \'Flat-six\',\n' +
-                    '    attributes: { foo: null, bar: \'Lorem ipsum dolor sit amet\' }\n' +
-                    '  }\n' +
+                    '  { foo: null, bar: \'Lorem ipsum dolor sit amet\' }\n' +
                     ']';
-                    const expected2 =
-                    '[Feature\n' +
-                    '  BAR\n' +
-                    '  (elementary)\n' +
-                    '  (check)\n' +
-                    '  { engine: \'Flat-six\',\n' +
-                    '    attributes: { foo: null, bar: \'Lorem ipsum dolor sit amet\' } }\n' +
-                    ']';
-                    assert
-                    (actual === expected1 || actual === expected2, `Actual value is:\n${actual}`);
+                    assert.strictEqual(actual, expected);
                 }
             },
         );
@@ -827,25 +845,37 @@ describe.when(typeof module !== 'undefined')
                 const { inspect } = getNodeUtil();
                 const Feature =
                 createFeatureClass
-                ({ DEFAULT: { attributes: { foo: null, bar: 'Lorem ipsum dolor sit amet' } } });
+                (
+                    {
+                        DEFAULT:
+                        {
+                            attributes:
+                            { foo: null, bar: 'Lorem ipsum dolor sit amet', baz: '1234567890' },
+                        },
+                    },
+                );
                 const featureObj = Feature.ALL.DEFAULT;
                 const actual = inspect([featureObj]);
                 const expected1 =
                 '[\n' +
                 '  [Feature\n' +
                 '    DEFAULT\n' +
-                '    { attributes: { foo: null, bar: \'Lorem ipsum dolor sit amet\' } }\n' +
+                '    { foo: null, bar: \'Lorem ipsum dolor sit amet\', baz: \'1234567890\' }\n' +
                 '  ]\n' +
                 ']';
                 const expected2 =
                 '[ [Feature\n' +
                 '  DEFAULT\n' +
-                '  { attributes: { foo: null, bar: \'Lorem ipsum dolor sit amet\' } }\n' +
+                '  { foo: null,\n' +
+                '      bar: \'Lorem ipsum dolor sit amet\',\n' +
+                '      baz: \'1234567890\' }\n' +
                 '] ]';
                 const expected3 =
                 '[ [Feature\n' +
                 '    DEFAULT\n' +
-                '    { attributes: { foo: null, bar: \'Lorem ipsum dolor sit amet\' } }\n' +
+                '    { foo: null,\n' +
+                '      bar: \'Lorem ipsum dolor sit amet\',\n' +
+                '      baz: \'1234567890\' }\n' +
                 '  ] ]';
                 assert
                 (

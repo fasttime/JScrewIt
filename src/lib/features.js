@@ -28,6 +28,12 @@ function checkSelfFeature()
     return available;
 }
 
+function describeEngine(engine)
+{
+    var description = 'Features available in ' + engine + '.';
+    return description;
+}
+
 function isExcludingAttribute(restrictionCache, restrictionName, featureObjs)
 {
     var returnValue = restrictionCache[restrictionName];
@@ -907,12 +913,12 @@ var featureInfos =
     },
     CHROME_PREV:
     {
-        engine: 'the previous to current versions of Chrome and Edge',
+        description: describeEngine('the previous to current versions of Chrome and Edge'),
         aliasFor: 'CHROME_92',
     },
     CHROME:
     {
-        engine: 'the current stable versions of Chrome, Edge and Opera',
+        description: describeEngine('the current stable versions of Chrome, Edge and Opera'),
         aliasFor: 'CHROME_92',
     },
     CHROME_92:
@@ -954,7 +960,7 @@ var featureInfos =
     },
     FF_ESR:
     {
-        engine: 'the current version of Firefox ESR',
+        description: describeEngine('the current version of Firefox ESR'),
         aliasFor: 'FF_78',
     },
     FF_78:
@@ -996,7 +1002,7 @@ var featureInfos =
     },
     FF_PREV:
     {
-        engine: 'the previous to current version of Firefox',
+        description: describeEngine('the previous to current version of Firefox'),
         aliasFor: 'FF_83',
     },
     FF_83:
@@ -1007,7 +1013,7 @@ var featureInfos =
     },
     FF:
     {
-        engine: 'the current stable version of Firefox',
+        description: describeEngine('the current stable version of Firefox'),
         aliasFor: 'FF_90',
     },
     FF_90:
@@ -1244,7 +1250,7 @@ var featureInfos =
     },
     SAFARI:
     {
-        engine: 'the current stable version of Safari',
+        description: describeEngine('the current stable version of Safari'),
         aliasFor: 'SAFARI_14_1',
     },
     SAFARI_14_1:
@@ -1256,13 +1262,7 @@ var featureInfos =
 };
 (function ()
 {
-    function describeEngine(engine)
-    {
-        var description = 'Features available in ' + engine + '.';
-        return description;
-    }
-
-    function formatEngine(compatibilities)
+    function formatEngineDescription(compatibilities)
     {
         var appendix = '';
         var parts =
@@ -1292,7 +1292,8 @@ var featureInfos =
         );
         var lastPart = parts.pop();
         var engine = (parts.length ? parts.join(', ') + ' and ' + lastPart : lastPart) + appendix;
-        return engine;
+        var description = describeEngine(engine);
+        return description;
     }
 
     var autoIncludes =
@@ -1308,10 +1309,10 @@ var featureInfos =
     );
     featureInfos.AUTO =
     {
-        engine: 'the current environment',
+        description: describeEngine('the current environment'),
         includes: autoIncludes,
     };
-    Feature = createFeatureClass(featureInfos, formatEngine, describeEngine);
+    Feature = createFeatureClass(featureInfos, formatEngineDescription);
     ELEMENTARY = Feature.ELEMENTARY;
     featureInfos = null;
     assignNoEnum(Feature.prototype, { restrict: restrict });

@@ -140,28 +140,6 @@
                                     }
                                 );
                             }
-                            var engine = featureObj.engine;
-                            if (engine !== undefined)
-                            {
-                                it
-                                (
-                                    'is not checkable',
-                                    function ()
-                                    {
-                                        expect(check).toBeNull();
-                                    }
-                                );
-                                it
-                                (
-                                    'has expected description',
-                                    function ()
-                                    {
-                                        var actual = Feature.descriptionFor(featureObj.name);
-                                        var expected = 'Features available in ' + engine + '.';
-                                        expect(actual).toBe(expected);
-                                    }
-                                );
-                            }
                         }
                     );
                 }
@@ -343,6 +321,31 @@
                         {
                             var featureObj = Feature.WINDOW.restrict('?');
                             expect(featureObj).toEqualFeature(Feature.WINDOW);
+                        }
+                    );
+                }
+            );
+
+            describe.per(Feature.ENGINE)
+            (
+                'engine feature #.name',
+                function (featureObj)
+                {
+                    it
+                    (
+                        'is not checkable',
+                        function ()
+                        {
+                            expect(featureObj.check).toBeNull();
+                        }
+                    );
+                    it
+                    (
+                        'has expected description',
+                        function ()
+                        {
+                            var description = Feature.descriptionFor(featureObj.name);
+                            expect(description).toMatch(/^Features available in .+\.$/);
                         }
                     );
                 }

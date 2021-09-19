@@ -84,7 +84,7 @@ export type FeatureInfo =
     ({ } | { readonly families?: readonly string[]; readonly versions: readonly VersionInfo[]; }) &
     ({ } | { readonly compatibilityTag: string; readonly compatibilityShortTag: string; })
 ) &
-{ readonly description?: string; readonly engine?: string; };
+{ readonly description?: string; };
 
 export type IncludeDifferenceMap = { readonly [FeatureName in string]: boolean; };
 
@@ -92,7 +92,6 @@ export interface PredefinedFeature extends Feature
 {
     readonly attributes:    AttributeMap;
     readonly check:         (() => boolean) | null;
-    readonly engine:        string | undefined;
     readonly name:          string;
 }
 
@@ -128,8 +127,7 @@ function assignNoEnum(target: object, source: object): void
 export function createFeatureClass
 (
     featureInfos: { readonly [FeatureName in string]: FeatureInfo; },
-    formatEngine?: (compatibilities: readonly CompatibilityInfo[]) => string,
-    describeEngine?: (engine: string) => string,
+    formatEngineDescription?: (compatibilities: readonly CompatibilityInfo[]) => string,
 ):
 FeatureConstructor
 {
@@ -242,23 +240,17 @@ FeatureConstructor
 
     function createFeature
     (
-        name: string,
-        mask: Mask,
-        check: (() => boolean) | null,
-        engine: string | undefined,
-        attributes: AttributeMap,
-        elementary?: unknown,
+        name:           string,
+        mask:           Mask,
+        check:          (() => boolean) | null,
+        attributes:     AttributeMap,
+        elementary?:    unknown,
     ):
     PredefinedFeature
     {
         _Object_freeze(attributes);
         const descriptors: PropertyDescriptorMap =
-        {
-            attributes:     { value: attributes },
-            check:          { value: check },
-            engine:         { value: engine },
-            name:           { value: name },
-        };
+        { attributes: { value: attributes }, check: { value: check }, name: { value: name } };
         if (elementary)
             descriptors.elementary = { value: true };
         const featureObj = _Object_create(FEATURE_PROTOTYPE, descriptors) as PredefinedFeature;
@@ -318,15 +310,10 @@ FeatureConstructor
         if ((this as PredefinedFeature).check)
             parts.push('(check)');
         {
-            const container: { [Key in string]: unknown; } = { };
-            const { attributes, engine } = this as PredefinedFeature;
-            if (engine !== undefined)
-                container.engine = engine;
-            if (attributes as AttributeMap | undefined !== undefined)
-                container.attributes = { ...attributes };
-            if (_Object_keys(container).length)
+            const { attributes } = this as PredefinedFeature;
+            if (typeof attributes === 'object')
             {
-                const str = utilInspect!(container, opts);
+                const str = utilInspect!({ ...attributes }, opts);
                 parts.push(str);
             }
         }
@@ -456,6 +443,10 @@ FeatureConstructor
 
     ((): void =>
     {
+        const compareFeatureNames =
+        (feature1: PredefinedFeature, feature2: PredefinedFeature): number =>
+        feature1.name < feature2.name ? -1 : 1;
+
         function completeExclusions(): void
         {
             const incompatibleMaskSet = new MaskSet();
@@ -493,7 +484,6 @@ FeatureConstructor
                 fieldName in info ?
                 esToString((info as { [Name in FieldNameType]: unknown; })[fieldName]) : undefined;
                 let description = getInfoStringField('description');
-                let engine = getInfoStringField('engine');
                 let featureObj: PredefinedFeature;
                 if ('aliasFor' in info)
                 {
@@ -596,8 +586,8 @@ FeatureConstructor
                                     return compatibility;
                                 },
                             );
-                            if (engine == null)
-                                engine = formatEngine?.(compatibilities);
+                            if (description == null)
+                                description = formatEngineDescription?.(compatibilities);
                         }
                     }
                     const attributes = createMap<string | null>();
@@ -626,15 +616,12 @@ FeatureConstructor
                         }
                     }
                     const elementary: unknown = wrappedCheck ?? info.excludes;
-                    featureObj =
-                    createFeature(name, mask, wrappedCheck, engine, attributes, elementary);
+                    featureObj = createFeature(name, mask, wrappedCheck, attributes, elementary);
                     if (elementary)
                         ELEMENTARY.push(featureObj);
                     if (compatibilities)
                         ENGINE.push(featureObj);
                 }
-                if (engine != null && describeEngine !== undefined)
-                    description = describeEngine(engine);
                 ALL[name] = featureObj;
                 DESCRIPTION_MAP[name] = description;
             }
@@ -679,8 +666,9 @@ FeatureConstructor
         featureNames.forEach(completeFeature);
         completeExclusions();
         PRISTINE_ELEMENTARY = ELEMENTARY.slice();
-        ELEMENTARY.sort((feature1, feature2): number => feature1.name < feature2.name ? -1 : 1);
+        ELEMENTARY.sort(compareFeatureNames);
         _Object_freeze(ELEMENTARY);
+        ENGINE.sort(compareFeatureNames);
         _Object_freeze(ENGINE);
         _Object_freeze(ALL);
         _Object_freeze(FAMILIES);
@@ -722,13 +710,13 @@ function initMask(featureObj: Feature, mask: Mask): void
 
 function joinParts
 (
-    compact: boolean | number,
-    intro: string,
-    preSeparator: string,
-    parts: readonly string[],
-    partSeparator: string,
-    outro: string,
-    maxLength: number,
+    compact:        boolean | number,
+    intro:          string,
+    preSeparator:   string,
+    parts:          readonly string[],
+    partSeparator:  string,
+    outro:          string,
+    maxLength:      number,
 ):
 string
 {
