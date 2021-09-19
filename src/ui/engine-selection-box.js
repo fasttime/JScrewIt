@@ -225,7 +225,7 @@ export default function createEngineSelectionBox()
                             var to = versionInfo.to;
                             version = to == null ? from + '+' : from + '–' + to;
                         }
-                        var shortTag = versionInfo.shortTag;
+                        var shortTag = compatibility.shortTag;
                         if (shortTag != null)
                             version += ' (' + shortTag + ')';
                         versionCheckBox =

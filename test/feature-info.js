@@ -106,7 +106,7 @@
             require('./helpers/feature-emulation.helpers');
         }
         Feature = JScrewIt.Feature;
-        var ALL = Feature.ALL;
+        var ENGINE = Feature.ENGINE;
         var AUTO = Feature.AUTO;
         root.forcedStrictModeFeatureObj = getForcedStrictModeFeatureObj();
         root.showFeatureSupport = showFeatureSupport;
@@ -122,17 +122,16 @@
                 return result;
             }
         );
-        for (var featureName in ALL)
-        {
-            var featureObj = ALL[featureName];
-            if (featureObj !== AUTO && featureObj.name === featureName && featureObj.engine)
+        ENGINE.forEach
+        (
+            function (featureObj)
             {
                 if (Feature.areEqual(AUTO, featureObj))
-                    characteristicList.push(featureName);
+                    characteristicList.push(featureObj.name);
                 else if (AUTO.includes(featureObj))
-                    compatibleList.push(featureName);
+                    compatibleList.push(featureObj.name);
             }
-        }
+        );
         characteristicList.sort();
         compatibleList.sort();
     }

@@ -1,4 +1,3 @@
-import type { CompatibilityInfo, EngineVersion, VersionInfo }   from './engine-data';
 import { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
 from './mask';
 import type { Mask }                                            from './mask';
@@ -12,6 +11,23 @@ declare module 'util'
 }
 
 export type AttributeMap = { readonly [AttributeName in string]: string | null; };
+
+export interface CompatibilityInfo
+{
+    readonly family:        string;
+    readonly featureName:   string;
+    readonly version:       EngineVersion;
+    readonly tag?:          string;
+    readonly shortTag?:     string;
+}
+
+export interface EngineEntry
+{
+    readonly family:            string;
+    readonly compatibilities:   readonly CompatibilityInfo[];
+}
+
+export type EngineVersion = string | Readonly<{ from: string; to?: string; dense: boolean; }>;
 
 export interface Feature
 {
@@ -32,6 +48,8 @@ export interface FeatureConstructor
     { readonly [FeatureName in string]: PredefinedFeature; };
 
     readonly ELEMENTARY:                                        readonly PredefinedFeature[];
+
+    readonly ENGINE:                                            readonly PredefinedFeature[];
 
     readonly FAMILIES:
     { readonly [Family in string]: readonly CompatibilityInfo[]; };
@@ -59,14 +77,14 @@ export type FeatureInfo =
     {
         readonly attributes?:   { readonly [AttributeName in string]: string | null | undefined; };
         readonly check?:        () => unknown;
-        readonly engine?:       string;
         readonly excludes?:     readonly string[];
         readonly includes?:     readonly string[] | IncludeDifferenceMap;
         readonly inherits?:     string;
     } &
-    ({ } | { readonly families?: readonly string[]; readonly versions: readonly VersionInfo[]; })
+    ({ } | { readonly families?: readonly string[]; readonly versions: readonly VersionInfo[]; }) &
+    ({ } | { readonly compatibilityTag: string; readonly compatibilityShortTag: string; })
 ) &
-{ readonly description?: string; };
+{ readonly description?: string; readonly engine?: string; };
 
 export type IncludeDifferenceMap = { readonly [FeatureName in string]: boolean; };
 
@@ -77,6 +95,9 @@ export interface PredefinedFeature extends Feature
     readonly engine:        string | undefined;
     readonly name:          string;
 }
+
+export type VersionInfo =
+string | readonly [from: string, to?: string] | readonly [from: string, _: never, to?: string];
 
 const _Array_isArray            = Array.isArray as (value: unknown) => value is readonly unknown[];
 const _Error                    = Error;
@@ -105,11 +126,17 @@ function assignNoEnum(target: object, source: object): void
 }
 
 export function createFeatureClass
-(featureInfos: { readonly [FeatureName in string]: FeatureInfo; }): FeatureConstructor
+(
+    featureInfos: { readonly [FeatureName in string]: FeatureInfo; },
+    formatEngine?: (compatibilities: readonly CompatibilityInfo[]) => string,
+    describeEngine?: (engine: string) => string,
+):
+FeatureConstructor
 {
     const ALL                               = createMap<PredefinedFeature>();
     const DESCRIPTION_MAP                   = createMap<string | undefined>();
     const ELEMENTARY: PredefinedFeature[]   = [];
+    const ENGINE: PredefinedFeature[]       = [];
     const FAMILIES                          = createMap<CompatibilityInfo[]>();
     const FEATURE_PROTOTYPE                 = Feature.prototype as object;
     const INCOMPATIBLE_MASK_LIST: Mask[]    = [];
@@ -466,6 +493,7 @@ export function createFeatureClass
                 fieldName in info ?
                 esToString((info as { [Name in FieldNameType]: unknown; })[fieldName]) : undefined;
                 let description = getInfoStringField('description');
+                let engine = getInfoStringField('engine');
                 let featureObj: PredefinedFeature;
                 if ('aliasFor' in info)
                 {
@@ -481,6 +509,7 @@ export function createFeatureClass
                     if (inherits != null)
                         completeFeature(inherits);
                     let wrappedCheck: (() => boolean) | null;
+                    let compatibilities: readonly CompatibilityInfo[] | undefined;
                     const { check } = info;
                     if (check !== undefined)
                     {
@@ -527,7 +556,6 @@ export function createFeatureClass
                             mask = maskUnion(mask, includeMask);
                         }
                     }
-                    const engine = getInfoStringField('engine');
                     if ('versions' in info)
                     {
                         let { families } = info;
@@ -537,27 +565,39 @@ export function createFeatureClass
                         if (families)
                         {
                             familiesMap[name] = families;
-                            families.forEach
+                            const tag = getInfoStringField('compatibilityTag');
+                            const shortTag = getInfoStringField('compatibilityShortTag');
+                            compatibilities =
+                            families.map
                             (
-                                (family: string, index: number): void =>
+                                (family: string, index: number): CompatibilityInfo =>
                                 {
-                                    const compatibilities =
-                                    (FAMILIES[family] as CompatibilityInfo[] | undefined) ??
-                                    (FAMILIES[family] = []);
                                     const versionInfo = versions[index];
                                     let version: EngineVersion;
                                     if (_Array_isArray(versionInfo))
-                                        version = { from: versionInfo[0], to: versionInfo[1] };
-                                    else if (typeof versionInfo === 'string')
-                                        version = { value: versionInfo };
+                                    {
+                                        const { length } = versionInfo;
+                                        const from = esToString(versionInfo[0]);
+                                        const to =
+                                        length < 2 ?
+                                        undefined : esToString(versionInfo[length - 1]);
+                                        const dense = versionInfo.length === 2;
+                                        version = _Object_freeze({ from, to, dense });
+                                    }
                                     else
-                                        version = { ...versionInfo };
-                                    _Object_freeze(version);
-                                    const compatibility: CompatibilityInfo =
-                                    _Object_freeze({ featureName: name, version });
-                                    compatibilities.push(compatibility);
+                                        version = esToString(versionInfo);
+                                    const compatibility =
+                                    _Object_freeze
+                                    ({ family, featureName: name, version, tag, shortTag });
+                                    const familyCompatibilities =
+                                    (FAMILIES[family] as CompatibilityInfo[] | undefined) ??
+                                    (FAMILIES[family] = []);
+                                    familyCompatibilities.push(compatibility);
+                                    return compatibility;
                                 },
                             );
+                            if (engine == null)
+                                engine = formatEngine?.(compatibilities);
                         }
                     }
                     const attributes = createMap<string | null>();
@@ -590,7 +630,11 @@ export function createFeatureClass
                     createFeature(name, mask, wrappedCheck, engine, attributes, elementary);
                     if (elementary)
                         ELEMENTARY.push(featureObj);
+                    if (compatibilities)
+                        ENGINE.push(featureObj);
                 }
+                if (engine != null && describeEngine !== undefined)
+                    description = describeEngine(engine);
                 ALL[name] = featureObj;
                 DESCRIPTION_MAP[name] = description;
             }
@@ -602,6 +646,7 @@ export function createFeatureClass
             {
                 ALL,
                 ELEMENTARY,
+                ENGINE,
                 FAMILIES,
                 _fromMask,
                 _getMask,
@@ -636,6 +681,7 @@ export function createFeatureClass
         PRISTINE_ELEMENTARY = ELEMENTARY.slice();
         ELEMENTARY.sort((feature1, feature2): number => feature1.name < feature2.name ? -1 : 1);
         _Object_freeze(ELEMENTARY);
+        _Object_freeze(ENGINE);
         _Object_freeze(ALL);
         _Object_freeze(FAMILIES);
         for (const family in FAMILIES)

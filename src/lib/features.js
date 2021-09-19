@@ -863,7 +863,6 @@ var featureInfos =
     },
     ANDRO_4_0:
     {
-        engine: 'Android Browser 4.0',
         families: ['Android Browser'],
         versions: ['4.0'],
         includes:
@@ -885,14 +884,12 @@ var featureInfos =
     },
     ANDRO_4_1:
     {
-        engine: 'Android Browser 4.1 to 4.3',
         inherits: 'ANDRO_4_0',
-        versions: [['4.1', '4.3']],
+        versions: [['4.1',, '4.3']],
         includes: { GENERIC_ARRAY_TO_STRING: true, OBJECT_UNDEFINED: true },
     },
     ANDRO_4_4:
     {
-        engine: 'Android Browser 4.4',
         inherits: 'ANDRO_4_1',
         versions: ['4.4'],
         includes:
@@ -920,7 +917,6 @@ var featureInfos =
     },
     CHROME_92:
     {
-        engine: 'Chrome 92, Edge 92 and Opera 78 or later',
         families: ['Chrome', 'Edge', 'Opera'],
         versions: [['92'], ['92'], ['78']],
         includes:
@@ -963,9 +959,8 @@ var featureInfos =
     },
     FF_78:
     {
-        engine: 'Firefox 78 to 82',
         families: ['Firefox'],
-        versions: [['78', '82']],
+        versions: [['78',, '82']],
         includes:
         [
             'ARROW',
@@ -1006,9 +1001,8 @@ var featureInfos =
     },
     FF_83:
     {
-        engine: 'Firefox 83 to 89',
         inherits: 'FF_78',
-        versions: [['83', '89']],
+        versions: [['83',, '89']],
         includes: { INTL: true, PLAIN_INTL: false },
     },
     FF:
@@ -1018,14 +1012,12 @@ var featureInfos =
     },
     FF_90:
     {
-        engine: 'Firefox 90 or later',
         inherits: 'FF_83',
         versions: [['90']],
         includes: { AT: true },
     },
     IE_9:
     {
-        engine: 'Internet Explorer 9',
         families: ['Internet Explorer'],
         versions: ['9'],
         includes:
@@ -1048,7 +1040,6 @@ var featureInfos =
     },
     IE_10:
     {
-        engine: 'Internet Explorer 10',
         inherits: 'IE_9',
         versions: ['10'],
         includes: { ATOB: true, CONSOLE: true, OBJECT_UNDEFINED: true, UNDEFINED: false },
@@ -1056,7 +1047,6 @@ var featureInfos =
     },
     IE_11:
     {
-        engine: 'Internet Explorer 11',
         inherits: 'IE_10',
         versions: ['11'],
         includes:
@@ -1071,14 +1061,14 @@ var featureInfos =
     },
     IE_11_WIN_10:
     {
-        engine: 'Internet Explorer 11 on Windows 10',
         inherits: 'IE_11',
-        versions: [{ value: '11', tag: 'on Windows 10', shortTag: 'W10' }],
+        versions: ['11'],
+        compatibilityTag: 'on Windows 10',
+        compatibilityShortTag: 'W10',
         includes: { LOCALE_INFINITY: true, LOCALE_NUMERALS: false, LOCALE_NUMERALS_EXT: true },
     },
     NODE_0_10:
     {
-        engine: 'Node.js 0.10',
         families: ['Node.js'],
         versions: ['0.10'],
         includes:
@@ -1095,7 +1085,6 @@ var featureInfos =
     },
     NODE_0_12:
     {
-        engine: 'Node.js 0.12',
         inherits: 'NODE_0_10',
         versions: ['0.12'],
         includes:
@@ -1109,70 +1098,60 @@ var featureInfos =
     },
     NODE_4:
     {
-        engine: 'Node.js 4',
         inherits: 'NODE_0_12',
         versions: ['4'],
         includes: { ARROW: true, ESC_REGEXP_SLASH: true, FILL: true, FROM_CODE_POINT: true },
     },
     NODE_5:
     {
-        engine: 'Node.js 5 to 9',
         inherits: 'NODE_4',
-        versions: [['5', '9']],
+        versions: [['5',, '9']],
         attributes: { 'char-increment-restriction': null },
     },
     NODE_10:
     {
-        engine: 'Node.js 10',
         inherits: 'NODE_5',
         versions: ['10'],
         includes: { FUNCTION_19_LF: true, FUNCTION_22_LF: false },
     },
     NODE_11:
     {
-        engine: 'Node.js 11',
         inherits: 'NODE_10',
         versions: ['11'],
         includes: { FLAT: true },
     },
     NODE_12:
     {
-        engine: 'Node.js 12',
         inherits: 'NODE_11',
         versions: ['12'],
         includes: { ESC_REGEXP_LF: true, REGEXP_STRING_ITERATOR: true },
     },
     NODE_13:
     {
-        engine: 'Node.js 13 and Node.js 14',
         inherits: 'NODE_12',
         versions: [['13', '14']],
         includes: { LOCALE_NUMERALS_EXT: true, SHORT_LOCALES: true },
     },
     NODE_15:
     {
-        engine: 'Node.js 15',
         inherits: 'NODE_13',
         versions: ['15'],
         includes: { INTL: true, PLAIN_INTL: false },
     },
     NODE_16_0:
     {
-        engine: 'Node.js 16.0 to 16.5',
         inherits: 'NODE_15',
-        versions: [['16.0', '16.5']],
+        versions: [['16.0',, '16.5']],
         includes: { ATOB: true },
     },
     NODE_16_6:
     {
-        engine: 'Node.js 16.6 or later',
         inherits: 'NODE_16_0',
         versions: [['16.6']],
         includes: { AT: true },
     },
     SAFARI_7_0:
     {
-        engine: 'Safari 7.0',
         families: ['Safari'],
         versions: ['7.0'],
         includes:
@@ -1209,7 +1188,6 @@ var featureInfos =
     },
     SAFARI_7_1:
     {
-        engine: 'Safari 7.1 and Safari 8',
         inherits: 'SAFARI_7_0',
         versions: [['7.1', '8']],
         includes: { ARRAY_ITERATOR: true, FILL: true },
@@ -1218,7 +1196,6 @@ var featureInfos =
     SAFARI_8: { aliasFor: 'SAFARI_7_1' },
     SAFARI_9:
     {
-        engine: 'Safari 9',
         inherits: 'SAFARI_7_1',
         versions: ['9'],
         includes:
@@ -1231,7 +1208,6 @@ var featureInfos =
     },
     SAFARI_10:
     {
-        engine: 'Safari 10 and Safari 11',
         inherits: 'SAFARI_9',
         versions: [['10', '11']],
         includes:
@@ -1250,23 +1226,20 @@ var featureInfos =
     },
     SAFARI_12:
     {
-        engine: 'Safari 12',
         inherits: 'SAFARI_10',
         versions: ['12'],
         includes: { FLAT: true },
     },
     SAFARI_13:
     {
-        engine: 'Safari 13 and Safari 14.0.0',
         inherits: 'SAFARI_12',
         versions: [['13', '14.0.0']],
         includes: { REGEXP_STRING_ITERATOR: true },
     },
     SAFARI_14_0_1:
     {
-        engine: 'Safari 14.0.1 to 14.0.3',
         inherits: 'SAFARI_13',
-        versions: [['14.0.1', '14.0.3']],
+        versions: [['14.0.1',, '14.0.3']],
         includes: { INTL: true, PLAIN_INTL: false },
     },
     SAFARI:
@@ -1276,7 +1249,6 @@ var featureInfos =
     },
     SAFARI_14_1:
     {
-        engine: 'Safari 14.1 or later',
         inherits: 'SAFARI_14_0_1',
         versions: [['14.1']],
         includes: { CONSOLE: false },
@@ -1284,6 +1256,45 @@ var featureInfos =
 };
 (function ()
 {
+    function describeEngine(engine)
+    {
+        var description = 'Features available in ' + engine + '.';
+        return description;
+    }
+
+    function formatEngine(compatibilities)
+    {
+        var appendix = '';
+        var parts =
+        compatibilities.map
+        (
+            function (compatibility)
+            {
+                var family = compatibility.family;
+                var version = compatibility.version;
+                var part = family;
+                if (typeof version === 'string')
+                    part += ' ' + version;
+                else
+                {
+                    part += ' ' + version.from;
+                    var to = version.to;
+                    if (to != null)
+                        part += (version.dense ? ' and ' + family + ' ' : ' to ') + to;
+                    else
+                        appendix = ' or later';
+                }
+                var tag = compatibility.tag;
+                if (tag != null)
+                    part += ' ' + tag;
+                return part;
+            }
+        );
+        var lastPart = parts.pop();
+        var engine = (parts.length ? parts.join(', ') + ' and ' + lastPart : lastPart) + appendix;
+        return engine;
+    }
+
     var autoIncludes =
     _Object_keys(featureInfos).filter
     (
@@ -1300,20 +1311,7 @@ var featureInfos =
         engine: 'the current environment',
         includes: autoIncludes,
     };
-    _Object_keys(featureInfos).forEach
-    (
-        function (featureName)
-        {
-            var featureInfo = featureInfos[featureName];
-            var engine = featureInfo.engine;
-            if (engine != null)
-            {
-                var description = 'Features available in ' + engine + '.';
-                featureInfo.description = description;
-            }
-        }
-    );
-    Feature = createFeatureClass(featureInfos);
+    Feature = createFeatureClass(featureInfos, formatEngine, describeEngine);
     ELEMENTARY = Feature.ELEMENTARY;
     featureInfos = null;
     assignNoEnum(Feature.prototype, { restrict: restrict });

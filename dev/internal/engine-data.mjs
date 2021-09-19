@@ -44,9 +44,8 @@ export const getAvailabilityByFeature =
 
 export function getDescription(compatibilities, compatibilityIndex, appendPlus)
 {
-    const { version } = compatibilities[compatibilityIndex];
-    let description = version.value ?? version.from;
-    const { tag } = version;
+    const { tag, version } = compatibilities[compatibilityIndex];
+    let description = typeof version === 'string' ? version : version.from;
     if (tag != null)
         description += ` ${tag}`;
     if (appendPlus && !isLastVersion(compatibilities, compatibilityIndex))
@@ -56,10 +55,10 @@ export function getDescription(compatibilities, compatibilityIndex, appendPlus)
 
 function isLastVersion(compatibilities, index)
 {
-    const { value } = compatibilities[index].version;
-    if (value == null)
+    const { version } = compatibilities[index];
+    if (typeof version !== 'string')
         return false;
-    const lastValue = compatibilities.at(-1).version.value;
-    const returnValue = value === lastValue;
+    const lastVersion = compatibilities.at(-1).version;
+    const returnValue = version === lastVersion;
     return returnValue;
 }
