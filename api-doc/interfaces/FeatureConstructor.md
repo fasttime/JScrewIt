@@ -146,7 +146,6 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [SAFARI_14_1](FeatureConstructor.md#safari_14_1)
 - [SAFARI_7_0](FeatureConstructor.md#safari_7_0)
 - [SAFARI_7_1](FeatureConstructor.md#safari_7_1)
-- [SAFARI_8](FeatureConstructor.md#safari_8)
 - [SAFARI_9](FeatureConstructor.md#safari_9)
 - [SELF](FeatureConstructor.md#self)
 - [SELF_OBJ](FeatureConstructor.md#self_obj)
@@ -675,7 +674,7 @@ Features available in Firefox 83 to 89.
 
 **`remarks`**
 
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF_PREV` instead of `FF_83` for long term support.
+This feature may be replaced or removed in the near future when current browser versions become obsolete.
 
 **`see`**
 
@@ -695,7 +694,7 @@ Features available in Firefox 90 or later.
 
 **`remarks`**
 
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF` instead of `FF_90` for long term support.
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF` or `FF_PREV` instead of `FF_90` for long term support.
 
 **`see`**
 
@@ -727,7 +726,7 @@ ___
 
 Features available in the previous to current version of Firefox.
 
-An alias for `FF_83`.
+An alias for `FF_90`.
 
 #### Inherited from
 
@@ -1518,18 +1517,6 @@ Features available in Safari 7.1 and Safari 8.
 #### Inherited from
 
 [FeatureAll](FeatureAll.md).[SAFARI_7_1](FeatureAll.md#safari_7_1)
-
-___
-
-### SAFARI\_8
-
-• **SAFARI\_8**: [`PredefinedFeature`](PredefinedFeature.md)
-
-An alias for `SAFARI_7_1`.
-
-#### Inherited from
-
-[FeatureAll](FeatureAll.md).[SAFARI_8](FeatureAll.md#safari_8)
 
 ___
 

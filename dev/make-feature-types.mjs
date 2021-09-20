@@ -183,16 +183,23 @@ export default
                 {
                     if ('unstable' in featureObj.attributes)
                     {
-                        const formattedAliases =
-                        OR_FORMATTER.format(getAliasesOf(featureObj).map(alias => `\`${alias}\``));
-                        const formattedFeatureName = `\`${featureName}\``;
+                        let remarks =
+                        'This feature may be replaced or removed in the near future when current ' +
+                        'browser versions become obsolete.';
+                        const aliases = getAliasesOf(featureObj);
+                        if (aliases.length)
+                        {
+                            const formattedAliases =
+                            OR_FORMATTER.format(aliases.map(alias => `\`${alias}\``));
+                            const formattedFeatureName = `\`${featureName}\``;
+                            remarks +=
+                            ` Use ${formattedAliases} instead of ${formattedFeatureName} for ` +
+                            'long term support.';
+                        }
                         descriptionLines.push
                         (
                             '@remarks',
-                            'This feature may be replaced or removed in the near future when ' +
-                            'current browser versions become obsolete. ' +
-                            `Use ${formattedAliases} instead of ${formattedFeatureName} for long ` +
-                            'term support.',
+                            remarks,
                             '@see',
                             `[Engine Support Policy](${ENGINE_SUPPORT_POLICY_LINK})`,
                         );

@@ -1000,16 +1000,16 @@ var featureInfos =
         attributes:
         { 'char-increment-restriction': null, 'unstable': null, 'web-worker-restriction': null },
     },
-    FF_PREV:
-    {
-        description: describeEngine('the previous to current version of Firefox'),
-        aliasFor: 'FF_83',
-    },
     FF_83:
     {
         inherits: 'FF_78',
         versions: [['83',, '89']],
         includes: { INTL: true, PLAIN_INTL: false },
+    },
+    FF_PREV:
+    {
+        description: describeEngine('the previous to current version of Firefox'),
+        aliasFor: 'FF_90',
     },
     FF:
     {
@@ -1199,7 +1199,6 @@ var featureInfos =
         includes: { ARRAY_ITERATOR: true, FILL: true },
         attributes: { 'no-console-in-web-worker': undefined, 'safari-bug-21820506': null },
     },
-    SAFARI_8: { aliasFor: 'SAFARI_7_1' },
     SAFARI_9:
     {
         inherits: 'SAFARI_7_1',
