@@ -127,7 +127,7 @@ function assignNoEnum(target: object, source: object): void
 export function createFeatureClass
 (
     featureInfos: { readonly [FeatureName in string]: FeatureInfo; },
-    formatEngineDescription?: (compatibilities: readonly CompatibilityInfo[]) => string,
+    formatEngineDescription?: (compatibilities: CompatibilityInfo[]) => string,
 ):
 FeatureConstructor
 {
@@ -499,7 +499,7 @@ FeatureConstructor
                     if (inherits != null)
                         completeFeature(inherits);
                     let wrappedCheck: (() => boolean) | null;
-                    let compatibilities: readonly CompatibilityInfo[] | undefined;
+                    let compatibilities: CompatibilityInfo[] | undefined;
                     const { check } = info;
                     if (check !== undefined)
                     {
@@ -552,43 +552,40 @@ FeatureConstructor
                         const { versions } = info;
                         if (inherits != null)
                             families ??= familiesMap[inherits];
-                        if (families)
-                        {
-                            familiesMap[name] = families;
-                            const tag = getInfoStringField('compatibilityTag');
-                            const shortTag = getInfoStringField('compatibilityShortTag');
-                            compatibilities =
-                            families.map
-                            (
-                                (family: string, index: number): CompatibilityInfo =>
+                        familiesMap[name] = families!;
+                        const tag = getInfoStringField('compatibilityTag');
+                        const shortTag = getInfoStringField('compatibilityShortTag');
+                        compatibilities =
+                        families!.map
+                        (
+                            (family: string, index: number): CompatibilityInfo =>
+                            {
+                                family = esToString(family);
+                                const versionInfo = versions[index];
+                                let version: EngineVersion;
+                                if (_Array_isArray(versionInfo))
                                 {
-                                    const versionInfo = versions[index];
-                                    let version: EngineVersion;
-                                    if (_Array_isArray(versionInfo))
-                                    {
-                                        const { length } = versionInfo;
-                                        const from = esToString(versionInfo[0]);
-                                        const to =
-                                        length < 2 ?
-                                        undefined : esToString(versionInfo[length - 1]);
-                                        const dense = versionInfo.length === 2;
-                                        version = _Object_freeze({ from, to, dense });
-                                    }
-                                    else
-                                        version = esToString(versionInfo);
-                                    const compatibility =
-                                    _Object_freeze
-                                    ({ family, featureName: name, version, tag, shortTag });
-                                    const familyCompatibilities =
-                                    (FAMILIES[family] as CompatibilityInfo[] | undefined) ??
-                                    (FAMILIES[family] = []);
-                                    familyCompatibilities.push(compatibility);
-                                    return compatibility;
-                                },
-                            );
-                            if (description == null)
-                                description = formatEngineDescription?.(compatibilities);
-                        }
+                                    const { length } = versionInfo;
+                                    const from = esToString(versionInfo[0]);
+                                    const to =
+                                    length < 2 ? undefined : esToString(versionInfo[length - 1]);
+                                    const dense = versionInfo.length === 2;
+                                    version = _Object_freeze({ from, to, dense });
+                                }
+                                else
+                                    version = esToString(versionInfo);
+                                const compatibility =
+                                _Object_freeze
+                                ({ family, featureName: name, version, tag, shortTag });
+                                const familyCompatibilities =
+                                (FAMILIES[family] as CompatibilityInfo[] | undefined) ??
+                                (FAMILIES[family] = []);
+                                familyCompatibilities.push(compatibility);
+                                return compatibility;
+                            },
+                        );
+                        if (description == null)
+                            description = formatEngineDescription?.(compatibilities);
                     }
                     const attributes = createMap<string | null>();
                     if (inherits != null)

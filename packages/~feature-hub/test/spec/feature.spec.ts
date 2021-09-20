@@ -1,6 +1,7 @@
 import { createFeatureClass, featuresToMask }   from '../../src/feature';
 
-import type { Feature, FeatureConstructor, FeatureElement, FeatureElementOrCompatibleArray }
+import type
+{ CompatibilityInfo, Feature, FeatureConstructor, FeatureElement, FeatureElementOrCompatibleArray }
 from '../../src/feature';
 
 import { maskAreEqual, maskIntersection, maskNew, maskNext, maskUnion }
@@ -242,6 +243,82 @@ describe
             },
         );
     }
+);
+
+describe
+(
+    'Feature.FEATURES',
+    (): void =>
+    {
+        it
+        (
+            'is frozen',
+            (): void =>
+            {
+                const Feature = createFeatureClass({ });
+                assert(Object.isFrozen(Feature.FAMILIES));
+            },
+        );
+
+        it
+        (
+            'has no inherited properties',
+            (): void =>
+            {
+                const Feature = createFeatureClass({ });
+                for
+                (
+                    let obj: unknown = Feature.FAMILIES;
+                    obj !== null;
+                    obj = Object.getPrototypeOf(obj)
+                )
+                    assert.deepEqual(Object.getOwnPropertyNames(obj), []);
+            },
+        );
+
+        it
+        (
+            'contains expected data',
+            (): void =>
+            {
+                const Feature =
+                createFeatureClass
+                (
+                    {
+                        FOO_1: { families: ['foo', 'bar'], versions: ['1', 'I'] },
+                        FOO_2: { inherits: 'FOO_1', versions: [['2', '3'], ['II', 'III']] },
+                        FOO_4: { inherits: 'FOO_2', families: ['foo'], versions: [['4']] },
+                    },
+                );
+                const actualFoo = Feature.FAMILIES.foo;
+                const expectedFoo =
+                [
+                    {
+                        family:         'foo',
+                        featureName:    'FOO_1',
+                        shortTag:       undefined,
+                        tag:            undefined,
+                        version:        '1',
+                    },
+                    {
+                        family:         'foo',
+                        featureName:    'FOO_2',
+                        shortTag:       undefined,
+                        tag:            undefined,
+                        version:        { from: '2', to: '3', dense: true },
+                    },
+                    {
+                        family:         'foo',
+                        featureName:    'FOO_4',
+                        shortTag:       undefined,
+                        tag:            undefined,
+                        version:        { from: '4', to: undefined, dense: false },
+                    },
+                ];
+                assert.deepEqual(actualFoo, expectedFoo);
+            },
+        );
+    },
 );
 
 describe
@@ -513,18 +590,33 @@ it
     'Feature.descriptionFor',
     (): void =>
     {
+        let formatEngineDescriptionCalls = 0;
         const Feature =
         createFeatureClass
         (
             {
-                FOO: { description: 'foo' },
-                BAR: { aliasFor: 'FOO' },
-                BAZ: { aliasFor: 'FOO', description: 'baz' },
+                DEBIAN:     { description: 'Debian', families: ['Linux'], versions: ['11'] },
+                UBUNTU:     { aliasFor: 'DEBIAN' },
+                MX:         { aliasFor: 'DEBIAN', description: 'MX Linux' },
+                WINDOWS:    { families: ['Windows'], versions: ['10'] },
             },
+            (compatibilities: readonly CompatibilityInfo[]): string =>
+            compatibilities
+            .map
+            (
+                ({ family, version }): string =>
+                {
+                    ++formatEngineDescriptionCalls;
+                    const description = `${family} ${typeof version === 'string' ? version : ''}`;
+                    return description;
+                },
+            )
+            .join(),
         );
-        assert.strictEqual(Feature.descriptionFor('FOO'), 'foo');
-        assert.strictEqual(Feature.descriptionFor('BAR'), 'foo');
-        assert.strictEqual(Feature.descriptionFor('BAZ'), 'baz');
+        assert.strictEqual(Feature.descriptionFor('DEBIAN'), 'Debian');
+        assert.strictEqual(Feature.descriptionFor('UBUNTU'), 'Debian');
+        assert.strictEqual(Feature.descriptionFor('MX'), 'MX Linux');
+        assert.strictEqual(Feature.descriptionFor('WINDOWS'), 'Windows 10');
         assert.throws
         (
             // @ts-expect-error
@@ -532,6 +624,7 @@ it
             (error): boolean =>
             error instanceof Error && error.message === 'Unknown feature "undefined"',
         );
+        assert.strictEqual(formatEngineDescriptionCalls, 1);
     },
 );
 
