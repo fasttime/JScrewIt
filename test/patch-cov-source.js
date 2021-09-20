@@ -13,54 +13,34 @@ const MARKER_LINES =
 };
 
 const c8Require = createRequire(require.resolve('c8'));
-const CovLine = c8Require('v8-to-istanbul/lib/line');
-const CovSource = c8Require('v8-to-istanbul/lib/source');
-CovSource.prototype._buildLines =
-function (source)
+const { prototype: covSourcePrototype } = c8Require('v8-to-istanbul/lib/source');
+const { _parseIgnore } = covSourcePrototype;
+covSourcePrototype._parseIgnore =
+function (lineStr)
 {
-    const ignoredRanges = [];
-    const ignoreRange = (from, to) => ignoredRanges.push({ from, to });
-    const { lines } = this;
-    let position = 0;
-    let embeddedModuleName;
-    for (const [index, lineStr] of source.split(/(?<=\r?\n)/).entries())
+    let ignoreToken = _parseIgnore.call(this, lineStr);
+    if (ignoreToken)
+        return ignoreToken;
+    const count = MARKER_LINES[lineStr];
+    if (count != null)
     {
-        const line = new CovLine(index + 1, position, lineStr);
-        const testIgnoreNextLines =
-        lineStr.match(/^\s*\/\* c8 ignore next (?:(?<count>[0-9]+) )\*\/\s*$/);
-        if (testIgnoreNextLines)
-        {
-            const countStr = testIgnoreNextLines.groups.count;
-            const count = countStr ? +countStr : 1;
-            ignoreRange(index, index + count);
-        }
-        else if (/\/\* c8 ignore next \*\//.test(lineStr))
-            ignoreRange(index, index);
-        else
-        {
-            const count = MARKER_LINES[lineStr];
-            if (count != null)
-                ignoreRange(index, index + count);
-        }
-        {
-            const match =
-            /^\s*\/\/ ([-\d\w~]+) – https:\/\/github\.com\/fasttime\/.*/.exec(lineStr);
-            if (match?.[1] === '~feature-hub')
-                [, embeddedModuleName] = match;
-        }
-        if (embeddedModuleName)
-        {
-            line.ignore = true;
-            const match = /^\s*\/\/ End of module ([-\d\w~]+)\s*$/.exec(lineStr);
-            if (match?.[1] === embeddedModuleName)
-                embeddedModuleName = undefined;
-        }
-        lines.push(line);
-        position += lineStr.length;
+        ignoreToken = { count };
+        return ignoreToken;
     }
-    for (const { from, to } of ignoredRanges)
     {
-        for (let index = from; index <= to; ++index)
-            lines[index].ignore = true;
+        const match = /^\s*\/\/ ([-\d\w~]+) – https:\/\/github\.com\/fasttime\/.*/.exec(lineStr);
+        if (match?.[1] === '~feature-hub')
+        {
+            ignoreToken = { start: true, stop: false };
+            return ignoreToken;
+        }
+    }
+    {
+        const match = /^\s*\/\/ End of module ([-\d\w~]+)\s*$/.exec(lineStr);
+        if (match?.[1] === '~feature-hub')
+        {
+            ignoreToken = { start: false, stop: true };
+            return ignoreToken;
+        }
     }
 };
