@@ -217,12 +217,11 @@ export default function createEngineSelectionBox()
                     var versionCheckBox = null;
                     if (compatibility)
                     {
-                        var versionInfo = compatibility.version;
-                        var version = versionInfo.value;
-                        if (version == null)
+                        var version = compatibility.version;
+                        if (typeof version !== 'string')
                         {
-                            var from = versionInfo.from;
-                            var to = versionInfo.to;
+                            var from = version.from;
+                            var to = version.to;
                             version = to == null ? from + '+' : from + '–' + to;
                         }
                         var shortTag = compatibility.shortTag;
