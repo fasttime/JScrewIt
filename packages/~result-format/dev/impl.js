@@ -35,14 +35,8 @@ export async function lint()
         },
         {
             src: ['*.js', 'dev/**/*.js'],
-            envs: ['node'],
-            parser: '@babel/eslint-parser',
-            parserOptions:
-            {
-                babelOptions: { plugins: ['@babel/plugin-syntax-top-level-await'] },
-                ecmaVersion: 2021,
-                requireConfigFile: false,
-            },
+            envs: 'node',
+            parserOptions: { ecmaVersion: 2022, sourceType: 'module' },
         },
     );
 }

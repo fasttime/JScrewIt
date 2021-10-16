@@ -43,8 +43,6 @@
     "test": "mocha --check-leaks --ui=ebdd test/{*,*/*}.spec.js"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "latest",
-    "@babel/plugin-syntax-top-level-await": "latest",
     "@fasttime/lint": "latest",
     "@rollup/plugin-node-resolve": "latest",
     "acorn": "latest",

@@ -7,18 +7,18 @@ class MaskIndex<ValueType>
     protected readonly _index = Object.create(null) as { [KeyType in string]?: ValueType; };
     private _size = 0;
 
+    /* The number of entries in the current collection. */
+    public get size(): number
+    {
+        return this._size;
+    }
+
     /** Determines whether the current collection contains an entry for a specified mask. */
     public has(mask: Mask): boolean
     {
         const key = keyFor(mask);
         const returnValue = key in this._index;
         return returnValue;
-    }
-
-    /* The number of entries in the current collection. */
-    public get size(): number
-    {
-        return this._size;
     }
 
     protected _setEntry(mask: Mask, value: ValueType): void

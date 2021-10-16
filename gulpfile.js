@@ -134,18 +134,12 @@ task
             {
                 src: ['dev/**/*.js', 'gulpfile.js', 'test/patch-cov-source.js', '!dev/legacy/**'],
                 envs: 'node',
-                parserOptions: { ecmaVersion: 2021 },
+                parserOptions: { ecmaVersion: 2022 },
             },
             {
                 src: ['dev/**/*.mjs'],
                 envs: 'node',
-                parser: '@babel/eslint-parser',
-                parserOptions:
-                {
-                    babelOptions: { plugins: ['@babel/plugin-syntax-top-level-await'] },
-                    ecmaVersion: 2021,
-                    requireConfigFile: false,
-                },
+                parserOptions: { ecmaVersion: 2022, sourceType: 'module' },
             },
             {
                 src:

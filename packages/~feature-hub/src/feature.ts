@@ -187,7 +187,9 @@ FeatureConstructor
         let arg0: FeatureElement | readonly FeatureElement[];
         const features: ArrayLike<FeatureElement> =
         arguments.length === 1 &&
+        // eslint-disable-next-line prefer-rest-params
         _Array_isArray(arg0 = arguments[0] as FeatureElement | readonly FeatureElement[]) ?
+        // eslint-disable-next-line prefer-rest-params
         arg0 : arguments as ArrayLike<FeatureElement>;
         const mask = featureArrayLikeToMask(features);
         const compatible = isMaskCompatible(mask);

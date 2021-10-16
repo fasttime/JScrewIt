@@ -44,18 +44,6 @@ export class DynamicSolution extends AbstractSolution
     private _replacement?:          string;
     private readonly _solutions:    Solution[] = [];
 
-    public append(solution: Solution): void
-    {
-        this._replacement = undefined;
-        this._solutions.push(solution);
-    }
-
-    public prepend(solution: Solution): void
-    {
-        this._replacement = undefined;
-        this._solutions.unshift(solution);
-    }
-
     public get replacement(): string
     {
         const replacement =
@@ -91,6 +79,18 @@ export class DynamicSolution extends AbstractSolution
                     return solutionType;
                 }
         }
+    }
+
+    public append(solution: Solution): void
+    {
+        this._replacement = undefined;
+        this._solutions.push(solution);
+    }
+
+    public prepend(solution: Solution): void
+    {
+        this._replacement = undefined;
+        this._solutions.unshift(solution);
     }
 }
 
