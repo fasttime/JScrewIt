@@ -1,14 +1,5 @@
 import
 {
-    APPEND_LENGTH_OF_DIGITS,
-    APPEND_LENGTH_OF_DIGIT_0,
-    APPEND_LENGTH_OF_DOT,
-    APPEND_LENGTH_OF_MINUS,
-    APPEND_LENGTH_OF_SMALL_E,
-}
-from '../append-lengths';
-import
-{
     CHARACTERS,
     CONSTANTS,
     JSFUCK_INFINITY,
@@ -17,13 +8,11 @@ import
     SIMPLE,
 }
 from '../definitions';
-import expressParseCached           from '../express-parse-cached';
-import { Feature }                  from '../features';
-import findDefinition               from './find-definition';
+import expressParseCached                                       from '../express-parse-cached';
+import { Feature }                                              from '../features';
 import
 {
     _Array_isArray,
-    _Array_prototype_forEach_call,
     _JSON_stringify,
     _Math_abs,
     _Object_create,
@@ -38,15 +27,16 @@ from '../obj-utils';
 import
 { SCREW_AS_STRING, SCREW_AS_BONDED_STRING, SCREW_NORMAL, ScrewBuffer }
 from '../screw-buffer';
-import { SimpleSolution }           from '../solution';
-import { extraZeros, initStaticEncoder, replaceStaticString, shortestOf }
-from './encoder-utils';
-import replaceCharByAtob            from './replace-char-by-atob';
-import replaceCharByCharCode        from './replace-char-by-char-code';
-import replaceCharByEscSeq          from './replace-char-by-esc-seq';
-import replaceCharByUnescape        from './replace-char-by-unescape';
-import { maskIncludes, maskNew }    from '~feature-hub';
-import { SolutionType }             from '~solution';
+import { SimpleSolution }                                       from '../solution';
+import { initStaticEncoder, replaceStaticString, shortestOf }   from './encoder-utils';
+import findDefinition                                           from './find-definition';
+import formatPositiveNumber                                     from './format-positive-number';
+import replaceCharByAtob                                        from './replace-char-by-atob';
+import replaceCharByCharCode                                    from './replace-char-by-char-code';
+import replaceCharByEscSeq                                      from './replace-char-by-esc-seq';
+import replaceCharByUnescape                                    from './replace-char-by-unescape';
+import { maskIncludes, maskNew }                                from '~feature-hub';
+import { SolutionType }                                         from '~solution';
 
 var ATOB_MASK = Feature.ATOB.mask;
 
@@ -104,12 +94,6 @@ function defaultResolveCharacter(encoder, char)
     return solution;
 }
 
-function evalNumber(preMantissa, lastDigit, exp)
-{
-    var value = +(preMantissa + lastDigit + 'e' + exp);
-    return value;
-}
-
 function findOptimalSolution(encoder, source, entries, defaultSolutionType)
 {
     var optimalSolution;
@@ -131,73 +115,6 @@ function findOptimalSolution(encoder, source, entries, defaultSolutionType)
         encoder
     );
     return optimalSolution;
-}
-
-function formatPositiveNumber(number)
-{
-    function getMantissa()
-    {
-        var lastDigitIndex = usefulDigits - 1;
-        var preMantissa = digits.slice(0, lastDigitIndex);
-        var lastDigit = +digits[lastDigitIndex];
-        var value = evalNumber(preMantissa, lastDigit, exp);
-        for (;;)
-        {
-            var decreasedLastDigit = lastDigit - 1;
-            var newValue = evalNumber(preMantissa, decreasedLastDigit, exp);
-            if (newValue !== value)
-                break;
-            lastDigit = decreasedLastDigit;
-        }
-        var mantissa = preMantissa + lastDigit;
-        return mantissa;
-    }
-
-    var str;
-    var match = /^(\d+)(?:\.(\d+))?(?:e(.+))?$/.exec(number);
-    var digitsAfterDot = match[2] || '';
-    var digits = (match[1] + digitsAfterDot).replace(/^0+/, '');
-    var usefulDigits = digits.search(/0*$/);
-    var exp = (match[3] | 0) - digitsAfterDot.length + digits.length - usefulDigits;
-    var mantissa = getMantissa();
-    if (exp >= 0)
-    {
-        if (exp < 10)
-            str = mantissa + extraZeros(exp);
-        else if (exp % 100 === 99 && (exp > 99 || mantissa[1]))
-            str = mantissa.replace(/.$/, '.$&e') + (exp + 1);
-        else
-            str = mantissa + 'e' + exp;
-    }
-    else
-    {
-        if (exp >= -mantissa.length)
-            str = mantissa.slice(0, exp) + '.' + mantissa.slice(exp);
-        else
-        {
-            var extraZeroCount = -mantissa.length - exp;
-            var extraLength = APPEND_LENGTH_OF_DOT + APPEND_LENGTH_OF_DIGIT_0 * extraZeroCount;
-            str =
-            replaceNegativeExponential(mantissa, exp, extraLength) ||
-            '.' + extraZeros(extraZeroCount) + mantissa;
-        }
-    }
-    return str;
-}
-
-function getMultiDigitLength(str)
-{
-    var appendLength = 0;
-    _Array_prototype_forEach_call
-    (
-        str,
-        function (digit)
-        {
-            var digitAppendLength = APPEND_LENGTH_OF_DIGITS[digit];
-            appendLength += digitAppendLength;
-        }
-    );
-    return appendLength;
 }
 
 function getReplacers(optimize)
@@ -252,39 +169,6 @@ function replaceIdentifier(encoder, identifier, bondStrength)
     if (groupingRequired)
         replacement = '(' + replacement + ')';
     return replacement;
-}
-
-export function replaceMultiDigitNumber(number)
-{
-    var str = formatPositiveNumber(number);
-    var replacement = replaceStaticString(str);
-    return replacement;
-}
-
-function replaceNegativeExponential(mantissa, exp, rivalExtraLength)
-{
-    var extraZeroCount;
-    if (exp % 100 > 7 - 100)
-    {
-        if (exp % 10 > -7)
-            extraZeroCount = 0;
-        else
-            extraZeroCount = 10 + exp % 10;
-    }
-    else
-        extraZeroCount = 100 + exp % 100;
-    mantissa += extraZeros(extraZeroCount);
-    exp -= extraZeroCount;
-    var extraLength =
-    APPEND_LENGTH_OF_DIGIT_0 * extraZeroCount +
-    APPEND_LENGTH_OF_SMALL_E +
-    APPEND_LENGTH_OF_MINUS +
-    getMultiDigitLength(_String(-exp));
-    if (extraLength < rivalExtraLength)
-    {
-        var str = mantissa + 'e' + exp;
-        return str;
-    }
 }
 
 function replacePrimaryExpr(encoder, unit, bondStrength, unitIndices, maxLength, replacers)

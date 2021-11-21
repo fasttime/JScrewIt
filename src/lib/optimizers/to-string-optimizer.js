@@ -8,10 +8,11 @@
 //
 // The leading append plus is omitted when the optimized cluster is the first element of a group.
 
-import { replaceMultiDigitNumber }  from '../encoder/encoder-base';
-import { _parseInt, createEmpty }   from '../obj-utils';
-import { SimpleSolution }           from '../solution';
-import { SolutionType }             from '~solution';
+import { replaceStaticString }              from '../encoder/encoder-utils';
+import formatPositiveNumber                 from '../encoder/format-positive-number';
+import { _String, _parseInt, createEmpty }  from '../obj-utils';
+import { SimpleSolution }                   from '../solution';
+import { SolutionType }                     from '~solution';
 
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
 var CLUSTER_EXTRA_LENGTHS = [];
@@ -20,6 +21,29 @@ var MAX_RADIX = 36;
 var MAX_SAFE_INTEGER = 0x1fffffffffffff;
 var MIN_SOLUTION_SPAN = 2;
 var RADIX_REPLACEMENTS = [];
+
+// DECIMAL_MIN_LENGTHS is indexed by decimalDigitMaxCount (the number of digits used to write
+// MAX_SAFE_INTEGER in base radix).
+// decimalDigitMaxCount may only range from 11 (for radix 36) to 15 (for radix 12).
+var DECIMAL_MIN_LENGTHS =
+[
+    ,
+    ,
+    ,
+    ,
+    ,
+    ,
+    ,
+    ,
+    ,
+    ,
+    ,
+    48, // 1e10
+    50, // 1e11
+    54, // 1e12
+    ,
+    64, // 1e14
+];
 
 function createOptimizer(toStringReplacement)
 {
@@ -70,7 +94,8 @@ function createOptimizer(toStringReplacement)
             var decimal = _parseInt(chars, radix);
             if (decimal > MAX_SAFE_INTEGER)
                 return clusterAppendLength == null;
-            var decimalReplacement = replaceMultiDigitNumber(decimal);
+            var decimalStr = formatPositiveNumber(decimal);
+            var decimalReplacement = replaceStaticString(decimalStr);
             // Adding 3 for leading "+(" and trailing ")".
             var decimalLength = decimalReplacement.length + 3;
             var radixReplacement = RADIX_REPLACEMENTS[radix];
@@ -187,33 +212,10 @@ export default function (encoder)
 var initialize =
 function ()
 {
-    // DECIMAL_MIN_LENGTHS is indexed by decimalDigitMaxCount (the number of digits used to write
-    // MAX_SAFE_INTEGER in base radix).
-    // decimalDigitMaxCount may only range from 11 (for radix 36) to 15 (for radix 12).
-    var DECIMAL_MIN_LENGTHS =
-    [
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        48, // 1e10
-        50, // 1e11
-        54, // 1e12
-        ,
-        64, // 1e14
-    ];
-
     var minLength = Infinity;
     for (var radix = MAX_RADIX; radix >= 12; --radix)
     {
-        var replacement = replaceMultiDigitNumber(radix);
+        var replacement = replaceStaticString(_String(radix));
         var length = replacement.length;
         if (length < minLength)
             minLength = length;

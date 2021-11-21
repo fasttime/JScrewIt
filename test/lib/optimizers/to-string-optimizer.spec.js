@@ -209,6 +209,31 @@
                     );
                     it
                     (
+                        'uses exponential optimization',
+                        function ()
+                        {
+                            var toStringReplacement = padRight('"toString"', 100);
+                            var optimizer = createOptimizer(toStringReplacement);
+                            var solutions =
+                            Array.prototype.map.call
+                            (
+                                1e10.toString(30),
+                                function (char)
+                                {
+                                    var solution = { appendLength: 50, source: char };
+                                    optimizer.appendLengthOf(solution);
+                                    return solution;
+                                }
+                            );
+                            optimizeSolutions([optimizer], solutions, false);
+                            expect(solutions.length).toBe(1);
+                            expect(solutions[0].replacement)
+                            // (+"1e10")[padRight('"toString"', 100)]("30")
+                            .toMatch(/^\(.{48}\)\[.{100}\]\(.{20}\)$/);
+                        }
+                    );
+                    it
+                    (
                         'does not cluster with decimals above MAX_SAFE_INTEGER',
                         function ()
                         {
