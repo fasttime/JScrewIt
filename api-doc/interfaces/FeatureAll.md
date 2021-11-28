@@ -37,8 +37,6 @@
 - [ESC\_REGEXP\_LF](FeatureAll.md#esc_regexp_lf)
 - [ESC\_REGEXP\_SLASH](FeatureAll.md#esc_regexp_slash)
 - [FF](FeatureAll.md#ff)
-- [FF\_78](FeatureAll.md#ff_78)
-- [FF\_83](FeatureAll.md#ff_83)
 - [FF\_90](FeatureAll.md#ff_90)
 - [FF\_ESR](FeatureAll.md#ff_esr)
 - [FF\_PREV](FeatureAll.md#ff_prev)
@@ -187,7 +185,7 @@ Existence of the native function Array.prototype.at.
 
 **`remarks`**
 
-Available in Chrome, Edge, Firefox 90+, Opera, and Node.js 16.6+.
+Available in Chrome, Edge, Firefox, Opera, and Node.js 16.6+.
 
 ___
 
@@ -407,38 +405,6 @@ An alias for `FF_90`.
 
 ___
 
-### FF\_78
-
-• **FF\_78**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Firefox 78 to 82.
-
-**`remarks`**
-
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF_ESR` instead of `FF_78` for long term support.
-
-**`see`**
-
-[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
-
-___
-
-### FF\_83
-
-• **FF\_83**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Firefox 83 to 89.
-
-**`remarks`**
-
-This feature may be replaced or removed in the near future when current browser versions become obsolete.
-
-**`see`**
-
-[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
-
-___
-
 ### FF\_90
 
 • **FF\_90**: [`PredefinedFeature`](PredefinedFeature.md)
@@ -447,7 +413,7 @@ Features available in Firefox 90 or later.
 
 **`remarks`**
 
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF` or `FF_PREV` instead of `FF_90` for long term support.
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF`, `FF_ESR`, or `FF_PREV` instead of `FF_90` for long term support.
 
 **`see`**
 
@@ -461,7 +427,7 @@ ___
 
 Features available in the current version of Firefox ESR.
 
-An alias for `FF_78`.
+An alias for `FF_90`.
 
 ___
 
@@ -963,7 +929,7 @@ Existence of the global object Intl having the string representation "\[object O
 
 **`remarks`**
 
-Available in Firefox before 83, Internet Explorer 11, Safari 10+ before 14.0.1, Android Browser 4.4, and Node.js 0.12+ before 15.
+Available in Internet Explorer 11, Safari 10+ before 14.0.1, Android Browser 4.4, and Node.js 0.12+ before 15.
 
 ___
 

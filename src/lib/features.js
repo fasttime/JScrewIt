@@ -961,15 +961,26 @@ var featureInfos =
     FF_ESR:
     {
         description: describeEngine('the current version of Firefox ESR'),
-        aliasFor: 'FF_78',
+        aliasFor: 'FF_90',
     },
-    FF_78:
+    FF_PREV:
+    {
+        description: describeEngine('the previous to current version of Firefox'),
+        aliasFor: 'FF_90',
+    },
+    FF:
+    {
+        description: describeEngine('the current stable version of Firefox'),
+        aliasFor: 'FF_90',
+    },
+    FF_90:
     {
         families: ['Firefox'],
-        versions: [['78',, '82']],
+        versions: [['90']],
         includes:
         [
             'ARROW',
+            'AT',
             'ATOB',
             'BARPROP',
             'ESC_HTML_QUOT_ONLY',
@@ -986,12 +997,12 @@ var featureInfos =
             'HISTORY',
             'HTMLDOCUMENT',
             'INCR_CHAR',
+            'INTL',
             'LOCALE_INFINITY',
             'LOCALE_NUMERALS_EXT',
             'LOCATION',
             'NAME',
             'NO_OLD_SAFARI_ARRAY_ITERATOR',
-            'PLAIN_INTL',
             'REGEXP_STRING_ITERATOR',
             'SHORT_LOCALES',
             'STATUS',
@@ -999,28 +1010,6 @@ var featureInfos =
         ],
         attributes:
         { 'char-increment-restriction': null, 'unstable': null, 'web-worker-restriction': null },
-    },
-    FF_83:
-    {
-        inherits: 'FF_78',
-        versions: [['83',, '89']],
-        includes: { INTL: true, PLAIN_INTL: false },
-    },
-    FF_PREV:
-    {
-        description: describeEngine('the previous to current version of Firefox'),
-        aliasFor: 'FF_90',
-    },
-    FF:
-    {
-        description: describeEngine('the current stable version of Firefox'),
-        aliasFor: 'FF_90',
-    },
-    FF_90:
-    {
-        inherits: 'FF_83',
-        versions: [['90']],
-        includes: { AT: true },
     },
     IE_9:
     {

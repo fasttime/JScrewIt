@@ -237,7 +237,7 @@ JScrewIt itself and the code it generates are compatible with the JavaScript eng
 <br>
  ![Edge](https://api.iconify.design/mdi:microsoft-edge.svg) Edge 86+
 <br>
- ![Firefox](https://api.iconify.design/mdi:firefox.svg) Firefox 78+
+ ![Firefox](https://api.iconify.design/mdi:firefox.svg) Firefox 90+
 <br>
  ![Opera](https://api.iconify.design/mdi:opera.svg) Opera 78+
 <br>

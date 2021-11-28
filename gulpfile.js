@@ -5,7 +5,6 @@ const { dest, parallel, series, src, task } = require('gulp');
 async function bundle(inputOptions, outputFile, banner)
 {
     const { parse }     = require('acorn');
-    const { red }       = require('chalk');
     const { rollup }    = require('rollup');
 
     const bundle = await rollup(inputOptions);
@@ -17,6 +16,7 @@ async function bundle(inputOptions, outputFile, banner)
     }
     catch (error)
     {
+        const { default: { red } } = await import('chalk');
         console.error(red('The file \'%s\' is not a valid ECMAScript 5 script.'), outputFile);
         error.showStack = false;
         throw error;

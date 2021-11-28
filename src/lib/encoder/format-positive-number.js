@@ -7,8 +7,8 @@ import
     APPEND_LENGTH_OF_SMALL_E,
 }
 from '../append-lengths';
-import { extraZeros }                               from './encoder-utils';
 import { _Array_prototype_forEach_call, _String }   from '../obj-utils';
+import { extraZeros }                               from './encoder-utils';
 
 function evalNumber(preMantissa, lastDigit, exp)
 {
