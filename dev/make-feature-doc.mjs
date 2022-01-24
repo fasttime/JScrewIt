@@ -72,6 +72,7 @@ export default
         ['Safari'],
         ['Android Browser'],
         ['Node.js'],
+        ['Deno'],
     ];
 
     function getComponentEntries(assignmentMap)

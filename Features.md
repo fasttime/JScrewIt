@@ -259,4 +259,42 @@ This table lists features available in the most common engines.
 </ul>
 </td>
 </tr>
+<tr>
+<td>Deno 1.17+</td>
+<td>
+<ul>
+<li><a href="api-doc/interfaces/FeatureAll.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
+<li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
+<li><a href="api-doc/interfaces/FeatureAll.md#ARROW"><code>ARROW</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#AT"><code>AT</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#ATOB"><code>ATOB</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>)
+<li><a href="api-doc/interfaces/FeatureAll.md#ESC_HTML_QUOT_ONLY"><code>ESC_HTML_QUOT_ONLY</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#ESC_REGEXP_LF"><code>ESC_REGEXP_LF</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#ESC_REGEXP_SLASH"><code>ESC_REGEXP_SLASH</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#FILL"><code>FILL</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#FLAT"><code>FLAT</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#GENERIC_ARRAY_TO_STRING"><code>GENERIC_ARRAY_TO_STRING</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#GMT"><code>GMT</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#INCR_CHAR"><code>INCR_CHAR</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#INTL"><code>INTL</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS"><code>LOCALE_NUMERALS</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a>)
+<li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#NAME"><code>NAME</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#NO_FF_SRC"><code>NO_FF_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#V8_SRC"><code>V8_SRC</code></a>)
+<li><a href="api-doc/interfaces/FeatureAll.md#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#V8_SRC"><code>V8_SRC</code></a>)
+<li><a href="api-doc/interfaces/FeatureAll.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED"><code>OBJECT_UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>)
+<li><a href="api-doc/interfaces/FeatureAll.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
+<li><a href="api-doc/interfaces/FeatureAll.md#UNDEFINED"><code>UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a> and <a href="api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED"><code>OBJECT_UNDEFINED</code></a>)
+<li><a href="api-doc/interfaces/FeatureAll.md#V8_SRC"><code>V8_SRC</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>
+</ul>
+</td>
+</tr>
 </table>

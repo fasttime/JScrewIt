@@ -131,7 +131,7 @@ API Reference.
 ### Features
 
 One peculiarity of JScrewIt is the ability to generate JSFuck code that is customized for a
-particular set of JavaScript engines (web browsers or Node.js).
+particular set of JavaScript engines (web browsers, Node.js or Deno).
 This optimized code is shorter than generic JSFuck code but does not work everywhere.
 To make use of this optimization, we have to specify which *features* the decoder engine is expected
 to support.

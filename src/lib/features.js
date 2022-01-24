@@ -961,6 +961,37 @@ var featureInfos =
         attributes:
         { 'char-increment-restriction': null, 'unstable': null, 'web-worker-restriction': null },
     },
+    DENO_1:
+    {
+        families: ['Deno'],
+        versions: [['1.17']],
+        includes:
+        [
+            'ARROW',
+            'AT',
+            'ATOB',
+            'ESC_HTML_QUOT_ONLY',
+            'ESC_REGEXP_LF',
+            'ESC_REGEXP_SLASH',
+            'FILL',
+            'FLAT',
+            'FROM_CODE_POINT',
+            'FUNCTION_19_LF',
+            'GENERIC_ARRAY_TO_STRING',
+            'GLOBAL_UNDEFINED',
+            'GMT',
+            'INCR_CHAR',
+            'INTL',
+            'LOCALE_INFINITY',
+            'LOCALE_NUMERALS_EXT',
+            'NAME',
+            'NO_OLD_SAFARI_ARRAY_ITERATOR',
+            'REGEXP_STRING_ITERATOR',
+            'V8_SRC',
+            'WINDOW',
+        ],
+        attributes: { 'char-increment-restriction': null },
+    },
     FF_ESR:
     {
         description:    describeEngine('the current version of Firefox ESR'),

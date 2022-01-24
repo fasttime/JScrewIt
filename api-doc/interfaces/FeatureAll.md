@@ -29,6 +29,7 @@
 - [COMPACT](FeatureAll.md#compact)
 - [CONSOLE](FeatureAll.md#console)
 - [DEFAULT](FeatureAll.md#default)
+- [DENO\_1](FeatureAll.md#deno_1)
 - [DOCUMENT](FeatureAll.md#document)
 - [DOMWINDOW](FeatureAll.md#domwindow)
 - [ESC\_HTML\_ALL](FeatureAll.md#esc_html_all)
@@ -150,7 +151,7 @@ Existence of the global object self whose string representation starts with "\[o
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser, and Deno. This feature is not available inside web workers.
 
 ___
 
@@ -162,7 +163,7 @@ The property that the string representation of Array.prototype.entries\(\) start
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Safari 7.1+, Opera, and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Safari 7.1+, Opera, Node.js 0.12+, and Deno.
 
 ___
 
@@ -174,7 +175,7 @@ Support for arrow functions.
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Safari 10+, Opera, and Node.js 4+.
+Available in Chrome, Edge, Firefox, Safari 10+, Opera, Node.js 4+, and Deno.
 
 ___
 
@@ -186,7 +187,7 @@ Existence of the native function Array.prototype.at.
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Safari 15.4+, Opera, and Node.js 16.6+.
+Available in Chrome, Edge, Firefox, Safari 15.4+, Opera, Node.js 16.6+, and Deno.
 
 ___
 
@@ -198,7 +199,7 @@ Existence of the global functions atob and btoa.
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser, and Node.js 16.0+. This feature is not available inside web workers in Safari before 10.
+Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser, Node.js 16.0+, and Deno. This feature is not available inside web workers in Safari before 10.
 
 ___
 
@@ -312,6 +313,14 @@ Minimum feature level, compatible with all supported engines in all environments
 
 ___
 
+### DENO\_1
+
+• **DENO\_1**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Deno 1.17 or later.
+
+___
+
 ### DOCUMENT
 
 • **DOCUMENT**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -356,7 +365,7 @@ The property that double quotation marks in the argument of String.prototype.fon
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
+Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, Node.js, and Deno.
 
 ___
 
@@ -368,7 +377,7 @@ The property that only double quotation marks and no other characters in the arg
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Safari, Opera, Node.js 0.12+, and Deno.
 
 ___
 
@@ -380,7 +389,7 @@ Having regular expressions created with the RegExp constructor use escape sequen
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js 12+.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Node.js 12+, and Deno.
 
 ___
 
@@ -392,7 +401,7 @@ Having regular expressions created with the RegExp constructor use escape sequen
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js 4+.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Node.js 4+, and Deno.
 
 ___
 
@@ -464,7 +473,7 @@ Existence of the native function Array.prototype.fill.
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Safari 7.1+, Opera, and Node.js 4+.
+Available in Chrome, Edge, Firefox, Safari 7.1+, Opera, Node.js 4+, and Deno.
 
 ___
 
@@ -476,7 +485,7 @@ Existence of the native function Array.prototype.flat.
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Safari 12+, Opera, and Node.js 11+.
+Available in Chrome, Edge, Firefox, Safari 12+, Opera, Node.js 11+, and Deno.
 
 ___
 
@@ -488,7 +497,7 @@ Existence of the function String.fromCodePoint.
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Safari 9+, Opera, and Node.js 4+.
+Available in Chrome, Edge, Firefox, Safari 9+, Opera, Node.js 4+, and Deno.
 
 ___
 
@@ -500,7 +509,7 @@ A string representation of dynamically generated functions where the character a
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Opera, and Node.js 10+.
+Available in Chrome, Edge, Firefox, Opera, Node.js 10+, and Deno.
 
 ___
 
@@ -524,7 +533,7 @@ Ability to call Array.prototype.toString with a non-array binding.
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+, and Node.js.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+, Node.js, and Deno.
 
 ___
 
@@ -536,7 +545,7 @@ Having the global function toString return the string "\[object Undefined\]" whe
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
+Available in Chrome, Edge, Firefox, Safari, Opera, Node.js, and Deno.
 
 ___
 
@@ -550,7 +559,7 @@ The string representation of dates is implementation dependent, but most engines
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, Android Browser, and Node.js.
+Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, Android Browser, Node.js, and Deno.
 
 ___
 
@@ -644,7 +653,7 @@ The ability to use unary increment operators with string characters, like in \( 
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser, and Node.js. This feature is not available when strict mode is enforced in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, and Node.js 5+.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser, Node.js, and Deno. This feature is not available when strict mode is enforced in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Node.js 5+, and Deno.
 
 ___
 
@@ -656,7 +665,7 @@ Existence of the global object Intl.
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, Node.js 0.12+, and Deno.
 
 ___
 
@@ -668,7 +677,7 @@ Language sensitive string representation of Infinity as "∞".
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4, and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4, Node.js 0.12+, and Deno.
 
 ___
 
@@ -680,7 +689,7 @@ Features shared by all engines capable of localized number formatting, including
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, and Node.js 13+.
+Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, Node.js 13+, and Deno.
 
 ___
 
@@ -694,7 +703,7 @@ This includes all features of LOCALE_NUMERALS plus the output of the first three
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4, and Node.js 13+.
+Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4, Node.js 13+, and Deno.
 
 ___
 
@@ -718,7 +727,7 @@ Existence of the name property for functions.
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
+Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, Node.js, and Deno.
 
 ___
 
@@ -830,7 +839,7 @@ A string representation of native functions typical for V8 or for Internet Explo
 
 **`Remarks`**
 
-Available in Chrome, Edge, Internet Explorer, Opera, Android Browser, and Node.js.
+Available in Chrome, Edge, Internet Explorer, Opera, Android Browser, Node.js, and Deno.
 
 ___
 
@@ -844,7 +853,7 @@ A remarkable trait of this feature is the lack of line feed characters at the be
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
+Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, Node.js, and Deno.
 
 ___
 
@@ -856,7 +865,7 @@ The property that the string representation of Array.prototype.entries\(\) evalu
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Safari 9+, Opera, and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Safari 9+, Opera, Node.js 0.12+, and Deno.
 
 ___
 
@@ -894,7 +903,7 @@ Having the function Object.prototype.toString return the string "\[object Undefi
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser 4.1+, and Node.js.
+Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser 4.1+, Node.js, and Deno.
 
 ___
 
@@ -942,7 +951,7 @@ The property that the string representation of String.prototype.matchAll\(\) eva
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Safari 13+, Opera, and Node.js 12+.
+Available in Chrome, Edge, Firefox, Safari 13+, Opera, Node.js 12+, and Deno.
 
 ___
 
@@ -1044,7 +1053,7 @@ Existence of the global object self whose string representation starts with "\[o
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser, and Deno. This feature is not available inside web workers in Safari 7.1+ before 10.
 
 ___
 
@@ -1082,7 +1091,7 @@ This behavior is specified by ECMAScript, and is enforced by all engines except 
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+, and Node.js.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+, Node.js, and Deno.
 
 ___
 
@@ -1096,7 +1105,7 @@ Remarkable traits are the lack of line feed characters at the beginning and at t
 
 **`Remarks`**
 
-Available in Chrome, Edge, Opera, Android Browser, and Node.js.
+Available in Chrome, Edge, Opera, Android Browser, Node.js, and Deno.
 
 ___
 
@@ -1108,4 +1117,4 @@ Existence of the global object self having the string representation "\[object W
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser 4.4. This feature is not available inside web workers.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.4, and Deno. This feature is not available inside web workers.

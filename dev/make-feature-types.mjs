@@ -67,6 +67,7 @@ export default
         'Opera',
         'Android Browser',
         'Node.js',
+        'Deno',
     ];
 
     const ENGINE_SUPPORT_POLICY_LINK =

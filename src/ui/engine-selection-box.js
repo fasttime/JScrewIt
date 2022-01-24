@@ -17,6 +17,7 @@ export default function createEngineSelectionBox()
         'Opera',
         'Android Browser',
         'Node.js',
+        'Deno',
     ];
 
     var FORCED_STRICT_MODE_CAPTION = 'Generate strict mode code';
