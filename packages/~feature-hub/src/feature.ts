@@ -5,11 +5,6 @@ import { MaskSet }                                              from './mask-ind
 import type util                                                from 'util';
 import type { InspectOptionsStylized }                          from 'util';
 
-declare module 'util'
-{
-    function inspect(obj: any, options?: InspectOptions): string;
-}
-
 export type AttributeMap = { readonly [AttributeName in string]: string | null; };
 
 export interface CompatibilityInfo
