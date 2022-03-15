@@ -142,6 +142,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [SAFARI\_13](FeatureConstructor.md#safari_13)
 - [SAFARI\_14\_0\_1](FeatureConstructor.md#safari_14_0_1)
 - [SAFARI\_14\_1](FeatureConstructor.md#safari_14_1)
+- [SAFARI\_15\_4](FeatureConstructor.md#safari_15_4)
 - [SAFARI\_7\_0](FeatureConstructor.md#safari_7_0)
 - [SAFARI\_7\_1](FeatureConstructor.md#safari_7_1)
 - [SAFARI\_9](FeatureConstructor.md#safari_9)
@@ -336,7 +337,7 @@ Existence of the native function Array.prototype.at.
 
 **`remarks`**
 
-Available in Chrome, Edge, Firefox, Opera, and Node.js 16.6+.
+Available in Chrome, Edge, Firefox, Safari 15.4+, Opera, and Node.js 16.6+.
 
 #### Inherited from
 
@@ -1386,7 +1387,7 @@ ___
 
 Features available in the current stable version of Safari.
 
-An alias for `SAFARI_14_1`.
+An alias for `SAFARI_15_4`.
 
 #### Inherited from
 
@@ -1446,11 +1447,23 @@ ___
 
 • **SAFARI\_14\_1**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Safari 14.1 or later.
+Features available in Safari 14.1 to 15.3.
 
 #### Inherited from
 
 [FeatureAll](FeatureAll.md).[SAFARI_14_1](FeatureAll.md#safari_14_1)
+
+___
+
+### SAFARI\_15\_4
+
+• **SAFARI\_15\_4**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Safari 15.4 or later.
+
+#### Inherited from
+
+[FeatureAll](FeatureAll.md).[SAFARI_15_4](FeatureAll.md#safari_15_4)
 
 ___
 

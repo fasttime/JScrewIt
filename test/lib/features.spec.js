@@ -174,7 +174,7 @@
                                     'IE_9',
                                     'IE_11',
                                     'SAFARI_7_0',
-                                    'SAFARI_14_1',
+                                    'SAFARI',
                                 ],
                             },
                             {
@@ -189,7 +189,8 @@
                         {
                             function verifyFeature(actualFeature, expectedFeature)
                             {
-                                expect(Feature.areEqual(actualFeature, expectedFeature));
+                                expect(Feature.areEqual(actualFeature, expectedFeature))
+                                .toBeTruthy();
                             }
 
                             var actualFeatureName       = paramData.actualFeatureName;

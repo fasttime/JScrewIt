@@ -840,6 +840,7 @@ var featureInfos =
         includes:
         [
             'ARROW',
+            'AT',
             'ATOB',
             'BARPROP',
             'ESC_HTML_QUOT_ONLY',
@@ -1236,16 +1237,22 @@ var featureInfos =
         versions: [['14.0.1',, '14.0.3']],
         includes: { INTL: true, PLAIN_INTL: false },
     },
-    SAFARI:
-    {
-        description: describeEngine('the current stable version of Safari'),
-        aliasFor: 'SAFARI_14_1',
-    },
     SAFARI_14_1:
     {
         inherits: 'SAFARI_14_0_1',
-        versions: [['14.1']],
+        versions: [['14.1',, '15.3']],
         includes: { CONSOLE: false },
+    },
+    SAFARI:
+    {
+        description: describeEngine('the current stable version of Safari'),
+        aliasFor: 'SAFARI_15_4',
+    },
+    SAFARI_15_4:
+    {
+        inherits: 'SAFARI_14_1',
+        versions: [['15.4']],
+        includes: { AT: true },
     },
 };
 (function ()

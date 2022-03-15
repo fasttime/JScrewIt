@@ -139,6 +139,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="api-doc/interfaces/FeatureAll.md#ARROW"><code>ARROW</code></a> (Safari 10+)
+<li><a href="api-doc/interfaces/FeatureAll.md#AT"><code>AT</code></a> (Safari 15.4+)
 <li><a href="api-doc/interfaces/FeatureAll.md#ATOB"><code>ATOB</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#BARPROP"><code>BARPROP</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#CONSOLE"><code>CONSOLE</code></a> (not in Safari 14.1+)
