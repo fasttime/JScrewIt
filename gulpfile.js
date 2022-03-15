@@ -277,6 +277,7 @@ task
         {
             disableSources:     true,
             entryPoints:        'lib/jscrewit.d.ts',
+            githubPages:        false,
             hideBreadcrumbs:    true,
             name:               'JScrewIt',
             plugin:             'typedoc-plugin-markdown',
