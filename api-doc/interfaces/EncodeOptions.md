@@ -25,7 +25,7 @@ ___
 
 ### runAs
 
-• `Optional` **runAs**: ``"call"`` \| ``"eval"`` \| ``"express"`` \| ``"express-call"`` \| ``"express-eval"`` \| ``"none"``
+• `Optional` **runAs**: [`RunAs`](../README.md#runas)
 
 This option controls the type of code generated from the given input.
 Allowed values are listed below.
@@ -94,6 +94,6 @@ ___
 
 ### wrapWith
 
-• `Optional` **wrapWith**: ``"call"`` \| ``"eval"`` \| ``"express"`` \| ``"express-call"`` \| ``"express-eval"`` \| ``"none"``
+• `Optional` **wrapWith**: [`RunAs`](../README.md#runas)
 
 An alias for `runAs`.

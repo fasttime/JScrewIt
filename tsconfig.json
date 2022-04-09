@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "noEmit": true,
+    "exactOptionalPropertyTypes": true,
     "strict": true,
     "types": []
   },

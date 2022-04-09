@@ -9,7 +9,7 @@ export interface EncodeOptions
      * ensures maximum compatibility but also generates the largest code.
      * To generate shorter code, specify all features available in all target engines explicitly.
      */
-    features?: FeatureElementOrCompatibleArray;
+    features?: FeatureElementOrCompatibleArray | undefined;
 
     /**
      * This option controls the type of code generated from the given input.
@@ -59,7 +59,7 @@ export interface EncodeOptions
      *
      * </dl>
      */
-    runAs?: 'call' | 'eval' | 'express' | 'express-call' | 'express-eval' | 'none';
+    runAs?: RunAs | undefined;
 
     /**
      * If this parameter is truthy, lines in the beginning and in the end of the file containing
@@ -72,11 +72,17 @@ export interface EncodeOptions
      * Using this option may produce unexpected results if the input is not well-formed JavaScript
      * code.
      */
-    trimCode?: boolean;
+    trimCode?: boolean | undefined;
 
     /** An alias for `runAs`. */
-    wrapWith?: 'call' | 'eval' | 'express' | 'express-call' | 'express-eval' | 'none';
+    wrapWith?: RunAs | undefined;
 }
+
+/**
+ * Values of this type control the type of code generated from a given input.
+ * See <code>[[EncodeOptions.runAs]]</code> for the meaning of each possible value.
+ */
+type RunAs = 'call' | 'eval' | 'express' | 'express-call' | 'express-eval' | 'none';
 
 interface encode
 {
