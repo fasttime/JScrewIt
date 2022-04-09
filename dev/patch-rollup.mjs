@@ -6,7 +6,6 @@
 
 import { readFile, writeFile }  from 'fs/promises';
 import { createRequire }        from 'module';
-import { join }                 from 'path';
 
 const SEARCH_LINE =
 '            start + findFirstLineBreakOutsideComment(code.original.slice(start, nextNode.start))' +
@@ -15,15 +14,34 @@ const REPLACEMENT_LINE =
 '            start + code.original.slice(start, nextNode.start).search(/\\n\\s*$/) + 1;\n';
 
 const require = createRequire(import.meta.url);
-const rollupPath = join(require.resolve('rollup'), '../shared/rollup.js');
-const input = await readFile(rollupPath, 'utf8');
-const index = input.indexOf(SEARCH_LINE);
-if (index === 0 || index > 0 && input[index - 1] === '\n')
+const rollupPath =
+(() =>
 {
-    const output =
-    input.slice(0, index) + REPLACEMENT_LINE + input.slice(index + SEARCH_LINE.length);
-    await writeFile(rollupPath, output);
-    console.log('Patching rollup.');
+    try
+    {
+        const rollupPath = require.resolve('rollup/dist/shared/rollup.js');
+        return rollupPath;
+    }
+    catch (error)
+    {
+        if (error.code !== 'MODULE_NOT_FOUND')
+            throw error;
+    }
+}
+)();
+if (rollupPath)
+{
+    const input = await readFile(rollupPath, 'utf8');
+    const index = input.indexOf(SEARCH_LINE);
+    if (index === 0 || index > 0 && input[index - 1] === '\n')
+    {
+        const output =
+        input.slice(0, index) + REPLACEMENT_LINE + input.slice(index + SEARCH_LINE.length);
+        await writeFile(rollupPath, output);
+        console.log('Patching rollup.');
+    }
+    else
+        console.log('Nothing to patch in rollup.');
 }
 else
-    console.log('Nothing to patch in rollup.');
+    console.log('rollup not installed.');

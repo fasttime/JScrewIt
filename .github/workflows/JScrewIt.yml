@@ -14,7 +14,7 @@ jobs:
       with:
         node-version: '16'
     - run: |
-        npm install --ignore-scripts --workspaces
+        npm install --workspaces
         npm install
         npm run --workspaces make
         gulp lint
