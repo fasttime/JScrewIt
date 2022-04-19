@@ -1,4 +1,4 @@
-import { ElementaryFeatureName, FeatureAll, PredefinedFeatureName } from './feature-all';
+import type { ElementaryFeatureName, FeatureAll, PredefinedFeatureName } from './feature-all';
 
 export interface CustomFeature extends Feature
 {

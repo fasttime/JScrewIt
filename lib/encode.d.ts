@@ -1,4 +1,4 @@
-import { FeatureElementOrCompatibleArray } from './feature';
+import type { FeatureElementOrCompatibleArray } from './feature';
 
 export interface EncodeOptions
 {

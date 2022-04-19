@@ -1,7 +1,7 @@
 // Type definitions for JScrewIt
 
-import { encode }   from './encode';
-import { Feature }  from './feature';
+import type { encode }  from './encode';
+import type { Feature } from './feature';
 
 export * from './encode';
 export * from './feature';

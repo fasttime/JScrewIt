@@ -158,12 +158,6 @@ task
             {
                 src: ['lib/**/*.ts', '!lib/feature-all.d.ts'],
                 parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
-                rules:
-                {
-                    // Type imports not available in TypeScript < 3.8.
-                    '@typescript-eslint/consistent-type-imports':
-                    ['error', { prefer: 'no-type-imports' }],
-                },
             },
             { src: 'test/acceptance/**/*.feature' },
         );
