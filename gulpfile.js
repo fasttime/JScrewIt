@@ -192,25 +192,27 @@ task('bundle:ui', series(parallel(makeArt, makeWorker), bundleUI));
 task
 (
     'test',
-    callback =>
+    async () =>
     {
-        const { fork } = require('child_process');
-
-        const { resolve } = require;
-        const c8Path = resolve('c8/bin/c8');
-        const mochaPath = resolve('mocha/bin/mocha');
-        const forkArgs =
-        [
-            '--reporter=html',
-            '--reporter=text-summary',
+        const [{ default: c8js }] =
+        await Promise.all([import('c8js'), import('./test/patch-cov-source.js')]);
+        const mochaPath = require.resolve('mocha/bin/mocha');
+        await c8js
+        (
             mochaPath,
-            '--check-leaks',
-            '--ui=ebdd',
-            'test/**/*.spec.js',
-        ];
-        const childProcess =
-        fork(c8Path, forkArgs, { execArgv: ['--require=./test/patch-cov-source'] });
-        childProcess.on('exit', code => callback(code && 'Test failed'));
+            ['--check-leaks', '--ui=ebdd', 'test/**/*.spec.js'],
+            {
+                reporter: ['html', 'text-summary'],
+                useC8Config: false,
+                watermarks:
+                {
+                    branches:   [90, 100],
+                    functions:  [90, 100],
+                    lines:      [90, 100],
+                    statements: [90, 100],
+                },
+            },
+        );
     },
 );
 

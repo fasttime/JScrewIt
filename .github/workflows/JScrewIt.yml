@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
       with:
         node-version: '18'
     - run: |
@@ -19,7 +19,7 @@ jobs:
         npm run --workspaces make
         gulp lint
         gulp bundle:lib
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: lib
         path: lib
@@ -37,11 +37,11 @@ jobs:
         node-version: ['0.10', '0.12', '4', '6', '8', '10', '12', '14', '16', '18']
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       with:
         name: lib
         path: lib

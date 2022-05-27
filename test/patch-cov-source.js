@@ -12,7 +12,8 @@ const MARKER_LINES =
     '    var __assign = function() {\n': 9,
 };
 
-const c8Require = createRequire(require.resolve('c8'));
+const c8jsRequire = createRequire(require.resolve('c8js'));
+const c8Require = createRequire(c8jsRequire.resolve('c8'));
 const { prototype: covSourcePrototype } = c8Require('v8-to-istanbul/lib/source');
 const { _parseIgnore } = covSourcePrototype;
 covSourcePrototype._parseIgnore =
