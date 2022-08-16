@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
     "strict": true,
     "types": []
   },

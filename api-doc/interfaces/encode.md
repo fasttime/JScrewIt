@@ -8,7 +8,7 @@
 
 Encodes a given string into JSFuck.
 
-**`throws`**
+**`Throws`**
 
 An `Error` is thrown under the following circumstances.
  - The specified string cannot be encoded with the specified options.

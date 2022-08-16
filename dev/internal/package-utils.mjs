@@ -164,4 +164,3 @@ export async function lintPackage(...configs)
 
     await lint(...configs);
 }
-

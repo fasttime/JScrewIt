@@ -11,8 +11,7 @@ import type { Mask }                            from '../../src/mask';
 import assert                                   from 'assert';
 import type util                                from 'util';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const getNodeUtil = (): typeof util => require('util') as typeof util;
+const getNodeUtil = (): typeof util => require('util') as typeof util; // eslint-disable-line
 
 const noop =
 (): void =>
@@ -175,7 +174,7 @@ describe
                     assert.deepEqual(Object.getOwnPropertyNames(obj), []);
             },
         );
-    }
+    },
 );
 
 describe
@@ -205,7 +204,7 @@ describe
                 assert.strictEqual(Feature.ELEMENTARY[2], Feature.ALL.C);
             },
         );
-    }
+    },
 );
 
 describe
@@ -242,7 +241,7 @@ describe
                 assert.strictEqual(Feature.ENGINE[2], Feature.ALL.C);
             },
         );
-    }
+    },
 );
 
 describe
@@ -336,7 +335,7 @@ describe
                 const featureObj = Feature._fromMask(mask);
                 assert(featureObj);
                 assert(maskAreEqual(featureObj.mask, mask));
-            }
+            },
         );
 
         it
@@ -362,7 +361,7 @@ describe
                     const actual = Feature._fromMask(mask);
                     assert.strictEqual(actual, null);
                 }
-            }
+            },
         );
     },
 );
@@ -393,7 +392,7 @@ it
             assert
             (
                 maskAreEqual(actual, featuresToMask(compatibleFeatureArray)),
-                `Actual value is:\n${actual as unknown}`
+                `Actual value is:\n${actual as unknown}`,
             );
         }
     },
@@ -414,7 +413,7 @@ describe.per
             (Feature: FeatureConstructor, ...features: FeatureElement[]): boolean =>
             Feature.areCompatible(features),
         },
-    ]
+    ],
 )
 (
     'Feature.areCompatible (#.description)',

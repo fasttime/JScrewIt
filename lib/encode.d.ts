@@ -5,8 +5,9 @@ export interface EncodeOptions
     /**
      * Specifies the features available in the engines that evaluate the encoded output.
      *
-     * If this parameter is unspecified, [[DEFAULT|`JScrewIt.Feature.DEFAULT`]] is assumed: this
-     * ensures maximum compatibility but also generates the largest code.
+     * If this parameter is unspecified, {@link FeatureConstructor.DEFAULT |
+     * `JScrewIt.Feature.DEFAULT`} is assumed: this ensures maximum compatibility but also generates
+     * the largest code.
      * To generate shorter code, specify all features available in all target engines explicitly.
      */
     features?: FeatureElementOrCompatibleArray | undefined;
@@ -80,7 +81,7 @@ export interface EncodeOptions
 
 /**
  * Values of this type control the type of code generated from a given input.
- * See <code>[[EncodeOptions.runAs]]</code> for the meaning of each possible value.
+ * See {@link EncodeOptions.runAs | `EncodeOptions.runAs`} for the meaning of each possible value.
  */
 type RunAs = 'call' | 'eval' | 'express' | 'express-call' | 'express-eval' | 'none';
 

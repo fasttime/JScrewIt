@@ -1,7 +1,5 @@
 # Interface: default
 
-JScrewIt object, available in Node.js.
-
 ## Table of contents
 
 ### Properties

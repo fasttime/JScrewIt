@@ -17,8 +17,8 @@
 
 Specifies the features available in the engines that evaluate the encoded output.
 
-If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](FeatureConstructor.md#default) is assumed: this
-ensures maximum compatibility but also generates the largest code.
+If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](FeatureConstructor.md#default) is assumed: this ensures maximum compatibility but also generates
+the largest code.
 To generate shorter code, specify all features available in all target engines explicitly.
 
 ___

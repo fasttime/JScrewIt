@@ -1,4 +1,4 @@
-import { assignNoEnum, _Object_defineProperty } from './obj-utils';
+import { _Object_defineProperty, assignNoEnum } from './obj-utils';
 import { AbstractSolution }                     from '~solution';
 
 assignNoEnum

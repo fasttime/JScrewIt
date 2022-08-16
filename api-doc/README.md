@@ -14,7 +14,7 @@
 - [default](interfaces/default.md)
 - [encode](interfaces/encode.md)
 
-### Type aliases
+### Type Aliases
 
 - [ElementaryFeatureName](README.md#elementaryfeaturename)
 - [FeatureElement](README.md#featureelement)
@@ -24,11 +24,14 @@
 
 ### Variables
 
-- [Feature](README.md#feature)
 - [default](README.md#default)
+
+### Functions
+
+- [Feature](README.md#feature)
 - [encode](README.md#encode)
 
-## Type aliases
+## Type Aliases
 
 ### ElementaryFeatureName
 
@@ -44,7 +47,7 @@ ___
 
 A feature object or a name or alias of a predefined feature.
 
-**`remarks`**
+**`Remarks`**
 
 Methods that accept parameters of this type throw an error if the specified value is neither a
 feature object nor a name or alias of a predefined feature.
@@ -58,7 +61,7 @@ ___
 A feature object, a name or alias of a predefined feature, or an array of such values that
 defines a union of mutually compatible features.
 
-**`remarks`**
+**`Remarks`**
 
 Methods that accept parameters of this type throw an error if the specified value is neither a
 feature object nor a name or alias of a predefined feature, or if it is an array of values that
@@ -79,24 +82,85 @@ ___
 Ƭ **RunAs**: ``"call"`` \| ``"eval"`` \| ``"express"`` \| ``"express-call"`` \| ``"express-eval"`` \| ``"none"``
 
 Values of this type control the type of code generated from a given input.
-See <code>[EncodeOptions.runAs](interfaces/EncodeOptions.md#runas)</code> for the meaning of each possible value.
+See [`EncodeOptions.runAs`](interfaces/EncodeOptions.md#runas) for the meaning of each possible value.
 
 ## Variables
-
-### Feature
-
-• **Feature**: [`FeatureConstructor`](interfaces/FeatureConstructor.md)
-
-___
 
 ### default
 
 • **default**: [`default`](README.md#default)
 
-JScrewIt object, available in Node.js.
+## Functions
+
+### Feature
+
+▸ **Feature**(...`features`): [`CustomFeature`](interfaces/CustomFeature.md)
+
+Creates a new feature object from the union of the specified features.
+
+The constructor can be used with or without the `new` operator, e.g.
+`new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
+If no arguments are specified, the new feature object will be equivalent to
+[`DEFAULT`](interfaces/FeatureConstructor.md#default).
+
+**`Example`**
+
+The following statements are equivalent, and will all construct a new feature object
+including both [`ANY_DOCUMENT`](interfaces/FeatureConstructor.md#any_document) and [`ANY_WINDOW`](interfaces/FeatureConstructor.md#any_window).
+
+```js
+new JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
+```
+
+```js
+new JScrewIt.Feature(JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW);
+```
+
+```js
+new JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW]);
+```
+
+**`Throws`**
+
+An error is thrown if any of the specified features are not mutually compatible.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `...features` | [`FeatureElementOrCompatibleArray`](README.md#featureelementorcompatiblearray)[] |
+
+#### Returns
+
+[`CustomFeature`](interfaces/CustomFeature.md)
 
 ___
 
 ### encode
 
-• **encode**: [`encode`](README.md#encode)
+▸ **encode**(`input`, `options?`): `string`
+
+Encodes a given string into JSFuck.
+
+**`Throws`**
+
+An `Error` is thrown under the following circumstances.
+ - The specified string cannot be encoded with the specified options.
+ - Some unknown features were specified.
+ - A combination of mutually incompatible features was specified.
+ - The option `runAs` (or `wrapWith`) was specified with an invalid value.
+
+Also, an out of memory condition may occur when processing very large data.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `input` | `string` | The string to encode. |
+| `options?` | [`EncodeOptions`](interfaces/EncodeOptions.md) | An optional object specifying encoding options. |
+
+#### Returns
+
+`string`
+
+The encoded string.

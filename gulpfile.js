@@ -87,7 +87,7 @@ task
     'clean',
     async () =>
     {
-        const del = require('del');
+        const { deleteAsync } = await import('del');
 
         const patterns =
         [
@@ -101,7 +101,7 @@ task
             'test/spec-runner.html',
             'ui/**/*.js',
         ];
-        await del(patterns);
+        await deleteAsync(patterns);
     },
 );
 
@@ -117,7 +117,7 @@ task
         (
             {
                 src: ['src/**/*.js', '!src/ui/worker.js'],
-                parserOptions: { sourceType: 'module' },
+                parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
                 rules:
                 {
                     'lines-around-comment':
@@ -133,13 +133,14 @@ task
             },
             {
                 src: ['dev/**/*.js', 'gulpfile.js', 'test/patch-cov-source.js', '!dev/legacy/**'],
+                jsVersion: 2022,
                 envs: 'node',
-                parserOptions: { ecmaVersion: 2022 },
             },
             {
                 src: ['dev/**/*.mjs'],
+                jsVersion: 2022,
                 envs: 'node',
-                parserOptions: { ecmaVersion: 2022, sourceType: 'module' },
+                parserOptions: { sourceType: 'module' },
             },
             {
                 src:
@@ -152,12 +153,18 @@ task
                     '!test/patch-cov-source.js',
                 ],
                 plugins: ['ebdd'],
-                // process.exitCode is not supported in Node.js 0.10.
-                rules: { 'no-process-exit': 'off' },
+                rules:
+                {
+                    // process.exitCode is not supported in Node.js 0.10.
+                    'no-process-exit': 'off',
+                    // Throws when "./" is required.
+                    'n/no-unpublished-require': 'off',
+                },
             },
             {
                 src: ['lib/**/*.ts', '!lib/feature-all.d.ts'],
-                parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
+                tsVersion: 'latest',
+                parserOptions: { project: 'tsconfig.json' },
             },
             { src: 'test/acceptance/**/*.feature' },
         );

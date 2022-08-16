@@ -136,7 +136,7 @@ ___
 
 Existence of the global object document whose string representation starts with "\[object " and ends with "Document\]".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
 
@@ -148,7 +148,7 @@ ___
 
 Existence of the global object self whose string representation starts with "\[object " and ends with "Window\]".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
 
@@ -160,7 +160,7 @@ ___
 
 The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Safari 7.1+, Opera, and Node.js 0.12+.
 
@@ -172,7 +172,7 @@ ___
 
 Support for arrow functions.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Safari 10+, Opera, and Node.js 4+.
 
@@ -184,7 +184,7 @@ ___
 
 Existence of the native function Array.prototype.at.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Safari 15.4+, Opera, and Node.js 16.6+.
 
@@ -196,7 +196,7 @@ ___
 
 Existence of the global functions atob and btoa.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser, and Node.js 16.0+. This feature is not available inside web workers in Safari before 10.
 
@@ -216,7 +216,7 @@ ___
 
 Existence of the global object statusbar having the string representation "\[object BarProp\]".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Safari, Opera, and Android Browser 4.4. This feature is not available inside web workers.
 
@@ -238,7 +238,7 @@ ___
 
 The property that the various string methods returning HTML code such as String.prototype.big or String.prototype.link have both the tag name and attributes written in capital letters.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Internet Explorer.
 
@@ -260,11 +260,11 @@ ___
 
 Features available in Chrome 92, Edge 92 and Opera 78 or later.
 
-**`remarks`**
+**`Remarks`**
 
 This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME` or `CHROME_PREV` instead of `CHROME_92` for long term support.
 
-**`see`**
+**`See`**
 
 [Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
 
@@ -298,7 +298,7 @@ Existence of the global object console having the string representation "\[objec
 
 This feature may become unavailable when certain browser extensions are active.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Internet Explorer 10+, Safari before 14.1, and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
 
@@ -318,7 +318,7 @@ ___
 
 Existence of the global object document having the string representation "\[object Document\]".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Internet Explorer before 11. This feature is not available inside web workers.
 
@@ -330,7 +330,7 @@ ___
 
 Existence of the global object self having the string representation "\[object DOMWindow\]".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Android Browser before 4.4. This feature is not available inside web workers.
 
@@ -342,7 +342,7 @@ ___
 
 The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Android Browser and Node.js before 0.12.
 
@@ -354,7 +354,7 @@ ___
 
 The property that double quotation marks in the argument of String.prototype.fontcolor are escaped as "\&quot;".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
 
@@ -366,7 +366,7 @@ ___
 
 The property that only double quotation marks and no other characters in the argument of String.prototype.fontcolor are escaped into HTML entities.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js 0.12+.
 
@@ -378,7 +378,7 @@ ___
 
 Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format line feed characters \("\\n"\) in their string representation.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js 12+.
 
@@ -390,7 +390,7 @@ ___
 
 Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format slashes \("/"\) in their string representation.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js 4+.
 
@@ -412,11 +412,11 @@ ___
 
 Features available in Firefox 90 or later.
 
-**`remarks`**
+**`Remarks`**
 
 This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF`, `FF_ESR`, or `FF_PREV` instead of `FF_90` for long term support.
 
-**`see`**
+**`See`**
 
 [Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
 
@@ -450,7 +450,7 @@ A string representation of native functions typical for Firefox and Safari.
 
 Remarkable traits are the lack of line feed characters at the beginning and at the end of the string and the presence of a line feed followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Firefox and Safari.
 
@@ -462,7 +462,7 @@ ___
 
 Existence of the native function Array.prototype.fill.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Safari 7.1+, Opera, and Node.js 4+.
 
@@ -474,7 +474,7 @@ ___
 
 Existence of the native function Array.prototype.flat.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Safari 12+, Opera, and Node.js 11+.
 
@@ -486,7 +486,7 @@ ___
 
 Existence of the function String.fromCodePoint.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Safari 9+, Opera, and Node.js 4+.
 
@@ -498,7 +498,7 @@ ___
 
 A string representation of dynamically generated functions where the character at index 19 is a line feed \("\\n"\).
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Opera, and Node.js 10+.
 
@@ -510,7 +510,7 @@ ___
 
 A string representation of dynamically generated functions where the character at index 22 is a line feed \("\\n"\).
 
-**`remarks`**
+**`Remarks`**
 
 Available in Internet Explorer, Safari 9+, Android Browser, and Node.js before 10.
 
@@ -522,7 +522,7 @@ ___
 
 Ability to call Array.prototype.toString with a non-array binding.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+, and Node.js.
 
@@ -534,7 +534,7 @@ ___
 
 Having the global function toString return the string "\[object Undefined\]" when invoked without a binding.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
@@ -548,7 +548,7 @@ Presence of the text "GMT" after the first 25 characters in the string returned 
 
 The string representation of dates is implementation dependent, but most engines use a similar format, making this feature available in all supported engines except Internet Explorer 9 and 10.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, Android Browser, and Node.js.
 
@@ -560,7 +560,7 @@ ___
 
 Existence of the global object history having the string representation "\[object History\]".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
 
@@ -572,7 +572,7 @@ ___
 
 Existence of the global object Audio whose string representation starts with "function HTMLAudioElement".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Android Browser 4.4. This feature is not available inside web workers.
 
@@ -584,7 +584,7 @@ ___
 
 Existence of the global object document having the string representation "\[object HTMLDocument\]".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, and Android Browser. This feature is not available inside web workers.
 
@@ -630,7 +630,7 @@ A string representation of native functions typical for Internet Explorer.
 
 Remarkable traits are the presence of a line feed character \("\\n"\) at the beginning and at the end of the string and a line feed followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Internet Explorer.
 
@@ -642,7 +642,7 @@ ___
 
 The ability to use unary increment operators with string characters, like in \( ++"some string"\[0\] \): this will result in a TypeError in strict mode in ECMAScript compliant engines.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser, and Node.js. This feature is not available when strict mode is enforced in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, and Node.js 5+.
 
@@ -654,7 +654,7 @@ ___
 
 Existence of the global object Intl.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, and Node.js 0.12+.
 
@@ -666,7 +666,7 @@ ___
 
 Language sensitive string representation of Infinity as "∞".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4, and Node.js 0.12+.
 
@@ -678,7 +678,7 @@ ___
 
 Features shared by all engines capable of localized number formatting, including output of Arabic digits, the Arabic decimal separator "٫", the letters in the first word of the Arabic string representation of NaN \("ليس"\), Persian digits and the Persian digit group separator "٬".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, and Node.js 13+.
 
@@ -692,7 +692,7 @@ Extended localized number formatting.
 
 This includes all features of LOCALE_NUMERALS plus the output of the first three letters in the second word of the Arabic string representation of NaN \("رقم"\), Bengali digits, the letters in the Russian string representation of NaN \("не число"\) and the letters in the Persian string representation of NaN \("ناعدد"\).
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4, and Node.js 13+.
 
@@ -704,7 +704,7 @@ ___
 
 Existence of the global object location with the property that Object.prototype.toString.call\(location\) evaluates to a string that starts with "\[object " and ends with "Location\]".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Safari, Opera, and Android Browser.
 
@@ -716,7 +716,7 @@ ___
 
 Existence of the name property for functions.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
 
@@ -728,7 +728,7 @@ ___
 
 Existence of the global object Node having the string representation "\[object NodeConstructor\]".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Safari before 10. This feature is not available inside web workers.
 
@@ -828,7 +828,7 @@ ___
 
 A string representation of native functions typical for V8 or for Internet Explorer but not for Firefox and Safari.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Internet Explorer, Opera, Android Browser, and Node.js.
 
@@ -842,7 +842,7 @@ A string representation of native functions typical for most engines with the no
 
 A remarkable trait of this feature is the lack of line feed characters at the beginning and at the end of the string.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
 
@@ -854,7 +854,7 @@ ___
 
 The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]" and that Array.prototype.entries\(\).constructor is the global function Object.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Safari 9+, Opera, and Node.js 0.12+.
 
@@ -868,7 +868,7 @@ A string representation of native functions typical for Firefox, Internet Explor
 
 A most remarkable trait of this feature is the presence of a line feed followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Firefox, Internet Explorer, and Safari.
 
@@ -880,7 +880,7 @@ ___
 
 Existence of the global function location.constructor whose string representation starts with "\[object L"
 
-**`remarks`**
+**`Remarks`**
 
 Available in Internet Explorer and Safari before 10. This feature is not available inside web workers.
 
@@ -892,7 +892,7 @@ ___
 
 Having the function Object.prototype.toString return the string "\[object Undefined\]" when invoked without a binding.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser 4.1+, and Node.js.
 
@@ -904,7 +904,7 @@ ___
 
 The property that the string representation of the global object constructor starts with "\[object W"
 
-**`remarks`**
+**`Remarks`**
 
 Available in Internet Explorer and Safari before 10. This feature is not available inside web workers in Safari before 10.
 
@@ -916,7 +916,7 @@ ___
 
 Existence of the global object location.constructor whose string representation starts with "\[object " and ends with "LocationConstructor\]"
 
-**`remarks`**
+**`Remarks`**
 
 Available in Safari before 10.
 
@@ -928,7 +928,7 @@ ___
 
 Existence of the global object Intl having the string representation "\[object Object\]"
 
-**`remarks`**
+**`Remarks`**
 
 Available in Internet Explorer 11, Safari 10+ before 14.0.1, Android Browser 4.4, and Node.js 0.12+ before 15.
 
@@ -940,7 +940,7 @@ ___
 
 The property that the string representation of String.prototype.matchAll\(\) evaluates to "\[object RegExp String Iterator\]".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Safari 13+, Opera, and Node.js 12+.
 
@@ -1042,7 +1042,7 @@ ___
 
 Existence of the global object self whose string representation starts with "\[object ".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.
 
@@ -1054,7 +1054,7 @@ ___
 
 Support for the two-letter locale name "ar" to format decimal numbers as Arabic numerals.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Firefox, Internet Explorer 11, Safari 10+, Android Browser 4.4, and Node.js 13+.
 
@@ -1066,7 +1066,7 @@ ___
 
 Existence of the global string status.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
 
@@ -1080,7 +1080,7 @@ The property that Object.prototype.toString.call\(\) evaluates to "\[object Unde
 
 This behavior is specified by ECMAScript, and is enforced by all engines except Android Browser versions prior to 4.1.2, where this feature is not available.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+, and Node.js.
 
@@ -1094,7 +1094,7 @@ A string representation of native functions typical for the V8 engine.
 
 Remarkable traits are the lack of line feed characters at the beginning and at the end of the string and the presence of a single whitespace before the "\[native code\]" sequence.
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Opera, Android Browser, and Node.js.
 
@@ -1106,6 +1106,6 @@ ___
 
 Existence of the global object self having the string representation "\[object Window\]".
 
-**`remarks`**
+**`Remarks`**
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser 4.4. This feature is not available inside web workers.

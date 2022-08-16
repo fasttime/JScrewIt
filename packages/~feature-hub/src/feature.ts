@@ -365,8 +365,7 @@ FeatureConstructor
     let utilInspect: typeof util.inspect | undefined;
     try
     {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        utilInspect = (require('util') as typeof util).inspect;
+        utilInspect = (require('util') as typeof util).inspect; // eslint-disable-line
     }
     catch
     { }

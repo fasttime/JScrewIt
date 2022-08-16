@@ -25,7 +25,7 @@ import
 }
 from '../obj-utils';
 import
-{ SCREW_AS_STRING, SCREW_AS_BONDED_STRING, SCREW_NORMAL, ScrewBuffer }
+{ SCREW_AS_BONDED_STRING, SCREW_AS_STRING, SCREW_NORMAL, ScrewBuffer }
 from '../screw-buffer';
 import { SimpleSolution }                                       from '../solution';
 import { initStaticEncoder, replaceStaticString, shortestOf }   from './encoder-utils';
