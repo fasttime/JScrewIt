@@ -157,13 +157,10 @@ task
                 {
                     // process.exitCode is not supported in Node.js 0.10.
                     'no-process-exit': 'off',
-                    // Throws when "./" is required.
-                    'n/no-unpublished-require': 'off',
                 },
             },
             {
                 src: ['lib/**/*.ts', '!lib/feature-all.d.ts'],
-                tsVersion: 'latest',
                 parserOptions: { project: 'tsconfig.json' },
             },
             { src: 'test/acceptance/**/*.feature' },
