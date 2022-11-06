@@ -278,193 +278,194 @@ describe
         var paramDataList =
         [
             {
-                params: [],
+                params: [], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { },
+                    options:        { },
                 },
             },
             {
-                params: ['--help'],
+                params:         ['--help'],
                 expectedResult: 'help',
             },
             {
-                params: ['--version'],
+                params:         ['--version'],
                 expectedResult: 'version',
             },
             {
-                params: ['-c'],
+                params: ['-c'], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { runAs: 'call' },
+                    options:        { runAs: 'call' },
                 },
             },
             {
-                params: ['-w'],
+                params: ['-w'], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { runAs: 'call' },
+                    options:        { runAs: 'call' },
                 },
             },
             {
-                params: ['-e'],
+                params: ['-e'], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { runAs: 'eval' },
+                    options:        { runAs: 'eval' },
                 },
             },
             {
-                params: ['-d'],
+                params: ['-d'], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { perfInfo: { } },
+                    options:        { perfInfo: { } },
                 },
             },
             {
-                params: ['--diagnostic'],
+                params: ['--diagnostic'], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { perfInfo: { } },
+                    options:        { perfInfo: { } },
                 },
             },
             {
-                params: ['-f', 'ATOB,SELF'],
+                params: ['-f', 'ATOB,SELF'], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { features: ['ATOB', 'SELF'] },
+                    options:        { features: ['ATOB', 'SELF'] },
                 },
             },
             {
-                params: ['--features', 'ATOB,SELF'],
+                params: ['--features', 'ATOB,SELF'], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { features: ['ATOB', 'SELF'] },
+                    options:        { features: ['ATOB', 'SELF'] },
                 },
             },
             {
-                params: ['-f'],
-                expectedErrorMsg: 'option "-f" requires an argument',
+                params:             ['-f'],
+                expectedErrorMsg:   'option "-f" requires an argument',
             },
             {
-                params: ['--features'],
-                expectedErrorMsg: 'option "--features" requires an argument',
+                params:             ['--features'],
+                expectedErrorMsg:   'option "--features" requires an argument',
             },
             {
-                params: ['-r', 'express'],
+                params: ['-r', 'express'], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { runAs: 'express' },
+                    options:        { runAs: 'express' },
                 },
             },
             {
-                params: ['--run-as', 'express'],
+                params: ['--run-as', 'express'], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { runAs: 'express' },
+                    options:        { runAs: 'express' },
                 },
             },
             {
-                params: ['-r'],
-                expectedErrorMsg: 'option "-r" requires an argument',
+                params:             ['-r'],
+                expectedErrorMsg:   'option "-r" requires an argument',
             },
             {
-                params: ['--run-as'],
-                expectedErrorMsg: 'option "--run-as" requires an argument',
+                params:             ['--run-as'],
+                expectedErrorMsg:   'option "--run-as" requires an argument',
             },
             {
-                params: ['-t'],
+                params: ['-t'], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { trimCode: true },
+                    options:        { trimCode: true },
                 },
             },
             {
-                params: ['--trim-code'],
+                params: ['--trim-code'], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { trimCode: true },
+                    options:        { trimCode: true },
                 },
             },
             {
-                params: ['-x'],
+                params: ['-x'], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { runAs: 'express' },
+                    options:        { runAs: 'express' },
                 },
             },
             {
-                params: ['-ctx'],
+                params: ['-ctx'], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { trimCode: true, runAs: 'express-call' },
+                    options:        { trimCode: true, runAs: 'express-call' },
                 },
             },
             {
-                params: ['-y'],
-                expectedErrorMsg: /unrecognized flag "y"/,
+                params:             ['-y'],
+                expectedErrorMsg:   /unrecognized flag "y"/,
             },
             {
-                params: ['--allyourbasearebelongtous'],
-                expectedErrorMsg: /unrecognized option "--allyourbasearebelongtous"/,
+                params:             ['--allyourbasearebelongtous'],
+                expectedErrorMsg:   /unrecognized option "--allyourbasearebelongtous"/,
             },
             {
-                params: ['infile'],
+                params: ['infile'], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: 'infile',
+                    inputFileName:  'infile',
                     outputFileName: undefined,
-                    options: { },
+                    options:        { },
                 },
             },
             {
-                params: ['infile', 'outfile'],
+                params: ['infile', 'outfile'], // eslint-disable-line key-spacing
                 expectedResult:
                 {
-                    inputFileName: 'infile',
+                    inputFileName:  'infile',
                     outputFileName: 'outfile',
-                    options: { },
+                    options:        { },
                 },
             },
             {
+                // eslint-disable-next-line key-spacing
                 params: ['-ct', 'infile', '--features', 'FF', 'outfile'],
                 expectedResult:
                 {
-                    inputFileName: 'infile',
+                    inputFileName:  'infile',
                     outputFileName: 'outfile',
-                    options: { features: ['FF'], trimCode: true, runAs: 'call' },
+                    options:        { features: ['FF'], trimCode: true, runAs: 'call' },
                 },
             },
             {
-                params: ['infile', 'outfile', 'etc.'],
-                expectedErrorMsg: /unexpected argument "etc."/,
+                params:             ['infile', 'outfile', 'etc.'],
+                expectedErrorMsg:   /unexpected argument "etc."/,
             },
         ];
         paramDataList.forEach
@@ -585,40 +586,40 @@ describe
                         (
                             null,
                             {
-                                strategyName: 'strategyA',
-                                status: 'used',
-                                outputLength: 100,
-                                time: 123,
+                                strategyName:   'strategyA',
+                                status:         'used',
+                                outputLength:   100,
+                                time:           123,
                                 perfLog:
                                 [
                                     makePerfInfoList
                                     (
                                         'lorem',
                                         {
-                                            strategyName: 'strategyA1',
-                                            status: 'used',
-                                            outputLength: 50,
-                                            time: 45,
+                                            strategyName:   'strategyA1',
+                                            status:         'used',
+                                            outputLength:   50,
+                                            time:           45,
                                         }
                                     ),
                                     makePerfInfoList
                                     (
                                         'ipsum',
                                         {
-                                            strategyName: 'strategyA2',
-                                            status: 'used',
-                                            outputLength: 25,
-                                            time: 67,
+                                            strategyName:   'strategyA2',
+                                            status:         'used',
+                                            outputLength:   25,
+                                            time:           67,
                                             perfLog:
                                             [
                                                 makePerfInfoList
                                                 (
                                                     'dolor',
                                                     {
-                                                        strategyName: 'strategyA2_extra',
-                                                        status: 'used',
-                                                        outputLength: 22,
-                                                        time: 66,
+                                                        strategyName:   'strategyA2_extra',
+                                                        status:         'used',
+                                                        outputLength:   22,
+                                                        time:           66,
                                                     }
                                                 ),
                                             ],

@@ -12,10 +12,7 @@ export function calculateAvailabilityInfo(family, filterFeature)
         {
             const engineFeatureObj = Feature[featureName];
             if (filterFeature(engineFeatureObj))
-            {
-                if (firstAvail == null)
-                    firstAvail = compatibilityIndex;
-            }
+                firstAvail ??= compatibilityIndex;
             else
             {
                 if (firstAvail != null && firstUnavail == null)
@@ -30,15 +27,10 @@ export function calculateAvailabilityInfo(family, filterFeature)
 export const getAvailabilityByFeature =
 (featureName, family) =>
 {
-    const availabilityInfoCache =
-    availabilityInfoMap[family] ?? (availabilityInfoMap[family] = { __proto__: null });
+    const availabilityInfoCache = availabilityInfoMap[family] ??= { __proto__: null };
     const availabilityInfo =
-    availabilityInfoCache[featureName] ||
-    (
-        availabilityInfoCache[featureName] =
-        calculateAvailabilityInfo
-        (family, engineFeatureObj => engineFeatureObj.includes(featureName))
-    );
+    availabilityInfoCache[featureName] ||=
+    calculateAvailabilityInfo(family, engineFeatureObj => engineFeatureObj.includes(featureName));
     return availabilityInfo;
 };
 

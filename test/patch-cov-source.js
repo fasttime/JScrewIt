@@ -6,10 +6,10 @@ const { createRequire } = require('module');
 
 const MARKER_LINES =
 {
-    __proto__: null,
-    '    var extendStatics = function(d, b) {\n': 5,
-    '    function __extends(d, b) {\n': 6,
-    '    var __assign = function() {\n': 9,
+    __proto__:                                      null,
+    '    var extendStatics = function(d, b) {\n':   5,
+    '    function __extends(d, b) {\n':             6,
+    '    var __assign = function() {\n':            9,
 };
 
 const c8jsRequire = createRequire(require.resolve('c8js'));

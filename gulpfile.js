@@ -116,31 +116,32 @@ task
         lint
         (
             {
-                src: ['src/**/*.js', '!src/ui/worker.js'],
-                parserOptions: { ecmaVersion: 2015, sourceType: 'module' },
+                src:            ['src/**/*.js', '!src/ui/worker.js'],
+                parserOptions:  { ecmaVersion: 2015, sourceType: 'module' },
                 rules:
                 {
                     'lines-around-comment':
                     [
                         'error',
                         {
-                            allowBlockStart: true,
-                            allowObjectStart: true,
-                            ignorePattern: '^\\s*c8 ignore next\\b',
+                            allowBlockStart:    true,
+                            allowObjectStart:   true,
+                            ignorePattern:      '^\\s*c8 ignore next\\b',
                         },
                     ],
                 },
             },
             {
-                src: ['dev/**/*.js', 'gulpfile.js', 'test/patch-cov-source.js', '!dev/legacy/**'],
-                jsVersion: 2022,
-                envs: 'node',
+                src:
+                ['dev/**/*.js', 'gulpfile.js', 'test/patch-cov-source.js', '!dev/legacy/**'],
+                jsVersion:  2022,
+                envs:       'node',
             },
             {
-                src: ['dev/**/*.mjs'],
-                jsVersion: 2022,
-                envs: 'node',
-                parserOptions: { sourceType: 'module' },
+                src:            ['dev/**/*.mjs'],
+                jsVersion:      2022,
+                envs:           'node',
+                parserOptions:  { sourceType: 'module' },
             },
             {
                 src:
@@ -160,8 +161,8 @@ task
                 },
             },
             {
-                src: ['lib/**/*.ts', '!lib/feature-all.d.ts'],
-                parserOptions: { project: 'tsconfig.json' },
+                src:            ['lib/**/*.ts', '!lib/feature-all.d.ts'],
+                parserOptions:  { project: 'tsconfig.json' },
             },
             { src: 'test/acceptance/**/*.feature' },
         );
@@ -179,7 +180,7 @@ task
 
         const inputOptions =
         {
-            input: 'src/lib/jscrewit-main.js',
+            input: 'src/lib/jscrewit-main.js', // eslint-disable-line key-spacing
             plugins:
             [
                 cleanup({ comments: [/^(?!\*(?:!|\s*global\b))/], maxEmptyLines: -1 }),
@@ -206,8 +207,8 @@ task
             mochaPath,
             ['--check-leaks', '--ui=ebdd', 'test/**/*.spec.js'],
             {
-                reporter: ['html', 'text-summary'],
-                useC8Config: false,
+                reporter:       ['html', 'text-summary'],
+                useC8Config:    false,
                 watermarks:
                 {
                     branches:   [90, 100],
@@ -230,9 +231,9 @@ task
 
         const uglifyOpts =
         {
-            compress: { global_defs: { NO_DEBUG: true }, hoist_funs: true, passes: 4 },
-            mangle: { properties: { regex: /^_/ } },
-            output: { comments: (node, comment) => comment.pos === 0 },
+            compress:   { global_defs: { NO_DEBUG: true }, hoist_funs: true, passes: 4 },
+            mangle:     { properties: { regex: /^_/ } },
+            output:     { comments: (node, comment) => comment.pos === 0 },
         };
         const stream =
         src('lib/jscrewit.js')
@@ -397,9 +398,9 @@ task
             jsdoc
             (
                 {
-                    opts: { destination: 'jsdoc' },
-                    plugins: ['plugins/markdown'],
-                    tags: { allowUnknownTags: false },
+                    opts:       { destination: 'jsdoc' },
+                    plugins:    ['plugins/markdown'],
+                    tags:       { allowUnknownTags: false },
                 },
             ),
         );

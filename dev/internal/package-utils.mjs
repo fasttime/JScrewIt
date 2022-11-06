@@ -22,15 +22,15 @@ async function bundleLib(pkgPath)
     const inputPath = join(pkgPath, '.tmp-out/index.js');
     const inputOptions =
     {
-        external: ['tslib'],
-        input: inputPath,
-        plugins: [rollupPluginCleanup({ comments: /^(?!\/\s*(?:@ts-|eslint-))/ })],
+        external:   ['tslib'],
+        input:      inputPath,
+        plugins:    [rollupPluginCleanup({ comments: /^(?!\/\s*(?:@ts-|eslint-))/ })],
     };
     const outputPath = join(pkgPath, 'lib/index.js');
     const outputOptions =
     {
         banner: `// ${name} – ${homepage}\n`,
-        file: outputPath,
+        file:   outputPath,
         footer: `\n// End of module ${name}`,
         format: 'esm',
     };

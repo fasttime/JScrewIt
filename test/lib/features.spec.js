@@ -164,7 +164,7 @@
                     (
                         [
                             {
-                                actualFeatureName: 'BROWSER',
+                                actualFeatureName: 'BROWSER', // eslint-disable-line key-spacing
                                 expectedFeatureNames:
                                 [
                                     'ANDRO_4_0',
@@ -178,8 +178,8 @@
                                 ],
                             },
                             {
-                                actualFeatureName: 'COMPACT',
-                                expectedFeatureNames: ['CHROME', 'FF', 'SAFARI'],
+                                actualFeatureName:      'COMPACT',
+                                expectedFeatureNames:   ['CHROME', 'FF', 'SAFARI'],
                             },
                         ]
                     )

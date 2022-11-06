@@ -20,8 +20,8 @@ export const RULES: readonly Rule[] =
             createTypeSet(SolutionType.UNDEFINED),
             createTypeSet(SolutionType.WEAK_ALGEBRAIC),
         ],
-        replace: (r1: string, r2: string, r3: string): string => `${r1}+(${r2}+[${r3}])`,
-        solutionType: SolutionType.PREFIXED_STRING,
+        replace:        (r1: string, r2: string, r3: string): string => `${r1}+(${r2}+[${r3}])`,
+        solutionType:   SolutionType.PREFIXED_STRING,
     },
     {
         typeSetList:
@@ -30,8 +30,8 @@ export const RULES: readonly Rule[] =
             createTypeSet(SolutionType.UNDEFINED),
             createTypeSet(SolutionType.WEAK_PREFIXED_STRING),
         ],
-        replace: (r1: string, r2: string, r3: string): string => `${r1}+(${r2}+(${r3}))`,
-        solutionType: SolutionType.PREFIXED_STRING,
+        replace:        (r1: string, r2: string, r3: string): string => `${r1}+(${r2}+(${r3}))`,
+        solutionType:   SolutionType.PREFIXED_STRING,
     },
     {
         typeSetList:
@@ -40,8 +40,8 @@ export const RULES: readonly Rule[] =
             createTypeSet(SolutionType.UNDEFINED),
             createTypeSet(SolutionType.OBJECT, SolutionType.STRING, SolutionType.COMBINED_STRING),
         ],
-        replace: (r1: string, r2: string, r3: string): string => `${r1}+(${r2}+${r3})`,
-        solutionType: SolutionType.PREFIXED_STRING,
+        replace:        (r1: string, r2: string, r3: string): string => `${r1}+(${r2}+${r3})`,
+        solutionType:   SolutionType.PREFIXED_STRING,
     },
     {
         typeSetList:
@@ -49,8 +49,8 @@ export const RULES: readonly Rule[] =
             createTypeSet(SolutionType.UNDEFINED),
             createTypeSet(SolutionType.UNDEFINED),
         ],
-        replace: (r1: string, r2: string): string => `[]+${r1}+${r2}`,
-        solutionType: SolutionType.COMBINED_STRING,
+        replace:        (r1: string, r2: string): string => `[]+${r1}+${r2}`,
+        solutionType:   SolutionType.COMBINED_STRING,
     },
     {
         typeSetList:
@@ -58,8 +58,8 @@ export const RULES: readonly Rule[] =
             createTypeSet(SolutionType.UNDEFINED),
             createTypeSet(SolutionType.ALGEBRAIC, SolutionType.WEAK_ALGEBRAIC),
         ],
-        replace: (r1: string, r2: string): string => `${r1}+[${r2}]`,
-        solutionType: SolutionType.PREFIXED_STRING,
+        replace:        (r1: string, r2: string): string => `${r1}+[${r2}]`,
+        solutionType:   SolutionType.PREFIXED_STRING,
     },
     {
         typeSetList:
@@ -67,13 +67,13 @@ export const RULES: readonly Rule[] =
             createTypeSet(SolutionType.UNDEFINED),
             createTypeSet(SolutionType.PREFIXED_STRING),
         ],
-        replace: (r1: string, r2: string): string => `${r1}+(${r2})`,
-        solutionType: SolutionType.PREFIXED_STRING,
+        replace:        (r1: string, r2: string): string => `${r1}+(${r2})`,
+        solutionType:   SolutionType.PREFIXED_STRING,
     },
     {
-        typeSetList: [createTypeSet(SolutionType.UNDEFINED)],
-        replace: (r1: string): string => r1,
-        solutionType: SolutionType.PREFIXED_STRING,
+        typeSetList:    [createTypeSet(SolutionType.UNDEFINED)],
+        replace:        (r1: string): string => r1,
+        solutionType:   SolutionType.PREFIXED_STRING,
     },
 
     // ALGEBRAIC, PREFIXED_STRING
@@ -84,8 +84,8 @@ export const RULES: readonly Rule[] =
             createTypeSet
             (SolutionType.UNDEFINED, SolutionType.ALGEBRAIC, SolutionType.PREFIXED_STRING),
         ],
-        replace: (r1: string, r2: string): string => `[${r1}]+${r2}`,
-        solutionType: SolutionType.COMBINED_STRING,
+        replace:        (r1: string, r2: string): string => `[${r1}]+${r2}`,
+        solutionType:   SolutionType.COMBINED_STRING,
     },
     {
         typeSetList:
@@ -93,13 +93,13 @@ export const RULES: readonly Rule[] =
             createTypeSet(SolutionType.ALGEBRAIC),
             createTypeSet(SolutionType.WEAK_ALGEBRAIC),
         ],
-        replace: (r1: string, r2: string): string => `${r1}+[${r2}]`,
-        solutionType: SolutionType.PREFIXED_STRING,
+        replace:        (r1: string, r2: string): string => `${r1}+[${r2}]`,
+        solutionType:   SolutionType.PREFIXED_STRING,
     },
     {
-        typeSetList: [createTypeSet(SolutionType.ALGEBRAIC, SolutionType.PREFIXED_STRING)],
-        replace: (r1: string): string => r1,
-        solutionType: SolutionType.PREFIXED_STRING,
+        typeSetList:    [createTypeSet(SolutionType.ALGEBRAIC, SolutionType.PREFIXED_STRING)],
+        replace:        (r1: string): string => r1,
+        solutionType:   SolutionType.PREFIXED_STRING,
     },
 
     // WEAK_ALGEBRAIC, WEAK_PREFIXED_STRING
@@ -110,8 +110,8 @@ export const RULES: readonly Rule[] =
             createTypeSet
             (SolutionType.UNDEFINED, SolutionType.ALGEBRAIC, SolutionType.PREFIXED_STRING),
         ],
-        replace: (r1: string, r2: string): string => `[${r1}]+${r2}`,
-        solutionType: SolutionType.COMBINED_STRING,
+        replace:        (r1: string, r2: string): string => `[${r1}]+${r2}`,
+        solutionType:   SolutionType.COMBINED_STRING,
     },
     {
         typeSetList:
@@ -119,22 +119,22 @@ export const RULES: readonly Rule[] =
             createTypeSet(SolutionType.WEAK_ALGEBRAIC),
             createTypeSet(SolutionType.WEAK_ALGEBRAIC),
         ],
-        replace: (r1: string, r2: string): string => `${r1}+[${r2}]`,
-        solutionType: SolutionType.WEAK_PREFIXED_STRING,
+        replace:        (r1: string, r2: string): string => `${r1}+[${r2}]`,
+        solutionType:   SolutionType.WEAK_PREFIXED_STRING,
     },
     {
         typeSetList:
         [createTypeSet(SolutionType.WEAK_ALGEBRAIC, SolutionType.WEAK_PREFIXED_STRING)],
-        replace: (r1: string): string => r1,
-        solutionType: SolutionType.WEAK_PREFIXED_STRING,
+        replace:        (r1: string): string => r1,
+        solutionType:   SolutionType.WEAK_PREFIXED_STRING,
     },
 
     // OBJECT, STRING, COMBINED_STRING
     {
         typeSetList:
         [createTypeSet(SolutionType.OBJECT, SolutionType.STRING, SolutionType.COMBINED_STRING)],
-        replace: (r1: string): string => r1,
-        solutionType: SolutionType.COMBINED_STRING,
+        replace:        (r1: string): string => r1,
+        solutionType:   SolutionType.COMBINED_STRING,
     },
 ];
 

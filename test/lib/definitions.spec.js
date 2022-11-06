@@ -456,15 +456,15 @@ self,
         {
             var paramDataMap =
             {
-                Array: isExpected(Array),
+                Array:      isExpected(Array),
                 Audio:
                 function ()
                 {
                     this.toBe(Audio);
                 },
-                Boolean: isExpected(Boolean),
-                Date: isExpected(Date),
-                Function: isExpected(Function),
+                Boolean:    isExpected(Boolean),
+                Date:       isExpected(Date),
+                Function:   isExpected(Function),
                 Intl:
                 function ()
                 {
@@ -475,10 +475,10 @@ self,
                 {
                     this.toBe(Node);
                 },
-                Number: isExpected(Number),
-                Object: isExpected(Object),
-                RegExp: isExpected(RegExp),
-                String: isExpected(String),
+                Number:     isExpected(Number),
+                Object:     isExpected(Object),
+                RegExp:     isExpected(RegExp),
+                String:     isExpected(String),
                 atob:
                 function ()
                 {
@@ -494,7 +494,7 @@ self,
                 {
                     this.toBe(document);
                 },
-                escape: isExpected(escape),
+                escape:     isExpected(escape),
                 location:
                 function ()
                 {
@@ -505,7 +505,7 @@ self,
                 {
                     this.toBe(self);
                 },
-                unescape: isExpected(unescape),
+                unescape:   isExpected(unescape), // eslint-disable-line key-spacing
                 ANY_FUNCTION:
                 function ()
                 {

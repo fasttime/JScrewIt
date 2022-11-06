@@ -552,7 +552,7 @@
 
     var FUNCTION_INTERCEPTOR =
     {
-        path: 'Function',
+        path: 'Function', // eslint-disable-line key-spacing
         createDescriptor:
         function (adapterList, context)
         {
@@ -571,14 +571,14 @@
 
     var FUNCTION_TO_STRING_INTERCEPTOR =
     {
-        path: 'Function.prototype.toString',
-        createDescriptor: createDefaultInterceptorDescriptor,
+        path:               'Function.prototype.toString',
+        createDescriptor:   createDefaultInterceptorDescriptor,
     };
 
     var NUMBER_TO_LOCALE_STRING_INTERCEPTOR =
     {
-        path: 'Number.prototype.toLocaleString',
-        createDescriptor: createDefaultInterceptorDescriptor,
+        path:               'Number.prototype.toLocaleString',
+        createDescriptor:   createDefaultInterceptorDescriptor,
     };
 
     var OBJECT_TO_STRING_INTERCEPTOR =
@@ -593,8 +593,9 @@
 
     var EMU_FEATURE_INFOS =
     {
-        ANY_DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object [\S\s]*Document]$/),
-        ANY_WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object [\S\s]*Window]$/),
+        ANY_DOCUMENT:
+        makeEmuFeatureDocument('[object Document]', /^\[object [\S\s]*Document]$/),
+        ANY_WINDOW:             makeEmuFeatureSelf('[object Window]', /^\[object [\S\s]*Window]$/),
         ARRAY_ITERATOR:
         function ()
         {
@@ -734,7 +735,8 @@
             else
                 override(this, 'statusbar', { value: { toString: toString } });
         },
-        CAPITAL_HTML: makeEmuFeatureHtml
+        CAPITAL_HTML:
+        makeEmuFeatureHtml
         (
             [
                 'anchor',
@@ -781,8 +783,8 @@
             var toString = createStaticSupplier('[object Console]');
             override(this, 'console.toString', { value: toString });
         },
-        DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object Document]$/),
-        DOMWINDOW: makeEmuFeatureSelf('[object DOMWindow]', /^\[object DOMWindow]$/),
+        DOCUMENT:               makeEmuFeatureDocument('[object Document]', /^\[object Document]$/),
+        DOMWINDOW:              makeEmuFeatureSelf('[object DOMWindow]', /^\[object DOMWindow]$/),
         ESC_HTML_ALL:
         makeEmuFeatureEscHtml
         (
@@ -813,10 +815,10 @@
             },
             /&quot;<>/
         ),
-        ESC_REGEXP_LF: makeEmuFeatureEscRegExp('\n', '\\n'),
-        ESC_REGEXP_SLASH: makeEmuFeatureEscRegExp('/', '\\/'),
-        FF_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_FF),
-        FILL: makeEmuFeatureArrayPrototypeFunction('fill', Function()),
+        ESC_REGEXP_LF:          makeEmuFeatureEscRegExp('\n', '\\n'),
+        ESC_REGEXP_SLASH:       makeEmuFeatureEscRegExp('/', '\\/'),
+        FF_SRC:                 makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_FF),
+        FILL:                   makeEmuFeatureArrayPrototypeFunction('fill', Function()),
         FLAT:
         makeEmuFeatureArrayPrototypeFunction
         (
@@ -840,8 +842,10 @@
         {
             override(this, 'String.fromCodePoint', { value: fromCodePoint });
         },
-        FUNCTION_19_LF: makeEmuFeatureFunctionLF('function anonymous(\n) {\n\n}'),
-        FUNCTION_22_LF: makeEmuFeatureFunctionLF('function anonymous() {\n\n}'),
+        // eslint-disable-next-line key-spacing
+        FUNCTION_19_LF:         makeEmuFeatureFunctionLF('function anonymous(\n) {\n\n}'),
+        // eslint-disable-next-line key-spacing
+        FUNCTION_22_LF:         makeEmuFeatureFunctionLF('function anonymous() {\n\n}'),
         GENERIC_ARRAY_TO_STRING:
         function ()
         {
@@ -884,8 +888,9 @@
             var toString = createStaticSupplier('function HTMLAudioElement');
             override(this, 'Audio.toString', { value: toString });
         },
-        HTMLDOCUMENT: makeEmuFeatureDocument('[object HTMLDocument]', /^\[object HTMLDocument]$/),
-        IE_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_IE),
+        HTMLDOCUMENT:
+        makeEmuFeatureDocument('[object HTMLDocument]', /^\[object HTMLDocument]$/),
+        IE_SRC:                 makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_IE),
         INTL:
         function ()
         {
@@ -1099,7 +1104,7 @@
                 registerDefaultToStringAdapter(this, Intl, '[object Object]');
         },
         REGEXP_STRING_ITERATOR: makeEmuFeatureMatchAll(),
-        SELF_OBJ: makeEmuFeatureSelf('[object Object]', /^\[object /),
+        SELF_OBJ:               makeEmuFeatureSelf('[object Object]', /^\[object /),
         SHORT_LOCALES:
         function ()
         {
@@ -1133,8 +1138,8 @@
             if (Object.prototype.toString.call() !== '[object Undefined]')
                 registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
         },
-        V8_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_V8),
-        WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object Window]$/),
+        V8_SRC:                 makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_V8),
+        WINDOW:                 makeEmuFeatureSelf('[object Window]', /^\[object Window]$/),
     };
 
     var EMU_FEATURES =

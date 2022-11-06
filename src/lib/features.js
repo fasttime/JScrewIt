@@ -113,7 +113,7 @@ var featureInfos =
                 return available;
             }
         ),
-        includes: ['SELF_OBJ'],
+        includes:   ['SELF_OBJ'],
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
     ARRAY_ITERATOR:
@@ -156,14 +156,14 @@ var featureInfos =
     },
     ATOB:
     {
-        description: 'Existence of the global functions atob and btoa.',
+        description:    'Existence of the global functions atob and btoa.',
         check:
         function ()
         {
             var available = typeof atob === 'function' && typeof btoa === 'function';
             return available;
         },
-        attributes: { 'web-worker': 'old-safari-restriction' },
+        attributes:     { 'web-worker': 'old-safari-restriction' },
     },
     BARPROP:
     {
@@ -224,8 +224,8 @@ var featureInfos =
             var available = typeof document === 'object' && document + '' === '[object Document]';
             return available;
         },
-        includes: ['ANY_DOCUMENT'],
-        excludes: ['HTMLDOCUMENT'],
+        includes:   ['ANY_DOCUMENT'],
+        excludes:   ['HTMLDOCUMENT'],
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
     DOMWINDOW:
@@ -242,8 +242,8 @@ var featureInfos =
                 return available;
             }
         ),
-        includes: ['ANY_WINDOW'],
-        excludes: ['WINDOW'],
+        includes:   ['ANY_WINDOW'],
+        excludes:   ['WINDOW'],
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
     ESC_HTML_ALL:
@@ -444,7 +444,7 @@ var featureInfos =
             typeof Audio !== 'undefined' && /^function HTMLAudioElement/.test(Audio);
             return available;
         },
-        includes: ['NO_IE_SRC'],
+        includes:   ['NO_IE_SRC'],
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
     HTMLDOCUMENT:
@@ -459,8 +459,8 @@ var featureInfos =
             typeof document === 'object' && document + '' === '[object HTMLDocument]';
             return available;
         },
-        includes: ['ANY_DOCUMENT'],
-        excludes: ['DOCUMENT'],
+        includes:   ['ANY_DOCUMENT'],
+        excludes:   ['DOCUMENT'],
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
     IE_SRC:
@@ -728,7 +728,8 @@ var featureInfos =
             return available;
         },
     },
-    SELF: { aliasFor: 'ANY_WINDOW' },
+    SELF:
+    { aliasFor: 'ANY_WINDOW' },
     SELF_OBJ:
     {
         description:
@@ -808,8 +809,8 @@ var featureInfos =
                 return available;
             }
         ),
-        includes: ['ANY_WINDOW'],
-        excludes: ['DOMWINDOW'],
+        includes:   ['ANY_WINDOW'],
+        excludes:   ['DOMWINDOW'],
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
 
@@ -823,6 +824,7 @@ var featureInfos =
         description:
         'Features available in all browsers.\n' +
         'No support for Node.js.',
+        // eslint-disable-next-line key-spacing
         includes: ['ANY_DOCUMENT', 'ANY_WINDOW', 'HISTORY', 'INCR_CHAR', 'STATUS'],
         attributes:
         {
@@ -897,8 +899,8 @@ var featureInfos =
     },
     ANDRO_4_4:
     {
-        inherits: 'ANDRO_4_1',
-        versions: ['4.4'],
+        inherits:   'ANDRO_4_1',
+        versions:   ['4.4'],
         includes:
         {
             BARPROP:                true,
@@ -914,13 +916,13 @@ var featureInfos =
     },
     CHROME_PREV:
     {
-        description: describeEngine('the previous to current versions of Chrome and Edge'),
-        aliasFor: 'CHROME_92',
+        description:    describeEngine('the previous to current versions of Chrome and Edge'),
+        aliasFor:       'CHROME_92',
     },
     CHROME:
     {
-        description: describeEngine('the current stable versions of Chrome, Edge and Opera'),
-        aliasFor: 'CHROME_92',
+        description:    describeEngine('the current stable versions of Chrome, Edge and Opera'),
+        aliasFor:       'CHROME_92',
     },
     CHROME_92:
     {
@@ -961,18 +963,18 @@ var featureInfos =
     },
     FF_ESR:
     {
-        description: describeEngine('the current version of Firefox ESR'),
-        aliasFor: 'FF_90',
+        description:    describeEngine('the current version of Firefox ESR'),
+        aliasFor:       'FF_90',
     },
     FF_PREV:
     {
-        description: describeEngine('the previous to current version of Firefox'),
-        aliasFor: 'FF_90',
+        description:    describeEngine('the previous to current version of Firefox'),
+        aliasFor:       'FF_90',
     },
     FF:
     {
-        description: describeEngine('the current stable version of Firefox'),
-        aliasFor: 'FF_90',
+        description:    describeEngine('the current stable version of Firefox'),
+        aliasFor:       'FF_90',
     },
     FF_90:
     {
@@ -1036,9 +1038,9 @@ var featureInfos =
     },
     IE_10:
     {
-        inherits: 'IE_9',
-        versions: ['10'],
-        includes: { ATOB: true, CONSOLE: true, OBJECT_UNDEFINED: true, UNDEFINED: false },
+        inherits:   'IE_9',
+        versions:   ['10'],
+        includes:   { ATOB: true, CONSOLE: true, OBJECT_UNDEFINED: true, UNDEFINED: false },
         attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
     },
     IE_11:
@@ -1057,11 +1059,12 @@ var featureInfos =
     },
     IE_11_WIN_10:
     {
-        inherits: 'IE_11',
-        versions: ['11'],
-        compatibilityTag: 'on Windows 10',
-        compatibilityShortTag: 'W10',
-        includes: { LOCALE_INFINITY: true, LOCALE_NUMERALS: false, LOCALE_NUMERALS_EXT: true },
+        inherits:               'IE_11',
+        versions:               ['11'],
+        compatibilityTag:       'on Windows 10',
+        compatibilityShortTag:  'W10',
+        includes:
+        { LOCALE_INFINITY: true, LOCALE_NUMERALS: false, LOCALE_NUMERALS_EXT: true },
     },
     NODE_0_10:
     {
@@ -1100,8 +1103,8 @@ var featureInfos =
     },
     NODE_5:
     {
-        inherits: 'NODE_4',
-        versions: [['5',, '9']],
+        inherits:   'NODE_4',
+        versions:   [['5',, '9']],
         attributes: { 'char-increment-restriction': null },
     },
     NODE_10:
@@ -1184,9 +1187,9 @@ var featureInfos =
     },
     SAFARI_7_1:
     {
-        inherits: 'SAFARI_7_0',
-        versions: [['7.1', '8']],
-        includes: { ARRAY_ITERATOR: true, FILL: true },
+        inherits:   'SAFARI_7_0',
+        versions:   [['7.1', '8']],
+        includes:   { ARRAY_ITERATOR: true, FILL: true },
         attributes: { 'no-console-in-web-worker': undefined, 'safari-bug-21820506': null },
     },
     SAFARI_9:
@@ -1203,8 +1206,8 @@ var featureInfos =
     },
     SAFARI_10:
     {
-        inherits: 'SAFARI_9',
-        versions: [['10', '11']],
+        inherits:   'SAFARI_9',
+        versions:   [['10', '11']],
         includes:
         {
             ARROW:                      true,
@@ -1245,8 +1248,8 @@ var featureInfos =
     },
     SAFARI:
     {
-        description: describeEngine('the current stable version of Safari'),
-        aliasFor: 'SAFARI_15_4',
+        description:    describeEngine('the current stable version of Safari'),
+        aliasFor:       'SAFARI_15_4',
     },
     SAFARI_15_4:
     {
@@ -1304,8 +1307,8 @@ var featureInfos =
     );
     featureInfos.AUTO =
     {
-        description: describeEngine('the current environment'),
-        includes: autoIncludes,
+        description:    describeEngine('the current environment'),
+        includes:       autoIncludes,
     };
     Feature = createFeatureClass(featureInfos, formatEngineDescription);
     ELEMENTARY = Feature.ELEMENTARY;

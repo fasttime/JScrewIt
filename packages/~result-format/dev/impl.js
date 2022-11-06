@@ -24,19 +24,19 @@ export async function lint()
     lintPackage
     (
         {
-            src: ['src/**/*.ts', 'test/*.ts'],
-            parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
+            src:            ['src/**/*.ts', 'test/*.ts'],
+            parserOptions:  { project: 'tsconfig.json', sourceType: 'module' },
         },
         {
-            src: 'test/spec/**/*.ts',
-            envs: ['ebdd/ebdd', 'mocha'],
-            parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
-            plugins: ['ebdd'],
+            src:            'test/spec/**/*.ts',
+            envs:           ['ebdd/ebdd', 'mocha'],
+            parserOptions:  { project: 'tsconfig.json', sourceType: 'module' },
+            plugins:        ['ebdd'],
         },
         {
-            src: ['*.js', 'dev/**/*.js'],
-            envs: 'node',
-            parserOptions: { ecmaVersion: 2022, sourceType: 'module' },
+            src:            ['*.js', 'dev/**/*.js'],
+            envs:           'node',
+            parserOptions:  { ecmaVersion: 2022, sourceType: 'module' },
         },
     );
 }

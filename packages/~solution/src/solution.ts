@@ -47,7 +47,7 @@ export class DynamicSolution extends AbstractSolution
     public get replacement(): string
     {
         const replacement =
-        this._replacement ?? (this._replacement = calculateReplacement(this._solutions));
+        this._replacement ??= this._replacement = calculateReplacement(this._solutions);
         return replacement;
     }
 

@@ -486,8 +486,7 @@ FeatureConstructor
                     const aliasFor = esToString(info.aliasFor);
                     mask = completeFeature(aliasFor);
                     featureObj = ALL[aliasFor];
-                    if (description == null)
-                        description = DESCRIPTION_MAP[aliasFor];
+                    description ??= DESCRIPTION_MAP[aliasFor];
                 }
                 else
                 {
@@ -580,8 +579,7 @@ FeatureConstructor
                                 return compatibility;
                             },
                         );
-                        if (description == null)
-                            description = formatEngineDescription?.(compatibilities);
+                        description ??= formatEngineDescription?.(compatibilities);
                     }
                     const attributes = createMap<string | null>();
                     if (inherits != null)

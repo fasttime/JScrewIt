@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
       with:
-        node-version: 18 >=18.1
+        node-version: ^18.1
     - run: |
         npm install --workspaces
         npm install
@@ -34,7 +34,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: ['0.10', '0.12', '4', '6', '8', '10', '12', '14', '16', '18']
+        node-version: ['0.10', '0.12', '4', '6', '8', '10', '12', '14', '16', '18', '19']
 
     steps:
     - uses: actions/checkout@v3
@@ -46,5 +46,5 @@ jobs:
         name: lib
         path: lib
     - run: |
-        npm install ebdd expectations mocha@3 postrequire
+        npm install @types/mocha@9 ebdd expectations mocha@3 postrequire
         npm test

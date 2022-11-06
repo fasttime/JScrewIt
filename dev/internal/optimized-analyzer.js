@@ -59,8 +59,7 @@ class OptimizedAnalyzer extends Analyzer
                                 knownSolution = solution;
                         }
                     }
-                    if (!knownSolution)
-                        knownSolution = resolveCharacter.call(encoder, char);
+                    knownSolution ||= resolveCharacter.call(encoder, char);
                     return knownSolution;
                 }
                 this.missingCharacter(char);

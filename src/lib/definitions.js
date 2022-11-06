@@ -858,7 +858,8 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: 'Function("return toString.call(location)")()[SLICE_OR_SUBSTR]("-10")[1]',
+                    expr:
+                    'Function("return toString.call(location)")()[SLICE_OR_SUBSTR]("-10")[1]',
                     optimize: true,
                 },
                 LOCATION
@@ -872,7 +873,8 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '(Function("return toString.call(location)")() + RP_1_WA).at("-10")',
+                    expr:
+                    '(Function("return toString.call(location)")() + RP_1_WA).at("-10")',
                     optimize: true,
                 },
                 AT,
@@ -1381,8 +1383,8 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '(+(RP_0_S + FILTER)[0] + RegExp(FILTER))[23]',
-                    solutionType: SolutionType.STRING,
+                    expr:           '(+(RP_0_S + FILTER)[0] + RegExp(FILTER))[23]',
+                    solutionType:   SolutionType.STRING,
                 },
                 ESC_REGEXP_LF,
                 NO_V8_SRC
@@ -1397,8 +1399,8 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '(RP_1_WA + [+(RP_0_S + AT)[0]] + RegExp(AT))[20]',
-                    solutionType: SolutionType.STRING,
+                    expr:           '(RP_1_WA + [+(RP_0_S + AT)[0]] + RegExp(AT))[20]',
+                    solutionType:   SolutionType.STRING,
                 },
                 AT,
                 ESC_REGEXP_LF,
@@ -1421,8 +1423,8 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '(+(RP_0_S + FILL)[0] + RegExp(FILL))[21]',
-                    solutionType: SolutionType.STRING,
+                    expr:           '(+(RP_0_S + FILL)[0] + RegExp(FILL))[21]',
+                    solutionType:   SolutionType.STRING,
                 },
                 ESC_REGEXP_LF,
                 FILL,
@@ -1431,8 +1433,8 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '(+(RP_0_S + FLAT)[0] + RegExp(FLAT))[21]',
-                    solutionType: SolutionType.STRING,
+                    expr:           '(+(RP_0_S + FLAT)[0] + RegExp(FLAT))[21]',
+                    solutionType:   SolutionType.STRING,
                 },
                 ESC_REGEXP_LF,
                 FLAT,
@@ -1488,9 +1490,9 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '"toLocaleString"',
-                    optimize: true,
-                    solutionType: SolutionType.COMBINED_STRING,
+                    expr:           '"toLocaleString"',
+                    optimize:       true,
+                    solutionType:   SolutionType.COMBINED_STRING,
                 }
             ),
         ],
@@ -1499,22 +1501,16 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '"toString"',
-                    optimize: { toStringOpt: false },
-                    solutionType: SolutionType.COMBINED_STRING,
+                    expr:           '"toString"',
+                    optimize:       { toStringOpt: false },
+                    solutionType:   SolutionType.COMBINED_STRING,
                 }
             ),
         ],
         TO_UPPER_CASE:
         [
             define
-            (
-                {
-                    expr: '"toUpperCase"',
-                    optimize: true,
-                    solutionType: SolutionType.COMBINED_STRING,
-                }
-            ),
+            ({ expr: '"toUpperCase"', optimize: true, solutionType: SolutionType.COMBINED_STRING }),
         ],
 
         // Function body extra padding blocks: prepended to a function to align the function's body
@@ -1565,31 +1561,31 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '+("10" + [(RP_4_A + FILTER)[40]] + "00000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("10" + [(RP_4_A + FILTER)[40]] + "00000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 }
             ),
             define
             (
                 {
-                    expr: '+("10" + [(RP_0_S + AT)[32]] + "00000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("10" + [(RP_0_S + AT)[32]] + "00000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 },
                 AT
             ),
             define
             (
                 {
-                    expr: '+("10" + [(RP_6_S + FILL)[40]] + "00000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("10" + [(RP_6_S + FILL)[40]] + "00000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 },
                 FILL
             ),
             define
             (
                 {
-                    expr: '+("10" + [(RP_6_S + FLAT)[40]] + "00000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("10" + [(RP_6_S + FLAT)[40]] + "00000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 },
                 FLAT
             ),
@@ -1599,31 +1595,31 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '+("1000" + (RP_5_A + FILTER + 0)[40] + "000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("1000" + (RP_5_A + FILTER + 0)[40] + "000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 }
             ),
             define
             (
                 {
-                    expr: '+("1000" + (AT + 0)[31] + "000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("1000" + (AT + 0)[31] + "000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 },
                 AT
             ),
             define
             (
                 {
-                    expr: '+("1000" + (FILL + 0)[33] + "000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("1000" + (FILL + 0)[33] + "000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 },
                 FILL
             ),
             define
             (
                 {
-                    expr: '+("1000" + (FLAT + 0)[33] + "000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("1000" + (FLAT + 0)[33] + "000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 },
                 FLAT
             ),
@@ -1633,8 +1629,8 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '[true][+(RP_0_S + ANY_FUNCTION)[0]]',
-                    solutionType: SolutionType.UNDEFINED,
+                    expr:           '[true][+(RP_0_S + ANY_FUNCTION)[0]]',
+                    solutionType:   SolutionType.UNDEFINED,
                 },
                 NO_FF_SRC
             ),
@@ -1669,15 +1665,15 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '+(1 + [+(RP_0_S + ANY_FUNCTION)[0]])',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+(1 + [+(RP_0_S + ANY_FUNCTION)[0]])',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 }
             ),
             define
             (
                 {
-                    expr: '+(++(RP_0_S + ANY_FUNCTION)[0] + [0])',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+(++(RP_0_S + ANY_FUNCTION)[0] + [0])',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 },
                 INCR_CHAR
             ),
@@ -1699,8 +1695,8 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '!![[]][+(RP_0_S + ANY_FUNCTION)[0]]',
-                    solutionType: SolutionType.ALGEBRAIC,
+                    expr:           '!![[]][+(RP_0_S + ANY_FUNCTION)[0]]',
+                    solutionType:   SolutionType.ALGEBRAIC,
                 }
             ),
             define

@@ -32,13 +32,13 @@ it
                 GREEN:  { check: noop, excludes: ['RED'] },
                 FOO:
                 {
-                    includes: ['RED1', 'GREEN'],
+                    includes:   ['RED1', 'GREEN'],
                     attributes: { id: 'foo', foo: null },
                 },
                 BAR:
                 {
-                    inherits: 'FOO',
-                    includes: { RED1: false, RED2: true },
+                    inherits:   'FOO',
+                    includes:   { RED1: false, RED2: true },
                     attributes: { id: 'bar', foo: undefined, bar: null },
                 },
             },
@@ -848,7 +848,7 @@ describe.when(typeof module !== 'undefined')
                         FOO: { check: noop },
                         BAR:
                         {
-                            check: noop,
+                            check:      noop,
                             attributes: { foo: null, bar: 'Lorem ipsum dolor sit amet' },
                         },
                     },
@@ -1013,15 +1013,18 @@ const STRING_TEST_DATA =
 [
     {
         description: 'Feature',
-        call: (Feature: FeatureConstructor, feature: string): Feature => Feature(feature),
+        call:
+        (Feature: FeatureConstructor, feature: string): Feature => Feature(feature),
     },
     {
         description: 'new Feature',
-        call: (Feature: FeatureConstructor, feature: string): Feature => new Feature(feature),
+        call:
+        (Feature: FeatureConstructor, feature: string): Feature => new Feature(feature),
     },
     {
         description: 'Feature._getMask',
-        call: (Feature: FeatureConstructor, feature: string): Mask => Feature._getMask(feature),
+        call:
+        (Feature: FeatureConstructor, feature: string): Mask => Feature._getMask(feature),
     },
     {
         description: 'Feature.areCompatible (regular signature)',
@@ -1035,7 +1038,8 @@ const STRING_TEST_DATA =
     },
     {
         description: 'Feature.areEqual',
-        call: (Feature: FeatureConstructor, feature: string): boolean => Feature.areEqual(feature),
+        call:
+        (Feature: FeatureConstructor, feature: string): boolean => Feature.areEqual(feature),
     },
     {
         description: 'Feature.commonOf',

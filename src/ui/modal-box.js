@@ -61,8 +61,8 @@ export default function showModalBox(content, callback)
         (
             'DIV',
             {
-                className: 'focusable',
-                id: 'modalBox',
+                className:  'focusable',
+                id:         'modalBox',
                 style:
                 {
                     background:     'whitesmoke',

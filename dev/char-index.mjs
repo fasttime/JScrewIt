@@ -426,7 +426,7 @@ function parseArguments(parseSequence)
     {
         const LOGICAL_SETS =
         {
-            __proto__:  null,
+            __proto__:      null,
             overdefined:    getOverdefinedCharacters,
             static:         () => '+-.0123456789INadefilnrstuy',
             wanted:         getWantedCharacters,
