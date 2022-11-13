@@ -32,7 +32,6 @@
     "@types/mocha": "latest",
     "@types/node": "latest",
     "ebdd": "latest",
-    "eslint-plugin-ebdd": "latest",
     "gulp": "latest",
     "mocha": "latest",
     "mocha-bar": "latest",
