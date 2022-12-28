@@ -505,7 +505,7 @@ self,
                 {
                     this.toBe(self);
                 },
-                unescape:   isExpected(unescape), // eslint-disable-line key-spacing
+                unescape:   isExpected(unescape),
                 ANY_FUNCTION:
                 function ()
                 {

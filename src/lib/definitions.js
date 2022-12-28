@@ -630,7 +630,7 @@ function getFHPaddingEntries(index)
 
     CHARACTERS =
     noProto
-    ({
+    ({ // eslint-disable-line @origin-1/bracket-layout
         '\t':
         [
             define('Function("return\\"" + ESCAPING_BACKSLASH + "true\\"")()[0]'),
@@ -1226,11 +1226,11 @@ function getFHPaddingEntries(index)
             define('Infinity[TO_LOCALE_STRING]()', LOCALE_INFINITY),
             defineCharDefault(),
         ],
-    });
+    }); // eslint-disable-line @origin-1/bracket-layout
 
     COMPLEX =
     noProto
-    ({
+    ({ // eslint-disable-line @origin-1/bracket-layout
         Number:         define({ expr: 'Number.name', optimize: { complexOpt: false } }, NAME),
         Object:         define({ expr: 'Object.name', optimize: { complexOpt: false } }, NAME),
         RegExp:         define({ expr: 'RegExp.name', optimize: { complexOpt: false } }, NAME),
@@ -1238,11 +1238,11 @@ function getFHPaddingEntries(index)
         fromCharCo:
         define({ expr: '"from3har3o".split(3).join("C")', optimize: { complexOpt: false } }),
         mCh:            define('atob("bUNo")', Feature.ATOB),
-    });
+    }); // eslint-disable-line @origin-1/bracket-layout
 
     CONSTANTS =
     noProto
-    ({
+    ({ // eslint-disable-line @origin-1/bracket-layout
         // JavaScript globals
 
         Array:
@@ -1724,7 +1724,7 @@ function getFHPaddingEntries(index)
         RP_4_A:     { expr: 'true',     solutionType: SolutionType.ALGEBRAIC },
         RP_5_A:     { expr: 'false',    solutionType: SolutionType.ALGEBRAIC },
         RP_6_S:     { expr: '"0false"', solutionType: SolutionType.COMBINED_STRING },
-    });
+    }); // eslint-disable-line @origin-1/bracket-layout
 
     FB_R_PADDING_SHIFTS = [define(4, FF_SRC), define(5, IE_SRC), define(0, V8_SRC)];
 

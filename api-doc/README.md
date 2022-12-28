@@ -94,7 +94,7 @@ See [`EncodeOptions.runAs`](interfaces/EncodeOptions.md#runas) for the meaning o
 
 ### Feature
 
-▸ **Feature**(...`features`): [`CustomFeature`](interfaces/CustomFeature.md)
+▸ **Feature**(`...features`): [`CustomFeature`](interfaces/CustomFeature.md)
 
 Creates a new feature object from the union of the specified features.
 

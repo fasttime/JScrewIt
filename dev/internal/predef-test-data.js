@@ -6,7 +6,6 @@ const { Feature, debug: { getEntries } } = JScrewIt;
 
 const RAW_PREDEFS =
 {
-    /* eslint-disable key-spacing */
     __proto__:                  null,
     'BASE64_ALPHABET_HI_4:0':   'ABCD',
     'BASE64_ALPHABET_HI_4:4':   'QRST',
@@ -14,7 +13,6 @@ const RAW_PREDEFS =
     'BASE64_ALPHABET_LO_4:1':   ['0B', '0R', '0h', '0x'],
     'BASE64_ALPHABET_LO_4:3':   ['0D', '0T', '0j', '0z'],
     FROM_CHAR_CODE:             (encoder, str) => encoder.replaceString(str, { optimize: true }),
-    /* eslint-enable key-spacing */
     FROM_CHAR_CODE_CALLBACK_FORMATTER:
     (encoder, fromCharCodeCallbackFormatter) =>
     {

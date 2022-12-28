@@ -25,26 +25,26 @@ export const calculateSolutionType =
     case 'boolean':
         return SolutionType.ALGEBRAIC;
     case 'number':
-    {
-        const type =
-        isWeak(replacement, value) ? SolutionType.WEAK_ALGEBRAIC : SolutionType.ALGEBRAIC;
-        return type;
-    }
+        {
+            const type =
+            isWeak(replacement, value) ? SolutionType.WEAK_ALGEBRAIC : SolutionType.ALGEBRAIC;
+            return type;
+        }
     case 'object':
     case 'function':
         return SolutionType.OBJECT;
     case 'string':
-    {
-        const type =
-        isCombined(replacement, value) ?
-        isPrefixed(replacement, value) ?
-        isWeak(replacement, value) ?
-        SolutionType.WEAK_PREFIXED_STRING :
-        SolutionType.PREFIXED_STRING :
-        SolutionType.COMBINED_STRING :
-        SolutionType.STRING;
-        return type;
-    }
+        {
+            const type =
+            isCombined(replacement, value) ?
+            isPrefixed(replacement, value) ?
+            isWeak(replacement, value) ?
+            SolutionType.WEAK_PREFIXED_STRING :
+            SolutionType.PREFIXED_STRING :
+            SolutionType.COMBINED_STRING :
+            SolutionType.STRING;
+            return type;
+        }
     }
 };
 

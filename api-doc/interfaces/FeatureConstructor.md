@@ -10,7 +10,7 @@
 
 ### FeatureConstructor
 
-▸ **FeatureConstructor**(...`features`): [`CustomFeature`](CustomFeature.md)
+▸ **FeatureConstructor**(`...features`): [`CustomFeature`](CustomFeature.md)
 
 Creates a new feature object from the union of the specified features.
 
@@ -165,7 +165,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 
 ### constructor
 
-• **new FeatureConstructor**(...`features`)
+• **new FeatureConstructor**(`...features`)
 
 Creates a new feature object from the union of the specified features.
 
@@ -1617,7 +1617,7 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Androi
 
 ### areCompatible
 
-▸ **areCompatible**(...`features`): `boolean`
+▸ **areCompatible**(`...features`): `boolean`
 
 Determines whether the specified features are mutually compatible.
 
@@ -1650,7 +1650,7 @@ ___
 
 ### areEqual
 
-▸ **areEqual**(...`features`): `boolean`
+▸ **areEqual**(`...features`): `boolean`
 
 Determines whether all of the specified features are equivalent.
 
@@ -1686,7 +1686,7 @@ ___
 
 ### commonOf
 
-▸ **commonOf**(...`features`): ``null`` \| [`CustomFeature`](CustomFeature.md)
+▸ **commonOf**(`...features`): ``null`` \| [`CustomFeature`](CustomFeature.md)
 
 Creates a new feature object equivalent to the intersection of the specified features.
 

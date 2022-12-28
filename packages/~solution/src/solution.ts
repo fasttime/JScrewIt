@@ -74,10 +74,10 @@ export class DynamicSolution extends AbstractSolution
         case 1:
             return solutions[0].type;
         default:
-        {
-            const { solutionType } = findRule(solutions);
-            return solutionType;
-        }
+            {
+                const { solutionType } = findRule(solutions);
+                return solutionType;
+            }
         }
     }
 
@@ -149,16 +149,16 @@ function calculateReplacement(solutions: readonly Solution[]): string
     case 1:
         return solutions[0].replacement;
     default:
-    {
-        const { replace, typeSetList } = findRule(solutions);
-        const typeSetCount = typeSetList.length;
-        const replacements = solutions.slice(typeSetCount).map(getAppendableReplacement);
-        const ruleReplacements = solutions.slice(0, typeSetCount).map(getReplacement);
-        const firstReplacement = replace(...ruleReplacements);
-        replacements.unshift(firstReplacement);
-        const replacement = replacements.join('');
-        return replacement;
-    }
+        {
+            const { replace, typeSetList } = findRule(solutions);
+            const typeSetCount = typeSetList.length;
+            const replacements = solutions.slice(typeSetCount).map(getAppendableReplacement);
+            const ruleReplacements = solutions.slice(0, typeSetCount).map(getReplacement);
+            const firstReplacement = replace(...ruleReplacements);
+            replacements.unshift(firstReplacement);
+            const replacement = replacements.join('');
+            return replacement;
+        }
     }
 }
 

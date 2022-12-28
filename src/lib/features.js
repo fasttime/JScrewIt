@@ -764,14 +764,14 @@ var featureInfos =
     },
     STATUS:
     {
-        description: 'Existence of the global string status.',
+        description:    'Existence of the global string status.',
         check:
         function ()
         {
             var available = typeof status === 'string';
             return available;
         },
-        attributes: { 'web-worker': 'web-worker-restriction' },
+        attributes:     { 'web-worker': 'web-worker-restriction' },
     },
     UNDEFINED:
     {
@@ -824,7 +824,6 @@ var featureInfos =
         description:
         'Features available in all browsers.\n' +
         'No support for Node.js.',
-        // eslint-disable-next-line key-spacing
         includes: ['ANY_DOCUMENT', 'ANY_WINDOW', 'HISTORY', 'INCR_CHAR', 'STATUS'],
         attributes:
         {

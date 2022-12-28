@@ -85,7 +85,7 @@ export default function createEngineSelectionBox()
         (
             'SPAN',
             {
-                className: 'focusable',
+                className:  'focusable',
                 style:
                 {
                     background:     'black',
@@ -101,7 +101,7 @@ export default function createEngineSelectionBox()
                     top:            '-1.5pt',
                     width:          QUESTION_MARK_SIZE,
                 },
-                title: 'Learn more…',
+                title:      'Learn more…',
             },
             '?',
             setTabindex,

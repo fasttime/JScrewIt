@@ -634,11 +634,10 @@ it
     {
         let actualThis: unknown;
         const expectedThis =
-        (
-            function (this: unknown): unknown
-            {
-                return this;
-            }
+        (function (this: unknown): unknown
+        {
+            return this;
+        }
         )();
         let argCount!: number;
         let checkValue: unknown;

@@ -552,7 +552,7 @@
 
     var FUNCTION_INTERCEPTOR =
     {
-        path: 'Function', // eslint-disable-line key-spacing
+        path: 'Function',
         createDescriptor:
         function (adapterList, context)
         {
@@ -842,9 +842,7 @@
         {
             override(this, 'String.fromCodePoint', { value: fromCodePoint });
         },
-        // eslint-disable-next-line key-spacing
         FUNCTION_19_LF:         makeEmuFeatureFunctionLF('function anonymous(\n) {\n\n}'),
-        // eslint-disable-next-line key-spacing
         FUNCTION_22_LF:         makeEmuFeatureFunctionLF('function anonymous() {\n\n}'),
         GENERIC_ARRAY_TO_STRING:
         function ()

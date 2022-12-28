@@ -423,7 +423,7 @@ FeatureConstructor
                 return included;
             },
 
-            name: undefined,
+            name:       undefined,
 
             toString(): string
             {

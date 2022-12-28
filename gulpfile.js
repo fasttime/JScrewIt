@@ -180,10 +180,11 @@ task
 
         const inputOptions =
         {
-            input: 'src/lib/jscrewit-main.js', // eslint-disable-line key-spacing
+            input: 'src/lib/jscrewit-main.js',
             plugins:
             [
-                cleanup({ comments: [/^(?!\*(?:!|\s*global\b))/], maxEmptyLines: -1 }),
+                cleanup
+                ({ comments: [/^(?!\*!|\*\s*global\b|\/\s*eslint-disable)/], maxEmptyLines: -1 }),
                 nodeResolve({ dedupe: ['tslib'] }),
             ],
         };

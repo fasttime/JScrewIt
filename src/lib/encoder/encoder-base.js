@@ -389,11 +389,11 @@ assignNoEnum
             throwSyntaxError(this, 'Undefined regular padding block with length ' + length);
         },
 
-        _replaceCharByAtob: replaceCharByAtob,
+        _replaceCharByAtob:     replaceCharByAtob,
 
         _replaceCharByCharCode: replaceCharByCharCode,
 
-        _replaceCharByEscSeq: replaceCharByEscSeq,
+        _replaceCharByEscSeq:   replaceCharByEscSeq,
 
         _replaceCharByUnescape: replaceCharByUnescape,
 
@@ -499,9 +499,9 @@ assignNoEnum
             return solution;
         },
 
-        constantDefinitions: CONSTANTS,
+        constantDefinitions:    CONSTANTS,
 
-        findDefinition: findDefinition,
+        findDefinition:         findDefinition,
 
         hasFeatures:
         function (mask)
@@ -520,7 +520,7 @@ assignNoEnum
         // Internet Explorer on Windows Phone occasionally failed the extreme decoding test in a
         // non-reproducible manner, although the issue seems to be related to the output size rather
         // than the grouping threshold setting.
-        maxGroupThreshold: 1800,
+        maxGroupThreshold:      1800,
 
         replaceExpr:
         function (expr, optimize)

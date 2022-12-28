@@ -278,7 +278,7 @@ describe
         var paramDataList =
         [
             {
-                params: [], // eslint-disable-line key-spacing
+                params: [],
                 expectedResult:
                 {
                     inputFileName:  undefined,
@@ -295,7 +295,7 @@ describe
                 expectedResult: 'version',
             },
             {
-                params: ['-c'], // eslint-disable-line key-spacing
+                params: ['-c'],
                 expectedResult:
                 {
                     inputFileName:  undefined,
@@ -304,7 +304,7 @@ describe
                 },
             },
             {
-                params: ['-w'], // eslint-disable-line key-spacing
+                params: ['-w'],
                 expectedResult:
                 {
                     inputFileName:  undefined,
@@ -313,7 +313,7 @@ describe
                 },
             },
             {
-                params: ['-e'], // eslint-disable-line key-spacing
+                params: ['-e'],
                 expectedResult:
                 {
                     inputFileName:  undefined,
@@ -322,7 +322,7 @@ describe
                 },
             },
             {
-                params: ['-d'], // eslint-disable-line key-spacing
+                params: ['-d'],
                 expectedResult:
                 {
                     inputFileName:  undefined,
@@ -331,7 +331,7 @@ describe
                 },
             },
             {
-                params: ['--diagnostic'], // eslint-disable-line key-spacing
+                params: ['--diagnostic'],
                 expectedResult:
                 {
                     inputFileName:  undefined,
@@ -340,7 +340,7 @@ describe
                 },
             },
             {
-                params: ['-f', 'ATOB,SELF'], // eslint-disable-line key-spacing
+                params: ['-f', 'ATOB,SELF'],
                 expectedResult:
                 {
                     inputFileName:  undefined,
@@ -349,7 +349,7 @@ describe
                 },
             },
             {
-                params: ['--features', 'ATOB,SELF'], // eslint-disable-line key-spacing
+                params: ['--features', 'ATOB,SELF'],
                 expectedResult:
                 {
                     inputFileName:  undefined,
@@ -366,7 +366,7 @@ describe
                 expectedErrorMsg:   'option "--features" requires an argument',
             },
             {
-                params: ['-r', 'express'], // eslint-disable-line key-spacing
+                params: ['-r', 'express'],
                 expectedResult:
                 {
                     inputFileName:  undefined,
@@ -375,7 +375,7 @@ describe
                 },
             },
             {
-                params: ['--run-as', 'express'], // eslint-disable-line key-spacing
+                params: ['--run-as', 'express'],
                 expectedResult:
                 {
                     inputFileName:  undefined,
@@ -392,7 +392,7 @@ describe
                 expectedErrorMsg:   'option "--run-as" requires an argument',
             },
             {
-                params: ['-t'], // eslint-disable-line key-spacing
+                params: ['-t'],
                 expectedResult:
                 {
                     inputFileName:  undefined,
@@ -401,7 +401,7 @@ describe
                 },
             },
             {
-                params: ['--trim-code'], // eslint-disable-line key-spacing
+                params: ['--trim-code'],
                 expectedResult:
                 {
                     inputFileName:  undefined,
@@ -410,7 +410,7 @@ describe
                 },
             },
             {
-                params: ['-x'], // eslint-disable-line key-spacing
+                params: ['-x'],
                 expectedResult:
                 {
                     inputFileName:  undefined,
@@ -419,7 +419,7 @@ describe
                 },
             },
             {
-                params: ['-ctx'], // eslint-disable-line key-spacing
+                params: ['-ctx'],
                 expectedResult:
                 {
                     inputFileName:  undefined,
@@ -436,7 +436,7 @@ describe
                 expectedErrorMsg:   /unrecognized option "--allyourbasearebelongtous"/,
             },
             {
-                params: ['infile'], // eslint-disable-line key-spacing
+                params: ['infile'],
                 expectedResult:
                 {
                     inputFileName:  'infile',
@@ -445,7 +445,7 @@ describe
                 },
             },
             {
-                params: ['infile', 'outfile'], // eslint-disable-line key-spacing
+                params: ['infile', 'outfile'],
                 expectedResult:
                 {
                     inputFileName:  'infile',
@@ -454,7 +454,6 @@ describe
                 },
             },
             {
-                // eslint-disable-next-line key-spacing
                 params: ['-ct', 'infile', '--features', 'FF', 'outfile'],
                 expectedResult:
                 {
