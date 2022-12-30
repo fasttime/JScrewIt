@@ -150,6 +150,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [SELF\_OBJ](FeatureConstructor.md#self_obj)
 - [SHORT\_LOCALES](FeatureConstructor.md#short_locales)
 - [STATUS](FeatureConstructor.md#status)
+- [U2F](FeatureConstructor.md#u2f)
 - [UNDEFINED](FeatureConstructor.md#undefined)
 - [V8\_SRC](FeatureConstructor.md#v8_src)
 - [WINDOW](FeatureConstructor.md#window)
@@ -1289,7 +1290,7 @@ ___
 
 • **OBJECT\_L\_LOCATION\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
 
-Existence of the global function location.constructor whose string representation starts with "\[object L"
+Existence of the function location.constructor whose string representation starts with "\[object L".
 
 **`Remarks`**
 
@@ -1321,7 +1322,7 @@ ___
 
 • **OBJECT\_W\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
 
-The property that the string representation of the global object constructor starts with "\[object W"
+The property that the string representation of the global object constructor starts with "\[object W".
 
 **`Remarks`**
 
@@ -1337,7 +1338,7 @@ ___
 
 • **OLD\_SAFARI\_LOCATION\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
 
-Existence of the global object location.constructor whose string representation starts with "\[object " and ends with "LocationConstructor\]"
+Existence of the global object location.constructor whose string representation starts with "\[object " and ends with "LocationConstructor\]".
 
 **`Remarks`**
 
@@ -1353,7 +1354,7 @@ ___
 
 • **PLAIN\_INTL**: [`ElementaryFeature`](ElementaryFeature.md)
 
-Existence of the global object Intl having the string representation "\[object Object\]"
+Existence of the global object Intl having the string representation "\[object Object\]".
 
 **`Remarks`**
 
@@ -1560,6 +1561,22 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Androi
 #### Inherited from
 
 [FeatureAll](FeatureAll.md).[STATUS](FeatureAll.md#status)
+
+___
+
+### U2F
+
+• **U2F**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Existence of the global object u2f having the string representation "\[object U2F\]".
+
+**`Remarks`**
+
+Available in Firefox. This feature is not available inside web workers.
+
+#### Inherited from
+
+[FeatureAll](FeatureAll.md).[U2F](FeatureAll.md#u2f)
 
 ___
 
