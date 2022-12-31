@@ -4,7 +4,7 @@ import JScrewIt, { Feature }    from '../lib/jscrewit.js';
 import choose                   from './internal/choose.mjs';
 import Analyzer                 from './internal/optimized-analyzer.js';
 import PREDEF_TEST_DATA_MAP_OBJ from './internal/predef-test-data.js';
-import progress                 from './internal/progress.js';
+import progress                 from './internal/progress.mjs';
 import solutionBookMap          from './internal/solution-book-map.js';
 
 function compareFeatures(feature1, feature2)

@@ -2,7 +2,7 @@
 
 import JScrewIt                         from '../lib/jscrewit.js';
 import timeUtils                        from '../tools/time-utils.js';
-import progress                         from './internal/progress.js';
+import progress                         from './internal/progress.mjs';
 import solutionBookMap, { NICKNAME }    from './internal/solution-book-map.js';
 import chalk                            from 'chalk';
 import { writeFile }                    from 'fs/promises';
@@ -197,7 +197,7 @@ async function doAdd()
                 case 'new':
                     noLoad = true;
                     break;
-                case 'test':
+                case 'dry-run':
                     noSave = true;
                     break;
                 default:
@@ -486,7 +486,7 @@ function parseArguments(parseSequence)
 function printHelp()
 {
     const help =
-    'char-index add [--new] [--test] <chars>\n' +
+    'char-index add [--dry-run] [--new] [--concurrency=<𝑛>] <chars>\n' +
     'char-index delete <chars>\n' +
     'char-index level\n' +
     'char-index list <chars>\n' +

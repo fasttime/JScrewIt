@@ -1,6 +1,4 @@
-'use strict';
-
-const chalk = require('chalk');
+import chalk from 'chalk';
 
 const COMPLETE_CHAR_PLACEHOLDER     = '\x01';
 const INCOMPLETE_CHAR_PLACEHOLDER   = '\x02';
@@ -128,7 +126,7 @@ class ProgressBar
 const stream = process.stdout;
 const bars = [];
 
-function progress(label, fn)
+export default function progress(label, fn)
 {
     if (fn === undefined)
     {
@@ -194,5 +192,3 @@ function progress(label, fn)
             onfinally();
     }
 }
-
-module.exports = progress;
