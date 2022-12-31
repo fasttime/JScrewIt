@@ -842,6 +842,7 @@ function getFHPaddingEntries(index)
         ],
         'L':
         [
+            define('(RP_0_S + document.createElement(false))[11]', ANY_DOCUMENT),
             define('btoa(".")[0]', ATOB),
             define('(RP_3_WA + "".fontcolor())[11]', CAPITAL_HTML),
             define('(RP_0_S + Audio)[12]', HTMLAUDIOELEMENT),
@@ -879,6 +880,7 @@ function getFHPaddingEntries(index)
         ],
         'M':
         [
+            define('(RP_0_S + document.createElement(false))[10]', ANY_DOCUMENT),
             define('btoa(0)[0]', ATOB),
             define('"".small()[2]', CAPITAL_HTML),
             define('(RP_0_S + self)[10]', DOMWINDOW),
