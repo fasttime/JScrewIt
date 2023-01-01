@@ -821,6 +821,7 @@ function getFHPaddingEntries(index)
         ],
         'H':
         [
+            define('(RP_2_WS + document.createElement(false))[10]', ANY_DOCUMENT),
             define('btoa(true)[1]', ATOB),
             define('"".link()[3]', CAPITAL_HTML),
             define
