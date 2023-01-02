@@ -524,7 +524,7 @@ function getFHPaddingEntries(index)
         'Infinity',
         'NaNfalse',
         [define('S'), define('R', CAPITAL_HTML), define('S', ARRAY_ITERATOR)],
-        [define('W'), define('U', CAPITAL_HTML)],
+        [define('W'), define('U', CAPITAL_HTML), define('U', U2F)],
         'a',
         'false',
         'i',
