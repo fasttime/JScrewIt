@@ -66,40 +66,40 @@ function chooseOtherArgName(argName)
     return otherArgName;
 }
 
-function createCharAtFnPosDefinition(expr, index, paddingEntries)
+function createCharDefinitionInFn(expr, index, paddingEntries)
 {
-    function definitionFX(char)
+    function charDefinitionInFn(char)
     {
         var solution =
         this._resolveCharInExpr(char, expr, index, paddingEntries, FH_R_PADDING_SHIFTS);
         return solution;
     }
 
-    return definitionFX;
+    return charDefinitionInFn;
 }
 
-function createCharInFBDefinition(offset)
+function createCharDefinitionInFnBody(offset)
 {
-    function definitionFB(char)
+    function charDefinitionInFnBody(char)
     {
         var solution =
         this._resolveCharInNativeFunction(char, offset, getFBPaddingEntries, FB_R_PADDING_SHIFTS);
         return solution;
     }
 
-    return definitionFB;
+    return charDefinitionInFnBody;
 }
 
-function createCharInFHDefinition(offset)
+function createCharDefinitionInFnHead(offset)
 {
-    function definitionFH(char)
+    function charDefinitionInFnHead(char)
     {
         var solution =
         this._resolveCharInNativeFunction(char, offset, getFHPaddingEntries, FH_R_PADDING_SHIFTS);
         return solution;
     }
 
-    return definitionFH;
+    return charDefinitionInFnHead;
 }
 
 function createLazySolution(source, expr, type)
@@ -417,14 +417,6 @@ function getFHPaddingEntries(index)
         return charDefaultDefinition;
     }
 
-    function defineCharAtFnPos(expr, index)
-    {
-        var paddingEntries = getFHPaddingEntries(index);
-        var definition = createCharAtFnPosDefinition(expr, index, paddingEntries);
-        var entry = define._callWithFeatures(definition, arguments, 2);
-        return entry;
-    }
-
     function defineCharDefault(opts)
     {
         function checkOpt(optName)
@@ -442,16 +434,78 @@ function getFHPaddingEntries(index)
         return entry;
     }
 
-    function defineCharInFB(offset)
+    /**
+     * Defines a character at a specified position in the string representation of a specified
+     * native function.
+     * Engine-dependent padding/shifting is used to account for spacing characters inserted before
+     * the function head by specific engines.
+     *
+     * @param {string} expr
+     * An expression that resolves to a native function.
+     *
+     * @param {number} index
+     * The index of the character to be extracted in engines that do not insert any spacing
+     * characters before the function head, e.g. V8.
+     *
+     * @param ...
+     * Required features for the definition.
+     *
+     * @returns
+     * A definition entry for the specified character.
+     */
+    function defineCharInFn(expr, index)
     {
-        var definition = createCharInFBDefinition(offset);
+        var paddingEntries = getFHPaddingEntries(index);
+        var definition = createCharDefinitionInFn(expr, index, paddingEntries);
+        var entry = define._callWithFeatures(definition, arguments, 2);
+        return entry;
+    }
+
+    /**
+     * Defines a character at a specified position in the string representation of an arbitrary
+     * native function.
+     * Engine-dependent padding/shifting is used to account for spacing characters inserted before
+     * the function head and body by specific engines.
+     *
+     * @param {string} expr
+     * An expression that resolves to a native function.
+     *
+     * @param {number} index
+     * The index of the character to be extracted in engines that do not insert any spacing
+     * characters before the function head and body, e.g. V8.
+     *
+     * @returns
+     * A definition entry for the specified character.
+     */
+    function defineCharInFnBody(offset)
+    {
+        var definition = createCharDefinitionInFnBody(offset);
         var entry = define(definition);
         return entry;
     }
 
-    function defineCharInFH(offset)
+    /**
+     * Defines a character at a specified position in the string representation of an arbitrary
+     * native function.
+     * Engine-dependent padding/shifting is used to account for spacing characters inserted before
+     * the function head by specific engines.
+     *
+     * @param {string} expr
+     * An expression that resolves to a native function.
+     *
+     * @param {number} index
+     * The index of the character to be extracted in engines that do not insert any spacing
+     * characters before the function head, e.g. V8.
+     *
+     * @param ...
+     * Required features for the definition.
+     *
+     * @returns
+     * A definition entry for the specified character.
+     */
+    function defineCharInFnHead(offset)
     {
-        var definition = createCharInFHDefinition(offset);
+        var definition = createCharDefinitionInFnHead(offset);
         var entry = define._callWithFeatures(definition, arguments, 1);
         return entry;
     }
@@ -643,7 +697,7 @@ function getFHPaddingEntries(index)
             define('(RP_1_WA + Function())[20]', FUNCTION_19_LF),
             define('(RP_0_S + Function())[22]', FUNCTION_22_LF),
             define('(RP_0_S + ANY_FUNCTION)[0]', IE_SRC),
-            defineCharInFH(13, NO_V8_SRC),
+            defineCharInFnHead(13, NO_V8_SRC),
         ],
 
         '\f':
@@ -664,7 +718,7 @@ function getFHPaddingEntries(index)
 
         ' ':
         [
-            defineCharAtFnPos('ANY_FUNCTION', 8),
+            defineCharInFn('ANY_FUNCTION', 8),
             define('(RP_3_WA + ARRAY_ITERATOR)[10]', ARRAY_ITERATOR),
             define('(RP_0_S + FILTER)[20]', FF_SRC),
             define('(+(RP_0_S + FILTER)[0] + FILTER)[22]', NO_FF_SRC),
@@ -710,11 +764,11 @@ function getFHPaddingEntries(index)
         // '\'':   ,
         '(':
         [
-            defineCharInFH(9),
+            defineCharInFnHead(9),
         ],
         ')':
         [
-            defineCharInFH(10),
+            defineCharInFnHead(10),
         ],
         // '*':    ,
         '+': '(1e100 + [])[2]',
@@ -766,12 +820,12 @@ function getFHPaddingEntries(index)
         // '@':    ,
         'A':
         [
-            defineCharAtFnPos('Array', 9),
+            defineCharInFn('Array', 9),
             define('(RP_3_WA + ARRAY_ITERATOR)[11]', ARRAY_ITERATOR),
         ],
         'B':
         [
-            defineCharAtFnPos('Boolean', 9),
+            defineCharInFn('Boolean', 9),
             define('"0".sub()[10]', CAPITAL_HTML),
         ],
         'C':
@@ -812,7 +866,7 @@ function getFHPaddingEntries(index)
         ],
         'E':
         [
-            defineCharAtFnPos('RegExp', 12),
+            defineCharInFn('RegExp', 12),
             define('btoa("0NaN")[1]', ATOB),
             define('(RP_5_A + "".link())[10]', CAPITAL_HTML),
             define('(RP_3_WA + Audio)[21]', HTMLAUDIOELEMENT),
@@ -820,7 +874,7 @@ function getFHPaddingEntries(index)
         ],
         'F':
         [
-            defineCharAtFnPos('Function', 9),
+            defineCharInFn('Function', 9),
             define('"".fontcolor()[1]', CAPITAL_HTML),
         ],
         'G':
@@ -911,7 +965,7 @@ function getFHPaddingEntries(index)
         'N': '"NaN"[0]',
         'O':
         [
-            defineCharAtFnPos('Object', 9),
+            defineCharInFn('Object', 9),
             define('(RP_3_WA + PLAIN_OBJECT)[11]'),
             define('btoa(NaN)[3]', ATOB),
             define('"".fontcolor()[2]', CAPITAL_HTML),
@@ -935,14 +989,14 @@ function getFHPaddingEntries(index)
         ],
         'R':
         [
-            defineCharAtFnPos('RegExp', 9),
+            defineCharInFn('RegExp', 9),
             define('btoa("0true")[2]', ATOB),
             define('"".fontcolor()[10]', CAPITAL_HTML),
             define('(RP_3_WA + REGEXP_STRING_ITERATOR)[11]', REGEXP_STRING_ITERATOR),
         ],
         'S':
         [
-            defineCharAtFnPos('String', 9),
+            defineCharInFn('String', 9),
             define('"".sub()[1]', CAPITAL_HTML),
         ],
         'T':
@@ -1025,7 +1079,7 @@ function getFHPaddingEntries(index)
         ],
         '[':
         [
-            defineCharInFB(14),
+            defineCharInFnBody(14),
             define('(RP_0_S + ARRAY_ITERATOR)[0]', ARRAY_ITERATOR),
         ],
         '\\':
@@ -1035,7 +1089,7 @@ function getFHPaddingEntries(index)
         ],
         ']':
         [
-            defineCharInFB(26),
+            defineCharInFnBody(26),
             define('(RP_0_S + ARRAY_ITERATOR)[22]', NO_OLD_SAFARI_ARRAY_ITERATOR),
         ],
         '^':
@@ -1047,12 +1101,12 @@ function getFHPaddingEntries(index)
         'a': '"false"[1]',
         'b':
         [
-            defineCharAtFnPos('Number', 12),
+            defineCharInFn('Number', 12),
             define('(RP_0_S + ARRAY_ITERATOR)[2]', ARRAY_ITERATOR),
         ],
         'c':
         [
-            defineCharAtFnPos('ANY_FUNCTION', 3),
+            defineCharInFn('ANY_FUNCTION', 3),
             define('(RP_5_A + ARRAY_ITERATOR)[10]', ARRAY_ITERATOR),
         ],
         'd': '"undefined"[2]',
@@ -1060,7 +1114,7 @@ function getFHPaddingEntries(index)
         'f': '"false"[0]',
         'g':
         [
-            defineCharAtFnPos('String', 14),
+            defineCharInFn('String', 14),
         ],
         'h':
         [
@@ -1085,13 +1139,13 @@ function getFHPaddingEntries(index)
         'l': '"false"[2]',
         'm':
         [
-            defineCharAtFnPos('Number', 11),
+            defineCharInFn('Number', 11),
             define('(RP_6_S + Function())[20]'),
         ],
         'n': '"undefined"[1]',
         'o':
         [
-            defineCharAtFnPos('ANY_FUNCTION', 6),
+            defineCharInFn('ANY_FUNCTION', 6),
             define('(RP_0_S + ARRAY_ITERATOR)[1]', ARRAY_ITERATOR),
         ],
         'p':
@@ -1113,7 +1167,7 @@ function getFHPaddingEntries(index)
         'u': '"undefined"[0]',
         'v':
         [
-            defineCharInFB(19),
+            defineCharInFnBody(19),
         ],
         'w':
         [
@@ -1137,12 +1191,12 @@ function getFHPaddingEntries(index)
         ],
         '{':
         [
-            defineCharInFH(12),
+            defineCharInFnHead(12),
         ],
         // '|':    ,
         '}':
         [
-            defineCharInFB(28),
+            defineCharInFnBody(28),
         ],
         // '~':    ,
 

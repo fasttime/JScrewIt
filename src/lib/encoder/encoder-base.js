@@ -599,7 +599,6 @@ assignNoEnum
          * @returns {string|undefined}
          * The replacement string or `undefined`.
          */
-
         replaceString:
         function (str, options)
         {

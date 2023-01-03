@@ -1218,7 +1218,6 @@ assignNoEnum
          * @returns {string|undefined}
          * The replacement string or `undefined`.
          */
-
         replaceStringArray:
         function (array, insertions, substitutions, forceString, maxLength)
         {

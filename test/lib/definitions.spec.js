@@ -156,14 +156,14 @@ self,
                         case 'commaDefinition':
                         case 'charDefaultDefinition':
                             break;
-                        case 'definitionFB':
-                            verifyFEntry(entry, FB_DISPOSITIONS, FB_VARIETIES);
+                        case 'charDefinitionInFn':
+                            verifyFEntry(entry, FN_DISPOSITIONS, FN_VARIETIES);
                             return;
-                        case 'definitionFH':
-                            verifyFEntry(entry, FH_DISPOSITIONS, FH_VARIETIES);
+                        case 'charDefinitionInFnBody':
+                            verifyFEntry(entry, FN_BODY_DISPOSITIONS, FN_BODY_VARIETIES);
                             return;
-                        case 'definitionFX':
-                            verifyFEntry(entry, FX_DISPOSITIONS, FX_VARIETIES);
+                        case 'charDefinitionInFnHead':
+                            verifyFEntry(entry, FN_HEAD_DISPOSITIONS, FN_HEAD_VARIETIES);
                             return;
                         default:
                             expect().fail
@@ -211,7 +211,11 @@ self,
             );
         }
 
-        var FB_DISPOSITIONS =
+        var FN_DISPOSITIONS = [[], ['IE_SRC'], ['INCR_CHAR'], ['NO_IE_SRC']];
+
+        var FN_VARIETIES = [['IE_SRC'], ['NO_IE_SRC']];
+
+        var FN_BODY_DISPOSITIONS =
         [
             [],
             ['AT'],
@@ -259,9 +263,9 @@ self,
             ['FLAT', 'INCR_CHAR', 'NO_V8_SRC'],
         ];
 
-        var FB_VARIETIES = [['FF_SRC'], ['IE_SRC'], ['V8_SRC']];
+        var FN_BODY_VARIETIES = [['FF_SRC'], ['IE_SRC'], ['V8_SRC']];
 
-        var FH_DISPOSITIONS =
+        var FN_HEAD_DISPOSITIONS =
         [
             [],
             ['AT'],
@@ -281,11 +285,7 @@ self,
             ['FLAT', 'NO_IE_SRC'],
         ];
 
-        var FH_VARIETIES = [['IE_SRC'], ['NO_IE_SRC']];
-
-        var FX_DISPOSITIONS = [[], ['IE_SRC'], ['INCR_CHAR'], ['NO_IE_SRC']];
-
-        var FX_VARIETIES = [['IE_SRC'], ['NO_IE_SRC']];
+        var FN_HEAD_VARIETIES = [['IE_SRC'], ['NO_IE_SRC']];
 
         var char = String.fromCharCode(charCode);
         var entries = JScrewIt.debug.getCharacterEntries(char);
