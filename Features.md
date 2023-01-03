@@ -89,7 +89,6 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#STATUS"><code>STATUS</code></a>
-<li><a href="api-doc/interfaces/FeatureAll.md#U2F"><code>U2F</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#UNDEFINED"><code>UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a> and <a href="api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED"><code>OBJECT_UNDEFINED</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>
 </ul>

@@ -1130,12 +1130,6 @@
         {
             override(this, 'status', { value: '' });
         },
-        U2F:
-        function ()
-        {
-            var toString = createStaticSupplier('[object U2F]');
-            override(this, 'u2f', { value: { toString: toString } });
-        },
         UNDEFINED:
         function ()
         {

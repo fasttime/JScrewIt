@@ -1,4 +1,4 @@
-/* global Audio, Intl, Node, console, document, history, location, self, statusbar, u2f */
+/* global Audio, Intl, Node, console, document, history, location, self, statusbar */
 
 import { _Object_defineProperty, _Object_keys, assignNoEnum, createEmpty }  from './obj-utils';
 import { createFeatureClass, featuresToMask }                               from '~feature-hub';
@@ -651,8 +651,8 @@ var featureInfos =
     OBJECT_L_LOCATION_CTOR:
     {
         description:
-        'Existence of the function location.constructor whose string representation starts with ' +
-        '"[object L".',
+        'Existence of the global function location.constructor whose string representation ' +
+        'starts with "[object L"',
         check:
         function ()
         {
@@ -680,7 +680,7 @@ var featureInfos =
     {
         description:
         'The property that the string representation of the global object constructor starts ' +
-        'with "[object W".',
+        'with "[object W"',
         check:
         function ()
         {
@@ -693,7 +693,7 @@ var featureInfos =
     {
         description:
         'Existence of the global object location.constructor whose string representation starts ' +
-        'with "[object " and ends with "LocationConstructor]".',
+        'with "[object " and ends with "LocationConstructor]"',
         check:
         function ()
         {
@@ -706,7 +706,7 @@ var featureInfos =
     PLAIN_INTL:
     {
         description:
-        'Existence of the global object Intl having the string representation "[object Object]".',
+        'Existence of the global object Intl having the string representation "[object Object]"',
         check:
         function ()
         {
@@ -772,18 +772,6 @@ var featureInfos =
             return available;
         },
         attributes:     { 'web-worker': 'web-worker-restriction' },
-    },
-    U2F:
-    {
-        description:
-        'Existence of the global object u2f having the string representation "[object U2F]".',
-        check:
-        function ()
-        {
-            var available = typeof u2f === 'object' && u2f + '' === '[object U2F]';
-            return available;
-        },
-        attributes: { 'web-worker': 'web-worker-restriction' },
     },
     UNDEFINED:
     {
@@ -1020,7 +1008,6 @@ var featureInfos =
             'REGEXP_STRING_ITERATOR',
             'SHORT_LOCALES',
             'STATUS',
-            'U2F',
             'WINDOW',
         ],
         attributes:

@@ -397,7 +397,6 @@ function getFHPaddingEntries(index)
     var SELF_OBJ                        = Feature.SELF_OBJ;
     var SHORT_LOCALES                   = Feature.SHORT_LOCALES;
     var STATUS                          = Feature.STATUS;
-    var U2F                             = Feature.U2F;
     var UNDEFINED                       = Feature.UNDEFINED;
     var V8_SRC                          = Feature.V8_SRC;
     var WINDOW                          = Feature.WINDOW;
@@ -578,7 +577,7 @@ function getFHPaddingEntries(index)
         'Infinity',
         'NaNfalse',
         [define('S'), define('R', CAPITAL_HTML), define('S', ARRAY_ITERATOR)],
-        [define('W'), define('U', CAPITAL_HTML), define('U', U2F)],
+        [define('W'), define('U', CAPITAL_HTML)],
         'a',
         'false',
         'i',
@@ -1031,7 +1030,6 @@ function getFHPaddingEntries(index)
         [
             define('btoa("1NaN")[1]', ATOB),
             define('"".sub()[2]', CAPITAL_HTML),
-            define('(RP_3_WA + u2f)[11]', U2F),
             define
             (
                 { expr: '(RP_3_WA + Function("return toString")()())[11]', optimize: true },
@@ -1384,10 +1382,6 @@ function getFHPaddingEntries(index)
         self:
         [
             define('Function("return self")()', SELF_OBJ),
-        ],
-        u2f:
-        [
-            define({ expr: 'Function("return u2f")()' }, U2F),
         ],
         unescape:
         [
