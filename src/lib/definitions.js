@@ -686,6 +686,12 @@ function getFHPaddingEntries(index)
     CHARACTERS =
     noProto
     ({ // eslint-disable-line @origin-1/bracket-layout
+        // '\0'…'\x07'
+        '\b':
+        [
+            define('Function("return\\"" + ESCAPING_BACKSLASH + "b\\"")()[0]'),
+            defineCharDefault({ escSeq: false }),
+        ],
         '\t':
         [
             define('Function("return\\"" + ESCAPING_BACKSLASH + "true\\"")()[0]'),
@@ -699,7 +705,11 @@ function getFHPaddingEntries(index)
             define('(RP_0_S + ANY_FUNCTION)[0]', IE_SRC),
             defineCharInFnHead(13, NO_V8_SRC),
         ],
-
+        '\v':
+        [
+            define('Function("return\\"" + ESCAPING_BACKSLASH + "v\\"")()[0]'),
+            defineCharDefault({ escSeq: false }),
+        ],
         '\f':
         [
             define('Function("return\\"" + ESCAPING_BACKSLASH + "false\\"")()[0]'),
@@ -710,12 +720,12 @@ function getFHPaddingEntries(index)
             define('Function("return\\"" + ESCAPING_BACKSLASH + "r\\"")()'),
             defineCharDefault({ escSeq: false }),
         ],
-
+        // '\x0e'…'\x1d'
         '\x1e':
         [
             define('(RP_5_A + atob("NaNfalse"))[10]', ATOB),
         ],
-
+        // '\x1f'
         ' ':
         [
             defineCharInFn('ANY_FUNCTION', 8),
@@ -733,7 +743,7 @@ function getFHPaddingEntries(index)
             define('(RP_5_A + FLAT)[20]', FLAT, NO_IE_SRC),
             define('(RP_0_S + FLAT)[20]', FLAT, NO_V8_SRC),
         ],
-        // '!':    ,
+        // '!'
         '"':
         [
             define('"".fontcolor()[12]'),
@@ -743,7 +753,7 @@ function getFHPaddingEntries(index)
             define('document.nodeName[0]', ANY_DOCUMENT),
             defineCharDefault(),
         ],
-        // '$':    ,
+        // '$'
         '%':
         [
             define('escape(FILTER)[20]'),
@@ -761,7 +771,7 @@ function getFHPaddingEntries(index)
             define('"".fontcolor("".fontcolor([]))[31]', ESC_HTML_QUOT_ONLY),
             defineCharDefault(),
         ],
-        // '\'':   ,
+        // '\''
         '(':
         [
             defineCharInFnHead(9),
@@ -770,7 +780,7 @@ function getFHPaddingEntries(index)
         [
             defineCharInFnHead(10),
         ],
-        // '*':    ,
+        // '*'
         '+': '(1e100 + [])[2]',
         ',':
         [
@@ -784,7 +794,7 @@ function getFHPaddingEntries(index)
             define('"0false".italics()[10]'),
             define('"true".sub()[10]'),
         ],
-        // '0'…'9':
+        // '0'…'9'
         ':':
         [
             define('(RP_0_S + RegExp())[3]'),
@@ -817,7 +827,7 @@ function getFHPaddingEntries(index)
             define('(RP_0_S + RegExp())[2]'),
             defineCharDefault(),
         ],
-        // '@':    ,
+        // '@'
         'A':
         [
             defineCharInFn('Array', 9),
@@ -840,7 +850,7 @@ function getFHPaddingEntries(index)
         ],
         'D':
         [
-            // • The escaped character may be either "]" or "}".
+            // * The escaped character may be either "]" or "}".
             define('escape((+("1000" + (RP_5_A + FILTER + 0)[40] + 0) + FILTER)[40])[2]'), // *
             define('escape("]")[2]'),
             define('escape("}")[2]'),
@@ -1096,8 +1106,8 @@ function getFHPaddingEntries(index)
         [
             define('atob("undefined0")[2]', ATOB),
         ],
-        // '_':    ,
-        // '`':    ,
+        // '_'
+        // '`'
         'a': '"false"[1]',
         'b':
         [
@@ -1193,12 +1203,13 @@ function getFHPaddingEntries(index)
         [
             defineCharInFnHead(12),
         ],
-        // '|':    ,
+        // '|'
         '}':
         [
             defineCharInFnBody(28),
         ],
-        // '~':    ,
+        // '~'
+        // '\x7f'
 
         '\x8a':
         [
