@@ -1,22 +1,21 @@
-'use strict';
-
-const JSCREWIT_PATH         = '../..';
 const NICKNAME              = 'atai';
 const TYPE_KEY              = '__type';
 const TYPE_VALUE_SOLUTION   = 'Solution';
 
-const JScrewIt      = require(JSCREWIT_PATH);
-const SortedMap     = require('./sorted-map');
+import Analyzer     from './optimized-analyzer.mjs';
+import SortedMap    from './sorted-map.js';
+import chalk        from 'chalk';
+import fs           from 'fs';
 
-const charMapRoot   = require('path').resolve(__dirname, `../../.${NICKNAME}.char-map.json`);
-const { debug } = JScrewIt;
-const solutionBookMap = module.exports = new SortedMap();
-
-module.exports.NICKNAME = NICKNAME;
+const mainURL               = new URL('../../lib/jscrewit.js', import.meta.url);
+const charMapRoot           = new URL(`../../.${NICKNAME}.char-map.json`, import.meta.url);
+const { default: JScrewIt } = await import(mainURL);
+const { Feature, debug }    = JScrewIt;
+const SolutionBookMap       = new SortedMap();
 
 Object.assign
 (
-    solutionBookMap,
+    SolutionBookMap,
     {
         clear:              clearSolutionBookMap,
         compareSolutions,
@@ -53,16 +52,16 @@ function compareSolutions(solution1, solution2)
 
 function clearSolutionBookMap()
 {
-    SortedMap.prototype.clear.call(solutionBookMap);
-    solutionBookMap.loadTime = undefined;
+    SortedMap.prototype.clear.call(SolutionBookMap);
+    SolutionBookMap.loadTime = undefined;
 }
 
 function createParseReviver()
 {
-    const { Feature } = JScrewIt;
     const { Solution, SolutionType } = debug;
     const parseReviverMap =
     new Map([[TYPE_VALUE_SOLUTION, jsonParseSolution], [SortedMap.name, jsonParseSortedMap]]);
+    const unknownFeatureNameSet = new Set();
     return parseReviver;
 
     function jsonParseSolution(obj)
@@ -74,7 +73,14 @@ function createParseReviver()
                 solution[key] = value;
         }
         solution.type = SolutionType[obj.type];
-        solution.masks = obj.features.map(featureNames => Feature(featureNames).mask);
+        const masks = solution.masks = [];
+        for (const featureNames of obj.features)
+        {
+            if (!validateFeatureNames(featureNames))
+                continue;
+            const { mask } = Feature(featureNames);
+            masks.push(mask);
+        }
         return solution;
     }
 
@@ -103,6 +109,23 @@ function createParseReviver()
                 value = reviver(value);
         }
         return value;
+    }
+
+    function validateFeatureNames(featureNames)
+    {
+        let validationResult = true;
+        for (const featureName of featureNames)
+        {
+            if (featureName in Feature.ALL)
+                continue;
+            validationResult = false;
+            if (!unknownFeatureNameSet.has(featureName))
+            {
+                unknownFeatureNameSet.add(featureName);
+                console.log(chalk.yellow('Unknown feature in character map: %s'), featureName);
+            }
+        }
+        return validationResult;
     }
 }
 
@@ -159,13 +182,9 @@ function createStringifyReplacer()
 
 async function indexChar(char, updateProgress, missingCharacter)
 {
-    const Analyzer = require('./optimized-analyzer');
-
     const { maskIncludes } = debug;
     {
-        const fs = requireFS();
-        const path = require.resolve(JSCREWIT_PATH);
-        const { mtime } = fs.statSync(path);
+        const { mtime } = fs.statSync(mainURL);
         const jscrewitTimestamp = Date.parse(mtime);
         const solutionIndex = new Map();
         const usedCharSet = await fillSolutionIndex(solutionIndex, char);
@@ -173,7 +192,7 @@ async function indexChar(char, updateProgress, missingCharacter)
         const solutions = [...solutionIndex.values()];
         solutions.sort(compareSolutions);
         const solutionBook = { jscrewitTimestamp, usedChars, solutions };
-        solutionBookMap.set(char, solutionBook);
+        SolutionBookMap.set(char, solutionBook);
         return solutionBook;
     }
 
@@ -253,13 +272,11 @@ function importBook(char, solutionBook)
     const { solutions } = solutionBook;
     for (const solution of solutions)
         setPrototypeOf(solution, solutionPrototype);
-    solutionBookMap.set(char, solutionBook);
+    SolutionBookMap.set(char, solutionBook);
 }
 
 function loadNewSolutionBookMap()
 {
-    const fs = requireFS();
-
     let jsonString;
     try
     {
@@ -279,27 +296,24 @@ function loadNewSolutionBookMap()
 
 function loadSolutionBookMap()
 {
-    if (!solutionBookMap.loadTime)
+    if (!SolutionBookMap.loadTime)
     {
         const newMap = loadNewSolutionBookMap();
-        solutionBookMap.clear();
+        SolutionBookMap.clear();
         for (const [key, value] of newMap)
-            solutionBookMap.set(key, value);
-        solutionBookMap.loadTime = new Date();
+            SolutionBookMap.set(key, value);
+        SolutionBookMap.loadTime = new Date();
     }
-    return solutionBookMap;
-}
-
-function requireFS()
-{
-    const fs = require('fs');
-    return fs;
+    return SolutionBookMap;
 }
 
 async function saveSolutionBookMap()
 {
     const stringifyReplacer = createStringifyReplacer();
-    const jsonString = JSON.stringify(solutionBookMap, stringifyReplacer, 4);
-    const fs = requireFS();
+    const jsonString = JSON.stringify(SolutionBookMap, stringifyReplacer, 4);
     await fs.promises.writeFile(charMapRoot, jsonString);
 }
+
+export default SolutionBookMap;
+
+export { NICKNAME };

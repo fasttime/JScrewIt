@@ -2,10 +2,10 @@
 
 import JScrewIt, { Feature }    from '../lib/jscrewit.js';
 import choose                   from './internal/choose.mjs';
-import Analyzer                 from './internal/optimized-analyzer.js';
+import Analyzer                 from './internal/optimized-analyzer.mjs';
 import PREDEF_TEST_DATA_MAP_OBJ from './internal/predef-test-data.js';
 import progress                 from './internal/progress.mjs';
-import solutionBookMap          from './internal/solution-book-map.js';
+import SolutionBookMap          from './internal/solution-book-map.mjs';
 
 function compareFeatures(feature1, feature2)
 {
@@ -309,7 +309,7 @@ function printDefinitions(definitionSets, { indent, formatVariant, variantToMinM
 
 function runAnalysis(predefTestData)
 {
-    solutionBookMap.load();
+    SolutionBookMap.load();
     const nodes = new Set();
     const { availableEntries, commonFeatureObj, replaceVariant, useReverseIteration } =
     predefTestData;

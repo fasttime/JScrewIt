@@ -1,14 +1,14 @@
-import solutionBookMap              from './solution-book-map.js';
+import SolutionBookMap              from './solution-book-map.mjs';
 import { parentPort, workerData }   from 'worker_threads';
 
-const { char, solutionBookMap: serializedSolutionBookMap } = workerData;
+const { char, SolutionBookMap: serializedSolutionBookMap } = workerData;
 serializedSolutionBookMap.delete(char);
 for (const [char, solutionBook] of serializedSolutionBookMap)
-    solutionBookMap.importBook(char, solutionBook);
+    SolutionBookMap.importBook(char, solutionBook);
 {
     const solutionBook =
     await
-    solutionBookMap.index
+    SolutionBookMap.index
     (
         char,
         progress => parentPort.postMessage({ progress }),

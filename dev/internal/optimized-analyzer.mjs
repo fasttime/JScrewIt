@@ -1,7 +1,5 @@
-'use strict';
-
-const Analyzer          = require('./analyzer');
-const solutionBookMap   = require('./solution-book-map');
+import Analyzer         from './analyzer.js';
+import SolutionBookMap  from './solution-book-map.mjs';
 
 function isSolutionApplicable({ masks }, analyzer, encoder)
 {
@@ -16,8 +14,7 @@ function isSolutionApplicable({ masks }, analyzer, encoder)
     return applicable;
 }
 
-module.exports =
-class OptimizedAnalyzer extends Analyzer
+export default class OptimizedAnalyzer extends Analyzer
 {
     constructor(ancestorFeatureObj, useReverseIteration = false)
     {
@@ -39,7 +36,7 @@ class OptimizedAnalyzer extends Analyzer
             char =>
             {
                 this.usedCharSet.add(char);
-                const solutionBook = solutionBookMap.get(char);
+                const solutionBook = SolutionBookMap.get(char);
                 if (solutionBook)
                 {
                     let knownSolution = null;
@@ -50,7 +47,7 @@ class OptimizedAnalyzer extends Analyzer
                     {
                         const comparison =
                         knownSolution ?
-                        solutionBookMap.compareSolutions(solution, knownSolution) : -1;
+                        SolutionBookMap.compareSolutions(solution, knownSolution) : -1;
                         if (comparison <= 0 && isSolutionApplicable(solution, this, encoder))
                         {
                             if (comparison === 0)
@@ -69,4 +66,4 @@ class OptimizedAnalyzer extends Analyzer
         }
         return encoder;
     }
-};
+}

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 import choose                   from    './internal/choose.mjs';
-import Analyzer                 from    './internal/optimized-analyzer.js';
+import Analyzer                 from    './internal/optimized-analyzer.mjs';
 import PREDEF_TEST_DATA_MAP_OBJ from    './internal/predef-test-data.js';
 import progress                 from    './internal/progress.mjs';
-import solutionBookMap          from    './internal/solution-book-map.js';
+import SolutionBookMap          from    './internal/solution-book-map.mjs';
 import STRATEGY_TEST_DATA_LIST  from    './internal/strategy-test-data.js';
 import JScrewIt                 from    '../lib/jscrewit.js';
 import                                  '../tools/text-utils.js';
@@ -87,7 +87,7 @@ function checkMinInputLength
 
 function createAnalyzer(ancestorFeatureObj)
 {
-    solutionBookMap.load();
+    SolutionBookMap.load();
     const analyzer = new Analyzer(ancestorFeatureObj);
     return analyzer;
 }

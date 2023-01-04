@@ -3,7 +3,7 @@
 import JScrewIt                         from '../lib/jscrewit.js';
 import timeUtils                        from '../tools/time-utils.js';
 import progress                         from './internal/progress.mjs';
-import solutionBookMap, { NICKNAME }    from './internal/solution-book-map.js';
+import SolutionBookMap, { NICKNAME }    from './internal/solution-book-map.mjs';
 import chalk                            from 'chalk';
 import { writeFile }                    from 'fs/promises';
 import { cpus }                         from 'os';
@@ -11,7 +11,7 @@ import { Worker }                       from 'worker_threads';
 
 async function doAdd()
 {
-    function * generateQueue(indicator, solutionBookMap)
+    function * generateQueue(indicator, SolutionBookMap)
     {
         const queue = new Set();
         for (const char of charSet)
@@ -22,13 +22,13 @@ async function doAdd()
                 {
                     const formattedCharacter = formatCharacter(char);
                     const bar = indicator.newBar(`Indexing ${formattedCharacter.padEnd(6)}`);
-                    const oldSolutionBook = solutionBookMap.get(char);
-                    const newSolutionBook = await runWorker(solutionBookMap, bar, char);
+                    const oldSolutionBook = SolutionBookMap.get(char);
+                    const newSolutionBook = await runWorker(SolutionBookMap, bar, char);
                     bar.hide();
-                    solutionBookMap.importBook(char, newSolutionBook);
+                    SolutionBookMap.importBook(char, newSolutionBook);
                     printIndexReport(char, oldSolutionBook, newSolutionBook);
                     if (!noSave)
-                        await solutionBookMap.save();
+                        await SolutionBookMap.save();
                     queue.delete(promise);
                 }
             )
@@ -48,7 +48,7 @@ async function doAdd()
         {
             const comparison =
             knownSolution ?
-            solutionBookMap.compareSolutions(solution, knownSolution) : -1;
+            SolutionBookMap.compareSolutions(solution, knownSolution) : -1;
             if (comparison < 0 && isSolutionApplicable(solution, mask))
                 knownSolution = solution;
         }
@@ -58,12 +58,12 @@ async function doAdd()
 
     async function indexCharacters()
     {
-        const solutionBookMap = loadSolutionBookMap(!noLoad);
+        const SolutionBookMap = loadSolutionBookMap(!noLoad);
         await progress
         (
             async indicator =>
             {
-                const generator = generateQueue(indicator, solutionBookMap);
+                const generator = generateQueue(indicator, SolutionBookMap);
                 for (const queue of generator)
                     await Promise.race(queue);
             },
@@ -133,13 +133,13 @@ async function doAdd()
             console.log(chalk.red('Not all definitions used!'));
     }
 
-    function runWorker(solutionBookMap, bar, char)
+    function runWorker(SolutionBookMap, bar, char)
     {
         const executor =
         (resolve, reject) =>
         {
             const workerURL = new URL('internal/char-index-worker.mjs', import.meta.url);
-            const worker = new Worker(workerURL, { workerData: { char, solutionBookMap } });
+            const worker = new Worker(workerURL, { workerData: { char, SolutionBookMap } });
             worker.on
             (
                 'message',
@@ -225,25 +225,25 @@ async function doAdd()
 async function doDelete()
 {
     const charSet = parseArguments(() => false);
-    const solutionBookMap = loadSolutionBookMap();
-    charSet.forEach(char => solutionBookMap.delete(char));
-    await solutionBookMap.save();
+    const SolutionBookMap = loadSolutionBookMap();
+    charSet.forEach(char => SolutionBookMap.delete(char));
+    await SolutionBookMap.save();
     console.log('Done.');
 }
 
 async function doLevel()
 {
     let output = '';
-    for (const solutionBookMap = loadSolutionBookMap(); solutionBookMap.size;)
+    for (const SolutionBookMap = loadSolutionBookMap(); SolutionBookMap.size;)
     {
         const independentChars = [];
-        for (const [char, solutionBook] of solutionBookMap)
+        for (const [char, solutionBook] of SolutionBookMap)
         {
             const { usedChars } = solutionBook;
-            if (usedChars.every(usedChar => usedChar === char || !solutionBookMap.has(usedChar)))
+            if (usedChars.every(usedChar => usedChar === char || !SolutionBookMap.has(usedChar)))
                 independentChars.push(char);
         }
-        independentChars.forEach(char => solutionBookMap.delete(char));
+        independentChars.forEach(char => SolutionBookMap.delete(char));
         output += `${formatCharacters(independentChars)}\n`;
     }
     process.stdout.write(output);
@@ -290,8 +290,8 @@ function doSort()
     const entries = [];
     {
         const counter = parseCounter();
-        const solutionBookMap = loadSolutionBookMap();
-        for (const [char, solutionBook] of solutionBookMap)
+        const SolutionBookMap = loadSolutionBookMap();
+        for (const [char, solutionBook] of SolutionBookMap)
         {
             const count = counter(solutionBook);
             const entry = { char, count };
@@ -311,9 +311,9 @@ function doSort()
 function doUses()
 {
     const charSet = parseArguments(() => false);
-    const solutionBookMap = loadSolutionBookMap();
+    const SolutionBookMap = loadSolutionBookMap();
     const dependentChars = [];
-    for (const [char, solutionBook] of solutionBookMap)
+    for (const [char, solutionBook] of SolutionBookMap)
     {
         if (solutionBook.usedChars.some(char => charSet.has(char)))
             dependentChars.push(char);
@@ -362,8 +362,8 @@ function formatCharacters(chars)
 function getOverdefinedCharacters()
 {
     const overdefinedChars = [];
-    const solutionBookMap = loadSolutionBookMap();
-    for (const [char, solutionBook] of solutionBookMap)
+    const SolutionBookMap = loadSolutionBookMap();
+    for (const [char, solutionBook] of SolutionBookMap)
     {
         if (hasUnusedDefinitions(solutionBook, char))
             overdefinedChars.push(char);
@@ -374,8 +374,8 @@ function getOverdefinedCharacters()
 function getWantedCharacters()
 {
     const { getCharacters } = JScrewIt.debug;
-    const solutionBookMap = loadSolutionBookMap();
-    const wantedChars = getCharacters().filter(char => !solutionBookMap.has(char));
+    const SolutionBookMap = loadSolutionBookMap();
+    const wantedChars = getCharacters().filter(char => !SolutionBookMap.has(char));
     return wantedChars;
 }
 
@@ -416,8 +416,8 @@ function isCharacterDefined(char)
 function loadSolutionBookMap(load = true)
 {
     if (load)
-        solutionBookMap.load();
-    return solutionBookMap;
+        SolutionBookMap.load();
+    return SolutionBookMap;
 }
 
 function parseArguments(parseSequence)
