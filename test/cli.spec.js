@@ -126,14 +126,14 @@ describe
             },
             {
                 description:            'encodes a file and shows the output',
-                screwArgs:              ['test/fixture.txt'],
+                screwArgs:              ['test/fixtures/0.txt'],
                 expectedStdout:         '+[]\n',
                 expectedStderr:         '',
                 expectedExitCode:       0,
             },
             {
                 description:            'encodes a file and writes the output to a file',
-                screwArgs:              ['test/fixture.txt', outputFileName1],
+                screwArgs:              ['test/fixtures/0.txt', outputFileName1],
                 expectedStdout:
                 /^Original size: .*\nScrewed size: .*\nExpansion factor: .*\nEncoding time: .*\n$/,
                 expectedStderr:         '',
@@ -143,19 +143,35 @@ describe
             {
                 description:
                 'encodes a file, writes the output to a file and prints a diagnostic report',
-                screwArgs:              ['-d', 'test/fixture.txt', outputFileName2],
+                screwArgs:              ['-d', 'test/fixtures/0.txt', outputFileName2],
                 expectedStdout:
                 RegExp
                 (
                     '\n\n' +
-                    'Original size: .*\n' +
-                    'Screwed size: .*\n' +
+                    'Original size: +1 byte\n' +
+                    'Screwed size: +\\d+ bytes\n' +
                     'Expansion factor: .*\n' +
                     'Encoding time: .*\n' +
                     '$'
                 ),
                 expectedStderr:         '',
                 expectedFiles:          expectedFiles2,
+                expectedExitCode:       0,
+            },
+            {
+                descriptions:           'shows the number of bytes in the input as original size',
+                screwArgs:              ['-d', 'test/fixtures/∞.txt', createOutputFileName()],
+                expectedStdout:
+                RegExp
+                (
+                    '\n\n' +
+                    'Original size: +3 bytes\n' +
+                    'Screwed size: +\\d+ bytes\n' +
+                    'Expansion factor: .*\n' +
+                    'Encoding time: .*\n' +
+                    '$'
+                ),
+                expectedStderr:         '',
                 expectedExitCode:       0,
             },
         ];
