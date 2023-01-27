@@ -192,8 +192,8 @@ function getMinRadix(char)
 
 function isClusterable(solution)
 {
-    var char = solution.source;
-    var clusterable = char != null && /[\da-z]/.test(char);
+    var source = solution.source;
+    var clusterable = source != null && /^[\da-z]$/.test(source);
     return clusterable;
 }
 
