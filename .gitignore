@@ -1,6 +1,6 @@
 .*
 !.git*
-!.npmrc
+!/.npmrc
 *.cpuprofile
 /jsdoc
 /lib/**/*.js

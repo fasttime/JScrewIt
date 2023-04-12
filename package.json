@@ -40,6 +40,7 @@
     "docs": "gulp docs",
     "feature-info": "node dev/legacy/feature-info.js",
     "prepare": "node dev/patch-rollup.mjs",
+    "release": "npm version -m 'Version %s' --tag-version-prefix=",
     "test": "mocha --check-leaks --ui=ebdd test/{*,*/*,*/*/*}.spec.js"
   },
   "devDependencies": {
@@ -54,7 +55,7 @@
     "ebdd": "latest",
     "eslint-plugin-ebdd": "latest",
     "expectations": "latest",
-    "fast-glob": "latest",
+    "glob": "latest",
     "gulp": "latest",
     "gulp-jsdoc3": "latest",
     "gulp-rename": "latest",

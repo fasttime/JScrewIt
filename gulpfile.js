@@ -288,7 +288,7 @@ task
         };
         const app = new Application();
         app.options.addReader(new TSConfigReader());
-        app.bootstrap(options);
+        await app.bootstrapWithPlugins(options);
         const project = app.convert();
         await app.renderer.render(project, 'api-doc');
         if (app.logger.hasErrors())
@@ -308,13 +308,13 @@ task
     'make-spec-runner',
     async () =>
     {
-        const fastGlob      = require('fast-glob');
+        const { glob }      = require('glob');
         const { writeFile } = require('fs/promises');
         const Handlebars    = require('handlebars');
 
         async function getSpecs()
         {
-            const specs = await fastGlob('**/*.spec.js', { cwd: 'test/lib' });
+            const specs = await glob('**/*.spec.js', { cwd: 'test/lib' });
             return specs;
         }
 
@@ -337,8 +337,8 @@ task
     'make-workflows',
     async () =>
     {
-        const fastGlob      = require('fast-glob');
         const { writeFile } = require('fs/promises');
+        const { glob }      = require('glob');
         const Handlebars    = require('handlebars');
         const { join }      = require('path');
 
@@ -356,7 +356,7 @@ task
             await writeFile(path, output);
         }
 
-        const promises = [getTemplate(), fastGlob('*', { cwd: 'packages', onlyDirectories: true })];
+        const promises = [getTemplate(), glob('*', { cwd: 'packages', onlyDirectories: true })];
         const [template, pkgNames] = await Promise.all(promises);
         const writeWorkflowPromises = pkgNames.map(writeWorkflow);
         await Promise.all(writeWorkflowPromises);

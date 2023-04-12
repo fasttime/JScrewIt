@@ -71,15 +71,14 @@ async function compileLib(pkgPath, dTsFilter)
 
 async function compileTS(pkgPath, source, newOptions, writeFile)
 {
-    const [{ default: fastGlob }, { default: ts }] =
-    await Promise.all([import('fast-glob'), import('typescript')]);
+    const [{ glob }, { default: ts }] = await Promise.all([import('glob'), import('typescript')]);
 
     const { sys } = ts;
     const program =
     await
     (async () =>
     {
-        const fileNames = await fastGlob(source, { absolute: true, cwd: pkgPath });
+        const fileNames = await glob(source, { absolute: true, cwd: pkgPath });
         const tsConfigPath = join(pkgPath, 'tsconfig.json');
         const tsConfig = ts.readConfigFile(tsConfigPath, sys.readFile);
         const { options } = ts.parseJsonConfigFileContent(tsConfig.config, sys, pkgPath);

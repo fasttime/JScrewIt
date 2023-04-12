@@ -330,7 +330,7 @@ FeatureConstructor
     {
         let featureObj: Feature;
         if (feature instanceof Feature)
-            featureObj = feature as Feature;
+            featureObj = feature;
         else
         {
             const name = esToString(feature);

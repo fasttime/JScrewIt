@@ -298,5 +298,5 @@ converted.
 * [jsfuck.com](http://www.jsfuck.com)
 * [jQuery *Screwed*](https://github.com/fasttime/jquery-screwed)
 
-[npm badge]: https://badge.fury.io/js/jscrewit.svg
+[npm badge]: https://img.shields.io/npm/v/jscrewit?logo=npm
 [npm url]: https://www.npmjs.com/package/jscrewit
