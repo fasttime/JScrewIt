@@ -1,15 +1,21 @@
-import { createFeatureClass, featuresToMask }   from '../../src/feature';
-
-import type
-{ CompatibilityInfo, Feature, FeatureConstructor, FeatureElement, FeatureElementOrCompatibleArray }
+import
+{
+    type CompatibilityInfo,
+    type Feature,
+    type FeatureConstructor,
+    type FeatureElement,
+    type FeatureElementOrCompatibleArray,
+    createFeatureClass,
+    featuresToMask,
+}
 from '../../src/feature';
 
-import { maskAreEqual, maskIntersection, maskNew, maskNext, maskUnion }
+import
+{ type Mask, maskAreEqual, maskIntersection, maskNew, maskNext, maskUnion }
 from '../../src/mask';
 
-import type { Mask }                            from '../../src/mask';
-import assert                                   from 'assert';
-import type util                                from 'util';
+import assert       from 'assert';
+import type util    from 'util';
 
 const getNodeUtil = (): typeof util => require('util') as typeof util; // eslint-disable-line
 

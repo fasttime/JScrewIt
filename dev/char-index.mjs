@@ -167,7 +167,7 @@ async function doAdd()
                 code =>
                 {
                     if (code)
-                        reject(new Error(`Worker stopped unexpectedly with exit code ${code}`));
+                        reject(Error(`Worker stopped unexpectedly with exit code ${code}`));
                 },
             );
         };

@@ -96,7 +96,11 @@ const paramDataList: ParamOrParamInfo<Readonly<ParamData>>[] =
     when
     (
         typeof BigInt !== 'undefined',
-        ['a bigint', typeof BigInt !== 'undefined' && BigInt(1), '1n'],
+        [
+            'a bigint',
+            typeof (BigInt as (BigIntConstructor | undefined)) !== 'undefined' && BigInt(1),
+            '1n',
+        ],
     ),
     ['an empty array', [], '[]', 'an empty array'],
     ['a one element array', [''], '[""]', 'a one element array'],
@@ -108,7 +112,12 @@ const paramDataList: ParamOrParamInfo<Readonly<ParamData>>[] =
     when
     (
         typeof document !== 'undefined',
-        ['document.all', typeof document !== 'undefined' && document.all, , 'an object'],
+        [
+            'document.all',
+            typeof (document as (Document | undefined)) !== 'undefined' && document.all,
+            ,
+            'an object',
+        ],
     ),
     ['a plain object', { }, '[object Object]', 'an object'],
     ['a function', Function(), , 'a function'],

@@ -144,21 +144,17 @@ task
                 parserOptions:  { sourceType: 'module' },
             },
             {
-                src:
-                [
-                    'dev/legacy/**/*.js',
-                    'screw.js',
-                    'src/ui/worker.js',
-                    'test/**/*.js',
-                    'tools/**/*.js',
-                    '!test/patch-cov-source.js',
-                ],
-                plugins: ['ebdd'],
+                src: ['dev/legacy/**/*.js', 'screw.js', 'src/ui/worker.js', 'tools/**/*.js'],
                 rules:
                 {
                     // process.exitCode is not supported in Node.js 0.10.
                     'no-process-exit': 'off',
                 },
+            },
+            {
+                src:        ['test/**/*.js', '!test/patch-cov-source.js'],
+                plugins:    ['ebdd'],
+                rules:      { '@origin-1/no-extra-new': 'off' },
             },
             {
                 src:            ['lib/**/*.ts', '!lib/feature-all.d.ts'],
@@ -286,10 +282,9 @@ task
             readme:             'none',
             tsconfig:           'tsconfig.json',
         };
-        const app = new Application();
-        app.options.addReader(new TSConfigReader());
-        await app.bootstrapWithPlugins(options);
-        const project = app.convert();
+        const tsConfigReader = new TSConfigReader();
+        const app = await Application.bootstrapWithPlugins(options, [tsConfigReader]);
+        const project = await app.convert();
         await app.renderer.render(project, 'api-doc');
         if (app.logger.hasErrors())
             throw Error('API documentation could not be generated');

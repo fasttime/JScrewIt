@@ -4,12 +4,17 @@
 
 const { createRequire } = require('module');
 
+const SUPPRESSED_ERROR_LINE =
+'    typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, ' +
+'message) {\n';
+
 const MARKER_LINES =
 {
     __proto__:                                      null,
     '    var extendStatics = function(d, b) {\n':   5,
     '    function __extends(d, b) {\n':             6,
     '    var __assign = function() {\n':            9,
+    [SUPPRESSED_ERROR_LINE]:                        3,
 };
 
 const c8jsRequire = createRequire(require.resolve('c8js'));

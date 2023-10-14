@@ -1,7 +1,8 @@
-import { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
+import
+{ type Mask, maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
 from '../../src/mask';
-import type { Mask }                from '../../src/mask';
-import assert, { AssertionError }   from 'assert';
+
+import assert, { AssertionError } from 'assert';
 
 function assertFail
 (message: string, stackStartFn: Function, actual?: unknown, expected?: unknown): never

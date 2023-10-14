@@ -61,5 +61,4 @@ export default async function (callback, message, choices)
         const { choice } = await inquirer.prompt(question);
         runCallback(callback, choice);
     }
-    process.exit();
 }

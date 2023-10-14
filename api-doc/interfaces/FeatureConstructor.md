@@ -19,6 +19,16 @@ The constructor can be used with or without the `new` operator, e.g.
 If no arguments are specified, the new feature object will be equivalent to
 [`DEFAULT`](FeatureConstructor.md#default).
 
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `...features` | [`FeatureElementOrCompatibleArray`](../README.md#featureelementorcompatiblearray)[] |
+
+#### Returns
+
+[`CustomFeature`](CustomFeature.md)
+
 **`Example`**
 
 The following statements are equivalent, and will all construct a new feature object
@@ -39,16 +49,6 @@ new JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW
 **`Throws`**
 
 An error is thrown if any of the specified features are not mutually compatible.
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `...features` | [`FeatureElementOrCompatibleArray`](../README.md#featureelementorcompatiblearray)[] |
-
-#### Returns
-
-[`CustomFeature`](CustomFeature.md)
 
 ## Table of contents
 
@@ -174,6 +174,12 @@ The constructor can be used with or without the `new` operator, e.g.
 If no arguments are specified, the new feature object will be equivalent to
 [`DEFAULT`](FeatureConstructor.md#default).
 
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `...features` | [`FeatureElementOrCompatibleArray`](../README.md#featureelementorcompatiblearray)[] |
+
 **`Example`**
 
 The following statements are equivalent, and will all construct a new feature object
@@ -194,12 +200,6 @@ JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW]);
 **`Throws`**
 
 An error is thrown if any of the specified features are not mutually compatible.
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `...features` | [`FeatureElementOrCompatibleArray`](../README.md#featureelementorcompatiblearray)[] |
 
 #### Inherited from
 
@@ -1621,18 +1621,6 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Androi
 
 Determines whether the specified features are mutually compatible.
 
-**`Example`**
-
-```js
-// false: only one of "V8_SRC" or "IE_SRC" may be available.
-JScrewIt.Feature.areCompatible("V8_SRC", "IE_SRC")
-```
-
-```js
-// true
-JScrewIt.Feature.areCompatible(JScrewIt.Feature.DEFAULT, JScrewIt.Feature.FILL)
-```
-
 #### Parameters
 
 | Name | Type |
@@ -1646,6 +1634,18 @@ JScrewIt.Feature.areCompatible(JScrewIt.Feature.DEFAULT, JScrewIt.Feature.FILL)
 `true` if the specified features are mutually compatible; otherwise, `false`.
 If less than two features are specified, the return value is `true`.
 
+**`Example`**
+
+```js
+// false: only one of "V8_SRC" or "IE_SRC" may be available.
+JScrewIt.Feature.areCompatible("V8_SRC", "IE_SRC")
+```
+
+```js
+// true
+JScrewIt.Feature.areCompatible(JScrewIt.Feature.DEFAULT, JScrewIt.Feature.FILL)
+```
+
 ___
 
 ### areEqual
@@ -1656,18 +1656,6 @@ Determines whether all of the specified features are equivalent.
 
 Different features are considered equivalent if they include the same set of elementary
 features, regardless of any other difference.
-
-**`Example`**
-
-```js
-// false
-JScrewIt.Feature.areEqual(JScrewIt.Feature.CHROME, JScrewIt.Feature.FF)
-```
-
-```js
-// true
-JScrewIt.Feature.areEqual("DEFAULT", [])
-```
 
 #### Parameters
 
@@ -1682,6 +1670,18 @@ JScrewIt.Feature.areEqual("DEFAULT", [])
 `true` if all of the specified features are equivalent; otherwise, `false`.
 If less than two arguments are specified, the return value is `true`.
 
+**`Example`**
+
+```js
+// false
+JScrewIt.Feature.areEqual(JScrewIt.Feature.CHROME, JScrewIt.Feature.FF)
+```
+
+```js
+// true
+JScrewIt.Feature.areEqual("DEFAULT", [])
+```
+
 ___
 
 ### commonOf
@@ -1689,21 +1689,6 @@ ___
 ▸ **commonOf**(`...features`): ``null`` \| [`CustomFeature`](CustomFeature.md)
 
 Creates a new feature object equivalent to the intersection of the specified features.
-
-**`Example`**
-
-This will create a new feature object equivalent to [`NAME`](FeatureConstructor.md#name).
-
-```js
-const newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
-```
-
-This will create a new feature object equivalent to [`ANY_DOCUMENT`](FeatureConstructor.md#any_document).
-This is because both [`HTMLDOCUMENT`](FeatureConstructor.md#htmldocument) and [`DOCUMENT`](FeatureConstructor.md#document) imply [`ANY_DOCUMENT`](FeatureConstructor.md#any_document).
-
-```js
-const newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
-```
 
 #### Parameters
 
@@ -1717,6 +1702,21 @@ const newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
 
 A feature object, or `null` if no arguments are specified.
 
+**`Example`**
+
+This will create a new feature object equivalent to [`NAME`](FeatureConstructor.md#name).
+
+```js
+const newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
+```
+
+This will create a new feature object equivalent to [FeatureConstructor.ANY_DOCUMENT | `ANY_DOCUMENT`](FeatureConstructor.md#any_document).
+This is because both [`HTMLDOCUMENT`](FeatureConstructor.md#htmldocument) and [`DOCUMENT`](FeatureConstructor.md#document) imply [FeatureConstructor.ANY_DOCUMENT | `ANY_DOCUMENT`](FeatureConstructor.md#any_document).
+
+```js
+const newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
+```
+
 ___
 
 ### descriptionFor
@@ -1724,14 +1724,6 @@ ___
 ▸ **descriptionFor**(`name`): `string`
 
 Returns a short description of a predefined feature in plain English.
-
-**`Remarks`**
-
-Different names or aliases of the same feature may have different descriptions.
-
-**`Throws`**
-
-An error is thrown if the specified argument is not a name or alias of a predefined feature.
 
 #### Parameters
 
@@ -1742,3 +1734,11 @@ An error is thrown if the specified argument is not a name or alias of a predefi
 #### Returns
 
 `string`
+
+**`Remarks`**
+
+Different names or aliases of the same feature may have different descriptions.
+
+**`Throws`**
+
+An error is thrown if the specified argument is not a name or alias of a predefined feature.

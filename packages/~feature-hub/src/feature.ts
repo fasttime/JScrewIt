@@ -1,9 +1,9 @@
-import { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
+import
+{ type Mask, maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
 from './mask';
-import type { Mask }                                            from './mask';
-import { MaskSet }                                              from './mask-index';
-import type util                                                from 'util';
-import type { InspectOptionsStylized }                          from 'util';
+
+import { MaskSet }  from './mask-index';
+import type util    from 'util';
 
 export type AttributeMap = { readonly [AttributeName in string]: string | null; };
 
@@ -53,6 +53,7 @@ export interface FeatureConstructor
     _fromMask(mask: Mask):                                      Feature | null;
     _getMask(feature?: FeatureElementOrCompatibleArray):        Mask;
     areCompatible(...features: FeatureElement[]):               boolean;
+
     /** @deprecated */
     areCompatible(features: readonly FeatureElement[]):         boolean;
     areEqual(...features: FeatureElementOrCompatibleArray[]):   boolean;
@@ -294,7 +295,7 @@ FeatureConstructor
      * further information.
      */
     // opts can be undefined in Node.js 0.10.0.
-    function inspect(this: Feature, depth: never, opts?: InspectOptionsStylized): string
+    function inspect(this: Feature, depth: never, opts?: util.InspectOptionsStylized): string
     {
         const breakLength = opts?.breakLength ?? 80;
         const compact = opts?.compact ?? true;

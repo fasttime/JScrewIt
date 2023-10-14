@@ -103,6 +103,16 @@ The constructor can be used with or without the `new` operator, e.g.
 If no arguments are specified, the new feature object will be equivalent to
 [`DEFAULT`](interfaces/FeatureConstructor.md#default).
 
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `...features` | [`FeatureElementOrCompatibleArray`](README.md#featureelementorcompatiblearray)[] |
+
+#### Returns
+
+[`CustomFeature`](interfaces/CustomFeature.md)
+
 **`Example`**
 
 The following statements are equivalent, and will all construct a new feature object
@@ -124,16 +134,6 @@ new JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW
 
 An error is thrown if any of the specified features are not mutually compatible.
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `...features` | [`FeatureElementOrCompatibleArray`](README.md#featureelementorcompatiblearray)[] |
-
-#### Returns
-
-[`CustomFeature`](interfaces/CustomFeature.md)
-
 ___
 
 ### encode
@@ -141,16 +141,6 @@ ___
 ▸ **encode**(`input`, `options?`): `string`
 
 Encodes a given string into JSFuck.
-
-**`Throws`**
-
-An `Error` is thrown under the following circumstances.
- - The specified string cannot be encoded with the specified options.
- - Some unknown features were specified.
- - A combination of mutually incompatible features was specified.
- - The option `runAs` (or `wrapWith`) was specified with an invalid value.
-
-Also, an out of memory condition may occur when processing very large data.
 
 #### Parameters
 
@@ -164,3 +154,13 @@ Also, an out of memory condition may occur when processing very large data.
 `string`
 
 The encoded string.
+
+**`Throws`**
+
+An `Error` is thrown under the following circumstances.
+ - The specified string cannot be encoded with the specified options.
+ - Some unknown features were specified.
+ - A combination of mutually incompatible features was specified.
+ - The option `runAs` (or `wrapWith`) was specified with an invalid value.
+
+Also, an out of memory condition may occur when processing very large data.

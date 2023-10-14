@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: actions/setup-node@v3
       with:
-        node-version: ^18.1
+        node-version: '20'
     - run: |
         npm install --prefix ../..
         npm run lint
@@ -31,10 +31,10 @@ jobs:
 
     strategy:
       matrix:
-        node-version: ['14', '16', '18', '19']
+        node-version: ['14', '16', '18', '20']
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
@@ -49,10 +49,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: actions/setup-node@v3
       with:
-        node-version: '18'
+        node-version: '20'
     - run: |
         npm install --prefix ../..
         npm run prepare-legacy-test
@@ -74,7 +74,7 @@ jobs:
         node-version: ['0.10', '0.12', '4', '6', '8', '10', '12']
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
