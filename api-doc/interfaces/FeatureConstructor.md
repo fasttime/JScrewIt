@@ -17,7 +17,7 @@ Creates a new feature object from the union of the specified features.
 The constructor can be used with or without the `new` operator, e.g.
 `new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
 If no arguments are specified, the new feature object will be equivalent to
-[`DEFAULT`](FeatureConstructor.md#default).
+[`DEFAULT`](FeatureAll.md#default).
 
 #### Parameters
 
@@ -32,7 +32,7 @@ If no arguments are specified, the new feature object will be equivalent to
 **`Example`**
 
 The following statements are equivalent, and will all construct a new feature object
-including both [`ANY_DOCUMENT`](FeatureConstructor.md#any_document) and [`ANY_WINDOW`](FeatureConstructor.md#any_window).
+including both [`ANY_DOCUMENT`](FeatureAll.md#any_document) and [`ANY_WINDOW`](FeatureConstructor.md#any_window).
 
 ```js
 new JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
@@ -165,14 +165,14 @@ An error is thrown if any of the specified features are not mutually compatible.
 
 ### constructor
 
-• **new FeatureConstructor**(`...features`)
+• **new FeatureConstructor**(`...features`): [`CustomFeature`](CustomFeature.md)
 
 Creates a new feature object from the union of the specified features.
 
 The constructor can be used with or without the `new` operator, e.g.
 `new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
 If no arguments are specified, the new feature object will be equivalent to
-[`DEFAULT`](FeatureConstructor.md#default).
+[`DEFAULT`](FeatureAll.md#default).
 
 #### Parameters
 
@@ -180,10 +180,14 @@ If no arguments are specified, the new feature object will be equivalent to
 | :------ | :------ |
 | `...features` | [`FeatureElementOrCompatibleArray`](../README.md#featureelementorcompatiblearray)[] |
 
+#### Returns
+
+[`CustomFeature`](CustomFeature.md)
+
 **`Example`**
 
 The following statements are equivalent, and will all construct a new feature object
-including both [`ANY_DOCUMENT`](FeatureConstructor.md#any_document) and [`ANY_WINDOW`](FeatureConstructor.md#any_window).
+including both [`ANY_DOCUMENT`](FeatureAll.md#any_document) and [`ANY_WINDOW`](FeatureConstructor.md#any_window).
 
 ```js
 JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
@@ -1704,14 +1708,14 @@ A feature object, or `null` if no arguments are specified.
 
 **`Example`**
 
-This will create a new feature object equivalent to [`NAME`](FeatureConstructor.md#name).
+This will create a new feature object equivalent to [`NAME`](FeatureAll.md#name).
 
 ```js
 const newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
 ```
 
-This will create a new feature object equivalent to [FeatureConstructor.ANY_DOCUMENT | `ANY_DOCUMENT`](FeatureConstructor.md#any_document).
-This is because both [`HTMLDOCUMENT`](FeatureConstructor.md#htmldocument) and [`DOCUMENT`](FeatureConstructor.md#document) imply [FeatureConstructor.ANY_DOCUMENT | `ANY_DOCUMENT`](FeatureConstructor.md#any_document).
+This will create a new feature object equivalent to [FeatureConstructor.ANY_DOCUMENT | `ANY_DOCUMENT`](FeatureAll.md#any_document).
+This is because both [`HTMLDOCUMENT`](FeatureAll.md#htmldocument) and [`DOCUMENT`](FeatureConstructor.md#document) imply [FeatureConstructor.ANY_DOCUMENT | `ANY_DOCUMENT`](FeatureAll.md#any_document).
 
 ```js
 const newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");

@@ -43,7 +43,7 @@ ___
 
 ### FeatureElement
 
-Ƭ **FeatureElement**: [`Feature`](README.md#feature) \| keyof [`FeatureAll`](interfaces/FeatureAll.md)
+Ƭ **FeatureElement**: [`Feature`](interfaces/Feature.md) \| keyof [`FeatureAll`](interfaces/FeatureAll.md)
 
 A feature object or a name or alias of a predefined feature.
 
@@ -88,7 +88,7 @@ See [`EncodeOptions.runAs`](interfaces/EncodeOptions.md#runas) for the meaning o
 
 ### default
 
-• **default**: [`default`](README.md#default)
+• **default**: [`default`](interfaces/default.md)
 
 ## Functions
 
@@ -101,7 +101,7 @@ Creates a new feature object from the union of the specified features.
 The constructor can be used with or without the `new` operator, e.g.
 `new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
 If no arguments are specified, the new feature object will be equivalent to
-[`DEFAULT`](interfaces/FeatureConstructor.md#default).
+[`DEFAULT`](interfaces/FeatureAll.md#default).
 
 #### Parameters
 
@@ -116,7 +116,7 @@ If no arguments are specified, the new feature object will be equivalent to
 **`Example`**
 
 The following statements are equivalent, and will all construct a new feature object
-including both [`ANY_DOCUMENT`](interfaces/FeatureConstructor.md#any_document) and [`ANY_WINDOW`](interfaces/FeatureConstructor.md#any_window).
+including both [`ANY_DOCUMENT`](interfaces/FeatureAll.md#any_document) and [`ANY_WINDOW`](interfaces/FeatureConstructor.md#any_window).
 
 ```js
 new JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");

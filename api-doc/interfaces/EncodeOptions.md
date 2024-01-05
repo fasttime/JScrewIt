@@ -13,7 +13,7 @@
 
 ### features
 
-• `Optional` **features**: [`FeatureElementOrCompatibleArray`](../README.md#featureelementorcompatiblearray)
+• `Optional` **features**: [`Feature`](Feature.md) \| ``"ANY_DOCUMENT"`` \| ``"ANY_WINDOW"`` \| ``"ARRAY_ITERATOR"`` \| ``"ARROW"`` \| ``"AT"`` \| ``"ATOB"`` \| ``"BARPROP"`` \| ``"CAPITAL_HTML"`` \| ``"CONSOLE"`` \| ``"DOCUMENT"`` \| ``"DOMWINDOW"`` \| ``"ESC_HTML_ALL"`` \| ``"ESC_HTML_QUOT"`` \| ``"ESC_HTML_QUOT_ONLY"`` \| ``"ESC_REGEXP_LF"`` \| ``"ESC_REGEXP_SLASH"`` \| ``"FF_SRC"`` \| ``"FILL"`` \| ``"FLAT"`` \| ``"FROM_CODE_POINT"`` \| ``"FUNCTION_19_LF"`` \| ``"FUNCTION_22_LF"`` \| ``"GENERIC_ARRAY_TO_STRING"`` \| ``"GLOBAL_UNDEFINED"`` \| ``"GMT"`` \| ``"HISTORY"`` \| ``"HTMLAUDIOELEMENT"`` \| ``"HTMLDOCUMENT"`` \| ``"IE_SRC"`` \| ``"INCR_CHAR"`` \| ``"INTL"`` \| ``"LOCALE_INFINITY"`` \| ``"LOCALE_NUMERALS"`` \| ``"LOCALE_NUMERALS_EXT"`` \| ``"LOCATION"`` \| ``"NAME"`` \| ``"NODECONSTRUCTOR"`` \| ``"NO_FF_SRC"`` \| ``"NO_IE_SRC"`` \| ``"NO_OLD_SAFARI_ARRAY_ITERATOR"`` \| ``"NO_V8_SRC"`` \| ``"OBJECT_L_LOCATION_CTOR"`` \| ``"OBJECT_UNDEFINED"`` \| ``"OBJECT_W_CTOR"`` \| ``"OLD_SAFARI_LOCATION_CTOR"`` \| ``"PLAIN_INTL"`` \| ``"REGEXP_STRING_ITERATOR"`` \| ``"SELF_OBJ"`` \| ``"SHORT_LOCALES"`` \| ``"STATUS"`` \| ``"UNDEFINED"`` \| ``"V8_SRC"`` \| ``"WINDOW"`` \| ``"ANDRO_4_0"`` \| ``"ANDRO_4_1"`` \| ``"ANDRO_4_4"`` \| ``"AUTO"`` \| ``"BROWSER"`` \| ``"CHROME_92"`` \| ``"COMPACT"`` \| ``"DEFAULT"`` \| ``"FF_90"`` \| ``"IE_10"`` \| ``"IE_11"`` \| ``"IE_11_WIN_10"`` \| ``"IE_9"`` \| ``"NODE_0_10"`` \| ``"NODE_0_12"`` \| ``"NODE_10"`` \| ``"NODE_11"`` \| ``"NODE_12"`` \| ``"NODE_13"`` \| ``"NODE_15"`` \| ``"NODE_16_0"`` \| ``"NODE_16_6"`` \| ``"NODE_4"`` \| ``"NODE_5"`` \| ``"SAFARI_10"`` \| ``"SAFARI_12"`` \| ``"SAFARI_13"`` \| ``"SAFARI_14_0_1"`` \| ``"SAFARI_14_1"`` \| ``"SAFARI_15_4"`` \| ``"SAFARI_7_0"`` \| ``"SAFARI_7_1"`` \| ``"SAFARI_9"`` \| ``"CHROME"`` \| ``"CHROME_PREV"`` \| ``"FF"`` \| ``"FF_ESR"`` \| ``"FF_PREV"`` \| ``"SAFARI"`` \| ``"SELF"`` \| readonly [`FeatureElement`](../README.md#featureelement)[]
 
 Specifies the features available in the engines that evaluate the encoded output.
 
@@ -25,7 +25,7 @@ ___
 
 ### runAs
 
-• `Optional` **runAs**: [`RunAs`](../README.md#runas)
+• `Optional` **runAs**: ``"none"`` \| ``"call"`` \| ``"eval"`` \| ``"express"`` \| ``"express-call"`` \| ``"express-eval"``
 
 This option controls the type of code generated from the given input.
 Allowed values are listed below.
@@ -94,6 +94,6 @@ ___
 
 ### wrapWith
 
-• `Optional` **wrapWith**: [`RunAs`](../README.md#runas)
+• `Optional` **wrapWith**: ``"none"`` \| ``"call"`` \| ``"eval"`` \| ``"express"`` \| ``"express-call"`` \| ``"express-eval"``
 
 An alias for `runAs`.

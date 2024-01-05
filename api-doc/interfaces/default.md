@@ -17,4 +17,4 @@ ___
 
 ### encode
 
-• **encode**: [`encode`](../README.md#encode)
+• **encode**: [`encode`](encode.md)

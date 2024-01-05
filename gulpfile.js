@@ -285,9 +285,11 @@ task
         const tsConfigReader = new TSConfigReader();
         const app = await Application.bootstrapWithPlugins(options, [tsConfigReader]);
         const project = await app.convert();
+        app.validate(project);
+        const { logger } = app;
+        if (logger.hasErrors() || logger.hasWarnings())
+            throw Error('Problems occurred while generating the documentation');
         await app.renderer.render(project, 'api-doc');
-        if (app.logger.hasErrors())
-            throw Error('API documentation could not be generated');
     },
 );
 

@@ -1,8 +1,31 @@
 # Interface: PredefinedFeature
 
+Objects of this type indicate which of the capabilities that JScrewIt can use to minimize the
+length of its output are available in a particular JavaScript engine.
+
+JScrewIt comes with a set of predefined feature objects exposed as property values of
+`JScrewIt.Feature` or [`JScrewIt.Feature.ALL`](FeatureConstructor.md#all), where the property
+name is the feature's name or alias.
+
+Besides these predefined features, it is possible to construct custom features from the union or
+intersection of other features.
+
+Among the predefined features, there are some special ones called *elementary* features.
+Elementary features either cannot be expressed as a union of any number of other features, or
+they are different from such a union in that they exclude some other feature not excluded by
+their elementary components.
+All other features, called *composite* features, can be constructed as a union of zero or more
+elementary features.
+Two of the predefined composite features are particularly important: [`DEFAULT`](FeatureConstructor.md#default) is the empty feature, indicating that no elementary
+feature is available at all; [`AUTO`](FeatureAll.md#auto) is the union of all
+elementary features available in the current environment.
+
+Not all features can be available at the same time: some features are necessarily incompatible,
+meaning that they mutually exclude each other, and thus their union cannot be constructed.
+
 ## Hierarchy
 
-- [`Feature`](../README.md#feature)
+- [`Feature`](Feature.md)
 
   ↳ **`PredefinedFeature`**
 
@@ -33,7 +56,7 @@ implied features.
 
 #### Inherited from
 
-Feature.canonicalNames
+[Feature](Feature.md).[canonicalNames](Feature.md#canonicalnames)
 
 ___
 
@@ -45,7 +68,7 @@ A boolean value indicating whether this is an elementary feature object.
 
 #### Inherited from
 
-Feature.elementary
+[Feature](Feature.md).[elementary](Feature.md#elementary)
 
 ___
 
@@ -57,7 +80,7 @@ An array of all elementary feature names included in this feature object, withou
 
 #### Inherited from
 
-Feature.elementaryNames
+[Feature](Feature.md).[elementaryNames](Feature.md#elementarynames)
 
 ___
 
@@ -65,9 +88,14 @@ ___
 
 • `Readonly` **name**: [`PredefinedFeatureName`](../README.md#predefinedfeaturename)
 
+The primary name of this feature object, useful for identification purpose.
+
+All predefined features have a name; custom features may be optionally assigned a name, too.
+If a name is assigned, it will be used when the feature is converted into a string.
+
 #### Overrides
 
-Feature.name
+[Feature](Feature.md).[name](Feature.md#name)
 
 ## Methods
 
@@ -92,7 +120,7 @@ If no arguments are specified, the return value is `true`.
 
 #### Inherited from
 
-Feature.includes
+[Feature](Feature.md).[includes](Feature.md#includes)
 
 ___
 
@@ -119,4 +147,4 @@ that require strict mode code, or inside web workers.
 
 #### Inherited from
 
-Feature.restrict
+[Feature](Feature.md).[restrict](Feature.md#restrict)
