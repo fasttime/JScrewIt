@@ -10,16 +10,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: ^20.8
     - run: |
         npm install --workspaces
         npm install
         npm run --workspaces make
         gulp lint
         gulp bundle:lib
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: lib
         path: lib
@@ -34,14 +34,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: ['0.10', '0.12', '4', '6', '8', '10', '12', '14', '16', '18', '20']
+        node-version: ['0.10', '0.12', '4', '6', '8', '10', '12', '14', '16', '18', '20', '21']
 
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: lib
         path: lib
