@@ -39,7 +39,6 @@
     "build": "npm install && npm run -ws build && gulp",
     "docs": "gulp docs",
     "feature-info": "node dev/legacy/feature-info.js",
-    "prepare": "node dev/patch-rollup.mjs",
     "release": "npm version -m 'Version %s' --tag-version-prefix=",
     "test": "mocha --check-leaks --ui=ebdd test/{*,*/*,*/*/*}.spec.js"
   },
