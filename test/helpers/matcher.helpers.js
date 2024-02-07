@@ -111,6 +111,11 @@
             {
                 error = newError;
             }
+            if (error == null)
+            {
+                var message = this.generateMessage(fn, this.expr, 'to throw an error');
+                this.assertions.fail(message);
+            }
             Array.prototype.forEach.call
             (
                 arguments,
