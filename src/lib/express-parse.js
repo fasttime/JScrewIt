@@ -512,6 +512,7 @@ var INESCAPABLE_WORDS = ['false', 'null', 'true'];
 var UNRETURNABLE_WORDS =
 [
     'arguments',    // shadowed in function body
+    'await',        // may be an identifier in non-strict mode
     'debugger',     // : debugger;
     'delete',       // : delete(x);
     'if',           // : if(x);

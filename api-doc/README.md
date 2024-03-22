@@ -24,11 +24,11 @@
 
 ### Variables
 
+- [Feature](README.md#feature)
 - [default](README.md#default)
 
 ### Functions
 
-- [Feature](README.md#feature)
 - [encode](README.md#encode)
 
 ## Type Aliases
@@ -86,55 +86,17 @@ See [`EncodeOptions.runAs`](interfaces/EncodeOptions.md#runas) for the meaning o
 
 ## Variables
 
+### Feature
+
+• **Feature**: [`FeatureConstructor`](interfaces/FeatureConstructor.md)
+
+___
+
 ### default
 
 • **default**: [`default`](interfaces/default.md)
 
 ## Functions
-
-### Feature
-
-▸ **Feature**(`...features`): [`CustomFeature`](interfaces/CustomFeature.md)
-
-Creates a new feature object from the union of the specified features.
-
-The constructor can be used with or without the `new` operator, e.g.
-`new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
-If no arguments are specified, the new feature object will be equivalent to
-[`DEFAULT`](interfaces/FeatureAll.md#default).
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `...features` | [`FeatureElementOrCompatibleArray`](README.md#featureelementorcompatiblearray)[] |
-
-#### Returns
-
-[`CustomFeature`](interfaces/CustomFeature.md)
-
-**`Example`**
-
-The following statements are equivalent, and will all construct a new feature object
-including both [`ANY_DOCUMENT`](interfaces/FeatureAll.md#any_document) and [`ANY_WINDOW`](interfaces/FeatureConstructor.md#any_window).
-
-```js
-new JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
-```
-
-```js
-new JScrewIt.Feature(JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW);
-```
-
-```js
-new JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW]);
-```
-
-**`Throws`**
-
-An error is thrown if any of the specified features are not mutually compatible.
-
-___
 
 ### encode
 
