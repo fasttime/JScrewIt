@@ -1,4 +1,4 @@
-const NICKNAME              = 'atai';
+const NICKNAME              = 'jscrewit';
 const TYPE_KEY              = '__type';
 const TYPE_VALUE_SOLUTION   = 'Solution';
 
@@ -310,7 +310,7 @@ function loadSolutionBookMap()
 async function saveSolutionBookMap()
 {
     const stringifyReplacer = createStringifyReplacer();
-    const jsonString = JSON.stringify(SolutionBookMap, stringifyReplacer, 4);
+    const jsonString = JSON.stringify(SolutionBookMap, stringifyReplacer, 2);
     await fs.promises.writeFile(charMapRoot, jsonString);
 }
 

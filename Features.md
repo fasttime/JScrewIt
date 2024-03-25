@@ -6,7 +6,7 @@ This table lists features available in the most common engines.
 <th>Features</th>
 </tr>
 <tr>
-<td>Chrome 92+, Edge 92+, Opera 78+</td>
+<td>Chrome 122+, Edge 122+, Opera 108+</td>
 <td>
 <ul>
 <li><a href="api-doc/interfaces/FeatureAll.md#ANY_DOCUMENT"><code>ANY_DOCUMENT</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>)
@@ -84,6 +84,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#FF_SRC"><code>FF_SRC</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_V8_SRC"><code>NO_V8_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#FF_SRC"><code>FF_SRC</code></a>)
+<li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_ARRAY_ENTRIES_CTOR"><code>OBJECT_ARRAY_ENTRIES_CTOR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED"><code>OBJECT_UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> and <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
@@ -151,7 +152,8 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#FILL"><code>FILL</code></a> (Safari 7.1+)
 <li><a href="api-doc/interfaces/FeatureAll.md#FLAT"><code>FLAT</code></a> (Safari 12+)
 <li><a href="api-doc/interfaces/FeatureAll.md#FROM_CODE_POINT"><code>FROM_CODE_POINT</code></a> (Safari 9+)
-<li><a href="api-doc/interfaces/FeatureAll.md#FUNCTION_22_LF"><code>FUNCTION_22_LF</code></a> (Safari 9+)
+<li><a href="api-doc/interfaces/FeatureAll.md#FUNCTION_19_LF"><code>FUNCTION_19_LF</code></a> (Safari 17.4+)
+<li><a href="api-doc/interfaces/FeatureAll.md#FUNCTION_22_LF"><code>FUNCTION_22_LF</code></a> (Safari 9+, not in Safari 17.4+)
 <li><a href="api-doc/interfaces/FeatureAll.md#GENERIC_ARRAY_TO_STRING"><code>GENERIC_ARRAY_TO_STRING</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#GMT"><code>GMT</code></a>
@@ -168,6 +170,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#FF_SRC"><code>FF_SRC</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Safari 9+)
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_V8_SRC"><code>NO_V8_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#FF_SRC"><code>FF_SRC</code></a>)
+<li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_ARRAY_ENTRIES_CTOR"><code>OBJECT_ARRAY_ENTRIES_CTOR</code></a> (Safari 9+)
 <li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_L_LOCATION_CTOR"><code>OBJECT_L_LOCATION_CTOR</code></a> (not in Safari 10+)
 <li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED"><code>OBJECT_UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_W_CTOR"><code>OBJECT_W_CTOR</code></a> (not in Safari 10+)
@@ -250,6 +253,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_FF_SRC"><code>NO_FF_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#V8_SRC"><code>V8_SRC</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#V8_SRC"><code>V8_SRC</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Node.js 0.12+)
+<li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_ARRAY_ENTRIES_CTOR"><code>OBJECT_ARRAY_ENTRIES_CTOR</code></a> (Node.js 0.12+)
 <li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED"><code>OBJECT_UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#PLAIN_INTL"><code>PLAIN_INTL</code></a> (Node.js 0.12+, not in Node.js 15+)
 <li><a href="api-doc/interfaces/FeatureAll.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a> (Node.js 12+)

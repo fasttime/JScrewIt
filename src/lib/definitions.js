@@ -388,6 +388,7 @@ function getFHPaddingEntries(index)
     var NO_IE_SRC                       = Feature.NO_IE_SRC;
     var NO_OLD_SAFARI_ARRAY_ITERATOR    = Feature.NO_OLD_SAFARI_ARRAY_ITERATOR;
     var NO_V8_SRC                       = Feature.NO_V8_SRC;
+    var OBJECT_ARRAY_ENTRIES_CTOR       = Feature.OBJECT_ARRAY_ENTRIES_CTOR;
     var OBJECT_L_LOCATION_CTOR          = Feature.OBJECT_L_LOCATION_CTOR;
     var OBJECT_UNDEFINED                = Feature.OBJECT_UNDEFINED;
     var OBJECT_W_CTOR                   = Feature.OBJECT_W_CTOR;
@@ -1349,7 +1350,7 @@ function getFHPaddingEntries(index)
         [
             define('PLAIN_OBJECT.constructor'),
             define('Intl.constructor', INTL),
-            define('[].entries().constructor', NO_OLD_SAFARI_ARRAY_ITERATOR),
+            define('[].entries().constructor', OBJECT_ARRAY_ENTRIES_CTOR),
         ],
         RegExp:
         [

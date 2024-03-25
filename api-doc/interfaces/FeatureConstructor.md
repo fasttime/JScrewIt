@@ -73,7 +73,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [BROWSER](FeatureConstructor.md#browser)
 - [CAPITAL\_HTML](FeatureConstructor.md#capital_html)
 - [CHROME](FeatureConstructor.md#chrome)
-- [CHROME\_92](FeatureConstructor.md#chrome_92)
+- [CHROME\_122](FeatureConstructor.md#chrome_122)
 - [CHROME\_PREV](FeatureConstructor.md#chrome_prev)
 - [COMPACT](FeatureConstructor.md#compact)
 - [CONSOLE](FeatureConstructor.md#console)
@@ -130,6 +130,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [NO\_IE\_SRC](FeatureConstructor.md#no_ie_src)
 - [NO\_OLD\_SAFARI\_ARRAY\_ITERATOR](FeatureConstructor.md#no_old_safari_array_iterator)
 - [NO\_V8\_SRC](FeatureConstructor.md#no_v8_src)
+- [OBJECT\_ARRAY\_ENTRIES\_CTOR](FeatureConstructor.md#object_array_entries_ctor)
 - [OBJECT\_L\_LOCATION\_CTOR](FeatureConstructor.md#object_l_location_ctor)
 - [OBJECT\_UNDEFINED](FeatureConstructor.md#object_undefined)
 - [OBJECT\_W\_CTOR](FeatureConstructor.md#object_w_ctor)
@@ -143,6 +144,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [SAFARI\_14\_0\_1](FeatureConstructor.md#safari_14_0_1)
 - [SAFARI\_14\_1](FeatureConstructor.md#safari_14_1)
 - [SAFARI\_15\_4](FeatureConstructor.md#safari_15_4)
+- [SAFARI\_17\_4](FeatureConstructor.md#safari_17_4)
 - [SAFARI\_7\_0](FeatureConstructor.md#safari_7_0)
 - [SAFARI\_7\_1](FeatureConstructor.md#safari_7_1)
 - [SAFARI\_9](FeatureConstructor.md#safari_9)
@@ -429,7 +431,7 @@ ___
 
 Features available in the current stable versions of Chrome, Edge and Opera.
 
-An alias for `CHROME_92`.
+An alias for `CHROME_122`.
 
 #### Inherited from
 
@@ -437,15 +439,15 @@ An alias for `CHROME_92`.
 
 ___
 
-### CHROME\_92
+### CHROME\_122
 
-• **CHROME\_92**: [`PredefinedFeature`](PredefinedFeature.md)
+• **CHROME\_122**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Chrome 92, Edge 92 and Opera 78 or later.
+Features available in Chrome 122, Edge 122 and Opera 108 or later.
 
 **`Remarks`**
 
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME` or `CHROME_PREV` instead of `CHROME_92` for long term support.
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `CHROME` or `CHROME_PREV` instead of `CHROME_122` for long term support.
 
 **`See`**
 
@@ -453,7 +455,7 @@ This feature may be replaced or removed in the near future when current browser 
 
 #### Inherited from
 
-[FeatureAll](FeatureAll.md).[CHROME_92](FeatureAll.md#chrome_92)
+[FeatureAll](FeatureAll.md).[CHROME_122](FeatureAll.md#chrome_122)
 
 ___
 
@@ -463,7 +465,7 @@ ___
 
 Features available in the previous to current versions of Chrome and Edge.
 
-An alias for `CHROME_92`.
+An alias for `CHROME_122`.
 
 #### Inherited from
 
@@ -771,7 +773,7 @@ A string representation of dynamically generated functions where the character a
 
 **`Remarks`**
 
-Available in Chrome, Edge, Firefox, Opera, and Node.js 10+.
+Available in Chrome, Edge, Firefox, Safari 17.4+, Opera, and Node.js 10+.
 
 #### Inherited from
 
@@ -787,7 +789,7 @@ A string representation of dynamically generated functions where the character a
 
 **`Remarks`**
 
-Available in Internet Explorer, Safari 9+, Android Browser, and Node.js before 10.
+Available in Internet Explorer, Safari 9+ before 17.4, Android Browser, and Node.js before 10.
 
 #### Inherited from
 
@@ -1259,7 +1261,7 @@ ___
 
 • **NO\_OLD\_SAFARI\_ARRAY\_ITERATOR**: [`ElementaryFeature`](ElementaryFeature.md)
 
-The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]" and that Array.prototype.entries\(\).constructor is the global function Object.
+The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
 
 **`Remarks`**
 
@@ -1289,11 +1291,27 @@ Available in Firefox, Internet Explorer, and Safari.
 
 ___
 
+### OBJECT\_ARRAY\_ENTRIES\_CTOR
+
+• **OBJECT\_ARRAY\_ENTRIES\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
+
+The property that the Array.prototype.entries\(\).constructor is the Object constructor.
+
+**`Remarks`**
+
+Available in Firefox, Safari 9+, and Node.js 0.12+.
+
+#### Inherited from
+
+[FeatureAll](FeatureAll.md).[OBJECT_ARRAY_ENTRIES_CTOR](FeatureAll.md#object_array_entries_ctor)
+
+___
+
 ### OBJECT\_L\_LOCATION\_CTOR
 
 • **OBJECT\_L\_LOCATION\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
 
-Existence of the global function location.constructor whose string representation starts with "\[object L"
+Existence of the global function location.constructor whose string representation starts with "\[object L".
 
 **`Remarks`**
 
@@ -1325,7 +1343,7 @@ ___
 
 • **OBJECT\_W\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
 
-The property that the string representation of the global object constructor starts with "\[object W"
+The property that the string representation of the global object constructor starts with "\[object W".
 
 **`Remarks`**
 
@@ -1341,7 +1359,7 @@ ___
 
 • **OLD\_SAFARI\_LOCATION\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
 
-Existence of the global object location.constructor whose string representation starts with "\[object " and ends with "LocationConstructor\]"
+Existence of the global object location.constructor whose string representation starts with "\[object " and ends with "LocationConstructor\]".
 
 **`Remarks`**
 
@@ -1357,7 +1375,7 @@ ___
 
 • **PLAIN\_INTL**: [`ElementaryFeature`](ElementaryFeature.md)
 
-Existence of the global object Intl having the string representation "\[object Object\]"
+Existence of the global object Intl having the string representation "\[object Object\]".
 
 **`Remarks`**
 
@@ -1391,7 +1409,7 @@ ___
 
 Features available in the current stable version of Safari.
 
-An alias for `SAFARI_15_4`.
+An alias for `SAFARI_17_4`.
 
 #### Inherited from
 
@@ -1463,11 +1481,23 @@ ___
 
 • **SAFARI\_15\_4**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Safari 15.4 or later.
+Features available in Safari 15.4 to 17.3.
 
 #### Inherited from
 
 [FeatureAll](FeatureAll.md).[SAFARI_15_4](FeatureAll.md#safari_15_4)
+
+___
+
+### SAFARI\_17\_4
+
+• **SAFARI\_17\_4**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Safari 17.4 or later.
+
+#### Inherited from
+
+[FeatureAll](FeatureAll.md).[SAFARI_17_4](FeatureAll.md#safari_17_4)
 
 ___
 

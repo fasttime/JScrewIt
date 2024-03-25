@@ -335,7 +335,7 @@
         {
             if (String.prototype.matchAll && ''.matchAll() + '' === str)
                 return;
-            registerObjectFactory(this, 'String.prototype.matchAll', str, Object);
+            registerObjectFactory(this, 'String.prototype.matchAll', str, Object.prototype);
         };
         return setUp;
     }
@@ -505,9 +505,9 @@
         intercept(context, NUMBER_TO_LOCALE_STRING_INTERCEPTOR, adapter);
     }
 
-    function registerObjectFactory(context, path, str, constructor)
+    function registerObjectFactory(context, path, str, prototype)
     {
-        var obj = Object.create(constructor.prototype);
+        var obj = Object.create(prototype);
         var factory = createStaticSupplier(obj);
         override(context, path, { value: factory });
         registerDefaultToStringAdapter(context, obj, str);
@@ -599,13 +599,16 @@
         ARRAY_ITERATOR:
         function ()
         {
-            if (Array.prototype.entries && /^\[object Array[\S\s]{8,9}]$/.test([].entries()))
-                return;
-            var constructor =
-            function ()
-            { };
+            if (Array.prototype.entries)
+            {
+                var arrayIterator = [].entries();
+                if (/^\[object Array[\S\s]{8,9}]$/.test(arrayIterator))
+                    return;
+            }
+            var prototype =
+            arrayIterator ? Object.getPrototypeOf(arrayIterator) : function () { }.prototype;
             registerObjectFactory
-            (this, 'Array.prototype.entries', '[object ArrayIterator]', constructor);
+            (this, 'Array.prototype.entries', '[object ArrayIterator]', prototype);
         },
         ARROW:
         function ()
@@ -1034,19 +1037,29 @@
             if (Array.prototype.entries)
             {
                 var arrayIterator = [].entries();
-                if
-                (
-                    /^\[object Array Iterator]$/.test(arrayIterator) &&
-                    arrayIterator.constructor === Object
-                )
+                if (/^\[object Array Iterator]$/.test(arrayIterator))
                     return;
             }
+            var prototype =
+            arrayIterator ? Object.getPrototypeOf(arrayIterator) : function () { }.prototype;
             registerObjectFactory
-            (this, 'Array.prototype.entries', '[object Array Iterator]', Object);
+            (this, 'Array.prototype.entries', '[object Array Iterator]', prototype);
         },
         NO_V8_SRC:
         makeEmuFeatureNativeFunctionSource
         (NATIVE_FUNCTION_SOURCE_INFO_FF, NATIVE_FUNCTION_SOURCE_INFO_IE),
+        OBJECT_ARRAY_ENTRIES_CTOR:
+        function ()
+        {
+            if (Array.prototype.entries)
+            {
+                var arrayIterator = [].entries();
+                if (arrayIterator.constructor === Object)
+                    return;
+            }
+            var str = arrayIterator ? arrayIterator + '' : '[object Object]';
+            registerObjectFactory(this, 'Array.prototype.entries', str, Object.prototype);
+        },
         OBJECT_L_LOCATION_CTOR:
         function ()
         {

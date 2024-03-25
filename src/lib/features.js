@@ -617,17 +617,13 @@ var featureInfos =
     {
         description:
         'The property that the string representation of Array.prototype.entries() evaluates to ' +
-        '"[object Array Iterator]" and that Array.prototype.entries().constructor is the global ' +
-        'function Object.',
+        '"[object Array Iterator]".',
         check:
         function ()
         {
             if (Array.prototype.entries)
             {
-                var arrayIterator = [].entries();
-                var available =
-                arrayIterator + '' === '[object Array Iterator]' &&
-                arrayIterator.constructor === Object;
+                var available = [].entries() + '' === '[object Array Iterator]';
                 return available;
             }
         },
@@ -648,11 +644,22 @@ var featureInfos =
         },
         excludes: ['V8_SRC'],
     },
+    OBJECT_ARRAY_ENTRIES_CTOR:
+    {
+        description:
+        'The property that the Array.prototype.entries().constructor is the Object constructor.',
+        check:
+        function ()
+        {
+            var available = Array.prototype.entries && [].entries().constructor === Object;
+            return available;
+        },
+    },
     OBJECT_L_LOCATION_CTOR:
     {
         description:
         'Existence of the global function location.constructor whose string representation ' +
-        'starts with "[object L"',
+        'starts with "[object L".',
         check:
         function ()
         {
@@ -680,7 +687,7 @@ var featureInfos =
     {
         description:
         'The property that the string representation of the global object constructor starts ' +
-        'with "[object W"',
+        'with "[object W".',
         check:
         function ()
         {
@@ -693,7 +700,7 @@ var featureInfos =
     {
         description:
         'Existence of the global object location.constructor whose string representation starts ' +
-        'with "[object " and ends with "LocationConstructor]"',
+        'with "[object " and ends with "LocationConstructor]".',
         check:
         function ()
         {
@@ -706,7 +713,7 @@ var featureInfos =
     PLAIN_INTL:
     {
         description:
-        'Existence of the global object Intl having the string representation "[object Object]"',
+        'Existence of the global object Intl having the string representation "[object Object]".',
         check:
         function ()
         {
@@ -850,6 +857,7 @@ var featureInfos =
             'FILL',
             'FLAT',
             'FROM_CODE_POINT',
+            'FUNCTION_19_LF',
             'GENERIC_ARRAY_TO_STRING',
             'GLOBAL_UNDEFINED',
             'GMT',
@@ -916,17 +924,17 @@ var featureInfos =
     CHROME_PREV:
     {
         description:    describeEngine('the previous to current versions of Chrome and Edge'),
-        aliasFor:       'CHROME_92',
+        aliasFor:       'CHROME_122',
     },
     CHROME:
     {
         description:    describeEngine('the current stable versions of Chrome, Edge and Opera'),
-        aliasFor:       'CHROME_92',
+        aliasFor:       'CHROME_122',
     },
-    CHROME_92:
+    CHROME_122:
     {
         families: ['Chrome', 'Edge', 'Opera'],
-        versions: [['92'], ['92'], ['78']],
+        versions: [['122'], ['122'], ['108']],
         includes:
         [
             'ARROW',
@@ -1005,6 +1013,7 @@ var featureInfos =
             'LOCATION',
             'NAME',
             'NO_OLD_SAFARI_ARRAY_ITERATOR',
+            'OBJECT_ARRAY_ENTRIES_CTOR',
             'REGEXP_STRING_ITERATOR',
             'SHORT_LOCALES',
             'STATUS',
@@ -1091,6 +1100,7 @@ var featureInfos =
             ESC_HTML_QUOT_ONLY:             true,
             LOCALE_INFINITY:                true,
             NO_OLD_SAFARI_ARRAY_ITERATOR:   true,
+            OBJECT_ARRAY_ENTRIES_CTOR:      true,
             PLAIN_INTL:                     true,
         },
     },
@@ -1201,6 +1211,7 @@ var featureInfos =
             FROM_CODE_POINT:                true,
             FUNCTION_22_LF:                 true,
             NO_OLD_SAFARI_ARRAY_ITERATOR:   true,
+            OBJECT_ARRAY_ENTRIES_CTOR:      true,
         },
     },
     SAFARI_10:
@@ -1245,16 +1256,22 @@ var featureInfos =
         versions: [['14.1',, '15.3']],
         includes: { CONSOLE: false },
     },
-    SAFARI:
-    {
-        description:    describeEngine('the current stable version of Safari'),
-        aliasFor:       'SAFARI_15_4',
-    },
     SAFARI_15_4:
     {
         inherits: 'SAFARI_14_1',
-        versions: [['15.4']],
+        versions: [['15.4',, '17.3']],
         includes: { AT: true },
+    },
+    SAFARI:
+    {
+        description:    describeEngine('the current stable version of Safari'),
+        aliasFor:       'SAFARI_17_4',
+    },
+    SAFARI_17_4:
+    {
+        inherits: 'SAFARI_15_4',
+        versions: [['17.4']],
+        includes: { FUNCTION_19_LF: true, FUNCTION_22_LF: false },
     },
 };
 (function ()
