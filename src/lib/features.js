@@ -843,8 +843,8 @@ var featureInfos =
     {
         description:
         'All new browsers\' features.\n' +
-        'No support for Node.js and older browsers like Internet Explorer, Safari 9 or Android ' +
-        'Browser.',
+        'No support for Node.js and older browsers like Internet Explorer, Safari 17.3 or ' +
+        'Android Browser.',
         includes:
         [
             'ARROW',
