@@ -17,7 +17,11 @@ from '../../src/mask';
 import assert       from 'assert';
 import type util    from 'util';
 
-const getNodeUtil = (): typeof util => require('util') as typeof util; // eslint-disable-line
+/* eslint-disable @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
+
+const getNodeUtil = (): typeof util => require('util') as typeof util;
+
+/* eslint-enable @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
 
 const noop =
 (): void =>

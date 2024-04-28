@@ -1,9 +1,10 @@
+import type util    from 'node:util';
+
 import
 { type Mask, maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
 from './mask';
 
 import { MaskSet }  from './mask-index';
-import type util    from 'util';
 
 export type AttributeMap = { readonly [AttributeName in string]: string | null; };
 
@@ -366,7 +367,13 @@ FeatureConstructor
     let utilInspect: typeof util.inspect | undefined;
     try
     {
-        utilInspect = (require('util') as typeof util).inspect; // eslint-disable-line
+        /* eslint-disable
+        @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
+
+        utilInspect = (require('util') as typeof util).inspect;
+
+        /* eslint-enable
+        @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
     }
     catch
     { }

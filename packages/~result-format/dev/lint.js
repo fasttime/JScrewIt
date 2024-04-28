@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
+import { fileURLToPath }    from 'node:url';
 import { lint }             from './impl.js';
-import { fileURLToPath }    from 'url';
 
 const pkgPath = fileURLToPath(new URL('..', import.meta.url));
 process.chdir(pkgPath);

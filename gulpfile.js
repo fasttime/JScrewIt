@@ -1,6 +1,7 @@
 'use strict';
 
 const { dest, parallel, series, src, task } = require('gulp');
+const syncReadable                          = require('sync-readable');
 
 async function bundle(inputOptions, outputFile, banner)
 {
@@ -33,7 +34,7 @@ async function bundleUI()
 
 async function createFileFromTemplate(createContextModuleId, templateSrcPath, outputPath)
 {
-    const { writeFile } = require('fs/promises');
+    const { writeFile } = require('node:fs/promises');
     const Handlebars    = require('handlebars');
 
     const promises = [import(createContextModuleId), readFileAsString(templateSrcPath)];
@@ -76,7 +77,7 @@ function makeWorker()
 
 function readFileAsString(inputPath)
 {
-    const { readFile } = require('fs/promises');
+    const { readFile } = require('node:fs/promises');
 
     const promise = readFile(inputPath, 'utf8');
     return promise;
@@ -108,61 +109,112 @@ task
 task
 (
     'lint',
-    async () =>
-    {
-        const { lint } = require('@fasttime/lint');
+    syncReadable
+    (
+        async () =>
+        {
+            const gherkinParser                     = require('./dev/internal/gherkin-parser');
+            const { createConfig, noParserConfig }  = require('@origin-1/eslint-config');
+            const eslintPluginEBDD                  = require('eslint-plugin-ebdd');
+            const { EslintEnvProcessor }            = require('eslint-plugin-eslint-env');
+            const globals                           = require('globals');
+            const gulpESLintNew                     = require('gulp-eslint-new');
 
-        await
-        lint
-        (
-            {
-                src:            ['src/**/*.js', '!src/ui/worker.js'],
-                parserOptions:  { ecmaVersion: 2015, sourceType: 'module' },
-                rules:
+            const ebddPlugins = { ebdd: eslintPluginEBDD };
+
+            const overrideConfig =
+            await createConfig
+            (
+                noParserConfig,
                 {
-                    'lines-around-comment':
-                    [
-                        'error',
-                        {
-                            allowBlockStart:    true,
-                            allowObjectStart:   true,
-                            ignorePattern:      '^\\s*c8 ignore next\\b',
-                        },
-                    ],
+                    files:              ['src/**/*.js'],
+                    ignores:            ['src/ui/worker.js'],
+                    jsVersion:          5,
+                    languageOptions:    { ecmaVersion: 2015 },
+                    processor:          new EslintEnvProcessor(),
+                    rules:
+                    {
+                        'lines-around-comment':
+                        [
+                            'error',
+                            {
+                                allowBlockStart:    true,
+                                allowObjectStart:   true,
+                                ignorePattern:      '^\\s*c8 ignore next\\b',
+                            },
+                        ],
+                    },
                 },
-            },
-            {
-                src:
-                ['dev/**/*.js', 'gulpfile.js', 'test/patch-cov-source.js', '!dev/legacy/**'],
-                jsVersion:  2022,
-                envs:       'node',
-            },
-            {
-                src:            ['dev/**/*.mjs'],
-                jsVersion:      2022,
-                envs:           'node',
-                parserOptions:  { sourceType: 'module' },
-            },
-            {
-                src: ['dev/legacy/**/*.js', 'screw.js', 'src/ui/worker.js', 'tools/**/*.js'],
-                rules:
                 {
-                    // process.exitCode is not supported in Node.js 0.10.
-                    'no-process-exit': 'off',
+                    files:              ['dev/**/*.js', 'gulpfile.js', 'test/patch-cov-source.js'],
+                    ignores:            ['dev/legacy'],
+                    jsVersion:          2022,
+                    languageOptions:    { globals: globals.node, sourceType: 'commonjs' },
                 },
-            },
-            {
-                src:        ['test/**/*.js', '!test/patch-cov-source.js'],
-                plugins:    ['ebdd'],
-                rules:      { '@origin-1/no-extra-new': 'off' },
-            },
-            {
-                src:            ['lib/**/*.ts', '!lib/feature-all.d.ts'],
-                parserOptions:  { project: 'tsconfig.json' },
-            },
-            { src: 'test/acceptance/**/*.feature' },
-        );
-    },
+                {
+                    files:              ['dev/**/*.mjs'],
+                    jsVersion:          2022,
+                    languageOptions:    { globals: globals.node },
+                },
+                {
+                    files:
+                    ['dev/legacy/**/*.js', 'screw.js', 'src/ui/worker.js', 'tools/**/*.js'],
+                    jsVersion:          5,
+                    languageOptions:    { sourceType: 'commonjs' },
+                    processor:          new EslintEnvProcessor(),
+                    rules:
+                    {
+                        // process.exitCode is not supported in Node.js 0.10.
+                        'no-process-exit': 'off',
+                    },
+                },
+                {
+                    files:              ['test/**/*.js'],
+                    jsVersion:          5,
+                    ignores:            ['test/patch-cov-source.js'],
+                    languageOptions:    { sourceType: 'script' },
+                    plugins:            ebddPlugins,
+                    processor:          new EslintEnvProcessor({ plugins: ebddPlugins }),
+                    rules:              { '@origin-1/no-extra-new': 'off' },
+                },
+                {
+                    files:              ['lib/**/*.ts'],
+                    ignores:            ['lib/feature-all.d.ts'],
+                    tsVersion:          'latest',
+                    languageOptions:    { parserOptions: { project: 'tsconfig.json' } },
+                },
+                {
+                    files:              ['test/acceptance/**/*.feature'],
+                    languageOptions:    { parser: gherkinParser },
+                },
+            );
+            const stream =
+            src
+            (
+                [
+                    '*.js',
+                    '{dev,src,test}/**/*.{feature,js,mjs,ts}',
+                    'lib/**/*.ts',
+                    '!lib/feature-all.d.ts',
+                ],
+            )
+            .pipe
+            (
+                gulpESLintNew
+                (
+                    {
+                        configType:         'flat',
+                        overrideConfig,
+                        overrideConfigFile: true,
+                        warnIgnored:        true,
+                    },
+                ),
+            )
+            .pipe(gulpESLintNew.format('compact'))
+            .pipe(gulpESLintNew.failAfterError());
+            return stream;
+        },
+    ),
 );
 
 task
@@ -305,8 +357,8 @@ task
     'make-spec-runner',
     async () =>
     {
+        const { writeFile } = require('node:fs/promises');
         const { glob }      = require('glob');
-        const { writeFile } = require('fs/promises');
         const Handlebars    = require('handlebars');
 
         async function getSpecs()
@@ -334,10 +386,10 @@ task
     'make-workflows',
     async () =>
     {
-        const { writeFile } = require('fs/promises');
+        const { writeFile } = require('node:fs/promises');
+        const { join }      = require('node:path');
         const { glob }      = require('glob');
         const Handlebars    = require('handlebars');
-        const { join }      = require('path');
 
         async function getTemplate()
         {
@@ -365,7 +417,8 @@ task
     'default',
     series
     (
-        parallel('clean', 'lint'),
+        'clean',
+        'lint',
         parallel('bundle:lib', 'bundle:ui'),
         'test',
         parallel

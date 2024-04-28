@@ -1,4 +1,4 @@
-/* global FinalizationRegistry, Map, WeakRef */
+/* global FinalizationRegistry, WeakRef */
 
 import expressParse from './express-parse';
 

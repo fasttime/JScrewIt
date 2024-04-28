@@ -1,7 +1,7 @@
-import { rm }                                   from 'fs/promises';
-import { createRequire }                        from 'module';
-import { isAbsolute, join, relative, resolve }  from 'path';
-import { fileURLToPath }                        from 'url';
+import { rm }                                   from 'node:fs/promises';
+import { createRequire }                        from 'node:module';
+import { isAbsolute, join, relative, resolve }  from 'node:path';
+import { fileURLToPath }                        from 'node:url';
 
 async function bundle(inputOptions, outputOptions)
 {
@@ -104,10 +104,7 @@ async function compileTS(pkgPath, source, newOptions, writeFile)
 
 export async function doMakeBrowserSpecRunner(pkgURL)
 {
-    const [{ default: rollupPluginNodeBuiltins }, { default: rollupPluginNodeGlobals }] =
-    await
-    Promise.all([import('rollup-plugin-node-builtins'), import('rollup-plugin-node-globals')]);
-
+    const { default: rollupPluginPolyfillNode } = await import('rollup-plugin-polyfill-node');
     const pkgPath = fileURLToPath(pkgURL);
     {
         const outDir = join(pkgPath, '.tmp-out');
@@ -123,7 +120,7 @@ export async function doMakeBrowserSpecRunner(pkgURL)
             if (warning.code !== 'THIS_IS_UNDEFINED')
                 console.error(warning.message);
         };
-        const plugins = [rollupPluginNodeBuiltins(), rollupPluginNodeGlobals({ buffer: false })];
+        const plugins = [rollupPluginPolyfillNode()];
         const inputOptions = { input: inputPath, onwarn, plugins };
         const outputPath = join(pkgPath, 'test/browser-spec-runner.js');
         const outputOptions = { esModule: false, file: outputPath, format: 'iife' };
@@ -157,9 +154,20 @@ function getWriteFile(sysWriteFile, declarationDir, dTsFilter)
     return writeFile;
 }
 
-export async function lintPackage(...configs)
+export async function lintPackage(...configData)
 {
-    const { lint } = await import('@fasttime/lint');
+    const { createConfig }              = await import('@origin-1/eslint-config');
+    const { default: { FlatESLint } }   = await import('eslint/use-at-your-own-risk');
 
-    await lint(...configs);
+    const overrideConfig = await createConfig(...configData);
+    const eslint    = new FlatESLint({ overrideConfig, overrideConfigFile: true });
+    const results   = await eslint.lintFiles('.');
+    const formatter = await eslint.loadFormatter('compact');
+    const output = await formatter.format(results);
+    if (output)
+    {
+        console.error(output);
+        const error = 'Lint failed.';
+        throw error;
+    }
 }

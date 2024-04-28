@@ -1,5 +1,5 @@
+import { parentPort, workerData }   from 'node:worker_threads';
 import SolutionBookMap              from './solution-book-map.mjs';
-import { parentPort, workerData }   from 'worker_threads';
 
 const { char, SolutionBookMap: serializedSolutionBookMap } = workerData;
 serializedSolutionBookMap.delete(char);

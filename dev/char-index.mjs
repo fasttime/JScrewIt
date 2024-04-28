@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
+import { writeFile }                    from 'node:fs/promises';
+import { cpus }                         from 'node:os';
+import { Worker }                       from 'node:worker_threads';
 import JScrewIt                         from '../lib/jscrewit.js';
 import timeUtils                        from '../tools/time-utils.js';
 import progress                         from './internal/progress.mjs';
 import SolutionBookMap, { NICKNAME }    from './internal/solution-book-map.mjs';
 import chalk                            from 'chalk';
-import { writeFile }                    from 'fs/promises';
-import { cpus }                         from 'os';
-import { Worker }                       from 'worker_threads';
 
 async function doAdd()
 {

@@ -1,3 +1,5 @@
+/* global Intl */
+
 import { Feature }                                  from '../lib/jscrewit.js';
 import { getAvailabilityByFeature, getDescription } from './internal/engine-data.mjs';
 

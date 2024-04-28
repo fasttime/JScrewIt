@@ -1,8 +1,8 @@
-import { fork, spawn }          from 'child_process';
-import { mkdir, rm, writeFile } from 'fs/promises';
-import { createRequire }        from 'module';
-import { EOL }                  from 'os';
-import { join }                 from 'path';
+import { fork, spawn }          from 'node:child_process';
+import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { createRequire }        from 'node:module';
+import { EOL }                  from 'node:os';
+import { join }                 from 'node:path';
 
 const NODE_LEGACY_DIR = 'test/node-legacy';
 

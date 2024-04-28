@@ -1,9 +1,7 @@
+import { fork }                 from 'node:child_process';
+import { createRequire }        from 'node:module';
 import { clean, lint, make }    from './dev/impl.js';
-import { fork }                 from 'child_process';
-import gulp                     from 'gulp';
-import { createRequire }        from 'module';
-
-const { parallel, series } = gulp;
+import { series }               from 'gulp';
 
 export function test(callback)
 {
@@ -27,4 +25,4 @@ export function test(callback)
 
 export { clean, lint, make };
 
-export default series(parallel(clean, lint), test, make);
+export default series(clean, lint, test, make);

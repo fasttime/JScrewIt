@@ -2,10 +2,10 @@ const NICKNAME              = 'jscrewit';
 const TYPE_KEY              = '__type';
 const TYPE_VALUE_SOLUTION   = 'Solution';
 
+import fs           from 'node:fs';
 import Analyzer     from './optimized-analyzer.mjs';
 import SortedMap    from './sorted-map.js';
 import chalk        from 'chalk';
-import fs           from 'fs';
 
 const mainURL               = new URL('../../lib/jscrewit.js', import.meta.url);
 const charMapRoot           = new URL(`../../.${NICKNAME}.char-map.json`, import.meta.url);

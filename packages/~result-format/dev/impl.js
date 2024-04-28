@@ -19,24 +19,30 @@ const importPackageUtils = () => import('../../../dev/internal/package-utils.mjs
 
 export async function lint()
 {
-    const { lintPackage } = await importPackageUtils();
+    const [{ lintPackage }, { globals: ebddGlobals }, { default: globals }] =
+    await Promise.all([importPackageUtils(), import('eslint-plugin-ebdd'), import('globals')]);
     await
     lintPackage
     (
         {
-            src:            ['src/**/*.ts', 'test/*.ts'],
-            parserOptions:  { project: 'tsconfig.json', sourceType: 'module' },
+            files:              ['src/**/*.ts', 'test/*.ts'],
+            tsVersion:          'latest',
+            languageOptions:    { parserOptions: { project: 'tsconfig.json' } },
         },
         {
-            src:            'test/spec/**/*.ts',
-            envs:           ['ebdd/ebdd', 'mocha'],
-            parserOptions:  { project: 'tsconfig.json', sourceType: 'module' },
-            plugins:        ['ebdd'],
+            files:              ['test/spec/**/*.ts'],
+            tsVersion:          'latest',
+            languageOptions:
+            {
+                globals:        { ...ebddGlobals, ...globals.node },
+                parserOptions:  { project: 'tsconfig.json' },
+            },
+            rules:              { 'n/prefer-node-protocol': 'off' },
         },
         {
-            src:            ['*.js', 'dev/**/*.js'],
-            envs:           'node',
-            parserOptions:  { ecmaVersion: 2022, sourceType: 'module' },
+            files:              ['*.js', 'dev/**/*.js'],
+            jsVersion:          2022,
+            languageOptions:    { globals: globals.node },
         },
     );
 }

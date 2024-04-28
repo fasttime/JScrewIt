@@ -1,6 +1,6 @@
+import { basename }                 from 'node:path';
 import { formatDuration, timeThis } from '../../tools/time-utils.js';
 import inquirer                     from 'inquirer';
-import { basename }                 from 'path';
 
 function compareChoices(choice1, choice2)
 {

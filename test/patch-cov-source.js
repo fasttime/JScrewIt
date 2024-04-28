@@ -2,7 +2,7 @@
 
 'use strict';
 
-const { createRequire } = require('module');
+const { createRequire } = require('node:module');
 
 const SUPPRESSED_ERROR_LINE =
 '    typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, ' +
