@@ -253,7 +253,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_FF_SRC"><code>NO_FF_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#V8_SRC"><code>V8_SRC</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#V8_SRC"><code>V8_SRC</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Node.js 0.12+)
-<li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_ARRAY_ENTRIES_CTOR"><code>OBJECT_ARRAY_ENTRIES_CTOR</code></a> (Node.js 0.12+)
+<li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_ARRAY_ENTRIES_CTOR"><code>OBJECT_ARRAY_ENTRIES_CTOR</code></a> (Node.js 0.12+, not in Node.js 22+)
 <li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED"><code>OBJECT_UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#PLAIN_INTL"><code>PLAIN_INTL</code></a> (Node.js 0.12+, not in Node.js 15+)
 <li><a href="api-doc/interfaces/FeatureAll.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a> (Node.js 12+)

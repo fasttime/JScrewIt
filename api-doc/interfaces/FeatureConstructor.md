@@ -124,6 +124,7 @@ An error is thrown if any of the specified features are not mutually compatible.
 - [NODE\_15](FeatureConstructor.md#node_15)
 - [NODE\_16\_0](FeatureConstructor.md#node_16_0)
 - [NODE\_16\_6](FeatureConstructor.md#node_16_6)
+- [NODE\_22](FeatureConstructor.md#node_22)
 - [NODE\_4](FeatureConstructor.md#node_4)
 - [NODE\_5](FeatureConstructor.md#node_5)
 - [NO\_FF\_SRC](FeatureConstructor.md#no_ff_src)
@@ -1191,11 +1192,23 @@ ___
 
 • **NODE\_16\_6**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Node.js 16.6 or later.
+Features available in Node.js 16.6 to 21.
 
 #### Inherited from
 
 [FeatureAll](FeatureAll.md).[NODE_16_6](FeatureAll.md#node_16_6)
+
+___
+
+### NODE\_22
+
+• **NODE\_22**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Node.js 22 or later.
+
+#### Inherited from
+
+[FeatureAll](FeatureAll.md).[NODE_22](FeatureAll.md#node_22)
 
 ___
 
@@ -1299,7 +1312,7 @@ The property that the Array.prototype.entries\(\).constructor is the Object cons
 
 **`Remarks`**
 
-Available in Firefox, Safari 9+, and Node.js 0.12+.
+Available in Firefox, Safari 9+, and Node.js 0.12+ before 22.
 
 #### Inherited from
 

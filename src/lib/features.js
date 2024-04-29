@@ -1155,8 +1155,14 @@ var featureInfos =
     NODE_16_6:
     {
         inherits: 'NODE_16_0',
-        versions: [['16.6']],
+        versions: [['16.6',, '21']],
         includes: { AT: true },
+    },
+    NODE_22:
+    {
+        inherits: 'NODE_16_6',
+        versions: [['22']],
+        includes: { OBJECT_ARRAY_ENTRIES_CTOR: false },
     },
     SAFARI_7_0:
     {

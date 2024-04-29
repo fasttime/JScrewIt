@@ -74,6 +74,7 @@
 - [NODE\_15](FeatureAll.md#node_15)
 - [NODE\_16\_0](FeatureAll.md#node_16_0)
 - [NODE\_16\_6](FeatureAll.md#node_16_6)
+- [NODE\_22](FeatureAll.md#node_22)
 - [NODE\_4](FeatureAll.md#node_4)
 - [NODE\_5](FeatureAll.md#node_5)
 - [NO\_FF\_SRC](FeatureAll.md#no_ff_src)
@@ -804,7 +805,15 @@ ___
 
 • **NODE\_16\_6**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Node.js 16.6 or later.
+Features available in Node.js 16.6 to 21.
+
+___
+
+### NODE\_22
+
+• **NODE\_22**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Node.js 22 or later.
 
 ___
 
@@ -884,7 +893,7 @@ The property that the Array.prototype.entries\(\).constructor is the Object cons
 
 **`Remarks`**
 
-Available in Firefox, Safari 9+, and Node.js 0.12+.
+Available in Firefox, Safari 9+, and Node.js 0.12+ before 22.
 
 ___
 
