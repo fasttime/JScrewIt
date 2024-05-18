@@ -1,3 +1,7 @@
+[**JScrewIt**](../README.md) • **Docs**
+
+***
+
 # Interface: CustomFeature
 
 Objects of this type indicate which of the capabilities that JScrewIt can use to minimize the
@@ -23,68 +27,52 @@ elementary features available in the current environment.
 Not all features can be available at the same time: some features are necessarily incompatible,
 meaning that they mutually exclude each other, and thus their union cannot be constructed.
 
-## Hierarchy
+## Extends
 
 - [`Feature`](Feature.md)
-
-  ↳ **`CustomFeature`**
-
-## Table of contents
-
-### Properties
-
-- [canonicalNames](CustomFeature.md#canonicalnames)
-- [elementary](CustomFeature.md#elementary)
-- [elementaryNames](CustomFeature.md#elementarynames)
-- [name](CustomFeature.md#name)
-
-### Methods
-
-- [includes](CustomFeature.md#includes)
-- [restrict](CustomFeature.md#restrict)
 
 ## Properties
 
 ### canonicalNames
 
-• `Readonly` **canonicalNames**: [`ElementaryFeatureName`](../README.md#elementaryfeaturename)[]
+> `readonly` **canonicalNames**: [`ElementaryFeatureName`](../type-aliases/ElementaryFeatureName.md)[]
 
 An array of all elementary feature names included in this feature object, without aliases and
 implied features.
 
 #### Inherited from
 
-[Feature](Feature.md).[canonicalNames](Feature.md#canonicalnames)
+[`Feature`](Feature.md).[`canonicalNames`](Feature.md#canonicalnames)
 
-___
+***
 
 ### elementary
 
-• `Readonly` **elementary**: ``false``
+> `readonly` **elementary**: `false`
 
 A boolean value indicating whether this is an elementary feature object.
 
 #### Overrides
 
-[Feature](Feature.md).[elementary](Feature.md#elementary)
+[`Feature`](Feature.md).[`elementary`](Feature.md#elementary)
 
-___
+***
 
 ### elementaryNames
 
-• `Readonly` **elementaryNames**: [`ElementaryFeatureName`](../README.md#elementaryfeaturename)[]
+> `readonly` **elementaryNames**: [`ElementaryFeatureName`](../type-aliases/ElementaryFeatureName.md)[]
 
 An array of all elementary feature names included in this feature object, without aliases.
 
 #### Inherited from
 
-[Feature](Feature.md).[elementaryNames](Feature.md#elementarynames)
+[`Feature`](Feature.md).[`elementaryNames`](Feature.md#elementarynames)
 
-___
+***
 
-### name
+### name?
 
-• `Optional` **name**: `string`
+> `optional` **name**: `string`
 
 The primary name of this feature object, useful for identification purpose.
 
@@ -93,21 +81,19 @@ If a name is assigned, it will be used when the feature is converted into a stri
 
 #### Inherited from
 
-[Feature](Feature.md).[name](Feature.md#name)
+[`Feature`](Feature.md).[`name`](Feature.md#name)
 
 ## Methods
 
-### includes
+### includes()
 
-▸ **includes**(`...features`): `boolean`
+> **includes**(...`features`): `boolean`
 
 Determines whether this feature object includes all of the specified features.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `...features` | [`FeatureElementOrCompatibleArray`](../README.md#featureelementorcompatiblearray)[] |
+• ...**features**: [`FeatureElementOrCompatibleArray`](../type-aliases/FeatureElementOrCompatibleArray.md)[]
 
 #### Returns
 
@@ -118,13 +104,13 @@ If no arguments are specified, the return value is `true`.
 
 #### Inherited from
 
-[Feature](Feature.md).[includes](Feature.md#includes)
+[`Feature`](Feature.md).[`includes`](Feature.md#includes)
 
-___
+***
 
-### restrict
+### restrict()
 
-▸ **restrict**(`environment`, `engineFeatureObjs?`): [`CustomFeature`](CustomFeature.md)
+> **restrict**(`environment`, `engineFeatureObjs`?): [`CustomFeature`](CustomFeature.md)
 
 Creates a new feature object from this feature by removing elementary features that are not
 available inside a particular environment.
@@ -134,10 +120,28 @@ that require strict mode code, or inside web workers.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `environment` | ``"forced-strict-mode"`` \| ``"web-worker"`` | The environment to which this feature should be restricted. Two environments are currently supported. <dl> <dt><code>"forced-strict-mode"</code></dt> <dd> Removes features that are not available in environments that require strict mode code. </dd> <dt><code>"web-worker"</code></dt> <dd>Removes features that are not available inside web workers.</dd> </dl> |
-| `engineFeatureObjs?` | readonly [`PredefinedFeature`](PredefinedFeature.md)[] | An array of predefined feature objects, each corresponding to a particular engine in which the restriction should be enacted. If this parameter is omitted, the restriction is enacted in all engines. |
+• **environment**: `"forced-strict-mode"` \| `"web-worker"`
+
+The environment to which this feature should be restricted.
+Two environments are currently supported.
+
+<dl>
+
+<dt><code>"forced-strict-mode"</code></dt>
+<dd>
+Removes features that are not available in environments that require strict mode code.
+</dd>
+
+<dt><code>"web-worker"</code></dt>
+<dd>Removes features that are not available inside web workers.</dd>
+
+</dl>
+
+• **engineFeatureObjs?**: readonly [`PredefinedFeature`](PredefinedFeature.md)[]
+
+An array of predefined feature objects, each corresponding to a particular engine in which
+the restriction should be enacted.
+If this parameter is omitted, the restriction is enacted in all engines.
 
 #### Returns
 
@@ -145,4 +149,4 @@ that require strict mode code, or inside web workers.
 
 #### Inherited from
 
-[Feature](Feature.md).[restrict](Feature.md#restrict)
+[`Feature`](Feature.md).[`restrict`](Feature.md#restrict)

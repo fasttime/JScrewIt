@@ -1,27 +1,30 @@
-# Interface: encode
+[**JScrewIt**](../README.md) • **Docs**
 
-## Callable
+***
 
-### encode
+# Interface: encode()
 
-▸ **encode**(`input`, `options?`): `string`
+> **encode**(`input`, `options`?): `string`
 
 Encodes a given string into JSFuck.
 
-#### Parameters
+## Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `input` | `string` | The string to encode. |
-| `options?` | [`EncodeOptions`](EncodeOptions.md) | An optional object specifying encoding options. |
+• **input**: `string`
 
-#### Returns
+The string to encode.
+
+• **options?**: [`EncodeOptions`](EncodeOptions.md)
+
+An optional object specifying encoding options.
+
+## Returns
 
 `string`
 
 The encoded string.
 
-**`Throws`**
+## Throws
 
 An `Error` is thrown under the following circumstances.
  - The specified string cannot be encoded with the specified options.
@@ -31,17 +34,11 @@ An `Error` is thrown under the following circumstances.
 
 Also, an out of memory condition may occur when processing very large data.
 
-## Table of contents
-
-### Properties
-
-- [permanentCaching](encode.md#permanentcaching)
-
 ## Properties
 
 ### permanentCaching
 
-• **permanentCaching**: `boolean`
+> **permanentCaching**: `boolean`
 
 Determines whether all created encoders are cached permanently.
 

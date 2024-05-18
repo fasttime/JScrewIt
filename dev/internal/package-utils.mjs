@@ -161,7 +161,8 @@ export async function lintPackage(...configData)
 
     const overrideConfig = await createConfig(...configData);
     const eslint    = new FlatESLint({ overrideConfig, overrideConfigFile: true });
-    const results   = await eslint.lintFiles('.');
+    const files     = configData.map(({ files }) => files).flat();
+    const results   = await eslint.lintFiles(files);
     const formatter = await eslint.loadFormatter('compact');
     const output = await formatter.format(results);
     if (output)

@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@cucumber/gherkin": "latest",
-    "@origin-1/eslint-config": "eslint-8",
+    "@origin-1/eslint-config": "latest",
     "@rollup/plugin-node-resolve": "latest",
     "acorn": "latest",
     "art-js": "latest",
@@ -53,6 +53,7 @@
     "chalk": "latest",
     "del": "latest",
     "ebdd": "latest",
+    "eslint-formatter-compact": "latest",
     "eslint-plugin-ebdd": "latest",
     "eslint-plugin-eslint-env": "latest",
     "expectations": "latest",

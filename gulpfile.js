@@ -132,18 +132,6 @@ task
                     jsVersion:          5,
                     languageOptions:    { ecmaVersion: 2015 },
                     processor:          new EslintEnvProcessor(),
-                    rules:
-                    {
-                        'lines-around-comment':
-                        [
-                            'error',
-                            {
-                                allowBlockStart:    true,
-                                allowObjectStart:   true,
-                                ignorePattern:      '^\\s*c8 ignore next\\b',
-                            },
-                        ],
-                    },
                 },
                 {
                     files:              ['dev/**/*.js', 'gulpfile.js', 'test/patch-cov-source.js'],

@@ -1,5 +1,3 @@
-/* global Intl */
-
 import { Feature } from '../lib/jscrewit.js';
 
 import { calculateAvailabilityInfo, getAvailabilityByFeature, getDescription }

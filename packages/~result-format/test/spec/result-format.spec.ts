@@ -28,7 +28,7 @@ function createSparseSingletonArray(): unknown[]
 
 function createTypeUnknownObjParamData(): ParamData
 {
-    const obj = Object.create(new Date()) as { };
+    const obj = Object.create(new Date()) as object;
     obj.toString = (): string => 'foo';
     const paramData: ParamData = ['a strange object', obj, 'foo', 'an object'];
     if (typeof Symbol !== 'undefined')

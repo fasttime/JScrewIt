@@ -1,4 +1,4 @@
-/* global Audio, Intl, Node, console, document, history, location, self, statusbar */
+/* global Audio, Node, console, document, history, location, self, statusbar */
 
 import { _Object_defineProperty, _Object_keys, assignNoEnum, createEmpty }  from './obj-utils';
 import { createFeatureClass, featuresToMask }                               from '~feature-hub';

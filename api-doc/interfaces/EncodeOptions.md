@@ -1,19 +1,14 @@
+[**JScrewIt**](../README.md) • **Docs**
+
+***
+
 # Interface: EncodeOptions
-
-## Table of contents
-
-### Properties
-
-- [features](EncodeOptions.md#features)
-- [runAs](EncodeOptions.md#runas)
-- [trimCode](EncodeOptions.md#trimcode)
-- [wrapWith](EncodeOptions.md#wrapwith)
 
 ## Properties
 
-### features
+### features?
 
-• `Optional` **features**: [`FeatureElementOrCompatibleArray`](../README.md#featureelementorcompatiblearray)
+> `optional` **features**: [`FeatureElementOrCompatibleArray`](../type-aliases/FeatureElementOrCompatibleArray.md)
 
 Specifies the features available in the engines that evaluate the encoded output.
 
@@ -21,11 +16,11 @@ If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](FeatureConstructo
 the largest code.
 To generate shorter code, specify all features available in all target engines explicitly.
 
-___
+***
 
-### runAs
+### runAs?
 
-• `Optional` **runAs**: [`RunAs`](../README.md#runas)
+> `optional` **runAs**: [`RunAs`](../type-aliases/RunAs.md)
 
 This option controls the type of code generated from the given input.
 Allowed values are listed below.
@@ -74,11 +69,11 @@ plain string.
 
 </dl>
 
-___
+***
 
-### trimCode
+### trimCode?
 
-• `Optional` **trimCode**: `boolean`
+> `optional` **trimCode**: `boolean`
 
 If this parameter is truthy, lines in the beginning and in the end of the file containing
 nothing but space characters and JavaScript comments are removed from the generated output.
@@ -90,10 +85,10 @@ which are sometimes found in minified scripts.
 Using this option may produce unexpected results if the input is not well-formed JavaScript
 code.
 
-___
+***
 
-### wrapWith
+### wrapWith?
 
-• `Optional` **wrapWith**: [`RunAs`](../README.md#runas)
+> `optional` **wrapWith**: [`RunAs`](../type-aliases/RunAs.md)
 
 An alias for `runAs`.
