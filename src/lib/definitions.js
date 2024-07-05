@@ -828,6 +828,7 @@ function getFHPaddingEntries(index)
             ({ expr: '(RP_3_WA + Function("return history")())[11]', optimize: true }, HISTORY),
             define('(RP_1_WA + Audio)[10]', HTMLAUDIOELEMENT),
             define('(RP_3_WA + document)[11]', HTMLDOCUMENT),
+            define('(NaN+[].entries().filter([].at))[20]', ITERATOR, AT),
         ],
         'I': '"Infinity"[0]',
         'J':
@@ -1218,6 +1219,8 @@ function getFHPaddingEntries(index)
         '∞':
         [
             define('Infinity[TO_LOCALE_STRING]()', LOCALE_INFINITY),
+            define('Infinity[TO_LOCALE_STRING]("ja")[SLICE_OR_SUBSTR]("-1")[0]', JAPANESE_INFINITY),
+            define('Infinity[TO_LOCALE_STRING]("ja").at("-1")', JAPANESE_INFINITY, AT),
             defineCharDefault(),
         ],
     });
