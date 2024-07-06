@@ -829,6 +829,7 @@ function getFHPaddingEntries(index)
             define('(RP_1_WA + Audio)[10]', HTMLAUDIOELEMENT),
             define('(RP_3_WA + document)[11]', HTMLDOCUMENT),
             define('(RP_4_A + [].entries().filter(ANY_FUNCTION))[21]', ITERATOR_HELPER),
+        ],
         'I': '"Infinity"[0]',
         'J':
         [
