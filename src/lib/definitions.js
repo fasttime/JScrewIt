@@ -828,8 +828,7 @@ function getFHPaddingEntries(index)
             ({ expr: '(RP_3_WA + Function("return history")())[11]', optimize: true }, HISTORY),
             define('(RP_1_WA + Audio)[10]', HTMLAUDIOELEMENT),
             define('(RP_3_WA + document)[11]', HTMLDOCUMENT),
-            define('(RP_3_WA + [].entries().filter([].at))[20]', ITERATOR, AT),
-        ],
+            define('(RP_4_A + [].entries().filter(ANY_FUNCTION))[21]', ITERATOR_HELPER),
         'I': '"Infinity"[0]',
         'J':
         [
@@ -1087,7 +1086,7 @@ function getFHPaddingEntries(index)
         [
             define('211[TO_STRING]("31")[1]'),
             define('(RP_3_WA + btoa(undefined))[10]', ATOB),
-            define('(RP_0_S + [].entries().filter([].at))[20]', ITERATOR, AT),
+            define('(RP_0_S + [].entries().filter(ANY_FUNCTION))[21]', ITERATOR_HELPER),
         ],
         'q':
         [
