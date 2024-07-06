@@ -367,13 +367,11 @@ FeatureConstructor
     let utilInspect: typeof util.inspect | undefined;
     try
     {
-        /* eslint-disable
-        @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
+        /* eslint-disable @typescript-eslint/no-require-imports */
 
         utilInspect = (require('util') as typeof util).inspect;
 
-        /* eslint-enable
-        @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
+        /* eslint-enable @typescript-eslint/no-require-imports */
     }
     catch
     { }
@@ -484,9 +482,15 @@ FeatureConstructor
             {
                 const info = featureInfos[name];
                 const getInfoStringField =
+
+                /* eslint-disable @typescript-eslint/no-unnecessary-type-parameters */
+
                 <FieldNameType extends string>(fieldName: FieldNameType): string | undefined =>
                 fieldName in info ?
                 esToString((info as { [Name in FieldNameType]: unknown; })[fieldName]) : undefined;
+
+                /* eslint-enable @typescript-eslint/no-unnecessary-type-parameters */
+
                 let description = getInfoStringField('description');
                 let featureObj: PredefinedFeature;
                 if ('aliasFor' in info)

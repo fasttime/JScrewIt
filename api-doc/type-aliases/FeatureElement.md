@@ -2,7 +2,7 @@
 
 ***
 
-# Type alias: FeatureElement
+# Type Alias: FeatureElement
 
 > **FeatureElement**: [`Feature`](../interfaces/Feature.md) \| keyof [`FeatureAll`](../interfaces/FeatureAll.md)
 

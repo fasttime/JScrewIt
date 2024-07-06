@@ -67,10 +67,6 @@ If no arguments are specified, the new feature object will be equivalent to
 
 [`CustomFeature`](CustomFeature.md)
 
-#### Inherited from
-
-`FeatureAll.constructor`
-
 #### Example
 
 The following statements are equivalent, and will all construct a new feature object
@@ -91,6 +87,10 @@ JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW]);
 #### Throws
 
 An error is thrown if any of the specified features are not mutually compatible.
+
+#### Inherited from
+
+`FeatureAll.constructor`
 
 ## Properties
 

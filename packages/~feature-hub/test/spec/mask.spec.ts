@@ -5,7 +5,8 @@ from '../../src/mask';
 import assert, { AssertionError } from 'assert';
 
 function assertFail
-(message: string, stackStartFn: Function, actual?: unknown, expected?: unknown): never
+(message: string, stackStartFn: (...args: never) => unknown, actual?: unknown, expected?: unknown):
+never
 {
     const options = { message, actual, expected, stackStartFn, stackStartFunction: stackStartFn };
     const error = new AssertionError(options);

@@ -2,7 +2,7 @@
 
 ***
 
-# Type alias: RunAs
+# Type Alias: RunAs
 
 > **RunAs**: `"call"` \| `"eval"` \| `"express"` \| `"express-call"` \| `"express-eval"` \| `"none"`
 

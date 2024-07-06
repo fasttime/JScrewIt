@@ -2,7 +2,7 @@
 
 ***
 
-# Type alias: FeatureElementOrCompatibleArray
+# Type Alias: FeatureElementOrCompatibleArray
 
 > **FeatureElementOrCompatibleArray**: [`FeatureElement`](FeatureElement.md) \| readonly [`FeatureElement`](FeatureElement.md)[]
 

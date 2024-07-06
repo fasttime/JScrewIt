@@ -10,10 +10,10 @@ export function evalExpr(expr: string): unknown
 
 export function tryEvalExpr(expr: string): unknown
 {
-    let fn: Function;
+    let fn: () => unknown;
     try
     {
-        fn = Function(`return(${expr});`);
+        fn = Function(`return(${expr});`) as () => unknown;
     }
     catch
     {
