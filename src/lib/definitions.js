@@ -1086,7 +1086,7 @@ function getFHPaddingEntries(index)
         [
             define('211[TO_STRING]("31")[1]'),
             define('(RP_3_WA + btoa(undefined))[10]', ATOB),
-            define('(RP_0_S + [].entries().filter(ANY_FUNCTION))[21]', ITERATOR_HELPER),
+            define('(RP_0_S + [].entries().filter(ANY_FUNCTION))[20]', ITERATOR_HELPER),
         ],
         'q':
         [
