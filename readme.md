@@ -153,7 +153,7 @@ const output = JScrewIt.encode("alert(1)"); // output is 1905 characters
 ```
 
 We can save a few characters by indicating that our code is only supposed to run in a browser.
-We do this using the feature [`BROWSER`](api-doc/interfaces/FeatureAll.md#BROWSER):
+We do this using the feature [`BROWSER`](api-doc/interfaces/FeatureAll.md#BROWSER).
 
 ```js
 const options = { features: "BROWSER" };
@@ -231,15 +231,15 @@ their intersection.
 
 JScrewIt itself and the code it generates are compatible with the JavaScript engines listed below.
 
- ![Chrome](https://api.iconify.design/mdi:google-chrome.svg) Chrome 86+
+ ![Chrome](https://api.iconify.design/mdi:google-chrome.svg) Chrome 122+
 <br>
  ![Safari](https://api.iconify.design/mdi:apple-safari.svg) Safari 7.0+
 <br>
- ![Edge](https://api.iconify.design/mdi:microsoft-edge.svg) Edge 86+
+ ![Edge](https://api.iconify.design/mdi:microsoft-edge.svg) Edge 122+
 <br>
- ![Firefox](https://api.iconify.design/mdi:firefox.svg) Firefox 78+
+ ![Firefox](https://api.iconify.design/mdi:firefox.svg) Firefox 90+
 <br>
- ![Opera](https://api.iconify.design/mdi:opera.svg) Opera 72+
+ ![Opera](https://api.iconify.design/mdi:opera.svg) Opera 108+
 <br>
  ![Internet Explorer](https://api.iconify.design/mdi:microsoft-internet-explorer.svg) Internet
 Explorer 9+
@@ -298,5 +298,5 @@ converted.
 * [jsfuck.com](http://www.jsfuck.com)
 * [jQuery *Screwed*](https://github.com/fasttime/jquery-screwed)
 
-[npm badge]: https://badge.fury.io/js/jscrewit.svg
+[npm badge]: https://img.shields.io/npm/v/jscrewit?logo=npm
 [npm url]: https://www.npmjs.com/package/jscrewit

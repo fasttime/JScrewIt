@@ -201,10 +201,51 @@
                             var optimizer = createOptimizer();
                             var solution0 = { appendLength: 6,      source: '0' };
                             var solutionB = { appendLength: 100,    source: 'b' };
+                            optimizer.appendLengthOf(solution0);
                             optimizer.appendLengthOf(solutionB);
                             var solutions = [solution0, solutionB];
                             optimizeSolutions([optimizer], solutions, false);
                             expect(solutions.length).toBe(2);
+                        }
+                    );
+                    it
+                    (
+                        'does not optimize a cluster with a multicharacter solution',
+                        function ()
+                        {
+                            var optimizer = createOptimizer();
+                            var solutionTrue    = { appendLength: 4,    source: 'true' };
+                            var solutionB       = { appendLength: 100,  source: 'b' };
+                            optimizer.appendLengthOf(solutionTrue);
+                            optimizer.appendLengthOf(solutionB);
+                            var solutions = [solutionTrue, solutionB];
+                            optimizeSolutions([optimizer], solutions, false);
+                            expect(solutions.length).toBe(2);
+                        }
+                    );
+                    it
+                    (
+                        'uses exponential optimization',
+                        function ()
+                        {
+                            var toStringReplacement = padRight('"toString"', 100);
+                            var optimizer = createOptimizer(toStringReplacement);
+                            var solutions =
+                            Array.prototype.map.call
+                            (
+                                1e10.toString(30),
+                                function (char)
+                                {
+                                    var solution = { appendLength: 50, source: char };
+                                    optimizer.appendLengthOf(solution);
+                                    return solution;
+                                }
+                            );
+                            optimizeSolutions([optimizer], solutions, false);
+                            expect(solutions.length).toBe(1);
+                            expect(solutions[0].replacement)
+                            // (+"1e10")[padRight('"toString"', 100)]("30")
+                            .toMatch(/^\(.{48}\)\[.{100}\]\(.{20}\)$/);
                         }
                     );
                     it

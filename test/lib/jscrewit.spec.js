@@ -66,24 +66,6 @@ self,
     );
     describe
     (
-        'JScrewIt.debug.createFeatureFromMask',
-        function ()
-        {
-            it
-            (
-                'returns null for an incompatible mask',
-                function ()
-                {
-                    var mask =
-                    JScrewIt.debug.maskUnion(Feature.NO_IE_SRC.mask, Feature.IE_SRC.mask);
-                    var featureObj = JScrewIt.debug.createFeatureFromMask(mask);
-                    expect(featureObj).toBeNull();
-                }
-            );
-        }
-    );
-    describe
-    (
         'JScrewIt.debug.createReindexMap',
         function ()
         {
@@ -119,28 +101,6 @@ self,
                 {
                     var fn = JScrewIt.debug.defineConstant.bind(null, null, 'X:X', '0');
                     expect(fn).toThrowStrictly(SyntaxError, 'Invalid identifier "X:X"');
-                }
-            );
-        }
-    );
-    describe
-    (
-        'JScrewIt.debug.maskNext',
-        function ()
-        {
-            it
-            (
-                'throws for full mask',
-                function ()
-                {
-                    var unionMask = JScrewIt.debug.maskNew();
-                    for (var index = 0; index < 52; ++index)
-                    {
-                        var nextMask = JScrewIt.debug.maskNext(unionMask);
-                        unionMask = JScrewIt.debug.maskUnion(unionMask, nextMask);
-                    }
-                    var fn = JScrewIt.debug.maskNext.bind(null, unionMask);
-                    expect(fn).toThrowStrictly(RangeError, 'Mask full');
                 }
             );
         }
@@ -951,7 +911,7 @@ self,
                 function ()
                 {
                     expect(debugReplacer('B')).toThrowStrictly
-                    (SyntaxError, 'Circular reference detected: B < C < B – [Feature {}]');
+                    (SyntaxError, 'Circular reference detected: B < C < B – [Feature <>]');
                 }
             );
             describe
@@ -1136,7 +1096,7 @@ self,
                     }
 
                     var strategy = strategies[strategyName];
-                    var featureObj = JScrewIt.debug.createFeatureFromMask(strategy.mask);
+                    var featureObj = JScrewIt.debug.featureFromMask(strategy.mask);
                     var encoder = JScrewIt.debug.createEncoder(featureObj);
                     emuIt
                     (

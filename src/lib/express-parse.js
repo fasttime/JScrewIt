@@ -488,7 +488,7 @@ var tokens =
     ConstIdentifier:        'Infinity|NaN|false|true|undefined',
     DecimalLiteral:         '(?:(?:0|[1-9]\\d*)(?:\\.\\d*)?|\\.\\d+)(?:[Ee][+-]?\\d+)?',
     DoubleQuotedString:     '"(?:#EscapeSequence|(?!["\\\\]).)*"',
-    EscapeSequence:         '\\\\(?:u#HexDigit{4}|x#HexDigit{2}|0(?![0-7])|\r\n|[^0-7ux])',
+    EscapeSequence:         '\\\\(?:u#HexDigit{4}|x#HexDigit{2}|0(?!\\d)|\r\n|[^\\dux])',
     HexDigit:               '[0-9A-Fa-f]',
     HexIntegerLiteral:      '0[Xx]#HexDigit+',
     NumericLiteral:         '#HexIntegerLiteral|#DecimalLiteral',
@@ -512,6 +512,7 @@ var INESCAPABLE_WORDS = ['false', 'null', 'true'];
 var UNRETURNABLE_WORDS =
 [
     'arguments',    // shadowed in function body
+    'await',        // may be an identifier in non-strict mode
     'debugger',     // : debugger;
     'delete',       // : delete(x);
     'if',           // : if(x);

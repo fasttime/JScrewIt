@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 import JScrewIt, { Feature }    from '../lib/jscrewit.js';
-import choose                   from './internal/choose.js';
-import Analyzer                 from './internal/optimized-analyzer.js';
+import choose                   from './internal/choose.mjs';
+import Analyzer                 from './internal/optimized-analyzer.mjs';
 import PREDEF_TEST_DATA_MAP_OBJ from './internal/predef-test-data.js';
-import progress                 from './internal/progress.js';
-import solutionBookMap          from './internal/solution-book-map.js';
+import progress                 from './internal/progress.mjs';
+import SolutionBookMap          from './internal/solution-book-map.mjs';
 
 function compareFeatures(feature1, feature2)
 {
@@ -250,17 +250,15 @@ function optimize(predefTestData)
 
 function printDefinitions(definitionSets, { indent, formatVariant, variantToMinMaskMap })
 {
+    const { featureFromMask } = JScrewIt.debug;
+    const { DEFAULT } = Feature;
     const LINE_LENGTH = 100;
-    const { createFeatureFromMask } = JScrewIt.debug;
-
     const argsList = [];
     for (const definitionSet of definitionSets)
     {
         const variant = definitionSet.varSet.any;
         const minFeature =
-        variantToMinMaskMap ?
-        createFeatureFromMask(variantToMinMaskMap.get(variant)) :
-        Feature.DEFAULT;
+        variantToMinMaskMap ? featureFromMask(variantToMinMaskMap.get(variant)) : DEFAULT;
         const features = [];
         for (const definitionSetFeature of definitionSet)
         {
@@ -311,7 +309,7 @@ function printDefinitions(definitionSets, { indent, formatVariant, variantToMinM
 
 function runAnalysis(predefTestData)
 {
-    solutionBookMap.load();
+    SolutionBookMap.load();
     const nodes = new Set();
     const { availableEntries, commonFeatureObj, replaceVariant, useReverseIteration } =
     predefTestData;
@@ -540,5 +538,5 @@ function simplifyDefinitions(definitionSets)
         optimize(predefTestData);
     };
     const predefNames = Object.keys(PREDEF_TEST_DATA_MAP_OBJ);
-    choose(callback, 'Predefinitions to optimize', predefNames);
+    await choose(callback, 'Predefinitions to optimize', predefNames);
 }

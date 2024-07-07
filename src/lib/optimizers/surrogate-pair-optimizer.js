@@ -1,6 +1,6 @@
 import { codePointFromSurrogatePair, shortestOf }   from '../encoder/encoder-utils';
 import { _Math_min }                                from '../obj-utils';
-import { SimpleSolution, SolutionType }             from 'novem';
+import { SimpleSolution, SolutionType }             from '~solution';
 
 function calculateMinSurrogateAppendLength(encoder)
 {

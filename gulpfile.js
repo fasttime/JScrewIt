@@ -1,11 +1,11 @@
 'use strict';
 
 const { dest, parallel, series, src, task } = require('gulp');
+const syncReadable                          = require('sync-readable');
 
 async function bundle(inputOptions, outputFile, banner)
 {
     const { parse }     = require('acorn');
-    const { red }       = require('chalk');
     const { rollup }    = require('rollup');
 
     const bundle = await rollup(inputOptions);
@@ -17,6 +17,7 @@ async function bundle(inputOptions, outputFile, banner)
     }
     catch (error)
     {
+        const { default: { red } } = await import('chalk');
         console.error(red('The file \'%s\' is not a valid ECMAScript 5 script.'), outputFile);
         error.showStack = false;
         throw error;
@@ -25,13 +26,15 @@ async function bundle(inputOptions, outputFile, banner)
 
 async function bundleUI()
 {
-    const inputOptions = { input: 'src/ui/ui-main.js' };
+    const { nodeResolve } = require('@rollup/plugin-node-resolve');
+
+    const inputOptions = { input: 'src/ui/ui-main.js', plugins: [nodeResolve()] };
     await bundle(inputOptions, '.tmp-out/ui.js');
 }
 
 async function createFileFromTemplate(createContextModuleId, templateSrcPath, outputPath)
 {
-    const { writeFile } = require('fs/promises');
+    const { writeFile } = require('node:fs/promises');
     const Handlebars    = require('handlebars');
 
     const promises = [import(createContextModuleId), readFileAsString(templateSrcPath)];
@@ -74,7 +77,7 @@ function makeWorker()
 
 function readFileAsString(inputPath)
 {
-    const { readFile } = require('fs/promises');
+    const { readFile } = require('node:fs/promises');
 
     const promise = readFile(inputPath, 'utf8');
     return promise;
@@ -85,10 +88,11 @@ task
     'clean',
     async () =>
     {
-        const del = require('del');
+        const { deleteAsync } = await import('del');
 
         const patterns =
         [
+            '.github/workflows/~*.yml',
             '.tmp-out',
             'Features.md',
             'api-doc',
@@ -98,73 +102,107 @@ task
             'test/spec-runner.html',
             'ui/**/*.js',
         ];
-        await del(patterns);
+        await deleteAsync(patterns);
     },
 );
 
 task
 (
     'lint',
-    async () =>
-    {
-        const { lint } = require('@fasttime/lint');
+    syncReadable
+    (
+        async () =>
+        {
+            const gherkinParser                     = require('./dev/internal/gherkin-parser');
+            const { createConfig, noParserConfig }  = require('@origin-1/eslint-config');
+            const eslintPluginEBDD                  = require('eslint-plugin-ebdd');
+            const { EslintEnvProcessor }            = require('eslint-plugin-eslint-env');
+            const globals                           = require('globals');
+            const gulpESLintNew                     = require('gulp-eslint-new');
 
-        await
-        lint
-        (
-            {
-                src: ['src/**/*.js', '!src/ui/worker.js'],
-                parserOptions: { sourceType: 'module' },
-                rules:
+            const ebddPlugins = { ebdd: eslintPluginEBDD };
+
+            const overrideConfig =
+            await createConfig
+            (
+                noParserConfig,
                 {
-                    'lines-around-comment':
-                    [
-                        'error',
-                        {
-                            allowBlockStart: true,
-                            allowObjectStart: true,
-                            ignorePattern: '^\\s*c8 ignore next\\b',
-                        },
-                    ],
+                    files:              ['src/**/*.js'],
+                    ignores:            ['src/ui/worker.js'],
+                    jsVersion:          5,
+                    languageOptions:    { ecmaVersion: 2015 },
+                    processor:          new EslintEnvProcessor(),
                 },
-            },
-            {
-                src: ['dev/**/*.js', 'gulpfile.js', 'test/patch-cov-source.js', '!dev/legacy/**'],
-                envs: 'node',
-                parserOptions: { ecmaVersion: 2021 },
-            },
-            {
-                src: ['dev/**/*.mjs'],
-                envs: 'node',
-                parserOptions: { ecmaVersion: 2021, sourceType: 'module' },
-            },
-            {
-                src:
+                {
+                    files:              ['dev/**/*.js', 'gulpfile.js', 'test/patch-cov-source.js'],
+                    ignores:            ['dev/legacy'],
+                    jsVersion:          2022,
+                    languageOptions:    { globals: globals.node, sourceType: 'commonjs' },
+                },
+                {
+                    files:              ['dev/**/*.mjs'],
+                    jsVersion:          2022,
+                    languageOptions:    { globals: globals.node },
+                },
+                {
+                    files:
+                    ['dev/legacy/**/*.js', 'screw.js', 'src/ui/worker.js', 'tools/**/*.js'],
+                    jsVersion:          5,
+                    languageOptions:    { sourceType: 'commonjs' },
+                    processor:          new EslintEnvProcessor(),
+                    rules:
+                    {
+                        // process.exitCode is not supported in Node.js 0.10.
+                        'no-process-exit': 'off',
+                    },
+                },
+                {
+                    files:              ['test/**/*.js'],
+                    jsVersion:          5,
+                    ignores:            ['test/patch-cov-source.js'],
+                    languageOptions:    { sourceType: 'script' },
+                    plugins:            ebddPlugins,
+                    processor:          new EslintEnvProcessor({ plugins: ebddPlugins }),
+                    rules:              { '@origin-1/no-extra-new': 'off' },
+                },
+                {
+                    files:              ['lib/**/*.ts'],
+                    ignores:            ['lib/feature-all.d.ts'],
+                    tsVersion:          'latest',
+                    languageOptions:    { parserOptions: { project: 'tsconfig.json' } },
+                },
+                {
+                    files:              ['test/acceptance/**/*.feature'],
+                    languageOptions:    { parser: gherkinParser },
+                },
+            );
+            const stream =
+            src
+            (
                 [
-                    'dev/legacy/**/*.js',
-                    'screw.js',
-                    'src/ui/worker.js',
-                    'test/**/*.js',
-                    'tools/**/*.js',
-                    '!test/patch-cov-source.js',
+                    '*.js',
+                    '{dev,src,test}/**/*.{feature,js,mjs,ts}',
+                    'lib/**/*.ts',
+                    '!lib/feature-all.d.ts',
                 ],
-                plugins: ['ebdd'],
-                // process.exitCode is not supported in Node.js 0.10.
-                rules: { 'no-process-exit': 'off' },
-            },
-            {
-                src: ['lib/**/*.ts', '!lib/feature-all.d.ts'],
-                parserOptions: { project: 'tsconfig.json', sourceType: 'module' },
-                rules:
-                {
-                    // Type imports not available in TypeScript < 3.8.
-                    '@typescript-eslint/consistent-type-imports':
-                    ['error', { prefer: 'no-type-imports' }],
-                },
-            },
-            { src: 'test/acceptance/**/*.feature' },
-        );
-    },
+            )
+            .pipe
+            (
+                gulpESLintNew
+                (
+                    {
+                        configType:         'flat',
+                        overrideConfig,
+                        overrideConfigFile: true,
+                        warnIgnored:        true,
+                    },
+                ),
+            )
+            .pipe(gulpESLintNew.format('compact'))
+            .pipe(gulpESLintNew.failAfterError());
+            return stream;
+        },
+    ),
 );
 
 task
@@ -181,11 +219,13 @@ task
             input: 'src/lib/jscrewit-main.js',
             plugins:
             [
-                cleanup({ comments: [/^(?!\*(?:!|\s*global\b))/], maxEmptyLines: -1 }),
+                cleanup
+                ({ comments: [/^(?!\*!|\*\s*global\b|\/\s*eslint-disable)/], maxEmptyLines: -1 }),
                 nodeResolve({ dedupe: ['tslib'] }),
             ],
         };
-        await bundle(inputOptions, 'lib/jscrewit.js', `// JScrewIt ${version} – ${homepage}\n`);
+        const banner = `// JScrewIt ${version} – ${homepage}\n`;
+        await bundle(inputOptions, 'lib/jscrewit.js', banner);
     },
 );
 
@@ -194,25 +234,27 @@ task('bundle:ui', series(parallel(makeArt, makeWorker), bundleUI));
 task
 (
     'test',
-    callback =>
+    async () =>
     {
-        const { fork } = require('child_process');
-
-        const { resolve } = require;
-        const c8Path = resolve('c8/bin/c8');
-        const mochaPath = resolve('mocha/bin/mocha');
-        const forkArgs =
-        [
-            '--reporter=html',
-            '--reporter=text-summary',
+        const [{ default: c8js }] =
+        await Promise.all([import('c8js'), import('./test/patch-cov-source.js')]);
+        const mochaPath = require.resolve('mocha/bin/mocha');
+        await c8js
+        (
             mochaPath,
-            '--check-leaks',
-            '--ui=ebdd',
-            'test/**/*.spec.js',
-        ];
-        const childProcess =
-        fork(c8Path, forkArgs, { execArgv: ['--require=./test/patch-cov-source'] });
-        childProcess.on('exit', code => callback(code && 'Test failed'));
+            ['--check-leaks', '--ui=ebdd', 'test/**/*.spec.js'],
+            {
+                reporter:       ['html', 'text-summary'],
+                useC8Config:    false,
+                watermarks:
+                {
+                    branches:   [90, 100],
+                    functions:  [90, 100],
+                    lines:      [90, 100],
+                    statements: [90, 100],
+                },
+            },
+        );
     },
 );
 
@@ -226,9 +268,9 @@ task
 
         const uglifyOpts =
         {
-            compress: { global_defs: { NO_DEBUG: true }, hoist_funs: true, passes: 4 },
-            mangle: { properties: { regex: /^_/ } },
-            output: { comments: (node, comment) => comment.pos === 0 },
+            compress:   { global_defs: { NO_DEBUG: true }, hoist_funs: true, passes: 4 },
+            mangle:     { properties: { regex: /^_/ } },
+            output:     { comments: (node, comment) => comment.pos === 0 },
         };
         const stream =
         src('lib/jscrewit.js')
@@ -256,13 +298,6 @@ task
 
 task
 (
-    'make-feature-doc',
-    () =>
-    createFileFromTemplate('./dev/make-feature-doc.mjs', 'src/Features.md.hbs', 'Features.md'),
-);
-
-task
-(
     'make-feature-types',
     () =>
     createFileFromTemplate
@@ -271,17 +306,52 @@ task
 
 task
 (
+    'make-api-doc',
+    async () =>
+    {
+        const { Application, TSConfigReader } = require('typedoc');
+
+        const options =
+        {
+            disableSources:     true,
+            entryPoints:        'lib/jscrewit.d.ts',
+            githubPages:        false,
+            hideBreadcrumbs:    true,
+            name:               'JScrewIt',
+            plugin:             'typedoc-plugin-markdown',
+            readme:             'none',
+            tsconfig:           'tsconfig.json',
+        };
+        const tsConfigReader = new TSConfigReader();
+        const app = await Application.bootstrapWithPlugins(options, [tsConfigReader]);
+        const project = await app.convert();
+        app.validate(project);
+        const { logger } = app;
+        if (logger.hasErrors() || logger.hasWarnings())
+            throw Error('Problems occurred while generating the documentation');
+        await app.renderer.render(project, 'api-doc');
+    },
+);
+
+task
+(
+    'make-feature-doc',
+    () =>
+    createFileFromTemplate('./dev/make-feature-doc.mjs', 'src/Features.md.hbs', 'Features.md'),
+);
+
+task
+(
     'make-spec-runner',
     async () =>
     {
-        const { writeFile } = require('fs/promises');
-        const glob          = require('glob');
+        const { writeFile } = require('node:fs/promises');
+        const { glob }      = require('glob');
         const Handlebars    = require('handlebars');
-        const { promisify } = require('util');
 
         async function getSpecs()
         {
-            const specs = await promisify(glob)('**/*.spec.js', { cwd: 'test/lib' });
+            const specs = await glob('**/*.spec.js', { cwd: 'test/lib' });
             return specs;
         }
 
@@ -301,29 +371,32 @@ task
 
 task
 (
-    'make-api-doc',
+    'make-workflows',
     async () =>
     {
-        const { Application, TSConfigReader } = require('typedoc');
+        const { writeFile } = require('node:fs/promises');
+        const { join }      = require('node:path');
+        const { glob }      = require('glob');
+        const Handlebars    = require('handlebars');
 
-        const options =
+        async function getTemplate()
         {
-            disableSources:     true,
-            entryPoints:        'lib/jscrewit.d.ts',
-            hideBreadcrumbs:    true,
-            name:               'JScrewIt',
-            plugin:             'typedoc-plugin-markdown',
-            readme:             'none',
-            tsconfig:           'tsconfig.json',
-        };
-        const app = new Application();
-        app.options.addReader(new TSConfigReader());
-        app.bootstrap(options);
-        const src = app.expandInputFiles(['lib']);
-        const project = app.convert(src);
-        await app.renderer.render(project, 'api-doc');
-        if (app.logger.hasErrors())
-            throw Error('API documentation could not be generated');
+            const input = await readFileAsString('src/package.yml.hbs');
+            const template = Handlebars.compile(input, { noEscape: true });
+            return template;
+        }
+
+        async function writeWorkflow(pkgName)
+        {
+            const output = template({ package: pkgName });
+            const path = join('.github/workflows', `${pkgName}.yml`);
+            await writeFile(path, output);
+        }
+
+        const promises = [getTemplate(), glob('*', { cwd: 'packages', onlyDirectories: true })];
+        const [template, pkgNames] = await Promise.all(promises);
+        const writeWorkflowPromises = pkgNames.map(writeWorkflow);
+        await Promise.all(writeWorkflowPromises);
     },
 );
 
@@ -332,7 +405,8 @@ task
     'default',
     series
     (
-        parallel('clean', 'lint'),
+        'clean',
+        'lint',
         parallel('bundle:lib', 'bundle:ui'),
         'test',
         parallel
@@ -342,6 +416,7 @@ task
             series('make-feature-types', 'make-api-doc'),
             'make-feature-doc',
             'make-spec-runner',
+            'make-workflows',
         ),
     ),
 );
@@ -362,9 +437,9 @@ task
             jsdoc
             (
                 {
-                    opts: { destination: 'jsdoc' },
-                    plugins: ['plugins/markdown'],
-                    tags: { allowUnknownTags: false },
+                    opts:       { destination: 'jsdoc' },
+                    plugins:    ['plugins/markdown'],
+                    tags:       { allowUnknownTags: false },
                 },
             ),
         );

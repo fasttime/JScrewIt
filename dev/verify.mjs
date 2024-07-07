@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import choose                   from    './internal/choose.js';
-import Analyzer                 from    './internal/optimized-analyzer.js';
+import choose                   from    './internal/choose.mjs';
+import Analyzer                 from    './internal/optimized-analyzer.mjs';
 import PREDEF_TEST_DATA_MAP_OBJ from    './internal/predef-test-data.js';
-import progress                 from    './internal/progress.js';
-import solutionBookMap          from    './internal/solution-book-map.js';
+import progress                 from    './internal/progress.mjs';
+import SolutionBookMap          from    './internal/solution-book-map.mjs';
 import STRATEGY_TEST_DATA_LIST  from    './internal/strategy-test-data.js';
 import JScrewIt                 from    '../lib/jscrewit.js';
 import                                  '../tools/text-utils.js';
@@ -87,7 +87,7 @@ function checkMinInputLength
 
 function createAnalyzer(ancestorFeatureObj)
 {
-    solutionBookMap.load();
+    SolutionBookMap.load();
     const analyzer = new Analyzer(ancestorFeatureObj);
     return analyzer;
 }
@@ -289,10 +289,10 @@ verify.OPTIMAL_B = verifyPredef('OPTIMAL_B');
 
 verify.OPTIMAL_RETURN_STRING = verifyPredef('OPTIMAL_RETURN_STRING');
 
-{
-    for (const strategyTestData of STRATEGY_TEST_DATA_LIST)
-        verify[strategyTestData.strategyName] = verifyStrategy(strategyTestData);
+for (const strategyTestData of STRATEGY_TEST_DATA_LIST)
+    verify[strategyTestData.strategyName] = verifyStrategy(strategyTestData);
 
+{
     const callback =
     routineName =>
     {
@@ -302,5 +302,5 @@ verify.OPTIMAL_RETURN_STRING = verifyPredef('OPTIMAL_RETURN_STRING');
         routine();
     };
     const routineNames = Object.keys(verify);
-    choose(callback, 'Routine to verify', routineNames);
+    await choose(callback, 'Routine to verify', routineNames);
 }

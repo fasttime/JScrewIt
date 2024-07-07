@@ -1,11 +1,15 @@
+[**JScrewIt**](../README.md) • **Docs**
+
+***
+
 # Interface: Feature
 
 Objects of this type indicate which of the capabilities that JScrewIt can use to minimize the
 length of its output are available in a particular JavaScript engine.
 
 JScrewIt comes with a set of predefined feature objects exposed as property values of
-`JScrewIt.Feature` or [`JScrewIt.Feature.ALL`](FeatureConstructor.md#all), where the property name is the feature's
-name or alias.
+`JScrewIt.Feature` or [`JScrewIt.Feature.ALL`](FeatureConstructor.md#all), where the property
+name is the feature's name or alias.
 
 Besides these predefined features, it is possible to construct custom features from the union or
 intersection of other features.
@@ -16,57 +20,48 @@ they are different from such a union in that they exclude some other feature not
 their elementary components.
 All other features, called *composite* features, can be constructed as a union of zero or more
 elementary features.
-Two of the predefined composite features are particularly important: <code>[DEFAULT](FeatureConstructor.md#default)</code> is
-the empty feature, indicating that no elementary feature is available at all;
-<code>[AUTO](FeatureConstructor.md#auto)</code> is the union of all elementary features available in the current engine.
+Two of the predefined composite features are particularly important: [`DEFAULT`](FeatureConstructor.md#default) is the empty feature, indicating that no elementary
+feature is available at all; [`AUTO`](FeatureAll.md#auto) is the union of all
+elementary features available in the current environment.
 
 Not all features can be available at the same time: some features are necessarily incompatible,
 meaning that they mutually exclude each other, and thus their union cannot be constructed.
 
-## Table of contents
+## Extended by
 
-### Properties
-
-- [canonicalNames](Feature.md#canonicalnames)
-- [elementary](Feature.md#elementary)
-- [elementaryNames](Feature.md#elementarynames)
-- [name](Feature.md#name)
-
-### Methods
-
-- [includes](Feature.md#includes)
-- [restrict](Feature.md#restrict)
+- [`CustomFeature`](CustomFeature.md)
+- [`PredefinedFeature`](PredefinedFeature.md)
 
 ## Properties
 
 ### canonicalNames
 
-• `Readonly` **canonicalNames**: [`ElementaryFeatureName`](../README.md#elementaryfeaturename)[]
+> `readonly` **canonicalNames**: [`ElementaryFeatureName`](../type-aliases/ElementaryFeatureName.md)[]
 
 An array of all elementary feature names included in this feature object, without aliases and
 implied features.
 
-___
+***
 
 ### elementary
 
-• `Readonly` **elementary**: `boolean`
+> `readonly` **elementary**: `boolean`
 
 A boolean value indicating whether this is an elementary feature object.
 
-___
+***
 
 ### elementaryNames
 
-• `Readonly` **elementaryNames**: [`ElementaryFeatureName`](../README.md#elementaryfeaturename)[]
+> `readonly` **elementaryNames**: [`ElementaryFeatureName`](../type-aliases/ElementaryFeatureName.md)[]
 
 An array of all elementary feature names included in this feature object, without aliases.
 
-___
+***
 
-### name
+### name?
 
-• `Optional` **name**: `string`
+> `optional` **name**: `string`
 
 The primary name of this feature object, useful for identification purpose.
 
@@ -75,17 +70,15 @@ If a name is assigned, it will be used when the feature is converted into a stri
 
 ## Methods
 
-### includes
+### includes()
 
-▸ **includes**(...`features`): `boolean`
+> **includes**(...`features`): `boolean`
 
 Determines whether this feature object includes all of the specified features.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `...features` | ([`FeatureElement`](../README.md#featureelement) \| [`CompatibleFeatureArray`](../README.md#compatiblefeaturearray))[] |
+• ...**features**: [`FeatureElementOrCompatibleArray`](../type-aliases/FeatureElementOrCompatibleArray.md)[]
 
 #### Returns
 
@@ -94,11 +87,11 @@ Determines whether this feature object includes all of the specified features.
 `true` if this feature object includes all of the specified features; otherwise, `false`.
 If no arguments are specified, the return value is `true`.
 
-___
+***
 
-### restrict
+### restrict()
 
-▸ **restrict**(`environment`, `engineFeatureObjs?`): [`CustomFeature`](CustomFeature.md)
+> **restrict**(`environment`, `engineFeatureObjs`?): [`CustomFeature`](CustomFeature.md)
 
 Creates a new feature object from this feature by removing elementary features that are not
 available inside a particular environment.
@@ -108,10 +101,28 @@ that require strict mode code, or inside web workers.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `environment` | ``"forced-strict-mode"`` \| ``"web-worker"`` | The environment to which this feature should be restricted. Two environments are currently supported.  <dl>  <dt><code>"forced-strict-mode"</code></dt> <dd> Removes features that are not available in environments that require strict mode code. </dd>  <dt><code>"web-worker"</code></dt> <dd>Removes features that are not available inside web workers.</dd>  </dl> |
-| `engineFeatureObjs?` | readonly [`PredefinedFeature`](PredefinedFeature.md)[] | An array of predefined feature objects, each corresponding to a particular engine in which the restriction should be enacted. If this parameter is omitted, the restriction is enacted in all engines. |
+• **environment**: `"forced-strict-mode"` \| `"web-worker"`
+
+The environment to which this feature should be restricted.
+Two environments are currently supported.
+
+<dl>
+
+<dt><code>"forced-strict-mode"</code></dt>
+<dd>
+Removes features that are not available in environments that require strict mode code.
+</dd>
+
+<dt><code>"web-worker"</code></dt>
+<dd>Removes features that are not available inside web workers.</dd>
+
+</dl>
+
+• **engineFeatureObjs?**: readonly [`PredefinedFeature`](PredefinedFeature.md)[]
+
+An array of predefined feature objects, each corresponding to a particular engine in which
+the restriction should be enacted.
+If this parameter is omitted, the restriction is enacted in all engines.
 
 #### Returns
 

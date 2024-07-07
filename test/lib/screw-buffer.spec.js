@@ -314,46 +314,47 @@
                 {
                     title:
                     'encodes a weak algebraic type solution followed by an undefined type solution',
-                    solutions: [solution0, solutionUndefined],
-                    expectedReplacement: '[+[]]+[][[]]',
+                    solutions:              [solution0, solutionUndefined],
+                    expectedReplacement:    '[+[]]+[][[]]',
                 },
                 {
-                    title: 'encodes two undefined type solutions',
-                    solutions: [solutionUndefined, solutionUndefined],
-                    expectedReplacement: '[]+[][[]]+[][[]]',
+                    title:
+                    'encodes two undefined type solutions',
+                    solutions:              [solutionUndefined, solutionUndefined],
+                    expectedReplacement:    '[]+[][[]]+[][[]]',
                 },
                 {
                     title:
                     'encodes an undefined type solution followed by a prefixed string type ' +
                     'solution',
-                    solutions: [solutionUndefined, solutionFalse0],
-                    expectedReplacement: '[][[]]+(![]+[+[]])',
+                    solutions:              [solutionUndefined, solutionFalse0],
+                    expectedReplacement:    '[][[]]+(![]+[+[]])',
                 },
                 {
                     title:
                     'encodes an algebraic type solution followed by a string type solution',
-                    solutions: [solutionFalse, solutionA],
-                    expectedReplacement: '![]+(![]+[])[+!![]]',
+                    solutions:              [solutionFalse, solutionA],
+                    expectedReplacement:    '![]+(![]+[])[+!![]]',
                 },
                 {
                     title:
                     'encodes two undefined type solutions followed by a weak algebraic type ' +
                     'solution',
-                    solutions: [solutionUndefined, solutionUndefined, solution0],
-                    expectedReplacement: '[][[]]+([][[]]+[+[]])',
+                    solutions:              [solutionUndefined, solutionUndefined, solution0],
+                    expectedReplacement:    '[][[]]+([][[]]+[+[]])',
                 },
                 {
                     title:
                     'encodes two undefined type solutions followed by a string type solution',
-                    solutions: [solutionUndefined, solutionUndefined, solutionA],
-                    expectedReplacement: '[][[]]+([][[]]+(![]+[])[+!![]])',
+                    solutions:              [solutionUndefined, solutionUndefined, solutionA],
+                    expectedReplacement:    '[][[]]+([][[]]+(![]+[])[+!![]])',
                 },
                 {
                     title:
                     'encodes two undefined type solutions followed by a weak prefixed string ' +
                     'type solution',
-                    solutions: [solutionUndefined, solutionUndefined, solution00],
-                    expectedReplacement: '[][[]]+([][[]]+(+[]+[+[]]))',
+                    solutions:              [solutionUndefined, solutionUndefined, solution00],
+                    expectedReplacement:    '[][[]]+([][[]]+(+[]+[+[]]))',
                 },
             ];
             it.per(concatParamDataList)

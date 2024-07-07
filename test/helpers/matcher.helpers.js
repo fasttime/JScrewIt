@@ -26,18 +26,6 @@
                 return this.assertions.pass(message);
             this.assertions.fail(message);
         },
-        toBeInt52:
-        function ()
-        {
-            var actual = this.value;
-            var message = this.generateMessage(actual, this.expr, 'to be a 52-bit integer number');
-            var pass =
-            typeof actual === 'number' &&
-            actual === (actual & 0x7fffffff) + (actual / 0x80000000 & 0x1fffff) * 0x80000000;
-            if (pass)
-                return this.assertions.pass(message);
-            this.assertions.fail(message);
-        },
         toBeJSFuck:
         function ()
         {
@@ -122,6 +110,11 @@
             catch (newError)
             {
                 error = newError;
+            }
+            if (error == null)
+            {
+                var message = this.generateMessage(fn, this.expr, 'to throw an error');
+                this.assertions.fail(message);
             }
             Array.prototype.forEach.call
             (

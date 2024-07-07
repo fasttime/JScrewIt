@@ -1,0 +1,90 @@
+name: ~feature-hub Node.js CI
+
+on:
+  push:
+    branches: '**'
+    tags-ignore: '**'
+  pull_request:
+    branches: '**'
+
+defaults:
+
+  run:
+
+    working-directory: packages/~feature-hub
+
+jobs:
+
+  lint:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+    - run: |
+        npm install --prefix ../..
+        npm run lint
+
+  test:
+
+    name: test (Node.js ${{ matrix.node-version }})
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: ['14', '16', '18', '20', '22']
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: |
+        npm install
+        npm test
+
+  prepare-legacy-test:
+
+    name: prepare legacy test
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+    - run: |
+        npm install --prefix ../..
+        npm run prepare-legacy-test
+    - uses: actions/upload-artifact@v3
+      with:
+        name: node-legacy
+        path: packages/~feature-hub/test/node-legacy
+
+  legacy-test:
+
+    name: legacy test (Node.js ${{ matrix.node-version }})
+
+    needs: prepare-legacy-test
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: ['0.10', '0.12', '4', '6', '8', '10', '12']
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+    - uses: actions/download-artifact@v3
+      with:
+        name: node-legacy
+        path: packages/~feature-hub/test/node-legacy
+    - run: npm run legacy-test

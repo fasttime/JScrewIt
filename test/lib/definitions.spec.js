@@ -16,7 +16,6 @@ location,
 module,
 require,
 self,
-sidebar,
 */
 
 'use strict';
@@ -39,7 +38,7 @@ sidebar,
 
     function getEntryFeature(entry)
     {
-        var featureObj = JScrewIt.debug.createFeatureFromMask(entry.mask);
+        var featureObj = JScrewIt.debug.featureFromMask(entry.mask);
         return featureObj;
     }
 
@@ -157,14 +156,14 @@ sidebar,
                         case 'commaDefinition':
                         case 'charDefaultDefinition':
                             break;
-                        case 'definitionFB':
-                            verifyFEntry(entry, FB_DISPOSITIONS, FB_VARIETIES);
+                        case 'charDefinitionInFn':
+                            verifyFEntry(entry, FN_DISPOSITIONS, FN_VARIETIES);
                             return;
-                        case 'definitionFH':
-                            verifyFEntry(entry, FH_DISPOSITIONS, FH_VARIETIES);
+                        case 'charDefinitionInFnBody':
+                            verifyFEntry(entry, FN_BODY_DISPOSITIONS, FN_BODY_VARIETIES);
                             return;
-                        case 'definitionFX':
-                            verifyFEntry(entry, FX_DISPOSITIONS, FX_VARIETIES);
+                        case 'charDefinitionInFnHead':
+                            verifyFEntry(entry, FN_HEAD_DISPOSITIONS, FN_HEAD_VARIETIES);
                             return;
                         default:
                             expect().fail
@@ -212,7 +211,11 @@ sidebar,
             );
         }
 
-        var FB_DISPOSITIONS =
+        var FN_DISPOSITIONS = [[], ['IE_SRC'], ['INCR_CHAR'], ['NO_IE_SRC']];
+
+        var FN_VARIETIES = [['IE_SRC'], ['NO_IE_SRC']];
+
+        var FN_BODY_DISPOSITIONS =
         [
             [],
             ['AT'],
@@ -260,9 +263,9 @@ sidebar,
             ['FLAT', 'INCR_CHAR', 'NO_V8_SRC'],
         ];
 
-        var FB_VARIETIES = [['FF_SRC'], ['IE_SRC'], ['V8_SRC']];
+        var FN_BODY_VARIETIES = [['FF_SRC'], ['IE_SRC'], ['V8_SRC']];
 
-        var FH_DISPOSITIONS =
+        var FN_HEAD_DISPOSITIONS =
         [
             [],
             ['AT'],
@@ -282,11 +285,7 @@ sidebar,
             ['FLAT', 'NO_IE_SRC'],
         ];
 
-        var FH_VARIETIES = [['IE_SRC'], ['NO_IE_SRC']];
-
-        var FX_DISPOSITIONS = [[], ['IE_SRC'], ['INCR_CHAR'], ['NO_IE_SRC']];
-
-        var FX_VARIETIES = [['IE_SRC'], ['NO_IE_SRC']];
+        var FN_HEAD_VARIETIES = [['IE_SRC'], ['NO_IE_SRC']];
 
         var char = String.fromCharCode(charCode);
         var entries = JScrewIt.debug.getCharacterEntries(char);
@@ -457,15 +456,15 @@ sidebar,
         {
             var paramDataMap =
             {
-                Array: isExpected(Array),
+                Array:      isExpected(Array),
                 Audio:
                 function ()
                 {
                     this.toBe(Audio);
                 },
-                Boolean: isExpected(Boolean),
-                Date: isExpected(Date),
-                Function: isExpected(Function),
+                Boolean:    isExpected(Boolean),
+                Date:       isExpected(Date),
+                Function:   isExpected(Function),
                 Intl:
                 function ()
                 {
@@ -476,10 +475,10 @@ sidebar,
                 {
                     this.toBe(Node);
                 },
-                Number: isExpected(Number),
-                Object: isExpected(Object),
-                RegExp: isExpected(RegExp),
-                String: isExpected(String),
+                Number:     isExpected(Number),
+                Object:     isExpected(Object),
+                RegExp:     isExpected(RegExp),
+                String:     isExpected(String),
                 atob:
                 function ()
                 {
@@ -495,7 +494,7 @@ sidebar,
                 {
                     this.toBe(document);
                 },
-                escape: isExpected(escape),
+                escape:     isExpected(escape),
                 location:
                 function ()
                 {
@@ -506,12 +505,7 @@ sidebar,
                 {
                     this.toBe(self);
                 },
-                sidebar:
-                function ()
-                {
-                    this.toBe(sidebar);
-                },
-                unescape: isExpected(unescape),
+                unescape:   isExpected(unescape),
                 ANY_FUNCTION:
                 function ()
                 {
@@ -562,6 +556,11 @@ sidebar,
                 function ()
                 {
                     this.toMatch(/^ar(-td)?$/);
+                },
+                LOCATION_CONSTRUCTOR:
+                function ()
+                {
+                    this.toBe(location.constructor);
                 },
                 PLAIN_OBJECT:
                 function ()

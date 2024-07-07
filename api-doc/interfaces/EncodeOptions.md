@@ -1,31 +1,26 @@
+[**JScrewIt**](../README.md) • **Docs**
+
+***
+
 # Interface: EncodeOptions
-
-## Table of contents
-
-### Properties
-
-- [features](EncodeOptions.md#features)
-- [runAs](EncodeOptions.md#runas)
-- [trimCode](EncodeOptions.md#trimcode)
-- [wrapWith](EncodeOptions.md#wrapwith)
 
 ## Properties
 
-### features
+### features?
 
-• `Optional` **features**: [`FeatureElement`](../README.md#featureelement) \| [`CompatibleFeatureArray`](../README.md#compatiblefeaturearray)
+> `optional` **features**: [`FeatureElementOrCompatibleArray`](../type-aliases/FeatureElementOrCompatibleArray.md)
 
 Specifies the features available in the engines that evaluate the encoded output.
 
-If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](FeatureConstructor.md#default) is assumed: this
-ensures maximum compatibility but also generates the largest code.
+If this parameter is unspecified, [`JScrewIt.Feature.DEFAULT`](FeatureConstructor.md#default) is assumed: this ensures maximum compatibility but also generates
+the largest code.
 To generate shorter code, specify all features available in all target engines explicitly.
 
-___
+***
 
-### runAs
+### runAs?
 
-• `Optional` **runAs**: ``"call"`` \| ``"eval"`` \| ``"express"`` \| ``"express-call"`` \| ``"express-eval"`` \| ``"none"``
+> `optional` **runAs**: [`RunAs`](../type-aliases/RunAs.md)
 
 This option controls the type of code generated from the given input.
 Allowed values are listed below.
@@ -74,11 +69,11 @@ plain string.
 
 </dl>
 
-___
+***
 
-### trimCode
+### trimCode?
 
-• `Optional` **trimCode**: `boolean`
+> `optional` **trimCode**: `boolean`
 
 If this parameter is truthy, lines in the beginning and in the end of the file containing
 nothing but space characters and JavaScript comments are removed from the generated output.
@@ -90,10 +85,10 @@ which are sometimes found in minified scripts.
 Using this option may produce unexpected results if the input is not well-formed JavaScript
 code.
 
-___
+***
 
-### wrapWith
+### wrapWith?
 
-• `Optional` **wrapWith**: ``"call"`` \| ``"eval"`` \| ``"express"`` \| ``"express-call"`` \| ``"express-eval"`` \| ``"none"``
+> `optional` **wrapWith**: [`RunAs`](../type-aliases/RunAs.md)
 
 An alias for `runAs`.

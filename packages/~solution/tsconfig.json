@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "strict": true,
+    "target": "ES5",
+    "types": [
+      "ebdd",
+      "mocha",
+      "node"
+    ],
+    "useDefineForClassFields": false, // Define semantics disabled for performance reasons.
+  },
+  "exclude": [
+    "test/node-legacy"
+  ],
+  "include": [
+    "src",
+    "test"
+  ]
+}

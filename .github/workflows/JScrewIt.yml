@@ -1,6 +1,11 @@
 name: JScrewIt Node.js CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: '**'
+    tags-ignore: '**'
+  pull_request:
+    branches: '**'
 
 jobs:
 
@@ -9,16 +14,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
       with:
-        node-version: 16.x
-    - run: npm install --workspaces
-    - run: npm run --workspaces make
-    - run: npm install
-    - run: gulp lint
-    - run: gulp bundle:lib
-    - uses: actions/upload-artifact@v2
+        node-version: '22'
+    - run: |
+        npm install --workspaces
+        npm install
+        npm run --workspaces make
+        gulp lint
+        gulp bundle:lib
+    - uses: actions/upload-artifact@v4
       with:
         name: lib
         path: lib
@@ -33,16 +39,17 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [0.10.x, 0.12.x, 4.x, 6.x, 8.x, 10.x, 12.x, 14.x, 16.x]
+        node-version: ['0.10', '0.12', '4', '6', '8', '10', '12', '14', '16', '18', '20', '22']
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install ebdd expectations mocha@3 postrequire
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v4
       with:
         name: lib
         path: lib
-    - run: npm test
+    - run: |
+        npm install @types/mocha@9 ebdd expectations mocha@3 postrequire
+        npm test

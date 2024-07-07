@@ -11,14 +11,13 @@ outputArea,
 stats,
 */
 
-import './result-format';
-
-import art                      from '../../.tmp-out/art';
-import WORKER_SRC               from '../../.tmp-out/worker';
-import createButton             from './button';
-import createEngineSelectionBox from './engine-selection-box';
-import showModalBox             from './modal-box';
-import createRoll               from './roll';
+import art                              from '../../.tmp-out/art';
+import WORKER_SRC                       from '../../.tmp-out/worker';
+import createButton                     from './button';
+import createEngineSelectionBox         from './engine-selection-box';
+import showModalBox                     from './modal-box';
+import createRoll                       from './roll';
+import { formatValue, formatValueType } from '~result-format';
 
 var JS_MIME_TYPE = 'application/javascript';
 

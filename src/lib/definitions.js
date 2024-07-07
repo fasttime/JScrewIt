@@ -9,7 +9,7 @@ import { replaceStaticExpr }                            from './encoder/encoder-
 import { Feature }                                      from './features';
 import { _String, createEmpty, noProto }                from './obj-utils';
 import { LazySolution, SimpleSolution }                 from './solution';
-import { SolutionType }                                 from 'novem';
+import { SolutionType }                                 from '~solution';
 
 export var AMENDINGS = ['true', 'undefined', 'NaN'];
 
@@ -66,40 +66,40 @@ function chooseOtherArgName(argName)
     return otherArgName;
 }
 
-function createCharAtFnPosDefinition(expr, index, paddingEntries)
+function createCharDefinitionInFn(expr, index, paddingEntries)
 {
-    function definitionFX(char)
+    function charDefinitionInFn(char)
     {
         var solution =
         this._resolveCharInExpr(char, expr, index, paddingEntries, FH_R_PADDING_SHIFTS);
         return solution;
     }
 
-    return definitionFX;
+    return charDefinitionInFn;
 }
 
-function createCharInFBDefinition(offset)
+function createCharDefinitionInFnBody(offset)
 {
-    function definitionFB(char)
+    function charDefinitionInFnBody(char)
     {
         var solution =
         this._resolveCharInNativeFunction(char, offset, getFBPaddingEntries, FB_R_PADDING_SHIFTS);
         return solution;
     }
 
-    return definitionFB;
+    return charDefinitionInFnBody;
 }
 
-function createCharInFHDefinition(offset)
+function createCharDefinitionInFnHead(offset)
 {
-    function definitionFH(char)
+    function charDefinitionInFnHead(char)
     {
         var solution =
         this._resolveCharInNativeFunction(char, offset, getFHPaddingEntries, FH_R_PADDING_SHIFTS);
         return solution;
     }
 
-    return definitionFH;
+    return charDefinitionInFnHead;
 }
 
 function createLazySolution(source, expr, type)
@@ -363,7 +363,6 @@ function getFHPaddingEntries(index)
     var ESC_HTML_QUOT_ONLY              = Feature.ESC_HTML_QUOT_ONLY;
     var ESC_REGEXP_LF                   = Feature.ESC_REGEXP_LF;
     var ESC_REGEXP_SLASH                = Feature.ESC_REGEXP_SLASH;
-    var EXTERNAL                        = Feature.EXTERNAL;
     var FF_SRC                          = Feature.FF_SRC;
     var FILL                            = Feature.FILL;
     var FLAT                            = Feature.FLAT;
@@ -389,7 +388,11 @@ function getFHPaddingEntries(index)
     var NO_IE_SRC                       = Feature.NO_IE_SRC;
     var NO_OLD_SAFARI_ARRAY_ITERATOR    = Feature.NO_OLD_SAFARI_ARRAY_ITERATOR;
     var NO_V8_SRC                       = Feature.NO_V8_SRC;
+    var OBJECT_ARRAY_ENTRIES_CTOR       = Feature.OBJECT_ARRAY_ENTRIES_CTOR;
+    var OBJECT_L_LOCATION_CTOR          = Feature.OBJECT_L_LOCATION_CTOR;
     var OBJECT_UNDEFINED                = Feature.OBJECT_UNDEFINED;
+    var OBJECT_W_CTOR                   = Feature.OBJECT_W_CTOR;
+    var OLD_SAFARI_LOCATION_CTOR        = Feature.OLD_SAFARI_LOCATION_CTOR;
     var PLAIN_INTL                      = Feature.PLAIN_INTL;
     var REGEXP_STRING_ITERATOR          = Feature.REGEXP_STRING_ITERATOR;
     var SELF_OBJ                        = Feature.SELF_OBJ;
@@ -414,14 +417,6 @@ function getFHPaddingEntries(index)
         return charDefaultDefinition;
     }
 
-    function defineCharAtFnPos(expr, index)
-    {
-        var paddingEntries = getFHPaddingEntries(index);
-        var definition = createCharAtFnPosDefinition(expr, index, paddingEntries);
-        var entry = define._callWithFeatures(definition, arguments, 2);
-        return entry;
-    }
-
     function defineCharDefault(opts)
     {
         function checkOpt(optName)
@@ -439,16 +434,78 @@ function getFHPaddingEntries(index)
         return entry;
     }
 
-    function defineCharInFB(offset)
+    /**
+     * Defines a character at a specified position in the string representation of a specified
+     * native function.
+     * Engine-dependent padding/shifting is used to account for spacing characters inserted before
+     * the function head by specific engines.
+     *
+     * @param {string} expr
+     * An expression that resolves to a native function.
+     *
+     * @param {number} index
+     * The index of the character to be extracted in engines that do not insert any spacing
+     * characters before the function head, e.g. V8.
+     *
+     * @param ...
+     * Required features for the definition.
+     *
+     * @returns
+     * A definition entry for the specified character.
+     */
+    function defineCharInFn(expr, index)
     {
-        var definition = createCharInFBDefinition(offset);
+        var paddingEntries = getFHPaddingEntries(index);
+        var definition = createCharDefinitionInFn(expr, index, paddingEntries);
+        var entry = define._callWithFeatures(definition, arguments, 2);
+        return entry;
+    }
+
+    /**
+     * Defines a character at a specified position in the string representation of an arbitrary
+     * native function.
+     * Engine-dependent padding/shifting is used to account for spacing characters inserted before
+     * the function head and body by specific engines.
+     *
+     * @param {string} expr
+     * An expression that resolves to a native function.
+     *
+     * @param {number} index
+     * The index of the character to be extracted in engines that do not insert any spacing
+     * characters before the function head and body, e.g. V8.
+     *
+     * @returns
+     * A definition entry for the specified character.
+     */
+    function defineCharInFnBody(offset)
+    {
+        var definition = createCharDefinitionInFnBody(offset);
         var entry = define(definition);
         return entry;
     }
 
-    function defineCharInFH(offset)
+    /**
+     * Defines a character at a specified position in the string representation of an arbitrary
+     * native function.
+     * Engine-dependent padding/shifting is used to account for spacing characters inserted before
+     * the function head by specific engines.
+     *
+     * @param {string} expr
+     * An expression that resolves to a native function.
+     *
+     * @param {number} index
+     * The index of the character to be extracted in engines that do not insert any spacing
+     * characters before the function head, e.g. V8.
+     *
+     * @param ...
+     * Required features for the definition.
+     *
+     * @returns
+     * A definition entry for the specified character.
+     */
+    function defineCharInFnHead(offset)
     {
-        var definition = createCharInFHDefinition(offset);
+        var definition = createCharDefinitionInFnHead(offset);
         var entry = define._callWithFeatures(definition, arguments, 1);
         return entry;
     }
@@ -457,7 +514,15 @@ function getFHPaddingEntries(index)
     {
         var expr = '(' + number + ')[TO_LOCALE_STRING](' + locale + ')';
         if (index != null)
-            expr += '[' + index + ']';
+        {
+            if (index > 4)
+            {
+                var paddingBlock = R_PADDINGS[10 - index];
+                expr = '(' + paddingBlock + ' + ' + expr + ')[10]';
+            }
+            else
+                expr += '[' + index + ']';
+        }
         var entry = define._callWithFeatures(expr, LOCALE_NUMERALS, arguments, 3);
         return entry;
     }
@@ -620,7 +685,13 @@ function getFHPaddingEntries(index)
 
     CHARACTERS =
     noProto
-    ({
+    ({ // eslint-disable-line @origin-1/bracket-layout
+        // '\0'…'\x07'
+        '\b':
+        [
+            define('Function("return\\"" + ESCAPING_BACKSLASH + "b\\"")()[0]'),
+            defineCharDefault({ escSeq: false }),
+        ],
         '\t':
         [
             define('Function("return\\"" + ESCAPING_BACKSLASH + "true\\"")()[0]'),
@@ -632,9 +703,13 @@ function getFHPaddingEntries(index)
             define('(RP_1_WA + Function())[20]', FUNCTION_19_LF),
             define('(RP_0_S + Function())[22]', FUNCTION_22_LF),
             define('(RP_0_S + ANY_FUNCTION)[0]', IE_SRC),
-            defineCharInFH(13, NO_V8_SRC),
+            defineCharInFnHead(13, NO_V8_SRC),
         ],
-
+        '\v':
+        [
+            define('Function("return\\"" + ESCAPING_BACKSLASH + "v\\"")()[0]'),
+            defineCharDefault({ escSeq: false }),
+        ],
         '\f':
         [
             define('Function("return\\"" + ESCAPING_BACKSLASH + "false\\"")()[0]'),
@@ -645,15 +720,15 @@ function getFHPaddingEntries(index)
             define('Function("return\\"" + ESCAPING_BACKSLASH + "r\\"")()'),
             defineCharDefault({ escSeq: false }),
         ],
-
+        // '\x0e'…'\x1d'
         '\x1e':
         [
             define('(RP_5_A + atob("NaNfalse"))[10]', ATOB),
         ],
-
+        // '\x1f'
         ' ':
         [
-            defineCharAtFnPos('ANY_FUNCTION', 8),
+            defineCharInFn('ANY_FUNCTION', 8),
             define('(RP_3_WA + ARRAY_ITERATOR)[10]', ARRAY_ITERATOR),
             define('(RP_0_S + FILTER)[20]', FF_SRC),
             define('(+(RP_0_S + FILTER)[0] + FILTER)[22]', NO_FF_SRC),
@@ -668,7 +743,7 @@ function getFHPaddingEntries(index)
             define('(RP_5_A + FLAT)[20]', FLAT, NO_IE_SRC),
             define('(RP_0_S + FLAT)[20]', FLAT, NO_V8_SRC),
         ],
-        // '!':    ,
+        // '!'
         '"':
         [
             define('"".fontcolor()[12]'),
@@ -678,7 +753,7 @@ function getFHPaddingEntries(index)
             define('document.nodeName[0]', ANY_DOCUMENT),
             defineCharDefault(),
         ],
-        // '$':    ,
+        // '$'
         '%':
         [
             define('escape(FILTER)[20]'),
@@ -696,16 +771,16 @@ function getFHPaddingEntries(index)
             define('"".fontcolor("".fontcolor([]))[31]', ESC_HTML_QUOT_ONLY),
             defineCharDefault(),
         ],
-        // '\'':   ,
+        // '\''
         '(':
         [
-            defineCharInFH(9),
+            defineCharInFnHead(9),
         ],
         ')':
         [
-            defineCharInFH(10),
+            defineCharInFnHead(10),
         ],
-        // '*':    ,
+        // '*'
         '+': '(1e100 + [])[2]',
         ',':
         [
@@ -719,7 +794,7 @@ function getFHPaddingEntries(index)
             define('"0false".italics()[10]'),
             define('"true".sub()[10]'),
         ],
-        // '0'…'9':
+        // '0'…'9'
         ':':
         [
             define('(RP_0_S + RegExp())[3]'),
@@ -752,15 +827,15 @@ function getFHPaddingEntries(index)
             define('(RP_0_S + RegExp())[2]'),
             defineCharDefault(),
         ],
-        // '@':    ,
+        // '@'
         'A':
         [
-            defineCharAtFnPos('Array', 9),
+            defineCharInFn('Array', 9),
             define('(RP_3_WA + ARRAY_ITERATOR)[11]', ARRAY_ITERATOR),
         ],
         'B':
         [
-            defineCharAtFnPos('Boolean', 9),
+            defineCharInFn('Boolean', 9),
             define('"0".sub()[10]', CAPITAL_HTML),
         ],
         'C':
@@ -775,7 +850,7 @@ function getFHPaddingEntries(index)
         ],
         'D':
         [
-            // • The escaped character may be either "]" or "}".
+            // * The escaped character may be either "]" or "}".
             define('escape((+("1000" + (RP_5_A + FILTER + 0)[40] + 0) + FILTER)[40])[2]'), // *
             define('escape("]")[2]'),
             define('escape("}")[2]'),
@@ -801,16 +876,15 @@ function getFHPaddingEntries(index)
         ],
         'E':
         [
-            defineCharAtFnPos('RegExp', 12),
+            defineCharInFn('RegExp', 12),
             define('btoa("0NaN")[1]', ATOB),
             define('(RP_5_A + "".link())[10]', CAPITAL_HTML),
-            define('(RP_3_WA + sidebar)[11]', EXTERNAL),
             define('(RP_3_WA + Audio)[21]', HTMLAUDIOELEMENT),
             define('(RP_0_S + REGEXP_STRING_ITERATOR)[11]', REGEXP_STRING_ITERATOR),
         ],
         'F':
         [
-            defineCharAtFnPos('Function', 9),
+            defineCharInFn('Function', 9),
             define('"".fontcolor()[1]', CAPITAL_HTML),
         ],
         'G':
@@ -852,20 +926,29 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: 'Function("return toString.call(location)")()[SLICE_OR_SUBSTR]("-10")[1]',
+                    expr:
+                    'Function("return toString.call(location)")()[SLICE_OR_SUBSTR]("-10")[1]',
                     optimize: true,
                 },
                 LOCATION
             ),
+            define('(RP_3_WA + LOCATION_CONSTRUCTOR)[11]', OBJECT_L_LOCATION_CTOR),
+            define
+            (
+                '(LOCATION_CONSTRUCTOR + RP_0_S)[SLICE_OR_SUBSTR]("-20")[0]',
+                OLD_SAFARI_LOCATION_CTOR
+            ),
             define
             (
                 {
-                    expr: '(Function("return toString.call(location)")() + RP_1_WA).at("-10")',
+                    expr:
+                    '(Function("return toString.call(location)")() + RP_1_WA).at("-10")',
                     optimize: true,
                 },
                 AT,
                 LOCATION
             ),
+            define('(LOCATION_CONSTRUCTOR + RP_0_S).at("-20")', AT, OLD_SAFARI_LOCATION_CTOR),
             define
             (
                 '[][TO_STRING].call(location)[SLICE_OR_SUBSTR]("-10")[1]',
@@ -893,7 +976,7 @@ function getFHPaddingEntries(index)
         'N': '"NaN"[0]',
         'O':
         [
-            defineCharAtFnPos('Object', 9),
+            defineCharInFn('Object', 9),
             define('(RP_3_WA + PLAIN_OBJECT)[11]'),
             define('btoa(NaN)[3]', ATOB),
             define('"".fontcolor()[2]', CAPITAL_HTML),
@@ -917,14 +1000,14 @@ function getFHPaddingEntries(index)
         ],
         'R':
         [
-            defineCharAtFnPos('RegExp', 9),
+            defineCharInFn('RegExp', 9),
             define('btoa("0true")[2]', ATOB),
             define('"".fontcolor()[10]', CAPITAL_HTML),
             define('(RP_3_WA + REGEXP_STRING_ITERATOR)[11]', REGEXP_STRING_ITERATOR),
         ],
         'S':
         [
-            defineCharAtFnPos('String', 9),
+            defineCharInFn('String', 9),
             define('"".sub()[1]', CAPITAL_HTML),
         ],
         'T':
@@ -951,28 +1034,19 @@ function getFHPaddingEntries(index)
             define('"".sub()[2]', CAPITAL_HTML),
             define
             (
-                {
-                    expr: '(RP_3_WA + Function("return toString")()())[11]',
-                    optimize: true,
-                },
+                { expr: '(RP_3_WA + Function("return toString")()())[11]', optimize: true },
                 GLOBAL_UNDEFINED
             ),
             define
             (
-                {
-                    expr: '(RP_3_WA + Function("return{}.toString")()())[11]',
-                    optimize: true,
-                },
+                { expr: '(RP_3_WA + Function("return{}.toString")()())[11]', optimize: true },
                 OBJECT_UNDEFINED
             ),
             define('(RP_3_WA + PLAIN_OBJECT[TO_STRING].call())[11]', UNDEFINED),
             define('(RP_3_WA + ARRAY_ITERATOR[TO_STRING].call())[11]', ARRAY_ITERATOR, UNDEFINED),
             define
             (
-                {
-                    expr: '(RP_3_WA + Function("return Intl.toString")()())[11]',
-                    optimize: true,
-                },
+                { expr: '(RP_3_WA + Function("return Intl.toString")()())[11]', optimize: true },
                 INTL,
                 OBJECT_UNDEFINED
             ),
@@ -991,6 +1065,7 @@ function getFHPaddingEntries(index)
             define('(self + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW),
             define('btoa(undefined)[1]', ATOB),
             define('(RP_0_S + self)[11]', DOMWINDOW),
+            define('(RP_3_WA + Function("return constructor")())[11]', OBJECT_W_CTOR),
             define('(RP_3_WA + self)[11]', WINDOW),
             define('(self + RP_4_A).at("-11")', ANY_WINDOW, AT),
             defineCharDefault({ atob: false }),
@@ -1014,7 +1089,7 @@ function getFHPaddingEntries(index)
         ],
         '[':
         [
-            defineCharInFB(14),
+            defineCharInFnBody(14),
             define('(RP_0_S + ARRAY_ITERATOR)[0]', ARRAY_ITERATOR),
         ],
         '\\':
@@ -1024,24 +1099,24 @@ function getFHPaddingEntries(index)
         ],
         ']':
         [
-            defineCharInFB(26),
+            defineCharInFnBody(26),
             define('(RP_0_S + ARRAY_ITERATOR)[22]', NO_OLD_SAFARI_ARRAY_ITERATOR),
         ],
         '^':
         [
             define('atob("undefined0")[2]', ATOB),
         ],
-        // '_':    ,
-        // '`':    ,
+        // '_'
+        // '`'
         'a': '"false"[1]',
         'b':
         [
-            defineCharAtFnPos('Number', 12),
+            defineCharInFn('Number', 12),
             define('(RP_0_S + ARRAY_ITERATOR)[2]', ARRAY_ITERATOR),
         ],
         'c':
         [
-            defineCharAtFnPos('ANY_FUNCTION', 3),
+            defineCharInFn('ANY_FUNCTION', 3),
             define('(RP_5_A + ARRAY_ITERATOR)[10]', ARRAY_ITERATOR),
         ],
         'd': '"undefined"[2]',
@@ -1049,7 +1124,7 @@ function getFHPaddingEntries(index)
         'f': '"false"[0]',
         'g':
         [
-            defineCharAtFnPos('String', 14),
+            defineCharInFn('String', 14),
         ],
         'h':
         [
@@ -1074,13 +1149,13 @@ function getFHPaddingEntries(index)
         'l': '"false"[2]',
         'm':
         [
-            defineCharAtFnPos('Number', 11),
+            defineCharInFn('Number', 11),
             define('(RP_6_S + Function())[20]'),
         ],
         'n': '"undefined"[1]',
         'o':
         [
-            defineCharAtFnPos('ANY_FUNCTION', 6),
+            defineCharInFn('ANY_FUNCTION', 6),
             define('(RP_0_S + ARRAY_ITERATOR)[1]', ARRAY_ITERATOR),
         ],
         'p':
@@ -1103,7 +1178,7 @@ function getFHPaddingEntries(index)
         'u': '"undefined"[0]',
         'v':
         [
-            defineCharInFB(19),
+            defineCharInFnBody(19),
         ],
         'w':
         [
@@ -1118,7 +1193,6 @@ function getFHPaddingEntries(index)
         [
             define('101[TO_STRING]("34")[1]'),
             define('btoa("falsefalse")[10]', ATOB),
-            define('(RP_1_WA + sidebar)[10]', EXTERNAL),
         ],
         'y': '(RP_3_WA + [Infinity])[10]',
         'z':
@@ -1128,14 +1202,15 @@ function getFHPaddingEntries(index)
         ],
         '{':
         [
-            defineCharInFH(12),
+            defineCharInFnHead(12),
         ],
-        // '|':    ,
+        // '|'
         '}':
         [
-            defineCharInFB(28),
+            defineCharInFnBody(28),
         ],
-        // '~':    ,
+        // '~'
+        // '\x7f'
 
         '\x8a':
         [
@@ -1224,11 +1299,11 @@ function getFHPaddingEntries(index)
             define('Infinity[TO_LOCALE_STRING]("ja").at("-1")', JAPANESE_INFINITY, AT),
             defineCharDefault(),
         ],
-    });
+    }); // eslint-disable-line @origin-1/bracket-layout
 
     COMPLEX =
     noProto
-    ({
+    ({ // eslint-disable-line @origin-1/bracket-layout
         Number:         define({ expr: 'Number.name', optimize: { complexOpt: false } }, NAME),
         Object:         define({ expr: 'Object.name', optimize: { complexOpt: false } }, NAME),
         RegExp:         define({ expr: 'RegExp.name', optimize: { complexOpt: false } }, NAME),
@@ -1236,11 +1311,11 @@ function getFHPaddingEntries(index)
         fromCharCo:
         define({ expr: '"from3har3o".split(3).join("C")', optimize: { complexOpt: false } }),
         mCh:            define('atob("bUNo")', Feature.ATOB),
-    });
+    }); // eslint-disable-line @origin-1/bracket-layout
 
     CONSTANTS =
     noProto
-    ({
+    ({ // eslint-disable-line @origin-1/bracket-layout
         // JavaScript globals
 
         Array:
@@ -1279,7 +1354,7 @@ function getFHPaddingEntries(index)
         [
             define('PLAIN_OBJECT.constructor'),
             define('Intl.constructor', INTL),
-            define('[].entries().constructor', NO_OLD_SAFARI_ARRAY_ITERATOR),
+            define('[].entries().constructor', OBJECT_ARRAY_ENTRIES_CTOR),
         ],
         RegExp:
         [
@@ -1312,10 +1387,6 @@ function getFHPaddingEntries(index)
         self:
         [
             define('Function("return self")()', SELF_OBJ),
-        ],
-        sidebar:
-        [
-            define('Function("return sidebar")()', EXTERNAL),
         ],
         unescape:
         [
@@ -1385,8 +1456,8 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '(+(RP_0_S + FILTER)[0] + RegExp(FILTER))[23]',
-                    solutionType: SolutionType.STRING,
+                    expr:           '(+(RP_0_S + FILTER)[0] + RegExp(FILTER))[23]',
+                    solutionType:   SolutionType.STRING,
                 },
                 ESC_REGEXP_LF,
                 NO_V8_SRC
@@ -1401,8 +1472,8 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '(RP_1_WA + [+(RP_0_S + AT)[0]] + RegExp(AT))[20]',
-                    solutionType: SolutionType.STRING,
+                    expr:           '(RP_1_WA + [+(RP_0_S + AT)[0]] + RegExp(AT))[20]',
+                    solutionType:   SolutionType.STRING,
                 },
                 AT,
                 ESC_REGEXP_LF,
@@ -1425,8 +1496,8 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '(+(RP_0_S + FILL)[0] + RegExp(FILL))[21]',
-                    solutionType: SolutionType.STRING,
+                    expr:           '(+(RP_0_S + FILL)[0] + RegExp(FILL))[21]',
+                    solutionType:   SolutionType.STRING,
                 },
                 ESC_REGEXP_LF,
                 FILL,
@@ -1435,8 +1506,8 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '(+(RP_0_S + FLAT)[0] + RegExp(FLAT))[21]',
-                    solutionType: SolutionType.STRING,
+                    expr:           '(+(RP_0_S + FLAT)[0] + RegExp(FLAT))[21]',
+                    solutionType:   SolutionType.STRING,
                 },
                 ESC_REGEXP_LF,
                 FLAT,
@@ -1464,6 +1535,11 @@ function getFHPaddingEntries(index)
             define({ expr: '"ar-td"', solutionType: SolutionType.COMBINED_STRING }),
             define({ expr: '"ar"', solutionType: SolutionType.COMBINED_STRING }, SHORT_LOCALES),
         ],
+        LOCATION_CONSTRUCTOR:
+        [
+            define('Function("return location")().constructor', OBJECT_L_LOCATION_CTOR),
+            define('Function("return location")().constructor', OLD_SAFARI_LOCATION_CTOR),
+        ],
         PLAIN_OBJECT:
         [
             define('Function("return{}")()'),
@@ -1487,9 +1563,9 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '"toLocaleString"',
-                    optimize: true,
-                    solutionType: SolutionType.COMBINED_STRING,
+                    expr:           '"toLocaleString"',
+                    optimize:       true,
+                    solutionType:   SolutionType.COMBINED_STRING,
                 }
             ),
         ],
@@ -1498,22 +1574,16 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '"toString"',
-                    optimize: { toStringOpt: false },
-                    solutionType: SolutionType.COMBINED_STRING,
+                    expr:           '"toString"',
+                    optimize:       { toStringOpt: false },
+                    solutionType:   SolutionType.COMBINED_STRING,
                 }
             ),
         ],
         TO_UPPER_CASE:
         [
             define
-            (
-                {
-                    expr: '"toUpperCase"',
-                    optimize: true,
-                    solutionType: SolutionType.COMBINED_STRING,
-                }
-            ),
+            ({ expr: '"toUpperCase"', optimize: true, solutionType: SolutionType.COMBINED_STRING }),
         ],
 
         // Function body extra padding blocks: prepended to a function to align the function's body
@@ -1564,31 +1634,31 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '+("10" + [(RP_4_A + FILTER)[40]] + "00000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("10" + [(RP_4_A + FILTER)[40]] + "00000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 }
             ),
             define
             (
                 {
-                    expr: '+("10" + [(RP_0_S + AT)[32]] + "00000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("10" + [(RP_0_S + AT)[32]] + "00000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 },
                 AT
             ),
             define
             (
                 {
-                    expr: '+("10" + [(RP_6_S + FILL)[40]] + "00000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("10" + [(RP_6_S + FILL)[40]] + "00000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 },
                 FILL
             ),
             define
             (
                 {
-                    expr: '+("10" + [(RP_6_S + FLAT)[40]] + "00000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("10" + [(RP_6_S + FLAT)[40]] + "00000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 },
                 FLAT
             ),
@@ -1598,31 +1668,31 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '+("1000" + (RP_5_A + FILTER + 0)[40] + "000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("1000" + (RP_5_A + FILTER + 0)[40] + "000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 }
             ),
             define
             (
                 {
-                    expr: '+("1000" + (AT + 0)[31] + "000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("1000" + (AT + 0)[31] + "000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 },
                 AT
             ),
             define
             (
                 {
-                    expr: '+("1000" + (FILL + 0)[33] + "000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("1000" + (FILL + 0)[33] + "000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 },
                 FILL
             ),
             define
             (
                 {
-                    expr: '+("1000" + (FLAT + 0)[33] + "000")',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+("1000" + (FLAT + 0)[33] + "000")',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 },
                 FLAT
             ),
@@ -1632,8 +1702,8 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '[true][+(RP_0_S + ANY_FUNCTION)[0]]',
-                    solutionType: SolutionType.UNDEFINED,
+                    expr:           '[true][+(RP_0_S + ANY_FUNCTION)[0]]',
+                    solutionType:   SolutionType.UNDEFINED,
                 },
                 NO_FF_SRC
             ),
@@ -1668,15 +1738,15 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '+(1 + [+(RP_0_S + ANY_FUNCTION)[0]])',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+(1 + [+(RP_0_S + ANY_FUNCTION)[0]])',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 }
             ),
             define
             (
                 {
-                    expr: '+(++(RP_0_S + ANY_FUNCTION)[0] + [0])',
-                    solutionType: SolutionType.WEAK_ALGEBRAIC,
+                    expr:           '+(++(RP_0_S + ANY_FUNCTION)[0] + [0])',
+                    solutionType:   SolutionType.WEAK_ALGEBRAIC,
                 },
                 INCR_CHAR
             ),
@@ -1698,8 +1768,8 @@ function getFHPaddingEntries(index)
             define
             (
                 {
-                    expr: '!![[]][+(RP_0_S + ANY_FUNCTION)[0]]',
-                    solutionType: SolutionType.ALGEBRAIC,
+                    expr:           '!![[]][+(RP_0_S + ANY_FUNCTION)[0]]',
+                    solutionType:   SolutionType.ALGEBRAIC,
                 }
             ),
             define
@@ -1727,7 +1797,7 @@ function getFHPaddingEntries(index)
         RP_4_A:     { expr: 'true',     solutionType: SolutionType.ALGEBRAIC },
         RP_5_A:     { expr: 'false',    solutionType: SolutionType.ALGEBRAIC },
         RP_6_S:     { expr: '"0false"', solutionType: SolutionType.COMBINED_STRING },
-    });
+    }); // eslint-disable-line @origin-1/bracket-layout
 
     FB_R_PADDING_SHIFTS = [define(4, FF_SRC), define(5, IE_SRC), define(0, V8_SRC)];
 

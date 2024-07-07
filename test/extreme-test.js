@@ -156,4 +156,3 @@
     addEventListener('load', handleLoad);
 }
 )();
-

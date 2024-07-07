@@ -1,23 +1,22 @@
 import { Feature } from '../../lib/jscrewit.js';
 
-export function calculateAvailabilityInfo(engineEntry, filterFeature)
+const availabilityInfoMap = { __proto__: null };
+
+export function calculateAvailabilityInfo(family, filterFeature)
 {
     let firstAvail;
     let firstUnavail;
-    engineEntry.versions.forEach
+    Feature.FAMILIES[family].forEach
     (
-        ({ feature }, versionIndex) =>
+        ({ featureName }, compatibilityIndex) =>
         {
-            const engineFeatureObj = Feature[feature];
+            const engineFeatureObj = Feature[featureName];
             if (filterFeature(engineFeatureObj))
-            {
-                if (firstAvail == null)
-                    firstAvail = versionIndex;
-            }
+                firstAvail ??= compatibilityIndex;
             else
             {
                 if (firstAvail != null && firstUnavail == null)
-                    firstUnavail = versionIndex;
+                    firstUnavail = compatibilityIndex;
             }
         },
     );
@@ -26,93 +25,32 @@ export function calculateAvailabilityInfo(engineEntry, filterFeature)
 }
 
 export const getAvailabilityByFeature =
-(featureName, engineEntry) =>
+(featureName, family) =>
 {
-    const availabilityInfoCache =
-    engineEntry.availabilityInfoCache || (engineEntry.availabilityInfoCache = { __proto__: null });
+    const availabilityInfoCache = availabilityInfoMap[family] ??= { __proto__: null };
     const availabilityInfo =
-    availabilityInfoCache[featureName] ||
-    (
-        availabilityInfoCache[featureName] =
-        calculateAvailabilityInfo
-        (engineEntry, engineFeatureObj => engineFeatureObj.includes(featureName))
-    );
+    availabilityInfoCache[featureName] ||=
+    calculateAvailabilityInfo(family, engineFeatureObj => engineFeatureObj.includes(featureName));
     return availabilityInfo;
 };
 
-export const getEngineEntries =
-() =>
+export function getDescription(compatibilities, compatibilityIndex, appendPlus)
 {
-    const ENGINE_ENTRIES =
-    [
-        {
-            name: ['Chrome', 'Edge', 'Opera'],
-            versions:
-            [
-                { description: ['86+', '86+', '72+'], feature: 'CHROME_86' },
-                { description: ['92+', '92+', '78+'], feature: 'CHROME_92' },
-            ],
-        },
-        {
-            name: 'Firefox',
-            versions:
-            [
-                { description: '78+', feature: 'FF_78' },
-                { description: '83+', feature: 'FF_83' },
-                { description: '90+', feature: 'FF_90' },
-            ],
-        },
-        {
-            name: 'Internet Explorer',
-            versions:
-            [
-                { description: '9+', feature: 'IE_9' },
-                { description: '10+', feature: 'IE_10' },
-                { description: '11', feature: 'IE_11' },
-                { description: '11 on Windows 10', feature: 'IE_11_WIN_10' },
-            ],
-        },
-        {
-            name: 'Safari',
-            versions:
-            [
-                { description: '7.0+', feature: 'SAFARI_7_0' },
-                { description: '7.1+', feature: 'SAFARI_7_1' },
-                { description: '8+', feature: 'SAFARI_8' },
-                { description: '9+', feature: 'SAFARI_9' },
-                { description: '10+', feature: 'SAFARI_10' },
-                { description: '12+', feature: 'SAFARI_12' },
-                { description: '13+', feature: 'SAFARI_13' },
-                { description: '14.0.1+', feature: 'SAFARI_14_0_1' },
-                { description: '14.1+', feature: 'SAFARI_14_1' },
-            ],
-        },
-        {
-            name: 'Android Browser',
-            versions:
-            [
-                { description: '4.0+', feature: 'ANDRO_4_0' },
-                { description: '4.1+', feature: 'ANDRO_4_1' },
-                { description: '4.4', feature: 'ANDRO_4_4' },
-            ],
-        },
-        {
-            name: 'Node.js',
-            versions:
-            [
-                { description: '0.10+', feature: 'NODE_0_10' },
-                { description: '0.12+', feature: 'NODE_0_12' },
-                { description: '4+', feature: 'NODE_4' },
-                { description: '5+', feature: 'NODE_5' },
-                { description: '10+', feature: 'NODE_10' },
-                { description: '11+', feature: 'NODE_11' },
-                { description: '12+', feature: 'NODE_12' },
-                { description: '13+', feature: 'NODE_13' },
-                { description: '15+', feature: 'NODE_15' },
-                { description: '16+', feature: 'NODE_16' },
-            ],
-        },
-    ];
+    const { tag, version } = compatibilities[compatibilityIndex];
+    let description = typeof version === 'string' ? version : version.from;
+    if (tag != null)
+        description += ` ${tag}`;
+    if (appendPlus && !isLastVersion(compatibilities, compatibilityIndex))
+        description += '+';
+    return description;
+}
 
-    return ENGINE_ENTRIES;
-};
+function isLastVersion(compatibilities, index)
+{
+    const { version } = compatibilities[index];
+    if (typeof version !== 'string')
+        return false;
+    const lastVersion = compatibilities.at(-1).version;
+    const returnValue = version === lastVersion;
+    return returnValue;
+}

@@ -1,6 +1,6 @@
 import { OPTIMAL_B }        from '../definitions';
 import { extraZeros }       from './encoder-utils';
-import { EMPTY_SOLUTION }   from 'novem';
+import { EMPTY_SOLUTION }   from '~solution';
 
 var REPLACE_OPTIONS = { firstSolution: EMPTY_SOLUTION };
 

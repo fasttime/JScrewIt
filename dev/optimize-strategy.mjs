@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import JScrewIt, { Feature }    from '../lib/jscrewit.js';
-import choose                   from './internal/choose.js';
+import choose                   from './internal/choose.mjs';
 import STRATEGY_TEST_DATA_LIST  from './internal/strategy-test-data.js';
 import chalk                    from 'chalk';
 
@@ -157,5 +157,5 @@ function optimize(strategyTestData)
         optimize(strategyTestData);
     };
     const strategyNames = STRATEGY_TEST_DATA_LIST.map(({ strategyName }) => strategyName);
-    choose(callback, 'Strategy to optimize', strategyNames);
+    await choose(callback, 'Strategy to optimize', strategyNames);
 }

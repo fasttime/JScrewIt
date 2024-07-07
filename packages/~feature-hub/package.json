@@ -1,0 +1,47 @@
+{
+  "name": "~feature-hub",
+  "description": "Feature framework for JScrewIt",
+  "homepage": "https://github.com/fasttime/JScrewIt/tree/master/packages/~feature-hub",
+  "bugs": "https://github.com/fasttime/JScrewIt/issues",
+  "license": "ISC",
+  "author": "Francesco Trotta <ft@fasttime.org> (https://github.com/fasttime)",
+  "files": [
+    "lib",
+    "!.*"
+  ],
+  "exports": "./lib/index.js",
+  "module": "./lib/index.js",
+  "types": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "build": "npm install && gulp",
+    "clean": "node dev/clean",
+    "coverage": "nyc --include=src --reporter=html --reporter=text-summary npm test",
+    "legacy-test": "node -- test/node-legacy/node_modules/mocha/bin/mocha --check-leaks --require=test/node-legacy-adapter --ui=ebdd test/node-legacy/test/spec/**/*.spec.js",
+    "lint": "node dev/lint",
+    "make": "npm run make-lib",
+    "make-browser-spec-runner": "node dev/make-browser-spec-runner",
+    "make-lib": "node dev/make-lib",
+    "prepare-legacy-test": "node ../../dev/internal/prepare-package-legacy-test.mjs",
+    "test": "mocha --check-leaks --require=ts-node/register --ui=ebdd test/spec/**/*.spec.ts"
+  },
+  "devDependencies": {
+    "@types/mocha": "latest",
+    "@types/node": "latest",
+    "ebdd": "latest",
+    "eslint-plugin-ebdd": "latest",
+    "globals": "latest",
+    "gulp": "latest",
+    "mocha": "latest",
+    "mocha-bar": "latest",
+    "mocha_3": "npm:mocha@3",
+    "nyc": "latest",
+    "ts-node": "latest",
+    "typescript": "latest"
+  },
+  "private": true,
+  "type": "module"
+}

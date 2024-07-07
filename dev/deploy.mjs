@@ -1,66 +1,25 @@
 #!/usr/bin/env node
 
-import { Client }           from 'basic-ftp';
-
-import { constants as fsConstants, promises as fsPromises, fstatSync, readFileSync }
-from 'fs';
-
-import { dirname }          from 'path';
-import { Readable }         from 'stream';
-import { fileURLToPath }    from 'url';
+import { constants as fsConstants, fstatSync, readFileSync }    from 'node:fs';
+import { access, readFile }                                     from 'node:fs/promises';
+import { dirname }                                              from 'node:path';
+import { Readable }                                             from 'node:stream';
+import { Client }                                               from 'basic-ftp';
 
 const JSCREWIT_MIN_PATH = 'lib/jscrewit.min.js';
 const REMOTE_HOME = '/html';
 
 {
-    const path = fileURLToPath(import.meta.url);
-    const __dirname = dirname(dirname(path));
-    process.chdir(__dirname);
+    const pkgDir = dirname(import.meta.dirname);
+    process.chdir(pkgDir);
 }
-(async () =>
-{
-    if (!await verifyBuild())
-    {
-        process.exitCode = 1;
-        return;
-    }
-    const ftpAccessOptions = readFTPAccessOptions();
-    if (ftpAccessOptions == null)
-    {
-        process.exitCode = 1;
-        return;
-    }
-    const client = new Client();
-    try
-    {
-        await client.access(ftpAccessOptions);
 
-        await client.ensureDir(REMOTE_HOME);
-        const readable = await createIndex();
-        await client.uploadFrom(readable, 'index.html');
-
-        await client.ensureDir('lib');
-        await client.clearWorkingDir();
-        await client.uploadFrom(JSCREWIT_MIN_PATH, 'jscrewit.min.js');
-
-        await client.ensureDir('../ui');
-        await client.clearWorkingDir();
-        await client.uploadFromDir('ui');
-    }
-    catch (error)
-    {
-        console.error(error);
-    }
-    finally
-    {
-        client.close();
-    }
-}
-)();
+if (!await deploy())
+    process.exitCode = 1;
 
 async function createIndex()
 {
-    const input = await readFile('JScrewIt.html');
+    const input = await readFile('JScrewIt.html', 'utf-8');
     const { groups: { start, end } } = input.match(/^(?<start>.*)\n\n(?<end><body>.*)\n$/s);
     const output =
     `${start}
@@ -120,6 +79,37 @@ ${end}
     return readable;
 }
 
+async function deploy()
+{
+    if (!await verifyBuild())
+        return false;
+    const ftpAccessOptions = readFTPAccessOptions();
+    if (ftpAccessOptions == null)
+        return false;
+    const client = new Client();
+    try
+    {
+        await client.access(ftpAccessOptions);
+
+        await client.ensureDir(REMOTE_HOME);
+        const readable = await createIndex();
+        await client.uploadFrom(readable, 'index.html');
+
+        await client.ensureDir('lib');
+        await client.clearWorkingDir();
+        await client.uploadFrom(JSCREWIT_MIN_PATH, 'jscrewit.min.js');
+
+        await client.ensureDir('../ui');
+        await client.clearWorkingDir();
+        await client.uploadFromDir('ui');
+    }
+    finally
+    {
+        client.close();
+    }
+    return true;
+}
+
 function readFTPAccessOptions()
 {
     let content;
@@ -145,12 +135,6 @@ function readFTPAccessOptions()
     return ftpAccessOptions;
 }
 
-function readFile(path)
-{
-    const promise = fsPromises.readFile(path, 'utf-8');
-    return promise;
-}
-
 async function verifyBuild()
 {
     const promises = [verifyReadable(JSCREWIT_MIN_PATH), verifyReadable('ui/ui.js')];
@@ -168,7 +152,7 @@ async function verifyReadable(filename)
 {
     try
     {
-        await fsPromises.access(filename, fsConstants.R_OK);
+        await access(filename, fsConstants.R_OK);
     }
     catch (error)
     {

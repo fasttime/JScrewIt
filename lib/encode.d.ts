@@ -1,15 +1,16 @@
-import { CompatibleFeatureArray, FeatureElement } from './feature';
+import type { FeatureElementOrCompatibleArray } from './feature';
 
 export interface EncodeOptions
 {
     /**
      * Specifies the features available in the engines that evaluate the encoded output.
      *
-     * If this parameter is unspecified, [[DEFAULT|`JScrewIt.Feature.DEFAULT`]] is assumed: this
-     * ensures maximum compatibility but also generates the largest code.
+     * If this parameter is unspecified, {@link FeatureConstructor.DEFAULT |
+     * `JScrewIt.Feature.DEFAULT`} is assumed: this ensures maximum compatibility but also generates
+     * the largest code.
      * To generate shorter code, specify all features available in all target engines explicitly.
      */
-    features?: FeatureElement | CompatibleFeatureArray;
+    features?: FeatureElementOrCompatibleArray | undefined;
 
     /**
      * This option controls the type of code generated from the given input.
@@ -59,7 +60,7 @@ export interface EncodeOptions
      *
      * </dl>
      */
-    runAs?: 'call' | 'eval' | 'express' | 'express-call' | 'express-eval' | 'none';
+    runAs?: RunAs | undefined;
 
     /**
      * If this parameter is truthy, lines in the beginning and in the end of the file containing
@@ -72,11 +73,17 @@ export interface EncodeOptions
      * Using this option may produce unexpected results if the input is not well-formed JavaScript
      * code.
      */
-    trimCode?: boolean;
+    trimCode?: boolean | undefined;
 
     /** An alias for `runAs`. */
-    wrapWith?: 'call' | 'eval' | 'express' | 'express-call' | 'express-eval' | 'none';
+    wrapWith?: RunAs | undefined;
 }
+
+/**
+ * Values of this type control the type of code generated from a given input.
+ * See {@link EncodeOptions.runAs | `EncodeOptions.runAs`} for the meaning of each possible value.
+ */
+type RunAs = 'call' | 'eval' | 'express' | 'express-call' | 'express-eval' | 'none';
 
 interface encode
 {

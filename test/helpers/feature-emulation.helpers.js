@@ -31,6 +31,16 @@
         return descriptor;
     }
 
+    function createStaticSupplier(value)
+    {
+        function supplier()
+        {
+            return value;
+        }
+
+        return supplier;
+    }
+
     function createToStringDescriptor(adapterList)
     {
         function get()
@@ -214,11 +224,7 @@
                 document = { createElement: createElement, nodeName: '#document' };
                 override(this, 'document', { value: document });
             }
-            var valueOf =
-            function ()
-            {
-                return str;
-            };
+            var valueOf = createStaticSupplier(str);
             override(this, 'document.valueOf', { value: valueOf });
         };
         return setUp;
@@ -329,7 +335,7 @@
         {
             if (String.prototype.matchAll && ''.matchAll() + '' === str)
                 return;
-            registerObjectFactory(this, 'String.prototype.matchAll', str, Object);
+            registerObjectFactory(this, 'String.prototype.matchAll', str, Object.prototype);
         };
         return setUp;
     }
@@ -390,14 +396,21 @@
             }
             else
                 override(this, 'self', { value: { } });
-            var valueOf =
-            function ()
-            {
-                return str;
-            };
+            var valueOf = createStaticSupplier(str);
             override(this, 'self.valueOf', { value: valueOf });
         };
         return setUp;
+    }
+
+    function mockLocation(context)
+    {
+        var location = global.location;
+        if (!location)
+        {
+            location = { constructor: { } };
+            override(context, 'location', { value: location });
+        }
+        return location;
     }
 
     function override(context, path, descriptor)
@@ -492,14 +505,10 @@
         intercept(context, NUMBER_TO_LOCALE_STRING_INTERCEPTOR, adapter);
     }
 
-    function registerObjectFactory(context, path, str, constructor)
+    function registerObjectFactory(context, path, str, prototype)
     {
-        var obj = Object.create(constructor.prototype);
-        var factory =
-        function ()
-        {
-            return obj;
-        };
+        var obj = Object.create(prototype);
+        var factory = createStaticSupplier(obj);
         override(context, path, { value: factory });
         registerDefaultToStringAdapter(context, obj, str);
     }
@@ -512,7 +521,7 @@
             ARROW_REGEXP,
             function (match, capture1, capture2)
             {
-                var replacement1 = /^\(.*\)$/.test(capture1) ? capture1 : '(' + capture1 + ')';
+                var replacement1 = /^\([\S\s]*\)$/.test(capture1) ? capture1 : '(' + capture1 + ')';
                 var innerExpr = replaceArrowFunctions(capture2);
                 var replacement2 =
                 /^\{[\s\S]*\}$/.test(capture2) ? innerExpr : '{return(' + innerExpr + ')}';
@@ -562,14 +571,14 @@
 
     var FUNCTION_TO_STRING_INTERCEPTOR =
     {
-        path: 'Function.prototype.toString',
-        createDescriptor: createDefaultInterceptorDescriptor,
+        path:               'Function.prototype.toString',
+        createDescriptor:   createDefaultInterceptorDescriptor,
     };
 
     var NUMBER_TO_LOCALE_STRING_INTERCEPTOR =
     {
-        path: 'Number.prototype.toLocaleString',
-        createDescriptor: createDefaultInterceptorDescriptor,
+        path:               'Number.prototype.toLocaleString',
+        createDescriptor:   createDefaultInterceptorDescriptor,
     };
 
     var OBJECT_TO_STRING_INTERCEPTOR =
@@ -584,18 +593,22 @@
 
     var EMU_FEATURE_INFOS =
     {
-        ANY_DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object .*Document]$/),
-        ANY_WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object .*Window]$/),
+        ANY_DOCUMENT:
+        makeEmuFeatureDocument('[object Document]', /^\[object [\S\s]*Document]$/),
+        ANY_WINDOW:             makeEmuFeatureSelf('[object Window]', /^\[object [\S\s]*Window]$/),
         ARRAY_ITERATOR:
         function ()
         {
-            if (Array.prototype.entries && /^\[object Array.{8,9}]$/.test([].entries()))
-                return;
-            var constructor =
-            function ()
-            { };
+            if (Array.prototype.entries)
+            {
+                var arrayIterator = [].entries();
+                if (/^\[object Array[\S\s]{8,9}]$/.test(arrayIterator))
+                    return;
+            }
+            var prototype =
+            arrayIterator ? Object.getPrototypeOf(arrayIterator) : function () { }.prototype;
             registerObjectFactory
-            (this, 'Array.prototype.entries', '[object ArrayIterator]', constructor);
+            (this, 'Array.prototype.entries', '[object ArrayIterator]', prototype);
         },
         ARROW:
         function ()
@@ -725,7 +738,8 @@
             else
                 override(this, 'statusbar', { value: { toString: toString } });
         },
-        CAPITAL_HTML: makeEmuFeatureHtml
+        CAPITAL_HTML:
+        makeEmuFeatureHtml
         (
             [
                 'anchor',
@@ -769,15 +783,11 @@
             if (!console || !Object.getPrototypeOf(console))
                 override(this, 'console', { value: Object.create(console || null) });
             // ...end of the workaround.
-            var toString =
-            function ()
-            {
-                return '[object Console]';
-            };
+            var toString = createStaticSupplier('[object Console]');
             override(this, 'console.toString', { value: toString });
         },
-        DOCUMENT: makeEmuFeatureDocument('[object Document]', /^\[object Document]$/),
-        DOMWINDOW: makeEmuFeatureSelf('[object DOMWindow]', /^\[object DOMWindow]$/),
+        DOCUMENT:               makeEmuFeatureDocument('[object Document]', /^\[object Document]$/),
+        DOMWINDOW:              makeEmuFeatureSelf('[object DOMWindow]', /^\[object DOMWindow]$/),
         ESC_HTML_ALL:
         makeEmuFeatureEscHtml
         (
@@ -808,20 +818,10 @@
             },
             /&quot;<>/
         ),
-        ESC_REGEXP_LF: makeEmuFeatureEscRegExp('\n', '\\n'),
-        ESC_REGEXP_SLASH: makeEmuFeatureEscRegExp('/', '\\/'),
-        EXTERNAL:
-        function ()
-        {
-            var toString =
-            function ()
-            {
-                return '[object External]';
-            };
-            override(this, 'sidebar', { value: { toString: toString } });
-        },
-        FF_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_FF),
-        FILL: makeEmuFeatureArrayPrototypeFunction('fill', Function()),
+        ESC_REGEXP_LF:          makeEmuFeatureEscRegExp('\n', '\\n'),
+        ESC_REGEXP_SLASH:       makeEmuFeatureEscRegExp('/', '\\/'),
+        FF_SRC:                 makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_FF),
+        FILL:                   makeEmuFeatureArrayPrototypeFunction('fill', Function()),
         FLAT:
         makeEmuFeatureArrayPrototypeFunction
         (
@@ -845,8 +845,8 @@
         {
             override(this, 'String.fromCodePoint', { value: fromCodePoint });
         },
-        FUNCTION_19_LF: makeEmuFeatureFunctionLF('function anonymous(\n) {\n\n}'),
-        FUNCTION_22_LF: makeEmuFeatureFunctionLF('function anonymous() {\n\n}'),
+        FUNCTION_19_LF:         makeEmuFeatureFunctionLF('function anonymous(\n) {\n\n}'),
+        FUNCTION_22_LF:         makeEmuFeatureFunctionLF('function anonymous() {\n\n}'),
         GENERIC_ARRAY_TO_STRING:
         function ()
         {
@@ -872,21 +872,13 @@
         GMT:
         function ()
         {
-            var Date =
-            function ()
-            {
-                return 'Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)';
-            };
+            var Date = createStaticSupplier('Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)');
             override(this, 'Date', { value: Date });
         },
         HISTORY:
         function ()
         {
-            var toString =
-            function ()
-            {
-                return '[object History]';
-            };
+            var toString = createStaticSupplier('[object History]');
             override(this, 'history', { value: { toString: toString } });
         },
         HTMLAUDIOELEMENT:
@@ -894,15 +886,12 @@
         {
             if (!global.Audio)
                 override(this, 'Audio', { value: { } });
-            var toString =
-            function ()
-            {
-                return 'function HTMLAudioElement';
-            };
+            var toString = createStaticSupplier('function HTMLAudioElement');
             override(this, 'Audio.toString', { value: toString });
         },
-        HTMLDOCUMENT: makeEmuFeatureDocument('[object HTMLDocument]', /^\[object HTMLDocument]$/),
-        IE_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_IE),
+        HTMLDOCUMENT:
+        makeEmuFeatureDocument('[object HTMLDocument]', /^\[object HTMLDocument]$/),
+        IE_SRC:                 makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_IE),
         INTL:
         function ()
         {
@@ -1012,13 +1001,8 @@
         LOCATION:
         function ()
         {
-            var location = global.location;
-            if (!location)
-            {
-                location = { };
-                override(this, 'location', { value: location });
-            }
-            if (!/^\[object .*Location]$/.test(Object.prototype.toString.call(location)))
+            var location = mockLocation(this);
+            if (!/^\[object [\S\s]*Location]$/.test(Object.prototype.toString.call(location)))
                 registerDefaultToStringAdapter(this, location, '[object Location]');
             patchGlobalToString(this);
         },
@@ -1038,11 +1022,7 @@
         {
             if (!global.Node)
                 override(this, 'Node', { value: { } });
-            var toString =
-            function ()
-            {
-                return '[object NodeConstructor]';
-            };
+            var toString = createStaticSupplier('[object NodeConstructor]');
             override(this, 'Node.toString', { value: toString });
         },
         NO_FF_SRC:
@@ -1057,25 +1037,70 @@
             if (Array.prototype.entries)
             {
                 var arrayIterator = [].entries();
-                if
-                (
-                    /^\[object Array Iterator]$/.test(arrayIterator) &&
-                    arrayIterator.constructor === Object
-                )
+                if (/^\[object Array Iterator]$/.test(arrayIterator))
                     return;
             }
+            var prototype =
+            arrayIterator ? Object.getPrototypeOf(arrayIterator) : function () { }.prototype;
             registerObjectFactory
-            (this, 'Array.prototype.entries', '[object Array Iterator]', Object);
+            (this, 'Array.prototype.entries', '[object Array Iterator]', prototype);
         },
         NO_V8_SRC:
         makeEmuFeatureNativeFunctionSource
         (NATIVE_FUNCTION_SOURCE_INFO_FF, NATIVE_FUNCTION_SOURCE_INFO_IE),
+        OBJECT_ARRAY_ENTRIES_CTOR:
+        function ()
+        {
+            if (Array.prototype.entries)
+            {
+                var arrayIterator = [].entries();
+                if (arrayIterator.constructor === Object)
+                    return;
+            }
+            var str = arrayIterator ? arrayIterator + '' : '[object Object]';
+            registerObjectFactory(this, 'Array.prototype.entries', str, Object.prototype);
+        },
+        OBJECT_L_LOCATION_CTOR:
+        function ()
+        {
+            var location = mockLocation(this);
+            var str = location.constructor + '';
+            if (!/^\[object L/.test(str))
+            {
+                str = '[object L' + str;
+                var toString = createStaticSupplier(str);
+                override(this, 'location.constructor.toString', { value: toString });
+            }
+        },
         OBJECT_UNDEFINED:
         function ()
         {
             var toString = Object.prototype.toString;
             if (toString() !== '[object Undefined]')
                 registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
+        },
+        OBJECT_W_CTOR:
+        function ()
+        {
+            var toString = createStaticSupplier('[object W');
+            override(this, 'constructor.toString', { value: toString });
+        },
+        OLD_SAFARI_LOCATION_CTOR:
+        function ()
+        {
+            var location = mockLocation(this);
+            var oldStr = location.constructor + '';
+            var newStr = oldStr;
+            if (!/^\[object /.test(oldStr))
+                newStr = '[object ' + newStr;
+            if (!/LocationConstructor]$/.test(oldStr))
+                newStr += 'LocationConstructor]';
+            if (newStr !== oldStr)
+            {
+                var toString = createStaticSupplier(newStr);
+                override(this, 'location.constructor.toString', { value: toString });
+                override(this, 'location.constructor.valueOf', { value: toString });
+            }
         },
         PLAIN_INTL:
         function ()
@@ -1090,7 +1115,7 @@
                 registerDefaultToStringAdapter(this, Intl, '[object Object]');
         },
         REGEXP_STRING_ITERATOR: makeEmuFeatureMatchAll(),
-        SELF_OBJ: makeEmuFeatureSelf('[object Object]', /^\[object /),
+        SELF_OBJ:               makeEmuFeatureSelf('[object Object]', /^\[object /),
         SHORT_LOCALES:
         function ()
         {
@@ -1124,8 +1149,8 @@
             if (Object.prototype.toString.call() !== '[object Undefined]')
                 registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
         },
-        V8_SRC: makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_V8),
-        WINDOW: makeEmuFeatureSelf('[object Window]', /^\[object Window]$/),
+        V8_SRC:                 makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_V8),
+        WINDOW:                 makeEmuFeatureSelf('[object Window]', /^\[object Window]$/),
     };
 
     var EMU_FEATURES =

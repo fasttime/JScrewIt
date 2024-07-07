@@ -4,10 +4,10 @@ import './optimizer';
 
 import { Encoder }                                                  from './encoder/encoder-base';
 import { wrapWithCall, wrapWithEval }                               from './encoder/encoder-ext';
-import { Feature, validMaskFromArrayOrStringOrFeature }             from './features';
+import { Feature }                                                  from './features';
 import { _Error, _String, _setTimeout, assignNoEnum, esToString }   from './obj-utils';
 import trimJS                                                       from './trim-js';
-import { MaskMap, maskNew }                                         from 'quinquaginta-duo';
+import { MaskMap }                                                  from '~feature-hub';
 
 function cacheEncoder(encoder)
 {
@@ -73,7 +73,7 @@ function flushEncoderCache()
 
 function getEncoder(features)
 {
-    var mask = getValidFeatureMask(features);
+    var mask = getFeatureMask(features);
     var encoder = encoderCache.get(mask);
     if (!encoder)
     {
@@ -85,15 +85,9 @@ function getEncoder(features)
     return encoder;
 }
 
-export function getValidFeatureMask(features)
-{
-    var mask = features !== undefined ? validMaskFromArrayOrStringOrFeature(features) : maskNew();
-    return mask;
-}
-
 export function isEncoderInCache(features)
 {
-    var mask = getValidFeatureMask(features);
+    var mask = getFeatureMask(features);
     var returnValue = encoderCache.has(mask);
     return returnValue;
 }
@@ -110,6 +104,8 @@ function scheduleFlush()
 }
 
 export var JScrewIt = assignNoEnum({ }, { Feature: Feature, encode: encode });
+
+var getFeatureMask = Feature._getMask;
 
 var _permanentCaching = false;
 var encoderCache;

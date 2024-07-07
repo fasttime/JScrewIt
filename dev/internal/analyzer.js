@@ -129,7 +129,7 @@
                 const mask = maskUnion(featureQuery.mask, featureQuery.ancestorMask);
                 if (analyzer.doesNotExclude(mask))
                 {
-                    const featureObj = createFeatureFromMask(mask);
+                    const featureObj = featureFromMask(mask);
                     if (featureObj)
                     {
                         analyzer.featureObj = featureObj;
@@ -172,7 +172,6 @@
         module.exports = Analyzer;
     }
 
-    const { MaskSet, createEncoder, createFeatureFromMask, maskIncludes, maskUnion } =
-    JScrewIt.debug;
+    const { MaskSet, createEncoder, featureFromMask, maskIncludes, maskUnion } = JScrewIt.debug;
 }
 )();

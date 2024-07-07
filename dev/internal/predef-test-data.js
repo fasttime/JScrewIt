@@ -6,13 +6,13 @@ const { Feature, debug: { getEntries } } = JScrewIt;
 
 const RAW_PREDEFS =
 {
-    __proto__: null,
-    'BASE64_ALPHABET_HI_4:0': 'ABCD',
-    'BASE64_ALPHABET_HI_4:4': 'QRST',
-    'BASE64_ALPHABET_HI_4:5': 'UVWX',
-    'BASE64_ALPHABET_LO_4:1': ['0B', '0R', '0h', '0x'],
-    'BASE64_ALPHABET_LO_4:3': ['0D', '0T', '0j', '0z'],
-    FROM_CHAR_CODE: (encoder, str) => encoder.replaceString(str, { optimize: true }),
+    __proto__:                  null,
+    'BASE64_ALPHABET_HI_4:0':   'ABCD',
+    'BASE64_ALPHABET_HI_4:4':   'QRST',
+    'BASE64_ALPHABET_HI_4:5':   'UVWX',
+    'BASE64_ALPHABET_LO_4:1':   ['0B', '0R', '0h', '0x'],
+    'BASE64_ALPHABET_LO_4:3':   ['0D', '0T', '0j', '0z'],
+    FROM_CHAR_CODE:             (encoder, str) => encoder.replaceString(str, { optimize: true }),
     FROM_CHAR_CODE_CALLBACK_FORMATTER:
     (encoder, fromCharCodeCallbackFormatter) =>
     {
@@ -38,8 +38,8 @@ const RAW_PREDEFS =
         },
         { useReverseIteration: true },
     ),
-    OPTIMAL_B: (encoder, char) => encoder.resolveCharacter(char).replacement,
-    OPTIMAL_RETURN_STRING: (encoder, str) => encoder.replaceString(str, { optimize: true }),
+    OPTIMAL_B:                  (encoder, char) => encoder.resolveCharacter(char).replacement,
+    OPTIMAL_RETURN_STRING:      (encoder, str) => encoder.replaceString(str, { optimize: true }),
 };
 
 function createFormatVariantByIndex(availableEntries)

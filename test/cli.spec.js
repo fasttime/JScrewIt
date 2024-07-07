@@ -126,14 +126,14 @@ describe
             },
             {
                 description:            'encodes a file and shows the output',
-                screwArgs:              ['test/fixture.txt'],
+                screwArgs:              ['test/fixtures/0.txt'],
                 expectedStdout:         '+[]\n',
                 expectedStderr:         '',
                 expectedExitCode:       0,
             },
             {
                 description:            'encodes a file and writes the output to a file',
-                screwArgs:              ['test/fixture.txt', outputFileName1],
+                screwArgs:              ['test/fixtures/0.txt', outputFileName1],
                 expectedStdout:
                 /^Original size: .*\nScrewed size: .*\nExpansion factor: .*\nEncoding time: .*\n$/,
                 expectedStderr:         '',
@@ -143,19 +143,35 @@ describe
             {
                 description:
                 'encodes a file, writes the output to a file and prints a diagnostic report',
-                screwArgs:              ['-d', 'test/fixture.txt', outputFileName2],
+                screwArgs:              ['-d', 'test/fixtures/0.txt', outputFileName2],
                 expectedStdout:
                 RegExp
                 (
                     '\n\n' +
-                    'Original size: .*\n' +
-                    'Screwed size: .*\n' +
+                    'Original size: +1 byte\n' +
+                    'Screwed size: +\\d+ bytes\n' +
                     'Expansion factor: .*\n' +
                     'Encoding time: .*\n' +
                     '$'
                 ),
                 expectedStderr:         '',
                 expectedFiles:          expectedFiles2,
+                expectedExitCode:       0,
+            },
+            {
+                descriptions:           'shows the number of bytes in the input as original size',
+                screwArgs:              ['-d', 'test/fixtures/∞.txt', createOutputFileName()],
+                expectedStdout:
+                RegExp
+                (
+                    '\n\n' +
+                    'Original size: +3 bytes\n' +
+                    'Screwed size: +\\d+ bytes\n' +
+                    'Expansion factor: .*\n' +
+                    'Encoding time: .*\n' +
+                    '$'
+                ),
+                expectedStderr:         '',
                 expectedExitCode:       0,
             },
         ];
@@ -281,190 +297,190 @@ describe
                 params: [],
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { },
+                    options:        { },
                 },
             },
             {
-                params: ['--help'],
+                params:         ['--help'],
                 expectedResult: 'help',
             },
             {
-                params: ['--version'],
+                params:         ['--version'],
                 expectedResult: 'version',
             },
             {
                 params: ['-c'],
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { runAs: 'call' },
+                    options:        { runAs: 'call' },
                 },
             },
             {
                 params: ['-w'],
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { runAs: 'call' },
+                    options:        { runAs: 'call' },
                 },
             },
             {
                 params: ['-e'],
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { runAs: 'eval' },
+                    options:        { runAs: 'eval' },
                 },
             },
             {
                 params: ['-d'],
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { perfInfo: { } },
+                    options:        { perfInfo: { } },
                 },
             },
             {
                 params: ['--diagnostic'],
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { perfInfo: { } },
+                    options:        { perfInfo: { } },
                 },
             },
             {
                 params: ['-f', 'ATOB,SELF'],
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { features: ['ATOB', 'SELF'] },
+                    options:        { features: ['ATOB', 'SELF'] },
                 },
             },
             {
                 params: ['--features', 'ATOB,SELF'],
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { features: ['ATOB', 'SELF'] },
+                    options:        { features: ['ATOB', 'SELF'] },
                 },
             },
             {
-                params: ['-f'],
-                expectedErrorMsg: 'option "-f" requires an argument',
+                params:             ['-f'],
+                expectedErrorMsg:   'option "-f" requires an argument',
             },
             {
-                params: ['--features'],
-                expectedErrorMsg: 'option "--features" requires an argument',
+                params:             ['--features'],
+                expectedErrorMsg:   'option "--features" requires an argument',
             },
             {
                 params: ['-r', 'express'],
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { runAs: 'express' },
+                    options:        { runAs: 'express' },
                 },
             },
             {
                 params: ['--run-as', 'express'],
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { runAs: 'express' },
+                    options:        { runAs: 'express' },
                 },
             },
             {
-                params: ['-r'],
-                expectedErrorMsg: 'option "-r" requires an argument',
+                params:             ['-r'],
+                expectedErrorMsg:   'option "-r" requires an argument',
             },
             {
-                params: ['--run-as'],
-                expectedErrorMsg: 'option "--run-as" requires an argument',
+                params:             ['--run-as'],
+                expectedErrorMsg:   'option "--run-as" requires an argument',
             },
             {
                 params: ['-t'],
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { trimCode: true },
+                    options:        { trimCode: true },
                 },
             },
             {
                 params: ['--trim-code'],
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { trimCode: true },
+                    options:        { trimCode: true },
                 },
             },
             {
                 params: ['-x'],
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { runAs: 'express' },
+                    options:        { runAs: 'express' },
                 },
             },
             {
                 params: ['-ctx'],
                 expectedResult:
                 {
-                    inputFileName: undefined,
+                    inputFileName:  undefined,
                     outputFileName: undefined,
-                    options: { trimCode: true, runAs: 'express-call' },
+                    options:        { trimCode: true, runAs: 'express-call' },
                 },
             },
             {
-                params: ['-y'],
-                expectedErrorMsg: /unrecognized flag "y"/,
+                params:             ['-y'],
+                expectedErrorMsg:   /unrecognized flag "y"/,
             },
             {
-                params: ['--allyourbasearebelongtous'],
-                expectedErrorMsg: /unrecognized option "--allyourbasearebelongtous"/,
+                params:             ['--allyourbasearebelongtous'],
+                expectedErrorMsg:   /unrecognized option "--allyourbasearebelongtous"/,
             },
             {
                 params: ['infile'],
                 expectedResult:
                 {
-                    inputFileName: 'infile',
+                    inputFileName:  'infile',
                     outputFileName: undefined,
-                    options: { },
+                    options:        { },
                 },
             },
             {
                 params: ['infile', 'outfile'],
                 expectedResult:
                 {
-                    inputFileName: 'infile',
+                    inputFileName:  'infile',
                     outputFileName: 'outfile',
-                    options: { },
+                    options:        { },
                 },
             },
             {
                 params: ['-ct', 'infile', '--features', 'FF', 'outfile'],
                 expectedResult:
                 {
-                    inputFileName: 'infile',
+                    inputFileName:  'infile',
                     outputFileName: 'outfile',
-                    options: { features: ['FF'], trimCode: true, runAs: 'call' },
+                    options:        { features: ['FF'], trimCode: true, runAs: 'call' },
                 },
             },
             {
-                params: ['infile', 'outfile', 'etc.'],
-                expectedErrorMsg: /unexpected argument "etc."/,
+                params:             ['infile', 'outfile', 'etc.'],
+                expectedErrorMsg:   /unexpected argument "etc."/,
             },
         ];
         paramDataList.forEach
@@ -585,40 +601,40 @@ describe
                         (
                             null,
                             {
-                                strategyName: 'strategyA',
-                                status: 'used',
-                                outputLength: 100,
-                                time: 123,
+                                strategyName:   'strategyA',
+                                status:         'used',
+                                outputLength:   100,
+                                time:           123,
                                 perfLog:
                                 [
                                     makePerfInfoList
                                     (
                                         'lorem',
                                         {
-                                            strategyName: 'strategyA1',
-                                            status: 'used',
-                                            outputLength: 50,
-                                            time: 45,
+                                            strategyName:   'strategyA1',
+                                            status:         'used',
+                                            outputLength:   50,
+                                            time:           45,
                                         }
                                     ),
                                     makePerfInfoList
                                     (
                                         'ipsum',
                                         {
-                                            strategyName: 'strategyA2',
-                                            status: 'used',
-                                            outputLength: 25,
-                                            time: 67,
+                                            strategyName:   'strategyA2',
+                                            status:         'used',
+                                            outputLength:   25,
+                                            time:           67,
                                             perfLog:
                                             [
                                                 makePerfInfoList
                                                 (
                                                     'dolor',
                                                     {
-                                                        strategyName: 'strategyA2_extra',
-                                                        status: 'used',
-                                                        outputLength: 22,
-                                                        time: 66,
+                                                        strategyName:   'strategyA2_extra',
+                                                        status:         'used',
+                                                        outputLength:   22,
+                                                        time:           66,
                                                     }
                                                 ),
                                             ],
