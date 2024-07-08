@@ -10,9 +10,8 @@ import
 }
 from '../../src/feature';
 
-import
-{ type Mask, maskAreEqual, maskIntersection, maskNew, maskNext, maskUnion }
-from '../../src/mask';
+import { type Mask, maskAreEqual, maskIntersection, maskNew, maskNext, maskUnion }
+from '../../src/mask-impl';
 
 import assert       from 'assert';
 import type util    from 'util';

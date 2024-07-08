@@ -70,11 +70,17 @@ if (typeof NO_DEBUG === 'undefined')
             if (inputEntries)
             {
                 if (_Array_isArray(inputEntries))
-                    outputEntries = inputEntries.map(clone);
+                    outputEntries = inputEntries.map(cloneEntry);
                 else
                     outputEntries = [createEntryClone(inputEntries, EMPTY_MASK)];
             }
             return outputEntries;
+        }
+
+        function cloneEntry(inputEntry)
+        {
+            var entry = createEntryClone(inputEntry.definition, inputEntry.mask);
+            return entry;
         }
 
         function createEncoder(features)
@@ -123,7 +129,7 @@ if (typeof NO_DEBUG === 'undefined')
 
         function getComplexEntry(complex)
         {
-            var entry = clone(COMPLEX[complex]);
+            var entry = cloneEntry(COMPLEX[complex]);
             return entry;
         }
 

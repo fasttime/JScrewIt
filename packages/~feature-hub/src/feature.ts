@@ -1,8 +1,7 @@
 import type util    from 'node:util';
 
-import
-{ type Mask, maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
-from './mask';
+import { type Mask, maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
+from './mask-impl';
 
 import { MaskSet }  from './mask-index';
 

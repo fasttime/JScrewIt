@@ -1,4 +1,4 @@
-import { maskNew }          from '../../src/mask';
+import { maskNew }          from '../../src/mask-impl';
 import { MaskMap, MaskSet } from '../../src/mask-index';
 import assert               from 'assert';
 

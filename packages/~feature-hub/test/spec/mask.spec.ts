@@ -1,6 +1,15 @@
 import
-{ type Mask, maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
-from '../../src/mask';
+{
+    MASK_MAX_SIZE,
+    type Mask,
+    maskAreEqual,
+    maskIncludes,
+    maskIntersection,
+    maskNew,
+    maskNext,
+    maskUnion,
+}
+from '../../src/mask-impl';
 
 import assert, { AssertionError } from 'assert';
 
@@ -73,7 +82,7 @@ it
     (): void =>
     {
         let prevMask = maskNew();
-        for (let count = 0; count < 52; ++count)
+        for (let count = 0; count < MASK_MAX_SIZE; ++count)
         {
             const nextMask = maskNext(prevMask);
             assertMaskNotEmpty(nextMask);

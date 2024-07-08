@@ -63,5 +63,17 @@ export async function makeLib()
 {
     const { doMakeLib } = await importPackageUtils();
     const pkgURL = new URL('..', import.meta.url);
-    await doMakeLib(pkgURL);
+    await
+    doMakeLib
+    (
+        pkgURL,
+        [
+            'feature.d.ts',
+            'index.d.ts',
+            'mask.d.ts',
+            'mask-impl.d.ts',
+            'mask-impl-64.d.ts',
+            'mask-index.d.ts',
+        ],
+    );
 }
