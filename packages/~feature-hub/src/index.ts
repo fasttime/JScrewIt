@@ -1,3 +1,3 @@
-export *                                                                    from './feature';
-export { maskAreEqual, maskIncludes, maskIntersection, maskNew, maskUnion } from './mask-impl';
-export *                                                                    from './mask-index';
+export *                                                                        from './feature';
+export { MASK_EMPTY, maskAreEqual, maskIncludes, maskIntersection, maskUnion }  from './mask-impl';
+export *                                                                        from './mask-index';

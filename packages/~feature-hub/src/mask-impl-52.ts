@@ -5,7 +5,8 @@ const BIN_POW_32    = 0x1_0000_0000;
 const BIN_POW_51    = 0x8_0000_0000_0000;
 const BIT_MASK_31   = 0x7fff_ffff;
 
-const EMPTY_MASK: Mask = 0 as never;
+/** An empty mask. */
+export const MASK_EMPTY: Mask = 0 as never;
 
 /** The maximum number of disjoint, non-empty masks supported by this implementation. */
 export const MASK_MAX_SIZE = 52 as number;
@@ -44,12 +45,6 @@ export function maskIntersection(mask1: Mask, mask2: Mask): Mask
         ((mask1 as never) / BIN_POW_31 & (mask2 as never) / BIN_POW_31) * BIN_POW_31
     ) as never;
     return intersectionMask;
-}
-
-/** Returns a new empty mask. */
-export function maskNew(): Mask
-{
-    return EMPTY_MASK;
 }
 
 /**

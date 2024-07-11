@@ -1,7 +1,7 @@
 /* global DEBUG */
 
-import createClusteringPlan                                     from './clustering-plan';
-import { define }                                               from './definers';
+import createClusteringPlan                                         from './clustering-plan';
+import { define }                                                   from './definers';
 import
 {
     BASE64_ALPHABET_HI_4,
@@ -17,11 +17,11 @@ import
     OPTIMAL_RETURN_STRING,
 }
 from './definitions';
-import { Encoder }                                              from './encoder/encoder-base';
-import { STRATEGIES, createReindexMap }                         from './encoder/encoder-ext';
-import { Feature }                                              from './features';
-import createFigurator                                          from './figurator';
-import { JScrewIt, isEncoderInCache }                           from './jscrewit-base';
+import { Encoder }                                                  from './encoder/encoder-base';
+import { STRATEGIES, createReindexMap }                             from './encoder/encoder-ext';
+import { Feature }                                                  from './features';
+import createFigurator                                              from './figurator';
+import { JScrewIt, isEncoderInCache }                               from './jscrewit-base';
 import
 {
     _Array_isArray,
@@ -35,11 +35,11 @@ import
     esToString,
 }
 from './obj-utils';
-import { ScrewBuffer, optimizeSolutions }                       from './screw-buffer';
-import { DynamicSolution, SimpleSolution }                      from './solution';
-import trimJS                                                   from './trim-js';
-import { MaskMap, MaskSet, maskIncludes, maskNew, maskUnion }   from '~feature-hub';
-import { SolutionType, calculateSolutionType }                  from '~solution';
+import { ScrewBuffer, optimizeSolutions }                           from './screw-buffer';
+import { DynamicSolution, SimpleSolution }                          from './solution';
+import trimJS                                                       from './trim-js';
+import { MASK_EMPTY, MaskMap, MaskSet, maskIncludes, maskUnion }    from '~feature-hub';
+import { SolutionType, calculateSolutionType }                      from '~solution';
 
 if (typeof NO_DEBUG === 'undefined')
 {
@@ -72,15 +72,15 @@ if (typeof NO_DEBUG === 'undefined')
                 if (_Array_isArray(inputEntries))
                     outputEntries = inputEntries.map(cloneEntry);
                 else
-                    outputEntries = [createEntryClone(inputEntries, EMPTY_MASK)];
+                    outputEntries = [createEntryClone(inputEntries, MASK_EMPTY)];
             }
             return outputEntries;
         }
 
         function cloneEntry(inputEntry)
         {
-            var entry = createEntryClone(inputEntry.definition, inputEntry.mask);
-            return entry;
+            var outputEntry = createEntryClone(inputEntry.definition, inputEntry.mask);
+            return outputEntry;
         }
 
         function createEncoder(features)
@@ -162,8 +162,6 @@ if (typeof NO_DEBUG === 'undefined')
         {
             return STRATEGIES;
         }
-
-        var EMPTY_MASK = maskNew();
 
         // Miscellaneous entries
         var ENTRIES = createEmpty();

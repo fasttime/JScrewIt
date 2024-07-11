@@ -35,14 +35,14 @@ import replaceCharByAtob                                        from './replace-
 import replaceCharByCharCode                                    from './replace-char-by-char-code';
 import replaceCharByEscSeq                                      from './replace-char-by-esc-seq';
 import replaceCharByUnescape                                    from './replace-char-by-unescape';
-import { maskIncludes, maskNew }                                from '~feature-hub';
+import { MASK_EMPTY, maskIncludes }                             from '~feature-hub';
 import { SolutionType }                                         from '~solution';
 
 var ATOB_MASK = Feature.ATOB.mask;
 
 var STATIC_CHAR_CACHE   = createEmpty();
 var STATIC_CONST_CACHE  = createEmpty();
-var STATIC_ENCODER      = new Encoder(maskNew());
+var STATIC_ENCODER      = new Encoder(MASK_EMPTY);
 
 var BOND_STRENGTH_NONE      = 0;
 var BOND_STRENGTH_WEAK      = 1;

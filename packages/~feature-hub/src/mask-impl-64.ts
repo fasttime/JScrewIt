@@ -7,6 +7,9 @@ type LoHi = readonly [number, number];
 
 const freezeMask = (_LoHi: LoHi): Mask => Object.freeze(_LoHi) as unknown as Mask;
 
+/** An empty mask. */
+export const MASK_EMPTY = freezeMask([0, 0]);
+
 /** The maximum number of disjoint, non-empty masks supported by this implementation. */
 export const MASK_MAX_SIZE = 64 as number;
 
@@ -40,12 +43,6 @@ export function maskIntersection(mask1: Mask, mask2: Mask): Mask
     const intersectionHi = _LoHi1[HI_INDEX] & _LoHi2[HI_INDEX];
     const intersectionLoHi: LoHi = [intersectionLo, intersectionHi];
     return freezeMask(intersectionLoHi);
-}
-
-/** Returns a new empty mask. */
-export function maskNew(): Mask
-{
-    return freezeMask([0, 0]);
 }
 
 /**

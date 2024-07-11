@@ -10,7 +10,7 @@ import
 }
 from '../../src/feature';
 
-import { type Mask, maskAreEqual, maskIntersection, maskNew, maskNext, maskUnion }
+import { MASK_EMPTY, type Mask, maskAreEqual, maskIntersection, maskNext, maskUnion }
 from '../../src/mask-impl';
 
 import assert       from 'assert';
@@ -54,10 +54,10 @@ it
         );
         const { RED, RED1, RED2, GREEN, FOO, BAR } = Feature.ALL;
         assert(maskAreEqual(RED.mask, featuresToMask([RED1, RED2])));
-        assert(maskAreEqual(maskIntersection(RED1.mask, RED2.mask), maskNew()));
-        assert(!maskAreEqual(RED1.mask, maskNew()));
-        assert(!maskAreEqual(RED2.mask, maskNew()));
-        assert(maskAreEqual(maskIntersection(RED.mask, GREEN.mask), maskNew()));
+        assert(maskAreEqual(maskIntersection(RED1.mask, RED2.mask), MASK_EMPTY));
+        assert(!maskAreEqual(RED1.mask, MASK_EMPTY));
+        assert(!maskAreEqual(RED2.mask, MASK_EMPTY));
+        assert(maskAreEqual(maskIntersection(RED.mask, GREEN.mask), MASK_EMPTY));
         assert(maskAreEqual(FOO.mask, featuresToMask([RED1, GREEN])));
         assert(maskAreEqual(BAR.mask, featuresToMask([RED2, GREEN])));
         assert.strictEqual(RED.elementary, true);
@@ -383,7 +383,7 @@ it
         const Feature = createFeatureClass({ FOO: { check: noop }, BAR: { check: noop } });
         {
             const actual = Feature._getMask(undefined);
-            assert(maskAreEqual(actual, maskNew()), `Actual value is:\n${actual as unknown}`);
+            assert(maskAreEqual(actual, MASK_EMPTY), `Actual value is:\n${actual as unknown}`);
         }
         {
             const actual = Feature._getMask('FOO');
