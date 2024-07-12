@@ -1,4 +1,4 @@
-/* global Audio, Node, console, document, history, location, self, statusbar */
+/* global Audio, Iterator, Node, console, document, history, location, self, statusbar */
 
 import { _Object_defineProperty, _Object_keys, assignNoEnum, createEmpty }  from './obj-utils';
 import { createFeatureClass, featuresToMask }                               from '~feature-hub';
@@ -493,6 +493,16 @@ var featureInfos =
         function ()
         {
             var available = typeof Intl === 'object';
+            return available;
+        },
+    },
+    ITERATOR_HELPER:
+    {
+        description: 'Availability of iterator helpers.',
+        check:
+        function ()
+        {
+            var available = typeof Iterator === 'function';
             return available;
         },
     },
