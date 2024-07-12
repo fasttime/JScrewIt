@@ -965,6 +965,7 @@ var featureInfos =
             'HTMLDOCUMENT',
             'INCR_CHAR',
             'INTL',
+            'ITERATOR_HELPER',
             'LOCALE_INFINITY',
             'LOCALE_NUMERALS_EXT',
             'LOCATION',
@@ -1172,7 +1173,7 @@ var featureInfos =
     {
         inherits: 'NODE_16_6',
         versions: [['22']],
-        includes: { OBJECT_ARRAY_ENTRIES_CTOR: false },
+        includes: { ITERATOR_HELPER: true, OBJECT_ARRAY_ENTRIES_CTOR: false },
     },
     SAFARI_7_0:
     {

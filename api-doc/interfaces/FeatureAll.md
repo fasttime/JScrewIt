@@ -572,7 +572,7 @@ Availability of iterator helpers.
 
 #### Remarks
 
-This feature is not available in any of the supported engines.
+Available in Chrome, Edge, Opera, and Node.js 22+.
 
 ***
 
