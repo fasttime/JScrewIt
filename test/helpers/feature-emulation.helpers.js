@@ -898,6 +898,28 @@
             if (!global.Intl)
                 override(this, 'Intl', { value: { } });
         },
+        ITERATOR_HELPER:
+        function ()
+        {
+            if (global.Iterator)
+                return;
+            var Iterator = function () { };
+            var arrayIterator;
+            if (Array.prototype.entries)
+            {
+                arrayIterator = [].entries();
+                Iterator.prototype = Object.getPrototypeOf(arrayIterator);
+            }
+            else
+            {
+                arrayIterator = new Iterator();
+                var entries = createStaticSupplier(arrayIterator);
+                override(this, 'Array.prototype.entries', { value: entries });
+            }
+            override(this, 'Iterator', { value: Iterator });
+            var filter = createStaticSupplier('[object Iterator Helper]');
+            override(this, 'Iterator.prototype.filter', { value: filter });
+        },
         LOCALE_INFINITY:
         function ()
         {
