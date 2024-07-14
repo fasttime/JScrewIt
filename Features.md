@@ -31,6 +31,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INTL"><code>INTL</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#ITERATOR_HELPER"><code>ITERATOR_HELPER</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS"><code>LOCALE_NUMERALS</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a>
@@ -246,6 +247,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#GMT"><code>GMT</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INTL"><code>INTL</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#PLAIN_INTL"><code>PLAIN_INTL</code></a>; Node.js 0.12+)
+<li><a href="api-doc/interfaces/FeatureAll.md#ITERATOR_HELPER"><code>ITERATOR_HELPER</code></a> (Node.js 22+)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Node.js 0.12+)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS"><code>LOCALE_NUMERALS</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a> and <a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a>; Node.js 13+)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a> (Node.js 13+)

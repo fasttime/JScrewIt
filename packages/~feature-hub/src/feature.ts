@@ -1,8 +1,7 @@
 import type util    from 'node:util';
 
-import
-{ type Mask, maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
-from './mask';
+import { MASK_EMPTY, type Mask, maskAreEqual, maskIncludes, maskIntersection, maskNext, maskUnion }
+from './mask-impl';
 
 import { MaskSet }  from './mask-index';
 
@@ -139,7 +138,7 @@ FeatureConstructor
 
     function Feature(this: Feature, ...features: FeatureElementOrCompatibleArray[]): Feature
     {
-        let mask = maskNew();
+        let mask = MASK_EMPTY;
         for (const feature of features)
         {
             const otherMask = validMaskFromArrayOrStringOrFeature(feature);
@@ -157,7 +156,7 @@ FeatureConstructor
     {
         if (isMaskCompatible(mask))
         {
-            let includedMask = maskNew();
+            let includedMask = MASK_EMPTY;
             for (const { mask: featureMask } of ELEMENTARY)
             {
                 if (maskIncludes(mask, featureMask))
@@ -175,7 +174,7 @@ FeatureConstructor
     function _getMask(feature?: FeatureElementOrCompatibleArray): Mask
     {
         const mask =
-        feature !== undefined ? validMaskFromArrayOrStringOrFeature(feature) : maskNew();
+        feature !== undefined ? validMaskFromArrayOrStringOrFeature(feature) : MASK_EMPTY;
         return mask;
     }
 
@@ -268,7 +267,7 @@ FeatureConstructor
 
     function featureArrayLikeToMask(features: ArrayLike<FeatureElement>): Mask
     {
-        let mask = maskNew();
+        let mask = MASK_EMPTY;
         const { length } = features;
         for (let index = 0; index < length; ++index)
         {
@@ -383,7 +382,7 @@ FeatureConstructor
             {
                 const { mask } = this;
                 const names: string[] = [];
-                let includedMask = maskNew();
+                let includedMask = MASK_EMPTY;
                 for (let index = PRISTINE_ELEMENTARY.length; index--;)
                 {
                     const featureObj = PRISTINE_ELEMENTARY[index];
@@ -516,7 +515,7 @@ FeatureConstructor
                     }
                     else
                     {
-                        mask = maskNew();
+                        mask = MASK_EMPTY;
                         wrappedCheck = null;
                     }
                     {
@@ -664,7 +663,7 @@ FeatureConstructor
         const featureNames = _Object_keys(featureInfos);
         const includeSetMap = createMap<{ readonly [FeatureName in string]: null; }>();
         const familiesMap = createMap<readonly string[]>();
-        let unionMask = maskNew();
+        let unionMask = MASK_EMPTY;
 
         featureNames.forEach(completeFeature);
         completeExclusions();
@@ -696,7 +695,7 @@ function esToString(name: unknown): string
 export function featuresToMask(featureObjs: readonly Feature[]): Mask
 {
     const mask =
-    featureObjs.reduce((mask, featureObj): Mask => maskUnion(mask, featureObj.mask), maskNew());
+    featureObjs.reduce((mask, featureObj): Mask => maskUnion(mask, featureObj.mask), MASK_EMPTY);
     return mask;
 }
 

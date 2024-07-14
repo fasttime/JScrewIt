@@ -1,4 +1,4 @@
-/* global Audio, Node, console, document, history, location, self, statusbar */
+/* global Audio, Iterator, Node, console, document, history, location, self, statusbar */
 
 import { _Object_defineProperty, _Object_keys, assignNoEnum, createEmpty }  from './obj-utils';
 import { createFeatureClass, featuresToMask }                               from '~feature-hub';
@@ -496,6 +496,16 @@ var featureInfos =
             return available;
         },
     },
+    ITERATOR_HELPER:
+    {
+        description: 'Availability of iterator helpers.',
+        check:
+        function ()
+        {
+            var available = typeof Iterator === 'function';
+            return available;
+        },
+    },
     LOCALE_INFINITY:
     {
         description: 'Language sensitive string representation of Infinity as "∞".',
@@ -955,6 +965,7 @@ var featureInfos =
             'HTMLDOCUMENT',
             'INCR_CHAR',
             'INTL',
+            'ITERATOR_HELPER',
             'LOCALE_INFINITY',
             'LOCALE_NUMERALS_EXT',
             'LOCATION',
@@ -1162,7 +1173,7 @@ var featureInfos =
     {
         inherits: 'NODE_16_6',
         versions: [['22']],
-        includes: { OBJECT_ARRAY_ENTRIES_CTOR: false },
+        includes: { ITERATOR_HELPER: true, OBJECT_ARRAY_ENTRIES_CTOR: false },
     },
     SAFARI_7_0:
     {

@@ -564,6 +564,18 @@ Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, And
 
 ***
 
+### ITERATOR\_HELPER
+
+> **ITERATOR\_HELPER**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Availability of iterator helpers.
+
+#### Remarks
+
+Available in Chrome, Edge, Opera, and Node.js 22+.
+
+***
+
 ### LOCALE\_INFINITY
 
 > **LOCALE\_INFINITY**: [`ElementaryFeature`](ElementaryFeature.md)

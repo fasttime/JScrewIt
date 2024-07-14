@@ -1,6 +1,15 @@
 import
-{ type Mask, maskAreEqual, maskIncludes, maskIntersection, maskNew, maskNext, maskUnion }
-from '../../src/mask';
+{
+    MASK_EMPTY,
+    MASK_MAX_SIZE,
+    type Mask,
+    maskAreEqual,
+    maskIncludes,
+    maskIntersection,
+    maskNext,
+    maskUnion,
+}
+from '../../src/mask-impl';
 
 import assert, { AssertionError } from 'assert';
 
@@ -15,7 +24,7 @@ never
 
 function assertMaskEmpty(actual: Mask): void
 {
-    const expected = maskNew();
+    const expected = MASK_EMPTY;
     if (!maskAreEqual(actual, expected))
     {
         const message = `Expected ${formatMask(actual)} to be empty`;
@@ -43,7 +52,7 @@ function assertMaskInclude(actual: Mask, includedMask: Mask): void
 
 function assertMaskNotEmpty(actual: Mask): void
 {
-    const expected = maskNew();
+    const expected = MASK_EMPTY;
     if (maskAreEqual(actual, expected))
     {
         const message = `Expected ${formatMask(actual)} to be non-empty`;
@@ -59,11 +68,10 @@ function formatMask(mask: Mask): string
 
 it
 (
-    'maskNew',
+    'MASK_EMPTY',
     (): void =>
     {
-        const newMask = maskNew();
-        assertMaskEmpty(newMask);
+        assertMaskEmpty(MASK_EMPTY);
     },
 );
 
@@ -72,8 +80,8 @@ it
     'maskNext',
     (): void =>
     {
-        let prevMask = maskNew();
-        for (let count = 0; count < 52; ++count)
+        let prevMask = MASK_EMPTY;
+        for (let count = 0; count < MASK_MAX_SIZE; ++count)
         {
             const nextMask = maskNext(prevMask);
             assertMaskNotEmpty(nextMask);
@@ -91,7 +99,7 @@ it
     'maskUnion',
     (): void =>
     {
-        let prevMask = maskNew();
+        let prevMask = MASK_EMPTY;
         for (let count = 0; count < 52; ++count)
         {
             const nextMask = maskNext(prevMask);
@@ -108,7 +116,7 @@ it
     'maskIntersection',
     (): void =>
     {
-        const mask0 = maskNew();
+        const mask0 = MASK_EMPTY;
         let prevHighMask = mask0;
         let lowMask = maskNext(mask0);
         for (let count = 0; count < 51; ++count)
