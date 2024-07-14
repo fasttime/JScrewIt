@@ -986,7 +986,7 @@ function getFHPaddingEntries(index)
         'P':
         [
             define('String.fromCharCode("80")'),
-            define('(RP_0_S + Function("return async function () {}")()())[11]', ASYNC_FUNCTION),
+            define('(RP_3_WA + Function("return async function(){}")()())[11]', ASYNC_FUNCTION),
             define('atob("01A")[1]', ATOB),
             define('btoa("".italics())[0]', ATOB),
             define('(RP_0_S + Function("return statusbar")())[11]', BARPROP),
