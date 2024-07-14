@@ -351,6 +351,7 @@ function getFHPaddingEntries(index)
     var ANY_WINDOW                      = Feature.ANY_WINDOW;
     var ARRAY_ITERATOR                  = Feature.ARRAY_ITERATOR;
     var ARROW                           = Feature.ARROW;
+    var ASYNC_FUNCTION                  = Feature.ASYNC_FUNCTION;
     var AT                              = Feature.AT;
     var ATOB                            = Feature.ATOB;
     var BARPROP                         = Feature.BARPROP;
@@ -378,6 +379,8 @@ function getFHPaddingEntries(index)
     var IE_SRC                          = Feature.IE_SRC;
     var INCR_CHAR                       = Feature.INCR_CHAR;
     var INTL                            = Feature.INTL;
+    var ITERATOR_HELPER                 = Feature.ITERATOR_HELPER;
+    var JAPANESE_INFINITY               = Feature.JAPANESE_INFINITY;    
     var LOCALE_INFINITY                 = Feature.LOCALE_INFINITY;
     var LOCALE_NUMERALS                 = Feature.LOCALE_NUMERALS;
     var LOCALE_NUMERALS_EXT             = Feature.LOCALE_NUMERALS_EXT;
