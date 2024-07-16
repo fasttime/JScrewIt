@@ -129,6 +129,21 @@ var featureInfos =
             return available;
         },
     },
+    ASYNC_FUNCTION:
+    {
+        description: 'Support for async functions, which return `Promise` object.',
+        check:
+        function ()
+        {
+            try
+            {
+                Function('return async function(){}');
+                return true;
+            }
+            catch (error)
+            { }
+        },
+    },
     ARROW:
     {
         description: 'Support for arrow functions.',
@@ -503,6 +518,16 @@ var featureInfos =
         function ()
         {
             var available = typeof Iterator === 'function';
+            return available;
+        },
+    },
+    JAPANESE_INFINITY:
+    {
+        description: 'Japanese string representation of Infinity ended with "∞".',
+        check:
+        function ()
+        {
+            var available = Infinity.toLocaleString('ja').slice(-1) === '∞';
             return available;
         },
     },
