@@ -1291,7 +1291,7 @@ var featureInfos =
     SAFARI_10.1:
     {
         inherits: 'SAFARI_10',
-        versions: ['12'],
+        versions: ['10.1'],
         includes: { ASYNC_FUNCTION: true },
     },
     SAFARI_12:
