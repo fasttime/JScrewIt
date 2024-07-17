@@ -13,6 +13,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#ARROW"><code>ARROW</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#ASYNC_FUNCTION"><code>ASYNC_FUNCTION</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#AT"><code>AT</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#ATOB"><code>ATOB</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#BARPROP"><code>BARPROP</code></a>
@@ -32,6 +33,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INTL"><code>INTL</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#ITERATOR_HELPER"><code>ITERATOR_HELPER</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#JAPANESE_INFINITY"><code>JAPANESE_INFINITY</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS"><code>LOCALE_NUMERALS</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a>
@@ -58,6 +60,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#ARROW"><code>ARROW</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#ASYNC_FUNCTION"><code>ASYNC_FUNCTION</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#AT"><code>AT</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#ATOB"><code>ATOB</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#BARPROP"><code>BARPROP</code></a>
@@ -77,6 +80,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INTL"><code>INTL</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#JAPANESE_INFINITY"><code>JAPANESE_INFINITY</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS"><code>LOCALE_NUMERALS</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a> and <a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a>
@@ -116,6 +120,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#IE_SRC"><code>IE_SRC</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INTL"><code>INTL</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#PLAIN_INTL"><code>PLAIN_INTL</code></a>; Internet Explorer 11)
+<li><a href="api-doc/interfaces/FeatureAll.md#JAPANESE_INFINITY"><code>JAPANESE_INFINITY</code></a> (Internet Explorer 11)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Internet Explorer 11 on Windows 10)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS"><code>LOCALE_NUMERALS</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a> and <a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a>; Internet Explorer 11)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a> (Internet Explorer 11 on Windows 10)
@@ -141,6 +146,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Safari 7.1+)
 <li><a href="api-doc/interfaces/FeatureAll.md#ARROW"><code>ARROW</code></a> (Safari 10+)
+<li><a href="api-doc/interfaces/FeatureAll.md#ASYNC_FUNCTION"><code>ASYNC_FUNCTION</code></a> (Safari 10.1+)
 <li><a href="api-doc/interfaces/FeatureAll.md#AT"><code>AT</code></a> (Safari 15.4+)
 <li><a href="api-doc/interfaces/FeatureAll.md#ATOB"><code>ATOB</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#BARPROP"><code>BARPROP</code></a>
@@ -162,6 +168,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INTL"><code>INTL</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#PLAIN_INTL"><code>PLAIN_INTL</code></a>; Safari 10+)
+<li><a href="api-doc/interfaces/FeatureAll.md#JAPANESE_INFINITY"><code>JAPANESE_INFINITY</code></a> (Safari 10+)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Safari 10+)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS"><code>LOCALE_NUMERALS</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a> and <a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a>; Safari 10+)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a> (Safari 10+)
@@ -206,6 +213,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#HTMLDOCUMENT"><code>HTMLDOCUMENT</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INTL"><code>INTL</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#PLAIN_INTL"><code>PLAIN_INTL</code></a>; Android Browser 4.4)
+<li><a href="api-doc/interfaces/FeatureAll.md#JAPANESE_INFINITY"><code>JAPANESE_INFINITY</code></a> (Android Browser 4.4)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Android Browser 4.4)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS"><code>LOCALE_NUMERALS</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a> and <a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a>; Android Browser 4.4)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a> (Android Browser 4.4)
@@ -230,6 +238,7 @@ This table lists features available in the most common engines.
 <ul>
 <li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>; Node.js 0.12+)
 <li><a href="api-doc/interfaces/FeatureAll.md#ARROW"><code>ARROW</code></a> (Node.js 4+)
+<li><a href="api-doc/interfaces/FeatureAll.md#ASYNC_FUNCTION"><code>ASYNC_FUNCTION</code></a> (Node.js 7.6+)
 <li><a href="api-doc/interfaces/FeatureAll.md#AT"><code>AT</code></a> (Node.js 16.6+)
 <li><a href="api-doc/interfaces/FeatureAll.md#ATOB"><code>ATOB</code></a> (Node.js 16.0+)
 <li><a href="api-doc/interfaces/FeatureAll.md#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a> (not in Node.js 0.12+)
@@ -248,6 +257,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INTL"><code>INTL</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#PLAIN_INTL"><code>PLAIN_INTL</code></a>; Node.js 0.12+)
 <li><a href="api-doc/interfaces/FeatureAll.md#ITERATOR_HELPER"><code>ITERATOR_HELPER</code></a> (Node.js 22+)
+<li><a href="api-doc/interfaces/FeatureAll.md#JAPANESE_INFINITY"><code>JAPANESE_INFINITY</code></a> (Node.js 0.12+)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Node.js 0.12+)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS"><code>LOCALE_NUMERALS</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a> and <a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a>; Node.js 13+)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a> (Node.js 13+)
