@@ -948,6 +948,7 @@ var featureInfos =
             BARPROP:                true,
             DOMWINDOW:              false,
             HTMLAUDIOELEMENT:       true,
+            JAPANESE_INFINITY:      true,
             LOCALE_INFINITY:        true,
             LOCALE_NUMERALS_EXT:    true,
             PLAIN_INTL:             true,
@@ -973,6 +974,7 @@ var featureInfos =
         includes:
         [
             'ARROW',
+            'ASYNC_FUNCTION',
             'AT',
             'ATOB',
             'BARPROP',
@@ -991,6 +993,7 @@ var featureInfos =
             'INCR_CHAR',
             'INTL',
             'ITERATOR_HELPER',
+            'JAPANESE_INFINITY',
             'LOCALE_INFINITY',
             'LOCALE_NUMERALS_EXT',
             'LOCATION',
@@ -1026,6 +1029,7 @@ var featureInfos =
         includes:
         [
             'ARROW',
+            'ASYNC_FUNCTION',
             'AT',
             'ATOB',
             'BARPROP',
@@ -1044,6 +1048,7 @@ var featureInfos =
             'HTMLDOCUMENT',
             'INCR_CHAR',
             'INTL',
+            'JAPANESE_INFINITY',
             'LOCALE_INFINITY',
             'LOCALE_NUMERALS_EXT',
             'LOCATION',
@@ -1096,6 +1101,7 @@ var featureInfos =
             DOCUMENT:           false,
             GMT:                true,
             HTMLDOCUMENT:       true,
+            JAPANESE_INFINITY:  true,
             LOCALE_NUMERALS:    true,
             PLAIN_INTL:         true,
             SHORT_LOCALES:      true,
@@ -1134,6 +1140,7 @@ var featureInfos =
         {
             ESC_HTML_ALL:                   false,
             ESC_HTML_QUOT_ONLY:             true,
+            JAPANESE_INFINITY:              true,
             LOCALE_INFINITY:                true,
             NO_OLD_SAFARI_ARRAY_ITERATOR:   true,
             OBJECT_ARRAY_ENTRIES_CTOR:      true,
@@ -1149,12 +1156,18 @@ var featureInfos =
     NODE_5:
     {
         inherits:   'NODE_4',
-        versions:   [['5',, '9']],
+        versions:   [['5',, '7.5']],
         attributes: { 'char-increment-restriction': null },
+    },
+    NODE_7.6:
+    {
+        inherits:   'NODE_5',
+        versions:   [['7.6',, '9']],
+        attributes: { ASYNC_FUNCTION: true },
     },
     NODE_10:
     {
-        inherits: 'NODE_5',
+        inherits: 'NODE_7.6',
         versions: ['10'],
         includes: { FUNCTION_19_LF: true, FUNCTION_22_LF: false },
     },
@@ -1263,6 +1276,7 @@ var featureInfos =
         includes:
         {
             ARROW:                      true,
+            JAPANESE_INFINITY:          true,
             LOCALE_INFINITY:            true,
             LOCALE_NUMERALS_EXT:        true,
             NODECONSTRUCTOR:            false,
@@ -1274,9 +1288,15 @@ var featureInfos =
         },
         attributes: { 'old-safari-restriction': undefined, 'safari-bug-21820506': undefined },
     },
-    SAFARI_12:
+    SAFARI_10.1:
     {
         inherits: 'SAFARI_10',
+        versions: ['12'],
+        includes: { ASYNC_FUNCTION: true },
+    },
+    SAFARI_12:
+    {
+        inherits: 'SAFARI_10.1',
         versions: ['12'],
         includes: { FLAT: true },
     },
