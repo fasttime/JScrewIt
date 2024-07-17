@@ -690,6 +690,14 @@ Features available in Node.js 0.12.
 
 ***
 
+### NODE\_7\_6
+
+> **NODE\_7\_6**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Node.js 7.6.
+
+***
+
 ### NODE\_10
 
 > **NODE\_10**: [`PredefinedFeature`](PredefinedFeature.md)
@@ -921,6 +929,14 @@ An alias for `SAFARI_17_4`.
 > **SAFARI\_10**: [`PredefinedFeature`](PredefinedFeature.md)
 
 Features available in Safari 10 and Safari 11.
+
+***
+
+### SAFARI\_10\_1
+
+> **SAFARI\_10\_1**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Safari 10.1 and Safari 11.
 
 ***
 
