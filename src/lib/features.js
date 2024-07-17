@@ -1159,7 +1159,7 @@ var featureInfos =
         versions:   [['5',, '7.5']],
         attributes: { 'char-increment-restriction': null },
     },
-    NODE_7.6:
+    NODE_7_6:
     {
         inherits:   'NODE_5',
         versions:   [['7.6',, '9']],
@@ -1288,7 +1288,7 @@ var featureInfos =
         },
         attributes: { 'old-safari-restriction': undefined, 'safari-bug-21820506': undefined },
     },
-    SAFARI_10.1:
+    SAFARI_10_1:
     {
         inherits: 'SAFARI_10',
         versions: ['10.1'],
