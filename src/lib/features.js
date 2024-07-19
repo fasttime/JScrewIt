@@ -523,7 +523,7 @@ var featureInfos =
     },
     JAPANESE_INFINITY:
     {
-        description: 'Japanese string representation of Infinity ended with "∞".',
+        description: 'Japanese string representation of Infinity ending with "∞".',
         check:
         function ()
         {
