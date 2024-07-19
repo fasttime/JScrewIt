@@ -1167,7 +1167,7 @@ var featureInfos =
     },
     NODE_10:
     {
-        inherits: 'NODE_7.6',
+        inherits: 'NODE_7_6',
         versions: ['10'],
         includes: { FUNCTION_19_LF: true, FUNCTION_22_LF: false },
     },
