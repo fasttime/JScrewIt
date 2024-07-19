@@ -131,7 +131,7 @@ var featureInfos =
     },
     ASYNC_FUNCTION:
     {
-        description: 'Support for async functions, which return `Promise` object.',
+        description: 'Support for async functions, which return Promise object.',
         check:
         function ()
         {
