@@ -532,6 +532,21 @@
         return expr;
     }
 
+    function replaceAsyncFunctions(expr)
+    {
+        expr =
+        expr.replace
+        (
+            ASYNC_REGEXP,
+            function (match, capture1, capture2, capture3)
+            {
+                var replacement = 'function ' + capture1 + '(){new Promise(function (' + capture2 + '){' + capture3 '}';
+                return replacement;
+            }
+        );
+        return expr;
+    }
+    
     function restoreAll(backupList)
     {
         var backupData;
@@ -587,6 +602,9 @@
     var ARROW_REGEXP =
     /(\([^(]*\)|[\w$]+)=>(\{.*?\}|(?:\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\)|[^,()])*)/g;
 
+    var ASYNC_REGEXP =
+    /async\sfunction\s([a-zA-Z\_\$][0-9a-zA-Z\_\$]*)\(([a-zA-Z\_\$][0-9a-zA-Z\_\$\,\s]*))\{(.*)}/g;
+    
     var NATIVE_FUNCTION_SOURCE_INFO_FF = { body: '\n    [native code]\n',    delimiter: ''   };
     var NATIVE_FUNCTION_SOURCE_INFO_IE = { body: '\n    [native code]\n',    delimiter: '\n' };
     var NATIVE_FUNCTION_SOURCE_INFO_V8 = { body: ' [native code] ',          delimiter: ''   };
@@ -609,6 +627,33 @@
             arrayIterator ? Object.getPrototypeOf(arrayIterator) : function () { }.prototype;
             registerObjectFactory
             (this, 'Array.prototype.entries', '[object ArrayIterator]', prototype);
+        },
+        ASYNC_FUNCTION:
+        function ()
+        {
+            var context = this;
+            if (!global.Promise)
+                var Promise = function () {this.toString()='[object Promise]';
+            registerFunctionAdapter
+            (
+                this,
+                function ()
+                {
+                    var bodyIndex = arguments.length - 1;
+                    if (bodyIndex < 0)
+                        return;
+                    var oldBody = arguments[bodyIndex];
+                    if (typeof oldBody !== 'string')
+                        return;
+                    var newBody = replaceAsyncFunctions(oldBody);
+                    if (newBody === oldBody)
+                        return;
+                    var fn = context.ADAPTERS.Function.function;
+                    arguments[bodyIndex] = newBody;
+                    var fnObj = fn.apply(this, arguments);
+                    return fnObj;
+                }
+            );
         },
         ARROW:
         function ()
@@ -919,6 +964,27 @@
             override(this, 'Iterator', { value: Iterator });
             var filter = createStaticSupplier('[object Iterator Helper]');
             override(this, 'Iterator.prototype.filter', { value: filter });
+        },
+        JAPANESE_INFINITY:
+        function ()
+        {
+            registerNumberToLocaleStringAdapter
+            (
+                this,
+                function (locale)
+                {
+                    if locale = 'ja'
+                    {
+                        switch (+this) // In Internet Explorer 9, +this is different from this.
+                        {
+                            case Infinity:
+                                return '+∞';
+                            case -Infinity:
+                                return '-∞';
+                        }
+                    }
+                }
+            );
         },
         LOCALE_INFINITY:
         function ()
