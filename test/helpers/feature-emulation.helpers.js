@@ -620,31 +620,6 @@
             registerObjectFactory
             (this, 'Array.prototype.entries', '[object ArrayIterator]', prototype);
         },
-        ASYNC_FUNCTION:
-        function ()
-        {
-            var context = this;
-            registerFunctionAdapter
-            (
-                this,
-                function ()
-                {
-                    var bodyIndex = arguments.length - 1;
-                    if (bodyIndex < 0)
-                        return;
-                    var oldBody = arguments[bodyIndex];
-                    if (typeof oldBody !== 'string')
-                        return;
-                    var newBody = replaceAsyncFunctions(oldBody);
-                    if (newBody === oldBody)
-                        return;
-                    var fn = context.ADAPTERS.Function.function;
-                    arguments[bodyIndex] = newBody;
-                    var fnObj = fn.apply(this, arguments);
-                    return fnObj;
-                }
-            );
-        },
         ARROW:
         function ()
         {
@@ -692,6 +667,31 @@
             var descriptor = { value: fn };
             override(this, 'Array.prototype.' + name, descriptor);
             override(this, 'String.prototype.' + name, descriptor);
+        },
+        ASYNC_FUNCTION:
+        function ()
+        {
+            var context = this;
+            registerFunctionAdapter
+            (
+                this,
+                function ()
+                {
+                    var bodyIndex = arguments.length - 1;
+                    if (bodyIndex < 0)
+                        return;
+                    var oldBody = arguments[bodyIndex];
+                    if (typeof oldBody !== 'string')
+                        return;
+                    var newBody = replaceAsyncFunctions(oldBody);
+                    if (newBody === oldBody)
+                        return;
+                    var fn = context.ADAPTERS.Function.function;
+                    arguments[bodyIndex] = newBody;
+                    var fnObj = fn.apply(this, arguments);
+                    return fnObj;
+                }
+            );
         },
         ATOB:
         function ()
