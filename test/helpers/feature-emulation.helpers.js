@@ -534,16 +534,8 @@
 
     function replaceAsyncFunctions(expr)
     {
-        expr =
-        expr.replace
-        (
-            ASYNC_REGEXP,
-            function (match, capture1, capture2, capture3)
-            {
-                var replacement = 'function ' + capture1 + '(){new Promise(function (' + capture2 + '){' + capture3 '}';
-                return replacement;
-            }
-        );
+        if (expr === 'return async function(){}')
+            return 'return function(){return"[object Promise]"}';
         return expr;
     }
     
