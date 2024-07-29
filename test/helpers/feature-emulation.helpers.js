@@ -624,8 +624,6 @@
         function ()
         {
             var context = this;
-            if (!global.Promise)
-                var Promise = function () {this.toString()='[object Promise]';
             registerFunctionAdapter
             (
                 this,
