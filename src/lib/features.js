@@ -883,6 +883,7 @@ var featureInfos =
         includes:
         [
             'ARROW',
+            'ASYNC_FUNCTION',
             'AT',
             'ATOB',
             'BARPROP',
@@ -900,6 +901,7 @@ var featureInfos =
             'HTMLDOCUMENT',
             'INCR_CHAR',
             'INTL',
+            'JAPANESE_INFINITY',
             'LOCALE_INFINITY',
             'LOCALE_NUMERALS_EXT',
             'LOCATION',
