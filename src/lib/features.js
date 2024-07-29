@@ -1296,7 +1296,7 @@ var featureInfos =
     },
     SAFARI_12:
     {
-        inherits: 'SAFARI_10.1',
+        inherits: 'SAFARI_10_1',
         versions: ['12'],
         includes: { FLAT: true },
     },
