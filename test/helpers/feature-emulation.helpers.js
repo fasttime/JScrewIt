@@ -963,7 +963,7 @@
                 this,
                 function (locale)
                 {
-                    if locale = 'ja'
+                    if (locale === 'ja')
                     {
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
