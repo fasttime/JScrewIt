@@ -977,10 +977,10 @@
                     {
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
-                            case Infinity:
-                                return '+∞';
-                            case -Infinity:
-                                return '-∞';
+                        case Infinity:
+                            return '+∞';
+                        case -Infinity:
+                            return '-∞';
                         }
                     }
                 }
