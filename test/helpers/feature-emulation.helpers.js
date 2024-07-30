@@ -594,9 +594,6 @@
     var ARROW_REGEXP =
     /(\([^(]*\)|[\w$]+)=>(\{.*?\}|(?:\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\)|[^,()])*)/g;
 
-    var ASYNC_REGEXP =
-    /async\sfunction\s([a-zA-Z\_\$][0-9a-zA-Z\_\$]*)\(([a-zA-Z\_\$][0-9a-zA-Z\_\$\,\s]*))\{(.*)}/g;
-    
     var NATIVE_FUNCTION_SOURCE_INFO_FF = { body: '\n    [native code]\n',    delimiter: ''   };
     var NATIVE_FUNCTION_SOURCE_INFO_IE = { body: '\n    [native code]\n',    delimiter: '\n' };
     var NATIVE_FUNCTION_SOURCE_INFO_V8 = { body: ' [native code] ',          delimiter: ''   };
