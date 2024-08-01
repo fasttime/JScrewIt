@@ -538,6 +538,7 @@
             return 'return function(){return"[object Promise]"}';
         return expr;
     }
+
     function restoreAll(backupList)
     {
         var backupData;
