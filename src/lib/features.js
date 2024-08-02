@@ -1163,9 +1163,9 @@ var featureInfos =
     },
     NODE_7_6:
     {
-        inherits:   'NODE_5',
-        versions:   [['7.6',, '9']],
-        attributes: { ASYNC_FUNCTION: true },
+        inherits: 'NODE_5',
+        versions: [['7.6',, '9']],
+        includes: { ASYNC_FUNCTION: true },
     },
     NODE_10:
     {
