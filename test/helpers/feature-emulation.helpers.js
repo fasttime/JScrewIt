@@ -532,6 +532,13 @@
         return expr;
     }
 
+    function replaceAsyncFunctions(expr)
+    {
+        if (expr === 'return async function(){}')
+            return 'return function(){return"[object Promise]"}';
+        return expr;
+    }
+
     function restoreAll(backupList)
     {
         var backupData;
@@ -626,6 +633,31 @@
                     if (typeof oldBody !== 'string')
                         return;
                     var newBody = replaceArrowFunctions(oldBody);
+                    if (newBody === oldBody)
+                        return;
+                    var fn = context.ADAPTERS.Function.function;
+                    arguments[bodyIndex] = newBody;
+                    var fnObj = fn.apply(this, arguments);
+                    return fnObj;
+                }
+            );
+        },
+        ASYNC_FUNCTION:
+        function ()
+        {
+            var context = this;
+            registerFunctionAdapter
+            (
+                this,
+                function ()
+                {
+                    var bodyIndex = arguments.length - 1;
+                    if (bodyIndex < 0)
+                        return;
+                    var oldBody = arguments[bodyIndex];
+                    if (typeof oldBody !== 'string')
+                        return;
+                    var newBody = replaceAsyncFunctions(oldBody);
                     if (newBody === oldBody)
                         return;
                     var fn = context.ADAPTERS.Function.function;
@@ -919,6 +951,27 @@
             override(this, 'Iterator', { value: Iterator });
             var filter = createStaticSupplier('[object Iterator Helper]');
             override(this, 'Iterator.prototype.filter', { value: filter });
+        },
+        JAPANESE_INFINITY:
+        function ()
+        {
+            registerNumberToLocaleStringAdapter
+            (
+                this,
+                function (locale)
+                {
+                    if (locale === 'ja')
+                    {
+                        switch (+this) // In Internet Explorer 9, +this is different from this.
+                        {
+                        case Infinity:
+                            return '+∞';
+                        case -Infinity:
+                            return '-∞';
+                        }
+                    }
+                }
+            );
         },
         LOCALE_INFINITY:
         function ()

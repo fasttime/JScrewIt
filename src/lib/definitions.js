@@ -351,6 +351,7 @@ function getFHPaddingEntries(index)
     var ANY_WINDOW                      = Feature.ANY_WINDOW;
     var ARRAY_ITERATOR                  = Feature.ARRAY_ITERATOR;
     var ARROW                           = Feature.ARROW;
+    var ASYNC_FUNCTION                  = Feature.ASYNC_FUNCTION;
     var AT                              = Feature.AT;
     var ATOB                            = Feature.ATOB;
     var BARPROP                         = Feature.BARPROP;
@@ -378,6 +379,8 @@ function getFHPaddingEntries(index)
     var IE_SRC                          = Feature.IE_SRC;
     var INCR_CHAR                       = Feature.INCR_CHAR;
     var INTL                            = Feature.INTL;
+    var ITERATOR_HELPER                 = Feature.ITERATOR_HELPER;
+    var JAPANESE_INFINITY               = Feature.JAPANESE_INFINITY;
     var LOCALE_INFINITY                 = Feature.LOCALE_INFINITY;
     var LOCALE_NUMERALS                 = Feature.LOCALE_NUMERALS;
     var LOCALE_NUMERALS_EXT             = Feature.LOCALE_NUMERALS_EXT;
@@ -902,6 +905,7 @@ function getFHPaddingEntries(index)
             ({ expr: '(RP_3_WA + Function("return history")())[11]', optimize: true }, HISTORY),
             define('(RP_1_WA + Audio)[10]', HTMLAUDIOELEMENT),
             define('(RP_3_WA + document)[11]', HTMLDOCUMENT),
+            define('(RP_4_A + [].entries().filter(ANY_FUNCTION))[21]', ITERATOR_HELPER),
         ],
         'I': '"Infinity"[0]',
         'J':
@@ -985,6 +989,7 @@ function getFHPaddingEntries(index)
         'P':
         [
             define('String.fromCharCode("80")'),
+            define('(RP_3_WA + Function("return async function(){}")()())[11]', ASYNC_FUNCTION),
             define('atob("01A")[1]', ATOB),
             define('btoa("".italics())[0]', ATOB),
             define('(RP_0_S + Function("return statusbar")())[11]', BARPROP),
@@ -1161,6 +1166,7 @@ function getFHPaddingEntries(index)
         [
             define('211[TO_STRING]("31")[1]'),
             define('(RP_3_WA + btoa(undefined))[10]', ATOB),
+            define('(RP_0_S + [].entries().filter(ANY_FUNCTION))[20]', ITERATOR_HELPER),
         ],
         'q':
         [
@@ -1293,6 +1299,8 @@ function getFHPaddingEntries(index)
         '∞':
         [
             define('Infinity[TO_LOCALE_STRING]()', LOCALE_INFINITY),
+            define('Infinity[TO_LOCALE_STRING]("ja")[SLICE_OR_SUBSTR]("-1")', JAPANESE_INFINITY),
+            define('Infinity[TO_LOCALE_STRING]("ja").at("-1")', JAPANESE_INFINITY, AT),
             defineCharDefault(),
         ],
     }); // eslint-disable-line @origin-1/bracket-layout

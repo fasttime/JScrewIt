@@ -82,6 +82,18 @@ Available in Chrome, Edge, Firefox, Safari 10+, Opera, and Node.js 4+.
 
 ***
 
+### ASYNC_FUNCTION
+
+> **ASYNC_FUNCTION**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Support for async functions, which return `Promise` object.
+
+#### Remarks
+
+Available in Chrome, Edge, Firefox, Safari 10.1+, Opera, and Node.js 7.6+.
+
+***
+
 ### AT
 
 > **AT**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -576,6 +588,18 @@ Available in Chrome, Edge, Opera, and Node.js 22+.
 
 ***
 
+### JAPANESE_INFINITY
+
+> **JAPANESE_INFINITY**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Japanese string representation of Infinity ended with "∞".
+
+#### Remarks
+
+Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, and Node.js 0.12+.
+
+***
+
 ### LOCALE\_INFINITY
 
 > **LOCALE\_INFINITY**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -663,6 +687,14 @@ Features available in Node.js 0.10.
 > **NODE\_0\_12**: [`PredefinedFeature`](PredefinedFeature.md)
 
 Features available in Node.js 0.12.
+
+***
+
+### NODE\_7\_6
+
+> **NODE\_7\_6**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Node.js 7.6.
 
 ***
 
@@ -897,6 +929,14 @@ An alias for `SAFARI_17_4`.
 > **SAFARI\_10**: [`PredefinedFeature`](PredefinedFeature.md)
 
 Features available in Safari 10 and Safari 11.
+
+***
+
+### SAFARI\_10\_1
+
+> **SAFARI\_10\_1**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Safari 10.1 and Safari 11.
 
 ***
 

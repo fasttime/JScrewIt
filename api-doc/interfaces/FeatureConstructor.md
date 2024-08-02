@@ -216,6 +216,22 @@ Available in Chrome, Edge, Firefox, Safari 10+, Opera, and Node.js 4+.
 
 ***
 
+### ASYNC_FUNCTION
+
+> **ASYNC_FUNCTION**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Support for async functions, which return `Promise` object.
+
+#### Remarks
+
+Available in Chrome, Edge, Firefox, Safari 10.1+, Opera, and Node.js 7.6+.
+
+#### Inherited from
+
+[`FeatureAll`](FeatureAll.md).[`ASYNC_FUNCTION`](FeatureAll.md#async_function)
+
+***
+
 ### AT
 
 > **AT**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -903,6 +919,22 @@ Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 1
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`LOCALE_INFINITY`](FeatureAll.md#locale_infinity)
+
+***
+
+### JAPANESE_INFINITY
+
+> **JAPANESE_INFINITY**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Japanese string representation of Infinity ended with "∞".
+
+#### Remarks
+
+Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, and Node.js 0.12+.
+
+#### Inherited from
+
+[`FeatureAll`](FeatureAll.md).[`JAPANESE_INFINITY`](FeatureAll.md#japanese_infinity)
 
 ***
 
