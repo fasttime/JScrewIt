@@ -1271,10 +1271,10 @@ var featureInfos =
             OBJECT_ARRAY_ENTRIES_CTOR:      true,
         },
     },
-    SAFARI_10:
+    SAFARI_10_0:
     {
         inherits:   'SAFARI_9',
-        versions:   [['10', '11']],
+        versions:   ['10.0'],
         includes:
         {
             ARROW:                      true,
@@ -1292,7 +1292,7 @@ var featureInfos =
     },
     SAFARI_10_1:
     {
-        inherits: 'SAFARI_10',
+        inherits: 'SAFARI_10_0',
         versions: [['10.1',, '11']],
         includes: { ASYNC_FUNCTION: true },
     },
