@@ -245,10 +245,10 @@
                     );
                 }
             );
-            it
+            it.per([Feature.ARROW, Feature.ASYNC_FUNCTION])
             (
-                'ARROW check returns false',
-                function ()
+                '#.name check returns false',
+                function (featureObj)
                 {
                     var Function = global.Function;
                     global.Function =
@@ -258,7 +258,7 @@
                     };
                     try
                     {
-                        var check = Feature.ARROW.check;
+                        var check = featureObj.check;
                         var available = check();
                         expect(available).toBe(false);
                     }
