@@ -240,7 +240,6 @@ var featureInfos =
             return available;
         },
         includes:   ['ANY_DOCUMENT'],
-        excludes:   ['HTMLDOCUMENT'],
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
     DOMWINDOW:
@@ -460,22 +459,6 @@ var featureInfos =
             return available;
         },
         includes:   ['NO_IE_SRC'],
-        attributes: { 'web-worker': 'web-worker-restriction' },
-    },
-    HTMLDOCUMENT:
-    {
-        description:
-        'Existence of the global object document having the string representation "[object ' +
-        'HTMLDocument]".',
-        check:
-        function ()
-        {
-            var available =
-            typeof document === 'object' && document + '' === '[object HTMLDocument]';
-            return available;
-        },
-        includes:   ['ANY_DOCUMENT'],
-        excludes:   ['DOCUMENT'],
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
     IE_SRC:
@@ -718,19 +701,6 @@ var featureInfos =
         },
         includes: ['UNDEFINED'],
     },
-    OBJECT_W_CTOR:
-    {
-        description:
-        'The property that the string representation of the global object constructor starts ' +
-        'with "[object W".',
-        check:
-        function ()
-        {
-            var available = /^\[object W/.test(constructor);
-            return available;
-        },
-        attributes: { 'web-worker': 'old-safari-restriction' },
-    },
     OLD_SAFARI_LOCATION_CTOR:
     {
         description:
@@ -882,6 +852,7 @@ var featureInfos =
         'Android Browser.',
         includes:
         [
+            'ANY_DOCUMENT',
             'ARROW',
             'ASYNC_FUNCTION',
             'AT',
@@ -898,7 +869,6 @@ var featureInfos =
             'GLOBAL_UNDEFINED',
             'GMT',
             'HISTORY',
-            'HTMLDOCUMENT',
             'INCR_CHAR',
             'INTL',
             'JAPANESE_INFINITY',
@@ -920,6 +890,7 @@ var featureInfos =
         versions: ['4.0'],
         includes:
         [
+            'ANY_DOCUMENT',
             'ATOB',
             'CONSOLE',
             'DOMWINDOW',
@@ -927,7 +898,6 @@ var featureInfos =
             'FUNCTION_22_LF',
             'GMT',
             'HISTORY',
-            'HTMLDOCUMENT',
             'INCR_CHAR',
             'LOCATION',
             'NAME',
@@ -975,6 +945,7 @@ var featureInfos =
         versions: [['122'], ['122'], ['108']],
         includes:
         [
+            'ANY_DOCUMENT',
             'ARROW',
             'ASYNC_FUNCTION',
             'AT',
@@ -991,7 +962,6 @@ var featureInfos =
             'GLOBAL_UNDEFINED',
             'GMT',
             'HISTORY',
-            'HTMLDOCUMENT',
             'INCR_CHAR',
             'INTL',
             'ITERATOR_HELPER',
@@ -1030,6 +1000,7 @@ var featureInfos =
         versions: [['90']],
         includes:
         [
+            'ANY_DOCUMENT',
             'ARROW',
             'ASYNC_FUNCTION',
             'AT',
@@ -1047,7 +1018,6 @@ var featureInfos =
             'GLOBAL_UNDEFINED',
             'GMT',
             'HISTORY',
-            'HTMLDOCUMENT',
             'INCR_CHAR',
             'INTL',
             'JAPANESE_INFINITY',
@@ -1081,7 +1051,6 @@ var featureInfos =
             'IE_SRC',
             'INCR_CHAR',
             'OBJECT_L_LOCATION_CTOR',
-            'OBJECT_W_CTOR',
             'STATUS',
             'UNDEFINED',
             'WINDOW',
@@ -1100,9 +1069,9 @@ var featureInfos =
         versions: ['11'],
         includes:
         {
+            ANY_DOCUMENT:       true,
             DOCUMENT:           false,
             GMT:                true,
-            HTMLDOCUMENT:       true,
             JAPANESE_INFINITY:  true,
             LOCALE_NUMERALS:    true,
             PLAIN_INTL:         true,
@@ -1221,6 +1190,7 @@ var featureInfos =
         versions: ['7.0'],
         includes:
         [
+            'ANY_DOCUMENT',
             'ATOB',
             'BARPROP',
             'CONSOLE',
@@ -1232,13 +1202,11 @@ var featureInfos =
             'GLOBAL_UNDEFINED',
             'GMT',
             'HISTORY',
-            'HTMLDOCUMENT',
             'INCR_CHAR',
             'LOCATION',
             'NAME',
             'NODECONSTRUCTOR',
             'OBJECT_L_LOCATION_CTOR',
-            'OBJECT_W_CTOR',
             'OLD_SAFARI_LOCATION_CTOR',
             'STATUS',
             'WINDOW',
@@ -1283,7 +1251,6 @@ var featureInfos =
             LOCALE_NUMERALS_EXT:        true,
             NODECONSTRUCTOR:            false,
             OBJECT_L_LOCATION_CTOR:     false,
-            OBJECT_W_CTOR:              false,
             OLD_SAFARI_LOCATION_CTOR:   false,
             PLAIN_INTL:                 true,
             SHORT_LOCALES:              true,

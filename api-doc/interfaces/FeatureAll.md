@@ -494,18 +494,6 @@ Available in Android Browser 4.4. This feature is not available inside web worke
 
 ***
 
-### HTMLDOCUMENT
-
-> **HTMLDOCUMENT**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object document having the string representation "\[object HTMLDocument\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, and Android Browser. This feature is not available inside web workers.
-
-***
-
 ### IE\_10
 
 > **IE\_10**: [`PredefinedFeature`](PredefinedFeature.md)
@@ -863,18 +851,6 @@ Having the function Object.prototype.toString return the string "\[object Undefi
 #### Remarks
 
 Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser 4.1+, and Node.js.
-
-***
-
-### OBJECT\_W\_CTOR
-
-> **OBJECT\_W\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
-
-The property that the string representation of the global object constructor starts with "\[object W".
-
-#### Remarks
-
-Available in Internet Explorer and Safari before 10.0. This feature is not available inside web workers in Safari before 10.0.
 
 ***
 

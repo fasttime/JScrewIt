@@ -375,7 +375,6 @@ function getFHPaddingEntries(index)
     var GMT                             = Feature.GMT;
     var HISTORY                         = Feature.HISTORY;
     var HTMLAUDIOELEMENT                = Feature.HTMLAUDIOELEMENT;
-    var HTMLDOCUMENT                    = Feature.HTMLDOCUMENT;
     var IE_SRC                          = Feature.IE_SRC;
     var INCR_CHAR                       = Feature.INCR_CHAR;
     var INTL                            = Feature.INTL;
@@ -394,7 +393,6 @@ function getFHPaddingEntries(index)
     var OBJECT_ARRAY_ENTRIES_CTOR       = Feature.OBJECT_ARRAY_ENTRIES_CTOR;
     var OBJECT_L_LOCATION_CTOR          = Feature.OBJECT_L_LOCATION_CTOR;
     var OBJECT_UNDEFINED                = Feature.OBJECT_UNDEFINED;
-    var OBJECT_W_CTOR                   = Feature.OBJECT_W_CTOR;
     var OLD_SAFARI_LOCATION_CTOR        = Feature.OLD_SAFARI_LOCATION_CTOR;
     var PLAIN_INTL                      = Feature.PLAIN_INTL;
     var REGEXP_STRING_ITERATOR          = Feature.REGEXP_STRING_ITERATOR;
@@ -871,7 +869,6 @@ function getFHPaddingEntries(index)
             ('escape((NaN + [+("10" + [(RP_6_S + FILL)[40]] + "000")] + FILL)[40])[2]', FILL),
             define // *
             ('escape((NaN + [+("10" + [(RP_6_S + FLAT)[40]] + "000")] + FLAT)[40])[2]', FLAT),
-            define('(RP_0_S + document)[12]', HTMLDOCUMENT),
             define('escape(ARRAY_ITERATOR)[30]', NO_OLD_SAFARI_ARRAY_ITERATOR),
             define('escape(FILTER)[50]', V8_SRC),
             define('(document + [RP_1_WA]).at("-10")', ANY_DOCUMENT, AT),
@@ -909,7 +906,6 @@ function getFHPaddingEntries(index)
             define
             ({ expr: '(RP_3_WA + Function("return history")())[11]', optimize: true }, HISTORY),
             define('(RP_1_WA + Audio)[10]', HTMLAUDIOELEMENT),
-            define('(RP_3_WA + document)[11]', HTMLDOCUMENT),
             define('(RP_4_A + [].entries().filter(ANY_FUNCTION))[21]', ITERATOR_HELPER),
         ],
         'I': '"Infinity"[0]',
@@ -930,7 +926,6 @@ function getFHPaddingEntries(index)
             define('btoa(".")[0]', ATOB),
             define('(RP_3_WA + "".fontcolor())[11]', CAPITAL_HTML),
             define('(RP_0_S + Audio)[12]', HTMLAUDIOELEMENT),
-            define('(RP_0_S + document)[11]', HTMLDOCUMENT),
             define
             (
                 {
@@ -979,7 +974,6 @@ function getFHPaddingEntries(index)
             define('(RP_0_S + self)[10]', DOMWINDOW),
             define('(RP_4_A + Date())[30]', GMT),
             define('(RP_0_S + Audio)[11]', HTMLAUDIOELEMENT),
-            define('(RP_0_S + document)[10]', HTMLDOCUMENT),
         ],
         'N': '"NaN"[0]',
         'O':
@@ -1034,7 +1028,6 @@ function getFHPaddingEntries(index)
             define('"".fontcolor([])[20]', CAPITAL_HTML),
             define('(RP_3_WA + Date())[30]', GMT),
             define('(RP_0_S + Audio)[10]', HTMLAUDIOELEMENT),
-            define('(RP_1_WA + document)[10]', HTMLDOCUMENT),
             defineCharDefault({ atob: false }),
         ],
         'U':
@@ -1074,7 +1067,6 @@ function getFHPaddingEntries(index)
             define('(self + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW),
             define('btoa(undefined)[1]', ATOB),
             define('(RP_0_S + self)[11]', DOMWINDOW),
-            define('(RP_3_WA + Function("return constructor")())[11]', OBJECT_W_CTOR),
             define('(RP_3_WA + self)[11]', WINDOW),
             define('(self + RP_4_A).at("-11")', ANY_WINDOW, AT),
             defineCharDefault({ atob: false }),

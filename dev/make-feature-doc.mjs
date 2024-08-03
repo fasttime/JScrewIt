@@ -88,8 +88,7 @@ export default
                 componentEntry += ' (';
                 if (impliers)
                 {
-                    const featureNameList =
-                    AND_FORMATTER.format(impliers.map(formatFeatureName));
+                    const featureNameList = AND_FORMATTER.format(impliers.map(formatFeatureName));
                     componentEntry += `implied by ${featureNameList}`;
                     if (versioning)
                         componentEntry += '; ';
