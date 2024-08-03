@@ -577,7 +577,12 @@ function getFHPaddingEntries(index)
     BASE64_ALPHABET_HI_4 =
     [
         [define('A'), define('C', CAPITAL_HTML), define('A', ARRAY_ITERATOR)],
-        'F',
+        [
+            define('F'),
+            define('H', ITERATOR_HELPER),
+            define('F', AT, CAPITAL_HTML, IE_SRC),
+            define('F', AT, CAPITAL_HTML, NO_IE_SRC),
+        ],
         'Infinity',
         'NaNfalse',
         [define('S'), define('R', CAPITAL_HTML), define('S', ARRAY_ITERATOR)],
