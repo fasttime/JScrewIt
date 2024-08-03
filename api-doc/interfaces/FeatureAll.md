@@ -78,15 +78,15 @@ Support for arrow functions.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari 10+, Opera, and Node.js 4+.
+Available in Chrome, Edge, Firefox, Safari 10.0+, Opera, and Node.js 4+.
 
 ***
 
-### ASYNC_FUNCTION
+### ASYNC\_FUNCTION
 
-> **ASYNC_FUNCTION**: [`ElementaryFeature`](ElementaryFeature.md)
+> **ASYNC\_FUNCTION**: [`ElementaryFeature`](ElementaryFeature.md)
 
-Support for async functions, which return `Promise` object.
+Support for async functions, which return Promise object.
 
 #### Remarks
 
@@ -114,7 +114,7 @@ Existence of the global functions atob and btoa.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser, and Node.js 16.0+. This feature is not available inside web workers in Safari before 10.
+Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser, and Node.js 16.0+. This feature is not available inside web workers in Safari before 10.0.
 
 ***
 
@@ -572,7 +572,7 @@ Existence of the global object Intl.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10.0+, Opera, Android Browser 4.4, and Node.js 0.12+.
 
 ***
 
@@ -588,15 +588,15 @@ Available in Chrome, Edge, Opera, and Node.js 22+.
 
 ***
 
-### JAPANESE_INFINITY
+### JAPANESE\_INFINITY
 
-> **JAPANESE_INFINITY**: [`ElementaryFeature`](ElementaryFeature.md)
+> **JAPANESE\_INFINITY**: [`ElementaryFeature`](ElementaryFeature.md)
 
-Japanese string representation of Infinity ended with "∞".
+Japanese string representation of Infinity ending with "∞".
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10.0+, Opera, Android Browser 4.4, and Node.js 0.12+.
 
 ***
 
@@ -608,7 +608,7 @@ Language sensitive string representation of Infinity as "∞".
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4, and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10.0+, Opera, Android Browser 4.4, and Node.js 0.12+.
 
 ***
 
@@ -620,7 +620,7 @@ Features shared by all engines capable of localized number formatting, including
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10+, Opera, Android Browser 4.4, and Node.js 13+.
+Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10.0+, Opera, Android Browser 4.4, and Node.js 13+.
 
 ***
 
@@ -634,7 +634,7 @@ This includes all features of LOCALE_NUMERALS plus the output of the first three
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10+, Opera, Android Browser 4.4, and Node.js 13+.
+Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10.0+, Opera, Android Browser 4.4, and Node.js 13+.
 
 ***
 
@@ -670,7 +670,7 @@ Existence of the global object Node having the string representation "\[object N
 
 #### Remarks
 
-Available in Safari before 10. This feature is not available inside web workers.
+Available in Safari before 10.0. This feature is not available inside web workers.
 
 ***
 
@@ -687,14 +687,6 @@ Features available in Node.js 0.10.
 > **NODE\_0\_12**: [`PredefinedFeature`](PredefinedFeature.md)
 
 Features available in Node.js 0.12.
-
-***
-
-### NODE\_7\_6
-
-> **NODE\_7\_6**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Node.js 7.6.
 
 ***
 
@@ -774,7 +766,15 @@ Features available in Node.js 4.
 
 > **NODE\_5**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Node.js 5 to 9.
+Features available in Node.js 5 to 7.5.
+
+***
+
+### NODE\_7\_6
+
+> **NODE\_7\_6**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Node.js 7.6 to 9.
 
 ***
 
@@ -850,7 +850,7 @@ Existence of the global function location.constructor whose string representatio
 
 #### Remarks
 
-Available in Internet Explorer and Safari before 10. This feature is not available inside web workers.
+Available in Internet Explorer and Safari before 10.0. This feature is not available inside web workers.
 
 ***
 
@@ -874,7 +874,7 @@ The property that the string representation of the global object constructor sta
 
 #### Remarks
 
-Available in Internet Explorer and Safari before 10. This feature is not available inside web workers in Safari before 10.
+Available in Internet Explorer and Safari before 10.0. This feature is not available inside web workers in Safari before 10.0.
 
 ***
 
@@ -886,7 +886,7 @@ Existence of the global object location.constructor whose string representation 
 
 #### Remarks
 
-Available in Safari before 10.
+Available in Safari before 10.0.
 
 ***
 
@@ -898,7 +898,7 @@ Existence of the global object Intl having the string representation "\[object O
 
 #### Remarks
 
-Available in Internet Explorer 11, Safari 10+ before 14.0.1, Android Browser 4.4, and Node.js 0.12+ before 15.
+Available in Internet Explorer 11, Safari 10.0+ before 14.0.1, Android Browser 4.4, and Node.js 0.12+ before 15.
 
 ***
 
@@ -924,11 +924,11 @@ An alias for `SAFARI_17_4`.
 
 ***
 
-### SAFARI\_10
+### SAFARI\_10\_0
 
-> **SAFARI\_10**: [`PredefinedFeature`](PredefinedFeature.md)
+> **SAFARI\_10\_0**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Safari 10 and Safari 11.
+Features available in Safari 10.0.
 
 ***
 
@@ -1028,7 +1028,7 @@ Existence of the global object self whose string representation starts with "\[o
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.0.
 
 ***
 
@@ -1040,7 +1040,7 @@ Support for the two-letter locale name "ar" to format decimal numbers as Arabic 
 
 #### Remarks
 
-Available in Firefox, Internet Explorer 11, Safari 10+, Android Browser 4.4, and Node.js 13+.
+Available in Firefox, Internet Explorer 11, Safari 10.0+, Android Browser 4.4, and Node.js 13+.
 
 ***
 
