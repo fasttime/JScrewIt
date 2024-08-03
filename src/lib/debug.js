@@ -165,11 +165,13 @@ if (typeof NO_DEBUG === 'undefined')
 
         // Miscellaneous entries
         var ENTRIES = createEmpty();
-        ENTRIES['BASE64_ALPHABET_HI_4:0']                       = BASE64_ALPHABET_HI_4[0];
-        ENTRIES['BASE64_ALPHABET_HI_4:4']                       = BASE64_ALPHABET_HI_4[4];
-        ENTRIES['BASE64_ALPHABET_HI_4:5']                       = BASE64_ALPHABET_HI_4[5];
-        ENTRIES['BASE64_ALPHABET_LO_4:1']                       = BASE64_ALPHABET_LO_4[1];
-        ENTRIES['BASE64_ALPHABET_LO_4:3']                       = BASE64_ALPHABET_LO_4[3];
+
+        ENTRIES['BASE64_ALPHABET_HI_4:0'] = BASE64_ALPHABET_HI_4[0];
+        ENTRIES['BASE64_ALPHABET_HI_4:1'] = BASE64_ALPHABET_HI_4[1];
+        ENTRIES['BASE64_ALPHABET_HI_4:4'] = BASE64_ALPHABET_HI_4[4];
+        ENTRIES['BASE64_ALPHABET_HI_4:5'] = BASE64_ALPHABET_HI_4[5];
+        ENTRIES['BASE64_ALPHABET_LO_4:1'] = BASE64_ALPHABET_LO_4[1];
+        ENTRIES['BASE64_ALPHABET_LO_4:3'] = BASE64_ALPHABET_LO_4[3];
 
         var featureFromMask = Feature._fromMask;
         var getFeatureMask = Feature._getMask;

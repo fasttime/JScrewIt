@@ -269,6 +269,8 @@ JScrewIt.debug.getComplexNames().forEach
 
 verify['BASE64_ALPHABET_HI_4:0'] = verifyPredef('BASE64_ALPHABET_HI_4:0');
 
+verify['BASE64_ALPHABET_HI_4:1'] = verifyPredef('BASE64_ALPHABET_HI_4:1');
+
 verify['BASE64_ALPHABET_HI_4:4'] = verifyPredef('BASE64_ALPHABET_HI_4:4');
 
 verify['BASE64_ALPHABET_HI_4:5'] = verifyPredef('BASE64_ALPHABET_HI_4:5');

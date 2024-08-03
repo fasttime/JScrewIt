@@ -8,6 +8,7 @@ const RAW_PREDEFS =
 {
     __proto__:                  null,
     'BASE64_ALPHABET_HI_4:0':   'ABCD',
+    'BASE64_ALPHABET_HI_4:1':   'EFGH',
     'BASE64_ALPHABET_HI_4:4':   'QRST',
     'BASE64_ALPHABET_HI_4:5':   'UVWX',
     'BASE64_ALPHABET_LO_4:1':   ['0B', '0R', '0h', '0x'],
