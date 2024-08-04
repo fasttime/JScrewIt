@@ -896,7 +896,11 @@ var featureInfos =
             'STATUS',
             'WINDOW',
         ],
-        attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null, 'non-ie-restriction': null },
+        attributes: { 
+            'char-increment-restriction': null, 
+            'web-worker-restriction': null, 
+            'non-ie-restriction': null 
+        },
     },
     ANDRO_4_0:
     {
@@ -941,7 +945,11 @@ var featureInfos =
             SHORT_LOCALES:          true,
             WINDOW:                 true,
         },
-        attributes: { 'no-console-in-web-worker': null, 'web-worker-restriction': null, 'non-ie-restriction': null },
+        attributes: { 
+            'no-console-in-web-worker': null, 
+            'web-worker-restriction': null, 
+            'non-ie-restriction': null 
+        },
     },
     CHROME_PREV:
     {
@@ -991,7 +999,12 @@ var featureInfos =
             'WINDOW',
         ],
         attributes:
-        { 'char-increment-restriction': null, 'unstable': null, 'web-worker-restriction': null, 'non-ie-restriction': null },
+        { 
+            'char-increment-restriction': null, 
+            'unstable': null, 
+            'web-worker-restriction': null, 
+            'non-ie-restriction': null 
+        },
     },
     FF_ESR:
     {
@@ -1047,7 +1060,12 @@ var featureInfos =
             'WINDOW',
         ],
         attributes:
-        { 'char-increment-restriction': null, 'unstable': null, 'web-worker-restriction': null, 'non-ie-restriction': null },
+        { 
+            'char-increment-restriction': null, 
+            'unstable': null, 
+            'web-worker-restriction': null, 
+            'non-ie-restriction': null 
+        },
     },
     IE_9:
     {
