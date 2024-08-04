@@ -628,7 +628,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this._encodeByCodePoints(inputData, 4, maxLength);
                 return output;
             },
-            38,
+            30,
             undefined,
             Feature.FROM_CODE_POINT
         ),
@@ -707,7 +707,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this._encodeByDict(inputData, 3, 1, maxLength);
                 return output;
             },
-            153
+            136
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -803,7 +803,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this._encodeByDict(inputData, 4, 2, maxLength);
                 return output;
             },
-            279
+            263
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -872,7 +872,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this._encodeByDict(inputData, 5, 3, maxLength);
                 return output;
             },
-            602
+            570
         ),
 
         /* -------------------------------------------------------------------------------------- *\
