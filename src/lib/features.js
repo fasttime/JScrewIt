@@ -731,6 +731,19 @@ var featureInfos =
         },
         attributes: { 'web-worker': 'old-safari-restriction' },
     },
+    OBJECT_W_SELF:
+    {
+        description:
+        'The property that the string representation of the global object self starts ' +
+        'with "[object W".',
+        check:
+        function ()
+        {
+            var available = /^\[object W/.test(self);
+            return available;
+        },
+        attributes: { 'web-worker': 'non-ie-restriction' },
+    },
     OLD_SAFARI_LOCATION_CTOR:
     {
         description:
@@ -872,6 +885,7 @@ var featureInfos =
             'char-increment-restriction':   null,
             'safari-bug-21820506':          null,
             'web-worker-restriction':       null,
+            'non-ie-restriction':           null,
         },
     },
     COMPACT:
@@ -912,7 +926,7 @@ var featureInfos =
             'STATUS',
             'WINDOW',
         ],
-        attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
+        attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null, 'non-ie-restriction': null },
     },
     ANDRO_4_0:
     {
@@ -957,7 +971,7 @@ var featureInfos =
             SHORT_LOCALES:          true,
             WINDOW:                 true,
         },
-        attributes: { 'no-console-in-web-worker': null, 'web-worker-restriction': null },
+        attributes: { 'no-console-in-web-worker': null, 'web-worker-restriction': null, 'non-ie-restriction': null },
     },
     CHROME_PREV:
     {
@@ -1007,7 +1021,7 @@ var featureInfos =
             'WINDOW',
         ],
         attributes:
-        { 'char-increment-restriction': null, 'unstable': null, 'web-worker-restriction': null },
+        { 'char-increment-restriction': null, 'unstable': null, 'web-worker-restriction': null, 'non-ie-restriction': null },
     },
     FF_ESR:
     {
@@ -1063,7 +1077,7 @@ var featureInfos =
             'WINDOW',
         ],
         attributes:
-        { 'char-increment-restriction': null, 'unstable': null, 'web-worker-restriction': null },
+        { 'char-increment-restriction': null, 'unstable': null, 'web-worker-restriction': null, 'non-ie-restriction': null },
     },
     IE_9:
     {
@@ -1249,6 +1263,7 @@ var featureInfos =
             'no-console-in-web-worker':     null,
             'old-safari-restriction':       null,
             'web-worker-restriction':       null,
+            'non-ie-restriction':           null
         },
     },
     SAFARI_7_1:
