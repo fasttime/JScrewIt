@@ -1160,6 +1160,8 @@
             var toString = createStaticSupplier('[object W');
             override(this, 'constructor.toString', { value: toString });
         },
+        OBJECT_W_SELF:                 makeEmuFeatureSelf('[object Window]', /^\[object Window]$/),
+    };
         OLD_SAFARI_LOCATION_CTOR:
         function ()
         {
