@@ -139,17 +139,16 @@ to support.
 In order to understand how this works, let's consider the JavaScript functions `atob` and `btoa`.
 Not all browsers support these functions: without any further information, JScrewIt will assume that
 they are unavailable and will not use them to encode the input.
-Anyway, if we know in advance that the browsers we plan to target do support `atob` and `btoa`
-indeed, we can let JScrewIt create code that uses those functions whenever that makes the output
-shorter.
+However, if we know in advance that the browsers we plan to target do support `atob` and `btoa`, we
+can let JScrewIt create code that uses those functions whenever that makes the output shorter.
 
 The way to tell JScrewIt to use a particular set of features is by specifying a value for the
 `features` option in the second parameter passed to `encode`.
 
-For instance, a generic `alert(1)` example for an unspecified environment is 1905 chracters long.
+For instance, a generic `alert(1)` example for an unspecified environment is 1903 chracters long.
 
 ```js
-const output = JScrewIt.encode("alert(1)"); // output is 1905 characters
+const output = JScrewIt.encode("alert(1)"); // output is 1903 characters
 ```
 
 We can save a few characters by indicating that our code is only supposed to run in a browser.
@@ -189,29 +188,27 @@ Most typically, it will throw some kind of error at runtime.
 
 It's important to keep in mind that each of the target engines needs to support every feature we
 specify.
-So if we want our JSFuck code to run in Android Browser 4.4, Safari 7.0 and Node.js 13+, we can only
+So if we want our JSFuck code to run in Android Browser 4.0, Safari 7.0 and Node.js 13+, we can only
 specify features supported by all of these engines.
 These features can be retrieved with
 [`JScrewIt.Feature.commonOf`](api-doc/interfaces/FeatureConstructor.md#commonof).
 
 ```js
-{ features: JScrewIt.Feature.commonOf("ANDRO_4_4", "NODE_13", "SAFARI_7_0") }
+{ features: JScrewIt.Feature.commonOf("ANDRO_4_0", "NODE_13", "SAFARI_7_0") }
 ```
 
 The features turn out to be
 [`ESC_HTML_QUOT`](api-doc/interfaces/FeatureAll.md#ESC_HTML_QUOT),
-[`GENERIC_ARRAY_TO_STRING`](api-doc/interfaces/FeatureAll.md#GENERIC_ARRAY_TO_STRING),
 [`GMT`](api-doc/interfaces/FeatureAll.md#GMT),
 [`INCR_CHAR`](api-doc/interfaces/FeatureAll.md#INCR_CHAR),
-[`NAME`](api-doc/interfaces/FeatureAll.md#NAME),
-[`NO_IE_SRC`](api-doc/interfaces/FeatureAll.md#NO_IE_SRC) and
-[`OBJECT_UNDEFINED`](api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED) (a quick way to see this is
-entering `JScrewIt.Feature.commonOf("ANDRO_4_4", "NODE_13", "SAFARI_7_0").toString()` in the
-browser's console).
+[`NAME`](api-doc/interfaces/FeatureAll.md#NAME) and
+[`NO_IE_SRC`](api-doc/interfaces/FeatureAll.md#NO_IE_SRC) (a quick way to see this is entering
+`JScrewIt.Feature.commonOf("ANDRO_4_0", "NODE_13", "SAFARI_7_0").toString()` in the browser's
+console).
 With this knowledge, we could also rewrite the expression above as follows.
 
 ```js
-{ features: ["ESC_HTML_QUOT", "GMT", "INCR_CHAR", "NAME", "NO_IE_SRC", "OBJECT_UNDEFINED"] }
+{ features: ["ESC_HTML_QUOT", "GMT", "INCR_CHAR", "NAME", "NO_IE_SRC"] }
 ```
 
 Finally, note that simply specifying an array of engine features will not achieve the desired
@@ -219,7 +216,7 @@ effect, as it will result in the union of the features available in every engine
 their intersection.
 
 ```diff
-- { features: ["ANDRO_4_4", "NODE_13", "SAFARI_7_0"] }
+- { features: ["ANDRO_4_0", "NODE_13", "SAFARI_7_0"] }
 ```
 
 ### Further Reading
