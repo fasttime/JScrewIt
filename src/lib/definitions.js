@@ -395,6 +395,7 @@ function getFHPaddingEntries(index)
     var OBJECT_L_LOCATION_CTOR          = Feature.OBJECT_L_LOCATION_CTOR;
     var OBJECT_UNDEFINED                = Feature.OBJECT_UNDEFINED;
     var OBJECT_W_CTOR                   = Feature.OBJECT_W_CTOR;
+    var OBJECT_W_SELF                   = Feature.OBJECT_W_SELF;
     var OLD_SAFARI_LOCATION_CTOR        = Feature.OLD_SAFARI_LOCATION_CTOR;
     var PLAIN_INTL                      = Feature.PLAIN_INTL;
     var REGEXP_STRING_ITERATOR          = Feature.REGEXP_STRING_ITERATOR;
@@ -1075,7 +1076,7 @@ function getFHPaddingEntries(index)
             define('btoa(undefined)[1]', ATOB),
             define('(RP_0_S + self)[11]', DOMWINDOW),
             define('(RP_3_WA + Function("return constructor")())[11]', OBJECT_W_CTOR),
-            define('(RP_3_WA + self)[11]', WINDOW),
+            define('(RP_3_WA + self)[11]', OBJECT_W_SELF),
             define('(self + RP_4_A).at("-11")', ANY_WINDOW, AT),
             defineCharDefault({ atob: false }),
         ],
