@@ -896,7 +896,7 @@ var featureInfos =
             'STATUS',
             'WINDOW',
         ],
-        attributes: { 
+        attributes: {
             'char-increment-restriction': null,
             'web-worker-restriction':     null,
             'non-ie-restriction':         null,
@@ -945,7 +945,7 @@ var featureInfos =
             SHORT_LOCALES:          true,
             WINDOW:                 true,
         },
-        attributes: { 
+        attributes: {
             'no-console-in-web-worker': null,
             'web-worker-restriction':   null,
             'non-ie-restriction':       null,
@@ -999,7 +999,7 @@ var featureInfos =
             'WINDOW',
         ],
         attributes:
-        { 
+        {
             'char-increment-restriction': null,
             'unstable':                   null,
             'web-worker-restriction':     null,
@@ -1060,7 +1060,7 @@ var featureInfos =
             'WINDOW',
         ],
         attributes:
-        { 
+        {
             'char-increment-restriction': null,
             'unstable':                   null,
             'web-worker-restriction':     null,
