@@ -776,22 +776,6 @@ Available in Android Browser 4.4. This feature is not available inside web worke
 
 ***
 
-### HTMLDOCUMENT
-
-> **HTMLDOCUMENT**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object document having the string representation "\[object HTMLDocument\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, and Android Browser. This feature is not available inside web workers.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`HTMLDOCUMENT`](FeatureAll.md#htmldocument)
-
-***
-
 ### IE\_10
 
 > **IE\_10**: [`PredefinedFeature`](PredefinedFeature.md)
@@ -1292,22 +1276,6 @@ Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Androi
 
 ***
 
-### OBJECT\_W\_CTOR
-
-> **OBJECT\_W\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
-
-The property that the string representation of the global object constructor starts with "\[object W".
-
-#### Remarks
-
-Available in Internet Explorer and Safari before 10.0. This feature is not available inside web workers in Safari before 10.0.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`OBJECT_W_CTOR`](FeatureAll.md#object_w_ctor)
-
-***
-
 ### OLD\_SAFARI\_LOCATION\_CTOR
 
 > **OLD\_SAFARI\_LOCATION\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -1703,11 +1671,11 @@ This will create a new feature object equivalent to [`NAME`](FeatureAll.md#name)
 const newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
 ```
 
-This will create a new feature object equivalent to [FeatureConstructor.ANY_DOCUMENT | `ANY_DOCUMENT`](FeatureAll.md#any_document).
-This is because both [`HTMLDOCUMENT`](FeatureAll.md#htmldocument) and [`DOCUMENT`](FeatureConstructor.md#document) imply [FeatureConstructor.ANY_DOCUMENT | `ANY_DOCUMENT`](FeatureAll.md#any_document).
+This will create a new feature object equivalent to [FeatureConstructor.ANY_WINDOW | `ANY_WINDOW`](FeatureAll.md#any_window).
+This is because both [`DOMWINDOW`](FeatureAll.md#domwindow) and [`WINDOW`](FeatureConstructor.md#window) imply [FeatureConstructor.ANY_WINDOW | `ANY_WINDOW`](FeatureAll.md#any_window).
 
 ```js
-const newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
+const newFeature = JScrewIt.Feature.commonOf("DOMWINDOW", "WINDOW");
 ```
 
 ***

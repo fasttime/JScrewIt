@@ -375,7 +375,6 @@ function getFHPaddingEntries(index)
     var GMT                             = Feature.GMT;
     var HISTORY                         = Feature.HISTORY;
     var HTMLAUDIOELEMENT                = Feature.HTMLAUDIOELEMENT;
-    var HTMLDOCUMENT                    = Feature.HTMLDOCUMENT;
     var IE_SRC                          = Feature.IE_SRC;
     var INCR_CHAR                       = Feature.INCR_CHAR;
     var INTL                            = Feature.INTL;
@@ -394,7 +393,6 @@ function getFHPaddingEntries(index)
     var OBJECT_ARRAY_ENTRIES_CTOR       = Feature.OBJECT_ARRAY_ENTRIES_CTOR;
     var OBJECT_L_LOCATION_CTOR          = Feature.OBJECT_L_LOCATION_CTOR;
     var OBJECT_UNDEFINED                = Feature.OBJECT_UNDEFINED;
-    var OBJECT_W_CTOR                   = Feature.OBJECT_W_CTOR;
     var OBJECT_W_SELF                   = Feature.OBJECT_W_SELF;
     var OLD_SAFARI_LOCATION_CTOR        = Feature.OLD_SAFARI_LOCATION_CTOR;
     var PLAIN_INTL                      = Feature.PLAIN_INTL;
@@ -872,7 +870,6 @@ function getFHPaddingEntries(index)
             ('escape((NaN + [+("10" + [(RP_6_S + FILL)[40]] + "000")] + FILL)[40])[2]', FILL),
             define // *
             ('escape((NaN + [+("10" + [(RP_6_S + FLAT)[40]] + "000")] + FLAT)[40])[2]', FLAT),
-            define('(RP_0_S + document)[12]', HTMLDOCUMENT),
             define('escape(ARRAY_ITERATOR)[30]', NO_OLD_SAFARI_ARRAY_ITERATOR),
             define('escape(FILTER)[50]', V8_SRC),
             define('(document + [RP_1_WA]).at("-10")', ANY_DOCUMENT, AT),
@@ -910,7 +907,6 @@ function getFHPaddingEntries(index)
             define
             ({ expr: '(RP_3_WA + Function("return history")())[11]', optimize: true }, HISTORY),
             define('(RP_1_WA + Audio)[10]', HTMLAUDIOELEMENT),
-            define('(RP_3_WA + document)[11]', HTMLDOCUMENT),
             define('(RP_4_A + [].entries().filter(ANY_FUNCTION))[21]', ITERATOR_HELPER),
         ],
         'I': '"Infinity"[0]',
@@ -931,7 +927,6 @@ function getFHPaddingEntries(index)
             define('btoa(".")[0]', ATOB),
             define('(RP_3_WA + "".fontcolor())[11]', CAPITAL_HTML),
             define('(RP_0_S + Audio)[12]', HTMLAUDIOELEMENT),
-            define('(RP_0_S + document)[11]', HTMLDOCUMENT),
             define
             (
                 {
@@ -980,7 +975,6 @@ function getFHPaddingEntries(index)
             define('(RP_0_S + self)[10]', DOMWINDOW),
             define('(RP_4_A + Date())[30]', GMT),
             define('(RP_0_S + Audio)[11]', HTMLAUDIOELEMENT),
-            define('(RP_0_S + document)[10]', HTMLDOCUMENT),
         ],
         'N': '"NaN"[0]',
         'O':
@@ -1035,7 +1029,6 @@ function getFHPaddingEntries(index)
             define('"".fontcolor([])[20]', CAPITAL_HTML),
             define('(RP_3_WA + Date())[30]', GMT),
             define('(RP_0_S + Audio)[10]', HTMLAUDIOELEMENT),
-            define('(RP_1_WA + document)[10]', HTMLDOCUMENT),
             defineCharDefault({ atob: false }),
         ],
         'U':
@@ -1075,7 +1068,6 @@ function getFHPaddingEntries(index)
             define('(self + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW),
             define('btoa(undefined)[1]', ATOB),
             define('(RP_0_S + self)[11]', DOMWINDOW),
-            define('(RP_3_WA + Function("return constructor")())[11]', OBJECT_W_CTOR),
             define('(RP_3_WA + self)[11]', OBJECT_W_SELF),
             define('(self + RP_4_A).at("-11")', ANY_WINDOW, AT),
             defineCharDefault({ atob: false }),
@@ -1819,10 +1811,114 @@ function getFHPaddingEntries(index)
         [define('fromCharCode'), define('fromCodePoint', FROM_CODE_POINT)],
         [
             define(0),
+            define(1, ASYNC_FUNCTION),
             define(1, ATOB),
-            define(1, BARPROP),
+            define(0, ATOB, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
+            define(1, ATOB, NO_V8_SRC),
+            define(0, ATOB, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NODECONSTRUCTOR),
+            define(1, ATOB, INCR_CHAR, ITERATOR_HELPER, NAME),
+            define(0, ARRAY_ITERATOR, ASYNC_FUNCTION, FROM_CODE_POINT, NAME),
+            define(0, ATOB, FROM_CODE_POINT, INCR_CHAR, ITERATOR_HELPER, NAME, NODECONSTRUCTOR),
+            define(0, ATOB, FROM_CODE_POINT, INCR_CHAR, ITERATOR_HELPER, NAME, NO_FF_SRC),
+            define(1, ARRAY_ITERATOR, ASYNC_FUNCTION, AT, NAME),
+            define(1, ARRAY_ITERATOR, ASYNC_FUNCTION, FILL, NAME),
+            define(1, ARRAY_ITERATOR, ASYNC_FUNCTION, FLAT, NAME),
+            define(1, ARRAY_ITERATOR, ASYNC_FUNCTION, NAME, NO_IE_SRC),
+            define(1, ARRAY_ITERATOR, ASYNC_FUNCTION, NAME, NO_V8_SRC),
+            define(0, ARRAY_ITERATOR, ATOB, FROM_CODE_POINT, IE_SRC, ITERATOR_HELPER),
+            define(1, ARRAY_ITERATOR, AT, ATOB, IE_SRC, ITERATOR_HELPER),
+            define(0, ARRAY_ITERATOR, ATOB, FROM_CODE_POINT, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, ATOB, FILL, ITERATOR_HELPER, NAME),
+            define(1, ARRAY_ITERATOR, AT, ATOB, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, ATOB, IE_SRC, ITERATOR_HELPER, NAME, NODECONSTRUCTOR),
+            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER),
+            define(0, ARRAY_ITERATOR, ATOB, FROM_CODE_POINT, INCR_CHAR, ITERATOR_HELPER, NAME),
+            define(1, ASYNC_FUNCTION, ITERATOR_HELPER, NO_V8_SRC),
+            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NODECONSTRUCTOR),
+            define(1, ASYNC_FUNCTION, FLAT, ITERATOR_HELPER),
+            define(1, ASYNC_FUNCTION, FILL, ITERATOR_HELPER, NO_V8_SRC),
+            define(0, ASYNC_FUNCTION, FLAT, FROM_CODE_POINT, INTL, ITERATOR_HELPER),
+            define(0, ASYNC_FUNCTION, FLAT, FROM_CODE_POINT, ITERATOR_HELPER, SELF_OBJ),
+            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, INTL, ITERATOR_HELPER, NO_V8_SRC),
+            define(1, ASYNC_FUNCTION, IE_SRC, INTL, ITERATOR_HELPER),
+            define(1, ASYNC_FUNCTION, FLAT, INTL, ITERATOR_HELPER, NO_V8_SRC),
+            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NO_V8_SRC, SELF_OBJ),
+            define(1, ASYNC_FUNCTION, IE_SRC, ITERATOR_HELPER, NODECONSTRUCTOR),
+            define(1, ASYNC_FUNCTION, IE_SRC, ITERATOR_HELPER, SELF_OBJ),
+            define(1, ASYNC_FUNCTION, FLAT, ITERATOR_HELPER, NO_V8_SRC, SELF_OBJ),
+            define(0, ATOB, FROM_CODE_POINT, INTL, ITERATOR_HELPER),
+            define(1, ATOB, FILL, INTL, ITERATOR_HELPER),
+            define(1, ATOB, IE_SRC, INTL, ITERATOR_HELPER),
+            define(1, ATOB, INTL, ITERATOR_HELPER, NO_IE_SRC),
+            define(0, ATOB, FILL, FROM_CODE_POINT, INTL, ITERATOR_HELPER, NAME),
+            define(1, ATOB, FILL, IE_SRC, INTL, ITERATOR_HELPER),
+            define(0, ATOB, FROM_CODE_POINT, ITERATOR_HELPER, SELF_OBJ),
+            define(1, ATOB, FILL, ITERATOR_HELPER, SELF_OBJ),
+            define(1, ATOB, IE_SRC, ITERATOR_HELPER, SELF_OBJ),
+            define(0, ATOB, FILL, FROM_CODE_POINT, ITERATOR_HELPER, NAME, SELF_OBJ),
+            define(1, ATOB, ITERATOR_HELPER, NO_IE_SRC, SELF_OBJ),
+            define(1, ATOB, FILL, IE_SRC, ITERATOR_HELPER, SELF_OBJ),
+            define(0, ARRAY_ITERATOR, ATOB, FILL, FROM_CODE_POINT, ITERATOR_HELPER),
+            define(1, ARRAY_ITERATOR, AT, ATOB, FILL, ITERATOR_HELPER),
+            define(1, ARRAY_ITERATOR, ATOB, FILL, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, ARRAY_ITERATOR, ATOB, FILL, ITERATOR_HELPER, NO_V8_SRC),
+            define(0, ARRAY_ITERATOR, ATOB, FLAT, FROM_CODE_POINT, ITERATOR_HELPER),
+            define(1, ARRAY_ITERATOR, AT, ATOB, FLAT, ITERATOR_HELPER),
+            define(1, ARRAY_ITERATOR, ATOB, FLAT, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, ARRAY_ITERATOR, ATOB, FLAT, ITERATOR_HELPER, NO_V8_SRC),
+            define(0, ARRAY_ITERATOR, ATOB, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NO_V8_SRC),
+            define(1, ARRAY_ITERATOR, ATOB, FILL, IE_SRC, ITERATOR_HELPER, NAME),
+            define(0, ARRAY_ITERATOR, ASYNC_FUNCTION, FLAT, FROM_CODE_POINT, ITERATOR_HELPER),
+            define(0, ASYNC_FUNCTION, FLAT, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
+            define(1, AT, ATOB, INTL, ITERATOR_HELPER),
+            define(1, AT, ATOB, ITERATOR_HELPER, SELF_OBJ),
+            define(1, ATOB, ITERATOR_HELPER, NAME, NO_IE_SRC),
+            define(0, ARRAY_ITERATOR, ATOB, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NO_IE_SRC),
+            define(1, ATOB, FLAT, INTL, ITERATOR_HELPER),
+            define(1, ATOB, FLAT, ITERATOR_HELPER, SELF_OBJ),
+            define(1, ATOB, FILL, ITERATOR_HELPER, NAME, NO_IE_SRC),
+            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NO_V8_SRC),
+            define(1, ASYNC_FUNCTION, FILL, INCR_CHAR, ITERATOR_HELPER, NAME, NO_V8_SRC),
+            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, INTL, ITERATOR_HELPER, NAME, NO_V8_SRC),
+            define
+            (0, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NODECONSTRUCTOR, NO_V8_SRC),
+            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NO_V8_SRC, SELF_OBJ),
+            define(1, ASYNC_FUNCTION, FLAT, ITERATOR_HELPER, NAME, NO_V8_SRC),
+            define
+            (0, ASYNC_FUNCTION, FLAT, FROM_CODE_POINT, INTL, ITERATOR_HELPER, NAME, NO_V8_SRC),
+            define
+            (0, ASYNC_FUNCTION, FLAT, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NO_V8_SRC, SELF_OBJ),
+            define(1, ASYNC_FUNCTION, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, ASYNC_FUNCTION, IE_SRC, ITERATOR_HELPER, NAME),
+            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, INTL, ITERATOR_HELPER, NO_IE_SRC),
+            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NO_IE_SRC, SELF_OBJ),
+            define(1, ASYNC_FUNCTION, ITERATOR_HELPER, V8_SRC),
+            define(1, ASYNC_FUNCTION, FF_SRC, INTL, ITERATOR_HELPER),
+            define(1, ASYNC_FUNCTION, FILL, INTL, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, ASYNC_FUNCTION, FLAT, INTL, ITERATOR_HELPER, NO_IE_SRC),
+            define
+            (0, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NODECONSTRUCTOR, NO_IE_SRC),
+            define(1, ASYNC_FUNCTION, FF_SRC, ITERATOR_HELPER, SELF_OBJ),
+            define(1, ASYNC_FUNCTION, FF_SRC, ITERATOR_HELPER, NAME, NODECONSTRUCTOR),
+            define(1, ASYNC_FUNCTION, FILL, ITERATOR_HELPER, NO_IE_SRC, SELF_OBJ),
+            define(1, ASYNC_FUNCTION, FLAT, ITERATOR_HELPER, NO_IE_SRC, SELF_OBJ),
+            define(1, ASYNC_FUNCTION, ITERATOR_HELPER, NAME, NODECONSTRUCTOR, V8_SRC),
+            define(1, ASYNC_FUNCTION, FILL, ITERATOR_HELPER, NAME, NODECONSTRUCTOR, NO_IE_SRC),
+            define(1, ASYNC_FUNCTION, FLAT, ITERATOR_HELPER, NAME, NODECONSTRUCTOR, NO_IE_SRC),
+            define(0, ARRAY_ITERATOR, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, ASYNC_FUNCTION, AT, ITERATOR_HELPER),
+            define(0, ARRAY_ITERATOR, ASYNC_FUNCTION, AT, FROM_CODE_POINT, ITERATOR_HELPER),
+            define(0, ARRAY_ITERATOR, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NO_V8_SRC),
+            define(1, ATOB, FLAT, ITERATOR_HELPER, NAME),
+            define(0, ARRAY_ITERATOR, ATOB, FLAT, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
             define(1, CAPITAL_HTML),
+            define(1, ATOB, FLAT, IE_SRC, ITERATOR_HELPER, NAME),
+            define(1, ATOB, FLAT, ITERATOR_HELPER, NAME, NO_IE_SRC),
             define(0, ARRAY_ITERATOR, ATOB, CAPITAL_HTML, FROM_CODE_POINT),
+            define(1, BARPROP),
+            define(1, CAPITAL_HTML, ITERATOR_HELPER),
+            define(1, AT, ATOB, ITERATOR_HELPER, NAME),
+            define(0, ARRAY_ITERATOR, ATOB, BARPROP, CAPITAL_HTML, FROM_CODE_POINT),
         ]
     );
 

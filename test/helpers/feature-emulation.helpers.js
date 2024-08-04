@@ -921,8 +921,6 @@
             var toString = createStaticSupplier('function HTMLAudioElement');
             override(this, 'Audio.toString', { value: toString });
         },
-        HTMLDOCUMENT:
-        makeEmuFeatureDocument('[object HTMLDocument]', /^\[object HTMLDocument]$/),
         IE_SRC:                 makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_IE),
         INTL:
         function ()
@@ -1154,14 +1152,7 @@
             if (toString() !== '[object Undefined]')
                 registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
         },
-        OBJECT_W_CTOR:
-        function ()
-        {
-            var toString = createStaticSupplier('[object W');
-            override(this, 'constructor.toString', { value: toString });
-        },
         OBJECT_W_SELF:                 makeEmuFeatureSelf('[object Window]', /^\[object Window]$/),
-    };
         OLD_SAFARI_LOCATION_CTOR:
         function ()
         {

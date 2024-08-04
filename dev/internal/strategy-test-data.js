@@ -120,6 +120,7 @@ module.exports =
             'CONSOLE',
             'FLAT',
             'FROM_CODE_POINT',
+            'ITERATOR_HELPER',
             'NODECONSTRUCTOR',
             'NO_IE_SRC',
             'STATUS',
@@ -151,7 +152,17 @@ module.exports =
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'AT', 'ATOB', 'CAPITAL_HTML', 'FF_SRC', 'FLAT'],
+        [
+            'ARRAY_ITERATOR',
+            'ARROW',
+            'AT',
+            'CONSOLE',
+            'FF_SRC',
+            'FLAT',
+            'FROM_CODE_POINT',
+            'ITERATOR_HELPER',
+            'NODECONSTRUCTOR',
+        ],
         createDictTestString.bind(null, 76),
         'byDictRadix3AmendedBy1',
     ),
@@ -178,7 +189,17 @@ module.exports =
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'AT', 'ATOB', 'CAPITAL_HTML', 'FF_SRC', 'FLAT'],
+        [
+            'ARRAY_ITERATOR',
+            'ARROW',
+            'AT',
+            'FF_SRC',
+            'FLAT',
+            'FROM_CODE_POINT',
+            'ITERATOR_HELPER',
+            'NAME',
+            'NODECONSTRUCTOR',
+        ],
         createDictTestString.bind(null, 156),
         'byDictRadix4AmendedBy2',
     ),
@@ -190,7 +211,20 @@ module.exports =
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'AT', 'ATOB', 'CAPITAL_HTML', 'FF_SRC', 'FLAT', 'STATUS'],
+        [
+            'ARRAY_ITERATOR',
+            'ARROW',
+            'ASYNC_FUNCTION',
+            'AT',
+            'ATOB',
+            'CONSOLE',
+            'FF_SRC',
+            'FLAT',
+            'FROM_CODE_POINT',
+            'ITERATOR_HELPER',
+            'NODECONSTRUCTOR',
+            'STATUS',
+        ],
         createDictTestString.bind(null, 374),
         'byDictRadix5AmendedBy3',
     ),

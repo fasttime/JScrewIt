@@ -261,14 +261,14 @@ export interface FeatureConstructor extends FeatureAll
      * const newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
      * ```
      *
-     * This will create a new feature object equivalent to {@link FeatureConstructor.ANY_DOCUMENT |
-     * `ANY_DOCUMENT`}.
-     * This is because both {@link FeatureConstructor.HTMLDOCUMENT | `HTMLDOCUMENT`} and {@link
-     * FeatureConstructor.DOCUMENT | `DOCUMENT`} imply {@link FeatureConstructor.ANY_DOCUMENT |
-     * `ANY_DOCUMENT`}.
+     * This will create a new feature object equivalent to {@link FeatureConstructor.ANY_WINDOW |
+     * `ANY_WINDOW`}.
+     * This is because both {@link FeatureConstructor.DOMWINDOW | `DOMWINDOW`} and {@link
+     * FeatureConstructor.WINDOW | `WINDOW`} imply {@link FeatureConstructor.ANY_WINDOW |
+     * `ANY_WINDOW`}.
      *
      * ```js
-     * const newFeature = JScrewIt.Feature.commonOf("HTMLDOCUMENT", "DOCUMENT");
+     * const newFeature = JScrewIt.Feature.commonOf("DOMWINDOW", "WINDOW");
      * ```
      */
     commonOf(...features: FeatureElementOrCompatibleArray[]): CustomFeature | null;

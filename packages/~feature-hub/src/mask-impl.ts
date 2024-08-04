@@ -1,2 +1,2 @@
 export type { Mask }    from './mask';
-export *                from './mask-impl-64';
+export *                from './mask-impl-52';
