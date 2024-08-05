@@ -707,11 +707,16 @@ var featureInfos =
         'The property that the string representation of the global object self starts ' +
         'with "[object W".',
         check:
-        function ()
-        {
-            var available = /^\[object W/.test(self);
-            return available;
-        },
+        checkSelfFeature.bind
+        (
+            function (str)
+            {
+                var available = /^\[object W/.test(str);
+                return available;
+            }
+        ),
+        includes:   ['SELF_OBJ'],
+        excludes:   ['DOMWINDOW'],
         attributes: { 'web-worker': 'non-ie-restriction' },
     },
     OLD_SAFARI_LOCATION_CTOR:
