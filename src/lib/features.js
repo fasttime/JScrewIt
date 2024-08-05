@@ -257,7 +257,7 @@ var featureInfos =
             }
         ),
         includes:   ['ANY_WINDOW'],
-        excludes:   ['WINDOW'],
+        excludes:   ['OBJECT_W_SELF'],
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
     ESC_HTML_ALL:
