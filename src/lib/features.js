@@ -903,8 +903,8 @@ var featureInfos =
         attributes:
         {
             'char-increment-restriction': null,
-            'web-worker-restriction':     null,
             'non-ie-restriction':         null,
+            'web-worker-restriction':     null,
         },
     },
     ANDRO_4_0:
