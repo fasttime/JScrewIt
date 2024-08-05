@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@cucumber/gherkin": "latest",
+    "@inquirer/rawlist": "latest",
     "@origin-1/eslint-config": "latest",
     "@rollup/plugin-node-resolve": "latest",
     "acorn": "latest",
@@ -66,7 +67,6 @@
     "gulp-tap": "latest",
     "gulp-uglify": "latest",
     "handlebars": "latest",
-    "inquirer": "latest",
     "mocha": "3",
     "mocha-bar": "latest",
     "postrequire": "latest",

@@ -1,15 +1,15 @@
 import { basename }                 from 'node:path';
 import { formatDuration, timeThis } from '../../tools/time-utils.js';
-import inquirer                     from 'inquirer';
+import rawlist                      from '@inquirer/rawlist';
 
-function compareChoices(choice1, choice2)
+function compareNames(name1, name2)
 {
-    const result = isCapital(choice2) - isCapital(choice1);
+    const result = isCapital(name2) - isCapital(name1);
     if (result)
         return result;
-    if (choice1 > choice2)
+    if (name1 > name2)
         return 1;
-    if (choice1 < choice2)
+    if (name1 < name2)
         return -1;
     return 0;
 }
@@ -37,7 +37,7 @@ function runCallback(callback, choice)
     console.log('%s elapsed.', durationStr);
 }
 
-export default async function (callback, message, choices)
+export default async function (callback, message, names)
 {
     const { argv } = process;
     const [,, choice] = argv;
@@ -55,10 +55,18 @@ export default async function (callback, message, choices)
     }
     else
     {
-        choices.sort(compareChoices);
-        const question =
-        { choices, loop: false, message, name: 'choice', pageSize: Infinity, type: 'rawlist' };
-        const { choice } = await inquirer.prompt(question);
+        const choices = names.toSorted(compareNames).map(name => ({ name, value: name }));
+        const question = { choices, loop: false, message, name: 'choice' };
+        let choice;
+        try
+        {
+            choice = await rawlist(question);
+        }
+        catch (error)
+        {
+            if (error.name === 'ExitPromptError') return;
+            throw error;
+        }
         runCallback(callback, choice);
     }
 }
