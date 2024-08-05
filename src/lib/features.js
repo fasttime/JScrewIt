@@ -860,7 +860,6 @@ var featureInfos =
             'char-increment-restriction':   null,
             'safari-bug-21820506':          null,
             'web-worker-restriction':       null,
-            'non-ie-restriction':           null,
         },
     },
     COMPACT:
