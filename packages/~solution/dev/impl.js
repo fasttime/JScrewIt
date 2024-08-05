@@ -18,16 +18,11 @@ export async function lint()
         {
             files:              ['src/**/*.ts'],
             tsVersion:          'latest',
-            languageOptions:    { parserOptions: { project: 'tsconfig.json' } },
         },
         {
             files:              ['test/spec/**/*.ts'],
             tsVersion:          'latest',
-            languageOptions:
-            {
-                globals:        { ...ebddGlobals, ...globals.node },
-                parserOptions:  { project: 'tsconfig.json' },
-            },
+            languageOptions:    { globals: { ...ebddGlobals, ...globals.node } },
             rules:              { 'n/prefer-node-protocol': 'off' },
         },
         {

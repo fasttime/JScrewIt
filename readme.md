@@ -56,8 +56,8 @@ The following source will do an `alert(1)` in any browser, including Internet Ex
 To use JScrewIt in your project, download
 [jscrewit.js](https://cdn.jsdelivr.net/npm/jscrewit/lib/jscrewit.js) (uncompressed, development
 version) or
-[jscrewit.min.js](https://cdn.jsdelivr.net/npm/jscrewit/lib/jscrewit.min.js) (compressed,
-productive version) from npm and include it in your HTML file.
+[jscrewit.min.js](https://cdn.jsdelivr.net/npm/jscrewit/lib/jscrewit.min.js) (compressed, productive
+version) from npm and include it in your HTML file.
 
 ```html
 <script src="jscrewit.js"></script>

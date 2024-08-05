@@ -169,7 +169,6 @@ task
                     files:              ['lib/**/*.ts'],
                     ignores:            ['lib/feature-all.d.ts'],
                     tsVersion:          'latest',
-                    languageOptions:    { parserOptions: { project: 'tsconfig.json' } },
                 },
                 {
                     files:              ['test/acceptance/**/*.feature'],
