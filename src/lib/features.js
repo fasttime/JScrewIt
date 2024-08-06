@@ -901,9 +901,9 @@ var featureInfos =
         ],
         attributes:
         {
-            'char-increment-restriction':    null,
-            'non-ie-restriction':            null,
-            'web-worker-restriction':        null,
+            'char-increment-restriction':   null,
+            'non-ie-restriction':           null,
+            'web-worker-restriction':       null,
         },
     },
     ANDRO_4_0:
