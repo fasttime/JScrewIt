@@ -854,6 +854,18 @@ Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Androi
 
 ***
 
+### OBJECT\_W\_SELF
+
+> **OBJECT\_W\_SELF**: [`ElementaryFeature`](ElementaryFeature.md)
+
+The property that the string representation of the global object self starts with "\[object W".
+
+#### Remarks
+
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser 4.4. This feature is not available inside web workers in Chrome, Edge, Firefox, Safari, Opera, and Android Browser 4.4.
+
+***
+
 ### OLD\_SAFARI\_LOCATION\_CTOR
 
 > **OLD\_SAFARI\_LOCATION\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)

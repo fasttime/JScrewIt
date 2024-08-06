@@ -13,21 +13,6 @@ function checkLocaleNumeral(locale, number, regExp)
     return returnValue;
 }
 
-function checkSelfFeature()
-{
-    // self + '' throws an error inside a web worker in Safari 8 and 9.
-    try
-    {
-        var str = self + '';
-    }
-    catch (error)
-    {
-        return false;
-    }
-    var available = this(str);
-    return available;
-}
-
 function describeEngine(engine)
 {
     var description = 'Features available in ' + engine + '.';
@@ -51,6 +36,26 @@ function isExcludingAttribute(restrictionCache, restrictionName, featureObjs)
         );
     }
     return returnValue;
+}
+
+function makeSelfFeatureCheck(regExp)
+{
+    function check()
+    {
+        // self + '' throws an error inside a web worker in Safari 8 and 9.
+        try
+        {
+            var str = self + '';
+        }
+        catch (error)
+        {
+            return false;
+        }
+        var available = regExp.test(str);
+        return available;
+    }
+
+    return check;
 }
 
 function restrict(environment, engineFeatureObjs)
@@ -104,15 +109,7 @@ var featureInfos =
         description:
         'Existence of the global object self whose string representation starts with "[object " ' +
         'and ends with "Window]".',
-        check:
-        checkSelfFeature.bind
-        (
-            function (str)
-            {
-                var available = /^\[object [\S\s]*Window]$/.test(str);
-                return available;
-            }
-        ),
+        check:      makeSelfFeatureCheck(/^\[object [\S\s]*Window]$/),
         includes:   ['SELF_OBJ'],
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
@@ -247,15 +244,7 @@ var featureInfos =
         description:
         'Existence of the global object self having the string representation "[object ' +
         'DOMWindow]".',
-        check:
-        checkSelfFeature.bind
-        (
-            function (str)
-            {
-                var available = str === '[object DOMWindow]';
-                return available;
-            }
-        ),
+        check:      makeSelfFeatureCheck(/^\[object DOMWindow]$/),
         includes:   ['ANY_WINDOW'],
         excludes:   ['OBJECT_W_SELF'],
         attributes: { 'web-worker': 'web-worker-restriction' },
@@ -510,7 +499,7 @@ var featureInfos =
         check:
         function ()
         {
-            var available = Infinity.toLocaleString('ja').slice(-1) === '∞';
+            var available = /∞$/.test(Infinity.toLocaleString('ja'));
             return available;
         },
     },
@@ -535,7 +524,6 @@ var featureInfos =
         function ()
         {
             var available =
-            Number.prototype.toLocaleString &&
             checkLocaleNumeral('ar', NaN, /^ليس/) &&
             checkLocaleNumeral('ar-td', 234567890.1, /^٢٣٤٬?٥٦٧٬?٨٩٠٫١/) &&
             checkLocaleNumeral('fa', 1234567890, /^۱٬۲۳۴٬۵۶۷٬۸۹۰/);
@@ -554,7 +542,6 @@ var featureInfos =
         function ()
         {
             var available =
-            Number.prototype.toLocaleString &&
             checkLocaleNumeral('ar', NaN, /^ليس.رقم/) &&
             checkLocaleNumeral('ar-td', 234567890.1, /^٢٣٤٬?٥٦٧٬?٨٩٠٫١/) &&
             checkLocaleNumeral('bn', 1234567890, /^১,২৩,৪৫,৬৭,৮৯০/) &&
@@ -706,15 +693,7 @@ var featureInfos =
         description:
         'The property that the string representation of the global object self starts ' +
         'with "[object W".',
-        check:
-        checkSelfFeature.bind
-        (
-            function (str)
-            {
-                var available = /^\[object W/.test(str);
-                return available;
-            }
-        ),
+        check:      makeSelfFeatureCheck(/^\[object W/),
         includes:   ['SELF_OBJ'],
         excludes:   ['DOMWINDOW'],
         attributes: { 'web-worker': 'non-ie-restriction' },
@@ -764,15 +743,7 @@ var featureInfos =
     {
         description:
         'Existence of the global object self whose string representation starts with "[object ".',
-        check:
-        checkSelfFeature.bind
-        (
-            function (str)
-            {
-                var available = /^\[object /.test(str);
-                return available;
-            }
-        ),
+        check:      makeSelfFeatureCheck(/^\[object /),
         attributes: { 'web-worker': 'safari-bug-21820506' },
     },
     SHORT_LOCALES:
@@ -830,15 +801,7 @@ var featureInfos =
     {
         description:
         'Existence of the global object self having the string representation "[object Window]".',
-        check:
-        checkSelfFeature.bind
-        (
-            function (str)
-            {
-                var available = str === '[object Window]';
-                return available;
-            }
-        ),
+        check:      makeSelfFeatureCheck(/^\[object Window]$/),
         includes:   ['ANY_WINDOW', 'OBJECT_W_SELF'],
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
