@@ -257,7 +257,7 @@ var featureInfos =
             }
         ),
         includes:   ['ANY_WINDOW'],
-        excludes:   ['WINDOW'],
+        excludes:   ['OBJECT_W_SELF'],
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
     ESC_HTML_ALL:
@@ -701,6 +701,24 @@ var featureInfos =
         },
         includes: ['UNDEFINED'],
     },
+    OBJECT_W_SELF:
+    {
+        description:
+        'The property that the string representation of the global object self starts ' +
+        'with "[object W".',
+        check:
+        checkSelfFeature.bind
+        (
+            function (str)
+            {
+                var available = /^\[object W/.test(str);
+                return available;
+            }
+        ),
+        includes:   ['SELF_OBJ'],
+        excludes:   ['DOMWINDOW'],
+        attributes: { 'web-worker': 'non-ie-restriction' },
+    },
     OLD_SAFARI_LOCATION_CTOR:
     {
         description:
@@ -821,8 +839,7 @@ var featureInfos =
                 return available;
             }
         ),
-        includes:   ['ANY_WINDOW'],
-        excludes:   ['DOMWINDOW'],
+        includes:   ['ANY_WINDOW', 'OBJECT_W_SELF'],
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
 
@@ -882,7 +899,12 @@ var featureInfos =
             'STATUS',
             'WINDOW',
         ],
-        attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
+        attributes:
+        {
+            'char-increment-restriction':   null,
+            'non-ie-restriction':           null,
+            'web-worker-restriction':       null,
+        },
     },
     ANDRO_4_0:
     {
@@ -927,7 +949,12 @@ var featureInfos =
             SHORT_LOCALES:          true,
             WINDOW:                 true,
         },
-        attributes: { 'no-console-in-web-worker': null, 'web-worker-restriction': null },
+        attributes:
+        {
+            'no-console-in-web-worker': null,
+            'non-ie-restriction':       null,
+            'web-worker-restriction':   null,
+        },
     },
     CHROME_PREV:
     {
@@ -977,7 +1004,12 @@ var featureInfos =
             'WINDOW',
         ],
         attributes:
-        { 'char-increment-restriction': null, 'unstable': null, 'web-worker-restriction': null },
+        {
+            'char-increment-restriction':   null,
+            'non-ie-restriction':           null,
+            'unstable':                     null,
+            'web-worker-restriction':       null,
+        },
     },
     FF_ESR:
     {
@@ -1033,7 +1065,12 @@ var featureInfos =
             'WINDOW',
         ],
         attributes:
-        { 'char-increment-restriction': null, 'unstable': null, 'web-worker-restriction': null },
+        {
+            'char-increment-restriction':   null,
+            'non-ie-restriction':           null,
+            'unstable':                     null,
+            'web-worker-restriction':       null,
+        },
     },
     IE_9:
     {
@@ -1215,6 +1252,7 @@ var featureInfos =
         {
             'char-increment-restriction':   null,
             'no-console-in-web-worker':     null,
+            'non-ie-restriction':           null,
             'old-safari-restriction':       null,
             'web-worker-restriction':       null,
         },

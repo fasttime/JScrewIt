@@ -1152,6 +1152,7 @@
             if (toString() !== '[object Undefined]')
                 registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
         },
+        OBJECT_W_SELF:          makeEmuFeatureSelf('[object WorkerGlobalScope]', /^\[object W/),
         OLD_SAFARI_LOCATION_CTOR:
         function ()
         {
