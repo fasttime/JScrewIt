@@ -839,8 +839,7 @@ var featureInfos =
                 return available;
             }
         ),
-        includes:   ['ANY_WINDOW'],
-        excludes:   ['DOMWINDOW'],
+        includes:   ['ANY_WINDOW', 'OBJECT_W_SELF'],
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
 
