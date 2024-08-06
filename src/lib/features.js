@@ -901,9 +901,9 @@ var featureInfos =
         ],
         attributes:
         {
-            'char-increment-restriction': null,
-            'non-ie-restriction':         null,
-            'web-worker-restriction':     null,
+            'char-increment-restriction':    null,
+            'non-ie-restriction':            null,
+            'web-worker-restriction':        null,
         },
     },
     ANDRO_4_0:
@@ -952,8 +952,8 @@ var featureInfos =
         attributes:
         {
             'no-console-in-web-worker': null,
-            'web-worker-restriction':   null,
             'non-ie-restriction':       null,
+            'web-worker-restriction':   null,
         },
     },
     CHROME_PREV:
@@ -1005,10 +1005,10 @@ var featureInfos =
         ],
         attributes:
         {
-            'char-increment-restriction': null,
-            'unstable':                   null,
-            'web-worker-restriction':     null,
-            'non-ie-restriction':         null,
+            'char-increment-restriction':   null,
+            'non-ie-restriction':           null,
+            'unstable':                     null,
+            'web-worker-restriction':       null,
         },
     },
     FF_ESR:
@@ -1066,10 +1066,10 @@ var featureInfos =
         ],
         attributes:
         {
-            'char-increment-restriction': null,
-            'unstable':                   null,
-            'web-worker-restriction':     null,
-            'non-ie-restriction':         null,
+            'char-increment-restriction':   null,
+            'non-ie-restriction':           null,
+            'unstable':                     null,
+            'web-worker-restriction':       null,
         },
     },
     IE_9:
@@ -1252,9 +1252,9 @@ var featureInfos =
         {
             'char-increment-restriction':   null,
             'no-console-in-web-worker':     null,
+            'non-ie-restriction':           null,
             'old-safari-restriction':       null,
             'web-worker-restriction':       null,
-            'non-ie-restriction':           null,
         },
     },
     SAFARI_7_1:
