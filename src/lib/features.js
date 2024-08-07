@@ -1,4 +1,4 @@
-/* global Audio, Iterator, Node, console, document, history, location, self, statusbar */
+/* global Audio, Iterator, Node, console, document, history, location, navigator, self, statusbar */
 
 import { _Object_defineProperty, _Object_keys, assignNoEnum, createEmpty }  from './obj-utils';
 import { createFeatureClass, featuresToMask }                               from '~feature-hub';
@@ -574,8 +574,8 @@ var featureInfos =
         check:
         function ()
         {
-            
-            var available = typeof navigator === 'object' &&
+            var available =
+            typeof navigator === 'object' &&
             /^Mozilla/.test(navigator.userAgent);
             return available;
         },
