@@ -1079,6 +1079,14 @@
                 registerDefaultToStringAdapter(this, location, '[object Location]');
             patchGlobalToString(this);
         },
+        MOZILLA:
+        function ()
+        {
+            if (!global.navigator)
+                override(this, 'navigator', { value: { } });
+            var Mozilla = createStaticSupplier('Mozilla/5.0');
+            override(this, 'navigator.userAgent', { value: Mozilla });
+        },
         NAME:
         function ()
         {
