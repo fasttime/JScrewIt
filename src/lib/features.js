@@ -567,6 +567,19 @@ var featureInfos =
             return available;
         },
     },
+    MOZILLA:
+    {
+        description:
+        'Existence of user agent string (`navigator.userAgent`) that starts with "Mozilla".',
+        check:
+        function ()
+        {
+            
+            var available = typeof navigator === 'object' &&
+            /^Mozilla/.test(navigator.userAgent);
+            return available;
+        },
+    },
     NAME:
     {
         description: 'Existence of the name property for functions.',
@@ -815,8 +828,8 @@ var featureInfos =
     {
         description:
         'Features available in all browsers.\n' +
-        'No support for Node.js.',
-        includes: ['ANY_DOCUMENT', 'ANY_WINDOW', 'HISTORY', 'INCR_CHAR', 'STATUS'],
+        'No support for Node.js.',,
+        includes: ['ANY_DOCUMENT', 'ANY_WINDOW', 'HISTORY', 'INCR_CHAR', 'MOZILLA', 'STATUS'],
         attributes:
         {
             'char-increment-restriction':   null,
@@ -855,6 +868,7 @@ var featureInfos =
             'LOCALE_INFINITY',
             'LOCALE_NUMERALS_EXT',
             'LOCATION',
+            'MOZILLA',
             'NAME',
             'NO_IE_SRC',
             'NO_OLD_SAFARI_ARRAY_ITERATOR',
@@ -885,6 +899,7 @@ var featureInfos =
             'HISTORY',
             'INCR_CHAR',
             'LOCATION',
+            'MOZILLA',
             'NAME',
             'STATUS',
             'V8_SRC',
@@ -959,6 +974,7 @@ var featureInfos =
             'LOCALE_INFINITY',
             'LOCALE_NUMERALS_EXT',
             'LOCATION',
+            'MOZILLA',
             'NAME',
             'NO_OLD_SAFARI_ARRAY_ITERATOR',
             'REGEXP_STRING_ITERATOR',
@@ -1019,6 +1035,7 @@ var featureInfos =
             'LOCALE_INFINITY',
             'LOCALE_NUMERALS_EXT',
             'LOCATION',
+            'MOZILLA',
             'NAME',
             'NO_OLD_SAFARI_ARRAY_ITERATOR',
             'OBJECT_ARRAY_ENTRIES_CTOR',
@@ -1050,6 +1067,7 @@ var featureInfos =
             'HISTORY',
             'IE_SRC',
             'INCR_CHAR',
+            'MOZILLA',
             'OBJECT_L_LOCATION_CTOR',
             'STATUS',
             'UNDEFINED',
@@ -1204,6 +1222,7 @@ var featureInfos =
             'HISTORY',
             'INCR_CHAR',
             'LOCATION',
+            'MOZILLA',
             'NAME',
             'NODECONSTRUCTOR',
             'OBJECT_L_LOCATION_CTOR',
