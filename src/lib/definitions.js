@@ -384,6 +384,7 @@ function getFHPaddingEntries(index)
     var LOCALE_NUMERALS                 = Feature.LOCALE_NUMERALS;
     var LOCALE_NUMERALS_EXT             = Feature.LOCALE_NUMERALS_EXT;
     var LOCATION                        = Feature.LOCATION;
+    var MOZILLA                         = Feature.MOZILLA;
     var NAME                            = Feature.NAME;
     var NODECONSTRUCTOR                 = Feature.NODECONSTRUCTOR;
     var NO_FF_SRC                       = Feature.NO_FF_SRC;
@@ -975,6 +976,7 @@ function getFHPaddingEntries(index)
             define('(RP_0_S + self)[10]', DOMWINDOW),
             define('(RP_4_A + Date())[30]', GMT),
             define('(RP_0_S + Audio)[11]', HTMLAUDIOELEMENT),
+            define('navigator.userAgent[0]', MOZILLA),
         ],
         'N': '"NaN"[0]',
         'O':
