@@ -1591,7 +1591,7 @@ function getFHPaddingEntries(index)
         ],
         USER_AGENT:
         [
-            define('Function("navigator").userAgent', MOZILLA),
+            define('Function("return navigator")().userAgent', MOZILLA),
         ],
         // Function body extra padding blocks: prepended to a function to align the function's body
         // at the same position in different engines, assuming that the function header is aligned.
