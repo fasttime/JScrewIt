@@ -976,7 +976,7 @@ function getFHPaddingEntries(index)
             define('(RP_0_S + self)[10]', DOMWINDOW),
             define('(RP_4_A + Date())[30]', GMT),
             define('(RP_0_S + Audio)[11]', HTMLAUDIOELEMENT),
-            define('navigator.userAgent[0]', MOZILLA),
+            define('USER_AGENT[0]', MOZILLA),
         ],
         'N': '"NaN"[0]',
         'O':
@@ -1589,7 +1589,10 @@ function getFHPaddingEntries(index)
             define
             ({ expr: '"toUpperCase"', optimize: true, solutionType: SolutionType.COMBINED_STRING }),
         ],
-
+        USER_AGENT:
+        [
+            define('Function(navigator).userAgent', MOZILLA),
+        ],
         // Function body extra padding blocks: prepended to a function to align the function's body
         // at the same position in different engines, assuming that the function header is aligned.
         // The number after "FBEP_" is the maximum character overhead.
