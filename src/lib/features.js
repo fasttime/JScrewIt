@@ -575,8 +575,7 @@ var featureInfos =
         function ()
         {
             var available =
-            typeof navigator === 'object' &&
-            /^Mozilla/.test(navigator.userAgent);
+            typeof navigator === 'object' && /^Mozilla/.test(navigator.userAgent);
             return available;
         },
     },
