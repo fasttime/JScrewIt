@@ -1079,6 +1079,12 @@
                 registerDefaultToStringAdapter(this, location, '[object Location]');
             patchGlobalToString(this);
         },
+        MOZILLA:
+        function ()
+        {
+            var navigator = { userAgent: 'Mozilla/5.0' };
+            override(this, 'navigator', { value: navigator });
+        },
         NAME:
         function ()
         {
