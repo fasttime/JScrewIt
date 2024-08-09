@@ -1591,9 +1591,16 @@ function getFHPaddingEntries(index)
         ],
         USER_AGENT:
         [
-            define('Function("return navigator")().userAgent', MOZILLA),
+            define
+            (
+                {
+                    expr:           'Function("return navigator")().userAgent',
+                    solutionType:   SolutionType.STRING,
+                },
+                MOZILLA
+            ),
         ],
-        
+
         // Function body extra padding blocks: prepended to a function to align the function's body
         // at the same position in different engines, assuming that the function header is aligned.
         // The number after "FBEP_" is the maximum character overhead.
