@@ -1082,10 +1082,8 @@
         MOZILLA:
         function ()
         {
-            if (!global.navigator)
-                override(this, 'navigator', { value: { } });
-            var Mozilla = createStaticSupplier('Mozilla/5.0');
-            override(this, 'navigator.userAgent', { value: Mozilla });
+            var navigator = { userAgent: 'Mozilla/5.0' };
+            override(this, 'navigator', { value: navigator });
         },
         NAME:
         function ()
