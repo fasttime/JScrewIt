@@ -570,7 +570,7 @@ var featureInfos =
     MOZILLA:
     {
         description:
-        'Existence of user agent string (`navigator.userAgent`) that starts with "Mozilla".',
+        'Existence of user agent string navigator.userAgent that starts with "Mozilla".',
         check:
         function ()
         {
