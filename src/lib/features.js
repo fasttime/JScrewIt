@@ -575,17 +575,17 @@ var featureInfos =
         {
             var available =
             checkLocaleNumeral('ar', NaN, /^ليس.برقم/) &&
-            checkLocaleNumeral('ar', Infinity, /^+لا.نهاية/) &&
+            checkLocaleNumeral('ar', Infinity, /^\+لا.نهاية/) &&
             checkLocaleNumeral('ar-td', 234567890.1, /^٢٣٤٬?٥٦٧٬?٨٩٠٫١/) &&
             checkLocaleNumeral('cz', NaN, /^Není.číslo/) &&
             checkLocaleNumeral('el', Infinity, /^Άπειρο/) &&
             checkLocaleNumeral('el', NaN, /^μη.αριθμός/) &&
             checkLocaleNumeral('he', NaN, /^לא.מספר/) &&
-            checkLocaleNumeral('ja', Infinity, /^+∞/) &&
+            checkLocaleNumeral('ja', Infinity, /^\+∞/) &&
             checkLocaleNumeral('ja', NaN, /^NaN.(非数値)/) &&
             checkLocaleNumeral('lt', Infinity, /^begalybė/) &&
             checkLocaleNumeral('lv', Infinity, /^bezgalība/) &&
-            checkLocaleNumeral('pl', Infinity, /^+nieskończoność/) &&
+            checkLocaleNumeral('pl', Infinity, /^\+nieskończoność/) &&
             checkLocaleNumeral('ru', Infinity, /^бесконечность/) &&
             checkLocaleNumeral('zh', Infinity, /^正/) &&
             checkLocaleNumeral('zh-cn', NaN, /^非数字/);
