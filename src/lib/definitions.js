@@ -2190,15 +2190,15 @@ function getFHPaddingEntries(index)
     useLocaleNumeralDefinition('с', '"ru"', NaN, 5, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('л', '"ru"', NaN, 6, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('о', '"ru"', NaN, 7, LOCALE_NUMERALS_EXT);
-    useLocaleNumeralDefinition('б', '"ru"', NaN, 0, LOCALE_NUMERALS_IE11_WIN7);
-    useLocaleNumeralDefinition('е', '"ru"', NaN, 1, LOCALE_NUMERALS_IE11_WIN7);
-    useLocaleNumeralDefinition('с', '"ru"', NaN, 2, LOCALE_NUMERALS_IE11_WIN7);
-    useLocaleNumeralDefinition('к', '"ru"', NaN, 3, LOCALE_NUMERALS_IE11_WIN7);
-    useLocaleNumeralDefinition('н', '"ru"', NaN, 5, LOCALE_NUMERALS_IE11_WIN7);
-    useLocaleNumeralDefinition('ч', '"ru"', NaN, 7, LOCALE_NUMERALS_IE11_WIN7);
-    useLocaleNumeralDefinition('о', '"ru"', NaN, 9, LOCALE_NUMERALS_IE11_WIN7);
-    useLocaleNumeralDefinition('т', '"ru"', NaN, 11, LOCALE_NUMERALS_IE11_WIN7);
-    useLocaleNumeralDefinition('ь', '"ru"', NaN, 12, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('б', '"ru"', Infinity, 0, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('е', '"ru"', Infinity, 1, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('с', '"ru"', Infinity, 2, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('к', '"ru"', Infinity, 3, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('н', '"ru"', Infinity, 5, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('ч', '"ru"', Infinity, 7, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('о', '"ru"', Infinity, 9, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('т', '"ru"', Infinity, 11, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('ь', '"ru"', Infinity, 12, LOCALE_NUMERALS_IE11_WIN7);
     useLocaleNumeralDefinition('正', '"zh"', Infinity, 0, LOCALE_NUMERALS_IE11_WIN7);
     useLocaleNumeralDefinition('字', '"zh-cn"', NaN, 2, LOCALE_NUMERALS_IE11_WIN7);
 }
