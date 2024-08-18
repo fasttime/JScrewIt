@@ -574,7 +574,7 @@ var featureInfos =
         function ()
         {
             var available =
-            checkLocaleNumeral('ar', NaN, /^ليس برقم/) &&
+            checkLocaleNumeral('ar', NaN, /^ليس.برقم/) &&
             checkLocaleNumeral('ar', Infinity, /^+لا.نهاية/) &&
             checkLocaleNumeral('ar-td', 234567890.1, /^٢٣٤٬?٥٦٧٬?٨٩٠٫١/) &&
             checkLocaleNumeral('cz', NaN, /^Není.číslo/) &&
