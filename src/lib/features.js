@@ -1145,10 +1145,10 @@ var featureInfos =
         compatibilityShortTag:  'W10',
         includes:
         {
-            LOCALE_INFINITY: true,
-            LOCALE_NUMERALS: false,
-            LOCALE_NUMERALS_EXT: true,
-            LOCALE_NUMERALS_IE11_WIN7: false
+            LOCALE_INFINITY:           true,
+            LOCALE_NUMERALS:           false,
+            LOCALE_NUMERALS_EXT:       true,
+            LOCALE_NUMERALS_IE11_WIN7: false,
         },
     },
     NODE_0_10:
