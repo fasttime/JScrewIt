@@ -638,6 +638,18 @@ Available in Chrome, Edge, Firefox, Safari, Opera, and Android Browser.
 
 ***
 
+### MOZILLA
+
+> **MOZILLA**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Existence of user agent string navigator.userAgent that starts with "Mozilla".
+
+#### Remarks
+
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser.
+
+***
+
 ### NAME
 
 > **NAME**: [`ElementaryFeature`](ElementaryFeature.md)

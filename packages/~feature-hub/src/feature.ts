@@ -481,15 +481,9 @@ FeatureConstructor
             {
                 const info = featureInfos[name];
                 const getInfoStringField =
-
-                /* eslint-disable @typescript-eslint/no-unnecessary-type-parameters */
-
                 <FieldNameType extends string>(fieldName: FieldNameType): string | undefined =>
                 fieldName in info ?
                 esToString((info as { [Name in FieldNameType]: unknown; })[fieldName]) : undefined;
-
-                /* eslint-enable @typescript-eslint/no-unnecessary-type-parameters */
-
                 let description = getInfoStringField('description');
                 let featureObj: PredefinedFeature;
                 if ('aliasFor' in info)
