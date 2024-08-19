@@ -581,10 +581,10 @@ var featureInfos =
         'of NaN ("μη\xa0αριθμός"), the letters in the Hebrew string representation of NaN ' +
         '("לא\xa0מספר"), the characters in the Japanese string representation of Infinity ' +
         '("+∞"), the characters in the Japanese string representation of NaN ("NaN\xa0(非数値)"), ' +
-        'the letters in the Lithuanian string representation of Infinity ("begalybė"), the letters ' +
-        'in the Polish string representation of Infinity ("+nieskończoność"), the characters in ' +
-        'the Chinese string representation of Infinity ("正无穷大" or "正無窮大"), the characters ' +
-        'in the Simplified Chinese string representation of NaN ("非数字").',
+        'the letters in the Lithuanian string representation of Infinity ("begalybė"), the ' +
+        'letters in the Polish string representation of Infinity ("+nieskończoność"), the ' +
+        'characters in the Chinese string representation of Infinity ("正无穷大" or "正無窮大"), the ' +
+        'characters in the Simplified Chinese string representation of NaN ("非数字").',
         check:
         function ()
         {
