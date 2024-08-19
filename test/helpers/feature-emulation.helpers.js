@@ -1045,6 +1045,40 @@
                     var number;
                     switch (locale)
                     {
+                    case 'lv':
+                        switch (+this) // In Internet Explorer 9, +this is different from this.
+                        {
+                        case Infinity:
+                            return 'bezgalība';
+                        case -Infinity:
+                            return '-bezgalība';
+                        }
+                    case 'ru':
+                        switch (+this) // In Internet Explorer 9, +this is different from this.
+                        {
+                        case Infinity:
+                            return 'бесконечность';
+                        case -Infinity:
+                            return '-бесконечность';
+                        }
+                    }
+                    return returnValue;
+                }
+            );
+        },
+        LOCALE_NUMERALS_IE11_WIN7_8:
+        function ()
+        {
+            this.arabicNaNString = 'ليس\xa0برقم';
+            registerNumberToLocaleStringAdapter
+            (
+                this,
+                function (locale)
+                {
+                    var returnValue;
+                    var number;
+                    switch (locale)
+                    {
                     case 'ar':
                     case 'ar-td':
                         number = Number(this);
@@ -1101,14 +1135,6 @@
                             }
                         }
                         break;
-                    case 'lt':
-                        switch (+this) // In Internet Explorer 9, +this is different from this.
-                        {
-                        case Infinity:
-                            return 'begalybė';
-                        case -Infinity:
-                            return '-begalybė';
-                        }
                     case 'lv':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
@@ -1141,12 +1167,46 @@
                         case -Infinity:
                             return '负无穷大';
                         }
-                    }
                     case 'zh-cn':
                         number = Number(this);
                         if (isNaN(number))
                             returnValue = '非数字';
                         break;
+                    }
+                    return returnValue;
+                }
+            );
+        },
+        LOCALE_NUMERALS_IE11_WIN8:
+        function ()
+        {
+            this.arabicNaNString = 'ليس\xa0برقم';
+            registerNumberToLocaleStringAdapter
+            (
+                this,
+                function (locale)
+                {
+                    var returnValue;
+                    var number;
+                    switch (locale)
+                    {
+                    case 'lv':
+                        switch (+this) // In Internet Explorer 9, +this is different from this.
+                        {
+                        case Infinity:
+                            return '∞';
+                        case -Infinity:
+                            return '-∞';
+                        }
+                    case 'ru':
+                        switch (+this) // In Internet Explorer 9, +this is different from this.
+                        {
+                        case Infinity:
+                            return '∞';
+                        case -Infinity:
+                            return '-∞';
+                        }
+                    }
                     return returnValue;
                 }
             );
