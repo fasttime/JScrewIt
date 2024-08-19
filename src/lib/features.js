@@ -552,7 +552,7 @@ var featureInfos =
         },
         includes: ['LOCALE_NUMERALS'],
     },
-        LOCALE_NUMERALS_IE11_WIN7:
+    LOCALE_NUMERALS_IE11_WIN7:
     {
         description:
         'Localized number formatting exclusive to Interner Explorer 11 in Windows 7.\n' +
