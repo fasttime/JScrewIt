@@ -582,7 +582,7 @@ var featureInfos =
             checkLocaleNumeral('el', NaN, /^μη.αριθμός/) &&
             checkLocaleNumeral('he', NaN, /^לא.מספר/) &&
             checkLocaleNumeral('ja', Infinity, /^\+∞/) &&
-            checkLocaleNumeral('ja', NaN, /^NaN.(非数値)/) &&
+            checkLocaleNumeral('ja', NaN, /^NaN \(非数値\)/) &&
             checkLocaleNumeral('lt', Infinity, /^begalybė/) &&
             checkLocaleNumeral('lv', Infinity, /^bezgalība/) &&
             checkLocaleNumeral('pl', Infinity, /^\+nieskończoność/) &&
