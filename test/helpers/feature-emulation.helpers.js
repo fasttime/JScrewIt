@@ -1089,10 +1089,10 @@
                         {
                             switch (+this) // In Internet Explorer 9, +this is different from this.
                             {
-                                case Infinity:
-                                    return '+لا\xa0نهاية';
-                                case -Infinity:
-                                    return '-لا\xa0نهاية';
+                            case Infinity:
+                                return '+لا\xa0نهاية';
+                            case -Infinity:
+                                return '-لا\xa0نهاية';
                             }
                         }
                         break;
@@ -1105,7 +1105,7 @@
                         number = Number(this);
                         if (isNaN(number))
                             returnValue = 'μη\xa0αριθμός';
-                        else 
+                        else
                         {
                             switch (+this) // In Internet Explorer 9, +this is different from this.
                             {
@@ -1125,7 +1125,7 @@
                         number = Number(this);
                         if (isNaN(number))
                             returnValue = 'NaN\xa0(非数値)';
-                        else 
+                        else
                         {
                             switch (+this) // In Internet Explorer 9, +this is different from this.
                             {
