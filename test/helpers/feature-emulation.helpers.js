@@ -1044,13 +1044,13 @@
                     var returnValue;
                     switch (locale)
                     {
-                    case 'lv':
+                    case 'lt':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
                         case Infinity:
-                            return 'bezgalība';
+                            return 'begalybė';
                         case -Infinity:
-                            return '-bezgalība';
+                            return '-begalybė';
                         }
                         break;
                     case 'ru':
@@ -1194,7 +1194,7 @@
                     var returnValue;
                     switch (locale)
                     {
-                    case 'lv':
+                    case 'lt':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
                         case Infinity:
