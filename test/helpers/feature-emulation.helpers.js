@@ -1042,7 +1042,6 @@
                 function (locale)
                 {
                     var returnValue;
-                    var number;
                     switch (locale)
                     {
                     case 'lv':
@@ -1053,6 +1052,7 @@
                         case -Infinity:
                             return '-bezgalība';
                         }
+                        break;
                     case 'ru':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
@@ -1061,6 +1061,7 @@
                         case -Infinity:
                             return '-бесконечность';
                         }
+                        break;
                     }
                     return returnValue;
                 }
@@ -1084,7 +1085,7 @@
                         number = Number(this);
                         if (isNaN(number))
                             returnValue = 'ليس\xa0برقم';
-                        else 
+                        else
                         {
                             switch (+this) // In Internet Explorer 9, +this is different from this.
                             {
@@ -1108,10 +1109,10 @@
                         {
                             switch (+this) // In Internet Explorer 9, +this is different from this.
                             {
-                                case Infinity:
-                                    return 'Άπειρο';
-                                case -Infinity:
-                                    return '-Άπειρο';
+                            case Infinity:
+                                return 'Άπειρο';
+                            case -Infinity:
+                                return '-Άπειρο';
                             }
                         }
                         break;
@@ -1128,10 +1129,10 @@
                         {
                             switch (+this) // In Internet Explorer 9, +this is different from this.
                             {
-                                case Infinity:
-                                    return '+∞';
-                                case -Infinity:
-                                    return '-∞';
+                            case Infinity:
+                                return '+∞';
+                            case -Infinity:
+                                return '-∞';
                             }
                         }
                         break;
@@ -1143,6 +1144,7 @@
                         case -Infinity:
                             return '-bezgalība';
                         }
+                        break;
                     case 'pl':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
@@ -1151,6 +1153,7 @@
                         case -Infinity:
                             return '-nieskończoność';
                         }
+                        break;
                     case 'ru':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
@@ -1159,6 +1162,7 @@
                         case -Infinity:
                             return '-бесконечность';
                         }
+                        break;
                     case 'zh':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
@@ -1167,6 +1171,7 @@
                         case -Infinity:
                             return '负无穷大';
                         }
+                        break;
                     case 'zh-cn':
                         number = Number(this);
                         if (isNaN(number))
@@ -1187,7 +1192,6 @@
                 function (locale)
                 {
                     var returnValue;
-                    var number;
                     switch (locale)
                     {
                     case 'lv':
@@ -1198,6 +1202,7 @@
                         case -Infinity:
                             return '-∞';
                         }
+                        break;
                     case 'ru':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
@@ -1206,6 +1211,7 @@
                         case -Infinity:
                             return '-∞';
                         }
+                        break;
                     }
                     return returnValue;
                 }
