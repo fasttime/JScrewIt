@@ -556,14 +556,14 @@ var featureInfos =
     {
         description:
         'Localized number formatting exclusive to Interner Explorer 11 in Windows 7.\n' +
-        'This includes the letters in the Lithuanian string representation of Infinity ' +
-        '("begalybė") and the letters in the Russian string representation of Infinity ' +
+        'This includes the letters in the Latvian string representation of Infinity ' +
+        '("bezgalība") and the letters in the Russian string representation of Infinity ' +
         '("бесконечность").',
         check:
         function ()
         {
             var available =
-            checkLocaleNumeral('lt', Infinity, /^begalybė/) &&
+            checkLocaleNumeral('lv', Infinity, /^bezgalība/) &&
             checkLocaleNumeral('ru', Infinity, /^бесконечность/);
             return available;
         },
@@ -581,7 +581,7 @@ var featureInfos =
         'of NaN ("μη\xa0αριθμός"), the letters in the Hebrew string representation of NaN ' +
         '("לא\xa0מספר"), the characters in the Japanese string representation of Infinity ' +
         '("+∞"), the characters in the Japanese string representation of NaN ("NaN\xa0(非数値)"), ' +
-        'the letters in the Latvian string representation of Infinity ("bezgalība"), the letters ' +
+        'the letters in the Lithuanian string representation of Infinity ("begalybė"), the letters ' +
         'in the Polish string representation of Infinity ("+nieskończoność"), the characters in ' +
         'the Chinese string representation of Infinity ("正无穷大" or "正無窮大"), the characters ' +
         'in the Simplified Chinese string representation of NaN ("非数字").',
@@ -598,7 +598,7 @@ var featureInfos =
             checkLocaleNumeral('he', NaN, /^לא.מספר/) &&
             checkLocaleNumeral('ja', Infinity, /^\+∞/) &&
             checkLocaleNumeral('ja', NaN, /^NaN \(非数値\)/) &&
-            checkLocaleNumeral('lv', Infinity, /^bezgalība/) &&
+            checkLocaleNumeral('lt', Infinity, /^begalybė/) &&
             checkLocaleNumeral('pl', Infinity, /^\+nieskończoność/) &&
             checkLocaleNumeral('zh', Infinity, /^正/) &&
             checkLocaleNumeral('zh-cn', NaN, /^非数字/);
@@ -610,12 +610,11 @@ var featureInfos =
     {
         description:
         'Localized number formatting exclusive to Interner Explorer 11 in Windows 8.\n' +
-        'In this case, Lithuanian and Russian string representation of Infinity are ' +
-        'both "∞".',
+        'In this case, Latvian and Russian string representation of Infinity are both "∞".',
         check:
         function ()
         {
-            var available = Infinity.toLocaleString('lt') === '∞' &&
+            var available = Infinity.toLocaleString('lv') === '∞' &&
             Infinity.toLocaleString('ru') === '∞';
             return available;
         },
