@@ -614,8 +614,8 @@ var featureInfos =
         check:
         function ()
         {
-            var available = (Infinity.toLocaleString('lt') === '∞') && 
-                (Infinity.toLocaleString('ru') === '∞');
+            var available = Infinity.toLocaleString('lt') === '∞' &&
+            Infinity.toLocaleString('ru') === '∞';
             return available;
         },
     },
