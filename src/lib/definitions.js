@@ -384,6 +384,8 @@ function getFHPaddingEntries(index)
     var LOCALE_NUMERALS                 = Feature.LOCALE_NUMERALS;
     var LOCALE_NUMERALS_EXT             = Feature.LOCALE_NUMERALS_EXT;
     var LOCALE_NUMERALS_IE11_WIN7       = Feature.LOCALE_NUMERALS_IE11_WIN7;
+    var LOCALE_NUMERALS_IE11_WIN7_8     = Feature.LOCALE_NUMERALS_IE11_WIN7_8;
+    var LOCALE_NUMERALS_IE11_WIN8       = Feature.LOCALE_NUMERALS_IE11_WIN8;
     var LOCATION                        = Feature.LOCATION;
     var MOZILLA                         = Feature.MOZILLA;
     var NAME                            = Feature.NAME;
