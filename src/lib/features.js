@@ -567,6 +567,7 @@ var featureInfos =
             checkLocaleNumeral('ru', Infinity, /^бесконечность/);
             return available;
         },
+        includes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
     },
     LOCALE_NUMERALS_IE11_WIN7_8:
     {
@@ -618,6 +619,7 @@ var featureInfos =
             Infinity.toLocaleString('ru') === '∞';
             return available;
         },
+        includes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
     },
     LOCATION:
     {
