@@ -564,7 +564,7 @@ var featureInfos =
         {
             var available =
             checkLocaleNumeral('lt', Infinity, /^begalybė/) &&
-            checkLocaleNumeral('ru', Infinity, /^бесконечность/) &&
+            checkLocaleNumeral('ru', Infinity, /^бесконечность/);
             return available;
         },
     },
