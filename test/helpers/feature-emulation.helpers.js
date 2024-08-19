@@ -1044,13 +1044,13 @@
                     var returnValue;
                     switch (locale)
                     {
-                    case 'lt':
+                    case 'lv':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
                         case Infinity:
-                            return 'begalybė';
+                            return 'bezgalība';
                         case -Infinity:
-                            return '-begalybė';
+                            return '-bezgalība';
                         }
                         break;
                     case 'ru':
@@ -1136,13 +1136,13 @@
                             }
                         }
                         break;
-                    case 'lv':
+                    case 'lt':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
                         case Infinity:
-                            return 'bezgalība';
+                            return 'begalybė';
                         case -Infinity:
-                            return '-bezgalība';
+                            return '-begalybė';
                         }
                         break;
                     case 'pl':
@@ -1194,7 +1194,7 @@
                     var returnValue;
                     switch (locale)
                     {
-                    case 'lt':
+                    case 'lv':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
                         case Infinity:
