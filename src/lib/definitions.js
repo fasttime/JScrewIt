@@ -355,6 +355,7 @@ function getFHPaddingEntries(index)
     var AT                              = Feature.AT;
     var ATOB                            = Feature.ATOB;
     var BARPROP                         = Feature.BARPROP;
+    var CALL_ON_GLOBAL                  = Feature.CALL_ON_GLOBAL;
     var CAPITAL_HTML                    = Feature.CAPITAL_HTML;
     var CONSOLE                         = Feature.CONSOLE;
     var DOCUMENT                        = Feature.DOCUMENT;
@@ -1068,10 +1069,18 @@ function getFHPaddingEntries(index)
         [
             define('"w"[TO_UPPER_CASE]()'),
             define('(self + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW),
+            define('(self + RP_4_A).at("-11")', ANY_WINDOW, AT),
             define('btoa(undefined)[1]', ATOB),
             define('(RP_0_S + self)[11]', DOMWINDOW),
             define('(RP_3_WA + self)[11]', OBJECT_W_SELF),
-            define('(self + RP_4_A).at("-11")', ANY_WINDOW, AT),
+            define('([].sort.call() + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
+            define('([].fill.call() + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL, FILL),
+            define('([].sort.call() + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW, CALL_ON_GLOBAL),
+            define('([].fill.call() + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW, CALL_ON_GLOBAL, FILL),
+            define('(RP_0_S + [].sort.call())[11]', CALL_ON_GLOBAL, DOMWINDOW),
+            define('(RP_0_S + [].fill.call())[11]', CALL_ON_GLOBAL, DOMWINDOW, FILL),
+            define('(RP_3_WA + [].sort.call())[11]', CALL_ON_GLOBAL, WINDOW),
+            define('(RP_3_WA + [].fill.call())[11]', CALL_ON_GLOBAL, WINDOW, FILL),
             defineCharDefault({ atob: false }),
         ],
         'X':
@@ -1191,7 +1200,15 @@ function getFHPaddingEntries(index)
             define('atob("undefined0")[1]', ATOB),
             define('(RP_4_A + self)[20]', DOMWINDOW),
             define('(RP_0_S + self)[13]', WINDOW),
+            define('([].sort.call() + RP_0_S)[SLICE_OR_SUBSTR]("-2")[0]', ANY_WINDOW, CALL_ON_GLOBAL),
+            define('([].fill.call() + RP_0_S)[SLICE_OR_SUBSTR]("-2")[0]', ANY_WINDOW, CALL_ON_GLOBAL, FILL),
             define('(self + RP_0_S).at("-2")', ANY_WINDOW, AT),
+            define('([].sort.call() + RP_0_S).at("-2")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
+            define('([].fill.call() + RP_0_S).at("-2")', ANY_WINDOW, AT, CALL_ON_GLOBAL, FILL),
+            define('(RP_4_A + [].sort.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
+            define('(RP_4_A + [].fill.call())[20]', CALL_ON_GLOBAL, DOMWINDOW, FILL),
+            define('(RP_0_S + [].sort.call())[13]', CALL_ON_GLOBAL, WINDOW),
+            define('(RP_0_S + [].fill.call())[13]', CALL_ON_GLOBAL, FILL, WINDOW),
         ],
         'x':
         [
