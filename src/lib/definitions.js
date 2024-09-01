@@ -1203,8 +1203,13 @@ function getFHPaddingEntries(index)
             define('(RP_0_S + self)[13]', WINDOW),
             define // *
             ('([].sort.call() + RP_0_S)[SLICE_OR_SUBSTR]("-2")[0]', ANY_WINDOW, CALL_ON_GLOBAL),
-            define // *
-            ('([].fill.call() + RP_0_S)[SLICE_OR_SUBSTR]("-2")[0]', ANY_WINDOW, CALL_ON_GLOBAL, FILL),
+            define
+            (
+                '([].fill.call() + RP_0_S)[SLICE_OR_SUBSTR]("-2")[0]',
+                ANY_WINDOW,
+                CALL_ON_GLOBAL,
+                FILL
+            ),
             define('(self + RP_0_S).at("-2")', ANY_WINDOW, AT),
             define('([].sort.call() + RP_0_S).at("-2")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
             define('([].fill.call() + RP_0_S).at("-2")', ANY_WINDOW, AT, CALL_ON_GLOBAL, FILL),
