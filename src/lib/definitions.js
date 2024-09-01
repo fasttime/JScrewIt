@@ -1069,10 +1069,10 @@ function getFHPaddingEntries(index)
         [
             define('"w"[TO_UPPER_CASE]()'),
             define('(self + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW),
-            define('(self + RP_4_A).at("-11")', ANY_WINDOW, AT),
             define('btoa(undefined)[1]', ATOB),
             define('(RP_0_S + self)[11]', DOMWINDOW),
             define('(RP_3_WA + self)[11]', OBJECT_W_SELF),
+            define('(self + RP_4_A).at("-11")', ANY_WINDOW, AT),
             define('([].sort.call() + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
             define('([].fill.call() + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL, FILL),
             define('([].sort.call() + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW, CALL_ON_GLOBAL),
