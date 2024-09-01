@@ -1075,7 +1075,8 @@ function getFHPaddingEntries(index)
             define('(self + RP_4_A).at("-11")', ANY_WINDOW, AT),
             define('([].sort.call() + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
             define('([].fill.call() + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL, FILL),
-            define('([].sort.call() + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW, CALL_ON_GLOBAL),
+            define // *
+            ('([].sort.call() + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW, CALL_ON_GLOBAL),
             define
             (
                 '([].fill.call() + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]',
