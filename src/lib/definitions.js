@@ -1076,7 +1076,8 @@ function getFHPaddingEntries(index)
             define('([].sort.call() + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
             define('([].fill.call() + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL, FILL),
             define('([].sort.call() + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW, CALL_ON_GLOBAL),
-            define('([].fill.call() + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW, CALL_ON_GLOBAL, FILL),
+            define // *
+            ('([].fill.call() + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW, CALL_ON_GLOBAL, FILL),
             define('(RP_0_S + [].sort.call())[11]', CALL_ON_GLOBAL, DOMWINDOW),
             define('(RP_0_S + [].fill.call())[11]', CALL_ON_GLOBAL, DOMWINDOW, FILL),
             define('(RP_3_WA + [].sort.call())[11]', CALL_ON_GLOBAL, WINDOW),
@@ -1200,8 +1201,10 @@ function getFHPaddingEntries(index)
             define('atob("undefined0")[1]', ATOB),
             define('(RP_4_A + self)[20]', DOMWINDOW),
             define('(RP_0_S + self)[13]', WINDOW),
-            define('([].sort.call() + RP_0_S)[SLICE_OR_SUBSTR]("-2")[0]', ANY_WINDOW, CALL_ON_GLOBAL),
-            define('([].fill.call() + RP_0_S)[SLICE_OR_SUBSTR]("-2")[0]', ANY_WINDOW, CALL_ON_GLOBAL, FILL),
+            define // *
+            ('([].sort.call() + RP_0_S)[SLICE_OR_SUBSTR]("-2")[0]', ANY_WINDOW, CALL_ON_GLOBAL),
+            define // *
+            ('([].fill.call() + RP_0_S)[SLICE_OR_SUBSTR]("-2")[0]', ANY_WINDOW, CALL_ON_GLOBAL, FILL),
             define('(self + RP_0_S).at("-2")', ANY_WINDOW, AT),
             define('([].sort.call() + RP_0_S).at("-2")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
             define('([].fill.call() + RP_0_S).at("-2")', ANY_WINDOW, AT, CALL_ON_GLOBAL, FILL),
