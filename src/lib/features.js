@@ -194,8 +194,8 @@ var featureInfos =
     {
         description:
         'The ability to call function on global object when invoking Function.prototype.call ' +
-        'without binding: this will call function on undefined insread in strict mode in ECMAScript ' +
-        'compliant engines.',
+        'without binding: this will call function on undefined insread in strict mode in ' +
+        'ECMAScript compliant engines.',
         check:
         function ()
         {
