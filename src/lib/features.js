@@ -194,12 +194,17 @@ var featureInfos =
     {
         description:
         'The ability to call function on global object when invoking Function.prototype.call ' +
-        'without binding: this will call function on undefined insread in strict mode in ' +
-        'ECMAScript compliant engines.',
+        'without binding.',
         check:
         function ()
         {
-            return true;
+            try
+            {
+                [].sort.call();
+                return true;
+            }
+            catch (error)
+            { }
         },
         attributes: { 'forced-strict-mode': 'char-increment-restriction' },
     },
@@ -904,6 +909,7 @@ var featureInfos =
             'ANY_DOCUMENT',
             'ATOB',
             'CONSOLE',
+            'CALL_ON_GLOBAL'
             'DOMWINDOW',
             'ESC_HTML_ALL',
             'FUNCTION_22_LF',
@@ -921,7 +927,7 @@ var featureInfos =
     {
         inherits: 'ANDRO_4_0',
         versions: [['4.1',, '4.3']],
-        includes: { GENERIC_ARRAY_TO_STRING: true, OBJECT_UNDEFINED: true },
+        includes: { CALL_ON_GLOBAL: false, GENERIC_ARRAY_TO_STRING: true, OBJECT_UNDEFINED: true },
     },
     ANDRO_4_4:
     {
