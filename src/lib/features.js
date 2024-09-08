@@ -206,7 +206,6 @@ var featureInfos =
             catch (error)
             { }
         },
-        attributes: { 'forced-strict-mode': 'char-increment-restriction' },
     },
     CAPITAL_HTML:
     {
