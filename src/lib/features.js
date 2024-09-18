@@ -193,8 +193,8 @@ var featureInfos =
     CALL_ON_GLOBAL:
     {
         description:
-        'The ability to call function on global object when invoking Function.prototype.call ' +
-        'without binding.',
+        'The ability to call a function on the global object when invoking ' +
+        'Function.prototype.call without binding.',
         check:
         function ()
         {
@@ -907,8 +907,8 @@ var featureInfos =
         [
             'ANY_DOCUMENT',
             'ATOB',
+            'CALL_ON_GLOBAL',
             'CONSOLE',
-            'CALL_ON_GLOBAL'
             'DOMWINDOW',
             'ESC_HTML_ALL',
             'FUNCTION_22_LF',

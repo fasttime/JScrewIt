@@ -910,6 +910,8 @@ function getFHPaddingEntries(index)
             ({ expr: '(RP_3_WA + Function("return history")())[11]', optimize: true }, HISTORY),
             define('(RP_1_WA + Audio)[10]', HTMLAUDIOELEMENT),
             define('(RP_4_A + [].entries().filter(ANY_FUNCTION))[21]', ITERATOR_HELPER),
+            define
+            ({ expr: '(RP_3_WA + self.history)[11]', optimize: true }, HISTORY, SELF_OBJ),
         ],
         'I': '"Infinity"[0]',
         'J':
@@ -954,6 +956,8 @@ function getFHPaddingEntries(index)
                 AT,
                 LOCATION
             ),
+            define
+            ('self[TO_STRING].call(location)[SLICE_OR_SUBSTR]("-10")[1]', LOCATION, SELF_OBJ),
             define('(LOCATION_CONSTRUCTOR + RP_0_S).at("-20")', AT, OLD_SAFARI_LOCATION_CTOR),
             define
             (
@@ -967,6 +971,13 @@ function getFHPaddingEntries(index)
                 AT,
                 GENERIC_ARRAY_TO_STRING,
                 LOCATION
+            ),
+            define
+            (
+                '(self[TO_STRING].call(location) + RP_1_WA).at("-10")',
+                AT,
+                LOCATION,
+                SELF_OBJ
             ),
         ],
         'M':
@@ -997,6 +1008,7 @@ function getFHPaddingEntries(index)
             define('btoa("".italics())[0]', ATOB),
             define('(RP_0_S + Function("return statusbar")())[11]', BARPROP),
             define('"0".sup()[10]', CAPITAL_HTML),
+            define('(RP_0_S + self.statusbar)[11]', BARPROP, SELF_OBJ),
             defineCharDefault({ atob: false, charCode: false }),
         ],
         'Q':
@@ -1073,15 +1085,6 @@ function getFHPaddingEntries(index)
             define('(RP_0_S + self)[11]', DOMWINDOW),
             define('(RP_3_WA + self)[11]', OBJECT_W_SELF),
             define('(self + RP_4_A).at("-11")', ANY_WINDOW, AT),
-            define('([].concat.call()[0] + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
-            define
-            (
-                '([].concat.call()[0] + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]',
-                ANY_WINDOW,
-                CALL_ON_GLOBAL
-            ),
-            define('(RP_0_S + [].concat.call()[0])[11]', CALL_ON_GLOBAL, DOMWINDOW),
-            define('(RP_3_WA + [].concat.call()[0])[11]', CALL_ON_GLOBAL, WINDOW),
             defineCharDefault({ atob: false }),
         ],
         'X':
@@ -1201,16 +1204,7 @@ function getFHPaddingEntries(index)
             define('atob("undefined0")[1]', ATOB),
             define('(RP_4_A + self)[20]', DOMWINDOW),
             define('(RP_0_S + self)[13]', WINDOW),
-            define
-            (
-                '([].concat.call()[0] + RP_0_S)[SLICE_OR_SUBSTR]("-2")[0]',
-                ANY_WINDOW,
-                CALL_ON_GLOBAL
-            ),
             define('(self + RP_0_S).at("-2")', ANY_WINDOW, AT),
-            define('([].concat.call()[0] + RP_0_S).at("-2")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
-            define('(RP_4_A + [].concat.call()[0])[20]', CALL_ON_GLOBAL, DOMWINDOW),
-            define('(RP_0_S + [].concat.call()[0])[13]', CALL_ON_GLOBAL, WINDOW),
         ],
         'x':
         [
@@ -1348,6 +1342,7 @@ function getFHPaddingEntries(index)
         Audio:
         [
             define('Function("return Audio")()', HTMLAUDIOELEMENT),
+            define('self.Audio', HTMLAUDIOELEMENT, SELF_OBJ),
         ],
         Boolean:
         [
@@ -1356,6 +1351,7 @@ function getFHPaddingEntries(index)
         Date:
         [
             define('Function("return Date")()'),
+            define('self.Date', SELF_OBJ),            
         ],
         Function:
         [
@@ -1390,30 +1386,37 @@ function getFHPaddingEntries(index)
         atob:
         [
             define('Function("return atob")()', ATOB),
+            define('self.atob', ATOB, SELF_OBJ),
         ],
         btoa:
         [
             define('Function("return btoa")()', ATOB),
+            define('self.btoa', ATOB, SELF_OBJ),
         ],
         document:
         [
             define({ expr: 'Function("return document")()', optimize: true }, ANY_DOCUMENT),
+            define({ expr: 'self.document', optimize: true }, ANY_DOCUMENT, SELF_OBJ),
         ],
         escape:
         [
             define({ expr: 'Function("return escape")()', optimize: true }),
+            define({ expr: 'self.escape', optimize: true }, SELF_OBJ),
         ],
         location:
         [
             define('Function("return location")()', LOCATION),
+            define('self.location', LOCATION, SELF_OBJ),
         ],
         self:
         [
             define('Function("return self")()', SELF_OBJ),
+            define('[].concat.call()[0]', CALL_ON_GLOBAL, SELF_OBJ),
         ],
         unescape:
         [
             define({ expr: 'Function("return unescape")()', optimize: true }),
+            define({ expr: 'self.unescape', optimize: true }, SELF_OBJ),
         ],
 
         // Custom definitions
@@ -1562,6 +1565,8 @@ function getFHPaddingEntries(index)
         [
             define('Function("return location")().constructor', OBJECT_L_LOCATION_CTOR),
             define('Function("return location")().constructor', OLD_SAFARI_LOCATION_CTOR),
+            define('self.location.constructor', OBJECT_L_LOCATION_CTOR, SELF_OBJ),
+            define('self.location.constructor', OLD_SAFARI_LOCATION_CTOR, SELF_OBJ),
         ],
         PLAIN_OBJECT:
         [
@@ -1617,6 +1622,15 @@ function getFHPaddingEntries(index)
                     solutionType:   SolutionType.STRING,
                 },
                 MOZILLA
+            ),
+            define
+            (
+                {
+                    expr:           'self.navigator.userAgent',
+                    solutionType:   SolutionType.STRING,
+                },
+                MOZILLA,
+                SELF_OBJ
             ),
         ],
 
