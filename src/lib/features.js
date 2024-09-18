@@ -200,7 +200,7 @@ var featureInfos =
         {
             try
             {
-                [].sort.call();
+                [].concat.call();
                 return true;
             }
             catch (error)
