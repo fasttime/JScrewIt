@@ -1360,10 +1360,12 @@ function getFHPaddingEntries(index)
         Intl:
         [
             define('Function("return Intl")()', INTL),
+            define('self.Intl', INTL, SELF_OBJ),
         ],
         Node:
         [
             define('Function("return Node")()', NODECONSTRUCTOR),
+            define('self.Node', NODECONSTRUCTOR, SELF_OBJ),
         ],
         Number:
         [
