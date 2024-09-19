@@ -662,15 +662,55 @@ Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
 
 ***
 
-### NODECONSTRUCTOR
+### NO\_FF\_SRC
 
-> **NODECONSTRUCTOR**: [`ElementaryFeature`](ElementaryFeature.md)
+> **NO\_FF\_SRC**: [`ElementaryFeature`](ElementaryFeature.md)
 
-Existence of the global object Node having the string representation "\[object NodeConstructor\]".
+A string representation of native functions typical for V8 or for Internet Explorer but not for Firefox and Safari.
 
 #### Remarks
 
-Available in Safari before 10.0. This feature is not available inside web workers.
+Available in Chrome, Edge, Internet Explorer, Opera, Android Browser, and Node.js.
+
+***
+
+### NO\_IE\_SRC
+
+> **NO\_IE\_SRC**: [`ElementaryFeature`](ElementaryFeature.md)
+
+A string representation of native functions typical for most engines with the notable exception of Internet Explorer.
+
+A remarkable trait of this feature is the lack of line feed characters at the beginning and at the end of the string.
+
+#### Remarks
+
+Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
+
+***
+
+### NO\_OLD\_SAFARI\_ARRAY\_ITERATOR
+
+> **NO\_OLD\_SAFARI\_ARRAY\_ITERATOR**: [`ElementaryFeature`](ElementaryFeature.md)
+
+The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
+
+#### Remarks
+
+Available in Chrome, Edge, Firefox, Safari 9+, Opera, and Node.js 0.12+.
+
+***
+
+### NO\_V8\_SRC
+
+> **NO\_V8\_SRC**: [`ElementaryFeature`](ElementaryFeature.md)
+
+A string representation of native functions typical for Firefox, Internet Explorer and Safari.
+
+A most remarkable trait of this feature is the presence of a line feed followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
+
+#### Remarks
+
+Available in Firefox, Internet Explorer, and Safari.
 
 ***
 
@@ -778,55 +818,15 @@ Features available in Node.js 7.6 to 9.
 
 ***
 
-### NO\_FF\_SRC
+### NODECONSTRUCTOR
 
-> **NO\_FF\_SRC**: [`ElementaryFeature`](ElementaryFeature.md)
+> **NODECONSTRUCTOR**: [`ElementaryFeature`](ElementaryFeature.md)
 
-A string representation of native functions typical for V8 or for Internet Explorer but not for Firefox and Safari.
-
-#### Remarks
-
-Available in Chrome, Edge, Internet Explorer, Opera, Android Browser, and Node.js.
-
-***
-
-### NO\_IE\_SRC
-
-> **NO\_IE\_SRC**: [`ElementaryFeature`](ElementaryFeature.md)
-
-A string representation of native functions typical for most engines with the notable exception of Internet Explorer.
-
-A remarkable trait of this feature is the lack of line feed characters at the beginning and at the end of the string.
+Existence of the global object Node having the string representation "\[object NodeConstructor\]".
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
-
-***
-
-### NO\_OLD\_SAFARI\_ARRAY\_ITERATOR
-
-> **NO\_OLD\_SAFARI\_ARRAY\_ITERATOR**: [`ElementaryFeature`](ElementaryFeature.md)
-
-The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Safari 9+, Opera, and Node.js 0.12+.
-
-***
-
-### NO\_V8\_SRC
-
-> **NO\_V8\_SRC**: [`ElementaryFeature`](ElementaryFeature.md)
-
-A string representation of native functions typical for Firefox, Internet Explorer and Safari.
-
-A most remarkable trait of this feature is the presence of a line feed followed by four whitespaces \("\\n    "\) before the "\[native code\]" sequence.
-
-#### Remarks
-
-Available in Firefox, Internet Explorer, and Safari.
+Available in Safari before 10.0. This feature is not available inside web workers.
 
 ***
 

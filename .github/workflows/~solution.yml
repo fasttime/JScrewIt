@@ -61,7 +61,7 @@ jobs:
     - run: |
         npm install --prefix ../..
         npm run prepare-legacy-test
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: node-legacy
         path: packages/~solution/test/node-legacy
@@ -76,14 +76,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: ['0.10', '0.12', '4', '6', '8', '10', '12']
+        node-version: ['0.10', '0.12', '4', '6.0', '6', '8', '10', '12']
 
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: node-legacy
         path: packages/~solution/test/node-legacy

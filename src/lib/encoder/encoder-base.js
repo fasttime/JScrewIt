@@ -316,7 +316,9 @@ var matchSimpleAt =
         function (str, index)
         {
             regExp.lastIndex = index;
-            var match = str.match(regExp);
+            // String.prototype.match doesn't work well with sticky regular expressions in Node.js <
+            // 6.5.
+            var match = regExp.exec(str);
             if (match)
                 return match[0];
         };

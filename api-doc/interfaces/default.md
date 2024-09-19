@@ -6,12 +6,12 @@
 
 ## Properties
 
-### Feature
-
-> **Feature**: [`FeatureConstructor`](FeatureConstructor.md)
-
-***
-
 ### encode
 
 > **encode**: [`encode`](encode.md)
+
+***
+
+### Feature
+
+> **Feature**: [`FeatureConstructor`](FeatureConstructor.md)
