@@ -956,8 +956,6 @@ function getFHPaddingEntries(index)
                 AT,
                 LOCATION
             ),
-            define
-            ('self[TO_STRING].call(location)[SLICE_OR_SUBSTR]("-10")[1]', LOCATION, SELF_OBJ),
             define('(LOCATION_CONSTRUCTOR + RP_0_S).at("-20")', AT, OLD_SAFARI_LOCATION_CTOR),
             define
             (
@@ -965,6 +963,8 @@ function getFHPaddingEntries(index)
                 GENERIC_ARRAY_TO_STRING,
                 LOCATION
             ),
+            define
+            ('self[TO_STRING].call(location)[SLICE_OR_SUBSTR]("-10")[1]', LOCATION, SELF_OBJ),
             define
             (
                 '([][TO_STRING].call(location) + RP_1_WA).at("-10")',
@@ -1351,7 +1351,7 @@ function getFHPaddingEntries(index)
         Date:
         [
             define('Function("return Date")()'),
-            define('self.Date', SELF_OBJ),            
+            define('self.Date', SELF_OBJ),
         ],
         Function:
         [
