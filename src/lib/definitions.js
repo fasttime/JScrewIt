@@ -971,13 +971,7 @@ function getFHPaddingEntries(index)
                 GENERIC_ARRAY_TO_STRING,
                 LOCATION
             ),
-            define
-            (
-                '(self[TO_STRING].call(location) + RP_1_WA).at("-10")',
-                AT,
-                LOCATION,
-                SELF_OBJ
-            ),
+            define('(self[TO_STRING].call(location) + RP_1_WA).at("-10")', AT, LOCATION, SELF_OBJ),
         ],
         'M':
         [
