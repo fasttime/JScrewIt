@@ -395,7 +395,7 @@
                     return;
             }
             else
-                override(this, 'self', { value: { } });
+                override(this, 'self', { value: global });
             var valueOf = createStaticSupplier(str);
             override(this, 'self.valueOf', { value: valueOf });
         };
@@ -438,27 +438,6 @@
         else
             delete obj[name];
         return oldDescriptor;
-    }
-
-    function patchGlobalToString(context)
-    {
-        registerFunctionAdapter
-        (
-            context,
-            function (body)
-            {
-                if (arguments.length !== 1)
-                    return;
-                if (typeof body === 'string')
-                {
-                    body =
-                    body.replace(/^return toString\b/, 'return Object.prototype.toString');
-                    var fn = context.ADAPTERS.Function.function;
-                    var fnObj = fn(body);
-                    return fnObj;
-                }
-            }
-        );
     }
 
     function rebaseDigits(digits, charCode0)
@@ -762,13 +741,27 @@
             {
                 return '[object BarProp]';
             };
-            // In Android Browser versions prior to 4.4, Object.defineProperty doesn't replace
-            // the statusbar correctly despite the configurable attribute set.
+            // In Android Browser versions prior to 4.4, Object.defineProperty doesn't replace the
+            // statusbar correctly despite the configurable attribute set.
             // As a workaround, we'll simply set a custom toString function.
             if (global.statusbar)
                 override(this, 'statusbar.toString', { value: toString });
             else
                 override(this, 'statusbar', { value: { toString: toString } });
+        },
+        CALL_ON_GLOBAL:
+        function ()
+        {
+            var callSlice = Function.prototype.call.bind(Array.prototype.slice);
+            var call =
+            function (thisArg)
+            {
+                if (thisArg == null) thisArg = global;
+                var args = callSlice(arguments, 1);
+                var returnValue = this.apply(thisArg, args);
+                return returnValue;
+            };
+            override(this, 'Function.prototype.call', { value: call });
         },
         CAPITAL_HTML:
         makeEmuFeatureHtml
@@ -899,7 +892,24 @@
         {
             if (Object.prototype.toString.call() !== '[object Undefined]')
                 registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
-            patchGlobalToString(this);
+            var context = this;
+            registerFunctionAdapter
+            (
+                this,
+                function (body)
+                {
+                    if (arguments.length !== 1)
+                        return;
+                    if (typeof body === 'string')
+                    {
+                        body =
+                        body.replace(/^return toString\b/, 'return Object.prototype.toString');
+                        var fn = context.ADAPTERS.Function.function;
+                        var fnObj = fn(body);
+                        return fnObj;
+                    }
+                }
+            );
         },
         GMT:
         function ()
@@ -1077,7 +1087,8 @@
             var location = mockLocation(this);
             if (!/^\[object [\S\s]*Location]$/.test(Object.prototype.toString.call(location)))
                 registerDefaultToStringAdapter(this, location, '[object Location]');
-            patchGlobalToString(this);
+            var descriptor = Object.getOwnPropertyDescriptor(Object.prototype, 'toString');
+            override(this, 'toString', descriptor);
         },
         MOZILLA:
         function ()

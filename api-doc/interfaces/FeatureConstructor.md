@@ -306,6 +306,22 @@ No support for Node.js.
 
 ***
 
+### CALL\_ON\_GLOBAL
+
+> **CALL\_ON\_GLOBAL**: [`ElementaryFeature`](ElementaryFeature.md)
+
+The ability to call a function on the global object when invoking Function.prototype.call without binding.
+
+#### Remarks
+
+Available in Android Browser before 4.1.
+
+#### Inherited from
+
+[`FeatureAll`](FeatureAll.md).[`CALL_ON_GLOBAL`](FeatureAll.md#call_on_global)
+
+***
+
 ### CAPITAL\_HTML
 
 > **CAPITAL\_HTML**: [`ElementaryFeature`](ElementaryFeature.md)

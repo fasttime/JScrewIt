@@ -203,6 +203,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#ANY_WINDOW"><code>ANY_WINDOW</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#DOMWINDOW"><code>DOMWINDOW</code></a> and <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#ATOB"><code>ATOB</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#BARPROP"><code>BARPROP</code></a> (Android Browser 4.4)
+<li><a href="api-doc/interfaces/FeatureAll.md#CALL_ON_GLOBAL"><code>CALL_ON_GLOBAL</code></a> (not in Android Browser 4.1+)
 <li><a href="api-doc/interfaces/FeatureAll.md#CONSOLE"><code>CONSOLE</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#DOMWINDOW"><code>DOMWINDOW</code></a> (not in Android Browser 4.4)
 <li><a href="api-doc/interfaces/FeatureAll.md#ESC_HTML_ALL"><code>ESC_HTML_ALL</code></a>
