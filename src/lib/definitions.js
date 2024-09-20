@@ -1620,10 +1620,7 @@ function getFHPaddingEntries(index)
             ),
             define
             (
-                {
-                    expr:           'self.navigator.userAgent',
-                    solutionType:   SolutionType.STRING,
-                },
+                { expr: 'self.navigator.userAgent', solutionType: SolutionType.STRING },
                 MOZILLA,
                 SELF_OBJ
             ),
