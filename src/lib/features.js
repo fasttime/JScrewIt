@@ -200,8 +200,8 @@ var featureInfos =
         {
             try
             {
-                [].concat.call();
-                return true;
+                if ([].concat.call()[0])
+                    return true;
             }
             catch (error)
             { }
