@@ -910,8 +910,7 @@ function getFHPaddingEntries(index)
             ({ expr: '(RP_3_WA + Function("return history")())[11]', optimize: true }, HISTORY),
             define('(RP_1_WA + Audio)[10]', HTMLAUDIOELEMENT),
             define('(RP_4_A + [].entries().filter(ANY_FUNCTION))[21]', ITERATOR_HELPER),
-            define
-            ({ expr: '(RP_3_WA + self.history)[11]', optimize: true }, HISTORY, SELF_OBJ),
+            define({ expr: '(RP_3_WA + self.history)[11]', optimize: true }, HISTORY, SELF_OBJ),
         ],
         'I': '"Infinity"[0]',
         'J':
