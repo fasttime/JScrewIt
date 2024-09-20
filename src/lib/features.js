@@ -190,6 +190,23 @@ var featureInfos =
         },
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
+    CALL_ON_GLOBAL:
+    {
+        description:
+        'The ability to call a function on the global object when invoking ' +
+        'Function.prototype.call without binding.',
+        check:
+        function ()
+        {
+            try
+            {
+                if ([].concat.call()[0])
+                    return true;
+            }
+            catch (error)
+            { }
+        },
+    },
     CAPITAL_HTML:
     {
         description:
@@ -890,6 +907,7 @@ var featureInfos =
         [
             'ANY_DOCUMENT',
             'ATOB',
+            'CALL_ON_GLOBAL',
             'CONSOLE',
             'DOMWINDOW',
             'ESC_HTML_ALL',
@@ -908,7 +926,7 @@ var featureInfos =
     {
         inherits: 'ANDRO_4_0',
         versions: [['4.1',, '4.3']],
-        includes: { GENERIC_ARRAY_TO_STRING: true, OBJECT_UNDEFINED: true },
+        includes: { CALL_ON_GLOBAL: false, GENERIC_ARRAY_TO_STRING: true, OBJECT_UNDEFINED: true },
     },
     ANDRO_4_4:
     {
