@@ -1015,7 +1015,7 @@
                     case 'ar':
                         number = Number(this);
                         if (isNaN(number))
-                            returnValue = 'ليس\xa0رقم';
+                            returnValue = context.arabicNaNString || 'ليس';
                         else if (context.shortLocales)
                         {
                             returnValue =
@@ -1025,7 +1025,7 @@
                     case 'ar-td':
                         number = Number(this);
                         if (isNaN(number))
-                            returnValue = 'ليس\xa0رقم';
+                            returnValue = context.arabicNaNString || 'ليس';
                         else
                         {
                             returnValue =
@@ -1045,6 +1045,7 @@
         LOCALE_NUMERALS_EXT:
         function ()
         {
+            this.arabicNaNString = 'ليس\xa0رقم';
             registerNumberToLocaleStringAdapter
             (
                 this,
@@ -1054,12 +1055,6 @@
                     var number;
                     switch (locale)
                     {
-                    case 'ar':
-                    case 'ar-td':
-                        number = Number(this);
-                        if (isNaN(number))
-                            returnValue = 'ليس\xa0رقم';
-                        break;
                     case 'bn':
                         number = Number(this);
                         if (!isNaN(number))
@@ -1117,6 +1112,7 @@
         LOCALE_NUMERALS_IE11_WIN7_8:
         function ()
         {
+            this.arabicNaNString = 'ليس\xa0برقم';
             registerNumberToLocaleStringAdapter
             (
                 this,
@@ -1128,18 +1124,12 @@
                     {
                     case 'ar':
                     case 'ar-td':
-                        number = Number(this);
-                        if (isNaN(number))
-                            returnValue = 'ليس\xa0برقم';
-                        else
+                        switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
-                            switch (+this) // In Internet Explorer 9, +this is different from this.
-                            {
-                            case Infinity:
-                                return '+لا\xa0نهاية';
-                            case -Infinity:
-                                return '-لا\xa0نهاية';
-                            }
+                        case Infinity:
+                            return '+لا\xa0نهاية';
+                        case -Infinity:
+                            return '-لا\xa0نهاية';
                         }
                         break;
                     case 'cz':
