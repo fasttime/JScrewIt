@@ -568,6 +568,7 @@ var featureInfos =
             return available;
         },
         includes: ['LOCALE_NUMERALS'],
+        excludes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
     },
     LOCALE_NUMERALS_IE11_WIN7:
     {
@@ -585,6 +586,7 @@ var featureInfos =
             return available;
         },
         includes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
+        excludes: ['LOCALE_NUMERALS_IE11_WIN8'],
     },
     LOCALE_NUMERALS_IE11_WIN7_8:
     {
@@ -622,6 +624,7 @@ var featureInfos =
             return available;
         },
         includes: ['LOCALE_NUMERALS'],
+        excludes: ['LOCALE_NUMERALS_EXT'],
     },
     LOCALE_NUMERALS_IE11_WIN8:
     {
@@ -636,6 +639,7 @@ var featureInfos =
             return available;
         },
         includes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
+        excludes: ['LOCALE_NUMERALS_IE11_WIN7'],
     },
     LOCATION:
     {
@@ -1201,7 +1205,6 @@ var featureInfos =
         includes:
         {
             LOCALE_INFINITY:             true,
-            LOCALE_NUMERALS:             false,
             LOCALE_NUMERALS_EXT:         true,
             LOCALE_NUMERALS_IE11_WIN7_8: false,
             LOCALE_NUMERALS_IE11_WIN8:   false,
