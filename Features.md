@@ -80,6 +80,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#HISTORY"><code>HISTORY</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INTL"><code>INTL</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#ITERATOR_HELPER"><code>ITERATOR_HELPER</code></a> (Firefox 131+)
 <li><a href="api-doc/interfaces/FeatureAll.md#JAPANESE_INFINITY"><code>JAPANESE_INFINITY</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS"><code>LOCALE_NUMERALS</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a> and <a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a>)
@@ -90,7 +91,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#FF_SRC"><code>FF_SRC</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_V8_SRC"><code>NO_V8_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#FF_SRC"><code>FF_SRC</code></a>)
-<li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_ARRAY_ENTRIES_CTOR"><code>OBJECT_ARRAY_ENTRIES_CTOR</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_ARRAY_ENTRIES_CTOR"><code>OBJECT_ARRAY_ENTRIES_CTOR</code></a> (not in Firefox 131+)
 <li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED"><code>OBJECT_UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_W_SELF"><code>OBJECT_W_SELF</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a>
@@ -188,7 +189,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#PLAIN_INTL"><code>PLAIN_INTL</code></a> (Safari 10.0+, not in Safari 14.0.1+)
 <li><a href="api-doc/interfaces/FeatureAll.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a> (Safari 13+)
 <li><a href="api-doc/interfaces/FeatureAll.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#ANY_WINDOW"><code>ANY_WINDOW</code></a>, <a href="api-doc/interfaces/FeatureAll.md#OBJECT_W_SELF"><code>OBJECT_W_SELF</code></a>, and <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
-<li><a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a> (Safari 10.0+)
+<li><a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a> (Safari 10.0+, not in Safari 18+)
 <li><a href="api-doc/interfaces/FeatureAll.md#STATUS"><code>STATUS</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#UNDEFINED"><code>UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a> and <a href="api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED"><code>OBJECT_UNDEFINED</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>

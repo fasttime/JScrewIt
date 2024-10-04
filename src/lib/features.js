@@ -1020,12 +1020,12 @@ var featureInfos =
     FF:
     {
         description:    describeEngine('the current stable version of Firefox'),
-        aliasFor:       'FF_90',
+        aliasFor:       'FF_131',
     },
     FF_90:
     {
         families: ['Firefox'],
-        versions: [['90']],
+        versions: [['90',, '130']],
         includes:
         [
             'ANY_DOCUMENT',
@@ -1068,6 +1068,12 @@ var featureInfos =
             'unstable':                     null,
             'web-worker-restriction':       null,
         },
+    },
+    FF_131:
+    {
+        inherits:   'FF_90',
+        versions:   [['131']],
+        includes:   { ITERATOR_HELPER: true, OBJECT_ARRAY_ENTRIES_CTOR: false },
     },
     IE_9:
     {
@@ -1330,16 +1336,22 @@ var featureInfos =
         versions: [['15.4',, '17.3']],
         includes: { AT: true },
     },
-    SAFARI:
-    {
-        description:    describeEngine('the current stable version of Safari'),
-        aliasFor:       'SAFARI_17_4',
-    },
     SAFARI_17_4:
     {
         inherits: 'SAFARI_15_4',
-        versions: [['17.4']],
+        versions: [['17.4',, '17.6']],
         includes: { FUNCTION_19_LF: true, FUNCTION_22_LF: false },
+    },
+    SAFARI:
+    {
+        description:    describeEngine('the current stable version of Safari'),
+        aliasFor:       'SAFARI_18',
+    },
+    SAFARI_18:
+    {
+        inherits: 'SAFARI_17_4',
+        versions: [['18']],
+        includes: { SHORT_LOCALES: false },
     },
 };
 (function ()

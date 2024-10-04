@@ -556,7 +556,7 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.j
 
 Features available in the current stable version of Firefox.
 
-An alias for `FF_90`.
+An alias for `FF_131`.
 
 #### Inherited from
 
@@ -564,15 +564,35 @@ An alias for `FF_90`.
 
 ***
 
+### FF\_131
+
+> **FF\_131**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Firefox 131 or later.
+
+#### Remarks
+
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF` instead of `FF_131` for long term support.
+
+#### See
+
+[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
+
+#### Inherited from
+
+[`FeatureAll`](FeatureAll.md).[`FF_131`](FeatureAll.md#ff_131)
+
+***
+
 ### FF\_90
 
 > **FF\_90**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Firefox 90 or later.
+Features available in Firefox 90 to 130.
 
 #### Remarks
 
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF`, `FF_ESR`, or `FF_PREV` instead of `FF_90` for long term support.
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF_ESR` or `FF_PREV` instead of `FF_90` for long term support.
 
 #### See
 
@@ -898,7 +918,7 @@ Availability of iterator helpers.
 
 #### Remarks
 
-Available in Chrome, Edge, Opera, and Node.js 22+.
+Available in Chrome, Edge, Firefox 131+, Opera, and Node.js 22+.
 
 #### Inherited from
 
@@ -1268,7 +1288,7 @@ The property that the Array.prototype.entries\(\).constructor is the Object cons
 
 #### Remarks
 
-Available in Firefox, Safari 9+, and Node.js 0.12+ before 22.
+Available in Firefox before 131, Safari 9+, and Node.js 0.12+ before 22.
 
 #### Inherited from
 
@@ -1378,7 +1398,7 @@ Available in Chrome, Edge, Firefox, Safari 13+, Opera, and Node.js 12+.
 
 Features available in the current stable version of Safari.
 
-An alias for `SAFARI_17_4`.
+An alias for `SAFARI_18`.
 
 #### Inherited from
 
@@ -1474,11 +1494,23 @@ Features available in Safari 15.4 to 17.3.
 
 > **SAFARI\_17\_4**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Safari 17.4 or later.
+Features available in Safari 17.4 to 17.6.
 
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`SAFARI_17_4`](FeatureAll.md#safari_17_4)
+
+***
+
+### SAFARI\_18
+
+> **SAFARI\_18**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Safari 18 or later.
+
+#### Inherited from
+
+[`FeatureAll`](FeatureAll.md).[`SAFARI_18`](FeatureAll.md#safari_18)
 
 ***
 
@@ -1554,7 +1586,7 @@ Support for the two-letter locale name "ar" to format decimal numbers as Arabic 
 
 #### Remarks
 
-Available in Firefox, Internet Explorer 11, Safari 10.0+, Android Browser 4.4, and Node.js 13+.
+Available in Firefox, Internet Explorer 11, Safari 10.0+ before 18, Android Browser 4.4, and Node.js 13+.
 
 #### Inherited from
 
