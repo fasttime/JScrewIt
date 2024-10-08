@@ -361,6 +361,20 @@ var featureInfos =
             return available;
         },
     },
+    FORMS:
+    {
+        description:
+        'Existence of the global object document having the property forms, which have string ' +
+        'representation [object HTMLCollection]".',
+        check:
+        function ()
+        {
+            var available = typeof document.forms === 'object' && document + '' === '[object HTMLCollection]';
+            return available;
+        },
+        includes:   ['ANY_DOCUMENT'],
+        attributes: { 'web-worker': 'web-worker-restriction' },
+    },
     FROM_CODE_POINT:
     {
         description: 'Existence of the function String.fromCodePoint.',
@@ -936,6 +950,7 @@ var featureInfos =
         {
             BARPROP:                true,
             DOMWINDOW:              false,
+            FORMS:                  true,
             HTMLAUDIOELEMENT:       true,
             JAPANESE_INFINITY:      true,
             LOCALE_INFINITY:        true,
@@ -978,6 +993,7 @@ var featureInfos =
             'ESC_REGEXP_SLASH',
             'FILL',
             'FLAT',
+            'FORMS',
             'FROM_CODE_POINT',
             'FUNCTION_19_LF',
             'GENERIC_ARRAY_TO_STRING',
@@ -1040,6 +1056,7 @@ var featureInfos =
             'FF_SRC',
             'FILL',
             'FLAT',
+            'FORMS',
             'FROM_CODE_POINT',
             'FUNCTION_19_LF',
             'GENERIC_ARRAY_TO_STRING',
@@ -1085,6 +1102,7 @@ var featureInfos =
             'DOCUMENT',
             'ESC_REGEXP_LF',
             'ESC_REGEXP_SLASH',
+            'FORMS',
             'FUNCTION_22_LF',
             'GENERIC_ARRAY_TO_STRING',
             'HISTORY',
@@ -1239,6 +1257,7 @@ var featureInfos =
             'ESC_REGEXP_LF',
             'ESC_REGEXP_SLASH',
             'FF_SRC',
+            'FORMS',
             'GENERIC_ARRAY_TO_STRING',
             'GLOBAL_UNDEFINED',
             'GMT',
