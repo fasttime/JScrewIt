@@ -860,7 +860,7 @@ var featureInfos =
         description:
         'Features available in all browsers.\n' +
         'No support for Node.js.',
-        includes: ['ANY_DOCUMENT', 'ANY_WINDOW', 'HISTORY', 'INCR_CHAR', 'MOZILLA', 'STATUS'],
+        includes: ['ANY_DOCUMENT', 'ANY_WINDOW', 'FORMS', 'HISTORY', 'INCR_CHAR', 'MOZILLA', 'STATUS'],
         attributes:
         {
             'char-increment-restriction':   null,
@@ -887,6 +887,7 @@ var featureInfos =
             'ESC_REGEXP_SLASH',
             'FILL',
             'FLAT',
+            'FORMS',
             'FROM_CODE_POINT',
             'FUNCTION_19_LF',
             'GENERIC_ARRAY_TO_STRING',
@@ -927,6 +928,7 @@ var featureInfos =
             'DOMWINDOW',
             'ESC_HTML_ALL',
             'FUNCTION_22_LF',
+            'FORMS',
             'GMT',
             'HISTORY',
             'INCR_CHAR',
@@ -951,7 +953,6 @@ var featureInfos =
         {
             BARPROP:                true,
             DOMWINDOW:              false,
-            FORMS:                  true,
             HTMLAUDIOELEMENT:       true,
             JAPANESE_INFINITY:      true,
             LOCALE_INFINITY:        true,
