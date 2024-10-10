@@ -369,7 +369,8 @@ var featureInfos =
         check:
         function ()
         {
-            var available = typeof document.forms === 'object' && document.forms + '' === '[object HTMLCollection]';
+            var available = typeof document.forms === 'object' &&
+            document.forms + '' === '[object HTMLCollection]';
             return available;
         },
         includes:   ['ANY_DOCUMENT'],

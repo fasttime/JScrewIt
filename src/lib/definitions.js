@@ -368,6 +368,7 @@ function getFHPaddingEntries(index)
     var FF_SRC                          = Feature.FF_SRC;
     var FILL                            = Feature.FILL;
     var FLAT                            = Feature.FLAT;
+    var FORMS                           = Feature.FORMS;
     var FROM_CODE_POINT                 = Feature.FROM_CODE_POINT;
     var FUNCTION_19_LF                  = Feature.FUNCTION_19_LF;
     var FUNCTION_22_LF                  = Feature.FUNCTION_22_LF;
