@@ -860,7 +860,16 @@ var featureInfos =
         description:
         'Features available in all browsers.\n' +
         'No support for Node.js.',
-        includes: ['ANY_DOCUMENT', 'ANY_WINDOW', 'FORMS', 'HISTORY', 'INCR_CHAR', 'MOZILLA', 'STATUS'],
+        includes:
+        [
+            'ANY_DOCUMENT',
+            'ANY_WINDOW',
+            'FORMS',
+            'HISTORY',
+            'INCR_CHAR',
+            'MOZILLA',
+            'STATUS',
+        ],
         attributes:
         {
             'char-increment-restriction':   null,
