@@ -361,6 +361,21 @@ var featureInfos =
             return available;
         },
     },
+    FORMS:
+    {
+        description:
+        'Existence of the global object document having the property forms, which have string ' +
+        'representation [object HTMLCollection]".',
+        check:
+        function ()
+        {
+            var available = typeof document.forms === 'object' &&
+            document.forms + '' === '[object HTMLCollection]';
+            return available;
+        },
+        includes:   ['ANY_DOCUMENT'],
+        attributes: { 'web-worker': 'web-worker-restriction' },
+    },
     FROM_CODE_POINT:
     {
         description: 'Existence of the function String.fromCodePoint.',
@@ -845,7 +860,16 @@ var featureInfos =
         description:
         'Features available in all browsers.\n' +
         'No support for Node.js.',
-        includes: ['ANY_DOCUMENT', 'ANY_WINDOW', 'HISTORY', 'INCR_CHAR', 'MOZILLA', 'STATUS'],
+        includes:
+        [
+            'ANY_DOCUMENT',
+            'ANY_WINDOW',
+            'FORMS',
+            'HISTORY',
+            'INCR_CHAR',
+            'MOZILLA',
+            'STATUS',
+        ],
         attributes:
         {
             'char-increment-restriction':   null,
@@ -872,6 +896,7 @@ var featureInfos =
             'ESC_REGEXP_SLASH',
             'FILL',
             'FLAT',
+            'FORMS',
             'FROM_CODE_POINT',
             'FUNCTION_19_LF',
             'GENERIC_ARRAY_TO_STRING',
@@ -912,6 +937,7 @@ var featureInfos =
             'DOMWINDOW',
             'ESC_HTML_ALL',
             'FUNCTION_22_LF',
+            'FORMS',
             'GMT',
             'HISTORY',
             'INCR_CHAR',
@@ -978,6 +1004,7 @@ var featureInfos =
             'ESC_REGEXP_SLASH',
             'FILL',
             'FLAT',
+            'FORMS',
             'FROM_CODE_POINT',
             'FUNCTION_19_LF',
             'GENERIC_ARRAY_TO_STRING',
@@ -1040,6 +1067,7 @@ var featureInfos =
             'FF_SRC',
             'FILL',
             'FLAT',
+            'FORMS',
             'FROM_CODE_POINT',
             'FUNCTION_19_LF',
             'GENERIC_ARRAY_TO_STRING',
@@ -1085,6 +1113,7 @@ var featureInfos =
             'DOCUMENT',
             'ESC_REGEXP_LF',
             'ESC_REGEXP_SLASH',
+            'FORMS',
             'FUNCTION_22_LF',
             'GENERIC_ARRAY_TO_STRING',
             'HISTORY',
@@ -1239,6 +1268,7 @@ var featureInfos =
             'ESC_REGEXP_LF',
             'ESC_REGEXP_SLASH',
             'FF_SRC',
+            'FORMS',
             'GENERIC_ARRAY_TO_STRING',
             'GLOBAL_UNDEFINED',
             'GMT',
