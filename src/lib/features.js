@@ -364,8 +364,8 @@ var featureInfos =
     FORMS:
     {
         description:
-        'Existence of the global object document having the property forms, which have string ' +
-        'representation [object HTMLCollection]".',
+        'Existence of the object document.forms with string representation "[object ' +
+        'HTMLCollection]".',
         check:
         function ()
         {
