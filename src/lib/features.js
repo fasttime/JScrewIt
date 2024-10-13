@@ -366,15 +366,7 @@ var featureInfos =
         description:
         'Existence of the object document.forms with string representation "[object ' +
         'HTMLCollection]".',
-        check:
-        function ()
-        {
-            var available =
-            typeof document === 'object' && document.forms + '' === '[object HTMLCollection]';
-            return available;
-        },
-        includes:   ['ANY_DOCUMENT'],
-        attributes: { 'web-worker': 'web-worker-restriction' },
+        aliasFor: 'ANY_DOCUMENT',
     },
     FROM_CODE_POINT:
     {
