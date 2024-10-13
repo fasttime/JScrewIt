@@ -221,7 +221,12 @@
                     '[object HTMLVideoElement]' : '[object HTMLUnknownElement]';
                     return elementStr;
                 };
-                document = { createElement: createElement, nodeName: '#document' };
+                document =
+                {
+                    createElement:  createElement,
+                    forms:          '[object HTMLCollection]',
+                    nodeName:       '#document',
+                };
                 override(this, 'document', { value: document });
             }
             var valueOf = createStaticSupplier(str);
