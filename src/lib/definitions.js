@@ -368,6 +368,7 @@ function getFHPaddingEntries(index)
     var FF_SRC                          = Feature.FF_SRC;
     var FILL                            = Feature.FILL;
     var FLAT                            = Feature.FLAT;
+    var FORMS                           = Feature.FORMS;
     var FROM_CODE_POINT                 = Feature.FROM_CODE_POINT;
     var FUNCTION_19_LF                  = Feature.FUNCTION_19_LF;
     var FUNCTION_22_LF                  = Feature.FUNCTION_22_LF;
@@ -915,9 +916,9 @@ function getFHPaddingEntries(index)
         ],
         'H':
         [
-            define('(RP_3_WA + document.createElement(false))[11]', ANY_DOCUMENT),
             define('btoa(true)[1]', ATOB),
             define('"".link()[3]', CAPITAL_HTML),
+            define('(RP_3_WA + document.forms)[11]', FORMS),
             define
             ({ expr: '(RP_3_WA + Function("return history")())[11]', optimize: true }, HISTORY),
             define('(RP_1_WA + Audio)[10]', HTMLAUDIOELEMENT),
@@ -938,9 +939,9 @@ function getFHPaddingEntries(index)
         ],
         'L':
         [
-            define('(RP_0_S + document.createElement(false))[11]', ANY_DOCUMENT),
             define('btoa(".")[0]', ATOB),
             define('(RP_3_WA + "".fontcolor())[11]', CAPITAL_HTML),
+            define('(RP_0_S + document.forms)[11]', FORMS),
             define('(RP_0_S + Audio)[12]', HTMLAUDIOELEMENT),
             define
             (
@@ -987,10 +988,10 @@ function getFHPaddingEntries(index)
         ],
         'M':
         [
-            define('(RP_0_S + document.createElement(false))[10]', ANY_DOCUMENT),
             define('btoa(0)[0]', ATOB),
             define('"".small()[2]', CAPITAL_HTML),
             define('(RP_0_S + self)[10]', DOMWINDOW),
+            define('(RP_0_S + document.forms)[10]', FORMS),
             define('(RP_4_A + Date())[30]', GMT),
             define('(RP_0_S + Audio)[11]', HTMLAUDIOELEMENT),
             define('USER_AGENT[0]', MOZILLA),
@@ -1047,6 +1048,7 @@ function getFHPaddingEntries(index)
             ),
             define('btoa(NaN)[0]', ATOB),
             define('"".fontcolor([])[20]', CAPITAL_HTML),
+            define('(RP_1_WA + document.forms)[10]', FORMS),
             define('(RP_3_WA + Date())[30]', GMT),
             define('(RP_0_S + Audio)[10]', HTMLAUDIOELEMENT),
             defineCharDefault({ atob: false }),

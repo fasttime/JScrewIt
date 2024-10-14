@@ -361,6 +361,13 @@ var featureInfos =
             return available;
         },
     },
+    FORMS:
+    {
+        description:
+        'Existence of the object document.forms with string representation "[object ' +
+        'HTMLCollection]".',
+        aliasFor: 'ANY_DOCUMENT',
+    },
     FROM_CODE_POINT:
     {
         description: 'Existence of the function String.fromCodePoint.',
