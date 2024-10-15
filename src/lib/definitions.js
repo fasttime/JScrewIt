@@ -358,6 +358,7 @@ function getFHPaddingEntries(index)
     var CALL_ON_GLOBAL                  = Feature.CALL_ON_GLOBAL;
     var CAPITAL_HTML                    = Feature.CAPITAL_HTML;
     var CONSOLE                         = Feature.CONSOLE;
+    var CREATE_ELEMENT                  = Feature.CREATE_ELEMENT;
     var DOCUMENT                        = Feature.DOCUMENT;
     var DOMWINDOW                       = Feature.DOMWINDOW;
     var ESC_HTML_ALL                    = Feature.ESC_HTML_ALL;
@@ -389,6 +390,7 @@ function getFHPaddingEntries(index)
     var MOZILLA                         = Feature.MOZILLA;
     var NAME                            = Feature.NAME;
     var NODECONSTRUCTOR                 = Feature.NODECONSTRUCTOR;
+    var NODE_NAME                       = Feature.NODE_NAME;
     var NO_FF_SRC                       = Feature.NO_FF_SRC;
     var NO_IE_SRC                       = Feature.NO_IE_SRC;
     var NO_OLD_SAFARI_ARRAY_ITERATOR    = Feature.NO_OLD_SAFARI_ARRAY_ITERATOR;
@@ -772,7 +774,7 @@ function getFHPaddingEntries(index)
         ],
         '#':
         [
-            define('document.nodeName[0]', ANY_DOCUMENT),
+            define('document.nodeName[0]', NODE_NAME),
             defineCharDefault(),
         ],
         // '$'
@@ -1080,8 +1082,8 @@ function getFHPaddingEntries(index)
         'V':
         [
             define('"v"[TO_UPPER_CASE]()'),
-            define('(RP_0_S + document.createElement("video"))[12]', ANY_DOCUMENT),
             define('btoa(undefined)[10]', ATOB),
+            define('(RP_0_S + document.createElement("video"))[12]', CREATE_ELEMENT),
             defineCharDefault({ atob: false }),
         ],
         'W':

@@ -242,6 +242,11 @@ var featureInfos =
         },
         attributes: { 'web-worker': 'no-console-in-web-worker' },
     },
+    CREATE_ELEMENT:
+    {
+        description:    'Existence of the function document.createElement.',
+        aliasFor:       'ANY_DOCUMENT',
+    },
     DOCUMENT:
     {
         description:
@@ -625,6 +630,12 @@ var featureInfos =
             return available;
         },
         attributes: { 'web-worker': 'web-worker-restriction' },
+    },
+    NODE_NAME:
+    {
+        description:
+        'Existence of the string document.nodeName that starts with a number sign ("#").',
+        aliasFor: 'ANY_DOCUMENT',
     },
     NO_FF_SRC:
     {

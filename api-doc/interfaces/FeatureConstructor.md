@@ -418,6 +418,20 @@ Available in Internet Explorer 10+, Safari before 14.1, and Android Browser. Thi
 
 ***
 
+### CREATE\_ELEMENT
+
+> **CREATE\_ELEMENT**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Existence of the function document.createElement.
+
+An alias for `ANY_DOCUMENT`.
+
+#### Inherited from
+
+[`FeatureAll`](FeatureAll.md).[`CREATE_ELEMENT`](FeatureAll.md#create_element)
+
+***
+
 ### DEFAULT
 
 > **DEFAULT**: [`PredefinedFeature`](PredefinedFeature.md)
@@ -679,6 +693,20 @@ Available in Chrome, Edge, Firefox, Safari 12+, Opera, and Node.js 11+.
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`FLAT`](FeatureAll.md#flat)
+
+***
+
+### FORMS
+
+> **FORMS**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Existence of the object document.forms with string representation "\[object HTMLCollection\]".
+
+An alias for `ANY_DOCUMENT`.
+
+#### Inherited from
+
+[`FeatureAll`](FeatureAll.md).[`FORMS`](FeatureAll.md#forms)
 
 ***
 
@@ -1261,6 +1289,20 @@ Features available in Node.js 7.6 to 9.
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`NODE_7_6`](FeatureAll.md#node_7_6)
+
+***
+
+### NODE\_NAME
+
+> **NODE\_NAME**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Existence of the string document.nodeName that starts with a number sign \("#"\).
+
+An alias for `ANY_DOCUMENT`.
+
+#### Inherited from
+
+[`FeatureAll`](FeatureAll.md).[`NODE_NAME`](FeatureAll.md#node_name)
 
 ***
 
