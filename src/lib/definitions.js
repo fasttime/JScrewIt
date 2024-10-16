@@ -2701,5 +2701,4 @@ function getFHPaddingEntries(index)
     useLocaleNumeralDefinition('正', '"zh"', Infinity, 0, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('字', '"zh-cn"', NaN, 2, LOCALE_NUMERALS_IE11_WIN7_8);
 }
-}
 )();
