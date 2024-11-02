@@ -77,7 +77,8 @@
     "tslib": "latest",
     "typedoc": "latest",
     "typedoc-plugin-markdown": "latest",
-    "typescript": "latest"
+    "typescript": "latest",
+    "uglify-js": "3.19.1"
   },
   "workspaces": [
     "./packages/*"
