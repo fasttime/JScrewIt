@@ -62,6 +62,7 @@ function assertMaskNotEmpty(actual: Mask): void
 
 function formatMask(mask: Mask): string
 {
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
     const str = `mask ${String(mask)}`;
     return str;
 }

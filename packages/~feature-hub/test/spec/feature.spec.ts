@@ -89,13 +89,13 @@ it
         assert.deepStrictEqual(RED2.attributes, Object.create(null));
         assert.deepStrictEqual(GREEN.attributes, Object.create(null));
         {
-            const expected = Object.create(null) as { [AttributeName in string]: string | null; };
+            const expected = Object.create(null) as Record<string, string | null>;
             expected.id = 'foo';
             expected.foo = null;
             assert.deepStrictEqual(FOO.attributes, expected);
         }
         {
-            const expected = Object.create(null) as { [AttributeName in string]: string | null; };
+            const expected = Object.create(null) as Record<string, string | null>;
             expected.id = 'bar';
             expected.bar = null;
             assert.deepStrictEqual(BAR.attributes, expected);

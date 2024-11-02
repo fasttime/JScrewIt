@@ -4,7 +4,7 @@ const keyFor = (mask: Mask): string => `_${mask as never as number}`;
 
 class MaskIndex<ValueType>
 {
-    protected readonly _index = Object.create(null) as { [KeyType in string]?: ValueType; };
+    protected readonly _index = Object.create(null) as Record<string, ValueType>;
     private _size = 0;
 
     /* The number of entries in the current collection. */

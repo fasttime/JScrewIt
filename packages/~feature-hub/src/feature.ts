@@ -5,7 +5,7 @@ from './mask-impl';
 
 import { MaskSet }  from './mask-index';
 
-export type AttributeMap = { readonly [AttributeName in string]: string | null; };
+export type AttributeMap = Readonly<Record<string, string | null>>;
 
 export interface CompatibilityInfo
 {
@@ -40,14 +40,14 @@ export interface FeatureConstructor
     (...features: FeatureElementOrCompatibleArray[]):           Feature;
 
     readonly ALL:
-    { readonly [FeatureName in string]: PredefinedFeature; };
+    Readonly<Record<string, PredefinedFeature>>;
 
     readonly ELEMENTARY:                                        readonly PredefinedFeature[];
 
     readonly ENGINE:                                            readonly PredefinedFeature[];
 
     readonly FAMILIES:
-    { readonly [Family in string]: readonly CompatibilityInfo[]; };
+    Readonly<Record<string, CompatibilityInfo[]>>;
 
     new (...features: FeatureElementOrCompatibleArray[]):       Feature;
     _fromMask(mask: Mask):                                      Feature | null;
@@ -71,7 +71,7 @@ export type FeatureInfo =
         readonly aliasFor:      string;
     } |
     {
-        readonly attributes?:   { readonly [AttributeName in string]: string | null | undefined; };
+        readonly attributes?:   Readonly<Record<string, string | null | undefined>>;
         readonly check?:        () => unknown;
         readonly excludes?:     readonly string[];
         readonly includes?:     readonly string[] | IncludeDifferenceMap;
@@ -82,7 +82,7 @@ export type FeatureInfo =
 ) &
 { readonly description?: string; };
 
-export type IncludeDifferenceMap = { readonly [FeatureName in string]: boolean; };
+export type IncludeDifferenceMap = Readonly<Record<string, boolean>>;
 
 export interface PredefinedFeature extends Feature
 {
@@ -122,7 +122,7 @@ function assignNoEnum(target: object, source: object): void
 
 export function createFeatureClass
 (
-    featureInfos: { readonly [FeatureName in string]: FeatureInfo; },
+    featureInfos: Readonly<Record<string, FeatureInfo>>,
     formatEngineDescription?: (compatibilities: CompatibilityInfo[]) => string,
 ):
 FeatureConstructor
@@ -436,7 +436,7 @@ FeatureConstructor
                 const str = `[Feature ${name}]`;
                 return str;
             },
-        } as { [PropName in string]: unknown; } & ThisType<Feature>;
+        } as Record<string, unknown> & ThisType<Feature>;
         if (utilInspect)
             protoSource.inspect = inspect;
         assignNoEnum(FEATURE_PROTOTYPE, protoSource);
@@ -483,7 +483,7 @@ FeatureConstructor
                 const getInfoStringField =
                 <FieldNameType extends string>(fieldName: FieldNameType): string | undefined =>
                 fieldName in info ?
-                esToString((info as { [Name in FieldNameType]: unknown; })[fieldName]) : undefined;
+                esToString((info as Record<FieldNameType, unknown>)[fieldName]) : undefined;
                 let description = getInfoStringField('description');
                 let featureObj: PredefinedFeature;
                 if ('aliasFor' in info)
@@ -655,7 +655,7 @@ FeatureConstructor
         }
 
         const featureNames = _Object_keys(featureInfos);
-        const includeSetMap = createMap<{ readonly [FeatureName in string]: null; }>();
+        const includeSetMap = createMap<Readonly<Record<string, null>>>();
         const familiesMap = createMap<readonly string[]>();
         let unionMask = MASK_EMPTY;
 
@@ -676,7 +676,7 @@ FeatureConstructor
     return Feature as FeatureConstructor;
 }
 
-const createMap = <T>(): { [Key in string]: T; } => _Object_create(null) as { };
+const createMap = <T>(): Record<string, T> => _Object_create(null) as { };
 
 function esToString(name: unknown): string
 {
