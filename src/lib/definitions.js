@@ -525,13 +525,23 @@ function getFHPaddingEntries(index)
         var expr = '(' + number + ')[TO_LOCALE_STRING](' + locale + ')';
         if (index != null)
         {
-            if (index > 4)
+            if (index > 4 && index < 10)
             {
-                var paddingBlock = R_PADDINGS[10 - index];
-                expr = '(' + paddingBlock + ' + ' + expr + ')[10]';
+                var padding;
+                var shiftedIndex;
+                if (index === 8)
+                {
+                    padding = 3;
+                    shiftedIndex = 11;
+                }
+                else
+                {
+                    padding = 10 - index;
+                    shiftedIndex = 10;
+                }
+                var paddingBlock = R_PADDINGS[padding];
+                expr = '(' + paddingBlock + ' + ' + expr + ')[' + shiftedIndex + ']';
             }
-            else
-                expr += '[' + index + ']';
         }
         var entry = define._callWithFeatures(expr, LOCALE_NUMERALS, arguments, 3);
         return entry;
@@ -2654,7 +2664,7 @@ function getFHPaddingEntries(index)
     useLocaleNumeralDefinition('ا', '"ar"', Infinity, 2, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('ن', '"ar"', Infinity, 4, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('ه', '"ar"', Infinity, 5, LOCALE_NUMERALS_IE11_WIN7_8);
-    useLocaleNumeralDefinition('ﺓ', '"ar"', Infinity, 8, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ة', '"ar"', Infinity, 8, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDigitDefinitions('"bn"', 0x09e6, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('č', '"cs"', NaN, 5, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('μ', '"el"', NaN, 0, LOCALE_NUMERALS_IE11_WIN7_8);
