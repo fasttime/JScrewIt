@@ -542,6 +542,8 @@ function getFHPaddingEntries(index)
                 var paddingBlock = R_PADDINGS[padding];
                 expr = '(' + paddingBlock + ' + ' + expr + ')[' + shiftedIndex + ']';
             }
+            else
+                expr += '[' + index + ']';
         }
         var entry = define._callWithFeatures(expr, LOCALE_NUMERALS, arguments, 3);
         return entry;
