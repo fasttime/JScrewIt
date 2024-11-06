@@ -1,6 +1,6 @@
 {
   "name": "jscrewit",
-  "version": "2.38.0",
+  "version": "2.39.0",
   "description": "Converts plain JavaScript into JSFuck code, which consists of only six different characters: ! ( ) + [ ]",
   "keywords": [
     "esoteric",
@@ -77,7 +77,8 @@
     "tslib": "latest",
     "typedoc": "latest",
     "typedoc-plugin-markdown": "latest",
-    "typescript": "latest"
+    "typescript": "latest",
+    "uglify-js": "3.19.1"
   },
   "workspaces": [
     "./packages/*"
