@@ -2691,8 +2691,8 @@ function getFHPaddingEntries(index)
     useLocaleNumeralDefinition('非', '"ja"', NaN, 5, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('数', '"ja"', NaN, 6, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('値', '"ja"', NaN, 7, LOCALE_NUMERALS_IE11_WIN7_8);
-    useLocaleNumeralDefinition('ė', '"lt"', Infinity, 7, LOCALE_NUMERALS_IE11_WIN7);
-    useLocaleNumeralDefinition('ī', '"lv"', Infinity, 6, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ė', '"lt"', Infinity, 7, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ī', '"lv"', Infinity, 6, LOCALE_NUMERALS_IE11_WIN7);
     useLocaleNumeralDefinition('ś', '"pl"', Infinity, 13, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('н', '"ru"', NaN, 0, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('е', '"ru"', NaN, 1, LOCALE_NUMERALS_EXT);
