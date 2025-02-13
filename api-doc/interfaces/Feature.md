@@ -1,4 +1,4 @@
-[**JScrewIt**](../README.md) • **Docs**
+[**JScrewIt**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@ Objects of this type indicate which of the capabilities that JScrewIt can use to
 length of its output are available in a particular JavaScript engine.
 
 JScrewIt comes with a set of predefined feature objects exposed as property values of
-`JScrewIt.Feature` or [`JScrewIt.Feature.ALL`](FeatureConstructor.md#all), where the property
+`JScrewIt.Feature` or [\`JScrewIt.Feature.ALL\`](FeatureConstructor.md#all), where the property
 name is the feature's name or alias.
 
 Besides these predefined features, it is possible to construct custom features from the union or
@@ -20,8 +20,8 @@ they are different from such a union in that they exclude some other feature not
 their elementary components.
 All other features, called *composite* features, can be constructed as a union of zero or more
 elementary features.
-Two of the predefined composite features are particularly important: [`DEFAULT`](FeatureConstructor.md#default) is the empty feature, indicating that no elementary
-feature is available at all; [`AUTO`](FeatureAll.md#auto) is the union of all
+Two of the predefined composite features are particularly important: [\`DEFAULT\`](FeatureConstructor.md#default) is the empty feature, indicating that no elementary
+feature is available at all; [\`AUTO\`](FeatureAll.md#auto) is the union of all
 elementary features available in the current environment.
 
 Not all features can be available at the same time: some features are necessarily incompatible,
@@ -78,7 +78,9 @@ Determines whether this feature object includes all of the specified features.
 
 #### Parameters
 
-• ...**features**: [`FeatureElementOrCompatibleArray`](../type-aliases/FeatureElementOrCompatibleArray.md)[]
+##### features
+
+...[`FeatureElementOrCompatibleArray`](../type-aliases/FeatureElementOrCompatibleArray.md)[]
 
 #### Returns
 
@@ -101,7 +103,7 @@ that require strict mode code, or inside web workers.
 
 #### Parameters
 
-• **environment**: `"forced-strict-mode"` \| `"web-worker"`
+##### environment
 
 The environment to which this feature should be restricted.
 Two environments are currently supported.
@@ -118,7 +120,11 @@ Removes features that are not available in environments that require strict mode
 
 </dl>
 
-• **engineFeatureObjs?**: readonly [`PredefinedFeature`](PredefinedFeature.md)[]
+`"forced-strict-mode"` | `"web-worker"`
+
+##### engineFeatureObjs?
+
+readonly [`PredefinedFeature`](PredefinedFeature.md)[]
 
 An array of predefined feature objects, each corresponding to a particular engine in which
 the restriction should be enacted.

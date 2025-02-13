@@ -1,4 +1,4 @@
-**JScrewIt** • **Docs**
+**JScrewIt**
 
 ***
 

@@ -1,4 +1,4 @@
-[**JScrewIt**](../README.md) • **Docs**
+[**JScrewIt**](../README.md)
 
 ***
 
@@ -15,11 +15,13 @@ Creates a new feature object from the union of the specified features.
 The constructor can be used with or without the `new` operator, e.g.
 `new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
 If no arguments are specified, the new feature object will be equivalent to
-[`DEFAULT`](FeatureAll.md#default).
+[\`DEFAULT\`](FeatureAll.md#default).
 
 ## Parameters
 
-• ...**features**: [`FeatureElementOrCompatibleArray`](../type-aliases/FeatureElementOrCompatibleArray.md)[]
+### features
+
+...[`FeatureElementOrCompatibleArray`](../type-aliases/FeatureElementOrCompatibleArray.md)[]
 
 ## Returns
 
@@ -28,7 +30,7 @@ If no arguments are specified, the new feature object will be equivalent to
 ## Example
 
 The following statements are equivalent, and will all construct a new feature object
-including both [`ANY_DOCUMENT`](FeatureAll.md#any_document) and [`ANY_WINDOW`](FeatureConstructor.md#any_window).
+including both [\`ANY\_DOCUMENT\`](FeatureAll.md#any_document) and [\`ANY\_WINDOW\`](FeatureConstructor.md#any_window).
 
 ```js
 new JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
@@ -57,11 +59,13 @@ Creates a new feature object from the union of the specified features.
 The constructor can be used with or without the `new` operator, e.g.
 `new JScrewIt.Feature(feature1, feature2)` or `JScrewIt.Feature(feature1, feature2)`.
 If no arguments are specified, the new feature object will be equivalent to
-[`DEFAULT`](FeatureAll.md#default).
+[\`DEFAULT\`](FeatureAll.md#default).
 
 #### Parameters
 
-• ...**features**: [`FeatureElementOrCompatibleArray`](../type-aliases/FeatureElementOrCompatibleArray.md)[]
+##### features
+
+...[`FeatureElementOrCompatibleArray`](../type-aliases/FeatureElementOrCompatibleArray.md)[]
 
 #### Returns
 
@@ -70,7 +74,7 @@ If no arguments are specified, the new feature object will be equivalent to
 #### Example
 
 The following statements are equivalent, and will all construct a new feature object
-including both [`ANY_DOCUMENT`](FeatureAll.md#any_document) and [`ANY_WINDOW`](FeatureConstructor.md#any_window).
+including both [\`ANY\_DOCUMENT\`](FeatureAll.md#any_document) and [\`ANY\_WINDOW\`](FeatureConstructor.md#any_window).
 
 ```js
 JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
@@ -1712,7 +1716,9 @@ Determines whether the specified features are mutually compatible.
 
 #### Parameters
 
-• ...**features**: [`FeatureElement`](../type-aliases/FeatureElement.md)[]
+##### features
+
+...[`FeatureElement`](../type-aliases/FeatureElement.md)[]
 
 #### Returns
 
@@ -1746,7 +1752,9 @@ features, regardless of any other difference.
 
 #### Parameters
 
-• ...**features**: [`FeatureElementOrCompatibleArray`](../type-aliases/FeatureElementOrCompatibleArray.md)[]
+##### features
+
+...[`FeatureElementOrCompatibleArray`](../type-aliases/FeatureElementOrCompatibleArray.md)[]
 
 #### Returns
 
@@ -1777,7 +1785,9 @@ Creates a new feature object equivalent to the intersection of the specified fea
 
 #### Parameters
 
-• ...**features**: [`FeatureElementOrCompatibleArray`](../type-aliases/FeatureElementOrCompatibleArray.md)[]
+##### features
+
+...[`FeatureElementOrCompatibleArray`](../type-aliases/FeatureElementOrCompatibleArray.md)[]
 
 #### Returns
 
@@ -1787,14 +1797,14 @@ A feature object, or `null` if no arguments are specified.
 
 #### Example
 
-This will create a new feature object equivalent to [`NAME`](FeatureAll.md#name).
+This will create a new feature object equivalent to [\`NAME\`](FeatureAll.md#name).
 
 ```js
 const newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
 ```
 
-This will create a new feature object equivalent to [FeatureConstructor.ANY_WINDOW | `ANY_WINDOW`](FeatureAll.md#any_window).
-This is because both [`DOMWINDOW`](FeatureAll.md#domwindow) and [`WINDOW`](FeatureConstructor.md#window) imply [FeatureConstructor.ANY_WINDOW | `ANY_WINDOW`](FeatureAll.md#any_window).
+This will create a new feature object equivalent to [FeatureConstructor.ANY\_WINDOW \| \`ANY\_WINDOW\`](FeatureAll.md#any_window).
+This is because both [\`DOMWINDOW\`](FeatureAll.md#domwindow) and [\`WINDOW\`](FeatureConstructor.md#window) imply [FeatureConstructor.ANY\_WINDOW \| \`ANY\_WINDOW\`](FeatureAll.md#any_window).
 
 ```js
 const newFeature = JScrewIt.Feature.commonOf("DOMWINDOW", "WINDOW");
@@ -1810,7 +1820,9 @@ Returns a short description of a predefined feature in plain English.
 
 #### Parameters
 
-• **name**: keyof [`FeatureAll`](FeatureAll.md)
+##### name
+
+keyof [`FeatureAll`](FeatureAll.md)
 
 A name or alias of a predefined feature.
 
