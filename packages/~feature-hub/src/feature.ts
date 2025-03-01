@@ -11,7 +11,7 @@ export interface CompatibilityInfo
 {
     readonly family:        string;
     readonly featureName:   string;
-    readonly version:       EngineVersion;
+    readonly versions:      readonly EngineVersion[];
     readonly tag?:          string;
     readonly shortTag?:     string;
 }
@@ -22,7 +22,7 @@ export interface EngineEntry
     readonly compatibilities:   readonly CompatibilityInfo[];
 }
 
-export type EngineVersion = string | Readonly<{ from: string; to?: string; dense: boolean; }>;
+export type EngineVersion = string | Readonly<{ from: string; to?: string; }>;
 
 export interface Feature
 {
@@ -91,8 +91,7 @@ export interface PredefinedFeature extends Feature
     readonly name:          string;
 }
 
-export type VersionInfo =
-string | readonly [from: string, to?: string] | readonly [from: string, _: never, to?: string];
+export type VersionInfo = string;
 
 const _Array_isArray            = Array.isArray as (value: unknown) => value is readonly unknown[];
 const _Error                    = Error;
@@ -549,7 +548,7 @@ FeatureConstructor
                     if ('versions' in info)
                     {
                         let { families } = info;
-                        const { versions } = info;
+                        const infoVersions = info.versions;
                         if (inherits != null)
                             families ??= familiesMap[inherits];
                         familiesMap[name] = families!;
@@ -561,22 +560,26 @@ FeatureConstructor
                             (family: string, index: number): CompatibilityInfo =>
                             {
                                 family = esToString(family);
-                                const versionInfo = versions[index];
-                                let version: EngineVersion;
-                                if (_Array_isArray(versionInfo))
-                                {
-                                    const { length } = versionInfo;
-                                    const from = esToString(versionInfo[0]);
-                                    const to =
-                                    length < 2 ? undefined : esToString(versionInfo[length - 1]);
-                                    const dense = versionInfo.length === 2;
-                                    version = _Object_freeze({ from, to, dense });
-                                }
-                                else
-                                    version = esToString(versionInfo);
+                                const versionInfo = esToString(infoVersions[index]);
+                                const parts = versionInfo.split('|');
+                                const versions =
+                                parts.map
+                                (
+                                    (part: string): EngineVersion =>
+                                    {
+                                        const match = /^([^-]+)-(?:([^-]+))?$/.exec(part);
+                                        if (match)
+                                        {
+                                            const [, from, to] = match;
+                                            const engineVersion = _Object_freeze({ from, to });
+                                            return engineVersion;
+                                        }
+                                        return part;
+                                    },
+                                );
                                 const compatibility =
                                 _Object_freeze
-                                ({ family, featureName: name, version, tag, shortTag });
+                                ({ family, featureName: name, versions, tag, shortTag });
                                 const familyCompatibilities =
                                 (FAMILIES[family] as CompatibilityInfo[] | undefined) ??
                                 (FAMILIES[family] = []);

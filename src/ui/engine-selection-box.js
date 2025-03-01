@@ -217,19 +217,25 @@ export default function createEngineSelectionBox()
                     var versionCheckBox = null;
                     if (compatibility)
                     {
-                        var version = compatibility.version;
-                        if (typeof version !== 'string')
-                        {
-                            var from = version.from;
-                            var to = version.to;
-                            version = to == null ? from + '+' : from + '–' + to;
-                        }
+                        var versionText =
+                        compatibility.versions.map
+                        (
+                            function (version)
+                            {
+                                if (typeof version === 'string') return version;
+                                var from = version.from;
+                                var to = version.to;
+                                var returnValue = to == null ? from + '+' : from + '–' + to;
+                                return returnValue;
+                            }
+                        )
+                        .join(', ');
                         var shortTag = compatibility.shortTag;
                         if (shortTag != null)
-                            version += ' (' + shortTag + ')';
+                            versionText += ' (' + shortTag + ')';
                         versionCheckBox =
                         createCheckBox
-                        (version, { checked: true, featureName: compatibility.featureName });
+                        (versionText, { checked: true, featureName: compatibility.featureName });
                     }
                     art
                     (

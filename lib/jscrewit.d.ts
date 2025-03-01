@@ -3,9 +3,9 @@
 import type { encode }  from './encode';
 import type { Feature } from './feature';
 
-export * from './encode';
-export * from './feature';
-export * from './feature-all';
+export *        from './encode';
+export *        from './feature';
+export type *   from './feature-all';
 
 interface JScrewIt
 {
