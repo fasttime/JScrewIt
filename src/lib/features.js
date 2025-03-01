@@ -1033,12 +1033,12 @@ var featureInfos =
     FF_PREV:
     {
         description:    describeEngine('the previous to current version of Firefox'),
-        aliasFor:       'FF_90',
+        aliasFor:       'FF_134',
     },
     FF:
     {
         description:    describeEngine('the current stable version of Firefox'),
-        aliasFor:       'FF_131',
+        aliasFor:       'FF_134',
     },
     FF_90:
     {
@@ -1090,8 +1090,14 @@ var featureInfos =
     FF_131:
     {
         inherits:   'FF_90',
-        versions:   ['131-'],
+        versions:   ['131-133'],
         includes:   { ITERATOR_HELPER: true, OBJECT_ARRAY_ENTRIES_CTOR: false },
+    },
+    FF_134:
+    {
+        inherits:   'FF_131',
+        versions:   ['134-'],
+        includes:   { SHORT_LOCALES: false },
     },
     IE_9:
     {
@@ -1240,8 +1246,14 @@ var featureInfos =
     NODE_22:
     {
         inherits: 'NODE_16_6',
-        versions: ['22-'],
+        versions: ['22.0-22.11|23.0-23.2'],
         includes: { ITERATOR_HELPER: true, OBJECT_ARRAY_ENTRIES_CTOR: false },
+    },
+    NODE_22_12:
+    {
+        inherits: 'NODE_22',
+        versions: ['22.12-22.14|23.3-'],
+        includes: { SHORT_LOCALES: false },
     },
     SAFARI_7_0:
     {

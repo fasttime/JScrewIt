@@ -96,7 +96,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_W_SELF"><code>OBJECT_W_SELF</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#SELF_OBJ"><code>SELF_OBJ</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#ANY_WINDOW"><code>ANY_WINDOW</code></a>, <a href="api-doc/interfaces/FeatureAll.md#OBJECT_W_SELF"><code>OBJECT_W_SELF</code></a>, and <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
-<li><a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a> (not in Firefox 134+)
 <li><a href="api-doc/interfaces/FeatureAll.md#STATUS"><code>STATUS</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#UNDEFINED"><code>UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a> and <a href="api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED"><code>OBJECT_UNDEFINED</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>
@@ -261,7 +261,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#GMT"><code>GMT</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INCR_CHAR"><code>INCR_CHAR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#INTL"><code>INTL</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#PLAIN_INTL"><code>PLAIN_INTL</code></a>; Node.js 0.12+)
-<li><a href="api-doc/interfaces/FeatureAll.md#ITERATOR_HELPER"><code>ITERATOR_HELPER</code></a> (Node.js 22+)
+<li><a href="api-doc/interfaces/FeatureAll.md#ITERATOR_HELPER"><code>ITERATOR_HELPER</code></a> (Node.js 22.0+)
 <li><a href="api-doc/interfaces/FeatureAll.md#JAPANESE_INFINITY"><code>JAPANESE_INFINITY</code></a> (Node.js 0.12+)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_INFINITY"><code>LOCALE_INFINITY</code></a> (Node.js 0.12+)
 <li><a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS"><code>LOCALE_NUMERALS</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#LOCALE_NUMERALS_EXT"><code>LOCALE_NUMERALS_EXT</code></a> and <a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a>; Node.js 13+)
@@ -270,11 +270,11 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_FF_SRC"><code>NO_FF_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#V8_SRC"><code>V8_SRC</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#V8_SRC"><code>V8_SRC</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_OLD_SAFARI_ARRAY_ITERATOR"><code>NO_OLD_SAFARI_ARRAY_ITERATOR</code></a> (Node.js 0.12+)
-<li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_ARRAY_ENTRIES_CTOR"><code>OBJECT_ARRAY_ENTRIES_CTOR</code></a> (Node.js 0.12+, not in Node.js 22+)
+<li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_ARRAY_ENTRIES_CTOR"><code>OBJECT_ARRAY_ENTRIES_CTOR</code></a> (Node.js 0.12+, not in Node.js 22.0+)
 <li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED"><code>OBJECT_UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#PLAIN_INTL"><code>PLAIN_INTL</code></a> (Node.js 0.12+, not in Node.js 15+)
 <li><a href="api-doc/interfaces/FeatureAll.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a> (Node.js 12+)
-<li><a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a> (Node.js 13+)
+<li><a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a> (Node.js 13+, not in Node.js 22.12–22.14 and 23.3+)
 <li><a href="api-doc/interfaces/FeatureAll.md#UNDEFINED"><code>UNDEFINED</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#GLOBAL_UNDEFINED"><code>GLOBAL_UNDEFINED</code></a> and <a href="api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED"><code>OBJECT_UNDEFINED</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#V8_SRC"><code>V8_SRC</code></a>
 </ul>

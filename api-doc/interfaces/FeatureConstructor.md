@@ -574,7 +574,7 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.j
 
 Features available in the current stable version of Firefox.
 
-An alias for `FF_131`.
+An alias for `FF_134`.
 
 #### Inherited from
 
@@ -586,11 +586,11 @@ An alias for `FF_131`.
 
 > **FF\_131**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Firefox 131 or later.
+Features available in Firefox 131 to 133.
 
 #### Remarks
 
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF` instead of `FF_131` for long term support.
+This feature may be replaced or removed in the near future when current browser versions become obsolete.
 
 #### See
 
@@ -602,6 +602,26 @@ This feature may be replaced or removed in the near future when current browser 
 
 ***
 
+### FF\_134
+
+> **FF\_134**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Firefox 134 or later.
+
+#### Remarks
+
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF` or `FF_PREV` instead of `FF_134` for long term support.
+
+#### See
+
+[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
+
+#### Inherited from
+
+[`FeatureAll`](FeatureAll.md).[`FF_134`](FeatureAll.md#ff_134)
+
+***
+
 ### FF\_90
 
 > **FF\_90**: [`PredefinedFeature`](PredefinedFeature.md)
@@ -610,7 +630,7 @@ Features available in Firefox 90 to 130.
 
 #### Remarks
 
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF_ESR` or `FF_PREV` instead of `FF_90` for long term support.
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `FF_ESR` instead of `FF_90` for long term support.
 
 #### See
 
@@ -642,7 +662,7 @@ An alias for `FF_90`.
 
 Features available in the previous to current version of Firefox.
 
-An alias for `FF_90`.
+An alias for `FF_134`.
 
 #### Inherited from
 
@@ -950,7 +970,7 @@ Availability of iterator helpers.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox 131+, Opera, and Node.js 22+.
+Available in Chrome, Edge, Firefox 131+, Opera, and Node.js 22.0+.
 
 #### Inherited from
 
@@ -1252,11 +1272,23 @@ Features available in Node.js 16.6 to 21.
 
 > **NODE\_22**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Node.js 22 or later.
+Features available in Node.js 22.0 to 22.11 and Node.js 23.0 to 23.2.
 
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`NODE_22`](FeatureAll.md#node_22)
+
+***
+
+### NODE\_22\_12
+
+> **NODE\_22\_12**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Node.js 22.12 to 22.14 and Node.js 23.3 or later.
+
+#### Inherited from
+
+[`FeatureAll`](FeatureAll.md).[`NODE_22_12`](FeatureAll.md#node_22_12)
 
 ***
 
@@ -1334,7 +1366,7 @@ The property that the Array.prototype.entries\(\).constructor is the Object cons
 
 #### Remarks
 
-Available in Firefox before 131, Safari 9+, and Node.js 0.12+ before 22.
+Available in Firefox before 131, Safari 9+, and Node.js 0.12+ before 22.0.
 
 #### Inherited from
 
@@ -1632,7 +1664,7 @@ Support for the two-letter locale name "ar" to format decimal numbers as Arabic 
 
 #### Remarks
 
-Available in Firefox, Internet Explorer 11, Safari 10.0+ before 18, Android Browser 4.4, and Node.js 13+.
+Available in Firefox before 134, Internet Explorer 11, Safari 10.0+ before 18, Android Browser 4.4, and Node.js 13+ before 22.12–22.14 and 23.3.
 
 #### Inherited from
 
