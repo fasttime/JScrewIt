@@ -1135,12 +1135,18 @@
                     {
                     case 'ar':
                     case 'ar-td':
-                        switch (+this) // In Internet Explorer 9, +this is different from this.
+                        number = Number(this);
+                        if (isNaN(number))
+                            returnValue = 'ليس\xa0برقم';
+                        else
                         {
-                        case Infinity:
-                            return '+لا\xa0نهاية';
-                        case -Infinity:
-                            return '-لا\xa0نهاية';
+                            switch (+this) // In Internet Explorer 9, +this is different from this.
+                            {
+                            case Infinity:
+                                return '+لا\xa0نهاية';
+                            case -Infinity:
+                                return '-لا\xa0نهاية';
+                            }
                         }
                         break;
                     case 'cz':
