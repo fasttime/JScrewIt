@@ -1,4 +1,4 @@
-[**JScrewIt**](../README.md) • **Docs**
+[**JScrewIt**](../README.md)
 
 ***
 

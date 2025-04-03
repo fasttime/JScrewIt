@@ -313,11 +313,12 @@ task
         const options =
         {
             disableSources:     true,
-            entryPoints:        'lib/jscrewit.d.ts',
+            entryPoints:        ['lib/jscrewit.d.ts'],
             githubPages:        false,
             hideBreadcrumbs:    true,
             name:               'JScrewIt',
-            plugin:             'typedoc-plugin-markdown',
+            out:                'api-doc',
+            plugin:             ['typedoc-plugin-markdown'],
             readme:             'none',
             tsconfig:           'tsconfig.json',
         };
@@ -325,10 +326,10 @@ task
         const app = await Application.bootstrapWithPlugins(options, [tsConfigReader]);
         const project = await app.convert();
         app.validate(project);
+        await app.generateOutputs(project);
         const { logger } = app;
         if (logger.hasErrors() || logger.hasWarnings())
             throw Error('Problems occurred while generating the documentation');
-        await app.renderer.render(project, 'api-doc');
     },
 );
 

@@ -1,4 +1,4 @@
-[**JScrewIt**](../README.md) • **Docs**
+[**JScrewIt**](../README.md)
 
 ***
 
@@ -10,11 +10,15 @@ Encodes a given string into JSFuck.
 
 ## Parameters
 
-• **input**: `string`
+### input
+
+`string`
 
 The string to encode.
 
-• **options?**: [`EncodeOptions`](EncodeOptions.md)
+### options?
+
+[`EncodeOptions`](EncodeOptions.md)
 
 An optional object specifying encoding options.
 
