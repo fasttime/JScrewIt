@@ -1143,9 +1143,11 @@
                             switch (+this) // In Internet Explorer 9, +this is different from this.
                             {
                             case Infinity:
-                                return '+لا\xa0نهاية';
+                                returnValue = '+لا\xa0نهاية';
+                                break;
                             case -Infinity:
-                                return '-لا\xa0نهاية';
+                                returnValue = '-لا\xa0نهاية';
+                                break;
                             }
                         }
                         break;
@@ -1163,9 +1165,11 @@
                             switch (+this) // In Internet Explorer 9, +this is different from this.
                             {
                             case Infinity:
-                                return 'Άπειρο';
+                                returnValue = 'Άπειρο';
+                                break;
                             case -Infinity:
-                                return '-Άπειρο';
+                                returnValue = '-Άπειρο';
+                                break;
                             }
                         }
                         break;
@@ -1183,9 +1187,11 @@
                             switch (+this) // In Internet Explorer 9, +this is different from this.
                             {
                             case Infinity:
-                                return '+∞';
+                                returnValue = '+∞';
+                                break;
                             case -Infinity:
-                                return '-∞';
+                                returnValue = '-∞';
+                                break;
                             }
                         }
                         break;
@@ -1193,27 +1199,33 @@
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
                         case Infinity:
-                            return 'begalybė';
+                            returnValue = 'begalybė';
+                            break;
                         case -Infinity:
-                            return '-begalybė';
+                            returnValue = '-begalybė';
+                            break;
                         }
                         break;
                     case 'pl':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
                         case Infinity:
-                            return '+nieskończoność';
+                            returnValue = '+nieskończoność';
+                            break;
                         case -Infinity:
-                            return '-nieskończoność';
+                            returnValue = '-nieskończoność';
+                            break;
                         }
                         break;
                     case 'ru':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
                         case Infinity:
-                            return 'бесконечность';
+                            returnValue = 'бесконечность';
+                            break;
                         case -Infinity:
-                            return '-бесконечность';
+                            returnValue = '-бесконечность';
+                            break;
                         }
                         break;
                     case 'zh':
