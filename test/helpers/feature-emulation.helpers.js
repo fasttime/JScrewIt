@@ -1086,6 +1086,186 @@
                 }
             );
         },
+        LOCALE_NUMERALS_IE11_WIN7:
+        function ()
+        {
+            registerNumberToLocaleStringAdapter
+            (
+                this,
+                function (locale)
+                {
+                    var returnValue;
+                    switch (locale)
+                    {
+                    case 'lv':
+                        switch (+this) // In Internet Explorer 9, +this is different from this.
+                        {
+                        case Infinity:
+                            return 'bezgalība';
+                        case -Infinity:
+                            return '-bezgalība';
+                        }
+                        break;
+                    case 'ru':
+                        switch (+this) // In Internet Explorer 9, +this is different from this.
+                        {
+                        case Infinity:
+                            return 'бесконечность';
+                        case -Infinity:
+                            return '-бесконечность';
+                        }
+                        break;
+                    }
+                    return returnValue;
+                }
+            );
+        },
+        LOCALE_NUMERALS_IE11_WIN7_8:
+        function ()
+        {
+            this.arabicNaNString = 'ليس\xa0برقم';
+            registerNumberToLocaleStringAdapter
+            (
+                this,
+                function (locale)
+                {
+                    var returnValue;
+                    var number;
+                    number = Number(this);
+                    switch (locale)
+                    {
+                    case 'ar':
+                        if (isNaN(number))
+                            returnValue = 'ليس\xa0برقم';
+                        else
+                        {
+                            switch (+this) // In Internet Explorer 9, +this is different from this.
+                            {
+                            case Infinity:
+                                returnValue = '+لا\xa0نهاية';
+                                break;
+                            case -Infinity:
+                                returnValue = '-لا\xa0نهاية';
+                                break;
+                            }
+                        }
+                        break;
+                    case 'cz':
+                        if (isNaN(number))
+                            returnValue = 'Není\xa0číslo';
+                        break;
+                    case 'el':
+                        if (isNaN(number))
+                            returnValue = 'μη\xa0αριθμός';
+                        else
+                        {
+                            switch (+this) // In Internet Explorer 9, +this is different from this.
+                            {
+                            case Infinity:
+                                returnValue = 'Άπειρο';
+                                break;
+                            case -Infinity:
+                                returnValue = '-Άπειρο';
+                                break;
+                            }
+                        }
+                        break;
+                    case 'he':
+                        if (isNaN(number))
+                            returnValue = 'לא\xa0מספר';
+                        break;
+                    case 'ja':
+                        if (isNaN(number))
+                            returnValue = 'NaN\xa0(非数値)';
+                        else
+                        {
+                            switch (+this) // In Internet Explorer 9, +this is different from this.
+                            {
+                            case Infinity:
+                                returnValue = '+∞';
+                                break;
+                            case -Infinity:
+                                returnValue = '-∞';
+                                break;
+                            }
+                        }
+                        break;
+                    case 'lt':
+                        switch (+this) // In Internet Explorer 9, +this is different from this.
+                        {
+                        case Infinity:
+                            returnValue = 'begalybė';
+                            break;
+                        case -Infinity:
+                            returnValue = '-begalybė';
+                            break;
+                        }
+                        break;
+                    case 'pl':
+                        switch (+this) // In Internet Explorer 9, +this is different from this.
+                        {
+                        case Infinity:
+                            returnValue = '+nieskończoność';
+                            break;
+                        case -Infinity:
+                            returnValue = '-nieskończoność';
+                            break;
+                        }
+                        break;
+                    case 'zh':
+                        switch (+this) // In Internet Explorer 9, +this is different from this.
+                        {
+                        case Infinity:
+                            returnValue = '正无穷大';
+                            break;
+                        case -Infinity:
+                            returnValue = '负无穷大';
+                            break;
+                        }
+                        break;
+                    case 'zh-cn':
+                        if (isNaN(number))
+                            returnValue = '非数字';
+                        break;
+                    }
+                    return returnValue;
+                }
+            );
+        },
+        LOCALE_NUMERALS_IE11_WIN8:
+        function ()
+        {
+            registerNumberToLocaleStringAdapter
+            (
+                this,
+                function (locale)
+                {
+                    var returnValue;
+                    switch (locale)
+                    {
+                    case 'lv':
+                        switch (+this) // In Internet Explorer 9, +this is different from this.
+                        {
+                        case Infinity:
+                            return '∞';
+                        case -Infinity:
+                            return '-∞';
+                        }
+                        break;
+                    case 'ru':
+                        switch (+this) // In Internet Explorer 9, +this is different from this.
+                        {
+                        case Infinity:
+                            return '∞';
+                        case -Infinity:
+                            return '-∞';
+                        }
+                        break;
+                    }
+                    return returnValue;
+                }
+            );
+        },
         LOCATION:
         function ()
         {
