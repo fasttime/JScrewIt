@@ -1135,7 +1135,6 @@
                     switch (locale)
                     {
                     case 'ar':
-                    case 'ar-td':
                         if (isNaN(number))
                             returnValue = 'ليس\xa0برقم';
                         else
