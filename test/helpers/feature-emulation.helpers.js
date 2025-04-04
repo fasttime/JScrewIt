@@ -1213,17 +1213,6 @@
                             break;
                         }
                         break;
-                    case 'ru':
-                        switch (+this) // In Internet Explorer 9, +this is different from this.
-                        {
-                        case Infinity:
-                            return 'бесконечность';
-                            break;
-                        case -Infinity:
-                            return '-бесконечность';
-                            break;
-                        }
-                        break;
                     case 'zh':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
