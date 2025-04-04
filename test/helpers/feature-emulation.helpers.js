@@ -1232,9 +1232,11 @@
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
                         case Infinity:
-                            return '正无穷大';
+                            returnValue = '正无穷大';
+                            break;
                         case -Infinity:
-                            return '负无穷大';
+                            returnValue = '负无穷大';
+                            break;
                         }
                         break;
                     case 'zh-cn':
