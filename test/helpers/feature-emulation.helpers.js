@@ -1144,8 +1144,10 @@
                             {
                             case Infinity:
                                 returnValue = '+لا\xa0نهاية';
+                                break;
                             case -Infinity:
                                 returnValue = '-لا\xa0نهاية';
+                                break;
                             }
                         }
                         break;
@@ -1162,8 +1164,10 @@
                             {
                             case Infinity:
                                 returnValue = 'Άπειρο';
+                                break;
                             case -Infinity:
                                 returnValue = '-Άπειρο';
+                                break;
                             }
                         }
                         break;
@@ -1180,8 +1184,10 @@
                             {
                             case Infinity:
                                 returnValue = '+∞';
+                                break;
                             case -Infinity:
                                 returnValue = '-∞';
+                                break;
                             }
                         }
                         break;
@@ -1190,8 +1196,10 @@
                         {
                         case Infinity:
                             returnValue = 'begalybė';
+                            break;
                         case -Infinity:
                             returnValue = '-begalybė';
+                            break;
                         }
                         break;
                     case 'pl':
@@ -1199,8 +1207,10 @@
                         {
                         case Infinity:
                             returnValue = '+nieskończoność';
+                            break;
                         case -Infinity:
                             returnValue = '-nieskończoność';
+                            break;
                         }
                         break;
                     case 'zh':
@@ -1208,8 +1218,10 @@
                         {
                         case Infinity:
                             returnValue = '正无穷大';
+                            break;
                         case -Infinity:
                             returnValue = '负无穷大';
+                            break;
                         }
                         break;
                     case 'zh-cn':
