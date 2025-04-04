@@ -1131,14 +1131,13 @@
                 {
                     var returnValue;
                     var number;
+                    number = Number(this);
                     switch (locale)
                     {
                     case 'ar':
                     case 'ar-td':
-                        number = Number(this);
                         if (isNaN(number))
                             returnValue = 'ليس\xa0برقم';
-                        break;
                         else
                         {
                             switch (+this) // In Internet Explorer 9, +this is different from this.
@@ -1153,12 +1152,10 @@
                         }
                         break;
                     case 'cz':
-                        number = Number(this);
                         if (isNaN(number))
                             returnValue = 'Není\xa0číslo';
                         break;
                     case 'el':
-                        number = Number(this);
                         if (isNaN(number))
                             returnValue = 'μη\xa0αριθμός';
                         else
@@ -1175,12 +1172,10 @@
                         }
                         break;
                     case 'he':
-                        number = Number(this);
                         if (isNaN(number))
                             returnValue = 'לא\xa0מספר';
                         break;
                     case 'ja':
-                        number = Number(this);
                         if (isNaN(number))
                             returnValue = 'NaN\xa0(非数値)';
                         else
@@ -1241,7 +1236,6 @@
                         }
                         break;
                     case 'zh-cn':
-                        number = Number(this);
                         if (isNaN(number))
                             returnValue = '非数字';
                         break;
