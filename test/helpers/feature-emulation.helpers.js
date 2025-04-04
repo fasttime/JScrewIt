@@ -1138,6 +1138,7 @@
                         number = Number(this);
                         if (isNaN(number))
                             returnValue = 'ليس\xa0برقم';
+                        break;
                         else
                         {
                             switch (+this) // In Internet Explorer 9, +this is different from this.
