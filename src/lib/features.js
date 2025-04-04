@@ -580,6 +580,7 @@ var featureInfos =
             return available;
         },
         includes: ['LOCALE_NUMERALS'],
+        excludes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
     },
     LOCALE_NUMERALS_IE11_WIN7:
     {
@@ -620,6 +621,7 @@ var featureInfos =
             var available =
             checkLocaleNumeral('ar', NaN, /^ليس.برقم/) &&
             checkLocaleNumeral('ar', Infinity, /^\+لا.نهاية/) &&
+            checkLocaleNumeral('ar-td', 234567890.1, /^٢٣٤٬?٥٦٧٬?٨٩٠٫١/) &&
             checkLocaleNumeral('cs', NaN, /^Není.číslo/) &&
             checkLocaleNumeral('el', Infinity, /^Άπειρο/) &&
             checkLocaleNumeral('el', NaN, /^μη.αριθμός/) &&
