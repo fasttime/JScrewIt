@@ -2702,4 +2702,3 @@ function getFHPaddingEntries(index)
     useLocaleNumeralDefinition('字', '"zh-cn"', NaN, 2, LOCALE_NUMERALS_IE11_WIN7_8);
 }
 )();
-
