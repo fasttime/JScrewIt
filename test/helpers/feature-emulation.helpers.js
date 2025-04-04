@@ -1137,57 +1137,51 @@
                     case 'ar':
                     case 'ar-td':
                         if (isNaN(number))
-                            return 'ليس\xa0برقم';
+                            returnValue = 'ليس\xa0برقم';
                         else
                         {
                             switch (+this) // In Internet Explorer 9, +this is different from this.
                             {
                             case Infinity:
-                                return '+لا\xa0نهاية';
-                                break;
+                                returnValue = '+لا\xa0نهاية';
                             case -Infinity:
-                                return '-لا\xa0نهاية';
-                                break;
+                                returnValue = '-لا\xa0نهاية';
                             }
                         }
                         break;
                     case 'cz':
                         if (isNaN(number))
-                            return 'Není\xa0číslo';
+                            returnValue = 'Není\xa0číslo';
                         break;
                     case 'el':
                         if (isNaN(number))
-                            return 'μη\xa0αριθμός';
+                            returnValue = 'μη\xa0αριθμός';
                         else
                         {
                             switch (+this) // In Internet Explorer 9, +this is different from this.
                             {
                             case Infinity:
-                                return 'Άπειρο';
-                                break;
+                                returnValue = 'Άπειρο';
                             case -Infinity:
-                                return '-Άπειρο';
-                                break;
+                                returnValue = '-Άπειρο';
                             }
                         }
                         break;
                     case 'he':
                         if (isNaN(number))
-                            return 'לא\xa0מספר';
+                            returnValue = 'לא\xa0מספר';
                         break;
                     case 'ja':
                         if (isNaN(number))
-                            return 'NaN\xa0(非数値)';
+                            returnValue = 'NaN\xa0(非数値)';
                         else
                         {
                             switch (+this) // In Internet Explorer 9, +this is different from this.
                             {
                             case Infinity:
-                                return '+∞';
-                                break;
+                                returnValue = '+∞';
                             case -Infinity:
-                                return '-∞';
-                                break;
+                                returnValue = '-∞';
                             }
                         }
                         break;
@@ -1195,38 +1189,32 @@
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
                         case Infinity:
-                            return 'begalybė';
-                            break;
+                            returnValue = 'begalybė';
                         case -Infinity:
-                            return '-begalybė';
-                            break;
+                            returnValue = '-begalybė';
                         }
                         break;
                     case 'pl':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
                         case Infinity:
-                            return '+nieskończoność';
-                            break;
+                            returnValue = '+nieskończoność';
                         case -Infinity:
-                            return '-nieskończoność';
-                            break;
+                            returnValue = '-nieskończoność';
                         }
                         break;
                     case 'zh':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
                         {
                         case Infinity:
-                            return '正无穷大';
-                            break;
+                            returnValue = '正无穷大';
                         case -Infinity:
-                            return '负无穷大';
-                            break;
+                            returnValue = '负无穷大';
                         }
                         break;
                     case 'zh-cn':
                         if (isNaN(number))
-                            return '非数字';
+                            returnValue = '非数字';
                         break;
                     }
                     return returnValue;
