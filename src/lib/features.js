@@ -542,6 +542,23 @@ var featureInfos =
             return available;
         },
     },
+        LOCALE_INFINITY_IE11_WIN7:
+    {
+        description:
+        'Localized string representation of Infinity exclusive to Interner Explorer 11 in' +
+        ' Windows 7.\n' +
+        'This includes Latvian ("bezgalība") and Russian ("бесконечность").',
+        check:
+        function ()
+        {
+            var available =
+            checkLocaleNumeral('lv', Infinity, /^bezgalība/) &&
+            checkLocaleNumeral('ru', Infinity, /^бесконечность/);
+            return available;
+        },
+        includes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
+        excludes: ['LOCALE_INFINITY_IE11_WIN7'],
+    },
     LOCALE_NUMERALS:
     {
         description:
@@ -581,24 +598,6 @@ var featureInfos =
         },
         includes: ['LOCALE_NUMERALS'],
     },
-    LOCALE_NUMERALS_IE11_WIN7:
-    {
-        description:
-        'Localized number formatting exclusive to Interner Explorer 11 in Windows 7.\n' +
-        'This includes the letters in the Latvian string representation of Infinity ' +
-        '("bezgalība") and the letters in the Russian string representation of Infinity ' +
-        '("бесконечность").',
-        check:
-        function ()
-        {
-            var available =
-            checkLocaleNumeral('lv', Infinity, /^bezgalība/) &&
-            checkLocaleNumeral('ru', Infinity, /^бесконечность/);
-            return available;
-        },
-        includes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
-        excludes: ['LOCALE_NUMERALS_IE11_WIN8'],
-    },
     LOCALE_NUMERALS_IE11_WIN7_8:
     {
         description:
@@ -621,7 +620,6 @@ var featureInfos =
             var available =
             checkLocaleNumeral('ar', NaN, /^ليس.برقم/) &&
             checkLocaleNumeral('ar', Infinity, /^\+لا.نهاية/) &&
-            checkLocaleNumeral('ar-td', 234567890.1, /^٢٣٤٬?٥٦٧٬?٨٩٠٫١/) &&
             checkLocaleNumeral('cs', NaN, /^Není.číslo/) &&
             checkLocaleNumeral('el', Infinity, /^Άπειρο/) &&
             checkLocaleNumeral('el', NaN, /^μη.αριθμός/) &&
