@@ -634,7 +634,6 @@ var featureInfos =
             return available;
         },
         includes: ['LOCALE_NUMERALS'],
-        excludes: ['LOCALE_NUMERALS_EXT'],
     },
     LOCALE_NUMERALS_IE11_WIN8:
     {
