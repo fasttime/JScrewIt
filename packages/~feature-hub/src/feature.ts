@@ -298,9 +298,9 @@ FeatureConstructor
     {
         const breakLength = opts?.breakLength ?? 80;
         const compact = opts?.compact ?? true;
-        let { name } = this;
-        if (name === undefined)
-            name = joinParts(compact, '<', '', this.canonicalNames, ',', '>', breakLength - 3);
+        const name =
+        this.name ??
+        joinParts(compact, '<', '', this.canonicalNames, ',', '>', breakLength - 3);
         const parts = [name];
         if (this.elementary)
             parts.push('(elementary)');
@@ -365,11 +365,11 @@ FeatureConstructor
     let utilInspect: typeof util.inspect | undefined;
     try
     {
-        /* eslint-disable @typescript-eslint/no-require-imports */
+        /* eslint-disable @typescript-eslint/no-require-imports, n/prefer-node-protocol */
 
         utilInspect = (require('util') as typeof util).inspect;
 
-        /* eslint-enable @typescript-eslint/no-require-imports */
+        /* eslint-enable @typescript-eslint/no-require-imports, n/prefer-node-protocol */
     }
     catch
     { }

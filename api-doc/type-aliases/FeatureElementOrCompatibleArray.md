@@ -4,7 +4,7 @@
 
 # Type Alias: FeatureElementOrCompatibleArray
 
-> **FeatureElementOrCompatibleArray**: [`FeatureElement`](FeatureElement.md) \| readonly [`FeatureElement`](FeatureElement.md)[]
+> **FeatureElementOrCompatibleArray** = [`FeatureElement`](FeatureElement.md) \| readonly [`FeatureElement`](FeatureElement.md)[]
 
 A feature object, a name or alias of a predefined feature, or an array of such values that
 defines a union of mutually compatible features.

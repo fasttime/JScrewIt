@@ -308,7 +308,7 @@ task
     'make-api-doc',
     async () =>
     {
-        const { Application, TSConfigReader } = require('typedoc');
+        const { Application, TSConfigReader } = await import('typedoc');
 
         const options =
         {

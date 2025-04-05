@@ -21,7 +21,7 @@ their elementary components.
 All other features, called *composite* features, can be constructed as a union of zero or more
 elementary features.
 Two of the predefined composite features are particularly important: [\`DEFAULT\`](FeatureConstructor.md#default) is the empty feature, indicating that no elementary
-feature is available at all; [\`AUTO\`](FeatureAll.md#auto) is the union of all
+feature is available at all; [\`AUTO\`](FeatureConstructor.md#auto) is the union of all
 elementary features available in the current environment.
 
 Not all features can be available at the same time: some features are necessarily incompatible,
@@ -112,7 +112,7 @@ If no arguments are specified, the return value is `true`.
 
 ### restrict()
 
-> **restrict**(`environment`, `engineFeatureObjs`?): [`CustomFeature`](CustomFeature.md)
+> **restrict**(`environment`, `engineFeatureObjs`?): `CustomFeature`
 
 Creates a new feature object from this feature by removing elementary features that are not
 available inside a particular environment.
@@ -151,7 +151,7 @@ If this parameter is omitted, the restriction is enacted in all engines.
 
 #### Returns
 
-[`CustomFeature`](CustomFeature.md)
+`CustomFeature`
 
 #### Inherited from
 
