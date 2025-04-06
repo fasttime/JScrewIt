@@ -29,15 +29,23 @@ export const getAvailabilityByFeature =
 {
     const availabilityInfoCache = availabilityInfoMap[family] ??= { __proto__: null };
     const availabilityInfo =
-    availabilityInfoCache[featureName] ||=
+    availabilityInfoCache[featureName] ??=
     calculateAvailabilityInfo(family, engineFeatureObj => engineFeatureObj.includes(featureName));
     return availabilityInfo;
 };
 
 export function getDescription(compatibilities, compatibilityIndex, appendPlus)
 {
-    const { tag, version } = compatibilities[compatibilityIndex];
-    let description = typeof version === 'string' ? version : version.from;
+    const { tag, versions } = compatibilities[compatibilityIndex];
+    const [firstVersion] = versions;
+    let description = typeof firstVersion === 'string' ? firstVersion : firstVersion.from;
+    if (isOldAndLatestVersion(versions))
+    {
+        if (typeof firstVersion !== 'string')
+            description += `–${firstVersion.to}`;
+        const lastVersion = versions.at(-1);
+        description += ` and ${typeof lastVersion === 'string' ? lastVersion : lastVersion.from}`;
+    }
     if (tag != null)
         description += ` ${tag}`;
     if (appendPlus && !isLastVersion(compatibilities, compatibilityIndex))
@@ -45,12 +53,29 @@ export function getDescription(compatibilities, compatibilityIndex, appendPlus)
     return description;
 }
 
-function isLastVersion(compatibilities, index)
+function getLastVersionNumber(compatibilities, index)
 {
-    const { version } = compatibilities[index];
+    const { versions } = compatibilities.at(index);
+    let version = versions.at(-1);
     if (typeof version !== 'string')
-        return false;
-    const lastVersion = compatibilities.at(-1).version;
-    const returnValue = version === lastVersion;
+    {
+        version = version.to;
+        if (version !== null) return NaN;
+    }
+    return version;
+}
+
+function isLastVersion(compatibilities, compatibilityIndex)
+{
+    const versionNumber = getLastVersionNumber(compatibilities, compatibilityIndex);
+    const lastVersionNumber = getLastVersionNumber(compatibilities, -1);
+    const returnValue = versionNumber === lastVersionNumber;
     return returnValue;
+}
+
+function isOldAndLatestVersion(versions)
+{
+    if (versions.length === 1) return false;
+    const lastVersion = versions.at(-1);
+    return typeof lastVersion !== 'string' && lastVersion.to == null;
 }

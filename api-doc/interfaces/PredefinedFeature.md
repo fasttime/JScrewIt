@@ -21,7 +21,7 @@ their elementary components.
 All other features, called *composite* features, can be constructed as a union of zero or more
 elementary features.
 Two of the predefined composite features are particularly important: [\`DEFAULT\`](FeatureConstructor.md#default) is the empty feature, indicating that no elementary
-feature is available at all; [\`AUTO\`](FeatureAll.md#auto) is the union of all
+feature is available at all; [\`AUTO\`](FeatureConstructor.md#auto) is the union of all
 elementary features available in the current environment.
 
 Not all features can be available at the same time: some features are necessarily incompatible,
@@ -147,7 +147,7 @@ Removes features that are not available in environments that require strict mode
 
 ##### engineFeatureObjs?
 
-readonly [`PredefinedFeature`](PredefinedFeature.md)[]
+readonly `PredefinedFeature`[]
 
 An array of predefined feature objects, each corresponding to a particular engine in which
 the restriction should be enacted.

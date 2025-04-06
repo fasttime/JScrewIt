@@ -1015,7 +1015,7 @@ var featureInfos =
     ANDRO_4_1:
     {
         inherits: 'ANDRO_4_0',
-        versions: [['4.1',, '4.3']],
+        versions: ['4.1-4.3'],
         includes: { CALL_ON_GLOBAL: false, GENERIC_ARRAY_TO_STRING: true, OBJECT_UNDEFINED: true },
     },
     ANDRO_4_4:
@@ -1054,7 +1054,7 @@ var featureInfos =
     CHROME_122:
     {
         families: ['Chrome', 'Edge', 'Opera'],
-        versions: [['122'], ['122'], ['108']],
+        versions: ['122-', '122-', '108-'],
         includes:
         [
             'ANY_DOCUMENT',
@@ -1105,17 +1105,17 @@ var featureInfos =
     FF_PREV:
     {
         description:    describeEngine('the previous to current version of Firefox'),
-        aliasFor:       'FF_90',
+        aliasFor:       'FF_134',
     },
     FF:
     {
         description:    describeEngine('the current stable version of Firefox'),
-        aliasFor:       'FF_131',
+        aliasFor:       'FF_134',
     },
     FF_90:
     {
         families: ['Firefox'],
-        versions: [['90',, '130']],
+        versions: ['90-130'],
         includes:
         [
             'ANY_DOCUMENT',
@@ -1162,8 +1162,14 @@ var featureInfos =
     FF_131:
     {
         inherits:   'FF_90',
-        versions:   [['131']],
+        versions:   ['131-133'],
         includes:   { ITERATOR_HELPER: true, OBJECT_ARRAY_ENTRIES_CTOR: false },
+    },
+    FF_134:
+    {
+        inherits:   'FF_131',
+        versions:   ['134-'],
+        includes:   { SHORT_LOCALES: false },
     },
     IE_9:
     {
@@ -1272,13 +1278,13 @@ var featureInfos =
     NODE_5:
     {
         inherits:   'NODE_4',
-        versions:   [['5',, '7.5']],
+        versions:   ['5-7.5'],
         attributes: { 'char-increment-restriction': null },
     },
     NODE_7_6:
     {
         inherits: 'NODE_5',
-        versions: [['7.6',, '9']],
+        versions: ['7.6-9'],
         includes: { ASYNC_FUNCTION: true },
     },
     NODE_10:
@@ -1302,7 +1308,7 @@ var featureInfos =
     NODE_13:
     {
         inherits: 'NODE_12',
-        versions: [['13', '14']],
+        versions: ['13|14'],
         includes: { LOCALE_NUMERALS_EXT: true, SHORT_LOCALES: true },
     },
     NODE_15:
@@ -1314,20 +1320,26 @@ var featureInfos =
     NODE_16_0:
     {
         inherits: 'NODE_15',
-        versions: [['16.0',, '16.5']],
+        versions: ['16.0-16.5'],
         includes: { ATOB: true },
     },
     NODE_16_6:
     {
         inherits: 'NODE_16_0',
-        versions: [['16.6',, '21']],
+        versions: ['16.6-21'],
         includes: { AT: true },
     },
     NODE_22:
     {
         inherits: 'NODE_16_6',
-        versions: [['22']],
+        versions: ['22.0-22.11|23.0-23.2'],
         includes: { ITERATOR_HELPER: true, OBJECT_ARRAY_ENTRIES_CTOR: false },
+    },
+    NODE_22_12:
+    {
+        inherits: 'NODE_22',
+        versions: ['22.12-22.14|23.3-'],
+        includes: { SHORT_LOCALES: false },
     },
     SAFARI_7_0:
     {
@@ -1369,7 +1381,7 @@ var featureInfos =
     SAFARI_7_1:
     {
         inherits:   'SAFARI_7_0',
-        versions:   [['7.1', '8']],
+        versions:   ['7.1|8'],
         includes:   { ARRAY_ITERATOR: true, FILL: true },
         attributes: { 'no-console-in-web-worker': undefined, 'safari-bug-21820506': null },
     },
@@ -1407,7 +1419,7 @@ var featureInfos =
     SAFARI_10_1:
     {
         inherits: 'SAFARI_10_0',
-        versions: [['10.1', '11']],
+        versions: ['10.1|11'],
         includes: { ASYNC_FUNCTION: true },
     },
     SAFARI_12:
@@ -1419,31 +1431,31 @@ var featureInfos =
     SAFARI_13:
     {
         inherits: 'SAFARI_12',
-        versions: [['13', '14.0.0']],
+        versions: ['13|14.0.0'],
         includes: { REGEXP_STRING_ITERATOR: true },
     },
     SAFARI_14_0_1:
     {
         inherits: 'SAFARI_13',
-        versions: [['14.0.1',, '14.0.3']],
+        versions: ['14.0.1-14.0.3'],
         includes: { INTL: true, PLAIN_INTL: false },
     },
     SAFARI_14_1:
     {
         inherits: 'SAFARI_14_0_1',
-        versions: [['14.1',, '15.3']],
+        versions: ['14.1-15.3'],
         includes: { CONSOLE: false },
     },
     SAFARI_15_4:
     {
         inherits: 'SAFARI_14_1',
-        versions: [['15.4',, '17.3']],
+        versions: ['15.4-17.3'],
         includes: { AT: true },
     },
     SAFARI_17_4:
     {
         inherits: 'SAFARI_15_4',
-        versions: [['17.4',, '17.6']],
+        versions: ['17.4-17.6'],
         includes: { FUNCTION_19_LF: true, FUNCTION_22_LF: false },
     },
     SAFARI:
@@ -1454,7 +1466,7 @@ var featureInfos =
     SAFARI_18:
     {
         inherits: 'SAFARI_17_4',
-        versions: [['18']],
+        versions: ['18-'],
         includes: { SHORT_LOCALES: false },
     },
 };
@@ -1469,19 +1481,31 @@ var featureInfos =
             function (compatibility)
             {
                 var family = compatibility.family;
-                var version = compatibility.version;
-                var part = family;
-                if (typeof version === 'string')
-                    part += ' ' + version;
-                else
-                {
-                    part += ' ' + version.from;
-                    var to = version.to;
-                    if (to != null)
-                        part += (version.dense ? ' and ' + family + ' ' : ' to ') + to;
-                    else
-                        appendix = ' or later';
-                }
+                var versions = compatibility.versions;
+                var part =
+                versions.map
+                (
+                    function (version)
+                    {
+                        var versionText;
+                        if (typeof version === 'string')
+                            versionText = version;
+                        else
+                        {
+                            var from    = version.from;
+                            var to      = version.to;
+                            if (to != null)
+                                versionText = from + ' to ' + to;
+                            else
+                            {
+                                versionText = from;
+                                appendix = ' or later';
+                            }
+                        }
+                        return family + ' ' + versionText;
+                    }
+                )
+                .join(' and ');
                 var tag = compatibility.tag;
                 if (tag != null)
                     part += ' ' + tag;
