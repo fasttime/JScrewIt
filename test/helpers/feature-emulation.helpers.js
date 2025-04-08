@@ -1094,7 +1094,6 @@
                 this,
                 function (locale)
                 {
-                    var returnValue;
                     switch (locale)
                     {
                     case 'lv':
@@ -1116,7 +1115,6 @@
                         }
                         break;
                     }
-                    return returnValue;
                 }
             );
         },
@@ -1240,7 +1238,6 @@
                 this,
                 function (locale)
                 {
-                    var returnValue;
                     switch (locale)
                     {
                     case 'lv':
@@ -1262,7 +1259,6 @@
                         }
                         break;
                     }
-                    return returnValue;
                 }
             );
         },
