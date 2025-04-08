@@ -294,8 +294,8 @@ describe
                 (
                     {
                         FOO_1: { families: ['foo', 'bar'], versions: ['1', 'I'] },
-                        FOO_2: { inherits: 'FOO_1', versions: [['2', '3'], ['II', 'III']] },
-                        FOO_4: { inherits: 'FOO_2', families: ['foo'], versions: [['4']] },
+                        FOO_2: { inherits: 'FOO_1', versions: ['2|3', 'II|III'] },
+                        FOO_4: { inherits: 'FOO_2', families: ['foo'], versions: ['4-'] },
                     },
                 );
                 const actualFoo = Feature.FAMILIES.foo;
@@ -306,21 +306,21 @@ describe
                         featureName:    'FOO_1',
                         shortTag:       undefined,
                         tag:            undefined,
-                        version:        '1',
+                        versions:       ['1'],
                     },
                     {
                         family:         'foo',
                         featureName:    'FOO_2',
                         shortTag:       undefined,
                         tag:            undefined,
-                        version:        { from: '2', to: '3', dense: true },
+                        versions:       ['2', '3'],
                     },
                     {
                         family:         'foo',
                         featureName:    'FOO_4',
                         shortTag:       undefined,
                         tag:            undefined,
-                        version:        { from: '4', to: undefined, dense: false },
+                        versions:       [{ from: '4', to: undefined }],
                     },
                 ];
                 assert.deepEqual(actualFoo, expectedFoo);
@@ -612,9 +612,10 @@ it
             compatibilities
             .map
             (
-                ({ family, version }): string =>
+                ({ family, versions }): string =>
                 {
                     ++formatEngineDescriptionCalls;
+                    const [version] = versions;
                     const description = `${family} ${typeof version === 'string' ? version : ''}`;
                     return description;
                 },

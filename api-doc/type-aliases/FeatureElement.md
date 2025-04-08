@@ -4,7 +4,7 @@
 
 # Type Alias: FeatureElement
 
-> **FeatureElement**: [`Feature`](../interfaces/Feature.md) \| keyof [`FeatureAll`](../interfaces/FeatureAll.md)
+> **FeatureElement** = [`Feature`](../interfaces/Feature.md) \| keyof [`FeatureAll`](../interfaces/FeatureAll.md)
 
 A feature object or a name or alias of a predefined feature.
 

@@ -27,8 +27,5 @@
 ## Variables
 
 - [default](variables/default.md)
+- [encode](variables/encode.md)
 - [Feature](variables/Feature.md)
-
-## Functions
-
-- [encode](functions/encode.md)
