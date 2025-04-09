@@ -1206,13 +1206,15 @@ var featureInfos =
         versions: ['11'],
         includes:
         {
-            ANY_DOCUMENT:       true,
-            DOCUMENT:           false,
-            GMT:                true,
-            JAPANESE_INFINITY:  true,
-            LOCALE_NUMERALS:    true,
-            PLAIN_INTL:         true,
-            SHORT_LOCALES:      true,
+            ANY_DOCUMENT:                true,
+            DOCUMENT:                    false,
+            GMT:                         true,
+            JAPANESE_INFINITY:           true,
+            LOCALE_NUMERALS:             true,
+            LOCALE_NUMERALS_IE11_WIN7:   true
+            LOCALE_NUMERALS_IE11_WIN7_8: true,
+            PLAIN_INTL:                  true,
+            SHORT_LOCALES:               true,
         },
     },
     IE_11_WIN_8:
