@@ -1135,9 +1135,9 @@
                     case 'ar':
                         if (isNaN(number))
                             returnValue = 'ليس\xa0برقم';
-                        else if (+this == Infinity)
+                        else if (+this === Infinity)
                             returnValue = '+لا\xa0نهاية';
-                        else if (+this == -Infinity)
+                        else if (+this === -Infinity)
                             returnValue = '+لا\xa0نهاية';
                         break;
                     case 'cz':
