@@ -601,7 +601,7 @@ var featureInfos =
     },
     LOCALE_NUMERALS_IE11_WIN7_8:
     {
-        description: ''
+        description: '',
         check:
         function ()
         {
