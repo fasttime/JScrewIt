@@ -1135,17 +1135,10 @@
                     case 'ar':
                         if (isNaN(number))
                             returnValue = 'ليس\xa0برقم';
-                        else
-                        {
-                            switch (+this) // In Internet Explorer 9, +this is different from this.
-                            {
-                            case Infinity:
-                                returnValue = '+لا\xa0نهاية';
-                                break;
-                            case -Infinity:
-                                returnValue = '-لا\xa0نهاية';
-                                break;
-                            }
+                        else if (+this == Infinity)
+                            returnValue = '+لا\xa0نهاية';
+                        else if (+this == -Infinity)
+                            returnValue = '-لا\xa0نهاية';
                         }
                         break;
                     case 'cz':
