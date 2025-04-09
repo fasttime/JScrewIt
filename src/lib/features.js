@@ -603,18 +603,18 @@ var featureInfos =
     {
         description:
         'Localized number formatting exclusive to Interner Explorer 11 in Windows 7 and 8.\n' +
-        'This includes all features of LOCALE_NUMERALS plus the output of the letters in the ' +
-        'second word of the Arabic string representation of NaN ("برقم"), the letters in the ' +
-        'Arabic string representation of Infinity ("+لا\xa0نهاية"), the letters in the the Czech ' +
-        'string representation of NaN ("Není\xa0číslo"), the letters in the the Greek string ' +
-        'representation of Infinity ("Άπειρο"), the letters in the Greek string representation ' +
-        'of NaN ("μη\xa0αριθμός"), the letters in the Hebrew string representation of NaN ' +
-        '("לא\xa0מספר"), the characters in the Japanese string representation of Infinity ' +
-        '("+∞"), the characters in the Japanese string representation of NaN ("NaN\xa0(非数値)"), ' +
-        'the letters in the Lithuanian string representation of Infinity ("begalybė"), the ' +
-        'letters in the Polish string representation of Infinity ("+nieskończoność"), the ' +
-        'characters in the Chinese string representation of Infinity ("正无穷大" or "正無窮大"), the ' +
-        'characters in the Simplified Chinese string representation of NaN ("非数字").',
+        'This includes the output of the letters in the second word of the Arabic string ' +
+        'representation of NaN ("برقم"), the letters in the Arabic string representation ' +
+        'of Infinity ("+لا\xa0نهاية"), the letters in the the Czech string representation of NaN ' +
+        '("Není\xa0číslo"), the letters in the the Greek string representation of Infinity ' +
+        '("Άπειρο"), the letters in the Greek string representation of NaN ("μη\xa0αριθμός"), ' +
+        'the letters in the Hebrew string representation of NaN ("לא\xa0מספר"), the characters ' +
+        'in the Japanese string representation of Infinity ("+∞"), the characters in the Japanese ' +
+        'string representation of NaN ("NaN\xa0(非数値)"), the letters in the Lithuanian string ' +
+        'representation of Infinity ("begalybė"), the letters in the Polish string representation ' +
+        'of Infinity ("+nieskończoność"), the characters in the Chinese string representation of ' +
+        'Infinity ("正无穷大" or "正無窮大"), the characters in the Simplified Chinese string ' +
+        'representation of NaN ("非数字").',
         check:
         function ()
         {
