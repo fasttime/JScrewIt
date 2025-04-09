@@ -597,7 +597,7 @@ var featureInfos =
             return available;
         },
         includes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
-        excludes: ['LOCALE_INFINITY_IE11_WIN7'],
+        excludes: ['LOCALE_NUMERALS_IE11_WIN8'],
     },
     LOCALE_NUMERALS_IE11_WIN7_8:
     {
