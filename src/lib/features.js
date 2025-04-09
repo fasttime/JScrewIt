@@ -580,6 +580,65 @@ var featureInfos =
             return available;
         },
         includes: ['LOCALE_NUMERALS'],
+        excludes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
+    },
+    LOCALE_NUMERALS_IE11_WIN7:
+    {
+        description:
+        'Localized number formatting exclusive to Interner Explorer 11 in Windows 7.\n' +
+        'This includes string representation of Infinity ("bezgalība") and string ' +
+        'representation of Infinity ("бесконечность").',
+        check:
+        function ()
+        {
+            var available =
+            checkLocaleNumeral('lv', Infinity, /^bezgalība/) &&
+            checkLocaleNumeral('ru', Infinity, /^бесконечность/);
+            return available;
+        },
+        includes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
+        excludes: ['LOCALE_NUMERALS_IE11_WIN8'],
+    },
+    LOCALE_NUMERALS_IE11_WIN7_8:
+    {
+        description: '',
+        check:
+        function ()
+        {
+            var available =
+            checkLocaleNumeral('ar', NaN, /^ليس.برقم/) &&
+            checkLocaleNumeral('ar', Infinity, /^\+لا.نهاية/) &&
+            checkLocaleNumeral('ar-td', 234567890.1, /^٢٣٤٬?٥٦٧٬?٨٩٠٫١/) &&
+            checkLocaleNumeral('cs', NaN, /^Není.číslo/) &&
+            checkLocaleNumeral('el', Infinity, /^Άπειρο/) &&
+            checkLocaleNumeral('el', NaN, /^μη.αριθμός/) &&
+            checkLocaleNumeral('he', NaN, /^לא.מספר/) &&
+            checkLocaleNumeral('ja', Infinity, /^\+∞/) &&
+            checkLocaleNumeral('ja', NaN, /^NaN \(非数値\)/) &&
+            checkLocaleNumeral('lt', Infinity, /^begalybė/) &&
+            checkLocaleNumeral('pl', Infinity, /^\+nieskończoność/) &&
+            checkLocaleNumeral('zh', Infinity, /^正/) &&
+            checkLocaleNumeral('zh-cn', NaN, /^非数字/);
+            return available;
+        },
+        includes:    ['LOCALE_NUMERALS'],
+        excludes:    ['LOCALE_NUMERALS_EXT'],
+
+    },
+    LOCALE_NUMERALS_IE11_WIN8:
+    {
+        description:
+        'Localized number formatting exclusive to Interner Explorer 11 in Windows 8.\n' +
+        'In this case, Latvian and Russian string representation of Infinity are both "∞".',
+        check:
+        function ()
+        {
+            var available = Infinity.toLocaleString('lv') === '∞' &&
+            Infinity.toLocaleString('ru') === '∞';
+            return available;
+        },
+        includes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
+        excludes: ['LOCALE_NUMERALS_IE11_WIN7'],
     },
     LOCATION:
     {
@@ -1134,23 +1193,39 @@ var featureInfos =
         versions: ['11'],
         includes:
         {
-            ANY_DOCUMENT:       true,
-            DOCUMENT:           false,
-            GMT:                true,
-            JAPANESE_INFINITY:  true,
-            LOCALE_NUMERALS:    true,
-            PLAIN_INTL:         true,
-            SHORT_LOCALES:      true,
+            ANY_DOCUMENT:                true,
+            DOCUMENT:                    false,
+            GMT:                         true,
+            JAPANESE_INFINITY:           true,
+            LOCALE_NUMERALS:             true,
+            LOCALE_NUMERALS_IE11_WIN7:   true,
+            LOCALE_NUMERALS_IE11_WIN7_8: true,
+            PLAIN_INTL:                  true,
+            SHORT_LOCALES:               true,
         },
+    },
+    IE_11_WIN_8:
+    {
+        inherits:               'IE_11',
+        versions:               ['11'],
+        compatibilityTag:       'on Windows 8',
+        compatibilityShortTag:  'W8',
+        includes:
+        { LOCALE_NUMERALS_IE11_WIN7: false, LOCALE_NUMERALS_IE11_WIN8: true },
     },
     IE_11_WIN_10:
     {
-        inherits:               'IE_11',
+        inherits:               'IE_11_WIN_8',
         versions:               ['11'],
         compatibilityTag:       'on Windows 10',
         compatibilityShortTag:  'W10',
         includes:
-        { LOCALE_INFINITY: true, LOCALE_NUMERALS: false, LOCALE_NUMERALS_EXT: true },
+        {
+            LOCALE_INFINITY:             true,
+            LOCALE_NUMERALS_EXT:         true,
+            LOCALE_NUMERALS_IE11_WIN7_8: false,
+            LOCALE_NUMERALS_IE11_WIN8:   false,
+        },
     },
     NODE_0_10:
     {
