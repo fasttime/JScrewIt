@@ -1147,18 +1147,10 @@
                     case 'el':
                         if (isNaN(number))
                             returnValue = 'μη\xa0αριθμός';
-                        else
-                        {
-                            switch (+this) // In Internet Explorer 9, +this is different from this.
-                            {
-                            case Infinity:
-                                returnValue = 'Άπειρο';
-                                break;
-                            case -Infinity:
-                                returnValue = '-Άπειρο';
-                                break;
-                            }
-                        }
+                        else if (+this === Infinity)
+                            returnValue = 'Άπειρο';
+                        else if (+this === -Infinity)
+                            returnValue = '-Άπειρο';
                         break;
                     case 'he':
                         if (isNaN(number))
@@ -1167,18 +1159,10 @@
                     case 'ja':
                         if (isNaN(number))
                             returnValue = 'NaN\xa0(非数値)';
-                        else
-                        {
-                            switch (+this) // In Internet Explorer 9, +this is different from this.
-                            {
-                            case Infinity:
-                                returnValue = '+∞';
-                                break;
-                            case -Infinity:
-                                returnValue = '-∞';
-                                break;
-                            }
-                        }
+                        else if (+this === Infinity)
+                            returnValue = '+∞';
+                        else if (+this === -Infinity)
+                            returnValue = '-∞';
                         break;
                     case 'lt':
                         switch (+this) // In Internet Explorer 9, +this is different from this.
