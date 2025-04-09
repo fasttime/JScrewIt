@@ -1211,7 +1211,7 @@ var featureInfos =
             GMT:                         true,
             JAPANESE_INFINITY:           true,
             LOCALE_NUMERALS:             true,
-            LOCALE_NUMERALS_IE11_WIN7:   true
+            LOCALE_NUMERALS_IE11_WIN7:   true,
             LOCALE_NUMERALS_IE11_WIN7_8: true,
             PLAIN_INTL:                  true,
             SHORT_LOCALES:               true,
