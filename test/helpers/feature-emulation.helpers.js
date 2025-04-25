@@ -1047,6 +1047,26 @@
                 }
             );
         },
+        LOCALE_NUMERALS_BN:
+        function ()
+        {
+            registerNumberToLocaleStringAdapter
+            (
+                this,
+                function (locale)
+                {
+                    if (locale === 'bn')
+                    {
+                        var number = Number(this);
+                        if (!isNaN(number))
+                        {
+                            var returnValue = formatLocaleNumeral(number, 0x09e6, 2);
+                            return returnValue;
+                        }
+                    }
+                }
+            );
+        },
         LOCALE_NUMERALS_EXT:
         function ()
         {
@@ -1065,11 +1085,6 @@
                         number = Number(this);
                         if (isNaN(number))
                             returnValue = 'ليس\xa0رقم';
-                        break;
-                    case 'bn':
-                        number = Number(this);
-                        if (!isNaN(number))
-                            returnValue = formatLocaleNumeral(number, 0x09e6, 2);
                         break;
                     case 'fa':
                         number = Number(this);

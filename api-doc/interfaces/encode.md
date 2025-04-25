@@ -4,7 +4,7 @@
 
 # Interface: encode()
 
-> **encode**(`input`, `options`?): `string`
+> **encode**(`input`, `options?`): `string`
 
 Encodes a given string into JSFuck.
 

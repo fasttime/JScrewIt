@@ -116,7 +116,7 @@ If no arguments are specified, the return value is `true`.
 
 ### restrict()
 
-> **restrict**(`environment`, `engineFeatureObjs`?): [`CustomFeature`](CustomFeature.md)
+> **restrict**(`environment`, `engineFeatureObjs?`): [`CustomFeature`](CustomFeature.md)
 
 Creates a new feature object from this feature by removing elementary features that are not
 available inside a particular environment.

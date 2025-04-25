@@ -636,7 +636,7 @@ Availability of iterator helpers.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox 131+, Opera, and Node.js 22.0+.
+Available in Chrome, Edge, Firefox 131+, Safari 18.4+, Opera, and Node.js 22.0+.
 
 ***
 
@@ -676,17 +676,29 @@ Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10.0+, Opera, A
 
 ***
 
+### LOCALE\_NUMERALS\_BN
+
+> **LOCALE\_NUMERALS\_BN**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Localized number formatting for Bengali.
+
+#### Remarks
+
+Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10.0+ before 18.4, Opera, Android Browser 4.4, and Node.js 13+.
+
+***
+
 ### LOCALE\_NUMERALS\_EXT
 
 > **LOCALE\_NUMERALS\_EXT**: [`ElementaryFeature`](ElementaryFeature.md)
 
 Extended localized number formatting.
 
-This includes all features of LOCALE_NUMERALS plus the output of the first three letters in the second word of the Arabic string representation of NaN \("رقم"\), Bengali digits, the letters in the Russian string representation of NaN \("не число"\) and the letters in the Persian string representation of NaN \("ناعدد"\).
+This includes all features of LOCALE_NUMERALS plus the output of the first three letters in the second word of the Arabic string representation of NaN \("رقم"\), the letters in the Russian string representation of NaN \("не число"\) and the letters in the Persian string representation of NaN \("ناعدد"\).
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10.0+, Opera, Android Browser 4.4, and Node.js 13+.
+Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10.0+, Opera, Android Browser 4.4, and Node.js 13+. This feature is not available inside web workers in Safari 18.4+.
 
 ***
 
@@ -920,7 +932,7 @@ The property that the Array.prototype.entries\(\).constructor is the Object cons
 
 #### Remarks
 
-Available in Firefox before 131, Safari 9+, and Node.js 0.12+ before 22.0.
+Available in Firefox before 131, Safari 9+ before 18.4, and Node.js 0.12+ before 22.0.
 
 ***
 
@@ -1002,7 +1014,7 @@ Available in Chrome, Edge, Firefox, Safari 13+, Opera, and Node.js 12+.
 
 Features available in the current stable version of Safari.
 
-An alias for `SAFARI_18`.
+An alias for `SAFARI_18_4`.
 
 ***
 
@@ -1070,11 +1082,19 @@ Features available in Safari 17.4 to 17.6.
 
 ***
 
-### SAFARI\_18
+### SAFARI\_18\_0
 
-> **SAFARI\_18**: [`PredefinedFeature`](PredefinedFeature.md)
+> **SAFARI\_18\_0**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Safari 18 or later.
+Features available in Safari 18.0 to 18.3.
+
+***
+
+### SAFARI\_18\_4
+
+> **SAFARI\_18\_4**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Safari 18.4 or later.
 
 ***
 
@@ -1130,7 +1150,7 @@ Support for the two-letter locale name "ar" to format decimal numbers as Arabic 
 
 #### Remarks
 
-Available in Firefox before 134, Internet Explorer 11, Safari 10.0+ before 18, Android Browser 4.4, and Node.js 13+ before 22.12–22.14 and 23.3.
+Available in Firefox before 134, Internet Explorer 11, Safari 10.0+ before 18.0, Android Browser 4.4, and Node.js 13+ before 22.12–22.14 and 23.3.
 
 ***
 

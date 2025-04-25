@@ -559,28 +559,39 @@ var featureInfos =
             return available;
         },
     },
+    LOCALE_NUMERALS_BN:
+    {
+        description: 'Localized number formatting for Bengali.',
+        check:
+        function ()
+        {
+            var available = checkLocaleNumeral('bn', 1234567890, /^১,২৩,৪৫,৬৭,৮৯০/);
+            return available;
+        },
+    },
     LOCALE_NUMERALS_EXT:
     {
         description:
         'Extended localized number formatting.\n' +
         'This includes all features of LOCALE_NUMERALS plus the output of the first three ' +
-        'letters in the second word of the Arabic string representation of NaN ("رقم"), Bengali ' +
-        'digits, the letters in the Russian string representation of NaN ("не\xa0число") and the ' +
-        'letters in the Persian string representation of NaN ("ناعدد").',
+        'letters in the second word of the Arabic string representation of NaN ("رقم"), the ' +
+        'letters in the Russian string representation of NaN ("не\xa0число") and the letters in ' +
+        'the Persian string representation of NaN ("ناعدد").',
         check:
         function ()
         {
             var available =
             checkLocaleNumeral('ar', NaN, /^ليس.رقم/) &&
             checkLocaleNumeral('ar-td', 234567890.1, /^٢٣٤٬?٥٦٧٬?٨٩٠٫١/) &&
-            checkLocaleNumeral('bn', 1234567890, /^১,২৩,৪৫,৬৭,৮৯০/) &&
             checkLocaleNumeral('fa', 1234567890, /^۱٬۲۳۴٬۵۶۷٬۸۹۰/) &&
             checkLocaleNumeral('fa', NaN, /^ناعد/) &&
             checkLocaleNumeral('ru', NaN, /^не.число/);
             return available;
         },
-        includes: ['LOCALE_NUMERALS'],
+        includes:   ['LOCALE_NUMERALS'],
+        attributes: { 'web-worker': 'locale-numerals-ext-restriction' },
     },
+
     LOCATION:
     {
         description:
@@ -898,6 +909,7 @@ var featureInfos =
             'HISTORY',
             'INCR_CHAR',
             'INTL',
+            'ITERATOR_HELPER',
             'JAPANESE_INFINITY',
             'LOCALE_INFINITY',
             'LOCALE_NUMERALS_EXT',
@@ -912,9 +924,10 @@ var featureInfos =
         ],
         attributes:
         {
-            'char-increment-restriction':   null,
-            'non-ie-restriction':           null,
-            'web-worker-restriction':       null,
+            'char-increment-restriction':       null,
+            'locale-numerals-ext-restriction':  null,
+            'non-ie-restriction':               null,
+            'web-worker-restriction':           null,
         },
     },
     ANDRO_4_0:
@@ -957,6 +970,7 @@ var featureInfos =
             HTMLAUDIOELEMENT:       true,
             JAPANESE_INFINITY:      true,
             LOCALE_INFINITY:        true,
+            LOCALE_NUMERALS_BN:     true,
             LOCALE_NUMERALS_EXT:    true,
             PLAIN_INTL:             true,
             SHORT_LOCALES:          true,
@@ -1007,6 +1021,7 @@ var featureInfos =
             'ITERATOR_HELPER',
             'JAPANESE_INFINITY',
             'LOCALE_INFINITY',
+            'LOCALE_NUMERALS_BN',
             'LOCALE_NUMERALS_EXT',
             'LOCATION',
             'MOZILLA',
@@ -1068,6 +1083,7 @@ var featureInfos =
             'INTL',
             'JAPANESE_INFINITY',
             'LOCALE_INFINITY',
+            'LOCALE_NUMERALS_BN',
             'LOCALE_NUMERALS_EXT',
             'LOCATION',
             'MOZILLA',
@@ -1150,7 +1166,12 @@ var featureInfos =
         compatibilityTag:       'on Windows 10',
         compatibilityShortTag:  'W10',
         includes:
-        { LOCALE_INFINITY: true, LOCALE_NUMERALS: false, LOCALE_NUMERALS_EXT: true },
+        {
+            LOCALE_INFINITY:        true,
+            LOCALE_NUMERALS:        false,
+            LOCALE_NUMERALS_BN:     true,
+            LOCALE_NUMERALS_EXT:    true,
+        },
     },
     NODE_0_10:
     {
@@ -1223,7 +1244,7 @@ var featureInfos =
     {
         inherits: 'NODE_12',
         versions: ['13|14'],
-        includes: { LOCALE_NUMERALS_EXT: true, SHORT_LOCALES: true },
+        includes: { LOCALE_NUMERALS_BN: true, LOCALE_NUMERALS_EXT: true, SHORT_LOCALES: true },
     },
     NODE_15:
     {
@@ -1321,6 +1342,7 @@ var featureInfos =
             ARROW:                      true,
             JAPANESE_INFINITY:          true,
             LOCALE_INFINITY:            true,
+            LOCALE_NUMERALS_BN:         true,
             LOCALE_NUMERALS_EXT:        true,
             NODECONSTRUCTOR:            false,
             OBJECT_L_LOCATION_CTOR:     false,
@@ -1372,16 +1394,24 @@ var featureInfos =
         versions: ['17.4-17.6'],
         includes: { FUNCTION_19_LF: true, FUNCTION_22_LF: false },
     },
+    SAFARI_18_0:
+    {
+        inherits: 'SAFARI_17_4',
+        versions: ['18.0-18.3'],
+        includes: { SHORT_LOCALES: false },
+    },
     SAFARI:
     {
         description:    describeEngine('the current stable version of Safari'),
-        aliasFor:       'SAFARI_18',
+        aliasFor:       'SAFARI_18_4',
     },
-    SAFARI_18:
+    SAFARI_18_4:
     {
-        inherits: 'SAFARI_17_4',
-        versions: ['18-'],
-        includes: { SHORT_LOCALES: false },
+        inherits:   'SAFARI_18_0',
+        versions:   ['18.4-'],
+        includes:
+        { ITERATOR_HELPER: true, LOCALE_NUMERALS_BN: false, OBJECT_ARRAY_ENTRIES_CTOR: false },
+        attributes: { 'locale-numerals-ext-restriction': null },
     },
 };
 (function ()

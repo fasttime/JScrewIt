@@ -385,6 +385,7 @@ function getFHPaddingEntries(index)
     var JAPANESE_INFINITY               = Feature.JAPANESE_INFINITY;
     var LOCALE_INFINITY                 = Feature.LOCALE_INFINITY;
     var LOCALE_NUMERALS                 = Feature.LOCALE_NUMERALS;
+    var LOCALE_NUMERALS_BN              = Feature.LOCALE_NUMERALS_BN;
     var LOCALE_NUMERALS_EXT             = Feature.LOCALE_NUMERALS_EXT;
     var LOCATION                        = Feature.LOCATION;
     var MOZILLA                         = Feature.MOZILLA;
@@ -2642,7 +2643,7 @@ function getFHPaddingEntries(index)
     useLocaleNumeralDefinition('ر', '"ar"', NaN, 4, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('ق', '"ar"', NaN, 5, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('م', '"ar"', NaN, 6, LOCALE_NUMERALS_EXT);
-    useLocaleNumeralDigitDefinitions('"bn"', 0x09e6, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDigitDefinitions('"bn"', 0x09e6, LOCALE_NUMERALS_BN);
     useLocaleNumeralDigitDefinitions('"fa"', 0x06f0);
     useLocaleNumeralDefinition('٬', '"fa"', 1000, 1);
     useLocaleNumeralDefinition('ن', '"fa"', NaN, 0, LOCALE_NUMERALS_EXT);
