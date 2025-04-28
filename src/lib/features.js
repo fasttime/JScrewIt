@@ -1150,27 +1150,38 @@ var featureInfos =
         versions: ['11'],
         includes:
         {
-            ANY_DOCUMENT:       true,
-            DOCUMENT:           false,
-            GMT:                true,
-            JAPANESE_INFINITY:  true,
-            LOCALE_NUMERALS:    true,
-            PLAIN_INTL:         true,
-            SHORT_LOCALES:      true,
+            ANY_DOCUMENT:                true,
+            DOCUMENT:                    false,
+            GMT:                         true,
+            JAPANESE_INFINITY:           true,
+            LOCALE_NUMERALS:             true,
+            LOCALE_NUMERALS_IE11_WIN7:   true,
+            LOCALE_NUMERALS_IE11_WIN7_8: true,
+            PLAIN_INTL:                  true,
+            SHORT_LOCALES:               true,
         },
+    },
+    IE_11_WIN_8:
+    {
+        inherits:               'IE_11',
+        versions:               ['11'],
+        compatibilityTag:       'on Windows 8',
+        compatibilityShortTag:  'W8',
+        includes:
+        { LOCALE_NUMERALS_IE11_WIN7: false, LOCALE_NUMERALS_IE11_WIN8: true },
     },
     IE_11_WIN_10:
     {
-        inherits:               'IE_11',
+        inherits:               'IE_11_WIN_8',
         versions:               ['11'],
         compatibilityTag:       'on Windows 10',
         compatibilityShortTag:  'W10',
         includes:
         {
-            LOCALE_INFINITY:        true,
-            LOCALE_NUMERALS:        false,
-            LOCALE_NUMERALS_BN:     true,
-            LOCALE_NUMERALS_EXT:    true,
+            LOCALE_INFINITY:             true,
+            LOCALE_NUMERALS_EXT:         true,
+            LOCALE_NUMERALS_IE11_WIN7_8: false,
+            LOCALE_NUMERALS_IE11_WIN8:   false,
         },
     },
     NODE_0_10:
