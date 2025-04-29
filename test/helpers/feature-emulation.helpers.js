@@ -401,7 +401,19 @@
             }
             else
                 override(this, 'self', { value: global });
-            var valueOf = createStaticSupplier(str);
+            var toString =
+            function ()
+            {
+                var returnValue = this === global ? str : this.toString();
+                return returnValue;
+            };
+            override(this, 'self.toString', { value: toString });
+            var valueOf =
+            function ()
+            {
+                var returnValue = this === global ? str : this.valueOf();
+                return returnValue;
+            };
             override(this, 'self.valueOf', { value: valueOf });
         };
         return setUp;
