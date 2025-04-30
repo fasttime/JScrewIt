@@ -1230,9 +1230,9 @@ function getFHPaddingEntries(index)
                 ANY_WINDOW,
                 CALL_ON_GLOBAL
             ),
-            define('([].concat.call() + RP_0_S).at("-2")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
             define('(RP_4_A + [].concat.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
             define('(RP_0_S + [].concat.call())[13]', CALL_ON_GLOBAL, WINDOW),
+            define('([].concat.call() + RP_0_S).at("-2")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
         ],
         'x':
         [
