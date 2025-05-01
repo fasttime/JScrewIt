@@ -1095,6 +1095,15 @@ function getFHPaddingEntries(index)
             define('(RP_0_S + self)[11]', DOMWINDOW),
             define('(RP_3_WA + self)[11]', OBJECT_W_SELF),
             define('(self + RP_4_A).at("-11")', ANY_WINDOW, AT),
+            define
+            (
+                '([].concat.call() + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]',
+                ANY_WINDOW,
+                CALL_ON_GLOBAL
+            ),
+            define('(RP_0_S + [].concat.call())[11]', CALL_ON_GLOBAL, DOMWINDOW),
+            define('(RP_3_WA + [].concat.call())[11]', CALL_ON_GLOBAL, WINDOW),
+            define('([].concat.call() + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
             defineCharDefault({ atob: false }),
         ],
         'X':
@@ -1215,6 +1224,15 @@ function getFHPaddingEntries(index)
             define('(RP_4_A + self)[20]', DOMWINDOW),
             define('(RP_0_S + self)[13]', WINDOW),
             define('(self + RP_0_S).at("-2")', ANY_WINDOW, AT),
+            define
+            (
+                '([].concat.call() + RP_0_S)[SLICE_OR_SUBSTR]("-2")[0]',
+                ANY_WINDOW,
+                CALL_ON_GLOBAL
+            ),
+            define('(RP_4_A + [].concat.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
+            define('(RP_0_S + [].concat.call())[13]', CALL_ON_GLOBAL, WINDOW),
+            define('([].concat.call() + RP_0_S).at("-2")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
         ],
         'x':
         [
