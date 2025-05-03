@@ -591,7 +591,63 @@ var featureInfos =
         includes:   ['LOCALE_NUMERALS'],
         attributes: { 'web-worker': 'locale-numerals-ext-restriction' },
     },
-
+    LOCALE_NUMERALS_IE11_WIN7:
+    {
+        description:
+        'Localized number formatting exclusive to Interner Explorer 11 in Windows 7.\n' +
+        'This includes string representation of Infinity ("bezgalība") and string ' +
+        'representation of Infinity ("бесконечность").',
+        check:
+        function ()
+        {
+            var available =
+            checkLocaleNumeral('lv', Infinity, /^bezgalība/) &&
+            checkLocaleNumeral('ru', Infinity, /^бесконечность/);
+            return available;
+        },
+        includes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
+        excludes: ['LOCALE_NUMERALS_IE11_WIN8'],
+    },
+    LOCALE_NUMERALS_IE11_WIN7_8:
+    {
+        description: '',
+        check:
+        function ()
+        {
+            var available =
+            checkLocaleNumeral('ar', NaN, /^ليس.برقم/) &&
+            checkLocaleNumeral('ar', Infinity, /^\+لا.نهاية/) &&
+            checkLocaleNumeral('ar-td', 234567890.1, /^٢٣٤٬?٥٦٧٬?٨٩٠٫١/) &&
+            checkLocaleNumeral('cs', NaN, /^Není.číslo/) &&
+            checkLocaleNumeral('el', Infinity, /^Άπειρο/) &&
+            checkLocaleNumeral('el', NaN, /^μη.αριθμός/) &&
+            checkLocaleNumeral('he', NaN, /^לא.מספר/) &&
+            checkLocaleNumeral('ja', Infinity, /^\+∞/) &&
+            checkLocaleNumeral('ja', NaN, /^NaN \(非数値\)/) &&
+            checkLocaleNumeral('lt', Infinity, /^begalybė/) &&
+            checkLocaleNumeral('pl', Infinity, /^\+nieskończoność/) &&
+            checkLocaleNumeral('zh', Infinity, /^正/) &&
+            checkLocaleNumeral('zh-cn', NaN, /^非数字/);
+            return available;
+        },
+        includes:    ['LOCALE_NUMERALS'],
+        excludes:    ['LOCALE_NUMERALS_EXT'],
+    },
+    LOCALE_NUMERALS_IE11_WIN8:
+    {
+        description:
+        'Localized number formatting exclusive to Interner Explorer 11 in Windows 8.\n' +
+        'In this case, Latvian and Russian string representation of Infinity are both "∞".',
+        check:
+        function ()
+        {
+            var available = Infinity.toLocaleString('lv') === '∞' &&
+            Infinity.toLocaleString('ru') === '∞';
+            return available;
+        },
+        includes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
+        excludes: ['LOCALE_NUMERALS_IE11_WIN7'],
+    },
     LOCATION:
     {
         description:
