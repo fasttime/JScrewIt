@@ -1032,7 +1032,7 @@
                     case 'ar':
                         number = Number(this);
                         if (isNaN(number))
-                            returnValue = context.arabicNaNString || 'ليس';
+                            returnValue = 'ليس\xa0رقم';
                         else if (context.shortLocales)
                         {
                             returnValue =
@@ -1042,7 +1042,7 @@
                     case 'ar-td':
                         number = Number(this);
                         if (isNaN(number))
-                            returnValue = context.arabicNaNString || 'ليس';
+                            returnValue = 'ليس\xa0رقم';
                         else
                         {
                             returnValue =
@@ -1114,7 +1114,6 @@
         LOCALE_NUMERALS_IE11_WIN7_8:
         function ()
         {
-            this.arabicNaNString = 'ليس\xa0برقم';
             registerNumberToLocaleStringAdapter
             (
                 this,
@@ -1234,7 +1233,6 @@
         LOCALE_NUMERALS_EXT:
         function ()
         {
-            this.arabicNaNString = 'ليس\xa0رقم';
             registerNumberToLocaleStringAdapter
             (
                 this,
