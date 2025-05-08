@@ -1132,7 +1132,7 @@
                         else if (+this === -Infinity)
                             returnValue = '+لا\xa0نهاية';
                         break;
-                    case 'cz':
+                    case 'cs':
                         if (isNaN(number))
                             returnValue = 'Není\xa0číslo';
                         break;
