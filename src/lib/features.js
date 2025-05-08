@@ -605,8 +605,6 @@ var featureInfos =
             checkLocaleNumeral('ru', Infinity, /^бесконечность/);
             return available;
         },
-        includes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
-        excludes: ['LOCALE_NUMERALS_IE11_WIN8'],
     },
     LOCALE_NUMERALS_IE11_WIN7_8:
     {
@@ -630,8 +628,6 @@ var featureInfos =
             checkLocaleNumeral('zh-cn', NaN, /^非数字/);
             return available;
         },
-        includes:    ['LOCALE_NUMERALS'],
-        excludes:    ['LOCALE_NUMERALS_EXT'],
     },
     LOCALE_NUMERALS_IE11_WIN8:
     {
@@ -645,8 +641,6 @@ var featureInfos =
             Infinity.toLocaleString('ru') === '∞';
             return available;
         },
-        includes: ['LOCALE_NUMERALS_IE11_WIN7_8'],
-        excludes: ['LOCALE_NUMERALS_IE11_WIN7'],
     },
     LOCATION:
     {
