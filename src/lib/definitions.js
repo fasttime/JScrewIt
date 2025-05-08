@@ -528,7 +528,7 @@ function getFHPaddingEntries(index)
         {
             if (index % 10 > 4)
             {
-                var paddingBlock = R_PADDINGS[10 - index];
+                var paddingBlock = R_PADDINGS[10 - (index % 10)];
                 expr = '(' + paddingBlock + ' + ' + expr + ')[index - (index % 10) + 10]';
             }
             else
