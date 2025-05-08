@@ -1240,6 +1240,7 @@ var featureInfos =
         includes:
         {
             LOCALE_INFINITY:             true,
+            LOCALE_NUMERALS_BN:          true,
             LOCALE_NUMERALS_EXT:         true,
             LOCALE_NUMERALS_IE11_WIN7_8: false,
             LOCALE_NUMERALS_IE11_WIN8:   false,
