@@ -526,11 +526,8 @@ function getFHPaddingEntries(index)
         var expr = '(' + number + ')[TO_LOCALE_STRING](' + locale + ')';
         if (index != null)
         {
-            if (index % 10 == 8)
-            {
-                var paddingBlock = R_PADDINGS[3];
-                expr = '(' + paddingBlock + ' + ' + expr + ')[' + (index - index % 10 + 11) + ']';
-            }
+            if (index % 10 === 8)
+                expr = '(' + R_PADDINGS[3] + ' + ' + expr + ')[' + (index - index % 10 + 11) + ']';
             else if (index % 10 > 4)
             {
                 var paddingBlock = R_PADDINGS[10 - index % 10];
