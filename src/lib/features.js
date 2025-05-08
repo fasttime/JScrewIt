@@ -582,7 +582,8 @@ var featureInfos =
         {
             var available =
             checkLocaleNumeral('ar', NaN, /^ليس.رقم/) &&
-            checkLocaleNumeral('fa', 1234567890, /^۱٬۲۳۴٬۵۶۷٬۸۹۰/) &&
+            checkLocaleNumeral('ar-td', 234567890.1, /^٢٣٤٬?٥٦٧٬?٨٩٠٫١/) &&
+            checkLocaleNumeral('fa', 1234567890, /^۱٬۲۳۴٬۵۶۷٬۸۹۰/);
             checkLocaleNumeral('fa', NaN, /^ناعد/) &&
             checkLocaleNumeral('ru', NaN, /^не.число/);
             return available;
