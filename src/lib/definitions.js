@@ -1097,7 +1097,7 @@ function getFHPaddingEntries(index)
             define('(self + RP_4_A).at("-11")', ANY_WINDOW, AT),
             define
             (
-                '"".italics.call()[SLICE_OR_SUBSTR]("-11")[0]',
+                '("".slice.call() + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]',
                 ANY_WINDOW,
                 CALL_ON_GLOBAL
             ),
@@ -1107,11 +1107,11 @@ function getFHPaddingEntries(index)
                 ANY_WINDOW,
                 CALL_ON_GLOBAL
             ),
-            define('(RP_6_S + "".italics.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
+            define('"".slice.call()[11]', CALL_ON_GLOBAL, DOMWINDOW),
             define('(RP_4_S + "".sub.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
-            define('"".italics.call()[11]', CALL_ON_GLOBAL, WINDOW),
+            define('(RP_3_WA + "".slice.call())[11]', CALL_ON_GLOBAL, WINDOW),
             define('"".sub.call()[13]', CALL_ON_GLOBAL, WINDOW),
-            define('"".italics.call().at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
+            define('("".slice.call() + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
             define('"".sub.call().at("-13")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
             defineCharDefault({ atob: false }),
         ],
@@ -1235,22 +1235,22 @@ function getFHPaddingEntries(index)
             define('(self + RP_0_S).at("-2")', ANY_WINDOW, AT),
             define
             (
-                '("".italics.call() + RP_4_A)[SLICE_OR_SUBSTR]("-20")[0]',
+                '"".slice.call()[SLICE_OR_SUBSTR]("-2")[0]',
                 ANY_WINDOW,
                 CALL_ON_GLOBAL
             ),
             define
             (
-                '("".sub.call() + RP_3_WA)[SLICE_OR_SUBSTR]("-21")[0]',
+                '("".sub.call() + RP_3_WA)[SLICE_OR_SUBSTR]("-11")[0]',
                 ANY_WINDOW,
                 CALL_ON_GLOBAL
             ),
-            define('(RP_1_WA + "".italics.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
+            define('(RP_4_WA + "".slice.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
             define('"".sub.call()[21]', CALL_ON_GLOBAL, DOMWINDOW),
-            define('(RP_4_A + "".italics.call())[20]', CALL_ON_GLOBAL, WINDOW),
+            define('"".slice.call()[13]', CALL_ON_GLOBAL, WINDOW),
             define('(RP_3_WA + "".sub.call())[21]', CALL_ON_GLOBAL, WINDOW),
-            define('("".italics.call() + RP_4_A).at("-20")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
-            define('("".sub.call() + RP_3_WA).at("-21")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
+            define('"".slice.call().at("-2")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
+            define('("".sub.call() + RP_3_WA).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
         ],
         'x':
         [
