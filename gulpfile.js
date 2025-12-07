@@ -113,6 +113,7 @@ task
     (
         async () =>
         {
+            const eslintPluginJScrewIt              = require('./dev/internal/eslint-plugin');
             const gherkinParser                     = require('./dev/internal/gherkin-parser');
             const { createConfig, noParserConfig }  = require('@origin-1/eslint-config');
             const eslintPluginEBDD                  = require('eslint-plugin-ebdd');
@@ -131,13 +132,16 @@ task
                     ignores:            ['src/ui/worker.js'],
                     jsVersion:          5,
                     languageOptions:    { ecmaVersion: 2015 },
+                    plugins:            { internal: eslintPluginJScrewIt },
                     processor:          new EslintEnvProcessor(),
+                    rules:              { 'internal/sorted-definitions': 'error' },
                 },
                 {
                     files:              ['dev/**/*.js', 'gulpfile.js', 'test/patch-cov-source.js'],
                     ignores:            ['dev/legacy'],
                     jsVersion:          2022,
                     languageOptions:    { globals: globals.node, sourceType: 'commonjs' },
+                    rules:              { 'object-shorthand': 'error' },
                 },
                 {
                     files:              ['dev/**/*.mjs'],

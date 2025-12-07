@@ -262,6 +262,13 @@ describe
 
         function testError(params, expectedErrorMsg)
         {
+            if
+            (
+                expectedErrorMsg !== undefined &&
+                typeof expectedErrorMsg !== 'string' &&
+                !(expectedErrorMsg instanceof RegExp)
+            )
+                throw Error('Invalid value for argument expectedErrorMsg');
             var argv = [null, '../screw.js'].concat(params);
             try
             {
@@ -281,10 +288,8 @@ describe
                             'Expecting error message to match ' + expectedErrorMsg
                         );
                     }
-                    else if (typeof expectedErrorMsg === 'string')
-                        assert.strictEqual(actualErrorMsg, expectedErrorMsg);
                     else
-                        throw Error('Invalid value for argument expectedErrorMsg');
+                        assert.strictEqual(actualErrorMsg, expectedErrorMsg);
                 }
                 return;
             }

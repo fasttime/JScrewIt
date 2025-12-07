@@ -1839,7 +1839,7 @@ JScrewIt.Feature.areEqual("DEFAULT", [])
 
 ### commonOf()
 
-> **commonOf**(...`features`): `null` \| [`CustomFeature`](CustomFeature.md)
+> **commonOf**(...`features`): [`CustomFeature`](CustomFeature.md) \| `null`
 
 Creates a new feature object equivalent to the intersection of the specified features.
 
@@ -1851,7 +1851,7 @@ Creates a new feature object equivalent to the intersection of the specified fea
 
 #### Returns
 
-`null` \| [`CustomFeature`](CustomFeature.md)
+[`CustomFeature`](CustomFeature.md) \| `null`
 
 A feature object, or `null` if no arguments are specified.
 
