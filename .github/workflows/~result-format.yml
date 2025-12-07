@@ -2,10 +2,10 @@ name: ~result-format Node.js CI
 
 on:
   push:
-    branches: '**'
-    tags-ignore: '**'
+    branches: ['**']
+    tags-ignore: ['**']
   pull_request:
-    branches: '**'
+    branches: ['**']
 
 defaults:
 
@@ -20,10 +20,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
       with:
-        node-version: '22'
+        node-version: '24'
     - run: |
         npm install --prefix ../..
         npm run lint
@@ -36,11 +36,11 @@ jobs:
 
     strategy:
       matrix:
-        node-version: ['14', '16', '18', '20', '22']
+        node-version: ['14', '16', '18', '20', '22', '24']
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node-version }}
     - run: |
@@ -54,14 +54,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
       with:
-        node-version: '22'
+        node-version: '24'
     - run: |
         npm install --prefix ../..
         npm run prepare-legacy-test
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       with:
         name: node-legacy
         path: packages/~result-format/test/node-legacy
@@ -79,11 +79,11 @@ jobs:
         node-version: ['0.10', '0.12', '4', '6.0', '6', '8', '10', '12']
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node-version }}
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v6
       with:
         name: node-legacy
         path: packages/~result-format/test/node-legacy

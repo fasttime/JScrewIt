@@ -2,10 +2,10 @@ name: JScrewIt Node.js CI
 
 on:
   push:
-    branches: '**'
-    tags-ignore: '**'
+    branches: ['**']
+    tags-ignore: ['**']
   pull_request:
-    branches: '**'
+    branches: ['**']
 
 jobs:
 
@@ -14,17 +14,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
       with:
-        node-version: '22'
+        node-version: '24'
     - run: |
         npm install --workspaces
         npm install
         npm run --workspaces make
         gulp lint
         gulp bundle:lib
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       with:
         name: lib
         path: lib
@@ -53,13 +53,14 @@ jobs:
           - '18'
           - '20'
           - '22'
+          - '24'
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node-version }}
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v6
       with:
         name: lib
         path: lib
