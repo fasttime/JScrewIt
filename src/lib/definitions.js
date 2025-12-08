@@ -1256,8 +1256,7 @@ function getFHPaddingEntries(index)
             define('"".slice.call()[13]', CALL_ON_GLOBAL, WINDOW),
             define('(RP_3_WA + "".sub.call())[21]', CALL_ON_GLOBAL, WINDOW),
             define('"".slice.call().at("-2")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
-            define('("".sub.call() + RP_3_WA).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
-        ],
+            ],
         'x':
         [
             define('101[TO_STRING]("34")[1]'),
