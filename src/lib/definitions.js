@@ -1114,7 +1114,7 @@ function getFHPaddingEntries(index)
                 CALL_ON_GLOBAL
             ),
             define('"".slice.call()[11]', CALL_ON_GLOBAL, DOMWINDOW),
-            define('(RP_4_S + "".sub.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
+            define('(RP_4_A + "".sub.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
             define('(RP_3_WA + "".slice.call())[11]', CALL_ON_GLOBAL, WINDOW),
             define('"".sub.call()[13]', CALL_ON_GLOBAL, WINDOW),
             define('("".slice.call() + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
