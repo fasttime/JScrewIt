@@ -895,6 +895,8 @@ function getFHPaddingEntries(index)
             define('escape([[]][+(RP_0_S + AT)[0]] + AT)[61]', AT, NO_FF_SRC), // *
             define('escape([NaN][+(RP_1_WA + AT)[20]] + AT)[61]', AT, NO_IE_SRC), // *
             define('escape(true + AT)[50]', AT, V8_SRC),
+            define('(RP_3_WA + "".slice.call())[11]', CALL_ON_GLOBAL, DOMWINDOW),
+            define('"".sub.call()[13]', CALL_ON_GLOBAL, DOMWINDOW),
             define('escape(FILL)[60]', FF_SRC, FILL),
             define('escape(FLAT)[60]', FF_SRC, FLAT),
         ],
@@ -998,6 +1000,8 @@ function getFHPaddingEntries(index)
             define('(RP_4_A + Date())[30]', GMT),
             define('(RP_0_S + Audio)[11]', HTMLAUDIOELEMENT),
             define('USER_AGENT[0]', MOZILLA),
+            define('"".slice.call()[10]', CALL_ON_GLOBAL, DOMWINDOW),
+            define('(RP_5_A + "".sub.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
         ],
         'N': '"NaN"[0]',
         'O':
@@ -1008,6 +1012,8 @@ function getFHPaddingEntries(index)
             define('"".fontcolor()[2]', CAPITAL_HTML),
             define('(RP_1_WA + self)[10]', DOMWINDOW),
             define('(RP_3_WA + Intl)[11]', PLAIN_INTL),
+            define('(RP_1_WA + "".slice.call())[10]', CALL_ON_GLOBAL, DOMWINDOW),
+            define('(RP_6_S + "".sub.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
         ],
         'P':
         [
@@ -1097,13 +1103,21 @@ function getFHPaddingEntries(index)
             define('(self + RP_4_A).at("-11")', ANY_WINDOW, AT),
             define
             (
-                '([].concat.call() + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]',
+                '("".slice.call() + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]',
                 ANY_WINDOW,
                 CALL_ON_GLOBAL
             ),
-            define('(RP_0_S + [].concat.call())[11]', CALL_ON_GLOBAL, DOMWINDOW),
-            define('(RP_3_WA + [].concat.call())[11]', CALL_ON_GLOBAL, WINDOW),
-            define('([].concat.call() + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
+            define
+            (
+                '"".sub.call()[SLICE_OR_SUBSTR]("-13")[0]',
+                ANY_WINDOW,
+                CALL_ON_GLOBAL
+            ),
+            define('"".slice.call()[11]', CALL_ON_GLOBAL, DOMWINDOW),
+            define('(RP_4_A + "".sub.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
+            define('(RP_3_WA + "".slice.call())[11]', CALL_ON_GLOBAL, WINDOW),
+            define('"".sub.call()[13]', CALL_ON_GLOBAL, WINDOW),
+            define('("".slice.call() + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
             defineCharDefault({ atob: false }),
         ],
         'X':
@@ -1226,13 +1240,21 @@ function getFHPaddingEntries(index)
             define('(self + RP_0_S).at("-2")', ANY_WINDOW, AT),
             define
             (
-                '([].concat.call() + RP_0_S)[SLICE_OR_SUBSTR]("-2")[0]',
+                '"".slice.call()[SLICE_OR_SUBSTR]("-2")[0]',
                 ANY_WINDOW,
                 CALL_ON_GLOBAL
             ),
-            define('(RP_4_A + [].concat.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
-            define('(RP_0_S + [].concat.call())[13]', CALL_ON_GLOBAL, WINDOW),
-            define('([].concat.call() + RP_0_S).at("-2")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
+            define
+            (
+                '("".sub.call() + RP_3_WA)[SLICE_OR_SUBSTR]("-11")[0]',
+                ANY_WINDOW,
+                CALL_ON_GLOBAL
+            ),
+            define('(RP_4_A + "".slice.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
+            define('"".sub.call()[21]', CALL_ON_GLOBAL, DOMWINDOW),
+            define('"".slice.call()[13]', CALL_ON_GLOBAL, WINDOW),
+            define('(RP_3_WA + "".sub.call())[21]', CALL_ON_GLOBAL, WINDOW),
+            define('"".slice.call().at("-2")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
         ],
         'x':
         [
