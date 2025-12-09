@@ -1118,7 +1118,6 @@ function getFHPaddingEntries(index)
             define('(RP_3_WA + "".slice.call())[11]', CALL_ON_GLOBAL, WINDOW),
             define('"".sub.call()[13]', CALL_ON_GLOBAL, WINDOW),
             define('("".slice.call() + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
-            define('"".sub.call().at("-13")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
             defineCharDefault({ atob: false }),
         ],
         'X':
