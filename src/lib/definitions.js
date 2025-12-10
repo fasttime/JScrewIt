@@ -596,7 +596,14 @@ function getFHPaddingEntries(index)
         ],
         'Infinity',
         'NaNfalse',
-        [define('S'), define('R', CAPITAL_HTML), define('S', ARRAY_ITERATOR)],
+        [
+            define('S'),
+            define('R', CAPITAL_HTML),
+            define('S', ARRAY_ITERATOR),
+            define('S', FILL),
+            define('S', FLAT),
+            define('S', AT),
+        ],
         [
             define('W'),
             define('U', CAPITAL_HTML),
@@ -1361,8 +1368,8 @@ function getFHPaddingEntries(index)
         ],
         '∞':
         [
-            define('Infinity[TO_LOCALE_STRING]("ja")[SLICE_OR_SUBSTR]("-1")', JAPANESE_INFINITY),
             define('Infinity[TO_LOCALE_STRING]()', LOCALE_INFINITY),
+            define('Infinity[TO_LOCALE_STRING]("ja")[SLICE_OR_SUBSTR]("-1")', JAPANESE_INFINITY),
             define('Infinity[TO_LOCALE_STRING]("ja").at("-1")', JAPANESE_INFINITY, AT),
             defineCharDefault(),
         ],
