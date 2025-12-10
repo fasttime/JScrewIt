@@ -1368,8 +1368,8 @@ function getFHPaddingEntries(index)
         ],
         '∞':
         [
-            define('Infinity[TO_LOCALE_STRING]()', LOCALE_INFINITY),
             define('Infinity[TO_LOCALE_STRING]("ja")[SLICE_OR_SUBSTR]("-1")', JAPANESE_INFINITY),
+            define('Infinity[TO_LOCALE_STRING]()', LOCALE_INFINITY),
             define('Infinity[TO_LOCALE_STRING]("ja").at("-1")', JAPANESE_INFINITY, AT),
             defineCharDefault(),
         ],
