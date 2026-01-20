@@ -595,8 +595,8 @@ var featureInfos =
     {
         description:
         'Localized number formatting exclusive to Interner Explorer 11 in Windows 7.\n' +
-        'This includes string representation of Infinity ("bezgalība") and string ' +
-        'representation of Infinity ("бесконечность").',
+        'This includes Latvian string representation of Infinity ("bezgalība") and Russian ' +
+        'string representation of Infinity ("бесконечность").',
         check:
         function ()
         {
