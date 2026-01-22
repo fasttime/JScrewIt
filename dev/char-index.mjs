@@ -385,12 +385,15 @@ function hasUnusedDefinitions({ solutions }, char)
     let customEntryCount = 0;
     let defaultEntryPresent = false;
     const entries = getCharacterEntries(char);
-    for (const entry of entries)
+    if (entries)
     {
-        if (entry.definition.name === 'charDefaultDefinition')
-            defaultEntryPresent = true;
-        else
-            ++customEntryCount;
+        for (const entry of entries)
+        {
+            if (entry.definition.name === 'charDefaultDefinition')
+                defaultEntryPresent = true;
+            else
+                ++customEntryCount;
+        }
     }
     const entryIndexSet = new Set();
     let defaultDefinitionUsed = false;
@@ -404,13 +407,6 @@ function hasUnusedDefinitions({ solutions }, char)
     const notAllDefsUsed =
     customEntryCount > entryIndexSet.size || defaultEntryPresent && !defaultDefinitionUsed;
     return notAllDefsUsed;
-}
-
-function isCharacterDefined(char)
-{
-    const { getCharacterEntries } = JScrewIt.debug;
-    const charDefined = !!getCharacterEntries(char);
-    return charDefined;
 }
 
 function loadSolutionBookMap(load = true)
@@ -472,14 +468,6 @@ function parseArguments(parseSequence)
     }
     if (!charSet.size)
         fail('No characters specified');
-    {
-        const unindexableChars = [...charSet].filter(char => !isCharacterDefined(char));
-        if (unindexableChars.length)
-        {
-            const formattedCharacters = formatCharacters(unindexableChars);
-            fail('Unindexable characters specified: %s', formattedCharacters);
-        }
-    }
     return charSet;
 }
 
