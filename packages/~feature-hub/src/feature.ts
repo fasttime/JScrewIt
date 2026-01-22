@@ -286,18 +286,15 @@ FeatureConstructor
 
     /**
      * Node.js custom inspection function.
-     * Set on `Feature.prototype` with name `"inspect"` for Node.js ≤ 8.6.x and with symbol
-     * `Symbol.for("nodejs.util.inspect.custom")` for Node.js ≥ 6.6.x.
      *
      * @see
      * {@link https://nodejs.org/api/util.html#util_custom_inspection_functions_on_objects} for
      * further information.
      */
-    // opts can be undefined in Node.js 0.10.0.
-    function inspect(this: Feature, depth: never, opts?: util.InspectOptionsStylized): string
+    function inspect(this: Feature, depth: never, opts: util.InspectOptionsStylized): string
     {
-        const breakLength = opts?.breakLength ?? 80;
-        const compact = opts?.compact ?? true;
+        const breakLength = opts.breakLength as number | undefined ?? 80;
+        const compact = opts.compact as number | boolean | undefined ?? true;
         const name =
         this.name ??
         joinParts(compact, '<', '', this.canonicalNames, ',', '>', breakLength - 3);
@@ -436,8 +433,6 @@ FeatureConstructor
                 return str;
             },
         } as Record<string, unknown> & ThisType<Feature>;
-        if (utilInspect)
-            protoSource.inspect = inspect;
         assignNoEnum(FEATURE_PROTOTYPE, protoSource);
     }
 
@@ -645,16 +640,12 @@ FeatureConstructor
         }
         if (utilInspect)
         {
-            const inspectKey = utilInspect.custom as symbol | undefined;
-            if (inspectKey)
-            {
-                _Object_defineProperty
-                (
-                    FEATURE_PROTOTYPE,
-                    inspectKey,
-                    { configurable: true, value: inspect, writable: true },
-                );
-            }
+            _Object_defineProperty
+            (
+                FEATURE_PROTOTYPE,
+                utilInspect.custom,
+                { configurable: true, value: inspect, writable: true },
+            );
         }
 
         const featureNames = _Object_keys(featureInfos);

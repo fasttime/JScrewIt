@@ -20,10 +20,8 @@
     "build": "npm install && gulp",
     "clean": "node dev/clean",
     "coverage": "nyc --include=src --reporter=html --reporter=text-summary npm test",
-    "legacy-test": "node -- test/node-legacy/node_modules/mocha/bin/mocha --check-leaks --ui=ebdd test/node-legacy/test/spec/**/*.spec.js",
     "lint": "node dev/lint",
     "make": "node dev/make",
-    "prepare-legacy-test": "node ../../dev/internal/prepare-package-legacy-test.mjs",
     "test": "mocha --check-leaks --require=ts-node/register --ui=ebdd test/spec/**/*.spec.ts"
   },
   "devDependencies": {
@@ -33,7 +31,7 @@
     "eslint-plugin-ebdd": "latest",
     "globals": "latest",
     "gulp": "latest",
-    "mocha": "latest",
+    "mocha": "11",
     "nyc": "latest",
     "ts-node": "latest",
     "typescript": "latest"

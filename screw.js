@@ -99,7 +99,7 @@ function prompt()
     var outputFileName  = command.outputFileName;
     var options         = command.options;
 
-    var JScrewIt = require('./'); // '.' doesn't work in Node.js 0.10.
+    var JScrewIt = require('.');
 
     if (inputFileName == null)
     {

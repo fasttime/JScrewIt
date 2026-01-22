@@ -12,12 +12,8 @@ function formatItem(value: unknown): string | undefined
             text = value.length ? '[…]' : '[]';
         else if (type === 'bigint')
             text = `${value}n`;
-        // In Node.js 0.12, calling String with a symbol argument throws a TypeError.
-        // Since this script is only used in browsers this is not a true problem, but still.
-        else if (type !== 'symbol')
-            text = String(value);
         else
-            text = (value as symbol).toString();
+            text = String(value);
     }
     catch
     { }

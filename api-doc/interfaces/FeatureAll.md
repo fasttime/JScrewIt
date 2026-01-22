@@ -10,30 +10,6 @@
 
 ## Properties
 
-### ANDRO\_4\_0
-
-> **ANDRO\_4\_0**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Android Browser 4.0.
-
-***
-
-### ANDRO\_4\_1
-
-> **ANDRO\_4\_1**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Android Browser 4.1 to 4.3.
-
-***
-
-### ANDRO\_4\_4
-
-> **ANDRO\_4\_4**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Android Browser 4.4.
-
-***
-
 ### ANY\_DOCUMENT
 
 > **ANY\_DOCUMENT**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -42,7 +18,7 @@ Existence of the global object document whose string representation starts with 
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.
 
 ***
 
@@ -54,7 +30,7 @@ Existence of the global object self whose string representation starts with "\[o
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.
 
 ***
 
@@ -66,7 +42,7 @@ The property that the string representation of Array.prototype.entries\(\) start
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari 7.1+, Opera, and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
@@ -78,7 +54,7 @@ Support for arrow functions.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari 10.0+, Opera, and Node.js 4+.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
@@ -90,7 +66,7 @@ Support for async functions, which return Promise object.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari 10.1+, Opera, and Node.js 7.6+.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
@@ -102,7 +78,7 @@ Existence of the native function Array.prototype.at.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari 15.4+, Opera, and Node.js 16.6+.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
@@ -114,7 +90,7 @@ Existence of the global functions atob and btoa.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser, and Node.js 16.0+. This feature is not available inside web workers in Safari before 10.0.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
 
 ***
 
@@ -134,7 +110,7 @@ Existence of the global object statusbar having the string representation "\[obj
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari, Opera, and Android Browser 4.4. This feature is not available inside web workers.
+Available in Chrome, Edge, Firefox, Safari, and Opera. This feature is not available inside web workers.
 
 ***
 
@@ -156,7 +132,7 @@ The ability to call a function on the global object when invoking Function.proto
 
 #### Remarks
 
-Available in Android Browser before 4.1.
+This feature is not available in any of the supported engines.
 
 ***
 
@@ -214,7 +190,7 @@ An alias for `CHROME_122`.
 
 All new browsers' features.
 
-No support for Node.js and older browsers like Internet Explorer, Safari 17.3 or Android Browser.
+Not compatible with Node.js, Internet Explorer, and old versions of supported browsers.
 
 ***
 
@@ -228,7 +204,7 @@ This feature may become unavailable when certain browser extensions are active.
 
 #### Remarks
 
-Available in Internet Explorer 10+, Safari before 14.1, and Android Browser. This feature is not available inside web workers in Safari before 7.1 and Android Browser 4.4.
+Available in Internet Explorer.
 
 ***
 
@@ -258,7 +234,7 @@ Existence of the global object document having the string representation "\[obje
 
 #### Remarks
 
-Available in Internet Explorer before 11. This feature is not available inside web workers.
+This feature is not available in any of the supported engines.
 
 ***
 
@@ -270,7 +246,7 @@ Existence of the global object self having the string representation "\[object D
 
 #### Remarks
 
-Available in Android Browser before 4.4. This feature is not available inside web workers.
+This feature is not available in any of the supported engines.
 
 ***
 
@@ -282,7 +258,7 @@ The property that double quotation mark, less than and greater than characters i
 
 #### Remarks
 
-Available in Android Browser and Node.js before 0.12.
+This feature is not available in any of the supported engines.
 
 ***
 
@@ -294,7 +270,7 @@ The property that double quotation marks in the argument of String.prototype.fon
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
@@ -306,7 +282,7 @@ The property that only double quotation marks and no other characters in the arg
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
@@ -318,7 +294,7 @@ Having regular expressions created with the RegExp constructor use escape sequen
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js 12+.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
 
 ***
 
@@ -330,7 +306,7 @@ Having regular expressions created with the RegExp constructor use escape sequen
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js 4+.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
 
 ***
 
@@ -434,7 +410,7 @@ Existence of the native function Array.prototype.fill.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari 7.1+, Opera, and Node.js 4+.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
@@ -446,7 +422,7 @@ Existence of the native function Array.prototype.flat.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari 12+, Opera, and Node.js 11+.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
@@ -468,7 +444,7 @@ Existence of the function String.fromCodePoint.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari 9+, Opera, and Node.js 4+.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
@@ -480,7 +456,7 @@ A string representation of dynamically generated functions where the character a
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari 17.4+, Opera, and Node.js 10+.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
@@ -492,7 +468,7 @@ A string representation of dynamically generated functions where the character a
 
 #### Remarks
 
-Available in Internet Explorer, Safari 9+ before 17.4, Android Browser, and Node.js before 10.
+Available in Internet Explorer.
 
 ***
 
@@ -504,7 +480,7 @@ Ability to call Array.prototype.toString with a non-array binding.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+, and Node.js.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
 
 ***
 
@@ -530,7 +506,7 @@ The string representation of dates is implementation dependent, but most engines
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari, Opera, Android Browser, and Node.js.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
 
 ***
 
@@ -542,7 +518,7 @@ Existence of the global object history having the string representation "\[objec
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.
 
 ***
 
@@ -554,15 +530,7 @@ Existence of the global object Audio whose string representation starts with "fu
 
 #### Remarks
 
-Available in Android Browser 4.4. This feature is not available inside web workers.
-
-***
-
-### IE\_10
-
-> **IE\_10**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Internet Explorer 10.
+This feature is not available in any of the supported engines.
 
 ***
 
@@ -579,14 +547,6 @@ Features available in Internet Explorer 11.
 > **IE\_11\_WIN\_10**: [`PredefinedFeature`](PredefinedFeature.md)
 
 Features available in Internet Explorer 11 on Windows 10.
-
-***
-
-### IE\_9
-
-> **IE\_9**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Internet Explorer 9.
 
 ***
 
@@ -612,7 +572,7 @@ The ability to use unary increment operators with string characters, like in \( 
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser, and Node.js. This feature is not available when strict mode is enforced in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, and Node.js 5+.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js. This feature is not available when strict mode is enforced in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
 
 ***
 
@@ -624,7 +584,7 @@ Existence of the global object Intl.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10.0+, Opera, Android Browser 4.4, and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
 
 ***
 
@@ -648,7 +608,7 @@ Japanese string representation of Infinity ending with "∞".
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10.0+, Opera, Android Browser 4.4, and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
 
 ***
 
@@ -660,7 +620,7 @@ Language sensitive string representation of Infinity as "∞".
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10.0+, Opera, Android Browser 4.4, and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari, Opera, and Node.js.
 
 ***
 
@@ -672,7 +632,7 @@ Features shared by all engines capable of localized number formatting, including
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11, Safari 10.0+, Opera, Android Browser 4.4, and Node.js 13+.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
 
 ***
 
@@ -684,7 +644,7 @@ Localized number formatting for Bengali.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10.0+ before 18.4, Opera, Android Browser 4.4, and Node.js 13+.
+Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari before 18.4, Opera, and Node.js.
 
 ***
 
@@ -698,7 +658,7 @@ This includes all features of LOCALE_NUMERALS plus the output of the first three
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari 10.0+, Opera, Android Browser 4.4, and Node.js 13+. This feature is not available inside web workers in Safari 18.4+.
+Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari, Opera, and Node.js.
 
 ***
 
@@ -710,7 +670,7 @@ Existence of the global object location with the property that Object.prototype.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari, Opera, and Android Browser.
+Available in Chrome, Edge, Firefox, Safari, and Opera.
 
 ***
 
@@ -722,7 +682,7 @@ Existence of user agent string navigator.userAgent that starts with "Mozilla".
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera.
 
 ***
 
@@ -734,7 +694,7 @@ Existence of the name property for functions.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
@@ -746,7 +706,7 @@ A string representation of native functions typical for V8 or for Internet Explo
 
 #### Remarks
 
-Available in Chrome, Edge, Internet Explorer, Opera, Android Browser, and Node.js.
+Available in Chrome, Edge, Internet Explorer, Opera, and Node.js.
 
 ***
 
@@ -760,7 +720,7 @@ A remarkable trait of this feature is the lack of line feed characters at the be
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari, Opera, Android Browser, and Node.js.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
@@ -772,7 +732,7 @@ The property that the string representation of Array.prototype.entries\(\) evalu
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari 9+, Opera, and Node.js 0.12+.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
@@ -790,75 +750,11 @@ Available in Firefox, Internet Explorer, and Safari.
 
 ***
 
-### NODE\_0\_10
+### NODE\_20
 
-> **NODE\_0\_10**: [`PredefinedFeature`](PredefinedFeature.md)
+> **NODE\_20**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Node.js 0.10.
-
-***
-
-### NODE\_0\_12
-
-> **NODE\_0\_12**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Node.js 0.12.
-
-***
-
-### NODE\_10
-
-> **NODE\_10**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Node.js 10.
-
-***
-
-### NODE\_11
-
-> **NODE\_11**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Node.js 11.
-
-***
-
-### NODE\_12
-
-> **NODE\_12**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Node.js 12.
-
-***
-
-### NODE\_13
-
-> **NODE\_13**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Node.js 13 and Node.js 14.
-
-***
-
-### NODE\_15
-
-> **NODE\_15**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Node.js 15.
-
-***
-
-### NODE\_16\_0
-
-> **NODE\_16\_0**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Node.js 16.0 to 16.5.
-
-***
-
-### NODE\_16\_6
-
-> **NODE\_16\_6**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Node.js 16.6 to 21.
+Features available in Node.js 20 to 21.
 
 ***
 
@@ -875,30 +771,6 @@ Features available in Node.js 22.0 to 22.11 and Node.js 23.0 to 23.2.
 > **NODE\_22\_12**: [`PredefinedFeature`](PredefinedFeature.md)
 
 Features available in Node.js 22.12 to 22.14 and Node.js 23.3 or later.
-
-***
-
-### NODE\_4
-
-> **NODE\_4**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Node.js 4.
-
-***
-
-### NODE\_5
-
-> **NODE\_5**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Node.js 5 to 7.5.
-
-***
-
-### NODE\_7\_6
-
-> **NODE\_7\_6**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Node.js 7.6 to 9.
 
 ***
 
@@ -920,7 +792,7 @@ Existence of the global object Node having the string representation "\[object N
 
 #### Remarks
 
-Available in Safari before 10.0. This feature is not available inside web workers.
+This feature is not available in any of the supported engines.
 
 ***
 
@@ -932,7 +804,7 @@ The property that the Array.prototype.entries\(\).constructor is the Object cons
 
 #### Remarks
 
-Available in Firefox before 131, Safari 9+ before 18.4, and Node.js 0.12+ before 22.0.
+Available in Firefox before 131, Safari before 18.4, and Node.js before 22.0.
 
 ***
 
@@ -944,7 +816,7 @@ Existence of the global function location.constructor whose string representatio
 
 #### Remarks
 
-Available in Internet Explorer and Safari before 10.0. This feature is not available inside web workers.
+Available in Internet Explorer. This feature is not available inside web workers.
 
 ***
 
@@ -956,7 +828,7 @@ Having the function Object.prototype.toString return the string "\[object Undefi
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer 10+, Safari, Opera, Android Browser 4.1+, and Node.js.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
 
 ***
 
@@ -968,7 +840,7 @@ The property that the string representation of the global object self starts wit
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser 4.4. This feature is not available inside web workers in Chrome, Edge, Firefox, Safari, Opera, and Android Browser 4.4.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers in Chrome, Edge, Firefox, Safari, and Opera.
 
 ***
 
@@ -980,7 +852,7 @@ Existence of the global object location.constructor whose string representation 
 
 #### Remarks
 
-Available in Safari before 10.0.
+This feature is not available in any of the supported engines.
 
 ***
 
@@ -992,7 +864,7 @@ Existence of the global object Intl having the string representation "\[object O
 
 #### Remarks
 
-Available in Internet Explorer 11, Safari 10.0+ before 14.0.1, Android Browser 4.4, and Node.js 0.12+ before 15.
+Available in Internet Explorer.
 
 ***
 
@@ -1004,7 +876,7 @@ The property that the string representation of String.prototype.matchAll\(\) eva
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Safari 13+, Opera, and Node.js 12+.
+Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
@@ -1018,67 +890,19 @@ An alias for `SAFARI_18_4`.
 
 ***
 
-### SAFARI\_10\_0
-
-> **SAFARI\_10\_0**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Safari 10.0.
-
-***
-
-### SAFARI\_10\_1
-
-> **SAFARI\_10\_1**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Safari 10.1 and Safari 11.
-
-***
-
-### SAFARI\_12
-
-> **SAFARI\_12**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Safari 12.
-
-***
-
-### SAFARI\_13
-
-> **SAFARI\_13**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Safari 13 and Safari 14.0.0.
-
-***
-
-### SAFARI\_14\_0\_1
-
-> **SAFARI\_14\_0\_1**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Safari 14.0.1 to 14.0.3.
-
-***
-
-### SAFARI\_14\_1
-
-> **SAFARI\_14\_1**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Safari 14.1 to 15.3.
-
-***
-
-### SAFARI\_15\_4
-
-> **SAFARI\_15\_4**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Safari 15.4 to 17.3.
-
-***
-
 ### SAFARI\_17\_4
 
 > **SAFARI\_17\_4**: [`PredefinedFeature`](PredefinedFeature.md)
 
 Features available in Safari 17.4 to 17.6.
+
+#### Remarks
+
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `SAFARI_PRE_PREV` instead of `SAFARI_17_4` for long term support.
+
+#### See
+
+[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
 
 ***
 
@@ -1088,6 +912,14 @@ Features available in Safari 17.4 to 17.6.
 
 Features available in Safari 18.0 to 18.3.
 
+#### Remarks
+
+This feature may be replaced or removed in the near future when current browser versions become obsolete.
+
+#### See
+
+[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
+
 ***
 
 ### SAFARI\_18\_4
@@ -1096,29 +928,33 @@ Features available in Safari 18.0 to 18.3.
 
 Features available in Safari 18.4 or later.
 
-***
+#### Remarks
 
-### SAFARI\_7\_0
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `SAFARI` or `SAFARI_PREV` instead of `SAFARI_18_4` for long term support.
 
-> **SAFARI\_7\_0**: [`PredefinedFeature`](PredefinedFeature.md)
+#### See
 
-Features available in Safari 7.0.
-
-***
-
-### SAFARI\_7\_1
-
-> **SAFARI\_7\_1**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Safari 7.1 and Safari 8.
+[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
 
 ***
 
-### SAFARI\_9
+### SAFARI\_PRE\_PREV
 
-> **SAFARI\_9**: [`PredefinedFeature`](PredefinedFeature.md)
+> **SAFARI\_PRE\_PREV**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Safari 9.
+Features available in the previous to previous version of Safari.
+
+An alias for `SAFARI_17_4`.
+
+***
+
+### SAFARI\_PREV
+
+> **SAFARI\_PREV**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in the previous to current version of Safari.
+
+An alias for `SAFARI_18_4`.
 
 ***
 
@@ -1138,7 +974,7 @@ Existence of the global object self whose string representation starts with "\[o
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers in Safari 7.1+ before 10.0.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera.
 
 ***
 
@@ -1150,7 +986,7 @@ Support for the two-letter locale name "ar" to format decimal numbers as Arabic 
 
 #### Remarks
 
-Available in Firefox before 134, Internet Explorer 11, Safari 10.0+ before 18.0, Android Browser 4.4, and Node.js 13+ before 22.12–22.14 and 23.3.
+Available in Firefox before 134, Internet Explorer, Safari before 18.0, and Node.js before 22.12–22.14 and 23.3.
 
 ***
 
@@ -1162,7 +998,7 @@ Existence of the global string status.
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser. This feature is not available inside web workers.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.
 
 ***
 
@@ -1176,7 +1012,7 @@ This behavior is specified by ECMAScript, and is enforced by all engines except 
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, Android Browser 4.1+, and Node.js.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
 
 ***
 
@@ -1190,7 +1026,7 @@ Remarkable traits are the lack of line feed characters at the beginning and at t
 
 #### Remarks
 
-Available in Chrome, Edge, Opera, Android Browser, and Node.js.
+Available in Chrome, Edge, Opera, and Node.js.
 
 ***
 
@@ -1202,4 +1038,4 @@ Existence of the global object self having the string representation "\[object W
 
 #### Remarks
 
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Android Browser 4.4. This feature is not available inside web workers.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.

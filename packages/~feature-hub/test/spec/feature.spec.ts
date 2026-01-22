@@ -752,67 +752,6 @@ describe
     },
 );
 
-describe.when(typeof module !== 'undefined')
-(
-    'Feature.prototype.inspect',
-    (): void =>
-    {
-        it
-        (
-            'can be called without arguments',
-            (): void =>
-            {
-                const Feature = createFeatureClass({ });
-                const featureObj = Feature() as Feature & { inspect(): string; };
-                const actual = typeof featureObj.inspect();
-                assert.strictEqual(actual, 'string');
-            },
-        );
-
-        it
-        (
-            'does not exist in browsers',
-            (): void =>
-            {
-                const exports: { inspect?: typeof util.inspect; } = getNodeUtil();
-                const inspect = exports.inspect!;
-                try
-                {
-                    delete exports.inspect;
-                    const Feature = createFeatureClass({ });
-                    assert(!('inspect' in Feature.prototype));
-                }
-                finally
-                {
-                    exports.inspect = inspect;
-                }
-            },
-        );
-
-        it
-        (
-            'exists in old versions of Node.js',
-            (): void =>
-            {
-                const { inspect }: { readonly inspect: { custom?: typeof util.inspect.custom; }; } =
-                getNodeUtil();
-                const { custom } = inspect;
-                try
-                {
-                    delete inspect.custom;
-                    const Feature = createFeatureClass({ });
-                    assert('inspect' in Feature.prototype);
-                }
-                finally
-                {
-                    if (custom)
-                        inspect.custom = custom;
-                }
-            },
-        );
-    },
-);
-
 it
 (
     'Feature.prototype.toString',

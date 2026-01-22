@@ -12,12 +12,7 @@ Feature: User interface
   Scenario: Output area content wrapping
     When the output area content is overlong
     Then the output area content should be broken into multiple lines
-
-  @appearance
-  Scenario: Output area content uniform wrapping
-    Given a browser other than Internet Explorer 9 or 10
-    When the output area content is overlong
-    Then all lines in the output area but the last one should be equally long
+    And all lines in the output area but the last one should be equally long
 
   @interaction
   Scenario: Double-click in output area

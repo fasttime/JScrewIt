@@ -67,7 +67,7 @@
     "gulp-tap": "latest",
     "gulp-uglify": "latest",
     "handlebars": "latest",
-    "mocha": "3",
+    "mocha": "4",
     "mocha-bar": "latest",
     "postrequire": "latest",
     "rollup": "latest",

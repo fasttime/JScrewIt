@@ -355,10 +355,7 @@ showFeatureSupport,
         document.querySelector('link[rel="icon"]').href = href;
     }
 
-    // In Internet Explorer 10, Mocha will occasionally set the globals $0, $1, $2, $3 and $4 and
-    // recognize them as leaked while running unit tests.
-    mocha.setup
-    ({ globals: ['$0', '$1', '$2', '$3', '$4'], reporter: MochaBar, timeout: 20000, ui: 'ebdd' });
+    mocha.setup({ reporter: MochaBar, timeout: 20000, ui: 'ebdd' });
     mocha.checkLeaks();
     addEventListener('load', handleLoad);
     var anyDaggers;

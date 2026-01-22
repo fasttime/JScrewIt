@@ -179,6 +179,14 @@ setTimeout,
                 'with runAs express',
                 function ()
                 {
+                    var SPACING_CHAR_CODES =
+                    [
+                        0x9,    0xA,    0xB,    0xC,    0xD,    0x20,   0xA0,   0x1680,
+                        0x2000, 0x2001, 0x2002, 0x2003, 0x2004, 0x2005, 0x2006, 0x2007,
+                        0x2008, 0x2009, 0x200A, 0x2028, 0x2029, 0x202F, 0x205F, 0x3000,
+                        0xFEFF,
+                    ];
+
                     describe
                     (
                         'encodes',
@@ -537,6 +545,42 @@ setTimeout,
                                     expect(fn).toThrowStrictly(Error, 'Encoding failed');
                                 }
                             );
+                        }
+                    );
+                    it
+                    (
+                        'encodes spacing characters as empty strings',
+                        function ()
+                        {
+                            SPACING_CHAR_CODES.forEach
+                            (
+                                function (charCode)
+                                {
+                                    var char = String.fromCharCode(charCode);
+                                    var output = encode(char, { runAs: 'express' });
+                                    expect(output).toBe('');
+                                }
+                            );
+                        }
+                    );
+                    it
+                    (
+                        'does not encode non-spacing characters as empty strings',
+                        function ()
+                        {
+                            for (var charCode = 0; charCode <= 0xffff; charCode++)
+                            {
+                                if (SPACING_CHAR_CODES.indexOf(charCode) >= 0)
+                                    continue;
+                                var char = String.fromCharCode(charCode);
+                                if (/[$;\w]/.test(char)) continue;
+                                expect(encode.bind(null, char, { runAs: 'express' }))
+                                .toThrow
+                                (
+                                    Error,
+                                    'Character with code ' + charCode + ' encoded unexpectedly'
+                                );
+                            }
                         }
                     );
                 }

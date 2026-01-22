@@ -168,14 +168,13 @@ var featureInfos =
     },
     ATOB:
     {
-        description:    'Existence of the global functions atob and btoa.',
+        description: 'Existence of the global functions atob and btoa.',
         check:
         function ()
         {
             var available = typeof atob === 'function' && typeof btoa === 'function';
             return available;
         },
-        attributes:     { 'web-worker': 'old-safari-restriction' },
     },
     BARPROP:
     {
@@ -240,7 +239,6 @@ var featureInfos =
             var available = typeof console === 'object' && console + '' === '[object Console]';
             return available;
         },
-        attributes: { 'web-worker': 'no-console-in-web-worker' },
     },
     CREATE_ELEMENT:
     {
@@ -588,8 +586,7 @@ var featureInfos =
             checkLocaleNumeral('ru', NaN, /^не.число/);
             return available;
         },
-        includes:   ['LOCALE_NUMERALS'],
-        attributes: { 'web-worker': 'locale-numerals-ext-restriction' },
+        includes: ['LOCALE_NUMERALS'],
     },
 
     LOCATION:
@@ -801,8 +798,7 @@ var featureInfos =
     {
         description:
         'Existence of the global object self whose string representation starts with "[object ".',
-        check:      makeSelfFeatureCheck(/^\[object /),
-        attributes: { 'web-worker': 'safari-bug-21820506' },
+        check: makeSelfFeatureCheck(/^\[object /),
     },
     SHORT_LOCALES:
     {
@@ -874,11 +870,28 @@ var featureInfos =
         description:
         'Features available in all browsers.\n' +
         'No support for Node.js.',
-        includes: ['ANY_DOCUMENT', 'ANY_WINDOW', 'HISTORY', 'INCR_CHAR', 'MOZILLA', 'STATUS'],
+        includes:
+        [
+            'ANY_DOCUMENT',
+            'ATOB',
+            'ESC_REGEXP_LF',
+            'ESC_REGEXP_SLASH',
+            'GENERIC_ARRAY_TO_STRING',
+            'GMT',
+            'HISTORY',
+            'INCR_CHAR',
+            'INTL',
+            'JAPANESE_INFINITY',
+            'LOCALE_NUMERALS',
+            'MOZILLA',
+            'OBJECT_UNDEFINED',
+            'STATUS',
+            'WINDOW',
+        ],
         attributes:
         {
             'char-increment-restriction':   null,
-            'safari-bug-21820506':          null,
+            'non-ie-restriction':           null,
             'web-worker-restriction':       null,
         },
     },
@@ -886,8 +899,7 @@ var featureInfos =
     {
         description:
         'All new browsers\' features.\n' +
-        'No support for Node.js and older browsers like Internet Explorer, Safari 17.3 or ' +
-        'Android Browser.',
+        'Not compatible with Node.js, Internet Explorer, and old versions of supported browsers.',
         includes:
         [
             'ANY_DOCUMENT',
@@ -924,63 +936,9 @@ var featureInfos =
         ],
         attributes:
         {
-            'char-increment-restriction':       null,
-            'locale-numerals-ext-restriction':  null,
-            'non-ie-restriction':               null,
-            'web-worker-restriction':           null,
-        },
-    },
-    ANDRO_4_0:
-    {
-        families: ['Android Browser'],
-        versions: ['4.0'],
-        includes:
-        [
-            'ANY_DOCUMENT',
-            'ATOB',
-            'CALL_ON_GLOBAL',
-            'CONSOLE',
-            'DOMWINDOW',
-            'ESC_HTML_ALL',
-            'FUNCTION_22_LF',
-            'GMT',
-            'HISTORY',
-            'INCR_CHAR',
-            'LOCATION',
-            'MOZILLA',
-            'NAME',
-            'STATUS',
-            'V8_SRC',
-        ],
-    },
-    ANDRO_4_1:
-    {
-        inherits: 'ANDRO_4_0',
-        versions: ['4.1-4.3'],
-        includes: { CALL_ON_GLOBAL: false, GENERIC_ARRAY_TO_STRING: true, OBJECT_UNDEFINED: true },
-    },
-    ANDRO_4_4:
-    {
-        inherits:   'ANDRO_4_1',
-        versions:   ['4.4'],
-        includes:
-        {
-            BARPROP:                true,
-            DOMWINDOW:              false,
-            HTMLAUDIOELEMENT:       true,
-            JAPANESE_INFINITY:      true,
-            LOCALE_INFINITY:        true,
-            LOCALE_NUMERALS_BN:     true,
-            LOCALE_NUMERALS_EXT:    true,
-            PLAIN_INTL:             true,
-            SHORT_LOCALES:          true,
-            WINDOW:                 true,
-        },
-        attributes:
-        {
-            'no-console-in-web-worker': null,
-            'non-ie-restriction':       null,
-            'web-worker-restriction':   null,
+            'char-increment-restriction':   null,
+            'non-ie-restriction':           null,
+            'web-worker-restriction':       null,
         },
     },
     CHROME_PREV:
@@ -1115,49 +1073,35 @@ var featureInfos =
         versions:   ['134-'],
         includes:   { SHORT_LOCALES: false },
     },
-    IE_9:
+    IE_11:
     {
-        families: ['Internet Explorer'],
-        versions: ['9'],
+        families:   ['Internet Explorer'],
+        versions:   ['11'],
         includes:
         [
+            'ANY_DOCUMENT',
+            'ATOB',
             'CAPITAL_HTML',
-            'DOCUMENT',
+            'CONSOLE',
             'ESC_REGEXP_LF',
             'ESC_REGEXP_SLASH',
             'FUNCTION_22_LF',
             'GENERIC_ARRAY_TO_STRING',
+            'GMT',
             'HISTORY',
             'IE_SRC',
             'INCR_CHAR',
+            'JAPANESE_INFINITY',
+            'LOCALE_NUMERALS',
             'MOZILLA',
             'OBJECT_L_LOCATION_CTOR',
+            'OBJECT_UNDEFINED',
+            'PLAIN_INTL',
+            'SHORT_LOCALES',
             'STATUS',
-            'UNDEFINED',
             'WINDOW',
         ],
-    },
-    IE_10:
-    {
-        inherits:   'IE_9',
-        versions:   ['10'],
-        includes:   { ATOB: true, CONSOLE: true, OBJECT_UNDEFINED: true, UNDEFINED: false },
         attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
-    },
-    IE_11:
-    {
-        inherits: 'IE_10',
-        versions: ['11'],
-        includes:
-        {
-            ANY_DOCUMENT:       true,
-            DOCUMENT:           false,
-            GMT:                true,
-            JAPANESE_INFINITY:  true,
-            LOCALE_NUMERALS:    true,
-            PLAIN_INTL:         true,
-            SHORT_LOCALES:      true,
-        },
     },
     IE_11_WIN_10:
     {
@@ -1173,100 +1117,44 @@ var featureInfos =
             LOCALE_NUMERALS_EXT:    true,
         },
     },
-    NODE_0_10:
+    NODE_20:
     {
-        families: ['Node.js'],
-        versions: ['0.10'],
+        families:   ['Node.js'],
+        versions:   ['20-21'],
         includes:
         [
-            'ESC_HTML_ALL',
-            'FUNCTION_22_LF',
+            'ARROW',
+            'ASYNC_FUNCTION',
+            'AT',
+            'ATOB',
+            'ESC_HTML_QUOT_ONLY',
+            'ESC_REGEXP_LF',
+            'ESC_REGEXP_SLASH',
+            'FILL',
+            'FLAT',
+            'FROM_CODE_POINT',
+            'FUNCTION_19_LF',
             'GENERIC_ARRAY_TO_STRING',
             'GLOBAL_UNDEFINED',
             'GMT',
             'INCR_CHAR',
+            'INTL',
+            'JAPANESE_INFINITY',
+            'LOCALE_INFINITY',
+            'LOCALE_NUMERALS_BN',
+            'LOCALE_NUMERALS_EXT',
             'NAME',
+            'NO_OLD_SAFARI_ARRAY_ITERATOR',
+            'OBJECT_ARRAY_ENTRIES_CTOR',
+            'REGEXP_STRING_ITERATOR',
+            'SHORT_LOCALES',
             'V8_SRC',
         ],
-    },
-    NODE_0_12:
-    {
-        inherits: 'NODE_0_10',
-        versions: ['0.12'],
-        includes:
-        {
-            ESC_HTML_ALL:                   false,
-            ESC_HTML_QUOT_ONLY:             true,
-            JAPANESE_INFINITY:              true,
-            LOCALE_INFINITY:                true,
-            NO_OLD_SAFARI_ARRAY_ITERATOR:   true,
-            OBJECT_ARRAY_ENTRIES_CTOR:      true,
-            PLAIN_INTL:                     true,
-        },
-    },
-    NODE_4:
-    {
-        inherits: 'NODE_0_12',
-        versions: ['4'],
-        includes: { ARROW: true, ESC_REGEXP_SLASH: true, FILL: true, FROM_CODE_POINT: true },
-    },
-    NODE_5:
-    {
-        inherits:   'NODE_4',
-        versions:   ['5-7.5'],
         attributes: { 'char-increment-restriction': null },
-    },
-    NODE_7_6:
-    {
-        inherits: 'NODE_5',
-        versions: ['7.6-9'],
-        includes: { ASYNC_FUNCTION: true },
-    },
-    NODE_10:
-    {
-        inherits: 'NODE_7_6',
-        versions: ['10'],
-        includes: { FUNCTION_19_LF: true, FUNCTION_22_LF: false },
-    },
-    NODE_11:
-    {
-        inherits: 'NODE_10',
-        versions: ['11'],
-        includes: { FLAT: true },
-    },
-    NODE_12:
-    {
-        inherits: 'NODE_11',
-        versions: ['12'],
-        includes: { ESC_REGEXP_LF: true, REGEXP_STRING_ITERATOR: true },
-    },
-    NODE_13:
-    {
-        inherits: 'NODE_12',
-        versions: ['13|14'],
-        includes: { LOCALE_NUMERALS_BN: true, LOCALE_NUMERALS_EXT: true, SHORT_LOCALES: true },
-    },
-    NODE_15:
-    {
-        inherits: 'NODE_13',
-        versions: ['15'],
-        includes: { INTL: true, PLAIN_INTL: false },
-    },
-    NODE_16_0:
-    {
-        inherits: 'NODE_15',
-        versions: ['16.0-16.5'],
-        includes: { ATOB: true },
-    },
-    NODE_16_6:
-    {
-        inherits: 'NODE_16_0',
-        versions: ['16.6-21'],
-        includes: { AT: true },
     },
     NODE_22:
     {
-        inherits: 'NODE_16_6',
+        inherits: 'NODE_20',
         versions: ['22.0-22.11|23.0-23.2'],
         includes: { ITERATOR_HELPER: true, OBJECT_ARRAY_ENTRIES_CTOR: false },
     },
@@ -1276,129 +1164,69 @@ var featureInfos =
         versions: ['22.12-22.14|23.3-'],
         includes: { SHORT_LOCALES: false },
     },
-    SAFARI_7_0:
+    SAFARI_PRE_PREV:
+    {
+        description:    describeEngine('the previous to previous version of Safari'),
+        aliasFor:       'SAFARI_17_4',
+    },
+    SAFARI_17_4:
     {
         families: ['Safari'],
-        versions: ['7.0'],
+        versions: ['17.4-17.6'],
         includes:
         [
             'ANY_DOCUMENT',
+            'ARROW',
+            'ASYNC_FUNCTION',
+            'AT',
             'ATOB',
             'BARPROP',
-            'CONSOLE',
             'ESC_HTML_QUOT_ONLY',
             'ESC_REGEXP_LF',
             'ESC_REGEXP_SLASH',
             'FF_SRC',
+            'FILL',
+            'FLAT',
+            'FROM_CODE_POINT',
+            'FUNCTION_19_LF',
             'GENERIC_ARRAY_TO_STRING',
             'GLOBAL_UNDEFINED',
             'GMT',
             'HISTORY',
             'INCR_CHAR',
+            'INTL',
+            'JAPANESE_INFINITY',
+            'LOCALE_INFINITY',
+            'LOCALE_NUMERALS_BN',
+            'LOCALE_NUMERALS_EXT',
             'LOCATION',
             'MOZILLA',
             'NAME',
-            'NODECONSTRUCTOR',
-            'OBJECT_L_LOCATION_CTOR',
-            'OLD_SAFARI_LOCATION_CTOR',
+            'NO_OLD_SAFARI_ARRAY_ITERATOR',
+            'OBJECT_ARRAY_ENTRIES_CTOR',
+            'REGEXP_STRING_ITERATOR',
+            'SHORT_LOCALES',
             'STATUS',
             'WINDOW',
         ],
         attributes:
         {
-            'char-increment-restriction':   null,
-            'no-console-in-web-worker':     null,
-            'non-ie-restriction':           null,
-            'old-safari-restriction':       null,
-            'web-worker-restriction':       null,
+            'char-increment-restriction':       null,
+            'non-ie-restriction':               null,
+            'unstable':                         null,
+            'web-worker-restriction':           null,
         },
-    },
-    SAFARI_7_1:
-    {
-        inherits:   'SAFARI_7_0',
-        versions:   ['7.1|8'],
-        includes:   { ARRAY_ITERATOR: true, FILL: true },
-        attributes: { 'no-console-in-web-worker': undefined, 'safari-bug-21820506': null },
-    },
-    SAFARI_9:
-    {
-        inherits: 'SAFARI_7_1',
-        versions: ['9'],
-        includes:
-        {
-            ARRAY_ITERATOR:                 false,
-            FROM_CODE_POINT:                true,
-            FUNCTION_22_LF:                 true,
-            NO_OLD_SAFARI_ARRAY_ITERATOR:   true,
-            OBJECT_ARRAY_ENTRIES_CTOR:      true,
-        },
-    },
-    SAFARI_10_0:
-    {
-        inherits:   'SAFARI_9',
-        versions:   ['10.0'],
-        includes:
-        {
-            ARROW:                      true,
-            JAPANESE_INFINITY:          true,
-            LOCALE_INFINITY:            true,
-            LOCALE_NUMERALS_BN:         true,
-            LOCALE_NUMERALS_EXT:        true,
-            NODECONSTRUCTOR:            false,
-            OBJECT_L_LOCATION_CTOR:     false,
-            OLD_SAFARI_LOCATION_CTOR:   false,
-            PLAIN_INTL:                 true,
-            SHORT_LOCALES:              true,
-        },
-        attributes: { 'old-safari-restriction': undefined, 'safari-bug-21820506': undefined },
-    },
-    SAFARI_10_1:
-    {
-        inherits: 'SAFARI_10_0',
-        versions: ['10.1|11'],
-        includes: { ASYNC_FUNCTION: true },
-    },
-    SAFARI_12:
-    {
-        inherits: 'SAFARI_10_1',
-        versions: ['12'],
-        includes: { FLAT: true },
-    },
-    SAFARI_13:
-    {
-        inherits: 'SAFARI_12',
-        versions: ['13|14.0.0'],
-        includes: { REGEXP_STRING_ITERATOR: true },
-    },
-    SAFARI_14_0_1:
-    {
-        inherits: 'SAFARI_13',
-        versions: ['14.0.1-14.0.3'],
-        includes: { INTL: true, PLAIN_INTL: false },
-    },
-    SAFARI_14_1:
-    {
-        inherits: 'SAFARI_14_0_1',
-        versions: ['14.1-15.3'],
-        includes: { CONSOLE: false },
-    },
-    SAFARI_15_4:
-    {
-        inherits: 'SAFARI_14_1',
-        versions: ['15.4-17.3'],
-        includes: { AT: true },
-    },
-    SAFARI_17_4:
-    {
-        inherits: 'SAFARI_15_4',
-        versions: ['17.4-17.6'],
-        includes: { FUNCTION_19_LF: true, FUNCTION_22_LF: false },
     },
     SAFARI_18_0:
     {
         inherits: 'SAFARI_17_4',
         versions: ['18.0-18.3'],
         includes: { SHORT_LOCALES: false },
+    },
+    SAFARI_PREV:
+    {
+        description:    describeEngine('the previous to current version of Safari'),
+        aliasFor:       'SAFARI_18_4',
     },
     SAFARI:
     {
@@ -1411,7 +1239,6 @@ var featureInfos =
         versions:   ['18.4-'],
         includes:
         { ITERATOR_HELPER: true, LOCALE_NUMERALS_BN: false, OBJECT_ARRAY_ENTRIES_CTOR: false },
-        attributes: { 'locale-numerals-ext-restriction': null },
     },
 };
 (function ()

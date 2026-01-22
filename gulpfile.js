@@ -154,11 +154,6 @@ task
                     jsVersion:          5,
                     languageOptions:    { sourceType: 'commonjs' },
                     processor:          new EslintEnvProcessor(),
-                    rules:
-                    {
-                        // process.exitCode is not supported in Node.js 0.10.
-                        'no-process-exit': 'off',
-                    },
                 },
                 {
                     files:              ['test/**/*.js'],
@@ -167,7 +162,6 @@ task
                     languageOptions:    { sourceType: 'script' },
                     plugins:            ebddPlugins,
                     processor:          new EslintEnvProcessor({ plugins: ebddPlugins }),
-                    rules:              { '@origin-1/no-extra-new': 'off' },
                 },
                 {
                     files:              ['lib/**/*.ts'],

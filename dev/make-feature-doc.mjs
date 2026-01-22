@@ -70,7 +70,6 @@ export default
         ['Firefox'],
         ['Internet Explorer'],
         ['Safari'],
-        ['Android Browser'],
         ['Node.js'],
     ];
 

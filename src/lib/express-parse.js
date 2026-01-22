@@ -493,9 +493,8 @@ var tokens =
     HexIntegerLiteral:      '0[Xx]#HexDigit+',
     NumericLiteral:         '#HexIntegerLiteral|#DecimalLiteral',
     Separator:              '#SeparatorChar|//.*(?!.)|/\\*[\\s\\S]*?\\*/',
-    // U+180E is recognized as a separator in older browsers.
-    // U+FEFF is missed by /\s/ in Android Browser < 4.1.x.
-    SeparatorChar:          '(?!\u180E)[\\s\uFEFF]',
+    // U+180E is recognized as a separator in Internet Explorer.
+    SeparatorChar:          '(?!\u180E)\\s',
     SingleQuotedString:     '\'(?:#EscapeSequence|(?![\'\\\\]).)*\'',
     UnicodeEscapeSequence:  '\\\\u#HexDigit{4}',
 };

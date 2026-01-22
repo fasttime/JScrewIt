@@ -45,21 +45,12 @@
     {
         function get()
         {
-            var returnValue = this === global ? toString : toStringNoGlobal;
-            return returnValue;
+            return toString;
         }
 
         function toString()
         {
             var str = callAdapters(adapterList, this, arguments);
-            return str;
-        }
-
-        function toStringNoGlobal()
-        {
-            // Some old browsers set the global object instead of undefined as this.
-            var thisValue = this === global ? undefined : this;
-            var str = callAdapters(adapterList, thisValue, arguments);
             return str;
         }
 
@@ -69,9 +60,7 @@
 
     function emuDo(emuFeatures, callback)
     {
-        // In Android Browser, some objects without a prototype don't work well with arbitrary
-        // property names; objects with an empty prototype are fine.
-        var context = Object.create(Object.create(null));
+        var context = Object.create(null);
         try
         {
             emuFeatures.forEach
@@ -151,7 +140,7 @@
             {
                 var codePoint = +arg;
                 if ((codePoint & 0x1fffff) !== codePoint || codePoint > 0x10ffff)
-                    throw new RangeError(codePoint + ' is not a valid code point');
+                    throw RangeError(codePoint + ' is not a valid code point');
                 if (codePoint <= 0xffff)
                     codeUnits.push(codePoint);
                 else
@@ -758,13 +747,7 @@
             {
                 return '[object BarProp]';
             };
-            // In Android Browser versions prior to 4.4, Object.defineProperty doesn't replace the
-            // statusbar correctly despite the configurable attribute set.
-            // As a workaround, we'll simply set a custom toString function.
-            if (global.statusbar)
-                override(this, 'statusbar.toString', { value: toString });
-            else
-                override(this, 'statusbar', { value: { toString: toString } });
+            override(this, 'statusbar', { value: { toString: toString } });
         },
         CALL_ON_GLOBAL:
         function ()
@@ -820,11 +803,6 @@
         CONSOLE:
         function ()
         {
-            // Workaround for Internet Explorer 9...
-            var console = global.console;
-            if (!console || !Object.getPrototypeOf(console))
-                override(this, 'console', { value: Object.create(console || null) });
-            // ...end of the workaround.
             var toString = createStaticSupplier('[object Console]');
             override(this, 'console.toString', { value: toString });
         },
@@ -1006,7 +984,7 @@
                 this,
                 function ()
                 {
-                    switch (+this) // In Internet Explorer 9, +this is different from this.
+                    switch (this)
                     {
                     case Infinity:
                         return '∞';

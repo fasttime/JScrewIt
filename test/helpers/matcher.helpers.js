@@ -138,7 +138,7 @@
                         this.assertions.fail(message);
                         return;
                     default:
-                        throw new TypeError('Unsupported argument type ' + type);
+                        throw TypeError('Unsupported argument type ' + type);
                     }
                 },
                 this

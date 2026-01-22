@@ -39,21 +39,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version:
-          - '0.10'
-          - '0.12'
-          - '4'
-          - '6.0'
-          - '6'
-          - '8'
-          - '10'
-          - '12'
-          - '14'
-          - '16'
-          - '18'
-          - '20'
-          - '22'
-          - '24'
+        node-version: ['20', '22', '24']
 
     steps:
     - uses: actions/checkout@v6
@@ -65,5 +51,5 @@ jobs:
         name: lib
         path: lib
     - run: |
-        npm install @types/mocha@9 ebdd expectations mocha@3 postrequire
+        npm install -D @types/mocha ebdd expectations mocha@4 postrequire
         npm test

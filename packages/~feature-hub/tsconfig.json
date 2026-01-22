@@ -13,9 +13,6 @@
     ],
     "useDefineForClassFields": false, // Define semantics disabled for performance reasons.
   },
-  "exclude": [
-    "test/node-legacy"
-  ],
   "include": [
     "src",
     "test"

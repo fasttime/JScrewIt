@@ -15,7 +15,6 @@ export default function createEngineSelectionBox()
         'Internet Explorer',
         'Safari',
         'Opera',
-        'Android Browser',
         'Node.js',
     ];
 
