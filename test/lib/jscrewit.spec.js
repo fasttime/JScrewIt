@@ -331,12 +331,12 @@ self,
             );
             emuIt
             (
-                'returns correct JSFuck with features ARRAY_ITERATOR and ATOB',
-                Feature('ARRAY_ITERATOR', 'ATOB'),
+                'returns correct JSFuck with feature ARRAY_ITERATOR',
+                Feature.ARRAY_ITERATOR,
                 function ()
                 {
                     var encoder =
-                    JScrewIt.debug.createEncoder(Feature('ARRAY_ITERATOR', 'ATOB'));
+                    JScrewIt.debug.createEncoder(Feature.ARRAY_ITERATOR);
                     var input = 'The quick brown fox jumps over the lazy dog';
                     var output = encoder._encodeByDict(Object(input), 4);
                     expect(output).toBeJSFuck();
@@ -674,9 +674,7 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder(Feature.FROM_CODE_POINT);
                     var actual = encoder.replaceString('😊', { optimize: true });
-                    var expected =
-                    encoder.replaceExpr
-                    ('Function("return\\"" + ESCAPING_BACKSLASH + "u{1f60a}\\"")()');
+                    var expected = encoder.replaceExpr('Function("return\\"\\\\u{1f60a}\\"")()');
                     expect(actual).toBe(expected);
                 }
             );

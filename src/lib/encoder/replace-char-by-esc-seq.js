@@ -26,7 +26,7 @@ export default function replaceCharByEscSeq(charCode)
         appendIndexer = false;
         toStringOpt = false;
     }
-    var expr = 'Function("return\\"" + ESCAPING_BACKSLASH + "' + escCode + '\\"")()';
+    var expr = 'Function("return\\"\\\\' + escCode + '\\"")()';
     if (appendIndexer)
         expr += '[0]';
     var replacement = this.replaceExpr(expr, { default: false, toStringOpt: toStringOpt });

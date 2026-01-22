@@ -38,8 +38,6 @@ import replaceCharByUnescape                                    from './replace-
 import { MASK_EMPTY, maskIncludes }                             from '~feature-hub';
 import { SolutionType }                                         from '~solution';
 
-var ATOB_MASK = Feature.ATOB.mask;
-
 var STATIC_CHAR_CACHE   = createEmpty();
 var STATIC_CONST_CACHE  = createEmpty();
 var STATIC_ENCODER      = new Encoder(MASK_EMPTY);
@@ -84,14 +82,6 @@ function callResolver(encoder, stackName, resolver)
     {
         stack.pop();
     }
-}
-
-function defaultResolveCharacter(encoder, char)
-{
-    var charCode = char.charCodeAt();
-    var atobOpt = charCode < 0x100;
-    var solution = encoder._createCharDefaultSolution(char, charCode, atobOpt, true, true, true);
-    return solution;
 }
 
 function findOptimalSolution(encoder, source, entries, defaultSolutionType)
@@ -346,37 +336,44 @@ assignNoEnum
         function (char, charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
         {
             var solution;
-            if (atobOpt && this.hasFeatures(ATOB_MASK))
+            var solutions = [];
+            if (atobOpt)
             {
                 solution =
                 resolveCharByDefaultMethod(this, char, charCode, replaceCharByAtob, 'atob');
+                solutions.push(solution);
             }
-            else
+            if (charCodeOpt)
             {
-                var solutions = [];
-                if (charCodeOpt)
-                {
-                    solution =
-                    resolveCharByDefaultMethod
-                    (this, char, charCode, replaceCharByCharCode, 'char-code');
-                    solutions.push(solution);
-                }
-                if (escSeqOpt)
-                {
-                    solution =
-                    resolveCharByDefaultMethod
-                    (this, char, charCode, replaceCharByEscSeq, 'esc-seq');
-                    solutions.push(solution);
-                }
-                if (unescapeOpt)
-                {
-                    solution =
-                    resolveCharByDefaultMethod
-                    (this, char, charCode, replaceCharByUnescape, 'unescape');
-                    solutions.push(solution);
-                }
-                solution = shortestOf.apply(null, solutions);
+                solution =
+                resolveCharByDefaultMethod
+                (this, char, charCode, replaceCharByCharCode, 'char-code');
+                solutions.push(solution);
             }
+            if (escSeqOpt)
+            {
+                solution =
+                resolveCharByDefaultMethod(this, char, charCode, replaceCharByEscSeq, 'esc-seq');
+                solutions.push(solution);
+            }
+            if (unescapeOpt)
+            {
+                solution =
+                resolveCharByDefaultMethod(this, char, charCode, replaceCharByUnescape, 'unescape');
+                solutions.push(solution);
+            }
+            solution = shortestOf.apply(null, solutions);
+            return solution;
+        },
+
+        _defaultResolveCharacter:
+        function (char)
+        {
+            var charCode = char.charCodeAt();
+            var atobOpt = charCode < 0x100;
+            var stdOpt = !atobOpt;
+            var solution =
+            this._createCharDefaultSolution(char, charCode, atobOpt, stdOpt, stdOpt, stdOpt);
             return solution;
         },
 
@@ -687,7 +684,7 @@ assignNoEnum
                             if (entries)
                                 solution = findOptimalSolution(this, char, entries);
                             if (!solution)
-                                solution = defaultResolveCharacter(this, char);
+                                solution = this._defaultResolveCharacter(char);
                         }
                         else
                         {

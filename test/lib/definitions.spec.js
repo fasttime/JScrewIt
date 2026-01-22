@@ -1,18 +1,13 @@
 /* eslint-env ebdd/ebdd */
 /*
 global
-Audio,
 Intl,
-Node,
-atob,
-btoa,
 document,
 emuDo,
 emuIt,
 evalJSFuck,
 expect,
 getEmuFeatureNames,
-location,
 module,
 require,
 self,
@@ -74,29 +69,6 @@ self,
 
     function testCharacter(charCode)
     {
-        function testAtob()
-        {
-            if (charCode < 0x100)
-            {
-                emuIt
-                (
-                    '(atob)',
-                    Feature.ATOB,
-                    function ()
-                    {
-                        var encoder = getPoolEncoder(Feature.ATOB);
-                        var solution =
-                        encoder._createCharDefaultSolution
-                        (char, charCode, true, false, false, false);
-                        verifyStringSolution(solution, char, this.test.emuFeatureNames);
-                        var defaultSolutionLength =
-                        getPoolEncoder(Feature.DEFAULT).resolveCharacter(char).length;
-                        expect(solution.length).not.toBeGreaterThan(defaultSolutionLength);
-                    }
-                );
-            }
-        }
-
         function testDefault()
         {
             it
@@ -139,8 +111,6 @@ self,
             var featureObj = getEntryFeature(entry);
             if (Feature.DEFAULT.includes(featureObj))
                 defaultEntryFound = true;
-            if (Feature.ATOB.includes(featureObj))
-                atobEntryFound = true;
             emuIt
             (
                 '(definition ' + index + ')',
@@ -292,19 +262,13 @@ self,
         if (entries)
         {
             var defaultEntryFound = false;
-            var atobEntryFound = false;
             if (entries)
                 entries.forEach(testEntry);
             if (!defaultEntryFound)
                 testDefault();
-            if (!atobEntryFound)
-                testAtob();
         }
         else
-        {
             testDefault();
-            testAtob();
-        }
     }
 
     function testComplex(complex)
@@ -457,49 +421,23 @@ self,
             var paramDataMap =
             {
                 Array:      isExpected(Array),
-                Audio:
-                function ()
-                {
-                    this.toBe(Audio);
-                },
                 Boolean:    isExpected(Boolean),
-                Date:       isExpected(Date),
                 Function:   isExpected(Function),
                 Intl:
                 function ()
                 {
                     this.toBe(Intl);
                 },
-                Node:
-                function ()
-                {
-                    this.toBe(Node);
-                },
                 Number:     isExpected(Number),
                 Object:     isExpected(Object),
                 RegExp:     isExpected(RegExp),
                 String:     isExpected(String),
-                atob:
-                function ()
-                {
-                    this.toBe(atob);
-                },
-                btoa:
-                function ()
-                {
-                    this.toBe(btoa);
-                },
                 document:
                 function ()
                 {
                     this.toBe(document);
                 },
                 escape:     isExpected(escape),
-                location:
-                function ()
-                {
-                    this.toBe(location);
-                },
                 self:
                 function ()
                 {
@@ -521,11 +459,6 @@ self,
                 function ()
                 {
                     this.toBe(Array.prototype.at);
-                },
-                ESCAPING_BACKSLASH:
-                function ()
-                {
-                    this.toBe('\\');
                 },
                 FILL:
                 function ()
@@ -556,11 +489,6 @@ self,
                 function ()
                 {
                     this.toMatch(/^ar(-td)?$/);
-                },
-                LOCATION_CONSTRUCTOR:
-                function ()
-                {
-                    this.toBe(location.constructor);
                 },
                 PLAIN_OBJECT:
                 function ()

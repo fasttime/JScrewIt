@@ -1,4 +1,4 @@
-/* global Audio, Iterator, Node, console, document, history, location, navigator, self, statusbar */
+/* global Iterator, console, document, self, statusbar */
 
 import { _Object_defineProperty, _Object_keys, assignNoEnum, createEmpty }  from './obj-utils';
 import { createFeatureClass, featuresToMask }                               from '~feature-hub';
@@ -42,16 +42,7 @@ function makeSelfFeatureCheck(regExp)
 {
     function check()
     {
-        // self + '' throws an error inside a web worker in Safari 8 and 9.
-        try
-        {
-            var str = self + '';
-        }
-        catch (error)
-        {
-            return false;
-        }
-        var available = regExp.test(str);
+        var available = typeof self !== 'undefined' && regExp.test(self + '');
         return available;
     }
 
@@ -90,55 +81,19 @@ function restrict(environment, engineFeatureObjs)
 
 var featureInfos =
 {
-    ANY_DOCUMENT:
-    {
-        description:
-        'Existence of the global object document whose string representation starts with ' +
-        '"[object " and ends with "Document]".',
-        check:
-        function ()
-        {
-            var available =
-            typeof document === 'object' && /^\[object [\S\s]*Document]$/.test(document + '');
-            return available;
-        },
-        attributes: { 'web-worker': 'web-worker-restriction' },
-    },
-    ANY_WINDOW:
-    {
-        description:
-        'Existence of the global object self whose string representation starts with "[object " ' +
-        'and ends with "Window]".',
-        check:      makeSelfFeatureCheck(/^\[object [\S\s]*Window]$/),
-        includes:   ['SELF_OBJ'],
-        attributes: { 'web-worker': 'web-worker-restriction' },
-    },
     ARRAY_ITERATOR:
     {
         description:
-        'The property that the string representation of Array.prototype.entries() starts with ' +
-        '"[object Array" and ends with "]" at index 21 or 22.',
+        'The property that the string representation of Array.prototype.entries() evaluates to ' +
+        '"[object Array Iterator]".',
         check:
         function ()
         {
-            var available =
-            Array.prototype.entries && /^\[object Array[\S\s]{8,9}]$/.test([].entries());
-            return available;
-        },
-    },
-    ASYNC_FUNCTION:
-    {
-        description: 'Support for async functions, which return Promise object.',
-        check:
-        function ()
-        {
-            try
+            if (Array.prototype.entries)
             {
-                Function('return async function(){}');
-                return true;
+                var available = [].entries() + '' === '[object Array Iterator]';
+                return available;
             }
-            catch (error)
-            { }
         },
     },
     ARROW:
@@ -166,16 +121,6 @@ var featureInfos =
             return available;
         },
     },
-    ATOB:
-    {
-        description: 'Existence of the global functions atob and btoa.',
-        check:
-        function ()
-        {
-            var available = typeof atob === 'function' && typeof btoa === 'function';
-            return available;
-        },
-    },
     BARPROP:
     {
         description:
@@ -188,23 +133,6 @@ var featureInfos =
             return available;
         },
         attributes: { 'web-worker': 'web-worker-restriction' },
-    },
-    CALL_ON_GLOBAL:
-    {
-        description:
-        'The ability to call a function on the global object when invoking ' +
-        'Function.prototype.call without binding.',
-        check:
-        function ()
-        {
-            try
-            {
-                if ([].concat.call()[0])
-                    return true;
-            }
-            catch (error)
-            { }
-        },
     },
     CAPITAL_HTML:
     {
@@ -240,48 +168,19 @@ var featureInfos =
             return available;
         },
     },
-    CREATE_ELEMENT:
-    {
-        description:    'Existence of the function document.createElement.',
-        aliasFor:       'ANY_DOCUMENT',
-    },
     DOCUMENT:
     {
         description:
-        'Existence of the global object document having the string representation "[object ' +
-        'Document]".',
+        'Existence of the global object document whose string representation starts with ' +
+        '"[object " and ends with "Document]".',
         check:
         function ()
         {
-            var available = typeof document === 'object' && document + '' === '[object Document]';
+            var available =
+            typeof document === 'object' && /^\[object [\S\s]*Document]$/.test(document + '');
             return available;
         },
-        includes:   ['ANY_DOCUMENT'],
         attributes: { 'web-worker': 'web-worker-restriction' },
-    },
-    DOMWINDOW:
-    {
-        description:
-        'Existence of the global object self having the string representation "[object ' +
-        'DOMWindow]".',
-        check:      makeSelfFeatureCheck(/^\[object DOMWindow]$/),
-        includes:   ['ANY_WINDOW'],
-        excludes:   ['OBJECT_W_SELF'],
-        attributes: { 'web-worker': 'web-worker-restriction' },
-    },
-    ESC_HTML_ALL:
-    {
-        description:
-        'The property that double quotation mark, less than and greater than characters in the ' +
-        'argument of String.prototype.fontcolor are escaped into their respective HTML entities.',
-        check:
-        function ()
-        {
-            var available = ~''.fontcolor('"<>').indexOf('&quot;&lt;&gt;');
-            return available;
-        },
-        includes: ['ESC_HTML_QUOT'],
-        excludes: ['ESC_HTML_QUOT_ONLY'],
     },
     ESC_HTML_QUOT:
     {
@@ -292,45 +191,6 @@ var featureInfos =
         function ()
         {
             var available = ~''.fontcolor('"').indexOf('&quot;');
-            return available;
-        },
-    },
-    ESC_HTML_QUOT_ONLY:
-    {
-        description:
-        'The property that only double quotation marks and no other characters in the argument ' +
-        'of String.prototype.fontcolor are escaped into HTML entities.',
-        check:
-        function ()
-        {
-            var available = ~''.fontcolor('"<>').indexOf('&quot;<>');
-            return available;
-        },
-        includes: ['ESC_HTML_QUOT'],
-        excludes: ['ESC_HTML_ALL'],
-    },
-    ESC_REGEXP_LF:
-    {
-        description:
-        'Having regular expressions created with the RegExp constructor use escape sequences ' +
-        'starting with a backslash to format line feed characters ("\\n") in their string ' +
-        'representation.',
-        check:
-        function ()
-        {
-            var available = (RegExp('\n') + '')[1] === '\\';
-            return available;
-        },
-    },
-    ESC_REGEXP_SLASH:
-    {
-        description:
-        'Having regular expressions created with the RegExp constructor use escape sequences ' +
-        'starting with a backslash to format slashes ("/") in their string representation.',
-        check:
-        function ()
-        {
-            var available = (RegExp('/') + '')[1] === '\\';
             return available;
         },
     },
@@ -363,13 +223,6 @@ var featureInfos =
             var available = Array.prototype.flat;
             return available;
         },
-    },
-    FORMS:
-    {
-        description:
-        'Existence of the object document.forms with string representation "[object ' +
-        'HTMLCollection]".',
-        aliasFor: 'ANY_DOCUMENT',
     },
     FROM_CODE_POINT:
     {
@@ -405,78 +258,6 @@ var featureInfos =
             return available;
         },
     },
-    GENERIC_ARRAY_TO_STRING:
-    {
-        description: 'Ability to call Array.prototype.toString with a non-array binding.',
-        check:
-        function ()
-        {
-            try
-            {
-                Array.prototype.toString.call({ });
-                return true;
-            }
-            catch (error)
-            { }
-        },
-    },
-    GLOBAL_UNDEFINED:
-    {
-        description:
-        'Having the global function toString return the string "[object Undefined]" when invoked ' +
-        'without a binding.',
-        check:
-        function ()
-        {
-            var getToString = Function('return toString');
-            var available = getToString()() === '[object Undefined]';
-            return available;
-        },
-        includes: ['OBJECT_UNDEFINED'],
-    },
-    GMT:
-    {
-        description:
-        'Presence of the text "GMT" after the first 25 characters in the string returned by ' +
-        'Date().\n' +
-        'The string representation of dates is implementation dependent, but most engines use a ' +
-        'similar format, making this feature available in all supported engines except Internet ' +
-        'Explorer 9 and 10.',
-        check:
-        function ()
-        {
-            var available = /^.{25}GMT/.test(Date());
-            return available;
-        },
-    },
-    HISTORY:
-    {
-        description:
-        'Existence of the global object history having the string representation "[object ' +
-        'History]".',
-        check:
-        function ()
-        {
-            var available = typeof history === 'object' && history + '' === '[object History]';
-            return available;
-        },
-        attributes: { 'web-worker': 'web-worker-restriction' },
-    },
-    HTMLAUDIOELEMENT:
-    {
-        description:
-        'Existence of the global object Audio whose string representation starts with ' +
-        '"function HTMLAudioElement".',
-        check:
-        function ()
-        {
-            var available =
-            typeof Audio !== 'undefined' && /^function HTMLAudioElement/.test(Audio);
-            return available;
-        },
-        includes:   ['NO_IE_SRC'],
-        attributes: { 'web-worker': 'web-worker-restriction' },
-    },
     IE_SRC:
     {
         description:
@@ -500,16 +281,6 @@ var featureInfos =
         },
         attributes: { 'forced-strict-mode': 'char-increment-restriction' },
     },
-    INTL:
-    {
-        description: 'Existence of the global object Intl.',
-        check:
-        function ()
-        {
-            var available = typeof Intl === 'object';
-            return available;
-        },
-    },
     ITERATOR_HELPER:
     {
         description: 'Availability of iterator helpers.',
@@ -520,16 +291,6 @@ var featureInfos =
             return available;
         },
     },
-    JAPANESE_INFINITY:
-    {
-        description: 'Japanese string representation of Infinity ending with "∞".',
-        check:
-        function ()
-        {
-            var available = /∞$/.test(Infinity.toLocaleString('ja'));
-            return available;
-        },
-    },
     LOCALE_INFINITY:
     {
         description: 'Language sensitive string representation of Infinity as "∞".',
@@ -537,23 +298,6 @@ var featureInfos =
         function ()
         {
             var available = Infinity.toLocaleString() === '∞';
-            return available;
-        },
-    },
-    LOCALE_NUMERALS:
-    {
-        description:
-        'Features shared by all engines capable of localized number formatting, including output ' +
-        'of Arabic digits, the Arabic decimal separator "٫", the letters in the first word of ' +
-        'the Arabic string representation of NaN ("ليس"), Persian digits and the Persian digit ' +
-        'group separator "٬".',
-        check:
-        function ()
-        {
-            var available =
-            checkLocaleNumeral('ar', NaN, /^ليس/) &&
-            checkLocaleNumeral('ar-td', 234567890.1, /^٢٣٤٬?٥٦٧٬?٨٩٠٫١/) &&
-            checkLocaleNumeral('fa', 1234567890, /^۱٬۲۳۴٬۵۶۷٬۸۹۰/);
             return available;
         },
     },
@@ -571,48 +315,17 @@ var featureInfos =
     {
         description:
         'Extended localized number formatting.\n' +
-        'This includes all features of LOCALE_NUMERALS plus the output of the first three ' +
-        'letters in the second word of the Arabic string representation of NaN ("رقم"), the ' +
-        'letters in the Russian string representation of NaN ("не\xa0число") and the letters in ' +
-        'the Persian string representation of NaN ("ناعدد").',
+        'Localized number formatting including the output of the first three letters in the ' +
+        'second word of the Arabic string representation of NaN ("رقم"), the letters in the ' +
+        'Russian string representation of NaN ("не\xa0число") and the letters in the Persian ' +
+        'string representation of NaN ("ناعدد").',
         check:
         function ()
         {
             var available =
             checkLocaleNumeral('ar', NaN, /^ليس.رقم/) &&
-            checkLocaleNumeral('ar-td', 234567890.1, /^٢٣٤٬?٥٦٧٬?٨٩٠٫١/) &&
-            checkLocaleNumeral('fa', 1234567890, /^۱٬۲۳۴٬۵۶۷٬۸۹۰/) &&
             checkLocaleNumeral('fa', NaN, /^ناعد/) &&
             checkLocaleNumeral('ru', NaN, /^не.число/);
-            return available;
-        },
-        includes: ['LOCALE_NUMERALS'],
-    },
-
-    LOCATION:
-    {
-        description:
-        'Existence of the global object location with the property that ' +
-        'Object.prototype.toString.call(location) evaluates to a string that starts with ' +
-        '"[object " and ends with "Location]".',
-        check:
-        function ()
-        {
-            var available =
-            typeof location === 'object' &&
-            /^\[object [\S\s]*Location]$/.test(Object.prototype.toString.call(location));
-            return available;
-        },
-    },
-    MOZILLA:
-    {
-        description:
-        'Existence of user agent string navigator.userAgent that starts with "Mozilla".',
-        check:
-        function ()
-        {
-            var available =
-            typeof navigator === 'object' && /^Mozilla/.test(navigator.userAgent);
             return available;
         },
     },
@@ -625,25 +338,6 @@ var featureInfos =
             var available = 'name' in Function();
             return available;
         },
-    },
-    NODECONSTRUCTOR:
-    {
-        description:
-        'Existence of the global object Node having the string representation "[object ' +
-        'NodeConstructor]".',
-        check:
-        function ()
-        {
-            var available = typeof Node !== 'undefined' && Node + '' === '[object NodeConstructor]';
-            return available;
-        },
-        attributes: { 'web-worker': 'web-worker-restriction' },
-    },
-    NODE_NAME:
-    {
-        description:
-        'Existence of the string document.nodeName that starts with a number sign ("#").',
-        aliasFor: 'ANY_DOCUMENT',
     },
     NO_FF_SRC:
     {
@@ -673,22 +367,6 @@ var featureInfos =
         },
         excludes: ['IE_SRC'],
     },
-    NO_OLD_SAFARI_ARRAY_ITERATOR:
-    {
-        description:
-        'The property that the string representation of Array.prototype.entries() evaluates to ' +
-        '"[object Array Iterator]".',
-        check:
-        function ()
-        {
-            if (Array.prototype.entries)
-            {
-                var available = [].entries() + '' === '[object Array Iterator]';
-                return available;
-            }
-        },
-        includes: ['ARRAY_ITERATOR'],
-    },
     NO_V8_SRC:
     {
         description:
@@ -715,57 +393,14 @@ var featureInfos =
             return available;
         },
     },
-    OBJECT_L_LOCATION_CTOR:
-    {
-        description:
-        'Existence of the global function location.constructor whose string representation ' +
-        'starts with "[object L".',
-        check:
-        function ()
-        {
-            var available =
-            typeof location === 'object' && /^\[object L/.test(location.constructor);
-            return available;
-        },
-        attributes: { 'web-worker': 'web-worker-restriction' },
-    },
-    OBJECT_UNDEFINED:
-    {
-        description:
-        'Having the function Object.prototype.toString return the string "[object Undefined]" ' +
-        'when invoked without a binding.',
-        check:
-        function ()
-        {
-            var toString = Object.prototype.toString;
-            var available = toString() === '[object Undefined]';
-            return available;
-        },
-        includes: ['UNDEFINED'],
-    },
     OBJECT_W_SELF:
     {
         description:
         'The property that the string representation of the global object self starts ' +
         'with "[object W".',
         check:      makeSelfFeatureCheck(/^\[object W/),
-        includes:   ['SELF_OBJ'],
-        excludes:   ['DOMWINDOW'],
+        includes:   ['SELF'],
         attributes: { 'web-worker': 'non-ie-restriction' },
-    },
-    OLD_SAFARI_LOCATION_CTOR:
-    {
-        description:
-        'Existence of the global object location.constructor whose string representation starts ' +
-        'with "[object " and ends with "LocationConstructor]".',
-        check:
-        function ()
-        {
-            var available =
-            typeof location === 'object' &&
-            /^\[object [\S\s]*LocationConstructor]$/.test(location.constructor);
-            return available;
-        },
     },
     PLAIN_INTL:
     {
@@ -777,7 +412,6 @@ var featureInfos =
             var available = typeof Intl === 'object' && Intl + '' === '[object Object]';
             return available;
         },
-        includes: ['INTL'],
     },
     REGEXP_STRING_ITERATOR:
     {
@@ -793,8 +427,6 @@ var featureInfos =
         },
     },
     SELF:
-    { aliasFor: 'ANY_WINDOW' },
-    SELF_OBJ:
     {
         description:
         'Existence of the global object self whose string representation starts with "[object ".',
@@ -815,7 +447,6 @@ var featureInfos =
             localizedNumeral !== NUMBER.toLocaleString('en');
             return available;
         },
-        includes: ['LOCALE_NUMERALS'],
     },
     STATUS:
     {
@@ -827,19 +458,6 @@ var featureInfos =
             return available;
         },
         attributes:     { 'web-worker': 'web-worker-restriction' },
-    },
-    UNDEFINED:
-    {
-        description:
-        'The property that Object.prototype.toString.call() evaluates to "[object Undefined]".\n' +
-        'This behavior is specified by ECMAScript, and is enforced by all engines except Android ' +
-        'Browser versions prior to 4.1.2, where this feature is not available.',
-        check:
-        function ()
-        {
-            var available = Object.prototype.toString.call() === '[object Undefined]';
-            return available;
-        },
     },
     V8_SRC:
     {
@@ -856,7 +474,7 @@ var featureInfos =
         description:
         'Existence of the global object self having the string representation "[object Window]".',
         check:      makeSelfFeatureCheck(/^\[object Window]$/),
-        includes:   ['ANY_WINDOW', 'OBJECT_W_SELF'],
+        includes:   ['OBJECT_W_SELF'],
         attributes: { 'web-worker': 'web-worker-restriction' },
     },
 
@@ -870,24 +488,7 @@ var featureInfos =
         description:
         'Features available in all browsers.\n' +
         'No support for Node.js.',
-        includes:
-        [
-            'ANY_DOCUMENT',
-            'ATOB',
-            'ESC_REGEXP_LF',
-            'ESC_REGEXP_SLASH',
-            'GENERIC_ARRAY_TO_STRING',
-            'GMT',
-            'HISTORY',
-            'INCR_CHAR',
-            'INTL',
-            'JAPANESE_INFINITY',
-            'LOCALE_NUMERALS',
-            'MOZILLA',
-            'OBJECT_UNDEFINED',
-            'STATUS',
-            'WINDOW',
-        ],
+        includes: ['DOCUMENT', 'INCR_CHAR', 'STATUS', 'WINDOW'],
         attributes:
         {
             'char-increment-restriction':   null,
@@ -902,34 +503,22 @@ var featureInfos =
         'Not compatible with Node.js, Internet Explorer, and old versions of supported browsers.',
         includes:
         [
-            'ANY_DOCUMENT',
+            'ARRAY_ITERATOR',
             'ARROW',
-            'ASYNC_FUNCTION',
             'AT',
-            'ATOB',
             'BARPROP',
-            'ESC_HTML_QUOT_ONLY',
-            'ESC_REGEXP_LF',
-            'ESC_REGEXP_SLASH',
+            'DOCUMENT',
+            'ESC_HTML_QUOT',
             'FILL',
             'FLAT',
             'FROM_CODE_POINT',
             'FUNCTION_19_LF',
-            'GENERIC_ARRAY_TO_STRING',
-            'GLOBAL_UNDEFINED',
-            'GMT',
-            'HISTORY',
             'INCR_CHAR',
-            'INTL',
             'ITERATOR_HELPER',
-            'JAPANESE_INFINITY',
             'LOCALE_INFINITY',
             'LOCALE_NUMERALS_EXT',
-            'LOCATION',
-            'MOZILLA',
             'NAME',
             'NO_IE_SRC',
-            'NO_OLD_SAFARI_ARRAY_ITERATOR',
             'REGEXP_STRING_ITERATOR',
             'STATUS',
             'WINDOW',
@@ -957,34 +546,22 @@ var featureInfos =
         versions: ['122-', '122-', '108-'],
         includes:
         [
-            'ANY_DOCUMENT',
+            'ARRAY_ITERATOR',
             'ARROW',
-            'ASYNC_FUNCTION',
             'AT',
-            'ATOB',
             'BARPROP',
-            'ESC_HTML_QUOT_ONLY',
-            'ESC_REGEXP_LF',
-            'ESC_REGEXP_SLASH',
+            'DOCUMENT',
+            'ESC_HTML_QUOT',
             'FILL',
             'FLAT',
             'FROM_CODE_POINT',
             'FUNCTION_19_LF',
-            'GENERIC_ARRAY_TO_STRING',
-            'GLOBAL_UNDEFINED',
-            'GMT',
-            'HISTORY',
             'INCR_CHAR',
-            'INTL',
             'ITERATOR_HELPER',
-            'JAPANESE_INFINITY',
             'LOCALE_INFINITY',
             'LOCALE_NUMERALS_BN',
             'LOCALE_NUMERALS_EXT',
-            'LOCATION',
-            'MOZILLA',
             'NAME',
-            'NO_OLD_SAFARI_ARRAY_ITERATOR',
             'REGEXP_STRING_ITERATOR',
             'STATUS',
             'V8_SRC',
@@ -1019,34 +596,22 @@ var featureInfos =
         versions: ['90-130'],
         includes:
         [
-            'ANY_DOCUMENT',
+            'ARRAY_ITERATOR',
             'ARROW',
-            'ASYNC_FUNCTION',
             'AT',
-            'ATOB',
             'BARPROP',
-            'ESC_HTML_QUOT_ONLY',
-            'ESC_REGEXP_LF',
-            'ESC_REGEXP_SLASH',
+            'DOCUMENT',
+            'ESC_HTML_QUOT',
             'FF_SRC',
             'FILL',
             'FLAT',
             'FROM_CODE_POINT',
             'FUNCTION_19_LF',
-            'GENERIC_ARRAY_TO_STRING',
-            'GLOBAL_UNDEFINED',
-            'GMT',
-            'HISTORY',
             'INCR_CHAR',
-            'INTL',
-            'JAPANESE_INFINITY',
             'LOCALE_INFINITY',
             'LOCALE_NUMERALS_BN',
             'LOCALE_NUMERALS_EXT',
-            'LOCATION',
-            'MOZILLA',
             'NAME',
-            'NO_OLD_SAFARI_ARRAY_ITERATOR',
             'OBJECT_ARRAY_ENTRIES_CTOR',
             'REGEXP_STRING_ITERATOR',
             'SHORT_LOCALES',
@@ -1079,23 +644,12 @@ var featureInfos =
         versions:   ['11'],
         includes:
         [
-            'ANY_DOCUMENT',
-            'ATOB',
             'CAPITAL_HTML',
             'CONSOLE',
-            'ESC_REGEXP_LF',
-            'ESC_REGEXP_SLASH',
+            'DOCUMENT',
             'FUNCTION_22_LF',
-            'GENERIC_ARRAY_TO_STRING',
-            'GMT',
-            'HISTORY',
             'IE_SRC',
             'INCR_CHAR',
-            'JAPANESE_INFINITY',
-            'LOCALE_NUMERALS',
-            'MOZILLA',
-            'OBJECT_L_LOCATION_CTOR',
-            'OBJECT_UNDEFINED',
             'PLAIN_INTL',
             'SHORT_LOCALES',
             'STATUS',
@@ -1112,7 +666,6 @@ var featureInfos =
         includes:
         {
             LOCALE_INFINITY:        true,
-            LOCALE_NUMERALS:        false,
             LOCALE_NUMERALS_BN:     true,
             LOCALE_NUMERALS_EXT:    true,
         },
@@ -1123,28 +676,19 @@ var featureInfos =
         versions:   ['20-21'],
         includes:
         [
+            'ARRAY_ITERATOR',
             'ARROW',
-            'ASYNC_FUNCTION',
             'AT',
-            'ATOB',
-            'ESC_HTML_QUOT_ONLY',
-            'ESC_REGEXP_LF',
-            'ESC_REGEXP_SLASH',
+            'ESC_HTML_QUOT',
             'FILL',
             'FLAT',
             'FROM_CODE_POINT',
             'FUNCTION_19_LF',
-            'GENERIC_ARRAY_TO_STRING',
-            'GLOBAL_UNDEFINED',
-            'GMT',
             'INCR_CHAR',
-            'INTL',
-            'JAPANESE_INFINITY',
             'LOCALE_INFINITY',
             'LOCALE_NUMERALS_BN',
             'LOCALE_NUMERALS_EXT',
             'NAME',
-            'NO_OLD_SAFARI_ARRAY_ITERATOR',
             'OBJECT_ARRAY_ENTRIES_CTOR',
             'REGEXP_STRING_ITERATOR',
             'SHORT_LOCALES',
@@ -1175,34 +719,22 @@ var featureInfos =
         versions: ['17.4-17.6'],
         includes:
         [
-            'ANY_DOCUMENT',
+            'ARRAY_ITERATOR',
             'ARROW',
-            'ASYNC_FUNCTION',
             'AT',
-            'ATOB',
             'BARPROP',
-            'ESC_HTML_QUOT_ONLY',
-            'ESC_REGEXP_LF',
-            'ESC_REGEXP_SLASH',
+            'DOCUMENT',
+            'ESC_HTML_QUOT',
             'FF_SRC',
             'FILL',
             'FLAT',
             'FROM_CODE_POINT',
             'FUNCTION_19_LF',
-            'GENERIC_ARRAY_TO_STRING',
-            'GLOBAL_UNDEFINED',
-            'GMT',
-            'HISTORY',
             'INCR_CHAR',
-            'INTL',
-            'JAPANESE_INFINITY',
             'LOCALE_INFINITY',
             'LOCALE_NUMERALS_BN',
             'LOCALE_NUMERALS_EXT',
-            'LOCATION',
-            'MOZILLA',
             'NAME',
-            'NO_OLD_SAFARI_ARRAY_ITERATOR',
             'OBJECT_ARRAY_ENTRIES_CTOR',
             'REGEXP_STRING_ITERATOR',
             'SHORT_LOCALES',

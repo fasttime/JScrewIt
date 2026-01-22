@@ -85,10 +85,10 @@ function checkMinInputLength
         logOk('minInputLength is ok.');
 }
 
-function createAnalyzer(ancestorFeatureObj)
+function createAnalyzer()
 {
     SolutionBookMap.load();
-    const analyzer = new Analyzer(ancestorFeatureObj);
+    const analyzer = new Analyzer();
     return analyzer;
 }
 
@@ -156,12 +156,11 @@ function verifyComplex(complex, entry)
     return false;
 }
 
-function verifyDefinitions
-(entries, inputList, mismatchCallback, replaceVariant, formatVariant, ancestorFeatureObj)
+function verifyDefinitions(entries, inputList, mismatchCallback, replaceVariant, formatVariant)
 {
     let encoder;
     let mismatchCount = 0;
-    const analyzer = createAnalyzer(ancestorFeatureObj);
+    const analyzer = createAnalyzer();
     progress
     (
         'Scanning definitions',
@@ -208,14 +207,7 @@ function verifyPredef(predefName)
     const verify =
     () =>
     {
-        const
-        {
-            availableEntries,
-            commonFeatureObj,
-            formatVariant,
-            organizedEntries,
-            replaceVariant,
-        } =
+        const { availableEntries, formatVariant, organizedEntries, replaceVariant } =
         PREDEF_TEST_DATA_MAP_OBJ[predefName];
         verifyDefinitions
         (
@@ -224,7 +216,6 @@ function verifyPredef(predefName)
             mismatchCallback,
             replaceVariant,
             formatVariant,
-            commonFeatureObj,
         );
     };
     return verify;

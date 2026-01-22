@@ -65,19 +65,17 @@ function getPredef(predefName)
         let availableEntries;
         let replaceVariant;
         let formatVariant;
-        let commonFeatureObj;
         let useReverseIteration;
         const rawPredef = RAW_PREDEFS[predefName];
         if (rawPredef[Symbol.iterator])
         {
             availableEntries =
-            Array.prototype.map.call(rawPredef, definition => define(definition, Feature.ATOB));
+            Array.prototype.map.call(rawPredef, definition => define(definition));
             if (Array.isArray(rawPredef))
                 replaceVariant = (encoder, str) => encoder.replaceString(str);
             else
                 replaceVariant = (encoder, char) => encoder.resolveCharacter(char).replacement;
             formatVariant = variant => `'${variant}'`;
-            commonFeatureObj = Feature.ATOB;
             useReverseIteration = false;
         }
         else
@@ -85,7 +83,6 @@ function getPredef(predefName)
             availableEntries = getEntries(`${predefName}:available`);
             replaceVariant = rawPredef;
             formatVariant = createFormatVariantByIndex(availableEntries);
-            commonFeatureObj = Feature.DEFAULT;
             useReverseIteration = rawPredef.useReverseIteration || false;
         }
         const variantToMinMaskMap = new Map();
@@ -94,7 +91,6 @@ function getPredef(predefName)
         predef =
         {
             availableEntries,
-            commonFeatureObj,
             formatVariant,
             replaceVariant,
             useReverseIteration,

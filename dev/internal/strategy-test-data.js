@@ -78,7 +78,7 @@ module.exports =
 [
     data
     (
-        ['ARRAY_ITERATOR', 'ATOB', 'CAPITAL_HTML', 'FILL', 'NO_V8_SRC', 'STATUS'],
+        ['ARRAY_ITERATOR', 'CAPITAL_HTML', 'FILL', 'NO_V8_SRC', 'STATUS'],
         length => String.fromCharCode(59999).repeat(length),
         'byCharCodes',
     ),
@@ -88,11 +88,9 @@ module.exports =
             'ARRAY_ITERATOR',
             'ARROW',
             'AT',
-            'ATOB',
             'CAPITAL_HTML',
             'CONSOLE',
             'FLAT',
-            'NODECONSTRUCTOR',
             'STATUS',
             'V8_SRC',
         ],
@@ -116,18 +114,17 @@ module.exports =
             'ARRAY_ITERATOR',
             'ARROW',
             'AT',
-            'CAPITAL_HTML',
+            'BARPROP',
             'CONSOLE',
             'FLAT',
             'FROM_CODE_POINT',
             'ITERATOR_HELPER',
-            'NODECONSTRUCTOR',
             'NO_IE_SRC',
             'STATUS',
         ],
         length =>
         {
-            let str = createTestStringSupplProRadix4AntiRadix10(16);
+            let str = createTestStringSupplProRadix4AntiRadix10(12);
             str = repeatToFit(str, length);
             return str;
         },
@@ -135,10 +132,10 @@ module.exports =
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'ARROW', 'AT', 'ATOB', 'CAPITAL_HTML', 'V8_SRC'],
+        ['ARRAY_ITERATOR', 'ARROW', 'AT', 'CAPITAL_HTML', 'V8_SRC'],
         length =>
         {
-            const postfix = repeatToFit('012345678', 422);
+            const postfix = repeatToFit('01234567', 491);
             const str = createDictTestString(2, length - postfix.length) + postfix;
             return str;
         },
@@ -146,7 +143,7 @@ module.exports =
     ),
     data
     (
-        ['ARRAY_ITERATOR', 'NAME', 'NO_V8_SRC'],
+        ['ARRAY_ITERATOR', 'ITERATOR_HELPER', 'NO_V8_SRC'],
         length => String.fromCharCode(59999).repeat(length),
         'byDict',
     ),
@@ -156,15 +153,32 @@ module.exports =
             'ARRAY_ITERATOR',
             'ARROW',
             'AT',
+            'BARPROP',
             'CONSOLE',
             'FF_SRC',
             'FLAT',
             'FROM_CODE_POINT',
             'ITERATOR_HELPER',
-            'NODECONSTRUCTOR',
         ],
-        createDictTestString.bind(null, 76),
+        createDictTestString.bind(null, 75),
         'byDictRadix3AmendedBy1',
+    ),
+    data
+    (
+        [
+            'ARROW',
+            'AT',
+            'BARPROP',
+            'CONSOLE',
+            'FLAT',
+            'FROM_CODE_POINT',
+            'INCR_CHAR',
+            'ITERATOR_HELPER',
+            'NO_V8_SRC',
+            'OBJECT_W_SELF',
+        ],
+        createDictTestString.bind(null, 38),
+        'byDictRadix4',
     ),
     data
     (
@@ -172,18 +186,14 @@ module.exports =
             'ARRAY_ITERATOR',
             'ARROW',
             'AT',
+            'BARPROP',
             'CONSOLE',
             'FLAT',
-            'IE_SRC',
-            'NODECONSTRUCTOR',
-            'SELF_OBJ',
+            'FROM_CODE_POINT',
+            'INCR_CHAR',
+            'ITERATOR_HELPER',
+            'NO_V8_SRC',
         ],
-        createDictTestString.bind(null, 78),
-        'byDictRadix4',
-    ),
-    data
-    (
-        ['ARRAY_ITERATOR', 'ARROW', 'AT', 'ATOB', 'CAPITAL_HTML', 'CONSOLE', 'FF_SRC', 'FLAT'],
         createDictTestString.bind(null, 120),
         'byDictRadix4AmendedBy1',
     ),
@@ -193,19 +203,20 @@ module.exports =
             'ARRAY_ITERATOR',
             'ARROW',
             'AT',
+            'BARPROP',
+            'CONSOLE',
             'FF_SRC',
             'FLAT',
             'FROM_CODE_POINT',
             'ITERATOR_HELPER',
             'NAME',
-            'NODECONSTRUCTOR',
         ],
-        createDictTestString.bind(null, 156),
+        createDictTestString.bind(null, 119),
         'byDictRadix4AmendedBy2',
     ),
     data
     (
-        ['ARROW', 'CONSOLE', 'FLAT', 'NODECONSTRUCTOR', 'V8_SRC'],
+        ['ARROW', 'AT', 'BARPROP', 'CONSOLE', 'FF_SRC', 'FLAT', 'FROM_CODE_POINT', 'INCR_CHAR'],
         createDictTestString.bind(null, 63),
         'byDictRadix5',
     ),
@@ -214,18 +225,16 @@ module.exports =
         [
             'ARRAY_ITERATOR',
             'ARROW',
-            'ASYNC_FUNCTION',
             'AT',
-            'ATOB',
+            'BARPROP',
             'CONSOLE',
             'FF_SRC',
             'FLAT',
             'FROM_CODE_POINT',
             'ITERATOR_HELPER',
-            'NODECONSTRUCTOR',
             'STATUS',
         ],
-        createDictTestString.bind(null, 374),
+        createDictTestString.bind(null, 327),
         'byDictRadix5AmendedBy3',
     ),
     data

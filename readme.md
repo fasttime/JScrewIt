@@ -198,38 +198,15 @@ These features can be retrieved with
 ```
 
 The features turn out to be
-[`ATOB`](api-doc/interfaces/FeatureAll.md#ATOB),
-[`ESC_REGEXP_LF`](api-doc/interfaces/FeatureAll.md#ESC_REGEXP_LF),
-[`ESC_REGEXP_SLASH`](api-doc/interfaces/FeatureAll.md#ESC_REGEXP_SLASH),
-[`GENERIC_ARRAY_TO_STRING`](api-doc/interfaces/FeatureAll.md#GENERIC_ARRAY_TO_STRING),
-[`GMT`](api-doc/interfaces/FeatureAll.md#GMT),
 [`INCR_CHAR`](api-doc/interfaces/FeatureAll.md#INCR_CHAR),
-[`INTL`](api-doc/interfaces/FeatureAll.md#INTL),
-[`JAPANESE_INFINITY`](api-doc/interfaces/FeatureAll.md#JAPANESE_INFINITY),
-[`NO_FF_SRC`](api-doc/interfaces/FeatureAll.md#NO_FF_SRC),
-[`OBJECT_UNDEFINED`](api-doc/interfaces/FeatureAll.md#OBJECT_UNDEFINED), and
+[`NO_FF_SRC`](api-doc/interfaces/FeatureAll.md#NO_FF_SRC), and
 [`SHORT_LOCALES`](api-doc/interfaces/FeatureAll.md#SHORT_LOCALES)
 (a quick way to see this is entering
 `JScrewIt.Feature.commonOf("NODE_20", "NODE_22", "IE_11").toString()` in a browser's console).
 With this knowledge, we could also rewrite the expression above as follows.
 
 ```js
-{
-    features:
-    [
-        "ATOB",
-        "ESC_REGEXP_LF",
-        "ESC_REGEXP_SLASH",
-        "GENERIC_ARRAY_TO_STRING",
-        "GMT",
-        "INCR_CHAR",
-        "INTL",
-        "JAPANESE_INFINITY",
-        "NO_FF_SRC",
-        "OBJECT_UNDEFINED",
-        "SHORT_LOCALES",
-    ],
-}
+{ features: ["INCR_CHAR", "NO_FF_SRC", "SHORT_LOCALES"] }
 ```
 
 Finally, note that simply specifying an array of engine features will not achieve the desired

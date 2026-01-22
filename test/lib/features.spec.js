@@ -243,10 +243,10 @@
                     );
                 }
             );
-            it.per([Feature.ARROW, Feature.ASYNC_FUNCTION])
+            it
             (
-                '#.name check returns false',
-                function (featureObj)
+                'ARROW check returns false',
+                function ()
                 {
                     var Function = global.Function;
                     global.Function =
@@ -256,7 +256,7 @@
                     };
                     try
                     {
-                        var check = featureObj.check;
+                        var check = Feature.ARROW.check;
                         var available = check();
                         expect(available).toBe(false);
                     }
@@ -268,25 +268,25 @@
             );
             it
             (
-                'GENERIC_ARRAY_TO_STRING check returns false',
+                'SHORT_LOCALES check returns false',
                 function ()
                 {
-                    var prototype = Array.prototype;
-                    var toString = prototype.toString;
-                    prototype.toString =
+                    var prototype = Number.prototype;
+                    var toLocaleString = prototype.toLocaleString;
+                    prototype.toLocaleString =
                     function ()
                     {
-                        throw TypeError();
+                        return String(this);
                     };
                     try
                     {
-                        var check = Feature.GENERIC_ARRAY_TO_STRING.check;
+                        var check = Feature.SHORT_LOCALES.check;
                         var available = check();
                         expect(available).toBe(false);
                     }
                     finally
                     {
-                        prototype.toString = toString;
+                        prototype.toLocaleString = toLocaleString;
                     }
                 }
             );
@@ -301,7 +301,7 @@
                         function ()
                         {
                             var featureObj = Feature.WINDOW.restrict('web-worker');
-                            expect(featureObj).toEqualFeature(Feature.SELF_OBJ);
+                            expect(featureObj).toEqualFeature(Feature.SELF);
                         }
                     );
                     it

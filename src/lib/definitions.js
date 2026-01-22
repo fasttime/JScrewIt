@@ -8,7 +8,7 @@ import { define, defineList, makeCallableWithFeatures } from './definers';
 import { replaceStaticExpr }                            from './encoder/encoder-utils';
 import { Feature }                                      from './features';
 import { _String, createEmpty, noProto }                from './obj-utils';
-import { LazySolution, SimpleSolution }                 from './solution';
+import { LazySolution }                                 from './solution';
 import { SolutionType }                                 from '~solution';
 
 export var AMENDINGS = ['true', 'undefined', 'NaN'];
@@ -52,13 +52,6 @@ var FH_PADDING_ENTRIES_MAP = createEmpty();
 
 var FB_R_PADDING_SHIFTS;
 var FH_R_PADDING_SHIFTS;
-
-function backslashDefinition()
-{
-    var replacement = this._replaceCharByUnescape(0x5C);
-    var solution = new SimpleSolution(undefined, replacement, SolutionType.STRING);
-    return solution;
-}
 
 function chooseOtherArgName(argName)
 {
@@ -347,98 +340,49 @@ function getFHPaddingEntries(index)
 
 (function ()
 {
-    var ANY_DOCUMENT                    = Feature.ANY_DOCUMENT;
-    var ANY_WINDOW                      = Feature.ANY_WINDOW;
     var ARRAY_ITERATOR                  = Feature.ARRAY_ITERATOR;
     var ARROW                           = Feature.ARROW;
-    var ASYNC_FUNCTION                  = Feature.ASYNC_FUNCTION;
     var AT                              = Feature.AT;
-    var ATOB                            = Feature.ATOB;
     var BARPROP                         = Feature.BARPROP;
-    var CALL_ON_GLOBAL                  = Feature.CALL_ON_GLOBAL;
     var CAPITAL_HTML                    = Feature.CAPITAL_HTML;
     var CONSOLE                         = Feature.CONSOLE;
-    var CREATE_ELEMENT                  = Feature.CREATE_ELEMENT;
     var DOCUMENT                        = Feature.DOCUMENT;
-    var DOMWINDOW                       = Feature.DOMWINDOW;
-    var ESC_HTML_ALL                    = Feature.ESC_HTML_ALL;
     var ESC_HTML_QUOT                   = Feature.ESC_HTML_QUOT;
-    var ESC_HTML_QUOT_ONLY              = Feature.ESC_HTML_QUOT_ONLY;
-    var ESC_REGEXP_LF                   = Feature.ESC_REGEXP_LF;
-    var ESC_REGEXP_SLASH                = Feature.ESC_REGEXP_SLASH;
     var FF_SRC                          = Feature.FF_SRC;
     var FILL                            = Feature.FILL;
     var FLAT                            = Feature.FLAT;
-    var FORMS                           = Feature.FORMS;
     var FROM_CODE_POINT                 = Feature.FROM_CODE_POINT;
     var FUNCTION_19_LF                  = Feature.FUNCTION_19_LF;
     var FUNCTION_22_LF                  = Feature.FUNCTION_22_LF;
-    var GENERIC_ARRAY_TO_STRING         = Feature.GENERIC_ARRAY_TO_STRING;
-    var GLOBAL_UNDEFINED                = Feature.GLOBAL_UNDEFINED;
-    var GMT                             = Feature.GMT;
-    var HISTORY                         = Feature.HISTORY;
-    var HTMLAUDIOELEMENT                = Feature.HTMLAUDIOELEMENT;
     var IE_SRC                          = Feature.IE_SRC;
     var INCR_CHAR                       = Feature.INCR_CHAR;
-    var INTL                            = Feature.INTL;
     var ITERATOR_HELPER                 = Feature.ITERATOR_HELPER;
-    var JAPANESE_INFINITY               = Feature.JAPANESE_INFINITY;
     var LOCALE_INFINITY                 = Feature.LOCALE_INFINITY;
-    var LOCALE_NUMERALS                 = Feature.LOCALE_NUMERALS;
     var LOCALE_NUMERALS_BN              = Feature.LOCALE_NUMERALS_BN;
     var LOCALE_NUMERALS_EXT             = Feature.LOCALE_NUMERALS_EXT;
-    var LOCATION                        = Feature.LOCATION;
-    var MOZILLA                         = Feature.MOZILLA;
     var NAME                            = Feature.NAME;
-    var NODECONSTRUCTOR                 = Feature.NODECONSTRUCTOR;
-    var NODE_NAME                       = Feature.NODE_NAME;
     var NO_FF_SRC                       = Feature.NO_FF_SRC;
     var NO_IE_SRC                       = Feature.NO_IE_SRC;
-    var NO_OLD_SAFARI_ARRAY_ITERATOR    = Feature.NO_OLD_SAFARI_ARRAY_ITERATOR;
     var NO_V8_SRC                       = Feature.NO_V8_SRC;
     var OBJECT_ARRAY_ENTRIES_CTOR       = Feature.OBJECT_ARRAY_ENTRIES_CTOR;
-    var OBJECT_L_LOCATION_CTOR          = Feature.OBJECT_L_LOCATION_CTOR;
-    var OBJECT_UNDEFINED                = Feature.OBJECT_UNDEFINED;
     var OBJECT_W_SELF                   = Feature.OBJECT_W_SELF;
-    var OLD_SAFARI_LOCATION_CTOR        = Feature.OLD_SAFARI_LOCATION_CTOR;
     var PLAIN_INTL                      = Feature.PLAIN_INTL;
     var REGEXP_STRING_ITERATOR          = Feature.REGEXP_STRING_ITERATOR;
-    var SELF_OBJ                        = Feature.SELF_OBJ;
+    var SELF                            = Feature.SELF;
     var SHORT_LOCALES                   = Feature.SHORT_LOCALES;
     var STATUS                          = Feature.STATUS;
-    var UNDEFINED                       = Feature.UNDEFINED;
     var V8_SRC                          = Feature.V8_SRC;
     var WINDOW                          = Feature.WINDOW;
 
-    function createCharDefaultDefinition
-    (atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
+    function charDefaultDefinition(char)
     {
-        function charDefaultDefinition(char)
-        {
-            var charCode = char.charCodeAt();
-            var solution =
-            this._createCharDefaultSolution
-            (char, charCode, atobOpt && charCode < 0x100, charCodeOpt, escSeqOpt, unescapeOpt);
-            return solution;
-        }
-
-        return charDefaultDefinition;
+        var solution = this._defaultResolveCharacter(char);
+        return solution;
     }
 
-    function defineCharDefault(opts)
+    function defineCharDefault()
     {
-        function checkOpt(optName)
-        {
-            var opt = !(opts && optName in opts) || opts[optName];
-            return opt;
-        }
-
-        var atobOpt     = checkOpt('atob');
-        var charCodeOpt = checkOpt('charCode');
-        var escSeqOpt   = checkOpt('escSeq');
-        var unescapeOpt = checkOpt('unescape');
-        var definition = createCharDefaultDefinition(atobOpt, charCodeOpt, escSeqOpt, unescapeOpt);
-        var entry = define(definition);
+        var entry = define(charDefaultDefinition);
         return entry;
     }
 
@@ -531,7 +475,7 @@ function getFHPaddingEntries(index)
             else
                 expr += '[' + index + ']';
         }
-        var entry = define._callWithFeatures(expr, LOCALE_NUMERALS, arguments, 3);
+        var entry = define._callWithFeatures(expr, arguments, 3);
         return entry;
     }
 
@@ -581,13 +525,7 @@ function getFHPaddingEntries(index)
 
     BASE64_ALPHABET_HI_4 =
     [
-        [
-            define('A'),
-            define('C', CAPITAL_HTML),
-            define('D', CALL_ON_GLOBAL, DOMWINDOW),
-            define('A', ARRAY_ITERATOR, CAPITAL_HTML),
-            define('A', ARRAY_ITERATOR, CALL_ON_GLOBAL, DOMWINDOW),
-        ],
+        [define('A'), define('C', CAPITAL_HTML), define('A', ARRAY_ITERATOR)],
         [
             define('F'),
             define('H', ITERATOR_HELPER),
@@ -597,18 +535,7 @@ function getFHPaddingEntries(index)
         'Infinity',
         'NaNfalse',
         [define('S'), define('R', CAPITAL_HTML), define('S', ARRAY_ITERATOR)],
-        [
-            define('W'),
-            define('U', CAPITAL_HTML),
-            define('W', ANY_WINDOW, CALL_ON_GLOBAL),
-            define('U', CAPITAL_HTML, IE_SRC),
-            define('W', CALL_ON_GLOBAL, CAPITAL_HTML, DOMWINDOW),
-            define('U', ANY_WINDOW, CALL_ON_GLOBAL, CAPITAL_HTML, NO_IE_SRC),
-            define('W', CALL_ON_GLOBAL, CAPITAL_HTML, OBJECT_W_SELF),
-            define('W', CALL_ON_GLOBAL, CAPITAL_HTML, DOMWINDOW, NO_IE_SRC),
-            define('U', ANY_WINDOW, ARRAY_ITERATOR, CALL_ON_GLOBAL, CAPITAL_HTML),
-            define('U', ARRAY_ITERATOR, CALL_ON_GLOBAL, CAPITAL_HTML, OBJECT_W_SELF),
-        ],
+        [define('W'), define('U', CAPITAL_HTML)],
         'a',
         'false',
         'i',
@@ -696,13 +623,7 @@ function getFHPaddingEntries(index)
         '0A',
         [define('0B'), define('0R', CAPITAL_HTML), define('0B', ARRAY_ITERATOR)],
         '0i',
-        [
-            define('0j'),
-            define('0T', CAPITAL_HTML),
-            define('0j', ARRAY_ITERATOR),
-            define('0D', CALL_ON_GLOBAL, DOMWINDOW),
-            define('0j', ARRAY_ITERATOR, CALL_ON_GLOBAL, DOMWINDOW),
-        ],
+        [define('0j'), define('0T', CAPITAL_HTML), define('0j', ARRAY_ITERATOR)],
         '00',
         '01',
         '02',
@@ -722,17 +643,7 @@ function getFHPaddingEntries(index)
     CHARACTERS =
     noProto
     ({ // eslint-disable-line @origin-1/bracket-layout
-        // '\0'…'\x07'
-        '\b':
-        [
-            define('Function("return\\"" + ESCAPING_BACKSLASH + "b\\"")()[0]'),
-            defineCharDefault({ escSeq: false }),
-        ],
-        '\t':
-        [
-            define('Function("return\\"" + ESCAPING_BACKSLASH + "true\\"")()[0]'),
-            defineCharDefault({ escSeq: false }),
-        ],
+        // '\0'…'\x09'
         '\n':
         [
             define('(RP_0_S + Function())[23]'),
@@ -741,25 +652,10 @@ function getFHPaddingEntries(index)
             define('(RP_0_S + ANY_FUNCTION)[0]', IE_SRC),
             defineCharInFnHead(13, NO_V8_SRC),
         ],
-        '\v':
-        [
-            define('Function("return\\"" + ESCAPING_BACKSLASH + "v\\"")()[0]'),
-            defineCharDefault({ escSeq: false }),
-        ],
-        '\f':
-        [
-            define('Function("return\\"" + ESCAPING_BACKSLASH + "false\\"")()[0]'),
-            defineCharDefault({ escSeq: false }),
-        ],
-        '\r':
-        [
-            define('Function("return\\"" + ESCAPING_BACKSLASH + "r\\"")()'),
-            defineCharDefault({ escSeq: false }),
-        ],
-        // '\x0e'…'\x1d'
+        // '\x0b'…'\x1d'
         '\x1e':
         [
-            define('(RP_5_A + atob("NaNfalse"))[10]', ATOB),
+            define('(RP_5_A + atob("NaNfalse"))[10]'),
         ],
         // '\x1f'
         ' ':
@@ -786,7 +682,6 @@ function getFHPaddingEntries(index)
         ],
         '#':
         [
-            define('document.nodeName[0]', NODE_NAME),
             defineCharDefault(),
         ],
         // '$'
@@ -794,17 +689,14 @@ function getFHPaddingEntries(index)
         [
             define('escape(FILTER)[20]'),
             define('escape(0 + AT)[20]', AT),
-            define('atob("000l")[2]', ATOB),
             define('escape(FILL)[21]', FILL),
             define('escape(FLAT)[21]', FLAT),
             define('escape(ANY_FUNCTION)[0]', IE_SRC),
+            defineCharDefault(),
         ],
         '&':
         [
-            define('"".fontcolor("".italics())[22]', ESC_HTML_ALL),
-            define('"".fontcolor("".sub())[20]', ESC_HTML_ALL),
-            define('"".fontcolor("\\"")[13]', ESC_HTML_QUOT),
-            define('"".fontcolor("".fontcolor([]))[31]', ESC_HTML_QUOT_ONLY),
+            define('"".fontcolor("".fontcolor([]))[31]', ESC_HTML_QUOT),
             defineCharDefault(),
         ],
         // '\''
@@ -831,18 +723,10 @@ function getFHPaddingEntries(index)
             define('"true".sub()[10]'),
         ],
         // '0'…'9'
-        ':':
-        [
-            define('(RP_0_S + RegExp())[3]'),
-            defineCharDefault(),
-        ],
+        // ':'
         ';':
         [
-            define('"".fontcolor("".italics())[21]', ESC_HTML_ALL),
-            define('"".fontcolor(true + "".sub())[20]', ESC_HTML_ALL),
-            define('"".fontcolor("NaN\\"")[21]', ESC_HTML_QUOT),
-            define('"".fontcolor("".fontcolor())[30]', ESC_HTML_QUOT_ONLY),
-            defineCharDefault(),
+            define('"".fontcolor("".fontcolor())[30]', ESC_HTML_QUOT),
         ],
         '<':
         [
@@ -877,47 +761,31 @@ function getFHPaddingEntries(index)
         'C':
         [
             define('escape("".italics())[2]'),
-            define('escape("".sub())[2]'),
             define('escape(F_A_L_S_E)[11]'),
-            define('atob("00NaNfalse")[1]', ATOB),
             define('(RP_4_A + "".fontcolor())[10]', CAPITAL_HTML),
             define('(RP_3_WA + Function("return console")())[11]', CONSOLE),
-            define('(RP_0_S + Node)[12]', NODECONSTRUCTOR),
+            defineCharDefault(),
         ],
         'D':
         [
+            define('btoa("00")[1]'),
             // * The escaped character may be either "]" or "}".
             define('escape((+("1000" + (RP_5_A + FILTER + 0)[40] + 0) + FILTER)[40])[2]'), // *
             define('escape("]")[2]'),
             define('escape("}")[2]'),
-            define('(document + RP_0_S)[SLICE_OR_SUBSTR]("-10")[1]', ANY_DOCUMENT),
             define('escape((RP_4_A + [+("1000" + (AT + 0)[31] + 0)] + AT)[40])[2]', AT), // *
-            define('btoa("00")[1]', ATOB),
-            define('(RP_3_WA + document)[11]', DOCUMENT),
-            define('(RP_3_WA + self)[11]', DOMWINDOW),
             define // *
             ('escape((NaN + [+("10" + [(RP_6_S + FILL)[40]] + "000")] + FILL)[40])[2]', FILL),
             define // *
             ('escape((NaN + [+("10" + [(RP_6_S + FLAT)[40]] + "000")] + FLAT)[40])[2]', FLAT),
-            define('escape(ARRAY_ITERATOR)[30]', NO_OLD_SAFARI_ARRAY_ITERATOR),
             define('escape(FILTER)[50]', V8_SRC),
-            define('(document + [RP_1_WA]).at("-10")', ANY_DOCUMENT, AT),
-            define('escape(AT)[61]', AT, IE_SRC),
             define('escape([[]][+(RP_0_S + AT)[0]] + AT)[61]', AT, NO_FF_SRC), // *
-            define('escape([NaN][+(RP_1_WA + AT)[20]] + AT)[61]', AT, NO_IE_SRC), // *
-            define('escape(true + AT)[50]', AT, V8_SRC),
-            define('(RP_3_WA + "".slice.call())[11]', CALL_ON_GLOBAL, DOMWINDOW),
-            define('"".sub.call()[13]', CALL_ON_GLOBAL, DOMWINDOW),
             define('escape(FILL)[60]', FF_SRC, FILL),
-            define('escape(FLAT)[60]', FF_SRC, FLAT),
         ],
         'E':
         [
-            defineCharInFn('RegExp', 12),
-            define('btoa("0NaN")[1]', ATOB),
+            define('btoa("0NaN")[1]'),
             define('(RP_5_A + "".link())[10]', CAPITAL_HTML),
-            define('(RP_3_WA + Audio)[21]', HTMLAUDIOELEMENT),
-            define('(RP_0_S + REGEXP_STRING_ITERATOR)[11]', REGEXP_STRING_ITERATOR),
         ],
         'F':
         [
@@ -926,27 +794,19 @@ function getFHPaddingEntries(index)
         ],
         'G':
         [
-            define('btoa("0false")[1]', ATOB),
+            define('btoa("0false")[1]'),
             define('"0".big()[10]', CAPITAL_HTML),
-            define('(RP_5_A + Date())[30]', GMT),
         ],
         'H':
         [
-            define('btoa(true)[1]', ATOB),
+            define('btoa(true)[1]'),
             define('"".link()[3]', CAPITAL_HTML),
-            define('(RP_3_WA + document.forms)[11]', FORMS),
-            define
-            ({ expr: '(RP_3_WA + Function("return history")())[11]', optimize: true }, HISTORY),
-            define('(RP_1_WA + Audio)[10]', HTMLAUDIOELEMENT),
             define('(RP_4_A + [].entries().filter(ANY_FUNCTION))[21]', ITERATOR_HELPER),
-            define({ expr: '(RP_3_WA + self.history)[11]', optimize: true }, HISTORY, SELF_OBJ),
         ],
         'I': '"Infinity"[0]',
         'J':
         [
-            define('"j"[TO_UPPER_CASE]()'),
-            define('btoa(true)[2]', ATOB),
-            defineCharDefault({ atob: false }),
+            define('btoa(true)[2]'),
         ],
         'K':
         [
@@ -955,100 +815,38 @@ function getFHPaddingEntries(index)
         ],
         'L':
         [
-            define('btoa(".")[0]', ATOB),
+            define('btoa(".")[0]'),
             define('(RP_3_WA + "".fontcolor())[11]', CAPITAL_HTML),
-            define('(RP_0_S + document.forms)[11]', FORMS),
-            define('(RP_0_S + Audio)[12]', HTMLAUDIOELEMENT),
-            define
-            (
-                {
-                    expr:
-                    'Function("return toString.call(location)")()[SLICE_OR_SUBSTR]("-10")[1]',
-                    optimize: true,
-                },
-                LOCATION
-            ),
-            define('(RP_3_WA + LOCATION_CONSTRUCTOR)[11]', OBJECT_L_LOCATION_CTOR),
-            define
-            (
-                '(LOCATION_CONSTRUCTOR + RP_0_S)[SLICE_OR_SUBSTR]("-20")[0]',
-                OLD_SAFARI_LOCATION_CTOR
-            ),
-            define
-            (
-                {
-                    expr:
-                    '(Function("return toString.call(location)")() + RP_1_WA).at("-10")',
-                    optimize: true,
-                },
-                AT,
-                LOCATION
-            ),
-            define('(LOCATION_CONSTRUCTOR + RP_0_S).at("-20")', AT, OLD_SAFARI_LOCATION_CTOR),
-            define
-            (
-                '[][TO_STRING].call(location)[SLICE_OR_SUBSTR]("-10")[1]',
-                GENERIC_ARRAY_TO_STRING,
-                LOCATION
-            ),
-            define
-            ('self[TO_STRING].call(location)[SLICE_OR_SUBSTR]("-10")[1]', LOCATION, SELF_OBJ),
-            define
-            (
-                '([][TO_STRING].call(location) + RP_1_WA).at("-10")',
-                AT,
-                GENERIC_ARRAY_TO_STRING,
-                LOCATION
-            ),
-            define('(self[TO_STRING].call(location) + RP_1_WA).at("-10")', AT, LOCATION, SELF_OBJ),
         ],
         'M':
         [
-            define('btoa(0)[0]', ATOB),
+            define('btoa(0)[0]'),
             define('"".small()[2]', CAPITAL_HTML),
-            define('(RP_0_S + self)[10]', DOMWINDOW),
-            define('(RP_0_S + document.forms)[10]', FORMS),
-            define('(RP_4_A + Date())[30]', GMT),
-            define('(RP_0_S + Audio)[11]', HTMLAUDIOELEMENT),
-            define('USER_AGENT[0]', MOZILLA),
-            define('"".slice.call()[10]', CALL_ON_GLOBAL, DOMWINDOW),
-            define('(RP_5_A + "".sub.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
         ],
         'N': '"NaN"[0]',
         'O':
         [
             defineCharInFn('Object', 9),
+            define('btoa(NaN)[3]'),
             define('(RP_3_WA + PLAIN_OBJECT)[11]'),
-            define('btoa(NaN)[3]', ATOB),
             define('"".fontcolor()[2]', CAPITAL_HTML),
-            define('(RP_1_WA + self)[10]', DOMWINDOW),
             define('(RP_3_WA + Intl)[11]', PLAIN_INTL),
-            define('(RP_1_WA + "".slice.call())[10]', CALL_ON_GLOBAL, DOMWINDOW),
-            define('(RP_6_S + "".sub.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
         ],
         'P':
         [
-            define('String.fromCharCode("80")'),
-            define('(RP_3_WA + Function("return async function(){}")()())[11]', ASYNC_FUNCTION),
-            define('atob("01A")[1]', ATOB),
-            define('btoa("".italics())[0]', ATOB),
+            define('btoa("".italics())[0]'),
             define('(RP_0_S + Function("return statusbar")())[11]', BARPROP),
             define('"0".sup()[10]', CAPITAL_HTML),
-            define('(RP_0_S + self.statusbar)[11]', BARPROP, SELF_OBJ),
-            defineCharDefault({ atob: false, charCode: false }),
+            defineCharDefault(),
         ],
         'Q':
         [
-            define('"q"[TO_UPPER_CASE]()'),
-            define('btoa(1)[1]', ATOB),
-            defineCharDefault({ atob: false }),
+            define('btoa(1)[1]'),
         ],
         'R':
         [
-            defineCharInFn('RegExp', 9),
-            define('btoa("0true")[2]', ATOB),
+            define('btoa("0true")[2]'),
             define('"".fontcolor()[10]', CAPITAL_HTML),
-            define('(RP_3_WA + REGEXP_STRING_ITERATOR)[11]', REGEXP_STRING_ITERATOR),
         ],
         'S':
         [
@@ -1057,115 +855,49 @@ function getFHPaddingEntries(index)
         ],
         'T':
         [
-            define
-            (
-                {
-                    expr:
-                    '(RP_0_S + ' +
-                    'Function("try{undefined.false}catch(undefined){return undefined}")())[0]',
-                    optimize: true,
-                }
-            ),
-            define('btoa(NaN)[0]', ATOB),
+            define('btoa(NaN)[0]'),
             define('"".fontcolor([])[20]', CAPITAL_HTML),
-            define('(RP_1_WA + document.forms)[10]', FORMS),
-            define('(RP_3_WA + Date())[30]', GMT),
-            define('(RP_0_S + Audio)[10]', HTMLAUDIOELEMENT),
-            defineCharDefault({ atob: false }),
         ],
         'U':
         [
-            define('btoa("1NaN")[1]', ATOB),
+            define('btoa("1NaN")[1]'),
             define('"".sub()[2]', CAPITAL_HTML),
-            define
-            (
-                { expr: '(RP_3_WA + Function("return toString")()())[11]', optimize: true },
-                GLOBAL_UNDEFINED
-            ),
-            define
-            (
-                { expr: '(RP_3_WA + Function("return{}.toString")()())[11]', optimize: true },
-                OBJECT_UNDEFINED
-            ),
-            define('(RP_3_WA + PLAIN_OBJECT[TO_STRING].call())[11]', UNDEFINED),
-            define('(RP_3_WA + ARRAY_ITERATOR[TO_STRING].call())[11]', ARRAY_ITERATOR, UNDEFINED),
-            define
-            (
-                { expr: '(RP_3_WA + Function("return Intl.toString")()())[11]', optimize: true },
-                INTL,
-                OBJECT_UNDEFINED
-            ),
-            define('(RP_3_WA + Intl[TO_STRING].call())[11]', INTL, UNDEFINED),
         ],
         'V':
         [
-            define('"v"[TO_UPPER_CASE]()'),
-            define('btoa(undefined)[10]', ATOB),
-            define('(RP_0_S + document.createElement("video"))[12]', CREATE_ELEMENT),
-            defineCharDefault({ atob: false }),
+            define('btoa(undefined)[10]'),
         ],
         'W':
         [
-            define('"w"[TO_UPPER_CASE]()'),
-            define('(self + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]', ANY_WINDOW),
-            define('btoa(undefined)[1]', ATOB),
-            define('(RP_0_S + self)[11]', DOMWINDOW),
+            define('btoa(undefined)[1]'),
             define('(RP_3_WA + self)[11]', OBJECT_W_SELF),
-            define('(self + RP_4_A).at("-11")', ANY_WINDOW, AT),
-            define
-            (
-                '("".slice.call() + RP_4_A)[SLICE_OR_SUBSTR]("-11")[0]',
-                ANY_WINDOW,
-                CALL_ON_GLOBAL
-            ),
-            define
-            (
-                '"".sub.call()[SLICE_OR_SUBSTR]("-13")[0]',
-                ANY_WINDOW,
-                CALL_ON_GLOBAL
-            ),
-            define('"".slice.call()[11]', CALL_ON_GLOBAL, DOMWINDOW),
-            define('(RP_4_A + "".sub.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
-            define('(RP_3_WA + "".slice.call())[11]', CALL_ON_GLOBAL, WINDOW),
-            define('"".sub.call()[13]', CALL_ON_GLOBAL, WINDOW),
-            define('("".slice.call() + RP_4_A).at("-11")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
-            defineCharDefault({ atob: false }),
         ],
         'X':
         [
-            define('"x"[TO_UPPER_CASE]()'),
-            define('btoa("1true")[1]', ATOB),
-            defineCharDefault({ atob: false }),
+            define('btoa("1true")[1]'),
         ],
         'Y':
         [
-            define('"y"[TO_UPPER_CASE]()'),
-            define('btoa("a")[0]', ATOB),
-            defineCharDefault({ atob: false }),
+            define('btoa("a")[0]'),
         ],
         'Z':
         [
-            define('btoa(false)[0]', ATOB),
-            define('(RP_3_WA + "".fontsize())[11]', CAPITAL_HTML),
+            define('btoa(false)[0]'),
         ],
         '[':
         [
             defineCharInFnBody(14),
             define('(RP_0_S + ARRAY_ITERATOR)[0]', ARRAY_ITERATOR),
         ],
-        '\\':
-        [
-            define('ESCAPING_BACKSLASH'),
-            defineCharDefault({ atob: false, escSeq: false, unescape: false }),
-        ],
+        // '\\'
         ']':
         [
             defineCharInFnBody(26),
-            define('(RP_0_S + ARRAY_ITERATOR)[22]', NO_OLD_SAFARI_ARRAY_ITERATOR),
+            define('(RP_0_S + ARRAY_ITERATOR)[22]', ARRAY_ITERATOR),
         ],
         '^':
         [
-            define('atob("undefined0")[2]', ATOB),
+            define('atob("undefined0")[2]'),
         ],
         // '_'
         // '`'
@@ -1189,18 +921,17 @@ function getFHPaddingEntries(index)
         ],
         'h':
         [
+            define('btoa("0false")[3]'),
             define('101[TO_STRING]("21")[1]'),
-            define('btoa("0false")[3]', ATOB),
         ],
         'i': '([RP_5_A] + undefined)[10]',
         'j':
         [
+            define('(RP_0_S + Intl)[3]'),
             define('(RP_0_S + PLAIN_OBJECT)[10]'),
             define('(RP_0_S + ARRAY_ITERATOR)[3]', ARRAY_ITERATOR),
-            define('(RP_0_S + Intl)[3]', INTL),
-            define('(RP_0_S + Node)[3]', NODECONSTRUCTOR),
             define('(RP_0_S + Intl)[10]', PLAIN_INTL),
-            define('(RP_0_S + self)[3]', SELF_OBJ),
+            define('(RP_0_S + self)[3]', SELF),
         ],
         'k':
         [
@@ -1222,15 +953,13 @@ function getFHPaddingEntries(index)
         'p':
         [
             define('211[TO_STRING]("31")[1]'),
-            define('(RP_3_WA + btoa(undefined))[10]', ATOB),
+            define('(RP_3_WA + btoa(undefined))[10]'),
             define('(RP_0_S + [].entries().filter(ANY_FUNCTION))[20]', ITERATOR_HELPER),
         ],
         'q':
         [
             define('212[TO_STRING]("31")[1]'),
-            define('"".fontcolor(0 + "".fontcolor())[30]', ESC_HTML_ALL),
-            define('"".fontcolor("0false\\"")[20]', ESC_HTML_QUOT),
-            define('"".fontcolor(true + "".fontcolor())[30]', ESC_HTML_QUOT_ONLY),
+            define('"".fontcolor(true + "".fontcolor())[30]', ESC_HTML_QUOT),
             defineCharDefault(),
         ],
         'r': '"true"[1]',
@@ -1244,39 +973,19 @@ function getFHPaddingEntries(index)
         'w':
         [
             define('32[TO_STRING]("33")'),
-            define('(self + RP_0_S)[SLICE_OR_SUBSTR]("-2")[0]', ANY_WINDOW),
-            define('atob("undefined0")[1]', ATOB),
-            define('(RP_4_A + self)[20]', DOMWINDOW),
+            define('atob("undefined0")[1]'),
             define('(RP_0_S + self)[13]', WINDOW),
-            define('(self + RP_0_S).at("-2")', ANY_WINDOW, AT),
-            define
-            (
-                '"".slice.call()[SLICE_OR_SUBSTR]("-2")[0]',
-                ANY_WINDOW,
-                CALL_ON_GLOBAL
-            ),
-            define
-            (
-                '("".sub.call() + RP_3_WA)[SLICE_OR_SUBSTR]("-11")[0]',
-                ANY_WINDOW,
-                CALL_ON_GLOBAL
-            ),
-            define('(RP_4_A + "".slice.call())[20]', CALL_ON_GLOBAL, DOMWINDOW),
-            define('"".sub.call()[21]', CALL_ON_GLOBAL, DOMWINDOW),
-            define('"".slice.call()[13]', CALL_ON_GLOBAL, WINDOW),
-            define('(RP_3_WA + "".sub.call())[21]', CALL_ON_GLOBAL, WINDOW),
-            define('"".slice.call().at("-2")', ANY_WINDOW, AT, CALL_ON_GLOBAL),
         ],
         'x':
         [
+            define('btoa("falsefalse")[10]'),
             define('101[TO_STRING]("34")[1]'),
-            define('btoa("falsefalse")[10]', ATOB),
         ],
         'y': '(RP_3_WA + [Infinity])[10]',
         'z':
         [
             define('35[TO_STRING]("36")'),
-            define('btoa("falsefalse")[11]', ATOB),
+            define('btoa("falsefalse")[11]'),
         ],
         '{':
         [
@@ -1292,89 +1001,89 @@ function getFHPaddingEntries(index)
 
         '\x8a':
         [
-            define('(RP_4_A + atob("NaNundefined"))[10]', ATOB),
+            define('(RP_4_A + atob("NaNundefined"))[10]'),
         ],
         '\x8d':
         [
-            define('atob("0NaN")[2]', ATOB),
+            define('atob("0NaN")[2]'),
         ],
         '\x96':
         [
-            define('atob("00false")[3]', ATOB),
+            define('atob("00false")[3]'),
         ],
         '\x9e':
         [
-            define('atob(true)[2]', ATOB),
+            define('atob(true)[2]'),
         ],
         '£':
         [
-            define('atob(NaN)[1]', ATOB),
+            define('atob(NaN)[1]'),
         ],
         '¥':
         [
-            define('atob("0false")[2]', ATOB),
+            define('atob("0false")[2]'),
         ],
         '§':
         [
-            define('atob("00undefined")[2]', ATOB),
+            define('atob("00undefined")[2]'),
         ],
         '©':
         [
-            define('atob("false0")[1]', ATOB),
+            define('atob("false0")[1]'),
         ],
         '±':
         [
-            define('atob("0false")[3]', ATOB),
+            define('atob("0false")[3]'),
         ],
         '¶':
         [
-            define('atob(true)[0]', ATOB),
+            define('atob(true)[0]'),
         ],
         'º':
         [
-            define('atob("undefined0")[0]', ATOB),
+            define('atob("undefined0")[0]'),
         ],
         '»':
         [
-            define('atob(true)[1]', ATOB),
+            define('atob(true)[1]'),
         ],
         'Ç':
         [
-            define('atob("falsefalsefalse")[10]', ATOB),
+            define('atob("falsefalsefalse")[10]'),
         ],
         'Ú':
         [
-            define('atob("0truefalse")[1]', ATOB),
+            define('atob("0truefalse")[1]'),
         ],
         'Ý':
         [
-            define('atob("0undefined")[2]', ATOB),
+            define('atob("0undefined")[2]'),
         ],
         'â':
         [
-            define('atob("falsefalseundefined")[11]', ATOB),
+            define('atob("falsefalseundefined")[11]'),
         ],
         'é':
         [
-            define('atob("0undefined")[1]', ATOB),
+            define('atob("0undefined")[1]'),
         ],
         'î':
         [
-            define('atob("0truefalse")[2]', ATOB),
+            define('atob("0truefalse")[2]'),
         ],
         'ö':
         [
-            define('atob("0false")[1]', ATOB),
+            define('atob("0false")[1]'),
         ],
         'ø':
         [
-            define('atob("undefinedundefined")[10]', ATOB),
+            define('atob("undefinedundefined")[10]'),
         ],
         '∞':
         [
-            define('Infinity[TO_LOCALE_STRING]("ja")[SLICE_OR_SUBSTR]("-1")', JAPANESE_INFINITY),
+            define('Infinity[TO_LOCALE_STRING]("ja")[SLICE_OR_SUBSTR]("-1")'),
+            define('Infinity[TO_LOCALE_STRING]("ja").at("-1")', AT),
             define('Infinity[TO_LOCALE_STRING]()', LOCALE_INFINITY),
-            define('Infinity[TO_LOCALE_STRING]("ja").at("-1")', JAPANESE_INFINITY, AT),
             defineCharDefault(),
         ],
     }); // eslint-disable-line @origin-1/bracket-layout
@@ -1388,7 +1097,7 @@ function getFHPaddingEntries(index)
         String:         define('String.name', NAME),
         fromCharCo:
         define({ expr: '"from3har3o".split(3).join("C")', optimize: { complexOpt: false } }),
-        mCh:            define('atob("bUNo")', Feature.ATOB),
+        mCh:            define('atob("bUNo")'),
     }); // eslint-disable-line @origin-1/bracket-layout
 
     CONSTANTS =
@@ -1400,19 +1109,9 @@ function getFHPaddingEntries(index)
         [
             define('[].constructor'),
         ],
-        Audio:
-        [
-            define('Function("return Audio")()', HTMLAUDIOELEMENT),
-            define('self.Audio', HTMLAUDIOELEMENT, SELF_OBJ),
-        ],
         Boolean:
         [
             define('false.constructor'),
-        ],
-        Date:
-        [
-            define('Function("return Date")()'),
-            define('self.Date', SELF_OBJ),
         ],
         Function:
         [
@@ -1420,13 +1119,8 @@ function getFHPaddingEntries(index)
         ],
         Intl:
         [
-            define('Function("return Intl")()', INTL),
-            define('self.Intl', INTL, SELF_OBJ),
-        ],
-        Node:
-        [
-            define('Function("return Node")()', NODECONSTRUCTOR),
-            define('self.Node', NODECONSTRUCTOR, SELF_OBJ),
+            define('Function("return Intl")()'),
+            define('self.Intl', SELF),
         ],
         Number:
         [
@@ -1434,8 +1128,8 @@ function getFHPaddingEntries(index)
         ],
         Object:
         [
+            define('Intl.constructor'),
             define('PLAIN_OBJECT.constructor'),
-            define('Intl.constructor', INTL),
             define('[].entries().constructor', OBJECT_ARRAY_ENTRIES_CTOR),
         ],
         RegExp:
@@ -1448,38 +1142,32 @@ function getFHPaddingEntries(index)
         ],
         atob:
         [
-            define('Function("return atob")()', ATOB),
-            define('self.atob', ATOB, SELF_OBJ),
+            define('Function("return atob")()'),
+            define('self.atob', SELF),
         ],
         btoa:
         [
-            define('Function("return btoa")()', ATOB),
-            define('self.btoa', ATOB, SELF_OBJ),
+            define('Function("return btoa")()'),
+            define('self.btoa', SELF),
         ],
         document:
         [
-            define({ expr: 'Function("return document")()', optimize: true }, ANY_DOCUMENT),
-            define({ expr: 'self.document', optimize: true }, ANY_DOCUMENT, SELF_OBJ),
+            define({ expr: 'Function("return document")()', optimize: true }, DOCUMENT),
+            define({ expr: 'self.document', optimize: true }, DOCUMENT, SELF),
         ],
         escape:
         [
             define({ expr: 'Function("return escape")()', optimize: true }),
-            define({ expr: 'self.escape', optimize: true }, SELF_OBJ),
-        ],
-        location:
-        [
-            define('Function("return location")()', LOCATION),
-            define('self.location', LOCATION, SELF_OBJ),
+            define({ expr: 'self.escape', optimize: true }, SELF),
         ],
         self:
         [
-            define('Function("return self")()', SELF_OBJ),
-            define('[].concat.call()[0]', CALL_ON_GLOBAL, SELF_OBJ),
+            define('Function("return self")()', SELF),
         ],
         unescape:
         [
             define({ expr: 'Function("return unescape")()', optimize: true }),
-            define({ expr: 'self.unescape', optimize: true }, SELF_OBJ),
+            define({ expr: 'self.unescape', optimize: true }, SELF),
         ],
 
         // Custom definitions
@@ -1498,110 +1186,6 @@ function getFHPaddingEntries(index)
         AT:
         [
             define('[].at', AT),
-        ],
-        ESCAPING_BACKSLASH:
-        [
-            define(backslashDefinition),
-            define({ expr: 'atob("01y")[1]', solutionType: SolutionType.STRING }, ATOB),
-            define
-            (
-                { expr: '(RP_0_S + RegExp("\\n"))[1]', solutionType: SolutionType.STRING },
-                ESC_REGEXP_LF
-            ),
-            define
-            (
-                { expr: '(RP_5_A + RegExp("".italics()))[10]', solutionType: SolutionType.STRING },
-                ESC_REGEXP_SLASH
-            ),
-            define
-            (
-                { expr: '(RP_3_WA + RegExp("".sub()))[10]', solutionType: SolutionType.STRING },
-                ESC_REGEXP_SLASH
-            ),
-            define
-            (
-                { expr: '(RP_0_S + RegExp(FILTER))[20]', solutionType: SolutionType.STRING },
-                ESC_REGEXP_LF,
-                FF_SRC
-            ),
-            define
-            (
-                { expr: '(RP_0_S + RegExp(Function()))[20]', solutionType: SolutionType.STRING },
-                ESC_REGEXP_LF,
-                FUNCTION_19_LF
-            ),
-            define
-            (
-                { expr: '(RP_5_A + RegExp(Function()))[30]', solutionType: SolutionType.STRING },
-                ESC_REGEXP_LF,
-                FUNCTION_22_LF
-            ),
-            define
-            (
-                { expr: '(RP_0_S + RegExp(ANY_FUNCTION))[1]', solutionType: SolutionType.STRING },
-                ESC_REGEXP_LF,
-                IE_SRC
-            ),
-            define
-            (
-                {
-                    expr:           '(+(RP_0_S + FILTER)[0] + RegExp(FILTER))[23]',
-                    solutionType:   SolutionType.STRING,
-                },
-                ESC_REGEXP_LF,
-                NO_V8_SRC
-            ),
-            define
-            (
-                { expr: '(RP_4_A + RegExp(AT))[20]', solutionType: SolutionType.STRING },
-                AT,
-                ESC_REGEXP_LF,
-                FF_SRC
-            ),
-            define
-            (
-                {
-                    expr:           '(RP_1_WA + [+(RP_0_S + AT)[0]] + RegExp(AT))[20]',
-                    solutionType:   SolutionType.STRING,
-                },
-                AT,
-                ESC_REGEXP_LF,
-                NO_V8_SRC
-            ),
-            define
-            (
-                { expr: '(RP_3_WA + RegExp(FILL))[21]', solutionType: SolutionType.STRING },
-                ESC_REGEXP_LF,
-                FF_SRC,
-                FILL
-            ),
-            define
-            (
-                { expr: '(RP_3_WA + RegExp(FLAT))[21]', solutionType: SolutionType.STRING },
-                ESC_REGEXP_LF,
-                FF_SRC,
-                FLAT
-            ),
-            define
-            (
-                {
-                    expr:           '(+(RP_0_S + FILL)[0] + RegExp(FILL))[21]',
-                    solutionType:   SolutionType.STRING,
-                },
-                ESC_REGEXP_LF,
-                FILL,
-                NO_V8_SRC
-            ),
-            define
-            (
-                {
-                    expr:           '(+(RP_0_S + FLAT)[0] + RegExp(FLAT))[21]',
-                    solutionType:   SolutionType.STRING,
-                },
-                ESC_REGEXP_LF,
-                FLAT,
-                NO_V8_SRC
-            ),
         ],
         FILL:
         [
@@ -1623,13 +1207,6 @@ function getFHPaddingEntries(index)
         [
             define({ expr: '"ar-td"', solutionType: SolutionType.COMBINED_STRING }),
             define({ expr: '"ar"', solutionType: SolutionType.COMBINED_STRING }, SHORT_LOCALES),
-        ],
-        LOCATION_CONSTRUCTOR:
-        [
-            define('Function("return location")().constructor', OBJECT_L_LOCATION_CTOR),
-            define('Function("return location")().constructor', OLD_SAFARI_LOCATION_CTOR),
-            define('self.location.constructor', OBJECT_L_LOCATION_CTOR, SELF_OBJ),
-            define('self.location.constructor', OLD_SAFARI_LOCATION_CTOR, SELF_OBJ),
         ],
         PLAIN_OBJECT:
         [
@@ -1675,23 +1252,6 @@ function getFHPaddingEntries(index)
         [
             define
             ({ expr: '"toUpperCase"', optimize: true, solutionType: SolutionType.COMBINED_STRING }),
-        ],
-        USER_AGENT:
-        [
-            define
-            (
-                {
-                    expr:           'Function("return navigator")().userAgent',
-                    solutionType:   SolutionType.STRING,
-                },
-                MOZILLA
-            ),
-            define
-            (
-                { expr: 'self.navigator.userAgent', solutionType: SolutionType.STRING },
-                MOZILLA,
-                SELF_OBJ
-            ),
         ],
 
         // Function body extra padding blocks: prepended to a function to align the function's body
@@ -1917,558 +1477,32 @@ function getFHPaddingEntries(index)
         [define('fromCharCode'), define('fromCodePoint', FROM_CODE_POINT)],
         [
             define(0),
-            define(1, ASYNC_FUNCTION),
-            define(1, ATOB),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FROM_CODE_POINT,
-                INCR_CHAR,
-                NAME,
-                NODECONSTRUCTOR,
-                SELF_OBJ
-            ),
-            define(1, ASYNC_FUNCTION, NO_FF_SRC),
-            define(1, ASYNC_FUNCTION, NO_V8_SRC),
-            define(0, ARRAY_ITERATOR, ASYNC_FUNCTION, FROM_CODE_POINT, NAME),
-            define(1, ARRAY_ITERATOR, ASYNC_FUNCTION, AT, NAME),
-            define(1, ARRAY_ITERATOR, ASYNC_FUNCTION, FILL, NAME),
-            define(1, ARRAY_ITERATOR, ASYNC_FUNCTION, FLAT, NAME),
-            define(1, ARRAY_ITERATOR, ASYNC_FUNCTION, NAME, NO_IE_SRC),
-            define(1, ARRAY_ITERATOR, ASYNC_FUNCTION, NAME, NO_V8_SRC),
-            define(0, ARRAY_ITERATOR, ATOB, FROM_CODE_POINT, IE_SRC, ITERATOR_HELPER),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                AT,
-                CALL_ON_GLOBAL,
-                FROM_CODE_POINT,
-                NAME,
-                NODECONSTRUCTOR,
-                SELF_OBJ
-            ),
-            define(1, ARRAY_ITERATOR, AT, ATOB, IE_SRC, ITERATOR_HELPER),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FLAT,
-                FROM_CODE_POINT,
-                NAME,
-                NODECONSTRUCTOR,
-                SELF_OBJ
-            ),
-            define
-            (1, ASYNC_FUNCTION, AT, CALL_ON_GLOBAL, NAME, NODECONSTRUCTOR, NO_FF_SRC, SELF_OBJ),
-            define
-            (1, ASYNC_FUNCTION, AT, CALL_ON_GLOBAL, NAME, NODECONSTRUCTOR, NO_V8_SRC, SELF_OBJ),
-            define
-            (1, ASYNC_FUNCTION, CALL_ON_GLOBAL, FLAT, NAME, NODECONSTRUCTOR, NO_FF_SRC, SELF_OBJ),
-            define
-            (1, ASYNC_FUNCTION, CALL_ON_GLOBAL, FLAT, NAME, NODECONSTRUCTOR, NO_V8_SRC, SELF_OBJ),
-            define(0, ATOB, FROM_CODE_POINT, INTL, ITERATOR_HELPER),
-            define(1, ATOB, FILL, INTL, ITERATOR_HELPER),
-            define(1, ATOB, IE_SRC, INTL, ITERATOR_HELPER),
-            define(1, ATOB, INTL, ITERATOR_HELPER, NO_IE_SRC),
-            define
-            (0, ASYNC_FUNCTION, CALL_ON_GLOBAL, FROM_CODE_POINT, IE_SRC, NODECONSTRUCTOR, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, AT, CALL_ON_GLOBAL, IE_SRC, NODECONSTRUCTOR, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, CALL_ON_GLOBAL, FILL, IE_SRC, NODECONSTRUCTOR, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, CALL_ON_GLOBAL, FLAT, IE_SRC, NODECONSTRUCTOR, SELF_OBJ),
-            define(0, ARRAY_ITERATOR, ATOB, FROM_CODE_POINT, ITERATOR_HELPER, NO_IE_SRC),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FLAT,
-                FROM_CODE_POINT,
-                IE_SRC,
-                NAME,
-                NODECONSTRUCTOR,
-                SELF_OBJ
-            ),
-            define(1, ARRAY_ITERATOR, AT, ATOB, ITERATOR_HELPER, NO_IE_SRC),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FILL,
-                FROM_CODE_POINT,
-                NAME,
-                NODECONSTRUCTOR,
-                SELF_OBJ
-            ),
-            define
-            (1, ASYNC_FUNCTION, CALL_ON_GLOBAL, FILL, NAME, NODECONSTRUCTOR, NO_FF_SRC, SELF_OBJ),
-            define
-            (1, ASYNC_FUNCTION, CALL_ON_GLOBAL, FILL, NAME, NODECONSTRUCTOR, NO_V8_SRC, SELF_OBJ),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FILL,
-                FROM_CODE_POINT,
-                IE_SRC,
-                NAME,
-                NODECONSTRUCTOR,
-                SELF_OBJ
-            ),
-            define(1, AT, ATOB, INTL, ITERATOR_HELPER),
-            define(0, ATOB, FROM_CODE_POINT, ITERATOR_HELPER, SELF_OBJ),
-            define(1, ARRAY_ITERATOR, ATOB, ITERATOR_HELPER, SELF_OBJ),
-            define(1, ATOB, FILL, ITERATOR_HELPER, SELF_OBJ),
-            define(1, ATOB, FLAT, INTL, ITERATOR_HELPER),
-            define(1, ATOB, FLAT, ITERATOR_HELPER, SELF_OBJ),
-            define
-            (
-                0,
-                ARRAY_ITERATOR,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FROM_CODE_POINT,
-                NODECONSTRUCTOR,
-                SELF_OBJ
-            ),
-            define
-            (1, ARRAY_ITERATOR, ASYNC_FUNCTION, AT, CALL_ON_GLOBAL, NODECONSTRUCTOR, SELF_OBJ),
-            define
-            (1, ARRAY_ITERATOR, ASYNC_FUNCTION, CALL_ON_GLOBAL, FLAT, NODECONSTRUCTOR, SELF_OBJ),
-            define
-            (
-                1,
-                ARRAY_ITERATOR,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FILL,
-                INCR_CHAR,
-                NODECONSTRUCTOR,
-                SELF_OBJ
-            ),
-            define
-            (
-                1,
-                ARRAY_ITERATOR,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FILL,
-                NODECONSTRUCTOR,
-                NO_FF_SRC,
-                SELF_OBJ
-            ),
-            define
-            (
-                0,
-                ARRAY_ITERATOR,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FROM_CODE_POINT,
-                NAME,
-                NODECONSTRUCTOR,
-                SELF_OBJ
-            ),
-            define
-            (
-                1,
-                ARRAY_ITERATOR,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FLAT,
-                NAME,
-                NODECONSTRUCTOR,
-                NO_FF_SRC,
-                SELF_OBJ
-            ),
-            define
-            (
-                1,
-                ARRAY_ITERATOR,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FLAT,
-                NAME,
-                NODECONSTRUCTOR,
-                NO_V8_SRC,
-                SELF_OBJ
-            ),
-            define
-            (
-                0,
-                ARRAY_ITERATOR,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FLAT,
-                FROM_CODE_POINT,
-                IE_SRC,
-                NAME,
-                NODECONSTRUCTOR,
-                SELF_OBJ
-            ),
-            define
-            (
-                1,
-                ARRAY_ITERATOR,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FILL,
-                NODECONSTRUCTOR,
-                NO_V8_SRC,
-                SELF_OBJ
-            ),
-            define
-            (
-                0,
-                ARRAY_ITERATOR,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FILL,
-                FROM_CODE_POINT,
-                IE_SRC,
-                NAME,
-                NODECONSTRUCTOR,
-                SELF_OBJ
-            ),
-            define
-            (
-                1,
-                ARRAY_ITERATOR,
-                ASYNC_FUNCTION,
-                AT,
-                CALL_ON_GLOBAL,
-                NAME,
-                NODECONSTRUCTOR,
-                NO_FF_SRC,
-                SELF_OBJ
-            ),
-            define
-            (
-                1,
-                ARRAY_ITERATOR,
-                ASYNC_FUNCTION,
-                AT,
-                CALL_ON_GLOBAL,
-                NAME,
-                NODECONSTRUCTOR,
-                NO_V8_SRC,
-                SELF_OBJ
-            ),
-            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER),
-            define(1, ASYNC_FUNCTION, FLAT, ITERATOR_HELPER),
-            define(1, ASYNC_FUNCTION, ITERATOR_HELPER, NO_V8_SRC),
-            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, INTL, ITERATOR_HELPER),
-            define(1, ASYNC_FUNCTION, IE_SRC, INTL, ITERATOR_HELPER),
-            define(1, ASYNC_FUNCTION, FLAT, INTL, ITERATOR_HELPER, NO_V8_SRC),
-            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NODECONSTRUCTOR, NO_V8_SRC),
-            define(1, ASYNC_FUNCTION, FILL, ITERATOR_HELPER, NODECONSTRUCTOR, NO_V8_SRC),
-            define
-            (0, ASYNC_FUNCTION, FROM_CODE_POINT, INTL, ITERATOR_HELPER, NODECONSTRUCTOR, NO_V8_SRC),
-            define(1, ASYNC_FUNCTION, IE_SRC, ITERATOR_HELPER, NODECONSTRUCTOR),
-            define(1, ASYNC_FUNCTION, FLAT, ITERATOR_HELPER, NODECONSTRUCTOR, NO_V8_SRC),
-            define(0, ASYNC_FUNCTION, FLAT, FROM_CODE_POINT, ITERATOR_HELPER, SELF_OBJ),
-            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NO_V8_SRC, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, IE_SRC, ITERATOR_HELPER, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, FLAT, ITERATOR_HELPER, NO_V8_SRC, SELF_OBJ),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FROM_CODE_POINT,
-                ITERATOR_HELPER,
-                NO_V8_SRC,
-                SELF_OBJ
-            ),
-            define(1, ASYNC_FUNCTION, ITERATOR_HELPER, NO_IE_SRC),
-            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, INTL, ITERATOR_HELPER, NO_IE_SRC),
-            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NO_IE_SRC, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, ITERATOR_HELPER, V8_SRC),
-            define(1, ASYNC_FUNCTION, FF_SRC, INTL, ITERATOR_HELPER),
-            define(1, ASYNC_FUNCTION, FILL, INTL, ITERATOR_HELPER, NO_IE_SRC),
-            define(1, ASYNC_FUNCTION, FLAT, INTL, ITERATOR_HELPER, NO_IE_SRC),
-            define
-            (0, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NODECONSTRUCTOR, NO_IE_SRC),
-            define(1, ASYNC_FUNCTION, FF_SRC, ITERATOR_HELPER, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, FILL, ITERATOR_HELPER, NO_IE_SRC, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, FLAT, ITERATOR_HELPER, NO_IE_SRC, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, ITERATOR_HELPER, NAME, NODECONSTRUCTOR, V8_SRC),
-            define(1, ASYNC_FUNCTION, FILL, ITERATOR_HELPER, NAME, NODECONSTRUCTOR, NO_IE_SRC),
-            define(0, ASYNC_FUNCTION, FLAT, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
-            define
-            (0, ASYNC_FUNCTION, CALL_ON_GLOBAL, FF_SRC, FROM_CODE_POINT, ITERATOR_HELPER, SELF_OBJ),
-            define
-            (0, ASYNC_FUNCTION, CALL_ON_GLOBAL, FROM_CODE_POINT, ITERATOR_HELPER, SELF_OBJ, V8_SRC),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FILL,
-                FROM_CODE_POINT,
-                ITERATOR_HELPER,
-                NO_IE_SRC,
-                SELF_OBJ
-            ),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FLAT,
-                FROM_CODE_POINT,
-                ITERATOR_HELPER,
-                NO_IE_SRC,
-                SELF_OBJ
-            ),
-            define(1, ASYNC_FUNCTION, FLAT, ITERATOR_HELPER, NAME, NO_IE_SRC),
-            define(0, ATOB, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FLAT,
-                FROM_CODE_POINT,
-                ITERATOR_HELPER,
-                NAME,
-                SELF_OBJ
-            ),
-            define(1, ATOB, ITERATOR_HELPER, NAME, NO_V8_SRC),
-            define(0, ATOB, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NODECONSTRUCTOR),
-            define(1, ATOB, INCR_CHAR, ITERATOR_HELPER, NAME),
-            define(0, ATOB, FROM_CODE_POINT, INCR_CHAR, INTL, ITERATOR_HELPER, NAME),
-            define(0, ATOB, FROM_CODE_POINT, INCR_CHAR, ITERATOR_HELPER, NAME, NODECONSTRUCTOR),
-            define(0, ATOB, FROM_CODE_POINT, INCR_CHAR, ITERATOR_HELPER, NAME, NO_FF_SRC),
-            define(0, ATOB, FROM_CODE_POINT, INCR_CHAR, ITERATOR_HELPER, NAME, SELF_OBJ),
-            define(0, ATOB, FROM_CODE_POINT, INTL, ITERATOR_HELPER, NAME, NO_V8_SRC),
-            define(1, ATOB, FILL, ITERATOR_HELPER, NAME),
-            define(1, ATOB, IE_SRC, INTL, ITERATOR_HELPER, NAME),
-            define(0, ATOB, FILL, FROM_CODE_POINT, INTL, ITERATOR_HELPER, NAME),
-            define(1, ATOB, FILL, IE_SRC, ITERATOR_HELPER, NAME),
-            define(0, ARRAY_ITERATOR, ATOB, FROM_CODE_POINT, INCR_CHAR, ITERATOR_HELPER, NAME),
-            define(0, ATOB, FILL, FROM_CODE_POINT, ITERATOR_HELPER, NAME, SELF_OBJ),
-            define(0, ATOB, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NO_V8_SRC, SELF_OBJ),
-            define(1, ATOB, IE_SRC, ITERATOR_HELPER, NAME, NODECONSTRUCTOR),
-            define(0, ARRAY_ITERATOR, ATOB, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NO_V8_SRC),
-            define(1, ATOB, FLAT, ITERATOR_HELPER, NAME),
-            define(0, ARRAY_ITERATOR, ATOB, FILL, FROM_CODE_POINT, ITERATOR_HELPER),
-            define(1, ARRAY_ITERATOR, ATOB, FILL, ITERATOR_HELPER, NO_V8_SRC),
-            define(1, ARRAY_ITERATOR, ATOB, CALL_ON_GLOBAL, FILL, ITERATOR_HELPER, SELF_OBJ),
-            define
-            (0, ARRAY_ITERATOR, ATOB, FILL, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NO_V8_SRC),
-            define(1, ARRAY_ITERATOR, ATOB, FILL, IE_SRC, ITERATOR_HELPER),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FROM_CODE_POINT,
-                NODECONSTRUCTOR,
-                NO_IE_SRC,
-                SELF_OBJ
-            ),
-            define(1, ASYNC_FUNCTION, CALL_ON_GLOBAL, FF_SRC, FLAT, NODECONSTRUCTOR, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, CALL_ON_GLOBAL, FLAT, NODECONSTRUCTOR, SELF_OBJ, V8_SRC),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FROM_CODE_POINT,
-                ITERATOR_HELPER,
-                NODECONSTRUCTOR,
-                NO_IE_SRC,
-                SELF_OBJ
-            ),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FROM_CODE_POINT,
-                NAME,
-                NODECONSTRUCTOR,
-                NO_IE_SRC,
-                SELF_OBJ
-            ),
-            define(1, ASYNC_FUNCTION, AT, CALL_ON_GLOBAL, FF_SRC, NODECONSTRUCTOR, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, AT, CALL_ON_GLOBAL, NODECONSTRUCTOR, SELF_OBJ, V8_SRC),
-            define(0, ARRAY_ITERATOR, ASYNC_FUNCTION, FLAT, FROM_CODE_POINT, ITERATOR_HELPER),
-            define(0, ATOB, CALL_ON_GLOBAL, FLAT, FROM_CODE_POINT, ITERATOR_HELPER, NAME, SELF_OBJ),
-            define(1, ATOB, IE_SRC, ITERATOR_HELPER, SELF_OBJ),
-            define(0, ARRAY_ITERATOR, ATOB, FROM_CODE_POINT, IE_SRC, ITERATOR_HELPER, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, AT, ITERATOR_HELPER),
-            define(1, ARRAY_ITERATOR, AT, ATOB, FILL, ITERATOR_HELPER),
-            define(1, ARRAY_ITERATOR, ATOB, FILL, ITERATOR_HELPER, NO_IE_SRC),
-            define(1, ATOB, CALL_ON_GLOBAL, IE_SRC, ITERATOR_HELPER, SELF_OBJ),
-            define(1, ATOB, FILL, IE_SRC, ITERATOR_HELPER, SELF_OBJ),
-            define
-            (0, ASYNC_FUNCTION, AT, CALL_ON_GLOBAL, FROM_CODE_POINT, ITERATOR_HELPER, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, AT, IE_SRC, ITERATOR_HELPER),
-            define(1, ASYNC_FUNCTION, AT, ITERATOR_HELPER, NO_IE_SRC),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                AT,
-                CALL_ON_GLOBAL,
-                FROM_CODE_POINT,
-                ITERATOR_HELPER,
-                NODECONSTRUCTOR,
-                NO_IE_SRC,
-                SELF_OBJ
-            ),
-            define(1, ASYNC_FUNCTION, AT, CALL_ON_GLOBAL, FF_SRC, ITERATOR_HELPER, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, AT, CALL_ON_GLOBAL, ITERATOR_HELPER, SELF_OBJ, V8_SRC),
-            define(0, ARRAY_ITERATOR, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NO_IE_SRC),
-            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NO_V8_SRC),
-            define(1, ASYNC_FUNCTION, FILL, INCR_CHAR, ITERATOR_HELPER, NAME, NO_V8_SRC),
-            define(0, ASYNC_FUNCTION, FROM_CODE_POINT, INTL, ITERATOR_HELPER, NAME, NO_V8_SRC),
-            define(1, ASYNC_FUNCTION, FLAT, ITERATOR_HELPER, NAME, NO_V8_SRC),
-            define
-            (0, ASYNC_FUNCTION, FLAT, FROM_CODE_POINT, INTL, ITERATOR_HELPER, NAME, NO_V8_SRC),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                FILL,
-                FROM_CODE_POINT,
-                INCR_CHAR,
-                ITERATOR_HELPER,
-                NAME,
-                NODECONSTRUCTOR,
-                NO_V8_SRC
-            ),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                FILL,
-                FROM_CODE_POINT,
-                INCR_CHAR,
-                ITERATOR_HELPER,
-                NAME,
-                NO_V8_SRC,
-                SELF_OBJ
-            ),
-            define(1, ASYNC_FUNCTION, IE_SRC, ITERATOR_HELPER, NAME),
-            define(1, ASYNC_FUNCTION, AT, ITERATOR_HELPER, NAME, NO_V8_SRC),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FROM_CODE_POINT,
-                IE_SRC,
-                ITERATOR_HELPER,
-                NAME,
-                SELF_OBJ
-            ),
-            define(1, ASYNC_FUNCTION, FF_SRC, ITERATOR_HELPER, NAME),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FF_SRC,
-                FROM_CODE_POINT,
-                ITERATOR_HELPER,
-                NAME,
-                SELF_OBJ
-            ),
-            define
-            (0, ASYNC_FUNCTION, FLAT, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NO_V8_SRC, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, FLAT, IE_SRC, ITERATOR_HELPER, NAME, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, AT, FLAT, ITERATOR_HELPER, NAME, NO_V8_SRC, SELF_OBJ),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FLAT,
-                FROM_CODE_POINT,
-                IE_SRC,
-                ITERATOR_HELPER,
-                NAME,
-                SELF_OBJ
-            ),
-            define(1, ASYNC_FUNCTION, FF_SRC, FLAT, ITERATOR_HELPER, NAME, SELF_OBJ),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                AT,
-                CALL_ON_GLOBAL,
-                FROM_CODE_POINT,
-                ITERATOR_HELPER,
-                NAME,
-                NO_V8_SRC,
-                SELF_OBJ
-            ),
-            define
-            (
-                0,
-                ASYNC_FUNCTION,
-                CALL_ON_GLOBAL,
-                FF_SRC,
-                FLAT,
-                FROM_CODE_POINT,
-                ITERATOR_HELPER,
-                NAME,
-                SELF_OBJ
-            ),
-            define(1, ASYNC_FUNCTION, AT, CALL_ON_GLOBAL, FF_SRC, ITERATOR_HELPER, NAME, SELF_OBJ),
-            define(1, ASYNC_FUNCTION, AT, CALL_ON_GLOBAL, IE_SRC, ITERATOR_HELPER, NAME, SELF_OBJ),
-            define(0, ARRAY_ITERATOR, ATOB, FLAT, FROM_CODE_POINT, ITERATOR_HELPER),
-            define(1, ARRAY_ITERATOR, ATOB, FLAT, ITERATOR_HELPER, NO_V8_SRC),
-            define
-            (1, ARRAY_ITERATOR, ATOB, CALL_ON_GLOBAL, FLAT, INCR_CHAR, ITERATOR_HELPER, SELF_OBJ),
-            define
-            (0, ARRAY_ITERATOR, ATOB, FLAT, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NO_V8_SRC),
-            define(1, ATOB, ITERATOR_HELPER, NO_IE_SRC, SELF_OBJ),
-            define(1, ARRAY_ITERATOR, AT, ATOB, FLAT, ITERATOR_HELPER),
-            define(1, ARRAY_ITERATOR, ATOB, FLAT, IE_SRC, ITERATOR_HELPER),
-            define(0, ARRAY_ITERATOR, ATOB, FROM_CODE_POINT, ITERATOR_HELPER, NO_IE_SRC, SELF_OBJ),
-            define(1, ARRAY_ITERATOR, ATOB, FLAT, ITERATOR_HELPER, NO_IE_SRC),
-            define(1, ATOB, CALL_ON_GLOBAL, ITERATOR_HELPER, NO_IE_SRC, SELF_OBJ),
-            define(1, ATOB, FILL, ITERATOR_HELPER, NO_IE_SRC, SELF_OBJ),
-            define(0, ARRAY_ITERATOR, ASYNC_FUNCTION, AT, FROM_CODE_POINT, ITERATOR_HELPER),
-            define(1, ATOB, ITERATOR_HELPER, NAME, NO_IE_SRC),
-            define(0, ARRAY_ITERATOR, ATOB, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NO_IE_SRC),
-            define(1, ATOB, FILL, ITERATOR_HELPER, NAME, NO_IE_SRC),
-            define(1, ATOB, FLAT, ITERATOR_HELPER, NAME, NO_IE_SRC),
-            define(1, ARRAY_ITERATOR, ATOB, CALL_ON_GLOBAL, ITERATOR_HELPER, NAME, SELF_OBJ),
-            define
-            (
-                0,
-                ARRAY_ITERATOR,
-                ATOB,
-                CALL_ON_GLOBAL,
-                FLAT,
-                FROM_CODE_POINT,
-                ITERATOR_HELPER,
-                NAME,
-                SELF_OBJ
-            ),
-            define
-            (1, ARRAY_ITERATOR, ATOB, CALL_ON_GLOBAL, IE_SRC, ITERATOR_HELPER, NAME, SELF_OBJ),
-            define
-            (1, ARRAY_ITERATOR, ATOB, CALL_ON_GLOBAL, INCR_CHAR, ITERATOR_HELPER, NAME, SELF_OBJ),
-            define
-            (1, ARRAY_ITERATOR, ATOB, CALL_ON_GLOBAL, ITERATOR_HELPER, NAME, NO_IE_SRC, SELF_OBJ),
-            define(0, ARRAY_ITERATOR, ASYNC_FUNCTION, FROM_CODE_POINT, ITERATOR_HELPER, NO_V8_SRC),
-            define(1, CAPITAL_HTML),
-            define(1, AT, ATOB, ITERATOR_HELPER, SELF_OBJ),
-            define(0, ARRAY_ITERATOR, ATOB, CAPITAL_HTML, FROM_CODE_POINT),
-            define(1, BARPROP),
+            define(1),
+            define(0, ITERATOR_HELPER),
+            define(1, FILL),
+            define(0, ARRAY_ITERATOR, CAPITAL_HTML, FROM_CODE_POINT),
+            define(1, FLAT, ITERATOR_HELPER),
+            define(0, FILL, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
+            define(1, ARRAY_ITERATOR, ITERATOR_HELPER),
+            define(1, IE_SRC, ITERATOR_HELPER),
+            define(1, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, FILL, FLAT, ITERATOR_HELPER, NAME),
+            define(0, ARRAY_ITERATOR, FILL, FROM_CODE_POINT, ITERATOR_HELPER),
+            define(0, ARRAY_ITERATOR, FLAT, FROM_CODE_POINT, ITERATOR_HELPER),
+            define(0, ARRAY_ITERATOR, FROM_CODE_POINT, IE_SRC, ITERATOR_HELPER),
+            define(0, ARRAY_ITERATOR, FROM_CODE_POINT, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, ARRAY_ITERATOR, FILL, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, ARRAY_ITERATOR, FILL, ITERATOR_HELPER, NO_V8_SRC),
+            define(1, ARRAY_ITERATOR, FLAT, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, ARRAY_ITERATOR, FLAT, ITERATOR_HELPER, NO_V8_SRC),
+            define(0, ARRAY_ITERATOR, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
+            define(1, AT, ITERATOR_HELPER),
+            define(1, BARPROP, ITERATOR_HELPER),
             define(1, CAPITAL_HTML, ITERATOR_HELPER),
-            define(1, AT, ATOB, ITERATOR_HELPER, NAME),
-            define(0, ARRAY_ITERATOR, ATOB, BARPROP, CAPITAL_HTML, FROM_CODE_POINT),
+            define(1, ARRAY_ITERATOR, FILL, IE_SRC, ITERATOR_HELPER, NAME),
+            define(1, ARRAY_ITERATOR, FILL, ITERATOR_HELPER, NAME, NO_IE_SRC),
+            define(1, ARRAY_ITERATOR, FLAT, IE_SRC, ITERATOR_HELPER, NAME),
+            define(1, ARRAY_ITERATOR, FLAT, ITERATOR_HELPER, NAME, NO_IE_SRC),
         ]
     );
 
@@ -2595,28 +1629,15 @@ function getFHPaddingEntries(index)
         ],
         [
             define(0),
-            define(1, ARRAY_ITERATOR, ATOB),
+            define(1, ARRAY_ITERATOR),
             define(0, NO_FF_SRC),
             define(0, NO_V8_SRC),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML),
-            define(1, ARRAY_ITERATOR, ATOB, CALL_ON_GLOBAL, SELF_OBJ),
-            define(0, ARRAY_ITERATOR, ATOB, FILL),
-            define(0, ARRAY_ITERATOR, CAPITAL_HTML, FILL),
+            define(0, ARRAY_ITERATOR, AT),
+            define(0, ARRAY_ITERATOR, FILL),
+            define(0, ARRAY_ITERATOR, FLAT),
+            define(0, ARRAY_ITERATOR, NO_IE_SRC),
             define(0, ARRAY_ITERATOR, CAPITAL_HTML, IE_SRC),
-            define(0, ARRAY_ITERATOR, ATOB, CALL_ON_GLOBAL, IE_SRC, SELF_OBJ),
-            define(1, ARRAY_ITERATOR, ATOB, CALL_ON_GLOBAL, FILL, SELF_OBJ),
-            define(0, ARRAY_ITERATOR, ATOB, NO_IE_SRC),
-            define(0, ARRAY_ITERATOR, CAPITAL_HTML, NO_IE_SRC),
-            define(0, ARRAY_ITERATOR, ATOB, FILL, IE_SRC),
-            define(0, ARRAY_ITERATOR, ATOB, FILL, INCR_CHAR, NO_V8_SRC),
-            define(1, ARRAY_ITERATOR, ATOB, CALL_ON_GLOBAL, NO_IE_SRC, SELF_OBJ),
-            define(0, ARRAY_ITERATOR, AT, ATOB),
-            define(0, ARRAY_ITERATOR, AT, CAPITAL_HTML),
-            define(0, ARRAY_ITERATOR, ATOB, FF_SRC),
-            define(0, ARRAY_ITERATOR, ATOB, FLAT),
-            define(0, ARRAY_ITERATOR, ATOB, V8_SRC),
-            define(0, ARRAY_ITERATOR, CAPITAL_HTML, FLAT),
-            define(0, ARRAY_ITERATOR, ATOB, FILL, NO_IE_SRC),
             define(2),
         ]
     );

@@ -10,35 +10,11 @@
 
 ## Properties
 
-### ANY\_DOCUMENT
-
-> **ANY\_DOCUMENT**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object document whose string representation starts with "\[object " and ends with "Document\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.
-
-***
-
-### ANY\_WINDOW
-
-> **ANY\_WINDOW**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object self whose string representation starts with "\[object " and ends with "Window\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.
-
-***
-
 ### ARRAY\_ITERATOR
 
 > **ARRAY\_ITERATOR**: [`ElementaryFeature`](ElementaryFeature.md)
 
-The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
+The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
 
 #### Remarks
 
@@ -58,18 +34,6 @@ Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
-### ASYNC\_FUNCTION
-
-> **ASYNC\_FUNCTION**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Support for async functions, which return Promise object.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
-
-***
-
 ### AT
 
 > **AT**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -79,18 +43,6 @@ Existence of the native function Array.prototype.at.
 #### Remarks
 
 Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
-
-***
-
-### ATOB
-
-> **ATOB**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global functions atob and btoa.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
 
 ***
 
@@ -121,18 +73,6 @@ Available in Chrome, Edge, Firefox, Safari, and Opera. This feature is not avail
 Features available in all browsers.
 
 No support for Node.js.
-
-***
-
-### CALL\_ON\_GLOBAL
-
-> **CALL\_ON\_GLOBAL**: [`ElementaryFeature`](ElementaryFeature.md)
-
-The ability to call a function on the global object when invoking Function.prototype.call without binding.
-
-#### Remarks
-
-This feature is not available in any of the supported engines.
 
 ***
 
@@ -208,16 +148,6 @@ Available in Internet Explorer.
 
 ***
 
-### CREATE\_ELEMENT
-
-> **CREATE\_ELEMENT**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the function document.createElement.
-
-An alias for `ANY_DOCUMENT`.
-
-***
-
 ### DEFAULT
 
 > **DEFAULT**: [`PredefinedFeature`](PredefinedFeature.md)
@@ -230,35 +160,11 @@ Minimum feature level, compatible with all supported engines in all environments
 
 > **DOCUMENT**: [`ElementaryFeature`](ElementaryFeature.md)
 
-Existence of the global object document having the string representation "\[object Document\]".
+Existence of the global object document whose string representation starts with "\[object " and ends with "Document\]".
 
 #### Remarks
 
-This feature is not available in any of the supported engines.
-
-***
-
-### DOMWINDOW
-
-> **DOMWINDOW**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object self having the string representation "\[object DOMWindow\]".
-
-#### Remarks
-
-This feature is not available in any of the supported engines.
-
-***
-
-### ESC\_HTML\_ALL
-
-> **ESC\_HTML\_ALL**: [`ElementaryFeature`](ElementaryFeature.md)
-
-The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
-
-#### Remarks
-
-This feature is not available in any of the supported engines.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.
 
 ***
 
@@ -271,42 +177,6 @@ The property that double quotation marks in the argument of String.prototype.fon
 #### Remarks
 
 Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
-
-***
-
-### ESC\_HTML\_QUOT\_ONLY
-
-> **ESC\_HTML\_QUOT\_ONLY**: [`ElementaryFeature`](ElementaryFeature.md)
-
-The property that only double quotation marks and no other characters in the argument of String.prototype.fontcolor are escaped into HTML entities.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
-
-***
-
-### ESC\_REGEXP\_LF
-
-> **ESC\_REGEXP\_LF**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format line feed characters \("\\n"\) in their string representation.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-***
-
-### ESC\_REGEXP\_SLASH
-
-> **ESC\_REGEXP\_SLASH**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format slashes \("/"\) in their string representation.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
 
 ***
 
@@ -426,16 +296,6 @@ Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
-### FORMS
-
-> **FORMS**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the object document.forms with string representation "\[object HTMLCollection\]".
-
-An alias for `ANY_DOCUMENT`.
-
-***
-
 ### FROM\_CODE\_POINT
 
 > **FROM\_CODE\_POINT**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -469,68 +329,6 @@ A string representation of dynamically generated functions where the character a
 #### Remarks
 
 Available in Internet Explorer.
-
-***
-
-### GENERIC\_ARRAY\_TO\_STRING
-
-> **GENERIC\_ARRAY\_TO\_STRING**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Ability to call Array.prototype.toString with a non-array binding.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-***
-
-### GLOBAL\_UNDEFINED
-
-> **GLOBAL\_UNDEFINED**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Having the global function toString return the string "\[object Undefined\]" when invoked without a binding.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
-
-***
-
-### GMT
-
-> **GMT**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
-
-The string representation of dates is implementation dependent, but most engines use a similar format, making this feature available in all supported engines except Internet Explorer 9 and 10.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-***
-
-### HISTORY
-
-> **HISTORY**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object history having the string representation "\[object History\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.
-
-***
-
-### HTMLAUDIOELEMENT
-
-> **HTMLAUDIOELEMENT**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object Audio whose string representation starts with "function HTMLAudioElement".
-
-#### Remarks
-
-This feature is not available in any of the supported engines.
 
 ***
 
@@ -576,18 +374,6 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.j
 
 ***
 
-### INTL
-
-> **INTL**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object Intl.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-***
-
 ### ITERATOR\_HELPER
 
 > **ITERATOR\_HELPER**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -600,18 +386,6 @@ Available in Chrome, Edge, Firefox 131+, Safari 18.4+, Opera, and Node.js 22.0+.
 
 ***
 
-### JAPANESE\_INFINITY
-
-> **JAPANESE\_INFINITY**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Japanese string representation of Infinity ending with "∞".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-***
-
 ### LOCALE\_INFINITY
 
 > **LOCALE\_INFINITY**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -621,18 +395,6 @@ Language sensitive string representation of Infinity as "∞".
 #### Remarks
 
 Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari, Opera, and Node.js.
-
-***
-
-### LOCALE\_NUMERALS
-
-> **LOCALE\_NUMERALS**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Features shared by all engines capable of localized number formatting, including output of Arabic digits, the Arabic decimal separator "٫", the letters in the first word of the Arabic string representation of NaN \("ليس"\), Persian digits and the Persian digit group separator "٬".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
 
 ***
 
@@ -654,35 +416,11 @@ Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari b
 
 Extended localized number formatting.
 
-This includes all features of LOCALE_NUMERALS plus the output of the first three letters in the second word of the Arabic string representation of NaN \("رقم"\), the letters in the Russian string representation of NaN \("не число"\) and the letters in the Persian string representation of NaN \("ناعدد"\).
+Localized number formatting including the output of the first three letters in the second word of the Arabic string representation of NaN \("رقم"\), the letters in the Russian string representation of NaN \("не число"\) and the letters in the Persian string representation of NaN \("ناعدد"\).
 
 #### Remarks
 
 Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari, Opera, and Node.js.
-
-***
-
-### LOCATION
-
-> **LOCATION**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object location with the property that Object.prototype.toString.call\(location\) evaluates to a string that starts with "\[object " and ends with "Location\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Safari, and Opera.
-
-***
-
-### MOZILLA
-
-> **MOZILLA**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of user agent string navigator.userAgent that starts with "Mozilla".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera.
 
 ***
 
@@ -717,18 +455,6 @@ Available in Chrome, Edge, Internet Explorer, Opera, and Node.js.
 A string representation of native functions typical for most engines with the notable exception of Internet Explorer.
 
 A remarkable trait of this feature is the lack of line feed characters at the beginning and at the end of the string.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
-
-***
-
-### NO\_OLD\_SAFARI\_ARRAY\_ITERATOR
-
-> **NO\_OLD\_SAFARI\_ARRAY\_ITERATOR**: [`ElementaryFeature`](ElementaryFeature.md)
-
-The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
 
 #### Remarks
 
@@ -774,28 +500,6 @@ Features available in Node.js 22.12 to 22.14 and Node.js 23.3 or later.
 
 ***
 
-### NODE\_NAME
-
-> **NODE\_NAME**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the string document.nodeName that starts with a number sign \("#"\).
-
-An alias for `ANY_DOCUMENT`.
-
-***
-
-### NODECONSTRUCTOR
-
-> **NODECONSTRUCTOR**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object Node having the string representation "\[object NodeConstructor\]".
-
-#### Remarks
-
-This feature is not available in any of the supported engines.
-
-***
-
 ### OBJECT\_ARRAY\_ENTRIES\_CTOR
 
 > **OBJECT\_ARRAY\_ENTRIES\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -808,30 +512,6 @@ Available in Firefox before 131, Safari before 18.4, and Node.js before 22.0.
 
 ***
 
-### OBJECT\_L\_LOCATION\_CTOR
-
-> **OBJECT\_L\_LOCATION\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global function location.constructor whose string representation starts with "\[object L".
-
-#### Remarks
-
-Available in Internet Explorer. This feature is not available inside web workers.
-
-***
-
-### OBJECT\_UNDEFINED
-
-> **OBJECT\_UNDEFINED**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Having the function Object.prototype.toString return the string "\[object Undefined\]" when invoked without a binding.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-***
-
 ### OBJECT\_W\_SELF
 
 > **OBJECT\_W\_SELF**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -841,18 +521,6 @@ The property that the string representation of the global object self starts wit
 #### Remarks
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers in Chrome, Edge, Firefox, Safari, and Opera.
-
-***
-
-### OLD\_SAFARI\_LOCATION\_CTOR
-
-> **OLD\_SAFARI\_LOCATION\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object location.constructor whose string representation starts with "\[object " and ends with "LocationConstructor\]".
-
-#### Remarks
-
-This feature is not available in any of the supported engines.
 
 ***
 
@@ -962,14 +630,6 @@ An alias for `SAFARI_18_4`.
 
 > **SELF**: [`ElementaryFeature`](ElementaryFeature.md)
 
-An alias for `ANY_WINDOW`.
-
-***
-
-### SELF\_OBJ
-
-> **SELF\_OBJ**: [`ElementaryFeature`](ElementaryFeature.md)
-
 Existence of the global object self whose string representation starts with "\[object ".
 
 #### Remarks
@@ -999,20 +659,6 @@ Existence of the global string status.
 #### Remarks
 
 Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.
-
-***
-
-### UNDEFINED
-
-> **UNDEFINED**: [`ElementaryFeature`](ElementaryFeature.md)
-
-The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
-
-This behavior is specified by ECMAScript, and is enforced by all engines except Android Browser versions prior to 4.1.2, where this feature is not available.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
 
 ***
 

@@ -102,26 +102,13 @@
         return result;
     }
 
-    function formatLocaleNumeral(number, charCode0, groupLength, separator, dotReplacement)
+    function formatLocaleNumeral(number, charCode0, intReplacer, dotReplacement)
     {
         var parts = String(number).match(/(-?)(\d*)(\.?)(.*)/);
         parts.shift();
         var int = rebaseDigits(parts[1], charCode0);
-        var regExp;
-        switch (groupLength)
-        {
-        case 2:
-            regExp = /(?=(..)+.$)/g;
-            break;
-        case 3:
-            regExp = /(?=(...)+$)/g;
-            break;
-        }
-        if (regExp)
-        {
-            var replacement = (separator || ',') + '$&';
-            int = int.replace(regExp, replacement);
-        }
+        if (intReplacer)
+            int = intReplacer(int);
         parts[1] = int;
         if (dotReplacement)
             parts[2] = parts[2] && dotReplacement;
@@ -245,36 +232,6 @@
             },
             regExp
         );
-        return setUp;
-    }
-
-    function makeEmuFeatureEscRegExp(char, escSeq)
-    {
-        var setUp =
-        function ()
-        {
-            if ((RegExp(char) + '')[1] !== '\\')
-            {
-                var newRegExp =
-                (function (oldRegExp)
-                {
-                    function RegExp(pattern, flags)
-                    {
-                        if (pattern !== undefined)
-                            pattern = String(pattern).replace(charRegExp, escSeq);
-                        var obj = oldRegExp(pattern, flags);
-                        return obj;
-                    }
-
-                    var charRegExp = oldRegExp(char, 'g');
-                    RegExp.prototype = oldRegExp.prototype;
-                    return RegExp;
-                }
-                )(RegExp);
-                override(this, 'RegExp.prototype.constructor', { value: newRegExp });
-                override(this, 'RegExp', { value: newRegExp });
-            }
-        };
         return setUp;
     }
 
@@ -408,17 +365,6 @@
         return setUp;
     }
 
-    function mockLocation(context)
-    {
-        var location = global.location;
-        if (!location)
-        {
-            location = { constructor: { } };
-            override(context, 'location', { value: location });
-        }
-        return location;
-    }
-
     function override(context, path, descriptor)
     {
         var backupList = context.BACKUP || (context.BACKUP = []);
@@ -517,13 +463,6 @@
         return expr;
     }
 
-    function replaceAsyncFunctions(expr)
-    {
-        if (expr === 'return async function(){}')
-            return 'return function(){return"[object Promise]"}';
-        return expr;
-    }
-
     function restoreAll(backupList)
     {
         var backupData;
@@ -537,6 +476,12 @@
             else
                 delete obj[name];
         }
+    }
+
+    function separate2CharGroupsByComma(str)
+    {
+        var returnValue = str.replace(/(?=(..)+.$)/g, ',$&');
+        return returnValue;
     }
 
     var ARRAY_TO_STRING_INTERCEPTOR =
@@ -585,22 +530,19 @@
 
     var EMU_FEATURE_INFOS =
     {
-        ANY_DOCUMENT:
-        makeEmuFeatureDocument('[object Document]', /^\[object [\S\s]*Document]$/),
-        ANY_WINDOW:             makeEmuFeatureSelf('[object Window]', /^\[object [\S\s]*Window]$/),
         ARRAY_ITERATOR:
         function ()
         {
             if (Array.prototype.entries)
             {
                 var arrayIterator = [].entries();
-                if (/^\[object Array[\S\s]{8,9}]$/.test(arrayIterator))
+                if (/^\[object Array Iterator]$/.test(arrayIterator))
                     return;
             }
             var prototype =
             arrayIterator ? Object.getPrototypeOf(arrayIterator) : function () { }.prototype;
             registerObjectFactory
-            (this, 'Array.prototype.entries', '[object ArrayIterator]', prototype);
+            (this, 'Array.prototype.entries', '[object Array Iterator]', prototype);
         },
         ARROW:
         function ()
@@ -618,31 +560,6 @@
                     if (typeof oldBody !== 'string')
                         return;
                     var newBody = replaceArrowFunctions(oldBody);
-                    if (newBody === oldBody)
-                        return;
-                    var fn = context.ADAPTERS.Function.function;
-                    arguments[bodyIndex] = newBody;
-                    var fnObj = fn.apply(this, arguments);
-                    return fnObj;
-                }
-            );
-        },
-        ASYNC_FUNCTION:
-        function ()
-        {
-            var context = this;
-            registerFunctionAdapter
-            (
-                this,
-                function ()
-                {
-                    var bodyIndex = arguments.length - 1;
-                    if (bodyIndex < 0)
-                        return;
-                    var oldBody = arguments[bodyIndex];
-                    if (typeof oldBody !== 'string')
-                        return;
-                    var newBody = replaceAsyncFunctions(oldBody);
                     if (newBody === oldBody)
                         return;
                     var fn = context.ADAPTERS.Function.function;
@@ -675,70 +592,6 @@
             override(this, 'Array.prototype.' + name, descriptor);
             override(this, 'String.prototype.' + name, descriptor);
         },
-        ATOB:
-        function ()
-        {
-            var BASE64_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-
-            function btoa(input)
-            {
-                var output = '';
-                input = String(input);
-                for (var index = 0; index < input.length;)
-                {
-                    var chr1 = input.charCodeAt(index++);
-                    var enc1 = chr1 >> 2;
-                    var chr2 = input.charCodeAt(index++);
-                    var enc2 = (chr1 & 3) << 4 | chr2 >> 4;
-                    var enc3;
-                    var enc4;
-                    if (isNaN(chr2))
-                        enc3 = enc4 = 64;
-                    else
-                    {
-                        var chr3 = input.charCodeAt(index++);
-                        enc3 = (chr2 & 15) << 2 | chr3 >> 6;
-                        if (isNaN(chr3))
-                            enc4 = 64;
-                        else
-                            enc4 = chr3 & 63;
-                    }
-                    output +=
-                    BASE64_CHARS.charAt(enc1) + BASE64_CHARS.charAt(enc2) +
-                    BASE64_CHARS.charAt(enc3) + BASE64_CHARS.charAt(enc4);
-                }
-                return output;
-            }
-
-            function atob(input)
-            {
-                var output = '';
-                input = String(input);
-                for (var index = 0; index < input.length;)
-                {
-                    var enc1 = BASE64_CHARS.indexOf(input.charAt(index++));
-                    var enc2 = BASE64_CHARS.indexOf(input.charAt(index++));
-                    var chr1 = enc1 << 2 | enc2 >> 4;
-                    output += String.fromCharCode(chr1);
-                    var pos3 = input.charAt(index++);
-                    var enc3 = BASE64_CHARS.indexOf(pos3);
-                    if (!pos3 || enc3 === 64)
-                        break;
-                    var chr2 = (enc2 & 15) << 4 | enc3 >> 2;
-                    output += String.fromCharCode(chr2);
-                    var pos4 = input.charAt(index++);
-                    var enc4 = BASE64_CHARS.indexOf(pos4);
-                    if (!pos4 || enc4 === 64)
-                        break;
-                    var chr3 = (enc3 & 3) << 6 | enc4;
-                    output += String.fromCharCode(chr3);
-                }
-                return output;
-            }
-
-            override(this, 'atob', { value: atob });
-            override(this, 'btoa', { value: btoa });
-        },
         BARPROP:
         function ()
         {
@@ -748,20 +601,6 @@
                 return '[object BarProp]';
             };
             override(this, 'statusbar', { value: { toString: toString } });
-        },
-        CALL_ON_GLOBAL:
-        function ()
-        {
-            var callSlice = Function.prototype.call.bind(Array.prototype.slice);
-            var call =
-            function (thisArg)
-            {
-                if (thisArg == null) thisArg = global;
-                var args = callSlice(arguments, 1);
-                var returnValue = this.apply(thisArg, args);
-                return returnValue;
-            };
-            override(this, 'Function.prototype.call', { value: call });
         },
         CAPITAL_HTML:
         makeEmuFeatureHtml
@@ -806,18 +645,8 @@
             var toString = createStaticSupplier('[object Console]');
             override(this, 'console.toString', { value: toString });
         },
-        DOCUMENT:               makeEmuFeatureDocument('[object Document]', /^\[object Document]$/),
-        DOMWINDOW:              makeEmuFeatureSelf('[object DOMWindow]', /^\[object DOMWindow]$/),
-        ESC_HTML_ALL:
-        makeEmuFeatureEscHtml
-        (
-            function (str)
-            {
-                str = str.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                return str;
-            },
-            /&quot;&lt;&gt;/
-        ),
+        DOCUMENT:
+        makeEmuFeatureDocument('[object Document]', /^\[object [\S\s]*Document]$/),
         ESC_HTML_QUOT:
         makeEmuFeatureEscHtml
         (
@@ -828,18 +657,6 @@
             },
             /&quot;/
         ),
-        ESC_HTML_QUOT_ONLY:
-        makeEmuFeatureEscHtml
-        (
-            function (str)
-            {
-                str = str.replace(/"/g, '&quot;');
-                return str;
-            },
-            /&quot;<>/
-        ),
-        ESC_REGEXP_LF:          makeEmuFeatureEscRegExp('\n', '\\n'),
-        ESC_REGEXP_SLASH:       makeEmuFeatureEscRegExp('/', '\\/'),
         FF_SRC:                 makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_FF),
         FILL:                   makeEmuFeatureArrayPrototypeFunction('fill', Function()),
         FLAT:
@@ -867,72 +684,7 @@
         },
         FUNCTION_19_LF:         makeEmuFeatureFunctionLF('function anonymous(\n) {\n\n}'),
         FUNCTION_22_LF:         makeEmuFeatureFunctionLF('function anonymous() {\n\n}'),
-        GENERIC_ARRAY_TO_STRING:
-        function ()
-        {
-            if (isArrayToStringGeneric)
-                return;
-            var originalFn = Array.prototype.toString;
-            var toString =
-            function ()
-            {
-                var fn = Array.isArray(this) ? originalFn : Object.prototype.toString;
-                var str = fn.apply(this, arguments);
-                return str;
-            };
-            override(this, 'Array.prototype.toString', { value: toString });
-        },
-        GLOBAL_UNDEFINED:
-        function ()
-        {
-            if (Object.prototype.toString.call() !== '[object Undefined]')
-                registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
-            var context = this;
-            registerFunctionAdapter
-            (
-                this,
-                function (body)
-                {
-                    if (arguments.length !== 1)
-                        return;
-                    if (typeof body === 'string')
-                    {
-                        body =
-                        body.replace(/^return toString\b/, 'return Object.prototype.toString');
-                        var fn = context.ADAPTERS.Function.function;
-                        var fnObj = fn(body);
-                        return fnObj;
-                    }
-                }
-            );
-        },
-        GMT:
-        function ()
-        {
-            var Date = createStaticSupplier('Xxx Xxx 00 0000 00:00:00 GMT+0000 (XXX)');
-            override(this, 'Date', { value: Date });
-        },
-        HISTORY:
-        function ()
-        {
-            var toString = createStaticSupplier('[object History]');
-            override(this, 'history', { value: { toString: toString } });
-        },
-        HTMLAUDIOELEMENT:
-        function ()
-        {
-            if (!global.Audio)
-                override(this, 'Audio', { value: { } });
-            var toString = createStaticSupplier('function HTMLAudioElement');
-            override(this, 'Audio.toString', { value: toString });
-        },
         IE_SRC:                 makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_IE),
-        INTL:
-        function ()
-        {
-            if (!global.Intl)
-                override(this, 'Intl', { value: { } });
-        },
         ITERATOR_HELPER:
         function ()
         {
@@ -955,27 +707,6 @@
             var filter = createStaticSupplier('[object Iterator Helper]');
             override(this, 'Iterator.prototype.filter', { value: filter });
         },
-        JAPANESE_INFINITY:
-        function ()
-        {
-            registerNumberToLocaleStringAdapter
-            (
-                this,
-                function (locale)
-                {
-                    if (locale === 'ja')
-                    {
-                        switch (+this) // In Internet Explorer 9, +this is different from this.
-                        {
-                        case Infinity:
-                            return '+∞';
-                        case -Infinity:
-                            return '-∞';
-                        }
-                    }
-                }
-            );
-        },
         LOCALE_INFINITY:
         function ()
         {
@@ -994,49 +725,6 @@
                 }
             );
         },
-        LOCALE_NUMERALS:
-        function ()
-        {
-            var context = this;
-            registerNumberToLocaleStringAdapter
-            (
-                this,
-                function (locale)
-                {
-                    var returnValue;
-                    var number;
-                    switch (locale)
-                    {
-                    case 'ar':
-                        number = Number(this);
-                        if (isNaN(number))
-                            returnValue = context.arabicNaNString || 'ليس';
-                        else if (context.shortLocales)
-                        {
-                            returnValue =
-                            formatLocaleNumeral(number, 0x0660, undefined, undefined, '٫');
-                        }
-                        break;
-                    case 'ar-td':
-                        number = Number(this);
-                        if (isNaN(number))
-                            returnValue = context.arabicNaNString || 'ليس';
-                        else
-                        {
-                            returnValue =
-                            formatLocaleNumeral(number, 0x0660, undefined, undefined, '٫');
-                        }
-                        break;
-                    case 'fa':
-                        number = Number(this);
-                        if (!isNaN(number))
-                            returnValue = formatLocaleNumeral(number, 0x06f0, 3, '٬');
-                        break;
-                    }
-                    return returnValue;
-                }
-            );
-        },
         LOCALE_NUMERALS_BN:
         function ()
         {
@@ -1050,7 +738,8 @@
                         var number = Number(this);
                         if (!isNaN(number))
                         {
-                            var returnValue = formatLocaleNumeral(number, 0x09e6, 2);
+                            var returnValue =
+                            formatLocaleNumeral(number, 0x09e6, separate2CharGroupsByComma);
                             return returnValue;
                         }
                     }
@@ -1091,21 +780,6 @@
                 }
             );
         },
-        LOCATION:
-        function ()
-        {
-            var location = mockLocation(this);
-            if (!/^\[object [\S\s]*Location]$/.test(Object.prototype.toString.call(location)))
-                registerDefaultToStringAdapter(this, location, '[object Location]');
-            var descriptor = Object.getOwnPropertyDescriptor(Object.prototype, 'toString');
-            override(this, 'toString', descriptor);
-        },
-        MOZILLA:
-        function ()
-        {
-            var navigator = { userAgent: 'Mozilla/5.0' };
-            override(this, 'navigator', { value: navigator });
-        },
         NAME:
         function ()
         {
@@ -1117,34 +791,12 @@
             };
             override(this, 'Function.prototype.name', { get: get });
         },
-        NODECONSTRUCTOR:
-        function ()
-        {
-            if (!global.Node)
-                override(this, 'Node', { value: { } });
-            var toString = createStaticSupplier('[object NodeConstructor]');
-            override(this, 'Node.toString', { value: toString });
-        },
         NO_FF_SRC:
         makeEmuFeatureNativeFunctionSource
         (NATIVE_FUNCTION_SOURCE_INFO_IE, NATIVE_FUNCTION_SOURCE_INFO_V8),
         NO_IE_SRC:
         makeEmuFeatureNativeFunctionSource
         (NATIVE_FUNCTION_SOURCE_INFO_FF, NATIVE_FUNCTION_SOURCE_INFO_V8),
-        NO_OLD_SAFARI_ARRAY_ITERATOR:
-        function ()
-        {
-            if (Array.prototype.entries)
-            {
-                var arrayIterator = [].entries();
-                if (/^\[object Array Iterator]$/.test(arrayIterator))
-                    return;
-            }
-            var prototype =
-            arrayIterator ? Object.getPrototypeOf(arrayIterator) : function () { }.prototype;
-            registerObjectFactory
-            (this, 'Array.prototype.entries', '[object Array Iterator]', prototype);
-        },
         NO_V8_SRC:
         makeEmuFeatureNativeFunctionSource
         (NATIVE_FUNCTION_SOURCE_INFO_FF, NATIVE_FUNCTION_SOURCE_INFO_IE),
@@ -1160,43 +812,7 @@
             var str = arrayIterator ? arrayIterator + '' : '[object Object]';
             registerObjectFactory(this, 'Array.prototype.entries', str, Object.prototype);
         },
-        OBJECT_L_LOCATION_CTOR:
-        function ()
-        {
-            var location = mockLocation(this);
-            var str = location.constructor + '';
-            if (!/^\[object L/.test(str))
-            {
-                str = '[object L' + str;
-                var toString = createStaticSupplier(str);
-                override(this, 'location.constructor.toString', { value: toString });
-            }
-        },
-        OBJECT_UNDEFINED:
-        function ()
-        {
-            var toString = Object.prototype.toString;
-            if (toString() !== '[object Undefined]')
-                registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
-        },
         OBJECT_W_SELF:          makeEmuFeatureSelf('[object WorkerGlobalScope]', /^\[object W/),
-        OLD_SAFARI_LOCATION_CTOR:
-        function ()
-        {
-            var location = mockLocation(this);
-            var oldStr = location.constructor + '';
-            var newStr = oldStr;
-            if (!/^\[object /.test(oldStr))
-                newStr = '[object ' + newStr;
-            if (!/LocationConstructor]$/.test(oldStr))
-                newStr += 'LocationConstructor]';
-            if (newStr !== oldStr)
-            {
-                var toString = createStaticSupplier(newStr);
-                override(this, 'location.constructor.toString', { value: toString });
-                override(this, 'location.constructor.valueOf', { value: toString });
-            }
-        },
         PLAIN_INTL:
         function ()
         {
@@ -1210,7 +826,7 @@
                 registerDefaultToStringAdapter(this, Intl, '[object Object]');
         },
         REGEXP_STRING_ITERATOR: makeEmuFeatureMatchAll(),
-        SELF_OBJ:               makeEmuFeatureSelf('[object Object]', /^\[object /),
+        SELF:                   makeEmuFeatureSelf('[object Object]', /^\[object /),
         SHORT_LOCALES:
         function ()
         {
@@ -1225,8 +841,7 @@
                         var number = Number(this);
                         if (!isNaN(number))
                         {
-                            var returnValue =
-                            formatLocaleNumeral(number, 0x660, undefined, undefined, '٫');
+                            var returnValue = formatLocaleNumeral(number, 0x660, undefined, '٫');
                             return returnValue;
                         }
                     }
@@ -1237,12 +852,6 @@
         function ()
         {
             override(this, 'status', { value: '' });
-        },
-        UNDEFINED:
-        function ()
-        {
-            if (Object.prototype.toString.call() !== '[object Undefined]')
-                registerDefaultToStringAdapter(this, undefined, '[object Undefined]');
         },
         V8_SRC:                 makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_V8),
         WINDOW:                 makeEmuFeatureSelf('[object Window]', /^\[object Window]$/),

@@ -54,7 +54,7 @@ export async function makeLib()
             'index.d.ts',
             'mask.d.ts',
             'mask-impl.d.ts',
-            'mask-impl-64.d.ts',
+            'mask-impl-52.d.ts',
             'mask-index.d.ts',
         ],
     );

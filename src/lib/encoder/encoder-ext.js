@@ -382,7 +382,6 @@ function encodeText(encoder, input, screwMode, unitPath, maxLength)
             'byDictRadix4AmendedBy1',
             'byDictRadix5',
             'byDictRadix3AmendedBy1',
-            'byDictRadix4',
             'byDict',
             'byCodePointsRadix4',
             'byCharCodesRadix4',
@@ -628,7 +627,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this._encodeByCodePoints(inputData, 4, maxLength);
                 return output;
             },
-            30,
+            29,
             undefined,
             Feature.FROM_CODE_POINT
         ),
@@ -651,7 +650,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this._encodeByDenseFigures(inputData, maxLength);
                 return output;
             },
-            1888
+            1881
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -678,7 +677,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this._encodeByDict(inputData, undefined, undefined, maxLength);
                 return output;
             },
-            2
+            3
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -707,7 +706,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this._encodeByDict(inputData, 3, 1, maxLength);
                 return output;
             },
-            136
+            134
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -743,7 +742,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this._encodeByDict(inputData, 4, 0, maxLength);
                 return output;
             },
-            160
+            112
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -772,7 +771,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this._encodeByDict(inputData, 4, 1, maxLength);
                 return output;
             },
-            218
+            213
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -803,7 +802,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this._encodeByDict(inputData, 4, 2, maxLength);
                 return output;
             },
-            263
+            209
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -840,7 +839,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this._encodeByDict(inputData, 5, 0, maxLength);
                 return output;
             },
-            223
+            172
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -872,7 +871,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 var output = this._encodeByDict(inputData, 5, 3, maxLength);
                 return output;
             },
-            570
+            506
         ),
 
         /* -------------------------------------------------------------------------------------- *\

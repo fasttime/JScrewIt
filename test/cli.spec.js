@@ -361,21 +361,21 @@ describe
                 },
             },
             {
-                params: ['-f', 'ATOB,SELF'],
+                params: ['-f', 'AT,WINDOW'],
                 expectedResult:
                 {
                     inputFileName:  undefined,
                     outputFileName: undefined,
-                    options:        { features: ['ATOB', 'SELF'] },
+                    options:        { features: ['AT', 'WINDOW'] },
                 },
             },
             {
-                params: ['--features', 'ATOB,SELF'],
+                params: ['--features', 'AT,WINDOW'],
                 expectedResult:
                 {
                     inputFileName:  undefined,
                     outputFileName: undefined,
-                    options:        { features: ['ATOB', 'SELF'] },
+                    options:        { features: ['AT', 'WINDOW'] },
                 },
             },
             {

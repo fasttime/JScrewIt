@@ -30,18 +30,18 @@ If no arguments are specified, the new feature object will be equivalent to
 ## Example
 
 The following statements are equivalent, and will all construct a new feature object
-including both [\`ANY\_DOCUMENT\`](#any_document) and [\`ANY\_WINDOW\`](#any_window).
+including both [\`DOCUMENT\`](#document) and [\`WINDOW\`](#window).
 
 ```js
-new JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
+new JScrewIt.Feature("DOCUMENT", "WINDOW");
 ```
 
 ```js
-new JScrewIt.Feature(JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW);
+new JScrewIt.Feature(JScrewIt.Feature.DOCUMENT, JScrewIt.Feature.WINDOW);
 ```
 
 ```js
-new JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW]);
+new JScrewIt.Feature([JScrewIt.Feature.DOCUMENT, JScrewIt.Feature.WINDOW]);
 ```
 
 ## Throws
@@ -74,18 +74,18 @@ If no arguments are specified, the new feature object will be equivalent to
 #### Example
 
 The following statements are equivalent, and will all construct a new feature object
-including both [\`ANY\_DOCUMENT\`](#any_document) and [\`ANY\_WINDOW\`](#any_window).
+including both [\`DOCUMENT\`](#document) and [\`WINDOW\`](#window).
 
 ```js
-JScrewIt.Feature("ANY_DOCUMENT", "ANY_WINDOW");
+JScrewIt.Feature("DOCUMENT", "WINDOW");
 ```
 
 ```js
-JScrewIt.Feature(JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW);
+JScrewIt.Feature(JScrewIt.Feature.DOCUMENT, JScrewIt.Feature.WINDOW);
 ```
 
 ```js
-JScrewIt.Feature([JScrewIt.Feature.ANY_DOCUMENT, JScrewIt.Feature.ANY_WINDOW]);
+JScrewIt.Feature([JScrewIt.Feature.DOCUMENT, JScrewIt.Feature.WINDOW]);
 ```
 
 #### Throws
@@ -120,43 +120,11 @@ featureObj === JScrewIt.Feature.ALL[featureObj.name]
 
 ***
 
-### ANY\_DOCUMENT
-
-> **ANY\_DOCUMENT**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object document whose string representation starts with "\[object " and ends with "Document\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`ANY_DOCUMENT`](FeatureAll.md#any_document)
-
-***
-
-### ANY\_WINDOW
-
-> **ANY\_WINDOW**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object self whose string representation starts with "\[object " and ends with "Window\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`ANY_WINDOW`](FeatureAll.md#any_window)
-
-***
-
 ### ARRAY\_ITERATOR
 
 > **ARRAY\_ITERATOR**: [`ElementaryFeature`](ElementaryFeature.md)
 
-The property that the string representation of Array.prototype.entries\(\) starts with "\[object Array" and ends with "\]" at index 21 or 22.
+The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
 
 #### Remarks
 
@@ -184,22 +152,6 @@ Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
-### ASYNC\_FUNCTION
-
-> **ASYNC\_FUNCTION**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Support for async functions, which return Promise object.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`ASYNC_FUNCTION`](FeatureAll.md#async_function)
-
-***
-
 ### AT
 
 > **AT**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -213,22 +165,6 @@ Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`AT`](FeatureAll.md#at)
-
-***
-
-### ATOB
-
-> **ATOB**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global functions atob and btoa.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`ATOB`](FeatureAll.md#atob)
 
 ***
 
@@ -271,22 +207,6 @@ No support for Node.js.
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`BROWSER`](FeatureAll.md#browser)
-
-***
-
-### CALL\_ON\_GLOBAL
-
-> **CALL\_ON\_GLOBAL**: [`ElementaryFeature`](ElementaryFeature.md)
-
-The ability to call a function on the global object when invoking Function.prototype.call without binding.
-
-#### Remarks
-
-This feature is not available in any of the supported engines.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`CALL_ON_GLOBAL`](FeatureAll.md#call_on_global)
 
 ***
 
@@ -386,20 +306,6 @@ Available in Internet Explorer.
 
 ***
 
-### CREATE\_ELEMENT
-
-> **CREATE\_ELEMENT**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the function document.createElement.
-
-An alias for `ANY_DOCUMENT`.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`CREATE_ELEMENT`](FeatureAll.md#create_element)
-
-***
-
 ### DEFAULT
 
 > **DEFAULT**: [`PredefinedFeature`](PredefinedFeature.md)
@@ -416,31 +322,15 @@ Minimum feature level, compatible with all supported engines in all environments
 
 > **DOCUMENT**: [`ElementaryFeature`](ElementaryFeature.md)
 
-Existence of the global object document having the string representation "\[object Document\]".
+Existence of the global object document whose string representation starts with "\[object " and ends with "Document\]".
 
 #### Remarks
 
-This feature is not available in any of the supported engines.
+Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.
 
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`DOCUMENT`](FeatureAll.md#document)
-
-***
-
-### DOMWINDOW
-
-> **DOMWINDOW**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object self having the string representation "\[object DOMWindow\]".
-
-#### Remarks
-
-This feature is not available in any of the supported engines.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`DOMWINDOW`](FeatureAll.md#domwindow)
 
 ***
 
@@ -449,22 +339,6 @@ This feature is not available in any of the supported engines.
 > `readonly` **ELEMENTARY**: readonly [`ElementaryFeature`](ElementaryFeature.md)[]
 
 An immutable array of all elementary feature objects ordered by name.
-
-***
-
-### ESC\_HTML\_ALL
-
-> **ESC\_HTML\_ALL**: [`ElementaryFeature`](ElementaryFeature.md)
-
-The property that double quotation mark, less than and greater than characters in the argument of String.prototype.fontcolor are escaped into their respective HTML entities.
-
-#### Remarks
-
-This feature is not available in any of the supported engines.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`ESC_HTML_ALL`](FeatureAll.md#esc_html_all)
 
 ***
 
@@ -481,54 +355,6 @@ Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`ESC_HTML_QUOT`](FeatureAll.md#esc_html_quot)
-
-***
-
-### ESC\_HTML\_QUOT\_ONLY
-
-> **ESC\_HTML\_QUOT\_ONLY**: [`ElementaryFeature`](ElementaryFeature.md)
-
-The property that only double quotation marks and no other characters in the argument of String.prototype.fontcolor are escaped into HTML entities.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`ESC_HTML_QUOT_ONLY`](FeatureAll.md#esc_html_quot_only)
-
-***
-
-### ESC\_REGEXP\_LF
-
-> **ESC\_REGEXP\_LF**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format line feed characters \("\\n"\) in their string representation.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`ESC_REGEXP_LF`](FeatureAll.md#esc_regexp_lf)
-
-***
-
-### ESC\_REGEXP\_SLASH
-
-> **ESC\_REGEXP\_SLASH**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Having regular expressions created with the RegExp constructor use escape sequences starting with a backslash to format slashes \("/"\) in their string representation.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`ESC_REGEXP_SLASH`](FeatureAll.md#esc_regexp_slash)
 
 ***
 
@@ -684,20 +510,6 @@ Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 
-### FORMS
-
-> **FORMS**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the object document.forms with string representation "\[object HTMLCollection\]".
-
-An alias for `ANY_DOCUMENT`.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`FORMS`](FeatureAll.md#forms)
-
-***
-
 ### FROM\_CODE\_POINT
 
 > **FROM\_CODE\_POINT**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -743,88 +555,6 @@ Available in Internet Explorer.
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`FUNCTION_22_LF`](FeatureAll.md#function_22_lf)
-
-***
-
-### GENERIC\_ARRAY\_TO\_STRING
-
-> **GENERIC\_ARRAY\_TO\_STRING**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Ability to call Array.prototype.toString with a non-array binding.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`GENERIC_ARRAY_TO_STRING`](FeatureAll.md#generic_array_to_string)
-
-***
-
-### GLOBAL\_UNDEFINED
-
-> **GLOBAL\_UNDEFINED**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Having the global function toString return the string "\[object Undefined\]" when invoked without a binding.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`GLOBAL_UNDEFINED`](FeatureAll.md#global_undefined)
-
-***
-
-### GMT
-
-> **GMT**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Presence of the text "GMT" after the first 25 characters in the string returned by Date\(\).
-
-The string representation of dates is implementation dependent, but most engines use a similar format, making this feature available in all supported engines except Internet Explorer 9 and 10.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`GMT`](FeatureAll.md#gmt)
-
-***
-
-### HISTORY
-
-> **HISTORY**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object history having the string representation "\[object History\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`HISTORY`](FeatureAll.md#history)
-
-***
-
-### HTMLAUDIOELEMENT
-
-> **HTMLAUDIOELEMENT**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object Audio whose string representation starts with "function HTMLAudioElement".
-
-#### Remarks
-
-This feature is not available in any of the supported engines.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`HTMLAUDIOELEMENT`](FeatureAll.md#htmlaudioelement)
 
 ***
 
@@ -886,22 +616,6 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.j
 
 ***
 
-### INTL
-
-> **INTL**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object Intl.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`INTL`](FeatureAll.md#intl)
-
-***
-
 ### ITERATOR\_HELPER
 
 > **ITERATOR\_HELPER**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -918,22 +632,6 @@ Available in Chrome, Edge, Firefox 131+, Safari 18.4+, Opera, and Node.js 22.0+.
 
 ***
 
-### JAPANESE\_INFINITY
-
-> **JAPANESE\_INFINITY**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Japanese string representation of Infinity ending with "∞".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`JAPANESE_INFINITY`](FeatureAll.md#japanese_infinity)
-
-***
-
 ### LOCALE\_INFINITY
 
 > **LOCALE\_INFINITY**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -947,22 +645,6 @@ Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari, 
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`LOCALE_INFINITY`](FeatureAll.md#locale_infinity)
-
-***
-
-### LOCALE\_NUMERALS
-
-> **LOCALE\_NUMERALS**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Features shared by all engines capable of localized number formatting, including output of Arabic digits, the Arabic decimal separator "٫", the letters in the first word of the Arabic string representation of NaN \("ليس"\), Persian digits and the Persian digit group separator "٬".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`LOCALE_NUMERALS`](FeatureAll.md#locale_numerals)
 
 ***
 
@@ -988,7 +670,7 @@ Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari b
 
 Extended localized number formatting.
 
-This includes all features of LOCALE_NUMERALS plus the output of the first three letters in the second word of the Arabic string representation of NaN \("رقم"\), the letters in the Russian string representation of NaN \("не число"\) and the letters in the Persian string representation of NaN \("ناعدد"\).
+Localized number formatting including the output of the first three letters in the second word of the Arabic string representation of NaN \("رقم"\), the letters in the Russian string representation of NaN \("не число"\) and the letters in the Persian string representation of NaN \("ناعدد"\).
 
 #### Remarks
 
@@ -997,38 +679,6 @@ Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari, 
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`LOCALE_NUMERALS_EXT`](FeatureAll.md#locale_numerals_ext)
-
-***
-
-### LOCATION
-
-> **LOCATION**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object location with the property that Object.prototype.toString.call\(location\) evaluates to a string that starts with "\[object " and ends with "Location\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Safari, and Opera.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`LOCATION`](FeatureAll.md#location)
-
-***
-
-### MOZILLA
-
-> **MOZILLA**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of user agent string navigator.userAgent that starts with "Mozilla".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`MOZILLA`](FeatureAll.md#mozilla)
 
 ***
 
@@ -1079,22 +729,6 @@ Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`NO_IE_SRC`](FeatureAll.md#no_ie_src)
-
-***
-
-### NO\_OLD\_SAFARI\_ARRAY\_ITERATOR
-
-> **NO\_OLD\_SAFARI\_ARRAY\_ITERATOR**: [`ElementaryFeature`](ElementaryFeature.md)
-
-The property that the string representation of Array.prototype.entries\(\) evaluates to "\[object Array Iterator\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`NO_OLD_SAFARI_ARRAY_ITERATOR`](FeatureAll.md#no_old_safari_array_iterator)
 
 ***
 
@@ -1152,36 +786,6 @@ Features available in Node.js 22.12 to 22.14 and Node.js 23.3 or later.
 
 ***
 
-### NODE\_NAME
-
-> **NODE\_NAME**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the string document.nodeName that starts with a number sign \("#"\).
-
-An alias for `ANY_DOCUMENT`.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`NODE_NAME`](FeatureAll.md#node_name)
-
-***
-
-### NODECONSTRUCTOR
-
-> **NODECONSTRUCTOR**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object Node having the string representation "\[object NodeConstructor\]".
-
-#### Remarks
-
-This feature is not available in any of the supported engines.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`NODECONSTRUCTOR`](FeatureAll.md#nodeconstructor)
-
-***
-
 ### OBJECT\_ARRAY\_ENTRIES\_CTOR
 
 > **OBJECT\_ARRAY\_ENTRIES\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -1198,38 +802,6 @@ Available in Firefox before 131, Safari before 18.4, and Node.js before 22.0.
 
 ***
 
-### OBJECT\_L\_LOCATION\_CTOR
-
-> **OBJECT\_L\_LOCATION\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global function location.constructor whose string representation starts with "\[object L".
-
-#### Remarks
-
-Available in Internet Explorer. This feature is not available inside web workers.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`OBJECT_L_LOCATION_CTOR`](FeatureAll.md#object_l_location_ctor)
-
-***
-
-### OBJECT\_UNDEFINED
-
-> **OBJECT\_UNDEFINED**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Having the function Object.prototype.toString return the string "\[object Undefined\]" when invoked without a binding.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`OBJECT_UNDEFINED`](FeatureAll.md#object_undefined)
-
-***
-
 ### OBJECT\_W\_SELF
 
 > **OBJECT\_W\_SELF**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -1243,22 +815,6 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This f
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`OBJECT_W_SELF`](FeatureAll.md#object_w_self)
-
-***
-
-### OLD\_SAFARI\_LOCATION\_CTOR
-
-> **OLD\_SAFARI\_LOCATION\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object location.constructor whose string representation starts with "\[object " and ends with "LocationConstructor\]".
-
-#### Remarks
-
-This feature is not available in any of the supported engines.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`OLD_SAFARI_LOCATION_CTOR`](FeatureAll.md#old_safari_location_ctor)
 
 ***
 
@@ -1400,18 +956,6 @@ An alias for `SAFARI_18_4`.
 
 > **SELF**: [`ElementaryFeature`](ElementaryFeature.md)
 
-An alias for `ANY_WINDOW`.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`SELF`](FeatureAll.md#self)
-
-***
-
-### SELF\_OBJ
-
-> **SELF\_OBJ**: [`ElementaryFeature`](ElementaryFeature.md)
-
 Existence of the global object self whose string representation starts with "\[object ".
 
 #### Remarks
@@ -1420,7 +964,7 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera.
 
 #### Inherited from
 
-[`FeatureAll`](FeatureAll.md).[`SELF_OBJ`](FeatureAll.md#self_obj)
+[`FeatureAll`](FeatureAll.md).[`SELF`](FeatureAll.md#self)
 
 ***
 
@@ -1453,24 +997,6 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This f
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`STATUS`](FeatureAll.md#status)
-
-***
-
-### UNDEFINED
-
-> **UNDEFINED**: [`ElementaryFeature`](ElementaryFeature.md)
-
-The property that Object.prototype.toString.call\(\) evaluates to "\[object Undefined\]".
-
-This behavior is specified by ECMAScript, and is enforced by all engines except Android Browser versions prior to 4.1.2, where this feature is not available.
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.js.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`UNDEFINED`](FeatureAll.md#undefined)
 
 ***
 
@@ -1597,17 +1123,18 @@ A feature object, or `null` if no arguments are specified.
 
 #### Example
 
-This will create a new feature object equivalent to [\`NAME\`](#name).
+The following declaration creates a new feature object equivalent to
+[\`NAME\`](#name).
 
 ```js
-const newFeature = JScrewIt.Feature.commonOf(["ATOB", "NAME"], ["NAME", "SELF"]);
+const newFeature = JScrewIt.Feature.commonOf(["AT", "NAME"], ["NAME", "WINDOW"]);
 ```
 
-This will create a new feature object equivalent to [FeatureConstructor.ANY\_WINDOW \| \`ANY\_WINDOW\`](#any_window).
-This is because both [\`DOMWINDOW\`](#domwindow) and [\`WINDOW\`](#window) imply [FeatureConstructor.ANY\_WINDOW \| \`ANY\_WINDOW\`](#any_window).
+The following declaration creates a new feature object equivalent to [\`NO\_IE\_SRC\`](#no_ie_src).
+This is because both [\`FF\_SRC\`](#ff_src) and [\`V8\_SRC\`](#v8_src) imply [\`NO\_IE\_SRC\`](#no_ie_src).
 
 ```js
-const newFeature = JScrewIt.Feature.commonOf("DOMWINDOW", "WINDOW");
+const newFeature = JScrewIt.Feature.commonOf("FF_SRC", "V8_SRC");
 ```
 
 ***
