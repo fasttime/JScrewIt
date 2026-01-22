@@ -49,22 +49,6 @@ showFeatureSupport,
                     outputBodyStyle.whiteSpace = 'pre';
                 }
             );
-            var extremeTestWindow;
-            addBarButton
-            (
-                'Extreme test',
-                function ()
-                {
-                    // Workaraoud for Android bug
-                    // https://code.google.com/p/android/issues/detail?id=21061
-                    if (!extremeTestWindow || extremeTestWindow.closed !== false)
-                    {
-                        extremeTestWindow =
-                        popup('extreme-test.html', 'extremeTestWindow', 600, 600);
-                    }
-                    extremeTestWindow.focus();
-                }
-            );
         }
     }
 

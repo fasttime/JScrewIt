@@ -701,16 +701,6 @@ self,
                     expect(actual).toBeUndefined();
                 }
             );
-            it
-            (
-                'returns undefined for too complex input',
-                function ()
-                {
-                    var encoder = JScrewIt.debug.createEncoder();
-                    encoder.maxGroupThreshold = 2;
-                    expect(encoder.replaceString('123')).toBeUndefined();
-                }
-            );
             it.when(typeof module !== 'undefined' && isStickyRegExpSupported())
             (
                 'works well in legacy mode',

@@ -98,9 +98,9 @@ if (typeof NO_DEBUG === 'undefined')
             return entry;
         }
 
-        function createScrewBuffer(screwMode, groupThreshold, optimizerList)
+        function createScrewBuffer(screwMode, optimizerList)
         {
-            var buffer = new ScrewBuffer(screwMode, groupThreshold, optimizerList);
+            var buffer = new ScrewBuffer(screwMode, optimizerList);
             return buffer;
         }
 

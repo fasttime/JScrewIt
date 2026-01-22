@@ -20,7 +20,6 @@ export var _JSON_stringify                  = JSON.stringify;
 export var _Math_abs                        = Math.abs;
 export var _Math_max                        = Math.max;
 export var _Math_min                        = Math.min;
-export var _Math_pow                        = Math.pow;
 
 export var _Object                          = Object;
 export var _Object_create                   = _Object.create;
