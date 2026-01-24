@@ -53,9 +53,6 @@ export interface FeatureConstructor
     _fromMask(mask: Mask):                                      Feature | null;
     _getMask(feature?: FeatureElementOrCompatibleArray):        Mask;
     areCompatible(...features: FeatureElement[]):               boolean;
-
-    /** @deprecated */
-    areCompatible(features: readonly FeatureElement[]):         boolean;
     areEqual(...features: FeatureElementOrCompatibleArray[]):   boolean;
     commonOf(...features: FeatureElementOrCompatibleArray[]):   Feature | null;
     descriptionFor(name: string):                               string | undefined;
@@ -177,16 +174,9 @@ FeatureConstructor
         return mask;
     }
 
-    function areCompatible(): boolean
+    function areCompatible(...features: FeatureElement[]): boolean
     {
-        let arg0: FeatureElement | readonly FeatureElement[];
-        const features: ArrayLike<FeatureElement> =
-        arguments.length === 1 &&
-        // eslint-disable-next-line prefer-rest-params
-        _Array_isArray(arg0 = arguments[0] as FeatureElement | readonly FeatureElement[]) ?
-        // eslint-disable-next-line prefer-rest-params
-        arg0 : arguments as ArrayLike<FeatureElement>;
-        const mask = featureArrayLikeToMask(features);
+        const mask = featureArrayToMask(features);
         const compatible = isMaskCompatible(mask);
         return compatible;
     }
@@ -264,13 +254,11 @@ FeatureConstructor
         return description;
     }
 
-    function featureArrayLikeToMask(features: ArrayLike<FeatureElement>): Mask
+    function featureArrayToMask(features: readonly FeatureElement[]): Mask
     {
         let mask = MASK_EMPTY;
-        const { length } = features;
-        for (let index = 0; index < length; ++index)
+        for (const feature of features)
         {
-            const feature = features[index];
             const otherMask = maskFromStringOrFeature(feature);
             mask = maskUnion(mask, otherMask);
         }
@@ -344,7 +332,7 @@ FeatureConstructor
         let mask: Mask;
         if (_Array_isArray(feature))
         {
-            mask = featureArrayLikeToMask(feature);
+            mask = featureArrayToMask(feature);
             if (feature.length > 1)
                 validateMask(mask);
         }

@@ -3,7 +3,6 @@ import
     type CompatibilityInfo,
     type Feature,
     type FeatureConstructor,
-    type FeatureElement,
     type FeatureElementOrCompatibleArray,
     createFeatureClass,
     featuresToMask,
@@ -407,27 +406,10 @@ it
     },
 );
 
-describe.per
-(
-    [
-        {
-            description: 'regular signature',
-            call:
-            (Feature: FeatureConstructor, ...features: FeatureElement[]): boolean =>
-            Feature.areCompatible(...features),
-        },
-        {
-            description: 'legacy signature',
-            call:
-            (Feature: FeatureConstructor, ...features: FeatureElement[]): boolean =>
-            Feature.areCompatible(features),
-        },
-    ],
-)
+describe
 (
     'Feature.areCompatible (#.description)',
-    ({ call }: { call: (Feature: FeatureConstructor, ...features: FeatureElement[]) => boolean; }):
-    void =>
+    (): void =>
     {
         it
         (
@@ -436,19 +418,19 @@ describe.per
             {
                 const Feature = createFeatureClass({ FOO: { check: noop } });
                 {
-                    const actual = call(Feature);
+                    const actual = Feature.areCompatible();
                     assert.equal(actual, true);
                 }
                 {
-                    const actual = call(Feature, 'FOO');
+                    const actual = Feature.areCompatible('FOO');
                     assert.equal(actual, true);
                 }
                 {
-                    const actual = call(Feature, 'FOO', 'FOO');
+                    const actual = Feature.areCompatible('FOO', 'FOO');
                     assert.equal(actual, true);
                 }
                 {
-                    const actual = call(Feature, 'FOO', Feature());
+                    const actual = Feature.areCompatible('FOO', Feature());
                     assert.strictEqual(actual, true);
                 }
             },
@@ -467,7 +449,7 @@ describe.per
                         BAR: { check: noop, excludes: ['FOO'] },
                     },
                 );
-                const actual = call(Feature, 'FOO', 'BAR');
+                const actual = Feature.areCompatible('FOO', 'BAR');
                 assert.strictEqual(actual, false);
             },
         );
@@ -480,7 +462,7 @@ describe.per
                 const Feature = createFeatureClass({ FOO: { }, BAR: { } });
                 const name =
                 { toString: (): string => 'BAR', valueOf: (): number => 42 } as unknown as string;
-                call(Feature, 'FOO', name, Feature.ALL.BAR);
+                Feature.areCompatible('FOO', name, Feature.ALL.BAR);
             },
         );
     },
@@ -975,14 +957,9 @@ const STRING_TEST_DATA =
         (Feature: FeatureConstructor, feature: string): Mask => Feature._getMask(feature),
     },
     {
-        description: 'Feature.areCompatible (regular signature)',
+        description: 'Feature.areCompatible',
         call:
         (Feature: FeatureConstructor, feature: string): boolean => Feature.areCompatible(feature),
-    },
-    {
-        description: 'Feature.areCompatible (legacy signature)',
-        call:
-        (Feature: FeatureConstructor, feature: string): boolean => Feature.areCompatible([feature]),
     },
     {
         description: 'Feature.areEqual',
