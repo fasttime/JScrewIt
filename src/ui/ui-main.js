@@ -208,17 +208,7 @@ function handleWorkerMessage(evt)
 
 function ignoreRepeatedMainMouseButtonEvent(evt)
 {
-    var repeated;
-    var target = evt.target;
-    if ('runtimeStyle' in target) // Hack for Internet Explorer
-    {
-        var lastMainMouseButtonEventTimeStamp = target.lastMainMouseButtonEventTimeStamp;
-        var currentTimeStamp = evt.button === 0 ? evt.timeStamp : undefined;
-        target.lastMainMouseButtonEventTimeStamp = currentTimeStamp;
-        repeated = currentTimeStamp - lastMainMouseButtonEventTimeStamp <= 500;
-    }
-    else
-        repeated = evt.detail >= 2 && evt.button === 0;
+    var repeated = evt.detail >= 2 && evt.button === 0;
     if (repeated)
         evt.preventDefault();
     return repeated;
@@ -278,11 +268,8 @@ function init()
             { accept: '.js', style: { display: 'none' }, type: 'file' },
             art.on('change', loadFile)
         );
-        // In older Android Browser versions, HTMLElement objects don't have a "click" property;
-        // HTMLInputElement objects do.
-        var openLoadFileDialog = HTMLInputElement.prototype.click.bind(loadFileInput);
-        loadFileButton =
-        art(createButton('Load file…'), art.on('click', openLoadFileDialog));
+        var openLoadFileDialog = HTMLElement.prototype.click.bind(loadFileInput);
+        loadFileButton = art(createButton('Load file…'), art.on('click', openLoadFileDialog));
         art(controls, loadFileButton, loadFileInput);
     }
     inputArea.oninput = changeHandler;

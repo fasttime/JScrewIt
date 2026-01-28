@@ -72,11 +72,6 @@ export default function createEngineSelectionBox()
             showModalBox(contentBlock);
         }
 
-        // Older Android Browser versions have problems in mixing elements with display style
-        // 'inline-block' and 'inline-table' in the same line, so we'll stick to 'inline-table'
-        // here.
-        var DISPLAY_STYLE = 'inline-table';
-
         var contentBlock = art('DIV', { className: 'help-text' });
         contentBlock.innerHTML = innerHTML;
         var questionMark =
@@ -91,7 +86,7 @@ export default function createEngineSelectionBox()
                     borderRadius:   '1em',
                     color:          'white',
                     cursor:         'pointer',
-                    display:        DISPLAY_STYLE,
+                    display:        'inline-block',
                     fontSize:       '8pt',
                     fontWeight:     'bold',
                     lineHeight:     QUESTION_MARK_SIZE,
