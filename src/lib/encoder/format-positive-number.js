@@ -21,8 +21,8 @@ export default function formatPositiveNumber(number)
     function getMantissa()
     {
         var lastDigitIndex = usefulDigits - 1;
-        var preMantissa = digits.slice(0, lastDigitIndex);
-        var lastDigit = +digits[lastDigitIndex];
+        var preMantissa = digitsBeforeDot.slice(0, lastDigitIndex);
+        var lastDigit = +digitsBeforeDot[lastDigitIndex];
         var value = evalNumber(preMantissa, lastDigit, exp);
         for (;;)
         {
@@ -39,9 +39,9 @@ export default function formatPositiveNumber(number)
     var str;
     var match = /^(\d+)(?:\.(\d+))?(?:e(.+))?$/.exec(number);
     var digitsAfterDot = match[2] || '';
-    var digits = (match[1] + digitsAfterDot).replace(/^0+/, '');
-    var usefulDigits = digits.search(/0*$/);
-    var exp = (match[3] | 0) - digitsAfterDot.length + digits.length - usefulDigits;
+    var digitsBeforeDot = (match[1] + digitsAfterDot).replace(/^0+/, '');
+    var usefulDigits = digitsBeforeDot.search(/0*$/);
+    var exp = (match[3] | 0) - digitsAfterDot.length + digitsBeforeDot.length - usefulDigits;
     var mantissa = getMantissa();
     if (exp >= 0)
     {

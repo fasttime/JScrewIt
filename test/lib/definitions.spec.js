@@ -100,7 +100,7 @@ self,
                 {
                     var encoder = getPoolEncoder(Feature.DEFAULT);
                     var solution =
-                    encoder._createCharDefaultSolution(char, charCode, false, true, false, false);
+                    encoder._createCharCommonSolution(char, charCode, false, true, false, false);
                     verifyStringSolution(solution, char);
                 }
             );
@@ -111,7 +111,7 @@ self,
                 {
                     var encoder = getPoolEncoder(Feature.DEFAULT);
                     var solution =
-                    encoder._createCharDefaultSolution(char, charCode, false, false, true, false);
+                    encoder._createCharCommonSolution(char, charCode, false, false, true, false);
                     verifyStringSolution(solution, char);
                 }
             );
@@ -122,7 +122,7 @@ self,
                 {
                     var encoder = getPoolEncoder(Feature.DEFAULT);
                     var solution =
-                    encoder._createCharDefaultSolution(char, charCode, false, false, false, true);
+                    encoder._createCharCommonSolution(char, charCode, false, false, false, true);
                     verifyStringSolution(solution, char);
                 }
             );
@@ -145,8 +145,8 @@ self,
                         var name = getFunctionName(definition);
                         switch (name)
                         {
+                        case 'charCommonDefinition':
                         case 'commaDefinition':
-                        case 'charDefaultDefinition':
                             break;
                         case 'charDefinitionInFn':
                             verifyFEntry(entry, FN_DISPOSITIONS, FN_VARIETIES);

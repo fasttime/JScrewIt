@@ -184,8 +184,8 @@ if (typeof NO_DEBUG === 'undefined')
                 ENTRIES[name + ':available'] = entries.available;
             }
 
-            exposeEntries('FORMAT_MAPPER_LONG',               FORMAT_MAPPER_LONG);
-            exposeEntries('FORMAT_MAPPER_SHORT',              FORMAT_MAPPER_SHORT);
+            exposeEntries('FORMAT_MAPPER_LONG',                 FORMAT_MAPPER_LONG);
+            exposeEntries('FORMAT_MAPPER_SHORT',                FORMAT_MAPPER_SHORT);
             exposeEntries('FROM_CHAR_CODE',                     FROM_CHAR_CODE);
             exposeEntries('FROM_CHAR_CODE_CALLBACK_FORMATTER',  FROM_CHAR_CODE_CALLBACK_FORMATTER);
             exposeEntries('OPTIMAL_B',                          OPTIMAL_B);

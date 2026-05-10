@@ -334,7 +334,18 @@ assignNoEnum
 (
     Encoder.prototype,
     {
-        _createCharDefaultSolution:
+        _commonResolveCharacter:
+        function (char)
+        {
+            var charCode = char.charCodeAt();
+            var atobOpt = charCode < 0x100;
+            var stdOpt = !atobOpt;
+            var solution =
+            this._createCharCommonSolution(char, charCode, atobOpt, stdOpt, stdOpt, stdOpt);
+            return solution;
+        },
+
+        _createCharCommonSolution:
         function (char, charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
         {
             var solution;
@@ -365,17 +376,6 @@ assignNoEnum
                 solutions.push(solution);
             }
             solution = shortestOf.apply(null, solutions);
-            return solution;
-        },
-
-        _defaultResolveCharacter:
-        function (char)
-        {
-            var charCode = char.charCodeAt();
-            var atobOpt = charCode < 0x100;
-            var stdOpt = !atobOpt;
-            var solution =
-            this._createCharDefaultSolution(char, charCode, atobOpt, stdOpt, stdOpt, stdOpt);
             return solution;
         },
 
@@ -677,7 +677,7 @@ assignNoEnum
                             if (entries)
                                 solution = findOptimalSolution(this, char, entries);
                             if (!solution)
-                                solution = this._defaultResolveCharacter(char);
+                                solution = this._commonResolveCharacter(char);
                         }
                         else
                         {

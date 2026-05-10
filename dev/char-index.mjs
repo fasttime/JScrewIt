@@ -383,29 +383,29 @@ function hasUnusedDefinitions({ solutions }, char)
 {
     const { getCharacterEntries } = JScrewIt.debug;
     let customEntryCount = 0;
-    let defaultEntryPresent = false;
+    let commonEntryFound = false;
     const entries = getCharacterEntries(char);
     if (entries)
     {
         for (const entry of entries)
         {
-            if (entry.definition.name === 'charDefaultDefinition')
-                defaultEntryPresent = true;
+            if (entry.definition.name === 'charCommonDefinition')
+                commonEntryFound = true;
             else
                 ++customEntryCount;
         }
     }
     const entryIndexSet = new Set();
-    let defaultDefinitionUsed = false;
+    let commonSolutionFound = false;
     for (const { entryCode } of solutions)
     {
         if (typeof entryCode === 'number' || entryCode === 'static')
             entryIndexSet.add(entryCode);
         else
-            defaultDefinitionUsed = true;
+            commonSolutionFound = true;
     }
     const notAllDefsUsed =
-    customEntryCount > entryIndexSet.size || defaultEntryPresent && !defaultDefinitionUsed;
+    customEntryCount > entryIndexSet.size || commonEntryFound && !commonSolutionFound;
     return notAllDefsUsed;
 }
 
