@@ -51,8 +51,8 @@ export function getDescription(compatibilities, compatibilityIndex, appendPlus)
     }
     if (tag != null)
     {
-        const availableCompatibilities = compatibilities.slice(compatibilityIndex);
-        const tags = availableCompatibilities.map(({ tag }) => tag).filter(tag => tag != null);
+        const taggableCompatibilities = compatibilities.slice(compatibilityIndex);
+        const tags = taggableCompatibilities.map(({ tag }) => tag).filter(tag => tag != null);
         description += ` ${joinWithAnd(tags)}`;
     }
     if (appendPlus && !isLastVersion(compatibilities, compatibilityIndex))

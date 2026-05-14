@@ -1,4 +1,5 @@
-import { Feature } from '../lib/jscrewit.js';
+import { isDeepStrictEqual }    from 'node:util';
+import { Feature }              from '../lib/jscrewit.js';
 
 import
 { calculateAvailabilityInfo, getAvailabilityByFeature, getDescription, joinWithAnd, joinWithOr }
@@ -124,15 +125,27 @@ export default
                 const { firstAvail } = availabilityInfo;
                 if (firstAvail != null)
                 {
+                    const { firstUnavail } = availabilityInfo;
                     const compatibilities = Feature.FAMILIES[family];
                     let availEntry = family;
                     if (firstAvail)
                     {
-                        const description = getDescription(compatibilities, firstAvail, true);
+                        const preUnavailCompatibilities =
+                        firstUnavail == null ?
+                        compatibilities : compatibilities.slice(0, firstUnavail);
+                        const description =
+                        getDescription(preUnavailCompatibilities, firstAvail, true);
                         availEntry += ` ${description}`;
                     }
-                    const { firstUnavail } = availabilityInfo;
-                    if (firstUnavail)
+                    if
+                    (
+                        firstUnavail &&
+                        !isDeepStrictEqual
+                        (
+                            compatibilities[firstUnavail].versions,
+                            compatibilities[firstAvail].versions,
+                        )
+                    )
                     {
                         const description = getDescription(compatibilities, firstUnavail, false);
                         if (description)
