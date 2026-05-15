@@ -323,13 +323,13 @@ var featureInfos =
     LOCALE_NUMERALS_IE11_WIN7:
     {
         description:
-        'Localized number formatting exclusive to Interner Explorer 11 in Windows 7.',
+        'Localized number formatting exclusive to Internet Explorer 11 in Windows 7.',
         check:
         function ()
         {
             var available =
-            checkLocaleNumeral('lv', Infinity, /^bezgalība/) &&
-            checkLocaleNumeral('ru', Infinity, /^бесконечность/);
+            checkLocaleNumeral('lv', Infinity, /^......ī/) &&
+            checkLocaleNumeral('ru', Infinity, /^беск.н.ч.о.ть/);
             return available;
         },
         excludes: ['RUSSIAN_INFINITY'],
@@ -337,23 +337,26 @@ var featureInfos =
     LOCALE_NUMERALS_IE11_WIN7_8:
     {
         description:
-        'Localized number formatting exclusive to Interner Explorer 11 in Windows 7 and 8.',
+        'Localized number formatting exclusive to Internet Explorer 11 in Windows 7 and 8.',
         check:
         function ()
         {
             var available =
             checkLocaleNumeral('ar', NaN, /^ليس.برقم/) &&
-            checkLocaleNumeral('ar', Infinity, /^\+لا.نهاية/) &&
-            checkLocaleNumeral('cs', NaN, /^Není.číslo/) &&
-            checkLocaleNumeral('el', Infinity, /^Άπειρο/) &&
-            checkLocaleNumeral('el', NaN, /^μη.αριθμός/) &&
+            checkLocaleNumeral('ar', Infinity, /^..ا.نه..ة/) &&
+            checkLocaleNumeral('cs', NaN, /^.....č/) &&
+            checkLocaleNumeral('el', Infinity, /^Άπε..ο/) &&
+            checkLocaleNumeral('el', NaN, /^μη.αριθ.ός/) &&
             checkLocaleNumeral('he', NaN, /^לא.מספר/) &&
-            checkLocaleNumeral('ja', Infinity, /^\+∞/) &&
-            checkLocaleNumeral('ja', NaN, /^NaN.\(非数値\)/) &&
-            checkLocaleNumeral('lt', Infinity, /^begalybė/) &&
-            checkLocaleNumeral('pl', Infinity, /^\+nieskończoność/) &&
+            checkLocaleNumeral('he', Infinity, /^.ינ.וף.ח..ב/) &&
+            checkLocaleNumeral('he', -Infinity, /^.......ש/) &&
+            checkLocaleNumeral('ja', Infinity, /^.∞/) &&
+            checkLocaleNumeral('ja', NaN, /^.....非数値/) &&
+            checkLocaleNumeral('lt', Infinity, /^.......ė/) &&
+            checkLocaleNumeral('pl', Infinity, /^.......ń.....ść/) &&
+            checkLocaleNumeral('pl', NaN, /^..............ą/) &&
             checkLocaleNumeral('zh', Infinity, /^正/) &&
-            checkLocaleNumeral('zh-cn', NaN, /^非数字/);
+            checkLocaleNumeral('zh-cn', NaN, /^..字/);
             return available;
         },
     },
@@ -701,7 +704,7 @@ var featureInfos =
         inherits:               'IE_11',
         versions:               ['11'],
         compatibilityTag:       'on Windows 7',
-        compatibilityShortTag:  'W8',
+        compatibilityShortTag:  'W7',
         includes:
         {
             LOCALE_NUMERALS_IE11_WIN7:   true,

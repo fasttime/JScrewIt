@@ -1,4 +1,5 @@
-import { Feature } from '../../lib/jscrewit.js';
+import { isDeepStrictEqual }    from 'node:util';
+import { Feature }              from '../../lib/jscrewit.js';
 
 const AND_FORMATTER = new Intl.ListFormat('en');
 const OR_FORMATTER  = new Intl.ListFormat('en', { type: 'disjunction' });
@@ -37,9 +38,10 @@ export const getAvailabilityByFeature =
     return availabilityInfo;
 };
 
-export function getDescription(compatibilities, compatibilityIndex, appendPlus)
+export function getDescription(compatibilities, start, end, appendPlus)
 {
-    const { tag, versions } = compatibilities[compatibilityIndex];
+    const describedCompatibilities = compatibilities.slice(start, end);
+    const [{ tag, versions }] = describedCompatibilities;
     const [firstVersion] = versions;
     let description = typeof firstVersion === 'string' ? firstVersion : firstVersion.from;
     if (isOldAndLatestVersion(versions))
@@ -51,11 +53,10 @@ export function getDescription(compatibilities, compatibilityIndex, appendPlus)
     }
     if (tag != null)
     {
-        const taggableCompatibilities = compatibilities.slice(compatibilityIndex);
-        const tags = taggableCompatibilities.map(({ tag }) => tag).filter(tag => tag != null);
+        const tags = describedCompatibilities.map(({ tag }) => tag).filter(tag => tag != null);
         description += ` ${joinWithAnd(tags)}`;
     }
-    if (appendPlus && !isLastVersion(compatibilities, compatibilityIndex))
+    if (appendPlus && !isLastVersion(describedCompatibilities, 0))
         description += '+';
     return description;
 }
@@ -96,5 +97,14 @@ export function joinWithAnd(array)
 export function joinWithOr(array)
 {
     const returnValue = OR_FORMATTER.format(array);
+    return returnValue;
+}
+
+export function needsUnavailNote(compatibilities, firstAvail, firstUnavail)
+{
+    const returnValue =
+    firstUnavail &&
+    !isDeepStrictEqual
+    (compatibilities[firstAvail].versions, compatibilities[firstUnavail].versions);
     return returnValue;
 }

@@ -473,7 +473,7 @@ function getFHPaddingEntries(index)
             else
                 expr += '[' + index + ']';
         }
-        var entry = define._callWithFeatures(expr, arguments, 3);
+        var entry = define._callWithFeatures({ expr: expr, optimize: true }, arguments, 3);
         return entry;
     }
 
@@ -1198,6 +1198,11 @@ function getFHPaddingEntries(index)
             define({ expr: '"ar-td"', solutionType: SolutionType.COMBINED_STRING }),
             define({ expr: '"ar"', solutionType: SolutionType.COMBINED_STRING }, SHORT_LOCALES),
         ],
+        LOCALE_HE:
+        [
+            define({ expr: '"He"', solutionType: SolutionType.COMBINED_STRING }),
+            define({ expr: '"he"', solutionType: SolutionType.COMBINED_STRING }),
+        ],
         MAP:
         [
             define({ expr: '"map"', optimize: true, solutionType: SolutionType.COMBINED_STRING }),
@@ -1757,13 +1762,28 @@ function getFHPaddingEntries(index)
     useLocaleNumeralDefinition('ا', '"fa"', NaN, 1, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('ع', '"fa"', NaN, 2, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('د', '"fa"', NaN, 3, LOCALE_NUMERALS_EXT);
-    useLocaleNumeralDefinition('ל', '"he"', NaN, 0, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ש', 'LOCALE_HE', -Infinity, 7, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('י', 'LOCALE_HE', Infinity, 1, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('נ', 'LOCALE_HE', Infinity, 2, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ו', 'LOCALE_HE', Infinity, 4, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ף', 'LOCALE_HE', Infinity, 5, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ח', 'LOCALE_HE', Infinity, 7, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ב', 'LOCALE_HE', Infinity, 10, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ל', 'LOCALE_HE', NaN, 0, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('א', 'LOCALE_HE', NaN, 1, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('מ', 'LOCALE_HE', NaN, 3, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ס', 'LOCALE_HE', NaN, 4, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('פ', 'LOCALE_HE', NaN, 5, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ר', 'LOCALE_HE', NaN, 6, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('非', '"ja"', NaN, 5, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('数', '"ja"', NaN, 6, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('値', '"ja"', NaN, 7, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('ė', '"lt"', Infinity, 7, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('ī', '"lv"', Infinity, 6, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('ń', '"pl"', Infinity, 7, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('ś', '"pl"', Infinity, 13, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ć', '"pl"', Infinity, 14, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ą', '"pl"', NaN, 14, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('н', '"ru"', NaN, 0, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('е', '"ru"', NaN, 1, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('ч', '"ru"', NaN, 3, LOCALE_NUMERALS_EXT);

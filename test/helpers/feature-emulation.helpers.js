@@ -835,6 +835,10 @@
                     case 'he':
                         if (isNaN(number))
                             returnValue = 'לא\xa0מספר';
+                        else if (+this === Infinity)
+                            returnValue = 'אינסוף חיובי';
+                        else if (+this === -Infinity)
+                            returnValue = 'אינסוף שלילי';
                         break;
                     case 'ja':
                         if (isNaN(number))
@@ -856,15 +860,12 @@
                         }
                         break;
                     case 'pl':
-                        switch (this)
-                        {
-                        case Infinity:
+                        if (isNaN(number))
+                            returnValue = 'nie jest liczbą';
+                        else if (+this === Infinity)
                             returnValue = '+nieskończoność';
-                            break;
-                        case -Infinity:
+                        else if (+this === -Infinity)
                             returnValue = '-nieskończoność';
-                            break;
-                        }
                         break;
                     case 'zh':
                         switch (this)
@@ -880,6 +881,10 @@
                     case 'zh-cn':
                         if (isNaN(number))
                             returnValue = '非数字';
+                        else if (+this === Infinity)
+                            returnValue = '正无穷大';
+                        else if (+this === -Infinity)
+                            returnValue = '负无穷大';
                         break;
                     }
                     return returnValue;

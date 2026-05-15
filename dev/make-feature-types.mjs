@@ -1,8 +1,14 @@
-import { isDeepStrictEqual }    from 'node:util';
-import { Feature }              from '../lib/jscrewit.js';
+import { Feature } from '../lib/jscrewit.js';
 
 import
-{ calculateAvailabilityInfo, getAvailabilityByFeature, getDescription, joinWithAnd, joinWithOr }
+{
+    calculateAvailabilityInfo,
+    getAvailabilityByFeature,
+    getDescription,
+    joinWithAnd,
+    joinWithOr,
+    needsUnavailNote,
+}
 from './internal/engine-data.mjs';
 
 const INDENT = '    ';
@@ -130,24 +136,14 @@ export default
                     let availEntry = family;
                     if (firstAvail)
                     {
-                        const preUnavailCompatibilities =
-                        firstUnavail == null ?
-                        compatibilities : compatibilities.slice(0, firstUnavail);
                         const description =
-                        getDescription(preUnavailCompatibilities, firstAvail, true);
+                        getDescription(compatibilities, firstAvail, firstUnavail, true);
                         availEntry += ` ${description}`;
                     }
-                    if
-                    (
-                        firstUnavail &&
-                        !isDeepStrictEqual
-                        (
-                            compatibilities[firstUnavail].versions,
-                            compatibilities[firstAvail].versions,
-                        )
-                    )
+                    if (needsUnavailNote(compatibilities, firstAvail, firstUnavail))
                     {
-                        const description = getDescription(compatibilities, firstUnavail, false);
+                        const description =
+                        getDescription(compatibilities, firstUnavail, undefined, false);
                         if (description)
                             availEntry += ` before ${description}`;
                     }
