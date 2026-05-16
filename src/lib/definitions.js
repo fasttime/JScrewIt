@@ -353,6 +353,8 @@ function getFHPaddingEntries(index)
     var LOCALE_INFINITY                 = Feature.LOCALE_INFINITY;
     var LOCALE_NUMERALS_BN              = Feature.LOCALE_NUMERALS_BN;
     var LOCALE_NUMERALS_EXT             = Feature.LOCALE_NUMERALS_EXT;
+    var LOCALE_NUMERALS_IE11_WIN7       = Feature.LOCALE_NUMERALS_IE11_WIN7;
+    var LOCALE_NUMERALS_IE11_WIN7_8     = Feature.LOCALE_NUMERALS_IE11_WIN7_8;
     var NAME                            = Feature.NAME;
     var NO_FF_SRC                       = Feature.NO_FF_SRC;
     var NO_IE_SRC                       = Feature.NO_IE_SRC;
@@ -461,10 +463,12 @@ function getFHPaddingEntries(index)
         var expr = '(' + number + ')[TO_LOCALE_STRING](' + locale + ')';
         if (index != null)
         {
-            if (index > 4)
+            if (index % 10 === 8)
+                expr = '(' + R_PADDINGS[3] + ' + ' + expr + ')[' + (index - index % 10 + 11) + ']';
+            else if (index % 10 > 4)
             {
-                var paddingBlock = R_PADDINGS[10 - index];
-                expr = '(' + paddingBlock + ' + ' + expr + ')[10]';
+                var paddingBlock = R_PADDINGS[10 - index % 10];
+                expr = '(' + paddingBlock + ' + ' + expr + ')[' + (index - index % 10 + 10) + ']';
             }
             else
                 expr += '[' + index + ']';
@@ -983,7 +987,6 @@ function getFHPaddingEntries(index)
         ],
         // '~'
         // '\x7f'
-
         '\x8a':
         [
             define('(RP_4_A + atob("NaNundefined"))[10]'),
@@ -1069,6 +1072,7 @@ function getFHPaddingEntries(index)
             define('Infinity[TO_LOCALE_STRING]("ja")[SLICE_OR_SUBSTR]("-1")'),
             define('Infinity[TO_LOCALE_STRING]("ja").at("-1")', AT),
             define('Infinity[TO_LOCALE_STRING]()', LOCALE_INFINITY),
+            define('Infinity[TO_LOCALE_STRING]("ja")[1]', LOCALE_NUMERALS_IE11_WIN7_8),
             define('Infinity[TO_LOCALE_STRING]("ru")', RUSSIAN_INFINITY),
             defineCharCommon(),
         ],
@@ -1723,15 +1727,43 @@ function getFHPaddingEntries(index)
     useLocaleNumeralDefinition('ي', '"ar"', NaN, 1);
     useLocaleNumeralDefinition('س', '"ar"', NaN, 2);
     useLocaleNumeralDefinition('ر', '"ar"', NaN, 4, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDefinition('ب', '"ar"', NaN, 4, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('ق', '"ar"', NaN, 5, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDefinition('ر', '"ar"', NaN, 5, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('م', '"ar"', NaN, 6, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDefinition('ق', '"ar"', NaN, 6, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('م', '"ar"', NaN, 7, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ا', '"ar"', Infinity, 2, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ن', '"ar"', Infinity, 4, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ه', '"ar"', Infinity, 5, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ة', '"ar"', Infinity, 8, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDigitDefinitions('"bn"', 0x09e6, LOCALE_NUMERALS_BN);
+    useLocaleNumeralDefinition('č', '"cs"', NaN, 5, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('μ', '"el"', NaN, 0, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('η', '"el"', NaN, 1, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('α', '"el"', NaN, 3, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ρ', '"el"', NaN, 4, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ι', '"el"', NaN, 5, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('θ', '"el"', NaN, 6, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ό', '"el"', NaN, 8, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ς', '"el"', NaN, 9, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('Ά', '"el"', Infinity, 0, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('π', '"el"', Infinity, 1, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ε', '"el"', Infinity, 2, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ο', '"el"', Infinity, 5, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDigitDefinitions('"fa"', 0x06f0);
     useLocaleNumeralDefinition('٬', '"fa"', 1000, 1);
     useLocaleNumeralDefinition('ن', '"fa"', NaN, 0, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('ا', '"fa"', NaN, 1, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('ع', '"fa"', NaN, 2, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('د', '"fa"', NaN, 3, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDefinition('ל', '"he"', NaN, 0, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('非', '"ja"', NaN, 5, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('数', '"ja"', NaN, 6, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('値', '"ja"', NaN, 7, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ė', '"lt"', Infinity, 7, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('ī', '"lv"', Infinity, 6, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('ś', '"pl"', Infinity, 13, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('н', '"ru"', NaN, 0, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('е', '"ru"', NaN, 1, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('ч', '"ru"', NaN, 3, LOCALE_NUMERALS_EXT);
@@ -1739,5 +1771,16 @@ function getFHPaddingEntries(index)
     useLocaleNumeralDefinition('с', '"ru"', NaN, 5, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('л', '"ru"', NaN, 6, LOCALE_NUMERALS_EXT);
     useLocaleNumeralDefinition('о', '"ru"', NaN, 7, LOCALE_NUMERALS_EXT);
+    useLocaleNumeralDefinition('б', '"ru"', Infinity, 0, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('е', '"ru"', Infinity, 1, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('с', '"ru"', Infinity, 2, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('к', '"ru"', Infinity, 3, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('н', '"ru"', Infinity, 5, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('ч', '"ru"', Infinity, 7, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('о', '"ru"', Infinity, 9, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('т', '"ru"', Infinity, 11, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('ь', '"ru"', Infinity, 12, LOCALE_NUMERALS_IE11_WIN7);
+    useLocaleNumeralDefinition('正', '"zh"', Infinity, 0, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('字', '"zh-cn"', NaN, 2, LOCALE_NUMERALS_IE11_WIN7_8);
 }
 )();

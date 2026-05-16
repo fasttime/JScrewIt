@@ -320,6 +320,43 @@ var featureInfos =
             return available;
         },
     },
+    LOCALE_NUMERALS_IE11_WIN7:
+    {
+        description:
+        'Localized number formatting exclusive to Internet Explorer 11 in Windows 7.',
+        check:
+        function ()
+        {
+            var available =
+            checkLocaleNumeral('lv', Infinity, /^......ī/) &&
+            checkLocaleNumeral('ru', Infinity, /^беск.н.ч.о.ть/);
+            return available;
+        },
+        excludes: ['RUSSIAN_INFINITY'],
+    },
+    LOCALE_NUMERALS_IE11_WIN7_8:
+    {
+        description:
+        'Localized number formatting exclusive to Internet Explorer 11 in Windows 7 and 8.',
+        check:
+        function ()
+        {
+            var available =
+            checkLocaleNumeral('ar', NaN, /^ليس.برقم/) &&
+            checkLocaleNumeral('ar', Infinity, /^..ا.نه..ة/) &&
+            checkLocaleNumeral('cs', NaN, /^.....č/) &&
+            checkLocaleNumeral('el', Infinity, /^Άπε..ο/) &&
+            checkLocaleNumeral('el', NaN, /^μη.αριθ.ός/) &&
+            checkLocaleNumeral('he', NaN, /^ל/) &&
+            checkLocaleNumeral('ja', Infinity, /^.∞/) &&
+            checkLocaleNumeral('ja', NaN, /^.....非数値/) &&
+            checkLocaleNumeral('lt', Infinity, /^.......ė/) &&
+            checkLocaleNumeral('pl', Infinity, /^.............ś/) &&
+            checkLocaleNumeral('zh', Infinity, /^正/) &&
+            checkLocaleNumeral('zh-cn', NaN, /^..字/);
+            return available;
+        },
+    },
     NAME:
     {
         description: 'Existence of the name property for functions.',
@@ -426,6 +463,7 @@ var featureInfos =
             var available = Infinity.toLocaleString('ru') === '∞';
             return available;
         },
+        excludes:    ['LOCALE_NUMERALS_IE11_WIN7'],
     },
     SELF:
     {
@@ -658,13 +696,29 @@ var featureInfos =
         ],
         attributes: { 'char-increment-restriction': null, 'web-worker-restriction': null },
     },
+    IE_11_WIN_7:
+    {
+        inherits:               'IE_11',
+        versions:               ['11'],
+        compatibilityTag:       'on Windows 7',
+        compatibilityShortTag:  'W7',
+        includes:
+        {
+            LOCALE_NUMERALS_IE11_WIN7:   true,
+            LOCALE_NUMERALS_IE11_WIN7_8: true,
+        },
+    },
     IE_11_WIN_8:
     {
         inherits:               'IE_11',
         versions:               ['11'],
         compatibilityTag:       'on Windows 8',
         compatibilityShortTag:  'W8',
-        includes:               { RUSSIAN_INFINITY: true },
+        includes:
+        {
+            LOCALE_NUMERALS_IE11_WIN7_8: true,
+            RUSSIAN_INFINITY:            true,
+        },
     },
     IE_11_WIN_10:
     {
@@ -674,10 +728,10 @@ var featureInfos =
         compatibilityShortTag:  'W10',
         includes:
         {
-            LOCALE_INFINITY:        true,
-            LOCALE_NUMERALS_BN:     true,
-            LOCALE_NUMERALS_EXT:    true,
-            RUSSIAN_INFINITY:       true,
+            LOCALE_INFINITY:             true,
+            LOCALE_NUMERALS_BN:          true,
+            LOCALE_NUMERALS_EXT:         true,
+            RUSSIAN_INFINITY:            true,
         },
     },
     NODE_20:
