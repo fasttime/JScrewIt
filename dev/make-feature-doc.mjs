@@ -1,6 +1,6 @@
 import { Feature } from '../lib/jscrewit.js';
 
-import { getAvailabilityByFeature, getDescription, joinWithAnd }
+import { getAvailabilityByFeature, getDescription, joinWithAnd, needsUnavailNote }
 from './internal/engine-data.mjs';
 
 function formatFeatureName(featureName)
@@ -11,12 +11,12 @@ function formatFeatureName(featureName)
     return result;
 }
 
-function getCombinedDescription(families, compatibilityIndex = 0)
+function getCombinedDescription(families, start, end)
 {
     function getVersionedName(name)
     {
         const compatibilities = Feature.FAMILIES[name];
-        const description = getDescription(compatibilities, compatibilityIndex, true);
+        const description = getDescription(compatibilities, start, end, true);
         const versionedName = description ? `${name} ${description}` : name;
         return versionedName;
     }
@@ -44,14 +44,15 @@ function getVersioningFor(featureName, families)
     const { firstAvail } = availabilityInfo;
     if (firstAvail != null)
     {
+        const { firstUnavail } = availabilityInfo;
         const notes = [];
         if (firstAvail)
         {
-            const availNote = getCombinedDescription(families, firstAvail);
+            const availNote = getCombinedDescription(families, firstAvail, firstUnavail);
             notes.push(availNote);
         }
-        const { firstUnavail } = availabilityInfo;
-        if (firstUnavail)
+        const compatibilities = Feature.FAMILIES[anyFamily];
+        if (needsUnavailNote(compatibilities, firstAvail, firstUnavail))
         {
             const unavailNote = `not in ${getCombinedDescription(families, firstUnavail)}`;
             notes.push(unavailNote);
