@@ -336,6 +336,14 @@ Features available in Internet Explorer 11 on Windows 10.
 
 ***
 
+### IE\_11\_WIN\_7
+
+> **IE\_11\_WIN\_7**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Internet Explorer 11 on Windows 7.
+
+***
+
 ### IE\_11\_WIN\_8
 
 > **IE\_11\_WIN\_8**: [`PredefinedFeature`](PredefinedFeature.md)
@@ -417,6 +425,30 @@ Localized number formatting including the output of the first three letters in t
 #### Remarks
 
 Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari, Opera, and Node.js.
+
+***
+
+### LOCALE\_NUMERALS\_IE11\_WIN7
+
+> **LOCALE\_NUMERALS\_IE11\_WIN7**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Localized number formatting exclusive to Internet Explorer 11 on Windows 7.
+
+#### Remarks
+
+Available in Internet Explorer 11 on Windows 7.
+
+***
+
+### LOCALE\_NUMERALS\_IE11\_WIN7\_8
+
+> **LOCALE\_NUMERALS\_IE11\_WIN7\_8**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Localized number formatting exclusive to Internet Explorer 11 on Windows 7 and 8.
+
+#### Remarks
+
+Available in Internet Explorer 11 on Windows 7 and on Windows 8.
 
 ***
 

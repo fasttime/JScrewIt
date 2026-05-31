@@ -497,7 +497,12 @@ self,
                 LOCALE_AR:
                 function ()
                 {
-                    this.toMatch(/^ar(-td)?$/);
+                    this.toMatch(/^ar(-td)?$/i);
+                },
+                LOCALE_HE:
+                function ()
+                {
+                    this.toMatch(/^he$/i);
                 },
                 MAP:                isExpectedMaybeCombinedString('map'),
                 PLAIN_OBJECT:

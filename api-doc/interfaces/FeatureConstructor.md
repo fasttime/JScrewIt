@@ -566,6 +566,18 @@ Features available in Internet Explorer 11 on Windows 10.
 
 ***
 
+### IE\_11\_WIN\_7
+
+> **IE\_11\_WIN\_7**: [`PredefinedFeature`](PredefinedFeature.md)
+
+Features available in Internet Explorer 11 on Windows 7.
+
+#### Inherited from
+
+[`FeatureAll`](FeatureAll.md).[`IE_11_WIN_7`](FeatureAll.md#ie_11_win_7)
+
+***
+
 ### IE\_11\_WIN\_8
 
 > **IE\_11\_WIN\_8**: [`PredefinedFeature`](PredefinedFeature.md)
@@ -675,6 +687,38 @@ Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari, 
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`LOCALE_NUMERALS_EXT`](FeatureAll.md#locale_numerals_ext)
+
+***
+
+### LOCALE\_NUMERALS\_IE11\_WIN7
+
+> **LOCALE\_NUMERALS\_IE11\_WIN7**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Localized number formatting exclusive to Internet Explorer 11 on Windows 7.
+
+#### Remarks
+
+Available in Internet Explorer 11 on Windows 7.
+
+#### Inherited from
+
+[`FeatureAll`](FeatureAll.md).[`LOCALE_NUMERALS_IE11_WIN7`](FeatureAll.md#locale_numerals_ie11_win7)
+
+***
+
+### LOCALE\_NUMERALS\_IE11\_WIN7\_8
+
+> **LOCALE\_NUMERALS\_IE11\_WIN7\_8**: [`ElementaryFeature`](ElementaryFeature.md)
+
+Localized number formatting exclusive to Internet Explorer 11 on Windows 7 and 8.
+
+#### Remarks
+
+Available in Internet Explorer 11 on Windows 7 and on Windows 8.
+
+#### Inherited from
+
+[`FeatureAll`](FeatureAll.md).[`LOCALE_NUMERALS_IE11_WIN7_8`](FeatureAll.md#locale_numerals_ie11_win7_8)
 
 ***
 

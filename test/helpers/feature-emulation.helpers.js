@@ -367,6 +367,12 @@
         return setUp;
     }
 
+    function normalizeLocale(locale)
+    {
+        var returnValue = typeof locale === 'string' ? locale.toLowerCase() : locale;
+        return returnValue;
+    }
+
     function override(context, path, descriptor)
     {
         var backupList = context.BACKUP || (context.BACKUP = []);
@@ -728,7 +734,8 @@
                 this,
                 function (locale)
                 {
-                    if (locale === 'bn')
+                    var normalizedLocale = normalizeLocale(locale);
+                    if (normalizedLocale === 'bn')
                     {
                         if (this === this)
                         {
@@ -742,13 +749,13 @@
         LOCALE_NUMERALS_EXT:
         function ()
         {
-            this.arabicNaNString = 'ليس\xa0رقم';
             registerNumberToLocaleStringAdapter
             (
                 this,
                 function (locale)
                 {
-                    switch (locale)
+                    var normalizedLocale = normalizeLocale(locale);
+                    switch (normalizedLocale)
                     {
                     case 'ar':
                     case 'ar-td':
@@ -762,6 +769,124 @@
                     case 'ru':
                         if (this !== this)
                             return 'не\xa0число';
+                        break;
+                    }
+                }
+            );
+        },
+        LOCALE_NUMERALS_IE11_WIN7:
+        function ()
+        {
+            registerNumberToLocaleStringAdapter
+            (
+                this,
+                function (locale)
+                {
+                    var normalizedLocale = normalizeLocale(locale);
+                    switch (normalizedLocale)
+                    {
+                    case 'lv':
+                        switch (this)
+                        {
+                        case Infinity:
+                            return 'bezgalība';
+                        case -Infinity:
+                            return '-bezgalība';
+                        }
+                        break;
+                    case 'ru':
+                        switch (this)
+                        {
+                        case Infinity:
+                            return 'бесконечность';
+                        case -Infinity:
+                            return '-бесконечность';
+                        }
+                        break;
+                    }
+                }
+            );
+        },
+        LOCALE_NUMERALS_IE11_WIN7_8:
+        function ()
+        {
+            registerNumberToLocaleStringAdapter
+            (
+                this,
+                function (locale)
+                {
+                    var normalizedLocale = normalizeLocale(locale);
+                    switch (normalizedLocale)
+                    {
+                    case 'ar':
+                        if (this !== this)
+                            return 'ليس\xa0برقم';
+                        if (this === Infinity)
+                            return '+لا\xa0نهاية';
+                        if (this === -Infinity)
+                            return '-لا\xa0نهاية';
+                        break;
+                    case 'cs':
+                        if (this !== this)
+                            return 'Není\xa0číslo';
+                        break;
+                    case 'el':
+                        if (this !== this)
+                            return 'μη\xa0αριθμός';
+                        if (this === Infinity)
+                            return 'Άπειρο';
+                        if (this === -Infinity)
+                            return '-Άπειρο';
+                        break;
+                    case 'he':
+                        if (this !== this)
+                            return 'לא\xa0מספר';
+                        if (this === Infinity)
+                            return 'אינסוף\xa0חיובי';
+                        if (this === -Infinity)
+                            return 'אינסוף\xa0שלילי';
+                        break;
+                    case 'ja':
+                        if (this !== this)
+                            return 'NaN\xa0(非数値)';
+                        if (this === Infinity)
+                            return '+∞';
+                        if (this === -Infinity)
+                            return '-∞';
+                        break;
+                    case 'lt':
+                        switch (this)
+                        {
+                        case Infinity:
+                            return 'begalybė';
+                        case -Infinity:
+                            return '-begalybė';
+                        }
+                        break;
+                    case 'pl':
+                        if (this !== this)
+                            return 'nie jest liczbą';
+                        if (this === Infinity)
+                            return '+nieskończoność';
+                        if (this === -Infinity)
+                            return '-nieskończoność';
+                        break;
+                    case 'zh':
+                        switch (this)
+                        {
+                        case Infinity:
+                            return '正无穷大';
+                        case -Infinity:
+                            return '负无穷大';
+                        }
+                        break;
+                    case 'zh-cn':
+                        if (this !== this)
+                            return '非数字';
+                        if (this === Infinity)
+                            return '正无穷大';
+                        if (this === -Infinity)
+                            return '负无穷大';
                         break;
                     }
                 }
@@ -821,7 +946,8 @@
                 this,
                 function (locale)
                 {
-                    if (locale === 'ru')
+                    var normalizedLocale = normalizeLocale(locale);
+                    if (normalizedLocale === 'ru')
                     {
                         if (this === Infinity)
                             return '∞';
@@ -841,7 +967,8 @@
                 this,
                 function (locale)
                 {
-                    if (locale === 'ar' || locale === 'ar-td')
+                    var normalizedLocale = normalizeLocale(locale);
+                    if (normalizedLocale === 'ar' || normalizedLocale === 'ar-td')
                     {
                         if (this === this)
                         {
