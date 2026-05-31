@@ -501,11 +501,12 @@ function getFHPaddingEntries(index)
 
     function useLocaleNumeralDefinition(char, locale, number, index)
     {
-        CHARACTERS[char] =
-        [
-            defineLocalizedNumeral._callWithFeatures(locale, number, index, arguments, 4),
-            defineCharCommon(),
-        ];
+        var entries = CHARACTERS[char];
+        var entry = defineLocalizedNumeral._callWithFeatures(locale, number, index, arguments, 4);
+        if (entries)
+            entries.splice(entries.length - 1, 0, entry);
+        else
+            CHARACTERS[char] = [entry, defineCharCommon()];
     }
 
     function useLocaleNumeralDigitDefinitions(locale, zeroCharCode)
@@ -987,6 +988,7 @@ function getFHPaddingEntries(index)
         ],
         // '~'
         // '\x7f'
+
         '\x8a':
         [
             define('(RP_4_A + atob("NaNundefined"))[10]'),

@@ -432,7 +432,7 @@ Available in Chrome, Edge, Firefox, Internet Explorer 11 on Windows 10, Safari, 
 
 > **LOCALE\_NUMERALS\_IE11\_WIN7**: [`ElementaryFeature`](ElementaryFeature.md)
 
-Localized number formatting exclusive to Internet Explorer 11 in Windows 7.
+Localized number formatting exclusive to Internet Explorer 11 on Windows 7.
 
 #### Remarks
 
@@ -444,7 +444,7 @@ Available in Internet Explorer 11 on Windows 7.
 
 > **LOCALE\_NUMERALS\_IE11\_WIN7\_8**: [`ElementaryFeature`](ElementaryFeature.md)
 
-Localized number formatting exclusive to Internet Explorer 11 in Windows 7 and 8.
+Localized number formatting exclusive to Internet Explorer 11 on Windows 7 and 8.
 
 #### Remarks
 

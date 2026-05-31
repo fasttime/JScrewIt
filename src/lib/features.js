@@ -323,7 +323,7 @@ var featureInfos =
     LOCALE_NUMERALS_IE11_WIN7:
     {
         description:
-        'Localized number formatting exclusive to Internet Explorer 11 in Windows 7.',
+        'Localized number formatting exclusive to Internet Explorer 11 on Windows 7.',
         check:
         function ()
         {
@@ -337,7 +337,7 @@ var featureInfos =
     LOCALE_NUMERALS_IE11_WIN7_8:
     {
         description:
-        'Localized number formatting exclusive to Internet Explorer 11 in Windows 7 and 8.',
+        'Localized number formatting exclusive to Internet Explorer 11 on Windows 7 and 8.',
         check:
         function ()
         {
@@ -459,14 +459,14 @@ var featureInfos =
     },
     RUSSIAN_INFINITY:
     {
-        description: 'Russian string representation of Infinity as "∞".',
+        description:    'Russian string representation of Infinity as "∞".',
         check:
         function ()
         {
             var available = Infinity.toLocaleString('ru') === '∞';
             return available;
         },
-        excludes:    ['LOCALE_NUMERALS_IE11_WIN7'],
+        excludes:       ['LOCALE_NUMERALS_IE11_WIN7'],
     },
     SELF:
     {
@@ -706,10 +706,7 @@ var featureInfos =
         compatibilityTag:       'on Windows 7',
         compatibilityShortTag:  'W7',
         includes:
-        {
-            LOCALE_NUMERALS_IE11_WIN7:   true,
-            LOCALE_NUMERALS_IE11_WIN7_8: true,
-        },
+        { LOCALE_NUMERALS_IE11_WIN7: true, LOCALE_NUMERALS_IE11_WIN7_8: true },
     },
     IE_11_WIN_8:
     {
@@ -717,11 +714,7 @@ var featureInfos =
         versions:               ['11'],
         compatibilityTag:       'on Windows 8',
         compatibilityShortTag:  'W8',
-        includes:
-        {
-            LOCALE_NUMERALS_IE11_WIN7_8: true,
-            RUSSIAN_INFINITY:            true,
-        },
+        includes:               { LOCALE_NUMERALS_IE11_WIN7_8: true, RUSSIAN_INFINITY: true },
     },
     IE_11_WIN_10:
     {
@@ -731,10 +724,10 @@ var featureInfos =
         compatibilityShortTag:  'W10',
         includes:
         {
-            LOCALE_INFINITY:             true,
-            LOCALE_NUMERALS_BN:          true,
-            LOCALE_NUMERALS_EXT:         true,
-            RUSSIAN_INFINITY:            true,
+            LOCALE_INFINITY:        true,
+            LOCALE_NUMERALS_BN:     true,
+            LOCALE_NUMERALS_EXT:    true,
+            RUSSIAN_INFINITY:       true,
         },
     },
     NODE_20:

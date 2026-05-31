@@ -367,6 +367,12 @@
         return setUp;
     }
 
+    function normalizeLocale(locale)
+    {
+        var returnValue = typeof locale === 'string' ? locale.toLowerCase() : locale;
+        return returnValue;
+    }
+
     function override(context, path, descriptor)
     {
         var backupList = context.BACKUP || (context.BACKUP = []);
@@ -728,7 +734,8 @@
                 this,
                 function (locale)
                 {
-                    if (locale === 'bn')
+                    var normalizedLocale = normalizeLocale(locale);
+                    if (normalizedLocale === 'bn')
                     {
                         if (this === this)
                         {
@@ -742,13 +749,13 @@
         LOCALE_NUMERALS_EXT:
         function ()
         {
-            this.arabicNaNString = 'ليس\xa0رقم';
             registerNumberToLocaleStringAdapter
             (
                 this,
                 function (locale)
                 {
-                    switch (locale)
+                    var normalizedLocale = normalizeLocale(locale);
+                    switch (normalizedLocale)
                     {
                     case 'ar':
                     case 'ar-td':
@@ -775,7 +782,8 @@
                 this,
                 function (locale)
                 {
-                    switch (locale)
+                    var normalizedLocale = normalizeLocale(locale);
+                    switch (normalizedLocale)
                     {
                     case 'lv':
                         switch (this)
@@ -807,87 +815,80 @@
                 this,
                 function (locale)
                 {
-                    var returnValue;
-                    var number;
-                    number = Number(this);
-                    switch (locale)
+                    var normalizedLocale = normalizeLocale(locale);
+                    switch (normalizedLocale)
                     {
                     case 'ar':
-                        if (isNaN(number))
-                            returnValue = 'ليس\xa0برقم';
-                        else if (+this === Infinity)
-                            returnValue = '+لا\xa0نهاية';
-                        else if (+this === -Infinity)
-                            returnValue = '-لا\xa0نهاية';
+                        if (this !== this)
+                            return 'ليس\xa0برقم';
+                        if (this === Infinity)
+                            return '+لا\xa0نهاية';
+                        if (this === -Infinity)
+                            return '-لا\xa0نهاية';
                         break;
                     case 'cs':
-                        if (isNaN(number))
-                            returnValue = 'Není\xa0číslo';
+                        if (this !== this)
+                            return 'Není\xa0číslo';
                         break;
                     case 'el':
-                        if (isNaN(number))
-                            returnValue = 'μη\xa0αριθμός';
-                        else if (+this === Infinity)
-                            returnValue = 'Άπειρο';
-                        else if (+this === -Infinity)
-                            returnValue = '-Άπειρο';
+                        if (this !== this)
+                            return 'μη\xa0αριθμός';
+                        if (this === Infinity)
+                            return 'Άπειρο';
+                        if (this === -Infinity)
+                            return '-Άπειρο';
                         break;
                     case 'he':
-                        if (isNaN(number))
-                            returnValue = 'לא\xa0מספר';
-                        else if (+this === Infinity)
-                            returnValue = 'אינסוף חיובי';
-                        else if (+this === -Infinity)
-                            returnValue = 'אינסוף שלילי';
+                        if (this !== this)
+                            return 'לא\xa0מספר';
+                        if (this === Infinity)
+                            return 'אינסוף\xa0חיובי';
+                        if (this === -Infinity)
+                            return 'אינסוף\xa0שלילי';
                         break;
                     case 'ja':
-                        if (isNaN(number))
-                            returnValue = 'NaN\xa0(非数値)';
-                        else if (+this === Infinity)
-                            returnValue = '+∞';
-                        else if (+this === -Infinity)
-                            returnValue = '-∞';
+                        if (this !== this)
+                            return 'NaN\xa0(非数値)';
+                        if (this === Infinity)
+                            return '+∞';
+                        if (this === -Infinity)
+                            return '-∞';
                         break;
                     case 'lt':
                         switch (this)
                         {
                         case Infinity:
-                            returnValue = 'begalybė';
-                            break;
+                            return 'begalybė';
                         case -Infinity:
-                            returnValue = '-begalybė';
-                            break;
+                            return '-begalybė';
                         }
                         break;
                     case 'pl':
-                        if (isNaN(number))
-                            returnValue = 'nie jest liczbą';
-                        else if (+this === Infinity)
-                            returnValue = '+nieskończoność';
-                        else if (+this === -Infinity)
-                            returnValue = '-nieskończoność';
+                        if (this !== this)
+                            return 'nie jest liczbą';
+                        if (this === Infinity)
+                            return '+nieskończoność';
+                        if (this === -Infinity)
+                            return '-nieskończoność';
                         break;
                     case 'zh':
                         switch (this)
                         {
                         case Infinity:
-                            returnValue = '正无穷大';
-                            break;
+                            return '正无穷大';
                         case -Infinity:
-                            returnValue = '负无穷大';
-                            break;
+                            return '负无穷大';
                         }
                         break;
                     case 'zh-cn':
-                        if (isNaN(number))
-                            returnValue = '非数字';
-                        else if (+this === Infinity)
-                            returnValue = '正无穷大';
-                        else if (+this === -Infinity)
-                            returnValue = '负无穷大';
+                        if (this !== this)
+                            return '非数字';
+                        if (this === Infinity)
+                            return '正无穷大';
+                        if (this === -Infinity)
+                            return '负无穷大';
                         break;
                     }
-                    return returnValue;
                 }
             );
         },
@@ -945,7 +946,8 @@
                 this,
                 function (locale)
                 {
-                    if (locale === 'ru')
+                    var normalizedLocale = normalizeLocale(locale);
+                    if (normalizedLocale === 'ru')
                     {
                         if (this === Infinity)
                             return '∞';
@@ -965,7 +967,8 @@
                 this,
                 function (locale)
                 {
-                    if (locale === 'ar' || locale === 'ar-td')
+                    var normalizedLocale = normalizeLocale(locale);
+                    if (normalizedLocale === 'ar' || normalizedLocale === 'ar-td')
                     {
                         if (this === this)
                         {
