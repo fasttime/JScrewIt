@@ -697,13 +697,9 @@
             var Iterator = function () { };
             var arrayIterator;
             if (Array.prototype.entries)
-            {
                 arrayIterator = [].entries();
-            }
             else
-            {
                 arrayIterator = new Iterator();
-            }
             var str = arrayIterator ? arrayIterator + '' : '[object Iterator]';
             registerObjectFactory(this, 'Array.prototype.entries', str, Iterator.prototype);
             override(this, 'Iterator', { value: Iterator });
