@@ -696,6 +696,7 @@
                 return;
             var Iterator = function () { };
             var arrayIterator;
+            var str = arrayIterator ? arrayIterator + '' : '[object Iterator]';
             if (Array.prototype.entries)
             {
                 arrayIterator = [].entries();
@@ -705,12 +706,11 @@
             {
                 arrayIterator = new Iterator();
                 var entries = createStaticSupplier(arrayIterator);
-                override(this, 'Array.prototype.entries', { value: entries });
+                registerObjectFactory(this, 'Array.prototype.entries', str, Iterator.prototype);
             }
             override(this, 'Iterator', { value: Iterator });
             var filter = createStaticSupplier('[object Iterator Helper]');
             override(this, 'Iterator.prototype.filter', { value: filter });
-            registerObjectFactory(this, 'Array.prototype.entries', str, Iterator.prototype);
         },
         LOCALE_INFINITY:
         function ()
