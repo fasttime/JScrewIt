@@ -678,14 +678,7 @@ function getFHPaddingEntries(index)
         ],
         // '#'
         // '$'
-        '%':
-        [
-            define('escape(FILTER)[20]'),
-            define('escape(0 + AT)[20]', AT),
-            define('escape(FLAT)[21]', FLAT),
-            define('escape(ANY_FUNCTION)[0]', IE_SRC),
-            defineCharCommon(),
-        ],
+        // '%'
         '&':
         [
             define('"".fontcolor("".fontcolor([]))[31]', ESC_HTML_QUOT),
@@ -752,8 +745,6 @@ function getFHPaddingEntries(index)
         ],
         'C':
         [
-            define('escape("".italics())[2]'),
-            define('escape(F_A_L_S_E)[11]'),
             define('(RP_4_A + "".fontcolor())[10]', CAPITAL_HTML),
             define('(RP_3_WA + Function("return console")())[11]', CONSOLE),
             defineCharCommon(),
@@ -761,20 +752,10 @@ function getFHPaddingEntries(index)
         'D':
         [
             define('btoa("00")[1]'),
-            // * The escaped character may be either "]" or "}".
-            define('escape((+("1000" + (RP_5_A + FILTER + 0)[40] + 0) + FILTER)[40])[2]'), // *
-            define('escape("]")[2]'),
-            define('escape("}")[2]'),
-            define('escape((RP_4_A + [+("1000" + (AT + 0)[31] + 0)] + AT)[40])[2]', AT), // *
-            define // *
-            ('escape((NaN + [+("10" + [(RP_6_S + FLAT)[40]] + "000")] + FLAT)[40])[2]', FLAT),
-            define('escape(FILTER)[50]', V8_SRC),
-            define('escape([[]][+(RP_0_S + AT)[0]] + AT)[61]', AT, NO_FF_SRC), // *
         ],
         'E':
         [
             define('btoa("0NaN")[1]'),
-            define('escape(RP_4_A + "".italics())[10]'),
             define('(RP_5_A + "".link())[10]', CAPITAL_HTML),
         ],
         'F':

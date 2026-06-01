@@ -278,9 +278,13 @@ var featureInfos =
         check:
         function ()
         {
-            var available = typeof Iterator === 'function';
+            var available =
+            typeof Iterator === 'function' &&
+            [].entries().constructor === Iterator;
             return available;
         },
+        includes:    ['ARRAY_ITERATOR'],
+        excludes:    ['OBJECT_ARRAY_ENTRIES_CTOR'],
     },
     LOCALE_INFINITY:
     {
@@ -423,6 +427,8 @@ var featureInfos =
             var available = Array.prototype.entries && [].entries().constructor === Object;
             return available;
         },
+        includes: ['ARRAY_ITERATOR'],
+        excludes: ['ITERATOR_HELPER'],
     },
     OBJECT_W_SELF:
     {

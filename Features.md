@@ -9,7 +9,7 @@ This table lists features available in the most common engines.
 <td>Chrome 122+, Edge 122+, Opera 108+</td>
 <td>
 <ul>
-<li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#ITERATOR_HELPER"><code>ITERATOR_HELPER</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#ARROW"><code>ARROW</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#AT"><code>AT</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#BARPROP"><code>BARPROP</code></a>
@@ -40,7 +40,7 @@ This table lists features available in the most common engines.
 <td>Firefox 90+</td>
 <td>
 <ul>
-<li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#ITERATOR_HELPER"><code>ITERATOR_HELPER</code></a> and <a href="api-doc/interfaces/FeatureAll.md#OBJECT_ARRAY_ENTRIES_CTOR"><code>OBJECT_ARRAY_ENTRIES_CTOR</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#ARROW"><code>ARROW</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#AT"><code>AT</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#BARPROP"><code>BARPROP</code></a>
@@ -100,7 +100,7 @@ This table lists features available in the most common engines.
 <td>Safari 17.4+</td>
 <td>
 <ul>
-<li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#ITERATOR_HELPER"><code>ITERATOR_HELPER</code></a> and <a href="api-doc/interfaces/FeatureAll.md#OBJECT_ARRAY_ENTRIES_CTOR"><code>OBJECT_ARRAY_ENTRIES_CTOR</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#ARROW"><code>ARROW</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#AT"><code>AT</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#BARPROP"><code>BARPROP</code></a>
@@ -133,7 +133,7 @@ This table lists features available in the most common engines.
 <td>Node.js 20+</td>
 <td>
 <ul>
-<li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a>
+<li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#ITERATOR_HELPER"><code>ITERATOR_HELPER</code></a> and <a href="api-doc/interfaces/FeatureAll.md#OBJECT_ARRAY_ENTRIES_CTOR"><code>OBJECT_ARRAY_ENTRIES_CTOR</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#ARROW"><code>ARROW</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#AT"><code>AT</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#ESC_HTML_QUOT"><code>ESC_HTML_QUOT</code></a>
