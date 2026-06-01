@@ -696,18 +696,16 @@
                 return;
             var Iterator = function () { };
             var arrayIterator;
-            var str = arrayIterator ? arrayIterator + '' : '[object Iterator]';
             if (Array.prototype.entries)
             {
                 arrayIterator = [].entries();
-                Iterator.prototype = Object.getPrototypeOf(arrayIterator);
             }
             else
             {
                 arrayIterator = new Iterator();
-                var entries = createStaticSupplier(arrayIterator);
-                registerObjectFactory(this, 'Array.prototype.entries', str, Iterator.prototype);
             }
+            var str = arrayIterator ? arrayIterator + '' : '[object Iterator]';
+            registerObjectFactory(this, 'Array.prototype.entries', str, Iterator.prototype);
             override(this, 'Iterator', { value: Iterator });
             var filter = createStaticSupplier('[object Iterator Helper]');
             override(this, 'Iterator.prototype.filter', { value: filter });
