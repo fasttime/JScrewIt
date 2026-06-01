@@ -710,6 +710,7 @@
             override(this, 'Iterator', { value: Iterator });
             var filter = createStaticSupplier('[object Iterator Helper]');
             override(this, 'Iterator.prototype.filter', { value: filter });
+            registerObjectFactory(this, 'Array.prototype.entries', str, Iterator.prototype);
         },
         LOCALE_INFINITY:
         function ()
