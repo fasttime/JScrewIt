@@ -252,7 +252,20 @@ export default function createEngineSelectionBox()
                         var versionLabel =
                         shortTag == null ?
                         versionText :
-                        art('SPAN', versionText, ' (', createShortTagLabel(shortTag), ')');
+                        art
+                        (
+                            'SPAN',
+                            versionText,
+                            ' ',
+                            art
+                            (
+                                'SPAN',
+                                '(',
+                                createShortTagLabel(shortTag),
+                                ')',
+                                { title: compatibility.tag }
+                            )
+                        );
                         versionCheckBox =
                         createCheckBox
                         (versionLabel, { checked: true, featureName: compatibility.featureName });

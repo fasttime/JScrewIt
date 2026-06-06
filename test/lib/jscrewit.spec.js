@@ -337,8 +337,7 @@ self,
                 Feature.ARRAY_ITERATOR,
                 function ()
                 {
-                    var encoder =
-                    JScrewIt.debug.createEncoder(Feature.ARRAY_ITERATOR);
+                    var encoder = JScrewIt.debug.createEncoder(Feature.ARRAY_ITERATOR);
                     var input = 'The quick brown fox jumps over the lazy dog';
                     var output = encoder._encodeByDict(Object(input), 4);
                     expect(output).toBeJSFuck();
