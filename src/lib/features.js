@@ -279,8 +279,15 @@ var featureInfos =
         check:
         function ()
         {
-            var available = [].entries().filter(Function()) + '' === '[object Iterator Helper]';
-            return available;
+            if (Array.prototype.entries)
+            {
+                if ([].entries().filter)
+                {
+                    var available = [].entries().filter(Function()) + '' ===
+                    '[object Iterator Helper]';
+                    return available;
+                }
+            }
         },
     },
     LOCALE_INFINITY:
