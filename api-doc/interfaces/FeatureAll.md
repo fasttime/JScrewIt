@@ -382,7 +382,7 @@ Available in Chrome, Edge, Firefox, Internet Explorer, Safari, Opera, and Node.j
 
 > **ITERATOR\_HELPER**: [`ElementaryFeature`](ElementaryFeature.md)
 
-Availability of iterator helpers.
+Availability of iterator helpers, whom string representation evaluates to "\[object Iterator Helper\]".
 
 #### Remarks
 
