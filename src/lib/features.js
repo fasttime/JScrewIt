@@ -274,8 +274,9 @@ var featureInfos =
     },
     ITERATOR_HELPER:
     {
-        description: 'Availability of iterator helpers, whom string representation evaluates to ' +
-        '"[object Iterator Helper]".',
+        description:
+        'Availability of iterator helpers having the string representation "[object Iterator ' +
+        'Helper]".',
         check:
         function ()
         {
