@@ -282,10 +282,10 @@ var featureInfos =
         {
             if (Array.prototype.entries)
             {
-                if ([].entries().filter)
+                var entries = [].entries();
+                if (entries.filter)
                 {
-                    var available = [].entries().filter(Function()) + '' ===
-                    '[object Iterator Helper]';
+                    var available = entries.filter(Function()) + '' === '[object Iterator Helper]';
                     return available;
                 }
             }
