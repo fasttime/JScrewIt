@@ -274,12 +274,21 @@ var featureInfos =
     },
     ITERATOR_HELPER:
     {
-        description: 'Availability of iterator helpers.',
+        description:
+        'Availability of iterator helpers having the string representation "[object Iterator ' +
+        'Helper]".',
         check:
         function ()
         {
-            var available = typeof Iterator === 'function';
-            return available;
+            if (Array.prototype.entries)
+            {
+                var entries = [].entries();
+                if (entries.filter)
+                {
+                    var available = entries.filter(Function()) + '' === '[object Iterator Helper]';
+                    return available;
+                }
+            }
         },
     },
     LOCALE_INFINITY:
