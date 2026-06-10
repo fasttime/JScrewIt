@@ -1,5 +1,5 @@
 /* eslint-env ebdd/ebdd */
-/* global emuDo, emuIt, expect, global, module, require, self */
+/* global emuDo, expect, global, module, require, self */
 
 'use strict';
 
@@ -129,13 +129,12 @@
                                         check();
                                     }
                                 );
-                                emuIt
+                                it
                                 (
                                     'is emulatable',
-                                    featureObj,
                                     function ()
                                     {
-                                        var available = emuDo(this.test.emuFeatureNames, check);
+                                        var available = emuDo(featureObj.canonicalNames, check);
                                         expect(available).toBe(true, 'Emulation doesn\'t work');
                                     }
                                 );

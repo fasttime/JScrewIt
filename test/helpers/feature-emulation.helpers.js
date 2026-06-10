@@ -692,8 +692,6 @@
         ITERATOR_HELPER:
         function ()
         {
-            if (global.Iterator)
-                return;
             var Iterator = function () { };
             var arrayIterator;
             if (Array.prototype.entries)
