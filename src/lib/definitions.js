@@ -524,7 +524,14 @@ function getFHPaddingEntries(index)
 
     BASE64_ALPHABET_HI_4 =
     [
-        [define('A'), define('C', CAPITAL_HTML), define('A', ARRAY_ITERATOR)],
+        [
+            define('A'),
+            define('C', CAPITAL_HTML),
+            define('B', CAPITAL_HTML, ITERATOR_HELPER),
+            define('C', AT, CAPITAL_HTML, IE_SRC),
+            define('C', AT, CAPITAL_HTML, NO_IE_SRC),
+            define('A', ARRAY_ITERATOR, CAPITAL_HTML),
+        ],
         [
             define('F'),
             define('H', ITERATOR_HELPER),
@@ -533,7 +540,14 @@ function getFHPaddingEntries(index)
         ],
         'Infinity',
         'NaNfalse',
-        [define('S'), define('R', CAPITAL_HTML), define('S', ARRAY_ITERATOR)],
+        [
+            define('S'),
+            define('R', CAPITAL_HTML),
+            define('S', ARRAY_ITERATOR),
+            define('S', ITERATOR_HELPER),
+            define('R', AT, CAPITAL_HTML, IE_SRC, ITERATOR_HELPER),
+            define('R', AT, CAPITAL_HTML, ITERATOR_HELPER, NO_IE_SRC),
+        ],
         [define('W'), define('U', CAPITAL_HTML)],
         'a',
         'false',
@@ -620,9 +634,20 @@ function getFHPaddingEntries(index)
     BASE64_ALPHABET_LO_4 =
     [
         '0A',
-        [define('0B'), define('0R', CAPITAL_HTML), define('0B', ARRAY_ITERATOR)],
+        [
+            define('0B'),
+            define('0R', CAPITAL_HTML),
+            define('0B', ARRAY_ITERATOR),
+            define('0B', ITERATOR_HELPER),
+        ],
         '0i',
-        [define('0j'), define('0T', CAPITAL_HTML), define('0j', ARRAY_ITERATOR)],
+        [
+            define('0j'),
+            define('0T', CAPITAL_HTML),
+            define('0j', ARRAY_ITERATOR),
+            define('0j', ITERATOR_HELPER),
+            define('0T', AT, CAPITAL_HTML, ITERATOR_HELPER, NO_IE_SRC),
+        ],
         '00',
         '01',
         '02',
@@ -1556,36 +1581,38 @@ function getFHPaddingEntries(index)
             define(1),
             define(0, ITERATOR_HELPER),
             define(0, ARRAY_ITERATOR, CAPITAL_HTML),
-            define(1, ARRAY_ITERATOR, ITERATOR_HELPER),
-            define(1, AT, ITERATOR_HELPER),
             define(1, BARPROP, ITERATOR_HELPER),
-            define(1, CAPITAL_HTML, ITERATOR_HELPER),
-            define(1, FLAT, ITERATOR_HELPER),
-            define(1, IE_SRC, ITERATOR_HELPER),
-            define(1, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, FLAT, IE_SRC, ITERATOR_HELPER),
+            define(1, FLAT, ITERATOR_HELPER, NO_IE_SRC),
+            define(0, BARPROP, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
+            define(1, AT, ITERATOR_HELPER),
+            define(1, BARPROP, FLAT, ITERATOR_HELPER),
+            define(1, BARPROP, IE_SRC, ITERATOR_HELPER),
+            define(1, BARPROP, ITERATOR_HELPER, NO_IE_SRC),
+            define(0, AT, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
+            define(1, ARRAY_ITERATOR, ITERATOR_HELPER),
+            define(1, AT, BARPROP, ITERATOR_HELPER),
+            define(1, AT, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, AT, ITERATOR_HELPER, NO_V8_SRC),
             define(0, ARRAY_ITERATOR, FLAT, FROM_CODE_POINT, ITERATOR_HELPER),
             define(0, ARRAY_ITERATOR, FROM_CODE_POINT, IE_SRC, ITERATOR_HELPER),
             define(1, ARRAY_ITERATOR, BARPROP, IE_SRC, ITERATOR_HELPER),
-            define(1, ARRAY_ITERATOR, CAPITAL_HTML, IE_SRC, ITERATOR_HELPER),
             define(0, ARRAY_ITERATOR, FROM_CODE_POINT, ITERATOR_HELPER, NO_IE_SRC),
             define(1, ARRAY_ITERATOR, AT, FLAT, ITERATOR_HELPER),
             define(1, ARRAY_ITERATOR, AT, IE_SRC, ITERATOR_HELPER),
             define(1, ARRAY_ITERATOR, AT, ITERATOR_HELPER, NO_IE_SRC),
             define(1, ARRAY_ITERATOR, BARPROP, FLAT, ITERATOR_HELPER),
             define(1, ARRAY_ITERATOR, BARPROP, ITERATOR_HELPER, NO_IE_SRC),
-            define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT, ITERATOR_HELPER),
-            define(1, ARRAY_ITERATOR, CAPITAL_HTML, ITERATOR_HELPER, NO_IE_SRC),
             define(0, ARRAY_ITERATOR, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
             define(1, ARRAY_ITERATOR, AT, ITERATOR_HELPER, NAME),
             define(1, ARRAY_ITERATOR, BARPROP, ITERATOR_HELPER, NAME),
-            define(1, ARRAY_ITERATOR, CAPITAL_HTML, ITERATOR_HELPER, NAME),
             define(1, ARRAY_ITERATOR, FLAT, ITERATOR_HELPER, NO_V8_SRC),
             define(0, ARRAY_ITERATOR, FLAT, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NO_V8_SRC),
+            define(1, CAPITAL_HTML, ITERATOR_HELPER),
             define(1, ARRAY_ITERATOR, FLAT, IE_SRC, ITERATOR_HELPER),
             define(1, ARRAY_ITERATOR, FLAT, ITERATOR_HELPER, NO_IE_SRC),
             define(1, ARRAY_ITERATOR, AT, FLAT, ITERATOR_HELPER, NO_V8_SRC),
             define(1, ARRAY_ITERATOR, BARPROP, FLAT, ITERATOR_HELPER, NO_V8_SRC),
-            define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT, ITERATOR_HELPER, NO_V8_SRC),
         ]
     );
 
@@ -1656,9 +1683,14 @@ function getFHPaddingEntries(index)
         [
             define(1),
             define(3),
+            define(2, CAPITAL_HTML, ITERATOR_HELPER),
             define(0, ARRAY_ITERATOR, CAPITAL_HTML),
+            define(3, CAPITAL_HTML, FLAT, ITERATOR_HELPER),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT),
-            define(0, ARRAY_ITERATOR, CAPITAL_HTML, NO_V8_SRC),
+            define(0, ARRAY_ITERATOR, CAPITAL_HTML, FLAT, NO_V8_SRC),
+            define(3, AT, CAPITAL_HTML, ITERATOR_HELPER),
+            define(3, CAPITAL_HTML, IE_SRC, ITERATOR_HELPER),
+            define(3, CAPITAL_HTML, ITERATOR_HELPER, NO_IE_SRC),
             define(1, ARRAY_ITERATOR, AT, CAPITAL_HTML),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FF_SRC, FLAT),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT, IE_SRC),
@@ -1677,7 +1709,12 @@ function getFHPaddingEntries(index)
         define({ expr: 'AT', shift: 2 }, AT),
     ];
 
-    OPTIMAL_B = defineList([define('B'), define('b')], [define(0), define(1, ARRAY_ITERATOR)]);
+    OPTIMAL_B =
+    defineList
+    (
+        [define('B'), define('b')],
+        [define(0), define(1, ARRAY_ITERATOR), define(1, ITERATOR_HELPER)]
+    );
 
     OPTIMAL_RETURN_STRING =
     defineList
