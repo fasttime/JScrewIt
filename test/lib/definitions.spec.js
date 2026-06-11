@@ -447,7 +447,6 @@ self,
                 {
                     this.toBe(document);
                 },
-                escape:             isExpected(escape),
                 self:
                 function ()
                 {

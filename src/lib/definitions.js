@@ -524,7 +524,14 @@ function getFHPaddingEntries(index)
 
     BASE64_ALPHABET_HI_4 =
     [
-        [define('A'), define('C', CAPITAL_HTML), define('A', ARRAY_ITERATOR)],
+        [
+            define('A'),
+            define('C', CAPITAL_HTML),
+            define('B', CAPITAL_HTML, ITERATOR_HELPER),
+            define('C', AT, CAPITAL_HTML, IE_SRC),
+            define('C', AT, CAPITAL_HTML, NO_IE_SRC),
+            define('A', ARRAY_ITERATOR, CAPITAL_HTML),
+        ],
         [
             define('F'),
             define('H', ITERATOR_HELPER),
@@ -533,7 +540,14 @@ function getFHPaddingEntries(index)
         ],
         'Infinity',
         'NaNfalse',
-        [define('S'), define('R', CAPITAL_HTML), define('S', ARRAY_ITERATOR)],
+        [
+            define('S'),
+            define('R', CAPITAL_HTML),
+            define('S', ARRAY_ITERATOR),
+            define('S', ITERATOR_HELPER),
+            define('R', AT, CAPITAL_HTML, IE_SRC, ITERATOR_HELPER),
+            define('R', AT, CAPITAL_HTML, ITERATOR_HELPER, NO_IE_SRC),
+        ],
         [define('W'), define('U', CAPITAL_HTML)],
         'a',
         'false',
@@ -620,9 +634,20 @@ function getFHPaddingEntries(index)
     BASE64_ALPHABET_LO_4 =
     [
         '0A',
-        [define('0B'), define('0R', CAPITAL_HTML), define('0B', ARRAY_ITERATOR)],
+        [
+            define('0B'),
+            define('0R', CAPITAL_HTML),
+            define('0B', ARRAY_ITERATOR),
+            define('0B', ITERATOR_HELPER),
+        ],
         '0i',
-        [define('0j'), define('0T', CAPITAL_HTML), define('0j', ARRAY_ITERATOR)],
+        [
+            define('0j'),
+            define('0T', CAPITAL_HTML),
+            define('0j', ARRAY_ITERATOR),
+            define('0j', ITERATOR_HELPER),
+            define('0T', AT, CAPITAL_HTML, ITERATOR_HELPER, NO_IE_SRC),
+        ],
         '00',
         '01',
         '02',
@@ -680,11 +705,7 @@ function getFHPaddingEntries(index)
         // '$'
         '%':
         [
-            define('escape(FILTER)[20]'),
-            define('escape(0 + AT)[20]', AT),
-            define('escape(FLAT)[21]', FLAT),
-            define('escape(ANY_FUNCTION)[0]', IE_SRC),
-            defineCharCommon(),
+            defineCharCommon({ unescape: false }),
         ],
         '&':
         [
@@ -752,8 +773,6 @@ function getFHPaddingEntries(index)
         ],
         'C':
         [
-            define('escape("".italics())[2]'),
-            define('escape(F_A_L_S_E)[11]'),
             define('(RP_4_A + "".fontcolor())[10]', CAPITAL_HTML),
             define('(RP_3_WA + Function("return console")())[11]', CONSOLE),
             defineCharCommon(),
@@ -761,20 +780,10 @@ function getFHPaddingEntries(index)
         'D':
         [
             define('btoa("00")[1]'),
-            // * The escaped character may be either "]" or "}".
-            define('escape((+("1000" + (RP_5_A + FILTER + 0)[40] + 0) + FILTER)[40])[2]'), // *
-            define('escape("]")[2]'),
-            define('escape("}")[2]'),
-            define('escape((RP_4_A + [+("1000" + (AT + 0)[31] + 0)] + AT)[40])[2]', AT), // *
-            define // *
-            ('escape((NaN + [+("10" + [(RP_6_S + FLAT)[40]] + "000")] + FLAT)[40])[2]', FLAT),
-            define('escape(FILTER)[50]', V8_SRC),
-            define('escape([[]][+(RP_0_S + AT)[0]] + AT)[61]', AT, NO_FF_SRC), // *
         ],
         'E':
         [
             define('btoa("0NaN")[1]'),
-            define('escape(RP_4_A + "".italics())[10]'),
             define('(RP_5_A + "".link())[10]', CAPITAL_HTML),
         ],
         'F':
@@ -879,7 +888,10 @@ function getFHPaddingEntries(index)
             defineCharInFnBody(14),
             define('(RP_0_S + ARRAY_ITERATOR)[0]', ARRAY_ITERATOR),
         ],
-        // '\\'
+        '\\':
+        [
+            defineCharCommon({ escSeq: false }),
+        ],
         ']':
         [
             defineCharInFnBody(26),
@@ -896,6 +908,7 @@ function getFHPaddingEntries(index)
         [
             defineCharInFn('Number', 12),
             define('(RP_0_S + ARRAY_ITERATOR)[2]', ARRAY_ITERATOR),
+            define('(RP_0_S + [].entries().filter(ANY_FUNCTION))[2]', ITERATOR_HELPER),
         ],
         'c':
         [
@@ -920,6 +933,7 @@ function getFHPaddingEntries(index)
             define('(RP_0_S + Intl)[3]'),
             define('(RP_0_S + PLAIN_OBJECT)[10]'),
             define('(RP_0_S + ARRAY_ITERATOR)[3]', ARRAY_ITERATOR),
+            define('(RP_0_S + [].entries().filter(ANY_FUNCTION))[3]', ITERATOR_HELPER),
             define('(RP_0_S + Intl)[10]', PLAIN_INTL),
             define('(RP_0_S + self)[3]', SELF),
         ],
@@ -1146,11 +1160,6 @@ function getFHPaddingEntries(index)
         [
             define({ expr: 'Function("return document")()', optimize: true }, DOCUMENT),
             define({ expr: 'self.document', optimize: true }, DOCUMENT, SELF),
-        ],
-        escape:
-        [
-            define({ expr: 'Function("return escape")()', optimize: true }),
-            define({ expr: 'self.escape', optimize: true }, SELF),
         ],
         self:
         [
@@ -1567,36 +1576,38 @@ function getFHPaddingEntries(index)
             define(1),
             define(0, ITERATOR_HELPER),
             define(0, ARRAY_ITERATOR, CAPITAL_HTML),
-            define(1, ARRAY_ITERATOR, ITERATOR_HELPER),
-            define(1, AT, ITERATOR_HELPER),
             define(1, BARPROP, ITERATOR_HELPER),
-            define(1, CAPITAL_HTML, ITERATOR_HELPER),
-            define(1, FLAT, ITERATOR_HELPER),
-            define(1, IE_SRC, ITERATOR_HELPER),
-            define(1, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, FLAT, IE_SRC, ITERATOR_HELPER),
+            define(1, FLAT, ITERATOR_HELPER, NO_IE_SRC),
+            define(0, BARPROP, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
+            define(1, AT, ITERATOR_HELPER),
+            define(1, BARPROP, FLAT, ITERATOR_HELPER),
+            define(1, BARPROP, IE_SRC, ITERATOR_HELPER),
+            define(1, BARPROP, ITERATOR_HELPER, NO_IE_SRC),
+            define(0, AT, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
+            define(1, ARRAY_ITERATOR, ITERATOR_HELPER),
+            define(1, AT, BARPROP, ITERATOR_HELPER),
+            define(1, AT, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, AT, ITERATOR_HELPER, NO_V8_SRC),
             define(0, ARRAY_ITERATOR, FLAT, FROM_CODE_POINT, ITERATOR_HELPER),
             define(0, ARRAY_ITERATOR, FROM_CODE_POINT, IE_SRC, ITERATOR_HELPER),
             define(1, ARRAY_ITERATOR, BARPROP, IE_SRC, ITERATOR_HELPER),
-            define(1, ARRAY_ITERATOR, CAPITAL_HTML, IE_SRC, ITERATOR_HELPER),
             define(0, ARRAY_ITERATOR, FROM_CODE_POINT, ITERATOR_HELPER, NO_IE_SRC),
             define(1, ARRAY_ITERATOR, AT, FLAT, ITERATOR_HELPER),
             define(1, ARRAY_ITERATOR, AT, IE_SRC, ITERATOR_HELPER),
             define(1, ARRAY_ITERATOR, AT, ITERATOR_HELPER, NO_IE_SRC),
             define(1, ARRAY_ITERATOR, BARPROP, FLAT, ITERATOR_HELPER),
             define(1, ARRAY_ITERATOR, BARPROP, ITERATOR_HELPER, NO_IE_SRC),
-            define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT, ITERATOR_HELPER),
-            define(1, ARRAY_ITERATOR, CAPITAL_HTML, ITERATOR_HELPER, NO_IE_SRC),
             define(0, ARRAY_ITERATOR, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
             define(1, ARRAY_ITERATOR, AT, ITERATOR_HELPER, NAME),
             define(1, ARRAY_ITERATOR, BARPROP, ITERATOR_HELPER, NAME),
-            define(1, ARRAY_ITERATOR, CAPITAL_HTML, ITERATOR_HELPER, NAME),
             define(1, ARRAY_ITERATOR, FLAT, ITERATOR_HELPER, NO_V8_SRC),
             define(0, ARRAY_ITERATOR, FLAT, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NO_V8_SRC),
+            define(1, CAPITAL_HTML, ITERATOR_HELPER),
             define(1, ARRAY_ITERATOR, FLAT, IE_SRC, ITERATOR_HELPER),
             define(1, ARRAY_ITERATOR, FLAT, ITERATOR_HELPER, NO_IE_SRC),
             define(1, ARRAY_ITERATOR, AT, FLAT, ITERATOR_HELPER, NO_V8_SRC),
             define(1, ARRAY_ITERATOR, BARPROP, FLAT, ITERATOR_HELPER, NO_V8_SRC),
-            define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT, ITERATOR_HELPER, NO_V8_SRC),
         ]
     );
 
@@ -1667,9 +1678,14 @@ function getFHPaddingEntries(index)
         [
             define(1),
             define(3),
+            define(2, CAPITAL_HTML, ITERATOR_HELPER),
             define(0, ARRAY_ITERATOR, CAPITAL_HTML),
+            define(3, CAPITAL_HTML, FLAT, ITERATOR_HELPER),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT),
-            define(0, ARRAY_ITERATOR, CAPITAL_HTML, NO_V8_SRC),
+            define(0, ARRAY_ITERATOR, CAPITAL_HTML, FLAT, NO_V8_SRC),
+            define(3, AT, CAPITAL_HTML, ITERATOR_HELPER),
+            define(3, CAPITAL_HTML, IE_SRC, ITERATOR_HELPER),
+            define(3, CAPITAL_HTML, ITERATOR_HELPER, NO_IE_SRC),
             define(1, ARRAY_ITERATOR, AT, CAPITAL_HTML),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FF_SRC, FLAT),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT, IE_SRC),
@@ -1688,7 +1704,12 @@ function getFHPaddingEntries(index)
         define({ expr: 'AT', shift: 2 }, AT),
     ];
 
-    OPTIMAL_B = defineList([define('B'), define('b')], [define(0), define(1, ARRAY_ITERATOR)]);
+    OPTIMAL_B =
+    defineList
+    (
+        [define('B'), define('b')],
+        [define(0), define(1, ARRAY_ITERATOR), define(1, ITERATOR_HELPER)]
+    );
 
     OPTIMAL_RETURN_STRING =
     defineList
