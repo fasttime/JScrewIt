@@ -28,7 +28,7 @@ async function doAdd()
                     SolutionBookMap.importBook(char, newSolutionBook);
                     printIndexReport(char, oldSolutionBook, newSolutionBook);
                     if (!noSave)
-                        await SolutionBookMap.save();
+                        SolutionBookMap.save();
                     queue.delete(promise);
                 }
             )
@@ -222,12 +222,12 @@ async function doAdd()
     }
 }
 
-async function doDelete()
+function doDelete()
 {
     const charSet = parseArguments(() => false);
     const SolutionBookMap = loadSolutionBookMap();
     charSet.forEach(char => SolutionBookMap.delete(char));
-    await SolutionBookMap.save();
+    SolutionBookMap.save();
     console.log('Done.');
 }
 

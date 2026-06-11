@@ -307,11 +307,11 @@ function loadSolutionBookMap()
     return SolutionBookMap;
 }
 
-async function saveSolutionBookMap()
+function saveSolutionBookMap()
 {
     const stringifyReplacer = createStringifyReplacer();
     const jsonString = JSON.stringify(SolutionBookMap, stringifyReplacer, 2);
-    await fs.promises.writeFile(charMapRoot, jsonString);
+    fs.writeFileSync(charMapRoot, jsonString);
 }
 
 export default SolutionBookMap;
