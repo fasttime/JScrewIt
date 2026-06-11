@@ -1161,11 +1161,6 @@ function getFHPaddingEntries(index)
             define({ expr: 'Function("return document")()', optimize: true }, DOCUMENT),
             define({ expr: 'self.document', optimize: true }, DOCUMENT, SELF),
         ],
-        escape:
-        [
-            define({ expr: 'Function("return escape")()', optimize: true }),
-            define({ expr: 'self.escape', optimize: true }, SELF),
-        ],
         self:
         [
             define('Function("return self")()', SELF),
