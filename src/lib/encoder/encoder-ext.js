@@ -695,7 +695,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 return output;
             },
             ENCODING_TYPE_TEXT,
-            1881
+            1712
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -790,7 +790,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 return output;
             },
             ENCODING_TYPE_TEXT,
-            112
+            106
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -978,7 +978,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 return output;
             },
             ENCODING_TYPE_TEXT,
-            173
+            183
         ),
 
         /* -------------------------------------------------------------------------------------- *\
