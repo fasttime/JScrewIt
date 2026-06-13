@@ -1,6 +1,4 @@
-'use strict';
-
-const { AstBuilder, GherkinClassicTokenMatcher, Parser } = require('@cucumber/gherkin');
+import { AstBuilder, GherkinClassicTokenMatcher, Parser } from '@cucumber/gherkin';
 
 function createGherkinParser(options)
 {
@@ -10,7 +8,7 @@ function createGherkinParser(options)
     return parser;
 }
 
-module.exports =
+export default
 {
     parse(text, options)
     {

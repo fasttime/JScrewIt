@@ -2,10 +2,10 @@
 
 import choose                   from    './internal/choose.mjs';
 import Analyzer                 from    './internal/optimized-analyzer.mjs';
-import PREDEF_TEST_DATA_MAP_OBJ from    './internal/predef-test-data.js';
+import PREDEF_TEST_DATA_MAP_OBJ from    './internal/predef-test-data.mjs';
 import progress                 from    './internal/progress.mjs';
 import SolutionBookMap          from    './internal/solution-book-map.mjs';
-import STRATEGY_TEST_DATA_LIST  from    './internal/strategy-test-data.js';
+import STRATEGY_TEST_DATA_LIST  from    './internal/strategy-test-data.mjs';
 import JScrewIt                 from    '../lib/jscrewit.js';
 import chalk                    from    'chalk';
 

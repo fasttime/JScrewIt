@@ -2,7 +2,7 @@
 
 import JScrewIt, { Feature }    from '../lib/jscrewit.js';
 import choose                   from './internal/choose.mjs';
-import STRATEGY_TEST_DATA_LIST  from './internal/strategy-test-data.js';
+import STRATEGY_TEST_DATA_LIST  from './internal/strategy-test-data.mjs';
 import chalk                    from 'chalk';
 
 function compareDiffLists(diffList1, diffList2)

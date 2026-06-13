@@ -113,13 +113,28 @@ task
     (
         async () =>
         {
-            const eslintPluginJScrewIt              = require('./dev/internal/eslint-plugin');
-            const gherkinParser                     = require('./dev/internal/gherkin-parser');
-            const { createConfig, noParserConfig }  = require('@origin-1/eslint-config');
-            const eslintPluginEBDD                  = require('eslint-plugin-ebdd');
-            const { EslintEnvProcessor }            = require('eslint-plugin-eslint-env');
-            const globals                           = require('globals');
-            const gulpESLintNew                     = require('gulp-eslint-new');
+            const
+            [
+                { default: eslintPluginJScrewIt },
+                { default: gherkinParser },
+                { createConfig, noParserConfig },
+                { default: eslintPluginEBDD },
+                { EslintEnvProcessor },
+                { default: globals },
+                { default: gulpESLintNew },
+            ] =
+            await Promise.all
+            (
+                [
+                    import('./dev/internal/eslint-plugin.mjs'),
+                    import('./dev/internal/gherkin-parser.mjs'),
+                    import('@origin-1/eslint-config'),
+                    import('eslint-plugin-ebdd'),
+                    import('eslint-plugin-eslint-env'),
+                    import('globals'),
+                    import('gulp-eslint-new'),
+                ],
+            );
 
             const ebddPlugins = { ebdd: eslintPluginEBDD };
 

@@ -4,7 +4,7 @@ const TYPE_VALUE_SOLUTION   = 'Solution';
 
 import fs           from 'node:fs';
 import Analyzer     from './optimized-analyzer.mjs';
-import SortedMap    from './sorted-map.js';
+import SortedMap    from './sorted-map.mjs';
 import chalk        from 'chalk';
 
 const mainURL               = new URL('../../lib/jscrewit.js', import.meta.url);

@@ -1,4 +1,4 @@
-'use strict';
+import JScrewIt from '../../lib/jscrewit.js';
 
 let proRadix4AntiRadix10Elements;
 let supplProRadix4AntiRadix10Elements;
@@ -50,8 +50,7 @@ function getProRadix4AntiRadix10Elements(to)
 {
     const proRadix4AntiRadix10Elements = [];
     {
-        const { createEncoder } = require('../..').debug;
-        const encoder = createEncoder();
+        const encoder = JScrewIt.debug.createEncoder();
         for (let charCode = 0; charCode <= to; ++charCode)
         {
             const base4Str = charCode.toString(4);
@@ -74,7 +73,7 @@ function repeatToFit(str, length)
     return result;
 }
 
-module.exports =
+export default
 [
     data
     (

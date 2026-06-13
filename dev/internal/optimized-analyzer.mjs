@@ -1,4 +1,4 @@
-import Analyzer         from './analyzer.js';
+import Analyzer         from './analyzer.mjs';
 import SolutionBookMap  from './solution-book-map.mjs';
 
 function isSolutionApplicable({ masks }, analyzer, encoder)

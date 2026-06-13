@@ -1,7 +1,4 @@
-'use strict';
-
-module.exports =
-class SortedMap extends Map
+export default class SortedMap extends Map
 {
     * entries()
     {
@@ -45,4 +42,4 @@ class SortedMap extends Map
         const entryIterator = this.entries();
         return entryIterator;
     }
-};
+}

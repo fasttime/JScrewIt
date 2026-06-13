@@ -1,5 +1,3 @@
-'use strict';
-
 function compareFeatureNames(featureNames1, featureNames2)
 {
     const length1 = featureNames1.length;
@@ -15,7 +13,7 @@ function compareFeatureNames(featureNames1, featureNames2)
     return 0;
 }
 
-module.exports =
+export default
 {
     rules:
     {

@@ -1,6 +1,4 @@
-'use strict';
-
-const JScrewIt = require('../..');
+import JScrewIt from '../../lib/jscrewit.js';
 
 const { Feature, debug: { getEntries } } = JScrewIt;
 
@@ -88,15 +86,15 @@ function getPredef(predefName)
     return predef;
 }
 
+const PREDEF_TEST_DATA_MAP_OBJ = { __proto__: null };
+for (const predefName in RAW_PREDEFS)
 {
-    const PREDEF_TEST_DATA_MAP_OBJ = module.exports = { __proto__: null };
-    for (const predefName in RAW_PREDEFS)
-    {
-        Object.defineProperty
-        (
-            PREDEF_TEST_DATA_MAP_OBJ,
-            predefName,
-            { enumerable: true, get: getPredef.bind(null, predefName) },
-        );
-    }
+    Object.defineProperty
+    (
+        PREDEF_TEST_DATA_MAP_OBJ,
+        predefName,
+        { enumerable: true, get: getPredef.bind(null, predefName) },
+    );
 }
+
+export default PREDEF_TEST_DATA_MAP_OBJ;
