@@ -152,19 +152,17 @@ task
                     rules:              { 'internal/sorted-definitions': 'error' },
                 },
                 {
-                    files:
-                    ['*.js', 'dev/**/*.js', 'test/patch-cov-source.js', 'tools/**/*.js'],
-                    ignores:            ['dev/legacy'],
+                    files:              ['*.js', 'test/patch-cov-source.js', 'tools/**/*.js'],
                     jsVersion:          2022,
                     languageOptions:    { globals: globals.node, sourceType: 'commonjs' },
                 },
                 {
                     files:              ['dev/**/*.mjs'],
                     jsVersion:          2022,
-                    languageOptions:    { globals: globals.node },
+                    languageOptions:    { globals: globals.nodeBuiltin },
                 },
                 {
-                    files:              ['dev/legacy/**/*.js', 'src/ui/worker.js'],
+                    files:              ['src/ui/worker.js'],
                     jsVersion:          5,
                     languageOptions:    { sourceType: 'commonjs' },
                     processor:          new EslintEnvProcessor(),

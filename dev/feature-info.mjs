@@ -1,21 +1,17 @@
 #!/usr/bin/env node
 
-/* eslint-env node */
+import featureInfo from '../test/feature-info.js';
 
-'use strict';
-
-var featureInfo = require('../../test/feature-info');
-
-var output = '\n';
-var anyMarked;
-var forcedStrictModeFeatureObj = featureInfo.forcedStrictModeFeatureObj;
+let output = '\n';
+let anyMarked;
+const { forcedStrictModeFeatureObj } = featureInfo;
 featureInfo.showFeatureSupport
 (
-    function (label, featureNames, isCategoryMarked)
+    (label, featureNames, isCategoryMarked) =>
     {
         function formatFeatureName(featureName)
         {
-            var marked =
+            const marked =
             isCategoryMarked(featureName, 'forced-strict-mode', forcedStrictModeFeatureObj);
             if (marked)
                 featureName += '¹';
@@ -23,9 +19,9 @@ featureInfo.showFeatureSupport
             return featureName;
         }
 
-        var boldLabel = '\x1b[1m' + label + '\x1b[0m';
-        output += boldLabel + featureNames.map(formatFeatureName).join(', ') + '\n';
-    }
+        const boldLabel = `\x1b[1m${label}\x1b[0m`;
+        output += `${boldLabel}${featureNames.map(formatFeatureName).join(', ')}\n`;
+    },
 );
 if (anyMarked)
     output += '(¹) Feature excluded when strict mode is enforced.\n';
