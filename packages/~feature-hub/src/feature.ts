@@ -279,13 +279,12 @@ FeatureConstructor
      * {@link https://nodejs.org/api/util.html#util_custom_inspection_functions_on_objects} for
      * further information.
      */
-    function inspect(this: Feature, depth: never, opts: util.InspectOptionsStylized): string
+    function inspect(this: Feature, depth: never, opts: util.InspectOptions): string
     {
         const breakLength = opts.breakLength as number | undefined ?? 80;
         const compact = opts.compact as number | boolean | undefined ?? true;
         const name =
-        this.name ??
-        joinParts(compact, '<', '', this.canonicalNames, ',', '>', breakLength - 3);
+        this.name ?? joinParts(compact, '<', '', this.canonicalNames, ',', '>', breakLength - 3);
         const parts = [name];
         if (this.elementary)
             parts.push('(elementary)');

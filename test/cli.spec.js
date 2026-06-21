@@ -51,7 +51,7 @@ describe
             {
                 description:            'shows the help message with option "--help"',
                 screwArgs:              ['--help'],
-                expectedStdout:         /^Usage: screw.js [^]*\n$/,
+                expectedStdout:         /^Usage: screw\.js .*\n$/s,
                 expectedStderr:         '',
                 expectedExitCode:       0,
             },
