@@ -10,7 +10,7 @@ function doAssert(actual, expected)
     if (expected instanceof RegExp)
         assert.match(actual, expected);
     else
-        assert.strictEqual(actual, expected);
+        assert.equal(actual, expected);
 }
 
 describe
@@ -18,132 +18,110 @@ describe
     'screw.js',
     () =>
     {
-        const childProcessExports   = require('node:child_process');
-        const fs                    = require('node:fs');
-        const os                    = require('node:os');
-        const path                  = require('node:path');
+        const { execFile }      = require('node:child_process');
+        const { randomUUID }    = require('node:crypto');
+        const { readFileSync }  = require('node:fs');
+        const { tmpdir }        = require('node:os');
+        const { dirname, join } = require('node:path');
 
         function createOutputFileName()
         {
-            let outputFileName;
-            const tmpDir = os.tmpdir();
-            do
-            {
-                let fileName = '';
-                do
-                    fileName += (Math.random() * 36 | 0).toString(36);
-                while (fileName.length < 10);
-                outputFileName = path.join(tmpDir, fileName);
-            }
-            while (fs.existsSync(outputFileName));
+            const tmpDir = tmpdir();
+            const fileName = randomUUID();
+            const outputFileName = join(tmpDir, fileName);
             return outputFileName;
         }
 
-        const options = { cwd: path.dirname(__dirname) };
+        const options = { cwd: dirname(__dirname) };
         const outputFileName1 = createOutputFileName();
-        const expectedFiles1 = { };
-        expectedFiles1[outputFileName1] = '+[]';
+        const expectedFiles1 = { __proto__: null, [outputFileName1]: '+[]' };
         const outputFileName2 = createOutputFileName();
-        const expectedFiles2 = { };
-        expectedFiles2[outputFileName2] = '+[]';
+        const expectedFiles2 = { __proto__: null, [outputFileName2]: '+[]' };
         const paramDataList =
         [
             {
-                description:            'shows the help message with option "--help"',
-                screwArgs:              ['--help'],
-                expectedStdout:         /^Usage: screw\.js .*\n$/s,
-                expectedStderr:         '',
-                expectedExitCode:       0,
+                description:        'shows the help message with option "--help"',
+                screwArgs:          ['--help'],
+                expectedStdout:     /^Usage: screw\.js .*\n$/s,
+                expectedStderr:     '',
+                expectedExitCode:   0,
             },
             {
-                description:            'shows the version number with option "--version"',
-                screwArgs:              ['--version'],
-                expectedStdout:         /^JScrewIt \d+\.\d+\.\d+\n$/,
-                expectedStderr:         '',
-                expectedExitCode:       0,
+                description:        'shows the version number with option "--version"',
+                screwArgs:          ['--version'],
+                expectedStdout:     /^JScrewIt \d+\.\d+\.\d+\n$/,
+                expectedStderr:     '',
+                expectedExitCode:   0,
             },
             {
-                description:            'shows an error message with an invalid option',
-                screwArgs:              ['--foo'],
-                expectedStdout:         '',
+                description:        'shows an error message with an invalid option',
+                screwArgs:          ['--foo'],
+                expectedStdout:     '',
                 expectedStderr:
                 'screw.js: Unknown option \'--foo\'. To specify a positional argument starting ' +
                 'with a \'-\', place it at the end of the command after \'--\', as in \'-- ' +
                 '"--foo".\n' +
                 'Try "screw.js --help" for more information.\n',
-                expectedExitCode:       1,
+                expectedExitCode:   1,
             },
             {
-                description:
-                'shows an error message when an invalid feature is specified',
-                screwArgs:              ['-f', 'FOO'],
-                expectedStdout:         '',
-                expectedStderr:         'Unknown feature "FOO"\n',
-                expectedExitCode:       1,
+                description:        'shows an error message when an invalid feature is specified',
+                screwArgs:          ['-f', 'FOO'],
+                expectedStdout:     '',
+                expectedStderr:     'Unknown feature "FOO"\n',
+                expectedExitCode:   1,
             },
             {
-                description:            'shows an error message when the input file does not exist',
-                screwArgs:              ['""'],
-                expectedStdout:         '',
-                expectedStderr:         /^ENOENT\b. no such file or directory\b.*\n$/,
-                expectedExitCode:       1,
+                description:        'shows an error message when the input file does not exist',
+                screwArgs:          ['""'],
+                expectedStdout:     '',
+                expectedStderr:     /^ENOENT\b. no such file or directory\b.*\n$/,
+                expectedExitCode:   1,
             },
             {
-                description:            'prints the encoded input interactively',
-                screwArgs:              [],
-                childProcessHandler(childProcess)
-                {
-                    childProcess.stdin.write('10\n');
-                    childProcess.stdin.end();
-                },
-                expectedStdout:         'SCREW> +(+!![]+[+[]])\nSCREW> ',
-                expectedStderr:         '',
-                expectedExitCode:       0,
+                description:        'prints the encoded input interactively',
+                screwArgs:          [],
+                stdin:              '10\n"a"\n',
+                expectedStdout:     'SCREW> +(+!![]+[+[]])\nSCREW> (![]+[])[+!![]]\nSCREW> ',
+                expectedStderr:     '',
+                expectedExitCode:   0,
             },
             {
-                description:            'prints an error message interactively',
-                screwArgs:              ['-x'],
-                childProcessHandler(childProcess)
-                {
-                    childProcess.stdin.write('?\n');
-                    childProcess.stdin.end();
-                },
-                expectedStdout:         'SCREW> SCREW> ',
-                expectedStderr:         'Encoding failed\n',
-                expectedExitCode:       0,
+                description:        'prints an error message interactively',
+                screwArgs:          ['-x'],
+                stdin:              '?\n',
+                expectedStdout:     'SCREW> SCREW> ',
+                expectedStderr:     'Encoding failed\n',
+                expectedExitCode:   0,
             },
             {
-                description:            'ignores empty input interactively',
-                screwArgs:              [],
-                childProcessHandler(childProcess)
-                {
-                    childProcess.stdin.write('\n');
-                    childProcess.stdin.end();
-                },
-                expectedStdout:         'SCREW> SCREW> ',
-                expectedStderr:         '',
-                expectedExitCode:       0,
+                description:        'ignores empty input interactively',
+                screwArgs:          [],
+                stdin:              '\n',
+                expectedStdout:     'SCREW> SCREW> ',
+                expectedStderr:     '',
+                expectedExitCode:   0,
             },
             {
-                description:            'encodes a file and shows the output',
-                screwArgs:              ['test/fixtures/0.txt'],
-                expectedStdout:         '+[]\n',
-                expectedStderr:         '',
-                expectedExitCode:       0,
+                description:        'encodes a file and shows the output',
+                screwArgs:          ['test/fixtures/0.txt'],
+                expectedStdout:     '+[]\n',
+                expectedStderr:     '',
+                expectedExitCode:   0,
             },
             {
-                description:            'encodes a file and writes the output to a file',
-                screwArgs:              ['test/fixtures/0.txt', outputFileName1],
+                description:        'encodes a file and writes the output to a file',
+                screwArgs:          ['test/fixtures/0.txt', outputFileName1],
                 expectedStdout:
                 /^Original size: .*\nScrewed size: .*\nExpansion factor: .*\nEncoding time: .*\n$/,
-                expectedStderr:         '',
-                expectedFiles:          expectedFiles1,
-                expectedExitCode:       0,
+                expectedStderr:     '',
+                expectedFiles:      expectedFiles1,
+                expectedExitCode:   0,
             },
             {
                 description:
                 'encodes a file, writes the output to a file and prints a diagnostic report',
-                screwArgs:              ['-d', 'test/fixtures/0.txt', outputFileName2],
+                screwArgs:          ['-d', 'test/fixtures/0.txt', outputFileName2],
                 expectedStdout:
                 RegExp
                 (
@@ -154,13 +132,13 @@ describe
                     'Encoding time: .*\n' +
                     '$',
                 ),
-                expectedStderr:         '',
-                expectedFiles:          expectedFiles2,
-                expectedExitCode:       0,
+                expectedStderr:     '',
+                expectedFiles:      expectedFiles2,
+                expectedExitCode:   0,
             },
             {
-                descriptions:           'shows the number of bytes in the input as original size',
-                screwArgs:              ['-d', 'test/fixtures/∞.txt', createOutputFileName()],
+                description:        'shows the number of bytes in the input as original size',
+                screwArgs:          ['-d', 'test/fixtures/∞.txt', createOutputFileName()],
                 expectedStdout:
                 RegExp
                 (
@@ -171,26 +149,30 @@ describe
                     'Encoding time: .*\n' +
                     '$',
                 ),
-                expectedStderr:         '',
-                expectedExitCode:       0,
+                expectedStderr:     '',
+                expectedExitCode:   0,
             },
         ];
 
         it.per(paramDataList)
         (
             '#.description',
-            (paramData, done) =>
+            (
+                {
+                    screwArgs,
+                    stdin,
+                    expectedStdout,
+                    expectedStderr,
+                    expectedFiles,
+                    expectedExitCode,
+                },
+                done,
+            ) =>
             {
-                const { screwArgs } = paramData;
-                const { childProcessHandler } = paramData;
-                const { expectedStdout } = paramData;
-                const { expectedStderr } = paramData;
-                const { expectedFiles } = paramData;
-                const { expectedExitCode } = paramData;
                 let actualExitCode;
-                const args = ['./screw.js'].concat(screwArgs);
+                const args = ['./screw.js', ...screwArgs];
                 const childProcess =
-                childProcessExports.execFile
+                execFile
                 (
                     process.execPath,
                     args,
@@ -203,11 +185,11 @@ describe
                             doAssert(stderr, expectedStderr);
                             for (const filePath in expectedFiles)
                             {
-                                const actualContent = fs.readFileSync(filePath).toString();
+                                const actualContent = readFileSync(filePath, 'utf-8');
                                 const expectedContent = expectedFiles[filePath];
-                                assert.strictEqual(actualContent, expectedContent);
+                                assert.equal(actualContent, expectedContent);
                             }
-                            assert.strictEqual(actualExitCode, expectedExitCode);
+                            assert.equal(actualExitCode, expectedExitCode);
                         }
                         catch (error)
                         {
@@ -225,8 +207,11 @@ describe
                         actualExitCode = exitCode;
                     },
                 );
-                if (childProcessHandler)
-                    childProcessHandler(childProcess);
+                if (stdin !== undefined)
+                {
+                    childProcess.stdin.write(stdin);
+                    childProcess.stdin.end();
+                }
             },
         )
         .timeout(5000);
@@ -240,7 +225,7 @@ describe
     {
         function test(params, expectedResult)
         {
-            const argv = [null, '../screw.js'].concat(params);
+            const argv = [null, '../screw.js', ...params];
             const actualResult = cli.parseCommandLine(argv);
             assert.deepEqual(actualResult, expectedResult);
         }
@@ -254,22 +239,22 @@ describe
                 !(expectedErrorMsg instanceof RegExp)
             )
                 throw Error('Invalid value for argument expectedErrorMsg');
-            const argv = [null, '../screw.js'].concat(params);
-            try
-            {
-                cli.parseCommandLine(argv);
-            }
-            catch (error)
-            {
-                assert(error instanceof Error);
-                if (expectedErrorMsg !== undefined)
+            const argv = [null, '../screw.js', ...params];
+            assert.throws
+            (
+                () => cli.parseCommandLine(argv),
+                error =>
                 {
-                    const actualErrorMsg = error.message;
-                    doAssert(actualErrorMsg, expectedErrorMsg);
-                }
-                return;
-            }
-            assert.fail('Error expected');
+                    if (!(error instanceof Error))
+                        assert.fail('Error expected');
+                    if (expectedErrorMsg !== undefined)
+                    {
+                        const actualErrorMsg = error.message;
+                        doAssert(actualErrorMsg, expectedErrorMsg);
+                    }
+                    return true;
+                },
+            );
         }
 
         const paramDataList =
@@ -506,7 +491,7 @@ describe
                 'Screwed size:     2345 bytes\n' +
                 'Expansion factor: 26.06\n' +
                 'Encoding time:    0.99 s';
-                assert.strictEqual(actual, expected);
+                assert.equal(actual, expected);
             },
         );
         it
@@ -520,7 +505,7 @@ describe
                 'Screwed size:      99 bytes\n' +
                 'Expansion factor: 0.99\n' +
                 'Encoding time:    0.01 s';
-                assert.strictEqual(actual, expected);
+                assert.equal(actual, expected);
             },
         );
         it
@@ -534,7 +519,7 @@ describe
                 'Screwed size:     6 bytes\n' +
                 'Expansion factor: 6.00\n' +
                 'Encoding time:    < 0.01 s';
-                assert.strictEqual(actual, expected);
+                assert.equal(actual, expected);
             },
         );
         it
@@ -548,7 +533,7 @@ describe
                 'Screwed size:     0 bytes\n' +
                 'Expansion factor: -\n' +
                 'Encoding time:    < 0.01 s';
-                assert.strictEqual(actual, expected);
+                assert.equal(actual, expected);
             },
         );
     },
@@ -637,7 +622,7 @@ describe
                 '│   └strategyA2_extra       used               22         66\n' +
                 '│\n' +
                 '└strategyB                  skipped             -          -\n';
-                assert.strictEqual(actual, expected);
+                assert.equal(actual, expected);
             },
         );
     },
