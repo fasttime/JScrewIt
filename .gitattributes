@@ -1,2 +1,4 @@
 * text eol=lf
 *.ico binary
+
+/.github/workflows/~*.yml linguist-generated
