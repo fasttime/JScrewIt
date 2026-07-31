@@ -56,7 +56,7 @@
     {
         if (featureSet)
             return;
-        var JScrewIt = typeof module !== 'undefined' ? require('../..') : self.JScrewIt;
+        var JScrewIt = typeof module !== 'undefined' ? require('#jscrewit') : self.JScrewIt;
         featureSet = Object.create(null);
         EMU_FEATURES.forEach
         (

@@ -1,4 +1,4 @@
-import JScrewIt from '../../lib/jscrewit.js';
+import JScrewIt from '#jscrewit';
 
 export default class Analyzer
 {

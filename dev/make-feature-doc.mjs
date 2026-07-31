@@ -1,4 +1,4 @@
-import { Feature } from '../lib/jscrewit.js';
+import { Feature } from '#jscrewit';
 
 import { getAvailabilityByFeature, getDescription, joinWithAnd, needsUnavailNote }
 from './internal/engine-data.mjs';

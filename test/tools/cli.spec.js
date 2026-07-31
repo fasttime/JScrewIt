@@ -1,9 +1,7 @@
-/* eslint-env ebdd/ebdd, node */
-
 'use strict';
 
-const cli       = require('../tools/cli');
 const assert    = require('node:assert/strict');
+const cli       = require('#tools/cli');
 
 function doAssert(actual, expected)
 {
@@ -22,7 +20,7 @@ describe
         const { randomUUID }    = require('node:crypto');
         const { readFileSync }  = require('node:fs');
         const { tmpdir }        = require('node:os');
-        const { dirname, join } = require('node:path');
+        const { join }          = require('node:path');
 
         function createOutputFileName()
         {
@@ -32,7 +30,7 @@ describe
             return outputFileName;
         }
 
-        const options = { cwd: dirname(__dirname) };
+        const options = { cwd: join(__dirname, '..', '..') };
         const outputFileName1 = createOutputFileName();
         const expectedFiles1 = { __proto__: null, [outputFileName1]: '+[]' };
         const outputFileName2 = createOutputFileName();

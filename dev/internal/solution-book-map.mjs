@@ -2,14 +2,15 @@ const NICKNAME              = 'jscrewit';
 const TYPE_KEY              = '__type';
 const TYPE_VALUE_SOLUTION   = 'Solution';
 
-import fs           from 'node:fs';
-import Analyzer     from './optimized-analyzer.mjs';
-import SortedMap    from './sorted-map.mjs';
-import chalk        from 'chalk';
+import fs                   from 'node:fs';
+import { createRequire }    from 'node:module';
+import Analyzer             from './optimized-analyzer.mjs';
+import SortedMap            from './sorted-map.mjs';
+import chalk                from 'chalk';
 
-const mainURL               = new URL('../../lib/jscrewit.js', import.meta.url);
+const jscrewitPath          = createRequire(import.meta.url).resolve('#jscrewit');
 const charMapRoot           = new URL(`../../.${NICKNAME}.char-map.json`, import.meta.url);
-const { default: JScrewIt } = await import(mainURL);
+const { default: JScrewIt } = await import('#jscrewit');
 const { Feature, debug }    = JScrewIt;
 const SolutionBookMap       = new SortedMap();
 
@@ -184,7 +185,7 @@ async function indexChar(char, updateProgress, missingCharacter)
 {
     const { maskIncludes } = debug;
     {
-        const { mtime } = fs.statSync(mainURL);
+        const { mtime } = fs.statSync(jscrewitPath);
         const jscrewitTimestamp = Date.parse(mtime);
         const solutionIndex = new Map();
         const usedCharSet = await fillSolutionIndex(solutionIndex, char);

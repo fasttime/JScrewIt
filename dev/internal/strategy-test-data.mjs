@@ -1,4 +1,4 @@
-import JScrewIt from '../../lib/jscrewit.js';
+import JScrewIt from '#jscrewit';
 
 let proRadix4AntiRadix10Elements;
 let supplProRadix4AntiRadix10Elements;

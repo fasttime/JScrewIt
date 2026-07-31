@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import JScrewIt, { Feature }    from '../lib/jscrewit.js';
+import JScrewIt, { Feature }    from '#jscrewit';
 import choose                   from './internal/choose.mjs';
 import STRATEGY_TEST_DATA_LIST  from './internal/strategy-test-data.mjs';
 import chalk                    from 'chalk';

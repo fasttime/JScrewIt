@@ -3,8 +3,8 @@
 import { writeFile }                    from 'node:fs/promises';
 import { cpus }                         from 'node:os';
 import { Worker }                       from 'node:worker_threads';
-import JScrewIt                         from '../lib/jscrewit.js';
-import timeUtils                        from '../tools/time-utils.js';
+import JScrewIt                         from '#jscrewit';
+import timeUtils                        from '#tools/time-utils';
 import progress                         from './internal/progress.mjs';
 import SolutionBookMap, { NICKNAME }    from './internal/solution-book-map.mjs';
 import chalk                            from 'chalk';

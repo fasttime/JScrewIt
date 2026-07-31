@@ -1,5 +1,5 @@
 import { basename }                 from 'node:path';
-import { formatDuration, timeThis } from '../../tools/time-utils.js';
+import { formatDuration, timeThis } from '#tools/time-utils';
 import rawlist                      from '@inquirer/rawlist';
 
 function compareNames(name1, name2)

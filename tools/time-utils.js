@@ -1,5 +1,7 @@
 'use strict';
 
+const hrtimeBigint = process.hrtime.bigint;
+
 exports.formatDuration =
 function (duration)
 {
@@ -10,19 +12,19 @@ function (duration)
 exports.timeThis =
 function (fn)
 {
-    const begin = process.hrtime();
+    const begin = hrtimeBigint();
     fn();
-    const time = process.hrtime(begin);
-    const duration = time[0] + time[1] / 1e9;
+    const end = hrtimeBigint();
+    const duration = Number(end - begin) / 1e9;
     return duration;
 };
 
 exports.timeThisAsync =
 async function (fn)
 {
-    const begin = process.hrtime();
+    const begin = hrtimeBigint();
     await fn();
-    const time = process.hrtime(begin);
-    const duration = time[0] + time[1] / 1e9;
+    const end = hrtimeBigint();
+    const duration = Number(end - begin) / 1e9;
     return duration;
 };

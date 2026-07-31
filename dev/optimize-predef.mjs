@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import JScrewIt, { Feature }    from '../lib/jscrewit.js';
+import JScrewIt, { Feature }    from '#jscrewit';
 import choose                   from './internal/choose.mjs';
 import Analyzer                 from './internal/optimized-analyzer.mjs';
 import PREDEF_TEST_DATA_MAP_OBJ from './internal/predef-test-data.mjs';

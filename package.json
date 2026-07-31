@@ -83,6 +83,10 @@
   "engines": {
     "node": ">=20"
   },
+  "imports": {
+    "#jscrewit": "./lib/jscrewit.js",
+    "#tools/*": "./tools/*.js"
+  },
   "workspaces": [
     "./packages/*"
   ]

@@ -2,7 +2,7 @@
 
 'use strict';
 
-const cli = require('./tools/cli');
+const cli = require('#tools/cli');
 
 function fail()
 {
@@ -92,7 +92,7 @@ if (command === 'version')
 }
 
 const { inputFileName, outputFileName, options } = command;
-const JScrewIt = require('.');
+const JScrewIt = require('#jscrewit');
 
 if (inputFileName == null)
 {
@@ -133,7 +133,7 @@ if (inputFileName == null)
 else
 {
     const fs = require('node:fs');
-    const timeUtils = require('./tools/time-utils');
+    const timeUtils = require('#tools/time-utils');
 
     let input;
     let output;

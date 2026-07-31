@@ -1,7 +1,7 @@
 'use strict';
 
 const { parseArgs } = require('node:util');
-const timeUtils     = require('./time-utils');
+const timeUtils     = require('#tools/time-utils');
 
 function byteCount(size, width)
 {

@@ -1,5 +1,5 @@
 import { isDeepStrictEqual }    from 'node:util';
-import { Feature }              from '../../lib/jscrewit.js';
+import { Feature }              from '#jscrewit';
 
 const AND_FORMATTER = new Intl.ListFormat('en');
 const OR_FORMATTER  = new Intl.ListFormat('en', { type: 'disjunction' });
