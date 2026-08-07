@@ -22,7 +22,7 @@
     "!.*"
   ],
   "main": "lib/jscrewit.js",
-  "types": "lib/jscrewit.d.ts",
+  "type": "commonjs",
   "bin": {
     "jscrewit": "screw.js"
   },
@@ -83,11 +83,12 @@
   "engines": {
     "node": ">=20"
   },
+  "workspaces": [
+    "./packages/*"
+  ],
   "imports": {
     "#jscrewit": "./lib/jscrewit.js",
     "#tools/*": "./tools/*.js"
   },
-  "workspaces": [
-    "./packages/*"
-  ]
+  "types": "lib/jscrewit.d.ts"
 }
