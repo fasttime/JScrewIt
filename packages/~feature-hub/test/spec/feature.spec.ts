@@ -1,3 +1,6 @@
+import assert       from 'node:assert/strict';
+import type util    from 'node:util';
+
 import
 {
     type CompatibilityInfo,
@@ -12,14 +15,8 @@ from '../../src/feature';
 import { MASK_EMPTY, type Mask, maskAreEqual, maskIntersection, maskNext, maskUnion }
 from '../../src/mask-impl';
 
-import assert       from 'assert/strict';
-import type util    from 'util';
-
-/* eslint-disable @typescript-eslint/no-require-imports */
-
-const getNodeUtil = (): typeof util => require('util') as typeof util;
-
-/* eslint-enable @typescript-eslint/no-require-imports */
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const getNodeUtil = (): typeof util => require('node:util') as typeof util;
 
 const noop =
 (): void =>
@@ -59,45 +56,45 @@ it
         assert(maskAreEqual(maskIntersection(RED.mask, GREEN.mask), MASK_EMPTY));
         assert(maskAreEqual(FOO.mask, featuresToMask([RED1, GREEN])));
         assert(maskAreEqual(BAR.mask, featuresToMask([RED2, GREEN])));
-        assert.strictEqual(RED.elementary, true);
-        assert.strictEqual(RED1.elementary, true);
-        assert.strictEqual(RED2.elementary, true);
-        assert.strictEqual(GREEN.elementary, true);
-        assert.strictEqual(FOO.elementary, false);
-        assert.strictEqual(BAR.elementary, false);
-        assert.deepStrictEqual(RED.canonicalNames, ['RED']);
-        assert.deepStrictEqual(RED1.canonicalNames, ['RED1']);
-        assert.deepStrictEqual(RED2.canonicalNames, ['RED2']);
-        assert.deepStrictEqual(GREEN.canonicalNames, ['GREEN']);
-        assert.deepStrictEqual(FOO.canonicalNames, ['GREEN', 'RED1']);
-        assert.deepStrictEqual(BAR.canonicalNames, ['GREEN', 'RED2']);
-        assert.deepStrictEqual(RED.elementaryNames, ['RED', 'RED1', 'RED2']);
-        assert.deepStrictEqual(RED1.elementaryNames, ['RED1']);
-        assert.deepStrictEqual(RED2.elementaryNames, ['RED2']);
-        assert.deepStrictEqual(GREEN.elementaryNames, ['GREEN']);
-        assert.deepStrictEqual(FOO.elementaryNames, ['GREEN', 'RED1']);
-        assert.deepStrictEqual(BAR.elementaryNames, ['GREEN', 'RED2']);
-        assert.strictEqual(RED.name, 'RED');
-        assert.strictEqual(RED1.name, 'RED1');
-        assert.strictEqual(RED2.name, 'RED2');
-        assert.strictEqual(GREEN.name, 'GREEN');
-        assert.strictEqual(FOO.name, 'FOO');
-        assert.strictEqual(BAR.name, 'BAR');
-        assert.deepStrictEqual(RED.attributes, Object.create(null));
-        assert.deepStrictEqual(RED1.attributes, Object.create(null));
-        assert.deepStrictEqual(RED2.attributes, Object.create(null));
-        assert.deepStrictEqual(GREEN.attributes, Object.create(null));
+        assert.equal(RED.elementary, true);
+        assert.equal(RED1.elementary, true);
+        assert.equal(RED2.elementary, true);
+        assert.equal(GREEN.elementary, true);
+        assert.equal(FOO.elementary, false);
+        assert.equal(BAR.elementary, false);
+        assert.deepEqual(RED.canonicalNames, ['RED']);
+        assert.deepEqual(RED1.canonicalNames, ['RED1']);
+        assert.deepEqual(RED2.canonicalNames, ['RED2']);
+        assert.deepEqual(GREEN.canonicalNames, ['GREEN']);
+        assert.deepEqual(FOO.canonicalNames, ['GREEN', 'RED1']);
+        assert.deepEqual(BAR.canonicalNames, ['GREEN', 'RED2']);
+        assert.deepEqual(RED.elementaryNames, ['RED', 'RED1', 'RED2']);
+        assert.deepEqual(RED1.elementaryNames, ['RED1']);
+        assert.deepEqual(RED2.elementaryNames, ['RED2']);
+        assert.deepEqual(GREEN.elementaryNames, ['GREEN']);
+        assert.deepEqual(FOO.elementaryNames, ['GREEN', 'RED1']);
+        assert.deepEqual(BAR.elementaryNames, ['GREEN', 'RED2']);
+        assert.equal(RED.name, 'RED');
+        assert.equal(RED1.name, 'RED1');
+        assert.equal(RED2.name, 'RED2');
+        assert.equal(GREEN.name, 'GREEN');
+        assert.equal(FOO.name, 'FOO');
+        assert.equal(BAR.name, 'BAR');
+        assert.deepEqual(RED.attributes, Object.create(null));
+        assert.deepEqual(RED1.attributes, Object.create(null));
+        assert.deepEqual(RED2.attributes, Object.create(null));
+        assert.deepEqual(GREEN.attributes, Object.create(null));
         {
             const expected = Object.create(null) as Record<string, string | null>;
             expected.id = 'foo';
             expected.foo = null;
-            assert.deepStrictEqual(FOO.attributes, expected);
+            assert.deepEqual(FOO.attributes, expected);
         }
         {
             const expected = Object.create(null) as Record<string, string | null>;
             expected.id = 'bar';
             expected.bar = null;
-            assert.deepStrictEqual(BAR.attributes, expected);
+            assert.deepEqual(BAR.attributes, expected);
         }
     },
 );
@@ -120,9 +117,9 @@ describe
                 const expectedMask =
                 featuresToMask([Feature.ALL.FOO, Feature.ALL.BAR, Feature.ALL.BAZ]);
                 assert(maskAreEqual(actualMask, expectedMask));
-                assert.strictEqual(featureObj.elementary, false);
-                assert.deepStrictEqual(featureObj.canonicalNames, ['BAR', 'BAZ', 'FOO']);
-                assert.deepStrictEqual(featureObj.elementaryNames, ['BAR', 'BAZ', 'FOO']);
+                assert.equal(featureObj.elementary, false);
+                assert.deepEqual(featureObj.canonicalNames, ['BAR', 'BAZ', 'FOO']);
+                assert.deepEqual(featureObj.elementaryNames, ['BAR', 'BAZ', 'FOO']);
             },
         );
 
@@ -207,9 +204,9 @@ describe
             {
                 const Feature =
                 createFeatureClass({ C: { check: noop }, B: { check: noop }, A: { check: noop } });
-                assert.strictEqual(Feature.ELEMENTARY[0], Feature.ALL.A);
-                assert.strictEqual(Feature.ELEMENTARY[1], Feature.ALL.B);
-                assert.strictEqual(Feature.ELEMENTARY[2], Feature.ALL.C);
+                assert.equal(Feature.ELEMENTARY[0], Feature.ALL.A);
+                assert.equal(Feature.ELEMENTARY[1], Feature.ALL.B);
+                assert.equal(Feature.ELEMENTARY[2], Feature.ALL.C);
             },
         );
     },
@@ -244,9 +241,9 @@ describe
                         A: { families: [], versions: [] },
                     },
                 );
-                assert.strictEqual(Feature.ENGINE[0], Feature.ALL.A);
-                assert.strictEqual(Feature.ENGINE[1], Feature.ALL.B);
-                assert.strictEqual(Feature.ENGINE[2], Feature.ALL.C);
+                assert.equal(Feature.ENGINE[0], Feature.ALL.A);
+                assert.equal(Feature.ENGINE[1], Feature.ALL.B);
+                assert.equal(Feature.ENGINE[2], Feature.ALL.C);
             },
         );
     },
@@ -362,12 +359,12 @@ describe
                 {
                     const mask = maskUnion(Feature.ALL.FOO.mask, Feature.ALL.BAR.mask);
                     const actual = Feature._fromMask(mask);
-                    assert.strictEqual(actual, null);
+                    assert.equal(actual, null);
                 }
                 {
                     const mask = maskNext(maskUnion(Feature.ALL.FOO.mask, Feature.ALL.BAR.mask));
                     const actual = Feature._fromMask(mask);
-                    assert.strictEqual(actual, null);
+                    assert.equal(actual, null);
                 }
             },
         );
@@ -431,7 +428,7 @@ describe
                 }
                 {
                     const actual = Feature.areCompatible('FOO', Feature());
-                    assert.strictEqual(actual, true);
+                    assert.equal(actual, true);
                 }
             },
         );
@@ -450,7 +447,7 @@ describe
                     },
                 );
                 const actual = Feature.areCompatible('FOO', 'BAR');
-                assert.strictEqual(actual, false);
+                assert.equal(actual, false);
             },
         );
 
@@ -494,7 +491,7 @@ describe
                 }
                 {
                     const actual = Feature.areEqual('FOO', 'BAR');
-                    assert.strictEqual(actual, true);
+                    assert.equal(actual, true);
                 }
             },
         );
@@ -506,7 +503,7 @@ describe
             {
                 const Feature = createFeatureClass({ FOO: { check: noop }, BAR: { check: noop } });
                 const actual = Feature.areEqual('FOO', 'BAR');
-                assert.strictEqual(actual, false);
+                assert.equal(actual, false);
             },
         );
 
@@ -557,7 +554,7 @@ describe
             {
                 const Feature = createFeatureClass({ });
                 const featureObj = Feature.commonOf();
-                assert.strictEqual(featureObj, null);
+                assert.equal(featureObj, null);
             },
         );
 
@@ -604,10 +601,10 @@ it
             )
             .join(),
         );
-        assert.strictEqual(Feature.descriptionFor('DEBIAN'), 'Debian');
-        assert.strictEqual(Feature.descriptionFor('UBUNTU'), 'Debian');
-        assert.strictEqual(Feature.descriptionFor('MX'), 'MX Linux');
-        assert.strictEqual(Feature.descriptionFor('WINDOWS'), 'Windows 10');
+        assert.equal(Feature.descriptionFor('DEBIAN'), 'Debian');
+        assert.equal(Feature.descriptionFor('UBUNTU'), 'Debian');
+        assert.equal(Feature.descriptionFor('MX'), 'MX Linux');
+        assert.equal(Feature.descriptionFor('WINDOWS'), 'Windows 10');
         assert.throws
         (
             // @ts-expect-error
@@ -615,7 +612,7 @@ it
             (error): boolean =>
             error instanceof Error && error.message === 'Unknown feature "undefined"',
         );
-        assert.strictEqual(formatEngineDescriptionCalls, 1);
+        assert.equal(formatEngineDescriptionCalls, 1);
     },
 );
 
@@ -641,22 +638,22 @@ it
             return checkValue;
         };
         const Feature = createFeatureClass({ FOO: { check }, BAR: { } });
-        assert.strictEqual(typeof Feature.ALL.FOO.check, 'function');
-        assert.strictEqual(Feature.ALL.BAR.check, null);
+        assert.equal(typeof Feature.ALL.FOO.check, 'function');
+        assert.equal(Feature.ALL.BAR.check, null);
         assert(!('check' in Feature('FOO', 'BAR')));
         {
             checkValue = 0;
             const returnValue = Feature.ALL.FOO.check!();
-            assert.strictEqual(actualThis, expectedThis);
-            assert.strictEqual(argCount, 0);
-            assert.strictEqual(returnValue, false);
+            assert.equal(actualThis, expectedThis);
+            assert.equal(argCount, 0);
+            assert.equal(returnValue, false);
         }
         {
             checkValue = 'yes';
             const returnValue = Feature.ALL.FOO.check!();
-            assert.strictEqual(actualThis, expectedThis);
-            assert.strictEqual(argCount, 0);
-            assert.strictEqual(returnValue, true);
+            assert.equal(actualThis, expectedThis);
+            assert.equal(argCount, 0);
+            assert.equal(returnValue, true);
         }
     },
 );
@@ -750,13 +747,12 @@ it
             },
         );
         const { NORMAL, BIG, BIGGER, UNDERLINED } = Feature.ALL;
-        assert.strictEqual(NORMAL.toString(), '[Feature NORMAL]');
-        assert.strictEqual(BIG.toString(), '[Feature BIG]');
-        assert.strictEqual(BIGGER.toString(), '[Feature BIGGER]');
-        assert.strictEqual(UNDERLINED.toString(), '[Feature UNDERLINED]');
-        assert.strictEqual(Feature().toString(), '[Feature <>]');
-        assert.strictEqual
-        (Feature(UNDERLINED, BIG, BIGGER).toString(), '[Feature <BIGGER, UNDERLINED>]');
+        assert.equal(NORMAL.toString(), '[Feature NORMAL]');
+        assert.equal(BIG.toString(), '[Feature BIG]');
+        assert.equal(BIGGER.toString(), '[Feature BIGGER]');
+        assert.equal(UNDERLINED.toString(), '[Feature UNDERLINED]');
+        assert.equal(Feature().toString(), '[Feature <>]');
+        assert.equal(Feature(UNDERLINED, BIG, BIGGER).toString(), '[Feature <BIGGER, UNDERLINED>]');
     },
 );
 
@@ -785,8 +781,7 @@ describe.when(typeof module !== 'undefined')
                 );
                 {
                     const actual = inspect(Feature.ALL.FOO);
-                    assert.strictEqual
-                    (actual, '[Feature FOO (elementary) (check) {}]');
+                    assert.equal(actual, '[Feature FOO (elementary) (check) {}]');
                 }
                 {
                     const actual = inspect(Feature.ALL.BAR);
@@ -797,7 +792,7 @@ describe.when(typeof module !== 'undefined')
                     '  (check)\n' +
                     '  { foo: null, bar: \'Lorem ipsum dolor sit amet\' }\n' +
                     ']';
-                    assert.strictEqual(actual, expected);
+                    assert.equal(actual, expected);
                 }
             },
         );
@@ -821,7 +816,7 @@ describe.when(typeof module !== 'undefined')
                 {
                     const featureObj = Feature();
                     const actual = inspect(featureObj);
-                    assert.strictEqual(actual, '[Feature <>]');
+                    assert.equal(actual, '[Feature <>]');
                 }
                 const [, major, minor] = /^v(\d+)\.(\d+)/.exec(process.version)!;
                 if (+major > 0 || +minor >= 12)
@@ -845,7 +840,7 @@ describe.when(typeof module !== 'undefined')
                         '    FEATURE4\n' +
                         '  >\n' +
                         ']';
-                        assert.strictEqual(actual, expected);
+                        assert.equal(actual, expected);
                     }
                     {
                         const actual = inspect(featureObj, { breakLength: 43 });
@@ -853,7 +848,7 @@ describe.when(typeof module !== 'undefined')
                         '[Feature\n' +
                         '  <FEATURE1, FEATURE2, FEATURE3, FEATURE4>\n' +
                         ']';
-                        assert.strictEqual(actual, expected);
+                        assert.equal(actual, expected);
                     }
                 }
             },
@@ -917,7 +912,7 @@ describe.when(typeof module !== 'undefined')
                 {
                     const featureObj = Feature(Feature.ALL.FOO);
                     const actual = inspect(featureObj, { compact: undefined });
-                    assert.strictEqual(actual, '[Feature <FOO>]');
+                    assert.equal(actual, '[Feature <FOO>]');
                 }
                 {
                     const featureObj = Feature();
@@ -925,13 +920,13 @@ describe.when(typeof module !== 'undefined')
                     '69CHARS69CHARS69CHARS69CHARS69CHARS69CHARS69CHARS69CHARS69CHARS69CHAR';
                     {
                         const actual = inspect(featureObj, { breakLength: undefined });
-                        assert.strictEqual(actual, `[Feature ${featureObj.name}]`);
+                        assert.equal(actual, `[Feature ${featureObj.name}]`);
                     }
                     featureObj.name =
                     '70CHARS70CHARS70CHARS70CHARS70CHARS70CHARS70CHARS70CHARS70CHARS70CHARS';
                     {
                         const actual = inspect(featureObj, { breakLength: undefined });
-                        assert.strictEqual(actual, `[Feature\n  ${featureObj.name}\n]`);
+                        assert.equal(actual, `[Feature\n  ${featureObj.name}\n]`);
                     }
                 }
             },

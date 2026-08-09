@@ -10,8 +10,7 @@
     "!.*"
   ],
   "exports": "./lib/index.js",
-  "module": "./lib/index.js",
-  "types": "lib/index.d.ts",
+  "type": "module",
   "directories": {
     "lib": "lib",
     "test": "test"
@@ -40,5 +39,6 @@
     "typescript": "latest"
   },
   "private": true,
-  "type": "module"
+  "module": "./lib/index.js",
+  "types": "lib/index.d.ts"
 }

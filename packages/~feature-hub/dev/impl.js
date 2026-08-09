@@ -11,25 +11,48 @@ const importPackageUtils = () => import('../../../dev/internal/package-utils.mjs
 
 export async function lint()
 {
-    const [{ lintPackage }, { globals: ebddGlobals }, { default: globals }] =
-    await Promise.all([importPackageUtils(), import('eslint-plugin-ebdd'), import('globals')]);
+    const
+    [{ lintPackage }, { default: origin1 }, { globals: ebddGlobals }, { default: globals }] =
+    await Promise.all
+    (
+        [
+            importPackageUtils(),
+            import('@origin-1/eslint-plugin'),
+            import('eslint-plugin-ebdd'),
+            import('globals'),
+        ],
+    );
+    await Promise.all
+    (
+        [
+            importPackageUtils(),
+            import('@origin-1/eslint-plugin'),
+            import('eslint-plugin-ebdd'),
+            import('globals'),
+        ],
+    );
     await
     lintPackage
     (
         {
             files:              ['src/**/*.ts', 'test/*.ts'],
-            tsVersion:          'latest',
+            tsVersion:          '6.0.0',
         },
         {
             files:              ['test/spec/**/*.ts'],
-            tsVersion:          'latest',
-            languageOptions:    { globals: { ...ebddGlobals, ...globals.node } },
-            rules:              { 'n/prefer-node-protocol': 'off' },
+            tsVersion:          '6.0.0',
+            languageOptions:    { globals: { ...ebddGlobals, ...globals.nodeBuiltin } },
         },
         {
             files:              ['*.js', 'dev/**/*.js'],
             jsVersion:          2022,
-            languageOptions:    { globals: globals.node },
+            languageOptions:    { globals: globals.nodeBuiltin },
+        },
+        {
+            files:              ['package.json'],
+            jsonVersion:        'standard',
+            plugins:            { '@origin-1': origin1 },
+            rules:              { '@origin-1/package-json-fields': 'error' },
         },
     );
 }

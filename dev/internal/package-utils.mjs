@@ -120,7 +120,20 @@ export async function doMakeBrowserSpecRunner(pkgURL)
             if (warning.code !== 'THIS_IS_UNDEFINED')
                 console.error(warning.message);
         };
-        const plugins = [rollupPluginPolyfillNode()];
+        const browserAssertStrictPolyfill =
+        {
+            resolveId(source)
+            {
+                if (source === 'assert/strict' || source === 'node:assert/strict')
+                {
+                    const path =
+                    fileURLToPath(new URL('browser-assert-strict-polyfill.mjs', import.meta.url));
+                    return path;
+                }
+                return null;
+            },
+        };
+        const plugins = [browserAssertStrictPolyfill, rollupPluginPolyfillNode()];
         const inputOptions = { input: inputPath, onwarn, plugins };
         const outputPath = join(pkgPath, 'test/browser-spec-runner.js');
         const outputOptions = { esModule: false, file: outputPath, format: 'iife' };

@@ -1,5 +1,5 @@
+import assert                           from 'node:assert/strict';
 import { LazySolution, SolutionType }   from '../../src/index';
-import assert                           from 'assert';
 
 describe
 (
@@ -16,9 +16,9 @@ describe
                 const createReplacement = (): string => replacement;
                 const type = SolutionType.ALGEBRAIC;
                 const solution = new LazySolution(source, createReplacement, type);
-                assert.strictEqual(solution.source,         source);
-                assert.strictEqual(solution.replacement,    replacement);
-                assert.strictEqual(solution.type,           type);
+                assert.equal(solution.source,       source);
+                assert.equal(solution.replacement,  replacement);
+                assert.equal(solution.type,         type);
             },
         );
         it
@@ -35,11 +35,11 @@ describe
                 };
                 const solution =
                 new LazySolution(undefined, createReplacement, SolutionType.UNDEFINED);
-                assert.strictEqual(callCount, 0);
+                assert.equal(callCount, 0);
                 assert.throws((): void => void solution.replacement);
-                assert.strictEqual(callCount, 1);
+                assert.equal(callCount, 1);
                 assert.throws((): void => void solution.replacement);
-                assert.strictEqual(callCount, 2);
+                assert.equal(callCount, 2);
             },
         );
     },

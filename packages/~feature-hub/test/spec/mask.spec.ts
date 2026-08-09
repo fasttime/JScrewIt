@@ -1,3 +1,5 @@
+import assert, { AssertionError } from 'node:assert/strict';
+
 import
 {
     MASK_EMPTY,
@@ -10,8 +12,6 @@ import
     maskUnion,
 }
 from '../../src/mask-impl';
-
-import assert, { AssertionError } from 'assert';
 
 function assertFail
 (message: string, stackStartFn: (...args: never) => unknown, actual?: unknown, expected?: unknown):

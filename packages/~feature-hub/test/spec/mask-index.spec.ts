@@ -1,6 +1,6 @@
+import assert               from 'node:assert/strict';
 import { MASK_EMPTY }       from '../../src/mask-impl';
 import { MaskMap, MaskSet } from '../../src/mask-index';
-import assert               from 'assert';
 
 describe
 (
@@ -21,7 +21,7 @@ describe
                         const mask = MASK_EMPTY;
                         map.set(mask, 42);
                         const actualValue = map.get(mask);
-                        assert.strictEqual(actualValue, 42);
+                        assert.equal(actualValue, 42);
                     },
                 );
 
@@ -35,7 +35,7 @@ describe
                         map.set(mask, 'foo');
                         map.set(mask, 'bar');
                         const actualValue = map.get(mask);
-                        assert.strictEqual(actualValue, 'bar');
+                        assert.equal(actualValue, 'bar');
                     },
                 );
             },
@@ -48,10 +48,10 @@ describe
             {
                 const map = new MaskMap();
                 const mask = MASK_EMPTY;
-                assert.strictEqual(map.size, 0);
+                assert.equal(map.size, 0);
                 map.set(mask, true);
                 map.set(mask, undefined);
-                assert.strictEqual(map.size, 1);
+                assert.equal(map.size, 1);
             },
         );
     },
@@ -71,7 +71,7 @@ describe
                 const mask = MASK_EMPTY;
                 set.add(mask);
                 const actualValue = set.has(mask);
-                assert.strictEqual(actualValue, true);
+                assert.equal(actualValue, true);
             },
         );
 
@@ -82,10 +82,10 @@ describe
             {
                 const set = new MaskSet();
                 const mask = MASK_EMPTY;
-                assert.strictEqual(set.size, 0);
+                assert.equal(set.size, 0);
                 set.add(mask);
                 set.add(mask);
-                assert.strictEqual(set.size, 1);
+                assert.equal(set.size, 1);
             },
         );
     },

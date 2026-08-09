@@ -159,8 +159,14 @@ task
                 },
                 {
                     files:              ['dev/**/*.mjs'],
+                    ignores:            ['dev/internal/browser-assert-strict-polyfill.mjs'],
                     jsVersion:          2022,
                     languageOptions:    { globals: globals.nodeBuiltin },
+                },
+                {
+                    files:              ['dev/internal/browser-assert-strict-polyfill.mjs'],
+                    jsVersion:          5,
+                    languageOptions:    { globals: globals.nodeBuiltin, ecmaVersion: 2015 },
                 },
                 {
                     files:              ['src/ui/worker.js'],

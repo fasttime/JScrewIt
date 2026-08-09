@@ -1,7 +1,7 @@
+import assert                                   from 'node:assert/strict';
 import { evalExpr }                             from '../../src/eval';
 import { DynamicSolution, SimpleSolution }      from '../../src/solution';
 import { SolutionType, calculateSolutionType }  from '../../src/solution-type';
-import assert                                   from 'assert';
 import type { ParamCollection }                 from 'ebdd';
 
 type SolutionInfo = [string, string, SolutionType];
@@ -771,10 +771,10 @@ describe
                 const expectedReplacement =
                 '([]+![])[+[]]+([]+![])[+!![]]+([]+!![])[+[]]+(+![])+(+!![])+(!![]+!![])';
 
-                assert.strictEqual(solution.length, expectedReplacement.length);
-                assert.strictEqual(solution.replacement, expectedReplacement);
-                assert.strictEqual(solution.source, 'fat012');
-                assert.strictEqual(solution.type, SolutionType.COMBINED_STRING);
+                assert.equal(solution.length, expectedReplacement.length);
+                assert.equal(solution.replacement, expectedReplacement);
+                assert.equal(solution.source, 'fat012');
+                assert.equal(solution.type, SolutionType.COMBINED_STRING);
             },
         );
 
@@ -792,7 +792,7 @@ describe
                         solution
                         .append(new SimpleSolution('0', '+[]', SolutionType.WEAK_ALGEBRAIC));
                         solution.append(new SimpleSolution('', '[]', SolutionType.OBJECT));
-                        assert.strictEqual(solution.source, '0');
+                        assert.equal(solution.source, '0');
                     },
                 );
 
@@ -805,7 +805,7 @@ describe
                         solution
                         .append(new SimpleSolution('0', '+[]', SolutionType.WEAK_ALGEBRAIC));
                         solution.append(new SimpleSolution(undefined, '[]', SolutionType.OBJECT));
-                        assert.strictEqual(solution.source, undefined);
+                        assert.equal(solution.source, undefined);
                     },
                 );
             },
@@ -839,16 +839,15 @@ describe
                         const solution = new DynamicSolution();
                         for (const [source, replacement, type] of subSolutions)
                         {
-                            assert.strictEqual(calculateSolutionType(replacement), type);
+                            assert.equal(calculateSolutionType(replacement), type);
                             solution.append(new SimpleSolution(source, replacement, type));
                         }
 
-                        assert.strictEqual(solution.length, expectedReplacement.length);
-                        assert.strictEqual(solution.replacement, expectedReplacement);
-                        assert.strictEqual(solution.source, String(evalExpr(expectedReplacement)));
-                        assert.strictEqual(solution.type, expectedType);
-                        assert.strictEqual
-                        (calculateSolutionType(solution.replacement), expectedType);
+                        assert.equal(solution.length, expectedReplacement.length);
+                        assert.equal(solution.replacement, expectedReplacement);
+                        assert.equal(solution.source, String(evalExpr(expectedReplacement)));
+                        assert.equal(solution.type, expectedType);
+                        assert.equal(calculateSolutionType(solution.replacement), expectedType);
                     },
                 );
             },

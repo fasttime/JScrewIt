@@ -1,6 +1,6 @@
+import assert                   from 'node:assert/strict';
 import { SimpleSolution }       from '../../src/solution';
 import { SolutionType }         from '../../src/solution-type';
-import assert                   from 'assert';
 import type { ParamCollection } from 'ebdd';
 
 interface IsAttrTestInfo
@@ -157,7 +157,7 @@ describe
             ({ isAttrName, solutionType, expectedValue }: IsAttrTestInfo): void =>
             {
                 const solution = new SimpleSolution(undefined, '', solutionType);
-                assert.strictEqual(solution[isAttrName], expectedValue);
+                assert.equal(solution[isAttrName], expectedValue);
             },
         );
     },

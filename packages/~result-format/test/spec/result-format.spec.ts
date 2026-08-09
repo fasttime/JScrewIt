@@ -1,5 +1,5 @@
+import assert                           from 'node:assert/strict';
 import { formatValue, formatValueType } from '../../src/result-format';
-import * as assert                      from 'assert';
 import type { ParamOrParamInfo }        from 'ebdd';
 
 interface ParamData
@@ -146,7 +146,7 @@ describe.per(paramDataList)
                 (): void =>
                 {
                     const actualValue = formatValue(input);
-                    assert.strictEqual(actualValue, expectedValue);
+                    assert.equal(actualValue, expectedValue);
                 },
             );
         }
@@ -156,7 +156,7 @@ describe.per(paramDataList)
             (): void =>
             {
                 const actualValueType = formatValueType(input);
-                assert.strictEqual(actualValueType, expectedValueType);
+                assert.equal(actualValueType, expectedValueType);
             },
         );
     },

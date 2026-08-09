@@ -1,5 +1,5 @@
+import assert                                   from 'node:assert/strict';
 import { SolutionType, calculateSolutionType }  from '../../src/solution-type';
-import assert                                   from 'assert';
 
 it
 (
