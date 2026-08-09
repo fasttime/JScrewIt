@@ -1,5 +1,6 @@
 'use strict';
 
+const origin1                               = require('@origin-1/eslint-plugin');
 const { dest, parallel, series, src, task } = require('gulp');
 const syncReadable                          = require('sync-readable');
 
@@ -193,12 +194,21 @@ task
                     files:              ['test/acceptance/**/*.feature'],
                     languageOptions:    { parser: gherkinParser },
                 },
+                {
+                    files:              ['**/*.json'],
+                    jsonVersion:        'standard',
+                },
+                {
+                    files:              ['package.json'],
+                    plugins:            { '@origin-1': origin1 },
+                    rules:              { '@origin-1/package-json-fields': 'error' },
+                },
             );
             const stream =
             src
             (
                 [
-                    '*.js',
+                    '*.{js,json}',
                     '{dev,src,test,tools}/**/*.{feature,js,mjs,ts}',
                     'lib/**/*.ts',
                     '!lib/feature-all.d.ts',

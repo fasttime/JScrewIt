@@ -1,6 +1,6 @@
 'use strict';
 
-const assert    = require('node:assert');
+const assert    = require('node:assert/strict');
 const timeUtils = require('#tools/time-utils');
 
 it
@@ -54,7 +54,7 @@ describe
             () =>
             {
                 const actual = timeUtils.formatDuration(0.004);
-                assert.strictEqual(actual, '< 0.01 s');
+                assert.equal(actual, '< 0.01 s');
             },
         );
         it
@@ -63,7 +63,7 @@ describe
             () =>
             {
                 const actual = timeUtils.formatDuration(0.005);
-                assert.strictEqual(actual, '0.01 s');
+                assert.equal(actual, '0.01 s');
             },
         );
         it
@@ -72,7 +72,7 @@ describe
             () =>
             {
                 const actual = timeUtils.formatDuration(9.999);
-                assert.strictEqual(actual, '10.00 s');
+                assert.equal(actual, '10.00 s');
             },
         );
     },

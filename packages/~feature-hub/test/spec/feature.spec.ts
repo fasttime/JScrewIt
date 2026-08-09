@@ -12,7 +12,7 @@ from '../../src/feature';
 import { MASK_EMPTY, type Mask, maskAreEqual, maskIntersection, maskNext, maskUnion }
 from '../../src/mask-impl';
 
-import assert       from 'assert';
+import assert       from 'assert/strict';
 import type util    from 'util';
 
 /* eslint-disable @typescript-eslint/no-require-imports */
