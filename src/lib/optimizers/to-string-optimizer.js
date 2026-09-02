@@ -220,7 +220,8 @@ function ()
         if (length < minLength)
             minLength = length;
         RADIX_REPLACEMENTS[radix] = replacement;
-        var decimalDigitMaxCount = DECIMAL_DIGIT_MAX_COUNTS[radix] =
+        var decimalDigitMaxCount =
+        DECIMAL_DIGIT_MAX_COUNTS[radix] =
         MAX_SAFE_INTEGER.toString(radix).length;
         CLUSTER_EXTRA_LENGTHS[radix] = DECIMAL_MIN_LENGTHS[decimalDigitMaxCount] + minLength;
     }

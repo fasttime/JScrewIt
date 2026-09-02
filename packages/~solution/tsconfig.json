@@ -4,7 +4,6 @@
     "ignoreDeprecations": "6.0",
     "module": "CommonJS",
     "moduleResolution": "node",
-    "strict": true,
     "target": "ES5",
     "types": [
       "ebdd",

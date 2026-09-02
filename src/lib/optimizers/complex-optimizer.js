@@ -85,7 +85,8 @@ export default function (encoder, complex, definition)
                 ++charInfo.count;
             else
             {
-                charInfo = charMap[char] =
+                charInfo =
+                charMap[char] =
                 { appendLength: charAppendLength, char: char, count: 1 };
                 charInfos.push(charInfo);
             }

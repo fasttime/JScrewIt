@@ -23,7 +23,8 @@ async function createIndex(compatibilityNotice)
     const input = await readFile('JScrewIt.html', 'utf-8');
     const { groups: { start, end } } = input.match(/^(?<start>.*)\n\n(?<end><body>.*)\n$/s);
     const bannerStyleMarkup =
-    compatibilityNotice ? `
+    compatibilityNotice ?
+    `
 <!-- Compatibility notice banner style element inserted -->
 <style>
 
@@ -68,8 +69,11 @@ body.hasBanner #compatibilityNotice { display: flex; }
 #compatibilityNotice button:hover { opacity: .5; }
 
 </style>
-<!-- End of insertion -->` : '';
-    const bannerHTML = compatibilityNotice ? `
+<!-- End of insertion -->` :
+    '';
+    const bannerHTML =
+    compatibilityNotice ?
+    `
 <!-- Compatibility notice banner HTML inserted -->
 <div id='compatibilityNotice'>
     <span>
@@ -98,7 +102,8 @@ addEventListener
     }
 );
 </script>
-<!-- End of insertion -->` : '';
+<!-- End of insertion -->` :
+    '';
     const output =
     `${start}${bannerStyleMarkup}
 <!-- Fork me ribbon style element inserted -->

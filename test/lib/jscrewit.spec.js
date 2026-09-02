@@ -1236,7 +1236,8 @@ self,
                         var maxLength = scope.maxLength;
                         if (maxLength === undefined)
                         {
-                            scope.maxLength = maxLength =
+                            scope.maxLength =
+                            maxLength =
                             strategy.call(encoder, Object('0')).length;
                         }
                         return maxLength;
