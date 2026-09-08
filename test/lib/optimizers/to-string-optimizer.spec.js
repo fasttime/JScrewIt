@@ -181,14 +181,32 @@
                     );
                     it
                     (
-                        'does not optimize a partial cluster with bonding',
+                        'does not optimize a partial cluster preceded by an unclusterable ' +
+                        'solution with bonding',
+                        function ()
+                        {
+                            var optimizer = createOptimizer();
+                            var solution0 = { appendLength: 6 };
+                            var solutionB = { appendLength: 34, source: 'b' };
+                            optimizer.appendLengthOf(solution0);
+                            optimizer.appendLengthOf(solutionB);
+                            var solutions = [solution0, solutionB, solutionB];
+                            optimizeSolutions([optimizer], solutions, true);
+                            expect(solutions.length).toBe(3);
+                        }
+                    );
+                    it
+                    (
+                        'does not optimize a partial cluster followed by an unclusterable ' +
+                        'solution with bonding',
                         function ()
                         {
                             var optimizer = createOptimizer();
                             var solution0 = { appendLength: 6 };
                             var solutionB = { appendLength: 34, source: 'b' };
                             optimizer.appendLengthOf(solutionB);
-                            var solutions = [solution0, solutionB, solutionB];
+                            optimizer.appendLengthOf(solution0);
+                            var solutions = [solutionB, solutionB, solution0];
                             optimizeSolutions([optimizer], solutions, true);
                             expect(solutions.length).toBe(3);
                         }

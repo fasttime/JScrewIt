@@ -1,5 +1,40 @@
 import { createEmpty } from './obj-utils';
 
+/**
+ * An object that collects the candidate clusters of a group of solutions and determines which ones
+ * are worth being applied.
+ *
+ * Candidate clusters are registered by the optimizers of a group with
+ * {@link ClusteringPlan#addCluster}, and compete with each other: when the plan is concluded, only
+ * a nonoverlapping selection of the most convenient candidates is retained.
+ *
+ * @interface ClusteringPlan
+ */
+
+/**
+ * Registers a candidate cluster in this plan.
+ *
+ * If a candidate cluster with the same start and length has been already registered, only the one
+ * with the largest saving is retained.
+ *
+ * @function ClusteringPlan#addCluster
+ *
+ * @param {number} start
+ * The index of the first solution in the group replaced by the cluster.
+ *
+ * @param {number} length
+ * The number of adjacent solutions in the group replaced by the cluster.
+ *
+ * A cluster always spans two or more solutions.
+ *
+ * @param {Clusterer} data
+ * The clusterer that produces the solution of the cluster.
+ *
+ * @param {number} saving
+ * The number of characters saved by the cluster.
+ *
+ * Only candidate clusters with a positive saving should be registered.
+ */
 function addCluster(start, length, data, saving)
 {
     var startLink = getOrCreateStartLink(this.startLinks, start);

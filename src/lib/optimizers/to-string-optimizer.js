@@ -130,7 +130,7 @@ function createOptimizer(toStringReplacement)
                 var minRadix = getMinRadix(maxDigitChar);
                 // If a bonding is required, an integral cluster can save two additional characters
                 // by omitting a pair of parentheses.
-                if (bond && !start && solutionSpan === maxSolutionSpan)
+                if (bond && solutionSpan >= solutions.length)
                     discreteAppendLength += BOND_EXTRA_LENGTH;
                 var clusterTooLong =
                 optimizeCluster(plan, start, minRadix, discreteAppendLength, chars);
