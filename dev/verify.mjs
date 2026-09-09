@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { styleText }                                    from 'node:util';
 import JScrewIt                                         from '#jscrewit';
 import choose                                           from './internal/choose.mjs';
 import Analyzer                                         from './internal/optimized-analyzer.mjs';
@@ -8,7 +9,6 @@ import PREDEF_TEST_DATA_MAP_OBJ                         from './internal/predef-
 import progress                                         from './internal/progress.mjs';
 import SolutionBookMap                                  from './internal/solution-book-map.mjs';
 import STRATEGY_TEST_DATA_LIST                          from './internal/strategy-test-data.mjs';
-import chalk                                            from 'chalk';
 
 function checkMinInputLength
 (features, createInput, strategies, strategy, minLength, rivalStrategyNames)
@@ -31,7 +31,7 @@ function checkMinInputLength
                     diffStr = `+${diff}`;
                 else
                 {
-                    diffStr = chalk.bold(diff);
+                    diffStr = styleText('bold', `${diff}`);
                     tooSmall = true;
                 }
             }
@@ -123,12 +123,12 @@ function getOptimalityInfo(encoder, inputList, replaceVariant)
 
 function logOk(str)
 {
-    console.log(chalk.green(str));
+    console.log(styleText('green', str));
 }
 
 function logWarn(str)
 {
-    console.log(chalk.yellow(str));
+    console.log(styleText('yellow', str));
 }
 
 function mismatchCallback(...args)

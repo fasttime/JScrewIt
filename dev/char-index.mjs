@@ -2,12 +2,12 @@
 
 import { writeFile }                    from 'node:fs/promises';
 import { cpus }                         from 'node:os';
+import { styleText }                    from 'node:util';
 import { Worker }                       from 'node:worker_threads';
 import JScrewIt                         from '#jscrewit';
 import timeUtils                        from '#tools/time-utils';
 import progress                         from './internal/progress.mjs';
 import SolutionBookMap, { NICKNAME }    from './internal/solution-book-map.mjs';
-import chalk                            from 'chalk';
 
 async function doAdd()
 {
@@ -96,7 +96,7 @@ async function doAdd()
                         const featureObj = featureFromMask(mask);
                         console.log
                         (
-                            chalk.green('New solution for %s is better: %d < %d'),
+                            styleText('green', 'New solution for %s is better: %d < %d'),
                             featureObj,
                             newLength,
                             oldLength,
@@ -113,14 +113,14 @@ async function doAdd()
                     if (newLength === undefined)
                     {
                         const featureObj = featureFromMask(mask);
-                        console.log(chalk.red('No solution for %s'), featureObj);
+                        console.log(styleText('red', 'No solution for %s'), featureObj);
                     }
                     else if (newLength > oldLength)
                     {
                         const featureObj = featureFromMask(mask);
                         console.log
                         (
-                            chalk.red('New solution for %s is worse: %d > %d'),
+                            styleText('red', 'New solution for %s is worse: %d > %d'),
                             featureObj,
                             newLength,
                             oldLength,
@@ -130,7 +130,7 @@ async function doAdd()
             }
         }
         if (hasUnusedDefinitions(newSolutionBook, char))
-            console.log(chalk.red('Not all definitions used!'));
+            console.log(styleText('red', 'Not all definitions used!'));
     }
 
     function runWorker(SolutionBookMap, bar, char)
@@ -151,7 +151,7 @@ async function doAdd()
                     {
                         console.log
                         (
-                            chalk.yellow('Character %s required by %s is not indexed'),
+                            styleText('yellow', 'Character %s required by %s is not indexed'),
                             formatCharacter(missingChar),
                             formatCharacter(char),
                         );

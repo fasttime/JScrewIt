@@ -18,8 +18,10 @@ async function bundle(inputOptions, outputFile, banner)
     }
     catch (error)
     {
-        const { default: { red } } = await import('chalk');
-        console.error(red('The file \'%s\' is not a valid ECMAScript 5 script.'), outputFile);
+        const { styleText } = require('node:util');
+
+        console.error
+        (styleText('red', 'The file \'%s\' is not a valid ECMAScript 5 script.'), outputFile);
         error.showStack = false;
         throw error;
     }
@@ -89,7 +91,7 @@ task
     'clean',
     async () =>
     {
-        const { deleteAsync } = await import('del');
+        const { glob, rm } = require('node:fs/promises');
 
         const patterns =
         [
@@ -103,7 +105,10 @@ task
             'test/spec-runner.html',
             'ui/**/*.js',
         ];
-        await deleteAsync(patterns);
+        const paths = await Array.fromAsync(glob(patterns));
+        const options = { force: true, recursive: true };
+        const rmPromises = paths.map(path => rm(path, options));
+        await Promise.all(rmPromises);
     },
 );
 
@@ -369,13 +374,12 @@ task
     'make-spec-runner',
     async () =>
     {
-        const { writeFile } = require('node:fs/promises');
-        const { glob }      = require('glob');
-        const Handlebars    = require('handlebars');
+        const { glob, writeFile }   = require('node:fs/promises');
+        const Handlebars            = require('handlebars');
 
         async function getSpecs()
         {
-            const specs = await glob('**/*.spec.js', { cwd: 'test/lib' });
+            const specs = await Array.fromAsync(glob('**/*.spec.js', { cwd: 'test/lib' }));
             return specs;
         }
 
@@ -398,10 +402,9 @@ task
     'make-workflows',
     async () =>
     {
-        const { writeFile } = require('node:fs/promises');
-        const { join }      = require('node:path');
-        const { glob }      = require('glob');
-        const Handlebars    = require('handlebars');
+        const { glob, writeFile }   = require('node:fs/promises');
+        const { join }              = require('node:path');
+        const Handlebars            = require('handlebars');
 
         async function getTemplate()
         {
@@ -417,7 +420,8 @@ task
             await writeFile(path, output);
         }
 
-        const promises = [getTemplate(), glob('*', { cwd: 'packages', onlyDirectories: true })];
+        const promises =
+        [getTemplate(), Array.fromAsync(glob('*', { cwd: 'packages', onlyDirectories: true }))];
         const [template, pkgNames] = await Promise.all(promises);
         const writeWorkflowPromises = pkgNames.map(writeWorkflow);
         await Promise.all(writeWorkflowPromises);

@@ -1,4 +1,4 @@
-import { rm }                                   from 'node:fs/promises';
+import { glob, rm }                             from 'node:fs/promises';
 import { createRequire }                        from 'node:module';
 import { isAbsolute, join, relative, resolve }  from 'node:path';
 import { fileURLToPath }                        from 'node:url';
@@ -71,14 +71,14 @@ async function compileLib(pkgPath, dTsFilter)
 
 async function compileTS(pkgPath, source, newOptions, writeFile)
 {
-    const [{ glob }, { default: ts }] = await Promise.all([import('glob'), import('typescript')]);
+    const { default: ts } = await import('typescript');
 
     const { sys } = ts;
     const program =
     await
     (async () =>
     {
-        const fileNames = await glob(source, { absolute: true, cwd: pkgPath });
+        const fileNames = await Array.fromAsync(glob(source, { absolute: true, cwd: pkgPath }));
         const tsConfigPath = join(pkgPath, 'tsconfig.json');
         const tsConfig = ts.readConfigFile(tsConfigPath, sys.readFile);
         const { options } = ts.parseJsonConfigFileContent(tsConfig.config, sys, pkgPath);

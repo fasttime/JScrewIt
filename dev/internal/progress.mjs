@@ -1,9 +1,9 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 
 const COMPLETE_CHAR_PLACEHOLDER     = '\x01';
 const INCOMPLETE_CHAR_PLACEHOLDER   = '\x02';
-const COMPLETE_CHAR                 = chalk.bgBlue(' ');
-const INCOMPLETE_CHAR               = chalk.bgWhite(' ');
+const COMPLETE_CHAR                 = styleText('bgBlue', ' ');
+const INCOMPLETE_CHAR               = styleText('bgWhite', ' ');
 const BAR_WIDTH                     = 20;
 
 function deleteBars()

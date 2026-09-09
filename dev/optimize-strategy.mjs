@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
+import { styleText }            from 'node:util';
 import JScrewIt, { Feature }    from '#jscrewit';
 import choose                   from './internal/choose.mjs';
 import STRATEGY_TEST_DATA_LIST  from './internal/strategy-test-data.mjs';
-import chalk                    from 'chalk';
 
 function compareDiffLists(diffList1, diffList2)
 {
@@ -141,10 +141,10 @@ function optimize(strategyTestData)
     if (dirty)
     {
         console.log
-        (chalk.yellow(['Optimal features:', ...optimalFeatureObj.canonicalNames].join('\n')));
+        (styleText('yellow', 'Optimal features:\n%s'), optimalFeatureObj.canonicalNames.join('\n'));
     }
     else
-        console.log(chalk.green('The configured features are already optimal.'));
+        console.log(styleText('green', 'The configured features are already optimal.'));
 }
 
 {

@@ -4,9 +4,9 @@ const TYPE_VALUE_SOLUTION   = 'Solution';
 
 import fs                   from 'node:fs';
 import { createRequire }    from 'node:module';
+import { styleText }        from 'node:util';
 import Analyzer             from './optimized-analyzer.mjs';
 import SortedMap            from './sorted-map.mjs';
-import chalk                from 'chalk';
 
 const jscrewitPath          = createRequire(import.meta.url).resolve('#jscrewit');
 const charMapRoot           = new URL(`../../.${NICKNAME}.char-map.json`, import.meta.url);
@@ -123,7 +123,8 @@ function createParseReviver()
             if (!unknownFeatureNameSet.has(featureName))
             {
                 unknownFeatureNameSet.add(featureName);
-                console.log(chalk.yellow('Unknown feature in character map: %s'), featureName);
+                console.log
+                (styleText('yellow', 'Unknown feature in character map: %s'), featureName);
             }
         }
         return validationResult;
