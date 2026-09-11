@@ -1,3 +1,51 @@
+/* ---------------------------------------------------------------------------------------------- *\
+
+Feature analyzer: enumerates the feature combinations that are relevant to an encoding.
+
+An `Analyzer` produces a sequence of encoders, each configured with a different feature combination,
+through the `nextEncoder` getter or the iterator-like `next()` method.
+Enumerating all possible feature combinations would be unfeasible; instead, the analyzer discovers
+the relevant ones by observing which features an encoding actually queries.
+
+The first encoder is created with an ancestor feature, by default `Feature.DEFAULT`.
+Its `hasFeatures()` method is instrumented to record every group of features whose availability is
+queried and not already implied by the features of the current encoder.
+When the next encoder is requested, the analyzer backtracks to the most recent query that returned
+false and creates a new encoder whose features additionally include the queried ones, so that the
+same encoding can be repeated with those features available.
+The result is a depth-first traversal of a tree of feature combinations, bifurcating at every group
+of features explicitly queried with `Encoder#hasFeatures()`.
+
+A branch is skipped when the features to be added are incompatible with the current ones, or when
+they include a group of features that an earlier query in the same encoding found unavailable,
+because such a combination is reached, if at all, by branching at that earlier query.
+
+Callers are expected to perform the same encoding with every encoder returned by the analyzer, e.g.
+
+```js
+const analyzer = new Analyzer();
+let encoder;
+while (encoder = analyzer.nextEncoder)
+{
+    // Encode something with the encoder here.
+    // `analyzer.featureObj` is the feature of the current encoder.
+    // `analyzer.progress` estimates the fraction of the tree visited so far, from 0 to 1.
+}
+```
+
+`stopCapture()` stops recording queries made through the current encoder, so that subsequent calls
+to `hasFeatures()` do not create new branches.
+
+After an encoding, `featureQueries` lists the queries recorded for the current encoder.
+The queries that returned false delimit the feature combinations for which the encoding behaves as
+it does with the current encoder: any combination that includes the current feature and none of
+those queried groups.
+
+`OptimizedAnalyzer` in `dev/internal/optimized-analyzer.mjs` extends this class to resolve
+characters from a precomputed solution book in order to speed up the analysis.
+
+\* ---------------------------------------------------------------------------------------------- */
+
 import JScrewIt from '#jscrewit';
 
 export default class Analyzer
@@ -5,7 +53,6 @@ export default class Analyzer
     constructor(ancestorFeatureObj = JScrewIt.Feature.DEFAULT)
     {
         this.featureObj = ancestorFeatureObj;
-        this.staticStrCache = new Map();
         this.ancestorMask = ancestorFeatureObj.mask;
     }
 
@@ -35,8 +82,7 @@ export default class Analyzer
         const featureQueries = this.featureQueries = [];
         const encoder =
         this.encoder =
-        createModifiedEncoder
-        (this.featureObj, featureQueries, this.staticStrCache, this.ancestorMask);
+        createInstrumentedEncoder(this.featureObj, featureQueries, this.ancestorMask);
         return encoder;
     }
 
@@ -62,8 +108,7 @@ function FeatureQueryInfo(mask, included, ancestorMask)
     this.ancestorMask = ancestorMask;
 }
 
-function createModifiedEncoder
-(featureObj, featureQueries, staticStrCache, ancestorMask)
+function createInstrumentedEncoder(featureObj, featureQueries, ancestorMask)
 {
     const encoder = createEncoder(featureObj);
     {
@@ -84,28 +129,6 @@ function createModifiedEncoder
             if (included)
                 ancestorMask = maskUnion(mask, ancestorMask);
             return included;
-        };
-    }
-    {
-        const { replaceJoinedArrayString } = encoder;
-        encoder.replaceJoinedArrayString =
-        function (str, maxLength)
-        {
-            let replacement = staticStrCache.get(str);
-            if (replacement)
-            {
-                if (!(replacement.length > maxLength))
-                    return replacement;
-            }
-            else
-            {
-                replacement = replaceJoinedArrayString.call(this, str, maxLength);
-                if (replacement)
-                {
-                    staticStrCache.set(str, replacement);
-                    return replacement;
-                }
-            }
         };
     }
     return encoder;

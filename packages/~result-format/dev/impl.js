@@ -36,7 +36,7 @@ export async function lint()
         },
         {
             files:              ['*.js', 'dev/**/*.js'],
-            jsVersion:          2022,
+            jsVersion:          2025,
             languageOptions:    { globals: globals.nodeBuiltin },
         },
         {

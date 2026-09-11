@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 
-import JScrewIt                 from    '#jscrewit';
-import choose                   from    './internal/choose.mjs';
-import Analyzer                 from    './internal/optimized-analyzer.mjs';
-import PREDEF_TEST_DATA_MAP_OBJ from    './internal/predef-test-data.mjs';
-import progress                 from    './internal/progress.mjs';
-import SolutionBookMap          from    './internal/solution-book-map.mjs';
-import STRATEGY_TEST_DATA_LIST  from    './internal/strategy-test-data.mjs';
-import chalk                    from    'chalk';
+import JScrewIt                                         from '#jscrewit';
+import choose                                           from './internal/choose.mjs';
+import Analyzer                                         from './internal/optimized-analyzer.mjs';
+import { PredefEntry, analyzeCells, createCellChecker } from './internal/predef-cells.mjs';
+import PREDEF_TEST_DATA_MAP_OBJ                         from './internal/predef-test-data.mjs';
+import progress                                         from './internal/progress.mjs';
+import SolutionBookMap                                  from './internal/solution-book-map.mjs';
+import STRATEGY_TEST_DATA_LIST                          from './internal/strategy-test-data.mjs';
+import chalk                                            from 'chalk';
 
 function checkMinInputLength
 (features, createInput, strategies, strategy, minLength, rivalStrategyNames)
@@ -155,50 +156,54 @@ function verifyComplex(complex, entry)
     return false;
 }
 
-function verifyDefinitions(entries, inputList, mismatchCallback, replaceVariant, formatVariant)
+function verifyDefinitions(predefTestData)
 {
-    let encoder;
-    let mismatchCount = 0;
-    const analyzer = createAnalyzer();
+    const { availableEntries, formatVariant, organizedEntries, replaceVariant } = predefTestData;
+    SolutionBookMap.load();
+    let cells;
     progress
     (
         'Scanning definitions',
         bar =>
         {
-            while (encoder = analyzer.nextEncoder)
-            {
-                const optimalityInfo = getOptimalityInfo(encoder, inputList, replaceVariant);
-                analyzer.stopCapture();
-                const { lengthMap } = optimalityInfo;
-                const actualDefinition = encoder.findDefinition(entries);
-                const actualLength = lengthMap[actualDefinition];
-                if (actualLength == null)
-                {
-                    const { featureObj } = analyzer;
-                    const message = `No definition available for ${featureObj}`;
-                    throw Error(message);
-                }
-                const { optimalLength } = optimalityInfo;
-                if (lengthMap[actualDefinition] > optimalLength)
-                {
-                    const featureNames = analyzer.featureObj.canonicalNames;
-                    const { optimalDefinitions } = optimalityInfo;
-                    optimalDefinitions.sort();
-                    mismatchCallback
-                    (
-                        `${++mismatchCount}.`,
-                        featureNames.join(', '),
-                        formatVariant(actualDefinition),
-                        `(${lengthMap[actualDefinition]})`,
-                        optimalDefinitions.map(formatVariant),
-                        `(${optimalLength})`,
-                        '\x1e',
-                    );
-                }
-                bar.update(analyzer.progress);
-            }
+            cells = analyzeCells(predefTestData, bar);
         },
     );
+    const { validate } = createCellChecker(cells);
+    const entries =
+    organizedEntries.map(({ definition, mask }) => new PredefEntry(mask, [definition]));
+    let mismatchCount = 0;
+    const report =
+    (cellIndex, entryIndex) =>
+    {
+        const cell = cells[cellIndex];
+        if (entryIndex == null)
+        {
+            const featureObj = featureFromMask(cell.mask);
+            const message = `No definition available for ${featureObj}`;
+            throw Error(message);
+        }
+        // A feature combination in the cell for which the offending entry is the last match.
+        const featureObj = featureFromMask(maskUnion(cell.mask, entries[entryIndex].mask));
+        const encoder = new Analyzer(featureObj).nextEncoder;
+        const { lengthMap, optimalDefinitions, optimalLength } =
+        getOptimalityInfo(encoder, availableEntries, replaceVariant);
+        const actualDefinition = encoder.findDefinition(organizedEntries);
+        optimalDefinitions.sort();
+        mismatchCallback
+        (
+            `${++mismatchCount}.`,
+            featureObj.canonicalNames.join(', '),
+            formatVariant(actualDefinition),
+            `(${lengthMap[actualDefinition]})`,
+            optimalDefinitions.map(formatVariant),
+            `(${optimalLength})`,
+            '\x1e',
+        );
+    };
+    validate(entries, report);
+    if (!mismatchCount)
+        logOk('Ok.');
 }
 
 function verifyPredef(predefName)
@@ -206,16 +211,8 @@ function verifyPredef(predefName)
     const verify =
     () =>
     {
-        const { availableEntries, formatVariant, organizedEntries, replaceVariant } =
-        PREDEF_TEST_DATA_MAP_OBJ[predefName];
-        verifyDefinitions
-        (
-            organizedEntries,
-            availableEntries,
-            mismatchCallback,
-            replaceVariant,
-            formatVariant,
-        );
+        const predefTestData = PREDEF_TEST_DATA_MAP_OBJ[predefName];
+        verifyDefinitions(predefTestData);
     };
     return verify;
 }
@@ -234,6 +231,8 @@ function verifyStrategy(strategyTestData)
     };
     return result;
 }
+
+const { featureFromMask, maskUnion } = JScrewIt.debug;
 
 const verify = { __proto__: null };
 

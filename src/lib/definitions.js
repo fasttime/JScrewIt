@@ -1,8 +1,8 @@
-// As of version 2.1.0, definitions are interpreted using JScrewIt's own express parser, which can
-// handle and optimize a useful subset of the JavaScript syntax.
-// See express-parse.js for details about constructs recognized by express.
+// Definitions are interpreted using JScrewIt's own express parser, which can handle and optimize a
+// useful subset of the JavaScript syntax.
+// See `src/lib/express-parse.js` for details about constructs recognized by express.
 // Compared to generic purpose encoding, definition encoding differs mainly in that every identifier
-// used must be defined itself, too, in a constant definition.
+// used must itself be defined in a constant definition.
 
 import { define, defineList, makeCallableWithFeatures } from './definers';
 import { replaceStaticExpr }                            from './encoder/encoder-utils';
@@ -530,7 +530,7 @@ function getFHPaddingEntries(index)
             define('B', CAPITAL_HTML, ITERATOR_HELPER),
             define('C', AT, CAPITAL_HTML, IE_SRC),
             define('C', AT, CAPITAL_HTML, NO_IE_SRC),
-            define('A', ARRAY_ITERATOR, CAPITAL_HTML),
+            define('A', ARRAY_ITERATOR),
         ],
         [
             define('F'),
@@ -543,10 +543,10 @@ function getFHPaddingEntries(index)
         [
             define('S'),
             define('R', CAPITAL_HTML),
-            define('S', ARRAY_ITERATOR),
             define('S', ITERATOR_HELPER),
-            define('R', AT, CAPITAL_HTML, IE_SRC, ITERATOR_HELPER),
-            define('R', AT, CAPITAL_HTML, ITERATOR_HELPER, NO_IE_SRC),
+            define('R', AT, CAPITAL_HTML, IE_SRC),
+            define('R', AT, CAPITAL_HTML, NO_IE_SRC),
+            define('S', ARRAY_ITERATOR),
         ],
         [define('W'), define('U', CAPITAL_HTML)],
         'a',
@@ -637,16 +637,18 @@ function getFHPaddingEntries(index)
         [
             define('0B'),
             define('0R', CAPITAL_HTML),
-            define('0B', ARRAY_ITERATOR),
             define('0B', ITERATOR_HELPER),
+            define('0R', AT, CAPITAL_HTML, IE_SRC),
+            define('0R', AT, CAPITAL_HTML, NO_IE_SRC),
+            define('0B', ARRAY_ITERATOR),
         ],
         '0i',
         [
             define('0j'),
             define('0T', CAPITAL_HTML),
-            define('0j', ARRAY_ITERATOR),
             define('0j', ITERATOR_HELPER),
-            define('0T', AT, CAPITAL_HTML, ITERATOR_HELPER, NO_IE_SRC),
+            define('0T', AT, CAPITAL_HTML, NO_IE_SRC),
+            define('0j', ARRAY_ITERATOR),
         ],
         '00',
         '01',
@@ -1520,10 +1522,10 @@ function getFHPaddingEntries(index)
             define(0, NO_FF_SRC),
             define(0, NO_V8_SRC),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML),
-            define(0, ARRAY_ITERATOR, AT),
-            define(0, ARRAY_ITERATOR, FLAT),
-            define(0, ARRAY_ITERATOR, NO_IE_SRC),
-            define(0, ARRAY_ITERATOR, CAPITAL_HTML, IE_SRC),
+            define(0, AT),
+            define(0, FLAT),
+            define(0, IE_SRC),
+            define(0, NO_IE_SRC),
             define(2),
         ]
     );
@@ -1575,39 +1577,26 @@ function getFHPaddingEntries(index)
             define(0),
             define(1),
             define(0, ITERATOR_HELPER),
+            define(1, ARRAY_ITERATOR),
+            define(1, BARPROP),
             define(0, ARRAY_ITERATOR, CAPITAL_HTML),
-            define(1, BARPROP, ITERATOR_HELPER),
-            define(1, FLAT, IE_SRC, ITERATOR_HELPER),
-            define(1, FLAT, ITERATOR_HELPER, NO_IE_SRC),
-            define(0, BARPROP, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
+            define(0, FLAT, ITERATOR_HELPER),
             define(1, AT, ITERATOR_HELPER),
-            define(1, BARPROP, FLAT, ITERATOR_HELPER),
-            define(1, BARPROP, IE_SRC, ITERATOR_HELPER),
-            define(1, BARPROP, ITERATOR_HELPER, NO_IE_SRC),
-            define(0, AT, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
-            define(1, ARRAY_ITERATOR, ITERATOR_HELPER),
+            define(1, ARRAY_ITERATOR, ITERATOR_HELPER, NO_V8_SRC),
+            define(0, IE_SRC, ITERATOR_HELPER),
+            define(0, ITERATOR_HELPER, NAME),
+            define(0, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, CAPITAL_HTML, ITERATOR_HELPER),
+            define(1, ARRAY_ITERATOR, AT, ITERATOR_HELPER),
+            define(1, ARRAY_ITERATOR, BARPROP, ITERATOR_HELPER),
             define(1, AT, BARPROP, ITERATOR_HELPER),
             define(1, AT, ITERATOR_HELPER, NO_IE_SRC),
             define(1, AT, ITERATOR_HELPER, NO_V8_SRC),
-            define(0, ARRAY_ITERATOR, FLAT, FROM_CODE_POINT, ITERATOR_HELPER),
-            define(0, ARRAY_ITERATOR, FROM_CODE_POINT, IE_SRC, ITERATOR_HELPER),
-            define(1, ARRAY_ITERATOR, BARPROP, IE_SRC, ITERATOR_HELPER),
-            define(0, ARRAY_ITERATOR, FROM_CODE_POINT, ITERATOR_HELPER, NO_IE_SRC),
-            define(1, ARRAY_ITERATOR, AT, FLAT, ITERATOR_HELPER),
-            define(1, ARRAY_ITERATOR, AT, IE_SRC, ITERATOR_HELPER),
-            define(1, ARRAY_ITERATOR, AT, ITERATOR_HELPER, NO_IE_SRC),
-            define(1, ARRAY_ITERATOR, BARPROP, FLAT, ITERATOR_HELPER),
-            define(1, ARRAY_ITERATOR, BARPROP, ITERATOR_HELPER, NO_IE_SRC),
-            define(0, ARRAY_ITERATOR, FROM_CODE_POINT, ITERATOR_HELPER, NAME),
-            define(1, ARRAY_ITERATOR, AT, ITERATOR_HELPER, NAME),
-            define(1, ARRAY_ITERATOR, BARPROP, ITERATOR_HELPER, NAME),
-            define(1, ARRAY_ITERATOR, FLAT, ITERATOR_HELPER, NO_V8_SRC),
-            define(0, ARRAY_ITERATOR, FLAT, FROM_CODE_POINT, ITERATOR_HELPER, NAME, NO_V8_SRC),
-            define(1, CAPITAL_HTML, ITERATOR_HELPER),
-            define(1, ARRAY_ITERATOR, FLAT, IE_SRC, ITERATOR_HELPER),
-            define(1, ARRAY_ITERATOR, FLAT, ITERATOR_HELPER, NO_IE_SRC),
-            define(1, ARRAY_ITERATOR, AT, FLAT, ITERATOR_HELPER, NO_V8_SRC),
-            define(1, ARRAY_ITERATOR, BARPROP, FLAT, ITERATOR_HELPER, NO_V8_SRC),
+            define(1, BARPROP, FLAT, ITERATOR_HELPER),
+            define(1, BARPROP, IE_SRC, ITERATOR_HELPER),
+            define(1, BARPROP, ITERATOR_HELPER, NO_IE_SRC),
+            define(1, FLAT, IE_SRC, ITERATOR_HELPER),
+            define(1, FLAT, ITERATOR_HELPER, NO_IE_SRC),
         ]
     );
 
@@ -1678,21 +1667,21 @@ function getFHPaddingEntries(index)
         [
             define(1),
             define(3),
-            define(2, CAPITAL_HTML, ITERATOR_HELPER),
             define(0, ARRAY_ITERATOR, CAPITAL_HTML),
-            define(3, CAPITAL_HTML, FLAT, ITERATOR_HELPER),
+            define(2, CAPITAL_HTML, ITERATOR_HELPER),
+            define(3, AT),
+            define(3, FLAT),
+            define(3, IE_SRC),
+            define(3, NO_IE_SRC),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT),
-            define(0, ARRAY_ITERATOR, CAPITAL_HTML, FLAT, NO_V8_SRC),
-            define(3, AT, CAPITAL_HTML, ITERATOR_HELPER),
-            define(3, CAPITAL_HTML, IE_SRC, ITERATOR_HELPER),
-            define(3, CAPITAL_HTML, ITERATOR_HELPER, NO_IE_SRC),
+            define(0, ARRAY_ITERATOR, CAPITAL_HTML, NO_V8_SRC),
             define(1, ARRAY_ITERATOR, AT, CAPITAL_HTML),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FF_SRC, FLAT),
             define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT, IE_SRC),
-            define(2, ARRAY_ITERATOR, CAPITAL_HTML),
-            define(3, ARRAY_ITERATOR, AT, CAPITAL_HTML, IE_SRC),
-            define(3, ARRAY_ITERATOR, AT, CAPITAL_HTML, NO_IE_SRC),
             define(4),
+            define(2, ARRAY_ITERATOR, CAPITAL_HTML),
+            define(3, AT, IE_SRC),
+            define(3, AT, NO_IE_SRC),
             define(5),
         ]
     );
@@ -1724,9 +1713,9 @@ function getFHPaddingEntries(index)
             define(0, ARRAY_ITERATOR, CAPITAL_HTML),
             define(1, FLAT),
             define(0, ARRAY_ITERATOR, CAPITAL_HTML, NO_V8_SRC),
-            define(1, ARRAY_ITERATOR, AT, CAPITAL_HTML),
-            define(1, ARRAY_ITERATOR, CAPITAL_HTML, FF_SRC, FLAT),
-            define(1, ARRAY_ITERATOR, CAPITAL_HTML, FLAT, IE_SRC),
+            define(1, AT),
+            define(1, FF_SRC, FLAT),
+            define(1, FLAT, IE_SRC),
             define(2),
         ]
     );

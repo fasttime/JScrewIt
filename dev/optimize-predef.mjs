@@ -1,214 +1,96 @@
 #!/usr/bin/env node
 
-import JScrewIt, { Feature }    from '#jscrewit';
-import choose                   from './internal/choose.mjs';
-import Analyzer                 from './internal/optimized-analyzer.mjs';
-import PREDEF_TEST_DATA_MAP_OBJ from './internal/predef-test-data.mjs';
-import progress                 from './internal/progress.mjs';
-import SolutionBookMap          from './internal/solution-book-map.mjs';
+/* ---------------------------------------------------------------------------------------------- *\
 
-function compareFeatures(feature1, feature2)
+Optimizes a list of predefined values against feature combinations.
+
+This script prints an array of `define(...)` entries that can be copy-pasted into
+`src/lib/definitions.js`.
+Each entry consists of a value, or the index of a value in a list of available values, followed by a
+list of features.
+At runtime, `Encoder#findDefinition()` scans such entries from last to first and picks the first one
+whose features are all available to the encoder.
+
+The purpose of pre-optimized entries is to guarantee that every feature combination resolves to the
+value that generates the shortest JSFuck code, without comparing all candidate values at runtime,
+which would be slow.
+
+The optimization proceeds in four steps.
+
+1. Analysis: a feature analyzer (see `dev/internal/analyzer.mjs`) is run on the encoding of every
+   candidate value.
+   Every feature combination visited by the analyzer yields a cell (see
+   `dev/internal/predef-cells.mjs`) along with the candidate values that yield the shortest output
+   throughout the cell.
+2. Selection: the cells are turned into entries in visitation order, which guarantees that the last
+   entry matching a feature combination is the one of its cell.
+   An entry is only kept if the earlier entries do not already resolve every combination in its
+   cell to an optimal value.
+3. Merging: pairs of entries with a common optimal value are repeatedly replaced by a single entry
+   with the features common to both, as long as the resulting list remains valid for every feature
+   combination.
+4. Pruning: single features are repeatedly removed from entries, as long as the resulting list
+   remains valid for every feature combination.
+   Merging and pruning are alternated until the list no longer changes.
+5. Sorting: entries are reordered so that entries with fewer features come first and entries with
+   the same number of features are sorted by feature names, as far as the resulting list remains
+   valid for every feature combination.
+
+When the candidate values come from a list of available entries with their own feature requirements
+(see `defineList` in `src/lib/definers.js`), those features are omitted from the printed entries,
+because they are added back at runtime.
+
+The predefinition to optimize can be passed as a command line argument; if omitted, the script
+prompts for it.
+
+\* ---------------------------------------------------------------------------------------------- */
+
+import JScrewIt, { Feature }                            from '#jscrewit';
+import choose                                           from './internal/choose.mjs';
+import { PredefEntry, analyzeCells, createCellChecker } from './internal/predef-cells.mjs';
+import PREDEF_TEST_DATA_MAP_OBJ                         from './internal/predef-test-data.mjs';
+import progress                                         from './internal/progress.mjs';
+import SolutionBookMap                                  from './internal/solution-book-map.mjs';
+
+/** @import { PredefCell }  from './internal/predef-cells.mjs' */
+/** @import { Mask }        from '~feature-hub' */
+
+const LINE_LENGTH = 100;
+
+const { featureFromMask, maskIncludes, maskUnion } = JScrewIt.debug;
+
+/**
+ * Compares two lists of feature names: shorter lists come first, and lists of the same length are
+ * compared name by name.
+ *
+ * @param {string[]} featureNames1
+ * The first list of feature names.
+ *
+ * @param {string[]} featureNames2
+ * The second list of feature names.
+ *
+ * @returns {number}
+ * A negative number if the first list comes first, a positive number if the second list comes
+ * first, or 0 if the lists are equal.
+ */
+function compareFeatureNames(featureNames1, featureNames2)
 {
-    const canonicalNames1 = feature1.canonicalNames;
-    const canonicalNames2 = feature2.canonicalNames;
+    const { length } = featureNames1;
     {
-        const diff = canonicalNames1.length - canonicalNames2.length;
+        const diff = length - featureNames2.length;
         if (diff)
             return diff;
     }
-    for (let index = 0; ; ++index)
+    for (let index = 0; index < length; ++index)
     {
-        const name1 = canonicalNames1[index];
-        const name2 = canonicalNames2[index];
-        if (name1 == null || name2 == null)
-        {
-            if (name1 != null)
-                return 1;
-            if (name2 != null)
-                return -1;
-            return 0;
-        }
-        if (name1 > name2)
+        const featureName1 = featureNames1[index];
+        const featureName2 = featureNames2[index];
+        if (featureName1 > featureName2)
             return 1;
-        if (name1 < name2)
+        if (featureName1 < featureName2)
             return -1;
     }
-}
-
-function countCompatibleSpecializations(varSet, { specializations })
-{
-    let count = 0;
-    for (const specialNode of specializations)
-    {
-        if (specialNode.varSet.includes(varSet))
-            count += 1 + countCompatibleSpecializations(varSet, specialNode);
-    }
-    return count;
-}
-
-function createDefinitions(nodes)
-{
-    function chooseRoot()
-    {
-        let root;
-        {
-            let optimalCount = Infinity;
-            for (const node of nodes)
-            {
-                if (!node.generalizations.size)
-                {
-                    const count = countCompatibleSpecializations(node.varSet, node);
-                    if (count < optimalCount)
-                    {
-                        optimalCount = count;
-                        root = node;
-                    }
-                }
-            }
-        }
-        return root;
-    }
-
-    function unroot(node, varSet)
-    {
-        nodes.delete(node);
-        const { specializations } = node;
-        for (const specialNode of specializations)
-            specialNode.generalizations.delete(node);
-        for (const specialNode of specializations)
-        {
-            if (!specialNode.generalizations.size && specialNode.varSet.includes(varSet))
-                unroot(specialNode, varSet);
-        }
-    }
-
-    const definitionSets = [];
-    let definitionSet;
-    while (nodes.size)
-    {
-        const node = chooseRoot();
-        const { feature, varSet } = node;
-        let definitionVarSet;
-        if
-        (
-            !definitionSet ||
-            (definitionVarSet = definitionSet.varSet.intersectWith(varSet)).isEmpty()
-        )
-        {
-            definitionSet = new Set();
-            definitionSet.varSet = varSet;
-            definitionSets.push(definitionSet);
-        }
-        else
-            definitionSet.varSet = definitionVarSet;
-        definitionSet.add(feature);
-        unroot(node, node.varSet);
-    }
-    return definitionSets;
-}
-
-function createVarSet(entries)
-{
-    const variantToMaskMap = new Map();
-    {
-        let defMask = 1;
-        for (const { definition } of entries)
-        {
-            variantToMaskMap.set(definition, defMask);
-            defMask <<= 1;
-        }
-    }
-
-    class VarSet
-    {
-        constructor()
-        {
-            Object.defineProperty(this, 'mask', { value: 0, writable: true });
-        }
-
-        add(variant)
-        {
-            const defMask = variantToMaskMap.get(variant);
-            if (!defMask)
-                throw TypeError('Not a valid variant');
-            this.mask |= defMask;
-        }
-
-        get any()
-        {
-            const { mask } = this;
-            for (const [variant, defMask] of variantToMaskMap)
-            {
-                if (mask & defMask)
-                    return variant;
-            }
-            return undefined;
-        }
-
-        clear()
-        {
-            this.mask = 0;
-        }
-
-        includes({ mask })
-        {
-            const included = (this.mask & mask) === mask;
-            return included;
-        }
-
-        intersectWith({ mask })
-        {
-            const varSet = new VarSet();
-            varSet.mask = mask & this.mask;
-            return varSet;
-        }
-
-        isEmpty()
-        {
-            return !this.mask;
-        }
-
-        get mask()
-        {
-            throw TypeError('No mask set');
-        }
-
-        get variants()
-        {
-            const variants = [];
-            {
-                const { mask } = this;
-                for (const [variant, defMask] of variantToMaskMap)
-                {
-                    if (mask & defMask)
-                        variants.push(variant);
-                }
-            }
-            return variants;
-        }
-    }
-
-    Object.seal(VarSet.prototype);
-    return VarSet;
-}
-
-function dropIndirectSpecializations(node)
-{
-    const { specializations } = node;
-    for (const specialNode0 of specializations)
-    {
-        const { feature } = specialNode0;
-        for (const specialNode1 of specializations)
-        {
-            if (specialNode0 !== specialNode1 && specialNode1.feature.includes(feature))
-            {
-                specializations.delete(specialNode1);
-                const { generalizations } = specialNode1;
-                if (generalizations)
-                    generalizations.delete(node);
-            }
-        }
-    }
+    return 0;
 }
 
 function featureDifference(featureAll, featureSome)
@@ -226,56 +108,127 @@ function featureDifference(featureAll, featureSome)
     return featureComplement;
 }
 
-function isRedundantNode(node)
+/**
+ * Returns the names of the features of an entry as they are printed, i.e. without the features
+ * required for the printed variant to be available.
+ *
+ * @param {PredefEntry} entry
+ * The entry.
+ *
+ * @param {Map<*, Mask>} variantToMinMaskMap
+ * A map from each variant to the mask of the features required for the variant to be available.
+ *
+ * @returns {string[]}
+ * The canonical names of the printed features, in alphabetical order.
+ */
+function getPrintedFeatureNames(entry, variantToMinMaskMap)
 {
-    const { varSet, generalizations } = node;
-    if (!generalizations.size)
-        return false;
-    for (const generalNode of generalizations)
-    {
-        if (!varSet.includes(generalNode.varSet))
-            return false;
-    }
-    return true;
+    const { mask } = entry;
+    const [variant] = entry;
+    const minFeature = featureFromMask(variantToMinMaskMap.get(variant));
+    const featureObj = featureDifference(featureFromMask(mask), minFeature);
+    const { canonicalNames } = featureObj;
+    return canonicalNames;
+}
+
+function maskIntersection(mask1, mask2)
+{
+    const feature2 = featureFromMask(mask2);
+    const elementaryNames =
+    featureFromMask(mask1).elementaryNames.filter
+    (elementaryName => feature2.includes(elementaryName));
+    const { mask } = Feature(elementaryNames);
+    return mask;
+}
+
+/**
+ * Repeatedly replaces two entries with a common variant by a single entry with the features common
+ * to both, whenever the resulting list is still valid for every cell.
+ *
+ * @param {PredefEntry[]} entries
+ * The list of entries to merge, in definition order.
+ *
+ * This array is not modified.
+ *
+ * @param {(entries: PredefEntry[]) => PredefEntry[]|undefined} validate
+ * A function that validates a list of entries.
+ *
+ * It should return a copy of the list with the variants of each entry narrowed down if the entries
+ * are valid for every cell, or `undefined` otherwise.
+ *
+ * @returns {PredefEntry[]}
+ * The merged list of entries, in definition order.
+ */
+function mergeEntries(entries, validate)
+{
+    progress
+    (
+        'Merging definitions',
+        bar =>
+        {
+            const initialCount = entries.length;
+            for (let index2 = initialCount; --index2 >= 0;)
+            {
+                bar.update((initialCount - index2) / initialCount);
+                let merged = false;
+                for (let index1 = index2; --index1 >= 0;)
+                {
+                    const mergedEntries = tryMerge(entries, index1, index2, validate);
+                    if (mergedEntries)
+                    {
+                        entries = mergedEntries;
+                        merged = true;
+                        break;
+                    }
+                }
+                if (merged)
+                    index2 = entries.length; // Start over with the reduced list.
+            }
+            bar.update(1);
+        },
+    );
+    return entries;
 }
 
 function optimize(predefTestData)
 {
-    const nodes = runAnalysis(predefTestData);
-    runJoin(nodes);
-    const definitionSets = createDefinitions(nodes);
-    simplifyDefinitions(definitionSets);
-    printDefinitions(definitionSets, predefTestData);
+    SolutionBookMap.load();
+    let cells;
+    progress
+    (
+        'Scanning definitions',
+        bar =>
+        {
+            cells = analyzeCells(predefTestData, bar);
+        },
+    );
+    const { isRelevant, validate } = createCellChecker(cells);
+    let entries = selectEntries(cells, isRelevant);
+    console.log('%d cell(s), %d selected definition(s).', cells.length, entries.length);
+    const { variantToMinMaskMap } = predefTestData;
+    for (;;)
+    {
+        entries = mergeEntries(entries, validate);
+        const prunedEntries = pruneEntries(entries, validate, variantToMinMaskMap);
+        if (prunedEntries === entries)
+            break;
+        entries = prunedEntries;
+    }
+    entries = sortEntries(entries, validate, variantToMinMaskMap);
+    if (!validate(entries))
+        throw Error('Internal error: the optimized definitions are not valid.');
+    printDefinitions(entries, predefTestData);
 }
 
-function printDefinitions(definitionSets, { indent, formatVariant, variantToMinMaskMap })
+function printDefinitions(entries, { indent, formatVariant, variantToMinMaskMap })
 {
-    const { featureFromMask } = JScrewIt.debug;
-    const { DEFAULT } = Feature;
-    const LINE_LENGTH = 100;
     const argsList = [];
-    for (const definitionSet of definitionSets)
+    for (const entry of entries)
     {
-        const variant = definitionSet.varSet.any;
-        const minFeature =
-        variantToMinMaskMap ? featureFromMask(variantToMinMaskMap.get(variant)) : DEFAULT;
-        const features = [];
-        for (const definitionSetFeature of definitionSet)
-        {
-            const feature = featureDifference(definitionSetFeature, minFeature);
-            features.push(feature);
-        }
-        const formattedVariant = formatVariant(variant);
-        features
-        .sort(compareFeatures)
-        .forEach
-        (
-            feature =>
-            {
-                const args = [formattedVariant, ...feature.canonicalNames];
-                argsList.push(args);
-            },
-        );
+        const [variant] = entry;
+        const featureNames = getPrintedFeatureNames(entry, variantToMinMaskMap);
+        const args = [formatVariant(variant), ...featureNames];
+        argsList.push(args);
     }
     const indentStr = ' '.repeat(indent);
     console.log('\n---\n');
@@ -307,224 +260,283 @@ function printDefinitions(definitionSets, { indent, formatVariant, variantToMinM
     console.log('%d definition(s) listed.', argsList.length);
 }
 
-function runAnalysis(predefTestData)
+/**
+ * Repeatedly removes single features from entries, whenever the resulting list is still valid for
+ * every cell.
+ *
+ * @param {PredefEntry[]} entries
+ * The list of entries to prune, in definition order.
+ *
+ * This array is not modified.
+ *
+ * @param {(entries: PredefEntry[]) => PredefEntry[]|undefined} validate
+ * A function that validates a list of entries.
+ *
+ * It should return a copy of the list with the variants of each entry narrowed down if the entries
+ * are valid for every cell, or `undefined` otherwise.
+ *
+ * @param {Map<*, Mask>} variantToMinMaskMap
+ * A map from each variant to the mask of the features required for the variant to be available.
+ *
+ * @returns {PredefEntry[]}
+ * The pruned list of entries, in definition order, or the same array that was passed in if no
+ * feature could be removed.
+ */
+function pruneEntries(entries, validate, variantToMinMaskMap)
 {
-    SolutionBookMap.load();
-    const nodes = new Set();
-    const { availableEntries, replaceVariant } = predefTestData;
-    const VarSet = createVarSet(availableEntries);
     progress
     (
-        'Scanning definitions',
+        'Pruning features',
         bar =>
         {
-            const analyzer = new Analyzer(Feature.DEFAULT);
-            let encoder;
-            while (encoder = analyzer.nextEncoder)
+            const { length } = entries;
+            for (let index = length; --index >= 0;)
             {
-                const varSet = new VarSet();
+                bar.update((length - 1 - index) / length);
+                const { elementaryNames } = featureFromMask(entries[index].mask);
+                for (const elementaryName of elementaryNames)
                 {
-                    let optimalLength = Infinity;
-                    for (const entry of availableEntries)
-                    {
-                        if (encoder.hasFeatures(entry.mask))
-                        {
-                            const variant = entry.definition;
-                            const { length } = replaceVariant(encoder, variant);
-                            if (length <= optimalLength)
-                            {
-                                if (length < optimalLength)
-                                {
-                                    optimalLength = length;
-                                    varSet.clear();
-                                }
-                                varSet.add(variant);
-                            }
-                        }
-                    }
+                    const prunedEntries =
+                    tryPrune(entries, index, elementaryName, validate, variantToMinMaskMap);
+                    if (prunedEntries)
+                        entries = prunedEntries;
                 }
-                if (varSet.isEmpty())
-                {
-                    const { featureObj } = analyzer;
-                    const message = `No definition available for ${featureObj}`;
-                    throw Error(message);
-                }
-                const node =
-                {
-                    feature:            analyzer.featureObj,
-                    generalizations:    new Set(),
-                    specializations:    new Set(),
-                    varSet,
-                };
-                nodes.add(node);
-                bar.update(analyzer.progress);
             }
+            bar.update(1);
         },
     );
-    return nodes;
+    return entries;
 }
 
-function runJoin(nodes)
+/**
+ * Turns cells into entries in visitation order, keeping an entry only if the earlier entries do
+ * not already resolve every feature combination in its cell to an optimal variant.
+ * The variants of the earlier entries are narrowed down as needed.
+ *
+ * @param {PredefCell[]} cells
+ * The cells to select entries from, in analyzer visitation order, as returned by `analyzeCells`.
+ *
+ * @param {(mask: Mask, cellIndex: number) => boolean} isRelevant
+ * A function that determines whether an entry matches any feature combination in a cell.
+ *
+ * @returns {PredefEntry[]}
+ * The selected entries, in definition order.
+ */
+function selectEntries(cells, isRelevant)
 {
-    const reportStage =
-    () => console.log('Stage %d: %d node(s), %d edge(s).', ++stage, nodes.size, edgeCount);
-
-    let edgeCount = 0;
-    progress
+    const entries = [];
+    cells.forEach
     (
-        'Joining nodes',
-        bar =>
+        (cell, cellIndex) =>
         {
-            // Join nodes
-            const nodeCount = nodes.size;
-            let done = 0;
-            for (const node0 of nodes)
-            {
-                const { feature, specializations } = node0;
-                for (const node1 of nodes)
+            const relevantIndices = [];
+            entries.forEach
+            (
+                ({ mask }, index) =>
                 {
-                    if (node0 !== node1 && node1.feature.includes(feature))
-                        specializations.add(node1);
+                    if (isRelevant(mask, cellIndex))
+                        relevantIndices.push(index);
+                },
+            );
+            const updates = [];
+            let covered = relevantIndices.length > 0;
+            for (const index of relevantIndices)
+            {
+                const entry = entries[index];
+                const unionMask = maskUnion(cell.mask, entry.mask);
+                const overridden =
+                relevantIndices.some
+                (index2 => index2 > index && maskIncludes(unionMask, entries[index2].mask));
+                if (overridden)
+                    continue;
+                const variants = new Set(cell.variants).intersection(entry);
+                if (!variants.size)
+                {
+                    covered = false;
+                    break;
                 }
-                dropIndirectSpecializations(node0);
-                for (const { generalizations } of specializations)
-                    generalizations.add(node0);
-                edgeCount += specializations.size;
-                ++done;
-                bar.update(done / nodeCount);
+                updates.push({ index, variants });
+            }
+            if (covered)
+            {
+                for (const { index, variants } of updates)
+                    entries[index] = new PredefEntry(entries[index].mask, variants);
+            }
+            else
+            {
+                const entry = new PredefEntry(cell.mask, cell.variants);
+                entries.push(entry);
             }
         },
     );
-    let stage = 0;
-    reportStage();
-    for (;;)
+    return entries;
+}
+
+/**
+ * Reorders the entries so that entries with fewer printed features come first and entries with the
+ * same number of features are sorted by feature names, as far as the list remains valid for every
+ * cell.
+ *
+ * Each position is filled with the first entry in sorting order, among the remaining ones, that can
+ * be moved there without invalidating the list.
+ *
+ * @param {PredefEntry[]} entries
+ * The list of entries to sort, in definition order.
+ *
+ * This array is not modified.
+ *
+ * @param {(entries: PredefEntry[]) => PredefEntry[]|undefined} validate
+ * A function that validates a list of entries.
+ *
+ * It should return a copy of the list with the variants of each entry narrowed down if the entries
+ * are valid for every cell, or `undefined` otherwise.
+ *
+ * @param {Map<*, Mask>} variantToMinMaskMap
+ * A map from each variant to the mask of the features required for the variant to be available.
+ *
+ * @returns {PredefEntry[]}
+ * The sorted list of entries, in definition order.
+ */
+function sortEntries(entries, validate, variantToMinMaskMap)
+{
+    const compareEntries =
+    (entry1, entry2) =>
     {
-        const updatedNodes = new Set();
-        // Remove redundant nodes
-        for (const node of nodes)
+        const featureNames1 = getPrintedFeatureNames(entry1, variantToMinMaskMap);
+        const featureNames2 = getPrintedFeatureNames(entry2, variantToMinMaskMap);
+        const result = compareFeatureNames(featureNames1, featureNames2);
+        return result;
+    };
+
+    const indexLimit = entries.length - 1;
+    for (let index = 0; index < indexLimit; ++index)
+    {
+        const currentEntry = entries[index];
+        const candidates = entries.slice(index).sort(compareEntries);
+        for (const candidate of candidates)
         {
-            if (isRedundantNode(node))
+            if (candidate === currentEntry)
+                break;
+            const trialEntries =
+            [
+                ...entries.slice(0, index),
+                candidate,
+                ...entries.slice(index).filter(entry => entry !== candidate),
+            ];
+            const narrowedEntries = validate(trialEntries);
+            if (narrowedEntries)
             {
-                const { generalizations, specializations } = node;
-                edgeCount -= generalizations.size + specializations.size;
-                for (const generalNode of generalizations)
-                {
-                    const generalNodeSpecializations = generalNode.specializations;
-                    generalNodeSpecializations.delete(node);
-                    edgeCount -= generalNodeSpecializations.size;
-                    specializations.forEach(Set.prototype.add.bind(generalNodeSpecializations));
-                    edgeCount += generalNodeSpecializations.size;
-                    updatedNodes.add(generalNode);
-                }
-                for (const specialNode of specializations)
-                {
-                    const specialNodeGeneralizations = specialNode.generalizations;
-                    specialNodeGeneralizations.delete(node);
-                    generalizations.forEach(Set.prototype.add.bind(specialNodeGeneralizations));
-                }
-                nodes.delete(node);
+                entries = narrowedEntries;
+                break;
             }
         }
-        if (!updatedNodes.size)
-            break;
-        // Drop indirect specializations
-        for (const node of updatedNodes)
-        {
-            const { specializations } = node;
-            edgeCount -= specializations.size;
-            dropIndirectSpecializations(node);
-            edgeCount += specializations.size;
-        }
-        reportStage();
+    }
+    return entries;
+}
+
+/**
+ * Attempts to replace the entries at the specified indices with a single entry that has the
+ * features common to both and a variant that is optimal for both.
+ *
+ * @param {PredefEntry[]} entries
+ * The current list of entries, in definition order.
+ *
+ * This array is not modified.
+ *
+ * @param {number} index1
+ * The index of the earlier of the two entries to merge.
+ *
+ * @param {number} index2
+ * The index of the later of the two entries to merge.
+ *
+ * This must be greater than `index1`.
+ *
+ * @param {(entries: PredefEntry[]) => PredefEntry[]|undefined} validate
+ * A function that validates a list of entries.
+ *
+ * It should return a copy of the list with the variants of each entry narrowed down if the entries
+ * are valid for every cell, or `undefined` otherwise.
+ *
+ * @returns {PredefEntry[]|undefined}
+ * The resulting list if it is valid for every cell, or `undefined` otherwise.
+ */
+function tryMerge(entries, index1, index2, validate)
+{
+    const entry1 = entries[index1];
+    const entry2 = entries[index2];
+    const variants = entry1.intersection(entry2);
+    if (!variants.size)
+        return;
+    const mask = maskIntersection(entry1.mask, entry2.mask);
+    const mergedEntry = new PredefEntry(mask, variants);
+    for (const survivorIndex of [index2, index1])
+    {
+        const trialEntries =
+        entries.map
+        (
+            (entry, index) =>
+            {
+                if (index === survivorIndex)
+                    return mergedEntry;
+                if (index === index1 || index === index2)
+                    return null;
+                return entry;
+            },
+        )
+        .filter(Boolean);
+        const mergedEntries = validate(trialEntries);
+        if (mergedEntries)
+            return mergedEntries;
     }
 }
 
 /**
-
-This will simplify definition sets like
-
-```
-{ varSet: s1, features: [[A], …X] }
-{ varSet: s2, features: [[A, B_1], [A, B_2]…] }
-{ varSet: s1, features: [[A, B_1, C], [A, B_2, C]…, …Y] }
-```
-
-into
-
-```
-{ varSet: s1, features: [[A], …X] }
-{ varSet: s2, features: [[A, B_1], [A, B_2]…] }
-{ varSet: s1, features: [[A, C], …Y] }
-```
-
-*/
-
-function simplifyDefinitions(definitionSets)
+ * Attempts to remove a feature from the entry at the specified index.
+ * Variants that require the removed feature are dropped from the entry.
+ *
+ * @param {PredefEntry[]} entries
+ * The current list of entries, in definition order.
+ *
+ * This array is not modified.
+ *
+ * @param {number} index
+ * The index of the entry to prune.
+ *
+ * @param {string} elementaryName
+ * The name of the elementary feature to remove.
+ *
+ * @param {(entries: PredefEntry[]) => PredefEntry[]|undefined} validate
+ * A function that validates a list of entries.
+ *
+ * It should return a copy of the list with the variants of each entry narrowed down if the entries
+ * are valid for every cell, or `undefined` otherwise.
+ *
+ * @param {Map<*, Mask>} variantToMinMaskMap
+ * A map from each variant to the mask of the features required for the variant to be available.
+ *
+ * @returns {PredefEntry[]|undefined}
+ * The resulting list if the feature could be removed and the list is valid for every cell, or
+ * `undefined` otherwise.
+ */
+function tryPrune(entries, index, elementaryName, validate, variantToMinMaskMap)
 {
-    function getFeaturesABC(featuresAB, features2, featureC)
-    {
-        const featuresABC = [];
-
-        loop:
-        for (const featureAB of featuresAB)
-        {
-            for (const feature2 of features2)
-            {
-                const features = [featureAB, featureC];
-                if (Feature.areCompatible(...features))
-                {
-                    const featureABC = Feature(features);
-                    if (Feature.areEqual(feature2, featureABC))
-                    {
-                        featuresABC.push(feature2);
-                        continue loop;
-                    }
-                }
-            }
-            return;
-        }
-        return featuresABC;
-    }
-
-    for
-    (
-        let definitionSetIndex = definitionSets.length - 3;
-        definitionSetIndex >= 0;
-        --definitionSetIndex
-    )
-    {
-        const definitionSet0 = definitionSets[definitionSetIndex];
-        const definitions1 = [...definitionSets[definitionSetIndex + 1]];
-        const definitionSet2 = definitionSets[definitionSetIndex + 2];
-        if (definitionSet0.varSet.includes(definitionSet2.varSet))
-        {
-            for (const feature0 of definitionSet0)
-            {
-                if (definitions1.every(feature1 => feature1.includes(feature0)))
-                {
-                    for (const feature1 of definitions1)
-                    {
-                        // Iterating over a copy of the set to be modified.
-                        for (const feature2 of [...definitionSet2])
-                        {
-                            if (feature2.includes(feature1))
-                            {
-                                const featureC = featureDifference(feature2, feature1);
-                                const featuresABC =
-                                getFeaturesABC(definitions1, definitionSet2, featureC);
-                                if (featuresABC)
-                                {
-                                    const featureAC = Feature([feature0, featureC]);
-                                    featuresABC.forEach(Set.prototype.delete.bind(definitionSet2));
-                                    definitionSet2.add(featureAC);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+    const entry = entries[index];
+    const elementaryNames =
+    featureFromMask(entry.mask).elementaryNames.filter(name => name !== elementaryName);
+    const { mask } = Feature(elementaryNames);
+    // Removing a feature that is implied by the remaining ones does not change the mask.
+    if (maskIncludes(mask, entry.mask))
+        return;
+    const variants =
+    entry.values().filter(variant => maskIncludes(mask, variantToMinMaskMap.get(variant)));
+    const prunedEntry = new PredefEntry(mask, variants);
+    if (!prunedEntry.size)
+        return;
+    const trialEntries =
+    entries.map
+    ((currentEntry, currentIndex) => currentIndex === index ? prunedEntry : currentEntry);
+    const prunedEntries = validate(trialEntries);
+    return prunedEntries;
 }
 
 {

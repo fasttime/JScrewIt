@@ -154,13 +154,13 @@ task
                 },
                 {
                     files:              ['*.js', 'test/patch-cov-source.js', 'tools/**/*.js'],
-                    jsVersion:          2022,
+                    jsVersion:          2025,
                     languageOptions:    { globals: globals.node, sourceType: 'commonjs' },
                 },
                 {
                     files:              ['dev/**/*.mjs'],
                     ignores:            ['dev/internal/browser-assert-strict-polyfill.mjs'],
-                    jsVersion:          2022,
+                    jsVersion:          2025,
                     languageOptions:    { globals: globals.nodeBuiltin },
                 },
                 {
@@ -184,7 +184,7 @@ task
                 },
                 {
                     files:              ['test/tools/**/*.js'],
-                    jsVersion:          2022,
+                    jsVersion:          2025,
                     languageOptions:
                     {
                         globals:    { ...eslintPluginEBDD.globals, ...globals.node },
