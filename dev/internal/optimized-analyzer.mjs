@@ -1,14 +1,14 @@
 import Analyzer         from './analyzer.mjs';
 import SolutionBookMap  from './solution-book-map.mjs';
 
-function isSolutionApplicable({ masks }, analyzer, encoder)
+function isSolutionApplicable({ masks }, encoder)
 {
     let applicable = false;
     for (const mask of masks)
     {
         // Must call hasFeatures with every mask of the provided solution, not stop on the first
         // match.
-        if (encoder.hasFeatures(mask) && analyzer.doesNotExclude(mask))
+        if (encoder.hasFeatures(mask))
             applicable = true;
     }
     return applicable;
@@ -39,25 +39,27 @@ export default class OptimizedAnalyzer extends Analyzer
                 const solutionBook = SolutionBookMap.get(char);
                 if (solutionBook)
                 {
-                    let knownSolution = null;
+                    let optimalSolution = null;
+                    let optimalLength = Infinity;
                     let { solutions } = solutionBook;
                     if (this.useReverseIteration)
                         solutions = [...solutions].reverse();
                     for (const solution of solutions)
                     {
-                        const comparison =
-                        knownSolution ?
-                        SolutionBookMap.compareSolutions(solution, knownSolution) : -1;
-                        if (comparison <= 0 && isSolutionApplicable(solution, this, encoder))
+                        const comparison = solution.length - optimalLength;
+                        if (comparison <= 0 && isSolutionApplicable(solution, encoder))
                         {
-                            if (comparison === 0)
-                                knownSolution = null;
+                            if (comparison < 0)
+                            {
+                                optimalSolution = solution;
+                                optimalLength = solution.length;
+                            }
                             else
-                                knownSolution = solution;
+                                optimalSolution = null;
                         }
                     }
-                    knownSolution ||= resolveCharacter.call(encoder, char);
-                    return knownSolution;
+                    optimalSolution ??= resolveCharacter.call(encoder, char);
+                    return optimalSolution;
                 }
                 this.missingCharacter(char);
                 const solution = resolveCharacter.call(encoder, char);

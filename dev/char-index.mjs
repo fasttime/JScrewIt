@@ -43,17 +43,15 @@ async function doAdd()
 
     function findSolutionLength({ solutions }, mask)
     {
-        let knownSolution;
+        let optimalLength = Infinity;
         for (const solution of solutions)
         {
-            const comparison =
-            knownSolution ?
-            SolutionBookMap.compareSolutions(solution, knownSolution) : -1;
+            const comparison = solution.length - optimalLength;
             if (comparison < 0 && isSolutionApplicable(solution, mask))
-                knownSolution = solution;
+                optimalLength = solution.length;
         }
-        const length = knownSolution?.length;
-        return length;
+        if (optimalLength < Infinity)
+            return optimalLength;
     }
 
     async function indexCharacters()

@@ -18,15 +18,20 @@ Object.assign
 (
     SolutionBookMap,
     {
-        clear:              clearSolutionBookMap,
-        compareSolutions,
+        clear:      clearSolutionBookMap,
         importBook,
-        index:              indexChar,
-        load:               loadSolutionBookMap,
-        loadTime:           undefined,
-        save:               saveSolutionBookMap,
+        index:      indexChar,
+        load:       loadSolutionBookMap,
+        loadTime:   undefined,
+        save:       saveSolutionBookMap,
     },
 );
+
+function clearSolutionBookMap()
+{
+    SortedMap.prototype.clear.call(SolutionBookMap);
+    SolutionBookMap.loadTime = undefined;
+}
 
 function compareSolutions(solution1, solution2)
 {
@@ -49,12 +54,6 @@ function compareSolutions(solution1, solution2)
         }
     }
     return diff;
-}
-
-function clearSolutionBookMap()
-{
-    SortedMap.prototype.clear.call(SolutionBookMap);
-    SolutionBookMap.loadTime = undefined;
 }
 
 function createParseReviver()
@@ -182,6 +181,17 @@ function createStringifyReplacer()
     }
 }
 
+function importBook(char, solutionBook)
+{
+    const { setPrototypeOf } = Object;
+    const { Solution: { prototype: solutionPrototype } } = debug;
+
+    const { solutions } = solutionBook;
+    for (const solution of solutions)
+        setPrototypeOf(solution, solutionPrototype);
+    SolutionBookMap.set(char, solutionBook);
+}
+
 async function indexChar(char, updateProgress, missingCharacter)
 {
     const { maskIncludes } = debug;
@@ -264,17 +274,6 @@ async function indexChar(char, updateProgress, missingCharacter)
         const { usedCharSet } = analyzer;
         return usedCharSet;
     }
-}
-
-function importBook(char, solutionBook)
-{
-    const { setPrototypeOf } = Object;
-    const { Solution: { prototype: solutionPrototype } } = debug;
-
-    const { solutions } = solutionBook;
-    for (const solution of solutions)
-        setPrototypeOf(solution, solutionPrototype);
-    SolutionBookMap.set(char, solutionBook);
 }
 
 function loadNewSolutionBookMap()
