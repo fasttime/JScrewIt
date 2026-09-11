@@ -1,6 +1,5 @@
 'use strict';
 
-const origin1                               = require('@origin-1/eslint-plugin');
 const { dest, parallel, series, src, task } = require('gulp');
 const syncReadable                          = require('sync-readable');
 
@@ -124,6 +123,7 @@ task
                 { default: eslintPluginJScrewIt },
                 { default: gherkinParser },
                 { createConfig, noParserConfig },
+                { default: eslintPluginOrigin1 },
                 { default: eslintPluginEBDD },
                 { EslintEnvProcessor },
                 { default: globals },
@@ -135,6 +135,7 @@ task
                     import('./dev/internal/eslint-plugin.mjs'),
                     import('./dev/internal/gherkin-parser.mjs'),
                     import('@origin-1/eslint-config'),
+                    import('@origin-1/eslint-plugin'),
                     import('eslint-plugin-ebdd'),
                     import('eslint-plugin-eslint-env'),
                     import('globals'),
@@ -211,7 +212,7 @@ task
                 },
                 {
                     files:              ['package.json'],
-                    plugins:            { '@origin-1': origin1 },
+                    plugins:            { '@origin-1': eslintPluginOrigin1 },
                     rules:              { '@origin-1/package-json-fields': 'error' },
                 },
             );

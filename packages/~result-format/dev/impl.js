@@ -12,7 +12,12 @@ const importPackageUtils = () => import('../../../dev/internal/package-utils.mjs
 export async function lint()
 {
     const
-    [{ lintPackage }, { default: origin1 }, { globals: ebddGlobals }, { default: globals }] =
+    [
+        { lintPackage },
+        { default: eslintPluginOrigin1 },
+        { globals: ebddGlobals },
+        { default: globals },
+    ] =
     await Promise.all
     (
         [
@@ -40,9 +45,9 @@ export async function lint()
             languageOptions:    { globals: globals.nodeBuiltin },
         },
         {
-            files:              ['package.json'],
+            files:              ['{src/,test/,}package.json'],
             jsonVersion:        'standard',
-            plugins:            { '@origin-1': origin1 },
+            plugins:            { '@origin-1': eslintPluginOrigin1 },
             rules:              { '@origin-1/package-json-fields': 'error' },
         },
     );
