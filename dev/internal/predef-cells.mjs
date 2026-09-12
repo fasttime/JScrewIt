@@ -179,7 +179,7 @@ export function createCellChecker(cells)
      *
      * If specified, the validation continues after a failure; otherwise, it stops at the first one.
      *
-     * @returns {PredefEntry[]|undefined}
+     * @returns {PredefEntry[] | undefined}
      * A copy of the list where the variants of each entry are narrowed down to those still
      * acceptable, if the list is valid; `undefined` otherwise.
      */

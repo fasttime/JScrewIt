@@ -150,7 +150,7 @@ function maskIntersection(mask1, mask2)
  *
  * This array is not modified.
  *
- * @param {(entries: PredefEntry[]) => PredefEntry[]|undefined} validate
+ * @param {(entries: PredefEntry[]) => PredefEntry[] | undefined} validate
  * A function that validates a list of entries.
  *
  * It should return a copy of the list with the variants of each entry narrowed down if the entries
@@ -269,7 +269,7 @@ function printDefinitions(entries, { indent, formatVariant, variantToMinMaskMap 
  *
  * This array is not modified.
  *
- * @param {(entries: PredefEntry[]) => PredefEntry[]|undefined} validate
+ * @param {(entries: PredefEntry[]) => PredefEntry[] | undefined} validate
  * A function that validates a list of entries.
  *
  * It should return a copy of the list with the variants of each entry narrowed down if the entries
@@ -385,7 +385,7 @@ function selectEntries(cells, isRelevant)
  *
  * This array is not modified.
  *
- * @param {(entries: PredefEntry[]) => PredefEntry[]|undefined} validate
+ * @param {(entries: PredefEntry[]) => PredefEntry[] | undefined} validate
  * A function that validates a list of entries.
  *
  * It should return a copy of the list with the variants of each entry narrowed down if the entries
@@ -451,13 +451,13 @@ function sortEntries(entries, validate, variantToMinMaskMap)
  *
  * This must be greater than `index1`.
  *
- * @param {(entries: PredefEntry[]) => PredefEntry[]|undefined} validate
+ * @param {(entries: PredefEntry[]) => PredefEntry[] | undefined} validate
  * A function that validates a list of entries.
  *
  * It should return a copy of the list with the variants of each entry narrowed down if the entries
  * are valid for every cell, or `undefined` otherwise.
  *
- * @returns {PredefEntry[]|undefined}
+ * @returns {PredefEntry[] | undefined}
  * The resulting list if it is valid for every cell, or `undefined` otherwise.
  */
 function tryMerge(entries, index1, index2, validate)
@@ -505,7 +505,7 @@ function tryMerge(entries, index1, index2, validate)
  * @param {string} elementaryName
  * The name of the elementary feature to remove.
  *
- * @param {(entries: PredefEntry[]) => PredefEntry[]|undefined} validate
+ * @param {(entries: PredefEntry[]) => PredefEntry[] | undefined} validate
  * A function that validates a list of entries.
  *
  * It should return a copy of the list with the variants of each entry narrowed down if the entries
@@ -514,7 +514,7 @@ function tryMerge(entries, index1, index2, validate)
  * @param {Map<*, Mask>} variantToMinMaskMap
  * A map from each variant to the mask of the features required for the variant to be available.
  *
- * @returns {PredefEntry[]|undefined}
+ * @returns {PredefEntry[] | undefined}
  * The resulting list if the feature could be removed and the list is valid for every cell, or
  * `undefined` otherwise.
  */
