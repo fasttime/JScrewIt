@@ -1,5 +1,21 @@
 import { createEmpty } from './obj-utils';
 
+/** @import { AbstractSolution } from '~solution' */
+
+/**
+ * A function that produces the solution of a cluster.
+ *
+ * A clusterer is invoked at most once, and only if the cluster it belongs to is retained by the
+ * clustering plan: the clusterers of candidate clusters that are discarded are never invoked.
+ * Because of this, it is convenient to defer any expensive computation of a cluster replacement to
+ * the clusterer.
+ *
+ * @callback Clusterer
+ *
+ * @returns {AbstractSolution}
+ * The solution that replaces the clustered solutions in the group.
+ */
+
 /**
  * An object that collects the candidate clusters of a group of solutions and determines which ones
  * are worth being applied.

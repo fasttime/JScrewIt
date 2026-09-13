@@ -126,6 +126,7 @@ task
                 { default: eslintPluginOrigin1 },
                 { default: eslintPluginEBDD },
                 { EslintEnvProcessor },
+                { default: eslintPluginJSDoc },
                 { default: globals },
                 { default: gulpESLintNew },
             ] =
@@ -138,6 +139,7 @@ task
                     import('@origin-1/eslint-plugin'),
                     import('eslint-plugin-ebdd'),
                     import('eslint-plugin-eslint-env'),
+                    import('eslint-plugin-jsdoc'),
                     import('globals'),
                     import('gulp-eslint-new'),
                 ],
@@ -195,6 +197,22 @@ task
                     {
                         globals:    { ...eslintPluginEBDD.globals, ...globals.node },
                         sourceType: 'commonjs',
+                    },
+                },
+                {
+                    files:              ['**/*.{js,mjs}'],
+                    plugins:            { jsdoc: eslintPluginJSDoc },
+                    rules:
+                    {
+                        'jsdoc/check-alignment':            'error',
+                        'jsdoc/check-param-names':          'error',
+                        'jsdoc/check-syntax':               'error',
+                        'jsdoc/empty-tags':                 'error',
+                        'jsdoc/no-blank-blocks':            'error',
+                        'jsdoc/no-multi-asterisks':         ['error', { allowWhitespace: true }],
+                        'jsdoc/no-undefined-types':         'error',
+                        'jsdoc/require-asterisk-prefix':    'error',
+                        'jsdoc/require-param-name':         'error',
                     },
                 },
                 {

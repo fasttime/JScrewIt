@@ -7,21 +7,10 @@ import createComplexOptimizer       from './optimizers/complex-optimizer';
 import createSurrogatePairOptimizer from './optimizers/surrogate-pair-optimizer';
 import createToStringOptimizer      from './optimizers/to-string-optimizer';
 
-var FROM_CODE_POINT_MASK = Feature.FROM_CODE_POINT.mask;
+/** @import { ClusteringPlan }      from './clustering-plan' */
+/** @import { AbstractSolution }    from '~solution' */
 
-/**
- * A function that produces the solution of a cluster.
- *
- * A clusterer is invoked at most once, and only if the cluster it belongs to is retained by the
- * clustering plan: the clusterers of candidate clusters that are discarded are never invoked.
- * Because of this, it is convenient to defer any expensive computation of a cluster replacement to
- * the clusterer.
- *
- * @callback Clusterer
- *
- * @returns {AbstractSolution}
- * The solution that replaces the clustered solutions in the group.
- */
+var FROM_CODE_POINT_MASK = Feature.FROM_CODE_POINT.mask;
 
 /**
  * An object that shortens the JSFuck code of a group of solutions by replacing sequences of

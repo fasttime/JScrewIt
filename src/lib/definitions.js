@@ -388,15 +388,14 @@ function getFHPaddingEntries(index)
      * Engine-dependent padding/shifting is used to account for spacing characters inserted before
      * the function head by specific engines.
      *
+     * This function accepts additional arguments that specify required features for the definition.
+     *
      * @param {string} expr
      * An expression that resolves to a native function.
      *
      * @param {number} index
      * The index of the character to be extracted in engines that do not insert any spacing
      * characters before the function head, e.g. V8.
-     *
-     * @param ...
-     * Required features for the definition.
      *
      * @returns
      * A definition entry for the specified character.
@@ -410,17 +409,15 @@ function getFHPaddingEntries(index)
     }
 
     /**
-     * Defines a character at a specified position in the string representation of an arbitrary
+     * Defines a character at a specified position in the body of the string representation of any
      * native function.
-     * Engine-dependent padding/shifting is used to account for spacing characters inserted before
-     * the function head and body by specific engines.
+     * Engine-dependent padding/shifting is used to account for the length of the function name and
+     * for spacing characters inserted before the function head and body by specific engines.
      *
-     * @param {string} expr
-     * An expression that resolves to a native function.
-     *
-     * @param {number} index
-     * The index of the character to be extracted in engines that do not insert any spacing
-     * characters before the function head and body, e.g. V8.
+     * @param {number} offset
+     * The index of the character to be extracted in the string representation of a native function
+     * with an empty name in engines that do not insert any spacing characters before the function
+     * head and body, e.g. V8.
      *
      * @returns
      * A definition entry for the specified character.
@@ -433,20 +430,17 @@ function getFHPaddingEntries(index)
     }
 
     /**
-     * Defines a character at a specified position in the string representation of an arbitrary
-     * native function.
-     * Engine-dependent padding/shifting is used to account for spacing characters inserted before
-     * the function head by specific engines.
+     * Defines a character at a specified position in the head of the string representation of an
+     * arbitrary native function.
+     * Engine-dependent padding/shifting is used to account for the length of the function name and
+     * for spacing characters inserted before the function head by specific engines.
      *
-     * @param {string} expr
-     * An expression that resolves to a native function.
+     * This function accepts additional arguments that specify required features for the definition.
      *
-     * @param {number} index
-     * The index of the character to be extracted in engines that do not insert any spacing
-     * characters before the function head, e.g. V8.
-     *
-     * @param ...
-     * Required features for the definition.
+     * @param {number} offset
+     * The index of the character to be extracted in the string representation of a native function
+     * with an empty name in engines that do not insert any spacing characters before the function
+     * head, e.g. V8.
      *
      * @returns
      * A definition entry for the specified character.

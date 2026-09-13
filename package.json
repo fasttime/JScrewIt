@@ -55,6 +55,7 @@
     "eslint-formatter-compact": "latest",
     "eslint-plugin-ebdd": "latest",
     "eslint-plugin-eslint-env": "latest",
+    "eslint-plugin-jsdoc": "latest",
     "expectations": "latest",
     "globals": "latest",
     "gulp": "latest",

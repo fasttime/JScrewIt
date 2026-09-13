@@ -94,11 +94,10 @@ export class DynamicSolution extends AbstractSolution
     }
 }
 
-export class
-// @ts-expect-error
-LazySolution
-extends AbstractSolution
+export class LazySolution extends AbstractSolution
 {
+    public declare readonly replacement: string;
+
     public constructor
     (
         public readonly source: string | undefined,
