@@ -1,6 +1,6 @@
 import { createEmpty } from './obj-utils';
 
-/** @import { AbstractSolution } from '~solution' */
+/** @typedef {import('~solution').AbstractSolution} AbstractSolution */
 
 /**
  * A function that produces the solution of a cluster.
@@ -25,6 +25,8 @@ import { createEmpty } from './obj-utils';
  * a nonoverlapping selection of the most convenient candidates is retained.
  *
  * @interface ClusteringPlan
+ *
+ * @ignore
  */
 
 /**

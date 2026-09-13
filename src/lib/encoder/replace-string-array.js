@@ -142,7 +142,7 @@ function replaceJoinedArrayString(array, joiner, maxLength)
  * the boundary between them. The separator is then used to split the concatenated string back into
  * its elements.
  *
- * @param {Delimiter[]|null} [substitutions]
+ * @param {Delimiter[] | null} [substitutions]
  * An array of delimiters, specifying substitutions to be applied to the input elements.
  *
  * All substitutions are applied on each element of the input array, in the order they are
@@ -152,10 +152,10 @@ function replaceJoinedArrayString(array, joiner, maxLength)
  * optimizations for short arrays to be made. To allow all optimizations to be performed, omit this
  * argument or set it to null instead of specifying an empty array.
  *
- * @param {boolean} [allowZeroForEmptyElements=false]
+ * @param {boolean} [allowZeroForEmptyElements = false]
  * Indicates whether empty string elements in the input array may be replaced with zeros.
  *
- * @param {boolean} [forceString=false]
+ * @param {boolean} [forceString = false]
  * Indicates whether the elements in the replacement expression should evaluate to strings.
  *
  * If this argument is falsy, the elements in the replacement expression may not be equal to those
@@ -165,14 +165,14 @@ function replaceJoinedArrayString(array, joiner, maxLength)
  * expression will be always the same as the string representation of the input array after applying
  * substitutions (including optional empty string to zero replacements) to its elements.
  *
- * @param {number} [maxLength=(NaN)]
+ * @param {number} [maxLength = NaN]
  * The maximum length of the replacement expression.
  *
  * If the replacement expression exceeds the specified length, the return value is `undefined`.
  *
  * If this parameter is `NaN`, then no length limit is imposed.
  *
- * @returns {string|undefined}
+ * @returns {string | undefined}
  * The replacement string or `undefined`.
  */
 export default function replaceStringArray

@@ -207,13 +207,16 @@ task
                         'jsdoc/check-alignment':            'error',
                         'jsdoc/check-param-names':          'error',
                         'jsdoc/check-syntax':               'error',
+                        'jsdoc/check-tag-names':            'error',
                         'jsdoc/empty-tags':                 'error',
                         'jsdoc/no-blank-blocks':            'error',
                         'jsdoc/no-multi-asterisks':         ['error', { allowWhitespace: true }],
-                        'jsdoc/no-undefined-types':         'error',
+                        'jsdoc/no-undefined-types':
+                        ['error', { definedTypes: ['Iterable'] }],
                         'jsdoc/require-asterisk-prefix':    'error',
                         'jsdoc/require-param-name':         'error',
                     },
+                    settings:           { jsdoc: { mode: 'jsdoc' } },
                 },
                 {
                     files:              ['lib/**/*.ts'],
@@ -261,13 +264,16 @@ task
         const { nodeResolve }       = require('@rollup/plugin-node-resolve');
         const cleanup               = require('rollup-plugin-cleanup');
 
+        // Preserves all comments but `/*!` blocks, `global`, `eslint-disable` and `eslint-enable`
+        // directives, and JSDoc blocks declaring dynamically imported types.
+        const commentFilter =
+        /^(?!\*!|\*\s*global\b|[*/]\s*eslint-(?:dis|en)able|\*\*[\s*]*@typedef\s*\{\s*import\()/;
         const inputOptions =
         {
             input: 'src/lib/jscrewit-main.js',
             plugins:
             [
-                cleanup
-                ({ comments: [/^(?!\*!|\*\s*global\b|\/\s*eslint-disable)/], maxEmptyLines: -1 }),
+                cleanup({ comments: [commentFilter], maxEmptyLines: -1 }),
                 nodeResolve({ dedupe: ['tslib'] }),
             ],
         };
@@ -473,23 +479,28 @@ task
 task
 (
     'jsdoc',
-    () =>
-    {
-        const jsdoc = require('gulp-jsdoc3');
+    syncReadable
+    (
+        async () =>
+        {
+            const [{ rm }, { default: jsdoc }] =
+            await Promise.all([import('node:fs/promises'), import('gulp-jsdoc3')]);
 
-        const stream =
-        src('lib/jscrewit.js', { read: false })
-        .pipe
-        (
-            jsdoc
+            await rm('jsdoc', { force: true, recursive: true });
+            const stream =
+            src('lib/jscrewit.js', { read: false })
+            .pipe
             (
-                {
-                    opts:       { destination: 'jsdoc' },
-                    plugins:    ['plugins/markdown'],
-                    tags:       { allowUnknownTags: false },
-                },
-            ),
-        );
-        return stream;
-    },
+                jsdoc
+                (
+                    {
+                        opts:       { destination: 'jsdoc' },
+                        plugins:    ['plugins/markdown'],
+                        tags:       { allowUnknownTags: false },
+                    },
+                ),
+            );
+            return stream;
+        },
+    ),
 );

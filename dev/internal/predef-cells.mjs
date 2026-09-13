@@ -22,7 +22,7 @@ later relevant entry matches the union of the entry's features and the cell's fe
 import JScrewIt from '#jscrewit';
 import Analyzer from './optimized-analyzer.mjs';
 
-/** @import { Mask } from '~feature-hub' */
+/** @typedef {import('~feature-hub').Mask} Mask */
 
 /**
  * A set of feature combinations for which an encoding behaves the same, along with the variants of
@@ -52,7 +52,7 @@ const { Feature, debug: { featureFromMask, maskIncludes, maskUnion } } = JScrewI
  *
  * Any of the variants is acceptable as the value of the entry.
  *
- * @extends {Set<*>}
+ * @augments {Set<*>}
  */
 export class PredefEntry extends Set
 {

@@ -52,8 +52,8 @@ import PREDEF_TEST_DATA_MAP_OBJ                         from './internal/predef-
 import progress                                         from './internal/progress.mjs';
 import SolutionBookMap                                  from './internal/solution-book-map.mjs';
 
-/** @import { PredefCell }  from './internal/predef-cells.mjs' */
-/** @import { Mask }        from '~feature-hub' */
+/** @typedef {import('~feature-hub').Mask}                      Mask */
+/** @typedef {import('./internal/predef-cells.mjs').PredefCell} PredefCell */
 
 const LINE_LENGTH = 100;
 

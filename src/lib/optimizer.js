@@ -7,8 +7,8 @@ import createComplexOptimizer       from './optimizers/complex-optimizer';
 import createSurrogatePairOptimizer from './optimizers/surrogate-pair-optimizer';
 import createToStringOptimizer      from './optimizers/to-string-optimizer';
 
-/** @import { ClusteringPlan }      from './clustering-plan' */
-/** @import { AbstractSolution }    from '~solution' */
+/** @typedef {import('~solution').AbstractSolution}         AbstractSolution */
+/** @typedef {import('./clustering-plan').ClusteringPlan}   ClusteringPlan */
 
 var FROM_CODE_POINT_MASK = Feature.FROM_CODE_POINT.mask;
 
@@ -24,14 +24,15 @@ var FROM_CODE_POINT_MASK = Feature.FROM_CODE_POINT.mask;
  * next.
  *
  * @interface Optimizer
+ *
+ * @ignore
  */
 
 /**
  * Estimates the append length that a solution will contribute to a group if this optimizer clusters
  * it.
  *
- * This method is called by {@link ScrewBuffer#append} for each solution appended to a group, before
- * any clustering takes place.
+ * This method is called for each solution appended to a group, before any clustering takes place.
  * The smallest value returned by the optimizers of a group is used in place of the append length of
  * the solution to keep track of the length of the group.
  *
@@ -48,7 +49,7 @@ var FROM_CODE_POINT_MASK = Feature.FROM_CODE_POINT.mask;
  * @param {AbstractSolution} solution
  * The solution being appended to the group.
  *
- * @returns {number|undefined}
+ * @returns {number | undefined}
  * The estimated append length of the specified solution, or `undefined` if this optimizer cannot
  * optimize the specified solution.
  */

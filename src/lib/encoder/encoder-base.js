@@ -530,13 +530,13 @@ assignNoEnum
          * @param {string} str
          * The string to replace.
          *
-         * @param {object} [options={ }]
+         * @param {object} [options = { }]
          * An optional object specifying replacement options.
          *
          * @param {SimpleSolution} [options.firstSolution]
          * An optional solution to be prepended to the replacement string.
          *
-         * @param {number} [options.maxLength=(NaN)]
+         * @param {number} [options.maxLength = NaN]
          * The maximum length of the replacement expression.
          *
          * If the replacement expression exceeds the specified length, the return value is
@@ -544,7 +544,7 @@ assignNoEnum
          *
          * If this parameter is `NaN`, then no length limit is imposed.
          *
-         * @param {boolean|object<string, boolean>} [options.optimize=false]
+         * @param {boolean | object<string, boolean>} [options.optimize = false]
          * Specifies which optimizations should be attempted.
          *
          * Optimizations may reduce the length of the replacement string, but they also reduce the
@@ -559,7 +559,7 @@ assignNoEnum
          * When an object is specified, undefined optimization settings have the value specified by
          * `default`, or `true` if `default` is not specified.
          *
-         * @param {number} [options.screwMode=SCREW_NORMAL]
+         * @param {number} [options.screwMode = SCREW_NORMAL]
          * Specifies how the replacement will be used.
          *
          * <dl>
@@ -585,7 +585,7 @@ assignNoEnum
          *
          * </dl>
          *
-         * @returns {string|undefined}
+         * @returns {string | undefined}
          * The replacement string or `undefined`.
          */
         replaceString:
