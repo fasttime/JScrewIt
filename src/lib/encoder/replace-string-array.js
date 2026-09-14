@@ -7,7 +7,7 @@ var CONCAT_HEAD_MIN_LENGTH      = 2;
 // The overhead of "[" + "]" plus the minimum concat head replacement length.
 var CONCAT_HEAD_MIN_OVERHEAD    = 2 + CONCAT_HEAD_MIN_LENGTH;
 
-// Length of the shortest possible concat part replacements "+[] and "![]".
+// Length of the shortest possible concat part replacements "+[]" and "![]".
 var CONCAT_PART_MIN_LENGTH      = 3;
 
 // The overhead of "[" + "](" + ")" plus the minimum concat part replacement length.
@@ -185,13 +185,13 @@ export default function replaceStringArray
     if (substitutions || count > 2)
     {
         var splitReplacement = this.resolveConstant('SPLIT').replacement;
-        var minSubstitutionsReplacementLength =
+        var maxSubstitutionsReplacementLength =
         maxLength -
         SEQUENCE_MIN_LENGTH -
         splitReplacement.length -
         SEPARATION_MIN_OVERHEAD;
         var substitutionsReplacement =
-        createSubstitutionsReplacement(this, substitutions, minSubstitutionsReplacementLength);
+        createSubstitutionsReplacement(this, substitutions, maxSubstitutionsReplacementLength);
     }
     if (substitutionsReplacement != null)
     // Approach 1: (array[0] + joiner + array[1] + joiner + array[2]...).split(separator)
