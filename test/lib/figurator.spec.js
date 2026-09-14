@@ -12,75 +12,87 @@
         'JScrewIt.debug.createFigurator',
         function ()
         {
+            function checkInsertionValueNotInFigures
+            (figurator, insertionValueToLastIndexMap, insertionValue, lastIndex)
+            {
+                for
+                (
+                    var index = insertionValueToLastIndexMap[insertionValue] + 1 || 0;
+                    index <= lastIndex;
+                    index++
+                )
+                {
+                    var figure = figurator(index);
+                    expect(figure).not.toContain(insertionValue);
+                    insertionValueToLastIndexMap[insertionValue] = index;
+                }
+            }
+
             it
             (
-                'returns a figurator with usable joiners',
+                'returns a usable figurator with non-empty start values and an empty joiner',
                 function ()
                 {
-                    var startValues = [''];
-                    for (;;)
+                    var figurator = JScrewIt.debug.createFigurator(['false', 'true'], '');
+                    var minExpectedSortLength = 0;
+                    var insertionValueToLastIndexMap = { __proto__: null };
+                    for (var index = 0; index < 0x10000; index++)
                     {
-                        var figurator = JScrewIt.debug.createFigurator(startValues);
-                        var joiner;
-                        for (var index = 0; ; ++index)
+                        var figure = figurator(index);
+
+                        expect(figure)
+                        .toMatch
+                        (/^false|^true/, 'figure should start with one of the start values');
+
+                        expect(figure)
+                        .not
+                        .toMatch
+                        (
+                            /.false|.true/,
+                            'a start value may appear only at the start of the figure'
+                        );
+
+                        var actualSortLength = figure.sortLength;
+                        expect(actualSortLength).not.toBeLessThan(minExpectedSortLength);
+                        minExpectedSortLength = actualSortLength;
+
+                        var insertionValue = figurator.getInsertionValue(index);
+                        if (insertionValue != null)
                         {
-                            var figure = figurator(index);
-                            joiner = figure.joiner;
-                            expect(joiner).not.toBe(figure.valueOf());
-                            if (startValues.indexOf(joiner) < 0)
-                                break;
+                            // Test that none of the figures so far contains this insertion value.
+                            checkInsertionValueNotInFigures
+                            (figurator, insertionValueToLastIndexMap, insertionValue, index);
                         }
-                        if (joiner == null)
-                            break;
-                        expect(startValues).not.toContain(joiner);
-                        startValues.push(joiner);
                     }
                 }
             );
             it
             (
-                'returns a figurator that filters start values from figures',
+                'returns a usable figurator an empty start value and a non-empty joiner',
                 function ()
                 {
-                    var figurator =
-                    JScrewIt.debug.createFigurator
-                    (
-                        [
-                            '',
-                            'false',
-                            'true',
-                            '0',
-                            'undefined',
-                            '1',
-                            'NaN',
-                            '2',
-                            'f',
-                            't',
-                            '3',
-                            'r',
-                            'u',
-                            'n',
-                            'l',
-                            '4',
-                            'd',
-                            's',
-                            'e',
-                            '5',
-                            'i',
-                            '6',
-                            '7',
-                            '8',
-                            '9',
-                        ]
-                    );
-                    for (var index = 0; ; ++index)
+                    var figurator = JScrewIt.debug.createFigurator([''], 'false');
+                    var minExpectedSortLength = 0;
+                    var insertionValueToLastIndexMap = { __proto__: null };
+                    for (var index = 0; index < 0x10000; index++)
                     {
                         var figure = figurator(index);
-                        var sortLength = figure.sortLength;
-                        if (sortLength > 50)
-                            break;
-                        if (sortLength >= 50)
-                            expect(figure.valueOf()).not.toBe('NaN');
+
+                        expect(figure)
+                        .not
+                        .toContain('false', 'figure should not contain the joiner');
+
+                        var actualSortLength = figure.sortLength;
+                        expect(actualSortLength).not.toBeLessThan(minExpectedSortLength);
+                        minExpectedSortLength = actualSortLength;
+
+                        var insertionValue = figurator.getInsertionValue(index);
+                        if (insertionValue != null)
+                        {
+                            // Test that none of the figures so far contains this insertion value.
+                            checkInsertionValueNotInFigures
+                            (figurator, insertionValueToLastIndexMap, insertionValue, index);
+                        }
                     }
                 }
             );

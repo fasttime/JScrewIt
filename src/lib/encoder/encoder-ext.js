@@ -449,10 +449,9 @@ function encodeText(encoder, input, screwMode, unitPath, maxLength)
 function getDenseFigureLegendInsertions(figurator, figures)
 {
     var insertions = [FALSE_TRUE_DELIMITER];
-    var lastFigure = figurator(figures.length - 1);
-    var joiner = lastFigure.joiner;
-    if (joiner != null)
-        insertions.push({ joiner: joiner, separator: joiner });
+    var insertionValue = figurator.getInsertionValue(figures.length - 1);
+    if (insertionValue != null)
+        insertions.push({ joiner: insertionValue, separator: insertionValue });
     return insertions;
 }
 

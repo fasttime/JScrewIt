@@ -1,22 +1,10 @@
-import { APPEND_LENGTH_OF_DIGIT_0, APPEND_LENGTH_OF_SMALL_E }   from './append-lengths';
-import { _Array_prototype_push_apply, _Object, createEmpty }    from './obj-utils';
+import { APPEND_LENGTH_OF_DIGIT_0, APPEND_LENGTH_OF_FALSE, APPEND_LENGTH_OF_SMALL_E }
+from './append-lengths';
+
+import { _Array_prototype_push_apply, _Object, createEmpty } from './obj-utils';
 
 export default function createFigurator(startValues, joiner)
 {
-    function createFigure(value, sortLength)
-    {
-        var figure = _Object(value);
-        figure.sortLength = sortLength;
-        return figure;
-    }
-
-    function createPart(value, sortLength, isJoiner)
-    {
-        var part = createFigure(value, sortLength);
-        part.isJoiner = isJoiner;
-        return part;
-    }
-
     function figurator(index)
     {
         while (figures.length <= index)
@@ -28,6 +16,13 @@ export default function createFigurator(startValues, joiner)
         }
         var figure = figures[index];
         return figure;
+    }
+
+    function getInsertionValue(lastIndex)
+    {
+        var figure = figurator(lastIndex);
+        var insertionValue = figure._insertionValue;
+        return insertionValue;
     }
 
     function growFigures(part)
@@ -63,49 +58,51 @@ export default function createFigurator(startValues, joiner)
                     break;
                 if (joinerPart.isJoiner)
                 {
-                    figure.joiner = joinerPart.valueOf();
+                    figure._insertionValue = joinerPart.valueOf();
                     break;
                 }
             }
         }
     }
 
-    var PARTS =
-    [
-        createPart('',          0,                          false),
-        createPart('false',     4,                          true),
-        createPart('true',      5,                          true),
-        createPart('0',         APPEND_LENGTH_OF_DIGIT_0,   true),
-        createPart('undefined', 7,                          true),
-        createPart('1',         8,                          true),
-        createPart('NaN',       9,                          true),
-        createPart('2',         12,                         true),
-        createPart('f',         14,                         false),
-        createPart('t',         15,                         false),
-        createPart('a',         16,                         false),
-        createPart('3',         17,                         true),
-        createPart('N',         17,                         false),
-        createPart('r',         17,                         false),
-        createPart('u',         17,                         false),
-        createPart('n',         19,                         false),
-        createPart('l',         20,                         false),
-        createPart('4',         22,                         true),
-        createPart('d',         23,                         false),
-        createPart('s',         25,                         false),
-        createPart('e',         APPEND_LENGTH_OF_SMALL_E,   false),
-        createPart('5',         27,                         true),
-        createPart('i',         28,                         false),
-        createPart('6',         32,                         true),
-        createPart('7',         37,                         true),
-        createPart('8',         42,                         true),
-        createPart('9',         47,                         true),
-    ];
-
     var currentSortLength = 0;
     var figureList = [];
     var figures = [];
     var joinerIndex = 0;
     var usedValueSet = createEmpty();
+    if (PARTS == null)
+    {
+        PARTS =
+        [
+            createPart('',          0,                          false),
+            createPart('false',     APPEND_LENGTH_OF_FALSE,     true),
+            createPart('true',      5,                          true),
+            createPart('0',         APPEND_LENGTH_OF_DIGIT_0,   true),
+            createPart('undefined', 7,                          true),
+            createPart('1',         8,                          true),
+            createPart('NaN',       9,                          true),
+            createPart('2',         12,                         true),
+            createPart('f',         14,                         false),
+            createPart('t',         15,                         false),
+            createPart('a',         16,                         false),
+            createPart('3',         17,                         true),
+            createPart('N',         17,                         false),
+            createPart('r',         17,                         false),
+            createPart('u',         17,                         false),
+            createPart('n',         19,                         false),
+            createPart('l',         20,                         false),
+            createPart('4',         22,                         true),
+            createPart('d',         23,                         false),
+            createPart('s',         25,                         false),
+            createPart('e',         APPEND_LENGTH_OF_SMALL_E,   false),
+            createPart('5',         27,                         true),
+            createPart('i',         28,                         false),
+            createPart('6',         32,                         true),
+            createPart('7',         37,                         true),
+            createPart('8',         42,                         true),
+            createPart('9',         47,                         true),
+        ];
+    }
     var appendableParts =
     PARTS.filter
     (
@@ -118,6 +115,23 @@ export default function createFigurator(startValues, joiner)
                 return true;
         }
     );
+    figurator.getInsertionValue = getInsertionValue;
 
     return figurator;
 }
+
+function createFigure(value, sortLength)
+{
+    var figure = _Object(value);
+    figure.sortLength = sortLength;
+    return figure;
+}
+
+function createPart(value, sortLength, isJoiner)
+{
+    var part = createFigure(value, sortLength);
+    part.isJoiner = isJoiner;
+    return part;
+}
+
+var PARTS;
