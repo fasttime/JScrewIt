@@ -7,7 +7,7 @@ import createComplexOptimizer       from './optimizers/complex-optimizer';
 import createSurrogatePairOptimizer from './optimizers/surrogate-pair-optimizer';
 import createToStringOptimizer      from './optimizers/to-string-optimizer';
 
-/** @typedef {import('~solution').AbstractSolution}         AbstractSolution */
+/** @typedef {import('./solution').AbstractSolution}        AbstractSolution */
 /** @typedef {import('./clustering-plan').ClusteringPlan}   ClusteringPlan */
 
 var FROM_CODE_POINT_MASK = Feature.FROM_CODE_POINT.mask;

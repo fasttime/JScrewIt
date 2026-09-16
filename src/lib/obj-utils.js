@@ -65,19 +65,6 @@ export function esToString(arg)
     return str;
 }
 
-export function noProto(obj)
-{
-    var result = createEmpty();
-    _Object_keys(obj).forEach
-    (
-        function (name)
-        {
-            result[name] = obj[name];
-        }
-    );
-    return result;
-}
-
 export function tryCreateRegExp(pattern, flags)
 {
     try

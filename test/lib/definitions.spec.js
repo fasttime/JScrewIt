@@ -146,7 +146,6 @@ self,
                         switch (name)
                         {
                         case 'charCommonDefinition':
-                        case 'commaDefinition':
                             break;
                         case 'charDefinitionInFn':
                             verifyFEntry(entry, FN_DISPOSITIONS, FN_VARIETIES);
@@ -375,7 +374,7 @@ self,
         'Character definitions of',
         function ()
         {
-            var charCodeSet = Object.create(null);
+            var charCodeSet = { __proto__: null };
             for (var charCode = 0; charCode < 256; ++charCode)
                 charCodeSet[charCode] = null;
             JScrewIt.debug.getCharacters().forEach

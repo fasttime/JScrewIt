@@ -7,7 +7,7 @@
 import { define, defineList, makeCallableWithFeatures } from './definers';
 import { replaceStaticExpr }                            from './encoder/encoder-utils';
 import { Feature }                                      from './features';
-import { _String, createEmpty, noProto }                from './obj-utils';
+import { _String, createEmpty }                         from './obj-utils';
 import { LazySolution }                                 from './solution';
 import { SolutionType }                                 from '~solution';
 
@@ -229,8 +229,11 @@ function getFBPaddingEntries(index)
             ];
             break;
         }
-        paddingEntries.cacheKey = 'FBP:' + index;
-        FB_PADDING_ENTRIES_MAP[index] = paddingEntries;
+        if (paddingEntries)
+        {
+            paddingEntries.cacheKey = 'FBP:' + index;
+            FB_PADDING_ENTRIES_MAP[index] = paddingEntries;
+        }
     }
     return paddingEntries;
 }
@@ -320,14 +323,17 @@ function getFHPaddingEntries(index)
             paddingEntries =
             [
                 definePadding('FHP_3_WA', 20),
-                definePadding('RP_3_WA', 2 + ' + FH_SHIFT_1', INCR_CHAR),
+                definePadding('RP_3_WA', '2 + FH_SHIFT_1', INCR_CHAR),
                 define(3, IE_SRC),
                 define(3, NO_IE_SRC),
             ];
             break;
         }
-        paddingEntries.cacheKey = 'FHP:' + index;
-        FH_PADDING_ENTRIES_MAP[index] = paddingEntries;
+        if (paddingEntries)
+        {
+            paddingEntries.cacheKey = 'FHP:' + index;
+            FH_PADDING_ENTRIES_MAP[index] = paddingEntries;
+        }
     }
     return paddingEntries;
 }
@@ -661,8 +667,9 @@ function getFHPaddingEntries(index)
     BASE64_ALPHABET_LO_6 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
     CHARACTERS =
-    noProto
-    ({ // eslint-disable-line @origin-1/bracket-layout
+    {
+        __proto__:  null,
+
         // '\0'…'\x09'
         '\n':
         [
@@ -701,7 +708,7 @@ function getFHPaddingEntries(index)
         // '$'
         '%':
         [
-            defineCharCommon({ unescape: false }),
+            defineCharCommon(),
         ],
         '&':
         [
@@ -718,14 +725,14 @@ function getFHPaddingEntries(index)
             defineCharInFnHead(10),
         ],
         // '*'
-        '+': '(1e100 + [])[2]',
+        '+':        '(1e100 + [])[2]',
         ',':
         [
             define('(RP_0_S + F_A_L_S_E)[1]'),
             define({ expr: '[[]][CONCAT]([[]])', solutionType: SolutionType.OBJECT }),
         ],
-        '-': '(.0000001 + [])[2]',
-        '.': '(11e20 + [])[1]',
+        '-':        '(.0000001 + [])[2]',
+        '.':        '(11e20 + [])[1]',
         '/':
         [
             define('"0false".italics()[10]'),
@@ -798,7 +805,7 @@ function getFHPaddingEntries(index)
             define('"".link()[3]', CAPITAL_HTML),
             define('(RP_4_A + [].entries().filter(ANY_FUNCTION))[21]', ITERATOR_HELPER),
         ],
-        'I': '"Infinity"[0]',
+        'I':        '"Infinity"[0]',
         'J':
         [
             define('btoa(true)[2]'),
@@ -818,7 +825,7 @@ function getFHPaddingEntries(index)
             define('btoa(0)[0]'),
             define('"".small()[2]', CAPITAL_HTML),
         ],
-        'N': '"NaN"[0]',
+        'N':        '"NaN"[0]',
         'O':
         [
             defineCharInFn('Object', 9),
@@ -886,7 +893,7 @@ function getFHPaddingEntries(index)
         ],
         '\\':
         [
-            defineCharCommon({ escSeq: false }),
+            defineCharCommon(),
         ],
         ']':
         [
@@ -899,7 +906,7 @@ function getFHPaddingEntries(index)
         ],
         // '_'
         // '`'
-        'a': '"false"[1]',
+        'a':        '"false"[1]',
         'b':
         [
             defineCharInFn('Number', 12),
@@ -911,9 +918,9 @@ function getFHPaddingEntries(index)
             defineCharInFn('ANY_FUNCTION', 3),
             define('(RP_5_A + ARRAY_ITERATOR)[10]', ARRAY_ITERATOR),
         ],
-        'd': '"undefined"[2]',
-        'e': '"true"[3]',
-        'f': '"false"[0]',
+        'd':        '"undefined"[2]',
+        'e':        '"true"[3]',
+        'f':        '"false"[0]',
         'g':
         [
             defineCharInFn('String', 14),
@@ -923,7 +930,7 @@ function getFHPaddingEntries(index)
             define('btoa("0false")[3]'),
             define('101[TO_STRING]("21")[1]'),
         ],
-        'i': '([RP_5_A] + undefined)[10]',
+        'i':        '([RP_5_A] + undefined)[10]',
         'j':
         [
             define('(RP_0_S + Intl)[3]'),
@@ -938,13 +945,13 @@ function getFHPaddingEntries(index)
             define('20[TO_STRING]("21")'),
             defineCharCommon(),
         ],
-        'l': '"false"[2]',
+        'l':        '"false"[2]',
         'm':
         [
             defineCharInFn('Number', 11),
             define('(RP_6_S + Function())[20]'),
         ],
-        'n': '"undefined"[1]',
+        'n':        '"undefined"[1]',
         'o':
         [
             defineCharInFn('ANY_FUNCTION', 6),
@@ -962,10 +969,10 @@ function getFHPaddingEntries(index)
             define('"".fontcolor(true + "".fontcolor())[30]', ESC_HTML_QUOT),
             defineCharCommon(),
         ],
-        'r': '"true"[1]',
-        's': '"false"[3]',
-        't': '"true"[0]',
-        'u': '"undefined"[0]',
+        'r':        '"true"[1]',
+        's':        '"false"[3]',
+        't':        '"true"[0]',
+        'u':        '"undefined"[0]',
         'v':
         [
             defineCharInFnBody(19),
@@ -981,7 +988,7 @@ function getFHPaddingEntries(index)
             define('btoa("falsefalse")[10]'),
             define('101[TO_STRING]("34")[1]'),
         ],
-        'y': '(RP_3_WA + [Infinity])[10]',
+        'y':        '(RP_3_WA + [Infinity])[10]',
         'z':
         [
             define('35[TO_STRING]("36")'),
@@ -1088,23 +1095,24 @@ function getFHPaddingEntries(index)
             define('Infinity[TO_LOCALE_STRING]("ru")', RUSSIAN_INFINITY),
             defineCharCommon(),
         ],
-    }); // eslint-disable-line @origin-1/bracket-layout
+    };
 
     COMPLEX =
-    noProto
-    ({ // eslint-disable-line @origin-1/bracket-layout
-        Number:         define({ expr: 'Number.name', optimize: { complexOpt: false } }, NAME),
-        Object:         define({ expr: 'Object.name', optimize: { complexOpt: false } }, NAME),
-        RegExp:         define({ expr: 'RegExp.name', optimize: { complexOpt: false } }, NAME),
-        String:         define('String.name', NAME),
+    {
+        __proto__:  null,
+        Number:     define({ expr: 'Number.name', optimize: { complexOpt: false } }, NAME),
+        Object:     define({ expr: 'Object.name', optimize: { complexOpt: false } }, NAME),
+        RegExp:     define({ expr: 'RegExp.name', optimize: { complexOpt: false } }, NAME),
+        String:     define('String.name', NAME),
         fromCharCo:
         define({ expr: '"from3har3o"[SPLIT](3)[JOIN]("C")', optimize: { complexOpt: false } }),
-        mCh:            define('atob("bUNo")'),
-    }); // eslint-disable-line @origin-1/bracket-layout
+        mCh:        define('atob("bUNo")'),
+    };
 
     CONSTANTS =
-    noProto
-    ({ // eslint-disable-line @origin-1/bracket-layout
+    {
+        __proto__:  null,
+
         // JavaScript globals
 
         Array:
@@ -1440,7 +1448,7 @@ function getFHPaddingEntries(index)
         // Regular padding blocks.
         //
         // The number after "RP_" is the character overhead.
-        // The postifx that follows it indicates the solution type.
+        // The postfix that follows it indicates the solution type.
         //
         // • "_U":  environment hybrid undefined and algebraic
         // • "_A":  algebraic
@@ -1455,7 +1463,7 @@ function getFHPaddingEntries(index)
         RP_4_A:     { expr: 'true',     solutionType: SolutionType.ALGEBRAIC },
         RP_5_A:     { expr: 'false',    solutionType: SolutionType.ALGEBRAIC },
         RP_6_S:     { expr: '"0false"', solutionType: SolutionType.COMBINED_STRING },
-    }); // eslint-disable-line @origin-1/bracket-layout
+    };
 
     FB_R_PADDING_SHIFTS = [define(4, FF_SRC), define(5, IE_SRC), define(0, V8_SRC)];
 

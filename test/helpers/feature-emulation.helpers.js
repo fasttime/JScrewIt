@@ -72,7 +72,7 @@
 
     function emuDo(emuFeatures, callback)
     {
-        var context = Object.create(null);
+        var context = { __proto__: null };
         try
         {
             emuFeatures.forEach
@@ -162,8 +162,7 @@
 
     function intercept(context, interceptor, adapter)
     {
-        var adapterListMap =
-        context.ADAPTERS || (context.ADAPTERS = Object.create(Object.create(null)));
+        var adapterListMap = context.ADAPTERS || (context.ADAPTERS = { __proto__: null });
         var path = interceptor.path;
         var adapterList = adapterListMap[path];
         if (!adapterList)
@@ -446,7 +445,7 @@
 
     function registerObjectFactory(context, path, str, prototype)
     {
-        var obj = Object.create(prototype);
+        var obj = { __proto__: prototype };
         var factory = createStaticSupplier(obj);
         override(context, path, { value: factory });
         registerDefaultToStringAdapter(context, obj, str);

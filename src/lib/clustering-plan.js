@@ -1,6 +1,6 @@
 import { createEmpty } from './obj-utils';
 
-/** @typedef {import('~solution').AbstractSolution} AbstractSolution */
+/** @typedef {import('./solution').AbstractSolution} AbstractSolution */
 
 /**
  * A function that produces the solution of a cluster.

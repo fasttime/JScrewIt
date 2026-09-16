@@ -40,6 +40,8 @@ import replaceCharByUnescape                                    from './replace-
 import { MASK_EMPTY, maskIncludes }                             from '~feature-hub';
 import { SolutionType }                                         from '~solution';
 
+/** @typedef {import('../solution').AbstractSolution} AbstractSolution */
+
 var STATIC_CHAR_CACHE   = createEmpty();
 var STATIC_CONST_CACHE  = createEmpty();
 var STATIC_ENCODER      = new Encoder(MASK_EMPTY);
@@ -51,7 +53,6 @@ var BOND_STRENGTH_STRONG    = 2;
 var featureFromMask = Feature._fromMask;
 
 /** @class Encoder */
-
 export function Encoder(mask)
 {
     this.mask               = mask;
@@ -103,8 +104,7 @@ function findOptimalSolution(encoder, source, entries, defaultSolutionType)
                         optimalSolution.entryCode = entryIndex;
                 }
             }
-        },
-        encoder
+        }
     );
     return optimalSolution;
 }
@@ -533,7 +533,7 @@ assignNoEnum
          * @param {object} [options = { }]
          * An optional object specifying replacement options.
          *
-         * @param {SimpleSolution} [options.firstSolution]
+         * @param {AbstractSolution} [options.firstSolution]
          * An optional solution to be prepended to the replacement string.
          *
          * @param {number} [options.maxLength = NaN]
@@ -554,7 +554,7 @@ assignNoEnum
          * (`true`) or off (`false`).
          * In order to turn specific optimizations on or off, specify an object that maps
          * optimization names with the suffix "Opt" to a boolean setting.
-         * Currently supported settings are `commaOpt`, `complexOpt` `surrogatePairOpt`,
+         * Currently supported settings are `commaOpt`, `complexOpt`, `surrogatePairOpt`,
          * `toStringOpt` and `default`.
          * When an object is specified, undefined optimization settings have the value specified by
          * `default`, or `true` if `default` is not specified.

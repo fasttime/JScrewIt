@@ -1,6 +1,7 @@
-import { SCREW_AS_STRING }  from '../screw-buffer';
-import { SimpleSolution }   from '../solution';
-import { SolutionType }     from '~solution';
+import { APPEND_LENGTH_OF_EMPTY }   from '../append-lengths';
+import { SCREW_AS_STRING }          from '../screw-buffer';
+import { SimpleSolution }           from '../solution';
+import { SolutionType }             from '~solution';
 
 function appendLengthOf(solution)
 {
@@ -88,7 +89,7 @@ export default function (encoder)
                     if (singlePart)
                     {
                         if (forceString)
-                            saving -= 3; // "+[]"
+                            saving -= APPEND_LENGTH_OF_EMPTY; // "+[]"
                         else if (bond)
                             saving += 2; // "(" + ")"
                     }

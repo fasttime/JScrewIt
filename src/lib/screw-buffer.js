@@ -1,7 +1,9 @@
-import { APPEND_LENGTH_OF_EMPTY }           from './append-lengths';
 import createClusteringPlan                 from './clustering-plan';
 import { assignNoEnum }                     from './obj-utils';
 import { DynamicSolution, EMPTY_SOLUTION }  from './solution';
+
+// The maximum difference between the append length and the length of a solution.
+var MAX_APPEND_EXTRA_LENGTH = 3;
 
 export var SCREW_NORMAL             = 0;
 export var SCREW_AS_STRING          = 1;
@@ -36,7 +38,7 @@ export function ScrewBuffer(screwMode, optimizerList)
     this._optimizerList = optimizerList;
     this._screwMode = screwMode;
     this._solutions = [];
-    this._length = -APPEND_LENGTH_OF_EMPTY;
+    this._length = -MAX_APPEND_EXTRA_LENGTH;
 }
 
 assignNoEnum

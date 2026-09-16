@@ -5,6 +5,13 @@ import { _Array_prototype_push_apply, _Object, createEmpty } from './obj-utils';
 
 export default function createFigurator(startValues, joiner)
 {
+    function createPart(value, sortLength, insertable)
+    {
+        var part = createFigure(value, sortLength);
+        part.insertable = insertable && startValues.indexOf(part.valueOf()) < 0;
+        return part;
+    }
+
     function figurator(index)
     {
         while (figures.length <= index)
@@ -50,15 +57,15 @@ export default function createFigurator(startValues, joiner)
             var figures = figureList[sortLength] || (figureList[sortLength] = []);
             var figure = createFigure(value, sortLength);
             figures.push(figure);
-            part.isJoiner = false;
-            for (;; ++joinerIndex)
+            part.insertable = false;
+            for (;; ++insertionPartIndex)
             {
-                var joinerPart = PARTS[joinerIndex];
-                if (!joinerPart)
+                var insertionPart = parts[insertionPartIndex];
+                if (!insertionPart)
                     break;
-                if (joinerPart.isJoiner)
+                if (insertionPart.insertable)
                 {
-                    figure._insertionValue = joinerPart.valueOf();
+                    figure._insertionValue = insertionPart.valueOf();
                     break;
                 }
             }
@@ -68,43 +75,40 @@ export default function createFigurator(startValues, joiner)
     var currentSortLength = 0;
     var figureList = [];
     var figures = [];
-    var joinerIndex = 0;
+    var insertionPartIndex = 0;
     var usedValueSet = createEmpty();
-    if (PARTS == null)
-    {
-        PARTS =
-        [
-            createPart('',          0,                          false),
-            createPart('false',     APPEND_LENGTH_OF_FALSE,     true),
-            createPart('true',      5,                          true),
-            createPart('0',         APPEND_LENGTH_OF_DIGIT_0,   true),
-            createPart('undefined', 7,                          true),
-            createPart('1',         8,                          true),
-            createPart('NaN',       9,                          true),
-            createPart('2',         12,                         true),
-            createPart('f',         14,                         false),
-            createPart('t',         15,                         false),
-            createPart('a',         16,                         false),
-            createPart('3',         17,                         true),
-            createPart('N',         17,                         false),
-            createPart('r',         17,                         false),
-            createPart('u',         17,                         false),
-            createPart('n',         19,                         false),
-            createPart('l',         20,                         false),
-            createPart('4',         22,                         true),
-            createPart('d',         23,                         false),
-            createPart('s',         25,                         false),
-            createPart('e',         APPEND_LENGTH_OF_SMALL_E,   false),
-            createPart('5',         27,                         true),
-            createPart('i',         28,                         false),
-            createPart('6',         32,                         true),
-            createPart('7',         37,                         true),
-            createPart('8',         42,                         true),
-            createPart('9',         47,                         true),
-        ];
-    }
+    var parts =
+    [
+        createPart('',          0,                          false),
+        createPart('false',     APPEND_LENGTH_OF_FALSE,     true),
+        createPart('true',      5,                          true),
+        createPart('0',         APPEND_LENGTH_OF_DIGIT_0,   true),
+        createPart('undefined', 7,                          true),
+        createPart('1',         8,                          true),
+        createPart('NaN',       9,                          true),
+        createPart('2',         12,                         true),
+        createPart('f',         14,                         false),
+        createPart('t',         15,                         false),
+        createPart('a',         16,                         false),
+        createPart('3',         17,                         true),
+        createPart('N',         17,                         false),
+        createPart('r',         17,                         false),
+        createPart('u',         17,                         false),
+        createPart('n',         19,                         false),
+        createPart('l',         20,                         false),
+        createPart('4',         22,                         true),
+        createPart('d',         23,                         false),
+        createPart('s',         25,                         false),
+        createPart('e',         APPEND_LENGTH_OF_SMALL_E,   false),
+        createPart('5',         27,                         true),
+        createPart('i',         28,                         false),
+        createPart('6',         32,                         true),
+        createPart('7',         37,                         true),
+        createPart('8',         42,                         true),
+        createPart('9',         47,                         true),
+    ];
     var appendableParts =
-    PARTS.filter
+    parts.filter
     (
         function (part)
         {
@@ -126,12 +130,3 @@ function createFigure(value, sortLength)
     figure.sortLength = sortLength;
     return figure;
 }
-
-function createPart(value, sortLength, isJoiner)
-{
-    var part = createFigure(value, sortLength);
-    part.isJoiner = isJoiner;
-    return part;
-}
-
-var PARTS;

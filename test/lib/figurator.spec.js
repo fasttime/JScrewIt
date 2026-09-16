@@ -17,7 +17,7 @@
             {
                 for
                 (
-                    var index = insertionValueToLastIndexMap[insertionValue] + 1 || 0;
+                    var index = insertionValueToLastIndexMap[insertionValue] + 1;
                     index <= lastIndex;
                     index++
                 )
@@ -34,6 +34,7 @@
                 function ()
                 {
                     var figurator = JScrewIt.debug.createFigurator(['false', 'true'], '');
+                    var figureValueToIndexMap = { __proto__: null };
                     var minExpectedSortLength = 0;
                     var insertionValueToLastIndexMap = { __proto__: null };
                     for (var index = 0; index < 0x10000; index++)
@@ -52,6 +53,11 @@
                             'a start value may appear only at the start of the figure'
                         );
 
+                        var lastIndex = figureValueToIndexMap[figure];
+                        if (lastIndex != null)
+                            expect(figure).fail('not to occur more than once');
+                        figureValueToIndexMap[figure] = index;
+
                         var actualSortLength = figure.sortLength;
                         expect(actualSortLength).not.toBeLessThan(minExpectedSortLength);
                         minExpectedSortLength = actualSortLength;
@@ -59,19 +65,33 @@
                         var insertionValue = figurator.getInsertionValue(index);
                         if (insertionValue != null)
                         {
+                            if (insertionValueToLastIndexMap[insertionValue] == null)
+                            {
+                                expect(insertionValue).not.toMatch
+                                (
+                                    /false|true/,
+                                    'insertion value should not contain any start value'
+                                );
+                                insertionValueToLastIndexMap[insertionValue] = -1;
+                            }
+
                             // Test that none of the figures so far contains this insertion value.
                             checkInsertionValueNotInFigures
                             (figurator, insertionValueToLastIndexMap, insertionValue, index);
                         }
                     }
+                    var firstInsertionValue = figurator.getInsertionValue(0);
+                    expect(firstInsertionValue).toBeDefined();
                 }
             );
             it
             (
-                'returns a usable figurator an empty start value and a non-empty joiner',
+                'returns a usable figurator with an empty start value and a non-empty joiner',
                 function ()
                 {
-                    var figurator = JScrewIt.debug.createFigurator([''], 'false');
+                    var joiner = 'false';
+                    var figurator = JScrewIt.debug.createFigurator([''], joiner);
+                    var figureValueToIndexMap = { __proto__: null };
                     var minExpectedSortLength = 0;
                     var insertionValueToLastIndexMap = { __proto__: null };
                     for (var index = 0; index < 0x10000; index++)
@@ -82,6 +102,11 @@
                         .not
                         .toContain('false', 'figure should not contain the joiner');
 
+                        var lastIndex = figureValueToIndexMap[figure];
+                        if (lastIndex != null)
+                            expect(figure).fail('not to occur more than once');
+                        figureValueToIndexMap[figure] = index;
+
                         var actualSortLength = figure.sortLength;
                         expect(actualSortLength).not.toBeLessThan(minExpectedSortLength);
                         minExpectedSortLength = actualSortLength;
@@ -89,11 +114,16 @@
                         var insertionValue = figurator.getInsertionValue(index);
                         if (insertionValue != null)
                         {
+                            if (insertionValueToLastIndexMap[insertionValue] == null)
+                                insertionValueToLastIndexMap[insertionValue] = -1;
+
                             // Test that none of the figures so far contains this insertion value.
                             checkInsertionValueNotInFigures
                             (figurator, insertionValueToLastIndexMap, insertionValue, index);
                         }
                     }
+                    var firstInsertionValue = figurator.getInsertionValue(0);
+                    expect(firstInsertionValue).toBeDefined();
                 }
             );
         }
