@@ -97,7 +97,7 @@ This table lists features available in the most common engines.
 </td>
 </tr>
 <tr>
-<td>Safari 17.4+</td>
+<td>Safari 18.0+</td>
 <td>
 <ul>
 <li><a href="api-doc/interfaces/FeatureAll.md#ARRAY_ITERATOR"><code>ARRAY_ITERATOR</code></a>
@@ -123,7 +123,6 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#REGEXP_STRING_ITERATOR"><code>REGEXP_STRING_ITERATOR</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#RUSSIAN_INFINITY"><code>RUSSIAN_INFINITY</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#SELF"><code>SELF</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#OBJECT_W_SELF"><code>OBJECT_W_SELF</code></a> and <a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>)
-<li><a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a> (not in Safari 18.0+)
 <li><a href="api-doc/interfaces/FeatureAll.md#STATUS"><code>STATUS</code></a>
 <li><a href="api-doc/interfaces/FeatureAll.md#WINDOW"><code>WINDOW</code></a>
 </ul>

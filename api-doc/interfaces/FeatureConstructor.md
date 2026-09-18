@@ -920,26 +920,6 @@ An alias for `SAFARI_18_4`.
 
 ***
 
-### SAFARI\_17\_4
-
-> **SAFARI\_17\_4**: [`PredefinedFeature`](PredefinedFeature.md)
-
-Features available in Safari 17.4 to 17.6.
-
-#### Remarks
-
-This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `SAFARI_PRE_PREV` instead of `SAFARI_17_4` for long term support.
-
-#### See
-
-[Engine Support Policy](https://github.com/fasttime/JScrewIt#engine-support-policy)
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`SAFARI_17_4`](FeatureAll.md#safari_17_4)
-
-***
-
 ### SAFARI\_18\_0
 
 > **SAFARI\_18\_0**: [`PredefinedFeature`](PredefinedFeature.md)
@@ -948,7 +928,7 @@ Features available in Safari 18.0 to 18.3.
 
 #### Remarks
 
-This feature may be replaced or removed in the near future when current browser versions become obsolete.
+This feature may be replaced or removed in the near future when current browser versions become obsolete. Use `SAFARI_PRE_PREV` instead of `SAFARI_18_0` for long term support.
 
 #### See
 
@@ -986,7 +966,7 @@ This feature may be replaced or removed in the near future when current browser 
 
 Features available in the previous to previous version of Safari.
 
-An alias for `SAFARI_17_4`.
+An alias for `SAFARI_18_0`.
 
 #### Inherited from
 
@@ -1032,7 +1012,7 @@ Support for the two-letter locale name "ar" to format decimal numbers as Arabic 
 
 #### Remarks
 
-Available in Firefox before 134, Internet Explorer, Safari before 18.0, and Node.js before 22.12–22.14 and 23.3.
+Available in Firefox before 134, Internet Explorer, and Node.js before 22.12–22.14 and 23.3.
 
 #### Inherited from
 

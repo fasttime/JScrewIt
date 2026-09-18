@@ -228,7 +228,7 @@ JScrewIt itself and the code it generates are compatible with the JavaScript eng
 
  ![Chrome](https://api.iconify.design/mdi:google-chrome.svg) Chrome 122+
 <br>
- ![Safari](https://api.iconify.design/mdi:apple-safari.svg) Safari 17.4+
+ ![Safari](https://api.iconify.design/mdi:apple-safari.svg) Safari 18.0+
 <br>
  ![Edge](https://api.iconify.design/mdi:microsoft-edge.svg) Edge 122+
 <br>

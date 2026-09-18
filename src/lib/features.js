@@ -780,12 +780,12 @@ var featureInfos =
     SAFARI_PRE_PREV:
     {
         description:    describeEngine('the previous to previous version of Safari'),
-        aliasFor:       'SAFARI_17_4',
+        aliasFor:       'SAFARI_18_0',
     },
-    SAFARI_17_4:
+    SAFARI_18_0:
     {
         families: ['Safari'],
-        versions: ['17.4-17.6'],
+        versions: ['18.0-18.3'],
         includes:
         [
             'ARRAY_ITERATOR',
@@ -806,7 +806,6 @@ var featureInfos =
             'OBJECT_ARRAY_ENTRIES_CTOR',
             'REGEXP_STRING_ITERATOR',
             'RUSSIAN_INFINITY',
-            'SHORT_LOCALES',
             'STATUS',
             'WINDOW',
         ],
@@ -817,12 +816,6 @@ var featureInfos =
             'unstable':                         null,
             'web-worker-restriction':           null,
         },
-    },
-    SAFARI_18_0:
-    {
-        inherits: 'SAFARI_17_4',
-        versions: ['18.0-18.3'],
-        includes: { SHORT_LOCALES: false },
     },
     SAFARI_PREV:
     {
