@@ -2,18 +2,19 @@ import { _Array_isArray, _Function, _JSON_parse, _RegExp, _String, createEmpty }
 
 // Recognized syntax elements include:
 //
-// • The boolean literals "true" and "false"
-// • The pseudoconstant literals "undefined", "NaN" and "Infinity"
+// • The boolean literals `true` and `false`
+// • The literal `null`
+// • The pseudoconstant literals `undefined`, `NaN` and `Infinity`
 // • ES5 strict mode numeric literals
-// • ES5 strict mode string literals with the line continuation extension
+// • ES5 strict mode string literals
 // • Empty and singleton array literals
 // • ASCII identifiers
 // • ASCII property getters in dot notation
 // • Property getters in bracket notation
 // • Function calls without parameters and with one parameter
-// • The unary operators "!", "+", and to a limited extent "-" and "++" (prefix and postfix
+// • The unary operators `!`, `+`, and to a limited extent `-` and `++` (prefix and postfix
 //   increment)
-// • The binary operators "+" and to a limited extent "-"
+// • The binary operators `+` and to a limited extent `-`
 // • Grouping parentheses
 // • White spaces and line terminators
 // • Semicolons
@@ -176,7 +177,7 @@ function finalizeParamCall(op, parseInfo)
 function finalizeUnit(unit)
 {
     var mod = unit.mod || '';
-    if (!/-/.test(mod) && (!/#$/.test(mod) || unit.ops.length))
+    if (!/-|\+#/.test(mod) && (!/#$/.test(mod) || unit.ops.length))
     {
         unit.mod = unescapeMod(mod);
         return unit;
@@ -197,19 +198,23 @@ function isUndecoratedUnit(unit)
     return undecorated;
 }
 
-function joinMods(mod1, mod2, trimTrailingPlus)
+function joinMods(mod1, mod2, numeric)
 {
-    var mod =
-    (mod1 + mod2)
-    .replace(/\+\+|--/, '+')
-    .replace(/\+-|-\+/, '-')
-    .replace(/!-/, '!+')
-    .replace(/\+#/, '#')
-    .replace(/!\+!/, '!!')
-    .replace('!!!', '!');
-    if (trimTrailingPlus)
-        mod = mod.replace(/\+$/, '');
-    return mod;
+    var mod = mod1 + mod2;
+    for (;;)
+    {
+        var newMod =
+        mod
+        .replace(/!!(?=!)|\+(?=\+)|--(?=#|\+)/, '')
+        .replace(/!\+(?=!)|!-(?=.)/, '!')
+        .replace('!+-', '!+')
+        .replace(/\+--|-\+-|--(?=!)/, '+');
+        if (numeric)
+            newMod = newMod.replace(/!-$/, '!').replace(/--$/, '');
+        if (newMod === mod)
+            return mod;
+        mod = newMod;
+    }
 }
 
 function makeRegExp(richPattern)
@@ -422,9 +427,9 @@ function readParenthesisRight(parseInfo)
     return match;
 }
 
-function readSeparatorOrColon(parseInfo)
+function readSeparatorOrSemicolon(parseInfo)
 {
-    parseInfo.data = parseInfo.data.replace(separatorOrColonRegExp, '');
+    parseInfo.data = parseInfo.data.replace(separatorOrSemicolonRegExp, '');
 }
 
 function readSquareBracketLeft(parseInfo)
@@ -528,23 +533,23 @@ var UNRETURNABLE_WORDS =
     'yield',        // may be an identifier in non-strict mode
 ];
 
-var constValueRegExp        = makeRegExp('(?:#NumericLiteral|#ConstIdentifier)');
-var rawIdentifierRegExp     = makeRegExp('(?:[$\\w]|#UnicodeEscapeSequence)+');
-var separatorOrColonRegExp  = makeRegExp('(?:#Separator|;)*');
-var separatorRegExp         = makeRegExp('#Separator*');
-var strRegExp               = makeRegExp('#SingleQuotedString|#DoubleQuotedString');
+var constValueRegExp            = makeRegExp('(?:#NumericLiteral|#ConstIdentifier)');
+var rawIdentifierRegExp         = makeRegExp('(?:[$\\w]|#UnicodeEscapeSequence)+');
+var separatorOrSemicolonRegExp  = makeRegExp('(?:#Separator|;)*');
+var separatorRegExp             = makeRegExp('#Separator*');
+var strRegExp                   = makeRegExp('#SingleQuotedString|#DoubleQuotedString');
 
 export default function expressParse(input)
 {
     var parseInfo =
     { data: input, modStack: [], opsStack: [], finalizerStack: [finalizeUnit], unitStack: [] };
-    readSeparatorOrColon(parseInfo);
+    readSeparatorOrSemicolon(parseInfo);
     if (!parseInfo.data)
         return true;
     var unit = parse(parseInfo);
     if (unit)
     {
-        readSeparatorOrColon(parseInfo);
+        readSeparatorOrSemicolon(parseInfo);
         if (!parseInfo.data)
             return unit;
     }

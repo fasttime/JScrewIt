@@ -110,50 +110,40 @@
             this.assertions.fail(message);
         },
         toThrowStrictly:
-        function ()
+        function (constructor, msgArg, customMsg)
         {
-            var error;
+            var actualError;
             var fn = this.value;
             try
             {
                 fn();
             }
-            catch (newError)
+            catch (error)
             {
-                error = newError;
+                actualError = error;
             }
-            if (error == null)
+            if (actualError == null)
             {
-                var message = this.generateMessage(fn, this.expr, 'to throw an error');
+                var message =
+                this.generateMessage(fn, this.expr, 'to throw an error', undefined, customMsg);
                 this.assertions.fail(message);
             }
-            Array.prototype.forEach.call
-            (
-                arguments,
-                function (arg)
+            if (constructor != null)
+            {
+                var prototype = constructor.prototype;
+                if (Object.getPrototypeOf(actualError) !== prototype)
+                    throw actualError;
+            }
+            if (msgArg != null)
+            {
+                if (actualError.message !== msgArg)
                 {
-                    var message;
-                    var type = typeof arg;
-                    switch (type)
-                    {
-                    case 'function':
-                        var prototype = arg.prototype;
-                        if (Object.getPrototypeOf(error) === prototype)
-                            break;
-                        throw error;
-                    case 'string':
-                        if (error.message === arg)
-                            break;
-                        message =
-                        this.generateMessage(fn, this.expr, 'to throw an error with message', arg);
-                        this.assertions.fail(message);
-                        return;
-                    default:
-                        throw TypeError('Unsupported argument type ' + type);
-                    }
-                },
-                this
-            );
+                    message =
+                    this.generateMessage
+                    (fn, this.expr, 'to throw an error with message', msgArg, customMsg);
+                    this.assertions.fail(message);
+                }
+            }
             return this.assertions.pass();
         },
     };

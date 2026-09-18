@@ -376,8 +376,32 @@ setTimeout,
                                 ['redundant modifiers on constants', '-+ +-!!!+!!42', '0'],
                                 [
                                     'redundant modifiers on non-constants',
-                                    '-+ +-!!!-!!+ ++!+""[0]++',
-                                    '+!++!([]+[])[0]++',
+                                    '+ +!!!!!+!+""[0]++',
+                                    '+!!+([]+[])[0]++',
+                                ],
+                                [
+                                    'modified pre-increments',
+                                    '!!!++""[0]',
+                                    '!++([]+[])[0]',
+                                ],
+                                ['double minus signed negations', '- -!""', '+!([]+[])'],
+                                ['double minus signed plus signs', '- - +""', '+([]+[])'],
+                                [
+                                    'double minus signed pre-increments',
+                                    '- - ++""[0]',
+                                    '++([]+[])[0]',
+                                ],
+                                ['triple minus signed constants', '- - -1', '+(*)', -1],
+                                ['minus plus minus signed strings', '-+-""', '+([]+[])'],
+                                ['plus minus minus plus signed strings', '+ - - +""', '+([]+[])'],
+                                ['plus minus minus signed strings', '+ - -""', '+([]+[])'],
+                                ['negated minus signed negations', '!-!""', '!!([]+[])'],
+                                ['negated minus plus signed strings', '!- +""', '!+([]+[])'],
+                                ['negated plus minus signed strings', '!+-""', '!+([]+[])'],
+                                [
+                                    'negated minus signed pre-increments',
+                                    '!-++""[0]',
+                                    '!++([]+[])[0]',
                                 ],
 
                                 // Groupings
@@ -423,15 +447,21 @@ setTimeout,
 
                                 // Post-increments
                                 ['post-increments', '[0][0]++', '[0][0]++'],
+                                ['double minus signed post-increments', '- -[0][0]++', '[0][0]++'],
+                                ['negated minus signed post-increments', '!-[0][0]++', '![0][0]++'],
                                 ['post-increments separated by a space', '[0][0] ++', '[0][0]++'],
                                 [
                                     'post-increments separated by a one-line multi-line comment',
                                     '[0][0]/**/++',
                                     '[0][0]++',
                                 ],
-                                ['modified grouped post-increments', '!([0][0]++)', '![0][0]++'],
                                 [
-                                    'grouped post-increments with operators',
+                                    'modified parenthesized post-increments',
+                                    '!([0][0]++)',
+                                    '![0][0]++',
+                                ],
+                                [
+                                    'parenthesized post-increments with operators',
                                     '([0].a++)[0]',
                                     '([0][(![]+[])[+!![]]]++)[0]',
                                 ],
@@ -440,6 +470,12 @@ setTimeout,
                                     '[0][0]++ - 1',
                                     '[0][0]+++*',
                                     -1,
+                                ],
+                                [
+                                    'plus signed post increments',
+                                    '+[2][0]++',
+                                    '+[2][0]++',
+                                    2,
                                 ],
 
                                 // Limits
@@ -454,7 +490,7 @@ setTimeout,
                                     var input           = paramData[1];
                                     var expectedPattern = paramData[2];
                                     var expectedValue   = paramData[3];
-                                    var actual = encode(input, { runAs: 'express' });
+                                    var output = encode(input, { runAs: 'express' });
                                     var regExpPattern =
                                     '^' +
                                     expectedPattern
@@ -466,9 +502,12 @@ setTimeout,
                                     .replace(/\*/g, ASTERISK_REPLACEMENT) +
                                     '$';
                                     var expectedRegExp = RegExp(regExpPattern);
-                                    expect(actual).toMatch(expectedRegExp);
+                                    expect(output).toMatch(expectedRegExp);
                                     if (expectedValue !== undefined)
-                                        expect(evalJSFuck(actual)).toBe(expectedValue);
+                                    {
+                                        var actualValue = evalJSFuck(output);
+                                        expect(actualValue).toBe(expectedValue);
+                                    }
                                 }
                             );
                         }
@@ -522,14 +561,23 @@ setTimeout,
                                 ['unclosed singleton array square bracket', '[0'],
                                 ['unclosed indexer square bracket', '0[0'],
                                 ['unrecognized tokens', 'a...'],
-                                ['too deep nestings', nestedBrackets(1001)],
+                                ['very deep nestings', nestedBrackets(1001)],
                                 ['minus signed standalone strings', '-""'],
+                                ['double minus signed identifiers', '- -a'],
+                                ['negated minus signed identifiers', '!-a'],
+                                ['minus signed subtrahends', 'a - -b'],
+                                ['plus signed pre-increments', '+ ++[1][0]'],
+                                ['plus and double minus signed pre-increments', '+ - - ++[1][0]'],
+                                ['minus plus minus signed pre-increments', '- + - ++[1][0]'],
+                                ['double minus and plus signed pre-increments', '- - + ++[1][0]'],
+                                ['triple minus signed strings', '- - -""'],
+                                ['plus minus signed post-increments', '+-[0][0]++'],
                                 ['modified minus signed strings', '++-""'],
                                 ['minus signed strings as first terms in a sum', '-"" + ""'],
                                 ['minus signed arrays', '-[]'],
                                 ['operations on minus signed arrays', '(-[])()'],
                                 ['string subtrahends', '1 - ""'],
-                                ['grouped string subtrahend subtractions', '(1 - "")'],
+                                ['parenthesized string subtrahend subtractions', '(1 - "")'],
                                 ['array subtrahends', '1 - []'],
                                 ['empty parentheses', '()'],
                                 ['multiple statements', '1;2'],
@@ -575,11 +623,72 @@ setTimeout,
                                 var char = String.fromCharCode(charCode);
                                 if (/[$;\w]/.test(char)) continue;
                                 expect(encode.bind(null, char, { runAs: 'express' }))
-                                .toThrow
+                                .toThrowStrictly
                                 (
                                     Error,
+                                    undefined,
                                     'Character with code ' + charCode + ' encoded unexpectedly'
                                 );
+                            }
+                        }
+                    );
+                }
+            );
+            describe
+            (
+                'with runAs express-eval',
+                function ()
+                {
+                    var bigIntAvailable = typeof BigInt === 'function';
+                    var paramDataList =
+                    [
+                        when(bigIntAvailable, ['double minus signed bigints', '- -BigInt(42)']),
+                        when
+                        (
+                            bigIntAvailable,
+                            ['minus signed bigint subtrahends', 'BigInt(42) - -BigInt(1)']
+                        ),
+                        when
+                        (
+                            bigIntAvailable,
+                            ['plus signed pre-incremented bigints', '+ ++[BigInt(1)][0]']
+                        ),
+                        when
+                        (
+                            bigIntAvailable,
+                            ['negated minus signed objects with value 0n', '!-Object(BigInt(0))']
+                        ),
+                        ['very deep nestings', nestedBrackets(1001)],
+                    ];
+
+                    it.per(paramDataList)
+                    (
+                        '#[0]',
+                        function (paramData)
+                        {
+                            var input = paramData[1];
+                            var output = encode(input, { runAs: 'express-eval' });
+                            try
+                            {
+                                var expectedValue = eval(input);
+                                var expectedError;
+                            }
+                            catch (error)
+                            {
+                                expectedError = error;
+                            }
+                            if (expectedError === undefined)
+                            {
+                                var actualValue = evalJSFuck(output);
+                                if (typeof expectedValue === 'object' && expectedValue !== null)
+                                    expect(actualValue).toEqual(expectedValue);
+                                else
+                                    expect(actualValue).toBe(expectedValue);
+                            }
+                            else
+                            {
+                                var fn = evalJSFuck.bind(null, output);
+                                expect(fn).toThrowStrictly(expectedError.constructor);
                             }
                         }
                     );
