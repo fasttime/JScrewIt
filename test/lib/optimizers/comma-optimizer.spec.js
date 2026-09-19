@@ -56,6 +56,10 @@
         new Solution
         ('C',       '"C"',                                  SolutionType.STRING),
 
+        D:
+        new Solution
+        ('D',       '"D"',                                  SolutionType.STRING),
+
         ',':
         new Solution
         (',',       '([].slice.call(![]+[])+[])[+!![]]',    SolutionType.STRING),
@@ -221,6 +225,46 @@
                             expect(solutions[1].replacement)
                             .toBe('[].slice.call(' + SOLUTIONS[','].replacement + '+"B"+"C")');
                             expect(solutions[1].type).toBe(SolutionType.OBJECT);
+                        }
+                    );
+                    it
+                    (
+                        'optimizes a subcluster when the longest cluster is discarded',
+                        function ()
+                        {
+                            var CD_SOLUTION = new Solution('CD', '"CD"', SolutionType.STRING);
+                            var cdOptimizer =
+                            {
+                                appendLengthOf:
+                                function ()
+                                { },
+                                optimizeSolutions:
+                                function (plan)
+                                {
+                                    var clusterer =
+                                    function ()
+                                    {
+                                        return CD_SOLUTION;
+                                    };
+                                    plan.addCluster(4, 2, clusterer, 1000);
+                                },
+                            };
+                            var optimizer = createOptimizer();
+                            var solutions =
+                            [
+                                SOLUTIONS.A,
+                                SOLUTIONS[','],
+                                SOLUTIONS.B,
+                                SOLUTIONS[','],
+                                SOLUTIONS.C,
+                                SOLUTIONS.D,
+                            ];
+                            optimizeSolutions([optimizer, cdOptimizer], solutions, false, false);
+                            expect(solutions.length).toBe(3);
+                            expect(solutions[0].replacement).toBe('[].slice.call("A"+"B")');
+                            expect(solutions[0].type).toBe(SolutionType.OBJECT);
+                            expect(solutions[1]).toBe(SOLUTIONS[',']);
+                            expect(solutions[2]).toBe(CD_SOLUTION);
                         }
                     );
                     describe

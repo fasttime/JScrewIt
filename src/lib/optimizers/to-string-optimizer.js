@@ -1,6 +1,6 @@
 // Optimized clusters take the form:
 //
-// +(X)["toString"](Y)
+// (X)["toString"](Y)
 //
 // X is a JSFuck integer between 23 and MAX_SAFE_INTEGER.
 //
@@ -17,10 +17,6 @@ import { SolutionType }                     from '~solution';
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
 var CLUSTER_EXTRA_LENGTHS = [];
 var DECIMAL_DIGIT_MAX_COUNTS = [];
-var MAX_RADIX = 36;
-var MAX_SAFE_INTEGER = 0x1fffffffffffff;
-var MIN_SOLUTION_SPAN = 2;
-var RADIX_REPLACEMENTS = [];
 
 // DECIMAL_MIN_LENGTHS is indexed by decimalDigitMaxCount (the number of digits used to write
 // MAX_SAFE_INTEGER in base radix).
@@ -45,12 +41,18 @@ var DECIMAL_MIN_LENGTHS =
     64, // 1e14
 ];
 
+var MAX_RADIX = 36;
+var MAX_SAFE_INTEGER = 0x1fffffffffffff;
+var MIN_SOLUTION_SPAN = 2;
+var RADIX_REPLACEMENTS = [];
+var WEAK_EXTRA_LENGTH = 2; // Extra length of wrapping parentheses or brackets.
+
 function createOptimizer(toStringReplacement)
 {
     function appendLengthOf(solution)
     {
         var source = solution.source;
-        if (source != null && /[bcghjkmopqvwxz]/.test(source))
+        if (source != null && /^[bcghjkmopqvwxz]$/.test(source))
         {
             var appendLength = appendLengthCache[source];
             if (appendLength == null)
@@ -121,6 +123,8 @@ function createOptimizer(toStringReplacement)
         {
             var solution = solutions[start + solutionSpan];
             discreteAppendLength += solution.appendLength;
+            if (!start && !solutionSpan && solution.isWeak)
+                discreteAppendLength -= WEAK_EXTRA_LENGTH;
             var char = solution.source;
             if (maxDigitChar < char)
                 maxDigitChar = char;
@@ -155,25 +159,20 @@ function createOptimizer(toStringReplacement)
 
     function optimizeSolutions(plan, solutions, bond)
     {
-        var end;
-        var expensive;
-        for (var start = solutions.length; start > 0;)
+        var solutionCount = solutions.length;
+        for (var start = 0; start < solutionCount; start = end + 1)
         {
-            var solution = solutions[--start];
-            if (isClusterable(solution))
+            var expensive = false;
+            for (var end = start; end < solutionCount; end++)
             {
-                if (!end)
-                {
-                    end = start + 1;
-                    expensive = false;
-                }
+                var solution = solutions[end];
+                if (!isClusterable(solution))
+                    break;
                 if (!expensive)
                     expensive = isExpensive(solution);
-                if (expensive && end - start >= MIN_SOLUTION_SPAN)
-                    optimizeSequence(plan, solutions, start, end, bond);
             }
-            else
-                end = undefined;
+            if (expensive && end - start >= MIN_SOLUTION_SPAN)
+                optimizeSequence(plan, solutions, start, end, bond);
         }
     }
 

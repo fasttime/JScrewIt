@@ -26,14 +26,6 @@ function countClusterableCommas(solutions, index)
     return commaCount;
 }
 
-function getCommaAppendLength(solutions, start, clusterLength)
-{
-    var commaAppendLength = 0;
-    for (var index = start + clusterLength; (index -= 2) > start;)
-        commaAppendLength += solutions[index].appendLength;
-    return commaAppendLength;
-}
-
 function isSingleCharacterSolution(solution)
 {
     var source = solution.source;
@@ -75,42 +67,35 @@ export default function (encoder)
 
     function optimizeSolutions(plan, solutions, bond, forceString)
     {
-        function passFrom(index)
-        {
-            while (index < end)
-            {
-                var commaCount = countClusterableCommas(solutions, index);
-                if (commaCount)
-                {
-                    var clusterLength = 2 * commaCount + 1;
-                    var saving =
-                    getCommaAppendLength(solutions, index, clusterLength) - extraLength;
-                    var singlePart = !index && clusterLength === solutionCount;
-                    if (singlePart)
-                    {
-                        if (forceString)
-                            saving -= APPEND_LENGTH_OF_EMPTY; // "+[]"
-                        else if (bond)
-                            saving += 2; // "(" + ")"
-                    }
-                    if (index && solutions[index].isWeak)
-                        saving += 2; // Save a pair of parentheses.
-                    if (saving > 0)
-                    {
-                        var clusterer = createClusterer(solutions, index, commaCount);
-                        plan.addCluster(index, clusterLength, clusterer, saving);
-                    }
-                    index += clusterLength + 1;
-                }
-                else
-                    index += 2;
-            }
-        }
-
         var solutionCount = solutions.length;
         var end = solutionCount - 2;
-        passFrom(0);
-        passFrom(1);
+        for (var index = 0; index < end; index++)
+        {
+            var maxCommaCount = countClusterableCommas(solutions, index);
+            var commaAppendLength = 0;
+            for (var commaCount = 1; commaCount <= maxCommaCount; commaCount++)
+            {
+                var clusterLength = 2 * commaCount + 1;
+                var charSolution = solutions[index + clusterLength - 2];
+                commaAppendLength += charSolution.appendLength;
+                var saving = commaAppendLength - extraLength;
+                var singlePart = !index && clusterLength >= solutionCount;
+                if (singlePart)
+                {
+                    if (forceString)
+                        saving -= APPEND_LENGTH_OF_EMPTY; // "+[]"
+                    else if (bond)
+                        saving += 2; // "(" + ")"
+                }
+                if (index && solutions[index].isWeak)
+                    saving += 2; // Save a pair of parentheses.
+                if (saving > 0)
+                {
+                    var clusterer = createClusterer(solutions, index, commaCount);
+                    plan.addCluster(index, clusterLength, clusterer, saving);
+                }
+            }
+        }
     }
 
     var rampReplacement = encoder.replaceExpr('[][SLICE_OR_FLAT].call');
