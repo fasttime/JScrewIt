@@ -156,18 +156,6 @@ Minimum feature level, compatible with all supported engines in all environments
 
 ***
 
-### DOCUMENT
-
-> **DOCUMENT**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object document whose string representation starts with "\[object " and ends with "Document\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.
-
-***
-
 ### ESC\_HTML\_QUOT
 
 > **ESC\_HTML\_QUOT**: [`ElementaryFeature`](ElementaryFeature.md)
@@ -561,18 +549,6 @@ Existence of the global object Intl having the string representation "\[object O
 #### Remarks
 
 Available in Internet Explorer.
-
-***
-
-### REGEXP\_STRING\_ITERATOR
-
-> **REGEXP\_STRING\_ITERATOR**: [`ElementaryFeature`](ElementaryFeature.md)
-
-The property that the string representation of String.prototype.matchAll\(\) evaluates to "\[object RegExp String Iterator\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
 
 ***
 

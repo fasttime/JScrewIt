@@ -177,41 +177,6 @@
         adapterList.push(adapter);
     }
 
-    function makeEmuFeatureDocument(str, regExp)
-    {
-        var setUp =
-        function ()
-        {
-            var document = global.document;
-            if (document)
-            {
-                if (regExp.test(document))
-                    return;
-            }
-            else
-            {
-                var createElement =
-                function (tagName)
-                {
-                    var elementStr =
-                    String(tagName).toLowerCase() === 'video' ?
-                    '[object HTMLVideoElement]' : '[object HTMLUnknownElement]';
-                    return elementStr;
-                };
-                document =
-                {
-                    createElement:  createElement,
-                    forms:          '[object HTMLCollection]',
-                    nodeName:       '#document',
-                };
-                override(this, 'document', { value: document });
-            }
-            var valueOf = createStaticSupplier(str);
-            override(this, 'document.valueOf', { value: valueOf });
-        };
-        return setUp;
-    }
-
     function makeEmuFeatureEscHtml(replacer, regExp)
     {
         var setUp =
@@ -275,19 +240,6 @@
                 },
                 this
             );
-        };
-        return setUp;
-    }
-
-    function makeEmuFeatureMatchAll()
-    {
-        var str = '[object RegExp String Iterator]';
-        var setUp =
-        function ()
-        {
-            if (String.prototype.matchAll && ''.matchAll() + '' === str)
-                return;
-            registerObjectFactory(this, 'String.prototype.matchAll', str, Object.prototype);
         };
         return setUp;
     }
@@ -643,8 +595,6 @@
             var toString = createStaticSupplier('[object Console]');
             override(this, 'console.toString', { value: toString });
         },
-        DOCUMENT:
-        makeEmuFeatureDocument('[object Document]', /^\[object [\S\s]*Document]$/),
         ESC_HTML_QUOT:
         makeEmuFeatureEscHtml
         (
@@ -934,7 +884,6 @@
             if (Intl + '' !== '[object Object]')
                 registerDefaultToStringAdapter(this, Intl, '[object Object]');
         },
-        REGEXP_STRING_ITERATOR: makeEmuFeatureMatchAll(),
         RUSSIAN_INFINITY:
         function ()
         {

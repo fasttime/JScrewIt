@@ -2,7 +2,6 @@
 /*
 global
 Intl,
-document,
 emuDo,
 emuIt,
 evalJSFuck,
@@ -441,11 +440,6 @@ self,
                 Object:             isExpected(Object),
                 RegExp:             isExpected(RegExp),
                 String:             isExpected(String),
-                document:
-                function ()
-                {
-                    this.toBe(document);
-                },
                 self:
                 function ()
                 {
@@ -508,12 +502,6 @@ self,
                 {
                     this.toBePlainObject();
                 },
-                REGEXP_STRING_ITERATOR:
-                function ()
-                {
-                    var prototype = Object.getPrototypeOf(''.matchAll());
-                    this.toHavePrototype(prototype);
-                },
                 SLICE_OR_FLAT:
                 function ()
                 {
@@ -527,7 +515,6 @@ self,
                 SPLIT:              isExpected('split'),
                 TO_LOCALE_STRING:   isExpected('toLocaleString'),
                 TO_STRING:          isExpected('toString'),
-                TO_UPPER_CASE:      isExpected('toUpperCase'),
             };
             var paramDataList =
             JScrewIt.debug.getConstantNames().map

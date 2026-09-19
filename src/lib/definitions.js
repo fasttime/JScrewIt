@@ -346,7 +346,6 @@ function getFHPaddingEntries(index)
     var BARPROP                         = Feature.BARPROP;
     var CAPITAL_HTML                    = Feature.CAPITAL_HTML;
     var CONSOLE                         = Feature.CONSOLE;
-    var DOCUMENT                        = Feature.DOCUMENT;
     var ESC_HTML_QUOT                   = Feature.ESC_HTML_QUOT;
     var FF_SRC                          = Feature.FF_SRC;
     var FLAT                            = Feature.FLAT;
@@ -368,7 +367,6 @@ function getFHPaddingEntries(index)
     var OBJECT_ARRAY_ENTRIES_CTOR       = Feature.OBJECT_ARRAY_ENTRIES_CTOR;
     var OBJECT_W_SELF                   = Feature.OBJECT_W_SELF;
     var PLAIN_INTL                      = Feature.PLAIN_INTL;
-    var REGEXP_STRING_ITERATOR          = Feature.REGEXP_STRING_ITERATOR;
     var RUSSIAN_INFINITY                = Feature.RUSSIAN_INFINITY;
     var SELF                            = Feature.SELF;
     var SHORT_LOCALES                   = Feature.SHORT_LOCALES;
@@ -1160,11 +1158,6 @@ function getFHPaddingEntries(index)
             define('Function("return btoa")()'),
             define('self.btoa', SELF),
         ],
-        document:
-        [
-            define({ expr: 'Function("return document")()', optimize: true }, DOCUMENT),
-            define({ expr: 'self.document', optimize: true }, DOCUMENT, SELF),
-        ],
         self:
         [
             define('Function("return self")()', SELF),
@@ -1226,10 +1219,6 @@ function getFHPaddingEntries(index)
         [
             define('Function("return{}")()'),
         ],
-        REGEXP_STRING_ITERATOR:
-        [
-            define({ expr: '"".matchAll()', optimize: true }, REGEXP_STRING_ITERATOR),
-        ],
         SLICE_OR_FLAT:
         [
             define({ expr: '"slice"', solutionType: SolutionType.COMBINED_STRING }),
@@ -1265,11 +1254,6 @@ function getFHPaddingEntries(index)
                     solutionType:   SolutionType.COMBINED_STRING,
                 }
             ),
-        ],
-        TO_UPPER_CASE:
-        [
-            define
-            ({ expr: '"toUpperCase"', optimize: true, solutionType: SolutionType.COMBINED_STRING }),
         ],
 
         // Function body extra padding blocks: prepended to a function to align the function's body

@@ -121,19 +121,19 @@ export interface FeatureConstructor extends FeatureAll
      * @example
      *
      * The following statements are equivalent, and will all construct a new feature object
-     * including both {@link FeatureConstructor.DOCUMENT | `DOCUMENT`} and {@link
+     * including both {@link FeatureConstructor.BARPROP | `BARPROP`} and {@link
      * FeatureConstructor.WINDOW | `WINDOW`}.
      *
      * ```js
-     * new JScrewIt.Feature("DOCUMENT", "WINDOW");
+     * new JScrewIt.Feature("BARPROP", "WINDOW");
      * ```
      *
      * ```js
-     * new JScrewIt.Feature(JScrewIt.Feature.DOCUMENT, JScrewIt.Feature.WINDOW);
+     * new JScrewIt.Feature(JScrewIt.Feature.BARPROP, JScrewIt.Feature.WINDOW);
      * ```
      *
      * ```js
-     * new JScrewIt.Feature([JScrewIt.Feature.DOCUMENT, JScrewIt.Feature.WINDOW]);
+     * new JScrewIt.Feature([JScrewIt.Feature.BARPROP, JScrewIt.Feature.WINDOW]);
      * ```
      *
      * @throws
@@ -175,19 +175,19 @@ export interface FeatureConstructor extends FeatureAll
      * @example
      *
      * The following statements are equivalent, and will all construct a new feature object
-     * including both {@link FeatureConstructor.DOCUMENT | `DOCUMENT`} and {@link
+     * including both {@link FeatureConstructor.BARPROP | `BARPROP`} and {@link
      * FeatureConstructor.WINDOW | `WINDOW`}.
      *
      * ```js
-     * JScrewIt.Feature("DOCUMENT", "WINDOW");
+     * JScrewIt.Feature("BARPROP", "WINDOW");
      * ```
      *
      * ```js
-     * JScrewIt.Feature(JScrewIt.Feature.DOCUMENT, JScrewIt.Feature.WINDOW);
+     * JScrewIt.Feature(JScrewIt.Feature.BARPROP, JScrewIt.Feature.WINDOW);
      * ```
      *
      * ```js
-     * JScrewIt.Feature([JScrewIt.Feature.DOCUMENT, JScrewIt.Feature.WINDOW]);
+     * JScrewIt.Feature([JScrewIt.Feature.BARPROP, JScrewIt.Feature.WINDOW]);
      * ```
      *
      * @throws

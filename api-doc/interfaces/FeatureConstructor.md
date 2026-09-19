@@ -30,18 +30,18 @@ If no arguments are specified, the new feature object will be equivalent to
 ## Example
 
 The following statements are equivalent, and will all construct a new feature object
-including both [\`DOCUMENT\`](#document) and [\`WINDOW\`](#window).
+including both [\`BARPROP\`](#barprop) and [\`WINDOW\`](#window).
 
 ```js
-new JScrewIt.Feature("DOCUMENT", "WINDOW");
+new JScrewIt.Feature("BARPROP", "WINDOW");
 ```
 
 ```js
-new JScrewIt.Feature(JScrewIt.Feature.DOCUMENT, JScrewIt.Feature.WINDOW);
+new JScrewIt.Feature(JScrewIt.Feature.BARPROP, JScrewIt.Feature.WINDOW);
 ```
 
 ```js
-new JScrewIt.Feature([JScrewIt.Feature.DOCUMENT, JScrewIt.Feature.WINDOW]);
+new JScrewIt.Feature([JScrewIt.Feature.BARPROP, JScrewIt.Feature.WINDOW]);
 ```
 
 ## Throws
@@ -74,18 +74,18 @@ If no arguments are specified, the new feature object will be equivalent to
 #### Example
 
 The following statements are equivalent, and will all construct a new feature object
-including both [\`DOCUMENT\`](#document) and [\`WINDOW\`](#window).
+including both [\`BARPROP\`](#barprop) and [\`WINDOW\`](#window).
 
 ```js
-JScrewIt.Feature("DOCUMENT", "WINDOW");
+JScrewIt.Feature("BARPROP", "WINDOW");
 ```
 
 ```js
-JScrewIt.Feature(JScrewIt.Feature.DOCUMENT, JScrewIt.Feature.WINDOW);
+JScrewIt.Feature(JScrewIt.Feature.BARPROP, JScrewIt.Feature.WINDOW);
 ```
 
 ```js
-JScrewIt.Feature([JScrewIt.Feature.DOCUMENT, JScrewIt.Feature.WINDOW]);
+JScrewIt.Feature([JScrewIt.Feature.BARPROP, JScrewIt.Feature.WINDOW]);
 ```
 
 #### Throws
@@ -315,22 +315,6 @@ Minimum feature level, compatible with all supported engines in all environments
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`DEFAULT`](FeatureAll.md#default)
-
-***
-
-### DOCUMENT
-
-> **DOCUMENT**: [`ElementaryFeature`](ElementaryFeature.md)
-
-Existence of the global object document whose string representation starts with "\[object " and ends with "Document\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Internet Explorer, Safari, and Opera. This feature is not available inside web workers.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`DOCUMENT`](FeatureAll.md#document)
 
 ***
 
@@ -871,22 +855,6 @@ Available in Internet Explorer.
 #### Inherited from
 
 [`FeatureAll`](FeatureAll.md).[`PLAIN_INTL`](FeatureAll.md#plain_intl)
-
-***
-
-### REGEXP\_STRING\_ITERATOR
-
-> **REGEXP\_STRING\_ITERATOR**: [`ElementaryFeature`](ElementaryFeature.md)
-
-The property that the string representation of String.prototype.matchAll\(\) evaluates to "\[object RegExp String Iterator\]".
-
-#### Remarks
-
-Available in Chrome, Edge, Firefox, Safari, Opera, and Node.js.
-
-#### Inherited from
-
-[`FeatureAll`](FeatureAll.md).[`REGEXP_STRING_ITERATOR`](FeatureAll.md#regexp_string_iterator)
 
 ***
 

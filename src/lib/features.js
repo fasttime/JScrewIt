@@ -1,4 +1,4 @@
-/* global Iterator, console, document, self, statusbar */
+/* global Iterator, console, self, statusbar */
 
 import { _Object_defineProperty, _Object_keys, assignNoEnum, createEmpty }  from './obj-utils';
 import { createFeatureClass, featuresToMask }                               from '~feature-hub';
@@ -168,20 +168,6 @@ var featureInfos =
             var available = typeof console === 'object' && console + '' === '[object Console]';
             return available;
         },
-    },
-    DOCUMENT:
-    {
-        description:
-        'Existence of the global object document whose string representation starts with ' +
-        '"[object " and ends with "Document]".',
-        check:
-        function ()
-        {
-            var available =
-            typeof document === 'object' && /^\[object [\S\s]*Document]$/.test(document + '');
-            return available;
-        },
-        attributes: { 'web-worker': 'web-worker-restriction' },
     },
     ESC_HTML_QUOT:
     {
@@ -453,19 +439,6 @@ var featureInfos =
             return available;
         },
     },
-    REGEXP_STRING_ITERATOR:
-    {
-        description:
-        'The property that the string representation of String.prototype.matchAll() evaluates to ' +
-        '"[object RegExp String Iterator]".',
-        check:
-        function ()
-        {
-            var available =
-            String.prototype.matchAll && ''.matchAll() + '' === '[object RegExp String Iterator]';
-            return available;
-        },
-    },
     RUSSIAN_INFINITY:
     {
         description:    'Russian string representation of Infinity as "∞".',
@@ -539,7 +512,7 @@ var featureInfos =
         description:
         'Features available in all browsers.\n' +
         'No support for Node.js.',
-        includes: ['DOCUMENT', 'INCR_CHAR', 'STATUS', 'WINDOW'],
+        includes: ['INCR_CHAR', 'STATUS', 'WINDOW'],
         attributes:
         {
             'char-increment-restriction':   null,
@@ -558,7 +531,6 @@ var featureInfos =
             'ARROW',
             'AT',
             'BARPROP',
-            'DOCUMENT',
             'ESC_HTML_QUOT',
             'FLAT',
             'FROM_CODE_POINT',
@@ -569,7 +541,6 @@ var featureInfos =
             'LOCALE_NUMERALS_EXT',
             'NAME',
             'NO_IE_SRC',
-            'REGEXP_STRING_ITERATOR',
             'RUSSIAN_INFINITY',
             'STATUS',
             'WINDOW',
@@ -601,7 +572,6 @@ var featureInfos =
             'ARROW',
             'AT',
             'BARPROP',
-            'DOCUMENT',
             'ESC_HTML_QUOT',
             'FLAT',
             'FROM_CODE_POINT',
@@ -612,7 +582,6 @@ var featureInfos =
             'LOCALE_NUMERALS_BN',
             'LOCALE_NUMERALS_EXT',
             'NAME',
-            'REGEXP_STRING_ITERATOR',
             'RUSSIAN_INFINITY',
             'STATUS',
             'V8_SRC',
@@ -651,7 +620,6 @@ var featureInfos =
             'ARROW',
             'AT',
             'BARPROP',
-            'DOCUMENT',
             'ESC_HTML_QUOT',
             'FF_SRC',
             'FLAT',
@@ -663,7 +631,6 @@ var featureInfos =
             'LOCALE_NUMERALS_EXT',
             'NAME',
             'OBJECT_ARRAY_ENTRIES_CTOR',
-            'REGEXP_STRING_ITERATOR',
             'RUSSIAN_INFINITY',
             'SHORT_LOCALES',
             'STATUS',
@@ -697,7 +664,6 @@ var featureInfos =
         [
             'CAPITAL_HTML',
             'CONSOLE',
-            'DOCUMENT',
             'FUNCTION_22_LF',
             'IE_SRC',
             'INCR_CHAR',
@@ -758,7 +724,6 @@ var featureInfos =
             'LOCALE_NUMERALS_EXT',
             'NAME',
             'OBJECT_ARRAY_ENTRIES_CTOR',
-            'REGEXP_STRING_ITERATOR',
             'RUSSIAN_INFINITY',
             'SHORT_LOCALES',
             'V8_SRC',
@@ -792,7 +757,6 @@ var featureInfos =
             'ARROW',
             'AT',
             'BARPROP',
-            'DOCUMENT',
             'ESC_HTML_QUOT',
             'FF_SRC',
             'FLAT',
@@ -804,7 +768,6 @@ var featureInfos =
             'LOCALE_NUMERALS_EXT',
             'NAME',
             'OBJECT_ARRAY_ENTRIES_CTOR',
-            'REGEXP_STRING_ITERATOR',
             'RUSSIAN_INFINITY',
             'STATUS',
             'WINDOW',
