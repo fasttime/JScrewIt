@@ -1,6 +1,5 @@
 import { APPEND_LENGTH_OF_DIGIT_0, APPEND_LENGTH_OF_FALSE, APPEND_LENGTH_OF_SMALL_E }
 from './append-lengths';
-
 import { _Array_prototype_push_apply, _Object, createEmpty } from './obj-utils';
 
 export default function createFigurator(startValues, joiner)

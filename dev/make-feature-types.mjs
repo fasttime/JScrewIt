@@ -1,5 +1,4 @@
 import { Feature } from '#jscrewit';
-
 import
 {
     calculateAvailabilityInfo,

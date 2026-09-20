@@ -144,11 +144,24 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var _replaceMapper = encoder._replaceMapper;
+                    var replaceMapperCalled;
                     encoder._replaceMapper =
-                    function () { expect(_replaceMapper).fail('not to be called'); };
+                    function ()
+                    {
+                        replaceMapperCalled = true;
+                        return _replaceMapper.apply(this, arguments);
+                    };
                     var inputData = Object('12345');
-                    var output = encoder._encodeByCharCodes(inputData, 4, 6000);
+                    var maxLength = 7002;
+                    replaceMapperCalled = false;
+                    var output = encoder._encodeByCharCodes(inputData, 4, maxLength);
+                    if (replaceMapperCalled)
+                        expect(_replaceMapper).fail('not to be called');
                     expect(output).toBeUndefined();
+                    replaceMapperCalled = false;
+                    encoder._encodeByCharCodes(inputData, 4, maxLength + 1);
+                    if (!replaceMapperCalled)
+                        expect(_replaceMapper).fail('to be called');
                 }
             );
             it
@@ -158,11 +171,24 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var _joinCharArray = encoder._joinCharArray;
+                    var joinCharArrayCalled;
                     encoder._joinCharArray =
-                    function () { expect(_joinCharArray).fail('not to be called'); };
+                    function ()
+                    {
+                        joinCharArrayCalled = true;
+                        return _joinCharArray.apply(this, arguments);
+                    };
                     var inputData = Object('12345');
-                    var output = encoder._encodeByCharCodes(inputData, 4, 31000);
+                    var maxLength = 31082;
+                    joinCharArrayCalled = false;
+                    var output = encoder._encodeByCharCodes(inputData, 4, maxLength);
+                    if (joinCharArrayCalled)
+                        expect(_joinCharArray).fail('not to be called');
                     expect(output).toBeUndefined();
+                    joinCharArrayCalled = false;
+                    encoder._encodeByCharCodes(inputData, 4, maxLength + 1);
+                    if (!joinCharArrayCalled)
+                        expect(_joinCharArray).fail('to be called');
                 }
             );
         }
@@ -284,18 +310,30 @@ self,
                     var encoder = JScrewIt.debug.createEncoder();
                     var input = 'aabbcc';
                     var replaceStringArray = encoder.replaceStringArray;
+                    var replaceStringArrayCalled;
                     encoder.replaceStringArray =
                     function (array)
                     {
                         if (array.length === input.length)
-                        {
-                            expect(replaceStringArray)
-                            .fail('not to be called with the input character figures');
-                        }
+                            replaceStringArrayCalled = true;
                         return replaceStringArray.apply(this, arguments);
                     };
-                    var output = encoder._encodeByDenseFigures(Object(input), 3000);
+                    var maxLength = 3664;
+                    replaceStringArrayCalled = false;
+                    var output = encoder._encodeByDenseFigures(Object(input), maxLength);
+                    if (replaceStringArrayCalled)
+                    {
+                        expect(replaceStringArray)
+                        .fail('not to be called with the input character figures');
+                    }
                     expect(output).toBeUndefined();
+                    replaceStringArrayCalled = false;
+                    encoder._encodeByDenseFigures(Object(input), maxLength + 1);
+                    if (!replaceStringArrayCalled)
+                    {
+                        expect(replaceStringArray)
+                        .fail('to be called with the input character figures');
+                    }
                 }
             );
         }
@@ -371,6 +409,39 @@ self,
                     expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
                 }
             );
+            it.per
+            (
+                [
+                    ['does not coerce to integer', 4, 0, 11, 1, false],
+                    ['coerces to integer', 4, 0, 12, 1, true],
+                    ['does not coerce to integer', 3, 1, 12, 11, false],
+                    ['coerces to integer', 3, 1, 12, 12, true],
+                    ['does not coerce to integer', 3, 1, 14, 1, false],
+                    ['coerces to integer', 3, 1, 14, 2, true],
+                ]
+            )
+            (
+                '#[0] with radix #[1] amended by #[2] when the most frequent characters occur ' +
+                '#[3] and #[4] times',
+                function (paramData)
+                {
+                    var radix = paramData[1];
+                    var amendingCount = paramData[2];
+                    var count0 = paramData[3];
+                    var count1 = paramData[4];
+                    var expectedCoerceToInt = paramData[5];
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var actualCoerceToInt;
+                    encoder._createDictEncoding =
+                    function (charIndexArrayStr, legend, radix, coerceToInt)
+                    {
+                        actualCoerceToInt = coerceToInt;
+                    };
+                    var input = repeat('a', count0) + repeat('b', count1) + 'c';
+                    encoder._encodeByDict(Object(input), radix, amendingCount);
+                    expect(actualCoerceToInt).toBe(expectedCoerceToInt);
+                }
+            );
             it
             (
                 'does not create a mapping when maxLength is too small',
@@ -378,15 +449,25 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var resolveConstant = encoder.resolveConstant;
+                    var mapConstantResolved;
                     encoder.resolveConstant =
                     function (constant)
                     {
                         if (constant === 'MAP')
-                            expect(resolveConstant).fail('not to be called with argument "MAP"');
+                            mapConstantResolved = true;
                         return resolveConstant.apply(this, arguments);
                     };
-                    var output = encoder._encodeByDict(Object('12345'), undefined, undefined, 3000);
+                    var inputData = Object('12345');
+                    var maxLength = 3589;
+                    mapConstantResolved = false;
+                    var output = encoder._encodeByDict(inputData, undefined, undefined, maxLength);
+                    if (mapConstantResolved)
+                        expect(resolveConstant).fail('not to be called with argument "MAP"');
                     expect(output).toBeUndefined();
+                    mapConstantResolved = false;
+                    encoder._encodeByDict(inputData, undefined, undefined, maxLength + 1);
+                    if (!mapConstantResolved)
+                        expect(resolveConstant).fail('to be called with argument "MAP"');
                 }
             );
             it
@@ -396,10 +477,24 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var _replaceMapper = encoder._replaceMapper;
+                    var replaceMapperCalled;
                     encoder._replaceMapper =
-                    function () { expect(_replaceMapper).fail('not to be called'); };
-                    var output = encoder._encodeByDict(Object('12345'), undefined, undefined, 4000);
+                    function ()
+                    {
+                        replaceMapperCalled = true;
+                        return _replaceMapper.apply(this, arguments);
+                    };
+                    var inputData = Object('12345');
+                    var maxLength = 6978;
+                    replaceMapperCalled = false;
+                    var output = encoder._encodeByDict(inputData, undefined, undefined, maxLength);
+                    if (replaceMapperCalled)
+                        expect(_replaceMapper).fail('not to be called');
                     expect(output).toBeUndefined();
+                    replaceMapperCalled = false;
+                    encoder._encodeByDict(inputData, undefined, undefined, maxLength + 1);
+                    if (!replaceMapperCalled)
+                        expect(_replaceMapper).fail('to be called');
                 }
             );
         }
@@ -448,28 +543,50 @@ self,
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var _findFormatMapperShort = encoder._findFormatMapperShort;
+                    var findFormatMapperShortCalled;
                     encoder._findFormatMapperShort =
-                    function () { expect(_findFormatMapperShort).fail('not to be called'); };
-                    var output = encoder._encodeBySparseFigures(Object('12345'), 7000);
+                    function ()
+                    {
+                        findFormatMapperShortCalled = true;
+                        return _findFormatMapperShort.apply(this, arguments);
+                    };
+                    var maxLength = 7034;
+                    findFormatMapperShortCalled = false;
+                    var output = encoder._encodeBySparseFigures(Object('12345'), maxLength);
+                    if (findFormatMapperShortCalled)
+                        expect(_findFormatMapperShort).fail('not to be called');
                     expect(output).toBeUndefined();
+                    findFormatMapperShortCalled = false;
+                    encoder._encodeBySparseFigures(Object('12345'), maxLength + 1);
+                    if (!findFormatMapperShortCalled)
+                        expect(_findFormatMapperShort).fail('to be called');
                 }
             );
             it
             (
-                'does not replace the create a mapping when maxLength is too small',
+                'does not create a mapping when the combined legend does not fit',
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
                     var resolveConstant = encoder.resolveConstant;
+                    var mapConstantResolved;
                     encoder.resolveConstant =
                     function (constant)
                     {
                         if (constant === 'MAP')
-                            expect(resolveConstant).fail('not to be called with argument "MAP"');
+                            mapConstantResolved = true;
                         return resolveConstant.apply(this, arguments);
                     };
-                    var output = encoder._encodeBySparseFigures(Object('12345'), 7900);
+                    var maxLength = 7979;
+                    mapConstantResolved = false;
+                    var output = encoder._encodeBySparseFigures(Object('12345'), maxLength);
+                    if (mapConstantResolved)
+                        expect(resolveConstant).fail('not to be called with argument "MAP"');
                     expect(output).toBeUndefined();
+                    mapConstantResolved = false;
+                    encoder._encodeBySparseFigures(Object('12345'), maxLength + 1);
+                    if (!mapConstantResolved)
+                        expect(resolveConstant).fail('to be called with argument "MAP"');
                 }
             );
         }
@@ -508,12 +625,98 @@ self,
                             var length = output.length;
                             var perfLogLength = encoder.perfLog.length;
                             output = encoder._encodeExpress(input, length);
-                            expect(output).not.toBeUndefined();
+                            expect(output).toBeString();
                             encoder.perfLog = [];
                             output = encoder._encodeExpress(input, length - 1);
                             expect(output).toBeUndefined();
                             var expectedCodingLogLength = Math.max(perfLogLength, 0);
                             expect(encoder.perfLog.length).toBe(expectedCodingLogLength);
+                        }
+                    );
+                }
+            );
+            it
+            (
+                'passes the maxLength limit to all strategies',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var input = '"abc"';
+                    var output = encoder._encodeExpress(input);
+                    var maxLength = output.length;
+                    encoder.perfLog = [];
+                    encoder._encodeExpress(input, maxLength);
+                    var perfInfoList = encoder.perfLog[0];
+                    var statuses = { };
+                    perfInfoList.forEach
+                    (
+                        function (perfInfo)
+                        {
+                            statuses[perfInfo.strategyName] = perfInfo.status;
+                            if (perfInfo.outputLength != null)
+                                expect(perfInfo.outputLength).not.toBeGreaterThan(maxLength);
+                        }
+                    );
+                    expect(statuses.byCharCodes).toBe('incomplete');
+                    expect(statuses.plain).toBe('used');
+                }
+            );
+            it
+            (
+                'passes the maxLength limit to all strategies with wrapped text',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var input = 'abc';
+                    var output = encoder._encodeExpress(input);
+                    var length = output.length;
+                    encoder.perfLog = [];
+                    output = encoder._encodeExpress(input, length - 1);
+                    expect(output).toBeUndefined();
+                    var perfInfoList = encoder.perfLog[0];
+                    perfInfoList.forEach
+                    (
+                        function (perfInfo)
+                        {
+                            expect(perfInfo.status).not.toBe('used');
+                        }
+                    );
+                    encoder.perfLog = [];
+                    output = encoder._encodeExpress(input, length);
+                    expect(output).toBeString();
+                }
+            );
+            describe
+            (
+                'generates correct perfLog paths',
+                function ()
+                {
+                    var paramDataList =
+                    [
+                        ['"A"', ['0']],
+                        ['"A"()("B1" + "B2")["C"].D', ['0', '2:0', '2:1', '3', '4']],
+                        ['["A1" + "A2"]("B")', ['0:0', '0:1', '1']],
+                        ['("A1" + "A2")["B"]', ['0:0', '0:1', '1']],
+                        ['["A".B][C]', ['0:0', '0:1', '1']],
+                        ['[[[x]]][y]', ['0', '1']],
+                    ];
+                    it.per(paramDataList)
+                    (
+                        'with `#[0]`',
+                        function (paramData)
+                        {
+                            var input = paramData[0];
+                            var expectedPerfLogNames = paramData[1];
+                            var encoder = JScrewIt.debug.createEncoder();
+                            encoder._encodeExpress(input);
+                            var perfLog = encoder.perfLog;
+                            expect(perfLog.length).toBe(expectedPerfLogNames.length);
+                            for (var index = 0; index < expectedPerfLogNames.length; index++)
+                            {
+                                var actualName = perfLog[index].name;
+                                var expectedName = expectedPerfLogNames[index];
+                                expect(actualName).toBe(expectedName);
+                            }
                         }
                     );
                 }
@@ -528,22 +731,6 @@ self,
                     var expected =
                     encoder.replaceExpr('(1221..toString("36"))[1120..toString("34")]');
                     expect(actual).toBe(expected);
-                }
-            );
-            it
-            (
-                'writes into perfLog',
-                function ()
-                {
-                    var encoder = JScrewIt.debug.createEncoder();
-                    encoder._encodeExpress('"A"()("B1" + "B2")["C"].D');
-                    var perfLog = encoder.perfLog;
-                    expect(perfLog.length).toBe(5);
-                    expect(perfLog[0].name).toBe('0');
-                    expect(perfLog[1].name).toBe('2:0');
-                    expect(perfLog[2].name).toBe('2:1');
-                    expect(perfLog[3].name).toBe('3');
-                    expect(perfLog[4].name).toBe('4');
                 }
             );
         }

@@ -171,6 +171,8 @@ function replacePrimaryExpr(encoder, unit, bondStrength, unitIndices, maxLength,
     var terms;
     var identifier;
     var strAppender = replacers.appendString;
+    if (unit.ops.length)
+        unitIndices = unitIndices.concat(0);
     if (terms = unit.terms)
     {
         var count = terms.length;
@@ -179,7 +181,7 @@ function replacePrimaryExpr(encoder, unit, bondStrength, unitIndices, maxLength,
         for (var index = 0; index < count; ++index)
         {
             var term = terms[index];
-            var termUnitIndices = count > 1 ? unitIndices.concat(index) : unitIndices;
+            var termUnitIndices = unitIndices.concat(index);
             if (strAppender && isStringUnit(term))
             {
                 var firstSolution;

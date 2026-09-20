@@ -1,7 +1,6 @@
 import
 {
     APPEND_LENGTH_OF_DIGITS,
-    APPEND_LENGTH_OF_DIGIT_0,
     APPEND_LENGTH_OF_FALSE,
     APPEND_LENGTH_OF_PLUS_SIGN,
 }
@@ -93,6 +92,7 @@ function callStrategies(encoder, input, options, strategyNames, unitPath)
             inputData[optName] = options[optName];
         }
     );
+    var maxLength = options.maxLength;
     var usedPerfInfo;
     strategyNames.forEach
     (
@@ -109,7 +109,6 @@ function callStrategies(encoder, input, options, strategyNames, unitPath)
             {
                 encoder.perfLog = perfInfo.perfLog = [];
                 var before = new _Date();
-                var maxLength = output != null ? output.length : NaN;
                 var newOutput = strategy.call(encoder, inputData, maxLength);
                 var time = new _Date() - before;
                 encoder.perfLog = perfLog;
@@ -117,6 +116,7 @@ function callStrategies(encoder, input, options, strategyNames, unitPath)
                 if (newOutput != null)
                 {
                     output = newOutput;
+                    maxLength = newOutput.length;
                     if (usedPerfInfo)
                         usedPerfInfo.status = 'superseded';
                     usedPerfInfo = perfInfo;
@@ -335,8 +335,21 @@ function encodeAndWrapText(encoder, input, wrapper, unitPath, maxLength)
     var output;
     if (!wrapper || input)
     {
-        var screwMode = !wrapper || wrapper.forceString ? SCREW_AS_STRING : SCREW_NORMAL;
-        output = encodeText(encoder, input, screwMode, unitPath, maxLength);
+        var screwMode;
+        var maxTextLength;
+        if (wrapper)
+        {
+            screwMode = wrapper.forceString ? SCREW_AS_STRING : SCREW_NORMAL;
+            // The wrapper adds a fixed overhead to the text.
+            var wrapperOverhead = wrapper.call(encoder, '').length;
+            maxTextLength = maxLength - wrapperOverhead;
+        }
+        else
+        {
+            screwMode = SCREW_AS_STRING;
+            maxTextLength = maxLength;
+        }
+        output = encodeText(encoder, input, screwMode, unitPath, maxTextLength);
         if (output == null)
             return;
     }
@@ -429,7 +442,7 @@ function encodeDictLegend(encoder, dictChars, maxLength)
         (
             encoder,
             input,
-            { screwMode: SCREW_AS_STRING },
+            { maxLength: maxLength, screwMode: SCREW_AS_STRING },
             ['byCodePointsRadix4', 'byCharCodesRadix4', 'byCodePoints', 'byCharCodes', 'plain'],
             'legend'
         );
@@ -440,10 +453,9 @@ function encodeDictLegend(encoder, dictChars, maxLength)
 
 function encodeText(encoder, input, screwMode, unitPath, maxLength)
 {
-    var output =
-    callStrategies(encoder, input, { screwMode: screwMode }, TEXT_STRATEGY_NAMES, unitPath);
-    if (output != null && !(output.length > maxLength))
-        return output;
+    var options = { maxLength: maxLength, screwMode: screwMode };
+    var output = callStrategies(encoder, input, options, TEXT_STRATEGY_NAMES, unitPath);
+    return output;
 }
 
 function getDenseFigureLegendInsertions(figurator, figures)
@@ -518,6 +530,24 @@ function initMinFalseFreeCharIndexArrayStrLength(input)
 function initMinFalseTrueCharIndexArrayStrLength()
 {
     return -1;
+}
+
+function shouldCoerceToInt(reindexMap, freqList)
+{
+    // Integer coercion with a radix costs a replaced plus sign.
+    var saving = -APPEND_LENGTH_OF_PLUS_SIGN;
+    var prevSortLength = 0;
+    for (var reindexIndex = 0; ; reindexIndex++)
+    {
+        var reindex = reindexMap[reindexIndex];
+        var sortLength = reindex.sortLength;
+        saving += freqList[reindexIndex].count * (sortLength - prevSortLength);
+        if (saving > 0)
+            return true;
+        if (!reindex.index)
+            return false;
+        prevSortLength = sortLength;
+    }
 }
 
 function splitIntoCharCodes(str, radix, cache)
@@ -680,8 +710,9 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         Encodes "NINE" as:
 
         ["false", "false0", "false", "true"].map(Function(
-        "return function(undefined){return this.indexOf(undefined)}")().bind(["false", "true",
-        "false0"])).map("".charAt.bind("NEI")).join([])
+        "return function(undefined){return function(falsefalse){return " +
+        "undefined[1][undefined[0].indexOf(falsefalse)]}}")()([["false", "true", "false0"]].concat(
+        "NEI"))).join([])
 
         \* -------------------------------------------------------------------------------------- */
 
@@ -730,14 +761,16 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         Encodes "THREE" as:
 
         "10false0false1falsetruefalsetrue".split(true).join(2).split(false).map(Function(
-        "return function(undefined){return this[parseInt(undefined,3)]}")().bind("HRET")).join([])
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(undefined,3)]}}")()("HRET")).join([])
 
         (simple)
 
         Or:
 
         "10falsetruefalse1falsefalse".split(true).join(2).split(false).map(Function(
-        "return function(undefined){return this[parseInt(+undefined,3)]}")().bind("ERHT")).join([])
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(+undefined,3)]}}")()("ERHT")).join([])
 
         (with coercion)
 
@@ -760,21 +793,24 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         Encodes "TWELVE" as:
 
         "2false3false0false1false10false0".split(false).map(Function(
-        "return function(undefined){return this[parseInt(undefined,4)]}")().bind("ELTWV")).join([])
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(undefined,4)]}}")()("ELTWV")).join([])
 
         (split strategy)
 
         Or:
 
         "2false3falsefalse1false10falsefalse".split(false).map(Function(
-        "return function(undefined){return this[parseInt(+undefined,4)]}")().bind("ELTWV")).join([])
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(+undefined,4)]}}")()("ELTWV")).join([])
 
         (split strategy, with coercion)
 
         Or:
 
         [2].concat(3).concat(0).concat(1).concat("10").concat(0).map(Function(
-        "return function(undefined){return this[parseInt(undefined,4)]}")().bind("ELTWV")).join([])
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(undefined,4)]}}")()("ELTWV")).join([])
 
         (concat strategy)
 
@@ -797,14 +833,16 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         Encodes "TWELVE" as:
 
         "1false10falsetruefalse0false2falsetrue".split(true).join(3).split(false).map(Function(
-        "return function(undefined){return this[parseInt(undefined,4)]}")().bind("LTVEW")).join([])
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(undefined,4)]}}")()("LTVEW")).join([])
 
         (simple)
 
         Or:
 
         "1false10falsefalsetruefalse2false".split(true).join(3).split(false).map(Function(
-        "return function(undefined){return this[parseInt(+undefined,4)]}")().bind("ETVLW")).join([])
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(+undefined,4)]}}")()("ETVLW")).join([])
 
         (with coercion)
 
@@ -828,15 +866,17 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
 
         "undefinedfalse10falsetruefalse0false1falsetrue".split(true).join(2).split("undefined").join
         (3).split(false).map(Function(
-        "return function(undefined){return this[parseInt(undefined,4)]}")().bind("LVETW")).join([])
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(undefined,4)]}}")()("LVETW")).join([])
 
         (simple)
 
         Or:
 
         "undefinedfalse10falsefalsetruefalse1false".split(true).join(2).split("undefined").join(3).
-        split(false).map(Function("return function(undefined){return this[parseInt(+undefined,4)]}")
-        ().bind("EVLTW")).join([])
+        split(false).map(Function(
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(+undefined,4)]}}")()("EVLTW")).join([])
 
         (with coercion)
 
@@ -859,22 +899,24 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         Encodes "SIXTEEN" as:
 
         "10false1false4false3false0false0false2".split(false).map(Function(
-        "return function(undefined){return this[parseInt(undefined,5)]}")().bind("EINTXS")).join([])
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(undefined,5)]}}")()("EINTXS")).join([])
 
         (split strategy)
 
         Or:
 
         "10false1false4false3falsefalsefalse2".split(false).map(Function(
-        "return function(undefined){return this[parseInt(+undefined,5)]}")().bind("EINTXS")).join([]
-        )
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(+undefined,5)]}}")()("EINTXS")).join([])
 
         (split strategy, with coercion)
 
         Or:
 
         ["10"].concat(1).concat(4).concat(3).concat(0).concat(0).concat(2).map(Function(
-        "return function(undefined){return this[parseInt(undefined,5)]}")().bind("EINTXS")).join([])
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(undefined,5)]}}")()("EINTXS")).join([])
 
         (concat strategy)
 
@@ -898,7 +940,8 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
 
         "1false0false10false2falsetruefalsetruefalseundefined".split(true).join(3).split("undefined"
         ).join(4).split(false).map(Function(
-        "return function(undefined){return this[parseInt(undefined,5)]}")().bind("ISTENX")).join([])
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(undefined,5)]}}")()("ISTENX")).join([])
 
         (simple)
 
@@ -906,8 +949,8 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
 
         "1falsetruefalse10false2falsefalsefalseundefined".split(true).join(3).split("undefined").
         join(4).split(false).map(Function(
-        "return function(undefined){return this[parseInt(+undefined,5)]}")().bind("ESTINX")).join([]
-        )
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(+undefined,5)]}}")()("ESTINX")).join([])
 
         (with coercion)
 
@@ -931,7 +974,8 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
 
         "1false0false10falseNaNfalsetruefalsetruefalseundefined".split(true).join(2).split(
         "undefined").join(3).split(NaN).join(4).split(false).map(Function(
-        "return function(undefined){return this[parseInt(undefined,5)]}")().bind("ISENTX")).join([])
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(undefined,5)]}}")()("ISENTX")).join([])
 
         (simple)
 
@@ -939,8 +983,8 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
 
         "1falsetruefalse10falseNaNfalsefalsefalseundefined".split(true).join(2).split("undefined").
         join(3).split(NaN).join(4).split(false).map(Function(
-        "return function(undefined){return this[parseInt(+undefined,5)]}")().bind("ESINTX")).join([]
-        )
+        "return function(falsefalse){return function(undefined){return " +
+        "falsefalse[parseInt(+undefined,5)]}}")()("ESINTX")).join([])
 
         (with coercion)
 
@@ -963,8 +1007,9 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
         Encodes "NINE" as:
 
         ["", "0", "", "true"].map(Function(
-        "return function(undefined){return this.indexOf(undefined)}")().bind(["", "true", "0"])).map
-        ("".charAt.bind("NEI")).join([])
+        "return function(undefined){return function(falsefalse){return " +
+        "undefined[1][undefined[0].indexOf(falsefalse)]}}")()([["", "true", "0"]].concat("NEI"))).
+        join([])
 
         \* -------------------------------------------------------------------------------------- */
 
@@ -1074,7 +1119,10 @@ assignNoEnum
             var accessor = '.indexOf(' + argName + ')';
             var mapper = formatMapper(accessor);
             var concatReplacement = this.resolveConstant('CONCAT').replacement;
-            var maxCombinedLegendLength = maxLength - charIndexFigureArrayStr.length - 10;
+            var maxCombinedLegendLength =
+            // 2 is for the calling parentheses around the combined legend replacement.
+            maxLength - charIndexFigureArrayStr.length -
+            JOINING_MIN_LENGTH - MAPPING_MIN_OVERHEAD - 2;
             var combinedLegend =
             joinWithMaxLength
             (
@@ -1156,14 +1204,14 @@ assignNoEnum
             var input = inputData.valueOf();
             var freqList = getFrequencyList(inputData);
             var freqListLength = freqList.length;
-            // Integer coercion is for free without a radix, otherwise it costs a replaced plus
-            // sign.
-            var coerceToInt =
-            !radix ||
-            freqListLength &&
-            freqList[0].count * APPEND_LENGTH_OF_DIGIT_0 > APPEND_LENGTH_OF_PLUS_SIGN;
+            var coerceToInt = !radix;
             var radixNum = radix || 10;
             var reindexMap = createReindexMap(freqListLength, radixNum, amendingCount, coerceToInt);
+            if (!coerceToInt && shouldCoerceToInt(reindexMap, freqList))
+            {
+                coerceToInt = true;
+                reindexMap = createReindexMap(freqListLength, radixNum, amendingCount, true);
+            }
             var charMap = createEmpty();
             var minCharIndexArrayStrLength = initMinFalseFreeCharIndexArrayStrLength(input);
             var dictChars = [];
