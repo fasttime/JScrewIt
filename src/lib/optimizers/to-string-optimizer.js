@@ -147,7 +147,7 @@ function createOptimizer(toStringReplacement)
 
     function optimizeSequence(plan, solutions, start, end, bond)
     {
-        for (;; ++start)
+        for (;; start++)
         {
             var maxSolutionSpan = end - start;
             if (solutions[start].source !== '0')
@@ -212,7 +212,7 @@ var initialize =
 function ()
 {
     var minLength = Infinity;
-    for (var radix = MAX_RADIX; radix >= 12; --radix)
+    for (var radix = MAX_RADIX; radix >= 12; radix--)
     {
         var replacement = replaceStaticString(_String(radix));
         var length = replacement.length;

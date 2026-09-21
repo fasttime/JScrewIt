@@ -81,7 +81,7 @@ function compareFeatureNames(featureNames1, featureNames2)
         if (diff)
             return diff;
     }
-    for (let index = 0; index < length; ++index)
+    for (let index = 0; index < length; index++)
     {
         const featureName1 = featureNames1[index];
         const featureName2 = featureNames2[index];
@@ -409,7 +409,7 @@ function sortEntries(entries, validate, variantToMinMaskMap)
     };
 
     const indexLimit = entries.length - 1;
-    for (let index = 0; index < indexLimit; ++index)
+    for (let index = 0; index < indexLimit; index++)
     {
         const currentEntry = entries[index];
         const candidates = entries.slice(index).sort(compareEntries);

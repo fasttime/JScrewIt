@@ -37,7 +37,7 @@ function formatCodingLog(perfLog, padding, nextCodingLog)
     padding += nextCodingLog ? '│' : ' ';
     let str = '';
     const count = perfLog.length;
-    for (let index = 0; index < count; ++index)
+    for (let index = 0; index < count; index++)
     {
         const perfInfoList = perfLog[index];
         const nextPerfInfoList = index < count - 1;
@@ -62,7 +62,7 @@ function formatPerfInfoList(perfInfoList, padding, paddingChars)
     padding += paddingChars[1];
     const count = perfInfoList.length;
     const paddingLength = padding.length;
-    for (let index = 0; index < count; ++index)
+    for (let index = 0; index < count; index++)
     {
         const perfInfo = perfInfoList[index];
         const next = index < count - 1;

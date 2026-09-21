@@ -82,7 +82,7 @@ it
     (): void =>
     {
         let prevMask = MASK_EMPTY;
-        for (let count = 0; count < MASK_MAX_SIZE; ++count)
+        for (let count = 0; count < MASK_MAX_SIZE; count++)
         {
             const nextMask = maskNext(prevMask);
             assertMaskNotEmpty(nextMask);
@@ -101,7 +101,7 @@ it
     (): void =>
     {
         let prevMask = MASK_EMPTY;
-        for (let count = 0; count < MASK_MAX_SIZE; ++count)
+        for (let count = 0; count < MASK_MAX_SIZE; count++)
         {
             const nextMask = maskNext(prevMask);
             const unionMask = maskUnion(nextMask, prevMask);
@@ -120,7 +120,7 @@ it
         const mask0 = MASK_EMPTY;
         let prevHighMask = mask0;
         let lowMask = maskNext(mask0);
-        for (let count = 1; count < MASK_MAX_SIZE; ++count)
+        for (let count = 1; count < MASK_MAX_SIZE; count++)
         {
             const topMask = maskNext(lowMask);
             const nextHighMask = maskUnion(prevHighMask, topMask);

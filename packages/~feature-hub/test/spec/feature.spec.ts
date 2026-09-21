@@ -593,7 +593,7 @@ it
             (
                 ({ family, versions }): string =>
                 {
-                    ++formatEngineDescriptionCalls;
+                    formatEngineDescriptionCalls++;
                     const [version] = versions;
                     const description = `${family} ${typeof version === 'string' ? version : ''}`;
                     return description;

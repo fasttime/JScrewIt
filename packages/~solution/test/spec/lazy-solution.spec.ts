@@ -30,7 +30,7 @@ describe
                 const createReplacement =
                 (): never =>
                 {
-                    ++callCount;
+                    callCount++;
                     throw Error();
                 };
                 const solution =

@@ -51,7 +51,7 @@ function getProRadix4AntiRadix10Elements(to)
     const proRadix4AntiRadix10Elements = [];
     {
         const encoder = JScrewIt.debug.createEncoder();
-        for (let charCode = 0; charCode <= to; ++charCode)
+        for (let charCode = 0; charCode <= to; charCode++)
         {
             const base4Str = charCode.toString(4);
             const base10Str = charCode.toString();

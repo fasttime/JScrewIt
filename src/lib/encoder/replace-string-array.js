@@ -54,7 +54,7 @@ function createConcatenationReplacement
         return;
     var options = { screwMode: forceString ? SCREW_AS_STRING : SCREW_NORMAL };
     var replacements = [];
-    for (var index = 0; index <= concatCount; ++index)
+    for (var index = 0; index <= concatCount; index++)
     {
         var element = array[index];
         var elementReplacement = undefinedAsString(replaceStaticString(element, options));
@@ -91,7 +91,7 @@ function createSubstitutionsReplacement(encoder, substitutions, maxLength)
     if (maxLength < 0)
         return;
     var replacements = [];
-    for (var index = 0; index < substitutionCount; ++index)
+    for (var index = 0; index < substitutionCount; index++)
     {
         var substitution = substitutions[index];
         var separatorReplacement = undefinedAsString(encoder.replaceExpr(substitution.separator));

@@ -26,7 +26,7 @@ class MaskIndex<ValueType>
         const key = keyFor(mask);
         const { _index } = this;
         if (!(key in _index))
-            ++this._size;
+            this._size++;
         _index[key] = value;
     }
 }

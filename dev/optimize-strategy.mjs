@@ -7,7 +7,7 @@ import STRATEGY_TEST_DATA_LIST  from './internal/strategy-test-data.mjs';
 
 function compareDiffLists(diffList1, diffList2)
 {
-    for (let index = 0; ; ++index)
+    for (let index = 0; ; index++)
     {
         const diff1 = diffList1[index];
         const diff2 = diffList2[index];

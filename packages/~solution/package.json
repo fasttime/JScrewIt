@@ -30,11 +30,16 @@
     "eslint-plugin-ebdd": "latest",
     "globals": "latest",
     "gulp": "latest",
-    "log-symbols": "^4.1.0",
     "mocha": "11",
     "nyc": "latest",
     "ts-node": "latest",
     "typescript": "latest"
+  },
+  "overrides": {
+    "mocha": {
+      "is-path-inside": "^3.0.3",
+      "log-symbols": "^4.1.0"
+    }
   },
   "private": true,
   "module": "./lib/index.js",

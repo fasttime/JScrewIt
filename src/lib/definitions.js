@@ -510,7 +510,7 @@ function getFHPaddingEntries(index)
     function useLocaleNumeralDigitDefinitions(locale, zeroCharCode)
     {
         var fromCharCode = _String.fromCharCode;
-        for (var digit = 0; digit <= 9; ++digit)
+        for (var digit = 0; digit <= 9; digit++)
         {
             var char = fromCharCode(zeroCharCode + digit);
             useLocaleNumeralDefinition
@@ -1714,7 +1714,7 @@ function getFHPaddingEntries(index)
     defineSimple('Infinity',    JSFUCK_INFINITY,    SolutionType.WEAK_ALGEBRAIC);
 
     // Create definitions for digits
-    for (var digit = 0; digit <= 9; ++digit)
+    for (var digit = 0; digit <= 9; digit++)
     {
         var expr = replaceDigit(digit);
         CHARACTERS[digit] = { expr: expr, solutionType: SolutionType.WEAK_ALGEBRAIC };

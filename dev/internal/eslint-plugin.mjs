@@ -3,7 +3,7 @@ function compareFeatureNames(featureNames1, featureNames2)
     const length1 = featureNames1.length;
     const length2 = featureNames2.length;
     if (length1 !== length2) return NaN;
-    for (let index = 0; index < length1; ++index)
+    for (let index = 0; index < length1; index++)
     {
         const featureName1 = featureNames1[index];
         const featureName2 = featureNames2[index];

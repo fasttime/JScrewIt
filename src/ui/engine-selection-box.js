@@ -211,7 +211,7 @@ export default function createEngineSelectionBox()
                 var rowSpan = (compatibilities.length + 2) / 3 ^ 0;
                 var cellCount = rowSpan * 3;
                 for
-                (var compatibilityIndex = 0; compatibilityIndex < cellCount; ++compatibilityIndex)
+                (var compatibilityIndex = 0; compatibilityIndex < cellCount; compatibilityIndex++)
                 {
                     var compatibility = compatibilities[compatibilityIndex];
                     if (!(compatibilityIndex % 3))
@@ -302,7 +302,7 @@ export default function createEngineSelectionBox()
         (
             function (input)
             {
-                ++checkedCount;
+                checkedCount++;
                 return Feature[input.featureName];
             }
         );

@@ -57,7 +57,7 @@ export default function createFigurator(startValues, joiner)
             var figure = createFigure(value, sortLength);
             figures.push(figure);
             part.insertable = false;
-            for (;; ++insertionPartIndex)
+            for (;; insertionPartIndex++)
             {
                 var insertionPart = parts[insertionPartIndex];
                 if (!insertionPart)

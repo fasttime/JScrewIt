@@ -21,7 +21,7 @@ function countClusterableCommas(solutions, index)
             solutions[++index].source === ',' &&
             isSingleCharacterSolution(solutions[++index]);
         )
-            ++commaCount;
+            commaCount++;
     }
     return commaCount;
 }

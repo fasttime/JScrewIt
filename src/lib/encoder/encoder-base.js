@@ -178,7 +178,7 @@ function replacePrimaryExpr(encoder, unit, bondStrength, unitIndices, maxLength,
         var count = terms.length;
         var maxCoreLength = maxLength - (bondStrength ? 2 : 0);
         var canAppendString = false;
-        for (var index = 0; index < count; ++index)
+        for (var index = 0; index < count; index++)
         {
             var term = terms[index];
             var termUnitIndices = unitIndices.concat(index);
@@ -418,7 +418,7 @@ assignNoEnum
             (this, unit, primaryExprBondStrength, unitIndices, maxCoreLength, replacers);
             if (output)
             {
-                for (var index = 0; index < opCount; ++index)
+                for (var index = 0; index < opCount; index++)
                 {
                     var op = ops[index];
                     var type = op.type;

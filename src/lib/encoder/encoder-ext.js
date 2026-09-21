@@ -234,7 +234,7 @@ export function createReindexMap(count, radix, amendingCount, coerceToInt)
     {
         var firstDigit = radix - amendingCount;
         var pattern = '[';
-        for (index = 0; index < amendingCount; ++index)
+        for (index = 0; index < amendingCount; index++)
         {
             var digit = firstDigit + index;
             digitAppendLengths[digit] = SIMPLE[AMENDINGS[index]].appendLength;
@@ -249,7 +249,7 @@ export function createReindexMap(count, radix, amendingCount, coerceToInt)
         };
     }
     var range = [];
-    for (index = 0; index < count; ++index)
+    for (index = 0; index < count; index++)
     {
         var str = coerceToInt && !index ? '' : index.toString(radix);
         var reindexStr = amendingCount ? str.replace(regExp, replacer) : str;
@@ -1233,7 +1233,7 @@ assignNoEnum
             {
                 var substitutions = [];
                 var firstDigit = radixNum - amendingCount;
-                for (var index = 0; index < amendingCount; ++index)
+                for (var index = 0; index < amendingCount; index++)
                 {
                     var separator = AMENDINGS[index];
                     var digit = firstDigit + index;

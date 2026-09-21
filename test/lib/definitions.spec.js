@@ -374,7 +374,7 @@ self,
         function ()
         {
             var charCodeSet = { __proto__: null };
-            for (var charCode = 0; charCode < 256; ++charCode)
+            for (var charCode = 0; charCode < 256; charCode++)
                 charCodeSet[charCode] = null;
             JScrewIt.debug.getCharacters().forEach
             (

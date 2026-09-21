@@ -390,7 +390,7 @@ function hasUnusedDefinitions({ solutions }, char)
             if (entry.definition.name === 'charCommonDefinition')
                 commonEntryFound = true;
             else
-                ++customEntryCount;
+                customEntryCount++;
         }
     }
     const entryIndexSet = new Set();
@@ -425,7 +425,7 @@ function parseArguments(parseSequence)
             static:         () => '+-.0123456789INadefilnrstuy',
             wanted:         getWantedCharacters,
         };
-        for (let index = 3; index < argCount; ++index)
+        for (let index = 3; index < argCount; index++)
         {
             const arg = argv[index];
             const matches =

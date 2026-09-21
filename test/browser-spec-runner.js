@@ -142,7 +142,7 @@ showFeatureSupport,
             {
                 return '`' + String.fromCharCode(charCode) + '`';
             };
-            for (var charCode = min; charCode <= max; ++charCode)
+            for (var charCode = min; charCode <= max; charCode++)
             {
                 var name = namer(charCode);
                 var char = String.fromCharCode(charCode);

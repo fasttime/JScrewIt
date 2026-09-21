@@ -21,7 +21,7 @@ function createOptimizer
 
     function matchComplex(solutions, start)
     {
-        for (var index = 0; index < complexLength; ++index)
+        for (var index = 0; index < complexLength; index++)
         {
             var solutionIndex = start + index;
             var solution = solutions[solutionIndex];
@@ -34,7 +34,7 @@ function createOptimizer
 
     function optimizeSolutions(plan, solutions, bond, forceString)
     {
-        for (var index = 0, limit = solutions.length - complexLength; index <= limit; ++index)
+        for (var index = 0, limit = solutions.length - complexLength; index <= limit; index++)
         {
             if (matchComplex(solutions, index))
             {
@@ -82,7 +82,7 @@ export default function (encoder, complex, definition)
             discreteAppendLength += charAppendLength;
             var charInfo = charMap[char];
             if (charInfo)
-                ++charInfo.count;
+                charInfo.count++;
             else
             {
                 charInfo =
@@ -107,7 +107,7 @@ export default function (encoder, complex, definition)
         );
         var restLength = solutionAppendLength;
         var restCount = complex.length;
-        for (var index = 0; restCount; ++index)
+        for (var index = 0; restCount; index++)
         {
             var charInfo = charInfos[index];
             var charAppendLength = charInfo.appendLength;
