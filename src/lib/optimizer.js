@@ -13,6 +13,20 @@ import createToStringOptimizer      from './optimizers/to-string-optimizer';
 var FROM_CODE_POINT_MASK = Feature.FROM_CODE_POINT.mask;
 
 /**
+ * A function that produces the solution of a cluster.
+ *
+ * A clusterer is invoked at most once, and only if the cluster it belongs to is retained by the
+ * clustering plan: the clusterers of candidate clusters that are discarded are never invoked.
+ * Because of this, it is convenient to defer any expensive computation of a cluster replacement to
+ * the clusterer.
+ *
+ * @callback Clusterer
+ *
+ * @returns {AbstractSolution}
+ * The solution that replaces the clustered solutions in the group.
+ */
+
+/**
  * An object that shortens the JSFuck code of a group of solutions by replacing sequences of
  * adjacent solutions with shorter equivalents called clusters.
  * A cluster that spans all solutions in a group is called an integral cluster, as opposed to a
@@ -69,6 +83,8 @@ var FROM_CODE_POINT_MASK = Feature.FROM_CODE_POINT.mask;
  * @param {ClusteringPlan} plan
  * The clustering plan of the group, where candidate clusters are registered with
  * {@link ClusteringPlan#addCluster}.
+ *
+ * The data argument passed to {@link ClusteringPlan#addCluster} must be a {@link Clusterer}.
  *
  * @param {AbstractSolution[]} solutions
  * The solutions in the group, in append order.

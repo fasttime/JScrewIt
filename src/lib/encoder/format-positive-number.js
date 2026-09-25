@@ -10,19 +10,39 @@ from '../append-lengths';
 import { _Array_prototype_forEach_call, _String }   from '../obj-utils';
 import { extraZeros }                               from './encoder-utils';
 
+// The difference between the append length and the length of a digit solution.
+var APPEND_EXTRA_LENGTH_OF_DIGIT    = 3;
+
+// The difference between the append length and the length of a dot solution.
+var APPEND_EXTRA_LENGTH_OF_DOT      = 1;
+
+// The extra length of an unsigned number representation starting with a dot compared to one
+// starting with a digit, beyond the difference in the append lengths of the characters.
+var LEADING_DOT_EXTRA_LENGTH = APPEND_EXTRA_LENGTH_OF_DIGIT - APPEND_EXTRA_LENGTH_OF_DOT;
+
 function evalNumber(preMantissa, lastDigit, exp)
 {
     var value = +(preMantissa + lastDigit + 'e' + exp);
     return value;
 }
 
-export default function formatPositiveNumber(number)
+/**
+ * Returns the string representation of a positive finite number that is expected to produce the
+ * shortest replacement.
+ *
+ * @param {number} number
+ * A positive finite number.
+ *
+ * @param {boolean} [signed]
+ * `true` if the returned string will be preceded by a sign.
+ */
+export default function formatPositiveNumber(number, signed)
 {
     function getMantissa()
     {
         var lastDigitIndex = usefulDigits - 1;
-        var preMantissa = digitsBeforeDot.slice(0, lastDigitIndex);
-        var lastDigit = +digitsBeforeDot[lastDigitIndex];
+        var preMantissa = significantDigits.slice(0, lastDigitIndex);
+        var lastDigit = +significantDigits[lastDigitIndex];
         var value = evalNumber(preMantissa, lastDigit, exp);
         for (;;)
         {
@@ -39,15 +59,15 @@ export default function formatPositiveNumber(number)
     var str;
     var match = /^(\d+)(?:\.(\d+))?(?:e(.+))?$/.exec(number);
     var digitsAfterDot = match[2] || '';
-    var digitsBeforeDot = (match[1] + digitsAfterDot).replace(/^0+/, '');
-    var usefulDigits = digitsBeforeDot.search(/0*$/);
-    var exp = (match[3] | 0) - digitsAfterDot.length + digitsBeforeDot.length - usefulDigits;
+    var significantDigits = (match[1] + digitsAfterDot).replace(/^0+/, '');
+    var usefulDigits = significantDigits.search(/0*$/);
+    var exp = (match[3] | 0) - digitsAfterDot.length + significantDigits.length - usefulDigits;
     var mantissa = getMantissa();
     if (exp >= 0)
     {
         if (exp < 10)
             str = mantissa + extraZeros(exp);
-        else if (exp % 100 === 99 && (exp > 99 || mantissa[1]))
+        else if (exp % 100 === 99 && (exp > 99 || mantissa[1] || signed))
             str = mantissa.replace(/.$/, '.$&e') + (exp + 1);
         else
             str = mantissa + 'e' + exp;
@@ -60,6 +80,8 @@ export default function formatPositiveNumber(number)
         {
             var extraZeroCount = -mantissa.length - exp;
             var extraLength = APPEND_LENGTH_OF_DOT + APPEND_LENGTH_OF_DIGIT_0 * extraZeroCount;
+            if (!signed)
+                extraLength += LEADING_DOT_EXTRA_LENGTH;
             str =
             replaceNegativeExponential(mantissa, exp, extraLength) ||
             '.' + extraZeros(extraZeroCount) + mantissa;

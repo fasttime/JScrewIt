@@ -19,6 +19,7 @@ function encode(input, options)
     input = esToString(input);
     options = options || { };
     var features = options.features;
+    var encoder = getEncoder(features);
     var runAsData;
     var runAs = options.runAs;
     if (runAs !== undefined)
@@ -30,7 +31,6 @@ function encode(input, options)
     if (options.trimCode)
         input = trimJS(input);
     var perfInfo = options.perfInfo;
-    var encoder = getEncoder(features);
     var output = encoder._exec(input, wrapper, strategyNames, perfInfo);
     return output;
 }

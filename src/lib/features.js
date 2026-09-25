@@ -1,4 +1,4 @@
-/* global Iterator, console, self, statusbar */
+/* global console, self, statusbar */
 
 import { _Object_defineProperty, _Object_keys, assignNoEnum, createEmpty }  from './obj-utils';
 import { createFeatureClass, featuresToMask }                               from '~feature-hub';
@@ -739,7 +739,7 @@ var featureInfos =
     NODE_22_12:
     {
         inherits: 'NODE_22',
-        versions: ['22.12-22.14|23.3-'],
+        versions: ['22.12-22.x|23.3-'],
         includes: { SHORT_LOCALES: false },
     },
     SAFARI_PRE_PREV:

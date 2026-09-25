@@ -276,23 +276,45 @@ setTimeout,
                                     0.123,
                                 ],
                                 [
-                                    'numbers below 0.1 represented with a dot',
-                                    '123e-21',
+                                    'unsigned numbers below 0.1 represented in fixed-point ' +
+                                    'notation',
+                                    '123e-20',
                                     '+(*+(1)+(2)+(3))',
+                                    123e-20,
+                                ],
+                                [
+                                    'unsigned numbers below 0.1 represented in exponential ' +
+                                    'notation',
+                                    '123e-21',
+                                    '+(1+[2]+(3)+"e"+*+(2)+(1))',
                                     123e-21,
                                 ],
                                 [
-                                    'numbers below 0.1 represented in expontential notation',
-                                    '123e-22',
-                                    '+(1+[2]+(3)+"e"+*+(2)+(2))',
-                                    123e-22,
+                                    'signed numbers below 0.1 represented in fixed-point ' +
+                                    'notation',
+                                    '-123e-21',
+                                    '+((*)[*]+(*)[*]+*+(1)+(2)+(3))',
+                                    -123e-21,
                                 ],
                                 [
-                                    'numbers with positive exponent ending in 99 and single ' +
-                                    'digit mantissa',
+                                    'signed numbers below 0.1 represented in exponential notation',
+                                    '-123e-22',
+                                    '+((*)[*]+(1)+(2)+(3)+"e"+*+(2)+(2))',
+                                    -123e-22,
+                                ],
+                                [
+                                    'unsigned numbers with positive exponent ending in 99 and ' +
+                                    'single digit mantissa',
                                     '1e99',
                                     '+(1+"e"+(9)+(9))',
                                     1e99,
+                                ],
+                                [
+                                    'signed numbers with positive exponent ending in 99 and ' +
+                                    'single digit mantissa',
+                                    '-1e99',
+                                    '+((*)[*]+(*)[*]+(1)+"e"+(1)+(0)+(0))',
+                                    -1e99,
                                 ],
                                 [
                                     'numbers with positive exponent ending in 99 and multiple ' +

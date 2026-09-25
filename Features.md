@@ -142,7 +142,7 @@ This table lists features available in the most common engines.
 <li><a href="api-doc/interfaces/FeatureAll.md#NO_IE_SRC"><code>NO_IE_SRC</code></a> (implied by <a href="api-doc/interfaces/FeatureAll.md#V8_SRC"><code>V8_SRC</code></a>)
 <li><a href="api-doc/interfaces/FeatureAll.md#OBJECT_ARRAY_ENTRIES_CTOR"><code>OBJECT_ARRAY_ENTRIES_CTOR</code></a> (not in Node.js 22.0+)
 <li><a href="api-doc/interfaces/FeatureAll.md#RUSSIAN_INFINITY"><code>RUSSIAN_INFINITY</code></a>
-<li><a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a> (not in Node.js 22.12–22.14 and 23.3+)
+<li><a href="api-doc/interfaces/FeatureAll.md#SHORT_LOCALES"><code>SHORT_LOCALES</code></a> (not in Node.js 22.12–22.x and 23.3+)
 <li><a href="api-doc/interfaces/FeatureAll.md#V8_SRC"><code>V8_SRC</code></a>
 </ul>
 </td>

@@ -16,7 +16,7 @@ export default function createFigurator(startValues, joiner)
         while (figures.length <= index)
         {
             appendableParts.forEach(growFigures);
-            var newFigures = figureList[currentSortLength++];
+            var newFigures = figureLists[currentSortLength++];
             if (newFigures)
                 _Array_prototype_push_apply(figures, newFigures);
         }
@@ -33,11 +33,11 @@ export default function createFigurator(startValues, joiner)
 
     function growFigures(part)
     {
-        var oldFigureSortLength = currentSortLength - part.sortLength;
-        var oldFigures = figureList[oldFigureSortLength];
-        if (oldFigures)
+        var oldSortLength = currentSortLength - part.sortLength;
+        var oldFigureList = figureLists[oldSortLength];
+        if (oldFigureList)
         {
-            oldFigures.forEach
+            oldFigureList.forEach
             (
                 function (oldFigure)
                 {
@@ -53,9 +53,9 @@ export default function createFigurator(startValues, joiner)
         if (!(value in usedValueSet))
         {
             usedValueSet[value] = null;
-            var figures = figureList[sortLength] || (figureList[sortLength] = []);
+            var figureList = figureLists[sortLength] || (figureLists[sortLength] = []);
             var figure = createFigure(value, sortLength);
-            figures.push(figure);
+            figureList.push(figure);
             part.insertable = false;
             for (;; insertionPartIndex++)
             {
@@ -72,7 +72,7 @@ export default function createFigurator(startValues, joiner)
     }
 
     var currentSortLength = 0;
-    var figureList = [];
+    var figureLists = [];
     var figures = [];
     var insertionPartIndex = 0;
     var usedValueSet = createEmpty();

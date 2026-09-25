@@ -263,7 +263,7 @@ function replacePrimaryExpr(encoder, unit, bondStrength, unitIndices, maxLength,
                 else if (abs === Infinity)
                     str = JSFUCK_INFINITY;
                 else
-                    str = formatPositiveNumber(abs);
+                    str = formatPositiveNumber(abs, negative);
                 if (negative)
                     str = '-' + str;
                 output = replaceStaticString(str);

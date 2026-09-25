@@ -725,7 +725,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 return output;
             },
             ENCODING_TYPE_TEXT,
-            1712
+            1702
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -785,7 +785,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 return output;
             },
             ENCODING_TYPE_TEXT,
-            134
+            132
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -825,7 +825,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 return output;
             },
             ENCODING_TYPE_TEXT,
-            106
+            99
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -891,7 +891,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 return output;
             },
             ENCODING_TYPE_TEXT,
-            178
+            177
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -965,7 +965,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 return output;
             },
             ENCODING_TYPE_TEXT,
-            194
+            192
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -999,7 +999,7 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
                 return output;
             },
             ENCODING_TYPE_TEXT,
-            506
+            293
         ),
 
         /* -------------------------------------------------------------------------------------- *\

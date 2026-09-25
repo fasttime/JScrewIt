@@ -1,19 +1,18 @@
 import { createEmpty } from './obj-utils';
 
-/** @typedef {import('./solution').AbstractSolution} AbstractSolution */
-
 /**
- * A function that produces the solution of a cluster.
+ * A cluster selected by a clustering plan.
  *
- * A clusterer is invoked at most once, and only if the cluster it belongs to is retained by the
- * clustering plan: the clusterers of candidate clusters that are discarded are never invoked.
- * Because of this, it is convenient to defer any expensive computation of a cluster replacement to
- * the clusterer.
+ * @typedef Cluster
  *
- * @callback Clusterer
+ * @property {number} start
+ * The index of the first solution in the group replaced by the cluster.
  *
- * @returns {AbstractSolution}
- * The solution that replaces the clustered solutions in the group.
+ * @property {number} length
+ * The number of adjacent solutions in the group replaced by the cluster.
+ *
+ * @property {*} data
+ * The data associated with the cluster when it was registered.
  */
 
 /**
@@ -43,10 +42,10 @@ import { createEmpty } from './obj-utils';
  * @param {number} length
  * The number of adjacent solutions in the group replaced by the cluster.
  *
- * A cluster always spans two or more solutions.
+ * @param {*} data
+ * Additional data associated with the cluster.
  *
- * @param {Clusterer} data
- * The clusterer that produces the solution of the cluster.
+ * This value is returned as is by {@link ClusteringPlan#conclude}.
  *
  * @param {number} saving
  * The number of characters saved by the cluster.
@@ -89,6 +88,22 @@ function compareClustersByStart(cluster1, cluster2)
     return diff;
 }
 
+/**
+ * Concludes this plan by selecting the candidate clusters to be applied.
+ *
+ * Candidates are picked greedily by decreasing saving, discarding any candidate that overlaps a
+ * cluster already picked.
+ * Among candidates with the same saving, shorter ones are preferred, and among those with the same
+ * length, the ones with a larger start.
+ *
+ * This method must be called at most once, and no candidate clusters may be registered afterwards.
+ *
+ * @function ClusteringPlan#conclude
+ *
+ * @returns {Cluster[]}
+ * The selected clusters, sorted by decreasing start, so that the solutions in the group can be
+ * replaced in order without affecting the indexes of the clusters still to be applied.
+ */
 function conclude()
 {
     var bestClusters = [];

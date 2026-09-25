@@ -512,7 +512,7 @@ Features available in Node.js 22.0 to 22.11 and Node.js 23.0 to 23.2.
 
 > **NODE\_22\_12**: [`PredefinedFeature`](PredefinedFeature.md)
 
-Features available in Node.js 22.12 to 22.14 and Node.js 23.3 or later.
+Features available in Node.js 22.12 to 22.x and Node.js 23.3 or later.
 
 ***
 
@@ -646,7 +646,7 @@ Support for the two-letter locale name "ar" to format decimal numbers as Arabic 
 
 #### Remarks
 
-Available in Firefox before 134, Internet Explorer, and Node.js before 22.12–22.14 and 23.3.
+Available in Firefox before 134, Internet Explorer, and Node.js before 22.12–22.x and 23.3.
 
 ***
 
