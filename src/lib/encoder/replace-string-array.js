@@ -39,8 +39,9 @@ var SEQUENCE_MIN_LENGTH         = 7;
  * into an array of strings.
  *
  * @property {string} joiner
- * The joiner can be any string. A joiner is inserted between adjacent strings in an array in order
- * to join them into a single string.
+ * The joiner can be any string.
+ * A joiner is inserted between adjacent strings in an array in order to join them into a single
+ * string.
  */
 
 function createConcatenationReplacement
@@ -132,25 +133,27 @@ function replaceJoinedArrayString(array, joiner, maxLength)
  * @function Encoder#replaceStringArray
  *
  * @param {string[]} array
- * The string array to replace. Empty arrays are not supported.
+ * The string array to replace.
+ * Empty arrays are not supported.
  *
  * @param {Delimiter[]} insertions
  * An array of delimiters of which at most one will be used to compose a joined string and split it
- * into an array of strings. Every joiner in the insertions must be a statically replaceable string.
+ * into an array of strings.
+ * Every joiner in the insertions must be a statically replaceable string.
  *
- * The encoder can pick an insertion and insert a joiner between any two adjacent elements to mark
- * the boundary between them. The separator is then used to split the concatenated string back into
- * its elements.
+ * The encoder can pick an insertion and insert its joiner between any two adjacent elements to mark
+ * the boundary between them.
+ * The separator is then used to split the concatenated string back into its elements.
  *
  * @param {Delimiter[] | null} [substitutions]
  * An array of delimiters, specifying substitutions to be applied to the input elements.
  *
- * All substitutions are applied on each element of the input array, in the order they are
- * specified.
+ * Substitutions are applied to the joined input array, in the order they are specified.
  *
  * Substitutions are expensive in two ways: they create additional overhead and prevent certain
- * optimizations for short arrays to be made. To allow all optimizations to be performed, omit this
- * argument or set it to null instead of specifying an empty array.
+ * optimizations for short arrays to be made.
+ * To allow all optimizations to be performed, omit this argument or set it to null instead of
+ * specifying an empty array.
  *
  * @param {boolean} [allowZeroForEmptyElements = false]
  * Indicates whether empty string elements in the input array may be replaced with zeros.

@@ -45,8 +45,9 @@ var ENCODING_TYPE_COMBINED      = 'combined';
 var ENCODING_TYPE_EXPRESSION    = 'expression';
 var ENCODING_TYPE_TEXT          = 'text';
 
-var FALSE_FREE_DELIMITER = { joiner: 'false', separator: 'false' };
-var FALSE_TRUE_DELIMITER = { joiner: '', separator: 'Function("return/(?=false|true)/")()' };
+var FALSE_FREE_DELIMITERS   = [{ joiner: 'false', separator: 'false' }];
+var FALSE_TRUE_DELIMITERS   = [{ joiner: '', separator: 'Function("return/(?=false|true)/")()' }];
+var TRUE_ZERO_DELIMITERS    = [{ joiner: '', separator: 'Function("return/(?=true|0)/")()' }];
 
 // Underestimated minimum length of the joining: "[" + joinReplacement + "]([])".
 var JOINING_MIN_LENGTH      = 8;
@@ -276,7 +277,7 @@ function createStrCodesEncoding(encoder, inputData, fromCharCode, splitter, radi
     var cache = inputData[strCodeCacheKey] || (inputData[strCodeCacheKey] = createEmpty());
     var strCodeArray = splitter(input, radix, cache);
     var strCodeArrayStr =
-    encoder.replaceStringArray(strCodeArray, [FALSE_FREE_DELIMITER], null, false, false, maxLength);
+    encoder.replaceStringArray(strCodeArray, FALSE_FREE_DELIMITERS, null, false, false, maxLength);
     if (strCodeArrayStr)
     {
         var replacement;
@@ -458,12 +459,17 @@ function encodeText(encoder, input, screwMode, unitPath, maxLength)
     return output;
 }
 
-function getDenseFigureLegendInsertions(figurator, figures)
+function getDenseFigureLegendInsertions(insertions, figurator, figures)
 {
-    var insertions = [FALSE_TRUE_DELIMITER];
-    var insertionValue = figurator.getInsertionValue(figures.length - 1);
-    if (insertionValue != null)
-        insertions.push({ joiner: insertionValue, separator: insertionValue });
+    var altJoiner = figurator.getAltJoiner(figures.length - 1);
+    if (altJoiner != null)
+        insertions = insertions.concat({ joiner: altJoiner, separator: altJoiner });
+    return insertions;
+}
+
+function getFalseTrueFigureLegendInsertions(figurator, figures)
+{
+    var insertions = getDenseFigureLegendInsertions(FALSE_TRUE_DELIMITERS, figurator, figures);
     return insertions;
 }
 
@@ -510,7 +516,12 @@ function getFrequencyList(inputData)
 
 function getSparseFigureLegendInsertions()
 {
-    var insertions = [FALSE_FREE_DELIMITER];
+    return FALSE_FREE_DELIMITERS;
+}
+
+function getTrueZeroFigureLegendInsertions(figurator, figures)
+{
+    var insertions = getDenseFigureLegendInsertions(TRUE_ZERO_DELIMITERS, figurator, figures);
     return insertions;
 }
 
@@ -521,15 +532,15 @@ function getUnitPath(unitIndices)
     return unitPath;
 }
 
+function initMinDenseFigureCharIndexArrayStrLength()
+{
+    return -1;
+}
+
 function initMinFalseFreeCharIndexArrayStrLength(input)
 {
     var minCharIndexArrayStrLength = _Math_max((input.length - 1) * APPEND_LENGTH_OF_FALSE - 3, 0);
     return minCharIndexArrayStrLength;
-}
-
-function initMinFalseTrueCharIndexArrayStrLength()
-{
-    return -1;
 }
 
 function shouldCoerceToInt(reindexMap, freqList)
@@ -596,8 +607,9 @@ export function wrapWithEval(str)
 
 wrapWithEval.forceString = true;
 
-var falseFreeFigurator = createFigurator([''], 'false');
-var falseTrueFigurator = createFigurator(['false', 'true'], '');
+var falseFreeFigurator  = createFigurator([''], 'false');
+var falseTrueFigurator  = createFigurator(['false', 'true'], '');
+var trueZeroFigurator   = createFigurator(['true', '0'], '');
 
 (function ()
 {
@@ -716,16 +728,39 @@ var falseTrueFigurator = createFigurator(['false', 'true'], '');
 
         \* -------------------------------------------------------------------------------------- */
 
-        byDenseFigures:
+        byDenseLowFigures:
         defineStrategy
         (
             function (inputData, maxLength)
             {
-                var output = this._encodeByDenseFigures(inputData, maxLength);
+                var output = this._encodeByDenseLowFigures(inputData, maxLength);
                 return output;
             },
             ENCODING_TYPE_TEXT,
             1702
+        ),
+
+        /* -------------------------------------------------------------------------------------- *\
+
+        Encodes "NINE" as:
+
+        ["true", "truefalse", "true", "0"].map(Function(
+        "return function(undefined){return function(falsefalse){return " +
+        "undefined[1][undefined[0].indexOf(falsefalse)]}}")()([["true", "0", "truefalse"]].concat(
+        "NEI"))).join([])
+
+        \* -------------------------------------------------------------------------------------- */
+
+        byDenseMidFigures:
+        defineStrategy
+        (
+            function (inputData, maxLength)
+            {
+                var output = this._encodeByDenseMidFigures(inputData, maxLength);
+                return output;
+            },
+            ENCODING_TYPE_TEXT,
+            3429
         ),
 
         /* -------------------------------------------------------------------------------------- *\
@@ -1181,17 +1216,34 @@ assignNoEnum
             return output;
         },
 
-        _encodeByDenseFigures:
+        _encodeByDenseLowFigures:
         function (inputData, maxLength)
         {
             var output =
             encodeByDblDict
             (
                 this,
-                initMinFalseTrueCharIndexArrayStrLength,
+                initMinDenseFigureCharIndexArrayStrLength,
                 falseTrueFigurator,
-                getDenseFigureLegendInsertions,
-                [FALSE_TRUE_DELIMITER],
+                getFalseTrueFigureLegendInsertions,
+                FALSE_TRUE_DELIMITERS,
+                inputData,
+                maxLength
+            );
+            return output;
+        },
+
+        _encodeByDenseMidFigures:
+        function (inputData, maxLength)
+        {
+            var output =
+            encodeByDblDict
+            (
+                this,
+                initMinDenseFigureCharIndexArrayStrLength,
+                trueZeroFigurator,
+                getTrueZeroFigureLegendInsertions,
+                TRUE_ZERO_DELIMITERS,
                 inputData,
                 maxLength
             );
@@ -1248,7 +1300,7 @@ assignNoEnum
                 this,
                 input,
                 charMap,
-                [FALSE_FREE_DELIMITER],
+                FALSE_FREE_DELIMITERS,
                 substitutions,
                 false,
                 maxLength - legend.length
@@ -1270,7 +1322,7 @@ assignNoEnum
                 initMinFalseFreeCharIndexArrayStrLength,
                 falseFreeFigurator,
                 getSparseFigureLegendInsertions,
-                [FALSE_FREE_DELIMITER],
+                FALSE_FREE_DELIMITERS,
                 inputData,
                 maxLength
             );

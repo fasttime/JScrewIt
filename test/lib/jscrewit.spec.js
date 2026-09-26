@@ -265,11 +265,35 @@ self,
             );
         }
     );
-    describe
+    describe.per
     (
-        'Encoder#_encodeByDenseFigures',
-        function ()
+        [
+            {
+                methodName:             '_encodeByDenseLowFigures',
+                figureArrayMaxLength:   3664,
+                mapperMaxLength:        7319,
+                mapMaxLength:           8264,
+            },
+            {
+                methodName:             '_encodeByDenseMidFigures',
+                figureArrayMaxLength:   3667,
+                mapperMaxLength:        7321,
+                mapMaxLength:           8266,
+            },
+            {
+                methodName:             '_encodeBySparseFigures',
+                figureArrayMaxLength:   3662,
+                mapperMaxLength:        7034,
+                mapMaxLength:           7979,
+            },
+        ]
+    )
+    (
+        'Encoder\\##.methodName',
+        function (paramData)
         {
+            var methodName = paramData.methodName;
+
             describe
             (
                 'with FORMAT_MAPPER_SHORT',
@@ -291,7 +315,7 @@ self,
                                 var input =
                                 'const pick = (arr, i) => arr[(i % arr.length + arr.length) % ' +
                                 'arr.length];';
-                                var output = encoder._encodeByDenseFigures(Object(input));
+                                var output = encoder[methodName](Object(input));
                                 expect(output).toBeJSFuck();
                                 expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
                             }
@@ -304,7 +328,7 @@ self,
             );
             it
             (
-                'returns undefined when maxLength is too small',
+                'does not create a character figure array when maxLength is too small',
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
@@ -318,9 +342,9 @@ self,
                             replaceStringArrayCalled = true;
                         return replaceStringArray.apply(this, arguments);
                     };
-                    var maxLength = 3664;
+                    var maxLength = paramData.figureArrayMaxLength;
                     replaceStringArrayCalled = false;
-                    var output = encoder._encodeByDenseFigures(Object(input), maxLength);
+                    var output = encoder[methodName](Object(input), maxLength);
                     if (replaceStringArrayCalled)
                     {
                         expect(replaceStringArray)
@@ -328,12 +352,65 @@ self,
                     }
                     expect(output).toBeUndefined();
                     replaceStringArrayCalled = false;
-                    encoder._encodeByDenseFigures(Object(input), maxLength + 1);
+                    encoder[methodName](Object(input), maxLength + 1);
                     if (!replaceStringArrayCalled)
                     {
                         expect(replaceStringArray)
                         .fail('to be called with the input character figures');
                     }
+                }
+            );
+            it
+            (
+                'does not resolve a mapper when maxLength is too small',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var _findFormatMapperShort = encoder._findFormatMapperShort;
+                    var findFormatMapperShortCalled;
+                    encoder._findFormatMapperShort =
+                    function ()
+                    {
+                        findFormatMapperShortCalled = true;
+                        return _findFormatMapperShort.apply(this, arguments);
+                    };
+                    var maxLength = paramData.mapperMaxLength;
+                    findFormatMapperShortCalled = false;
+                    var output = encoder[methodName](Object('12345'), maxLength);
+                    if (findFormatMapperShortCalled)
+                        expect(_findFormatMapperShort).fail('not to be called');
+                    expect(output).toBeUndefined();
+                    findFormatMapperShortCalled = false;
+                    encoder[methodName](Object('12345'), maxLength + 1);
+                    if (!findFormatMapperShortCalled)
+                        expect(_findFormatMapperShort).fail('to be called');
+                }
+            );
+            it
+            (
+                'does not create a mapping when the combined legend does not fit',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var resolveConstant = encoder.resolveConstant;
+                    var mapConstantResolved;
+                    encoder.resolveConstant =
+                    function (constant)
+                    {
+                        if (constant === 'MAP')
+                            mapConstantResolved = true;
+                        return resolveConstant.apply(this, arguments);
+                    };
+                    var maxLength = paramData.mapMaxLength;
+                    mapConstantResolved = false;
+                    var output = encoder[methodName](Object('12345'), maxLength);
+                    if (mapConstantResolved)
+                        expect(resolveConstant).fail('not to be called with argument "MAP"');
+                    expect(output).toBeUndefined();
+                    mapConstantResolved = false;
+                    encoder[methodName](Object('12345'), maxLength + 1);
+                    if (!mapConstantResolved)
+                        expect(resolveConstant).fail('to be called with argument "MAP"');
                 }
             );
         }
@@ -495,98 +572,6 @@ self,
                     encoder._encodeByDict(inputData, undefined, undefined, maxLength + 1);
                     if (!replaceMapperCalled)
                         expect(_replaceMapper).fail('to be called');
-                }
-            );
-        }
-    );
-    describe
-    (
-        'Encoder#_encodeBySparseFigures',
-        function ()
-        {
-            describe
-            (
-                'with FORMAT_MAPPER_SHORT',
-                function ()
-                {
-                    function testEntry(entry, index)
-                    {
-                        var featureObj = JScrewIt.debug.featureFromMask(entry.mask);
-                        emuIt
-                        (
-                            '(definition ' + index + ')',
-                            featureObj,
-                            function ()
-                            {
-                                var encoder = JScrewIt.debug.createEncoder(featureObj);
-                                var formatMapper = entry.definition;
-                                encoder._findFormatMapperShort =
-                                function () { return formatMapper; };
-                                var input =
-                                'const pick = (arr, i) => arr[(i % arr.length + arr.length) % ' +
-                                'arr.length];';
-                                var output = encoder._encodeBySparseFigures(Object(input));
-                                expect(output).toBeJSFuck();
-                                expect(emuEval(this.test.emuFeatureNames, output)).toBe(input);
-                            }
-                        );
-                    }
-
-                    var entries = JScrewIt.debug.getEntries('FORMAT_MAPPER_SHORT:available');
-                    entries.forEach(testEntry);
-                }
-            );
-            it
-            (
-                'does not resolve a mapper when maxLength is too small',
-                function ()
-                {
-                    var encoder = JScrewIt.debug.createEncoder();
-                    var _findFormatMapperShort = encoder._findFormatMapperShort;
-                    var findFormatMapperShortCalled;
-                    encoder._findFormatMapperShort =
-                    function ()
-                    {
-                        findFormatMapperShortCalled = true;
-                        return _findFormatMapperShort.apply(this, arguments);
-                    };
-                    var maxLength = 7034;
-                    findFormatMapperShortCalled = false;
-                    var output = encoder._encodeBySparseFigures(Object('12345'), maxLength);
-                    if (findFormatMapperShortCalled)
-                        expect(_findFormatMapperShort).fail('not to be called');
-                    expect(output).toBeUndefined();
-                    findFormatMapperShortCalled = false;
-                    encoder._encodeBySparseFigures(Object('12345'), maxLength + 1);
-                    if (!findFormatMapperShortCalled)
-                        expect(_findFormatMapperShort).fail('to be called');
-                }
-            );
-            it
-            (
-                'does not create a mapping when the combined legend does not fit',
-                function ()
-                {
-                    var encoder = JScrewIt.debug.createEncoder();
-                    var resolveConstant = encoder.resolveConstant;
-                    var mapConstantResolved;
-                    encoder.resolveConstant =
-                    function (constant)
-                    {
-                        if (constant === 'MAP')
-                            mapConstantResolved = true;
-                        return resolveConstant.apply(this, arguments);
-                    };
-                    var maxLength = 7979;
-                    mapConstantResolved = false;
-                    var output = encoder._encodeBySparseFigures(Object('12345'), maxLength);
-                    if (mapConstantResolved)
-                        expect(resolveConstant).fail('not to be called with argument "MAP"');
-                    expect(output).toBeUndefined();
-                    mapConstantResolved = false;
-                    encoder._encodeBySparseFigures(Object('12345'), maxLength + 1);
-                    if (!mapConstantResolved)
-                        expect(resolveConstant).fail('to be called with argument "MAP"');
                 }
             );
         }
@@ -1478,11 +1463,19 @@ self,
             var paramDataList =
             [
                 {
-                    description: '_encodeByDenseFigures',
+                    description: '_encodeByDenseLowFigures',
                     fn:
                     function (inputData)
                     {
-                        this._encodeByDenseFigures(inputData, 0);
+                        this._encodeByDenseLowFigures(inputData, 0);
+                    },
+                },
+                {
+                    description: '_encodeByDenseMidFigures',
+                    fn:
+                    function (inputData)
+                    {
+                        this._encodeByDenseMidFigures(inputData, 0);
                     },
                 },
                 {

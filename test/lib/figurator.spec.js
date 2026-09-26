@@ -12,19 +12,15 @@
         'JScrewIt.debug.createFigurator',
         function ()
         {
-            function checkInsertionValueNotInFigures
-            (figurator, insertionValueToLastIndexMap, insertionValue, lastIndex)
+            function checkAltJoinerNotInFigures
+            (figurator, altJoinerToLastIndexMap, altJoiner, lastIndex)
             {
                 for
-                (
-                    var index = insertionValueToLastIndexMap[insertionValue] + 1;
-                    index <= lastIndex;
-                    index++
-                )
+                (var index = altJoinerToLastIndexMap[altJoiner] + 1; index <= lastIndex; index++)
                 {
                     var figure = figurator(index);
-                    expect(figure).not.toContain(insertionValue);
-                    insertionValueToLastIndexMap[insertionValue] = index;
+                    expect(figure).not.toContain(altJoiner);
+                    altJoinerToLastIndexMap[altJoiner] = index;
                 }
             }
 
@@ -36,7 +32,7 @@
                     var figurator = JScrewIt.debug.createFigurator(['false', 'true'], '');
                     var figureValueToIndexMap = { __proto__: null };
                     var minExpectedSortLength = 0;
-                    var insertionValueToLastIndexMap = { __proto__: null };
+                    var altJoinerToLastIndexMap = { __proto__: null };
                     for (var index = 0; index < 0x10000; index++)
                     {
                         var figure = figurator(index);
@@ -62,26 +58,27 @@
                         expect(actualSortLength).not.toBeLessThan(minExpectedSortLength);
                         minExpectedSortLength = actualSortLength;
 
-                        var insertionValue = figurator.getInsertionValue(index);
-                        if (insertionValue != null)
+                        var altJoiner = figurator.getAltJoiner(index);
+                        if (altJoiner != null)
                         {
-                            if (insertionValueToLastIndexMap[insertionValue] == null)
+                            if (altJoinerToLastIndexMap[altJoiner] == null)
                             {
-                                expect(insertionValue).not.toMatch
+                                expect(altJoiner).not.toMatch
                                 (
                                     /false|true/,
-                                    'insertion value should not contain any start value'
+                                    'alternative joiner should not contain any start value'
                                 );
-                                insertionValueToLastIndexMap[insertionValue] = -1;
+                                altJoinerToLastIndexMap[altJoiner] = -1;
                             }
 
-                            // Test that none of the figures so far contains this insertion value.
-                            checkInsertionValueNotInFigures
-                            (figurator, insertionValueToLastIndexMap, insertionValue, index);
+                            // Test that none of the figures so far contains this alternative
+                            // joiner.
+                            checkAltJoinerNotInFigures
+                            (figurator, altJoinerToLastIndexMap, altJoiner, index);
                         }
                     }
-                    var firstInsertionValue = figurator.getInsertionValue(0);
-                    expect(firstInsertionValue).toBeDefined();
+                    var firstAltJoiner = figurator.getAltJoiner(0);
+                    expect(firstAltJoiner).toBeDefined();
                 }
             );
             it
@@ -93,7 +90,7 @@
                     var figurator = JScrewIt.debug.createFigurator([''], joiner);
                     var figureValueToIndexMap = { __proto__: null };
                     var minExpectedSortLength = 0;
-                    var insertionValueToLastIndexMap = { __proto__: null };
+                    var altJoinerToLastIndexMap = { __proto__: null };
                     for (var index = 0; index < 0x10000; index++)
                     {
                         var figure = figurator(index);
@@ -111,19 +108,20 @@
                         expect(actualSortLength).not.toBeLessThan(minExpectedSortLength);
                         minExpectedSortLength = actualSortLength;
 
-                        var insertionValue = figurator.getInsertionValue(index);
-                        if (insertionValue != null)
+                        var altJoiner = figurator.getAltJoiner(index);
+                        if (altJoiner != null)
                         {
-                            if (insertionValueToLastIndexMap[insertionValue] == null)
-                                insertionValueToLastIndexMap[insertionValue] = -1;
+                            if (altJoinerToLastIndexMap[altJoiner] == null)
+                                altJoinerToLastIndexMap[altJoiner] = -1;
 
-                            // Test that none of the figures so far contains this insertion value.
-                            checkInsertionValueNotInFigures
-                            (figurator, insertionValueToLastIndexMap, insertionValue, index);
+                            // Test that none of the figures so far contains this alternative
+                            // joiner.
+                            checkAltJoinerNotInFigures
+                            (figurator, altJoinerToLastIndexMap, altJoiner, index);
                         }
                     }
-                    var firstInsertionValue = figurator.getInsertionValue(0);
-                    expect(firstInsertionValue).toBeDefined();
+                    var firstAltJoiner = figurator.getAltJoiner(0);
+                    expect(firstAltJoiner).toBeDefined();
                 }
             );
         }

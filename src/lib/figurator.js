@@ -4,10 +4,10 @@ import { _Array_prototype_push_apply, _Object, createEmpty } from './obj-utils';
 
 export default function createFigurator(startValues, joiner)
 {
-    function createPart(value, sortLength, insertable)
+    function createPart(value, sortLength, isAltJoiner)
     {
         var part = createFigure(value, sortLength);
-        part.insertable = insertable && startValues.indexOf(part.valueOf()) < 0;
+        part.isAltJoiner = isAltJoiner && startValues.indexOf(part.valueOf()) < 0;
         return part;
     }
 
@@ -24,11 +24,11 @@ export default function createFigurator(startValues, joiner)
         return figure;
     }
 
-    function getInsertionValue(lastIndex)
+    function getAltJoiner(lastIndex)
     {
         var figure = figurator(lastIndex);
-        var insertionValue = figure._insertionValue;
-        return insertionValue;
+        var altJoiner = figure._altJoiner;
+        return altJoiner;
     }
 
     function growFigures(part)
@@ -56,25 +56,25 @@ export default function createFigurator(startValues, joiner)
             var figureList = figureLists[sortLength] || (figureLists[sortLength] = []);
             var figure = createFigure(value, sortLength);
             figureList.push(figure);
-            part.insertable = false;
-            for (;; insertionPartIndex++)
+            part.isAltJoiner = false;
+            for (;; altJoinerPartIndex++)
             {
-                var insertionPart = parts[insertionPartIndex];
-                if (!insertionPart)
+                var altJoinerPart = parts[altJoinerPartIndex];
+                if (!altJoinerPart)
                     break;
-                if (insertionPart.insertable)
+                if (altJoinerPart.isAltJoiner)
                 {
-                    figure._insertionValue = insertionPart.valueOf();
+                    figure._altJoiner = altJoinerPart.valueOf();
                     break;
                 }
             }
         }
     }
 
+    var altJoinerPartIndex = 0;
     var currentSortLength = 0;
     var figureLists = [];
     var figures = [];
-    var insertionPartIndex = 0;
     var usedValueSet = createEmpty();
     var parts =
     [
@@ -118,7 +118,7 @@ export default function createFigurator(startValues, joiner)
                 return true;
         }
     );
-    figurator.getInsertionValue = getInsertionValue;
+    figurator.getAltJoiner = getAltJoiner;
 
     return figurator;
 }

@@ -2,6 +2,8 @@ import JScrewIt from '#jscrewit';
 
 const { createEncoder, getStrategies } = JScrewIt.debug;
 
+const COUNT_FACTOR = 1.16;
+
 // Element pools
 //
 // Every pool is an ordered list of Unicode characters, including supplementary characters, with the
@@ -147,8 +149,6 @@ function data(features, elementSupplier, strategyName)
     };
     return data;
 }
-
-const COUNT_FACTOR = 1.2;
 
 /**
  * Returns candidate counts of distinct elements for an input of the specified length.
@@ -306,7 +306,13 @@ export default
     (
         ['ARRAY_ITERATOR', 'ARROW', 'AT', 'CAPITAL_HTML', 'FF_SRC'],
         DICT_CHARS,
-        'byDenseFigures',
+        'byDenseLowFigures',
+    ),
+    data
+    (
+        ['ARRAY_ITERATOR', 'ARROW', 'AT', 'CAPITAL_HTML', 'FF_SRC'],
+        DICT_CHARS,
+        'byDenseMidFigures',
     ),
     data
     (
