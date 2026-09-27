@@ -7,7 +7,7 @@ export function test(callback)
 {
     const { resolve } = createRequire(import.meta.url);
     const nycPath = resolve('nyc/bin/nyc');
-    const mochaPath = resolve('mocha/bin/mocha');
+    const mochaPath = resolve('mocha_11/bin/mocha');
     const forkArgs =
     [
         '--include=src',
