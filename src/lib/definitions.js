@@ -8,8 +8,7 @@ import { define, defineList, makeCallableWithFeatures } from './definers';
 import { replaceStaticExpr }                            from './encoder/encoder-utils';
 import { Feature }                                      from './features';
 import { _String, createEmpty }                         from './obj-utils';
-import { LazySolution }                                 from './solution';
-import { SolutionType }                                 from '~solution';
+import { LazySolution, SolutionType }                   from './solution';
 
 export var AMENDINGS = ['true', 'undefined', 'NaN'];
 

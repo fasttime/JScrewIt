@@ -36,10 +36,10 @@ import
 }
 from './obj-utils';
 import { ScrewBuffer, optimizeSolutions }                           from './screw-buffer';
-import { DynamicSolution, SimpleSolution }                          from './solution';
+import { DynamicSolution, SimpleSolution, SolutionType, calculateSolutionType }
+from './solution';
 import trimJS                                                       from './trim-js';
 import { MASK_EMPTY, MaskMap, MaskSet, maskIncludes, maskUnion }    from '~feature-hub';
-import { SolutionType, calculateSolutionType }                      from '~solution';
 
 if (typeof NO_DEBUG === 'undefined')
 {

@@ -1,6 +1,9 @@
 import { codePointFromSurrogatePair, shortestOf }   from '../encoder/encoder-utils';
+import { Feature }                                  from '../features';
 import { _Math_min }                                from '../obj-utils';
-import { SimpleSolution, SolutionType }             from '~solution';
+import { SimpleSolution, SolutionType }             from '../solution';
+
+var FROM_CODE_POINT_MASK = Feature.FROM_CODE_POINT.mask;
 
 function calculateMinSurrogateAppendLength(encoder)
 {
@@ -21,17 +24,7 @@ function createClusterer(source, replacement)
     return clusterer;
 }
 
-function getCharCodeInRange(source, from, to)
-{
-    if (source && source.length === 1)
-    {
-        var charCode = source.charCodeAt();
-        if (charCode >= from && charCode <= to)
-            return charCode;
-    }
-}
-
-export default function (encoder)
+export default function createOptimizer(encoder)
 {
     var minSurrogateAppendLength = calculateMinSurrogateAppendLength(encoder);
     var appendLengthOf =
@@ -78,3 +71,22 @@ export default function (encoder)
     var optimizer = { appendLengthOf: appendLengthOf, optimizeSolutions: optimizeSolutions };
     return optimizer;
 }
+
+function getCharCodeInRange(source, from, to)
+{
+    if (source && source.length === 1)
+    {
+        var charCode = source.charCodeAt();
+        if (charCode >= from && charCode <= to)
+            return charCode;
+    }
+}
+
+createOptimizer.key = 'surrogatePair';
+createOptimizer.matches =
+function (encoder, str)
+{
+    var returnValue =
+    encoder.hasFeatures(FROM_CODE_POINT_MASK) && /[\ud800-\udbff][\udc00-\udfff]/.test(str);
+    return returnValue;
+};

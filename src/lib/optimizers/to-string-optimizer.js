@@ -1,18 +1,17 @@
 // Optimized clusters take the form:
 //
-// (X)["toString"](Y)
+// (+(X))["toString"](Y)
 //
 // X is a JSFuck integer between 23 and MAX_SAFE_INTEGER.
 //
-// Y takes at least 15 charactes for "20" and at most 46 characters for "36".
+// Y takes at least 15 characters for "20" and at most 46 characters for "36".
 //
 // The leading append plus is omitted when the optimized cluster is the first element of a group.
 
 import { replaceStaticString }              from '../encoder/encoder-utils';
 import formatPositiveNumber                 from '../encoder/format-positive-number';
 import { _String, _parseInt, createEmpty }  from '../obj-utils';
-import { SimpleSolution }                   from '../solution';
-import { SolutionType }                     from '~solution';
+import { SimpleSolution, SolutionType }     from '../solution';
 
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
 var CLUSTER_EXTRA_LENGTHS = [];
@@ -47,7 +46,32 @@ var MIN_SOLUTION_SPAN = 2;
 var RADIX_REPLACEMENTS = [];
 var WEAK_EXTRA_LENGTH = 2; // Extra length of wrapping parentheses or brackets.
 
-function createOptimizer(toStringReplacement)
+export default function createOptimizer(encoder)
+{
+    if (initialize)
+    {
+        initialize();
+        initialize = null;
+    }
+    var toStringReplacement = encoder.resolveConstant('TO_STRING').replacement;
+    var optimizer = makeOptimizer(toStringReplacement);
+    return optimizer;
+}
+
+function getMinRadix(char)
+{
+    var minRadix = _parseInt(char, MAX_RADIX) + 1;
+    return minRadix;
+}
+
+function isClusterable(solution)
+{
+    var source = solution.source;
+    var clusterable = source != null && /^[\da-z]$/.test(source);
+    return clusterable;
+}
+
+function makeOptimizer(toStringReplacement)
 {
     function appendLengthOf(solution)
     {
@@ -68,7 +92,7 @@ function createOptimizer(toStringReplacement)
         }
     }
 
-    function createClusterer(decimalReplacement, radixReplacement)
+    function createClusterer(source, decimalReplacement, radixReplacement)
     {
         var clusterer =
         function ()
@@ -76,7 +100,7 @@ function createOptimizer(toStringReplacement)
             var replacement =
             '(+(' + decimalReplacement + '))[' + toStringReplacement + '](' + radixReplacement +
             ')';
-            var solution = new SimpleSolution(undefined, replacement, SolutionType.STRING);
+            var solution = new SimpleSolution(source, replacement, SolutionType.STRING);
             return solution;
         };
         return clusterer;
@@ -106,7 +130,7 @@ function createOptimizer(toStringReplacement)
             var saving = discreteAppendLength - clusterAppendLength;
             if (saving > 0)
             {
-                var clusterer = createClusterer(decimalReplacement, radixReplacement);
+                var clusterer = createClusterer(chars, decimalReplacement, radixReplacement);
                 plan.addCluster(start, chars.length, clusterer, saving);
             }
         }
@@ -183,31 +207,6 @@ function createOptimizer(toStringReplacement)
     return optimizer;
 }
 
-function getMinRadix(char)
-{
-    var minRadix = _parseInt(char, MAX_RADIX) + 1;
-    return minRadix;
-}
-
-function isClusterable(solution)
-{
-    var source = solution.source;
-    var clusterable = source != null && /^[\da-z]$/.test(source);
-    return clusterable;
-}
-
-export default function (encoder)
-{
-    if (initialize)
-    {
-        initialize();
-        initialize = null;
-    }
-    var toStringReplacement = encoder.resolveConstant('TO_STRING').replacement;
-    var optimizer = createOptimizer(toStringReplacement);
-    return optimizer;
-}
-
 var initialize =
 function ()
 {
@@ -224,4 +223,12 @@ function ()
         MAX_SAFE_INTEGER.toString(radix).length;
         CLUSTER_EXTRA_LENGTHS[radix] = DECIMAL_MIN_LENGTHS[decimalDigitMaxCount] + minLength;
     }
+};
+
+createOptimizer.key = 'toString';
+createOptimizer.matches =
+function (encoder, str)
+{
+    var returnValue = /[\da-z]{2}/.test(str);
+    return returnValue;
 };

@@ -18,5 +18,4 @@ assignNoEnum
     }
 );
 
-export { AbstractSolution, DynamicSolution, EMPTY_SOLUTION, LazySolution, SimpleSolution }
-from '~solution';
+export * from '~solution';

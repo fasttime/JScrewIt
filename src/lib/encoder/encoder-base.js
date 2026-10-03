@@ -29,7 +29,7 @@ from '../obj-utils';
 import
 { SCREW_AS_BONDED_STRING, SCREW_AS_STRING, SCREW_NORMAL, ScrewBuffer }
 from '../screw-buffer';
-import { SimpleSolution }                                       from '../solution';
+import { SimpleSolution, SolutionType }                         from '../solution';
 import { initStaticEncoder, replaceStaticString, shortestOf }   from './encoder-utils';
 import findDefinition                                           from './find-definition';
 import formatPositiveNumber                                     from './format-positive-number';
@@ -38,7 +38,6 @@ import replaceCharByCharCode                                    from './replace-
 import replaceCharByEscSeq                                      from './replace-char-by-esc-seq';
 import replaceCharByUnescape                                    from './replace-char-by-unescape';
 import { MASK_EMPTY, maskIncludes }                             from '~feature-hub';
-import { SolutionType }                                         from '~solution';
 
 /** @typedef {import('../solution').AbstractSolution} AbstractSolution */
 

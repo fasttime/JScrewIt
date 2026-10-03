@@ -171,6 +171,25 @@
                     expect(bestClusters).toEqual([clusters[4], clusters[2], clusters[0]]);
                 }
             );
+            it
+            (
+                'selects the clusters with the largest total saving',
+                function ()
+                {
+                    var plan = JScrewIt.debug.createClusteringPlan();
+                    plan.addCluster(0, 2, 'foo', 5);
+                    plan.addCluster(1, 2, 'bar', 6);
+                    plan.addCluster(2, 2, 'baz', 5);
+                    var bestClusters = plan.conclude();
+                    expect(bestClusters).toEqual
+                    (
+                        [
+                            { start: 2, length: 2, data: 'baz' },
+                            { start: 0, length: 2, data: 'foo' },
+                        ]
+                    );
+                }
+            );
         }
     );
 }

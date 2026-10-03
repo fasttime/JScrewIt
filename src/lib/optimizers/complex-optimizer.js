@@ -1,10 +1,84 @@
-import { APPEND_LENGTH_OF_EMPTY }                           from '../append-lengths';
-import { _Array_prototype_forEach_call, createEmpty, noop } from '../obj-utils';
+import { APPEND_LENGTH_OF_EMPTY }   from '../append-lengths';
+import { COMPLEX }                  from '../definitions';
+import { _Array_prototype_forEach_call, _Object_keys, createEmpty, noop }
+from '../obj-utils';
 
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
 var NOOP_OPTIMIZER = { appendLengthOf: noop, optimizeSolutions: noop };
 
-function createOptimizer
+function createCharSet(charInfos, index)
+{
+    var charSet = createEmpty();
+    var charInfo;
+    while (charInfo = charInfos[index++])
+        charSet[charInfo.char] = null;
+    return charSet;
+}
+
+export default function createOptimizer(encoder, complex)
+{
+    var optimizer;
+    var discreteAppendLength = 0;
+    var charMap = createEmpty();
+    var charInfos = [];
+    _Array_prototype_forEach_call
+    (
+        complex,
+        function (char)
+        {
+            var charSolution = encoder.resolveCharacter(char);
+            var charAppendLength = charSolution.appendLength;
+            discreteAppendLength += charAppendLength;
+            var charInfo = charMap[char];
+            if (charInfo)
+                charInfo.count++;
+            else
+            {
+                charInfo =
+                charMap[char] =
+                { appendLength: charAppendLength, char: char, count: 1 };
+                charInfos.push(charInfo);
+            }
+        }
+    );
+    var definition = COMPLEX[complex].definition;
+    var complexSolution = encoder.resolve(definition, complex);
+    var solutionAppendLength = complexSolution.appendLength;
+    var appendLengthDiff = discreteAppendLength - solutionAppendLength;
+    if (appendLengthDiff + BOND_EXTRA_LENGTH > 0)
+    {
+        charInfos.sort
+        (
+            function (charInfo1, charInfo2)
+            {
+                var result = charInfo1.appendLength - charInfo2.appendLength;
+                return result;
+            }
+        );
+        var restLength = solutionAppendLength;
+        var restCount = complex.length;
+        for (var index = 0; restCount; index++)
+        {
+            var charInfo = charInfos[index];
+            var charAppendLength = charInfo.appendLength;
+            if (charAppendLength * restCount > restLength)
+                break;
+            var count = charInfo.count;
+            restLength -= charAppendLength * count;
+            restCount -= count;
+        }
+        var optimizedCharAppendLength = restLength / restCount | 0;
+        var charSet = createCharSet(charInfos, index);
+        optimizer =
+        makeOptimizer
+        (complex, complexSolution, charSet, optimizedCharAppendLength, appendLengthDiff);
+    }
+    else
+        optimizer = NOOP_OPTIMIZER;
+    return optimizer;
+}
+
+function makeOptimizer
 (complex, complexSolution, charSet, optimizedCharAppendLength, appendLengthDiff)
 {
     function appendLengthOf(solution)
@@ -43,7 +117,7 @@ function createOptimizer
                 {
                     if (forceString && !complexSolution.isString)
                         saving -= APPEND_LENGTH_OF_EMPTY;
-                    else if (bond)
+                    else if (bond && !complexSolution.isLoose)
                         saving += BOND_EXTRA_LENGTH;
                 }
                 if (saving > 0)
@@ -57,73 +131,12 @@ function createOptimizer
     return optimizer;
 }
 
-function createCharSet(charInfos, index)
+createOptimizer.key = 'complex';
+createOptimizer.subKeys = _Object_keys(COMPLEX);
+createOptimizer.matches =
+function (encoder, str, complex)
 {
-    var charSet = createEmpty();
-    var charInfo;
-    while (charInfo = charInfos[index++])
-        charSet[charInfo.char] = null;
-    return charSet;
-}
-
-export default function (encoder, complex, definition)
-{
-    var optimizer;
-    var discreteAppendLength = 0;
-    var charMap = createEmpty();
-    var charInfos = [];
-    _Array_prototype_forEach_call
-    (
-        complex,
-        function (char)
-        {
-            var charSolution = encoder.resolveCharacter(char);
-            var charAppendLength = charSolution.appendLength;
-            discreteAppendLength += charAppendLength;
-            var charInfo = charMap[char];
-            if (charInfo)
-                charInfo.count++;
-            else
-            {
-                charInfo =
-                charMap[char] =
-                { appendLength: charAppendLength, char: char, count: 1 };
-                charInfos.push(charInfo);
-            }
-        }
-    );
-    var complexSolution = encoder.resolve(definition, complex);
-    var solutionAppendLength = complexSolution.appendLength;
-    var appendLengthDiff = discreteAppendLength - solutionAppendLength;
-    if (appendLengthDiff + BOND_EXTRA_LENGTH > 0)
-    {
-        charInfos.sort
-        (
-            function (charInfo1, charInfo2)
-            {
-                var result = charInfo1.appendLength - charInfo2.appendLength;
-                return result;
-            }
-        );
-        var restLength = solutionAppendLength;
-        var restCount = complex.length;
-        for (var index = 0; restCount; index++)
-        {
-            var charInfo = charInfos[index];
-            var charAppendLength = charInfo.appendLength;
-            if (charAppendLength * restCount > restLength)
-                break;
-            var count = charInfo.count;
-            restLength -= charAppendLength * count;
-            restCount -= count;
-        }
-        var optimizedCharAppendLength = restLength / restCount | 0;
-        var charSet = createCharSet(charInfos, index);
-        optimizer =
-        createOptimizer
-        (complex, complexSolution, charSet, optimizedCharAppendLength, appendLengthDiff);
-    }
-    else
-        optimizer = NOOP_OPTIMIZER;
-    return optimizer;
-}
+    var entry = COMPLEX[complex];
+    var returnValue = encoder.hasFeatures(entry.mask) && str.indexOf(complex) >= 0;
+    return returnValue;
+};

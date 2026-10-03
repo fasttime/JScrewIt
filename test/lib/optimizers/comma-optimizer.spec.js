@@ -5,7 +5,7 @@
 
 (function ()
 {
-    function createOptimizer()
+    function createOptimizer(replaceCoil)
     {
         function replaceExpr()
         {
@@ -15,6 +15,12 @@
         function replaceString(str, options)
         {
             expect(options.optimize).toBe(true);
+            if (replaceCoil)
+            {
+                var replacement = replaceCoil(str);
+                if (replacement != null)
+                    return replacement;
+            }
             var solution = new DynamicSolution();
             Array.prototype.forEach.call
             (
@@ -31,7 +37,7 @@
         var encoder = JScrewIt.debug.createEncoder();
         encoder.replaceExpr     = replaceExpr;
         encoder.replaceString   = replaceString;
-        var optimizer = encoder._createOptimizer('comma');
+        var optimizer = encoder._getOptimizer('comma');
         return optimizer;
     }
 
@@ -75,7 +81,7 @@
 
     describe
     (
-        'Comma optimizer (comma-optimizer)',
+        '`comma` optimizer',
         function ()
         {
             describe
@@ -428,6 +434,121 @@
                             solutions[1] = SHORT_COMMA_SOLUTION;
                             optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBeGreaterThan(2);
+                        }
+                    );
+                    it
+                    (
+                        'optimizes a run of commas preceded by a comma',
+                        function ()
+                        {
+                            var optimizer = createOptimizer();
+                            var solutions =
+                            [SOLUTIONS[','], SOLUTIONS.A, SOLUTIONS[','], SOLUTIONS.B];
+                            optimizeSolutions([optimizer], solutions, false, false);
+                            expect(solutions.length).toBe(2);
+                            expect(solutions[0]).toBe(SOLUTIONS[',']);
+                            expect(solutions[1].replacement).toBe('[].slice.call("A"+"B")');
+                            expect(solutions[1].type).toBe(SolutionType.OBJECT);
+                        }
+                    );
+                    it
+                    (
+                        'accounts for the optimization of the coil',
+                        function ()
+                        {
+                            var COMMA_SOLUTION =
+                            new Solution(',', '/* 17 */      ","', SolutionType.STRING);
+
+                            var replaceCoil =
+                            function (str)
+                            {
+                                if (str === 'AB')
+                                    return '"AB"';
+                            };
+                            var optimizer;
+                            var solutions;
+                            var initSolutions =
+                            function ()
+                            {
+                                solutions = [SOLUTIONS.A, COMMA_SOLUTION, SOLUTIONS.B];
+                            };
+
+                            // OK.
+                            optimizer = createOptimizer(replaceCoil);
+                            initSolutions();
+                            optimizeSolutions([optimizer], solutions, false, true);
+                            expect(solutions.length).toBe(1);
+                            expect(solutions[0].replacement).toBe('[].slice.call("AB")');
+                            expect(solutions[0].type).toBe(SolutionType.OBJECT);
+
+                            // Coil not optimized.
+                            optimizer = createOptimizer();
+                            initSolutions();
+                            optimizeSolutions([optimizer], solutions, false, true);
+                            expect(solutions.length).toBe(3);
+                        }
+                    );
+                    it
+                    (
+                        'replaces the coil of a candidate cluster only once',
+                        function ()
+                        {
+                            var coils = [];
+                            var replaceCoil =
+                            function (str)
+                            {
+                                coils.push(str);
+                            };
+                            var optimizer = createOptimizer(replaceCoil);
+                            var solutions =
+                            [
+                                SOLUTIONS.false,
+                                SOLUTIONS.A,
+                                SOLUTIONS[','],
+                                SOLUTIONS.B,
+                                SOLUTIONS[','],
+                                SOLUTIONS.C,
+                                SOLUTIONS.false,
+                            ];
+                            optimizeSolutions([optimizer], solutions, false, false);
+                            expect(solutions.length).toBe(3);
+                            expect(solutions[1].replacement).toBe('[].slice.call("A"+"B"+"C")');
+                            expect(coils).toEqual(['ABC', 'AB', 'BC']);
+                        }
+                    );
+                    it
+                    (
+                        'does not drop the first or last characters of a run at the start or at ' +
+                        'the end of a group',
+                        function ()
+                        {
+                            function test(solutions, expectedCoils)
+                            {
+                                var coils = [];
+                                var replaceCoil =
+                                function (str)
+                                {
+                                    coils.push(str);
+                                };
+                                var optimizer = createOptimizer(replaceCoil);
+                                optimizeSolutions([optimizer], solutions, false, false);
+                                expect(coils.sort()).toEqual(expectedCoils);
+                            }
+
+                            var solutions =
+                            [
+                                SOLUTIONS.A,
+                                SOLUTIONS[','],
+                                SOLUTIONS.B,
+                                SOLUTIONS[','],
+                                SOLUTIONS.C,
+                            ];
+                            // Run spanning the whole group.
+                            test(solutions.slice(), ['ABC']);
+                            // Run at the start of the group.
+                            test(solutions.concat(SOLUTIONS.false), ['AB', 'ABC']);
+                            // Run at the end of the group.
+                            test([SOLUTIONS.false].concat(solutions), ['ABC', 'BC']);
                         }
                     );
                 }

@@ -17,7 +17,7 @@
         var encoder = JScrewIt.debug.createEncoder();
         encoder._replaceCharByCharCode  = replaceChar;
         encoder._replaceCharByEscSeq    = replaceChar;
-        var optimizer = encoder._createOptimizer('surrogatePair');
+        var optimizer = encoder._getOptimizer('surrogatePair');
         return optimizer;
     }
 
@@ -36,7 +36,7 @@
 
     describe
     (
-        'Surrogate pair optimizer (surrogate-pair-optimizer)',
+        '`surrogatePair` optimizer',
         function ()
         {
             describe

@@ -69,32 +69,22 @@ function addCluster(start, length, data, saving)
         cluster = startLink[length] = { start: start, length: length, data: data, saving: saving };
         this.clusters.push(cluster);
     }
-    if (this.maxLength < length)
-        this.maxLength = length;
 }
 
-function compareClustersByQuality(cluster1, cluster2)
+function compareClustersByEnd(cluster1, cluster2)
 {
     var diff =
-    cluster1.saving - cluster2.saving ||
-    cluster2.length - cluster1.length ||
-    compareClustersByStart(cluster2, cluster1);
-    return diff;
-}
-
-function compareClustersByStart(cluster1, cluster2)
-{
-    var diff = cluster2.start - cluster1.start;
+    cluster1.start + cluster1.length - (cluster2.start + cluster2.length) ||
+    cluster1.start - cluster2.start;
     return diff;
 }
 
 /**
  * Concludes this plan by selecting the candidate clusters to be applied.
  *
- * Candidates are picked greedily by decreasing saving, discarding any candidate that overlaps a
- * cluster already picked.
- * Among candidates with the same saving, shorter ones are preferred, and among those with the same
- * length, the ones with a larger start.
+ * The selected clusters do not overlap, and their total saving is the largest attainable.
+ * Among selections with the same total saving, the one whose clusters span fewer solutions is
+ * preferred, and remaining ties are broken in favor of clusters that end later.
  *
  * This method must be called at most once, and no candidate clusters may be registered afterwards.
  *
@@ -108,71 +98,76 @@ function conclude()
 {
     var bestClusters = [];
     var clusters = this.clusters;
-    if (clusters.length)
+    var clusterCount = clusters.length;
+    if (clusterCount)
     {
-        clusters.sort(compareClustersByQuality);
-        var cluster;
-        while (cluster = pickBestCluster(this.startLinks, clusters, this.maxLength))
-            bestClusters.push(cluster);
-        bestClusters.sort(compareClustersByStart);
+        clusters.sort(compareClustersByEnd);
+        // selections[index] is the best selection among the first index clusters.
+        var selections = [{ saving: 0, span: 0 }];
+        for (var index = 0; index < clusterCount; index++)
+        {
+            var cluster = clusters[index];
+            var prevIndex = countClustersEndingBy(clusters, index, cluster.start);
+            var prevSelection = selections[prevIndex];
+            var saving = prevSelection.saving + cluster.saving;
+            var span = prevSelection.span + cluster.length;
+            var selection = selections[index];
+            var diff = saving - selection.saving || selection.span - span;
+            if (diff >= 0)
+                selection = { saving: saving, span: span, cluster: cluster, prevIndex: prevIndex };
+            selections.push(selection);
+        }
+        for
+        (
+            var bestSelection = selections[clusterCount];
+            bestSelection.cluster;
+            bestSelection = selections[bestSelection.prevIndex]
+        )
+        {
+            var bestCluster = bestSelection.cluster;
+            delete bestCluster.saving;
+            bestClusters.push(bestCluster);
+        }
     }
     return bestClusters;
+}
+
+/**
+ * Returns the number of leading clusters in a list sorted by end that end at or before a specified
+ * position.
+ *
+ * @param {object[]} clusters
+ * A list of clusters sorted by end.
+ *
+ * @param {number} count
+ * The number of leading clusters to consider.
+ *
+ * @param {number} position
+ * The position to compare with the ends of the clusters.
+ *
+ * @returns {number}
+ * The number of leading clusters ending at or before the specified position.
+ */
+function countClustersEndingBy(clusters, count, position)
+{
+    var low = 0;
+    var high = count;
+    while (low < high)
+    {
+        var middle = low + high >>> 1;
+        var cluster = clusters[middle];
+        if (cluster.start + cluster.length <= position)
+            low = middle + 1;
+        else
+            high = middle;
+    }
+    return low;
 }
 
 function getOrCreateStartLink(startLinks, start)
 {
     var startLink = startLinks[start] || (startLinks[start] = []);
     return startLink;
-}
-
-function pickBestCluster(startLinks, clusters, maxLength)
-{
-    var cluster;
-    while (cluster = clusters.pop())
-    {
-        if (cluster.saving != null)
-        {
-            unlinkClusters(startLinks, maxLength, cluster);
-            return cluster;
-        }
-    }
-}
-
-function unlinkClusters(startLinks, maxLength, cluster)
-{
-    var startLink;
-    var start = cluster.start;
-    var index = start;
-    var end = start + cluster.length;
-    do
-    {
-        startLink = startLinks[index];
-        if (startLink)
-        {
-            unlinkClustersFromLength(startLink, 0);
-            delete startLinks[index];
-        }
-    }
-    while (++index < end);
-    for (var length = 1; length < maxLength;)
-    {
-        startLink = startLinks[start - length++];
-        if (startLink)
-        {
-            unlinkClustersFromLength(startLink, length);
-            startLink.length = length;
-        }
-    }
-}
-
-function unlinkClustersFromLength(startLink, fromLength)
-{
-    for (var length = startLink.length; length-- > fromLength;)
-    {
-        var cluster = startLink[length];
-        if (cluster)
-            delete cluster.saving;
-    }
 }
 
 export default function createClusteringPlan()
@@ -182,7 +177,6 @@ export default function createClusteringPlan()
         addCluster: addCluster,
         clusters:   [],
         conclude:   conclude,
-        maxLength:  0,
         startLinks: createEmpty(),
     };
     return plan;

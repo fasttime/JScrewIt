@@ -14,18 +14,12 @@
             return solution;
         }
 
-        function resolveCharacter(char)
-        {
-            var solution = SOLUTIONS[char];
-            return solution;
-        }
-
         if (appendLength === undefined)
             appendLength = 60;
         var encoder = JScrewIt.debug.createEncoder();
         encoder.resolve             = resolve;
         encoder.resolveCharacter    = resolveCharacter;
-        var optimizer = encoder._createOptimizer('complex', 'feet');
+        var optimizer = encoder._getOptimizer('complex', COMPLEX);
         return optimizer;
     }
 
@@ -36,25 +30,55 @@
         return solution;
     }
 
-    var EXPECTED_REPLACEMENT = '"feet"';
+    function resolveCharacter(char)
+    {
+        var solution = SOLUTIONS[char];
+        return solution;
+    }
 
     var JScrewIt =
     typeof module !== 'undefined' ? require('../../node-jscrewit-test') : self.JScrewIt;
     var SolutionType = JScrewIt.debug.SolutionType;
 
+    var COMPLEX = 'mCh';
+    var EXPECTED_REPLACEMENT = '"mCh"';
+
     var SOLUTIONS =
     {
-        e: createSolution(26, 'e', undefined, SolutionType.STRING),
-        f: createSolution(14, 'f', undefined, SolutionType.STRING),
-        t: createSolution(15, 't', undefined, SolutionType.STRING),
+        C: createSolution(40, 'C', undefined, SolutionType.STRING),
+        h: createSolution(15, 'h', undefined, SolutionType.STRING),
+        m: createSolution(14, 'm', undefined, SolutionType.STRING),
         u: createSolution(17, 'u', undefined, SolutionType.STRING),
     };
 
     describe
     (
-        'Complex optimizer (complex-optimizer)',
+        '`complex` optimizer',
         function ()
         {
+            it
+            (
+                'resolves the definition of the complex',
+                function ()
+                {
+                    var resolveArgs;
+                    var encoder = JScrewIt.debug.createEncoder();
+                    encoder.resolve =
+                    function ()
+                    {
+                        resolveArgs = arguments;
+                        var solution =
+                        createSolution(60, undefined, EXPECTED_REPLACEMENT, SolutionType.STRING);
+                        return solution;
+                    };
+                    encoder.resolveCharacter = resolveCharacter;
+                    encoder._getOptimizer('complex', COMPLEX);
+                    var definition = JScrewIt.debug.getComplexEntry(COMPLEX).definition;
+                    expect(resolveArgs.length).toBe(2);
+                    expect(resolveArgs[0]).toBe(definition);
+                    expect(resolveArgs[1]).toBe(COMPLEX);
+                }
+            );
             describe
             (
                 '#appendLengthOf',
@@ -66,7 +90,7 @@
                         function ()
                         {
                             var optimizer = createOptimizer();
-                            expect(optimizer.appendLengthOf(SOLUTIONS.e)).toBe(15);
+                            expect(optimizer.appendLengthOf(SOLUTIONS.C)).toBe(31);
                         }
                     );
                     it
@@ -84,7 +108,7 @@
                         function ()
                         {
                             var optimizer = createOptimizer();
-                            expect(optimizer.appendLengthOf(SOLUTIONS.t)).toBeUndefined();
+                            expect(optimizer.appendLengthOf(SOLUTIONS.h)).toBeUndefined();
                         }
                     );
                 }
@@ -98,24 +122,24 @@
                     [
                         [
                             'a string integral cluster without bonding or string forcing',
-                            { complexAppendLength: 80 },
+                            { complexAppendLength: 68 },
                         ],
                         [
                             'an object integral cluster without bonding or string forcing',
-                            { complexAppendLength: 80, complexSolutionType: SolutionType.OBJECT },
+                            { complexAppendLength: 68, complexSolutionType: SolutionType.OBJECT },
                         ],
                         [
                             'an integral cluster with bonding',
-                            { bond: true, complexAppendLength: 82 },
+                            { bond: true, complexAppendLength: 70 },
                         ],
                         [
                             'an integral string cluster with string forcing',
-                            { complexAppendLength: 80, forceString: true },
+                            { complexAppendLength: 68, forceString: true },
                         ],
                         [
                             'an integral object cluster with string forcing',
                             {
-                                complexAppendLength:    77,
+                                complexAppendLength:    65,
                                 complexSolutionType:    SolutionType.OBJECT,
                                 forceString:            true,
                             },
@@ -124,9 +148,9 @@
                             'a partial cluster with bonding',
                             {
                                 bond:                   true,
-                                complexAppendLength:    80,
+                                complexAppendLength:    68,
                                 solutions:
-                                [SOLUTIONS.u, SOLUTIONS.f, SOLUTIONS.e, SOLUTIONS.e, SOLUTIONS.t],
+                                [SOLUTIONS.u, SOLUTIONS.m, SOLUTIONS.C, SOLUTIONS.h],
                                 verifyDo:
                                 function (solutions)
                                 {
@@ -139,11 +163,11 @@
                         [
                             'a partial object cluster with string forcing',
                             {
-                                complexAppendLength:    80,
+                                complexAppendLength:    68,
                                 complexSolutionType:    SolutionType.OBJECT,
                                 forceString:            true,
                                 solutions:
-                                [SOLUTIONS.u, SOLUTIONS.f, SOLUTIONS.e, SOLUTIONS.e, SOLUTIONS.t],
+                                [SOLUTIONS.u, SOLUTIONS.m, SOLUTIONS.C, SOLUTIONS.h],
                                 verifyDo:
                                 function (solutions)
                                 {
@@ -165,7 +189,7 @@
                             if (complexSolutionType == null)
                                 complexSolutionType = SolutionType.STRING;
                             var solutions =
-                            opt.solutions || [SOLUTIONS.f, SOLUTIONS.e, SOLUTIONS.e, SOLUTIONS.t];
+                            opt.solutions || [SOLUTIONS.m, SOLUTIONS.C, SOLUTIONS.h];
                             var bond = opt.bond;
                             var forceString = opt.forceString;
                             var verify =
@@ -200,7 +224,7 @@
                             if (complexSolutionType == null)
                                 complexSolutionType = SolutionType.STRING;
                             var solutions =
-                            opt.solutions || [SOLUTIONS.f, SOLUTIONS.e, SOLUTIONS.e, SOLUTIONS.t];
+                            opt.solutions || [SOLUTIONS.m, SOLUTIONS.C, SOLUTIONS.h];
                             var bond = opt.bond;
                             var forceString = opt.forceString;
                             var expectedSolutionCount = solutions.length;
