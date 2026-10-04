@@ -84,12 +84,12 @@ assignNoEnum
 
 export function optimizeSolutions(optimizerList, solutions, bond, forceString)
 {
-    var plan = createClusteringPlan();
+    var plan = createClusteringPlan(solutions, bond, forceString);
     optimizerList.forEach
     (
         function (optimizer)
         {
-            optimizer.optimizeSolutions(plan, solutions, bond, forceString);
+            optimizer.optimizeSolutions(plan, solutions);
         }
     );
     var clusters = plan.conclude();

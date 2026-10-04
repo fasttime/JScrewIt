@@ -273,65 +273,40 @@
                             expect(solutions[2]).toBe(CD_SOLUTION);
                         }
                     );
-                    describe
+                    it
                     (
                         'does not optimize a comma in a single part because of string forcing',
                         function ()
                         {
-                            function test(bond)
+                            var COMMA_SOLUTION =
+                            new Solution(',', '/* 17 */      ","', SolutionType.STRING);
+
+                            var LONG_COMMA_SOLUTION =
+                            new Solution(',', '/* 18 */       ","', SolutionType.STRING);
+
+                            var optimizer = createOptimizer();
+                            var solutions;
+                            var initSolutions =
+                            function ()
                             {
-                                var COMMA_SOLUTION =
-                                new Solution(',', '/* 17 */      ","', SolutionType.STRING);
+                                solutions = [SOLUTIONS.A, COMMA_SOLUTION, SOLUTIONS.B];
+                            };
 
-                                var LONG_COMMA_SOLUTION =
-                                new Solution(',', '/* 18 */       ","', SolutionType.STRING);
+                            // OK.
+                            initSolutions();
+                            optimizeSolutions([optimizer], solutions, false, true);
+                            expect(solutions.length).toBe(3);
 
-                                var optimizer = createOptimizer();
-                                var solutions;
-                                var initSolutions =
-                                function ()
-                                {
-                                    solutions = [SOLUTIONS.A, COMMA_SOLUTION, SOLUTIONS.B];
-                                };
+                            // No string forcing.
+                            initSolutions();
+                            optimizeSolutions([optimizer], solutions, false, false);
+                            expect(solutions.length).toBeLessThan(3);
 
-                                // OK.
-                                initSolutions();
-                                optimizeSolutions([optimizer], solutions, bond, true);
-                                expect(solutions.length).toBe(3);
-
-                                // No string forcing.
-                                initSolutions();
-                                optimizeSolutions([optimizer], solutions, bond, false);
-                                expect(solutions.length).toBeLessThan(3);
-
-                                // Comma too long.
-                                initSolutions();
-                                solutions[1] = LONG_COMMA_SOLUTION;
-                                optimizeSolutions([optimizer], solutions, bond, true);
-                                expect(solutions.length).toBeLessThan(3);
-
-                                // Not a single part: additional leading solution.
-                                initSolutions();
-                                solutions.unshift(SOLUTIONS.A);
-                                optimizeSolutions([optimizer], solutions, bond, true);
-                                expect(solutions.length).toBeLessThan(3);
-
-                                // Not a single part: additional trailing solution.
-                                initSolutions();
-                                solutions.push(SOLUTIONS.B);
-                                optimizeSolutions([optimizer], solutions, bond, true);
-                                expect(solutions.length).toBeLessThan(3);
-
-                                // Multiple commas.
-                                initSolutions();
-                                solutions.push(COMMA_SOLUTION);
-                                solutions.push(SOLUTIONS.C);
-                                optimizeSolutions([optimizer], solutions, bond, true);
-                                expect(solutions.length).toBeLessThan(3);
-                            }
-
-                            it('without bonding', test.bind(null, false));
-                            it('with bonding', test.bind(null, true));
+                            // Comma too long.
+                            initSolutions();
+                            solutions[1] = LONG_COMMA_SOLUTION;
+                            optimizeSolutions([optimizer], solutions, false, true);
+                            expect(solutions.length).toBeLessThan(3);
                         }
                     );
                     it
@@ -365,34 +340,16 @@
                             optimizeSolutions([optimizer], solutions, false, false);
                             expect(solutions.length).toBeGreaterThan(1);
 
-                            // String forcing.
-                            initSolutions();
-                            optimizeSolutions([optimizer], solutions, true, true);
-                            expect(solutions.length).toBeGreaterThan(1);
-
                             // Comma short enough.
                             initSolutions();
                             solutions[1] = SHORT_COMMA_SOLUTION;
-                            optimizeSolutions([optimizer], solutions, true, false);
-                            expect(solutions.length).toBeGreaterThan(1);
-
-                            // Not a single part: additional leading solution.
-                            initSolutions();
-                            solutions.unshift(SOLUTIONS.A);
-                            optimizeSolutions([optimizer], solutions, true, false);
-                            expect(solutions.length).toBeGreaterThan(1);
-
-                            // Not a single part: additional trailing solution.
-                            initSolutions();
-                            solutions.push(SOLUTIONS.B);
                             optimizeSolutions([optimizer], solutions, true, false);
                             expect(solutions.length).toBeGreaterThan(1);
                         }
                     );
                     it
                     (
-                        'optimizes a comma because it is preceded by a digit that is not the ' +
-                        'first character in the group',
+                        'optimizes a comma preceded by a digit',
                         function ()
                         {
                             var COMMA_SOLUTION =
@@ -420,12 +377,6 @@
                             // Comma not preceded by a digit.
                             initSolutions();
                             solutions[1] = SOLUTIONS.A;
-                            optimizeSolutions([optimizer], solutions);
-                            expect(solutions.length).toBeGreaterThan(2);
-
-                            // Digit before comma is the first character in the group.
-                            initSolutions();
-                            solutions.push(solutions.shift());
                             optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBeGreaterThan(2);
 

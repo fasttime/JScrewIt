@@ -39,7 +39,7 @@ export default function createOptimizer(encoder)
         }
     };
     var optimizeSolutions =
-    function (plan, solutions, bond)
+    function (plan, solutions)
     {
         for (var index = solutions.length - 1; index--;)
         {
@@ -57,15 +57,11 @@ export default function createOptimizer(encoder)
             var replacementByCharCode   = encoder._replaceCharByCharCode(codePoint);
             var replacementByEscSeq     = encoder._replaceCharByEscSeq(codePoint);
             var replacement = shortestOf(replacementByCharCode, replacementByEscSeq);
-            var saving = solution1.appendLength + solution2.appendLength - replacement.length - 1;
-            if (solutions.length === 2 && bond)
-                saving += 2; // "(" + ")"
-            if (saving > 0)
-            {
-                var source = source1 + source2;
-                var clusterer = createClusterer(source, replacement);
-                plan.addCluster(index, 2, clusterer, saving);
-            }
+            var clusterAppendLength = replacement.length + 1; // Adding 1 for the leading "+".
+            var saving = solution1.appendLength + solution2.appendLength - clusterAppendLength;
+            var source = source1 + source2;
+            var clusterer = createClusterer(source, replacement);
+            plan.addCluster(index, 2, clusterer, saving, SolutionType.STRING);
         }
     };
     var optimizer = { appendLengthOf: appendLengthOf, optimizeSolutions: optimizeSolutions };

@@ -13,7 +13,6 @@ import formatPositiveNumber                 from '../encoder/format-positive-num
 import { _String, _parseInt, createEmpty }  from '../obj-utils';
 import { SimpleSolution, SolutionType }     from '../solution';
 
-var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
 var CLUSTER_EXTRA_LENGTHS = [];
 var DECIMAL_DIGIT_MAX_COUNTS = [];
 
@@ -44,7 +43,6 @@ var MAX_RADIX = 36;
 var MAX_SAFE_INTEGER = 0x1fffffffffffff;
 var MIN_SOLUTION_SPAN = 2;
 var RADIX_REPLACEMENTS = [];
-var WEAK_EXTRA_LENGTH = 2; // Extra length of wrapping parentheses or brackets.
 
 export default function createOptimizer(encoder)
 {
@@ -128,16 +126,13 @@ function makeOptimizer(toStringReplacement)
             var radixLength = radixReplacement.length;
             var clusterAppendLength = clusterBaseLength + decimalLength + radixLength;
             var saving = discreteAppendLength - clusterAppendLength;
-            if (saving > 0)
-            {
-                var clusterer = createClusterer(chars, decimalReplacement, radixReplacement);
-                plan.addCluster(start, chars.length, clusterer, saving);
-            }
+            var clusterer = createClusterer(chars, decimalReplacement, radixReplacement);
+            plan.addCluster(start, chars.length, clusterer, saving, SolutionType.STRING);
         }
         while (++radix <= MAX_RADIX);
     }
 
-    function optimizeClusters(plan, solutions, start, maxSolutionSpan, bond)
+    function optimizeClusters(plan, solutions, start, maxSolutionSpan)
     {
         var maxDigitChar = '';
         var discreteAppendLength = 0;
@@ -147,8 +142,6 @@ function makeOptimizer(toStringReplacement)
         {
             var solution = solutions[start + solutionSpan];
             discreteAppendLength += solution.appendLength;
-            if (!start && !solutionSpan && solution.isWeak)
-                discreteAppendLength -= WEAK_EXTRA_LENGTH;
             var char = solution.source;
             if (maxDigitChar < char)
                 maxDigitChar = char;
@@ -156,10 +149,6 @@ function makeOptimizer(toStringReplacement)
             if (++solutionSpan >= MIN_SOLUTION_SPAN && discreteAppendLength > clusterBaseLength)
             {
                 var minRadix = getMinRadix(maxDigitChar);
-                // If a bonding is required, an integral cluster can save two additional characters
-                // by omitting a pair of parentheses.
-                if (bond && solutionSpan >= solutions.length)
-                    discreteAppendLength += BOND_EXTRA_LENGTH;
                 var clusterTooLong =
                 optimizeCluster(plan, start, minRadix, discreteAppendLength, chars);
                 if (clusterTooLong)
@@ -169,19 +158,19 @@ function makeOptimizer(toStringReplacement)
         while (solutionSpan < maxSolutionSpan);
     }
 
-    function optimizeSequence(plan, solutions, start, end, bond)
+    function optimizeSequence(plan, solutions, start, end)
     {
         for (;; start++)
         {
             var maxSolutionSpan = end - start;
             if (solutions[start].source !== '0')
-                optimizeClusters(plan, solutions, start, maxSolutionSpan, bond);
+                optimizeClusters(plan, solutions, start, maxSolutionSpan);
             if (maxSolutionSpan <= MIN_SOLUTION_SPAN)
                 break;
         }
     }
 
-    function optimizeSolutions(plan, solutions, bond)
+    function optimizeSolutions(plan, solutions)
     {
         var solutionCount = solutions.length;
         for (var start = 0; start < solutionCount; start = end + 1)
@@ -196,7 +185,7 @@ function makeOptimizer(toStringReplacement)
                     expensive = isExpensive(solution);
             }
             if (expensive && end - start >= MIN_SOLUTION_SPAN)
-                optimizeSequence(plan, solutions, start, end, bond);
+                optimizeSequence(plan, solutions, start, end);
         }
     }
 

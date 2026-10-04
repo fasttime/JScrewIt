@@ -8,11 +8,12 @@ const SUPPRESSED_ERROR_LINE =
 
 const MARKER_LINES =
 {
-    __proto__:                                      null,
-    '    var extendStatics = function(d, b) {\n':   5,
-    '    function __extends(d, b) {\n':             6,
-    '    var __assign = function() {\n':            9,
-    [SUPPRESSED_ERROR_LINE]:                        3,
+    __proto__:                                          null,
+    '    var extendStatics = function(d, b) {\n':       5,
+    '    function __extends(d, b) {\n':                 6,
+    '    var __assign = function() {\n':                9,
+    [SUPPRESSED_ERROR_LINE]:                            3,
+    '    })(SolutionType || (SolutionType = {}));\n':   1,
 };
 
 const c8jsRequire = createRequire(require.resolve('c8js'));

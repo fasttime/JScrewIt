@@ -1,4 +1,15 @@
-import { createEmpty } from './obj-utils';
+import { APPEND_LENGTH_OF_EMPTY }   from './append-lengths';
+import { SolutionType }             from './solution';
+
+/** @typedef {import('./solution').AbstractSolution}    AbstractSolution */
+/** @typedef {import('./solution').SolutionType}        SolutionType */
+
+// The difference between the append length and the length of a solution: the leading "+", and a
+// pair of parentheses around a weak solution.
+var APPEND_EXTRA_LENGTH         = 1;
+var WEAK_APPEND_EXTRA_LENGTH    = 3;
+
+var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
 
 /**
  * A cluster selected by a clustering plan.
@@ -31,8 +42,17 @@ import { createEmpty } from './obj-utils';
 /**
  * Registers a candidate cluster in this plan.
  *
+ * The specified saving is adjusted for the position of the cluster in the group.
+ * A cluster at the start of the group, like the solution it replaces there, contributes the length
+ * of its solution rather than the append length.
+ * An integral cluster also determines the type of the group: if the group must be a string but the
+ * solution of the cluster is not, the append length of an empty array is subtracted; otherwise, if
+ * the group must be bonded and the solution of the cluster is not loose, the length of the bonding
+ * parentheses is added, since the concatenation of two or more solutions would need them.
+ *
+ * Candidate clusters whose adjusted saving is not positive are ignored.
  * If a candidate cluster with the same start and length has been already registered, only the one
- * with the largest saving is retained.
+ * with the largest adjusted saving is retained.
  *
  * @function ClusteringPlan#addCluster
  *
@@ -48,35 +68,48 @@ import { createEmpty } from './obj-utils';
  * This value is returned as is by {@link ClusteringPlan#conclude}.
  *
  * @param {number} saving
- * The number of characters saved by the cluster.
+ * The difference between the sum of the append lengths of the solutions replaced by the cluster and
+ * the append length of the solution of the cluster.
  *
- * Only candidate clusters with a positive saving should be registered.
+ * @param {SolutionType} solutionType
+ * The type of the solution of the cluster.
  */
-function addCluster(start, length, data, saving)
+function addCluster(start, length, data, saving, solutionType)
 {
-    var startLink = getOrCreateStartLink(this.startLinks, start);
-    var cluster = startLink[length];
-    if (cluster)
+    if (!start)
     {
-        if (cluster.saving < saving)
+        var solutions = this.solutions;
+        saving -=
+        getAppendExtraLength(solutions[0].isWeak) -
+        getAppendExtraLength(SolutionType.isWeak(solutionType));
+        if (length === solutions.length) // Integral cluster.
         {
-            cluster.data    = data;
-            cluster.saving  = saving;
+            if (this.forceString && !SolutionType.isString(solutionType))
+                saving -= APPEND_LENGTH_OF_EMPTY;
+            else if (this.bond && !SolutionType.isLoose(solutionType))
+                saving += BOND_EXTRA_LENGTH;
         }
     }
-    else
+    if (saving > 0)
     {
-        cluster = startLink[length] = { start: start, length: length, data: data, saving: saving };
-        this.clusters.push(cluster);
+        var clusterLists = this.clusterLists;
+        var end = start + length;
+        var clustersByLength = clusterLists[end] || (clusterLists[end] = []);
+        var cluster = clustersByLength[length];
+        if (cluster)
+        {
+            if (cluster.saving < saving)
+            {
+                cluster.data    = data;
+                cluster.saving  = saving;
+            }
+        }
+        else
+        {
+            cluster = { start: start, length: length, data: data, saving: saving };
+            clustersByLength[length] = cluster;
+        }
     }
-}
-
-function compareClustersByEnd(cluster1, cluster2)
-{
-    var diff =
-    cluster1.start + cluster1.length - (cluster2.start + cluster2.length) ||
-    cluster1.start - cluster2.start;
-    return diff;
 }
 
 /**
@@ -97,87 +130,76 @@ function compareClustersByEnd(cluster1, cluster2)
 function conclude()
 {
     var bestClusters = [];
-    var clusters = this.clusters;
-    var clusterCount = clusters.length;
-    if (clusterCount)
+    var clusterLists = this.clusterLists;
+    // selections[end] is the best selection among the clusters ending at or before end.
+    var selections = [];
+    var selection = { saving: 0, span: 0 };
+    var clusterListCount = clusterLists.length;
+    for (var end = 0; end < clusterListCount; end++)
     {
-        clusters.sort(compareClustersByEnd);
-        // selections[index] is the best selection among the first index clusters.
-        var selections = [{ saving: 0, span: 0 }];
-        for (var index = 0; index < clusterCount; index++)
+        var clustersByLength = clusterLists[end];
+        if (clustersByLength)
         {
-            var cluster = clusters[index];
-            var prevIndex = countClustersEndingBy(clusters, index, cluster.start);
-            var prevSelection = selections[prevIndex];
-            var saving = prevSelection.saving + cluster.saving;
-            var span = prevSelection.span + cluster.length;
-            var selection = selections[index];
-            var diff = saving - selection.saving || selection.span - span;
-            if (diff >= 0)
-                selection = { saving: saving, span: span, cluster: cluster, prevIndex: prevIndex };
-            selections.push(selection);
+            for (var length in clustersByLength)
+            {
+                var cluster = clustersByLength[length];
+                var prevSelection = selections[cluster.start];
+                var saving = prevSelection.saving + cluster.saving;
+                var span = prevSelection.span + cluster.length;
+                var diff = saving - selection.saving || selection.span - span;
+                if (diff >= 0)
+                    selection = { saving: saving, span: span, cluster: cluster };
+            }
         }
-        for
-        (
-            var bestSelection = selections[clusterCount];
-            bestSelection.cluster;
-            bestSelection = selections[bestSelection.prevIndex]
-        )
-        {
-            var bestCluster = bestSelection.cluster;
-            delete bestCluster.saving;
-            bestClusters.push(bestCluster);
-        }
+        selections[end] = selection;
+    }
+    for (; selection.cluster; selection = selections[selection.cluster.start])
+    {
+        var bestCluster = selection.cluster;
+        delete bestCluster.saving;
+        bestClusters.push(bestCluster);
     }
     return bestClusters;
 }
 
 /**
- * Returns the number of leading clusters in a list sorted by end that end at or before a specified
- * position.
+ * Creates a clustering plan for a group of solutions.
  *
- * @param {object[]} clusters
- * A list of clusters sorted by end.
+ * @param {AbstractSolution[]} solutions
+ * The solutions in the group, in append order.
  *
- * @param {number} count
- * The number of leading clusters to consider.
+ * @param {boolean} bond
+ * `true` if the replacement of the group must be bonded, i.e. usable with any unary operator, as a
+ * property access target, or as an operand of a concatenation, without further parentheses.
  *
- * @param {number} position
- * The position to compare with the ends of the clusters.
+ * A loose expression is bonded by wrapping it in a pair of parentheses, whereas an expression that
+ * is not loose is bonded as it is.
  *
- * @returns {number}
- * The number of leading clusters ending at or before the specified position.
+ * @param {boolean} forceString
+ * `true` if the replacement of the group must evaluate to a string.
+ *
+ * A group that does not evaluate to a string is turned into a string by concatenating it with an
+ * empty array.
+ *
+ * @returns {ClusteringPlan}
+ * A new clustering plan.
  */
-function countClustersEndingBy(clusters, count, position)
-{
-    var low = 0;
-    var high = count;
-    while (low < high)
-    {
-        var middle = low + high >>> 1;
-        var cluster = clusters[middle];
-        if (cluster.start + cluster.length <= position)
-            low = middle + 1;
-        else
-            high = middle;
-    }
-    return low;
-}
-
-function getOrCreateStartLink(startLinks, start)
-{
-    var startLink = startLinks[start] || (startLinks[start] = []);
-    return startLink;
-}
-
-export default function createClusteringPlan()
+export default function createClusteringPlan(solutions, bond, forceString)
 {
     var plan =
     {
-        addCluster: addCluster,
-        clusters:   [],
-        conclude:   conclude,
-        startLinks: createEmpty(),
+        addCluster:     addCluster,
+        bond:           bond,
+        clusterLists:   [],
+        conclude:       conclude,
+        forceString:    forceString,
+        solutions:      solutions,
     };
     return plan;
+}
+
+function getAppendExtraLength(weak)
+{
+    var appendExtraLength = weak ? WEAK_APPEND_EXTRA_LENGTH : APPEND_EXTRA_LENGTH;
+    return appendExtraLength;
 }

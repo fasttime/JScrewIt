@@ -18,6 +18,8 @@ import createToStringOptimizer      from './optimizers/to-string-optimizer';
  *
  * @returns {AbstractSolution}
  * The solution that replaces the clustered solutions in the group.
+ *
+ * The type of the solution must be the one specified when the cluster was registered.
  */
 
 /**
@@ -77,28 +79,13 @@ import createToStringOptimizer      from './optimizers/to-string-optimizer';
  * {@link ClusteringPlan#addCluster}.
  *
  * The data argument passed to {@link ClusteringPlan#addCluster} must be a {@link Clusterer}.
+ * The saving argument is the difference between the sum of the append lengths of the clustered
+ * solutions and the append length of the solution of the cluster: the plan adjusts it for the
+ * position of the cluster in the group and ignores candidates that are not worth applying, so an
+ * optimizer should register every candidate cluster it finds, whatever its saving.
  *
  * @param {AbstractSolution[]} solutions
  * The solutions in the group, in append order.
- *
- * @param {boolean} bond
- * `true` if the replacement of the group must be bonded, i.e. usable with any unary operator, as a
- * property access target, or as an operand of a concatenation, without further parentheses.
- *
- * A loose expression is bonded by wrapping it in a pair of parentheses, whereas an expression that
- * is not loose is bonded as it is.
- * Since the concatenation of two or more solutions is always loose, those parentheses can only be
- * spared by an integral cluster whose solution is not loose: this extra saving must be added by the
- * optimizer.
- *
- * @param {boolean} forceString
- * `true` if the replacement of the group must evaluate to a string.
- *
- * A group that does not evaluate to a string is turned into a string by concatenating it with an
- * empty array.
- * Since the concatenation of two or more solutions is always a string, this only concerns an
- * integral cluster whose solution is not a string: the append length of the empty array must be
- * subtracted by the optimizer.
  *
  * @returns {void}
  */

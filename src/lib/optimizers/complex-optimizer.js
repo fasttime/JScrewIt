@@ -1,7 +1,5 @@
-import { APPEND_LENGTH_OF_EMPTY }   from '../append-lengths';
-import { COMPLEX }                  from '../definitions';
-import { _Array_prototype_forEach_call, _Object_keys, createEmpty, noop }
-from '../obj-utils';
+import { COMPLEX }                                                          from '../definitions';
+import { _Array_prototype_forEach_call, _Object_keys, createEmpty, noop }   from '../obj-utils';
 
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
 var NOOP_OPTIMIZER = { appendLengthOf: noop, optimizeSolutions: noop };
@@ -45,6 +43,8 @@ export default function createOptimizer(encoder, complex)
     var complexSolution = encoder.resolve(definition, complex);
     var solutionAppendLength = complexSolution.appendLength;
     var appendLengthDiff = discreteAppendLength - solutionAppendLength;
+    // The saving of a cluster can exceed the difference between the append lengths by at most the
+    // length of the bonding parentheses.
     if (appendLengthDiff + BOND_EXTRA_LENGTH > 0)
     {
         charInfos.sort
@@ -106,27 +106,17 @@ function makeOptimizer
         return true;
     }
 
-    function optimizeSolutions(plan, solutions, bond, forceString)
+    function optimizeSolutions(plan, solutions)
     {
         for (var index = 0, limit = solutions.length - complexLength; index <= limit; index++)
         {
             if (matchComplex(solutions, index))
-            {
-                var saving = appendLengthDiff;
-                if (!limit)
-                {
-                    if (forceString && !complexSolution.isString)
-                        saving -= APPEND_LENGTH_OF_EMPTY;
-                    else if (bond && !complexSolution.isLoose)
-                        saving += BOND_EXTRA_LENGTH;
-                }
-                if (saving > 0)
-                    plan.addCluster(index, complexLength, clusterer, saving);
-            }
+                plan.addCluster(index, complexLength, clusterer, appendLengthDiff, solutionType);
         }
     }
 
     var complexLength = complex.length;
+    var solutionType = complexSolution.type;
     var optimizer = { appendLengthOf: appendLengthOf, optimizeSolutions: optimizeSolutions };
     return optimizer;
 }

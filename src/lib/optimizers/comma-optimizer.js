@@ -9,12 +9,8 @@
 // cluster is registered rather than in the clusterer, and the solution obtained is reused by the
 // clusterer.
 
-import { APPEND_LENGTH_OF_EMPTY }       from '../append-lengths';
 import { SCREW_AS_STRING }              from '../screw-buffer';
 import { SimpleSolution, SolutionType } from '../solution';
-
-var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
-var WEAK_EXTRA_LENGTH = 2; // Extra length of wrapping parentheses "(" and ")".
 
 var REPLACE_STRING_OPTIONS = { optimize: true, screwMode: SCREW_AS_STRING };
 
@@ -83,7 +79,7 @@ export default function createOptimizer(encoder)
         return solution;
     }
 
-    function optimizeSolutions(plan, solutions, bond, forceString)
+    function optimizeSolutions(plan, solutions)
     {
         function tryCluster(start, commaCount)
         {
@@ -95,25 +91,8 @@ export default function createOptimizer(encoder)
                 discreteAppendLength += solutions[index].appendLength;
             var clusterSolution = createClusterSolution(solutions, start, commaCount);
             var saving = discreteAppendLength - clusterSolution.appendLength;
-            if (!start)
-            {
-                // The append length of a weak solution includes a pair of parentheses that are not
-                // needed at the start of a group.
-                if (solutions[0].isWeak)
-                    saving -= WEAK_EXTRA_LENGTH;
-                if (clusterLength >= solutionCount) // Integral cluster.
-                {
-                    if (forceString)
-                        saving -= APPEND_LENGTH_OF_EMPTY; // "+[]"
-                    else if (bond)
-                        saving += BOND_EXTRA_LENGTH;
-                }
-            }
-            if (saving > 0)
-            {
-                var clusterer = createClusterer(clusterSolution);
-                plan.addCluster(start, clusterLength, clusterer, saving);
-            }
+            var clusterer = createClusterer(clusterSolution);
+            plan.addCluster(start, clusterLength, clusterer, saving, clusterSolution.type);
         }
 
         var solutionCount = solutions.length;

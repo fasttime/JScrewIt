@@ -201,54 +201,6 @@
                     );
                     it
                     (
-                        'discounts only the first weak solution of an integral cluster',
-                        function ()
-                        {
-                            var toStringReplacement = padRight('"toString"', 200);
-                            var optimizer = createOptimizer(toStringReplacement);
-                            var solution1 = { appendLength: 100,    isWeak: true,   source: '1' };
-                            var solution2 = { appendLength: 12,     isWeak: true,   source: '2' };
-                            var solutionB = { appendLength: 170,                    source: 'b' };
-                            optimizer.appendLengthOf(solution1);
-                            optimizer.appendLengthOf(solution2);
-                            optimizer.appendLengthOf(solutionB);
-                            var solutions = [solution1, solution2, solutionB];
-                            optimizeSolutions([optimizer], solutions, false);
-                            expect(solutions.length).toBe(1);
-                            expect(solutions[0].source).toBe('12b');
-                            expect(solutions[0].replacement)
-                            .toBe
-                            (
-                                // (+"206")[toStringReplacement]("13")
-                                '(+(!![]+!![]+[+[]]+(!![]+!![]+!![]+!![]+!![]+!![])))[' +
-                                toStringReplacement +
-                                '](+!![]+[!![]+!![]+!![]])'
-                            );
-                        }
-                    );
-                    it
-                    (
-                        'does not discount a weak solution at the start of a partial cluster',
-                        function ()
-                        {
-                            var optimizer = createOptimizer();
-                            var solution0 = { appendLength: 6,                  source: '0' };
-                            var solution1 = { appendLength: 23, isWeak: true,   source: '1' };
-                            var solutionB = { appendLength: 35,                 source: 'b' };
-                            optimizer.appendLengthOf(solution0);
-                            optimizer.appendLengthOf(solution1);
-                            optimizer.appendLengthOf(solutionB);
-                            var solutions = [solution0, solution1, solutionB];
-                            optimizeSolutions([optimizer], solutions, false);
-                            expect(solutions.length).toBe(2);
-                            expect(solutions[0]).toBe(solution0);
-                            expect(solutions[1].source).toBe('1b');
-                            expect(solutions[1].replacement)
-                            .toBe('(+(!![]+!![]+!![]+[+!![]]))["toString"](!![]+!![]+[+[]])');
-                        }
-                    );
-                    it
-                    (
                         'does not optimize an integral cluster starting with a weak solution',
                         function ()
                         {
@@ -260,38 +212,6 @@
                             var solutions = [solution1, solutionB];
                             optimizeSolutions([optimizer], solutions, false);
                             expect(solutions.length).toBe(2);
-                        }
-                    );
-                    it
-                    (
-                        'does not optimize a partial cluster preceded by an unclusterable ' +
-                        'solution with bonding',
-                        function ()
-                        {
-                            var optimizer = createOptimizer();
-                            var solution0 = { appendLength: 6 };
-                            var solutionB = { appendLength: 34, source: 'b' };
-                            optimizer.appendLengthOf(solution0);
-                            optimizer.appendLengthOf(solutionB);
-                            var solutions = [solution0, solutionB, solutionB];
-                            optimizeSolutions([optimizer], solutions, true);
-                            expect(solutions.length).toBe(3);
-                        }
-                    );
-                    it
-                    (
-                        'does not optimize a partial cluster followed by an unclusterable ' +
-                        'solution with bonding',
-                        function ()
-                        {
-                            var optimizer = createOptimizer();
-                            var solution0 = { appendLength: 6 };
-                            var solutionB = { appendLength: 34, source: 'b' };
-                            optimizer.appendLengthOf(solutionB);
-                            optimizer.appendLengthOf(solution0);
-                            var solutions = [solutionB, solutionB, solution0];
-                            optimizeSolutions([optimizer], solutions, true);
-                            expect(solutions.length).toBe(3);
                         }
                     );
                     it

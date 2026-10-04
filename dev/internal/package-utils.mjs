@@ -24,7 +24,8 @@ async function bundleLib(pkgPath)
     {
         external:   ['tslib'],
         input:      inputPath,
-        plugins:    [rollupPluginCleanup({ comments: /^(?!\/\s*(?:@ts-|eslint-))/ })],
+        plugins:
+        [rollupPluginCleanup({ comments: /^(?!\/\s*(?:@ts-|eslint-)|\*\s*istanbul\s+ignore\b)/ })],
     };
     const outputPath = join(pkgPath, 'lib/index.js');
     const outputOptions =

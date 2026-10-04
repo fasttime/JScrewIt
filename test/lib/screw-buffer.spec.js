@@ -26,7 +26,7 @@
             optimizeSolutions:
             function (plan)
             {
-                plan.addCluster(0, 2, clusterer, 1);
+                plan.addCluster(0, 2, clusterer, 100, solution.type);
             },
         };
         return optimizer;

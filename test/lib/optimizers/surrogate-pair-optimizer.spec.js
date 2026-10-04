@@ -126,26 +126,6 @@
                             solutions = [HIGH_SURROGATE_SOLUTION, LOW_SURROGATE_SOLUTION];
                             optimizeSolutions([optimizer], solutions, false, false);
                             expect(solutions.length).toBeGreaterThan(1);
-
-                            // Not a single part: additional leading solution.
-                            solutions =
-                            [
-                                NON_SURROGATE_SOLUTION,
-                                HIGH_SURROGATE_SOLUTION,
-                                LOW_SURROGATE_SOLUTION,
-                            ];
-                            optimizeSolutions([optimizer], solutions, true, false);
-                            expect(solutions.length).toBeGreaterThan(1);
-
-                            // Not a single part: additional trailing solution.
-                            solutions =
-                            [
-                                HIGH_SURROGATE_SOLUTION,
-                                LOW_SURROGATE_SOLUTION,
-                                NON_SURROGATE_SOLUTION,
-                            ];
-                            optimizeSolutions([optimizer], solutions, true, false);
-                            expect(solutions.length).toBeGreaterThan(1);
                         }
                     );
                     it

@@ -133,48 +133,11 @@
                             { bond: true, complexAppendLength: 70 },
                         ],
                         [
-                            'an integral string cluster with string forcing',
-                            { complexAppendLength: 68, forceString: true },
-                        ],
-                        [
                             'an integral object cluster with string forcing',
                             {
                                 complexAppendLength:    65,
                                 complexSolutionType:    SolutionType.OBJECT,
                                 forceString:            true,
-                            },
-                        ],
-                        [
-                            'a partial cluster with bonding',
-                            {
-                                bond:                   true,
-                                complexAppendLength:    68,
-                                solutions:
-                                [SOLUTIONS.u, SOLUTIONS.m, SOLUTIONS.C, SOLUTIONS.h],
-                                verifyDo:
-                                function (solutions)
-                                {
-                                    expect(solutions.length).toBe(2);
-                                    expect(solutions[0]).toBe(SOLUTIONS.u);
-                                    expect(solutions[1].replacement).toBe(EXPECTED_REPLACEMENT);
-                                },
-                            },
-                        ],
-                        [
-                            'a partial object cluster with string forcing',
-                            {
-                                complexAppendLength:    68,
-                                complexSolutionType:    SolutionType.OBJECT,
-                                forceString:            true,
-                                solutions:
-                                [SOLUTIONS.u, SOLUTIONS.m, SOLUTIONS.C, SOLUTIONS.h],
-                                verifyDo:
-                                function (solutions)
-                                {
-                                    expect(solutions.length).toBe(2);
-                                    expect(solutions[0]).toBe(SOLUTIONS.u);
-                                    expect(solutions[1].replacement).toBe(EXPECTED_REPLACEMENT);
-                                },
                             },
                         ],
                     ];
@@ -188,17 +151,9 @@
                             var complexSolutionType = opt.complexSolutionType;
                             if (complexSolutionType == null)
                                 complexSolutionType = SolutionType.STRING;
-                            var solutions =
-                            opt.solutions || [SOLUTIONS.m, SOLUTIONS.C, SOLUTIONS.h];
+                            var solutions = [SOLUTIONS.m, SOLUTIONS.C, SOLUTIONS.h];
                             var bond = opt.bond;
                             var forceString = opt.forceString;
-                            var verify =
-                            opt.verifyDo ||
-                            function ()
-                            {
-                                expect(solutions.length).toBe(1);
-                                expect(solutions[0].replacement).toBe(EXPECTED_REPLACEMENT);
-                            };
                             var optimizer =
                             createOptimizer(complexAppendLength, complexSolutionType);
                             solutions.forEach
@@ -210,7 +165,8 @@
                             );
                             JScrewIt.debug.optimizeSolutions
                             ([optimizer], solutions, bond, forceString);
-                            verify(solutions);
+                            expect(solutions.length).toBe(1);
+                            expect(solutions[0].replacement).toBe(EXPECTED_REPLACEMENT);
                         }
                     );
                     it.per(paramDataList)
@@ -223,11 +179,9 @@
                             var complexSolutionType = opt.complexSolutionType;
                             if (complexSolutionType == null)
                                 complexSolutionType = SolutionType.STRING;
-                            var solutions =
-                            opt.solutions || [SOLUTIONS.m, SOLUTIONS.C, SOLUTIONS.h];
+                            var solutions = [SOLUTIONS.m, SOLUTIONS.C, SOLUTIONS.h];
                             var bond = opt.bond;
                             var forceString = opt.forceString;
-                            var expectedSolutionCount = solutions.length;
                             var optimizer =
                             createOptimizer(complexAppendLength, complexSolutionType);
                             solutions.forEach
@@ -239,7 +193,7 @@
                             );
                             JScrewIt.debug.optimizeSolutions
                             ([optimizer], solutions, bond, forceString);
-                            expect(solutions.length).toBe(expectedSolutionCount);
+                            expect(solutions.length).toBe(3);
                         }
                     );
                 }

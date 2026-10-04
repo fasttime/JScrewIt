@@ -1,6 +1,5 @@
 import { findRule }                     from './rule';
 import { SolutionType }                 from './solution-type';
-import { isLoose, isString, isWeak }    from './type-set';
 
 export interface Solution
 {
@@ -16,17 +15,17 @@ export abstract class AbstractSolution implements Solution
 {
     public get isLoose(): boolean
     {
-        return isLoose(this.type);
+        return SolutionType.isLoose(this.type);
     }
 
     public get isString(): boolean
     {
-        return isString(this.type);
+        return SolutionType.isString(this.type);
     }
 
     public get isWeak(): boolean
     {
-        return isWeak(this.type);
+        return SolutionType.isWeak(this.type);
     }
 
     public get length(): number
@@ -162,6 +161,7 @@ function calculateReplacement(solutions: readonly Solution[]): string
 }
 
 const getAppendableReplacement =
-({ replacement, type }: Solution): string => isWeak(type) ? `+(${replacement})` : `+${replacement}`;
+({ replacement, type }: Solution): string =>
+SolutionType.isWeak(type) ? `+(${replacement})` : `+${replacement}`;
 
 const getReplacement = ({ replacement }: Solution): string => replacement;
