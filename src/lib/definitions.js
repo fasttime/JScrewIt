@@ -42,9 +42,9 @@ export var BASE64_ALPHABET_LO_4;
 export var BASE64_ALPHABET_LO_6;
 
 export var CHARACTERS;
-export var COMPLEX;
 export var CONSTANTS;
 export var NATIVE_FUNCTION_INFOS;
+export var SHORTCUTS;
 
 var FB_PADDING_ENTRIES_MAP = createEmpty();
 var FH_PADDING_ENTRIES_MAP = createEmpty();
@@ -1094,18 +1094,6 @@ function getFHPaddingEntries(index)
         ],
     };
 
-    COMPLEX =
-    {
-        __proto__:  null,
-        Number:     define({ expr: 'Number.name', optimize: { complexOpt: false } }, NAME),
-        Object:     define({ expr: 'Object.name', optimize: { complexOpt: false } }, NAME),
-        RegExp:     define({ expr: 'RegExp.name', optimize: { complexOpt: false } }, NAME),
-        String:     define('String.name', NAME),
-        fromCharCo:
-        define({ expr: '"from3har3o"[SPLIT](3)[JOIN]("C")', optimize: { complexOpt: false } }),
-        mCh:        define('atob("bUNo")'),
-    };
-
     CONSTANTS =
     {
         __proto__:  null,
@@ -1704,6 +1692,18 @@ function getFHPaddingEntries(index)
             define(2),
         ]
     );
+
+    SHORTCUTS =
+    {
+        __proto__:  null,
+        Number:     define({ expr: 'Number.name', optimize: { shortcutOpt: false } }, NAME),
+        Object:     define({ expr: 'Object.name', optimize: { shortcutOpt: false } }, NAME),
+        RegExp:     define({ expr: 'RegExp.name', optimize: { shortcutOpt: false } }, NAME),
+        String:     define('String.name', NAME),
+        fromCharCo:
+        define({ expr: '"from3har3o"[SPLIT](3)[JOIN]("C")', optimize: { shortcutOpt: false } }),
+        mCh:        define('atob("bUNo")'),
+    };
 
     // Create simple constant solutions
     defineSimple('false',       '![]',              SolutionType.ALGEBRAIC);

@@ -7,7 +7,6 @@ import
     BASE64_ALPHABET_HI_4,
     BASE64_ALPHABET_LO_4,
     CHARACTERS,
-    COMPLEX,
     CONSTANTS,
     FORMAT_MAPPER_LONG,
     FORMAT_MAPPER_SHORT,
@@ -15,6 +14,7 @@ import
     FROM_CHAR_CODE_CALLBACK_FORMATTER,
     OPTIMAL_B,
     OPTIMAL_RETURN_STRING,
+    SHORTCUTS,
 }
 from './definitions';
 import { Encoder }                                                  from './encoder/encoder-base';
@@ -127,18 +127,6 @@ if (typeof NO_DEBUG === 'undefined')
             return chars;
         }
 
-        function getComplexEntry(complex)
-        {
-            var entry = cloneEntry(COMPLEX[complex]);
-            return entry;
-        }
-
-        function getComplexNames()
-        {
-            var names = _Object_keys(COMPLEX).sort();
-            return names;
-        }
-
         function getConstantEntries(constant)
         {
             var entries = cloneEntries(CONSTANTS[constant]);
@@ -156,6 +144,18 @@ if (typeof NO_DEBUG === 'undefined')
             var entries = cloneEntries(ENTRIES[name]);
             entries.cacheKey = name;
             return entries;
+        }
+
+        function getShortcutEntry(shortcut)
+        {
+            var entry = cloneEntry(SHORTCUTS[shortcut]);
+            return entry;
+        }
+
+        function getShortcutNames()
+        {
+            var names = _Object_keys(SHORTCUTS).sort();
+            return names;
         }
 
         function getStrategies()
@@ -213,11 +213,11 @@ if (typeof NO_DEBUG === 'undefined')
                 featureFromMask:        featureFromMask,
                 getCharacterEntries:    getCharacterEntries,
                 getCharacters:          getCharacters,
-                getComplexEntry:        getComplexEntry,
-                getComplexNames:        getComplexNames,
                 getConstantEntries:     getConstantEntries,
                 getConstantNames:       getConstantNames,
                 getEntries:             getEntries,
+                getShortcutEntry:       getShortcutEntry,
+                getShortcutNames:       getShortcutNames,
                 getStrategies:          getStrategies,
                 isEncoderInCache:       isEncoderInCache,
                 maskIncludes:           maskIncludes,

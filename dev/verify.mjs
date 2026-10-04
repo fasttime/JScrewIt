@@ -136,26 +136,6 @@ function mismatchCallback(...args)
     args.forEach(logWarn);
 }
 
-function verifyComplex(complex, entry)
-{
-    let encoder;
-    const analyzer = createAnalyzer();
-    const entryMask = entry.mask;
-    const { definition } = entry;
-    while (encoder = analyzer.nextEncoder)
-    {
-        if (encoder.hasFeatures(entryMask))
-        {
-            const complexSolution = encoder.resolve(definition, complex);
-            const options = { optimize: { complexOpt: false } };
-            const replacement = encoder.replaceString(complex, options);
-            if (complexSolution.length < replacement.length)
-                return true;
-        }
-    }
-    return false;
-}
-
 function verifyDefinitions(predefTestData)
 {
     const { availableEntries, formatVariant, organizedEntries, replaceVariant } = predefTestData;
@@ -217,6 +197,26 @@ function verifyPredef(predefName)
     return verify;
 }
 
+function verifyShortcut(shortcut, entry)
+{
+    let encoder;
+    const analyzer = createAnalyzer();
+    const entryMask = entry.mask;
+    const { definition } = entry;
+    while (encoder = analyzer.nextEncoder)
+    {
+        if (encoder.hasFeatures(entryMask))
+        {
+            const shortcutSolution = encoder.resolve(definition, shortcut);
+            const options = { optimize: { shortcutOpt: false } };
+            const replacement = encoder.replaceString(shortcut, options);
+            if (shortcutSolution.length < replacement.length)
+                return true;
+        }
+    }
+    return false;
+}
+
 function verifyStrategy(strategyTestData)
 {
     const result =
@@ -236,17 +236,17 @@ const { featureFromMask, maskUnion } = JScrewIt.debug;
 
 const verify = { __proto__: null };
 
-JScrewIt.debug.getComplexNames().forEach
+JScrewIt.debug.getShortcutNames().forEach
 (
-    complex =>
+    shortcut =>
     {
-        if (!verify[complex])
+        if (!verify[shortcut])
         {
-            const entry = JScrewIt.debug.getComplexEntry(complex);
-            verify[complex] =
+            const entry = JScrewIt.debug.getShortcutEntry(shortcut);
+            verify[shortcut] =
             () =>
             {
-                const ok = verifyComplex(complex, entry);
+                const ok = verifyShortcut(shortcut, entry);
                 if (ok)
                     logOk('Ok.');
                 else

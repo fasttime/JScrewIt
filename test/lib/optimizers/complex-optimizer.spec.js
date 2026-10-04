@@ -19,7 +19,7 @@
         var encoder = JScrewIt.debug.createEncoder();
         encoder.resolve             = resolve;
         encoder.resolveCharacter    = resolveCharacter;
-        var optimizer = encoder._getOptimizer('complex', COMPLEX);
+        var optimizer = encoder._getOptimizer('shortcut', SHORTCUT);
         return optimizer;
     }
 
@@ -40,8 +40,8 @@
     typeof module !== 'undefined' ? require('../../node-jscrewit-test') : self.JScrewIt;
     var SolutionType = JScrewIt.debug.SolutionType;
 
-    var COMPLEX = 'mCh';
     var EXPECTED_REPLACEMENT = '"mCh"';
+    var SHORTCUT = 'mCh';
 
     var SOLUTIONS =
     {
@@ -53,12 +53,12 @@
 
     describe
     (
-        '`complex` optimizer',
+        '`shortcut` optimizer',
         function ()
         {
             it
             (
-                'resolves the definition of the complex',
+                'resolves the definition of the shortcut',
                 function ()
                 {
                     var resolveArgs;
@@ -72,11 +72,11 @@
                         return solution;
                     };
                     encoder.resolveCharacter = resolveCharacter;
-                    encoder._getOptimizer('complex', COMPLEX);
-                    var definition = JScrewIt.debug.getComplexEntry(COMPLEX).definition;
+                    encoder._getOptimizer('shortcut', SHORTCUT);
+                    var definition = JScrewIt.debug.getShortcutEntry(SHORTCUT).definition;
                     expect(resolveArgs.length).toBe(2);
                     expect(resolveArgs[0]).toBe(definition);
-                    expect(resolveArgs[1]).toBe(COMPLEX);
+                    expect(resolveArgs[1]).toBe(SHORTCUT);
                 }
             );
             describe
@@ -86,7 +86,7 @@
                 {
                     it
                     (
-                        'optimizes characters that are part of the complex',
+                        'optimizes characters that are part of the shortcut',
                         function ()
                         {
                             var optimizer = createOptimizer();
@@ -95,7 +95,7 @@
                     );
                     it
                     (
-                        'does not optimize characters that are not part of the complex',
+                        'does not optimize characters that are not part of the shortcut',
                         function ()
                         {
                             var optimizer = createOptimizer();
@@ -122,21 +122,21 @@
                     [
                         [
                             'a string integral cluster without bonding or string forcing',
-                            { complexAppendLength: 68 },
+                            { shortcutAppendLength: 68 },
                         ],
                         [
                             'an object integral cluster without bonding or string forcing',
-                            { complexAppendLength: 68, complexSolutionType: SolutionType.OBJECT },
+                            { shortcutAppendLength: 68, shortcutSolutionType: SolutionType.OBJECT },
                         ],
                         [
                             'an integral cluster with bonding',
-                            { bond: true, complexAppendLength: 70 },
+                            { bond: true, shortcutAppendLength: 70 },
                         ],
                         [
                             'an integral object cluster with string forcing',
                             {
-                                complexAppendLength:    65,
-                                complexSolutionType:    SolutionType.OBJECT,
+                                shortcutAppendLength:   65,
+                                shortcutSolutionType:   SolutionType.OBJECT,
                                 forceString:            true,
                             },
                         ],
@@ -147,15 +147,15 @@
                         function (paramData)
                         {
                             var opt = paramData[1];
-                            var complexAppendLength = opt.complexAppendLength;
-                            var complexSolutionType = opt.complexSolutionType;
-                            if (complexSolutionType == null)
-                                complexSolutionType = SolutionType.STRING;
+                            var shortcutAppendLength = opt.shortcutAppendLength;
+                            var shortcutSolutionType = opt.shortcutSolutionType;
+                            if (shortcutSolutionType == null)
+                                shortcutSolutionType = SolutionType.STRING;
                             var solutions = [SOLUTIONS.m, SOLUTIONS.C, SOLUTIONS.h];
                             var bond = opt.bond;
                             var forceString = opt.forceString;
                             var optimizer =
-                            createOptimizer(complexAppendLength, complexSolutionType);
+                            createOptimizer(shortcutAppendLength, shortcutSolutionType);
                             solutions.forEach
                             (
                                 function (solution)
@@ -175,15 +175,15 @@
                         function (paramData)
                         {
                             var opt = paramData[1];
-                            var complexAppendLength = (opt.complexAppendLength | 0) + 1;
-                            var complexSolutionType = opt.complexSolutionType;
-                            if (complexSolutionType == null)
-                                complexSolutionType = SolutionType.STRING;
+                            var shortcutAppendLength = (opt.shortcutAppendLength | 0) + 1;
+                            var shortcutSolutionType = opt.shortcutSolutionType;
+                            if (shortcutSolutionType == null)
+                                shortcutSolutionType = SolutionType.STRING;
                             var solutions = [SOLUTIONS.m, SOLUTIONS.C, SOLUTIONS.h];
                             var bond = opt.bond;
                             var forceString = opt.forceString;
                             var optimizer =
-                            createOptimizer(complexAppendLength, complexSolutionType);
+                            createOptimizer(shortcutAppendLength, shortcutSolutionType);
                             solutions.forEach
                             (
                                 function (solution)

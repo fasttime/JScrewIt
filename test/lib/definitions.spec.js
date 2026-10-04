@@ -276,24 +276,6 @@ self,
             testDefault();
     }
 
-    function testComplex(complex)
-    {
-        var desc = JSON.stringify(complex);
-        var entry = JScrewIt.debug.getComplexEntry(complex);
-        var featureObj = getEntryFeature(entry);
-        emuIt
-        (
-            desc,
-            featureObj,
-            function ()
-            {
-                var encoder = getPoolEncoder(featureObj);
-                var solution = encoder.resolve(entry.definition, complex);
-                verifyStringSolution(solution, complex, this.test.emuFeatureNames);
-            }
-        );
-    }
-
     function testConstant(constant, validator, namedSolutionTypes)
     {
         var entries = JScrewIt.debug.getConstantEntries(constant);
@@ -339,6 +321,24 @@ self,
                         );
                     }
                 );
+            }
+        );
+    }
+
+    function testShortcut(shortcut)
+    {
+        var desc = JSON.stringify(shortcut);
+        var entry = JScrewIt.debug.getShortcutEntry(shortcut);
+        var featureObj = getEntryFeature(entry);
+        emuIt
+        (
+            desc,
+            featureObj,
+            function ()
+            {
+                var encoder = getPoolEncoder(featureObj);
+                var solution = encoder.resolve(entry.definition, shortcut);
+                verifyStringSolution(solution, shortcut, this.test.emuFeatureNames);
             }
         );
     }
@@ -415,10 +415,10 @@ self,
     );
     describe
     (
-        'Complex definitions of',
+        'Shortcut definition of',
         function ()
         {
-            JScrewIt.debug.getComplexNames().forEach(testComplex);
+            JScrewIt.debug.getShortcutNames().forEach(testShortcut);
         }
     );
     describe

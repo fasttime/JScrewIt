@@ -1,4 +1,4 @@
-import { COMPLEX }                                                          from '../definitions';
+import { SHORTCUTS }                                                        from '../definitions';
 import { _Array_prototype_forEach_call, _Object_keys, createEmpty, noop }   from '../obj-utils';
 
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
@@ -13,7 +13,7 @@ function createCharSet(charInfos, index)
     return charSet;
 }
 
-export default function createOptimizer(encoder, complex)
+export default function createOptimizer(encoder, shortcut)
 {
     var optimizer;
     var discreteAppendLength = 0;
@@ -21,7 +21,7 @@ export default function createOptimizer(encoder, complex)
     var charInfos = [];
     _Array_prototype_forEach_call
     (
-        complex,
+        shortcut,
         function (char)
         {
             var charSolution = encoder.resolveCharacter(char);
@@ -39,9 +39,9 @@ export default function createOptimizer(encoder, complex)
             }
         }
     );
-    var definition = COMPLEX[complex].definition;
-    var complexSolution = encoder.resolve(definition, complex);
-    var solutionAppendLength = complexSolution.appendLength;
+    var definition = SHORTCUTS[shortcut].definition;
+    var shortcutSolution = encoder.resolve(definition, shortcut);
+    var solutionAppendLength = shortcutSolution.appendLength;
     var appendLengthDiff = discreteAppendLength - solutionAppendLength;
     // The saving of a cluster can exceed the difference between the append lengths by at most the
     // length of the bonding parentheses.
@@ -56,7 +56,7 @@ export default function createOptimizer(encoder, complex)
             }
         );
         var restLength = solutionAppendLength;
-        var restCount = complex.length;
+        var restCount = shortcut.length;
         for (var index = 0; restCount; index++)
         {
             var charInfo = charInfos[index];
@@ -71,7 +71,7 @@ export default function createOptimizer(encoder, complex)
         var charSet = createCharSet(charInfos, index);
         optimizer =
         makeOptimizer
-        (complex, complexSolution, charSet, optimizedCharAppendLength, appendLengthDiff);
+        (shortcut, shortcutSolution, charSet, optimizedCharAppendLength, appendLengthDiff);
     }
     else
         optimizer = NOOP_OPTIMIZER;
@@ -79,7 +79,7 @@ export default function createOptimizer(encoder, complex)
 }
 
 function makeOptimizer
-(complex, complexSolution, charSet, optimizedCharAppendLength, appendLengthDiff)
+(shortcut, shortcutSolution, charSet, optimizedCharAppendLength, appendLengthDiff)
 {
     function appendLengthOf(solution)
     {
@@ -90,17 +90,17 @@ function makeOptimizer
 
     function clusterer()
     {
-        return complexSolution;
+        return shortcutSolution;
     }
 
-    function matchComplex(solutions, start)
+    function matchShortcut(solutions, start)
     {
-        for (var index = 0; index < complexLength; index++)
+        for (var index = 0; index < shortcutLength; index++)
         {
             var solutionIndex = start + index;
             var solution = solutions[solutionIndex];
-            var complexChar = complex[index];
-            if (solution.source !== complexChar)
+            var shortcutChar = shortcut[index];
+            if (solution.source !== shortcutChar)
                 return false;
         }
         return true;
@@ -108,25 +108,25 @@ function makeOptimizer
 
     function optimizeSolutions(plan, solutions)
     {
-        for (var index = 0, limit = solutions.length - complexLength; index <= limit; index++)
+        for (var index = 0, limit = solutions.length - shortcutLength; index <= limit; index++)
         {
-            if (matchComplex(solutions, index))
-                plan.addCluster(index, complexLength, clusterer, appendLengthDiff, solutionType);
+            if (matchShortcut(solutions, index))
+                plan.addCluster(index, shortcutLength, clusterer, appendLengthDiff, solutionType);
         }
     }
 
-    var complexLength = complex.length;
-    var solutionType = complexSolution.type;
+    var shortcutLength = shortcut.length;
+    var solutionType = shortcutSolution.type;
     var optimizer = { appendLengthOf: appendLengthOf, optimizeSolutions: optimizeSolutions };
     return optimizer;
 }
 
-createOptimizer.key = 'complex';
-createOptimizer.subKeys = _Object_keys(COMPLEX);
+createOptimizer.key = 'shortcut';
+createOptimizer.subKeys = _Object_keys(SHORTCUTS);
 createOptimizer.matches =
-function (encoder, str, complex)
+function (encoder, str, shortcut)
 {
-    var entry = COMPLEX[complex];
-    var returnValue = encoder.hasFeatures(entry.mask) && str.indexOf(complex) >= 0;
+    var entry = SHORTCUTS[shortcut];
+    var returnValue = encoder.hasFeatures(entry.mask) && str.indexOf(shortcut) >= 0;
     return returnValue;
 };
