@@ -118,136 +118,19 @@ task
     (
         async () =>
         {
-            const
-            [
-                { default: eslintPluginJScrewIt },
-                { default: gherkinParser },
-                { createConfig, noParserConfig },
-                { default: eslintPluginOrigin1 },
-                { default: eslintPluginEBDD },
-                { EslintEnvProcessor },
-                { default: eslintPluginJSDoc },
-                { default: globals },
-                { default: gulpESLintNew },
-            ] =
-            await Promise.all
-            (
-                [
-                    import('./dev/internal/eslint-plugin.mjs'),
-                    import('./dev/internal/gherkin-parser.mjs'),
-                    import('@origin-1/eslint-config'),
-                    import('@origin-1/eslint-plugin'),
-                    import('eslint-plugin-ebdd'),
-                    import('eslint-plugin-eslint-env'),
-                    import('eslint-plugin-jsdoc'),
-                    import('globals'),
-                    import('gulp-eslint-new'),
-                ],
-            );
+            const { default: gulpESLintNew } = await import('gulp-eslint-new');
 
-            const ebddPlugins = { ebdd: eslintPluginEBDD };
-
-            const overrideConfig =
-            await createConfig
-            (
-                noParserConfig,
-                {
-                    files:              ['src/**/*.js'],
-                    ignores:            ['src/ui/worker.js'],
-                    jsVersion:          5,
-                    languageOptions:    { ecmaVersion: 2015 },
-                    plugins:            { internal: eslintPluginJScrewIt },
-                    processor:          new EslintEnvProcessor(),
-                    rules:              { 'internal/sorted-definitions': 'error' },
-                },
-                {
-                    files:              ['*.js', 'test/patch-cov-source.js', 'tools/**/*.js'],
-                    jsVersion:          2025,
-                    languageOptions:    { globals: globals.node, sourceType: 'commonjs' },
-                },
-                {
-                    files:              ['dev/**/*.mjs'],
-                    ignores:            ['dev/internal/browser-assert-strict-polyfill.mjs'],
-                    jsVersion:          2025,
-                    languageOptions:    { globals: globals.nodeBuiltin },
-                },
-                {
-                    files:              ['dev/internal/browser-assert-strict-polyfill.mjs'],
-                    jsVersion:          5,
-                    languageOptions:    { globals: globals.nodeBuiltin, ecmaVersion: 2015 },
-                },
-                {
-                    files:              ['src/ui/worker.js'],
-                    jsVersion:          5,
-                    languageOptions:    { sourceType: 'commonjs' },
-                    processor:          new EslintEnvProcessor(),
-                },
-                {
-                    files:              ['test/**/*.js'],
-                    jsVersion:          5,
-                    ignores:            ['test/patch-cov-source.js', 'test/tools/**/*.js'],
-                    languageOptions:    { sourceType: 'script' },
-                    plugins:            ebddPlugins,
-                    processor:          new EslintEnvProcessor({ plugins: ebddPlugins }),
-                },
-                {
-                    files:              ['test/tools/**/*.js'],
-                    jsVersion:          2025,
-                    languageOptions:
-                    {
-                        globals:    { ...eslintPluginEBDD.globals, ...globals.node },
-                        sourceType: 'commonjs',
-                    },
-                },
-                {
-                    files:              ['**/*.{js,mjs}'],
-                    plugins:            { jsdoc: eslintPluginJSDoc },
-                    rules:
-                    {
-                        'jsdoc/check-alignment':            'error',
-                        'jsdoc/check-param-names':          'error',
-                        'jsdoc/check-syntax':               'error',
-                        'jsdoc/check-tag-names':            'error',
-                        'jsdoc/empty-tags':                 'error',
-                        'jsdoc/no-blank-blocks':            'error',
-                        'jsdoc/no-multi-asterisks':         ['error', { allowWhitespace: true }],
-                        'jsdoc/no-undefined-types':
-                        ['error', { definedTypes: ['Iterable'] }],
-                        'jsdoc/require-asterisk-prefix':    'error',
-                        'jsdoc/require-param-name':         'error',
-                    },
-                    settings:           { jsdoc: { mode: 'jsdoc' } },
-                },
-                {
-                    files:              ['lib/**/*.ts'],
-                    ignores:            ['lib/feature-all.d.ts'],
-                    tsVersion:          'latest',
-                },
-                {
-                    files:              ['test/acceptance/**/*.feature'],
-                    languageOptions:    { parser: gherkinParser },
-                },
-                {
-                    files:              ['**/*.json'],
-                    jsonVersion:        'standard',
-                },
-                {
-                    files:              ['package.json'],
-                    plugins:            { '@origin-1': eslintPluginOrigin1 },
-                    rules:              { '@origin-1/package-json-fields': 'error' },
-                },
-            );
             const stream =
             src
             (
                 [
-                    '*.{js,json}',
+                    '*.{js,json,mjs}',
                     '{dev,src,test,tools}/**/*.{feature,js,mjs,ts}',
                     'lib/**/*.ts',
                     '!lib/feature-all.d.ts',
                 ],
             )
-            .pipe(gulpESLintNew({ overrideConfig, overrideConfigFile: true, warnIgnored: true }))
+            .pipe(gulpESLintNew({ warnIgnored: true }))
             .pipe(gulpESLintNew.format('compact'))
             .pipe(gulpESLintNew.failAfterError());
             return stream;

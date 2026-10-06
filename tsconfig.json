@@ -2,9 +2,9 @@
   "compilerOptions": {
     "exactOptionalPropertyTypes": true,
     "forceConsistentCasingInFileNames": true,
-    "types": []
+    "types": [],
   },
   "include": [
-    "lib"
-  ]
+    "lib",
+  ],
 }

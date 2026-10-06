@@ -168,15 +168,12 @@ function getWriteFile(sysWriteFile, declarationDir, dTsFilter)
     return writeFile;
 }
 
-export async function lintPackage(...configData)
+export async function lintPackage(pkgPath)
 {
-    const { createConfig }  = await import('@origin-1/eslint-config');
-    const { ESLint }        = await import('eslint');
+    const { ESLint } = await import('eslint');
 
-    const overrideConfig = await createConfig(...configData);
-    const eslint    = new ESLint({ overrideConfig, overrideConfigFile: true });
-    const files     = configData.map(({ files }) => files).flat();
-    const results   = await eslint.lintFiles(files);
+    const eslint    = new ESLint({ cwd: pkgPath });
+    const results   = await eslint.lintFiles('.');
     const formatter = await eslint.loadFormatter('compact');
     const output = await formatter.format(results);
     if (output)

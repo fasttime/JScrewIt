@@ -1,3 +1,5 @@
+import { dirname } from 'node:path';
+
 export async function clean()
 {
     const { cleanPackage } = await importPackageUtils();
@@ -11,46 +13,10 @@ const importPackageUtils = () => import('../../../dev/internal/package-utils.mjs
 
 export async function lint()
 {
-    const
-    [
-        { lintPackage },
-        { default: eslintPluginOrigin1 },
-        { globals: ebddGlobals },
-        { default: globals },
-    ] =
-    await Promise.all
-    (
-        [
-            importPackageUtils(),
-            import('@origin-1/eslint-plugin'),
-            import('eslint-plugin-ebdd'),
-            import('globals'),
-        ],
-    );
-    await
-    lintPackage
-    (
-        {
-            files:              ['src/**/*.ts', 'test/*.ts'],
-            tsVersion:          '6.0.0',
-        },
-        {
-            files:              ['test/spec/**/*.ts'],
-            tsVersion:          '6.0.0',
-            languageOptions:    { globals: { ...ebddGlobals, ...globals.nodeBuiltin } },
-        },
-        {
-            files:              ['*.js', 'dev/**/*.js'],
-            jsVersion:          2025,
-            languageOptions:    { globals: globals.nodeBuiltin },
-        },
-        {
-            files:              ['{src/,test/,}package.json'],
-            jsonVersion:        'standard',
-            plugins:            { '@origin-1': eslintPluginOrigin1 },
-            rules:              { '@origin-1/package-json-fields': 'error' },
-        },
-    );
+    const { lintPackage } = await importPackageUtils();
+
+    const pkgPath = dirname(import.meta.dirname);
+    await lintPackage(pkgPath);
 }
 
 export async function makeBrowserSpecRunner()

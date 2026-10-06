@@ -11,8 +11,8 @@ const JSCREWIT_MIN_PATH = 'lib/jscrewit.min.js';
 const REMOTE_HOME = '/html';
 
 {
-    const pkgDir = dirname(import.meta.dirname);
-    process.chdir(pkgDir);
+    const pkgPath = dirname(import.meta.dirname);
+    process.chdir(pkgPath);
 }
 
 if (!await deploy())

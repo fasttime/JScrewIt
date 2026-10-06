@@ -9,12 +9,12 @@
       "ebdd",
       "mocha",
       "mocha-bar",
-      "node"
+      "node",
     ],
     "useDefineForClassFields": false, // Define semantics disabled for performance reasons.
   },
   "include": [
     "src",
-    "test"
-  ]
+    "test",
+  ],
 }
