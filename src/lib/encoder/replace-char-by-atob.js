@@ -8,18 +8,9 @@ import
     BASE64_ALPHABET_LO_6,
 }
 from '../definitions';
-import { _Array_isArray, _String }          from '../obj-utils';
+import findBase64AlphabetDefinition         from '../find-base64-alphabet-definition';
+import { _String }                          from '../obj-utils';
 import { replaceStaticString, shortestOf }  from './encoder-utils';
-
-function findBase64AlphabetDefinition(encoder, element)
-{
-    var definition;
-    if (_Array_isArray(element))
-        definition = encoder.findDefinition(element);
-    else
-        definition = element;
-    return definition;
-}
 
 export default function replaceCharByAtob(charCode)
 {

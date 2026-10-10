@@ -40,15 +40,18 @@
     typeof module !== 'undefined' ? require('../../node-jscrewit-test') : self.JScrewIt;
     var SolutionType = JScrewIt.debug.SolutionType;
 
-    var EXPECTED_REPLACEMENT = '"mCh"';
-    var SHORTCUT = 'mCh';
+    var EXPECTED_REPLACEMENT = '"String"';
+    var SHORTCUT = 'String';
 
     var SOLUTIONS =
     {
-        C: createSolution(40, 'C', undefined, SolutionType.STRING),
-        h: createSolution(15, 'h', undefined, SolutionType.STRING),
-        m: createSolution(14, 'm', undefined, SolutionType.STRING),
-        u: createSolution(17, 'u', undefined, SolutionType.STRING),
+        S: createSolution(40,   'S', undefined, SolutionType.STRING),
+        g: createSolution(8,    'g', undefined, SolutionType.STRING),
+        i: createSolution(8,    'i', undefined, SolutionType.STRING),
+        n: createSolution(8,    'n', undefined, SolutionType.STRING),
+        r: createSolution(8,    'r', undefined, SolutionType.STRING),
+        t: createSolution(8,    't', undefined, SolutionType.STRING),
+        u: createSolution(17,   'u', undefined, SolutionType.STRING),
     };
 
     describe
@@ -90,7 +93,7 @@
                         function ()
                         {
                             var optimizer = createOptimizer();
-                            expect(optimizer.appendLengthOf(SOLUTIONS.C)).toBe(31);
+                            expect(optimizer.appendLengthOf(SOLUTIONS.S)).toBe(20);
                         }
                     );
                     it
@@ -108,7 +111,7 @@
                         function ()
                         {
                             var optimizer = createOptimizer();
-                            expect(optimizer.appendLengthOf(SOLUTIONS.h)).toBeUndefined();
+                            expect(optimizer.appendLengthOf(SOLUTIONS.t)).toBeUndefined();
                         }
                     );
                 }
@@ -122,20 +125,20 @@
                     [
                         [
                             'a string integral cluster without bonding or string forcing',
-                            { shortcutAppendLength: 68 },
+                            { shortcutAppendLength: 79 },
                         ],
                         [
                             'an object integral cluster without bonding or string forcing',
-                            { shortcutAppendLength: 68, shortcutSolutionType: SolutionType.OBJECT },
+                            { shortcutAppendLength: 79, shortcutSolutionType: SolutionType.OBJECT },
                         ],
                         [
                             'an integral cluster with bonding',
-                            { bond: true, shortcutAppendLength: 70 },
+                            { bond: true, shortcutAppendLength: 81 },
                         ],
                         [
                             'an integral object cluster with string forcing',
                             {
-                                shortcutAppendLength:   65,
+                                shortcutAppendLength:   76,
                                 shortcutSolutionType:   SolutionType.OBJECT,
                                 forceString:            true,
                             },
@@ -151,7 +154,15 @@
                             var shortcutSolutionType = opt.shortcutSolutionType;
                             if (shortcutSolutionType == null)
                                 shortcutSolutionType = SolutionType.STRING;
-                            var solutions = [SOLUTIONS.m, SOLUTIONS.C, SOLUTIONS.h];
+                            var solutions =
+                            [
+                                SOLUTIONS.S,
+                                SOLUTIONS.t,
+                                SOLUTIONS.r,
+                                SOLUTIONS.i,
+                                SOLUTIONS.n,
+                                SOLUTIONS.g,
+                            ];
                             var bond = opt.bond;
                             var forceString = opt.forceString;
                             var optimizer =
@@ -179,7 +190,15 @@
                             var shortcutSolutionType = opt.shortcutSolutionType;
                             if (shortcutSolutionType == null)
                                 shortcutSolutionType = SolutionType.STRING;
-                            var solutions = [SOLUTIONS.m, SOLUTIONS.C, SOLUTIONS.h];
+                            var solutions =
+                            [
+                                SOLUTIONS.S,
+                                SOLUTIONS.t,
+                                SOLUTIONS.r,
+                                SOLUTIONS.i,
+                                SOLUTIONS.n,
+                                SOLUTIONS.g,
+                            ];
                             var bond = opt.bond;
                             var forceString = opt.forceString;
                             var optimizer =
@@ -193,7 +212,7 @@
                             );
                             JScrewIt.debug.optimizeSolutions
                             ([optimizer], solutions, bond, forceString);
-                            expect(solutions.length).toBe(3);
+                            expect(solutions.length).toBe(6);
                         }
                     );
                 }
