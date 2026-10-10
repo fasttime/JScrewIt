@@ -133,7 +133,7 @@
 
                             // OK.
                             initSolutions();
-                            optimizeSolutions([optimizer], solutions, false, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBe(1);
                             expect(solutions[0].replacement).toBe('[].slice.call("A"+"B")');
                             expect(solutions[0].type).toBe(SolutionType.OBJECT);
@@ -141,25 +141,25 @@
                             // Solution before comma is not a single character.
                             initSolutions();
                             solutions[0] = SOLUTIONS.false;
-                            optimizeSolutions([optimizer], solutions, false, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBeGreaterThan(1);
 
                             // Solution after comma is not a single character.
                             initSolutions();
                             solutions[2] = SOLUTIONS.false;
-                            optimizeSolutions([optimizer], solutions, false, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBeGreaterThan(1);
 
                             // No solution before comma.
                             initSolutions();
                             solutions.shift();
-                            optimizeSolutions([optimizer], solutions, false, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBeGreaterThan(1);
 
                             // No solution after comma.
                             initSolutions();
                             solutions.pop();
-                            optimizeSolutions([optimizer], solutions, false, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBeGreaterThan(1);
                         }
                     );
@@ -185,7 +185,7 @@
 
                             // OK.
                             initSolutions();
-                            optimizeSolutions([optimizer], solutions, false, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBe(1);
                             expect(solutions[0].replacement).toBe('[].slice.call("A"+"B"+"C")');
                             expect(solutions[0].type).toBe(SolutionType.OBJECT);
@@ -193,13 +193,13 @@
                             // Solution between commas is not a single character.
                             initSolutions();
                             solutions[2] = SOLUTIONS.false;
-                            optimizeSolutions([optimizer], solutions, false, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBeGreaterThan(1);
 
                             // No solution between commas.
                             initSolutions();
                             solutions.splice(2, 1);
-                            optimizeSolutions([optimizer], solutions, false, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBeGreaterThan(1);
                         }
                     );
@@ -226,7 +226,7 @@
 
                             // OK.
                             initSolutions();
-                            optimizeSolutions([optimizer], solutions, false, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBe(2);
                             expect(solutions[1].replacement)
                             .toBe('[].slice.call(' + SOLUTIONS[','].replacement + '+"B"+"C")');
@@ -265,7 +265,7 @@
                                 SOLUTIONS.C,
                                 SOLUTIONS.D,
                             ];
-                            optimizeSolutions([optimizer, cdOptimizer], solutions, false, false);
+                            optimizeSolutions([optimizer, cdOptimizer], solutions);
                             expect(solutions.length).toBe(3);
                             expect(solutions[0].replacement).toBe('[].slice.call("A"+"B")');
                             expect(solutions[0].type).toBe(SolutionType.OBJECT);
@@ -395,7 +395,7 @@
                             var optimizer = createOptimizer();
                             var solutions =
                             [SOLUTIONS[','], SOLUTIONS.A, SOLUTIONS[','], SOLUTIONS.B];
-                            optimizeSolutions([optimizer], solutions, false, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBe(2);
                             expect(solutions[0]).toBe(SOLUTIONS[',']);
                             expect(solutions[1].replacement).toBe('[].slice.call("A"+"B")');
@@ -461,7 +461,7 @@
                                 SOLUTIONS.C,
                                 SOLUTIONS.false,
                             ];
-                            optimizeSolutions([optimizer], solutions, false, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBe(3);
                             expect(solutions[1].replacement).toBe('[].slice.call("A"+"B"+"C")');
                             expect(coils).toEqual(['ABC', 'AB', 'BC']);
@@ -482,7 +482,7 @@
                                     coils.push(str);
                                 };
                                 var optimizer = createOptimizer(replaceCoil);
-                                optimizeSolutions([optimizer], solutions, false, false);
+                                optimizeSolutions([optimizer], solutions);
                                 expect(coils.sort()).toEqual(expectedCoils);
                             }
 

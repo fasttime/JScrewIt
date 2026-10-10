@@ -168,15 +168,16 @@ function conclude()
  * @param {AbstractSolution[]} solutions
  * The solutions in the group, in append order.
  *
- * @param {boolean} bond
- * `true` if the replacement of the group must be bonded, i.e. usable with any unary operator, as a
- * property access target, or as an operand of a concatenation, without further parentheses.
+ * @param {*} [bond]
+ * A truthy value if the replacement of the group must be bonded, i.e. usable with any unary
+ * operator, as a property access target, or as an operand of a concatenation, without further
+ * parentheses.
  *
  * A loose expression is bonded by wrapping it in a pair of parentheses, whereas an expression that
  * is not loose is bonded as it is.
  *
- * @param {boolean} forceString
- * `true` if the replacement of the group must evaluate to a string.
+ * @param {*} [forceString]
+ * A truthy value if the replacement of the group must evaluate to a string.
  *
  * A group that does not evaluate to a string is turned into a string by concatenating it with an
  * empty array.
@@ -189,10 +190,10 @@ export default function createClusteringPlan(solutions, bond, forceString)
     var plan =
     {
         addCluster:     addCluster,
-        bond:           bond,
+        bond:           !!bond,
         clusterLists:   [],
         conclude:       conclude,
-        forceString:    forceString,
+        forceString:    !!forceString,
         solutions:      solutions,
     };
     return plan;

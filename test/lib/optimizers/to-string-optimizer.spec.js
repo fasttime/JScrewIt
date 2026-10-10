@@ -218,7 +218,7 @@
                             var solutionB = { appendLength: 35, source: 'b' };
                             optimizer.appendLengthOf(solutionB);
                             var solutions = [solutionB, solutionB];
-                            optimizeSolutions([optimizer], solutions, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBe(1);
                             expect(solutions[0].source).toBe('bb');
                             expect(solutions[0].replacement).toBe(EXPECTED_REPLACEMENT);
@@ -233,7 +233,7 @@
                             var solutionB = { appendLength: 34, source: 'b' };
                             optimizer.appendLengthOf(solutionB);
                             var solutions = [solutionB, solutionB];
-                            optimizeSolutions([optimizer], solutions, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBe(2);
                         }
                     );
@@ -263,7 +263,7 @@
                             optimizer.appendLengthOf(solution1);
                             optimizer.appendLengthOf(solutionB);
                             var solutions = [solution1, solutionB];
-                            optimizeSolutions([optimizer], solutions, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBe(1);
                             expect(solutions[0].source).toBe('1b');
                             expect(solutions[0].replacement)
@@ -281,7 +281,7 @@
                             optimizer.appendLengthOf(solution1);
                             optimizer.appendLengthOf(solutionB);
                             var solutions = [solution1, solutionB];
-                            optimizeSolutions([optimizer], solutions, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBe(2);
                         }
                     );
@@ -296,7 +296,7 @@
                             optimizer.appendLengthOf(solution0);
                             optimizer.appendLengthOf(solutionB);
                             var solutions = [solution0, solutionB];
-                            optimizeSolutions([optimizer], solutions, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBe(2);
                         }
                     );
@@ -311,7 +311,7 @@
                             optimizer.appendLengthOf(solutionTrue);
                             optimizer.appendLengthOf(solutionB);
                             var solutions = [solutionTrue, solutionB];
-                            optimizeSolutions([optimizer], solutions, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBe(2);
                         }
                     );
@@ -334,7 +334,7 @@
                                     return solution;
                                 }
                             );
-                            optimizeSolutions([optimizer], solutions, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBe(1);
                             expect(solutions[0].source).toBe(chars);
                             expect(solutions[0].replacement)

@@ -94,7 +94,7 @@
                             // OK.
                             optimizer = createOptimizer();
                             solutions = [HIGH_SURROGATE_SOLUTION, LOW_SURROGATE_SOLUTION];
-                            optimizeSolutions([optimizer], solutions, false, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBe(1);
                             expect(solutions[0].replacement).toBe('"🪛"');
                             expect(solutions[0].type).toBe(SolutionType.STRING);
@@ -102,7 +102,7 @@
                             // Surrogates short enough.
                             optimizer = createOptimizer(' "🪛"  ');
                             solutions = [HIGH_SURROGATE_SOLUTION, LOW_SURROGATE_SOLUTION];
-                            optimizeSolutions([optimizer], solutions, false, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBeGreaterThan(1);
                         }
                     );
@@ -140,7 +140,7 @@
                                 NON_SURROGATE_SOLUTION,
                                 LOW_SURROGATE_SOLUTION,
                             ];
-                            optimizeSolutions([optimizer], solutions, false, false);
+                            optimizeSolutions([optimizer], solutions);
                             expect(solutions.length).toBe(3);
                         }
                     );

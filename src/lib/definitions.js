@@ -35,6 +35,7 @@ export var OPTIMAL_B;
 export var OPTIMAL_RETURN_STRING;
 
 export var BASE64_ALPHABET_HI_2;
+export var BASE64_ALPHABET_HI_2_CHARS;
 export var BASE64_ALPHABET_HI_4;
 export var BASE64_ALPHABET_HI_6;
 export var BASE64_ALPHABET_LO_2;
@@ -518,6 +519,8 @@ function getFHPaddingEntries(index)
     }
 
     BASE64_ALPHABET_HI_2 = ['NaN', 'false', 'undefined', '0'];
+
+    BASE64_ALPHABET_HI_2_CHARS = 'Nft0';
 
     BASE64_ALPHABET_HI_4 =
     [
@@ -1237,7 +1240,7 @@ function getFHPaddingEntries(index)
             (
                 {
                     expr:           '"toString"',
-                    optimize:       { toStringOpt: false },
+                    optimize:       { atobOpt: false, toStringOpt: false },
                     solutionType:   SolutionType.COMBINED_STRING,
                 }
             ),
@@ -1702,7 +1705,6 @@ function getFHPaddingEntries(index)
         String:     define('String.name', NAME),
         fromCharCo:
         define({ expr: '"from3har3o"[SPLIT](3)[JOIN]("C")', optimize: { shortcutOpt: false } }),
-        mCh:        define('atob("bUNo")'),
     };
 
     // Create simple constant solutions

@@ -10,6 +10,7 @@ import
 from '../definitions';
 import expressParseCached                                       from '../express-parse-cached';
 import { Feature }                                              from '../features';
+import findDefinition                                           from '../find-definition';
 import
 {
     _Array_isArray,
@@ -31,7 +32,6 @@ import
 from '../screw-buffer';
 import { SimpleSolution, SolutionType }                         from '../solution';
 import { initStaticEncoder, replaceStaticString, shortestOf }   from './encoder-utils';
-import findDefinition                                           from './find-definition';
 import formatPositiveNumber                                     from './format-positive-number';
 import replaceCharByAtob                                        from './replace-char-by-atob';
 import replaceCharByCharCode                                    from './replace-char-by-char-code';
@@ -553,8 +553,8 @@ assignNoEnum
          * (`true`) or off (`false`).
          * In order to turn specific optimizations on or off, specify an object that maps
          * optimization names with the suffix "Opt" to a boolean setting.
-         * Currently supported settings are `commaOpt`, `shortcutOpt`, `surrogatePairOpt`,
-         * `toStringOpt` and `default`.
+         * Currently supported settings are `atobOpt`, `commaOpt`, `shortcutOpt`,
+         * `surrogatePairOpt`, `toStringOpt` and `default`.
          * When an object is specified, undefined optimization settings have the value specified by
          * `default`, or `true` if `default` is not specified.
          *
