@@ -177,7 +177,7 @@ function finalizeParamCall(op, parseInfo)
 function finalizeUnit(unit)
 {
     var mod = unit.mod || '';
-    if (!/-|\+#/.test(mod) && (!/#$/.test(mod) || unit.ops.length))
+    if (!/#.|-|\+#/.test(mod) && (!/#$/.test(mod) || unit.ops.length && !unit.pmod))
     {
         unit.mod = unescapeMod(mod);
         return unit;
@@ -198,9 +198,34 @@ function isUndecoratedUnit(unit)
     return undecorated;
 }
 
-function joinMods(mod1, mod2, numeric)
+/**
+ * Joins two modifier strings and simplifies the result.
+ *
+ * A modifier string is a sequence of the characters `!`, `+`, `-` and `#`, listed from the
+ * outermost to the innermost operator, where `#` stands for a prefix increment operator `++`.
+ *
+ * Operators are only removed or replaced where the resulting expression is equivalent to the
+ * original one for every possible operand.
+ *
+ * @param {string} outerMod
+ * The outer modifier string, applied to the result of `innerMod`.
+ *
+ * @param {string} innerMod
+ * The inner modifier string, applied directly to the operand.
+ *
+ * @param {*} [numeric]
+ * A truthy value if the operand is known to evaluate to a number, as is the case for a
+ * post-incremented expression.
+ *
+ * In this case, a trailing `!-` is reduced to `!` and a trailing `--` is dropped, since the sign of
+ * a number affects neither its truthiness nor the result of a further negation.
+ *
+ * @returns {string}
+ * The simplified concatenation of `outerMod` and `innerMod`.
+ */
+function joinMods(outerMod, innerMod, numeric)
 {
-    var mod = mod1 + mod2;
+    var mod = outerMod + innerMod;
     for (;;)
     {
         var newMod =
@@ -265,13 +290,13 @@ function parseNextOp(parseInfo)
     var ops = popOps(parseInfo);
     if (ops.length)
     {
-        unit.arithmetic = false;
         if (unit.mod || unit.pmod)
         {
             if (!finalizeUnit(unit))
                 return;
             unit = { terms: [unit] };
         }
+        unit.arithmetic = false;
     }
     unit.ops = ops = (unit.ops || []).concat(ops);
     if (ops.length && !unit.mod && !unit.pmod)
@@ -533,7 +558,7 @@ var UNRETURNABLE_WORDS =
     'yield',        // may be an identifier in non-strict mode
 ];
 
-var constValueRegExp            = makeRegExp('(?:#NumericLiteral|#ConstIdentifier)');
+var constValueRegExp            = makeRegExp('#NumericLiteral|#ConstIdentifier(?![$\\w\\\\])');
 var rawIdentifierRegExp         = makeRegExp('(?:[$\\w]|#UnicodeEscapeSequence)+');
 var separatorOrSemicolonRegExp  = makeRegExp('(?:#Separator|;)*');
 var separatorRegExp             = makeRegExp('#Separator*');

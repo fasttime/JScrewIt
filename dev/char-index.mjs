@@ -56,7 +56,7 @@ async function doAdd()
 
     async function indexCharacters()
     {
-        const SolutionBookMap = loadSolutionBookMap(!noLoad);
+        const SolutionBookMap = noLoad ? resetSolutionBookMap() : loadSolutionBookMap();
         await progress
         (
             async indicator =>
@@ -181,7 +181,7 @@ async function doAdd()
     (
         sequence =>
         {
-            const match = /concurrency(?:=(?<concurrency>.*))?/.exec(sequence);
+            const match = /^concurrency(?:=(?<concurrency>.*))?/.exec(sequence);
             if (match)
             {
                 concurrency = Number(match.groups.concurrency);
@@ -335,7 +335,7 @@ function formatCharacter(char)
     if
     (
         charCode >= 0x20 && charCode <= 0x7e && charCode !== 0x22 ||
-        charCode >= 0xa0 && !/(?=\p{L})(?=\p{sc=Arab})/u.test(char)
+        charCode >= 0xa0 && !/[\p{sc=Arab}\p{sc=Hebr}]/u.test(char)
     )
         return char;
     return `U+${charCode.toString(16).toUpperCase().padStart(4, '0')}`;
@@ -407,10 +407,9 @@ function hasUnusedDefinitions({ solutions }, char)
     return notAllDefsUsed;
 }
 
-function loadSolutionBookMap(load = true)
+function loadSolutionBookMap()
 {
-    if (load)
-        SolutionBookMap.load();
+    SolutionBookMap.load();
     return SolutionBookMap;
 }
 
@@ -459,7 +458,7 @@ function parseArguments(parseSequence)
             }
             else
             {
-                for (const char of arg)
+                for (const char of arg.split(''))
                     charSet.add(char);
             }
         }
@@ -476,7 +475,7 @@ function printHelp()
     'char-index delete <chars>\n' +
     'char-index level\n' +
     'char-index list <chars>\n' +
-    'char-index sort [jscrewit-timestamp|max-length|min-length|solutions]\n' +
+    'char-index sort {jscrewit-timestamp|max-length|min-length|solutions}\n' +
     'char-index uses <chars>\n' +
     'char-index help\n' +
     '\n' +
@@ -489,7 +488,13 @@ function printHelp()
     console.log(help);
 }
 
-const ARG_ERROR = { };
+function resetSolutionBookMap()
+{
+    SolutionBookMap.clear();
+    return SolutionBookMap;
+}
+
+const ARG_ERROR = Symbol();
 
 const { argv } = process;
 const argCount = argv.length;

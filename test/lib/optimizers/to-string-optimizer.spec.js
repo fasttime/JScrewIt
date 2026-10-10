@@ -36,6 +36,76 @@
         return optimizer;
     }
 
+    function getIncompatibleFeatureSets()
+    {
+        var incompatibleFeatureSets = { __proto__: null };
+        var elementaryFeatureObjs = Feature.ELEMENTARY;
+        for (var index1 = elementaryFeatureObjs.length; --index1 >= 0;)
+        {
+            var elementaryFeatureObj1 = elementaryFeatureObjs[index1];
+            for (var index2 = elementaryFeatureObjs.length; --index2 > index1;)
+            {
+                var elementaryFeatureObj2 = elementaryFeatureObjs[index2];
+                if (Feature.areCompatible(elementaryFeatureObj1, elementaryFeatureObj2))
+                    continue;
+                var feature1 = elementaryFeatureObj1.name;
+                var feature2 = elementaryFeatureObj2.name;
+                var incompatibleFeatureSet1 =
+                incompatibleFeatureSets[feature1] ||
+                (incompatibleFeatureSets[feature1] = { __proto__: null });
+                incompatibleFeatureSet1[feature2] = elementaryFeatureObj2;
+                var incompatibleFeatureSet2 =
+                incompatibleFeatureSets[feature2] ||
+                (incompatibleFeatureSets[feature2] = { __proto__: null });
+                incompatibleFeatureSet2[feature1] = elementaryFeatureObj1;
+            }
+        }
+        return incompatibleFeatureSets;
+    }
+
+    // Returns a list of feature objects covering all maximal combinations of compatible features,
+    // i.e. combinations to which no elementary feature can be added.
+    function getMaximalFeatureObjs()
+    {
+        function maximizeFeature(featureObj)
+        {
+            var newFeatureObj;
+            for (var featureName in incompatibleFeatureSets)
+            {
+                if (featureObj.includes(featureName))
+                    continue;
+                if (!Feature.areCompatible(featureObj, featureName))
+                    continue;
+                newFeatureObj = Feature(featureObj, featureName);
+                maximizeFeature(newFeatureObj);
+            }
+            if (!newFeatureObj)
+            {
+                var mask = featureObj.mask;
+                if (!maximalFeatureMasks.has(mask))
+                {
+                    maximalFeatureMasks.add(mask);
+                    maximalFeatureObjs.push(featureObj);
+                }
+            }
+        }
+
+        var maximalFeatureObjs = [];
+        var incompatibleFeatureSets = getIncompatibleFeatureSets();
+        var compatibleFeatureNames =
+        Feature.ELEMENTARY.filter
+        (
+            function (elementaryFeatureObj)
+            {
+                return !incompatibleFeatureSets[elementaryFeatureObj.name];
+            }
+        );
+        var compatibleFeatureObj = Feature(compatibleFeatureNames);
+        var maximalFeatureMasks = new JScrewIt.debug.MaskSet();
+        maximizeFeature(compatibleFeatureObj);
+        return maximalFeatureObjs;
+    }
+
     function nextMultipleOf(minValue, divisor)
     {
         var nextMultiple = Math.ceil(minValue / divisor) * divisor;
@@ -47,6 +117,7 @@
 
     var JScrewIt =
     typeof module !== 'undefined' ? require('../../node-jscrewit-test') : self.JScrewIt;
+    var Feature = JScrewIt.Feature;
 
     describe
     (
@@ -285,6 +356,59 @@
                             expect(solutions.length).toBe(2);
                             expect(solutions[0]).toBe(solutionZ);
                             expect(solutions[1].source).toBe('zzzzzzzzzz');
+                        }
+                    );
+                    it
+                    (
+                        'does not create clusters below base 12',
+                        function ()
+                        {
+                            // With any combination of features, the replacement of "toString" is
+                            // longer than the total append length of any string of digits below 12
+                            // that fits in a safe integer, the most expensive being
+                            // "8999999999999999", so no such string is ever clustered.
+                            // The trailing "b" makes the sequence eligible for optimization.
+                            var DIGITS = '8999999999999999';
+                            getMaximalFeatureObjs().forEach
+                            (
+                                function (featureObj)
+                                {
+                                    var encoder = JScrewIt.debug.createEncoder(featureObj);
+                                    var optimizer = encoder._getOptimizer('toString');
+                                    var solutionB = { appendLength: Infinity, source: 'b' };
+                                    optimizer.appendLengthOf(solutionB);
+                                    var solutions =
+                                    Array.prototype.map.call
+                                    (
+                                        DIGITS,
+                                        function (char)
+                                        {
+                                            var solution = encoder.resolveCharacter(char);
+                                            return solution;
+                                        }
+                                    );
+                                    solutions.push(solutionB);
+                                    var clusterSources = [];
+                                    var plan =
+                                    {
+                                        addCluster:
+                                        function (start, length, clusterer)
+                                        {
+                                            var source = clusterer().source;
+                                            clusterSources.push(source);
+                                        },
+                                    };
+                                    optimizer.optimizeSolutions(plan, solutions);
+                                    expect(clusterSources.length).toBeGreaterThan(0);
+                                    clusterSources.forEach
+                                    (
+                                        function (source)
+                                        {
+                                            expect(source).toMatch(/[b-z]/);
+                                        }
+                                    );
+                                }
+                            );
                         }
                     );
                 }

@@ -134,7 +134,7 @@ function createStringifyReplacer()
 {
     const { Solution, SolutionType, featureFromMask } = debug;
     const stringifyReplacerMap =
-    new SortedMap([[Solution, jsonReplaceSolution], [SortedMap, jsonReplaceSortedMap]]);
+    new Map([[Solution, jsonReplaceSolution], [SortedMap, jsonReplaceSortedMap]]);
     return stringifyReplacer;
 
     function jsonReplaceSolution(solution)
@@ -155,11 +155,11 @@ function createStringifyReplacer()
     {
         const obj = { __proto__: null, [TYPE_KEY]: SortedMap.name };
         const keys = [];
-        for (let key of map.keys())
+        for (const [key, value] of map)
         {
-            key = key.replace(/^__/, '___');
-            obj[key] = map.get(key);
-            keys.push(key);
+            const escapedKey = key.replace(/^__/, '___');
+            obj[escapedKey] = value;
+            keys.push(escapedKey);
         }
         const proxy = new Proxy(obj, { ownKeys: () => [TYPE_KEY, ...keys] });
         return proxy;

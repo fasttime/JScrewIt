@@ -4,7 +4,7 @@
 //
 // X is a JSFuck integer between 23 and MAX_SAFE_INTEGER.
 //
-// Y takes at least 15 characters for "20" and at most 46 characters for "36".
+// Y takes at least 15 characters for "20" and at most 56 characters for "29".
 //
 // The leading append plus is omitted when the optimized cluster is the first element of a group.
 
@@ -40,6 +40,8 @@ var DECIMAL_MIN_LENGTHS =
 ];
 
 var MAX_RADIX = 36;
+var MIN_RADIX = 12;
+
 var MAX_SAFE_INTEGER = 0x1fffffffffffff;
 var MIN_SOLUTION_SPAN = 2;
 var RADIX_REPLACEMENTS = [];
@@ -200,7 +202,7 @@ var initialize =
 function ()
 {
     var minLength = Infinity;
-    for (var radix = MAX_RADIX; radix >= 12; radix--)
+    for (var radix = MAX_RADIX; radix >= MIN_RADIX; radix--)
     {
         var replacement = replaceStaticString(_String(radix));
         var length = replacement.length;
