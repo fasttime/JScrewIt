@@ -115,8 +115,6 @@ function getReplacers(optimize)
     {
         options.optimize = optimize;
         var replacement = encoder.replaceString(str, options);
-        if (!replacement)
-            throwSyntaxError(encoder, 'String too complex');
         return replacement;
     };
     var strReplacer =

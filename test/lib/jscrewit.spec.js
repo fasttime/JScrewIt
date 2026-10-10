@@ -1309,31 +1309,6 @@ self,
             );
             describe
             (
-                'string too complex',
-                function ()
-                {
-                    it
-                    (
-                        'in a definition',
-                        function ()
-                        {
-                            expect(debugReplacer('F')).toThrowStrictly
-                            (SyntaxError, 'String too complex in the definition of F');
-                        }
-                    );
-                    it
-                    (
-                        'inline',
-                        function ()
-                        {
-                            expect(debugReplacer('"too complex"')).toThrowStrictly
-                            (SyntaxError, 'String too complex');
-                        }
-                    );
-                }
-            );
-            describe
-            (
                 'string to non-string concatenation',
                 function ()
                 {
