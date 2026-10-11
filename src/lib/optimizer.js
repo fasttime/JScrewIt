@@ -1,6 +1,7 @@
 import { Encoder }                  from './encoder/encoder-base';
 import { assignNoEnum }             from './obj-utils';
 import createAtobOptimizer          from './optimizers/atob-optimizer';
+import createBtoaOptimizer          from './optimizers/btoa-optimizer';
 import createCommaOptimizer         from './optimizers/comma-optimizer';
 import createShortcutOptimizer      from './optimizers/shortcut-optimizer';
 import createSurrogatePairOptimizer from './optimizers/surrogate-pair-optimizer';
@@ -95,6 +96,7 @@ var CREATE_OPTIMIZER_MAP =
 {
     __proto__:      null,
     atob:           createAtobOptimizer,
+    btoa:           createBtoaOptimizer,
     comma:          createCommaOptimizer,
     shortcut:       createShortcutOptimizer,
     surrogatePair:  createSurrogatePairOptimizer,

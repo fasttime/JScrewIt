@@ -888,6 +888,17 @@ self,
             );
             it
             (
+                'supports btoa clustering',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var actual = encoder.replaceString('SQRT', { optimize: true });
+                    var expected = encoder.replaceExpr('btoa("I\\x04S")');
+                    expect(actual).toBe(expected);
+                }
+            );
+            it
+            (
                 'respects the maxLength limit on the first solution',
                 function ()
                 {

@@ -1240,7 +1240,7 @@ function getFHPaddingEntries(index)
             (
                 {
                     expr:           '"toString"',
-                    optimize:       { atobOpt: false, toStringOpt: false },
+                    optimize:       { atobOpt: false, btoaOpt: false, toStringOpt: false },
                     solutionType:   SolutionType.COMBINED_STRING,
                 }
             ),

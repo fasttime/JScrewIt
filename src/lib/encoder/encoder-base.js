@@ -553,7 +553,7 @@ assignNoEnum
          * (`true`) or off (`false`).
          * In order to turn specific optimizations on or off, specify an object that maps
          * optimization names with the suffix "Opt" to a boolean setting.
-         * Currently supported settings are `atobOpt`, `commaOpt`, `shortcutOpt`,
+         * Currently supported settings are `atobOpt`, `btoaOpt`, `commaOpt`, `shortcutOpt`,
          * `surrogatePairOpt`, `toStringOpt` and `default`.
          * When an object is specified, undefined optimization settings have the value specified by
          * `default`, or `true` if `default` is not specified.
