@@ -327,15 +327,15 @@ function fail(message, ...optionalParams)
 
 function formatCharacter(char)
 {
-    if (' #&\'(),;<=>?[]{|}~'.includes(char))
+    if (' #&\'()*,;<=>?[]{|}~'.includes(char))
         return `"${char}"`;
-    if (char === '\\' || char === '`')
-        return `"\\${char}"`;
+    if (char === '\\')
+        return '"\\\\"';
     const charCode = char.charCodeAt();
     if
     (
-        charCode >= 0x20 && charCode <= 0x7e && charCode !== 0x22 ||
-        charCode >= 0xa0 && !/[\p{sc=Arab}\p{sc=Hebr}]/u.test(char)
+        charCode >= 0x20 && charCode <= 0x7e && charCode !== 0x22 && charCode !== 0x60 ||
+        charCode >= 0xa1 && charCode !== 0xad && !/[\s\p{sc=Arab}\p{sc=Hebr}]/u.test(char)
     )
         return char;
     return `U+${charCode.toString(16).toUpperCase().padStart(4, '0')}`;
