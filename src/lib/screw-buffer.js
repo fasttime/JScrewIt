@@ -1,9 +1,8 @@
-import createClusteringPlan                 from './clustering-plan';
-import { assignNoEnum }                     from './obj-utils';
-import { DynamicSolution, EMPTY_SOLUTION }  from './solution';
+import createClusteringPlan                                             from './clustering-plan';
+import { assignNoEnum }                                                 from './obj-utils';
+import { DynamicSolution, EMPTY_SOLUTION, WEAK_APPEND_EXTRA_LENGTH }    from './solution';
 
-// The maximum difference between the append length and the length of a solution.
-var MAX_APPEND_EXTRA_LENGTH = 3;
+var MAX_APPEND_EXTRA_LENGTH = WEAK_APPEND_EXTRA_LENGTH;
 
 export var SCREW_NORMAL             = 0;
 export var SCREW_AS_STRING          = 1;

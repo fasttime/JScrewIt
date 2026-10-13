@@ -1,13 +1,9 @@
-import { APPEND_LENGTH_OF_EMPTY }   from './append-lengths';
-import { SolutionType }             from './solution';
+import { APPEND_LENGTH_OF_EMPTY } from './append-lengths';
+import { DEFAULT_APPEND_EXTRA_LENGTH, SolutionType, WEAK_APPEND_EXTRA_LENGTH }
+from './solution';
 
 /** @typedef {import('./solution').AbstractSolution}    AbstractSolution */
 /** @typedef {import('./solution').SolutionType}        SolutionType */
-
-// The difference between the append length and the length of a solution: the leading "+", and a
-// pair of parentheses around a weak solution.
-var APPEND_EXTRA_LENGTH         = 1;
-var WEAK_APPEND_EXTRA_LENGTH    = 3;
 
 var BOND_EXTRA_LENGTH = 2; // Extra length of bonding parentheses "(" and ")".
 
@@ -201,6 +197,6 @@ export default function createClusteringPlan(solutions, bond, forceString)
 
 function getAppendExtraLength(weak)
 {
-    var appendExtraLength = weak ? WEAK_APPEND_EXTRA_LENGTH : APPEND_EXTRA_LENGTH;
+    var appendExtraLength = weak ? WEAK_APPEND_EXTRA_LENGTH : DEFAULT_APPEND_EXTRA_LENGTH;
     return appendExtraLength;
 }

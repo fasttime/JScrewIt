@@ -7,18 +7,13 @@ import
     APPEND_LENGTH_OF_SMALL_E,
 }
 from '../append-lengths';
-import { _Array_prototype_forEach_call, _String }   from '../obj-utils';
-import { extraZeros }                               from './encoder-utils';
-
-// The difference between the append length and the length of a digit solution.
-var APPEND_EXTRA_LENGTH_OF_DIGIT    = 3;
-
-// The difference between the append length and the length of a dot solution.
-var APPEND_EXTRA_LENGTH_OF_DOT      = 1;
+import { _Array_prototype_forEach_call, _String }                   from '../obj-utils';
+import { DEFAULT_APPEND_EXTRA_LENGTH, WEAK_APPEND_EXTRA_LENGTH }    from '../solution';
+import { extraZeros }                                               from './encoder-utils';
 
 // The extra length of an unsigned number representation starting with a dot compared to one
 // starting with a digit, beyond the difference in the append lengths of the characters.
-var LEADING_DOT_EXTRA_LENGTH = APPEND_EXTRA_LENGTH_OF_DIGIT - APPEND_EXTRA_LENGTH_OF_DOT;
+var LEADING_DOT_EXTRA_LENGTH = WEAK_APPEND_EXTRA_LENGTH - DEFAULT_APPEND_EXTRA_LENGTH;
 
 function evalNumber(preMantissa, lastDigit, exp)
 {
