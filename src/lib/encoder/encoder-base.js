@@ -278,6 +278,107 @@ function replacePrimaryExpr(encoder, unit, bondStrength, unitIndices, maxLength,
     return output;
 }
 
+/**
+ * Replaces a given string with equivalent JSFuck code.
+ *
+ * @function Encoder#replaceString
+ *
+ * @param {string} str
+ * The string to replace.
+ *
+ * @param {object} [options = { }]
+ * An optional object specifying replacement options.
+ *
+ * @param {AbstractSolution} [options.firstSolution]
+ * An optional solution to be prepended to the replacement string.
+ *
+ * @param {number} [options.maxLength = NaN]
+ * The maximum length of the replacement expression.
+ *
+ * If the replacement expression exceeds the specified length, the return value is `undefined`.
+ *
+ * If this parameter is `NaN`, then no length limit is imposed.
+ *
+ * @param {boolean | object<string, boolean>} [options.optimize = false]
+ * Specifies which optimizations should be attempted.
+ *
+ * Optimizations may reduce the length of the replacement string, but they also reduce the
+ * performance and may lead to unwanted circular dependencies when resolving definitions.
+ *
+ * This parameter can be set to a boolean value in order to turn all optimizations on (`true`) or
+ * off (`false`).
+ * In order to turn specific optimizations on or off, specify an object that maps optimization names
+ * with the suffix "Opt" to a boolean setting.
+ * Currently supported settings are `atobOpt`, `btoaOpt`, `commaOpt`, `shortcutOpt`,
+ * `surrogatePairOpt`, `toStringOpt` and `default`.
+ * When an object is specified, undefined optimization settings have the value specified by
+ * `default`, or `true` if `default` is not specified.
+ *
+ * @param {number} [options.screwMode = SCREW_NORMAL]
+ * Specifies how the replacement will be used.
+ *
+ * <dl>
+ *
+ * <dt><code>SCREW_NORMAL</code></dt>
+ * <dd>
+ * Generates code suitable for being used as a function argument or indexer.
+ * The generated replacement is not guaranteed to evaluate to a string but will have the string
+ * representation specified by the input string.
+ * </dd>
+ *
+ * <dt><code>SCREW_AS_STRING</code></dt>
+ * <dd>
+ * Generates code suitable for being used as a standalone string or as the start of a concatenated
+ * string or as an argument to a function that expects a string.
+ * </dd>
+ *
+ * <dt><code>SCREW_AS_BONDED_STRING</code></dt>
+ * <dd>
+ * Generates code suitable for being used with any unary operators, as a property access target, or
+ * in concatenation with any expression.
+ * </dd>
+ *
+ * </dl>
+ *
+ * @returns {string | undefined}
+ * The replacement string or `undefined`.
+ */
+function replaceString(str, options)
+{
+    options = options || { };
+    var optimizerList = this._getOptimizerList(str, options.optimize);
+    var screwMode = options.screwMode || SCREW_NORMAL;
+    var buffer = new ScrewBuffer(screwMode, optimizerList);
+    var firstSolution = options.firstSolution;
+    var maxLength = options.maxLength;
+    if (firstSolution)
+        buffer.append(firstSolution);
+    if (buffer.length > maxLength)
+        return;
+    var length = str.length;
+    for (var index = 0; index < length;)
+    {
+        var solution;
+        var simple = matchSimpleAt(str, index);
+        if (simple)
+        {
+            index += simple.length;
+            solution = SIMPLE[simple];
+        }
+        else
+        {
+            var char = str[index++];
+            solution = this.resolveCharacter(char);
+        }
+        buffer.append(solution);
+        if (buffer.length > maxLength)
+            return;
+    }
+    var replacement = _String(buffer);
+    if (!(replacement.length > maxLength))
+        return replacement;
+}
+
 function resolveCharByDefaultMethod(encoder, char, charCode, replaceChar, entryCode)
 {
     var replacement = replaceChar.call(encoder, charCode);
@@ -521,108 +622,7 @@ assignNoEnum
             return replacement;
         },
 
-        /**
-         * Replaces a given string with equivalent JSFuck code.
-         *
-         * @function Encoder#replaceString
-         *
-         * @param {string} str
-         * The string to replace.
-         *
-         * @param {object} [options = { }]
-         * An optional object specifying replacement options.
-         *
-         * @param {AbstractSolution} [options.firstSolution]
-         * An optional solution to be prepended to the replacement string.
-         *
-         * @param {number} [options.maxLength = NaN]
-         * The maximum length of the replacement expression.
-         *
-         * If the replacement expression exceeds the specified length, the return value is
-         * `undefined`.
-         *
-         * If this parameter is `NaN`, then no length limit is imposed.
-         *
-         * @param {boolean | object<string, boolean>} [options.optimize = false]
-         * Specifies which optimizations should be attempted.
-         *
-         * Optimizations may reduce the length of the replacement string, but they also reduce the
-         * performance and may lead to unwanted circular dependencies when resolving definitions.
-         *
-         * This parameter can be set to a boolean value in order to turn all optimizations on
-         * (`true`) or off (`false`).
-         * In order to turn specific optimizations on or off, specify an object that maps
-         * optimization names with the suffix "Opt" to a boolean setting.
-         * Currently supported settings are `atobOpt`, `btoaOpt`, `commaOpt`, `shortcutOpt`,
-         * `surrogatePairOpt`, `toStringOpt` and `default`.
-         * When an object is specified, undefined optimization settings have the value specified by
-         * `default`, or `true` if `default` is not specified.
-         *
-         * @param {number} [options.screwMode = SCREW_NORMAL]
-         * Specifies how the replacement will be used.
-         *
-         * <dl>
-         *
-         * <dt><code>SCREW_NORMAL</code></dt>
-         * <dd>
-         * Generates code suitable for being used as a function argument or indexer.
-         * The generated replacement is not guaranteed to evaluate to a string but will have the
-         * string representation specified by the input string.
-         * </dd>
-         *
-         * <dt><code>SCREW_AS_STRING</code></dt>
-         * <dd>
-         * Generates code suitable for being used as a standalone string or as the start of a
-         * concatenated string or as an argument to a function that expects a string.
-         * </dd>
-         *
-         * <dt><code>SCREW_AS_BONDED_STRING</code></dt>
-         * <dd>
-         * Generates code suitable for being used with any unary operators, as a property access
-         * target, or in concatenation with any expression.
-         * </dd>
-         *
-         * </dl>
-         *
-         * @returns {string | undefined}
-         * The replacement string or `undefined`.
-         */
-        replaceString:
-        function (str, options)
-        {
-            options = options || { };
-            var optimizerList = this._getOptimizerList(str, options.optimize);
-            var screwMode = options.screwMode || SCREW_NORMAL;
-            var buffer = new ScrewBuffer(screwMode, optimizerList);
-            var firstSolution = options.firstSolution;
-            var maxLength = options.maxLength;
-            if (firstSolution)
-                buffer.append(firstSolution);
-            if (buffer.length > maxLength)
-                return;
-            var length = str.length;
-            for (var index = 0; index < length;)
-            {
-                var solution;
-                var simple = matchSimpleAt(str, index);
-                if (simple)
-                {
-                    index += simple.length;
-                    solution = SIMPLE[simple];
-                }
-                else
-                {
-                    var char = str[index++];
-                    solution = this.resolveCharacter(char);
-                }
-                buffer.append(solution);
-                if (buffer.length > maxLength)
-                    return;
-            }
-            var replacement = _String(buffer);
-            if (!(replacement.length > maxLength))
-                return replacement;
-        },
+        replaceString:          replaceString,
 
         resolve:
         function (definition, source, defaultSolutionType)

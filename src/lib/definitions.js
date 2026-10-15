@@ -27,8 +27,8 @@ export var R_PADDINGS =
 
 export var SIMPLE = createEmpty();
 
-export var FORMAT_MAPPER_LONG;
-export var FORMAT_MAPPER_SHORT;
+export var FORMAT_MAPPER_DBL_DICT;
+export var FORMAT_MAPPER_DICT;
 export var FROM_CHAR_CODE;
 export var FROM_CHAR_CODE_CALLBACK_FORMATTER;
 export var OPTIMAL_B;
@@ -1443,7 +1443,46 @@ function getFHPaddingEntries(index)
 
     FH_R_PADDING_SHIFTS = [define(1, IE_SRC), define(0, NO_IE_SRC)];
 
-    FORMAT_MAPPER_LONG =
+    FORMAT_MAPPER_DBL_DICT =
+    defineList
+    (
+        [
+            define
+            (
+                (function () {
+                    var formatMapper =
+                    function (accessor)
+                    {
+                        var mapper =
+                        'Function("return function(undefined){return function(falsefalse){return ' +
+                        'undefined[1][undefined[0]' + accessor + ']}}")()';
+                        return mapper;
+                    };
+                    formatMapper.argName = 'falsefalse';
+                    return formatMapper;
+                })()
+            ),
+            define
+            (
+                (function () {
+                    var formatMapper =
+                    function (accessor)
+                    {
+                        var mapper =
+                        'Function("return undefined=>falsefalse=>undefined[1][undefined[0]' +
+                        accessor + ']")()';
+                        return mapper;
+                    };
+                    formatMapper.argName = 'falsefalse';
+                    return formatMapper;
+                })(),
+                ARROW
+            ),
+        ],
+        [define(0), define(1)]
+    );
+
+    FORMAT_MAPPER_DICT =
     defineList
     (
         [
@@ -1504,45 +1543,6 @@ function getFHPaddingEntries(index)
             define(0, NO_IE_SRC),
             define(2),
         ]
-    );
-
-    FORMAT_MAPPER_SHORT =
-    defineList
-    (
-        [
-            define
-            (
-                (function () {
-                    var formatMapper =
-                    function (accessor)
-                    {
-                        var mapper =
-                        'Function("return function(undefined){return function(falsefalse){return ' +
-                        'undefined[1][undefined[0]' + accessor + ']}}")()';
-                        return mapper;
-                    };
-                    formatMapper.argName = 'falsefalse';
-                    return formatMapper;
-                })()
-            ),
-            define
-            (
-                (function () {
-                    var formatMapper =
-                    function (accessor)
-                    {
-                        var mapper =
-                        'Function("return undefined=>falsefalse=>undefined[1][undefined[0]' +
-                        accessor + ']")()';
-                        return mapper;
-                    };
-                    formatMapper.argName = 'falsefalse';
-                    return formatMapper;
-                })(),
-                ARROW
-            ),
-        ],
-        [define(0), define(1)]
     );
 
     FROM_CHAR_CODE =

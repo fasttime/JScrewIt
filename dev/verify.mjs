@@ -268,9 +268,9 @@ verify['BASE64_ALPHABET_LO_4:1'] = verifyPredef('BASE64_ALPHABET_LO_4:1');
 
 verify['BASE64_ALPHABET_LO_4:3'] = verifyPredef('BASE64_ALPHABET_LO_4:3');
 
-verify.FORMAT_MAPPER_LONG = verifyPredef('FORMAT_MAPPER_LONG');
+verify.FORMAT_MAPPER_DBL_DICT = verifyPredef('FORMAT_MAPPER_DBL_DICT');
 
-verify.FORMAT_MAPPER_SHORT = verifyPredef('FORMAT_MAPPER_SHORT');
+verify.FORMAT_MAPPER_DICT = verifyPredef('FORMAT_MAPPER_DICT');
 
 verify.FROM_CHAR_CODE = verifyPredef('FROM_CHAR_CODE');
 

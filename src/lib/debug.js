@@ -8,8 +8,8 @@ import
     BASE64_ALPHABET_LO_4,
     CHARACTERS,
     CONSTANTS,
-    FORMAT_MAPPER_LONG,
-    FORMAT_MAPPER_SHORT,
+    FORMAT_MAPPER_DBL_DICT,
+    FORMAT_MAPPER_DICT,
     FROM_CHAR_CODE,
     FROM_CHAR_CODE_CALLBACK_FORMATTER,
     OPTIMAL_B,
@@ -18,7 +18,8 @@ import
 }
 from './definitions';
 import { Encoder }                                                  from './encoder/encoder-base';
-import { STRATEGIES, createReindexMap }                             from './encoder/encoder-ext';
+import { STRATEGIES, createIndexOfMapper, createParseIntMapper, createReindexMap }
+from './encoder/encoder-ext';
 import { Feature }                                                  from './features';
 import createFigurator                                              from './figurator';
 import { JScrewIt, isEncoderInCache }                               from './jscrewit-base';
@@ -184,8 +185,8 @@ if (typeof NO_DEBUG === 'undefined')
                 ENTRIES[name + ':available'] = entries.available;
             }
 
-            exposeEntries('FORMAT_MAPPER_LONG',                 FORMAT_MAPPER_LONG);
-            exposeEntries('FORMAT_MAPPER_SHORT',                FORMAT_MAPPER_SHORT);
+            exposeEntries('FORMAT_MAPPER_DBL_DICT',             FORMAT_MAPPER_DBL_DICT);
+            exposeEntries('FORMAT_MAPPER_DICT',                 FORMAT_MAPPER_DICT);
             exposeEntries('FROM_CHAR_CODE',                     FROM_CHAR_CODE);
             exposeEntries('FROM_CHAR_CODE_CALLBACK_FORMATTER',  FROM_CHAR_CODE_CALLBACK_FORMATTER);
             exposeEntries('OPTIMAL_B',                          OPTIMAL_B);
@@ -207,6 +208,8 @@ if (typeof NO_DEBUG === 'undefined')
                 createClusteringPlan:   createClusteringPlan,
                 createEncoder:          createEncoder,
                 createFigurator:        createFigurator,
+                createIndexOfMapper:    createIndexOfMapper,
+                createParseIntMapper:   createParseIntMapper,
                 createReindexMap:       createReindexMap,
                 createScrewBuffer:      createScrewBuffer,
                 defineConstant:         defineConstant,

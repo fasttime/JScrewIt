@@ -1,6 +1,6 @@
 import JScrewIt from '#jscrewit';
 
-const { Feature, debug: { getEntries } } = JScrewIt;
+const { Feature, debug: { createIndexOfMapper, createParseIntMapper, getEntries } } = JScrewIt;
 
 const RAW_PREDEFS =
 {
@@ -11,18 +11,18 @@ const RAW_PREDEFS =
     'BASE64_ALPHABET_HI_4:5':   'UVWX',
     'BASE64_ALPHABET_LO_4:1':   ['0B', '0R', '0h', '0x'],
     'BASE64_ALPHABET_LO_4:3':   ['0D', '0T', '0j', '0z'],
-    FORMAT_MAPPER_LONG:
+    FORMAT_MAPPER_DBL_DICT:
     (encoder, formatMapper) =>
     {
-        const { argName } = formatMapper;
-        const expr = formatMapper(`[parseInt(${argName},3)]`);
-        const replacement = encoder.replaceExpr(expr, true);
+        const mapper = createIndexOfMapper(formatMapper);
+        const replacement = encoder.replaceMapper(mapper);
         return replacement;
     },
-    FORMAT_MAPPER_SHORT:
+    FORMAT_MAPPER_DICT:
     (encoder, formatMapper) =>
     {
-        const replacement = encoder._createDblDictEncoding(formatMapper, '[]', '[]', '[]+[]');
+        const mapper = createParseIntMapper(formatMapper, 3, false);
+        const replacement = encoder.replaceMapper(mapper);
         return replacement;
     },
     FROM_CHAR_CODE:             (encoder, str) => encoder.replaceString(str, { optimize: true }),

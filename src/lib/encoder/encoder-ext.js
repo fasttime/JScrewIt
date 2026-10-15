@@ -8,8 +8,8 @@ from '../append-lengths';
 import
 {
     AMENDINGS,
-    FORMAT_MAPPER_LONG,
-    FORMAT_MAPPER_SHORT,
+    FORMAT_MAPPER_DBL_DICT,
+    FORMAT_MAPPER_DICT,
     FROM_CHAR_CODE,
     FROM_CHAR_CODE_CALLBACK_FORMATTER,
     OPTIMAL_RETURN_STRING,
@@ -153,6 +153,23 @@ function createCharKeyArrayString
     return charKeyArrayStr;
 }
 
+export function createIndexOfMapper(formatMapper)
+{
+    var argName = formatMapper.argName;
+    var accessor = '.indexOf(' + argName + ')';
+    var mapper = formatMapper(accessor);
+    return mapper;
+}
+
+export function createParseIntMapper(formatMapper, radix, coerceToInt)
+{
+    var argName = formatMapper.argName;
+    var parseIntArg = (coerceToInt ? '+' : '') + argName;
+    var accessor = '[parseInt(' + parseIntArg + ',' + radix + ')]';
+    var mapper = formatMapper(accessor);
+    return mapper;
+}
+
 function createLongStrCodesOutput(encoder, arrayReplacement, fromCharCode, arg, maxLength)
 {
     var mapReplacement = encoder.resolveConstant('MAP').replacement;
@@ -164,7 +181,7 @@ function createLongStrCodesOutput(encoder, arrayReplacement, fromCharCode, arg, 
     var formatter = encoder.findDefinition(FROM_CHAR_CODE_CALLBACK_FORMATTER);
     var formatterExpr = formatter(fromCharCode, arg);
     var mapper = 'Function("return ' + formatterExpr + '")()';
-    var mapperReplacement = encoder._replaceMapper(mapper);
+    var mapperReplacement = encoder.replaceMapper(mapper);
     var charArrayReplacement =
     joinWithMaxLength
     (
@@ -191,7 +208,7 @@ function createMappedArrayEncoding(encoder, arrayReplacement, mapper, legend, ma
     maxCharArrayLength - arrayReplacement.length - MAPPING_MIN_OVERHEAD - legend.length - 2;
     if (mapReplacement.length > maxMapReplacementLength)
         return;
-    var mapperReplacement = encoder._replaceMapper(mapper);
+    var mapperReplacement = encoder.replaceMapper(mapper);
     var charArrayReplacement =
     joinWithMaxLength
     (
@@ -426,7 +443,7 @@ function encodeByDblDict
     );
     if (!charIndexFigureArrayStr)
         return;
-    var formatMapper = encoder._findFormatMapperShort();
+    var formatMapper = encoder._findFormatMapperDblDict();
     var output =
     encoder._createDblDictEncoding
     (formatMapper, charIndexFigureArrayStr, figureLegend, legend, maxLength);
@@ -541,6 +558,27 @@ function initMinFalseFreeCharIndexArrayStrLength(input)
 {
     var minCharIndexArrayStrLength = _Math_max((input.length - 1) * APPEND_LENGTH_OF_FALSE - 3, 0);
     return minCharIndexArrayStrLength;
+}
+
+/**
+ * Replaces a given mapper expression with equivalent JSFuck code.
+ *
+ * A mapper is a JavaScript expression that evaluates to a function suitable for being passed as the
+ * callback argument of `Array.prototype.map`, typically in the form
+ * `Function("return <function expression>")()`.
+ *
+ * @function Encoder#replaceMapper
+ *
+ * @param {string} mapper
+ * The mapper expression to replace.
+ *
+ * @returns {string}
+ * The replacement string.
+ */
+function replaceMapper(mapper)
+{
+    var mapperReplacement = this.replaceExpr(mapper, true);
+    return mapperReplacement;
 }
 
 function shouldCoerceToInt(reindexMap, freqList)
@@ -1150,9 +1188,7 @@ assignNoEnum
         _createDblDictEncoding:
         function (formatMapper, charIndexFigureArrayStr, figureLegend, legend, maxLength)
         {
-            var argName = formatMapper.argName;
-            var accessor = '.indexOf(' + argName + ')';
-            var mapper = formatMapper(accessor);
+            var mapper = createIndexOfMapper(formatMapper);
             var concatReplacement = this.resolveConstant('CONCAT').replacement;
             var maxCombinedLegendLength =
             // 2 is for the calling parentheses around the combined legend replacement.
@@ -1184,11 +1220,8 @@ assignNoEnum
             var mapper;
             if (radix)
             {
-                var formatMapper = this.findDefinition(FORMAT_MAPPER_LONG);
-                var argName = formatMapper.argName;
-                var parseIntArg = (coerceToInt ? '+' : '') + argName;
-                var accessor = '[parseInt(' + parseIntArg + ',' + radix + ')]';
-                mapper = formatMapper(accessor);
+                var formatMapper = this.findDefinition(FORMAT_MAPPER_DICT);
+                mapper = createParseIntMapper(formatMapper, radix, coerceToInt);
             }
             else
                 mapper = '"".charAt.bind';
@@ -1360,10 +1393,10 @@ assignNoEnum
             return output;
         },
 
-        _findFormatMapperShort:
+        _findFormatMapperDblDict:
         function ()
         {
-            var formatMapper = this.findDefinition(FORMAT_MAPPER_SHORT);
+            var formatMapper = this.findDefinition(FORMAT_MAPPER_DBL_DICT);
             return formatMapper;
         },
 
@@ -1378,12 +1411,7 @@ assignNoEnum
 
         _maxDecodableArgs:  65533, // Limit imposed by Internet Explorer.
 
-        _replaceMapper:
-        function (mapper)
-        {
-            var mapperReplacement = this.replaceExpr(mapper, true);
-            return mapperReplacement;
-        },
+        replaceMapper:      replaceMapper,
 
         replaceStringArray: replaceStringArray,
     }

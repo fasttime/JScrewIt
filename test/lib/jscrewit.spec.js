@@ -143,25 +143,25 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var _replaceMapper = encoder._replaceMapper;
+                    var replaceMapper = encoder.replaceMapper;
                     var replaceMapperCalled;
-                    encoder._replaceMapper =
+                    encoder.replaceMapper =
                     function ()
                     {
                         replaceMapperCalled = true;
-                        return _replaceMapper.apply(this, arguments);
+                        return replaceMapper.apply(this, arguments);
                     };
                     var inputData = Object('12345');
                     var maxLength = 7002;
                     replaceMapperCalled = false;
                     var output = encoder._encodeByCharCodes(inputData, 4, maxLength);
                     if (replaceMapperCalled)
-                        expect(_replaceMapper).fail('not to be called');
+                        expect(replaceMapper).fail('not to be called');
                     expect(output).toBeUndefined();
                     replaceMapperCalled = false;
                     encoder._encodeByCharCodes(inputData, 4, maxLength + 1);
                     if (!replaceMapperCalled)
-                        expect(_replaceMapper).fail('to be called');
+                        expect(replaceMapper).fail('to be called');
                 }
             );
             it
@@ -296,7 +296,7 @@ self,
 
             describe
             (
-                'with FORMAT_MAPPER_SHORT',
+                'with FORMAT_MAPPER_DBL_DICT',
                 function ()
                 {
                     function testEntry(entry, index)
@@ -310,7 +310,7 @@ self,
                             {
                                 var encoder = JScrewIt.debug.createEncoder(featureObj);
                                 var formatMapper = entry.definition;
-                                encoder._findFormatMapperShort =
+                                encoder._findFormatMapperDblDict =
                                 function () { return formatMapper; };
                                 var input =
                                 'const pick = (arr, i) => arr[(i % arr.length + arr.length) % ' +
@@ -322,7 +322,7 @@ self,
                         );
                     }
 
-                    var entries = JScrewIt.debug.getEntries('FORMAT_MAPPER_SHORT:available');
+                    var entries = JScrewIt.debug.getEntries('FORMAT_MAPPER_DBL_DICT:available');
                     entries.forEach(testEntry);
                 }
             );
@@ -366,24 +366,24 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var _findFormatMapperShort = encoder._findFormatMapperShort;
-                    var findFormatMapperShortCalled;
-                    encoder._findFormatMapperShort =
+                    var _findFormatMapperDblDict = encoder._findFormatMapperDblDict;
+                    var findFormatMapperDblDictCalled;
+                    encoder._findFormatMapperDblDict =
                     function ()
                     {
-                        findFormatMapperShortCalled = true;
-                        return _findFormatMapperShort.apply(this, arguments);
+                        findFormatMapperDblDictCalled = true;
+                        return _findFormatMapperDblDict.apply(this, arguments);
                     };
                     var maxLength = paramData.mapperMaxLength;
-                    findFormatMapperShortCalled = false;
+                    findFormatMapperDblDictCalled = false;
                     var output = encoder[methodName](Object('12345'), maxLength);
-                    if (findFormatMapperShortCalled)
-                        expect(_findFormatMapperShort).fail('not to be called');
+                    if (findFormatMapperDblDictCalled)
+                        expect(_findFormatMapperDblDict).fail('not to be called');
                     expect(output).toBeUndefined();
-                    findFormatMapperShortCalled = false;
+                    findFormatMapperDblDictCalled = false;
                     encoder[methodName](Object('12345'), maxLength + 1);
-                    if (!findFormatMapperShortCalled)
-                        expect(_findFormatMapperShort).fail('to be called');
+                    if (!findFormatMapperDblDictCalled)
+                        expect(_findFormatMapperDblDict).fail('to be called');
                 }
             );
             it
@@ -553,25 +553,25 @@ self,
                 function ()
                 {
                     var encoder = JScrewIt.debug.createEncoder();
-                    var _replaceMapper = encoder._replaceMapper;
+                    var replaceMapper = encoder.replaceMapper;
                     var replaceMapperCalled;
-                    encoder._replaceMapper =
+                    encoder.replaceMapper =
                     function ()
                     {
                         replaceMapperCalled = true;
-                        return _replaceMapper.apply(this, arguments);
+                        return replaceMapper.apply(this, arguments);
                     };
                     var inputData = Object('12345');
                     var maxLength = 6978;
                     replaceMapperCalled = false;
                     var output = encoder._encodeByDict(inputData, undefined, undefined, maxLength);
                     if (replaceMapperCalled)
-                        expect(_replaceMapper).fail('not to be called');
+                        expect(replaceMapper).fail('not to be called');
                     expect(output).toBeUndefined();
                     replaceMapperCalled = false;
                     encoder._encodeByDict(inputData, undefined, undefined, maxLength + 1);
                     if (!replaceMapperCalled)
-                        expect(_replaceMapper).fail('to be called');
+                        expect(replaceMapper).fail('to be called');
                 }
             );
         }
