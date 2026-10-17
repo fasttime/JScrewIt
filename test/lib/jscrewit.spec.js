@@ -1355,7 +1355,7 @@ self,
     );
     describe
     (
-        'Encoder#resolveCharInExpr throws a SyntaxError for',
+        'Encoder#_resolveCharInExpr throws a SyntaxError for',
         function ()
         {
             it
@@ -1372,6 +1372,72 @@ self,
                         }
                     )
                     .toThrowStrictly(SyntaxError, 'Missing padding entries for index 42');
+                }
+            );
+        }
+    );
+    describe
+    (
+        'Encoder#resolveCharacter throws an error for',
+        function ()
+        {
+            function debugResolver(char)
+            {
+                var result =
+                function ()
+                {
+                    encoder.resolveCharacter(char);
+                };
+                return result;
+            }
+
+            var encoder = JScrewIt.debug.createEncoder();
+
+            it
+            (
+                'a non-string argument',
+                function ()
+                {
+                    expect(debugResolver(42)).toThrowStrictly(Error, 'Invalid character "42"');
+                }
+            );
+            it
+            (
+                'an empty string',
+                function ()
+                {
+                    expect(debugResolver('')).toThrowStrictly(Error, 'Invalid character ""');
+                }
+            );
+            it
+            (
+                'a string with more than one character',
+                function ()
+                {
+                    expect(debugResolver('😊')).toThrowStrictly(Error, 'Invalid character "😊"');
+                }
+            );
+        }
+    );
+    describe
+    (
+        'Encoder#resolveConstant',
+        function ()
+        {
+            it
+            (
+                'throws an error for an undefined constant',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    expect
+                    (
+                        function ()
+                        {
+                            encoder.resolveConstant('FOO');
+                        }
+                    )
+                    .toThrowStrictly(Error, 'Undefined constant FOO');
                 }
             );
         }

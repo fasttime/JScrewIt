@@ -23,6 +23,7 @@ import
     _SyntaxError,
     assignNoEnum,
     createEmpty,
+    esToString,
     noop,
     tryCreateRegExp,
 }
@@ -658,6 +659,9 @@ assignNoEnum
         resolveCharacter:
         function (char)
         {
+            char = esToString(char);
+            if (char.length !== 1)
+                throw _Error('Invalid character ' + _JSON_stringify(char));
             var charCache = this._charCache;
             var solution = charCache[char];
             if (solution === undefined)
@@ -694,17 +698,20 @@ assignNoEnum
         resolveConstant:
         function (constant)
         {
+            constant = esToString(constant);
             var constCache = this._constCache;
             var solution = constCache[constant];
             if (solution === undefined)
             {
+                var entries = this.constantDefinitions[constant];
+                if (entries == null)
+                    throw _Error('Undefined constant ' + constant);
                 callResolver
                 (
                     this,
                     constant,
                     function ()
                     {
-                        var entries = this.constantDefinitions[constant];
                         if (_Array_isArray(entries))
                         {
                             this._guardResolution(constant);
