@@ -1671,7 +1671,7 @@ self,
                             var solution = new JScrewIt.debug.DynamicSolution();
                             solution.prepend
                             (
-                                new JScrewIt.debug.Solution
+                                new JScrewIt.debug.SimpleSolution
                                 (
                                     '',
                                     '[]',
@@ -1680,7 +1680,7 @@ self,
                             );
                             solution.append
                             (
-                                new JScrewIt.debug.Solution
+                                new JScrewIt.debug.SimpleSolution
                                 (
                                     undefined,
                                     '[]',

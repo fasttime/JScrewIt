@@ -62,7 +62,7 @@ function printHelpMessage()
 function printVersion()
 {
     const { version } = require('./package.json');
-    console.log(`JScrewIt ${version}`);
+    console.log('JScrewIt %s', version);
 }
 
 function prompt()

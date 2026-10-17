@@ -5,10 +5,10 @@
 // used must itself be defined in a constant definition.
 
 import { define, defineList, makeCallableWithFeatures } from './definers';
-import { replaceStaticExpr }                            from './encoder/encoder-utils';
 import { Feature }                                      from './features';
 import { _String, createEmpty }                         from './obj-utils';
 import { LazySolution, SolutionType }                   from './solution';
+import { replaceStaticExpr }                            from './static-encoder';
 
 export var AMENDINGS = ['true', 'undefined', 'NaN'];
 

@@ -1,12 +1,12 @@
 /* global exports, module, self */
 
-import './optimizer';
+import '../optimizer/optimizer';
 
-import { Encoder }                                                  from './encoder/encoder-base';
-import { wrapWithCall, wrapWithEval }                               from './encoder/encoder-ext';
-import { Feature }                                                  from './features';
-import { _Error, _String, _setTimeout, assignNoEnum, esToString }   from './obj-utils';
-import trimJS                                                       from './trim-js';
+import Encoder                                                      from '../encoder/encoder-base';
+import { wrapWithCall, wrapWithEval }                               from '../encoder/encoder-ext';
+import { Feature }                                                  from '../features';
+import { _Error, _String, _setTimeout, assignNoEnum, esToString }   from '../obj-utils';
+import trimJS                                                       from '../trim-js';
 import { MaskMap }                                                  from '~feature-hub';
 
 function cacheEncoder(encoder)

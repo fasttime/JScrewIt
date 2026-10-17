@@ -45,37 +45,37 @@
     typeof module !== 'undefined' ? require('../../node-jscrewit-test') : self.JScrewIt;
 
     var DynamicSolution = JScrewIt.debug.DynamicSolution;
-    var Solution        = JScrewIt.debug.Solution;
+    var SimpleSolution  = JScrewIt.debug.SimpleSolution;
     var SolutionType    = JScrewIt.debug.SolutionType;
 
     var SOLUTIONS =
     {
         A:
-        new Solution
+        new SimpleSolution
         ('A',       '"A"',                                  SolutionType.STRING),
 
         B:
-        new Solution
+        new SimpleSolution
         ('B',       '"B"',                                  SolutionType.STRING),
 
         C:
-        new Solution
+        new SimpleSolution
         ('C',       '"C"',                                  SolutionType.STRING),
 
         D:
-        new Solution
+        new SimpleSolution
         ('D',       '"D"',                                  SolutionType.STRING),
 
         ',':
-        new Solution
+        new SimpleSolution
         (',',       '([].slice.call(![]+[])+[])[+!![]]',    SolutionType.STRING),
 
         0:
-        new Solution
+        new SimpleSolution
         ('0',       '+![]',                                 SolutionType.WEAK_ALGEBRAIC),
 
         false:
-        new Solution
+        new SimpleSolution
         ('false',   '![]',                                  SolutionType.ALGEBRAIC),
     };
 
@@ -238,7 +238,7 @@
                         'optimizes a subcluster when the longest cluster is discarded',
                         function ()
                         {
-                            var CD_SOLUTION = new Solution('CD', '"CD"', SolutionType.STRING);
+                            var CD_SOLUTION = new SimpleSolution('CD', '"CD"', SolutionType.STRING);
                             var cdOptimizer =
                             {
                                 appendLengthOf:
@@ -279,10 +279,10 @@
                         function ()
                         {
                             var COMMA_SOLUTION =
-                            new Solution(',', '/* 17 */      ","', SolutionType.STRING);
+                            new SimpleSolution(',', '/* 17 */      ","', SolutionType.STRING);
 
                             var LONG_COMMA_SOLUTION =
-                            new Solution(',', '/* 18 */       ","', SolutionType.STRING);
+                            new SimpleSolution(',', '/* 18 */       ","', SolutionType.STRING);
 
                             var optimizer = createOptimizer();
                             var solutions;
@@ -315,10 +315,10 @@
                         function ()
                         {
                             var COMMA_SOLUTION =
-                            new Solution(',', '/* 13 */  ","', SolutionType.STRING);
+                            new SimpleSolution(',', '/* 13 */  ","', SolutionType.STRING);
 
                             var SHORT_COMMA_SOLUTION =
-                            new Solution(',', '/* 12 */ ","', SolutionType.STRING);
+                            new SimpleSolution(',', '/* 12 */ ","', SolutionType.STRING);
 
                             var optimizer = createOptimizer();
                             var solutions;
@@ -353,10 +353,10 @@
                         function ()
                         {
                             var COMMA_SOLUTION =
-                            new Solution(',', '/* 13 */  ","', SolutionType.STRING);
+                            new SimpleSolution(',', '/* 13 */  ","', SolutionType.STRING);
 
                             var SHORT_COMMA_SOLUTION =
-                            new Solution(',', '/* 12 */ ","', SolutionType.STRING);
+                            new SimpleSolution(',', '/* 12 */ ","', SolutionType.STRING);
 
                             var optimizer = createOptimizer();
                             var solutions;
@@ -408,7 +408,7 @@
                         function ()
                         {
                             var COMMA_SOLUTION =
-                            new Solution(',', '/* 17 */      ","', SolutionType.STRING);
+                            new SimpleSolution(',', '/* 17 */      ","', SolutionType.STRING);
 
                             var replaceCoil =
                             function (str)

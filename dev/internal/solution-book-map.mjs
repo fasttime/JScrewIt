@@ -58,7 +58,7 @@ function compareSolutions(solution1, solution2)
 
 function createParseReviver()
 {
-    const { Solution, SolutionType } = debug;
+    const { SimpleSolution, SolutionType } = debug;
     const parseReviverMap =
     new Map([[TYPE_VALUE_SOLUTION, jsonParseSolution], [SortedMap.name, jsonParseSortedMap]]);
     const unknownFeatureNameSet = new Set();
@@ -66,7 +66,7 @@ function createParseReviver()
 
     function jsonParseSolution(obj)
     {
-        const solution = new Solution(obj.source, obj.replacement, obj.type);
+        const solution = new SimpleSolution(obj.source, obj.replacement, obj.type);
         for (const [key, value] of Object.entries(obj))
         {
             if (!solution.hasOwnProperty(key) && key !== 'type' && key !== 'features')
@@ -132,9 +132,9 @@ function createParseReviver()
 
 function createStringifyReplacer()
 {
-    const { Solution, SolutionType, featureFromMask } = debug;
+    const { SimpleSolution, SolutionType, featureFromMask } = debug;
     const stringifyReplacerMap =
-    new Map([[Solution, jsonReplaceSolution], [SortedMap, jsonReplaceSortedMap]]);
+    new Map([[SimpleSolution, jsonReplaceSolution], [SortedMap, jsonReplaceSortedMap]]);
     return stringifyReplacer;
 
     function jsonReplaceSolution(solution)
@@ -184,7 +184,7 @@ function createStringifyReplacer()
 function importBook(char, solutionBook)
 {
     const { setPrototypeOf } = Object;
-    const { Solution: { prototype: solutionPrototype } } = debug;
+    const { SimpleSolution: { prototype: solutionPrototype } } = debug;
 
     const { solutions } = solutionBook;
     for (const solution of solutions)

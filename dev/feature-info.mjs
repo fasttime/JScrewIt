@@ -25,5 +25,4 @@ featureInfo.showFeatureSupport
 );
 if (anyMarked)
     output += '(¹) Feature excluded when strict mode is enforced.\n';
-output += '\n';
-process.stdout.write(output);
+console.log(output);

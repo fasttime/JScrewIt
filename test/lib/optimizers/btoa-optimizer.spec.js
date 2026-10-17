@@ -22,7 +22,7 @@
 
     function createSolution(source, replacement, type, appendLength)
     {
-        var solution = new JScrewIt.debug.Solution(source, replacement, type);
+        var solution = new JScrewIt.debug.SimpleSolution(source, replacement, type);
         if (appendLength !== undefined)
             solution.appendLength = appendLength;
         return solution;

@@ -251,7 +251,7 @@ async function verifyReadable(filename)
     {
         if (error.code === 'ENOENT')
         {
-            console.error(`File '${filename}' not found in JScrewIt folder.`);
+            console.error('File \'%s\' not found in JScrewIt folder.', filename);
             return false;
         }
         throw error;

@@ -242,9 +242,9 @@ async function doLevel()
                 independentChars.push(char);
         }
         independentChars.forEach(char => SolutionBookMap.delete(char));
-        output += `${formatCharacters(independentChars)}\n`;
+        output += formatCharacters(independentChars);
     }
-    process.stdout.write(output);
+    printFormattedCharacters(output);
     {
         const outputURL = new URL(`../.${NICKNAME}.char-index-level`, import.meta.url);
         await writeFile(outputURL, output);
@@ -254,7 +254,8 @@ async function doLevel()
 function doList()
 {
     const charSet = parseArguments(() => false);
-    console.log(formatCharacters(charSet));
+    const output = formatCharacters(charSet);
+    printFormattedCharacters(output);
 }
 
 function doSort()
@@ -316,7 +317,8 @@ function doUses()
         if (solutionBook.usedChars.some(char => charSet.has(char)))
             dependentChars.push(char);
     }
-    console.log(formatCharacters(dependentChars));
+    const output = formatCharacters(dependentChars);
+    printFormattedCharacters(output);
 }
 
 function fail(message, ...optionalParams)
@@ -354,6 +356,7 @@ function formatCharacters(chars)
         str += formattedChar;
         prevCharLong = charLong;
     }
+    str += '\n';
     return str;
 }
 
@@ -466,6 +469,11 @@ function parseArguments(parseSequence)
     if (!charSet.size)
         fail('No characters specified');
     return charSet;
+}
+
+function printFormattedCharacters(formattedChars)
+{
+    process.stdout.write(formattedChars);
 }
 
 function printHelp()

@@ -127,8 +127,7 @@ export async function doMakeBrowserSpecRunner(pkgURL)
             {
                 if (source === 'assert/strict' || source === 'node:assert/strict')
                 {
-                    const path =
-                    fileURLToPath(new URL('browser-assert-strict-polyfill.mjs', import.meta.url));
+                    const path = join(import.meta.dirname, 'browser-assert-strict-polyfill.mjs');
                     return path;
                 }
                 return null;

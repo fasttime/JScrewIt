@@ -1,5 +1,5 @@
 import { SCREW_AS_BONDED_STRING, SCREW_AS_STRING, SCREW_NORMAL }    from '../screw-buffer';
-import { replaceStaticString }                                      from './encoder-utils';
+import { replaceStaticString }                                      from '../static-encoder';
 
 // Length of the shortest possible concat head replacement "[]".
 var CONCAT_HEAD_MIN_LENGTH      = 2;

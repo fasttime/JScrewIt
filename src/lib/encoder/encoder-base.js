@@ -9,9 +9,11 @@ import
     SIMPLE,
 }
 from '../definitions';
-import expressParseCached                                       from '../express-parse-cached';
-import { Feature }                                              from '../features';
-import findDefinition                                           from '../find-definition';
+import { shortestOf }                               from '../encoding-utils';
+import expressParseCached                           from '../express-parse-cached';
+import { Feature }                                  from '../features';
+import findDefinition                               from '../find-definition';
+import formatPositiveNumber                         from '../format-positive-number';
 import
 {
     _Array_isArray,
@@ -32,14 +34,13 @@ from '../obj-utils';
 import
 { SCREW_AS_BONDED_STRING, SCREW_AS_STRING, SCREW_NORMAL, ScrewBuffer }
 from '../screw-buffer';
-import { SimpleSolution, SolutionType }                         from '../solution';
-import { initStaticEncoder, replaceStaticString, shortestOf }   from './encoder-utils';
-import formatPositiveNumber                                     from './format-positive-number';
-import replaceCharByAtob                                        from './replace-char-by-atob';
-import replaceCharByCharCode                                    from './replace-char-by-char-code';
-import replaceCharByEscSeq                                      from './replace-char-by-esc-seq';
-import replaceCharByUnescape                                    from './replace-char-by-unescape';
-import { MASK_EMPTY, maskIncludes }                             from '~feature-hub';
+import { SimpleSolution, SolutionType }             from '../solution';
+import { initStaticEncoder, replaceStaticString }   from '../static-encoder';
+import replaceCharByAtob                            from './replace-char-by-atob';
+import replaceCharByCharCode                        from './replace-char-by-char-code';
+import replaceCharByEscSeq                          from './replace-char-by-esc-seq';
+import replaceCharByUnescape                        from './replace-char-by-unescape';
+import { MASK_EMPTY, maskIncludes }                 from '~feature-hub';
 
 /** @typedef {import('../solution').AbstractSolution} AbstractSolution */
 
@@ -54,7 +55,7 @@ var BOND_STRENGTH_STRONG    = 2;
 var featureFromMask = Feature._fromMask;
 
 /** @class Encoder */
-export function Encoder(mask)
+export default function Encoder(mask)
 {
     this.mask               = mask;
     this._charCache         = _Object_create(STATIC_CHAR_CACHE);
@@ -390,6 +391,159 @@ function resolveCharByDefaultMethod(encoder, char, charCode, replaceChar, entryC
     return solution;
 }
 
+/**
+ * Resolves a character to a solution.
+ *
+ * The solution is cached, so that subsequent calls with the same character on the same encoder
+ * return the same solution.
+ *
+ * @function Encoder#resolveCharacter
+ *
+ * @param {string} char
+ * The character to resolve: a string consisting of exactly one UTF-16 code unit.
+ *
+ * If this parameter is not a string of length 1, an error is thrown.
+ *
+ * @returns {AbstractSolution}
+ * The solution of the shortest definition of the character supported by the features of this
+ * encoder, or a solution obtained by a default method if no such definition exists.
+ */
+function resolveCharacter(char)
+{
+    char = esToString(char);
+    if (char.length !== 1)
+        throw _Error('Invalid character ' + _JSON_stringify(char));
+    var charCache = this._charCache;
+    var solution = charCache[char];
+    if (solution === undefined)
+    {
+        var charName = _JSON_stringify(char);
+        callResolver
+        (
+            this,
+            charName,
+            function ()
+            {
+                var entries = CHARACTERS[char];
+                if (!entries || _Array_isArray(entries))
+                {
+                    this._guardResolution(charName);
+                    if (entries)
+                        solution = findOptimalSolution(this, char, entries);
+                    if (!solution)
+                        solution = this._commonResolveCharacter(char);
+                }
+                else
+                {
+                    solution = STATIC_ENCODER.resolve(entries, char);
+                    solution.entryCode = 'static';
+                    charCache = STATIC_CHAR_CACHE;
+                }
+                charCache[char] = solution;
+            }
+        );
+    }
+    return solution;
+}
+
+/**
+ * Resolves a constant to a solution.
+ *
+ * The solution is cached, so that subsequent calls with the same constant on the same encoder
+ * return the same solution.
+ *
+ * @function Encoder#resolveConstant
+ *
+ * @param {string} constant
+ * The name of the constant to resolve.
+ *
+ * If no constant with the specified name is defined, an error is thrown.
+ *
+ * @returns {AbstractSolution | undefined}
+ * The solution of the shortest definition of the constant supported by the features of this
+ * encoder, or `undefined` if no such definition exists.
+ */
+function resolveConstant(constant)
+{
+    constant = esToString(constant);
+    var constCache = this._constCache;
+    var solution = constCache[constant];
+    if (solution === undefined)
+    {
+        var entries = this.constantDefinitions[constant];
+        if (entries == null)
+            throw _Error('Undefined constant ' + constant);
+        callResolver
+        (
+            this,
+            constant,
+            function ()
+            {
+                if (_Array_isArray(entries))
+                {
+                    this._guardResolution(constant);
+                    solution = findOptimalSolution(this, constant, entries, SolutionType.OBJECT);
+                }
+                else
+                {
+                    solution = STATIC_ENCODER.resolve(entries, undefined, SolutionType.OBJECT);
+                    constCache = STATIC_CONST_CACHE;
+                }
+                constCache[constant] = solution;
+            }
+        );
+    }
+    return solution;
+}
+
+/**
+ * Resolves a shortcut to a solution.
+ *
+ * A shortcut is a string of multiple characters with its own definition, which the `shortcut`
+ * optimizer uses to replace occurrences of the string as a whole rather than character by
+ * character.
+ *
+ * The solution is cached, so that subsequent calls with the same shortcut on the same encoder
+ * return the same solution.
+ *
+ * @function Encoder#resolveShortcut
+ *
+ * @param {string} shortcut
+ * The shortcut to resolve.
+ *
+ * If no shortcut with the specified name is defined, an error is thrown.
+ *
+ * @returns {AbstractSolution | undefined}
+ * The solution of the definition of the shortcut, or `undefined` if the definition is not
+ * supported by the features of this encoder.
+ */
+function resolveShortcut(shortcut)
+{
+    shortcut = esToString(shortcut);
+    var shortcutCache = this._shortcutCache;
+    var solution = shortcutCache[shortcut];
+    if (solution === undefined)
+    {
+        var entry = SHORTCUTS[shortcut];
+        var shortcutName = _JSON_stringify(shortcut);
+        if (entry == null)
+            throw _Error('Undefined shortcut ' + shortcutName);
+        callResolver
+        (
+            this,
+            shortcutName,
+            function ()
+            {
+                this._guardResolution(shortcutName);
+                if (this.hasFeatures(entry.mask))
+                    solution = this.resolve(entry.definition, shortcut);
+                shortcutCache[shortcut] = solution;
+            }
+        );
+    }
+    return solution;
+}
+
 function throwSyntaxError(encoder, message)
 {
     var stack = encoder._stack;
@@ -658,108 +812,11 @@ assignNoEnum
             return solution;
         },
 
-        resolveCharacter:
-        function (char)
-        {
-            char = esToString(char);
-            if (char.length !== 1)
-                throw _Error('Invalid character ' + _JSON_stringify(char));
-            var charCache = this._charCache;
-            var solution = charCache[char];
-            if (solution === undefined)
-            {
-                var charName = _JSON_stringify(char);
-                callResolver
-                (
-                    this,
-                    charName,
-                    function ()
-                    {
-                        var entries = CHARACTERS[char];
-                        if (!entries || _Array_isArray(entries))
-                        {
-                            this._guardResolution(charName);
-                            if (entries)
-                                solution = findOptimalSolution(this, char, entries);
-                            if (!solution)
-                                solution = this._commonResolveCharacter(char);
-                        }
-                        else
-                        {
-                            solution = STATIC_ENCODER.resolve(entries, char);
-                            solution.entryCode = 'static';
-                            charCache = STATIC_CHAR_CACHE;
-                        }
-                        charCache[char] = solution;
-                    }
-                );
-            }
-            return solution;
-        },
+        resolveCharacter:       resolveCharacter,
 
-        resolveConstant:
-        function (constant)
-        {
-            constant = esToString(constant);
-            var constCache = this._constCache;
-            var solution = constCache[constant];
-            if (solution === undefined)
-            {
-                var entries = this.constantDefinitions[constant];
-                if (entries == null)
-                    throw _Error('Undefined constant ' + constant);
-                callResolver
-                (
-                    this,
-                    constant,
-                    function ()
-                    {
-                        if (_Array_isArray(entries))
-                        {
-                            this._guardResolution(constant);
-                            solution =
-                            findOptimalSolution(this, constant, entries, SolutionType.OBJECT);
-                        }
-                        else
-                        {
-                            solution =
-                            STATIC_ENCODER.resolve(entries, undefined, SolutionType.OBJECT);
-                            constCache = STATIC_CONST_CACHE;
-                        }
-                        constCache[constant] = solution;
-                    }
-                );
-            }
-            return solution;
-        },
+        resolveConstant:        resolveConstant,
 
-        resolveShortcut:
-        function (shortcut)
-        {
-            shortcut = esToString(shortcut);
-            var shortcutCache = this._shortcutCache;
-            var solution = shortcutCache[shortcut];
-            if (solution === undefined)
-            {
-                var entry = SHORTCUTS[shortcut];
-                var shortcutName = _JSON_stringify(shortcut);
-                if (entry == null)
-                    throw _Error('Undefined shortcut ' + shortcutName);
-                callResolver
-                (
-                    this,
-                    shortcutName,
-                    function ()
-                    {
-                        this._guardResolution(shortcutName);
-                        if (this.hasFeatures(entry.mask))
-                            solution = this.resolve(entry.definition, shortcut);
-                        shortcutCache[shortcut] = solution;
-                    }
-                );
-            }
-            return solution;
-        },
+        resolveShortcut:        resolveShortcut,
     }
 );
 

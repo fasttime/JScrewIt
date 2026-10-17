@@ -153,7 +153,7 @@ task
         /^(?!\*!|\*\s*global\b|[*/]\s*eslint-(?:dis|en)able|\*\*[\s*]*@typedef\s*\{\s*import\()/;
         const inputOptions =
         {
-            input: 'src/lib/jscrewit-main.js',
+            input: 'src/lib/jscrewit/jscrewit-main.js',
             plugins:
             [
                 cleanup({ comments: [commentFilter], maxEmptyLines: -1 }),

@@ -9,8 +9,16 @@ import eslintPluginJSDoc                    from 'eslint-plugin-jsdoc';
 import { globalIgnores, includeIgnoreFile } from 'eslint/config';
 import globals                              from 'globals';
 
-const ebddPlugins = { ebdd: eslintPluginEBDD };
+function allowImportsOnlyFrom(files, ...dirs)
+{
+    const alternation = dirs.map(RegExp.escape).join('|');
+    const regex = `^(?!~[^/]+$|(?:${alternation})/[^/.][^/]*$)`;
+    const message = `Only imports from ${dirs.join(', ')} or workspace packages are allowed here.`;
+    const rules = { 'no-restricted-imports': ['error', { patterns: [{ regex, message }] }] };
+    return { files, rules };
+}
 
+const ebddPlugins = { ebdd: eslintPluginEBDD };
 const gitignoreFile = join(import.meta.dirname, '.gitignore');
 const overrideConfig =
 await createConfig
@@ -27,6 +35,16 @@ await createConfig
         processor:          new EslintEnvProcessor(),
         rules:              { 'internal/sorted-definitions': 'error' },
     },
+    allowImportsOnlyFrom(['src/lib/*.js'], '.'),
+    allowImportsOnlyFrom(['src/lib/encoder/*.js'], '.', '..'),
+    allowImportsOnlyFrom(['src/lib/optimizer/*.js'], '.', '..', '../encoder'),
+    allowImportsOnlyFrom(['src/lib/jscrewit/*.js'], '.', '..', '../encoder', '../optimizer'),
+    {
+        files:              ['src/ui/worker.js'],
+        jsVersion:          5,
+        languageOptions:    { sourceType: 'commonjs' },
+        processor:          new EslintEnvProcessor(),
+    },
     {
         files:              ['*.js', 'test/patch-cov-source.js', 'tools/**/*.js'],
         jsVersion:          2025,
@@ -42,12 +60,6 @@ await createConfig
         files:              ['dev/internal/browser-assert-strict-polyfill.mjs'],
         jsVersion:          5,
         languageOptions:    { globals: globals.nodeBuiltin, ecmaVersion: 2015 },
-    },
-    {
-        files:              ['src/ui/worker.js'],
-        jsVersion:          5,
-        languageOptions:    { sourceType: 'commonjs' },
-        processor:          new EslintEnvProcessor(),
     },
     {
         files:              ['test/**/*.js'],

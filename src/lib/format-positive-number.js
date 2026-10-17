@@ -6,10 +6,10 @@ import
     APPEND_LENGTH_OF_MINUS,
     APPEND_LENGTH_OF_SMALL_E,
 }
-from '../append-lengths';
-import { _Array_prototype_forEach_call, _String }                   from '../obj-utils';
-import { DEFAULT_APPEND_EXTRA_LENGTH, WEAK_APPEND_EXTRA_LENGTH }    from '../solution';
-import { extraZeros }                                               from './encoder-utils';
+from './append-lengths';
+import { extraZeros }                                               from './encoding-utils';
+import { _Array_prototype_forEach_call, _String }                   from './obj-utils';
+import { DEFAULT_APPEND_EXTRA_LENGTH, WEAK_APPEND_EXTRA_LENGTH }    from './solution';
 
 // The extra length of an unsigned number representation starting with a dot compared to one
 // starting with a digit, beyond the difference in the append lengths of the characters.

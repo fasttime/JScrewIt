@@ -1,7 +1,7 @@
 /* global DEBUG */
 
-import createClusteringPlan                                         from './clustering-plan';
-import { define }                                                   from './definers';
+import createClusteringPlan                                         from '../clustering-plan';
+import { define }                                                   from '../definers';
 import
 {
     BASE64_ALPHABET_HI_4,
@@ -16,12 +16,12 @@ import
     OPTIMAL_RETURN_STRING,
     SHORTCUTS,
 }
-from './definitions';
-import { Encoder }                                                  from './encoder/encoder-base';
+from '../definitions';
+import Encoder                                                      from '../encoder/encoder-base';
 import { STRATEGIES, createIndexOfMapper, createParseIntMapper, createReindexMap }
-from './encoder/encoder-ext';
-import { Feature }                                                  from './features';
-import createFigurator                                              from './figurator';
+from '../encoder/encoder-ext';
+import { Feature }                                                  from '../features';
+import createFigurator                                              from '../figurator';
 import { JScrewIt, isEncoderInCache }                               from './jscrewit-base';
 import
 {
@@ -35,11 +35,13 @@ import
     createEmpty,
     esToString,
 }
-from './obj-utils';
-import { ScrewBuffer, optimizeSolutions }                           from './screw-buffer';
+from '../obj-utils';
+import
+{ SCREW_AS_BONDED_STRING, SCREW_AS_STRING, SCREW_NORMAL, ScrewBuffer, optimizeSolutions }
+from '../screw-buffer';
 import { DynamicSolution, SimpleSolution, SolutionType, calculateSolutionType }
-from './solution';
-import trimJS                                                       from './trim-js';
+from '../solution';
+import trimJS                                                       from '../trim-js';
 import { MASK_EMPTY, MaskMap, MaskSet, maskIncludes, maskUnion }    from '~feature-hub';
 
 if (typeof NO_DEBUG === 'undefined')
@@ -199,10 +201,13 @@ if (typeof NO_DEBUG === 'undefined')
         (
             { },
             {
+                SCREW_AS_BONDED_STRING: SCREW_AS_BONDED_STRING,
+                SCREW_AS_STRING:        SCREW_AS_STRING,
+                SCREW_NORMAL:           SCREW_NORMAL,
                 DynamicSolution:        DynamicSolution,
                 MaskMap:                MaskMap,
                 MaskSet:                MaskSet,
-                Solution:               SimpleSolution,
+                SimpleSolution:         SimpleSolution,
                 SolutionType:           SolutionType,
                 calculateSolutionType:  calculateSolutionType,
                 createClusteringPlan:   createClusteringPlan,

@@ -139,26 +139,26 @@
             }
 
             var createScrewBuffer = JScrewIt.debug.createScrewBuffer;
-            var Solution = JScrewIt.debug.Solution;
+            var SimpleSolution = JScrewIt.debug.SimpleSolution;
             var SolutionType = JScrewIt.debug.SolutionType;
             var solutionA =
-            new Solution('a',           '(![]+[])[+!![]]',  SolutionType.STRING);
+            new SimpleSolution('a',         '(![]+[])[+!![]]',  SolutionType.STRING);
             var solution0 =
-            new Solution('0',           '+[]',              SolutionType.WEAK_ALGEBRAIC);
+            new SimpleSolution('0',         '+[]',              SolutionType.WEAK_ALGEBRAIC);
             var solution00 =
-            new Solution('00',          '+[]+[+[]]',        SolutionType.WEAK_PREFIXED_STRING);
+            new SimpleSolution('00',        '+[]+[+[]]',        SolutionType.WEAK_PREFIXED_STRING);
             var solution0False =
-            new Solution('0false',      '[+[]]+![]',        SolutionType.COMBINED_STRING);
+            new SimpleSolution('0false',    '[+[]]+![]',        SolutionType.COMBINED_STRING);
             var solutionFalse =
-            new Solution('false',       '![]',              SolutionType.ALGEBRAIC);
+            new SimpleSolution('false',     '![]',              SolutionType.ALGEBRAIC);
             var solutionFalse0 =
-            new Solution('false0',      '![]+[+[]]',        SolutionType.PREFIXED_STRING);
+            new SimpleSolution('false0',    '![]+[+[]]',        SolutionType.PREFIXED_STRING);
             var solutionUndefined =
-            new Solution('undefined',   '[][[]]',           SolutionType.UNDEFINED);
+            new SimpleSolution('undefined', '[][[]]',           SolutionType.UNDEFINED);
             var strTestOptimizer =
-            createTestOptimizer(new Solution(undefined, '""', SolutionType.STRING));
+            createTestOptimizer(new SimpleSolution(undefined, '""', SolutionType.STRING));
             var objTestOptimizer =
-            createTestOptimizer(new Solution(undefined, '{}', SolutionType.OBJECT));
+            createTestOptimizer(new SimpleSolution(undefined, '{}', SolutionType.OBJECT));
 
             var shortEncodingsParamDataList =
             [

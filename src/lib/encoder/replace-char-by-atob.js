@@ -8,9 +8,10 @@ import
     BASE64_ALPHABET_LO_6,
 }
 from '../definitions';
-import findBase64AlphabetDefinition         from '../find-base64-alphabet-definition';
-import { _String }                          from '../obj-utils';
-import { replaceStaticString, shortestOf }  from './encoder-utils';
+import { shortestOf }               from '../encoding-utils';
+import findBase64AlphabetDefinition from '../find-base64-alphabet-definition';
+import { _String }                  from '../obj-utils';
+import { replaceStaticString }      from '../static-encoder';
 
 export default function replaceCharByAtob(charCode)
 {
