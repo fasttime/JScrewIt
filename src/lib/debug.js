@@ -155,7 +155,7 @@ if (typeof NO_DEBUG === 'undefined')
 
         function getShortcutNames()
         {
-            var names = _Object_keys(SHORTCUTS).sort();
+            var names = _Object_keys(SHORTCUTS);
             return names;
         }
 

@@ -1444,6 +1444,50 @@ self,
     );
     describe
     (
+        'Encoder#resolveShortcut',
+        function ()
+        {
+            it
+            (
+                'throws an error for an undefined shortcut',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    expect
+                    (
+                        function ()
+                        {
+                            encoder.resolveShortcut('FOO');
+                        }
+                    )
+                    .toThrowStrictly(Error, 'Undefined shortcut "FOO"');
+                }
+            );
+            it
+            (
+                'returns undefined if the definition is not supported',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var solution = encoder.resolveShortcut('String');
+                    expect(solution).toBeUndefined();
+                }
+            );
+            it
+            (
+                'caches the solution',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var solution = encoder.resolveShortcut('fromCharCo');
+                    expect(solution.source).toBe('fromCharCo');
+                    expect(encoder.resolveShortcut('fromCharCo')).toBe(solution);
+                }
+            );
+        }
+    );
+    describe
+    (
         'Strategy',
         function ()
         {

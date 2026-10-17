@@ -1240,7 +1240,7 @@ function getFHPaddingEntries(index)
             (
                 {
                     expr:           '"toString"',
-                    optimize:       { atobOpt: false, btoaOpt: false, toStringOpt: false },
+                    optimize:       { default: false, shortcutOpt: true },
                     solutionType:   SolutionType.COMBINED_STRING,
                 }
             ),
@@ -1699,12 +1699,12 @@ function getFHPaddingEntries(index)
     SHORTCUTS =
     {
         __proto__:  null,
-        Number:     define({ expr: 'Number.name', optimize: { shortcutOpt: false } }, NAME),
-        Object:     define({ expr: 'Object.name', optimize: { shortcutOpt: false } }, NAME),
-        RegExp:     define({ expr: 'RegExp.name', optimize: { shortcutOpt: false } }, NAME),
+        Number:     define('Number.name', NAME),
+        Object:     define('Object.name', NAME),
+        RegExp:     define('RegExp.name', NAME),
         String:     define('String.name', NAME),
-        fromCharCo:
-        define({ expr: '"from3har3o"[SPLIT](3)[JOIN]("C")', optimize: { shortcutOpt: false } }),
+        fromCharCo: define({ expr: '"from3har3o"[SPLIT](3)[JOIN]("C")', optimize: true }),
+        omCharC:    define({ expr: '"om0har0"[SPLIT](0)[JOIN]("C")', optimize: true }),
     };
 
     // Create simple constant solutions

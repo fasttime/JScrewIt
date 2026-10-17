@@ -7,7 +7,7 @@
 {
     function createOptimizer(appendLength, solutionType)
     {
-        function resolve()
+        function resolveShortcut()
         {
             var solution =
             createSolution(appendLength, undefined, EXPECTED_REPLACEMENT, solutionType);
@@ -17,8 +17,8 @@
         if (appendLength === undefined)
             appendLength = 60;
         var encoder = JScrewIt.debug.createEncoder();
-        encoder.resolve             = resolve;
         encoder.resolveCharacter    = resolveCharacter;
+        encoder.resolveShortcut     = resolveShortcut;
         var optimizer = encoder._getOptimizer('shortcut', SHORTCUT);
         return optimizer;
     }
@@ -61,25 +61,23 @@
         {
             it
             (
-                'resolves the definition of the shortcut',
+                'resolves the shortcut',
                 function ()
                 {
-                    var resolveArgs;
+                    var resolveShortcutArgs;
                     var encoder = JScrewIt.debug.createEncoder();
-                    encoder.resolve =
+                    encoder.resolveCharacter = resolveCharacter;
+                    encoder.resolveShortcut =
                     function ()
                     {
-                        resolveArgs = arguments;
+                        resolveShortcutArgs = arguments;
                         var solution =
                         createSolution(60, undefined, EXPECTED_REPLACEMENT, SolutionType.STRING);
                         return solution;
                     };
-                    encoder.resolveCharacter = resolveCharacter;
                     encoder._getOptimizer('shortcut', SHORTCUT);
-                    var definition = JScrewIt.debug.getShortcutEntry(SHORTCUT).definition;
-                    expect(resolveArgs.length).toBe(2);
-                    expect(resolveArgs[0]).toBe(definition);
-                    expect(resolveArgs[1]).toBe(SHORTCUT);
+                    expect(resolveShortcutArgs.length).toBe(1);
+                    expect(resolveShortcutArgs[0]).toBe(SHORTCUT);
                 }
             );
             describe

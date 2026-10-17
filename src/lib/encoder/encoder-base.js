@@ -5,6 +5,7 @@ import
     JSFUCK_INFINITY,
     NATIVE_FUNCTION_INFOS,
     R_PADDINGS,
+    SHORTCUTS,
     SIMPLE,
 }
 from '../definitions';
@@ -60,6 +61,7 @@ export function Encoder(mask)
     this._constCache        = _Object_create(STATIC_CONST_CACHE);
     this._definitionCache   = createEmpty();
     this._optimizers        = createEmpty();
+    this._shortcutCache     = createEmpty();
     this._stack             = [];
 }
 
@@ -725,6 +727,34 @@ assignNoEnum
                             constCache = STATIC_CONST_CACHE;
                         }
                         constCache[constant] = solution;
+                    }
+                );
+            }
+            return solution;
+        },
+
+        resolveShortcut:
+        function (shortcut)
+        {
+            shortcut = esToString(shortcut);
+            var shortcutCache = this._shortcutCache;
+            var solution = shortcutCache[shortcut];
+            if (solution === undefined)
+            {
+                var entry = SHORTCUTS[shortcut];
+                var shortcutName = _JSON_stringify(shortcut);
+                if (entry == null)
+                    throw _Error('Undefined shortcut ' + shortcutName);
+                callResolver
+                (
+                    this,
+                    shortcutName,
+                    function ()
+                    {
+                        this._guardResolution(shortcutName);
+                        if (this.hasFeatures(entry.mask))
+                            solution = this.resolve(entry.definition, shortcut);
+                        shortcutCache[shortcut] = solution;
                     }
                 );
             }

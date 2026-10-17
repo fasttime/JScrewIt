@@ -39,8 +39,7 @@ export default function createOptimizer(encoder, shortcut)
             }
         }
     );
-    var definition = SHORTCUTS[shortcut].definition;
-    var shortcutSolution = encoder.resolve(definition, shortcut);
+    var shortcutSolution = encoder.resolveShortcut(shortcut);
     var solutionAppendLength = shortcutSolution.appendLength;
     var appendLengthDiff = discreteAppendLength - solutionAppendLength;
     // The saving of a cluster can exceed the difference between the append lengths by at most the
