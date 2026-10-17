@@ -24,15 +24,12 @@
     var JScrewIt =
     typeof module !== 'undefined' ? require('../../node-jscrewit-test') : self.JScrewIt;
 
-    var Solution        = JScrewIt.debug.Solution;
+    var SimpleSolution  = JScrewIt.debug.SimpleSolution;
     var SolutionType    = JScrewIt.debug.SolutionType;
 
-    var HIGH_SURROGATE_SOLUTION =
-    new Solution('\ud83e', '"\ud83e"', SolutionType.STRING);
-    var LOW_SURROGATE_SOLUTION =
-    new Solution('\ude9b', '"\ude9b"', SolutionType.STRING);
-    var NON_SURROGATE_SOLUTION =
-    new Solution('\uffff', '"\uffff"', SolutionType.STRING);
+    var HIGH_SURROGATE_SOLUTION = new SimpleSolution('\ud83e', '"\ud83e"', SolutionType.STRING);
+    var LOW_SURROGATE_SOLUTION  = new SimpleSolution('\ude9b', '"\ude9b"', SolutionType.STRING);
+    var NON_SURROGATE_SOLUTION  = new SimpleSolution('\uffff', '"\uffff"', SolutionType.STRING);
 
     describe
     (

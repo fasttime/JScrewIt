@@ -1,4 +1,4 @@
-import { _Array, _Array_prototype_forEach_call } from '../obj-utils';
+import { _Array, _Array_prototype_forEach_call, _Array_prototype_slice_call } from './obj-utils';
 
 export function codePointFromSurrogatePair(highSurrogateCharCode, lowSurrogateCharCode)
 {
@@ -13,21 +13,20 @@ export function extraZeros(count)
     return extraZeros;
 }
 
-export function initStaticEncoder(encoder)
+export function joinWithMaxLength(maxLength)
 {
-    staticEncoder = encoder;
-}
-
-export function replaceStaticExpr(expr)
-{
-    var solution = staticEncoder.replaceExpr(expr);
-    return solution;
-}
-
-export function replaceStaticString(str, options)
-{
-    var replacement = staticEncoder.replaceString(str, options);
-    return replacement;
+    for (var index = arguments.length; ;)
+    {
+        if (maxLength < 0)
+            return;
+        if (--index < 1)
+            break;
+        var str = arguments[index];
+        maxLength -= str.length;
+    }
+    var array = _Array_prototype_slice_call(arguments, 1);
+    var result = array.join('');
+    return result;
 }
 
 export function shortestOf()
@@ -49,5 +48,3 @@ export function shortestOf()
     );
     return shortestObj;
 }
-
-var staticEncoder;

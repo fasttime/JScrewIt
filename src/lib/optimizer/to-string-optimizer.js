@@ -8,10 +8,10 @@
 //
 // The leading append plus is omitted when the optimized cluster is the first element of a group.
 
-import { replaceStaticString }              from '../encoder/encoder-utils';
-import formatPositiveNumber                 from '../encoder/format-positive-number';
+import formatPositiveNumber                 from '../format-positive-number';
 import { _String, _parseInt, createEmpty }  from '../obj-utils';
 import { SimpleSolution, SolutionType }     from '../solution';
+import { replaceStaticString }              from '../static-encoder';
 
 var CLUSTER_EXTRA_LENGTHS = [];
 var DECIMAL_DIGIT_MAX_COUNTS = [];

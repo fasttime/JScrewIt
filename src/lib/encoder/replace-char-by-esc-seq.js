@@ -3,26 +3,26 @@ import hexCodeOf        from './hex-code-of';
 
 var LOW_UNICODE_ESC_SEQ_CODES;
 
-export default function replaceCharByEscSeq(charCode)
+export default function replaceCharByEscSeq(codePoint)
 {
     var escCode;
     var appendIndexer;
     var toStringOpt;
-    if (charCode >= 0x10000)
+    if (codePoint >= 0x10000)
     {
-        escCode = 'u{' + hexCodeOf(this, charCode) + '}';
+        escCode = 'u{' + hexCodeOf(this, codePoint) + '}';
         appendIndexer = false;
         toStringOpt = true;
     }
-    else if (charCode >= 0xfd || charCode in LOW_UNICODE_ESC_SEQ_CODES)
+    else if (codePoint >= 0xfd || codePoint in LOW_UNICODE_ESC_SEQ_CODES)
     {
-        escCode = 'u' + hexCodeOf(this, charCode, 4);
+        escCode = 'u' + hexCodeOf(this, codePoint, 4);
         appendIndexer = escCode.length > 5;
         toStringOpt = true;
     }
     else
     {
-        escCode = charCode.toString(8);
+        escCode = codePoint.toString(8);
         appendIndexer = false;
         toStringOpt = false;
     }
@@ -41,8 +41,8 @@ LOW_UNICODE_ESC_SEQ_CODES = createEmpty();
 ]
 .forEach
 (
-    function (charCode)
+    function (codePoint)
     {
-        LOW_UNICODE_ESC_SEQ_CODES[charCode] = null;
+        LOW_UNICODE_ESC_SEQ_CODES[codePoint] = null;
     }
 );

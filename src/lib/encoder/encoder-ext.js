@@ -16,10 +16,10 @@ import
     SIMPLE,
 }
 from '../definitions';
-import expressParse                         from '../express-parse';
-import { Feature }                          from '../features';
-import createFigurator                      from '../figurator';
-import joinWithMaxLength                    from '../join-with-max-length';
+import { codePointFromSurrogatePair, joinWithMaxLength }    from '../encoding-utils';
+import expressParse                                         from '../express-parse';
+import { Feature }                                          from '../features';
+import createFigurator                                      from '../figurator';
 import
 {
     _Array_prototype_forEach_call,
@@ -36,10 +36,9 @@ import
     tryCreateRegExp,
 }
 from '../obj-utils';
-import { SCREW_AS_STRING, SCREW_NORMAL }    from '../screw-buffer';
-import { Encoder }                          from './encoder-base';
-import { codePointFromSurrogatePair }       from './encoder-utils';
-import replaceStringArray                   from './replace-string-array';
+import { SCREW_AS_STRING, SCREW_NORMAL }                    from '../screw-buffer';
+import Encoder                                              from './encoder-base';
+import replaceStringArray                                   from './replace-string-array';
 
 var ENCODING_TYPE_COMBINED      = 'combined';
 var ENCODING_TYPE_EXPRESSION    = 'expression';

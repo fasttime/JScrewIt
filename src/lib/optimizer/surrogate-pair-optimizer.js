@@ -1,4 +1,4 @@
-import { codePointFromSurrogatePair, shortestOf }   from '../encoder/encoder-utils';
+import { codePointFromSurrogatePair, shortestOf }   from '../encoding-utils';
 import { Feature }                                  from '../features';
 import { _Math_min }                                from '../obj-utils';
 import { SimpleSolution, SolutionType }             from '../solution';

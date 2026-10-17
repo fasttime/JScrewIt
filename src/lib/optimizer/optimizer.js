@@ -1,14 +1,14 @@
-import { Encoder }                  from './encoder/encoder-base';
-import { assignNoEnum }             from './obj-utils';
-import createAtobOptimizer          from './optimizers/atob-optimizer';
-import createBtoaOptimizer          from './optimizers/btoa-optimizer';
-import createCommaOptimizer         from './optimizers/comma-optimizer';
-import createShortcutOptimizer      from './optimizers/shortcut-optimizer';
-import createSurrogatePairOptimizer from './optimizers/surrogate-pair-optimizer';
-import createToStringOptimizer      from './optimizers/to-string-optimizer';
+import Encoder                      from '../encoder/encoder-base';
+import { assignNoEnum }             from '../obj-utils';
+import createAtobOptimizer          from './atob-optimizer';
+import createBtoaOptimizer          from './btoa-optimizer';
+import createCommaOptimizer         from './comma-optimizer';
+import createShortcutOptimizer      from './shortcut-optimizer';
+import createSurrogatePairOptimizer from './surrogate-pair-optimizer';
+import createToStringOptimizer      from './to-string-optimizer';
 
-/** @typedef {import('./solution').AbstractSolution}        AbstractSolution */
-/** @typedef {import('./clustering-plan').ClusteringPlan}   ClusteringPlan */
+/** @typedef {import('../solution').AbstractSolution}       AbstractSolution */
+/** @typedef {import('../clustering-plan').ClusteringPlan}  ClusteringPlan */
 
 /**
  * A function that produces the solution of a cluster.
