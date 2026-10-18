@@ -1201,11 +1201,6 @@ function getFHPaddingEntries(index)
             define({ expr: '"He"', solutionType: SolutionType.COMBINED_STRING }),
             define({ expr: '"he"', solutionType: SolutionType.COMBINED_STRING }),
         ],
-        LOCALE_ZHTW:
-        [
-            define({ expr: '"zh-tw"', solutionType: SolutionType.COMBINED_STRING }),
-            define({ expr: '"zh-tW"', solutionType: SolutionType.COMBINED_STRING }),
-        ],
         MAP:
         [
             define({ expr: '"map"', optimize: true, solutionType: SolutionType.COMBINED_STRING }),
