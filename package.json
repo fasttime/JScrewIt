@@ -36,7 +36,7 @@
     "url": "git+https://github.com/fasttime/JScrewIt.git"
   },
   "scripts": {
-    "build": "npm install && npm run -ws build && gulp",
+    "build": "npm install && npm run --ws build && gulp",
     "docs": "gulp docs",
     "feature-info": "node dev/feature-info.mjs",
     "release": "npm version -m 'release %s' --tag-version-prefix=",

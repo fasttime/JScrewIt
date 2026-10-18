@@ -1201,6 +1201,11 @@ function getFHPaddingEntries(index)
             define({ expr: '"He"', solutionType: SolutionType.COMBINED_STRING }),
             define({ expr: '"he"', solutionType: SolutionType.COMBINED_STRING }),
         ],
+        LOCALE_ZHTW:
+        [
+            define({ expr: '"zh-tw"', solutionType: SolutionType.COMBINED_STRING }),
+            define({ expr: '"zh-tW"', solutionType: SolutionType.COMBINED_STRING }),
+        ],
         MAP:
         [
             define({ expr: '"map"', optimize: true, solutionType: SolutionType.COMBINED_STRING }),
@@ -1800,10 +1805,7 @@ function getFHPaddingEntries(index)
     useLocaleNumeralDefinition('т', '"ru"', Infinity, 11, LOCALE_NUMERALS_IE11_WIN7);
     useLocaleNumeralDefinition('ь', '"ru"', Infinity, 12, LOCALE_NUMERALS_IE11_WIN7);
     useLocaleNumeralDefinition('正', '"zh"', Infinity, 0, LOCALE_NUMERALS_IE11_WIN7_8);
-    useLocaleNumeralDefinition('无', '"zh"', Infinity, 1, LOCALE_NUMERALS_IE11_WIN7_8);
-    useLocaleNumeralDefinition('穷', '"zh"', Infinity, 2, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('大', '"zh"', Infinity, 3, LOCALE_NUMERALS_IE11_WIN7_8);
-    useLocaleNumeralDefinition('负', '"zh"', -Infinity, 0, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('字', '"zh-cn"', NaN, 2, LOCALE_NUMERALS_IE11_WIN7_8);
 }
 )();

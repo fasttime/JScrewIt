@@ -350,8 +350,7 @@ var featureInfos =
             checkLocaleNumeral('lt', Infinity, /^.......ė/) &&
             checkLocaleNumeral('pl', Infinity, /^.......ń.....ść/) &&
             checkLocaleNumeral('pl', NaN, /^..............ą/) &&
-            checkLocaleNumeral('zh', Infinity, /^正无穷大/) &&
-            checkLocaleNumeral('zh', -Infinity, /^负无穷大/) &&
+            checkLocaleNumeral('zh', Infinity, /^正..大/) &&
             checkLocaleNumeral('zh-cn', NaN, /^..字/);
             return available;
         },
