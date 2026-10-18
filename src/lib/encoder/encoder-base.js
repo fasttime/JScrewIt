@@ -44,13 +44,22 @@ import { MASK_EMPTY, maskIncludes }                 from '~feature-hub';
 
 /** @typedef {import('../solution').AbstractSolution} AbstractSolution */
 
-var STATIC_CHAR_CACHE   = createEmpty();
-var STATIC_CONST_CACHE  = createEmpty();
-var STATIC_ENCODER      = new Encoder(MASK_EMPTY);
-
 var BOND_STRENGTH_NONE      = 0;
 var BOND_STRENGTH_WEAK      = 1;
 var BOND_STRENGTH_STRONG    = 2;
+
+var RESOLVERS =
+{
+    __proto__:      null,
+    charCommon:     resolveCharByCommonMethod,
+    charInFn:       resolveCharInExpr,
+    charInFnBody:   resolveCharInNativeFunction,
+    charInFnHead:   resolveCharInNativeFunction,
+};
+
+var STATIC_CHAR_CACHE   = createEmpty();
+var STATIC_CONST_CACHE  = createEmpty();
+var STATIC_ENCODER      = new Encoder(MASK_EMPTY);
 
 var featureFromMask = Feature._fromMask;
 
@@ -383,11 +392,56 @@ function replaceString(str, options)
         return replacement;
 }
 
+function resolveCharByCommonMethod(char)
+{
+    var charCode = char.charCodeAt();
+    var atobOpt = charCode < 0x100;
+    var stdOpt = !atobOpt;
+    var solution = this._createCharCommonSolution(char, charCode, atobOpt, stdOpt, stdOpt, stdOpt);
+    return solution;
+}
+
 function resolveCharByDefaultMethod(encoder, char, charCode, replaceChar, entryCode)
 {
     var replacement = replaceChar.call(encoder, charCode);
     var solution = new SimpleSolution(char, replacement, SolutionType.STRING);
     solution.entryCode = entryCode;
+    return solution;
+}
+
+function resolveCharInExpr(char, expr, index, paddingEntries, paddingShifts)
+{
+    if (!paddingEntries)
+        throwSyntaxError(this, 'Missing padding entries for index ' + index);
+    var padding = this.findDefinition(paddingEntries);
+    var paddingBlock;
+    var shiftedIndex;
+    if (typeof padding === 'number')
+    {
+        var paddingShift = this.findDefinition(paddingShifts);
+        paddingBlock = R_PADDINGS[padding];
+        if (!paddingBlock)
+            throwSyntaxError(this, 'Undefined regular padding block with length ' + padding);
+        shiftedIndex = index + padding + paddingShift;
+    }
+    else
+    {
+        paddingBlock = padding.block;
+        shiftedIndex = padding.shiftedIndex;
+    }
+    var fullExpr = '(' + paddingBlock + ' + ' + expr + ')[' + shiftedIndex + ']';
+    var replacement = this.replaceExpr(fullExpr);
+    var solution = new SimpleSolution(char, replacement, SolutionType.STRING);
+    return solution;
+}
+
+function resolveCharInNativeFunction(char, offset, getPaddingEntries, paddingShifts)
+{
+    var nativeFunctionInfo = this.findDefinition(NATIVE_FUNCTION_INFOS);
+    var expr = nativeFunctionInfo.expr;
+    var index = offset + nativeFunctionInfo.shift;
+    var paddingEntries = getPaddingEntries(index);
+    var solution = this._resolveCharInExpr(char, expr, index, paddingEntries, paddingShifts);
     return solution;
 }
 
@@ -431,7 +485,7 @@ function resolveCharacter(char)
                     if (entries)
                         solution = findOptimalSolution(this, char, entries);
                     if (!solution)
-                        solution = this._commonResolveCharacter(char);
+                        solution = this._resolveCharByCommonMethod(char);
                 }
                 else
                 {
@@ -591,17 +645,6 @@ assignNoEnum
 (
     Encoder.prototype,
     {
-        _commonResolveCharacter:
-        function (char)
-        {
-            var charCode = char.charCodeAt();
-            var atobOpt = charCode < 0x100;
-            var stdOpt = !atobOpt;
-            var solution =
-            this._createCharCommonSolution(char, charCode, atobOpt, stdOpt, stdOpt, stdOpt);
-            return solution;
-        },
-
         _createCharCommonSolution:
         function (char, charCode, atobOpt, charCodeOpt, escSeqOpt, unescapeOpt)
         {
@@ -636,24 +679,19 @@ assignNoEnum
             return solution;
         },
 
-        _getPaddingBlock:
-        function (length)
-        {
-            var paddingBlock = R_PADDINGS[length];
-            if (paddingBlock)
-                return paddingBlock;
-            throwSyntaxError(this, 'Undefined regular padding block with length ' + length);
-        },
+        _guardResolution:           noop,
 
-        _guardResolution:       noop,
+        _replaceCharByAtob:         replaceCharByAtob,
 
-        _replaceCharByAtob:     replaceCharByAtob,
+        _replaceCharByCharCode:     replaceCharByCharCode,
 
-        _replaceCharByCharCode: replaceCharByCharCode,
+        _resolveCharByCommonMethod: resolveCharByCommonMethod,
 
-        _replaceCharByEscSeq:   replaceCharByEscSeq,
+        _replaceCharByEscSeq:       replaceCharByEscSeq,
 
-        _replaceCharByUnescape: replaceCharByUnescape,
+        _replaceCharByUnescape:     replaceCharByUnescape,
+
+        _resolveCharInExpr:         resolveCharInExpr,
 
         _replaceExpressUnit:
         function (unit, bond, unitIndices, maxLength, replacers)
@@ -720,46 +758,9 @@ assignNoEnum
             return output;
         },
 
-        _resolveCharInExpr:
-        function (char, expr, index, paddingEntries, paddingShifts)
-        {
-            if (!paddingEntries)
-                throwSyntaxError(this, 'Missing padding entries for index ' + index);
-            var padding = this.findDefinition(paddingEntries);
-            var paddingBlock;
-            var shiftedIndex;
-            if (typeof padding === 'number')
-            {
-                var paddingShift = this.findDefinition(paddingShifts);
-                paddingBlock = this._getPaddingBlock(padding);
-                shiftedIndex = index + padding + paddingShift;
-            }
-            else
-            {
-                paddingBlock = padding.block;
-                shiftedIndex = padding.shiftedIndex;
-            }
-            var fullExpr = '(' + paddingBlock + ' + ' + expr + ')[' + shiftedIndex + ']';
-            var replacement = this.replaceExpr(fullExpr);
-            var solution = new SimpleSolution(char, replacement, SolutionType.STRING);
-            return solution;
-        },
+        constantDefinitions:        CONSTANTS,
 
-        _resolveCharInNativeFunction:
-        function (char, offset, getPaddingEntries, paddingShifts)
-        {
-            var nativeFunctionInfo = this.findDefinition(NATIVE_FUNCTION_INFOS);
-            var expr = nativeFunctionInfo.expr;
-            var index = offset + nativeFunctionInfo.shift;
-            var paddingEntries = getPaddingEntries(index);
-            var solution =
-            this._resolveCharInExpr(char, expr, index, paddingEntries, paddingShifts);
-            return solution;
-        },
-
-        constantDefinitions:    CONSTANTS,
-
-        findDefinition:         findDefinition,
+        findDefinition:             findDefinition,
 
         hasFeatures:
         function (mask)
@@ -779,7 +780,7 @@ assignNoEnum
             return replacement;
         },
 
-        replaceString:          replaceString,
+        replaceString:              replaceString,
 
         resolve:
         function (definition, source, defaultSolutionType)
@@ -787,7 +788,11 @@ assignNoEnum
             var solution;
             var type = typeof definition;
             if (type === 'function')
-                solution = definition.call(this, source);
+            {
+                var resolverName = definition.resolverName;
+                var resolver = RESOLVERS[resolverName].bind(this);
+                solution = definition.call(resolver, source);
+            }
             else
             {
                 var expr;
@@ -812,11 +817,11 @@ assignNoEnum
             return solution;
         },
 
-        resolveCharacter:       resolveCharacter,
+        resolveCharacter:           resolveCharacter,
 
-        resolveConstant:        resolveConstant,
+        resolveConstant:            resolveConstant,
 
-        resolveShortcut:        resolveShortcut,
+        resolveShortcut:            resolveShortcut,
     }
 );
 

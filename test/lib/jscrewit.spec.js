@@ -746,29 +746,6 @@ self,
     );
     describe
     (
-        'Encoder#_getPaddingBlock throws a SyntaxError for',
-        function ()
-        {
-            it
-            (
-                'undefined padding',
-                function ()
-                {
-                    var encoder = JScrewIt.debug.createEncoder();
-                    expect
-                    (
-                        function ()
-                        {
-                            encoder._getPaddingBlock(2);
-                        }
-                    )
-                    .toThrowStrictly(SyntaxError, 'Undefined regular padding block with length 2');
-                }
-            );
-        }
-    );
-    describe
-    (
         'Encoder#findDefinition',
         function ()
         {
@@ -1357,6 +1334,23 @@ self,
                         }
                     )
                     .toThrowStrictly(SyntaxError, 'Missing padding entries for index 42');
+                }
+            );
+            it
+            (
+                'undefined padding block',
+                function ()
+                {
+                    var encoder = JScrewIt.debug.createEncoder();
+                    var paddingEntries = [{ definition: 2, mask: Feature.DEFAULT.mask }];
+                    expect
+                    (
+                        function ()
+                        {
+                            encoder._resolveCharInExpr('', '', 0, paddingEntries, []);
+                        }
+                    )
+                    .toThrowStrictly(SyntaxError, 'Undefined regular padding block with length 2');
                 }
             );
         }
