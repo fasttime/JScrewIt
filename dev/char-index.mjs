@@ -390,7 +390,7 @@ function hasUnusedDefinitions({ solutions }, char)
     {
         for (const entry of entries)
         {
-            if (entry.definition.name === 'charCommonDefinition')
+            if (entry.definition.resolverName === 'charCommon')
                 commonEntryFound = true;
             else
                 customEntryCount++;

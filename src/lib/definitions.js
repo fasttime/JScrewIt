@@ -6,7 +6,8 @@
 
 import { define, defineList, makeCallableWithFeatures } from './definers';
 import { Feature }                                      from './features';
-import { _String, createEmpty }                         from './obj-utils';
+import { _Array_prototype_push_apply, _Array_prototype_slice_call, _String, createEmpty }
+from './obj-utils';
 import { LazySolution, SolutionType }                   from './solution';
 import { replaceStaticExpr }                            from './static-encoder';
 
@@ -50,45 +51,6 @@ export var SHORTCUTS;
 var FB_PADDING_ENTRIES_MAP = createEmpty();
 var FH_PADDING_ENTRIES_MAP = createEmpty();
 
-var FB_R_PADDING_SHIFTS;
-var FH_R_PADDING_SHIFTS;
-
-function createCharDefinitionInFn(expr, index, paddingEntries)
-{
-    function charDefinitionInFn(char)
-    {
-        var solution =
-        this._resolveCharInExpr(char, expr, index, paddingEntries, FH_R_PADDING_SHIFTS);
-        return solution;
-    }
-
-    return charDefinitionInFn;
-}
-
-function createCharDefinitionInFnBody(offset)
-{
-    function charDefinitionInFnBody(char)
-    {
-        var solution =
-        this._resolveCharInNativeFunction(char, offset, getFBPaddingEntries, FB_R_PADDING_SHIFTS);
-        return solution;
-    }
-
-    return charDefinitionInFnBody;
-}
-
-function createCharDefinitionInFnHead(offset)
-{
-    function charDefinitionInFnHead(char)
-    {
-        var solution =
-        this._resolveCharInNativeFunction(char, offset, getFHPaddingEntries, FH_R_PADDING_SHIFTS);
-        return solution;
-    }
-
-    return charDefinitionInFnHead;
-}
-
 function createLazySolution(source, expr, type)
 {
     var solution =
@@ -103,6 +65,21 @@ function createLazySolution(source, expr, type)
         type
     );
     return solution;
+}
+
+function defineCharByFunction(resolverName)
+{
+    function definition(char)
+    {
+        var args = [char];
+        _Array_prototype_push_apply(args, extraArgs);
+        var solution = this.apply(null, args);
+        return solution;
+    }
+
+    var extraArgs = _Array_prototype_slice_call(arguments, 1);
+    definition.resolverName = resolverName;
+    return definition;
 }
 
 function definePadding(block, shiftedIndex)
@@ -332,6 +309,8 @@ function getFHPaddingEntries(index)
     return paddingEntries;
 }
 
+var charCommonDefinition = defineCharByFunction('charCommon');
+
 (function ()
 {
     var ARRAY_ITERATOR                  = Feature.ARRAY_ITERATOR;
@@ -368,17 +347,10 @@ function getFHPaddingEntries(index)
     var V8_SRC                          = Feature.V8_SRC;
     var WINDOW                          = Feature.WINDOW;
 
-    function charCommonDefinition(char)
-    {
-        var solution = this._commonResolveCharacter(char);
-        return solution;
-    }
+    var DEFINE_CHAR_COMMON = define(charCommonDefinition);
 
-    function defineCharCommon()
-    {
-        var entry = define(charCommonDefinition);
-        return entry;
-    }
+    var FB_R_PADDING_SHIFTS = [define(4, FF_SRC), define(5, IE_SRC), define(0, V8_SRC)];
+    var FH_R_PADDING_SHIFTS = [define(1, IE_SRC), define(0, NO_IE_SRC)];
 
     /**
      * Defines a character at a specified position in the string representation of a specified
@@ -401,7 +373,8 @@ function getFHPaddingEntries(index)
     function defineCharInFn(expr, index)
     {
         var paddingEntries = getFHPaddingEntries(index);
-        var definition = createCharDefinitionInFn(expr, index, paddingEntries);
+        var definition =
+        defineCharByFunction('charInFn', expr, index, paddingEntries, FH_R_PADDING_SHIFTS);
         var entry = define._callWithFeatures(definition, arguments, 2);
         return entry;
     }
@@ -422,7 +395,8 @@ function getFHPaddingEntries(index)
      */
     function defineCharInFnBody(offset)
     {
-        var definition = createCharDefinitionInFnBody(offset);
+        var definition =
+        defineCharByFunction('charInFnBody', offset, getFBPaddingEntries, FB_R_PADDING_SHIFTS);
         var entry = define(definition);
         return entry;
     }
@@ -445,7 +419,8 @@ function getFHPaddingEntries(index)
      */
     function defineCharInFnHead(offset)
     {
-        var definition = createCharDefinitionInFnHead(offset);
+        var definition =
+        defineCharByFunction('charInFnHead', offset, getFHPaddingEntries, FH_R_PADDING_SHIFTS);
         var entry = define._callWithFeatures(definition, arguments, 1);
         return entry;
     }
@@ -498,7 +473,7 @@ function getFHPaddingEntries(index)
         if (entries)
             entries.splice(entries.length - 1, 0, entry);
         else
-            CHARACTERS[char] = [entry, defineCharCommon()];
+            CHARACTERS[char] = [entry, DEFINE_CHAR_COMMON];
     }
 
     function useLocaleNumeralDigitDefinitions(locale, zeroCharCode)
@@ -702,12 +677,12 @@ function getFHPaddingEntries(index)
         // '$'
         '%':
         [
-            defineCharCommon(),
+            DEFINE_CHAR_COMMON,
         ],
         '&':
         [
             define('"".fontcolor("".fontcolor([]))[31]', ESC_HTML_QUOT),
-            defineCharCommon(),
+            DEFINE_CHAR_COMMON,
         ],
         // '\''
         '(':
@@ -755,7 +730,7 @@ function getFHPaddingEntries(index)
         '?':
         [
             define('(RP_0_S + RegExp())[2]'),
-            defineCharCommon(),
+            DEFINE_CHAR_COMMON,
         ],
         // '@'
         'A':
@@ -772,7 +747,7 @@ function getFHPaddingEntries(index)
         [
             define('(RP_4_A + "".fontcolor())[10]', CAPITAL_HTML),
             define('(RP_3_WA + Function("return console")())[11]', CONSOLE),
-            defineCharCommon(),
+            DEFINE_CHAR_COMMON,
         ],
         'D':
         [
@@ -807,7 +782,7 @@ function getFHPaddingEntries(index)
         'K':
         [
             define('(RP_5_A + "".strike())[10]', CAPITAL_HTML),
-            defineCharCommon(),
+            DEFINE_CHAR_COMMON,
         ],
         'L':
         [
@@ -833,7 +808,7 @@ function getFHPaddingEntries(index)
             define('btoa("".italics())[0]'),
             define('(RP_0_S + Function("return statusbar")())[11]', BARPROP),
             define('"0".sup()[10]', CAPITAL_HTML),
-            defineCharCommon(),
+            DEFINE_CHAR_COMMON,
         ],
         'Q':
         [
@@ -887,7 +862,7 @@ function getFHPaddingEntries(index)
         ],
         '\\':
         [
-            defineCharCommon(),
+            DEFINE_CHAR_COMMON,
         ],
         ']':
         [
@@ -937,7 +912,7 @@ function getFHPaddingEntries(index)
         'k':
         [
             define('20[TO_STRING]("21")'),
-            defineCharCommon(),
+            DEFINE_CHAR_COMMON,
         ],
         'l':        '"false"[2]',
         'm':
@@ -961,7 +936,7 @@ function getFHPaddingEntries(index)
         [
             define('212[TO_STRING]("31")[1]'),
             define('"".fontcolor(true + "".fontcolor())[30]', ESC_HTML_QUOT),
-            defineCharCommon(),
+            DEFINE_CHAR_COMMON,
         ],
         'r':        '"true"[1]',
         's':        '"false"[3]',
@@ -1087,7 +1062,7 @@ function getFHPaddingEntries(index)
             define('Infinity[TO_LOCALE_STRING]()', LOCALE_INFINITY),
             define('Infinity[TO_LOCALE_STRING]("ja")[1]', LOCALE_NUMERALS_IE11_WIN7_8),
             define('Infinity[TO_LOCALE_STRING]("ru")', RUSSIAN_INFINITY),
-            defineCharCommon(),
+            DEFINE_CHAR_COMMON,
         ],
     };
 
@@ -1432,10 +1407,6 @@ function getFHPaddingEntries(index)
         RP_5_A:     { expr: 'false',    solutionType: SolutionType.ALGEBRAIC },
         RP_6_S:     { expr: '"0false"', solutionType: SolutionType.COMBINED_STRING },
     };
-
-    FB_R_PADDING_SHIFTS = [define(4, FF_SRC), define(5, IE_SRC), define(0, V8_SRC)];
-
-    FH_R_PADDING_SHIFTS = [define(1, IE_SRC), define(0, NO_IE_SRC)];
 
     FORMAT_MAPPER_DBL_DICT =
     defineList

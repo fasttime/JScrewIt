@@ -36,14 +36,6 @@ self,
         return featureObj;
     }
 
-    function getFunctionName(fn)
-    {
-        var name = fn.name;
-        if (name === undefined)
-            name = /^\s*function ([\w$]+)/.exec(fn)[1];
-        return name;
-    }
-
     function getPoolEncoder(featureObj)
     {
         var mask = featureObj.mask;
@@ -92,6 +84,21 @@ self,
     {
         function testDefault()
         {
+            if (charCode < 0x100)
+            {
+                it
+                (
+                    '(atob)',
+                    function ()
+                    {
+                        var encoder = getPoolEncoder(Feature.DEFAULT);
+                        var solution =
+                        encoder._createCharCommonSolution
+                        (char, charCode, true, false, false, false);
+                        verifyStringSolution(solution, char);
+                    }
+                );
+            }
             it
             (
                 '(charCode)',
@@ -141,18 +148,18 @@ self,
                     var definition = entry.definition;
                     if (typeof definition === 'function')
                     {
-                        var name = getFunctionName(definition);
-                        switch (name)
+                        var resolverName = definition.resolverName;
+                        switch (resolverName)
                         {
-                        case 'charCommonDefinition':
+                        case 'charCommon':
                             break;
-                        case 'charDefinitionInFn':
+                        case 'charInFn':
                             verifyFEntry(entry, FN_DISPOSITIONS, FN_VARIETIES);
                             return;
-                        case 'charDefinitionInFnBody':
+                        case 'charInFnBody':
                             verifyFEntry(entry, FN_BODY_DISPOSITIONS, FN_BODY_VARIETIES);
                             return;
-                        case 'charDefinitionInFnHead':
+                        case 'charInFnHead':
                             verifyFEntry(entry, FN_HEAD_DISPOSITIONS, FN_HEAD_VARIETIES);
                             return;
                         default:
@@ -160,7 +167,8 @@ self,
                             (
                                 function ()
                                 {
-                                    var message = 'Unexpected definition function name ' + name;
+                                    var message =
+                                    'Unexpected definition function name ' + resolverName;
                                     return message;
                                 }
                             );
