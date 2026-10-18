@@ -60,7 +60,7 @@ export default function Encoder(mask)
     this.mask               = mask;
     this._charCache         = _Object_create(STATIC_CHAR_CACHE);
     this._constCache        = _Object_create(STATIC_CONST_CACHE);
-    this._definitionCache   = createEmpty();
+    this._definitionCache   = new WeakMap();
     this._optimizers        = createEmpty();
     this._shortcutCache     = createEmpty();
     this._stack             = [];

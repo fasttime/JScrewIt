@@ -145,7 +145,6 @@ if (typeof NO_DEBUG === 'undefined')
         function getEntries(name)
         {
             var entries = cloneEntries(ENTRIES[name]);
-            entries.cacheKey = name;
             return entries;
         }
 

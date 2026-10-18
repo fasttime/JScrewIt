@@ -230,10 +230,7 @@ function getFBPaddingEntries(index)
             break;
         }
         if (paddingEntries)
-        {
-            paddingEntries.cacheKey = 'FBP:' + index;
             FB_PADDING_ENTRIES_MAP[index] = paddingEntries;
-        }
     }
     return paddingEntries;
 }
@@ -330,10 +327,7 @@ function getFHPaddingEntries(index)
             break;
         }
         if (paddingEntries)
-        {
-            paddingEntries.cacheKey = 'FHP:' + index;
             FH_PADDING_ENTRIES_MAP[index] = paddingEntries;
-        }
     }
     return paddingEntries;
 }

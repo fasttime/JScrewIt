@@ -774,21 +774,6 @@ self,
         {
             it
             (
-                'Adds a cache key to the entry list',
-                function ()
-                {
-                    var encoder = JScrewIt.debug.createEncoder();
-                    var entries1 = [];
-                    var entries2 = [];
-                    encoder.findDefinition(entries1);
-                    expect(entries1.cacheKey).toBeDefined();
-                    encoder.findDefinition(entries2);
-                    expect(entries2.cacheKey).toBeDefined();
-                    expect(entries2.cacheKey).toNotEqual(entries1.cacheKey);
-                }
-            );
-            it
-            (
                 'Caches an existing definition',
                 function ()
                 {
