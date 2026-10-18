@@ -30,7 +30,8 @@ await createConfig
         files:              ['src/**/*.js'],
         ignores:            ['src/ui/worker.js'],
         jsVersion:          5,
-        languageOptions:    { ecmaVersion: 2015, globals: { atob: 'readonly', btoa: 'readonly' } },
+        languageOptions:
+        { ecmaVersion: 2015, globals: { WeakMap: 'readonly', atob: 'readonly', btoa: 'readonly' } },
         plugins:            { internal: eslintPluginJScrewIt },
         processor:          new EslintEnvProcessor(),
         rules:              { 'internal/sorted-definitions': 'error' },
