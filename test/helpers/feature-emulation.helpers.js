@@ -830,10 +830,6 @@
                     case 'zh-cn':
                         if (this !== this)
                             return '非数字';
-                        if (this === Infinity)
-                            return '正无穷大';
-                        if (this === -Infinity)
-                            return '负无穷大';
                         break;
                     }
                 }
