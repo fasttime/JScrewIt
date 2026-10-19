@@ -1801,6 +1801,6 @@ function getFHPaddingEntries(index)
     useLocaleNumeralDefinition('ь', '"ru"', Infinity, 12, LOCALE_NUMERALS_IE11_WIN7);
     useLocaleNumeralDefinition('正', '"zh"', Infinity, 0, LOCALE_NUMERALS_IE11_WIN7_8);
     useLocaleNumeralDefinition('大', '"zh"', Infinity, 3, LOCALE_NUMERALS_IE11_WIN7_8);
-    useLocaleNumeralDefinition('字', '"zh-cn"', NaN, 2, LOCALE_NUMERALS_IE11_WIN7_8);
+    useLocaleNumeralDefinition('字', '"zh-cN"', NaN, 2, LOCALE_NUMERALS_IE11_WIN7_8);
 }
 )();
