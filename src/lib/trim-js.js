@@ -11,7 +11,7 @@ var trimJS;
     trimJS =
     function (str)
     {
-        str = str.replace(/^(?:\s|\uFEFF|\/\/.*(?!.)|\/\*[\s\S]*?\*\/)*(?!.)\s/, '');
+        str = str.replace(/^(?:\s|\uFEFF|\/\/.*(?!.)|\/\*[^]*?\*\/)*(?!.)\s/, '');
         var match = regExp.exec(str);
         if (match)
         {

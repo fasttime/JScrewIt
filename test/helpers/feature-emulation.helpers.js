@@ -39,7 +39,7 @@
             var str = String(Array.prototype.join).replace(/\bjoin\b/, name);
             return str;
         };
-        var descriptor = { value: fn };
+        var descriptor = { value: fn, writable: true };
         return descriptor;
     }
 
@@ -123,7 +123,7 @@
         var int = rebaseDigits(parts[1], charCode0);
         if (groupLength)
         {
-            var regExpStr = '(?=(.{' + groupLength + '})+.$)';
+            var regExpStr = '(?!^)(?=(.{' + groupLength + '})+.$)';
             var regExp = RegExp(regExpStr, 'g');
             int = int.replace(regExp, ',$&');
         }
@@ -175,30 +175,6 @@
             adapterList.function = oldDescriptor.value;
         }
         adapterList.push(adapter);
-    }
-
-    function makeEmuFeatureEscHtml(replacer, regExp)
-    {
-        var setUp =
-        makeEmuFeatureHtml
-        (
-            ['anchor', 'fontcolor', 'fontsize', 'link'],
-            function (method)
-            {
-                function adaptedMethod(value)
-                {
-                    var str = method.call(this, '');
-                    value = replacer(String(value));
-                    var index = str.lastIndexOf('"');
-                    str = str.slice(0, index) + value + str.slice(index);
-                    return str;
-                }
-
-                return adaptedMethod;
-            },
-            regExp
-        );
-        return setUp;
     }
 
     function makeEmuFeatureFunctionLF(replacement)
@@ -351,6 +327,12 @@
         return oldDescriptor;
     }
 
+    function registerArrayPrototypeEntries(context, obj)
+    {
+        var value = createStaticSupplier(obj);
+        override(context, 'Array.prototype.entries', { value: value, writable: true });
+    }
+
     function rebaseDigits(digits, charCode0)
     {
         var returnValue =
@@ -395,14 +377,6 @@
         intercept(context, NUMBER_TO_LOCALE_STRING_INTERCEPTOR, adapter);
     }
 
-    function registerObjectFactory(context, path, str, prototype)
-    {
-        var obj = { __proto__: prototype };
-        var factory = createStaticSupplier(obj);
-        override(context, path, { value: factory });
-        registerDefaultToStringAdapter(context, obj, str);
-    }
-
     function replaceArrowFunctions(expr)
     {
         expr =
@@ -411,10 +385,10 @@
             ARROW_REGEXP,
             function (match, capture1, capture2)
             {
-                var replacement1 = /^\([\S\s]*\)$/.test(capture1) ? capture1 : '(' + capture1 + ')';
+                var replacement1 = /^\([^]*\)$/.test(capture1) ? capture1 : '(' + capture1 + ')';
                 var innerExpr = replaceArrowFunctions(capture2);
                 var replacement2 =
-                /^\{[\s\S]*\}$/.test(capture2) ? innerExpr : '{return(' + innerExpr + ')}';
+                /^\{[^]*\}$/.test(capture2) ? innerExpr : '{return(' + innerExpr + ')}';
                 var replacement = '(function' + replacement1 + replacement2 + ')';
                 return replacement;
             }
@@ -494,8 +468,9 @@
             }
             var prototype =
             arrayIterator ? Object.getPrototypeOf(arrayIterator) : function () { }.prototype;
-            registerObjectFactory
-            (this, 'Array.prototype.entries', '[object Array Iterator]', prototype);
+            var obj = { __proto__: prototype };
+            registerDefaultToStringAdapter(this, obj, '[object Array Iterator]');
+            registerArrayPrototypeEntries(this, obj);
         },
         ARROW:
         function ()
@@ -596,16 +571,23 @@
             override(this, 'console.toString', { value: toString });
         },
         ESC_HTML_QUOT:
-        makeEmuFeatureEscHtml
+        makeEmuFeatureHtml
         (
-            function (str)
+            ['anchor', 'fontcolor', 'fontsize', 'link'],
+            function (method)
             {
-                str = str.replace(/"/g, '&quot;');
-                return str;
+                function adaptedMethod(value)
+                {
+                    value = String(value).replace(/"/g, '&quot;');
+                    var str = method.call(this, value);
+                    return str;
+                }
+
+                return adaptedMethod;
             },
             /&quot;/
         ),
-        FF_SRC:                 makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_FF),
+        FF_SRC:         makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_FF),
         FLAT:
         function ()
         {
@@ -635,9 +617,9 @@
         {
             override(this, 'String.fromCodePoint', { value: fromCodePoint });
         },
-        FUNCTION_19_LF:         makeEmuFeatureFunctionLF('function anonymous(\n) {\n\n}'),
-        FUNCTION_22_LF:         makeEmuFeatureFunctionLF('function anonymous() {\n\n}'),
-        IE_SRC:                 makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_IE),
+        FUNCTION_19_LF: makeEmuFeatureFunctionLF('function anonymous(\n) {\n\n}'),
+        FUNCTION_22_LF: makeEmuFeatureFunctionLF('function anonymous() {\n\n}'),
+        IE_SRC:         makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_IE),
         ITERATOR_HELPER:
         function ()
         {
@@ -684,7 +666,7 @@
                     var normalizedLocale = normalizeLocale(locale);
                     if (normalizedLocale === 'bn')
                     {
-                        if (this === this)
+                        if (isFinite(this))
                         {
                             var returnValue = formatLocaleNumeral(this, 0x09e6, 2);
                             return returnValue;
@@ -766,6 +748,7 @@
                     switch (normalizedLocale)
                     {
                     case 'ar':
+                    case 'ar-td':
                         if (this !== this)
                             return 'ليس\xa0برقم';
                         if (this === Infinity)
@@ -841,7 +824,8 @@
             var get =
             function ()
             {
-                var result = /^\s*function ([\w$]+)/.exec(this)[1];
+                var match = /^\s*function ([\w$]+)/.exec(this);
+                var result = match ? match[1] : '';
                 return result;
             };
             override(this, 'Function.prototype.name', { get: get });
@@ -858,16 +842,23 @@
         OBJECT_ARRAY_ENTRIES_CTOR:
         function ()
         {
+            var obj;
             if (Array.prototype.entries)
             {
                 var arrayIterator = [].entries();
                 if (arrayIterator.constructor === Object)
                     return;
+                var prototype = Object.getPrototypeOf(arrayIterator);
+                obj = Object.create(prototype, { constructor: { value: Object } });
+                var str = arrayIterator + '';
+                if (obj + '' !== str)
+                    registerDefaultToStringAdapter(this, obj, str);
             }
-            var str = arrayIterator ? arrayIterator + '' : '[object Object]';
-            registerObjectFactory(this, 'Array.prototype.entries', str, Object.prototype);
+            else
+                obj = { };
+            registerArrayPrototypeEntries(this, obj);
         },
-        OBJECT_W_SELF:          makeEmuFeatureSelf('[object WorkerGlobalScope]', /^\[object W/),
+        OBJECT_W_SELF:  makeEmuFeatureSelf('[object WorkerGlobalScope]', /^\[object W/),
         PLAIN_INTL:
         function ()
         {
@@ -899,11 +890,10 @@
                 }
             );
         },
-        SELF:                   makeEmuFeatureSelf('[object Object]', /^\[object /),
+        SELF:           makeEmuFeatureSelf('[object Object]', /^\[object /),
         SHORT_LOCALES:
         function ()
         {
-            this.shortLocales = true;
             registerNumberToLocaleStringAdapter
             (
                 this,
@@ -912,7 +902,7 @@
                     var normalizedLocale = normalizeLocale(locale);
                     if (normalizedLocale === 'ar' || normalizedLocale === 'ar-td')
                     {
-                        if (this === this)
+                        if (isFinite(this))
                         {
                             var returnValue = formatLocaleNumeral(this, 0x660, undefined, '٫');
                             return returnValue;
@@ -926,8 +916,8 @@
         {
             override(this, 'status', { value: '' });
         },
-        V8_SRC:                 makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_V8),
-        WINDOW:                 makeEmuFeatureSelf('[object Window]', /^\[object Window]$/),
+        V8_SRC:         makeEmuFeatureNativeFunctionSource(NATIVE_FUNCTION_SOURCE_INFO_V8),
+        WINDOW:         makeEmuFeatureSelf('[object Window]', /^\[object Window]$/),
     };
 
     var EMU_FEATURES = Object.keys(EMU_FEATURE_INFOS);
