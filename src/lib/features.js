@@ -411,7 +411,7 @@ var featureInfos =
     OBJECT_ARRAY_ENTRIES_CTOR:
     {
         description:
-        'The property that the Array.prototype.entries().constructor is the Object constructor.',
+        'The property that Array.prototype.entries().constructor is the Object constructor.',
         check:
         function ()
         {

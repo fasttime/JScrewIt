@@ -814,7 +814,7 @@ Features available in Node.js 22.12 to 22.x and Node.js 23.3 or later.
 
 > **OBJECT\_ARRAY\_ENTRIES\_CTOR**: [`ElementaryFeature`](ElementaryFeature.md)
 
-The property that the Array.prototype.entries\(\).constructor is the Object constructor.
+The property that Array.prototype.entries\(\).constructor is the Object constructor.
 
 #### Remarks
 
